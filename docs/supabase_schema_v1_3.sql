@@ -118,3 +118,48 @@ create policy "qa update admin" on public.qa_questions
 for update to authenticated
 using (public.nh7_is_admin())
 with check (public.nh7_is_admin());
+
+-- Church meeting details - added in v1.3.2
+-- Admin can change meeting link/code in Supabase without uploading a new app version.
+create table if not exists public.meeting_settings (
+  id text primary key default 'active',
+  provider text default 'FreeConferenceCall',
+  meeting_url text,
+  phone_number text,
+  access_code text,
+  security_code text,
+  extra_info text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.meeting_settings enable row level security;
+
+drop policy if exists "meeting settings select approved or admin" on public.meeting_settings;
+drop policy if exists "meeting settings admin insert" on public.meeting_settings;
+drop policy if exists "meeting settings admin update" on public.meeting_settings;
+
+create policy "meeting settings select approved or admin" on public.meeting_settings
+for select to anon, authenticated
+using (
+  public.nh7_is_admin()
+  or exists (
+    select 1 from public.registrations r
+    where r.device_id = public.nh7_device_id()
+      and r.type = 'meeting'
+      and r.status = 'approved'
+  )
+);
+
+create policy "meeting settings admin insert" on public.meeting_settings
+for insert to authenticated
+with check (public.nh7_is_admin());
+
+create policy "meeting settings admin update" on public.meeting_settings
+for update to authenticated
+using (public.nh7_is_admin())
+with check (public.nh7_is_admin());
+
+insert into public.meeting_settings (id, provider, meeting_url, phone_number, access_code, security_code, extra_info)
+values ('active', 'FreeConferenceCall', '', '', '', '', '')
+on conflict (id) do nothing;

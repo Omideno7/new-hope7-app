@@ -21,3 +21,6 @@ This version adds Supabase cloud-save foundation, improved offline caching, and 
 - Added admin answer workflow.
 - Fixed school registration to submit to Supabase registrations table.
 - Added qa_questions table to SQL schema.
+
+## v1.3.3
+- Q&A page is cleaner: My Questions and Public Answers are collapsed sections; each answer opens only when the user taps the question.

@@ -52,6 +52,14 @@ const QA_T = {
 };
 Object.keys(QA_T).forEach(lang=>Object.assign(T[lang], QA_T[lang]));
 
+const MEETING_T = {
+  en:{meetingApproved:'Your meeting access is approved.',meetingDetails:'Meeting details',meetingLink:'Meeting link',accessCode:'Access code',securityCode:'Security code',phoneNumber:'Phone number',openMeeting:'Open meeting',notConfigured:'Meeting details are not configured yet by admin.',checkingApproval:'Checking your approval status...',syncApproval:'Refresh approval status'},
+  fa:{meetingApproved:'دسترسی شما به جلسه تأیید شده است.',meetingDetails:'اطلاعات ورود به جلسه',meetingLink:'لینک جلسه',accessCode:'کد دسترسی',securityCode:'کد امنیتی',phoneNumber:'شماره تماس',openMeeting:'باز کردن جلسه',notConfigured:'اطلاعات جلسه هنوز توسط ادمین تنظیم نشده است.',checkingApproval:'در حال بررسی وضعیت تأیید شما...',syncApproval:'تازه‌سازی وضعیت تأیید'},
+  hr:{meetingApproved:'Vaš pristup sastanku je odobren.',meetingDetails:'Podaci za pristup sastanku',meetingLink:'Link sastanka',accessCode:'Pristupni kod',securityCode:'Sigurnosni kod',phoneNumber:'Telefonski broj',openMeeting:'Otvori sastanak',notConfigured:'Podaci za sastanak još nisu postavljeni od administratora.',checkingApproval:'Provjera statusa odobrenja...',syncApproval:'Osvježi status odobrenja'}
+};
+Object.keys(MEETING_T).forEach(lang=>Object.assign(T[lang], MEETING_T[lang]));
+
+
 
 const NEW_BIRTH_VIDEOS = [
   'https://youtu.be/u-G6r7rYNEE?is=8kokBIcdqkvQGayt',
@@ -130,6 +138,42 @@ async function saveProgressCloud(key, value){
 async function saveQuestionCloud(questionText){
   const payload={device_id:deviceId(), question_text:questionText, language:state.lang, status:'pending'};
   await saveCloud({type:'insert', table:'qa_questions', payload});
+}
+
+async function fetchLatestRegistration(kind){
+  if(!CLOUD_ENABLED || !navigator.onLine) return null;
+  try{
+    const rows = await cloudFetch(`registrations?select=*&device_id=eq.${encodeURIComponent(deviceId())}&type=eq.${encodeURIComponent(kind)}&order=created_at.desc&limit=1`, {method:'GET'});
+    const row = Array.isArray(rows) ? rows[0] : null;
+    if(row){
+      const data = Object.assign({}, row.payload||{}, {status:row.status, cloudId:row.id, approvedBy: row.status==='approved' ? 'admin' : ''});
+      localStorage.setItem(kind==='meeting'?'nh7_meeting_access':'nh7_school_access', JSON.stringify(data));
+      return data;
+    }
+  }catch(e){ console.warn('Registration status check failed', e); }
+  return null;
+}
+async function fetchMeetingSettings(){
+  if(!CLOUD_ENABLED || !navigator.onLine) return null;
+  try{
+    const rows = await cloudFetch('meeting_settings?select=*&id=eq.active&limit=1', {method:'GET'});
+    return Array.isArray(rows) ? rows[0] : null;
+  }catch(e){ console.warn('Meeting settings load failed', e); return null; }
+}
+function renderMeetingDetails(settings){
+  if(!settings) return `<div class="notice">${tr('notConfigured')}</div>`;
+  const link = settings.meeting_url || '';
+  const phone = settings.phone_number || '';
+  const access = settings.access_code || '';
+  const security = settings.security_code || '';
+  const extra = settings.extra_info || '';
+  return `<div class="notice"><h3>${tr('meetingDetails')}</h3>
+    ${link?`<p><strong>${tr('meetingLink')}:</strong> <a href="${html(link)}" target="_blank" rel="noopener">${tr('openMeeting')}</a></p>`:''}
+    ${phone?`<p><strong>${tr('phoneNumber')}:</strong> ${html(phone)}</p>`:''}
+    ${access?`<p><strong>${tr('accessCode')}:</strong> ${html(access)}</p>`:''}
+    ${security?`<p><strong>${tr('securityCode')}:</strong> ${html(security)}</p>`:''}
+    ${extra?`<p>${html(extra)}</p>`:''}
+  </div>`;
 }
 
 function tr(k){ return T[state.lang]?.[k] || T.en[k] || k; }
@@ -255,7 +299,7 @@ async function render(route, params={}, preserve=false){
     else if(route==='audio') await audio(params);
     else if(route==='salvation') await salvation(params);
     else if(route==='about') await about();
-    else if(route==='meetings') await meetings();
+    else if(route==='meetings') await meetings(params);
     else if(route==='settings') await settings();
     else if(route==='qna') await qna();
     else await home();
@@ -493,12 +537,17 @@ async function about(){
   view.innerHTML=card(tr('about'), `<h3>${tr('churchIntro')}</h3><p>${html(d.intro?.[state.lang]||'')}</p><h3>${tr('ourVision')}</h3><p>${html(d.vision?.[state.lang]||'')}</p><h3>${tr('ourBeliefs')}</h3><p>${html(d.beliefs?.[state.lang]||'')}</p><div class="button-row"><a class="secondary-btn" href="https://www.bible.com/organizations/da6136d1-04cd-4243-a52b-f9ba7f32ec79?utm_source=yvapp&utm_medium=share&utm_content=partner-page" target="_blank" rel="noopener">${tr('youversion')}</a></div>`);
 }
 async function meetings(params={}){
-  const d=await jfetch('data/church/church_config.json'); const access=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{"status":"guest"}');
-  const approved = access.status==='approved' && access.approvedBy==='admin';
+  let access=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{"status":"guest"}');
   if(params.form){ view.innerHTML=registrationFormHtml('meeting', access); return; }
+  const cloudAccess = await fetchLatestRegistration('meeting');
+  if(cloudAccess) access = cloudAccess;
+  const approved = access.status==='approved' || access.approvedBy==='admin';
   let details='';
-  if(approved) details=`<div class="notice"><strong>FreeConferenceCall</strong><p>${html(d.publicMeetingText?.[state.lang]||'')}</p></div>`;
-  view.innerHTML=card(tr('meetings'), `<p>${tr('meetingAccessText')}</p><p class="muted">${tr('meetingNotApproved')}</p><span class="badge">${approved?tr('approved'):registrationStatus(access)}</span>${details}<div class="button-row"><button class="primary-btn" data-go="meetings" data-params='{"form":true}'>${tr('register')}</button></div>`);
+  if(approved){
+    const settings = await fetchMeetingSettings();
+    details = `<p class="success-text">${tr('meetingApproved')}</p>` + renderMeetingDetails(settings);
+  }
+  view.innerHTML=card(tr('meetings'), `<p>${tr('meetingAccessText')}</p>${approved?'':`<p class="muted">${tr('meetingNotApproved')}</p>`}<span class="badge">${approved?tr('approved'):registrationStatus(access)}</span>${details}<div class="button-row"><button class="primary-btn" data-go="meetings" data-params='{"form":true}'>${tr('register')}</button><button class="secondary-btn" data-go="meetings">${tr('syncApproval')}</button></div>`);
 }
 async function more(){ view.innerHTML=`<div class="grid">${tile('audio','🎧',tr('audio'))}${tile('salvation','✝',tr('salvation'))}${tile('gratitude','🙏',tr('gratitude'))}${tile('meetings','☎',tr('meetings'))}${tile('qna','❓',tr('qna'))}${tile('about','ℹ',tr('about'))}${tile('settings','⚙',tr('settings'))}</div>`; }
 
@@ -508,9 +557,11 @@ async function qna(){
   try{
     answered = await cloudFetch('qa_questions?select=id,question_text,answer_text,language,answered_at&status=eq.answered&order=answered_at.desc&limit=50', {method:'GET'});
   }catch(e){ console.warn('Q&A load failed', e); }
-  const myHtml = my.length ? `<div class="list">${my.slice().reverse().map(q=>`<div class="notice"><strong>${html(q.question)}</strong><p class="muted">${q.status==='answered'?tr('answered'):tr('waitingAnswer')}</p>${q.answer?`<p><strong>${tr('answer')}:</strong> ${html(q.answer)}</p>`:''}</div>`).join('')}</div>` : `<p class="muted">${tr('noQuestions')}</p>`;
-  const answeredHtml = answered && answered.length ? `<div class="list">${answered.map(q=>`<div class="card"><strong>${html(q.question_text)}</strong><p><strong>${tr('answer')}:</strong> ${html(q.answer_text||'')}</p></div>`).join('')}</div>` : `<p class="muted">${tr('noQuestions')}</p>`;
-  view.innerHTML=card(tr('qna'), `<p class="muted">${tr('anonymousNote')}</p><h3>${tr('askQuestion')}</h3><textarea id="qaQuestion" placeholder="${tr('questionText')}" required></textarea><button class="primary-btn" id="submitQa">${tr('submitQuestion')}</button><h3>${tr('myQuestions')}</h3>${myHtml}<h3>${tr('publicAnswers')}</h3>${answeredHtml}`);
+  const tapText = state.lang==='fa' ? 'برای دیدن پاسخ کلیک کنید' : state.lang==='hr' ? 'Dodirnite za prikaz odgovora' : 'Tap to view answer';
+  const openText = state.lang==='fa' ? 'برای باز کردن کلیک کنید' : state.lang==='hr' ? 'Dodirnite za otvaranje' : 'Tap to open';
+  const myHtml = my.length ? `<div class="list">${my.slice().reverse().map((q,i)=>`<button class="list-btn qna-answer-toggle" data-qna-answer="myq-${i}"><strong>${html(q.question)}</strong><small>${q.status==='answered'?tr('answered'):tr('waitingAnswer')} • ${tapText}</small></button><div id="myq-${i}" class="accordion-panel hidden">${q.answer?`<p><strong>${tr('answer')}:</strong> ${html(q.answer)}</p>`:`<p class="muted">${tr('waitingAnswer')}</p>`}</div>`).join('')}</div>` : `<p class="muted">${tr('noQuestions')}</p>`;
+  const answeredHtml = answered && answered.length ? `<div class="list">${answered.map((q,i)=>`<button class="list-btn qna-answer-toggle" data-qna-answer="pubq-${i}"><strong>${html(q.question_text)}</strong><small>${tapText}</small></button><div id="pubq-${i}" class="accordion-panel hidden"><p><strong>${tr('answer')}:</strong> ${html(q.answer_text||'')}</p></div>`).join('')}</div>` : `<p class="muted">${tr('noQuestions')}</p>`;
+  view.innerHTML=card(tr('qna'), `<p class="muted">${tr('anonymousNote')}</p><h3>${tr('askQuestion')}</h3><textarea id="qaQuestion" placeholder="${tr('questionText')}" required></textarea><button class="primary-btn" id="submitQa">${tr('submitQuestion')}</button><div class="qna-section"><button class="secondary-btn wide-btn" data-qna-toggle="myQuestionsPanel">${tr('myQuestions')} <span>${openText}</span></button><div id="myQuestionsPanel" class="accordion-panel hidden">${myHtml}</div></div><div class="qna-section"><button class="secondary-btn wide-btn" data-qna-toggle="publicAnswersPanel">${tr('publicAnswers')} <span>${openText}</span></button><div id="publicAnswersPanel" class="accordion-panel hidden">${answeredHtml}</div></div>`);
   $('#submitQa').onclick=async()=>{
     const question=($('#qaQuestion').value||'').trim();
     if(!question){ alert(tr('requiredField')); return; }
@@ -524,7 +575,7 @@ async function qna(){
 async function settings(){
   const perm=typeof Notification==='undefined'?'default':Notification.permission;
   const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');
-  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>New Hope 7 v1.3.1</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
+  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>New Hope 7 v1.3.3</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
   $('#settingsLang').value=state.lang; $('#settingsLang').onchange=e=>setLang(e.target.value);
   $('#enableNotify').onclick=enableNotifications;
   $('#clearCache').onclick=()=>{ if('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.update())); alert(tr('saved')); };
@@ -550,6 +601,8 @@ function bindDynamic(){
   $$('[data-read-range]').forEach(el=>el.onclick=()=>revealReadingRange(el));
   $$('[data-toggle-panel]').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.togglePanel); if(p){ p.classList.toggle('hidden'); el.textContent=p.classList.contains('hidden')?(el.dataset.togglePanel==='notesPanel'?tr('showMyNotes'):tr('showSavedVerses')):tr('hide'); }});
   $$('[data-salvation-toggle]').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.salvationToggle); if(p){ p.classList.toggle('hidden'); const small=el.querySelector('small'); if(small) small.textContent=p.classList.contains('hidden') ? (state.lang==='fa'?'برای باز کردن کلیک کنید':state.lang==='hr'?'Dodirnite za otvaranje':'Tap to open') : tr('hide'); }});
+  $$('[data-qna-toggle]').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.qnaToggle); if(p){ p.classList.toggle('hidden'); const sp=el.querySelector('span'); if(sp) sp.textContent=p.classList.contains('hidden') ? (state.lang==='fa'?'برای باز کردن کلیک کنید':state.lang==='hr'?'Dodirnite za otvaranje':'Tap to open') : tr('hide'); }});
+  $$('.qna-answer-toggle').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.qnaAnswer); if(p){ p.classList.toggle('hidden'); }});
   $$('[data-submit-registration]').forEach(el=>el.onclick=()=>collectRegistration(el.dataset.submitRegistration));
   const run=$('#runBibleSearch'); if(run) run.onclick=()=>navigate('bible',{q:$('#bibleSearch').value},true);
   $('#startGratitude')?.addEventListener('click',()=>{ localStorage.setItem('nh7_gratitude_start',todayKey()); addPoints(5,'gratitude_1'); render('daily',{tab:'gratitude'},true); });

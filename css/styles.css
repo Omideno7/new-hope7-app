@@ -47,3 +47,7 @@
 .accordion-toggle strong{font-size:1.02rem}
 
 .table-wrap{overflow:auto}.table-wrap table{width:100%;border-collapse:collapse}.table-wrap th,.table-wrap td{border-bottom:1px solid rgba(15,23,42,.12);padding:10px;text-align:start;vertical-align:top}.table-wrap small{white-space:pre-wrap;display:block;max-height:180px;overflow:auto}.link-card{display:block;text-decoration:none}
+/* v1.3.3 Q&A accordion cleanup */
+.qna-section{margin-top:16px}
+.wide-btn{width:100%;justify-content:space-between;text-align:start;display:flex;gap:10px;align-items:center}
+.qna-answer-toggle{margin-top:10px}
