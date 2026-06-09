@@ -1,11 +1,13 @@
-# Audio upload guide
+# New Hope 7 Audio
 
-Place MP3 files in these folders:
+Audio files are stored in Supabase Storage, not inside GitHub Pages.
 
-- school: class-01-fa.mp3 ... class-07-fa.mp3
-- messages/morning-prayers: morning-prayer-001-fa.mp3 ...
-- messages/short-messages: short-message-001-fa.mp3 ...
-- messages/sermons: sermon-001-fa.mp3 ...
-- messages/teachings: teaching-001-fa.mp3 ...
+Bucket: church-audio
 
-After adding message audio files, update data/audio/messages.json with title, category, language, duration, and path.
+Folders:
+- messages/short-messages/
+- messages/morning-prayers/
+- messages/teachings/
+- school/
+
+The public audio list is configured in data/audio/messages.json.

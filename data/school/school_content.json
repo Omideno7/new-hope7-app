@@ -31,7 +31,9 @@
       },
       "audio": {
         "fileName": "class-01-fa.mp3",
-        "available": "yes"
+        "available": "yes",
+        "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/school/class-01-fa.mp3",
+        "source": "supabase"
       },
       "written": {
         "fa": {
@@ -85,7 +87,9 @@
       },
       "audio": {
         "fileName": "class-02-fa.mp3",
-        "available": "yes"
+        "available": "yes",
+        "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/school/class-02-fa.mp3",
+        "source": "supabase"
       },
       "written": {
         "fa": {
@@ -139,7 +143,9 @@
       },
       "audio": {
         "fileName": "class-03-fa.mp3",
-        "available": "yes"
+        "available": "yes",
+        "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/school/class-03-fa.mp3",
+        "source": "supabase"
       },
       "written": {
         "fa": {
@@ -193,7 +199,9 @@
       },
       "audio": {
         "fileName": "class-04a-fa.mp3",
-        "available": "yes"
+        "available": "yes",
+        "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/school/class-04a-fa.mp3",
+        "source": "supabase"
       },
       "written": {
         "fa": {
@@ -247,7 +255,9 @@
       },
       "audio": {
         "fileName": "class-04b-fa.mp3",
-        "available": "yes"
+        "available": "yes",
+        "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/school/class-04b-fa.mp3",
+        "source": "supabase"
       },
       "written": {
         "fa": {
@@ -301,7 +311,9 @@
       },
       "audio": {
         "fileName": "class-05-fa.mp3",
-        "available": "yes"
+        "available": "yes",
+        "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/school/class-05-fa.mp3",
+        "source": "supabase"
       },
       "written": {
         "fa": {
@@ -355,7 +367,9 @@
       },
       "audio": {
         "fileName": "class-06-fa.mp3",
-        "available": "yes"
+        "available": "yes",
+        "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/school/class-06-fa.mp3",
+        "source": "supabase"
       },
       "written": {
         "fa": {
@@ -409,7 +423,9 @@
       },
       "audio": {
         "fileName": "class-07-fa.mp3",
-        "available": "yes"
+        "available": "yes",
+        "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/school/class-07-fa.mp3",
+        "source": "supabase"
       },
       "written": {
         "fa": {
@@ -2342,7 +2358,8 @@
       "audio_file_name": "class-01-fa.mp3",
       "language": "fa",
       "audio_available": "yes",
-      "storage_note": "Upload to Supabase Storage / GitHub / secure file storage and place final URL in this row."
+      "storage_note": "Supabase Storage: church-audio/school/class-01-fa.mp3",
+      "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/school/class-01-fa.mp3"
     },
     {
       "lesson_order": 2,
@@ -2350,7 +2367,8 @@
       "audio_file_name": "class-02-fa.mp3",
       "language": "fa",
       "audio_available": "yes",
-      "storage_note": "Upload to Supabase Storage / GitHub / secure file storage and place final URL in this row."
+      "storage_note": "Supabase Storage: church-audio/school/class-02-fa.mp3",
+      "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/school/class-02-fa.mp3"
     },
     {
       "lesson_order": 3,
@@ -2358,7 +2376,8 @@
       "audio_file_name": "class-03-fa.mp3",
       "language": "fa",
       "audio_available": "yes",
-      "storage_note": "Upload to Supabase Storage / GitHub / secure file storage and place final URL in this row."
+      "storage_note": "Supabase Storage: church-audio/school/class-03-fa.mp3",
+      "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/school/class-03-fa.mp3"
     },
     {
       "lesson_order": 4,
@@ -2366,7 +2385,8 @@
       "audio_file_name": "class-04a-fa.mp3",
       "language": "fa",
       "audio_available": "yes",
-      "storage_note": "Upload to Supabase Storage / GitHub / secure file storage and place final URL in this row."
+      "storage_note": "Supabase Storage: church-audio/school/class-04a-fa.mp3",
+      "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/school/class-04a-fa.mp3"
     },
     {
       "lesson_order": 5,
@@ -2374,7 +2394,8 @@
       "audio_file_name": "class-04b-fa.mp3",
       "language": "fa",
       "audio_available": "yes",
-      "storage_note": "Upload to Supabase Storage / GitHub / secure file storage and place final URL in this row."
+      "storage_note": "Supabase Storage: church-audio/school/class-04b-fa.mp3",
+      "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/school/class-04b-fa.mp3"
     },
     {
       "lesson_order": 6,
@@ -2382,7 +2403,8 @@
       "audio_file_name": "class-05-fa.mp3",
       "language": "fa",
       "audio_available": "yes",
-      "storage_note": "Upload to Supabase Storage / GitHub / secure file storage and place final URL in this row."
+      "storage_note": "Supabase Storage: church-audio/school/class-05-fa.mp3",
+      "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/school/class-05-fa.mp3"
     },
     {
       "lesson_order": 7,
@@ -2390,7 +2412,8 @@
       "audio_file_name": "class-06-fa.mp3",
       "language": "fa",
       "audio_available": "yes",
-      "storage_note": "Upload to Supabase Storage / GitHub / secure file storage and place final URL in this row."
+      "storage_note": "Supabase Storage: church-audio/school/class-06-fa.mp3",
+      "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/school/class-06-fa.mp3"
     },
     {
       "lesson_order": 8,
@@ -2398,7 +2421,8 @@
       "audio_file_name": "class-07-fa.mp3",
       "language": "fa",
       "audio_available": "yes",
-      "storage_note": "Upload to Supabase Storage / GitHub / secure file storage and place final URL in this row."
+      "storage_note": "Supabase Storage: church-audio/school/class-07-fa.mp3",
+      "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/school/class-07-fa.mp3"
     }
   ]
 }

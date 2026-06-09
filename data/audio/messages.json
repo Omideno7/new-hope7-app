@@ -7,7 +7,40 @@
         "fa": "نیایش‌های صبحگاهی",
         "hr": "Jutarnje molitve"
       },
-      "items": []
+      "items": [
+        {
+          "id": "morning-prayer-001",
+          "title": {
+            "en": "Morning Prayer 1",
+            "fa": "دعای صبحگاهی 1",
+            "hr": "Jutarnja molitva 1"
+          },
+          "description": {
+            "en": "Morning prayer audio",
+            "fa": "فایل صوتی دعای صبحگاهی",
+            "hr": "Audio jutarnje molitve"
+          },
+          "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/messages/morning-prayers/001.mp3",
+          "format": "mp3",
+          "source": "supabase"
+        },
+        {
+          "id": "morning-prayer-002",
+          "title": {
+            "en": "Morning Prayer 2",
+            "fa": "دعای صبحگاهی 2",
+            "hr": "Jutarnja molitva 2"
+          },
+          "description": {
+            "en": "Morning prayer audio",
+            "fa": "فایل صوتی دعای صبحگاهی",
+            "hr": "Audio jutarnje molitve"
+          },
+          "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/messages/morning-prayers/002.mp3",
+          "format": "mp3",
+          "source": "supabase"
+        }
+      ]
     },
     {
       "id": "short-messages",
@@ -16,7 +49,200 @@
         "fa": "پیام‌های کوتاه",
         "hr": "Kratke poruke"
       },
-      "items": []
+      "items": [
+        {
+          "id": "short-message-001",
+          "title": {
+            "en": "Short Message 1",
+            "fa": "پیام کوتاه 1",
+            "hr": "Kratka poruka 1"
+          },
+          "description": {
+            "en": "Short audio message",
+            "fa": "پیام صوتی کوتاه",
+            "hr": "Kratka audio poruka"
+          },
+          "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/messages/short-messages/001.mp3",
+          "format": "mp3",
+          "source": "supabase"
+        },
+        {
+          "id": "short-message-002",
+          "title": {
+            "en": "Short Message 2",
+            "fa": "پیام کوتاه 2",
+            "hr": "Kratka poruka 2"
+          },
+          "description": {
+            "en": "Short audio message",
+            "fa": "پیام صوتی کوتاه",
+            "hr": "Kratka audio poruka"
+          },
+          "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/messages/short-messages/002.mp3",
+          "format": "mp3",
+          "source": "supabase"
+        },
+        {
+          "id": "short-message-003",
+          "title": {
+            "en": "Short Message 3",
+            "fa": "پیام کوتاه 3",
+            "hr": "Kratka poruka 3"
+          },
+          "description": {
+            "en": "Short audio message",
+            "fa": "پیام صوتی کوتاه",
+            "hr": "Kratka audio poruka"
+          },
+          "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/messages/short-messages/003.mp3",
+          "format": "mp3",
+          "source": "supabase"
+        },
+        {
+          "id": "short-message-004",
+          "title": {
+            "en": "Short Message 4",
+            "fa": "پیام کوتاه 4",
+            "hr": "Kratka poruka 4"
+          },
+          "description": {
+            "en": "Short audio message",
+            "fa": "پیام صوتی کوتاه",
+            "hr": "Kratka audio poruka"
+          },
+          "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/messages/short-messages/004.mp3",
+          "format": "mp3",
+          "source": "supabase"
+        },
+        {
+          "id": "short-message-005",
+          "title": {
+            "en": "Short Message 5",
+            "fa": "پیام کوتاه 5",
+            "hr": "Kratka poruka 5"
+          },
+          "description": {
+            "en": "Short audio message",
+            "fa": "پیام صوتی کوتاه",
+            "hr": "Kratka audio poruka"
+          },
+          "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/messages/short-messages/005.mp3",
+          "format": "mp3",
+          "source": "supabase"
+        },
+        {
+          "id": "short-message-006",
+          "title": {
+            "en": "Short Message 6",
+            "fa": "پیام کوتاه 6",
+            "hr": "Kratka poruka 6"
+          },
+          "description": {
+            "en": "Short audio message",
+            "fa": "پیام صوتی کوتاه",
+            "hr": "Kratka audio poruka"
+          },
+          "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/messages/short-messages/006.mp3",
+          "format": "mp3",
+          "source": "supabase"
+        },
+        {
+          "id": "short-message-007",
+          "title": {
+            "en": "Short Message 7",
+            "fa": "پیام کوتاه 7",
+            "hr": "Kratka poruka 7"
+          },
+          "description": {
+            "en": "Short audio message",
+            "fa": "پیام صوتی کوتاه",
+            "hr": "Kratka audio poruka"
+          },
+          "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/messages/short-messages/007.mp3",
+          "format": "mp3",
+          "source": "supabase"
+        },
+        {
+          "id": "short-message-008",
+          "title": {
+            "en": "Short Message 8",
+            "fa": "پیام کوتاه 8",
+            "hr": "Kratka poruka 8"
+          },
+          "description": {
+            "en": "Short audio message",
+            "fa": "پیام صوتی کوتاه",
+            "hr": "Kratka audio poruka"
+          },
+          "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/messages/short-messages/008.mp3",
+          "format": "mp3",
+          "source": "supabase"
+        },
+        {
+          "id": "short-message-009",
+          "title": {
+            "en": "Short Message 9",
+            "fa": "پیام کوتاه 9",
+            "hr": "Kratka poruka 9"
+          },
+          "description": {
+            "en": "Short audio message",
+            "fa": "پیام صوتی کوتاه",
+            "hr": "Kratka audio poruka"
+          },
+          "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/messages/short-messages/009.mp3",
+          "format": "mp3",
+          "source": "supabase"
+        },
+        {
+          "id": "short-message-010",
+          "title": {
+            "en": "Short Message 10",
+            "fa": "پیام کوتاه 10",
+            "hr": "Kratka poruka 10"
+          },
+          "description": {
+            "en": "Short audio message",
+            "fa": "پیام صوتی کوتاه",
+            "hr": "Kratka audio poruka"
+          },
+          "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/messages/short-messages/010.mp3",
+          "format": "mp3",
+          "source": "supabase"
+        },
+        {
+          "id": "short-message-011",
+          "title": {
+            "en": "Short Message 11",
+            "fa": "پیام کوتاه 11",
+            "hr": "Kratka poruka 11"
+          },
+          "description": {
+            "en": "Short audio message",
+            "fa": "پیام صوتی کوتاه",
+            "hr": "Kratka audio poruka"
+          },
+          "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/messages/short-messages/011.mp3",
+          "format": "mp3",
+          "source": "supabase"
+        },
+        {
+          "id": "short-message-012",
+          "title": {
+            "en": "Short Message 12",
+            "fa": "پیام کوتاه 12",
+            "hr": "Kratka poruka 12"
+          },
+          "description": {
+            "en": "Short audio message",
+            "fa": "پیام صوتی کوتاه",
+            "hr": "Kratka audio poruka"
+          },
+          "src": "https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/messages/short-messages/012.mp3",
+          "format": "mp3",
+          "source": "supabase"
+        }
+      ]
     },
     {
       "id": "teachings",

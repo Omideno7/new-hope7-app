@@ -375,7 +375,7 @@ async function school(params={}){
   if(params.lesson) return schoolLesson(d, params.lesson);
   view.innerHTML=card(tr('school'), `<span class="badge">${tr('approved')}</span><div class="list">${d.lessons.map(l=>`<button class="list-btn" data-go="school" data-params='${html(JSON.stringify({lesson:l.lesson_code}))}'><strong>${html(l.translations?.[state.lang]?.class_title||l.translations?.en?.class_title)}</strong><small>${html(l.translations?.[state.lang]?.lesson_title||'')}</small></button>`).join('')}</div>`);
 }
-function schoolLesson(d, code){ const l=d.lessons.find(x=>x.lesson_code===code); const tx=l.translations?.[state.lang]||l.translations?.en||{}; const wr=l.written?.[state.lang]||l.written?.en||{}; view.innerHTML=card(tx.class_title||tr('school'), `<p>${html(tx.lesson_text)}</p><div class="audio-placeholder"><strong>${tr('playAudio')}</strong><p>${html(l.audio?.fileName||'class-01-fa.mp3')}</p><audio controls src="public/audio/school/${html(l.audio?.fileName||'class-01-fa.mp3')}"></audio></div><h3>${tr('assignment')}</h3><p>${html(tx.assignment_question)}</p><textarea placeholder="${tr('notes')}"></textarea><button class="secondary-btn" data-save-note="school-${code}">${tr('save')}</button><h3>${tr('fullLesson')}</h3><p>${html(wr.text||'')}</p>`); }
+function schoolLesson(d, code){ const l=d.lessons.find(x=>x.lesson_code===code); const tx=l.translations?.[state.lang]||l.translations?.en||{}; const wr=l.written?.[state.lang]||l.written?.en||{}; const audioSrc=l.audio?.src || `public/audio/school/${l.audio?.fileName||'class-01-fa.mp3'}`; view.innerHTML=card(tx.class_title||tr('school'), `<p>${html(tx.lesson_text)}</p><div class="audio-placeholder"><strong>${tr('playAudio')}</strong><p>${html(l.audio?.fileName||'class-01-fa.mp3')}</p><audio controls src="${html(audioSrc)}"></audio></div><h3>${tr('assignment')}</h3><p>${html(tx.assignment_question)}</p><textarea placeholder="${tr('notes')}"></textarea><button class="secondary-btn" data-save-note="school-${code}">${tr('save')}</button><h3>${tr('fullLesson')}</h3><p>${html(wr.text||'')}</p>`); }
 
 async function audio(params={}){
   const d=await jfetch('data/audio/messages.json');
@@ -384,8 +384,29 @@ async function audio(params={}){
 }
 async function salvation(){
   const d=await jfetch('data/salvation/need_salvation.json');
-  const videos=card(tr('videos'), `<div class="list">${NEW_BIRTH_VIDEOS.map((url,i)=>`<a class="list-btn link-card" href="${html(url)}" target="_blank" rel="noopener"><strong>${tr('part')} ${localNum(i+1)}: ${state.lang==='fa'?'تولد تازه':state.lang==='hr'?'Novo rođenje':'New Birth'}</strong><small>YouTube</small></a>`).join('')}</div>`);
-  view.innerHTML=`<div class="list">${(d.sections||[]).filter(s=>s.id!=='new_birth_videos').map(s=>card(pick(s.title),`<p>${html(pick(s.content))}</p>`)).join('')}${videos}</div>`;
+  const sections=(d.sections||[]).filter(s=>s.id!=='new_birth_videos');
+  const introText = state.lang==='fa'
+    ? 'برای مطالعه هر بخش، روی عنوان آن بزنید.'
+    : state.lang==='hr'
+      ? 'Za čitanje svakog dijela dodirnite njegov naslov.'
+      : 'Tap each title to open its content.';
+  const sectionButtons = sections.map((s,i)=>`
+    <button class="list-btn accordion-toggle" data-salvation-toggle="salvation-section-${i}">
+      <strong>${html(pick(s.title))}</strong>
+      <small>${state.lang==='fa'?'برای باز کردن کلیک کنید':state.lang==='hr'?'Dodirnite za otvaranje':'Tap to open'}</small>
+    </button>
+    <div id="salvation-section-${i}" class="accordion-panel hidden">
+      <p>${html(pick(s.content))}</p>
+    </div>`).join('');
+  const videoList = `<div class="list">${NEW_BIRTH_VIDEOS.map((url,i)=>`<a class="list-btn link-card" href="${html(url)}" target="_blank" rel="noopener"><strong>${tr('part')} ${localNum(i+1)}: ${state.lang==='fa'?'تولد تازه':state.lang==='hr'?'Novo rođenje':'New Birth'}</strong><small>YouTube</small></a>`).join('')}</div>`;
+  const videosAccordion = `
+    <button class="list-btn accordion-toggle" data-salvation-toggle="salvation-videos">
+      <strong>${tr('videos')}</strong>
+      <small>${state.lang==='fa'?'نمایش ویدیوها':state.lang==='hr'?'Prikaži video lekcije':'Show videos'}</small>
+    </button>
+    <div id="salvation-videos" class="accordion-panel hidden">${videoList}</div>`;
+  view.innerHTML=card(tr('salvation'), `<p class="muted">${introText}</p><div class="list">${sectionButtons}${videosAccordion}</div>`);
+  bindDynamic();
 }
 async function about(){
   const d=await jfetch('data/church/about.json');
@@ -403,7 +424,7 @@ async function more(){ view.innerHTML=`<div class="grid">${tile('audio','🎧',t
 async function settings(){
   const perm=typeof Notification==='undefined'?'default':Notification.permission;
   const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');
-  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time.'}</p></div><h3>${tr('version')}</h3><p>New Hope 7 v1.2.3</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
+  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time.'}</p></div><h3>${tr('version')}</h3><p>New Hope 7 v1.2.6</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
   $('#settingsLang').value=state.lang; $('#settingsLang').onchange=e=>setLang(e.target.value);
   $('#enableNotify').onclick=enableNotifications;
   $('#clearCache').onclick=()=>{ if('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.update())); alert(tr('saved')); };
@@ -427,6 +448,7 @@ function bindDynamic(){
   $$('[data-reveal-ref]').forEach(el=>el.onclick=()=>revealVerse(el));
   $$('[data-read-range]').forEach(el=>el.onclick=()=>revealReadingRange(el));
   $$('[data-toggle-panel]').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.togglePanel); if(p){ p.classList.toggle('hidden'); el.textContent=p.classList.contains('hidden')?(el.dataset.togglePanel==='notesPanel'?tr('showMyNotes'):tr('showSavedVerses')):tr('hide'); }});
+  $$('[data-salvation-toggle]').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.salvationToggle); if(p){ p.classList.toggle('hidden'); const small=el.querySelector('small'); if(small) small.textContent=p.classList.contains('hidden') ? (state.lang==='fa'?'برای باز کردن کلیک کنید':state.lang==='hr'?'Dodirnite za otvaranje':'Tap to open') : tr('hide'); }});
   $$('[data-submit-registration]').forEach(el=>el.onclick=()=>collectRegistration(el.dataset.submitRegistration));
   const run=$('#runBibleSearch'); if(run) run.onclick=()=>navigate('bible',{q:$('#bibleSearch').value},true);
   $('#startGratitude')?.addEventListener('click',()=>{ localStorage.setItem('nh7_gratitude_start',todayKey()); addPoints(5,'gratitude_1'); render('daily',{tab:'gratitude'},true); });
