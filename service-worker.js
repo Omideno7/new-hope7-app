@@ -1,4 +1,4 @@
-const CACHE = 'new-hope-7-v1.3.3';
+const CACHE = 'new-hope-7-v1.3.4';
 const APP_SHELL = [
   './','./index.html','./css/styles.css','./js/app.js','./manifest.json','./assets/logo.png',
   './data/app/opening_messages_365.json','./data/church/church_config.json','./data/church/about.json',

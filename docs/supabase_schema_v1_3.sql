@@ -15,6 +15,18 @@ as $$
   );
 $$;
 
+
+create or replace function public.nh7_request_email()
+returns text
+language sql
+stable
+as $$
+  select lower(coalesce(
+    nullif(current_setting('request.headers', true)::json ->> 'x-user-email', ''),
+    ''
+  ));
+$$;
+
 create or replace function public.nh7_is_admin()
 returns boolean
 language sql
@@ -74,7 +86,11 @@ drop policy if exists "registrations insert own" on public.registrations;
 drop policy if exists "registrations select own or admin" on public.registrations;
 drop policy if exists "registrations update admin" on public.registrations;
 create policy "registrations insert own" on public.registrations for insert to anon, authenticated with check (device_id = public.nh7_device_id());
-create policy "registrations select own or admin" on public.registrations for select to anon, authenticated using (device_id = public.nh7_device_id() or public.nh7_is_admin());
+create policy "registrations select own or admin" on public.registrations for select to anon, authenticated using (
+  device_id = public.nh7_device_id()
+  or lower(coalesce(payload ->> 'email','')) = public.nh7_request_email()
+  or public.nh7_is_admin()
+);
 create policy "registrations update admin" on public.registrations for update to authenticated using (public.nh7_is_admin()) with check (public.nh7_is_admin());
 
 drop policy if exists "saved verses own all" on public.saved_verses;
@@ -145,7 +161,7 @@ using (
   public.nh7_is_admin()
   or exists (
     select 1 from public.registrations r
-    where r.device_id = public.nh7_device_id()
+    where (r.device_id = public.nh7_device_id() or lower(coalesce(r.payload ->> 'email','')) = public.nh7_request_email())
       and r.type = 'meeting'
       and r.status = 'approved'
   )
@@ -161,5 +177,10 @@ using (public.nh7_is_admin())
 with check (public.nh7_is_admin());
 
 insert into public.meeting_settings (id, provider, meeting_url, phone_number, access_code, security_code, extra_info)
-values ('active', 'FreeConferenceCall', '', '', '', '', '')
-on conflict (id) do nothing;
+values ('active', 'FreeConferenceCall', 'https://fccdl.in/i/omideno7church', '', '', '789987', 'پس از تأیید ثبت‌نام توسط ادمین، روی لینک جلسه کلیک کنید و هنگام ورود کد امنیتی را وارد کنید.')
+on conflict (id) do update set
+  provider = excluded.provider,
+  meeting_url = coalesce(nullif(public.meeting_settings.meeting_url,''), excluded.meeting_url),
+  security_code = coalesce(nullif(public.meeting_settings.security_code,''), excluded.security_code),
+  extra_info = coalesce(nullif(public.meeting_settings.extra_info,''), excluded.extra_info),
+  updated_at = now();

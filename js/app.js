@@ -17,7 +17,7 @@ const T = {
   en:{
     'nav.home':'Home','nav.daily':'Daily','nav.bible':'Bible','nav.plans':'Plans','nav.school':'School','nav.more':'More',
     home:'Home',daily:'Daily',bible:'Bible',plans:'Plans',school:'School',more:'More',audio:'Audio Messages',salvation:'Need Salvation',about:'About Church',settings:'Settings',gratitude:'Gratitude Plan',meetings:'Church Meetings',youversion:'My Church on YouVersion',amen:'Amen',read:'I read; unlock next day',register:'Register',requestAccess:'Request access',pending:'Pending review',approved:'Approved',guest:'Guest',login:'Registration / Access',offline:'Offline mode active',search:'Search',oldtestament:'Old Testament',newtestament:'New Testament',chapters:'Chapters',back:'Back',save:'Save',saved:'Saved',notes:'Notes',assignment:'Assignment',fullLesson:'Full Written Lesson',playAudio:'Audio',
-    appTitle:'New Hope 7 Church',welcome:'Welcome to the New Hope 7 Church app',todayMessage:'Today’s message',continueToday:'Continue today',savedVerses:'My saved verses',progress:'My progress',points:'Points',badges:'Badges',nextMeeting:'Next church meeting',enableNotifications:'Enable notifications',notifications:'Notifications',notificationStatus:'Notification status',notificationEnabled:'Notifications are allowed on this device.',notificationDenied:'Notifications are blocked by the browser.',notificationDefault:'Notifications are not active yet.',language:'Language',clearProgress:'Clear local progress',refreshData:'Refresh app data',version:'App version',dailyWord:'Daily Word',faithProclamation:'Faith Proclamation',dailyJuice:'Daily Juice',gratitudeCourse:'Gratitude Course',day:'Day',mainVerse:'Main Verse',message:'Message',prayer:'Prayer / Confession',proclamation:'Proclamation',actionStep:'Action Step',furtherStudy:'Further Study',openVerse:'Open verse',startCourse:'Start course',completeDay:'Save and complete this day',lockedUntilTomorrow:'The next day will unlock tomorrow.',completed:'Completed',notStarted:'Not started',videos:'New Birth Videos',part:'Part',ourVision:'Our Vision',ourBeliefs:'Our Beliefs',churchIntro:'Church Introduction',meetingsInfo:'Meeting Information',contact:'Contact',openToday:'Open today’s reading',noSavedVerses:'No saved verses yet.',readings:'Readings',openToRead:'Open to read',bookmarks:'Bookmarks',noAudio:'Audio files will be added soon.',audioFormat:'Audio files must be MP3.',schoolAccessText:'To enter the school, register and wait for admin approval.',meetingAccessText:'Meeting access details are shown only after registration and admin approval.',registerDone:'Your request was saved on this device. Admin approval will be connected through the secure system.',name:'Name',email:'Email',book:'Book',chapter:'Chapter',verseSaved:'Verse saved',dailyCompleted:'Today’s item completed',all:'All',showVerse:'Show verse',hideVerse:'Hide verse'
+    appTitle:'New Hope 7 Church',welcome:'Welcome to the New Hope 7 Church app',todayMessage:'Today’s message',continueToday:'Continue today',savedVerses:'My saved verses',progress:'My progress',points:'Points',badges:'Badges',nextMeeting:'Next church meeting',enableNotifications:'Enable notifications',notifications:'Notifications',notificationStatus:'Notification status',notificationEnabled:'Notifications are allowed on this device.',notificationDenied:'Notifications are blocked by the browser.',notificationDefault:'Notifications are not active yet.',language:'Language',clearProgress:'Clear local progress',refreshData:'Refresh app data',version:'App version',dailyWord:'Daily Word',faithProclamation:'Faith Proclamation',dailyJuice:'Daily Juice',gratitudeCourse:'Gratitude Course',day:'Day',mainVerse:'Main Verse',message:'Message',prayer:'Prayer / Confession',proclamation:'Proclamation',actionStep:'Action Step',furtherStudy:'Further Study',openVerse:'Open verse',startCourse:'Start course',completeDay:'Save and complete this day',lockedUntilTomorrow:'The next day will unlock tomorrow.',completed:'Completed',notStarted:'Not started',videos:'New Birth Videos',part:'Part',ourVision:'Our Vision',ourBeliefs:'Our Beliefs',churchIntro:'Church Introduction',meetingsInfo:'Meeting Information',contact:'Contact',openToday:'Open today’s reading',noSavedVerses:'No saved verses yet.',readings:'Readings',openToRead:'Open to read',bookmarks:'Bookmarks',noAudio:'Audio files will be added soon.',audioFormat:'Audio files must be MP3.',schoolAccessText:'To enter the school, register and wait for admin approval.',meetingAccessText:'Meeting access details are shown only after registration and admin approval.',registerDone:'Your request was sent to admin. Please wait for approval.',name:'Name',email:'Email',book:'Book',chapter:'Chapter',verseSaved:'Verse saved',dailyCompleted:'Today’s item completed',all:'All',showVerse:'Show verse',hideVerse:'Hide verse'
   },
   fa:{
     'nav.home':'خانه','nav.daily':'روزانه','nav.bible':'کتاب','nav.plans':'برنامه‌ها','nav.school':'مدرسه','nav.more':'بیشتر',
@@ -81,6 +81,13 @@ function deviceId(){
   if(!id){ id='dev_'+(crypto?.randomUUID ? crypto.randomUUID() : Date.now()+'_'+Math.random().toString(16).slice(2)); localStorage.setItem('nh7_device_id',id); }
   return id;
 }
+function currentUserEmail(){
+  try{
+    const m=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{}');
+    const s=JSON.parse(localStorage.getItem('nh7_school_access')||'{}');
+    return (m.email || s.email || '').trim().toLowerCase();
+  }catch(e){ return ''; }
+}
 async function cloudFetch(path, options={}){
   if(!CLOUD_ENABLED) throw new Error('Cloud disabled');
   const headers=Object.assign({
@@ -88,7 +95,8 @@ async function cloudFetch(path, options={}){
     'Authorization': 'Bearer '+SUPABASE_CONFIG.key,
     'Content-Type':'application/json',
     'Prefer':'return=representation',
-    'x-device-id': deviceId()
+    'x-device-id': deviceId(),
+    'x-user-email': currentUserEmail()
   }, options.headers||{});
   const res=await fetch(SUPABASE_CONFIG.url + '/rest/v1/' + path, Object.assign({}, options, {headers}));
   if(!res.ok){ const txt=await res.text().catch(()=>''); throw new Error(txt || res.statusText); }
@@ -143,11 +151,17 @@ async function saveQuestionCloud(questionText){
 async function fetchLatestRegistration(kind){
   if(!CLOUD_ENABLED || !navigator.onLine) return null;
   try{
-    const rows = await cloudFetch(`registrations?select=*&device_id=eq.${encodeURIComponent(deviceId())}&type=eq.${encodeURIComponent(kind)}&order=created_at.desc&limit=1`, {method:'GET'});
+    const localKey = kind==='meeting' ? 'nh7_meeting_access' : 'nh7_school_access';
+    const local = JSON.parse(localStorage.getItem(localKey)||'{}');
+    const email = (local.email || currentUserEmail() || '').trim().toLowerCase();
+    let rows = await cloudFetch(`registrations?select=*&device_id=eq.${encodeURIComponent(deviceId())}&type=eq.${encodeURIComponent(kind)}&order=created_at.desc&limit=1`, {method:'GET'});
+    if((!rows || !rows.length) && email){
+      rows = await cloudFetch(`registrations?select=*&type=eq.${encodeURIComponent(kind)}&payload->>email=eq.${encodeURIComponent(email)}&order=created_at.desc&limit=1`, {method:'GET'});
+    }
     const row = Array.isArray(rows) ? rows[0] : null;
     if(row){
       const data = Object.assign({}, row.payload||{}, {status:row.status, cloudId:row.id, approvedBy: row.status==='approved' ? 'admin' : ''});
-      localStorage.setItem(kind==='meeting'?'nh7_meeting_access':'nh7_school_access', JSON.stringify(data));
+      localStorage.setItem(localKey, JSON.stringify(data));
       return data;
     }
   }catch(e){ console.warn('Registration status check failed', e); }
@@ -246,14 +260,15 @@ function registrationFormHtml(kind, access={}){
     <button class="primary-btn" data-submit-registration="${kind}">${tr('submitRegistration')}</button>
   `);
 }
-function collectRegistration(kind){
+async function collectRegistration(kind){
   const fields=['firstName','lastName','birthDate','city','country','spiritualAge','churchMember','churchName','pastorName','waterBaptism','salvationPrayer','eventsInterest','testimony','howFound','phone','email'];
   const data={status:'pending',submittedAt:new Date().toISOString(),kind};
   for(const f of fields){ const el=$('#reg_'+f); data[f]=(el?.value||'').trim(); if(!data[f]){ alert(tr('requiredField')); el?.focus(); return; } }
+  data.email = data.email.toLowerCase();
   const key=kind==='meeting'?'nh7_meeting_access':'nh7_school_access';
   localStorage.setItem(key, JSON.stringify(data));
-  saveRegistrationCloud(data).catch(console.warn);
-  alert(tr('registerDone'));
+  try{ await saveRegistrationCloud(data); alert(tr('registerDone')); }
+  catch(e){ console.warn(e); alert((state.lang==='fa'?'درخواست شما فعلاً روی دستگاه ذخیره شد و بعد از اتصال اینترنت دوباره همگام‌سازی می‌شود.':'Your request was saved on this device and will sync when online.')); }
   if(data.salvationPrayer==='no') navigate('salvation',{},true); else render(kind==='meeting'?'meetings':'school',{},true);
 }
 function collectNotes(){
@@ -575,7 +590,7 @@ async function qna(){
 async function settings(){
   const perm=typeof Notification==='undefined'?'default':Notification.permission;
   const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');
-  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>New Hope 7 v1.3.3</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
+  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>New Hope 7 v1.3.4</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
   $('#settingsLang').value=state.lang; $('#settingsLang').onchange=e=>setLang(e.target.value);
   $('#enableNotify').onclick=enableNotifications;
   $('#clearCache').onclick=()=>{ if('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.update())); alert(tr('saved')); };
