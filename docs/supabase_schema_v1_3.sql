@@ -184,3 +184,55 @@ on conflict (id) do update set
   security_code = coalesce(nullif(public.meeting_settings.security_code,''), excluded.security_code),
   extra_info = coalesce(nullif(public.meeting_settings.extra_info,''), excluded.extra_info),
   updated_at = now();
+
+
+-- Notification inbox for New Hope 7 v1.3.7
+create table if not exists public.notification_inbox (
+  id uuid primary key default gen_random_uuid(),
+  device_id text,
+  user_email text,
+  title text not null,
+  body text not null,
+  category text default 'app',
+  language text default 'fa',
+  delivered_at timestamptz default now(),
+  read_at timestamptz,
+  created_at timestamptz default now()
+);
+
+alter table public.notification_inbox enable row level security;
+
+drop policy if exists "insert notification inbox" on public.notification_inbox;
+create policy "insert notification inbox" on public.notification_inbox
+for insert with check (true);
+
+drop policy if exists "read own notification inbox" on public.notification_inbox;
+create policy "read own notification inbox" on public.notification_inbox
+for select using (true);
+
+-- Optional global notification schedule rows for admin/backend automation
+create table if not exists public.notification_schedule (
+  id uuid primary key default gen_random_uuid(),
+  key text unique not null,
+  title_fa text not null,
+  body_fa text not null,
+  title_en text not null,
+  body_en text not null,
+  title_hr text not null,
+  body_hr text not null,
+  send_time text not null,
+  timezone_mode text not null default 'user_local',
+  category text not null default 'daily',
+  enabled boolean default true,
+  created_at timestamptz default now()
+);
+
+insert into public.notification_schedule (key,title_fa,body_fa,title_en,body_en,title_hr,body_hr,send_time,timezone_mode,category)
+values
+('daily_word','کلام روزانه آماده است','امروز کلام خدا را دریافت کن و روزت را با ایمان شروع کن.','Daily Word is ready','Receive God’s Word today and start your day in faith.','Dnevna Riječ je spremna','Primi Božju Riječ danas i započni dan u vjeri.','07:00','user_local','daily_word'),
+('faith','اعلان ایمان آماده است','وقت اعلان ایمان است؛ کلام را با دهانت اعلام کن.','Faith proclamation is ready','It is time for your faith proclamation; speak the Word.','Proglas vjere je spreman','Vrijeme je za proglas vjere; izgovori Riječ.','12:00','user_local','faith'),
+('daily_juice','آبمیوه روزانه آماده است','آبمیوه روزانه امروز آماده است؛ چند دقیقه برای تقویت روح خود وقت بگذار.','Daily Juice is ready','Today’s Daily Juice is ready; take a few minutes to strengthen your spirit.','Dnevni sok je spreman','Današnji Daily Juice je spreman; odvoji nekoliko minuta za svoj duh.','17:00','user_local','daily_juice'),
+('gratitude','یادآوری شکرگزاری','امروز را با شکرگزاری به پایان برسان و نیکویی خدا را به یاد آور.','Gratitude reminder','End today with thanksgiving and remember God’s goodness.','Podsjetnik zahvalnosti','Završi dan zahvalnošću i sjeti se Božje dobrote.','21:00','user_local','gratitude'),
+('morning_meeting','یادآوری جلسه دعای صبحگاهی','جلسه دعای صبحگاهی کلیسا ۵ دقیقه دیگر آغاز می‌شود.','Morning prayer meeting reminder','The morning prayer meeting starts in 5 minutes.','Podsjetnik za jutarnju molitvu','Jutarnji molitveni sastanak počinje za 5 minuta.','04:55','europe_zagreb','meeting'),
+('sunday_service','یادآوری جلسه کلیسای یکشنبه','جلسه کلیسای یکشنبه آماده است. برای ورود به جلسه کلیک کن.','Sunday church meeting reminder','The Sunday church meeting is ready. Tap to join.','Podsjetnik za nedjeljni sastanak','Nedjeljni crkveni sastanak je spreman. Dodirni za ulazak.','20:00','europe_zagreb','meeting')
+on conflict (key) do update set send_time=excluded.send_time, timezone_mode=excluded.timezone_mode, enabled=excluded.enabled;

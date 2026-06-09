@@ -60,6 +60,13 @@ const MEETING_T = {
 Object.keys(MEETING_T).forEach(lang=>Object.assign(T[lang], MEETING_T[lang]));
 
 
+const INBOX_T = {
+  en:{inbox:'Inbox',unread:'Unread',markAllRead:'Mark all as read',noInboxMessages:'No messages yet.',notificationInbox:'Notification Inbox',readMessage:'Read message',newMessage:'New message',messageRead:'Message marked as read',dailyWordReminder:'Daily Word is ready',faithReminder:'Faith proclamation is ready',juiceReminder:'Daily Juice is ready',gratitudeReminder:'Gratitude reminder',morningMeetingReminder:'Morning prayer meeting reminder',sundayMeetingReminder:'Sunday church meeting reminder',notificationAutoNote:'Automatic push sending uses OneSignal + Supabase Edge Function. This inbox also keeps messages inside the app.'},
+  fa:{inbox:'صندوق ورودی',unread:'خوانده‌نشده',markAllRead:'علامت‌گذاری همه به‌عنوان خوانده‌شده',noInboxMessages:'هنوز پیامی دریافت نشده است.',notificationInbox:'صندوق ورودی اعلان‌ها',readMessage:'خواندن پیام',newMessage:'پیام جدید',messageRead:'پیام خوانده شد',dailyWordReminder:'کلام روزانه آماده است',faithReminder:'اعلان ایمان آماده است',juiceReminder:'آبمیوه روزانه آماده است',gratitudeReminder:'یادآوری شکرگزاری',morningMeetingReminder:'یادآوری جلسه دعای صبحگاهی',sundayMeetingReminder:'یادآوری جلسه کلیسای یکشنبه',notificationAutoNote:'ارسال خودکار اعلان‌ها با OneSignal و Supabase Edge Function انجام می‌شود. این صندوق، پیام‌ها را داخل اپ هم نگه می‌دارد.'},
+  hr:{inbox:'Ulazna pošta',unread:'Nepročitano',markAllRead:'Označi sve kao pročitano',noInboxMessages:'Još nema poruka.',notificationInbox:'Ulazna pošta obavijesti',readMessage:'Pročitaj poruku',newMessage:'Nova poruka',messageRead:'Poruka je pročitana',dailyWordReminder:'Dnevna Riječ je spremna',faithReminder:'Proglas vjere je spreman',juiceReminder:'Dnevni sok je spreman',gratitudeReminder:'Podsjetnik zahvalnosti',morningMeetingReminder:'Podsjetnik za jutarnju molitvu',sundayMeetingReminder:'Podsjetnik za nedjeljni sastanak',notificationAutoNote:'Automatsko slanje push obavijesti koristi OneSignal + Supabase Edge Function. Ova ulazna pošta čuva poruke i u aplikaciji.'}
+};
+Object.keys(INBOX_T).forEach(lang=>Object.assign(T[lang], INBOX_T[lang]));
+
 
 const NEW_BIRTH_VIDEOS = [
   'https://youtu.be/u-G6r7rYNEE?is=8kokBIcdqkvQGayt',
@@ -292,6 +299,96 @@ function notesPanel(){
 }
 
 
+
+function inboxMessages(){
+  return JSON.parse(localStorage.getItem('nh7_inbox_messages')||'[]');
+}
+function setInboxMessages(arr){
+  localStorage.setItem('nh7_inbox_messages', JSON.stringify(arr));
+  updateInboxBadge();
+}
+function unreadCount(){ return inboxMessages().filter(m=>!m.read).length; }
+function updateInboxBadge(){
+  const count=unreadCount();
+  const badge=$('#inboxBadge');
+  if(badge){ badge.textContent=count>99?'99+':String(count); badge.classList.toggle('hidden', count===0); }
+  if('setAppBadge' in navigator){ try{ count>0 ? navigator.setAppBadge(count) : navigator.clearAppBadge(); }catch(e){} }
+}
+function addInboxMessage(title, body, category='app', id=null){
+  const arr=inboxMessages();
+  const mid=id || (category+'_'+todayKey()+'_'+title.replace(/\W+/g,'_').slice(0,24));
+  if(arr.some(m=>m.id===mid)) return;
+  const item={id:mid,title,body,category,createdAt:new Date().toISOString(),read:false,lang:state.lang};
+  arr.unshift(item); setInboxMessages(arr.slice(0,100));
+  saveInboxCloud(item).catch(console.warn);
+}
+function notificationBodies(){
+  if(state.lang==='fa') return {
+    daily:'امروز کلام خدا را دریافت کن و روزت را با ایمان شروع کن.',
+    faith:'وقت اعلان ایمان است؛ کلام را با دهانت اعلام کن.',
+    juice:'آبمیوه روزانه امروز آماده است؛ چند دقیقه برای تقویت روح خود وقت بگذار.',
+    gratitude:'امروز را با شکرگزاری به پایان برسان و نیکویی خدا را به یاد آور.',
+    morning:'جلسه دعای صبحگاهی کلیسا ۵ دقیقه دیگر آغاز می‌شود.',
+    sunday:'جلسه کلیسای یکشنبه آماده است. برای ورود به جلسه کلیک کن.'
+  };
+  if(state.lang==='hr') return {
+    daily:'Primi Božju Riječ danas i započni dan u vjeri.',
+    faith:'Vrijeme je za proglas vjere; izgovori Riječ.',
+    juice:'Današnji Daily Juice je spreman; odvoji nekoliko minuta za svoj duh.',
+    gratitude:'Završi dan zahvalnošću i sjeti se Božje dobrote.',
+    morning:'Jutarnji molitveni sastanak počinje za 5 minuta.',
+    sunday:'Nedjeljni crkveni sastanak je spreman. Dodirni za ulazak.'
+  };
+  return {
+    daily:'Receive God’s Word today and start your day in faith.',
+    faith:'It is time for your faith proclamation; speak the Word.',
+    juice:'Today’s Daily Juice is ready; take a few minutes to strengthen your spirit.',
+    gratitude:'End today with thanksgiving and remember God’s goodness.',
+    morning:'The morning prayer meeting starts in 5 minutes.',
+    sunday:'The Sunday church meeting is ready. Tap to join.'
+  };
+}
+function maybeCreateScheduledInboxMessages(){
+  const permission = localStorage.getItem('nh7_notifications_permission');
+  if(permission!=='granted') return;
+  const now=new Date(); const key=todayKey(); const h=now.getHours(); const m=now.getMinutes(); const b=notificationBodies();
+  const items=[
+    {hour:7, min:0, id:'daily_word', title:tr('dailyWordReminder'), body:b.daily},
+    {hour:12, min:0, id:'faith', title:tr('faithReminder'), body:b.faith},
+    {hour:17, min:0, id:'juice', title:tr('juiceReminder'), body:b.juice},
+    {hour:21, min:0, id:'gratitude', title:tr('gratitudeReminder'), body:b.gratitude}
+  ];
+  items.forEach(it=>{ if(h>it.hour || (h===it.hour && m>=it.min)) addInboxMessage(it.title,it.body,it.id,it.id+'_'+key); });
+  try{
+    const zagreb = new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Zagreb',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(now);
+    const hh=Number(zagreb.find(p=>p.type==='hour')?.value||0); const mm=Number(zagreb.find(p=>p.type==='minute')?.value||0); const wd=zagreb.find(p=>p.type==='weekday')?.value;
+    if(hh>4 || (hh===4 && mm>=55)) addInboxMessage(tr('morningMeetingReminder'), b.morning, 'morning_meeting','morning_'+key);
+    if(wd==='Sun' && (hh>20 || (hh===20 && mm>=0))) addInboxMessage(tr('sundayMeetingReminder'), b.sunday, 'sunday_service','sunday_'+key);
+  }catch(e){}
+}
+async function refreshInboxFromCloud(){
+  try{
+    const email=currentUserEmail();
+    const q=email?`notification_inbox?select=id,title,body,category,delivered_at,read_at&or=(device_id.eq.${encodeURIComponent(deviceId())},user_email.eq.${encodeURIComponent(email)})&order=delivered_at.desc&limit=50`:`notification_inbox?select=id,title,body,category,delivered_at,read_at&device_id=eq.${encodeURIComponent(deviceId())}&order=delivered_at.desc&limit=50`;
+    const ownRows=await cloudFetch(q,{method:'GET'});
+    let globalRows=[];
+    try{ globalRows=await cloudFetch('notification_inbox?select=id,title,body,category,delivered_at,read_at&device_id=is.null&user_email=is.null&order=delivered_at.desc&limit=50',{method:'GET'}); }catch(e){}
+    const rows=[...(Array.isArray(ownRows)?ownRows:[]), ...(Array.isArray(globalRows)?globalRows:[])];
+    if(rows.length){
+      const local=inboxMessages(); const byId=new Map(local.map(x=>[String(x.id),x]));
+      rows.forEach(r=>{ const id=String(r.id); if(!byId.has(id)) byId.set(id,{id,title:r.title,body:r.body,category:r.category||'cloud',createdAt:r.delivered_at,read:!!r.read_at,lang:state.lang}); });
+      setInboxMessages(Array.from(byId.values()).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt))).slice(0,100));
+    }
+  }catch(e){ console.warn('Inbox cloud fetch failed', e); }
+}
+async function inbox(){
+  maybeCreateScheduledInboxMessages(); await refreshInboxFromCloud();
+  const arr=inboxMessages();
+  const body = arr.length ? `<div class="list inbox-list">${arr.map((m,i)=>`<button class="list-btn inbox-item ${m.read?'read':'unread'}" data-inbox-open="${html(m.id)}"><strong>${m.read?'':'● '}${html(m.title)}</strong><small>${new Date(m.createdAt).toLocaleString()} • ${m.read?tr('completed'):tr('unread')}</small></button><div id="inbox-${html(String(m.id).replace(/[^a-zA-Z0-9_-]/g,'_'))}" class="accordion-panel hidden"><p>${html(m.body)}</p></div>`).join('')}</div>` : `<p class="muted">${tr('noInboxMessages')}</p>`;
+  view.innerHTML = card(tr('notificationInbox'), `<p class="muted">${tr('notificationAutoNote')}</p><div class="button-row"><span class="badge">${tr('unread')}: ${localNum(unreadCount())}</span><button class="secondary-btn" id="markAllRead">${tr('markAllRead')}</button></div>${body}`);
+  $('#markAllRead')?.addEventListener('click',()=>{ const all=inboxMessages().map(m=>({...m,read:true,readAt:new Date().toISOString()})); setInboxMessages(all); render('inbox',{},true); });
+}
+
 async function showAmen(){
   const data=await jfetch('data/app/opening_messages_365.json').catch(()=>null);
   const it=data?.items?.[userCycleDay(data.items?.length||365)-1];
@@ -317,6 +414,7 @@ async function render(route, params={}, preserve=false){
     else if(route==='meetings') await meetings(params);
     else if(route==='settings') await settings();
     else if(route==='qna') await qna();
+    else if(route==='inbox') await inbox();
     else await home();
     bindDynamic();
     setCrumb(tr(route));
@@ -564,7 +662,7 @@ async function meetings(params={}){
   }
   view.innerHTML=card(tr('meetings'), `<p>${tr('meetingAccessText')}</p>${approved?'':`<p class="muted">${tr('meetingNotApproved')}</p>`}<span class="badge">${approved?tr('approved'):registrationStatus(access)}</span>${details}<div class="button-row"><button class="primary-btn" data-go="meetings" data-params='{"form":true}'>${tr('register')}</button><button class="secondary-btn" data-go="meetings">${tr('syncApproval')}</button></div>`);
 }
-async function more(){ view.innerHTML=`<div class="grid">${tile('audio','🎧',tr('audio'))}${tile('salvation','✝',tr('salvation'))}${tile('gratitude','🙏',tr('gratitude'))}${tile('meetings','☎',tr('meetings'))}${tile('qna','❓',tr('qna'))}${tile('about','ℹ',tr('about'))}${tile('settings','⚙',tr('settings'))}</div>`; }
+async function more(){ view.innerHTML=`<div class="grid">${tile('audio','🎧',tr('audio'))}${tile('salvation','✝',tr('salvation'))}${tile('gratitude','🙏',tr('gratitude'))}${tile('meetings','☎',tr('meetings'))}${tile('qna','❓',tr('qna'))}${tile('inbox','📥',tr('inbox'), unreadCount()?`${tr('unread')}: ${localNum(unreadCount())}`:'')}${tile('about','ℹ',tr('about'))}${tile('settings','⚙',tr('settings'))}</div>`; }
 
 async function qna(){
   const my = JSON.parse(localStorage.getItem('nh7_my_questions')||'[]');
@@ -590,7 +688,7 @@ async function qna(){
 async function settings(){
   const perm=typeof Notification==='undefined'?'default':Notification.permission;
   const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');
-  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است. برای آیفون، اپ را به Home Screen اضافه کنید و سپس اعلان‌ها را فعال کنید.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time. On iPhone, add the app to Home Screen, then enable notifications.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>New Hope 7 v1.3.6</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
+  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است. برای آیفون، اپ را به Home Screen اضافه کنید و سپس اعلان‌ها را فعال کنید. پیام‌های دریافت‌شده در صندوق ورودی اپ نیز ذخیره می‌شوند.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time. On iPhone, add the app to Home Screen, then enable notifications. Received messages are also saved in the app inbox.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>New Hope 7 v1.3.7</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
   $('#settingsLang').value=state.lang; $('#settingsLang').onchange=e=>setLang(e.target.value);
   $('#enableNotify').onclick=enableNotifications;
   $('#clearCache').onclick=()=>{ if('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.update())); alert(tr('saved')); };
@@ -618,7 +716,8 @@ async function enableNotifications(){
                 daily_juice_time:'17:00',
                 gratitude_time:'21:00',
                 croatia_morning_meeting:'04:55',
-                croatia_sunday_service:'20:00'
+                croatia_sunday_service:'20:00',
+                inbox_enabled:'true'
               });
             }
             const subId = OneSignal.User?.PushSubscription?.id || '';
@@ -635,6 +734,7 @@ async function enableNotifications(){
   localStorage.setItem('nh7_notifications_timezone', Intl.DateTimeFormat().resolvedOptions().timeZone || 'local');
   if(perm==='granted'){
     try{ new Notification(tr('appTitle'),{body:tr('notificationEnabled'),icon:'assets/logo.png'}); }catch(e){}
+    addInboxMessage(tr('notificationEnabled'), state.lang==='fa'?'اعلان‌ها با موفقیت فعال شد. از این به بعد پیام‌های کلیسا در این صندوق نیز ذخیره می‌شوند.':state.lang==='hr'?'Obavijesti su uključene. Od sada će se crkvene poruke spremati i u ovu ulaznu poštu.':'Notifications are active. Church messages will also be saved in this inbox.', 'system', 'notifications_enabled_'+todayKey());
     alert(state.lang==='fa'?'اعلان‌ها فعال شد. برای دریافت اعلان‌ها، اجازه مرورگر باید روشن بماند.':'Notifications are active. Keep browser permission enabled to receive them.');
   } else if(perm==='denied') {
     alert(tr('notificationDenied'));
@@ -656,6 +756,7 @@ function bindDynamic(){
   $$('[data-salvation-toggle]').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.salvationToggle); if(p){ p.classList.toggle('hidden'); const small=el.querySelector('small'); if(small) small.textContent=p.classList.contains('hidden') ? (state.lang==='fa'?'برای باز کردن کلیک کنید':state.lang==='hr'?'Dodirnite za otvaranje':'Tap to open') : tr('hide'); }});
   $$('[data-qna-toggle]').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.qnaToggle); if(p){ p.classList.toggle('hidden'); const sp=el.querySelector('span'); if(sp) sp.textContent=p.classList.contains('hidden') ? (state.lang==='fa'?'برای باز کردن کلیک کنید':state.lang==='hr'?'Dodirnite za otvaranje':'Tap to open') : tr('hide'); }});
   $$('.qna-answer-toggle').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.qnaAnswer); if(p){ p.classList.toggle('hidden'); }});
+  $$('[data-inbox-open]').forEach(el=>el.onclick=()=>{ const id=el.dataset.inboxOpen; const safe=String(id).replace(/[^a-zA-Z0-9_-]/g,'_'); const p=$('#inbox-'+safe); if(p) p.classList.toggle('hidden'); const arr=inboxMessages().map(m=>m.id===id?{...m,read:true,readAt:new Date().toISOString()}:m); setInboxMessages(arr); updateInboxBadge(); });
   $$('[data-submit-registration]').forEach(el=>el.onclick=()=>collectRegistration(el.dataset.submitRegistration));
   const run=$('#runBibleSearch'); if(run) run.onclick=()=>navigate('bible',{q:$('#bibleSearch').value},true);
   $('#startGratitude')?.addEventListener('click',()=>{ localStorage.setItem('nh7_gratitude_start',todayKey()); addPoints(5,'gratitude_1'); render('daily',{tab:'gratitude'},true); });
@@ -663,10 +764,11 @@ function bindDynamic(){
 }
 
 $('#langSelect').onchange=e=>setLang(e.target.value);
+$('#inboxBtn')?.addEventListener('click',()=>navigate('inbox',{},false));
 $('#backBtn').onclick=back;
 $$('.nav-item').forEach(b=>b.onclick=()=>{ state.stack=[]; navigate(b.dataset.route,{},true); });
 $('#amenButton').onclick=()=>$('#amenGate').classList.add('hidden');
 window.addEventListener('online',()=>{ $('.offline')?.remove(); syncCloudQueue().catch(console.warn); });
 window.addEventListener('offline',()=>{ if(!$('.offline')){ const d=document.createElement('div'); d.className='offline'; d.textContent=tr('offline'); document.body.appendChild(d);} });
 if('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js').catch(console.warn);
-setLang(state.lang); syncCloudQueue().catch(console.warn); showAmen();
+setLang(state.lang); syncCloudQueue().catch(console.warn); maybeCreateScheduledInboxMessages(); updateInboxBadge(); showAmen();

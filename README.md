@@ -29,3 +29,10 @@ This version adds Supabase cloud-save foundation, improved offline caching, and 
 ## v1.3.6 Notifications
 
 OneSignal Web Push connected with App ID. Enable notifications from Home or Settings.
+
+## v1.3.7
+
+- Added notification inbox with unread badge.
+- Added app badge support where supported by browser.
+- Added Supabase notification_inbox table SQL.
+- Added OneSignal + Supabase Edge Function template for automatic scheduled notifications.
