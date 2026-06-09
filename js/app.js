@@ -1,145 +1,324 @@
 const $ = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 const view = $('#view');
-const state = { lang: localStorage.getItem('nh7_lang') || 'en', route:'home', stack:[], data:{}, bible:{groups:{},books:null,verses:null,book:null,chapter:null}, dailyTab:'word' };
+const STORE_PREFIX = 'nh7_';
+
+const state = {
+  lang: localStorage.getItem('nh7_lang') || 'en',
+  route: 'home',
+  params: {},
+  stack: [],
+  data: {},
+  bible: { groups:{}, books:null, verses:null, book:null, chapter:null },
+  dailyTab: 'word'
+};
 
 const T = {
-  en:{'nav.home':'Home','nav.daily':'Daily','nav.bible':'Bible','nav.plans':'Plans','nav.school':'School','nav.more':'More',home:'Home',daily:'Daily',bible:'Bible',plans:'Plans',school:'School',more:'More',audio:'Audio Messages',salvation:'Need Salvation',about:'About Church',settings:'Settings',gratitude:'Gratitude Plan',meetings:'Church Meetings',youversion:'My Church on YouVersion',amen:'Amen',read:'I read; unlock next day',register:'Register',pending:'Pending Review',approved:'Approved',login:'Registration / Access',offline:'Offline mode active',search:'Search',oldtestament:'Old Testament',newtestament:'New Testament',chapters:'Chapters',back:'Back',save:'Save',notes:'Notes',assignment:'Assignment',fullLesson:'Full Written Lesson',playAudio:'Audio'},
-  fa:{'nav.home':'خانه','nav.daily':'روزانه','nav.bible':'کتاب','nav.plans':'برنامه‌ها','nav.school':'مدرسه','nav.more':'بیشتر',home:'خانه',daily:'روزانه',bible:'کتاب‌مقدس',plans:'برنامه‌ها',school:'مدرسه',more:'بیشتر',audio:'پیام‌های صوتی',salvation:'نیاز به نجات',about:'درباره کلیسا',settings:'تنظیمات',gratitude:'دوره شکرگزاری',meetings:'جلسات کلیسا',youversion:'کلیسای من در YouVersion',amen:'آمین',read:'خواندم؛ روز بعد باز شود',register:'ثبت‌نام',pending:'در انتظار تأیید',approved:'تأیید شده',login:'ثبت‌نام / دسترسی',offline:'حالت آفلاین فعال است',search:'جستجو',oldtestament:'عهد عتیق',newtestament:'عهد جدید',chapters:'باب‌ها',back:'برگشت',save:'ذخیره',notes:'یادداشت‌ها',assignment:'تکلیف',fullLesson:'متن کامل درس',playAudio:'صوت'},
-  hr:{'nav.home':'Početna','nav.daily':'Dnevno','nav.bible':'Biblija','nav.plans':'Planovi','nav.school':'Škola','nav.more':'Više',home:'Početna',daily:'Dnevno',bible:'Biblija',plans:'Planovi',school:'Škola',more:'Više',audio:'Audio poruke',salvation:'Trebam spasenje',about:'O crkvi',settings:'Postavke',gratitude:'Plan zahvalnosti',meetings:'Crkveni sastanci',youversion:'Moja crkva na YouVersionu',amen:'Amen',read:'Pročitao sam; otključaj sljedeći dan',register:'Registracija',pending:'Čeka odobrenje',approved:'Odobreno',login:'Registracija / Pristup',offline:'Izvanmrežni način je aktivan',search:'Pretraži',oldtestament:'Stari zavjet',newtestament:'Novi zavjet',chapters:'Poglavlja',back:'Natrag',save:'Spremi',notes:'Bilješke',assignment:'Zadatak',fullLesson:'Cijela pisana lekcija',playAudio:'Audio'}
+  en:{
+    'nav.home':'Home','nav.daily':'Daily','nav.bible':'Bible','nav.plans':'Plans','nav.school':'School','nav.more':'More',
+    home:'Home',daily:'Daily',bible:'Bible',plans:'Plans',school:'School',more:'More',audio:'Audio Messages',salvation:'Need Salvation',about:'About Church',settings:'Settings',gratitude:'Gratitude Plan',meetings:'Church Meetings',youversion:'My Church on YouVersion',amen:'Amen',read:'I read; unlock next day',register:'Register',requestAccess:'Request access',pending:'Pending review',approved:'Approved',guest:'Guest',login:'Registration / Access',offline:'Offline mode active',search:'Search',oldtestament:'Old Testament',newtestament:'New Testament',chapters:'Chapters',back:'Back',save:'Save',saved:'Saved',notes:'Notes',assignment:'Assignment',fullLesson:'Full Written Lesson',playAudio:'Audio',
+    appTitle:'New Hope 7 Church',welcome:'Welcome to the New Hope 7 Church app',todayMessage:'Today’s message',continueToday:'Continue today',savedVerses:'My saved verses',progress:'My progress',points:'Points',badges:'Badges',nextMeeting:'Next church meeting',enableNotifications:'Enable notifications',notifications:'Notifications',notificationStatus:'Notification status',notificationEnabled:'Notifications are allowed on this device.',notificationDenied:'Notifications are blocked by the browser.',notificationDefault:'Notifications are not active yet.',language:'Language',clearProgress:'Clear local progress',refreshData:'Refresh app data',version:'App version',dailyWord:'Daily Word',faithProclamation:'Faith Proclamation',dailyJuice:'Daily Juice',gratitudeCourse:'Gratitude Course',day:'Day',mainVerse:'Main Verse',message:'Message',prayer:'Prayer / Confession',proclamation:'Proclamation',actionStep:'Action Step',furtherStudy:'Further Study',openVerse:'Open verse',startCourse:'Start course',completeDay:'Save and complete this day',lockedUntilTomorrow:'The next day will unlock tomorrow.',completed:'Completed',notStarted:'Not started',videos:'New Birth Videos',part:'Part',ourVision:'Our Vision',ourBeliefs:'Our Beliefs',churchIntro:'Church Introduction',meetingsInfo:'Meeting Information',contact:'Contact',openToday:'Open today’s reading',noSavedVerses:'No saved verses yet.',readings:'Readings',openToRead:'Open to read',bookmarks:'Bookmarks',noAudio:'Audio files will be added soon.',audioFormat:'Audio files must be MP3.',schoolAccessText:'To enter the school, register and wait for admin approval.',meetingAccessText:'Meeting access details are shown only after registration and admin approval.',registerDone:'Your request was saved on this device. Admin approval will be connected through the secure system.',name:'Name',email:'Email',book:'Book',chapter:'Chapter',verseSaved:'Verse saved',dailyCompleted:'Today’s item completed',all:'All'
+  },
+  fa:{
+    'nav.home':'خانه','nav.daily':'روزانه','nav.bible':'کتاب','nav.plans':'برنامه‌ها','nav.school':'مدرسه','nav.more':'بیشتر',
+    home:'خانه',daily:'روزانه',bible:'کتاب‌مقدس',plans:'برنامه‌ها',school:'مدرسه',more:'بیشتر',audio:'پیام‌های صوتی',salvation:'نیاز به نجات',about:'درباره کلیسا',settings:'تنظیمات',gratitude:'دوره شکرگزاری',meetings:'جلسات کلیسا',youversion:'کلیسای من در YouVersion',amen:'آمین',read:'خواندم؛ روز بعد باز شود',register:'ثبت‌نام',requestAccess:'درخواست دسترسی',pending:'در انتظار تأیید',approved:'تأیید شده',guest:'مهمان',login:'ثبت‌نام / دسترسی',offline:'حالت آفلاین فعال است',search:'جستجو',oldtestament:'عهد عتیق',newtestament:'عهد جدید',chapters:'باب‌ها',back:'برگشت',save:'ذخیره',saved:'ذخیره شد',notes:'یادداشت‌ها',assignment:'تکلیف',fullLesson:'متن کامل درس',playAudio:'صوت',
+    appTitle:'کلیسای امید نو ۷',welcome:'به اپ کلیسای امید نو ۷ خوش آمدید',todayMessage:'پیام امروز',continueToday:'ادامه امروز',savedVerses:'آیات ذخیره‌شده من',progress:'پیشرفت من',points:'امتیازها',badges:'مدال‌ها',nextMeeting:'جلسه بعدی کلیسا',enableNotifications:'فعال‌سازی اعلان‌ها',notifications:'اعلان‌ها',notificationStatus:'وضعیت اعلان‌ها',notificationEnabled:'اعلان‌ها روی این دستگاه فعال هستند.',notificationDenied:'اعلان‌ها توسط مرورگر مسدود شده‌اند.',notificationDefault:'اعلان‌ها هنوز فعال نشده‌اند.',language:'زبان برنامه',clearProgress:'پاک کردن پیشرفت محلی',refreshData:'تازه‌سازی داده‌های اپ',version:'نسخه برنامه',dailyWord:'کلام روزانه',faithProclamation:'اعلان ایمان',dailyJuice:'آبمیوه روزانه',gratitudeCourse:'دوره شکرگزاری',day:'روز',mainVerse:'آیه اصلی',message:'پیام',prayer:'دعا / اعتراف',proclamation:'اعلان',actionStep:'قدم عملی',furtherStudy:'مطالعه بیشتر',openVerse:'باز کردن آیه',startCourse:'شروع دوره',completeDay:'ذخیره و تکمیل این روز',lockedUntilTomorrow:'روز بعد فردا باز می‌شود.',completed:'کامل شد',notStarted:'شروع نشده',videos:'ویدیوهای تولد تازه',part:'قسمت',ourVision:'رویای ما',ourBeliefs:'اعتقادات ما',churchIntro:'معرفی کلیسا',meetingsInfo:'اطلاعات جلسات',contact:'ارتباط با ما',openToday:'باز کردن مطالعه امروز',noSavedVerses:'هنوز آیه‌ای ذخیره نشده است.',readings:'مطالعه‌ها',openToRead:'برای خواندن باز کن',bookmarks:'آیات ذخیره‌شده',noAudio:'فایل‌های صوتی به‌زودی اضافه می‌شوند.',audioFormat:'فایل‌های صوتی باید با فرمت MP3 باشند.',schoolAccessText:'برای ورود به مدرسه، ثبت‌نام کنید و منتظر تأیید ادمین بمانید.',meetingAccessText:'اطلاعات ورود به جلسه فقط بعد از ثبت‌نام و تأیید ادمین نمایش داده می‌شود.',registerDone:'درخواست شما روی این دستگاه ذخیره شد. تأیید ادمین بعداً از طریق سیستم امن وصل می‌شود.',name:'نام',email:'ایمیل',book:'کتاب',chapter:'باب',verseSaved:'آیه ذخیره شد',dailyCompleted:'مورد امروز کامل شد',all:'همه'
+  },
+  hr:{
+    'nav.home':'Početna','nav.daily':'Dnevno','nav.bible':'Biblija','nav.plans':'Planovi','nav.school':'Škola','nav.more':'Više',
+    home:'Početna',daily:'Dnevno',bible:'Biblija',plans:'Planovi',school:'Škola',more:'Više',audio:'Audio poruke',salvation:'Trebam spasenje',about:'O crkvi',settings:'Postavke',gratitude:'Plan zahvalnosti',meetings:'Crkveni sastanci',youversion:'Moja crkva na YouVersionu',amen:'Amen',read:'Pročitao sam; otključaj sljedeći dan',register:'Registracija',requestAccess:'Zatraži pristup',pending:'Čeka odobrenje',approved:'Odobreno',guest:'Gost',login:'Registracija / Pristup',offline:'Izvanmrežni način je aktivan',search:'Pretraži',oldtestament:'Stari zavjet',newtestament:'Novi zavjet',chapters:'Poglavlja',back:'Natrag',save:'Spremi',saved:'Spremljeno',notes:'Bilješke',assignment:'Zadatak',fullLesson:'Cijela pisana lekcija',playAudio:'Audio',
+    appTitle:'Crkva New Hope 7',welcome:'Dobrodošli u aplikaciju crkve New Hope 7',todayMessage:'Današnja poruka',continueToday:'Nastavi danas',savedVerses:'Moji spremljeni stihovi',progress:'Moj napredak',points:'Bodovi',badges:'Medalje',nextMeeting:'Sljedeći crkveni sastanak',enableNotifications:'Uključi obavijesti',notifications:'Obavijesti',notificationStatus:'Status obavijesti',notificationEnabled:'Obavijesti su dopuštene na ovom uređaju.',notificationDenied:'Preglednik je blokirao obavijesti.',notificationDefault:'Obavijesti još nisu aktivne.',language:'Jezik aplikacije',clearProgress:'Obriši lokalni napredak',refreshData:'Osvježi podatke aplikacije',version:'Verzija aplikacije',dailyWord:'Dnevna Riječ',faithProclamation:'Proglas vjere',dailyJuice:'Dnevni sok',gratitudeCourse:'Tečaj zahvalnosti',day:'Dan',mainVerse:'Glavni stih',message:'Poruka',prayer:'Molitva / Ispovijed',proclamation:'Proglas',actionStep:'Praktični korak',furtherStudy:'Daljnje proučavanje',openVerse:'Otvori stih',startCourse:'Započni tečaj',completeDay:'Spremi i dovrši ovaj dan',lockedUntilTomorrow:'Sljedeći dan otključava se sutra.',completed:'Dovršeno',notStarted:'Nije započeto',videos:'Video lekcije o novom rođenju',part:'Dio',ourVision:'Naša vizija',ourBeliefs:'Naša vjerovanja',churchIntro:'Uvod o crkvi',meetingsInfo:'Informacije o sastancima',contact:'Kontakt',openToday:'Otvori današnje čitanje',noSavedVerses:'Još nema spremljenih stihova.',readings:'Čitanja',openToRead:'Otvori za čitanje',bookmarks:'Spremljeni stihovi',noAudio:'Audio datoteke bit će uskoro dodane.',audioFormat:'Audio datoteke moraju biti u MP3 formatu.',schoolAccessText:'Za ulazak u školu registrirajte se i pričekajte odobrenje administratora.',meetingAccessText:'Podaci za pristup sastanku prikazuju se tek nakon registracije i odobrenja administratora.',registerDone:'Vaš je zahtjev spremljen na ovom uređaju. Odobrenje administratora kasnije će biti povezano sigurnim sustavom.',name:'Ime',email:'Email',book:'Knjiga',chapter:'Poglavlje',verseSaved:'Stih je spremljen',dailyCompleted:'Današnja stavka je dovršena',all:'Sve'
+  }
 };
-const tr = k => T[state.lang]?.[k] || T.en[k] || k;
-const pick = obj => (obj && (obj[state.lang] ?? obj.en ?? obj.fa ?? obj.hr)) || '';
-const jfetch = async path => { if(state.data[path]) return state.data[path]; const res = await fetch(path); if(!res.ok) throw new Error(path); return state.data[path] = await res.json(); };
-const dayOfYear = () => { const d=new Date(); const start=new Date(d.getFullYear(),0,0); return Math.floor((d-start)/86400000); };
-const cycleDay = n => ((dayOfYear()-1)%n)+1;
-const html = s => String(s ?? '').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])).replace(/\n/g,'<br>');
 
-function setLang(lang){ state.lang=lang; localStorage.setItem('nh7_lang',lang); document.documentElement.lang=lang; document.body.dir = lang==='fa'?'rtl':'ltr'; $('#langSelect').value=lang; $$('[data-i18n]').forEach(el=>el.textContent=tr(el.dataset.i18n)); render(state.route, null, true); }
-function setCrumb(t){ $('#breadcrumb').textContent=t; $('#backBtn').classList.toggle('hidden', state.stack.length===0); $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.route===state.route)); }
-function navigate(route, params=null, replace=false){ if(!replace && state.route) state.stack.push({route:state.route, params:state.params}); state.route=route; state.params=params; render(route, params); }
-function back(){ const prev=state.stack.pop(); if(prev){state.route=prev.route; state.params=prev.params; render(prev.route, prev.params, true)} }
+const NEW_BIRTH_VIDEOS = [
+  'https://youtu.be/u-G6r7rYNEE?is=8kokBIcdqkvQGayt',
+  'https://youtu.be/_NNh_EZYKTk?is=4UkXpWX2ziuZOyuI',
+  'https://youtu.be/NkhUL9CTWcs?is=b1RAH8qmJwNMFciF',
+  'https://youtu.be/LbJ1Fba5sww?is=kFsEup6CxLNId6Pb',
+  'https://youtu.be/BYyCOXIA944?is=29lwY491PLjLwqdl',
+  'https://youtu.be/ByEg4dcb6zs?is=gzcGJdHnEzKgXqe9'
+];
 
-async function showAmen(){
-  const data=await jfetch('data/app/opening_messages_365.json').catch(()=>null); const item=data?.items?.[cycleDay(365)-1];
-  $('#amenTitle').textContent = item ? pick(item).title : 'New Hope 7';
-  $('#amenMessage').textContent = item ? pick(item).message : 'God is with you today.';
-  $('#amenButton').textContent = tr('amen'); $('#amenGate').classList.remove('hidden');
+function tr(k){ return T[state.lang]?.[k] || T.en[k] || k; }
+function pick(obj){ return (obj && (obj[state.lang] ?? obj.en ?? obj.fa ?? obj.hr)) || ''; }
+function html(s){ return String(s ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])).replace(/\n/g,'<br>'); }
+function todayKey(d=new Date()){ return d.toISOString().slice(0,10); }
+function dateDiffDays(a,b){ const A=new Date(a+'T00:00:00'); const B=new Date(b+'T00:00:00'); return Math.max(0, Math.floor((B-A)/86400000)); }
+function firstUseDate(){ let d=localStorage.getItem('nh7_first_use_date'); if(!d){d=todayKey(); localStorage.setItem('nh7_first_use_date', d);} return d; }
+function userCycleDay(total){ return ((dateDiffDays(firstUseDate(), todayKey())) % total) + 1; }
+function localNum(n){ return state.lang==='fa' ? String(n).replace(/\d/g, d=>'۰۱۲۳۴۵۶۷۸۹'[d]) : String(n); }
+function localText(s){ return state.lang==='fa' ? String(s).replace(/\d/g, d=>'۰۱۲۳۴۵۶۷۸۹'[d]) : String(s); }
+async function jfetch(path){ if(state.data[path]) return state.data[path]; const res=await fetch(path); if(!res.ok) throw new Error(path); const data=await res.json(); state.data[path]=data; return data; }
+function itemsOf(data){ return data.items || data.days || data.proclamations || []; }
+
+function addPoints(amount, badgeId){
+  const g = JSON.parse(localStorage.getItem('nh7_gamification') || '{"points":0,"badges":[]}');
+  g.points = (g.points || 0) + amount;
+  if(badgeId && !g.badges.includes(badgeId)) g.badges.push(badgeId);
+  localStorage.setItem('nh7_gamification', JSON.stringify(g));
+}
+function gamification(){ return JSON.parse(localStorage.getItem('nh7_gamification') || '{"points":0,"badges":[]}'); }
+function badgeName(id){
+  const names = {
+    first_verse:{fa:'اولین آیه ذخیره‌شده',en:'First Saved Verse',hr:'Prvi spremljeni stih'},
+    daily_1:{fa:'شروع روزانه',en:'Daily Starter',hr:'Dnevni početak'},
+    gratitude_1:{fa:'شروع شکرگزاری',en:'Gratitude Starter',hr:'Početak zahvalnosti'},
+    plan_1:{fa:'شروع مطالعه کتاب‌مقدس',en:'Bible Plan Starter',hr:'Početak biblijskog plana'}
+  };
+  return names[id]?.[state.lang] || id;
 }
 
-function card(title, body, cls=''){ return `<section class="card ${cls}"><h2>${html(title)}</h2>${body}</section>`; }
-function tile(route, emoji, title, sub, params=null){ return `<button class="tile" data-go="${route}" data-params='${JSON.stringify(params||{})}'><span class="emoji">${emoji}</span><strong>${html(title)}</strong><small>${html(sub||'')}</small></button>`; }
+function setLang(lang){
+  state.lang=lang; localStorage.setItem('nh7_lang',lang);
+  document.documentElement.lang=lang; document.body.dir = lang==='fa'?'rtl':'ltr';
+  $('#langSelect').value=lang;
+  $$('[data-i18n]').forEach(el=>el.textContent=tr(el.dataset.i18n));
+  const brandStrong = $('.brand strong'); if(brandStrong) brandStrong.textContent = tr('appTitle');
+  render(state.route, state.params, true);
+}
+function setCrumb(t){ $('#breadcrumb').textContent=t; $('#backBtn').classList.toggle('hidden', state.stack.length===0); $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.route===state.route)); }
+function navigate(route, params={}, replace=false){ if(!replace && state.route) state.stack.push({route:state.route, params:state.params}); state.route=route; state.params=params||{}; render(route, state.params); }
+function back(){ const prev=state.stack.pop(); if(prev){ state.route=prev.route; state.params=prev.params; render(prev.route, prev.params, true); } }
+function card(title, body, cls=''){ return `<section class="card ${cls}">${title?`<h2>${html(title)}</h2>`:''}${body}</section>`; }
+function tile(route, emoji, title, sub='', params={}){ return `<button class="tile" data-go="${route}" data-params='${html(JSON.stringify(params||{}))}'><span class="emoji">${emoji}</span><strong>${html(title)}</strong>${sub?`<small>${html(sub)}</small>`:''}</button>`; }
+function notice(text){ return `<div class="notice">${html(text)}</div>`; }
+
+async function showAmen(){
+  const data=await jfetch('data/app/opening_messages_365.json').catch(()=>null);
+  const it=data?.items?.[userCycleDay(data.items?.length||365)-1];
+  const msg = it ? (it[state.lang] || it.en || it.fa || it.hr) : null;
+  $('#amenTitle').textContent = msg?.title || tr('appTitle');
+  $('#amenMessage').textContent = msg?.message || tr('welcome');
+  $('#amenButton').textContent = tr('amen');
+  $('#amenGate').classList.remove('hidden');
+}
 
 async function render(route, params={}, preserve=false){
-  view.innerHTML='<section class="card"><p>Loading...</p></section>';
+  view.innerHTML='<section class="card"><p>...</p></section>';
   try{
     if(route==='home') await home();
-    if(route==='daily') await daily(params);
-    if(route==='bible') await bible(params);
-    if(route==='plans') await plans(params);
-    if(route==='school') await school(params);
-    if(route==='more') await more(params);
-    if(route==='audio') await audio(params);
-    if(route==='salvation') await salvation(params);
-    if(route==='about') await about(params);
-    if(route==='meetings') await meetings(params);
-    if(route==='settings') await settings(params);
+    else if(route==='daily') await daily(params);
+    else if(route==='bible') await bible(params);
+    else if(route==='plans') await plans(params);
+    else if(route==='school') await school(params);
+    else if(route==='more') await more();
+    else if(route==='audio') await audio(params);
+    else if(route==='salvation') await salvation(params);
+    else if(route==='about') await about();
+    else if(route==='meetings') await meetings();
+    else if(route==='settings') await settings();
+    else await home();
     bindDynamic();
     setCrumb(tr(route));
-  } catch(e){ console.error(e); view.innerHTML=card('Error',`<p>${html(e.message)}</p>`); }
+  }catch(e){ console.error(e); view.innerHTML=card('Error',`<p>${html(e.message)}</p>`); }
 }
 
 async function home(){
-  view.innerHTML = card('New Hope 7', `<p>${state.lang==='fa'?'به اپ کلیسای امیدنو۷ خوش آمدید.':'Welcome to the New Hope 7 church app.'}</p><div class="button-row"><a class="primary-btn" href="https://www.bible.com/organizations/da6136d1-04cd-4243-a52b-f9ba7f32ec79?utm_source=yvapp&utm_medium=share&utm_content=partner-page" target="_blank" rel="noopener">${tr('youversion')}</a></div>`, 'hero') +
-  `<div class="grid">${tile('daily','☀',tr('daily'),'Daily Word, Faith, Juice')}${tile('bible','📖',tr('bible'),'FA / EN / HR')}${tile('plans','✓',tr('plans'),'1-year & 2-year Bible plans')}${tile('school','🎓',tr('school'),'Registration required')}${tile('meetings','☎',tr('meetings'),'Admin approval required')}${tile('more','☰',tr('more'),'Audio, Salvation, About')}</div>` +
-  card('Offline-first', `<p>${state.lang==='fa'?'این نسخه از ابتدا برای استفاده آفلاین، ذخیره‌سازی محلی و نصب روی موبایل آماده شده است.':'This version is prepared from the beginning for offline use, local saving, and mobile installation.'}</p>`);
+  const g=gamification();
+  const bookmarks=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]');
+  const dailyDay=userCycleDay(365);
+  const badgeHtml = g.badges?.length ? g.badges.map(b=>`<span class="badge">🏅 ${html(badgeName(b))}</span>`).join(' ') : `<span class="muted">${tr('notStarted')}</span>`;
+  view.innerHTML =
+    card(tr('appTitle'), `<p>${tr('welcome')}</p><div class="button-row"><button class="primary-btn" data-go="daily">${tr('continueToday')}</button><button class="secondary-btn" id="quickNotify">${tr('enableNotifications')}</button></div>`, 'hero') +
+    card(tr('todayMessage'), `<p>${tr('day')} ${localNum(dailyDay)}</p><div class="button-row"><button class="secondary-btn" data-go="daily" data-params='{"tab":"word"}'>${tr('dailyWord')}</button><button class="secondary-btn" data-go="daily" data-params='{"tab":"faith"}'>${tr('faithProclamation')}</button><button class="secondary-btn" data-go="daily" data-params='{"tab":"juice"}'>${tr('dailyJuice')}</button></div>`) +
+    card(tr('savedVerses'), bookmarks.length ? `<div class="list">${bookmarks.slice(-5).reverse().map(ref=>`<button class="list-btn" data-open-ref="${html(ref)}"><strong>${html(localText(ref))}</strong><small>${tr('openVerse')}</small></button>`).join('')}</div>` : `<p class="muted">${tr('noSavedVerses')}</p>`) +
+    card(tr('progress'), `<p><strong>${tr('points')}:</strong> ${localNum(g.points||0)}</p><p><strong>${tr('badges')}:</strong> ${badgeHtml}</p>`) +
+    `<div class="grid">${tile('bible','📖',tr('bible'))}${tile('plans','✓',tr('plans'))}${tile('school','🎓',tr('school'))}${tile('meetings','☎',tr('meetings'))}</div>`;
+  $('#quickNotify')?.addEventListener('click', enableNotifications);
 }
 
-async function daily(){
-  const tabs=[['word','Daily Word'],['faith','Faith Proclamation'],['juice','Daily Juice'],['gratitude','Gratitude']];
-  let out=`<div class="tabs">${tabs.map(t=>`<button class="tab ${state.dailyTab===t[0]?'active':''}" data-dailytab="${t[0]}">${t[1]}</button>`).join('')}</div>`;
-  if(state.dailyTab==='word') out+=await dailyWord();
-  if(state.dailyTab==='faith') out+=await faith();
-  if(state.dailyTab==='juice') out+=await juice();
-  if(state.dailyTab==='gratitude') out+=await gratitude();
+async function daily(params={}){
+  if(params.tab) state.dailyTab = params.tab;
+  const tabs=[['word',tr('dailyWord')],['faith',tr('faithProclamation')],['juice',tr('dailyJuice')],['gratitude',tr('gratitudeCourse')]];
+  let out=`<div class="tabs">${tabs.map(([id,label])=>`<button class="tab ${state.dailyTab===id?'active':''}" data-dailytab="${id}">${html(label)}</button>`).join('')}</div>`;
+  if(state.dailyTab==='word') out += await renderDailyType('data/daily/daily_word_365.json','message','prayer','word');
+  if(state.dailyTab==='faith') out += await renderDailyType('data/daily/faith_proclamations_365.json','proclamation',null,'faith');
+  if(state.dailyTab==='juice') out += await renderDailyType('data/daily/daily_juice_365.json','message','prayer','juice','actionStep');
+  if(state.dailyTab==='gratitude') out += await renderGratitude();
   view.innerHTML=out;
 }
-function getItems(data){ return data.items || data.days || data.proclamations || []; }
-async function dailyWord(){ const d=await jfetch('data/daily/daily_word_365.json'); const it=getItems(d)[cycleDay(getItems(d).length)-1]||{}; return dailyCard(it,'message','prayer'); }
-async function faith(){ const d=await jfetch('data/daily/faith_proclamations_365.json'); const it=getItems(d)[cycleDay(getItems(d).length)-1]||{}; return dailyCard(it,'proclamation',null); }
-async function juice(){ const d=await jfetch('data/daily/daily_juice_365.json'); const it=getItems(d)[cycleDay(getItems(d).length)-1]||{}; return dailyCard(it,'message','prayer','actionStep'); }
-async function gratitude(){ const d=await jfetch('data/gratitude/gratitude_plan_30_days.json'); const it=getItems(d)[cycleDay(30)-1]||{}; return dailyCard(it,'teaching',null,'dailyTasks',true); }
-function dailyCard(it, mainKey, prayerKey, extraKey, journal=false){
-  const title=pick(it.title)||`Day ${it.day||''}`; const verse=it.mainVerse||{}; const main=pick(it[mainKey]);
-  let body=`<span class="badge">Day ${it.day||cycleDay(365)}</span><h2>${html(title)}</h2>`;
-  if(verse.reference) body+=`<div class="notice"><strong>${html(verse.reference)}</strong><p>${html(pick(verse.text))}</p></div>`;
-  body+=`<p>${html(main)}</p>`;
-  if(extraKey && it[extraKey]){ const v=it[extraKey]; body+=Array.isArray(v[state.lang])?`<ul>${v[state.lang].map(x=>`<li>${html(x)}</li>`).join('')}</ul>`:`<p><strong>${html(pick(v))}</strong></p>`; }
-  if(prayerKey && it[prayerKey]) body+=`<h3>Prayer</h3><p>${html(pick(it[prayerKey]))}</p>`;
-  if(journal) body+=`<textarea placeholder="${state.lang==='fa'?'یادداشت شکرگزاری امروز':'Today’s gratitude note'}"></textarea><button class="secondary-btn" data-save-note="gratitude-${it.day}">${tr('save')}</button>`;
-  return card(title,body);
+async function renderDailyType(path, mainKey, prayerKey, type, extraKey){
+  const d=await jfetch(path); const list=itemsOf(d); const day=userCycleDay(list.length); const it=list[day-1]||{};
+  return dailyDetail(it, day, list.length, mainKey, prayerKey, type, extraKey);
+}
+async function dailyDetail(it, day, total, mainKey, prayerKey, type, extraKey){
+  await loadBibleMeta();
+  const title=pick(it.title)||`${tr('day')} ${localNum(day)}`;
+  const verse=it.mainVerse || {};
+  let body=`<span class="badge">${tr('day')} ${localNum(day)} / ${localNum(total)}</span>`;
+  if(verse.reference || pick(verse.text)) body += `<h3>${tr('mainVerse')}</h3><div class="notice"><strong>${html(localizeRef(verse.reference||''))}</strong><p>${html(pick(verse.text))}</p>${verse.reference?`<button class="secondary-btn" data-open-ref="${html(verse.reference)}">${tr('openVerse')}</button>`:''}</div>`;
+  if(it[mainKey]) body += `<h3>${mainKey==='proclamation'?tr('proclamation'):tr('message')}</h3><p>${html(pick(it[mainKey]))}</p>`;
+  if(extraKey && it[extraKey]) body += `<h3>${tr('actionStep')}</h3>${renderMulti(it[extraKey])}`;
+  if(prayerKey && it[prayerKey]) body += `<h3>${tr('prayer')}</h3><p>${html(pick(it[prayerKey]))}</p>`;
+  if(Array.isArray(it.furtherStudy) && it.furtherStudy.length){
+    body += `<h3>${tr('furtherStudy')}</h3><div class="list">${it.furtherStudy.map(fs=>`<button class="list-btn" data-open-ref="${html(fs.reference||'')}"><strong>${html(localizeRef(fs.reference||''))}</strong><small>${html(pick(fs.text))}</small></button>`).join('')}</div>`;
+  }
+  body += `<div class="button-row"><button class="primary-btn" data-complete-daily="${type}-${day}">${tr('completed')}</button></div>`;
+  return card(title, body);
+}
+function renderMulti(v){
+  if(Array.isArray(v?.[state.lang])) return `<ul>${v[state.lang].map(x=>`<li>${html(x)}</li>`).join('')}</ul>`;
+  if(Array.isArray(v)) return `<ul>${v.map(x=>`<li>${html(pick(x)||x)}</li>`).join('')}</ul>`;
+  return `<p>${html(pick(v)||v)}</p>`;
+}
+async function renderGratitude(){
+  const data=await jfetch('data/gratitude/gratitude_plan_30_days.json'); const list=itemsOf(data);
+  let start=localStorage.getItem('nh7_gratitude_start');
+  if(!start){ return card(tr('gratitudeCourse'), `<p>${tr('gratitudeCourse')} - ${localNum(30)} ${tr('day')}</p><button class="primary-btn" id="startGratitude">${tr('startCourse')}</button>`); }
+  const daysSince=dateDiffDays(start,todayKey());
+  const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]');
+  const current=Math.min(completed.length+1, list.length);
+  const unlocked=Math.min(daysSince+1, list.length);
+  if(current>unlocked){ return card(tr('gratitudeCourse'), `<p>${tr('lockedUntilTomorrow')}</p><p>${tr('completed')}: ${localNum(completed.length)} / ${localNum(list.length)}</p>`); }
+  const it=list[current-1];
+  let body=`<span class="badge">${tr('day')} ${localNum(current)} / ${localNum(list.length)}</span>`;
+  if(it.mainVerse) body+=`<h3>${tr('mainVerse')}</h3><div class="notice"><strong>${html(localizeRef(it.mainVerse.reference||''))}</strong><p>${html(pick(it.mainVerse.text))}</p><button class="secondary-btn" data-open-ref="${html(it.mainVerse.reference||'')}">${tr('openVerse')}</button></div>`;
+  body+=`<h3>${tr('message')}</h3><p>${html(pick(it.teaching))}</p>`;
+  if(it.dailyTasks) body+=`<h3>${tr('actionStep')}</h3>${renderMulti(it.dailyTasks)}`;
+  if(it.understandingQuestions) body+=`<h3>${tr('notes')}</h3>${renderMulti(it.understandingQuestions)}`;
+  body+=`<textarea id="gratitudeNote" placeholder="${tr('notes')}"></textarea><button class="primary-btn" id="completeGratitude">${tr('completeDay')}</button>`;
+  return card(pick(it.title), body);
 }
 
 async function loadBibleMeta(){
   if(state.bible.books) return;
-  const data=await jfetch('data/bible/groups/bible_group_01_18.json'); state.bible.books=data.books || [];
+  const planData = await jfetch('data/bible/plans/reading_plans_1yr_2yr.json').catch(()=>null);
+  if(planData?.books?.length) state.bible.books = planData.books;
+  else {
+    const groups=await Promise.all(['01_18','19_39','40_66'].map(g=>jfetch(`data/bible/groups/bible_group_${g}.json`)));
+    state.bible.books=groups.flatMap(g=>g.books||[]).sort((a,b)=>a.order-b.order);
+  }
 }
-async function loadBibleGroupByOrder(order){
-  const file = order<=18?'01_18':order<=39?'19_39':'40_66';
-  if(!state.bible.groups[file]) state.bible.groups[file]=await jfetch(`data/bible/groups/bible_group_${file}.json`);
-  return state.bible.groups[file];
+async function loadBook(bookId){
+  await loadBibleMeta();
+  const b=state.bible.books.find(x=>x.id===bookId);
+  if(!b) return null;
+  const group=b.order<=18?'01_18':b.order<=39?'19_39':'40_66';
+  if(!state.bible.groups[group]) state.bible.groups[group]=await jfetch(`data/bible/groups/bible_group_${group}.json`);
+  return {book:b, verses:state.bible.groups[group].verses.filter(v=>v.bookId===bookId)};
 }
 async function bible(params={}){
   await loadBibleMeta();
+  if(params.q) return bibleSearch(params.q);
   if(params.mode==='book') return bibleBook(params.bookId);
-  if(params.mode==='chapter') return bibleChapter(params.bookId, params.chapter);
-  const q = params.q || '';
-  let body=`<input id="bibleSearch" class="search-box" placeholder="${tr('search')}" value="${html(q)}"/><div class="button-row"><button class="secondary-btn" id="runBibleSearch">${tr('search')}</button></div>`;
-  if(q) body += await bibleSearch(q);
-  const ot=state.bible.books.filter(b=>b.testament==='OT'), nt=state.bible.books.filter(b=>b.testament==='NT');
-  body+=`<h2>${tr('oldtestament')}</h2><div class="list">${ot.map(bookBtn).join('')}</div><h2>${tr('newtestament')}</h2><div class="list">${nt.map(bookBtn).join('')}</div>`;
-  view.innerHTML=body;
+  if(params.mode==='chapter') return bibleChapter(params.bookId, Number(params.chapter||1));
+  const ot=state.bible.books.filter(b=>b.testament==='OT'); const nt=state.bible.books.filter(b=>b.testament==='NT');
+  view.innerHTML=card(tr('bible'), `<div class="form-row"><input id="bibleSearch" class="search-box" placeholder="${tr('search')}"></div><button class="secondary-btn" id="runBibleSearch">${tr('search')}</button>`) + renderBookList(tr('oldtestament'),ot) + renderBookList(tr('newtestament'),nt);
 }
-function bookBtn(b){ return `<button class="list-btn" data-go="bible" data-params='${JSON.stringify({mode:'book',bookId:b.id})}'><strong>${html(b.names[state.lang]||b.names.en)}</strong><small>${b.chapters} ${tr('chapters')}</small></button>`; }
-async function bibleBook(bookId){ const b=state.bible.books.find(x=>x.id===bookId); view.innerHTML=`<section class="card"><h2>${html(b.names[state.lang]||b.names.en)}</h2><div class="grid">${Array.from({length:b.chapters},(_,i)=>`<button class="list-btn" data-go="bible" data-params='${JSON.stringify({mode:'chapter',bookId,chapter:i+1})}'>${i+1}</button>`).join('')}</div></section>`; }
-async function bibleChapter(bookId,chapter){ const b=state.bible.books.find(x=>x.id===bookId); const group=await loadBibleGroupByOrder(b.order); const verses=(group.verses||[]).filter(v=>v.bookId===bookId && Number(v.chapter)===Number(chapter)); let body=`<h2>${html((b.names[state.lang]||b.names.en)+' '+chapter)}</h2>`; body+=verses.map(v=>`<div class="reader-verse" data-verse="${v.id}"><span class="num">${v.verse}</span>${html(v.text?.[state.lang]||v.text?.en||'')}<div class="button-row"><button class="secondary-btn small" data-bookmark="${v.id}">☆</button><button class="secondary-btn small" data-highlight="${v.id}">Highlight</button></div></div>`).join(''); view.innerHTML=card((b.names[state.lang]||b.names.en), body); }
-async function bibleSearch(q){ let results=[]; for(const f of ['01_18','19_39','40_66']){ const g=await loadBibleGroupByOrder(f==='01_18'?1:f==='19_39'?19:40); results.push(...(g.verses||[]).filter(v=>(v.text?.[state.lang]||'').toLowerCase().includes(q.toLowerCase())).slice(0,12)); if(results.length>=12) break; } return `<h2>${tr('search')}</h2><div class="list">${results.slice(0,12).map(v=>`<button class="list-btn" data-go="bible" data-params='${JSON.stringify({mode:'chapter',bookId:v.bookId,chapter:v.chapter})}'><strong>${html(v.reference?.[state.lang]||v.reference?.en)}</strong><small>${html((v.text?.[state.lang]||'').slice(0,130))}</small></button>`).join('')}</div>`; }
+function renderBookList(title, books){ return card(title, `<div class="grid">${books.map(b=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({mode:'book',bookId:b.id}))}'><strong>${html(b.names[state.lang]||b.names.en)}</strong><small>${localNum(b.chapters)} ${tr('chapters')}</small></button>`).join('')}</div>`); }
+async function bibleBook(bookId){ const data=await loadBook(bookId); if(!data) return bible(); const chapters=Array.from({length:data.book.chapters},(_,i)=>i+1); view.innerHTML=card(data.book.names[state.lang]||data.book.names.en, `<div class="grid">${chapters.map(ch=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({mode:'chapter',bookId,chapter:ch}))}'><strong>${tr('chapter')} ${localNum(ch)}</strong></button>`).join('')}</div>`); }
+async function bibleChapter(bookId, chapter){
+  const data=await loadBook(bookId); if(!data) return bible();
+  const verses=data.verses.filter(v=>Number(v.chapter)===chapter);
+  const title=`${data.book.names[state.lang]||data.book.names.en} ${localNum(chapter)}`;
+  view.innerHTML=card(title, `<div class="reader">${verses.map(v=>`<div class="reader-verse" id="v-${v.id}"><span class="num">${localNum(v.verse)}</span><span>${html(v.text?.[state.lang]||v.text?.en||'')}</span><div class="button-row"><button class="secondary-btn" data-bookmark="${html(v.reference?.en||v.id)}">☆ ${tr('save')}</button><button class="secondary-btn" data-highlight>✦</button></div></div>`).join('')}</div>`);
+}
+async function bibleSearch(q){
+  await loadBibleMeta(); let out=[];
+  for(const g of ['01_18','19_39','40_66']){ if(!state.bible.groups[g]) state.bible.groups[g]=await jfetch(`data/bible/groups/bible_group_${g}.json`); const found=state.bible.groups[g].verses.filter(v=>(v.text?.[state.lang]||v.text?.en||'').toLowerCase().includes(q.toLowerCase())).slice(0,8); out.push(...found); if(out.length>=20) break; }
+  view.innerHTML=card(tr('search'), out.length?`<div class="list">${out.slice(0,20).map(v=>`<button class="list-btn" data-go="bible" data-params='${html(JSON.stringify({mode:'chapter',bookId:v.bookId,chapter:v.chapter}))}'><strong>${html(localizeRef(v.reference?.en||''))}</strong><small>${html((v.text?.[state.lang]||v.text?.en||'').slice(0,180))}</small></button>`).join('')}</div>`:`<p class="muted">${tr('notStarted')}</p>`);
+}
+function localizeRef(ref){
+  if(!ref) return '';
+  let s=String(ref);
+  const books=state.bible.books||[];
+  const pairs=books.map(b=>[b.names?.en,b.names?.[state.lang]||b.names?.en]).filter(x=>x[0]).sort((a,b)=>b[0].length-a[0].length);
+  for(const [en,loc] of pairs){
+    const re=new RegExp('^'+en.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'i');
+    if(re.test(s)){ s=s.replace(re,loc); break; }
+  }
+  return localText(s);
+}
+function parseRef(ref){
+  const m=String(ref||'').match(/^(.+?)\s+(\d+):(\d+)/); if(!m) return null;
+  const name=m[1].trim().toLowerCase(); const chapter=Number(m[2]);
+  const b=(state.bible.books||[]).find(x=>(x.names?.en||'').toLowerCase()===name);
+  return b?{bookId:b.id,chapter}:null;
+}
 
 async function plans(){
-  const d=await jfetch('data/bible/plans/reading_plans_1yr_2yr.json');
-  const plans=Array.isArray(d)?d:(d.plans||d.readingPlans||Object.values(d).filter(x=>x&&x.days));
-  view.innerHTML=card(tr('plans'), `<div class="list">${plans.map((p,i)=>`<button class="list-btn" data-plan="${i}"><strong>${html(p.title?.[state.lang]||p.title?.en||p.id||`Plan ${i+1}`)}</strong><small>${p.durationDays||p.days?.length||''} days</small></button>`).join('')}</div><div id="planDetail"></div>`);
-  $$('[data-plan]').forEach(btn=>btn.onclick=()=>showPlan(plans[btn.dataset.plan]));
+  const d=await jfetch('data/bible/plans/reading_plans_1yr_2yr.json'); await loadBibleMeta();
+  const plans=d.plans||[];
+  view.innerHTML=card(tr('plans'), `<div class="list">${plans.map((p,i)=>`<button class="list-btn" data-show-plan="${i}"><strong>${html(p.title?.[state.lang]||p.title?.en)}</strong><small>${localNum(p.durationDays||p.days?.length)} ${tr('day')}</small></button>`).join('')}</div><div id="planDetail"></div>`);
+  $$('[data-show-plan]').forEach(btn=>btn.onclick=()=>showPlan(plans[Number(btn.dataset.showPlan)]));
 }
-function showPlan(p){ const prog=JSON.parse(localStorage.getItem('nh7_plan_'+(p.id||'plan'))||'{"completed":[]}'); const current=(prog.completed?.length||0)+1; const day=(p.days||[]).find(d=>Number(d.day)===current)||p.days?.[0]; $('#planDetail').innerHTML=card(p.title?.[state.lang]||p.title?.en||'Plan', `<div class="progress"><span style="width:${Math.min(100,(prog.completed?.length||0)/(p.days?.length||365)*100)}%"></span></div><p>Day ${current}</p><pre class="notice">${html(JSON.stringify(day?.readings||day,null,2))}</pre><button class="primary-btn" id="markRead">${tr('read')}</button>`); $('#markRead').onclick=()=>{ prog.completed=[...(prog.completed||[]), current]; localStorage.setItem('nh7_plan_'+(p.id||'plan'),JSON.stringify(prog)); showPlan(p); }; }
+function planBookName(bookId){ const b=state.bible.books?.find(x=>x.id===bookId); return b?.names?.[state.lang] || b?.names?.en || bookId; }
+function renderReading(r){
+  const start=Number(r.startChapter); const end=Number(r.endChapter ?? r.startChapter);
+  const label=start===end?`${planBookName(r.bookId)} ${localNum(start)}`:`${planBookName(r.bookId)} ${localNum(start)}–${localNum(end)}`;
+  return `<button class="list-btn" data-go="bible" data-params='${html(JSON.stringify({mode:'chapter',bookId:r.bookId,chapter:start}))}'><strong>${html(label)}</strong><small>${tr('openToRead')}</small></button>`;
+}
+function showPlan(p){
+  const key='nh7_plan_'+(p.id||'plan'); const prog=JSON.parse(localStorage.getItem(key)||'{"completed":[]}');
+  const total=p.days?.length||p.durationDays||365; const current=Math.min((prog.completed?.length||0)+1,total); const day=(p.days||[]).find(x=>Number(x.day)===current)||p.days?.[0]||{};
+  const percent=Math.round(((prog.completed?.length||0)/total)*100);
+  $('#planDetail').innerHTML=card(p.title?.[state.lang]||p.title?.en, `<div class="progress"><span style="width:${percent}%"></span></div><p><strong>${tr('day')} ${localNum(current)}</strong> / ${localNum(total)}</p><h3>${tr('readings')}</h3><div class="list">${(day.readings||[]).map(renderReading).join('')}</div><button class="primary-btn" id="markRead">${tr('read')}</button>`);
+  $('#markRead').onclick=()=>{ if(!prog.completed.includes(current)) prog.completed.push(current); localStorage.setItem(key,JSON.stringify(prog)); addPoints(10,'plan_1'); showPlan(p); bindDynamic(); };
+  bindDynamic();
+}
 
 async function school(params={}){
   const d=await jfetch('data/school/school_content.json'); const access=JSON.parse(localStorage.getItem('nh7_school_access')||'{"status":"guest"}');
   if(access.status!=='approved'){
-    view.innerHTML=card(tr('school'), `<p>${state.lang==='fa'?'برای ورود به مدرسه باید ثبت‌نام کنید و ادمین شما را تأیید کند.':'To enter the school, you must register and be approved by admin.'}</p><span class="badge">${access.status==='pending'?tr('pending'):'Guest'}</span><div class="form-row"><input id="regName" placeholder="Name" value="${html(access.name||'')}"></div><div class="form-row"><input id="regEmail" placeholder="Email" value="${html(access.email||'')}"></div><button class="primary-btn" id="schoolRegister">${tr('register')}</button><p class="muted small">In the static GitHub version, approval is a local demo. Real approval/security must be connected to Supabase.</p><button class="secondary-btn" id="demoApprove">Demo admin approve on this device</button>`);
-    $('#schoolRegister').onclick=()=>{ localStorage.setItem('nh7_school_access', JSON.stringify({status:'pending',name:$('#regName').value,email:$('#regEmail').value})); render('school',null,true); };
-    $('#demoApprove').onclick=()=>{ localStorage.setItem('nh7_school_access', JSON.stringify({status:'approved'})); render('school',null,true); };
+    view.innerHTML=card(tr('school'), `<p>${tr('schoolAccessText')}</p><span class="badge">${access.status==='pending'?tr('pending'):tr('guest')}</span><div class="form-row"><input id="regName" placeholder="${tr('name')}" value="${html(access.name||'')}"></div><div class="form-row"><input id="regEmail" placeholder="${tr('email')}" value="${html(access.email||'')}"></div><button class="primary-btn" id="schoolRegister">${tr('register')}</button>`);
+    $('#schoolRegister').onclick=()=>{ localStorage.setItem('nh7_school_access',JSON.stringify({status:'pending',name:$('#regName').value,email:$('#regEmail').value})); alert(tr('registerDone')); render('school',{},true); };
     return;
   }
   if(params.lesson) return schoolLesson(d, params.lesson);
-  view.innerHTML=card(tr('school'), `<p><span class="badge">${tr('approved')}</span></p><div class="list">${d.lessons.map(l=>`<button class="list-btn" data-go="school" data-params='${JSON.stringify({lesson:l.lesson_code})}'><strong>${html(l.translations?.[state.lang]?.class_title||l.translations?.en?.class_title)}</strong><small>${html(l.translations?.[state.lang]?.lesson_title||'')}</small></button>`).join('')}</div>`);
+  view.innerHTML=card(tr('school'), `<span class="badge">${tr('approved')}</span><div class="list">${d.lessons.map(l=>`<button class="list-btn" data-go="school" data-params='${html(JSON.stringify({lesson:l.lesson_code}))}'><strong>${html(l.translations?.[state.lang]?.class_title||l.translations?.en?.class_title)}</strong><small>${html(l.translations?.[state.lang]?.lesson_title||'')}</small></button>`).join('')}</div>`);
 }
-function schoolLesson(d, code){ const l=d.lessons.find(x=>x.lesson_code===code); const tx=l.translations?.[state.lang]||l.translations?.en||{}; const wr=l.written?.[state.lang]||l.written?.en||{}; let body=`<p>${html(tx.lesson_text)}</p><div class="audio-placeholder"><strong>${tr('playAudio')}</strong><p>${html(l.audio?.fileName||'Audio file placeholder')}</p><audio controls src="public/audio/school/${html(l.audio?.fileName||'class-01-fa.mp3')}"></audio></div><h3>${tr('assignment')}</h3><p>${html(tx.assignment_question)}</p><textarea placeholder="${tr('notes')}"></textarea><button class="secondary-btn" data-save-note="school-${code}">${tr('save')}</button><h3>${tr('fullLesson')}</h3><p>${html(wr.text||'')}</p>`; view.innerHTML=card(tx.class_title||tr('school'), body); }
+function schoolLesson(d, code){ const l=d.lessons.find(x=>x.lesson_code===code); const tx=l.translations?.[state.lang]||l.translations?.en||{}; const wr=l.written?.[state.lang]||l.written?.en||{}; view.innerHTML=card(tx.class_title||tr('school'), `<p>${html(tx.lesson_text)}</p><div class="audio-placeholder"><strong>${tr('playAudio')}</strong><p>${html(l.audio?.fileName||'class-01-fa.mp3')}</p><audio controls src="public/audio/school/${html(l.audio?.fileName||'class-01-fa.mp3')}"></audio></div><h3>${tr('assignment')}</h3><p>${html(tx.assignment_question)}</p><textarea placeholder="${tr('notes')}"></textarea><button class="secondary-btn" data-save-note="school-${code}">${tr('save')}</button><h3>${tr('fullLesson')}</h3><p>${html(wr.text||'')}</p>`); }
 
-async function audio(){ const d=await jfetch('data/audio/messages.json'); view.innerHTML=card(tr('audio'), `<div class="grid">${d.categories.map(c=>tile('audio','🎧',pick(c.title), c.items.length+' items',{cat:c.id})).join('')}</div><p class="muted">Upload MP3 files into public/audio/messages and update data/audio/messages.json.</p>`); }
-async function salvation(){ const d=await jfetch('data/salvation/need_salvation.json'); view.innerHTML=`<div class="list">${(d.sections||[]).map(s=>card(pick(s.title),`<p>${html(pick(s.content))}</p>`)).join('')}</div>`; }
-async function about(){ const d=await jfetch('data/church/about.json'); view.innerHTML=card(tr('about'), `<h3>${state.lang==='fa'?'رویای ما':'Our Vision'}</h3><p>${html(d.vision[state.lang])}</p><h3>${state.lang==='fa'?'اعتقادات ما':'Our Beliefs'}</h3><p>${html(d.beliefs[state.lang])}</p><div class="grid"><img src="assets/about/vision_fa_source.jpeg" style="width:100%;border-radius:16px"><img src="assets/about/beliefs_fa_source.jpeg" style="width:100%;border-radius:16px"></div>`); }
-async function meetings(){ const d=await jfetch('data/church/church_config.json'); const access=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{"status":"guest"}'); view.innerHTML=card(tr('meetings'), `<p>${state.lang==='fa'?'اطلاعات ورود به جلسه فقط بعد از ثبت‌نام و تأیید ادمین نمایش داده می‌شود.':'Meeting access details are shown only after registration and admin approval.'}</p><span class="badge">${access.status||'guest'}</span><p>Provider: ${d.meetingProvider}</p><div class="notice">${html(d.meetingDetailsNote)}</div><button class="primary-btn" id="meetingRequest">${tr('register')}</button><button class="secondary-btn" id="meetingApprove">Demo approve</button>`); $('#meetingRequest').onclick=()=>{localStorage.setItem('nh7_meeting_access',JSON.stringify({status:'pending'}));render('meetings',null,true)}; $('#meetingApprove').onclick=()=>{localStorage.setItem('nh7_meeting_access',JSON.stringify({status:'approved'}));render('meetings',null,true)}; }
-async function more(){ view.innerHTML=`<div class="grid">${tile('audio','🎧',tr('audio'),'')}${tile('salvation','✝',tr('salvation'),'')}${tile('gratitude','🙏',tr('gratitude'),'')}${tile('meetings','☎',tr('meetings'),'')}${tile('about','ℹ',tr('about'),'')}${tile('settings','⚙',tr('settings'),'')}</div>`; }
-async function settings(){ view.innerHTML=card(tr('settings'), `<p>Language</p><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>Notifications</h3><p class="muted">07:00 Daily Word, 12:00 Faith Proclamation, 17:00 Daily Juice, 21:00 Gratitude by user local time. Church meeting reminders use Europe/Zagreb.</p><h3>Offline</h3><p class="muted">App shell and accessed data are cached for offline use.</p>`); $('#settingsLang').value=state.lang; $('#settingsLang').onchange=e=>setLang(e.target.value); }
+async function audio(params={}){
+  const d=await jfetch('data/audio/messages.json');
+  if(params.cat){ const c=d.categories.find(x=>x.id===params.cat); const items=c?.items||[]; view.innerHTML=card(pick(c?.title)||tr('audio'), items.length?`<div class="list">${items.map(it=>`<div class="card"><strong>${html(pick(it.title)||it.title||'Audio')}</strong><audio controls src="${html(it.src)}"></audio></div>`).join('')}</div>`:`<p class="muted">${tr('noAudio')}</p><p class="muted">${tr('audioFormat')}</p>`); return; }
+  view.innerHTML=card(tr('audio'), `<div class="grid">${d.categories.map(c=>tile('audio','🎧',pick(c.title),`${tr('all')}: ${localNum((c.items||[]).length)}`,{cat:c.id})).join('')}</div>`);
+}
+async function salvation(){
+  const d=await jfetch('data/salvation/need_salvation.json');
+  const videos=card(tr('videos'), `<div class="list">${NEW_BIRTH_VIDEOS.map((url,i)=>`<a class="list-btn link-card" href="${html(url)}" target="_blank" rel="noopener"><strong>${tr('part')} ${localNum(i+1)}: ${state.lang==='fa'?'تولد تازه':state.lang==='hr'?'Novo rođenje':'New Birth'}</strong><small>YouTube</small></a>`).join('')}</div>`);
+  view.innerHTML=`<div class="list">${(d.sections||[]).map(s=>card(pick(s.title),`<p>${html(pick(s.content))}</p>`)).join('')}${videos}</div>`;
+}
+async function about(){
+  const d=await jfetch('data/church/about.json');
+  view.innerHTML=card(tr('about'), `<h3>${tr('churchIntro')}</h3><p>${html(d.intro?.[state.lang]||'')}</p><h3>${tr('ourVision')}</h3><p>${html(d.vision?.[state.lang]||'')}</p><h3>${tr('ourBeliefs')}</h3><p>${html(d.beliefs?.[state.lang]||'')}</p><div class="button-row"><a class="secondary-btn" href="https://www.bible.com/organizations/da6136d1-04cd-4243-a52b-f9ba7f32ec79?utm_source=yvapp&utm_medium=share&utm_content=partner-page" target="_blank" rel="noopener">${tr('youversion')}</a></div>`);
+}
+async function meetings(){
+  const d=await jfetch('data/church/church_config.json'); const access=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{"status":"guest"}');
+  let details='';
+  if(access.status==='approved') details=`<div class="notice"><strong>FreeConferenceCall</strong><p>${html(d.publicMeetingText?.[state.lang]||'')}</p></div>`;
+  view.innerHTML=card(tr('meetings'), `<p>${tr('meetingAccessText')}</p><span class="badge">${access.status==='pending'?tr('pending'):access.status==='approved'?tr('approved'):tr('guest')}</span>${details}<div class="form-row"><input id="meetingName" placeholder="${tr('name')}" value="${html(access.name||'')}"></div><div class="form-row"><input id="meetingEmail" placeholder="${tr('email')}" value="${html(access.email||'')}"></div><button class="primary-btn" id="meetingRequest">${tr('requestAccess')}</button>`);
+  $('#meetingRequest').onclick=()=>{ localStorage.setItem('nh7_meeting_access',JSON.stringify({status:'pending',name:$('#meetingName').value,email:$('#meetingEmail').value})); alert(tr('registerDone')); render('meetings',{},true); };
+}
+async function more(){ view.innerHTML=`<div class="grid">${tile('audio','🎧',tr('audio'))}${tile('salvation','✝',tr('salvation'))}${tile('gratitude','🙏',tr('gratitude'))}${tile('meetings','☎',tr('meetings'))}${tile('about','ℹ',tr('about'))}${tile('settings','⚙',tr('settings'))}</div>`; }
+async function settings(){
+  const perm=typeof Notification==='undefined'?'default':Notification.permission;
+  const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');
+  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time.'}</p></div><h3>${tr('version')}</h3><p>New Hope 7 v1.2</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
+  $('#settingsLang').value=state.lang; $('#settingsLang').onchange=e=>setLang(e.target.value);
+  $('#enableNotify').onclick=enableNotifications;
+  $('#clearCache').onclick=()=>{ if('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.update())); alert(tr('saved')); };
+}
+async function enableNotifications(){
+  if(typeof Notification==='undefined'){ alert('Notifications are not supported in this browser.'); return; }
+  const perm=await Notification.requestPermission();
+  localStorage.setItem('nh7_notifications_permission',perm);
+  if(perm==='granted') new Notification(tr('appTitle'),{body:tr('notificationEnabled'),icon:'assets/logo.png'});
+  render(state.route,state.params,true);
+}
 
 function bindDynamic(){
   $$('[data-go]').forEach(el=>el.onclick=()=>navigate(el.dataset.go, JSON.parse(el.dataset.params||'{}')));
-  $$('[data-dailytab]').forEach(el=>el.onclick=()=>{state.dailyTab=el.dataset.dailytab; render('daily',null,true)});
-  $$('[data-save-note]').forEach(el=>el.onclick=()=>{ localStorage.setItem('nh7_note_'+el.dataset.saveNote, el.previousElementSibling?.value||''); el.textContent='Saved'; });
-  $$('[data-bookmark]').forEach(el=>el.onclick=()=>{ const arr=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]'); if(!arr.includes(el.dataset.bookmark)) arr.push(el.dataset.bookmark); localStorage.setItem('nh7_bookmarks',JSON.stringify(arr)); el.textContent='★'; });
+  $$('[data-dailytab]').forEach(el=>el.onclick=()=>{ state.dailyTab=el.dataset.dailytab; render('daily',{},true); });
+  $$('[data-save-note]').forEach(el=>el.onclick=()=>{ localStorage.setItem('nh7_note_'+el.dataset.saveNote, el.previousElementSibling?.value||''); el.textContent=tr('saved'); });
+  $$('[data-bookmark]').forEach(el=>el.onclick=()=>{ const arr=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]'); if(!arr.includes(el.dataset.bookmark)) arr.push(el.dataset.bookmark); localStorage.setItem('nh7_bookmarks',JSON.stringify(arr)); addPoints(5,'first_verse'); el.textContent='★ '+tr('saved'); });
   $$('[data-highlight]').forEach(el=>el.onclick=()=>el.closest('.reader-verse')?.classList.toggle('highlighted'));
+  $$('[data-complete-daily]').forEach(el=>el.onclick=()=>{ const key='nh7_daily_done_'+el.dataset.completeDaily; if(!localStorage.getItem(key)){ localStorage.setItem(key,'1'); addPoints(3,'daily_1'); } el.textContent=tr('dailyCompleted'); });
+  $$('[data-open-ref]').forEach(el=>el.onclick=async()=>{ await loadBibleMeta(); const ref=parseRef(el.dataset.openRef); if(ref) navigate('bible',{mode:'chapter',bookId:ref.bookId,chapter:ref.chapter}); });
   const run=$('#runBibleSearch'); if(run) run.onclick=()=>navigate('bible',{q:$('#bibleSearch').value},true);
+  $('#startGratitude')?.addEventListener('click',()=>{ localStorage.setItem('nh7_gratitude_start',todayKey()); addPoints(5,'gratitude_1'); render('daily',{tab:'gratitude'},true); });
+  $('#completeGratitude')?.addEventListener('click',()=>{ const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]'); const current=Math.min(completed.length+1,30); if(!completed.includes(current)) completed.push(current); localStorage.setItem('nh7_gratitude_completed',JSON.stringify(completed)); localStorage.setItem('nh7_gratitude_note_'+current,$('#gratitudeNote')?.value||''); addPoints(10,'gratitude_1'); render('daily',{tab:'gratitude'},true); });
 }
 
 $('#langSelect').onchange=e=>setLang(e.target.value);

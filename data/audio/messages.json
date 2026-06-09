@@ -19,20 +19,11 @@
       "items": []
     },
     {
-      "id": "sermons",
-      "title": {
-        "en": "Sermons",
-        "fa": "موعظات",
-        "hr": "Propovijedi"
-      },
-      "items": []
-    },
-    {
       "id": "teachings",
       "title": {
-        "en": "Teachings",
-        "fa": "تعالیم",
-        "hr": "Pouke"
+        "en": "Teachings and Sermons",
+        "fa": "تعالیم و موعظه‌ها",
+        "hr": "Pouke i propovijedi"
       },
       "items": []
     }
