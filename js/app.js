@@ -54,6 +54,72 @@ const NEW_BIRTH_VIDEOS = [
   'https://youtu.be/ByEg4dcb6zs?is=gzcGJdHnEzKgXqe9'
 ];
 
+
+const SUPABASE_CONFIG = {
+  url: 'https://gpzcwffxnddhaeaogdyo.supabase.co',
+  key: 'sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37'
+};
+const CLOUD_ENABLED = Boolean(SUPABASE_CONFIG.url && SUPABASE_CONFIG.key);
+function deviceId(){
+  let id=localStorage.getItem('nh7_device_id');
+  if(!id){ id='dev_'+(crypto?.randomUUID ? crypto.randomUUID() : Date.now()+'_'+Math.random().toString(16).slice(2)); localStorage.setItem('nh7_device_id',id); }
+  return id;
+}
+async function cloudFetch(path, options={}){
+  if(!CLOUD_ENABLED) throw new Error('Cloud disabled');
+  const headers=Object.assign({
+    'apikey': SUPABASE_CONFIG.key,
+    'Authorization': 'Bearer '+SUPABASE_CONFIG.key,
+    'Content-Type':'application/json',
+    'Prefer':'return=representation',
+    'x-device-id': deviceId()
+  }, options.headers||{});
+  const res=await fetch(SUPABASE_CONFIG.url + '/rest/v1/' + path, Object.assign({}, options, {headers}));
+  if(!res.ok){ const txt=await res.text().catch(()=>''); throw new Error(txt || res.statusText); }
+  if(res.status===204) return null;
+  return res.json().catch(()=>null);
+}
+function enqueueCloud(op){
+  const q=JSON.parse(localStorage.getItem('nh7_cloud_queue')||'[]');
+  q.push(Object.assign({id:Date.now()+'_'+Math.random().toString(16).slice(2), createdAt:new Date().toISOString()}, op));
+  localStorage.setItem('nh7_cloud_queue', JSON.stringify(q));
+  localStorage.setItem('nh7_cloud_status','queued');
+}
+async function syncCloudQueue(){
+  if(!navigator.onLine) return;
+  const q=JSON.parse(localStorage.getItem('nh7_cloud_queue')||'[]');
+  if(!q.length){ localStorage.setItem('nh7_cloud_status','synced'); return; }
+  const remaining=[];
+  for(const op of q){
+    try{
+      if(op.type==='insert') await cloudFetch(op.table, {method:'POST', body:JSON.stringify(op.payload)});
+      if(op.type==='upsert') await cloudFetch(op.table+'?on_conflict='+encodeURIComponent(op.conflict||'device_id'), {method:'POST', headers:{'Prefer':'resolution=merge-duplicates,return=representation'}, body:JSON.stringify(op.payload)});
+    }catch(e){ console.warn('Cloud sync failed', e); remaining.push(op); }
+  }
+  localStorage.setItem('nh7_cloud_queue', JSON.stringify(remaining));
+  localStorage.setItem('nh7_cloud_status', remaining.length ? 'queued' : 'synced');
+}
+async function saveCloud(op){ enqueueCloud(op); await syncCloudQueue(); }
+function cloudStatusText(){
+  const s=localStorage.getItem('nh7_cloud_status')||'local';
+  if(state.lang==='fa') return s==='synced'?'ذخیره ابری همگام است.':s==='queued'?'چند مورد برای همگام‌سازی ابری در صف است.':'ذخیره محلی فعال است؛ بعد از ساخت جدول‌ها ذخیره ابری فعال می‌شود.';
+  if(state.lang==='hr') return s==='synced'?'Cloud spremanje je sinkronizirano.':s==='queued'?'Neke stavke čekaju sinkronizaciju u oblak.':'Lokalno spremanje je aktivno; cloud se uključuje nakon stvaranja tablica.';
+  return s==='synced'?'Cloud save is synced.':s==='queued'?'Some items are waiting for cloud sync.':'Local save is active; cloud starts after the tables are created.';
+}
+async function saveRegistrationCloud(data){
+  const payload={device_id:deviceId(), type:data.kind||'general', status:'pending', language:state.lang, payload:data};
+  await saveCloud({type:'insert', table:'registrations', payload});
+}
+async function saveVerseCloud(ref){
+  await saveCloud({type:'upsert', table:'saved_verses', conflict:'device_id,ref', payload:{device_id:deviceId(), ref, language:state.lang}});
+}
+async function saveNoteCloud(key, content){
+  await saveCloud({type:'upsert', table:'user_notes', conflict:'device_id,note_key', payload:{device_id:deviceId(), note_key:key, content, language:state.lang}});
+}
+async function saveProgressCloud(key, value){
+  await saveCloud({type:'upsert', table:'user_progress', conflict:'device_id,progress_key', payload:{device_id:deviceId(), progress_key:key, value, language:state.lang}});
+}
+
 function tr(k){ return T[state.lang]?.[k] || T.en[k] || k; }
 function pick(obj){ return (obj && (obj[state.lang] ?? obj.en ?? obj.fa ?? obj.hr)) || ''; }
 function html(s){ return String(s ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])).replace(/\n/g,'<br>'); }
@@ -130,6 +196,7 @@ function collectRegistration(kind){
   for(const f of fields){ const el=$('#reg_'+f); data[f]=(el?.value||'').trim(); if(!data[f]){ alert(tr('requiredField')); el?.focus(); return; } }
   const key=kind==='meeting'?'nh7_meeting_access':'nh7_school_access';
   localStorage.setItem(key, JSON.stringify(data));
+  saveRegistrationCloud(data).catch(console.warn);
   alert(tr('registerDone'));
   if(data.salvationPrayer==='no') navigate('salvation',{},true); else render(kind==='meeting'?'meetings':'school',{},true);
 }
@@ -424,10 +491,11 @@ async function more(){ view.innerHTML=`<div class="grid">${tile('audio','🎧',t
 async function settings(){
   const perm=typeof Notification==='undefined'?'default':Notification.permission;
   const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');
-  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time.'}</p></div><h3>${tr('version')}</h3><p>New Hope 7 v1.2.6</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
+  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>New Hope 7 v1.3</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
   $('#settingsLang').value=state.lang; $('#settingsLang').onchange=e=>setLang(e.target.value);
   $('#enableNotify').onclick=enableNotifications;
   $('#clearCache').onclick=()=>{ if('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.update())); alert(tr('saved')); };
+  $('#syncCloud')?.addEventListener('click', async()=>{ await syncCloudQueue(); alert(cloudStatusText()); render('settings',{},true); });
 }
 async function enableNotifications(){
   if(typeof Notification==='undefined'){ alert('Notifications are not supported in this browser.'); return; }
@@ -440,10 +508,10 @@ async function enableNotifications(){
 function bindDynamic(){
   $$('[data-go]').forEach(el=>el.onclick=()=>navigate(el.dataset.go, JSON.parse(el.dataset.params||'{}')));
   $$('[data-dailytab]').forEach(el=>el.onclick=()=>{ state.dailyTab=el.dataset.dailytab; render('daily',{},true); });
-  $$('[data-save-note]').forEach(el=>el.onclick=()=>{ localStorage.setItem('nh7_note_'+el.dataset.saveNote, el.previousElementSibling?.value||''); el.textContent=tr('saved'); });
-  $$('[data-bookmark]').forEach(el=>el.onclick=()=>{ const arr=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]'); if(!arr.includes(el.dataset.bookmark)) arr.push(el.dataset.bookmark); localStorage.setItem('nh7_bookmarks',JSON.stringify(arr)); addPoints(5,'first_verse'); el.textContent='★ '+tr('saved'); });
+  $$('[data-save-note]').forEach(el=>el.onclick=()=>{ const content=el.previousElementSibling?.value||''; localStorage.setItem('nh7_note_'+el.dataset.saveNote, content); saveNoteCloud('note_'+el.dataset.saveNote, content).catch(console.warn); el.textContent=tr('saved'); });
+  $$('[data-bookmark]').forEach(el=>el.onclick=()=>{ const arr=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]'); if(!arr.includes(el.dataset.bookmark)) arr.push(el.dataset.bookmark); localStorage.setItem('nh7_bookmarks',JSON.stringify(arr)); saveVerseCloud(el.dataset.bookmark).catch(console.warn); addPoints(5,'first_verse'); el.textContent='★ '+tr('saved'); });
   $$('[data-highlight]').forEach(el=>el.onclick=()=>el.closest('.reader-verse')?.classList.toggle('highlighted'));
-  $$('[data-complete-daily]').forEach(el=>el.onclick=()=>{ const key='nh7_daily_done_'+el.dataset.completeDaily; if(!localStorage.getItem(key)){ localStorage.setItem(key,'1'); addPoints(3,'daily_1'); } el.textContent=tr('dailyCompleted'); });
+  $$('[data-complete-daily]').forEach(el=>el.onclick=()=>{ const key='nh7_daily_done_'+el.dataset.completeDaily; if(!localStorage.getItem(key)){ localStorage.setItem(key,'1'); saveProgressCloud(key,{done:true,at:new Date().toISOString()}).catch(console.warn); addPoints(3,'daily_1'); } el.textContent=tr('dailyCompleted'); });
   $$('[data-open-ref]').forEach(el=>el.onclick=async()=>{ await loadBibleMeta(); const ref=parseRef(el.dataset.openRef); if(ref) navigate('bible',{mode:'chapter',bookId:ref.bookId,chapter:ref.chapter}); });
   $$('[data-reveal-ref]').forEach(el=>el.onclick=()=>revealVerse(el));
   $$('[data-read-range]').forEach(el=>el.onclick=()=>revealReadingRange(el));
@@ -452,14 +520,14 @@ function bindDynamic(){
   $$('[data-submit-registration]').forEach(el=>el.onclick=()=>collectRegistration(el.dataset.submitRegistration));
   const run=$('#runBibleSearch'); if(run) run.onclick=()=>navigate('bible',{q:$('#bibleSearch').value},true);
   $('#startGratitude')?.addEventListener('click',()=>{ localStorage.setItem('nh7_gratitude_start',todayKey()); addPoints(5,'gratitude_1'); render('daily',{tab:'gratitude'},true); });
-  $('#completeGratitude')?.addEventListener('click',()=>{ const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]'); const current=Math.min(completed.length+1,30); if(!completed.includes(current)) completed.push(current); localStorage.setItem('nh7_gratitude_completed',JSON.stringify(completed)); localStorage.setItem('nh7_gratitude_note_'+current,$('#gratitudeNote')?.value||''); addPoints(10,'gratitude_1'); render('daily',{tab:'gratitude'},true); });
+  $('#completeGratitude')?.addEventListener('click',()=>{ const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]'); const current=Math.min(completed.length+1,30); if(!completed.includes(current)) completed.push(current); localStorage.setItem('nh7_gratitude_completed',JSON.stringify(completed)); const gnote=$('#gratitudeNote')?.value||''; localStorage.setItem('nh7_gratitude_note_'+current,gnote); saveNoteCloud('gratitude_note_'+current, gnote).catch(console.warn); saveProgressCloud('gratitude_completed',{completed}).catch(console.warn); addPoints(10,'gratitude_1'); render('daily',{tab:'gratitude'},true); });
 }
 
 $('#langSelect').onchange=e=>setLang(e.target.value);
 $('#backBtn').onclick=back;
 $$('.nav-item').forEach(b=>b.onclick=()=>{ state.stack=[]; navigate(b.dataset.route,{},true); });
 $('#amenButton').onclick=()=>$('#amenGate').classList.add('hidden');
-window.addEventListener('online',()=>$('.offline')?.remove());
+window.addEventListener('online',()=>{ $('.offline')?.remove(); syncCloudQueue().catch(console.warn); });
 window.addEventListener('offline',()=>{ if(!$('.offline')){ const d=document.createElement('div'); d.className='offline'; d.textContent=tr('offline'); document.body.appendChild(d);} });
 if('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js').catch(console.warn);
-setLang(state.lang); showAmen();
+setLang(state.lang); syncCloudQueue().catch(console.warn); showAmen();

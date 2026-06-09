@@ -1,8 +1,8 @@
-const CACHE = 'new-hope-7-v1.2.6';
+const CACHE = 'new-hope-7-v1.3';
 const APP_SHELL = [
   './','./index.html','./css/styles.css','./js/app.js','./manifest.json','./assets/logo.png',
   './data/app/opening_messages_365.json','./data/church/church_config.json','./data/church/about.json',
-  './data/audio/messages.json','./offline/index.html'
+  './data/audio/messages.json','./data/daily/daily_word_365.json','./data/daily/faith_proclamations_365.json','./data/daily/daily_juice_365.json','./data/gratitude/gratitude_plan_30_days.json','./data/salvation/need_salvation.json','./data/school/school_content.json','./data/bible/plans/reading_plans_1yr_2yr.json','./offline/index.html'
 ];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(APP_SHELL)).then(()=>self.skipWaiting()));
