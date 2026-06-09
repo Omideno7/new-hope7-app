@@ -1,0 +1,47 @@
+{
+  "appName": "New Hope 7",
+  "churchName": {
+    "en": "New Hope 7 / Omideno7",
+    "fa": "امیدنو۷",
+    "hr": "Nova Nada 7 / Omideno7"
+  },
+  "meetingProvider": "FreeConferenceCall",
+  "meetingAccess": "requires_admin_approval",
+  "youVersionUrl": "https://www.bible.com/organizations/da6136d1-04cd-4243-a52b-f9ba7f32ec79?utm_source=yvapp&utm_medium=share&utm_content=partner-page",
+  "notifications": {
+    "localUser": [
+      {
+        "id": "daily_word",
+        "time": "07:00"
+      },
+      {
+        "id": "faith_proclamation",
+        "time": "12:00"
+      },
+      {
+        "id": "daily_juice",
+        "time": "17:00"
+      },
+      {
+        "id": "gratitude_prayer",
+        "time": "21:00"
+      }
+    ],
+    "churchFixedTimezone": [
+      {
+        "id": "morning_meeting",
+        "time": "04:55",
+        "timezone": "Europe/Zagreb",
+        "frequency": "daily"
+      },
+      {
+        "id": "sunday_service",
+        "time": "20:00",
+        "timezone": "Europe/Zagreb",
+        "frequency": "weekly",
+        "day": "Sunday"
+      }
+    ]
+  },
+  "meetingDetailsNote": "Do not store meeting password/code in public GitHub files. Store in Supabase with RLS and show only to approved users."
+}

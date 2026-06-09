@@ -1,0 +1,40 @@
+{
+  "categories": [
+    {
+      "id": "morning-prayers",
+      "title": {
+        "en": "Morning Prayers",
+        "fa": "نیایش‌های صبحگاهی",
+        "hr": "Jutarnje molitve"
+      },
+      "items": []
+    },
+    {
+      "id": "short-messages",
+      "title": {
+        "en": "Short Messages",
+        "fa": "پیام‌های کوتاه",
+        "hr": "Kratke poruke"
+      },
+      "items": []
+    },
+    {
+      "id": "sermons",
+      "title": {
+        "en": "Sermons",
+        "fa": "موعظات",
+        "hr": "Propovijedi"
+      },
+      "items": []
+    },
+    {
+      "id": "teachings",
+      "title": {
+        "en": "Teachings",
+        "fa": "تعالیم",
+        "hr": "Pouke"
+      },
+      "items": []
+    }
+  ]
+}

@@ -1,0 +1,2327 @@
+{
+  "page": "gratitude_plan",
+  "version": "1.1.0-30-days-deeper",
+  "appTitle": {
+    "fa": "دوره شکرگزاری",
+    "en": "Gratitude Plan",
+    "hr": "Plan zahvalnosti"
+  },
+  "durationDays": 30,
+  "sourceNote": {
+    "fa": "نسخه عمیق‌تر دوره شکرگزاری OmideNo7؛ متن اختصاصی و کتاب‌مقدسی است و متن یا ساختار دقیق کتاب‌های Rhonda Byrne را بازتولید نمی‌کند.",
+    "en": "Deeper OmideNo7 gratitude plan; original biblical content and not a reproduction of the text or exact structure of Rhonda Byrne’s books.",
+    "hr": "Dublji OmideNo7 plan zahvalnosti; originalan biblijski sadržaj i nije reprodukcija teksta ili točne strukture knjiga Rhonde Byrne."
+  },
+  "items": [
+    {
+      "day": 1,
+      "title": {
+        "fa": "شمارش برکت‌ها",
+        "en": "Counting Your Blessings",
+        "hr": "Brojanje blagoslova"
+      },
+      "mainVerse": {
+        "reference": "Psalm 103:2",
+        "text": {
+          "fa": "نعمت‌های خدا را فراموش مکن.",
+          "en": "Forget not all His benefits.",
+          "hr": "Ne zaboravi sva Njegova dobročinstva."
+        }
+      },
+      "teaching": {
+        "fa": "شکرگزاری فقط گفتن یک «متشکرم» ساده نیست؛ شکرگزاری یعنی چشم قلب انسان باز شود و نیکویی خدا را در زندگی خود ببیند. بسیاری از مردم چون فقط به کمبودها نگاه می‌کنند، برکت‌های موجود را نمی‌بینند. اما وقتی انسان شروع می‌کند برکت‌هایش را بشمارد، ذهن او از شکایت به ایمان منتقل می‌شود.\n\nدر کتاب‌مقدس، فراموش نکردن احسان‌های خدا یک اصل روحانی است. وقتی برکت‌ها را به یاد می‌آوری، قلب تو دوباره به وفاداری خدا متصل می‌شود. شکرگزاری، حافظه روحانی را بیدار می‌کند و به تو نشان می‌دهد که خدا قبلاً بارها تو را حفظ، هدایت، تقویت و برکت داده است.\n\nامروز هدف این نیست که وانمود کنی هیچ مشکلی وجود ندارد. هدف این است که اجازه ندهی مشکل‌ها تمام نگاه تو را اشغال کنند. وقتی ده چیز برای شکرگزاری می‌نویسی، در حقیقت به قلب خود تعلیم می‌دهی که خدا هنوز نیکوست، هنوز حاضر است و هنوز در زندگی تو کار می‌کند.\n\nاین تمرین را با عجله انجام نده. هر مورد را بنویس، چند ثانیه روی آن فکر کن و بعد با صدای آرام خدا را شکر کن. این کار به‌تدریج فضای درونی تو را عوض می‌کند و تو را از فشار، نگرانی و ناشکری به آرامش، ایمان و امید منتقل می‌سازد.",
+        "en": "Today’s subject is “Counting Your Blessings.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Psalm 103:2, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Brojanje blagoslova”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Psalm 103:2, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 2,
+      "title": {
+        "fa": "شکرگزاری برای حیات",
+        "en": "Gratitude for Life",
+        "hr": "Zahvalnost za život"
+      },
+      "mainVerse": {
+        "reference": "Acts 17:28",
+        "text": {
+          "fa": "در او زندگی و حرکت و هستی داریم.",
+          "en": "In Him we live, and move, and have our being.",
+          "hr": "U Njemu živimo, mičemo se i jesmo."
+        }
+      },
+      "teaching": {
+        "fa": "حیات یک هدیه عادی نیست؛ هر روزی که بیدار می‌شوی، فرصتی تازه از طرف خدا دریافت کرده‌ای. بسیاری از چیزهایی که انسان آن‌ها را طبیعی می‌داند، در حقیقت نعمت‌اند: نفس کشیدن، دیدن، شنیدن، حرکت کردن، فکر کردن، دعا کردن و فرصت دوباره برای رشد.\n\nوقتی برای حیات شکرگزاری می‌کنی، ارزش زندگی را بهتر می‌فهمی. شکرگزاری تو را از حالت طلبکار بودن خارج می‌کند و به جای آن تو را به شخصی آگاه، فروتن و بیدار تبدیل می‌کند. انسان شکرگزار می‌فهمد که زندگی فقط برای گذراندن روزها نیست؛ زندگی فرصتی است برای شناخت خدا، محبت کردن، خدمت کردن و ثمر آوردن.\n\nامروز به بدن، نفس، وقت و توانایی‌هایی که داری با نگاه تازه نگاه کن. شاید همه چیز کامل نباشد، اما هنوز خدا به تو فرصت داده است. تا وقتی حیات داری، امید هست، رشد هست، تغییر هست و امکان قدم برداشتن در مسیر خدا وجود دارد.\n\nتمرین امروز به تو کمک می‌کند که به جای تمرکز بر آنچه نداری، به آنچه داری آگاه شوی. وقتی برای حیات شکر می‌کنی، قلب تو نرم‌تر می‌شود و بهتر می‌تواند هدف خدا را برای زندگی بپذیرد.",
+        "en": "Today’s subject is “Gratitude for Life.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Acts 17:28, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za život”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Acts 17:28, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 3,
+      "title": {
+        "fa": "شکرگزاری برای نجات",
+        "en": "Gratitude for Salvation",
+        "hr": "Zahvalnost za spasenje"
+      },
+      "mainVerse": {
+        "reference": "Ephesians 2:8",
+        "text": {
+          "fa": "به فیض و از راه ایمان نجات یافته‌اید.",
+          "en": "By grace are ye saved through faith.",
+          "hr": "Milošću ste spašeni po vjeri."
+        }
+      },
+      "teaching": {
+        "fa": "نجات بزرگ‌ترین دلیل شکرگزاری ایماندار است، زیرا نجات فقط بخشیده شدن گناهان گذشته نیست؛ نجات انتقال کامل از تاریکی به نور، از مرگ به حیات، از محکومیت به عدالت و از جدایی به رابطه با خداست. وقتی شخص نجات را سطحی ببیند، شکرگزاری او هم سطحی می‌ماند. اما وقتی بفهمد که خدا در مسیح چه کاری برای او انجام داده، قلبش پر از سپاس می‌شود.\n\nشکرگزاری برای نجات یعنی به یاد بیاوری که هویت تو با گذشته‌ات تعریف نمی‌شود. تو در مسیح خلقت تازه هستی. خدا تو را پذیرفته، عادل ساخته و به خانواده خود آورده است. این حقیقت باید هر روز در فکر تو زنده بماند، چون دشمن تلاش می‌کند انسان را با محکومیت، شرم و یادآوری گذشته تضعیف کند.\n\nامروز برای فیض خدا شکر کن. برای خون عیسی، برای بخشش، برای حیات جاودانی، برای روح‌القدس و برای اینکه نام تو در آسمان ارزشمند است شکر کن. شکرگزاری برای نجات ایمان را قوی می‌کند و باعث می‌شود از جایگاه فرزندی زندگی کنی، نه از ترس و محکومیت.\n\nدر یادداشت امروز بنویس: «نجات برای من یعنی...» و اجازه بده این جمله تو را به تفکر عمیق‌تر ببرد. وقتی معنای نجات را بهتر درک کنی، شکرگزاری تو پرقدرت‌تر و زندگی تو ثابت‌تر می‌شود.",
+        "en": "Today’s subject is “Gratitude for Salvation.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Ephesians 2:8, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za spasenje”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Ephesians 2:8, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 4,
+      "title": {
+        "fa": "شکرگزاری برای بدن",
+        "en": "Gratitude for the Body",
+        "hr": "Zahvalnost za tijelo"
+      },
+      "mainVerse": {
+        "reference": "1 Corinthians 6:19",
+        "text": {
+          "fa": "بدن شما معبد روح‌القدس است.",
+          "en": "Your body is the temple of the Holy Ghost.",
+          "hr": "Vaše tijelo je hram Duha Svetoga."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای بدن» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از 1 Corinthians 6:19 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for the Body.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, 1 Corinthians 6:19, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za tijelo”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, 1 Corinthians 6:19, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 5,
+      "title": {
+        "fa": "شکرگزاری برای خانواده",
+        "en": "Gratitude for Family",
+        "hr": "Zahvalnost za obitelj"
+      },
+      "mainVerse": {
+        "reference": "Psalm 127:3",
+        "text": {
+          "fa": "فرزندان میراث خداوندند.",
+          "en": "Children are an heritage of the LORD.",
+          "hr": "Djeca su baština Gospodnja."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای خانواده» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از Psalm 127:3 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for Family.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Psalm 127:3, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za obitelj”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Psalm 127:3, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 6,
+      "title": {
+        "fa": "شکرگزاری برای دوستان",
+        "en": "Gratitude for Friends",
+        "hr": "Zahvalnost za prijatelje"
+      },
+      "mainVerse": {
+        "reference": "Proverbs 17:17",
+        "text": {
+          "fa": "دوست در همه وقت محبت می‌کند.",
+          "en": "A friend loveth at all times.",
+          "hr": "Prijatelj ljubi u svako doba."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای دوستان» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از Proverbs 17:17 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for Friends.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Proverbs 17:17, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za prijatelje”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Proverbs 17:17, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 7,
+      "title": {
+        "fa": "شکرگزاری برای کلیسا",
+        "en": "Gratitude for the Church",
+        "hr": "Zahvalnost za crkvu"
+      },
+      "mainVerse": {
+        "reference": "Hebrews 10:25",
+        "text": {
+          "fa": "از جمع شدن با یکدیگر دست نکشیم.",
+          "en": "Not forsaking the assembling of ourselves together.",
+          "hr": "Ne napuštajmo svoje sastajanje."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای کلیسا» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از Hebrews 10:25 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for the Church.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Hebrews 10:25, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za crkvu”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Hebrews 10:25, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 8,
+      "title": {
+        "fa": "شکرگزاری برای کلام خدا",
+        "en": "Gratitude for the Word",
+        "hr": "Zahvalnost za Riječ"
+      },
+      "mainVerse": {
+        "reference": "Psalm 119:105",
+        "text": {
+          "fa": "کلام تو چراغ پای‌های من است.",
+          "en": "Thy word is a lamp unto my feet.",
+          "hr": "Tvoja riječ je svjetiljka mojoj nozi."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای کلام خدا» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از Psalm 119:105 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for the Word.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Psalm 119:105, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za Riječ”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Psalm 119:105, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 9,
+      "title": {
+        "fa": "شکرگزاری برای روح‌القدس",
+        "en": "Gratitude for the Holy Spirit",
+        "hr": "Zahvalnost za Duha Svetoga"
+      },
+      "mainVerse": {
+        "reference": "John 14:26",
+        "text": {
+          "fa": "روح‌القدس همه چیز را به شما تعلیم خواهد داد.",
+          "en": "The Holy Ghost shall teach you all things.",
+          "hr": "Duh Sveti poučit će vas svemu."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای روح‌القدس» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از John 14:26 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for the Holy Spirit.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, John 14:26, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za Duha Svetoga”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, John 14:26, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 10,
+      "title": {
+        "fa": "شکرگزاری برای سلامتی",
+        "en": "Gratitude for Health",
+        "hr": "Zahvalnost za zdravlje"
+      },
+      "mainVerse": {
+        "reference": "3 John 1:2",
+        "text": {
+          "fa": "در سلامتی باشی، چنان‌که جانت کامیاب است.",
+          "en": "Be in health, even as thy soul prospereth.",
+          "hr": "Budi zdrav kao što tvoja duša napreduje."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای سلامتی» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از 3 John 1:2 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for Health.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, 3 John 1:2, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za zdravlje”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, 3 John 1:2, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 11,
+      "title": {
+        "fa": "شکرگزاری برای غذا و نیازها",
+        "en": "Gratitude for Provision",
+        "hr": "Zahvalnost za opskrbu"
+      },
+      "mainVerse": {
+        "reference": "Philippians 4:19",
+        "text": {
+          "fa": "خدای من همه نیازهای شما را رفع خواهد کرد.",
+          "en": "My God shall supply all your need.",
+          "hr": "Moj Bog ispunit će svaku vašu potrebu."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای غذا و نیازها» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از Philippians 4:19 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for Provision.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Philippians 4:19, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za opskrbu”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Philippians 4:19, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 12,
+      "title": {
+        "fa": "شکرگزاری برای امور مالی",
+        "en": "Gratitude for Finances",
+        "hr": "Zahvalnost za financije"
+      },
+      "mainVerse": {
+        "reference": "Deuteronomy 8:18",
+        "text": {
+          "fa": "خدا قوت کسب ثروت را می‌دهد.",
+          "en": "God gives thee power to get wealth.",
+          "hr": "Bog ti daje snagu da stekneš bogatstvo."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای امور مالی» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از Deuteronomy 8:18 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for Finances.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Deuteronomy 8:18, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za financije”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Deuteronomy 8:18, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 13,
+      "title": {
+        "fa": "شکرگزاری برای کار",
+        "en": "Gratitude for Work",
+        "hr": "Zahvalnost za posao"
+      },
+      "mainVerse": {
+        "reference": "Colossians 3:23",
+        "text": {
+          "fa": "هرچه می‌کنید، از دل برای خداوند انجام دهید.",
+          "en": "Whatsoever ye do, do it heartily, as to the Lord.",
+          "hr": "Što god činite, činite od srca kao Gospodinu."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای کار» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از Colossians 3:23 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for Work.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Colossians 3:23, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za posao”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Colossians 3:23, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 14,
+      "title": {
+        "fa": "شکرگزاری برای موفقیت‌های کوچک",
+        "en": "Gratitude for Small Successes",
+        "hr": "Zahvalnost za male uspjehe"
+      },
+      "mainVerse": {
+        "reference": "Zechariah 4:10",
+        "text": {
+          "fa": "روز امور کوچک را حقیر مشمارید.",
+          "en": "Despise not the day of small things.",
+          "hr": "Ne preziri dan malih početaka."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای موفقیت‌های کوچک» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از Zechariah 4:10 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for Small Successes.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Zechariah 4:10, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za male uspjehe”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Zechariah 4:10, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 15,
+      "title": {
+        "fa": "شکرگزاری برای چالش‌ها",
+        "en": "Gratitude in Challenges",
+        "hr": "Zahvalnost u izazovima"
+      },
+      "mainVerse": {
+        "reference": "James 1:2-3",
+        "text": {
+          "fa": "آزمایش ایمان شما صبر را پدید می‌آورد.",
+          "en": "The trying of your faith worketh patience.",
+          "hr": "Kušnja vaše vjere rađa strpljivost."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای چالش‌ها» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از James 1:2-3 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude in Challenges.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, James 1:2-3, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost u izazovima”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, James 1:2-3, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 16,
+      "title": {
+        "fa": "شکرگزاری برای بخشش",
+        "en": "Gratitude for Forgiveness",
+        "hr": "Zahvalnost za oproštenje"
+      },
+      "mainVerse": {
+        "reference": "1 John 1:9",
+        "text": {
+          "fa": "او امین و عادل است تا گناهان ما را بیامرزد.",
+          "en": "He is faithful and just to forgive us our sins.",
+          "hr": "Vjeran je i pravedan da nam oprosti grijehe."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای بخشش» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از 1 John 1:9 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for Forgiveness.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, 1 John 1:9, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za oproštenje”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, 1 John 1:9, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 17,
+      "title": {
+        "fa": "شکرگزاری برای آینده",
+        "en": "Gratitude for the Future",
+        "hr": "Zahvalnost za budućnost"
+      },
+      "mainVerse": {
+        "reference": "Jeremiah 29:11",
+        "text": {
+          "fa": "فکرهای سلامتی دارم تا آینده و امیدی به شما بدهم.",
+          "en": "Thoughts of peace, to give you an expected end.",
+          "hr": "Misli mira, da vam dam budućnost i nadu."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای آینده» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از Jeremiah 29:11 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for the Future.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Jeremiah 29:11, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za budućnost”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Jeremiah 29:11, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 18,
+      "title": {
+        "fa": "شکرگزاری برای دعاهای پاسخ‌داده‌شده",
+        "en": "Gratitude for Answered Prayer",
+        "hr": "Zahvalnost za uslišane molitve"
+      },
+      "mainVerse": {
+        "reference": "1 John 5:14",
+        "text": {
+          "fa": "اگر بر حسب اراده او بطلبیم، ما را می‌شنود.",
+          "en": "If we ask according to His will, He heareth us.",
+          "hr": "Ako molimo po Njegovoj volji, uslišava nas."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای دعاهای پاسخ‌داده‌شده» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از 1 John 5:14 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for Answered Prayer.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, 1 John 5:14, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za uslišane molitve”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, 1 John 5:14, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 19,
+      "title": {
+        "fa": "شکرگزاری برای مردم دشوار",
+        "en": "Gratitude and Difficult People",
+        "hr": "Zahvalnost i teški ljudi"
+      },
+      "mainVerse": {
+        "reference": "Romans 12:18",
+        "text": {
+          "fa": "تا حد امکان با همه مردم صلح داشته باشید.",
+          "en": "As much as lieth in you, live peaceably with all men.",
+          "hr": "Koliko je do vas, živite u miru sa svima."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای مردم دشوار» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از Romans 12:18 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude and Difficult People.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Romans 12:18, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost i teški ljudi”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Romans 12:18, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 20,
+      "title": {
+        "fa": "شکرگزاری برای هدایت",
+        "en": "Gratitude for Guidance",
+        "hr": "Zahvalnost za vodstvo"
+      },
+      "mainVerse": {
+        "reference": "Psalm 32:8",
+        "text": {
+          "fa": "تو را تعلیم خواهم داد و راهی را که باید بروی نشان خواهم داد.",
+          "en": "I will instruct thee and teach thee in the way which thou shalt go.",
+          "hr": "Poučit ću te i pokazati ti put kojim trebaš ići."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای هدایت» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از Psalm 32:8 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for Guidance.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Psalm 32:8, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za vodstvo”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Psalm 32:8, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 21,
+      "title": {
+        "fa": "شکرگزاری برای فرصت‌ها",
+        "en": "Gratitude for Opportunities",
+        "hr": "Zahvalnost za prilike"
+      },
+      "mainVerse": {
+        "reference": "Revelation 3:8",
+        "text": {
+          "fa": "دری گشوده پیش روی تو نهاده‌ام.",
+          "en": "I have set before thee an open door.",
+          "hr": "Postavio sam pred tebe otvorena vrata."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای فرصت‌ها» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از Revelation 3:8 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for Opportunities.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Revelation 3:8, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za prilike”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Revelation 3:8, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 22,
+      "title": {
+        "fa": "شکرگزاری برای حکمت",
+        "en": "Gratitude for Wisdom",
+        "hr": "Zahvalnost za mudrost"
+      },
+      "mainVerse": {
+        "reference": "James 1:5",
+        "text": {
+          "fa": "اگر کسی حکمت می‌خواهد، از خدا بطلبد.",
+          "en": "If any of you lack wisdom, let him ask of God.",
+          "hr": "Ako komu nedostaje mudrosti, neka ište od Boga."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای حکمت» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از James 1:5 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for Wisdom.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, James 1:5, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za mudrost”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, James 1:5, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 23,
+      "title": {
+        "fa": "شکرگزاری برای صلح",
+        "en": "Gratitude for Peace",
+        "hr": "Zahvalnost za mir"
+      },
+      "mainVerse": {
+        "reference": "John 14:27",
+        "text": {
+          "fa": "سلامتی خود را به شما می‌دهم.",
+          "en": "My peace I give unto you.",
+          "hr": "Mir svoj dajem vam."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای صلح» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از John 14:27 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for Peace.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, John 14:27, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za mir”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, John 14:27, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 24,
+      "title": {
+        "fa": "شکرگزاری برای برکت دادن",
+        "en": "Gratitude Through Giving",
+        "hr": "Zahvalnost kroz davanje"
+      },
+      "mainVerse": {
+        "reference": "Acts 20:35",
+        "text": {
+          "fa": "دادن از گرفتن مبارک‌تر است.",
+          "en": "It is more blessed to give than to receive.",
+          "hr": "Blaženije je davati nego primati."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای برکت دادن» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از Acts 20:35 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude Through Giving.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Acts 20:35, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost kroz davanje”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Acts 20:35, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 25,
+      "title": {
+        "fa": "شکرگزاری برای کلمات",
+        "en": "Gratitude in Words",
+        "hr": "Zahvalnost u riječima"
+      },
+      "mainVerse": {
+        "reference": "Proverbs 18:21",
+        "text": {
+          "fa": "مرگ و زندگی در قدرت زبان است.",
+          "en": "Death and life are in the power of the tongue.",
+          "hr": "Smrt i život u vlasti su jezika."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای کلمات» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از Proverbs 18:21 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude in Words.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Proverbs 18:21, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost u riječima”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Proverbs 18:21, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 26,
+      "title": {
+        "fa": "شکرگزاری برای یادگیری",
+        "en": "Gratitude for Learning",
+        "hr": "Zahvalnost za učenje"
+      },
+      "mainVerse": {
+        "reference": "Proverbs 9:9",
+        "text": {
+          "fa": "حکیم را تعلیم ده تا حکیم‌تر شود.",
+          "en": "Teach a just man, and he will increase in learning.",
+          "hr": "Pouči pravednika i uvećat će znanje."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای یادگیری» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از Proverbs 9:9 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for Learning.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Proverbs 9:9, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za učenje”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Proverbs 9:9, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 27,
+      "title": {
+        "fa": "شکرگزاری برای ایمان",
+        "en": "Gratitude for Faith",
+        "hr": "Zahvalnost za vjeru"
+      },
+      "mainVerse": {
+        "reference": "Hebrews 11:6",
+        "text": {
+          "fa": "بدون ایمان خشنود ساختن خدا محال است.",
+          "en": "Without faith it is impossible to please God.",
+          "hr": "Bez vjere nemoguće je ugoditi Bogu."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای ایمان» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از Hebrews 11:6 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for Faith.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Hebrews 11:6, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za vjeru”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Hebrews 11:6, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 28,
+      "title": {
+        "fa": "شکرگزاری برای محبت",
+        "en": "Gratitude for Love",
+        "hr": "Zahvalnost za ljubav"
+      },
+      "mainVerse": {
+        "reference": "Romans 5:5",
+        "text": {
+          "fa": "محبت خدا در دل‌های ما ریخته شده است.",
+          "en": "The love of God is shed abroad in our hearts.",
+          "hr": "Božja ljubav izlivena je u naša srca."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای محبت» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از Romans 5:5 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for Love.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Romans 5:5, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za ljubav”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Romans 5:5, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 29,
+      "title": {
+        "fa": "شکرگزاری برای یک ماه رشد",
+        "en": "Gratitude for Growth",
+        "hr": "Zahvalnost za rast"
+      },
+      "mainVerse": {
+        "reference": "Philippians 1:6",
+        "text": {
+          "fa": "او که عمل نیکو را آغاز کرد، آن را به کمال خواهد رسانید.",
+          "en": "He which hath begun a good work in you will perform it.",
+          "hr": "Onaj koji je započeo dobro djelo, dovršit će ga."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «شکرگزاری برای یک ماه رشد» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از Philippians 1:6 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Gratitude for Growth.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Philippians 1:6, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Zahvalnost za rast”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Philippians 1:6, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    },
+    {
+      "day": 30,
+      "title": {
+        "fa": "ادامه زندگی شکرگزارانه",
+        "en": "Continue a Grateful Life",
+        "hr": "Nastavi zahvalan život"
+      },
+      "mainVerse": {
+        "reference": "Colossians 3:17",
+        "text": {
+          "fa": "هرچه می‌کنید، با شکرگزاری برای خدا انجام دهید.",
+          "en": "Whatsoever ye do, do all giving thanks to God.",
+          "hr": "Što god činite, sve činite zahvaljujući Bogu."
+        }
+      },
+      "teaching": {
+        "fa": "موضوع امروز «ادامه زندگی شکرگزارانه» است. شکرگزاری در این بخش به تو کمک می‌کند که نگاهت از سطح اتفاقات روزانه فراتر برود و دست خدا را در پشت نعمت‌ها، فرصت‌ها و حتی فرایندهای رشد ببینی. انسان معمولاً وقتی چیزی را از دست می‌دهد ارزش آن را می‌فهمد، اما شکرگزاری به ما یاد می‌دهد قبل از از دست دادن، قدرشناسی کنیم.\n\nآیه امروز از Colossians 3:17 به ما یادآوری می‌کند که زندگی ایمانی فقط دانستن حقیقت نیست؛ بلکه پاسخ درست دادن به حقیقت است. وقتی خدا چیزی را به ما نشان می‌دهد، پاسخ سالم قلب، شکرگزاری است. شکرگزاری یعنی من قبول می‌کنم که خدا منبع نیکویی، هدایت، برکت و حفظ زندگی من است.\n\nدر این روز، تمرکز فقط بر نوشتن چند جمله نیست. هدف این است که قلبت تربیت شود. اگر برای خانواده شکر می‌کنی، فقط نام افراد را ننویس؛ فکر کن خدا از طریق آن‌ها چه چیزی به تو آموخته است. اگر برای کار شکر می‌کنی، فقط درآمد را نبین؛ فرصت خدمت، رشد، نظم و اثرگذاری را هم ببین. اگر برای چالش‌ها شکر می‌کنی، درد را جشن نگیر؛ بلکه برای حکمتی که خدا از میان آن بیرون می‌آورد شکر کن.\n\nشکرگزاری عمیق، نگاه انسان را تغییر می‌دهد. شکایت معمولاً انسان را در مشکل نگه می‌دارد، اما شکرگزاری چشم را به وفاداری خدا باز می‌کند. امروز با آرامش بنویس، فکر کن، دعا کن و از خدا بخواه که قلبی شکرگزار در تو بسازد؛ نه فقط برای یک ماه، بلکه برای یک سبک زندگی.",
+        "en": "Today’s subject is “Continue a Grateful Life.” Gratitude is more than a positive habit; it is a trained spiritual awareness that helps the heart recognize God’s goodness, faithfulness, provision, and guidance. A person can be surrounded by blessings and still live with a complaining heart if the eyes of the heart are not trained to notice what God has done.\n\nThe verse for today, Colossians 3:17, gives you a foundation for reflection. Do not read it quickly. Let it teach your mind and guide your response. Gratitude is a response of faith: it says, “God is good, God is present, and God is working in my life.” This does not mean that every circumstance is perfect; it means that God’s faithfulness is greater than the circumstance.\n\nToday’s exercise is not only about writing notes. It is about forming a new inner culture. When you write your gratitude list, pause after each item and think about why it matters. What does this blessing reveal about God? What does it teach you? How has it helped you grow, endure, love, serve, or believe?\n\nAs you practice gratitude deeply, your thoughts become clearer, your heart becomes softer, and your faith becomes stronger. Gratitude moves you from pressure to peace, from complaint to trust, and from fear to expectation. Let today’s practice become a real conversation with God, not just a list.",
+        "hr": "Današnja tema je „Nastavi zahvalan život”. Zahvalnost je više od pozitivne navike; to je oblikovana duhovna svijest koja pomaže srcu prepoznati Božju dobrotu, vjernost, opskrbu i vodstvo. Čovjek može biti okružen blagoslovima, a ipak živjeti s prigovaranjem ako oči srca nisu naučene vidjeti što je Bog učinio.\n\nDanašnji stih, Colossians 3:17, daje ti temelj za razmišljanje. Nemoj ga pročitati brzo. Dopusti da pouči tvoj um i usmjeri tvoj odgovor. Zahvalnost je odgovor vjere: ona kaže: „Bog je dobar, Bog je prisutan i Bog djeluje u mom životu.” To ne znači da je svaka okolnost savršena; znači da je Božja vjernost veća od okolnosti.\n\nDanašnja vježba nije samo pisanje bilješki. Ona oblikuje novu unutarnju kulturu. Kada pišeš popis zahvalnosti, zastani nakon svake stavke i razmisli zašto je važna. Što taj blagoslov otkriva o Bogu? Što te uči? Kako ti je pomogao rasti, izdržati, voljeti, služiti ili vjerovati?\n\nDok duboko prakticiraš zahvalnost, tvoje misli postaju jasnije, srce mekše, a vjera snažnija. Zahvalnost te vodi od pritiska prema miru, od prigovaranja prema povjerenju i od straha prema očekivanju. Neka današnja praksa bude stvaran razgovor s Bogom, a ne samo popis."
+      },
+      "dailyTasks": {
+        "fa": [
+          "۱۰ موردی را که امروز بابت آن‌ها شکرگزار هستی بنویس.",
+          "بعد از هر مورد بنویس: «خداوندا، برای این برکت تو را شکر می‌کنم.»",
+          "یک عمل عملی شکرگزاری انجام بده: دعا، پیام تشویق، کمک، بخشش یا خدمت.",
+          "شب قبل از خواب، بهترین اتفاق امروز را یادداشت کن و برای آن شکر کن."
+        ],
+        "en": [
+          "Write 10 things you are grateful for today.",
+          "After each item write: “Lord, thank You for this blessing.”",
+          "Do one practical act of gratitude: pray, encourage, help, forgive, or serve.",
+          "Before sleep, write the best thing that happened today and give thanks for it."
+        ],
+        "hr": [
+          "Napiši 10 stvari za koje si danas zahvalan.",
+          "Nakon svake napiši: „Gospodine, hvala Ti za ovaj blagoslov.”",
+          "Učini jedno praktično djelo zahvalnosti: moli, ohrabri, pomozi, oprosti ili služi.",
+          "Prije spavanja zapiši najbolju stvar dana i zahvali za nju."
+        ]
+      },
+      "journalFields": {
+        "gratitudeList": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "todayAssignmentNotes": "",
+        "peopleToThank": "",
+        "prayerOfThanks": "",
+        "eveningReflection": "",
+        "bestThingToday": ""
+      },
+      "understandingQuestions": {
+        "fa": [
+          "امروز این موضوع چه چیزی درباره خدا به من نشان می‌دهد؟",
+          "کدام بخش زندگی من نیاز دارد با شکرگزاری عوض شود؟",
+          "اگر واقعاً شکرگزار باشم، امروز رفتارم چه تغییری می‌کند؟"
+        ],
+        "en": [
+          "What does today’s subject show me about God?",
+          "Which area of my life needs to be changed through gratitude?",
+          "If I am truly grateful, how should my behavior change today?"
+        ],
+        "hr": [
+          "Što mi današnja tema pokazuje o Bogu?",
+          "Koje područje mog života treba biti promijenjeno kroz zahvalnost?",
+          "Ako sam zaista zahvalan, kako se moje ponašanje danas treba promijeniti?"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "package": "OmideNo7 Bible App Data & System Design",
+  "version": "1.0.0",
+  "languages": {
+    "fa": {
+      "requestedTranslation": "Tarjumeh-ye Hezareh Noh / ترجمه هزاره نو",
+      "uploadedSwordModule": {
+        "conf": "farhezarenoh.conf",
+        "driver": "zText",
+        "sourceType": "OSIS",
+        "language": "fa",
+        "direction": "RtoL",
+        "scopeDetected": "New Testament module according to configuration metadata",
+        "licenseNote": "Copyrighted; permission to distribute granted to CrossWire. App/public redistribution should be confirmed with rights holder."
+      }
+    },
+    "en": {
+      "requestedTranslation": "KJV / King James Version",
+      "licenseNote": "Commonly public domain in most jurisdictions; UK Crown rights caveat may apply."
+    },
+    "hr": {
+      "requestedTranslation": "Croatian Bible",
+      "recommendation": "Use a legally distributable Croatian public-domain Bible such as Ivan Šarić via eBible, unless you provide/confirm a specific Croatian KJB/KJV-rights text.",
+      "licenseNote": "Need final confirmation before bundling in public app."
+    }
+  }
+}
