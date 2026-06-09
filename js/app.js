@@ -45,6 +45,14 @@ const EXTRA_T = {
 };
 Object.keys(EXTRA_T).forEach(lang=>Object.assign(T[lang], EXTRA_T[lang]));
 
+const QA_T = {
+  en:{qna:'Questions & Answers',askQuestion:'Ask a question',questionText:'Write your question',submitQuestion:'Submit question',publicAnswers:'Public answered questions',myQuestions:'My questions',answered:'Answered',waitingAnswer:'Waiting for answer',questionSent:'Your question was sent. It will be answered by the church team.',noQuestions:'No questions yet.',anonymousNote:'Questions and answers are shown publicly without showing the person’s name.',answer:'Answer'},
+  fa:{qna:'پرسش و پاسخ',askQuestion:'پرسش خود را بنویسید',questionText:'متن پرسش',submitQuestion:'ارسال پرسش',publicAnswers:'پرسش‌ها و پاسخ‌های عمومی',myQuestions:'پرسش‌های من',answered:'پاسخ داده شده',waitingAnswer:'در انتظار پاسخ',questionSent:'پرسش شما ارسال شد. خادمین کلیسا پاسخ خواهند داد.',noQuestions:'هنوز پرسشی ثبت نشده است.',anonymousNote:'پرسش‌ها و پاسخ‌ها بدون نمایش نام شخص، به‌صورت گمنام برای دیگر کاربران نمایش داده می‌شود.',answer:'پاسخ'},
+  hr:{qna:'Pitanja i odgovori',askQuestion:'Postavite pitanje',questionText:'Napišite svoje pitanje',submitQuestion:'Pošalji pitanje',publicAnswers:'Javna odgovorena pitanja',myQuestions:'Moja pitanja',answered:'Odgovoreno',waitingAnswer:'Čeka odgovor',questionSent:'Vaše pitanje je poslano. Crkveni služitelji će odgovoriti.',noQuestions:'Još nema pitanja.',anonymousNote:'Pitanja i odgovori prikazuju se javno bez imena osobe.',answer:'Odgovor'}
+};
+Object.keys(QA_T).forEach(lang=>Object.assign(T[lang], QA_T[lang]));
+
+
 const NEW_BIRTH_VIDEOS = [
   'https://youtu.be/u-G6r7rYNEE?is=8kokBIcdqkvQGayt',
   'https://youtu.be/_NNh_EZYKTk?is=4UkXpWX2ziuZOyuI',
@@ -118,6 +126,10 @@ async function saveNoteCloud(key, content){
 }
 async function saveProgressCloud(key, value){
   await saveCloud({type:'upsert', table:'user_progress', conflict:'device_id,progress_key', payload:{device_id:deviceId(), progress_key:key, value, language:state.lang}});
+}
+async function saveQuestionCloud(questionText){
+  const payload={device_id:deviceId(), question_text:questionText, language:state.lang, status:'pending'};
+  await saveCloud({type:'insert', table:'qa_questions', payload});
 }
 
 function tr(k){ return T[state.lang]?.[k] || T.en[k] || k; }
@@ -245,6 +257,7 @@ async function render(route, params={}, preserve=false){
     else if(route==='about') await about();
     else if(route==='meetings') await meetings();
     else if(route==='settings') await settings();
+    else if(route==='qna') await qna();
     else await home();
     bindDynamic();
     setCrumb(tr(route));
@@ -435,8 +448,8 @@ function showPlan(p){
 async function school(params={}){
   const d=await jfetch('data/school/school_content.json'); const access=JSON.parse(localStorage.getItem('nh7_school_access')||'{"status":"guest"}');
   if(access.status!=='approved'){
-    view.innerHTML=card(tr('school'), `<p>${tr('schoolAccessText')}</p><span class="badge">${access.status==='pending'?tr('pending'):tr('guest')}</span><div class="form-row"><input id="regName" placeholder="${tr('name')}" value="${html(access.name||'')}"></div><div class="form-row"><input id="regEmail" placeholder="${tr('email')}" value="${html(access.email||'')}"></div><button class="primary-btn" id="schoolRegister">${tr('register')}</button>`);
-    $('#schoolRegister').onclick=()=>{ localStorage.setItem('nh7_school_access',JSON.stringify({status:'pending',name:$('#regName').value,email:$('#regEmail').value})); alert(tr('registerDone')); render('school',{},true); };
+    if(params.form){ view.innerHTML=registrationFormHtml('school', access); return; }
+    view.innerHTML=card(tr('school'), `<p>${tr('schoolAccessText')}</p><p class="muted">${tr('schoolNotApproved')}</p><span class="badge">${access.status==='pending'?tr('pending'):tr('guest')}</span><div class="button-row"><button class="primary-btn" data-go="school" data-params='{"form":true}'>${tr('register')}</button></div>`);
     return;
   }
   if(params.lesson) return schoolLesson(d, params.lesson);
@@ -487,11 +500,31 @@ async function meetings(params={}){
   if(approved) details=`<div class="notice"><strong>FreeConferenceCall</strong><p>${html(d.publicMeetingText?.[state.lang]||'')}</p></div>`;
   view.innerHTML=card(tr('meetings'), `<p>${tr('meetingAccessText')}</p><p class="muted">${tr('meetingNotApproved')}</p><span class="badge">${approved?tr('approved'):registrationStatus(access)}</span>${details}<div class="button-row"><button class="primary-btn" data-go="meetings" data-params='{"form":true}'>${tr('register')}</button></div>`);
 }
-async function more(){ view.innerHTML=`<div class="grid">${tile('audio','🎧',tr('audio'))}${tile('salvation','✝',tr('salvation'))}${tile('gratitude','🙏',tr('gratitude'))}${tile('meetings','☎',tr('meetings'))}${tile('about','ℹ',tr('about'))}${tile('settings','⚙',tr('settings'))}</div>`; }
+async function more(){ view.innerHTML=`<div class="grid">${tile('audio','🎧',tr('audio'))}${tile('salvation','✝',tr('salvation'))}${tile('gratitude','🙏',tr('gratitude'))}${tile('meetings','☎',tr('meetings'))}${tile('qna','❓',tr('qna'))}${tile('about','ℹ',tr('about'))}${tile('settings','⚙',tr('settings'))}</div>`; }
+
+async function qna(){
+  const my = JSON.parse(localStorage.getItem('nh7_my_questions')||'[]');
+  let answered=[];
+  try{
+    answered = await cloudFetch('qa_questions?select=id,question_text,answer_text,language,answered_at&status=eq.answered&order=answered_at.desc&limit=50', {method:'GET'});
+  }catch(e){ console.warn('Q&A load failed', e); }
+  const myHtml = my.length ? `<div class="list">${my.slice().reverse().map(q=>`<div class="notice"><strong>${html(q.question)}</strong><p class="muted">${q.status==='answered'?tr('answered'):tr('waitingAnswer')}</p>${q.answer?`<p><strong>${tr('answer')}:</strong> ${html(q.answer)}</p>`:''}</div>`).join('')}</div>` : `<p class="muted">${tr('noQuestions')}</p>`;
+  const answeredHtml = answered && answered.length ? `<div class="list">${answered.map(q=>`<div class="card"><strong>${html(q.question_text)}</strong><p><strong>${tr('answer')}:</strong> ${html(q.answer_text||'')}</p></div>`).join('')}</div>` : `<p class="muted">${tr('noQuestions')}</p>`;
+  view.innerHTML=card(tr('qna'), `<p class="muted">${tr('anonymousNote')}</p><h3>${tr('askQuestion')}</h3><textarea id="qaQuestion" placeholder="${tr('questionText')}" required></textarea><button class="primary-btn" id="submitQa">${tr('submitQuestion')}</button><h3>${tr('myQuestions')}</h3>${myHtml}<h3>${tr('publicAnswers')}</h3>${answeredHtml}`);
+  $('#submitQa').onclick=async()=>{
+    const question=($('#qaQuestion').value||'').trim();
+    if(!question){ alert(tr('requiredField')); return; }
+    const item={question,status:'pending',createdAt:new Date().toISOString()};
+    const arr=JSON.parse(localStorage.getItem('nh7_my_questions')||'[]'); arr.push(item); localStorage.setItem('nh7_my_questions',JSON.stringify(arr));
+    await saveQuestionCloud(question).catch(console.warn);
+    alert(tr('questionSent')); render('qna',{},true);
+  };
+}
+
 async function settings(){
   const perm=typeof Notification==='undefined'?'default':Notification.permission;
   const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');
-  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>New Hope 7 v1.3</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
+  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>New Hope 7 v1.3.1</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
   $('#settingsLang').value=state.lang; $('#settingsLang').onchange=e=>setLang(e.target.value);
   $('#enableNotify').onclick=enableNotifications;
   $('#clearCache').onclick=()=>{ if('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.update())); alert(tr('saved')); };

@@ -85,3 +85,36 @@ create policy "user notes own all" on public.user_notes for all to anon, authent
 
 drop policy if exists "user progress own all" on public.user_progress;
 create policy "user progress own all" on public.user_progress for all to anon, authenticated using (device_id = public.nh7_device_id()) with check (device_id = public.nh7_device_id());
+
+
+-- Q&A / پرسش و پاسخ - added in v1.3.1
+create table if not exists public.qa_questions (
+  id uuid primary key default gen_random_uuid(),
+  device_id text not null,
+  question_text text not null,
+  answer_text text,
+  status text not null default 'pending' check (status in ('pending','answered','hidden')),
+  language text default 'en',
+  created_at timestamptz not null default now(),
+  answered_at timestamptz,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.qa_questions enable row level security;
+
+drop policy if exists "qa insert own" on public.qa_questions;
+drop policy if exists "qa select own answered or admin" on public.qa_questions;
+drop policy if exists "qa update admin" on public.qa_questions;
+
+create policy "qa insert own" on public.qa_questions
+for insert to anon, authenticated
+with check (device_id = public.nh7_device_id());
+
+create policy "qa select own answered or admin" on public.qa_questions
+for select to anon, authenticated
+using (device_id = public.nh7_device_id() or status = 'answered' or public.nh7_is_admin());
+
+create policy "qa update admin" on public.qa_questions
+for update to authenticated
+using (public.nh7_is_admin())
+with check (public.nh7_is_admin());

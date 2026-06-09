@@ -14,3 +14,10 @@ This version adds Supabase cloud-save foundation, improved offline caching, and 
 
 - App: `https://omideno7.github.io/new-hope7-app/?v=13`
 - Admin: `https://omideno7.github.io/new-hope7-app/admin.html?v=13`
+
+
+## v1.3.1
+- Added public anonymous Questions & Answers.
+- Added admin answer workflow.
+- Fixed school registration to submit to Supabase registrations table.
+- Added qa_questions table to SQL schema.
