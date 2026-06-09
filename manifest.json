@@ -1,0 +1,14 @@
+{
+  "name": "New Hope 7",
+  "short_name": "New Hope 7",
+  "description": "Trilingual church, Bible, school, daily word, and audio app.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6fbfa",
+  "theme_color": "#0f766e",
+  "icons": [
+    {"src":"assets/logo.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
+}
