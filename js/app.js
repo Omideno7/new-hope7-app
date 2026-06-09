@@ -31,6 +31,20 @@ const T = {
   }
 };
 
+
+const EXTRA_T = {
+  en:{
+    myNotes:'My notes',showSavedVerses:'Show saved verses',showMyNotes:'Show my notes',hide:'Hide',noNotes:'No notes yet.',registrationForm:'Registration Form',firstName:'First Name',lastName:'Last Name',birthDate:'Date of Birth',city:'City',country:'Country of Residence',spiritualAge:'How long have you been a believer?',churchMember:'Are you a member of a church?',churchName:'Church name',pastorName:'Pastor name',waterBaptism:'Have you received water baptism?',salvationPrayer:'Have you prayed the prayer of salvation?',eventsInterest:'Interested in in-person seminars/conferences?',testimony:'Testimony of coming to faith',howFound:'How did you hear about New Hope 7?',phone:'Phone number',requiredField:'Please complete all required fields.',yes:'Yes',no:'No',submitRegistration:'Submit registration',goToSalvation:'Go to salvation prayer',schoolNotApproved:'Your school access is waiting for admin approval.',meetingNotApproved:'Your meeting access is waiting for admin approval.',finalExam:'Final Exam',submitExam:'Submit exam',correctAnswers:'Correct answers',openReadingHere:'Show reading here',closeReading:'Close reading',oldAndNew:'Old Testament + New Testament',savedVersesCollapsed:'Saved verses are available here.',notesCollapsed:'All your notes are collected here.'
+  },
+  fa:{
+    myNotes:'یادداشت‌های من',showSavedVerses:'نمایش آیات ذخیره‌شده',showMyNotes:'نمایش یادداشت‌های من',hide:'بستن',noNotes:'هنوز یادداشتی ذخیره نشده است.',registrationForm:'فرم ثبت‌نام',firstName:'نام',lastName:'نام خانوادگی',birthDate:'تاریخ تولد',city:'شهر محل سکونت',country:'کشور محل سکونت',spiritualAge:'چند وقت است ایمان آورده‌اید؟',churchMember:'آیا عضو کلیسایی هستید؟',churchName:'نام کلیسا',pastorName:'نام شبان',waterBaptism:'آیا تعمید آب گرفته‌اید؟',salvationPrayer:'آیا دعای نجات را خوانده‌اید؟',eventsInterest:'آیا علاقه به شرکت در سمینارها و کنفرانس‌های حضوری دارید؟',testimony:'شهادت ایمان‌آوری شما',howFound:'از چه طریقی با کلیسای امید نو ۷ آشنا شده‌اید؟',phone:'شماره تماس',requiredField:'لطفاً همه فیلدهای ضروری را کامل کنید.',yes:'بله',no:'خیر',submitRegistration:'ارسال ثبت‌نام',goToSalvation:'رفتن به دعای نجات',schoolNotApproved:'دسترسی شما به مدرسه در انتظار تأیید ادمین است.',meetingNotApproved:'دسترسی شما به جلسات در انتظار تأیید ادمین است.',finalExam:'امتحان پایان دوره',submitExam:'ارسال امتحان',correctAnswers:'پاسخ‌های درست',openReadingHere:'نمایش مطالعه در همین صفحه',closeReading:'بستن مطالعه',oldAndNew:'عهد عتیق + عهد جدید',savedVersesCollapsed:'آیات ذخیره‌شده شما اینجا قرار دارد.',notesCollapsed:'همه یادداشت‌های شما اینجا جمع می‌شود.'
+  },
+  hr:{
+    myNotes:'Moje bilješke',showSavedVerses:'Prikaži spremljene stihove',showMyNotes:'Prikaži moje bilješke',hide:'Sakrij',noNotes:'Još nema spremljenih bilješki.',registrationForm:'Obrazac za registraciju',firstName:'Ime',lastName:'Prezime',birthDate:'Datum rođenja',city:'Grad prebivališta',country:'Država prebivališta',spiritualAge:'Koliko dugo ste vjernik?',churchMember:'Jeste li član crkve?',churchName:'Naziv crkve',pastorName:'Ime pastora',waterBaptism:'Jeste li primili krštenje u vodi?',salvationPrayer:'Jeste li molili molitvu spasenja?',eventsInterest:'Zanimate li se za seminare i konferencije uživo?',testimony:'Svjedočanstvo obraćenja',howFound:'Kako ste čuli za crkvu New Hope 7?',phone:'Broj telefona',requiredField:'Molimo ispunite sva obavezna polja.',yes:'Da',no:'Ne',submitRegistration:'Pošalji registraciju',goToSalvation:'Idi na molitvu spasenja',schoolNotApproved:'Vaš pristup školi čeka odobrenje administratora.',meetingNotApproved:'Vaš pristup sastancima čeka odobrenje administratora.',finalExam:'Završni ispit',submitExam:'Pošalji ispit',correctAnswers:'Točni odgovori',openReadingHere:'Prikaži čitanje ovdje',closeReading:'Zatvori čitanje',oldAndNew:'Stari zavjet + Novi zavjet',savedVersesCollapsed:'Spremljeni stihovi dostupni su ovdje.',notesCollapsed:'Sve vaše bilješke skupljene su ovdje.'
+  }
+};
+Object.keys(EXTRA_T).forEach(lang=>Object.assign(T[lang], EXTRA_T[lang]));
+
 const NEW_BIRTH_VIDEOS = [
   'https://youtu.be/u-G6r7rYNEE?is=8kokBIcdqkvQGayt',
   'https://youtu.be/_NNh_EZYKTk?is=4UkXpWX2ziuZOyuI',
@@ -84,6 +98,62 @@ function card(title, body, cls=''){ return `<section class="card ${cls}">${title
 function tile(route, emoji, title, sub='', params={}){ return `<button class="tile" data-go="${route}" data-params='${html(JSON.stringify(params||{}))}'><span class="emoji">${emoji}</span><strong>${html(title)}</strong>${sub?`<small>${html(sub)}</small>`:''}</button>`; }
 function notice(text){ return `<div class="notice">${html(text)}</div>`; }
 
+function registrationStatus(access){ return access.status==='pending'?tr('pending'):tr('guest'); }
+function optionYesNo(value=''){
+  return `<option value="">---</option><option value="yes" ${value==='yes'?'selected':''}>${tr('yes')}</option><option value="no" ${value==='no'?'selected':''}>${tr('no')}</option>`;
+}
+function registrationFormHtml(kind, access={}){
+  const v=(k)=>html(access[k]||'');
+  return card(tr('registrationForm'), `
+    <div class="form-row"><input id="reg_firstName" required placeholder="${tr('firstName')} *" value="${v('firstName')}"></div>
+    <div class="form-row"><input id="reg_lastName" required placeholder="${tr('lastName')} *" value="${v('lastName')}"></div>
+    <div class="form-row"><input id="reg_birthDate" required type="date" value="${v('birthDate')}"></div>
+    <div class="form-row"><input id="reg_city" required placeholder="${tr('city')} *" value="${v('city')}"></div>
+    <div class="form-row"><input id="reg_country" required placeholder="${tr('country')} *" value="${v('country')}"></div>
+    <div class="form-row"><input id="reg_spiritualAge" required placeholder="${tr('spiritualAge')} *" value="${v('spiritualAge')}"></div>
+    <div class="form-row"><label>${tr('churchMember')} *</label><select id="reg_churchMember" required>${optionYesNo(access.churchMember)}</select></div>
+    <div class="form-row"><input id="reg_churchName" required placeholder="${tr('churchName')} *" value="${v('churchName')}"></div>
+    <div class="form-row"><input id="reg_pastorName" required placeholder="${tr('pastorName')} *" value="${v('pastorName')}"></div>
+    <div class="form-row"><label>${tr('waterBaptism')} *</label><select id="reg_waterBaptism" required>${optionYesNo(access.waterBaptism)}</select></div>
+    <div class="form-row"><label>${tr('salvationPrayer')} *</label><select id="reg_salvationPrayer" required>${optionYesNo(access.salvationPrayer)}</select></div>
+    <div class="form-row"><label>${tr('eventsInterest')} *</label><select id="reg_eventsInterest" required>${optionYesNo(access.eventsInterest)}</select></div>
+    <div class="form-row"><textarea id="reg_testimony" required placeholder="${tr('testimony')} *">${v('testimony')}</textarea></div>
+    <div class="form-row"><input id="reg_howFound" required placeholder="${tr('howFound')} *" value="${v('howFound')}"></div>
+    <div class="form-row"><input id="reg_phone" required placeholder="${tr('phone')} *" value="${v('phone')}"></div>
+    <div class="form-row"><input id="reg_email" required type="email" placeholder="${tr('email')} *" value="${v('email')}"></div>
+    <button class="primary-btn" data-submit-registration="${kind}">${tr('submitRegistration')}</button>
+  `);
+}
+function collectRegistration(kind){
+  const fields=['firstName','lastName','birthDate','city','country','spiritualAge','churchMember','churchName','pastorName','waterBaptism','salvationPrayer','eventsInterest','testimony','howFound','phone','email'];
+  const data={status:'pending',submittedAt:new Date().toISOString(),kind};
+  for(const f of fields){ const el=$('#reg_'+f); data[f]=(el?.value||'').trim(); if(!data[f]){ alert(tr('requiredField')); el?.focus(); return; } }
+  const key=kind==='meeting'?'nh7_meeting_access':'nh7_school_access';
+  localStorage.setItem(key, JSON.stringify(data));
+  alert(tr('registerDone'));
+  if(data.salvationPrayer==='no') navigate('salvation',{},true); else render(kind==='meeting'?'meetings':'school',{},true);
+}
+function collectNotes(){
+  const out=[];
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(!k) continue;
+    if(k.startsWith('nh7_note_') || k.startsWith('nh7_gratitude_note_')){
+      const val=localStorage.getItem(k);
+      if(val) out.push({key:k.replace(/^nh7_/,'').replace(/_/g,' '), text:val});
+    }
+  }
+  return out;
+}
+function savedVersesPanel(bookmarks){
+  return `<button class="secondary-btn" data-toggle-panel="savedVersesPanel">${tr('showSavedVerses')}</button><div id="savedVersesPanel" class="collapsible-panel hidden">${bookmarks.length ? `<div class="list">${bookmarks.slice().reverse().map(ref=>`<button class="list-btn" data-open-ref="${html(ref)}"><strong>${html(localText(ref))}</strong><small>${tr('openVerse')}</small></button>`).join('')}</div>` : `<p class="muted">${tr('noSavedVerses')}</p>`}</div>`;
+}
+function notesPanel(){
+  const notes=collectNotes();
+  return `<button class="secondary-btn" data-toggle-panel="notesPanel">${tr('showMyNotes')}</button><div id="notesPanel" class="collapsible-panel hidden">${notes.length?`<div class="list">${notes.reverse().map(n=>`<div class="notice"><strong>${html(n.key)}</strong><p>${html(n.text)}</p></div>`).join('')}</div>`:`<p class="muted">${tr('noNotes')}</p>`}</div>`;
+}
+
+
 async function showAmen(){
   const data=await jfetch('data/app/opening_messages_365.json').catch(()=>null);
   const it=data?.items?.[userCycleDay(data.items?.length||365)-1];
@@ -122,7 +192,8 @@ async function home(){
   view.innerHTML =
     card(tr('appTitle'), `<p>${tr('welcome')}</p><div class="button-row"><button class="primary-btn" data-go="daily">${tr('continueToday')}</button><button class="secondary-btn" id="quickNotify">${tr('enableNotifications')}</button></div>`, 'hero') +
     card(tr('todayMessage'), `<p>${tr('day')} ${localNum(dailyDay)}</p><div class="button-row"><button class="secondary-btn" data-go="daily" data-params='{"tab":"word"}'>${tr('dailyWord')}</button><button class="secondary-btn" data-go="daily" data-params='{"tab":"faith"}'>${tr('faithProclamation')}</button><button class="secondary-btn" data-go="daily" data-params='{"tab":"juice"}'>${tr('dailyJuice')}</button></div>`) +
-    card(tr('savedVerses'), bookmarks.length ? `<div class="list">${bookmarks.slice(-5).reverse().map(ref=>`<button class="list-btn" data-open-ref="${html(ref)}"><strong>${html(localText(ref))}</strong><small>${tr('openVerse')}</small></button>`).join('')}</div>` : `<p class="muted">${tr('noSavedVerses')}</p>`) +
+    card(tr('savedVerses'), `<p class="muted">${tr('savedVersesCollapsed')}</p>${savedVersesPanel(bookmarks)}`) +
+    card(tr('myNotes'), `<p class="muted">${tr('notesCollapsed')}</p>${notesPanel()}`) +
     card(tr('progress'), `<p><strong>${tr('points')}:</strong> ${localNum(g.points||0)}</p><p><strong>${tr('badges')}:</strong> ${badgeHtml}</p>`) +
     `<div class="grid">${tile('bible','📖',tr('bible'))}${tile('plans','✓',tr('plans'))}${tile('school','🎓',tr('school'))}${tile('meetings','☎',tr('meetings'))}</div>`;
   $('#quickNotify')?.addEventListener('click', enableNotifications);
@@ -272,13 +343,24 @@ function planBookName(bookId){ const b=state.bible.books?.find(x=>x.id===bookId)
 function renderReading(r){
   const start=Number(r.startChapter); const end=Number(r.endChapter ?? r.startChapter);
   const label=start===end?`${planBookName(r.bookId)} ${localNum(start)}`:`${planBookName(r.bookId)} ${localNum(start)}–${localNum(end)}`;
-  return `<button class="list-btn" data-go="bible" data-params='${html(JSON.stringify({mode:'chapter',bookId:r.bookId,chapter:start}))}'><strong>${html(label)}</strong><small>${tr('openToRead')}</small></button>`;
+  return `<button class="list-btn" data-read-range='${html(JSON.stringify({bookId:r.bookId,startChapter:start,endChapter:end}))}'><strong>${html(label)}</strong><small>${tr('openReadingHere')}</small></button><div class="inline-reading hidden"></div>`;
+}
+async function revealReadingRange(el){
+  const box=el.nextElementSibling; if(!box) return;
+  if(!box.classList.contains('hidden')){ box.classList.add('hidden'); box.innerHTML=''; el.querySelector('small').textContent=tr('openReadingHere'); return; }
+  const r=JSON.parse(el.dataset.readRange||'{}'); const data=await loadBook(r.bookId); if(!data) return;
+  let htmlOut='';
+  for(let ch=Number(r.startChapter); ch<=Number(r.endChapter||r.startChapter); ch++){
+    const verses=data.verses.filter(v=>Number(v.chapter)===ch);
+    htmlOut += `<h3>${html((data.book.names[state.lang]||data.book.names.en)+' '+localNum(ch))}</h3><div class="reader compact-reader">${verses.map(v=>`<div class="reader-verse"><span class="num">${localNum(v.verse)}</span><span>${html(v.text?.[state.lang]||v.text?.en||'')}</span></div>`).join('')}</div>`;
+  }
+  box.innerHTML=htmlOut; box.classList.remove('hidden'); el.querySelector('small').textContent=tr('closeReading'); addPoints(2);
 }
 function showPlan(p){
   const key='nh7_plan_'+(p.id||'plan'); const prog=JSON.parse(localStorage.getItem(key)||'{"completed":[]}');
   const total=p.days?.length||p.durationDays||365; const current=Math.min((prog.completed?.length||0)+1,total); const day=(p.days||[]).find(x=>Number(x.day)===current)||p.days?.[0]||{};
   const percent=Math.round(((prog.completed?.length||0)/total)*100);
-  $('#planDetail').innerHTML=card(p.title?.[state.lang]||p.title?.en, `<div class="progress"><span style="width:${percent}%"></span></div><p><strong>${tr('day')} ${localNum(current)}</strong> / ${localNum(total)}</p><h3>${tr('readings')}</h3><div class="list">${(day.readings||[]).map(renderReading).join('')}</div><button class="primary-btn" id="markRead">${tr('read')}</button>`);
+  $('#planDetail').innerHTML=card(p.title?.[state.lang]||p.title?.en, `<span class="badge">${tr('oldAndNew')}</span><div class="progress"><span style="width:${percent}%"></span></div><p><strong>${tr('day')} ${localNum(current)}</strong> / ${localNum(total)}</p><h3>${tr('readings')}</h3><div class="list">${(day.readings||[]).map(renderReading).join('')}</div><button class="primary-btn" id="markRead">${tr('read')}</button>`);
   $('#markRead').onclick=()=>{ if(!prog.completed.includes(current)) prog.completed.push(current); localStorage.setItem(key,JSON.stringify(prog)); addPoints(10,'plan_1'); showPlan(p); bindDynamic(); };
   bindDynamic();
 }
@@ -303,24 +385,25 @@ async function audio(params={}){
 async function salvation(){
   const d=await jfetch('data/salvation/need_salvation.json');
   const videos=card(tr('videos'), `<div class="list">${NEW_BIRTH_VIDEOS.map((url,i)=>`<a class="list-btn link-card" href="${html(url)}" target="_blank" rel="noopener"><strong>${tr('part')} ${localNum(i+1)}: ${state.lang==='fa'?'تولد تازه':state.lang==='hr'?'Novo rođenje':'New Birth'}</strong><small>YouTube</small></a>`).join('')}</div>`);
-  view.innerHTML=`<div class="list">${(d.sections||[]).map(s=>card(pick(s.title),`<p>${html(pick(s.content))}</p>`)).join('')}${videos}</div>`;
+  view.innerHTML=`<div class="list">${(d.sections||[]).filter(s=>s.id!=='new_birth_videos').map(s=>card(pick(s.title),`<p>${html(pick(s.content))}</p>`)).join('')}${videos}</div>`;
 }
 async function about(){
   const d=await jfetch('data/church/about.json');
   view.innerHTML=card(tr('about'), `<h3>${tr('churchIntro')}</h3><p>${html(d.intro?.[state.lang]||'')}</p><h3>${tr('ourVision')}</h3><p>${html(d.vision?.[state.lang]||'')}</p><h3>${tr('ourBeliefs')}</h3><p>${html(d.beliefs?.[state.lang]||'')}</p><div class="button-row"><a class="secondary-btn" href="https://www.bible.com/organizations/da6136d1-04cd-4243-a52b-f9ba7f32ec79?utm_source=yvapp&utm_medium=share&utm_content=partner-page" target="_blank" rel="noopener">${tr('youversion')}</a></div>`);
 }
-async function meetings(){
+async function meetings(params={}){
   const d=await jfetch('data/church/church_config.json'); const access=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{"status":"guest"}');
+  const approved = access.status==='approved' && access.approvedBy==='admin';
+  if(params.form){ view.innerHTML=registrationFormHtml('meeting', access); return; }
   let details='';
-  if(access.status==='approved') details=`<div class="notice"><strong>FreeConferenceCall</strong><p>${html(d.publicMeetingText?.[state.lang]||'')}</p></div>`;
-  view.innerHTML=card(tr('meetings'), `<p>${tr('meetingAccessText')}</p><span class="badge">${access.status==='pending'?tr('pending'):access.status==='approved'?tr('approved'):tr('guest')}</span>${details}<div class="form-row"><input id="meetingName" placeholder="${tr('name')}" value="${html(access.name||'')}"></div><div class="form-row"><input id="meetingEmail" placeholder="${tr('email')}" value="${html(access.email||'')}"></div><button class="primary-btn" id="meetingRequest">${tr('requestAccess')}</button>`);
-  $('#meetingRequest').onclick=()=>{ localStorage.setItem('nh7_meeting_access',JSON.stringify({status:'pending',name:$('#meetingName').value,email:$('#meetingEmail').value})); alert(tr('registerDone')); render('meetings',{},true); };
+  if(approved) details=`<div class="notice"><strong>FreeConferenceCall</strong><p>${html(d.publicMeetingText?.[state.lang]||'')}</p></div>`;
+  view.innerHTML=card(tr('meetings'), `<p>${tr('meetingAccessText')}</p><p class="muted">${tr('meetingNotApproved')}</p><span class="badge">${approved?tr('approved'):registrationStatus(access)}</span>${details}<div class="button-row"><button class="primary-btn" data-go="meetings" data-params='{"form":true}'>${tr('register')}</button></div>`);
 }
 async function more(){ view.innerHTML=`<div class="grid">${tile('audio','🎧',tr('audio'))}${tile('salvation','✝',tr('salvation'))}${tile('gratitude','🙏',tr('gratitude'))}${tile('meetings','☎',tr('meetings'))}${tile('about','ℹ',tr('about'))}${tile('settings','⚙',tr('settings'))}</div>`; }
 async function settings(){
   const perm=typeof Notification==='undefined'?'default':Notification.permission;
   const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');
-  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time.'}</p></div><h3>${tr('version')}</h3><p>New Hope 7 v1.2.2</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
+  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time.'}</p></div><h3>${tr('version')}</h3><p>New Hope 7 v1.2.3</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
   $('#settingsLang').value=state.lang; $('#settingsLang').onchange=e=>setLang(e.target.value);
   $('#enableNotify').onclick=enableNotifications;
   $('#clearCache').onclick=()=>{ if('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.update())); alert(tr('saved')); };
@@ -342,6 +425,9 @@ function bindDynamic(){
   $$('[data-complete-daily]').forEach(el=>el.onclick=()=>{ const key='nh7_daily_done_'+el.dataset.completeDaily; if(!localStorage.getItem(key)){ localStorage.setItem(key,'1'); addPoints(3,'daily_1'); } el.textContent=tr('dailyCompleted'); });
   $$('[data-open-ref]').forEach(el=>el.onclick=async()=>{ await loadBibleMeta(); const ref=parseRef(el.dataset.openRef); if(ref) navigate('bible',{mode:'chapter',bookId:ref.bookId,chapter:ref.chapter}); });
   $$('[data-reveal-ref]').forEach(el=>el.onclick=()=>revealVerse(el));
+  $$('[data-read-range]').forEach(el=>el.onclick=()=>revealReadingRange(el));
+  $$('[data-toggle-panel]').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.togglePanel); if(p){ p.classList.toggle('hidden'); el.textContent=p.classList.contains('hidden')?(el.dataset.togglePanel==='notesPanel'?tr('showMyNotes'):tr('showSavedVerses')):tr('hide'); }});
+  $$('[data-submit-registration]').forEach(el=>el.onclick=()=>collectRegistration(el.dataset.submitRegistration));
   const run=$('#runBibleSearch'); if(run) run.onclick=()=>navigate('bible',{q:$('#bibleSearch').value},true);
   $('#startGratitude')?.addEventListener('click',()=>{ localStorage.setItem('nh7_gratitude_start',todayKey()); addPoints(5,'gratitude_1'); render('daily',{tab:'gratitude'},true); });
   $('#completeGratitude')?.addEventListener('click',()=>{ const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]'); const current=Math.min(completed.length+1,30); if(!completed.includes(current)) completed.push(current); localStorage.setItem('nh7_gratitude_completed',JSON.stringify(completed)); localStorage.setItem('nh7_gratitude_note_'+current,$('#gratitudeNote')?.value||''); addPoints(10,'gratitude_1'); render('daily',{tab:'gratitude'},true); });
