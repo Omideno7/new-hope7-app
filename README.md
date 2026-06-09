@@ -22,5 +22,10 @@ This version adds Supabase cloud-save foundation, improved offline caching, and 
 - Fixed school registration to submit to Supabase registrations table.
 - Added qa_questions table to SQL schema.
 
-## v1.3.5
+## v1.3.4
 - Q&A page is cleaner: My Questions and Public Answers are collapsed sections; each answer opens only when the user taps the question.
+
+
+## v1.3.6 Notifications
+
+OneSignal Web Push connected with App ID. Enable notifications from Home or Settings.

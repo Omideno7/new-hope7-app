@@ -590,17 +590,55 @@ async function qna(){
 async function settings(){
   const perm=typeof Notification==='undefined'?'default':Notification.permission;
   const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');
-  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>New Hope 7 v1.3.5</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
+  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است. برای آیفون، اپ را به Home Screen اضافه کنید و سپس اعلان‌ها را فعال کنید.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time. On iPhone, add the app to Home Screen, then enable notifications.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>New Hope 7 v1.3.6</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
   $('#settingsLang').value=state.lang; $('#settingsLang').onchange=e=>setLang(e.target.value);
   $('#enableNotify').onclick=enableNotifications;
   $('#clearCache').onclick=()=>{ if('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.update())); alert(tr('saved')); };
   $('#syncCloud')?.addEventListener('click', async()=>{ await syncCloudQueue(); alert(cloudStatusText()); render('settings',{},true); });
 }
 async function enableNotifications(){
-  if(typeof Notification==='undefined'){ alert('Notifications are not supported in this browser.'); return; }
-  const perm=await Notification.requestPermission();
+  if(typeof Notification==='undefined'){ alert(state.lang==='fa'?'اعلان‌ها در این مرورگر پشتیبانی نمی‌شوند.':'Notifications are not supported in this browser.'); return; }
+  let perm='default';
+  try{
+    if(window.OneSignalDeferred){
+      await new Promise(resolve=>{
+        window.OneSignalDeferred.push(async function(OneSignal){
+          try{
+            if(OneSignal.Notifications && OneSignal.Notifications.requestPermission){
+              perm = await OneSignal.Notifications.requestPermission();
+            }
+            const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'local';
+            if(OneSignal.User && OneSignal.User.addTags){
+              await OneSignal.User.addTags({
+                app:'new_hope_7',
+                language: state.lang,
+                timezone: tz,
+                daily_word_time:'07:00',
+                faith_time:'12:00',
+                daily_juice_time:'17:00',
+                gratitude_time:'21:00',
+                croatia_morning_meeting:'04:55',
+                croatia_sunday_service:'20:00'
+              });
+            }
+            const subId = OneSignal.User?.PushSubscription?.id || '';
+            if(subId) localStorage.setItem('nh7_onesignal_subscription_id', subId);
+          }catch(err){ console.warn('OneSignal permission failed', err); }
+          resolve();
+        });
+      });
+    }
+    if(Notification.permission !== 'granted') perm = await Notification.requestPermission();
+    else perm = 'granted';
+  }catch(e){ console.warn(e); perm = Notification.permission || 'default'; }
   localStorage.setItem('nh7_notifications_permission',perm);
-  if(perm==='granted') new Notification(tr('appTitle'),{body:tr('notificationEnabled'),icon:'assets/logo.png'});
+  localStorage.setItem('nh7_notifications_timezone', Intl.DateTimeFormat().resolvedOptions().timeZone || 'local');
+  if(perm==='granted'){
+    try{ new Notification(tr('appTitle'),{body:tr('notificationEnabled'),icon:'assets/logo.png'}); }catch(e){}
+    alert(state.lang==='fa'?'اعلان‌ها فعال شد. برای دریافت اعلان‌ها، اجازه مرورگر باید روشن بماند.':'Notifications are active. Keep browser permission enabled to receive them.');
+  } else if(perm==='denied') {
+    alert(tr('notificationDenied'));
+  }
   render(state.route,state.params,true);
 }
 

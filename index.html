@@ -8,6 +8,22 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="assets/logo.png" />
   <link rel="stylesheet" href="css/styles.css" />
+  <script>
+    window.NH7_ONESIGNAL_APP_ID = '86f4116a-707a-4959-aa3f-7c703f57bf7e';
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      try {
+        await OneSignal.init({
+          appId: window.NH7_ONESIGNAL_APP_ID,
+          serviceWorkerPath: 'service-worker.js',
+          serviceWorkerParam: { scope: '/new-hope7-app/' },
+          notifyButton: { enable: false },
+          allowLocalhostAsSecureOrigin: true
+        });
+      } catch (err) { console.warn('OneSignal init failed', err); }
+    });
+  </script>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 </head>
 <body>
   <div id="amenGate" class="amen-gate hidden" role="dialog" aria-modal="true">
