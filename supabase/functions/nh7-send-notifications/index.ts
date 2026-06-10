@@ -6,7 +6,7 @@ const ONESIGNAL_APP_ID = Deno.env.get('ONESIGNAL_APP_ID')!;
 const ONESIGNAL_REST_API_KEY = Deno.env.get('ONESIGNAL_REST_API_KEY')!;
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-const APP_URL = 'https://omideno7.github.io/new-hope7-app/?v=137';
+const APP_URL = 'https://omideno7.github.io/new-hope7-app/?v=138';
 
 type Lang = 'fa' | 'en' | 'hr';
 
