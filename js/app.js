@@ -110,6 +110,10 @@ async function cloudFetch(path, options={}){
   if(res.status===204) return null;
   return res.json().catch(()=>null);
 }
+
+async function cloudRpc(name, payload={}){
+  return cloudFetch('rpc/'+name, {method:'POST', body:JSON.stringify(payload)});
+}
 function enqueueCloud(op){
   const q=JSON.parse(localStorage.getItem('nh7_cloud_queue')||'[]');
   q.push(Object.assign({id:Date.now()+'_'+Math.random().toString(16).slice(2), createdAt:new Date().toISOString()}, op));
@@ -171,15 +175,36 @@ async function saveInboxCloud(item){
 
 async function fetchLatestRegistration(kind){
   if(!CLOUD_ENABLED || !navigator.onLine) return null;
+  const localKey = kind==='meeting' ? 'nh7_meeting_access' : 'nh7_school_access';
   try{
-    const localKey = kind==='meeting' ? 'nh7_meeting_access' : 'nh7_school_access';
     const local = JSON.parse(localStorage.getItem(localKey)||'{}');
     const email = (local.email || currentUserEmail() || '').trim().toLowerCase();
-    let rows = await cloudFetch(`registrations?select=*&device_id=eq.${encodeURIComponent(deviceId())}&type=eq.${encodeURIComponent(kind)}&order=created_at.desc&limit=1`, {method:'GET'});
-    if((!rows || !rows.length) && email){
-      rows = await cloudFetch(`registrations?select=*&type=eq.${encodeURIComponent(kind)}&payload->>email=eq.${encodeURIComponent(email)}&order=created_at.desc&limit=1`, {method:'GET'});
+
+    // v1.4.1: use a SECURITY DEFINER RPC first.
+    // This avoids old device-id/cache problems and always gives priority to any approved row for the same email.
+    try{
+      const rpcRows = await cloudRpc('nh7_registration_status', {p_type:kind, p_email:email, p_device_id:deviceId()});
+      const r = Array.isArray(rpcRows) ? rpcRows[0] : rpcRows;
+      if(r && r.found){
+        const data = Object.assign({}, local, {
+          email: (email || r.email || local.email || '').trim().toLowerCase(),
+          status: r.status || 'pending',
+          cloudId: r.registration_id || local.cloudId || '',
+          approvedBy: r.approved ? 'admin' : ''
+        });
+        localStorage.setItem(localKey, JSON.stringify(data));
+        return data;
+      }
+    }catch(rpcErr){ console.warn('Registration RPC status check failed, falling back', rpcErr); }
+
+    let rows = await cloudFetch(`registrations?select=*&device_id=eq.${encodeURIComponent(deviceId())}&type=eq.${encodeURIComponent(kind)}&order=created_at.desc&limit=20`, {method:'GET'});
+    if(email){
+      const emailRows = await cloudFetch(`registrations?select=*&type=eq.${encodeURIComponent(kind)}&payload->>email=eq.${encodeURIComponent(email)}&order=created_at.desc&limit=20`, {method:'GET'}).catch(()=>[]);
+      rows = [...(Array.isArray(rows)?rows:[]), ...(Array.isArray(emailRows)?emailRows:[])];
     }
-    const row = Array.isArray(rows) ? rows[0] : null;
+    const seen=new Set();
+    rows=(Array.isArray(rows)?rows:[]).filter(r=>{ const id=String(r.id||''); if(seen.has(id)) return false; seen.add(id); return true; });
+    const row = rows.find(r=>r.status==='approved') || rows[0] || null;
     if(row){
       const data = Object.assign({}, row.payload||{}, {status:row.status, cloudId:row.id, approvedBy: row.status==='approved' ? 'admin' : ''});
       localStorage.setItem(localKey, JSON.stringify(data));
@@ -751,10 +776,14 @@ function showPlan(p){
 }
 
 async function school(params={}){
-  const d=await jfetch('data/school/school_content.json'); const access=JSON.parse(localStorage.getItem('nh7_school_access')||'{"status":"guest"}');
-  if(access.status!=='approved'){
-    if(params.form){ view.innerHTML=registrationFormHtml('school', access); return; }
-    view.innerHTML=card(tr('school'), `<p>${tr('schoolAccessText')}</p><p class="muted">${tr('schoolNotApproved')}</p><span class="badge">${access.status==='pending'?tr('pending'):tr('guest')}</span><div class="button-row"><button class="primary-btn" data-go="school" data-params='{"form":true}'>${tr('register')}</button></div>`);
+  const d=await jfetch('data/school/school_content.json');
+  let access=JSON.parse(localStorage.getItem('nh7_school_access')||'{"status":"guest"}');
+  if(params.form){ view.innerHTML=registrationFormHtml('school', access); return; }
+  const cloudAccess = await fetchLatestRegistration('school');
+  if(cloudAccess) access = cloudAccess;
+  const approved = access.status==='approved' || access.approvedBy==='admin';
+  if(!approved){
+    view.innerHTML=card(tr('school'), `<p>${tr('schoolAccessText')}</p><p class="muted">${tr('schoolNotApproved')}</p><span class="badge">${access.status==='pending'?tr('pending'):tr('guest')}</span><div class="button-row"><button class="primary-btn" data-go="school" data-params='{"form":true}'>${tr('register')}</button><button class="secondary-btn" data-go="school">${tr('syncApproval')}</button></div>`);
     return;
   }
   if(params.lesson) return schoolLesson(d, params.lesson);
@@ -836,10 +865,10 @@ async function qna(){
 async function settings(){
   const perm=typeof Notification==='undefined'?'default':Notification.permission;
   const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');
-  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است. برای آیفون، اپ را به Home Screen اضافه کنید و سپس اعلان‌ها را فعال کنید. پیام‌های دریافت‌شده در صندوق ورودی اپ نیز ذخیره می‌شوند.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time. On iPhone, add the app to Home Screen, then enable notifications. Received messages are also saved in the app inbox.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>New Hope 7 v1.3.9</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
+  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است. برای آیفون، اپ را به Home Screen اضافه کنید و سپس اعلان‌ها را فعال کنید. پیام‌های دریافت‌شده در صندوق ورودی اپ نیز ذخیره می‌شوند.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time. On iPhone, add the app to Home Screen, then enable notifications. Received messages are also saved in the app inbox.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>OmideNo7 v1.4.1</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
   $('#settingsLang').value=state.lang; $('#settingsLang').onchange=e=>setLang(e.target.value);
   $('#enableNotify').onclick=enableNotifications;
-  $('#clearCache').onclick=()=>{ if('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.update())); alert(tr('saved')); };
+  $('#clearCache').onclick=async()=>{ try{ if('caches' in window){ const keys=await caches.keys(); await Promise.all(keys.map(k=>caches.delete(k))); } if('serviceWorker' in navigator){ const rs=await navigator.serviceWorker.getRegistrations(); await Promise.all(rs.map(r=>r.update())); } }catch(e){} alert(tr('saved')); location.reload(); };
   $('#syncCloud')?.addEventListener('click', async()=>{ await syncCloudQueue(); alert(cloudStatusText()); render('settings',{},true); });
 }
 async function enableNotifications(){

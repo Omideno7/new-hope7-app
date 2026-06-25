@@ -36,3 +36,9 @@ OneSignal Web Push connected with App ID. Enable notifications from Home or Sett
 - Added app badge support where supported by browser.
 - Added Supabase notification_inbox table SQL.
 - Added OneSignal + Supabase Edge Function template for automatic scheduled notifications.
+
+
+## v1.4.0 hotfix
+- School approval now syncs from Supabase like Church Meetings.
+- Registration status lookup now prioritizes approved rows over newer duplicate pending rows.
+- Service worker cache updated to force refresh.
