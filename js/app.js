@@ -34,12 +34,15 @@ const T = {
 
 const EXTRA_T = {
   en:{
+    loginAccount:'Sign in / restore access',logoutAccount:'Sign out from this device',restoreAccess:'Restore access by email',restoreAccessHint:'Enter the email you used for school registration to restore approved access on this device.',restoreAccessDone:'Access check completed. If your email is approved, school and meeting access are now restored.',accountActions:'Account access',
     myNotes:'My notes',showSavedVerses:'Show saved verses',showMyNotes:'Show my notes',hide:'Hide',noNotes:'No notes yet.',registrationForm:'Registration Form',firstName:'First Name',lastName:'Last Name',birthDate:'Date of Birth',city:'City',country:'Country of Residence',spiritualAge:'How long have you been a believer?',churchMember:'Are you a member of a church?',churchName:'Church name',pastorName:'Pastor name',waterBaptism:'Have you received water baptism?',salvationPrayer:'Have you prayed the prayer of salvation?',eventsInterest:'Interested in in-person seminars/conferences?',testimony:'Testimony of coming to faith',howFound:'How did you hear about OmideNo7?',phone:'Phone number',requiredField:'Please complete all required fields.',yes:'Yes',no:'No',submitRegistration:'Submit registration',goToSalvation:'Go to salvation prayer',schoolNotApproved:'Your school access is waiting for admin approval.',meetingNotApproved:'Your meeting access is waiting for admin approval.',finalExam:'Final Exam',submitExam:'Submit exam',correctAnswers:'Correct answers',openReadingHere:'Show reading here',closeReading:'Close reading',oldAndNew:'Old Testament + New Testament',savedVersesCollapsed:'Saved verses are available here.',notesCollapsed:'All your notes are collected here.'
   },
   fa:{
+    loginAccount:'ورود / بازیابی دسترسی',logoutAccount:'خروج از حساب در این دستگاه',restoreAccess:'بازیابی دسترسی با ایمیل',restoreAccessHint:'ایمیلی را که برای ثبت‌نام مدرسه استفاده کرده‌اید وارد کنید تا دسترسی تأییدشده در این دستگاه بازیابی شود.',restoreAccessDone:'بررسی دسترسی انجام شد. اگر این ایمیل تأیید شده باشد، دسترسی مدرسه و جلسات بازیابی شد.',accountActions:'دسترسی حساب',
     myNotes:'یادداشت‌های من',showSavedVerses:'نمایش آیات ذخیره‌شده',showMyNotes:'نمایش یادداشت‌های من',hide:'بستن',noNotes:'هنوز یادداشتی ذخیره نشده است.',registrationForm:'فرم ثبت‌نام',firstName:'نام',lastName:'نام خانوادگی',birthDate:'تاریخ تولد',city:'شهر محل سکونت',country:'کشور محل سکونت',spiritualAge:'چند وقت است ایمان آورده‌اید؟',churchMember:'آیا عضو کلیسایی هستید؟',churchName:'نام کلیسا',pastorName:'نام شبان',waterBaptism:'آیا تعمید آب گرفته‌اید؟',salvationPrayer:'آیا دعای نجات را خوانده‌اید؟',eventsInterest:'آیا علاقه به شرکت در سمینارها و کنفرانس‌های حضوری دارید؟',testimony:'شهادت ایمان‌آوری شما',howFound:'از چه طریقی با کلیسای امید نو ۷ آشنا شده‌اید؟',phone:'شماره تماس',requiredField:'لطفاً همه فیلدهای ضروری را کامل کنید.',yes:'بله',no:'خیر',submitRegistration:'ارسال ثبت‌نام',goToSalvation:'رفتن به دعای نجات',schoolNotApproved:'دسترسی شما به مدرسه در انتظار تأیید ادمین است.',meetingNotApproved:'دسترسی شما به جلسات در انتظار تأیید ادمین است.',finalExam:'امتحان پایان دوره',submitExam:'ارسال امتحان',correctAnswers:'پاسخ‌های درست',openReadingHere:'نمایش مطالعه در همین صفحه',closeReading:'بستن مطالعه',oldAndNew:'عهد عتیق + عهد جدید',savedVersesCollapsed:'آیات ذخیره‌شده شما اینجا قرار دارد.',notesCollapsed:'همه یادداشت‌های شما اینجا جمع می‌شود.'
   },
   hr:{
+    loginAccount:'Prijava / obnova pristupa',logoutAccount:'Odjavi se s ovog uređaja',restoreAccess:'Obnovi pristup putem emaila',restoreAccessHint:'Unesite email koji ste koristili za registraciju u školu kako biste obnovili odobreni pristup na ovom uređaju.',restoreAccessDone:'Provjera pristupa je završena. Ako je email odobren, pristup školi i sastancima je obnovljen.',accountActions:'Pristup računu',
     myNotes:'Moje bilješke',showSavedVerses:'Prikaži spremljene stihove',showMyNotes:'Prikaži moje bilješke',hide:'Sakrij',noNotes:'Još nema spremljenih bilješki.',registrationForm:'Obrazac za registraciju',firstName:'Ime',lastName:'Prezime',birthDate:'Datum rođenja',city:'Grad prebivališta',country:'Država prebivališta',spiritualAge:'Koliko dugo ste vjernik?',churchMember:'Jeste li član crkve?',churchName:'Naziv crkve',pastorName:'Ime pastora',waterBaptism:'Jeste li primili krštenje u vodi?',salvationPrayer:'Jeste li molili molitvu spasenja?',eventsInterest:'Zanimate li se za seminare i konferencije uživo?',testimony:'Svjedočanstvo obraćenja',howFound:'Kako ste čuli za crkvu OmideNo7?',phone:'Broj telefona',requiredField:'Molimo ispunite sva obavezna polja.',yes:'Da',no:'Ne',submitRegistration:'Pošalji registraciju',goToSalvation:'Idi na molitvu spasenja',schoolNotApproved:'Vaš pristup školi čeka odobrenje administratora.',meetingNotApproved:'Vaš pristup sastancima čeka odobrenje administratora.',finalExam:'Završni ispit',submitExam:'Pošalji ispit',correctAnswers:'Točni odgovori',openReadingHere:'Prikaži čitanje ovdje',closeReading:'Zatvori čitanje',oldAndNew:'Stari zavjet + Novi zavjet',savedVersesCollapsed:'Spremljeni stihovi dostupni su ovdje.',notesCollapsed:'Sve vaše bilješke skupljene su ovdje.'
   }
 };
@@ -100,10 +103,11 @@ function deviceId(){
 }
 function currentUserEmail(){
   try{
+    const manual=(localStorage.getItem('nh7_manual_email')||'').trim().toLowerCase();
     const m=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{}');
     const s=JSON.parse(localStorage.getItem('nh7_school_access')||'{}');
-    return (m.email || s.email || '').trim().toLowerCase();
-  }catch(e){ return ''; }
+    return (manual || s.email || m.email || '').trim().toLowerCase();
+  }catch(e){ return (localStorage.getItem('nh7_manual_email')||'').trim().toLowerCase(); }
 }
 async function cloudFetch(path, options={}){
   if(!CLOUD_ENABLED) throw new Error('Cloud disabled');
@@ -912,7 +916,8 @@ async function school(params={}){
     return;
   }
   if(params.lesson) return schoolLesson(d, params.lesson);
-  view.innerHTML=card(tr('school'), `<span class="badge">${tr('approved')}</span><p class="success-text">${tr('enterSchool')}</p><div class="list">${d.lessons.map(l=>`<button class="list-btn" data-go="school" data-params='${html(JSON.stringify({lesson:l.lesson_code}))}'><strong>${html(l.translations?.[state.lang]?.class_title||l.translations?.en?.class_title)}</strong><small>${html(l.translations?.[state.lang]?.lesson_title||'')}</small></button>`).join('')}</div>`);
+  view.innerHTML=card(tr('school'), `<span class="badge">${tr('approved')}</span><p class="success-text">${tr('enterSchool')}</p><div class="button-row"><button class="secondary-btn" data-go="account">${tr('accountActions')}</button><button class="secondary-btn" id="schoolLogoutBtn">${tr('logoutAccount')}</button></div><div class="list">${d.lessons.map(l=>`<button class="list-btn" data-go="school" data-params='${html(JSON.stringify({lesson:l.lesson_code}))}'><strong>${html(l.translations?.[state.lang]?.class_title||l.translations?.en?.class_title)}</strong><small>${html(l.translations?.[state.lang]?.lesson_title||'')}</small></button>`).join('')}</div>`);
+  $('#schoolLogoutBtn')?.addEventListener('click', logoutAccount);
 }
 function schoolLesson(d, code){ const l=d.lessons.find(x=>x.lesson_code===code); const tx=l.translations?.[state.lang]||l.translations?.en||{}; const wr=l.written?.[state.lang]||l.written?.en||{}; const audioSrc=l.audio?.src || `public/audio/school/${l.audio?.fileName||'class-01-fa.mp3'}`; view.innerHTML=card(tx.class_title||tr('school'), `<p>${html(tx.lesson_text)}</p><div class="audio-placeholder"><strong>${tr('playAudio')}</strong><p>${html(l.audio?.fileName||'class-01-fa.mp3')}</p><audio controls src="${html(audioSrc)}"></audio></div><h3>${tr('assignment')}</h3><p>${html(tx.assignment_question)}</p><textarea placeholder="${tr('notes')}"></textarea><button class="secondary-btn" data-save-note="school-${code}">${tr('save')}</button><h3>${tr('fullLesson')}</h3><p>${html(wr.text||'')}</p>`); }
 
@@ -1007,8 +1012,36 @@ async function qna(){
 
 async function account(){
   const profile=getKnownUserProfile();
-  view.innerHTML=card(tr('account'), `<p class="muted">${tr('myAccess')}</p><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(profile.email||'-')}</p></div><h3>${tr('forgotPassword')}</h3><p class="muted">${state.lang==='fa'?'اگر رمز حساب را فراموش کرده‌اید، ایمیل خود را وارد کنید تا لینک بازیابی رمز ارسال شود.':state.lang==='hr'?'Ako ste zaboravili lozinku, unesite email za poveznicu za reset.':'If you forgot your password, enter your email to receive a reset link.'}</p><input id="resetEmail" type="email" placeholder="${tr('email')}" value="${html(profile.email||'')}"><button class="primary-btn" id="resetPasswordBtn">${tr('resetPassword')}</button><p id="resetMsg" class="muted"></p>`);
+  const emailValue=html(profile.email||'');
+  view.innerHTML=card(tr('account'), `<h3>${tr('accountActions')}</h3><p class="muted">${tr('myAccess')}</p><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(profile.email||'-')}</p></div><p class="muted">${tr('restoreAccessHint')}</p><input id="loginEmail" type="email" placeholder="${tr('email')}" value="${emailValue}"><div class="button-row"><button class="primary-btn" id="restoreAccessBtn">${tr('restoreAccess')}</button><button class="secondary-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button></div><h3>${tr('forgotPassword')}</h3><p class="muted">${state.lang==='fa'?'اگر رمز حساب را فراموش کرده‌اید، ایمیل خود را وارد کنید تا لینک بازیابی رمز ارسال شود.':state.lang==='hr'?'Ako ste zaboravili lozinku, unesite email za poveznicu za reset.':'If you forgot your password, enter your email to receive a reset link.'}</p><input id="resetEmail" type="email" placeholder="${tr('email')}" value="${emailValue}"><button class="primary-btn" id="resetPasswordBtn">${tr('resetPassword')}</button><p id="resetMsg" class="muted"></p>`);
   $('#resetPasswordBtn')?.addEventListener('click', resetPassword);
+  $('#restoreAccessBtn')?.addEventListener('click', loginRestoreAccess);
+  $('#logoutAccountBtn')?.addEventListener('click', logoutAccount);
+}
+async function loginRestoreAccess(){
+  const email=($('#loginEmail')?.value||'').trim().toLowerCase();
+  if(!email){ alert(tr('requiredField')); return; }
+  localStorage.setItem('nh7_manual_email', email);
+  try{
+    const school=await fetchLatestRegistration('school');
+    const meeting=await fetchLatestRegistration('meeting');
+    if(school) localStorage.setItem('nh7_school_access', JSON.stringify(Object.assign({}, school, {email})));
+    if(meeting) localStorage.setItem('nh7_meeting_access', JSON.stringify(Object.assign({}, meeting, {email})));
+    if(!school && !meeting){
+      const old=JSON.parse(localStorage.getItem('nh7_school_access')||'{}');
+      localStorage.setItem('nh7_school_access', JSON.stringify(Object.assign({}, old, {email, status: old.status||'guest'})));
+    }
+  }catch(e){ console.warn('restore access failed', e); }
+  alert(tr('restoreAccessDone'));
+  render('account',{},true);
+}
+function logoutAccount(){
+  if(!confirm(state.lang==='fa'?'از حساب این دستگاه خارج شوید؟ دسترسی مدرسه و جلسات از این دستگاه پاک می‌شود و با ایمیل قابل بازیابی است.':state.lang==='hr'?'Odjaviti se s ovog uređaja? Pristup se može obnoviti emailom.':'Sign out from this device? Access can be restored by email.')) return;
+  localStorage.removeItem('nh7_manual_email');
+  localStorage.removeItem('nh7_school_access');
+  localStorage.removeItem('nh7_meeting_access');
+  alert(state.lang==='fa'?'از حساب خارج شدید. برای ورود دوباره از بخش حساب، ایمیل ثبت‌نام را وارد کنید.':state.lang==='hr'?'Odjavljeni ste. Za ponovni ulazak unesite email u računu.':'You are signed out. To sign in again, enter your registration email in Account.');
+  render('account',{},true);
 }
 async function resetPassword(){
   const email=($('#resetEmail')?.value||'').trim().toLowerCase();
@@ -1023,7 +1056,7 @@ async function resetPassword(){
 async function settings(){
   const perm=typeof Notification==='undefined'?'default':Notification.permission;
   const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');
-  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است. برای آیفون، اپ را به Home Screen اضافه کنید و سپس اعلان‌ها را فعال کنید. پیام‌های دریافت‌شده در صندوق ورودی اپ نیز ذخیره می‌شوند.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time. On iPhone, add the app to Home Screen, then enable notifications. Received messages are also saved in the app inbox.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>OmideNo7 v1.6.1</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
+  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است. برای آیفون، اپ را به Home Screen اضافه کنید و سپس اعلان‌ها را فعال کنید. پیام‌های دریافت‌شده در صندوق ورودی اپ نیز ذخیره می‌شوند.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time. On iPhone, add the app to Home Screen, then enable notifications. Received messages are also saved in the app inbox.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>OmideNo7 v1.6.2</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
   $('#settingsLang').value=state.lang; $('#settingsLang').onchange=e=>setLang(e.target.value);
   $('#enableNotify').onclick=enableNotifications;
   $('#clearCache').onclick=async()=>{ try{ if('caches' in window){ const keys=await caches.keys(); await Promise.all(keys.map(k=>caches.delete(k))); } if('serviceWorker' in navigator){ const rs=await navigator.serviceWorker.getRegistrations(); await Promise.all(rs.map(r=>r.update())); } }catch(e){} alert(tr('saved')); location.reload(); };

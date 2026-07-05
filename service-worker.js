@@ -1,5 +1,5 @@
 try { importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js'); } catch (e) { console.warn('OneSignal SW unavailable', e); }
-const CACHE = 'omideno7-v1.6.1';
+const CACHE = 'omideno7-v1.6.2';
 const APP_SHELL = [
   './','./index.html','./css/styles.css','./js/app.js','./manifest.json','./assets/logo.png',
   './data/app/opening_messages_365.json','./data/church/church_config.json','./data/church/about.json',
