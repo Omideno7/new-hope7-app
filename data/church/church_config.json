@@ -44,8 +44,8 @@
     ]
   },
   "publicMeetingText": {
-    "fa": "پس از تأیید ادمین، لینک، کد دسترسی و اطلاعات لازم برای ورود به جلسه در این بخش نمایش داده می‌شود.",
-    "en": "After admin approval, the meeting link, access code, and needed details will appear in this section.",
-    "hr": "Nakon odobrenja administratora, poveznica za sastanak, pristupni kod i potrebni podaci prikazat će se u ovom dijelu."
+    "fa": "پس از تأیید ادمین، لینک جلسه و کد امنیتی در این بخش نمایش داده می‌شود.",
+    "en": "After admin approval, the meeting link and security code will appear in this section.",
+    "hr": "Nakon odobrenja administratora, poveznica sastanka i sigurnosni kod prikazat će se u ovom dijelu."
   }
 }
