@@ -17,17 +17,17 @@ const T = {
   en:{
     'nav.home':'Home','nav.daily':'Daily','nav.bible':'Bible','nav.plans':'Plans','nav.school':'School','nav.more':'More',
     home:'Home',daily:'Daily',bible:'Bible',plans:'Plans',school:'School',more:'More',audio:'Audio Messages',salvation:'Need Salvation',about:'About Church',settings:'Settings',gratitude:'Gratitude Plan',meetings:'Church Meetings',youversion:'My Church on YouVersion',amen:'Amen',read:'I read; unlock next day',register:'Register',requestAccess:'Request access',pending:'Pending review',approved:'Approved',guest:'Guest',login:'Registration / Access',offline:'Offline mode active',search:'Search',oldtestament:'Old Testament',newtestament:'New Testament',chapters:'Chapters',back:'Back',save:'Save',saved:'Saved',notes:'Notes',assignment:'Assignment',fullLesson:'Full Written Lesson',playAudio:'Audio',
-    appTitle:'OmideNo7 Church',welcome:'Welcome to the OmideNo7 Church app',todayMessage:'Today’s message',continueToday:'Continue today',savedVerses:'My saved verses',progress:'My progress',points:'Points',badges:'Badges',nextMeeting:'Next church meeting',enableNotifications:'Enable notifications',notifications:'Notifications',notificationStatus:'Notification status',notificationEnabled:'Notifications are allowed on this device.',notificationDenied:'Notifications are blocked by the browser.',notificationDefault:'Notifications are not active yet.',language:'Language',clearProgress:'Clear local progress',refreshData:'Refresh app data',version:'App version',dailyWord:'Daily Word',faithProclamation:'Faith Proclamation',dailyJuice:'Daily Juice',gratitudeCourse:'Gratitude Course',day:'Day',mainVerse:'Main Verse',message:'Message',prayer:'Prayer / Confession',proclamation:'Proclamation',actionStep:'Action Step',furtherStudy:'Further Study',openVerse:'Open verse',startCourse:'Start course',completeDay:'Save and complete this day',lockedUntilTomorrow:'The next day will unlock tomorrow.',completed:'Completed',notStarted:'Not started',videos:'New Birth Videos',part:'Part',ourVision:'Our Vision',ourBeliefs:'Our Beliefs',churchIntro:'Church Introduction',meetingsInfo:'Meeting Information',contact:'Contact',openToday:'Open today’s reading',noSavedVerses:'No saved verses yet.',readings:'Readings',openToRead:'Open to read',bookmarks:'Bookmarks',noAudio:'Audio files will be added soon.',audioFormat:'Audio files must be MP3.',schoolAccessText:'To enter the school, register and wait for admin approval.',meetingAccessText:'Meeting access details are shown only after registration and admin approval.',registerDone:'Your request was sent to admin. Please wait for approval.',name:'Name',email:'Email',book:'Book',chapter:'Chapter',verseSaved:'Verse saved',dailyCompleted:'Today’s item completed',all:'All',showVerse:'Show verse',hideVerse:'Hide verse'
+    appTitle:'OmideNo7 Church',welcome:'Welcome to the OmideNo7 Church app',todayMessage:'Today’s message',continueToday:'Continue today',savedVerses:'My saved verses',progress:'My progress',points:'Points',badges:'Badges',nextMeeting:'Next church meeting',enableNotifications:'Enable notifications',notifications:'Notifications',notificationStatus:'Notification status',notificationEnabled:'Notifications are allowed on this device.',notificationDenied:'Notifications are blocked by the browser.',notificationDefault:'Notifications are not active yet.',language:'Language',clearProgress:'Clear local progress',refreshData:'Refresh app data',version:'App version',dailyWord:'Daily Word',faithProclamation:'Faith Proclamation',dailyJuice:'Daily Juice',gratitudeCourse:'Gratitude Course',day:'Day',mainVerse:'Main Verse',message:'Message',prayer:'Prayer / Confession',proclamation:'Proclamation',actionStep:'Action Step',furtherStudy:'Further Study',openVerse:'Open verse',startCourse:'Start course',completeDay:'Save and complete this day',lockedUntilTomorrow:'The next day will unlock tomorrow.',completed:'Completed',notStarted:'Not started',videos:'New Birth Videos',part:'Part',ourVision:'Our Vision',ourBeliefs:'Our Beliefs',churchIntro:'Church Introduction',meetingsInfo:'Meeting Information',contact:'Contact',openToday:'Open today’s reading',noSavedVerses:'No saved verses yet.',readings:'Readings',openToRead:'Open to read',bookmarks:'Bookmarks',noAudio:'Audio files will be added soon.',audioFormat:'Audio files must be MP3.',schoolAccessText:'To enter the school, register and wait for admin approval.',meetingAccessText:'Meeting access details are shown after school registration and admin approval. A separate meeting registration is not required.',registerDone:'Your request was sent to admin. Please wait for approval.',name:'Name',email:'Email',book:'Book',chapter:'Chapter',verseSaved:'Verse saved',dailyCompleted:'Today’s item completed',all:'All',showVerse:'Show verse',hideVerse:'Hide verse'
   },
   fa:{
     'nav.home':'خانه','nav.daily':'روزانه','nav.bible':'کتاب','nav.plans':'برنامه‌ها','nav.school':'مدرسه','nav.more':'بیشتر',
     home:'خانه',daily:'روزانه',bible:'کتاب‌مقدس',plans:'برنامه‌ها',school:'مدرسه',more:'بیشتر',audio:'پیام‌های صوتی',salvation:'نیاز به نجات',about:'درباره کلیسا',settings:'تنظیمات',gratitude:'دوره شکرگزاری',meetings:'جلسات کلیسا',youversion:'کلیسای من در YouVersion',amen:'آمین',read:'خواندم؛ روز بعد باز شود',register:'ثبت‌نام',requestAccess:'درخواست دسترسی',pending:'در انتظار تأیید',approved:'تأیید شده',guest:'مهمان',login:'ثبت‌نام / دسترسی',offline:'حالت آفلاین فعال است',search:'جستجو',oldtestament:'عهد عتیق',newtestament:'عهد جدید',chapters:'باب‌ها',back:'برگشت',save:'ذخیره',saved:'ذخیره شد',notes:'یادداشت‌ها',assignment:'تکلیف',fullLesson:'متن کامل درس',playAudio:'صوت',
-    appTitle:'کلیسای امیدنو۷',welcome:'به اپ کلیسای امید نو ۷ خوش آمدید',todayMessage:'پیام امروز',continueToday:'ادامه امروز',savedVerses:'آیات ذخیره‌شده من',progress:'پیشرفت من',points:'امتیازها',badges:'مدال‌ها',nextMeeting:'جلسه بعدی کلیسا',enableNotifications:'فعال‌سازی اعلان‌ها',notifications:'اعلان‌ها',notificationStatus:'وضعیت اعلان‌ها',notificationEnabled:'اعلان‌ها روی این دستگاه فعال هستند.',notificationDenied:'اعلان‌ها توسط مرورگر مسدود شده‌اند.',notificationDefault:'اعلان‌ها هنوز فعال نشده‌اند.',language:'زبان برنامه',clearProgress:'پاک کردن پیشرفت محلی',refreshData:'تازه‌سازی داده‌های اپ',version:'نسخه برنامه',dailyWord:'کلام روزانه',faithProclamation:'اعلان ایمان',dailyJuice:'آبمیوه روزانه',gratitudeCourse:'دوره شکرگزاری',day:'روز',mainVerse:'آیه اصلی',message:'پیام',prayer:'دعا / اعتراف',proclamation:'اعلان',actionStep:'قدم عملی',furtherStudy:'مطالعه بیشتر',openVerse:'باز کردن آیه',startCourse:'شروع دوره',completeDay:'ذخیره و تکمیل این روز',lockedUntilTomorrow:'روز بعد فردا باز می‌شود.',completed:'کامل شد',notStarted:'شروع نشده',videos:'ویدیوهای تولد تازه',part:'قسمت',ourVision:'رویای ما',ourBeliefs:'اعتقادات ما',churchIntro:'معرفی کلیسا',meetingsInfo:'اطلاعات جلسات',contact:'ارتباط با ما',openToday:'باز کردن مطالعه امروز',noSavedVerses:'هنوز آیه‌ای ذخیره نشده است.',readings:'مطالعه‌ها',openToRead:'برای خواندن باز کن',bookmarks:'آیات ذخیره‌شده',noAudio:'فایل‌های صوتی به‌زودی اضافه می‌شوند.',audioFormat:'فایل‌های صوتی باید با فرمت MP3 باشند.',schoolAccessText:'برای ورود به مدرسه، ثبت‌نام کنید و منتظر تأیید ادمین بمانید.',meetingAccessText:'اطلاعات ورود به جلسه فقط بعد از ثبت‌نام و تأیید ادمین نمایش داده می‌شود.',registerDone:'درخواست شما روی این دستگاه ذخیره شد. تأیید ادمین بعداً از طریق سیستم امن وصل می‌شود.',name:'نام',email:'ایمیل',book:'کتاب',chapter:'باب',verseSaved:'آیه ذخیره شد',dailyCompleted:'مورد امروز کامل شد',all:'همه',showVerse:'نمایش آیه',hideVerse:'بستن آیه'
+    appTitle:'کلیسای امیدنو۷',welcome:'به اپ کلیسای امید نو ۷ خوش آمدید',todayMessage:'پیام امروز',continueToday:'ادامه امروز',savedVerses:'آیات ذخیره‌شده من',progress:'پیشرفت من',points:'امتیازها',badges:'مدال‌ها',nextMeeting:'جلسه بعدی کلیسا',enableNotifications:'فعال‌سازی اعلان‌ها',notifications:'اعلان‌ها',notificationStatus:'وضعیت اعلان‌ها',notificationEnabled:'اعلان‌ها روی این دستگاه فعال هستند.',notificationDenied:'اعلان‌ها توسط مرورگر مسدود شده‌اند.',notificationDefault:'اعلان‌ها هنوز فعال نشده‌اند.',language:'زبان برنامه',clearProgress:'پاک کردن پیشرفت محلی',refreshData:'تازه‌سازی داده‌های اپ',version:'نسخه برنامه',dailyWord:'کلام روزانه',faithProclamation:'اعلان ایمان',dailyJuice:'آبمیوه روزانه',gratitudeCourse:'دوره شکرگزاری',day:'روز',mainVerse:'آیه اصلی',message:'پیام',prayer:'دعا / اعتراف',proclamation:'اعلان',actionStep:'قدم عملی',furtherStudy:'مطالعه بیشتر',openVerse:'باز کردن آیه',startCourse:'شروع دوره',completeDay:'ذخیره و تکمیل این روز',lockedUntilTomorrow:'روز بعد فردا باز می‌شود.',completed:'کامل شد',notStarted:'شروع نشده',videos:'ویدیوهای تولد تازه',part:'قسمت',ourVision:'رویای ما',ourBeliefs:'اعتقادات ما',churchIntro:'معرفی کلیسا',meetingsInfo:'اطلاعات جلسات',contact:'ارتباط با ما',openToday:'باز کردن مطالعه امروز',noSavedVerses:'هنوز آیه‌ای ذخیره نشده است.',readings:'مطالعه‌ها',openToRead:'برای خواندن باز کن',bookmarks:'آیات ذخیره‌شده',noAudio:'فایل‌های صوتی به‌زودی اضافه می‌شوند.',audioFormat:'فایل‌های صوتی باید با فرمت MP3 باشند.',schoolAccessText:'برای ورود به مدرسه، ثبت‌نام کنید و منتظر تأیید ادمین بمانید.',meetingAccessText:'اطلاعات ورود به جلسه بعد از ثبت‌نام در مدرسه و تأیید ادمین نمایش داده می‌شود. ثبت‌نام جداگانه برای جلسه لازم نیست.',registerDone:'درخواست شما روی این دستگاه ذخیره شد. تأیید ادمین بعداً از طریق سیستم امن وصل می‌شود.',name:'نام',email:'ایمیل',book:'کتاب',chapter:'باب',verseSaved:'آیه ذخیره شد',dailyCompleted:'مورد امروز کامل شد',all:'همه',showVerse:'نمایش آیه',hideVerse:'بستن آیه'
   },
   hr:{
     'nav.home':'Početna','nav.daily':'Dnevno','nav.bible':'Biblija','nav.plans':'Planovi','nav.school':'Škola','nav.more':'Više',
     home:'Početna',daily:'Dnevno',bible:'Biblija',plans:'Planovi',school:'Škola',more:'Više',audio:'Audio poruke',salvation:'Trebam spasenje',about:'O crkvi',settings:'Postavke',gratitude:'Plan zahvalnosti',meetings:'Crkveni sastanci',youversion:'Moja crkva na YouVersionu',amen:'Amen',read:'Pročitao sam; otključaj sljedeći dan',register:'Registracija',requestAccess:'Zatraži pristup',pending:'Čeka odobrenje',approved:'Odobreno',guest:'Gost',login:'Registracija / Pristup',offline:'Izvanmrežni način je aktivan',search:'Pretraži',oldtestament:'Stari zavjet',newtestament:'Novi zavjet',chapters:'Poglavlja',back:'Natrag',save:'Spremi',saved:'Spremljeno',notes:'Bilješke',assignment:'Zadatak',fullLesson:'Cijela pisana lekcija',playAudio:'Audio',
-    appTitle:'Crkva OmideNo7',welcome:'Dobrodošli u aplikaciju crkve OmideNo7',todayMessage:'Današnja poruka',continueToday:'Nastavi danas',savedVerses:'Moji spremljeni stihovi',progress:'Moj napredak',points:'Bodovi',badges:'Medalje',nextMeeting:'Sljedeći crkveni sastanak',enableNotifications:'Uključi obavijesti',notifications:'Obavijesti',notificationStatus:'Status obavijesti',notificationEnabled:'Obavijesti su dopuštene na ovom uređaju.',notificationDenied:'Preglednik je blokirao obavijesti.',notificationDefault:'Obavijesti još nisu aktivne.',language:'Jezik aplikacije',clearProgress:'Obriši lokalni napredak',refreshData:'Osvježi podatke aplikacije',version:'Verzija aplikacije',dailyWord:'Dnevna Riječ',faithProclamation:'Proglas vjere',dailyJuice:'Dnevni sok',gratitudeCourse:'Tečaj zahvalnosti',day:'Dan',mainVerse:'Glavni stih',message:'Poruka',prayer:'Molitva / Ispovijed',proclamation:'Proglas',actionStep:'Praktični korak',furtherStudy:'Daljnje proučavanje',openVerse:'Otvori stih',startCourse:'Započni tečaj',completeDay:'Spremi i dovrši ovaj dan',lockedUntilTomorrow:'Sljedeći dan otključava se sutra.',completed:'Dovršeno',notStarted:'Nije započeto',videos:'Video lekcije o novom rođenju',part:'Dio',ourVision:'Naša vizija',ourBeliefs:'Naša vjerovanja',churchIntro:'Uvod o crkvi',meetingsInfo:'Informacije o sastancima',contact:'Kontakt',openToday:'Otvori današnje čitanje',noSavedVerses:'Još nema spremljenih stihova.',readings:'Čitanja',openToRead:'Otvori za čitanje',bookmarks:'Spremljeni stihovi',noAudio:'Audio datoteke bit će uskoro dodane.',audioFormat:'Audio datoteke moraju biti u MP3 formatu.',schoolAccessText:'Za ulazak u školu registrirajte se i pričekajte odobrenje administratora.',meetingAccessText:'Podaci za pristup sastanku prikazuju se tek nakon registracije i odobrenja administratora.',registerDone:'Vaš je zahtjev spremljen na ovom uređaju. Odobrenje administratora kasnije će biti povezano sigurnim sustavom.',name:'Ime',email:'Email',book:'Knjiga',chapter:'Poglavlje',verseSaved:'Stih je spremljen',dailyCompleted:'Današnja stavka je dovršena',all:'Sve',showVerse:'Prikaži stih',hideVerse:'Sakrij stih'
+    appTitle:'Crkva OmideNo7',welcome:'Dobrodošli u aplikaciju crkve OmideNo7',todayMessage:'Današnja poruka',continueToday:'Nastavi danas',savedVerses:'Moji spremljeni stihovi',progress:'Moj napredak',points:'Bodovi',badges:'Medalje',nextMeeting:'Sljedeći crkveni sastanak',enableNotifications:'Uključi obavijesti',notifications:'Obavijesti',notificationStatus:'Status obavijesti',notificationEnabled:'Obavijesti su dopuštene na ovom uređaju.',notificationDenied:'Preglednik je blokirao obavijesti.',notificationDefault:'Obavijesti još nisu aktivne.',language:'Jezik aplikacije',clearProgress:'Obriši lokalni napredak',refreshData:'Osvježi podatke aplikacije',version:'Verzija aplikacije',dailyWord:'Dnevna Riječ',faithProclamation:'Proglas vjere',dailyJuice:'Dnevni sok',gratitudeCourse:'Tečaj zahvalnosti',day:'Dan',mainVerse:'Glavni stih',message:'Poruka',prayer:'Molitva / Ispovijed',proclamation:'Proglas',actionStep:'Praktični korak',furtherStudy:'Daljnje proučavanje',openVerse:'Otvori stih',startCourse:'Započni tečaj',completeDay:'Spremi i dovrši ovaj dan',lockedUntilTomorrow:'Sljedeći dan otključava se sutra.',completed:'Dovršeno',notStarted:'Nije započeto',videos:'Video lekcije o novom rođenju',part:'Dio',ourVision:'Naša vizija',ourBeliefs:'Naša vjerovanja',churchIntro:'Uvod o crkvi',meetingsInfo:'Informacije o sastancima',contact:'Kontakt',openToday:'Otvori današnje čitanje',noSavedVerses:'Još nema spremljenih stihova.',readings:'Čitanja',openToRead:'Otvori za čitanje',bookmarks:'Spremljeni stihovi',noAudio:'Audio datoteke bit će uskoro dodane.',audioFormat:'Audio datoteke moraju biti u MP3 formatu.',schoolAccessText:'Za ulazak u školu registrirajte se i pričekajte odobrenje administratora.',meetingAccessText:'Podaci za sastanak prikazuju se nakon registracije za školu i odobrenja administratora. Posebna registracija za sastanak nije potrebna.',registerDone:'Vaš je zahtjev spremljen na ovom uređaju. Odobrenje administratora kasnije će biti povezano sigurnim sustavom.',name:'Ime',email:'Email',book:'Knjiga',chapter:'Poglavlje',verseSaved:'Stih je spremljen',dailyCompleted:'Današnja stavka je dovršena',all:'Sve',showVerse:'Prikaži stih',hideVerse:'Sakrij stih'
   }
 };
 
@@ -229,12 +229,23 @@ async function fetchLatestRegistration(kind){
   }catch(e){ console.warn('Registration status check failed', e); }
   return null;
 }
+function defaultMeetingSettings(){
+  return {
+    id:'fallback',
+    meeting_url:'https://fccdl.in/i/omideno7church',
+    phone_number:'01 7757 417',
+    access_code:'2452236',
+    security_code:'789987',
+    extra_info: state.lang==='fa' ? 'جلسه دعا هر روز ساعت ۵ صبح به وقت کرواسی و جلسه کلیسا یکشنبه‌ها ساعت ۲۰ به وقت کرواسی برگزار می‌شود.' : (state.lang==='hr' ? 'Molitveni sastanak je svaki dan u 05:00, a crkvena služba nedjeljom u 20:00 po hrvatskom vremenu.' : 'Prayer meeting is daily at 05:00 Croatia time. Sunday service is at 20:00 Croatia time.')
+  };
+}
 async function fetchMeetingSettings(){
-  if(!CLOUD_ENABLED || !navigator.onLine) return null;
+  if(!CLOUD_ENABLED || !navigator.onLine) return defaultMeetingSettings();
   try{
     const rows = await cloudFetch('meeting_settings?select=*&id=eq.active&limit=1', {method:'GET'});
-    return Array.isArray(rows) ? rows[0] : null;
-  }catch(e){ console.warn('Meeting settings load failed', e); return null; }
+    const row = Array.isArray(rows) ? rows[0] : null;
+    return row || defaultMeetingSettings();
+  }catch(e){ console.warn('Meeting settings load failed', e); return defaultMeetingSettings(); }
 }
 function renderMeetingDetails(settings){
   if(!settings) return `<div class="notice">${tr('notConfigured')}</div>`;
@@ -261,7 +272,7 @@ function firstUseDate(){ let d=localStorage.getItem('nh7_first_use_date'); if(!d
 function userCycleDay(total){ return ((dateDiffDays(firstUseDate(), todayKey())) % total) + 1; }
 function localNum(n){ return state.lang==='fa' ? String(n).replace(/\d/g, d=>'۰۱۲۳۴۵۶۷۸۹'[d]) : String(n); }
 function localText(s){ return state.lang==='fa' ? String(s).replace(/\d/g, d=>'۰۱۲۳۴۵۶۷۸۹'[d]) : String(s); }
-async function jfetch(path){ if(state.data[path]) return state.data[path]; const res=await fetch(path); if(!res.ok) throw new Error(path); const data=await res.json(); state.data[path]=data; return data; }
+async function jfetch(path){ if(state.data[path]) return state.data[path]; const res=await fetch(path, {cache:'no-cache'}); if(!res.ok) throw new Error(path); const data=await res.json(); state.data[path]=data; return data; }
 function itemsOf(data){ return data.items || data.days || data.proclamations || []; }
 
 function addPoints(amount, badgeId){
@@ -825,13 +836,27 @@ function bibleNameAliases(book){
   if(book.id==='3JN') out.push('3 John','Third John','سوم یوحنا');
   return [...new Set(out)];
 }
+
+const BOOK_REF_FALLBACK = {"fa": {"Genesis": "پیدایش", "Exodus": "خروج", "Leviticus": "لاویان", "Numbers": "اعداد", "Deuteronomy": "تثنیه", "Joshua": "یوشع", "Judges": "داوران", "Ruth": "روت", "1 Samuel": "اول سموئیل", "2 Samuel": "دوم سموئیل", "1 Kings": "اول پادشاهان", "2 Kings": "دوم پادشاهان", "1 Chronicles": "اول تواریخ", "2 Chronicles": "دوم تواریخ", "Ezra": "عزرا", "Nehemiah": "نحمیا", "Esther": "استر", "Job": "ایوب", "Psalms": "مزامیر", "Proverbs": "امثال", "Ecclesiastes": "جامعه", "Song of Songs": "غزل غزل‌ها", "Isaiah": "اشعیا", "Jeremiah": "ارمیا", "Lamentations": "مراثی", "Ezekiel": "حزقیال", "Daniel": "دانیال", "Hosea": "هوشع", "Joel": "یوئیل", "Amos": "عاموس", "Obadiah": "عوبدیا", "Jonah": "یونس", "Micah": "میکاه", "Nahum": "ناحوم", "Habakkuk": "حبقوق", "Zephaniah": "صفنیا", "Haggai": "حجی", "Zechariah": "زکریا", "Malachi": "ملاکی", "Matthew": "متی", "Mark": "مرقس", "Luke": "لوقا", "John": "یوحنا", "Acts": "اعمال رسولان", "Romans": "رومیان", "1 Corinthians": "اول قرنتیان", "2 Corinthians": "دوم قرنتیان", "Galatians": "غلاطیان", "Ephesians": "افسسیان", "Philippians": "فیلیپیان", "Colossians": "کولسیان", "1 Thessalonians": "اول تسالونیکیان", "2 Thessalonians": "دوم تسالونیکیان", "1 Timothy": "اول تیموتائوس", "2 Timothy": "دوم تیموتائوس", "Titus": "تیتوس", "Philemon": "فیلیمون", "Hebrews": "عبرانیان", "James": "یعقوب", "1 Peter": "اول پطرس", "2 Peter": "دوم پطرس", "1 John": "اول یوحنا", "2 John": "دوم یوحنا", "3 John": "سوم یوحنا", "Jude": "یهودا", "Revelation": "مکاشفه", "Psalm": "مزامیر", "Ps": "مزامیر", "Song of Solomon": "غزل غزل‌ها", "First Samuel": "اول سموئیل", "Second Samuel": "دوم سموئیل", "First Kings": "اول پادشاهان", "Second Kings": "دوم پادشاهان", "First Chronicles": "اول تواریخ", "Second Chronicles": "دوم تواریخ", "First Corinthians": "اول قرنتیان", "Second Corinthians": "دوم قرنتیان", "First Thessalonians": "اول تسالونیکیان", "Second Thessalonians": "دوم تسالونیکیان", "First Timothy": "اول تیموتائوس", "Second Timothy": "دوم تیموتائوس", "First Peter": "اول پطرس", "Second Peter": "دوم پطرس", "First John": "اول یوحنا", "Second John": "دوم یوحنا", "Third John": "سوم یوحنا"}, "hr": {"Genesis": "Postanak", "Exodus": "Izlazak", "Leviticus": "Levitski zakonik", "Numbers": "Brojevi", "Deuteronomy": "Ponovljeni zakon", "Joshua": "Jošua", "Judges": "Suci", "Ruth": "Ruta", "1 Samuel": "1. Samuelova", "2 Samuel": "2. Samuelova", "1 Kings": "1. Kraljevima", "2 Kings": "2. Kraljevima", "1 Chronicles": "1. Ljetopisa", "2 Chronicles": "2. Ljetopisa", "Ezra": "Ezra", "Nehemiah": "Nehemija", "Esther": "Estera", "Job": "Job", "Psalms": "Psalmi", "Proverbs": "Mudre izreke", "Ecclesiastes": "Propovjednik", "Song of Songs": "Pjesma nad pjesmama", "Isaiah": "Izaija", "Jeremiah": "Jeremija", "Lamentations": "Tužaljke", "Ezekiel": "Ezekiel", "Daniel": "Daniel", "Hosea": "Hošea", "Joel": "Joel", "Amos": "Amos", "Obadiah": "Obadija", "Jonah": "Jona", "Micah": "Mihej", "Nahum": "Nahum", "Habakkuk": "Habakuk", "Zephaniah": "Sefanija", "Haggai": "Hagaj", "Zechariah": "Zaharija", "Malachi": "Malahija", "Matthew": "Matej", "Mark": "Marko", "Luke": "Luka", "John": "Ivan", "Acts": "Djela apostolska", "Romans": "Rimljanima", "1 Corinthians": "1. Korinćanima", "2 Corinthians": "2. Korinćanima", "Galatians": "Galaćanima", "Ephesians": "Efežanima", "Philippians": "Filipljanima", "Colossians": "Kološanima", "1 Thessalonians": "1. Solunjanima", "2 Thessalonians": "2. Solunjanima", "1 Timothy": "1. Timoteju", "2 Timothy": "2. Timoteju", "Titus": "Titu", "Philemon": "Filemonu", "Hebrews": "Hebrejima", "James": "Jakovljeva", "1 Peter": "1. Petrova", "2 Peter": "2. Petrova", "1 John": "1. Ivanova", "2 John": "2. Ivanova", "3 John": "3. Ivanova", "Jude": "Judina", "Revelation": "Otkrivenje", "Psalm": "Psalmi", "Ps": "Psalmi", "Song of Solomon": "Pjesma nad pjesmama"}};
+
 function localizeRef(ref){
   if(!ref) return '';
-  let s=String(ref);
+  let s=String(ref).trim();
+  const pairs=[];
   const books=state.bible.books||[];
-  const pairs=books.flatMap(b=>bibleNameAliases(b).map(alias=>[alias,b.names?.[state.lang]||b.names?.en])).filter(x=>x[0]).sort((a,b)=>b[0].length-a[0].length);
-  for(const [en,loc] of pairs){
-    const re=new RegExp('^'+en.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?=\\s|$)','i');
+  for(const b of books){
+    for(const alias of bibleNameAliases(b)){
+      const loc=b.names?.[state.lang] || b.names?.en || alias;
+      if(alias && loc) pairs.push([String(alias), String(loc)]);
+    }
+  }
+  const fb=BOOK_REF_FALLBACK[state.lang] || {};
+  for(const [en,loc] of Object.entries(fb)) pairs.push([en,loc]);
+  const unique=[]; const seen=new Set();
+  for(const [en,loc] of pairs){ const k=en.toLowerCase(); if(!seen.has(k)){ seen.add(k); unique.push([en,loc]); } }
+  unique.sort((a,b)=>b[0].length-a[0].length);
+  for(const [en,loc] of unique){
+    const re=new RegExp('^'+en.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?=\\s|\\.|,|:|$)','i');
     if(re.test(s)){ s=s.replace(re,loc); break; }
   }
   return localText(s);
@@ -927,11 +952,19 @@ async function about(){
   view.innerHTML=card(tr('about'), `<h3>${tr('churchIntro')}</h3><p>${html(d.intro?.[state.lang]||'')}</p><h3>${tr('ourVision')}</h3><p>${html(d.vision?.[state.lang]||'')}</p><h3>${tr('ourBeliefs')}</h3><p>${html(d.beliefs?.[state.lang]||'')}</p><div class="button-row"><a class="secondary-btn" href="https://www.bible.com/organizations/da6136d1-04cd-4243-a52b-f9ba7f32ec79?utm_source=yvapp&utm_medium=share&utm_content=partner-page" target="_blank" rel="noopener">${tr('youversion')}</a></div>`);
 }
 async function meetings(params={}){
-  let access=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{"status":"guest"}');
-  if(params.form){ view.innerHTML=registrationFormHtml('meeting', access); return; }
-  const cloudAccess = await fetchLatestRegistration('meeting');
-  if(cloudAccess) access = cloudAccess;
-  const approved = access.status==='approved' || access.approvedBy==='admin';
+  let meetingAccess=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{"status":"none"}');
+  let schoolAccess=JSON.parse(localStorage.getItem('nh7_school_access')||'{"status":"none"}');
+
+  // From v1.6.1 onward, approved School access also grants Church Meeting access.
+  // No separate meeting registration and no guest entrance for security.
+  const cloudSchool = await fetchLatestRegistration('school');
+  if(cloudSchool) schoolAccess = cloudSchool;
+  const cloudMeeting = await fetchLatestRegistration('meeting');
+  if(cloudMeeting) meetingAccess = cloudMeeting;
+
+  const schoolApproved = schoolAccess.status==='approved' || schoolAccess.approvedBy==='admin';
+  const meetingApproved = meetingAccess.status==='approved' || meetingAccess.approvedBy==='admin';
+  const approved = schoolApproved || meetingApproved;
   let details='';
   if(approved){
     const settings = await fetchMeetingSettings();
@@ -939,8 +972,11 @@ async function meetings(params={}){
   }
   const buttons = approved
     ? `<div class="button-row"><button class="secondary-btn" data-go="meetings">${tr('refreshApproval')}</button></div>`
-    : `<div class="button-row"><button class="primary-btn" data-go="meetings" data-params='{"form":true}'>${tr('register')}</button><button class="secondary-btn" data-go="meetings">${tr('enterMeeting')} / ${tr('refreshApproval')}</button></div>`;
-  view.innerHTML=card(tr('meetings'), `<p>${tr('meetingAccessText')}</p>${approved?'':`<p class="muted">${tr('meetingNotApproved')}</p>`}<span class="badge">${approved?tr('approved'):registrationStatus(access)}</span>${details}${buttons}`);
+    : `<div class="button-row"><button class="primary-btn" data-go="school" data-params='{"form":true}'>${tr('register')} ${tr('school')}</button><button class="secondary-btn" data-go="meetings">${tr('refreshApproval')}</button></div>`;
+  const notApprovedText = state.lang==='fa'
+    ? 'برای امنیت جلسه، ورود مهمان نداریم. اگر در مدرسه ثبت‌نام کرده‌اید، پس از تأیید ادمین همین بخش لینک و کد جلسه را نشان می‌دهد.'
+    : (state.lang==='hr' ? 'Zbog sigurnosti nema ulaska kao gost. Nakon registracije za školu i odobrenja administratora ovdje će se prikazati poveznica i kod sastanka.' : 'For meeting security, guest access is not available. After school registration and admin approval, the meeting link and codes will appear here.');
+  view.innerHTML=card(tr('meetings'), `<p>${tr('meetingAccessText')}</p>${approved?'':`<p class="muted">${notApprovedText}</p>`}<span class="badge">${approved?tr('approved'):(schoolAccess.status==='pending'||meetingAccess.status==='pending'?tr('pending'):tr('notStarted'))}</span>${details}${buttons}`);
 }
 async function more(){ view.innerHTML=`<div class="grid">${tile('audio','🎧',tr('audio'))}${tile('salvation','✝',tr('salvation'))}${tile('daily','🙏',tr('gratitude'),'',{tab:'gratitude'})}${tile('meetings','☎',tr('meetings'))}${tile('qna','❓',tr('qna'))}${tile('inbox','📥',tr('inbox'), unreadCount()?`${tr('unread')}: ${localNum(unreadCount())}`:'')}${tile('account','👤',tr('account'))}${tile('about','ℹ',tr('about'))}${tile('settings','⚙',tr('settings'))}</div>`; }
 
@@ -987,27 +1023,34 @@ async function resetPassword(){
 async function settings(){
   const perm=typeof Notification==='undefined'?'default':Notification.permission;
   const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');
-  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است. برای آیفون، اپ را به Home Screen اضافه کنید و سپس اعلان‌ها را فعال کنید. پیام‌های دریافت‌شده در صندوق ورودی اپ نیز ذخیره می‌شوند.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time. On iPhone, add the app to Home Screen, then enable notifications. Received messages are also saved in the app inbox.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>OmideNo7 v1.6.0</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
+  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است. برای آیفون، اپ را به Home Screen اضافه کنید و سپس اعلان‌ها را فعال کنید. پیام‌های دریافت‌شده در صندوق ورودی اپ نیز ذخیره می‌شوند.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time. On iPhone, add the app to Home Screen, then enable notifications. Received messages are also saved in the app inbox.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>OmideNo7 v1.6.1</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
   $('#settingsLang').value=state.lang; $('#settingsLang').onchange=e=>setLang(e.target.value);
   $('#enableNotify').onclick=enableNotifications;
   $('#clearCache').onclick=async()=>{ try{ if('caches' in window){ const keys=await caches.keys(); await Promise.all(keys.map(k=>caches.delete(k))); } if('serviceWorker' in navigator){ const rs=await navigator.serviceWorker.getRegistrations(); await Promise.all(rs.map(r=>r.update())); } }catch(e){} alert(tr('saved')); location.reload(); };
   $('#syncCloud')?.addEventListener('click', async()=>{ await syncCloudQueue(); alert(cloudStatusText()); render('settings',{},true); });
 }
 async function enableNotifications(){
-  if(typeof Notification==='undefined'){ alert(state.lang==='fa'?'اعلان‌ها در این مرورگر پشتیبانی نمی‌شوند.':'Notifications are not supported in this browser.'); return; }
-  let perm='default';
+  if(typeof Notification==='undefined'){
+    alert(state.lang==='fa'?'اعلان‌ها در این مرورگر یا داخل این حالت نصب پشتیبانی نمی‌شوند. اگر از اندروید استفاده می‌کنید، اپ را از Google Play/Chrome باز کنید و اجازه Notifications را در تنظیمات گوشی روشن کنید.':'Notifications are not supported in this browser or install mode. On Android, open the app through Google Play/Chrome and allow Notifications in device settings.');
+    return;
+  }
+  let perm = Notification.permission || 'default';
   try{
     if(window.OneSignalDeferred){
       await new Promise(resolve=>{
+        let done=false;
+        const finish=()=>{ if(!done){ done=true; resolve(); } };
+        setTimeout(finish, 7000);
         window.OneSignalDeferred.push(async function(OneSignal){
           try{
             if(OneSignal.Notifications && OneSignal.Notifications.requestPermission){
-              perm = await OneSignal.Notifications.requestPermission();
+              const result = await OneSignal.Notifications.requestPermission();
+              perm = result===true ? 'granted' : (Notification.permission || perm || 'default');
             }
             const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'local';
             if(OneSignal.User && OneSignal.User.addTags){
               await OneSignal.User.addTags({
-                app:'new_hope_7',
+                app:'omideno7',
                 language: state.lang,
                 timezone: tz,
                 daily_word_time:'07:00',
@@ -1022,21 +1065,26 @@ async function enableNotifications(){
             const subId = OneSignal.User?.PushSubscription?.id || '';
             if(subId) localStorage.setItem('nh7_onesignal_subscription_id', subId);
           }catch(err){ console.warn('OneSignal permission failed', err); }
-          resolve();
+          finish();
         });
       });
     }
-    if(Notification.permission !== 'granted') perm = await Notification.requestPermission();
-    else perm = 'granted';
-  }catch(e){ console.warn(e); perm = Notification.permission || 'default'; }
+    if(Notification.permission !== 'granted'){
+      const browserPerm = await Notification.requestPermission();
+      perm = browserPerm || perm;
+    } else perm = 'granted';
+  }catch(e){ console.warn(e); perm = Notification.permission || perm || 'default'; }
+  if(perm===true) perm='granted';
   localStorage.setItem('nh7_notifications_permission',perm);
   localStorage.setItem('nh7_notifications_timezone', Intl.DateTimeFormat().resolvedOptions().timeZone || 'local');
   if(perm==='granted'){
     try{ new Notification(tr('appTitle'),{body:tr('notificationEnabled'),icon:'assets/logo.png'}); }catch(e){}
     addInboxMessage(tr('notificationEnabled'), state.lang==='fa'?'اعلان‌ها با موفقیت فعال شد. از این به بعد پیام‌های کلیسا در این صندوق نیز ذخیره می‌شوند.':state.lang==='hr'?'Obavijesti su uključene. Od sada će se crkvene poruke spremati i u ovu ulaznu poštu.':'Notifications are active. Church messages will also be saved in this inbox.', 'system', 'notifications_enabled_'+todayKey());
-    alert(state.lang==='fa'?'اعلان‌ها فعال شد. برای دریافت اعلان‌ها، اجازه مرورگر باید روشن بماند.':'Notifications are active. Keep browser permission enabled to receive them.');
+    alert(state.lang==='fa'?'اعلان‌ها فعال شد. اگر هنوز پیام دریافت نکردید، در تنظیمات گوشی برای این اپ/Chrome اجازه Notifications را روشن بگذارید.':'Notifications are active. If you still do not receive messages, keep Notifications allowed for this app/Chrome in device settings.');
   } else if(perm==='denied') {
-    alert(tr('notificationDenied'));
+    alert(state.lang==='fa'?'اجازه اعلان‌ها قبلاً مسدود شده است. از تنظیمات گوشی/مرورگر، Notifications را برای این اپ یا Chrome روی Allow بگذارید و دوباره تلاش کنید.':tr('notificationDenied'));
+  } else {
+    alert(state.lang==='fa'?'اعلان‌ها هنوز فعال نشد. لطفاً اجازه اعلان را در پنجره گوشی تأیید کنید یا از تنظیمات گوشی Notifications را فعال کنید.':'Notifications are not active yet. Please allow notifications in the phone prompt or device settings.');
   }
   render(state.route,state.params,true);
 }

@@ -10,14 +10,15 @@
   <link rel="stylesheet" href="css/styles.css" />
   <script>
     window.NH7_ONESIGNAL_APP_ID = '86f4116a-707a-4959-aa3f-7c703f57bf7e';
-    window.NH7_VERSION = '1.6.0';
+    window.NH7_VERSION = '1.6.1';
+    window.NH7_BASE_PATH = new URL('.', window.location.href).pathname;
     window.OneSignalDeferred = window.OneSignalDeferred || [];
     OneSignalDeferred.push(async function(OneSignal) {
       try {
         await OneSignal.init({
           appId: window.NH7_ONESIGNAL_APP_ID,
-          serviceWorkerPath: 'service-worker.js',
-          serviceWorkerParam: { scope: '/new-hope7-app/' },
+          serviceWorkerPath: window.NH7_BASE_PATH + 'service-worker.js',
+          serviceWorkerParam: { scope: window.NH7_BASE_PATH },
           notifyButton: { enable: false },
           allowLocalhostAsSecureOrigin: true
         });
