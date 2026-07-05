@@ -67,6 +67,12 @@ const INBOX_T = {
 };
 Object.keys(INBOX_T).forEach(lang=>Object.assign(T[lang], INBOX_T[lang]));
 
+// V1.5.0 production-fix labels
+Object.assign(T.en, {openSingleVerse:'Open this verse', openWholeChapter:'Open full chapter', deleteSavedVerse:'Delete saved verse', writeNote:'Write note', saveNote:'Save note', share:'Share', undoComplete:'Undo completion', viewPreviousDays:'View previous days', selectDay:'Select day', approvedRefreshHint:'If approved access is not visible, tap Refresh approval status or refresh app data from Settings.'});
+Object.assign(T.fa, {openSingleVerse:'باز کردن همین آیه', openWholeChapter:'باز کردن کل فصل', deleteSavedVerse:'حذف آیه ذخیره‌شده', writeNote:'نوشتن یادداشت', saveNote:'ذخیره یادداشت', share:'اشتراک‌گذاری', undoComplete:'لغو تکمیل امروز', viewPreviousDays:'مشاهده روزهای قبلی', selectDay:'انتخاب روز', approvedRefreshHint:'اگر دسترسی تأیید شده هنوز دیده نمی‌شود، «تازه‌سازی وضعیت تأیید» یا «تازه‌سازی داده‌های اپ» را بزنید.'});
+Object.assign(T.hr, {openSingleVerse:'Otvori ovaj stih', openWholeChapter:'Otvori cijelo poglavlje', deleteSavedVerse:'Izbriši spremljeni stih', writeNote:'Napiši bilješku', saveNote:'Spremi bilješku', share:'Podijeli', undoComplete:'Poništi završetak', viewPreviousDays:'Prikaži prethodne dane', selectDay:'Odaberi dan', approvedRefreshHint:'Ako se odobreni pristup ne vidi, dodirnite Osvježi status odobrenja ili Osvježi podatke aplikacije u postavkama.'});
+
+
 
 const NEW_BIRTH_VIDEOS = [
   'https://youtu.be/u-G6r7rYNEE?is=8kokBIcdqkvQGayt',
@@ -179,9 +185,15 @@ async function fetchLatestRegistration(kind){
   try{
     const local = JSON.parse(localStorage.getItem(localKey)||'{}');
     const email = (local.email || currentUserEmail() || '').trim().toLowerCase();
+    const normalize = (row)=>Object.assign({}, row?.payload||{}, {
+      email: (row?.payload?.email || email || local.email || '').trim().toLowerCase(),
+      status: row?.status || 'pending',
+      cloudId: row?.id || local.cloudId || '',
+      approvedBy: row?.status==='approved' ? 'admin' : (local.approvedBy||''),
+      syncedAt: new Date().toISOString()
+    });
 
-    // v1.4.1: use a SECURITY DEFINER RPC first.
-    // This avoids old device-id/cache problems and always gives priority to any approved row for the same email.
+    // Preferred: secure RPC installed by the SQL file. It gives priority to any approved row by email.
     try{
       const rpcRows = await cloudRpc('nh7_registration_status', {p_type:kind, p_email:email, p_device_id:deviceId()});
       const r = Array.isArray(rpcRows) ? rpcRows[0] : rpcRows;
@@ -190,26 +202,25 @@ async function fetchLatestRegistration(kind){
           email: (email || r.email || local.email || '').trim().toLowerCase(),
           status: r.status || 'pending',
           cloudId: r.registration_id || local.cloudId || '',
-          approvedBy: r.approved ? 'admin' : ''
+          approvedBy: r.approved ? 'admin' : (local.approvedBy||''),
+          syncedAt: new Date().toISOString()
         });
         localStorage.setItem(localKey, JSON.stringify(data));
         return data;
       }
-    }catch(rpcErr){ console.warn('Registration RPC status check failed, falling back', rpcErr); }
+    }catch(rpcErr){ console.warn('Registration RPC status check failed, using REST fallback', rpcErr); }
 
-    let rows = await cloudFetch(`registrations?select=*&device_id=eq.${encodeURIComponent(deviceId())}&type=eq.${encodeURIComponent(kind)}&order=created_at.desc&limit=20`, {method:'GET'});
-    if(email){
-      const emailRows = await cloudFetch(`registrations?select=*&type=eq.${encodeURIComponent(kind)}&payload->>email=eq.${encodeURIComponent(email)}&order=created_at.desc&limit=20`, {method:'GET'}).catch(()=>[]);
-      rows = [...(Array.isArray(rows)?rows:[]), ...(Array.isArray(emailRows)?emailRows:[])];
-    }
-    const seen=new Set();
-    rows=(Array.isArray(rows)?rows:[]).filter(r=>{ const id=String(r.id||''); if(seen.has(id)) return false; seen.add(id); return true; });
-    const row = rows.find(r=>r.status==='approved') || rows[0] || null;
-    if(row){
-      const data = Object.assign({}, row.payload||{}, {status:row.status, cloudId:row.id, approvedBy: row.status==='approved' ? 'admin' : ''});
-      localStorage.setItem(localKey, JSON.stringify(data));
-      return data;
-    }
+    // Robust REST fallback: load recent rows and match locally by email or device.
+    let rows = await cloudFetch(`registrations?select=*&type=eq.${encodeURIComponent(kind)}&order=updated_at.desc,created_at.desc&limit=300`, {method:'GET'}).catch(()=>[]);
+    rows = Array.isArray(rows) ? rows : [];
+    const dev = deviceId();
+    const matches = rows.filter(r=>{
+      const p=r.payload||{};
+      const re=String(p.email||'').trim().toLowerCase();
+      return (email && re===email) || String(r.device_id||'')===dev;
+    });
+    const row = matches.find(r=>r.status==='approved') || matches[0] || null;
+    if(row){ const data=normalize(row); localStorage.setItem(localKey, JSON.stringify(data)); return data; }
   }catch(e){ console.warn('Registration status check failed', e); }
   return null;
 }
@@ -274,22 +285,25 @@ function setLang(lang){
   render(state.route, state.params, true);
 }
 function setCrumb(t){ $('#breadcrumb').textContent=t; $('#backBtn').classList.toggle('hidden', state.stack.length===0); $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.route===state.route)); }
-function navigate(route, params={}, replace=false){ if(!replace && state.route) state.stack.push({route:state.route, params:state.params}); state.route=route; state.params=params||{}; render(route, state.params); }
-function back(){ const prev=state.stack.pop(); if(prev){ state.route=prev.route; state.params=prev.params; render(prev.route, prev.params, true); } }
-function card(title, body, cls=''){ return `<section class="card ${cls}">${title?`<h2>${html(title)}</h2>`:''}${body}</section>`; }
-function tile(route, emoji, title, sub='', params={}){ return `<button class="tile" data-go="${route}" data-params='${html(JSON.stringify(params||{}))}'><span class="emoji">${emoji}</span><strong>${html(title)}</strong>${sub?`<small>${html(sub)}</small>`:''}</button>`; }
-function notice(text){ return `<div class="notice">${html(text)}</div>`; }
-
-function registrationStatus(access){ return access.status==='pending'?tr('pending'):tr('guest'); }
-function optionYesNo(value=''){
-  return `<option value="">---</option><option value="yes" ${value==='yes'?'selected':''}>${tr('yes')}</option><option value="no" ${value==='no'?'selected':''}>${tr('no')}</option>`;
+function navigate(route, params={}, replace=false){
+  if(!replace && state.route) state.stack.push({route:state.route, params:state.params});
+  state.route=route; state.params=params||{};
+  try{ const url='#'+encodeURIComponent(route)+(Object.keys(state.params).length?':'+encodeURIComponent(JSON.stringify(state.params)):''); replace ? history.replaceState({route,params:state.params},'',url) : history.pushState({route,params:state.params},'',url); }catch(e){}
+  render(route, state.params);
 }
+function back(){
+  const prev=state.stack.pop();
+  if(prev){ state.route=prev.route; state.params=prev.params; render(prev.route, prev.params, true); try{ history.replaceState({route:prev.route,params:prev.params},'', '#'+encodeURIComponent(prev.route)); }catch(e){} return; }
+  if(state.route && state.route!=='home'){ state.route='home'; state.params={}; render('home',{},true); try{ history.replaceState({route:'home',params:{}},'', '#home'); }catch(e){} }
+}
+
 function registrationFormHtml(kind, access={}){
   const v=(k)=>html(access[k]||'');
+  const dobHint = state.lang==='fa' ? 'روز / ماه / سال' : (state.lang==='hr' ? 'dan / mjesec / godina' : 'day / month / year');
   return card(tr('registrationForm'), `
     <div class="form-row"><input id="reg_firstName" required placeholder="${tr('firstName')} *" value="${v('firstName')}"></div>
     <div class="form-row"><input id="reg_lastName" required placeholder="${tr('lastName')} *" value="${v('lastName')}"></div>
-    <div class="form-row"><input id="reg_birthDate" required type="date" value="${v('birthDate')}"></div>
+    <div class="form-row"><label for="reg_birthDate"><strong>${tr('birthDate')} *</strong><small>${dobHint}</small></label><input id="reg_birthDate" required type="date" aria-label="${tr('birthDate')}" value="${v('birthDate')}"></div>
     <div class="form-row"><input id="reg_city" required placeholder="${tr('city')} *" value="${v('city')}"></div>
     <div class="form-row"><input id="reg_country" required placeholder="${tr('country')} *" value="${v('country')}"></div>
     <div class="form-row"><input id="reg_spiritualAge" required placeholder="${tr('spiritualAge')} *" value="${v('spiritualAge')}"></div>
@@ -330,7 +344,17 @@ function collectNotes(){
   return out;
 }
 function savedVersesPanel(bookmarks){
-  return `<button class="secondary-btn" data-toggle-panel="savedVersesPanel">${tr('showSavedVerses')}</button><div id="savedVersesPanel" class="collapsible-panel hidden">${bookmarks.length ? `<div class="list">${bookmarks.slice().reverse().map(ref=>`<button class="list-btn" data-open-ref="${html(ref)}"><strong>${html(localText(ref))}</strong><small>${tr('openVerse')}</small></button>`).join('')}</div>` : `<p class="muted">${tr('noSavedVerses')}</p>`}</div>`;
+  const unique=[...new Set((bookmarks||[]).filter(Boolean))];
+  const items=unique.slice().reverse().map(ref=>`
+    <div class="saved-verse-card">
+      <strong>${html(localizeRef(ref))}</strong>
+      <div class="button-row saved-verse-actions">
+        <button class="secondary-btn" data-open-ref="${html(ref)}" data-open-ref-mode="verse">${tr('openSingleVerse')}</button>
+        <button class="secondary-btn" data-open-ref="${html(ref)}" data-open-ref-mode="chapter">${tr('openWholeChapter')}</button>
+        <button class="danger-btn" data-delete-bookmark="${html(ref)}">${tr('deleteSavedVerse')}</button>
+      </div>
+    </div>`).join('');
+  return `<button class="secondary-btn" data-toggle-panel="savedVersesPanel">${tr('showSavedVerses')}</button><div id="savedVersesPanel" class="collapsible-panel hidden">${unique.length?`<div class="list">${items}</div>`:`<p class="muted">${tr('noSavedVerses')}</p>`}</div>`;
 }
 function notesPanel(){
   const notes=collectNotes();
@@ -484,6 +508,7 @@ function updateInboxBadge(){
 function addInboxMessage(title, body, category='app', id=null){
   const arr=inboxMessages();
   const mid=(id ? id+'_'+state.lang : (category+'_'+state.lang+'_'+todayKey()+'_'+title.replace(/\W+/g,'_').slice(0,24)));
+  if(inboxDeletedIds().has(String(mid))) return;
   if(arr.some(m=>m.id===mid)) return;
   const item={id:mid,title,body,category,createdAt:new Date().toISOString(),read:false,lang:state.lang,language:state.lang};
   arr.unshift(item); setInboxMessages(arr.slice(0,100));
@@ -652,7 +677,10 @@ async function dailyDetail(it, day, total, mainKey, prayerKey, type, extraKey){
   await loadBibleMeta();
   const title=pick(it.title)||`${tr('day')} ${localNum(day)}`;
   const verse=it.mainVerse || {};
+  const doneKey='nh7_daily_done_'+type+'-'+day;
+  const isDone=!!localStorage.getItem(doneKey);
   let body=`<span class="badge">${tr('day')} ${localNum(day)} / ${localNum(total)}</span>`;
+  if(isDone) body+=`<div class="notice success-notice">${tr('dailyCompleted')}</div>`;
   if(verse.reference || pick(verse.text)) body += `<h3>${tr('mainVerse')}</h3><div class="notice verse-card">${verse.reference?verseRevealButton(verse.reference,pick(verse.text)):`<p>${html(pick(verse.text))}</p>`}</div>`;
   if(it[mainKey]) body += `<h3>${mainKey==='proclamation'?tr('proclamation'):tr('message')}</h3><p>${html(pick(it[mainKey]))}</p>`;
   if(extraKey && it[extraKey]) body += `<h3>${tr('actionStep')}</h3>${renderMulti(it[extraKey])}`;
@@ -660,7 +688,7 @@ async function dailyDetail(it, day, total, mainKey, prayerKey, type, extraKey){
   if(Array.isArray(it.furtherStudy) && it.furtherStudy.length){
     body += `<h3>${tr('furtherStudy')}</h3><div class="list">${it.furtherStudy.map(fs=>`<div class="verse-list-item">${verseRevealButton(fs.reference||'',pick(fs.text))}</div>`).join('')}</div>`;
   }
-  body += `<div class="button-row"><button class="primary-btn" data-complete-daily="${type}-${day}">${tr('completed')}</button></div>`;
+  body += `<div class="button-row"><button class="primary-btn" data-complete-daily="${type}-${day}">${isDone?tr('dailyCompleted'):tr('completeDay')}</button></div>`;
   return card(title, body);
 }
 function renderMulti(v){
@@ -671,19 +699,25 @@ function renderMulti(v){
 async function renderGratitude(){
   const data=await jfetch('data/gratitude/gratitude_plan_30_days.json'); const list=itemsOf(data);
   let start=localStorage.getItem('nh7_gratitude_start');
-  if(!start){ return card(tr('gratitudeCourse'), `<p>${tr('gratitudeCourse')} - ${localNum(30)} ${tr('day')}</p><button class="primary-btn" id="startGratitude">${tr('startCourse')}</button>`); }
+  if(!start){ return card(tr('gratitudeCourse'), `<p>${tr('gratitudeCourse')} - ${localNum(list.length||30)} ${tr('day')}</p><button class="primary-btn" id="startGratitude">${tr('startCourse')}</button>`); }
   const daysSince=dateDiffDays(start,todayKey());
   const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]');
-  const current=Math.min(completed.length+1, list.length);
   const unlocked=Math.min(daysSince+1, list.length);
-  if(current>unlocked){ return card(tr('gratitudeCourse'), `<p>${tr('lockedUntilTomorrow')}</p><p>${tr('completed')}: ${localNum(completed.length)} / ${localNum(list.length)}</p>`); }
-  const it=list[current-1];
+  let requested=Number(state.params?.gday||0);
+  const nextDay=Math.min((completed.length+1), list.length);
+  const current=requested && requested<=unlocked ? requested : Math.min(nextDay, unlocked);
+  const it=list[current-1]||list[0];
+  const isDone=completed.includes(current);
+  const dayButtons=Array.from({length:unlocked},(_,i)=>i+1).map(n=>`<button class="secondary-btn ${n===current?'active-day':''}" data-go="daily" data-params='${html(JSON.stringify({tab:'gratitude',gday:n}))}'>${tr('day')} ${localNum(n)}${completed.includes(n)?' ✓':''}</button>`).join('');
   let body=`<span class="badge">${tr('day')} ${localNum(current)} / ${localNum(list.length)}</span>`;
+  body+=`<div class="notice"><strong>${tr('viewPreviousDays')}</strong><div class="button-row day-selector">${dayButtons}</div></div>`;
+  if(isDone) body+=`<div class="notice success-notice">${tr('completed')}</div>`;
   if(it.mainVerse) body+=`<h3>${tr('mainVerse')}</h3><div class="notice verse-card">${verseRevealButton(it.mainVerse.reference||'',pick(it.mainVerse.text))}</div>`;
   body+=`<h3>${tr('message')}</h3><p>${html(pick(it.teaching))}</p>`;
   if(it.dailyTasks) body+=`<h3>${tr('actionStep')}</h3>${renderMulti(it.dailyTasks)}`;
   if(it.understandingQuestions) body+=`<h3>${tr('notes')}</h3>${renderMulti(it.understandingQuestions)}`;
-  body+=`<textarea id="gratitudeNote" placeholder="${tr('notes')}"></textarea><button class="primary-btn" id="completeGratitude">${tr('completeDay')}</button>`;
+  const savedNote=localStorage.getItem('nh7_gratitude_note_'+current)||'';
+  body+=`<textarea id="gratitudeNote" placeholder="${tr('notes')}">${html(savedNote)}</textarea><div class="button-row"><button class="primary-btn" id="completeGratitude" data-gratitude-day="${current}">${isDone?tr('dailyCompleted'):tr('completeDay')}</button>${isDone?`<button class="secondary-btn" id="undoGratitude" data-gratitude-day="${current}">${tr('undoComplete')}</button>`:''}</div>`;
   return card(pick(it.title), body);
 }
 
@@ -717,8 +751,28 @@ async function bibleBook(bookId){ const data=await loadBook(bookId); if(!data) r
 async function bibleChapter(bookId, chapter){
   const data=await loadBook(bookId); if(!data) return bible();
   const verses=data.verses.filter(v=>Number(v.chapter)===chapter);
+  const focusVerse=Number(state.params?.verse||0);
   const title=`${data.book.names[state.lang]||data.book.names.en} ${localNum(chapter)}`;
-  view.innerHTML=card(title, `<div class="reader">${verses.map(v=>`<div class="reader-verse" id="v-${v.id}"><span class="num">${localNum(v.verse)}</span><span>${html(v.text?.[state.lang]||v.text?.en||'')}</span><div class="button-row"><button class="secondary-btn" data-bookmark="${html(v.reference?.en||v.id)}">☆ ${tr('save')}</button><button class="secondary-btn" data-highlight>✦</button></div></div>`).join('')}</div>`);
+  const rows=verses.map(v=>{
+    const ref=v.reference?.en || `${data.book.names.en} ${chapter}:${v.verse}`;
+    const key='nh7_bible_state_'+String(v.id||ref).replace(/[^a-zA-Z0-9_-]/g,'_');
+    const st=JSON.parse(localStorage.getItem(key)||'{}');
+    const cls=['reader-verse']; if(st.highlight) cls.push('highlighted'); if(focusVerse===Number(v.verse)) cls.push('saved-focus');
+    const noteBoxId='noteBox_'+String(v.id||ref).replace(/[^a-zA-Z0-9_-]/g,'_');
+    return `<div class="${cls.join(' ')}" id="v-${v.verse}" data-verse-key="${html(key)}">
+      <span class="num">${localNum(v.verse)}</span><span>${html(v.text?.[state.lang]||v.text?.en||'')}</span>
+      ${st.note?`<div class="verse-note-preview">📝 ${html(st.note)}</div>`:''}
+      <div class="button-row">
+        <button class="secondary-btn" data-bookmark="${html(ref)}">${st.saved?'★':'☆'} ${tr('save')}</button>
+        <button class="secondary-btn" data-toggle-highlight="${html(key)}">✦ ${tr('highlight')}</button>
+        <button class="secondary-btn" data-note-verse="${html(noteBoxId)}">📝 ${tr('writeNote')}</button>
+        <button class="secondary-btn" data-share-verse="${html(ref)}" data-share-text="${html((v.text?.[state.lang]||v.text?.en||''))}">↗ ${tr('share')}</button>
+      </div>
+      <div id="${html(noteBoxId)}" class="verse-note-box hidden"><textarea data-note-input="${html(key)}" maxlength="1000" placeholder="${tr('writeNote')}">${html(st.note||'')}</textarea><button class="primary-btn" data-save-verse-note="${html(key)}">${tr('saveNote')}</button></div>
+    </div>`;
+  }).join('');
+  view.innerHTML=card(title, `<div class="reader">${rows}</div>`);
+  if(focusVerse){ setTimeout(()=>document.getElementById('v-'+focusVerse)?.scrollIntoView({behavior:'smooth',block:'center'}),150); }
 }
 async function bibleSearch(q){
   await loadBibleMeta(); let out=[];
@@ -783,7 +837,7 @@ async function school(params={}){
   if(cloudAccess) access = cloudAccess;
   const approved = access.status==='approved' || access.approvedBy==='admin';
   if(!approved){
-    view.innerHTML=card(tr('school'), `<p>${tr('schoolAccessText')}</p><p class="muted">${tr('schoolNotApproved')}</p><span class="badge">${access.status==='pending'?tr('pending'):tr('guest')}</span><div class="button-row"><button class="primary-btn" data-go="school" data-params='{"form":true}'>${tr('register')}</button><button class="secondary-btn" data-go="school">${tr('syncApproval')}</button></div>`);
+    view.innerHTML=card(tr('school'), `<p>${tr('schoolAccessText')}</p><p class="muted">${tr('schoolNotApproved')}</p><p class="muted">${tr('approvedRefreshHint')}</p><span class="badge">${access.status==='pending'?tr('pending'):tr('guest')}</span><div class="button-row"><button class="primary-btn" data-go="school" data-params='{"form":true}'>${tr('register')}</button><button class="secondary-btn" data-go="school">${tr('syncApproval')}</button></div>`);
     return;
   }
   if(params.lesson) return schoolLesson(d, params.lesson);
@@ -865,7 +919,7 @@ async function qna(){
 async function settings(){
   const perm=typeof Notification==='undefined'?'default':Notification.permission;
   const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');
-  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است. برای آیفون، اپ را به Home Screen اضافه کنید و سپس اعلان‌ها را فعال کنید. پیام‌های دریافت‌شده در صندوق ورودی اپ نیز ذخیره می‌شوند.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time. On iPhone, add the app to Home Screen, then enable notifications. Received messages are also saved in the app inbox.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>OmideNo7 v1.4.1</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
+  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است. برای آیفون، اپ را به Home Screen اضافه کنید و سپس اعلان‌ها را فعال کنید. پیام‌های دریافت‌شده در صندوق ورودی اپ نیز ذخیره می‌شوند.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time. On iPhone, add the app to Home Screen, then enable notifications. Received messages are also saved in the app inbox.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>OmideNo7 v1.5.0</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
   $('#settingsLang').value=state.lang; $('#settingsLang').onchange=e=>setLang(e.target.value);
   $('#enableNotify').onclick=enableNotifications;
   $('#clearCache').onclick=async()=>{ try{ if('caches' in window){ const keys=await caches.keys(); await Promise.all(keys.map(k=>caches.delete(k))); } if('serviceWorker' in navigator){ const rs=await navigator.serviceWorker.getRegistrations(); await Promise.all(rs.map(r=>r.update())); } }catch(e){} alert(tr('saved')); location.reload(); };
@@ -923,10 +977,15 @@ function bindDynamic(){
   $$('[data-go]').forEach(el=>el.onclick=()=>navigate(el.dataset.go, JSON.parse(el.dataset.params||'{}')));
   $$('[data-dailytab]').forEach(el=>el.onclick=()=>{ state.dailyTab=el.dataset.dailytab; render('daily',{},true); });
   $$('[data-save-note]').forEach(el=>el.onclick=()=>{ const content=el.previousElementSibling?.value||''; localStorage.setItem('nh7_note_'+el.dataset.saveNote, content); saveNoteCloud('note_'+el.dataset.saveNote, content).catch(console.warn); el.textContent=tr('saved'); });
-  $$('[data-bookmark]').forEach(el=>el.onclick=()=>{ const arr=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]'); if(!arr.includes(el.dataset.bookmark)) arr.push(el.dataset.bookmark); localStorage.setItem('nh7_bookmarks',JSON.stringify(arr)); saveVerseCloud(el.dataset.bookmark).catch(console.warn); addPoints(5,'first_verse'); el.textContent='★ '+tr('saved'); });
+  $$('[data-bookmark]').forEach(el=>el.onclick=()=>{ const arr=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]'); if(!arr.includes(el.dataset.bookmark)) arr.push(el.dataset.bookmark); localStorage.setItem('nh7_bookmarks',JSON.stringify(arr)); try{ const key=el.closest('.reader-verse')?.dataset?.verseKey; if(key){ const st=JSON.parse(localStorage.getItem(key)||'{}'); st.saved=true; localStorage.setItem(key,JSON.stringify(st)); }}catch(e){} saveVerseCloud(el.dataset.bookmark).catch(console.warn); addPoints(5,'first_verse'); el.textContent='★ '+tr('saved'); });
+  $$('[data-delete-bookmark]').forEach(el=>el.onclick=(ev)=>{ ev.stopPropagation(); const ref=el.dataset.deleteBookmark; const arr=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]').filter(x=>String(x)!==String(ref)); localStorage.setItem('nh7_bookmarks',JSON.stringify(arr)); render(state.route,state.params,true); });
   $$('[data-highlight]').forEach(el=>el.onclick=()=>el.closest('.reader-verse')?.classList.toggle('highlighted'));
+  $$('[data-toggle-highlight]').forEach(el=>el.onclick=()=>{ const key=el.dataset.toggleHighlight; const st=JSON.parse(localStorage.getItem(key)||'{}'); st.highlight=!st.highlight; localStorage.setItem(key,JSON.stringify(st)); el.closest('.reader-verse')?.classList.toggle('highlighted', !!st.highlight); });
+  $$('[data-note-verse]').forEach(el=>el.onclick=()=>{ const box=$('#'+el.dataset.noteVerse); if(box) box.classList.toggle('hidden'); });
+  $$('[data-save-verse-note]').forEach(el=>el.onclick=()=>{ const key=el.dataset.saveVerseNote; const input=$(`[data-note-input="${CSS.escape(key)}"]`); const st=JSON.parse(localStorage.getItem(key)||'{}'); st.note=(input?.value||'').slice(0,1000); localStorage.setItem(key,JSON.stringify(st)); el.textContent=tr('saved'); });
+  $$('[data-share-verse]').forEach(el=>el.onclick=async()=>{ const txt=`${localizeRef(el.dataset.shareVerse)} — ${el.dataset.shareText||''}`; try{ if(navigator.share) await navigator.share({text:txt}); else { await navigator.clipboard.writeText(txt); alert(tr('saved')); } }catch(e){} });
   $$('[data-complete-daily]').forEach(el=>el.onclick=()=>{ const key='nh7_daily_done_'+el.dataset.completeDaily; if(!localStorage.getItem(key)){ localStorage.setItem(key,'1'); saveProgressCloud(key,{done:true,at:new Date().toISOString()}).catch(console.warn); addPoints(3,'daily_1'); } el.textContent=tr('dailyCompleted'); });
-  $$('[data-open-ref]').forEach(el=>el.onclick=async()=>{ await loadBibleMeta(); const ref=parseRef(el.dataset.openRef); if(ref) navigate('bible',{mode:'chapter',bookId:ref.bookId,chapter:ref.chapter}); });
+  $$('[data-open-ref]').forEach(el=>el.onclick=async()=>{ await loadBibleMeta(); const ref=parseRef(el.dataset.openRef); if(ref){ const params={mode:'chapter',bookId:ref.bookId,chapter:ref.chapter}; if((el.dataset.openRefMode||'verse')==='verse') params.verse=ref.verse; navigate('bible',params); } });
   $$('[data-reveal-ref]').forEach(el=>el.onclick=()=>revealVerse(el));
   $$('[data-read-range]').forEach(el=>el.onclick=()=>revealReadingRange(el));
   $$('[data-toggle-panel]').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.togglePanel); if(p){ p.classList.toggle('hidden'); el.textContent=p.classList.contains('hidden')?(el.dataset.togglePanel==='notesPanel'?tr('showMyNotes'):tr('showSavedVerses')):tr('hide'); }});
@@ -938,9 +997,12 @@ function bindDynamic(){
   $$('[data-submit-registration]').forEach(el=>el.onclick=()=>collectRegistration(el.dataset.submitRegistration));
   const run=$('#runBibleSearch'); if(run) run.onclick=()=>navigate('bible',{q:$('#bibleSearch').value},true);
   $('#startGratitude')?.addEventListener('click',()=>{ localStorage.setItem('nh7_gratitude_start',todayKey()); addPoints(5,'gratitude_1'); render('daily',{tab:'gratitude'},true); });
-  $('#completeGratitude')?.addEventListener('click',()=>{ const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]'); const current=Math.min(completed.length+1,30); if(!completed.includes(current)) completed.push(current); localStorage.setItem('nh7_gratitude_completed',JSON.stringify(completed)); const gnote=$('#gratitudeNote')?.value||''; localStorage.setItem('nh7_gratitude_note_'+current,gnote); saveNoteCloud('gratitude_note_'+current, gnote).catch(console.warn); saveProgressCloud('gratitude_completed',{completed}).catch(console.warn); addPoints(10,'gratitude_1'); render('daily',{tab:'gratitude'},true); });
+  $('#completeGratitude')?.addEventListener('click',(ev)=>{ const current=Number(ev.currentTarget.dataset.gratitudeDay||1); const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]'); if(!completed.includes(current)) completed.push(current); completed.sort((a,b)=>a-b); localStorage.setItem('nh7_gratitude_completed',JSON.stringify(completed)); const gnote=$('#gratitudeNote')?.value||''; localStorage.setItem('nh7_gratitude_note_'+current,gnote); saveNoteCloud('gratitude_note_'+current, gnote).catch(console.warn); saveProgressCloud('gratitude_completed',{completed}).catch(console.warn); addPoints(10,'gratitude_1'); render('daily',{tab:'gratitude',gday:current},true); });
+  $('#undoGratitude')?.addEventListener('click',(ev)=>{ const current=Number(ev.currentTarget.dataset.gratitudeDay||1); const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]').filter(x=>Number(x)!==current); localStorage.setItem('nh7_gratitude_completed',JSON.stringify(completed)); saveProgressCloud('gratitude_completed',{completed}).catch(console.warn); render('daily',{tab:'gratitude',gday:current},true); });
 }
 
+window.addEventListener('popstate', (ev)=>{ const st=ev.state||{}; if(st.route){ state.route=st.route; state.params=st.params||{}; render(state.route,state.params,true); } else { back(); } });
+try{ history.replaceState({route:state.route,params:state.params},'', '#'+encodeURIComponent(state.route)); }catch(e){}
 $('#langSelect').onchange=e=>setLang(e.target.value);
 $('#inboxBtn')?.addEventListener('click',()=>navigate('inbox',{},false));
 $('#backBtn').onclick=back;
