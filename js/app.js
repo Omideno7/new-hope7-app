@@ -246,9 +246,25 @@ function defaultMeetingSettings(){
 async function fetchMeetingSettings(){
   if(!CLOUD_ENABLED || !navigator.onLine) return defaultMeetingSettings();
   try{
-    const rows = await cloudFetch('meeting_settings?select=*&id=eq.active&limit=1', {method:'GET'});
+    // v1.6.4: use a security-definer RPC so approved school/meeting users always receive
+    // the latest admin-edited meeting link and security code. This avoids RLS/header/cache
+    // issues that caused the app to fall back to the old built-in meeting details.
+    try{
+      const rpc = await cloudRpc('nh7_get_meeting_settings', {
+        p_email: currentUserEmail(),
+        p_device_id: deviceId()
+      });
+      const row = Array.isArray(rpc) ? rpc[0] : rpc;
+      if(row && (row.meeting_url || row.security_code || row.extra_info)){
+        return Object.assign(defaultMeetingSettings(), row, {phone_number:'', access_code:''});
+      }
+    }catch(rpcErr){
+      console.warn('Meeting settings RPC failed, trying REST fallback', rpcErr);
+    }
+
+    const rows = await cloudFetch('meeting_settings?select=*&id=eq.active&limit=1&_ts='+Date.now(), {method:'GET', headers:{'Cache-Control':'no-cache'}});
     const row = Array.isArray(rows) ? rows[0] : null;
-    return row || defaultMeetingSettings();
+    return row ? Object.assign(defaultMeetingSettings(), row, {phone_number:'', access_code:''}) : defaultMeetingSettings();
   }catch(e){ console.warn('Meeting settings load failed', e); return defaultMeetingSettings(); }
 }
 function renderMeetingDetails(settings){
@@ -1052,7 +1068,7 @@ async function resetPassword(){
 async function settings(){
   const perm=typeof Notification==='undefined'?'default':Notification.permission;
   const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');
-  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است. برای آیفون، اپ را به Home Screen اضافه کنید و سپس اعلان‌ها را فعال کنید. پیام‌های دریافت‌شده در صندوق ورودی اپ نیز ذخیره می‌شوند.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time. On iPhone, add the app to Home Screen, then enable notifications. Received messages are also saved in the app inbox.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>OmideNo7 v1.6.3</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
+  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است. برای آیفون، اپ را به Home Screen اضافه کنید و سپس اعلان‌ها را فعال کنید. پیام‌های دریافت‌شده در صندوق ورودی اپ نیز ذخیره می‌شوند.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time. On iPhone, add the app to Home Screen, then enable notifications. Received messages are also saved in the app inbox.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>OmideNo7 v1.6.4</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
   $('#settingsLang').value=state.lang; $('#settingsLang').onchange=e=>setLang(e.target.value);
   $('#enableNotify').onclick=enableNotifications;
   $('#clearCache').onclick=async()=>{ try{ if('caches' in window){ const keys=await caches.keys(); await Promise.all(keys.map(k=>caches.delete(k))); } if('serviceWorker' in navigator){ const rs=await navigator.serviceWorker.getRegistrations(); await Promise.all(rs.map(r=>r.update())); } }catch(e){} alert(tr('saved')); location.reload(); };

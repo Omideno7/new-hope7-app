@@ -42,3 +42,7 @@ OneSignal Web Push connected with App ID. Enable notifications from Home or Sett
 - School approval now syncs from Supabase like Church Meetings.
 - Registration status lookup now prioritizes approved rows over newer duplicate pending rows.
 - Service worker cache updated to force refresh.
+
+
+## v1.6.4
+- Fixed live meeting settings sync for approved users via secure RPC.
