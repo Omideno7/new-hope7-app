@@ -1,7 +1,7 @@
 try { importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js'); } catch (e) { console.warn('OneSignal SW unavailable', e); }
-const CACHE = 'omideno7-v1.6.4';
+const CACHE = 'omideno7-v1.6.4-admin-v1';
 const APP_SHELL = [
-  './','./index.html','./css/styles.css','./js/app.js','./manifest.json','./assets/logo.png',
+  './','./index.html','./admin.html','./css/styles.css','./js/app.js','./manifest.json','./admin-manifest.json','./assets/logo.png','./assets/admin-icon-192.png','./assets/admin-icon-512.png','./assets/admin-apple-touch-icon.png',
   './data/app/opening_messages_365.json','./data/church/church_config.json','./data/church/about.json',
   './data/audio/messages.json','./data/daily/daily_word_365.json','./data/daily/faith_proclamations_365.json','./data/daily/daily_juice_365.json','./data/gratitude/gratitude_plan_30_days.json','./data/salvation/need_salvation.json','./data/school/school_content.json','./data/bible/plans/reading_plans_1yr_2yr.json','./offline/index.html'
 ];
