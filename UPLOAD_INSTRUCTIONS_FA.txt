@@ -1,5 +1,1 @@
-1) ابتدا supabase_v1_8_0_dynamic_school.sql را در Supabase SQL Editor اجرا کنید.
-2) سپس فقط admin.html، js/app.js و service-worker.js را در GitHub جایگزین کنید.
-3) فایل SQL را لازم نیست داخل GitHub آپلود کنید.
-4) پس از Deploy، Cache را تازه کنید و در پنل ادمین «مدیریت مدرسه» را باز کنید.
-5) فقط یک بار دکمه «واردکردن کلاس‌های فعلی اپ» را بزنید.
+ابتدا SQL را اجرا کنید. سپس سه فایل admin.html و js/app.js و service-worker.js را جایگزین کنید.
