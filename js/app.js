@@ -285,27 +285,33 @@ async function fetchLatestRegistration(kind){
   const localKey = kind==='meeting' ? 'nh7_meeting_access' : 'nh7_school_access';
   try{
     const local = JSON.parse(localStorage.getItem(localKey)||'{}');
-    const email = (local.email || currentUserEmail() || '').trim().toLowerCase();
+    const email = (currentUserEmail() || local.email || '').trim().toLowerCase();
     const normalize = (row)=>Object.assign({}, row?.payload||{}, {
-      email: (row?.payload?.email || email || local.email || '').trim().toLowerCase(),
+      email: (row?.payload?.email || row?.email || email || local.email || '').trim().toLowerCase(),
       status: row?.status || 'pending',
-      cloudId: row?.id || local.cloudId || '',
-      approvedBy: row?.status==='approved' ? 'admin' : (local.approvedBy||''),
+      cloudId: row?.registration_id || row?.id || local.cloudId || '',
+      approvedBy: (row?.approved || row?.status==='approved') ? 'admin' : (local.approvedBy||''),
       syncedAt: new Date().toISOString()
     });
 
-    // Preferred: secure RPC installed by the SQL file. It gives priority to any approved row by email.
+    // Preferred v2 RPC: uses the signed-in account email, returns the approved row and its profile payload.
+    try{
+      const rpcRows = await cloudRpc('nh7_registration_access_v2', {p_type:kind, p_email:email, p_device_id:deviceId()});
+      const r = Array.isArray(rpcRows) ? rpcRows[0] : rpcRows;
+      if(r && r.found){
+        const data = Object.assign({}, local, r.payload||{}, normalize(r));
+        localStorage.setItem(localKey, JSON.stringify(data));
+        if(kind==='school') localStorage.setItem('nh7_user_profile', JSON.stringify({name:String((data.firstName||'')+' '+(data.lastName||'')).trim(),email:data.email||email,phone:data.phone||''}));
+        return data;
+      }
+    }catch(v2Err){ console.warn('Registration v2 RPC unavailable, using legacy lookup', v2Err); }
+
+    // Legacy secure RPC fallback.
     try{
       const rpcRows = await cloudRpc('nh7_registration_status', {p_type:kind, p_email:email, p_device_id:deviceId()});
       const r = Array.isArray(rpcRows) ? rpcRows[0] : rpcRows;
       if(r && r.found){
-        const data = Object.assign({}, local, {
-          email: (email || r.email || local.email || '').trim().toLowerCase(),
-          status: r.status || 'pending',
-          cloudId: r.registration_id || local.cloudId || '',
-          approvedBy: r.approved ? 'admin' : (local.approvedBy||''),
-          syncedAt: new Date().toISOString()
-        });
+        const data = Object.assign({}, local, normalize(r));
         localStorage.setItem(localKey, JSON.stringify(data));
         return data;
       }
@@ -430,9 +436,13 @@ function getKnownUserProfile(){
   try{
     const s=JSON.parse(localStorage.getItem('nh7_school_access')||'{}');
     const m=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{}');
+    const cached=JSON.parse(localStorage.getItem('nh7_user_profile')||'{}');
+    const session=authSession();
     const p=Object.assign({}, m||{}, s||{});
-    return {name:String((p.firstName||'')+' '+(p.lastName||'')).trim(), email:String(p.email||currentUserEmail()||'').trim().toLowerCase(), phone:String(p.phone||'').trim()};
-  }catch(e){ return {name:'',email:currentUserEmail(),phone:''}; }
+    const metadataName=String(session?.user?.user_metadata?.full_name||session?.user?.user_metadata?.name||'').trim();
+    const registrationName=String((p.firstName||'')+' '+(p.lastName||'')).trim();
+    return {name:registrationName||cached.name||metadataName, email:String(p.email||cached.email||currentUserEmail()||'').trim().toLowerCase(), phone:String(p.phone||cached.phone||'').trim()};
+  }catch(e){ return {name:String(authSession()?.user?.user_metadata?.full_name||''),email:currentUserEmail(),phone:''}; }
 }
 
 function registrationFormHtml(kind, access={}){
@@ -474,7 +484,7 @@ async function collectRegistration(kind){
     const msg=String(e.message||'').toLowerCase();
     if(!msg.includes('already')&&!msg.includes('registered')&&!msg.includes('exists')) console.warn('Account creation',e);
   }
-  localStorage.removeItem(EXPLICIT_LOGOUT_KEY); localStorage.setItem('nh7_manual_email',data.email);
+  localStorage.removeItem(EXPLICIT_LOGOUT_KEY); localStorage.setItem('nh7_manual_email',data.email); localStorage.setItem('nh7_user_profile',JSON.stringify({name:(data.firstName+' '+data.lastName).trim(),email:data.email,phone:data.phone||''}));
   const key=kind==='meeting'?'nh7_meeting_access':'nh7_school_access'; localStorage.setItem(key,JSON.stringify(data));
   try{await saveRegistrationCloud(data);alert(tr('registerDone'))}catch(e){console.warn(e);alert(state.lang==='fa'?'درخواست روی دستگاه ذخیره شد و بعداً همگام می‌شود.':'Request saved locally and will sync later.')}
   if(data.salvationPrayer==='no')navigate('salvation',{},true);else render(kind==='meeting'?'meetings':'school',{},true);
@@ -1026,7 +1036,8 @@ async function school(params={}){
     $('#schoolLogoutBtn')?.addEventListener('click',()=>logoutAccount('school'));return;
   }
   if(params.lesson)return schoolLesson(d,params.lesson);
-  view.innerHTML=card(tr('school'),`<span class="badge">${tr('approved')}</span><p class="success-text">${tr('enterSchool')}</p><div class="button-row"><button class="secondary-btn" data-go="account">${tr('accountActions')}</button><button class="secondary-btn" id="schoolLogoutBtn">${tr('logoutAccount')}</button></div><div class="list">${d.lessons.map(l=>`<button class="list-btn" data-go="school" data-params='${html(JSON.stringify({lesson:l.lesson_code}))}'><strong>${html(l.translations?.[state.lang]?.class_title||l.translations?.en?.class_title)}</strong><small>${html(l.translations?.[state.lang]?.lesson_title||'')}</small></button>`).join('')}</div>`);
+  const profile=getKnownUserProfile();
+  view.innerHTML=card(tr('school'),`<span class="badge">${tr('approved')}</span><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(profile.email||currentUserEmail()||'')}</p></div><p class="success-text">${tr('enterSchool')}</p><div class="button-row"><button class="secondary-btn" data-go="account">${tr('accountActions')}</button><button class="secondary-btn" id="schoolLogoutBtn">${tr('logoutAccount')}</button></div><div class="list">${d.lessons.map(l=>`<button class="list-btn" data-go="school" data-params='${html(JSON.stringify({lesson:l.lesson_code}))}'><strong>${html(l.translations?.[state.lang]?.class_title||l.translations?.en?.class_title)}</strong><small>${html(l.translations?.[state.lang]?.lesson_title||'')}</small></button>`).join('')}</div>`);
   $('#schoolLogoutBtn')?.addEventListener('click',()=>logoutAccount('school'));
 }
 async function signInSchool(){
