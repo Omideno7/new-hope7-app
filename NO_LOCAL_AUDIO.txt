@@ -1,5 +1,7 @@
-New Hope 7 v1.7.0 GitHub package (no bundled audio)
+New Hope 7 — No Local Audio Package
 
-Audio files are intentionally excluded from this repository package.
-The app reads message and sermon audio from Supabase Storage URLs.
-Do not upload large audio files to GitHub.
+This project ZIP intentionally contains no sermon, prayer, teaching, or school audio media files.
+All audio content must be managed from the Admin Panel and loaded from Supabase Storage / the configured remote URL.
+Do not add MP3, M4A, WAV, AAC, OGG, or FLAC files to the GitHub deployment package.
+
+Code, audio player features, metadata detection, notes, playback speed, and resume playback remain included.
