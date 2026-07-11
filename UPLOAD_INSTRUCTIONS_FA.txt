@@ -1,1 +1,6 @@
-ابتدا SQL را اجرا کنید. سپس سه فایل admin.html و js/app.js و service-worker.js را جایگزین کنید.
+فقط این فایل‌ها را در GitHub جایگزین کنید:
+admin.html
+js/app.js
+service-worker.js
+
+SQL جدید لازم نیست. پس از Deploy روی کامپیوتر Ctrl+Shift+R بزنید و در گوشی اپ را کاملاً ببندید و دوباره باز کنید.

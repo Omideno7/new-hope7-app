@@ -828,18 +828,21 @@ async function home(){
 
 
 async function fetchDynamicDailyItem(contentType,day){
-  const key=`${contentType}:${day}:${state.lang}`;
-  if(dailyContentCache[key]) return dailyContentCache[key];
+  // Always ask Supabase for the newest saved version. Do not keep stale daily
+  // content in memory or the browser HTTP cache after an admin edit.
   if(!CLOUD_ENABLED||!navigator.onLine) return null;
   try{
-    const rows=await cloudFetch(`daily_content?select=content_data&content_type=eq.${encodeURIComponent(contentType)}&day_number=eq.${Number(day)}&is_active=eq.true&limit=1`,{method:'GET'});
-    const item=Array.isArray(rows)&&rows[0]?.content_data?rows[0].content_data:null;
-    if(item) dailyContentCache[key]=item;
-    return item;
+    const rows=await cloudFetch(`daily_content?select=content_data,updated_at&content_type=eq.${encodeURIComponent(contentType)}&day_number=eq.${Number(day)}&is_active=eq.true&order=updated_at.desc&limit=1`,{method:'GET',cache:'no-store'});
+    let item=Array.isArray(rows)&&rows[0]?.content_data?rows[0].content_data:null;
+    if(typeof item==='string'){
+      try{ item=JSON.parse(item); }catch(_){ item=null; }
+    }
+    return item&&typeof item==='object'?item:null;
   }catch(e){console.warn('Dynamic daily content fallback',e);return null}
 }
 function mergeDailyItem(localItem,remoteItem){return remoteItem&&typeof remoteItem==='object'?Object.assign({},localItem||{},remoteItem):localItem}
 async function daily(params={}){
+  Object.keys(dailyContentCache).forEach(k=>delete dailyContentCache[k]);
   if(params.tab) state.dailyTab = params.tab;
   const tabs=[['word',tr('dailyWord')],['faith',tr('faithProclamation')],['juice',tr('dailyJuice')],['gratitude',tr('gratitudeCourse')]];
   let out=`<div class="tabs">${tabs.map(([id,label])=>`<button class="tab ${state.dailyTab===id?'active':''}" data-dailytab="${id}">${html(label)}</button>`).join('')}</div>`;
@@ -1078,11 +1081,26 @@ function showPlan(p){
 
 async function loadSchoolContent(){
   const fallback=await jfetch('data/school/school_content.json');
+  const baseLessons=Array.isArray(fallback?.lessons)?fallback.lessons:[];
   try{
     const rows=await cloudFetch('school_lessons?select=*&is_active=eq.true&order=lesson_order.asc',{method:'GET'});
-    if(Array.isArray(rows)&&rows.length){return Object.assign({},fallback,{lessons:rows.map(r=>Object.assign({},r.content_data||{},{lesson_code:r.lesson_code,lesson_order:r.lesson_order}))})}
+    if(Array.isArray(rows)&&rows.length){
+      const cloudLessons=rows.map(r=>Object.assign({},r.content_data||{},{lesson_code:r.lesson_code,lesson_order:r.lesson_order}));
+      const byCode=new Map(baseLessons.map(x=>[String(x.lesson_code||''),x]));
+      // Cloud rows override matching built-in classes, but never remove untouched built-in classes.
+      cloudLessons.forEach(x=>{const code=String(x.lesson_code||'');if(code)byCode.set(code,Object.assign({},byCode.get(code)||{},x))});
+      const merged=[...byCode.values()].sort((a,b)=>Number(a.lesson_order||999)-Number(b.lesson_order||999));
+      return Object.assign({},fallback,{lessons:merged});
+    }
   }catch(e){console.warn('school cloud fallback',e)}
   return fallback;
+}
+function schoolCourseInfo(l){
+  const c=l?.course||l?.program||{};
+  const code=String(c.code||'foundation_school');
+  const defaults={fa:'مدرسه بنیادی مسیحی',en:'Christian Foundation School',hr:'Škola kršćanskih temelja'};
+  const title=(c.title&&typeof c.title==='object')?c.title:{fa:c.title_fa,en:c.title_en,hr:c.title_hr};
+  return {code,title:{fa:title?.fa||defaults.fa,en:title?.en||defaults.en,hr:title?.hr||defaults.hr},order:Number(c.order||1)};
 }
 
 async function school(params={}){
@@ -1105,7 +1123,7 @@ async function school(params={}){
   }
   if(params.lesson)return schoolLesson(d,params.lesson);
   const profile=getKnownUserProfile();
-  view.innerHTML=card(tr('school'),`<span class="badge">${tr('approved')}</span><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(profile.email||currentUserEmail()||'')}</p></div><p class="success-text">${tr('enterSchool')}</p><div class="button-row"><button class="secondary-btn" data-go="account">${tr('accountActions')}</button><button class="secondary-btn" id="schoolLogoutBtn">${tr('logoutAccount')}</button></div><div class="list">${d.lessons.map(l=>`<button class="list-btn" data-go="school" data-params='${html(JSON.stringify({lesson:l.lesson_code}))}'><strong>${html(l.translations?.[state.lang]?.class_title||l.translations?.en?.class_title)}</strong><small>${html(l.translations?.[state.lang]?.lesson_title||'')}</small></button>`).join('')}</div>`);
+  view.innerHTML=card(tr('school'),`<span class="badge">${tr('approved')}</span><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(profile.email||currentUserEmail()||'')}</p></div><p class="success-text">${tr('enterSchool')}</p><div class="button-row"><button class="secondary-btn" data-go="account">${tr('accountActions')}</button><button class="secondary-btn" id="schoolLogoutBtn">${tr('logoutAccount')}</button></div><div class="list">${(()=>{const groups=new Map();d.lessons.forEach(l=>{const c=schoolCourseInfo(l);if(!groups.has(c.code))groups.set(c.code,{info:c,lessons:[]});groups.get(c.code).lessons.push(l)});return [...groups.values()].sort((a,b)=>a.info.order-b.info.order).map(g=>`<section class="school-course-group"><h3>${html(g.info.title[state.lang]||g.info.title.en)}</h3>${g.lessons.sort((a,b)=>Number(a.lesson_order||999)-Number(b.lesson_order||999)).map(l=>`<button class="list-btn" data-go="school" data-params='${html(JSON.stringify({lesson:l.lesson_code}))}'><strong>${html(l.translations?.[state.lang]?.class_title||l.translations?.en?.class_title)}</strong><small>${html(l.translations?.[state.lang]?.lesson_title||'')}</small></button>`).join('')}</section>`).join('')})()}</div>`);
   $('#schoolLogoutBtn')?.addEventListener('click',()=>logoutAccount('school'));
 }
 async function signInSchool(){
