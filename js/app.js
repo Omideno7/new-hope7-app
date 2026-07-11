@@ -16,34 +16,54 @@ const state = {
 const sermonPlayerState={audio:null,current:null,saveTimer:null};
 function sermonProgressKey(id){return 'nh7_sermon_progress_'+String(id)}
 function sermonNoteKey(id){return 'nh7_sermon_note_'+String(id)}
-function formatAudioTime(sec){sec=Math.max(0,Number(sec)||0);const h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=Math.floor(sec%60);return h?`${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`:`${m}:${String(s).padStart(2,'0')}`}
+function formatAudioTime(sec){sec=Math.max(0,Number(sec)||0);const h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),ss=Math.floor(sec%60);return h?`${h}:${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`:`${m}:${String(ss).padStart(2,'0')}`}
+function sermonDurationSeconds(item){const exact=Number(item?.duration_seconds||0);if(exact>0)return exact;const mins=Number(item?.duration_minutes||0);return mins>0?Math.round(mins*60):0}
+function sermonDurationLabel(item){const sec=sermonDurationSeconds(item);return sec?formatAudioTime(sec):''}
 function ensureSermonPlayer(){
-  let shell=document.getElementById('globalSermonPlayer');
-  if(shell)return shell;
-  shell=document.createElement('section');shell.id='globalSermonPlayer';shell.className='global-sermon-player hidden';
-  shell.innerHTML=`<div class="gsp-head"><div><small id="gspLabel"></small><strong id="gspTitle"></strong></div><button id="gspClose" class="icon-btn" aria-label="Close">×</button></div><div class="gsp-row"><button id="gspBack" class="player-round">↶15</button><button id="gspPlay" class="player-main">▶</button><button id="gspForward" class="player-round">30↷</button><div class="gsp-time"><span id="gspCurrent">0:00</span><input id="gspSeek" type="range" min="0" max="1000" value="0"><span id="gspDuration">0:00</span></div><select id="gspSpeed" aria-label="Playback speed"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div>`;
-  document.body.appendChild(shell);
+  if(sermonPlayerState.audio)return sermonPlayerState.audio;
   const audio=new Audio();audio.preload='metadata';sermonPlayerState.audio=audio;
-  document.getElementById('gspPlay').onclick=()=>audio.paused?audio.play():audio.pause();
-  document.getElementById('gspBack').onclick=()=>audio.currentTime=Math.max(0,audio.currentTime-15);
-  document.getElementById('gspForward').onclick=()=>audio.currentTime=Math.min(audio.duration||Infinity,audio.currentTime+30);
-  document.getElementById('gspSeek').oninput=e=>{if(Number.isFinite(audio.duration))audio.currentTime=(Number(e.target.value)/1000)*audio.duration};
-  document.getElementById('gspSpeed').onchange=e=>{audio.playbackRate=Number(e.target.value)||1;localStorage.setItem('nh7_sermon_speed',String(audio.playbackRate))};
-  document.getElementById('gspClose').onclick=()=>{audio.pause();shell.classList.add('hidden');sermonPlayerState.current=null;updateSermonButtons()};
-  const sync=()=>{const cur=sermonPlayerState.current;document.getElementById('gspPlay').textContent=audio.paused?'▶':'❚❚';document.getElementById('gspCurrent').textContent=formatAudioTime(audio.currentTime);document.getElementById('gspDuration').textContent=formatAudioTime(audio.duration);document.getElementById('gspSeek').value=Number.isFinite(audio.duration)&&audio.duration?Math.round(audio.currentTime/audio.duration*1000):0;if(cur){clearTimeout(sermonPlayerState.saveTimer);sermonPlayerState.saveTimer=setTimeout(()=>{localStorage.setItem(sermonProgressKey(cur.id),JSON.stringify({time:audio.currentTime,duration:audio.duration||cur.duration||0,updatedAt:new Date().toISOString()}))},500)}updateSermonButtons()};
+  const sync=()=>{
+    const cur=sermonPlayerState.current;if(!cur)return;
+    clearTimeout(sermonPlayerState.saveTimer);
+    sermonPlayerState.saveTimer=setTimeout(()=>localStorage.setItem(sermonProgressKey(cur.id),JSON.stringify({time:audio.currentTime,duration:audio.duration||cur.duration||0,updatedAt:new Date().toISOString()})),500);
+    updateInlineSermonPlayers();
+  };
   ['timeupdate','play','pause','loadedmetadata','durationchange','ended'].forEach(ev=>audio.addEventListener(ev,sync));
-  audio.addEventListener('ended',()=>{if(sermonPlayerState.current)localStorage.setItem(sermonProgressKey(sermonPlayerState.current.id),JSON.stringify({time:0,duration:audio.duration||0,completed:true,updatedAt:new Date().toISOString()}))});
-  return shell;
+  audio.addEventListener('ended',()=>{if(sermonPlayerState.current)localStorage.setItem(sermonProgressKey(sermonPlayerState.current.id),JSON.stringify({time:0,duration:audio.duration||0,completed:true,updatedAt:new Date().toISOString()}));updateInlineSermonPlayers()});
+  return audio;
 }
-function updateSermonButtons(){document.querySelectorAll('[data-sermon-play]').forEach(b=>{const same=sermonPlayerState.current&&String(sermonPlayerState.current.id)===String(b.dataset.sermonPlay);b.textContent=same&&!sermonPlayerState.audio?.paused?'❚❚':(same?'▶':'▶ '+tr('listenAudio'))})}
+function updateInlineSermonPlayers(){
+  const audio=sermonPlayerState.audio,cur=sermonPlayerState.current;
+  document.querySelectorAll('[data-inline-player]').forEach(panel=>{
+    const same=cur&&String(cur.id)===String(panel.dataset.inlinePlayer);
+    panel.classList.toggle('hidden',!same);
+    if(!same)return;
+    const play=panel.querySelector('[data-inline-play]'),seek=panel.querySelector('[data-inline-seek]'),now=panel.querySelector('[data-inline-now]'),total=panel.querySelector('[data-inline-total]'),speed=panel.querySelector('[data-inline-speed]');
+    if(play)play.textContent=audio?.paused?'▶':'❚❚';
+    if(now)now.textContent=formatAudioTime(audio?.currentTime||0);
+    if(total)total.textContent=formatAudioTime((Number.isFinite(audio?.duration)&&audio.duration)||cur.duration||0);
+    if(seek)seek.value=Number.isFinite(audio?.duration)&&audio.duration?Math.round((audio.currentTime/audio.duration)*1000):0;
+    if(speed)speed.value=String(audio?.playbackRate||1);
+  });
+  document.querySelectorAll('[data-sermon-play]').forEach(btn=>{const same=cur&&String(cur.id)===String(btn.dataset.sermonPlay);btn.textContent=same&&!audio?.paused?'❚❚':`▶ ${same?tr('continueListening'):tr('listenAudio')}`});
+}
 function playSermon(item,restart=false){
-  if(!item?.audio_url)return;const shell=ensureSermonPlayer(),audio=sermonPlayerState.audio,same=sermonPlayerState.current&&String(sermonPlayerState.current.id)===String(item.id);
-  if(same&&!restart){audio.paused?audio.play():audio.pause();return}
-  sermonPlayerState.current={id:item.id,title:item['title_'+state.lang]||item.title_fa||item.title_en||'Audio',audio_url:item.audio_url,duration:Number(item.duration_minutes||0)*60};
-  audio.src=item.audio_url;audio.playbackRate=Number(localStorage.getItem('nh7_sermon_speed')||1);document.getElementById('gspSpeed').value=String(audio.playbackRate);
-  document.getElementById('gspLabel').textContent=tr('nowPlaying');document.getElementById('gspTitle').textContent=sermonPlayerState.current.title;shell.classList.remove('hidden');
-  audio.addEventListener('loadedmetadata',function restore(){audio.removeEventListener('loadedmetadata',restore);if(!restart){try{const st=JSON.parse(localStorage.getItem(sermonProgressKey(item.id))||'{}');if(st.time>5&&(!audio.duration||st.time<audio.duration-10))audio.currentTime=st.time}catch(e){}}audio.play().catch(()=>{})});
+  if(!item?.audio_url)return;const audio=ensureSermonPlayer(),same=sermonPlayerState.current&&String(sermonPlayerState.current.id)===String(item.id);
+  if(same&&!restart){audio.paused?audio.play():audio.pause();updateInlineSermonPlayers();return}
+  sermonPlayerState.current={id:item.id,title:item['title_'+state.lang]||item.title_fa||item.title_en||'Audio',audio_url:item.audio_url,duration:sermonDurationSeconds(item)};
+  audio.src=item.audio_url;audio.playbackRate=Number(localStorage.getItem('nh7_sermon_speed')||1);
+  audio.addEventListener('loadedmetadata',function restore(){audio.removeEventListener('loadedmetadata',restore);if(!restart){try{const st=JSON.parse(localStorage.getItem(sermonProgressKey(item.id))||'{}');if(st.time>5&&(!audio.duration||st.time<audio.duration-10))audio.currentTime=st.time}catch(e){}}audio.play().catch(()=>{});updateInlineSermonPlayers()});
   if('mediaSession'in navigator){navigator.mediaSession.metadata=new MediaMetadata({title:sermonPlayerState.current.title,artist:'New Hope 7',artwork:item.cover_url?[{src:item.cover_url}]:[]});try{navigator.mediaSession.setActionHandler('seekbackward',()=>audio.currentTime=Math.max(0,audio.currentTime-15));navigator.mediaSession.setActionHandler('seekforward',()=>audio.currentTime=Math.min(audio.duration||Infinity,audio.currentTime+30));navigator.mediaSession.setActionHandler('play',()=>audio.play());navigator.mediaSession.setActionHandler('pause',()=>audio.pause())}catch(e){}}
+  updateInlineSermonPlayers();
+}
+function openSermonNote(item){
+  let modal=document.getElementById('sermonNoteModal');if(!modal){modal=document.createElement('div');modal.id='sermonNoteModal';modal.className='sermon-note-modal hidden';document.body.appendChild(modal)}
+  const title=item['title_'+state.lang]||item.title_fa||item.title_en||tr('sermonNotes');const note=localStorage.getItem(sermonNoteKey(item.id))||'';
+  modal.innerHTML=`<div class="sermon-note-dialog"><div class="note-dialog-head"><h3>${html(title)}</h3><button class="icon-btn" data-close-note>×</button></div><p class="muted">${tr('sermonNotes')}</p><textarea id="sermonModalNote" rows="8" placeholder="${tr('notes')}">${html(note)}</textarea><div class="button-row"><button class="primary-btn" data-save-modal-note="${html(item.id)}">${tr('saveSermonNote')}</button><button class="secondary-btn" data-close-note>${tr('back')}</button></div></div>`;
+  modal.classList.remove('hidden');
+  modal.querySelectorAll('[data-close-note]').forEach(b=>b.onclick=()=>modal.classList.add('hidden'));
+  modal.querySelector('[data-save-modal-note]')?.addEventListener('click',async e=>{const value=(modal.querySelector('#sermonModalNote')?.value||'').slice(0,5000);localStorage.setItem(sermonNoteKey(item.id),value);saveNoteCloud('sermon_note_'+item.id,value).catch(console.warn);e.currentTarget.textContent=tr('saved')});
+  modal.onclick=e=>{if(e.target===modal)modal.classList.add('hidden')};
 }
 
 
@@ -122,6 +142,9 @@ const V170_T = {
   hr:{signIn:'Prijava',signUp:'Izradi račun',password:'Lozinka',confirmPassword:'Potvrdi lozinku',showPassword:'Prikaži lozinku',hidePassword:'Sakrij lozinku',signedOut:'Odjavljeni ste.',signInHint:'Unesite email i lozinku za prijavu.',loginFailed:'Email ili lozinka nisu ispravni.',passwordMismatch:'Lozinke se ne podudaraju.',passwordMin:'Lozinka mora imati najmanje 6 znakova.',accountCreated:'Račun je izrađen. Ako je potvrda emaila uključena, provjerite email.',legacyRestore:'Obnovi odobreni pristup starijeg računa',sermons:'Propovijedi',watchYouTube:'Gledaj na YouTubeu',listenAudio:'Slušaj u aplikaciji',sermonSearch:'Pretraži propovijedi',allCategories:'Sve kategorije',noSermons:'Još nema objavljenih propovijedi.',duration:'Trajanje',notificationNativeUnsupported:'Izvorne obavijesti nisu dostupne u ovoj verziji.',notificationSettingsOpen:'Otvori postavke obavijesti',notificationUpdated:'Raspored obavijesti je ažuriran.',loginRequired:'Najprije se prijavite.',sermonNotes:'Bilješke za ovu propovijed',saveSermonNote:'Spremi bilješku',continueListening:'Nastavi slušati',restart:'Počni ispočetka',closePlayer:'Zatvori reproduktor',back15:'15 sekundi natrag',forward30:'30 sekundi naprijed',playbackSpeed:'Brzina reprodukcije',nowPlaying:'Sada svira',listened:'Poslušano'}
 };
 Object.keys(V170_T).forEach(l=>Object.assign(T[l],V170_T[l]));
+Object.assign(T.en,{schoolExistingLogin:'Sign in to school',schoolNewRegistration:'New registration',schoolLoginHelp:'Already registered? Sign in with the same email and password on any device.',sermonNoteButton:'Notes'});
+Object.assign(T.fa,{schoolExistingLogin:'ورود به مدرسه',schoolNewRegistration:'ثبت‌نام جدید',schoolLoginHelp:'اگر قبلاً ثبت‌نام کرده‌اید، در هر دستگاه با همان ایمیل و رمز عبور وارد شوید.',sermonNoteButton:'یادداشت'});
+Object.assign(T.hr,{schoolExistingLogin:'Prijava u školu',schoolNewRegistration:'Nova registracija',schoolLoginHelp:'Ako ste se već registrirali, prijavite se istim emailom i lozinkom na bilo kojem uređaju.',sermonNoteButton:'Bilješke'});
 
 const NEW_BIRTH_VIDEOS = [
   'https://youtu.be/u-G6r7rYNEE?is=8kokBIcdqkvQGayt',
@@ -986,21 +1009,38 @@ function showPlan(p){
 
 async function school(params={}){
   const d=await jfetch('data/school/school_content.json');
-  if(isExplicitlyLoggedOut() && !params.form){view.innerHTML=card(tr('school'),`<p>${tr('loginRequired')}</p><button class="primary-btn" data-go="account">${tr('signIn')}</button><button class="secondary-btn" data-go="school" data-params='${html(JSON.stringify({form:true}))}'>${tr('register')}</button>`);return;}
-  let access=JSON.parse(localStorage.getItem('nh7_school_access')||'{"status":"guest"}');
-  if(params.form){ view.innerHTML=registrationFormHtml('school', access); return; }
-  const cloudAccess = await fetchLatestRegistration('school');
-  if(cloudAccess) access = cloudAccess;
-  const approved = access.status==='approved' || access.approvedBy==='admin';
-  if(!approved){
-    view.innerHTML=card(tr('school'), `<p>${tr('schoolAccessText')}</p><p class="muted">${tr('schoolNotApproved')}</p><p class="muted">${tr('approvedRefreshHint')}</p><span class="badge">${access.status==='pending'?tr('pending'):tr('guest')}</span><div class="button-row"><button class="primary-btn" data-go="school" data-params='{"form":true}'>${tr('register')}</button><button class="secondary-btn" data-go="school">${tr('enterSchool')} / ${tr('refreshApproval')}</button></div>`);
-    return;
+  if(params.login){
+    view.innerHTML=card(tr('schoolExistingLogin'),`<p>${tr('schoolLoginHelp')}</p><input id="schoolLoginEmail" type="email" autocomplete="email" placeholder="${tr('email')}"><div class="password-wrap"><input id="schoolLoginPassword" type="password" autocomplete="current-password" placeholder="${tr('password')}"><button type="button" class="password-eye" data-toggle-password="schoolLoginPassword">👁</button></div><button class="primary-btn wide-btn" id="schoolSignInBtn">${tr('schoolExistingLogin')}</button><button class="link-button" data-go="account">${tr('forgotPassword')}</button><button class="secondary-btn wide-btn" data-go="school">${tr('back')}</button>`);
+    $('#schoolSignInBtn')?.addEventListener('click',signInSchool);bindPasswordToggles();return;
   }
-  if(params.lesson) return schoolLesson(d, params.lesson);
-  view.innerHTML=card(tr('school'), `<span class="badge">${tr('approved')}</span><p class="success-text">${tr('enterSchool')}</p><div class="button-row"><button class="secondary-btn" data-go="account">${tr('accountActions')}</button><button class="secondary-btn" id="schoolLogoutBtn">${tr('logoutAccount')}</button></div><div class="list">${d.lessons.map(l=>`<button class="list-btn" data-go="school" data-params='${html(JSON.stringify({lesson:l.lesson_code}))}'><strong>${html(l.translations?.[state.lang]?.class_title||l.translations?.en?.class_title)}</strong><small>${html(l.translations?.[state.lang]?.lesson_title||'')}</small></button>`).join('')}</div>`);
-  $('#schoolLogoutBtn')?.addEventListener('click', logoutAccount);
+  if(params.form){view.innerHTML=registrationFormHtml('school',JSON.parse(localStorage.getItem('nh7_school_access')||'{}'));return}
+  if(!isAccountLoggedIn()){
+    view.innerHTML=card(tr('school'),`<p>${tr('schoolAccessText')}</p><p class="muted">${tr('schoolLoginHelp')}</p><div class="school-entry-actions"><button class="primary-btn wide-btn" data-go="school" data-params='{"login":true}'>${tr('schoolExistingLogin')}</button><button class="secondary-btn wide-btn" data-go="school" data-params='{"form":true}'>${tr('schoolNewRegistration')}</button></div>`);return;
+  }
+  let access=JSON.parse(localStorage.getItem('nh7_school_access')||'{"status":"none"}');
+  const cloudAccess=await fetchLatestRegistration('school');if(cloudAccess)access=cloudAccess;
+  const approved=access.status==='approved'||access.approvedBy==='admin';
+  if(!approved){
+    const status=access.status==='pending'?`<span class="badge">${tr('pending')}</span>`:'';
+    view.innerHTML=card(tr('school'),`<p>${tr('schoolAccessText')}</p>${status}<p class="muted">${access.status==='pending'?tr('approvedRefreshHint'):tr('schoolNotApproved')}</p><div class="school-entry-actions">${access.status==='pending'?'':`<button class="primary-btn wide-btn" data-go="school" data-params='{"form":true}'>${tr('schoolNewRegistration')}</button>`}<button class="secondary-btn wide-btn" data-go="school">${tr('refreshApproval')}</button><button class="secondary-btn wide-btn" id="schoolLogoutBtn">${tr('logoutAccount')}</button></div>`);
+    $('#schoolLogoutBtn')?.addEventListener('click',()=>logoutAccount('school'));return;
+  }
+  if(params.lesson)return schoolLesson(d,params.lesson);
+  view.innerHTML=card(tr('school'),`<span class="badge">${tr('approved')}</span><p class="success-text">${tr('enterSchool')}</p><div class="button-row"><button class="secondary-btn" data-go="account">${tr('accountActions')}</button><button class="secondary-btn" id="schoolLogoutBtn">${tr('logoutAccount')}</button></div><div class="list">${d.lessons.map(l=>`<button class="list-btn" data-go="school" data-params='${html(JSON.stringify({lesson:l.lesson_code}))}'><strong>${html(l.translations?.[state.lang]?.class_title||l.translations?.en?.class_title)}</strong><small>${html(l.translations?.[state.lang]?.lesson_title||'')}</small></button>`).join('')}</div>`);
+  $('#schoolLogoutBtn')?.addEventListener('click',()=>logoutAccount('school'));
 }
+async function signInSchool(){
+  const email=($('#schoolLoginEmail')?.value||'').trim().toLowerCase(),password=$('#schoolLoginPassword')?.value||'';if(!email||!password){alert(tr('requiredField'));return}
+  try{const data=await authApi('token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})});saveAuthSession(data);localStorage.setItem('nh7_manual_email',email);localStorage.removeItem(EXPLICIT_LOGOUT_KEY);const schoolAccess=await fetchLatestRegistration('school');if(schoolAccess)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},schoolAccess,{email})));navigate('school',{},true)}catch(e){console.warn(e);alert(tr('loginFailed'))}
+}
+
 function schoolLesson(d, code){ const l=d.lessons.find(x=>x.lesson_code===code); const tx=l.translations?.[state.lang]||l.translations?.en||{}; const wr=l.written?.[state.lang]||l.written?.en||{}; const audioSrc=l.audio?.src || `public/audio/school/${l.audio?.fileName||'class-01-fa.mp3'}`; view.innerHTML=card(tx.class_title||tr('school'), `<p>${html(tx.lesson_text)}</p><div class="audio-placeholder"><strong>${tr('playAudio')}</strong><p>${html(l.audio?.fileName||'class-01-fa.mp3')}</p><audio controls src="${html(audioSrc)}"></audio></div><h3>${tr('assignment')}</h3><p>${html(tx.assignment_question)}</p><textarea placeholder="${tr('notes')}"></textarea><button class="secondary-btn" data-save-note="school-${code}">${tr('save')}</button><h3>${tr('fullLesson')}</h3><p>${html(wr.text||'')}</p>`); }
+
+function bindInlineSermonControls(){
+  $$('[data-sermon-play]').forEach(b=>b.onclick=e=>{e.stopPropagation();const item=window.__sermonMap?.[String(b.dataset.sermonPlay)];if(item)playSermon(item)});
+  $$('[data-sermon-note]').forEach(b=>b.onclick=e=>{e.stopPropagation();const item=window.__sermonMap?.[String(b.dataset.sermonNote)];if(item)openSermonNote(item)});
+  $$('[data-inline-player]').forEach(panel=>{const id=String(panel.dataset.inlinePlayer);panel.querySelector('[data-inline-play]')?.addEventListener('click',()=>{const item=window.__sermonMap?.[id];if(item)playSermon(item)});panel.querySelector('[data-inline-back]')?.addEventListener('click',()=>{const a=ensureSermonPlayer();a.currentTime=Math.max(0,a.currentTime-15)});panel.querySelector('[data-inline-forward]')?.addEventListener('click',()=>{const a=ensureSermonPlayer();a.currentTime=Math.min(a.duration||Infinity,a.currentTime+30)});panel.querySelector('[data-inline-seek]')?.addEventListener('input',e=>{const a=ensureSermonPlayer();if(Number.isFinite(a.duration))a.currentTime=(Number(e.target.value)/1000)*a.duration});panel.querySelector('[data-inline-speed]')?.addEventListener('change',e=>{const a=ensureSermonPlayer();a.playbackRate=Number(e.target.value)||1;localStorage.setItem('nh7_sermon_speed',String(a.playbackRate))})});
+}
 
 async function audio(params={}){
   let categories=[],sermons=[];
@@ -1010,10 +1050,11 @@ async function audio(params={}){
   if(Array.isArray(sermons)&&sermons.length){
     const catId=params.cat||''; const q=String(params.q||'').trim().toLowerCase();
     const filtered=sermons.filter(x=>(!catId||String(x.category_id)===String(catId))&&(!q||[x.title_fa,x.title_en,x.title_hr,x.description_fa,x.description_en,x.description_hr].some(v=>String(v||'').toLowerCase().includes(q))));
-    if(params.open){const x=sermons.find(v=>String(v.id)===String(params.open));if(!x)return;const title=x['title_'+state.lang]||x.title_fa||x.title_en;const desc=x['description_'+state.lang]||x.description_fa||x.description_en||'';let progress={};try{progress=JSON.parse(localStorage.getItem(sermonProgressKey(x.id))||'{}')}catch(e){}const pct=progress.duration?Math.min(100,Math.round((progress.time||0)/progress.duration*100)):0;const note=localStorage.getItem(sermonNoteKey(x.id))||'';view.innerHTML=card(title,`${x.cover_url?`<img class="sermon-cover" src="${html(x.cover_url)}" alt="">`:''}<p>${html(desc)}</p>${x.duration_minutes?`<span class="badge">${tr('duration')}: ${localNum(x.duration_minutes)} min</span>`:''}${pct?`<div class="sermon-progress"><span style="width:${pct}%"></span></div><small class="muted">${tr('listened')}: ${localNum(pct)}%</small>`:''}${x.audio_url?`<div class="pro-audio-actions"><button class="primary-btn wide-btn" data-sermon-play="${html(x.id)}">▶ ${progress.time>5?tr('continueListening'):tr('listenAudio')}</button>${progress.time>5?`<button class="secondary-btn" data-sermon-restart="${html(x.id)}">↺ ${tr('restart')}</button>`:''}</div>`:''}<h3>${tr('sermonNotes')}</h3><textarea id="sermonNote" rows="5" placeholder="${tr('notes')}">${html(note)}</textarea><button class="secondary-btn" data-save-sermon-note="${html(x.id)}">${tr('saveSermonNote')}</button><div class="button-row">${x.youtube_url?`<a class="primary-btn" href="${html(x.youtube_url)}" target="_blank" rel="noopener">▶ ${tr('watchYouTube')}</a>`:''}<button class="secondary-btn" data-go="audio">${tr('back')}</button></div>`);window.__openSermon=x;return}
-    const list=filtered.length?`<div class="sermon-list">${filtered.map(x=>{const title=x['title_'+state.lang]||x.title_fa||x.title_en;return `<button class="sermon-card" data-go="audio" data-params='${html(JSON.stringify({open:x.id}))}'>${x.cover_url?`<img src="${html(x.cover_url)}" alt="">`:'<span class="sermon-placeholder">🎙</span>'}<span><strong>${html(title)}</strong><small>${x.duration_minutes?localNum(x.duration_minutes)+' min · ':''}${x.youtube_url?'YouTube · ':''}${x.audio_url?'MP3':''}</small></span></button>`}).join('')}</div>`:`<p class="muted">${tr('noSermons')}</p>`;
+    window.__sermonMap=Object.fromEntries(sermons.map(x=>[String(x.id),x]));
+    if(params.open){const x=sermons.find(v=>String(v.id)===String(params.open));if(x)playSermon(x);navigate('audio',{cat:catId,q:params.q||''},true);return}
+    const list=filtered.length?`<div class="sermon-list">${filtered.map(x=>{const title=x['title_'+state.lang]||x.title_fa||x.title_en;let progress={};try{progress=JSON.parse(localStorage.getItem(sermonProgressKey(x.id))||'{}')}catch(e){}const duration=sermonDurationLabel(x)||formatAudioTime(progress.duration||0);return `<article class="sermon-card" data-sermon-card="${html(x.id)}"><div class="sermon-card-main">${x.cover_url?`<img src="${html(x.cover_url)}" alt="">`:'<span class="sermon-placeholder">🎙</span>'}<div class="sermon-card-copy"><strong>${html(title)}</strong><small>${duration?`${tr('duration')}: ${localText(duration)} · `:''}${x.youtube_url?'YouTube · ':''}${x.audio_url?'MP3':''}</small><div class="sermon-card-actions">${x.audio_url?`<button class="primary-btn compact-player-btn" data-sermon-play="${html(x.id)}">▶ ${progress.time>5?tr('continueListening'):tr('listenAudio')}</button>`:''}<button class="secondary-btn compact-player-btn" data-sermon-note="${html(x.id)}">📝 ${tr('sermonNoteButton')}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(x.id)}"><div class="inline-player-controls"><button class="player-round" data-inline-back>↶15</button><button class="player-main" data-inline-play>▶</button><button class="player-round" data-inline-forward>30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek type="range" min="0" max="1000" value="0"><span data-inline-total>${duration||'0:00'}</span></div></div></article>`}).join('')}</div>`:`<p class="muted">${tr('noSermons')}</p>`;
     view.innerHTML=card(tr('sermons'),`<input id="sermonSearch" placeholder="${tr('sermonSearch')}" value="${html(params.q||'')}"><div class="tabs"><button class="tab ${!catId?'active':''}" data-go="audio">${tr('allCategories')}</button>${(categories||[]).map(c=>`<button class="tab ${String(catId)===String(c.id)?'active':''}" data-go="audio" data-params='${html(JSON.stringify({cat:c.id}))}'>${html(c['name_'+state.lang]||c.name_fa||c.name_en)}</button>`).join('')}</div>${list}`);
-    $('#sermonSearch')?.addEventListener('change',e=>navigate('audio',{cat:catId,q:e.target.value},true));return;
+    $('#sermonSearch')?.addEventListener('change',e=>navigate('audio',{cat:catId,q:e.target.value},true));bindInlineSermonControls();updateInlineSermonPlayers();return;
   }
   const d=await jfetch('data/audio/messages.json'); if(params.cat){const c=d.categories.find(x=>x.id===params.cat);const items=c?.items||[];view.innerHTML=card(pick(c?.title)||tr('audio'),items.length?`<div class="list">${items.map(it=>`<div class="card"><strong>${html(pick(it.title)||it.title||'Audio')}</strong><audio controls src="${html(it.src)}"></audio></div>`).join('')}</div>`:`<p class="muted">${tr('noAudio')}</p>`);return}view.innerHTML=card(tr('audio'),`<div class="grid">${d.categories.map(c=>tile('audio','🎧',pick(c.title),`${tr('all')}: ${localNum((c.items||[]).length)}`,{cat:c.id})).join('')}</div>`);
 }
@@ -1136,12 +1177,13 @@ async function loginRestoreAccess(){
   try{const school=await fetchLatestRegistration('school');const meeting=await fetchLatestRegistration('meeting');if(school)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},school,{email})));if(meeting)localStorage.setItem('nh7_meeting_access',JSON.stringify(Object.assign({},meeting,{email})));}catch(e){console.warn(e)}
   alert(tr('restoreAccessDone'));render('account',{},true);
 }
-async function logoutAccount(){
+async function logoutAccount(targetRoute='account'){
+  if(typeof targetRoute!=='string')targetRoute='account';
   if(!confirm(state.lang==='fa'?'از حساب خارج شوید؟':state.lang==='hr'?'Odjaviti se?':'Sign out?'))return;
   const session=authSession(); try{if(session?.access_token)await authApi('logout',{method:'POST',headers:{Authorization:'Bearer '+session.access_token}})}catch(e){}
   saveAuthSession(null); localStorage.setItem(EXPLICIT_LOGOUT_KEY,'1');
   ['nh7_manual_email','nh7_school_access','nh7_meeting_access'].forEach(k=>localStorage.removeItem(k));
-  state.stack=[]; state.params={}; alert(tr('signedOut')); navigate('account',{},true);
+  state.stack=[]; state.params={}; alert(tr('signedOut')); navigate(targetRoute==='school'?'school':'account',{},true);
 }
 async function resetPassword(){
   const email=(($('#resetEmail')?.value||$('#accountEmail')?.value||'')).trim().toLowerCase(); if(!email){alert(tr('requiredField'));return}
@@ -1201,9 +1243,6 @@ async function enableNotifications(){
 }
 
 function bindDynamic(){
-  $$('[data-sermon-play]').forEach(el=>el.onclick=()=>{if(window.__openSermon)playSermon(window.__openSermon,false)});
-  $$('[data-sermon-restart]').forEach(el=>el.onclick=()=>{if(window.__openSermon)playSermon(window.__openSermon,true)});
-  $$('[data-save-sermon-note]').forEach(el=>el.onclick=()=>{const id=el.dataset.saveSermonNote;const value=($('#sermonNote')?.value||'').slice(0,5000);localStorage.setItem(sermonNoteKey(id),value);saveNoteCloud('sermon_note_'+id,value).catch(console.warn);el.textContent=tr('saved')});
   $$('[data-go]').forEach(el=>el.onclick=()=>navigate(el.dataset.go, JSON.parse(el.dataset.params||'{}')));
   $$('[data-dailytab]').forEach(el=>el.onclick=()=>{ state.dailyTab=el.dataset.dailytab; render('daily',{},true); });
   $$('[data-save-note]').forEach(el=>el.onclick=()=>{ const content=el.previousElementSibling?.value||''; localStorage.setItem('nh7_note_'+el.dataset.saveNote, content); saveNoteCloud('note_'+el.dataset.saveNote, content).catch(console.warn); el.textContent=tr('saved'); });

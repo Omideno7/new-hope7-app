@@ -1,5 +1,5 @@
 try { importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js'); } catch (e) { console.warn('OneSignal SW unavailable', e); }
-const CACHE = 'omideno7-v1.7.0-hotfix3-audio';
+const CACHE = 'omideno7-v1.7.0-hotfix4-audio-school';
 const APP_SHELL = [
   './','./index.html','./admin.html','./css/styles.css','./js/app.js','./manifest.json','./admin-manifest.json','./assets/logo.png','./assets/admin-icon-192.png','./assets/admin-icon-512.png','./assets/admin-apple-touch-icon.png',
   './data/app/opening_messages_365.json','./data/church/church_config.json','./data/church/about.json',
