@@ -1075,8 +1075,18 @@ function showPlan(p){
   bindDynamic();
 }
 
+
+async function loadSchoolContent(){
+  const fallback=await jfetch('data/school/school_content.json');
+  try{
+    const rows=await cloudFetch('school_lessons?select=*&is_active=eq.true&order=lesson_order.asc',{method:'GET'});
+    if(Array.isArray(rows)&&rows.length){return Object.assign({},fallback,{lessons:rows.map(r=>Object.assign({},r.content_data||{},{lesson_code:r.lesson_code,lesson_order:r.lesson_order}))})}
+  }catch(e){console.warn('school cloud fallback',e)}
+  return fallback;
+}
+
 async function school(params={}){
-  const d=await jfetch('data/school/school_content.json');
+  const d=await loadSchoolContent();
   if(params.login){
     view.innerHTML=card(tr('schoolExistingLogin'),`<p>${tr('schoolLoginHelp')}</p><input id="schoolLoginEmail" type="email" autocomplete="email" placeholder="${tr('email')}"><div class="password-wrap"><input id="schoolLoginPassword" type="password" autocomplete="current-password" placeholder="${tr('password')}"><button type="button" class="password-eye" data-toggle-password="schoolLoginPassword">👁</button></div><button class="primary-btn wide-btn" id="schoolSignInBtn">${tr('schoolExistingLogin')}</button><button class="link-button" data-go="account">${tr('forgotPassword')}</button><button class="secondary-btn wide-btn" data-go="school">${tr('back')}</button>`);
     $('#schoolSignInBtn')?.addEventListener('click',signInSchool);bindPasswordToggles();return;
@@ -1103,7 +1113,7 @@ async function signInSchool(){
   try{const data=await signInOrClaimLegacyAccount(email,password);if(data?.access_token)saveAuthSession(data);localStorage.setItem('nh7_manual_email',email);localStorage.removeItem(EXPLICIT_LOGOUT_KEY);const schoolAccess=await fetchLatestRegistration('school');if(schoolAccess)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},schoolAccess,{email})));navigate('school',{},true)}catch(e){console.warn(e);alert(tr('loginFailed'))}
 }
 
-function schoolLesson(d, code){ const l=d.lessons.find(x=>x.lesson_code===code); const tx=l.translations?.[state.lang]||l.translations?.en||{}; const wr=l.written?.[state.lang]||l.written?.en||{}; const audioSrc=l.audio?.src || `public/audio/school/${l.audio?.fileName||'class-01-fa.mp3'}`; view.innerHTML=card(tx.class_title||tr('school'), `<p>${html(tx.lesson_text)}</p><div class="audio-placeholder"><strong>${tr('playAudio')}</strong><p>${html(l.audio?.fileName||'class-01-fa.mp3')}</p><audio controls src="${html(audioSrc)}"></audio></div><h3>${tr('assignment')}</h3><p>${html(tx.assignment_question)}</p><textarea placeholder="${tr('notes')}"></textarea><button class="secondary-btn" data-save-note="school-${code}">${tr('save')}</button><h3>${tr('fullLesson')}</h3><p>${html(wr.text||'')}</p>`); }
+function schoolLesson(d, code){ const l=d.lessons.find(x=>x.lesson_code===code); const tx=l.translations?.[state.lang]||l.translations?.en||{}; const wr=l.written?.[state.lang]||l.written?.en||{}; const audioSrc=l.audio?.src || `public/audio/school/${l.audio?.fileName||'class-01-fa.mp3'}`; view.innerHTML=card(tx.class_title||tr('school'), `<p>${html(tx.lesson_text)}</p><div class="audio-placeholder"><strong>${tr('playAudio')}</strong><p>${html(l.audio?.fileName||'class-01-fa.mp3')}</p><audio controls src="${html(audioSrc)}"></audio></div>${l.video?.url?`<p><a class="secondary-btn" href="${html(l.video.url)}" target="_blank" rel="noopener">Video</a></p>`:''}${l.pdf?.url?`<p><a class="secondary-btn" href="${html(l.pdf.url)}" target="_blank" rel="noopener">PDF</a></p>`:''}<h3>${tr('assignment')}</h3><p>${html(tx.assignment_question)}</p><textarea placeholder="${tr('notes')}"></textarea><button class="secondary-btn" data-save-note="school-${code}">${tr('save')}</button><h3>${tr('fullLesson')}</h3><p>${html(wr.text||'')}</p>`); }
 
 function bindInlineSermonControls(){
   $$('[data-sermon-play]').forEach(b=>b.onclick=e=>{e.stopPropagation();const item=window.__sermonMap?.[String(b.dataset.sermonPlay)];if(item)playSermon(item)});
@@ -1292,7 +1302,7 @@ async function notificationPermissionStatus(){const Native=nativeLocalNotificati
 
 async function settings(){
   const perm=await notificationPermissionStatus();const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');const schedules=await fetchNotificationSchedules();
-  view.innerHTML=card(tr('settings'),`<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice">${schedules.map(x=>`<p><strong>${html(scheduleText(x,'title'))}</strong> — ${html(x.time_value||'')} ${x.timezone_mode&&x.timezone_mode!=='local'?`(${html(x.timezone_mode)})`:''}</p>`).join('')}</div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>New Hope 7 v1.7.1 Internal Build</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
+  view.innerHTML=card(tr('settings'),`<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice">${schedules.map(x=>`<p><strong>${html(scheduleText(x,'title'))}</strong> — ${html(x.time_value||'')} ${x.timezone_mode&&x.timezone_mode!=='local'?`(${html(x.timezone_mode)})`:''}</p>`).join('')}</div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>New Hope 7 v1.8.0 Internal Build</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
   $('#settingsLang').value=state.lang;$('#settingsLang').onchange=e=>setLang(e.target.value);$('#enableNotify').onclick=enableNotifications;
   $('#clearCache').onclick=async()=>{try{if('caches'in window){const keys=await caches.keys();await Promise.all(keys.map(k=>caches.delete(k)))}if('serviceWorker'in navigator){const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.update()))}}catch(e){}alert(tr('saved'));location.reload()};
   $('#syncCloud')?.addEventListener('click',async()=>{await syncCloudQueue();await refreshInboxFromCloud();notificationSettingsCache=null;alert(cloudStatusText());render('settings',{},true)});
