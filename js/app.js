@@ -180,6 +180,48 @@ async function refreshUserSession(){
 }
 function authEmail(){ return String(authSession()?.user?.email||'').trim().toLowerCase(); }
 
+async function signInOrClaimLegacyAccount(email,password){
+  try{
+    return await authApi('token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})});
+  }catch(loginErr){
+    // Legacy New Hope 7 users may have an approved school registration but no Supabase Auth user.
+    // Only approved historical registrations are eligible for transparent account claiming.
+    let legacy=null;
+    try{
+      const rows=await cloudRpc('nh7_registration_access_v2',{p_type:'school',p_email:email,p_device_id:deviceId()});
+      legacy=Array.isArray(rows)?rows[0]:rows;
+    }catch(e){ console.warn('Legacy account lookup failed',e); }
+    if(!(legacy&&legacy.found&&(legacy.approved||legacy.status==='approved'))) throw loginErr;
+    try{
+      const created=await authApi('signup',{method:'POST',body:JSON.stringify({
+        email,password,data:{
+          full_name:String(((legacy.payload||{}).firstName||'')+' '+((legacy.payload||{}).lastName||'')).trim(),
+          language:state.lang,
+          migrated_from_legacy_school:true
+        }
+      })});
+      if(created?.access_token) return created;
+      // Some Supabase projects require email confirmation. Try password login once more;
+      // if it is not active yet, keep the approved legacy access on this device.
+      try{return await authApi('token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})})}
+      catch(confirmErr){
+        localStorage.setItem('nh7_manual_email',email);
+        localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},legacy.payload||{},legacy,{email,status:'approved',approvedBy:'admin'})));
+        localStorage.setItem('nh7_user_profile',JSON.stringify({
+          name:String(((legacy.payload||{}).firstName||'')+' '+((legacy.payload||{}).lastName||'')).trim(),
+          email,
+          phone:String((legacy.payload||{}).phone||'')
+        }));
+        return {legacy_approved:true,user:{email,user_metadata:{full_name:String(((legacy.payload||{}).firstName||'')+' '+((legacy.payload||{}).lastName||'')).trim()}}};
+      }
+    }catch(signupErr){
+      const m=String(signupErr?.message||'').toLowerCase();
+      if(m.includes('already')||m.includes('registered')||m.includes('exists')) throw loginErr;
+      throw signupErr;
+    }
+  }
+}
+
 function deviceId(){
   let id=localStorage.getItem('nh7_device_id');
   if(!id){ id='dev_'+(crypto?.randomUUID ? crypto.randomUUID() : Date.now()+'_'+Math.random().toString(16).slice(2)); localStorage.setItem('nh7_device_id',id); }
@@ -1042,7 +1084,7 @@ async function school(params={}){
 }
 async function signInSchool(){
   const email=($('#schoolLoginEmail')?.value||'').trim().toLowerCase(),password=$('#schoolLoginPassword')?.value||'';if(!email||!password){alert(tr('requiredField'));return}
-  try{const data=await authApi('token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})});saveAuthSession(data);localStorage.setItem('nh7_manual_email',email);localStorage.removeItem(EXPLICIT_LOGOUT_KEY);const schoolAccess=await fetchLatestRegistration('school');if(schoolAccess)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},schoolAccess,{email})));navigate('school',{},true)}catch(e){console.warn(e);alert(tr('loginFailed'))}
+  try{const data=await signInOrClaimLegacyAccount(email,password);if(data?.access_token)saveAuthSession(data);localStorage.setItem('nh7_manual_email',email);localStorage.removeItem(EXPLICIT_LOGOUT_KEY);const schoolAccess=await fetchLatestRegistration('school');if(schoolAccess)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},schoolAccess,{email})));navigate('school',{},true)}catch(e){console.warn(e);alert(tr('loginFailed'))}
 }
 
 function schoolLesson(d, code){ const l=d.lessons.find(x=>x.lesson_code===code); const tx=l.translations?.[state.lang]||l.translations?.en||{}; const wr=l.written?.[state.lang]||l.written?.en||{}; const audioSrc=l.audio?.src || `public/audio/school/${l.audio?.fileName||'class-01-fa.mp3'}`; view.innerHTML=card(tx.class_title||tr('school'), `<p>${html(tx.lesson_text)}</p><div class="audio-placeholder"><strong>${tr('playAudio')}</strong><p>${html(l.audio?.fileName||'class-01-fa.mp3')}</p><audio controls src="${html(audioSrc)}"></audio></div><h3>${tr('assignment')}</h3><p>${html(tx.assignment_question)}</p><textarea placeholder="${tr('notes')}"></textarea><button class="secondary-btn" data-save-note="school-${code}">${tr('save')}</button><h3>${tr('fullLesson')}</h3><p>${html(wr.text||'')}</p>`); }
@@ -1172,7 +1214,7 @@ async function signInAccount(){
   const email=($('#accountEmail')?.value||'').trim().toLowerCase(); const password=$('#accountPassword')?.value||'';
   if(!email||!password){alert(tr('requiredField'));return}
   try{
-    const data=await authApi('token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})}); saveAuthSession(data); localStorage.setItem('nh7_manual_email',email); localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
+    const data=await signInOrClaimLegacyAccount(email,password); if(data?.access_token)saveAuthSession(data); localStorage.setItem('nh7_manual_email',email); localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
     const school=await fetchLatestRegistration('school'); const meeting=await fetchLatestRegistration('meeting');
     if(school)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},school,{email}))); if(meeting)localStorage.setItem('nh7_meeting_access',JSON.stringify(Object.assign({},meeting,{email})));
     navigate('school',{},true);
