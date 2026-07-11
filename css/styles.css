@@ -76,3 +76,7 @@
 button[disabled]{opacity:.45;cursor:not-allowed;filter:grayscale(.3)}
 .success-text{color:#166534;font-weight:800}
 .account-card input{margin-bottom:10px}
+
+
+/* New Hope 7 v1.7.0 */
+.password-wrap{position:relative;margin-bottom:10px}.password-wrap input{padding-inline-end:52px}.password-eye{position:absolute;inset-inline-end:7px;top:50%;transform:translateY(-50%);border:0;background:transparent;font-size:20px;padding:8px;cursor:pointer}.link-button{border:0;background:transparent;color:var(--brand);text-decoration:underline;padding:12px 4px;cursor:pointer}.legacy-access{margin-top:18px;border-top:1px solid var(--line);padding-top:14px}.legacy-access summary{cursor:pointer;color:var(--muted)}.sermon-list{display:grid;grid-template-columns:1fr;gap:12px}.sermon-card{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:center;width:100%;border:1px solid var(--line);background:#fff;border-radius:18px;padding:10px;text-align:inherit;color:var(--ink)}.sermon-card img,.sermon-placeholder{width:96px;height:72px;object-fit:cover;border-radius:13px;background:linear-gradient(135deg,#dbeafe,#dcfce7);display:grid;place-items:center;font-size:30px}.sermon-card strong,.sermon-card small{display:block}.sermon-card small{color:var(--muted);margin-top:5px}.sermon-cover{width:100%;max-height:360px;object-fit:cover;border-radius:18px;margin-bottom:12px}.audio-player audio{width:100%;margin:14px 0}.wide-btn{width:100%}@media(min-width:680px){.sermon-list{grid-template-columns:1fr 1fr}}
