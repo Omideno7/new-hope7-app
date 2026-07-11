@@ -1089,7 +1089,7 @@ async function signInAccount(){
     const data=await authApi('token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})}); saveAuthSession(data); localStorage.setItem('nh7_manual_email',email); localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
     const school=await fetchLatestRegistration('school'); const meeting=await fetchLatestRegistration('meeting');
     if(school)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},school,{email}))); if(meeting)localStorage.setItem('nh7_meeting_access',JSON.stringify(Object.assign({},meeting,{email})));
-    render('account',{},true);
+    navigate('school',{},true);
   }catch(e){console.warn(e);alert(tr('loginFailed'))}
 }
 function bindPasswordToggles(){
