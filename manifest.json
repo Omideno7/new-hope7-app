@@ -1,7 +1,7 @@
 {
-  "name": "OmideNo7 Church",
+  "name": "New Hope 7",
   "short_name": "OmideNo7",
-  "description": "Trilingual church, Bible, school, daily word, and audio app.",
+  "description": "OmideNo7 Church app v1.7.0",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

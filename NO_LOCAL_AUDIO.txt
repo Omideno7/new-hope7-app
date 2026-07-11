@@ -1,0 +1,5 @@
+New Hope 7 v1.7.0 GitHub package (no bundled audio)
+
+Audio files are intentionally excluded from this repository package.
+The app reads message and sermon audio from Supabase Storage URLs.
+Do not upload large audio files to GitHub.

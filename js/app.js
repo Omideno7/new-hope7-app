@@ -81,6 +81,14 @@ Object.assign(T.hr, {highlight:'Označi', account:'Račun', forgotPassword:'Zabo
 
 
 
+
+const V170_T = {
+  en:{signIn:'Sign in',signUp:'Create account',password:'Password',confirmPassword:'Confirm password',showPassword:'Show password',hidePassword:'Hide password',signedOut:'You are signed out.',signInHint:'Enter your email and password to sign in.',loginFailed:'Email or password is incorrect.',passwordMismatch:'Passwords do not match.',passwordMin:'Password must be at least 6 characters.',accountCreated:'Account created. If email confirmation is enabled, check your email.',legacyRestore:'Restore approved access for an older account',sermons:'Sermons',watchYouTube:'Watch on YouTube',listenAudio:'Listen in app',sermonSearch:'Search sermons',allCategories:'All categories',noSermons:'No published sermons yet.',duration:'Duration',notificationNativeUnsupported:'Native notifications are not available in this build.',notificationSettingsOpen:'Open notification settings',notificationUpdated:'Notification schedule updated.',loginRequired:'Please sign in to continue.'},
+  fa:{signIn:'ورود',signUp:'ساخت حساب',password:'رمز عبور',confirmPassword:'تکرار رمز عبور',showPassword:'نمایش رمز',hidePassword:'پنهان کردن رمز',signedOut:'شما از حساب خارج هستید.',signInHint:'برای ورود، ایمیل و رمز عبور خود را وارد کنید.',loginFailed:'ایمیل یا رمز عبور صحیح نیست.',passwordMismatch:'رمز عبور و تکرار آن یکسان نیستند.',passwordMin:'رمز عبور باید حداقل ۶ حرف باشد.',accountCreated:'حساب ساخته شد. اگر تأیید ایمیل فعال باشد، ایمیل خود را بررسی کنید.',legacyRestore:'بازیابی دسترسی تأییدشده حساب‌های قدیمی',sermons:'موعظه‌ها',watchYouTube:'تماشا در YouTube',listenAudio:'گوش دادن در اپ',sermonSearch:'جستجوی موعظه',allCategories:'همه دسته‌بندی‌ها',noSermons:'هنوز موعظه‌ای منتشر نشده است.',duration:'مدت',notificationNativeUnsupported:'اعلان بومی در این نسخه نصب‌شده در دسترس نیست.',notificationSettingsOpen:'باز کردن تنظیمات اعلان‌ها',notificationUpdated:'برنامه اعلان‌ها به‌روزرسانی شد.',loginRequired:'لطفاً ابتدا وارد حساب شوید.'},
+  hr:{signIn:'Prijava',signUp:'Izradi račun',password:'Lozinka',confirmPassword:'Potvrdi lozinku',showPassword:'Prikaži lozinku',hidePassword:'Sakrij lozinku',signedOut:'Odjavljeni ste.',signInHint:'Unesite email i lozinku za prijavu.',loginFailed:'Email ili lozinka nisu ispravni.',passwordMismatch:'Lozinke se ne podudaraju.',passwordMin:'Lozinka mora imati najmanje 6 znakova.',accountCreated:'Račun je izrađen. Ako je potvrda emaila uključena, provjerite email.',legacyRestore:'Obnovi odobreni pristup starijeg računa',sermons:'Propovijedi',watchYouTube:'Gledaj na YouTubeu',listenAudio:'Slušaj u aplikaciji',sermonSearch:'Pretraži propovijedi',allCategories:'Sve kategorije',noSermons:'Još nema objavljenih propovijedi.',duration:'Trajanje',notificationNativeUnsupported:'Izvorne obavijesti nisu dostupne u ovoj verziji.',notificationSettingsOpen:'Otvori postavke obavijesti',notificationUpdated:'Raspored obavijesti je ažuriran.',loginRequired:'Najprije se prijavite.'}
+};
+Object.keys(V170_T).forEach(l=>Object.assign(T[l],V170_T[l]));
+
 const NEW_BIRTH_VIDEOS = [
   'https://youtu.be/u-G6r7rYNEE?is=8kokBIcdqkvQGayt',
   'https://youtu.be/_NNh_EZYKTk?is=4UkXpWX2ziuZOyuI',
@@ -96,31 +104,58 @@ const SUPABASE_CONFIG = {
   key: 'sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37'
 };
 const CLOUD_ENABLED = Boolean(SUPABASE_CONFIG.url && SUPABASE_CONFIG.key);
+const AUTH_SESSION_KEY='nh7_user_session_v170';
+const EXPLICIT_LOGOUT_KEY='nh7_explicit_logout';
+function authSession(){ try{return JSON.parse(localStorage.getItem(AUTH_SESSION_KEY)||'null')}catch(e){return null} }
+function saveAuthSession(v){ if(v){localStorage.setItem(AUTH_SESSION_KEY,JSON.stringify(v));localStorage.removeItem(EXPLICIT_LOGOUT_KEY);}else localStorage.removeItem(AUTH_SESSION_KEY); }
+function isExplicitlyLoggedOut(){ return localStorage.getItem(EXPLICIT_LOGOUT_KEY)==='1'; }
+function isAccountLoggedIn(){ const x=authSession(); return !!(x&&x.access_token&&!isExplicitlyLoggedOut()); }
+async function authApi(path,options={}){
+  const headers=Object.assign({'apikey':SUPABASE_CONFIG.key,'Content-Type':'application/json'},options.headers||{});
+  const r=await fetch(SUPABASE_CONFIG.url+'/auth/v1/'+path,Object.assign({},options,{headers}));
+  const text=await r.text(); let data={}; try{data=text?JSON.parse(text):{}}catch(e){data={message:text}}
+  if(!r.ok) throw new Error(data.msg||data.message||data.error_description||text||r.statusText);
+  return data;
+}
+async function refreshUserSession(){
+  const old=authSession(); if(!old?.refresh_token)return null;
+  try{const d=await authApi('token?grant_type=refresh_token',{method:'POST',body:JSON.stringify({refresh_token:old.refresh_token})});saveAuthSession(d);return d}catch(e){saveAuthSession(null);return null}
+}
+function authEmail(){ return String(authSession()?.user?.email||'').trim().toLowerCase(); }
+
 function deviceId(){
   let id=localStorage.getItem('nh7_device_id');
   if(!id){ id='dev_'+(crypto?.randomUUID ? crypto.randomUUID() : Date.now()+'_'+Math.random().toString(16).slice(2)); localStorage.setItem('nh7_device_id',id); }
   return id;
 }
 function currentUserEmail(){
+  if(isExplicitlyLoggedOut()) return '';
+  const ae=authEmail(); if(ae) return ae;
   try{
     const manual=(localStorage.getItem('nh7_manual_email')||'').trim().toLowerCase();
     const m=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{}');
-    const s=JSON.parse(localStorage.getItem('nh7_school_access')||'{}');
-    return (manual || s.email || m.email || '').trim().toLowerCase();
+    const sc=JSON.parse(localStorage.getItem('nh7_school_access')||'{}');
+    return (manual || sc.email || m.email || '').trim().toLowerCase();
   }catch(e){ return (localStorage.getItem('nh7_manual_email')||'').trim().toLowerCase(); }
 }
 async function cloudFetch(path, options={}){
   if(!CLOUD_ENABLED) throw new Error('Cloud disabled');
-  const headers=Object.assign({
+  const makeHeaders=()=>Object.assign({
     'apikey': SUPABASE_CONFIG.key,
-    'Authorization': 'Bearer '+SUPABASE_CONFIG.key,
-    'Content-Type':'application/json',
-    'Prefer':'return=representation',
-    'x-device-id': deviceId(),
-    'x-user-email': currentUserEmail()
+    'Authorization': 'Bearer '+(authSession()?.access_token||SUPABASE_CONFIG.key),
+    'Content-Type':'application/json','Prefer':'return=representation',
+    'x-device-id': deviceId(),'x-user-email': currentUserEmail()
   }, options.headers||{});
-  const res=await fetch(SUPABASE_CONFIG.url + '/rest/v1/' + path, Object.assign({}, options, {headers}));
-  if(!res.ok){ const txt=await res.text().catch(()=>''); throw new Error(txt || res.statusText); }
+  let res=await fetch(SUPABASE_CONFIG.url + '/rest/v1/' + path, Object.assign({}, options, {headers:makeHeaders()}));
+  if(!res.ok){
+    const txt=await res.text().catch(()=>'');
+    if((res.status===401||txt.toLowerCase().includes('jwt expired')) && await refreshUserSession()){
+      res=await fetch(SUPABASE_CONFIG.url + '/rest/v1/' + path, Object.assign({}, options, {headers:makeHeaders()}));
+      if(res.ok){if(res.status===204)return null;return res.json().catch(()=>null)}
+      throw new Error(await res.text().catch(()=>res.statusText));
+    }
+    throw new Error(txt || res.statusText);
+  }
   if(res.status===204) return null;
   return res.json().catch(()=>null);
 }
@@ -363,6 +398,8 @@ function registrationFormHtml(kind, access={}){
     <div class="form-row"><input id="reg_howFound" required placeholder="${tr('howFound')} *" value="${v('howFound')}"></div>
     <div class="form-row"><input id="reg_phone" required placeholder="${tr('phone')} *" value="${v('phone')}"></div>
     <div class="form-row"><input id="reg_email" required type="email" placeholder="${tr('email')} *" value="${v('email')}"></div>
+    <div class="form-row password-wrap"><input id="reg_password" required type="password" minlength="6" placeholder="${tr('password')} *"><button type="button" class="password-eye" data-toggle-password="reg_password">👁</button></div>
+    <div class="form-row password-wrap"><input id="reg_confirmPassword" required type="password" minlength="6" placeholder="${tr('confirmPassword')} *"><button type="button" class="password-eye" data-toggle-password="reg_confirmPassword">👁</button></div>
     <button class="primary-btn" data-submit-registration="${kind}">${tr('submitRegistration')}</button>
   `);
 }
@@ -370,12 +407,20 @@ async function collectRegistration(kind){
   const fields=['firstName','lastName','birthDate','city','country','spiritualAge','churchMember','churchName','pastorName','waterBaptism','salvationPrayer','eventsInterest','testimony','howFound','phone','email'];
   const data={status:'pending',submittedAt:new Date().toISOString(),kind};
   for(const f of fields){ const el=$('#reg_'+f); data[f]=(el?.value||'').trim(); if(!data[f]){ alert(tr('requiredField')); el?.focus(); return; } }
-  data.email = data.email.toLowerCase();
-  const key=kind==='meeting'?'nh7_meeting_access':'nh7_school_access';
-  localStorage.setItem(key, JSON.stringify(data));
-  try{ await saveRegistrationCloud(data); alert(tr('registerDone')); }
-  catch(e){ console.warn(e); alert((state.lang==='fa'?'درخواست شما فعلاً روی دستگاه ذخیره شد و بعد از اتصال اینترنت دوباره همگام‌سازی می‌شود.':'Your request was saved on this device and will sync when online.')); }
-  if(data.salvationPrayer==='no') navigate('salvation',{},true); else render(kind==='meeting'?'meetings':'school',{},true);
+  data.email=data.email.toLowerCase();
+  const password=$('#reg_password')?.value||''; const confirmPassword=$('#reg_confirmPassword')?.value||'';
+  if(password.length<6){alert(tr('passwordMin'));return} if(password!==confirmPassword){alert(tr('passwordMismatch'));return}
+  try{
+    const session=await authApi('signup',{method:'POST',body:JSON.stringify({email:data.email,password,data:{full_name:(data.firstName+' '+data.lastName).trim(),language:state.lang}})});
+    if(session?.access_token) saveAuthSession(session);
+  }catch(e){
+    const msg=String(e.message||'').toLowerCase();
+    if(!msg.includes('already')&&!msg.includes('registered')&&!msg.includes('exists')) console.warn('Account creation',e);
+  }
+  localStorage.removeItem(EXPLICIT_LOGOUT_KEY); localStorage.setItem('nh7_manual_email',data.email);
+  const key=kind==='meeting'?'nh7_meeting_access':'nh7_school_access'; localStorage.setItem(key,JSON.stringify(data));
+  try{await saveRegistrationCloud(data);alert(tr('registerDone'))}catch(e){console.warn(e);alert(state.lang==='fa'?'درخواست روی دستگاه ذخیره شد و بعداً همگام می‌شود.':'Request saved locally and will sync later.')}
+  if(data.salvationPrayer==='no')navigate('salvation',{},true);else render(kind==='meeting'?'meetings':'school',{},true);
 }
 function collectNotes(){
   const out=[];
@@ -444,9 +489,17 @@ function cleanupInboxLanguage(){
   const cleaned=inboxMessages().filter(m=>!deleted.has(String(m.id)) && !rawInboxLooksLikeOtherLanguage(m));
   if(cleaned.length!==inboxMessages().length) setInboxMessages(cleaned);
 }
+function inboxUserKey(){return (currentUserEmail()?'email:'+currentUserEmail():'device:'+deviceId()).toLowerCase()}
+async function saveInboxReceipt(messageId,changes={}){
+  if(!messageId)return; const payload={user_key:inboxUserKey(),message_id:String(messageId),device_id:deviceId(),user_email:currentUserEmail()||null,read_at:changes.read_at||null,deleted_at:changes.deleted_at||null,updated_at:new Date().toISOString()};
+  try{await cloudFetch('notification_inbox_receipts?on_conflict=user_key,message_id',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify(payload)})}catch(e){console.warn('Inbox receipt sync failed',e)}
+}
+async function fetchInboxReceipts(){
+  try{const rows=await cloudFetch(`notification_inbox_receipts?select=message_id,read_at,deleted_at&user_key=eq.${encodeURIComponent(inboxUserKey())}&limit=500`,{method:'GET'});return Array.isArray(rows)?rows:[]}catch(e){return []}
+}
+
 async function deleteInboxCloud(id){
-  if(!id || !CLOUD_ENABLED || !navigator.onLine) return;
-  try{ await cloudFetch(`notification_inbox?id=eq.${encodeURIComponent(String(id))}`, {method:'DELETE', headers:{Prefer:'return=minimal'}}); }catch(e){ console.warn('Inbox cloud delete failed', e); }
+  if(!id)return; await saveInboxReceipt(id,{deleted_at:new Date().toISOString()});
 }
 function deleteInboxLocal(id){
   const target=inboxMessages().find(m=>String(m.id)===String(id));
@@ -586,40 +639,21 @@ function notificationBodies(){
     sunday:'The Sunday church meeting is ready. Tap to join.'
   };
 }
-function maybeCreateScheduledInboxMessages(){
-  const permission = localStorage.getItem('nh7_notifications_permission');
-  if(permission!=='granted') return;
-  const now=new Date(); const key=todayKey(); const h=now.getHours(); const m=now.getMinutes(); const b=notificationBodies();
-  const items=[
-    {hour:7, min:0, id:'daily_word', title:tr('dailyWordReminder'), body:b.daily},
-    {hour:12, min:0, id:'faith', title:tr('faithReminder'), body:b.faith},
-    {hour:17, min:0, id:'juice', title:tr('juiceReminder'), body:b.juice},
-    {hour:21, min:0, id:'gratitude', title:tr('gratitudeReminder'), body:b.gratitude}
-  ];
-  items.forEach(it=>{ if(h>it.hour || (h===it.hour && m>=it.min)) addInboxMessage(it.title,it.body,it.id,it.id+'_'+key); });
-  try{
-    const zagreb = new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Zagreb',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(now);
-    const hh=Number(zagreb.find(p=>p.type==='hour')?.value||0); const mm=Number(zagreb.find(p=>p.type==='minute')?.value||0); const wd=zagreb.find(p=>p.type==='weekday')?.value;
-    if(hh>4 || (hh===4 && mm>=55)) addInboxMessage(tr('morningMeetingReminder'), b.morning, 'morning_meeting','morning_'+key);
-    if(wd==='Sun' && (hh>20 || (hh===20 && mm>=0))) addInboxMessage(tr('sundayMeetingReminder'), b.sunday, 'sunday_service','sunday_'+key);
-  }catch(e){}
+async function maybeCreateScheduledInboxMessages(){
+  if(localStorage.getItem('nh7_notifications_permission')!=='granted')return;const rows=await fetchNotificationSchedules();const now=new Date();const dateKey=todayKey();
+  for(const row of rows){let compare=now;if(row.timezone_mode&&row.timezone_mode!=='local'){try{const parts=new Intl.DateTimeFormat('en-CA',{timeZone:row.timezone_mode,weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(now);const hh=Number(parts.find(p=>p.type==='hour')?.value||0),mm=Number(parts.find(p=>p.type==='minute')?.value||0),wd=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(parts.find(p=>p.type==='weekday')?.value);const [th,tm]=String(row.time_value||'00:00').split(':').map(Number);if(Array.isArray(row.days_of_week)&&!row.days_of_week.includes(wd))continue;if(hh>th||(hh===th&&mm>=tm))addInboxMessage(scheduleText(row,'title'),scheduleText(row,'body'),row.key,row.key+'_'+dateKey)}catch(e){}}else{const [th,tm]=String(row.time_value||'00:00').split(':').map(Number);if(Array.isArray(row.days_of_week)&&!row.days_of_week.includes(now.getDay()))continue;if(now.getHours()>th||(now.getHours()===th&&now.getMinutes()>=tm))addInboxMessage(scheduleText(row,'title'),scheduleText(row,'body'),row.key,row.key+'_'+dateKey)}}
 }
 async function refreshInboxFromCloud(){
   try{
     const email=currentUserEmail();
-    const q=email?`notification_inbox?select=id,title,body,category,language,delivered_at,read_at&or=(device_id.eq.${encodeURIComponent(deviceId())},user_email.eq.${encodeURIComponent(email)})&order=delivered_at.desc&limit=50`:`notification_inbox?select=id,title,body,category,language,delivered_at,read_at&device_id=eq.${encodeURIComponent(deviceId())}&order=delivered_at.desc&limit=50`;
-    const rawOwnRows=await cloudFetch(q,{method:'GET'});
-    const ownRows=Array.isArray(rawOwnRows) ? rawOwnRows.filter(r=>!r.language || r.language===state.lang) : [];
-    let globalRows=[];
-    try{ globalRows=await cloudFetch(`notification_inbox?select=id,title,body,category,language,delivered_at,read_at&device_id=is.null&user_email=is.null&language=eq.${encodeURIComponent(state.lang)}&order=delivered_at.desc&limit=50`,{method:'GET'}); }catch(e){}
-    const rows=[...(Array.isArray(ownRows)?ownRows:[]), ...(Array.isArray(globalRows)?globalRows:[])];
-    if(rows.length){
-      const deleted=inboxDeletedIds();
-      const local=inboxMessages().filter(x=>!deleted.has(String(x.id)) && !rawInboxLooksLikeOtherLanguage(x)); const byId=new Map(local.map(x=>[String(x.id),x]));
-      rows.forEach(r=>{ const id=String(r.id); if(!deleted.has(id) && !byId.has(id)) byId.set(id,{id,title:r.title,body:r.body,category:r.category||'cloud',language:r.language||state.lang,createdAt:r.delivered_at,read:!!r.read_at,lang:r.language||state.lang}); });
-      setInboxMessages(Array.from(byId.values()).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt))).slice(0,100));
-    }
-  }catch(e){ console.warn('Inbox cloud fetch failed', e); }
+    const q=email?`notification_inbox?select=id,title,body,category,language,delivered_at,read_at&or=(device_id.eq.${encodeURIComponent(deviceId())},user_email.eq.${encodeURIComponent(email)})&order=delivered_at.desc&limit=100`:`notification_inbox?select=id,title,body,category,language,delivered_at,read_at&device_id=eq.${encodeURIComponent(deviceId())}&order=delivered_at.desc&limit=100`;
+    const rawOwnRows=await cloudFetch(q,{method:'GET'}); const ownRows=Array.isArray(rawOwnRows)?rawOwnRows:[];
+    let globalRows=[];try{globalRows=await cloudFetch(`notification_inbox?select=id,title,body,category,language,delivered_at,read_at&device_id=is.null&user_email=is.null&language=eq.${encodeURIComponent(state.lang)}&order=delivered_at.desc&limit=100`,{method:'GET'})}catch(e){}
+    const receipts=await fetchInboxReceipts(); const receiptMap=new Map(receipts.map(r=>[String(r.message_id),r])); const deleted=inboxDeletedIds();
+    const local=inboxMessages().filter(x=>!deleted.has(String(x.id))); const byId=new Map(local.map(x=>[String(x.id),x]));
+    [...ownRows,...(Array.isArray(globalRows)?globalRows:[])].forEach(r=>{const id=String(r.id),rc=receiptMap.get(id);if(rc?.deleted_at||deleted.has(id)){byId.delete(id);return}const old=byId.get(id)||{};byId.set(id,{...old,id,title:r.title,body:r.body,category:r.category||'cloud',language:r.language||state.lang,createdAt:r.delivered_at,read:!!(rc?.read_at||r.read_at),readAt:rc?.read_at||r.read_at||null,lang:r.language||state.lang})});
+    setInboxMessages(Array.from(byId.values()).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt))).slice(0,200)); updateInboxBadge();
+  }catch(e){console.warn('Inbox cloud refresh failed',e)}
 }
 async function inbox(){
   cleanupInboxLanguage();
@@ -918,6 +952,7 @@ function showPlan(p){
 
 async function school(params={}){
   const d=await jfetch('data/school/school_content.json');
+  if(isExplicitlyLoggedOut() && !params.form){view.innerHTML=card(tr('school'),`<p>${tr('loginRequired')}</p><button class="primary-btn" data-go="account">${tr('signIn')}</button><button class="secondary-btn" data-go="school" data-params='${html(JSON.stringify({form:true}))}'>${tr('register')}</button>`);return;}
   let access=JSON.parse(localStorage.getItem('nh7_school_access')||'{"status":"guest"}');
   if(params.form){ view.innerHTML=registrationFormHtml('school', access); return; }
   const cloudAccess = await fetchLatestRegistration('school');
@@ -934,9 +969,19 @@ async function school(params={}){
 function schoolLesson(d, code){ const l=d.lessons.find(x=>x.lesson_code===code); const tx=l.translations?.[state.lang]||l.translations?.en||{}; const wr=l.written?.[state.lang]||l.written?.en||{}; const audioSrc=l.audio?.src || `public/audio/school/${l.audio?.fileName||'class-01-fa.mp3'}`; view.innerHTML=card(tx.class_title||tr('school'), `<p>${html(tx.lesson_text)}</p><div class="audio-placeholder"><strong>${tr('playAudio')}</strong><p>${html(l.audio?.fileName||'class-01-fa.mp3')}</p><audio controls src="${html(audioSrc)}"></audio></div><h3>${tr('assignment')}</h3><p>${html(tx.assignment_question)}</p><textarea placeholder="${tr('notes')}"></textarea><button class="secondary-btn" data-save-note="school-${code}">${tr('save')}</button><h3>${tr('fullLesson')}</h3><p>${html(wr.text||'')}</p>`); }
 
 async function audio(params={}){
-  const d=await jfetch('data/audio/messages.json');
-  if(params.cat){ const c=d.categories.find(x=>x.id===params.cat); const items=c?.items||[]; view.innerHTML=card(pick(c?.title)||tr('audio'), items.length?`<div class="list">${items.map(it=>`<div class="card"><strong>${html(pick(it.title)||it.title||'Audio')}</strong><audio controls src="${html(it.src)}"></audio></div>`).join('')}</div>`:`<p class="muted">${tr('noAudio')}</p><p class="muted">${tr('audioFormat')}</p>`); return; }
-  view.innerHTML=card(tr('audio'), `<div class="grid">${d.categories.map(c=>tile('audio','🎧',pick(c.title),`${tr('all')}: ${localNum((c.items||[]).length)}`,{cat:c.id})).join('')}</div>`);
+  let categories=[],sermons=[];
+  try{
+    categories=await cloudFetch('sermon_categories?select=*&is_active=eq.true&order=sort_order.asc,name_fa.asc',{method:'GET'}); sermons=await cloudFetch('sermons?select=*&is_published=eq.true&order=sort_order.asc,published_at.desc',{method:'GET'});
+  }catch(e){console.warn('Dynamic sermons unavailable; using bundled audio list',e)}
+  if(Array.isArray(sermons)&&sermons.length){
+    const catId=params.cat||''; const q=String(params.q||'').trim().toLowerCase();
+    const filtered=sermons.filter(x=>(!catId||String(x.category_id)===String(catId))&&(!q||[x.title_fa,x.title_en,x.title_hr,x.description_fa,x.description_en,x.description_hr].some(v=>String(v||'').toLowerCase().includes(q))));
+    if(params.open){const x=sermons.find(v=>String(v.id)===String(params.open));if(!x)return;const title=x['title_'+state.lang]||x.title_fa||x.title_en;const desc=x['description_'+state.lang]||x.description_fa||x.description_en||'';view.innerHTML=card(title,`${x.cover_url?`<img class="sermon-cover" src="${html(x.cover_url)}" alt="">`:''}<p>${html(desc)}</p>${x.duration_minutes?`<span class="badge">${tr('duration')}: ${localNum(x.duration_minutes)} min</span>`:''}${x.audio_url?`<div class="audio-player"><audio controls preload="metadata" src="${html(x.audio_url)}"></audio></div>`:''}<div class="button-row">${x.youtube_url?`<a class="primary-btn" href="${html(x.youtube_url)}" target="_blank" rel="noopener">▶ ${tr('watchYouTube')}</a>`:''}<button class="secondary-btn" data-go="audio">${tr('back')}</button></div>`);return}
+    const list=filtered.length?`<div class="sermon-list">${filtered.map(x=>{const title=x['title_'+state.lang]||x.title_fa||x.title_en;return `<button class="sermon-card" data-go="audio" data-params='${html(JSON.stringify({open:x.id}))}'>${x.cover_url?`<img src="${html(x.cover_url)}" alt="">`:'<span class="sermon-placeholder">🎙</span>'}<span><strong>${html(title)}</strong><small>${x.duration_minutes?localNum(x.duration_minutes)+' min · ':''}${x.youtube_url?'YouTube · ':''}${x.audio_url?'MP3':''}</small></span></button>`}).join('')}</div>`:`<p class="muted">${tr('noSermons')}</p>`;
+    view.innerHTML=card(tr('sermons'),`<input id="sermonSearch" placeholder="${tr('sermonSearch')}" value="${html(params.q||'')}"><div class="tabs"><button class="tab ${!catId?'active':''}" data-go="audio">${tr('allCategories')}</button>${(categories||[]).map(c=>`<button class="tab ${String(catId)===String(c.id)?'active':''}" data-go="audio" data-params='${html(JSON.stringify({cat:c.id}))}'>${html(c['name_'+state.lang]||c.name_fa||c.name_en)}</button>`).join('')}</div>${list}`);
+    $('#sermonSearch')?.addEventListener('change',e=>navigate('audio',{cat:catId,q:e.target.value},true));return;
+  }
+  const d=await jfetch('data/audio/messages.json'); if(params.cat){const c=d.categories.find(x=>x.id===params.cat);const items=c?.items||[];view.innerHTML=card(pick(c?.title)||tr('audio'),items.length?`<div class="list">${items.map(it=>`<div class="card"><strong>${html(pick(it.title)||it.title||'Audio')}</strong><audio controls src="${html(it.src)}"></audio></div>`).join('')}</div>`:`<p class="muted">${tr('noAudio')}</p>`);return}view.innerHTML=card(tr('audio'),`<div class="grid">${d.categories.map(c=>tile('audio','🎧',pick(c.title),`${tr('all')}: ${localNum((c.items||[]).length)}`,{cat:c.id})).join('')}</div>`);
 }
 async function salvation(){
   const d=await jfetch('data/salvation/need_salvation.json');
@@ -969,6 +1014,7 @@ async function about(){
   view.innerHTML=card(tr('about'), `<h3>${tr('churchIntro')}</h3><p>${html(d.intro?.[state.lang]||'')}</p><h3>${tr('ourVision')}</h3><p>${html(d.vision?.[state.lang]||'')}</p><h3>${tr('ourBeliefs')}</h3><p>${html(d.beliefs?.[state.lang]||'')}</p><div class="button-row"><a class="secondary-btn" href="https://www.bible.com/organizations/da6136d1-04cd-4243-a52b-f9ba7f32ec79?utm_source=yvapp&utm_medium=share&utm_content=partner-page" target="_blank" rel="noopener">${tr('youversion')}</a></div>`);
 }
 async function meetings(params={}){
+  if(isExplicitlyLoggedOut()){view.innerHTML=card(tr('meetings'),`<p>${tr('loginRequired')}</p><button class="primary-btn" data-go="account">${tr('signIn')}</button>`);return;}
   let meetingAccess=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{"status":"none"}');
   let schoolAccess=JSON.parse(localStorage.getItem('nh7_school_access')||'{"status":"none"}');
 
@@ -1023,114 +1069,100 @@ async function qna(){
 }
 
 async function account(){
-  const profile=getKnownUserProfile();
-  const emailValue=html(profile.email||'');
-  view.innerHTML=card(tr('account'), `<h3>${tr('accountActions')}</h3><p class="muted">${tr('myAccess')}</p><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(profile.email||'-')}</p></div><p class="muted">${tr('restoreAccessHint')}</p><input id="loginEmail" type="email" placeholder="${tr('email')}" value="${emailValue}"><div class="button-row"><button class="primary-btn" id="restoreAccessBtn">${tr('restoreAccess')}</button><button class="secondary-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button></div><h3>${tr('forgotPassword')}</h3><p class="muted">${state.lang==='fa'?'اگر رمز حساب را فراموش کرده‌اید، ایمیل خود را وارد کنید تا لینک بازیابی رمز ارسال شود.':state.lang==='hr'?'Ako ste zaboravili lozinku, unesite email za poveznicu za reset.':'If you forgot your password, enter your email to receive a reset link.'}</p><input id="resetEmail" type="email" placeholder="${tr('email')}" value="${emailValue}"><button class="primary-btn" id="resetPasswordBtn">${tr('resetPassword')}</button><p id="resetMsg" class="muted"></p>`);
-  $('#resetPasswordBtn')?.addEventListener('click', resetPassword);
-  $('#restoreAccessBtn')?.addEventListener('click', loginRestoreAccess);
-  $('#logoutAccountBtn')?.addEventListener('click', logoutAccount);
+  const session=authSession();
+  if(isAccountLoggedIn()){
+    const profile=getKnownUserProfile(); const email=authEmail()||profile.email||'';
+    view.innerHTML=card(tr('account'), `<h3>${tr('myAccess')}</h3><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||session?.user?.user_metadata?.full_name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(email)}</p></div><button class="danger-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button>`);
+    $('#logoutAccountBtn')?.addEventListener('click',logoutAccount); return;
+  }
+  view.innerHTML=card(tr('account'), `<p class="muted">${tr('signedOut')}</p><p>${tr('signInHint')}</p><input id="accountEmail" type="email" autocomplete="email" placeholder="${tr('email')}"><div class="password-wrap"><input id="accountPassword" type="password" autocomplete="current-password" placeholder="${tr('password')}"><button type="button" class="password-eye" data-toggle-password="accountPassword">👁</button></div><button class="primary-btn wide-btn" id="signInBtn">${tr('signIn')}</button><button class="link-button" id="forgotPasswordToggle">${tr('forgotPassword')}</button><div id="forgotPasswordPanel" class="hidden"><input id="resetEmail" type="email" placeholder="${tr('email')}"><button class="secondary-btn" id="resetPasswordBtn">${tr('resetPassword')}</button><p id="resetMsg" class="muted"></p></div><details class="legacy-access"><summary>${tr('legacyRestore')}</summary><p class="muted">${tr('restoreAccessHint')}</p><input id="loginEmail" type="email" placeholder="${tr('email')}"><button class="secondary-btn" id="restoreAccessBtn">${tr('restoreAccess')}</button></details>`);
+  $('#signInBtn')?.addEventListener('click',signInAccount);
+  $('#forgotPasswordToggle')?.addEventListener('click',()=>$('#forgotPasswordPanel')?.classList.toggle('hidden'));
+  $('#resetPasswordBtn')?.addEventListener('click',resetPassword);
+  $('#restoreAccessBtn')?.addEventListener('click',loginRestoreAccess);
+  bindPasswordToggles();
 }
-async function loginRestoreAccess(){
-  const email=($('#loginEmail')?.value||'').trim().toLowerCase();
-  if(!email){ alert(tr('requiredField')); return; }
-  localStorage.setItem('nh7_manual_email', email);
+async function signInAccount(){
+  const email=($('#accountEmail')?.value||'').trim().toLowerCase(); const password=$('#accountPassword')?.value||'';
+  if(!email||!password){alert(tr('requiredField'));return}
   try{
-    const school=await fetchLatestRegistration('school');
-    const meeting=await fetchLatestRegistration('meeting');
-    if(school) localStorage.setItem('nh7_school_access', JSON.stringify(Object.assign({}, school, {email})));
-    if(meeting) localStorage.setItem('nh7_meeting_access', JSON.stringify(Object.assign({}, meeting, {email})));
-    if(!school && !meeting){
-      const old=JSON.parse(localStorage.getItem('nh7_school_access')||'{}');
-      localStorage.setItem('nh7_school_access', JSON.stringify(Object.assign({}, old, {email, status: old.status||'guest'})));
-    }
-  }catch(e){ console.warn('restore access failed', e); }
-  alert(tr('restoreAccessDone'));
-  render('account',{},true);
+    const data=await authApi('token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})}); saveAuthSession(data); localStorage.setItem('nh7_manual_email',email); localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
+    const school=await fetchLatestRegistration('school'); const meeting=await fetchLatestRegistration('meeting');
+    if(school)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},school,{email}))); if(meeting)localStorage.setItem('nh7_meeting_access',JSON.stringify(Object.assign({},meeting,{email})));
+    render('account',{},true);
+  }catch(e){console.warn(e);alert(tr('loginFailed'))}
 }
-function logoutAccount(){
-  if(!confirm(state.lang==='fa'?'از حساب این دستگاه خارج شوید؟ دسترسی مدرسه و جلسات از این دستگاه پاک می‌شود و با ایمیل قابل بازیابی است.':state.lang==='hr'?'Odjaviti se s ovog uređaja? Pristup se može obnoviti emailom.':'Sign out from this device? Access can be restored by email.')) return;
-  localStorage.removeItem('nh7_manual_email');
-  localStorage.removeItem('nh7_school_access');
-  localStorage.removeItem('nh7_meeting_access');
-  alert(state.lang==='fa'?'از حساب خارج شدید. برای ورود دوباره از بخش حساب، ایمیل ثبت‌نام را وارد کنید.':state.lang==='hr'?'Odjavljeni ste. Za ponovni ulazak unesite email u računu.':'You are signed out. To sign in again, enter your registration email in Account.');
-  render('account',{},true);
-}
-async function resetPassword(){
-  const email=($('#resetEmail')?.value||'').trim().toLowerCase();
-  if(!email){ alert(tr('requiredField')); return; }
-  try{
-    await fetch(SUPABASE_CONFIG.url + '/auth/v1/recover', {method:'POST', headers:{'apikey':SUPABASE_CONFIG.key,'Content-Type':'application/json'}, body:JSON.stringify({email, redirect_to: location.origin + location.pathname})});
-  }catch(e){ console.warn('password reset request failed', e); }
-  const msg=$('#resetMsg'); if(msg) msg.textContent=tr('resetPasswordSent');
-  alert(tr('resetPasswordSent'));
+function bindPasswordToggles(){
+  $$('[data-toggle-password]').forEach(btn=>btn.onclick=()=>{const input=$('#'+btn.dataset.togglePassword);if(!input)return;input.type=input.type==='password'?'text':'password';btn.textContent=input.type==='password'?'👁':'🙈';});
 }
 
+async function loginRestoreAccess(){
+  const email=($('#loginEmail')?.value||'').trim().toLowerCase(); if(!email){alert(tr('requiredField'));return}
+  localStorage.setItem('nh7_manual_email',email); localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
+  try{const school=await fetchLatestRegistration('school');const meeting=await fetchLatestRegistration('meeting');if(school)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},school,{email})));if(meeting)localStorage.setItem('nh7_meeting_access',JSON.stringify(Object.assign({},meeting,{email})));}catch(e){console.warn(e)}
+  alert(tr('restoreAccessDone'));render('account',{},true);
+}
+async function logoutAccount(){
+  if(!confirm(state.lang==='fa'?'از حساب خارج شوید؟':state.lang==='hr'?'Odjaviti se?':'Sign out?'))return;
+  const session=authSession(); try{if(session?.access_token)await authApi('logout',{method:'POST',headers:{Authorization:'Bearer '+session.access_token}})}catch(e){}
+  saveAuthSession(null); localStorage.setItem(EXPLICIT_LOGOUT_KEY,'1');
+  ['nh7_manual_email','nh7_school_access','nh7_meeting_access'].forEach(k=>localStorage.removeItem(k));
+  state.stack=[]; state.params={}; alert(tr('signedOut')); navigate('account',{},true);
+}
+async function resetPassword(){
+  const email=(($('#resetEmail')?.value||$('#accountEmail')?.value||'')).trim().toLowerCase(); if(!email){alert(tr('requiredField'));return}
+  try{await authApi('recover',{method:'POST',body:JSON.stringify({email,redirect_to:location.origin+location.pathname+'#account'})})}catch(e){console.warn(e)}
+  const msg=$('#resetMsg');if(msg)msg.textContent=tr('resetPasswordSent');alert(tr('resetPasswordSent'));
+}
+
+let notificationSettingsCache=null;
+function nativeLocalNotifications(){return window.Capacitor?.Plugins?.LocalNotifications||window.Capacitor?.LocalNotifications||null}
+async function fetchNotificationSchedules(force=false){
+  if(notificationSettingsCache&&!force)return notificationSettingsCache;
+  try{const rows=await cloudFetch('notification_schedules?select=*&is_active=eq.true&order=sort_order.asc',{method:'GET'});if(Array.isArray(rows)&&rows.length){notificationSettingsCache=rows;return rows}}catch(e){console.warn(e)}
+  notificationSettingsCache=[
+    {key:'daily_word',time_value:'07:00',timezone_mode:'local',days_of_week:[0,1,2,3,4,5,6],title_fa:'کلام روزانه آماده است',body_fa:'امروز کلام خدا را دریافت کن.',title_en:'Daily Word is ready',body_en:'Receive God’s Word today.',title_hr:'Dnevna Riječ je spremna',body_hr:'Primi Božju Riječ danas.'},
+    {key:'faith',time_value:'12:00',timezone_mode:'local',days_of_week:[0,1,2,3,4,5,6],title_fa:'اعلان ایمان آماده است',body_fa:'وقت اعلان ایمان است.',title_en:'Faith proclamation is ready',body_en:'It is time for your faith proclamation.',title_hr:'Proglas vjere je spreman',body_hr:'Vrijeme je za proglas vjere.'},
+    {key:'daily_juice',time_value:'17:00',timezone_mode:'local',days_of_week:[0,1,2,3,4,5,6],title_fa:'آب حیات روزانه آماده است',body_fa:'چند دقیقه برای تقویت روح خود وقت بگذار.',title_en:'Daily Juice is ready',body_en:'Take a few minutes to strengthen your spirit.',title_hr:'Dnevni sok je spreman',body_hr:'Odvoji nekoliko minuta za svoj duh.'},
+    {key:'gratitude',time_value:'21:00',timezone_mode:'local',days_of_week:[0,1,2,3,4,5,6],title_fa:'یادآوری شکرگزاری',body_fa:'امروز را با شکرگزاری به پایان برسان.',title_en:'Gratitude reminder',body_en:'End today with thanksgiving.',title_hr:'Podsjetnik zahvalnosti',body_hr:'Završi dan zahvalnošću.'},
+    {key:'morning_meeting',time_value:'04:55',timezone_mode:'Europe/Zagreb',days_of_week:[0,1,2,3,4,5,6],title_fa:'یادآوری دعای صبحگاهی',body_fa:'جلسه دعا پنج دقیقه دیگر آغاز می‌شود.',title_en:'Morning prayer reminder',body_en:'Prayer meeting starts in five minutes.',title_hr:'Podsjetnik jutarnje molitve',body_hr:'Molitveni sastanak počinje za pet minuta.'},
+    {key:'sunday_service',time_value:'19:55',timezone_mode:'Europe/Zagreb',days_of_week:[0],title_fa:'یادآوری جلسه یکشنبه',body_fa:'جلسه یکشنبه پنج دقیقه دیگر آغاز می‌شود.',title_en:'Sunday service reminder',body_en:'Sunday service starts in five minutes.',title_hr:'Podsjetnik nedjeljne službe',body_hr:'Nedjeljna služba počinje za pet minuta.'}
+  ];return notificationSettingsCache;
+}
+function scheduleText(row,field){return row[field+'_'+state.lang]||row[field+'_en']||row[field+'_fa']||''}
+function zonedScheduleDate(baseDay,hh,mm,zone){
+  if(!zone||zone==='local'){const d=new Date(baseDay);d.setHours(hh,mm,0,0);return d}
+  const guess=new Date(Date.UTC(baseDay.getFullYear(),baseDay.getMonth(),baseDay.getDate(),hh,mm,0));
+  try{const parts=new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).formatToParts(guess);const val=t=>Number(parts.find(p=>p.type===t)?.value||0);const asUTC=Date.UTC(val('year'),val('month')-1,val('day'),val('hour'),val('minute'),val('second'));return new Date(guess.getTime()-(asUTC-guess.getTime()))}catch(e){return guess}
+}
+async function scheduleNativeNotifications(){
+  const Native=nativeLocalNotifications();if(!Native)return false;const settings=await fetchNotificationSchedules(true);try{const pending=(await Native.getPending()).notifications||[];if(pending.length)await Native.cancel({notifications:pending.map(x=>({id:x.id}))})}catch(e){}
+  const now=new Date();const notifications=[];let id=17000;
+  for(const row of settings){const [hh,mm]=String(row.time_value||'00:00').split(':').map(Number);for(let plus=0;plus<14;plus++){const base=new Date(now);base.setDate(base.getDate()+plus);const d=zonedScheduleDate(base,hh,mm,row.timezone_mode);if(d<=now)continue;let dow=d.getDay();if(row.timezone_mode&&row.timezone_mode!=='local'){try{const wd=new Intl.DateTimeFormat('en-US',{timeZone:row.timezone_mode,weekday:'short'}).format(d);dow=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(wd)}catch(e){}}if(Array.isArray(row.days_of_week)&&!row.days_of_week.includes(dow))continue;notifications.push({id:id++,title:scheduleText(row,'title'),body:scheduleText(row,'body'),schedule:{at:d,allowWhileIdle:true},extra:{route:row.target_route||'home',notificationKey:row.key}})}}
+  if(notifications.length)await Native.schedule({notifications});return true;
+}
+async function notificationPermissionStatus(){const Native=nativeLocalNotifications();if(Native){try{const p=await Native.checkPermissions();return p.display==='granted'?'granted':p.display==='denied'?'denied':'default'}catch(e){}}return typeof Notification==='undefined'?'default':Notification.permission}
+
 async function settings(){
-  const perm=typeof Notification==='undefined'?'default':Notification.permission;
-  const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');
-  view.innerHTML=card(tr('settings'), `<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice"><p>${state.lang==='fa'?'کلام روزانه ساعت ۷، اعلان ایمان ساعت ۱۲، آبمیوه روزانه ساعت ۱۷، و یادآوری شکرگزاری ساعت ۲۱ بر اساس زمان محلی کاربر تنظیم می‌شود. یادآوری جلسات کلیسا بر اساس زمان کرواسی است. برای آیفون، اپ را به Home Screen اضافه کنید و سپس اعلان‌ها را فعال کنید. پیام‌های دریافت‌شده در صندوق ورودی اپ نیز ذخیره می‌شوند.':'Daily Word at 07:00, Faith Proclamation at 12:00, Daily Juice at 17:00, and Gratitude reminder at 21:00 use the user’s local time. Church meeting reminders use Croatia time. On iPhone, add the app to Home Screen, then enable notifications. Received messages are also saved in the app inbox.'}</p></div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>OmideNo7 v1.6.4</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
-  $('#settingsLang').value=state.lang; $('#settingsLang').onchange=e=>setLang(e.target.value);
-  $('#enableNotify').onclick=enableNotifications;
-  $('#clearCache').onclick=async()=>{ try{ if('caches' in window){ const keys=await caches.keys(); await Promise.all(keys.map(k=>caches.delete(k))); } if('serviceWorker' in navigator){ const rs=await navigator.serviceWorker.getRegistrations(); await Promise.all(rs.map(r=>r.update())); } }catch(e){} alert(tr('saved')); location.reload(); };
-  $('#syncCloud')?.addEventListener('click', async()=>{ await syncCloudQueue(); alert(cloudStatusText()); render('settings',{},true); });
+  const perm=await notificationPermissionStatus();const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');const schedules=await fetchNotificationSchedules();
+  view.innerHTML=card(tr('settings'),`<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice">${schedules.map(x=>`<p><strong>${html(scheduleText(x,'title'))}</strong> — ${html(x.time_value||'')} ${x.timezone_mode&&x.timezone_mode!=='local'?`(${html(x.timezone_mode)})`:''}</p>`).join('')}</div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>OmideNo7 v1.7.0</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
+  $('#settingsLang').value=state.lang;$('#settingsLang').onchange=e=>setLang(e.target.value);$('#enableNotify').onclick=enableNotifications;
+  $('#clearCache').onclick=async()=>{try{if('caches'in window){const keys=await caches.keys();await Promise.all(keys.map(k=>caches.delete(k)))}if('serviceWorker'in navigator){const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.update()))}}catch(e){}alert(tr('saved'));location.reload()};
+  $('#syncCloud')?.addEventListener('click',async()=>{await syncCloudQueue();await refreshInboxFromCloud();notificationSettingsCache=null;alert(cloudStatusText());render('settings',{},true)});
 }
 async function enableNotifications(){
-  if(typeof Notification==='undefined'){
-    alert(state.lang==='fa'?'اعلان‌ها در این مرورگر یا داخل این حالت نصب پشتیبانی نمی‌شوند. اگر از اندروید استفاده می‌کنید، اپ را از Google Play/Chrome باز کنید و اجازه Notifications را در تنظیمات گوشی روشن کنید.':'Notifications are not supported in this browser or install mode. On Android, open the app through Google Play/Chrome and allow Notifications in device settings.');
-    return;
-  }
-  let perm = Notification.permission || 'default';
+  let perm='default';const Native=nativeLocalNotifications();
   try{
-    if(window.OneSignalDeferred){
-      await new Promise(resolve=>{
-        let done=false;
-        const finish=()=>{ if(!done){ done=true; resolve(); } };
-        setTimeout(finish, 7000);
-        window.OneSignalDeferred.push(async function(OneSignal){
-          try{
-            if(OneSignal.Notifications && OneSignal.Notifications.requestPermission){
-              const result = await OneSignal.Notifications.requestPermission();
-              perm = result===true ? 'granted' : (Notification.permission || perm || 'default');
-            }
-            const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'local';
-            if(OneSignal.User && OneSignal.User.addTags){
-              await OneSignal.User.addTags({
-                app:'omideno7',
-                language: state.lang,
-                timezone: tz,
-                daily_word_time:'07:00',
-                faith_time:'12:00',
-                daily_juice_time:'17:00',
-                gratitude_time:'21:00',
-                croatia_morning_meeting:'04:55',
-                croatia_sunday_service:'20:00',
-                inbox_enabled:'true'
-              });
-            }
-            const subId = OneSignal.User?.PushSubscription?.id || '';
-            if(subId) localStorage.setItem('nh7_onesignal_subscription_id', subId);
-          }catch(err){ console.warn('OneSignal permission failed', err); }
-          finish();
-        });
-      });
-    }
-    if(Notification.permission !== 'granted'){
-      const browserPerm = await Notification.requestPermission();
-      perm = browserPerm || perm;
-    } else perm = 'granted';
-  }catch(e){ console.warn(e); perm = Notification.permission || perm || 'default'; }
-  if(perm===true) perm='granted';
-  localStorage.setItem('nh7_notifications_permission',perm);
-  localStorage.setItem('nh7_notifications_timezone', Intl.DateTimeFormat().resolvedOptions().timeZone || 'local');
-  if(perm==='granted'){
-    try{ new Notification(tr('appTitle'),{body:tr('notificationEnabled'),icon:'assets/logo.png'}); }catch(e){}
-    addInboxMessage(tr('notificationEnabled'), state.lang==='fa'?'اعلان‌ها با موفقیت فعال شد. از این به بعد پیام‌های کلیسا در این صندوق نیز ذخیره می‌شوند.':state.lang==='hr'?'Obavijesti su uključene. Od sada će se crkvene poruke spremati i u ovu ulaznu poštu.':'Notifications are active. Church messages will also be saved in this inbox.', 'system', 'notifications_enabled_'+todayKey());
-    alert(state.lang==='fa'?'اعلان‌ها فعال شد. اگر هنوز پیام دریافت نکردید، در تنظیمات گوشی برای این اپ/Chrome اجازه Notifications را روشن بگذارید.':'Notifications are active. If you still do not receive messages, keep Notifications allowed for this app/Chrome in device settings.');
-  } else if(perm==='denied') {
-    alert(state.lang==='fa'?'اجازه اعلان‌ها قبلاً مسدود شده است. از تنظیمات گوشی/مرورگر، Notifications را برای این اپ یا Chrome روی Allow بگذارید و دوباره تلاش کنید.':tr('notificationDenied'));
-  } else {
-    alert(state.lang==='fa'?'اعلان‌ها هنوز فعال نشد. لطفاً اجازه اعلان را در پنجره گوشی تأیید کنید یا از تنظیمات گوشی Notifications را فعال کنید.':'Notifications are not active yet. Please allow notifications in the phone prompt or device settings.');
-  }
+    if(Native){const p=await Native.requestPermissions();perm=p.display==='granted'?'granted':p.display==='denied'?'denied':'default';if(perm==='granted')await scheduleNativeNotifications();}
+    else if(window.OneSignalDeferred&&typeof Notification!=='undefined'){
+      await new Promise(resolve=>{let done=false;const finish=()=>{if(!done){done=true;resolve()}};setTimeout(finish,7000);window.OneSignalDeferred.push(async OneSignal=>{try{if(OneSignal.Notifications?.requestPermission){const result=await OneSignal.Notifications.requestPermission();perm=result===true?'granted':Notification.permission}const settings=await fetchNotificationSchedules();const tags={app:'omideno7',language:state.lang,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'local',inbox_enabled:'true'};settings.forEach(x=>tags[x.key+'_time']=x.time_value);if(OneSignal.User?.addTags)await OneSignal.User.addTags(tags)}catch(e){console.warn(e)}finish()})});
+      if(Notification.permission!=='granted')perm=await Notification.requestPermission();else perm='granted';
+    }else if(typeof Notification!=='undefined'){perm=await Notification.requestPermission()}
+    else perm='default';
+  }catch(e){console.warn(e)}
+  localStorage.setItem('nh7_notifications_permission',perm);localStorage.setItem('nh7_notifications_timezone',Intl.DateTimeFormat().resolvedOptions().timeZone||'local');
+  if(perm==='granted'){addInboxMessage(tr('notificationEnabled'),state.lang==='fa'?'اعلان‌ها با موفقیت فعال شدند.':state.lang==='hr'?'Obavijesti su uspješno uključene.':'Notifications are enabled.','system','notifications_enabled_'+todayKey());alert(tr('notificationEnabled'))}
+  else if(perm==='denied')alert(tr('notificationDenied'));else alert(state.lang==='fa'?'اجازه اعلان فعال نشد. لطفاً اجازه را در تنظیمات گوشی بررسی کنید.':tr('notificationDefault'));
   render(state.route,state.params,true);
 }
 
@@ -1153,9 +1185,9 @@ function bindDynamic(){
   $$('[data-salvation-toggle]').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.salvationToggle); if(p){ p.classList.toggle('hidden'); const small=el.querySelector('small'); if(small) small.textContent=p.classList.contains('hidden') ? (state.lang==='fa'?'برای باز کردن کلیک کنید':state.lang==='hr'?'Dodirnite za otvaranje':'Tap to open') : tr('hide'); }});
   $$('[data-qna-toggle]').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.qnaToggle); if(p){ p.classList.toggle('hidden'); const sp=el.querySelector('span'); if(sp) sp.textContent=p.classList.contains('hidden') ? (state.lang==='fa'?'برای باز کردن کلیک کنید':state.lang==='hr'?'Dodirnite za otvaranje':'Tap to open') : tr('hide'); }});
   $$('.qna-answer-toggle').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.qnaAnswer); if(p){ p.classList.toggle('hidden'); }});
-  $$('[data-inbox-open]').forEach(el=>el.onclick=()=>{ const id=el.dataset.inboxOpen; const safe=String(id).replace(/[^a-zA-Z0-9_-]/g,'_'); const p=$('#inbox-'+safe); if(p) p.classList.toggle('hidden'); const arr=inboxMessages().map(m=>String(m.id)===String(id)?{...m,read:true,readAt:new Date().toISOString()}:m); setInboxMessages(arr); updateInboxBadge(); });
+  $$('[data-inbox-open]').forEach(el=>el.onclick=()=>{ const id=el.dataset.inboxOpen; const safe=String(id).replace(/[^a-zA-Z0-9_-]/g,'_'); const p=$('#inbox-'+safe); if(p) p.classList.toggle('hidden'); const at=new Date().toISOString(); const arr=inboxMessages().map(m=>String(m.id)===String(id)?{...m,read:true,readAt:at}:m); setInboxMessages(arr); saveInboxReceipt(id,{read_at:at}).catch(console.warn); updateInboxBadge(); });
   $$('[data-inbox-delete]').forEach(el=>el.onclick=(ev)=>{ ev.stopPropagation(); const id=el.dataset.inboxDelete; if(confirm(tr('deleteConfirm'))){ deleteInboxLocal(id); render('inbox',{},true); } });
-  $$('[data-submit-registration]').forEach(el=>el.onclick=()=>collectRegistration(el.dataset.submitRegistration));
+  $$('[data-submit-registration]').forEach(el=>el.onclick=()=>collectRegistration(el.dataset.submitRegistration)); bindPasswordToggles();
   const run=$('#runBibleSearch'); if(run) run.onclick=()=>navigate('bible',{q:$('#bibleSearch').value},true);
   $('#startGratitude')?.addEventListener('click',()=>{ localStorage.setItem('nh7_gratitude_start',todayKey()); addPoints(5,'gratitude_1'); render('daily',{tab:'gratitude'},true); });
   $('#completeGratitude')?.addEventListener('click',(ev)=>{ const current=Number(ev.currentTarget.dataset.gratitudeDay||1); const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]'); if(!completed.includes(current)) completed.push(current); completed.sort((a,b)=>a-b); localStorage.setItem('nh7_gratitude_completed',JSON.stringify(completed)); const gnote=$('#gratitudeNote')?.value||''; localStorage.setItem('nh7_gratitude_note_'+current,gnote); saveNoteCloud('gratitude_note_'+current, gnote).catch(console.warn); saveProgressCloud('gratitude_completed',{completed}).catch(console.warn); addPoints(10,'gratitude_1'); render('daily',{tab:'gratitude',gday:current},true); });
@@ -1172,4 +1204,5 @@ $('#amenButton').onclick=()=>$('#amenGate').classList.add('hidden');
 window.addEventListener('online',()=>{ $('.offline')?.remove(); syncCloudQueue().catch(console.warn); });
 window.addEventListener('offline',()=>{ if(!$('.offline')){ const d=document.createElement('div'); d.className='offline'; d.textContent=tr('offline'); document.body.appendChild(d);} });
 if('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js').catch(console.warn);
-setLang(state.lang); syncCloudQueue().catch(console.warn); maybeCreateScheduledInboxMessages(); updateInboxBadge(); showAmen();
+try{const Native=nativeLocalNotifications();Native?.addListener?.('localNotificationActionPerformed',ev=>{const route=ev?.notification?.extra?.route||'home';navigate(route,{},true)});}catch(e){}
+setLang(state.lang); syncCloudQueue().catch(console.warn); refreshInboxFromCloud().catch(console.warn); maybeCreateScheduledInboxMessages().catch(console.warn); notificationPermissionStatus().then(p=>{if(p==='granted'&&nativeLocalNotifications())scheduleNativeNotifications().catch(console.warn)}).catch(console.warn); updateInboxBadge(); showAmen();

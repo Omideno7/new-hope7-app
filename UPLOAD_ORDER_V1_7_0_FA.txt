@@ -1,0 +1,18 @@
+ترتیب امن آپلود New Hope 7 v1.7.0
+
+1) Supabase > SQL Editor
+   فایل supabase_v1_7_0_dynamic_platform.sql را Run کنید.
+
+2) GitHub
+   همه فایل‌های داخل ZIP وب را در ریشه repository آپلود و Replace کنید.
+
+3) تست وب
+   https://omideno7.github.io/new-hope7-app/?v=170
+   https://omideno7.github.io/new-hope7-app/admin.html?v=170
+
+4) فقط بعد از تست موفق وب و Supabase، Android AAB را بسازید.
+
+5) Google Play Production
+   versionCode: 170
+   versionName: 1.7.0
+   همان JKS قبلی
