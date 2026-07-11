@@ -612,29 +612,17 @@ async function deleteInboxCloud(id){
 }
 function deleteInboxLocal(id){
   const target=inboxMessages().find(m=>String(m.id)===String(id));
-  const key=target ? inboxMessageKey(target) : '';
-  const minute=target ? String(target.createdAt||'').slice(0,16) : '';
+  const canonical=target?inboxCanonicalGroup(target):String(id);
   const ids=[];
-  const remaining=inboxMessages().filter(m=>{
-    const sameId=String(m.id)===String(id);
-    const sameGroup=key && inboxMessageKey(m)===key && String(m.createdAt||'').slice(0,16)===minute;
-    if(sameId || sameGroup){ ids.push(String(m.id)); return false; }
-    return true;
-  });
-  markInboxDeleted(ids.length?ids:[String(id)]);
-  setInboxMessages(remaining);
-  ids.forEach(x=>deleteInboxCloud(x));
+  const remaining=inboxMessages().filter(m=>{const match=String(m.id)===String(id)||inboxCanonicalGroup(m)===canonical;if(match){ids.push(String(m.id));return false}return true});
+  markInboxDeleted([canonical,...ids]); setInboxMessages(remaining);
+  ids.filter(x=>!x.startsWith('scheduled:')).forEach(x=>deleteInboxCloud(x));
 }
 function deleteVisibleInbox(){
-  const visible=inboxDisplayMessages();
-  const ids=new Set();
-  visible.forEach(v=>{
-    const key=inboxMessageKey(v); const minute=String(v.createdAt||'').slice(0,16);
-    inboxMessages().forEach(m=>{ if(String(m.id)===String(v.id) || (key && inboxMessageKey(m)===key && String(m.createdAt||'').slice(0,16)===minute)) ids.add(String(m.id)); });
-  });
-  markInboxDeleted(Array.from(ids));
-  setInboxMessages(inboxMessages().filter(m=>!ids.has(String(m.id))));
-  ids.forEach(x=>deleteInboxCloud(x));
+  const groups=new Set(inboxDisplayMessages().map(inboxCanonicalGroup)); const ids=[];
+  const remaining=inboxMessages().filter(m=>{if(groups.has(inboxCanonicalGroup(m))){ids.push(String(m.id));return false}return true});
+  markInboxDeleted([...groups,...ids]); setInboxMessages(remaining);
+  ids.filter(x=>!x.startsWith('scheduled:')).forEach(x=>deleteInboxCloud(x));
 }
 const INBOX_LOCALIZED_MESSAGES = {
   daily_word:{
@@ -682,6 +670,15 @@ function inboxMessageKey(m){
   if(c==='meeting' && (b.includes('sunday') || b.includes('یکشنبه') || b.includes('nedjeljni'))) return 'sunday_service';
   return '';
 }
+function inboxDateKey(m){
+  const raw=String(m.createdAt||m.delivered_at||new Date().toISOString());
+  const d=new Date(raw); if(Number.isNaN(d.getTime())) return raw.slice(0,10);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function inboxCanonicalGroup(m){
+  const key=inboxMessageKey(m);
+  return key ? `scheduled:${key}:${inboxDateKey(m)}` : `message:${String(m.id)}`;
+}
 function normalizedInboxMessage(m){
   const lang = String(m.language || m.lang || '').toLowerCase();
   const key = inboxMessageKey(m);
@@ -696,13 +693,16 @@ function normalizedInboxMessage(m){
 function inboxDisplayMessages(){
   const deleted=inboxDeletedIds();
   const seen=new Map();
-  inboxMessages().filter(m=>!deleted.has(String(m.id))).map(normalizedInboxMessage).filter(Boolean).forEach(m=>{
-    const key=inboxMessageKey(m) || String(m.id);
-    const minute=String(m.createdAt||'').slice(0,16);
-    const group=key+'_'+minute;
+  inboxMessages().filter(m=>!deleted.has(String(m.id)) && !deleted.has(inboxCanonicalGroup(m))).map(normalizedInboxMessage).filter(Boolean).forEach(m=>{
+    const group=inboxCanonicalGroup(m);
     const existing=seen.get(group);
     if(!existing) seen.set(group,m);
-    else if((m.language||m.lang)===state.lang && (existing.language||existing.lang)!==state.lang) seen.set(group,m);
+    else {
+      const mLocal=(m.language||m.lang)===state.lang;
+      const eLocal=(existing.language||existing.lang)===state.lang;
+      if(mLocal&&!eLocal) seen.set(group,m);
+      else if(m.read && !existing.read) seen.set(group,{...m,read:false});
+    }
   });
   return Array.from(seen.values()).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt)));
 }
@@ -715,12 +715,13 @@ function updateInboxBadge(){
 }
 function addInboxMessage(title, body, category='app', id=null){
   const arr=inboxMessages();
-  const mid=(id ? id+'_'+state.lang : (category+'_'+state.lang+'_'+todayKey()+'_'+title.replace(/\W+/g,'_').slice(0,24)));
-  if(inboxDeletedIds().has(String(mid))) return;
-  if(arr.some(m=>m.id===mid)) return;
+  const scheduled=!!INBOX_LOCALIZED_MESSAGES[String(category||'').toLowerCase()];
+  const mid=scheduled ? `scheduled:${category}:${todayKey()}` : (id ? String(id) : `${category}:${crypto?.randomUUID?crypto.randomUUID():Date.now()}`);
+  if(inboxDeletedIds().has(mid)) return;
+  if(arr.some(m=>String(m.id)===mid || inboxCanonicalGroup(m)===mid)) return;
   const item={id:mid,title,body,category,createdAt:new Date().toISOString(),read:false,lang:state.lang,language:state.lang};
-  arr.unshift(item); setInboxMessages(arr.slice(0,100));
-  saveInboxCloud(item).catch(console.warn);
+  arr.unshift(item); setInboxMessages(arr.slice(0,150));
+  if(!scheduled) saveInboxCloud(item).catch(console.warn);
 }
 function notificationBodies(){
   if(state.lang==='fa') return {
@@ -771,7 +772,7 @@ async function inbox(){
   const arr=inboxDisplayMessages();
   const body = arr.length ? `<div class="list inbox-list">${arr.map((m,i)=>`<div class="list-btn inbox-item ${m.read?'read':'unread'}"><button class="list-btn inbox-item ${m.read?'read':'unread'}" data-inbox-open="${html(m.id)}"><strong>${m.read?'':'● '}${html(m.title)}</strong><small>${new Date(m.createdAt).toLocaleString()} • ${m.read?tr('completed'):tr('unread')}</small></button><div id="inbox-${html(String(m.id).replace(/[^a-zA-Z0-9_-]/g,'_'))}" class="accordion-panel hidden"><p>${html(m.body)}</p><button class="danger-btn" data-inbox-delete="${html(m.id)}">${tr('deleteMessage')}</button></div></div>`).join('')}</div>` : `<p class="muted">${tr('noInboxMessages')}</p>`;
   view.innerHTML = card(tr('notificationInbox'), `<p class="muted">${tr('notificationAutoNote')}</p><div class="button-row"><span class="badge">${tr('unread')}: ${localNum(unreadCount())}</span><button class="secondary-btn" id="markAllRead">${tr('markAllRead')}</button><button class="secondary-btn" id="cleanInboxLang">${tr('cleanInbox')}</button><button class="danger-btn" id="deleteVisibleInbox">${tr('deleteAllInbox')}</button></div>${body}`);
-  $('#markAllRead')?.addEventListener('click',()=>{ const all=inboxMessages().map(m=>({...m,read:true,readAt:new Date().toISOString()})); setInboxMessages(all); render('inbox',{},true); });
+  $('#markAllRead')?.addEventListener('click',()=>{ const now=new Date().toISOString(); const all=inboxMessages().map(m=>({...m,read:true,readAt:now})); setInboxMessages(all); all.filter(m=>!String(m.id).startsWith('scheduled:')).forEach(m=>saveInboxReceipt(m.id,{read_at:now})); render('inbox',{},true); });
   $('#cleanInboxLang')?.addEventListener('click',()=>{ cleanupInboxLanguage(); render('inbox',{},true); });
   $('#deleteVisibleInbox')?.addEventListener('click',()=>{ if(confirm(tr('deleteAllConfirm'))){ deleteVisibleInbox(); render('inbox',{},true); } });
 }
@@ -825,6 +826,19 @@ async function home(){
   $('#quickNotify')?.addEventListener('click', enableNotifications);
 }
 
+
+async function fetchDynamicDailyItem(contentType,day){
+  const key=`${contentType}:${day}:${state.lang}`;
+  if(dailyContentCache[key]) return dailyContentCache[key];
+  if(!CLOUD_ENABLED||!navigator.onLine) return null;
+  try{
+    const rows=await cloudFetch(`daily_content?select=content_data&content_type=eq.${encodeURIComponent(contentType)}&day_number=eq.${Number(day)}&is_active=eq.true&limit=1`,{method:'GET'});
+    const item=Array.isArray(rows)&&rows[0]?.content_data?rows[0].content_data:null;
+    if(item) dailyContentCache[key]=item;
+    return item;
+  }catch(e){console.warn('Dynamic daily content fallback',e);return null}
+}
+function mergeDailyItem(localItem,remoteItem){return remoteItem&&typeof remoteItem==='object'?Object.assign({},localItem||{},remoteItem):localItem}
 async function daily(params={}){
   if(params.tab) state.dailyTab = params.tab;
   const tabs=[['word',tr('dailyWord')],['faith',tr('faithProclamation')],['juice',tr('dailyJuice')],['gratitude',tr('gratitudeCourse')]];
@@ -838,7 +852,9 @@ async function daily(params={}){
 async function renderDailyType(path, mainKey, prayerKey, type, extraKey, params={}){
   const d=await jfetch(path); const list=itemsOf(d); const todayDay=userCycleDay(list.length);
   let day=Number(params.day||0); if(!day || day<1 || day>list.length) day=todayDay;
-  const it=list[day-1]||{};
+  let it=list[day-1]||{};
+  const dynamicType=type==='word'?'daily_word':type==='juice'?'daily_juice':type;
+  it=mergeDailyItem(it,await fetchDynamicDailyItem(dynamicType,day));
   const prev=Math.max(1,day-1), next=Math.min(list.length,day+1);
   const nav=`<div class="button-row daily-nav"><button class="secondary-btn" data-go="daily" data-params='${html(JSON.stringify({tab:type==='word'?'word':type,day:prev}))}' ${day===1?'disabled':''}>${tr('previousDay')}</button><button class="secondary-btn" data-go="daily" data-params='${html(JSON.stringify({tab:type==='word'?'word':type,day:todayDay}))}'>${tr('today')}</button><button class="secondary-btn" data-go="daily" data-params='${html(JSON.stringify({tab:type==='word'?'word':type,day:next}))}' ${day===list.length?'disabled':''}>${tr('nextDay')}</button></div>`;
   return nav + await dailyDetail(it, day, list.length, mainKey, prayerKey, type, extraKey);
@@ -1245,6 +1261,8 @@ async function resetPassword(){
 }
 
 let notificationSettingsCache=null;
+let dailyContentCache={};
+
 function nativeLocalNotifications(){return window.Capacitor?.Plugins?.LocalNotifications||window.Capacitor?.LocalNotifications||null}
 async function fetchNotificationSchedules(force=false){
   if(notificationSettingsCache&&!force)return notificationSettingsCache;
@@ -1274,7 +1292,7 @@ async function notificationPermissionStatus(){const Native=nativeLocalNotificati
 
 async function settings(){
   const perm=await notificationPermissionStatus();const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');const schedules=await fetchNotificationSchedules();
-  view.innerHTML=card(tr('settings'),`<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice">${schedules.map(x=>`<p><strong>${html(scheduleText(x,'title'))}</strong> — ${html(x.time_value||'')} ${x.timezone_mode&&x.timezone_mode!=='local'?`(${html(x.timezone_mode)})`:''}</p>`).join('')}</div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>OmideNo7 v1.7.0 Hotfix 3</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
+  view.innerHTML=card(tr('settings'),`<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice">${schedules.map(x=>`<p><strong>${html(scheduleText(x,'title'))}</strong> — ${html(x.time_value||'')} ${x.timezone_mode&&x.timezone_mode!=='local'?`(${html(x.timezone_mode)})`:''}</p>`).join('')}</div><h3>${state.lang==='fa'?'ذخیره ابری / آفلاین':state.lang==='hr'?'Cloud / offline spremanje':'Cloud / offline save'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>New Hope 7 v1.7.1 Internal Build</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
   $('#settingsLang').value=state.lang;$('#settingsLang').onchange=e=>setLang(e.target.value);$('#enableNotify').onclick=enableNotifications;
   $('#clearCache').onclick=async()=>{try{if('caches'in window){const keys=await caches.keys();await Promise.all(keys.map(k=>caches.delete(k)))}if('serviceWorker'in navigator){const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.update()))}}catch(e){}alert(tr('saved'));location.reload()};
   $('#syncCloud')?.addEventListener('click',async()=>{await syncCloudQueue();await refreshInboxFromCloud();notificationSettingsCache=null;alert(cloudStatusText());render('settings',{},true)});
