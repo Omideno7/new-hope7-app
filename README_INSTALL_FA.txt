@@ -1,30 +1,27 @@
-New Hope 7 v2.1.2 – urgent account, registration and admin hotfix
+New Hope 7 v2.1.4 — داشبورد دانشجویان و دسته‌بندی تکالیف
 
-This package fixes:
-1. Old approved users being unable to restore/sign in to school access.
-2. New registration requests being saved locally but not reliably reaching Supabase.
-3. Registration count appearing while request cards fail to load.
-4. Admin dashboard error caused by the missing adminDashboard function.
-5. Slow admin loading caused by waiting for every large dataset before displaying requests.
-6. Missing visible alert in the admin panel for new requests.
+این بسته فقط پنل ادمین و Supabase را ارتقا می‌دهد.
+فایل‌های اپ اصلی (index.html و js/app.js) تغییر نکرده‌اند؛ بنابراین برای این مرحله نیازی به آپدیت Google Play نیست.
 
-INSTALL ORDER
-1. In Supabase SQL Editor, run:
-   supabase_v2_1_2_auth_registration_admin_hotfix.sql
-2. Upload/replace these files in GitHub:
-   admin.html
-   index.html
-   js/app.js
-   service-worker.js
-3. Open the admin panel and hard refresh once.
-4. Ask affected users to completely close and reopen the app while online.
-   Their queued registration request will retry automatically.
-5. An approved older user should choose “Sign in to school”, enter the same approved email,
-   and enter a password of at least 6 characters. If an Auth account already exists and the
-   password is forgotten, use “Forgot password”.
+امکانات جدید:
+1. تب مستقل «دانشجویان» در پنل ادمین.
+2. فهرست تمام دانشجویان با جستجو و فیلترهای هوشمند.
+3. نمایش تعداد درس‌های تکمیل‌شده و تکمیل‌نشده.
+4. نمایش تکالیف ارسال‌شده، تأییدشده، نیازمند اصلاح و انجام‌نشده.
+5. نمایش تعداد تلاش‌های آزمون، بهترین نمره، آخرین نتیجه و وضعیت قبولی.
+6. نمایش وضعیت مدرک: صادر نشده، در انتظار، صادر شده یا لغو شده.
+7. پرونده کامل هر دانشجو در یک پنجره موبایل‌پسند.
+8. انتقال عملی تکالیف به تب مستقل و جمع‌شدن آنها بر اساس نام دانشجو؛ دیگر همه تکالیف هم‌زمان باز نیستند.
+9. انتخاب دانشجو، جستجو و فیلتر تکالیف بر اساس وضعیت.
 
-IMPORTANT
-- The SQL and admin.html repair take effect without a Google Play update.
-- The improved js/app.js behavior reaches native Android users only after the next AAB update,
-  but the repaired RPC/RLS in SQL already supports the currently installed build.
-- No registration, exam, lesson, assignment or user data is deleted.
+نصب:
+1. فایل supabase_v2_1_4_admin_student_dashboard.sql را یک بار در Supabase SQL Editor اجرا کنید.
+2. فقط admin.html و service-worker.js را در GitHub جایگزین کنید.
+3. پنل ادمین را با Refresh کامل باز کنید؛ در صورت باقی‌ماندن کش، یک بار صفحه خصوصی مرورگر را امتحان کنید.
+4. تب «دانشجویان» را باز کنید و روی نام یک دانشجو بزنید.
+
+ایمنی:
+- هیچ حساب، درس، تکلیف، آزمون، نتیجه یا پیشرفتی حذف نمی‌شود.
+- هیچ فایل اپ اصلی تغییر نمی‌کند.
+- این بسته روی نسخه v2.1.2/v2.1.3 قابل نصب است و تغییرات تکالیف v2.1.3 را نیز در خود دارد.
+- جدول school_certificates فقط زیرساخت آینده مدرک است و فعلاً خودکار مدرک صادر نمی‌کند.
