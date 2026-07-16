@@ -227,7 +227,10 @@ async function signInOrClaimLegacyAccount(email,password){
     try{
       const rows=await cloudRpc('nh7_registration_access_v2',{p_type:'school',p_email:email,p_device_id:deviceId()});
       legacy=Array.isArray(rows)?rows[0]:rows;
-    }catch(e){ console.warn('Legacy account lookup failed',e); }
+    }catch(e){
+      console.warn('Registration v2 lookup failed; trying legacy RPC',e);
+      try{const rows=await cloudRpc('nh7_registration_status',{p_type:'school',p_email:email,p_device_id:deviceId()});legacy=Array.isArray(rows)?rows[0]:rows}catch(e2){console.warn('Legacy account lookup failed',e2)}
+    }
     if(!(legacy&&legacy.found&&(legacy.approved||legacy.status==='approved'))) throw loginErr;
     try{
       const created=await authApi('signup',{method:'POST',body:JSON.stringify({
@@ -327,8 +330,17 @@ function cloudStatusText(){
   return s==='synced'?'Cloud save is synced.':s==='queued'?'Some items are waiting for cloud sync.':'Local save is active; cloud starts after the tables are created.';
 }
 async function saveRegistrationCloud(data){
-  const payload={device_id:deviceId(), type:data.kind||'general', status:'pending', language:state.lang, payload:data};
-  await saveCloud({type:'insert', table:'registrations', payload});
+  const type=data.kind||'general',email=String(data.email||'').trim().toLowerCase(),dev=deviceId();
+  try{
+    const rows=await cloudRpc('nh7_submit_registration_v3',{p_type:type,p_email:email,p_device_id:dev,p_language:state.lang,p_payload:data});
+    localStorage.setItem('nh7_cloud_status','synced');
+    return Array.isArray(rows)?rows[0]:rows;
+  }catch(e){
+    console.warn('Registration RPC unavailable; using queued REST fallback',e);
+    const payload={device_id:dev,type,status:'pending',language:state.lang,payload:data};
+    await saveCloud({type:'insert',table:'registrations',payload});
+    return null;
+  }
 }
 async function saveVerseCloud(ref){
   await saveCloud({type:'upsert', table:'saved_verses', conflict:'device_id,ref', payload:{device_id:deviceId(), ref, language:state.lang}});
@@ -565,7 +577,7 @@ async function collectRegistration(kind){
   }
   localStorage.removeItem(EXPLICIT_LOGOUT_KEY); localStorage.setItem('nh7_manual_email',data.email); localStorage.setItem('nh7_user_profile',JSON.stringify({name:(data.firstName+' '+data.lastName).trim(),email:data.email,phone:data.phone||''}));
   const key=kind==='meeting'?'nh7_meeting_access':'nh7_school_access'; localStorage.setItem(key,JSON.stringify(data));
-  try{await saveRegistrationCloud(data);alert(tr('registerDone'))}catch(e){console.warn(e);alert(state.lang==='fa'?'درخواست روی دستگاه ذخیره شد و بعداً همگام می‌شود.':'Request saved locally and will sync later.')}
+  try{await saveRegistrationCloud(data);const queued=JSON.parse(localStorage.getItem('nh7_cloud_queue')||'[]').some(x=>x.table==='registrations');alert(queued?(state.lang==='fa'?'درخواست ذخیره شد و در اولین اتصال پایدار ارسال می‌شود.':state.lang==='hr'?'Zahtjev je spremljen i poslat će se pri stabilnoj vezi.':'Request saved and will sync on a stable connection.'):tr('registerDone'))}catch(e){console.warn(e);alert(state.lang==='fa'?'ارسال درخواست کامل نشد. اینترنت را بررسی و دوباره تلاش کنید.':state.lang==='hr'?'Zahtjev nije poslan. Provjerite internet i pokušajte ponovno.':'The request was not sent. Check your connection and try again.')}
   if(data.salvationPrayer==='no')navigate('salvation',{},true);else render(kind==='meeting'?'meetings':'school',{},true);
 }
 function collectNotes(){
