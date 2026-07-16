@@ -1,39 +1,30 @@
-NEW HOPE 7 v2.1.1 — آزمون سه‌زبانه، تکالیف نمره‌دار و ترتیب تصادفی سؤال‌ها
+New Hope 7 v2.1.2 – urgent account, registration and admin hotfix
 
-این بسته جایگزین کامل بسته قبلی v2.1.0 است. چون هنوز بسته قبلی نصب نشده، فقط از همین بسته استفاده کنید.
+This package fixes:
+1. Old approved users being unable to restore/sign in to school access.
+2. New registration requests being saved locally but not reliably reaching Supabase.
+3. Registration count appearing while request cards fail to load.
+4. Admin dashboard error caused by the missing adminDashboard function.
+5. Slow admin loading caused by waiting for every large dataset before displaying requests.
+6. Missing visible alert in the admin panel for new requests.
 
-امکانات اصلی
-1) آزمون نهایی به فارسی، انگلیسی و کرواتی؛ زبان آزمون دقیقاً از زبان انتخاب‌شده در اپ پیروی می‌کند.
-2) کلید رسمی ۵۰ سؤال بدون هیچ تغییر حفظ شده است.
-3) نمره نهایی: ۷۰٪ آزمون کتبی + ۳۰٪ تکالیف.
-4) حد قبولی نهایی به‌صورت پیش‌فرض ۷۰٪ است و از پنل قابل تغییر است.
-5) هر تکلیف رسمی در Supabase ذخیره می‌شود و در پنل ادمین قابل مشاهده، تأیید، امتیازدهی یا بازگرداندن برای اصلاح است.
-6) کلاس ۴A و ۴B دو بخش از کلاس ۴ محسوب می‌شوند؛ در نتیجه ساختار فعلی به هفت واحد کلاسی نمره‌دار تبدیل می‌شود. هر دو تکلیف ۴A و ۴B در امتیاز همان واحد اثر دارند.
-7) ترتیب سؤال‌ها در هر تلاش با یک ترتیب جدید و پایدار نمایش داده می‌شود. در آینده اگر بانک سؤال بزرگ‌تر از ۵۰ سؤال شود، پنل می‌تواند تعداد مشخصی سؤال را از بانک انتخاب کند.
-8) نتایج ادمین سه نمره را جدا نشان می‌دهد: آزمون کتبی، تکالیف و نمره نهایی.
+INSTALL ORDER
+1. In Supabase SQL Editor, run:
+   supabase_v2_1_2_auth_registration_admin_hotfix.sql
+2. Upload/replace these files in GitHub:
+   admin.html
+   index.html
+   js/app.js
+   service-worker.js
+3. Open the admin panel and hard refresh once.
+4. Ask affected users to completely close and reopen the app while online.
+   Their queued registration request will retry automatically.
+5. An approved older user should choose “Sign in to school”, enter the same approved email,
+   and enter a password of at least 6 characters. If an Auth account already exists and the
+   password is forgotten, use “Forgot password”.
 
-فرمول
-نمره نهایی = (درصد آزمون × ۷۰٪) + (درصد تکالیف × ۳۰٪)
-مثال: آزمون ۸۰٪ و تکالیف ۱۰۰٪ = نمره نهایی ۸۶٪.
-
-ترتیب نصب
-1) ابتدا در Supabase SQL Editor فقط این فایل را اجرا کنید:
-   supabase_v2_1_1_exam_assignments_weighted.sql
-2) پس از Success شدن SQL، فایل‌های داخل ZIP را در مسیرهای هم‌نام GitHub جایگزین کنید.
-3) پنل ادمین را باز کنید و وارد «آزمون و پیشرفت» شوید.
-4) دکمه «بارگذاری آزمون بنیادی ۵۰ سؤالی» را بزنید.
-5) بررسی کنید وزن آزمون ۷۰، وزن تکالیف ۳۰، حد قبولی ۷۰ و گزینه تغییر تصادفی سؤال‌ها فعال باشد.
-6) «ذخیره آزمون» را بزنید.
-7) با یک حساب آزمایشی، یک تکلیف و سپس آزمون را تست کنید.
-
-فایل‌های تغییرکرده
-- admin.html
-- index.html
-- js/app.js
-- service-worker.js
-- data/school/foundation_exam_50_trilingual.json
-- supabase_v2_1_1_exam_assignments_weighted.sql
-- ANSWER_KEY_REVIEW_FA.txt
-
-نکته امنیتی
-دانشجو تکلیف را از طریق RPC امن ارسال می‌کند و نمی‌تواند وضعیت «تأییدشده» یا نمره تکلیف را برای خودش جعل کند. این موارد فقط در پنل ادمین قابل تغییرند.
+IMPORTANT
+- The SQL and admin.html repair take effect without a Google Play update.
+- The improved js/app.js behavior reaches native Android users only after the next AAB update,
+  but the repaired RPC/RLS in SQL already supports the currently installed build.
+- No registration, exam, lesson, assignment or user data is deleted.

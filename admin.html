@@ -50,6 +50,8 @@ let sermonCoverFile=null;
 let activeTab=localStorage.getItem('nh7_admin_tab')||'overview';
 let currentFilter='pending';
 let currentSearch='';
+let adminLoadInFlight=false;
+let lastLoadedAt='';
 let state={registrations:[],questions:[],messages:[],meeting:{},sermons:[],categories:[],schedules:[],dailyContent:[],schoolLessons:[],schoolCourses:[],schoolLocalLessons:[],schoolExams:[],schoolProgress:[],schoolAttempts:[],schoolAssignments:[],legacyAudio:[],loading:false,lastError:''};
 let refreshTimer=null;
 let lastCounts=JSON.parse(localStorage.getItem('nh7_admin_last_counts')||'{"pending":0,"questions":0}');
@@ -87,36 +89,84 @@ function getDevice(r){const p=normalizePayload(r?.payload);return r?.device_id||
 function getCreated(r){return r.created_at?new Date(r.created_at).toLocaleString(lang==='fa'?'fa-IR':lang==='hr'?'hr-HR':'en-US'):''}
 function jwtExpiredText(t){return String(t||'').includes('PGRST303')||String(t||'').toLowerCase().includes('jwt expired')}
 async function refreshAdminSession(){if(!refreshToken)return false;try{const r=await fetch(SUPABASE_URL+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:refreshToken})});if(!r.ok)return false;const d=await r.json();token=d.access_token;refreshToken=d.refresh_token||refreshToken;localStorage.setItem('nh7_admin_token',token);localStorage.setItem('nh7_admin_refresh_token',refreshToken);return true}catch(e){return false}}
+async function fetchWithTimeout(url,opt={},timeoutMs=15000){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),timeoutMs);
+  try{return await fetch(url,Object.assign({},opt,{signal:controller.signal}))}
+  catch(e){if(e?.name==='AbortError')throw new Error(lang==='fa'?'زمان دریافت اطلاعات تمام شد. دوباره تازه‌سازی کنید.':'Request timed out. Please refresh.');throw e}
+  finally{clearTimeout(timer)}
+}
 async function authFetch(path,opt={}){
   const makeHeaders=()=>Object.assign({apikey:SUPABASE_KEY,Authorization:'Bearer '+(token||SUPABASE_KEY),'Content-Type':'application/json',Prefer:'return=representation'},opt.headers||{});
-  let r=await fetch(SUPABASE_URL+path,Object.assign({},opt,{headers:makeHeaders()}));
-  if(!r.ok){const txt=await r.text();if(jwtExpiredText(txt)&&await refreshAdminSession()){r=await fetch(SUPABASE_URL+path,Object.assign({},opt,{headers:makeHeaders()}));if(r.ok)return r.status===204?null:r.json()}if(jwtExpiredText(txt)){logout();alert(lang==='fa'?'نشست ادمین منقضی شد. دوباره وارد شوید.':'Admin session expired. Sign in again.')}throw new Error(txt)}
+  let r=await fetchWithTimeout(SUPABASE_URL+path,Object.assign({},opt,{headers:makeHeaders()}));
+  if(!r.ok){const txt=await r.text();if(jwtExpiredText(txt)&&await refreshAdminSession()){r=await fetchWithTimeout(SUPABASE_URL+path,Object.assign({},opt,{headers:makeHeaders()}));if(r.ok)return r.status===204?null:r.json()}if(jwtExpiredText(txt)){logout();alert(lang==='fa'?'نشست ادمین منقضی شد. دوباره وارد شوید.':'Admin session expired. Sign in again.')}throw new Error(txt)}
   return r.status===204?null:r.json();
 }
 async function adminRpc(name,payload={}){return authFetch('/rest/v1/rpc/'+name,{method:'POST',body:JSON.stringify(payload)})}
+async function loadRegistrationFeed(){
+  try{return await adminRpc('nh7_admin_registration_feed_v3',{p_limit:2000,p_offset:0})}
+  catch(e){console.warn('Registration feed RPC unavailable; REST fallback',e);return authFetch('/rest/v1/registrations?select=*&order=created_at.desc&limit=2000')}
+}
 
 async function signIn(){const email=document.getElementById('email').value.trim();const password=document.getElementById('password').value;const r=await fetch(SUPABASE_URL+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password})});if(!r.ok){alert(await r.text());return}const data=await r.json();token=data.access_token;refreshToken=data.refresh_token||'';localStorage.setItem('nh7_admin_token',token);if(refreshToken)localStorage.setItem('nh7_admin_refresh_token',refreshToken);await loadAll();render()}
 function logout(){localStorage.removeItem('nh7_admin_token');localStorage.removeItem('nh7_admin_refresh_token');token='';refreshToken='';state={registrations:[],questions:[],messages:[],meeting:{},sermons:[],categories:[],schedules:[],dailyContent:[],schoolLessons:[],schoolCourses:[],schoolLocalLessons:[],schoolExams:[],schoolProgress:[],schoolAttempts:[],schoolAssignments:[],legacyAudio:[],loading:false,lastError:''};render()}
-async function loadAll(silent=false){if(!token)return;state.loading=true;if(!silent)render();try{const results=await Promise.allSettled([
-  authFetch('/rest/v1/registrations?select=*&order=created_at.desc&limit=2000'),
-  authFetch('/rest/v1/qa_questions?select=*&order=created_at.desc&limit=500'),
-  authFetch('/rest/v1/notification_inbox?select=*&order=delivered_at.desc&limit=100'),
-  authFetch('/rest/v1/meeting_settings?select=*&id=eq.active&limit=1'),
-  authFetch('/rest/v1/sermon_categories?select=*&order=sort_order.asc,created_at.desc'),
-  authFetch('/rest/v1/sermons?select=*&order=sort_order.asc,published_at.desc'),
-  authFetch('/rest/v1/notification_schedules?select=*&order=sort_order.asc'),
-  authFetch('/rest/v1/daily_content?select=*&order=content_type.asc,day_number.asc'),
-  authFetch('/rest/v1/school_lessons?select=*&order=lesson_order.asc'),
-  authFetch('/rest/v1/school_courses?select=*&order=course_order.asc'),
-  authFetch('/rest/v1/school_exams?select=*&order=lesson_code.asc,sort_order.asc'),
-  authFetch('/rest/v1/school_progress?select=*&order=updated_at.desc&limit=500'),
-  authFetch('/rest/v1/school_exam_attempts?select=*&order=submitted_at.desc&limit=1000'),
-  authFetch('/rest/v1/school_assignments?select=*&order=updated_at.desc&limit=2000'),
-  fetch('./data/school/school_content.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('school content');return r.json()}),
-  fetch('./data/audio/messages.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('legacy audio');return r.json()})
-]);const [registrations,questions,msgs,meeting,categories,sermons,schedules,dailyContent,schoolLessons,schoolCourses,schoolExams,schoolProgress,schoolAttempts,schoolAssignments,schoolLocal,legacyAudio]=results;state.registrations=registrations.status==='fulfilled'?(registrations.value||[]):state.registrations;state.questions=questions.status==='fulfilled'?(questions.value||[]):state.questions;state.messages=msgs.status==='fulfilled'?(msgs.value||[]):state.messages;state.meeting=meeting.status==='fulfilled'?((meeting.value||[])[0]||{}):state.meeting;state.categories=categories.status==='fulfilled'?(categories.value||[]):state.categories;state.sermons=sermons.status==='fulfilled'?(sermons.value||[]):state.sermons;state.schedules=schedules.status==='fulfilled'?(schedules.value||[]):state.schedules;state.dailyContent=dailyContent.status==='fulfilled'?(dailyContent.value||[]):state.dailyContent;state.schoolCourses=schoolCourses.status==='fulfilled'?(schoolCourses.value||[]):state.schoolCourses;state.schoolExams=schoolExams.status==='fulfilled'?(schoolExams.value||[]):state.schoolExams;state.schoolProgress=schoolProgress.status==='fulfilled'?(schoolProgress.value||[]):state.schoolProgress;state.schoolAttempts=schoolAttempts.status==='fulfilled'?(schoolAttempts.value||[]):state.schoolAttempts;state.schoolAssignments=schoolAssignments.status==='fulfilled'?(schoolAssignments.value||[]):state.schoolAssignments;state.schoolLocalLessons=schoolLocal.status==='fulfilled'?((schoolLocal.value?.lessons||[])):state.schoolLocalLessons;const cloudSchool=schoolLessons.status==='fulfilled'?(schoolLessons.value||[]):[];state.schoolLessons=mergeSchoolLessons(cloudSchool,state.schoolLocalLessons);state.legacyAudio=legacyAudio.status==='fulfilled'?((legacyAudio.value?.categories||[]).flatMap(c=>(c.items||[]).map(i=>Object.assign({legacy_category:c},i)))):state.legacyAudio;state.lastError=[registrations,questions,meeting].filter(x=>x.status==='rejected').map(x=>x.reason.message).join('\n');notifyIfNew()}catch(e){state.lastError=e.message}finally{state.loading=false;render(false)}}
+async function loadAll(silent=false){
+  if(!token||adminLoadInFlight)return;
+  adminLoadInFlight=true;
+  state.loading=true;
+  if(!silent)render();
+  try{
+    const critical=await Promise.allSettled([
+      loadRegistrationFeed(),
+      authFetch('/rest/v1/qa_questions?select=*&order=created_at.desc&limit=500'),
+      authFetch('/rest/v1/meeting_settings?select=*&id=eq.active&limit=1')
+    ]);
+    const [registrations,questions,meeting]=critical;
+    if(registrations.status==='fulfilled')state.registrations=registrations.value||[];
+    if(questions.status==='fulfilled')state.questions=questions.value||[];
+    if(meeting.status==='fulfilled')state.meeting=(meeting.value||[])[0]||{};
+    state.lastError=critical.filter(x=>x.status==='rejected').map(x=>String(x.reason?.message||x.reason||'')).join('\n');
+    state.loading=false;
+    lastLoadedAt=new Date().toISOString();
+    notifyIfNew();
+    render(false);
+
+    const secondary=await Promise.allSettled([
+      authFetch('/rest/v1/notification_inbox?select=*&order=delivered_at.desc&limit=100'),
+      authFetch('/rest/v1/sermon_categories?select=*&order=sort_order.asc,created_at.desc'),
+      authFetch('/rest/v1/sermons?select=*&order=sort_order.asc,published_at.desc'),
+      authFetch('/rest/v1/notification_schedules?select=*&order=sort_order.asc'),
+      authFetch('/rest/v1/daily_content?select=*&order=content_type.asc,day_number.asc'),
+      authFetch('/rest/v1/school_lessons?select=*&order=lesson_order.asc'),
+      authFetch('/rest/v1/school_courses?select=*&order=course_order.asc'),
+      authFetch('/rest/v1/school_exams?select=*&order=lesson_code.asc,sort_order.asc'),
+      authFetch('/rest/v1/school_progress?select=*&order=updated_at.desc&limit=500'),
+      authFetch('/rest/v1/school_exam_attempts?select=*&order=submitted_at.desc&limit=1000'),
+      authFetch('/rest/v1/school_assignments?select=*&order=updated_at.desc&limit=2000'),
+      fetch('./data/school/school_content.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('school content');return r.json()}),
+      fetch('./data/audio/messages.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('legacy audio');return r.json()})
+    ]);
+    const [msgs,categories,sermons,schedules,dailyContent,schoolLessons,schoolCourses,schoolExams,schoolProgress,schoolAttempts,schoolAssignments,schoolLocal,legacyAudio]=secondary;
+    state.messages=msgs.status==='fulfilled'?(msgs.value||[]):state.messages;
+    state.categories=categories.status==='fulfilled'?(categories.value||[]):state.categories;
+    state.sermons=sermons.status==='fulfilled'?(sermons.value||[]):state.sermons;
+    state.schedules=schedules.status==='fulfilled'?(schedules.value||[]):state.schedules;
+    state.dailyContent=dailyContent.status==='fulfilled'?(dailyContent.value||[]):state.dailyContent;
+    state.schoolCourses=schoolCourses.status==='fulfilled'?(schoolCourses.value||[]):state.schoolCourses;
+    state.schoolExams=schoolExams.status==='fulfilled'?(schoolExams.value||[]):state.schoolExams;
+    state.schoolProgress=schoolProgress.status==='fulfilled'?(schoolProgress.value||[]):state.schoolProgress;
+    state.schoolAttempts=schoolAttempts.status==='fulfilled'?(schoolAttempts.value||[]):state.schoolAttempts;
+    state.schoolAssignments=schoolAssignments.status==='fulfilled'?(schoolAssignments.value||[]):state.schoolAssignments;
+    state.schoolLocalLessons=schoolLocal.status==='fulfilled'?(schoolLocal.value?.lessons||[]):state.schoolLocalLessons;
+    const cloudSchool=schoolLessons.status==='fulfilled'?(schoolLessons.value||[]):[];
+    state.schoolLessons=mergeSchoolLessons(cloudSchool,state.schoolLocalLessons);
+    state.legacyAudio=legacyAudio.status==='fulfilled'?((legacyAudio.value?.categories||[]).flatMap(c=>(c.items||[]).map(i=>Object.assign({legacy_category:c},i)))):state.legacyAudio;
+    render(false);
+  }catch(e){state.lastError=String(e?.message||e);state.loading=false;render(false)}
+  finally{adminLoadInFlight=false;state.loading=false}
+}
 function counts(){const pending=state.registrations.filter(r=>isEffectivePending(r)).length;const approved=state.registrations.filter(r=>isEffectiveApproved(r)).length;const newQ=state.questions.filter(q=>String(q.status||'new').toLowerCase()!=='answered'&&String(q.status||'new').toLowerCase()!=='archived').length;return{pending,approved,newQ}}
-function notifyIfNew(){const c=counts();if(('Notification' in window)&&Notification.permission==='granted'){if(c.pending>lastCounts.pending)new Notification('OmideNo7 Admin',{body:c.pending+' '+tr('newRequests'),icon:'assets/admin-icon-192.png'});if(c.newQ>lastCounts.questions)new Notification('OmideNo7 Admin',{body:c.newQ+' '+tr('newQuestions'),icon:'assets/admin-icon-192.png'});}lastCounts={pending:c.pending,questions:c.newQ};localStorage.setItem('nh7_admin_last_counts',JSON.stringify(lastCounts));document.title=(c.pending+c.newQ?('('+(c.pending+c.newQ)+') '):'')+'OmideNo7 Admin'}
+function notifyIfNew(){const c=counts();const newPending=c.pending>lastCounts.pending,newQuestions=c.newQ>lastCounts.questions;if(('Notification' in window)&&Notification.permission==='granted'){if(newPending)new Notification('OmideNo7 Admin',{body:c.pending+' '+tr('newRequests'),icon:'assets/admin-icon-192.png'});if(newQuestions)new Notification('OmideNo7 Admin',{body:c.newQ+' '+tr('newQuestions'),icon:'assets/admin-icon-192.png'});}if(newPending||newQuestions){setTimeout(()=>setMessage((newPending?c.pending+' '+tr('newRequests'):'')+(newPending&&newQuestions?' · ':'')+(newQuestions?c.newQ+' '+tr('newQuestions'):''),'success'),80);try{const C=window.AudioContext||window.webkitAudioContext;if(C){const a=new C(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);g.gain.value=.05;o.frequency.value=880;o.start();o.stop(a.currentTime+.12)}}catch(e){}}lastCounts={pending:c.pending,questions:c.newQ};localStorage.setItem('nh7_admin_last_counts',JSON.stringify(lastCounts));document.title=(c.pending+c.newQ?('('+(c.pending+c.newQ)+') '):'')+'OmideNo7 Admin'}
 async function enableAlerts(){if(!('Notification'in window)){alert('Notifications are not supported on this browser.');return}const p=await Notification.requestPermission();alert(p==='granted'?tr('saved'):p)}
 async function updateStatus(id,status){try{setMessage(tr('saving'));await authFetch('/rest/v1/registrations?id=eq.'+encodeURIComponent(id),{method:'PATCH',body:JSON.stringify({status,updated_at:new Date().toISOString()})});setMessage(status==='approved'?tr('approvedMsg'):tr('rejectedMsg'),'success');await loadAll(true)}catch(e){setMessage(e.message,'danger');alert(e.message)}}
 async function deleteRequest(id){if(!confirm(tr('confirmDelete')))return;try{try{await adminRpc('nh7_admin_delete_registration',{p_id:id})}catch(rpcErr){console.warn('RPC delete failed, trying REST delete',rpcErr);await authFetch('/rest/v1/registrations?id=eq.'+encodeURIComponent(id),{method:'DELETE'})}setMessage(tr('deletedMsg'),'success');await loadAll(true)}catch(e){const msg=tr('needAdminSql')+'\n'+e.message;setMessage(msg,'danger');alert(msg)}}
@@ -194,6 +244,15 @@ async function sendBroadcast(){const rows=['fa','en','hr'].map(l=>({id:uuid(),de
 function notificationDuplicateEstimate(){const seen=new Set();let dup=0;for(const m of (state.messages||[])){const day=String(m.delivered_at||m.created_at||'').slice(0,10);const key=[String(m.category||''),String(m.title||'').trim().toLowerCase(),String(m.body||'').trim().toLowerCase(),day].join('|');if(seen.has(key))dup++;else seen.add(key)}return dup}
 function renderNotifications(){const cards=state.schedules.map(x=>'<article class="request-card"><div class="req-head"><div class="req-name">'+h(x.key)+'</div><label><input id="ns_active_'+x.key+'" type="checkbox" '+(x.is_active?'checked':'')+'> '+tr('active')+'</label></div><div class="grid2"><input id="ns_time_'+x.key+'" type="time" value="'+h(String(x.time_value||'').slice(0,5))+'"><input id="ns_tz_'+x.key+'" value="'+h(x.timezone_mode||'local')+'"><input id="ns_title_fa_'+x.key+'" value="'+h(x.title_fa||'')+'"><input id="ns_title_en_'+x.key+'" value="'+h(x.title_en||'')+'"><input id="ns_title_hr_'+x.key+'" value="'+h(x.title_hr||'')+'"></div><textarea id="ns_body_fa_'+x.key+'">'+h(x.body_fa||'')+'</textarea><textarea id="ns_body_en_'+x.key+'">'+h(x.body_en||'')+'</textarea><textarea id="ns_body_hr_'+x.key+'">'+h(x.body_hr||'')+'</textarea><button class="btn primary" onclick="saveSchedule(\''+x.key+'\')">'+tr('saveSchedule')+'</button></article>').join('');return '<section class="panel-card"><h3>'+tr('notificationCenter')+'</h3><div class="notice"><strong>'+(lang==='fa'?'سلامت Inbox':'Inbox health')+':</strong> '+state.messages.length+' · '+(lang==='fa'?'تکراری احتمالی':'possible duplicates')+': '+notificationDuplicateEstimate()+'</div><button class="btn danger-btn" onclick="cleanupNotificationDuplicates()">'+(lang==='fa'?'پاک‌سازی اعلان‌های تکراری قدیمی':'Clean old duplicate notifications')+'</button>'+cards+'</section><section class="panel-card"><h3>'+tr('sendNow')+'</h3><input id="bc_title_fa" placeholder="FA '+tr('broadcastTitle')+'"><textarea id="bc_body_fa" placeholder="FA '+tr('broadcastBody')+'"></textarea><input id="bc_title_en" placeholder="EN '+tr('broadcastTitle')+'"><textarea id="bc_body_en" placeholder="EN '+tr('broadcastBody')+'"></textarea><input id="bc_title_hr" placeholder="HR '+tr('broadcastTitle')+'"><textarea id="bc_body_hr" placeholder="HR '+tr('broadcastBody')+'"></textarea><button class="btn primary" onclick="sendBroadcast()">'+tr('sendNow')+'</button></section>'}
 
+function adminDashboard(){
+  const c=counts();
+  const pending=state.registrations.filter(r=>isEffectivePending(r)).slice(0,6);
+  const recentQ=state.questions.filter(q=>String(q.status||'pending').toLowerCase()!=='answered'&&String(q.status||'pending').toLowerCase()!=='archived').slice(0,4);
+  const synced=lastLoadedAt?new Date(lastLoadedAt).toLocaleTimeString(lang==='fa'?'fa-IR':lang==='hr'?'hr-HR':'en-US',{hour:'2-digit',minute:'2-digit'}):'-';
+  const pendingHtml=pending.length?pending.map(renderRequestCard).join(''):'<div class="empty">'+tr('empty')+'</div>';
+  const qHtml=recentQ.length?recentQ.map(renderQuestionCard).join(''):'<div class="empty">'+tr('empty')+'</div>';
+  return '<section class="panel-card"><div class="req-head"><div><h3>'+(lang==='fa'?'داشبورد مدیریت':lang==='hr'?'Nadzorna ploča':'Admin dashboard')+'</h3><p class="muted small">'+(lang==='fa'?'آخرین همگام‌سازی: ':lang==='hr'?'Zadnja sinkronizacija: ':'Last sync: ')+synced+'</p></div><button class="btn secondary" onclick="loadAll()">⟳ '+tr('refresh')+'</button></div><div class="exam-results-grid"><div class="stat"><b>'+c.pending+'</b><span>'+tr('newRequests')+'</span></div><div class="stat"><b>'+c.newQ+'</b><span>'+tr('newQuestions')+'</span></div><div class="stat"><b>'+c.approved+'</b><span>'+tr('totalApproved')+'</span></div><div class="stat"><b>'+state.schoolAttempts.length+'</b><span>'+(lang==='fa'?'تلاش‌های آزمون':lang==='hr'?'Pokušaji ispita':'Exam attempts')+'</span></div></div></section><section class="panel-card"><div class="req-head"><h3>'+tr('newRequests')+'</h3><button class="btn secondary" onclick="setTab(&quot;requests&quot;)">'+tr('all')+'</button></div>'+pendingHtml+'</section><section class="panel-card"><div class="req-head"><h3>'+tr('newQuestions')+'</h3><button class="btn secondary" onclick="setTab(&quot;qa&quot;)">'+tr('all')+'</button></div>'+qHtml+'</section>';
+}
 function renderBody(){if(state.loading)return '<div class="empty">...</div>';if(state.lastError)return '<div class="notice">'+h(state.lastError)+'<br>'+tr('setup')+'</div>'+renderActivePanel();return renderActivePanel()}
 
 let editingDailyContentId='';
@@ -292,11 +351,11 @@ async function saveSchoolExam(){captureExamQuestions();const scope=document.getE
 async function deleteSchoolExam(id){if(!confirm(tr('confirmDelete')))return;await authFetch('/rest/v1/school_exams?id=eq.'+id,{method:'DELETE'});editingExamId='';examQuestionsDraft=[];examMetaDraft={};await loadAll(true)}
 async function resetSchoolProgress(id){if(!confirm(lang==='fa'?'پیشرفت این مورد ریست شود؟':'Reset this progress?'))return;await authFetch('/rest/v1/school_progress?id=eq.'+id,{method:'DELETE'});await loadAll(true)}
 function renderActivePanel(){if(activeTab==='overview')return adminDashboard();if(activeTab==='approved')return renderRequests(true);if(activeTab==='qa')return renderQa();if(activeTab==='sermons')return renderSermons();if(activeTab==='notifications')return renderNotifications();if(activeTab==='dailycontent')return renderDailyContent();if(activeTab==='schoolcontent')return renderSchoolContent();if(activeTab==='schoolresults')return renderSchoolResults();if(activeTab==='meetings')return renderMeetings();if(activeTab==='messages')return renderMessages();return renderRequests(false)}
-function render(){document.documentElement.lang=lang;document.body.dir=lang==='fa'?'rtl':'ltr';const app=document.getElementById('adminApp');app.innerHTML=!token?renderLogin():renderTop()+renderBody()+'<button class="fab-refresh" onclick="loadAll()">⟳</button>';}
+function render(){document.documentElement.lang=lang;document.body.dir=lang==='fa'?'rtl':'ltr';const app=document.getElementById('adminApp');try{app.innerHTML=!token?renderLogin():renderTop()+renderBody()+'<button class="fab-refresh" onclick="loadAll()">⟳</button>';}catch(e){console.error('Admin render failed',e);app.innerHTML=(token?renderTop():'')+'<div class="notice">'+h(lang==='fa'?'خطای نمایش پنل: ':'Admin render error: ')+h(e.message||String(e))+'</div><button class="btn secondary" onclick="activeTab=&quot;requests&quot;;loadAll()">⟳ '+tr('refresh')+'</button>';}}
 render();
 if(token)loadAll(true);
 if(refreshTimer)clearInterval(refreshTimer);
-refreshTimer=setInterval(()=>{if(token)loadAll(true)},60000);
+refreshTimer=setInterval(()=>{if(token&&!adminLoadInFlight)loadAll(true)},90000);
 </script>
 </body>
 </html>
