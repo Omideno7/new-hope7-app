@@ -201,6 +201,35 @@ const CLOUD_ENABLED = Boolean(SUPABASE_CONFIG.url && SUPABASE_CONFIG.key);
 const AUTH_SESSION_KEY='nh7_user_session_v170';
 const EXPLICIT_LOGOUT_KEY='nh7_explicit_logout';
 const NH7_PASSWORD_RESET_URL='https://omideno7.github.io/new-hope7-app/reset-password.html';
+const LEGACY_SCHOOL_SESSION_KEY='nh7_legacy_school_session_v1';
+const LEGACY_SCHOOL_SESSION_MAX_AGE=30*24*60*60*1000;
+function legacySchoolSession(){
+  try{return JSON.parse(localStorage.getItem(LEGACY_SCHOOL_SESSION_KEY)||'null')}catch(e){return null}
+}
+function clearLegacySchoolSession(){localStorage.removeItem(LEGACY_SCHOOL_SESSION_KEY)}
+function saveLegacySchoolSession(email,access={}){
+  const normalized=String(email||'').trim().toLowerCase();
+  if(!normalized)return clearLegacySchoolSession();
+  localStorage.setItem(LEGACY_SCHOOL_SESSION_KEY,JSON.stringify({
+    email:normalized,
+    verified_at:Date.now(),
+    status:'approved',
+    registration_id:access.cloudId||access.registration_id||access.id||''
+  }));
+  localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
+}
+function isLegacySchoolLoggedIn(){
+  if(isExplicitlyLoggedOut())return false;
+  const s=legacySchoolSession();
+  if(!s?.email||!s?.verified_at)return false;
+  if(Date.now()-Number(s.verified_at)>LEGACY_SCHOOL_SESSION_MAX_AGE){clearLegacySchoolSession();return false}
+  const access=(()=>{try{return JSON.parse(localStorage.getItem('nh7_school_access')||'{}')}catch(e){return {}}})();
+  const email=String(currentUserEmail()||access.email||'').trim().toLowerCase();
+  const approved=access.status==='approved'||access.approvedBy==='admin';
+  return approved&&email===String(s.email).trim().toLowerCase();
+}
+function isSchoolIdentityAvailable(){return isAccountLoggedIn()||isLegacySchoolLoggedIn()}
+
 function authSession(){ try{return JSON.parse(localStorage.getItem(AUTH_SESSION_KEY)||'null')}catch(e){return null} }
 function saveAuthSession(v){ if(v){localStorage.setItem(AUTH_SESSION_KEY,JSON.stringify(v));localStorage.removeItem(EXPLICIT_LOGOUT_KEY);}else localStorage.removeItem(AUTH_SESSION_KEY); }
 function isExplicitlyLoggedOut(){ return localStorage.getItem(EXPLICIT_LOGOUT_KEY)==='1'; }
@@ -1214,7 +1243,7 @@ async function school(params={}){
     $('#schoolSignInBtn')?.addEventListener('click',signInSchool);bindPasswordToggles();return;
   }
   if(params.form){view.innerHTML=registrationFormHtml('school',JSON.parse(localStorage.getItem('nh7_school_access')||'{}'));return}
-  if(!isAccountLoggedIn()){
+  if(!isSchoolIdentityAvailable()){
     view.innerHTML=card(tr('school'),`<p>${tr('schoolAccessText')}</p><p class="muted">${tr('schoolLoginHelp')}</p><div class="school-entry-actions"><button class="primary-btn wide-btn" data-go="school" data-params='{"login":true}'>${tr('schoolExistingLogin')}</button><button class="secondary-btn wide-btn" data-go="school" data-params='{"form":true}'>${tr('schoolNewRegistration')}</button></div>`);return;
   }
   let access=JSON.parse(localStorage.getItem('nh7_school_access')||'{"status":"none"}');
@@ -1238,8 +1267,29 @@ async function school(params={}){
   $('#schoolLogoutBtn')?.addEventListener('click',()=>logoutAccount('school'));
 }
 async function signInSchool(){
-  const email=($('#schoolLoginEmail')?.value||'').trim().toLowerCase(),password=$('#schoolLoginPassword')?.value||'';if(!email||!password){alert(tr('requiredField'));return}
-  try{const data=await signInOrClaimLegacyAccount(email,password);if(data?.access_token)saveAuthSession(data);localStorage.setItem('nh7_manual_email',email);localStorage.removeItem(EXPLICIT_LOGOUT_KEY);const schoolAccess=await fetchLatestRegistration('school');if(schoolAccess)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},schoolAccess,{email})));navigate('school',{},true)}catch(e){console.warn(e);alert(tr('loginFailed'))}
+  const email=($('#schoolLoginEmail')?.value||'').trim().toLowerCase(),password=$('#schoolLoginPassword')?.value||'';
+  if(!email||!password){alert(tr('requiredField'));return}
+  try{
+    const data=await signInOrClaimLegacyAccount(email,password);
+    if(data?.access_token){saveAuthSession(data);clearLegacySchoolSession()}
+    localStorage.setItem('nh7_manual_email',email);
+    localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
+
+    let schoolAccess=await fetchLatestRegistration('school');
+    if(schoolAccess)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},schoolAccess,{email})));
+    else{try{schoolAccess=JSON.parse(localStorage.getItem('nh7_school_access')||'{}')}catch(e){schoolAccess={}}}
+
+    const approved=schoolAccess?.status==='approved'||schoolAccess?.approvedBy==='admin';
+    if(data?.legacy_approved&&approved)saveLegacySchoolSession(email,schoolAccess);
+
+    if(!isAccountLoggedIn()&&!isLegacySchoolLoggedIn()){
+      throw new Error('School login completed without an active Auth or verified legacy session.');
+    }
+    navigate('school',{},true);
+  }catch(e){
+    console.warn('School sign-in failed',e);
+    alert(tr('loginFailed'));
+  }
 }
 
 async function schoolLesson(d, code){
@@ -1405,7 +1455,7 @@ async function qna(){
 
 async function account(){
   const session=authSession();
-  if(isAccountLoggedIn()){
+  if(isAccountLoggedIn()||isLegacySchoolLoggedIn()){
     const profile=getKnownUserProfile(); const email=authEmail()||profile.email||'';
     view.innerHTML=card(tr('account'), `<h3>${tr('myAccess')}</h3><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||session?.user?.user_metadata?.full_name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(email)}</p></div><button class="danger-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button>`);
     $('#logoutAccountBtn')?.addEventListener('click',logoutAccount); return;
@@ -1421,11 +1471,25 @@ async function signInAccount(){
   const email=($('#accountEmail')?.value||'').trim().toLowerCase(); const password=$('#accountPassword')?.value||'';
   if(!email||!password){alert(tr('requiredField'));return}
   try{
-    const data=await signInOrClaimLegacyAccount(email,password); if(data?.access_token)saveAuthSession(data); localStorage.setItem('nh7_manual_email',email); localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
-    const school=await fetchLatestRegistration('school'); const meeting=await fetchLatestRegistration('meeting');
-    if(school)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},school,{email}))); if(meeting)localStorage.setItem('nh7_meeting_access',JSON.stringify(Object.assign({},meeting,{email})));
+    const data=await signInOrClaimLegacyAccount(email,password);
+    if(data?.access_token){saveAuthSession(data);clearLegacySchoolSession()}
+    localStorage.setItem('nh7_manual_email',email);
+    localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
+
+    let school=await fetchLatestRegistration('school');
+    const meeting=await fetchLatestRegistration('meeting');
+    if(school)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},school,{email})));
+    else{try{school=JSON.parse(localStorage.getItem('nh7_school_access')||'{}')}catch(e){school={}}}
+    if(meeting)localStorage.setItem('nh7_meeting_access',JSON.stringify(Object.assign({},meeting,{email})));
+
+    const approved=school?.status==='approved'||school?.approvedBy==='admin';
+    if(data?.legacy_approved&&approved)saveLegacySchoolSession(email,school);
+
+    if(!isAccountLoggedIn()&&!isLegacySchoolLoggedIn()){
+      throw new Error('Account sign-in completed without an active Auth or verified legacy session.');
+    }
     navigate('school',{},true);
-  }catch(e){console.warn(e);alert(tr('loginFailed'))}
+  }catch(e){console.warn('Account sign-in failed',e);alert(tr('loginFailed'))}
 }
 function bindPasswordToggles(){
   $$('[data-toggle-password]').forEach(btn=>btn.onclick=()=>{const input=$('#'+btn.dataset.togglePassword);if(!input)return;input.type=input.type==='password'?'text':'password';btn.textContent=input.type==='password'?'👁':'🙈';});
@@ -1441,7 +1505,7 @@ async function logoutAccount(targetRoute='account'){
   if(typeof targetRoute!=='string')targetRoute='account';
   if(!confirm(state.lang==='fa'?'از حساب خارج شوید؟':state.lang==='hr'?'Odjaviti se?':'Sign out?'))return;
   const session=authSession(); try{if(session?.access_token)await authApi('logout',{method:'POST',headers:{Authorization:'Bearer '+session.access_token}})}catch(e){}
-  saveAuthSession(null); localStorage.setItem(EXPLICIT_LOGOUT_KEY,'1');
+  saveAuthSession(null); clearLegacySchoolSession(); localStorage.setItem(EXPLICIT_LOGOUT_KEY,'1');
   ['nh7_manual_email','nh7_school_access','nh7_meeting_access'].forEach(k=>localStorage.removeItem(k));
   state.stack=[]; state.params={}; alert(tr('signedOut')); navigate(targetRoute==='school'?'school':'account',{},true);
 }
