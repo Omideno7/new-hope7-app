@@ -1,6 +1,6 @@
 try { importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js'); } catch (e) { console.warn('OneSignal SW unavailable', e); }
 
-const VERSION='v2.1.8.1-urgent-school-login-loop-fix';
+const VERSION='v2.2.0-consolidated';
 const CORE_CACHE='nh7-core-'+VERSION;
 const DATA_CACHE='nh7-data-'+VERSION;
 const PUBLIC_API_CACHE='nh7-public-api-'+VERSION;
@@ -8,7 +8,7 @@ const MEDIA_CACHE='nh7-media-v1';
 const OFFLINE_PAGE='./offline/index.html';
 
 const CORE_ASSETS=[
-  './','./index.html','./admin.html','./certificate.html','./reset-password.html','./privacy.html','./css/styles.css','./js/app.js','./manifest.json','./admin-manifest.json',
+  './','./index.html','./admin.html','./certificate.html','./verify-document.html','./reset-password.html','./privacy.html','./css/styles.css','./css/v2.2.0.css','./css/v2.2.0-platform.css','./js/app.js','./js/admin-v2.2.0.js','./manifest.json','./admin-manifest.json',
   './assets/logo.png','./assets/admin-icon-192.png','./assets/admin-icon-512.png','./assets/admin-apple-touch-icon.png',
   './assets/about/beliefs_fa_source.jpeg','./assets/about/vision_fa_source.jpeg',
   './data/app/opening_messages_365.json','./data/church/church_config.json','./data/church/about.json',
@@ -25,11 +25,22 @@ self.addEventListener('install',event=>{event.waitUntil(cacheCore().then(()=>sel
 self.addEventListener('activate',event=>{event.waitUntil((async()=>{const keep=new Set([CORE_CACHE,DATA_CACHE,PUBLIC_API_CACHE,MEDIA_CACHE]);const keys=await caches.keys();await Promise.all(keys.filter(k=>k.startsWith('nh7-')||k.startsWith('omideno7-')).filter(k=>!keep.has(k)).map(k=>caches.delete(k)));await self.clients.claim()})())});
 
 function isLocalStatic(url){return url.origin===self.location.origin&&(url.pathname.includes('/data/')||url.pathname.includes('/assets/')||url.pathname.endsWith('.css')||url.pathname.endsWith('.js')||url.pathname.endsWith('.json')||url.pathname.endsWith('.png')||url.pathname.endsWith('.jpeg')||url.pathname.endsWith('.jpg')||url.pathname.endsWith('.webp'))}
-function isPublicSupabase(url){if(!url.pathname.includes('/rest/v1/'))return false;return ['daily_content','school_lessons','school_courses','sermons','sermon_categories','notification_settings','meeting_settings'].some(t=>url.pathname.includes('/rest/v1/'+t))}
+function isPublicSupabase(url){if(!url.pathname.includes('/rest/v1/'))return false;return ['daily_content','school_lessons','school_courses','sermons','sermon_categories','notification_settings','meeting_settings','audio_bible_books_v220','audio_bible_chapters_v220','document_templates_v220'].some(t=>url.pathname.includes('/rest/v1/'+t))}
 function simpleKey(request){return new Request(request.url,{method:'GET'})}
 async function networkFirst(request,cacheName,key=request){const cache=await caches.open(cacheName);try{const res=await fetch(request);if(res&&res.ok)await cache.put(key,res.clone());return res}catch(e){const hit=await cache.match(key);if(hit)return hit;throw e}}
 async function staleWhileRevalidate(request,cacheName){const cache=await caches.open(cacheName);const hit=await cache.match(request);const update=fetch(request).then(res=>{if(res&&res.ok)cache.put(request,res.clone());return res}).catch(()=>null);return hit||await update||await caches.match(OFFLINE_PAGE)}
 async function mediaFromCache(request){const cache=await caches.open(MEDIA_CACHE);const key=simpleKey(request);const full=await cache.match(key);if(!full)return null;const range=request.headers.get('range');if(!range)return full;const blob=await full.blob();const m=/bytes=(\d+)-(\d*)/.exec(range);if(!m)return full;const start=Number(m[1]);const end=m[2]?Number(m[2]):blob.size-1;if(start>=blob.size)return new Response(null,{status:416,headers:{'Content-Range':`bytes */${blob.size}`}});const chunk=blob.slice(start,Math.min(end+1,blob.size));const headers=new Headers(full.headers);headers.set('Content-Range',`bytes ${start}-${Math.min(end,blob.size-1)}/${blob.size}`);headers.set('Content-Length',String(chunk.size));headers.set('Accept-Ranges','bytes');return new Response(chunk,{status:206,statusText:'Partial Content',headers})}
+
+
+function nh7FindAdminPushData(value,depth=0){
+  if(!value||depth>5)return null;
+  if(typeof value==='object'&&value.nh7_admin_event)return value;
+  if(typeof value==='object'){for(const v of Object.values(value)){const found=nh7FindAdminPushData(v,depth+1);if(found)return found}}
+  return null;
+}
+self.addEventListener('push',event=>{
+  try{const raw=event.data?event.data.json():null,data=nh7FindAdminPushData(raw);if(!data||!self.navigator?.setAppBadge)return;const n=Math.max(1,Number(data.unread_count)||1);event.waitUntil(self.navigator.setAppBadge(n))}catch(e){console.warn('NH7 admin badge push parse failed',e)}
+});
 
 self.addEventListener('fetch',event=>{
   const req=event.request;if(req.method!=='GET')return;const url=new URL(req.url);

@@ -13,6 +13,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="theme-color" content="#0f766e">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/v2.2.0-platform.css?v=2.2.0">
   <style>
     :root{--blue:#0b5faa;--green:#16a765;--ink:#102033;--muted:#667085;--bg:#eef8f7;--card:#ffffff;--line:#d8ecea;--danger:#b42318;--warn:#b54708;--shadow:0 12px 34px rgba(15,118,110,.14)}
     *{box-sizing:border-box}
@@ -65,6 +66,14 @@
 
 .admin-password-wrap{position:relative;display:flex;align-items:center}.admin-password-wrap input{width:100%;padding-inline-end:52px}.admin-eye-btn{position:absolute;inset-inline-end:8px;border:0;background:transparent;font-size:22px;cursor:pointer;padding:8px}.admin-forgot-panel{margin-top:12px;padding:14px;border:1px solid #d9ece9;border-radius:16px;background:#f8fffd}.admin-login-card>.btn{width:100%;margin-top:10px}
 </style>
+  <script>
+    window.NH7_ONESIGNAL_APP_ID='86f4116a-707a-4959-aa3f-7c703f57bf7e';
+    window.NH7_BASE_PATH=new URL('.',window.location.href).pathname;
+    window.OneSignalDeferred=window.OneSignalDeferred||[];
+    OneSignalDeferred.push(async function(OneSignal){try{await OneSignal.init({appId:window.NH7_ONESIGNAL_APP_ID,serviceWorkerPath:window.NH7_BASE_PATH+'service-worker.js',serviceWorkerParam:{scope:window.NH7_BASE_PATH},notifyButton:{enable:false},allowLocalhostAsSecureOrigin:true});}catch(err){console.warn('OneSignal admin init failed',err);}});
+  </script>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js" defer></script>
 </head>
 <body>
 <main id="adminApp" class="admin-shell"></main>
@@ -339,7 +348,7 @@ function messageCenterRows(){let rows=(state.messages||[]).slice();if(messageFil
 function messageDuplicateKey(m){const day=String(m.delivered_at||m.created_at||'').slice(0,10),target=String(m.user_email||m.device_id||'global').trim().toLowerCase();return [target,String(m.language||''),String(m.category||''),String(m.title||m.subject||'').trim().toLowerCase(),String(m.body||m.message||m.content||'').trim().toLowerCase(),day].join('|')}
 function messageDuplicateIds(){const rows=(state.messages||[]).slice().sort((a,b)=>String(b.delivered_at||b.created_at||'').localeCompare(String(a.delivered_at||a.created_at||''))),seen=new Set(),ids=[];for(const m of rows){const key=messageDuplicateKey(m);if(!key||!m.id)continue;if(seen.has(key))ids.push(m.id);else seen.add(key)}return ids}
 async function deleteMessageIds(ids){ids=[...new Set((ids||[]).filter(Boolean).map(String))];if(!ids.length)return 0;let deleted=0;for(let i=0;i<ids.length;i+=100){const chunk=ids.slice(i,i+100);let n=0;try{const result=await adminRpc('nh7_admin_delete_inbox_messages_v218',{p_ids:chunk});n=Number(Array.isArray(result)?result[0]:result)||0}catch(rpcError){console.warn('Bulk message delete RPC fallback',rpcError);for(const id of chunk){const rows=await authFetch('/rest/v1/notification_inbox?id=eq.'+encodeURIComponent(id),{method:'DELETE',headers:{Prefer:'return=representation'}});if(Array.isArray(rows)&&rows.length)n+=rows.length}}deleted+=n;const set=new Set(chunk);state.messages=(state.messages||[]).filter(m=>!set.has(String(m.id)));render()}return deleted}
-async function cleanupAllMessageDuplicates(){const ids=messageDuplicateIds();if(!ids.length){alert(nh7Label('پیام تکراری پیدا نشد.','No duplicate messages found.','Nema duplikata poruka.'));return}if(!confirm(nh7Label('همه پیام‌های تکراری اضافی حذف شوند؟ تعداد: ','Delete all extra duplicate messages? Count: ','Izbrisati sve dodatne duplikate? Broj: ')+ids.length))return;try{const deleted=await deleteMessageIds(ids);await loadAll(true);render();if(deleted<1)throw new Error(nh7Label('هیچ ردیفی از دیتابیس حذف نشد. فایل SQL نسخه 2.1.8 را اجرا کن.','No database row was deleted. Run the v2.1.8 SQL file.','Nijedan redak nije izbrisan. Pokrenite SQL v2.1.8.'));alert(nh7Label(`پیام‌های تکراری حذف شدند: ${deleted}`,`Duplicate messages removed: ${deleted}`,`Uklonjeni duplikati: ${deleted}`))}catch(e){alert(e.message)}}
+async function cleanupAllMessageDuplicates(){const ids=messageDuplicateIds();if(!ids.length){alert(nh7Label('پیام تکراری پیدا نشد.','No duplicate messages found.','Nema duplikata poruka.'));return}if(!confirm(nh7Label('همه پیام‌های تکراری اضافی حذف شوند؟ تعداد: ','Delete all extra duplicate messages? Count: ','Izbrisati sve dodatne duplikate? Broj: ')+ids.length))return;try{const deleted=await deleteMessageIds(ids);await loadAll(true);render();if(deleted<1)throw new Error(nh7Label('هیچ ردیفی از دیتابیس حذف نشد. فایل SQL نهایی نسخه 2.2.0 را اجرا کن.','No database row was deleted. Run the final v2.2.0 SQL file.','Nijedan redak nije izbrisan. Pokrenite završni SQL v2.2.0.'));alert(nh7Label(`پیام‌های تکراری حذف شدند: ${deleted}`,`Duplicate messages removed: ${deleted}`,`Uklonjeni duplikati: ${deleted}`))}catch(e){alert(e.message)}}
 async function deleteVisibleMessages(){const rows=messageCenterRows().filter(m=>m.id);if(!rows.length){alert(lang==='fa'?'پیامی در این فیلتر وجود ندارد.':'No messages in this filter.');return}const text=(lang==='fa'?'همه پیام‌های نمایش‌داده‌شده حذف شوند؟ تعداد: ':lang==='hr'?'Izbrisati sve prikazane poruke? Broj: ':'Delete all currently displayed messages? Count: ')+rows.length;if(!confirm(text))return;if(rows.length>20&&!confirm(lang==='fa'?'این حذف گروهی قابل بازگشت نیست. برای تأیید نهایی دوباره OK را بزن.':'This bulk deletion cannot be undone. Confirm again.'))return;try{await deleteMessageIds(rows.map(m=>m.id));await loadAll(true)}catch(e){alert(e.message)}}
 
 function dashboardStudentInsights(){const all=studentDirectory().map(student=>({student,sum:studentMainSummary(student)}));const outstanding=all.filter(x=>x.sum.primary.key==='passed'&&x.sum.primary.best>=85&&x.sum.primary.completed===x.sum.primary.lessons.length&&x.sum.primary.approved===x.sum.primary.expected.length).sort((a,b)=>b.sum.primary.best-a.sum.primary.best).slice(0,6);const active=all.filter(x=>x.sum.primary.key!=='not_started').sort((a,b)=>{const ap=a.sum.primary.completed+a.sum.primary.approved,bp=b.sum.primary.completed+b.sum.primary.approved;return bp-ap||b.sum.primary.best-a.sum.primary.best}).slice(0,6);const attention=all.filter(x=>{const p=x.sum.primary;return p.revision>0||p.key==='attempted'||(p.completed>0&&p.expected.length>p.submitted)}).sort((a,b)=>b.sum.primary.revision-a.sum.primary.revision).slice(0,8);return{outstanding,active,attention}}
@@ -558,5 +567,6 @@ if(token)loadAll(true);
 if(refreshTimer)clearInterval(refreshTimer);
 refreshTimer=setInterval(()=>{if(token&&!adminLoadInFlight)loadAll(true)},90000);
 </script>
+  <script src="js/admin-v2.2.0.js?v=2.2.0"></script>
 </body>
 </html>

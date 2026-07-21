@@ -1,15 +1,21 @@
 {
-  "name": "OmideNo7 Admin Panel",
-  "short_name": "OmideNo7 Admin",
-  "description": "Admin dashboard for OmideNo7 church app requests, Q&A, and meeting settings.",
-  "start_url": "./admin.html",
-  "scope": "./",
-  "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#eef8f7",
-  "theme_color": "#0f766e",
-  "icons": [
-    {"src": "assets/admin-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
-    {"src": "assets/admin-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  "id":"./admin.html",
+  "name":"New Hope 7 Admin Panel",
+  "short_name":"NH7 Admin",
+  "description":"Admin dashboard for requests, Q&A, Audio Bible, documents, school, and notifications.",
+  "start_url":"./admin.html?v=2.2.0",
+  "scope":"./",
+  "display":"standalone",
+  "orientation":"any",
+  "background_color":"#eef8f7",
+  "theme_color":"#0f766e",
+  "icons":[
+    {"src":"assets/admin-icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"assets/admin-icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ],
+  "shortcuts":[
+    {"name":"Requests","url":"./admin.html?tab=requests","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Questions","url":"./admin.html?tab=qa","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Documents","url":"./admin.html?tab=certificates","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]}
   ]
 }
