@@ -1,3 +1,4 @@
+// NH7 v2.2.0 consolidated update: real cloud auth, Audio Bible, Q&A sync, and admin integration.
 const $ = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 const view = $('#view');
@@ -50,7 +51,7 @@ async function clearDownloadedMedia(){if(isNativeCapacitor()){const F=capacitorP
 async function prepareCoreOffline(button){const old=button?.textContent||'';try{if(button){button.disabled=true;button.textContent=state.lang==='fa'?'در حال آماده‌سازی…':state.lang==='hr'?'Priprema…':'Preparing…'}if(isNativeCapacitor()){localStorage.setItem('nh7_offline_core_ready',new Date().toISOString());alert(state.lang==='fa'?'محتوای اصلی داخل برنامه نصب شده و برای استفاده آفلاین آماده است.':state.lang==='hr'?'Osnovni sadržaj ugrađen je u aplikaciju i spreman je za offline korištenje.':'Core content is bundled in the app and ready offline.')}else{const r=await swMessage('CACHE_CORE');localStorage.setItem('nh7_offline_core_ready',new Date().toISOString());alert(state.lang==='fa'?`محتوای اصلی برای استفاده آفلاین آماده شد. (${r.cached||0} فایل)`:state.lang==='hr'?'Osnovni sadržaj je spreman za offline korištenje.':'Core content is ready for offline use.')}}catch(e){console.warn(e);alert(state.lang==='fa'?'آماده‌سازی آفلاین کامل نشد. دوباره تلاش کنید.':'Offline preparation did not finish. Please try again.')}finally{if(button){button.disabled=false;button.textContent=old}}}
 async function offlineStorageSummary(){if(isNativeCapacitor()){let count=0,bytes=0;for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!k?.startsWith(OFFLINE_MEDIA_PREFIX))continue;try{const m=JSON.parse(localStorage.getItem(k)||'{}');if(m.native){count++;bytes+=Number(m.bytes||0)}}catch(e){}}const mb=(bytes/1048576).toFixed(1);return state.lang==='fa'?`${count} فایل رسانه‌ای (${mb} مگابایت) روی دستگاه ذخیره شده است.`:state.lang==='hr'?`${count} medijskih datoteka (${mb} MB) spremljeno je na uređaju.`:`${count} media files (${mb} MB) are stored on this device.`}try{const r=await swMessage('OFFLINE_STATUS');const mb=(Number(r.mediaBytes||0)/1048576).toFixed(1);return state.lang==='fa'?`${r.coreCount||0} فایل اصلی و ${r.mediaCount||0} فایل رسانه‌ای (${mb} مگابایت) آماده آفلاین است.`:state.lang==='hr'?`${r.coreCount||0} osnovnih i ${r.mediaCount||0} medijskih datoteka (${mb} MB) spremljeno je offline.`:`${r.coreCount||0} core files and ${r.mediaCount||0} media files (${mb} MB) are available offline.`}catch(e){return state.lang==='fa'?'وضعیت فضای آفلاین در دسترس نیست.':'Offline storage status unavailable.'}}
 
-const sermonPlayerState={audio:null,current:null,saveTimer:null};
+const sermonPlayerState={audio:null,current:null,saveTimer:null,cloudTimer:null};
 function sermonProgressKey(id){return 'nh7_sermon_progress_'+String(id)}
 function sermonNoteKey(id){return 'nh7_sermon_note_'+String(id)}
 function formatAudioTime(sec){sec=Math.max(0,Number(sec)||0);const h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),ss=Math.floor(sec%60);return h?`${h}:${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`:`${m}:${String(ss).padStart(2,'0')}`}
@@ -61,12 +62,23 @@ function ensureSermonPlayer(){
   const audio=new Audio();audio.preload='metadata';sermonPlayerState.audio=audio;
   const sync=()=>{
     const cur=sermonPlayerState.current;if(!cur)return;
+    const snapshot={time:audio.currentTime,duration:audio.duration||cur.duration||0,updatedAt:new Date().toISOString()};
     clearTimeout(sermonPlayerState.saveTimer);
-    sermonPlayerState.saveTimer=setTimeout(()=>localStorage.setItem(sermonProgressKey(cur.id),JSON.stringify({time:audio.currentTime,duration:audio.duration||cur.duration||0,updatedAt:new Date().toISOString()})),500);
+    sermonPlayerState.saveTimer=setTimeout(()=>localStorage.setItem(sermonProgressKey(cur.id),JSON.stringify(snapshot)),500);
+    clearTimeout(sermonPlayerState.cloudTimer);
+    sermonPlayerState.cloudTimer=setTimeout(()=>saveProgressCloud(sermonProgressKey(cur.id),snapshot).catch(console.warn),5000);
     updateInlineSermonPlayers();
   };
   ['timeupdate','play','pause','loadedmetadata','durationchange','ended'].forEach(ev=>audio.addEventListener(ev,sync));
-  audio.addEventListener('ended',()=>{if(sermonPlayerState.current)localStorage.setItem(sermonProgressKey(sermonPlayerState.current.id),JSON.stringify({time:0,duration:audio.duration||0,completed:true,updatedAt:new Date().toISOString()}));updateInlineSermonPlayers()});
+  audio.addEventListener('ended',()=>{
+    if(sermonPlayerState.current){
+      const key=sermonProgressKey(sermonPlayerState.current.id);
+      const snapshot={time:0,duration:audio.duration||0,completed:true,updatedAt:new Date().toISOString()};
+      localStorage.setItem(key,JSON.stringify(snapshot));
+      saveProgressCloud(key,snapshot).catch(console.warn);
+    }
+    updateInlineSermonPlayers();
+  });
   return audio;
 }
 function updateInlineSermonPlayers(){
@@ -146,6 +158,13 @@ const QA_T = {
 };
 Object.keys(QA_T).forEach(lang=>Object.assign(T[lang], QA_T[lang]));
 
+const AUDIO_BIBLE_T = {
+  en:{audioBible:'Audio Bible',audioBibleIntro:'Choose a testament, then a book and chapter.',uploadedChapters:'Uploaded chapters',chapterAudio:'Chapter audio',noChapterAudio:'No chapter audio has been published yet.',oldTestament:'Old Testament',newTestament:'New Testament',backToBooks:'Back to books',downloadOffline:'Download offline'},
+  fa:{audioBible:'کتاب مقدس صوتی',audioBibleIntro:'ابتدا عهد، سپس کتاب و باب مورد نظر را انتخاب کنید.',uploadedChapters:'باب‌های صوتی موجود',chapterAudio:'فایل صوتی باب',noChapterAudio:'هنوز فایل صوتی برای این کتاب منتشر نشده است.',oldTestament:'عهد عتیق',newTestament:'عهد جدید',backToBooks:'بازگشت به فهرست کتاب‌ها',downloadOffline:'دانلود برای آفلاین'},
+  hr:{audioBible:'Audio Biblija',audioBibleIntro:'Odaberite zavjet, zatim knjigu i poglavlje.',uploadedChapters:'Prenesena poglavlja',chapterAudio:'Audio poglavlja',noChapterAudio:'Za ovu knjigu još nema objavljenog audio zapisa.',oldTestament:'Stari zavjet',newTestament:'Novi zavjet',backToBooks:'Natrag na knjige',downloadOffline:'Preuzmi offline'}
+};
+Object.keys(AUDIO_BIBLE_T).forEach(lang=>Object.assign(T[lang], AUDIO_BIBLE_T[lang]));
+
 const MEETING_T = {
   en:{meetingApproved:'Your meeting access is approved.',meetingDetails:'Meeting details',meetingLink:'Meeting link',accessCode:'Access code',securityCode:'Security code',phoneNumber:'Phone number',openMeeting:'Open meeting',notConfigured:'Meeting details are not configured yet by admin.',checkingApproval:'Checking your approval status...',syncApproval:'Refresh approval status'},
   fa:{meetingApproved:'دسترسی شما به جلسه تأیید شده است.',meetingDetails:'اطلاعات ورود به جلسه',meetingLink:'لینک جلسه',accessCode:'کد دسترسی',securityCode:'کد امنیتی',phoneNumber:'شماره تماس',openMeeting:'باز کردن جلسه',notConfigured:'اطلاعات جلسه هنوز توسط ادمین تنظیم نشده است.',checkingApproval:'در حال بررسی وضعیت تأیید شما...',syncApproval:'تازه‌سازی وضعیت تأیید'},
@@ -202,33 +221,9 @@ const AUTH_SESSION_KEY='nh7_user_session_v170';
 const EXPLICIT_LOGOUT_KEY='nh7_explicit_logout';
 const NH7_PASSWORD_RESET_URL='https://omideno7.github.io/new-hope7-app/reset-password.html';
 const LEGACY_SCHOOL_SESSION_KEY='nh7_legacy_school_session_v1';
-const LEGACY_SCHOOL_SESSION_MAX_AGE=30*24*60*60*1000;
-function legacySchoolSession(){
-  try{return JSON.parse(localStorage.getItem(LEGACY_SCHOOL_SESSION_KEY)||'null')}catch(e){return null}
-}
 function clearLegacySchoolSession(){localStorage.removeItem(LEGACY_SCHOOL_SESSION_KEY)}
-function saveLegacySchoolSession(email,access={}){
-  const normalized=String(email||'').trim().toLowerCase();
-  if(!normalized)return clearLegacySchoolSession();
-  localStorage.setItem(LEGACY_SCHOOL_SESSION_KEY,JSON.stringify({
-    email:normalized,
-    verified_at:Date.now(),
-    status:'approved',
-    registration_id:access.cloudId||access.registration_id||access.id||''
-  }));
-  localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
-}
-function isLegacySchoolLoggedIn(){
-  if(isExplicitlyLoggedOut())return false;
-  const s=legacySchoolSession();
-  if(!s?.email||!s?.verified_at)return false;
-  if(Date.now()-Number(s.verified_at)>LEGACY_SCHOOL_SESSION_MAX_AGE){clearLegacySchoolSession();return false}
-  const access=(()=>{try{return JSON.parse(localStorage.getItem('nh7_school_access')||'{}')}catch(e){return {}}})();
-  const email=String(currentUserEmail()||access.email||'').trim().toLowerCase();
-  const approved=access.status==='approved'||access.approvedBy==='admin';
-  return approved&&email===String(s.email).trim().toLowerCase();
-}
-function isSchoolIdentityAvailable(){return isAccountLoggedIn()||isLegacySchoolLoggedIn()}
+function isLegacySchoolLoggedIn(){return false}
+function isSchoolIdentityAvailable(){return isAccountLoggedIn()}
 
 function authSession(){ try{return JSON.parse(localStorage.getItem(AUTH_SESSION_KEY)||'null')}catch(e){return null} }
 function saveAuthSession(v){ if(v){localStorage.setItem(AUTH_SESSION_KEY,JSON.stringify(v));localStorage.removeItem(EXPLICIT_LOGOUT_KEY);}else localStorage.removeItem(AUTH_SESSION_KEY); }
@@ -241,6 +236,27 @@ async function authApi(path,options={}){
   if(!r.ok) throw new Error(data.msg||data.message||data.error_description||text||r.statusText);
   return data;
 }
+async function invokeEdgeFunction(name,payload={}){
+  if(!CLOUD_ENABLED)throw new Error('Cloud disabled');
+  const headers={
+    'apikey':SUPABASE_CONFIG.key,
+    'Content-Type':'application/json'
+  };
+  const r=await fetch(SUPABASE_CONFIG.url+'/functions/v1/'+name,{
+    method:'POST',
+    headers,
+    body:JSON.stringify(payload||{})
+  });
+  const text=await r.text();let data={};
+  try{data=text?JSON.parse(text):{}}catch(e){data={message:text}}
+  if(!r.ok){
+    const err=new Error(data.error||data.message||text||r.statusText);
+    err.code=data.code||'';
+    throw err;
+  }
+  return data;
+}
+
 async function refreshUserSession(){
   const old=authSession(); if(!old?.refresh_token)return null;
   try{const d=await authApi('token?grant_type=refresh_token',{method:'POST',body:JSON.stringify({refresh_token:old.refresh_token})});saveAuthSession(d);return d}catch(e){saveAuthSession(null);return null}
@@ -249,42 +265,41 @@ function authEmail(){ return String(authSession()?.user?.email||'').trim().toLow
 
 async function signInOrClaimLegacyAccount(email,password){
   try{
-    return await authApi('token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})});
+    return await authApi('token?grant_type=password',{
+      method:'POST',
+      body:JSON.stringify({email,password})
+    });
   }catch(loginErr){
-    // Legacy New Hope 7 users may have an approved school registration but no Supabase Auth user.
-    // Only approved historical registrations are eligible for transparent account claiming.
-    let legacy=null;
+    const claimPayload={email,password,device_id:deviceId(),language:state.lang};
+    const runClaim=async payload=>{
+      const claimed=await invokeEdgeFunction('nh7-claim-legacy-auth',payload);
+      const session=claimed?.session||claimed;
+      if(!session?.access_token)throw new Error('No authenticated session was returned.');
+      return session;
+    };
     try{
-      const rows=await cloudRpc('nh7_registration_access_v2',{p_type:'school',p_email:email,p_device_id:deviceId()});
-      legacy=Array.isArray(rows)?rows[0]:rows;
-    }catch(e){ console.warn('Legacy account lookup failed',e); }
-    if(!(legacy&&legacy.found&&(legacy.approved||legacy.status==='approved'))) throw loginErr;
-    try{
-      const created=await authApi('signup',{method:'POST',body:JSON.stringify({
-        email,password,data:{
-          full_name:String(((legacy.payload||{}).firstName||'')+' '+((legacy.payload||{}).lastName||'')).trim(),
-          language:state.lang,
-          migrated_from_legacy_school:true
-        }
-      })});
-      if(created?.access_token) return created;
-      // Some Supabase projects require email confirmation. Try password login once more;
-      // if it is not active yet, keep the approved legacy access on this device.
-      try{return await authApi('token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})})}
-      catch(confirmErr){
-        localStorage.setItem('nh7_manual_email',email);
-        localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},legacy.payload||{},legacy,{email,status:'approved',approvedBy:'admin'})));
-        localStorage.setItem('nh7_user_profile',JSON.stringify({
-          name:String(((legacy.payload||{}).firstName||'')+' '+((legacy.payload||{}).lastName||'')).trim(),
-          email,
-          phone:String((legacy.payload||{}).phone||'')
-        }));
-        return {legacy_approved:true,user:{email,user_metadata:{full_name:String(((legacy.payload||{}).firstName||'')+' '+((legacy.payload||{}).lastName||'')).trim()}}};
+      return await runClaim(claimPayload);
+    }catch(claimErr){
+      const code=String(claimErr?.code||'');
+      if(code==='ACCOUNT_EXISTS'||code==='EXISTING_CONFIRMED_ACCOUNT')throw loginErr;
+      if(code==='PROFILE_VERIFICATION_REQUIRED'){
+        const dobPrompt=state.lang==='fa'
+          ?'برای تأیید حساب قدیمی، تاریخ تولدی را که هنگام ثبت‌نام نوشته‌اید به شکل سال-ماه-روز وارد کنید. مثال: 1980-09-19'
+          :state.lang==='hr'
+            ?'Za potvrdu starog računa unesite datum rođenja iz prijave u obliku GGGG-MM-DD.'
+            :'To verify the old account, enter the date of birth used during registration in YYYY-MM-DD format.';
+        const phonePrompt=state.lang==='fa'
+          ?'شماره تلفنی را که هنگام ثبت‌نام نوشته‌اید وارد کنید.'
+          :state.lang==='hr'
+            ?'Unesite telefonski broj korišten pri registraciji.'
+            :'Enter the phone number used during registration.';
+        const birthDate=window.prompt(dobPrompt,'')?.trim()||'';
+        if(!birthDate)throw claimErr;
+        const phone=window.prompt(phonePrompt,'')?.trim()||'';
+        if(!phone)throw claimErr;
+        return await runClaim(Object.assign({},claimPayload,{birth_date:birthDate,phone}));
       }
-    }catch(signupErr){
-      const m=String(signupErr?.message||'').toLowerCase();
-      if(m.includes('already')||m.includes('registered')||m.includes('exists')) throw loginErr;
-      throw signupErr;
+      throw claimErr;
     }
   }
 }
@@ -331,23 +346,28 @@ async function cloudRpc(name, payload={}){
 }
 function enqueueCloud(op){
   const q=JSON.parse(localStorage.getItem('nh7_cloud_queue')||'[]');
-  q.push(Object.assign({id:Date.now()+'_'+Math.random().toString(16).slice(2), createdAt:new Date().toISOString()}, op));
-  localStorage.setItem('nh7_cloud_queue', JSON.stringify(q));
+  q.push(Object.assign({id:Date.now()+'_'+Math.random().toString(16).slice(2),createdAt:new Date().toISOString()},op));
+  localStorage.setItem('nh7_cloud_queue',JSON.stringify(q));
   localStorage.setItem('nh7_cloud_status','queued');
 }
 async function syncCloudQueue(){
-  if(!navigator.onLine) return;
+  if(!navigator.onLine)return;
   const q=JSON.parse(localStorage.getItem('nh7_cloud_queue')||'[]');
-  if(!q.length){ localStorage.setItem('nh7_cloud_status','synced'); return; }
-  const remaining=[];
+  if(!q.length){localStorage.setItem('nh7_cloud_status','synced');return}
+  const remaining=[],activeEmail=authEmail();
   for(const op of q){
+    if(op.owner_email&&String(op.owner_email).toLowerCase()!==activeEmail){
+      remaining.push(op);
+      continue;
+    }
     try{
-      if(op.type==='insert') await cloudFetch(op.table, {method:'POST', body:JSON.stringify(op.payload)});
-      if(op.type==='upsert') await cloudFetch(op.table+'?on_conflict='+encodeURIComponent(op.conflict||'device_id'), {method:'POST', headers:{'Prefer':'resolution=merge-duplicates,return=representation'}, body:JSON.stringify(op.payload)});
-    }catch(e){ console.warn('Cloud sync failed', e); remaining.push(op); }
+      if(op.type==='insert')await cloudFetch(op.table,{method:'POST',body:JSON.stringify(op.payload)});
+      if(op.type==='upsert')await cloudFetch(op.table+'?on_conflict='+encodeURIComponent(op.conflict||'device_id'),{method:'POST',headers:{'Prefer':'resolution=merge-duplicates,return=representation'},body:JSON.stringify(op.payload)});
+      if(op.type==='delete')await cloudFetch(op.path,{method:'DELETE'});
+    }catch(e){console.warn('Cloud sync failed',e);remaining.push(op)}
   }
-  localStorage.setItem('nh7_cloud_queue', JSON.stringify(remaining));
-  localStorage.setItem('nh7_cloud_status', remaining.length ? 'queued' : 'synced');
+  localStorage.setItem('nh7_cloud_queue',JSON.stringify(remaining));
+  localStorage.setItem('nh7_cloud_status',remaining.length?'queued':'synced');
 }
 async function saveCloud(op){ enqueueCloud(op); await syncCloudQueue(); }
 function cloudStatusText(){
@@ -360,19 +380,138 @@ async function saveRegistrationCloud(data){
   const payload={device_id:deviceId(), type:data.kind||'general', status:'pending', language:state.lang, payload:data};
   await saveCloud({type:'insert', table:'registrations', payload});
 }
+function accountCloudEmail(){return isAccountLoggedIn()?authEmail():''}
+function accountProgressKey(key){const k=String(key||'');return k.startsWith('nh7_')?k:'nh7_'+k}
 async function saveVerseCloud(ref){
-  await saveCloud({type:'upsert', table:'saved_verses', conflict:'device_id,ref', payload:{device_id:deviceId(), ref, language:state.lang}});
+  await saveCloud({type:'upsert',table:'saved_verses',conflict:'device_id,ref',payload:{device_id:deviceId(),ref,language:state.lang}});
+  const email=accountCloudEmail();
+  if(email)await saveCloud({
+    type:'upsert',
+    table:'nh7_account_saved_verses',
+    conflict:'user_email,ref',
+    owner_email:email,
+    payload:{user_email:email,ref,language:state.lang,updated_at:new Date().toISOString()}
+  });
 }
-async function saveNoteCloud(key, content){
-  await saveCloud({type:'upsert', table:'user_notes', conflict:'device_id,note_key', payload:{device_id:deviceId(), note_key:key, content, language:state.lang}});
+async function deleteVerseCloud(ref){
+  await saveCloud({type:'delete',path:'saved_verses?device_id=eq.'+encodeURIComponent(deviceId())+'&ref=eq.'+encodeURIComponent(ref)});
+  const email=accountCloudEmail();
+  if(email)await saveCloud({
+    type:'delete',
+    owner_email:email,
+    path:'nh7_account_saved_verses?user_email=eq.'+encodeURIComponent(email)+'&ref=eq.'+encodeURIComponent(ref)
+  });
 }
-async function saveProgressCloud(key, value){
-  await saveCloud({type:'upsert', table:'user_progress', conflict:'device_id,progress_key', payload:{device_id:deviceId(), progress_key:key, value, language:state.lang}});
+async function saveNoteCloud(key,content){
+  await saveCloud({type:'upsert',table:'user_notes',conflict:'device_id,note_key',payload:{device_id:deviceId(),note_key:key,content,language:state.lang,updated_at:new Date().toISOString()}});
+  const email=accountCloudEmail();
+  if(email)await saveCloud({
+    type:'upsert',
+    table:'nh7_account_notes',
+    conflict:'user_email,note_key',
+    owner_email:email,
+    payload:{user_email:email,note_key:key,content,language:state.lang,updated_at:new Date().toISOString()}
+  });
 }
-async function saveQuestionCloud(questionText){
+async function saveProgressCloud(key,value){
+  await saveCloud({type:'upsert',table:'user_progress',conflict:'device_id,progress_key',payload:{device_id:deviceId(),progress_key:key,value,language:state.lang,updated_at:new Date().toISOString()}});
+  const email=accountCloudEmail();
+  if(email)await saveCloud({
+    type:'upsert',
+    table:'nh7_account_progress',
+    conflict:'user_email,progress_key',
+    owner_email:email,
+    payload:{user_email:email,progress_key:accountProgressKey(key),value,language:state.lang,updated_at:new Date().toISOString()}
+  });
+}
+function restoreAccountProgressValue(key,value){
+  if(key==='nh7_gratitude_completed'&&value&&Array.isArray(value.completed)){
+    localStorage.setItem(key,JSON.stringify(value.completed));
+    return;
+  }
+  if(value&&typeof value==='object'&&!Array.isArray(value)&&Object.prototype.hasOwnProperty.call(value,'__raw')){
+    localStorage.setItem(key,String(value.__raw??''));
+    return;
+  }
+  localStorage.setItem(key,JSON.stringify(value??{}));
+}
+async function restoreAccountCloudData(force=false){
+  const email=accountCloudEmail();
+  if(!email||!navigator.onLine)return false;
+  const marker='nh7_account_cloud_restore_'+email;
+  if(!force&&sessionStorage.getItem(marker)==='1')return true;
+  try{
+    const [notes,progress,verses]=await Promise.all([
+      cloudFetch('nh7_account_notes?select=note_key,content,updated_at&user_email=eq.'+encodeURIComponent(email),{method:'GET'}),
+      cloudFetch('nh7_account_progress?select=progress_key,value,updated_at&user_email=eq.'+encodeURIComponent(email),{method:'GET'}),
+      cloudFetch('nh7_account_saved_verses?select=ref&user_email=eq.'+encodeURIComponent(email),{method:'GET'})
+    ]);
+    (Array.isArray(notes)?notes:[]).forEach(row=>{
+      const key='nh7_'+String(row.note_key||'');
+      if(row.content!=null)localStorage.setItem(key,String(row.content));
+    });
+    (Array.isArray(progress)?progress:[]).forEach(row=>{
+      const key=accountProgressKey(row.progress_key);
+      if(key)restoreAccountProgressValue(key,row.value);
+    });
+    const cloudRefs=(Array.isArray(verses)?verses:[]).map(x=>String(x.ref||'')).filter(Boolean);
+    if(cloudRefs.length){
+      let local=[];try{local=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]')}catch(e){}
+      localStorage.setItem('nh7_bookmarks',JSON.stringify([...new Set([...(Array.isArray(local)?local:[]),...cloudRefs])]));
+    }
+    sessionStorage.setItem(marker,'1');
+    localStorage.setItem('nh7_account_cloud_restored_at',new Date().toISOString());
+    return true;
+  }catch(e){
+    console.warn('Account cloud restore failed',e);
+    return false;
+  }
+}
+function schoolSnapshotCacheKey(email){return 'nh7_school_snapshot_'+String(email||'').trim().toLowerCase()}
+function readSchoolSnapshotCache(email){
+  try{
+    const v=JSON.parse(localStorage.getItem(schoolSnapshotCacheKey(email))||'null');
+    return v&&Array.isArray(v.progress)&&Array.isArray(v.assignments)?v:null;
+  }catch(e){return null}
+}
+function invalidateSchoolSnapshot(email=currentUserEmail()){if(email)localStorage.removeItem(schoolSnapshotCacheKey(email))}
+async function getSchoolSnapshot(email=currentUserEmail(),force=false){
+  email=String(email||'').trim().toLowerCase();
+  const cached=readSchoolSnapshotCache(email);
+  if(!email||!isAccountLoggedIn())return Object.assign({progress:[],assignments:[],from_cache:true,error:'login_required'},cached||{});
+  if(!navigator.onLine)return Object.assign({progress:[],assignments:[],from_cache:true,offline:true},cached||{});
+  try{
+    let snapshot=null;
+    try{
+      snapshot=await cloudRpc('nh7_get_my_school_snapshot_v2110',{});
+      if(Array.isArray(snapshot))snapshot=snapshot[0]||{};
+    }catch(rpcError){
+      console.warn('School snapshot RPC unavailable; using REST fallback',rpcError);
+      const [progress,assignments]=await Promise.all([
+        cloudFetch('school_progress?select=*&user_email=eq.'+encodeURIComponent(email),{method:'GET'}),
+        cloudFetch('school_assignments?select=*&user_email=eq.'+encodeURIComponent(email),{method:'GET'})
+      ]);
+      snapshot={progress:Array.isArray(progress)?progress:[],assignments:Array.isArray(assignments)?assignments:[]};
+    }
+    const clean={
+      progress:Array.isArray(snapshot?.progress)?snapshot.progress:[],
+      assignments:Array.isArray(snapshot?.assignments)?snapshot.assignments:[],
+      saved_at:new Date().toISOString(),
+      from_cache:false
+    };
+    localStorage.setItem(schoolSnapshotCacheKey(email),JSON.stringify(clean));
+    return clean;
+  }catch(e){
+    console.warn('School snapshot load failed',e);
+    return Object.assign({progress:[],assignments:[],from_cache:true,error:String(e?.message||e)},cached||{});
+  }
+}
+async function saveQuestionCloud(item){
   const profile=getKnownUserProfile();
-  const payload={device_id:deviceId(), question_text:questionText, author_name:profile.name||null, author_email:profile.email||null, language:state.lang, status:'pending'};
-  await saveCloud({type:'insert', table:'qa_questions', payload});
+  const questionText=typeof item==='string'?item:item?.question;
+  const clientId=typeof item==='object'?(item.client_question_id||item.id||''):'';
+  const payload={device_id:deviceId(),client_question_id:clientId||null,question_text:questionText,author_name:profile.name||null,author_email:(currentUserEmail()||profile.email||null),language:state.lang,status:'pending'};
+  await saveCloud({type:'insert',table:'qa_questions',payload});
 }
 async function saveInboxCloud(item){
   const payload={
@@ -491,18 +630,19 @@ function pick(obj){ return (obj && (obj[state.lang] ?? obj.en ?? obj.fa ?? obj.h
 function html(s){ return String(s ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])).replace(/\n/g,'<br>'); }
 function todayKey(d=new Date()){ return d.toISOString().slice(0,10); }
 function dateDiffDays(a,b){ const A=new Date(a+'T00:00:00'); const B=new Date(b+'T00:00:00'); return Math.max(0, Math.floor((B-A)/86400000)); }
-function firstUseDate(){ let d=localStorage.getItem('nh7_first_use_date'); if(!d){d=todayKey(); localStorage.setItem('nh7_first_use_date', d);} return d; }
+function firstUseDate(){let d=localStorage.getItem('nh7_first_use_date');if(!d){d=todayKey();localStorage.setItem('nh7_first_use_date',d);saveProgressCloud('nh7_first_use_date',{__raw:d}).catch(console.warn)}return d}
 function userCycleDay(total){ return ((dateDiffDays(firstUseDate(), todayKey())) % total) + 1; }
 function localNum(n){ return state.lang==='fa' ? String(n).replace(/\d/g, d=>'۰۱۲۳۴۵۶۷۸۹'[d]) : String(n); }
 function localText(s){ return state.lang==='fa' ? String(s).replace(/\d/g, d=>'۰۱۲۳۴۵۶۷۸۹'[d]) : String(s); }
 async function jfetch(path){ if(state.data[path]) return state.data[path]; const res=await fetch(path, {cache:'no-cache'}); if(!res.ok) throw new Error(path); const data=await res.json(); state.data[path]=data; return data; }
 function itemsOf(data){ return data.items || data.days || data.proclamations || []; }
 
-function addPoints(amount, badgeId){
-  const g = JSON.parse(localStorage.getItem('nh7_gamification') || '{"points":0,"badges":[]}');
-  g.points = (g.points || 0) + amount;
-  if(badgeId && !g.badges.includes(badgeId)) g.badges.push(badgeId);
-  localStorage.setItem('nh7_gamification', JSON.stringify(g));
+function addPoints(amount,badgeId){
+  const g=JSON.parse(localStorage.getItem('nh7_gamification')||'{"points":0,"badges":[]}');
+  g.points=(g.points||0)+amount;
+  if(badgeId&&!g.badges.includes(badgeId))g.badges.push(badgeId);
+  localStorage.setItem('nh7_gamification',JSON.stringify(g));
+  saveProgressCloud('nh7_gamification',g).catch(console.warn);
 }
 function gamification(){ return JSON.parse(localStorage.getItem('nh7_gamification') || '{"points":0,"badges":[]}'); }
 function badgeName(id){
@@ -823,13 +963,13 @@ async function maybeCreateScheduledInboxMessages(){
 async function refreshInboxFromCloud(){
   try{
     const email=currentUserEmail();
-    const q=email?`notification_inbox?select=id,title,body,category,language,delivered_at,read_at&or=(device_id.eq.${encodeURIComponent(deviceId())},user_email.eq.${encodeURIComponent(email)})&order=delivered_at.desc&limit=100`:`notification_inbox?select=id,title,body,category,language,delivered_at,read_at&device_id=eq.${encodeURIComponent(deviceId())}&order=delivered_at.desc&limit=100`;
+    const q=email?`notification_inbox?select=id,title,body,category,language,delivered_at,read_at,admin_deleted_at&or=(device_id.eq.${encodeURIComponent(deviceId())},user_email.eq.${encodeURIComponent(email)})&order=delivered_at.desc&limit=100`:`notification_inbox?select=id,title,body,category,language,delivered_at,read_at,admin_deleted_at&device_id=eq.${encodeURIComponent(deviceId())}&order=delivered_at.desc&limit=100`;
     const rawOwnRows=await cloudFetch(q,{method:'GET'}); const ownRows=Array.isArray(rawOwnRows)?rawOwnRows:[];
-    let globalRows=[];try{globalRows=await cloudFetch(`notification_inbox?select=id,title,body,category,language,delivered_at,read_at&device_id=is.null&user_email=is.null&language=eq.${encodeURIComponent(state.lang)}&order=delivered_at.desc&limit=100`,{method:'GET'})}catch(e){}
+    let globalRows=[];try{globalRows=await cloudFetch(`notification_inbox?select=id,title,body,category,language,delivered_at,read_at,admin_deleted_at&device_id=is.null&user_email=is.null&language=eq.${encodeURIComponent(state.lang)}&order=delivered_at.desc&limit=100`,{method:'GET'})}catch(e){}
     const receipts=await fetchInboxReceipts(); const receiptMap=new Map(receipts.map(r=>[String(r.message_id),r])); const deleted=inboxDeletedIds();
     const local=inboxMessages().filter(x=>!deleted.has(String(x.id))); const byId=new Map(local.map(x=>[String(x.id),x]));
-    [...ownRows,...(Array.isArray(globalRows)?globalRows:[])].forEach(r=>{const id=String(r.id),rc=receiptMap.get(id);if(rc?.deleted_at||deleted.has(id)){byId.delete(id);return}const old=byId.get(id)||{};byId.set(id,{...old,id,title:r.title,body:r.body,category:r.category||'cloud',language:r.language||state.lang,createdAt:r.delivered_at,read:!!(rc?.read_at||r.read_at),readAt:rc?.read_at||r.read_at||null,lang:r.language||state.lang})});
-    setInboxMessages(Array.from(byId.values()).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt))).slice(0,200)); updateInboxBadge();
+    [...ownRows,...(Array.isArray(globalRows)?globalRows:[])].forEach(r=>{const id=String(r.id),rc=receiptMap.get(id);if(r.admin_deleted_at||rc?.deleted_at||deleted.has(id)){byId.delete(id);if(r.admin_deleted_at)deleted.add(id);return}const old=byId.get(id)||{};byId.set(id,{...old,id,title:r.title,body:r.body,category:r.category||'cloud',language:r.language||state.lang,createdAt:r.delivered_at,read:!!(rc?.read_at||r.read_at),readAt:rc?.read_at||r.read_at||null,lang:r.language||state.lang})});
+    localStorage.setItem('nh7_inbox_deleted_ids',JSON.stringify(Array.from(deleted).slice(-1000))); setInboxMessages(Array.from(byId.values()).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt))).slice(0,200)); updateInboxBadge();
   }catch(e){console.warn('Inbox cloud refresh failed',e)}
 }
 async function inbox(){
@@ -864,6 +1004,7 @@ async function render(route, params={}, preserve=false){
     else if(route==='school') await school(params);
     else if(route==='more') await more();
     else if(route==='audio') await audio(params);
+    else if(route==='audioBible') await audioBible(params);
     else if(route==='salvation') await salvation(params);
     else if(route==='about') await about();
     else if(route==='meetings') await meetings(params);
@@ -1034,10 +1175,13 @@ async function bibleChapter(bookId, chapter){
   const verses=data.verses.filter(v=>Number(v.chapter)===chapter);
   const focusVerse=Number(state.params?.verse||0);
   const title=`${data.book.names[state.lang]||data.book.names.en} ${localNum(chapter)}`;
+  let savedRefs=[];try{savedRefs=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]')}catch(e){}
+  const savedRefSet=new Set(Array.isArray(savedRefs)?savedRefs:[]);
   const rows=verses.map(v=>{
     const ref=v.reference?.en || `${data.book.names.en} ${chapter}:${v.verse}`;
     const key='nh7_bible_state_'+String(v.id||ref).replace(/[^a-zA-Z0-9_-]/g,'_');
     const st=JSON.parse(localStorage.getItem(key)||'{}');
+    if(savedRefSet.has(ref))st.saved=true;
     const cls=['reader-verse']; if(st.highlight) cls.push('highlighted'); if(focusVerse===Number(v.verse)) cls.push('saved-focus');
     const noteBoxId='noteBox_'+String(v.id||ref).replace(/[^a-zA-Z0-9_-]/g,'_');
     return `<div class="${cls.join(' ')}" id="v-${v.verse}" data-verse-key="${html(key)}">
@@ -1141,7 +1285,7 @@ function showPlan(p){
   const total=p.days?.length||p.durationDays||365; const current=Math.min((prog.completed?.length||0)+1,total); const day=(p.days||[]).find(x=>Number(x.day)===current)||p.days?.[0]||{};
   const percent=Math.round(((prog.completed?.length||0)/total)*100);
   $('#planDetail').innerHTML=card(p.title?.[state.lang]||p.title?.en, `<span class="badge">${tr('oldAndNew')}</span><div class="progress"><span style="width:${percent}%"></span></div><p><strong>${tr('day')} ${localNum(current)}</strong> / ${localNum(total)}</p><h3>${tr('readings')}</h3><div class="list">${(day.readings||[]).map(renderReading).join('')}</div><button class="primary-btn" id="markRead">${tr('read')}</button>`);
-  $('#markRead').onclick=()=>{ if(!prog.completed.includes(current)) prog.completed.push(current); localStorage.setItem(key,JSON.stringify(prog)); addPoints(10,'plan_1'); showPlan(p); bindDynamic(); };
+  $('#markRead').onclick=()=>{if(!prog.completed.includes(current))prog.completed.push(current);localStorage.setItem(key,JSON.stringify(prog));saveProgressCloud(key,prog).catch(console.warn);addPoints(10,'plan_1');showPlan(p);bindDynamic()};
   bindDynamic();
 }
 
@@ -1230,10 +1374,43 @@ function courseAssignmentSummary(d,courseCode,rows=[]){
 }
 function assignmentStatusText(row){const s=String(row?.status||'').toLowerCase();if(state.lang==='fa')return s==='approved'?'تأیید شده':s==='needs_revision'?'نیاز به اصلاح':s==='submitted'?'ارسال شده؛ در انتظار بررسی':'ارسال نشده';if(state.lang==='hr')return s==='approved'?'Odobreno':s==='needs_revision'?'Potrebna dorada':s==='submitted'?'Poslano; čeka pregled':'Nije poslano';return s==='approved'?'Approved':s==='needs_revision'?'Needs revision':s==='submitted'?'Submitted; awaiting review':'Not submitted'}
 async function submitSchoolAssignment(courseCode,lessonCode,answerText){
-  const answer=String(answerText||'').trim();if(answer.length<10){alert(state.lang==='fa'?'لطفاً پاسخ تکلیف را کامل‌تر بنویسید.':state.lang==='hr'?'Molimo napišite potpuniji odgovor na zadatak.':'Please write a more complete assignment answer.');return}
-  if(!navigator.onLine){alert(state.lang==='fa'?'پاسخ به‌صورت پیش‌نویس ذخیره شد. برای ارسال رسمی به اینترنت متصل شوید.':state.lang==='hr'?'Odgovor je spremljen kao skica. Povežite se s internetom za službenu predaju.':'The answer was saved as a draft. Connect to the internet to submit it.');return}
+  const answer=String(answerText||'').trim();
+  if(answer.length<10){
+    alert(state.lang==='fa'?'لطفاً پاسخ تکلیف را کامل‌تر بنویسید.':state.lang==='hr'?'Molimo napišite potpuniji odgovor na zadatak.':'Please write a more complete assignment answer.');
+    return;
+  }
+  localStorage.setItem('nh7_note_school-'+lessonCode,answer);
+  saveNoteCloud('note_school-'+lessonCode,answer).catch(console.warn);
+  if(!navigator.onLine){
+    alert(state.lang==='fa'?'پاسخ به‌صورت پیش‌نویس در دستگاه و حساب ابری ذخیره شد. برای ارسال رسمی به اینترنت متصل شوید.':state.lang==='hr'?'Odgovor je spremljen kao skica na uređaju i u oblaku. Povežite se s internetom za službenu predaju.':'The answer was saved as a draft on the device and in your cloud account. Connect to the internet to submit it.');
+    return;
+  }
+  if(!isAccountLoggedIn()){
+    alert(tr('loginRequired'));
+    return;
+  }
   const profile=getKnownUserProfile();
-  try{await cloudRpc('nh7_submit_school_assignment',{p_course_code:courseCode,p_lesson_code:lessonCode,p_answer_text:answer,p_language:state.lang,p_user_name:profile.name||''});localStorage.setItem('nh7_note_school-'+lessonCode,answer);alert(state.lang==='fa'?'تکلیف با موفقیت ارسال شد و در نمره تکالیف محاسبه می‌شود.':state.lang==='hr'?'Zadatak je uspješno poslan i uračunava se u ocjenu zadataka.':'The assignment was submitted successfully and counts toward the assignment grade.');navigate('school',{lesson:lessonCode},true)}catch(e){console.warn(e);alert(state.lang==='fa'?'ارسال تکلیف انجام نشد. ابتدا فایل SQL جدید را اجرا و دوباره تلاش کنید.':state.lang==='hr'?'Zadatak nije poslan. Pokrenite novu SQL datoteku i pokušajte ponovno.':'The assignment could not be submitted. Run the new SQL file and try again.')}
+  try{
+    await cloudRpc('nh7_submit_school_assignment',{
+      p_course_code:courseCode,
+      p_lesson_code:lessonCode,
+      p_answer_text:answer,
+      p_language:state.lang,
+      p_user_name:profile.name||''
+    });
+    invalidateSchoolSnapshot(currentUserEmail());
+    await getSchoolSnapshot(currentUserEmail(),true);
+    alert(state.lang==='fa'?'تکلیف با موفقیت ارسال شد و در نمره تکالیف محاسبه می‌شود.':state.lang==='hr'?'Zadatak je uspješno poslan i uračunava se u ocjenu zadataka.':'The assignment was submitted successfully and counts toward the assignment grade.');
+    navigate('school',{lesson:lessonCode},true);
+  }catch(e){
+    console.warn('Official assignment submit failed',e);
+    const raw=String(e?.message||'');
+    const missing=/PGRST202|nh7_submit_school_assignment|function.*not found|schema cache/i.test(raw);
+    const message=missing
+      ? (state.lang==='fa'?'تابع ارسال رسمی تکلیف هنوز در Supabase نصب نشده است. فایل SQL نهایی این نسخه را یک‌بار اجرا کنید.':state.lang==='hr'?'Funkcija za službenu predaju još nije instalirana u Supabaseu. Pokrenite završnu SQL datoteku ove verzije.':'The official assignment function is not installed in Supabase yet. Run this version’s final SQL file once.')
+      : (state.lang==='fa'?'ارسال رسمی تکلیف انجام نشد. اتصال اینترنت و ورود حساب را بررسی کنید و دوباره تلاش کنید.':state.lang==='hr'?'Službena predaja nije uspjela. Provjerite internet i prijavu pa pokušajte ponovno.':'The official submission failed. Check your internet connection and account sign-in, then try again.');
+    alert(message+(raw&&!missing?'\n'+raw:''));
+  }
 }
 
 async function school(params={}){
@@ -1257,13 +1434,16 @@ async function school(params={}){
   if(params.lesson)return schoolLesson(d,params.lesson);
   if(params.exam)return schoolCourseExam(d,params.exam);
   const profile=getKnownUserProfile();
-  let courseExams=[],courseProgress=[],courseAssignments=[];const email=currentUserEmail();
+  let courseExams=[];const email=currentUserEmail();
   try{courseExams=await cloudFetch('school_exams?select=*&exam_scope=eq.course&is_active=eq.true&order=sort_order.asc',{method:'GET'})}catch(e){console.warn('course exams unavailable',e)}
-  try{if(email)courseProgress=await cloudFetch('school_progress?select=*&user_email=eq.'+encodeURIComponent(email),{method:'GET'})}catch(e){console.warn('course progress unavailable',e)}
-  try{if(email)courseAssignments=await cloudFetch('school_assignments?select=*&user_email=eq.'+encodeURIComponent(email),{method:'GET'})}catch(e){console.warn('course assignments unavailable',e)}
+  const schoolSnapshot=await getSchoolSnapshot(email,true);
+  const courseProgress=schoolSnapshot.progress||[],courseAssignments=schoolSnapshot.assignments||[];
+  const schoolSyncNotice=schoolSnapshot.error
+    ? `<div class="notice">${state.lang==='fa'?'نمایش وضعیت کلاس‌ها از نسخه ذخیره‌شده انجام شد. برای تازه‌سازی، اتصال اینترنت و ورود حساب را بررسی کنید.':state.lang==='hr'?'Status nastave prikazan je iz spremljene kopije. Provjerite internet i prijavu za osvježavanje.':'Class status is shown from the saved copy. Check internet and sign-in to refresh.'}</div>`
+    : '';
   const progressByCode=new Map((Array.isArray(courseProgress)?courseProgress:[]).map(x=>[String(x.lesson_code||''),x]));
   const examByCourse=new Map((Array.isArray(courseExams)?courseExams:[]).map(x=>[String(x.course_code||String(x.lesson_code||'').replace(/^course:/,'')),x]));
-  view.innerHTML=card(tr('school'),`<span class="badge">${tr('approved')}</span><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(profile.email||currentUserEmail()||'')}</p></div><p class="success-text">${tr('enterSchool')}</p><div class="button-row"><button class="secondary-btn" data-go="account">${tr('accountActions')}</button><button class="secondary-btn" id="schoolLogoutBtn">${tr('logoutAccount')}</button></div><div class="list">${(()=>{const groups=new Map();d.lessons.forEach(l=>{const c=schoolCourseInfo(l);if(!groups.has(c.code))groups.set(c.code,{info:c,lessons:[]});groups.get(c.code).lessons.push(l)});return [...groups.values()].sort((a,b)=>a.info.order-b.info.order).map(g=>{const exam=examByCourse.get(g.info.code),summary=progressByCode.get('course:'+g.info.code),assignment=courseAssignmentSummary(d,g.info.code,courseAssignments);const lessons=g.lessons.sort((a,b)=>Number(a.lesson_order||999)-Number(b.lesson_order||999));const completed=lessons.filter(l=>progressByCode.get(l.lesson_code)?.completed_at).length;const lessonsLocked=exam?.require_course_completion===true&&completed<lessons.length;const assignmentsLocked=exam?.require_assignments_before_exam===true&&assignment.completed<assignment.total;const locked=lessonsLocked||assignmentsLocked;const examTitle=exam?.['title_'+state.lang]||exam?.title_en||tr('finalExam');return `<section class="school-course-group"><h3>${html(g.info.title[state.lang]||g.info.title.en)}</h3><p class="muted">${state.lang==='fa'?'پیشرفت دوره':state.lang==='hr'?'Napredak tečaja':'Course progress'}: ${localNum(completed)} / ${localNum(lessons.length)}</p>${assignment.total?`<p class="muted">${state.lang==='fa'?'تکالیف دارای نمره':state.lang==='hr'?'Ocjenjivani zadaci':'Graded assignments'}: ${localNum(assignment.completed)} / ${localNum(assignment.total)} · ${localNum(assignment.percent)}%</p>`:''}${lessons.map(l=>`<button class="list-btn" data-go="school" data-params='${html(JSON.stringify({lesson:l.lesson_code}))}'><strong>${html(l.translations?.[state.lang]?.class_title||l.translations?.en?.class_title)}</strong><small>${html(l.translations?.[state.lang]?.lesson_title||'')}${progressByCode.get(l.lesson_code)?.completed_at?' · ✓':''}${assignmentIsCompleted(assignment.rows.get(String(l.lesson_code||'')))?' · 📝':''}</small></button>`).join('')}${exam?`<button class="primary-btn wide-btn" ${locked?'disabled':''} data-go="school" data-params='${html(JSON.stringify({exam:g.info.code}))}'>📝 ${html(examTitle)}${summary?.exam_score!=null?' · '+html(summary.exam_score)+'%':''}</button>${locked?`<p class="muted">${lessonsLocked?(state.lang==='fa'?'برای ورود به آزمون ابتدا همه درس‌ها را تکمیل کنید.':state.lang==='hr'?'Za pristup ispitu najprije završite sve lekcije.':'Complete all lessons before taking the exam.'):(state.lang==='fa'?'برای ورود به آزمون ابتدا تکالیف لازم را ارسال کنید.':state.lang==='hr'?'Za pristup ispitu najprije predajte potrebne zadatke.':'Submit the required assignments before taking the exam.')}</p>`:''}`:''}</section>`}).join('')})()}</div>`);
+  view.innerHTML=card(tr('school'),`<span class="badge">${tr('approved')}</span><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(profile.email||currentUserEmail()||'')}</p></div><p class="success-text">${tr('enterSchool')}</p>${schoolSyncNotice}<div class="button-row"><button class="secondary-btn" data-go="account">${tr('accountActions')}</button><button class="secondary-btn" id="schoolLogoutBtn">${tr('logoutAccount')}</button></div><div class="list">${(()=>{const groups=new Map();d.lessons.forEach(l=>{const c=schoolCourseInfo(l);if(!groups.has(c.code))groups.set(c.code,{info:c,lessons:[]});groups.get(c.code).lessons.push(l)});return [...groups.values()].sort((a,b)=>a.info.order-b.info.order).map(g=>{const exam=examByCourse.get(g.info.code),summary=progressByCode.get('course:'+g.info.code),assignment=courseAssignmentSummary(d,g.info.code,courseAssignments);const lessons=g.lessons.sort((a,b)=>Number(a.lesson_order||999)-Number(b.lesson_order||999));const completed=lessons.filter(l=>progressByCode.get(l.lesson_code)?.completed_at).length;const lessonsLocked=exam?.require_course_completion===true&&completed<lessons.length;const assignmentsLocked=exam?.require_assignments_before_exam===true&&assignment.completed<assignment.total;const locked=lessonsLocked||assignmentsLocked;const examTitle=exam?.['title_'+state.lang]||exam?.title_en||tr('finalExam');return `<section class="school-course-group"><h3>${html(g.info.title[state.lang]||g.info.title.en)}</h3><p class="muted">${state.lang==='fa'?'پیشرفت دوره':state.lang==='hr'?'Napredak tečaja':'Course progress'}: ${localNum(completed)} / ${localNum(lessons.length)}</p>${assignment.total?`<p class="muted">${state.lang==='fa'?'تکالیف دارای نمره':state.lang==='hr'?'Ocjenjivani zadaci':'Graded assignments'}: ${localNum(assignment.completed)} / ${localNum(assignment.total)} · ${localNum(assignment.percent)}%</p>`:''}${lessons.map(l=>`<button class="list-btn" data-go="school" data-params='${html(JSON.stringify({lesson:l.lesson_code}))}'><strong>${html(l.translations?.[state.lang]?.class_title||l.translations?.en?.class_title)}</strong><small>${html(l.translations?.[state.lang]?.lesson_title||'')}${progressByCode.get(l.lesson_code)?.completed_at?' · ✅':''}${assignmentIsCompleted(assignment.rows.get(String(l.lesson_code||'')))?' · 📓':''}</small></button>`).join('')}${exam?`<button class="primary-btn wide-btn" ${locked?'disabled':''} data-go="school" data-params='${html(JSON.stringify({exam:g.info.code}))}'>📝 ${html(examTitle)}${summary?.exam_score!=null?' · '+html(summary.exam_score)+'%':''}</button>${locked?`<p class="muted">${lessonsLocked?(state.lang==='fa'?'برای ورود به آزمون ابتدا همه درس‌ها را تکمیل کنید.':state.lang==='hr'?'Za pristup ispitu najprije završite sve lekcije.':'Complete all lessons before taking the exam.'):(state.lang==='fa'?'برای ورود به آزمون ابتدا تکالیف لازم را ارسال کنید.':state.lang==='hr'?'Za pristup ispitu najprije predajte potrebne zadatke.':'Submit the required assignments before taking the exam.')}</p>`:''}`:''}</section>`}).join('')})()}</div>`);
   $('#schoolLogoutBtn')?.addEventListener('click',()=>logoutAccount('school'));
 }
 async function signInSchool(){
@@ -1271,24 +1451,26 @@ async function signInSchool(){
   if(!email||!password){alert(tr('requiredField'));return}
   try{
     const data=await signInOrClaimLegacyAccount(email,password);
-    if(data?.access_token){saveAuthSession(data);clearLegacySchoolSession()}
+    if(!data?.access_token)throw new Error('Authenticated session was not returned.');
+    saveAuthSession(data);
+    clearLegacySchoolSession();
     localStorage.setItem('nh7_manual_email',email);
     localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
 
-    let schoolAccess=await fetchLatestRegistration('school');
+    const schoolAccess=await fetchLatestRegistration('school');
     if(schoolAccess)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},schoolAccess,{email})));
-    else{try{schoolAccess=JSON.parse(localStorage.getItem('nh7_school_access')||'{}')}catch(e){schoolAccess={}}}
 
-    const approved=schoolAccess?.status==='approved'||schoolAccess?.approvedBy==='admin';
-    if(data?.legacy_approved&&approved)saveLegacySchoolSession(email,schoolAccess);
-
-    if(!isAccountLoggedIn()&&!isLegacySchoolLoggedIn()){
-      throw new Error('School login completed without an active Auth or verified legacy session.');
-    }
+    if(!isAccountLoggedIn())throw new Error('School login completed without an authenticated session.');
+    await restoreAccountCloudData(true);
+    invalidateSchoolSnapshot(email);
+    await getSchoolSnapshot(email,true);
     navigate('school',{},true);
   }catch(e){
     console.warn('School sign-in failed',e);
-    alert(tr('loginFailed'));
+    const message=String(e?.message||'');
+    alert(message&&message!=='Failed to fetch'
+      ? message
+      : tr('loginFailed'));
   }
 }
 
@@ -1300,8 +1482,9 @@ async function schoolLesson(d, code){
   const item={id:audioId,audio_url:audioSrc,duration_seconds:duration,title_fa:l.translations?.fa?.lesson_title||l.translations?.fa?.class_title||code,title_en:l.translations?.en?.lesson_title||l.translations?.en?.class_title||code,title_hr:l.translations?.hr?.lesson_title||l.translations?.hr?.class_title||code};window.__sermonMap=window.__sermonMap||{};window.__sermonMap[audioId]=item;
   let schoolExam=null,schoolProgress=null,schoolAssignment=null;const email=currentUserEmail();
   try{const ex=await cloudFetch('school_exams?select=*&lesson_code=eq.'+encodeURIComponent(code)+'&is_active=eq.true&order=sort_order.asc&limit=1',{method:'GET'});schoolExam=Array.isArray(ex)?ex[0]:null}catch(e){console.warn('school exam',e)}
-  try{if(email){const pr=await cloudFetch('school_progress?select=*&user_email=eq.'+encodeURIComponent(email)+'&lesson_code=eq.'+encodeURIComponent(code)+'&limit=1',{method:'GET'});schoolProgress=Array.isArray(pr)?pr[0]:null}}catch(e){console.warn('school progress',e)}
-  try{if(email){const ar=await cloudFetch('school_assignments?select=*&user_email=eq.'+encodeURIComponent(email)+'&lesson_code=eq.'+encodeURIComponent(code)+'&limit=1',{method:'GET'});schoolAssignment=Array.isArray(ar)?ar[0]:null}}catch(e){console.warn('school assignment',e)}
+  const schoolSnapshot=await getSchoolSnapshot(email,false);
+  schoolProgress=(schoolSnapshot.progress||[]).find(x=>String(x.lesson_code||'')===String(code))||null;
+  schoolAssignment=(schoolSnapshot.assignments||[]).find(x=>String(x.lesson_code||'')===String(code))||null;
   let progress={};try{progress=JSON.parse(localStorage.getItem(sermonProgressKey(audioId))||'{}')}catch(e){}
   const durationLabel=duration?formatAudioTime(duration):formatAudioTime(progress.duration||0);
   const player=audioSrc?`<article class="sermon-card school-audio-card" data-sermon-card="${html(audioId)}"><div class="sermon-card-main"><span class="sermon-placeholder">🎧</span><div class="sermon-card-copy"><strong>${html(tx.lesson_title||tx.class_title||tr('playAudio'))}</strong><small>${tr('duration')}: ${localText(durationLabel||'0:00')} · MP3</small><div class="sermon-card-actions"><button class="primary-btn compact-player-btn" data-sermon-play="${html(audioId)}">▶ ${progress.time>5?tr('continueListening'):tr('listenAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(audioSrc)}" data-offline-title="${html(tx.lesson_title||tx.class_title||tr('playAudio'))}">${state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline'}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(audioId)}"><div class="inline-player-controls"><button class="player-round" data-inline-back>↶15</button><button class="player-main" data-inline-play>▶</button><button class="player-round" data-inline-forward>30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek type="range" min="0" max="1000" value="0"><span data-inline-total>${durationLabel||'0:00'}</span></div></div></article>`:'';
@@ -1327,7 +1510,26 @@ function renderExamQuestions(exam,namePrefix='exam_q_'){const qs=Array.isArray(e
 function renderSchoolExamBlock(exam,progress){const qs=Array.isArray(exam?.questions)?exam.questions:[];if(!qs.length)return '';const title=examLocalized(exam,'title',tr('exam')),intro=examLocalized(exam,'intro','');return `<section class="school-exam"><h3>${html(title)}</h3>${intro?`<p>${html(intro)}</p>`:''}<p class="muted">${state.lang==='fa'?'نمره قبولی':state.lang==='hr'?'Prolazna ocjena':'Passing score'}: ${Number(exam.passing_score||70)}% · ${localNum(qs.length)} ${state.lang==='fa'?'سؤال':state.lang==='hr'?'pitanja':'questions'}</p>${renderExamQuestions(exam)}<button class="primary-btn wide-btn" id="submitSchoolExam">${state.lang==='fa'?'ارسال آزمون':state.lang==='hr'?'Pošalji ispit':'Submit exam'}</button>${progress?.exam_score!=null?`<p class="notice">${state.lang==='fa'?'آخرین نمره':state.lang==='hr'?'Zadnji rezultat':'Latest score'}: ${html(progress.exam_score)}%</p>`:''}</section>`}
 function collectExamAnswers(exam,namePrefix='exam_q_'){const qs=Array.isArray(exam?.questions)?exam.questions:[];let correct=0,answered=0;const answers=qs.map((q,i)=>{const el=document.querySelector(`input[name="${namePrefix}${i}"]:checked`);const selected=el?Number(el.value):null;if(selected!==null){answered++;if(selected===Number(q.correct))correct++}return {question_number:Number(q.number||i+1),selected,correct:Number(q.correct),is_correct:selected!==null&&selected===Number(q.correct)}});return {answers,correct,answered,total:qs.length}}
 function examResultMessage(exam,passed){return examLocalized(exam,passed?'pass_message':'fail_message',passed?(state.lang==='fa'?'تبریک! شما قبول شدید.':state.lang==='hr'?'Čestitamo! Položili ste.':'Congratulations! You passed.'):(state.lang==='fa'?'بهتر است درس‌ها را یک بار دیگر مطالعه کنید و دوباره در آزمون شرکت کنید.':state.lang==='hr'?'Preporučujemo da ponovno proučite lekcije i opet pristupite ispitu.':'Please review the lessons and take the exam again.'))}
-async function saveSchoolProgress(lessonCode,patch={}){const email=currentUserEmail();if(!email){alert(tr('loginRequired'));return}const profile=getKnownUserProfile();const payload=Object.assign({user_email:email,user_name:profile.name||'',lesson_code:lessonCode,updated_at:new Date().toISOString()},patch);try{await cloudFetch('school_progress?on_conflict=user_email,lesson_code',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify(payload)});alert(state.lang==='fa'?'پیشرفت ذخیره شد.':state.lang==='hr'?'Napredak je spremljen.':'Progress saved.');navigate('school',{lesson:lessonCode},true)}catch(e){console.warn(e);alert(state.lang==='fa'?'ذخیره پیشرفت انجام نشد.':'Could not save progress.')}}
+async function saveSchoolProgress(lessonCode,patch={}){
+  const email=currentUserEmail();
+  if(!email||!isAccountLoggedIn()){alert(tr('loginRequired'));return}
+  const profile=getKnownUserProfile();
+  const payload=Object.assign({user_email:email,user_name:profile.name||'',lesson_code:lessonCode,updated_at:new Date().toISOString()},patch);
+  try{
+    await cloudFetch('school_progress?on_conflict=user_email,lesson_code',{
+      method:'POST',
+      headers:{Prefer:'resolution=merge-duplicates,return=minimal'},
+      body:JSON.stringify(payload)
+    });
+    invalidateSchoolSnapshot(email);
+    await getSchoolSnapshot(email,true);
+    alert(state.lang==='fa'?'پیشرفت ذخیره شد.':state.lang==='hr'?'Napredak je spremljen.':'Progress saved.');
+    navigate('school',{lesson:lessonCode},true);
+  }catch(e){
+    console.warn('School progress save failed',e);
+    alert(state.lang==='fa'?'ذخیره پیشرفت انجام نشد. ورود حساب و اتصال اینترنت را بررسی کنید.':state.lang==='hr'?'Napredak nije spremljen. Provjerite prijavu i internet.':'Could not save progress. Check your account sign-in and internet connection.');
+  }
+}
 async function submitSchoolExam(exam,lessonCode){if(!exam)return;const result=collectExamAnswers(exam);if(result.answered<result.total){alert(state.lang==='fa'?'لطفاً به همه سؤال‌ها پاسخ بده.':state.lang==='hr'?'Odgovorite na sva pitanja.':'Please answer all questions.');return}const score=Math.round((result.correct/Math.max(1,result.total))*100),passed=score>=Number(exam.passing_score||70);await saveSchoolProgress(lessonCode,{exam_id:exam.id,exam_score:score,exam_passed:passed,exam_attempted_at:new Date().toISOString()});alert((state.lang==='fa'?'نمره شما: ':state.lang==='hr'?'Vaš rezultat: ':'Your score: ')+score+'%\n\n'+examResultMessage(exam,passed))}
 async function schoolCourseExam(d,courseCode){
   const email=currentUserEmail();if(!email){alert(tr('loginRequired'));navigate('school',{},true);return}
@@ -1335,7 +1537,7 @@ async function schoolCourseExam(d,courseCode){
   try{const rows=await cloudFetch('school_exams?select=*&exam_scope=eq.course&course_code=eq.'+encodeURIComponent(courseCode)+'&is_active=eq.true&order=sort_order.asc&limit=1',{method:'GET'});exam=Array.isArray(rows)?rows[0]:null}catch(e){console.warn('course exam',e)}
   if(!exam){view.innerHTML=card(tr('finalExam'),`<p class="muted">${state.lang==='fa'?'آزمون فعالی برای این دوره پیدا نشد.':state.lang==='hr'?'Nije pronađen aktivan ispit za ovaj tečaj.':'No active exam was found for this course.'}</p><button class="secondary-btn wide-btn" data-go="school">${tr('back')}</button>`);return}
   try{attempts=await cloudFetch('school_exam_attempts?select=*&exam_id=eq.'+encodeURIComponent(exam.id)+'&user_email=eq.'+encodeURIComponent(email)+'&order=submitted_at.desc',{method:'GET'})}catch(e){console.warn('exam attempts',e)}
-  try{assignments=await cloudFetch('school_assignments?select=*&course_code=eq.'+encodeURIComponent(courseCode)+'&user_email=eq.'+encodeURIComponent(email),{method:'GET'})}catch(e){console.warn('exam assignments',e)}
+  try{const snapshot=await getSchoolSnapshot(email,false);assignments=(snapshot.assignments||[]).filter(x=>String(x.course_code||'foundation_school')===String(courseCode))}catch(e){console.warn('exam assignments',e)}
   const used=Array.isArray(attempts)?attempts.length:0,max=Number(exam.max_attempts||3),passedAlready=Array.isArray(attempts)&&attempts.some(x=>x.passed),remaining=passedAlready?0:Math.max(0,max-used),latest=attempts?.[0];const attemptNumber=used+1,attemptExam=prepareExamForAttempt(exam,attemptNumber,email),qs=Array.isArray(attemptExam.questions)?attemptExam.questions:[],title=examLocalized(exam,'title',tr('finalExam')),intro=examLocalized(exam,'intro',''),assignment=courseAssignmentSummary(d,courseCode,assignments);const examWeight=Number(exam.exam_weight??70),assignmentWeight=Number(exam.assignment_weight??30),assignmentLocked=exam.require_assignments_before_exam===true&&assignment.completed<assignment.total;
   view.innerHTML=card(title,`${intro?`<p>${html(intro)}</p>`:''}<div class="notice"><p><strong>${state.lang==='fa'?'ساختار نمره':state.lang==='hr'?'Struktura ocjene':'Grade structure'}:</strong> ${localNum(examWeight)}% ${state.lang==='fa'?'آزمون':state.lang==='hr'?'ispit':'exam'} + ${localNum(assignmentWeight)}% ${state.lang==='fa'?'تکالیف':state.lang==='hr'?'zadaci':'assignments'}</p><p><strong>${state.lang==='fa'?'نمره فعلی تکالیف':state.lang==='hr'?'Trenutačna ocjena zadataka':'Current assignment score'}:</strong> ${localNum(assignment.percent)}% (${localNum(assignment.completed)} / ${localNum(assignment.total)})</p><p><strong>${state.lang==='fa'?'حد قبولی نهایی':state.lang==='hr'?'Završni prag prolaza':'Final passing score'}:</strong> ${Number(exam.passing_score||70)}%</p><p><strong>${state.lang==='fa'?'تعداد سؤال این تلاش':state.lang==='hr'?'Broj pitanja u ovom pokušaju':'Questions in this attempt'}:</strong> ${localNum(qs.length)}</p><p><strong>${state.lang==='fa'?'فرصت باقی‌مانده':state.lang==='hr'?'Preostali pokušaji':'Attempts remaining'}:</strong> ${localNum(remaining)} / ${localNum(max)}</p>${exam.shuffle_questions?`<p class="muted">${state.lang==='fa'?'ترتیب سؤال‌ها برای هر تلاش تغییر می‌کند.':state.lang==='hr'?'Redoslijed pitanja mijenja se pri svakom pokušaju.':'Question order changes on each attempt.'}</p>`:''}${latest?`<p><strong>${state.lang==='fa'?'آخرین نتیجه نهایی':state.lang==='hr'?'Posljednji završni rezultat':'Latest final result'}:</strong> ${html(latest.final_score_percent??latest.score_percent)}% ${latest.passed?'✓':''}</p>`:''}</div>${remaining>0&&!assignmentLocked?`${renderExamQuestions(attemptExam,'course_exam_q_')}<button class="primary-btn wide-btn" id="submitCourseExam">${state.lang==='fa'?'ثبت و دریافت نتیجه':state.lang==='hr'?'Pošalji i prikaži rezultat':'Submit and view result'}</button>`:assignmentLocked?`<p class="notice">${state.lang==='fa'?'ابتدا همه تکالیف لازم را ارسال کنید.':state.lang==='hr'?'Najprije predajte sve potrebne zadatke.':'Submit all required assignments first.'}</p>`:passedAlready?`<p class="notice" style="background:#ecfdf3;color:#08783d">${html(examResultMessage(exam,true))}</p>`:`<p class="notice">${state.lang==='fa'?'فرصت‌های تعیین‌شده برای این آزمون تمام شده است. لطفاً با مدیر مدرسه تماس بگیرید.':state.lang==='hr'?'Iskoristili ste sve dopuštene pokušaje. Obratite se administratoru škole.':'You have used all allowed attempts. Please contact the school administrator.'}</p>`}<button class="secondary-btn wide-btn" data-go="school">${tr('back')}</button><div id="courseExamResult"></div>`);
   $('#submitCourseExam')?.addEventListener('click',()=>submitCourseExam(exam,attemptExam,courseCode,used,assignment));
@@ -1344,12 +1546,12 @@ async function submitCourseExam(exam,attemptExam,courseCode,usedAttempts=0,assig
   const button=$('#submitCourseExam');if(button?.disabled)return;const result=collectExamAnswers(attemptExam,'course_exam_q_');if(result.answered<result.total){alert(state.lang==='fa'?'لطفاً به همه سؤال‌ها پاسخ بدهید.':state.lang==='hr'?'Molimo odgovorite na sva pitanja.':'Please answer all questions.');return}if(button){button.disabled=true;button.textContent=state.lang==='fa'?'در حال ثبت نتیجه…':state.lang==='hr'?'Spremanje rezultata…':'Saving result…'}
   const email=currentUserEmail(),profile=getKnownUserProfile(),objectiveScore=Math.round(result.correct/Math.max(1,result.total)*100),examWeight=Number(exam.exam_weight??70),assignmentWeight=Number(exam.assignment_weight??30),weightTotal=Math.max(1,examWeight+assignmentWeight),assignmentScore=Number(assignment.percent??100),finalScore=Math.round((objectiveScore*examWeight+assignmentScore*assignmentWeight)/weightTotal),passed=finalScore>=Number(exam.passing_score||70),submitted=new Date().toISOString(),attemptNumber=Number(usedAttempts||0)+1;
   const attempt={exam_id:exam.id,user_email:email,user_name:profile.name||'',course_code:courseCode,lesson_code:'course:'+courseCode,attempt_number:attemptNumber,correct_count:result.correct,total_questions:result.total,objective_score_percent:objectiveScore,assignment_score_percent:assignmentScore,final_score_percent:finalScore,assignment_completed_count:Number(assignment.completed||0),assignment_total_count:Number(assignment.total||0),score_percent:finalScore,passed,answers:result.answers,submitted_at:submitted};
-  try{await cloudFetch('school_exam_attempts',{method:'POST',body:JSON.stringify(attempt)});await cloudFetch('school_progress?on_conflict=user_email,lesson_code',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({user_email:email,user_name:profile.name||'',lesson_code:'course:'+courseCode,progress_percent:passed?100:finalScore,completed_at:passed?submitted:null,exam_id:exam.id,exam_score:finalScore,objective_score_percent:objectiveScore,assignment_score_percent:assignmentScore,final_score_percent:finalScore,exam_passed:passed,exam_attempted_at:submitted,updated_at:submitted})});const msg=examResultMessage(exam,passed),box=$('#courseExamResult');if(box)box.innerHTML=`<section class="notice" style="${passed?'background:#ecfdf3;color:#08783d':''}"><h3>${passed?'✓ ':''}${state.lang==='fa'?'نتیجه نهایی':state.lang==='hr'?'Završni rezultat':'Final result'}</h3><p><strong>${state.lang==='fa'?'آزمون کتبی':state.lang==='hr'?'Pisani ispit':'Written exam'}:</strong> ${localNum(result.correct)} / ${localNum(result.total)} · ${localNum(objectiveScore)}% × ${localNum(examWeight)}%</p><p><strong>${state.lang==='fa'?'تکالیف':state.lang==='hr'?'Zadaci':'Assignments'}:</strong> ${localNum(assignmentScore)}% × ${localNum(assignmentWeight)}%</p><p><strong>${state.lang==='fa'?'نمره نهایی':state.lang==='hr'?'Završna ocjena':'Final grade'}:</strong> ${localNum(finalScore)}%</p><p>${html(msg)}</p></section>`;window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})}catch(e){console.warn(e);alert(state.lang==='fa'?'ثبت نتیجه انجام نشد. لطفاً دوباره تلاش کنید.':state.lang==='hr'?'Rezultat nije spremljen. Pokušajte ponovno.':'The result could not be saved. Please try again.');if(button){button.disabled=false;button.textContent=state.lang==='fa'?'ثبت و دریافت نتیجه':state.lang==='hr'?'Pošalji i prikaži rezultat':'Submit and view result'}}
+  try{await cloudFetch('school_exam_attempts',{method:'POST',body:JSON.stringify(attempt)});await cloudFetch('school_progress?on_conflict=user_email,lesson_code',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({user_email:email,user_name:profile.name||'',lesson_code:'course:'+courseCode,progress_percent:passed?100:finalScore,completed_at:passed?submitted:null,exam_id:exam.id,exam_score:finalScore,objective_score_percent:objectiveScore,assignment_score_percent:assignmentScore,final_score_percent:finalScore,exam_passed:passed,exam_attempted_at:submitted,updated_at:submitted})});invalidateSchoolSnapshot(email);await getSchoolSnapshot(email,true);const msg=examResultMessage(exam,passed),box=$('#courseExamResult');if(box)box.innerHTML=`<section class="notice" style="${passed?'background:#ecfdf3;color:#08783d':''}"><h3>${passed?'✓ ':''}${state.lang==='fa'?'نتیجه نهایی':state.lang==='hr'?'Završni rezultat':'Final result'}</h3><p><strong>${state.lang==='fa'?'آزمون کتبی':state.lang==='hr'?'Pisani ispit':'Written exam'}:</strong> ${localNum(result.correct)} / ${localNum(result.total)} · ${localNum(objectiveScore)}% × ${localNum(examWeight)}%</p><p><strong>${state.lang==='fa'?'تکالیف':state.lang==='hr'?'Zadaci':'Assignments'}:</strong> ${localNum(assignmentScore)}% × ${localNum(assignmentWeight)}%</p><p><strong>${state.lang==='fa'?'نمره نهایی':state.lang==='hr'?'Završna ocjena':'Final grade'}:</strong> ${localNum(finalScore)}%</p><p>${html(msg)}</p></section>`;window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})}catch(e){console.warn(e);alert(state.lang==='fa'?'ثبت نتیجه انجام نشد. لطفاً دوباره تلاش کنید.':state.lang==='hr'?'Rezultat nije spremljen. Pokušajte ponovno.':'The result could not be saved. Please try again.');if(button){button.disabled=false;button.textContent=state.lang==='fa'?'ثبت و دریافت نتیجه':state.lang==='hr'?'Pošalji i prikaži rezultat':'Submit and view result'}}
 }
 function bindInlineSermonControls(){
   $$('[data-sermon-play]').forEach(b=>b.onclick=e=>{e.stopPropagation();const item=window.__sermonMap?.[String(b.dataset.sermonPlay)];if(item)playSermon(item)});
   $$('[data-sermon-note]').forEach(b=>b.onclick=e=>{e.stopPropagation();const item=window.__sermonMap?.[String(b.dataset.sermonNote)];if(item)openSermonNote(item)});
-  $$('[data-inline-player]').forEach(panel=>{const id=String(panel.dataset.inlinePlayer);panel.querySelector('[data-inline-play]')?.addEventListener('click',()=>{const item=window.__sermonMap?.[id];if(item)playSermon(item)});panel.querySelector('[data-inline-back]')?.addEventListener('click',()=>{const a=ensureSermonPlayer();a.currentTime=Math.max(0,a.currentTime-15)});panel.querySelector('[data-inline-forward]')?.addEventListener('click',()=>{const a=ensureSermonPlayer();a.currentTime=Math.min(a.duration||Infinity,a.currentTime+30)});panel.querySelector('[data-inline-seek]')?.addEventListener('input',e=>{const a=ensureSermonPlayer();if(Number.isFinite(a.duration))a.currentTime=(Number(e.target.value)/1000)*a.duration});panel.querySelector('[data-inline-speed]')?.addEventListener('change',e=>{const a=ensureSermonPlayer();a.playbackRate=Number(e.target.value)||1;localStorage.setItem('nh7_sermon_speed',String(a.playbackRate))})});
+  $$('[data-inline-player]').forEach(panel=>{const id=String(panel.dataset.inlinePlayer);panel.querySelector('[data-inline-play]')?.addEventListener('click',()=>{const item=window.__sermonMap?.[id];if(item)playSermon(item)});panel.querySelector('[data-inline-back]')?.addEventListener('click',()=>{const a=ensureSermonPlayer();a.currentTime=Math.max(0,a.currentTime-15)});panel.querySelector('[data-inline-forward]')?.addEventListener('click',()=>{const a=ensureSermonPlayer();a.currentTime=Math.min(a.duration||Infinity,a.currentTime+30)});panel.querySelector('[data-inline-seek]')?.addEventListener('input',e=>{const a=ensureSermonPlayer();if(Number.isFinite(a.duration))a.currentTime=(Number(e.target.value)/1000)*a.duration});panel.querySelector('[data-inline-speed]')?.addEventListener('change',e=>{const a=ensureSermonPlayer();a.playbackRate=Number(e.target.value)||1;localStorage.setItem('nh7_sermon_speed',String(a.playbackRate));saveProgressCloud('nh7_sermon_speed',{__raw:String(a.playbackRate)}).catch(console.warn)})});
 }
 
 async function audio(params={}){
@@ -1368,6 +1570,54 @@ async function audio(params={}){
   }
   const d=await jfetch('data/audio/messages.json'); if(params.cat){const c=d.categories.find(x=>x.id===params.cat);const items=c?.items||[];view.innerHTML=card(pick(c?.title)||tr('audio'),items.length?`<div class="list">${items.map(it=>`<div class="card"><strong>${html(pick(it.title)||it.title||'Audio')}</strong><audio controls src="${html(it.src)}"></audio></div>`).join('')}</div>`:`<p class="muted">${tr('noAudio')}</p>`);return}view.innerHTML=card(tr('audio'),`<div class="grid">${d.categories.map(c=>tile('audio','🎧',pick(c.title),`${tr('all')}: ${localNum((c.items||[]).length)}`,{cat:c.id})).join('')}</div>`);
 }
+
+function audioBibleTitle(row){return row?.['name_'+state.lang]||row?.name_en||row?.name_fa||row?.code||''}
+function audioBibleChapterTitle(row){
+  const n=Number(row?.chapter_number||0);
+  if(row?.['title_'+state.lang])return row['title_'+state.lang];
+  return `${tr('chapter')} ${localNum(n)}`;
+}
+async function audioBible(params={}){
+  let books=[],chapters=[];
+  try{
+    [books,chapters]=await Promise.all([
+      cloudFetch('audio_bible_books_v220?select=*&is_active=eq.true&order=book_order.asc',{method:'GET',cache:'no-store'}),
+      cloudFetch('audio_bible_chapters_v220?select=*&is_published=eq.true&language=eq.'+encodeURIComponent(state.lang)+'&order=book_code.asc,chapter_number.asc',{method:'GET',cache:'no-store'})
+    ]);
+  }catch(e){
+    console.warn('Audio Bible load failed',e);
+    view.innerHTML=card(tr('audioBible'),`<p class="muted">${html(tr('noChapterAudio'))}</p>`);
+    return;
+  }
+  books=Array.isArray(books)?books:[]; chapters=Array.isArray(chapters)?chapters:[];
+  const testament=String(params.testament||'');
+  const bookCode=String(params.book||'');
+  if(!testament){
+    const oldCount=chapters.filter(c=>books.find(b=>b.book_code===c.book_code)?.testament==='old').length;
+    const newCount=chapters.filter(c=>books.find(b=>b.book_code===c.book_code)?.testament==='new').length;
+    view.innerHTML=card(tr('audioBible'),`<p class="muted">${html(tr('audioBibleIntro'))}</p><div class="grid">${tile('audioBible','📜',tr('oldTestament'),`${tr('uploadedChapters')}: ${localNum(oldCount)}`,{testament:'old'})}${tile('audioBible','✝',tr('newTestament'),`${tr('uploadedChapters')}: ${localNum(newCount)}`,{testament:'new'})}</div>`);
+    return;
+  }
+  const testamentBooks=books.filter(b=>String(b.testament)===testament);
+  if(!bookCode){
+    const cards=testamentBooks.map(b=>{
+      const count=chapters.filter(c=>String(c.book_code)===String(b.book_code)).length;
+      return tile('audioBible','📘',audioBibleTitle(b),`${tr('uploadedChapters')}: ${localNum(count)} / ${localNum(b.chapter_count||0)}`,{testament,book:b.book_code});
+    }).join('');
+    view.innerHTML=card(testament==='old'?tr('oldTestament'):tr('newTestament'),`<p class="muted">${html(tr('audioBibleIntro'))}</p><div class="grid">${cards}</div>`);
+    return;
+  }
+  const book=books.find(b=>String(b.book_code)===bookCode);
+  const rows=chapters.filter(c=>String(c.book_code)===bookCode).sort((a,b)=>Number(a.chapter_number)-Number(b.chapter_number));
+  window.__audioBibleMap=Object.fromEntries(rows.map(r=>['bible-'+String(r.id),{id:'bible-'+String(r.id),title_fa:`${book?.name_fa||''} — باب ${r.chapter_number}`,title_en:`${book?.name_en||''} — Chapter ${r.chapter_number}`,title_hr:`${book?.name_hr||''} — Poglavlje ${r.chapter_number}`,audio_url:r.audio_url,duration_seconds:r.duration_seconds||0,cover_url:r.cover_url||''}]));
+  const list=rows.length?`<div class="sermon-list">${rows.map(r=>{
+    const id='bible-'+String(r.id), item=window.__audioBibleMap[id], title=audioBibleChapterTitle(r), duration=formatAudioTime(r.duration_seconds||0);
+    return `<article class="sermon-card"><div class="sermon-card-main"><span class="sermon-placeholder">🔊</span><div class="sermon-card-copy"><strong>${html(title)}</strong><small>${duration?`${tr('duration')}: ${duration}`:''}</small><div class="sermon-card-actions"><button class="primary-btn compact-player-btn" data-audio-bible-play="${html(id)}">▶ ${tr('playAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(r.audio_url)}" data-offline-title="${html(audioBibleTitle(book)+' '+title)}">${tr('downloadOffline')}</button></div></div></div></article>`;
+  }).join('')}</div>`:`<p class="muted">${html(tr('noChapterAudio'))}</p>`;
+  view.innerHTML=card(audioBibleTitle(book)||tr('audioBible'),`<p class="muted">${html(testament==='old'?tr('oldTestament'):tr('newTestament'))}</p>${list}`);
+  $$('[data-audio-bible-play]').forEach(btn=>btn.onclick=()=>{const item=window.__audioBibleMap?.[btn.dataset.audioBiblePlay];if(item)playSermon(item)});
+}
+
 async function salvation(){
   const d=await jfetch('data/salvation/need_salvation.json');
   const sections=(d.sections||[]).filter(s=>s.id!=='new_birth_videos');
@@ -1426,70 +1676,117 @@ async function meetings(params={}){
     : (state.lang==='hr' ? 'Zbog sigurnosti nema ulaska kao gost. Nakon registracije za školu i odobrenja administratora ovdje će se prikazati poveznica i kod sastanka.' : 'For meeting security, guest access is not available. After school registration and admin approval, the meeting link and codes will appear here.');
   view.innerHTML=card(tr('meetings'), `<p>${tr('meetingAccessText')}</p>${approved?'':`<p class="muted">${notApprovedText}</p>`}<span class="badge">${approved?tr('approved'):(schoolAccess.status==='pending'||meetingAccess.status==='pending'?tr('pending'):tr('notStarted'))}</span>${details}${buttons}`);
 }
-async function more(){ view.innerHTML=`<div class="grid">${tile('audio','🎧',tr('audio'))}${tile('salvation','✝',tr('salvation'))}${tile('daily','🙏',tr('gratitude'),'',{tab:'gratitude'})}${tile('meetings','☎',tr('meetings'))}${tile('qna','❓',tr('qna'))}${tile('inbox','📥',tr('inbox'), unreadCount()?`${tr('unread')}: ${localNum(unreadCount())}`:'')}${tile('account','👤',tr('account'))}${tile('about','ℹ',tr('about'))}${tile('settings','⚙',tr('settings'))}</div>`; }
+async function more(){ view.innerHTML=`<div class="grid">${tile('audioBible','📖🔊',tr('audioBible'))}${tile('audio','🎧',tr('audio'))}${tile('salvation','✝',tr('salvation'))}${tile('daily','🙏',tr('gratitude'),'',{tab:'gratitude'})}${tile('meetings','☎',tr('meetings'))}${tile('qna','❓',tr('qna'))}${tile('inbox','📥',tr('inbox'), unreadCount()?`${tr('unread')}: ${localNum(unreadCount())}`:'')}${tile('account','👤',tr('account'))}${tile('about','ℹ',tr('about'))}${tile('settings','⚙',tr('settings'))}</div>`; }
 
-async function qna(){
-  const my = JSON.parse(localStorage.getItem('nh7_my_questions')||'[]');
-  let answered=[];
+async function fetchMyQuestionsCloud(){
+  const profile=getKnownUserProfile();
+  const email=String(currentUserEmail()||profile.email||'').trim().toLowerCase();
   try{
-    answered = await cloudFetch('qa_questions?select=id,question_text,answer_text,language,answered_at&status=eq.answered&order=answered_at.desc&limit=50', {method:'GET'});
-  }catch(e){ console.warn('Q&A load failed', e); }
-  const tapText = state.lang==='fa' ? 'برای دیدن پاسخ کلیک کنید' : state.lang==='hr' ? 'Dodirnite za prikaz odgovora' : 'Tap to view answer';
-  const openText = state.lang==='fa' ? 'برای باز کردن کلیک کنید' : state.lang==='hr' ? 'Dodirnite za otvaranje' : 'Tap to open';
-  const myHtml = my.length ? `<div class="list">${my.slice().reverse().map((q,i)=>`<button class="list-btn qna-answer-toggle" data-qna-answer="myq-${i}"><strong>${html(q.question)}</strong><small>${q.status==='answered'?tr('answered'):tr('waitingAnswer')} • ${tapText}</small></button><div id="myq-${i}" class="accordion-panel hidden">${q.answer?`<p><strong>${tr('answer')}:</strong> ${html(q.answer)}</p>`:`<p class="muted">${tr('waitingAnswer')}</p>`}</div>`).join('')}</div>` : `<p class="muted">${tr('noQuestions')}</p>`;
-  const answeredHtml = answered && answered.length ? `<div class="list">${answered.map((q,i)=>`<button class="list-btn qna-answer-toggle" data-qna-answer="pubq-${i}"><strong>${html(q.question_text)}</strong><small>${tapText}</small></button><div id="pubq-${i}" class="accordion-panel hidden"><p><strong>${tr('answer')}:</strong> ${html(q.answer_text||'')}</p></div>`).join('')}</div>` : `<p class="muted">${tr('noQuestions')}</p>`;
-  view.innerHTML=card(tr('qna'), `<p class="muted">${tr('anonymousNote')}</p><div class="notice"><p>${tr('qnaWaitNotice')}</p><p>${tr('askQuestionOnce')}</p></div><h3>${tr('askQuestion')}</h3><textarea id="qaQuestion" placeholder="${tr('questionText')}" required></textarea><button class="primary-btn" id="submitQa">${tr('submitQuestion')}</button><div class="qna-section"><button class="secondary-btn wide-btn" data-qna-toggle="myQuestionsPanel">${tr('myQuestions')} <span>${openText}</span></button><div id="myQuestionsPanel" class="accordion-panel hidden">${myHtml}</div></div><div class="qna-section"><button class="secondary-btn wide-btn" data-qna-toggle="publicAnswersPanel">${tr('publicAnswers')} <span>${openText}</span></button><div id="publicAnswersPanel" class="accordion-panel hidden">${answeredHtml}</div></div>`);
+    const rows=await cloudRpc('nh7_my_questions_v220',{p_email:email||null,p_device_id:deviceId()});
+    return Array.isArray(rows)?rows:[];
+  }catch(e){
+    console.warn('My Q&A sync failed',e);
+    try{
+      const filters=[];
+      if(email)filters.push(`author_email.eq.${encodeURIComponent(email)}`);
+      filters.push(`device_id.eq.${encodeURIComponent(deviceId())}`);
+      return await cloudFetch(`qa_questions?select=id,question_text,answer_text,status,language,created_at,answered_at&or=(${filters.join(',')})&order=created_at.desc&limit=100`,{method:'GET',cache:'no-store'});
+    }catch(_){return []}
+  }
+}
+function mergeMyQuestionState(localRows,cloudRows){
+  const map=new Map();
+  for(const q of (localRows||[])){
+    const key=normalizeQuestionText(q.question||q.question_text);
+    if(key)map.set(key,Object.assign({},q));
+  }
+  for(const q of (cloudRows||[])){
+    const key=normalizeQuestionText(q.question_text||q.question);
+    if(!key)continue;
+    const prev=map.get(key)||{};
+    map.set(key,Object.assign({},prev,{
+      id:q.id||prev.id,
+      question:q.question_text||q.question||prev.question,
+      status:(String(q.answer_text||q.answer||'').trim()?'answered':String(q.status||prev.status||'pending')).toLowerCase(),
+      answer:q.answer_text||q.answer||'',
+      answeredAt:q.answered_at||prev.answeredAt||null,
+      createdAt:q.created_at||prev.createdAt||new Date().toISOString()
+    }));
+  }
+  const out=[...map.values()].sort((a,b)=>String(a.createdAt||'').localeCompare(String(b.createdAt||'')));
+  localStorage.setItem('nh7_my_questions',JSON.stringify(out));
+  return out;
+}
+async function qna(){
+  let local=[];try{local=JSON.parse(localStorage.getItem('nh7_my_questions')||'[]')}catch(e){local=[]}
+  local=Array.isArray(local)?local:[];
+  let ownCloud=[],answered=[];
+  try{ownCloud=await cloudRpc('nh7_my_questions_v220',{p_device_id:deviceId()});if(!Array.isArray(ownCloud))ownCloud=ownCloud?[ownCloud]:[]}catch(e){console.warn('My Q&A cloud sync failed',e)}
+  try{answered=await cloudFetch('qa_questions?select=id,question_text,answer_text,language,answered_at&status=eq.answered&order=answered_at.desc&limit=50',{method:'GET'})}catch(e){console.warn('Q&A load failed',e)}
+  const map=new Map();
+  const keyFor=q=>String(q.client_question_id||q.id||'')||('q:'+normalizeQuestionText(q.question||q.question_text||''));
+  local.forEach(q=>map.set(keyFor(q),q));
+  ownCloud.forEach(row=>{
+    const key=keyFor(row),old=map.get(key)||local.find(q=>normalizeQuestionText(q.question)===normalizeQuestionText(row.question_text))||{};
+    map.set(key,{...old,id:row.client_question_id||old.id||row.id,client_question_id:row.client_question_id||old.client_question_id||'',cloud_id:row.id,question:row.question_text,status:String(row.answer_text||'').trim()?'answered':(row.status||'pending'),answer:row.answer_text||'',createdAt:row.created_at||old.createdAt,answeredAt:row.answered_at||null,updatedAt:row.updated_at||null});
+  });
+  const my=Array.from(map.values()).filter(q=>q&&q.question).sort((a,b)=>String(a.createdAt||'').localeCompare(String(b.createdAt||'')));
+  localStorage.setItem('nh7_my_questions',JSON.stringify(my));
+  const tapText=state.lang==='fa'?'برای دیدن پاسخ کلیک کنید':state.lang==='hr'?'Dodirnite za prikaz odgovora':'Tap to view answer';
+  const openText=state.lang==='fa'?'برای باز کردن کلیک کنید':state.lang==='hr'?'Dodirnite za otvaranje':'Tap to open';
+  const myHtml=my.length?`<div class="list">${my.slice().reverse().map((q,i)=>{const done=String(q.answer||'').trim().length>0||q.status==='answered';return `<button class="list-btn qna-answer-toggle" data-qna-answer="myq-${i}"><strong>${html(q.question)}</strong><small>${done?tr('answered'):tr('waitingAnswer')} • ${tapText}</small></button><div id="myq-${i}" class="accordion-panel hidden">${done?`<p><strong>${tr('answer')}:</strong> ${html(q.answer)}</p>`:`<p class="muted">${tr('waitingAnswer')}</p>`}</div>`}).join('')}</div>`:`<p class="muted">${tr('noQuestions')}</p>`;
+  const answeredHtml=answered&&answered.length?`<div class="list">${answered.map((q,i)=>`<button class="list-btn qna-answer-toggle" data-qna-answer="pubq-${i}"><strong>${html(q.question_text)}</strong><small>${tapText}</small></button><div id="pubq-${i}" class="accordion-panel hidden"><p><strong>${tr('answer')}:</strong> ${html(q.answer_text||'')}</p></div>`).join('')}</div>`:`<p class="muted">${tr('noQuestions')}</p>`;
+  view.innerHTML=card(tr('qna'),`<p class="muted">${tr('anonymousNote')}</p><div class="notice"><p>${tr('qnaWaitNotice')}</p><p>${tr('askQuestionOnce')}</p></div><h3>${tr('askQuestion')}</h3><textarea id="qaQuestion" placeholder="${tr('questionText')}" required></textarea><button class="primary-btn" id="submitQa">${tr('submitQuestion')}</button><div class="qna-section"><button class="secondary-btn wide-btn" data-qna-toggle="myQuestionsPanel">${tr('myQuestions')} <span>${openText}</span></button><div id="myQuestionsPanel" class="accordion-panel hidden">${myHtml}</div></div><div class="qna-section"><button class="secondary-btn wide-btn" data-qna-toggle="publicAnswersPanel">${tr('publicAnswers')} <span>${openText}</span></button><div id="publicAnswersPanel" class="accordion-panel hidden">${answeredHtml}</div></div>`);
   $('#submitQa').onclick=async()=>{
-    const question=($('#qaQuestion').value||'').trim();
-    if(!question){ alert(tr('requiredField')); return; }
-    const norm=normalizeQuestionText(question);
-    const duplicateLocal=my.some(q=>normalizeQuestionText(q.question)===norm);
-    const duplicatePublic=(answered||[]).some(q=>normalizeQuestionText(q.question_text)===norm);
-    if(duplicateLocal || duplicatePublic){ alert(tr('alreadyAsked')); return; }
-    const item={question,status:'pending',createdAt:new Date().toISOString()};
-    const arr=JSON.parse(localStorage.getItem('nh7_my_questions')||'[]'); arr.push(item); localStorage.setItem('nh7_my_questions',JSON.stringify(arr));
-    await saveQuestionCloud(question).catch(console.warn);
-    alert(tr('questionSent')); render('qna',{},true);
+    const question=($('#qaQuestion').value||'').trim();if(!question){alert(tr('requiredField'));return}
+    const norm=normalizeQuestionText(question),duplicateLocal=my.some(q=>normalizeQuestionText(q.question)===norm),duplicatePublic=(answered||[]).some(q=>normalizeQuestionText(q.question_text)===norm);
+    if(duplicateLocal||duplicatePublic){alert(tr('alreadyAsked'));return}
+    const id=(globalThis.crypto?.randomUUID?.()||('q-'+Date.now()+'-'+Math.random().toString(16).slice(2))),item={id,client_question_id:id,question,status:'pending',answer:'',createdAt:new Date().toISOString()};
+    const arr=[...my,item];localStorage.setItem('nh7_my_questions',JSON.stringify(arr));
+    await saveQuestionCloud(item).catch(console.warn);alert(tr('questionSent'));render('qna',{},true);
   };
 }
-
 async function account(){
   const session=authSession();
-  if(isAccountLoggedIn()||isLegacySchoolLoggedIn()){
+  if(isAccountLoggedIn()){
     const profile=getKnownUserProfile(); const email=authEmail()||profile.email||'';
     view.innerHTML=card(tr('account'), `<h3>${tr('myAccess')}</h3><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||session?.user?.user_metadata?.full_name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(email)}</p></div><button class="danger-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button>`);
     $('#logoutAccountBtn')?.addEventListener('click',logoutAccount); return;
   }
-  view.innerHTML=card(tr('account'), `<p class="muted">${tr('signedOut')}</p><p>${tr('signInHint')}</p><input id="accountEmail" type="email" autocomplete="email" placeholder="${tr('email')}"><div class="password-wrap"><input id="accountPassword" type="password" autocomplete="current-password" placeholder="${tr('password')}"><button type="button" class="password-eye" data-toggle-password="accountPassword">👁</button></div><button class="primary-btn wide-btn" id="signInBtn">${tr('signIn')}</button><button class="link-button" id="forgotPasswordToggle">${tr('forgotPassword')}</button><div id="forgotPasswordPanel" class="hidden"><input id="resetEmail" type="email" placeholder="${tr('email')}"><button class="secondary-btn" id="resetPasswordBtn">${tr('resetPassword')}</button><p id="resetMsg" class="muted"></p></div><details class="legacy-access"><summary>${tr('legacyRestore')}</summary><p class="muted">${tr('restoreAccessHint')}</p><input id="loginEmail" type="email" placeholder="${tr('email')}"><button class="secondary-btn" id="restoreAccessBtn">${tr('restoreAccess')}</button></details>`);
+  view.innerHTML=card(tr('account'), `<p class="muted">${tr('signedOut')}</p><p>${tr('signInHint')}</p><input id="accountEmail" type="email" autocomplete="email" placeholder="${tr('email')}"><div class="password-wrap"><input id="accountPassword" type="password" autocomplete="current-password" placeholder="${tr('password')}"><button type="button" class="password-eye" data-toggle-password="accountPassword">👁</button></div><button class="primary-btn wide-btn" id="signInBtn">${tr('signIn')}</button><button class="link-button" id="forgotPasswordToggle">${tr('forgotPassword')}</button><div id="forgotPasswordPanel" class="hidden"><input id="resetEmail" type="email" placeholder="${tr('email')}"><button class="secondary-btn" id="resetPasswordBtn">${tr('resetPassword')}</button><p id="resetMsg" class="muted"></p></div>`);
   $('#signInBtn')?.addEventListener('click',signInAccount);
   $('#forgotPasswordToggle')?.addEventListener('click',()=>$('#forgotPasswordPanel')?.classList.toggle('hidden'));
   $('#resetPasswordBtn')?.addEventListener('click',resetPassword);
-  $('#restoreAccessBtn')?.addEventListener('click',loginRestoreAccess);
   bindPasswordToggles();
 }
 async function signInAccount(){
-  const email=($('#accountEmail')?.value||'').trim().toLowerCase(); const password=$('#accountPassword')?.value||'';
+  const email=($('#accountEmail')?.value||'').trim().toLowerCase(),password=$('#accountPassword')?.value||'';
   if(!email||!password){alert(tr('requiredField'));return}
   try{
     const data=await signInOrClaimLegacyAccount(email,password);
-    if(data?.access_token){saveAuthSession(data);clearLegacySchoolSession()}
+    if(!data?.access_token)throw new Error('Authenticated session was not returned.');
+    saveAuthSession(data);
+    clearLegacySchoolSession();
     localStorage.setItem('nh7_manual_email',email);
     localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
 
-    let school=await fetchLatestRegistration('school');
+    const school=await fetchLatestRegistration('school');
     const meeting=await fetchLatestRegistration('meeting');
     if(school)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},school,{email})));
-    else{try{school=JSON.parse(localStorage.getItem('nh7_school_access')||'{}')}catch(e){school={}}}
     if(meeting)localStorage.setItem('nh7_meeting_access',JSON.stringify(Object.assign({},meeting,{email})));
 
-    const approved=school?.status==='approved'||school?.approvedBy==='admin';
-    if(data?.legacy_approved&&approved)saveLegacySchoolSession(email,school);
-
-    if(!isAccountLoggedIn()&&!isLegacySchoolLoggedIn()){
-      throw new Error('Account sign-in completed without an active Auth or verified legacy session.');
-    }
+    if(!isAccountLoggedIn())throw new Error('Account sign-in completed without an authenticated session.');
+    await restoreAccountCloudData(true);
+    invalidateSchoolSnapshot(email);
+    await getSchoolSnapshot(email,true);
     navigate('school',{},true);
-  }catch(e){console.warn('Account sign-in failed',e);alert(tr('loginFailed'))}
+  }catch(e){
+    console.warn('Account sign-in failed',e);
+    const message=String(e?.message||'');
+    alert(message&&message!=='Failed to fetch'
+      ? message
+      : tr('loginFailed'));
+  }
 }
 function bindPasswordToggles(){
   $$('[data-toggle-password]').forEach(btn=>btn.onclick=()=>{const input=$('#'+btn.dataset.togglePassword);if(!input)return;input.type=input.type==='password'?'text':'password';btn.textContent=input.type==='password'?'👁':'🙈';});
@@ -1510,9 +1807,19 @@ async function logoutAccount(targetRoute='account'){
   state.stack=[]; state.params={}; alert(tr('signedOut')); navigate(targetRoute==='school'?'school':'account',{},true);
 }
 async function resetPassword(){
-  const email=(($('#resetEmail')?.value||$('#accountEmail')?.value||'')).trim().toLowerCase(); if(!email){alert(tr('requiredField'));return}
-  try{await authApi('recover',{method:'POST',body:JSON.stringify({email,redirect_to:NH7_PASSWORD_RESET_URL})})}catch(e){console.warn(e)}
-  const msg=$('#resetMsg');if(msg)msg.textContent=tr('resetPasswordSent');alert(tr('resetPasswordSent'));
+  const email=(($('#resetEmail')?.value||$('#accountEmail')?.value||'')).trim().toLowerCase();
+  if(!email){alert(tr('requiredField'));return}
+  const msg=$('#resetMsg');
+  try{
+    await authApi('recover',{method:'POST',body:JSON.stringify({email,redirect_to:NH7_PASSWORD_RESET_URL})});
+    if(msg)msg.textContent=tr('resetPasswordSent');
+    alert(tr('resetPasswordSent'));
+  }catch(e){
+    console.warn('Password reset request failed',e);
+    const text=String(e?.message||'');
+    if(msg)msg.textContent=text||tr('loginFailed');
+    alert(text||tr('loginFailed'));
+  }
 }
 
 let notificationSettingsCache=null;
@@ -1559,7 +1866,7 @@ async function enableNotifications(){
   try{
     if(Native){const p=await Native.requestPermissions();perm=p.display==='granted'?'granted':p.display==='denied'?'denied':'default';if(perm==='granted')await scheduleNativeNotifications();}
     else if(window.OneSignalDeferred&&typeof Notification!=='undefined'){
-      await new Promise(resolve=>{let done=false;const finish=()=>{if(!done){done=true;resolve()}};setTimeout(finish,7000);window.OneSignalDeferred.push(async OneSignal=>{try{if(OneSignal.Notifications?.requestPermission){const result=await OneSignal.Notifications.requestPermission();perm=result===true?'granted':Notification.permission}const settings=await fetchNotificationSchedules();const tags={app:'omideno7',language:state.lang,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'local',inbox_enabled:'true'};settings.forEach(x=>tags[x.key+'_time']=x.time_value);if(OneSignal.User?.addTags)await OneSignal.User.addTags(tags)}catch(e){console.warn(e)}finish()})});
+      await new Promise(resolve=>{let done=false;const finish=()=>{if(!done){done=true;resolve()}};setTimeout(finish,7000);window.OneSignalDeferred.push(async OneSignal=>{try{if(OneSignal.Notifications?.requestPermission){const result=await OneSignal.Notifications.requestPermission();perm=result===true?'granted':Notification.permission}const settings=await fetchNotificationSchedules();const tags={app:'new_hope_7',language:state.lang,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'local',inbox_enabled:'true'};settings.forEach(x=>tags[x.key+'_time']=x.time_value);if(OneSignal.User?.addTags)await OneSignal.User.addTags(tags)}catch(e){console.warn(e)}finish()})});
       if(Notification.permission!=='granted')perm=await Notification.requestPermission();else perm='granted';
     }else if(typeof Notification!=='undefined'){perm=await Notification.requestPermission()}
     else perm='default';
@@ -1577,11 +1884,11 @@ function bindDynamic(){
   $$('[data-dailytab]').forEach(el=>el.onclick=()=>{ state.dailyTab=el.dataset.dailytab; render('daily',{},true); });
   $$('[data-save-note]').forEach(el=>el.onclick=()=>{ const content=el.previousElementSibling?.value||''; localStorage.setItem('nh7_note_'+el.dataset.saveNote, content); saveNoteCloud('note_'+el.dataset.saveNote, content).catch(console.warn); el.textContent=tr('saved'); });
   $$('[data-bookmark]').forEach(el=>el.onclick=()=>{ const arr=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]'); if(!arr.includes(el.dataset.bookmark)) arr.push(el.dataset.bookmark); localStorage.setItem('nh7_bookmarks',JSON.stringify(arr)); try{ const key=el.closest('.reader-verse')?.dataset?.verseKey; if(key){ const st=JSON.parse(localStorage.getItem(key)||'{}'); st.saved=true; localStorage.setItem(key,JSON.stringify(st)); }}catch(e){} saveVerseCloud(el.dataset.bookmark).catch(console.warn); addPoints(5,'first_verse'); el.textContent='★ '+tr('saved'); });
-  $$('[data-delete-bookmark]').forEach(el=>el.onclick=(ev)=>{ ev.stopPropagation(); const ref=el.dataset.deleteBookmark; const arr=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]').filter(x=>String(x)!==String(ref)); localStorage.setItem('nh7_bookmarks',JSON.stringify(arr)); render(state.route,state.params,true); });
+  $$('[data-delete-bookmark]').forEach(el=>el.onclick=(ev)=>{ev.stopPropagation();const ref=el.dataset.deleteBookmark;const arr=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]').filter(x=>String(x)!==String(ref));localStorage.setItem('nh7_bookmarks',JSON.stringify(arr));deleteVerseCloud(ref).catch(console.warn);render(state.route,state.params,true)});
   $$('[data-highlight]').forEach(el=>el.onclick=()=>el.closest('.reader-verse')?.classList.toggle('highlighted'));
-  $$('[data-toggle-highlight]').forEach(el=>el.onclick=()=>{ const key=el.dataset.toggleHighlight; const st=JSON.parse(localStorage.getItem(key)||'{}'); st.highlight=!st.highlight; localStorage.setItem(key,JSON.stringify(st)); el.closest('.reader-verse')?.classList.toggle('highlighted', !!st.highlight); });
+  $$('[data-toggle-highlight]').forEach(el=>el.onclick=()=>{const key=el.dataset.toggleHighlight;const st=JSON.parse(localStorage.getItem(key)||'{}');st.highlight=!st.highlight;localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);el.closest('.reader-verse')?.classList.toggle('highlighted',!!st.highlight)});
   $$('[data-note-verse]').forEach(el=>el.onclick=()=>{ const box=$('#'+el.dataset.noteVerse); if(box) box.classList.toggle('hidden'); });
-  $$('[data-save-verse-note]').forEach(el=>el.onclick=()=>{ const key=el.dataset.saveVerseNote; const input=$(`[data-note-input="${CSS.escape(key)}"]`); const st=JSON.parse(localStorage.getItem(key)||'{}'); st.note=(input?.value||'').slice(0,1000); localStorage.setItem(key,JSON.stringify(st)); el.textContent=tr('saved'); });
+  $$('[data-save-verse-note]').forEach(el=>el.onclick=()=>{const key=el.dataset.saveVerseNote;const input=$(`[data-note-input="${CSS.escape(key)}"]`);const st=JSON.parse(localStorage.getItem(key)||'{}');st.note=(input?.value||'').slice(0,1000);localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);el.textContent=tr('saved')});
   $$('[data-share-verse]').forEach(el=>el.onclick=async()=>{ const txt=`${localizeRef(el.dataset.shareVerse)} — ${el.dataset.shareText||''}`; try{ if(navigator.share) await navigator.share({text:txt}); else { await navigator.clipboard.writeText(txt); alert(tr('saved')); } }catch(e){} });
   $$('[data-complete-daily]').forEach(el=>el.onclick=()=>{ const key='nh7_daily_done_'+el.dataset.completeDaily; if(!localStorage.getItem(key)){ localStorage.setItem(key,'1'); saveProgressCloud(key,{done:true,at:new Date().toISOString()}).catch(console.warn); addPoints(3,'daily_1'); } el.textContent=tr('dailyCompleted'); });
   $$('[data-open-ref]').forEach(el=>el.onclick=async()=>{ await loadBibleMeta(); const ref=parseRef(el.dataset.openRef); if(ref){ const params={mode:'chapter',bookId:ref.bookId,chapter:ref.chapter}; if((el.dataset.openRefMode||'verse')==='verse') params.verse=ref.verse; navigate('bible',params); } });
@@ -1595,7 +1902,7 @@ function bindDynamic(){
   $$('[data-inbox-delete]').forEach(el=>el.onclick=(ev)=>{ ev.stopPropagation(); const id=el.dataset.inboxDelete; if(confirm(tr('deleteConfirm'))){ deleteInboxLocal(id); render('inbox',{},true); } });
   $$('[data-submit-registration]').forEach(el=>el.onclick=()=>collectRegistration(el.dataset.submitRegistration)); bindPasswordToggles();
   const run=$('#runBibleSearch'); if(run) run.onclick=()=>navigate('bible',{q:$('#bibleSearch').value},true);
-  $('#startGratitude')?.addEventListener('click',()=>{ localStorage.setItem('nh7_gratitude_start',todayKey()); addPoints(5,'gratitude_1'); render('daily',{tab:'gratitude'},true); });
+  $('#startGratitude')?.addEventListener('click',()=>{const start=todayKey();localStorage.setItem('nh7_gratitude_start',start);saveProgressCloud('nh7_gratitude_start',{__raw:start}).catch(console.warn);addPoints(5,'gratitude_1');render('daily',{tab:'gratitude'},true)});
   $('#completeGratitude')?.addEventListener('click',(ev)=>{ const current=Number(ev.currentTarget.dataset.gratitudeDay||1); const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]'); if(!completed.includes(current)) completed.push(current); completed.sort((a,b)=>a-b); localStorage.setItem('nh7_gratitude_completed',JSON.stringify(completed)); const gnote=$('#gratitudeNote')?.value||''; localStorage.setItem('nh7_gratitude_note_'+current,gnote); saveNoteCloud('gratitude_note_'+current, gnote).catch(console.warn); saveProgressCloud('gratitude_completed',{completed}).catch(console.warn); addPoints(10,'gratitude_1'); render('daily',{tab:'gratitude',gday:current},true); });
   $('#undoGratitude')?.addEventListener('click',(ev)=>{ const current=Number(ev.currentTarget.dataset.gratitudeDay||1); const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]').filter(x=>Number(x)!==current); localStorage.setItem('nh7_gratitude_completed',JSON.stringify(completed)); saveProgressCloud('gratitude_completed',{completed}).catch(console.warn); render('daily',{tab:'gratitude',gday:current},true); });
 }
@@ -1607,8 +1914,23 @@ $('#inboxBtn')?.addEventListener('click',()=>navigate('inbox',{},false));
 $('#backBtn').onclick=back;
 $$('.nav-item').forEach(b=>b.onclick=()=>{ state.stack=[]; navigate(b.dataset.route,{},true); });
 $('#amenButton').onclick=()=>$('#amenGate').classList.add('hidden');
-window.addEventListener('online',()=>{ $('.offline')?.remove(); syncCloudQueue().catch(console.warn); });
+window.addEventListener('online',async()=>{$('.offline')?.remove();await syncCloudQueue().catch(console.warn);if(isAccountLoggedIn()){await restoreAccountCloudData(true).catch(console.warn);invalidateSchoolSnapshot(authEmail());await getSchoolSnapshot(authEmail(),true).catch(console.warn);if(state.route==='school')render('school',state.params,true)}});
 window.addEventListener('offline',()=>{ if(!$('.offline')){ const d=document.createElement('div'); d.className='offline'; d.textContent=tr('offline'); document.body.appendChild(d);} });
 if('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js').catch(console.warn);
 try{const Native=nativeLocalNotifications();Native?.addListener?.('localNotificationActionPerformed',ev=>{const route=ev?.notification?.extra?.route||'home';navigate(route,{},true)});}catch(e){}
-setLang(state.lang); ensureSermonPlayer(); syncCloudQueue().catch(console.warn); refreshInboxFromCloud().catch(console.warn); maybeCreateScheduledInboxMessages().catch(console.warn); notificationPermissionStatus().then(p=>{if(p==='granted'&&nativeLocalNotifications())scheduleNativeNotifications().catch(console.warn)}).catch(console.warn); updateInboxBadge(); showAmen();
+async function bootstrapApp(){
+  clearLegacySchoolSession();
+  if(isAccountLoggedIn()){
+    await restoreAccountCloudData(true).catch(console.warn);
+    await getSchoolSnapshot(authEmail(),true).catch(console.warn);
+  }
+  setLang(state.lang);
+  ensureSermonPlayer();
+  syncCloudQueue().catch(console.warn);
+  refreshInboxFromCloud().catch(console.warn);
+  maybeCreateScheduledInboxMessages().catch(console.warn);
+  notificationPermissionStatus().then(p=>{if(p==='granted'&&nativeLocalNotifications())scheduleNativeNotifications().catch(console.warn)}).catch(console.warn);
+  updateInboxBadge();
+  showAmen();
+}
+bootstrapApp().catch(console.warn);
