@@ -1,4 +1,4 @@
-// NH7 v2.2.0 consolidated update: real cloud auth, Audio Bible, Q&A sync, and admin integration.
+// NH7 v2.2.1 targeted update: preserve the consolidated base and add Audio Bible, document, analytics, and reader fixes.
 const $ = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 const view = $('#view');
@@ -51,26 +51,90 @@ async function clearDownloadedMedia(){if(isNativeCapacitor()){const F=capacitorP
 async function prepareCoreOffline(button){const old=button?.textContent||'';try{if(button){button.disabled=true;button.textContent=state.lang==='fa'?'در حال آماده‌سازی…':state.lang==='hr'?'Priprema…':'Preparing…'}if(isNativeCapacitor()){localStorage.setItem('nh7_offline_core_ready',new Date().toISOString());alert(state.lang==='fa'?'محتوای اصلی داخل برنامه نصب شده و برای استفاده آفلاین آماده است.':state.lang==='hr'?'Osnovni sadržaj ugrađen je u aplikaciju i spreman je za offline korištenje.':'Core content is bundled in the app and ready offline.')}else{const r=await swMessage('CACHE_CORE');localStorage.setItem('nh7_offline_core_ready',new Date().toISOString());alert(state.lang==='fa'?`محتوای اصلی برای استفاده آفلاین آماده شد. (${r.cached||0} فایل)`:state.lang==='hr'?'Osnovni sadržaj je spreman za offline korištenje.':'Core content is ready for offline use.')}}catch(e){console.warn(e);alert(state.lang==='fa'?'آماده‌سازی آفلاین کامل نشد. دوباره تلاش کنید.':'Offline preparation did not finish. Please try again.')}finally{if(button){button.disabled=false;button.textContent=old}}}
 async function offlineStorageSummary(){if(isNativeCapacitor()){let count=0,bytes=0;for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!k?.startsWith(OFFLINE_MEDIA_PREFIX))continue;try{const m=JSON.parse(localStorage.getItem(k)||'{}');if(m.native){count++;bytes+=Number(m.bytes||0)}}catch(e){}}const mb=(bytes/1048576).toFixed(1);return state.lang==='fa'?`${count} فایل رسانه‌ای (${mb} مگابایت) روی دستگاه ذخیره شده است.`:state.lang==='hr'?`${count} medijskih datoteka (${mb} MB) spremljeno je na uređaju.`:`${count} media files (${mb} MB) are stored on this device.`}try{const r=await swMessage('OFFLINE_STATUS');const mb=(Number(r.mediaBytes||0)/1048576).toFixed(1);return state.lang==='fa'?`${r.coreCount||0} فایل اصلی و ${r.mediaCount||0} فایل رسانه‌ای (${mb} مگابایت) آماده آفلاین است.`:state.lang==='hr'?`${r.coreCount||0} osnovnih i ${r.mediaCount||0} medijskih datoteka (${mb} MB) spremljeno je offline.`:`${r.coreCount||0} core files and ${r.mediaCount||0} media files (${mb} MB) are available offline.`}catch(e){return state.lang==='fa'?'وضعیت فضای آفلاین در دسترس نیست.':'Offline storage status unavailable.'}}
 
-const sermonPlayerState={audio:null,current:null,saveTimer:null,cloudTimer:null};
+const sermonPlayerState={audio:null,current:null,saveTimer:null,cloudTimer:null,analyticsSessionId:'',analyticsTotalSeconds:0,analyticsLastFlushedSeconds:0,analyticsLastWallAt:0,analyticsSending:false};
 function sermonProgressKey(id){return 'nh7_sermon_progress_'+String(id)}
 function sermonNoteKey(id){return 'nh7_sermon_note_'+String(id)}
 function formatAudioTime(sec){sec=Math.max(0,Number(sec)||0);const h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),ss=Math.floor(sec%60);return h?`${h}:${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`:`${m}:${String(ss).padStart(2,'0')}`}
 function sermonDurationSeconds(item){const exact=Number(item?.duration_seconds||0);if(exact>0)return exact;const mins=Number(item?.duration_minutes||0);return mins>0?Math.round(mins*60):0}
 function sermonDurationLabel(item){const sec=sermonDurationSeconds(item);return sec?formatAudioTime(sec):''}
+function audioAnalyticsMeta(item={}){
+  const id=String(item.analytics_id||item.id||'');
+  const type=String(item.analytics_type||(id.startsWith('school-')?'school':id.startsWith('bible-')?'audio_bible':'sermon'));
+  return {
+    mediaType:['sermon','school','audio_bible'].includes(type)?type:'sermon',
+    mediaId:id,
+    title:String(item['title_'+state.lang]||item.title_fa||item.title_en||item.title_hr||item.title||'Audio'),
+    topic:String(item.analytics_topic||item.topic||item.category_name||''),
+    sourceGroup:String(item.analytics_source_group||item.course_code||item.book_code||item.category_id||''),
+    language:String(item.analytics_language||state.lang||'fa'),
+    duration:sermonDurationSeconds(item)
+  };
+}
+function newAudioAnalyticsSession(item){
+  sermonPlayerState.analyticsSessionId='aud_'+(globalThis.crypto?.randomUUID?globalThis.crypto.randomUUID():Date.now()+'_'+Math.random().toString(36).slice(2));
+  sermonPlayerState.analyticsTotalSeconds=0;
+  sermonPlayerState.analyticsLastFlushedSeconds=0;
+  sermonPlayerState.analyticsLastWallAt=Date.now();
+  sermonPlayerState.current=Object.assign({},sermonPlayerState.current||{},audioAnalyticsMeta(item));
+}
+function captureAudioListenTime(){
+  const a=sermonPlayerState.audio;if(!a||a.paused||!sermonPlayerState.current)return;
+  const now=Date.now(),last=Number(sermonPlayerState.analyticsLastWallAt||now),delta=Math.min(5,Math.max(0,(now-last)/1000));
+  sermonPlayerState.analyticsLastWallAt=now;
+  if(delta>0&&delta<10)sermonPlayerState.analyticsTotalSeconds+=delta;
+}
+async function flushAudioAnalytics(eventName='progress',force=false){
+  const a=sermonPlayerState.audio,cur=sermonPlayerState.current,sid=sermonPlayerState.analyticsSessionId;
+  if(!cur||!sid||!navigator.onLine)return false;
+  captureAudioListenTime();
+  const total=Math.floor(sermonPlayerState.analyticsTotalSeconds||0),unsent=Math.max(0,total-Number(sermonPlayerState.analyticsLastFlushedSeconds||0));
+  if(!force&&unsent<15)return false;
+  if(sermonPlayerState.analyticsSending)return false;
+  sermonPlayerState.analyticsSending=true;
+  try{
+    await cloudRpc('nh7_track_audio_session_v221',{
+      p_session_id:sid,p_device_id:deviceId(),p_user_email:currentUserEmail()||'',
+      p_media_type:cur.mediaType||'sermon',p_media_id:cur.mediaId||String(cur.id||''),
+      p_title:cur.title||'',p_topic:cur.topic||'',p_source_group:cur.sourceGroup||'',
+      p_language:cur.language||state.lang,p_duration_seconds:Math.round((Number.isFinite(a?.duration)&&a.duration)||cur.duration||0),
+      p_position_seconds:Math.round(a?.currentTime||0),p_delta_seconds:total,p_event:eventName
+    });
+    sermonPlayerState.analyticsLastFlushedSeconds=Math.max(sermonPlayerState.analyticsLastFlushedSeconds||0,total);
+    return true;
+  }catch(e){
+    console.warn('Audio analytics sync failed',e);
+    return false;
+  }finally{sermonPlayerState.analyticsSending=false}
+}
+const appSectionLastSent=new Map();
+function trackAppSection(section){
+  section=String(section||'').trim();if(!section||!navigator.onLine)return;
+  const now=Date.now(),last=appSectionLastSent.get(section)||Number(localStorage.getItem('nh7_section_track_'+section)||0);
+  if(now-last<15*60*1000)return;
+  appSectionLastSent.set(section,now);localStorage.setItem('nh7_section_track_'+section,String(now));
+  cloudRpc('nh7_track_app_section_v221',{p_section:section,p_device_id:deviceId(),p_user_email:currentUserEmail()||''}).catch(()=>{});
+}
 function ensureSermonPlayer(){
   if(sermonPlayerState.audio)return sermonPlayerState.audio;
   const audio=new Audio();audio.preload='metadata';sermonPlayerState.audio=audio;
   const sync=()=>{
     const cur=sermonPlayerState.current;if(!cur)return;
+    if(!audio.paused)captureAudioListenTime();
     const snapshot={time:audio.currentTime,duration:audio.duration||cur.duration||0,updatedAt:new Date().toISOString()};
     clearTimeout(sermonPlayerState.saveTimer);
     sermonPlayerState.saveTimer=setTimeout(()=>localStorage.setItem(sermonProgressKey(cur.id),JSON.stringify(snapshot)),500);
     clearTimeout(sermonPlayerState.cloudTimer);
     sermonPlayerState.cloudTimer=setTimeout(()=>saveProgressCloud(sermonProgressKey(cur.id),snapshot).catch(console.warn),5000);
+    if((sermonPlayerState.analyticsTotalSeconds-sermonPlayerState.analyticsLastFlushedSeconds)>=15)flushAudioAnalytics('progress').catch(()=>{});
     updateInlineSermonPlayers();
   };
-  ['timeupdate','play','pause','loadedmetadata','durationchange','ended'].forEach(ev=>audio.addEventListener(ev,sync));
+  ['timeupdate','loadedmetadata','durationchange'].forEach(ev=>audio.addEventListener(ev,sync));
+  audio.addEventListener('play',()=>{sermonPlayerState.analyticsLastWallAt=Date.now();sync();flushAudioAnalytics('play',true).catch(()=>{})});
+  audio.addEventListener('pause',()=>{sync();flushAudioAnalytics('pause',true).catch(()=>{})});
   audio.addEventListener('ended',()=>{
+    captureAudioListenTime();
+    // A pause/progress flush may still be in flight. Retry once so completion is not lost.
+    flushAudioAnalytics('ended',true).then(ok=>{if(!ok)setTimeout(()=>flushAudioAnalytics('ended',true).catch(()=>{}),600)}).catch(()=>{});
     if(sermonPlayerState.current){
       const key=sermonProgressKey(sermonPlayerState.current.id);
       const snapshot={time:0,duration:audio.duration||0,completed:true,updatedAt:new Date().toISOString()};
@@ -99,7 +163,10 @@ function updateInlineSermonPlayers(){
 async function playSermon(item,restart=false){
   if(!item?.audio_url)return;const audio=ensureSermonPlayer(),same=sermonPlayerState.current&&String(sermonPlayerState.current.id)===String(item.id);
   if(same&&!restart){audio.paused?audio.play():audio.pause();updateInlineSermonPlayers();return}
-  sermonPlayerState.current={id:item.id,title:item['title_'+state.lang]||item.title_fa||item.title_en||'Audio',audio_url:item.audio_url,duration:sermonDurationSeconds(item)};
+  if(sermonPlayerState.current)await flushAudioAnalytics('switch',true).catch(()=>{});
+  const meta=audioAnalyticsMeta(item);
+  sermonPlayerState.current={id:item.id,title:meta.title,audio_url:item.audio_url,duration:meta.duration,mediaType:meta.mediaType,mediaId:meta.mediaId,topic:meta.topic,sourceGroup:meta.sourceGroup,language:meta.language};
+  newAudioAnalyticsSession(item);
   const sourceUrl=await resolveOfflineMediaUrl(item.audio_url).catch(()=>item.audio_url);audio.src=sourceUrl;audio.playbackRate=Number(localStorage.getItem('nh7_sermon_speed')||1);
   audio.addEventListener('loadedmetadata',function restore(){audio.removeEventListener('loadedmetadata',restore);if(!restart){try{const st=JSON.parse(localStorage.getItem(sermonProgressKey(item.id))||'{}');if(st.time>5&&(!audio.duration||st.time<audio.duration-10))audio.currentTime=st.time}catch(e){}}audio.play().catch(()=>{});updateInlineSermonPlayers()});
   if('mediaSession'in navigator){navigator.mediaSession.metadata=new MediaMetadata({title:sermonPlayerState.current.title,artist:'New Hope 7',artwork:item.cover_url?[{src:item.cover_url}]:[]});try{navigator.mediaSession.setActionHandler('seekbackward',()=>audio.currentTime=Math.max(0,audio.currentTime-15));navigator.mediaSession.setActionHandler('seekforward',()=>audio.currentTime=Math.min(audio.duration||Infinity,audio.currentTime+30));navigator.mediaSession.setActionHandler('play',()=>audio.play());navigator.mediaSession.setActionHandler('pause',()=>audio.pause())}catch(e){}}
@@ -306,7 +373,7 @@ async function signInOrClaimLegacyAccount(email,password){
 
 function deviceId(){
   let id=localStorage.getItem('nh7_device_id');
-  if(!id){ id='dev_'+(crypto?.randomUUID ? crypto.randomUUID() : Date.now()+'_'+Math.random().toString(16).slice(2)); localStorage.setItem('nh7_device_id',id); }
+  if(!id){ id='dev_'+(globalThis.crypto?.randomUUID ? globalThis.crypto.randomUUID() : Date.now()+'_'+Math.random().toString(16).slice(2)); localStorage.setItem('nh7_device_id',id); }
   return id;
 }
 function currentUserEmail(){
@@ -923,7 +990,7 @@ function updateInboxBadge(){
 function addInboxMessage(title, body, category='app', id=null){
   const arr=inboxMessages();
   const scheduled=!!INBOX_LOCALIZED_MESSAGES[String(category||'').toLowerCase()];
-  const mid=scheduled ? `scheduled:${category}:${todayKey()}` : (id ? String(id) : `${category}:${crypto?.randomUUID?crypto.randomUUID():Date.now()}`);
+  const mid=scheduled ? `scheduled:${category}:${todayKey()}` : (id ? String(id) : `${category}:${globalThis.crypto?.randomUUID?globalThis.crypto.randomUUID():Date.now()}`);
   if(inboxDeletedIds().has(mid)) return;
   if(arr.some(m=>String(m.id)===mid || inboxCanonicalGroup(m)===mid)) return;
   const item={id:mid,title,body,category,createdAt:new Date().toISOString(),read:false,lang:state.lang,language:state.lang};
@@ -1015,6 +1082,8 @@ async function render(route, params={}, preserve=false){
     else if(route==='account') await account();
     else await home();
     bindDynamic();
+    const detail=params?.lesson?':lesson':params?.exam?':exam':params?.mode==='chapter'?':chapter':params?.book?':book':params?.tab?':'+String(params.tab):'';
+    trackAppSection(String(route||'home')+detail);
     setCrumb(tr(route));
   }catch(e){ console.error(e); view.innerHTML=card('Error',`<p>${html(e.message)}</p>`); }
 }
@@ -1180,24 +1249,23 @@ async function bibleChapter(bookId, chapter){
   const rows=verses.map(v=>{
     const ref=v.reference?.en || `${data.book.names.en} ${chapter}:${v.verse}`;
     const key='nh7_bible_state_'+String(v.id||ref).replace(/[^a-zA-Z0-9_-]/g,'_');
-    const st=JSON.parse(localStorage.getItem(key)||'{}');
-    if(savedRefSet.has(ref))st.saved=true;
-    const cls=['reader-verse']; if(st.highlight) cls.push('highlighted'); if(focusVerse===Number(v.verse)) cls.push('saved-focus');
+    const st=JSON.parse(localStorage.getItem(key)||'{}');if(savedRefSet.has(ref))st.saved=true;
+    const cls=['reader-verse'];if(st.highlight)cls.push('highlighted');if(focusVerse===Number(v.verse))cls.push('saved-focus');
     const noteBoxId='noteBox_'+String(v.id||ref).replace(/[^a-zA-Z0-9_-]/g,'_');
-    return `<div class="${cls.join(' ')}" id="v-${v.verse}" data-verse-key="${html(key)}">
-      <span class="num">${localNum(v.verse)}</span><span>${html(v.text?.[state.lang]||v.text?.en||'')}</span>
-      ${st.note?`<div class="verse-note-preview">📝 ${html(st.note)}</div>`:''}
-      <div class="button-row">
-        <button class="secondary-btn" data-bookmark="${html(ref)}">${st.saved?'★':'☆'} ${tr('save')}</button>
-        <button class="secondary-btn" data-toggle-highlight="${html(key)}">✦ ${tr('highlight')}</button>
-        <button class="secondary-btn" data-note-verse="${html(noteBoxId)}">📝 ${tr('writeNote')}</button>
-        <button class="secondary-btn" data-share-verse="${html(ref)}" data-share-text="${html((v.text?.[state.lang]||v.text?.en||''))}">↗ ${tr('share')}</button>
-      </div>
-      <div id="${html(noteBoxId)}" class="verse-note-box hidden"><textarea data-note-input="${html(key)}" maxlength="1000" placeholder="${tr('writeNote')}">${html(st.note||'')}</textarea><button class="primary-btn" data-save-verse-note="${html(key)}">${tr('saveNote')}</button></div>
-    </div>`;
-  }).join('');
-  view.innerHTML=card(title, `<div class="reader">${rows}</div>`);
-  if(focusVerse){ setTimeout(()=>document.getElementById('v-'+focusVerse)?.scrollIntoView({behavior:'smooth',block:'center'}),150); }
+    return `<span class="${cls.join(' ')}" id="v-${v.verse}" data-verse-key="${html(key)}" tabindex="0"><sup class="num">${localNum(v.verse)}</sup><span class="verse-text">${html(v.text?.[state.lang]||v.text?.en||'')}</span>${st.note?`<span class="verse-note-preview">📝 ${html(st.note)}</span>`:''}<span class="verse-tools hidden" aria-label="Verse actions"><button class="secondary-btn" data-bookmark="${html(ref)}">${st.saved?'★':'☆'} ${tr('save')}</button><button class="secondary-btn" data-toggle-highlight="${html(key)}">✦ ${tr('highlight')}</button><button class="secondary-btn" data-note-verse="${html(noteBoxId)}">📝 ${tr('writeNote')}</button><button class="secondary-btn" data-share-verse="${html(ref)}" data-share-text="${html(v.text?.[state.lang]||v.text?.en||'')}">↗ ${tr('share')}</button></span><span id="${html(noteBoxId)}" class="verse-note-box hidden"><textarea data-note-input="${html(key)}" maxlength="1000" placeholder="${tr('writeNote')}">${html(st.note||'')}</textarea><button class="primary-btn" data-save-verse-note="${html(key)}">${tr('saveNote')}</button></span></span>`;
+  }).join(' ');
+  const idx=state.bible.books.findIndex(b=>b.id===bookId);
+  const prev=chapter>1?{bookId,chapter:chapter-1}:idx>0?{bookId:state.bible.books[idx-1].id,chapter:state.bible.books[idx-1].chapters}:null;
+  const next=chapter<data.book.chapters?{bookId,chapter:chapter+1}:idx>=0&&idx<state.bible.books.length-1?{bookId:state.bible.books[idx+1].id,chapter:1}:null;
+  const nav=`<div class="bible-chapter-nav">${prev?`<button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({mode:'chapter',...prev}))}'>‹ ${tr('back')}</button>`:'<span></span>'}<span>${tr('chapter')} ${localNum(chapter)} / ${localNum(data.book.chapters)}</span>${next?`<button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({mode:'chapter',...next}))}'>${tr('chapter')} ${localNum(next.chapter)} ›</button>`:'<span></span>'}</div>`;
+  view.innerHTML=card(title,`${nav}<p class="muted bible-reader-hint">${state.lang==='fa'?'برای نمایش ابزارها روی آیه بزنید؛ برای باب بعدی یا قبلی صفحه را به چپ یا راست بکشید.':state.lang==='hr'?'Dodirnite redak za alate; povucite lijevo ili desno za drugo poglavlje.':'Tap a verse for tools; swipe left or right to change chapter.'}</p><div class="reader continuous-reader" data-bible-swipe="1">${rows}</div>${nav}`);
+  bindBibleChapterSwipe(prev,next);
+  if(focusVerse)setTimeout(()=>document.getElementById('v-'+focusVerse)?.scrollIntoView({behavior:'smooth',block:'center'}),150);
+}
+function bindBibleChapterSwipe(prev,next){
+  const reader=document.querySelector('[data-bible-swipe]');if(!reader)return;let sx=0,sy=0,tracking=false;
+  reader.addEventListener('touchstart',e=>{if(e.touches.length!==1||e.target.closest('button,textarea,input,a'))return;tracking=true;sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
+  reader.addEventListener('touchend',e=>{if(!tracking||!e.changedTouches.length)return;tracking=false;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)<65||Math.abs(dx)<Math.abs(dy)*1.35)return;const target=dx<0?next:prev;if(target)navigate('bible',{mode:'chapter',bookId:target.bookId,chapter:target.chapter});},{passive:true});
 }
 async function bibleSearch(q){
   await loadBibleMeta(); let out=[];
@@ -1479,7 +1547,7 @@ async function schoolLesson(d, code){
   const tx=l.translations?.[state.lang]||l.translations?.en||{};const wr=l.written?.[state.lang]||l.written?.en||{};const courseCode=schoolCourseInfo(l).code;
   let audioSrc=l.audio?.src||'';const bundledLesson=(Array.isArray(d?.lessons)?d.lessons:[]).find(x=>x.lesson_code===code);if(!audioSrc&&bundledLesson?.audio?.src)audioSrc=bundledLesson.audio.src;
   const audioId='school-'+code;const duration=Number(l.audio?.duration_seconds||0)||Math.round(Number(l.audio?.duration_minutes||0)*60)||0;
-  const item={id:audioId,audio_url:audioSrc,duration_seconds:duration,title_fa:l.translations?.fa?.lesson_title||l.translations?.fa?.class_title||code,title_en:l.translations?.en?.lesson_title||l.translations?.en?.class_title||code,title_hr:l.translations?.hr?.lesson_title||l.translations?.hr?.class_title||code};window.__sermonMap=window.__sermonMap||{};window.__sermonMap[audioId]=item;
+  const item={id:audioId,audio_url:audioSrc,duration_seconds:duration,title_fa:l.translations?.fa?.lesson_title||l.translations?.fa?.class_title||code,title_en:l.translations?.en?.lesson_title||l.translations?.en?.class_title||code,title_hr:l.translations?.hr?.lesson_title||l.translations?.hr?.class_title||code,analytics_type:'school',analytics_id:code,analytics_topic:(l.translations?.[state.lang]?.class_title||l.translations?.en?.class_title||courseCode),analytics_source_group:courseCode,analytics_language:state.lang,course_code:courseCode};window.__sermonMap=window.__sermonMap||{};window.__sermonMap[audioId]=item;
   let schoolExam=null,schoolProgress=null,schoolAssignment=null;const email=currentUserEmail();
   try{const ex=await cloudFetch('school_exams?select=*&lesson_code=eq.'+encodeURIComponent(code)+'&is_active=eq.true&order=sort_order.asc&limit=1',{method:'GET'});schoolExam=Array.isArray(ex)?ex[0]:null}catch(e){console.warn('school exam',e)}
   const schoolSnapshot=await getSchoolSnapshot(email,false);
@@ -1562,13 +1630,20 @@ async function audio(params={}){
   if(Array.isArray(sermons)&&sermons.length){
     const catId=params.cat||''; const q=String(params.q||'').trim().toLowerCase();
     const filtered=sermons.filter(x=>(!catId||String(x.category_id)===String(catId))&&(!q||[x.title_fa,x.title_en,x.title_hr,x.description_fa,x.description_en,x.description_hr].some(v=>String(v||'').toLowerCase().includes(q))));
-    window.__sermonMap=Object.fromEntries(sermons.map(x=>[String(x.id),x]));
+    window.__sermonMap=Object.fromEntries(sermons.map(x=>{const c=categories.find(v=>String(v.id)===String(x.category_id));const topic=c?.['name_'+state.lang]||c?.name_fa||c?.name_en||'';return[String(x.id),Object.assign({},x,{analytics_type:'sermon',analytics_id:String(x.id),analytics_topic:topic,analytics_source_group:String(x.category_id||''),analytics_language:state.lang})]}));
     if(params.open){const x=sermons.find(v=>String(v.id)===String(params.open));if(x)playSermon(x);navigate('audio',{cat:catId,q:params.q||''},true);return}
     const list=filtered.length?`<div class="sermon-list">${filtered.map(x=>{const title=x['title_'+state.lang]||x.title_fa||x.title_en;let progress={};try{progress=JSON.parse(localStorage.getItem(sermonProgressKey(x.id))||'{}')}catch(e){}const duration=sermonDurationLabel(x)||formatAudioTime(progress.duration||0);return `<article class="sermon-card" data-sermon-card="${html(x.id)}"><div class="sermon-card-main">${x.cover_url?`<img src="${html(x.cover_url)}" alt="">`:'<span class="sermon-placeholder">🎙</span>'}<div class="sermon-card-copy"><strong>${html(title)}</strong><small>${duration?`${tr('duration')}: ${localText(duration)} · `:''}${x.youtube_url?'YouTube · ':''}${x.audio_url?'MP3':''}</small><div class="sermon-card-actions">${x.audio_url?`<button class="primary-btn compact-player-btn" data-sermon-play="${html(x.id)}">▶ ${progress.time>5?tr('continueListening'):tr('listenAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(x.audio_url)}" data-offline-title="${html(title)}">${state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline'}</button>`:''}<button class="secondary-btn compact-player-btn" data-sermon-note="${html(x.id)}">📝 ${tr('sermonNoteButton')}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(x.id)}"><div class="inline-player-controls"><button class="player-round" data-inline-back>↶15</button><button class="player-main" data-inline-play>▶</button><button class="player-round" data-inline-forward>30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek type="range" min="0" max="1000" value="0"><span data-inline-total>${duration||'0:00'}</span></div></div></article>`}).join('')}</div>`:`<p class="muted">${tr('noSermons')}</p>`;
     view.innerHTML=card(tr('sermons'),`<input id="sermonSearch" placeholder="${tr('sermonSearch')}" value="${html(params.q||'')}"><div class="tabs"><button class="tab ${!catId?'active':''}" data-go="audio">${tr('allCategories')}</button>${(categories||[]).map(c=>`<button class="tab ${String(catId)===String(c.id)?'active':''}" data-go="audio" data-params='${html(JSON.stringify({cat:c.id}))}'>${html(c['name_'+state.lang]||c.name_fa||c.name_en)}</button>`).join('')}</div>${list}`);
     $('#sermonSearch')?.addEventListener('change',e=>navigate('audio',{cat:catId,q:e.target.value},true));bindInlineSermonControls();updateInlineSermonPlayers();return;
   }
-  const d=await jfetch('data/audio/messages.json'); if(params.cat){const c=d.categories.find(x=>x.id===params.cat);const items=c?.items||[];view.innerHTML=card(pick(c?.title)||tr('audio'),items.length?`<div class="list">${items.map(it=>`<div class="card"><strong>${html(pick(it.title)||it.title||'Audio')}</strong><audio controls src="${html(it.src)}"></audio></div>`).join('')}</div>`:`<p class="muted">${tr('noAudio')}</p>`);return}view.innerHTML=card(tr('audio'),`<div class="grid">${d.categories.map(c=>tile('audio','🎧',pick(c.title),`${tr('all')}: ${localNum((c.items||[]).length)}`,{cat:c.id})).join('')}</div>`);
+  const d=await jfetch('data/audio/messages.json');
+  if(params.cat){
+    const c=d.categories.find(x=>x.id===params.cat),items=c?.items||[],topic=pick(c?.title)||tr('audio');
+    window.__sermonMap=Object.fromEntries(items.map(it=>{const id='bundled-'+String(it.id||simpleHash(it.src||it.title||''));return[id,{id,audio_url:it.src||'',title_fa:it.title?.fa||it.title?.en||'Audio',title_en:it.title?.en||it.title?.fa||'Audio',title_hr:it.title?.hr||it.title?.en||'Audio',analytics_type:'sermon',analytics_id:String(it.id||id),analytics_topic:topic,analytics_source_group:String(c?.id||''),analytics_language:state.lang}]}));
+    const list=items.length?`<div class="sermon-list">${items.map(it=>{const id='bundled-'+String(it.id||simpleHash(it.src||it.title||'')),title=pick(it.title)||it.title||'Audio';let progress={};try{progress=JSON.parse(localStorage.getItem(sermonProgressKey(id))||'{}')}catch(e){}const duration=formatAudioTime(progress.duration||0);return`<article class="sermon-card" data-sermon-card="${html(id)}"><div class="sermon-card-main"><span class="sermon-placeholder">🎧</span><div class="sermon-card-copy"><strong>${html(title)}</strong><small>${duration!=='0:00'?`${tr('duration')}: ${localText(duration)} · `:''}MP3</small><div class="sermon-card-actions"><button class="primary-btn compact-player-btn" data-sermon-play="${html(id)}">▶ ${progress.time>5?tr('continueListening'):tr('listenAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(it.src||'')}" data-offline-title="${html(title)}">${state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline'}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(id)}"><div class="inline-player-controls"><button class="player-round" data-inline-back>↶15</button><button class="player-main" data-inline-play>▶</button><button class="player-round" data-inline-forward>30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek type="range" min="0" max="1000" value="0"><span data-inline-total>${duration}</span></div></div></article>`}).join('')}</div>`:`<p class="muted">${tr('noAudio')}</p>`;
+    view.innerHTML=card(topic,list);bindInlineSermonControls();updateInlineSermonPlayers();return
+  }
+  view.innerHTML=card(tr('audio'),`<div class="grid">${d.categories.map(c=>tile('audio','🎧',pick(c.title),`${tr('all')}: ${localNum((c.items||[]).length)}`,{cat:c.id})).join('')}</div>`);
 }
 
 function audioBibleTitle(row){return row?.['name_'+state.lang]||row?.name_en||row?.name_fa||row?.code||''}
@@ -1609,13 +1684,13 @@ async function audioBible(params={}){
   }
   const book=books.find(b=>String(b.book_code)===bookCode);
   const rows=chapters.filter(c=>String(c.book_code)===bookCode).sort((a,b)=>Number(a.chapter_number)-Number(b.chapter_number));
-  window.__audioBibleMap=Object.fromEntries(rows.map(r=>['bible-'+String(r.id),{id:'bible-'+String(r.id),title_fa:`${book?.name_fa||''} — باب ${r.chapter_number}`,title_en:`${book?.name_en||''} — Chapter ${r.chapter_number}`,title_hr:`${book?.name_hr||''} — Poglavlje ${r.chapter_number}`,audio_url:r.audio_url,duration_seconds:r.duration_seconds||0,cover_url:r.cover_url||''}]));
+  window.__audioBibleMap=Object.fromEntries(rows.map(r=>['bible-'+String(r.id),{id:'bible-'+String(r.id),title_fa:`${book?.name_fa||''} — باب ${r.chapter_number}`,title_en:`${book?.name_en||''} — Chapter ${r.chapter_number}`,title_hr:`${book?.name_hr||''} — Poglavlje ${r.chapter_number}`,audio_url:r.audio_url,duration_seconds:r.duration_seconds||0,cover_url:r.cover_url||'',analytics_type:'audio_bible',analytics_id:String(r.id),analytics_topic:audioBibleTitle(book),analytics_source_group:String(book?.book_code||''),analytics_language:r.language||state.lang,book_code:String(book?.book_code||'')}]));
   const list=rows.length?`<div class="sermon-list">${rows.map(r=>{
-    const id='bible-'+String(r.id), item=window.__audioBibleMap[id], title=audioBibleChapterTitle(r), duration=formatAudioTime(r.duration_seconds||0);
-    return `<article class="sermon-card"><div class="sermon-card-main"><span class="sermon-placeholder">🔊</span><div class="sermon-card-copy"><strong>${html(title)}</strong><small>${duration?`${tr('duration')}: ${duration}`:''}</small><div class="sermon-card-actions"><button class="primary-btn compact-player-btn" data-audio-bible-play="${html(id)}">▶ ${tr('playAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(r.audio_url)}" data-offline-title="${html(audioBibleTitle(book)+' '+title)}">${tr('downloadOffline')}</button></div></div></div></article>`;
+    const id='bible-'+String(r.id),title=audioBibleChapterTitle(r),duration=formatAudioTime(r.duration_seconds||0),progress=(()=>{try{return JSON.parse(localStorage.getItem(sermonProgressKey(id))||'{}')}catch(e){return{}}})();
+    return `<article class="sermon-card" data-sermon-card="${html(id)}"><div class="sermon-card-main"><span class="sermon-placeholder">🔊</span><div class="sermon-card-copy"><strong>${html(title)}</strong><small>${duration?`${tr('duration')}: ${duration}`:''}</small><div class="sermon-card-actions"><button class="primary-btn compact-player-btn" data-sermon-play="${html(id)}">▶ ${progress.time>5?tr('continueListening'):tr('playAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(r.audio_url)}" data-offline-title="${html(audioBibleTitle(book)+' '+title)}">${tr('downloadOffline')}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(id)}"><div class="inline-player-controls"><button class="player-round" data-inline-back>↶15</button><button class="player-main" data-inline-play>▶</button><button class="player-round" data-inline-forward>30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek type="range" min="0" max="1000" value="0"><span data-inline-total>${duration||'0:00'}</span></div></div></article>`;
   }).join('')}</div>`:`<p class="muted">${html(tr('noChapterAudio'))}</p>`;
   view.innerHTML=card(audioBibleTitle(book)||tr('audioBible'),`<p class="muted">${html(testament==='old'?tr('oldTestament'):tr('newTestament'))}</p>${list}`);
-  $$('[data-audio-bible-play]').forEach(btn=>btn.onclick=()=>{const item=window.__audioBibleMap?.[btn.dataset.audioBiblePlay];if(item)playSermon(item)});
+  window.__sermonMap=Object.assign(window.__sermonMap||{},window.__audioBibleMap||{});bindInlineSermonControls();updateInlineSermonPlayers();
 }
 
 async function salvation(){
@@ -1881,6 +1956,8 @@ function bindDynamic(){
   $$('[data-go]').forEach(el=>el.onclick=()=>navigate(el.dataset.go, JSON.parse(el.dataset.params||'{}')));
   $$('[data-offline-download]').forEach(el=>el.onclick=async()=>{const url=el.dataset.offlineDownload;if(el.dataset.offlineCached==='1'){if(confirm(state.lang==='fa'?'این فایل از حافظه آفلاین پاک شود؟':'Remove this offline download?'))await removeOfflineDownload(url,el)}else await downloadForOffline(url,el.dataset.offlineTitle||'',el)});
   refreshOfflineButtons().catch(()=>{});
+  $$('.reader-verse').forEach(el=>{el.onclick=e=>{if(e.target.closest('button,textarea,input,a,.verse-tools,.verse-note-box'))return;const was=el.classList.contains('verse-selected');$$('.reader-verse.verse-selected').forEach(v=>{v.classList.remove('verse-selected');v.querySelector('.verse-tools')?.classList.add('hidden');v.querySelector('.verse-note-box')?.classList.add('hidden')});if(!was){el.classList.add('verse-selected');el.querySelector('.verse-tools')?.classList.remove('hidden')}};el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click()}}});
+  $$('.verse-tools,.verse-note-box').forEach(el=>el.onclick=e=>e.stopPropagation());
   $$('[data-dailytab]').forEach(el=>el.onclick=()=>{ state.dailyTab=el.dataset.dailytab; render('daily',{},true); });
   $$('[data-save-note]').forEach(el=>el.onclick=()=>{ const content=el.previousElementSibling?.value||''; localStorage.setItem('nh7_note_'+el.dataset.saveNote, content); saveNoteCloud('note_'+el.dataset.saveNote, content).catch(console.warn); el.textContent=tr('saved'); });
   $$('[data-bookmark]').forEach(el=>el.onclick=()=>{ const arr=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]'); if(!arr.includes(el.dataset.bookmark)) arr.push(el.dataset.bookmark); localStorage.setItem('nh7_bookmarks',JSON.stringify(arr)); try{ const key=el.closest('.reader-verse')?.dataset?.verseKey; if(key){ const st=JSON.parse(localStorage.getItem(key)||'{}'); st.saved=true; localStorage.setItem(key,JSON.stringify(st)); }}catch(e){} saveVerseCloud(el.dataset.bookmark).catch(console.warn); addPoints(5,'first_verse'); el.textContent='★ '+tr('saved'); });
@@ -1907,6 +1984,8 @@ function bindDynamic(){
   $('#undoGratitude')?.addEventListener('click',(ev)=>{ const current=Number(ev.currentTarget.dataset.gratitudeDay||1); const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]').filter(x=>Number(x)!==current); localStorage.setItem('nh7_gratitude_completed',JSON.stringify(completed)); saveProgressCloud('gratitude_completed',{completed}).catch(console.warn); render('daily',{tab:'gratitude',gday:current},true); });
 }
 
+window.addEventListener('pagehide',()=>{flushAudioAnalytics('pagehide',true).catch(()=>{})});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)flushAudioAnalytics('hidden',true).catch(()=>{})});
 window.addEventListener('popstate', (ev)=>{ const st=ev.state||{}; if(st.route){ state.route=st.route; state.params=st.params||{}; render(state.route,state.params,true); } else { back(); } });
 try{ history.replaceState({route:state.route,params:state.params},'', '#'+encodeURIComponent(state.route)); }catch(e){}
 $('#langSelect').onchange=e=>setLang(e.target.value);
