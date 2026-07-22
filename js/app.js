@@ -1,4 +1,4 @@
-// NH7 v2.2.2 focused update: reliable analytics and the public/protected PDF library.
+// NH7 v2.2.3 targeted update: Bible navigation, protected content, reliable analytics, and secure PDF viewer.
 const $ = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 const view = $('#view');
@@ -711,6 +711,53 @@ function renderMeetingDetails(settings){
 }
 
 function tr(k){ return T[state.lang]?.[k] || T.en[k] || k; }
+function l223(fa,en,hr){return state.lang==='fa'?fa:state.lang==='hr'?hr:en}
+Object.assign(T.en,{writtenBible:'Written Bible',apocrypha:'Apocrypha',bookList:'Book list',previousBook:'Previous book',nextBook:'Next book',previousChapter:'Previous chapter',nextChapter:'Next chapter',noteAvailable:'A note is saved for this verse',close:'Close',openExternal:'Open in browser',securePdfLoading:'Preparing the secure PDF…',schoolContentRequired:'School registration is required',schoolContentGate:'This protected teaching resource is available after school registration and administrator approval.',goToSchoolRegistration:'Go to school registration'});
+Object.assign(T.fa,{writtenBible:'کتاب مقدس',apocrypha:'کتاب‌های اپوکریفا',bookList:'فهرست کتاب‌ها',previousBook:'کتاب قبلی',nextBook:'کتاب بعدی',previousChapter:'باب قبلی',nextChapter:'باب بعدی',noteAvailable:'برای این آیه یادداشت ذخیره شده است',close:'بستن',openExternal:'باز کردن در مرورگر',securePdfLoading:'در حال آماده‌سازی فایل امن PDF…',schoolContentRequired:'ثبت‌نام مدرسه لازم است',schoolContentGate:'این منبع آموزشی محافظت‌شده پس از ثبت‌نام در مدرسه و تأیید مدیر در دسترس قرار می‌گیرد.',goToSchoolRegistration:'رفتن به ثبت‌نام مدرسه'});
+Object.assign(T.hr,{writtenBible:'Biblija',apocrypha:'Apokrifi',bookList:'Popis knjiga',previousBook:'Prethodna knjiga',nextBook:'Sljedeća knjiga',previousChapter:'Prethodno poglavlje',nextChapter:'Sljedeće poglavlje',noteAvailable:'Za ovaj redak spremljena je bilješka',close:'Zatvori',openExternal:'Otvori u pregledniku',securePdfLoading:'Priprema sigurne PDF datoteke…',schoolContentRequired:'Potrebna je registracija za školu',schoolContentGate:'Ovaj zaštićeni nastavni sadržaj dostupan je nakon registracije za školu i odobrenja administratora.',goToSchoolRegistration:'Idi na registraciju za školu'});
+
+let nh7SchoolApprovalCacheV223={at:0,value:false,status:'none'};
+async function nh7ApprovedSchoolAccessV223(force=false){
+  const now=Date.now();
+  if(!force&&now-nh7SchoolApprovalCacheV223.at<60000)return nh7SchoolApprovalCacheV223.value;
+  let access={};
+  try{access=JSON.parse(localStorage.getItem('nh7_school_access')||'{}')||{}}catch(e){}
+  try{const cloud=await fetchLatestRegistration('school');if(cloud)access=cloud}catch(e){console.warn('School access check',e)}
+  const status=String(access?.status||'none').toLowerCase();
+  const value=status==='approved'||access?.approvedBy==='admin';
+  nh7SchoolApprovalCacheV223={at:now,value,status};
+  return value;
+}
+function nh7RenderSchoolGateV223(resourceLabel=''){
+  const status=nh7SchoolApprovalCacheV223.status;
+  const statusText=status==='pending'?tr('pending'):tr('notStarted');
+  view.innerHTML=card(tr('schoolContentRequired'),`<div class="nh7-school-content-gate"><div class="nh7-gate-icon">🎓</div><h2>${html(tr('schoolContentRequired'))}</h2><p>${html(tr('schoolContentGate'))}</p>${resourceLabel?`<p class="muted">${html(resourceLabel)}</p>`:''}<span class="badge">${html(statusText)}</span><div class="button-row"><button class="primary-btn" data-go="school" data-params='{"form":true}'>${html(tr('goToSchoolRegistration'))}</button><button class="secondary-btn" data-go="account">${html(tr('account'))}</button></div></div>`);
+  return false;
+}
+async function nh7RequireSchoolAccessV223(resourceLabel=''){
+  if(await nh7ApprovedSchoolAccessV223())return true;
+  return nh7RenderSchoolGateV223(resourceLabel);
+}
+
+const nh7ContentTrackLastV223=new Map();
+function nh7TrackContentV223(contentType,contentId,title,completed=false,engagedSeconds=0){
+  if(!navigator.onLine)return;
+  const key=[contentType,contentId,completed?'done':'open'].join('|'),now=Date.now();
+  if(!completed&&now-(nh7ContentTrackLastV223.get(key)||0)<60000)return;
+  nh7ContentTrackLastV223.set(key,now);
+  cloudRpc('nh7_track_content_v223',{p_content_type:String(contentType||'other'),p_content_id:String(contentId||''),p_title:String(title||''),p_language:state.lang,p_device_id:deviceId(),p_user_email:currentUserEmail()||'',p_event:completed?'complete':'open',p_engaged_seconds:Math.max(0,Math.round(Number(engagedSeconds)||0))}).catch(()=>{});
+}
+function nh7TrackRenderedContentV223(route,params={}){
+  const title=(view.querySelector('h1,h2,h3,strong')?.textContent||tr(route)||route).trim();
+  let type=route,id='';
+  if(route==='daily'){type='daily_content';id=String(params.tab||state.dailyTab||'word')+':'+String(params.gday||params.day||userCycleDay(365));}
+  else if(route==='bible'&&params.mode==='chapter'){type='bible_chapter';id=String(params.bookId||'')+':'+String(params.chapter||1);}
+  else if(route==='plans'){type='reading_plan';id=String(params.plan||params.day||'overview');}
+  else if(route==='library'){type='library_section';id=String(params.tab||nh7LibraryTab||'public');}
+  else {id=JSON.stringify(params||{}).slice(0,160)||'overview';}
+  nh7TrackContentV223(type,id,title,false,0);
+}
+
 function pick(obj){ return (obj && (obj[state.lang] ?? obj.en ?? obj.fa ?? obj.hr)) || ''; }
 function html(s){ return String(s ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])).replace(/\n/g,'<br>'); }
 function todayKey(d=new Date()){ return d.toISOString().slice(0,10); }
@@ -1091,6 +1138,7 @@ async function render(route, params={}, preserve=false){
     else if(route==='library') await library(params);
     else if(route==='audio') await audio(params);
     else if(route==='audioBible') await audioBible(params);
+    else if(route==='apocrypha') await apocrypha(params);
     else if(route==='salvation') await salvation(params);
     else if(route==='about') await about();
     else if(route==='meetings') await meetings(params);
@@ -1103,6 +1151,7 @@ async function render(route, params={}, preserve=false){
     bindDynamic();
     const detail=params?.lesson?':lesson':params?.exam?':exam':params?.mode==='chapter'?':chapter':params?.book?':book':params?.tab?':'+String(params.tab):'';
     trackAppSection(String(route||'home')+detail);
+    nh7TrackRenderedContentV223(route,params);
     setCrumb(tr(route));
   }catch(e){ console.error(e); view.innerHTML=card('Error',`<p>${html(e.message)}</p>`); }
 }
@@ -1250,41 +1299,59 @@ async function loadBook(bookId){
 }
 async function bible(params={}){
   await loadBibleMeta();
-  if(params.q) return bibleSearch(params.q);
-  if(params.mode==='book') return bibleBook(params.bookId);
-  if(params.mode==='chapter') return bibleChapter(params.bookId, Number(params.chapter||1));
-  const ot=state.bible.books.filter(b=>b.testament==='OT'); const nt=state.bible.books.filter(b=>b.testament==='NT');
-  view.innerHTML=card(tr('bible'), `<div class="form-row"><input id="bibleSearch" class="search-box" placeholder="${tr('search')}"></div><button class="secondary-btn" id="runBibleSearch">${tr('search')}</button>`) + renderBookList(tr('oldtestament'),ot) + renderBookList(tr('newtestament'),nt);
+  if(params.q)return bibleSearch(params.q);
+  if(params.mode==='book')return bibleBook(params.bookId,params.testament||'');
+  if(params.mode==='chapter')return bibleChapter(params.bookId,Number(params.chapter||1));
+  if(!params.section&&!params.testament){
+    view.innerHTML=card(tr('book'),`<p class="muted">${html(l223('منبع مورد نظر خود را انتخاب کنید.','Choose the resource you want to open.','Odaberite sadržaj koji želite otvoriti.'))}</p><div class="grid nh7-book-hub">${tile('bible','📖',tr('writtenBible'),l223('عهد عتیق و عهد جدید','Old and New Testaments','Stari i Novi zavjet'),{section:'written'})}${tile('audioBible','🎧📖',tr('audioBible'),l223('کتاب مقدس صوتی','Audio Bible','Audio Biblija'))}${tile('apocrypha','📜',tr('apocrypha'),l223('کتاب‌های تاریخی اپوکریفا','Apocryphal books','Apokrifne knjige'))}${tile('library','📚',tr('library'),l223('کتاب‌ها و جزوه‌ها','Books and handouts','Knjige i materijali'))}</div>`);
+    return;
+  }
+  if(!params.testament){
+    view.innerHTML=card(tr('writtenBible'),`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible">‹ ${html(tr('back'))}</button></div><div class="form-row"><input id="bibleSearch" class="search-box" placeholder="${tr('search')}"></div><button class="secondary-btn" id="runBibleSearch">${tr('search')}</button><div class="grid">${tile('bible','📜',tr('oldtestament'),'',{section:'written',testament:'OT'})}${tile('bible','✝',tr('newtestament'),'',{section:'written',testament:'NT'})}</div>`);
+    return;
+  }
+  const testament=String(params.testament).toUpperCase();
+  const books=state.bible.books.filter(b=>b.testament===testament);
+  view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written'}))}'>‹ ${html(tr('back'))}</button></div>`+renderBookList(testament==='OT'?tr('oldtestament'):tr('newtestament'),books,testament);
 }
-function renderBookList(title, books){ return card(title, `<div class="grid">${books.map(b=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({mode:'book',bookId:b.id}))}'><strong>${html(b.names[state.lang]||b.names.en)}</strong><small>${localNum(b.chapters)} ${tr('chapters')}</small></button>`).join('')}</div>`); }
-async function bibleBook(bookId){ const data=await loadBook(bookId); if(!data) return bible(); const chapters=Array.from({length:data.book.chapters},(_,i)=>i+1); view.innerHTML=card(data.book.names[state.lang]||data.book.names.en, `<div class="grid">${chapters.map(ch=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({mode:'chapter',bookId,chapter:ch}))}'><strong>${tr('chapter')} ${localNum(ch)}</strong></button>`).join('')}</div>`); }
-async function bibleChapter(bookId, chapter){
-  const data=await loadBook(bookId); if(!data) return bible();
-  const verses=data.verses.filter(v=>Number(v.chapter)===chapter);
-  const focusVerse=Number(state.params?.verse||0);
-  const title=`${data.book.names[state.lang]||data.book.names.en} ${localNum(chapter)}`;
+function renderBookList(title,books,testament=''){return card(title,`<div class="grid">${books.map(b=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:testament||b.testament,bookId:b.id}))}'><strong>${html(b.names[state.lang]||b.names.en)}</strong><small>${localNum(b.chapters)} ${tr('chapters')}</small></button>`).join('')}</div>`)}
+async function bibleBook(bookId,testament=''){
+  const data=await loadBook(bookId);if(!data)return bible({section:'written'});
+  const chapters=Array.from({length:data.book.chapters},(_,i)=>i+1),test=data.book.testament||testament;
+  view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written',testament:test}))}'>‹ ${html(tr('bookList'))}</button></div>`+card(data.book.names[state.lang]||data.book.names.en,`<div class="grid">${chapters.map(ch=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:ch}))}'><strong>${tr('chapter')} ${localNum(ch)}</strong></button>`).join('')}</div>`);
+}
+async function bibleChapter(bookId,chapter){
+  const data=await loadBook(bookId);if(!data)return bible({section:'written'});
+  chapter=Math.min(Math.max(1,Number(chapter)||1),Number(data.book.chapters)||1);
+  const verses=data.verses.filter(v=>Number(v.chapter)===chapter),focusVerse=Number(state.params?.verse||0),title=`${data.book.names[state.lang]||data.book.names.en} ${localNum(chapter)}`;
   let savedRefs=[];try{savedRefs=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]')}catch(e){}
   const savedRefSet=new Set(Array.isArray(savedRefs)?savedRefs:[]);
   const rows=verses.map(v=>{
-    const ref=v.reference?.en || `${data.book.names.en} ${chapter}:${v.verse}`;
-    const key='nh7_bible_state_'+String(v.id||ref).replace(/[^a-zA-Z0-9_-]/g,'_');
-    const st=JSON.parse(localStorage.getItem(key)||'{}');if(savedRefSet.has(ref))st.saved=true;
+    const ref=v.reference?.en||`${data.book.names.en} ${chapter}:${v.verse}`,key='nh7_bible_state_'+String(v.id||ref).replace(/[^a-zA-Z0-9_-]/g,'_');
+    let st={};try{st=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}if(savedRefSet.has(ref))st.saved=true;
     const cls=['reader-verse'];if(st.highlight)cls.push('highlighted');if(focusVerse===Number(v.verse))cls.push('saved-focus');
     const noteBoxId='noteBox_'+String(v.id||ref).replace(/[^a-zA-Z0-9_-]/g,'_');
-    return `<span class="${cls.join(' ')}" id="v-${v.verse}" data-verse-key="${html(key)}" tabindex="0"><sup class="num">${localNum(v.verse)}</sup><span class="verse-text">${html(v.text?.[state.lang]||v.text?.en||'')}</span>${st.note?`<span class="verse-note-preview">📝 ${html(st.note)}</span>`:''}<span class="verse-tools hidden" aria-label="Verse actions"><button class="secondary-btn" data-bookmark="${html(ref)}">${st.saved?'★':'☆'} ${tr('save')}</button><button class="secondary-btn" data-toggle-highlight="${html(key)}">✦ ${tr('highlight')}</button><button class="secondary-btn" data-note-verse="${html(noteBoxId)}">📝 ${tr('writeNote')}</button><button class="secondary-btn" data-share-verse="${html(ref)}" data-share-text="${html(v.text?.[state.lang]||v.text?.en||'')}">↗ ${tr('share')}</button></span><span id="${html(noteBoxId)}" class="verse-note-box hidden"><textarea data-note-input="${html(key)}" maxlength="1000" placeholder="${tr('writeNote')}">${html(st.note||'')}</textarea><button class="primary-btn" data-save-verse-note="${html(key)}">${tr('saveNote')}</button></span></span>`;
+    return `<span class="${cls.join(' ')}" id="v-${v.verse}" data-verse-key="${html(key)}" tabindex="0"><sup class="num">${localNum(v.verse)}</sup><span class="verse-text">${html(v.text?.[state.lang]||v.text?.en||'')}</span>${st.note?`<button class="verse-note-marker" data-note-marker="${html(noteBoxId)}" aria-label="${html(tr('noteAvailable'))}" title="${html(tr('noteAvailable'))}">📓</button>`:''}<span class="verse-tools hidden" aria-label="Verse actions"><button class="secondary-btn" data-bookmark="${html(ref)}">${st.saved?'★':'☆'} ${tr('save')}</button><button class="secondary-btn" data-toggle-highlight="${html(key)}">✦ ${tr('highlight')}</button><button class="secondary-btn" data-note-verse="${html(noteBoxId)}">📝 ${tr('writeNote')}</button><button class="secondary-btn" data-share-verse="${html(ref)}" data-share-text="${html(v.text?.[state.lang]||v.text?.en||'')}">↗ ${tr('share')}</button></span><span id="${html(noteBoxId)}" class="verse-note-box hidden"><div class="verse-note-head"><strong>📓 ${html(tr('notes'))}</strong><button type="button" class="icon-btn" data-close-verse-note>×</button></div><textarea data-note-input="${html(key)}" maxlength="1000" placeholder="${tr('writeNote')}">${html(st.note||'')}</textarea><button class="primary-btn" data-save-verse-note="${html(key)}">${tr('saveNote')}</button></span></span>`;
   }).join(' ');
-  const idx=state.bible.books.findIndex(b=>b.id===bookId);
-  const prev=chapter>1?{bookId,chapter:chapter-1}:idx>0?{bookId:state.bible.books[idx-1].id,chapter:state.bible.books[idx-1].chapters}:null;
-  const next=chapter<data.book.chapters?{bookId,chapter:chapter+1}:idx>=0&&idx<state.bible.books.length-1?{bookId:state.bible.books[idx+1].id,chapter:1}:null;
-  const nav=`<div class="bible-chapter-nav">${prev?`<button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({mode:'chapter',...prev}))}'>‹ ${tr('back')}</button>`:'<span></span>'}<span>${tr('chapter')} ${localNum(chapter)} / ${localNum(data.book.chapters)}</span>${next?`<button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({mode:'chapter',...next}))}'>${tr('chapter')} ${localNum(next.chapter)} ›</button>`:'<span></span>'}</div>`;
-  view.innerHTML=card(title,`${nav}<p class="muted bible-reader-hint">${state.lang==='fa'?'برای نمایش ابزارها روی آیه بزنید؛ برای باب بعدی یا قبلی صفحه را به چپ یا راست بکشید.':state.lang==='hr'?'Dodirnite redak za alate; povucite lijevo ili desno za drugo poglavlje.':'Tap a verse for tools; swipe left or right to change chapter.'}</p><div class="reader continuous-reader" data-bible-swipe="1">${rows}</div>${nav}`);
-  bindBibleChapterSwipe(prev,next);
+  const idx=state.bible.books.findIndex(b=>b.id===bookId),prevBook=idx>0?state.bible.books[idx-1]:null,nextBook=idx>=0&&idx<state.bible.books.length-1?state.bible.books[idx+1]:null;
+  const topNav=`<div class="bible-book-nav"><button class="secondary-btn" ${prevBook?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:prevBook.testament,bookId:prevBook.id}))}'`:'disabled'}>‹ ${html(tr('previousBook'))}</button><button class="primary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written',testament:data.book.testament}))}'>☷ ${html(tr('bookList'))}</button><button class="secondary-btn" ${nextBook?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:nextBook.testament,bookId:nextBook.id}))}'`:'disabled'}>${html(tr('nextBook'))} ›</button></div>`;
+  const prevChapter=chapter>1?chapter-1:null,nextChapter=chapter<data.book.chapters?chapter+1:null;
+  const bottomNav=`<div class="bible-chapter-nav"><button class="secondary-btn" ${prevChapter?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:prevChapter}))}'`:'disabled'}>‹ ${html(tr('previousChapter'))}</button><span>${tr('chapter')} ${localNum(chapter)} / ${localNum(data.book.chapters)}</span><button class="secondary-btn" ${nextChapter?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:nextChapter}))}'`:'disabled'}>${html(tr('nextChapter'))} ›</button></div>`;
+  view.innerHTML=card(title,`${topNav}<p class="muted bible-reader-hint">${html(l223('برای نمایش ابزارها روی آیه بزنید؛ برای باب بعدی یا قبلی صفحه را به چپ یا راست بکشید.','Tap a verse for tools; swipe left or right to change chapter.','Dodirnite redak za alate; povucite lijevo ili desno za drugo poglavlje.'))}</p><div class="reader continuous-reader" data-bible-swipe="1">${rows}</div>${bottomNav}`);
+  bindBibleChapterSwipe(prevChapter?{bookId,chapter:prevChapter}:null,nextChapter?{bookId,chapter:nextChapter}:null);
   if(focusVerse)setTimeout(()=>document.getElementById('v-'+focusVerse)?.scrollIntoView({behavior:'smooth',block:'center'}),150);
 }
 function bindBibleChapterSwipe(prev,next){
   const reader=document.querySelector('[data-bible-swipe]');if(!reader)return;let sx=0,sy=0,tracking=false;
   reader.addEventListener('touchstart',e=>{if(e.touches.length!==1||e.target.closest('button,textarea,input,a'))return;tracking=true;sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
-  reader.addEventListener('touchend',e=>{if(!tracking||!e.changedTouches.length)return;tracking=false;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)<65||Math.abs(dx)<Math.abs(dy)*1.35)return;const target=dx<0?next:prev;if(target)navigate('bible',{mode:'chapter',bookId:target.bookId,chapter:target.chapter});},{passive:true});
+  reader.addEventListener('touchend',e=>{if(!tracking||!e.changedTouches.length)return;tracking=false;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)<65||Math.abs(dx)<Math.abs(dy)*1.35)return;const target=dx<0?next:prev;if(target)navigate('bible',{section:'written',mode:'chapter',bookId:target.bookId,chapter:target.chapter});},{passive:true});
+}
+const NH7_APOCRYPHA_BOOKS_V223=[
+ {en:'Tobit',fa:'طوبیت',hr:'Tobija'},{en:'Judith',fa:'یهودیت',hr:'Judita'},{en:'Wisdom of Solomon',fa:'حکمت سلیمان',hr:'Knjiga Mudrosti'},{en:'Sirach',fa:'حکمت یشوع بن سیراخ',hr:'Sirah'},{en:'Baruch',fa:'باروخ',hr:'Baruh'},{en:'1 Maccabees',fa:'اول مکابیان',hr:'1. Makabejcima'},{en:'2 Maccabees',fa:'دوم مکابیان',hr:'2. Makabejcima'},{en:'Additions to Esther',fa:'افزوده‌های استر',hr:'Dodaci Esteri'},{en:'Additions to Daniel',fa:'افزوده‌های دانیال',hr:'Dodaci Danielu'}
+];
+async function apocrypha(params={}){
+  if(params.book){const b=NH7_APOCRYPHA_BOOKS_V223[Number(params.book)]||NH7_APOCRYPHA_BOOKS_V223[0];view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="apocrypha">‹ ${html(tr('back'))}</button></div>`+card(b[state.lang]||b.en,`<p class="muted">${html(l223('متن این کتاب هنوز در اپ منتشر نشده است. پس از آماده‌شدن ترجمه یا فایل رسمی، از همین بخش قابل مطالعه خواهد بود.','The text of this book has not been published in the app yet. It will be available here after the approved text is prepared.','Tekst ove knjige još nije objavljen u aplikaciji.'))}</p>`);return}
+  view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible">‹ ${html(tr('back'))}</button></div>`+card(tr('apocrypha'),`<p class="muted">${html(l223('فهرست کتاب‌های اپوکریفا؛ متن‌ها پس از آماده‌سازی و تأیید در همین قسمت منتشر می‌شوند.','Apocrypha book list; approved texts will be published here when ready.','Popis apokrifnih knjiga; odobreni tekstovi bit će objavljeni ovdje.'))}</p><div class="grid">${NH7_APOCRYPHA_BOOKS_V223.map((b,i)=>`<button class="tile compact" data-go="apocrypha" data-params='${html(JSON.stringify({book:i}))}'><strong>${html(b[state.lang]||b.en)}</strong></button>`).join('')}</div>`);
 }
 async function bibleSearch(q){
   await loadBibleMeta(); let out=[];
@@ -1642,6 +1709,7 @@ function bindInlineSermonControls(){
 }
 
 async function audio(params={}){
+  if(!await nh7RequireSchoolAccessV223(tr('audio')))return;
   let categories=[],sermons=[];
   try{
     categories=await cloudFetch('sermon_categories?select=*&is_active=eq.true&order=sort_order.asc,name_fa.asc',{method:'GET'}); sermons=await cloudFetch('sermons?select=*&is_published=eq.true&order=sort_order.asc,published_at.desc',{method:'GET'});
@@ -1672,6 +1740,7 @@ function audioBibleChapterTitle(row){
   return `${tr('chapter')} ${localNum(n)}`;
 }
 async function audioBible(params={}){
+  if(!await nh7RequireSchoolAccessV223(tr('audioBible')))return;
   let books=[],chapters=[];
   try{
     [books,chapters]=await Promise.all([
@@ -1689,7 +1758,7 @@ async function audioBible(params={}){
   if(!testament){
     const oldCount=chapters.filter(c=>books.find(b=>b.book_code===c.book_code)?.testament==='old').length;
     const newCount=chapters.filter(c=>books.find(b=>b.book_code===c.book_code)?.testament==='new').length;
-    view.innerHTML=card(tr('audioBible'),`<p class="muted">${html(tr('audioBibleIntro'))}</p><div class="grid">${tile('audioBible','📜',tr('oldTestament'),`${tr('uploadedChapters')}: ${localNum(oldCount)}`,{testament:'old'})}${tile('audioBible','✝',tr('newTestament'),`${tr('uploadedChapters')}: ${localNum(newCount)}`,{testament:'new'})}</div>`);
+    view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible">‹ ${html(tr('back'))}</button></div>`+card(tr('audioBible'),`<p class="muted">${html(tr('audioBibleIntro'))}</p><div class="grid">${tile('audioBible','📜',tr('oldTestament'),`${tr('uploadedChapters')}: ${localNum(oldCount)}`,{testament:'old'})}${tile('audioBible','✝',tr('newTestament'),`${tr('uploadedChapters')}: ${localNum(newCount)}`,{testament:'new'})}</div>`);
     return;
   }
   const testamentBooks=books.filter(b=>String(b.testament)===testament);
@@ -1698,7 +1767,7 @@ async function audioBible(params={}){
       const count=chapters.filter(c=>String(c.book_code)===String(b.book_code)).length;
       return tile('audioBible','📘',audioBibleTitle(b),`${tr('uploadedChapters')}: ${localNum(count)} / ${localNum(b.chapter_count||0)}`,{testament,book:b.book_code});
     }).join('');
-    view.innerHTML=card(testament==='old'?tr('oldTestament'):tr('newTestament'),`<p class="muted">${html(tr('audioBibleIntro'))}</p><div class="grid">${cards}</div>`);
+    view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="audioBible">‹ ${html(tr('back'))}</button></div>`+card(testament==='old'?tr('oldTestament'):tr('newTestament'),`<p class="muted">${html(tr('audioBibleIntro'))}</p><div class="grid">${cards}</div>`);
     return;
   }
   const book=books.find(b=>String(b.book_code)===bookCode);
@@ -1708,7 +1777,7 @@ async function audioBible(params={}){
     const id='bible-'+String(r.id),title=audioBibleChapterTitle(r),duration=formatAudioTime(r.duration_seconds||0),progress=(()=>{try{return JSON.parse(localStorage.getItem(sermonProgressKey(id))||'{}')}catch(e){return{}}})();
     return `<article class="sermon-card" data-sermon-card="${html(id)}"><div class="sermon-card-main"><span class="sermon-placeholder">🔊</span><div class="sermon-card-copy"><strong>${html(title)}</strong><small>${duration?`${tr('duration')}: ${duration}`:''}</small><div class="sermon-card-actions"><button class="primary-btn compact-player-btn" data-sermon-play="${html(id)}">▶ ${progress.time>5?tr('continueListening'):tr('playAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(r.audio_url)}" data-offline-title="${html(audioBibleTitle(book)+' '+title)}">${tr('downloadOffline')}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(id)}"><div class="inline-player-controls"><button class="player-round" data-inline-back>↶15</button><button class="player-main" data-inline-play>▶</button><button class="player-round" data-inline-forward>30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek type="range" min="0" max="1000" value="0"><span data-inline-total>${duration||'0:00'}</span></div></div></article>`;
   }).join('')}</div>`:`<p class="muted">${html(tr('noChapterAudio'))}</p>`;
-  view.innerHTML=card(audioBibleTitle(book)||tr('audioBible'),`<p class="muted">${html(testament==='old'?tr('oldTestament'):tr('newTestament'))}</p>${list}`);
+  view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="audioBible" data-params='${html(JSON.stringify({testament}))}'>‹ ${html(tr('bookList'))}</button></div>`+card(audioBibleTitle(book)||tr('audioBible'),`<p class="muted">${html(testament==='old'?tr('oldTestament'):tr('newTestament'))}</p>${list}`);
   window.__sermonMap=Object.assign(window.__sermonMap||{},window.__audioBibleMap||{});bindInlineSermonControls();updateInlineSermonPlayers();
 }
 
@@ -1779,30 +1848,41 @@ async function loadLibraryCatalog(){
   try{const rows=await cloudFetch('nh7_library_items_v222?select=*&order=audience.asc,sort_order.asc,created_at.desc',{method:'GET',cache:'no-store'});nh7LibraryCatalog=Array.isArray(rows)?rows:[]}catch(e){console.warn('Library catalog',e);nh7LibraryCatalog=[]}
   return nh7LibraryCatalog;
 }
+function nh7ClosePdfViewerV223(){document.getElementById('nh7PdfViewerV223')?.remove()}
+function nh7PdfErrorTextV223(err){
+  const raw=String(err?.code||err?.message||err||'').trim(),key=raw.toLowerCase();
+  if(key.includes('school_approval_required'))return tr('schoolContentGate');
+  if(key.includes('invalid_code')||key.includes('code_invalid')||key.includes('expired')||key.includes('max_uses'))return tr('invalidAccessCode');
+  if(key.includes('item_not_found')||key.includes('not_found'))return l223('این فایل پیدا نشد یا دیگر منتشر نشده است.','This file was not found or is no longer published.','Datoteka nije pronađena ili više nije objavljena.');
+  if(key.includes('storage')||key.includes('signed_url')||key.includes('no signed url'))return l223('لینک امن فایل ساخته نشد. چند لحظه بعد دوباره تلاش کنید.','The secure file link could not be created. Please try again shortly.','Sigurna poveznica nije stvorena. Pokušajte ponovno.');
+  if(key.includes('failed to fetch')||key.includes('network'))return l223('ارتباط اینترنتی برقرار نشد. پنجره را ببندید و دوباره تلاش کنید.','The network connection failed. Close this window and try again.','Mrežna veza nije uspjela. Zatvorite prozor i pokušajte ponovno.');
+  return raw||l223('فایل باز نشد. پنجره را ببندید و دوباره تلاش کنید.','The file could not be opened. Close this window and try again.','Datoteka se nije mogla otvoriti.');
+}
+function nh7ShowPdfViewerV223(title=''){
+  nh7ClosePdfViewerV223();const modal=document.createElement('div');modal.id='nh7PdfViewerV223';modal.className='nh7-pdf-viewer-modal';modal.innerHTML=`<div class="nh7-pdf-viewer-dialog"><div class="nh7-pdf-viewer-head"><strong>${html(title||tr('library'))}</strong><div><a class="secondary-btn hidden" id="nh7PdfExternalV223" target="_blank" rel="noopener">${html(tr('openExternal'))}</a><button class="icon-btn" type="button" data-pdf-close>×</button></div></div><div class="nh7-pdf-loading" id="nh7PdfLoadingV223"><div class="spinner"></div><p>${html(tr('securePdfLoading'))}</p></div><iframe class="hidden" id="nh7PdfFrameV223" title="PDF"></iframe></div>`;document.body.appendChild(modal);modal.querySelectorAll('[data-pdf-close]').forEach(b=>b.onclick=nh7ClosePdfViewerV223);modal.onclick=e=>{if(e.target===modal)nh7ClosePdfViewerV223()};return modal;
+}
 async function openLibraryPdf(item){
-  if(!item)return;
-  let code='';
-  if(item.audience==='ministers'){
-    const saved=JSON.parse(sessionStorage.getItem('nh7_minister_library_code')||'null');
+  if(!item)return;if(!await nh7RequireSchoolAccessV223(tr('library')))return;
+  let code='';if(item.audience==='ministers'){
+    let saved=null;try{saved=JSON.parse(sessionStorage.getItem('nh7_minister_library_code')||'null')}catch(e){}
     if(saved&&Date.now()-Number(saved.at||0)<12*60*60*1000)code=String(saved.code||'');
-    if(!code)code=String(prompt(tr('enterAccessCode'),'')||'').trim();
-    if(!code)return;
+    if(!code)code=String(prompt(tr('enterAccessCode'),'')||'').trim();if(!code)return;
   }
-  const popup=window.open('about:blank','_blank');
+  const modal=nh7ShowPdfViewerV223(libraryText(item,'title')||item.file_name||'PDF');
   try{
-    if(popup){popup.document.write('<p style="font-family:system-ui;padding:24px">Opening secure PDF…</p>');popup.document.close()}
     const d=await invokeEdgeFunction('nh7-library-access',{item_id:item.id,code,device_id:deviceId(),user_email:currentUserEmail()||''});
     if(!d?.signed_url)throw new Error(d?.error||'No signed URL');
     if(item.audience==='ministers')sessionStorage.setItem('nh7_minister_library_code',JSON.stringify({code,at:Date.now()}));
-    trackAppSection('library:'+item.audience+':open');
-    if(popup)popup.location.href=d.signed_url;else location.href=d.signed_url;
+    trackAppSection('library:'+item.audience+':open');nh7TrackContentV223('library_pdf',String(item.id),libraryText(item,'title')||item.file_name||'PDF');
+    const frame=modal.querySelector('#nh7PdfFrameV223'),external=modal.querySelector('#nh7PdfExternalV223');external.href=d.signed_url;external.classList.remove('hidden');frame.src=d.signed_url;frame.classList.remove('hidden');modal.querySelector('#nh7PdfLoadingV223')?.classList.add('hidden');
   }catch(e){
-    try{popup?.close()}catch(_){}
     if(item.audience==='ministers')sessionStorage.removeItem('nh7_minister_library_code');
-    const msg=String(e?.message||e);alert(item.audience==='ministers'?tr('invalidAccessCode')+'\n'+msg:msg)
+    modal.querySelector('#nh7PdfLoadingV223').innerHTML=`<div class="notice"><strong>${html(item.audience==='ministers'?tr('invalidAccessCode'):tr('library'))}</strong><p>${html(nh7PdfErrorTextV223(e))}</p><button class="secondary-btn" type="button" data-pdf-close>${html(tr('close'))}</button></div>`;modal.querySelectorAll('[data-pdf-close]').forEach(b=>b.onclick=nh7ClosePdfViewerV223);
   }
 }
+
 async function library(params={}){
+  if(!await nh7RequireSchoolAccessV223(tr('library')))return;
   nh7LibraryTab=params.tab||nh7LibraryTab||'public';sessionStorage.setItem('nh7_library_tab',nh7LibraryTab);
   await loadLibraryCatalog();
   const rows=nh7LibraryCatalog.filter(x=>x.audience===nh7LibraryTab);
@@ -1811,7 +1891,7 @@ async function library(params={}){
   view.innerHTML=card(tr('library'),`<div class="library-user-tabs"><button class="${nh7LibraryTab==='public'?'primary-btn':'secondary-btn'}" data-library-tab="public">${tr('publicLibrary')}</button><button class="${nh7LibraryTab==='ministers'?'primary-btn':'secondary-btn'}" data-library-tab="ministers">🔒 ${tr('ministersLibrary')}</button></div>${nh7LibraryTab==='ministers'?`<div class="library-lock-note">${tr('protectedLibrary')}<br>${tr('enterAccessCode')}</div>`:''}<h2>${title}</h2><div class="library-user-grid">${cards||`<p class="muted">${tr('libraryEmpty')}</p>`}</div><p class="muted small">${tr('pdfExpires')}</p>`);
 }
 
-async function more(){ view.innerHTML=`<div class="grid">${tile('library','📚',tr('library'))}${tile('audioBible','📖🔊',tr('audioBible'))}${tile('audio','🎧',tr('audio'))}${tile('salvation','✝',tr('salvation'))}${tile('daily','🙏',tr('gratitude'),'',{tab:'gratitude'})}${tile('meetings','☎',tr('meetings'))}${tile('qna','❓',tr('qna'))}${tile('inbox','📥',tr('inbox'), unreadCount()?`${tr('unread')}: ${localNum(unreadCount())}`:'')}${tile('account','👤',tr('account'))}${tile('about','ℹ',tr('about'))}${tile('settings','⚙',tr('settings'))}</div>`; }
+async function more(){ view.innerHTML=`<div class="grid">${tile('audio','🎧',tr('audio'))}${tile('salvation','✝',tr('salvation'))}${tile('daily','🙏',tr('gratitude'),'',{tab:'gratitude'})}${tile('meetings','☎',tr('meetings'))}${tile('qna','❓',tr('qna'))}${tile('inbox','📥',tr('inbox'), unreadCount()?`${tr('unread')}: ${localNum(unreadCount())}`:'')}${tile('account','👤',tr('account'))}${tile('about','ℹ',tr('about'))}${tile('settings','⚙',tr('settings'))}</div>`; }
 
 async function fetchMyQuestionsCloud(){
   const profile=getKnownUserProfile();
@@ -2026,8 +2106,9 @@ function bindDynamic(){
   $$('[data-delete-bookmark]').forEach(el=>el.onclick=(ev)=>{ev.stopPropagation();const ref=el.dataset.deleteBookmark;const arr=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]').filter(x=>String(x)!==String(ref));localStorage.setItem('nh7_bookmarks',JSON.stringify(arr));deleteVerseCloud(ref).catch(console.warn);render(state.route,state.params,true)});
   $$('[data-highlight]').forEach(el=>el.onclick=()=>el.closest('.reader-verse')?.classList.toggle('highlighted'));
   $$('[data-toggle-highlight]').forEach(el=>el.onclick=()=>{const key=el.dataset.toggleHighlight;const st=JSON.parse(localStorage.getItem(key)||'{}');st.highlight=!st.highlight;localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);el.closest('.reader-verse')?.classList.toggle('highlighted',!!st.highlight)});
-  $$('[data-note-verse]').forEach(el=>el.onclick=()=>{ const box=$('#'+el.dataset.noteVerse); if(box) box.classList.toggle('hidden'); });
-  $$('[data-save-verse-note]').forEach(el=>el.onclick=()=>{const key=el.dataset.saveVerseNote;const input=$(`[data-note-input="${CSS.escape(key)}"]`);const st=JSON.parse(localStorage.getItem(key)||'{}');st.note=(input?.value||'').slice(0,1000);localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);el.textContent=tr('saved')});
+  $$('[data-note-verse],[data-note-marker]').forEach(el=>el.onclick=()=>{const id=el.dataset.noteVerse||el.dataset.noteMarker,box=$('#'+CSS.escape(id));if(box){$$('.verse-note-box').forEach(x=>{if(x!==box)x.classList.add('hidden')});box.classList.toggle('hidden')}});
+  $$('[data-close-verse-note]').forEach(el=>el.onclick=()=>el.closest('.verse-note-box')?.classList.add('hidden'));
+  $$('[data-save-verse-note]').forEach(el=>el.onclick=()=>{const key=el.dataset.saveVerseNote,input=$(`[data-note-input="${CSS.escape(key)}"]`),verse=el.closest('.reader-verse');let st={};try{st=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}st.note=(input?.value||'').slice(0,1000);localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);let marker=verse?.querySelector('.verse-note-marker');if(st.note&&!marker&&verse){marker=document.createElement('button');marker.type='button';marker.className='verse-note-marker';marker.dataset.noteMarker=el.closest('.verse-note-box')?.id||'';marker.textContent='📓';marker.title=tr('noteAvailable');marker.onclick=()=>el.closest('.verse-note-box')?.classList.toggle('hidden');verse.querySelector('.verse-text')?.after(marker)}else if(!st.note&&marker)marker.remove();el.textContent=tr('saved');setTimeout(()=>el.closest('.verse-note-box')?.classList.add('hidden'),350)});
   $$('[data-share-verse]').forEach(el=>el.onclick=async()=>{ const txt=`${localizeRef(el.dataset.shareVerse)} — ${el.dataset.shareText||''}`; try{ if(navigator.share) await navigator.share({text:txt}); else { await navigator.clipboard.writeText(txt); alert(tr('saved')); } }catch(e){} });
   $$('[data-complete-daily]').forEach(el=>el.onclick=()=>{ const key='nh7_daily_done_'+el.dataset.completeDaily; if(!localStorage.getItem(key)){ localStorage.setItem(key,'1'); saveProgressCloud(key,{done:true,at:new Date().toISOString()}).catch(console.warn); addPoints(3,'daily_1'); } el.textContent=tr('dailyCompleted'); });
   $$('[data-open-ref]').forEach(el=>el.onclick=async()=>{ await loadBibleMeta(); const ref=parseRef(el.dataset.openRef); if(ref){ const params={mode:'chapter',bookId:ref.bookId,chapter:ref.chapter}; if((el.dataset.openRefMode||'verse')==='verse') params.verse=ref.verse; navigate('bible',params); } });
