@@ -462,8 +462,18 @@ function cloudStatusText(){
   return s==='synced'?'Cloud save is synced.':s==='queued'?'Some items are waiting for cloud sync.':'Local save is active; cloud starts after the tables are created.';
 }
 async function saveRegistrationCloud(data){
-  const payload={device_id:deviceId(), type:data.kind||'general', status:'pending', language:state.lang, payload:data};
-  await saveCloud({type:'insert', table:'registrations', payload});
+  const payload=Object.assign({},data,{device_id:deviceId()});
+  try{
+    const result=await cloudRpc('nh7_submit_registration_v3',{
+      p_type:data.kind||'general',p_email:data.email||'',p_device_id:deviceId(),p_language:state.lang,p_payload:payload
+    });
+    return Array.isArray(result)?result[0]:result;
+  }catch(e){
+    console.warn('Registration RPC unavailable; using compatible fallback',e);
+    const row={device_id:deviceId(),type:data.kind||'general',status:'pending',language:state.lang,payload};
+    await saveCloud({type:'insert',table:'registrations',payload:row});
+    return {status:'pending',created:true};
+  }
 }
 function accountCloudEmail(){return isAccountLoggedIn()?authEmail():''}
 function accountProgressKey(key){const k=String(key||'');return k.startsWith('nh7_')?k:'nh7_'+k}
@@ -848,27 +858,41 @@ function registrationFormHtml(kind, access={}){
     <div class="form-row"><input id="reg_email" required type="email" placeholder="${tr('email')} *" value="${v('email')}"></div>
     <div class="form-row password-wrap"><input id="reg_password" required type="password" minlength="6" placeholder="${tr('password')} *"><button type="button" class="password-eye" data-toggle-password="reg_password">👁</button></div>
     <div class="form-row password-wrap"><input id="reg_confirmPassword" required type="password" minlength="6" placeholder="${tr('confirmPassword')} *"><button type="button" class="password-eye" data-toggle-password="reg_confirmPassword">👁</button></div>
-    <button class="primary-btn" data-submit-registration="${kind}">${tr('submitRegistration')}</button>
+    <button class="primary-btn registration-submit-btn" data-submit-registration="${kind}">${tr('submitRegistration')}</button>
+    <div class="registration-submit-status" id="registrationSubmitStatus" role="status" aria-live="polite"></div>
   `);
 }
 async function collectRegistration(kind){
+  const button=document.querySelector(`[data-submit-registration="${CSS.escape(kind)}"]`),statusEl=document.getElementById('registrationSubmitStatus');
+  if(button?.dataset.submitting==='1')return;
+  const say=(fa,en,hr)=>state.lang==='fa'?fa:state.lang==='hr'?hr:en;
+  const setBusy=(busy,text='')=>{if(button){button.dataset.submitting=busy?'1':'0';button.disabled=busy;button.classList.toggle('is-busy',busy);button.textContent=text||(busy?say('در حال ثبت درخواست…','Submitting request…','Slanje zahtjeva…'):tr('submitRegistration'))}if(statusEl){statusEl.textContent=text||'';statusEl.classList.toggle('success',!busy&&!!text)}};
   const fields=['firstName','lastName','birthDate','city','country','spiritualAge','churchMember','churchName','pastorName','waterBaptism','salvationPrayer','eventsInterest','testimony','howFound','phone','email'];
   const data={status:'pending',submittedAt:new Date().toISOString(),kind};
-  for(const f of fields){ const el=$('#reg_'+f); data[f]=(el?.value||'').trim(); if(!data[f]){ alert(tr('requiredField')); el?.focus(); return; } }
+  for(const f of fields){const el=$('#reg_'+f);data[f]=(el?.value||'').trim();if(!data[f]){alert(tr('requiredField'));el?.focus();return}}
   data.email=data.email.toLowerCase();
-  const password=$('#reg_password')?.value||''; const confirmPassword=$('#reg_confirmPassword')?.value||'';
-  if(password.length<6){alert(tr('passwordMin'));return} if(password!==confirmPassword){alert(tr('passwordMismatch'));return}
+  const password=$('#reg_password')?.value||'',confirmPassword=$('#reg_confirmPassword')?.value||'';
+  if(password.length<6){alert(tr('passwordMin'));return}if(password!==confirmPassword){alert(tr('passwordMismatch'));return}
+  setBusy(true,say('درخواست دریافت شد؛ لطفاً صبر کنید…','Request received; please wait…','Zahtjev je primljen; pričekajte…'));
   try{
-    const session=await authApi('signup',{method:'POST',body:JSON.stringify({email:data.email,password,data:{full_name:(data.firstName+' '+data.lastName).trim(),language:state.lang}})});
-    if(session?.access_token) saveAuthSession(session);
+    try{
+      const session=await authApi('signup',{method:'POST',body:JSON.stringify({email:data.email,password,data:{full_name:(data.firstName+' '+data.lastName).trim(),language:state.lang}})});
+      if(session?.access_token)saveAuthSession(session);
+    }catch(e){
+      const msg=String(e.message||'').toLowerCase();
+      if(!msg.includes('already')&&!msg.includes('registered')&&!msg.includes('exists'))console.warn('Account creation',e);
+    }
+    localStorage.removeItem(EXPLICIT_LOGOUT_KEY);localStorage.setItem('nh7_manual_email',data.email);localStorage.setItem('nh7_user_profile',JSON.stringify({name:(data.firstName+' '+data.lastName).trim(),email:data.email,phone:data.phone||''}));
+    const key=kind==='meeting'?'nh7_meeting_access':'nh7_school_access';localStorage.setItem(key,JSON.stringify(data));
+    const result=await saveRegistrationCloud(data),finalStatus=String(result?.status||'pending');
+    data.status=finalStatus;localStorage.setItem(key,JSON.stringify(data));
+    const message=finalStatus==='approved'?say('ثبت‌نام شما تأیید شده است.','Your registration is approved.','Vaša registracija je odobrena.'):say('ثبت‌نام شما با موفقیت انجام شد. اکنون باید منتظر تأیید مدیر مدرسه بمانید.','Your registration was submitted successfully. Please wait for school administrator approval.','Registracija je uspješno poslana. Pričekajte odobrenje administratora škole.');
+    setBusy(false,'✓ '+message);alert(message);
+    setTimeout(()=>{if(data.salvationPrayer==='no')navigate('salvation',{},true);else render(kind==='meeting'?'meetings':'school',{},true)},250);
   }catch(e){
-    const msg=String(e.message||'').toLowerCase();
-    if(!msg.includes('already')&&!msg.includes('registered')&&!msg.includes('exists')) console.warn('Account creation',e);
+    console.warn(e);setBusy(false,say('درخواست روی دستگاه ذخیره شد و پس از اتصال دوباره همگام می‌شود.','Request saved on this device and will sync when online.','Zahtjev je spremljen i sinkronizirat će se kad budete online.'));
+    alert(statusEl?.textContent||String(e.message||e));
   }
-  localStorage.removeItem(EXPLICIT_LOGOUT_KEY); localStorage.setItem('nh7_manual_email',data.email); localStorage.setItem('nh7_user_profile',JSON.stringify({name:(data.firstName+' '+data.lastName).trim(),email:data.email,phone:data.phone||''}));
-  const key=kind==='meeting'?'nh7_meeting_access':'nh7_school_access'; localStorage.setItem(key,JSON.stringify(data));
-  try{await saveRegistrationCloud(data);alert(tr('registerDone'))}catch(e){console.warn(e);alert(state.lang==='fa'?'درخواست روی دستگاه ذخیره شد و بعداً همگام می‌شود.':'Request saved locally and will sync later.')}
-  if(data.salvationPrayer==='no')navigate('salvation',{},true);else render(kind==='meeting'?'meetings':'school',{},true);
 }
 function collectNotes(){
   const out=[];
@@ -1329,9 +1353,10 @@ async function bibleChapter(bookId,chapter){
   const rows=verses.map(v=>{
     const ref=v.reference?.en||`${data.book.names.en} ${chapter}:${v.verse}`,key='nh7_bible_state_'+String(v.id||ref).replace(/[^a-zA-Z0-9_-]/g,'_');
     let st={};try{st=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}if(savedRefSet.has(ref))st.saved=true;
-    const cls=['reader-verse'];if(st.highlight)cls.push('highlighted');if(focusVerse===Number(v.verse))cls.push('saved-focus');
+    const color=st.highlightColor||'yellow',cls=['reader-verse'];if(st.highlight)cls.push('highlighted','highlight-'+color);if(focusVerse===Number(v.verse))cls.push('saved-focus');
     const noteBoxId='noteBox_'+String(v.id||ref).replace(/[^a-zA-Z0-9_-]/g,'_');
-    return `<span class="${cls.join(' ')}" id="v-${v.verse}" data-verse-key="${html(key)}" tabindex="0"><sup class="num">${localNum(v.verse)}</sup><span class="verse-text">${html(v.text?.[state.lang]||v.text?.en||'')}</span>${st.note?`<button class="verse-note-marker" data-note-marker="${html(noteBoxId)}" aria-label="${html(tr('noteAvailable'))}" title="${html(tr('noteAvailable'))}">📓</button>`:''}<span class="verse-tools hidden" aria-label="Verse actions"><button class="secondary-btn" data-bookmark="${html(ref)}">${st.saved?'★':'☆'} ${tr('save')}</button><button class="secondary-btn" data-toggle-highlight="${html(key)}">✦ ${tr('highlight')}</button><button class="secondary-btn" data-note-verse="${html(noteBoxId)}">📝 ${tr('writeNote')}</button><button class="secondary-btn" data-share-verse="${html(ref)}" data-share-text="${html(v.text?.[state.lang]||v.text?.en||'')}">↗ ${tr('share')}</button></span><span id="${html(noteBoxId)}" class="verse-note-box hidden"><div class="verse-note-head"><strong>📓 ${html(tr('notes'))}</strong><button type="button" class="icon-btn" data-close-verse-note>×</button></div><textarea data-note-input="${html(key)}" maxlength="1000" placeholder="${tr('writeNote')}">${html(st.note||'')}</textarea><button class="primary-btn" data-save-verse-note="${html(key)}">${tr('saveNote')}</button></span></span>`;
+    const colors=['yellow','red','green','blue'];
+    return `<span class="${cls.join(' ')}" id="v-${v.verse}" data-verse-key="${html(key)}" tabindex="0"><sup class="num">${localNum(v.verse)}</sup><span class="verse-text">${html(v.text?.[state.lang]||v.text?.en||'')}</span>${st.note?`<button class="verse-note-marker" data-note-marker="${html(noteBoxId)}" aria-label="${html(tr('noteAvailable'))}" title="${html(tr('noteAvailable'))}">📓</button>`:''}<span class="verse-tools hidden" aria-label="Verse actions"><button class="secondary-btn" data-bookmark="${html(ref)}">${st.saved?'★':'☆'} ${tr('save')}</button><span class="highlight-control"><button class="secondary-btn" data-highlight-menu="${html(key)}">✦ ${tr('highlight')}</button><span class="highlight-palette hidden" data-highlight-palette="${html(key)}">${colors.map(c=>`<button type="button" class="highlight-dot ${c} ${st.highlight&&color===c?'active':''}" data-highlight-color="${c}" data-highlight-key="${html(key)}" aria-label="${c}"></button>`).join('')}<button type="button" class="highlight-clear" data-highlight-clear="${html(key)}" aria-label="Clear">×</button></span></span><button class="secondary-btn" data-note-verse="${html(noteBoxId)}">📝 ${tr('writeNote')}</button><button class="secondary-btn" data-share-verse="${html(ref)}" data-share-text="${html(v.text?.[state.lang]||v.text?.en||'')}">↗ ${tr('share')}</button></span><span id="${html(noteBoxId)}" class="verse-note-box hidden"><div class="verse-note-head"><strong>📓 ${html(tr('notes'))}</strong><button type="button" class="icon-btn" data-close-verse-note>×</button></div><textarea data-note-input="${html(key)}" maxlength="1000" placeholder="${tr('writeNote')}">${html(st.note||'')}</textarea><button class="primary-btn" data-save-verse-note="${html(key)}">${tr('saveNote')}</button></span></span>`;
   }).join(' ');
   const idx=state.bible.books.findIndex(b=>b.id===bookId),prevBook=idx>0?state.bible.books[idx-1]:null,nextBook=idx>=0&&idx<state.bible.books.length-1?state.bible.books[idx+1]:null;
   const topNav=`<div class="bible-book-nav"><button class="secondary-btn" ${prevBook?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:prevBook.testament,bookId:prevBook.id}))}'`:'disabled'}>‹ ${html(tr('previousBook'))}</button><button class="primary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written',testament:data.book.testament}))}'>☷ ${html(tr('bookList'))}</button><button class="secondary-btn" ${nextBook?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:nextBook.testament,bookId:nextBook.id}))}'`:'disabled'}>${html(tr('nextBook'))} ›</button></div>`;
@@ -1350,8 +1375,15 @@ const NH7_APOCRYPHA_BOOKS_V223=[
  {en:'Tobit',fa:'طوبیت',hr:'Tobija'},{en:'Judith',fa:'یهودیت',hr:'Judita'},{en:'Wisdom of Solomon',fa:'حکمت سلیمان',hr:'Knjiga Mudrosti'},{en:'Sirach',fa:'حکمت یشوع بن سیراخ',hr:'Sirah'},{en:'Baruch',fa:'باروخ',hr:'Baruh'},{en:'1 Maccabees',fa:'اول مکابیان',hr:'1. Makabejcima'},{en:'2 Maccabees',fa:'دوم مکابیان',hr:'2. Makabejcima'},{en:'Additions to Esther',fa:'افزوده‌های استر',hr:'Dodaci Esteri'},{en:'Additions to Daniel',fa:'افزوده‌های دانیال',hr:'Dodaci Danielu'}
 ];
 async function apocrypha(params={}){
-  if(params.book){const b=NH7_APOCRYPHA_BOOKS_V223[Number(params.book)]||NH7_APOCRYPHA_BOOKS_V223[0];view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="apocrypha">‹ ${html(tr('back'))}</button></div>`+card(b[state.lang]||b.en,`<p class="muted">${html(l223('متن این کتاب هنوز در اپ منتشر نشده است. پس از آماده‌شدن ترجمه یا فایل رسمی، از همین بخش قابل مطالعه خواهد بود.','The text of this book has not been published in the app yet. It will be available here after the approved text is prepared.','Tekst ove knjige još nije objavljen u aplikaciji.'))}</p>`);return}
-  view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible">‹ ${html(tr('back'))}</button></div>`+card(tr('apocrypha'),`<p class="muted">${html(l223('فهرست کتاب‌های اپوکریفا؛ متن‌ها پس از آماده‌سازی و تأیید در همین قسمت منتشر می‌شوند.','Apocrypha book list; approved texts will be published here when ready.','Popis apokrifnih knjiga; odobreni tekstovi bit će objavljeni ovdje.'))}</p><div class="grid">${NH7_APOCRYPHA_BOOKS_V223.map((b,i)=>`<button class="tile compact" data-go="apocrypha" data-params='${html(JSON.stringify({book:i}))}'><strong>${html(b[state.lang]||b.en)}</strong></button>`).join('')}</div>`);
+  if(!await nh7RequireSchoolAccessV223(tr('apocrypha')))return;
+  await loadLibraryCatalog();
+  const apoRows=nh7LibraryCatalog.filter(x=>(x.resource_type||'library')==='apocrypha');
+  if(params.book!==undefined){
+    const idx=Number(params.book),b=NH7_APOCRYPHA_BOOKS_V223[idx]||NH7_APOCRYPHA_BOOKS_V223[0],code=String(b.en||'').toLowerCase().replace(/[^a-z0-9]+/g,'_'),rows=apoRows.filter(x=>String(x.apocrypha_book||'').toLowerCase()===code||libraryText(x,'title').toLowerCase().includes(String(b[state.lang]||b.en).toLowerCase()));
+    view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="apocrypha">‹ ${html(tr('back'))}</button></div>`+card(b[state.lang]||b.en,`<div class="library-user-grid">${rows.map(x=>libraryUserCardV224(x,true)).join('')||`<p class="muted">${html(l223('هنوز فایل تأییدشده‌ای برای این کتاب بارگذاری نشده است.','No approved file has been uploaded for this book yet.','Za ovu knjigu još nema odobrene datoteke.'))}</p>`}</div>`);return
+  }
+  const countByBook=i=>{const code=String(NH7_APOCRYPHA_BOOKS_V223[i].en||'').toLowerCase().replace(/[^a-z0-9]+/g,'_');return apoRows.filter(x=>String(x.apocrypha_book||'').toLowerCase()===code).length};
+  view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible">‹ ${html(tr('back'))}</button></div>`+card(tr('apocrypha'),`<p class="muted">${html(l223('کتاب‌های اپوکریفا به‌صورت PDF یا Word از پنل مدیریت منتشر می‌شوند.','Apocrypha books are published as PDF or Word documents from the admin panel.','Apokrifne knjige objavljuju se kao PDF ili Word dokumenti.'))}</p><div class="grid">${NH7_APOCRYPHA_BOOKS_V223.map((b,i)=>`<button class="tile compact" data-go="apocrypha" data-params='${html(JSON.stringify({book:i}))}'><strong>${html(b[state.lang]||b.en)}</strong><small>${localNum(countByBook(i))}</small></button>`).join('')}</div>`);
 }
 async function bibleSearch(q){
   await loadBibleMeta(); let out=[];
@@ -1845,10 +1877,11 @@ let nh7LibraryCatalog=[];
 function libraryText(row,key){return row?.[key+'_'+state.lang]||row?.[key+'_en']||row?.[key+'_fa']||row?.[key+'_hr']||''}
 function librarySize(bytes){bytes=Number(bytes||0);if(bytes<1024*1024)return Math.max(1,Math.round(bytes/1024))+' KB';return (bytes/1024/1024).toFixed(1)+' MB'}
 async function loadLibraryCatalog(){
-  try{const rows=await cloudFetch('nh7_library_items_v222?select=*&order=audience.asc,sort_order.asc,created_at.desc',{method:'GET',cache:'no-store'});nh7LibraryCatalog=Array.isArray(rows)?rows:[]}catch(e){console.warn('Library catalog',e);nh7LibraryCatalog=[]}
+  try{const rows=await cloudFetch('nh7_library_items_v224?select=*&order=resource_type.asc,audience.asc,sort_order.asc,created_at.desc',{method:'GET',cache:'no-store'});nh7LibraryCatalog=Array.isArray(rows)?rows:[]}catch(e){console.warn('Library catalog',e);nh7LibraryCatalog=[]}
   return nh7LibraryCatalog;
 }
-function nh7ClosePdfViewerV223(){document.getElementById('nh7PdfViewerV223')?.remove()}
+let nh7LibraryBlobUrlV224='';
+function nh7ClosePdfViewerV223(){if(nh7LibraryBlobUrlV224){URL.revokeObjectURL(nh7LibraryBlobUrlV224);nh7LibraryBlobUrlV224=''}document.getElementById('nh7PdfViewerV223')?.remove();document.body.classList.remove('nh7-modal-open')}
 function nh7PdfErrorTextV223(err){
   const raw=String(err?.code||err?.message||err||'').trim(),key=raw.toLowerCase();
   if(key.includes('school_approval_required'))return tr('schoolContentGate');
@@ -1859,7 +1892,7 @@ function nh7PdfErrorTextV223(err){
   return raw||l223('فایل باز نشد. پنجره را ببندید و دوباره تلاش کنید.','The file could not be opened. Close this window and try again.','Datoteka se nije mogla otvoriti.');
 }
 function nh7ShowPdfViewerV223(title=''){
-  nh7ClosePdfViewerV223();const modal=document.createElement('div');modal.id='nh7PdfViewerV223';modal.className='nh7-pdf-viewer-modal';modal.innerHTML=`<div class="nh7-pdf-viewer-dialog"><div class="nh7-pdf-viewer-head"><strong>${html(title||tr('library'))}</strong><div><a class="secondary-btn hidden" id="nh7PdfExternalV223" target="_blank" rel="noopener">${html(tr('openExternal'))}</a><button class="icon-btn" type="button" data-pdf-close>×</button></div></div><div class="nh7-pdf-loading" id="nh7PdfLoadingV223"><div class="spinner"></div><p>${html(tr('securePdfLoading'))}</p></div><iframe class="hidden" id="nh7PdfFrameV223" title="PDF"></iframe></div>`;document.body.appendChild(modal);modal.querySelectorAll('[data-pdf-close]').forEach(b=>b.onclick=nh7ClosePdfViewerV223);modal.onclick=e=>{if(e.target===modal)nh7ClosePdfViewerV223()};return modal;
+  nh7ClosePdfViewerV223();const modal=document.createElement('div');modal.id='nh7PdfViewerV223';modal.className='nh7-pdf-viewer-modal';modal.innerHTML=`<div class="nh7-pdf-viewer-dialog"><div class="nh7-pdf-viewer-head"><strong>${html(title||tr('library'))}</strong><div><a class="secondary-btn hidden" id="nh7PdfExternalV223" target="_blank" rel="noopener">${html(tr('openExternal'))}</a><button class="icon-btn" type="button" data-pdf-close aria-label="${html(tr('close'))}">×</button></div></div><div class="nh7-pdf-loading" id="nh7PdfLoadingV223"><div class="spinner"></div><p>${html(tr('securePdfLoading'))}</p></div><iframe class="hidden" id="nh7PdfFrameV223" title="Document"></iframe><div class="nh7-docx-reader hidden" id="nh7DocxReaderV224"></div></div>`;document.body.appendChild(modal);document.body.classList.add('nh7-modal-open');modal.querySelectorAll('[data-pdf-close]').forEach(b=>b.onclick=nh7ClosePdfViewerV223);modal.onclick=e=>{if(e.target===modal)nh7ClosePdfViewerV223()};return modal;
 }
 async function openLibraryPdf(item){
   if(!item)return;if(!await nh7RequireSchoolAccessV223(tr('library')))return;
@@ -1868,26 +1901,37 @@ async function openLibraryPdf(item){
     if(saved&&Date.now()-Number(saved.at||0)<12*60*60*1000)code=String(saved.code||'');
     if(!code)code=String(prompt(tr('enterAccessCode'),'')||'').trim();if(!code)return;
   }
-  const modal=nh7ShowPdfViewerV223(libraryText(item,'title')||item.file_name||'PDF');
+  const title=libraryText(item,'title')||item.file_name||'Document',modal=nh7ShowPdfViewerV223(title);
   try{
     const d=await invokeEdgeFunction('nh7-library-access',{item_id:item.id,code,device_id:deviceId(),user_email:currentUserEmail()||''});
     if(!d?.signed_url)throw new Error(d?.error||'No signed URL');
     if(item.audience==='ministers')sessionStorage.setItem('nh7_minister_library_code',JSON.stringify({code,at:Date.now()}));
-    trackAppSection('library:'+item.audience+':open');nh7TrackContentV223('library_pdf',String(item.id),libraryText(item,'title')||item.file_name||'PDF');
-    const frame=modal.querySelector('#nh7PdfFrameV223'),external=modal.querySelector('#nh7PdfExternalV223');external.href=d.signed_url;external.classList.remove('hidden');frame.src=d.signed_url;frame.classList.remove('hidden');modal.querySelector('#nh7PdfLoadingV223')?.classList.add('hidden');
+    trackAppSection('library:'+item.audience+':open');nh7TrackContentV223((item.resource_type||'library')==='apocrypha'?'apocrypha':'library_pdf',String(item.id),title);
+    const external=modal.querySelector('#nh7PdfExternalV223'),loading=modal.querySelector('#nh7PdfLoadingV223'),mime=String(d.mime_type||item.mime_type||'application/pdf').toLowerCase();external.href=d.signed_url;external.classList.remove('hidden');
+    const response=await fetch(d.signed_url,{cache:'no-store'});if(!response.ok)throw new Error('Document download failed: '+response.status);
+    const blob=await response.blob();
+    if(mime.includes('wordprocessingml')||/\.docx$/i.test(d.file_name||item.file_name||'')){
+      if(!window.mammoth)throw new Error(l223('نمایش Word هنوز بارگذاری نشده است؛ دوباره تلاش کنید.','Word reader is not loaded yet. Please retry.','Čitač Worda nije učitan. Pokušajte ponovno.'));
+      const reader=modal.querySelector('#nh7DocxReaderV224'),result=await window.mammoth.convertToHtml({arrayBuffer:await blob.arrayBuffer()});reader.innerHTML=`<article class="nh7-docx-page"><h1>${html(title)}</h1>${result.value}</article>`;reader.classList.remove('hidden');
+    }else{
+      nh7LibraryBlobUrlV224=URL.createObjectURL(blob);const frame=modal.querySelector('#nh7PdfFrameV223');frame.src=nh7LibraryBlobUrlV224+'#toolbar=1&navpanes=0&view=FitH';frame.classList.remove('hidden');
+    }
+    loading?.classList.add('hidden');
   }catch(e){
     if(item.audience==='ministers')sessionStorage.removeItem('nh7_minister_library_code');
-    modal.querySelector('#nh7PdfLoadingV223').innerHTML=`<div class="notice"><strong>${html(item.audience==='ministers'?tr('invalidAccessCode'):tr('library'))}</strong><p>${html(nh7PdfErrorTextV223(e))}</p><button class="secondary-btn" type="button" data-pdf-close>${html(tr('close'))}</button></div>`;modal.querySelectorAll('[data-pdf-close]').forEach(b=>b.onclick=nh7ClosePdfViewerV223);
+    const loading=modal.querySelector('#nh7PdfLoadingV223');if(loading)loading.innerHTML=`<div class="notice"><strong>${html(item.audience==='ministers'?tr('invalidAccessCode'):tr('library'))}</strong><p>${html(nh7PdfErrorTextV223(e))}</p><button class="secondary-btn" type="button" data-pdf-close>${html(tr('close'))}</button></div>`;modal.querySelectorAll('[data-pdf-close]').forEach(b=>b.onclick=nh7ClosePdfViewerV223);
   }
 }
+
+function libraryUserCardV224(x,isApocrypha=false){const mime=String(x.mime_type||'application/pdf'),label=mime.includes('wordprocessingml')||/\.docx$/i.test(x.file_name||'')?'DOCX':'PDF';return `<article class="library-user-card"><div class="library-user-icon">${label}</div><span class="library-audience ${html(x.audience)}">${x.audience==='ministers'?'🔒 '+tr('ministersLibrary'):'🌍 '+tr('publicLibrary')}</span><h3>${html(libraryText(x,'title')||x.file_name||label)}</h3><p>${html(libraryText(x,'description')||'')}</p><small class="muted">${html(x.file_name||'')} · ${librarySize(x.file_size)}</small><div class="button-row"><button class="primary-btn" data-library-open="${html(x.id)}">${x.audience==='ministers'?'🔐':'📖'} ${html(isApocrypha?l223('باز کردن','Open','Otvori'):tr('openPdf'))}</button></div></article>`}
 
 async function library(params={}){
   if(!await nh7RequireSchoolAccessV223(tr('library')))return;
   nh7LibraryTab=params.tab||nh7LibraryTab||'public';sessionStorage.setItem('nh7_library_tab',nh7LibraryTab);
   await loadLibraryCatalog();
-  const rows=nh7LibraryCatalog.filter(x=>x.audience===nh7LibraryTab);
+  const rows=nh7LibraryCatalog.filter(x=>x.audience===nh7LibraryTab&&(x.resource_type||'library')==='library');
   const title=nh7LibraryTab==='ministers'?tr('ministersLibrary'):tr('publicLibrary');
-  const cards=rows.map(x=>`<article class="library-user-card"><div class="library-user-icon">PDF</div><span class="library-audience ${html(x.audience)}">${x.audience==='ministers'?'🔒 '+tr('ministersLibrary'):'🌍 '+tr('publicLibrary')}</span><h3>${html(libraryText(x,'title')||x.file_name||'PDF')}</h3><p>${html(libraryText(x,'description')||'')}</p><small class="muted">${html(x.file_name||'')} · ${librarySize(x.file_size)}</small><div class="button-row"><button class="primary-btn" data-library-open="${html(x.id)}">${x.audience==='ministers'?'🔐':'📖'} ${tr('openPdf')}</button></div></article>`).join('');
+  const cards=rows.map(x=>libraryUserCardV224(x,false)).join('');
   view.innerHTML=card(tr('library'),`<div class="library-user-tabs"><button class="${nh7LibraryTab==='public'?'primary-btn':'secondary-btn'}" data-library-tab="public">${tr('publicLibrary')}</button><button class="${nh7LibraryTab==='ministers'?'primary-btn':'secondary-btn'}" data-library-tab="ministers">🔒 ${tr('ministersLibrary')}</button></div>${nh7LibraryTab==='ministers'?`<div class="library-lock-note">${tr('protectedLibrary')}<br>${tr('enterAccessCode')}</div>`:''}<h2>${title}</h2><div class="library-user-grid">${cards||`<p class="muted">${tr('libraryEmpty')}</p>`}</div><p class="muted small">${tr('pdfExpires')}</p>`);
 }
 
@@ -2105,7 +2149,9 @@ function bindDynamic(){
   $$('[data-bookmark]').forEach(el=>el.onclick=()=>{ const arr=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]'); if(!arr.includes(el.dataset.bookmark)) arr.push(el.dataset.bookmark); localStorage.setItem('nh7_bookmarks',JSON.stringify(arr)); try{ const key=el.closest('.reader-verse')?.dataset?.verseKey; if(key){ const st=JSON.parse(localStorage.getItem(key)||'{}'); st.saved=true; localStorage.setItem(key,JSON.stringify(st)); }}catch(e){} saveVerseCloud(el.dataset.bookmark).catch(console.warn); addPoints(5,'first_verse'); el.textContent='★ '+tr('saved'); });
   $$('[data-delete-bookmark]').forEach(el=>el.onclick=(ev)=>{ev.stopPropagation();const ref=el.dataset.deleteBookmark;const arr=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]').filter(x=>String(x)!==String(ref));localStorage.setItem('nh7_bookmarks',JSON.stringify(arr));deleteVerseCloud(ref).catch(console.warn);render(state.route,state.params,true)});
   $$('[data-highlight]').forEach(el=>el.onclick=()=>el.closest('.reader-verse')?.classList.toggle('highlighted'));
-  $$('[data-toggle-highlight]').forEach(el=>el.onclick=()=>{const key=el.dataset.toggleHighlight;const st=JSON.parse(localStorage.getItem(key)||'{}');st.highlight=!st.highlight;localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);el.closest('.reader-verse')?.classList.toggle('highlighted',!!st.highlight)});
+  $$('[data-highlight-menu]').forEach(el=>el.onclick=e=>{e.stopPropagation();const key=el.dataset.highlightMenu,p=document.querySelector(`[data-highlight-palette="${CSS.escape(key)}"]`);document.querySelectorAll('.highlight-palette').forEach(x=>{if(x!==p)x.classList.add('hidden')});p?.classList.toggle('hidden')});
+  $$('[data-highlight-color]').forEach(el=>el.onclick=e=>{e.stopPropagation();const key=el.dataset.highlightKey,color=el.dataset.highlightColor,st=JSON.parse(localStorage.getItem(key)||'{}'),verse=el.closest('.reader-verse');st.highlight=true;st.highlightColor=color;localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);verse?.classList.remove('highlight-yellow','highlight-red','highlight-green','highlight-blue');verse?.classList.add('highlighted','highlight-'+color);el.closest('.highlight-palette')?.querySelectorAll('.highlight-dot').forEach(x=>x.classList.toggle('active',x===el));el.closest('.highlight-palette')?.classList.add('hidden')});
+  $$('[data-highlight-clear]').forEach(el=>el.onclick=e=>{e.stopPropagation();const key=el.dataset.highlightClear,st=JSON.parse(localStorage.getItem(key)||'{}'),verse=el.closest('.reader-verse');st.highlight=false;delete st.highlightColor;localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);verse?.classList.remove('highlighted','highlight-yellow','highlight-red','highlight-green','highlight-blue');el.closest('.highlight-palette')?.classList.add('hidden')});
   $$('[data-note-verse],[data-note-marker]').forEach(el=>el.onclick=()=>{const id=el.dataset.noteVerse||el.dataset.noteMarker,box=$('#'+CSS.escape(id));if(box){$$('.verse-note-box').forEach(x=>{if(x!==box)x.classList.add('hidden')});box.classList.toggle('hidden')}});
   $$('[data-close-verse-note]').forEach(el=>el.onclick=()=>el.closest('.verse-note-box')?.classList.add('hidden'));
   $$('[data-save-verse-note]').forEach(el=>el.onclick=()=>{const key=el.dataset.saveVerseNote,input=$(`[data-note-input="${CSS.escape(key)}"]`),verse=el.closest('.reader-verse');let st={};try{st=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}st.note=(input?.value||'').slice(0,1000);localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);let marker=verse?.querySelector('.verse-note-marker');if(st.note&&!marker&&verse){marker=document.createElement('button');marker.type='button';marker.className='verse-note-marker';marker.dataset.noteMarker=el.closest('.verse-note-box')?.id||'';marker.textContent='📓';marker.title=tr('noteAvailable');marker.onclick=()=>el.closest('.verse-note-box')?.classList.toggle('hidden');verse.querySelector('.verse-text')?.after(marker)}else if(!st.note&&marker)marker.remove();el.textContent=tr('saved');setTimeout(()=>el.closest('.verse-note-box')?.classList.add('hidden'),350)});
