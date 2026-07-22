@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Bodoni+Moda:ital,wght@0,400;0,600;0,700;1,500&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,500&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,500&family=Estedad:wght@400;500;600;700;800&family=Great+Vibes&family=Lalezar&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;0,700;1,500&family=Markazi+Text:wght@400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Serif+Arabic:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,500&family=Scheherazade+New:wght@400;500;600;700&family=Spectral:ital,wght@0,400;0,600;0,700;1,500&display=swap');
+/* New Hope 7 v2.2.5 — admin-only reliability patch. Bible/user reader styles are untouched. */
+body.nh7-student-modal-open{overflow:hidden!important;position:fixed!important;inset:0!important;width:100%!important}
+.student-modal-backdrop{position:fixed!important;inset:0!important;z-index:50000!important;display:flex!important;align-items:stretch!important;justify-content:center!important;padding:0!important;overflow:hidden!important;background:rgba(9,30,43,.65)!important;overscroll-behavior:none!important;touch-action:none!important}
+.student-modal{position:relative!important;width:min(1040px,100%)!important;height:100dvh!important;max-height:100dvh!important;margin:0 auto!important;padding:16px!important;overflow-y:auto!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior:contain!important;touch-action:pan-y!important;background:#f7fbfb!important;border-radius:0!important}
+.student-modal-head{position:sticky!important;top:-16px!important;z-index:60!important;padding:14px 0!important;background:rgba(247,251,251,.98)!important;backdrop-filter:blur(12px)!important}
+.student-modal .close-round{position:relative!important;top:auto!important;z-index:80!important;display:grid!important;place-items:center!important;width:48px!important;height:48px!important;min-width:48px!important;border:0!important;border-radius:50%!important;background:#b42318!important;color:#fff!important;font-size:27px!important;line-height:1!important;cursor:pointer!important;pointer-events:auto!important}
+.student-modal>*{max-width:100%}.student-modal .student-activity-panel,.student-modal .email-studio-v223{overflow:visible!important}
+
+.doc-v222-editor,.doc-v223-studio{display:none!important}
+.doc-v225-studio{border:2px solid #0f766e!important;background:linear-gradient(180deg,#f8fffd,#fff)!important;box-shadow:0 16px 44px rgba(15,118,110,.12)!important}
+.doc-v225-studio>details{margin-top:14px;border:1px solid #cbd5e1;border-radius:16px;background:#fff;overflow:hidden}
+.doc-v225-studio>details>summary{padding:15px 16px;font-weight:900;cursor:pointer;background:#f1f5f9;color:#0f3f63}
+.doc-v225-studio>details[open]>summary{border-bottom:1px solid #dbe4ec}
+.doc-v225-studio>details>:not(summary){margin:14px}
+.doc-v225-grid,.doc-v225-style-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;align-items:end}
+.doc-v225-grid label,.doc-v225-style-grid label{display:grid;gap:6px;font-weight:750;color:#334155}
+.doc-v225-grid input,.doc-v225-grid select,.doc-v225-style-grid input,.doc-v225-style-grid select{width:100%}
+.doc-v225-photo-layout{display:grid;grid-template-columns:minmax(190px,280px) minmax(0,1fr);gap:16px;align-items:start}
+.doc-v225-photo-stage{height:260px;border:2px dashed #94a3b8;border-radius:18px;background:#e2e8f0;overflow:hidden;display:grid;place-items:center}
+.doc-v225-photo-stage img{width:100%;height:100%;object-fit:cover;transform-origin:center}
+.doc-v225-photo-empty{padding:24px;color:#64748b;text-align:center;font-weight:800}
+.doc-v225-toggle{width:44px;height:44px;border:1px solid #94a3b8;border-radius:11px;background:#fff;color:#0f172a;font-size:18px;font-weight:800;cursor:pointer}.doc-v225-toggle.active{background:#0f766e;color:#fff;border-color:#0f766e}
+.doc-v225-font-preview{margin-top:14px;padding:18px;border:1px dashed #94a3b8;border-radius:14px;background:#f8fafc;text-align:center;min-height:62px}
+.doc-v225-actions{position:sticky;bottom:8px;z-index:15;display:flex;flex-wrap:wrap;gap:9px;margin-top:16px;padding:12px;border:1px solid #cbd5e1;border-radius:14px;background:rgba(255,255,255,.96);box-shadow:0 10px 30px rgba(15,23,42,.16)}
+.doc-v222-signature-pad{display:block;width:100%!important;height:190px!important;min-height:190px!important;background:#fff!important;border:2px dashed #64748b!important;border-radius:14px!important;touch-action:none!important}
+
+@media(min-width:720px){.student-modal{height:min(94dvh,980px)!important;margin:auto!important;border-radius:24px!important}.student-modal-backdrop{padding:3dvh 18px!important}}
+@media(max-width:700px){.doc-v225-photo-layout{grid-template-columns:1fr}.doc-v225-photo-stage{height:220px}.doc-v225-grid,.doc-v225-style-grid{grid-template-columns:1fr 1fr}.doc-v225-actions{bottom:max(8px,env(safe-area-inset-bottom))}}
