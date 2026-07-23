@@ -167,3 +167,340 @@ loadAll=async function(silent=false){
 
 window.NH7_ADMIN_VERSION=V;
 })();
+
+/* ============================================================
+   New Hope 7 Admin v2.2.6 — ONLY student panel + document studio
+   This final compatibility layer intentionally leaves every other
+   admin/user feature untouched.
+   ============================================================ */
+(()=>{'use strict';
+const VERSION='2.2.6';
+const txt=(fa,en,hr)=>{
+  try{return lang==='fa'?fa:lang==='hr'?hr:en}catch(_){return fa}
+};
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const num=(v,f=0)=>Number.isFinite(Number(v))?Number(v):f;
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,num(v,a)));
+function safeState(){
+  if(typeof state!=='object'||!state)return;
+  state.studentActivityV222=(state.studentActivityV222&&typeof state.studentActivityV222==='object')?state.studentActivityV222:{};
+  state.studentActivityV223=(state.studentActivityV223&&typeof state.studentActivityV223==='object')?state.studentActivityV223:{};
+  state.studentActivityV224=(state.studentActivityV224&&typeof state.studentActivityV224==='object')?state.studentActivityV224:{};
+  state.studentActivityV225=(state.studentActivityV225&&typeof state.studentActivityV225==='object')?state.studentActivityV225:{};
+  state.schoolCertificates=Array.isArray(state.schoolCertificates)?state.schoolCertificates:[];
+}
+safeState();
+
+/* ---------- Student modal: stable scrolling and closing on iPad ---------- */
+let lockedScrollY=0;
+function modalPresent(){return !!document.querySelector('.student-modal-backdrop')}
+function lockStudentPage(){
+  if(document.body.classList.contains('nh7-student-lock-v226'))return;
+  lockedScrollY=window.scrollY||document.documentElement.scrollTop||0;
+  document.body.style.setProperty('--nh7-lock-scroll-y',`${lockedScrollY}px`);
+  document.body.classList.add('nh7-student-lock-v226');
+}
+function unlockStudentPage(){
+  if(!document.body.classList.contains('nh7-student-lock-v226'))return;
+  document.body.classList.remove('nh7-student-lock-v226');
+  document.body.style.removeProperty('--nh7-lock-scroll-y');
+  requestAnimationFrame(()=>window.scrollTo(0,lockedScrollY));
+}
+function closeStudentV226(){
+  try{selectedStudentEmail=''}catch(_){}
+  unlockStudentPage();
+  try{render()}catch(e){console.error('NH7 close student',e)}
+}
+const renderBeforeV226=render;
+render=function(){
+  safeState();
+  const out=renderBeforeV226();
+  requestAnimationFrame(()=>{
+    const back=document.querySelector('.student-modal-backdrop');
+    if(back){
+      lockStudentPage();
+      back.setAttribute('role','dialog');
+      back.setAttribute('aria-modal','true');
+      back.dataset.nh7V226='1';
+      const modal=back.querySelector('.student-modal');
+      if(modal){
+        modal.setAttribute('tabindex','0');
+        modal.style.webkitOverflowScrolling='touch';
+        if(!modal.dataset.nh7Opened){modal.dataset.nh7Opened='1';modal.scrollTop=0}
+      }
+      const close=back.querySelector('.close-round');
+      if(close){close.type='button';close.setAttribute('aria-label',txt('بستن پرونده','Close profile','Zatvori profil'))}
+    }else unlockStudentPage();
+    initSignatureV226();
+    applyDocumentDesignV226();
+  });
+  return out;
+};
+document.addEventListener('click',e=>{
+  const close=e.target.closest?.('.student-modal .close-round,[data-nh7-close-student],[data-close-student]');
+  if(close){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();closeStudentV226();return}
+  if(e.target.classList?.contains('student-modal-backdrop')){
+    e.preventDefault();e.stopPropagation();closeStudentV226();
+  }
+},true);
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&modalPresent()){e.preventDefault();closeStudentV226()}
+},true);
+document.addEventListener('touchmove',e=>{
+  const modal=e.target.closest?.('.student-modal');
+  if(modal)return;
+  if(modalPresent())e.preventDefault();
+},{passive:false,capture:true});
+window.closeStudentDashboard=closeStudentV226;
+
+/* ---------- Standalone professional document studio ---------- */
+const STORE='nh7_doc_design_v226';
+const TEMPLATE_STORE='nh7_doc_templates_v226';
+const defaults={
+  theme:'blue_gold',orientation:'landscape',paper:'#fffdf7',accent:'#0b5faa',
+  watermarkOpacity:.055,watermarkScale:58,
+  logoData:'',logoSize:88,logoX:50,logoY:8,logoRotate:0,logoOpacity:1,logoRound:false,logoBlend:'normal',
+  photoData:'',photoSize:112,photoX:8,photoY:15,photoRotate:0,photoZoom:1,photoRound:50,
+  signatureData:'',
+  activeTarget:'title',
+  styles:{
+    kicker:{font:'Cinzel',size:13,color:'#0f766e',bold:true,italic:false,underline:false,align:'center',y:0,spacing:2,line:1.3},
+    title:{font:'Cinzel',size:38,color:'#0b5faa',bold:true,italic:false,underline:false,align:'center',y:0,spacing:0,line:1.2},
+    name:{font:'Cormorant Garamond',size:42,color:'#102033',bold:true,italic:false,underline:false,align:'center',y:0,spacing:0,line:1.15},
+    body:{font:'Noto Naskh Arabic',size:17,color:'#334155',bold:false,italic:false,underline:false,align:'center',y:0,spacing:0,line:1.8},
+    course:{font:'Markazi Text',size:26,color:'#0f766e',bold:true,italic:false,underline:false,align:'center',y:0,spacing:0,line:1.4},
+    footer:{font:'Estedad',size:12,color:'#475569',bold:false,italic:false,underline:false,align:'center',y:0,spacing:0,line:1.4}
+  }
+};
+function mergeDesign(raw){
+  const d=JSON.parse(JSON.stringify(defaults));
+  if(raw&&typeof raw==='object'){
+    Object.assign(d,raw);
+    d.styles=Object.assign({},defaults.styles,raw.styles||{});
+    for(const k of Object.keys(d.styles))d.styles[k]=Object.assign({},defaults.styles[k]||defaults.styles.body,d.styles[k]||{});
+  }
+  return d;
+}
+let design=(()=>{try{return mergeDesign(JSON.parse(localStorage.getItem(STORE)||'null'))}catch(_){return mergeDesign()}})();
+function saveDesign(){localStorage.setItem(STORE,JSON.stringify(design))}
+function rerenderCertificates(){
+  saveDesign();
+  try{render()}catch(e){console.error('NH7 document render',e)}
+}
+const fonts=[
+ 'Vazirmatn','Estedad','Markazi Text','Noto Naskh Arabic','Noto Serif Arabic','Scheherazade New','Amiri','Lalezar',
+ 'Cinzel','Cormorant Garamond','EB Garamond','Libre Baskerville','Playfair Display','Merriweather','Lora','Great Vibes','Spectral','Bodoni Moda',
+ 'Georgia','Times New Roman','Arial','Tahoma'
+];
+const themes=[
+ ['blue_gold',txt('آبی و طلایی رسمی','Formal blue & gold','Službeno plavo-zlatno')],
+ ['baptism',txt('تعمید آبی روشن','Baptism blue','Plavo krštenje')],
+ ['royal',txt('سلطنتی سرمه‌ای','Royal navy','Kraljevsko tamnoplavo')],
+ ['emerald',txt('زمردی خدمتی','Emerald ministry','Smaragdna služba')],
+ ['burgundy',txt('زرشکی کلاسیک','Classic burgundy','Klasična bordo')],
+ ['parchment',txt('کاغذ قدیمی طلایی','Golden parchment','Zlatni pergament')],
+ ['marble',txt('مرمر سفید و طلایی','White marble & gold','Bijeli mramor i zlato')],
+ ['silver',txt('نقره‌ای رسمی','Official silver','Službeno srebrno')],
+ ['minimal',txt('مینیمال مدرن','Modern minimal','Moderno minimalistički')],
+ ['letterhead',txt('نامه رسمی سربرگ‌دار','Formal letterhead','Službeno zaglavlje')],
+ ['invitation',txt('دعوت‌نامه کلیسایی','Church invitation','Crkvena pozivnica')],
+ ['ministry',txt('گواهی خدمت','Ministry certificate','Potvrda službe')]
+];
+const targetLabels={
+ kicker:txt('نام کلیسا / بالای صفحه','Church heading','Zaglavlje crkve'),
+ title:txt('عنوان اصلی','Main title','Glavni naslov'),
+ name:txt('نام شخص','Recipient name','Ime osobe'),
+ body:txt('متن اصلی','Body text','Glavni tekst'),
+ course:txt('نام دوره / سمت','Course or designation','Tečaj ili služba'),
+ footer:txt('تاریخ، امضا و شماره','Date, signature and number','Datum, potpis i broj')
+};
+const opt=(value,label,current)=>`<option value="${esc(value)}" ${String(value)===String(current)?'selected':''}>${esc(label)}</option>`;
+function currentStyleV226(){
+  const k=design.activeTarget||'title';
+  design.styles[k]=Object.assign({},defaults.styles[k]||defaults.styles.body,design.styles[k]||{});
+  return design.styles[k];
+}
+function studioHtmlV226(){
+  const s=currentStyleV226();
+  return `<section class="panel-card nh7-doc-studio-v226">
+    <div class="req-head"><div><h3>🎨 ${txt('استودیوی حرفه‌ای مدارک','Professional Document Studio','Profesionalni studio dokumenata')}</h3>
+    <p class="muted small">${txt('نسخه فعال ۲.۲.۶ — تنظیمات فوراً روی پیش‌نمایش پایین اعمال می‌شوند.','Active v2.2.6 — settings apply immediately to the preview below.','Aktivna verzija 2.2.6 — promjene se odmah vide.')}</p></div>
+    <button type="button" class="btn primary" onclick="NH7Doc226.full()">👁 ${txt('پیش‌نمایش تمام صفحه','Full-screen preview','Puni pregled')}</button></div>
+
+    <details open><summary>🖼 ${txt('قالب، قاب و پس‌زمینه','Template, frame and background','Predložak, okvir i pozadina')}</summary>
+      <div class="nh7-doc-grid-v226">
+        <label>${txt('نوع قالب','Template style','Stil predloška')}<select onchange="NH7Doc226.set('theme',this.value)">${themes.map(x=>opt(x[0],x[1],design.theme)).join('')}</select></label>
+        <label>${txt('جهت صفحه','Orientation','Orijentacija')}<select onchange="NH7Doc226.set('orientation',this.value)">${opt('portrait','A4 '+txt('عمودی','Portrait','Okomito'),design.orientation)}${opt('landscape','A4 '+txt('افقی','Landscape','Vodoravno'),design.orientation)}</select></label>
+        <label>${txt('رنگ کاغذ','Paper color','Boja papira')}<input type="color" value="${esc(design.paper)}" oninput="NH7Doc226.setLive('paper',this.value)"></label>
+        <label>${txt('رنگ اصلی','Accent color','Glavna boja')}<input type="color" value="${esc(design.accent)}" oninput="NH7Doc226.setLive('accent',this.value)"></label>
+        <label>${txt('شفافیت واترمارک','Watermark opacity','Prozirnost vodenog žiga')}<input type="range" min="0" max=".22" step=".005" value="${design.watermarkOpacity}" oninput="NH7Doc226.setLive('watermarkOpacity',this.value)"></label>
+        <label>${txt('اندازه واترمارک','Watermark size','Veličina vodenog žiga')}<input type="range" min="20" max="110" value="${design.watermarkScale}" oninput="NH7Doc226.setLive('watermarkScale',this.value)"></label>
+      </div>
+    </details>
+
+    <details open><summary>⛪ ${txt('لوگو و واترمارک کلیسا','Church logo and watermark','Logo crkve i vodeni žig')}</summary>
+      <div class="nh7-doc-grid-v226">
+        <label>${txt('آپلود لوگو','Upload logo','Prenesi logo')}<input type="file" accept="image/*" onchange="NH7Doc226.image(this,'logoData')"></label>
+        <label>${txt('اندازه لوگو','Logo size','Veličina logotipa')}<input type="range" min="35" max="210" value="${design.logoSize}" oninput="NH7Doc226.setLive('logoSize',this.value)"></label>
+        <label>${txt('چپ و راست لوگو','Logo left/right','Logo lijevo/desno')}<input type="range" min="0" max="100" value="${design.logoX}" oninput="NH7Doc226.setLive('logoX',this.value)"></label>
+        <label>${txt('بالا و پایین لوگو','Logo up/down','Logo gore/dolje')}<input type="range" min="0" max="85" value="${design.logoY}" oninput="NH7Doc226.setLive('logoY',this.value)"></label>
+        <label>${txt('چرخش لوگو','Logo rotation','Rotacija logotipa')}<input type="range" min="-180" max="180" value="${design.logoRotate}" oninput="NH7Doc226.setLive('logoRotate',this.value)"></label>
+        <label>${txt('شفافیت لوگو','Logo opacity','Prozirnost logotipa')}<input type="range" min=".1" max="1" step=".05" value="${design.logoOpacity}" oninput="NH7Doc226.setLive('logoOpacity',this.value)"></label>
+        <label>${txt('شکل لوگو','Logo shape','Oblik logotipa')}<select onchange="NH7Doc226.set('logoRound',this.value==='1')">${opt('0',txt('عادی','Normal','Normalno'),design.logoRound?'1':'0')}${opt('1',txt('گرد','Circular','Kružno'),design.logoRound?'1':'0')}</select></label>
+        <label>${txt('ترکیب با زمینه','Blend with background','Stapanje s pozadinom')}<select onchange="NH7Doc226.set('logoBlend',this.value)">${opt('normal',txt('عادی','Normal','Normalno'),design.logoBlend)}${opt('multiply',txt('حذف سفیدی زمینه','Multiply / blend','Stapanje'),design.logoBlend)}${opt('screen','روشن',design.logoBlend)}</select></label>
+      </div>
+    </details>
+
+    <details><summary>👤 ${txt('عکس شخص','Recipient photo','Fotografija osobe')}</summary>
+      <div class="nh7-doc-grid-v226">
+        <label>${txt('آپلود عکس','Upload photo','Prenesi fotografiju')}<input type="file" accept="image/*" onchange="NH7Doc226.image(this,'photoData')"></label>
+        <label>${txt('اندازه عکس','Photo size','Veličina fotografije')}<input type="range" min="45" max="220" value="${design.photoSize}" oninput="NH7Doc226.setLive('photoSize',this.value)"></label>
+        <label>${txt('چپ و راست','Left/right','Lijevo/desno')}<input type="range" min="0" max="100" value="${design.photoX}" oninput="NH7Doc226.setLive('photoX',this.value)"></label>
+        <label>${txt('بالا و پایین','Up/down','Gore/dolje')}<input type="range" min="0" max="85" value="${design.photoY}" oninput="NH7Doc226.setLive('photoY',this.value)"></label>
+        <label>${txt('چرخش عکس','Photo rotation','Rotacija fotografije')}<input type="range" min="-30" max="30" value="${design.photoRotate}" oninput="NH7Doc226.setLive('photoRotate',this.value)"></label>
+        <label>${txt('گردی قاب','Corner radius','Zaobljenost')}<input type="range" min="0" max="50" value="${design.photoRound}" oninput="NH7Doc226.setLive('photoRound',this.value)"></label>
+        <button type="button" class="btn danger-btn" onclick="NH7Doc226.clearImage('photoData')">${txt('حذف عکس','Remove photo','Ukloni fotografiju')}</button>
+      </div>
+    </details>
+
+    <details open><summary>🔤 ${txt('فونت و اندازه مستقل هر قسمت','Independent font and size','Neovisni font i veličina')}</summary>
+      <div class="nh7-doc-grid-v226">
+        <label>${txt('قسمت موردنظر','Text section','Dio teksta')}<select onchange="NH7Doc226.target(this.value)">${Object.entries(targetLabels).map(([k,v])=>opt(k,v,design.activeTarget)).join('')}</select></label>
+        <label>${txt('فونت','Font','Font')}<select onchange="NH7Doc226.style('font',this.value)">${fonts.map(f=>opt(f,f,s.font)).join('')}</select></label>
+        <label>${txt('اندازه','Size','Veličina')}<input type="number" min="7" max="80" value="${s.size}" onchange="NH7Doc226.style('size',this.value)"></label>
+        <label>${txt('رنگ','Color','Boja')}<input type="color" value="${esc(s.color)}" oninput="NH7Doc226.styleLive('color',this.value)"></label>
+        <label>${txt('تراز','Alignment','Poravnanje')}<select onchange="NH7Doc226.style('align',this.value)">${opt('start',txt('راست/شروع','Start','Početak'),s.align)}${opt('center',txt('وسط','Center','Sredina'),s.align)}${opt('end',txt('چپ/پایان','End','Kraj'),s.align)}</select></label>
+        <label>${txt('بالا و پایین','Move up/down','Pomak gore/dolje')}<input type="range" min="-100" max="120" value="${s.y}" oninput="NH7Doc226.styleLive('y',this.value)"></label>
+        <label>${txt('فاصله خطوط','Line height','Prored')}<input type="range" min=".8" max="2.8" step=".05" value="${s.line}" oninput="NH7Doc226.styleLive('line',this.value)"></label>
+        <label>${txt('فاصله حروف','Letter spacing','Razmak slova')}<input type="range" min="-2" max="10" step=".25" value="${s.spacing}" oninput="NH7Doc226.styleLive('spacing',this.value)"></label>
+        <div class="nh7-doc-toggle-row-v226">
+          <button type="button" class="nh7-doc-toggle-v226 ${s.bold?'active':''}" onclick="NH7Doc226.style('bold',${!s.bold})"><b>B</b></button>
+          <button type="button" class="nh7-doc-toggle-v226 ${s.italic?'active':''}" onclick="NH7Doc226.style('italic',${!s.italic})"><i>I</i></button>
+          <button type="button" class="nh7-doc-toggle-v226 ${s.underline?'active':''}" onclick="NH7Doc226.style('underline',${!s.underline})"><u>U</u></button>
+        </div>
+      </div>
+      <div class="nh7-font-preview-v226" style="font-family:${esc(s.font)};font-size:${s.size}px;color:${esc(s.color)};font-weight:${s.bold?800:400};font-style:${s.italic?'italic':'normal'};text-decoration:${s.underline?'underline':'none'}">${txt('نمونه زنده متن فارسی، English و Hrvatski','Live preview: فارسی, English and Hrvatski','Pregled: فارسی, English i Hrvatski')}</div>
+    </details>
+
+    <details><summary>✍ ${txt('امضا با Apple Pencil یا انگشت','Signature with Apple Pencil or finger','Potpis olovkom ili prstom')}</summary>
+      <canvas id="nh7-signature-v226" class="nh7-signature-v226"></canvas>
+      <div class="actions"><button type="button" class="btn primary" onclick="NH7Doc226.saveSignature()">✓ ${txt('ذخیره امضا','Save signature','Spremi potpis')}</button>
+      <button type="button" class="btn ghost" onclick="NH7Doc226.clearSignature()">${txt('پاک‌کردن','Clear','Očisti')}</button></div>
+    </details>
+
+    <details><summary>💾 ${txt('مدیریت قالب‌های شخصی','Saved template manager','Upravljanje spremljenim predlošcima')}</summary>
+      <div class="actions"><button type="button" class="btn primary" onclick="NH7Doc226.saveTemplate()">${txt('ذخیره قالب فعلی','Save current template','Spremi trenutni predložak')}</button>
+      <button type="button" class="btn secondary" onclick="NH7Doc226.loadTemplate()">${txt('بازکردن قالب ذخیره‌شده','Load saved template','Učitaj spremljeni predložak')}</button>
+      <button type="button" class="btn danger-btn" onclick="NH7Doc226.reset()">${txt('بازنشانی طراحی','Reset design','Vrati dizajn')}</button></div>
+    </details>
+  </section>`;
+}
+function targetElements(preview,key){
+  if(key==='kicker')return preview.querySelectorAll('.certificate-kicker,.nh7-cert-church,.certificate-org');
+  if(key==='title')return preview.querySelectorAll('.certificate-title');
+  if(key==='name')return preview.querySelectorAll('.certificate-name');
+  if(key==='body')return preview.querySelectorAll('.certificate-copy,.certificate-body-custom,.nh7-cert-body');
+  if(key==='course')return preview.querySelectorAll('.certificate-course,.certificate-designation,.certificate-score');
+  return preview.querySelectorAll('.certificate-footer,.certificate-sign,.certificate-meta,.certificate-seal');
+}
+function applyStyle(el,s){
+  el.style.fontFamily=s.font||'inherit';
+  el.style.fontSize=`${clamp(s.size,7,80)}px`;
+  el.style.color=s.color||'#1e293b';
+  el.style.fontWeight=s.bold?'800':'400';
+  el.style.fontStyle=s.italic?'italic':'normal';
+  el.style.textDecoration=s.underline?'underline':'none';
+  el.style.textAlign=s.align||'center';
+  el.style.lineHeight=String(s.line||1.4);
+  el.style.letterSpacing=`${num(s.spacing,0)}px`;
+  el.style.transform=`translateY(${num(s.y,0)}px)`;
+}
+function applyDocumentDesignV226(){
+  const previews=document.querySelectorAll('.certificate-preview');
+  previews.forEach(preview=>{
+    preview.dataset.nh7Theme=design.theme;
+    preview.dataset.nh7Orientation=design.orientation;
+    preview.style.setProperty('--nh7-paper',design.paper);
+    preview.style.setProperty('--nh7-accent',design.accent);
+    preview.style.setProperty('--nh7-watermark-opacity',String(design.watermarkOpacity));
+    preview.style.setProperty('--nh7-watermark-scale',`${design.watermarkScale}%`);
+    const logo=preview.querySelector('.certificate-logo');
+    if(logo){
+      if(design.logoData)logo.src=design.logoData;
+      logo.style.width=`${design.logoSize}px`;logo.style.height=`${design.logoSize}px`;
+      logo.style.position='absolute';logo.style.left=`${design.logoX}%`;logo.style.top=`${design.logoY}%`;
+      logo.style.transform=`translate(-50%,-50%) rotate(${design.logoRotate}deg)`;
+      logo.style.opacity=String(design.logoOpacity);logo.style.borderRadius=design.logoRound?'50%':'8px';
+      logo.style.mixBlendMode=design.logoBlend||'normal';logo.style.zIndex='8';logo.style.margin='0';
+      preview.style.setProperty('--nh7-watermark-image',`url("${(design.logoData||logo.src).replace(/"/g,'%22')}")`);
+    }
+    let photo=preview.querySelector('.nh7-cert-photo-v226');
+    if(design.photoData){
+      if(!photo){photo=document.createElement('img');photo.className='nh7-cert-photo-v226';preview.appendChild(photo)}
+      photo.src=design.photoData;
+      Object.assign(photo.style,{width:`${design.photoSize}px`,height:`${design.photoSize}px`,left:`${design.photoX}%`,top:`${design.photoY}%`,transform:`translate(-50%,-50%) rotate(${design.photoRotate}deg) scale(${design.photoZoom||1})`,borderRadius:`${design.photoRound}%`});
+    }else photo?.remove();
+    let sig=preview.querySelector('.nh7-cert-signature-v226');
+    if(design.signatureData){
+      if(!sig){sig=document.createElement('img');sig.className='nh7-cert-signature-v226';preview.appendChild(sig)}
+      sig.src=design.signatureData;
+    }else sig?.remove();
+    for(const [k,s] of Object.entries(design.styles||{}))targetElements(preview,k).forEach(el=>applyStyle(el,s));
+  });
+}
+const renderCertificatesBeforeV226=renderCertificates;
+renderCertificates=function(){
+  safeState();
+  let base='';
+  try{base=String(renderCertificatesBeforeV226())}catch(e){base=`<div class="notice">${esc(e.message||e)}</div>`}
+  base=base
+    .replace(/<section class="panel-card doc-v225-studio">[\s\S]*?<\/section>/,'')
+    .replace(/<section class="panel-card doc-v223-studio">[\s\S]*?<\/section>/,'')
+    .replace(/<section class="panel-card doc-v222-editor">[\s\S]*?<\/section>/,'');
+  return studioHtmlV226()+base;
+};
+function initSignatureV226(){
+  const canvas=document.getElementById('nh7-signature-v226');
+  if(!canvas||canvas.dataset.ready)return;
+  canvas.dataset.ready='1';
+  const ratio=Math.max(1,window.devicePixelRatio||1),rect=canvas.getBoundingClientRect();
+  canvas.width=Math.max(600,Math.round((rect.width||600)*ratio));canvas.height=Math.round(180*ratio);
+  const ctx=canvas.getContext('2d');ctx.scale(ratio,ratio);ctx.lineWidth=2.3;ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle='#0f172a';
+  let drawing=false;
+  const point=e=>{const r=canvas.getBoundingClientRect(),p=e.touches?.[0]||e;return{x:p.clientX-r.left,y:p.clientY-r.top}};
+  const start=e=>{drawing=true;const p=point(e);ctx.beginPath();ctx.moveTo(p.x,p.y);e.preventDefault()};
+  const move=e=>{if(!drawing)return;const p=point(e);ctx.lineTo(p.x,p.y);ctx.stroke();e.preventDefault()};
+  const end=e=>{drawing=false;e.preventDefault()};
+  canvas.addEventListener('pointerdown',start);canvas.addEventListener('pointermove',move);canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);canvas.addEventListener('pointerleave',end);
+  if(design.signatureData){const img=new Image();img.onload=()=>ctx.drawImage(img,0,0,rect.width||600,180);img.src=design.signatureData}
+}
+function updateLive(key,val){
+  const numeric=['watermarkOpacity','watermarkScale','logoSize','logoX','logoY','logoRotate','logoOpacity','photoSize','photoX','photoY','photoRotate','photoZoom','photoRound'];
+  design[key]=numeric.includes(key)?num(val):val;saveDesign();applyDocumentDesignV226();
+}
+window.NH7Doc226={
+  set(k,v){design[k]=v;rerenderCertificates()},
+  setLive:updateLive,
+  image(input,key){const file=input?.files?.[0];if(!file)return;const r=new FileReader();r.onload=()=>{design[key]=String(r.result||'');rerenderCertificates()};r.readAsDataURL(file)},
+  clearImage(key){design[key]='';rerenderCertificates()},
+  target(k){design.activeTarget=k;rerenderCertificates()},
+  style(k,v){const s=currentStyleV226();s[k]=['size','y','line','spacing'].includes(k)?num(v):v;rerenderCertificates()},
+  styleLive(k,v){const s=currentStyleV226();s[k]=['size','y','line','spacing'].includes(k)?num(v):v;saveDesign();applyDocumentDesignV226()},
+  full(){
+    const target=document.querySelector('#certificatePrintTarget .certificate-preview,.certificate-shell .certificate-preview');
+    if(!target){alert(txt('ابتدا یک مدرک را انتخاب کنید.','Select a document first.','Najprije odaberite dokument.'));return}
+    const overlay=document.createElement('div');overlay.className='nh7-full-preview-v226';
+    overlay.innerHTML=`<div class="nh7-full-toolbar-v226"><button type="button" class="btn danger-btn" data-close>× ${txt('بستن','Close','Zatvori')}</button><button type="button" class="btn primary" data-print>🖨 ${txt('چاپ / PDF','Print / PDF','Ispis / PDF')}</button></div><div class="nh7-full-sheet-v226">${target.outerHTML}</div>`;
+    overlay.querySelector('[data-close]').onclick=()=>overlay.remove();
+    overlay.querySelector('[data-print]').onclick=()=>window.print();
+    overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});
+    document.body.appendChild(overlay);requestAnimationFrame(applyDocumentDesignV226);
+  },
+  reset(){if(!confirm(txt('همه تنظیمات طراحی بازنشانی شود؟','Reset all design settings?','Vratiti sve postavke dizajna?')))return;design=mergeDesign();rerenderCertificates()},
+  saveTemplate(){const name=prompt(txt('نام قالب را بنویسید:','Template name:','Naziv predloška:'),txt('قالب کلیسا','Church template','Crkveni predložak'));if(!name)return;let all={};try{all=JSON.parse(localStorage.getItem(TEMPLATE_STORE)||'{}')}catch(_){}all[name]=design;localStorage.setItem(TEMPLATE_STORE,JSON.stringify(all));alert(txt('قالب ذخیره شد.','Template saved.','Predložak je spremljen.'))},
+  loadTemplate(){let all={};try{all=JSON.parse(localStorage.getItem(TEMPLATE_STORE)||'{}')}catch(_){}const names=Object.keys(all);if(!names.length){alert(txt('قالب ذخیره‌شده‌ای وجود ندارد.','No saved template.','Nema spremljenog predloška.'));return}const name=prompt(txt('نام یکی از قالب‌ها را دقیق بنویسید:\n','Enter one saved template name:\n','Unesite naziv spremljenog predloška:\n')+names.join('\n'),names[0]);if(!name||!all[name])return;design=mergeDesign(all[name]);rerenderCertificates()},
+  saveSignature(){const c=document.getElementById('nh7-signature-v226');if(!c)return;design.signatureData=c.toDataURL('image/png');rerenderCertificates()},
+  clearSignature(){design.signatureData='';const c=document.getElementById('nh7-signature-v226'),ctx=c?.getContext('2d');ctx?.clearRect(0,0,c.width,c.height);saveDesign();applyDocumentDesignV226()}
+};
+window.NH7_ADMIN_VERSION=VERSION;
+})();
