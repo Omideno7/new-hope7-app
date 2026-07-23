@@ -504,3 +504,82 @@ window.NH7Doc226={
 };
 window.NH7_ADMIN_VERSION=VERSION;
 })();
+
+/* ============================================================
+   New Hope 7 Admin v2.2.7 — final student-detail scroll + preview exit
+   Only these two UI defects are addressed. All analytics, Audio Bible,
+   school, library, dashboard and data functions remain untouched.
+   ============================================================ */
+(()=>{'use strict';
+const T=(fa,en,hr)=>{try{return lang==='fa'?fa:lang==='hr'?hr:en}catch(_){return fa}};
+
+/* iOS/iPad: do not freeze BODY with position:fixed; keep only the
+   foreground student detail panel scrollable. */
+function activateStudentScrollV227(){
+  const back=document.querySelector('.student-modal-backdrop');
+  if(!back){
+    document.body.classList.remove('nh7-student-detail-open-v227');
+    return;
+  }
+  document.body.classList.remove('nh7-student-lock-v226','nh7-student-modal-open');
+  document.body.classList.add('nh7-student-detail-open-v227');
+  const modal=back.querySelector('.student-modal');
+  if(modal){
+    modal.setAttribute('role','document');
+    modal.setAttribute('tabindex','0');
+    modal.style.overflowY='auto';
+    modal.style.webkitOverflowScrolling='touch';
+    modal.style.touchAction='pan-y';
+  }
+}
+function closeStudentDetailV227(){
+  document.body.classList.remove('nh7-student-detail-open-v227','nh7-student-lock-v226','nh7-student-modal-open');
+  try{selectedStudentEmail=''}catch(_){}
+  try{render()}catch(e){console.error('NH7 student close v2.2.7',e)}
+}
+const observerStudentV227=new MutationObserver(()=>requestAnimationFrame(activateStudentScrollV227));
+observerStudentV227.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+window.addEventListener('load',activateStudentScrollV227,{once:true});
+document.addEventListener('click',e=>{
+  const btn=e.target.closest?.('[data-nh7-close-student],.student-modal .close-round,[data-close-student]');
+  if(btn){e.preventDefault();e.stopImmediatePropagation();closeStudentDetailV227()}
+},true);
+window.closeStudentDashboard=closeStudentDetailV227;
+
+/* Every document/print preview receives a permanent close/back control,
+   including legacy v2.2.2/v2.2.3 previews and the v2.2.6 overlay. */
+function closeDocumentPreviewV227(node){
+  const root=node?.closest?.('.doc-v222-preview-modal,.doc-v223-preview-modal,.nh7-full-preview-v226,.nh7-document-preview,.certificate-preview-modal')||node;
+  if(root?.classList?.contains('doc-v222-preview-modal')){root.classList.add('hidden');root.removeAttribute('style')}
+  else if(root?.classList?.contains('doc-v223-preview-modal'))root.remove();
+  else if(root?.parentNode)root.remove();
+  document.body.classList.remove('nh7-preview-open-v227');
+}
+function ensurePreviewExitV227(){
+  const previews=document.querySelectorAll('.doc-v222-preview-modal:not(.hidden),.doc-v223-preview-modal,.nh7-full-preview-v226,.nh7-document-preview,.certificate-preview-modal');
+  previews.forEach(root=>{
+    document.body.classList.add('nh7-preview-open-v227');
+    if(root.querySelector('[data-nh7-preview-exit-v227]'))return;
+    const bar=document.createElement('div');
+    bar.className='nh7-preview-exit-v227';
+    bar.setAttribute('data-nh7-preview-exit-v227','1');
+    bar.innerHTML=`<button type="button" class="btn danger-btn" data-nh7-preview-close-v227>× ${T('بستن و بازگشت به پنل','Close and return to admin','Zatvori i vrati se')}</button>`;
+    root.appendChild(bar);
+  });
+}
+const observerPreviewV227=new MutationObserver(()=>requestAnimationFrame(ensurePreviewExitV227));
+observerPreviewV227.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+document.addEventListener('click',e=>{
+  const btn=e.target.closest?.('[data-nh7-preview-close-v227]');
+  if(!btn)return;
+  e.preventDefault();e.stopImmediatePropagation();closeDocumentPreviewV227(btn);
+},true);
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Escape')return;
+  const root=document.querySelector('.nh7-full-preview-v226,.doc-v223-preview-modal,.doc-v222-preview-modal:not(.hidden),.nh7-document-preview,.certificate-preview-modal');
+  if(root){e.preventDefault();closeDocumentPreviewV227(root)}
+},true);
+window.addEventListener('afterprint',()=>setTimeout(ensurePreviewExitV227,50));
+requestAnimationFrame(()=>{activateStudentScrollV227();ensurePreviewExitV227()});
+window.NH7_ADMIN_VERSION='2.2.7';
+})();
