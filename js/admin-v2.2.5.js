@@ -583,3 +583,70 @@ window.addEventListener('afterprint',()=>setTimeout(ensurePreviewExitV227,50));
 requestAnimationFrame(()=>{activateStudentScrollV227();ensurePreviewExitV227()});
 window.NH7_ADMIN_VERSION='2.2.7';
 })();
+
+/* ============================================================
+   New Hope 7 Admin v2.2.8 — student detail scroll only
+   Robust iPad/iPhone strategy: the full-screen backdrop is the
+   scroll container; the profile card itself stays in normal flow.
+   No analytics, Audio Bible, documents, school, library or data
+   functions are modified.
+   ============================================================ */
+(()=>{'use strict';
+
+function setupStudentDetailScrollV228(){
+  const back=document.querySelector('.student-modal-backdrop');
+  if(!back){
+    document.body.classList.remove('nh7-student-detail-open-v228');
+    return;
+  }
+
+  document.body.classList.remove(
+    'nh7-student-lock-v226',
+    'nh7-student-modal-open'
+  );
+  document.body.classList.add('nh7-student-detail-open-v227','nh7-student-detail-open-v228');
+
+  const modal=back.querySelector('.student-modal');
+  back.setAttribute('role','dialog');
+  back.setAttribute('aria-modal','true');
+  back.style.setProperty('overflow-y','auto','important');
+  back.style.setProperty('overflow-x','hidden','important');
+  back.style.setProperty('-webkit-overflow-scrolling','touch','important');
+  back.style.setProperty('touch-action','pan-y','important');
+  back.style.setProperty('overscroll-behavior-y','contain','important');
+
+  if(modal){
+    modal.setAttribute('tabindex','0');
+    modal.style.setProperty('position','relative','important');
+    modal.style.setProperty('inset','auto','important');
+    modal.style.setProperty('height','auto','important');
+    modal.style.setProperty('min-height','100%','important');
+    modal.style.setProperty('max-height','none','important');
+    modal.style.setProperty('overflow','visible','important');
+    modal.style.setProperty('touch-action','auto','important');
+    modal.style.setProperty('-webkit-overflow-scrolling','auto','important');
+  }
+
+  if(!back.dataset.nh7V228Ready){
+    back.dataset.nh7V228Ready='1';
+    back.scrollTop=0;
+    requestAnimationFrame(()=>{ back.scrollTop=0; });
+  }
+}
+
+const observerStudentV228=new MutationObserver(()=>{
+  requestAnimationFrame(setupStudentDetailScrollV228);
+});
+observerStudentV228.observe(document.documentElement,{
+  childList:true,
+  subtree:true,
+  attributes:true,
+  attributeFilter:['class']
+});
+
+window.addEventListener('resize',setupStudentDetailScrollV228);
+window.addEventListener('orientationchange',()=>setTimeout(setupStudentDetailScrollV228,120));
+requestAnimationFrame(setupStudentDetailScrollV228);
+
+window.NH7_ADMIN_VERSION='2.2.8';
+})();
