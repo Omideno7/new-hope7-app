@@ -218,3 +218,102 @@ html[dir="rtl"] .nh7-preview-exit-v227{left:auto!important;right:10px!important}
   touch-action:manipulation!important;
 }
 @media print{.nh7-preview-exit-v227{display:none!important}}
+
+/* ============================================================
+   New Hope 7 Admin v2.2.8 — student detail scroll only
+   The backdrop, not the fixed profile card, is the scroll area.
+   This avoids the nested fixed-scroller bug in iPadOS Safari/PWA.
+   ============================================================ */
+body.nh7-student-detail-open-v228{
+  overflow:hidden!important;
+  position:static!important;
+  inset:auto!important;
+  width:auto!important;
+  height:auto!important;
+}
+
+body.nh7-student-detail-open-v228 .student-modal-backdrop{
+  position:fixed!important;
+  inset:0!important;
+  z-index:2147482000!important;
+  display:block!important;
+  width:100%!important;
+  height:100dvh!important;
+  max-height:100dvh!important;
+  margin:0!important;
+  padding:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  overscroll-behavior-y:contain!important;
+  touch-action:pan-y!important;
+  background:rgba(9,30,43,.68)!important;
+}
+
+body.nh7-student-detail-open-v228 .student-modal{
+  position:relative!important;
+  inset:auto!important;
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0 14px calc(42px + env(safe-area-inset-bottom))!important;
+  overflow:visible!important;
+  -webkit-overflow-scrolling:auto!important;
+  overscroll-behavior:auto!important;
+  touch-action:auto!important;
+  background:#f7fbfb!important;
+  border-radius:0!important;
+}
+
+body.nh7-student-detail-open-v228 .student-modal-head{
+  position:sticky!important;
+  top:0!important;
+  z-index:1000!important;
+  margin:0 -14px 12px!important;
+  padding:calc(10px + env(safe-area-inset-top)) 14px 10px!important;
+  background:rgba(247,251,251,.98)!important;
+  border-bottom:1px solid #d8ecea!important;
+}
+
+body.nh7-student-detail-open-v228 .student-modal .close-round{
+  position:relative!important;
+  top:auto!important;
+  z-index:1002!important;
+  width:52px!important;
+  height:52px!important;
+  min-width:52px!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+}
+
+body.nh7-student-detail-open-v228 .student-modal .student-lessons,
+body.nh7-student-detail-open-v228 .student-modal .table-wrap{
+  max-width:100%!important;
+  overflow-x:auto!important;
+  overflow-y:visible!important;
+  -webkit-overflow-scrolling:touch!important;
+}
+
+@media(min-width:760px){
+  body.nh7-student-detail-open-v228 .student-modal-backdrop{
+    padding:24px!important;
+  }
+  body.nh7-student-detail-open-v228 .student-modal{
+    width:min(1040px,100%)!important;
+    min-height:calc(100dvh - 48px)!important;
+    margin:0 auto!important;
+    padding:0 18px 36px!important;
+    border-radius:24px!important;
+  }
+}
+
+@supports not (height:100dvh){
+  body.nh7-student-detail-open-v228 .student-modal-backdrop{
+    height:100vh!important;
+    max-height:100vh!important;
+  }
+}
