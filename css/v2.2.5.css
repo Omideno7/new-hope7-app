@@ -132,3 +132,89 @@ body.nh7-student-lock-v226 .student-modal button{touch-action:manipulation}
   .nh7-full-preview-v226{position:fixed!important;inset:0!important;padding:0!important;background:#fff!important}
   .nh7-full-sheet-v226{width:100%!important;height:100%!important}
 }
+
+/* ============================================================
+   New Hope 7 Admin v2.2.7 — student detail scroll + preview exit
+   ============================================================ */
+body.nh7-student-detail-open-v227{
+  overflow:hidden!important;
+  position:static!important;
+  inset:auto!important;
+  width:auto!important;
+  height:auto!important;
+}
+body.nh7-student-detail-open-v227 .student-modal-backdrop{
+  position:fixed!important;
+  inset:0!important;
+  z-index:2147482000!important;
+  display:block!important;
+  overflow:hidden!important;
+  padding:0!important;
+  touch-action:auto!important;
+  overscroll-behavior:none!important;
+  background:rgba(9,30,43,.68)!important;
+}
+body.nh7-student-detail-open-v227 .student-modal{
+  position:fixed!important;
+  inset:0!important;
+  width:100%!important;
+  height:100dvh!important;
+  max-width:none!important;
+  max-height:100dvh!important;
+  margin:0!important;
+  padding:0 14px calc(34px + env(safe-area-inset-bottom))!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  overscroll-behavior-y:contain!important;
+  touch-action:pan-y!important;
+  background:#f7fbfb!important;
+  border-radius:0!important;
+}
+body.nh7-student-detail-open-v227 .student-modal-head{
+  position:sticky!important;
+  top:0!important;
+  z-index:1000!important;
+  margin:0 -14px 12px!important;
+  padding:calc(10px + env(safe-area-inset-top)) 14px 10px!important;
+  background:rgba(247,251,251,.98)!important;
+  border-bottom:1px solid #d8ecea!important;
+}
+body.nh7-student-detail-open-v227 .student-modal .close-round{
+  position:relative!important;
+  top:auto!important;
+  z-index:1002!important;
+  width:52px!important;
+  height:52px!important;
+  min-width:52px!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+}
+body.nh7-student-detail-open-v227 .student-modal>*{max-width:100%!important}
+@media(min-width:760px){
+  body.nh7-student-detail-open-v227 .student-modal-backdrop{display:flex!important;align-items:center!important;justify-content:center!important;padding:24px!important}
+  body.nh7-student-detail-open-v227 .student-modal{position:relative!important;inset:auto!important;width:min(1040px,100%)!important;height:min(94dvh,980px)!important;max-height:94dvh!important;border-radius:24px!important;padding:0 18px 32px!important}
+}
+
+.nh7-preview-exit-v227{
+  position:fixed!important;
+  top:max(10px,env(safe-area-inset-top))!important;
+  left:10px!important;
+  z-index:2147483646!important;
+  display:flex!important;
+  pointer-events:auto!important;
+}
+html[dir="rtl"] .nh7-preview-exit-v227{left:auto!important;right:10px!important}
+.nh7-preview-exit-v227 button{
+  min-height:50px!important;
+  padding:10px 16px!important;
+  border:3px solid #fff!important;
+  border-radius:999px!important;
+  background:#b42318!important;
+  color:#fff!important;
+  font-weight:900!important;
+  font-size:15px!important;
+  box-shadow:0 10px 30px rgba(0,0,0,.35)!important;
+  touch-action:manipulation!important;
+}
+@media print{.nh7-preview-exit-v227{display:none!important}}
