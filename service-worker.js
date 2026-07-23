@@ -1,6 +1,6 @@
 try { importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js'); } catch (e) { console.warn('OneSignal SW unavailable', e); }
 
-const VERSION='v2.2.6-final-three-fixes';
+const VERSION='v2.2.8-student-detail-scroll';
 const CORE_CACHE='nh7-core-'+VERSION;
 const DATA_CACHE='nh7-data-'+VERSION;
 const PUBLIC_API_CACHE='nh7-public-api-'+VERSION;
