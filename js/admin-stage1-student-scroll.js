@@ -1,17 +1,18 @@
 /* ============================================================
-   New Hope 7 Admin v2.3.4 — bounded student profile scroll
+   New Hope 7 Admin v2.3.5 — bounded student profile scroll + close
    - Locks the page behind the modal
    - Uses one dedicated inner scroll area
    - Prevents iOS scroll chaining / excessive bounce
-   - Uses an isolated close button handler
+   - Replaces the legacy close button with an isolated native button
    ============================================================ */
 (()=>{'use strict';
 const LEGACY_BACKDROP='student-modal-backdrop';
-const SAFE_BACKDROP='nh7-student-overlay-v234';
-const SCROLLER='nh7-student-scroll-v234';
-const CLOSE='nh7-student-close-v234';
+const SAFE_BACKDROP='nh7-student-overlay-v235';
+const SCROLLER='nh7-student-scroll-v235';
+const CLOSE='nh7-student-close-v235';
 let savedScrollY=0;
 let active=false;
+let closing=false;
 
 function important(el,name,value){if(el)el.style.setProperty(name,value,'important');}
 function isProfileBackdrop(back){
@@ -56,42 +57,84 @@ function unlockPage(){
   clearLegacyClasses();
   requestAnimationFrame(()=>window.scrollTo(0,savedScrollY));
 }
-function closeProfileNow(e){
-  if(e){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();}
+function clearStudentSelectionFallback(){
+  try{window.selectedStudentEmail=''}catch(_){}
+  try{Function("try{selectedStudentEmail=''}catch(_){ }")()}catch(_){}
+}
+function closeProfileNow(event){
+  if(event){
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+  }
+  if(closing)return false;
+  closing=true;
+
   const safe=document.querySelector('.'+SAFE_BACKDROP);
   if(safe)safe.remove();
-  try{selectedStudentEmail=''}catch(_){}
   unlockPage();
-  try{render()}catch(err){console.error('NH7 student close v2.3.4',err)}
-}
-function styleCloseButton(btn){
-  btn.classList.remove('close-round');
-  btn.removeAttribute('data-nh7-close-student');
-  btn.removeAttribute('data-close-student');
-  btn.removeAttribute('onclick');
-  btn.classList.add(CLOSE);
-  btn.type='button';
-  btn.setAttribute('aria-label','Close student profile');
-  important(btn,'position','relative');
-  important(btn,'z-index','50');
-  important(btn,'display','grid');
-  important(btn,'place-items','center');
-  important(btn,'width','48px');
-  important(btn,'height','48px');
-  important(btn,'min-width','48px');
-  important(btn,'border','0');
-  important(btn,'border-radius','50%');
-  important(btn,'background','#b42318');
-  important(btn,'color','#fff');
-  important(btn,'font-size','27px');
-  important(btn,'line-height','1');
-  important(btn,'pointer-events','auto');
-  important(btn,'touch-action','manipulation');
-  if(!btn.dataset.nh7CloseBound){
-    btn.dataset.nh7CloseBound='1';
-    btn.addEventListener('pointerup',closeProfileNow,true);
-    btn.addEventListener('click',closeProfileNow,true);
+
+  let handled=false;
+  try{
+    if(typeof window.closeStudentDashboard==='function'){
+      window.closeStudentDashboard();
+      handled=true;
+    }
+  }catch(error){console.warn('NH7 legacy close fallback',error)}
+
+  if(!handled){
+    clearStudentSelectionFallback();
+    try{if(typeof window.render==='function')window.render()}catch(error){console.error('NH7 student close v2.3.5',error)}
   }
+
+  setTimeout(()=>{closing=false},350);
+  return false;
+}
+function replaceCloseButton(button){
+  if(!button)return null;
+  if(button.classList.contains(CLOSE))return button;
+
+  /* Clone the control so all old inline/direct listeners are discarded. */
+  const fresh=button.cloneNode(true);
+  fresh.classList.remove('close-round');
+  fresh.removeAttribute('data-nh7-close-student');
+  fresh.removeAttribute('data-close-student');
+  fresh.removeAttribute('onclick');
+  fresh.classList.add(CLOSE);
+  fresh.type='button';
+  fresh.setAttribute('aria-label','Close student profile');
+  fresh.setAttribute('title','Close');
+  fresh.dataset.nh7CloseBound='1';
+
+  important(fresh,'position','relative');
+  important(fresh,'z-index','100');
+  important(fresh,'display','grid');
+  important(fresh,'place-items','center');
+  important(fresh,'width','48px');
+  important(fresh,'height','48px');
+  important(fresh,'min-width','48px');
+  important(fresh,'border','0');
+  important(fresh,'border-radius','50%');
+  important(fresh,'background','#b42318');
+  important(fresh,'color','#fff');
+  important(fresh,'font-size','27px');
+  important(fresh,'line-height','1');
+  important(fresh,'cursor','pointer');
+  important(fresh,'pointer-events','auto');
+  important(fresh,'touch-action','manipulation');
+  important(fresh,'-webkit-appearance','none');
+  important(fresh,'user-select','none');
+
+  /* Native property handlers work reliably in iOS PWA/Safari. */
+  fresh.onclick=closeProfileNow;
+  fresh.ontouchend=closeProfileNow;
+  fresh.addEventListener('pointerup',closeProfileNow,{capture:true});
+  fresh.addEventListener('keydown',event=>{
+    if(event.key==='Enter'||event.key===' ')closeProfileNow(event);
+  },true);
+
+  button.replaceWith(fresh);
+  return fresh;
 }
 function nudgeScrollBoundary(scroller){
   if(scroller.scrollHeight<=scroller.clientHeight)return;
@@ -173,7 +216,7 @@ function prepareProfile(){
   important(scroller,'box-sizing','border-box');
 
   const close=modal.querySelector('.close-round,[data-nh7-close-student],[data-close-student],.'+CLOSE);
-  if(close)styleCloseButton(close);
+  replaceCloseButton(close);
 
   if(!scroller.dataset.nh7TouchGuard){
     scroller.dataset.nh7TouchGuard='1';
@@ -205,5 +248,5 @@ if(typeof beforeRender==='function'){
 window.addEventListener('resize',prepareProfile,{passive:true});
 window.addEventListener('orientationchange',()=>setTimeout(prepareProfile,180),{passive:true});
 requestAnimationFrame(prepareProfile);
-window.NH7_ADMIN_VERSION='2.3.4-stage1';
+window.NH7_ADMIN_VERSION='2.3.5-stage1';
 })();
