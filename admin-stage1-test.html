@@ -3,28 +3,34 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>New Hope 7 — Stage 1 Test</title>
+  <title>New Hope 7 — Stage 1 Direct Test</title>
   <style>
-    html,body{margin:0;height:100%;overflow:hidden;background:#0f766e;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif}
-    .bar{height:44px;display:flex;align-items:center;justify-content:center;padding-top:env(safe-area-inset-top);background:#0f766e;color:#fff;font-size:13px;font-weight:800;box-sizing:content-box}
-    iframe{display:block;width:100%;height:calc(100% - 44px - env(safe-area-inset-top));border:0;background:#fff}
+    html,body{margin:0;min-height:100%;background:#eef8f7;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif}
+    .loading{min-height:100dvh;display:grid;place-items:center;padding:24px;text-align:center;color:#0f766e;font-weight:900}
   </style>
 </head>
 <body>
-  <div class="bar">نسخه آزمایشی مرحله ۱ — فقط اصلاح اسکرول پروفایل دانشجو</div>
-  <iframe id="adminFrame" src="admin.html?stage1-test=2.3.1"></iframe>
+  <div class="loading">در حال بارگذاری نسخه آزمایشی مستقیم مرحله ۱…</div>
   <script>
-    const frame=document.getElementById('adminFrame');
-    frame.addEventListener('load',()=>{
+    (async()=>{
       try{
-        const d=frame.contentDocument;
-        if(!d||d.getElementById('nh7-stage1-test-script'))return;
-        const s=d.createElement('script');
-        s.id='nh7-stage1-test-script';
-        s.src='js/admin-stage1-student-scroll.js?v=2.3.1-stage1';
-        d.body.appendChild(s);
-      }catch(e){console.error('Stage 1 patch injection failed',e);}
-    });
+        const response=await fetch('admin.html?stage1-direct=2.3.2',{cache:'no-store'});
+        if(!response.ok)throw new Error('HTTP '+response.status);
+        let html=await response.text();
+        const injected=`
+          <style>
+            .nh7-stage1-badge-v232{position:fixed;left:8px;bottom:8px;z-index:2147483647;background:#0f766e;color:#fff;border:2px solid #fff;border-radius:999px;padding:6px 10px;font:800 11px system-ui;box-shadow:0 6px 18px rgba(0,0,0,.2);pointer-events:none}
+          </style>
+          <div class="nh7-stage1-badge-v232">Stage 1 · v2.3.2</div>
+          <script src="js/admin-stage1-student-scroll.js?v=2.3.2-stage1-direct"><\/script>`;
+        html=html.replace(/<\/body>\s*<\/html>\s*$/i,injected+'\n</body>\n</html>');
+        document.open();
+        document.write(html);
+        document.close();
+      }catch(error){
+        document.body.innerHTML='<div class="loading">خطا در بارگذاری نسخه آزمایشی: '+String(error.message||error)+'</div>';
+      }
+    })();
   </script>
 </body>
 </html>
