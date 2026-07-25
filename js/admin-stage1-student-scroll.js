@@ -1,15 +1,16 @@
 /* ============================================================
-   New Hope 7 Admin v2.3.6 — canonical student profile test
+   New Hope 7 Admin v2.3.7 — canonical student profile test
    - Does not move or wrap profile content
    - The modal itself is the only scroll container
    - Background stays locked
-   - Close button bypasses all legacy close handlers
+   - Close button is handled at document-capture level and removes the
+     profile overlay immediately, without depending on legacy state/render
    - Existing student analytics rendering stays untouched
    ============================================================ */
 (()=>{'use strict';
 const LEGACY_BACKDROP='student-modal-backdrop';
-const SAFE_BACKDROP='nh7-student-overlay-v236';
-const SAFE_CLOSE='nh7-student-close-v236';
+const SAFE_BACKDROP='nh7-student-overlay-v237';
+const SAFE_CLOSE='nh7-student-close-v237';
 let savedScrollY=0;
 let active=false;
 let closing=false;
@@ -44,9 +45,8 @@ function lockPage(){
   important(body,'overflow','hidden');
 }
 function unlockPage(){
-  if(!active)return;
-  active=false;
   const html=document.documentElement,body=document.body;
+  active=false;
   for(const p of ['overflow','height'])html.style.removeProperty(p);
   for(const p of ['position','top','left','right','width','height','overflow'])body.style.removeProperty(p);
   clearLegacyLocks();
@@ -54,56 +54,82 @@ function unlockPage(){
 }
 function clearStudentSelection(){
   try{selectedStudentEmail=''}catch(_){ }
-  try{Function("selectedStudentEmail='';")()}catch(_){ }
+  try{window.selectedStudentEmail=''}catch(_){ }
+}
+function removeProfileOverlay(source){
+  const fromButton=source?.closest?.('.'+SAFE_BACKDROP);
+  const safe=fromButton||document.querySelector('.'+SAFE_BACKDROP);
+  if(safe){
+    safe.style.setProperty('display','none','important');
+    safe.setAttribute('aria-hidden','true');
+    safe.remove();
+  }
 }
 function closeProfile(event){
-  if(event){event.preventDefault();event.stopPropagation();event.stopImmediatePropagation?.();}
+  if(event){
+    event.preventDefault?.();
+    event.stopPropagation?.();
+    event.stopImmediatePropagation?.();
+  }
   if(closing)return false;
   closing=true;
+
+  /* The visual close must never depend on the old render wrappers. */
+  removeProfileOverlay(event?.target);
   clearStudentSelection();
   unlockPage();
-  try{Function('render();')()}catch(error){
-    try{if(typeof window.render==='function')window.render()}catch(inner){console.error('NH7 close student profile',inner)}
-  }
-  setTimeout(()=>{closing=false},250);
+
+  setTimeout(()=>{
+    document.querySelectorAll('.'+SAFE_BACKDROP).forEach(node=>node.remove());
+    clearStudentSelection();
+    closing=false;
+  },300);
   return false;
 }
 function replaceCloseButton(modal){
-  const old=modal.querySelector('.student-modal-head .close-round,[data-nh7-close-student],[data-close-student],.'+SAFE_CLOSE);
-  if(!old)return;
-  if(old.classList.contains(SAFE_CLOSE))return;
+  const head=modal.querySelector('.student-modal-head');
+  if(!head)return;
+  let old=head.querySelector('.close-round,[data-nh7-close-student],[data-close-student],.'+SAFE_CLOSE);
+  if(old?.classList.contains(SAFE_CLOSE))return;
+  if(!old){
+    old=document.createElement('button');
+    old.textContent='×';
+    head.appendChild(old);
+  }
   const button=old.cloneNode(true);
-  button.classList.remove('close-round');
-  button.classList.add(SAFE_CLOSE);
+  button.textContent='×';
+  button.className=SAFE_CLOSE;
   button.removeAttribute('onclick');
   button.removeAttribute('data-nh7-close-student');
   button.removeAttribute('data-close-student');
   button.type='button';
   button.setAttribute('aria-label','Close student profile');
   button.setAttribute('title','Close');
+  button.setAttribute('data-nh7-force-close-v237','1');
   important(button,'position','relative');
-  important(button,'z-index','100');
+  important(button,'z-index','2147483646');
   important(button,'display','grid');
   important(button,'place-items','center');
   important(button,'width','46px');
   important(button,'height','46px');
   important(button,'min-width','46px');
+  important(button,'padding','0px');
   important(button,'border','0');
   important(button,'border-radius','50%');
   important(button,'background','#b42318');
   important(button,'color','#fff');
-  important(button,'font-size','26px');
+  important(button,'font-size','28px');
+  important(button,'font-weight','800');
   important(button,'line-height','1');
   important(button,'cursor','pointer');
   important(button,'pointer-events','auto');
   important(button,'touch-action','manipulation');
-  button.onclick=closeProfile;
-  button.ontouchend=closeProfile;
+  important(button,'-webkit-appearance','none');
   old.replaceWith(button);
 }
 function installBoundaryGuard(modal){
-  if(modal.dataset.nh7BoundaryGuardV236)return;
-  modal.dataset.nh7BoundaryGuardV236='1';
+  if(modal.dataset.nh7BoundaryGuardV237)return;
+  modal.dataset.nh7BoundaryGuardV237='1';
   let lastY=0;
   modal.addEventListener('touchstart',event=>{
     lastY=event.touches?.[0]?.clientY||0;
@@ -173,27 +199,32 @@ function prepareProfile(){
   if(head){
     important(head,'position','sticky');
     important(head,'top','-16px');
-    important(head,'z-index','80');
+    important(head,'z-index','2147483645');
     important(head,'margin','-16px -16px 12px');
     important(head,'padding','calc(10px + env(safe-area-inset-top)) 16px 10px');
     important(head,'background','rgba(247,251,251,.98)');
     important(head,'border-bottom','1px solid #d8ecea');
+    important(head,'pointer-events','auto');
   }
   replaceCloseButton(modal);
   installBoundaryGuard(modal);
-  if(!modal.dataset.nh7ReadyV236){
-    modal.dataset.nh7ReadyV236='1';
+  if(!modal.dataset.nh7ReadyV237){
+    modal.dataset.nh7ReadyV237='1';
     modal.scrollTop=0;
   }
-
-  try{
-    const email=String(selectedStudentEmail||'').trim().toLowerCase();
-    if(email&&typeof window.nh7LoadStudentV223==='function'){
-      state.studentActivityV223=state.studentActivityV223&&typeof state.studentActivityV223==='object'?state.studentActivityV223:{};
-      if(!state.studentActivityV223[email])window.nh7LoadStudentV223(email,true).catch(console.warn);
-    }
-  }catch(error){console.warn('NH7 activity retry',error)}
 }
+
+/* Capture before the event reaches any legacy target handler. The unique
+   selector is not matched by the older .close-round listeners. */
+function forceCloseCapture(event){
+  const button=event.target?.closest?.('[data-nh7-force-close-v237],.'+SAFE_CLOSE);
+  if(button)closeProfile(event);
+}
+document.addEventListener('touchstart',forceCloseCapture,{capture:true,passive:false});
+document.addEventListener('pointerdown',forceCloseCapture,true);
+document.addEventListener('mousedown',forceCloseCapture,true);
+document.addEventListener('click',forceCloseCapture,true);
+
 const observer=new MutationObserver(()=>requestAnimationFrame(prepareProfile));
 observer.observe(document.documentElement,{childList:true,subtree:true});
 const beforeRender=window.render;
@@ -206,5 +237,5 @@ if(typeof beforeRender==='function'){
 }
 window.addEventListener('orientationchange',()=>setTimeout(prepareProfile,160),{passive:true});
 requestAnimationFrame(prepareProfile);
-window.NH7_ADMIN_VERSION='2.3.6-stage1';
+window.NH7_ADMIN_VERSION='2.3.7-stage1';
 })();
