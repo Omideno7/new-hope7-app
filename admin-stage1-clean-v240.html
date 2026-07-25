@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <title>New Hope 7 — Clean Stage 1 Test v2.4.0</title>
+  <style>
+    html,body{margin:0;min-height:100%;background:#eef8f7;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif}
+    .loading{min-height:100dvh;display:grid;place-items:center;padding:24px;text-align:center;color:#0f766e;font-weight:900}
+  </style>
+</head>
+<body>
+  <div class="loading">در حال بارگذاری نسخه پاک‌سازی‌شده مرحله اول…</div>
+  <script>
+    (async()=>{
+      try{
+        const response=await fetch('admin.html?clean-stage1=2.4.0-'+Date.now(),{cache:'no-store'});
+        if(!response.ok)throw new Error('HTTP '+response.status);
+        let source=await response.text();
+        source=source.replace(
+          /<script\s+src=["']js\/admin-v2\.2\.5\.js[^"']*["']><\/script>/i,
+          '<script src="js/admin-v2.2.5-stage1-clean-v240.js?v=2.4.0-clean"><\/script>'
+        );
+        const badge=`
+          <div style="position:fixed;left:8px;bottom:8px;z-index:2147483647;background:#0f766e;color:#fff;border:2px solid #fff;border-radius:999px;padding:6px 10px;font:800 11px system-ui;box-shadow:0 6px 18px rgba(0,0,0,.2);pointer-events:none">Clean Stage 1 · v2.4.0</div>`;
+        source=source.replace(/<\/body>\s*<\/html>\s*$/i,badge+'\n</body>\n</html>');
+        document.open();
+        document.write(source);
+        document.close();
+      }catch(error){
+        document.body.innerHTML='<div class="loading">خطا در بارگذاری نسخه آزمایشی: '+String(error.message||error)+'</div>';
+      }
+    })();
+  </script>
+</body>
+</html>
