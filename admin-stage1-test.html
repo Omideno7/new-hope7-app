@@ -14,15 +14,16 @@
   <script>
     (async()=>{
       try{
-        const response=await fetch('admin.html?stage1-direct=2.3.7',{cache:'no-store'});
+        const response=await fetch('admin.html?stage1-direct=2.3.8',{cache:'no-store'});
         if(!response.ok)throw new Error('HTTP '+response.status);
         let html=await response.text();
         const injected=`
           <style>
-            .nh7-stage1-badge-v237{position:fixed;left:8px;bottom:8px;z-index:2147483647;background:#0f766e;color:#fff;border:2px solid #fff;border-radius:999px;padding:6px 10px;font:800 11px system-ui;box-shadow:0 6px 18px rgba(0,0,0,.2);pointer-events:none}
+            .nh7-stage1-badge-v238{position:fixed;left:8px;bottom:8px;z-index:2147483646;background:#0f766e;color:#fff;border:2px solid #fff;border-radius:999px;padding:6px 10px;font:800 11px system-ui;box-shadow:0 6px 18px rgba(0,0,0,.2);pointer-events:none}
           </style>
-          <div class="nh7-stage1-badge-v237">Stage 1 · v2.3.7</div>
-          <script src="js/admin-stage1-student-scroll.js?v=2.3.7-force-close"><\/script>`;
+          <div class="nh7-stage1-badge-v238">Stage 1 · v2.3.8</div>
+          <script src="js/admin-stage1-student-scroll.js?v=2.3.7-scroll"><\/script>
+          <script src="js/admin-stage1-close-v238.js?v=2.3.8-portal-close"><\/script>`;
         html=html.replace(/<\/body>\s*<\/html>\s*$/i,injected+'\n</body>\n</html>');
         document.open();
         document.write(html);
