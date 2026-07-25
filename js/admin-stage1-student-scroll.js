@@ -1,15 +1,15 @@
 /* ============================================================
-   New Hope 7 Admin v2.3.5 — bounded student profile scroll + close
-   - Locks the page behind the modal
-   - Uses one dedicated inner scroll area
-   - Prevents iOS scroll chaining / excessive bounce
-   - Replaces the legacy close button with an isolated native button
+   New Hope 7 Admin v2.3.6 — canonical student profile test
+   - Does not move or wrap profile content
+   - The modal itself is the only scroll container
+   - Background stays locked
+   - Close button bypasses all legacy close handlers
+   - Existing student analytics rendering stays untouched
    ============================================================ */
 (()=>{'use strict';
 const LEGACY_BACKDROP='student-modal-backdrop';
-const SAFE_BACKDROP='nh7-student-overlay-v235';
-const SCROLLER='nh7-student-scroll-v235';
-const CLOSE='nh7-student-close-v235';
+const SAFE_BACKDROP='nh7-student-overlay-v236';
+const SAFE_CLOSE='nh7-student-close-v236';
 let savedScrollY=0;
 let active=false;
 let closing=false;
@@ -18,25 +18,20 @@ function important(el,name,value){if(el)el.style.setProperty(name,value,'importa
 function isProfileBackdrop(back){
   if(!back||back.id==='nh7EmailModal')return false;
   const modal=back.querySelector('.student-modal');
-  if(!modal||modal.classList.contains('email-modal'))return false;
-  try{return !!String(selectedStudentEmail||'').trim()}catch(_){return true}
+  return !!modal&&!modal.classList.contains('email-modal');
 }
 function findLegacyProfile(){
   return Array.from(document.querySelectorAll('.'+LEGACY_BACKDROP)).find(isProfileBackdrop)||null;
 }
-function clearLegacyClasses(){
-  document.body.classList.remove(
-    'nh7-student-lock-v226',
-    'nh7-student-modal-open',
-    'nh7-student-detail-open-v227',
-    'nh7-student-detail-open-v228'
-  );
-  document.body.style.removeProperty('--nh7-lock-scroll-y');
+function clearLegacyLocks(){
+  const body=document.body;
+  body.classList.remove('nh7-student-lock-v226','nh7-student-modal-open','nh7-student-detail-open-v227','nh7-student-detail-open-v228');
+  body.style.removeProperty('--nh7-lock-scroll-y');
 }
 function lockPage(){
   if(!active)savedScrollY=window.scrollY||document.documentElement.scrollTop||0;
   active=true;
-  clearLegacyClasses();
+  clearLegacyLocks();
   const html=document.documentElement,body=document.body;
   important(html,'overflow','hidden');
   important(html,'height','100%');
@@ -54,92 +49,80 @@ function unlockPage(){
   const html=document.documentElement,body=document.body;
   for(const p of ['overflow','height'])html.style.removeProperty(p);
   for(const p of ['position','top','left','right','width','height','overflow'])body.style.removeProperty(p);
-  clearLegacyClasses();
+  clearLegacyLocks();
   requestAnimationFrame(()=>window.scrollTo(0,savedScrollY));
 }
-function clearStudentSelectionFallback(){
-  try{window.selectedStudentEmail=''}catch(_){}
-  try{Function("try{selectedStudentEmail=''}catch(_){ }")()}catch(_){}
+function clearStudentSelection(){
+  try{selectedStudentEmail=''}catch(_){ }
+  try{Function("selectedStudentEmail='';")()}catch(_){ }
 }
-function closeProfileNow(event){
-  if(event){
-    event.preventDefault();
-    event.stopPropagation();
-    event.stopImmediatePropagation();
-  }
+function closeProfile(event){
+  if(event){event.preventDefault();event.stopPropagation();event.stopImmediatePropagation?.();}
   if(closing)return false;
   closing=true;
-
-  const safe=document.querySelector('.'+SAFE_BACKDROP);
-  if(safe)safe.remove();
+  clearStudentSelection();
   unlockPage();
-
-  let handled=false;
-  try{
-    if(typeof window.closeStudentDashboard==='function'){
-      window.closeStudentDashboard();
-      handled=true;
-    }
-  }catch(error){console.warn('NH7 legacy close fallback',error)}
-
-  if(!handled){
-    clearStudentSelectionFallback();
-    try{if(typeof window.render==='function')window.render()}catch(error){console.error('NH7 student close v2.3.5',error)}
+  try{Function('render();')()}catch(error){
+    try{if(typeof window.render==='function')window.render()}catch(inner){console.error('NH7 close student profile',inner)}
   }
-
-  setTimeout(()=>{closing=false},350);
+  setTimeout(()=>{closing=false},250);
   return false;
 }
-function replaceCloseButton(button){
-  if(!button)return null;
-  if(button.classList.contains(CLOSE))return button;
-
-  /* Clone the control so all old inline/direct listeners are discarded. */
-  const fresh=button.cloneNode(true);
-  fresh.classList.remove('close-round');
-  fresh.removeAttribute('data-nh7-close-student');
-  fresh.removeAttribute('data-close-student');
-  fresh.removeAttribute('onclick');
-  fresh.classList.add(CLOSE);
-  fresh.type='button';
-  fresh.setAttribute('aria-label','Close student profile');
-  fresh.setAttribute('title','Close');
-  fresh.dataset.nh7CloseBound='1';
-
-  important(fresh,'position','relative');
-  important(fresh,'z-index','100');
-  important(fresh,'display','grid');
-  important(fresh,'place-items','center');
-  important(fresh,'width','48px');
-  important(fresh,'height','48px');
-  important(fresh,'min-width','48px');
-  important(fresh,'border','0');
-  important(fresh,'border-radius','50%');
-  important(fresh,'background','#b42318');
-  important(fresh,'color','#fff');
-  important(fresh,'font-size','27px');
-  important(fresh,'line-height','1');
-  important(fresh,'cursor','pointer');
-  important(fresh,'pointer-events','auto');
-  important(fresh,'touch-action','manipulation');
-  important(fresh,'-webkit-appearance','none');
-  important(fresh,'user-select','none');
-
-  /* Native property handlers work reliably in iOS PWA/Safari. */
-  fresh.onclick=closeProfileNow;
-  fresh.ontouchend=closeProfileNow;
-  fresh.addEventListener('pointerup',closeProfileNow,{capture:true});
-  fresh.addEventListener('keydown',event=>{
-    if(event.key==='Enter'||event.key===' ')closeProfileNow(event);
-  },true);
-
-  button.replaceWith(fresh);
-  return fresh;
+function replaceCloseButton(modal){
+  const old=modal.querySelector('.student-modal-head .close-round,[data-nh7-close-student],[data-close-student],.'+SAFE_CLOSE);
+  if(!old)return;
+  if(old.classList.contains(SAFE_CLOSE))return;
+  const button=old.cloneNode(true);
+  button.classList.remove('close-round');
+  button.classList.add(SAFE_CLOSE);
+  button.removeAttribute('onclick');
+  button.removeAttribute('data-nh7-close-student');
+  button.removeAttribute('data-close-student');
+  button.type='button';
+  button.setAttribute('aria-label','Close student profile');
+  button.setAttribute('title','Close');
+  important(button,'position','relative');
+  important(button,'z-index','100');
+  important(button,'display','grid');
+  important(button,'place-items','center');
+  important(button,'width','46px');
+  important(button,'height','46px');
+  important(button,'min-width','46px');
+  important(button,'border','0');
+  important(button,'border-radius','50%');
+  important(button,'background','#b42318');
+  important(button,'color','#fff');
+  important(button,'font-size','26px');
+  important(button,'line-height','1');
+  important(button,'cursor','pointer');
+  important(button,'pointer-events','auto');
+  important(button,'touch-action','manipulation');
+  button.onclick=closeProfile;
+  button.ontouchend=closeProfile;
+  old.replaceWith(button);
 }
-function nudgeScrollBoundary(scroller){
-  if(scroller.scrollHeight<=scroller.clientHeight)return;
-  if(scroller.scrollTop<=0)scroller.scrollTop=1;
-  else if(scroller.scrollTop+scroller.clientHeight>=scroller.scrollHeight)scroller.scrollTop=scroller.scrollHeight-scroller.clientHeight-1;
+function installBoundaryGuard(modal){
+  if(modal.dataset.nh7BoundaryGuardV236)return;
+  modal.dataset.nh7BoundaryGuardV236='1';
+  let lastY=0;
+  modal.addEventListener('touchstart',event=>{
+    lastY=event.touches?.[0]?.clientY||0;
+    const max=Math.max(0,modal.scrollHeight-modal.clientHeight);
+    if(max>0){
+      if(modal.scrollTop<=0)modal.scrollTop=1;
+      else if(modal.scrollTop>=max)modal.scrollTop=Math.max(1,max-1);
+    }
+  },{passive:true});
+  modal.addEventListener('touchmove',event=>{
+    const y=event.touches?.[0]?.clientY||lastY;
+    const delta=y-lastY;
+    lastY=y;
+    const max=Math.max(0,modal.scrollHeight-modal.clientHeight);
+    if(max<=0)return;
+    const atTop=modal.scrollTop<=1;
+    const atBottom=modal.scrollTop>=max-1;
+    if((atTop&&delta>0)||(atBottom&&delta<0))event.preventDefault();
+  },{passive:false});
 }
 function prepareProfile(){
   const back=findLegacyProfile();
@@ -152,7 +135,6 @@ function prepareProfile(){
   back.classList.add(SAFE_BACKDROP);
   back.setAttribute('role','dialog');
   back.setAttribute('aria-modal','true');
-
   important(back,'position','fixed');
   important(back,'inset','0px');
   important(back,'z-index','2147483000');
@@ -169,71 +151,49 @@ function prepareProfile(){
 
   const modal=back.querySelector('.student-modal');
   if(!modal)return;
-  const head=modal.querySelector(':scope > .student-modal-head')||modal.querySelector('.student-modal-head');
-  let scroller=modal.querySelector(':scope > .'+SCROLLER);
-  if(!scroller){
-    scroller=document.createElement('div');
-    scroller.className=SCROLLER;
-    for(const node of Array.from(modal.childNodes)){
-      if(node!==head)scroller.appendChild(node);
-    }
-    modal.appendChild(scroller);
-  }
-
   important(modal,'position','relative');
-  important(modal,'display','flex');
-  important(modal,'flex-direction','column');
+  important(modal,'inset','auto');
+  important(modal,'display','block');
   important(modal,'width','min(980px,100%)');
   important(modal,'height','100dvh');
   important(modal,'min-height','0px');
   important(modal,'max-height','100dvh');
   important(modal,'margin','0 auto');
-  important(modal,'padding','0px');
-  important(modal,'overflow','hidden');
+  important(modal,'padding','16px');
+  important(modal,'overflow-y','auto');
+  important(modal,'overflow-x','hidden');
+  important(modal,'-webkit-overflow-scrolling','touch');
+  important(modal,'overscroll-behavior-y','none');
+  important(modal,'touch-action','pan-y');
   important(modal,'background','#f7fbfb');
+  important(modal,'box-sizing','border-box');
   important(modal,'border-radius','0px');
 
+  const head=modal.querySelector('.student-modal-head');
   if(head){
-    important(head,'position','relative');
-    important(head,'top','auto');
-    important(head,'flex','0 0 auto');
-    important(head,'margin','0px');
-    important(head,'padding','calc(10px + env(safe-area-inset-top)) 14px 10px');
+    important(head,'position','sticky');
+    important(head,'top','-16px');
+    important(head,'z-index','80');
+    important(head,'margin','-16px -16px 12px');
+    important(head,'padding','calc(10px + env(safe-area-inset-top)) 16px 10px');
     important(head,'background','rgba(247,251,251,.98)');
     important(head,'border-bottom','1px solid #d8ecea');
   }
-
-  important(scroller,'display','block');
-  important(scroller,'flex','1 1 auto');
-  important(scroller,'min-height','0px');
-  important(scroller,'width','100%');
-  important(scroller,'padding','0 16px calc(24px + env(safe-area-inset-bottom))');
-  important(scroller,'overflow-y','auto');
-  important(scroller,'overflow-x','hidden');
-  important(scroller,'-webkit-overflow-scrolling','touch');
-  important(scroller,'touch-action','pan-y');
-  important(scroller,'overscroll-behavior-y','contain');
-  important(scroller,'box-sizing','border-box');
-
-  const close=modal.querySelector('.close-round,[data-nh7-close-student],[data-close-student],.'+CLOSE);
-  replaceCloseButton(close);
-
-  if(!scroller.dataset.nh7TouchGuard){
-    scroller.dataset.nh7TouchGuard='1';
-    scroller.addEventListener('touchstart',()=>nudgeScrollBoundary(scroller),{passive:true});
+  replaceCloseButton(modal);
+  installBoundaryGuard(modal);
+  if(!modal.dataset.nh7ReadyV236){
+    modal.dataset.nh7ReadyV236='1';
+    modal.scrollTop=0;
   }
-  if(!back.dataset.nh7OutsideGuard){
-    back.dataset.nh7OutsideGuard='1';
-    back.addEventListener('touchmove',event=>{
-      if(!event.target.closest?.('.'+SCROLLER))event.preventDefault();
-    },{passive:false});
-  }
-  if(!scroller.dataset.nh7Ready){
-    scroller.dataset.nh7Ready='1';
-    scroller.scrollTop=0;
-  }
+
+  try{
+    const email=String(selectedStudentEmail||'').trim().toLowerCase();
+    if(email&&typeof window.nh7LoadStudentV223==='function'){
+      state.studentActivityV223=state.studentActivityV223&&typeof state.studentActivityV223==='object'?state.studentActivityV223:{};
+      if(!state.studentActivityV223[email])window.nh7LoadStudentV223(email,true).catch(console.warn);
+    }
+  }catch(error){console.warn('NH7 activity retry',error)}
 }
-
 const observer=new MutationObserver(()=>requestAnimationFrame(prepareProfile));
 observer.observe(document.documentElement,{childList:true,subtree:true});
 const beforeRender=window.render;
@@ -241,12 +201,10 @@ if(typeof beforeRender==='function'){
   window.render=function(...args){
     const out=beforeRender.apply(this,args);
     requestAnimationFrame(prepareProfile);
-    setTimeout(prepareProfile,60);
     return out;
   };
 }
-window.addEventListener('resize',prepareProfile,{passive:true});
-window.addEventListener('orientationchange',()=>setTimeout(prepareProfile,180),{passive:true});
+window.addEventListener('orientationchange',()=>setTimeout(prepareProfile,160),{passive:true});
 requestAnimationFrame(prepareProfile);
-window.NH7_ADMIN_VERSION='2.3.5-stage1';
+window.NH7_ADMIN_VERSION='2.3.6-stage1';
 })();
