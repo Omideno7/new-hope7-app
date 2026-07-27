@@ -1,4 +1,4 @@
-/* New Hope 7 v2.3.1 — protected access + Bible tap-to-select batch selection */
+/* New Hope 7 v2.3.3 — protected access + Bible tap selection with original verse tools */
 body.nh7-gate-open-v230{overflow:hidden!important}
 .nh7-access-gate-v230{position:fixed;inset:0;z-index:2147483000;background:rgba(8,24,43,.72);backdrop-filter:blur(8px);display:grid;place-items:center;padding:18px;box-sizing:border-box}
 .nh7-access-card-v230{position:relative;width:min(560px,100%);max-height:calc(100dvh - 36px);overflow:auto;background:#fff;border-radius:26px;padding:28px 22px 24px;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,.34);border:1px solid rgba(255,255,255,.7)}
@@ -8,23 +8,17 @@ body.nh7-gate-open-v230{overflow:hidden!important}
 .nh7-access-card-v230 p{line-height:1.85;color:#44556a;margin:0 auto 20px;max-width:48ch}
 .nh7-access-actions-v230{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 
-/* v2.3.1: circle controls are removed. The verse itself is the selection target. */
+/* The verse itself is the multi-selection target; no circles are shown. */
 .nh7-verse-select-v230{display:none!important}
 .reader-verse[data-nh7-batch-ready="1"],.clean-verse[data-nh7-batch-ready="1"],[data-verse-key][data-nh7-batch-ready="1"]{position:relative!important;padding-inline-end:0!important;cursor:pointer;transition:box-shadow .15s ease,text-decoration-color .15s ease}
 .nh7-verse-selected-v230{box-shadow:inset 0 -3px 0 #1976d2!important}
 .nh7-verse-selected-v230 .verse-text,.nh7-verse-selected-v230 .clean-verse-line span:not(.num){text-decoration-line:underline;text-decoration-color:#1976d2;text-decoration-thickness:3px;text-underline-offset:5px}
 .reader-verse.highlighted,.clean-verse.highlighted,[data-verse-key].highlighted{background:var(--nh7-verse-highlight,#fff3a3)!important}
 
-.nh7-bible-batch-toolbar-v230{position:fixed;z-index:2147482000;left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right));bottom:calc(76px + env(safe-area-inset-bottom));max-width:920px;margin:auto;background:rgba(255,255,255,.98);border:1px solid #cfe0e8;border-radius:22px;padding:11px;box-shadow:0 18px 50px rgba(11,34,55,.24);backdrop-filter:blur(12px)}
-.nh7-bible-batch-toolbar-v230.hidden{display:none!important}
-.nh7-batch-head-v230{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 4px 9px;color:#123a63}
-.nh7-batch-head-v230 strong{font-size:15px}
-.nh7-batch-head-v230>button{width:36px;height:36px;border:0;border-radius:50%;background:#eef3f6;color:#26394b;font-size:24px;line-height:1;cursor:pointer}
-.nh7-batch-actions-v230{display:flex;gap:7px;overflow-x:auto;padding:1px 1px 3px;scrollbar-width:thin}
-.nh7-batch-actions-v230 button,.nh7-batch-actions-v230 label{flex:0 0 auto;min-height:40px;border:1px solid #d0dde5;background:#f8fbfd;color:#173d61;border-radius:999px;padding:8px 12px;font:800 13px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;display:flex;align-items:center;gap:6px;cursor:pointer;touch-action:manipulation}
-.nh7-batch-actions-v230 select{border:0;background:transparent;color:inherit;font:inherit;max-width:92px}
-body.nh7-batch-open-v230 .view{padding-bottom:180px}
-.fa .nh7-access-card-v230,.fa .nh7-bible-batch-toolbar-v230{direction:rtl}
+/* The added English duplicate toolbar is permanently removed. The app's
+   original localized verse-tools panel remains the only visible action panel. */
+.nh7-bible-batch-toolbar-v230{display:none!important}
+body.nh7-batch-open-v230 .view{padding-bottom:0!important}
+.fa .nh7-access-card-v230{direction:rtl}
 
-@media (min-width:760px){.nh7-bible-batch-toolbar-v230{bottom:22px}.nh7-batch-actions-v230{flex-wrap:wrap;overflow:visible}body.nh7-batch-open-v230 .view{padding-bottom:120px}}
 @media (prefers-reduced-motion:reduce){.reader-verse,.clean-verse{transition:none!important}}
