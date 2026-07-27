@@ -1,0 +1,34 @@
+name: Validate New Hope 7 v2.3.0
+
+on:
+  push:
+    branches:
+      - release/v2.3.0-access-bible-batch
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check browser JavaScript syntax
+        run: |
+          node --check js/nh7-access-bootstrap-v230.js
+          node --check js/nh7-app-enhancements-v230.js
+          node --check service-worker.js
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Check Edge Functions
+        run: |
+          deno check supabase/functions/nh7-content-access/index.ts
+          deno check supabase/functions/nh7-library-access/index.ts
+      - name: Confirm release files
+        run: |
+          test -f index.html
+          test -f css/v2.3.0-access-bible.css
+          test -f supabase/migrations/20260727_v230_protected_content_bible_batch.sql
