@@ -1,6 +1,6 @@
-/* New Hope 7 v2.3.1 — UI access gate + Bible tap-to-select batch tools */
+/* New Hope 7 v2.3.2 — UI access gate + Bible tap-to-select batch tools */
 (()=>{'use strict';
-const VERSION='2.3.1';
+const VERSION='2.3.2';
 const access=window.NH7AccessV230;
 const selected=new Map();
 let bypassRouteOnce=false;
@@ -121,7 +121,18 @@ async function batchApply(action,value=''){
 function selectedText(){return [...selected.values()].map(v=>`${v.ref} — ${v.text}`).join('\n')}
 async function copySelected(share){const text=selectedText();try{if(share&&navigator.share)await navigator.share({text});else{await navigator.clipboard.writeText(text);alert(t('آیات انتخاب‌شده کپی شدند.','Selected verses copied.','Odabrani stihovi su kopirani.'))}}catch(error){console.warn(error)}}
 
-const observer=new MutationObserver(records=>{records.forEach(r=>r.addedNodes.forEach(n=>{if(n.nodeType===1)enhanceVerses(n)}));enhanceVerses(document);renderToolbar()});
+/* Do not render the toolbar inside the MutationObserver callback. Updating its
+   text creates another childList mutation and previously caused an endless loop. */
+let observerQueued=false;
+const observer=new MutationObserver(records=>{
+  if(observerQueued)return;
+  observerQueued=true;
+  requestAnimationFrame(()=>{
+    observerQueued=false;
+    records.forEach(r=>r.addedNodes.forEach(n=>{if(n.nodeType===1)enhanceVerses(n)}));
+    enhanceVerses(document);
+  });
+});
 observer.observe(document.documentElement,{childList:true,subtree:true});
 enhanceVerses(document);toolbar();
 window.addEventListener('online',flushQueue);window.addEventListener('nh7-access-status',flushQueue);setTimeout(flushQueue,1200);
