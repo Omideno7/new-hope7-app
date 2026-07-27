@@ -1,6 +1,6 @@
 try { importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js'); } catch (e) { console.warn('OneSignal SW unavailable', e); }
 
-const VERSION='v2.3.0-protected-content-bible-batch';
+const VERSION='v2.3.0-protected-content-bible-batch-admin';
 const CORE_CACHE='nh7-core-'+VERSION;
 const DATA_CACHE='nh7-data-'+VERSION;
 const PUBLIC_API_CACHE='nh7-public-api-'+VERSION;
@@ -8,12 +8,12 @@ const MEDIA_CACHE='nh7-media-v2-protected';
 const OFFLINE_PAGE='./offline/index.html';
 
 const CORE_ASSETS=[
-  './','./index.html','./admin.html','./certificate.html','./verify-document.html','./reset-password.html','./privacy.html','./css/styles.css','./css/v2.2.0.css','./css/v2.2.0-platform.css','./css/v2.2.1.css','./css/v2.2.2.css','./css/v2.2.3.css','./css/v2.2.4.css','./css/v2.2.5.css','./css/v2.3.0-access-bible.css','./js/app.js','./js/nh7-access-bootstrap-v230.js','./js/nh7-app-enhancements-v230.js','./js/admin-v2.2.0.js','./js/admin-v2.2.1.js','./js/admin-v2.2.2.js','./js/admin-v2.2.3.js','./js/admin-v2.2.4.js','./js/admin-v2.2.5.js','./manifest.json','./admin-manifest.json',
+  './','./index.html','./admin.html','./certificate.html','./verify-document.html','./reset-password.html','./privacy.html','./css/styles.css','./css/v2.2.0.css','./css/v2.2.0-platform.css','./css/v2.2.1.css','./css/v2.2.2.css','./css/v2.2.3.css','./css/v2.2.4.css','./css/v2.2.5.css','./css/v2.3.0-access-bible.css','./css/admin-v2.3.0-student-profile.css','./js/app.js','./js/nh7-access-bootstrap-v230.js','./js/nh7-app-enhancements-v230.js','./js/admin-v2.2.0.js','./js/admin-v2.2.1.js','./js/admin-v2.2.2.js','./js/admin-v2.2.3.js','./js/admin-v2.2.4.js','./js/admin-v2.2.5-v230.js','./manifest.json','./admin-manifest.json',
   './assets/logo.png','./assets/admin-icon-192.png','./assets/admin-icon-512.png','./assets/admin-apple-touch-icon.png',
   './assets/about/beliefs_fa_source.jpeg','./assets/about/vision_fa_source.jpeg',
   './data/app/opening_messages_365.json','./data/church/church_config.json','./data/church/about.json',
   './data/daily/daily_word_365.json','./data/daily/faith_proclamations_365.json','./data/daily/daily_juice_365.json',
-  './data/gratitude/gratitude_plan_30_days.json','./data/salvation/need_salvation.json','./data/school/school_content.json','./data/school/foundation_exam_50_trilingual.json',
+  './data/gratitude/gratitude_plan_30_days.json','./data/salvation/need_salvation.json','./data/school/school_content.json','./data/school/school_content.json','./data/school/foundation_exam_50_trilingual.json',
   './data/bible/plans/reading_plans_1yr_2yr.json','./data/bible/groups/bible_group_01_18.json','./data/bible/groups/bible_group_19_39.json','./data/bible/groups/bible_group_40_66.json',
   './offline/index.html'
 ];
@@ -36,15 +36,8 @@ async function networkFirst(request,cacheName,key=request){const cache=await cac
 async function staleWhileRevalidate(request,cacheName){const cache=await caches.open(cacheName);const hit=await cache.match(request);const update=fetch(request).then(res=>{if(res&&res.ok)cache.put(request,res.clone());return res}).catch(()=>null);return hit||await update||await caches.match(OFFLINE_PAGE)}
 async function mediaFromCache(request){const cache=await caches.open(MEDIA_CACHE);const key=simpleKey(request);const full=await cache.match(key);if(!full)return null;const range=request.headers.get('range');if(!range)return full;const blob=await full.blob();const m=/bytes=(\d+)-(\d*)/.exec(range);if(!m)return full;const start=Number(m[1]);const end=m[2]?Number(m[2]):blob.size-1;if(start>=blob.size)return new Response(null,{status:416,headers:{'Content-Range':`bytes */${blob.size}`}});const chunk=blob.slice(start,Math.min(end+1,blob.size));const headers=new Headers(full.headers);headers.set('Content-Range',`bytes ${start}-${Math.min(end,blob.size-1)}/${blob.size}`);headers.set('Content-Length',String(chunk.size));headers.set('Accept-Ranges','bytes');return new Response(chunk,{status:206,statusText:'Partial Content',headers})}
 
-function nh7FindAdminPushData(value,depth=0){
-  if(!value||depth>5)return null;
-  if(typeof value==='object'&&value.nh7_admin_event)return value;
-  if(typeof value==='object'){for(const v of Object.values(value)){const found=nh7FindAdminPushData(v,depth+1);if(found)return found}}
-  return null;
-}
-self.addEventListener('push',event=>{
-  try{const raw=event.data?event.data.json():null,data=nh7FindAdminPushData(raw);if(!data||!self.navigator?.setAppBadge)return;const n=Math.max(1,Number(data.unread_count)||1);event.waitUntil(self.navigator.setAppBadge(n))}catch(e){console.warn('NH7 admin badge push parse failed',e)}
-});
+function nh7FindAdminPushData(value,depth=0){if(!value||depth>5)return null;if(typeof value==='object'&&value.nh7_admin_event)return value;if(typeof value==='object'){for(const v of Object.values(value)){const found=nh7FindAdminPushData(v,depth+1);if(found)return found}}return null}
+self.addEventListener('push',event=>{try{const raw=event.data?event.data.json():null,data=nh7FindAdminPushData(raw);if(!data||!self.navigator?.setAppBadge)return;const n=Math.max(1,Number(data.unread_count)||1);event.waitUntil(self.navigator.setAppBadge(n))}catch(e){console.warn('NH7 admin badge push parse failed',e)}});
 
 self.addEventListener('fetch',event=>{
   const req=event.request;if(req.method!=='GET')return;const url=new URL(req.url);
