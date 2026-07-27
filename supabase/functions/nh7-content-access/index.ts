@@ -63,20 +63,15 @@ Deno.serve(async (req) => {
   const email = cleanEmail(user.email);
   const deviceId = clean(body?.device_id || req.headers.get('x-device-id')).slice(0, 160);
 
-  const { data: registrations, error: registrationError } = await admin
-    .from('registrations')
-    .select('id,status,device_id,payload,updated_at')
-    .eq('type', 'school')
-    .eq('status', 'approved')
-    .order('updated_at', { ascending: false })
-    .limit(100);
-  if (registrationError) return reply(origin, { error: registrationError.message, code: 'registration_check_failed' }, 500);
-
-  const approved = (registrations || []).some((row: any) => {
-    const rowEmail = cleanEmail(row?.payload?.email || row?.payload?.user_email);
-    const rowDevice = clean(row?.device_id || row?.payload?.device_id);
-    return (rowEmail && rowEmail === email) || (deviceId && rowDevice && rowDevice === deviceId);
+  /* This RPC already exists in the current production database and performs
+     an indexed server-side lookup, so approval is not limited to a page of
+     registration rows. The email comes only from the verified JWT user. */
+  const { data: approvalData, error: approvalError } = await admin.rpc('nh7_school_access_approved_v223', {
+    p_email: email,
+    p_device_id: deviceId,
   });
+  if (approvalError) return reply(origin, { error: approvalError.message, code: 'registration_check_failed' }, 500);
+  const approved = Boolean(approvalData);
 
   if (action === 'status') {
     return reply(origin, { authenticated: true, approved, user_email: email, code: approved ? 'approved' : 'school_approval_required' });
