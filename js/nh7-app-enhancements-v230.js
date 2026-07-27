@@ -1,6 +1,6 @@
-/* New Hope 7 v2.3.0 — UI access gate + Bible batch tools */
+/* New Hope 7 v2.3.1 — UI access gate + Bible tap-to-select batch tools */
 (()=>{'use strict';
-const VERSION='2.3.0';
+const VERSION='2.3.1';
 const access=window.NH7AccessV230;
 const selected=new Map();
 let bypassRouteOnce=false;
@@ -53,21 +53,40 @@ function verseInfo(node){
   const text=share?.dataset.shareText||node.querySelector('.verse-text')?.textContent||node.querySelector('.clean-verse-line span:not(.num)')?.textContent||node.textContent||'';
   return{node,key:String(key),ref:String(ref),text:String(text).trim().replace(/\s+/g,' ')};
 }
-function selectedCount(){return selected.size}
-function selectionButton(node){
-  let b=node.querySelector(':scope > .nh7-verse-select-v230');if(b)return b;
-  b=document.createElement('button');b.type='button';b.className='nh7-verse-select-v230';b.setAttribute('aria-label',t('انتخاب آیه','Select verse','Odaberi stih'));b.innerHTML='<span>✓</span>';
-  node.prepend(b);b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();toggleVerse(node)});return b;
-}
+function removeLegacyCircle(node){node.querySelectorAll(':scope > .nh7-verse-select-v230').forEach(button=>button.remove())}
+function cleanupDetachedSelection(){selected.forEach((info,key)=>{if(!info.node?.isConnected)selected.delete(key)})}
+function selectedCount(){cleanupDetachedSelection();return selected.size}
 function toggleVerse(node,force){
   const info=verseInfo(node),on=force==null?!selected.has(info.key):!!force;
   if(on)selected.set(info.key,info);else selected.delete(info.key);
-  node.classList.toggle('nh7-verse-selected-v230',on);selectionButton(node).setAttribute('aria-pressed',String(on));renderToolbar();
+  node.classList.toggle('nh7-verse-selected-v230',on);
+  node.setAttribute('aria-selected',String(on));
+  renderToolbar();
+}
+function isActionTarget(target,node){
+  const action=target?.closest?.('button,a,input,textarea,select,option,label,[contenteditable="true"],[role="textbox"],[data-bookmark],[data-share-verse],[data-toggle-highlight],[data-save-verse-note],[data-note-input],.verse-actions,.verse-tools,.verse-toolbar,.verse-note-preview');
+  return !!action&&action!==node;
+}
+function bindVerseTap(node){
+  removeLegacyCircle(node);
+  if(node.dataset.nh7TapSelectReady==='1')return;
+  node.dataset.nh7TapSelectReady='1';
+  node.classList.add('nh7-verse-tap-select-v231');
+  node.addEventListener('click',event=>{
+    if(isActionTarget(event.target,node))return;
+    toggleVerse(node);
+  },true);
+  node.addEventListener('keydown',event=>{
+    if(event.key!=='Enter'||isActionTarget(event.target,node))return;
+    event.preventDefault();toggleVerse(node);
+  });
 }
 function enhanceVerses(root=document){
   root.querySelectorAll?.('.reader .reader-verse[data-verse-key],#bibleReaderContent [data-verse-key],.bible-verses [data-verse-key],.clean-verse[data-verse-key]').forEach(node=>{
-    if(node.dataset.nh7BatchReady==='1')return;node.dataset.nh7BatchReady='1';selectionButton(node);
+    node.dataset.nh7BatchReady='1';
+    bindVerseTap(node);
   });
+  root.querySelectorAll?.('.nh7-verse-select-v230').forEach(button=>button.remove());
 }
 function toolbar(){let bar=document.getElementById('nh7BibleBatchToolbarV230');if(bar)return bar;bar=document.createElement('aside');bar.id='nh7BibleBatchToolbarV230';bar.className='nh7-bible-batch-toolbar-v230 hidden';bar.innerHTML=`<div class="nh7-batch-head-v230"><strong data-nh7-batch-count></strong><button type="button" data-nh7-batch-clear aria-label="${esc(t('لغو انتخاب','Clear selection','Poništi odabir'))}">×</button></div><div class="nh7-batch-actions-v230"><button type="button" data-nh7-batch-save>★ ${esc(t('ذخیره','Save','Spremi'))}</button><label>${esc(t('رنگ','Color','Boja'))}<select data-nh7-batch-color><option value="#fff3a3">${esc(t('زرد','Yellow','Žuta'))}</option><option value="#c9f7d4">${esc(t('سبز','Green','Zelena'))}</option><option value="#cde8ff">${esc(t('آبی','Blue','Plava'))}</option><option value="#f7d0ef">${esc(t('صورتی','Pink','Ružičasta'))}</option><option value="remove">${esc(t('حذف هایلایت','Remove','Ukloni'))}</option></select></label><button type="button" data-nh7-batch-highlight>✦ ${esc(t('هایلایت','Highlight','Označi'))}</button><button type="button" data-nh7-batch-note>📝 ${esc(t('یادداشت','Note','Bilješka'))}</button><button type="button" data-nh7-batch-copy>⧉ ${esc(t('کپی','Copy','Kopiraj'))}</button><button type="button" data-nh7-batch-share>↗ ${esc(t('اشتراک','Share','Podijeli'))}</button></div>`;document.body.appendChild(bar);
   bar.querySelector('[data-nh7-batch-clear]').onclick=clearSelection;
@@ -79,7 +98,7 @@ function toolbar(){let bar=document.getElementById('nh7BibleBatchToolbarV230');i
   return bar;
 }
 function renderToolbar(){const bar=toolbar(),count=selectedCount();bar.classList.toggle('hidden',!count);bar.querySelector('[data-nh7-batch-count]').textContent=t(`${count} آیه انتخاب شده`,`${count} verse${count===1?'':'s'} selected`,`Odabrano stihova: ${count}`);document.body.classList.toggle('nh7-batch-open-v230',!!count)}
-function clearSelection(){selected.forEach(v=>v.node?.classList.remove('nh7-verse-selected-v230'));selected.clear();renderToolbar()}
+function clearSelection(){selected.forEach(v=>{v.node?.classList.remove('nh7-verse-selected-v230');v.node?.setAttribute('aria-selected','false')});selected.clear();renderToolbar()}
 function readState(key){try{return JSON.parse(localStorage.getItem(key)||'{}')}catch(_){return{}}}
 function writeState(key,value){localStorage.setItem(key,JSON.stringify(value))}
 function queueBatch(payload){let q=[];try{q=JSON.parse(localStorage.getItem(QUEUE_KEY)||'[]')}catch(_){};q.push(payload);localStorage.setItem(QUEUE_KEY,JSON.stringify(q.slice(-50)))}
@@ -102,9 +121,9 @@ async function batchApply(action,value=''){
 function selectedText(){return [...selected.values()].map(v=>`${v.ref} — ${v.text}`).join('\n')}
 async function copySelected(share){const text=selectedText();try{if(share&&navigator.share)await navigator.share({text});else{await navigator.clipboard.writeText(text);alert(t('آیات انتخاب‌شده کپی شدند.','Selected verses copied.','Odabrani stihovi su kopirani.'))}}catch(error){console.warn(error)}}
 
-const observer=new MutationObserver(records=>{records.forEach(r=>r.addedNodes.forEach(n=>{if(n.nodeType===1)enhanceVerses(n)}));enhanceVerses(document)});
+const observer=new MutationObserver(records=>{records.forEach(r=>r.addedNodes.forEach(n=>{if(n.nodeType===1)enhanceVerses(n)}));enhanceVerses(document);renderToolbar()});
 observer.observe(document.documentElement,{childList:true,subtree:true});
 enhanceVerses(document);toolbar();
 window.addEventListener('online',flushQueue);window.addEventListener('nh7-access-status',flushQueue);setTimeout(flushQueue,1200);
-window.NH7BibleBatchV230={VERSION,selected,clearSelection,batchApply,enhanceVerses};
+window.NH7BibleBatchV230={VERSION,selected,clearSelection,batchApply,enhanceVerses,toggleVerse};
 })();
