@@ -35,3 +35,19 @@ jobs:
           test -f index.html
           test -f css/v2.3.0-access-bible.css
           test -f supabase/migrations/20260727_v230_protected_content_bible_batch.sql
+      - name: Build upload-only package
+        run: |
+          mkdir -p upload-only/css upload-only/js upload-only/supabase/functions/nh7-content-access upload-only/supabase/functions/nh7-library-access upload-only/supabase/migrations
+          cp index.html service-worker.js V2.3.0_UPLOAD_INSTRUCTIONS_FA.md upload-only/
+          cp css/v2.3.0-access-bible.css upload-only/css/
+          cp js/nh7-access-bootstrap-v230.js js/nh7-app-enhancements-v230.js upload-only/js/
+          cp supabase/functions/nh7-content-access/index.ts upload-only/supabase/functions/nh7-content-access/
+          cp supabase/functions/nh7-library-access/index.ts upload-only/supabase/functions/nh7-library-access/
+          cp supabase/migrations/20260727_v230_protected_content_bible_batch.sql upload-only/supabase/migrations/
+      - name: Upload package
+        uses: actions/upload-artifact@v4
+        with:
+          name: New-Hope-7-v2.3.0-upload-only
+          path: upload-only
+          if-no-files-found: error
+          retention-days: 30
