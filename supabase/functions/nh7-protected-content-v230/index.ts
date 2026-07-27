@@ -12,11 +12,7 @@ const corsHeaders = {
 function reply(body: Record<string, unknown>, status = 200): Response {
   return new Response(JSON.stringify(body), { status, headers: corsHeaders });
 }
-
-function cleanId(value: unknown): string {
-  return String(value ?? "").trim();
-}
-
+function cleanId(value: unknown): string { return String(value ?? "").trim(); }
 function storagePathFromUrl(rawUrl: unknown, bucket: string): string {
   const value = String(rawUrl ?? "").trim();
   if (!value) return "";
@@ -31,9 +27,7 @@ function storagePathFromUrl(rawUrl: unknown, bucket: string): string {
       const index = url.pathname.indexOf(marker);
       if (index >= 0) return decodeURIComponent(url.pathname.slice(index + marker.length));
     }
-  } catch (_) {
-    // A plain storage path is also accepted.
-  }
+  } catch (_) { /* A plain storage path is also accepted. */ }
   if (!/^https?:\/\//i.test(value)) {
     return value.replace(new RegExp(`^${bucket}/`), "").replace(/^\/+/, "");
   }
@@ -48,13 +42,8 @@ Deno.serve(async (req: Request) => {
   const anonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
   const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
   const authorization = req.headers.get("Authorization") ?? "";
-
-  if (!supabaseUrl || !anonKey || !serviceRoleKey) {
-    return reply({ allowed: false, code: "server_configuration_missing" }, 500);
-  }
-  if (!authorization.toLowerCase().startsWith("bearer ")) {
-    return reply({ allowed: false, code: "login_required" }, 401);
-  }
+  if (!supabaseUrl || !anonKey || !serviceRoleKey) return reply({ allowed: false, code: "server_configuration_missing" }, 500);
+  if (!authorization.toLowerCase().startsWith("bearer ")) return reply({ allowed: false, code: "login_required" }, 401);
 
   const userClient = createClient(supabaseUrl, anonKey, {
     global: { headers: { Authorization: authorization } },
@@ -65,25 +54,16 @@ Deno.serve(async (req: Request) => {
   });
 
   const { data: userData, error: userError } = await userClient.auth.getUser();
-  if (userError || !userData.user) {
-    return reply({ allowed: false, code: "login_required" }, 401);
-  }
+  if (userError || !userData.user) return reply({ allowed: false, code: "login_required" }, 401);
 
   const { data: accessData, error: accessError } = await userClient.rpc("nh7_my_protected_access_v230");
-  if (accessError) {
-    return reply({ allowed: false, code: "access_check_failed", message: accessError.message }, 403);
-  }
+  if (accessError) return reply({ allowed: false, code: "access_check_failed", message: accessError.message }, 403);
   const access = Array.isArray(accessData) ? accessData[0] : accessData;
-  if (!access?.allowed) {
-    return reply({ allowed: false, code: access?.status || "school_approval_required" }, 403);
-  }
+  if (!access?.allowed) return reply({ allowed: false, code: access?.status || "school_approval_required" }, 403);
 
   let body: Record<string, unknown> = {};
-  try {
-    body = await req.json();
-  } catch (_) {
-    return reply({ allowed: false, code: "invalid_json" }, 400);
-  }
+  try { body = await req.json(); }
+  catch (_) { return reply({ allowed: false, code: "invalid_json" }, 400); }
 
   const kind = cleanId(body.kind).toLowerCase();
   const mediaId = cleanId(body.media_id || body.id);
@@ -112,12 +92,9 @@ Deno.serve(async (req: Request) => {
     expiresIn = 600;
   } else if (kind === "sermon") {
     if (!mediaId) return reply({ allowed: false, code: "media_id_required" }, 400);
-    const { data, error } = await adminClient
-      .from("sermons")
+    const { data, error } = await adminClient.from("sermons")
       .select("id,title_fa,title_en,title_hr,audio_url,is_published")
-      .eq("id", mediaId)
-      .eq("is_published", true)
-      .maybeSingle();
+      .eq("id", mediaId).eq("is_published", true).maybeSingle();
     if (error || !data) return reply({ allowed: false, code: "media_not_found" }, 404);
     bucket = "church-audio";
     path = storagePathFromUrl(data.audio_url, bucket);
@@ -126,12 +103,9 @@ Deno.serve(async (req: Request) => {
     expiresIn = 14400;
   } else if (kind === "audio_bible") {
     if (!mediaId) return reply({ allowed: false, code: "media_id_required" }, 400);
-    const { data, error } = await adminClient
-      .from("audio_bible_chapters_v220")
+    const { data, error } = await adminClient.from("audio_bible_chapters_v220")
       .select("id,title_fa,title_en,title_hr,audio_url,storage_path,file_name,is_published")
-      .eq("id", mediaId)
-      .eq("is_published", true)
-      .maybeSingle();
+      .eq("id", mediaId).eq("is_published", true).maybeSingle();
     if (error || !data) return reply({ allowed: false, code: "media_not_found" }, 404);
     bucket = "church-audio";
     path = cleanId(data.storage_path) || storagePathFromUrl(data.audio_url, bucket);
@@ -139,23 +113,36 @@ Deno.serve(async (req: Request) => {
     title = cleanId(data.title_fa || data.title_en || data.title_hr || fileName);
     mimeType = "audio/mpeg";
     expiresIn = 14400;
+  } else if (kind === "school") {
+    if (!mediaId) return reply({ allowed: false, code: "lesson_code_required" }, 400);
+    const lessonCode = mediaId.replace(/^school-/, "");
+    const { data, error } = await adminClient.from("school_lessons")
+      .select("id,lesson_code,content_data,is_active")
+      .eq("lesson_code", lessonCode).eq("is_active", true).maybeSingle();
+    if (error || !data) return reply({ allowed: false, code: "school_audio_not_found" }, 404);
+    const content = (data.content_data ?? {}) as Record<string, unknown>;
+    const audio = (content.audio ?? {}) as Record<string, unknown>;
+    const translations = (content.translations ?? {}) as Record<string, unknown>;
+    const fa = (translations.fa ?? {}) as Record<string, unknown>;
+    const en = (translations.en ?? {}) as Record<string, unknown>;
+    const hr = (translations.hr ?? {}) as Record<string, unknown>;
+    bucket = "church-audio";
+    path = storagePathFromUrl(audio.src, bucket);
+    fileName = cleanId(audio.fileName);
+    title = cleanId(fa.lesson_title || en.lesson_title || hr.lesson_title || lessonCode);
+    mimeType = "audio/mpeg";
+    expiresIn = 14400;
   } else {
     return reply({ allowed: false, code: "unsupported_content_type" }, 400);
   }
 
-  if (!bucket || !path) {
-    return reply({ allowed: false, code: "protected_storage_path_missing" }, 404);
-  }
-
-  const { data: signed, error: signedError } = await adminClient.storage
-    .from(bucket)
+  if (!bucket || !path) return reply({ allowed: false, code: "protected_storage_path_missing" }, 404);
+  const { data: signed, error: signedError } = await adminClient.storage.from(bucket)
     .createSignedUrl(path, expiresIn, { download: false });
-
   if (signedError || !signed?.signedUrl) {
     return reply({ allowed: false, code: "signed_url_failed", message: signedError?.message || "No signed URL" }, 500);
   }
 
-  // Lightweight access logging for audio. Library access is logged inside its RPC.
   if (kind !== "library") {
     await adminClient.from("nh7_content_access_log_v230").insert({
       user_id: userData.user.id,
