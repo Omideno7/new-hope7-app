@@ -37,7 +37,6 @@ async function interceptRestricted(event){
   openGate('required',false);
 }
 document.addEventListener('click',interceptRestricted,true);
-document.addEventListener('pointerup',interceptRestricted,true);
 
 /* Space in a note editor must remain text input, never a global shortcut. */
 document.addEventListener('keydown',event=>{
