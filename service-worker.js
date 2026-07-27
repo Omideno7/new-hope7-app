@@ -1,6 +1,6 @@
 try { importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js'); } catch (e) { console.warn('OneSignal SW unavailable', e); }
 
-const VERSION='v2.3.0-protected-content-bible-batch-admin';
+const VERSION='v2.3.1-bible-tap-batch-selection';
 const CORE_CACHE='nh7-core-'+VERSION;
 const DATA_CACHE='nh7-data-'+VERSION;
 const PUBLIC_API_CACHE='nh7-public-api-'+VERSION;
@@ -53,12 +53,21 @@ self.addEventListener('fetch',event=>{
 
 async function downloadUrl(url){const parsed=new URL(url);if(!isProtectedSupabase(parsed))throw new Error('Only protected signed media may be stored offline');const cache=await caches.open(MEDIA_CACHE);const key=new Request(url,{method:'GET'});const existing=await cache.match(key);if(existing){const b=await existing.clone().blob();return {bytes:b.size,already:true}}const res=await fetch(url,{cache:'no-store'});if(!res.ok)throw new Error('HTTP '+res.status);const clone=res.clone();const blob=await clone.blob();await cache.put(key,res);return {bytes:blob.size,already:false}}
 async function mediaStats(){const cache=await caches.open(MEDIA_CACHE);const keys=await cache.keys();let bytes=0;for(const k of keys){const r=await cache.match(k);if(r){const b=await r.clone().blob();bytes+=b.size}}const core=await caches.open(CORE_CACHE);return {mediaCount:keys.length,mediaBytes:bytes,coreCount:(await core.keys()).length}}
-self.addEventListener('message',event=>{const d=event.data||{},port=event.ports&&event.ports[0];const reply=x=>port&&port.postMessage(x);event.waitUntil((async()=>{try{
-  if(d.type==='CACHE_CORE'){const cached=await cacheCore();reply({ok:true,cached});return}
-  if(d.type==='DOWNLOAD_URL'){const r=await downloadUrl(d.url);reply(Object.assign({ok:true},r));return}
-  if(d.type==='REMOVE_URL'){const cache=await caches.open(MEDIA_CACHE);await cache.delete(new Request(d.url,{method:'GET'}));reply({ok:true});return}
-  if(d.type==='MEDIA_STATUS'){const cache=await caches.open(MEDIA_CACHE);const r=await cache.match(new Request(d.url,{method:'GET'}));reply({ok:true,cached:!!r});return}
-  if(d.type==='CLEAR_MEDIA'){await caches.delete(MEDIA_CACHE);await caches.open(MEDIA_CACHE);reply({ok:true});return}
-  if(d.type==='OFFLINE_STATUS'){reply(Object.assign({ok:true},await mediaStats()));return}
-  reply({ok:false,error:'Unknown offline command'});
-}catch(e){reply({ok:false,error:e.message||String(e)})}})())});
+self.addEventListener('message',event=>{
+  const d=event.data||{};
+  const port=event.ports&&event.ports[0];
+  const reply=x=>port&&port.postMessage(x);
+  event.waitUntil((async()=>{
+    try{
+      if(d.type==='CACHE_CORE'){const cached=await cacheCore();reply({ok:true,cached});return}
+      if(d.type==='DOWNLOAD_URL'){const r=await downloadUrl(d.url);reply(Object.assign({ok:true},r));return}
+      if(d.type==='REMOVE_URL'){const cache=await caches.open(MEDIA_CACHE);await cache.delete(new Request(d.url,{method:'GET'}));reply({ok:true});return}
+      if(d.type==='MEDIA_STATUS'){const cache=await caches.open(MEDIA_CACHE);const r=await cache.match(new Request(d.url,{method:'GET'}));reply({ok:true,cached:!!r});return}
+      if(d.type==='CLEAR_MEDIA'){await caches.delete(MEDIA_CACHE);await caches.open(MEDIA_CACHE);reply({ok:true});return}
+      if(d.type==='OFFLINE_STATUS'){reply(Object.assign({ok:true},await mediaStats()));return}
+      reply({ok:false,error:'Unknown offline command'});
+    }catch(e){
+      reply({ok:false,error:e.message||String(e)});
+    }
+  })());
+});
