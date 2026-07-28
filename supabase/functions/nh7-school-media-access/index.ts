@@ -27,13 +27,8 @@ function json(origin: string | null, body: unknown, status = 200) {
   });
 }
 
-function clean(value: unknown) {
-  return String(value || '').trim();
-}
-
-function tokenFrom(req: Request) {
-  return (req.headers.get('authorization') || '').replace(/^Bearer\s+/i, '').trim();
-}
+const clean = (value: unknown) => String(value || '').trim();
+const tokenFrom = (req: Request) => (req.headers.get('authorization') || '').replace(/^Bearer\s+/i, '').trim();
 
 Deno.serve(async (req) => {
   const origin = req.headers.get('origin');
@@ -42,22 +37,15 @@ Deno.serve(async (req) => {
 
   const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
   const serviceRole = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
-  if (!supabaseUrl || !serviceRole) {
-    return json(origin, { error: 'Server configuration is incomplete', code: 'server_config' }, 500);
-  }
+  if (!supabaseUrl || !serviceRole) return json(origin, { error: 'Server configuration is incomplete', code: 'server_config' }, 500);
 
   const accessToken = tokenFrom(req);
   if (!accessToken) return json(origin, { error: 'Sign in is required', code: 'login_required' }, 401);
 
-  const admin = createClient(supabaseUrl, serviceRole, {
-    auth: { persistSession: false, autoRefreshToken: false },
-  });
-
+  const admin = createClient(supabaseUrl, serviceRole, { auth: { persistSession: false, autoRefreshToken: false } });
   const { data: userData, error: userError } = await admin.auth.getUser(accessToken);
   const user = userData?.user;
-  if (userError || !user?.id || !user.email) {
-    return json(origin, { error: 'The account session is invalid or expired', code: 'invalid_session' }, 401);
-  }
+  if (userError || !user?.id || !user.email) return json(origin, { error: 'The account session is invalid or expired', code: 'invalid_session' }, 401);
 
   try {
     const body = await req.json().catch(() => ({}));
@@ -66,47 +54,72 @@ Deno.serve(async (req) => {
     const videoId = clean(body?.video_id);
     const code = clean(body?.code);
     const deviceId = clean(body?.device_id || req.headers.get('x-device-id')).slice(0, 160);
+    const userEmail = String(user.email).trim().toLowerCase();
 
-    if (!['audio', 'video'].includes(kind)) {
-      return json(origin, { error: 'Invalid media kind', code: 'invalid_kind' }, 400);
+    if (!['audio', 'portal', 'video'].includes(kind)) return json(origin, { error: 'Invalid media kind', code: 'invalid_kind' }, 400);
+
+    if (kind === 'portal') {
+      const { data, error } = await admin.rpc('nh7_video_portal_authorize_v270', {
+        p_code: code,
+        p_device_id: deviceId,
+        p_user_id: user.id,
+        p_user_email: userEmail,
+      });
+      if (error) return json(origin, { error: error.message, code: 'authorization_error' }, 400);
+      const access = Array.isArray(data) ? data[0] : data;
+      if (!access?.allowed) {
+        const reason = String(access?.code || 'not_allowed');
+        return json(origin, { error: reason, code: reason }, reason === 'login_required' ? 401 : 403);
+      }
+      return json(origin, {
+        ok: true,
+        allowed: true,
+        kind: 'portal',
+        catalog: Array.isArray(access.catalog) ? access.catalog : [],
+        watermark_email: access.watermark_email || userEmail,
+        watermark_device: access.watermark_device || deviceId.slice(-8),
+      });
     }
-    if (kind === 'video' && !/^[0-9a-f-]{36}$/i.test(videoId)) {
-      return json(origin, { error: 'Invalid video id', code: 'invalid_video' }, 400);
+
+    let access: any;
+    if (kind === 'audio') {
+      const { data, error } = await admin.rpc('nh7_school_media_authorize_v260', {
+        p_kind: 'audio',
+        p_lesson_code: lessonCode,
+        p_video_id: null,
+        p_code: '',
+        p_device_id: deviceId,
+        p_user_id: user.id,
+        p_user_email: userEmail,
+      });
+      if (error) return json(origin, { error: error.message, code: 'authorization_error' }, 400);
+      access = Array.isArray(data) ? data[0] : data;
+    } else {
+      if (!/^[0-9a-f-]{36}$/i.test(videoId)) return json(origin, { error: 'Invalid video id', code: 'invalid_video' }, 400);
+      const { data, error } = await admin.rpc('nh7_video_authorize_v270', {
+        p_video_id: videoId,
+        p_code: code,
+        p_device_id: deviceId,
+        p_user_id: user.id,
+        p_user_email: userEmail,
+      });
+      if (error) return json(origin, { error: error.message, code: 'authorization_error' }, 400);
+      access = Array.isArray(data) ? data[0] : data;
     }
 
-    const { data: authData, error: authError } = await admin.rpc('nh7_school_media_authorize_v260', {
-      p_kind: kind,
-      p_lesson_code: lessonCode,
-      p_video_id: kind === 'video' ? videoId : null,
-      p_code: code,
-      p_device_id: deviceId,
-      p_user_id: user.id,
-      p_user_email: String(user.email).trim().toLowerCase(),
-    });
-
-    if (authError) return json(origin, { error: authError.message, code: 'authorization_error' }, 400);
-    const access = Array.isArray(authData) ? authData[0] : authData;
     if (!access?.allowed) {
       const reason = String(access?.code || 'not_allowed');
-      const status = ['login_required', 'invalid_session'].includes(reason)
-        ? 401
-        : reason.endsWith('_not_found')
-          ? 404
-          : 403;
+      const status = ['login_required', 'invalid_session'].includes(reason) ? 401 : reason.endsWith('_not_found') ? 404 : 403;
       return json(origin, { error: reason, code: reason }, status);
     }
 
     const bucket = clean(access.bucket);
     const path = clean(access.storage_path).replace(/^\/+/, '');
-    if (!bucket || !path || path.includes('..')) {
-      return json(origin, { error: 'Invalid storage path', code: 'invalid_path' }, 400);
-    }
+    if (!bucket || !path || path.includes('..')) return json(origin, { error: 'Invalid storage path', code: 'invalid_path' }, 400);
 
     const expiresIn = kind === 'video' ? 8 * 60 * 60 : 6 * 60 * 60;
     const { data: signed, error: signError } = await admin.storage.from(bucket).createSignedUrl(path, expiresIn);
-    if (signError || !signed?.signedUrl) {
-      return json(origin, { error: signError?.message || 'Could not create signed URL', code: 'signed_url_failed' }, 500);
-    }
+    if (signError || !signed?.signedUrl) return json(origin, { error: signError?.message || 'Could not create signed URL', code: 'signed_url_failed' }, 500);
 
     const signTrack = async (trackPath: unknown) => {
       const subtitlePath = clean(trackPath).replace(/^\/+/, '');
@@ -135,14 +148,11 @@ Deno.serve(async (req) => {
       title_hr: access.title_hr || '',
       subtitle_en_url: subtitleEnUrl,
       subtitle_hr_url: subtitleHrUrl,
-      watermark_email: access.watermark_email || String(user.email).trim().toLowerCase(),
+      watermark_email: access.watermark_email || userEmail,
       watermark_device: access.watermark_device || deviceId.slice(-8),
     });
   } catch (error) {
     console.error('nh7-school-media-access', error);
-    return json(origin, {
-      error: error instanceof Error ? error.message : String(error),
-      code: 'school_media_access_failed',
-    }, 500);
+    return json(origin, { error: error instanceof Error ? error.message : String(error), code: 'school_media_access_failed' }, 500);
   }
 });
