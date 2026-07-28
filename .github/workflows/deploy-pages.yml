@@ -24,10 +24,14 @@ jobs:
           node --check js/admin-v2.3.9-document-studio.js
           node --check js/admin-v2.3.9-document-studio-fix1.js
           node --check js/admin-v2.3.9-document-studio-focus-fix2.js
+          node --check js/admin-v2.3.9-document-runtime-fix3.js
           test -f admin-v239.html
+          test -f admin-v239-fix3.html
           test -f certificate-v239.html
           test -f css/admin-v2.3.9-document-studio.css
           test -f css/admin-v2.3.9-document-studio-fix1.css
+          test -f css/admin-v2.3.9-document-runtime-fix3.css
+          node -e "const fs=require('fs'); for(const file of ['admin-v239.html','admin-v239-fix3.html','certificate-v239.html']){const html=fs.readFileSync(file,'utf8'); const blocks=[...html.matchAll(/<script(?:\\s[^>]*)?>([\\s\\S]*?)<\\/script>/gi)].map(x=>x[1]).filter(Boolean); blocks.forEach((code,index)=>new Function(code+'\\n//# sourceURL='+file+'-inline-'+index));}"
 
   deploy:
     needs: validate
