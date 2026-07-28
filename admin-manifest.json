@@ -2,8 +2,8 @@
   "id": "./new-hope7-admin-v239",
   "name": "New Hope 7 Admin Panel",
   "short_name": "NH7 Admin",
-  "description": "New Hope 7 Admin v2.3.9 Fix 7 with an inline document studio, secure media and dynamic Apocrypha catalogue.",
-  "start_url": "./admin-v239-fix7.html?release=fix7",
+  "description": "New Hope 7 Admin v2.3.9 Fix 8 with the full inline document studio, stable uploads and in-app book conversion.",
+  "start_url": "./admin-v239-fix8.html?release=fix8",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
@@ -14,10 +14,10 @@
     {"src":"assets/admin-icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
   ],
   "shortcuts": [
-    {"name":"Requests","url":"./admin-v239-fix7.html?tab=requests&release=fix7","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"Questions","url":"./admin-v239-fix7.html?tab=qa&release=fix7","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"Documents","url":"./admin-v239-fix7.html?tab=certificates&release=fix7","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"Audio and Video","url":"./admin-v239-fix7.html?tab=schoolmedia&release=fix7","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"Library and Apocrypha","url":"./admin-v239-fix7.html?tab=library&release=fix7","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]}
+    {"name":"Requests","url":"./admin-v239-fix8.html?tab=requests&release=fix8","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Questions","url":"./admin-v239-fix8.html?tab=qa&release=fix8","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Documents","url":"./admin-v239-fix8.html?tab=certificates&release=fix8","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Audio and Video","url":"./admin-v239-fix8.html?tab=schoolmedia&release=fix8","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Library and Apocrypha","url":"./admin-v239-fix8.html?tab=library&release=fix8","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]}
   ]
 }
