@@ -1,6 +1,6 @@
 try { importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js'); } catch (e) { console.warn('OneSignal SW unavailable', e); }
 
-const VERSION='v2.3.4-unified-my-notes';
+const VERSION='v2.3.5-admin-user-analytics';
 const CORE_CACHE='nh7-core-'+VERSION;
 const DATA_CACHE='nh7-data-'+VERSION;
 const PUBLIC_API_CACHE='nh7-public-api-'+VERSION;
@@ -8,7 +8,7 @@ const MEDIA_CACHE='nh7-media-v2-protected';
 const OFFLINE_PAGE='./offline/index.html';
 
 const CORE_ASSETS=[
-  './','./index.html','./admin.html','./certificate.html','./verify-document.html','./reset-password.html','./privacy.html','./css/styles.css','./css/v2.2.0.css','./css/v2.2.0-platform.css','./css/v2.2.1.css','./css/v2.2.2.css','./css/v2.2.3.css','./css/v2.2.4.css','./css/v2.2.5.css','./css/v2.3.0-access-bible.css','./css/v2.3.4-my-notes.css','./css/admin-v2.3.0-student-profile.css','./js/app.js','./js/nh7-access-bootstrap-v230.js','./js/nh7-app-enhancements-v230.js','./js/nh7-my-notes-v234.js','./js/admin-v2.2.0.js','./js/admin-v2.2.1.js','./js/admin-v2.2.2.js','./js/admin-v2.2.3.js','./js/admin-v2.2.4.js','./js/admin-v2.2.5-v230.js','./manifest.json','./admin-manifest.json',
+  './','./index.html','./admin.html','./certificate.html','./verify-document.html','./reset-password.html','./privacy.html','./css/styles.css','./css/v2.2.0.css','./css/v2.2.0-platform.css','./css/v2.2.1.css','./css/v2.2.2.css','./css/v2.2.3.css','./css/v2.2.4.css','./css/v2.2.5.css','./css/v2.3.0-access-bible.css','./css/v2.3.4-my-notes.css','./css/admin-v2.3.0-student-profile.css','./css/admin-v2.3.5-analytics.css','./js/app.js','./js/nh7-access-bootstrap-v230.js','./js/nh7-app-enhancements-v230.js','./js/nh7-my-notes-v234.js','./js/admin-v2.2.0.js','./js/admin-v2.2.1.js','./js/admin-v2.2.2.js','./js/admin-v2.2.3.js','./js/admin-v2.2.4.js','./js/admin-v2.2.5-v230.js','./js/admin-v2.3.5-analytics.js','./manifest.json','./admin-manifest.json',
   './assets/logo.png','./assets/admin-icon-192.png','./assets/admin-icon-512.png','./assets/admin-apple-touch-icon.png',
   './assets/about/beliefs_fa_source.jpeg','./assets/about/vision_fa_source.jpeg',
   './data/app/opening_messages_365.json','./data/church/church_config.json','./data/church/about.json',
