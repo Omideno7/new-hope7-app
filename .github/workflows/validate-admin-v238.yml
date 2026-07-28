@@ -1,17 +1,23 @@
-name: Validate Admin v2.3.8
+name: Validate New Hope 7 v2.3.9
 
 on:
   push:
     branches: [main]
     paths:
+      - 'service-worker.js'
+      - 'app-v239.html'
+      - 'admin-v239.html'
       - 'js/admin-v2.3.8-student-fix.js'
+      - 'js/admin-v2.3.9-document-studio.js'
       - 'css/admin-v2.3.8-student-fix.css'
-      - 'admin-v238.html'
+      - 'css/admin-v2.3.9-document-studio.css'
+      - 'manifest.json'
+      - 'admin-manifest.json'
       - '.github/workflows/validate-admin-v238.yml'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   validate:
@@ -19,17 +25,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Check JavaScript syntax
-        run: node --check js/admin-v2.3.8-student-fix.js
-      - name: Verify required files
         run: |
-          test -f admin-v238.html
+          node --check service-worker.js
+          node --check js/admin-v2.3.8-student-fix.js
+          node --check js/admin-v2.3.9-document-studio.js
+      - name: Verify required files and JSON
+        run: |
+          test -f app-v239.html
+          test -f admin-v239.html
           test -f css/admin-v2.3.8-student-fix.css
-      - name: Record validation success
-        run: |
-          mkdir -p validation
-          printf 'Admin v2.3.8 validation passed at %s\nCommit: %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$GITHUB_SHA" > validation/admin-v238-success.txt
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add validation/admin-v238-success.txt
-          git commit -m "Validate admin v2.3.8 [skip ci]"
-          git push
+          test -f css/admin-v2.3.9-document-studio.css
+          node -e "JSON.parse(require('fs').readFileSync('manifest.json','utf8')); JSON.parse(require('fs').readFileSync('admin-manifest.json','utf8'))"
