@@ -1,0 +1,6 @@
+/* New Hope 7 video watermark v2.7.2 */
+.nh7-media-watermark{max-width:min(72%,420px)!important;padding:5px 8px!important;border-radius:8px!important;background:rgba(0,0,0,.46)!important;color:rgba(255,255,255,.88)!important;font-size:clamp(9px,2.2vw,12px)!important;line-height:1.25!important;font-weight:700!important;white-space:normal!important;word-break:break-all!important;text-shadow:0 1px 2px #000!important;opacity:.78!important;right:auto!important;bottom:auto!important;transform:none!important;transition:left .35s ease,top .35s ease!important;pointer-events:none!important}
+.nh7-media-watermark[data-nh7-watermark-corner="tl"]{left:10px!important;top:10px!important}
+.nh7-media-watermark[data-nh7-watermark-corner="tr"]{left:calc(100% - min(72%,420px) - 10px)!important;top:10px!important}
+.nh7-media-watermark[data-nh7-watermark-corner="bl"]{left:10px!important;top:auto!important;bottom:10px!important}
+.nh7-media-watermark[data-nh7-watermark-corner="br"]{left:calc(100% - min(72%,420px) - 10px)!important;top:auto!important;bottom:10px!important}
