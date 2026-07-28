@@ -1,4 +1,4 @@
-/* New Hope 7 Admin v2.8.0 — mount the complete Fix 4 document studio inline */
+/* New Hope 7 Admin v2.9.0 — mount the complete Fix 4 document studio inline without locking page scroll */
 .nh7-f4-fab,.nh7-f4-card{display:none!important}
 .nh7-doc-inline-host-v280{margin:12px 0;min-height:220px}
 .nh7-doc-inline-intro-v280{background:linear-gradient(135deg,#0b5faa,#0f766e);color:#fff;border-radius:22px;padding:16px;margin:12px 0;box-shadow:0 12px 32px rgba(15,118,110,.18)}
@@ -11,6 +11,6 @@
 .nh7-f4-inline-v280 .nh7-f4-controls{height:auto!important;max-height:none!important;overflow:visible!important}
 .nh7-f4-inline-v280 .nh7-f4-preview{position:sticky!important;top:205px!important;align-self:start!important;max-height:calc(100dvh - 225px)!important;overflow:auto!important}
 .nh7-f4-inline-v280 .nh7-f4-status{min-height:24px}
-body.nh7-f4-open{overflow:auto!important}
+body.nh7-f4-open:has(.nh7-f4-inline-v280){overflow-y:auto!important;overflow-x:hidden!important;position:static!important;inset:auto!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;width:auto!important;height:auto!important}
 @media(max-width:900px){.nh7-f4-inline-v280 .nh7-f4-layout{display:block!important}.nh7-f4-inline-v280 .nh7-f4-preview{position:relative!important;top:auto!important;max-height:none!important}.nh7-f4-inline-v280 .nh7-f4-head{top:126px!important}}
 @media(max-width:700px){.nh7-doc-inline-intro-v280{border-radius:18px;padding:14px}.nh7-f4-inline-v280 .nh7-f4-head{position:relative!important;top:auto!important}.nh7-f4-inline-v280 .nh7-f4-shell{border-radius:18px!important}}
