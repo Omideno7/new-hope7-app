@@ -1,0 +1,51 @@
+name: Deploy New Hope 7 to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate document studio files
+        run: |
+          node --check js/admin-v2.3.9-document-studio.js
+          node --check js/admin-v2.3.9-document-studio-fix1.js
+          node --check js/admin-v2.3.9-document-studio-focus-fix2.js
+          test -f admin-v239.html
+          test -f certificate-v239.html
+          test -f css/admin-v2.3.9-document-studio.css
+          test -f css/admin-v2.3.9-document-studio-fix1.css
+
+  deploy:
+    needs: validate
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: .
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
