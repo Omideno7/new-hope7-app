@@ -1,0 +1,67 @@
+name: Integrate Admin v2.3.5
+
+on:
+  push:
+    paths:
+      - '.github/workflows/patch-admin-v235.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-admin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Patch admin entry, manifest, and service worker
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+
+          admin=Path('admin.html')
+          text=admin.read_text(encoding='utf-8')
+          css='  <link rel="stylesheet" href="css/admin-v2.3.5-analytics.css?v=2.3.5">\n'
+          js='  <script src="js/admin-v2.3.5-analytics.js?v=2.3.5"></script>\n'
+          text=text.replace('<link rel="manifest" href="admin-manifest.json">','<link rel="manifest" href="admin-manifest.json?v=2.3.5">')
+          if 'admin-v2.3.5-analytics.css' not in text:
+              text=text.replace('</head>',css+'</head>')
+          if 'admin-v2.3.5-analytics.js' not in text:
+              text=text.replace('</body>',js+'</body>')
+          admin.write_text(text,encoding='utf-8')
+
+          manifest_path=Path('admin-manifest.json')
+          manifest=json.loads(manifest_path.read_text(encoding='utf-8'))
+          manifest['start_url']='./admin.html?v=2.3.5'
+          manifest['description']='Admin dashboard v2.3.5 with user analytics drilldown and complete student activity.'
+          manifest_path.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+
+          sw_path=Path('service-worker.js')
+          sw=sw_path.read_text(encoding='utf-8')
+          import re
+          sw=re.sub(r"const VERSION='[^']+';","const VERSION='v2.3.5-admin-user-analytics';",sw,count=1)
+          if "'./css/admin-v2.3.5-analytics.css'" not in sw:
+              sw=sw.replace("'./css/admin-v2.3.0-student-profile.css'","'./css/admin-v2.3.0-student-profile.css','./css/admin-v2.3.5-analytics.css'")
+          if "'./js/admin-v2.3.5-analytics.js'" not in sw:
+              sw=sw.replace("'./js/admin-v2.2.5-v230.js'","'./js/admin-v2.2.5-v230.js','./js/admin-v2.3.5-analytics.js'")
+          sw_path.write_text(sw,encoding='utf-8')
+          PY
+      - name: Validate files
+        run: |
+          node --check js/admin-v2.3.5-analytics.js
+          python -m json.tool admin-manifest.json >/dev/null
+          grep -q 'admin-v2.3.5-analytics.js' admin.html
+          grep -q 'admin-v2.3.5-analytics.css' admin.html
+      - name: Commit integrated files
+        run: |
+          git config user.name 'New Hope 7 Automation'
+          git config user.email 'actions@users.noreply.github.com'
+          git add admin.html admin-manifest.json service-worker.js
+          git diff --cached --quiet && exit 0
+          git commit -m 'Integrate admin analytics v2.3.5'
+          git push
