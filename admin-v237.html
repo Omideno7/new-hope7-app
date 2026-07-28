@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0f766e">
+  <title>New Hope 7 Admin v2.3.7</title>
+  <style>
+    body{margin:0;min-height:100dvh;display:grid;place-items:center;background:linear-gradient(180deg,#e9f8f6,#f7fbff);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;color:#102033;padding:24px;box-sizing:border-box}
+    main{width:min(520px,100%);background:#fff;border:1px solid #d8ecea;border-radius:24px;padding:24px;text-align:center;box-shadow:0 18px 55px rgba(15,118,110,.16)}
+    .spinner{width:46px;height:46px;margin:0 auto 16px;border:5px solid #dff4f0;border-top-color:#0f766e;border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+    h1{font-size:1.25rem;margin:0 0 8px}p{color:#667085;line-height:1.8;margin:0}
+  </style>
+</head>
+<body>
+<main><div class="spinner"></div><h1>در حال باز کردن پنل ادمین نسخه ۲.۳.۷</h1><p>حافظه نسخه قبلی فقط یک‌بار پاک و پنل تازه بارگذاری می‌شود.</p></main>
+<script>
+(async()=>{
+  const BUILD='2.3.7-school-profile-assignments';
+  try{
+    if(localStorage.getItem('nh7_admin_bootstrap_build')!==BUILD&&'caches' in window){
+      const keys=await caches.keys();
+      await Promise.all(keys.filter(k=>k.startsWith('nh7-')||k.startsWith('omideno7-')).map(k=>caches.delete(k)));
+      localStorage.setItem('nh7_admin_bootstrap_build',BUILD);
+    }
+  }catch(error){console.warn('Admin cache refresh',error)}
+  location.replace('./admin.html?v=2.3.7-school-profile-'+Date.now());
+})();
+</script>
+</body>
+</html>
