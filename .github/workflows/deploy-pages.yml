@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate document studio and library reader files
+      - name: Validate document, library, and school media files
         run: |
           node --check js/admin-v2.3.9-document-studio.js
           node --check js/admin-v2.3.9-document-studio-fix1.js
@@ -27,17 +27,22 @@ jobs:
           node --check js/admin-v2.3.9-document-runtime-fix4.js
           node --check js/admin-v2.3.9-document-select-fix5.js
           node --check js/admin-v2.3.9-library-text-v250.js
+          node --check js/admin-v2.3.9-school-media-v260.js
           node --check js/nh7-library-text-reader-v250.js
+          node --check js/nh7-school-media-v260.js
           test -f admin-v239.html
-          test -f admin-v239-fix5.html
+          test -f admin-v239-fix6.html
+          test -f app-v239.html
           test -f certificate-v239.html
           test -f css/admin-v2.3.9-document-studio.css
           test -f css/admin-v2.3.9-document-studio-fix1.css
           test -f css/admin-v2.3.9-document-runtime-fix4.css
           test -f css/admin-v2.3.9-document-select-fix5.css
           test -f css/admin-v2.3.9-library-text-v250.css
+          test -f css/admin-v2.3.9-school-media-v260.css
           test -f css/nh7-library-text-reader-v250.css
-          node -e "const fs=require('fs');for(const file of ['admin-v239.html','admin-v239-fix5.html','app-v239.html','index.html','certificate-v239.html']){const html=fs.readFileSync(file,'utf8');const blocks=[...html.matchAll(/<script(?:\\s[^>]*)?>([\\s\\S]*?)<\\/script>/gi)].map(x=>x[1]).filter(Boolean);blocks.forEach((code,index)=>new Function(code+'\\n//# sourceURL='+file+'-inline-'+index));}"
+          test -f css/nh7-school-media-v260.css
+          node -e "const fs=require('fs');for(const file of ['admin-v239.html','admin-v239-fix6.html','app-v239.html','index.html','certificate-v239.html']){const html=fs.readFileSync(file,'utf8');const blocks=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]).filter(Boolean);blocks.forEach((code,index)=>new Function(code+'\n//# sourceURL='+file+'-inline-'+index));}"
           node -e "JSON.parse(require('fs').readFileSync('admin-manifest.json','utf8'));JSON.parse(require('fs').readFileSync('manifest.json','utf8'))"
 
   deploy:
