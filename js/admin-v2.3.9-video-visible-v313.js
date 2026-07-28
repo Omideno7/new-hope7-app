@@ -5,18 +5,24 @@ const L=(fa,en,hr)=>typeof lang!=='undefined'&&lang==='fa'?fa:typeof lang!=='und
 function ensure(){
   try{
     const nav=document.querySelector('.tabs');
-    if(nav&&!nav.querySelector('[data-nh7-video-direct]')){
-      const button=document.createElement('button');
-      button.type='button';
-      button.className='tab';
-      button.dataset.nh7VideoDirect='1';
-      button.textContent='🎬 '+L('ویدیوها','Videos','Videozapisi');
-      button.addEventListener('click',()=>{if(typeof setTab==='function')setTab('videos')});
-      const audio=[...nav.querySelectorAll('.tab')].find(x=>String(x.getAttribute('onclick')||'').includes('schoolaudio')||String(x.textContent||'').includes('صوت مدرسه'));
-      if(audio?.nextSibling)nav.insertBefore(button,audio.nextSibling);else nav.appendChild(button);
+    if(nav){
+      let direct=nav.querySelector('[data-nh7-video-direct]');
+      if(!direct){
+        direct=[...nav.querySelectorAll('.tab')].find(x=>String(x.getAttribute('onclick')||'').includes("setTab('videos')")||String(x.getAttribute('onclick')||'').includes('setTab("videos")'))||null;
+        if(direct)direct.dataset.nh7VideoDirect='1';
+      }
+      if(!direct){
+        direct=document.createElement('button');
+        direct.type='button';
+        direct.className='tab';
+        direct.dataset.nh7VideoDirect='1';
+        direct.textContent='🎬 '+L('ویدیوها','Videos','Videozapisi');
+        direct.addEventListener('click',()=>{if(typeof setTab==='function')setTab('videos')});
+        const audio=[...nav.querySelectorAll('.tab')].find(x=>String(x.getAttribute('onclick')||'').includes('schoolaudio')||String(x.textContent||'').includes('صوت مدرسه'));
+        if(audio?.nextSibling)nav.insertBefore(direct,audio.nextSibling);else nav.appendChild(direct);
+      }
+      direct.classList.toggle('active',typeof activeTab!=='undefined'&&activeTab==='videos');
     }
-    const direct=nav?.querySelector('[data-nh7-video-direct]');
-    if(direct)direct.classList.toggle('active',typeof activeTab!=='undefined'&&activeTab==='videos');
     if(typeof activeTab!=='undefined'&&activeTab==='schoolaudio'){
       const host=document.querySelector('#adminContent,.admin-content,main')||document.querySelector('.admin-shell');
       if(host&&!document.querySelector('[data-nh7-video-shortcut]')){
