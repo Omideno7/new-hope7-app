@@ -21,6 +21,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Validate document, library, and school media files
         run: |
+          node --check service-worker.js
           node --check js/admin-v2.3.9-document-studio.js
           node --check js/admin-v2.3.9-document-studio-fix1.js
           node --check js/admin-v2.3.9-document-studio-focus-fix2.js
@@ -28,6 +29,7 @@ jobs:
           node --check js/admin-v2.3.9-document-select-fix5.js
           node --check js/admin-v2.3.9-library-text-v250.js
           node --check js/admin-v2.3.9-school-media-v260.js
+          node --check js/admin-v2.3.9-fix6-labels.js
           node --check js/nh7-library-text-reader-v250.js
           node --check js/nh7-school-media-v260.js
           test -f admin-v239.html
