@@ -1,0 +1,12 @@
+{
+  "app": "New Hope 7 Admin",
+  "version": "2.3.9",
+  "build": "document-studio-fix2",
+  "features": [
+    "professional-document-studio",
+    "church-address-email-phone-header",
+    "stable-field-typing",
+    "print-preview"
+  ],
+  "source_commit": "ccaf4aa02baf223548f2473b4f6448177ad23b40"
+}
