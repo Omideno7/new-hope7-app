@@ -27,6 +27,7 @@ jobs:
           node --check js/admin-v2.3.9-document-inline-v280.js
           node --check js/admin-v2.3.9-form-stability-v280.js
           node --check js/admin-v2.3.9-library-reader-v280.js
+          node --check js/admin-v2.3.9-library-batch-v281.js
           node --check js/admin-v2.3.9-school-media-v260.js
           node --check js/admin-v2.3.9-apocrypha-v270.js
           node --check js/nh7-book-reader-v281.js
