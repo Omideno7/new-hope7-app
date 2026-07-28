@@ -1,9 +1,9 @@
 {
-  "id": "./admin.html",
+  "id": "./new-hope7-admin-v239",
   "name": "New Hope 7 Admin Panel",
   "short_name": "NH7 Admin",
-  "description": "Admin dashboard v2.3.7 with truthful student school records, assignment review, notifications, analytics, and reliable profile scrolling.",
-  "start_url": "./admin-v237.html",
+  "description": "New Hope 7 Admin v2.3.9 with student analytics, assignment review, and document studio.",
+  "start_url": "./admin-v239.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
@@ -14,8 +14,8 @@
     {"src":"assets/admin-icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
   ],
   "shortcuts": [
-    {"name":"Requests","url":"./admin.html?tab=requests","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"Questions","url":"./admin.html?tab=qa","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"Documents","url":"./admin.html?tab=certificates","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]}
+    {"name":"Requests","url":"./admin-v239.html?tab=requests","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Questions","url":"./admin-v239.html?tab=qa","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Documents","url":"./admin-v239.html?tab=certificates","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]}
   ]
 }
