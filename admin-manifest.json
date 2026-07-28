@@ -2,8 +2,8 @@
   "id": "./new-hope7-admin-v239",
   "name": "New Hope 7 Admin Panel",
   "short_name": "NH7 Admin",
-  "description": "New Hope 7 Admin v2.3.9 with stable document editing and secure school media management.",
-  "start_url": "./admin-v239-fix6.html?release=fix6",
+  "description": "New Hope 7 Admin v2.3.9 Fix 7 with an inline document studio, secure media and dynamic Apocrypha catalogue.",
+  "start_url": "./admin-v239-fix7.html?release=fix7",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
@@ -14,10 +14,10 @@
     {"src":"assets/admin-icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
   ],
   "shortcuts": [
-    {"name":"Requests","url":"./admin-v239-fix6.html?tab=requests&release=fix6","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"Questions","url":"./admin-v239-fix6.html?tab=qa&release=fix6","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"Documents","url":"./admin-v239-fix6.html?tab=certificates&release=fix6","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"School Media","url":"./admin-v239-fix6.html?tab=schoolmedia&release=fix6","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"Library","url":"./admin-v239-fix6.html?tab=library&release=fix6","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]}
+    {"name":"Requests","url":"./admin-v239-fix7.html?tab=requests&release=fix7","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Questions","url":"./admin-v239-fix7.html?tab=qa&release=fix7","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Documents","url":"./admin-v239-fix7.html?tab=certificates&release=fix7","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Audio and Video","url":"./admin-v239-fix7.html?tab=schoolmedia&release=fix7","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Library and Apocrypha","url":"./admin-v239-fix7.html?tab=library&release=fix7","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]}
   ]
 }
