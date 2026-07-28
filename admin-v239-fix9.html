@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0f766e">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>New Hope 7 Admin v2.3.9 Fix 9</title>
+  <style>
+    body{margin:0;min-height:100dvh;display:grid;place-items:center;background:linear-gradient(180deg,#e9f8f6,#f7fbff);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;color:#102033;padding:24px;box-sizing:border-box}
+    main{width:min(620px,100%);background:#fff;border:1px solid #d8ecea;border-radius:24px;padding:24px;text-align:center;box-shadow:0 18px 55px rgba(15,118,110,.16)}
+    .spinner{width:46px;height:46px;margin:0 auto 16px;border:5px solid #dff4f0;border-top-color:#0f766e;border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+    h1{font-size:1.25rem;margin:0 0 8px}p{color:#667085;line-height:1.8;margin:0}.error{color:#b42318;margin-top:12px;white-space:pre-wrap}
+  </style>
+</head>
+<body>
+<main><div class="spinner"></div><h1>New Hope 7 Admin v2.3.9 — Fix 9</h1><p>رفع پرش اسکرول در تمام تب‌های پنل ادمین و آزادسازی قفل‌های باقی‌مانده در حال بارگذاری است.</p><div id="error" class="error"></div></main>
+<script>
+(async()=>{
+  const BUILD='2.3.9-admin-scroll-rescue-fix9';
+  try{
+    if('caches' in window){const keys=await caches.keys();await Promise.all(keys.map(key=>caches.delete(key)))}
+    if('serviceWorker' in navigator){const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(reg=>reg.unregister()))}
+    const response=await fetch('./admin.html?direct='+Date.now(),{cache:'no-store',headers:{'Cache-Control':'no-cache, no-store, must-revalidate','Pragma':'no-cache'}});
+    if(!response.ok)throw new Error('Admin HTML '+response.status);
+    let html=await response.text();
+    html=html.replace('admin-manifest.json?v=2.3.6','admin-manifest.json?v='+BUILD);
+    html=html.replace('</head>',`<link rel="stylesheet" href="css/admin-v2.3.8-student-fix.css?v=${BUILD}"><link rel="stylesheet" href="css/admin-v2.3.9-document-studio.css?v=${BUILD}"><link rel="stylesheet" href="css/admin-v2.3.9-document-runtime-fix4.css?v=${BUILD}"><link rel="stylesheet" href="css/admin-v2.3.9-document-inline-v280.css?v=${BUILD}"><link rel="stylesheet" href="css/admin-v2.3.9-library-reader-v280.css?v=${BUILD}"><link rel="stylesheet" href="css/admin-v2.3.9-library-text-v250.css?v=${BUILD}"><link rel="stylesheet" href="css/admin-v2.3.9-school-media-v260.css?v=${BUILD}"><link rel="stylesheet" href="css/admin-v2.3.9-apocrypha-v270.css?v=${BUILD}"><link rel="stylesheet" href="css/admin-v2.3.9-form-stability-v280.css?v=${BUILD}"><style>.nh7-admin-version-v235{font-size:0!important}.nh7-admin-version-v235::after{content:"v2.3.9 FIX 9"!important;font-size:.72rem!important}.nh7-v239-live-build-badge{position:fixed;left:10px;bottom:10px;z-index:2147483647;border-radius:999px;padding:7px 10px;background:#067647;color:#fff;font:800 11px/1.2 system-ui;box-shadow:0 8px 22px rgba(0,0,0,.22)}</style></head>`);
+    html=html.replace('</body>',`<script src="js/admin-v2.3.8-student-fix.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-document-studio.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-document-runtime-fix4.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-document-inline-v280.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-library-reader-v280.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-library-batch-v281.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-school-media-v260.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-apocrypha-v270.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-form-stability-v280.js?v=${BUILD}"><\/script><script>(()=>{const badge=document.createElement('div');badge.className='nh7-v239-live-build-badge';badge.textContent='FIX 9 SCROLL ACTIVE';document.body.appendChild(badge);setTimeout(()=>{const ok=window.NH7_ADMIN_DOCUMENT_STUDIO_VERSION&&window.NH7_ADMIN_DOCUMENT_RUNTIME_FIX_VERSION&&window.NH7_ADMIN_DOCUMENT_INLINE_VERSION&&window.NH7_LIBRARY_BOOK_ADMIN_VERSION&&window.NH7_LIBRARY_BATCH_VERSION&&window.NH7_ADMIN_SCHOOL_MEDIA_VERSION&&window.NH7_ADMIN_APOCRYPHA_VERSION&&String(window.NH7_ADMIN_FORM_STABILITY_VERSION||'').includes('2.9.0');if(!ok){badge.textContent='FIX 9 FAILED TO LOAD';badge.style.background='#b42318'}else{document.body.classList.remove('nh7-f4-open','nh7-v239-preview-open','nh7-student-modal-open');for(const prop of ['position','inset','top','right','bottom','left','width','height','overflow','overflowY'])document.body.style[prop]='';const requested=new URL(location.href).searchParams.get('tab');if(requested&&typeof activeTab!=='undefined'&&activeTab!==requested&&typeof setTab==='function')setTab(requested)}},1800)})();<\/script></body>`);
+    document.open();document.write(html);document.close();
+  }catch(error){document.getElementById('error').textContent='خطا در بارگذاری پنل: '+(error&&error.message?error.message:String(error))}
+})();
+</script>
+</body>
+</html>
