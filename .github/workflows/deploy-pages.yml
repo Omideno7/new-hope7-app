@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate Fix 8 stable document, upload, and book reader files
+      - name: Validate Fix 9 scroll-safe admin and book reader files
         run: |
           node --check service-worker.js
           node --check js/admin-v2.3.9-document-studio.js
@@ -36,7 +36,7 @@ jobs:
           node --check js/nh7-secure-media-fix-v271.js
           node --check js/nh7-apocrypha-v270.js
           test -f admin-v239.html
-          test -f admin-v239-fix8.html
+          test -f admin-v239-fix9.html
           test -f app-v239.html
           test -f certificate-v239.html
           test -f css/admin-v2.3.9-document-studio.css
@@ -49,7 +49,7 @@ jobs:
           test -f css/nh7-book-reader-v280.css
           test -f css/nh7-secure-media-v270.css
           test -f css/nh7-apocrypha-v270.css
-          node -e "const fs=require('fs');for(const file of ['admin-v239.html','admin-v239-fix7.html','admin-v239-fix8.html','app-v239.html','index.html','certificate-v239.html']){const html=fs.readFileSync(file,'utf8');const blocks=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]).filter(Boolean);blocks.forEach((code,index)=>new Function(code+'\n//# sourceURL='+file+'-inline-'+index));}"
+          node -e "const fs=require('fs');for(const file of ['admin-v239.html','admin-v239-fix7.html','admin-v239-fix8.html','admin-v239-fix9.html','app-v239.html','index.html','certificate-v239.html']){const html=fs.readFileSync(file,'utf8');const blocks=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]).filter(Boolean);blocks.forEach((code,index)=>new Function(code+'\n//# sourceURL='+file+'-inline-'+index));}"
           node -e "JSON.parse(require('fs').readFileSync('admin-manifest.json','utf8'));JSON.parse(require('fs').readFileSync('manifest.json','utf8'))"
 
   deploy:
