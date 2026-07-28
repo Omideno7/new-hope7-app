@@ -55,7 +55,7 @@ function blockHtml(){return contactParts().map(part=>`<span class="nh7-v239-cont
 function applyContact(root=document){
   root.querySelectorAll?.('.certificate-preview').forEach(preview=>{
     const l=languageFor(preview),kicker=preview.querySelector('.certificate-kicker');
-    if(kicker&&contact.useChurchName)kicker.textContent=localizedName(l);
+    if(kicker&&contact.useChurchName){const name=localizedName(l);if(kicker.textContent!==name)kicker.textContent=name}
     let block=preview.querySelector('.nh7-v239-church-contact');
     if(!contact.enabled||!contactParts().length){block?.remove();return}
     if(!block){block=document.createElement('div');block.className='nh7-v239-church-contact'}
@@ -63,13 +63,14 @@ function applyContact(root=document){
     block.dir=l==='fa'?'rtl':'ltr';
     block.style.fontSize=`${Math.max(7,Math.min(18,N(contact.size,10)))}px`;
     block.style.color=contact.color||'#475569';
-    block.innerHTML=blockHtml();
+    const html=blockHtml();if(block.innerHTML!==html)block.innerHTML=html;
     if((contact.placement||'header')==='footer'){
       const meta=preview.querySelector('.certificate-meta');
-      if(meta)preview.insertBefore(block,meta);else preview.appendChild(block);
+      if(meta){if(block.parentElement!==preview||block.nextElementSibling!==meta)preview.insertBefore(block,meta)}
+      else if(block.parentElement!==preview||preview.lastElementChild!==block)preview.appendChild(block);
     }else if(kicker){
-      kicker.insertAdjacentElement('afterend',block);
-    }else{
+      if(block.parentElement!==preview||block.previousElementSibling!==kicker)kicker.insertAdjacentElement('afterend',block);
+    }else if(block.parentElement!==preview||preview.firstElementChild!==block){
       preview.prepend(block);
     }
   });
@@ -114,7 +115,7 @@ function mountPanel(){
     if(head)head.insertAdjacentHTML('afterend',panelHtml());else studio.insertAdjacentHTML('afterbegin',panelHtml());
   }
   applyContact();
-  const badge=document.querySelector('.nh7-admin-version-v235');if(badge)badge.textContent='v2.3.9';
+  const badge=document.querySelector('.nh7-admin-version-v235');if(badge&&badge.textContent!=='v2.3.9')badge.textContent='v2.3.9';
 }
 function scheduleMount(){if(mountScheduled)return;mountScheduled=true;requestAnimationFrame(()=>{mountScheduled=false;mountPanel()})}
 function updateValue(key,value){contact[key]=value;save();applyContact()}
