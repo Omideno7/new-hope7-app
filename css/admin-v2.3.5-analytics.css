@@ -1,5 +1,6 @@
 /* New Hope 7 Admin v2.3.6 — analytics user drilldown, unified student activity, and reliable profile scrolling */
-.nh7-admin-version-v235{display:inline-flex;align-items:center;margin-inline-start:8px;padding:3px 8px;border-radius:999px;background:#dff8f2;color:#0f766e;font-size:.72rem;font-weight:900;vertical-align:middle}
+.nh7-admin-version-v235{display:inline-flex;align-items:center;margin-inline-start:8px;padding:3px 8px;border-radius:999px;background:#dff8f2;color:#0f766e;font-size:0;font-weight:900;vertical-align:middle}
+.nh7-admin-version-v235::after{content:'v2.3.6';font-size:.72rem}
 .nh7-users-drill-v235{width:100%;border:1px solid #b9ddd8;background:#effaf8;color:#0f766e;border-radius:12px;padding:8px 10px;font-weight:900;cursor:pointer;touch-action:manipulation}
 .nh7-users-drill-v235 small{display:block;font-size:.68rem;font-weight:700;margin-top:2px;color:#55736f}
 .nh7-users-drill-v235:hover,.nh7-users-drill-v235:focus-visible{background:#dff8f2;outline:2px solid rgba(15,118,110,.22);outline-offset:2px}
