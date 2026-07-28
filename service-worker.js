@@ -1,6 +1,6 @@
 try { importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js'); } catch (e) { console.warn('OneSignal SW unavailable', e); }
 
-const VERSION='v2.3.6-student-profile-scroll';
+const VERSION='v2.3.7-student-school-assignments';
 const CORE_CACHE='nh7-core-'+VERSION;
 const DATA_CACHE='nh7-data-'+VERSION;
 const PUBLIC_API_CACHE='nh7-public-api-'+VERSION;
@@ -66,8 +66,6 @@ self.addEventListener('message',event=>{
       if(d.type==='CLEAR_MEDIA'){await caches.delete(MEDIA_CACHE);await caches.open(MEDIA_CACHE);reply({ok:true});return}
       if(d.type==='OFFLINE_STATUS'){reply(Object.assign({ok:true},await mediaStats()));return}
       reply({ok:false,error:'Unknown offline command'});
-    }catch(e){
-      reply({ok:false,error:e.message||String(e)});
-    }
+    }catch(e){reply({ok:false,error:e.message||String(e)})}
   })());
 });
