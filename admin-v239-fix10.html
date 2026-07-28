@@ -19,7 +19,7 @@
 <main><div class="spinner"></div><h1>Fix 10 — پنل ادمین با اسکرول پاک</h1><p>نسخهٔ اصلی پنل بدون Patchهای Observer و Timer در حال بارگذاری است.</p><div id="error" class="error"></div></main>
 <script>
 (async()=>{
-  const BUILD='2.3.9-clean-admin-scroll-fix10';
+  const BUILD='2.3.9-clean-admin-scroll-fix10b';
   try{
     if('caches' in window){const keys=await caches.keys();await Promise.all(keys.map(key=>caches.delete(key)))}
     if('serviceWorker' in navigator){const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(reg=>reg.unregister()))}
@@ -28,7 +28,7 @@
     let html=await response.text();
     html=html.replace('admin-manifest.json?v=2.3.6','admin-manifest.json?v='+BUILD);
     html=html.replace('</head>',`<link rel="stylesheet" href="css/admin-v2.3.9-clean-scroll-v300.css?v=${BUILD}"><style>.nh7-admin-version-v235{font-size:0!important}.nh7-admin-version-v235::after{content:"v2.3.9 FIX 10"!important;font-size:.72rem!important}</style></head>`);
-    html=html.replace('</body>',`<script src="js/admin-v2.3.9-clean-scroll-v300.js?v=${BUILD}"><\/script><script>(()=>{setTimeout(()=>{const badge=document.querySelector('.nh7-clean-scroll-badge');if(!window.NH7_ADMIN_CLEAN_SCROLL_VERSION&&badge){badge.textContent='FIX 10 FAILED TO LOAD';badge.style.background='#b42318'}const requested=new URL(location.href).searchParams.get('tab');if(requested&&typeof activeTab!=='undefined'&&activeTab!==requested&&typeof setTab==='function'){explicitUntil=Date.now()+1500;setTab(requested)}},900)})();<\/script></body>`);
+    html=html.replace('</body>',`<script src="js/admin-v2.3.9-clean-scroll-v300.js?v=${BUILD}"><\/script><script>(()=>{setTimeout(()=>{const badge=document.querySelector('.nh7-clean-scroll-badge');if(!window.NH7_ADMIN_CLEAN_SCROLL_VERSION&&badge){badge.textContent='FIX 10 FAILED TO LOAD';badge.style.background='#b42318'}const requested=new URL(location.href).searchParams.get('tab');if(requested&&typeof activeTab!=='undefined'&&activeTab!==requested&&typeof setTab==='function')setTab(requested)},900)})();<\/script></body>`);
     document.open();document.write(html);document.close();
   }catch(error){document.getElementById('error').textContent='خطا در بارگذاری پنل: '+(error&&error.message?error.message:String(error))}
 })();
