@@ -1,12 +1,11 @@
-/* New Hope 7 Admin v2.3.6 — analytics user drilldown, unified student activity, and reliable profile scrolling */
-.nh7-admin-version-v235{display:inline-flex;align-items:center;margin-inline-start:8px;padding:3px 8px;border-radius:999px;background:#dff8f2;color:#0f766e;font-size:0;font-weight:900;vertical-align:middle}
-.nh7-admin-version-v235::after{content:'v2.3.6';font-size:.72rem}
+/* New Hope 7 Admin v2.3.7 — analytics, truthful school records, assignments, and backdrop scrolling */
+.nh7-admin-version-v235{display:inline-flex;align-items:center;margin-inline-start:8px;padding:3px 8px;border-radius:999px;background:#dff8f2;color:#0f766e;font-size:.72rem;font-weight:900;vertical-align:middle}
 .nh7-users-drill-v235{width:100%;border:1px solid #b9ddd8;background:#effaf8;color:#0f766e;border-radius:12px;padding:8px 10px;font-weight:900;cursor:pointer;touch-action:manipulation}
 .nh7-users-drill-v235 small{display:block;font-size:.68rem;font-weight:700;margin-top:2px;color:#55736f}
 .nh7-users-drill-v235:hover,.nh7-users-drill-v235:focus-visible{background:#dff8f2;outline:2px solid rgba(15,118,110,.22);outline-offset:2px}
 .nh7-analytics-click-hint-v235{padding:10px 12px;border-radius:14px;background:#eff8ff;color:#0b5faa;margin:8px 0 12px;font-size:.84rem;font-weight:750}
 
-.nh7-users-modal-v235{position:fixed;inset:0;z-index:2147483100;background:rgba(6,24,38,.66);backdrop-filter:blur(7px);display:flex;align-items:flex-start;justify-content:center;padding:16px;overflow:auto}
+.nh7-users-modal-v235{position:fixed;inset:0;z-index:2147483100;background:rgba(6,24,38,.66);backdrop-filter:blur(7px);display:flex;align-items:flex-start;justify-content:center;padding:16px;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y}
 .nh7-users-dialog-v235{width:min(960px,100%);max-height:calc(100dvh - 32px);overflow:auto;margin:auto;background:#f7fbfb;border:1px solid rgba(255,255,255,.72);border-radius:24px;box-shadow:0 28px 90px rgba(0,0,0,.34);padding:15px}
 .nh7-users-head-v235{position:sticky;top:-15px;z-index:3;background:rgba(247,251,251,.97);backdrop-filter:blur(12px);display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:8px 0 12px;border-bottom:1px solid #d8ecea}
 .nh7-users-head-v235 h2{margin:0 0 4px;font-size:1.15rem}.nh7-users-head-v235 p{margin:0;color:#667085;font-size:.82rem}
@@ -19,69 +18,115 @@
 .nh7-user-metrics-v235{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.nh7-user-metrics-v235 span{display:inline-flex;border-radius:999px;padding:5px 8px;background:#f1f7f7;color:#344054;font-size:.74rem;font-weight:750}
 .nh7-user-row-v235 .btn{margin-top:9px}
 
-.student-activity-v235{margin-top:14px;border-top:1px solid #d8ecea;padding-top:14px}
+.student-activity-v235,.student-school-v237{margin-top:14px;border-top:1px solid #d8ecea;padding-top:14px}
 .nh7-student-summary-v235{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0}
 .nh7-student-summary-v235 .stat{min-width:0}.nh7-student-summary-v235 .stat b{font-size:1.12rem;word-break:break-word}
-.nh7-student-activity-grid-v235{display:grid;grid-template-columns:1.15fr .85fr;gap:12px}.nh7-student-section-v235{background:white;border:1px solid #d8ecea;border-radius:18px;padding:12px;min-width:0}.nh7-student-section-v235 h4{margin:0 0 10px}
-.nh7-student-audio-row-v235{padding:10px 0;border-bottom:1px solid #edf3f3}.nh7-student-audio-row-v235:last-child{border-bottom:0}.nh7-student-audio-row-v235 strong{display:block}.nh7-student-audio-row-v235 small{display:block;color:#667085;margin-top:4px;line-height:1.65}.nh7-student-progress-v235{height:7px;border-radius:999px;background:#e7efef;overflow:hidden;margin-top:7px}.nh7-student-progress-v235 i{display:block;height:100%;background:linear-gradient(90deg,#0b5faa,#16a765)}
+.nh7-student-activity-grid-v235{display:grid;grid-template-columns:1.15fr .85fr;gap:12px}
+.nh7-student-section-v235{background:white;border:1px solid #d8ecea;border-radius:18px;padding:12px;min-width:0;margin:10px 0}.nh7-student-section-v235 h4{margin:0 0 10px}
+.nh7-student-audio-row-v235{padding:10px 0;border-bottom:1px solid #edf3f3}.nh7-student-audio-row-v235:last-child{border-bottom:0}.nh7-student-audio-row-v235 strong{display:block}.nh7-student-audio-row-v235 small{display:block;color:#667085;margin-top:4px;line-height:1.65}
+.nh7-student-progress-v235{height:7px;border-radius:999px;background:#e7efef;overflow:hidden;margin-top:7px}.nh7-student-progress-v235 i{display:block;height:100%;background:linear-gradient(90deg,#0b5faa,#16a765)}
 .nh7-student-status-v235{display:inline-flex;border-radius:999px;padding:4px 8px;font-size:.7rem;font-weight:900;margin-inline-start:6px}.nh7-student-status-v235.complete{background:#ecfdf3;color:#067647}.nh7-student-status-v235.partial{background:#eff8ff;color:#175cd3}.nh7-student-status-v235.skip{background:#fff4ed;color:#b54708}.nh7-student-status-v235.brief{background:#f2f4f7;color:#475467}
 .nh7-student-table-v235{width:100%;border-collapse:collapse}.nh7-student-table-v235 th,.nh7-student-table-v235 td{padding:8px;border-bottom:1px solid #edf3f3;text-align:start;vertical-align:top;font-size:.8rem}.nh7-student-table-v235 th{color:#475467}
 .nh7-student-section-chips-v235{display:flex;gap:7px;flex-wrap:wrap}.nh7-student-section-chips-v235 span{border-radius:999px;padding:6px 9px;background:#eff8ff;color:#0b5faa;font-size:.75rem;font-weight:800}
 
-/* v2.3.6: the profile itself is the only vertical scroll container.
-   The older stylesheet placed touch-action:none on the backdrop, which can
-   block the child scroller in iOS Safari and installed PWAs. */
-html:has(.student-modal-backdrop),body:has(.student-modal-backdrop){overscroll-behavior:none!important}
-body.nh7-student-modal-open{overflow:hidden!important}
+.student-school-v237>details{margin:11px 0;border:1px solid #d8ecea;border-radius:18px;background:#fff;overflow:hidden}
+.student-school-v237>details>summary{cursor:pointer;padding:13px 14px;background:#f5fbfa;color:#183b45}
+.student-school-v237>details[open]>summary{border-bottom:1px solid #d8ecea}
+.student-school-v237>details>:not(summary){margin:12px}
+.nh7-truthful-empty-v237{padding:16px;border:1px solid #f4c96b;border-radius:16px;background:#fff9e9;color:#7a4a00;line-height:1.8;margin:12px 0}
+.nh7-open-assignments-v237{width:100%;margin:12px 0}
+.nh7-assignment-list-v237{display:flex;flex-direction:column;gap:12px}
+.nh7-assignment-review-v237{border:1px solid #d8ecea;border-radius:18px;padding:13px;background:#fff;box-shadow:0 7px 20px rgba(16,32,51,.045)}
+.nh7-assignment-answer-v237{margin:10px 0;padding:12px;border-radius:14px;background:#f7fafc;border:1px solid #e5eaef;line-height:1.8;white-space:pre-wrap}
+.nh7-assignment-answer-v237 p{margin:6px 0 0}
+.nh7-assignment-feedback-v237{margin-top:10px;padding:10px;border-radius:13px;background:#eff8ff;color:#175cd3;line-height:1.7}
+.nh7-assignment-toolbar-v237{grid-template-columns:minmax(220px,2fr) minmax(200px,1.2fr) minmax(170px,.9fr)}
+.assignment-student-group[open]>.assignment-student-body{display:block}
+
+html.nh7-student-profile-open-v237,
+body.nh7-student-profile-open-v237,
+body.nh7-student-modal-open{overflow:hidden!important;overscroll-behavior:none!important}
+body.nh7-student-profile-open-v237,
+body.nh7-student-modal-open{position:fixed!important;inset:0!important;width:100%!important}
+
 .student-modal-backdrop{
   position:fixed!important;
   inset:0!important;
-  overflow:hidden!important;
-  overscroll-behavior:none!important;
-  touch-action:auto!important;
-  -webkit-user-select:auto!important;
-}
-.student-modal-backdrop>.student-modal{
-  position:relative!important;
-  width:min(1040px,100%)!important;
-  height:100vh!important;
-  height:100dvh!important;
-  min-height:0!important;
-  max-height:100dvh!important;
-  margin:0 auto!important;
-  padding:16px 16px calc(88px + env(safe-area-inset-bottom))!important;
+  z-index:2147482000!important;
+  display:block!important;
+  padding:0!important;
+  margin:0!important;
   overflow-y:scroll!important;
   overflow-x:hidden!important;
   -webkit-overflow-scrolling:touch!important;
   overscroll-behavior-y:contain!important;
   touch-action:pan-y!important;
-  scroll-behavior:smooth;
-  box-sizing:border-box!important;
-  transform:translateZ(0);
-  -webkit-transform:translateZ(0);
+  background:rgba(9,30,43,.65)!important;
+  backdrop-filter:blur(6px);
 }
+
+.student-modal-backdrop>.student-modal{
+  position:relative!important;
+  inset:auto!important;
+  display:block!important;
+  width:min(1040px,100%)!important;
+  height:auto!important;
+  min-height:100vh!important;
+  min-height:100dvh!important;
+  max-height:none!important;
+  margin:0 auto!important;
+  padding:0 16px calc(110px + env(safe-area-inset-bottom))!important;
+  overflow:visible!important;
+  touch-action:pan-y!important;
+  border-radius:0!important;
+  background:#f7fbfb!important;
+  box-sizing:border-box!important;
+}
+
 .student-modal-backdrop>.student-modal>.student-modal-head{
   position:sticky!important;
-  top:-16px!important;
+  top:0!important;
   z-index:100!important;
   margin:0 -16px 12px!important;
   padding:calc(10px + env(safe-area-inset-top)) 16px 10px!important;
   background:rgba(247,251,251,.99)!important;
   border-bottom:1px solid #d8ecea!important;
+  pointer-events:auto!important;
+}
+.student-modal-backdrop .close-round,
+.student-modal-backdrop [data-nh7-close-student]{
+  position:relative!important;
+  z-index:120!important;
+  width:50px!important;height:50px!important;min-width:50px!important;
+  display:grid!important;place-items:center!important;
+  border:0!important;border-radius:999px!important;
+  background:#b42318!important;color:#fff!important;font-size:28px!important;font-weight:900!important;
+  pointer-events:auto!important;touch-action:manipulation!important;
 }
 .student-modal-backdrop .student-activity-panel,
 .student-modal-backdrop .student-activity-v235,
-.student-modal-backdrop .nh7-student-section-v235{overflow:visible!important;max-height:none!important}
-.student-modal-backdrop .table-wrap{max-width:100%;overflow-x:auto!important;overflow-y:visible!important;-webkit-overflow-scrolling:touch}
+.student-modal-backdrop .student-school-v237,
+.student-modal-backdrop .nh7-student-section-v235,
+.student-modal-backdrop .student-lessons{overflow:visible!important;max-height:none!important}
+.student-modal-backdrop .table-wrap,
+.student-modal-backdrop .student-lessons{max-width:100%;overflow-x:auto!important;overflow-y:visible!important;-webkit-overflow-scrolling:touch}
+.nh7-profile-end-v237{height:80px;width:100%;clear:both}
 
 @media(min-width:760px){
-  .student-modal-backdrop{display:flex!important;align-items:center!important;justify-content:center!important;padding:3dvh 18px!important}
-  .student-modal-backdrop>.student-modal{height:94vh!important;height:94dvh!important;max-height:94dvh!important;border-radius:24px!important}
+  .student-modal-backdrop{padding:3dvh 18px!important}
+  .student-modal-backdrop>.student-modal{
+    min-height:94vh!important;
+    min-height:94dvh!important;
+    border-radius:24px!important;
+    padding-inline:18px!important;
+  }
+  .student-modal-backdrop>.student-modal>.student-modal-head{margin-inline:-18px!important;padding-inline:18px!important;border-radius:24px 24px 0 0}
 }
 
 @media(max-width:760px){
- .nh7-users-summary-v235{grid-template-columns:1fr 1fr}.nh7-user-row-head-v235{display:block}.nh7-user-row-head-v235 .btn{width:100%}
- .nh7-student-summary-v235{grid-template-columns:1fr 1fr}.nh7-student-activity-grid-v235{grid-template-columns:1fr}.nh7-users-modal-v235{padding:8px}.nh7-users-dialog-v235{max-height:calc(100dvh - 16px);border-radius:18px}
- .student-modal-backdrop{padding:0!important}
- .student-modal-backdrop>.student-modal{width:100%!important;border-radius:0!important}
+  .nh7-users-summary-v235{grid-template-columns:1fr 1fr}.nh7-user-row-head-v235{display:block}.nh7-user-row-v235 .btn{width:100%}
+  .nh7-student-summary-v235{grid-template-columns:1fr 1fr}.nh7-student-activity-grid-v235{grid-template-columns:1fr}
+  .nh7-users-modal-v235{padding:8px}.nh7-users-dialog-v235{max-height:calc(100dvh - 16px);border-radius:18px}
+  .nh7-assignment-toolbar-v237{grid-template-columns:1fr}
+  .student-modal-backdrop>.student-modal{width:100%!important}
 }
