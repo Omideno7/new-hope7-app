@@ -1,7 +1,7 @@
-/* New Hope 7 Admin v2.3.5 — user drilldown and unified student activity */
+/* New Hope 7 Admin v2.3.6 — user drilldown and unified student activity */
 (()=>{'use strict';
 
-const VERSION='2.3.5';
+const VERSION='2.3.6';
 const L=(fa,en,hr)=>typeof lang!=='undefined'&&lang==='fa'?fa:typeof lang!=='undefined'&&lang==='hr'?hr:en;
 const E=value=>typeof h==='function'?h(value):String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const N=value=>Number(value||0);
