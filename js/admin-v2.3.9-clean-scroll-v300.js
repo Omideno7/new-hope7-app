@@ -1,6 +1,6 @@
-/* New Hope 7 Admin v3.0.0 — clean scroll recovery runtime */
+/* New Hope 7 Admin v3.0.1 — clean scroll recovery without observers */
 (()=>{'use strict';
-const VERSION='3.0.0-clean-scroll';
+const VERSION='3.0.1-clean-scroll-no-observer';
 let scrollBlockUntil=0,explicitUntil=0,touching=false;
 const now=()=>Date.now();
 const userIsScrolling=()=>touching||now()<scrollBlockUntil;
@@ -17,35 +17,27 @@ window.addEventListener('touchend',()=>{touching=false;noteScroll()},{passive:tr
 window.addEventListener('touchcancel',()=>{touching=false;noteScroll()},{passive:true,capture:true});
 window.addEventListener('scroll',noteScroll,{passive:true,capture:true});
 window.addEventListener('wheel',noteScroll,{passive:true,capture:true});
+window.addEventListener('pageshow',unlock,{passive:true});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)unlock()},{passive:true});
 document.addEventListener('pointerdown',event=>{if(event.target.closest?.('button,a,.tab,input,textarea,select,summary'))explicitUntil=now()+1400},{capture:true,passive:true});
 document.addEventListener('click',event=>{if(event.target.closest?.('button,a,.tab'))explicitUntil=now()+1400},true);
 function explicitAction(){return now()<explicitUntil}
+try{if(typeof refreshTimer!=='undefined'&&refreshTimer){clearInterval(refreshTimer);refreshTimer=null}}catch(_){}
 try{
-  if(typeof refreshTimer!=='undefined'&&refreshTimer){clearInterval(refreshTimer);refreshTimer=null}
-}catch(_){}
-try{
-  if(typeof render==='function'&&!render.__nh7CleanScrollV300){
+  if(typeof render==='function'&&!render.__nh7CleanScrollV301){
     const original=render;
-    const wrapped=function(...args){
-      if(userIsScrolling()&&!explicitAction())return null;
-      return original.apply(this,args);
-    };
-    wrapped.__nh7CleanScrollV300=true;wrapped.__nh7Original=original;render=wrapped;
+    const wrapped=function(...args){if(userIsScrolling()&&!explicitAction())return null;return original.apply(this,args)};
+    wrapped.__nh7CleanScrollV301=true;wrapped.__nh7Original=original;render=wrapped;
   }
 }catch(error){console.warn('Clean scroll render guard',error)}
 try{
-  if(typeof loadAll==='function'&&!loadAll.__nh7CleanScrollV300){
+  if(typeof loadAll==='function'&&!loadAll.__nh7CleanScrollV301){
     const original=loadAll;
-    const wrapped=async function(...args){
-      if(userIsScrolling()&&!explicitAction())return null;
-      return original.apply(this,args);
-    };
-    wrapped.__nh7CleanScrollV300=true;wrapped.__nh7Original=original;loadAll=wrapped;
+    const wrapped=async function(...args){if(userIsScrolling()&&!explicitAction())return null;return original.apply(this,args)};
+    wrapped.__nh7CleanScrollV301=true;wrapped.__nh7Original=original;loadAll=wrapped;
   }
 }catch(error){console.warn('Clean scroll load guard',error)}
 unlock();
-const bodyObserver=new MutationObserver(()=>unlock());
-if(document.body)bodyObserver.observe(document.body,{attributes:true,attributeFilter:['class','style']});
 let badge=document.querySelector('.nh7-clean-scroll-badge');
 if(!badge){badge=document.createElement('div');badge.className='nh7-clean-scroll-badge';badge.textContent='FIX 10 CLEAN SCROLL';document.body.appendChild(badge)}
 window.NH7_ADMIN_CLEAN_SCROLL_VERSION=VERSION;
