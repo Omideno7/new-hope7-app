@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0f766e">
-  <link rel="manifest" href="manifest.json?v=2.3.9-reader1">
+  <link rel="manifest" href="manifest.json?v=2.3.9-media1">
   <link rel="apple-touch-icon" href="assets/logo.png">
   <title>New Hope 7 v2.3.9</title>
   <style>
@@ -15,10 +15,10 @@
   </style>
 </head>
 <body>
-<main><div class="spinner"></div><h1>در حال باز کردن New Hope 7 نسخه ۲.۳.۹</h1><p>کتاب‌خوان متنی و نسخه تازه بدون استفاده از حافظه قدیمی بارگذاری می‌شود.</p><div id="error" class="error"></div></main>
+<main><div class="spinner"></div><h1>در حال باز کردن New Hope 7 نسخه ۲.۳.۹</h1><p>پلیر امن صوت و ویدیوی مدرسه و نسخه تازه بدون استفاده از حافظه قدیمی بارگذاری می‌شود.</p><div id="error" class="error"></div></main>
 <script>
 (async()=>{
-  const BUILD='2.3.9-library-reader1-install-entry';
+  const BUILD='2.3.9-school-media-v260-install-entry';
   try{
     if(localStorage.getItem('nh7_app_install_build')!==BUILD){
       if('caches' in window){
@@ -34,7 +34,7 @@
     const response=await fetch('./index.html?v='+encodeURIComponent(BUILD)+'-'+Date.now(),{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
     if(!response.ok)throw new Error('App HTML '+response.status);
     let html=await response.text();
-    html=html.replace('manifest.json?v=2.3.9','manifest.json?v=2.3.9-reader1');
+    html=html.replace('manifest.json?v=2.3.9-media1','manifest.json?v='+BUILD);
     document.open();document.write(html);document.close();
   }catch(error){document.getElementById('error').textContent='خطا در بارگذاری اپ: '+(error&&error.message?error.message:String(error))}
 })();
