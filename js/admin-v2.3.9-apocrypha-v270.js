@@ -32,7 +32,7 @@ function mount(){
   const editor=document.getElementById('nh7_library_editor_v224');if(!editor)return;
   const signature=books().map(x=>`${x.id}:${x.updated_at||''}`).join('|')+'#'+draft.id+'#'+state.apocryphaV270.loading;
   const existing=document.querySelector('[data-apo-manager]');
-  if(!existing){editor.parentElement?.insertAdjacentHTML('beforebegin',managerHtml());lastSignature=signature}
+  if(!existing){editor.insertAdjacentHTML('beforebegin',managerHtml());lastSignature=signature}
   else if(signature!==lastSignature){const holder=document.createElement('div');holder.innerHTML=managerHtml();existing.replaceWith(holder.firstElementChild);lastSignature=signature}
   updateSelector();
   if(!books().length&&!state.apocryphaV270.loading)load(false);
