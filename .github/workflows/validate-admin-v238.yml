@@ -1,0 +1,23 @@
+name: Validate Admin v2.3.8
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'js/admin-v2.3.8-student-fix.js'
+      - 'css/admin-v2.3.8-student-fix.css'
+      - 'admin-v238.html'
+      - '.github/workflows/validate-admin-v238.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check JavaScript syntax
+        run: node --check js/admin-v2.3.8-student-fix.js
+      - name: Verify required files
+        run: |
+          test -f admin-v238.html
+          test -f css/admin-v2.3.8-student-fix.css
