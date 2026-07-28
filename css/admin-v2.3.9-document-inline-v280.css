@@ -1,0 +1,16 @@
+/* New Hope 7 Admin v2.8.0 — mount the complete Fix 4 document studio inline */
+.nh7-f4-fab,.nh7-f4-card{display:none!important}
+.nh7-doc-inline-host-v280{margin:12px 0;min-height:220px}
+.nh7-doc-inline-intro-v280{background:linear-gradient(135deg,#0b5faa,#0f766e);color:#fff;border-radius:22px;padding:16px;margin:12px 0;box-shadow:0 12px 32px rgba(15,118,110,.18)}
+.nh7-doc-inline-intro-v280 h2{margin:0 0 6px;font-size:1.2rem}.nh7-doc-inline-intro-v280 p{margin:0;line-height:1.75;opacity:.94}
+.nh7-f4-overlay.nh7-f4-inline-v280{position:static!important;inset:auto!important;z-index:auto!important;display:block!important;width:100%!important;height:auto!important;min-height:0!important;padding:0!important;margin:0!important;background:transparent!important;overflow:visible!important;backdrop-filter:none!important}
+.nh7-f4-inline-v280 .nh7-f4-shell{width:100%!important;max-width:none!important;height:auto!important;max-height:none!important;min-height:0!important;margin:0!important;border-radius:22px!important;box-shadow:0 12px 34px rgba(16,32,51,.08)!important;overflow:visible!important}
+.nh7-f4-inline-v280 .nh7-f4-head{position:sticky!important;top:134px!important;z-index:32!important;border-radius:20px 20px 0 0!important}
+.nh7-f4-inline-v280 [data-f4-close]{display:none!important}
+.nh7-f4-inline-v280 .nh7-f4-layout{min-height:0!important;height:auto!important;overflow:visible!important}
+.nh7-f4-inline-v280 .nh7-f4-controls{height:auto!important;max-height:none!important;overflow:visible!important}
+.nh7-f4-inline-v280 .nh7-f4-preview{position:sticky!important;top:205px!important;align-self:start!important;max-height:calc(100dvh - 225px)!important;overflow:auto!important}
+.nh7-f4-inline-v280 .nh7-f4-status{min-height:24px}
+body.nh7-f4-open{overflow:auto!important}
+@media(max-width:900px){.nh7-f4-inline-v280 .nh7-f4-layout{display:block!important}.nh7-f4-inline-v280 .nh7-f4-preview{position:relative!important;top:auto!important;max-height:none!important}.nh7-f4-inline-v280 .nh7-f4-head{top:126px!important}}
+@media(max-width:700px){.nh7-doc-inline-intro-v280{border-radius:18px;padding:14px}.nh7-f4-inline-v280 .nh7-f4-head{position:relative!important;top:auto!important}.nh7-f4-inline-v280 .nh7-f4-shell{border-radius:18px!important}}
