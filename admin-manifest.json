@@ -2,8 +2,8 @@
   "id": "./new-hope7-admin-v239",
   "name": "New Hope 7 Admin Panel",
   "short_name": "NH7 Admin",
-  "description": "New Hope 7 Admin v2.3.9 with standalone document studio Fix 4.",
-  "start_url": "./admin-v239-fix4.html?release=fix4",
+  "description": "New Hope 7 Admin v2.3.9 with document selection and PDF to in-app text tools.",
+  "start_url": "./admin-v239-fix5.html?release=fix5",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
@@ -14,8 +14,9 @@
     {"src":"assets/admin-icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
   ],
   "shortcuts": [
-    {"name":"Requests","url":"./admin-v239-fix4.html?tab=requests&release=fix4","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"Questions","url":"./admin-v239-fix4.html?tab=qa&release=fix4","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"Documents","url":"./admin-v239-fix4.html?tab=certificates&release=fix4","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]}
+    {"name":"Requests","url":"./admin-v239-fix5.html?tab=requests&release=fix5","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Questions","url":"./admin-v239-fix5.html?tab=qa&release=fix5","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Documents","url":"./admin-v239-fix5.html?tab=certificates&release=fix5","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Library","url":"./admin-v239-fix5.html?tab=library&release=fix5","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]}
   ]
 }
