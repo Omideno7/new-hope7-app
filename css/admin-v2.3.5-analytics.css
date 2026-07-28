@@ -1,4 +1,4 @@
-/* New Hope 7 Admin v2.3.5 — analytics user drilldown and unified student activity */
+/* New Hope 7 Admin v2.3.6 — analytics user drilldown, unified student activity, and reliable profile scrolling */
 .nh7-admin-version-v235{display:inline-flex;align-items:center;margin-inline-start:8px;padding:3px 8px;border-radius:999px;background:#dff8f2;color:#0f766e;font-size:.72rem;font-weight:900;vertical-align:middle}
 .nh7-users-drill-v235{width:100%;border:1px solid #b9ddd8;background:#effaf8;color:#0f766e;border-radius:12px;padding:8px 10px;font-weight:900;cursor:pointer;touch-action:manipulation}
 .nh7-users-drill-v235 small{display:block;font-size:.68rem;font-weight:700;margin-top:2px;color:#55736f}
@@ -27,7 +27,60 @@
 .nh7-student-table-v235{width:100%;border-collapse:collapse}.nh7-student-table-v235 th,.nh7-student-table-v235 td{padding:8px;border-bottom:1px solid #edf3f3;text-align:start;vertical-align:top;font-size:.8rem}.nh7-student-table-v235 th{color:#475467}
 .nh7-student-section-chips-v235{display:flex;gap:7px;flex-wrap:wrap}.nh7-student-section-chips-v235 span{border-radius:999px;padding:6px 9px;background:#eff8ff;color:#0b5faa;font-size:.75rem;font-weight:800}
 
+/* v2.3.6: the profile itself is the only vertical scroll container.
+   The older stylesheet placed touch-action:none on the backdrop, which can
+   block the child scroller in iOS Safari and installed PWAs. */
+html:has(.student-modal-backdrop),body:has(.student-modal-backdrop){overscroll-behavior:none!important}
+body.nh7-student-modal-open{overflow:hidden!important}
+.student-modal-backdrop{
+  position:fixed!important;
+  inset:0!important;
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  touch-action:auto!important;
+  -webkit-user-select:auto!important;
+}
+.student-modal-backdrop>.student-modal{
+  position:relative!important;
+  width:min(1040px,100%)!important;
+  height:100vh!important;
+  height:100dvh!important;
+  min-height:0!important;
+  max-height:100dvh!important;
+  margin:0 auto!important;
+  padding:16px 16px calc(88px + env(safe-area-inset-bottom))!important;
+  overflow-y:scroll!important;
+  overflow-x:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  overscroll-behavior-y:contain!important;
+  touch-action:pan-y!important;
+  scroll-behavior:smooth;
+  box-sizing:border-box!important;
+  transform:translateZ(0);
+  -webkit-transform:translateZ(0);
+}
+.student-modal-backdrop>.student-modal>.student-modal-head{
+  position:sticky!important;
+  top:-16px!important;
+  z-index:100!important;
+  margin:0 -16px 12px!important;
+  padding:calc(10px + env(safe-area-inset-top)) 16px 10px!important;
+  background:rgba(247,251,251,.99)!important;
+  border-bottom:1px solid #d8ecea!important;
+}
+.student-modal-backdrop .student-activity-panel,
+.student-modal-backdrop .student-activity-v235,
+.student-modal-backdrop .nh7-student-section-v235{overflow:visible!important;max-height:none!important}
+.student-modal-backdrop .table-wrap{max-width:100%;overflow-x:auto!important;overflow-y:visible!important;-webkit-overflow-scrolling:touch}
+
+@media(min-width:760px){
+  .student-modal-backdrop{display:flex!important;align-items:center!important;justify-content:center!important;padding:3dvh 18px!important}
+  .student-modal-backdrop>.student-modal{height:94vh!important;height:94dvh!important;max-height:94dvh!important;border-radius:24px!important}
+}
+
 @media(max-width:760px){
  .nh7-users-summary-v235{grid-template-columns:1fr 1fr}.nh7-user-row-head-v235{display:block}.nh7-user-row-head-v235 .btn{width:100%}
  .nh7-student-summary-v235{grid-template-columns:1fr 1fr}.nh7-student-activity-grid-v235{grid-template-columns:1fr}.nh7-users-modal-v235{padding:8px}.nh7-users-dialog-v235{max-height:calc(100dvh - 16px);border-radius:18px}
+ .student-modal-backdrop{padding:0!important}
+ .student-modal-backdrop>.student-modal{width:100%!important;border-radius:0!important}
 }
