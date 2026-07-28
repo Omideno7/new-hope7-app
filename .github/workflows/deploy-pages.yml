@@ -31,6 +31,7 @@ jobs:
           node --check js/nh7-library-text-reader-v250.js
           node --check js/nh7-school-media-session-v262.js
           node --check js/nh7-secure-media-v270.js
+          node --check js/nh7-secure-media-fix-v271.js
           node --check js/nh7-apocrypha-v270.js
           test -f admin-v239.html
           test -f admin-v239-fix7.html
