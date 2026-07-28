@@ -1,0 +1,33 @@
+/* New Hope 7 Admin v2.3.5 — analytics user drilldown and unified student activity */
+.nh7-admin-version-v235{display:inline-flex;align-items:center;margin-inline-start:8px;padding:3px 8px;border-radius:999px;background:#dff8f2;color:#0f766e;font-size:.72rem;font-weight:900;vertical-align:middle}
+.nh7-users-drill-v235{width:100%;border:1px solid #b9ddd8;background:#effaf8;color:#0f766e;border-radius:12px;padding:8px 10px;font-weight:900;cursor:pointer;touch-action:manipulation}
+.nh7-users-drill-v235 small{display:block;font-size:.68rem;font-weight:700;margin-top:2px;color:#55736f}
+.nh7-users-drill-v235:hover,.nh7-users-drill-v235:focus-visible{background:#dff8f2;outline:2px solid rgba(15,118,110,.22);outline-offset:2px}
+.nh7-analytics-click-hint-v235{padding:10px 12px;border-radius:14px;background:#eff8ff;color:#0b5faa;margin:8px 0 12px;font-size:.84rem;font-weight:750}
+
+.nh7-users-modal-v235{position:fixed;inset:0;z-index:2147483100;background:rgba(6,24,38,.66);backdrop-filter:blur(7px);display:flex;align-items:flex-start;justify-content:center;padding:16px;overflow:auto}
+.nh7-users-dialog-v235{width:min(960px,100%);max-height:calc(100dvh - 32px);overflow:auto;margin:auto;background:#f7fbfb;border:1px solid rgba(255,255,255,.72);border-radius:24px;box-shadow:0 28px 90px rgba(0,0,0,.34);padding:15px}
+.nh7-users-head-v235{position:sticky;top:-15px;z-index:3;background:rgba(247,251,251,.97);backdrop-filter:blur(12px);display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:8px 0 12px;border-bottom:1px solid #d8ecea}
+.nh7-users-head-v235 h2{margin:0 0 4px;font-size:1.15rem}.nh7-users-head-v235 p{margin:0;color:#667085;font-size:.82rem}
+.nh7-users-close-v235{flex:0 0 auto;width:46px;height:46px;border:0;border-radius:999px;background:#b42318;color:white;font-size:26px;font-weight:900;cursor:pointer;touch-action:manipulation}
+.nh7-users-summary-v235{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0}
+.nh7-users-summary-v235>div{background:white;border:1px solid #d8ecea;border-radius:16px;padding:11px}.nh7-users-summary-v235 b{display:block;font-size:1.15rem}.nh7-users-summary-v235 span{font-size:.76rem;color:#667085}
+.nh7-user-list-v235{display:flex;flex-direction:column;gap:9px}
+.nh7-user-row-v235{background:#fff;border:1px solid #d8ecea;border-radius:18px;padding:12px}
+.nh7-user-row-head-v235{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.nh7-user-row-head-v235 strong{display:block}.nh7-user-row-head-v235 small{display:block;color:#667085;margin-top:3px;word-break:break-word}
+.nh7-user-metrics-v235{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.nh7-user-metrics-v235 span{display:inline-flex;border-radius:999px;padding:5px 8px;background:#f1f7f7;color:#344054;font-size:.74rem;font-weight:750}
+.nh7-user-row-v235 .btn{margin-top:9px}
+
+.student-activity-v235{margin-top:14px;border-top:1px solid #d8ecea;padding-top:14px}
+.nh7-student-summary-v235{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0}
+.nh7-student-summary-v235 .stat{min-width:0}.nh7-student-summary-v235 .stat b{font-size:1.12rem;word-break:break-word}
+.nh7-student-activity-grid-v235{display:grid;grid-template-columns:1.15fr .85fr;gap:12px}.nh7-student-section-v235{background:white;border:1px solid #d8ecea;border-radius:18px;padding:12px;min-width:0}.nh7-student-section-v235 h4{margin:0 0 10px}
+.nh7-student-audio-row-v235{padding:10px 0;border-bottom:1px solid #edf3f3}.nh7-student-audio-row-v235:last-child{border-bottom:0}.nh7-student-audio-row-v235 strong{display:block}.nh7-student-audio-row-v235 small{display:block;color:#667085;margin-top:4px;line-height:1.65}.nh7-student-progress-v235{height:7px;border-radius:999px;background:#e7efef;overflow:hidden;margin-top:7px}.nh7-student-progress-v235 i{display:block;height:100%;background:linear-gradient(90deg,#0b5faa,#16a765)}
+.nh7-student-status-v235{display:inline-flex;border-radius:999px;padding:4px 8px;font-size:.7rem;font-weight:900;margin-inline-start:6px}.nh7-student-status-v235.complete{background:#ecfdf3;color:#067647}.nh7-student-status-v235.partial{background:#eff8ff;color:#175cd3}.nh7-student-status-v235.skip{background:#fff4ed;color:#b54708}.nh7-student-status-v235.brief{background:#f2f4f7;color:#475467}
+.nh7-student-table-v235{width:100%;border-collapse:collapse}.nh7-student-table-v235 th,.nh7-student-table-v235 td{padding:8px;border-bottom:1px solid #edf3f3;text-align:start;vertical-align:top;font-size:.8rem}.nh7-student-table-v235 th{color:#475467}
+.nh7-student-section-chips-v235{display:flex;gap:7px;flex-wrap:wrap}.nh7-student-section-chips-v235 span{border-radius:999px;padding:6px 9px;background:#eff8ff;color:#0b5faa;font-size:.75rem;font-weight:800}
+
+@media(max-width:760px){
+ .nh7-users-summary-v235{grid-template-columns:1fr 1fr}.nh7-user-row-head-v235{display:block}.nh7-user-row-head-v235 .btn{width:100%}
+ .nh7-student-summary-v235{grid-template-columns:1fr 1fr}.nh7-student-activity-grid-v235{grid-template-columns:1fr}.nh7-users-modal-v235{padding:8px}.nh7-users-dialog-v235{max-height:calc(100dvh - 16px);border-radius:18px}
+}
