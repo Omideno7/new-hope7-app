@@ -2,8 +2,8 @@
   "id": "./new-hope7-admin-v239",
   "name": "New Hope 7 Admin Panel",
   "short_name": "NH7 Admin",
-  "description": "New Hope 7 Admin Fix 12 with stable scrolling, school audio, video management, readable in-app books, ordered assignments and student activity analytics.",
-  "start_url": "./admin-v239-fix12.html?release=fix12",
+  "description": "New Hope 7 stable admin with school audio, multi-format video management, readable in-app books, ordered assignments and student activity analytics.",
+  "start_url": "./admin-v239-stable.html?release=stable-2.3.9",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
@@ -14,10 +14,10 @@
     {"src":"assets/admin-icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
   ],
   "shortcuts": [
-    {"name":"Students","url":"./admin-v239-fix12.html?tab=students&release=fix12","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"Assignments","url":"./admin-v239-fix12.html?tab=assignments&release=fix12","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"School audio","url":"./admin-v239-fix12.html?tab=schoolaudio&release=fix12","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"Videos","url":"./admin-v239-fix12.html?tab=videos&release=fix12","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"Library","url":"./admin-v239-fix12.html?tab=library&release=fix12","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]}
+    {"name":"Students","url":"./admin-v239-stable.html?tab=students&release=stable-2.3.9","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Assignments","url":"./admin-v239-stable.html?tab=assignments&release=stable-2.3.9","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"School audio","url":"./admin-v239-stable.html?tab=schoolaudio&release=stable-2.3.9","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Videos","url":"./admin-v239-stable.html?tab=videos&release=stable-2.3.9","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Library","url":"./admin-v239-stable.html?tab=library&release=stable-2.3.9","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]}
   ]
 }
