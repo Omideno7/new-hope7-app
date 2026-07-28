@@ -19,20 +19,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate Fix 11 clean admin features
+      - name: Validate Fix 12 clean admin and watermark features
         run: |
           node --check service-worker.js
           node --check js/admin-v2.3.9-clean-scroll-v300.js
           node --check js/admin-v2.3.9-video-clean-v311.js
           node --check js/admin-v2.3.9-library-clean-v311.js
           node --check js/admin-v2.3.9-student-clean-v311.js
+          node --check js/admin-v2.3.9-audio-clean-v312.js
+          node --check js/admin-v2.3.9-fix12-bootstrap.js
+          node --check js/nh7-secure-media-watermark-v272.js
           test -f admin.html
           test -f admin-v239.html
           test -f admin-v239-fix10.html
           test -f admin-v239-fix11.html
+          test -f admin-v239-fix12.html
+          test -f app-v239.html
+          test -f index.html
           test -f css/admin-v2.3.9-clean-scroll-v300.css
           test -f css/admin-v2.3.9-clean-features-v311.css
-          node -e "const fs=require('fs');for(const file of ['admin-v239.html','admin-v239-fix10.html','admin-v239-fix11.html','app-v239.html','index.html','certificate-v239.html']){const html=fs.readFileSync(file,'utf8');const blocks=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]).filter(Boolean);blocks.forEach((code,index)=>new Function(code+'\n//# sourceURL='+file+'-inline-'+index));}"
+          test -f css/nh7-secure-media-watermark-v272.css
+          node -e "const fs=require('fs');for(const file of ['admin-v239.html','admin-v239-fix10.html','admin-v239-fix11.html','admin-v239-fix12.html','app-v239.html','index.html','certificate-v239.html']){const html=fs.readFileSync(file,'utf8');const blocks=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]).filter(Boolean);blocks.forEach((code,index)=>new Function(code+'\n//# sourceURL='+file+'-inline-'+index));}"
           node -e "JSON.parse(require('fs').readFileSync('admin-manifest.json','utf8'));JSON.parse(require('fs').readFileSync('manifest.json','utf8'))"
 
   deploy:
