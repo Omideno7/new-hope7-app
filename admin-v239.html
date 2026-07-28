@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0f766e">
-  <link rel="manifest" href="admin-manifest.json?v=2.3.9-document-fix2">
+  <link rel="manifest" href="admin-manifest.json?v=2.3.9-document-fix3">
   <link rel="apple-touch-icon" href="assets/admin-apple-touch-icon.png">
   <title>New Hope 7 Admin v2.3.9</title>
   <style>
@@ -15,10 +15,10 @@
   </style>
 </head>
 <body>
-<main><div class="spinner"></div><h1>در حال باز کردن پنل ادمین نسخه ۲.۳.۹</h1><p>اصلاح پایدار استودیوی مدارک، فیلدهای اطلاعات کلیسا و پیش‌نمایش چاپ در حال بارگذاری است.</p><div id="error" class="error"></div></main>
+<main><div class="spinner"></div><h1>در حال باز کردن پنل ادمین نسخه ۲.۳.۹</h1><p>استودیوی مدارک Fix 3، صدور مدرک و نمایش عکس در حال بارگذاری است.</p><div id="error" class="error"></div></main>
 <script>
 (async()=>{
-  const BUILD='2.3.9-document-studio-fix2';
+  const BUILD='2.3.9-document-studio-fix3';
   try{
     if(localStorage.getItem('nh7_admin_install_build')!==BUILD){
       if('caches' in window){
@@ -34,9 +34,9 @@
     const response=await fetch('./admin.html?v='+encodeURIComponent(BUILD)+'-'+Date.now(),{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
     if(!response.ok)throw new Error('Admin HTML '+response.status);
     let html=await response.text();
-    html=html.replace('admin-manifest.json?v=2.3.6','admin-manifest.json?v=2.3.9-document-fix2');
-    html=html.replace('</head>','<link rel="stylesheet" href="css/admin-v2.3.8-student-fix.css?v=2.3.9-document-fix2"><link rel="stylesheet" href="css/admin-v2.3.9-document-studio.css?v=2.3.9-document-fix2"><link rel="stylesheet" href="css/admin-v2.3.9-document-studio-fix1.css?v=2.3.9-document-fix2"><style>.nh7-admin-version-v235{font-size:0!important}.nh7-admin-version-v235::after{content:"v2.3.9"!important;font-size:.72rem!important}</style></head>');
-    html=html.replace('</body>','<script src="js/admin-v2.3.8-student-fix.js?v=2.3.9-document-fix2"><\/script><script src="js/admin-v2.3.9-document-studio.js?v=2.3.9-document-fix2"><\/script><script src="js/admin-v2.3.9-document-studio-fix1.js?v=2.3.9-document-fix2"><\/script><script src="js/admin-v2.3.9-document-studio-focus-fix2.js?v=2.3.9-document-fix2"><\/script></body>');
+    html=html.replace('admin-manifest.json?v=2.3.6','admin-manifest.json?v=2.3.9-document-fix3');
+    html=html.replace('</head>','<link rel="stylesheet" href="css/admin-v2.3.8-student-fix.css?v=2.3.9-document-fix3"><link rel="stylesheet" href="css/admin-v2.3.9-document-studio.css?v=2.3.9-document-fix3"><link rel="stylesheet" href="css/admin-v2.3.9-document-studio-fix1.css?v=2.3.9-document-fix3"><link rel="stylesheet" href="css/admin-v2.3.9-document-runtime-fix3.css?v=2.3.9-document-fix3"><style>.nh7-admin-version-v235{font-size:0!important}.nh7-admin-version-v235::after{content:"v2.3.9 FIX 3"!important;font-size:.72rem!important}</style></head>');
+    html=html.replace('</body>','<script src="js/admin-v2.3.8-student-fix.js?v=2.3.9-document-fix3"><\/script><script src="js/admin-v2.3.9-document-studio.js?v=2.3.9-document-fix3"><\/script><script src="js/admin-v2.3.9-document-studio-fix1.js?v=2.3.9-document-fix3"><\/script><script src="js/admin-v2.3.9-document-studio-focus-fix2.js?v=2.3.9-document-fix3"><\/script><script src="js/admin-v2.3.9-document-runtime-fix3.js?v=2.3.9-document-fix3"><\/script></body>');
     document.open();document.write(html);document.close();
   }catch(error){document.getElementById('error').textContent='خطا در بارگذاری پنل: '+(error&&error.message?error.message:String(error))}
 })();
