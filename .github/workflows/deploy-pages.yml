@@ -31,7 +31,9 @@ jobs:
           node --check js/admin-v2.3.9-school-media-v260.js
           node --check js/admin-v2.3.9-fix6-labels.js
           node --check js/nh7-library-text-reader-v250.js
+          node --check js/nh7-school-media-session-v262.js
           node --check js/nh7-school-media-v260.js
+          node --check js/nh7-school-media-safari-v261.js
           test -f admin-v239.html
           test -f admin-v239-fix6.html
           test -f app-v239.html
