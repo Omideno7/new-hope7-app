@@ -1,8 +1,9 @@
 {
+  "id": "./new-hope7-app-v239",
   "name": "New Hope 7",
   "short_name": "OmideNo7",
-  "description": "New Hope 7 Church app v2.2.0",
-  "start_url": "./index.html?v=2.2.0",
+  "description": "New Hope 7 Church app v2.3.9",
+  "start_url": "./app-v239.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
