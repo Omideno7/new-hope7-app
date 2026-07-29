@@ -19,11 +19,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate stable 2.3.9.21 library text quality
+      - name: Validate stable 2.3.9.22 library collections
         run: |
           node --check service-worker.js
           node --check js/nh7-book-reader-v281.js
           node --check js/nh7-library-language-v321.js
+          node --check js/nh7-library-collections-v322.js
           node --check js/nh7-apocrypha-v270.js
           node --check js/nh7-large-mov-native-fallback-v273.js
           node --check js/nh7-secure-media-watermark-v272.js
@@ -32,6 +33,7 @@ jobs:
           node --check js/admin-v2.3.9-library-clean-v311.js
           node --check js/admin-v2.3.9-apocrypha-catalog-v274.js
           node --check js/admin-v2.3.9-apocrypha-text-only-v320.js
+          node --check js/admin-v2.3.9-library-collections-v322.js
           node --check js/admin-v2.3.9-student-clean-v311.js
           node --check js/admin-v2.3.9-audio-clean-v312.js
           node --check js/admin-v2.3.9-video-final-v316.js
@@ -50,6 +52,7 @@ jobs:
           test -f css/admin-v2.3.9-final-stable-v316.css
           test -f css/admin-v2.3.9-library-mobile-v320.css
           test -f css/nh7-book-reader-v280.css
+          test -f css/nh7-library-collections-v322.css
           test -f css/nh7-secure-media-watermark-v272.css
           test -f css/nh7-apocrypha-v270.css
           node -e "const fs=require('fs');for(const file of ['admin-v239.html','admin-v239-stable.html','app-v239.html','index.html','certificate-v239.html']){const html=fs.readFileSync(file,'utf8');const blocks=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]).filter(Boolean);blocks.forEach((code,index)=>new Function(code+'\n//# sourceURL='+file+'-inline-'+index));}"
