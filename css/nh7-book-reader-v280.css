@@ -1,4 +1,4 @@
-/* New Hope 7 v2.8.0 — full-screen in-app book reader */
+/* New Hope 7 v2.8.1 — full-screen in-app book reader with improved Persian typography */
 body.nh7-book-open{overflow:hidden!important}
 .nh7-book-modal{position:fixed;inset:0;z-index:2147483300;background:#eef2f6;display:flex;flex-direction:column;overflow:hidden}
 .nh7-book-shell{width:100%;height:100%;display:flex;flex-direction:column;background:#fff;color:#1f2937}
@@ -8,8 +8,10 @@ body.nh7-book-open{overflow:hidden!important}
 .nh7-book-toolbar input,.nh7-book-toolbar select{margin:0;border:1px solid #cfdde5;border-radius:12px;padding:9px 10px;background:#fff;min-width:0}.nh7-book-tool-btn{border:1px solid #cfdde5;background:#fff;border-radius:12px;padding:9px 11px;font-weight:800;cursor:pointer}
 .nh7-book-progress{height:4px;background:#e5edf2;flex:0 0 auto}.nh7-book-progress i{display:block;height:100%;background:linear-gradient(90deg,#0b5faa,#16a765);width:0;transition:width .2s ease}
 .nh7-book-main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 290px;overflow:hidden}
-.nh7-book-article{overflow:auto;-webkit-overflow-scrolling:touch;padding:28px clamp(20px,6vw,92px) 100px;font-size:20px;line-height:1.9;white-space:normal;scroll-behavior:smooth;background:#fff}
-.nh7-book-page{max-width:850px;margin:0 auto}.nh7-book-page h3{font-size:.86rem;color:#0f766e;text-align:center;margin:0 0 24px;padding-bottom:10px;border-bottom:1px solid #dce9e7}.nh7-book-page p{margin:0 0 1.1em;text-align:justify}.nh7-book-page div{white-space:pre-wrap}.nh7-book-page mark{background:#fff0a8;border-radius:3px;padding:0 2px}
+.nh7-book-article{overflow:auto;-webkit-overflow-scrolling:touch;padding:28px clamp(20px,6vw,92px) 100px;font-size:20px;line-height:2;white-space:normal;scroll-behavior:smooth;background:#fff;font-family:"Vazirmatn","Noto Sans Arabic","Noto Naskh Arabic",Tahoma,Arial,sans-serif;font-kerning:normal;font-variant-ligatures:common-ligatures;text-rendering:optimizeLegibility}
+.nh7-book-modal[dir="rtl"] .nh7-book-article{direction:rtl;text-align:right;unicode-bidi:plaintext}
+.nh7-book-modal[dir="ltr"] .nh7-book-article{direction:ltr;text-align:left;unicode-bidi:plaintext}
+.nh7-book-page{max-width:850px;margin:0 auto}.nh7-book-page h3{font-size:.86rem;color:#0f766e;text-align:center;margin:0 0 24px;padding-bottom:10px;border-bottom:1px solid #dce9e7}.nh7-book-page p{margin:0 0 1.15em;text-align:start;white-space:pre-wrap;overflow-wrap:break-word}.nh7-book-page div{white-space:pre-wrap;overflow-wrap:break-word}.nh7-book-page mark{background:#fff0a8;border-radius:3px;padding:0 2px}
 .nh7-book-sidebar{border-inline-start:1px solid #dfe8ee;background:#f8fbfc;overflow:auto;padding:12px}.nh7-book-sidebar h3{margin:0 0 9px;font-size:.88rem}.nh7-book-page-list{display:grid;gap:6px}.nh7-book-page-list button{border:1px solid #d8e3e9;border-radius:11px;background:#fff;padding:9px;text-align:start;cursor:pointer}.nh7-book-page-list button.active{background:#eaf7f5;border-color:#0f766e;color:#0f766e;font-weight:850}
 .nh7-book-footer{position:absolute;left:0;right:290px;bottom:0;display:grid;grid-template-columns:1fr auto 1fr;gap:9px;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.97);border-top:1px solid #dce6ec;backdrop-filter:blur(10px)}.nh7-book-footer button{border:0;border-radius:13px;padding:11px 13px;font-weight:850;cursor:pointer}.nh7-book-prev{background:#eef8f7;color:#0f766e}.nh7-book-next{background:linear-gradient(135deg,#0b5faa,#16a765);color:#fff}.nh7-book-count{display:flex;align-items:center;justify-content:center;color:#667085;font-weight:800;min-width:90px}
 .nh7-book-modal[data-theme="sepia"] .nh7-book-shell,.nh7-book-modal[data-theme="sepia"] .nh7-book-article{background:#f6eedc;color:#4c3c2a}.nh7-book-modal[data-theme="sepia"] .nh7-book-head,.nh7-book-modal[data-theme="sepia"] .nh7-book-footer{background:rgba(246,238,220,.97)}
@@ -18,4 +20,4 @@ body.nh7-book-open{overflow:hidden!important}
 .nh7-book-empty{padding:40px;text-align:center;color:#667085}
 .nh7-book-open-btn{margin-inline-end:6px}
 @media(max-width:900px){.nh7-book-main{grid-template-columns:1fr}.nh7-book-sidebar{display:none}.nh7-book-footer{right:0}.nh7-book-toolbar{grid-template-columns:1fr auto auto}.nh7-book-toolbar select{display:none}}
-@media(max-width:600px){.nh7-book-head{grid-template-columns:auto minmax(0,1fr) auto}.nh7-book-head button{padding:9px}.nh7-book-toolbar{padding:7px 9px}.nh7-book-article{padding:22px 18px 95px;font-size:19px}.nh7-book-footer{padding-inline:9px}.nh7-book-count{min-width:66px;font-size:.82rem}}
+@media(max-width:600px){.nh7-book-head{grid-template-columns:auto minmax(0,1fr) auto}.nh7-book-head button{padding:9px}.nh7-book-toolbar{padding:7px 9px}.nh7-book-article{padding:22px 18px 95px;font-size:19px;line-height:2}.nh7-book-footer{padding-inline:9px}.nh7-book-count{min-width:66px;font-size:.82rem}}
