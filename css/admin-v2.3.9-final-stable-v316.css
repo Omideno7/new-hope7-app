@@ -1,4 +1,4 @@
-/* New Hope 7 Admin — final stable responsive layout v3.1.6 */
+/* New Hope 7 Admin — final stable responsive layout v3.1.7 */
 html,body{overflow-x:hidden!important;max-width:100%!important}
 body{overscroll-behavior-y:auto!important}
 .admin-shell,#adminApp,.panel-card,.card,.request-card,.certificate-admin-grid,.doc-v225-studio,.nh7-doc-studio-v226{min-width:0!important;max-width:100%!important}
@@ -14,6 +14,11 @@ body{overscroll-behavior-y:auto!important}
 #nh7-video-upload-hud-v316 div{height:9px;background:rgba(255,255,255,.18);border-radius:999px;overflow:hidden;margin:7px 0}
 #nh7-video-upload-hud-v316 i{display:block;height:100%;width:0;background:linear-gradient(90deg,#38bdf8,#22c55e);transition:width .18s linear}
 body.nh7-video-uploading-v316 .tabs,body.nh7-video-uploading-v316 .top-actions{pointer-events:none;opacity:.65}
+.nh7-person-code-v317{margin:0 0 14px;padding:14px;border:1px solid #a8d8d2;border-radius:18px;background:linear-gradient(180deg,#f3fffc,#f8fbff)}
+.nh7-person-code-v317 label{display:grid;gap:7px;font-weight:800}.nh7-person-code-v317 select{width:100%;max-width:100%;min-width:0}
+.nh7-person-code-meta-v317{margin:10px 0;padding:10px 12px;border-radius:14px;background:#f2f8f7;border:1px solid #d8ecea;overflow-wrap:anywhere}
+.nh7-person-code-meta-v317 small{display:block;margin-top:5px;color:var(--muted,#667085)}
+.nh7-created-person-code-v317{display:grid;gap:8px;margin-top:12px}.nh7-created-person-code-v317 code{display:block;padding:10px;border-radius:12px;background:#0f172a;color:#fff;font-size:1.05rem;direction:ltr;text-align:center;overflow-wrap:anywhere}
 .nh7-doc-final-root-v316{width:100%;max-width:100%;min-width:0}
 .nh7-doc-final-root-v316>.nh7-doc-studio-v226{margin-top:0}
 .nh7-doc-workflow-v316{background:#fff;border:1px solid var(--line,#d8ecea);border-radius:20px;margin:14px 0;overflow:hidden}
@@ -28,4 +33,4 @@ body.nh7-video-uploading-v316 .tabs,body.nh7-video-uploading-v316 .top-actions{p
 .student-modal-backdrop,.nh7-clean-student-backdrop{overscroll-behavior:contain!important}
 .nh7-clean-student-profile{max-width:min(980px,calc(100vw - 20px))!important;max-height:calc(100dvh - 20px)!important}
 @media(max-width:900px){.nh7-admin-menu-v316{grid-template-columns:repeat(3,minmax(0,1fr))}.certificate-admin-grid{grid-template-columns:1fr!important}.doc-v225-grid,.nh7-doc-grid-v226,.doc-v225-style-grid{grid-template-columns:1fr 1fr!important}}
-@media(max-width:640px){.admin-shell{padding-inline:10px!important}.topbar{position:relative!important;top:auto!important}.tabs{top:0!important;position:sticky!important;scroll-padding-inline:10px}.nh7-admin-menu-v316{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.nh7-admin-menu-v316 button{min-height:86px;padding:10px}.doc-v225-grid,.nh7-doc-grid-v226,.doc-v225-style-grid,.nh7-v311-grid,.nh7-v311-grid3{grid-template-columns:1fr!important}.req-head{min-width:0}.req-head>*{min-width:0}.certificate-preview,.document-sheet{transform-origin:top center}.nh7-doc-workflow-body-v316{padding-inline:8px}.panel-card,.card{padding:12px!important;border-radius:18px!important}.actions{grid-template-columns:1fr!important}}
+@media(max-width:640px){.admin-shell{padding-inline:10px!important}.topbar{position:relative!important;top:auto!important}.tabs{top:0!important;position:sticky!important;scroll-padding-inline:10px}.nh7-admin-menu-v316{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.nh7-admin-menu-v316 button{min-height:86px;padding:10px}.doc-v225-grid,.nh7-doc-grid-v226,.doc-v225-style-grid,.nh7-v311-grid,.nh7-v311-grid3{grid-template-columns:1fr!important}.req-head{min-width:0}.req-head>*{min-width:0}.certificate-preview,.document-sheet{transform-origin:top center}.nh7-doc-workflow-body-v316{padding-inline:8px}.panel-card,.card{padding:12px!important;border-radius:18px!important}.actions{grid-template-columns:1fr!important}.nh7-person-code-v317{padding:11px}}
