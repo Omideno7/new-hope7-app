@@ -72,5 +72,5 @@ self.addEventListener('message',event=>{
     if(d.type==='CLEAR_MEDIA'){await caches.delete(MEDIA_CACHE);await caches.open(MEDIA_CACHE);reply({ok:true});return}
     if(d.type==='OFFLINE_STATUS'){reply(Object.assign({ok:true},await mediaStats()));return}
     reply({ok:false,error:'Unknown offline command'});
-  }catch(e){reply({ok:false,error:e.message||String(e)}})())});
+  }catch(e){reply({ok:false,error:e.message||String(e)})}})());
 });
