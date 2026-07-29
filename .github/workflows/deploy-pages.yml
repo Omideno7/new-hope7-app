@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate stable 2.3.9.16 admin and user app
+      - name: Validate stable 2.3.9.17 admin and user app
         run: |
           node --check service-worker.js
           node --check js/admin-v2.3.9-clean-scroll-v300.js
@@ -28,6 +28,7 @@ jobs:
           node --check js/admin-v2.3.9-audio-clean-v312.js
           node --check js/admin-v2.3.9-video-final-v316.js
           node --check js/admin-v2.3.9-video-save-sync-v316.js
+          node --check js/admin-v2.3.9-video-person-access-v317.js
           node --check js/admin-v2.3.9-student-state-fix-v316.js
           node --check js/admin-v2.3.9-ui-documents-final-v316.js
           node --check js/admin-v2.3.9-fix12-bootstrap.js
