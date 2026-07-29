@@ -1,6 +1,6 @@
 try { importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js'); } catch (e) { console.warn('OneSignal SW unavailable', e); }
 
-const VERSION='v2.3.9-fix8-stable-workspaces-book-reader-281';
+const VERSION='v2.3.9.16-final-stable';
 const CORE_CACHE='nh7-core-'+VERSION;
 const DATA_CACHE='nh7-data-'+VERSION;
 const PUBLIC_API_CACHE='nh7-public-api-'+VERSION;
@@ -8,9 +8,9 @@ const MEDIA_CACHE='nh7-media-v2-protected';
 const OFFLINE_PAGE='./offline/index.html';
 
 const CORE_ASSETS=[
-  './','./index.html','./app-v239.html','./admin.html','./admin-v239.html','./admin-v239-fix8.html','./certificate.html','./verify-document.html','./reset-password.html','./privacy.html',
-  './css/styles.css','./css/v2.2.0.css','./css/v2.2.0-platform.css','./css/v2.2.1.css','./css/v2.2.2.css','./css/v2.2.3.css','./css/v2.2.4.css','./css/v2.2.5.css','./css/v2.3.0-access-bible.css','./css/v2.3.4-my-notes.css','./css/admin-v2.3.0-student-profile.css','./css/admin-v2.3.5-analytics.css','./css/admin-v2.3.8-student-fix.css','./css/admin-v2.3.9-document-studio.css','./css/admin-v2.3.9-document-runtime-fix4.css','./css/admin-v2.3.9-document-inline-v280.css','./css/admin-v2.3.9-form-stability-v280.css','./css/admin-v2.3.9-library-reader-v280.css','./css/admin-v2.3.9-library-text-v250.css','./css/admin-v2.3.9-school-media-v260.css','./css/admin-v2.3.9-apocrypha-v270.css','./css/nh7-book-reader-v280.css','./css/nh7-secure-media-v270.css','./css/nh7-apocrypha-v270.css',
-  './js/app.js','./js/nh7-access-bootstrap-v230.js','./js/nh7-app-enhancements-v230.js','./js/nh7-my-notes-v234.js','./js/nh7-book-reader-v281.js','./js/nh7-school-media-session-v262.js','./js/nh7-secure-media-v270.js','./js/nh7-secure-media-fix-v271.js','./js/nh7-apocrypha-v270.js','./js/admin-v2.2.0.js','./js/admin-v2.2.1.js','./js/admin-v2.2.2.js','./js/admin-v2.2.3.js','./js/admin-v2.2.4.js','./js/admin-v2.2.5-v230.js','./js/admin-v2.3.5-analytics.js','./js/admin-v2.3.8-student-fix.js','./js/admin-v2.3.9-document-studio.js','./js/admin-v2.3.9-document-runtime-fix4.js','./js/admin-v2.3.9-document-inline-v280.js','./js/admin-v2.3.9-form-stability-v280.js','./js/admin-v2.3.9-library-reader-v280.js','./js/admin-v2.3.9-library-batch-v281.js','./js/admin-v2.3.9-school-media-v260.js','./js/admin-v2.3.9-apocrypha-v270.js','./manifest.json','./admin-manifest.json',
+  './','./index.html','./app-v239.html','./admin.html','./admin-v239.html','./admin-v239-stable.html','./certificate.html','./verify-document.html','./reset-password.html','./privacy.html',
+  './css/styles.css','./css/v2.2.0.css','./css/v2.2.0-platform.css','./css/v2.2.1.css','./css/v2.2.2.css','./css/v2.2.3.css','./css/v2.2.4.css','./css/v2.2.5.css','./css/v2.3.0-access-bible.css','./css/v2.3.4-my-notes.css','./css/admin-v2.3.0-student-profile.css','./css/admin-v2.3.5-analytics.css','./css/admin-v2.3.9-clean-scroll-v300.css','./css/admin-v2.3.9-clean-features-v311.css','./css/admin-v2.3.9-final-stable-v316.css','./css/nh7-book-reader-v280.css','./css/nh7-secure-media-v270.css','./css/nh7-secure-media-watermark-v272.css','./css/nh7-apocrypha-v270.css',
+  './js/app.js','./js/nh7-access-bootstrap-v230.js','./js/nh7-app-enhancements-v230.js','./js/nh7-my-notes-v234.js','./js/nh7-book-reader-v281.js','./js/nh7-school-media-session-v262.js','./js/nh7-secure-media-v270.js','./js/nh7-secure-media-fix-v271.js','./js/nh7-secure-media-watermark-v272.js','./js/nh7-apocrypha-v270.js','./js/nh7-protected-audio-gate-v316.js','./js/admin-v2.2.0.js','./js/admin-v2.2.1.js','./js/admin-v2.2.2.js','./js/admin-v2.2.3.js','./js/admin-v2.2.4.js','./js/admin-v2.2.5-v230.js','./js/admin-v2.3.5-analytics.js','./js/admin-v2.3.9-clean-scroll-v300.js','./js/admin-v2.3.9-library-clean-v311.js','./js/admin-v2.3.9-student-clean-v311.js','./js/admin-v2.3.9-audio-clean-v312.js','./js/admin-v2.3.9-video-final-v316.js','./js/admin-v2.3.9-student-state-fix-v316.js','./js/admin-v2.3.9-ui-documents-final-v316.js','./js/admin-v2.3.9-fix12-bootstrap.js','./manifest.json','./admin-manifest.json',
   './assets/logo.png','./assets/admin-icon-192.png','./assets/admin-icon-512.png','./assets/admin-apple-touch-icon.png',
   './assets/about/beliefs_fa_source.jpeg','./assets/about/vision_fa_source.jpeg',
   './data/app/opening_messages_365.json','./data/church/church_config.json','./data/church/about.json',
@@ -72,5 +72,5 @@ self.addEventListener('message',event=>{
     if(d.type==='CLEAR_MEDIA'){await caches.delete(MEDIA_CACHE);await caches.open(MEDIA_CACHE);reply({ok:true});return}
     if(d.type==='OFFLINE_STATUS'){reply(Object.assign({ok:true},await mediaStats()));return}
     reply({ok:false,error:'Unknown offline command'});
-  }catch(e){reply({ok:false,error:e.message||String(e))}})());
+  }catch(e){reply({ok:false,error:e.message||String(e)}})())});
 });
