@@ -2,8 +2,8 @@
   "id": "./new-hope7-admin-v239",
   "name": "New Hope 7 Admin Panel",
   "short_name": "NH7 Admin",
-  "description": "New Hope 7 stable admin 2.3.9.21 with improved Persian extraction, multilingual in-app books, and complete library file management.",
-  "start_url": "./admin-v239-stable.html?release=stable-2.3.9.21",
+  "description": "New Hope 7 stable admin 2.3.9.22 with dynamic library collections and multilingual in-app books.",
+  "start_url": "./admin-v239-stable.html?release=stable-2.3.9.22",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
@@ -14,11 +14,11 @@
     {"src":"assets/admin-icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
   ],
   "shortcuts": [
-    {"name":"Students","url":"./admin-v239-stable.html?tab=students&release=stable-2.3.9.21","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"Assignments","url":"./admin-v239-stable.html?tab=assignments&release=stable-2.3.9.21","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"School audio","url":"./admin-v239-stable.html?tab=schoolaudio&release=stable-2.3.9.21","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"Videos","url":"./admin-v239-stable.html?tab=videos&release=stable-2.3.9.21","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"Library","url":"./admin-v239-stable.html?tab=library&release=stable-2.3.9.21","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
-    {"name":"Documents","url":"./admin-v239-stable.html?tab=certificates&release=stable-2.3.9.21","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]}
+    {"name":"Students","url":"./admin-v239-stable.html?tab=students&release=stable-2.3.9.22","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Assignments","url":"./admin-v239-stable.html?tab=assignments&release=stable-2.3.9.22","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"School audio","url":"./admin-v239-stable.html?tab=schoolaudio&release=stable-2.3.9.22","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Videos","url":"./admin-v239-stable.html?tab=videos&release=stable-2.3.9.22","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Library","url":"./admin-v239-stable.html?tab=library&release=stable-2.3.9.22","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]},
+    {"name":"Documents","url":"./admin-v239-stable.html?tab=certificates&release=stable-2.3.9.22","icons":[{"src":"assets/admin-icon-192.png","sizes":"192x192"}]}
   ]
 }
