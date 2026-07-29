@@ -1,0 +1,14 @@
+/* New Hope 7 v3.2.2 — library collection menus */
+.nh7-collection-hub,.nh7-collection-content{display:grid;gap:16px;margin-top:14px}
+.nh7-collection-head,.nh7-collection-content-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.nh7-collection-head h2,.nh7-collection-content-head h2{margin:0 0 6px}.nh7-collection-head p,.nh7-collection-content-head p{margin:0;color:#667085;line-height:1.7}
+.nh7-collection-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.nh7-collection-card{min-width:0;border:1px solid #d7e8e6;background:linear-gradient(180deg,#fff,#f5fbfa);border-radius:20px;padding:18px;text-align:start;display:flex;flex-direction:column;gap:8px;box-shadow:0 8px 24px rgba(15,118,110,.08);cursor:pointer;color:#163047}
+.nh7-collection-card:hover{transform:translateY(-1px);border-color:#6bb7ad}.nh7-collection-card strong{font-size:1rem;line-height:1.5}.nh7-collection-card small{color:#667085;line-height:1.6;min-height:2.7em}.nh7-collection-card em{font-style:normal;color:#0f766e;font-size:.82rem;font-weight:800;margin-top:auto}
+.nh7-collection-icon{font-size:2rem;line-height:1}.nh7-collection-content .library-user-grid{display:grid!important}
+.nh7-library-original-title-hidden{display:none!important}
+.nh7-v322-item-collection{margin:14px 0;padding:14px;border:1px solid #cfe5e2;border-radius:16px;background:#f4fbfa}
+.nh7-v322-item-collection label{display:grid;gap:7px}.nh7-v322-item-collection select{width:100%;max-width:100%;min-width:0}.nh7-v322-item-collection small{color:#667085;line-height:1.6}
+.nh7-v322-collection-editor,.nh7-v322-collection-list{margin-bottom:16px}.nh7-v322-grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:12px 0}.nh7-v322-grid3>*{min-width:0;width:100%;box-sizing:border-box}.nh7-v322-grid3 label{display:grid;gap:6px}.nh7-v322-collection-cards{display:grid;gap:12px}.nh7-v322-title{font-size:1rem}.nh7-v322-inactive{opacity:.7}
+@media(max-width:900px){.nh7-collection-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.nh7-v322-grid3{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.nh7-collection-grid,.nh7-v322-grid3{grid-template-columns:1fr}.nh7-collection-card{padding:15px}.nh7-collection-head,.nh7-collection-content-head{display:grid}.nh7-collection-content-head .secondary-btn{justify-self:start}.nh7-v322-collection-editor,.nh7-v322-collection-list,.nh7-v322-item-collection{max-width:100%;overflow:hidden}.nh7-v322-grid3 input,.nh7-v322-grid3 textarea,.nh7-v322-grid3 select{width:100%;max-width:100%;box-sizing:border-box}}
