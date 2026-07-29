@@ -30,6 +30,7 @@ jobs:
           node --check js/admin-v2.3.9-clean-scroll-v300.js
           node --check js/admin-v2.3.9-library-clean-v311.js
           node --check js/admin-v2.3.9-apocrypha-catalog-v274.js
+          node --check js/admin-v2.3.9-apocrypha-text-only-v320.js
           node --check js/admin-v2.3.9-student-clean-v311.js
           node --check js/admin-v2.3.9-audio-clean-v312.js
           node --check js/admin-v2.3.9-video-final-v316.js
