@@ -1,6 +1,6 @@
 try { importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js'); } catch (e) { console.warn('OneSignal SW unavailable', e); }
 
-const VERSION='v2.3.9.20-apocrypha-text-reader';
+const VERSION='v2.3.9.21-library-text-quality';
 const CORE_CACHE='nh7-core-'+VERSION;
 const DATA_CACHE='nh7-data-'+VERSION;
 const PUBLIC_API_CACHE='nh7-public-api-'+VERSION;
@@ -10,7 +10,7 @@ const OFFLINE_PAGE='./offline/index.html';
 const CORE_ASSETS=[
   './','./index.html','./app-v239.html','./admin.html','./admin-v239.html','./admin-v239-stable.html','./certificate.html','./verify-document.html','./reset-password.html','./privacy.html',
   './css/styles.css','./css/v2.2.0.css','./css/v2.2.0-platform.css','./css/v2.2.1.css','./css/v2.2.2.css','./css/v2.2.3.css','./css/v2.2.4.css','./css/v2.2.5.css','./css/v2.3.0-access-bible.css','./css/v2.3.4-my-notes.css','./css/admin-v2.3.0-student-profile.css','./css/admin-v2.3.5-analytics.css','./css/admin-v2.3.9-clean-scroll-v300.css','./css/admin-v2.3.9-clean-features-v311.css','./css/admin-v2.3.9-final-stable-v316.css','./css/admin-v2.3.9-library-mobile-v320.css','./css/nh7-book-reader-v280.css','./css/nh7-secure-media-v270.css','./css/nh7-secure-media-watermark-v272.css','./css/nh7-apocrypha-v270.css',
-  './js/app.js','./js/nh7-access-bootstrap-v230.js','./js/nh7-app-enhancements-v230.js','./js/nh7-my-notes-v234.js','./js/nh7-book-reader-v281.js','./js/nh7-school-media-session-v262.js','./js/nh7-secure-media-v270.js','./js/nh7-secure-media-fix-v271.js','./js/nh7-large-mov-native-fallback-v273.js','./js/nh7-secure-media-watermark-v272.js','./js/nh7-apocrypha-v270.js','./js/nh7-protected-audio-gate-v316.js','./js/admin-v2.2.0.js','./js/admin-v2.2.1.js','./js/admin-v2.2.2.js','./js/admin-v2.2.3.js','./js/admin-v2.2.4.js','./js/admin-v2.2.5-v230.js','./js/admin-v2.3.5-analytics.js','./js/admin-v2.3.9-clean-scroll-v300.js','./js/admin-v2.3.9-library-clean-v311.js','./js/admin-v2.3.9-apocrypha-catalog-v274.js','./js/admin-v2.3.9-apocrypha-text-only-v320.js','./js/admin-v2.3.9-student-clean-v311.js','./js/admin-v2.3.9-audio-clean-v312.js','./js/admin-v2.3.9-video-final-v316.js','./js/admin-v2.3.9-video-save-sync-v316.js','./js/admin-v2.3.9-video-person-access-v317.js','./js/admin-v2.3.9-student-state-fix-v316.js','./js/admin-v2.3.9-ui-documents-final-v316.js','./js/admin-v2.3.9-fix12-bootstrap.js','./manifest.json','./admin-manifest.json',
+  './js/app.js','./js/nh7-access-bootstrap-v230.js','./js/nh7-app-enhancements-v230.js','./js/nh7-my-notes-v234.js','./js/nh7-book-reader-v281.js','./js/nh7-library-language-v321.js','./js/nh7-school-media-session-v262.js','./js/nh7-secure-media-v270.js','./js/nh7-secure-media-fix-v271.js','./js/nh7-large-mov-native-fallback-v273.js','./js/nh7-secure-media-watermark-v272.js','./js/nh7-apocrypha-v270.js','./js/nh7-protected-audio-gate-v316.js','./js/admin-v2.2.0.js','./js/admin-v2.2.1.js','./js/admin-v2.2.2.js','./js/admin-v2.2.3.js','./js/admin-v2.2.4.js','./js/admin-v2.2.5-v230.js','./js/admin-v2.3.5-analytics.js','./js/admin-v2.3.9-clean-scroll-v300.js','./js/admin-v2.3.9-library-clean-v311.js','./js/admin-v2.3.9-apocrypha-catalog-v274.js','./js/admin-v2.3.9-apocrypha-text-only-v320.js','./js/admin-v2.3.9-student-clean-v311.js','./js/admin-v2.3.9-audio-clean-v312.js','./js/admin-v2.3.9-video-final-v316.js','./js/admin-v2.3.9-video-save-sync-v316.js','./js/admin-v2.3.9-video-person-access-v317.js','./js/admin-v2.3.9-student-state-fix-v316.js','./js/admin-v2.3.9-ui-documents-final-v316.js','./js/admin-v2.3.9-fix12-bootstrap.js','./manifest.json','./admin-manifest.json',
   './assets/logo.png','./assets/admin-icon-192.png','./assets/admin-icon-512.png','./assets/admin-apple-touch-icon.png',
   './assets/about/beliefs_fa_source.jpeg','./assets/about/vision_fa_source.jpeg',
   './data/app/opening_messages_365.json','./data/church/church_config.json','./data/church/about.json',
@@ -30,7 +30,7 @@ function isLocalStatic(url){return url.origin===self.location.origin&&(url.pathn
 function isCriticalCode(url){return url.origin===self.location.origin&&(url.pathname.endsWith('.js')||url.pathname.endsWith('.css')||url.pathname.endsWith('.html')||url.pathname.endsWith('manifest.json'))}
 function isPublicSupabase(url){if(!url.pathname.includes('/rest/v1/'))return false;return ['daily_content','school_courses','sermon_categories','notification_settings','meeting_settings','document_templates_v220'].some(t=>url.pathname.includes('/rest/v1/'+t))}
 function isProtectedSupabase(url){return url.origin==='https://gpzcwffxnddhaeaogdyo.supabase.co'&&(
-  /\/rest\/v1\/(sermons|audio_bible_books|audio_bible_books_v220|audio_bible_chapters|audio_bible_chapters_v220|nh7_library_items|nh7_library_items_v222|nh7_library_items_v224|rpc\/nh7_apocrypha_|rpc\/nh7_library_reader_access_v250)/.test(url.pathname)
+  /\/rest\/v1\/(sermons|audio_bible_books|audio_bible_books_v220|audio_bible_chapters|audio_bible_chapters_v220|nh7_library_items|nh7_library_items_v222|nh7_library_items_v224|rpc\/nh7_apocrypha_|rpc\/nh7_library_reader_access_v250|rpc\/nh7_library_reader_access_v321)/.test(url.pathname)
   || /\/functions\/v1\/(nh7-content-access|nh7-library-access|nh7-school-media-access)/.test(url.pathname)
   || /\/storage\/v1\/object\/(public|sign|authenticated)\/(church-audio|nh7-library|nh7-school-media)/.test(url.pathname)
 )}
@@ -41,7 +41,6 @@ async function mediaFromCache(request){const cache=await caches.open(MEDIA_CACHE
 
 function nh7FindAdminPushData(value,depth=0){if(!value||depth>5)return null;if(typeof value==='object'&&value.nh7_admin_event)return value;if(typeof value==='object'){for(const v of Object.values(value)){const found=nh7FindAdminPushData(v,depth+1);if(found)return found}}return null}
 self.addEventListener('push',event=>{try{const raw=event.data?event.data.json():null,data=nh7FindAdminPushData(raw);if(!data||!self.navigator?.setAppBadge)return;const n=Math.max(1,Number(data.unread_count)||1);event.waitUntil(self.navigator.setAppBadge(n))}catch(e){console.warn('NH7 admin badge push parse failed',e)}});
-
 self.addEventListener('fetch',event=>{
   const req=event.request;if(req.method!=='GET')return;const url=new URL(req.url);
   if(req.mode==='navigate'){
