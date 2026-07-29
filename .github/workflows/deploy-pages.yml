@@ -19,10 +19,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate stable 2.3.9.20 Apocrypha text reader
+      - name: Validate stable 2.3.9.21 library text quality
         run: |
           node --check service-worker.js
           node --check js/nh7-book-reader-v281.js
+          node --check js/nh7-library-language-v321.js
           node --check js/nh7-apocrypha-v270.js
           node --check js/nh7-large-mov-native-fallback-v273.js
           node --check js/nh7-secure-media-watermark-v272.js
