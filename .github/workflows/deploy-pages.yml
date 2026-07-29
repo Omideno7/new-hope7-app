@@ -19,15 +19,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate final stable 2.3.9 admin and user app
+      - name: Validate stable 2.3.9.16 admin and user app
         run: |
           node --check service-worker.js
           node --check js/admin-v2.3.9-clean-scroll-v300.js
           node --check js/admin-v2.3.9-library-clean-v311.js
           node --check js/admin-v2.3.9-student-clean-v311.js
           node --check js/admin-v2.3.9-audio-clean-v312.js
-          node --check js/admin-v2.3.9-video-final-v314.js
+          node --check js/admin-v2.3.9-video-final-v316.js
+          node --check js/admin-v2.3.9-video-save-sync-v316.js
+          node --check js/admin-v2.3.9-student-state-fix-v316.js
+          node --check js/admin-v2.3.9-ui-documents-final-v316.js
           node --check js/admin-v2.3.9-fix12-bootstrap.js
+          node --check js/nh7-protected-audio-gate-v316.js
           node --check js/nh7-secure-media-watermark-v272.js
           test -f admin.html
           test -f admin-v239.html
@@ -36,6 +40,7 @@ jobs:
           test -f index.html
           test -f css/admin-v2.3.9-clean-scroll-v300.css
           test -f css/admin-v2.3.9-clean-features-v311.css
+          test -f css/admin-v2.3.9-final-stable-v316.css
           test -f css/nh7-secure-media-watermark-v272.css
           node -e "const fs=require('fs');for(const file of ['admin-v239.html','admin-v239-stable.html','app-v239.html','index.html','certificate-v239.html']){const html=fs.readFileSync(file,'utf8');const blocks=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]).filter(Boolean);blocks.forEach((code,index)=>new Function(code+'\n//# sourceURL='+file+'-inline-'+index));}"
           node -e "JSON.parse(require('fs').readFileSync('admin-manifest.json','utf8'));JSON.parse(require('fs').readFileSync('manifest.json','utf8'))"
