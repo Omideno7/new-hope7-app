@@ -19,11 +19,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate stable 2.3.9.24 offline download fix
+      - name: Validate stable 2.3.9.25 offline persistence and auto updates
         run: |
           node --check service-worker.js
+          node --check js/nh7-auto-update-v325.js
           node --check js/nh7-offline-persistence-v323.js
-          grep -q "3.2.4-offline-download-fix" js/nh7-offline-persistence-v323.js
+          grep -q "3.2.5-offline-idb" js/nh7-offline-persistence-v323.js
+          grep -q "2.3.9.25" version.json
           node --check js/nh7-book-reader-v281.js
           node --check js/nh7-library-language-v321.js
           node --check js/nh7-library-collections-v322.js
@@ -49,6 +51,8 @@ jobs:
           test -f admin-v239-stable.html
           test -f app-v239.html
           test -f index.html
+          test -f version.json
+          test -f js/nh7-auto-update-v325.js
           test -f css/admin-v2.3.9-clean-scroll-v300.css
           test -f css/admin-v2.3.9-clean-features-v311.css
           test -f css/admin-v2.3.9-final-stable-v316.css
@@ -58,7 +62,7 @@ jobs:
           test -f css/nh7-secure-media-watermark-v272.css
           test -f css/nh7-apocrypha-v270.css
           node -e "const fs=require('fs');for(const file of ['admin-v239.html','admin-v239-stable.html','app-v239.html','index.html','certificate-v239.html']){const html=fs.readFileSync(file,'utf8');const blocks=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]).filter(Boolean);blocks.forEach((code,index)=>new Function(code+'\n//# sourceURL='+file+'-inline-'+index));}"
-          node -e "JSON.parse(require('fs').readFileSync('admin-manifest.json','utf8'));JSON.parse(require('fs').readFileSync('manifest.json','utf8'))"
+          node -e "for(const f of ['admin-manifest.json','manifest.json','version.json'])JSON.parse(require('fs').readFileSync(f,'utf8'))"
 
   deploy:
     needs: validate
