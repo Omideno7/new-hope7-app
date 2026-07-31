@@ -3,9 +3,13 @@
 const VERSION='3.2.6-offline-playback-bridge';
 function replay(button){
   button.dataset.nh7OfflineBridgeBypass='1';
+  button.dataset.nh7OfflinePlayBypass='1';
   queueMicrotask(()=>{
     button.click();
-    setTimeout(()=>delete button.dataset.nh7OfflineBridgeBypass,0);
+    setTimeout(()=>{
+      delete button.dataset.nh7OfflineBridgeBypass;
+      delete button.dataset.nh7OfflinePlayBypass;
+    },0);
   });
 }
 async function handle(event){
