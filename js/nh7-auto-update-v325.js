@@ -1,6 +1,6 @@
-/* New Hope 7 v3.2.5 — automatic build and service-worker updates */
+/* New Hope 7 v3.2.6 — automatic build and service-worker updates */
 (()=>{'use strict';
-const BUILD='2.3.9.25';
+const BUILD='2.3.9.26';
 const VERSION_URL='./version.json';
 const MEDIA_CACHE='nh7-media-v2-protected';
 const INSTALLED_KEY='nh7_current_app_build';
@@ -82,5 +82,5 @@ window.addEventListener('pageshow',()=>setTimeout(check,300));
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(check,200)});
 window.addEventListener('online',()=>setTimeout(check,200));
 boot();
-window.NH7_AUTO_UPDATE_VERSION='3.2.5';
+window.NH7_AUTO_UPDATE_VERSION='3.2.6';
 })();
