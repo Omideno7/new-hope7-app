@@ -4,31 +4,34 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#1d4ed8" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>OmideNo7 Church</title>
-  <link rel="manifest" href="manifest.json?v=2.3.9.24" />
+  <link rel="manifest" href="manifest.json?v=2.3.9.25" />
   <link rel="icon" href="assets/logo.png" />
-  <link rel="stylesheet" href="css/styles.css?v=2.3.9.24" />
+  <link rel="stylesheet" href="css/styles.css?v=2.3.9.25" />
   <link rel="stylesheet" href="css/v2.2.0.css?v=2.3.9" />
   <link rel="stylesheet" href="css/v2.2.2.css?v=2.3.9" />
   <link rel="stylesheet" href="css/v2.2.3.css?v=2.3.9" />
   <link rel="stylesheet" href="css/v2.2.4.css?v=2.3.9" />
   <link rel="stylesheet" href="css/v2.3.0-access-bible.css?v=2.3.9" />
   <link rel="stylesheet" href="css/v2.3.4-my-notes.css?v=2.3.9" />
-  <link rel="stylesheet" href="css/nh7-book-reader-v280.css?v=2.3.9.24" />
-  <link rel="stylesheet" href="css/nh7-library-collections-v322.css?v=2.3.9.24" />
-  <link rel="stylesheet" href="css/nh7-secure-media-v270.css?v=2.3.9.24" />
-  <link rel="stylesheet" href="css/nh7-secure-media-watermark-v272.css?v=2.3.9.24" />
-  <link rel="stylesheet" href="css/nh7-apocrypha-v270.css?v=2.3.9.24" />
+  <link rel="stylesheet" href="css/nh7-book-reader-v280.css?v=2.3.9.25" />
+  <link rel="stylesheet" href="css/nh7-library-collections-v322.css?v=2.3.9.25" />
+  <link rel="stylesheet" href="css/nh7-secure-media-v270.css?v=2.3.9.25" />
+  <link rel="stylesheet" href="css/nh7-secure-media-watermark-v272.css?v=2.3.9.25" />
+  <link rel="stylesheet" href="css/nh7-apocrypha-v270.css?v=2.3.9.25" />
   <script>
     window.NH7_ONESIGNAL_APP_ID = '86f4116a-707a-4959-aa3f-7c703f57bf7e';
-    window.NH7_VERSION = '2.3.9.24';
+    window.NH7_VERSION = '2.3.9.25';
     window.NH7_BASE_PATH = new URL('.', window.location.href).pathname;
     window.OneSignalDeferred = window.OneSignalDeferred || [];
     OneSignalDeferred.push(async function(OneSignal) {
       try {
         await OneSignal.init({
           appId: window.NH7_ONESIGNAL_APP_ID,
-          serviceWorkerPath: window.NH7_BASE_PATH + 'service-worker.js',
+          serviceWorkerPath: window.NH7_BASE_PATH + 'service-worker.js?build=2.3.9.25',
           serviceWorkerParam: { scope: window.NH7_BASE_PATH },
           notifyButton: { enable: false },
           allowLocalhostAsSecureOrigin: true
@@ -80,20 +83,21 @@
 
   <template id="loadingTpl"><section class="card"><p>Loading...</p></section></template>
   <script src="https://cdn.jsdelivr.net/npm/mammoth@1.12.0/mammoth.browser.min.js" defer></script>
-  <script src="js/nh7-access-bootstrap-v230.js?v=2.3.9.24"></script>
-  <script src="js/nh7-offline-persistence-v323.js?v=2.3.9.24"></script>
-  <script src="js/app.js?v=2.3.9.24" type="module"></script>
-  <script src="js/nh7-app-enhancements-v230.js?v=2.3.9.24" type="module"></script>
-  <script src="js/nh7-my-notes-v234.js?v=2.3.9.24" type="module"></script>
-  <script src="js/nh7-book-reader-v281.js?v=2.3.9.24" defer></script>
-  <script src="js/nh7-library-language-v321.js?v=2.3.9.24" defer></script>
-  <script src="js/nh7-library-collections-v322.js?v=2.3.9.24" defer></script>
-  <script src="js/nh7-school-media-session-v262.js?v=2.3.9.24" defer></script>
-  <script src="js/nh7-secure-media-v270.js?v=2.3.9.24" defer></script>
-  <script src="js/nh7-secure-media-fix-v271.js?v=2.3.9.24" defer></script>
-  <script src="js/nh7-large-mov-native-fallback-v273.js?v=2.3.9.24" defer></script>
-  <script src="js/nh7-secure-media-watermark-v272.js?v=2.3.9.24" defer></script>
-  <script src="js/nh7-apocrypha-v270.js?v=2.3.9.24" defer></script>
-  <script src="js/nh7-protected-audio-gate-v316.js?v=2.3.9.24" defer></script>
+  <script src="js/nh7-auto-update-v325.js?v=2.3.9.25"></script>
+  <script src="js/nh7-access-bootstrap-v230.js?v=2.3.9.25"></script>
+  <script src="js/nh7-offline-persistence-v323.js?v=2.3.9.25"></script>
+  <script src="js/app.js?v=2.3.9.25" type="module"></script>
+  <script src="js/nh7-app-enhancements-v230.js?v=2.3.9.25" type="module"></script>
+  <script src="js/nh7-my-notes-v234.js?v=2.3.9.25" type="module"></script>
+  <script src="js/nh7-book-reader-v281.js?v=2.3.9.25" defer></script>
+  <script src="js/nh7-library-language-v321.js?v=2.3.9.25" defer></script>
+  <script src="js/nh7-library-collections-v322.js?v=2.3.9.25" defer></script>
+  <script src="js/nh7-school-media-session-v262.js?v=2.3.9.25" defer></script>
+  <script src="js/nh7-secure-media-v270.js?v=2.3.9.25" defer></script>
+  <script src="js/nh7-secure-media-fix-v271.js?v=2.3.9.25" defer></script>
+  <script src="js/nh7-large-mov-native-fallback-v273.js?v=2.3.9.25" defer></script>
+  <script src="js/nh7-secure-media-watermark-v272.js?v=2.3.9.25" defer></script>
+  <script src="js/nh7-apocrypha-v270.js?v=2.3.9.25" defer></script>
+  <script src="js/nh7-protected-audio-gate-v316.js?v=2.3.9.25" defer></script>
 </body>
 </html>
