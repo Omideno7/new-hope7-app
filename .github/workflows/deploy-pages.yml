@@ -19,9 +19,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate stable 2.3.9.22 library collections
+      - name: Validate stable 2.3.9.23 offline persistence
         run: |
           node --check service-worker.js
+          node --check js/nh7-offline-persistence-v323.js
           node --check js/nh7-book-reader-v281.js
           node --check js/nh7-library-language-v321.js
           node --check js/nh7-library-collections-v322.js
