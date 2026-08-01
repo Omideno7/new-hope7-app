@@ -29,14 +29,11 @@
   const shellRequest=new Request('./index.html',{method:'GET'});
   async function cachedShell(){
     if(!('caches' in window))return null;
-    try{
-      const shell=await caches.open(SHELL_CACHE);
-      return await shell.match(shellRequest,{ignoreSearch:true})||await caches.match(shellRequest,{ignoreSearch:true});
-    }catch(_){return null}
+    try{const shell=await caches.open(SHELL_CACHE);return await shell.match(shellRequest,{ignoreSearch:true})||await caches.match(shellRequest,{ignoreSearch:true})}catch(_){return null}
   }
   async function networkShell(){
     const controller=new AbortController();
-    const timer=setTimeout(()=>controller.abort(),12000);
+    const timer=setTimeout(()=>controller.abort(),5000);
     try{
       const response=await fetch('./index.html?build='+encodeURIComponent(BUILD)+'&t='+Date.now(),{cache:'no-store',signal:controller.signal,headers:{'Cache-Control':'no-cache, no-store, must-revalidate','Pragma':'no-cache'}});
       if(!response.ok)throw new Error('App HTML '+response.status);
@@ -44,9 +41,7 @@
       return response;
     }finally{clearTimeout(timer)}
   }
-  async function serviceWorkerShell(){
-    try{const response=await fetch('./index.html',{cache:'force-cache'});return response.ok?response:null}catch(_){return null}
-  }
+  async function serviceWorkerShell(){try{const response=await fetch('./index.html',{cache:'force-cache'});return response.ok?response:null}catch(_){return null}}
   try{
     let response=null;
     if(navigator.onLine){
@@ -62,11 +57,7 @@
     html=html.replace(/manifest\.json\?v=[^"']+/,'manifest.json?v='+BUILD);
     localStorage.setItem('nh7_app_install_build',BUILD);
     document.open();document.write(html);document.close();
-  }catch(error){
-    document.querySelector('.spinner')?.remove();
-    status.textContent='برنامه باز نشد';
-    errorBox.textContent=error&&error.message?error.message:String(error);
-  }
+  }catch(error){document.querySelector('.spinner')?.remove();status.textContent='برنامه باز نشد';errorBox.textContent=error&&error.message?error.message:String(error)}
 })();
 </script>
 </body>
