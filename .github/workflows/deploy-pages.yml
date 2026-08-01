@@ -31,11 +31,11 @@ jobs:
           node --check js/nh7-offline-playback-bridge-v326.js
           grep -q "v2.3.9.28-offline-shell" sw-offline-v328.js
           grep -q "3.2.8" js/nh7-auto-update-v325.js
+          grep -q "3.2.8-offline-core" js/nh7-offline-core-v327.js
           grep -q "sw-offline-v328.js" index.html
           grep -q '"start_url": "./app-v239.html"' manifest.json
           grep -q "2.3.9.28" version.json
           grep -q "3.2.7-offline-startup" js/nh7-offline-startup-v327.js
-          grep -q "3.2.7-offline-core" js/nh7-offline-core-v327.js
           grep -q "3.2.7-offline-access" js/nh7-access-bootstrap-v230.js
           grep -q "3.2.7-library-reader-offline" js/nh7-library-language-v321.js
           grep -q "3.2.7-library-collections-offline" js/nh7-library-collections-v322.js
