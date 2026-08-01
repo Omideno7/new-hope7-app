@@ -19,8 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate stable 2.3.9.27 offline-first startup
+      - name: Validate stable 2.3.9.28 offline shell
         run: |
+          node --check sw-offline-v328.js
           node --check service-worker.js
           node --check js/nh7-offline-startup-v327.js
           node --check js/nh7-offline-core-v327.js
@@ -28,14 +29,16 @@ jobs:
           node --check js/nh7-access-bootstrap-v230.js
           node --check js/nh7-offline-persistence-v323.js
           node --check js/nh7-offline-playback-bridge-v326.js
+          grep -q "v2.3.9.28-offline-shell" sw-offline-v328.js
+          grep -q "3.2.8" js/nh7-auto-update-v325.js
+          grep -q "sw-offline-v328.js" index.html
+          grep -q '"start_url": "./app-v239.html"' manifest.json
+          grep -q "2.3.9.28" version.json
           grep -q "3.2.7-offline-startup" js/nh7-offline-startup-v327.js
           grep -q "3.2.7-offline-core" js/nh7-offline-core-v327.js
           grep -q "3.2.7-offline-access" js/nh7-access-bootstrap-v230.js
           grep -q "3.2.7-library-reader-offline" js/nh7-library-language-v321.js
           grep -q "3.2.7-library-collections-offline" js/nh7-library-collections-v322.js
-          grep -q "nh7-shell-stable" service-worker.js
-          grep -q "ignoreSearch:true" service-worker.js
-          grep -q "2.3.9.27" version.json
           node --check js/nh7-book-reader-v281.js
           node --check js/nh7-library-language-v321.js
           node --check js/nh7-library-collections-v322.js
@@ -62,6 +65,7 @@ jobs:
           test -f app-v239.html
           test -f index.html
           test -f version.json
+          test -f sw-offline-v328.js
           test -f js/nh7-offline-startup-v327.js
           test -f js/nh7-offline-core-v327.js
           test -f js/nh7-auto-update-v325.js
