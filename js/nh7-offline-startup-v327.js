@@ -2,21 +2,14 @@
 (()=>{'use strict';
 const VERSION='3.2.7-offline-startup';
 const nativeFetch=window.fetch.bind(window);
-const REMOTE_TIMEOUT=4500;
-function isRemote(input){
-  try{const raw=typeof input==='string'?input:input instanceof URL?input.href:input?.url||'';return new URL(raw,location.href).origin!==location.origin}catch(_){return false}
-}
+const STARTUP_UNTIL=Date.now()+15000;
+function isRemote(input){try{const raw=typeof input==='string'?input:input instanceof URL?input.href:input?.url||'';return new URL(raw,location.href).origin!==location.origin}catch(_){return false}}
 function offlineError(){const error=new TypeError('Offline: remote request skipped');error.code='offline';return error}
-function mergeSignal(init,timeout){
-  if(init?.signal)return{init,timer:0};
-  const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(new DOMException('Startup request timed out','TimeoutError')),timeout);
-  return{init:Object.assign({},init||{},{signal:controller.signal}),timer};
-}
+function mergeSignal(init,timeout){if(init?.signal)return{init,timer:0};const controller=new AbortController(),timer=setTimeout(()=>controller.abort(new DOMException('Request timed out','TimeoutError')),timeout);return{init:Object.assign({},init||{},{signal:controller.signal}),timer}}
 window.fetch=async function nh7OfflineStartupFetch(input,init={}){
   if(!isRemote(input))return nativeFetch(input,init);
   if(!navigator.onLine)throw offlineError();
-  const wrapped=mergeSignal(init,REMOTE_TIMEOUT);
+  const wrapped=mergeSignal(init,Date.now()<STARTUP_UNTIL?4500:20000);
   try{return await nativeFetch(input,wrapped.init)}finally{if(wrapped.timer)clearTimeout(wrapped.timer)}
 };
 window.NH7_OFFLINE_STARTUP_VERSION=VERSION;
