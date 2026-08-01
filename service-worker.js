@@ -1,9 +1,10 @@
 try { importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js'); } catch (e) { console.warn('OneSignal SW unavailable', e); }
 
-const VERSION='v2.3.9.26-offline-playback-auto-update';
+const VERSION='v2.3.9.27-offline-first-startup';
 const CORE_CACHE='nh7-core-'+VERSION;
 const DATA_CACHE='nh7-data-'+VERSION;
 const PUBLIC_API_CACHE='nh7-public-api-'+VERSION;
+const SHELL_CACHE='nh7-shell-stable';
 const MEDIA_CACHE='nh7-media-v2-protected';
 const OFFLINE_PAGE='./offline/index.html';
 const STABLE_MEDIA_PATH='__nh7_offline_media_v3__';
@@ -13,7 +14,7 @@ const DB_STORE='media';
 const CORE_ASSETS=[
   './','./index.html','./app-v239.html','./admin.html','./admin-v239.html','./admin-v239-stable.html','./certificate.html','./verify-document.html','./reset-password.html','./privacy.html','./version.json',
   './css/styles.css','./css/v2.2.0.css','./css/v2.2.0-platform.css','./css/v2.2.1.css','./css/v2.2.2.css','./css/v2.2.3.css','./css/v2.2.4.css','./css/v2.2.5.css','./css/v2.3.0-access-bible.css','./css/v2.3.4-my-notes.css','./css/admin-v2.3.0-student-profile.css','./css/admin-v2.3.5-analytics.css','./css/admin-v2.3.9-clean-scroll-v300.css','./css/admin-v2.3.9-clean-features-v311.css','./css/admin-v2.3.9-final-stable-v316.css','./css/admin-v2.3.9-library-mobile-v320.css','./css/nh7-book-reader-v280.css','./css/nh7-library-collections-v322.css','./css/nh7-secure-media-v270.css','./css/nh7-secure-media-watermark-v272.css','./css/nh7-apocrypha-v270.css',
-  './js/app.js','./js/nh7-auto-update-v325.js','./js/nh7-offline-persistence-v323.js','./js/nh7-offline-playback-bridge-v326.js','./js/nh7-access-bootstrap-v230.js','./js/nh7-app-enhancements-v230.js','./js/nh7-my-notes-v234.js','./js/nh7-book-reader-v281.js','./js/nh7-library-language-v321.js','./js/nh7-library-collections-v322.js','./js/nh7-school-media-session-v262.js','./js/nh7-secure-media-v270.js','./js/nh7-secure-media-fix-v271.js','./js/nh7-large-mov-native-fallback-v273.js','./js/nh7-secure-media-watermark-v272.js','./js/nh7-apocrypha-v270.js','./js/nh7-protected-audio-gate-v316.js','./js/admin-v2.2.0.js','./js/admin-v2.2.1.js','./js/admin-v2.2.2.js','./js/admin-v2.2.3.js','./js/admin-v2.2.4.js','./js/admin-v2.2.5-v230.js','./js/admin-v2.3.5-analytics.js','./js/admin-v2.3.9-clean-scroll-v300.js','./js/admin-v2.3.9-library-clean-v311.js','./js/admin-v2.3.9-apocrypha-catalog-v274.js','./js/admin-v2.3.9-apocrypha-text-only-v320.js','./js/admin-v2.3.9-library-collections-v322.js','./js/admin-v2.3.9-student-clean-v311.js','./js/admin-v2.3.9-audio-clean-v312.js','./js/admin-v2.3.9-video-final-v316.js','./js/admin-v2.3.9-video-save-sync-v316.js','./js/admin-v2.3.9-video-person-access-v317.js','./js/admin-v2.3.9-student-state-fix-v316.js','./js/admin-v2.3.9-ui-documents-final-v316.js','./js/admin-v2.3.9-fix12-bootstrap.js','./manifest.json','./admin-manifest.json',
+  './js/app.js','./js/nh7-offline-startup-v327.js','./js/nh7-auto-update-v325.js','./js/nh7-offline-persistence-v323.js','./js/nh7-offline-playback-bridge-v326.js','./js/nh7-access-bootstrap-v230.js','./js/nh7-app-enhancements-v230.js','./js/nh7-my-notes-v234.js','./js/nh7-book-reader-v281.js','./js/nh7-library-language-v321.js','./js/nh7-library-collections-v322.js','./js/nh7-school-media-session-v262.js','./js/nh7-secure-media-v270.js','./js/nh7-secure-media-fix-v271.js','./js/nh7-large-mov-native-fallback-v273.js','./js/nh7-secure-media-watermark-v272.js','./js/nh7-apocrypha-v270.js','./js/nh7-protected-audio-gate-v316.js','./js/admin-v2.2.0.js','./js/admin-v2.2.1.js','./js/admin-v2.2.2.js','./js/admin-v2.2.3.js','./js/admin-v2.2.4.js','./js/admin-v2.2.5-v230.js','./js/admin-v2.3.5-analytics.js','./js/admin-v2.3.9-clean-scroll-v300.js','./js/admin-v2.3.9-library-clean-v311.js','./js/admin-v2.3.9-apocrypha-catalog-v274.js','./js/admin-v2.3.9-apocrypha-text-only-v320.js','./js/admin-v2.3.9-library-collections-v322.js','./js/admin-v2.3.9-student-clean-v311.js','./js/admin-v2.3.9-audio-clean-v312.js','./js/admin-v2.3.9-video-final-v316.js','./js/admin-v2.3.9-video-save-sync-v316.js','./js/admin-v2.3.9-video-person-access-v317.js','./js/admin-v2.3.9-student-state-fix-v316.js','./js/admin-v2.3.9-ui-documents-final-v316.js','./js/admin-v2.3.9-fix12-bootstrap.js','./manifest.json','./admin-manifest.json',
   './assets/logo.png','./assets/admin-icon-192.png','./assets/admin-icon-512.png','./assets/admin-apple-touch-icon.png',
   './assets/about/beliefs_fa_source.jpeg','./assets/about/vision_fa_source.jpeg',
   './data/app/opening_messages_365.json','./data/church/church_config.json','./data/church/about.json',
@@ -24,7 +25,16 @@ const CORE_ASSETS=[
 ];
 
 async function cacheOne(cache,url){try{const req=new Request(url,{cache:'reload'}),res=await fetch(req,{cache:'no-store'});if(res.ok){await cache.put(req,res.clone());return true}}catch(e){console.warn('Offline cache miss',url,e)}return false}
-async function cacheCore(){const cache=await caches.open(CORE_CACHE),results=await Promise.all(CORE_ASSETS.map(x=>cacheOne(cache,x)));return results.filter(Boolean).length}
+async function cacheCore(){
+  const cache=await caches.open(CORE_CACHE),results=await Promise.all(CORE_ASSETS.map(x=>cacheOne(cache,x)));
+  const shell=await caches.open(SHELL_CACHE);
+  for(const url of ['./index.html','./app-v239.html']){
+    const response=await cache.match(url,{ignoreSearch:true})||await caches.match(url,{ignoreSearch:true});
+    if(response)await shell.put(url,response.clone());
+  }
+  return results.filter(Boolean).length;
+}
+async function matchIgnoringSearch(request){try{return await caches.match(request,{ignoreSearch:true})}catch(_){return null}}
 function stableHash(value){let h=2166136261;for(let i=0;i<value.length;i++){h^=value.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(16)}
 function canonicalMediaIdentity(raw){try{const u=new URL(String(raw||''),self.location.origin);let path=decodeURIComponent(u.pathname);path=path.replace(/\/storage\/v1\/object\/(?:sign|authenticated|public)\//,'/storage/v1/object/');return u.origin+path}catch(_){return String(raw||'').split(/[?#]/)[0]}}
 function stableMediaKey(raw){const id=canonicalMediaIdentity(raw);return new Request(new URL(`${STABLE_MEDIA_PATH}/${stableHash(id)}-${id.length}`,self.registration.scope).href,{method:'GET'})}
@@ -35,15 +45,15 @@ async function idbAll(){const db=await openDb();return new Promise((resolve,reje
 async function migrateLegacyMedia(){const cache=await caches.open(MEDIA_CACHE),keys=await cache.keys();for(const oldKey of keys){if(new URL(oldKey.url).pathname.includes('/'+STABLE_MEDIA_PATH+'/'))continue;const response=await cache.match(oldKey);if(!response)continue;const stable=stableMediaKey(oldKey.url);if(!await cache.match(stable))await cache.put(stable,response.clone());await cache.delete(oldKey)}}
 
 self.addEventListener('install',event=>{event.waitUntil(cacheCore().then(()=>self.skipWaiting()))});
-self.addEventListener('activate',event=>{event.waitUntil((async()=>{await migrateLegacyMedia();const keep=new Set([CORE_CACHE,DATA_CACHE,PUBLIC_API_CACHE,MEDIA_CACHE]),keys=await caches.keys();await Promise.all(keys.filter(k=>(k.startsWith('nh7-')||k.startsWith('omideno7-'))&&!keep.has(k)).map(k=>caches.delete(k)));await self.clients.claim()})())});
+self.addEventListener('activate',event=>{event.waitUntil((async()=>{await migrateLegacyMedia();const keep=new Set([CORE_CACHE,DATA_CACHE,PUBLIC_API_CACHE,SHELL_CACHE,MEDIA_CACHE]),keys=await caches.keys();await Promise.all(keys.filter(k=>(k.startsWith('nh7-')||k.startsWith('omideno7-'))&&!keep.has(k)).map(k=>caches.delete(k)));await self.clients.claim()})())});
 
 function isLocalStatic(url){return url.origin===self.location.origin&&(url.pathname.includes('/data/')||url.pathname.includes('/assets/')||url.pathname.endsWith('.css')||url.pathname.endsWith('.js')||url.pathname.endsWith('.json')||url.pathname.endsWith('.png')||url.pathname.endsWith('.jpeg')||url.pathname.endsWith('.jpg')||url.pathname.endsWith('.webp'))}
 function isCriticalCode(url){return url.origin===self.location.origin&&(url.pathname.endsWith('.js')||url.pathname.endsWith('.css')||url.pathname.endsWith('.html')||url.pathname.endsWith('manifest.json')||url.pathname.endsWith('version.json'))}
 function isPublicSupabase(url){if(!url.pathname.includes('/rest/v1/'))return false;return['daily_content','school_courses','sermon_categories','notification_settings','meeting_settings','document_templates_v220'].some(t=>url.pathname.includes('/rest/v1/'+t))}
 function isProtectedSupabase(url){return url.origin==='https://gpzcwffxnddhaeaogdyo.supabase.co'&&(/\/rest\/v1\/(sermons|audio_bible_books|audio_bible_books_v220|audio_bible_chapters|audio_bible_chapters_v220|nh7_library_items|nh7_library_items_v222|nh7_library_items_v224|nh7_library_collections_public_v322|rpc\/nh7_apocrypha_|rpc\/nh7_library_reader_access_v250|rpc\/nh7_library_reader_access_v321)/.test(url.pathname)||/\/functions\/v1\/(nh7-content-access|nh7-library-access|nh7-school-media-access)/.test(url.pathname)||/\/storage\/v1\/object\/(public|sign|authenticated)\/(church-audio|nh7-library|nh7-school-media)/.test(url.pathname))}
 function simpleKey(request){return new Request(request.url,{method:'GET'})}
-async function networkFirst(request,cacheName,key=request){const cache=await caches.open(cacheName);try{const res=await fetch(request,{cache:'no-store'});if(res&&res.ok)await cache.put(key,res.clone());return res}catch(e){const hit=await cache.match(key);if(hit)return hit;throw e}}
-async function staleWhileRevalidate(request,cacheName){const cache=await caches.open(cacheName),hit=await cache.match(request),update=fetch(request).then(res=>{if(res&&res.ok)cache.put(request,res.clone());return res}).catch(()=>null);return hit||await update||await caches.match(OFFLINE_PAGE)}
+async function networkFirst(request,cacheName,key=request){const cache=await caches.open(cacheName);try{const res=await fetch(request,{cache:'no-store'});if(res&&res.ok)await cache.put(key,res.clone());return res}catch(error){const hit=await cache.match(key,{ignoreSearch:true})||await matchIgnoringSearch(key);if(hit)return hit;throw error}}
+async function staleWhileRevalidate(request,cacheName){const cache=await caches.open(cacheName),hit=await cache.match(request,{ignoreSearch:true})||await matchIgnoringSearch(request),update=fetch(request).then(res=>{if(res&&res.ok)cache.put(request,res.clone());return res}).catch(()=>null);return hit||await update||await matchIgnoringSearch(OFFLINE_PAGE)}
 async function stableCachedResponse(raw){const cache=await caches.open(MEDIA_CACHE),stable=stableMediaKey(raw);let response=await cache.match(stable);if(response)return response;const identity=canonicalMediaIdentity(raw),keys=await cache.keys();for(const candidate of keys){if(new URL(candidate.url).pathname.includes('/'+STABLE_MEDIA_PATH+'/'))continue;if(canonicalMediaIdentity(candidate.url)!==identity)continue;response=await cache.match(candidate);if(response){await cache.put(stable,response.clone());await cache.delete(candidate);return response}}return null}
 function responseFromBlob(blob,mime='application/octet-stream'){return new Response(blob,{status:200,headers:{'Content-Type':mime||blob.type||'application/octet-stream','Content-Length':String(blob.size),'Accept-Ranges':'bytes','Cache-Control':'private, max-age=31536000'}})}
 async function offlineFullResponse(raw){const cached=await stableCachedResponse(raw);if(cached)return cached;try{const row=await idbGet(canonicalMediaIdentity(raw));if(row?.blob?.size)return responseFromBlob(row.blob,row.mime)}catch(_){}return null}
@@ -52,7 +62,22 @@ async function mediaFromOffline(request){const full=await offlineFullResponse(re
 
 function nh7FindAdminPushData(value,depth=0){if(!value||depth>5)return null;if(typeof value==='object'&&value.nh7_admin_event)return value;if(typeof value==='object'){for(const v of Object.values(value)){const found=nh7FindAdminPushData(v,depth+1);if(found)return found}}return null}
 self.addEventListener('push',event=>{try{const raw=event.data?event.data.json():null,data=nh7FindAdminPushData(raw);if(!data||!self.navigator?.setAppBadge)return;event.waitUntil(self.navigator.setAppBadge(Math.max(1,Number(data.unread_count)||1)))}catch(e){console.warn('NH7 admin badge push parse failed',e)}});
-self.addEventListener('fetch',event=>{const req=event.request;if(req.method!=='GET')return;const url=new URL(req.url);if(req.mode==='navigate'){event.respondWith(networkFirst(req,CORE_CACHE).catch(async()=>{const admin=url.pathname.includes('admin');return(await caches.match(admin?'./admin-v239.html':'./app-v239.html'))||(await caches.match(admin?'./admin.html':'./index.html'))||(await caches.match(OFFLINE_PAGE))}));return}event.respondWith((async()=>{if(isProtectedSupabase(url)){const local=await mediaFromOffline(req);if(local)return local;return fetch(req,{cache:'no-store'})}if(isPublicSupabase(url)){const key=simpleKey(req);return networkFirst(req,PUBLIC_API_CACHE,key).catch(()=>caches.match(key))}if(isCriticalCode(url))return networkFirst(req,CORE_CACHE).catch(()=>caches.match(req));if(isLocalStatic(url))return staleWhileRevalidate(req,DATA_CACHE);try{return await fetch(req)}catch(e){const local=await mediaFromOffline(req);return local||(await caches.match(req))||(await caches.match(OFFLINE_PAGE))}})())});
+self.addEventListener('fetch',event=>{
+  const req=event.request;if(req.method!=='GET')return;const url=new URL(req.url);
+  if(req.mode==='navigate'){
+    event.respondWith(networkFirst(req,CORE_CACHE).catch(async()=>{
+      const admin=url.pathname.includes('admin');
+      return await matchIgnoringSearch(admin?'./admin-v239.html':'./app-v239.html')||await matchIgnoringSearch(admin?'./admin.html':'./index.html')||await matchIgnoringSearch(OFFLINE_PAGE);
+    }));return;
+  }
+  event.respondWith((async()=>{
+    if(isProtectedSupabase(url)){const local=await mediaFromOffline(req);if(local)return local;return fetch(req,{cache:'no-store'})}
+    if(isPublicSupabase(url)){const key=simpleKey(req);return networkFirst(req,PUBLIC_API_CACHE,key).catch(()=>matchIgnoringSearch(key))}
+    if(isCriticalCode(url))return networkFirst(req,CORE_CACHE).catch(()=>matchIgnoringSearch(req));
+    if(isLocalStatic(url))return staleWhileRevalidate(req,DATA_CACHE);
+    try{return await fetch(req)}catch(error){const local=await mediaFromOffline(req);return local||await matchIgnoringSearch(req)||await matchIgnoringSearch(OFFLINE_PAGE)}
+  })());
+});
 
 async function removeUrl(url){const identity=canonicalMediaIdentity(url),cache=await caches.open(MEDIA_CACHE),keys=await cache.keys();for(const candidate of keys){const path=new URL(candidate.url).pathname;if((path.includes('/'+STABLE_MEDIA_PATH+'/')&&candidate.url===stableMediaKey(url).url)||(!path.includes('/'+STABLE_MEDIA_PATH+'/')&&canonicalMediaIdentity(candidate.url)===identity))await cache.delete(candidate)}try{await idbDelete(identity)}catch(_){}return true}
 async function mediaStats(){let rows=[];try{rows=await idbAll()}catch(_){}let bytes=rows.reduce((sum,row)=>sum+Number(row?.blob?.size||row?.bytes||0),0),count=rows.filter(row=>row?.blob?.size).length;const cache=await caches.open(MEDIA_CACHE),keys=await cache.keys();if(!count){for(const key of keys){if(!new URL(key.url).pathname.includes('/'+STABLE_MEDIA_PATH+'/'))continue;const response=await cache.match(key);if(response){count++;bytes+=Number(response.headers.get('content-length')||0)}}}const core=await caches.open(CORE_CACHE);return{mediaCount:count,mediaBytes:bytes,coreCount:(await core.keys()).length}}
