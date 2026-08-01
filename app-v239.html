@@ -7,36 +7,66 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <link rel="manifest" href="manifest.json?v=2.3.9.26">
+  <link rel="manifest" href="manifest.json?v=2.3.9.27">
   <link rel="apple-touch-icon" href="assets/logo.png">
-  <title>New Hope 7 v2.3.9.26</title>
+  <title>New Hope 7 v2.3.9.27</title>
   <style>
     body{margin:0;min-height:100dvh;display:grid;place-items:center;background:linear-gradient(180deg,#e9f8f6,#f7fbff);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;color:#102033;padding:24px;box-sizing:border-box}
     main{width:min(540px,100%);background:#fff;border:1px solid #d8ecea;border-radius:24px;padding:24px;text-align:center;box-shadow:0 18px 55px rgba(15,118,110,.16)}
     .spinner{width:46px;height:46px;margin:0 auto 16px;border:5px solid #dff4f0;border-top-color:#0f766e;border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
-    h1{font-size:1.25rem;margin:0 0 8px}p{color:#667085;line-height:1.8;margin:0}.error{color:#b42318;margin-top:12px;white-space:pre-wrap}
+    h1{font-size:1.25rem;margin:0 0 8px}p{color:#667085;line-height:1.8;margin:0}.error{color:#b42318;margin-top:12px;white-space:pre-wrap}.offline-note{margin-top:10px;color:#0f766e;font-weight:700}
   </style>
 </head>
 <body>
-<main><div class="spinner"></div><h1>در حال باز کردن New Hope 7 نسخه ۲.۳.۹.۲۶</h1><p>نسخهٔ جدید و فایل‌های آفلاین ذخیره‌شده در حال بازیابی هستند.</p><div id="error" class="error"></div></main>
+<main><div class="spinner"></div><h1>در حال باز کردن New Hope 7 نسخه ۲.۳.۹.۲۷</h1><p id="statusText">در حال آماده‌سازی برنامه…</p><p id="offlineNote" class="offline-note"></p><div id="error" class="error"></div></main>
 <script>
 (async()=>{
-  const BUILD='2.3.9.26-offline-playback-auto-update';
-  const MEDIA_CACHE='nh7-media-v2-protected';
+  const BUILD='2.3.9.27-offline-first-startup';
+  const SHELL_CACHE='nh7-shell-stable';
+  const status=document.getElementById('statusText');
+  const offline=document.getElementById('offlineNote');
+  const errorBox=document.getElementById('error');
+  const shellRequest=new Request('./index.html',{method:'GET'});
+  async function cachedShell(){
+    if(!('caches' in window))return null;
+    try{
+      const shell=await caches.open(SHELL_CACHE);
+      return await shell.match(shellRequest,{ignoreSearch:true})||await caches.match(shellRequest,{ignoreSearch:true});
+    }catch(_){return null}
+  }
+  async function networkShell(){
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),12000);
+    try{
+      const response=await fetch('./index.html?build='+encodeURIComponent(BUILD)+'&t='+Date.now(),{cache:'no-store',signal:controller.signal,headers:{'Cache-Control':'no-cache, no-store, must-revalidate','Pragma':'no-cache'}});
+      if(!response.ok)throw new Error('App HTML '+response.status);
+      if('caches' in window){const shell=await caches.open(SHELL_CACHE);await shell.put(shellRequest,response.clone())}
+      return response;
+    }finally{clearTimeout(timer)}
+  }
+  async function serviceWorkerShell(){
+    try{const response=await fetch('./index.html',{cache:'force-cache'});return response.ok?response:null}catch(_){return null}
+  }
   try{
-    if(localStorage.getItem('nh7_app_install_build')!==BUILD){
-      if('caches' in window){
-        const keys=await caches.keys();
-        await Promise.all(keys.filter(key=>key!==MEDIA_CACHE&&(key.startsWith('nh7-core-')||key.startsWith('nh7-data-')||key.startsWith('nh7-public-api-')||key.startsWith('omideno7-'))).map(key=>caches.delete(key)));
-      }
-      localStorage.setItem('nh7_app_install_build',BUILD);
+    let response=null;
+    if(navigator.onLine){
+      status.textContent='در حال دریافت آخرین نسخه…';
+      try{response=await networkShell()}catch(networkError){console.warn('Fresh app shell unavailable',networkError);response=await cachedShell()||await serviceWorkerShell()}
+    }else{
+      status.textContent='در حال بازکردن نسخهٔ ذخیره‌شده…';
+      offline.textContent='حالت آفلاین فعال است';
+      response=await cachedShell()||await serviceWorkerShell();
     }
-    const response=await fetch('./index.html?v='+encodeURIComponent(BUILD)+'-'+Date.now(),{cache:'no-store',headers:{'Cache-Control':'no-cache, no-store, must-revalidate','Pragma':'no-cache'}});
-    if(!response.ok)throw new Error('App HTML '+response.status);
+    if(!response)throw new Error('نسخهٔ آفلاین برنامه روی این دستگاه پیدا نشد. یک‌بار با اینترنت برنامه را کامل باز کنید.');
     let html=await response.text();
-    html=html.replace('manifest.json?v=2.3.9.26','manifest.json?v='+BUILD);
+    html=html.replace(/manifest\.json\?v=[^"']+/,'manifest.json?v='+BUILD);
+    localStorage.setItem('nh7_app_install_build',BUILD);
     document.open();document.write(html);document.close();
-  }catch(error){document.getElementById('error').textContent='خطا در بارگذاری اپ: '+(error&&error.message?error.message:String(error))}
+  }catch(error){
+    document.querySelector('.spinner')?.remove();
+    status.textContent='برنامه باز نشد';
+    errorBox.textContent=error&&error.message?error.message:String(error);
+  }
 })();
 </script>
 </body>
