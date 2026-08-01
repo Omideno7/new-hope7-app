@@ -23,6 +23,7 @@ jobs:
         run: |
           node --check service-worker.js
           node --check sw-offline-v329.js
+          node --check sw-offline-path-fix-v329.js
           node --check js/nh7-offline-startup-v327.js
           node --check js/nh7-offline-core-v327.js
           node --check js/nh7-offline-data-v329.js
@@ -32,6 +33,8 @@ jobs:
           node --check js/nh7-offline-persistence-v323.js
           node --check js/nh7-offline-playback-bridge-v326.js
           grep -q "v2.3.9.29-offline-routes" sw-offline-v329.js
+          grep -q "self.registration.scope" sw-offline-path-fix-v329.js
+          grep -q "sw-offline-path-fix-v329.js" service-worker.js
           grep -q "3.2.9-offline-data" js/nh7-offline-data-v329.js
           grep -q "3.2.9-ui-stability" js/nh7-ui-stability-v329.js
           grep -q "3.2.9" js/nh7-auto-update-v325.js
@@ -72,6 +75,7 @@ jobs:
           test -f index.html
           test -f version.json
           test -f sw-offline-v329.js
+          test -f sw-offline-path-fix-v329.js
           test -f js/nh7-offline-startup-v327.js
           test -f js/nh7-offline-core-v327.js
           test -f js/nh7-offline-data-v329.js
