@@ -22,6 +22,7 @@ async function cacheCore(){const core=await caches.open(CORE_CACHE);const result
 async function shellResponse(){const shell=await caches.open(SHELL_CACHE);return await shell.match(SHELL_URL,{ignoreSearch:true})||await caches.match(SHELL_URL,{ignoreSearch:true})||await caches.match(APP_URL,{ignoreSearch:true})}
 async function refreshShell(){const response=await fetch(SHELL_URL,{cache:'no-store'});if(!response.ok)throw new Error('Shell HTTP '+response.status);const shell=await caches.open(SHELL_CACHE);await shell.put(new Request(SHELL_URL),response.clone());const core=await caches.open(CORE_CACHE);await core.put(new Request(SHELL_URL),response.clone());return response}
 function sameOrigin(url){return url.origin===self.location.origin}
+function appNavigation(url){const scopePath=new URL(self.registration.scope).pathname;const relative=url.pathname.startsWith(scopePath)?url.pathname.slice(scopePath.length):url.pathname;return relative===''||relative==='index.html'||relative==='app-v239.html'}
 function stableHash(value){let hash=2166136261;for(let i=0;i<value.length;i++){hash^=value.charCodeAt(i);hash=Math.imul(hash,16777619)}return(hash>>>0).toString(16)}
 function canonicalMediaIdentity(raw){try{const url=new URL(String(raw||''),self.location.origin);let path=decodeURIComponent(url.pathname);path=path.replace(/\/storage\/v1\/object\/(?:sign|authenticated|public)\//,'/storage/v1/object/');return url.origin+path}catch(_){return String(raw||'').split(/[?#]/)[0]}}
 function stableMediaKey(raw){const identity=canonicalMediaIdentity(raw);return new Request(new URL(`${STABLE_MEDIA_PATH}/${stableHash(identity)}-${identity.length}`,self.registration.scope).href)}
@@ -34,14 +35,20 @@ async function storedMedia(raw){const identity=canonicalMediaIdentity(raw);try{c
 async function ranged(response,request){const value=request.headers.get('range');if(!value)return response;const blob=await response.blob();const match=/bytes=(\d+)-(\d*)/.exec(value);if(!match)return response;const start=Number(match[1]);const end=match[2]?Number(match[2]):blob.size-1;if(start>=blob.size)return new Response(null,{status:416,headers:{'Content-Range':`bytes */${blob.size}`}});const finalEnd=Math.min(end,blob.size-1);const chunk=blob.slice(start,finalEnd+1);const headers=new Headers(response.headers);headers.set('Content-Range',`bytes ${start}-${finalEnd}/${blob.size}`);headers.set('Content-Length',String(chunk.size));headers.set('Accept-Ranges','bytes');return new Response(chunk,{status:206,statusText:'Partial Content',headers})}
 function protectedMedia(url){return url.origin==='https://gpzcwffxnddhaeaogdyo.supabase.co'&&(/\/storage\/v1\/object\/(?:public|sign|authenticated)\/(?:church-audio|nh7-library|nh7-school-media)/.test(url.pathname)||/\/functions\/v1\/(?:nh7-content-access|nh7-library-access|nh7-school-media-access)/.test(url.pathname))}
 async function updateStatic(request){try{const response=await fetch(request);if(response.ok)await (await caches.open(CORE_CACHE)).put(request,response.clone());return response}catch(_){return null}}
+async function updatePage(request){try{const response=await fetch(request,{cache:'no-store'});if(response.ok)await (await caches.open(CORE_CACHE)).put(request,response.clone());return response}catch(_){return null}}
 
 self.addEventListener('install',event=>event.waitUntil(cacheCore().then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil((async()=>{const keep=new Set([CORE_CACHE,SHELL_CACHE,MEDIA_CACHE,READER_CACHE]);const keys=await caches.keys();await Promise.all(keys.filter(key=>(key.startsWith('nh7-core-')||key.startsWith('nh7-data-')||key.startsWith('nh7-public-api-')||key.startsWith('omideno7-'))&&!keep.has(key)).map(key=>caches.delete(key)));await self.clients.claim()})()));
 self.addEventListener('fetch',event=>{
   const request=event.request;if(request.method!=='GET')return;const url=new URL(request.url);
   if(request.mode==='navigate'&&sameOrigin(url)){
-    const update=refreshShell().catch(()=>null);event.waitUntil(update.then(()=>{}));
-    event.respondWith((async()=>await shellResponse()||await update||await caches.match('./offline/index.html',{ignoreSearch:true}))());
+    if(appNavigation(url)){
+      const update=refreshShell().catch(()=>null);event.waitUntil(update.then(()=>{}));
+      event.respondWith((async()=>await shellResponse()||await update||await caches.match('./offline/index.html',{ignoreSearch:true}))());
+    }else{
+      const update=updatePage(request);event.waitUntil(update.then(()=>{}));
+      event.respondWith((async()=>await caches.match(request,{ignoreSearch:true})||await update||await caches.match('./offline/index.html',{ignoreSearch:true}))());
+    }
     return;
   }
   if(protectedMedia(url)){
