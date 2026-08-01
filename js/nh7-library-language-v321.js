@@ -1,7 +1,7 @@
 /* New Hope 7 v3.2.7 — multilingual in-app books with offline reader cache */
 (()=>{'use strict';
 const VERSION='3.2.7-library-reader-offline';
-const CACHE='nh7-library-reader-offline-v327';
+const CACHE='nh7reader-offline-v327';
 const SESSION='nh7_user_session_v170';
 if(window.fetch?.__nh7LibraryLanguageV327)return;
 const original=window.fetch.bind(window);
