@@ -1,22 +1,39 @@
-/* New Hope 7 v3.2.2 — dynamic collections inside Books & Handouts */
+/* New Hope 7 v3.2.7 — dynamic library collections with offline cache */
 (()=>{'use strict';
-const VERSION='3.2.2-library-collections';
+const VERSION='3.2.7-library-collections-offline';
 const URL='https://gpzcwffxnddhaeaogdyo.supabase.co';
 const KEY='sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37';
 const SESSION_KEY='nh7_user_session_v170';
+const CACHE_PREFIX='nh7_library_collections_cache_v327_';
 let collections=[],itemMap=new Map(),loading=false,lastLoad=0,mountTimer=0,selectedCollection='',selectedAudience='';
-const lang=()=>{const value=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return ['fa','en','hr'].includes(value)?value:'en'};
+const lang=()=>{const value=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return['fa','en','hr'].includes(value)?value:'en'};
 const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
 const E=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 function session(){try{return JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch(_){return null}}
 function token(){return String(session()?.access_token||'')}
+function email(){return String(session()?.user?.email||'').trim().toLowerCase()}
+function hash(value){let h=2166136261;for(let i=0;i<String(value).length;i++){h^=String(value).charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(16)}
+function cacheKey(){return CACHE_PREFIX+hash(email()||'guest')}
 function headers(){return{apikey:KEY,Authorization:'Bearer '+(token()||KEY),'Content-Type':'application/json'}}
 function title(row){const l=lang();return row?.['title_'+l]||row?.title_en||row?.title_fa||row?.title_hr||row?.slug||L('مجموعه','Collection','Zbirka')}
 function description(row){const l=lang();return row?.['description_'+l]||row?.description_en||row?.description_fa||row?.description_hr||''}
-async function load(force=false){if(loading||!token()||(!force&&Date.now()-lastLoad<20000))return;loading=true;try{const [cRes,iRes]=await Promise.all([
-  fetch(`${URL}/rest/v1/nh7_library_collections_public_v322?select=*&order=audience.asc,sort_order.asc`,{headers:headers(),cache:'no-store'}),
-  fetch(`${URL}/rest/v1/nh7_library_items_v224?select=id,collection_id,audience,resource_type&resource_type=eq.library`,{headers:headers(),cache:'no-store'})
-]);if(!cRes.ok)throw new Error(await cRes.text());if(!iRes.ok)throw new Error(await iRes.text());collections=await cRes.json();const items=await iRes.json();itemMap=new Map((Array.isArray(items)?items:[]).map(row=>[String(row.id),row]));lastLoad=Date.now()}catch(error){console.warn('Library collections',error);collections=[];itemMap=new Map()}finally{loading=false;scheduleMount()}}
+function applyCache(value){if(!value||!Array.isArray(value.collections)||!Array.isArray(value.items))return false;collections=value.collections;itemMap=new Map(value.items.map(row=>[String(row.id),row]));lastLoad=Number(value.saved_at||Date.now());return true}
+function readCache(){try{return JSON.parse(localStorage.getItem(cacheKey())||'null')}catch(_){return null}}
+function saveCache(items){try{localStorage.setItem(cacheKey(),JSON.stringify({collections,items,saved_at:Date.now(),user_email:email()}))}catch(_){}}
+async function load(force=false){
+  if(loading||!token()||(!force&&Date.now()-lastLoad<20000))return;
+  if(!navigator.onLine){applyCache(readCache());scheduleMount();return}
+  loading=true;
+  try{
+    const[cRes,iRes]=await Promise.all([
+      fetch(`${URL}/rest/v1/nh7_library_collections_public_v322?select=*&order=audience.asc,sort_order.asc`,{headers:headers(),cache:'no-store'}),
+      fetch(`${URL}/rest/v1/nh7_library_items_v224?select=id,collection_id,audience,resource_type&resource_type=eq.library`,{headers:headers(),cache:'no-store'})
+    ]);
+    if(!cRes.ok)throw new Error(await cRes.text());if(!iRes.ok)throw new Error(await iRes.text());
+    collections=await cRes.json();const items=await iRes.json();itemMap=new Map((Array.isArray(items)?items:[]).map(row=>[String(row.id),row]));lastLoad=Date.now();saveCache(Array.isArray(items)?items:[])
+  }catch(error){console.warn('Library collections',error);if(!applyCache(readCache())){collections=[];itemMap=new Map()}}
+  finally{loading=false;scheduleMount()}
+}
 function audience(){return sessionStorage.getItem('nh7_library_tab')==='ministers'?'ministers':'public'}
 function libraryRoot(){const tabs=document.querySelector('.library-user-tabs');if(!tabs)return null;return tabs.closest('section,.card')||tabs.parentElement}
 function originalGrid(root){return root?.querySelector('.library-user-grid[data-nh7-original-library-grid]')||root?.querySelector('.library-user-grid')}
@@ -34,7 +51,7 @@ function scheduleMount(){clearTimeout(mountTimer);mountTimer=setTimeout(()=>{if(
 document.addEventListener('click',event=>{const open=event.target.closest?.('[data-nh7-open-collection]');if(open){event.preventDefault();event.stopPropagation();selectedCollection=open.dataset.nh7OpenCollection||'';showCollection(libraryRoot(),selectedCollection,true);return}if(event.target.closest?.('[data-nh7-collections-back]')){event.preventDefault();event.stopPropagation();selectedCollection='';renderHub(libraryRoot(),true)}},true);
 const observer=new MutationObserver(scheduleMount);observer.observe(document.documentElement,{childList:true,subtree:true});
 window.addEventListener('storage',event=>{if(event.key==='nh7_lang'){lastLoad=0;scheduleMount()}});
-setInterval(()=>{if(libraryRoot()){load(false);scheduleMount()}},6000);
+setInterval(()=>{if(navigator.onLine&&libraryRoot()){load(false);scheduleMount()}},6000);
 setTimeout(()=>load(true),900);
 window.NH7_LIBRARY_COLLECTIONS_VERSION=VERSION;
 })();
