@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate stable 2.3.9.29 route and offline fixes
+      - name: Validate stable 2.3.9.30 audio route stability
         run: |
           node --check service-worker.js
           node --check sw-offline-v329.js
@@ -27,6 +27,7 @@ jobs:
           node --check js/nh7-offline-startup-v327.js
           node --check js/nh7-offline-core-v327.js
           node --check js/nh7-offline-data-v329.js
+          node --check js/nh7-audio-route-stability-v330.js
           node --check js/nh7-ui-stability-v329.js
           node --check js/nh7-auto-update-v325.js
           node --check js/nh7-access-bootstrap-v230.js
@@ -35,15 +36,17 @@ jobs:
           grep -q "v2.3.9.29-offline-routes" sw-offline-v329.js
           grep -q "self.registration.scope" sw-offline-path-fix-v329.js
           grep -q "sw-offline-path-fix-v329.js" service-worker.js
-          grep -q "3.2.9-offline-data" js/nh7-offline-data-v329.js
+          grep -q "3.3.0-offline-data" js/nh7-offline-data-v329.js
+          grep -q "3.3.0-audio-route-stability" js/nh7-audio-route-stability-v330.js
           grep -q "3.2.9-ui-stability" js/nh7-ui-stability-v329.js
-          grep -q "3.2.9" js/nh7-auto-update-v325.js
-          grep -q "3.2.9-offline-core" js/nh7-offline-core-v327.js
+          grep -q "3.3.0" js/nh7-auto-update-v325.js
+          grep -q "3.3.0-offline-core" js/nh7-offline-core-v327.js
+          grep -q "nh7-audio-route-stability-v330.js" index.html
           grep -q "service-worker.js" index.html
           grep -q "service-worker.js" app-v239.html
           grep -q "service-worker.js" js/nh7-auto-update-v325.js
           grep -q '"start_url": "./app-v239.html"' manifest.json
-          grep -q "2.3.9.29" version.json
+          grep -q "2.3.9.30" version.json
           grep -q "3.2.7-offline-startup" js/nh7-offline-startup-v327.js
           grep -q "3.2.7-offline-access" js/nh7-access-bootstrap-v230.js
           grep -q "3.2.7-library-reader-offline" js/nh7-library-language-v321.js
@@ -79,6 +82,7 @@ jobs:
           test -f js/nh7-offline-startup-v327.js
           test -f js/nh7-offline-core-v327.js
           test -f js/nh7-offline-data-v329.js
+          test -f js/nh7-audio-route-stability-v330.js
           test -f js/nh7-ui-stability-v329.js
           test -f js/nh7-auto-update-v325.js
           test -f js/nh7-offline-playback-bridge-v326.js
