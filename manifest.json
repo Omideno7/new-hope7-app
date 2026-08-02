@@ -2,7 +2,7 @@
   "id": "./new-hope7-app-v239",
   "name": "New Hope 7",
   "short_name": "OmideNo7",
-  "description": "New Hope 7 Church app v2.3.9.29 with stable More navigation, complete offline data, persistent media, and all 30 gratitude days.",
+  "description": "New Hope 7 Church app v2.3.9.30 with a non-blocking audio catalogue, stable offline data, and persistent downloaded media.",
   "start_url": "./app-v239.html",
   "scope": "./",
   "display": "standalone",
