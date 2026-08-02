@@ -1,9 +1,12 @@
-/* New Hope 7 v3.2.9 — persistent offline data for Bible, daily content and cached catalogues */
+/* New Hope 7 v3.3.0 — persistent offline data without repeated startup downloads */
 (()=>{'use strict';
-const VERSION='3.2.9-offline-data';
+const VERSION='3.3.0-offline-data';
+const BUILD='2.3.9.30';
 const CACHE='nh7-data-stable-v329';
 const SESSION='nh7_user_session_v170';
+const READY_KEY='nh7_offline_data_ready';
 const originalFetch=window.fetch.bind(window);
+let running=false;
 const CRITICAL=[
   'data/app/opening_messages_365.json','data/church/church_config.json','data/church/about.json',
   'data/daily/daily_word_365.json','data/daily/faith_proclamations_365.json','data/daily/daily_juice_365.json',
@@ -12,6 +15,8 @@ const CRITICAL=[
   'data/bible/plans/reading_plans_1yr_2yr.json','data/bible/groups/bible_group_01_18.json',
   'data/bible/groups/bible_group_19_39.json','data/bible/groups/bible_group_40_66.json'
 ];
+function parse(value,fallback=null){try{return JSON.parse(value||'')??fallback}catch(_){return fallback}}
+function ready(){const row=parse(localStorage.getItem(READY_KEY),{});return row?.build===BUILD&&Number(row?.saved||0)>=CRITICAL.length}
 function account(){try{return String(JSON.parse(localStorage.getItem(SESSION)||'null')?.user?.email||'guest').trim().toLowerCase()}catch(_){return'guest'}}
 function hash(value){let h=2166136261;for(let i=0;i<String(value).length;i++){h^=String(value).charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(16)}
 function urlOf(input){try{return new URL(typeof input==='string'?input:input instanceof URL?input.href:input?.url||'',location.href)}catch(_){return null}}
@@ -21,16 +26,12 @@ function remoteCatalogue(url){return url?.hostname.endsWith('supabase.co')&&url.
 function localKey(url){return new Request(url.origin+url.pathname,{method:'GET'})}
 function remoteKey(url){const identity=account()+'|'+url.origin+url.pathname+'?'+url.searchParams.toString();return new Request(new URL(`__nh7_api_cache_v329__/${hash(identity)}`,location.href).href,{method:'GET'})}
 async function hit(key){try{return await (await caches.open(CACHE)).match(key)}catch(_){return null}}
-async function store(key,response){if(!response?.ok)return;try{await (await caches.open(CACHE)).put(key,response.clone())}catch(error){console.warn('NH7 data cache store',error)}}
+async function store(key,response){if(!response?.ok)return;try{await (await caches.open(CACHE)).put(key,response.clone())}catch(error){console.warn('NH7 data cache save',error)}}
 async function cachedFetch(input,init,url,key){
   const saved=await hit(key);
   if(!navigator.onLine&&saved)return saved.clone();
-  try{
-    const response=await originalFetch(input,init);
-    if(response?.ok)await store(key,response);
-    else if(saved)return saved.clone();
-    return response;
-  }catch(error){if(saved)return saved.clone();throw error}
+  try{const response=await originalFetch(input,init);if(response?.ok)await store(key,response);else if(saved)return saved.clone();return response}
+  catch(error){if(saved)return saved.clone();throw error}
 }
 window.fetch=async function nh7OfflineDataFetch(input,init={}){
   const url=urlOf(input),method=methodOf(input,init);
@@ -38,20 +39,21 @@ window.fetch=async function nh7OfflineDataFetch(input,init={}){
   if(method==='GET'&&remoteCatalogue(url))return cachedFetch(input,init,url,remoteKey(url));
   return originalFetch(input,init);
 };
-async function prefetch(){
-  if(!navigator.onLine||!('caches'in window))return;
-  const cache=await caches.open(CACHE);
-  let saved=0;
-  for(const path of CRITICAL){
-    try{
-      const url=new URL(path,location.href),response=await originalFetch(url.href,{cache:'no-store'});
-      if(response.ok){await cache.put(localKey(url),response.clone());saved++}
-    }catch(_){ }
-  }
-  localStorage.setItem('nh7_offline_data_ready',JSON.stringify({version:VERSION,saved,at:new Date().toISOString()}));
+async function fetchAndStore(path,cache){
+  try{const url=new URL(path,location.href),response=await originalFetch(url.href,{cache:'no-store'});if(!response.ok)return 0;await cache.put(localKey(url),response.clone());return 1}catch(_){return 0}
 }
-window.addEventListener('online',()=>setTimeout(prefetch,700));
-window.addEventListener('pageshow',()=>setTimeout(prefetch,1300));
-setTimeout(prefetch,1800);
+async function prefetch(force=false){
+  if(running||!navigator.onLine||(!force&&ready())||!('caches'in window))return;
+  running=true;
+  try{
+    const cache=await caches.open(CACHE);let saved=0;
+    for(let i=0;i<CRITICAL.length;i+=3){const batch=CRITICAL.slice(i,i+3);const results=await Promise.all(batch.map(path=>fetchAndStore(path,cache)));saved+=results.reduce((sum,n)=>sum+n,0)}
+    localStorage.setItem(READY_KEY,JSON.stringify({version:VERSION,build:BUILD,saved,at:new Date().toISOString()}));
+  }finally{running=false}
+}
+window.addEventListener('online',()=>{if(!ready())setTimeout(()=>prefetch(false),3500)});
+window.addEventListener('pageshow',()=>{if(!ready())setTimeout(()=>prefetch(false),9000)});
+setTimeout(()=>{if(!ready())prefetch(false)},12000);
 window.NH7_OFFLINE_DATA_VERSION=VERSION;
+window.NH7_PREPARE_OFFLINE_DATA=()=>prefetch(true);
 })();
