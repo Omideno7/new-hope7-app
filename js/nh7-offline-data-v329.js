@@ -39,21 +39,16 @@ window.fetch=async function nh7OfflineDataFetch(input,init={}){
   if(method==='GET'&&remoteCatalogue(url))return cachedFetch(input,init,url,remoteKey(url));
   return originalFetch(input,init);
 };
-async function fetchAndStore(path,cache){
-  try{const url=new URL(path,location.href),response=await originalFetch(url.href,{cache:'no-store'});if(!response.ok)return 0;await cache.put(localKey(url),response.clone());return 1}catch(_){return 0}
-}
+async function fetchAndStore(path,cache){try{const url=new URL(path,location.href),response=await originalFetch(url.href,{cache:'no-store'});if(!response.ok)return 0;await cache.put(localKey(url),response.clone());return 1}catch(_){return 0}}
 async function prefetch(force=false){
   if(running||!navigator.onLine||(!force&&ready())||!('caches'in window))return;
   running=true;
-  try{
-    const cache=await caches.open(CACHE);let saved=0;
-    for(let i=0;i<CRITICAL.length;i+=3){const batch=CRITICAL.slice(i,i+3);const results=await Promise.all(batch.map(path=>fetchAndStore(path,cache)));saved+=results.reduce((sum,n)=>sum+n,0)}
-    localStorage.setItem(READY_KEY,JSON.stringify({version:VERSION,build:BUILD,saved,at:new Date().toISOString()}));
-  }finally{running=false}
+  try{const cache=await caches.open(CACHE);let saved=0;for(let i=0;i<CRITICAL.length;i+=3){const batch=CRITICAL.slice(i,i+3);const results=await Promise.all(batch.map(path=>fetchAndStore(path,cache)));saved+=results.reduce((sum,n)=>sum+n,0)}localStorage.setItem(READY_KEY,JSON.stringify({version:VERSION,build:BUILD,saved,at:new Date().toISOString()}))}
+  finally{running=false}
 }
-window.addEventListener('online',()=>{if(!ready())setTimeout(()=>prefetch(false),3500)});
-window.addEventListener('pageshow',()=>{if(!ready())setTimeout(()=>prefetch(false),9000)});
-setTimeout(()=>{if(!ready())prefetch(false)},12000);
+window.addEventListener('online',()=>{if(!ready())setTimeout(()=>prefetch(false),20000)});
+window.addEventListener('pageshow',()=>{if(!ready())setTimeout(()=>prefetch(false),40000)});
+setTimeout(()=>{if(!ready())prefetch(false)},45000);
 window.NH7_OFFLINE_DATA_VERSION=VERSION;
 window.NH7_PREPARE_OFFLINE_DATA=()=>prefetch(true);
 })();
