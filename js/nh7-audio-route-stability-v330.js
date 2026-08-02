@@ -12,7 +12,16 @@ function session(){return parse(localStorage.getItem(SESSION_KEY),null)}
 function email(){return String(session()?.user?.email||localStorage.getItem('nh7_manual_email')||'').trim().toLowerCase()}
 function signedIn(){return localStorage.getItem(LOGOUT_KEY)!=='1'&&!!session()?.access_token}
 function schoolAccess(){return parse(localStorage.getItem('nh7_school_access'),{})||{}}
-function locallyApproved(){const row=schoolAccess(),status=String(row.status||'').toLowerCase();return signedIn()&&(status==='approved'||row.approved===true||String(row.approvedBy||'').toLowerCase()==='admin')}
+function locallyApproved(){
+  if(!signedIn())return false;
+  const row=schoolAccess(),status=String(row.status||'').toLowerCase();
+  if(status==='approved'||row.approved===true||String(row.approvedBy||'').toLowerCase()==='admin')return true;
+  const current=email();
+  const candidates=[];
+  try{candidates.push(parse(sessionStorage.getItem('nh7_content_access_status_v230'),null))}catch(_){}
+  for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(key?.startsWith('nh7_content_access_offline_'))candidates.push(parse(localStorage.getItem(key),null))}
+  return candidates.some(value=>value?.approved===true&&(!value.user_email||!current||String(value.user_email).toLowerCase()===current));
+}
 function urlOf(input){try{return new URL(typeof input==='string'?input:input instanceof URL?input.href:input?.url||'',location.href)}catch(_){return null}}
 function methodOf(input,init){return String(init?.method||(input instanceof Request?input.method:'GET')||'GET').toUpperCase()}
 function bodyOf(input,init){if(typeof init?.body==='string')return init.body;if(input instanceof Request&&typeof input._bodyInit==='string')return input._bodyInit;return''}
@@ -52,7 +61,10 @@ window.fetch=async function nh7AudioStableFetch(input,init={}){
   }
   if(isContentEdge(url,method)){
     const payload=jsonBody(input,init),action=String(payload.action||'');
-    if(action==='status'&&locallyApproved())return statusResponse();
+    if(action==='status'){
+      if(locallyApproved())return statusResponse();
+      try{return await timeoutFetch(input,init,6000)}catch(error){return response({authenticated:signedIn(),approved:false,reason:'access_check_timeout'},503)}
+    }
     if(action==='catalog'&&String(payload.resource||'')==='sermons'){
       const identity=JSON.stringify({resource:'sermons',query:payload.query||'',language:payload.language||'',email:email()});
       const key=cacheKey('sermons',identity),hit=await cached(key);
