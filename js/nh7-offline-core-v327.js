@@ -14,10 +14,10 @@ async function prepare(force=false){
   catch(error){console.warn('Offline core preparation',error);return null}
   finally{running=false}
 }
-window.addEventListener('online',()=>{if(!ready())setTimeout(()=>prepare(false),6000)});
-window.addEventListener('pageshow',()=>{if(!ready())setTimeout(()=>prepare(false),14000)});
-navigator.serviceWorker?.addEventListener?.('controllerchange',()=>{if(!ready())setTimeout(()=>prepare(false),9000)});
-setTimeout(()=>{if(!ready())prepare(false)},16000);
+window.addEventListener('online',()=>{if(!ready())setTimeout(()=>prepare(false),30000)});
+window.addEventListener('pageshow',()=>{if(!ready())setTimeout(()=>prepare(false),60000)});
+navigator.serviceWorker?.addEventListener?.('controllerchange',()=>{if(!ready())setTimeout(()=>prepare(false),45000)});
+setTimeout(()=>{if(!ready())prepare(false)},65000);
 window.NH7_OFFLINE_CORE_VERSION=VERSION;
 window.NH7_PREPARE_OFFLINE_CORE=()=>prepare(true);
 })();
