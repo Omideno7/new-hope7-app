@@ -54,7 +54,7 @@ async function staleWhileRefresh(key,input,init,emptyFallback){
 }
 window.fetch=async function nh7AudioStableFetch(input,init={}){
   const url=urlOf(input),method=methodOf(input,init);
-  if(locallyApproved()&&isRegistrationRpc(url))return registrationResponse();
+  if(locallyApproved()&&isRegistrationRpc(url)){const payload=jsonBody(input,init);if(String(payload.p_type||'school').toLowerCase()==='school')return registrationResponse()}
   if(isCategoryGet(url,method)){
     const key=cacheKey('categories',url.pathname+'?'+url.searchParams.toString());
     return staleWhileRefresh(key,input,init,[]);
