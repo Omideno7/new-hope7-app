@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate stable 2.3.9.30 audio route stability
+      - name: Validate stable 2.3.9.31 school registration and admin requests
         run: |
           node --check service-worker.js
           node --check sw-offline-v329.js
@@ -28,6 +28,7 @@ jobs:
           node --check js/nh7-offline-core-v327.js
           node --check js/nh7-offline-data-v329.js
           node --check js/nh7-audio-route-stability-v330.js
+          node --check js/nh7-school-registration-v331.js
           node --check js/nh7-ui-stability-v329.js
           node --check js/nh7-auto-update-v325.js
           node --check js/nh7-access-bootstrap-v230.js
@@ -38,15 +39,17 @@ jobs:
           grep -q "sw-offline-path-fix-v329.js" service-worker.js
           grep -q "3.3.0-offline-data" js/nh7-offline-data-v329.js
           grep -q "3.3.0-audio-route-stability" js/nh7-audio-route-stability-v330.js
+          grep -q "3.3.1-school-registration" js/nh7-school-registration-v331.js
           grep -q "3.2.9-ui-stability" js/nh7-ui-stability-v329.js
-          grep -q "3.3.0" js/nh7-auto-update-v325.js
+          grep -q "3.3.1" js/nh7-auto-update-v325.js
           grep -q "3.3.0-offline-core" js/nh7-offline-core-v327.js
           grep -q "nh7-audio-route-stability-v330.js" index.html
+          grep -q "nh7-school-registration-v331.js" index.html
           grep -q "service-worker.js" index.html
           grep -q "service-worker.js" app-v239.html
           grep -q "service-worker.js" js/nh7-auto-update-v325.js
           grep -q '"start_url": "./app-v239.html"' manifest.json
-          grep -q "2.3.9.30" version.json
+          grep -q "2.3.9.31" version.json
           grep -q "3.2.7-offline-startup" js/nh7-offline-startup-v327.js
           grep -q "3.2.7-offline-access" js/nh7-access-bootstrap-v230.js
           grep -q "3.2.7-library-reader-offline" js/nh7-library-language-v321.js
@@ -71,6 +74,9 @@ jobs:
           node --check js/admin-v2.3.9-student-state-fix-v316.js
           node --check js/admin-v2.3.9-ui-documents-final-v316.js
           node --check js/admin-v2.3.9-fix12-bootstrap.js
+          node --check js/admin-v2.3.9-registration-requests-v331.js
+          grep -q "3.3.1-registration-requests" js/admin-v2.3.9-registration-requests-v331.js
+          grep -q "admin-v2.3.9-registration-requests-v331.js" admin-v239-stable.html
           test -f admin.html
           test -f admin-v239.html
           test -f admin-v239-stable.html
@@ -83,9 +89,11 @@ jobs:
           test -f js/nh7-offline-core-v327.js
           test -f js/nh7-offline-data-v329.js
           test -f js/nh7-audio-route-stability-v330.js
+          test -f js/nh7-school-registration-v331.js
           test -f js/nh7-ui-stability-v329.js
           test -f js/nh7-auto-update-v325.js
           test -f js/nh7-offline-playback-bridge-v326.js
+          test -f js/admin-v2.3.9-registration-requests-v331.js
           test -f css/admin-v2.3.9-clean-scroll-v300.css
           test -f css/admin-v2.3.9-clean-features-v311.css
           test -f css/admin-v2.3.9-final-stable-v316.css
