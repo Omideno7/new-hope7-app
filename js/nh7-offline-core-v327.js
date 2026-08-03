@@ -1,7 +1,7 @@
-/* New Hope 7 v3.3.0 — one-time background preparation of the offline app shell */
+/* New Hope 7 v3.3.1 — one-time background preparation of the offline app shell */
 (()=>{'use strict';
-const VERSION='3.3.0-offline-core';
-const BUILD='2.3.9.30';
+const VERSION='3.3.1-offline-core';
+const BUILD='2.3.9.31';
 const READY_KEY='nh7_offline_core_ready';
 let running=false;
 function parse(value,fallback=null){try{return JSON.parse(value||'')??fallback}catch(_){return fallback}}
