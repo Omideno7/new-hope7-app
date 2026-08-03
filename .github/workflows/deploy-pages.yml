@@ -42,7 +42,7 @@ jobs:
           grep -q "3.3.1-school-registration" js/nh7-school-registration-v331.js
           grep -q "3.2.9-ui-stability" js/nh7-ui-stability-v329.js
           grep -q "3.3.1" js/nh7-auto-update-v325.js
-          grep -q "3.3.0-offline-core" js/nh7-offline-core-v327.js
+          grep -q "3.3.1-offline-core" js/nh7-offline-core-v327.js
           grep -q "nh7-audio-route-stability-v330.js" index.html
           grep -q "nh7-school-registration-v331.js" index.html
           grep -q "service-worker.js" index.html
