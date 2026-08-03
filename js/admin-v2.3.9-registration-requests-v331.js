@@ -1,92 +1,49 @@
-/* New Hope 7 Admin v3.3.1 — pending request badge, pending-first view and jump-free deletion */
+/* New Hope 7 Admin v3.3.1 — accurate pending queue, live badge and no-jump actions */
 (()=>{'use strict';
 const VERSION='3.3.1-registration-requests';
 if(typeof state!=='object'||!state||typeof render!=='function')return;
 const L=(fa,en,hr)=>typeof lang!=='undefined'&&lang==='fa'?fa:typeof lang!=='undefined'&&lang==='hr'?hr:en;
+const E=value=>typeof h==='function'?h(value):String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const EMAIL=value=>String(value||'').trim().toLowerCase();
-const TYPE=row=>String(typeof getType==='function'?getType(row):row?.type||'registration').trim().toLowerCase();
-const EMAIL_OF=row=>EMAIL(typeof getEmail==='function'?getEmail(row):(row?.payload?.email||row?.email||row?.user_email||''));
-const STATUS=row=>String(typeof getEffectiveStatus==='function'?getEffectiveStatus(row):row?.status||'pending').trim().toLowerCase();
-const PENDING=row=>typeof isEffectivePending==='function'?isEffectivePending(row):!['approved','rejected','denied','blocked','archived'].includes(STATUS(row));
+const payload=row=>{if(row?.payload&&typeof row.payload==='object')return row.payload;try{return JSON.parse(row?.payload||'{}')||{}}catch(_){return{}}};
+const TYPE=row=>String(row?.type||payload(row).kind||'registration').trim().toLowerCase();
+const EMAIL_OF=row=>EMAIL(payload(row).email||payload(row).user_email||row?.email||row?.user_email||'');
+const STATUS=row=>String(row?.status||'pending').trim().toLowerCase();
 const APPROVED=row=>STATUS(row)==='approved';
-const DATE=row=>new Date(row?.updated_at||row?.created_at||row?.payload?.submittedAt||0).getTime()||0;
-let installed=false;
+const REJECTED=row=>['rejected','denied','blocked'].includes(STATUS(row));
+const PENDING=row=>!APPROVED(row)&&!REJECTED(row)&&STATUS(row)!=='archived';
+const DATE=row=>new Date(row?.updated_at||row?.created_at||payload(row).submittedAt||0).getTime()||0;
+let refreshing=false;
 function rows(){return Array.isArray(state.registrations)?state.registrations:[]}
 function pendingRows(){return rows().filter(PENDING)}
-function requestKey(row){const email=EMAIL_OF(row);return email?TYPE(row)+'|'+email:''}
-function bestRow(group){return group.slice().sort((a,b)=>Number(APPROVED(b))-Number(APPROVED(a))||DATE(b)-DATE(a))[0]||null}
-function duplicatesFor(email='',type=''){
-  const targetEmail=EMAIL(email),targetType=String(type||'').trim().toLowerCase(),groups=new Map();
-  for(const row of rows()){
-    const key=requestKey(row);if(!key)continue;
-    if(targetEmail&&EMAIL_OF(row)!==targetEmail)continue;
-    if(targetType&&TYPE(row)!==targetType)continue;
-    if(!groups.has(key))groups.set(key,[]);groups.get(key).push(row);
-  }
-  const remove=[];
-  for(const group of groups.values()){
-    if(group.length<2)continue;const keep=bestRow(group);
-    group.forEach(row=>{if(row!==keep)remove.push(row)});
-  }
-  return remove;
-}
-function restoreScroll(y){requestAnimationFrame(()=>requestAnimationFrame(()=>window.scrollTo({top:Math.max(0,y),behavior:'auto'})))}
+function requestKey(row){const email=EMAIL_OF(row);return email?TYPE(row)+'|'+email:'id:'+String(row?.id||'')}
+function restoreScroll(y){requestAnimationFrame(()=>requestAnimationFrame(()=>window.scrollTo({top:Math.max(0,y),left:0,behavior:'auto'})))}
 function renderAt(y=window.scrollY){render();restoreScroll(y)}
-function style(){
-  if(document.getElementById('nh7RegistrationRequestsStyleV331'))return;
-  const element=document.createElement('style');element.id='nh7RegistrationRequestsStyleV331';
-  element.textContent=`.nh7-request-summary-v331{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0 12px;padding:11px 13px;border:1px solid #fed7aa;border-radius:15px;background:#fff7ed;color:#9a3412}.nh7-request-summary-v331 b{font-size:1.15rem}.nh7-request-deleting-v331{opacity:.45;pointer-events:none;transform:scale(.985);transition:.16s ease}.nh7-request-tab-alert-v331{box-shadow:0 0 0 3px rgba(225,29,72,.12)}`;
-  document.head.appendChild(element);
-}
-function requestTab(){return [...document.querySelectorAll('.tab')].find(button=>/setTab\((?:&quot;|["'])requests/.test(button.getAttribute('onclick')||''))||null}
-function decorate(){
-  style();const count=pendingRows().length,tab=requestTab();
-  if(tab){let badge=tab.querySelector('.badge');if(count){if(!badge){badge=document.createElement('span');badge.className='badge';tab.appendChild(badge)}badge.textContent=String(count);tab.classList.add('nh7-request-tab-alert-v331')}else{badge?.remove();tab.classList.remove('nh7-request-tab-alert-v331')}}
+function style(){if(document.getElementById('nh7RegistrationRequestsStyleV331'))return;const element=document.createElement('style');element.id='nh7RegistrationRequestsStyleV331';element.textContent=`.nh7-request-summary-v331{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:8px 0 12px}.nh7-request-summary-v331>div{padding:11px 13px;border:1px solid #d8ecea;border-radius:15px;background:#f8fcfc;text-align:center}.nh7-request-summary-v331 b{display:block;font-size:1.2rem}.nh7-request-summary-v331 span{font-size:.78rem;color:#667085}.nh7-request-deleting-v331{opacity:.4;pointer-events:none;transition:.16s ease}.nh7-request-tab-alert-v331{box-shadow:0 0 0 3px rgba(225,29,72,.12)}@media(max-width:560px){.nh7-request-summary-v331{grid-template-columns:1fr 1fr}.nh7-request-summary-v331>div:first-child{grid-column:1/-1}}`;document.head.appendChild(element)}
+function requestTab(){return [...document.querySelectorAll('.tab')].find(button=>String(button.getAttribute('onclick')||'').includes('requests'))||null}
+function decorate(){style();const count=pendingRows().length,tab=requestTab();if(tab){let badge=tab.querySelector('.badge');if(count){if(!badge){badge=document.createElement('span');badge.className='badge';tab.appendChild(badge)}badge.textContent=String(count);tab.classList.add('nh7-request-tab-alert-v331')}else{badge?.remove();tab.classList.remove('nh7-request-tab-alert-v331')}}}
+function dedupeLocal(list){const groups=new Map();for(const row of list){const key=requestKey(row);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(row)}const keep=[],remove=[];for(const group of groups.values()){group.sort((a,b)=>Number(APPROVED(b))-Number(APPROVED(a))||DATE(b)-DATE(a));keep.push(group[0]);remove.push(...group.slice(1))}return{keep,remove}}
+async function refreshRegistrations(renderChanged=true){if(refreshing||document.hidden||typeof token==='undefined'||!token||typeof authFetch!=='function')return;refreshing=true;try{const before=rows().map(row=>String(row.id)+'|'+STATUS(row)).join(','),fresh=await authFetch('/rest/v1/registrations?select=*&order=created_at.desc&limit=2000',{method:'GET'});if(!Array.isArray(fresh))return;state.registrations=fresh;const after=fresh.map(row=>String(row.id)+'|'+STATUS(row)).join(',');decorate();if(renderChanged&&before!==after&&typeof activeTab!=='undefined'&&['requests','approved','overview'].includes(activeTab))renderAt()}catch(error){console.warn('Registration refresh',error)}finally{refreshing=false}}
+if(typeof getEffectiveStatus==='function')getEffectiveStatus=window.getEffectiveStatus=row=>STATUS(row);
+if(typeof isEffectivePending==='function')isEffectivePending=window.isEffectivePending=PENDING;
+if(typeof isEffectiveApproved==='function')isEffectiveApproved=window.isEffectiveApproved=APPROVED;
+if(typeof counts==='function'){
+  const originalCounts=counts;
+  counts=window.counts=function(){const value=originalCounts();value.pending=pendingRows().length;return value};
 }
 if(typeof renderRequests==='function'){
   const originalRenderRequests=renderRequests;
-  renderRequests=window.renderRequests=function(approvedOnly=false){
-    let html=originalRenderRequests(approvedOnly);
-    if(!approvedOnly){const count=pendingRows().length;html=html.replace('</h3>',`</h3><div class="nh7-request-summary-v331"><span>${L('درخواست‌های تازه و در انتظار تأیید','New requests awaiting approval','Novi zahtjevi koji čekaju odobrenje')}</span><b>${count}</b></div>`)}
-    return html;
-  };
+  renderRequests=window.renderRequests=function(approvedOnly=false){let html=originalRenderRequests(approvedOnly);if(!approvedOnly){const all=rows(),waiting=all.filter(PENDING).length,ok=all.filter(APPROVED).length,rejected=all.filter(REJECTED).length,summary=`<div class="nh7-request-summary-v331"><div><b>${waiting}</b><span>${E(L('در انتظار تأیید','Waiting approval','Čeka odobrenje'))}</span></div><div><b>${ok}</b><span>${E(L('تأییدشده','Approved','Odobreno'))}</span></div><div><b>${rejected}</b><span>${E(L('ردشده','Rejected','Odbijeno'))}</span></div></div>`;html=html.replace('<div class="toolbar">',summary+'<div class="toolbar">')}return html};
 }
 if(typeof setTab==='function'){
   const originalSetTab=setTab;
-  setTab=window.setTab=function(tab){
-    if(tab==='requests'&&typeof currentFilter!=='undefined'){currentFilter='pending';if(typeof currentSearch!=='undefined')currentSearch=''}
-    const result=originalSetTab.apply(this,arguments);requestAnimationFrame(decorate);return result;
-  };
+  setTab=window.setTab=function(tab){if(tab==='requests'&&typeof currentFilter!=='undefined'){currentFilter='pending';if(typeof currentSearch!=='undefined')currentSearch=''}const result=originalSetTab.apply(this,arguments);requestAnimationFrame(decorate);if(tab==='requests')setTimeout(()=>refreshRegistrations(true),100);return result};
 }
-const originalRender=render;
-render=window.render=function(){const result=originalRender.apply(this,arguments);requestAnimationFrame(decorate);return result};
-async function serverDelete(id){
-  try{return await adminRpc('nh7_admin_delete_registration',{p_id:id})}
-  catch(rpcError){console.warn('Registration delete RPC',rpcError);return authFetch('/rest/v1/registrations?id=eq.'+encodeURIComponent(id),{method:'DELETE'})}
-}
-deleteRequest=window.deleteRequest=async function(id){
-  if(!confirm(typeof tr==='function'?tr('confirmDelete'):L('این درخواست حذف شود؟','Delete this request?','Izbrisati zahtjev?')))return;
-  const before=rows().slice(),target=before.find(row=>String(row.id)===String(id));if(!target)return;
-  const y=window.scrollY,card=[...document.querySelectorAll('.request-card')].find(node=>node.querySelector(`[onclick*="${CSS.escape(String(id))}"]`));card?.classList.add('nh7-request-deleting-v331');
-  state.registrations=before.filter(row=>String(row.id)!==String(id));renderAt(y);
-  try{await serverDelete(id);if(typeof setMessage==='function')setMessage(typeof tr==='function'?tr('deletedMsg'):L('حذف شد','Deleted','Izbrisano'),'success')}
-  catch(error){state.registrations=before;renderAt(y);const message=error?.message||String(error);if(typeof setMessage==='function')setMessage(message,'danger');alert(message)}
-};
-cleanupRegistrationDuplicates=window.cleanupRegistrationDuplicates=async function(){
-  const remove=duplicatesFor();if(!remove.length){alert(L('درخواست تکراری وجود ندارد.','No duplicate requests were found.','Nema duplikata zahtjeva.'));return}
-  if(!confirm(L(`درخواست‌های تکراری اضافی حذف شوند؟ تعداد: ${remove.length}`,`Delete ${remove.length} duplicate request(s)?`,`Izbrisati ${remove.length} duplikata zahtjeva?`)))return;
-  const before=rows().slice(),ids=new Set(remove.map(row=>String(row.id))),y=window.scrollY;state.registrations=before.filter(row=>!ids.has(String(row.id)));renderAt(y);
-  try{await adminRpc('nh7_admin_cleanup_registration_duplicates',{p_email:null,p_type:null});if(typeof setMessage==='function')setMessage(L('درخواست‌های تکراری حذف شدند.','Duplicate requests were removed.','Duplikati su uklonjeni.'),'success')}
-  catch(error){state.registrations=before;renderAt(y);alert(error?.message||String(error))}
-};
-cleanupRegistrationDuplicatesFor=window.cleanupRegistrationDuplicatesFor=async function(email,type){
-  email=EMAIL(email);const remove=duplicatesFor(email,type);if(!remove.length){alert(L('برای این ایمیل درخواست تکراری وجود ندارد.','No duplicate request exists for this email.','Nema duplikata za ovaj email.'));return}
-  if(!confirm(L(`درخواست‌های تکراری این ایمیل حذف شوند؟ تعداد: ${remove.length}`,`Delete ${remove.length} duplicate request(s) for this email?`,`Izbrisati ${remove.length} duplikata za ovaj email?`)))return;
-  const before=rows().slice(),ids=new Set(remove.map(row=>String(row.id))),y=window.scrollY;state.registrations=before.filter(row=>!ids.has(String(row.id)));renderAt(y);
-  try{await adminRpc('nh7_admin_cleanup_registration_duplicates',{p_email:email,p_type:type||null});if(typeof setMessage==='function')setMessage(L('تکراری‌ها حذف شدند.','Duplicates removed.','Duplikati uklonjeni.'),'success')}
-  catch(error){state.registrations=before;renderAt(y);alert(error?.message||String(error))}
-};
-if(typeof activeTab!=='undefined'&&activeTab==='requests'&&typeof currentFilter!=='undefined')currentFilter='pending';
-window.addEventListener('pageshow',()=>requestAnimationFrame(decorate));document.addEventListener('visibilitychange',()=>{if(!document.hidden)requestAnimationFrame(decorate)});
-installed=true;style();requestAnimationFrame(decorate);window.NH7_ADMIN_REGISTRATION_REQUESTS_VERSION=VERSION;
+const originalRender=render;render=window.render=function(){const result=originalRender.apply(this,arguments);requestAnimationFrame(decorate);return result};
+async function serverDelete(id){try{return await adminRpc('nh7_admin_delete_registration',{p_id:id})}catch(rpcError){console.warn('Registration delete RPC',rpcError);return authFetch('/rest/v1/registrations?id=eq.'+encodeURIComponent(id),{method:'DELETE'})}}
+deleteRequest=window.deleteRequest=async function(id){if(!confirm(typeof tr==='function'?tr('confirmDelete'):L('این درخواست حذف شود؟','Delete this request?','Izbrisati zahtjev?')))return;const before=rows().slice(),target=before.find(row=>String(row.id)===String(id));if(!target)return;const y=window.scrollY;state.registrations=before.filter(row=>String(row.id)!==String(id));renderAt(y);try{await serverDelete(id);if(typeof setMessage==='function')setMessage(typeof tr==='function'?tr('deletedMsg'):L('حذف شد','Deleted','Izbrisano'),'success')}catch(error){state.registrations=before;renderAt(y);const message=error?.message||String(error);if(typeof setMessage==='function')setMessage(message,'danger');alert(message)}};
+updateStatus=window.updateStatus=async function(id,status){const before=rows().slice(),index=before.findIndex(row=>String(row.id)===String(id));if(index<0)return;const y=window.scrollY;state.registrations=before.map((row,i)=>i===index?Object.assign({},row,{status,updated_at:new Date().toISOString()}):row);renderAt(y);try{await authFetch('/rest/v1/registrations?id=eq.'+encodeURIComponent(id),{method:'PATCH',body:JSON.stringify({status,updated_at:new Date().toISOString()})});if(typeof setMessage==='function')setMessage(status==='approved'?(typeof tr==='function'?tr('approvedMsg'):'Approved'):(typeof tr==='function'?tr('rejectedMsg'):'Rejected'),'success')}catch(error){state.registrations=before;renderAt(y);alert(error?.message||String(error))}};
+cleanupRegistrationDuplicates=window.cleanupRegistrationDuplicates=async function(){const before=rows().slice(),local=dedupeLocal(before);if(!local.remove.length){alert(L('درخواست تکراری وجود ندارد.','No duplicate requests were found.','Nema duplikata zahtjeva.'));return}if(!confirm(L(`درخواست‌های تکراری اضافی حذف شوند؟ تعداد: ${local.remove.length}`,`Delete ${local.remove.length} duplicate request(s)?`,`Izbrisati ${local.remove.length} duplikata zahtjeva?`)))return;const y=window.scrollY;state.registrations=local.keep;renderAt(y);try{const count=Number(await adminRpc('nh7_admin_cleanup_registration_duplicates_v331',{p_type:'',p_email:''})||0);if(typeof setMessage==='function')setMessage(L(`درخواست‌های تکراری حذف شدند: ${Math.max(count,local.remove.length)}`,`Duplicate requests removed: ${Math.max(count,local.remove.length)}`,`Duplikati su uklonjeni: ${Math.max(count,local.remove.length)}`),'success')}catch(error){state.registrations=before;renderAt(y);alert(error?.message||String(error))}};
+cleanupRegistrationDuplicatesFor=window.cleanupRegistrationDuplicatesFor=async function(email,type){email=EMAIL(email);type=String(type||'').trim().toLowerCase();const before=rows().slice(),selected=before.filter(row=>EMAIL_OF(row)===email&&(!type||TYPE(row)===type)),local=dedupeLocal(selected);if(!local.remove.length){alert(L('برای این ایمیل درخواست تکراری وجود ندارد.','No duplicate request exists for this email.','Nema duplikata za ovaj email.'));return}const removeIds=new Set(local.remove.map(row=>String(row.id))),y=window.scrollY;state.registrations=before.filter(row=>!removeIds.has(String(row.id)));renderAt(y);try{await adminRpc('nh7_admin_cleanup_registration_duplicates_v331',{p_type:type,p_email:email})}catch(error){state.registrations=before;renderAt(y);alert(error?.message||String(error))}};
+if(typeof activeTab!=='undefined'&&activeTab==='requests'&&typeof currentFilter!=='undefined')currentFilter='pending';window.addEventListener('pageshow',()=>setTimeout(()=>refreshRegistrations(true),700));document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(()=>refreshRegistrations(true),350)});setInterval(()=>refreshRegistrations(true),60000);style();requestAnimationFrame(decorate);setTimeout(()=>refreshRegistrations(true),1100);window.NH7_ADMIN_REGISTRATION_REQUESTS_VERSION=VERSION;
 })();
