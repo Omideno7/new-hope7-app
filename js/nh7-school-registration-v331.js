@@ -41,13 +41,19 @@ async function submitRpc(data,accessToken=''){
   const rows=await request('/rest/v1/rpc/nh7_submit_registration_v3',{token:accessToken,body:{p_type:'school',p_email:data.email,p_device_id:deviceId(),p_language:language(),p_payload:payload}});
   return Array.isArray(rows)?rows[0]||{}:rows||{};
 }
+function openSchoolLogin(){
+  document.querySelector('.nh7-registration-confirm-v331')?.remove();
+  if(typeof navigate==='function'){navigate('school',{login:true},true);return}
+  const routeButton=document.querySelector('[data-route="school"]');
+  if(routeButton){routeButton.click();setTimeout(()=>document.querySelector('[data-go="school"][data-params*="login"]')?.click(),80);return}
+  location.hash='school';
+}
 function showConfirmation(message,status){
   document.querySelector('.nh7-registration-confirm-v331')?.remove();
   const modal=document.createElement('div');modal.className='nh7-registration-confirm-v331';modal.dir=language()==='fa'?'rtl':'ltr';
   modal.innerHTML=`<div><div class="icon">✅</div><h2>${E(status==='approved'?L('دسترسی شما تأیید است','Your access is approved','Vaš pristup je odobren'):L('درخواست ثبت شد','Request submitted','Zahtjev je poslan'))}</h2><p>${E(message)}</p><button type="button" class="primary-btn" data-nh7-school-return>${E(L('بازگشت به ورود مدرسه','Return to school login','Povratak na prijavu u školu'))}</button></div>`;
   document.body.appendChild(modal);
-  const go=()=>{modal.remove();const button=document.querySelector('[data-route="school"]');if(button)button.click();else location.hash='school'};
-  modal.querySelector('[data-nh7-school-return]').onclick=go;setTimeout(go,2200);
+  modal.querySelector('[data-nh7-school-return]').onclick=openSchoolLogin;setTimeout(openSchoolLogin,2400);
 }
 async function submitSchool(button){
   if(busy||button?.dataset.submitting==='1')return;
@@ -73,7 +79,7 @@ async function submitSchool(button){
   }catch(error){
     console.warn('School registration',error);const message=error.code==='existing_account'?error.message:L('ثبت درخواست کامل نشد. اتصال اینترنت و اطلاعات ورود را بررسی کرده و دوباره تلاش کنید.','The request was not completed. Check your connection and account details, then try again.','Zahtjev nije dovršen. Provjerite vezu i podatke računa.');
     setButton(button,status,false,message);alert(message);
-    if(error.code==='existing_account')setTimeout(()=>document.querySelector('[data-route="school"]')?.click(),300);
+    if(error.code==='existing_account')setTimeout(openSchoolLogin,350);
   }finally{busy=false;if(button)button.dataset.submitting='0'}
 }
 document.addEventListener('click',event=>{const button=event.target.closest?.('[data-submit-registration="school"]');if(!button)return;event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();submitSchool(button)},true);
