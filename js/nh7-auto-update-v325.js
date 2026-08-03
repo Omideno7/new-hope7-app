@@ -1,6 +1,6 @@
-/* New Hope 7 v3.3.0 — stable service-worker registration and safe updates */
+/* New Hope 7 v3.3.1 — stable service-worker registration and safe updates */
 (()=>{'use strict';
-const BUILD='2.3.9.30';
+const BUILD='2.3.9.31';
 const VERSION_URL='./version.json';
 const WORKER='./service-worker.js';
 const INSTALLED_KEY='nh7_current_app_build';
@@ -13,5 +13,5 @@ async function moveToLatest(remote){const latest=String(remote?.app||'').trim();
 async function boot(){try{const registration=await registerLatestWorker();if(!navigator.onLine)return registration;const remote=await fetchLatest();if(await moveToLatest(remote))return registration;localStorage.setItem(INSTALLED_KEY,BUILD);return registration}catch(error){console.warn('NH7 automatic update',error);return null}}
 let checking=false;async function check(){if(checking||!navigator.onLine)return;checking=true;try{const remote=await fetchLatest();if(await moveToLatest(remote))return;const registration=await navigator.serviceWorker?.getRegistration?.('./');await registration?.update?.();if(registration?.waiting)registration.waiting.postMessage({type:'SKIP_WAITING'});localStorage.setItem(INSTALLED_KEY,BUILD)}catch(_){}finally{checking=false}}
 if(navigator.serviceWorker){navigator.serviceWorker.addEventListener('controllerchange',()=>{const guard='nh7_controller_reloaded_'+BUILD;if(sessionStorage.getItem(guard)==='1')return;sessionStorage.setItem(guard,'1');location.reload()})}
-window.addEventListener('pageshow',()=>setTimeout(check,900));document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(check,650)});window.addEventListener('online',()=>setTimeout(()=>{boot();check()},500));boot();window.NH7_AUTO_UPDATE_VERSION='3.3.0';
+window.addEventListener('pageshow',()=>setTimeout(check,900));document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(check,650)});window.addEventListener('online',()=>setTimeout(()=>{boot();check()},500));boot();window.NH7_AUTO_UPDATE_VERSION='3.3.1';
 })();
