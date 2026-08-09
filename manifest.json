@@ -2,7 +2,7 @@
   "id": "./new-hope7-app-v239",
   "name": "New Hope 7",
   "short_name": "OmideNo7",
-  "description": "New Hope 7 Church app v2.3.9.31 with single-submit school registration, clear approval messaging, stable offline data, and persistent media.",
+  "description": "New Hope 7 Church app v2.3.9.32 with direct online audio streaming, persistent offline downloads, and stable school registration.",
   "start_url": "./app-v239.html",
   "scope": "./",
   "display": "standalone",
