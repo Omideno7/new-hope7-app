@@ -1,6 +1,6 @@
 try{importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js')}catch(error){console.warn('OneSignal SW unavailable',error)}
 
-const VERSION='v2.3.9.29-offline-routes';
+const VERSION='v2.3.9.34-school-hotfix';
 const CORE_CACHE='nh7-core-'+VERSION;
 const SHELL_CACHE='nh7-shell-stable';
 const DATA_CACHE='nh7-data-stable-v329';
