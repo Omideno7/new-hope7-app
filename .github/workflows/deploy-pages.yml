@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -19,6 +19,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Repair offline worker syntax for push registration
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('sw-offline-v329.js')
+          s = p.read_text(encoding='utf-8')
+          old_import = "try{importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js')}catch(error){console.warn('OneSignal SW unavailable',error)}\n\n"
+          s = s.replace(old_import, '', 1)
+          old_tail = "catch(error){reply({ok:false,error:error?.message||String(error)})})())});"
+          new_tail = "catch(error){reply({ok:false,error:error?.message||String(error)})}})())});"
+          if old_tail in s:
+              s = s.replace(old_tail, new_tail, 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+          node --check sw-offline-v329.js
+          if ! git diff --quiet -- sw-offline-v329.js; then
+            git config user.name "New Hope 7 CI"
+            git config user.email "actions@github.com"
+            git add sw-offline-v329.js
+            git commit -m "Fix offline worker syntax for push registration"
+            git push origin HEAD:main
+          fi
+
       - name: Validate current New Hope 7 production shell
         run: |
           node --check service-worker.js
@@ -62,6 +88,7 @@ jobs:
           node --check js/admin-v2.3.9-notifications-zagreb-v333.js
           grep -q "2.3.9.35b" service-worker.js
           grep -q "OneSignalSDK.sw.js" push/OneSignalSDKWorker.js
+          ! grep -q "OneSignalSDK.sw.js" sw-offline-v329.js
           grep -q "NH7_ONESIGNAL_WORKER" index.html
           grep -q "push/OneSignalSDKWorker.js" index.html
           grep -q "nh7-notifications-zagreb-v333.js?v=2.3.9.35d" index.html
