@@ -28,6 +28,7 @@ async function cacheCore(){
 async function shellResponse(){const shell=await caches.open(SHELL_CACHE);return await shell.match(canonicalRequest(SHELL_URL))||await caches.match(SHELL_URL,{ignoreSearch:true})||await caches.match(APP_URL,{ignoreSearch:true})}
 function scopeRelative(url){const scope=new URL(self.registration.scope).pathname;return url.pathname.startsWith(scope)?url.pathname.slice(scope.length):url.pathname}
 function appNavigation(url){const rel=scopeRelative(url);return rel===''||rel==='index.html'||rel==='app-v239.html'}
+function adminRequest(url){const rel=scopeRelative(url);return rel==='admin.html'||rel==='admin-v239.html'||rel==='admin-v239-stable.html'||rel==='admin-refresh.html'||rel==='admin-manifest.json'||rel==='certificate-v239.html'||rel.startsWith('js/admin-')||rel.startsWith('css/admin-')}
 function isData(url){return url.pathname.includes('/data/')||url.pathname.endsWith('.json')}
 function isStatic(url){return /\.(?:js|css|png|jpe?g|webp|svg|ico|woff2?|ttf)$/i.test(url.pathname)}
 function responseType(url){if(url.pathname.endsWith('.json'))return'application/json; charset=utf-8';if(url.pathname.endsWith('.js'))return'application/javascript; charset=utf-8';if(url.pathname.endsWith('.css'))return'text/css; charset=utf-8';return'text/plain; charset=utf-8'}
@@ -50,11 +51,13 @@ self.addEventListener('activate',event=>event.waitUntil((async()=>{const keep=ne
 self.addEventListener('fetch',event=>{
   const request=event.request;if(request.method!=='GET')return;const url=new URL(request.url);
   if(request.mode==='navigate'&&url.origin===self.location.origin){
+    if(adminRequest(url)){event.respondWith((async()=>await updateCache(request,CORE_CACHE)||await caches.match(request,{ignoreSearch:true})||await caches.match(OFFLINE_URL,{ignoreSearch:true}))());return}
     if(appNavigation(url))event.respondWith((async()=>{const cached=await shellResponse();if(cached){event.waitUntil(updateCache(SHELL_URL,CORE_CACHE).then(async response=>{if(response)await (await caches.open(SHELL_CACHE)).put(canonicalRequest(SHELL_URL),response.clone())}));return cached}return await updateCache(SHELL_URL,CORE_CACHE)||await caches.match(OFFLINE_URL,{ignoreSearch:true})})());
     else event.respondWith((async()=>await caches.match(request,{ignoreSearch:true})||await updateCache(request,CORE_CACHE)||await caches.match(OFFLINE_URL,{ignoreSearch:true}))());
     return;
   }
   if(protectedMedia(url)){event.respondWith((async()=>{const local=await storedMedia(request.url);if(local)return rangeResponse(local,request);try{return await fetch(request,{cache:'no-store'})}catch(_){return new Response('',{status:503})}})());return}
+  if(url.origin===self.location.origin&&adminRequest(url)){event.respondWith((async()=>await updateCache(request,CORE_CACHE)||await caches.match(request,{ignoreSearch:true})||unavailable(url))());return}
   if(url.origin===self.location.origin&&(isData(url)||isStatic(url))){
     const cacheName=isData(url)?DATA_CACHE:CORE_CACHE;
     event.respondWith((async()=>{const cache=await caches.open(cacheName),key=canonicalRequest(request),cached=await cache.match(key)||await caches.match(request,{ignoreSearch:true});if(cached){event.waitUntil(updateCache(request,cacheName).then(()=>{}));return cached}const fresh=await updateCache(request,cacheName);if(fresh)return fresh;return isData(url)?offlineDataResponse(url):unavailable(url)})());
