@@ -18,7 +18,8 @@
 <main><div class="spin"></div><h2>در حال دریافت آخرین نسخه پنل ادمین…</h2><p>این صفحه فقط Cache پنل ادمین را تازه می‌کند و اطلاعات ورود یا داده‌های اپ را پاک نمی‌کند.</p></main>
 <script>
 (async()=>{
-  const target=()=>{const u=new URL('./admin-v239-stable.html',location.href);u.searchParams.set('fresh',Date.now().toString());return u.href};
+  const incoming=new URL(location.href).searchParams;
+  const target=()=>{const u=new URL('./admin-v239-stable.html',location.href);for(const [k,v] of incoming){if(k!=='v'&&k!=='fresh')u.searchParams.set(k,v)}u.searchParams.set('fresh',Date.now().toString());return u.href};
   let moved=false;
   const go=()=>{if(moved)return;moved=true;location.replace(target())};
   if(!('serviceWorker' in navigator)){go();return}
