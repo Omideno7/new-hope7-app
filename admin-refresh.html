@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>New Hope 7 Admin — Updating</title>
+  <style>
+    body{margin:0;min-height:100dvh;display:grid;place-items:center;background:#eef8f7;color:#102033;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;padding:24px;box-sizing:border-box}
+    main{width:min(560px,100%);background:#fff;border:1px solid #d8ecea;border-radius:22px;padding:22px;text-align:center;box-shadow:0 14px 42px rgba(15,118,110,.14)}
+    .spin{width:42px;height:42px;margin:0 auto 14px;border:4px solid #dff4f0;border-top-color:#0f766e;border-radius:50%;animation:s .8s linear infinite}@keyframes s{to{transform:rotate(360deg)}}
+    p{color:#667085;line-height:1.8}
+  </style>
+</head>
+<body>
+<main><div class="spin"></div><h2>در حال دریافت آخرین نسخه پنل ادمین…</h2><p>این صفحه فقط Cache پنل ادمین را تازه می‌کند و اطلاعات ورود یا داده‌های اپ را پاک نمی‌کند.</p></main>
+<script>
+(async()=>{
+  const target=()=>{const u=new URL('./admin-v239-stable.html',location.href);u.searchParams.set('fresh',Date.now().toString());return u.href};
+  let moved=false;
+  const go=()=>{if(moved)return;moved=true;location.replace(target())};
+  if(!('serviceWorker' in navigator)){go();return}
+  try{
+    const reg=await navigator.serviceWorker.getRegistration();
+    if(!reg){go();return}
+    navigator.serviceWorker.addEventListener('controllerchange',go,{once:true});
+    await reg.update();
+    if(reg.waiting)reg.waiting.postMessage({type:'SKIP_WAITING'});
+    setTimeout(go,7000);
+  }catch(_){go()}
+})();
+</script>
+</body>
+</html>
