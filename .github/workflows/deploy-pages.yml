@@ -57,7 +57,7 @@ jobs:
           node --check js/nh7-offline-data-v329.js
           node --check js/nh7-audio-route-stability-v330.js
           node --check js/nh7-auto-update-v335.js
-          node --check js/nh7-notifications-zagreb-v333.js
+          node --check js/nh7-notifications-zagreb-v334.js
           node --check js/nh7-school-registration-v331.js
           node --check js/nh7-ui-stability-v329.js
           node --check js/nh7-access-bootstrap-v230.js
@@ -91,7 +91,7 @@ jobs:
           ! grep -q "OneSignalSDK.sw.js" sw-offline-v329.js
           grep -q "NH7_ONESIGNAL_WORKER" index.html
           grep -q "push/OneSignalSDKWorker.js" index.html
-          grep -q "nh7-notifications-zagreb-v333.js?v=2.3.9.35d" index.html
+          grep -q "nh7-notifications-zagreb-v334.js?v=2.3.9.35e" index.html
           grep -q "nh7-auto-update-v335.js" index.html
           grep -q "nh7-school-audio-native-v337.js" index.html
           grep -q "admin-v2.3.9-notifications-zagreb-v333.js" admin-v239-stable.html
@@ -106,7 +106,7 @@ jobs:
           test -f version.json
           test -f service-worker.js
           test -f push/OneSignalSDKWorker.js
-          test -f js/nh7-notifications-zagreb-v333.js
+          test -f js/nh7-notifications-zagreb-v334.js
           test -f js/nh7-auto-update-v335.js
           test -f js/nh7-school-audio-native-v337.js
           test -f js/admin-v2.3.9-notifications-zagreb-v333.js
