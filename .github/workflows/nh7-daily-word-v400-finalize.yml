@@ -1,0 +1,55 @@
+name: Finalize Daily Word v4 content replacement
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+concurrency:
+  group: daily-word-v400-finalize
+  cancel-in-progress: false
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Fetch and validate verified 365-day Daily Word data
+        run: |
+          curl --fail --silent --show-error --location \
+            -H 'x-nh7-export-token: nh7_dw_export_20260818_M8pR3vK6qT1xC9fL5sW2' \
+            'https://gpzcwffxnddhaeaogdyo.supabase.co/functions/v1/nh7-daily-word-export-v400' \
+            -o data/daily/daily_word_365.json
+          python3 - <<'PY'
+          import json
+          p='data/daily/daily_word_365.json'
+          d=json.load(open(p,encoding='utf-8'))
+          assert len(d)==365
+          assert [x.get('day') for x in d]==list(range(1,366))
+          for i,x in enumerate(d,1):
+              assert set(('day','title','mainVerse','message','prayer','furtherStudy')).issubset(x), i
+              for field in ('title','message','prayer'):
+                  assert all(isinstance(x[field].get(lang),str) and x[field][lang].strip() for lang in ('fa','en','hr')), (i,field)
+              assert isinstance(x['mainVerse'].get('reference'),str) and x['mainVerse']['reference'].strip(), i
+              assert all(isinstance(x['mainVerse']['text'].get(lang),str) and x['mainVerse']['text'][lang].strip() for lang in ('fa','en','hr')), i
+              assert len(x['furtherStudy'])==2, i
+          assert d[0]['title']['fa']=='زندگی تازه در مسیح'
+          assert d[18]['title']['fa']=='حیات در بدن تو'
+          PY
+      - name: Remove one-time sync workflows and commit only intended production result
+        run: |
+          git config user.name 'New Hope 7 CI'
+          git config user.email 'actions@github.com'
+          git add data/daily/daily_word_365.json
+          for f in \
+            .github/workflows/nh7-daily-word-v400-sync.yml \
+            .github/workflows/nh7-daily-word-v400-sync-auto.yml \
+            .github/workflows/nh7-daily-word-v400-finalize.yml; do
+            [ -f "$f" ] && git rm -f "$f" || true
+          done
+          if git diff --cached --quiet; then
+            echo 'Nothing to finalize.'
+            exit 0
+          fi
+          git commit -m 'Finalize Daily Word 365 content replacement'
+          git push origin HEAD:main
