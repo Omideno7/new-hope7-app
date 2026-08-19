@@ -1,11 +1,12 @@
-/* New Hope 7 Security Core v3.4.0
+/* New Hope 7 Security Core v3.4.1
    - Server-authoritative school exams: answer keys never reach the learner browser.
    - Direct learner writes to exam attempts/course exam progress are blocked.
    - Public answered Q&A is rewritten to a PII-safe RPC.
    - Normal lesson completion is routed through a constrained server RPC.
+   - Library catalog/collection reads are routed through approved-user metadata RPCs.
 */
 (()=>{'use strict';
-const VERSION='3.4.0-security-core';
+const VERSION='3.4.1-security-core';
 window.NH7_SECURITY_CORE_VERSION=VERSION;
 const nativeFetch=window.fetch.bind(window);
 const examState={current:null,byId:new Map(),lastRestUrl:'',lastHeaders:null};
@@ -72,6 +73,14 @@ window.fetch=async function(input,init={}){
 
   if(resource==='qa_questions'&&method==='GET'&&String(u.searchParams.get('status')||'')==='eq.answered'){
     return rpc(u.href,headers,'nh7_public_answered_questions_v340',{p_limit:50});
+  }
+
+  if(resource==='nh7_library_items_v224'&&method==='GET'){
+    return rpc(u.href,headers,'nh7_library_catalog_v341',{});
+  }
+
+  if(resource==='nh7_library_collections_public_v322'&&method==='GET'){
+    return rpc(u.href,headers,'nh7_library_collections_catalog_v341',{});
   }
 
   return nativeFetch(input,init);
