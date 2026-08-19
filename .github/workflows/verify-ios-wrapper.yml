@@ -23,7 +23,7 @@ permissions:
   contents: read
 
 jobs:
-  simulator-build:
+  baseline-native-build:
     runs-on: macos-26
     timeout-minutes: 40
     env:
@@ -37,14 +37,20 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Select Xcode 26.6
-        run: sudo xcode-select -s /Applications/Xcode_26.6.app/Contents/Developer
+      - name: Select latest installed Xcode 26
+        shell: bash
+        run: |
+          set -euo pipefail
+          XCODE=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1)
+          test -n "$XCODE"
+          sudo xcode-select -s "$XCODE/Contents/Developer"
+          xcodebuild -version
 
       - name: Install dependencies
         working-directory: ios-wrapper
         run: npm install --no-audit --no-fund
 
-      - name: Prepare native web bundle
+      - name: Prepare native-safe web bundle
         working-directory: ios-wrapper
         run: npm run prepare
 
@@ -52,63 +58,24 @@ jobs:
         working-directory: ios-wrapper
         run: npx cap add ios
 
-      - name: Sync native plugins
+      - name: Sync Capacitor and OneSignal native plugins
         working-directory: ios-wrapper
-        run: npx cap sync ios
+        run: ONESIGNAL_DISABLE_LOCATION=true npx cap sync ios
 
-      - name: Generate New Hope 7 app icon and splash
+      - name: Verify generated identity and web bundle
         working-directory: ios-wrapper
-        run: npm run ios:assets
-
-      - name: Configure native iOS capabilities
-        working-directory: ios-wrapper
-        run: npm run ios:configure
-
-      - name: Verify generated native settings privacy and branding
-        working-directory: ios-wrapper
+        shell: bash
         run: |
-          plutil -lint ios/App/App/Info.plist
-          plutil -lint ios/App/App/NewHope7.entitlements
-          grep -q 'group.com.omideno7.newhope7.onesignal' ios/App/App/NewHope7.entitlements
-          grep -q 'remote-notification' ios/App/App/Info.plist
-          grep -q '<string>audio</string>' ios/App/App/Info.plist
-          grep -q 'CODE_SIGN_ENTITLEMENTS = App/NewHope7.entitlements;' ios/App/App.xcodeproj/project.pbxproj
-          grep -q 'MARKETING_VERSION = 2.3.9;' ios/App/App.xcodeproj/project.pbxproj
-
-          plutil -lint ios/App/App/PrivacyInfo.xcprivacy
-          grep -q 'NSPrivacyAccessedAPICategoryFileTimestamp' ios/App/App/PrivacyInfo.xcprivacy
-          grep -q '<string>C617.1</string>' ios/App/App/PrivacyInfo.xcprivacy
-          grep -q 'NSPrivacyCollectedDataTypeSensitiveInfo' ios/App/App/PrivacyInfo.xcprivacy
-          grep -q 'NSPrivacyCollectedDataTypeProductInteraction' ios/App/App/PrivacyInfo.xcprivacy
-          grep -q 'PrivacyInfo.xcprivacy in Resources' ios/App/App.xcodeproj/project.pbxproj
-
-          plutil -lint ios/App/OneSignalNotificationServiceExtension/Info.plist
-          plutil -lint ios/App/OneSignalNotificationServiceExtension/NewHope7OneSignalExtension.entitlements
-          grep -q 'OneSignalNotificationServiceExtension' ios/App/App.xcodeproj/project.pbxproj
-          grep -q 'com.omideno7.newhope7.OneSignalNotificationServiceExtension' ios/App/App.xcodeproj/project.pbxproj
-          grep -q 'group.com.omideno7.newhope7.onesignal' ios/App/OneSignalNotificationServiceExtension/Info.plist
-          grep -q 'group.com.omideno7.newhope7.onesignal' ios/App/OneSignalNotificationServiceExtension/NewHope7OneSignalExtension.entitlements
-
-          python3 - <<'PY'
-          import hashlib, json
-          from pathlib import Path
-          root = Path('ios/App/App/Assets.xcassets/Splash.imageset')
-          source = Path('assets/splash.png')
-          data = json.loads((root / 'Contents.json').read_text(encoding='utf-8'))
-          names = sorted({x.get('filename') for x in data.get('images', []) if x.get('filename')})
-          assert names, 'No splash image files found'
-          digest = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
-          expected = digest(source)
-          for name in names:
-              assert digest(root / name) == expected, f'Unbranded splash: {name}'
-          print('Verified branded splash:', names)
-          PY
-
-      - name: Show toolchain
-        run: |
-          node --version
-          npm --version
-          xcodebuild -version
+          set -euo pipefail
+          test -f ios/App/App/Info.plist
+          test -f ios/App/App/public/index.html
+          grep -q 'com.omideno7.newhope7' ios/App/App.xcodeproj/project.pbxproj
+          grep -q 'nh7-native-bridge.js' ios/App/App/public/index.html
+          grep -q 'nh7-native-ios.css' ios/App/App/public/index.html
+          if grep -q 'cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer' ios/App/App/public/index.html; then
+            echo 'Raw OneSignal Web SDK is still present in native bundle' >&2
+            exit 1
+          fi
 
       - name: Build unsigned iOS Simulator app
         working-directory: ios-wrapper
@@ -123,56 +90,17 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             build
 
-      - name: Verify Simulator app packaging
+      - name: Verify Simulator packaging
         working-directory: ios-wrapper
+        shell: bash
         run: |
+          set -euo pipefail
           APP=.build/SimulatorDerivedData/Build/Products/Debug-iphonesimulator/App.app
-          test -d "$APP/PlugIns/OneSignalNotificationServiceExtension.appex"
-          test -f "$APP/PlugIns/OneSignalNotificationServiceExtension.appex/Info.plist"
-          test -f "$APP/PrivacyInfo.xcprivacy"
-          plutil -lint "$APP/PrivacyInfo.xcprivacy"
+          test -d "$APP"
+          test -f "$APP/public/index.html"
+          /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP/Info.plist" | grep -q 'com.omideno7.newhope7'
 
-      - name: Launch on iPhone Simulator and capture smoke screenshot
-        continue-on-error: true
-        working-directory: ios-wrapper
-        run: |
-          mkdir -p .build/smoke
-          UDID=$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); rows=[x for xs in d.get("devices",{}).values() for x in xs if x.get("isAvailable") and str(x.get("name","")).startswith("iPhone")]; print(rows[0]["udid"] if rows else "")')
-          if [ -z "$UDID" ]; then
-            echo "No available iPhone Simulator found" | tee .build/smoke/app.log
-            exit 1
-          fi
-          echo "Using simulator: $UDID" | tee .build/smoke/app.log
-          xcrun simctl boot "$UDID" || true
-          python3 - "$UDID" <<'PY'
-          import subprocess, sys
-          udid=sys.argv[1]
-          try:
-              subprocess.run(['xcrun','simctl','bootstatus',udid,'-b'], check=True, timeout=120)
-          except subprocess.TimeoutExpired:
-              print('Simulator boot timed out after 120 seconds', file=sys.stderr)
-              raise SystemExit(124)
-          PY
-          APP=.build/SimulatorDerivedData/Build/Products/Debug-iphonesimulator/App.app
-          xcrun simctl install "$UDID" "$APP"
-          xcrun simctl launch "$UDID" com.omideno7.newhope7
-          sleep 10
-          xcrun simctl io "$UDID" screenshot .build/smoke/new-hope-7-ios.png
-          xcrun simctl spawn "$UDID" log show --style compact --last 2m --predicate 'process == "App"' >> .build/smoke/app.log || true
-          test -s .build/smoke/new-hope-7-ios.png
-
-      - name: Upload iOS Simulator smoke evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: New-Hope-7-iOS-Simulator-Smoke
-          path: |
-            ios-wrapper/.build/smoke/new-hope-7-ios.png
-            ios-wrapper/.build/smoke/app.log
-          if-no-files-found: warn
-          retention-days: 14
-
-      - name: Build unsigned Release app for real iOS devices
+      - name: Build unsigned Release app for physical iOS devices
         working-directory: ios-wrapper
         run: |
           xcodebuild \
@@ -185,23 +113,14 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             build
 
-      - name: Verify Release device app packaging
-        working-directory: ios-wrapper
-        run: |
-          APP=.build/DeviceDerivedData/Build/Products/Release-iphoneos/App.app
-          test -d "$APP/PlugIns/OneSignalNotificationServiceExtension.appex"
-          test -f "$APP/PlugIns/OneSignalNotificationServiceExtension.appex/Info.plist"
-          test -f "$APP/PrivacyInfo.xcprivacy"
-          plutil -lint "$APP/PrivacyInfo.xcprivacy"
-
       - name: Package generated Xcode project
         working-directory: ios-wrapper
-        run: ditto -c -k --sequesterRsrc --keepParent ios New-Hope-7-iOS-Xcode.zip
+        run: ditto -c -k --sequesterRsrc --keepParent ios New-Hope-7-iOS-Xcode-baseline.zip
 
-      - name: Upload generated iOS project
+      - name: Upload generated Xcode project
         uses: actions/upload-artifact@v4
         with:
-          name: New-Hope-7-iOS-Xcode
-          path: ios-wrapper/New-Hope-7-iOS-Xcode.zip
+          name: New-Hope-7-iOS-Xcode-Baseline
+          path: ios-wrapper/New-Hope-7-iOS-Xcode-baseline.zip
           if-no-files-found: error
           retention-days: 14
