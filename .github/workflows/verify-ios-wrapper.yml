@@ -21,7 +21,7 @@ permissions:
 jobs:
   simulator-build:
     runs-on: macos-26
-    timeout-minutes: 30
+    timeout-minutes: 35
     env:
       ONESIGNAL_DISABLE_LOCATION: 'true'
     steps:
@@ -70,6 +70,12 @@ jobs:
           grep -q '<string>audio</string>' ios/App/App/Info.plist
           grep -q 'CODE_SIGN_ENTITLEMENTS = App/NewHope7.entitlements;' ios/App/App.xcodeproj/project.pbxproj
           grep -q 'MARKETING_VERSION = 2.3.9;' ios/App/App.xcodeproj/project.pbxproj
+          plutil -lint ios/App/OneSignalNotificationServiceExtension/Info.plist
+          plutil -lint ios/App/OneSignalNotificationServiceExtension/NewHope7OneSignalExtension.entitlements
+          grep -q 'OneSignalNotificationServiceExtension' ios/App/App.xcodeproj/project.pbxproj
+          grep -q 'com.omideno7.newhope7.OneSignalNotificationServiceExtension' ios/App/App.xcodeproj/project.pbxproj
+          grep -q 'group.com.omideno7.newhope7.onesignal' ios/App/OneSignalNotificationServiceExtension/Info.plist
+          grep -q 'group.com.omideno7.newhope7.onesignal' ios/App/OneSignalNotificationServiceExtension/NewHope7OneSignalExtension.entitlements
           python3 - <<'PY'
           import hashlib, json
           from pathlib import Path
@@ -100,8 +106,34 @@ jobs:
             -configuration Debug \
             -sdk iphonesimulator \
             -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath .build/SimulatorDerivedData \
             CODE_SIGNING_ALLOWED=NO \
             build
+
+      - name: Verify embedded OneSignal extension in Simulator app
+        working-directory: ios-wrapper
+        run: |
+          test -d .build/SimulatorDerivedData/Build/Products/Debug-iphonesimulator/App.app/PlugIns/OneSignalNotificationServiceExtension.appex
+          test -f .build/SimulatorDerivedData/Build/Products/Debug-iphonesimulator/App.app/PlugIns/OneSignalNotificationServiceExtension.appex/Info.plist
+
+      - name: Build unsigned Release app for real iOS devices
+        working-directory: ios-wrapper
+        run: |
+          xcodebuild \
+            -project ios/App/App.xcodeproj \
+            -scheme App \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath .build/DeviceDerivedData \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Verify embedded OneSignal extension in Release device app
+        working-directory: ios-wrapper
+        run: |
+          test -d .build/DeviceDerivedData/Build/Products/Release-iphoneos/App.app/PlugIns/OneSignalNotificationServiceExtension.appex
+          test -f .build/DeviceDerivedData/Build/Products/Release-iphoneos/App.app/PlugIns/OneSignalNotificationServiceExtension.appex/Info.plist
 
       - name: Package generated Xcode project
         working-directory: ios-wrapper
