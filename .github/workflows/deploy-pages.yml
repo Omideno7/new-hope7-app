@@ -53,6 +53,7 @@ jobs:
           node --check sw-offline-v329.js
           node --check sw-offline-path-fix-v329.js
           node --check js/nh7-security-core-v340.js
+          node --check js/nh7-qna-i18n-v341.js
           node --check js/nh7-offline-startup-v327.js
           node --check js/nh7-offline-core-v327.js
           node --check js/nh7-offline-data-v329.js
@@ -87,13 +88,16 @@ jobs:
           node --check js/admin-v2.3.9-fix12-bootstrap.js
           node --check js/admin-v2.3.9-registration-requests-v331.js
           node --check js/admin-v2.3.9-notifications-zagreb-v333.js
+          node --check js/admin-qna-i18n-v341.js
           grep -q "2.3.9.35b" service-worker.js
           grep -q "OneSignalSDK.sw.js" push/OneSignalSDKWorker.js
           ! grep -q "OneSignalSDK.sw.js" sw-offline-v329.js
           grep -q "NH7_ONESIGNAL_WORKER" index.html
           grep -q "push/OneSignalSDKWorker.js" index.html
           grep -q "nh7-security-core-v340.js?v=3.4.1" index.html
+          grep -q "nh7-qna-i18n-v341.js?v=2.3.9.36" index.html
           grep -q "3.4.1-security-core" js/nh7-security-core-v340.js
+          grep -q "3.4.1-qna-i18n" js/nh7-qna-i18n-v341.js
           grep -q "nh7_library_catalog_v341" js/nh7-security-core-v340.js
           grep -q "nh7_library_collections_catalog_v341" js/nh7-security-core-v340.js
           grep -q '"protectedContent": true' data/school/school_content.json
@@ -102,9 +106,10 @@ jobs:
           grep -q "nh7-auto-update-v335.js" index.html
           grep -q "nh7-school-audio-native-v337.js" index.html
           grep -q "admin-v2.3.9-notifications-zagreb-v333.js" admin-v239-stable.html
+          grep -q "admin-qna-i18n-v341.js" admin-v239-stable.html
           grep -q '"start_url": "./index.html"' manifest.json
-          grep -q '"app":"2.3.9.35"' version.json
-          grep -q '"admin":"2.3.9.33"' version.json
+          grep -q '"app":"2.3.9.36"' version.json
+          grep -q '"admin":"2.3.9.34"' version.json
           test -f admin.html
           test -f admin-v239.html
           test -f admin-v239-stable.html
@@ -114,10 +119,12 @@ jobs:
           test -f service-worker.js
           test -f push/OneSignalSDKWorker.js
           test -f js/nh7-security-core-v340.js
+          test -f js/nh7-qna-i18n-v341.js
           test -f js/nh7-notifications-zagreb-v334.js
           test -f js/nh7-auto-update-v335.js
           test -f js/nh7-school-audio-native-v337.js
           test -f js/admin-v2.3.9-notifications-zagreb-v333.js
+          test -f js/admin-qna-i18n-v341.js
           test -f css/admin-v2.3.9-clean-scroll-v300.css
           test -f css/admin-v2.3.9-clean-features-v311.css
           test -f css/admin-v2.3.9-final-stable-v316.css
