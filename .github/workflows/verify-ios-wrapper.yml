@@ -1,0 +1,77 @@
+name: Verify New Hope 7 iOS wrapper
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agent/ios-capacitor-239
+    paths:
+      - 'ios-wrapper/**'
+      - '.github/workflows/verify-ios-wrapper.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  simulator-build:
+    runs-on: macos-26
+    timeout-minutes: 30
+    env:
+      ONESIGNAL_DISABLE_LOCATION: 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Select Xcode 26.6
+        run: sudo xcode-select -s /Applications/Xcode_26.6.app/Contents/Developer
+
+      - name: Install dependencies
+        working-directory: ios-wrapper
+        run: npm install --no-audit --no-fund
+
+      - name: Prepare native web bundle
+        working-directory: ios-wrapper
+        run: npm run prepare
+
+      - name: Generate iOS project
+        working-directory: ios-wrapper
+        run: npx cap add ios
+
+      - name: Sync native plugins
+        working-directory: ios-wrapper
+        run: npx cap sync ios
+
+      - name: Show toolchain
+        run: |
+          node --version
+          npm --version
+          xcodebuild -version
+
+      - name: Build unsigned iOS Simulator app
+        working-directory: ios-wrapper
+        run: |
+          xcodebuild \
+            -project ios/App/App.xcodeproj \
+            -scheme App \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Package generated Xcode project
+        working-directory: ios-wrapper
+        run: ditto -c -k --sequesterRsrc --keepParent ios New-Hope-7-iOS-Xcode.zip
+
+      - name: Upload generated iOS project
+        uses: actions/upload-artifact@v4
+        with:
+          name: New-Hope-7-iOS-Xcode
+          path: ios-wrapper/New-Hope-7-iOS-Xcode.zip
+          if-no-files-found: error
+          retention-days: 14
