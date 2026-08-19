@@ -60,7 +60,7 @@ jobs:
         working-directory: ios-wrapper
         run: npm run ios:configure
 
-      - name: Verify generated native settings and branding
+      - name: Verify generated native settings privacy and branding
         working-directory: ios-wrapper
         run: |
           plutil -lint ios/App/App/Info.plist
@@ -70,12 +70,21 @@ jobs:
           grep -q '<string>audio</string>' ios/App/App/Info.plist
           grep -q 'CODE_SIGN_ENTITLEMENTS = App/NewHope7.entitlements;' ios/App/App.xcodeproj/project.pbxproj
           grep -q 'MARKETING_VERSION = 2.3.9;' ios/App/App.xcodeproj/project.pbxproj
+
+          plutil -lint ios/App/App/PrivacyInfo.xcprivacy
+          grep -q 'NSPrivacyAccessedAPICategoryFileTimestamp' ios/App/App/PrivacyInfo.xcprivacy
+          grep -q '<string>C617.1</string>' ios/App/App/PrivacyInfo.xcprivacy
+          grep -q 'NSPrivacyCollectedDataTypeSensitiveInfo' ios/App/App/PrivacyInfo.xcprivacy
+          grep -q 'NSPrivacyCollectedDataTypeProductInteraction' ios/App/App/PrivacyInfo.xcprivacy
+          grep -q 'PrivacyInfo.xcprivacy in Resources' ios/App/App.xcodeproj/project.pbxproj
+
           plutil -lint ios/App/OneSignalNotificationServiceExtension/Info.plist
           plutil -lint ios/App/OneSignalNotificationServiceExtension/NewHope7OneSignalExtension.entitlements
           grep -q 'OneSignalNotificationServiceExtension' ios/App/App.xcodeproj/project.pbxproj
           grep -q 'com.omideno7.newhope7.OneSignalNotificationServiceExtension' ios/App/App.xcodeproj/project.pbxproj
           grep -q 'group.com.omideno7.newhope7.onesignal' ios/App/OneSignalNotificationServiceExtension/Info.plist
           grep -q 'group.com.omideno7.newhope7.onesignal' ios/App/OneSignalNotificationServiceExtension/NewHope7OneSignalExtension.entitlements
+
           python3 - <<'PY'
           import hashlib, json
           from pathlib import Path
@@ -110,11 +119,14 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             build
 
-      - name: Verify embedded OneSignal extension in Simulator app
+      - name: Verify Simulator app packaging
         working-directory: ios-wrapper
         run: |
-          test -d .build/SimulatorDerivedData/Build/Products/Debug-iphonesimulator/App.app/PlugIns/OneSignalNotificationServiceExtension.appex
-          test -f .build/SimulatorDerivedData/Build/Products/Debug-iphonesimulator/App.app/PlugIns/OneSignalNotificationServiceExtension.appex/Info.plist
+          APP=.build/SimulatorDerivedData/Build/Products/Debug-iphonesimulator/App.app
+          test -d "$APP/PlugIns/OneSignalNotificationServiceExtension.appex"
+          test -f "$APP/PlugIns/OneSignalNotificationServiceExtension.appex/Info.plist"
+          test -f "$APP/PrivacyInfo.xcprivacy"
+          plutil -lint "$APP/PrivacyInfo.xcprivacy"
 
       - name: Build unsigned Release app for real iOS devices
         working-directory: ios-wrapper
@@ -129,11 +141,14 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             build
 
-      - name: Verify embedded OneSignal extension in Release device app
+      - name: Verify Release device app packaging
         working-directory: ios-wrapper
         run: |
-          test -d .build/DeviceDerivedData/Build/Products/Release-iphoneos/App.app/PlugIns/OneSignalNotificationServiceExtension.appex
-          test -f .build/DeviceDerivedData/Build/Products/Release-iphoneos/App.app/PlugIns/OneSignalNotificationServiceExtension.appex/Info.plist
+          APP=.build/DeviceDerivedData/Build/Products/Release-iphoneos/App.app
+          test -d "$APP/PlugIns/OneSignalNotificationServiceExtension.appex"
+          test -f "$APP/PlugIns/OneSignalNotificationServiceExtension.appex/Info.plist"
+          test -f "$APP/PrivacyInfo.xcprivacy"
+          plutil -lint "$APP/PrivacyInfo.xcprivacy"
 
       - name: Package generated Xcode project
         working-directory: ios-wrapper
