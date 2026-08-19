@@ -52,6 +52,7 @@ jobs:
           node --check sw-media-stream-bypass-v332.js
           node --check sw-offline-v329.js
           node --check sw-offline-path-fix-v329.js
+          node --check js/nh7-security-core-v340.js
           node --check js/nh7-offline-startup-v327.js
           node --check js/nh7-offline-core-v327.js
           node --check js/nh7-offline-data-v329.js
@@ -91,6 +92,10 @@ jobs:
           ! grep -q "OneSignalSDK.sw.js" sw-offline-v329.js
           grep -q "NH7_ONESIGNAL_WORKER" index.html
           grep -q "push/OneSignalSDKWorker.js" index.html
+          grep -q "nh7-security-core-v340.js?v=3.4.0" index.html
+          grep -q "3.4.0-security-core" js/nh7-security-core-v340.js
+          grep -q '"protectedContent": true' data/school/school_content.json
+          node -e "const s=JSON.parse(require('fs').readFileSync('data/school/school_content.json','utf8'));if(!Array.isArray(s.lessons)||s.lessons.length!==0)throw new Error('Protected school lessons must not ship in the public bundle')"
           grep -q "nh7-notifications-zagreb-v334.js?v=2.3.9.35e" index.html
           grep -q "nh7-auto-update-v335.js" index.html
           grep -q "nh7-school-audio-native-v337.js" index.html
@@ -106,6 +111,7 @@ jobs:
           test -f version.json
           test -f service-worker.js
           test -f push/OneSignalSDKWorker.js
+          test -f js/nh7-security-core-v340.js
           test -f js/nh7-notifications-zagreb-v334.js
           test -f js/nh7-auto-update-v335.js
           test -f js/nh7-school-audio-native-v337.js
