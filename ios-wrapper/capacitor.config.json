@@ -1,0 +1,8 @@
+{
+  "appId": "com.omideno7.newhope7",
+  "appName": "New Hope 7",
+  "webDir": "www",
+  "ios": {
+    "handleApplicationNotifications": false
+  }
+}
