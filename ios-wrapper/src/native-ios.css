@@ -1,0 +1,15 @@
+html.nh7-native-ios,
+html.nh7-native-ios body {
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+}
+html.nh7-native-ios .topbar {
+  padding-top: max(10px, env(safe-area-inset-top));
+}
+html.nh7-native-ios .bottom-nav {
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
+}
+html.nh7-native-ios #view,
+html.nh7-native-ios .view {
+  padding-bottom: calc(96px + env(safe-area-inset-bottom));
+}
