@@ -7,7 +7,7 @@ const wrapperRoot = path.resolve(here, '..');
 const pbxPath = path.join(wrapperRoot, 'ios', 'App', 'App.xcodeproj', 'project.pbxproj');
 
 const APP_STORE_VERSION = '1.0';
-const BUILD_NUMBER = '1';
+const BUILD_NUMBER = '2';
 
 let pbx = await readFile(pbxPath, 'utf8');
 pbx = pbx.replace(/MARKETING_VERSION = [^;]+;/g, `MARKETING_VERSION = ${APP_STORE_VERSION};`);
