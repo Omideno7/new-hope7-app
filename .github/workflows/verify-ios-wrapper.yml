@@ -25,7 +25,7 @@ permissions:
 jobs:
   full-native-build:
     runs-on: macos-26
-    timeout-minutes: 45
+    timeout-minutes: 55
     env:
       ONESIGNAL_DISABLE_LOCATION: 'true'
     steps:
@@ -162,14 +162,60 @@ jobs:
           test -f "$APP/PrivacyInfo.xcprivacy"
           plutil -lint "$APP/PrivacyInfo.xcprivacy"
 
-      - name: Package generated Xcode project
+      - name: Create self-contained Mac-ready Xcode bundle
         working-directory: ios-wrapper
-        run: ditto -c -k --sequesterRsrc --keepParent ios New-Hope-7-iOS-Xcode-full.zip
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT=.mac-ready/New-Hope-7-iOS-MacReady
+          rm -rf .mac-ready New-Hope-7-iOS-MacReady.zip
+          mkdir -p "$ROOT"
+          ditto ios "$ROOT/ios"
+          ditto node_modules "$ROOT/node_modules"
+          cp package.json "$ROOT/package.json"
+          if [ -f package-lock.json ]; then cp package-lock.json "$ROOT/package-lock.json"; fi
+          cat > "$ROOT/OPEN_ME_FIRST.txt" <<'TXT'
+          New Hope 7 iOS — Mac-ready package
 
-      - name: Upload generated iOS project
+          Open this Xcode project:
+          ios/App/App.xcodeproj
+
+          Keep the ios and node_modules folders together. The local Capacitor Swift package depends on the bundled node_modules directory.
+          TXT
+          test -f "$ROOT/node_modules/@capacitor/app/Package.swift"
+          test -f "$ROOT/node_modules/@onesignal/capacitor-plugin/Package.swift"
+          du -sh "$ROOT/node_modules" "$ROOT/ios"
+          ditto -c -k --sequesterRsrc --keepParent "$ROOT" New-Hope-7-iOS-MacReady.zip
+
+      - name: Verify Mac-ready bundle resolves packages independently
+        working-directory: ios-wrapper
+        shell: bash
+        run: |
+          set -euo pipefail
+          TMP=$(mktemp -d)
+          ditto -x -k New-Hope-7-iOS-MacReady.zip "$TMP"
+          ROOT="$TMP/New-Hope-7-iOS-MacReady"
+          test -f "$ROOT/ios/App/CapApp-SPM/Package.swift"
+          test -f "$ROOT/node_modules/@capacitor/app/Package.swift"
+          test -f "$ROOT/node_modules/@onesignal/capacitor-plugin/Package.swift"
+          xcodebuild \
+            -resolvePackageDependencies \
+            -project "$ROOT/ios/App/App.xcodeproj" \
+            -scheme App
+          xcodebuild \
+            -project "$ROOT/ios/App/App.xcodeproj" \
+            -scheme App \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath "$TMP/DerivedData" \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Upload Mac-ready generated iOS project
         uses: actions/upload-artifact@v4
         with:
-          name: New-Hope-7-iOS-Xcode-Full
-          path: ios-wrapper/New-Hope-7-iOS-Xcode-full.zip
+          name: New-Hope-7-iOS-MacReady
+          path: ios-wrapper/New-Hope-7-iOS-MacReady.zip
           if-no-files-found: error
           retention-days: 14
