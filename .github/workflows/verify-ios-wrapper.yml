@@ -21,7 +21,7 @@ permissions:
 jobs:
   simulator-build:
     runs-on: macos-26
-    timeout-minutes: 35
+    timeout-minutes: 40
     env:
       ONESIGNAL_DISABLE_LOCATION: 'true'
     steps:
@@ -127,6 +127,37 @@ jobs:
           test -f "$APP/PlugIns/OneSignalNotificationServiceExtension.appex/Info.plist"
           test -f "$APP/PrivacyInfo.xcprivacy"
           plutil -lint "$APP/PrivacyInfo.xcprivacy"
+
+      - name: Launch on iPhone Simulator and capture smoke screenshot
+        working-directory: ios-wrapper
+        run: |
+          mkdir -p .build/smoke
+          UDID=$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); rows=[x for xs in d.get("devices",{}).values() for x in xs if x.get("isAvailable") and str(x.get("name","")).startswith("iPhone")]; print(rows[0]["udid"] if rows else "")')
+          if [ -z "$UDID" ]; then
+            echo "No available iPhone Simulator found" >&2
+            xcrun simctl list devices available
+            exit 1
+          fi
+          echo "Using simulator: $UDID"
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+          APP=.build/SimulatorDerivedData/Build/Products/Debug-iphonesimulator/App.app
+          xcrun simctl install "$UDID" "$APP"
+          xcrun simctl launch "$UDID" com.omideno7.newhope7
+          sleep 10
+          xcrun simctl io "$UDID" screenshot .build/smoke/new-hope-7-ios.png
+          xcrun simctl spawn "$UDID" log show --style compact --last 2m --predicate 'process == "App"' > .build/smoke/app.log || true
+          test -s .build/smoke/new-hope-7-ios.png
+
+      - name: Upload iOS Simulator smoke evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: New-Hope-7-iOS-Simulator-Smoke
+          path: |
+            ios-wrapper/.build/smoke/new-hope-7-ios.png
+            ios-wrapper/.build/smoke/app.log
+          if-no-files-found: error
+          retention-days: 14
 
       - name: Build unsigned Release app for real iOS devices
         working-directory: ios-wrapper
