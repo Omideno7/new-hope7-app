@@ -15,6 +15,10 @@ on:
       - 'ios-wrapper/**'
       - '.github/workflows/verify-ios-wrapper.yml'
 
+concurrency:
+  group: nh7-ios-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
