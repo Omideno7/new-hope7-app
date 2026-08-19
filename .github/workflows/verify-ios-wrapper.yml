@@ -54,21 +54,13 @@ jobs:
 
       - name: Generate New Hope 7 app icon and splash
         working-directory: ios-wrapper
-        run: |
-          mkdir -p assets
-          cp ../assets/logo.png assets/icon-only.png
-          cp ../assets/logo.png assets/splash.png
-          sips -Z 860 assets/icon-only.png >/dev/null
-          sips --padToHeightWidth 1024 1024 --padColor FFFFFF assets/icon-only.png >/dev/null
-          sips -Z 1500 assets/splash.png >/dev/null
-          sips --padToHeightWidth 2732 2732 --padColor FFFFFF assets/splash.png >/dev/null
-          npx capacitor-assets generate --ios
+        run: npm run ios:assets
 
       - name: Configure native iOS capabilities
         working-directory: ios-wrapper
         run: npm run ios:configure
 
-      - name: Verify generated native settings
+      - name: Verify generated native settings and branding
         working-directory: ios-wrapper
         run: |
           plutil -lint ios/App/App/Info.plist
@@ -78,6 +70,20 @@ jobs:
           grep -q '<string>audio</string>' ios/App/App/Info.plist
           grep -q 'CODE_SIGN_ENTITLEMENTS = App/NewHope7.entitlements;' ios/App/App.xcodeproj/project.pbxproj
           grep -q 'MARKETING_VERSION = 2.3.9;' ios/App/App.xcodeproj/project.pbxproj
+          python3 - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          root = Path('ios/App/App/Assets.xcassets/Splash.imageset')
+          source = Path('assets/splash.png')
+          data = json.loads((root / 'Contents.json').read_text(encoding='utf-8'))
+          names = sorted({x.get('filename') for x in data.get('images', []) if x.get('filename')})
+          assert names, 'No splash image files found'
+          digest = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+          expected = digest(source)
+          for name in names:
+              assert digest(root / name) == expected, f'Unbranded splash: {name}'
+          print('Verified branded splash:', names)
+          PY
 
       - name: Show toolchain
         run: |
