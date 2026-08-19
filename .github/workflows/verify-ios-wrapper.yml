@@ -8,6 +8,12 @@ on:
     paths:
       - 'ios-wrapper/**'
       - '.github/workflows/verify-ios-wrapper.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'ios-wrapper/**'
+      - '.github/workflows/verify-ios-wrapper.yml'
 
 permissions:
   contents: read
