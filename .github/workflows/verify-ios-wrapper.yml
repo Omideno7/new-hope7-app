@@ -52,6 +52,33 @@ jobs:
         working-directory: ios-wrapper
         run: npx cap sync ios
 
+      - name: Generate New Hope 7 app icon and splash
+        working-directory: ios-wrapper
+        run: |
+          mkdir -p assets
+          cp ../assets/logo.png assets/icon-only.png
+          cp ../assets/logo.png assets/splash.png
+          sips -Z 860 assets/icon-only.png >/dev/null
+          sips --padToHeightWidth 1024 1024 --padColor FFFFFF assets/icon-only.png >/dev/null
+          sips -Z 1500 assets/splash.png >/dev/null
+          sips --padToHeightWidth 2732 2732 --padColor FFFFFF assets/splash.png >/dev/null
+          npx capacitor-assets generate --ios
+
+      - name: Configure native iOS capabilities
+        working-directory: ios-wrapper
+        run: npm run ios:configure
+
+      - name: Verify generated native settings
+        working-directory: ios-wrapper
+        run: |
+          plutil -lint ios/App/App/Info.plist
+          plutil -lint ios/App/App/NewHope7.entitlements
+          grep -q 'group.com.omideno7.newhope7.onesignal' ios/App/App/NewHope7.entitlements
+          grep -q 'remote-notification' ios/App/App/Info.plist
+          grep -q '<string>audio</string>' ios/App/App/Info.plist
+          grep -q 'CODE_SIGN_ENTITLEMENTS = App/NewHope7.entitlements;' ios/App/App.xcodeproj/project.pbxproj
+          grep -q 'MARKETING_VERSION = 2.3.9;' ios/App/App.xcodeproj/project.pbxproj
+
       - name: Show toolchain
         run: |
           node --version
