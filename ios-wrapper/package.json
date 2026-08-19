@@ -1,13 +1,13 @@
 {
   "name": "new-hope-7-ios-wrapper",
   "private": true,
-  "version": "2.3.9-ios.4",
+  "version": "2.3.9-ios.5",
   "description": "Native iOS wrapper for New Hope 7 stable web release 2.3.9",
   "scripts": {
     "prepare:web": "node scripts/prepare-web.mjs",
     "build:bridge": "node scripts/build-native-bridge.mjs",
     "prepare": "npm run prepare:web && npm run build:bridge",
-    "ios:configure": "node scripts/configure-ios.mjs && node scripts/configure-onesignal-nse.mjs",
+    "ios:configure": "node scripts/configure-ios.mjs && node scripts/configure-privacy-manifest.mjs && node scripts/configure-onesignal-nse.mjs",
     "ios:assets": "bash scripts/generate-ios-assets.sh",
     "ios:add": "npm run prepare && npx cap add ios && npm run ios:assets && npm run ios:configure",
     "ios:sync": "npm run prepare && ONESIGNAL_DISABLE_LOCATION=true npx cap sync ios && npm run ios:assets && npm run ios:configure",
