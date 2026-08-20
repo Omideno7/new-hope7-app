@@ -1,21 +1,9 @@
 name: Verify New Hope 7 iOS wrapper
 
+# Manual-only on purpose: automatic push/PR runs were generating repeated
+# failure-notification emails while the iOS wrapper is still being prepared.
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - agent/ios-capacitor-239
-    paths:
-      - 'ios-wrapper/**'
-      - 'index.html'
-      - 'js/nh7-qna-i18n-v341.js'
-      - '.github/workflows/verify-ios-wrapper.yml'
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'ios-wrapper/**'
-      - '.github/workflows/verify-ios-wrapper.yml'
 
 concurrency:
   group: nh7-ios-${{ github.ref }}
