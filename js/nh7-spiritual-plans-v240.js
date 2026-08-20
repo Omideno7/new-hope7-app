@@ -1,9 +1,11 @@
 const MODULE_VERSION = 1;
 const CATALOG_PATH = 'data/spiritual-plans/catalog.json';
+const FASTING_GUIDES_PATH = 'data/spiritual-plans/fasting-types.json';
 const PROGRESS_PREFIX = 'nh7_spiritual_plans_v240:';
 const FASTING_PREFIX = 'nh7_fasting_journeys_v240:';
 const cloudSyncAt = new Map();
 let catalogPromise = null;
+let fastingGuidesPromise = null;
 
 const UI = {
   en: {
@@ -18,7 +20,7 @@ const UI = {
     scripture: 'Scripture', biblicalFoundation: 'Biblical foundation', pastoralGuidance: 'Pastoral guidance', teaching: 'Devotional teaching', reflect: 'Reflect', practice: 'Practice today', spiritPractice: 'Prayer-in-the-Spirit practice', prayer: 'Prayer', declaration: 'Declaration',
     privateNote: 'My private note', privateNoteHelp: 'Only your account can read this reflection.', saveNote: 'Save private note',
     completeDay: 'Complete this day', undoDay: 'Mark as not completed', planComplete: 'Journey completed',
-    chooseDay: 'Choose a day', confirmUndo: 'Mark this day as not completed?', openBible: 'Open in Bible',
+    chooseDay: 'Choose a day', confirmUndo: 'Mark this day as not completed?', showVerse: 'Read verse here',
     fastingTitle: 'Begin a fasting journey', fastingIntro: 'Choose a wise form of fasting, name your purpose, and use the daily teaching and log to keep your attention on God.',
     safety: 'Health and safety', safetyAck: 'I have read the safety note and will choose a medically appropriate fast.',
     fastingType: 'Type of fast', purpose: 'Purpose of this fast', startDate: 'Start date', endDate: 'End date', startJourney: 'Start journey',
@@ -26,10 +28,11 @@ const UI = {
     journeyDay: 'Journey day', dailyLog: 'Daily fasting log', prayerMinutes: 'Prayer minutes', scriptureNote: 'Scripture note', reflection: 'Reflection',
     dayObserved: 'I observed today’s fast', saveLog: 'Save daily log', logSaved: 'Daily log saved', completeJourney: 'Complete journey', cancelJourney: 'End journey',
     statusActive: 'Active', statusCompleted: 'Completed', statusCancelled: 'Ended', continueJourney: 'Continue journey',
-    required: 'Please complete the required fields.', invalidDates: 'The end date cannot be before the start date.',
+    required: 'Please complete the required fields.', invalidDates: 'The end date cannot be before the start date.', prayerRequired: 'A completed fast day must include prayer. Enter at least one minute of prayer before marking the day complete.',
+    fastingTeaching: 'Learn before you begin', fastingTeachingIntro: 'Each form below includes its purpose, practice, prayer rhythm, boundaries, and safety guidance.', fastingCovenant: 'The fasting covenant',
     summaryTitle: 'Spiritual plans activity', noActivity: 'No spiritual-plan activity yet.', viewPlans: 'Open plans',
     recentCompletions: 'Recent completions', fastingRecords: 'fasting records', date: 'Date',
-    type_partial: 'Partial food fast', type_daniel: 'Daniel-style fast', type_sunrise: 'Sunrise-to-sunset fast', type_one_meal: 'One-meal fast', type_media: 'Media / non-food fast', type_custom: 'Custom wise fast',
+    type_partial: 'Partial food fast', type_daniel: 'Daniel-style fast', type_sunrise: 'Sunrise-to-sunset fast', type_one_meal: 'One-meal fast', type_liquid: 'Liquid fast', type_water: 'Water-only fast (guided)', type_media: 'Media / non-food consecration', type_custom: 'Custom wise fast',
     errorTitle: 'Plans are temporarily unavailable', retry: 'Try again'
   },
   fa: {
@@ -44,7 +47,7 @@ const UI = {
     scripture: 'کلام', biblicalFoundation: 'مبنای کتاب‌مقدسی', pastoralGuidance: 'راهنمایی شبانی', teaching: 'تعلیم روز', reflect: 'تأمل', practice: 'تمرین امروز', spiritPractice: 'تمرین دعا در روح و به زبان‌ها', prayer: 'دعا', declaration: 'اعلام ایمان',
     privateNote: 'یادداشت خصوصی من', privateNoteHelp: 'فقط حساب خودت می‌تواند این تأمل را بخواند.', saveNote: 'ذخیرهٔ یادداشت خصوصی',
     completeDay: 'تکمیل این روز', undoDay: 'برگرداندن به تکمیل‌نشده', planComplete: 'این مسیر تکمیل شد',
-    chooseDay: 'انتخاب روز', confirmUndo: 'این روز به حالت تکمیل‌نشده برگردد؟', openBible: 'باز کردن در کتاب‌مقدس',
+    chooseDay: 'انتخاب روز', confirmUndo: 'این روز به حالت تکمیل‌نشده برگردد؟', showVerse: 'نمایش آیه همین‌جا',
     fastingTitle: 'شروع یک مسیر روزه', fastingIntro: 'نوعی حکیمانه از روزه را انتخاب کن، هدفت را بنویس و با تعلیم و ثبت روزانه تمرکزت را بر خدا نگه دار.',
     safety: 'سلامت و ایمنی', safetyAck: 'یادداشت ایمنی را خوانده‌ام و روزه‌ای متناسب با وضعیت سلامتی‌ام انتخاب می‌کنم.',
     fastingType: 'نوع روزه', purpose: 'هدف این روزه', startDate: 'تاریخ شروع', endDate: 'تاریخ پایان', startJourney: 'شروع مسیر',
@@ -52,10 +55,11 @@ const UI = {
     journeyDay: 'روز مسیر', dailyLog: 'ثبت روزانهٔ روزه', prayerMinutes: 'دقایق دعا', scriptureNote: 'یادداشت کلام', reflection: 'تأمل',
     dayObserved: 'روزهٔ امروز را انجام دادم', saveLog: 'ذخیرهٔ ثبت روزانه', logSaved: 'ثبت روزانه ذخیره شد', completeJourney: 'تکمیل مسیر', cancelJourney: 'پایان مسیر',
     statusActive: 'فعال', statusCompleted: 'تکمیل‌شده', statusCancelled: 'پایان‌یافته', continueJourney: 'ادامهٔ مسیر',
-    required: 'لطفاً همهٔ موارد ضروری را کامل کن.', invalidDates: 'تاریخ پایان نمی‌تواند پیش از تاریخ شروع باشد.',
+    required: 'لطفاً همهٔ موارد ضروری را کامل کن.', invalidDates: 'تاریخ پایان نمی‌تواند پیش از تاریخ شروع باشد.', prayerRequired: 'روزهٔ تکمیل‌شده باید با دعا همراه باشد. پیش از علامت‌زدن روز، دست‌کم یک دقیقه دعا ثبت کن.',
+    fastingTeaching: 'پیش از شروع یاد بگیر', fastingTeachingIntro: 'برای هر نوع روزه، هدف، روش اجرا، برنامهٔ دعا، پرهیزها و نکات ایمنی را بخوان.', fastingCovenant: 'عهد روزه',
     summaryTitle: 'فعالیت پلن‌های روحانی', noActivity: 'هنوز فعالیتی در پلن‌های روحانی ثبت نشده است.', viewPlans: 'باز کردن پلن‌ها',
     recentCompletions: 'تکمیل‌های اخیر', fastingRecords: 'سابقهٔ روزه', date: 'تاریخ',
-    type_partial: 'روزهٔ غذایی محدود', type_daniel: 'روزه به شیوهٔ دانیال', type_sunrise: 'روزه از طلوع تا غروب', type_one_meal: 'حذف یک وعده', type_media: 'روزهٔ رسانه‌ای / غیرغذایی', type_custom: 'روزهٔ حکیمانهٔ سفارشی',
+    type_partial: 'روزهٔ غذایی محدود', type_daniel: 'روزه به شیوهٔ دانیال', type_sunrise: 'روزه از طلوع تا غروب', type_one_meal: 'حذف یک وعده', type_liquid: 'روزهٔ مایعات', type_water: 'روزهٔ فقط آب (با راهنمایی)', type_media: 'وقف رسانه‌ای / پرهیز غیرغذایی', type_custom: 'روزهٔ حکیمانهٔ سفارشی',
     errorTitle: 'پلن‌ها موقتاً در دسترس نیستند', retry: 'تلاش دوباره'
   },
   hr: {
@@ -70,7 +74,7 @@ const UI = {
     scripture: 'Pismo', biblicalFoundation: 'Biblijski temelj', pastoralGuidance: 'Pastoralna smjernica', teaching: 'Dnevni nauk', reflect: 'Promisli', practice: 'Primijeni danas', spiritPractice: 'Vježba molitve u Duhu i jezicima', prayer: 'Molitva', declaration: 'Ispovijed vjere',
     privateNote: 'Moja privatna bilješka', privateNoteHelp: 'Samo tvoj račun može pročitati ovo promišljanje.', saveNote: 'Spremi privatnu bilješku',
     completeDay: 'Dovrši ovaj dan', undoDay: 'Označi kao nedovršeno', planComplete: 'Putovanje je dovršeno',
-    chooseDay: 'Odaberi dan', confirmUndo: 'Označiti ovaj dan kao nedovršen?', openBible: 'Otvori u Bibliji',
+    chooseDay: 'Odaberi dan', confirmUndo: 'Označiti ovaj dan kao nedovršen?', showVerse: 'Prikaži stih ovdje',
     fastingTitle: 'Započni putovanje posta', fastingIntro: 'Odaberi mudar oblik posta, imenuj svrhu i koristi dnevni nauk i dnevnik kako bi ostao usmjeren na Boga.',
     safety: 'Zdravlje i sigurnost', safetyAck: 'Pročitao/la sam sigurnosnu napomenu i odabrat ću medicinski prikladan post.',
     fastingType: 'Vrsta posta', purpose: 'Svrha ovoga posta', startDate: 'Datum početka', endDate: 'Datum završetka', startJourney: 'Započni putovanje',
@@ -78,15 +82,16 @@ const UI = {
     journeyDay: 'Dan putovanja', dailyLog: 'Dnevni zapis posta', prayerMinutes: 'Minute molitve', scriptureNote: 'Bilješka iz Pisma', reflection: 'Promišljanje',
     dayObserved: 'Održao/la sam današnji post', saveLog: 'Spremi dnevni zapis', logSaved: 'Dnevni zapis je spremljen', completeJourney: 'Dovrši putovanje', cancelJourney: 'Završi putovanje',
     statusActive: 'Aktivno', statusCompleted: 'Dovršeno', statusCancelled: 'Završeno', continueJourney: 'Nastavi putovanje',
-    required: 'Ispuni obavezna polja.', invalidDates: 'Datum završetka ne može biti prije datuma početka.',
+    required: 'Ispuni obavezna polja.', invalidDates: 'Datum završetka ne može biti prije datuma početka.', prayerRequired: 'Dovršen dan posta mora uključivati molitvu. Upiši barem jednu minutu molitve prije dovršetka dana.',
+    fastingTeaching: 'Nauči prije početka', fastingTeachingIntro: 'Za svaki oblik pročitaj svrhu, način, ritam molitve, odricanja i sigurnosne smjernice.', fastingCovenant: 'Savez posta',
     summaryTitle: 'Aktivnost duhovnih planova', noActivity: 'Još nema aktivnosti u duhovnim planovima.', viewPlans: 'Otvori planove',
     recentCompletions: 'Nedavni dovršeci', fastingRecords: 'zapisa posta', date: 'Datum',
-    type_partial: 'Djelomični post od hrane', type_daniel: 'Post po Danielovu uzoru', type_sunrise: 'Post od izlaska do zalaska', type_one_meal: 'Post jednoga obroka', type_media: 'Medijski / neprehrambeni post', type_custom: 'Prilagođeni mudar post',
+    type_partial: 'Djelomični post od hrane', type_daniel: 'Post po Danielovu uzoru', type_sunrise: 'Post od izlaska do zalaska', type_one_meal: 'Post jednoga obroka', type_liquid: 'Tekući post', type_water: 'Post samo na vodi (uz vodstvo)', type_media: 'Medijska posveta / neprehrambeno odricanje', type_custom: 'Prilagođeni mudar post',
     errorTitle: 'Planovi trenutačno nisu dostupni', retry: 'Pokušaj ponovno'
   }
 };
 
-const FASTING_TYPES = ['partial', 'daniel', 'sunrise', 'one_meal', 'media', 'custom'];
+const FASTING_TYPES = ['partial', 'daniel', 'sunrise', 'one_meal', 'liquid', 'water', 'media', 'custom'];
 
 function lang(ctx) {
   const value = typeof ctx.getLang === 'function' ? ctx.getLang() : ctx.lang;
@@ -212,6 +217,16 @@ async function loadPlans(ctx) {
     })().catch(error => { catalogPromise = null; throw error; });
   }
   return catalogPromise;
+}
+async function loadFastingGuides(ctx) {
+  if (!fastingGuidesPromise) fastingGuidesPromise = fetchJson(ctx, FASTING_GUIDES_PATH).catch(error => { fastingGuidesPromise = null; throw error; });
+  return fastingGuidesPromise;
+}
+function localizedReference(ctx, reference) {
+  return typeof ctx.localizeRef === 'function' ? ctx.localizeRef(reference) : reference;
+}
+function scriptureReveal(ctx, reference, compact=false) {
+  return `<div class="nh7-scripture-reveal ${compact ? 'compact' : ''}"><button type="button" class="nh7-scripture-ref" data-reveal-ref="${esc(reference)}" aria-expanded="false"><span>${esc(localizedReference(ctx, reference))}</span><small>${esc(t(ctx, 'showVerse'))}</small></button><div class="inline-verse hidden"></div></div>`;
 }
 function loggedIn(ctx) { return Boolean(typeof ctx.isLoggedIn === 'function' && ctx.isLoggedIn() && ctx.userId()); }
 function cloudOwner(ctx) { return typeof ctx.authEmail === 'function' ? ctx.authEmail() : ''; }
@@ -420,6 +435,16 @@ function contentBlock(ctx, icon, titleKey, body, className='') {
   if (!body) return '';
   return `<section class="nh7-devotional-block ${className}"><h3><span aria-hidden="true">${icon}</span>${esc(t(ctx, titleKey))}</h3><p>${text(body)}</p></section>`;
 }
+function fastingGuideCopy(value, ctx) { return value?.localized?.[lang(ctx)] || value?.localized?.en || {}; }
+function renderFastingEducation(ctx, guides) {
+  const shared = fastingGuideCopy(guides, ctx);
+  const abstain = Array.isArray(shared.abstain) ? shared.abstain : [];
+  const types = Array.isArray(guides?.types) ? guides.types : [];
+  return `<section class="card nh7-fasting-education"><header><span aria-hidden="true">📚</span><div><h2>${esc(t(ctx, 'fastingTeaching'))}</h2><p>${esc(t(ctx, 'fastingTeachingIntro'))}</p></div></header>
+    <div class="nh7-fasting-covenant"><h3>${esc(t(ctx, 'fastingCovenant'))}</h3><p>${text(shared.intro || '')}</p><div class="nh7-fasting-prayer-rule"><strong>🙏 ${esc(shared.prayerTitle || t(ctx, 'prayer'))}</strong><p>${text(shared.prayerRhythm || '')}</p></div>${abstain.length ? `<h4>${esc(shared.abstainTitle || '')}</h4><ul>${abstain.map(item => `<li>${esc(item)}</li>`).join('')}</ul>` : ''}<p class="nh7-fasting-shared-practice">${text(shared.sharedPractice || '')}</p></div>
+    <div class="nh7-fast-type-guides">${types.map((type, index) => { const copy=fastingGuideCopy(type, ctx); return `<details class="nh7-fast-type-guide" ${index === 0 ? 'open' : ''}><summary><span>${esc(type.icon || '•')}</span><div><strong>${esc(copy.title || t(ctx, `type_${type.key}`))}</strong><small>${esc(copy.summary || '')}</small></div><b aria-hidden="true">＋</b></summary><div class="nh7-fast-type-body"><section><h4>${esc(copy.teachingTitle || t(ctx, 'teaching'))}</h4><p>${text(copy.teaching || '')}</p></section><section><h4>${esc(copy.practiceTitle || t(ctx, 'practice'))}</h4><p>${text(copy.practice || '')}</p></section><section><h4>${esc(copy.prayerTitle || t(ctx, 'prayer'))}</h4><p>${text(copy.prayer || '')}</p></section><section><h4>${esc(copy.boundariesTitle || '')}</h4><p>${text(copy.boundaries || '')}</p></section>${type.scriptures?.length ? `<div class="nh7-fast-guide-refs">${type.scriptures.map(reference => scriptureReveal(ctx, reference, true)).join('')}</div>` : ''}<div class="nh7-fast-guide-safety">⚕ ${text(copy.safety || shared.safety || '')}</div></div></details>` }).join('')}</div>
+  </section>`;
+}
 function renderFastingLog(ctx, journey, dayNumber, fasting) {
   if (!journey) return `<section class="nh7-devotional-block nh7-fast-callout"><h3>🔥 ${esc(t(ctx, 'dailyLog'))}</h3><p>${esc(t(ctx, 'fastingIntro'))}</p><button type="button" class="secondary-btn" data-nh7-open-fasting>${esc(t(ctx, 'fastingJournal'))}</button></section>`;
   const logDate = plusDays(journey.startDate, Number(dayNumber) - 1);
@@ -427,7 +452,8 @@ function renderFastingLog(ctx, journey, dayNumber, fasting) {
   const log = fasting.logs[key] || {};
   return `<section class="nh7-fasting-log" data-log-date="${esc(logDate)}">
     <div class="nh7-log-heading"><div><span class="badge">${esc(t(ctx, 'journeyDay'))} ${localNumber(ctx, dayNumber)}</span><h3>${esc(t(ctx, 'dailyLog'))}</h3></div><strong>${esc(formatDate(ctx, logDate))}</strong></div>
-    <label>${esc(t(ctx, 'prayerMinutes'))}<input id="nh7PrayerMinutes" type="number" inputmode="numeric" min="0" max="1440" value="${Number(log.prayerMinutes || 0)}"></label>
+    <div class="nh7-prayer-required-note">🙏 ${esc(t(ctx, 'prayerRequired'))}</div>
+    <label>${esc(t(ctx, 'prayerMinutes'))}<input id="nh7PrayerMinutes" type="number" inputmode="numeric" min="1" max="1440" value="${Number(log.prayerMinutes || 0)}"></label>
     <label>${esc(t(ctx, 'scriptureNote'))}<textarea id="nh7ScriptureNote" maxlength="4000" rows="3">${esc(log.scriptureNote || '')}</textarea></label>
     <label>${esc(t(ctx, 'reflection'))}<textarea id="nh7FastingReflection" maxlength="4000" rows="4">${esc(log.reflection || '')}</textarea></label>
     <label class="nh7-check-row"><input id="nh7FastingObserved" type="checkbox" ${log.completed ? 'checked' : ''}><span>${esc(t(ctx, 'dayObserved'))}</span></label>
@@ -443,7 +469,7 @@ async function renderPlanDetail(ctx, plan, params) {
   if (!state?.startedAt && String(params.start) === '1') state = await ensurePlanStarted(ctx, plan, Number(params.day || 1));
   if (!state?.startedAt) {
     ctx.view.innerHTML = `${renderPlansTabsV240(ctx, 'spiritual')}<button type="button" class="nh7-plans-back" data-nh7-back-plans>‹ ${esc(t(ctx, 'backToPlans'))}</button>
-      <section class="card nh7-plan-intro theme-${esc(plan.theme || plan.category || 'default')}"><span class="nh7-plan-icon large">${esc(plan.icon || '✓')}</span><h1>${esc(meta.title || plan.id)}</h1><p class="lead">${esc(meta.subtitle || '')}</p><p>${esc(meta.description || '')}</p><div class="notice"><strong>${esc(t(ctx, 'goal'))}:</strong> ${esc(meta.goal || '')}</div>${meta.pastoralNote ? `<div class="nh7-pastoral-note"><strong>${esc(t(ctx, 'pastoralGuidance'))}</strong><p>${esc(meta.pastoralNote)}</p></div>` : ''}${plan.foundationalScriptures?.length ? `<div class="nh7-foundation-refs"><strong>${esc(t(ctx, 'biblicalFoundation'))}</strong>${plan.foundationalScriptures.map(reference => `<button type="button" data-open-ref="${esc(reference)}">${esc(typeof ctx.localizeRef === 'function' ? ctx.localizeRef(reference) : reference)}</button>`).join('')}</div>` : ''}<button type="button" class="primary-btn wide-btn" data-nh7-start-plan="${esc(plan.id)}">${esc(t(ctx, 'start'))}</button></section>
+      <section class="card nh7-plan-intro theme-${esc(plan.theme || plan.category || 'default')}"><span class="nh7-plan-icon large">${esc(plan.icon || '✓')}</span><h1>${esc(meta.title || plan.id)}</h1><p class="lead">${esc(meta.subtitle || '')}</p><p>${esc(meta.description || '')}</p><div class="notice"><strong>${esc(t(ctx, 'goal'))}:</strong> ${esc(meta.goal || '')}</div>${meta.pastoralNote ? `<div class="nh7-pastoral-note"><strong>${esc(t(ctx, 'pastoralGuidance'))}</strong><p>${esc(meta.pastoralNote)}</p></div>` : ''}${plan.foundationalScriptures?.length ? `<div class="nh7-foundation-refs"><strong>${esc(t(ctx, 'biblicalFoundation'))}</strong>${plan.foundationalScriptures.map(reference => scriptureReveal(ctx, reference, true)).join('')}</div>` : ''}<button type="button" class="primary-btn wide-btn" data-nh7-start-plan="${esc(plan.id)}">${esc(t(ctx, 'start'))}</button></section>
       <section class="card"><h2>${esc(t(ctx, 'planOutline'))}</h2><ol class="nh7-plan-outline">${plan.days.map(day => `<li><span>${localNumber(ctx, day.day)}</span>${esc(localDay(day, ctx).title || '')}</li>`).join('')}</ol></section>`;
     bindDetailEvents(ctx, plan, params);
     return;
@@ -464,8 +490,8 @@ async function renderPlanDetail(ctx, plan, params) {
       ${progressBar(ctx, done, total)}
       ${renderPlanOutline(ctx, plan, state, selected)}
       ${selected === 1 && meta.pastoralNote ? `<div class="nh7-pastoral-note"><strong>${esc(t(ctx, 'pastoralGuidance'))}</strong><p>${esc(meta.pastoralNote)}</p></div>` : ''}
-      ${selected === 1 && plan.foundationalScriptures?.length ? `<section class="nh7-scripture-block nh7-foundational-scriptures"><h3>🕊 ${esc(t(ctx, 'biblicalFoundation'))}</h3><div>${plan.foundationalScriptures.map(reference => `<button type="button" class="nh7-scripture-ref" data-open-ref="${esc(reference)}"><span>${esc(typeof ctx.localizeRef === 'function' ? ctx.localizeRef(reference) : reference)}</span><small>${esc(t(ctx, 'openBible'))}</small></button>`).join('')}</div></section>` : ''}
-      <section class="nh7-scripture-block"><h3>📖 ${esc(t(ctx, 'scripture'))}</h3><div>${(day.scriptures || []).map(reference => `<button type="button" class="nh7-scripture-ref" data-open-ref="${esc(reference)}"><span>${esc(typeof ctx.localizeRef === 'function' ? ctx.localizeRef(reference) : reference)}</span><small>${esc(t(ctx, 'openBible'))}</small></button>`).join('')}</div></section>
+      ${selected === 1 && plan.foundationalScriptures?.length ? `<section class="nh7-scripture-block nh7-foundational-scriptures"><h3>🕊 ${esc(t(ctx, 'biblicalFoundation'))}</h3><div>${plan.foundationalScriptures.map(reference => scriptureReveal(ctx, reference)).join('')}</div></section>` : ''}
+      <section class="nh7-scripture-block"><h3>📖 ${esc(t(ctx, 'scripture'))}</h3><div>${(day.scriptures || []).map(reference => scriptureReveal(ctx, reference)).join('')}</div></section>
       ${contentBlock(ctx, '✦', 'teaching', copy.devotional, 'teaching')}
       ${contentBlock(ctx, '؟', 'reflect', copy.reflection, 'reflection')}
       ${contentBlock(ctx, '→', 'practice', copy.action, 'practice')}
@@ -510,10 +536,16 @@ function bindDetailEvents(ctx, plan, params) {
     if (!journey) return;
     const logDate = plusDays(journey.startDate, Number(params.day || 1) - 1);
     const key = `${journey.id}:${logDate}`;
+    const completed = Boolean(document.querySelector('#nh7FastingObserved')?.checked);
+    const prayerMinutes = Math.max(0, Math.min(1440, Number(document.querySelector('#nh7PrayerMinutes')?.value || 0)));
+    if (completed && prayerMinutes < 1) {
+      window.alert(t(ctx, 'prayerRequired'));
+      document.querySelector('#nh7PrayerMinutes')?.focus();
+      return;
+    }
     const log = {
       ...(fasting.logs[key] || {}), journeyId:journey.id, logDate,
-      completed:Boolean(document.querySelector('#nh7FastingObserved')?.checked),
-      prayerMinutes:Math.max(0, Math.min(1440, Number(document.querySelector('#nh7PrayerMinutes')?.value || 0))),
+      completed, prayerMinutes,
       scriptureNote:String(document.querySelector('#nh7ScriptureNote')?.value || '').slice(0, 4000),
       reflection:String(document.querySelector('#nh7FastingReflection')?.value || '').slice(0, 4000), updatedAt:nowIso()
     };
@@ -546,6 +578,7 @@ function renderJourneyCard(ctx, journey, fasting, compact=false) {
 }
 async function renderFastingHub(ctx, plans) {
   const fastingPlan = plans.find(plan => plan.id === 'fasting-7');
+  const guides = await loadFastingGuides(ctx);
   const meta = localMeta(fastingPlan, ctx);
   const fasting = loadFasting(ctx);
   const active = fasting.journeys.filter(journey => journey.status === 'active');
@@ -554,6 +587,7 @@ async function renderFastingHub(ctx, plans) {
   ctx.view.innerHTML = `${renderPlansTabsV240(ctx, 'fasting')}
     <section class="card nh7-fasting-hero"><span class="nh7-plan-icon large">🔥</span><h1>${esc(t(ctx, 'fastingTitle'))}</h1><p>${esc(t(ctx, 'fastingIntro'))}</p></section>
     ${active.length ? `<section class="card"><h2>${esc(t(ctx, 'activeJourneys'))}</h2><div class="nh7-journey-list">${active.map(journey => renderJourneyCard(ctx, journey, fasting)).join('')}</div></section>` : ''}
+    ${renderFastingEducation(ctx, guides)}
     <section class="card nh7-fasting-form"><h2>${esc(meta.title || t(ctx, 'fastingJournal'))}</h2><div class="nh7-safety-note"><strong>⚕ ${esc(t(ctx, 'safety'))}</strong><p>${esc(meta.safety || '')}</p></div>
       <form id="nh7FastingJourneyForm">
         <label>${esc(t(ctx, 'fastingType'))}<select id="nh7FastingType" required><option value="">—</option>${FASTING_TYPES.map(type => `<option value="${type}">${esc(t(ctx, `type_${type}`))}</option>`).join('')}</select></label>

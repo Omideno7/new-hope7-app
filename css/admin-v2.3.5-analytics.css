@@ -28,6 +28,11 @@
 .nh7-student-status-v235{display:inline-flex;border-radius:999px;padding:4px 8px;font-size:.7rem;font-weight:900;margin-inline-start:6px}.nh7-student-status-v235.complete{background:#ecfdf3;color:#067647}.nh7-student-status-v235.partial{background:#eff8ff;color:#175cd3}.nh7-student-status-v235.skip{background:#fff4ed;color:#b54708}.nh7-student-status-v235.brief{background:#f2f4f7;color:#475467}
 .nh7-student-table-v235{width:100%;border-collapse:collapse}.nh7-student-table-v235 th,.nh7-student-table-v235 td{padding:8px;border-bottom:1px solid #edf3f3;text-align:start;vertical-align:top;font-size:.8rem}.nh7-student-table-v235 th{color:#475467}
 .nh7-student-section-chips-v235{display:flex;gap:7px;flex-wrap:wrap}.nh7-student-section-chips-v235 span{border-radius:999px;padding:6px 9px;background:#eff8ff;color:#0b5faa;font-size:.75rem;font-weight:800}
+.nh7-spiritual-activity-v241{border-color:#c9dcec;background:linear-gradient(145deg,#fff,#f4fbff)}
+.nh7-spiritual-activity-v241 .req-head h4{margin:0 0 4px}.nh7-spiritual-activity-v241 .req-head p{margin:0;line-height:1.65}.nh7-spiritual-activity-v241 .pill{align-self:flex-start;white-space:nowrap}
+.nh7-spiritual-summary-v241{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0}.nh7-spiritual-summary-v241>div{padding:10px;border:1px solid #d9e8f2;border-radius:14px;background:#fff}.nh7-spiritual-summary-v241 b,.nh7-spiritual-summary-v241 span{display:block}.nh7-spiritual-summary-v241 b{font-size:1.1rem;color:#0b5faa}.nh7-spiritual-summary-v241 span{margin-top:2px;color:#667085;font-size:.72rem;line-height:1.35}
+.nh7-spiritual-columns-v241{display:grid;grid-template-columns:1.15fr .85fr;gap:12px}.nh7-spiritual-columns-v241>div{min-width:0}.nh7-spiritual-columns-v241 h5{margin:5px 0 8px;font-size:.9rem}
+.nh7-spiritual-row-v241,.nh7-fasting-row-v241{padding:10px;border:1px solid #e1ecef;border-radius:14px;background:#fff;margin:7px 0}.nh7-spiritual-row-v241{display:grid;grid-template-columns:1fr auto;gap:7px;align-items:start}.nh7-spiritual-row-v241>div:first-child{min-width:0}.nh7-spiritual-row-v241 strong,.nh7-spiritual-row-v241 small,.nh7-fasting-row-v241 strong,.nh7-fasting-row-v241 small{display:block}.nh7-spiritual-row-v241 small,.nh7-fasting-row-v241 small{margin-top:4px;color:#667085;font-size:.72rem;line-height:1.6}.nh7-spiritual-row-v241>.nh7-student-progress-v235{grid-column:1/-1;margin-top:0}.nh7-spiritual-row-v241>b{color:#0b5faa;font-size:.83rem}.nh7-fasting-row-v241{display:flex;align-items:flex-start;justify-content:space-between;gap:9px}.nh7-fasting-row-v241>div{min-width:0}
 
 .student-school-v237>details{margin:11px 0;border:1px solid #d8ecea;border-radius:18px;background:#fff;overflow:hidden}
 .student-school-v237>details>summary{cursor:pointer;padding:13px 14px;background:#f5fbfa;color:#183b45}
@@ -128,5 +133,6 @@ body.nh7-student-modal-open{position:fixed!important;inset:0!important;width:100
   .nh7-student-summary-v235{grid-template-columns:1fr 1fr}.nh7-student-activity-grid-v235{grid-template-columns:1fr}
   .nh7-users-modal-v235{padding:8px}.nh7-users-dialog-v235{max-height:calc(100dvh - 16px);border-radius:18px}
   .nh7-assignment-toolbar-v237{grid-template-columns:1fr}
+  .nh7-spiritual-summary-v241{grid-template-columns:1fr 1fr}.nh7-spiritual-columns-v241{grid-template-columns:1fr}.nh7-spiritual-activity-v241 .req-head{display:block}.nh7-spiritual-activity-v241 .pill{margin-top:8px;white-space:normal}
   .student-modal-backdrop>.student-modal{width:100%!important}
 }

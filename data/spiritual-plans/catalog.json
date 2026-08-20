@@ -30,6 +30,12 @@
       "file": "data/spiritual-plans/salvation-10.json",
       "order": 5,
       "featured": false
+    },
+    {
+      "id": "mind-renewal-14",
+      "file": "data/spiritual-plans/mind-renewal-14.json",
+      "order": 6,
+      "featured": true
     }
   ]
 }

@@ -2,16 +2,19 @@
 
 Status: implemented and validated on `agent/next-plans-logo-240`. Production `main` is not changed until this branch is explicitly merged for a future store release.
 
-## Implemented in v2.4.0.240
+## Implemented through v2.4.0.241
 - 30 Days of Prayer in the Spirit and Tongues — 30 complete days, biblical foundations, pastoral guidance, and a unique daily practice.
 - Living in Grace — 14 complete days.
-- Fasting and Prayer — 7 complete teaching days, six fasting types, health guidance, journeys, daily logs, and history.
+- Fasting and Prayer — 7 complete teaching days, eight fasting types with full FA/EN/HR instructions, required prayer for completed days, companion abstinence, health guidance, journeys, daily logs, and history.
 - Obedience and Blessing — 10 complete days.
 - Salvation and New Life in Christ — 10 complete days.
+- Change Your Thinking — 14 original devotional days based on themes from the user-provided Persian edition of Chris Oyakhilome's *The Power of Your Mind*, without reproducing the book text.
+- Scripture references inside spiritual plans reveal the requested verse or verse range directly below the reference; they no longer navigate away to the Bible reader.
 - Native FA/EN/HR metadata and content for every day: title, devotional, Scripture references, reflection, practice, prayer, and declaration.
 - Existing one-year/two-year Bible reading plans remain available in a separate tab and retain their existing storage behavior.
 - Offline-first, account-scoped local state and queued, idempotent Supabase upserts.
 - Account profile summary for active/completed plans, completed days, streak, recent completions, and fasting records. Private note text is never shown in the summary.
+- Admin student analytics include per-plan progress, fasting journeys, and recorded prayer minutes through an admin-only aggregate RPC. Private reflections, fasting purposes, and Scripture notes are excluded.
 - Approved display logo retained, with standards-compliant 192, 512, maskable 512, and Apple touch icons.
 - Feature flag `NH7_SPIRITUAL_PLANS_V240` is enabled only in this branch build.
 
@@ -41,7 +44,7 @@ Legacy fasting EN/HR currently reference the Persian plan object instead of havi
 - `fasting_journeys`: user_id, fasting_type, start/end, purpose, status
 - `fasting_daily_logs`: journey_id, date, completed, prayer_minutes, scripture_note, reflection
 
-The three user tables are installed through `20260820214030_spiritual_plans_v240.sql` plus its composite-FK index follow-up. RLS is enabled with separate SELECT/INSERT/UPDATE/DELETE policies for `authenticated`; `anon` has no table privileges. Each policy compares `auth.uid()` with `user_id`, so users can read/write only their own progress and private reflections.
+The three user tables are installed through `20260820214030_spiritual_plans_v240.sql` plus its composite-FK index follow-up. `20260821140000_spiritual_plans_admin_analytics_v241.sql` adds the new fasting types and an admin-only aggregate analytics function. RLS is enabled with separate SELECT/INSERT/UPDATE/DELETE policies for `authenticated`; `anon` has no table privileges. Each policy compares `auth.uid()` with `user_id`, so users can read/write only their own progress and private reflections.
 
 ## Safe integration rules
 - Develop and test on this branch first.
@@ -70,4 +73,4 @@ Keep a teaching journey but expand the user flow with fasting-type selection, pu
 - Offline updates queue and reconcile without data loss.
 - Profile accurately summarizes plan/fasting history.
 
-Automated validation covers all five plan files (71 devotional days × three languages), unique devotional/practice content, required fields, offline cache inclusion, module syntax, render smoke tests, icon dimensions, live RLS policy/grant checks, and Supabase security/performance advisors for the new tables.
+Automated validation covers all six plan files (85 devotional days × three languages), eight fasting guides, unique devotional/practice content, required fields, inline Scripture controls, offline cache inclusion, module syntax, render smoke tests, icon dimensions, live RLS policy/grant checks, and Supabase security/performance advisors for the new tables.

@@ -45,8 +45,9 @@ const ctx = {
 };
 
 await renderSpiritualPlansV240(ctx, { tab:'spiritual' });
-invariant(occurrences(view.innerHTML, 'class="nh7-plan-card ') === 5, 'Landing page did not render five plan cards.');
+invariant(occurrences(view.innerHTML, 'class="nh7-plan-card ') === 6, 'Landing page did not render six plan cards.');
 invariant(view.innerHTML.includes('30 Days of Prayer in the Spirit and Tongues'), 'Prayer-in-tongues title is missing.');
+invariant(view.innerHTML.includes('Change Your Thinking'), 'Mind-renewal plan title is missing.');
 
 language = 'fa';
 await renderSpiritualPlansV240(ctx, { tab:'spiritual' });
@@ -65,14 +66,22 @@ invariant(occurrences(view.innerHTML, 'data-nh7-plan-day=') === 30, 'Prayer plan
 invariant(view.innerHTML.includes('spirit-practice'), 'Daily prayer-in-the-Spirit practice did not render.');
 invariant(view.innerHTML.includes('Pastoral guidance'), 'Pastoral guidance did not render.');
 invariant(view.innerHTML.includes('Biblical foundation'), 'Biblical foundations did not render.');
+invariant(view.innerHTML.includes('data-reveal-ref='), 'Plan Scripture references must reveal inline.');
+invariant(!view.innerHTML.includes('data-open-ref='), 'Plan Scripture references must not navigate to the Bible reader.');
+
+await renderSpiritualPlansV240(ctx, { tab:'spiritual', plan:'mind-renewal-14', day:14, start:1 });
+invariant(occurrences(view.innerHTML, 'data-nh7-plan-day=') === 14, 'Mind-renewal plan did not render 14 day selectors.');
+invariant(view.innerHTML.includes('Everything Has Become New'), 'Mind-renewal final day is missing.');
 
 await renderSpiritualPlansV240(ctx, { tab:'fasting' });
 invariant(view.innerHTML.includes('id="nh7FastingJourneyForm"'), 'Fasting journey form did not render.');
 invariant(view.innerHTML.includes('Health and safety'), 'Fasting safety guidance did not render.');
+invariant(occurrences(view.innerHTML, 'class="nh7-fast-type-guide"') === 8, 'Eight complete fasting teachings did not render.');
+invariant(view.innerHTML.includes('Every day of fasting must include prayer'), 'Fasting prayer covenant is missing.');
 
 const profile = { innerHTML:'' };
 await renderSpiritualProfileSummaryV240(ctx, profile);
 invariant(profile.innerHTML.includes('Spiritual plans activity'), 'Profile summary did not render.');
 invariant(!profile.innerHTML.includes('My private note'), 'Profile summary must not expose private-note text.');
 
-console.log('Render verification passed: plan hub, 30-day tongues plan, grace reader, fasting form, and profile summary.');
+console.log('Render verification passed: six-plan hub, inline Scripture, mind renewal, eight fasting teachings, and profile summary.');

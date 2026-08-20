@@ -1250,17 +1250,24 @@ async function revealVerse(el){
   const ref=el.dataset.revealRef||'';
   const box=el.nextElementSibling;
   if(!box) return;
-  if(!box.classList.contains('hidden')){ box.classList.add('hidden'); box.innerHTML=''; return; }
+  if(!box.classList.contains('hidden')){ box.classList.add('hidden'); box.innerHTML=''; el.setAttribute('aria-expanded','false'); return; }
   const parsed=parseRef(ref);
-  let text='';
+  let verses=[];
   if(parsed){
     const data=await loadBook(parsed.bookId);
-    const v=(data.verses||[]).find(x=>Number(x.chapter)===parsed.chapter && Number(x.verse)===parsed.verse);
-    text=v ? (v.text?.[state.lang]||v.text?.en||'') : '';
+    verses=(data.verses||[]).filter(verse=>{
+      const position=(Number(verse.chapter)*1000)+Number(verse.verse);
+      return position>=parsed.startPosition&&position<=parsed.endPosition;
+    }).slice(0,50);
   }
-  text=text || el.dataset.fallbackText || '';
-  box.innerHTML = text ? `<p><strong>${html(localizeRef(ref))}</strong></p><p>${html(text)}</p>` : `<p>${html(localizeRef(ref))}</p>`;
+  const lines=verses.map(verse=>{
+    const value=String(verse.text?.[state.lang]||verse.text?.en||'').replace(/^\s*\d+\.\s*/, '');
+    return `<p class="inline-verse-line"><b>${localNum(verse.verse)}</b><span>${html(value)}</span></p>`;
+  }).join('');
+  const fallback=el.dataset.fallbackText||'';
+  box.innerHTML = `<p><strong>${html(localizeRef(ref))}</strong></p>${lines||(fallback?`<p>${html(fallback)}</p>`:'')}`;
   box.classList.remove('hidden');
+  el.setAttribute('aria-expanded','true');
   addPoints(1);
 }
 
@@ -1445,10 +1452,12 @@ function localizeRef(ref){
   return localText(s);
 }
 function parseRef(ref){
-  const m=String(ref||'').match(/^(.+?)\s+(\d+):(\d+)/); if(!m) return null;
-  const name=m[1].trim().toLowerCase(); const chapter=Number(m[2]); const verse=Number(m[3]);
+  const m=String(ref||'').trim().match(/^(.+?)\s+(\d+):(\d+)(?:\s*[-–—]\s*(?:(\d+):)?(\d+))?/); if(!m) return null;
+  const name=m[1].trim().toLowerCase(),chapter=Number(m[2]),verse=Number(m[3]);
+  const endChapter=Number(m[4]||chapter),endVerse=Number(m[5]||verse);
   const b=(state.bible.books||[]).find(x=>bibleNameAliases(x).some(n=>String(n).toLowerCase()===name));
-  return b?{bookId:b.id,chapter,verse}:null;
+  if(!b||endChapter<chapter||(endChapter===chapter&&endVerse<verse))return null;
+  return{bookId:b.id,chapter,verse,endChapter,endVerse,startPosition:(chapter*1000)+verse,endPosition:(endChapter*1000)+endVerse};
 }
 
 function spiritualPlansContext(){
