@@ -20,7 +20,7 @@
 <script>
 (async()=>{
   const RELEASE='2.3.9.35';
-  const BUILD='2.3.9.35-auth-approval';
+  const BUILD='2.3.9.35-auth-approval-email343';
   async function latestVersion(){try{const r=await fetch('./version.json?t='+Date.now(),{cache:'no-store',headers:{'Cache-Control':'no-cache, no-store, must-revalidate','Pragma':'no-cache'}});return r.ok?await r.json():null}catch(_){return null}}
   async function checkForUpdate(){const remote=await latestVersion(),latest=String(remote?.admin||'');if(!latest||latest===RELEASE)return;const guard='nh7_admin_redirect_'+latest;if(sessionStorage.getItem(guard)==='1')return;sessionStorage.setItem(guard,'1');const target=new URL('./admin-v239-stable.html',location.href);target.searchParams.set('release','stable-'+latest);target.searchParams.set('update',Date.now().toString());location.replace(target.href)}
   try{
