@@ -1,4 +1,4 @@
-/* New Hope 7 v2.3.9.38 — hardened registration and account recovery hotfix */
-importScripts('./sw-media-stream-bypass-v332.js?v=2.3.9.38');
-importScripts('./sw-offline-v329.js?v=2.3.9.38-auth');
-importScripts('./sw-offline-path-fix-v329.js?v=2.3.9.38');
+/* New Hope 7 v2.4.0.240 — spiritual plans and approved app icons */
+importScripts('./sw-media-stream-bypass-v332.js?v=2.4.0.240');
+importScripts('./sw-offline-v329.js?v=2.4.0.240-plans');
+importScripts('./sw-offline-path-fix-v329.js?v=2.4.0.240');
