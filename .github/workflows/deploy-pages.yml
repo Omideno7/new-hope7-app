@@ -92,7 +92,9 @@ jobs:
           node --check js/admin-v2.3.9-registration-requests-v331.js
           node --check js/admin-v2.3.9-notifications-zagreb-v333.js
           node --check js/admin-qna-i18n-v341.js
-          grep -q "2.3.9.39" service-worker.js
+          node --check js/nh7-admin-rbac-v350.js
+          node scripts/verify-admin-rbac-v350.mjs
+          grep -q "2.3.9.40" service-worker.js
           grep -q "OneSignalSDK.sw.js" push/OneSignalSDKWorker.js
           ! grep -q "OneSignalSDK.sw.js" sw-offline-v329.js
           grep -q "NH7_ONESIGNAL_WORKER" index.html
@@ -111,14 +113,15 @@ jobs:
           grep -q "admin-v2.3.9-notifications-zagreb-v333.js" admin-v239-stable.html
           grep -q "admin-qna-i18n-v341.js" admin-v239-stable.html
           grep -q '"start_url": "./index.html"' manifest.json
-          grep -q '"app":"2.3.9.39"' version.json
-          grep -q '"admin":"2.3.9.39"' version.json
+          grep -q '"app":"2.3.9.40"' version.json
+          grep -q '"admin":"2.3.9.40"' version.json
           test -f admin.html
           test -f admin-v239.html
           test -f admin-v239-stable.html
           test -f app-v239.html
           test -f index.html
           test -f reset-password.html
+          test -f admin-reset-password.html
           test -f version.json
           test -f service-worker.js
           test -f push/OneSignalSDKWorker.js
@@ -130,6 +133,7 @@ jobs:
           test -f js/nh7-auth-signup-guard-v343.js
           test -f js/nh7-school-registration-v342.js
           test -f js/nh7-auth-recovery-v342.js
+          test -f js/nh7-admin-rbac-v350.js
           test -f js/admin-v2.3.9-notifications-zagreb-v333.js
           test -f js/admin-qna-i18n-v341.js
           test -f css/admin-v2.3.9-clean-scroll-v300.css
@@ -140,7 +144,7 @@ jobs:
           test -f css/nh7-library-collections-v322.css
           test -f css/nh7-secure-media-watermark-v272.css
           test -f css/nh7-apocrypha-v270.css
-          node -e "const fs=require('fs');for(const file of ['admin-v239.html','admin-v239-stable.html','app-v239.html','index.html','certificate-v239.html']){const html=fs.readFileSync(file,'utf8');const blocks=[...html.matchAll(/<script(?:\\s[^>]*)?>([\\s\\S]*?)<\\/script>/gi)].map(x=>x[1]).filter(Boolean);blocks.forEach((code,index)=>new Function(code+'\\n//# sourceURL='+file+'-inline-'+index));}"
+          node -e "const fs=require('fs');for(const file of ['admin.html','admin-v239.html','admin-v239-stable.html','admin-reset-password.html','reset-password.html','app-v239.html','index.html','certificate-v239.html']){const html=fs.readFileSync(file,'utf8');const blocks=[...html.matchAll(/<script(?:\\s[^>]*)?>([\\s\\S]*?)<\\/script>/gi)].map(x=>x[1]).filter(Boolean);blocks.forEach((code,index)=>new Function(code+'\\n//# sourceURL='+file+'-inline-'+index));}"
           node -e "for(const f of ['admin-manifest.json','manifest.json','version.json'])JSON.parse(require('fs').readFileSync(f,'utf8'))"
           node scripts/verify-auth-hotfix-v348.mjs
 

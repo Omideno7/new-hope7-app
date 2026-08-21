@@ -15,9 +15,9 @@ const workflow=read('.github/workflows/deploy-pages.yml');
 const compatibilityMigration=read('supabase/migrations/20260821163811_auth_registration_compatibility_v349.sql');
 const version=JSON.parse(read('version.json'));
 
-assert(version.app==='2.3.9.39'&&version.admin==='2.3.9.39','production version must be 2.3.9.39');
+assert(version.app==='2.3.9.40'&&version.admin==='2.3.9.40','production version must be 2.3.9.40');
 assert(index.indexOf('js/nh7-auth-recovery-v342.js')<index.indexOf('js/app.js'),'recovery capture must load before app bootstrap');
-assert(index.includes('js/nh7-school-registration-v342.js?v=2.3.9.39'),'hardened registration module is not loaded');
+assert(index.includes('js/nh7-school-registration-v342.js?v=2.3.9.40'),'hardened registration module is not loaded');
 assert(!recovery.includes("request('/auth/v1/recover',{body:"),'recovery must not use the endpoint without redirect_to query');
 assert(recovery.includes("redirectPath('/auth/v1/recover')"),'recovery redirect query helper is missing');
 assert(recovery.includes("if(type&&type!=='recovery')return null"),'non-recovery auth callbacks must not open the password reset dialog');
@@ -46,7 +46,7 @@ assert(app.includes("recover?redirect_to='+encodeURIComponent(NH7_PASSWORD_RESET
 assert(!app.includes("body:JSON.stringify({email,redirect_to:NH7_PASSWORD_RESET_URL})"),'app still sends redirect_to in the body');
 assert(!app.includes('Registration RPC unavailable; using compatible fallback'),'unsafe direct registration fallback remains');
 assert(app.includes('created?.user?.identities')&&app.includes('identities.length===0'),'generic registration does not detect obfuscated existing accounts');
-assert(admin.includes("/auth/v1/recover?redirect_to='+encodeURIComponent(NH7_PASSWORD_RESET_URL)"),'admin recovery redirect query is missing');
+assert(admin.includes("/auth/v1/recover?redirect_to='+encodeURIComponent(NH7_ADMIN_PASSWORD_RESET_URL)"),'admin recovery redirect query is missing');
 assert(adminRequests.includes('فقط پروندهٔ ثبت‌نام حذف می‌شود'),'admin delete action is not described as record-only');
 
 assert(worker.includes("'./reset-password.html'"),'standalone recovery page is not cached');
