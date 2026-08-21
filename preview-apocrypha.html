@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>New Hope 7 — Apocrypha Preview</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;color:#132b2a;background:#f3f8f7}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#f3f8f7}.wrap{max-width:900px;margin:0 auto;padding:16px 14px 48px}.hero{background:#fff;border:1px solid #dce9e6;border-radius:20px;padding:18px;box-shadow:0 8px 30px rgba(18,58,55,.08);margin-bottom:14px}.hero h1{font-size:24px;margin:0 0 7px}.hero p{margin:5px 0;line-height:1.65;color:#526a68}.badge{display:inline-block;padding:5px 10px;border-radius:999px;background:#e7f6f2;color:#08715f;font-weight:700;font-size:12px}.toolbar{position:sticky;top:0;z-index:3;background:rgba(243,248,247,.94);backdrop-filter:blur(10px);padding:10px 0;display:flex;gap:8px;flex-wrap:wrap}.lang{border:1px solid #b8d5cf;background:#fff;color:#17423e;border-radius:12px;padding:10px 15px;font-weight:700;cursor:pointer}.lang.active{background:#0f766e;color:#fff;border-color:#0f766e}.status{background:#fff;border:1px solid #dce9e6;border-radius:16px;padding:14px;margin-bottom:12px}.loading{display:flex;gap:10px;align-items:center}.dot{width:10px;height:10px;border-radius:50%;background:#0f766e;animation:pulse 1s infinite alternate}@keyframes pulse{to{opacity:.25}}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}.book{width:100%;text-align:inherit;border:1px solid #d7e6e3;background:#fff;border-radius:16px;padding:14px;cursor:pointer;box-shadow:0 3px 12px rgba(18,58,55,.05)}.book:hover,.book.active{border-color:#0f766e;box-shadow:0 7px 20px rgba(15,118,110,.12)}.book strong{display:block;font-size:16px;margin-bottom:5px}.book small{display:block;color:#657b78;line-height:1.4}.reader{margin-top:14px;background:#fff;border:1px solid #dce9e6;border-radius:20px;padding:16px;box-shadow:0 8px 30px rgba(18,58,55,.07)}.reader-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.reader h2{font-size:22px;margin:0}.select{padding:9px 10px;border-radius:10px;border:1px solid #bfd3d0;background:#fff;font:inherit}.note{margin:12px 0;padding:10px 12px;border-radius:12px;background:#fff8df;border:1px solid #efd990;color:#6c5310;font-size:13px;line-height:1.55}.verse{padding:11px 0;border-bottom:1px solid #edf2f1;line-height:1.8}.verse:last-child{border-bottom:0}.num{display:inline-flex;align-items:center;justify-content:center;min-width:29px;height:29px;border-radius:9px;background:#e9f5f2;color:#0b6a5d;font-weight:800;margin-inline-end:8px;font-size:13px;vertical-align:top}.pageText{white-space:pre-wrap;line-height:2;font-size:16px}.empty{padding:28px 12px;text-align:center;color:#617572}.error{background:#fff1f1;border-color:#efbbbb;color:#842323}.back{border:0;background:transparent;color:#0f766e;font-weight:800;cursor:pointer;padding:8px 0}.meta{color:#647976;font-size:13px;margin-top:6px}body[dir="ltr"] .book{text-align:left}body[dir="rtl"] .book{text-align:right}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <span class="badge" id="previewBadge">پیش‌نمایش بازبینی</span>
+    <h1 id="title">کتاب‌های اپوکریفا — New Hope 7</h1>
+    <p id="subtitle">نسخهٔ تست مستقل ۱۹ کتاب؛ این صفحه به نسخهٔ اصلی کاربران وصل نیست.</p>
+    <p class="meta" id="version">Preview branch: preview-apocrypha-20260822</p>
+  </section>
+  <div class="toolbar" aria-label="Language">
+    <button class="lang active" data-lang="fa">فارسی</button>
+    <button class="lang" data-lang="en">English</button>
+    <button class="lang" data-lang="hr">Hrvatski</button>
+  </div>
+  <div id="state" class="status loading"><span class="dot"></span><span id="stateText">در حال بارگذاری ۱۹ کتاب…</span></div>
+  <div id="books" class="grid" hidden></div>
+  <section id="reader" class="reader" hidden>
+    <button id="back" class="back" type="button">← بازگشت به فهرست</button>
+    <div class="reader-head"><div><h2 id="bookTitle"></h2><div class="meta" id="bookMeta"></div></div><label><span id="unitLabel">فصل</span> <select id="unit" class="select"></select></label></div>
+    <div id="reviewNote" class="note"></div>
+    <div id="content"></div>
+  </section>
+</div>
+<script>
+(() => {
+  'use strict';
+  const DATA_URL = 'data/apocrypha/runtime/apocrypha-browser-19.preview.json?v=6401-test2';
+  const L = {
+    fa:{dir:'rtl',title:'کتاب‌های اپوکریفا — New Hope 7',sub:'نسخهٔ تست مستقل ۱۹ کتاب؛ این صفحه به نسخهٔ اصلی کاربران وصل نیست.',loading:'در حال بارگذاری ۱۹ کتاب…',failed:'داده‌های اپوکریفا بارگذاری نشد. لطفاً صفحه را دوباره باز کنید.',back:'← بازگشت به فهرست',chapter:'فصل',page:'صفحه',review:'این نسخه برای بازبینی است؛ ترجمه‌های تازه هنوز in_review هستند.',structured:'متن فصل‌بندی‌شده',document:'متن فارسی آمادهٔ پیشین — نمایش صفحه‌ای',prepared:'متن کرواتی آماده',empty:'برای این بخش متن قابل نمایش پیدا نشد.',books:'کتاب'},
+    en:{dir:'ltr',title:'Apocrypha — New Hope 7',sub:'Standalone test view of all 19 books; this page is isolated from the production app.',loading:'Loading the 19 books…',failed:'The Apocrypha data could not be loaded. Please reopen the page.',back:'← Back to books',chapter:'Chapter',page:'Page',review:'Review preview: newly prepared translations remain in_review.',structured:'Structured chapter text',document:'Previously prepared Persian text — page view',prepared:'Prepared Croatian text',empty:'No displayable text was found for this selection.',books:'books'},
+    hr:{dir:'ltr',title:'Apokrifi — New Hope 7',sub:'Samostalni testni prikaz svih 19 knjiga; ova stranica je odvojena od produkcijske aplikacije.',loading:'Učitavanje 19 knjiga…',failed:'Podaci apokrifnih knjiga nisu učitani. Ponovno otvorite stranicu.',back:'← Natrag na knjige',chapter:'Poglavlje',page:'Stranica',review:'Pregled za provjeru: novopripremljeni prijevodi ostaju in_review.',structured:'Tekst po poglavljima',document:'Ranije pripremljeni perzijski tekst — prikaz stranica',prepared:'Pripremljeni hrvatski tekst',empty:'Za ovaj odabir nije pronađen tekst za prikaz.',books:'knjiga'}
+  };
+  let asset=null, lang='fa', selected=null, mode='chapters';
+  const $=id=>document.getElementById(id);
+  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const titleFor=b=>b?.['title_'+lang] || b?.title_en || b?.title_fa || b?.book_id || '';
+  const preparedHr=b=>b?.hr_prepared || b?.croatian_prepared || null;
+  function localized(n){return lang==='fa'?String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]):String(n)}
+  function availableChapterRows(b, ch){
+    const chapter=(b.chapters||[]).find(x=>Number(x.chapter)===Number(ch));
+    if(!chapter)return [];
+    const key='text_'+lang;
+    return (chapter.verses||[]).filter(v=>typeof v[key]==='string'&&v[key].trim()).map(v=>({v:v.verse,t:v[key]}));
+  }
+  function hrPreparedChapterRows(b,ch){
+    const p=preparedHr(b); const c=(p?.chapters||[]).find(x=>Number(x.chapter)===Number(ch));
+    return (c?.verses||[]).filter(v=>typeof v.text_hr==='string'&&v.text_hr.trim()).map(v=>({v:v.verse,t:v.text_hr}));
+  }
+  function chapterNumbersFor(b){
+    let nums=[];
+    if(lang==='hr' && preparedHr(b)?.chapters?.length) nums=preparedHr(b).chapters.map(c=>Number(c.chapter));
+    else nums=(b.chapters||[]).filter(c=>availableChapterRows(b,c.chapter).length).map(c=>Number(c.chapter));
+    return [...new Set(nums)].filter(Number.isFinite).sort((a,b)=>a-b);
+  }
+  function resolveMode(b){
+    const nums=chapterNumbersFor(b);
+    if(nums.length)return {kind:'chapters',units:nums};
+    if(lang==='fa' && b.fa_document?.pages?.length)return {kind:'pages',units:b.fa_document.pages.map((_,i)=>i+1)};
+    return {kind:'none',units:[]};
+  }
+  function updateStatic(){
+    const u=L[lang]; document.documentElement.lang=lang; document.documentElement.dir=u.dir; document.body.dir=u.dir;
+    $('title').textContent=u.title; $('subtitle').textContent=u.sub; $('back').textContent=u.back;
+    document.querySelectorAll('.lang').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+    if(!asset){$('stateText').textContent=u.loading;return}
+    renderBooks(); if(selected) openBook(selected.book_id, true);
+  }
+  function coverageText(b){
+    const c=b.coverage||{};
+    const en=c.en?.chapters || b.chapters?.length || 0;
+    let tag='EN '+localized(en);
+    if(lang==='fa') tag += ' · FA';
+    if(lang==='hr') tag += ' · HR';
+    return tag;
+  }
+  function renderBooks(){
+    const root=$('books');
+    root.innerHTML=(asset.books||[]).map((b,i)=>`<button type="button" class="book" data-id="${esc(b.book_id)}"><strong>${localized(i+1)}. ${esc(titleFor(b))}</strong><small>${esc(b.title_en||'')}</small><small>${esc(coverageText(b))}</small></button>`).join('');
+    root.querySelectorAll('.book').forEach(btn=>btn.addEventListener('click',()=>openBook(btn.dataset.id)));
+    $('state').hidden=true; root.hidden=false;
+  }
+  function openBook(id, preserveUnit=false){
+    selected=(asset.books||[]).find(b=>b.book_id===id); if(!selected)return;
+    const u=L[lang], resolved=resolveMode(selected); mode=resolved.kind;
+    $('books').hidden=true; $('reader').hidden=false; $('bookTitle').textContent=titleFor(selected);
+    $('bookMeta').textContent=selected.title_en && lang!=='en' ? selected.title_en : selected.book_id;
+    $('reviewNote').textContent=u.review + (mode==='pages' ? ' '+u.document+'.' : lang==='hr'&&preparedHr(selected)?.chapters?.length ? ' '+u.prepared+'.' : ' '+u.structured+'.');
+    $('unitLabel').textContent=mode==='pages'?u.page:u.chapter;
+    const select=$('unit'), old=preserveUnit?Number(select.value):null;
+    select.innerHTML=resolved.units.map(n=>`<option value="${n}">${localized(n)}</option>`).join('');
+    if(old && resolved.units.includes(old)) select.value=String(old);
+    select.disabled=!resolved.units.length;
+    renderUnit(); window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function renderUnit(){
+    const u=L[lang], root=$('content'); if(!selected){return}
+    if(mode==='none'){root.innerHTML=`<div class="empty">${esc(u.empty)}</div>`;return}
+    const unit=Number($('unit').value)||1;
+    if(mode==='pages'){
+      const p=selected.fa_document.pages[unit-1];
+      root.innerHTML=p?.text?`<div class="pageText">${esc(p.text)}</div>`:`<div class="empty">${esc(u.empty)}</div>`; return;
+    }
+    let rows=lang==='hr'&&preparedHr(selected)?.chapters?.length?hrPreparedChapterRows(selected,unit):availableChapterRows(selected,unit);
+    root.innerHTML=rows.length?rows.map(v=>`<div class="verse"><span class="num">${localized(v.v)}</span><span>${esc(v.t)}</span></div>`).join(''):`<div class="empty">${esc(u.empty)}</div>`;
+  }
+  document.querySelectorAll('.lang').forEach(b=>b.addEventListener('click',()=>{lang=b.dataset.lang;updateStatic()}));
+  $('unit').addEventListener('change',renderUnit);
+  $('back').addEventListener('click',()=>{$('reader').hidden=true;$('books').hidden=false;selected=null;window.scrollTo({top:0,behavior:'smooth'})});
+  fetch(DATA_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}).then(data=>{
+    if(data?.asset_id!=='new_hope_7_apocrypha_browser_19_preview' || data?.totals?.books!==19)throw new Error('Invalid preview asset');
+    asset=data; renderBooks(); updateStatic();
+  }).catch(err=>{console.error(err);$('state').classList.add('error');$('state').classList.remove('loading');$('stateText').textContent=L[lang].failed});
+})();
+</script>
+</body>
+</html>
