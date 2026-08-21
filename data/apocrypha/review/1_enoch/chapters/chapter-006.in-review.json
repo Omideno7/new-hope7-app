@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 6,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "ce0a9cf607b5b161d4ac16948339f3e4b51d6e163b11ac025f6ec0124718249a",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And it came to pass when the children of men had multiplied that in those days were born unto them beautiful and comely daughters.",
+      "text_fa": null,
+      "text_hr": "Kad su se sinovi ljudski namnožili, u one im se dane rodiše lijepe i dražesne kćeri.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And the angels, the children of the heaven, saw and lusted after them, and said to one another: ‘Come, let us choose us wives from among the children of men and beget us children.’",
+      "text_fa": null,
+      "text_hr": "Anđeli, sinovi neba, ugledaše ih i poželješe pa rekoše jedni drugima: ‘Dođite, izaberimo sebi žene među kćerima ljudskim i rodimo sebi djecu.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And Semjâzâ, who was their leader, said unto them: ‘I fear ye will not indeed agree to do this deed, and I alone shall have to pay the penalty of a great sin.’",
+      "text_fa": null,
+      "text_hr": "A Semjaza, njihov vođa, reče im: ‘Bojim se da se vi zapravo nećete složiti izvršiti to djelo te ću ja sam morati platiti kaznu za velik grijeh.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And they all answered him and said: ‘Let us all swear an oath, and all bind ourselves by mutual imprecations not to abandon this plan but to do this thing.’",
+      "text_fa": null,
+      "text_hr": "Svi mu odgovoriše: ‘Zaklet ćemo se svi i uzajamnim se prokletstvima obvezati da nećemo napustiti taj naum, nego ćemo ga izvršiti.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "Then sware they all together and bound themselves by mutual imprecations upon it.",
+      "text_fa": null,
+      "text_hr": "Tada se svi zajedno zakleše i uzajamnim se prokletstvima na to obvezaše.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And they were in all two hundred; who descended ⌜in the days⌝ of =Jared= on the summit of Mount Hermon, and they called it Mount Hermon, because they had sworn and bound themselves by mutual imprecations upon it.",
+      "text_fa": null,
+      "text_hr": "Bilo ih je ukupno dvije stotine; sišli su ⌜u dane⌝ =Jareda= na vrh gore Hermon, a prozvali su je gorom Hermon jer su se ondje zakleli i vezali uzajamnim prokletstvima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And these are the names of their leaders: Sêmîazâz, their leader, Arâkîba, Râmêêl, Kôkabîêl, Tâmîêl, Râmîêl, Dânêl, Êzêqêêl, Barâqîjâl, Asâêl, Armârôs, Batârêl, Anânêl, Zaqîêl, Samsâpêêl, Satarêl, Tûrêl, Jômjâêl, =Sariêl=.",
+      "text_fa": null,
+      "text_hr": "Ovo su imena njihovih vođa: Semjaza, njihov vođa, Arakiba, Rameel, Kokabiel, Tamiel, Ramiel, Daniel, Ezekiel, Barakijal, Asael, Armaros, Batarel, Ananel, Zakiel, Samsapiel, Satarel, Turel, Jomjael i =Sariel=.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "These are their chiefs of tens.",
+      "text_fa": null,
+      "text_hr": "To su njihovi glavari nad deseticama.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

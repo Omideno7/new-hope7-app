@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 97,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "ecdc250e2435dab1b3cd82d3340da87d92ed9d84aeef7613b33defa46c55f081",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Believe, ye righteous, that the sinners will become a shame,\nAnd perish in the day of unrighteousness.",
+      "text_fa": null,
+      "text_hr": "Vjerujte, pravednici, da će grešnici postati sramota i propasti u dan nepravde.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "Be it known unto you (ye sinners) that the Most High is mindful of your destruction,\nAnd the angels of heaven rejoice over your destruction.",
+      "text_fa": null,
+      "text_hr": "Neka vam bude poznato, grešnici, da Svevišnji pamti vašu propast, a nebeski se anđeli raduju vašoj propasti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "What will ye do, ye sinners,\nAnd whither will ye flee on that day of judgement,\nWhen ye hear the voice of the prayer of the righteous?",
+      "text_fa": null,
+      "text_hr": "Što ćete učiniti, vi grešnici, i kamo ćete pobjeći na onaj sudnji dan, Kada čujete glas molitve pravednika?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "Yea, ye shall fare like unto them,\nAgainst whom this word shall be a testimony:\n“Ye have been companions of sinners.”",
+      "text_fa": null,
+      "text_hr": "Da, bit ćete poput onih protiv kojih će ova riječ svjedočiti: ‘Bili ste drugovi grešnika.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And in those days the prayer of the righteous shall reach unto the Lord.\nAnd for you the days of your judgement shall come,",
+      "text_fa": null,
+      "text_hr": "I u one će dane molitva pravednika stići do Gospodina. I za vas će doći dani vašeg suda,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And all the words of your unrighteousness shall be read out before the Great Holy One;\nAnd your faces shall be covered with shame,\nAnd He will reject every work which is grounded on unrighteousness.",
+      "text_fa": null,
+      "text_hr": "I sve riječi vaše nepravednosti bit će pročitane pred Velikim Svetim; i vaša će lica biti prekrivena sramotom, i On će odbaciti svako djelo koje je utemeljeno na nepravdi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "Woe to you, ye sinners, who live on the mid-ocean and on the dry land,\nWhose remembrance is evil against you.",
+      "text_fa": null,
+      "text_hr": "Teško vama, grešnici koji živite usred oceana i na kopnu, jer je spomen na vas zao.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "Woe to you who acquire silver and gold in unrighteousness, and say:\n“We have become rich with riches and have possessions,\nAnd have acquired everything we have desired.",
+      "text_fa": null,
+      "text_hr": "Teško vama koji nepravedno stječete srebro i zlato i govorite: ‘Obogatili smo se, imamo posjede i stekli smo sve što smo željeli.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And now let us do what we purposed:\nFor we have gathered silver,\n9^d And many are the husbandmen in our houses,\n9^c And our granaries are (brim)full as with water.”",
+      "text_fa": null,
+      "text_hr": "A sada učinimo što smo naumili, jer smo nakupili srebro; 9^d mnogo je ratara u našim kućama, 9^c a žitnice su nam pune do vrha kao vodom.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "Yea, and like water your lies shall flow away;\nFor your riches shall not abide,\nBut speedily ascend from you;\nFor ye have acquired it all in unrighteousness,\nAnd ye shall be given over to a great curse.",
+      "text_fa": null,
+      "text_hr": "Da, vaše će laži oteći poput vode. Vaše bogatstvo neće opstati, nego će brzo otići od vas, jer ste sve stekli u nepravdi i bit ćete predani velikom prokletstvu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

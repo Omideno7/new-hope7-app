@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 105,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "dc93114b16019d611dcf64ba35239000756bcd0eeb3fd84f14f187bf5612ec8c",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "In those days the Lord bade (them) to summon and testify to the children of earth concerning their wisdom: Show (it) unto them; for ye are their guides, and a recompense over the whole earth.",
+      "text_fa": null,
+      "text_hr": "U one dane Gospodin im zapovjedi da pozovu djecu zemlje i posvjedoče im o njihovoj mudrosti: ‘Pokažite im je, jer vi ste njihovi vodiči i nagrada po svoj zemlji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "For I and My Son will be united with them for ever in the paths of uprightness in their lives; and ye shall have peace: rejoice, ye children of uprightness. Amen.",
+      "text_fa": null,
+      "text_hr": "Jer Ja i Moj Sin bit ćemo ujedinjeni s njima zauvijek na stazama čestitosti u njihovim životima; i imat ćete mir: radujte se, sinovi poštenja. Amen.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

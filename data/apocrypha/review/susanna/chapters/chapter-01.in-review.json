@@ -1,0 +1,529 @@
+{
+  "schema_version": 1,
+  "book_id": "susanna",
+  "title_fa": "سوسنا",
+  "title_en": "Susanna",
+  "title_hr": "Suzana",
+  "chapter": 1,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "f948fa7060c77731645f45c54d05807a2ead535a27d779359061522529dc386e",
+  "locales_in_scope": [
+    "fa"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "There dwelt a man in Babylon, called Joacim:",
+      "text_fa": "مردی به نام یواقیم در بابل زندگی می‌کرد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 2,
+      "text_en": "And he took a wife, whose name was Susanna, the daughter of Chelcias, a very fair woman, and one that feared the Lord.",
+      "text_fa": "او با زنی به نام سوسنا، دختر حِلقیا، ازدواج کرد؛ زنی بسیار زیبا که از خداوند می‌ترسید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 3,
+      "text_en": "Her parents also were righteous, and taught their daughter according to the law of Moses.",
+      "text_fa": "پدر و مادرش نیز پارسا بودند و دختر خود را مطابق شریعت موسی تعلیم داده بودند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 4,
+      "text_en": "Now Joacim was a great rich man, and had a fair garden joining unto his house: and to him resorted the Jews; because he was more honourable than all others.",
+      "text_fa": "یواقیم مردی بسیار ثروتمند بود و باغی زیبا در کنار خانه‌اش داشت. یهودیان نزد او گرد می‌آمدند، زیرا از همه محترم‌تر بود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 5,
+      "text_en": "The same year were appointed two of the ancients of the people to be judges, such as the Lord spake of, that wickedness came from Babylon from ancient judges, who seemed to govern the people.",
+      "text_fa": "در همان سال دو تن از پیران قوم به داوری گماشته شدند؛ همان کسانی که خداوند درباره‌شان گفته بود: «شرارت از بابل، از داوران سالخورده‌ای که خود را حاکم قوم می‌نمایاندند، برخاسته است.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 6,
+      "text_en": "These kept much at Joacim’s house: and all that had any suits in law came unto them.",
+      "text_fa": "آنان بیشتر وقت خود را در خانهٔ یواقیم می‌گذراندند و هرکس دعوایی حقوقی داشت نزد ایشان می‌آمد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 7,
+      "text_en": "Now when the people departed away at noon, Susanna went into her husband’s garden to walk.",
+      "text_fa": "هنگامی که مردم ظهر پراکنده می‌شدند، سوسنا برای قدم‌زدن به باغ شوهرش می‌رفت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 8,
+      "text_en": "And the two elders saw her going in every day, and walking; so that their lust was inflamed toward her.",
+      "text_fa": "آن دو پیر هر روز او را می‌دیدند که وارد باغ می‌شود و قدم می‌زند؛ ازاین‌رو شهوتشان نسبت به او شعله‌ور شد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 9,
+      "text_en": "And they perverted their own mind, and turned away their eyes, that they might not look unto heaven, nor remember just judgments.",
+      "text_fa": "ذهن خود را منحرف ساختند و چشمانشان را برگرداندند تا نه به آسمان بنگرند و نه داوری‌های عادلانه را به یاد آورند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 10,
+      "text_en": "And albeit they both were wounded with her love, yet durst not one shew another his grief.",
+      "text_fa": "هرچند هر دو گرفتار اشتیاق به او شده بودند، هیچ‌یک جرئت نمی‌کرد درد خود را برای دیگری آشکار کند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 11,
+      "text_en": "For they were ashamed to declare their lust, that they desired to have to do with her.",
+      "text_fa": "زیرا شرم داشتند شهوت خود و میلشان به هم‌بسترشدن با او را بازگو کنند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 12,
+      "text_en": "Yet they watched diligently from day to day to see her.",
+      "text_fa": "بااین‌حال، روزبه‌روز با دقت چشم‌به‌راه بودند تا او را ببینند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 13,
+      "text_en": "And the one said to the other, Let us now go home: for it is dinner time.",
+      "text_fa": "روزی یکی به دیگری گفت: «اکنون به خانه برویم، چون وقت ناهار است.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 14,
+      "text_en": "So when they were gone out, they parted the one from the other, and turning back again they came to the same place; and after that they had asked one another the cause, they acknowledged their lust: then appointed they a time both together, when they might find her alone.",
+      "text_fa": "پس بیرون رفتند و از یکدیگر جدا شدند، اما هر دو برگشتند و دوباره به همان‌جا آمدند. چون از یکدیگر علت بازگشت را پرسیدند، به شهوت خود اعتراف کردند؛ سپس زمانی را تعیین کردند تا با هم او را تنها بیابند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 15,
+      "text_en": "And it fell out, as they watched a fit time, she went in as before with two maids only, and she was desirous to wash herself in the garden: for it was hot.",
+      "text_fa": "درحالی‌که منتظر فرصت مناسبی بودند، سوسنا مانند روزهای پیش تنها با دو کنیز وارد باغ شد و چون هوا گرم بود، خواست در باغ خود را بشوید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 16,
+      "text_en": "And there was no body there save the two elders, that had hid themselves, and watched her.",
+      "text_fa": "هیچ‌کس جز آن دو پیر که پنهان شده و او را زیر نظر داشتند، در آنجا نبود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 17,
+      "text_en": "Then she said to her maids, Bring me oil and washing balls, and shut the garden doors, that I may wash me.",
+      "text_fa": "سوسنا به کنیزانش گفت: «برایم روغن و صابون بیاورید و درهای باغ را ببندید تا خود را بشویم.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 18,
+      "text_en": "And they did as she bade them, and shut the garden doors, and went out themselves at privy doors to fetch the things that she had commanded them: but they saw not the elders, because they were hid.",
+      "text_fa": "آنان مطابق فرمانش عمل کردند، درهای باغ را بستند و خود از درهای پشتی بیرون رفتند تا چیزهایی را که خواسته بود بیاورند؛ اما پیران را ندیدند، زیرا پنهان شده بودند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 19,
+      "text_en": "Now when the maids were gone forth, the two elders rose up, and ran unto her, saying,",
+      "text_fa": "وقتی کنیزان بیرون رفتند، آن دو پیر برخاستند، به‌سوی سوسنا دویدند و گفتند:",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 20,
+      "text_en": "Behold, the garden doors are shut, that no man can see us, and we are in love with thee; therefore consent unto us, and lie with us.",
+      "text_fa": "«ببین، درهای باغ بسته است و هیچ‌کس ما را نمی‌بیند. ما شیفتهٔ تو هستیم؛ پس به خواستهٔ ما تن بده و با ما هم‌بستر شو.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 21,
+      "text_en": "If thou wilt not, we will bear witness against thee, that a young man was with thee: and therefore thou didst send away thy maids from thee.",
+      "text_fa": "اگر نپذیری، علیه تو شهادت می‌دهیم که مرد جوانی با تو بوده و به همین سبب کنیزانت را از خود دور کرده‌ای.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 22,
+      "text_en": "Then Susanna sighed, and said, I am straitened on every side: for if I do this thing, it is death unto me: and if I do it not I cannot escape your hands.",
+      "text_fa": "سوسنا آهی کشید و گفت: «از هر سو گرفتار شده‌ام؛ اگر این کار را انجام دهم، برایم مرگ است، و اگر انجام ندهم، از دست شما نمی‌توانم بگریزم.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 23,
+      "text_en": "It is better for me to fall into your hands, and not do it, than to sin in the sight of the Lord.",
+      "text_fa": "برایم بهتر است بی‌آنکه چنین کاری کنم به دست شما بیفتم، تا اینکه در حضور خداوند گناه ورزم.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 24,
+      "text_en": "With that Susanna cried with a loud voice: and the two elders cried out against her.",
+      "text_fa": "آنگاه سوسنا با صدای بلند فریاد زد و آن دو پیر نیز علیه او فریاد کشیدند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 25,
+      "text_en": "Then ran the one, and opened the garden door.",
+      "text_fa": "یکی از آنان دوید و در باغ را گشود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 26,
+      "text_en": "So when the servants of the house heard the cry in the garden, they rushed in at the privy door, to see what was done unto her.",
+      "text_fa": "وقتی خدمتگزاران خانه فریاد را در باغ شنیدند، از در پشتی به داخل هجوم آوردند تا ببینند چه بر سر او آمده است.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 27,
+      "text_en": "But when the elders had declared their matter, the servants were greatly ashamed: for there was never such a report made of Susanna.",
+      "text_fa": "اما هنگامی که پیران ماجرا را به روایت خود بیان کردند، خدمتگزاران بسیار شرمسار شدند، زیرا هرگز چنین سخنی دربارهٔ سوسنا گفته نشده بود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 28,
+      "text_en": "And it came to pass the next day, when the people were assembled to her husband Joacim, the two elders came also full of mischievous imagination against Susanna to put her to death;",
+      "text_fa": "روز بعد، هنگامی که مردم در خانهٔ شوهرش یواقیم گرد آمده بودند، آن دو پیر نیز با نقشه‌ای پلید علیه سوسنا آمدند تا او را به مرگ بسپارند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 29,
+      "text_en": "And said before the people, Send for Susanna, the daughter of Chelcias, Joacim’s wife. And so they sent.",
+      "text_fa": "آنان در برابر مردم گفتند: «سوسنا، دختر حِلقیا و همسر یواقیم را فراخوانید.» پس در پی او فرستادند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 30,
+      "text_en": "So she came with her father and mother, her children, and all her kindred.",
+      "text_fa": "او همراه پدر و مادر، فرزندان و همهٔ خویشاوندانش آمد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 31,
+      "text_en": "Now Susanna was a very delicate woman, and beauteous to behold.",
+      "text_fa": "سوسنا زنی بسیار لطیف و زیبارو بود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 32,
+      "text_en": "And these wicked men commanded to uncover her face, (for she was covered) that they might be filled with her beauty.",
+      "text_fa": "آن مردان شریر دستور دادند پوشش چهره‌اش را بردارند، زیرا صورتش پوشیده بود، تا از زیبایی او لذت ببرند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 33,
+      "text_en": "Therefore her friends and all that saw her wept.",
+      "text_fa": "دوستانش و همهٔ کسانی که او را دیدند، گریستند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 34,
+      "text_en": "Then the two elders stood up in the midst of the people, and laid their hands upon her head.",
+      "text_fa": "آنگاه آن دو پیر در میان مردم برخاستند و دست‌های خود را بر سر او گذاشتند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 35,
+      "text_en": "And she weeping looked up toward heaven: for her heart trusted in the Lord.",
+      "text_fa": "سوسنا درحالی‌که می‌گریست به آسمان نگریست، زیرا دلش بر خداوند توکل داشت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 36,
+      "text_en": "And the elders said, As we walked in the garden alone, this woman came in with two maids, and shut the garden doors, and sent the maids away.",
+      "text_fa": "پیران گفتند: «هنگامی که تنها در باغ قدم می‌زدیم، این زن با دو کنیز وارد شد، درهای باغ را بست و کنیزان را مرخص کرد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 37,
+      "text_en": "Then a young man, who there was hid, came unto her, and lay with her.",
+      "text_fa": "سپس مرد جوانی که آنجا پنهان شده بود نزد او آمد و با او هم‌بستر شد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 38,
+      "text_en": "Then we that stood in a corner of the garden, seeing this wickedness, ran unto them.",
+      "text_fa": "ما که در گوشه‌ای از باغ ایستاده بودیم، با دیدن این شرارت به‌سوی آنان دویدیم.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 39,
+      "text_en": "And when we saw them together, the man we could not hold: for he was stronger than we, and opened the door, and leaped out.",
+      "text_fa": "وقتی آن دو را با هم دیدیم، نتوانستیم مرد را بگیریم، زیرا از ما نیرومندتر بود؛ در را باز کرد و گریخت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 40,
+      "text_en": "But having taken this woman, we asked who the young man was, but she would not tell us: these things do we testify.",
+      "text_fa": "اما این زن را گرفتیم و پرسیدیم آن مرد جوان چه کسی بود، ولی به ما نگفت. بر این امور شهادت می‌دهیم.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 41,
+      "text_en": "Then the assembly believed them as those that were the elders and judges of the people: so they condemned her to death.",
+      "text_fa": "جماعت سخن آنان را باور کرد، زیرا از پیران و داوران قوم بودند؛ پس سوسنا را به مرگ محکوم کردند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 42,
+      "text_en": "Then Susanna cried out with a loud voice, and said, O everlasting God, that knowest the secrets, and knowest all things before they be:",
+      "text_fa": "آنگاه سوسنا با صدای بلند فریاد زد و گفت: «ای خدای جاودان که رازها را می‌دانی و پیش از وقوع هر چیز از آن آگاهی،",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 43,
+      "text_en": "Thou knowest that they have borne false witness against me, and, behold, I must die; whereas I never did such things as these men have maliciously invented against me.",
+      "text_fa": "تو می‌دانی که آنان علیه من شهادت دروغ داده‌اند. اکنون باید بمیرم، با آنکه هرگز کارهایی را که این مردان از روی بدخواهی علیه من ساخته‌اند انجام نداده‌ام.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 44,
+      "text_en": "And the Lord heard her voice.",
+      "text_fa": "و خداوند صدای او را شنید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 45,
+      "text_en": "Therefore when she was led to be put to death, the Lord raised up the holy spirit of a young youth whose name was Daniel:",
+      "text_fa": "هنگامی که او را برای کشتن می‌بردند، خداوند روح پاک جوانی به نام دانیال را برانگیخت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 46,
+      "text_en": "Who cried with a loud voice, I am clear from the blood of this woman.",
+      "text_fa": "او با صدای بلند فریاد زد: «من از خون این زن بی‌گناهم.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 47,
+      "text_en": "Then all the people turned them toward him, and said, What mean these words that thou hast spoken?",
+      "text_fa": "همهٔ مردم به‌سوی او برگشتند و گفتند: «این سخنی که گفتی چه معنایی دارد؟»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 48,
+      "text_en": "So he standing in the midst of them said, Are ye such fools, ye sons of Israel, that without examination or knowledge of the truth ye have condemned a daughter of Israel?",
+      "text_fa": "دانیال در میان آنان ایستاد و گفت: «ای بنی‌اسرائیل، آیا تا این اندازه نادانید که بدون بازجویی و شناخت حقیقت، دختری از اسرائیل را محکوم کرده‌اید؟",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 49,
+      "text_en": "Return again to the place of judgment: for they have borne false witness against her.",
+      "text_fa": "به جایگاه داوری بازگردید، زیرا این دو علیه او شهادت دروغ داده‌اند.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 50,
+      "text_en": "Wherefore all the people turned again in haste, and the elders said unto him, Come, sit down among us, and shew it us, seeing God hath given thee the honour of an elder.",
+      "text_fa": "پس همهٔ مردم شتابان بازگشتند و پیران قوم به دانیال گفتند: «بیا در میان ما بنشین و موضوع را برایمان روشن کن، زیرا خدا منزلت یک پیر قوم را به تو بخشیده است.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 51,
+      "text_en": "Then said Daniel unto them, Put these two aside one far from another, and I will examine them.",
+      "text_fa": "دانیال به آنان گفت: «این دو را دور از یکدیگر جدا نگه دارید تا از ایشان بازجویی کنم.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 52,
+      "text_en": "So when they were put asunder one from another, he called one of them, and said unto him, O thou that art waxen old in wickedness, now thy sins which thou hast committed aforetime are come to light.",
+      "text_fa": "وقتی آنان را از هم جدا کردند، دانیال یکی را فراخواند و گفت: «ای کسی که در شرارت پیر شده‌ای، اکنون گناهانی که پیش‌تر مرتکب شده‌ای آشکار شده است.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 53,
+      "text_en": "For thou hast pronounced false judgment and hast condemned the innocent and hast let the guilty go free; albeit the Lord saith, The innocent and righteous shalt thou not slay.",
+      "text_fa": "زیرا داوری دروغین کرده‌ای، بی‌گناه را محکوم ساخته و گناهکار را آزاد گذاشته‌ای؛ با آنکه خداوند می‌فرماید: بی‌گناه و پارسا را مکش.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 54,
+      "text_en": "Now then, if thou hast seen her, tell me, Under what tree sawest thou them companying together? Who answered, Under a mastick tree.",
+      "text_fa": "حال اگر واقعاً او را دیده‌ای، بگو زیر کدام درخت آن دو را با هم دیدی؟» پاسخ داد: «زیر درخت مصطکی.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 55,
+      "text_en": "And Daniel said, Very well; thou hast lied against thine own head; for even now the angel of God hath received the sentence of God to cut thee in two.",
+      "text_fa": "دانیال گفت: «بسیار خوب؛ این دروغ به قیمت جانت تمام می‌شود، زیرا همین اکنون فرشتهٔ خدا حکم خدا را دریافت کرده است تا تو را دو نیم کند.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 56,
+      "text_en": "So he put him aside, and commanded to bring the other, and said unto him, O thou seed of Chanaan, and not of Juda, beauty hath deceived thee, and lust hath perverted thine heart.",
+      "text_fa": "سپس او را کنار گذاشت و دستور داد دیگری را بیاورند. به او گفت: «ای نسل کنعان، نه یهودا، زیبایی تو را فریفته و شهوت دلت را منحرف ساخته است.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 57,
+      "text_en": "Thus have ye dealt with the daughters of Israel, and they for fear companied with you: but the daughter of Juda would not abide your wickedness.",
+      "text_fa": "شما با دختران اسرائیل چنین رفتار می‌کردید و آنان از ترس تسلیم شما می‌شدند؛ اما این دختر یهودا زیر بار شرارت شما نرفت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 58,
+      "text_en": "Now therefore tell me, Under what tree didst thou take them companying together? Who answered, Under an holm tree.",
+      "text_fa": "اکنون بگو زیر کدام درخت آن دو را با هم گرفتی؟» پاسخ داد: «زیر درخت بلوط همیشه‌سبز.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 59,
+      "text_en": "Then said Daniel unto him, Well; thou hast also lied against thine own head: for the angel of God waiteth with the sword to cut thee in two, that he may destroy you.",
+      "text_fa": "دانیال به او گفت: «تو نیز با این دروغ حکم مرگ خود را صادر کردی، زیرا فرشتهٔ خدا با شمشیر منتظر است تا تو را دو نیم کند و هر دوی شما را نابود سازد.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 60,
+      "text_en": "With that all the assembly cried out with a loud voice, and praised God, who saveth them that trust in him.",
+      "text_fa": "آنگاه همهٔ جماعت با صدای بلند فریاد زدند و خدایی را ستودند که توکل‌کنندگان بر خود را نجات می‌دهد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 61,
+      "text_en": "And they arose against the two elders, for Daniel had convicted them of false witness by their own mouth:",
+      "text_fa": "سپس علیه آن دو پیر برخاستند، زیرا دانیال با سخنان خودشان ثابت کرده بود که شهادت دروغ داده‌اند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 62,
+      "text_en": "And according to the law of Moses they did unto them in such sort as they maliciously intended to do to their neighbour: and they put them to death. Thus the innocent blood was saved the same day.",
+      "text_fa": "مطابق شریعت موسی، همان کاری را با آنان کردند که از روی بدخواهی قصد داشتند با همسایهٔ خود انجام دهند؛ آنان را کشتند و در آن روز خون بی‌گناه نجات یافت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 63,
+      "text_en": "Therefore Chelcias and his wife praised God for their daughter Susanna, with Joacim her husband, and all the kindred, because there was no dishonesty found in her.",
+      "text_fa": "پس حِلقیا و همسرش برای دخترشان سوسنا خدا را ستودند؛ یواقیم، شوهر سوسنا، و همهٔ خویشاوندان نیز خدا را ستودند، زیرا هیچ بی‌عفتی در او یافت نشد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 64,
+      "text_en": "From that day forth was Daniel had in great reputation in the sight of the people.",
+      "text_fa": "از آن روز به بعد، دانیال در نظر مردم بسیار محترم شمرده شد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    }
+  ]
+}

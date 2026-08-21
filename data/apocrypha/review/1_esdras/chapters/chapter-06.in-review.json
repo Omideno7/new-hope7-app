@@ -1,0 +1,289 @@
+{
+  "schema_version": 1,
+  "book_id": "1_esdras",
+  "title_fa": "اول اِسدراس",
+  "title_en": "First Esdras",
+  "title_hr": "Prva Ezdrina",
+  "chapter": 6,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "3d99065228182c7855dffdd8ecd8fb7f9ab40c57d9fe73d3d3e6d0233a85b1f0",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Now in the second year of the reign of Darius Aggeus and Zacharias the son of Addo, the prophets, prophesied unto the Jews in Jewry and Jerusalem in the name of the Lord God of Israel, which was upon them.",
+      "text_fa": null,
+      "text_hr": "Druge godine Darijeva kraljevanja proroci Hagaj i Zaharija, sin Idov, prorokovali su Židovima u Judeji i Jeruzalemu u ime Gospodina, Boga Izraelova, koji je bio nad njima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "Then stood up Zorobabel the son of Salatiel, and Jesus the son of Josedec, and began to build the house of the Lord at Jerusalem, the prophets of the Lord being with them, and helping them.",
+      "text_fa": null,
+      "text_hr": "Tada ustadoše Zorobabel, sin Šealtielov, i Ješua, sin Josadakov, te počeše graditi Dom Gospodnji u Jeruzalemu. Proroci Gospodnji bili su s njima i pomagali im.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "At the same time came unto them Sisinnes the governor of Syria and Phenice, with Sathrabuzanes and his companions, and said unto them,",
+      "text_fa": null,
+      "text_hr": "U isto su vrijeme k njima došli Sisines, upravitelj Sirije i Fenicije, Satrabuzan i njihovi drugovi te ih upitali:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "By whose appointment do ye build this house and this roof, and perform all the other things? and who are the workmen that perform these things?",
+      "text_fa": null,
+      "text_hr": "„Po čijoj odredbi gradite ovaj Dom i podižete ovaj krov te obavljate sve ostale radove? Tko su graditelji koji to rade?“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "Nevertheless the elders of the Jews obtained favour, because the Lord had visited the captivity;",
+      "text_fa": null,
+      "text_hr": "Ipak su židovski starješine uživali naklonost jer je Gospodin pohodio povratnike iz sužanjstva.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And they were not hindered from building, until such time as signification was given unto Darius concerning them, and an answer received.",
+      "text_fa": null,
+      "text_hr": "Gradnja im nije bila obustavljena dok Darije nije bio obaviješten o njima i dok nije stigao odgovor.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "The copy of the letters which Sisinnes, governor of Syria and Phenice, and Sathrabuzanes, with their companions, rulers in Syria and Phenice, wrote and sent unto Darius; To king Darius, greeting:",
+      "text_fa": null,
+      "text_hr": "Ovo je prijepis pisma koje su Sisines, upravitelj Sirije i Fenicije, Satrabuzan i njihovi drugovi, poglavari u Siriji i Feniciji, napisali i poslali Dariju: „Kralju Dariju, pozdrav!",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "Let all things be known unto our lord the king, that being come into the country of Judea, and entered into the city of Jerusalem we found in the city of Jerusalem the ancients of the Jews that were of the captivity",
+      "text_fa": null,
+      "text_hr": "Neka naš gospodar kralj bude o svemu obaviješten: došli smo u Judeju i ušli u grad Jeruzalem. Ondje smo zatekli židovske starješine, povratnike iz sužanjstva,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "Building an house unto the Lord, great and new, of hewn and costly stones, and the timber already laid upon the walls.",
+      "text_fa": null,
+      "text_hr": "kako Gospodinu grade velik i nov Dom od klesanoga dragocjenog kamena, a grede su već položene na zidove.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And those works are done with great speed, and the work goeth on prosperously in their hands, and with all glory and diligence is it made.",
+      "text_fa": null,
+      "text_hr": "Ti se radovi obavljaju velikom brzinom; djelo u njihovim rukama dobro napreduje i izvršava se sa svom krasotom i marljivošću.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "Then asked we these elders, saying, By whose commandment build ye this house, and lay the foundations of these works?",
+      "text_fa": null,
+      "text_hr": "Tada smo upitali starješine: ‘Po čijoj zapovijedi gradite ovaj Dom i polažete temelje ovim radovima?’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "Therefore to the intent that we might give knowledge unto thee by writing, we demanded of them who were the chief doers, and we required of them the names in writing of their principal men.",
+      "text_fa": null,
+      "text_hr": "Da bismo te mogli pismeno obavijestiti, pitali smo ih tko predvodi radove i zatražili da nam napišu imena svojih glavara.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "So they gave us this answer, We are the servants of the Lord which made heaven and earth.",
+      "text_fa": null,
+      "text_hr": "Odgovorili su nam ovako: ‘Mi smo sluge Gospodina koji je stvorio nebo i zemlju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "And as for this house, it was builded many years ago by a king of Israel great and strong, and was finished.",
+      "text_fa": null,
+      "text_hr": "Ovaj je Dom prije mnogo godina sagradio velik i moćan izraelski kralj te ga dovršio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "But when our fathers provoked God unto wrath, and sinned against the Lord of Israel which is in heaven, he gave them over into the power of Nabuchodonosor king of Babylon, of the Chaldees;",
+      "text_fa": null,
+      "text_hr": "Ali kad su naši oci izazvali Božju srdžbu i sagriješili protiv Gospodina Izraelova koji je na nebu, predao ih je u ruke kaldejskoga kralja Nabukodonozora Babilonskoga.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "Who pulled down the house, and burned it, and carried away the people captives unto Babylon.",
+      "text_fa": null,
+      "text_hr": "On je Dom porušio i spalio, a narod kao sužnje odveo u Babilon.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "But in the first year that king Cyrus reigned over the country of Babylon Cyrus the king wrote to build up this house.",
+      "text_fa": null,
+      "text_hr": "No prve godine vladavine kralja Kira nad Babilonijom kralj Kir napisao je zapovijed da se ovaj Dom ponovno izgradi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "And the holy vessels of gold and of silver, that Nabuchodonosor had carried away out of the house at Jerusalem, and had set them in his own temple those Cyrus the king brought forth again out of the temple at Babylon, and they were delivered to Zorobabel and to Sanabassarus the ruler,",
+      "text_fa": null,
+      "text_hr": "Svete zlatne i srebrne posude koje je Nabukodonozor odnio iz jeruzalemskoga Doma i smjestio u svoj hram kralj Kir ponovno je iznio iz babilonskoga hrama i predao Zorobabelu i upravitelju Šešbasaru,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "With commandment that he should carry away the same vessels, and put them in the temple at Jerusalem; and that the temple of the Lord should be built in his place.",
+      "text_fa": null,
+      "text_hr": "zapovjedivši da te posude odnesu i postave u Hramu u Jeruzalemu te da se Hram Gospodnji sagradi na svojem mjestu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "Then the same Sanabassarus, being come hither, laid the foundations of the house of the Lord at Jerusalem; and from that time to this being still a building, it is not yet fully ended.",
+      "text_fa": null,
+      "text_hr": "Kad je Šešbasar došao ovamo, položio je temelje Doma Gospodnjega u Jeruzalemu. Otada se gradi sve do danas, ali još nije posve dovršen.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "Now therefore, if it seem good unto the king, let search be made among the records of king Cyrus:",
+      "text_fa": null,
+      "text_hr": "Stoga, ako je kralju po volji, neka se pretraže spisi kralja Kira.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "And if it be found that the building of the house of the Lord at Jerusalem hath been done with the consent of king Cyrus, and if our lord the king be so minded, let him signify unto us thereof.",
+      "text_fa": null,
+      "text_hr": "Ako se utvrdi da je gradnju Doma Gospodnjega u Jeruzalemu odobrio kralj Kir i ako je to po volji našemu gospodaru kralju, neka nam javi svoju odluku.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "Then commanded king Darius to seek among the records at Babylon: and so at Ecbatane the palace, which is in the country of Media, there was found a roll wherein these things were recorded.",
+      "text_fa": null,
+      "text_hr": "Kralj Darije tada je zapovjedio da se pretraže spisi u Babilonu. U tvrđavi Ekbatani, u medijskoj zemlji, pronađen je svitak na kojem je bilo zapisano:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "In the first year of the reign of Cyrus king Cyrus commanded that the house of the Lord at Jerusalem should be built again, where they do sacrifice with continual fire:",
+      "text_fa": null,
+      "text_hr": "„Prve godine vladavine kralja Kira kralj Kir zapovjedio je da se ponovno izgradi Dom Gospodnji u Jeruzalemu, gdje se prinose žrtve uz trajnu vatru.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "Whose height shall be sixty cubits and the breadth sixty cubits, with three rows of hewn stones, and one row of new wood of that country; and the expences thereof to be given out of the house of king Cyrus:",
+      "text_fa": null,
+      "text_hr": "Neka mu visina bude šezdeset lakata i širina šezdeset lakata, s tri reda klesanoga kamena i jednim redom novoga domaćeg drveta; troškovi neka se podmire iz kuće kralja Kira.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "And that the holy vessels of the house of the Lord, both of gold and silver, that Nabuchodonosor took out of the house at Jerusalem, and brought to Babylon, should be restored to the house at Jerusalem, and be set in the place where they were before.",
+      "text_fa": null,
+      "text_hr": "Neka se i svete zlatne i srebrne posude Doma Gospodnjega, koje je Nabukodonozor odnio iz jeruzalemskoga Doma i donio u Babilon, vrate u Dom u Jeruzalemu i postave ondje gdje su bile prije.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "And also he commanded that Sisinnes the governor of Syria and Phenice, and Sathrabuzanes, and their companions, and those which were appointed rulers in Syria and Phenice, should be careful not to meddle with the place, but suffer Zorobabel, the servant of the Lord, and governor of Judea, and the elders of the Jews, to build the house of the Lord in that place.",
+      "text_fa": null,
+      "text_hr": "Zapovjedio je i da Sisines, upravitelj Sirije i Fenicije, Satrabuzan i njihovi drugovi te svi koji su postavljeni za poglavare u Siriji i Feniciji ne zadiru u to mjesto, nego dopuste Zorobabelu, sluzi Gospodnjem i upravitelju Judeje, te židovskim starješinama da ondje grade Dom Gospodnji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "I have commanded also to have it built up whole again; and that they look diligently to help those that be of the captivity of the Jews, till the house of the Lord be finished:",
+      "text_fa": null,
+      "text_hr": "I ja sam zapovjedio da se Dom ponovno sagradi u cijelosti. Neka pomno pomažu povratnicima iz židovskoga sužanjstva dok Dom Gospodnji ne bude dovršen.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "And out of the tribute of Celosyria and Phenice a portion carefully to be given these men for the sacrifices of the Lord, that is, to Zorobabel the governor, for bullocks, and rams, and lambs;",
+      "text_fa": null,
+      "text_hr": "Od danka Koelesirije i Fenicije neka se tim ljudima, to jest upravitelju Zorobabelu, redovito daje dio za žrtve Gospodnje: za junce, ovnove i janjce.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "And also corn, salt, wine, and oil, and that continually every year without further question, according as the priests that be in Jerusalem shall signify to be daily spent:",
+      "text_fa": null,
+      "text_hr": "Neka se i pšenica, sol, vino i ulje daju bez prekida iz godine u godinu i bez daljnjega propitivanja, prema količinama za dnevnu uporabu koje odrede svećenici u Jeruzalemu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "That offerings may be made to the most high God for the king and for his children, and that they may pray for their lives.",
+      "text_fa": null,
+      "text_hr": "Tako će se moći prinositi žrtve Svevišnjemu Bogu za kralja i njegovu djecu te moliti za njihov život.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "And he commanded that whosoever should transgress, yea, or make light of any thing afore spoken or written, out of his own house should a tree be taken, and he thereon be hanged, and all his goods seized for the king.",
+      "text_fa": null,
+      "text_hr": "Zapovjedio je da se svakomu tko prestupi ili prezre bilo što od prethodno izrečenoga ili napisanoga iz njegove kuće iščupa greda, da ga na njoj objese, a sva njegova dobra zaplijene za kralja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "The Lord therefore, whose name is there called upon, utterly destroy every king and nation, that stretcheth out his hand to hinder or endamage that house of the Lord in Jerusalem.",
+      "text_fa": null,
+      "text_hr": "Neka Gospodin, čije se ime ondje zaziva, potpuno uništi svakoga kralja i narod koji pruži ruku da omete ili ošteti taj Dom Gospodnji u Jeruzalemu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 34,
+      "text_en": "I Darius the king have ordained that according unto these things it be done with diligence.",
+      "text_fa": null,
+      "text_hr": "Ja, kralj Darije, odredio sam da se sve to izvrši pomno i bez odlaganja.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 48,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "cf62c8e2806b033864e1f84dd9f75cf3ead5b6f2a0d3fb75f32b9f041cf09df9",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And in that place I saw the fountain of righteousness,\nWhich was inexhaustible:\nAnd around it were many fountains of wisdom;\nAnd all the thirsty drank of them,\nAnd were filled with wisdom,\nAnd their dwellings were with the righteous and holy and elect.",
+      "text_fa": null,
+      "text_hr": "Na tome sam mjestu vidio neiscrpan izvor pravednosti.\nOko njega su bili mnogi izvori mudrosti;\nsvi žedni pili su iz njih\ni ispunili se mudrošću,\na njihova prebivališta bila su s pravednima, svetima i izabranima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And at that hour that Son of Man was named\nIn the presence of the Lord of Spirits,\nAnd his name before the Head of Days.",
+      "text_fa": null,
+      "text_hr": "U tome je času taj Sin Čovječji bio imenovan\nu nazočnosti Gospodara duhova,\na njegovo ime pred Glavom Dana.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "Yea, before the sun and the signs were created,\nBefore the stars of the heaven were made,\nHis name was named before the Lord of Spirits.",
+      "text_fa": null,
+      "text_hr": "Još prije nego što su stvoreni sunce i znakovi,\nprije nego što su načinjene zvijezde nebeske,\nnjegovo je ime bilo izgovoreno pred Gospodarom duhova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "He shall be a staff to the righteous whereon to stay themselves and not fall,\nAnd he shall be the light of the Gentiles,\nAnd the hope of those who are troubled of heart.",
+      "text_fa": null,
+      "text_hr": "On će biti štap na koji će se pravedni oslanjati da ne padnu,\nsvjetlost narodima\ni nada onima kojima je srce izmučeno.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "All who dwell on earth shall fall down and worship before him,\nAnd will praise and bless and celebrate with song the Lord of Spirits.",
+      "text_fa": null,
+      "text_hr": "Svi stanovnici zemlje past će ničice i pokloniti se pred njim\nte hvaliti, blagoslivljati i pjesmom slaviti Gospodara duhova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And for this reason hath he been chosen and hidden before Him,\nBefore the creation of the world and for evermore.",
+      "text_fa": null,
+      "text_hr": "Zato je bio izabran i skriven pred njim\njoš prije stvaranja svijeta i zauvijek.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And the wisdom of the Lord of Spirits hath revealed him to the holy and righteous;\nFor he hath preserved the lot of the righteous;\nBecause they have hated and despised this world of unrighteousness,\nAnd have hated all its works and ways in the name of the Lord of Spirits:\nFor in his name they are saved,\nAnd according to his good pleasure hath it been in regard to their life.",
+      "text_fa": null,
+      "text_hr": "Mudrost Gospodara duhova objavila ga je svetima i pravednima,\njer je sačuvao baštinu pravednih.\nOni su zamrzili i prezreli ovaj svijet nepravde\ni u ime Gospodara duhova zamrzili sva njegova djela i putove.\nU njegovo se ime spašavaju,\na prema njegovoj dobrohotnosti određeno je što će biti s njihovim životom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "In those days downcast in countenance shall the kings of the earth have become,\nAnd the strong who possess the land because of the works of their hands;\nFor on the day of their anguish and affliction they shall not (be able to) save themselves,",
+      "text_fa": null,
+      "text_hr": "U one će dane kraljevi zemlje postati oborena lica,\nkao i snažni koji posjeduju zemlju, zbog djela svojih ruku.\nU dan svoje tjeskobe i nevolje neće se moći spasiti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And I will give them over into the hands of Mine elect:\nAs straw in the fire so shall they burn before the face of the holy:\nAs lead in the water shall they sink before the face of the righteous,\nAnd no trace of them shall any more be found.",
+      "text_fa": null,
+      "text_hr": "Predat ću ih u ruke svojih izabranih.\nKao slama u vatri gorjet će pred licem svetih;\nkao olovo u vodi potonut će pred licem pravednih\ni više im se neće naći nikakva traga.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And on the day of their affliction there shall be rest on the earth,\nAnd before them they shall fall and not rise again:\nAnd there shall be no one to take them with his hands and raise them:\nFor they have denied the Lord of Spirits and His Anointed.\nThe name of the Lord of Spirits be blessed.",
+      "text_fa": null,
+      "text_hr": "U dan njihove nevolje na zemlji će zavladati mir,\na oni će pred njima pasti i neće više ustati.\nNeće biti nikoga da ih uzme za ruku i podigne,\njer su zanijekali Gospodara duhova i njegova Pomazanika.\nNeka je blagoslovljeno ime Gospodara duhova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

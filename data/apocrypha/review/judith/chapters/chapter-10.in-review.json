@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "book_id": "judith",
+  "title_fa": "یهودیت",
+  "title_en": "Judith",
+  "title_hr": "Judita",
+  "chapter": 10,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "df5b286a08fc83243953c0d51b8fc163812f6aab6023ebafb94546366e3ab234",
+  "locales_in_scope": [
+    "fa"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Now after that she had ceased to cry unto the God of Israel, and had made an end of all these words.",
+      "text_fa": "وقتی یهودیت فریاد زدن نزد خدای اسرائیل را پایان داد و همهٔ این سخنان را به انجام رساند،",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 2,
+      "text_en": "She rose where she had fallen down, and called her maid, and went down into the house in the which she abode in the sabbath days, and in her feast days,",
+      "text_fa": "از جایی که به خاک افتاده بود برخاست، کنیزش را صدا زد و به خانه‌ای رفت که روزهای شَبّات و عیدها در آن می‌ماند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 3,
+      "text_en": "And pulled off the sackcloth which she had on, and put off the garments of her widowhood, and washed her body all over with water, and anointed herself with precious ointment, and braided the hair of her head, and put on a tire upon it, and put on her garments of gladness, wherewith she was clad during the life of Manasses her husband.",
+      "text_fa": "پلاسی را که بر تن داشت و جامه‌های بیوگی‌اش را بیرون آورد، تمام بدن خود را با آب شست، خود را با عطری گران‌بها تدهین کرد، موهای سرش را بافت، سربندی بر آن نهاد و جامه‌های شادی را پوشید که در زمان حیات شوهرش منسی بر تن می‌کرد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 4,
+      "text_en": "And she took sandals upon her feet, and put about her bracelets, and her chains, and her rings, and her earrings, and all her ornaments, and decked herself bravely, to allure the eyes of all men that should see her.",
+      "text_fa": "کفش به پا کرد، دستبندها، زنجیرها، انگشترها، گوشواره‌ها و همهٔ زیورهایش را پوشید و خود را به‌آراست تا چشم هر مردی را که او را می‌دید مجذوب کند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 5,
+      "text_en": "Then she gave her maid a bottle of wine, and a cruse of oil, and filled a bag with parched corn, and lumps of figs, and with fine bread; so she folded all these things together, and laid them upon her.",
+      "text_fa": "سپس مشک شراب و کوزه‌ای روغن به کنیزش داد و کیسه‌ای را از دانه‌های برشته، قرص‌های انجیر و نان پاکیزه پُر کرد. همهٔ آنها را بسته‌بندی کرد و بر دوش کنیز گذاشت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 6,
+      "text_en": "Thus they went forth to the gate of the city of Bethulia, and found standing there Ozias and the ancients of the city, Chabris and Charmis.",
+      "text_fa": "آنگاه به دروازهٔ شهر بیتولیا رفتند و عُزیا و مشایخ شهر، خابریس و خارمیس، را دیدند که آنجا ایستاده بودند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 7,
+      "text_en": "And when they saw her, that her countenance was altered, and her apparel was changed, they wondered at her beauty very greatly, and said unto her.",
+      "text_fa": "وقتی آنان یهودیت را دیدند که چهره و لباسش دگرگون شده بود، از زیبایی او سخت شگفت‌زده شدند و گفتند:",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 8,
+      "text_en": "The God, the God of our fathers give thee favour, and accomplish thine enterprizes to the glory of the children of Israel, and to the exaltation of Jerusalem. Then they worshipped God.",
+      "text_fa": "«خدا، خدای پدران ما، تو را مورد لطف قرار دهد و نقشه‌هایت را برای جلال بنی‌اسرائیل و سربلندی اورشلیم به انجام رساند.» سپس خدا را پرستش کردند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 9,
+      "text_en": "And she said unto them, Command the gates of the city to be opened unto me, that I may go forth to accomplish the things whereof ye have spoken with me. So they commanded the young men to open unto her, as she had spoken.",
+      "text_fa": "یهودیت به آنان گفت: «فرمان دهید دروازهٔ شهر را برایم باز کنند تا بیرون روم و آنچه را درباره‌اش با من سخن گفتید به انجام رسانم.» پس به جوانان فرمان دادند مطابق سخن او دروازه را باز کنند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 10,
+      "text_en": "And when they had done so, Judith went out, she, and her maid with her; and the men of the city looked after her, until she was gone down the mountain, and till she had passed the valley, and could see her no more.",
+      "text_fa": "پس یهودیت همراه کنیزش بیرون رفت. مردان شهر از پشت سر به او می‌نگریستند تا از کوه پایین رفت، از دره گذشت و دیگر او را ندیدند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 11,
+      "text_en": "Thus they went straight forth in the valley: and the first watch of the Assyrians met her,",
+      "text_fa": "آن دو مستقیم در دره پیش رفتند و نگهبانان شیفت نخست آشوریان با آنان روبه‌رو شدند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 12,
+      "text_en": "And took her, and asked her, Of what people art thou? and whence comest thou? and whither goest thou? And she said, I am a woman of the Hebrews, and am fled from them: for they shall be given you to be consumed:",
+      "text_fa": "نگهبانان آنان را گرفتند و از یهودیت پرسیدند: «از کدام قوم هستی؟ از کجا می‌آیی و به کجا می‌روی؟» او گفت: «من زنی عبرانی هستم و از میان قوم خود گریخته‌ام، زیرا آنان به دست شما سپرده خواهند شد تا نابود شوند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 13,
+      "text_en": "And I am coming before Holofernes the chief captain of your army, to declare words of truth; and I will shew him a way, whereby he shall go, and win all the hill country, without losing the body or life of any one of his men.",
+      "text_fa": "می‌آیم تا به حضور هولوفرنس، فرماندهٔ کل سپاه شما، برسم و سخنان راست را برایش بازگو کنم. راهی به او نشان خواهم داد که از آن بر تمام کوهستان پیروز شود، بی‌آنکه حتی بدن یا جان یک نفر از مردانش از دست برود.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 14,
+      "text_en": "Now when the men heard her words, and beheld her countenance, they wondered greatly at her beauty, and said unto her,",
+      "text_fa": "وقتی آن مردان سخنانش را شنیدند و چهره‌اش را دیدند، از زیبایی او بسیار شگفت‌زده شدند و گفتند:",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 15,
+      "text_en": "Thou hast saved thy life, in that thou hast hasted to come down to the presence of our lord: now therefore come to his tent, and some of us shall conduct thee, until they have delivered thee to his hands.",
+      "text_fa": "«با شتاب آمدن به حضور سرورمان جان خود را نجات دادی. اکنون به خیمهٔ او بیا؛ گروهی از ما تو را همراهی خواهند کرد تا به دست او بسپارند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 16,
+      "text_en": "And when thou standest before him, be not afraid in thine heart, but shew unto him according to thy word; and he will entreat thee well.",
+      "text_fa": "وقتی در حضورش ایستادی، در دل خود مترس؛ آنچه گفتی برایش بازگو کن و او با تو به نیکی رفتار خواهد کرد.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 17,
+      "text_en": "Then they chose out of them an hundred men to accompany her and her maid; and they brought her to the tent of Holofernes.",
+      "text_fa": "پس صد مرد از میان خود برگزیدند تا یهودیت و کنیزش را همراهی کنند و آنان را به خیمهٔ هولوفرنس بردند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 18,
+      "text_en": "Then was there a concourse throughout all the camp: for her coming was noised among the tents, and they came about her, as she stood without the tent of Holofernes, till they told him of her.",
+      "text_fa": "در سراسر اردوگاه ازدحامی برپا شد، زیرا خبر آمدن او میان خیمه‌ها پیچیده بود. تا زمانی که ورودش را به هولوفرنس خبر دادند، مردم دور یهودیت که بیرون خیمه ایستاده بود جمع شدند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 19,
+      "text_en": "And they wondered at her beauty, and admired the children of Israel because of her, and every one said to his neighbour, Who would despise this people, that have among them such women? surely it is not good that one man of them be left who being let go might deceive the whole earth.",
+      "text_fa": "از زیبایی او شگفت‌زده شدند و به سبب او بنی‌اسرائیل را تحسین کردند. هر کس به همسایه‌اش می‌گفت: «چه کسی قومی را که چنین زنانی در میان خود دارد خوار می‌شمارد؟ به‌راستی خوب نیست حتی یک مرد از آنان زنده بماند، زیرا اگر آزاد شود می‌تواند سراسر زمین را بفریبد.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 20,
+      "text_en": "And they that lay near Holofernes went out, and all his servants and they brought her into the tent.",
+      "text_fa": "نگهبانان نزدیک هولوفرنس و همهٔ خدمتگزارانش بیرون آمدند و یهودیت را به داخل خیمه بردند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 21,
+      "text_en": "Now Holofernes rested upon his bed under a canopy, which was woven with purple, and gold, and emeralds, and precious stones.",
+      "text_fa": "هولوفرنس بر بستر خود زیر سایبانی آرمیده بود که از ارغوان، طلا، زمرد و سنگ‌های گران‌بها بافته شده بود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 22,
+      "text_en": "So they shewed him of her; and he came out before his tent with silver lamps going before him.",
+      "text_fa": "ورود یهودیت را به او خبر دادند. هولوفرنس در حالی که چراغدان‌های نقره‌ای پیشاپیش او حمل می‌شد، به جلوی خیمه آمد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 23,
+      "text_en": "And when Judith was come before him and his servants they all marvelled at the beauty of her countenance; and she fell down upon her face, and did reverence unto him: and his servants took her up.",
+      "text_fa": "وقتی یهودیت به حضور او و خدمتگزارانش رسید، همگی از زیبایی چهره‌اش در شگفت شدند. یهودیت به روی خود افتاد و در برابر او تعظیم کرد؛ خدمتگزاران هولوفرنس او را بلند کردند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    }
+  ]
+}

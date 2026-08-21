@@ -1,0 +1,457 @@
+{
+  "schema_version": 1,
+  "book_id": "1_esdras",
+  "title_fa": "اول اِسدراس",
+  "title_en": "First Esdras",
+  "title_hr": "Prva Ezdrina",
+  "chapter": 9,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "247b2e617195083cc92158d73e3c3eb2919fc4ebabb179dd3058ab7a5c3c07e9",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Then Esdras rising from the court of the temple went to the chamber of Joanan the son of Eliasib,",
+      "text_fa": null,
+      "text_hr": "Tada je Ezra ustao iz hramskoga predvorja i otišao u odaju Johanana, sina Elijašibova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And remained there, and did eat no meat nor drink water, mourning for the great iniquities of the multitude.",
+      "text_fa": null,
+      "text_hr": "Ondje je ostao ne jedući hranu ni pijući vodu, jer je tugovao zbog velikoga bezakonja mnoštva.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And there was a proclamation in all Jewry and Jerusalem to all them that were of the captivity, that they should be gathered together at Jerusalem:",
+      "text_fa": null,
+      "text_hr": "Po svoj Judeji i Jeruzalemu upućen je proglas svim povratnicima iz sužanjstva da se okupe u Jeruzalemu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And that whosoever met not there within two or three days according as the elders that bare rule appointed, their cattle should be seized to the use of the temple, and himself cast out from them that were of the captivity.",
+      "text_fa": null,
+      "text_hr": "Tko se prema odluci starješina i poglavara ne pojavi u roku od dva ili tri dana, njegova će stoka biti zaplijenjena za potrebe Hrama, a on isključen iz zajednice povratnika iz sužanjstva.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And in three days were all they of the tribe of Judah and Benjamin gathered together at Jerusalem the twentieth day of the ninth month.",
+      "text_fa": null,
+      "text_hr": "U roku od tri dana svi iz Judina i Benjaminova plemena okupili su se u Jeruzalemu, dvadesetoga dana devetoga mjeseca.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And all the multitude sat trembling in the broad court of the temple because of the present foul weather.",
+      "text_fa": null,
+      "text_hr": "Sve je mnoštvo sjedilo dršćući na širokome hramskom trgu zbog nevremena koje je vladalo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "So Esdras arose up, and said unto them, Ye have transgressed the law in marrying strange wives, thereby to increase the sins of Israel.",
+      "text_fa": null,
+      "text_hr": "Ezra ustade i reče im: „Prestupili ste Zakon oženivši se tuđinkama i tako umnožili grijehe Izraela.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And now by confessing give glory unto the Lord God of our fathers,",
+      "text_fa": null,
+      "text_hr": "Sada se ispovjedite i dajte slavu Gospodinu, Bogu svojih otaca.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And do his will, and separate yourselves from the heathen of the land, and from the strange women.",
+      "text_fa": null,
+      "text_hr": "Izvršite njegovu volju i odvojite se od poganskih naroda zemlje i od tuđinki.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "Then cried the whole multitude, and said with a loud voice, Like as thou hast spoken, so will we do.",
+      "text_fa": null,
+      "text_hr": "Tada je sve mnoštvo snažnim glasom povikalo: „Učinit ćemo kako si rekao.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "But forasmuch as the people are many, and it is foul weather, so that we cannot stand without, and this is not a work of a day or two, seeing our sin in these things is spread far:",
+      "text_fa": null,
+      "text_hr": "Ali naroda je mnogo, vrijeme je loše i ne možemo stajati vani. To nije posao za jedan ili dva dana, jer se naš grijeh u tome veoma proširio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "Therefore let the rulers of the multitude stay, and let all them of our habitations that have strange wives come at the time appointed,",
+      "text_fa": null,
+      "text_hr": "Neka zato ostanu poglavari mnoštva, a svi iz naših naselja koji imaju tuđinke za žene neka dođu u određeno vrijeme.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "And with them the rulers and judges of every place, till we turn away the wrath of the Lord from us for this matter.",
+      "text_fa": null,
+      "text_hr": "S njima neka dođu poglavari i suci svakoga mjesta, dok zbog toga ne odvratimo od sebe srdžbu Gospodnju.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "Then Jonathan the son of Azael and Ezechias the son of Theocanus accordingly took this matter upon them: and Mosollam and Levis and Sabbatheus helped them.",
+      "text_fa": null,
+      "text_hr": "Jonatan, sin Azaelov, i Ezekija, sin Teokanov, preuzeli su taj posao, a pomagali su im Mešulam, Levi i Šabetaj.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "And they that were of the captivity did according to all these things.",
+      "text_fa": null,
+      "text_hr": "Povratnici iz sužanjstva postupili su prema svemu tome.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "And Esdras the priest chose unto him the principal men of their families, all by name: and in the first day of the tenth month they sat together to examine the matter.",
+      "text_fa": null,
+      "text_hr": "Svećenik Ezra izabrao je poimence glavare njihovih obitelji; prvoga dana desetoga mjeseca sjeli su zajedno da ispitaju slučajeve.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "So their cause that held strange wives was brought to an end in the first day of the first month.",
+      "text_fa": null,
+      "text_hr": "Do prvoga dana prvoga mjeseca završili su postupak sa svima koji su imali tuđinke za žene.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "And of the priests that were come together, and had strange wives, there were found:",
+      "text_fa": null,
+      "text_hr": "Među okupljenim svećenicima pronađeni su ovi koji su imali tuđinke za žene:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "Of the sons of Jesus the son of Josedec, and his brethren; Matthelas and Eleazar, and Joribus and Joadanus.",
+      "text_fa": null,
+      "text_hr": "od sinova Ješue, sina Josadakova, i njegove braće: Matela, Eleazar, Jorib i Joadan.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "And they gave their hands to put away their wives and to offer rams to make reconcilement for their errors.",
+      "text_fa": null,
+      "text_hr": "Oni su pružili ruku u znak obećanja da će otpustiti svoje žene i prinijeti ovnove kao žrtvu pomirnicu za svoje prijestupe.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "And of the sons of Emmer; Ananias, and Zabdeus, and Eanes, and Sameius, and Hiereel, and Azarias.",
+      "text_fa": null,
+      "text_hr": "Od Imerovih sinova: Ananija, Zabdej, Eanes, Šemaja, Jehiel i Azarja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "And of the sons of Phaisur; Elionas, Massias Israel, and Nathanael, and Ocidelus and Talsas.",
+      "text_fa": null,
+      "text_hr": "Od Pašhurovih sinova: Elioenaj, Masija, Izrael, Natanael, Okidel i Talsa.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "And of the Levites; Jozabad, and Semis, and Colius, who was called Calitas, and Patheus, and Judas, and Jonas.",
+      "text_fa": null,
+      "text_hr": "Od levita: Jozabad, Šimej, Kelaja zvani Kelita, Petahija, Juda i Jona.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "Of the holy singers; Eleazurus, Bacchurus.",
+      "text_fa": null,
+      "text_hr": "Od svetih pjevača: Eliašib i Bakur.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "Of the porters; Sallumus, and Tolbanes.",
+      "text_fa": null,
+      "text_hr": "Od vratara: Šalum i Tolban.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "Of them of Israel, of the sons of Phoros; Hiermas, and Eddias, and Melchias, and Maelus, and Eleazar, and Asibias, and Baanias.",
+      "text_fa": null,
+      "text_hr": "Od Izraelaca, od Peresovih sinova: Jirma, Edija, Malkija, Mael, Eleazar, Hašabija i Baanija.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "Of the sons of Ela; Matthanias, Zacharias, and Hierielus, and Hieremoth, and Aedias.",
+      "text_fa": null,
+      "text_hr": "Od Elamovih sinova: Matanija, Zaharija, Jehiel, Jeremot i Edija.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "And of the sons of Zamoth; Eliadas, Elisimus, Othonias, Jarimoth, and Sabatus, and Sardeus.",
+      "text_fa": null,
+      "text_hr": "Od Zatuovih sinova: Eliada, Eljašib, Otonija, Jeremot, Zabad i Zardej.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "Of the sons of Babai; Johannes, and Ananias and Josabad, and Amatheis.",
+      "text_fa": null,
+      "text_hr": "Od Bebajevih sinova: Johanan, Ananija, Jozabad i Amataj.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "Of the sons of Mani; Olamus, Mamuchus, Jedeus, Jasubus, Jasael, and Hieremoth.",
+      "text_fa": null,
+      "text_hr": "Od Banijevih sinova: Olam, Mamuk, Jedaj, Jašub, Šeal i Jeremot.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "And of the sons of Addi; Naathus, and Moosias, Lacunus, and Naidus, and Mathanias, and Sesthel, Balnuus, and Manasseas.",
+      "text_fa": null,
+      "text_hr": "Od Adinovih sinova: Naat, Mozija, Lakun, Naid, Matanija, Šestel, Balnuj i Manaše.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "And of the sons of Annas; Elionas and Aseas, and Melchias, and Sabbeus, and Simon Chosameus.",
+      "text_fa": null,
+      "text_hr": "Od Haninovih sinova: Elioenaj, Asa, Malkija, Šebaj i Šimun Košamej.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "And of the sons of Asom; Altaneus, and Matthias, and Baanaia, Eliphalet, and Manasses, and Semei.",
+      "text_fa": null,
+      "text_hr": "Od Hašumovih sinova: Matenaj, Matatija, Baanija, Elifelet, Manaše i Šimej.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 34,
+      "text_en": "And of the sons of Maani; Jeremias, Momdis, Omaerus, Juel, Mabdai, and Pelias, and Anos, Carabasion, and Enasibus, and Mamnitanaimus, Eliasis, Bannus, Eliali, Samis, Selemias, Nathanias: and of the sons of Ozora; Sesis, Esril, Azaelus, Samatus, Zambis, Josephus.",
+      "text_fa": null,
+      "text_hr": "Od Banijevih sinova: Jeremija, Momdi, Omar, Juel, Mabdaj, Pelaja, Anos, Karabasion, Eljašib, Matanaj, Eliasis, Banuj, Eliali, Šamis, Šelemija i Natanija; a od Ozorinih sinova: Šišaj, Ezril, Azael, Šemat, Zambis i Josip.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 35,
+      "text_en": "And of the sons of Ethma; Mazitias, Zabadaias, Edes, Juel, Banaias.",
+      "text_fa": null,
+      "text_hr": "Od Etminih sinova: Mazitija, Zabadija, Edes, Juel i Baanija.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 36,
+      "text_en": "All these had taken strange wives, and they put them away with their children.",
+      "text_fa": null,
+      "text_hr": "Svi su oni bili uzeli tuđinke za žene, pa su ih otpustili zajedno s njihovom djecom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 37,
+      "text_en": "And the priests and Levites, and they that were of Israel, dwelt in Jerusalem, and in the country, in the first day of the seventh month: so the children of Israel were in their habitations.",
+      "text_fa": null,
+      "text_hr": "Svećenici, leviti i ostali Izraelci nastanili su se u Jeruzalemu i okolici. Prvoga dana sedmoga mjeseca Izraelovi sinovi bili su u svojim naseljima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 38,
+      "text_en": "And the whole multitude came together with one accord into the broad place of the holy porch toward the east:",
+      "text_fa": null,
+      "text_hr": "Sav se narod jednodušno okupio na širokome prostoru pred svetim trijemom okrenutim prema istoku.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 39,
+      "text_en": "And they spake unto Esdras the priest and reader, that he would bring the law of Moses, that was given of the Lord God of Israel.",
+      "text_fa": null,
+      "text_hr": "Zatražili su od svećenika i čitača Ezre da donese Mojsijev zakon koji je dao Gospodin, Bog Izraelov.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 40,
+      "text_en": "So Esdras the chief priest brought the law unto the whole multitude from man to woman, and to all the priests, to hear law in the first day of the seventh month.",
+      "text_fa": null,
+      "text_hr": "Veliki svećenik Ezra donio je Zakon pred sve mnoštvo — pred muškarce, žene i sve svećenike — da ga čuju prvoga dana sedmoga mjeseca.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 41,
+      "text_en": "And he read in the broad court before the holy porch from morning unto midday, before both men and women; and the multitude gave heed unto the law.",
+      "text_fa": null,
+      "text_hr": "Čitao ga je na širokome trgu pred svetim trijemom od jutra do podneva, pred muškarcima i ženama, a mnoštvo je pozorno slušalo Zakon.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 42,
+      "text_en": "And Esdras the priest and reader of the law stood up upon a pulpit of wood, which was made for that purpose.",
+      "text_fa": null,
+      "text_hr": "Svećenik Ezra, čitač Zakona, stajao je na drvenome postolju načinjenom za tu svrhu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 43,
+      "text_en": "And there stood up by him Mattathias, Sammus, Ananias, Azarias, Urias, Ezecias, Balasamus, upon the right hand:",
+      "text_fa": null,
+      "text_hr": "Zdesna uz njega stajali su Matatija, Šamus, Ananija, Azarja, Urija, Ezekija i Baalsam.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 44,
+      "text_en": "And upon his left hand stood Phaldaius, Misael, Melchias, Lothasubus, and Nabarias.",
+      "text_fa": null,
+      "text_hr": "Slijeva su stajali Faldaj, Mišael, Malkija, Lotašub i Nabarija.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 45,
+      "text_en": "Then took Esdras the book of the law before the multitude: for he sat honourably in the first place in the sight of them all.",
+      "text_fa": null,
+      "text_hr": "Ezra je uzeo Knjigu Zakona pred mnoštvom, jer je sjedio na počasnome prvom mjestu pred očima sviju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 46,
+      "text_en": "And when he opened the law, they stood all straight up. So Esdras blessed the Lord God most High, the God of hosts, Almighty.",
+      "text_fa": null,
+      "text_hr": "Kad je otvorio Zakon, svi su ustali. Ezra je blagoslovio Svevišnjega Gospodina Boga, Boga nad vojskama, Svemogućega.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 47,
+      "text_en": "And all the people answered, Amen; and lifting up their hands they fell to the ground, and worshipped the Lord.",
+      "text_fa": null,
+      "text_hr": "Sav je narod odgovorio: „Amen!“ Podigli su ruke, pali ničice na zemlju i poklonili se Gospodinu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 48,
+      "text_en": "Also Jesus, Anus, Sarabias, Adinus, Jacubus, Sabateas, Auteas, Maianeas, and Calitas, Asrias, and Joazabdus, and Ananias, Biatas, the Levites, taught the law of the Lord, making them withal to understand it.",
+      "text_fa": null,
+      "text_hr": "A leviti Ješua, Anus, Šerebija, Adin, Jakub, Šabetaj, Hodeja, Maanija, Kelita, Azarja, Jozabad, Ananija i Pelaja poučavali su Zakon Gospodnji i pomagali narodu da ga razumije.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 49,
+      "text_en": "Then spake Attharates unto Esdras the chief priest. and reader, and to the Levites that taught the multitude, even to all, saying,",
+      "text_fa": null,
+      "text_hr": "Tada je Atarat rekao velikomu svećeniku i čitaču Ezri, levitima koji su poučavali mnoštvo i svemu narodu:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 50,
+      "text_en": "This day is holy unto the Lord; (for they all wept when they heard the law:)",
+      "text_fa": null,
+      "text_hr": "„Ovaj je dan svet Gospodinu.“ Jer svi su plakali dok su slušali Zakon.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 51,
+      "text_en": "Go then, and eat the fat, and drink the sweet, and send part to them that have nothing;",
+      "text_fa": null,
+      "text_hr": "„Pođite, jedite masna jela, pijte slatka pića i pošaljite dio onima koji nemaju ništa.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 52,
+      "text_en": "For this day is holy unto the Lord: and be not sorrowful; for the Lord will bring you to honour.",
+      "text_fa": null,
+      "text_hr": "Ovaj je dan svet Gospodinu. Ne žalostite se, jer će vas Gospodin dovesti do časti.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 53,
+      "text_en": "So the Levites published all things to the people, saying, This day is holy to the Lord; be not sorrowful.",
+      "text_fa": null,
+      "text_hr": "Leviti su zatim svemu narodu objavili: „Ovaj je dan svet Gospodinu; ne žalostite se.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 54,
+      "text_en": "Then went they their way, every one to eat and drink, and make merry, and to give part to them that had nothing, and to make great cheer;",
+      "text_fa": null,
+      "text_hr": "Svi su otišli jesti, piti i veseliti se. Dijelili su s onima koji nisu imali ništa i priredili veliko slavlje,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 55,
+      "text_en": "Because they understood the words wherein they were instructed, and for the which they had been assembled.",
+      "text_fa": null,
+      "text_hr": "jer su razumjeli riječi kojima su bili poučeni i zbog kojih su se okupili.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

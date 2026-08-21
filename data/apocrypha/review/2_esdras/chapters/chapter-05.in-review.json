@@ -1,0 +1,465 @@
+{
+  "schema_version": 1,
+  "book_id": "2_esdras",
+  "title_fa": "دوم اِسدراس",
+  "title_en": "Second Esdras",
+  "title_hr": "Druga Ezdrina",
+  "chapter": 5,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "5730ce2f626da3671e36337dc2d5386c2aa45e3626bccde3bf6e311e523cfc24",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Nevertheless as concerning the tokens, behold, the days shall come, that they which dwell upon earth shall be taken in a great number, and the way of truth shall be hidden, and the land shall be barren of faith.",
+      "text_fa": null,
+      "text_hr": "A što se tiče znakova: evo, dolaze dani kada će velik broj stanovnika zemlje biti uzet, put istine skriven, a zemlja ostati bez vjere.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "But iniquity shall be increased above that which now thou seest, or that thou hast heard long ago.",
+      "text_fa": null,
+      "text_hr": "Ali opačina će se povećati iznad onoga što sada vidiš ili što si davno čuo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And the land, that thou seest now to have root, shalt thou see wasted suddenly.",
+      "text_fa": null,
+      "text_hr": "A zemlju, za koju sada vidiš da ima korijen, vidjet ćeš da je iznenada opustošena.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "But if the most High grant thee to live, thou shalt see after the third trumpet that the sun shall suddenly shine again in the night, and the moon thrice in the day:",
+      "text_fa": null,
+      "text_hr": "Ako ti Svevišnji dopusti da živiš, nakon treće ćeš trube vidjeti kako sunce iznenada ponovno sja noću, a mjesec triput danju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And blood shall drop out of wood, and the stone shall give his voice, and the people shall be troubled:",
+      "text_fa": null,
+      "text_hr": "I krv će kapati iz drveta, i kamen će dati svoj glas, i narod će biti uznemiren.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And even he shall rule, whom they look not for that dwell upon the earth, and the fowls shall take their flight away together:",
+      "text_fa": null,
+      "text_hr": "Zavladat će onaj kojega stanovnici zemlje ne očekuju, a ptice će zajedno odletjeti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And the Sodomitish sea shall cast out fish, and make a noise in the night, which many have not known: but they shall all hear the voice thereof.",
+      "text_fa": null,
+      "text_hr": "I sodomsko će more izbaciti ribe i napraviti buku u noći, koju mnogi ne poznaju, ali svi će čuti njen glas.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "There shall be a confusion also in many places, and the fire shall be oft sent out again, and the wild beasts shall change their places, and menstruous women shall bring forth monsters:",
+      "text_fa": null,
+      "text_hr": "Također će biti pomutnje na mnogim mjestima, i vatra će se često ponovno slati, i divlje će zvijeri promijeniti svoja mjesta, a žene s menstruacijom rađat će čudovišta:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And salt waters shall be found in the sweet, and all friends shall destroy one another; then shall wit hide itself, and understanding withdraw itself into his secret chamber,",
+      "text_fa": null,
+      "text_hr": "I slane će se vode naći u slatkim, i svi će prijatelji uništiti jedni druge; tada će se pamet sakriti, a razum će se povući u njegovu tajnu odaju,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And shall be sought of many, and yet not be found: then shall unrighteousness and incontinency be multiplied upon earth.",
+      "text_fa": null,
+      "text_hr": "I tražit će se od mnogih, ali neće se naći: tada će se nepravda i neuzdržljivost umnožiti na zemlji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "One land also shall ask another, and say, Is righteousness that maketh a man righteous gone through thee? And it shall say, No.",
+      "text_fa": null,
+      "text_hr": "Jedna će zemlja pitati drugu i reći: Je li kroz tebe prošla pravda koja čovjeka čini pravednim? I reći će, Ne.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "At the same time shall men hope, but nothing obtain: they shall labour, but their ways shall not prosper.",
+      "text_fa": null,
+      "text_hr": "U isto vrijeme ljudi će se nadati, ali ništa neće postići: trudit će se, ali putovi im neće uspjeti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "To shew thee such tokens I have leave; and if thou wilt pray again, and weep as now, and fast even days, thou shalt hear yet greater things.",
+      "text_fa": null,
+      "text_hr": "Dopušteno mi je pokazati ti takve znakove; i ako opet budeš molio, i plakao kao sada, i postio čak i dane, čut ćeš još veće stvari.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "Then I awaked, and an extreme fearfulness went through all my body, and my mind was troubled, so that it fainted.",
+      "text_fa": null,
+      "text_hr": "Tada sam se probudio. Silan mi je strah prožeo tijelo, a um mi se toliko uznemirio da sam gotovo izgubio svijest.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "So the angel that was come to talk with me held me, comforted me, and set me up upon my feet.",
+      "text_fa": null,
+      "text_hr": "Tako me anđeo koji je došao razgovarati sa mnom držao, tješio i uspravio na noge.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "And in the second night it came to pass, that Salathiel the captain of the people came unto me, saying, Where hast thou been? and why is thy countenance so heavy?",
+      "text_fa": null,
+      "text_hr": "Sljedeće noći došao mi je Salatiel, zapovjednik naroda, i upitao: Gdje si bio? Zašto ti je lice tako sumorno?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "Knowest thou not that Israel is committed unto thee in the land of their captivity?",
+      "text_fa": null,
+      "text_hr": "Zar ne znaš da je Izrael predan tebi u zemlji sužanjstva?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "Up then, and eat bread, and forsake us not, as the shepherd that leaveth his flock in the hands of cruel wolves.",
+      "text_fa": null,
+      "text_hr": "Gore dakle, i jedi kruha, i ne ostavljaj nas, kao pastir koji svoje stado ostavlja u rukama okrutnih vukova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "Then said I unto him, Go thy ways from me, and come not nigh me. And he heard what I said, and went from me.",
+      "text_fa": null,
+      "text_hr": "Tada sam mu rekao: Idi od mene i ne približavaj mi se. I čuo je što sam rekao i otišao od mene.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "And so I fasted seven days, mourning and weeping, like as Uriel the angel commanded me.",
+      "text_fa": null,
+      "text_hr": "I tako sam postio sedam dana, tugujući i plačući, kao što mi je naredio anđeo Uriel.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "And after seven days so it was, that the thoughts of my heart were very grievous unto me again,",
+      "text_fa": null,
+      "text_hr": "I nakon sedam dana tako je bilo, da su misli moga srca opet bile vrlo teške za mene,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "And my soul recovered the spirit of understanding, and I began to talk with the most High again,",
+      "text_fa": null,
+      "text_hr": "U dušu mi se vratio duh razuma i ponovno sam počeo govoriti Svevišnjemu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "And said, O Lord that bearest rule, of every wood of the earth, and of all the trees thereof, thou hast chosen thee one only vine:",
+      "text_fa": null,
+      "text_hr": "Rekao sam: O Gospodine, Vladaru, od svih šuma na zemlji i svega njihova drveća izabrao si samo jednu lozu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "And of all lands of the whole world thou hast chosen thee one pit: and of all the flowers thereof one lily:",
+      "text_fa": null,
+      "text_hr": "Od svih zemalja svijeta izabrao si sebi samo jedno mjesto, a od svega cvijeća samo jedan ljiljan.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "And of all the depths of the sea thou hast filled thee one river: and of all builded cities thou hast hallowed Sion unto thyself:",
+      "text_fa": null,
+      "text_hr": "I od svih morskih dubina ti si jednu rijeku napunio, i od svih sagrađenih gradova posvetio si sebi Sion.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "And of all the fowls that are created thou hast named thee one dove: and of all the cattle that are made thou hast provided thee one sheep:",
+      "text_fa": null,
+      "text_hr": "Od svih stvorenih ptica nazvao si svojom samo jednu golubicu, a od sve stoke dao si sebi jednu ovcu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "And among all the multitudes of people thou hast gotten thee one people: and unto this people, whom thou lovedst, thou gavest a law that is approved of all.",
+      "text_fa": null,
+      "text_hr": "I među svim mnoštvom naroda stekao si sebi jedan narod: i ovom narodu, koji si ljubio, dao si zakon koji svi odobravaju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "And now, O Lord, why hast thou given this one people over unto many? and upon the one root hast thou prepared others, and why hast thou scattered thy only one people among many?",
+      "text_fa": null,
+      "text_hr": "A sada, Gospodine, zašto si ovaj jedan narod predao mnogima? I na jednom si korijenu pripremio druge, i zašto si jedini svoj narod raspršio među mnoge?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "And they which did gainsay thy promises, and believed not thy covenants, have trodden them down.",
+      "text_fa": null,
+      "text_hr": "I oni koji su se protivili tvojim obećanjima i nisu vjerovali tvojim savezima, pogazili su ih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "If thou didst so much hate thy people, yet shouldest thou punish them with thine own hands.",
+      "text_fa": null,
+      "text_hr": "Ako si svoj narod toliko zamrzio, trebao bi ga kazniti vlastitom rukom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "Now when I had spoken these words, the angel that came to me the night afore was sent unto me,",
+      "text_fa": null,
+      "text_hr": "Kad sam izgovorio ove riječi, anđeo koji mi je došao prethodne noći bio je poslan k meni,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "And said unto me, Hear me, and I will instruct thee; hearken to the thing that I say, and I shall tell thee more.",
+      "text_fa": null,
+      "text_hr": "I rekao mi je: Slušaj me i poučit ću te; poslušaj što ti govorim i još ću ti reći.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "And I said, Speak on, my Lord. Then said he unto me, Thou art sore troubled in mind for Israel’s sake: lovest thou that people better than he that made them?",
+      "text_fa": null,
+      "text_hr": "Rekao sam, Govori dalje, moj Gospodaru. Tada mi je rekao: Jako si zabrinut zbog Izraela: voliš li taj narod više od onoga koji ga je stvorio?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 34,
+      "text_en": "And I said, No, Lord: but of very grief have I spoken: for my reins pain me every hour, while I labour to comprehend the way of the most High, and to seek out part of his judgment.",
+      "text_fa": null,
+      "text_hr": "Odgovorio sam: Ne, Gospodine. Govorio sam od silne žalosti; slabine me neprestano bole dok nastojim razumjeti put Svevišnjega i proniknuti u dio njegova suda.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 35,
+      "text_en": "And he said unto me, Thou canst not. And I said, Wherefore, Lord? whereunto was I born then? or why was not my mother’s womb then my grave, that I might not have seen the travail of Jacob, and the wearisome toil of the stock of Israel?",
+      "text_fa": null,
+      "text_hr": "A on mi je rekao, Ne možeš. Rekao sam: Zašto, Gospodine? Gdje sam se tada rodio? Ili zašto utroba moje majke nije bila onda moj grob, da ne bih vidio muke Jakovljeve i mukotrpan rad stada Izraelova?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 36,
+      "text_en": "And he said unto me, Number me the things that are not yet come, gather me together the dross that are scattered abroad, make me the flowers green again that are withered,",
+      "text_fa": null,
+      "text_hr": "Rekao mi je: Izbroji mi ono što još nije došlo, skupi mi rasute kapljice i učini da uvelo cvijeće ponovno pozeleni.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 37,
+      "text_en": "Open me the places that are closed, and bring me forth the winds that in them are shut up, shew me the image of a voice: and then I will declare to thee the thing that thou labourest to know.",
+      "text_fa": null,
+      "text_hr": "Otvori mi mjesta koja su zatvorena, i izvedi mi vjetrove koji su u njima zatvoreni, pokaži mi sliku glasa: i tada ću ti objaviti ono što se trudiš znati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 38,
+      "text_en": "And I said, O Lord that bearest rule, who may know these things, but he that hath not his dwelling with men?",
+      "text_fa": null,
+      "text_hr": "Rekao sam, O Gospodine koji vladaš, tko može znati ove stvari osim onoga koji ne živi s ljudima?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 39,
+      "text_en": "As for me, I am unwise: how may I then speak of these things whereof thou askest me?",
+      "text_fa": null,
+      "text_hr": "Što se mene tiče, ja sam nerazborit: kako onda mogu govoriti o ovim stvarima o kojima me pitaš?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 40,
+      "text_en": "Then said he unto me, Like as thou canst do none of these things that I have spoken of, even so canst thou not find out my judgment, or in the end the love that I have promised unto my people.",
+      "text_fa": null,
+      "text_hr": "Tada mi je rekao: Kao što ne možeš učiniti ništa od onoga o čemu sam govorio, tako ne možeš spoznati moj sud ni ljubav koju sam na svršetku obećao svojemu narodu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 41,
+      "text_en": "And I said, Behold, O Lord, yet art thou nigh unto them that be reserved till the end: and what shall they do that have been before me, or we that be now, or they that shall come after us?",
+      "text_fa": null,
+      "text_hr": "Rekao sam: Gle, Gospodine, ipak si blizu onima koji su zadržani do kraja: i što će učiniti oni koji su bili prije mene, ili mi koji smo sada, ili oni koji će doći poslije nas?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 42,
+      "text_en": "And he said unto me, I will liken my judgment unto a ring: like as there is no slackness of the last, even so there is no swiftness of the first.",
+      "text_fa": null,
+      "text_hr": "I rekao mi je: \"Svoj ću sud usporediti s prstenom: kao što nema tromosti posljednjih, tako nema ni brzine prvih.\"",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 43,
+      "text_en": "So I answered and said, Couldest thou not make those that have been made, and be now, and that are for to come, at once; that thou mightest shew thy judgment the sooner?",
+      "text_fa": null,
+      "text_hr": "Pa sam odgovorio i rekao: Zar nisi mogao učiniti one koji su stvoreni, koji su sada, i koji će doći, odjednom; da bi što prije mogao objaviti svoj sud?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 44,
+      "text_en": "Then answered he me, and said, The creature may not haste above the maker; neither may the world hold them at once that shall be created therein.",
+      "text_fa": null,
+      "text_hr": "Tada mi je odgovorio: Stvorenje ne smije žuriti iznad Stvoritelja; niti ih svijet može odjednom zadržati što će se u njemu stvoriti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 45,
+      "text_en": "And I said, As thou hast said unto thy servant, that thou, which givest life to all, hast given life at once to the creature that thou hast created, and the creature bare it: even so it might now also bear them that now be present at once.",
+      "text_fa": null,
+      "text_hr": "Rekao sam: Kao što si svojemu sluzi rekao, ti koji svima daješ život mogao si odjednom oživiti sve stvorenje koje si sazdao, a ono bi ih moglo odjednom podnijeti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 46,
+      "text_en": "And he said unto me, Ask the womb of a woman, and say unto her, If thou bringest forth children, why dost thou it not together, but one after another? pray her therefore to bring forth ten children at once.",
+      "text_fa": null,
+      "text_hr": "I rekao mi je: Pitaj utrobu ženinu i reci joj: Ako rađaš djecu, zašto ne rađaš zajedno, nego jedno za drugim? Moli je stoga da rodi desetero djece odjednom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 47,
+      "text_en": "And I said, She cannot: but must do it by distance of time.",
+      "text_fa": null,
+      "text_hr": "Rekao sam: Ne može; mora ih rađati u vremenskim razmacima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 48,
+      "text_en": "Then said he unto me, Even so have I given the womb of the earth to those that be sown in it in their times.",
+      "text_fa": null,
+      "text_hr": "Tada mi je rekao: Tako sam ja dao utrobu zemlje onima koji su u njoj posijani u svoje vrijeme.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 49,
+      "text_en": "For like as a young child may not bring forth the things that belong to the aged, even so have I disposed the world which I created.",
+      "text_fa": null,
+      "text_hr": "Kao što malo dijete ne može roditi ono što pripada starijoj dobi, tako sam uredio i svijet koji sam stvorio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 50,
+      "text_en": "And I asked, and said, Seeing thou hast now given me the way, I will proceed to speak before thee: for our mother, of whom thou hast told me that she is young, draweth now nigh unto age.",
+      "text_fa": null,
+      "text_hr": "Upitao sam: Budući da si mi sada otvorio put, nastavit ću govoriti pred tobom. Naša majka, za koju si rekao da je mlada, već se približava starosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 51,
+      "text_en": "He answered me, and said, Ask a woman that beareth children, and she shall tell thee.",
+      "text_fa": null,
+      "text_hr": "On mi je odgovorio: Pitaj ženu koja rađa i ona će ti reći.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 52,
+      "text_en": "Say unto her, Wherefore are unto they whom thou hast now brought forth like those that were before, but less of stature?",
+      "text_fa": null,
+      "text_hr": "Reci joj: Zašto su oni koje si sada rodila kao oni koji su prije bili, ali manjeg rasta?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 53,
+      "text_en": "And she shall answer thee, They that be born in the strength of youth are of one fashion, and they that are born in the time of age, when the womb faileth, are otherwise.",
+      "text_fa": null,
+      "text_hr": "Odgovorit će ti: Djeca rođena u snazi mladosti međusobno su slična, a drukčija su ona rođena u starosti, kada utroba oslabi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 54,
+      "text_en": "Consider thou therefore also, how that ye are less of stature than those that were before you.",
+      "text_fa": null,
+      "text_hr": "Razmotri dakle i ti kako si niži od onih koji su bili prije tebe.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 55,
+      "text_en": "And so are they that come after you less than ye, as the creatures which now begin to be old, and have passed over the strength of youth.",
+      "text_fa": null,
+      "text_hr": "A tako su i oni koji dolaze nakon vas manji od vas, kao stvorenja koja sada počinju stariti i prešla su snagu mladosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 56,
+      "text_en": "Then said I, Lord, I beseech thee, if I have found favour in thy sight, shew thy servant by whom thou visitest thy creature.",
+      "text_fa": null,
+      "text_hr": "Tada sam rekao: Gospodine, molim te, ako sam našao milost u tvojim očima, pokaži svojemu sluzi po komu pohodiš svoje stvorenje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

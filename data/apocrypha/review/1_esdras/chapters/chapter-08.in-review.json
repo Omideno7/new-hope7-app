@@ -1,0 +1,785 @@
+{
+  "schema_version": 1,
+  "book_id": "1_esdras",
+  "title_fa": "اول اِسدراس",
+  "title_en": "First Esdras",
+  "title_hr": "Prva Ezdrina",
+  "chapter": 8,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "2ab8def6371b38a513f722a8c7e51a45649889b1ef479d5eaf0ef943d26f2dbb",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And after these things, when Artexerxes the king of the Persians reigned came Esdras the son of Saraias, the son of Ezerias, the son of Helchiah, the son of Salum,",
+      "text_fa": null,
+      "text_hr": "Nakon toga, za kraljevanja perzijskoga kralja Artakserksa, došao je Ezra, sin Seraje, sina Azarje, sina Helkije, sina Šaluma,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "The son of Sadduc, the son of Achitob, the son of Amarias, the son of Ezias, the son of Meremoth, the son of Zaraias, the son of Savias, the son of Boccas, the son of Abisum, the son of Phinees, the son of Eleazar, the son of Aaron the chief priest.",
+      "text_fa": null,
+      "text_hr": "sina Sadoka, sina Ahituba, sina Amarije, sina Ezije, sina Meremota, sina Zeraje, sina Savije, sina Bokasa, sina Abišue, sina Fineesa, sina Eleazara, sina velikoga svećenika Arona.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "This Esdras went up from Babylon, as a scribe, being very ready in the law of Moses, that was given by the God of Israel.",
+      "text_fa": null,
+      "text_hr": "Taj je Ezra došao iz Babilona kao pisar dobro upućen u Mojsijev zakon koji je dao Bog Izraelov.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And the king did him honour: for he found grace in his sight in all his requests.",
+      "text_fa": null,
+      "text_hr": "Kralj mu je iskazao čast, jer je Ezra u svemu što je tražio našao milost pred njim.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "There went up with him also certain of the children of Israel, of the priest of the Levites, of the holy singers, porters, and ministers of the temple, unto Jerusalem,",
+      "text_fa": null,
+      "text_hr": "S njim su u Jeruzalem pošli i neki od Izraelovih sinova, svećenika i levita, svetih pjevača, vratara i hramskih službenika.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "In the seventh year of the reign of Artexerxes, in the fifth month, this was the king’s seventh year; for they went from Babylon in the first day of the first month, and came to Jerusalem, according to the prosperous journey which the Lord gave them.",
+      "text_fa": null,
+      "text_hr": "Bilo je to sedme godine Artakserksova kraljevanja, u petome mjesecu. Iz Babilona su krenuli prvoga dana prvoga mjeseca i stigli u Jeruzalem zahvaljujući sretnu putovanju koje im je Gospodin podario.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "For Esdras had very great skill, so that he omitted nothing of the law and commandments of the Lord, but taught all Israel the ordinances and judgments.",
+      "text_fa": null,
+      "text_hr": "Ezra je bio vrlo vješt, pa nije zanemario ništa od Zakona i zapovijedi Gospodnjih, nego je sav Izrael poučavao odredbama i sudovima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "Now the copy of the commission, which was written from Artexerxes the king, and came to Esdras the priest and reader of the law of the Lord, is this that followeth;",
+      "text_fa": null,
+      "text_hr": "Ovo je prijepis ovlaštenja koje je kralj Artakserkso napisao i dao svećeniku Ezri, čitaču Zakona Gospodnjega:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "King Artexerxes unto Esdras the priest and reader of the law of the Lord sendeth greeting:",
+      "text_fa": null,
+      "text_hr": "„Kralj Artakserkso šalje pozdrav svećeniku Ezri, čitaču Zakona Gospodnjega.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "Having determined to deal graciously, I have given order, that such of the nation of the Jews, and of the priests and Levites being within our realm, as are willing and desirous should go with thee unto Jerusalem.",
+      "text_fa": null,
+      "text_hr": "Odlučio sam iskazati milost i zapovjedio da oni iz židovskoga naroda te svećenici i leviti u našemu kraljevstvu koji žele ići pođu s tobom u Jeruzalem.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "As many therefore as have a mind thereunto, let them depart with thee, as it hath seemed good both to me and my seven friends the counsellors;",
+      "text_fa": null,
+      "text_hr": "Svatko tko to želi neka krene s tobom, jer se to učinilo dobrim meni i sedmorici mojih prijatelja savjetnika,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "That they may look unto the affairs of Judea and Jerusalem, agreeably to that which is in the law of the Lord;",
+      "text_fa": null,
+      "text_hr": "da ispitaju prilike u Judeji i Jeruzalemu prema onome što stoji u Zakonu Gospodnjemu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "And carry the gifts unto the Lord of Israel to Jerusalem, which I and my friends have vowed, and all the gold and silver that in the country of Babylon can be found, to the Lord in Jerusalem,",
+      "text_fa": null,
+      "text_hr": "Neka u Jeruzalem odnesu darove Gospodinu Izraelovu koje smo zavjetovali ja i moji prijatelji te sve zlato i srebro što se može pronaći u Babiloniji za Gospodina u Jeruzalemu,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "With that also which is given of the people for the temple of the Lord their God at Jerusalem: and that silver and gold may be collected for bullocks, rams, and lambs, and things thereunto appertaining;",
+      "text_fa": null,
+      "text_hr": "zajedno s onim što narod daruje za Hram Gospodina, svojega Boga, u Jeruzalemu. Neka se srebro i zlato prikupe za junce, ovnove, janjce i sve što je za njih potrebno,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "To the end that they may offer sacrifices unto the Lord upon the altar of the Lord their God, which is in Jerusalem.",
+      "text_fa": null,
+      "text_hr": "da bi mogli prinijeti žrtve Gospodinu na žrtveniku Gospodina, svojega Boga, u Jeruzalemu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "And whatsoever thou and thy brethren will do with the silver and gold, that do, according to the will of thy God.",
+      "text_fa": null,
+      "text_hr": "Ti i tvoja braća učinite sa srebrom i zlatom što god smatrate dobrim, prema volji svojega Boga.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "And the holy vessels of the Lord, which are given thee for the use of the temple of thy God, which is in Jerusalem, thou shalt set before thy God in Jerusalem.",
+      "text_fa": null,
+      "text_hr": "Svete posude Gospodnje koje su ti predane za službu Hrama tvojega Boga u Jeruzalemu postavit ćeš pred svojega Boga u Jeruzalemu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "And whatsoever thing else thou shalt remember for the use of the temple of thy God, thou shalt give it out of the king’s treasury.",
+      "text_fa": null,
+      "text_hr": "Što god još smatraš potrebnim za službu Hrama svojega Boga, podmirit ćeš iz kraljevske riznice.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "And I king Artexerxes have also commanded the keepers of the treasures in Syria and Phenice, that whatsoever Esdras the priest and the reader of the law of the most high God shall send for, they should give it him with speed,",
+      "text_fa": null,
+      "text_hr": "Ja, kralj Artakserkso, zapovjedio sam čuvarima riznica u Siriji i Feniciji da sve što svećenik Ezra, čitač Zakona Svevišnjega Boga, zatraži odmah predaju,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "To the sum of an hundred talents of silver, likewise also of wheat even to an hundred cors, and an hundred pieces of wine, and other things in abundance.",
+      "text_fa": null,
+      "text_hr": "do svote od sto talenata srebra, do sto kora pšenice i sto posuda vina, a ostaloga u izobilju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "Let all things be performed after the law of God diligently unto the most high God, that wrath come not upon the kingdom of the king and his sons.",
+      "text_fa": null,
+      "text_hr": "Neka se sve pomno izvrši po Zakonu Božjemu za Svevišnjega Boga, da srdžba ne dođe na kraljevstvo kralja i njegovih sinova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "I command you also, that ye require no tax, nor any other imposition, of any of the priests, or Levites, or holy singers, or porters, or ministers of the temple, or of any that have doings in this temple, and that no man have authority to impose any thing upon them.",
+      "text_fa": null,
+      "text_hr": "Zapovijedam vam i da ne tražite porez ni ikakav drugi namet ni od jednoga svećenika, levita, svetoga pjevača, vratara, hramskoga službenika niti ikoga tko radi u tome Hramu; nitko nema vlast nametnuti im bilo što.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "And thou, Esdras, according to the wisdom of God ordain judges and justices, that they may judge in all Syria and Phenice all those that know the law of thy God; and those that know it not thou shalt teach.",
+      "text_fa": null,
+      "text_hr": "A ti, Ezra, prema mudrosti Božjoj postavi suce i pravnike da u svoj Siriji i Feniciji sude svima koji poznaju Zakon tvojega Boga; one koji ga ne poznaju ti ćeš poučiti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "And whosoever shall transgress the law of thy God, and of the king, shall be punished diligently, whether it be by death, or other punishment, by penalty of money, or by imprisonment.",
+      "text_fa": null,
+      "text_hr": "Tko prestupi Zakon tvojega Boga i kraljev zakon neka bude strogo kažnjen: smrću ili drugom kaznom, novčanom globom ili tamnicom.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "Then said Esdras the scribe, Blessed be the only Lord God of my fathers, who hath put these things into the heart of the king, to glorify his house that is in Jerusalem:",
+      "text_fa": null,
+      "text_hr": "Tada pisar Ezra reče: „Blagoslovljen neka je jedini Gospodin, Bog mojih otaca, koji je to stavio kralju u srce da proslavi njegov Dom u Jeruzalemu,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "And hath honoured me in the sight of the king, and his counsellors, and all his friends and nobles.",
+      "text_fa": null,
+      "text_hr": "i koji mi je iskazao čast pred kraljem, njegovim savjetnicima te svim njegovim prijateljima i velikašima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "Therefore was I encouraged by the help of the Lord my God, and gathered together men of Israel to go up with me.",
+      "text_fa": null,
+      "text_hr": "Ohrabrila me pomoć Gospodina, Boga mojega, pa sam okupio izraelske ljude da pođu sa mnom.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "And these are the chief according to their families and several dignities, that went up with me from Babylon in the reign of king Artexerxes:",
+      "text_fa": null,
+      "text_hr": "Ovo su glavari po svojim obiteljima i pojedinim dostojanstvima koji su pošli sa mnom iz Babilona za kraljevanja kralja Artakserksa:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "Of the sons of Phinees, Gerson: of the sons of Ithamar, Gamael: of the sons of David, Lettus the son of Sechenias:",
+      "text_fa": null,
+      "text_hr": "od Fineesovih sinova Geršom; od Itamarovih sinova Gamael; od Davidovih sinova Let, sin Šekanijin.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "Of the sons of Pharez, Zacharias; and with him were counted an hundred and fifty men:",
+      "text_fa": null,
+      "text_hr": "Od Peresovih sinova Zaharija, a s njim je bilo popisano sto pedeset ljudi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "Of the sons of Pahath Moab, Eliaonias, the son of Zaraias, and with him two hundred men:",
+      "text_fa": null,
+      "text_hr": "Od Pahat-Moabovih sinova Elioenaj, sin Zerajin, a s njim dvije stotine ljudi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "Of the sons of Zathoe, Sechenias the son of Jezelus, and with him three hundred men: of the sons of Adin, Obeth the son of Jonathan, and with him two hundred and fifty men:",
+      "text_fa": null,
+      "text_hr": "Od Zatuevih sinova Šekanija, sin Jezielov, a s njim tri stotine ljudi; od Adinovih sinova Obed, sin Jonatanov, a s njim dvije stotine pedeset ljudi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "Of the sons of Elam, Josias son of Gotholias, and with him seventy men:",
+      "text_fa": null,
+      "text_hr": "Od Elamovih sinova Josija, sin Atalijin, a s njim sedamdeset ljudi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 34,
+      "text_en": "Of the sons of Saphatias, Zaraias son of Michael, and with him threescore and ten men:",
+      "text_fa": null,
+      "text_hr": "Od Šefatjinih sinova Zeraja, sin Mihaelov, a s njim sedamdeset ljudi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 35,
+      "text_en": "Of the sons of Joab, Abadias son of Jezelus, and with him two hundred and twelve men:",
+      "text_fa": null,
+      "text_hr": "Od Joabovih sinova Obadija, sin Jezielov, a s njim dvije stotine i dvanaest ljudi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 36,
+      "text_en": "Of the sons of Banid, Assalimoth son of Josaphias, and with him an hundred and threescore men:",
+      "text_fa": null,
+      "text_hr": "Od Banijevih sinova Šelomit, sin Josifijin, a s njim sto šezdeset ljudi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 37,
+      "text_en": "Of the sons of Babi, Zacharias son of Bebai, and with him twenty and eight men:",
+      "text_fa": null,
+      "text_hr": "Od Bebajevih sinova Zaharija, sin Bebajev, a s njim dvadeset i osam ljudi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 38,
+      "text_en": "Of the sons of Astath, Johannes son of Acatan, and with him an hundred and ten men:",
+      "text_fa": null,
+      "text_hr": "Od Azgadovih sinova Johanan, sin Hakatanov, a s njim sto deset ljudi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 39,
+      "text_en": "Of the sons of Adonikam the last, and these are the names of them, Eliphalet, Jewel, and Samaias, and with them seventy men:",
+      "text_fa": null,
+      "text_hr": "Od posljednjih Adonikamovih sinova — ovo su njihova imena: Elifelet, Jeuel i Šemaja — a s njima sedamdeset ljudi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 40,
+      "text_en": "Of the sons of Bago, Uthi the son of Istalcurus, and with him seventy men.",
+      "text_fa": null,
+      "text_hr": "Od Bagojevih sinova Utaj, sin Istalkurov, a s njim sedamdeset ljudi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 41,
+      "text_en": "And these I gathered together to the river called Theras, where we pitched our tents three days: and then I surveyed them.",
+      "text_fa": null,
+      "text_hr": "Okupio sam ih kod rijeke zvane Teras, gdje smo tri dana taborovali; tada sam ih pregledao.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 42,
+      "text_en": "But when I had found there none of the priests and Levites,",
+      "text_fa": null,
+      "text_hr": "Kad među njima nisam našao nijednoga svećenika ni levita,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 43,
+      "text_en": "Then sent I unto Eleazar, and Iduel, and Masman,",
+      "text_fa": null,
+      "text_hr": "poslao sam po Eleazara, Iduela i Masmana,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 44,
+      "text_en": "And Alnathan, and Mamaias, and Joribas, and Nathan, Eunatan, Zacharias, and Mosollamon, principal men and learned.",
+      "text_fa": null,
+      "text_hr": "zatim Elnatana, Mamaju, Joriba, Natana, Eunatana, Zahariju i Mešulama, ugledne i učene ljude.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 45,
+      "text_en": "And I bade them that they should go unto Saddeus the captain, who was in the place of the treasury:",
+      "text_fa": null,
+      "text_hr": "Naložio sam im da odu k zapovjedniku Sadeju, koji je bio u mjestu riznice,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 46,
+      "text_en": "And commanded them that they should speak unto Daddeus, and to his brethren, and to the treasurers in that place, to send us such men as might execute the priests’ office in the house of the Lord.",
+      "text_fa": null,
+      "text_hr": "i zapovjedio im da kažu Dadeju, njegovoj braći i tamošnjim rizničarima neka nam pošalju ljude sposobne obavljati svećeničku službu u Domu Gospodnjemu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 47,
+      "text_en": "And by the mighty hand of our Lord they brought unto us skilful men of the sons of Moli the son of Levi, the son of Israel, Asebebia, and his sons, and his brethren, who were eighteen.",
+      "text_fa": null,
+      "text_hr": "Moćnom rukom našega Gospodina doveli su nam sposobne ljude od sinova Mahlija, sina Levijeva, sina Izraelova: Šerebiju, njegove sinove i braću, ukupno osamnaest ljudi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 48,
+      "text_en": "And Asebia, and Annus, and Osaias his brother, of the sons of Channuneus, and their sons, were twenty men.",
+      "text_fa": null,
+      "text_hr": "Doveli su i Hašabiju, Anuna i njegova brata Izaiju, od Kanunejevih sinova; s njihovim sinovima bilo ih je dvadeset.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 49,
+      "text_en": "And of the servants of the temple whom David had ordained, and the principal men for the service of the Levites to wit, the servants of the temple two hundred and twenty, the catalogue of whose names were shewed.",
+      "text_fa": null,
+      "text_hr": "Od hramskih slugu, koje su David i glavari odredili za službu levitima, bilo je dvije stotine i dvadeset; sva su njihova imena bila navedena u popisu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 50,
+      "text_en": "And there I vowed a fast unto the young men before our Lord, to desire of him a prosperous journey both for us and them that were with us, for our children, and for the cattle:",
+      "text_fa": null,
+      "text_hr": "Ondje sam za mladiće proglasio post pred našim Gospodinom, da od njega izmolimo sretan put za sebe, za one koji su bili s nama, za našu djecu i stoku.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 51,
+      "text_en": "For I was ashamed to ask the king footmen, and horsemen, and conduct for safeguard against our adversaries.",
+      "text_fa": null,
+      "text_hr": "Stidio sam se od kralja zatražiti pješake, konjanike i pratnju da nas putem štite od neprijatelja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 52,
+      "text_en": "For we had said unto the king, that the power of the Lord our God should be with them that seek him, to support them in all ways.",
+      "text_fa": null,
+      "text_hr": "Jer smo rekli kralju da je sila Gospodina, Boga našega, uz one koji ga traže i da ih podupire na svim njihovim putovima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 53,
+      "text_en": "And again we besought our Lord as touching these things, and found him favourable unto us.",
+      "text_fa": null,
+      "text_hr": "Zato smo ponovno za sve to molili našega Gospodina i on nam se smilovao.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 54,
+      "text_en": "Then I separated twelve of the chief of the priests, Esebrias, and Assanias, and ten men of their brethren with them:",
+      "text_fa": null,
+      "text_hr": "Tada sam izdvojio dvanaestoricu svećeničkih glavara: Šerebiju, Hašabiju i s njima desetoricu njihove braće.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 55,
+      "text_en": "And I weighed them the gold, and the silver, and the holy vessels of the house of our Lord, which the king, and his council, and the princes, and all Israel, had given.",
+      "text_fa": null,
+      "text_hr": "Odvagnuo sam im zlato, srebro i svete posude Doma našega Gospodina koje su darovali kralj, njegovo vijeće, knezovi i sav Izrael.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 56,
+      "text_en": "And when I had weighed it, I delivered unto them six hundred and fifty talents of silver, and silver vessels of an hundred talents, and an hundred talents of gold,",
+      "text_fa": null,
+      "text_hr": "Kad sam sve odvagnuo, predao sam im šest stotina pedeset talenata srebra, srebrnih posuda u vrijednosti sto talenata i sto talenata zlata,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 57,
+      "text_en": "And twenty golden vessels, and twelve vessels of brass, even of fine brass, glittering like gold.",
+      "text_fa": null,
+      "text_hr": "zatim dvadeset zlatnih posuda i dvanaest posuda od fine mjedi, sjajne poput zlata.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 58,
+      "text_en": "And I said unto them, Both ye are holy unto the Lord, and the vessels are holy, and the gold and the silver is a vow unto the Lord, the Lord of our fathers.",
+      "text_fa": null,
+      "text_hr": "Rekao sam im: „Vi ste sveti Gospodinu i posude su svete; zlato i srebro zavjetni su dar Gospodinu, Bogu naših otaca.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 59,
+      "text_en": "Watch ye, and keep them till ye deliver them to the chief of the priests and Levites, and to the principal men of the families of Israel, in Jerusalem, into the chambers of the house of our God.",
+      "text_fa": null,
+      "text_hr": "Bdijte i čuvajte ih dok ih u Jeruzalemu ne predate glavarima svećenika i levita te prvacima izraelskih obitelji, u odaje Doma našega Boga.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 60,
+      "text_en": "So the priests and the Levites, who had received the silver and the gold and the vessels, brought them unto Jerusalem, into the temple of the Lord.",
+      "text_fa": null,
+      "text_hr": "Svećenici i leviti koji su primili srebro, zlato i posude odnijeli su ih u Jeruzalem, u Hram Gospodnji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 61,
+      "text_en": "And from the river Theras we departed the twelfth day of the first month, and came to Jerusalem by the mighty hand of our Lord, which was with us: and from the beginning of our journey the Lord delivered us from every enemy, and so we came to Jerusalem.",
+      "text_fa": null,
+      "text_hr": "Od rijeke Terasa krenuli smo dvanaestoga dana prvoga mjeseca i stigli u Jeruzalem pod moćnom rukom našega Gospodina koja je bila nad nama. Od početka našega putovanja Gospodin nas je izbavljao od svakoga neprijatelja te smo stigli u Jeruzalem.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 62,
+      "text_en": "And when we had been there three days, the gold and silver that was weighed was delivered in the house of our Lord on the fourth day unto Marmoth the priest the son of Iri.",
+      "text_fa": null,
+      "text_hr": "Nakon što smo ondje proveli tri dana, četvrtoga su dana odvagnuto zlato i srebro predani u Domu našega Gospodina svećeniku Meremotu, sinu Urijinu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 63,
+      "text_en": "And with him was Eleazar the son of Phinees, and with them were Josabad the son of Jesu and Moeth the son of Sabban, Levites: all was delivered them by number and weight.",
+      "text_fa": null,
+      "text_hr": "S njim je bio Eleazar, sin Fineesov, a s njima leviti Jozabad, sin Ješuin, i Moet, sin Sabanov. Sve im je predano po broju i težini.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 64,
+      "text_en": "And all the weight of them was written up the same hour.",
+      "text_fa": null,
+      "text_hr": "Sva je težina zapisana istoga časa.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 65,
+      "text_en": "Moreover they that were come out of the captivity offered sacrifice unto the Lord God of Israel, even twelve bullocks for all Israel, fourscore and sixteen rams,",
+      "text_fa": null,
+      "text_hr": "Povratnici iz sužanjstva prinijeli su žrtvu Gospodinu, Bogu Izraelovu: dvanaest junaca za sav Izrael i devedeset i šest ovnova,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 66,
+      "text_en": "Threescore and twelve lambs, goats for a peace offering, twelve; all of them a sacrifice to the Lord.",
+      "text_fa": null,
+      "text_hr": "sedamdeset i dva janjca te dvanaest jaraca kao žrtvu pomirnicu; sve je to bilo žrtva Gospodinu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 67,
+      "text_en": "And they delivered the king’s commandments unto the king’s stewards’ and to the governors of Celosyria and Phenice; and they honoured the people and the temple of God.",
+      "text_fa": null,
+      "text_hr": "Kraljeve zapovijedi predali su kraljevskim upraviteljima i namjesnicima Koelesirije i Fenicije, a oni su iskazali čast narodu i Hramu Božjemu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 68,
+      "text_en": "Now when these things were done, the rulers came unto me, and said,",
+      "text_fa": null,
+      "text_hr": "Kad je sve to bilo obavljeno, poglavari su došli k meni i rekli:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 69,
+      "text_en": "The nation of Israel, the princes, the priests and Levites, have not put away from them the strange people of the land, nor the pollutions of the Gentiles to wit, of the Canaanites, Hittites, Pheresites, Jebusites, and the Moabites, Egyptians, and Edomites.",
+      "text_fa": null,
+      "text_hr": "„Izraelski narod, knezovi, svećenici i leviti nisu se odvojili od tuđih naroda zemlje ni od nečistoća pogana — Kanaanaca, Hetita, Perižana, Jebusejaca, Moabaca, Egipćana i Edomaca.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 70,
+      "text_en": "For both they and their sons have married with their daughters, and the holy seed is mixed with the strange people of the land; and from the beginning of this matter the rulers and the great men have been partakers of this iniquity.",
+      "text_fa": null,
+      "text_hr": "I oni i njihovi sinovi uzimali su njihove kćeri za žene, pa se sveto sjeme pomiješalo s tuđim narodima zemlje. Poglavari i velikaši od početka su predvodili u toj nepravdi.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 71,
+      "text_en": "And as soon as I had heard these things, I rent my clothes, and the holy garment, and pulled off the hair from off my head and beard, and sat me down sad and very heavy.",
+      "text_fa": null,
+      "text_hr": "Čim sam to čuo, razderao sam svoju odjeću i svetu haljinu, čupao kosu s glave i brade te sjeo tužan i silno potresen.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 72,
+      "text_en": "So all they that were then moved at the word of the Lord God of Israel assembled unto me, whilst I mourned for the iniquity: but I sat still full of heaviness until the evening sacrifice.",
+      "text_fa": null,
+      "text_hr": "Dok sam oplakivao tu nepravdu, oko mene su se okupili svi koje je potresla riječ Gospodina, Boga Izraelova. Ja sam pak sjedio shrvan sve do večernje žrtve.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 73,
+      "text_en": "Then rising up from the fast with my clothes and the holy garment rent, and bowing my knees, and stretching forth my hands unto the Lord,",
+      "text_fa": null,
+      "text_hr": "Tada sam ustao od posta, razderane odjeće i svete haljine, pao na koljena i ispružio ruke prema Gospodinu",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 74,
+      "text_en": "I said, O Lord, I am confounded and ashamed before thy face;",
+      "text_fa": null,
+      "text_hr": "te rekao: „Gospodine, smućen sam i stidim se podići lice pred tobom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 75,
+      "text_en": "For our sins are multiplied above our heads, and our ignorances have reached up unto heaven.",
+      "text_fa": null,
+      "text_hr": "Naši su se grijesi umnožili više od naših glava, a naši prijestupi iz neznanja doprli su do neba.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 76,
+      "text_en": "For ever since the time of our fathers we have been and are in great sin, even unto this day.",
+      "text_fa": null,
+      "text_hr": "Od vremena svojih otaca sve do današnjega dana bili smo i ostali u velikome grijehu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 77,
+      "text_en": "And for our sins and our fathers’ we with our brethren and our kings and our priests were given up unto the kings of the earth, to the sword, and to captivity, and for a prey with shame, unto this day.",
+      "text_fa": null,
+      "text_hr": "Zbog svojih grijeha i grijeha svojih otaca mi, naša braća, naši kraljevi i naši svećenici bili smo predani kraljevima zemlje, maču, sužanjstvu i pljački, na sramotu koja traje do danas.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 78,
+      "text_en": "And now in some measure hath mercy been shewed unto us from thee, O Lord, that there should be left us a root and a name in the place of thy sanctuary;",
+      "text_fa": null,
+      "text_hr": "A sada si nam, Gospodine, iskazao bar nešto milosti i ostavio nam korijen i ime na mjestu svojega Svetišta.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 79,
+      "text_en": "And to discover unto us a light in the house of the Lord our God, and to give us food in the time of our servitude.",
+      "text_fa": null,
+      "text_hr": "Dao si da nam zasja svjetlo u Domu Gospodina, Boga našega, i dao nam hranu u vrijeme našega ropstva.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 80,
+      "text_en": "Yea, when we were in bondage, we were not forsaken of our Lord; but he made us gracious before the kings of Persia, so that they gave us food;",
+      "text_fa": null,
+      "text_hr": "Premda smo bili robovi, naš nas Gospodin nije napustio, nego nam je dao milost pred perzijskim kraljevima, tako da su nam dali hranu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 81,
+      "text_en": "Yea, and honoured the temple of our Lord, and raised up the desolate Sion, that they have given us a sure abiding in Jewry and Jerusalem.",
+      "text_fa": null,
+      "text_hr": "Iskazali su čast Hramu našega Gospodina i podigli opustošeni Sion te nam dali sigurno prebivalište u Judeji i Jeruzalemu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 82,
+      "text_en": "And now, O Lord, what shall we say, having these things? for we have transgressed thy commandments, which thou gavest by the hand of thy servants the prophets, saying,",
+      "text_fa": null,
+      "text_hr": "A sada, Gospodine, što da kažemo poslije svega toga? Prestupili smo tvoje zapovijedi koje si nam dao po svojim slugama prorocima govoreći:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 83,
+      "text_en": "That the land, which ye enter into to possess as an heritage, is a land polluted with the pollutions of the strangers of the land, and they have filled it with their uncleanness.",
+      "text_fa": null,
+      "text_hr": "‘Zemlja u koju ulazite da je baštinite zemlja je onečišćena nečistoćama tuđinaca te zemlje; oni su je ispunili svojom nečistoćom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 84,
+      "text_en": "Therefore now shall ye not join your daughters unto their sons, neither shall ye take their daughters unto your sons.",
+      "text_fa": null,
+      "text_hr": "Zato nemojte udavati svoje kćeri za njihove sinove niti uzimati njihove kćeri svojim sinovima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 85,
+      "text_en": "Moreover ye shall never seek to have peace with them, that ye may be strong, and eat the good things of the land, and that ye may leave the inheritance of the land unto your children for evermore.",
+      "text_fa": null,
+      "text_hr": "Nikada ne tražite mir s njima, da biste bili snažni, jeli dobra zemlje i ostavili zemlju u baštinu svojoj djeci zauvijek.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 86,
+      "text_en": "And all that is befallen is done unto us for our wicked works and great sins; for thou, O Lord, didst make our sins light,",
+      "text_fa": null,
+      "text_hr": "Sve što nas je snašlo došlo je zbog naših zlih djela i velikih grijeha, premda si ti, Gospodine, našu kaznu učinio lakšom od naših grijeha",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 87,
+      "text_en": "And didst give unto us such a root: but we have turned back again to transgress thy law, and to mingle ourselves with the uncleanness of the nations of the land.",
+      "text_fa": null,
+      "text_hr": "i dao nam ovakav korijen. A mi smo se opet vratili prestupanju tvojega Zakona i miješanju s nečistoćom naroda ove zemlje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 88,
+      "text_en": "Mightest not thou be angry with us to destroy us, till thou hadst left us neither root, seed, nor name?",
+      "text_fa": null,
+      "text_hr": "Ne bi li se mogao rasrditi na nas i uništiti nas tako da nam ne ostanu ni korijen, ni potomstvo, ni ime?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 89,
+      "text_en": "O Lord of Israel, thou art true: for we are left a root this day.",
+      "text_fa": null,
+      "text_hr": "Gospodine Izraelov, ti si istinit, jer nam je sve do danas ostao korijen.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 90,
+      "text_en": "Behold, now are we before thee in our iniquities, for we cannot stand any longer by reason of these things before thee.",
+      "text_fa": null,
+      "text_hr": "Evo, sada stojimo pred tobom u svojim bezakonjima; zbog svega toga ne možemo više opstati pred tobom.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 91,
+      "text_en": "And as Esdras in his prayer made his confession, weeping, and lying flat upon the ground before the temple, there gathered unto him from Jerusalem a very great multitude of men and women and children: for there was great weeping among the multitude.",
+      "text_fa": null,
+      "text_hr": "Dok se Ezra tako u molitvi ispovijedao, plakao i ležao ničice pred Hramom, oko njega se iz Jeruzalema okupilo veoma veliko mnoštvo muškaraca, žena i djece; silan se plač širio mnoštvom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 92,
+      "text_en": "Then Jechonias the son of Jeelus, one of the sons of Israel, called out, and said, O Esdras, we have sinned against the Lord God, we have married strange women of the nations of the land, and now is all Israel aloft.",
+      "text_fa": null,
+      "text_hr": "Tada Jekonija, sin Jeelov, jedan od Izraelovih sinova, povika: „Ezra, sagriješili smo protiv Gospodina Boga jer smo se oženili tuđinkama iz naroda ove zemlje. Ali još ima nade za sav Izrael.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 93,
+      "text_en": "Let us make an oath to the Lord, that we will put away all our wives, which we have taken of the heathen, with their children,",
+      "text_fa": null,
+      "text_hr": "Zakletvom se obvežimo Gospodinu da ćemo otpustiti sve žene koje smo uzeli među poganima, zajedno s njihovom djecom,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 94,
+      "text_en": "Like as thou hast decreed, and as many as do obey the law of the Lord.",
+      "text_fa": null,
+      "text_hr": "kako si ti odredio i kako nalažu svi koji se pokoravaju Zakonu Gospodnjemu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 95,
+      "text_en": "Arise and put in execution: for to thee doth this matter appertain, and we will be with thee: do valiantly.",
+      "text_fa": null,
+      "text_hr": "Ustani i izvrši to, jer je ovo tvoja odgovornost, a mi ćemo biti uz tebe. Budi odvažan!“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 96,
+      "text_en": "So Esdras arose, and took an oath of the chief of the priests and Levites of all Israel to do after these things; and so they sware.",
+      "text_fa": null,
+      "text_hr": "Tada Ezra ustade i zakletvom obveza glavare svećenika i levita svega Izraela da će postupiti prema tim riječima; i oni se zakleše.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

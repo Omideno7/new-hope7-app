@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "book_id": "judith",
+  "title_fa": "یهودیت",
+  "title_en": "Judith",
+  "title_hr": "Judita",
+  "chapter": 9,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "bf5c258a8b2df3f94d3947d111785488dc2e70e89aa261d3dbd24d7d59cd8248",
+  "locales_in_scope": [
+    "fa"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Judith fell upon her face, and put ashes upon her head, and uncovered the sackcloth wherewith she was clothed; and about the time that the incense of that evening was offered in Jerusalem in the house of the Lord Judith cried with a loud voice, and said,",
+      "text_fa": "یهودیت به روی خود افتاد، بر سرش خاکستر ریخت و پلاسی را که پوشیده بود کنار زد. نزدیک زمانی که بخور شامگاهی در خانهٔ خداوند در اورشلیم تقدیم می‌شد، یهودیت با صدای بلند فریاد زد و گفت:",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 2,
+      "text_en": "O Lord God of my father Simeon, to whom thou gavest a sword to take vengeance of the strangers, who loosened the girdle of a maid to defile her, and discovered the thigh to her shame, and polluted her virginity to her reproach; for thou saidst, It shall not be so; and yet they did so:",
+      "text_fa": "«ای خداوند، خدای پدرم شمعون، تو شمشیری به او دادی تا از بیگانگانی انتقام بگیرد که کمربند دختری را برای بی‌حرمت کردنش گشودند، ران او را برای رسوایی برهنه کردند و بکارتش را به ننگ آلوده ساختند. تو گفته بودی: چنین کاری نباید بشود؛ اما آنان آن را انجام دادند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 3,
+      "text_en": "Wherefore thou gavest their rulers to be slain, so that they dyed their bed in blood, being deceived, and smotest the servants with their lords, and the lords upon their thrones;",
+      "text_fa": "از این رو فرمانروایانشان را به کشتن دادی؛ آنان که فریب خورده بودند بستر خود را با خون رنگین کردند. تو خدمتگزاران را همراه سرورانشان و سروران را بر تخت‌هایشان از پا درآوردی.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 4,
+      "text_en": "And hast given their wives for a prey, and their daughters to be captives, and all their spoils to be divided among thy dear children; which were moved with thy zeal, and abhorred the pollution of their blood, and called upon thee for aid: O God, O my God, hear me also a widow.",
+      "text_fa": "زنانشان را به غنیمت، دخترانشان را به اسارت و همهٔ اموالشان را برای تقسیم به فرزندان محبوبت سپردی؛ همانان که از غیرت تو برانگیخته شدند، از آلودگی خون خود بیزار بودند و برای یاری نزد تو فریاد زدند. ای خدا، ای خدای من، صدای منِ بیوه را نیز بشنو.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 5,
+      "text_en": "For thou hast wrought not only those things, but also the things which fell out before, and which ensued after; thou hast thought upon the things which are now, and which are to come.",
+      "text_fa": "زیرا نه‌فقط آن کارها، بلکه آنچه پیش از آنها رخ داد و آنچه پس از آنها پیش آمد، همه را تو به انجام رساندی. تو دربارهٔ امور اکنون و آینده اندیشیده‌ای.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 6,
+      "text_en": "Yea, what things thou didst determine were ready at hand, and said, Lo, we are here: for all thy ways are prepared, and thy judgments are in thy foreknowledge.",
+      "text_fa": "هر چه مقرر کردی آماده و مهیا شد و گفت: اینک ما حاضریم؛ زیرا همهٔ راه‌های تو از پیش آماده است و داوری‌هایت در علم پیشین تو قرار دارد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 7,
+      "text_en": "For, behold, the Assyrians are multiplied in their power; they are exalted with horse and man; they glory in the strength of their footmen; they trust in shield, and spear, and bow, and sling; and know not that thou art the Lord that breakest the battles: the Lord is thy name.",
+      "text_fa": "اینک آشوریان با نیروی فراوان گرد آمده‌اند؛ به اسب‌ها و سوارانشان می‌بالند، به قدرت پیاده‌نظامشان فخر می‌کنند، بر سپر، نیزه، کمان و فلاخن تکیه دارند و نمی‌دانند که تو خداوندی هستی که جنگ‌ها را درهم می‌شکنی؛ نام تو خداوند است.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 8,
+      "text_en": "Throw down their strength in thy power, and bring down their force in thy wrath: for they have purposed to defile thy sanctuary, and to pollute the tabernacle where thy glorious name resteth and to cast down with sword the horn of thy altar.",
+      "text_fa": "با قدرت خود نیرویشان را فرو افکن و در خشمت توانشان را پست ساز؛ زیرا قصد کرده‌اند مکان مقدست را بی‌حرمت کنند، خیمه‌ای را که نام پرجلالت در آن آرام دارد آلوده سازند و شاخ مذبحت را با شمشیر فرو اندازند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 9,
+      "text_en": "Behold their pride, and send thy wrath upon their heads: give into mine hand, which am a widow, the power that I have conceived.",
+      "text_fa": "به غرورشان بنگر و خشمت را بر سرشان بفرست. آن قدرتی را که در اندیشه دارم به دست من که بیوه‌ای هستم بسپار.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 10,
+      "text_en": "Smite by the deceit of my lips the servant with the prince, and the prince with the servant: break down their stateliness by the hand of a woman.",
+      "text_fa": "با فریب لبانم خدمتگزار را همراه فرمانده و فرمانده را همراه خدمتگزار از پا درآور؛ شکوه و غرورشان را به دست یک زن درهم بشکن.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 11,
+      "text_en": "For thy power standeth not in multitude nor thy might in strong men: for thou art a God of the afflicted, an helper of the oppressed, an upholder of the weak, a protector of the forlorn, a saviour of them that are without hope.",
+      "text_fa": "زیرا قدرت تو به شمار فراوان و توانت به مردان زورمند وابسته نیست. تو خدای رنج‌دیدگانی، یاور ستمدیدگان، پشتیبان ناتوانان، محافظ درماندگان و نجات‌دهندهٔ کسانی هستی که امیدی ندارند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 12,
+      "text_en": "I pray thee, I pray thee, O God of my father, and God of the inheritance of Israel, Lord of the heavens and earth, Creator of the waters, king of every creature, hear thou my prayer:",
+      "text_fa": "از تو درخواست می‌کنم، آری از تو درخواست می‌کنم، ای خدای پدرم و خدای میراث اسرائیل، ای خداوند آسمان و زمین، آفرینندهٔ آب‌ها و پادشاه هر آفریده، دعایم را بشنو.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 13,
+      "text_en": "And make my speech and deceit to be their wound and stripe, who have purposed cruel things against thy covenant, and thy hallowed house, and against the top of Sion, and against the house of the possession of thy children.",
+      "text_fa": "سخن و فریب مرا به زخم و تازیانه‌ای برای کسانی بدل کن که بر ضد عهد تو، خانهٔ مقدست، قلهٔ صهیون و خانه‌ای که ملک فرزندانت است نقشه‌های بی‌رحمانه کشیده‌اند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 14,
+      "text_en": "And make every nation and tribe to acknowledge that thou art the God of all power and might, and that there is none other that protecteth the people of Israel but thou.",
+      "text_fa": "کاری کن هر ملت و قبیله‌ای اقرار کند که تو خدای تمام قدرت و توان هستی و جز تو هیچ‌کس از قوم اسرائیل محافظت نمی‌کند.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    }
+  ]
+}

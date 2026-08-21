@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 58,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "9f04e15a73142baa1e68fb21483ba8b54e80adf1d4d345416073a7dad006e873",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And I began to speak the third Parable concerning the righteous and elect.",
+      "text_fa": null,
+      "text_hr": "Počeo sam govoriti Treću prispodobu o pravednima i izabranima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "Blessed are ye, ye righteous and elect,\nFor glorious shall be your lot.",
+      "text_fa": null,
+      "text_hr": "Blago vama, pravedni i izabrani,\njer će slavna biti vaša baština.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And the righteous shall be in the light of the sun,\nAnd the elect in the light of eternal life:\nThe days of their life shall be unending,\nAnd the days of the holy without number.",
+      "text_fa": null,
+      "text_hr": "Pravedni će biti u svjetlosti sunca,\na izabrani u svjetlosti vječnoga života.\nDanima njihova života neće biti kraja,\na danima svetih neće biti broja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And they shall seek the light and find righteousness with the Lord of Spirits:\nThere shall be peace to the righteous in the name of the Eternal Lord.",
+      "text_fa": null,
+      "text_hr": "Tražit će svjetlost i naći pravednost kod Gospodara duhova.\nPravednima će biti mir u ime Vječnoga Gospodina.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And after this it shall be said to the holy in heaven\nThat they should seek out the secrets of righteousness, the heritage of faith:\nFor it has become bright as the sun upon earth,\nAnd the darkness is past.",
+      "text_fa": null,
+      "text_hr": "Nakon toga svetima na nebu bit će rečeno\nda potraže tajne pravednosti, baštinu vjere,\njer je ona postala sjajna poput sunca nad zemljom,\na tama je prošla.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And there shall be a light that never =endeth=,\nAnd to a limit (lit. ‘number’) of days they shall not come,\nFor the darkness shall first have been destroyed,\n[And the light established before the Lord of Spirits]\nAnd the light of uprightness established for ever before the Lord of Spirits.",
+      "text_fa": null,
+      "text_hr": "Bit će svjetlost koja nikada =ne prestaje=\ni oni neće doći do granice — doslovno „broja“ — dana,\njer će tama prije toga biti uništena,\n[a svjetlost učvršćena pred Gospodarom duhova]\ni svjetlost čestitosti zauvijek utvrđena pred Gospodarom duhova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

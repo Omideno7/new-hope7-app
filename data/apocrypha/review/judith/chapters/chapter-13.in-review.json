@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "book_id": "judith",
+  "title_fa": "یهودیت",
+  "title_en": "Judith",
+  "title_hr": "Judita",
+  "chapter": 13,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "f8360f1e7ecf0ecc5388f1069326a70acd8e5b4b66f2ee7f70ef87d909a42ba8",
+  "locales_in_scope": [
+    "fa"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Now when the evening was come, his servants made haste to depart, and Bagoas shut his tent without, and dismissed the waiters from the presence of his lord; and they went to their beds: for they were all weary, because the feast had been long.",
+      "text_fa": "وقتی شب فرا رسید، خدمتگزاران هولوفرنس شتابان بیرون رفتند. باگواس خیمه را از بیرون بست و پیشخدمت‌ها را از حضور سرورش مرخص کرد. همه به بسترهای خود رفتند، زیرا ضیافت طولانی شده و خسته بودند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 2,
+      "text_en": "And Judith was left alone in the tent, and Holofernes lying alone upon his bed: for he was filled with wine.",
+      "text_fa": "یهودیت در خیمه تنها ماند و هولوفرنس که از شراب پُر شده بود، بر بستر خود افتاده بود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 3,
+      "text_en": "Now Judith had commanded her maid to stand without her bedchamber, and to wait for her. coming forth, as she did daily: for she said she would go forth to her prayers, and she spake to Bagoas according to the same purpose.",
+      "text_fa": "یهودیت به کنیزش گفته بود بیرون اتاق خواب بایستد و مانند هر روز منتظر بیرون آمدنش باشد؛ زیرا گفته بود برای دعا بیرون خواهد رفت و همین قصد را با باگواس نیز در میان گذاشته بود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 4,
+      "text_en": "So all went forth and none was left in the bedchamber, neither little nor great. Then Judith, standing by his bed, said in her heart, O Lord God of all power, look at this present upon the works of mine hands for the exaltation of Jerusalem.",
+      "text_fa": "پس همه بیرون رفتند و هیچ‌کس، نه کوچک و نه بزرگ، در اتاق خواب باقی نماند. یهودیت کنار بستر هولوفرنس ایستاد و در دل خود گفت: «ای خداوند، خدای تمام قدرت، اکنون به کار دستان من برای سربلندی اورشلیم نظر کن.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 5,
+      "text_en": "For now is the time to help thine inheritance, and to execute thine enterprizes to the destruction of the enemies which are risen against us.",
+      "text_fa": "اکنون زمان آن است که میراثت را یاری کنی و نقشه‌ات را برای نابودی دشمنانی که بر ضد ما برخاسته‌اند به انجام رسانی.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 6,
+      "text_en": "Then she came to the pillar of the bed, which was at Holofernes’ head, and took down his fauchion from thence,",
+      "text_fa": "سپس به ستون بستر در کنار سر هولوفرنس رفت و شمشیر او را از آنجا پایین آورد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 7,
+      "text_en": "And approached to his bed, and took hold of the hair of his head, and said, Strengthen me, O Lord God of Israel, this day.",
+      "text_fa": "به بستر نزدیک شد، موی سر هولوفرنس را گرفت و گفت: «ای خداوند، خدای اسرائیل، امروز مرا نیرومند ساز.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 8,
+      "text_en": "And she smote twice upon his neck with all her might, and she took away his head from him.",
+      "text_fa": "با تمام توان دو بار بر گردن او ضربه زد و سرش را از بدن جدا کرد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 9,
+      "text_en": "And tumbled his body down from the bed, and pulled down the canopy from the pillars; and anon after she went forth, and gave Holofernes his head to her maid;",
+      "text_fa": "بدنش را از بستر به پایین غلتاند و سایبان را از ستون‌ها جدا کرد. اندکی بعد بیرون رفت و سر هولوفرنس را به کنیزش داد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 10,
+      "text_en": "And she put it in her bag of meat: so they twain went together according to their custom unto prayer: and when they passed the camp, they compassed the valley, and went up the mountain of Bethulia, and came to the gates thereof.",
+      "text_fa": "کنیز سر را در کیسهٔ خوراک گذاشت. آنگاه هر دو طبق عادت برای دعا بیرون رفتند، از اردوگاه گذشتند، دره را دور زدند، از کوه بیتولیا بالا رفتند و به دروازه‌های شهر رسیدند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 11,
+      "text_en": "Then said Judith afar off, to the watchmen at the gate, Open, open now the gate: God, even our God, is with us, to shew his power yet in Jerusalem, and his forces against the enemy, as he hath even done this day.",
+      "text_fa": "یهودیت از دور به نگهبانان دروازه گفت: «دروازه را باز کنید، همین اکنون باز کنید! خدا، خدای ما، با ماست تا قدرت خود را بار دیگر در اورشلیم و نیروی خود را بر ضد دشمن نشان دهد، همان‌گونه که امروز انجام داده است.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 12,
+      "text_en": "Now when the men of her city heard her voice, they made haste to go down to the gate of their city, and they called the elders of the city.",
+      "text_fa": "وقتی مردان شهر صدای او را شنیدند، شتابان به سوی دروازهٔ شهر پایین رفتند و مشایخ شهر را فراخواندند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 13,
+      "text_en": "And then they ran all together, both small and great, for it was strange unto them that she was come: so they opened the gate, and received them, and made a fire for a light, and stood round about them.",
+      "text_fa": "همه، از کوچک تا بزرگ، با هم دویدند، زیرا بازگشت او برایشان باورکردنی نبود. دروازه را باز کردند، یهودیت و کنیزش را پذیرفتند، برای روشنایی آتشی افروختند و گرد آنان ایستادند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 14,
+      "text_en": "Then she said to them with a loud voice, Praise, praise God, praise God, I say, for he hath not taken away his mercy from the house of Israel, but hath destroyed our enemies by mine hands this night.",
+      "text_fa": "یهودیت با صدای بلند گفت: «خدا را بستایید! بستایید! آری، خدا را بستایید؛ زیرا رحمت خود را از خاندان اسرائیل برنداشته، بلکه امشب به دست من دشمنانمان را نابود کرده است.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 15,
+      "text_en": "So she took the head out of the bag, and shewed it, and said unto them, behold the head of Holofernes, the chief captain of the army of Assur, and behold the canopy, wherein he did lie in his drunkenness; and the Lord hath smitten him by the hand of a woman.",
+      "text_fa": "سپس سر را از کیسه بیرون آورد، به آنان نشان داد و گفت: «اینک سر هولوفرنس، فرماندهٔ کل سپاه آشور، و این هم سایبانی که زیر آن در مستی خوابیده بود. خداوند او را به دست یک زن از پا درآورد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 16,
+      "text_en": "As the Lord liveth, who hath kept me in my way that I went, my countenance hath deceived him to his destruction, and yet hath he not committed sin with me, to defile and shame me.",
+      "text_fa": "به حیات خداوندی که مرا در راهی که رفتم حفظ کرد سوگند، چهره‌ام او را فریفت و به نابودی کشاند؛ با این همه، او با من مرتکب گناه نشد تا مرا آلوده و رسوا کند.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 17,
+      "text_en": "Then all the people were wonderfully astonished, and bowed themselves and worshipped God, and said with one accord, Blessed be thou, O our God, which hast this day brought to nought the enemies of thy people.",
+      "text_fa": "تمام قوم سخت شگفت‌زده شدند، سر فرود آوردند، خدا را پرستش کردند و یک‌صدا گفتند: «متبارک هستی، ای خدای ما، که امروز دشمنان قومت را نابود کردی.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 18,
+      "text_en": "Then said Ozias unto her, O daughter, blessed art thou of the most high God above all the women upon the earth; and blessed be the Lord God, which hath created the heavens and the earth, which hath directed thee to the cutting off of the head of the chief of our enemies.",
+      "text_fa": "آنگاه عُزیا به یهودیت گفت: «ای دختر، تو بیش از همهٔ زنان روی زمین از جانب خدای متعال برکت یافته‌ای؛ و متبارک است خداوند خدا، آفرینندهٔ آسمان‌ها و زمین، که تو را هدایت کرد تا سر فرماندهٔ دشمنانمان را جدا کنی.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 19,
+      "text_en": "For this thy confidence shall not depart from the heart of men, which remember the power of God for ever.",
+      "text_fa": "اعتماد و دلیری تو هرگز از دل مردمانی که قدرت خدا را تا ابد به یاد می‌آورند محو نخواهد شد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 20,
+      "text_en": "And God turn these things to thee for a perpetual praise, to visit thee in good things because thou hast not spared thy life for the affliction of our nation, but hast revenged our ruin, walking a straight way before our God. And all the people said; So be it, so be it.",
+      "text_fa": "خدا این کارها را به ستایشی جاودان برایت بدل سازد و با نیکویی‌ها به دیدارت بیاید؛ زیرا هنگام رنج قوم ما از جان خود دریغ نکردی، بلکه از ویرانی ما انتقام گرفتی و در حضور خدایمان در راه راست گام برداشتی.» همهٔ قوم گفتند: «آمین، آمین.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    }
+  ]
+}

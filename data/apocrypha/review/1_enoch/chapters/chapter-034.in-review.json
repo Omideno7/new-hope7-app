@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 34,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "dd22998665f10684d183a147d99e062d3c068bbdfb9f9794882b4bd44ea47aae",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And from thence I went towards the north to the ends of the earth, and there I saw a great and glorious device at the ends of the whole earth.",
+      "text_fa": null,
+      "text_hr": "Odatle odoh prema sjeveru, do krajeva zemlje. Ondje na krajevima cijele zemlje vidjeh velik i slavan poredak.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And here I saw three portals of heaven open in the heaven: through each of them proceed north winds: when they blow there is cold, hail, frost, snow, dew, and rain.",
+      "text_fa": null,
+      "text_hr": "Ondje vidjeh troja nebeska vrata otvorena na nebu. Kroz svaka od njih izlaze sjeverni vjetrovi; kad pušu, donose hladnoću, tuču, mraz, snijeg, rosu i kišu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And out of one portal they blow for good: but when they blow through the other two portals, †it is with violence and affliction on the earth, and they blow with violence.†",
+      "text_fa": null,
+      "text_hr": "Kroz jedna vrata pušu na dobro, ali kad pušu kroz druga dvoja, †čine to silovito i donose nevolju zemlji; silovito pušu.†",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

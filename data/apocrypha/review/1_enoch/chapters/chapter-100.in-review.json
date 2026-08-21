@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 100,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "8f4e0c0414317a979538d784575e69627db66f42000387c7d4c58c30032ea367",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And in those days in one place the fathers together with their sons shall be smitten,\nAnd brothers one with another shall fall in death,\nTill the streams flow with their blood.",
+      "text_fa": null,
+      "text_hr": "I u one će dane na jednom mjestu biti potučeni očevi sa svojim sinovima, i braća jedan s drugim u smrt će pasti, Dok potoci ne poteku njihovom krvlju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "For a man shall not withhold his hand from slaying his sons and his son’s sons,\nAnd the sinner shall not withhold his hand from his honoured brother:\nFrom dawn till sunset they shall slay one another.",
+      "text_fa": null,
+      "text_hr": "Čovjek neće ustegnuti ruku od ubijanja svojih sinova i sinova svojih sinova, a grešnik neće ustegnuti ruku od svojega poštovanog brata. Od zore do zalaska Sunca ubijat će jedni druge.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And the horse shall walk up to the breast in the blood of sinners,\nAnd the chariot shall be submerged to its height.",
+      "text_fa": null,
+      "text_hr": "I konj će hodati do grudi u krvi grešnika, i kola će biti potopljena do svoje visine.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "In those days the angels shall descend into the secret places,\nAnd gather together into one place all those who brought down sin,\nAnd the Most High will arise on that day of Judgement,\nTo execute great judgement amongst sinners.",
+      "text_fa": null,
+      "text_hr": "U one dane anđeli će sići na skrovita mjesta i okupiti na jedno mjesto sve koji su donijeli grijeh. Svevišnji će ustati na dan Suda da izvrši veliki sud među grešnicima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And over all the righteous and holy He will appoint guardians from amongst the holy angels,\nTo guard them as the apple of an eye,\nUntil He makes an end of all wickedness and all sin,\nAnd though the righteous sleep a long sleep, they have nought to fear.",
+      "text_fa": null,
+      "text_hr": "Nad svim pravednima i svetima postavit će čuvare među svetim anđelima, da ih čuvaju kao zjenicu oka dok ne učini kraj svakoj zloći i svakomu grijehu. Premda pravednici spavaju dugim snom, nemaju se čega bojati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And (then) the children of the earth shall see the wise =in security=,\nAnd shall understand all the words of this book,\nAnd recognize that their riches shall not be able to save them\nIn the overthrow of their sins.",
+      "text_fa": null,
+      "text_hr": "Tada će djeca zemlje vidjeti mudre =u sigurnosti=, razumjeti sve riječi ove knjige i priznati da ih njihovo bogatstvo neće moći spasiti kad njihovi grijesi budu oboreni.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "Woe to you, sinners, on the day of strong anguish,\n=Ye who= afflict the righteous and burn them with fire:\nYe shall be requited according to your works.",
+      "text_fa": null,
+      "text_hr": "Teško vama, grješnici, u dan teške tjeskobe, =Vi koji= mučite pravedne i spaljujete ih vatrom: Bit ćete plaćeni prema svojim djelima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "Woe to you, ye obstinate of heart,\nWho watch in order to devise wickedness:\nTherefore shall fear come upon you,\nAnd there shall be none to help you.",
+      "text_fa": null,
+      "text_hr": "Teško vama, tvrdoglava srca, Koji bdiju da smišljaju zloću: Zato će te spopasti strah, i neće biti nikoga da ti pomogne.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "Woe to you, ye sinners, on account of the words of your mouth,\nAnd on account of the deeds of your hands which your godlessness has wrought,\nIn blazing flames burning worse than fire shall ye burn.",
+      "text_fa": null,
+      "text_hr": "Teško vama, grešnici, zbog riječi vaših usta i djela vaših ruku koja je učinilo vaše bezboštvo: gorjet ćete u plamenu koji žeže snažnije od ognja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And now, know ye that from the angels He will inquire as to your deeds in heaven, from the sun and from the moon and from the stars in reference to your sins because upon the earth ye execute judgement on the righteous.",
+      "text_fa": null,
+      "text_hr": "I sada znajte da će On od anđela pitati za vaša djela na nebu, od sunca i od mjeseca i od zvijezda u odnosu na vaše grijehe jer na zemlji vi izvršavate sud nad pravednicima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "And He will summon to testify against you every cloud and mist and dew and rain; for they shall all be withheld because of you from descending upon you, and they shall be mindful of your sins.",
+      "text_fa": null,
+      "text_hr": "Pozvat će svaki oblak, maglu, rosu i kišu da svjedoče protiv vas; zbog vas će svi biti zadržani da ne siđu na vas i pamtit će vaše grijehe.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "And now give presents to the rain that it be not withheld from descending upon you, nor yet the dew, when it has received gold and silver from you that it may descend.",
+      "text_fa": null,
+      "text_hr": "A sada dajte darove kiši da se ne uskrati da siđe na vas, ni rosi, kad od vas primi zlato i srebro da može sići.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "When the hoar-frost and snow with their chilliness, and all the snow-storms with all their plagues fall upon you, in those days ye shall not be able to stand before them.",
+      "text_fa": null,
+      "text_hr": "Kad inje i snijeg sa svojom hladnoćom, i sve snježne oluje sa svim svojim pošastima padnu na vas, u one dane nećete se moći održati pred njima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

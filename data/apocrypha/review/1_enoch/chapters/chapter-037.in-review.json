@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 37,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "4a3a9ed567b643d8b0e3416f2ab596b9a9f6b1b17bce56b43bafc4392838ed7a",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "The second vision which he saw, the vision of wisdom—which Enoch, the son of Jared, the son of Mahalalel, the son of Cainan, the son of Enos, the son of Seth, the son of Adam, saw.",
+      "text_fa": null,
+      "text_hr": "Drugo viđenje koje je vidio, viđenje mudrosti što ga je vidio Henok, sin Jaredov, sin Mahalalelov, sin Kenanov, sin Enošev, sin Šetov, sin Adamov.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And this is the beginning of the words of wisdom which I lifted up my voice to speak and say to those which dwell on earth: Hear, ye men of old time, and see, ye that come after, the words of the Holy One which I will speak before the Lord of Spirits.",
+      "text_fa": null,
+      "text_hr": "Ovo je početak riječi mudrosti o kojima sam podigao glas da ih izgovorim i kažem stanovnicima zemlje: Čujte, vi iz davnih vremena, i promotrite, vi koji dolazite poslije, riječi Svetoga koje ću izgovoriti pred Gospodarom duhova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "It were better to declare (them only) to the men of old time, but even from those that come after we will not withhold the beginning of wisdom.",
+      "text_fa": null,
+      "text_hr": "Bilo bi bolje objaviti ih samo ljudima iz davnih vremena, ali ni onima koji dolaze poslije nećemo uskratiti početak mudrosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "Till the present day such wisdom has never been given =by= the Lord of Spirits as I have received according to my insight, according to the good pleasure of the Lord of Spirits by whom the lot of eternal life has been given to me.",
+      "text_fa": null,
+      "text_hr": "Sve do današnjega dana Gospodar duhova nikomu nije dao mudrost kakvu sam ja primio prema svojem uvidu i dobrohotnosti Gospodara duhova, po kojem mi je dodijeljena baština vječnoga života.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "Now three parables were imparted to me, and I lifted up my voice and recounted them to those that dwell on the earth.",
+      "text_fa": null,
+      "text_hr": "Tada su mi priopćene tri prispodobe, a ja sam podigao glas i ispripovijedao ih stanovnicima zemlje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

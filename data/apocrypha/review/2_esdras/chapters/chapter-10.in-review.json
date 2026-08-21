@@ -1,0 +1,489 @@
+{
+  "schema_version": 1,
+  "book_id": "2_esdras",
+  "title_fa": "دوم اِسدراس",
+  "title_en": "Second Esdras",
+  "title_hr": "Druga Ezdrina",
+  "chapter": 10,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "64e30213dc3b5e88f0b6b14c9b7af05af2a4c8c0624984a908a1393166a58556",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And it so came to pass, that when my son was entered into his wedding chamber, he fell down, and died.",
+      "text_fa": null,
+      "text_hr": "I dogodilo se da kad je moj sin ušao u svoju svadbenu odaju, pao je i umro.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "Then we all overthrew the lights, and all my neighbours rose up to comfort me: so I took my rest unto the second day at night.",
+      "text_fa": null,
+      "text_hr": "Tada smo svi pogasili svjetla, a svi su moji susjedi ustali da me tješe. Tako sam počivala do noći drugoga dana.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And it came to pass, when they had all left off to comfort me, to the end I might be quiet; then rose I up by night and fled, and came hither into this field, as thou seest.",
+      "text_fa": null,
+      "text_hr": "I dogodi se, kad su svi otišli da me tješe, da bih mogao biti na miru; tada sam ustao noću i pobjegao, i došao ovamo u ovo polje, kao što vidiš.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And I do now purpose not to return into the city, but here to stay, and neither to eat nor drink, but continually to mourn and to fast until I die.",
+      "text_fa": null,
+      "text_hr": "I sada se ne namjeravam vratiti u grad, nego ostati ovdje, i ne jesti ni piti, nego neprestano tugovati i postiti dok ne umrem.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "Then left I the meditations wherein I was, and spake to her in anger, saying,",
+      "text_fa": null,
+      "text_hr": "Napustio sam razmišljanja kojima sam bio zaokupljen i ljutito joj se obratio:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "Thou foolish woman above all other, seest thou not our mourning, and what happeneth unto us?",
+      "text_fa": null,
+      "text_hr": "Ti, najnerazumnija od svih žena, zar ne vidiš našu žalost, i što se s nama događa?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "How that Sion our mother is full of all heaviness, and much humbled, mourning very sore?",
+      "text_fa": null,
+      "text_hr": "Zar ne vidiš kako je Sion, naša majka, ispunjena svakom tugom, duboko ponižena i u gorkoj žalosti?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And now, seeing we all mourn and are sad, for we are all in heaviness, art thou grieved for one son?",
+      "text_fa": null,
+      "text_hr": "A sada, gledajući da svi tugujemo i tužni smo, jer svi smo u nevolji, tuguješ li zbog jednoga sina?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "For ask the earth, and she shall tell thee, that it is she which ought to mourn for the fall of so many that grow upon her.",
+      "text_fa": null,
+      "text_hr": "Upitaj zemlju i reći će ti da upravo ona treba oplakivati pad tolikih koji na njoj rastu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "For out of her came all at the first, and out of her shall all others come, and, behold, they walk almost all into destruction, and a multitude of them is utterly rooted out.",
+      "text_fa": null,
+      "text_hr": "Iz nje su u početku svi izišli i iz nje će izići svi budući; a gle, gotovo svi idu u propast i veliko je mnoštvo posve iskorijenjeno.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "Who then should make more mourning than she, that hath lost so great a multitude; and not thou, which art sorry but for one?",
+      "text_fa": null,
+      "text_hr": "Tko bi trebao više tugovati od nje, koja je izgubila tako veliko mnoštvo, a ne ti koja žališ samo za jednim?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "But if thou sayest unto me, My lamentation is not like the earth’s, because I have lost the fruit of my womb, which I brought forth with pains, and bare with sorrows;",
+      "text_fa": null,
+      "text_hr": "Ali ako mi kažeš: Moje jadikovanje nije kao zemaljsko, jer sam izgubila plod svoje utrobe, koji sam u bolovima rodila i s tugom nosila;",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "But the earth not so: for the multitude present in it according to the course of the earth is gone, as it came:",
+      "text_fa": null,
+      "text_hr": "Ali sa zemljom nije tako: mnoštvo koje je na njoj prisutno, prema zemaljskomu tijeku, odlazi kao što je došlo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "Then say I unto thee, Like as thou hast brought forth with labour; even so the earth also hath given her fruit, namely, man, ever since the beginning unto him that made her.",
+      "text_fa": null,
+      "text_hr": "Tada ti kažem: kao što si ti rodila uz trud, tako i zemlja od početka daje svoj plod — čovjeka — onomu koji ju je stvorio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "Now therefore keep thy sorrow to thyself, and bear with a good courage that which hath befallen thee.",
+      "text_fa": null,
+      "text_hr": "Sada, dakle, zadrži svoju tugu za sebe i hrabro podnosi ono što te snašlo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "For if thou shalt acknowledge the determination of God to be just, thou shalt both receive thy son in time, and shalt be commended among women.",
+      "text_fa": null,
+      "text_hr": "Ako priznaš da je Božja odluka pravedna, svojega ćeš sina primiti u određeno vrijeme i bit ćeš pohvaljena među ženama.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "Go thy way then into the city to thine husband.",
+      "text_fa": null,
+      "text_hr": "Idi dakle u grad svome mužu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "And she said unto me, That will I not do: I will not go into the city, but here will I die.",
+      "text_fa": null,
+      "text_hr": "A ona mi je rekla: To neću učiniti: neću ići u grad, ali ću ovdje umrijeti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "So I proceeded to speak further unto her, and said,",
+      "text_fa": null,
+      "text_hr": "Pa sam nastavio razgovarati s njom i rekao:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "Do not so, but be counselled. by me: for how many are the adversities of Sion? be comforted in regard of the sorrow of Jerusalem.",
+      "text_fa": null,
+      "text_hr": "Ne čini tako, nego poslušaj moj savjet. Pomisli na nevolje Siona i utješi se s obzirom na žalost Jeruzalema.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "For thou seest that our sanctuary is laid waste, our altar broken down, our temple destroyed;",
+      "text_fa": null,
+      "text_hr": "Jer ti vidiš da je naše svetište opustošeno, naš žrtvenik razvaljen, naš hram uništen;",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "Our psaltery is laid on the ground, our song is put to silence, our rejoicing is at an end, the light of our candlestick is put out, the ark of our covenant is spoiled, our holy things are defiled, and the name that is called upon us is almost profaned: our children are put to shame, our priests are burnt, our Levites are gone into captivity, our virgins are defiled, and our wives ravished; our righteous men carried away, our little ones destroyed, our young men are brought in bondage, and our strong men are become weak;",
+      "text_fa": null,
+      "text_hr": "Naš psaltir leži na zemlji, naša je pjesma utihnula, našemu je veselju došao kraj, svjetlost našega svijećnjaka ugašena je, Kovčeg našega saveza opljačkan, svetinje oskvrnjene, a ime kojim smo nazvani gotovo obeščašćeno. Naša su djeca posramljena, svećenici spaljeni, leviti odvedeni u sužanjstvo, djevice oskvrnjene, žene silovane, pravednici odvedeni, maleni uništeni, mladići porobljeni, a snažni oslabjeli.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "And, which is the greatest of all, the seal of Sion hath now lost her honour; for she is delivered into the hands of them that hate us.",
+      "text_fa": null,
+      "text_hr": "Najgore od svega, Sionski je pečat izgubio svoju čast jer je predan u ruke onima koji nas mrze.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "And therefore shake off thy great heaviness, and put away the multitude of sorrows, that the Mighty may be merciful unto thee again, and the Highest shall give thee rest and ease from thy labour.",
+      "text_fa": null,
+      "text_hr": "Zato otresi svoju silnu tugu i odbaci mnoštvo žalosti, da ti Silni ponovno iskaže milosrđe i Svevišnji podari počinak i olakšanje od truda.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "And it came to pass while I was talking with her, behold, her face upon a sudden shined exceedingly, and her countenance glistered, so that I was afraid of her, and mused what it might be.",
+      "text_fa": null,
+      "text_hr": "I dok sam s njom razgovarao, gle, njezino lice iznenada silno zasja, a lice joj zablista, tako da sam je se uplašio i razmišljao što bi to moglo biti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "And, behold, suddenly she made a great cry very fearful: so that the earth shook at the noise of the woman.",
+      "text_fa": null,
+      "text_hr": "I gle, iznenada je jako i strašno zavapila: tako da se zemlja zatresla od ženine buke.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "And I looked, and, behold, the woman appeared unto me no more, but there was a city builded, and a large place shewed itself from the foundations: then was I afraid, and cried with a loud voice, and said,",
+      "text_fa": null,
+      "text_hr": "Pogledao sam: žena mi se više nije ukazivala, nego je preda mnom stajao izgrađen grad i pokazivao se širok prostor njegovih temelja. Prestrašio sam se i povikao iz svega glasa:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "Where is Uriel the angel, who came unto me at the first? for he hath caused me to fall into many trances, and mine end is turned into corruption, and my prayer to rebuke.",
+      "text_fa": null,
+      "text_hr": "Gdje je anđeo Uriel, koji mi je prvi došao? On me bacio u tolike zanose; moja se nakana pretvorila u propast, a molitva u prijekor.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "And as I was speaking these words behold, he came unto me, and looked upon me.",
+      "text_fa": null,
+      "text_hr": "I dok sam govorio ove riječi, gle, došao je do mene i pogledao me.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "And, lo, I lay as one that had been dead, and mine understanding was taken from me: and he took me by the right hand, and comforted me, and set me upon my feet, and said unto me,",
+      "text_fa": null,
+      "text_hr": "I gle, ležao sam kao mrtav, i razum mi je bio oduzet; i on me uhvatio za desnu ruku, utješio me, postavio me na noge i rekao mi:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "What aileth thee? and why art thou so disquieted? and why is thine understanding troubled, and the thoughts of thine heart?",
+      "text_fa": null,
+      "text_hr": "Što ti je? Zašto si tako uznemiren? Zašto su ti razum i misli srca smeteni?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "And I said, Because thou hast forsaken me, and yet I did according to thy words, and I went into the field, and, lo, I have seen, and yet see, that I am not able to express.",
+      "text_fa": null,
+      "text_hr": "Odgovorio sam: Zato što si me napustio. Postupio sam prema tvojim riječima i otišao u polje, a ondje sam vidio i još gledam ono što ne mogu izraziti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "And he said unto me, Stand up manfully, and I will advise thee.",
+      "text_fa": null,
+      "text_hr": "Rekao mi je: Ustani hrabro, a ja ću te poučiti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 34,
+      "text_en": "Then said I, Speak on, my lord, in me; only forsake me not, lest I die frustrate of my hope.",
+      "text_fa": null,
+      "text_hr": "Tada sam rekao: Govori mi, gospodaru; samo me ne napuštaj, da ne umrem razočaran zbog svoje nade.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 35,
+      "text_en": "For I have seen that I knew not, and hear that I do not know.",
+      "text_fa": null,
+      "text_hr": "Jer vidio sam ono što nisam poznavao i čuo ono što ne razumijem.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 36,
+      "text_en": "Or is my sense deceived, or my soul in a dream?",
+      "text_fa": null,
+      "text_hr": "Ili su moja osjetila zavarana, ili mi duša sanja?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 37,
+      "text_en": "Now therefore I beseech thee that thou wilt shew thy servant of this vision.",
+      "text_fa": null,
+      "text_hr": "Sada te molim da svome sluzi pokažeš ovo viđenje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 38,
+      "text_en": "He answered me then, and said, Hear me, and I shall inform thee, and tell thee wherefore thou art afraid: for the Highest will reveal many secret things unto thee.",
+      "text_fa": null,
+      "text_hr": "Odgovorio mi je: Slušaj me; poučit ću te i objasniti zašto se bojiš. Svevišnji će ti otkriti mnoge tajne.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 39,
+      "text_en": "He hath seen that thy way is right: for that thou sorrowest continually for thy people, and makest great lamentation for Sion.",
+      "text_fa": null,
+      "text_hr": "Vidio je da je tvoj put ispravan jer neprestano tuguješ za svojim narodom i duboko oplakuješ Sion.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 40,
+      "text_en": "This therefore is the meaning of the vision which thou lately sawest:",
+      "text_fa": null,
+      "text_hr": "Ovo je dakle značenje vizije koju si nedavno vidio:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 41,
+      "text_en": "Thou sawest a woman mourning, and thou begannest to comfort her:",
+      "text_fa": null,
+      "text_hr": "Vidio si ženu kako tuguje i počeo si je tješiti:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 42,
+      "text_en": "But now seest thou the likeness of the woman no more, but there appeared unto thee a city builded.",
+      "text_fa": null,
+      "text_hr": "Sada više ne vidiš obličje žene, nego ti se ukazao izgrađen grad.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 43,
+      "text_en": "And whereas she told thee of the death of her son, this is the solution:",
+      "text_fa": null,
+      "text_hr": "Ovo je tumačenje onoga što ti je rekla o smrti svojega sina:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 44,
+      "text_en": "This woman, whom thou sawest is Sion: and whereas she said unto thee, even she whom thou seest as a city builded,",
+      "text_fa": null,
+      "text_hr": "Žena koju si vidio jest Sion; glede onoga što ti je rekla ona koju sada vidiš kao izgrađen grad,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 45,
+      "text_en": "Whereas, I say, she said unto thee, that she hath been thirty years barren: those are the thirty years wherein there was no offering made in her.",
+      "text_fa": null,
+      "text_hr": "Da je bila nerotkinja trideset godina: to su trideset godina u kojima se u njoj nije prinosila žrtva.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 46,
+      "text_en": "But after thirty years Solomon builded the city and offered offerings: and then bare the barren a son.",
+      "text_fa": null,
+      "text_hr": "Ali nakon trideset godina Salomon je sagradio grad i prinio žrtve: i tada je nerotkinja rodila sina.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 47,
+      "text_en": "And whereas she told thee that she nourished him with labour: that was the dwelling in Jerusalem.",
+      "text_fa": null,
+      "text_hr": "A to što ti je rekla da ga je othranila uz trud označava prebivanje u Jeruzalemu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 48,
+      "text_en": "But whereas she said unto thee, That my son coming into his marriage chamber happened to have a fail, and died: this was the destruction that came to Jerusalem.",
+      "text_fa": null,
+      "text_hr": "A to što je rekla da joj je sin pao i umro ulazeći u bračnu odaju označava propast koja je zadesila Jeruzalem.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 49,
+      "text_en": "And, behold, thou sawest her likeness, and because she mourned for her son, thou begannest to comfort her: and of these things which have chanced, these are to be opened unto thee.",
+      "text_fa": null,
+      "text_hr": "Vidio si njezin lik i počeo je tješiti dok je tugovala za sinom; sada ti se otkriva značenje onoga što se dogodilo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 50,
+      "text_en": "For now the most High seeth that thou art grieved unfeignedly, and sufferest from thy whole heart for her, so hath he shewed thee the brightness of her glory, and the comeliness of her beauty:",
+      "text_fa": null,
+      "text_hr": "Svevišnji vidi da iskreno tuguješ i svim srcem patiš za njom, pa ti je pokazao sjaj njezine slave i krasotu njezine ljepote.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 51,
+      "text_en": "And therefore I bade thee remain in the field where no house was builded:",
+      "text_fa": null,
+      "text_hr": "I zato sam ti zapovjedio da ostaneš u polju gdje nije sagrađena kuća:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 52,
+      "text_en": "For I knew that the Highest would shew this unto thee.",
+      "text_fa": null,
+      "text_hr": "Jer sam znao da će ti Svevišnji ovo pokazati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 53,
+      "text_en": "Therefore I commanded thee to go into the field, where no foundation of any building was.",
+      "text_fa": null,
+      "text_hr": "Zato sam ti zapovjedio da odeš u polje, gdje nije bilo temelja ni jednoj zgradi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 54,
+      "text_en": "For in the place wherein the Highest beginneth to shew his city, there can no man’s building be able to stand.",
+      "text_fa": null,
+      "text_hr": "Na mjestu gdje Svevišnji počinje pokazivati svoj grad ne može stajati nijedna ljudska građevina.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 55,
+      "text_en": "And therefore fear not, let not thine heart be affrighted, but go thy way in, and see the beauty and greatness of the building, as much as thine eyes be able to see:",
+      "text_fa": null,
+      "text_hr": "Zato se ne boj i ne plaši u srcu. Uđi i pogledaj ljepotu i veličinu građevine koliko je tvoje oči mogu obuhvatiti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 56,
+      "text_en": "And then shalt thou hear as much as thine ears may comprehend.",
+      "text_fa": null,
+      "text_hr": "I tada ćeš čuti onoliko koliko tvoje uši mogu shvatiti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 57,
+      "text_en": "For thou art blessed above many other, and art called with the Highest; and so are but few.",
+      "text_fa": null,
+      "text_hr": "Blagoslovljen si više od mnogih i pozvan si k Svevišnjemu, kao samo malobrojni.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 58,
+      "text_en": "But to morrow at night thou shalt remain here;",
+      "text_fa": null,
+      "text_hr": "Ali sutra navečer ostat ćeš ovdje;",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 59,
+      "text_en": "And so shall the Highest shew thee visions of the high things, which the most High will do unto them that dwell upon the earth in the last days. So I slept that night and another, like as he commanded me.",
+      "text_fa": null,
+      "text_hr": "Svevišnji će ti pokazati viđenja uzvišenih stvari koje će u posljednjim danima učiniti stanovnicima zemlje. Spavao sam te noći i sljedeće, kako mi je zapovjedio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

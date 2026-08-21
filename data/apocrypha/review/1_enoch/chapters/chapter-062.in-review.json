@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 62,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "8596b5990fa192ffd461eacf04285dc0514c5dd8c7313b95f24d6ec70e533a3f",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And thus the Lord commanded the kings and the mighty and the exalted, and those who dwell on the earth, and said: ‘Open your eyes and lift up your horns if ye are able to recognize the Elect One.’",
+      "text_fa": null,
+      "text_hr": "Tako je Gospodin zapovjedio kraljevima, moćnicima, uzvišenima i stanovnicima zemlje: „Otvorite oči i podignite svoje rogove ako možete prepoznati Izabranoga.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And the Lord of Spirits seated him on the throne of His glory,\nAnd the spirit of righteousness was poured out upon him,\nAnd the word of his mouth slays all the sinners,\nAnd all the unrighteous are destroyed from before his face.",
+      "text_fa": null,
+      "text_hr": "Gospodar duhova postavio ga je na prijestolje svoje slave,\nduh pravednosti izlio se na njega,\nriječ njegovih usta ubija sve grešnike,\na svi nepravednici nestaju pred njegovim licem.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And there shall stand up in that day all the kings and the mighty,\nAnd the exalted and those who hold the earth,\nAnd they shall see and recognize\nHow he sits on the throne of his glory,\nAnd righteousness is judged before him,\nAnd no lying word is spoken before him.",
+      "text_fa": null,
+      "text_hr": "Toga će dana ustati svi kraljevi i moćnici,\nuzvišeni i oni koji drže zemlju.\nVidjet će i prepoznati\nkako on sjedi na prijestolju svoje slave,\nkako se pred njim sudi pravedno\ni kako se pred njim ne izgovara lažna riječ.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "Then shall pain come upon them as on a woman in travail,\n[And she has pain in bringing forth]\nWhen her child enters the mouth of the womb,\nAnd she has pain in bringing forth.",
+      "text_fa": null,
+      "text_hr": "Tada će ih obuzeti bol poput žene u trudovima,\n[i ona trpi porođajnu bol]\nkad joj dijete uđe u otvor utrobe\ni ona trpi porođajnu bol.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And one portion of them shall look on the other,\nAnd they shall be terrified,\nAnd they shall be downcast of countenance,\nAnd pain shall seize them,\nWhen they see that Son of Man\nSitting on the throne of his glory.",
+      "text_fa": null,
+      "text_hr": "Jedan će dio njih gledati drugi,\na oni će se prestrašiti,\nlica će im klonuti\ni bol će ih obuzeti\nkad vide toga Sina Čovječjega\ngdje sjedi na prijestolju svoje slave.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And the kings and the mighty and all who possess the earth shall bless and glorify and extol him who rules over all, who was hidden.",
+      "text_fa": null,
+      "text_hr": "Kraljevi, moćnici i svi koji posjeduju zemlju blagoslivljat će, slaviti i uzvisivati onoga koji vlada nad svima i koji je bio skriven.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "For from the beginning the Son of Man was hidden,\nAnd the Most High preserved him in the presence of His might,\nAnd revealed him to the elect.",
+      "text_fa": null,
+      "text_hr": "Jer Sin Čovječji bio je skriven od početka,\nSvevišnji ga je čuvao u nazočnosti svoje moći\ni objavio izabranima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And the congregation of the elect and holy shall be sown,\nAnd all the elect shall stand before him on that day.",
+      "text_fa": null,
+      "text_hr": "Zajednica izabranih i svetih bit će posijana,\na svi će izabrani toga dana stajati pred njim.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And all the kings and the mighty and the exalted and those who rule the earth\nShall fall down before him on their faces,\nAnd worship and set their hope upon that Son of Man,\nAnd petition him and supplicate for mercy at his hands.",
+      "text_fa": null,
+      "text_hr": "Svi kraljevi, moćnici, uzvišeni i oni koji vladaju zemljom\npast će pred njim ničice,\npokloniti se i položiti nadu u toga Sina Čovječjega\nte ga moliti i iz njegovih ruku preklinjati milosrđe.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "Nevertheless that Lord of Spirits will so press them\nThat they shall hastily go forth from His presence,\nAnd their faces shall be filled with shame,\nAnd the darkness shall grow deeper on their faces.",
+      "text_fa": null,
+      "text_hr": "Ali Gospodar duhova toliko će ih pritisnuti\nda će žurno otići iz njegove nazočnosti.\nLica će im se ispuniti sramotom,\na tama se produbiti na njihovim licima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "And =He will deliver= them to the angels for punishment,\nTo execute vengeance on them because they have oppressed His children and His elect.",
+      "text_fa": null,
+      "text_hr": "On će ih =predati= anđelima za kaznu\nda im se osvete zato što su tlačili njegovu djecu i njegove izabrane.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "And they shall be a spectacle for the righteous and for His elect:\nThey shall rejoice over them,\nBecause the wrath of the Lord of Spirits resteth upon them,\nAnd His sword is drunk with their blood.",
+      "text_fa": null,
+      "text_hr": "Bit će prizor pravednima i njegovim izabranima,\na oni će im se radovati,\njer srdžba Gospodara duhova počiva na njima\ni njegov je mač opijen njihovom krvlju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "And the righteous and elect shall be saved on that day,\nAnd they shall never thenceforward see the face of the sinners and unrighteous.",
+      "text_fa": null,
+      "text_hr": "Toga će se dana pravedni i izabrani spasiti\ni od tada više nikada neće gledati lice grešnika i nepravednika.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "And the Lord of Spirits will abide over them,\nAnd with that Son of Man shall they eat\nAnd lie down and rise up for ever and ever.",
+      "text_fa": null,
+      "text_hr": "Gospodar duhova prebivat će nad njima,\na s tim će Sinom Čovječjim jesti,\npočivati i ustajati u vijeke vjekova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "And the righteous and elect shall have risen from the earth,\nAnd ceased to be of downcast countenance.",
+      "text_fa": null,
+      "text_hr": "Pravedni i izabrani ustat će sa zemlje\ni njihova će lica prestati biti klonula.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "And they shall have been clothed with garments of glory,\nAnd they shall be the garments of life from the Lord of Spirits:\nAnd your garments shall not grow old,\nNor your glory pass away before the Lord of Spirits.",
+      "text_fa": null,
+      "text_hr": "Bit će odjeveni u haljine slave,\na to će biti haljine života od Gospodara duhova.\nVaše haljine neće ostarjeti\nniti će vaša slava proći pred Gospodarom duhova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

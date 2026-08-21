@@ -1,0 +1,601 @@
+{
+  "schema_version": 1,
+  "book_id": "1_esdras",
+  "title_fa": "اول اِسدراس",
+  "title_en": "First Esdras",
+  "title_hr": "Prva Ezdrina",
+  "chapter": 5,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "e04c42de2d27f32c137d0e59f1ff85867e47b3b7cac74840d82ce0d99a87e117",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "After this were the principal men of the families chosen according to their tribes, to go up with their wives and sons and daughters, with their menservants and maidservants, and their cattle.",
+      "text_fa": null,
+      "text_hr": "Nakon toga izabrani su glavari obitelji po svojim plemenima da pođu sa svojim ženama, sinovima i kćerima, slugama i sluškinjama te sa svojom stokom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And Darius sent with them a thousand horsemen, till they had brought them back to Jerusalem safely, and with musical instruments tabrets and flutes.",
+      "text_fa": null,
+      "text_hr": "Darije je s njima poslao tisuću konjanika da ih sigurno doprate do Jeruzalema, uz glazbala, bubnjeve i frule.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And all their brethren played, and he made them go up together with them.",
+      "text_fa": null,
+      "text_hr": "Sva su njihova braća svirala, a kralj je odredio da pođu zajedno s njima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And these are the names of the men which went up, according to their families among their tribes, after their several heads.",
+      "text_fa": null,
+      "text_hr": "Ovo su imena ljudi koji su pošli, po svojim obiteljima unutar plemena i prema svojim glavarima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "The priests, the sons of Phinees the son of Aaron: Jesus the son of Josedec, the son of Saraias, and Joacim the son of Zorobabel, the son of Salathiel, of the house of David, out of the kindred of Phares, of the tribe of Judah;",
+      "text_fa": null,
+      "text_hr": "Od svećenika, potomaka Fineesa, sina Aronova: Ješua, sin Josadakov, sin Serajin; i Jojakim, sin Zorobabelov, sin Šealtielov, iz Davidova doma, iz roda Peresova, iz plemena Judina.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "Who spake wise sentences before Darius the king of Persia in the second year of his reign, in the month Nisan, which is the first month.",
+      "text_fa": null,
+      "text_hr": "On je izrekao mudre riječi pred perzijskim kraljem Darijem druge godine njegova kraljevanja, u mjesecu nisanu, to jest prvome mjesecu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And these are they of Jewry that came up from the captivity, where they dwelt as strangers, whom Nabuchodonosor the king of Babylon had carried away unto Babylon.",
+      "text_fa": null,
+      "text_hr": "Ovo su Judejci koji su pošli iz sužanjstva, gdje su živjeli kao došljaci nakon što ih je babilonski kralj Nabukodonozor odveo u Babilon.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And they returned unto Jerusalem, and to the other parts of Jewry, every man to his own city, who came with Zorobabel, with Jesus, Nehemias, and Zacharias, and Reesaias, Enenius, Mardocheus. Beelsarus, Aspharasus, Reelius, Roimus, and Baana, their guides.",
+      "text_fa": null,
+      "text_hr": "Vratili su se u Jeruzalem i u ostale krajeve Judeje, svaki u svoj grad. Došli su sa Zorobabelom, Ješuom, Nehemijom, Zaharijom, Rešajom, Enenijem, Mordokajem, Beelsarom, Asfarasom, Reelijem, Roimom i Baanom, svojim vođama.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "The number of them of the nation, and their governors, sons of Phoros, two thousand an hundred seventy and two; the sons of Saphat, four hundred seventy and two:",
+      "text_fa": null,
+      "text_hr": "Broj ljudi iz naroda i njihovih glavara: Peresovih sinova dvije tisuće sto sedamdeset i dva; Šafatovih sinova četiri stotine sedamdeset i dva.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "The sons of Ares, seven hundred fifty and six:",
+      "text_fa": null,
+      "text_hr": "Aresovih sinova sedam stotina pedeset i šest.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "The sons of Phaath Moab, two thousand eight hundred and twelve:",
+      "text_fa": null,
+      "text_hr": "Pahat-Moabovih sinova dvije tisuće osam stotina i dvanaest.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "The sons of Elam, a thousand two hundred fifty and four: the sons of Zathul, nine hundred forty and five: the sons of Corbe, seven hundred and five: the sons of Bani, six hundred forty and eight:",
+      "text_fa": null,
+      "text_hr": "Elamovih sinova tisuću dvjesto pedeset i četiri; Zatulovih sinova devet stotina četrdeset i pet; Korbeovih sinova sedam stotina i pet; Banijevih sinova šest stotina četrdeset i osam.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "The sons of Bebai, six hundred twenty and three: the sons of Sadas, three thousand two hundred twenty and two:",
+      "text_fa": null,
+      "text_hr": "Bebajevih sinova šest stotina dvadeset i tri; Sadasovih sinova tri tisuće dvjesto dvadeset i dva.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "The sons of Adonikam, six hundred sixty and seven: the sons of Bagoi, two thousand sixty and six: the sons of Adin, four hundred fifty and four:",
+      "text_fa": null,
+      "text_hr": "Adonikamovih sinova šest stotina šezdeset i sedam; Bagojevih sinova dvije tisuće šezdeset i šest; Adinovih sinova četiri stotine pedeset i četiri.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "The sons of Aterezias, ninety and two: the sons of Ceilan and Azetas threescore and seven: the sons of Azuran, four hundred thirty and two:",
+      "text_fa": null,
+      "text_hr": "Aterezijinih sinova devedeset i dva; Keilanovih i Azetinih sinova šezdeset i sedam; Azuranovih sinova četiri stotine trideset i dva.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "The sons of Ananias, an hundred and one: the sons of Arom, thirty two: and the sons of Bassa, three hundred twenty and three: the sons of Azephurith, an hundred and two:",
+      "text_fa": null,
+      "text_hr": "Ananijinih sinova sto i jedan; Aromovih sinova trideset i dva; Basaovih sinova tri stotine dvadeset i tri; Azefuritovih sinova sto i dva.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "The sons of Meterus, three thousand and five: the sons of Bethlomon, an hundred twenty and three:",
+      "text_fa": null,
+      "text_hr": "Meterovih sinova tri tisuće i pet; Betlehemljana sto dvadeset i tri.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "They of Netophah, fifty and five: they of Anathoth, an hundred fifty and eight: they of Bethsamos, forty and two:",
+      "text_fa": null,
+      "text_hr": "Iz Netofe pedeset i pet; iz Anatota sto pedeset i osam; iz Bet-Šemeša četrdeset i dva.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "They of Kiriathiarius, twenty and five: they of Caphira and Beroth, seven hundred forty and three: they of Pira, seven hundred:",
+      "text_fa": null,
+      "text_hr": "Iz Kirjat-Jearima dvadeset i pet; iz Kefire i Beerota sedam stotina četrdeset i tri; iz Pire sedam stotina.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "They of Chadias and Ammidoi, four hundred twenty and two: they of Cirama and Gabdes, six hundred twenty and one:",
+      "text_fa": null,
+      "text_hr": "Iz Kadije i Amidoja četiri stotine dvadeset i dva; iz Kirame i Gabdesa šest stotina dvadeset i jedan.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "They of Macalon, an hundred twenty and two: they of Betolius, fifty and two: the sons of Nephis, an hundred fifty and six:",
+      "text_fa": null,
+      "text_hr": "Iz Makalona sto dvadeset i dva; iz Betolija pedeset i dva; Nefisovih sinova sto pedeset i šest.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "The sons of Calamolalus and Onus, seven hundred twenty and five: the sons of Jerechus, two hundred forty and five:",
+      "text_fa": null,
+      "text_hr": "Kalamolalovih i Onusovih sinova sedam stotina dvadeset i pet; Jerihoćana dvije stotine četrdeset i pet.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "The sons of Annas, three thousand three hundred and thirty.",
+      "text_fa": null,
+      "text_hr": "Anasovih sinova tri tisuće tristo i trideset.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "The priests: the sons of Jeddu, the son of Jesus among the sons of Sanasib, nine hundred seventy and two: the sons of Meruth, a thousand fifty and two:",
+      "text_fa": null,
+      "text_hr": "Svećenici: Jedduovi sinovi, potomci Ješue među Sanasibovim sinovima, devet stotina sedamdeset i dva; Merutovi sinovi tisuću pedeset i dva.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "The sons of Phassaron, a thousand forty and seven: the sons of Carme, a thousand and seventeen.",
+      "text_fa": null,
+      "text_hr": "Fasaronovih sinova tisuću četrdeset i sedam; Karmeovih sinova tisuću i sedamnaest.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "The Levites: the sons of Jessue, and Cadmiel, and Banuas, and Sudias, seventy and four.",
+      "text_fa": null,
+      "text_hr": "Leviti: sinovi Ješue, Kadmiela, Banuasa i Sudije, sedamdeset i četiri.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "The holy singers: the sons of Asaph, an hundred twenty and eight.",
+      "text_fa": null,
+      "text_hr": "Sveti pjevači: Asafovih sinova sto dvadeset i osam.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "The porters: the sons of Salum, the sons of Jatal, the sons of Talmon, the sons of Dacobi, the sons of Teta, the sons of Sami, in all an hundred thirty and nine.",
+      "text_fa": null,
+      "text_hr": "Vratari: sinovi Šaluma, Jatala, Talmona, Dakobija, Tete i Samija, ukupno sto trideset i devet.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "The servants of the temple: the sons of Esau, the sons of Asipha, the sons of Tabaoth, the sons of Ceras, the sons of Sud, the sons of Phaleas, the sons of Labana, the sons of Graba,",
+      "text_fa": null,
+      "text_hr": "Hramski sluge: sinovi Esaua, Asife, Tabaota, Kerasa, Suda, Faleasa, Labane i Grabe;",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "The sons of Acua, the sons of Uta, the sons of Cetab, the sons of Agaba, the sons of Subai, the sons of Anan, the sons of Cathua, the sons of Geddur,",
+      "text_fa": null,
+      "text_hr": "sinovi Akue, Ute, Ketaba, Agabe, Subaja, Anana, Katue i Gedura;",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "The sons of Airus, the sons of Daisan, the sons of Noeba, the sons of Chaseba, the sons of Gazera, the sons of Azia, the sons of Phinees, the sons of Azare, the sons of Bastai, the sons of Asana, the sons of Meani, the sons of Naphisi, the sons of Acub, the sons of Acipha, the sons of Assur, the sons of Pharacim, the sons of Basaloth,",
+      "text_fa": null,
+      "text_hr": "sinovi Aira, Daisana, Noebe, Kasebe, Gazere, Azije, Fineesa, Azare, Bastaja, Asane, Meanija, Nafisija, Akuba, Akife, Asura, Farakima i Basalota;",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "The sons of Meeda, the sons of Coutha, the sons of Charea, the sons of Charcus, the sons of Aserer, the sons of Thomoi, the sons of Nasith, the sons of Atipha.",
+      "text_fa": null,
+      "text_hr": "sinovi Meede, Kute, Karee, Karkusa, Aserera, Tomoja, Nasita i Atife.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "The sons of the servants of Solomon: the sons of Azaphion, the sons of Pharira, the sons of Jeeli, the sons of Lozon, the sons of Israel, the sons of Sapheth,",
+      "text_fa": null,
+      "text_hr": "Potomci Salomonovih slugu: sinovi Azafiona, Farire, Jeelija, Lozona, Izraela i Safeta;",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 34,
+      "text_en": "The sons of Hagia, the sons of Pharacareth, the sons of Sabi, the sons of Sarothie, the sons of Masias, the sons of Gar, the sons of Addus, the sons of Suba, the sons of Apherra, the sons of Barodis, the sons of Sabat, the sons of Allom.",
+      "text_fa": null,
+      "text_hr": "sinovi Hagije, Farakareta, Sabija, Sarotija, Masije, Gara, Adusa, Sube, Afere, Barodisa, Sabata i Aloma.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 35,
+      "text_en": "All the ministers of the temple, and the sons of the servants of Solomon, were three hundred seventy and two.",
+      "text_fa": null,
+      "text_hr": "Svih hramskih službenika i potomaka Salomonovih slugu bilo je tri stotine sedamdeset i dva.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 36,
+      "text_en": "These came up from Thermeleth and Thelersas, Charaathalar leading them, and Aalar;",
+      "text_fa": null,
+      "text_hr": "Ovi su došli iz Tel-Melaha i Tel-Harše, pod vodstvom Karaatalara i Aalara:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 37,
+      "text_en": "Neither could they shew their families, nor their stock, how they were of Israel: the sons of Ladan, the son of Ban, the sons of Necodan, six hundred fifty and two.",
+      "text_fa": null,
+      "text_hr": "nisu mogli dokazati svoje obitelji ni podrijetlo, to jest pripadaju li Izraelu: Ladanovi, Banovi i Nekodanovi sinovi, njih šest stotina pedeset i dva.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 38,
+      "text_en": "And of the priests that usurped the office of the priesthood, and were not found: the sons of Obdia, the sons of Accoz, the sons of Addus, who married Augia one of the daughters of Barzelus, and was named after his name.",
+      "text_fa": null,
+      "text_hr": "Od svećenika koji su prisvojili svećeničku službu, ali nisu nađeni u popisu, bili su: Obdijini, Hakosovi i Adusovi sinovi. Adus se oženio Augijom, jednom od kćeri Barzelaja, pa je prozvan njegovim imenom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 39,
+      "text_en": "And when the description of the kindred of these men was sought in the register, and was not found, they were removed from executing the office of the priesthood:",
+      "text_fa": null,
+      "text_hr": "Kad su podatke o rodu tih ljudi potražili u rodoslovniku, nisu ih pronašli, pa su bili isključeni iz obavljanja svećeničke službe.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 40,
+      "text_en": "For unto them said Nehemias and Atharias, that they should not be partakers of the holy things, till there arose up an high priest clothed with doctrine and truth.",
+      "text_fa": null,
+      "text_hr": "Nehemija i Atarija rekli su im da ne smiju blagovati od svetinja dok ne ustane veliki svećenik odjeven poukom i istinom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 41,
+      "text_en": "So of Israel, from them of twelve years old and upward, they were all in number forty thousand, beside menservants and womenservants two thousand three hundred and sixty.",
+      "text_fa": null,
+      "text_hr": "Svih Izraelaca u dobi od dvanaest godina naviše bilo je četrdeset tisuća, ne računajući dvije tisuće tristo i šezdeset slugu i sluškinja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 42,
+      "text_en": "Their menservants and handmaids were seven thousand three hundred forty and seven: the singing men and singing women, two hundred forty and five:",
+      "text_fa": null,
+      "text_hr": "Njihovih slugu i sluškinja bilo je sedam tisuća tristo četrdeset i sedam, a pjevača i pjevačica dvije stotine četrdeset i pet.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 43,
+      "text_en": "Four hundred thirty and five camels, seven thousand thirty and six horses, two hundred forty and five mules, five thousand five hundred twenty and five beasts used to the yoke.",
+      "text_fa": null,
+      "text_hr": "Imali su četiri stotine trideset i pet deva, sedam tisuća trideset i šest konja, dvije stotine četrdeset i pet mazgi i pet tisuća pet stotina dvadeset i pet teglećih životinja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 44,
+      "text_en": "And certain of the chief of their families, when they came to the temple of God that is in Jerusalem, vowed to set up the house again in his own place according to their ability,",
+      "text_fa": null,
+      "text_hr": "Kad su neki od obiteljskih glavara stigli do Hrama Božjega u Jeruzalemu, zavjetovali su se da će prema svojim mogućnostima ponovno podići Dom na njegovu mjestu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 45,
+      "text_en": "And to give into the holy treasury of the works a thousand pounds of gold, five thousand of silver, and an hundred priestly vestments.",
+      "text_fa": null,
+      "text_hr": "U svetu riznicu za radove dali su tisuću mina zlata, pet tisuća mina srebra i sto svećeničkih haljina.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 46,
+      "text_en": "And so dwelt the priests and the Levites and the people in Jerusalem, and in the country, the singers also and the porters; and all Israel in their villages.",
+      "text_fa": null,
+      "text_hr": "Tako su se svećenici, leviti i dio naroda nastanili u Jeruzalemu i okolici, a pjevači i vratari te sav Izrael u svojim selima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 47,
+      "text_en": "But when the seventh month was at hand, and when the children of Israel were every man in his own place, they came all together with one consent into the open place of the first gate which is toward the east.",
+      "text_fa": null,
+      "text_hr": "Kad se približio sedmi mjesec i svaki je Izraelac bio u svojem mjestu, svi su jednodušno došli na otvoreni prostor kod prvih vrata okrenutih prema istoku.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 48,
+      "text_en": "Then stood up Jesus the son of Josedec, and his brethren the priests and Zorobabel the son of Salathiel, and his brethren, and made ready the altar of the God of Israel,",
+      "text_fa": null,
+      "text_hr": "Tada ustadoše Ješua, sin Josadakov, njegova braća svećenici, Zorobabel, sin Šealtielov, i njegova braća te pripraviše žrtvenik Boga Izraelova,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 49,
+      "text_en": "To offer burnt sacrifices upon it, according as it is expressly commanded in the book of Moses the man of God.",
+      "text_fa": null,
+      "text_hr": "da na njemu prinose žrtve paljenice, kako je izričito zapovjeđeno u knjizi Mojsija, čovjeka Božjega.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 50,
+      "text_en": "And there were gathered unto them out of the other nations of the land, and they erected the altar upon his own place, because all the nations of the land were at enmity with them, and oppressed them; and they offered sacrifices according to the time, and burnt offerings to the Lord both morning and evening.",
+      "text_fa": null,
+      "text_hr": "Pridružili su im se ljudi iz drugih naroda zemlje. Podigli su žrtvenik na njegovu prijašnjem mjestu jer su svi narodi zemlje bili neprijateljski raspoloženi prema njima i tlačili ih. Prinosili su žrtve u propisano vrijeme i paljenice Gospodinu jutrom i večerom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 51,
+      "text_en": "Also they held the feast of tabernacles, as it is commanded in the law, and offered sacrifices daily, as was meet:",
+      "text_fa": null,
+      "text_hr": "Svetkovali su i Blagdan sjenica, kako je zapovjeđeno u Zakonu, te svakoga dana prinosili propisane žrtve.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 52,
+      "text_en": "And after that, the continual oblations, and the sacrifice of the sabbaths, and of the new moons, and of all holy feasts.",
+      "text_fa": null,
+      "text_hr": "Nakon toga prinosili su trajne prinose, žrtve subotama, za mlađaka i za sve svete blagdane.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 53,
+      "text_en": "And all they that had made any vow to God began to offer sacrifices to God from the first day of the seventh month, although the temple of the Lord was not yet built.",
+      "text_fa": null,
+      "text_hr": "Svi koji su se zavjetovali Bogu počeli su prinositi žrtve Bogu od prvoga dana sedmoga mjeseca, premda Hram Gospodnji još nije bio izgrađen.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 54,
+      "text_en": "And they gave unto the masons and carpenters money, meat, and drink, with cheerfulness.",
+      "text_fa": null,
+      "text_hr": "Zidarima i tesarima radosno su davali novac, hranu i piće.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 55,
+      "text_en": "Unto them of Zidon also and Tyre they gave carrs, that they should bring cedar trees from Libanus, which should be brought by floats to the haven of Joppa, according as it was commanded them by Cyrus king of the Persians.",
+      "text_fa": null,
+      "text_hr": "Sidoncima i Tircima dali su kola da iz Libanona dovezu cedrovinu, koju su splavima trebali dopremiti u luku Jafu, kako im je zapovjedio perzijski kralj Kir.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 56,
+      "text_en": "And in the second year and second month after his coming to the temple of God at Jerusalem began Zorobabel the son of Salathiel, and Jesus the son of Josedec, and their brethren, and the priests, and the Levites, and all they that were come unto Jerusalem out of the captivity:",
+      "text_fa": null,
+      "text_hr": "Druge godine i drugoga mjeseca nakon dolaska do Hrama Božjega u Jeruzalemu započeli su rad Zorobabel, sin Šealtielov, Ješua, sin Josadakov, njihova braća, svećenici, leviti i svi koji su se iz sužanjstva vratili u Jeruzalem.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 57,
+      "text_en": "And they laid the foundation of the house of God in the first day of the second month, in the second year after they were come to Jewry and Jerusalem.",
+      "text_fa": null,
+      "text_hr": "Prvoga dana drugoga mjeseca, druge godine nakon dolaska u Judeju i Jeruzalem, položili su temelje Doma Božjega.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 58,
+      "text_en": "And they appointed the Levites from twenty years old over the works of the Lord. Then stood up Jesus, and his sons and brethren, and Cadmiel his brother, and the sons of Madiabun, with the sons of Joda the son of Eliadun, with their sons and brethren, all Levites, with one accord setters forward of the business, labouring to advance the works in the house of God. So the workmen built the temple of the Lord.",
+      "text_fa": null,
+      "text_hr": "Levite od dvadeset godina naviše postavili su da nadgledaju djelo Gospodnje. Ješua, njegovi sinovi i braća, njegov brat Kadmiel, sinovi Madiabunovi i sinovi Jode, sina Eliadunova, sa svojim sinovima i braćom — svi leviti — jednodušno su vodili posao i unapređivali radove u Domu Božjem. Tako su graditelji podizali Hram Gospodnji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 59,
+      "text_en": "And the priests stood arrayed in their vestments with musical instruments and trumpets; and the Levites the sons of Asaph had cymbals,",
+      "text_fa": null,
+      "text_hr": "Svećenici su stajali odjeveni u svoje haljine, s glazbalima i trubama, a leviti, Asafovi sinovi, držali su cimbale.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 60,
+      "text_en": "Singing songs of thanksgiving, and praising the Lord, according as David the king of Israel had ordained.",
+      "text_fa": null,
+      "text_hr": "Pjevali su zahvalnice i hvalili Gospodina, kako je odredio izraelski kralj David.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 61,
+      "text_en": "And they sung with loud voices songs to the praise of the Lord, because his mercy and glory is for ever in all Israel.",
+      "text_fa": null,
+      "text_hr": "Snažnim su glasovima pjevali pjesme hvale Gospodinu, jer njegova milost i slava zauvijek ostaju nad svim Izraelom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 62,
+      "text_en": "And all the people sounded trumpets, and shouted with a loud voice, singing songs of thanksgiving unto the Lord for the rearing up of the house of the Lord.",
+      "text_fa": null,
+      "text_hr": "Sav je narod trubio u trube i glasno klicao, pjevajući zahvalnice Gospodinu zato što je Dom Gospodnji ponovno podignut.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 63,
+      "text_en": "Also of the priests and Levites, and of the chief of their families, the ancients who had seen the former house came to the building of this with weeping and great crying.",
+      "text_fa": null,
+      "text_hr": "No starci među svećenicima, levitima i obiteljskim glavarima, koji su vidjeli prijašnji Dom, došli su na gradnju ovoga Doma plačući i glasno naričući.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 64,
+      "text_en": "But many with trumpets and joy shouted with loud voice,",
+      "text_fa": null,
+      "text_hr": "Mnogi su pak glasno klicali uz trube i radost,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 65,
+      "text_en": "Insomuch that the trumpets might not be heard for the weeping of the people: yet the multitude sounded marvellously, so that it was heard afar off.",
+      "text_fa": null,
+      "text_hr": "tako da se zvuk truba nije mogao razaznati od plača naroda. Ipak je mnoštvo stvaralo tako silan zvuk da se čuo izdaleka.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 66,
+      "text_en": "Wherefore when the enemies of the tribe of Judah and Benjamin heard it, they came to know what that noise of trumpets should mean.",
+      "text_fa": null,
+      "text_hr": "Kad su to čuli neprijatelji Judina i Benjaminova plemena, došli su saznati što znači taj zvuk truba.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 67,
+      "text_en": "And they perceived that they that were of the captivity did build the temple unto the Lord God of Israel.",
+      "text_fa": null,
+      "text_hr": "Shvatili su da povratnici iz sužanjstva grade Hram Gospodinu, Bogu Izraelovu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 68,
+      "text_en": "So they went to Zorobabel and Jesus, and to the chief of the families, and said unto them, We will build together with you.",
+      "text_fa": null,
+      "text_hr": "Stoga su otišli Zorobabelu, Ješui i obiteljskim glavarima te im rekli: „Gradit ćemo zajedno s vama.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 69,
+      "text_en": "For we likewise, as ye, do obey your Lord, and do sacrifice unto him from the days of Azbazareth the king of the Assyrians, who brought us hither.",
+      "text_fa": null,
+      "text_hr": "Jer i mi se poput vas pokoravamo vašemu Gospodinu i prinosimo mu žrtve još od vremena asirskoga kralja Azbazareta, koji nas je doveo ovamo.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 70,
+      "text_en": "Then Zorobabel and Jesus and the chief of the families of Israel said unto them, It is not for us and you to build together an house unto the Lord our God.",
+      "text_fa": null,
+      "text_hr": "Ali Zorobabel, Ješua i glavari izraelskih obitelji odgovoriše im: „Ne pripada vama da zajedno s nama gradite Dom Gospodinu, Bogu našemu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 71,
+      "text_en": "We ourselves alone will build unto the Lord of Israel, according as Cyrus the king of the Persians hath commanded us.",
+      "text_fa": null,
+      "text_hr": "Mi ćemo ga sami sagraditi Gospodinu Izraelovu, kako nam je zapovjedio perzijski kralj Kir.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 72,
+      "text_en": "But the heathen of the land lying heavy upon the inhabitants of Judea, and holding them strait, hindered their building;",
+      "text_fa": null,
+      "text_hr": "No narodi zemlje teško su pritiskali stanovnike Judeje, držali ih u tjeskobi i ometali njihovu gradnju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 73,
+      "text_en": "And by their secret plots, and popular persuasions and commotions, they hindered the finishing of the building all the time that king Cyrus lived: so they were hindered from building for the space of two years, until the reign of Darius.",
+      "text_fa": null,
+      "text_hr": "Skrivenim spletkama, nagovaranjem naroda i izazivanjem nemira sprečavali su dovršetak gradnje sve dok je kralj Kir bio živ. Tako je gradnja bila zaustavljena dvije godine, sve do Darijeve vladavine.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

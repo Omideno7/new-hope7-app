@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 102,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "c3db88af0a44d89c0e7df02616c801aa0e9248e3d5a7c64ebdaadbeb1c6ad959",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "In those days when He hath brought a grievous fire upon you,\nWhither will ye flee, and where will ye find deliverance?\nAnd when He launches forth His word against you,\nWill you not be affrighted and fear?",
+      "text_fa": null,
+      "text_hr": "U one dane, kad na vas spusti žestoki oganj, kamo ćete pobjeći i gdje naći izbavljenje? Kad protiv vas pošalje svoju riječ, nećete li se prestrašiti i uzdrhtati?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And all the luminaries shall be affrighted with great fear,\nAnd all the earth shall be affrighted and tremble and be alarmed.",
+      "text_fa": null,
+      "text_hr": "Sva će se svjetlila silno prestrašiti, a sva će zemlja drhtati, tresti se i biti užasnuta.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And all the †angels shall execute their commands†\nAnd shall seek to hide themselves from the presence of the Great Glory,\nAnd the children of earth shall tremble and quake;\nAnd ye sinners shall be accursed for ever,\nAnd ye shall have no peace.",
+      "text_fa": null,
+      "text_hr": "I svi će †anđeli izvršiti svoje zapovijedi† I nastojat će se sakriti od prisutnosti Velike Slave, i djeca će zemlje drhtati i tresti se; A vi grešnici bit ćete prokleti zauvijek, i nećete imati mira.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "Fear ye not, ye souls of the righteous,\nAnd be hopeful ye that have died in righteousness.",
+      "text_fa": null,
+      "text_hr": "Ne bojte se, duše pravedne, i nadajte se vi koji ste umrli u pravdi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And grieve not if your soul into Sheol has descended in grief,\nAnd that in your life your body fared not according to your goodness,\nBut =wait for= the day of the =judgement= of sinners,\nAnd for the day of cursing and chastisement.",
+      "text_fa": null,
+      "text_hr": "I ne tuguj ako je tvoja duša u šeol sišla u tuzi, i da u tvom životu tvoje tijelo nije prošlo prema tvojoj dobroti, Ali =čekajte= dan =suda= nad grešnicima, i za dan prokletstva i kazne.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And yet when ye die the sinners speak over you:\n“As we die, so die the righteous,\nAnd what benefit do they reap for their deeds?",
+      "text_fa": null,
+      "text_hr": "Pa ipak, kad umrete, grešnici govore o vama: \"Kako mi umiremo, tako umiru i pravednici, i kakvu korist oni ubiru za svoja djela?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "Behold, even as we, so do they die in grief and darkness,\nAnd what have they more than we?\nFrom henceforth we are equal.",
+      "text_fa": null,
+      "text_hr": "Gle, kao i mi, tako i oni umiru u tuzi i tami, A što oni imaju više od nas? Od sada smo ravnopravni.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And what will they receive and what will they see for ever?\nBehold, they too have died,\nAnd henceforth for ever shall they see no light.”",
+      "text_fa": null,
+      "text_hr": "I što će primiti i što će zauvijek vidjeti? Gle, i oni su umrli, i od sada zauvijek neće vidjeti svjetlost.”",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "I tell you, ye sinners, ye are content to eat and drink, and rob and sin, and strip men naked, and acquire wealth and see good days.",
+      "text_fa": null,
+      "text_hr": "Kažem vam, vi grešnici, vi ste zadovoljni jesti i piti, i pljačkati i griješiti, i svlačiti ljude do gola, i stjecati bogatstvo i vidjeti dobre dane.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "Have ye seen the righteous how their end falls out, that no manner of violence is found in them till their death?",
+      "text_fa": null,
+      "text_hr": "Jeste li vidjeli pravednike kako im kraj pada, da se u njima ne nalazi nikakvo nasilje do smrti njihove?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "“Nevertheless they perished and became as though they had not been, and their spirits descended into Sheol in tribulation.”",
+      "text_fa": null,
+      "text_hr": "“Usprkos tome, nestali su i postali kao da ih nije ni bilo, a njihovi su duhovi sišli u šeol u nevolji.”",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

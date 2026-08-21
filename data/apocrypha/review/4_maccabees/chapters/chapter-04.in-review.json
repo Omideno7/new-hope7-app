@@ -10,215 +10,216 @@
   "versification": "WEBC",
   "source_english_sha256": "8b0c777a4cb30afbb39f1979eb5fd5cec5b736f21825cc474b85ec2f1ee993b8",
   "locales_in_scope": [
+    "fa",
     "hr"
   ],
   "verses": [
     {
       "verse": 1,
       "text_en": "For a certain man named Simon, who was in opposition to an honorable and good man who once held the high priesthood for life, named Onias. After slandering Onias in every way, Simon couldn’t injure him with the people, so he went away as an exile, with the intention of betraying his country.",
-      "text_fa": null,
+      "text_fa": "مردی به نام شمعون بود که با مردی شریف و نیک به نام اونیاس مخالفت می‌کرد؛ اونیاس زمانی منصب کهانت اعظم را مادام‌العمر بر عهده داشت. شمعون پس از آنکه از هر راهی به او تهمت زد و نتوانست در میان مردم آسیبی به وی برساند، با قصد خیانت به میهن خود به تبعید رفت.",
       "text_hr": "Neki čovjek imenom Šimun protivio se časnom i dobrom čovjeku po imenu Onija, koji je nekoć doživotno obnašao službu velikoga svećenika. Pošto je Oniju na sve načine oklevetao, a ipak mu nije mogao nauditi pred narodom, Šimun je otišao u progonstvo s namjerom da izda svoju domovinu.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 2,
       "text_en": "When coming to Apollonius, the military governor of Syria, Phoenicia, and Cilicia, he said,",
-      "text_fa": null,
+      "text_fa": "هنگامی که نزد آپولونیوس، فرماندار نظامی سوریه، فنیقیه و کیلیکیه، آمد، گفت:",
       "text_hr": "Došavši Apoloniju, vojnom upravitelju Sirije, Fenicije i Cilicije, reče:",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 3,
       "text_en": "“Having good will to the king’s affairs, I have come to inform you that tens of thousands in private wealth is laid up in the treasuries of Jerusalem which do not belong to the temple, but belong to King Seleucus.”",
-      "text_fa": null,
+      "text_fa": "«از سر خیرخواهی نسبت به امور پادشاه آمده‌ام تا آگاهت سازم که ده‌ها هزار از دارایی‌های خصوصی در خزانه‌های اورشلیم نهفته است؛ دارایی‌هایی که متعلق به معبد نیست، بلکه از آنِ سلوکوس پادشاه است.»",
       "text_hr": "„Budući da želim dobro kraljevim poslovima, došao sam te izvijestiti da su u jeruzalemskim riznicama pohranjeni deseci tisuća privatnoga blaga, koje ne pripada Hramu, nego kralju Seleuku.”",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 4,
       "text_en": "Apollonius, acquainting himself with the particulars of this, praised Simon for his care of the king’s interests, and going up to Seleucus informed him of the treasure.",
-      "text_fa": null,
+      "text_fa": "آپولونیوس پس از آگاهی از جزئیات، شمعون را به سبب توجهش به منافع پادشاه ستود و نزد سلوکوس رفت و او را از آن گنج آگاه کرد.",
       "text_hr": "Kad se Apolonije upoznao s pojedinostima, pohvalio je Šimuna zbog njegove brige za kraljeve interese te je otišao Seleuku i izvijestio ga o blagu.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 5,
       "text_en": "Getting authority about it, and quickly advancing into our country with the accursed Simon and a very heavy force,",
-      "text_fa": null,
+      "text_fa": "پس از آنکه اختیار این کار را گرفت، همراه شمعونِ ملعون و نیرویی بسیار سنگین به‌سرعت وارد سرزمین ما شد،",
       "text_hr": "Dobivši ovlast za to, brzo je prodro u našu zemlju s prokletim Šimunom i veoma brojnom vojskom",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 6,
       "text_en": "he said that he came with the commands of the king that he should take the private money of the treasury.",
-      "text_fa": null,
+      "text_fa": "و گفت به فرمان پادشاه آمده است تا اموال خصوصی خزانه را تصاحب کند.",
       "text_hr": "te je rekao da je došao po kraljevoj zapovijedi kako bi uzeo privatni novac iz riznice.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 7,
       "text_en": "The nation, indignant at this proclamation, and replying to the effect that it was extremely unfair that those who had committed deposits to the sacred treasury should be deprived of them, resisted as well as they could.",
-      "text_fa": null,
+      "text_fa": "قوم از این اعلامیه برآشفت و پاسخ داد که بسیار ناعادلانه است کسانی که سپرده‌های خود را به خزانهٔ مقدس سپرده‌اند از آنها محروم شوند؛ پس تا آنجا که می‌توانستند مقاومت کردند.",
       "text_hr": "Narod se razgnjevio zbog te objave i odgovorio da je krajnje nepravedno da oni koji su svoje pologe povjerili svetoj riznici budu lišeni svoje imovine; stoga su se odupirali koliko su mogli.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 8,
       "text_en": "But Appolonius went away with threats into the temple.",
-      "text_fa": null,
+      "text_fa": "اما آپولونیوس با تهدید به سوی معبد رفت.",
       "text_hr": "No Apolonije je uz prijetnje ušao u Hram.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 9,
       "text_en": "The priests, with the women and children, asked God to throw his shield over the holy, despised place,",
-      "text_fa": null,
+      "text_fa": "کاهنان همراه زنان و کودکان از خدا خواستند سپر خود را بر آن مکان مقدس که خوار شمرده شده بود بگستراند،",
       "text_hr": "Svećenici su zajedno sa ženama i djecom molili Boga da svojim štitom zakrili prezreno sveto mjesto.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 10,
       "text_en": "and Appolonius was going up with his armed force to seize the treasure, when angels from heaven appeared riding on horseback, all radiant in armor, filling them with much fear and trembling.",
-      "text_fa": null,
+      "text_fa": "و هنگامی که آپولونیوس با نیروی مسلح خود برای تصرف گنج پیش می‌آمد، فرشتگانی از آسمان، سوار بر اسب و سراسر درخشان در زره، ظاهر شدند و آنان را از ترس و لرز بسیار پر کردند.",
       "text_hr": "Dok se Apolonije sa svojom naoružanom vojskom uspinjao da zaplijeni blago, pojavili su se anđeli s neba jašući na konjima, svi blistavi u oklopu, te su ih ispunili silnim strahom i trepetom.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 11,
       "text_en": "Apollonius fell half dead on the court which is open to all nations, and extended his hands to heaven, and implored the Hebrews, with tears, to pray for him, and take away the wrath of the heavenly army.",
-      "text_fa": null,
+      "text_fa": "آپولونیوس نیمه‌جان در صحنِ گشوده به روی همهٔ قوم‌ها افتاد، دستانش را به سوی آسمان دراز کرد و با اشک از عبرانیان التماس نمود برایش دعا کنند و خشم سپاه آسمانی را از او دور سازند.",
       "text_hr": "Apolonije pade napola mrtav u dvorištu otvorenom svim narodima, pruži ruke prema nebu i sa suzama preklinjaše Hebreje da mole za njega i odvrate gnjev nebeske vojske.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 12,
       "text_en": "For he said that he had sinned, so as to be consequently worthy of death, and that if he were saved, he would proclaim to all people the blessedness of the holy place.",
-      "text_fa": null,
+      "text_fa": "زیرا می‌گفت گناه کرده و ازاین‌رو سزاوار مرگ است؛ و اگر نجات یابد، برکتِ آن مکان مقدس را برای همهٔ مردم اعلام خواهد کرد.",
       "text_hr": "Jer govoraše da je sagriješio te je stoga dostojan smrti, i da će, bude li spašen, svim ljudima naviještati blaženstvo svetoga mjesta.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 13,
       "text_en": "Onias the high priest, induced by these words, although for other reasons anxious that King Seleucus wouldn’t suppose that Apollonius was slain by human device and not by Divine punishment, prayed for him;",
-      "text_fa": null,
+      "text_fa": "اونیاس، کاهن اعظم، تحت تأثیر این سخنان برای او دعا کرد؛ همچنین نگران بود مبادا سلوکوس پادشاه گمان کند آپولونیوس با تدبیر انسانی کشته شده است، نه به مجازات الهی.",
       "text_hr": "Potaknut tim riječima, veliki svećenik Onija pomolio se za njega; usto se bojao da kralj Seleuk ne pomisli kako je Apolonije pogubljen ljudskom spletkom, a ne božanskom kaznom.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 14,
       "text_en": "and he being thus unexpectedly saved, departed to report to the king what had happened to him.",
-      "text_fa": null,
+      "text_fa": "پس آپولونیوس که بدین‌گونه به‌طور غیرمنتظره نجات یافته بود، رفت تا آنچه را برایش رخ داده بود به پادشاه گزارش دهد.",
       "text_hr": "Tako neočekivano spašen, Apolonije ode izvijestiti kralja o onome što mu se dogodilo.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 15,
       "text_en": "But on the death of Seleucus the king, his son Antiochus Epiphanes succeeded to the kingdom—a terrible man of arrogant pride.",
-      "text_fa": null,
+      "text_fa": "اما پس از مرگ سلوکوس پادشاه، پسرش آنتیوخوس اپیفان جانشین او شد؛ مردی هولناک و سخت متکبر.",
       "text_hr": "Nakon smrti kralja Seleuka kraljevstvo je naslijedio njegov sin Antioh Epifan, strašan čovjek ohole nadutosti.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 16,
       "text_en": "He, having deposed Onias from the high priesthood, appointed his brother Jason to be high priest,",
-      "text_fa": null,
+      "text_fa": "او اونیاس را از کهانت اعظم برکنار کرد و برادرش یاسون را کاهن اعظم ساخت،",
       "text_hr": "On je Oniju svrgnuo s položaja velikoga svećenika i za velikoga svećenika postavio njegova brata Jasona,",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 17,
       "text_en": "who had made a covenant, if he would give him this authority, to pay yearly three thousand six hundred and sixty talents.",
-      "text_fa": null,
+      "text_fa": "یاسون پیمان بسته بود که اگر این اختیار به او داده شود، هر سال سه هزار و ششصد و شصت قنطار بپردازد.",
       "text_hr": "koji se obvezao da će mu, dadne li mu tu vlast, svake godine plaćati tri tisuće šest stotina i šezdeset talenata.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 18,
       "text_en": "He committed to him the high priesthood and rulership over the nation.",
-      "text_fa": null,
+      "text_fa": "آنتیوخوس کهانت اعظم و حکومت بر قوم را به او سپرد.",
       "text_hr": "Povjerio mu je velikosvećeništvo i vlast nad narodom.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 19,
       "text_en": "He both changed the manner of living of the people, and perverted their civil customs into all lawlessness.",
-      "text_fa": null,
+      "text_fa": "یاسون هم شیوهٔ زندگی مردم را تغییر داد و هم رسوم مدنی آنان را به بی‌قانونی کامل کشاند.",
       "text_hr": "On je promijenio način života naroda i izopačio njihove građanske običaje u svako bezakonje.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 20,
       "text_en": "So that he not only erected a gymnasium on the very citadel of our country, but neglected the guardianship of the temple.",
-      "text_fa": null,
+      "text_fa": "تا آنجا که نه‌تنها در همان دژ سرزمین ما ورزشگاهی برپا کرد، بلکه پاسداری از معبد را نیز وانهاد.",
       "text_hr": "Tako ne samo da je podigao vježbalište na samoj tvrđavi naše zemlje nego je zanemario i čuvanje Hrama.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 21,
       "text_en": "Because of that, Divine vengeance was grieved and instigated Antiochus himself against them.",
-      "text_fa": null,
+      "text_fa": "به سبب این کار، انتقام الهی به خشم آمد و خود آنتیوخوس را علیه ایشان برانگیخت.",
       "text_hr": "Zbog toga se božanska osveta razgnjevila i potaknula samoga Antioha protiv njih.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 22,
       "text_en": "For being at war with Ptolemy in Egypt, he heard that on a report of his death being spread abroad, the inhabitants of Jerusalem had exceedingly rejoiced, and he quickly marched against them.",
-      "text_fa": null,
+      "text_fa": "زیرا هنگامی که آنتیوخوس در مصر با بطلمیوس می‌جنگید، شنید که پس از انتشار خبر مرگش، ساکنان اورشلیم بسیار شادی کرده‌اند؛ پس به‌سرعت بر ضد آنان لشکر کشید.",
       "text_hr": "Dok je ratovao s Ptolemejem u Egiptu, čuo je da su se stanovnici Jeruzalema silno obradovali kad se proširila vijest o njegovoj smrti, pa je brzo krenuo protiv njih.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 23,
       "text_en": "Having subdued them, he established a decree that if any of them lived according to the ancestral laws, he should die.",
-      "text_fa": null,
+      "text_fa": "پس از آنکه آنان را مغلوب ساخت، فرمان داد هرکس بر اساس قوانین نیاکان زندگی کند باید بمیرد.",
       "text_hr": "Pošto ih je pokorio, izdao je odredbu da svatko od njih tko živi prema otačkom Zakonu mora umrijeti.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 24,
       "text_en": "When he could by no means destroy by his decrees the obedience to the law of the nation, but saw all his threats and punishments without effect,",
-      "text_fa": null,
+      "text_fa": "وقتی نتوانست با فرمان‌های خود اطاعت قوم از شریعت را از میان ببرد و دید که همهٔ تهدیدها و مجازات‌هایش بی‌اثر است،",
       "text_hr": "Kad svojim odredbama nikako nije mogao uništiti vjernost naroda Zakonu, nego je vidio da su sve njegove prijetnje i kazne bez učinka —",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 25,
       "text_en": "for even women, because they continued to circumcise their children, were flung down a precipice along with them, knowing beforehand of the punishment.",
-      "text_fa": null,
+      "text_fa": "زیرا حتی زنان را به سبب آنکه همچنان فرزندانشان را ختنه می‌کردند، با همان کودکان از پرتگاه فرو می‌افکندند، با آنکه از پیش مجازات را می‌دانستند،",
       "text_hr": "jer čak su i žene, zato što su nastavile obrezivati svoju djecu, bile zajedno s njima bačene niz liticu, premda su unaprijed znale za kaznu —",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 26,
       "text_en": "When, therefore, his decrees were disregarded by the people, he himself compelled by means of tortures every one of this race, by tasting forbidden meats, to renounce the Jewish religion.",
-      "text_fa": null,
+      "text_fa": "پس چون مردم فرمان‌هایش را نادیده گرفتند، خود او هر فرد این قوم را با شکنجه مجبور می‌کرد با چشیدن خوراک‌های حرام از دین یهودی دست بکشد.",
       "text_hr": "budući da se narod nije obazirao na njegove odredbe, on je sam mučenjem prisiljavao svakoga iz toga roda da kušanjem zabranjenoga mesa zaniječe židovsku vjeru.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     }
   ]

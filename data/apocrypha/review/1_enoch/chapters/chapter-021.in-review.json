@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 21,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "1aaa0ca7db0748e3032b7c4d4d4601d609258f24e701ef2004d65afa52e2879f",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And I proceeded to where things were chaotic.",
+      "text_fa": null,
+      "text_hr": "Nastavih do mjesta gdje je sve bilo kaotično.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And I saw there something horrible: I saw neither a heaven above nor a firmly founded earth, but a place chaotic and horrible.",
+      "text_fa": null,
+      "text_hr": "Ondje vidjeh nešto strašno: nisam vidio ni neba iznad ni čvrsto utemeljene zemlje, nego kaotično i užasno mjesto.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And there I saw seven stars of the heaven bound together in it, like great mountains and burning with fire.",
+      "text_fa": null,
+      "text_hr": "Ondje vidjeh sedam nebeskih zvijezda svezanih zajedno, nalik velikim gorama koje gore ognjem.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "Then I said: ‘For what sin are they bound, and on what account have they been cast in hither?’",
+      "text_fa": null,
+      "text_hr": "Tada upitah: ‘Zbog kojega su grijeha svezane i zašto su bačene ovamo?’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "Then said Uriel, one of the holy angels, who was with me, and was chief over them, and said: ‘Enoch, why dost thou ask, and why art thou eager for the truth?",
+      "text_fa": null,
+      "text_hr": "Uriel, jedan od svetih anđela koji bijaše sa mnom i njihov starješina, reče mi: ‘Henok, zašto pitaš i zašto žarko želiš istinu?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "These are of the number of the stars ⌜of heaven⌝ which have transgressed the commandment of the Lord, and are bound here till ten thousand years, the time entailed by their sins, are consummated.’",
+      "text_fa": null,
+      "text_hr": "One pripadaju zvijezdama ⌜nebeskim⌝ koje su prestupile Gospodinovu zapovijed; ovdje su svezane dok se ne navrši deset tisuća godina, vrijeme određeno njihovim grijesima.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And from thence I went to another place, which was still more horrible than the former, and I saw a horrible thing: a great fire there which burnt and blazed, and the place was cleft as far as the abyss, being full of great descending columns of fire: neither its extent or magnitude could I see, nor could I conjecture.",
+      "text_fa": null,
+      "text_hr": "Odatle odoh na drugo mjesto, još strašnije od prethodnoga, i vidjeh užas: velik oganj koji je gorio i plamtio; mjesto bijaše rascijepljeno sve do ponora i puno golemih silaznih stupova ognja. Nisam mogao vidjeti ni njegov opseg ni veličinu, niti sam ih mogao naslutiti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "Then I said: ‘How fearful is the place and how terrible to look upon!’",
+      "text_fa": null,
+      "text_hr": "Tada rekoh: ‘Kako je strašno ovo mjesto i kako ga je užasno gledati!’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "Then Uriel answered me, one of the holy angels who was with me, and said unto me: ‘Enoch, why hast thou such fear and affright?’ And I answered: ‘Because of this fearful place, and because of the spectacle of the pain.’",
+      "text_fa": null,
+      "text_hr": "Uriel, jedan od svetih anđela koji bijaše sa mnom, odgovori: ‘Henok, zašto te obuzimaju takav strah i užas?’ Odgovorih: ‘Zbog ovoga strašnoga mjesta i prizora muke.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And he said 〚unto me〛: ‘This place is the prison of the angels, and here they will be imprisoned for ever.’",
+      "text_fa": null,
+      "text_hr": "On mi 〚reče〛: ‘Ovo je mjesto tamnica anđela; ovdje će biti zatočeni zauvijek.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

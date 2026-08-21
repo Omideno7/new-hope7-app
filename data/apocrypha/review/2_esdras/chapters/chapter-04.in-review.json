@@ -1,0 +1,433 @@
+{
+  "schema_version": 1,
+  "book_id": "2_esdras",
+  "title_fa": "دوم اِسدراس",
+  "title_en": "Second Esdras",
+  "title_hr": "Druga Ezdrina",
+  "chapter": 4,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "b30a22d93b9f0cbd60394d4ae159e81020452a035c8b6f6f7a063a7ac3d61832",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And the angel that was sent unto me, whose name was Uriel, gave me an answer,",
+      "text_fa": null,
+      "text_hr": "I anđeo koji mi je bio poslan, čije je ime bilo Uriel, dao mi je odgovor,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And said, Thy heart hath gone to far in this world, and thinkest thou to comprehend the way of the most High?",
+      "text_fa": null,
+      "text_hr": "I rekao je: Tvoje je srce otišlo predaleko na ovome svijetu, a misliš li da ćeš shvatiti put Svevišnjega?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "Then said I, Yea, my lord. And he answered me, and said, I am sent to shew thee three ways, and to set forth three similitudes before thee:",
+      "text_fa": null,
+      "text_hr": "Tada sam rekao, Da, moj gospodaru. On mi je odgovorio: Poslan sam da ti pokažem tri puta i da ti iznesem tri usporedbe:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "Whereof if thou canst declare me one, I will shew thee also the way that thou desirest to see, and I shall shew thee from whence the wicked heart cometh.",
+      "text_fa": null,
+      "text_hr": "Ako mi možeš razjasniti jedan od tih putova, pokazat ću ti put koji želiš vidjeti i objasniti ti odakle dolazi zlo srce.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And I said, Tell on, my lord. Then said he unto me, Go thy way, weigh me the weight of the fire, or measure me the blast of the wind, or call me again the day that is past.",
+      "text_fa": null,
+      "text_hr": "Rekao sam: Nastavi, gospodaru. On mi je odgovorio: Izvagni mi težinu ognja, izmjeri udar vjetra ili mi vrati dan koji je prošao.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "Then answered I and said, What man is able to do that, that thou shouldest ask such things of me?",
+      "text_fa": null,
+      "text_hr": "Tada sam odgovorio i rekao: Koji je čovjek u stanju to učiniti da tražiš takve stvari od mene?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And he said unto me, If I should ask thee how great dwellings are in the midst of the sea, or how many springs are in the beginning of the deep, or how many springs are above the firmament, or which are the outgoings of paradise:",
+      "text_fa": null,
+      "text_hr": "A on mi je rekao: \"Ako bih te pitao koliki su stanovi usred mora, ili koliko je izvora na početku bezdana, ili koliko je izvora iznad nebeskog svoda, ili koji su izlazi raja:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "Peradventure thou wouldest say unto me, I never went down into the deep, nor as yet into hell, neither did I ever climb up into heaven.",
+      "text_fa": null,
+      "text_hr": "Možda bi mi rekao da nikad nisam sišao u dubinu, niti u podzemlje, niti sam se ikad popeo na nebo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "Nevertheless now have I asked thee but only of the fire and wind, and of the day wherethrough thou hast passed, and of things from which thou canst not be separated, and yet canst thou give me no answer of them.",
+      "text_fa": null,
+      "text_hr": "Ipak, sad sam te pitao samo o vatri i vjetru, i o danu kroz koji si prošao, i o stvarima od kojih se ne možeš odvojiti, a ipak mi ne možeš odgovoriti na njih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "He said moreover unto me, Thine own things, and such as are grown up with thee, canst thou not know;",
+      "text_fa": null,
+      "text_hr": "Nadalje mi je rekao: Svoje stvari i ono što je s tobom odraslo ne možeš znati;",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "How should thy vessel then be able to comprehend the way of the Highest, and, the world being now outwardly corrupted to understand the corruption that is evident in my sight?",
+      "text_fa": null,
+      "text_hr": "Kako bi onda tvoja posuda mogla obuhvatiti put Svevišnjega i, dok je svijet izvana iskvaren, razumjeti iskvarenost koja je očita pred mojim očima?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "Then said I unto him, It were better that we were not at all, than that we should live still in wickedness, and to suffer, and not to know wherefore.",
+      "text_fa": null,
+      "text_hr": "Tada sam mu rekao: Bolje da nas uopće nema, nego da još živimo u zloći i da patimo, a da ne znamo zašto.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "He answered me, and said, I went into a forest into a plain, and the trees took counsel,",
+      "text_fa": null,
+      "text_hr": "Odgovorio mi je: Otišao sam u šumu na ravnici, a stabla su se posavjetovala,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "And said, Come, let us go and make war against the sea that it may depart away before us, and that we may make us more woods.",
+      "text_fa": null,
+      "text_hr": "I rekao je: Hajde, pođimo i zaratimo s morem da ono odstupi pred nama i da si napravimo još više šuma.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "The floods of the sea also in like manner took counsel, and said, Come, let us go up and subdue the woods of the plain, that there also we may make us another country.",
+      "text_fa": null,
+      "text_hr": "I morske su se bujice posavjetovale: Hajdemo pokoriti šume u ravnici kako bismo ondje sebi načinile novu zemlju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "The thought of the wood was in vain, for the fire came and consumed it.",
+      "text_fa": null,
+      "text_hr": "Pomisao na drvo bila je uzaludna, jer vatra je došla i progutala ga.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "The thought of the floods of the sea came likewise to nought, for the sand stood up and stopped them.",
+      "text_fa": null,
+      "text_hr": "Pomisao na morske bujice također je bila uzaludna, jer se pijesak uspravio i zaustavio ih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "If thou wert judge now betwixt these two, whom wouldest thou begin to justify? or whom wouldest thou condemn?",
+      "text_fa": null,
+      "text_hr": "Da si sada sudac između ove dvojice, koga bi počeo opravdavati? Ili koga bi osudio?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "I answered and said, Verily it is a foolish thought that they both have devised, for the ground is given unto the wood, and the sea also hath his place to bear his floods.",
+      "text_fa": null,
+      "text_hr": "Odgovorio sam: Uistinu je nerazumna zamisao koju su oboje smislili, jer je tlo dano šumi, a more ima svoje mjesto za svoje bujice.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "Then answered he me, and said, Thou hast given a right judgment, but why judgest thou not thyself also?",
+      "text_fa": null,
+      "text_hr": "Tada mi je odgovorio: Ti si dao pravu presudu, ali zašto ne sudiš i sebi?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "For like as the ground is given unto the wood, and the sea to his floods: even so they that dwell upon the earth may understand nothing but that which is upon the earth: and he that dwelleth above the heavens may only understand the things that are above the height of the heavens.",
+      "text_fa": null,
+      "text_hr": "Jer kao što je tlo dano šumi, a more njegovim poplavama, tako i oni koji žive na zemlji ne razumiju ništa osim onoga što je na zemlji: a onaj koji živi iznad neba može razumjeti samo ono što je iznad visine neba.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "Then answered I and said, I beseech thee, O Lord, let me have understanding:",
+      "text_fa": null,
+      "text_hr": "Tada sam odgovorio i rekao: Molim te, Gospodine, daj mi razuma:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "For it was not my mind to be curious of the high things, but of such as pass by us daily, namely, wherefore Israel is given up as a reproach to the heathen, and for what cause the people whom thou hast loved is given over unto ungodly nations, and why the law of our forefathers is brought to nought, and the written covenants come to none effect,",
+      "text_fa": null,
+      "text_hr": "Nisam htio istraživati uzvišene stvari, nego ono što svakodnevno prolazi pred nama: zašto je Izrael predan na porugu narodima, zašto je narod koji si ljubio predan bezbožnicima, zašto je Zakon naših otaca poništen i pisani savezi nemaju učinka,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "And we pass away out of the world as grasshoppers, and our life is astonishment and fear, and we are not worthy to obtain mercy.",
+      "text_fa": null,
+      "text_hr": "Zašto sa svijeta prolazimo kao skakavci, a naš je život ispunjen čuđenjem i strahom te nismo dostojni zadobiti milosrđe.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "What will he then do unto his name whereby we are called? of these things have I asked.",
+      "text_fa": null,
+      "text_hr": "Što će onda učiniti radi svojega imena kojim smo nazvani? O tome sam pitao.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "Then answered he me, and said, The more thou searchest, the more thou shalt marvel; for the world hasteth fast to pass away,",
+      "text_fa": null,
+      "text_hr": "Tada mi je odgovorio: Što više budeš tražio, to ćeš se više čuditi; jer svijet žuri da prođe,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "And cannot comprehend the things that are promised to the righteous in time to come: for this world is full of unrighteousness and infirmities.",
+      "text_fa": null,
+      "text_hr": "I ne može shvatiti stvari koje su obećane pravednicima u vremenu koje dolazi: jer ovaj je svijet pun nepravednosti i slabosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "But as concerning the things whereof thou askest me, I will tell thee; for the evil is sown, but the destruction thereof is not yet come.",
+      "text_fa": null,
+      "text_hr": "Ali što se tiče stvari o kojima me pitaš, reći ću ti; jer zlo je posijano, ali propast još nije došla.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "If therefore that which is sown be not turned upside down, and if the place where the evil is sown pass not away, then cannot it come that is sown with good.",
+      "text_fa": null,
+      "text_hr": "Ako se, dakle, ono što je posijano ne okrene naopako, i ako mjesto gdje je posijano zlo ne prođe, onda ne može doći ono što je zasijano dobrim.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "For the grain of evil seed hath been sown in the heart of Adam from the beginning, and how much ungodliness hath it brought up unto this time? and how much shall it yet bring forth until the time of threshing come?",
+      "text_fa": null,
+      "text_hr": "Jer je zrno zlog sjemena posijano u srce Adamovo od početka, i koliko je opačine donijelo do ovog vremena? I koliko će još uroditi dok ne dođe vrijeme vršidbe?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "Ponder now by thyself, how great fruit of wickedness the grain of evil seed hath brought forth.",
+      "text_fa": null,
+      "text_hr": "Razmisli sada sam o tome kako je velik plod zloće donijelo zrno zlog sjemena.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "And when the ears shall be cut down, which are without number, how great a floor shall they fill?",
+      "text_fa": null,
+      "text_hr": "Kad se požanje bezbrojno klasje, koliko će veliko gumno napuniti?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "Then I answered and said, How, and when shall these things come to pass? wherefore are our years few and evil?",
+      "text_fa": null,
+      "text_hr": "Tada sam odgovorio i rekao: Kako i kada će se ove stvari dogoditi? Zašto su naše godine male i zle?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 34,
+      "text_en": "And he answered me, saying, Do not thou hasten above the most Highest: for thy haste is in vain to be above him, for thou hast much exceeded.",
+      "text_fa": null,
+      "text_hr": "Odgovorio mi je: Ne žuri više od Svevišnjega. Uzalud ga pokušavaš preteći; već si predaleko otišao.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 35,
+      "text_en": "Did not the souls also of the righteous ask question of these things in their chambers, saying, How long shall I hope on this fashion? when cometh the fruit of the floor of our reward?",
+      "text_fa": null,
+      "text_hr": "Nisu li i duše pravednika u svojim odajama pitale: Dokle ćemo se tako nadati? Kada će doći plod gumna naše nagrade?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 36,
+      "text_en": "And unto these things Uriel the archangel gave them answer, and said, Even when the number of seeds is filled in you: for he hath weighed the world in the balance.",
+      "text_fa": null,
+      "text_hr": "Arkanđeo Uriel odgovorio im je: Kad se ispuni broj posijanih među vama, jer Svevišnji je izvagao svijet na vagi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 37,
+      "text_en": "By measure hath he measured the times; and by number hath he numbered the times; and he doth not move nor stir them, until the said measure be fulfilled.",
+      "text_fa": null,
+      "text_hr": "Mjerom je mjerio vremena; i brojem je izbrojio vremena; i on ih ne miče niti miče, dok se navedena mjera ne ispuni.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 38,
+      "text_en": "Then answered I and said, O Lord that bearest rule, even we all are full of impiety.",
+      "text_fa": null,
+      "text_hr": "Tada sam odgovorio: O Gospodine, Vladaru, svi smo mi puni bezbožnosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 39,
+      "text_en": "And for our sakes peradventure it is that the floors of the righteous are not filled, because of the sins of them that dwell upon the earth.",
+      "text_fa": null,
+      "text_hr": "Možda se upravo zbog nas gumna pravednika ne pune, zbog grijeha stanovnika zemlje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 40,
+      "text_en": "So he answered me, and said, Go thy way to a woman with child, and ask of her when she hath fulfilled her nine months, if her womb may keep the birth any longer within her.",
+      "text_fa": null,
+      "text_hr": "Odgovorio mi je: Pođi k trudnoj ženi i upitaj je može li, kad navrši devet mjeseci, još zadržavati dijete u utrobi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 41,
+      "text_en": "Then said I, No, Lord, that can she not. And he said unto me, In the grave the chambers of souls are like the womb of a woman:",
+      "text_fa": null,
+      "text_hr": "Rekao sam: Ne može, gospodaru. On mi je rekao: Odaje duša u grobu slične su ženinoj utrobi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 42,
+      "text_en": "For like as a woman that travaileth maketh haste to escape the necessity of the travail: even so do these places haste to deliver those things that are committed unto them.",
+      "text_fa": null,
+      "text_hr": "Kao što žena u trudovima žuri osloboditi se porođajne muke, tako i ta mjesta žure predati ono što im je povjereno.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 43,
+      "text_en": "From the beginning, look, what thou desirest to see, it shall be shewed thee.",
+      "text_fa": null,
+      "text_hr": "Od početka gledaj: pokazat će ti se ono što želiš vidjeti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 44,
+      "text_en": "Then answered I and said, If I have found favour in thy sight, and if it be possible, and if I be meet therefore,",
+      "text_fa": null,
+      "text_hr": "Odgovorio sam: Ako sam našao milost u tvojim očima, ako je moguće i ako sam toga dostojan,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 45,
+      "text_en": "Shew me then whether there be more to come than is past, or more past than is to come.",
+      "text_fa": null,
+      "text_hr": "Pokaži mi onda hoće li doći više od onoga što je prošlo, ili više od onoga što će doći.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 46,
+      "text_en": "What is past I know, but what is for to come I know not.",
+      "text_fa": null,
+      "text_hr": "Ono što je prošlo znam, ali ono što dolazi ne znam.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 47,
+      "text_en": "And he said unto me, Stand up upon the right side, and I shall expound the similitude unto thee.",
+      "text_fa": null,
+      "text_hr": "I rekao mi je, Ustani s desne strane i ja ću ti objasniti usporedbu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 48,
+      "text_en": "So I stood, and saw, and, behold, an hot burning oven passed by before me: and it happened that when the flame was gone by I looked, and, behold, the smoke remained still.",
+      "text_fa": null,
+      "text_hr": "Stao sam i vidio kako preda mnom prolazi užarena peć. Kad je plamen prošao, pogledao sam, a dim je još ostao.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 49,
+      "text_en": "After this there passed by before me a watery cloud, and sent down much rain with a storm; and when the stormy rain was past, the drops remained still.",
+      "text_fa": null,
+      "text_hr": "Nakon toga preda mnom je prošao vodeni oblak, i pustio mnogo kiše s olujom; a kad je olujna kiša prošla, kapi su ostale mirne.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 50,
+      "text_en": "Then said he unto me, Consider with thyself; as the rain is more than the drops, and as the fire is greater than the smoke; but the drops and the smoke remain behind: so the quantity which is past did more exceed.",
+      "text_fa": null,
+      "text_hr": "Tada mi je rekao: Razmisli. Kao što je kiša veća od kapljica i oganj veći od dima, a kapljice i dim ostaju iza njih, tako je i ono što je prošlo bilo mnogo veće.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 51,
+      "text_en": "Then I prayed, and said, May I live, thinkest thou, until that time? or what shall happen in those days?",
+      "text_fa": null,
+      "text_hr": "Tada sam se pomolio i rekao: Mogu li živjeti, što misliš, do tog vremena? Ili što će se dogoditi u one dane?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 52,
+      "text_en": "He answered me, and said, As for the tokens whereof thou askest me, I may tell thee of them in part: but as touching thy life, I am not sent to shew thee; for I do not know it.",
+      "text_fa": null,
+      "text_hr": "Odgovorio mi je i rekao: Što se tiče znakova za koje me pitaš, mogu ti ih djelomično reći; ali što se tiče tvog života, nisam poslan da ti pokažem; jer ja to ne znam.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

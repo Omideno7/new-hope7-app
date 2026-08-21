@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 39,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "7526dd407b61e99a37ce0b26c914ce71368a17738ee45acccbfa1e08bf2b9671",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "[And it †shall come to pass in those days that elect and holy children †will descend from the high heaven, and their seed †will become one with the children of men.",
+      "text_fa": null,
+      "text_hr": "[I dogodit će se †u one dane da će izabrana i sveta djeca †sići s visokoga neba i njihovo će se potomstvo †sjediniti sa sinovima ljudskim.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And in those days Enoch received books of zeal and wrath, and books of disquiet and expulsion.]\n\nAnd mercy shall not be accorded to them, saith the Lord of Spirits.",
+      "text_fa": null,
+      "text_hr": "U one je dane Henok primio knjige revnosti i srdžbe te knjige nemira i izgona.]\n\n„I neće im se iskazati milosrđe“, govori Gospodar duhova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And in those days a whirlwind carried me off from the earth,\nAnd set me down at the end of the heavens.",
+      "text_fa": null,
+      "text_hr": "U one me dane vihor odnio sa zemlje\ni spustio na kraj nebesa.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And there I saw another vision, the dwelling-places of the holy,\nAnd the resting-places of the righteous.",
+      "text_fa": null,
+      "text_hr": "Ondje sam vidio drugo viđenje: prebivališta svetih\ni počivališta pravednih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "Here mine eyes saw their dwellings with His righteous angels,\nAnd their resting-places with the holy.\nAnd they petitioned and interceded and prayed for the children of men.\nAnd righteousness flowed before them as water,\nAnd mercy like dew upon the earth:\nThus it is amongst them for ever and ever.",
+      "text_fa": null,
+      "text_hr": "Ondje su moje oči vidjele njihova prebivališta s njegovim pravednim anđelima\ni njihova počivališta sa svetima.\nMolili su, zauzimali se i preklinjali za sinove ljudske.\nPravednost je pred njima tekla poput vode,\na milosrđe poput rose po zemlji:\ntako je među njima u vijeke vjekova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "[6a] And in that place mine eyes saw the Elect One of righteousness and of faith,\n\n[6b] And righteousness shall prevail in his days,\nAnd the righteous and elect shall be without number before Him for ever and ever.",
+      "text_fa": null,
+      "text_hr": "[6a] Na tome su mjestu moje oči vidjele Izabranoga pravednosti i vjere.\n\n[6b] Pravednost će prevladati u njegove dane,\na pravednih i izabranih bit će pred njim bezbroj u vijeke vjekova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "[7a] And I saw his dwelling-place under the wings of the Lord of Spirits.\n\n[7b] And all the righteous and elect before Him shall be †strong† as fiery lights,\nAnd their mouth shall be full of blessing,\nAnd their lips shall extol the name of the Lord of Spirits,\nAnd righteousness before Him shall never fail,\n[And uprightness shall never fail before Him].",
+      "text_fa": null,
+      "text_hr": "[7a] Vidio sam njegovo prebivalište pod krilima Gospodara duhova.\n\n[7b] Svi pravedni i izabrani pred njim bit će †snažni† poput ognjenih svjetala,\nusta će im biti puna blagoslova,\na njihove će usne uzvisivati ime Gospodara duhova.\nPravednosti pred njim nikada neće uzmanjkati\n[i čestitosti pred njim nikada neće uzmanjkati].",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "There I wished to dwell,\nAnd my spirit longed for that dwelling-place:\nAnd there heretofore hath been my portion,\nFor so hath it been established concerning me before the Lord of Spirits.",
+      "text_fa": null,
+      "text_hr": "Ondje sam poželio prebivati\ni moj je duh čeznuo za tim prebivalištem.\nOndje je otprije bio moj dio,\njer je tako o meni određeno pred Gospodarom duhova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "In those days I praised and extolled the name of the Lord of Spirits with blessings and praises, because He hath destined me for blessing and glory according to the good pleasure of the Lord of Spirits.",
+      "text_fa": null,
+      "text_hr": "U one sam dane blagoslovima i hvalospjevima hvalio i uzvisivao ime Gospodara duhova, jer me prema svojoj dobrohotnosti odredio za blagoslov i slavu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "For a long time my eyes regarded that place, and I blessed Him and praised Him, saying: ‘Blessed is He, and may He be blessed from the beginning and for evermore.",
+      "text_fa": null,
+      "text_hr": "Dugo su moje oči promatrale to mjesto, a ja sam ga blagoslivljao i hvalio govoreći: „Blagoslovljen je on i neka bude blagoslovljen od početka i zauvijek.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "And before Him there is no ceasing. He knows before the world was created what is for ever and what will be from generation unto generation.",
+      "text_fa": null,
+      "text_hr": "Pred njim nema prestanka. On je još prije stvaranja svijeta znao što traje zauvijek i što će biti od naraštaja do naraštaja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "Those who sleep not bless Thee: they stand before Thy glory and bless, praise, and extol, saying: “Holy, holy, holy, is the Lord of Spirits: He filleth the earth with spirits.”’",
+      "text_fa": null,
+      "text_hr": "Oni koji ne spavaju blagoslivljaju te: stoje pred tvojom slavom i blagoslivljaju, hvale i uzvisuju govoreći: ‘Svet, svet, svet je Gospodar duhova; on ispunja zemlju duhovima.’“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "And here my eyes saw all those who sleep not: they stand before Him and bless and say: ‘Blessed be Thou, and blessed be the name of the Lord for ever and ever.’",
+      "text_fa": null,
+      "text_hr": "Ondje su moje oči vidjele sve one koji ne spavaju: stoje pred njim, blagoslivljaju i govore: „Blagoslovljen si ti i blagoslovljeno neka je ime Gospodnje u vijeke vjekova.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "And my face was changed; for I could no longer behold.",
+      "text_fa": null,
+      "text_hr": "Moje se lice promijenilo, jer više nisam mogao gledati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "book_id": "2_esdras",
+  "title_fa": "دوم اِسدراس",
+  "title_en": "Second Esdras",
+  "title_hr": "Druga Ezdrina",
+  "status": "in_review",
+  "prepared_on": "2026-08-21",
+  "included_ranges": {
+    "hr": [
+      [
+        1,
+        16
+      ]
+    ]
+  },
+  "locales_in_scope": [
+    "hr"
+  ],
+  "source_translation": "KJVA",
+  "source_translation_name": "King James Version with Apocrypha",
+  "source_url": "https://ebible.org/bible/details.php?id=eng-kjv",
+  "source_license": "Public Domain",
+  "versification": "KJVA",
+  "translation_note": "Fresh project Croatian rendering aligned verse by verse to the public-domain KJVA source; an older Ijekavian South-Slavic comparison text was consulted for terminology, then normalized and reviewed in Croatian.",
+  "totals": {
+    "chapters": 16,
+    "aligned_source_verses": 874,
+    "persian_out_of_scope_verses": 874,
+    "croatian_in_review_verses": 874
+  },
+  "chapter_qa": {
+    "1": {
+      "verse_count": 40,
+      "persian_out_of_scope_count": 40,
+      "croatian_in_review_count": 40,
+      "source_english_sha256": "4c17a09d9e9223718157689910c638620a0fb1546e31295d0a13c08e05c4e09b"
+    },
+    "2": {
+      "verse_count": 48,
+      "persian_out_of_scope_count": 48,
+      "croatian_in_review_count": 48,
+      "source_english_sha256": "ce2881f83ac22cfa4370ce534883c710ccaf00e7d97bb01c1a545c495205edf2"
+    },
+    "3": {
+      "verse_count": 36,
+      "persian_out_of_scope_count": 36,
+      "croatian_in_review_count": 36,
+      "source_english_sha256": "03da879033785d12e6708527efe5aee750ee6b3227e08a824a887da3833263da"
+    },
+    "4": {
+      "verse_count": 52,
+      "persian_out_of_scope_count": 52,
+      "croatian_in_review_count": 52,
+      "source_english_sha256": "b30a22d93b9f0cbd60394d4ae159e81020452a035c8b6f6f7a063a7ac3d61832"
+    },
+    "5": {
+      "verse_count": 56,
+      "persian_out_of_scope_count": 56,
+      "croatian_in_review_count": 56,
+      "source_english_sha256": "5730ce2f626da3671e36337dc2d5386c2aa45e3626bccde3bf6e311e523cfc24"
+    },
+    "6": {
+      "verse_count": 59,
+      "persian_out_of_scope_count": 59,
+      "croatian_in_review_count": 59,
+      "source_english_sha256": "c2416716461efd66e614b88e1ad94268607c970927344fba7a4dde51d39e5d11"
+    },
+    "7": {
+      "verse_count": 70,
+      "persian_out_of_scope_count": 70,
+      "croatian_in_review_count": 70,
+      "source_english_sha256": "aae5b35b528855cfd137b49444cd580ec0a70efca925546a0c766bc875f8cc55"
+    },
+    "8": {
+      "verse_count": 63,
+      "persian_out_of_scope_count": 63,
+      "croatian_in_review_count": 63,
+      "source_english_sha256": "26d61538d2b8817707f82576cfef66dc4dd9014979c5fb1a852a7fa39ef6621a"
+    },
+    "9": {
+      "verse_count": 47,
+      "persian_out_of_scope_count": 47,
+      "croatian_in_review_count": 47,
+      "source_english_sha256": "ad39c307db56894ac0e5fc0abccf38d4ddc28baefa69f8218c52ae02e1a4268d"
+    },
+    "10": {
+      "verse_count": 59,
+      "persian_out_of_scope_count": 59,
+      "croatian_in_review_count": 59,
+      "source_english_sha256": "64e30213dc3b5e88f0b6b14c9b7af05af2a4c8c0624984a908a1393166a58556"
+    },
+    "11": {
+      "verse_count": 46,
+      "persian_out_of_scope_count": 46,
+      "croatian_in_review_count": 46,
+      "source_english_sha256": "be76dbc2ef6afe92419b114320d7d1ed35ff297587b674fdcf237c0634e9dded"
+    },
+    "12": {
+      "verse_count": 51,
+      "persian_out_of_scope_count": 51,
+      "croatian_in_review_count": 51,
+      "source_english_sha256": "55489935c010a6da1d945c5a895c9075434e5f0502df99c4bf93b13c551bc000"
+    },
+    "13": {
+      "verse_count": 58,
+      "persian_out_of_scope_count": 58,
+      "croatian_in_review_count": 58,
+      "source_english_sha256": "5c64ef667d63d90f5b630eebb402c63dfd9c4bf40e385b2860db643068087ba7"
+    },
+    "14": {
+      "verse_count": 48,
+      "persian_out_of_scope_count": 48,
+      "croatian_in_review_count": 48,
+      "source_english_sha256": "1de5af8bf8d8666458e81cc74de6cda2e03e1c89c934cf6936ed911806cf57cd"
+    },
+    "15": {
+      "verse_count": 63,
+      "persian_out_of_scope_count": 63,
+      "croatian_in_review_count": 63,
+      "source_english_sha256": "bba8f6ccc8bafe577345648f223cda684f7f14ef09b1d8956edae28aca014eb6"
+    },
+    "16": {
+      "verse_count": 78,
+      "persian_out_of_scope_count": 78,
+      "croatian_in_review_count": 78,
+      "source_english_sha256": "104a180e0c2d28d3c88aa4640d82b11ce2ce606f985f1eda4c48a67aec8e9435"
+    }
+  }
+}

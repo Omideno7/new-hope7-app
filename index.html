@@ -1,125 +1,145 @@
 <!doctype html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#1d4ed8" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <title>OmideNo7 Church</title>
-  <link rel="manifest" href="manifest.json?v=2.4.0.241" />
-  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png?v=2.4.0.241" />
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=2.4.0.241" />
-  <link rel="stylesheet" href="css/styles.css?v=2.3.9.33" />
-  <link rel="stylesheet" href="css/v2.2.0.css?v=2.3.9" />
-  <link rel="stylesheet" href="css/v2.2.2.css?v=2.3.9" />
-  <link rel="stylesheet" href="css/v2.2.3.css?v=2.3.9" />
-  <link rel="stylesheet" href="css/v2.2.4.css?v=2.3.9" />
-  <link rel="stylesheet" href="css/v2.3.0-access-bible.css?v=2.3.9" />
-  <link rel="stylesheet" href="css/v2.3.4-my-notes.css?v=2.3.9" />
-  <link rel="stylesheet" href="css/nh7-book-reader-v280.css?v=2.3.9.33" />
-  <link rel="stylesheet" href="css/nh7-library-collections-v322.css?v=2.3.9.33" />
-  <link rel="stylesheet" href="css/nh7-secure-media-v270.css?v=2.3.9.33" />
-  <link rel="stylesheet" href="css/nh7-secure-media-watermark-v272.css?v=2.3.9.33" />
-  <link rel="stylesheet" href="css/nh7-apocrypha-v270.css?v=2.3.9.33" />
-  <link rel="stylesheet" href="css/nh7-spiritual-plans-v240.css?v=2.4.0.241" />
-  <script>
-    window.NH7_ONESIGNAL_APP_ID = '86f4116a-707a-4959-aa3f-7c703f57bf7e';
-    window.NH7_VERSION = '2.4.0.241';
-    window.NH7_SPIRITUAL_PLANS_V240 = true;
-    window.NH7_BASE_PATH = new URL('.', window.location.href).pathname;
-    window.NH7_SERVICE_WORKER = window.NH7_BASE_PATH + 'service-worker.js';
-    window.NH7_ONESIGNAL_WORKER = window.NH7_BASE_PATH + 'push/OneSignalSDKWorker.js';
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register(window.NH7_SERVICE_WORKER, { scope: window.NH7_BASE_PATH, updateViaCache: 'none' }).catch(console.warn);
-    }
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
-      try {
-        await OneSignal.init({
-          appId: window.NH7_ONESIGNAL_APP_ID,
-          serviceWorkerPath: window.NH7_ONESIGNAL_WORKER,
-          serviceWorkerParam: { scope: window.NH7_BASE_PATH + 'push/' },
-          autoResubscribe: true,
-          notifyButton: { enable: false },
-          allowLocalhostAsSecureOrigin: true
-        });
-      } catch (err) { console.warn('OneSignal init failed', err); }
-    });
-  </script>
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#06146D">
+<meta name="description" content="Omid No 7 Church">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="styles-v45.css?v=45">
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js?v=45" defer></script>
+<title>Omid No 7 Church</title>
 </head>
 <body>
-  <div id="amenGate" class="amen-gate hidden" role="dialog" aria-modal="true">
-    <div class="amen-card">
-      <img src="assets/logo.png" alt="OmideNo7" class="amen-logo" />
-      <h1 id="amenTitle">OmideNo7</h1>
-      <p id="amenMessage">God is with you today.</p>
-      <button id="amenButton" class="primary-btn">Amen</button>
-    </div>
-  </div>
-
-  <div id="appShell" class="app-shell">
-    <header class="topbar">
-      <button id="backBtn" class="icon-btn hidden" aria-label="Back">‹</button>
-      <div class="brand">
-        <img src="assets/logo.png" alt="" />
-        <div>
-          <strong>OmideNo7 Church</strong>
-          <small id="breadcrumb">Home</small>
-        </div>
-      </div>
-      <button id="inboxBtn" class="icon-btn inbox-top-btn" aria-label="Inbox">📥<span id="inboxBadge" class="inbox-badge hidden">0</span></button>
-      <select id="langSelect" class="lang-select" aria-label="Language">
-        <option value="en">EN</option>
-        <option value="fa">FA</option>
-        <option value="hr">HR</option>
-      </select>
-    </header>
-
-    <main id="view" class="view"></main>
-
-    <nav class="bottom-nav" aria-label="Main navigation">
-      <button data-route="home" class="nav-item active"><span>⌂</span><small data-i18n="nav.home">Home</small></button>
-      <button data-route="daily" class="nav-item"><span>☀</span><small data-i18n="nav.daily">Daily</small></button>
-      <button data-route="bible" class="nav-item"><span>📖</span><small data-i18n="nav.bible">Bible</small></button>
-      <button data-route="plans" class="nav-item"><span>✓</span><small data-i18n="nav.plans">Plans</small></button>
-      <button data-route="school" class="nav-item"><span>🎓</span><small data-i18n="nav.school">School</small></button>
-      <button data-route="more" class="nav-item"><span>☰</span><small data-i18n="nav.more">More</small></button>
-    </nav>
-  </div>
-
-  <template id="loadingTpl"><section class="card"><p>Loading...</p></section></template>
-  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.12.0/mammoth.browser.min.js" defer></script>
-  <script src="js/nh7-security-core-v340.js?v=3.4.1"></script>
-  <script src="js/nh7-qna-i18n-v341.js?v=2.3.9.36"></script>
-  <script src="js/nh7-offline-startup-v327.js?v=2.3.9.33"></script>
-  <script src="js/nh7-auto-update-v335.js?v=2.3.9.35"></script>
-  <script src="js/nh7-notifications-zagreb-v334.js?v=2.3.9.35e"></script>
-  <script src="js/nh7-offline-core-v327.js?v=2.3.9.33"></script>
-  <script src="js/nh7-offline-data-v329.js?v=2.3.9.33"></script>
-  <script src="js/nh7-audio-route-stability-v330.js?v=2.3.9.33"></script>
-  <script src="js/nh7-access-bootstrap-v230.js?v=2.3.9.33"></script>
-  <script src="js/nh7-auth-signup-guard-v343.js?v=2.3.9.38"></script>
-  <script src="js/nh7-school-registration-v342.js?v=2.3.9.38"></script>
-  <script src="js/nh7-offline-playback-bridge-v332.js?v=2.3.9.33"></script>
-  <script src="js/nh7-offline-persistence-v323.js?v=2.3.9.33"></script>
-  <script src="js/app.js?v=2.4.0.241" type="module"></script>
-  <script src="js/nh7-auth-recovery-v342.js?v=2.3.9.38"></script>
-  <script src="js/nh7-app-enhancements-v230.js?v=2.3.9.33" type="module"></script>
-  <script src="js/nh7-my-notes-v234.js?v=2.3.9.33" type="module"></script>
-  <script src="js/nh7-book-reader-v281.js?v=2.3.9.33" defer></script>
-  <script src="js/nh7-library-language-v321.js?v=2.3.9.33" defer></script>
-  <script src="js/nh7-library-collections-v322.js?v=2.3.9.33" defer></script>
-  <script src="js/nh7-school-media-session-v262.js?v=2.3.9.33" defer></script>
-  <script src="js/nh7-secure-media-v270.js?v=2.3.9.33" defer></script>
-  <script src="js/nh7-school-audio-native-v337.js?v=2.3.9.35b" defer></script>
-  <script src="js/nh7-secure-media-fix-v271.js?v=2.3.9.33" defer></script>
-  <script src="js/nh7-large-mov-native-fallback-v273.js?v=2.3.9.33" defer></script>
-  <script src="js/nh7-secure-media-watermark-v272.js?v=2.3.9.33" defer></script>
-  <script src="js/nh7-apocrypha-v270.js?v=2.3.9.33" defer></script>
-  <script src="js/nh7-protected-audio-gate-v316.js?v=2.3.9.33" defer></script>
-  <script src="js/nh7-ui-stability-v329.js?v=2.3.9.33" defer></script>
+<header class="app-header"><div class="header-row"><div class="logo-box"><img src="logo-en.jpeg" alt="Omid No 7 Church logo"></div><div><h1 class="app-title" data-i18n="appTitle"></h1><div class="app-subtitle" data-i18n="appSubtitle"></div></div><div class="lang-toggle"><button data-lang="hr">HR</button><button data-lang="fa">فا</button><button data-lang="en">EN</button></div></div></header>
+<main>
+<section id="home" class="page active"><div class="hero-card"><h1 data-i18n="homeTitle"></h1><p data-i18n="homeDesc"></p><div class="btn-row"><a class="btn primary" href="https://join.freeconferencecall.com/omideno7church" target="_blank" rel="noopener" data-i18n="joinMeeting"></a><button class="btn gold enable-notifications" data-i18n="enableNotifications"></button></div><p class="status" data-i18n="notificationInfo"></p><p class="status notification-status"></p></div><div class="grid home-feature-grid"><div class="card feature-card"><h3 data-i18n="declarationsTitle"></h3><p data-i18n="declarationsDesc"></p><button class="btn gold" data-open="declarations" data-i18n="openDeclarations"></button></div><div class="card feature-card"><h3 data-i18n="newBirthTitle"></h3><p data-i18n="newBirthP2"></p><button class="btn primary" data-open="newbirth" data-i18n="registerAfterPrayer"></button></div><div class="card feature-card"><h3 data-i18n="meetingsTitle"></h3><p data-i18n="meetingsDesc"></p><button class="btn secondary" data-open="meetings" data-i18n="joinMeeting"></button></div></div></section>
+<section id="plans" class="page"><div class="section-title"><h2 data-i18n="plansTitle"></h2></div><div id="plansContent"></div></section>
+<section id="bible" class="page"><div class="section-title"><h2 data-i18n="bibleTitle"></h2></div><div class="hero-card bible-reader-main-card"><img src="bible-icon.svg" class="bible-icon" alt="Bible icon"><h1 data-i18n="bibleReaderTitle"></h1><p data-i18n="bibleReaderDesc"></p><button class="btn primary" data-open-bible-home="1" data-i18n="openBibleReader"></button></div><div class="card bible-app-follow-card"><h3 data-i18n="bibleAppChurchTitle"></h3><p data-i18n="bibleAppChurchDesc"></p><a class="btn gold track-link" data-track="follow_bible_app_church" href="https://www.bible.com/organizations/da6136d1-04cd-4243-a52b-f9ba7f32ec79?utm_source=yvapp&utm_medium=share&utm_content=partner-page" target="_blank" rel="noopener" data-i18n="followBibleApp"></a></div></section>
+<section id="bibleReader" class="page"><div id="bibleReaderContent"></div></section>
+<section id="word" class="page"><div class="section-title"><h2 data-i18n="todayWordTitle"></h2></div><div class="word-box"><h2 data-i18n="todayWordTitle"></h2><div data-daily-card></div></div><div class="card"><button class="btn gold enable-notifications" data-i18n="enableNotifications"></button><p class="status notification-status"></p></div></section>
+<section id="declarations" class="page"><div class="section-title"><h2 data-i18n="declarationsTitle"></h2></div><div class="card"><p data-i18n="readOutLoud"></p></div><div id="declarationsContent"></div></section>
+<section id="meetings" class="page"><div class="section-title"><h2 data-i18n="meetingsTitle"></h2></div><div class="card"><p data-i18n="meetingsDesc"></p><div class="btn-row"><a class="btn primary" href="https://join.freeconferencecall.com/omideno7church" target="_blank" rel="noopener" data-i18n="joinMeeting"></a><a class="btn secondary" href="tel:+38517757417,,2452236" data-i18n="callToJoin"></a></div></div><div class="card"><h3 data-i18n="scheduleTitle"></h3><div class="schedule-item"><div class="time-badge">5:00 AM</div><div><strong data-i18n="morningPrayer"></strong><br><span class="small" data-i18n="croatiaTime"></span></div></div><div class="schedule-item"><div class="time-badge">8:00 PM</div><div><strong data-i18n="sundayService"></strong><br><span class="small">Sunday</span></div></div></div></section>
+<section id="newbirth" class="page"><div id="newBirthContent"></div></section>
+<section id="thanksgiving" class="page"><div class="section-title"><h2 data-i18n="thanksgivingTitle"></h2></div><div id="thanksgivingContent"></div></section>
+<section id="more" class="page"><div class="section-title"><h2 data-i18n="moreTitle"></h2></div><div class="card"><h3 data-i18n="visionTitle"></h3><p data-i18n="visionDesc"></p></div><div class="card"><h3 data-i18n="beliefsTitle"></h3><p data-i18n="beliefsDesc"></p></div><div class="card"><h3 data-i18n="privacyTitle"></h3><p data-i18n="privacyDesc"></p></div><div class="card"><h3 data-i18n="givingTitle"></h3><p data-i18n="givingDesc"></p><div class="btn-row"><a class="btn primary track-link" data-track="give_paypal" href="https://www.paypal.me/MehdiBadanFirouz377" target="_blank" rel="noopener" data-i18n="givePayPal"></a><a class="btn secondary track-link" data-track="give_revolut" href="https://revolut.me/m_badanfirouz" target="_blank" rel="noopener" data-i18n="giveRevolut"></a></div></div><div class="footer" id="mainFooter" data-footer-managed="v60"></div></section>
+</main>
+<nav class="bottom-nav"><div class="nav-inner"><button class="nav-btn active" data-page="home"><span class="icon">⌂</span><span data-i18n="navHome"></span></button><button class="nav-btn" data-page="plans"><span class="icon">▣</span><span data-i18n="navPlans"></span></button><button class="nav-btn" data-page="bible"><span class="icon bible-nav-symbol"></span><span data-i18n="navBible"></span></button><button class="nav-btn" data-page="word"><span class="icon">✦</span><span data-i18n="navWord"></span></button><button class="nav-btn" data-page="more"><span class="icon">☰</span><span data-i18n="navMore"></span></button></div></nav>
+<script src="daily-messages-v14.js?v=49"></script>
+<script src="thanksgiving-v22.js?v=45"></script>
+<script src="newbirth-v48.js?v=48"></script>
+<script src="bible-meta-v40.js?v=45"></script>
+<script src="bible-old-en-v40.js?v=57"></script>
+<script src="bible-old-hr-v40.js?v=45"></script>
+<script src="bible-new-en-v40.js?v=57"></script>
+<script src="bible-new-hr-v40.js?v=45"></script>
+<script src="bible-fa-v40/GEN.js?v=57"></script>
+<script src="bible-fa-v40/EXO.js?v=57"></script>
+<script src="bible-fa-v40/LEV.js?v=57"></script>
+<script src="bible-fa-v40/NUM.js?v=57"></script>
+<script src="bible-fa-v40/DEU.js?v=57"></script>
+<script src="bible-fa-v40/JOS.js?v=57"></script>
+<script src="bible-fa-v40/JDG.js?v=57"></script>
+<script src="bible-fa-v40/RUT.js?v=57"></script>
+<script src="bible-fa-v40/1SA.js?v=57"></script>
+<script src="bible-fa-v40/2SA.js?v=57"></script>
+<script src="bible-fa-v40/1KI.js?v=57"></script>
+<script src="bible-fa-v40/2KI.js?v=57"></script>
+<script src="bible-fa-v40/1CH.js?v=57"></script>
+<script src="bible-fa-v40/2CH.js?v=57"></script>
+<script src="bible-fa-v40/EZR.js?v=57"></script>
+<script src="bible-fa-v40/NEH.js?v=57"></script>
+<script src="bible-fa-v40/EST.js?v=57"></script>
+<script src="bible-fa-v40/JOB.js?v=57"></script>
+<script src="bible-fa-v40/PSA.js?v=57"></script>
+<script src="bible-fa-v40/PRO.js?v=57"></script>
+<script src="bible-fa-v40/ECC.js?v=57"></script>
+<script src="bible-fa-v40/SNG.js?v=57"></script>
+<script src="bible-fa-v40/ISA.js?v=57"></script>
+<script src="bible-fa-v40/JER.js?v=57"></script>
+<script src="bible-fa-v40/LAM.js?v=57"></script>
+<script src="bible-fa-v40/EZK.js?v=57"></script>
+<script src="bible-fa-v40/DAN.js?v=57"></script>
+<script src="bible-fa-v40/HOS.js?v=57"></script>
+<script src="bible-fa-v40/JOL.js?v=57"></script>
+<script src="bible-fa-v40/AMO.js?v=57"></script>
+<script src="bible-fa-v40/OBA.js?v=57"></script>
+<script src="bible-fa-v40/JON.js?v=57"></script>
+<script src="bible-fa-v40/MIC.js?v=57"></script>
+<script src="bible-fa-v40/NAM.js?v=57"></script>
+<script src="bible-fa-v40/HAB.js?v=57"></script>
+<script src="bible-fa-v40/ZEP.js?v=57"></script>
+<script src="bible-fa-v40/HAG.js?v=57"></script>
+<script src="bible-fa-v40/ZEC.js?v=57"></script>
+<script src="bible-fa-v40/MAL.js?v=57"></script>
+<script src="bible-fa-v40/MAT.js?v=57"></script>
+<script src="bible-fa-v40/MRK.js?v=57"></script>
+<script src="bible-fa-v40/LUK.js?v=57"></script>
+<script src="bible-fa-v40/JHN.js?v=57"></script>
+<script src="bible-fa-v40/ACT.js?v=57"></script>
+<script src="bible-fa-v40/ROM.js?v=57"></script>
+<script src="bible-fa-v40/1CO.js?v=57"></script>
+<script src="bible-fa-v40/2CO.js?v=57"></script>
+<script src="bible-fa-v40/GAL.js?v=57"></script>
+<script src="bible-fa-v40/EPH.js?v=57"></script>
+<script src="bible-fa-v40/PHP.js?v=57"></script>
+<script src="bible-fa-v40/COL.js?v=57"></script>
+<script src="bible-fa-v40/1TH.js?v=57"></script>
+<script src="bible-fa-v40/2TH.js?v=57"></script>
+<script src="bible-fa-v40/1TI.js?v=57"></script>
+<script src="bible-fa-v40/2TI.js?v=57"></script>
+<script src="bible-fa-v40/TIT.js?v=57"></script>
+<script src="bible-fa-v40/PHM.js?v=57"></script>
+<script src="bible-fa-v40/HEB.js?v=57"></script>
+<script src="bible-fa-v40/JAS.js?v=57"></script>
+<script src="bible-fa-v40/1PE.js?v=57"></script>
+<script src="bible-fa-v40/2PE.js?v=57"></script>
+<script src="bible-fa-v40/1JN.js?v=57"></script>
+<script src="bible-fa-v40/2JN.js?v=57"></script>
+<script src="bible-fa-v40/3JN.js?v=57"></script>
+<script src="bible-fa-v40/JUD.js?v=57"></script>
+<script src="bible-fa-v40/REV.js?v=57"></script>
+<script src="reading-plan-v37.js?v=45"></script>
+<script src="plans-v14.js?v=51"></script>
+<script src="v56-plans-language-hotfix.js?v=561"></script>
+<script src="declarations-v14.js?v=51"></script>
+<script src="config-v14.js?v=45"></script>
+<script src="app-v55.js?v=55"></script>
+<script src="audio-messages-v49.js?v=53"></script>
+<script src="fasting-journey-v53.js?v=54"></script>
+<script src="v52-my-notes-back-fix.js?v=54"></script>
+<script src="v54-bible-enhancements.js?v=54"></script>
+<script src="v55-bible-verse-actions-fix.js?v=55"></script>
+<script src="v55-keywords-expanded-and-style-fix.js?v=55"></script>
+<script src="v56-final-bible-verse-actions.js?v=56"></script>
+<script src="v56-2-fasting-plan-language-hotfix.js?v=562"></script>
+<script src="v56-4-plans-complete-language-and-fasting-verses-fix.js?v=564"></script>
+<script src="bible-apocrypha-en-v57.js?v=57"></script>
+<script src="bible-apocrypha-fa-v58-2.js?v=582"></script>
+<script src="v58-bible-system-polish.js?v=582"></script>
+<script src="v58-3-restore-audio-section.js?v=583"></script>
+<script src="v59-qa-system.js?v=60"></script>
+<script src="v61-1-fasting-topic-teachings.js?v=611"></script>
+<script src="v61-5-nav-install-footer-fix.js?v=615"></script>
+<script src="v61-7-notification-ui-footer-fix.js?v=617"></script>
+<!-- <script src="v62-14-daily-word-verse-toggle-fix.js?v=6214"></script> -->
+<script src="v62-9-plan-navigation-final-fix.js?v=6214"></script>
+<script src="v63-online-school.js?v=6319"></script>
+<script src="v63-5-navigation-admin-audio-fix.js?v=6316"></script>
+<script src="v63-9-admin-and-more-polish.js?v=6316"></script>
+<script src="v63-16-clean-school-stability.js?v=6318"></script>
+<script src="v63-20-daily-word-final.js?v=6321"></script>
+<script src="v63-21-daily-school-bible-polish.js?v=6321"></script>
+<script src="v63-24-daily-word-verse-open-fix.js?v=6324"></script>
+<script src="v63-22-bible-reading-plan-365.js?v=6331"></script>
+<script src="v63-39-bible365-stable-single-reader.js?v=6339"></script>
+<!-- disabled older Bible 365 experiments: v63-26, v63-27, v63-28, v63-29, v63-30 -->
+<script src="v63-36-notification-language-sync.js?v=6336"></script>
+<script src="v63-36-version-stability-lock.js?v=6336"></script>
+<script src="v64-apocrypha-19-preview.js?v=6401"></script>
 </body>
 </html>

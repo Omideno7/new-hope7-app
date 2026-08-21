@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 35,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "dfc8ccbf7a0c4e791299ff91b32e12f7f98dd87abcac1f68cccf97283890f6a0",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And from thence I went towards the west to the ends of the earth, and saw there three portals of the heaven open such as I had seen in the †east†, the same number of portals, and the same number of outlets.",
+      "text_fa": null,
+      "text_hr": "Odatle odoh prema zapadu, do krajeva zemlje. Ondje vidjeh otvorena troja nebeska vrata, kao što sam vidio na †istoku†: isti broj vrata i isti broj izlaza.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

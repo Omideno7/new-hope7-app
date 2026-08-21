@@ -1,0 +1,249 @@
+{
+  "schema_version": 1,
+  "book_id": "3_maccabees",
+  "title_fa": "سوم مکابیان",
+  "title_en": "Third Maccabees",
+  "title_hr": "Treća knjiga o Makabejcima",
+  "chapter": 1,
+  "status": "in_review",
+  "source_translation": "WEBC",
+  "versification": "WEBC",
+  "source_english_sha256": "627cd0d8132255f157738dd112e0095f3af1d8ece05b9ed0dcadd0359d2d1b38",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Now Philopater, on learning from those who came back that Antiochus had made himself master of the places which belonged to himself, sent orders to all his infantry and cavalry, took with him his sister Arsinoe, and marched out as far as the parts of Raphia, where Antiochus and his forces encamped.",
+      "text_fa": null,
+      "text_hr": "Kad je Filopator od povratnika doznao da je Antioh zavladao područjima koja su pripadala njemu, izdao je zapovijedi cijelom pješaštvu i konjaništvu, poveo sa sobom svoju sestru Arsinoju te krenuo sve do okolice Rafije, gdje su se utaborili Antioh i njegove snage.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And one Theodotus, intending to carry out his design, took with him the bravest of the armed men who had been before committed to his trust by Ptolemy, and got through at night to the tent of Ptolemy, to kill him on his own responsibility, and so to end the war.",
+      "text_fa": null,
+      "text_hr": "Neki je Teodot, namjeravajući izvršiti svoj naum, poveo najhrabrije među naoružanim ljudima koje mu je Ptolemej prije bio povjerio. Noću se probio do Ptolemejeva šatora kako bi ga na svoju ruku ubio i tako okončao rat.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "But Dositheus, called the son of Drimulus, by birth a Jew, afterward a renegade from the laws and observances of his country, conveyed Ptolemy away, and made an obscure person lie down in his stead in the tent. It turned out that this man received the fate which was meant for the other.",
+      "text_fa": null,
+      "text_hr": "Ali Dositej, zvan Drimulov sin, podrijetlom Židov, koji se poslije odrekao zakona i običaja svoje zemlje, sklonio je Ptolemeja, a umjesto njega u šator položio nepoznata čovjeka. Tako je taj čovjek doživio sudbinu namijenjenu drugomu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "A fierce battle then took place. The men of Antiochus were prevailing. Arsinoe continually went up and down the ranks, and with dishevelled hair, with tears and entreaties, begged the soldiers to fight bravely for themselves, their children, and wives, and promised that if they proved conquerors, she would give them each two minas of gold.",
+      "text_fa": null,
+      "text_hr": "Tada je izbila žestoka bitka. Antiohovi su ljudi nadvladavali, a Arsinoja je neprestano prolazila kroz redove. Raščupane kose, u suzama i s molbama, zaklinjala je vojnike da se hrabro bore za sebe, svoju djecu i žene te im obećala da će, pobijede li, svakomu dati po dvije mine zlata.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "It thus fell out that their enemies were defeated in hand-to-hand encounter, and that many of them were taken prisoners.",
+      "text_fa": null,
+      "text_hr": "Tako su njihovi neprijatelji poraženi u borbi prsa o prsa, a mnogi su zarobljeni.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "Having vanquished this attempt, the king then decided to proceed to the neighboring cities, and encourage them.",
+      "text_fa": null,
+      "text_hr": "Nakon što je osujetio taj pokušaj, kralj je odlučio poći u susjedne gradove i ohrabriti ih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "By doing this, and by making donations to their temples, he inspired his subjects with confidence.",
+      "text_fa": null,
+      "text_hr": "Time što je tako postupao i davao priloge njihovim hramovima ulio je svojim podanicima povjerenje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "The Jews sent some of their council and of their elders to him. The greetings, welcoming gifts, and congratulations of the past, given by them, filled him with the greater eagerness to visit their city.",
+      "text_fa": null,
+      "text_hr": "Židovi su mu poslali neke članove svojega vijeća i svoje starješine. Njihovi pozdravi, darovi dobrodošlice i čestitke zbog prijašnjih uspjeha još su više u njemu probudili želju da posjeti njihov grad.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "Having arrived at Jerusalem, sacrificed, and offered thank-offerings to the Greatest God, and done whatever else was suitable to the sanctity of the place, and entered the inner court,",
+      "text_fa": null,
+      "text_hr": "Kad je stigao u Jeruzalem, prinio je žrtve i zahvalnice Svevišnjemu Bogu, učinio sve ostalo što je dolikovalo svetosti toga mjesta te ušao u unutarnje dvorište.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "he was so impressed with the magnificence of the place, and so wondered at the orderly arrangements of the temple, that he considered entering the sanctuary itself.",
+      "text_fa": null,
+      "text_hr": "Veličanstvenost mjesta toliko ga je zadivila, a uređenost Hrama toliko začudila, da je naumio ući i u samo Svetište.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "When they told him that this was not permissible, none of the nation, not even the priests in general, but only the supreme high priest of all, and he only once in a year, was allowed to go in, he would by no means give way.",
+      "text_fa": null,
+      "text_hr": "Kad su mu rekli da to nije dopušteno nikomu iz naroda, pa ni svećenicima općenito, nego samo vrhovnom velikom svećeniku, i to jednom godišnje, nipošto nije htio popustiti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "Then they read the law to him, but he persisted in intruding, exclaiming that he ought to be allowed. He said, “Even if they were deprived of this honor, I shouldn’t be.”",
+      "text_fa": null,
+      "text_hr": "Pročitali su mu Zakon, ali on je ustrajao u namjeri da prodre unutra, uzvikujući da njemu ulazak mora biti dopušten. Govorio je: „Čak i ako su oni lišeni te časti, ja ne bih smio biti.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "He asked why, when he entered all the other temples, did none of the priests who were present forbid him.",
+      "text_fa": null,
+      "text_hr": "Upitao je zašto ga, kad je ulazio u sve druge hramove, nijedan nazočni svećenik nije spriječio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "He was thoroughly answered by someone, that he did wrong to boast of this.",
+      "text_fa": null,
+      "text_hr": "Netko mu je sasvim opravdano odgovorio da se time ne smije hvaliti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "“Well, since I have done this,” said he, “be the cause what it may, shall I not enter with or without your consent?”",
+      "text_fa": null,
+      "text_hr": "„Pa kad sam to već učinio“, rekao je, „ma kakav razlog bio, zar neću ući s vašim pristankom ili bez njega?“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "When the priests fell down in their sacred vestments imploring the Greatest God to come and help in time of need, and to avert the violence of the fierce aggressor, and when they filled the temple with lamentations and tears,",
+      "text_fa": null,
+      "text_hr": "Svećenici su se u svetim haljinama bacili ničice i molili Svevišnjega Boga da im pritekne u pomoć u času nevolje te zaustavi nasilje okrutnoga napadača; Hram su ispunili naricanjem i suzama.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "then those who had been left behind in the city were scared, and rushed out, uncertain of the event.",
+      "text_fa": null,
+      "text_hr": "Tada su se oni koji su ostali u gradu prestrašili i izjurili van, ne znajući što će se dogoditi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "Virgins, who had been shut up within their chambers, came out with their mothers, scattering dust and ashes on their heads, and filling the streets with outcries.",
+      "text_fa": null,
+      "text_hr": "Djevice koje su bile zatvorene u svojim odajama izišle su s majkama, posipale glave prašinom i pepelom te ispunile ulice zapomaganjem.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "Women who had recently been arrayed for marriage left their bridal chambers, left the reserve that befitted them, and ran around the city in a disorderly manner.",
+      "text_fa": null,
+      "text_hr": "Žene koje su se nedavno ukrasile za vjenčanje napustile su svadbene odaje i odložile čednu suzdržanost koja im je dolikovala, pa su u neredu trčale gradom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "New-born babes were deserted by the mothers or nurses who waited upon them—some here, some there, in houses, or in fields; these now, with an ardor which could not be checked, swarmed into the Most High temple.",
+      "text_fa": null,
+      "text_hr": "Majke ili dojilje ostavljale su novorođenčad — jedne ovdje, druge ondje, po kućama ili poljima — a potom su, nošene nezaustavljivom revnošću, u mnoštvu hrlile u Hram Svevišnjega.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "Various prayers were offered up by those who assembled in this place because of the unholy attempt of the king.",
+      "text_fa": null,
+      "text_hr": "Oni koji su se ondje okupili upućivali su razne molitve zbog kraljeva bezbožnog pokušaja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "Along with these there were some of the citizens who took courage and would not submit to his obstinacy and his intention of carrying out his purpose.",
+      "text_fa": null,
+      "text_hr": "Među građanima bilo je i onih koji su se ohrabrili te nisu htjeli popustiti njegovoj tvrdoglavosti i namjeri da provede svoj naum.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "Calling out to arms, and to die bravely in defense of the law of their fathers, they created a great uproar in the place, and were with difficulty brought back by the aged and the elders to the station of prayer which they had occupied before.",
+      "text_fa": null,
+      "text_hr": "Pozivali su na oružje i na hrabru smrt u obrani otačkoga Zakona, izazvavši ondje veliku buku. Starci i starješine jedva su ih uspjeli vratiti na mjesto molitve koje su prije zauzimali.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "During this time, the multitude kept on praying.",
+      "text_fa": null,
+      "text_hr": "Za sve to vrijeme mnoštvo je neprestano molilo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "The elders who surrounded the king tried in many ways to divert his arrogant mind from the design which he had formed.",
+      "text_fa": null,
+      "text_hr": "Starješine koje su okruživale kralja na mnoge su načine pokušavale odvratiti njegov oholi um od nauma koji je začeo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "He, in his hardened mood, insensible to all persuasion, was going onward with the view of carrying out this design.",
+      "text_fa": null,
+      "text_hr": "Ali on je, otvrdnuo i nedostupan svakom nagovoru, išao naprijed kako bi ostvario taj naum.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "Yet even his own officers, when they saw this, joined the Jews in an appeal to Him who has all power to aid in the present crisis, and not wink at such haughty lawlessness.",
+      "text_fa": null,
+      "text_hr": "Kad su to vidjeli, čak su se i njegovi časnici pridružili Židovima u molbi Onomu koji ima svu vlast da pomogne u toj nevolji i ne prijeđe šutke preko tako ohola bezakonja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "Such was the frequency and the vehemence of the cry of the assembled crowd, that an indescribable noise ensued.",
+      "text_fa": null,
+      "text_hr": "Povici okupljenoga mnoštva bili su toliko učestali i snažni da je nastala neopisiva buka.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "Not the men only, but the very walls and floor seemed to sound out, all things preferring death rather than to see the place defiled.",
+      "text_fa": null,
+      "text_hr": "Činilo se da ne odjekuju samo ljudi nego i sami zidovi i pod, jer je svemu smrt bila draža od prizora oskvrnuta mjesta.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

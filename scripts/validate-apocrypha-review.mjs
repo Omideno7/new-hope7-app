@@ -70,8 +70,8 @@ assert(manifest.status === "in_review", "Manifest status must be in_review");
 assert(manifest.source_translation === "WEBC", "Source translation must be WEBC");
 assert(manifest.versification === "WEBC", "Versification must be WEBC");
 assert(
-  JSON.stringify(manifest.included_ranges?.fa) === JSON.stringify([[5, 18]]),
-  "Persian continuation range must be chapters 5–18",
+  JSON.stringify(manifest.included_ranges?.fa) === JSON.stringify([[4, 18]]),
+  "Persian continuation range must be chapters 4–18",
 );
 assert(
   JSON.stringify(manifest.included_ranges?.hr) === JSON.stringify([[4, 18]]),
@@ -106,14 +106,9 @@ for (let chapter = 4; chapter <= 18; chapter += 1) {
     assertCleanText(row.text_hr, `${label} Croatian`);
     assert(row.status_hr === "in_review", `${label}: Croatian status must be in_review`);
 
-    if (chapter === 4) {
-      assert(row.text_fa === null, `${label}: Persian must be null outside this scope`);
-      assert(row.status_fa === "out_of_scope", `${label}: invalid Persian scope status`);
-    } else {
-      assertCleanText(row.text_fa, `${label} Persian`);
-      assert(row.status_fa === "in_review", `${label}: Persian status must be in_review`);
-      persianVerseTotal += 1;
-    }
+    assertCleanText(row.text_fa, `${label} Persian`);
+    assert(row.status_fa === "in_review", `${label}: Persian status must be in_review`);
+    persianVerseTotal += 1;
 
     sourceVerseTotal += 1;
     croatianVerseTotal += 1;
@@ -135,7 +130,7 @@ for (let chapter = 4; chapter <= 18; chapter += 1) {
 }
 
 assert(sourceVerseTotal === 404, `Expected 404 aligned source verses, found ${sourceVerseTotal}`);
-assert(persianVerseTotal === 378, `Expected 378 Persian verses, found ${persianVerseTotal}`);
+assert(persianVerseTotal === 404, `Expected 404 Persian verses, found ${persianVerseTotal}`);
 assert(croatianVerseTotal === 404, `Expected 404 Croatian verses, found ${croatianVerseTotal}`);
 assert(manifest.totals?.aligned_source_verses === sourceVerseTotal, "Manifest source total mismatch");
 assert(manifest.totals?.persian_in_review_verses === persianVerseTotal, "Manifest Persian total mismatch");

@@ -1,0 +1,217 @@
+{
+  "schema_version": 1,
+  "book_id": "judith",
+  "title_fa": "یهودیت",
+  "title_en": "Judith",
+  "title_hr": "Judita",
+  "chapter": 16,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "c6757ab95ce3429d023b4084e268477b6abfbd0b60c657804a05c6734711c197",
+  "locales_in_scope": [
+    "fa"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Then Judith began to sing this thanksgiving in all Israel, and all the people sang after her this song of praise.",
+      "text_fa": "آنگاه یهودیت در میان تمام اسرائیل سرود شکرگزاری را آغاز کرد و همهٔ قوم پس از او این سرود ستایش را خواندند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 2,
+      "text_en": "And Judith said, Begin unto my God with timbrels, sing unto my Lord with cymbals: tune unto him a new psalm: exalt him, and call upon his name.",
+      "text_fa": "یهودیت گفت: «با دف‌ها برای خدایم بنوازید و با سنج‌ها برای خداوندم بسرایید؛ سرودی تازه برایش هماهنگ کنید، او را برافرازید و نامش را بخوانید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 3,
+      "text_en": "For God breaketh the battles: for among the camps in the midst of the people he hath delivered me out of the hands of them that persecuted me.",
+      "text_fa": "زیرا خدا جنگ‌ها را درهم می‌شکند؛ او در میان اردوگاه‌ها و در قلب قوم، مرا از دست تعقیب‌کنندگانم رهانید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 4,
+      "text_en": "Assur came out of the mountains from the north, he came with ten thousands of his army, the multitude whereof stopped the torrents, and their horsemen have covered the hills.",
+      "text_fa": "آشور از کوه‌های شمال بیرون آمد؛ با ده‌ها هزار نفر از سپاهش آمد. انبوه آنان مسیر سیلاب‌ها را بست و سوارانشان تپه‌ها را پوشاندند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 5,
+      "text_en": "He bragged that he would burn up my borders, and kill my young men with the sword, and dash the sucking children against the ground, and make mine infants as a prey, and my virgins as a spoil.",
+      "text_fa": "او به خود می‌بالید که مرزهای مرا خواهد سوزاند، جوانانم را با شمشیر خواهد کشت، شیرخوارگانم را بر زمین خواهد کوبید، کودکانم را غنیمت و باکره‌هایم را تاراج خواهد کرد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 6,
+      "text_en": "But the Almighty Lord hath disappointed them by the hand of a woman.",
+      "text_fa": "اما خداوند قادر مطلق به دست یک زن نقشهٔ آنان را باطل کرد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 7,
+      "text_en": "For the mighty one did not fall by the young men, neither did the sons of the Titans smite him, nor high giants set upon him: but Judith the daughter of Merari weakened him with the beauty of her countenance.",
+      "text_fa": "آن مرد نیرومند به دست جوانان نیفتاد، پسران تایتان‌ها او را نزدند و غول‌های بلندقد بر او نتاختند؛ بلکه یهودیت، دختر مراری، با زیبایی چهره‌اش او را ناتوان ساخت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 8,
+      "text_en": "For she put off the garment of her widowhood for the exaltation of those that were oppressed in Israel, and anointed her face with ointment, and bound her hair in a tire, and took a linen garment to deceive him.",
+      "text_fa": "او برای سربلندی ستمدیدگان اسرائیل جامهٔ بیوگی را از تن بیرون آورد، چهره‌اش را با عطر تدهین کرد، موهایش را با سربند بست و جامه‌ای کتانی پوشید تا او را بفریبد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 9,
+      "text_en": "Her sandals ravished his eyes, her beauty took his mind prisoner, and the fauchion passed through his neck.",
+      "text_fa": "کفش‌هایش چشمان او را ربود، زیبایی‌اش ذهن او را اسیر کرد و شمشیر از گردنش گذشت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 10,
+      "text_en": "The Persians quaked at her boldness, and the Medes were daunted at her hardiness.",
+      "text_fa": "پارسیان از دلیری او لرزیدند و مادیان از جسارتش هراسان شدند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 11,
+      "text_en": "Then my afflicted shouted for joy, and my weak ones cried aloud; but they were astonished: these lifted up their voices, but they were overthrown.",
+      "text_fa": "آنگاه رنج‌دیدگان قوم من از شادی فریاد زدند و ناتوانانم بانگ برآوردند؛ دشمنان وحشت کردند. قوم من صدایش را بلند کرد و دشمنان سرنگون شدند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 12,
+      "text_en": "The sons of the damsels have pierced them through, and wounded them as fugitives’ children: they perished by the battle of the Lord.",
+      "text_fa": "پسران کنیزان آنان را با شمشیر شکافتند و همچون فرزندان فراریان زخمی‌شان کردند؛ آنان در نبرد خداوند نابود شدند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 13,
+      "text_en": "I will sing unto the Lord a new song: O Lord, thou art great and glorious, wonderful in strength, and invincible.",
+      "text_fa": "برای خداوند سرودی تازه خواهم خواند: ای خداوند، تو بزرگ و پُرجلال، در قدرت شگفت‌انگیز و شکست‌ناپذیری.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 14,
+      "text_en": "Let all creatures serve thee: for thou spakest, and they were made, thou didst send forth thy spirit, and it created them, and there is none that can resist thy voice.",
+      "text_fa": "همهٔ آفریدگان تو را خدمت کنند؛ زیرا تو سخن گفتی و آفریده شدند، روح خود را فرستادی و آنان را پدید آورد و هیچ‌کس نمی‌تواند در برابر صدایت مقاومت کند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 15,
+      "text_en": "For the mountains shall be moved from their foundations with the waters, the rocks shall melt as wax at thy presence: yet thou art merciful to them that fear thee.",
+      "text_fa": "کوه‌ها با آب‌ها از بنیادهایشان به حرکت درمی‌آیند و صخره‌ها در حضورت همچون موم ذوب می‌شوند؛ با این همه، بر کسانی که از تو می‌ترسند رحم می‌کنی.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 16,
+      "text_en": "For all sacrifice is too little for a sweet savour unto thee, and all the fat is not sufficient for thy burnt offering: but he that feareth the Lord is great at all times.",
+      "text_fa": "هر قربانی برای رایحه‌ای خوش در حضورت اندک است و همهٔ چربی‌ها برای قربانی سوختنی تو کافی نیست؛ اما کسی که از خداوند می‌ترسد در همهٔ زمان‌ها بزرگ است.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 17,
+      "text_en": "Woe to the nations that rise up against my kindred! the Lord Almighty will take vengeance of them in the day of judgment, in putting fire and worms in their flesh; and they shall feel them, and weep for ever.",
+      "text_fa": "وای بر ملت‌هایی که بر ضد قوم من برمی‌خیزند! خداوند قادر مطلق در روز داوری از آنان انتقام خواهد گرفت؛ آتش و کرم‌ها را در بدنشان خواهد نهاد، درد خواهند کشید و تا ابد خواهند گریست.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 18,
+      "text_en": "Now as soon as they entered into Jerusalem, they worshipped the Lord; and as soon as the people were purified, they offered their burnt offerings, and their free offerings, and their gifts.",
+      "text_fa": "به محض ورود به اورشلیم، خداوند را پرستش کردند. وقتی قوم تطهیر شد، قربانی‌های سوختنی، هدایای داوطلبانه و پیشکش‌های خود را تقدیم نمودند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 19,
+      "text_en": "Judith also dedicated all the stuff of Holofernes, which the people had given her, and gave the canopy, which she had taken out of his bedchamber, for a gift unto the Lord.",
+      "text_fa": "یهودیت نیز تمام وسایل هولوفرنس را که قوم به او داده بود وقف کرد و سایبانی را که از اتاق خوابش برداشته بود به‌عنوان هدیه به خداوند تقدیم نمود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 20,
+      "text_en": "So the people continued feasting in Jerusalem before the sanctuary for the space of three months and Judith remained with them.",
+      "text_fa": "قوم سه ماه در اورشلیم و در برابر مکان مقدس به جشن ادامه داد و یهودیت نیز با آنان ماند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 21,
+      "text_en": "After this time every one returned to his own inheritance, and Judith went to Bethulia, and remained in her own possession, and was in her time honourable in all the country.",
+      "text_fa": "پس از آن هر کس به میراث خود بازگشت. یهودیت به بیتولیا رفت، در ملک خود ماند و در زمان خویش در سراسر آن سرزمین مورد احترام بود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 22,
+      "text_en": "And many desired her, but none knew her all the days of her life, after that Manasses her husband was dead, and was gathered to his people.",
+      "text_fa": "مردان بسیاری خواهان او بودند، اما پس از مرگ شوهرش منسی و پیوستن او به قوم خود، هیچ مردی در تمام روزهای زندگی یهودیت با او هم‌بستر نشد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 23,
+      "text_en": "But she increased more and more in honour, and waxed old in her husband’s house, being an hundred and five years old, and made her maid free; so she died in Bethulia: and they buried her in the cave of her husband Manasses.",
+      "text_fa": "احترام او روزبه‌روز بیشتر شد. در خانهٔ شوهرش پیر شد و به صد و پنج سالگی رسید. کنیزش را آزاد کرد، سپس در بیتولیا درگذشت و او را در غار شوهرش منسی دفن کردند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 24,
+      "text_en": "And the house of Israel lamented her seven days: and before she died, she did distribute her goods to all them that were nearest of kindred to Manasses her husband, and to them that were the nearest of her kindred.",
+      "text_fa": "خاندان اسرائیل هفت روز برایش سوگواری کرد. یهودیت پیش از مرگ، اموال خود را میان نزدیک‌ترین خویشاوندان شوهرش منسی و نزدیک‌ترین خویشاوندان خودش تقسیم کرد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 25,
+      "text_en": "And there was none that made the children of Israel any more afraid in the days of Judith, nor a long time after her death.",
+      "text_fa": "در روزگار یهودیت و تا مدت‌ها پس از مرگش، دیگر هیچ‌کس بنی‌اسرائیل را به وحشت نینداخت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    }
+  ]
+}

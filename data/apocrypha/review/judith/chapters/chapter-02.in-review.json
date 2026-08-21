@@ -1,0 +1,241 @@
+{
+  "schema_version": 1,
+  "book_id": "judith",
+  "title_fa": "یهودیت",
+  "title_en": "Judith",
+  "title_hr": "Judita",
+  "chapter": 2,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "08ba2ba4908c7845493d2201b510bd2f7ae9835e02a93fb58f33709cec024ab2",
+  "locales_in_scope": [
+    "fa"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And in the eighteenth year, the two and twentieth day of the first month, there was talk in the house of Nabuchodonosor king of the Assyrians that he should, as he said, avenge himself on all the earth.",
+      "text_fa": "در سال هجدهم، در روز بیست‌ودوم ماه نخست، در کاخ نبوکدنصر پادشاه آشوریان سخن از این بود که او، چنان‌که گفته بود، از سراسر زمین انتقام بگیرد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 2,
+      "text_en": "So he called unto him all his officers, and all his nobles, and communicated with them his secret counsel, and concluded the afflicting of the whole earth out of his own mouth.",
+      "text_fa": "پس همهٔ کارگزاران و بزرگانش را فراخواند، نقشهٔ پنهانی خود را با آنان در میان گذاشت و با زبان خود حکم کرد که سراسر زمین گرفتار مصیبت شود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 3,
+      "text_en": "Then they decreed to destroy all flesh, that did not obey the commandment of his mouth.",
+      "text_fa": "آنگاه تصمیم گرفتند هر انسانی را که از فرمان او اطاعت نمی‌کرد نابود کنند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 4,
+      "text_en": "And when he had ended his counsel, Nabuchodonosor king of the Assyrians called Holofernes the chief captain of his army, which was next unto him, and said unto him.",
+      "text_fa": "پس از پایان شورا، نبوکدنصر پادشاه آشوریان، هولوفرنس، فرماندهٔ کل سپاهش و شخص دوم پس از خود، را فراخواند و به او گفت:",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 5,
+      "text_en": "Thus saith the great king, the lord of the whole earth, Behold, thou shalt go forth from my presence, and take with thee men that trust in their own strength, of footmen an hundred and twenty thousand; and the number of horses with their riders twelve thousand.",
+      "text_fa": "«پادشاه بزرگ، فرمانروای سراسر زمین، چنین می‌گوید: از حضور من بیرون برو و صد و بیست هزار پیاده از مردانی که به نیروی خود اعتماد دارند و دوازده هزار اسب با سوارانشان با خود ببر.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 6,
+      "text_en": "And thou shalt go against all the west country, because they disobeyed my commandment.",
+      "text_fa": "به تمامی سرزمین‌های غربی حمله کن، زیرا از فرمان من سرپیچی کردند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 7,
+      "text_en": "And thou shalt declare unto that they prepare for me earth and water: for I will go forth in my wrath against them and will cover the whole face of the earth with the feet of mine army, and I will give them for a spoil unto them:",
+      "text_fa": "به آنان اعلام کن که خاک و آب برای من آماده سازند؛ زیرا با خشم به سویشان خواهم آمد، سراسر روی زمین را با قدم‌های سپاهم خواهم پوشاند و آنان را به غنیمت سپاهیانم خواهم داد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 8,
+      "text_en": "So that their slain shall fill their valleys and brooks and the river shall be filled with their dead, till it overflow:",
+      "text_fa": "کشتگانشان دره‌ها و جویبارها را پُر خواهند کرد و رود از اجسادشان لبریز شده، طغیان خواهد نمود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 9,
+      "text_en": "And I will lead them captives to the utmost parts of all the earth.",
+      "text_fa": "و بازماندگان را تا دورترین نقاط زمین به اسارت خواهم برد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 10,
+      "text_en": "Thou therefore shalt go forth. and take beforehand for me all their coasts: and if they will yield themselves unto thee, thou shalt reserve them for me till the day of their punishment.",
+      "text_fa": "پس پیش برو و همهٔ سرزمین‌هایشان را پیشاپیش برای من تصرف کن. اگر خود را به تو تسلیم کردند، آنان را تا روز مجازاتشان برای من نگه دار.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 11,
+      "text_en": "But concerning them that rebel, let not thine eye spare them; but put them to the slaughter, and spoil them wheresoever thou goest.",
+      "text_fa": "اما بر شورشیان ترحم مکن؛ هر جا می‌روی آنان را به کشتار بسپار و اموالشان را غارت کن.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 12,
+      "text_en": "For as I live, and by the power of my kingdom, whatsoever I have spoken, that will I do by mine hand.",
+      "text_fa": "زیرا به حیات خودم و قدرت پادشاهی‌ام سوگند، هر چه گفته‌ام با دست خود انجام خواهم داد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 13,
+      "text_en": "And take thou heed that thou transgress none of the commandments of thy lord, but accomplish them fully, as I have commanded thee, and defer not to do them.",
+      "text_fa": "مراقب باش از هیچ‌یک از فرمان‌های سرورت سرپیچی نکنی؛ همه را همان‌گونه که فرمان داده‌ام به‌طور کامل انجام بده و در اجرای آنها درنگ مکن.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 14,
+      "text_en": "Then Holofernes went forth from the presence of his lord, and called all the governors and captains, and the officers of the army of Assur;",
+      "text_fa": "هولوفرنس از حضور سرورش بیرون رفت و همهٔ فرمانداران، سرداران و افسران سپاه آشور را فراخواند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 15,
+      "text_en": "And he mustered the chosen men for the battle, as his lord had commanded him, unto an hundred and twenty thousand, and twelve thousand archers on horseback;",
+      "text_fa": "همان‌گونه که سرورش فرمان داده بود، صد و بیست هزار مرد برگزیده برای جنگ و دوازده هزار تیرانداز سواره گرد آورد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 16,
+      "text_en": "And he ranged them, as a great army is ordered for the war.",
+      "text_fa": "او آنان را همان‌گونه که سپاهی بزرگ برای جنگ سازمان می‌یابد، آرایش داد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 17,
+      "text_en": "And he took camels and asses for their carriages, a very great number; and sheep and oxen and goats without number for their provision:",
+      "text_fa": "شمار بسیار زیادی شتر و الاغ برای حمل بار، و گوسفند و گاو و بز بی‌شمار برای آذوقه برداشت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 18,
+      "text_en": "And plenty of victual for every man of the army, and very much gold and silver out of the king’s house.",
+      "text_fa": "برای هر سرباز خوراک فراوان و از خزانهٔ پادشاه طلا و نقرهٔ بسیار گرفت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 19,
+      "text_en": "Then he went forth and all his power to go before king Nabuchodonosor in the voyage, and to cover all the face of the earth westward with their chariots, and horsemen, and their chosen footmen.",
+      "text_fa": "سپس با تمام سپاهش حرکت کرد تا در این لشکرکشی پیشاپیش نبوکدنصر پادشاه برود و سراسر سرزمین‌های غربی را با ارابه‌ها، سواران و پیاده‌نظام برگزیدهٔ خود بپوشاند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 20,
+      "text_en": "A great number also sundry countries came with them like locusts, and like the sand of the earth: for the multitude was without number.",
+      "text_fa": "انبوهی از مردمان سرزمین‌های گوناگون نیز همراهشان آمدند؛ همچون ملخ‌ها و شن‌های زمین، زیرا شمارشان بی‌حد بود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 21,
+      "text_en": "And they went forth of Nineve three days’ journey toward the plain of Bectileth, and pitched from Bectileth near the mountain which is at the left hand of the upper Cilicia.",
+      "text_fa": "آنان از نینوا سه روز راه پیمودند و به سوی دشت بکتیلت رفتند و در نزدیکی کوهی که در سمت چپ قیلیقیهٔ علیا بود، اردو زدند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 22,
+      "text_en": "Then he took all his army, his footmen, and horsemen and chariots, and went from thence into the hill country;",
+      "text_fa": "سپس هولوفرنس تمام سپاه خود، پیاده‌نظام، سواران و ارابه‌ها را برداشت و از آنجا به کوهستان رفت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 23,
+      "text_en": "And destroyed Phud and Lud, and spoiled all the children of Rasses, and the children of Israel, which were toward the wilderness at the south of the land of the Chellians.",
+      "text_fa": "فود و لود را ویران کرد و همهٔ فرزندان راسِس و بنی‌اسرائیل را که در بیابان جنوب سرزمین کِلیان بودند، غارت نمود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 24,
+      "text_en": "Then he went over Euphrates, and went through Mesopotamia, and destroyed all the high cities that were upon the river Arbonai, till ye come to the sea.",
+      "text_fa": "از فرات گذشت، سراسر میان‌رودان را پیمود و همهٔ شهرهای مستحکم کنار رود اربونای را تا دریا ویران کرد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 25,
+      "text_en": "And he took the borders of Cilicia, and killed all that resisted him, and came to the borders of Japheth, which were toward the south, over against Arabia.",
+      "text_fa": "مرزهای قیلیقیه را تصرف کرد، همهٔ مقاومت‌کنندگان را کشت و به مرزهای یافث در جنوب و روبه‌روی عربستان رسید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 26,
+      "text_en": "He compassed also all the children of Madian, and burned up their tabernacles, and spoiled their sheepcotes.",
+      "text_fa": "تمام مدیانیان را نیز محاصره کرد، خیمه‌هایشان را سوزاند و آغل‌هایشان را غارت نمود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 27,
+      "text_en": "Then he went down into the plain of Damascus in the time of wheat harvest, and burnt up all their fields, and destroyed their flocks and herds, also he spoiled their cities, and utterly wasted their countries, and smote all their young men with the edge of the sword.",
+      "text_fa": "در فصل برداشت گندم به دشت دمشق فرود آمد، همهٔ کشتزارها را سوزاند، گله‌ها و رمه‌ها را نابود کرد، شهرها را غارت نمود، سرزمین‌ها را به‌کلی ویران ساخت و همهٔ جوانان را از دم شمشیر گذراند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 28,
+      "text_en": "Therefore the fear and dread of him fell upon all the inhabitants of the sea coasts, which were in Sidon and Tyrus, and them that dwelt in Sur and Ocina, and all that dwelt in Jemnaan; and they that dwelt in Azotus and Ascalon feared him greatly.",
+      "text_fa": "از این رو ترس و وحشت او بر همهٔ ساحل‌نشینانِ صیدون و صور، ساکنان سور و اوکینا و همهٔ مردم یمنان افتاد؛ ساکنان اشدود و اشقلون نیز سخت از او ترسیدند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    }
+  ]
+}

@@ -1,0 +1,521 @@
+{
+  "schema_version": 1,
+  "book_id": "2_esdras",
+  "title_fa": "دوم اِسدراس",
+  "title_en": "Second Esdras",
+  "title_hr": "Druga Ezdrina",
+  "chapter": 15,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "bba8f6ccc8bafe577345648f223cda684f7f14ef09b1d8956edae28aca014eb6",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Behold, speak thou in the ears of my people the words of prophecy, which I will put in thy mouth, saith the Lord:",
+      "text_fa": null,
+      "text_hr": "Gle, govori mojemu narodu na uši riječi proroštva koje ću staviti u tvoja usta, govori Gospodin.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And cause them to be written in paper: for they are faithful and true.",
+      "text_fa": null,
+      "text_hr": "Daj da se zapišu na papiru, jer su pouzdane i istinite.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "Fear not the imaginations against thee, let not the incredulity of them trouble thee, that speak against thee.",
+      "text_fa": null,
+      "text_hr": "Ne boj se spletki protiv sebe i neka te ne uznemiruje nevjera onih koji ti proturječe.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "For all the unfaithful shall die in their unfaithfulness.",
+      "text_fa": null,
+      "text_hr": "Jer svi će nevjerni umrijeti u svojoj nevjernosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "Behold, saith the Lord, I will bring plagues upon the world; the sword, famine, death, and destruction.",
+      "text_fa": null,
+      "text_hr": "Gle, govori Gospodin, donijet ću na svijet pošasti: mač, glad, smrt i uništenje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "For wickedness hath exceedingly polluted the whole earth, and their hurtful works are fulfilled.",
+      "text_fa": null,
+      "text_hr": "Jer zloća je silno zagadila cijelu zemlju i njihova su se štetna djela ispunila.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "Therefore saith the Lord,",
+      "text_fa": null,
+      "text_hr": "Zato govori Gospodin,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "I will hold my tongue no more as touching their wickedness, which they profanely commit, neither will I suffer them in those things, in which they wickedly exercise themselves: behold, the innocent and righteous blood crieth unto me, and the souls of the just complain continually.",
+      "text_fa": null,
+      "text_hr": "Neću više šutjeti o opačinama koje bezbožno čine niti ću ih i dalje trpjeti u zlodjelima kojima se odaju. Gle, nedužna i pravedna krv vapi k meni, a duše pravednika neprestano se tuže.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And therefore, saith the Lord, I will surely avenge them, and receive unto me all the innocent blood from among them.",
+      "text_fa": null,
+      "text_hr": "Zato ću ih, govori Gospodin, zasigurno osvetiti i k sebi primiti svu nedužnu krv prolivenu među njima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "Behold, my people is led as a flock to the slaughter: I will not suffer them now to dwell in the land of Egypt:",
+      "text_fa": null,
+      "text_hr": "Gle, moj narod vode kao stado na klanje; neću više dopustiti da prebiva u egipatskoj zemlji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "But I will bring them with a mighty hand and a stretched out arm, and smite Egypt with plagues, as before, and will destroy all the land thereof.",
+      "text_fa": null,
+      "text_hr": "Izvest ću ga snažnom rukom i ispruženom mišicom, udariti Egipat pošastima kao nekoć i uništiti svu njegovu zemlju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "Egypt shall mourn, and the foundation of it shall be smitten with the plague and punishment that God shall bring upon it.",
+      "text_fa": null,
+      "text_hr": "Egipat će tugovati, a njegovi će temelji biti pogođeni pošasti i kaznom koju će Bog na njega dovesti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "They that till the ground shall mourn: for their seeds shall fail through the blasting and hail, and with a fearful constellation.",
+      "text_fa": null,
+      "text_hr": "Tugovat će oni koji obrađuju zemlju, jer će im sjeme propasti od paleži i tuče te kobnoga zviježđa.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "Woe to the world and them that dwell therein!",
+      "text_fa": null,
+      "text_hr": "Teško svijetu i onima koji u njemu žive!",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "For the sword and their destruction draweth nigh, and one people shall stand up and fight against another, and swords in their hands.",
+      "text_fa": null,
+      "text_hr": "Mač i njihova propast približavaju se. Jedan će narod ustati i boriti se protiv drugoga, s mačevima u rukama.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "For there shall be sedition among men, and invading one another; they shall not regard their kings nor princes, and the course of their actions shall stand in their power.",
+      "text_fa": null,
+      "text_hr": "Među ljudima će nastati pobune i napadat će jedni druge. Neće se obazirati na svoje kraljeve ni knezove, nego će postupati po vlastitoj moći.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "A man shall desire to go into a city, and shall not be able.",
+      "text_fa": null,
+      "text_hr": "Čovjek će poželjeti ući u grad, ali neće moći.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "For because of their pride the cities shall be troubled, the houses shall be destroyed, and men shall be afraid.",
+      "text_fa": null,
+      "text_hr": "Jer zbog njihove oholosti gradovi će se uznemiriti, kuće će biti uništene, a ljudi će se bojati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "A man shall have no pity upon his neighbour, but shall destroy their houses with the sword, and spoil their goods, because of the lack of bread, and for great tribulation.",
+      "text_fa": null,
+      "text_hr": "Nitko neće imati samilosti prema svojemu bližnjemu, nego će mu mačem uništavati kuće i pljačkati dobra zbog nestašice kruha i velike nevolje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "Behold, saith God, I will call together all the kings of the earth to reverence me, which are from the rising of the sun, from the south, from the east, and Libanus; to turn themselves one against another, and repay the things that they have done to them.",
+      "text_fa": null,
+      "text_hr": "Gle, govori Bog, sazvat ću sve kraljeve zemlje da mi iskažu štovanje — one od izlaska sunca, s juga, istoka i Libanona — da se okrenu jedni protiv drugih i uzvrate što su jedni drugima učinili.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "Like as they do yet this day unto my chosen, so will I do also, and recompense in their bosom. Thus saith the Lord God;",
+      "text_fa": null,
+      "text_hr": "Kao što oni još danas čine mojim izabranima, tako ću i ja postupiti te im uzvratiti u njihovo krilo. Ovako govori Gospodin Bog:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "My right hand shall not spare the sinners, and my sword shall not cease over them that shed innocent blood upon the earth.",
+      "text_fa": null,
+      "text_hr": "Moja desnica neće poštedjeti grešnike i moj mač neće mirovati nad onima koji na zemlji prolijevaju nedužnu krv.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "The fire is gone forth from his wrath, and hath consumed the foundations of the earth, and the sinners, like the straw that is kindled.",
+      "text_fa": null,
+      "text_hr": "Oganj je izišao iz njegova gnjeva i proždro temelje zemlje i grešnike poput zapaljene slame.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "Woe to them that sin, and keep not my commandments! saith the Lord.",
+      "text_fa": null,
+      "text_hr": "Teško onima koji griješe i ne drže mojih zapovijedi! Govori Gospodin.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "I will not spare them: go your way, ye children, from the power, defile not my sanctuary.",
+      "text_fa": null,
+      "text_hr": "Neću ih poštedjeti. Idite svojim putem, djeco, iziđite ispod vlasti; ne oskvrnjujte moje svetište.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "For the Lord knoweth all them that sin against him, and therefore delivereth he them unto death and destruction.",
+      "text_fa": null,
+      "text_hr": "Jer Gospodin poznaje sve one koji griješe protiv njega, i stoga ih predaje smrti i uništenju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "For now are the plagues come upon the whole earth and ye shall remain in them: for God shall not deliver you, because ye have sinned against him.",
+      "text_fa": null,
+      "text_hr": "Jer sada su pošasti došle na cijelu zemlju i vi ćete ostati u njima: jer Bog vas neće izbaviti, jer ste protiv njega sagriješili.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "Behold an horrible vision, and the appearance thereof from the east:",
+      "text_fa": null,
+      "text_hr": "Gle, strašno viđenje i njegova pojava s istoka:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "Where the nations of the dragons of Arabia shall come out with many chariots, and the multitude of them shall be carried as the wind upon earth, that all they which hear them may fear and tremble.",
+      "text_fa": null,
+      "text_hr": "Gdje će narodi zmajeva iz Arabije izaći s mnogim bojnim kolima, a mnoštvo će njihovo biti nošeno kao vjetar zemljom, da se svi oni koji ih čuju mogu bojati i drhtati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "Also the Carmanians raging in wrath shall go forth as the wild boars of the wood, and with great power shall they come, and join battle with them, and shall waste a portion of the land of the Assyrians.",
+      "text_fa": null,
+      "text_hr": "Karmanci će također, razjareni gnjevom, izići poput divljih veprova iz šume. Doći će s velikom silom, stupiti s njima u boj i opustošiti dio asirske zemlje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "And then shall the dragons have the upper hand, remembering their nature; and if they shall turn themselves, conspiring together in great power to persecute them,",
+      "text_fa": null,
+      "text_hr": "Tada će zmajevi nadvladati, sjećajući se svoje naravi; a ako se okrenu i velikom se silom udruže da ih progone,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "Then these shall be troubled bled, and keep silence through their power, and shall flee.",
+      "text_fa": null,
+      "text_hr": "Ovi će se smesti, zašutjeti pred njihovom silom i pobjeći.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "And from the land of the Assyrians shall the enemy besiege them, and consume some of them, and in their host shall be fear and dread, and strife among their kings.",
+      "text_fa": null,
+      "text_hr": "Iz asirske zemlje neprijatelj će ih opkoliti i neke od njih uništiti; u njihovoj će vojsci zavladati strah i užas, a među kraljevima razdor.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 34,
+      "text_en": "Behold clouds from the east and from the north unto the south, and they are very horrible to look upon, full of wrath and storm.",
+      "text_fa": null,
+      "text_hr": "Gle, oblaci dolaze s istoka i sa sjevera prema jugu; prizor im je veoma strašan, puni su gnjeva i oluje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 35,
+      "text_en": "They shall smite one upon another, and they shall smite down a great multitude of stars upon the earth, even their own star; and blood shall be from the sword unto the belly,",
+      "text_fa": null,
+      "text_hr": "Udarit će jedni na druge i oboriti na zemlju veliko mnoštvo zvijezda, pa i svoju vlastitu zvijezdu; krv će dosezati od mača do trbuha,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 36,
+      "text_en": "And dung of men unto the camel’s hough.",
+      "text_fa": null,
+      "text_hr": "A ljudska nečist do devina skočnog zgloba.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 37,
+      "text_en": "And there shall be great fearfulness and trembling upon earth: and they that see the wrath shall be afraid, and trembling shall come upon them.",
+      "text_fa": null,
+      "text_hr": "I bit će veliki strah i drhtanje na zemlji, i oni koji vide gnjev uplašit će se i drhtanje će ih obuzeti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 38,
+      "text_en": "And then shall there come great storms from the south, and from the north, and another part from the west.",
+      "text_fa": null,
+      "text_hr": "Tada će doći velike oluje s juga i sa sjevera, a još jedan dio sa zapada.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 39,
+      "text_en": "And strong winds shall arise from the east, and shall open it; and the cloud which he raised up in wrath, and the star stirred to cause fear toward the east and west wind, shall be destroyed.",
+      "text_fa": null,
+      "text_hr": "S istoka će se podići snažni vjetrovi i otvoriti ga; oblak koji je podigao u gnjevu i zvijezda pokrenuta da izazove strah prema istočnomu i zapadnomu vjetru bit će uništeni.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 40,
+      "text_en": "The great and mighty clouds shall be puffed up full of wrath, and the star, that they may make all the earth afraid, and them that dwell therein; and they shall pour out over every high and eminent place an horrible star,",
+      "text_fa": null,
+      "text_hr": "Veliki i silni oblaci, puni gnjeva, nadut će se zajedno sa zvijezdom da zastraše svu zemlju i njezine stanovnike. Na svako visoko i uzvišeno mjesto izlit će strašnu zvijezdu,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 41,
+      "text_en": "Fire, and hail, and flying swords, and many waters, that all fields may be full, and all rivers, with the abundance of great waters.",
+      "text_fa": null,
+      "text_hr": "Oganj, tuču, leteće mačeve i silne vode, tako da se sva polja i sve rijeke ispune obiljem velikih voda.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 42,
+      "text_en": "And they shall break down the cities and walls, mountains and hills, trees of the wood, and grass of the meadows, and their corn.",
+      "text_fa": null,
+      "text_hr": "Srušit će gradove i zidine, gore i brežuljke, šumsko drveće, livadsku travu i njihovo žito.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 43,
+      "text_en": "And they shall go stedfastly unto Babylon, and make her afraid.",
+      "text_fa": null,
+      "text_hr": "Postojano će krenuti prema Babilonu i zastrašiti ga.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 44,
+      "text_en": "They shall come to her, and besiege her, the star and all wrath shall they pour out upon her: then shall the dust and smoke go up unto the heaven, and all they that be about her shall bewail her.",
+      "text_fa": null,
+      "text_hr": "Doći će k njemu i opsjesti ga; zvijezdu i sav gnjev izlit će na njega. Tada će se prah i dim dizati do neba, a svi oko njega oplakivat će ga.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 45,
+      "text_en": "And they that remain under her shall do service unto them that have put her in fear.",
+      "text_fa": null,
+      "text_hr": "Oni koji ostanu pod njim služit će onima koji su ga zastrašili.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 46,
+      "text_en": "And thou, Asia, that art partaker of the hope of Babylon, and art the glory of her person:",
+      "text_fa": null,
+      "text_hr": "A ti, Azijo, koja sudjeluješ u nadi Babilona i ponos si njegova lika,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 47,
+      "text_en": "Woe be unto thee, thou wretch, because thou hast made thyself like unto her; and hast decked thy daughters in whoredom, that they might please and glory in thy lovers, which have always desired to commit whoredom with thee.",
+      "text_fa": null,
+      "text_hr": "Teško tebi, nesretnice, jer si se učinila sličnom njemu. Svoje si kćeri okitila za blud kako bi ugodile tvojim ljubavnicima i hvalile se njima, onima koji su uvijek žudjeli bludovati s tobom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 48,
+      "text_en": "Thou hast followed her that is hated in all her works and inventions: therefore saith God,",
+      "text_fa": null,
+      "text_hr": "Slijedila si omraženoga u svim njegovim djelima i nakanama. Zato govori Bog:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 49,
+      "text_en": "I will send plagues upon thee; widowhood, poverty, famine, sword, and pestilence, to waste thy houses with destruction and death.",
+      "text_fa": null,
+      "text_hr": "Poslat ću na tebe pošasti — udovištvo, siromaštvo, glad, mač i kugu — da ti kuće opustoše uništenjem i smrću.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 50,
+      "text_en": "And the glory of thy Power shall be dried up as a flower, the heat shall arise that is sent over thee.",
+      "text_fa": null,
+      "text_hr": "Slava tvoje moći osušit će se poput cvijeta; podići će se žega poslana na tebe.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 51,
+      "text_en": "Thou shalt be weakened as a poor woman with stripes, and as one chastised with wounds, so that the mighty and lovers shall not be able to receive thee.",
+      "text_fa": null,
+      "text_hr": "Bit ćeš oslabljena poput uboge žene prekrivene modricama i poput one kažnjene ranama, tako da te moćnici i ljubavnici neće moći primiti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 52,
+      "text_en": "Would I with jealousy have so proceeded against thee, saith the Lord,",
+      "text_fa": null,
+      "text_hr": "Zar bih u svojoj revnosti tako postupio protiv tebe, govori Gospodin,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 53,
+      "text_en": "If thou hadst not always slain my chosen, exalting the stroke of thine hands, and saying over their dead, when thou wast drunken,",
+      "text_fa": null,
+      "text_hr": "Da nisi uvijek ubijala moje izabrane, uzdizala udarac svojih ruku i, pijana, govorila nad njihovim mrtvima:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 54,
+      "text_en": "Set forth the beauty of thy countenance?",
+      "text_fa": null,
+      "text_hr": "Pokaži ljepotu svojega lica?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 55,
+      "text_en": "The reward of thy whoredom shall be in thy bosom, therefore shalt thou receive recompence.",
+      "text_fa": null,
+      "text_hr": "Plaća za tvoje bludništvo bit će u tvojemu krilu; zato ćeš primiti odmazdu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 56,
+      "text_en": "Like as thou hast done unto my chosen, saith the Lord, even so shall God do unto thee, and shall deliver thee into mischief",
+      "text_fa": null,
+      "text_hr": "Kao što si učinila mojim izabranima, govori Gospodin, tako će Bog učiniti tebi i predati te nesreći.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 57,
+      "text_en": "Thy children shall die of hunger, and thou shalt fall through the sword: thy cities shall be broken down, and all thine shall perish with the sword in the field.",
+      "text_fa": null,
+      "text_hr": "Tvoja će djeca umrijeti od gladi, a ti ćeš pasti od mača. Tvoji će gradovi biti srušeni, a svi tvoji poginut će od mača u polju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 58,
+      "text_en": "They that be in the mountains shall die of hunger, and eat their own flesh, and drink their own blood, for very hunger of bread, and thirst of water.",
+      "text_fa": null,
+      "text_hr": "Oni koji budu u gorama umrijet će od gladi, jest će vlastito meso i piti vlastitu krv zbog silne gladi za kruhom i žeđi za vodom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 59,
+      "text_en": "Thou as unhappy shalt come through the sea, and receive plagues again.",
+      "text_fa": null,
+      "text_hr": "Ti ćeš, nesretna, prijeći more i ponovno primiti pošasti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 60,
+      "text_en": "And in the passage they shall rush on the idle city, and shall destroy some portion of thy land, and consume part of thy glory, and shall return to Babylon that was destroyed.",
+      "text_fa": null,
+      "text_hr": "Na prolazu će navaliti na opustjeli grad, uništiti dio tvoje zemlje i proždrijeti dio tvoje slave, a zatim se vratiti u razoreni Babilon.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 61,
+      "text_en": "And thou shalt be cast down by them as stubble, and they shall be unto thee as fire;",
+      "text_fa": null,
+      "text_hr": "Oborit će te poput strnjike i bit će ti poput ognja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 62,
+      "text_en": "And shall consume thee, and thy cities, thy land, and thy mountains; all thy woods and thy fruitful trees shall they burn up with fire.",
+      "text_fa": null,
+      "text_hr": "Proždrijet će tebe, tvoje gradove, zemlju i gore; sve tvoje šume i plodna stabla spalit će ognjem.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 63,
+      "text_en": "Thy children shall they carry away captive, and, look, what thou hast, they shall spoil it, and mar the beauty of thy face.",
+      "text_fa": null,
+      "text_hr": "Tvoju će djecu odvesti u sužanjstvo; opljačkat će sve što imaš i nagrditi ljepotu tvojega lica.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

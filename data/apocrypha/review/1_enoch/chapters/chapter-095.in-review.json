@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 95,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "13505fa196e41fe1ae20172e7f832bd5762c719277e7ec63a1b3812f5fa0f78c",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Oh that mine eyes were [a cloud of] waters\nThat I might weep over you,\nAnd pour down my tears as a cloud †of† waters:\nThat so I might rest from my trouble of heart!",
+      "text_fa": null,
+      "text_hr": "O, kad bi moje oči bile [oblak] vode, da mogu plakati nad vama i izliti suze poput oblaka †punog† vode, pa da mi se srce odmori od muke!",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "†Who has permitted you to practise reproaches and wickedness?\nAnd so judgement shall overtake you, sinners.†",
+      "text_fa": null,
+      "text_hr": "†Tko vam je dopustio činiti prijekore i zloću? Zato će vas, grešnici, stići sud.†",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "Fear not the sinners, ye righteous;\nFor again will the Lord deliver them into your hands,\nThat ye may execute judgement upon them according to your desires.",
+      "text_fa": null,
+      "text_hr": "Ne bojte se grešnika, vi pravednici; Jer opet će ih Gospodin predati u vaše ruke, Da biste nad njima mogli izvršiti presudu prema svojim željama.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "Woe to you who fulminate anathemas which cannot be reversed:\nHealing shall therefore be far from you because of your sins.",
+      "text_fa": null,
+      "text_hr": "Jao vama koji bacate anateme koje se ne mogu poništiti: Liječenje će stoga biti daleko od vas zbog vaših grijeha.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "Woe to you who requite your neighbour with evil;\nFor ye shall be requited according to your works.",
+      "text_fa": null,
+      "text_hr": "Teško vama koji bližnjemu uzvraćate zlom; Jer ćete biti plaćeni po svojim djelima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "Woe to you, lying witnesses,\nAnd to those who weigh out injustice,\nFor suddenly shall ye perish.",
+      "text_fa": null,
+      "text_hr": "Teško vama, lažljivi svjedoci, i onima koji vagaju nepravdu, Jer iznenada ćete nestati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "Woe to you, sinners, for ye persecute the righteous;\nFor ye shall be delivered up and persecuted because of injustice,\nAnd heavy shall its yoke be upon you.",
+      "text_fa": null,
+      "text_hr": "Teško vama, grešnici, što progonite pravednike; Jer ćete biti predani i progonjeni zbog nepravde, i težak će jaram njegov biti na vama.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 20,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "68a3b9616865f4715734320d0be90bc083878e14626480c397c8af10067e8da0",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And these are the names of the holy angels who watch.",
+      "text_fa": null,
+      "text_hr": "Ovo su imena svetih anđela koji bdiju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "Uriel, one of the holy angels, who is over the world and over Tartarus.",
+      "text_fa": null,
+      "text_hr": "Uriel, jedan od svetih anđela, nad svijetom i Tartarom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "Raphael, one of the holy angels, who is over the spirits of men.",
+      "text_fa": null,
+      "text_hr": "Rafael, jedan od svetih anđela, nad duhovima ljudi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "Raguel, one of the holy angels who †takes vengeance on† the world of the luminaries.",
+      "text_fa": null,
+      "text_hr": "Raguel, jedan od svetih anđela, koji †se osvećuje nad† svijetom svjetlila.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "Michael, one of the holy angels, to wit, he that is set over the best part of mankind 〚and〛 over chaos.",
+      "text_fa": null,
+      "text_hr": "Mihael, jedan od svetih anđela, onaj koji je postavljen nad najboljim dijelom čovječanstva 〚i〛 nad kaosom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "Saraqâêl, one of the holy angels, who is set over the spirits, who sin in the spirit.",
+      "text_fa": null,
+      "text_hr": "Sarakael, jedan od svetih anđela, postavljen nad duhovima koji griješe u duhu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "Gabriel, one of the holy angels, who is over Paradise and the serpents and the Cherubim.",
+      "text_fa": null,
+      "text_hr": "Gabriel, jedan od svetih anđela, nad Rajem, zmijama i kerubinima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "Remiel, one of the holy angels, whom God set over those who rise.",
+      "text_fa": null,
+      "text_hr": "Remiel, jedan od svetih anđela, kojega je Bog postavio nad one koji ustaju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

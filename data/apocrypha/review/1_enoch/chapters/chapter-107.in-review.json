@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 107,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "bc2a4e7bf4c313d83864a35cd63c408b50069af9f96e728c254be428ce3ea217",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And I saw written on them that generation upon generation shall transgress, till a generation of righteousness arises, and transgression is destroyed and sin passes away from the earth, and all manner of good comes upon it.",
+      "text_fa": null,
+      "text_hr": "I vidio sam zapisano na njima da će naraštaj za naraštajem griješiti, sve dok ne nastane naraštaj pravednosti, i prijestup ne bude uništen i grijeh nestane sa zemlje, i svako dobro dođe na nju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And now, my son, go and make known to thy son Lamech that this son, which has been born, is in truth his son, and that (this) is no lie.’",
+      "text_fa": null,
+      "text_hr": "A sada, sine moj, idi i obznani svome sinu Lameku da je ovaj sin, koji je rođen, uistinu njegov sin, i da (ovo) nije laž.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And when Methuselah had heard the words of his father Enoch—for he had shown to him everything in secret—he returned and showed (them) to him and called the name of that son Noah; for he will comfort the earth after all the destruction.",
+      "text_fa": null,
+      "text_hr": "I kada je Metušalah čuo riječi svoga oca Henoka - jer mu je pokazao sve u tajnosti - vratio se i pokazao (ih) mu i nazvao je tog sina Noa; jer on će utješiti zemlju nakon svih razaranja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

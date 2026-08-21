@@ -1,0 +1,481 @@
+{
+  "schema_version": 1,
+  "book_id": "2_esdras",
+  "title_fa": "دوم اِسدراس",
+  "title_en": "Second Esdras",
+  "title_hr": "Druga Ezdrina",
+  "chapter": 13,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "5c64ef667d63d90f5b630eebb402c63dfd9c4bf40e385b2860db643068087ba7",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And it came to pass after seven days, I dreamed a dream by night:",
+      "text_fa": null,
+      "text_hr": "I dogodi se nakon sedam dana, noću sam sanjao san:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And, lo, there arose a wind from the sea, that it moved all the waves thereof.",
+      "text_fa": null,
+      "text_hr": "I, gle, digne se vjetar s mora i pokrene sve njegove valove.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And I beheld, and, lo, that man waxed strong with the thousands of heaven: and when he turned his countenance to look, all the things trembled that were seen under him.",
+      "text_fa": null,
+      "text_hr": "Pogledao sam, i gle, taj je čovjek bio osnažen nebeskim tisućama; kad je okrenuo lice da pogleda, zadrhtalo je sve što se pod njim moglo vidjeti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And whensoever the voice went out of his mouth, all they burned that heard his voice, like as the earth faileth when it feeleth the fire.",
+      "text_fa": null,
+      "text_hr": "Kad god bi mu glas izišao iz usta, svi koji su ga čuli izgorjeli bi, kao što zemlja iščezava kad osjeti oganj.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And after this I beheld, and, lo, there was gathered together a multitude of men, out of number, from the four winds of the heaven, to subdue the man that came out of the sea",
+      "text_fa": null,
+      "text_hr": "Nakon toga sam vidio, i gle, nebrojeno mnoštvo ljudi okupilo se s četiriju vjetrova nebeskih kako bi pokorilo čovjeka koji je izišao iz mora.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "But I beheld, and, lo, he had graved himself a great mountain, and flew up upon it.",
+      "text_fa": null,
+      "text_hr": "Pogledao sam, i gle, on je sebi isklesao veliku goru i uzletio na nju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "But I would have seen the region or place whereout the hill was graven, and I could not.",
+      "text_fa": null,
+      "text_hr": "Htio sam vidjeti kraj ili mjesto iz kojega je gora bila isklesana, ali nisam mogao.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And after this I beheld, and, lo, all they which were gathered together to subdue him were sore afraid, and yet durst fight.",
+      "text_fa": null,
+      "text_hr": "Nakon toga sam vidio, i gle, svi koji su se okupili da ga pokore silno su se prestrašili, ali su se ipak usudili boriti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And, lo, as he saw the violence of the multitude that came, he neither lifted up his hand, nor held sword, nor any instrument of war:",
+      "text_fa": null,
+      "text_hr": "I gle, kad je vidio navalu mnoštva koje je dolazilo, nije podigao ruku niti držao mač ili ikakvo ratno oruđe.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "But only I saw that he sent out of his mouth as it had been a blast of fire, and out of his lips a flaming breath, and out of his tongue he cast out sparks and tempests.",
+      "text_fa": null,
+      "text_hr": "Vidio sam samo kako je iz usta ispustio nešto poput udara ognja, iz usana plameni dah, a s jezika iskre i oluju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "And they were all mixed together; the blast of fire, the flaming breath, and the great tempest; and fell with violence upon the multitude which was prepared to fight, and burned them up every one, so that upon a sudden of an innumerable multitude nothing was to be perceived, but only dust and smell of smoke: when I saw this I was afraid.",
+      "text_fa": null,
+      "text_hr": "Sve se to pomiješalo — udar ognja, plameni dah i silna oluja — te se svom snagom obrušilo na mnoštvo spremno za boj i sve ih spalilo. Od nebrojenoga mnoštva odjednom se više nije moglo vidjeti ništa osim praha i osjetiti zadah dima. Kad sam to vidio, prestrašio sam se.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "Afterward saw I the same man come down from the mountain, and call unto him another peaceable Multitude.",
+      "text_fa": null,
+      "text_hr": "Poslije sam vidio istog čovjeka kako silazi s planine i poziva k sebi drugo miroljubivo mnoštvo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "And there came much people unto him, whereof some were glad, some were sorry, and some of them were bound, and other some brought of them that were offered: then was I sick through great fear, and I awaked, and said,",
+      "text_fa": null,
+      "text_hr": "K njemu je došlo mnogo ljudi: neki su se radovali, neki tugovali, neki su bili svezani, a drugi su dovodili one koji su bili prineseni. Tada sam od silnoga straha klonuo, probudio se i rekao:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "Thou hast shewed thy servant these wonders from the beginning, and hast counted me worthy that thou shouldest receive my prayer:",
+      "text_fa": null,
+      "text_hr": "Od početka si svojemu sluzi pokazivao ova čudesa i udostojao me da primiš moju molitvu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "Shew me now yet the interpretation of this dream.",
+      "text_fa": null,
+      "text_hr": "Pokaži mi sada i tumačenje ovoga sna.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "For as I conceive in mine understanding, woe unto them that shall be left in those days and much more woe unto them that are not left behind!",
+      "text_fa": null,
+      "text_hr": "Koliko razumijem, teško onima koji ostanu u one dane, a mnogo teže onima koji ne ostanu!",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "For they that were not left were in heaviness.",
+      "text_fa": null,
+      "text_hr": "Jer oni koji nisu ostali prebivali su u žalosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "Now understand I the things that are laid up in the latter days, which shall happen unto them, and to those that are left behind.",
+      "text_fa": null,
+      "text_hr": "Sada razumijem što se čuva za posljednje dane i što će se dogoditi njima i onima koji ostanu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "Therefore are they come into great perils and many necessities, like as these dreams declare.",
+      "text_fa": null,
+      "text_hr": "Zato će zapasti u velike opasnosti i mnoge oskudice, kao što objavljuju ovi snovi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "Yet is it easier for him that is in danger to come into these things, than to pass away as a cloud out of the world, and not to see the things that happen in the last days. And he answered unto me, and said,",
+      "text_fa": null,
+      "text_hr": "Ipak je onomu tko je u opasnosti lakše proći kroz to nego poput oblaka iščeznuti sa svijeta i ne vidjeti što će se dogoditi u posljednje dane. Odgovorio mi je:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "The interpretation of the vision shall I shew thee, and I will open unto thee the thing that thou hast required.",
+      "text_fa": null,
+      "text_hr": "Pokazat ću ti tumačenje viđenja i razotkriti ono što si zatražio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "Whereas thou hast spoken of them that are left behind, this is the interpretation:",
+      "text_fa": null,
+      "text_hr": "Što se tiče onih za koje si rekao da ostaju, tumačenje je ovo:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "He that shall endure the peril in that time hath kept himself: they that be fallen into danger are such as have works, and faith toward the Almighty.",
+      "text_fa": null,
+      "text_hr": "Tko u ono vrijeme izdrži opasnost, sačuvao je sebe; oni koji zapadnu u opasnost ljudi su koji imaju djela i vjeru u Svemogućega.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "Know this therefore, that they which be left behind are more blessed than they that be dead.",
+      "text_fa": null,
+      "text_hr": "Znaj, dakle, da su oni koji ostanu blaženiji od umrlih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "This is the meaning of the vision: Whereas thou sawest a man coming up from the midst of the sea:",
+      "text_fa": null,
+      "text_hr": "Ovo je značenje viđenja: čovjek kojega si vidio kako izlazi iz sredine mora",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "The same is he whom God the Highest hath kept a great season, which by his own self shall deliver his creature: and he shall order them that are left behind.",
+      "text_fa": null,
+      "text_hr": "Onaj je kojega je Bog Svevišnji čuvao dugo vrijeme. On će sam izbaviti svoje stvorenje i urediti život onih koji ostanu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "And whereas thou sawest, that out of his mouth there came as a blast of wind, and fire, and storm;",
+      "text_fa": null,
+      "text_hr": "A to što si vidio da mu je iz usta izišlo nešto poput udara vjetra, ognja i oluje,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "And that he held neither sword, nor any instrument of war, but that the rushing in of him destroyed the whole multitude that came to subdue him; this is the interpretation:",
+      "text_fa": null,
+      "text_hr": "I da nije držao ni mač ni ikakvo ratno oruđe, nego je njegov nalet uništio čitavo mnoštvo koje ga je došlo pokoriti, znači ovo:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "Behold, the days come, when the most High will begin to deliver them that are upon the earth.",
+      "text_fa": null,
+      "text_hr": "Evo, dolaze dani, kada će Svevišnji početi izbavljati one koji su na zemlji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "And he shall come to the astonishment of them that dwell on the earth.",
+      "text_fa": null,
+      "text_hr": "On će zaprepastiti stanovnike zemlje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "And one shall undertake to fight against another, one city against another, one place against another, one people against another, and one realm against another.",
+      "text_fa": null,
+      "text_hr": "Jedni će se upustiti u boj protiv drugih: grad protiv grada, mjesto protiv mjesta, narod protiv naroda i kraljevstvo protiv kraljevstva.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "And the time shall be when these things shall come to pass, and the signs shall happen which I shewed thee before, and then shall my Son be declared, whom thou sawest as a man ascending.",
+      "text_fa": null,
+      "text_hr": "Kad se to dogodi i pojave se znakovi koje sam ti prije pokazao, tada će se objaviti moj Sin, kojega si vidio kao čovjeka koji uzlazi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "And when all the people hear his voice, every man shall in their own land leave the battle they have one against another.",
+      "text_fa": null,
+      "text_hr": "Kad svi narodi čuju njegov glas, svatko će u svojoj zemlji prekinuti boj koji vodi protiv drugoga.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 34,
+      "text_en": "And an innumerable multitude shall be gathered together, as thou sawest them, willing to come, and to overcome him by fighting.",
+      "text_fa": null,
+      "text_hr": "Okupit će se nebrojeno mnoštvo, kao što si vidio, spremno doći i svladati ga u boju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 35,
+      "text_en": "But he shall stand upon the top of the mount Sion.",
+      "text_fa": null,
+      "text_hr": "Ali on će stajati na vrhu brda Sion.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 36,
+      "text_en": "And Sion shall come, and shall be shewed to all men, being prepared and builded, like as thou sawest the hill graven without hands.",
+      "text_fa": null,
+      "text_hr": "Sion će doći i pokazati se svim ljudima, pripravljen i izgrađen poput gore koju si vidio isklesanu bez ruku.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 37,
+      "text_en": "And this my Son shall rebuke the wicked inventions of those nations, which for their wicked life are fallen into the tempest;",
+      "text_fa": null,
+      "text_hr": "Taj će moj Sin ukoriti zle nakane onih naroda koji su zbog svojega opakog života zapali u oluju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 38,
+      "text_en": "And shall lay before them their evil thoughts, and the torments wherewith they shall begin to be tormented, which are like unto a flame: and he shall destroy them without labour by the law which is like unto fire.",
+      "text_fa": null,
+      "text_hr": "Pred njih će iznijeti njihove zle misli i muke kojima će se početi mučiti, nalik plamenu; bez napora će ih uništiti Zakonom koji je poput ognja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 39,
+      "text_en": "And whereas thou sawest that he gathered another peaceable multitude unto him;",
+      "text_fa": null,
+      "text_hr": "A to što si vidio da je k sebi okupio drugo, miroljubivo mnoštvo,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 40,
+      "text_en": "Those are the ten tribes, which were carried away prisoners out of their own land in the time of Osea the king, whom Salmanasar the king of Assyria led away captive, and he carried them over the waters, and so came they into another land.",
+      "text_fa": null,
+      "text_hr": "To su deset plemena koja su u vrijeme kralja Hošee kao sužnji odvedena iz svoje zemlje. Salmanasar, kralj Asirije, odveo ih je u sužanjstvo, preveo preko voda i tako su stigli u drugu zemlju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 41,
+      "text_en": "But they took this counsel among themselves, that they would leave the multitude of the heathen, and go forth into a further country, where never mankind dwelt,",
+      "text_fa": null,
+      "text_hr": "Među sobom su se dogovorili da napuste mnoštvo naroda i pođu u udaljeniju zemlju u kojoj ljudski rod nikada nije prebivao,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 42,
+      "text_en": "That they might there keep their statutes, which they never kept in their own land.",
+      "text_fa": null,
+      "text_hr": "Da ondje drže svoje zakone, kojih se nikada nisu držali u svojoj zemlji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 43,
+      "text_en": "And they entered into Euphrates by the narrow places of the river.",
+      "text_fa": null,
+      "text_hr": "Ušli su u Eufrat kroz uske riječne prolaze.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 44,
+      "text_en": "For the most High then shewed signs for them, and held still the flood, till they were passed over.",
+      "text_fa": null,
+      "text_hr": "Svevišnji im je tada pokazao znakove i zaustavio bujicu dok nisu prešli.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 45,
+      "text_en": "For through that country there was a great way to go, namely, of a year and a half: and the same region is called Arsareth.",
+      "text_fa": null,
+      "text_hr": "Kroz tu je zemlju trebalo prijeći dug put od godine i pol dana; taj se kraj zove Arsaret.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 46,
+      "text_en": "Then dwelt they there until the latter time; and now when they shall begin to come,",
+      "text_fa": null,
+      "text_hr": "Ondje su prebivali do posljednjega vremena. A kada se počnu vraćati,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 47,
+      "text_en": "The Highest shall stay the springs of the stream again, that they may go through: therefore sawest thou the multitude with peace.",
+      "text_fa": null,
+      "text_hr": "Svevišnji će ponovno zaustaviti izvore rijeke kako bi mogli prijeći. Zato si vidio miroljubivo mnoštvo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 48,
+      "text_en": "But those that be left behind of thy people are they that are found within my borders.",
+      "text_fa": null,
+      "text_hr": "Oni iz tvojega naroda koji ostanu bit će oni koji se nađu unutar mojih granica.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 49,
+      "text_en": "Now when he destroyeth the multitude of the nations that are gathered together, he shall defend his people that remain.",
+      "text_fa": null,
+      "text_hr": "Kad uništi okupljeno mnoštvo naroda, zaštitit će svoj preostali narod.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 50,
+      "text_en": "And then shall he shew them great wonders.",
+      "text_fa": null,
+      "text_hr": "Tada će im pokazati velika čudesa.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 51,
+      "text_en": "Then said I, O Lord that bearest rule, shew me this: Wherefore have I seen the man coming up from the midst of the sea?",
+      "text_fa": null,
+      "text_hr": "Tada sam rekao: O Gospodine, Vladaru, pokaži mi zašto sam vidio čovjeka kako izlazi iz sredine mora.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 52,
+      "text_en": "And he said unto me, Like as thou canst neither seek out nor know the things that are in the deep of the sea: even so can no man upon earth see my Son, or those that be with him, but in the day time.",
+      "text_fa": null,
+      "text_hr": "Odgovorio mi je: Kao što ne možeš istražiti ni spoznati što je u morskim dubinama, tako nitko na zemlji ne može vidjeti mojega Sina ni one koji su s njim, osim za njegova dana.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 53,
+      "text_en": "This is the interpretation of the dream which thou sawest, and whereby thou only art here lightened.",
+      "text_fa": null,
+      "text_hr": "Ovo je tumačenje sna koji si vidio i zbog kojega si jedini ovdje prosvijetljen.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 54,
+      "text_en": "For thou hast forsaken thine own way, and applied thy diligence unto my law, and sought it.",
+      "text_fa": null,
+      "text_hr": "Napustio si vlastiti put, marljivo se posvetio mojemu Zakonu i istraživao ga.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 55,
+      "text_en": "Thy life hast thou ordered in wisdom, and hast called understanding thy mother.",
+      "text_fa": null,
+      "text_hr": "Život si svoj uredio u mudrosti, a razum si svojom majkom nazvao.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 56,
+      "text_en": "And therefore have I shewed thee the treasures of the Highest: after other three days I will speak other things unto thee, and declare unto thee mighty and wondrous things.",
+      "text_fa": null,
+      "text_hr": "Zato sam ti pokazao blaga Svevišnjega. Nakon još tri dana govorit ću ti o drugim stvarima i objaviti ti silne i čudesne stvari.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 57,
+      "text_en": "Then went I forth into the field, giving praise and thanks greatly unto the most High because of his wonders which he did in time;",
+      "text_fa": null,
+      "text_hr": "Tada sam izišao u polje, silno hvaleći Svevišnjega i zahvaljujući mu za čudesa koja je učinio u svoje vrijeme,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 58,
+      "text_en": "And because he governeth the same, and such things as fall in their seasons: and there I sat three days.",
+      "text_fa": null,
+      "text_hr": "I zato što upravlja vremenima i onim što se u njima događa. Ondje sam sjedio tri dana.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

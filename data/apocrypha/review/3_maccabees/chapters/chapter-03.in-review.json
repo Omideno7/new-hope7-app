@@ -1,0 +1,257 @@
+{
+  "schema_version": 1,
+  "book_id": "3_maccabees",
+  "title_fa": "سوم مکابیان",
+  "title_en": "Third Maccabees",
+  "title_hr": "Treća knjiga o Makabejcima",
+  "chapter": 3,
+  "status": "in_review",
+  "source_translation": "WEBC",
+  "versification": "WEBC",
+  "source_english_sha256": "beddebacc8b297da5f8e75e2897b135900e27003b615d0c73d8637eca61ba2e6",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "On discovering this, so incensed was the wicked king, that he no longer confined his rage to the Jews in Alexandria. Laying his hand more heavily upon those who lived in the country, he gave orders that they should be quickly collected into one place, and most cruelly deprived of their lives.",
+      "text_fa": null,
+      "text_hr": "Kad je to doznao, opaki se kralj toliko razbjesnio da svoj gnjev više nije ograničavao na Židove u Aleksandriji. Još je teže pritisnuo one koji su živjeli u unutrašnjosti zemlje i zapovjedio da ih brzo okupe na jedno mjesto te im na najokrutniji način oduzmu život.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "While this was going on, a hostile rumor was uttered abroad by men who had banded together to injure the Jewish race. The pretext of their charge was that the Jews kept them away from the ordinances of the law.",
+      "text_fa": null,
+      "text_hr": "Dok se to događalo, ljudi udruženi da naude židovskom rodu posvuda su širili neprijateljske glasine. Kao povod optužbi tvrdili su da ih Židovi drže podalje od odredaba Zakona.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "Now the Jews always maintained a feeling of unwavering loyalty toward the kings,",
+      "text_fa": null,
+      "text_hr": "Židovi su, međutim, uvijek postojano čuvali svoju odanost kraljevima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "yet, as they worshiped God and observed his law, they made certain distinctions, and avoided certain things. Hence they appeared hateful to some people,",
+      "text_fa": null,
+      "text_hr": "Ipak, budući da su štovali Boga i držali njegov Zakon, pravili su određene razlike i nekih se stvari klonili. Zbog toga su se nekim ljudima činili omraženima,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "although, as they adorned their conversation with works of righteousness, they had established themselves in the good opinion of the world.",
+      "text_fa": null,
+      "text_hr": "premda su pravednim djelima oplemenjivali svoje ponašanje i stekli dobar ugled u svijetu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "What all the rest of mankind said was, however, disregarded by the foreigners,",
+      "text_fa": null,
+      "text_hr": "Ali stranci nisu marili za ono što su o njima govorili svi ostali ljudi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "who said much of the exclusiveness of the Jews with regard to their worship and meats. They alleged that they were unsociable men, hostile to the king’s interests, refusing to associate with him or his troops. By this way of speaking, they brought much hatred on them.",
+      "text_fa": null,
+      "text_hr": "Mnogo su govorili o židovskoj izdvojenosti u bogoslužju i prehrani. Optuživali su ih da su nedruželjubivi, neprijateljski raspoloženi prema kraljevim interesima te da odbijaju imati zajedništvo s njim ili njegovim postrojbama. Takvim su govorom izazvali veliku mržnju protiv njih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "This unexpected uproar and sudden gathering of people was observed by the Greeks who lived in the city, concerning men who had never harmed them. Yet to aid them was not in their power, since all was oppression around, but they encouraged them in their troubles, and expected a favorable turn of affairs.",
+      "text_fa": null,
+      "text_hr": "Grci koji su živjeli u gradu promatrali su tu neočekivanu uzbunu i naglo okupljanje protiv ljudi koji im nikada nisu nanijeli zlo. Nisu im mogli pomoći jer je posvuda vladalo nasilje, ali su ih hrabrili u nevolji i nadali se povoljnom preokretu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "He who knows all things will not, they said, disregard so great a people.",
+      "text_fa": null,
+      "text_hr": "Govorili su: „Onaj koji sve zna neće zanemariti tako velik narod.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "Some of the neighbors, friends, and business associates of the Jews even called them secretly to an interview, pledged them their assistance, and promised to do their very utmost for them.",
+      "text_fa": null,
+      "text_hr": "Neki židovski susjedi, prijatelji i poslovni suradnici čak su ih potajno pozvali na razgovor, zajamčili im svoju pomoć i obećali da će za njih učiniti sve što mogu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "Now the king, elated with his prosperous fortune, and not regarding the superior power of God, but thinking to persevere in his present purpose, wrote the following letter to the prejudice of the Jews:",
+      "text_fa": null,
+      "text_hr": "Kralj se, uznesen svojim uspjesima, nije obazirao na nadmoćnu Božju silu. Misleći ustrajati u svojem naumu, napisao je sljedeće pismo protiv Židova:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "“King Ptolemy Philopater, to the commanders and soldiers in Egypt, and in all places, health and happiness!",
+      "text_fa": null,
+      "text_hr": "„Kralj Ptolemej Filopator zapovjednicima i vojnicima u Egiptu i u svim krajevima: pozdrav i sreća!",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "I am doing well, and so, too, are my affairs.",
+      "text_fa": null,
+      "text_hr": "Dobro sam, a dobro napreduju i moji poslovi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "Since our Asiatic campaign, the particulars of which you know, and which by the aid of the gods, not lightly given, and by our own vigor, has been brought to a successful conclusion according to our expectation,",
+      "text_fa": null,
+      "text_hr": "Naš pohod u Aziju, čije pojedinosti poznajete, zahvaljujući obilatoj pomoći bogova i našoj vlastitoj snazi uspješno je dovršen u skladu s našim očekivanjima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "we resolved, not with strength of spear, but with gentleness and much humanity, as it were to nurse the inhabitants of Coele-Syria and Phoenicia, and to be their willing benefactors.",
+      "text_fa": null,
+      "text_hr": "Odlučili smo stanovnike Celesirije i Fenicije pridobiti ne silom koplja, nego blagošću i velikom čovječnošću, njegujući ih poput djece i dragovoljno im iskazujući dobročinstva.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "So, having bestowed considerable sums of money upon the temples of the several cities, we proceeded even as far as Jerusalem, and went up to honor the temple of these wretched beings who never cease from their folly.",
+      "text_fa": null,
+      "text_hr": "Tako smo hramovima pojedinih gradova darovali znatne svote novca, stigli čak do Jeruzalema i uzašli počastiti hram tih bijednika koji se nikada ne odriču svoje ludosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "To outward appearance they received us willingly, but belied that appearance by their deeds. When we were eager to enter their temple, and to honor it with the most beautiful and exquisite gifts,",
+      "text_fa": null,
+      "text_hr": "Izvana su nas primili spremno, ali su svojim djelima opovrgnuli taj dojam. Kad smo poželjeli ući u njihov Hram i počastiti ga najljepšim i najdragocjenijim darovima,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "they were so carried away by their old arrogance as to forbid us the entrance, while we, out of our forbearance toward all men, refrained from exercising our power upon them.",
+      "text_fa": null,
+      "text_hr": "stara ih je oholost toliko zanijela da su nam zabranili ulazak. Mi smo se, zbog svoje obzirnosti prema svim ljudima, ipak suzdržali upotrijebiti silu protiv njih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "Thus, exhibiting their enmity against us, they alone among the nations lift up their heads against kings and benefactors, as men unwilling to submit to any reasonable thing.",
+      "text_fa": null,
+      "text_hr": "Tako su otvoreno pokazali neprijateljstvo prema nama. Jedini se među narodima uzdižu protiv kraljeva i dobročinitelja, poput ljudi koji se ne žele pokoriti ničemu razumnom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "We then, having endeavored to make allowance for the madness of these people, and on our victorious return treating all people in Egypt courteously, acted in a manner which was befitting.",
+      "text_fa": null,
+      "text_hr": "Pokušali smo imati razumijevanja za ludost tih ljudi. Nakon pobjedničkog povratka sa svima smo u Egiptu postupali uljudno, kako i dolikuje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "Accordingly, bearing no ill will against their kinsmen, but rather remembering our connection with them, and the numerous matters with sincere heart from a remote period entrusted to them, we wished to venture a total alteration of their state, by giving them the rights of citizens of Alexandria, and to admit them to the everlasting rites of our solemnities.",
+      "text_fa": null,
+      "text_hr": "Stoga ni prema njihovim sunarodnjacima nismo gajili zlovolju. Naprotiv, imajući na umu našu dugotrajnu povezanost s njima i mnoge poslove koji su im od davnine povjeravani s iskrenim pouzdanjem, odlučili smo iz temelja promijeniti njihov položaj: dati im građanska prava Aleksandrije i pripustiti ih vječnim obredima naših svečanosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "All this, however, they have taken in a very different spirit. With their innate malignity, they have spurned the fair offer, and constantly inclining to evil,",
+      "text_fa": null,
+      "text_hr": "Oni su, međutim, sve to primili u sasvim drukčijem duhu. U svojoj prirođenoj zloći odbacili su velikodušnu ponudu i stalno naginjali zlu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "have rejected the inestimable rights. Not only so, but by using speech, and by refraining from speech, they abhor the few among them who are heartily disposed toward us, ever deeming that their infamous way of life will force us to do away with our reform.",
+      "text_fa": null,
+      "text_hr": "Odbili su ta neprocjenjiva prava. Štoviše, i riječima i šutnjom iskazuju prijezir prema onoj nekolicini među njima koja nam je iskreno naklonjena, uvijek računajući da će nas njihov sramotni način života prisiliti da ukinemo svoju reformu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "Having then received certain proofs that these Jews bear us every sort of ill will, we must look forward to the possibility of some sudden tumult among ourselves when these impious men may turn traitors and barbarous enemies.",
+      "text_fa": null,
+      "text_hr": "Budući da smo primili pouzdane dokaze kako nam ti Židovi žele svako zlo, moramo računati s mogućnošću iznenadne pobune u kojoj bi se ti bezbožnici mogli okrenuti protiv nas kao izdajice i barbarski neprijatelji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "Therefore, as soon as the contents of this letter become known to you, in that same hour we order those Jews who dwell among you, with wives and children, to be sent to us, vilified and abused, in chains of iron, to undergo a cruel and shameful death, suitable to enemies.",
+      "text_fa": null,
+      "text_hr": "Zato vam zapovijedamo da, čim doznate sadržaj ovoga pisma, istoga časa Židove koji prebivaju među vama, zajedno sa ženama i djecom, uz pogrde i zlostavljanje pošaljete k nama u željeznim lancima, kako bi pretrpjeli okrutnu i sramotnu smrt kakva dolikuje neprijateljima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "For by the punishment of them in one body we perceive that we have found the only means of establishing our affairs for the future on a firm and satisfactory basis.",
+      "text_fa": null,
+      "text_hr": "Uviđamo da ćemo jedino njihovim zajedničkim kažnjavanjem svoje poslove za budućnost postaviti na čvrst i zadovoljavajući temelj.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "Whoever protects a Jew, whether it be old man, child, or nursing baby, shall with his whole house be tortured to death.",
+      "text_fa": null,
+      "text_hr": "Tko god zaštiti Židova, bio on starac, dijete ili dojenče, bit će sa cijelim svojim domom mučen do smrti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "Whoever informs against the Jews, besides receiving the property of the person charged, shall be presented with two thousand drachmas from the royal treasury, shall be made free, and shall be crowned.",
+      "text_fa": null,
+      "text_hr": "Tko prijavi Židova, osim imovine optuženoga primit će dvije tisuće drahmi iz kraljevske riznice, bit će oslobođen i ovjenčan vijencem.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "Whatever place shelters a Jew shall be made unapproachable and shall be put under the ban of fire, and be forever rendered useless to every living being for all time to come.”",
+      "text_fa": null,
+      "text_hr": "Svako mjesto koje pruži zaklon Židovu bit će učinjeno nepristupačnim, predano ognju i zauvijek, za sva vremena, posve neupotrebljivo svakom živom biću.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "The king’s letter was written in the above form.",
+      "text_fa": null,
+      "text_hr": "Takav je bio sadržaj kraljeva pisma.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

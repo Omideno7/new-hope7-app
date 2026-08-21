@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 19,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "5fe2ce62dcc889454fd59d297da27f8378b1a9ac79e934f5d74ae7178b79561e",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And Uriel said to me: ‘Here shall stand the angels who have connected themselves with women, and their spirits, assuming many different forms, are defiling mankind, and shall lead them astray into sacrificing to demons 〚as gods〛, (here shall they stand), till 〚the day of〛 the great judgement in which they shall be judged till they are made an end of.",
+      "text_fa": null,
+      "text_hr": "Uriel mi reče: ‘Ovdje će stajati anđeli koji su se združili sa ženama. Njihovi duhovi, poprimajući mnoge različite oblike, kaljaju čovječanstvo i zavode ga da prinosi žrtve demonima 〚kao bogovima〛. (Ovdje će stajati) sve do 〚dana〛 velikoga suda, na kojem će im biti suđeno dok ne budu dokrajčeni.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And the women also of the angels who went astray shall become sirens.’",
+      "text_fa": null,
+      "text_hr": "A žene anđela koje su zastranile postat će sirene.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And I, Enoch, alone saw the vision, the ends of all things: and no man shall see as I have seen.",
+      "text_fa": null,
+      "text_hr": "Samo sam ja, Henok, vidio to viđenje, svršetke svega; nijedan čovjek neće vidjeti kao što sam ja vidio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

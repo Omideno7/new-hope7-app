@@ -1,0 +1,353 @@
+{
+  "schema_version": 1,
+  "book_id": "bel_and_the_dragon",
+  "title_fa": "بِل و اژدها",
+  "title_en": "Bel and the Dragon",
+  "title_hr": "Bel i Zmaj",
+  "chapter": 1,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "e78d847ac728e26329526e09ac0a907f92541b333ca20eee8a1c190f9808ba3d",
+  "locales_in_scope": [
+    "fa"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And king Astyages was gathered to his fathers, and Cyrus of Persia received his kingdom.",
+      "text_fa": "آنگاه آستیاگ، پادشاه، به پدران خود پیوست و کوروشِ پارسی پادشاهی او را به دست گرفت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 2,
+      "text_en": "And Daniel conversed with the king, and was honoured above all his friends.",
+      "text_fa": "دانیال با پادشاه معاشرت داشت و بیش از همهٔ دوستان او مورد احترام بود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 3,
+      "text_en": "Now the Babylons had an idol, called Bel, and there were spent upon him every day twelve great measures of fine flour, and forty sheep, and six vessels of wine.",
+      "text_fa": "بابلیان بتی به نام بِل داشتند و هر روز برای آن دوازده پیمانهٔ بزرگ آرد نرم، چهل گوسفند و شش ظرف شراب مصرف می‌کردند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 4,
+      "text_en": "And the king worshipped it and went daily to adore it: but Daniel worshipped his own God. And the king said unto him, Why dost not thou worship Bel?",
+      "text_fa": "پادشاه بِل را می‌پرستید و هر روز برای نیایش آن می‌رفت، اما دانیال خدای خود را می‌پرستید. پادشاه از او پرسید: «چرا بِل را نمی‌پرستی؟»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 5,
+      "text_en": "Who answered and said, Because I may not worship idols made with hands, but the living God, who hath created the heaven and the earth, and hath sovereignty over all flesh.",
+      "text_fa": "دانیال پاسخ داد: «زیرا من نمی‌توانم بت‌های دست‌ساخته را بپرستم، بلکه خدای زنده را می‌پرستم که آسمان و زمین را آفریده و بر هر موجود زنده فرمانروایی دارد.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 6,
+      "text_en": "Then said the king unto him, Thinkest thou not that Bel is a living God? seest thou not how much he eateth and drinketh every day?",
+      "text_fa": "پادشاه به او گفت: «آیا گمان نمی‌کنی بِل خدایی زنده است؟ مگر نمی‌بینی هر روز چه اندازه می‌خورد و می‌نوشد؟»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 7,
+      "text_en": "Then Daniel smiled, and said, O king, be not deceived: for this is but clay within, and brass without, and did never eat or drink any thing.",
+      "text_fa": "دانیال لبخند زد و گفت: «ای پادشاه، فریب مخور؛ درون این بت از گل و بیرونش از برنج است و هرگز چیزی نخورده و ننوشیده است.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 8,
+      "text_en": "So the king was wroth, and called for his priests, and said unto them, If ye tell me not who this is that devoureth these expences, ye shall die.",
+      "text_fa": "پادشاه خشمگین شد، کاهنان بِل را فراخواند و گفت: «اگر به من نگویید چه کسی این نذورات را می‌خورد، خواهید مرد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 9,
+      "text_en": "But if ye can certify me that Bel devoureth them, then Daniel shall die: for he hath spoken blasphemy against Bel. And Daniel said unto the king, Let it be according to thy word.",
+      "text_fa": "اما اگر ثابت کنید که بِل آنها را می‌خورد، دانیال خواهد مرد، زیرا به بِل کفر گفته است.» دانیال به پادشاه گفت: «مطابق سخنت عمل شود.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 10,
+      "text_en": "Now the priests of Bel were threescore and ten, beside their wives and children. And the king went with Daniel into the temple of Bel.",
+      "text_fa": "شمار کاهنان بِل، جدا از زنان و فرزندانشان، هفتاد تن بود. پادشاه همراه دانیال به معبد بِل رفت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 11,
+      "text_en": "So Bel’s priests said, Lo, we go out: but thou, O king, set on the meat, and make ready the wine, and shut the door fast and seal it with thine own signet;",
+      "text_fa": "کاهنان بِل گفتند: «ما بیرون می‌رویم؛ اما تو، ای پادشاه، خوراک را بچین، شراب را آماده کن، در را محکم ببند و با مُهر خود آن را مُهروموم کن.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 12,
+      "text_en": "And to morrow when thou comest in, if thou findest not that Bel hath eaten up all, we will suffer death: or else Daniel, that speaketh falsely against us.",
+      "text_fa": "فردا وقتی بازمی‌گردی، اگر نبینی که بِل همه‌چیز را خورده است، ما مرگ را می‌پذیریم؛ وگرنه دانیال که علیه ما دروغ می‌گوید، باید بمیرد.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 13,
+      "text_en": "And they little regarded it: for under the table they had made a privy entrance, whereby they entered in continually, and consumed those things.",
+      "text_fa": "آنان هیچ نگرانی نداشتند، زیرا زیر میز ورودی پنهانی ساخته بودند و همواره از آن وارد می‌شدند و نذورات را مصرف می‌کردند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 14,
+      "text_en": "So when they were gone forth, the king set meats before Bel. Now Daniel had commanded his servants to bring ashes, and those they strewed throughout all the temple in the presence of the king alone: then went they out, and shut the door, and sealed it with the king’s signet, and so departed.",
+      "text_fa": "پس از بیرون‌رفتن کاهنان، پادشاه خوراک‌ها را پیش روی بِل گذاشت. دانیال به خدمتگزارانش دستور داده بود خاکستر بیاورند؛ آنان در حضور پادشاه، که تنها شاهد بود، خاکستر را در سراسر معبد پاشیدند. سپس بیرون رفتند، در را بستند، آن را با مُهر پادشاه مُهروموم کردند و رفتند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 15,
+      "text_en": "Now in the night came the priests with their wives and children, as they were wont to do, and did eat and drink up all.",
+      "text_fa": "شب‌هنگام، کاهنان طبق عادت همراه زنان و فرزندانشان آمدند و همهٔ خوراک و شراب را خوردند و نوشیدند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 16,
+      "text_en": "In the morning betime the king arose, and Daniel with him.",
+      "text_fa": "صبح زود، پادشاه برخاست و دانیال نیز همراه او بود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 17,
+      "text_en": "And the king said, Daniel, are the seals whole? And he said, Yea, O king, they be whole.",
+      "text_fa": "پادشاه گفت: «دانیال، آیا مُهرها سالم‌اند؟» او پاسخ داد: «بله، ای پادشاه، سالم‌اند.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 18,
+      "text_en": "And as soon as he had opened the door, the king looked upon the table, and cried with a loud voice, Great art thou, O Bel, and with thee is no deceit at all.",
+      "text_fa": "به‌محض آنکه در را گشود، پادشاه به میز نگاه کرد و با صدای بلند فریاد زد: «بزرگ هستی، ای بِل، و هیچ فریبی در تو نیست!»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 19,
+      "text_en": "Then laughed Daniel, and held the king that he should not go in, and said, Behold now the pavement, and mark well whose footsteps are these.",
+      "text_fa": "دانیال خندید، پادشاه را نگه داشت تا وارد نشود و گفت: «اکنون به کف معبد نگاه کن و خوب ببین این ردپاها از آنِ چه کسانی است.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 20,
+      "text_en": "And the king said, I see the footsteps of men, women, and children. And then the king was angry,",
+      "text_fa": "پادشاه گفت: «ردپای مردان، زنان و کودکان را می‌بینم.» آنگاه سخت خشمگین شد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 21,
+      "text_en": "And took the priests with their wives and children, who shewed him the privy doors, where they came in, and consumed such things as were upon the table.",
+      "text_fa": "او کاهنان را همراه زنان و فرزندانشان گرفت. آنان درهای پنهانی را که از آنها وارد می‌شدند و خوراک‌های روی میز را می‌خوردند، به پادشاه نشان دادند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 22,
+      "text_en": "Therefore the king slew them, and delivered Bel into Daniel’s power, who destroyed him and his temple.",
+      "text_fa": "پس پادشاه آنان را کشت و بِل را به دست دانیال سپرد؛ دانیال نیز آن بت و معبدش را نابود کرد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 23,
+      "text_en": "And in that same place there was a great dragon, which they of Babylon worshipped.",
+      "text_fa": "در همان مکان اژدهایی بزرگ بود که بابلیان آن را می‌پرستیدند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 24,
+      "text_en": "And the king said unto Daniel, Wilt thou also say that this is of brass? lo, he liveth, he eateth and drinketh; thou canst not say that he is no living god: therefore worship him.",
+      "text_fa": "پادشاه به دانیال گفت: «آیا دربارهٔ این نیز می‌گویی که از برنج است؟ ببین، زنده است، می‌خورد و می‌نوشد. نمی‌توانی بگویی خدایی زنده نیست؛ پس آن را بپرست.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 25,
+      "text_en": "Then said Daniel unto the king, I will worship the Lord my God: for he is the living God.",
+      "text_fa": "دانیال به پادشاه گفت: «من خداوند، خدای خود را می‌پرستم، زیرا او خدای زنده است.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 26,
+      "text_en": "But give me leave, O king, and I shall slay this dragon without sword or staff. The king said, I give thee leave.",
+      "text_fa": "اما ای پادشاه، به من اجازه بده تا این اژدها را بدون شمشیر یا چوب‌دستی بکشم.» پادشاه گفت: «اجازه می‌دهم.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 27,
+      "text_en": "Then Daniel took pitch, and fat, and hair, and did seethe them together, and made lumps thereof: this he put in the dragon’s mouth, and so the dragon burst in sunder: and Daniel said, Lo, these are the gods ye worship.",
+      "text_fa": "دانیال قیر، چربی و مو را با هم جوشاند و از آنها گلوله‌هایی ساخت؛ آنها را در دهان اژدها گذاشت و اژدها از درون ترکید. آنگاه دانیال گفت: «ببینید چه خدایانی را می‌پرستید!»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 28,
+      "text_en": "When they of Babylon heard that, they took great indignation, and conspired against the king, saying, The king is become a Jew, and he hath destroyed Bel, he hath slain the dragon, and put the priests to death.",
+      "text_fa": "وقتی بابلیان این را شنیدند، به‌شدت خشمگین شدند و علیه پادشاه توطئه کردند و گفتند: «پادشاه یهودی شده است؛ بِل را نابود کرده، اژدها را کشته و کاهنان را به مرگ رسانده است.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 29,
+      "text_en": "So they came to the king, and said, Deliver us Daniel, or else we will destroy thee and thine house.",
+      "text_fa": "پس نزد پادشاه آمدند و گفتند: «دانیال را به ما تحویل بده، وگرنه تو و خاندانَت را نابود می‌کنیم.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 30,
+      "text_en": "Now when the king saw that they pressed him sore, being constrained, he delivered Daniel unto them:",
+      "text_fa": "پادشاه چون دید سخت بر او فشار می‌آورند، ناچار شد دانیال را به آنان تحویل دهد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 31,
+      "text_en": "Who cast him into the lions’ den: where he was six days.",
+      "text_fa": "آنان دانیال را در چاه شیران انداختند و او شش روز در آنجا ماند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 32,
+      "text_en": "And in the den there were seven lions, and they had given them every day two carcases, and two sheep: which then were not given to them, to the intent they might devour Daniel.",
+      "text_fa": "در چاه هفت شیر بود و هر روز دو لاشه و دو گوسفند به آنها می‌دادند؛ اما در آن روزها خوراکشان را ندادند تا دانیال را ببلعند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 33,
+      "text_en": "Now there was in Jewry a prophet, called Habbacuc, who had made pottage, and had broken bread in a bowl, and was going into the field, for to bring it to the reapers.",
+      "text_fa": "در یهودیه پیامبری به نام حبقوق بود. او خوراکی پخته و نان را در کاسه‌ای تکه کرده بود و به مزرعه می‌رفت تا آن را برای دروگران ببرد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 34,
+      "text_en": "But the angel of the Lord said unto Habbacuc, Go, carry the dinner that thou hast into Babylon unto Daniel, who is in the lions’ den.",
+      "text_fa": "اما فرشتهٔ خداوند به حبقوق گفت: «این ناهاری را که داری به بابل، نزد دانیال در چاه شیران ببر.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 35,
+      "text_en": "And Habbacuc said, Lord, I never saw Babylon; neither do I know where the den is.",
+      "text_fa": "حبقوق گفت: «خداوندا، من هرگز بابل را ندیده‌ام و نمی‌دانم چاه کجاست.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 36,
+      "text_en": "Then the angel of the Lord took him by the crown, and bare him by the hair of his head, and through the vehemency of his spirit set him in Babylon over the den.",
+      "text_fa": "آنگاه فرشتهٔ خداوند از فرق سرش گرفت و او را از موی سر بلند کرد و با نیروی روح خود بر فراز چاه در بابل فرود آورد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 37,
+      "text_en": "And Habbacuc cried, saying, O Daniel, Daniel, take the dinner which God hath sent thee.",
+      "text_fa": "حبقوق فریاد زد: «ای دانیال، دانیال، ناهاری را که خدا برایت فرستاده است بگیر.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 38,
+      "text_en": "And Daniel said, Thou hast remembered me, O God: neither hast thou forsaken them that seek thee and love thee.",
+      "text_fa": "دانیال گفت: «ای خدا، مرا به یاد آوردی و کسانی را که تو را می‌جویند و دوستت دارند رها نکردی.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 39,
+      "text_en": "So Daniel arose, and did eat: and the angel of the Lord set Habbacuc in his own place again immediately.",
+      "text_fa": "پس دانیال برخاست و خورد، و فرشتهٔ خداوند بی‌درنگ حبقوق را به جای خودش بازگرداند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 40,
+      "text_en": "Upon the seventh day the king went to bewail Daniel: and when he came to the den, he looked in, and behold, Daniel was sitting.",
+      "text_fa": "روز هفتم، پادشاه رفت تا برای دانیال سوگواری کند. هنگامی که به چاه رسید و درون آن را نگریست، دید دانیال نشسته است.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 41,
+      "text_en": "Then cried the king with a loud voice, saying, Great art thou, O Lord God of Daniel, and there is none other beside thee.",
+      "text_fa": "آنگاه پادشاه با صدای بلند فریاد زد: «بزرگی تو، ای خداوند، خدای دانیال؛ و جز تو خدای دیگری نیست.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 42,
+      "text_en": "And he drew him out, and cast those that were the cause of his destruction into the den: and they were devoured in a moment before his face.",
+      "text_fa": "پادشاه دانیال را بیرون آورد و کسانی را که سبب نابودی او شده بودند به چاه انداخت؛ آنان در برابر چشمانش در یک لحظه بلعیده شدند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    }
+  ]
+}

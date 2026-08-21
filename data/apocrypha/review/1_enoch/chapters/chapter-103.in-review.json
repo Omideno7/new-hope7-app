@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 103,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "cbc5db24ccd8b7e32da1d4a869456c7274b208b959da59e4940a49f893eb6329",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Now, therefore, I swear to you, the righteous, by the glory of the Great and Honoured and Mighty One in dominion, and by His greatness I swear to you:",
+      "text_fa": null,
+      "text_hr": "Sada se, dakle, kunem vama, pravednici, slavom Velikoga, Časnog i Moćnog u vlasti; kunem vam se Njegovom veličinom:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "I know a mystery\nAnd have read the heavenly tablets,\nAnd have seen the holy books,\nAnd have found written therein and inscribed regarding them:",
+      "text_fa": null,
+      "text_hr": "Poznajem tajnu, čitao sam nebeske ploče, vidio svete knjige i našao u njima napisano i urezano o pravednicima:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "That all goodness and joy and glory are prepared for them,\nAnd written down for the spirits of those who have died in righteousness,\nAnd that manifold good shall be given to you in recompense for your labours,\nAnd that your lot is abundantly beyond the lot of the living.",
+      "text_fa": null,
+      "text_hr": "Da su sva dobra, radost i slava za njih pripremljena, i zapisano za duhove onih koji su umrli u pravednosti, i to mnogostruko dobro bit će vam dano kao naknada za vaš trud, i da je vaša sudbina daleko veća od sudbine živih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And the spirits of you who have died in righteousness shall live and rejoice,\nAnd their spirits shall not perish, nor their memorial from before the face of the Great One\nUnto all the generations of the world: wherefore no longer fear their contumely.",
+      "text_fa": null,
+      "text_hr": "Duhovi vas koji ste umrli u pravednosti živjet će i radovati se. Vaši duhovi neće propasti, niti će spomen na vas nestati pred licem Velikoga kroz sve naraštaje svijeta; zato se više ne bojte njihovih poruga.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "Woe to you, ye sinners, when ye have died,\nIf ye die in the wealth of your sins;\nAnd those who are like you say regarding you:\n“Blessed are the sinners: they have seen all their days.",
+      "text_fa": null,
+      "text_hr": "Teško vama, grešnici, kad umrete, Ako umrete u bogatstvu svojih grijeha; A oni koji su kao ti kažu za tebe: “Blago grješnicima: proživjeli su sve dane svoje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And now they have died in prosperity and in wealth,\nAnd have not seen tribulation or murder in their life;\nAnd they have died in honour,\nAnd judgement has not been executed on them during their life.”",
+      "text_fa": null,
+      "text_hr": "I sada su umrli u blagostanju i bogatstvu, i nisu vidjeli nevolje ni ubojstva u svom životu; i umrli su u čast, i presuda im nije izvršena za njihova života.”",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "Know ye, that their souls will be made to descend into Sheol,\nAnd they shall be wretched in their great tribulation.",
+      "text_fa": null,
+      "text_hr": "Znaj da će njihove duše biti natjerane da siđu u Šeol, i oni će biti jadni u svojoj velikoj nevolji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And into darkness and chains and a burning flame where there is grievous judgement shall your spirits enter;\nAnd the great judgement shall be for all the generations of the world.\nWoe to you, for ye shall have no peace.",
+      "text_fa": null,
+      "text_hr": "I u tamu i okove i gorući plamen gdje je teški sud ući će vaši duhovi; i veliki će sud biti za sve naraštaje svijeta. Jao vama, jer nećete imati mira.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "Say not in regard to the righteous and good who are in life:\n“In our troubled days we have toiled laboriously and experienced every trouble,\nAnd met with much evil and been consumed,\nAnd have become few and our spirit small.",
+      "text_fa": null,
+      "text_hr": "Ne govorite o pravednima i dobrima koji žive: ‘U danima svoje nevolje mukotrpno smo radili, iskusili svaku muku, susreli mnogo zla, bili uništavani, postali malobrojni i klonula duha.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And we have been destroyed and have not found any to help us even with a word:\nWe have been tortured [and destroyed], and hoped not to see life from day to day.",
+      "text_fa": null,
+      "text_hr": "I uništeni smo i nismo našli nikoga da nam pomogne ni riječju: Bili smo mučeni [i uništeni] i nadali se da nećemo vidjeti život iz dana u dan.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "We hoped to be the head and have become the tail:\nWe have toiled laboriously and had no satisfaction in our toil;\nAnd we have become the food of the sinners and the unrighteous,\nAnd they have laid their yoke heavily upon us.",
+      "text_fa": null,
+      "text_hr": "Nadali smo se da smo glava, a postali smo rep: Mukotrpno smo radili i nismo imali zadovoljstva u našem radu; i postali smo hrana grešnika i nepravednika, i metnuše na nas težak jaram svoj.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "They have had dominion over us that hated us †and smote us;\nAnd to those that hated us† we have bowed our necks,\nBut they pitied us not.",
+      "text_fa": null,
+      "text_hr": "Nad nama su imali vlast oni koji su nas mrzili †i tukli nas; i onima koji su nas mrzili† vrat smo pognuli, Ali nisu nas žalili.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "We desired to get away from them that we might escape and be at rest,\nBut found no place whereunto we should flee and be safe from them.",
+      "text_fa": null,
+      "text_hr": "Željeli smo pobjeći od njih kako bismo mogli pobjeći i odmoriti se, Ali nismo našli mjesta kamo bismo trebali pobjeći i biti sigurni od njih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "And we complained to the rulers in our tribulation,\nAnd cried out against those who devoured us;\nBut they did not attend to our cries,\nAnd would not hearken to our voice.",
+      "text_fa": null,
+      "text_hr": "Žalili smo se vladarima u svojoj nevolji i vikali protiv onih koji su nas proždirali, ali oni se nisu obazirali na naše vapaje niti su htjeli poslušati naš glas.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "And they helped those who robbed us and devoured us and those who made us few; and they concealed their oppression, and they did not remove from us the yoke of those that devoured us and dispersed us and murdered us, and they concealed their murder, and remembered not that they had lifted up their hands against us.”",
+      "text_fa": null,
+      "text_hr": "I pomogli su onima koji su nas opljačkali i proždirali i onima koji su nas smanjili; i sakrili su svoje ugnjetavanje, i nisu skinuli s nas jaram onih koji su nas proždirali i rastjerali i ubijali, i sakrili su svoje ubojstvo, i nisu se sjetili da su digli ruke svoje na nas.”",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

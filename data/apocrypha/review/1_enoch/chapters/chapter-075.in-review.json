@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 75,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "286bd44c38c1bc85f88d520b31e2a9cfd3082e473e9ec23b25c635a4fb008452",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And the leaders of the heads of the thousands, who are placed over the whole creation and over all the stars, have also to do with the four intercalary days, being inseparable from their office, according to the reckoning of the year, and these render service on the four days which are not reckoned in the reckoning of the year.",
+      "text_fa": null,
+      "text_hr": "Vođe glavara tisuća, postavljeni nad cijelim stvorenjem i nad svim zvijezdama, upravljaju i četirima umetnutim danima. Oni su, prema računanju godine, neodvojivi od svoje službe i služe u ona četiri dana koja se ne ubrajaju u godinu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And owing to them men go wrong therein, for those luminaries truly render service on the world-stations, one in the first portal, one in the third portal of the heaven, one in the fourth portal, and one in the sixth portal, and the exactness of the year is accomplished through its separate three hundred and sixty-four stations.",
+      "text_fa": null,
+      "text_hr": "Zbog njih ljudi griješe, jer ta svjetlila doista služe na postajama svijeta: jedno na prvim vratima, jedno na trećim vratima neba, jedno na četvrtim i jedno na šestim. Točnost godine ostvaruje se kroz njezine odvojene 364 postaje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "For the signs and the times and the years and the days the angel Uriel showed to me, whom the Lord of glory hath set for ever over all the luminaries of the heaven, in the heaven and in the world, that they should rule on the face of the heaven and be seen on the earth, and be leaders for the day and the night, _i. e._ the sun, moon, and stars, and all the ministering creatures which make their revolution in all the chariots of the heaven.",
+      "text_fa": null,
+      "text_hr": "Znakove, vremena, godine i dane pokazao mi je anđeo Uriel, kojega je Gospodar Slave zauvijek postavio nad svim nebeskim svjetlilima, na nebu i na zemlji, da upravljaju licem neba, budu vidljiva na zemlji i vode dan i noć — to jest Sunce, Mjesec, zvijezde i sva službujuća stvorenja koja obilaze u svim nebeskim kolima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "In like manner twelve doors Uriel showed me, open in the circumference of the sun’s chariot in the heaven, through which the rays of the sun break forth: and from them is warmth diffused over the earth, when they are opened at their appointed seasons.",
+      "text_fa": null,
+      "text_hr": "Na sličan način Uriel mi je pokazao dvanaest vrata, otvorenih u obodu sunčevih kola na nebu, kroz koja probijaju zrake sunca: i iz njih se toplina širi zemljom, kada se otvore u svoje određeno doba godine.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "[And for the winds and the spirit of the dew† when they are opened, standing open in the heavens at the ends.]",
+      "text_fa": null,
+      "text_hr": "[I kada se otvore vjetrovima i duhu rose†, ostaju otvorena na nebu, na njegovim krajevima.]",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "As for the twelve portals in the heaven, at the ends of the earth, out of which go forth the sun, moon, and stars, and all the works of heaven in the east and in the west.",
+      "text_fa": null,
+      "text_hr": "Na krajevima zemlje nalazi se dvanaest nebeskih vrata iz kojih izlaze Sunce, Mjesec i zvijezde te sva djela neba na istoku i zapadu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "There are many windows open to the left and right of them, and one window at its (appointed) season produces warmth, corresponding (as these do) to those doors from which the stars come forth according as He has commanded them, and wherein they set corresponding to their number.",
+      "text_fa": null,
+      "text_hr": "Mnogo je prozora otvorenih lijevo i desno od njih, a jedan prozor u svom (određenom) godišnjem dobu proizvodi toplinu, koja odgovara (kao što ovi čine) onim vratima iz kojih zvijezde izlaze prema onome kako im je On naredio, i na kojima su postavljene u skladu sa svojim brojem.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And I saw chariots in the heaven, running in the world, above those portals in which revolve the stars that never set.",
+      "text_fa": null,
+      "text_hr": "I vidio sam kola na nebu, kako jure u svijetu, iznad onih portala u kojima se okreću zvijezde koje nikada ne zalaze.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And one is larger than all the rest, and it is that that makes its course through the entire world.",
+      "text_fa": null,
+      "text_hr": "A jedan je veći od svih ostalih, i to je ono što prolazi kroz cijeli svijet.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

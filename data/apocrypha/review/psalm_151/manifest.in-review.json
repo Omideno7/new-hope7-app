@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "book_id": "psalm_151",
+  "title_fa": "مزمور ۱۵۱",
+  "title_en": "Psalm 151",
+  "title_hr": "Psalam 151",
+  "status": "in_review",
+  "prepared_on": "2026-08-21",
+  "included_ranges": {
+    "hr": [
+      [
+        1,
+        1
+      ]
+    ]
+  },
+  "source_translation": "WEBC",
+  "source_translation_name": "World English Bible Classic",
+  "source_url": "https://ebible.org/eng-web/PS201.htm",
+  "source_license": "Public Domain",
+  "versification": "WEBC",
+  "translation_note": "Fresh project Croatian rendering; prior page-based draft was used only for terminology comparison.",
+  "totals": {
+    "aligned_source_verses": 7,
+    "persian_in_review_verses": 0,
+    "croatian_in_review_verses": 7
+  },
+  "chapter_qa": {
+    "1": {
+      "verse_count": 7,
+      "persian_in_review_count": 0,
+      "croatian_in_review_count": 7,
+      "source_english_sha256": "5966c8b7d492ed62f0735e167200936065647a6c7b268afa2ec0ff5b9e60f129"
+    }
+  }
+}

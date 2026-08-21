@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 36,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "7a232a59321458ea993d6ee4d3e8a0475ee27bb1afcc5bd53d212f18062a3f2a",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And from thence I went to the south to the ends of the earth, and saw there three open portals of the heaven: and thence there come dew, rain, †and wind†.",
+      "text_fa": null,
+      "text_hr": "Odatle odoh prema jugu, do krajeva zemlje. Ondje vidjeh troja otvorena nebeska vrata; iz njih dolaze rosa, kiša †i vjetar†.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And from thence I went to the east to the ends of the heaven, and saw here the three eastern portals of heaven open and small portals above them.",
+      "text_fa": null,
+      "text_hr": "Odatle odoh prema istoku, do krajeva neba. Ondje vidjeh otvorena troja istočna nebeska vrata, a iznad njih mala vrata.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "Through each of these small portals pass the stars of heaven and run their course to the west on the path which is shown to them.",
+      "text_fa": null,
+      "text_hr": "Kroz svaka od tih malih vrata prolaze nebeske zvijezde i kreću se svojom putanjom prema zapadu, putem koji im je pokazan.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And as often as I saw I blessed always the Lord of Glory, and I continued to bless the Lord of Glory who has wrought great and glorious wonders, to show the greatness of His work to the angels and to =spirits= and to men, that they might praise His work and all His creation: that they might see the work of His might and praise the great work of His hands and bless Him for ever.",
+      "text_fa": null,
+      "text_hr": "Kad god bih to vidio, uvijek sam blagoslivljao Gospodina Slave. Neprestano sam blagoslivljao Gospodina Slave koji je učinio velika i slavna čudesa da bi veličinu svojega djela pokazao anđelima, =duhovima= i ljudima, kako bi hvalili Njegovo djelo i sve Njegovo stvorenje; da vide djelo Njegove moći, hvale veliko djelo Njegovih ruku i blagoslivljaju Ga dovijeka.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

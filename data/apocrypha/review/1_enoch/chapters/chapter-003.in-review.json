@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 3,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "c987b043ec37256a0df18031e7bb4c6e953df76fa5d049532936a02d3a1d0a64",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Observe and see how (in the winter) all the trees 〚seem〛 as though they had withered and shed all their leaves, except fourteen trees, which do not lose their foliage but retain the old foliage from two to three years till the new comes.",
+      "text_fa": null,
+      "text_hr": "Promotrite i vidite kako (zimi) sva stabla 〚izgledaju〛 kao da su se osušila i odbacila sve svoje lišće, osim četrnaest stabala koja ne gube krošnju, nego zadržavaju staro lišće dvije do tri godine, dok ne izraste novo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

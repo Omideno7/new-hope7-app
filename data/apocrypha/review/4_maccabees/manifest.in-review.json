@@ -11,7 +11,7 @@
       "fa": [
         [
           1,
-          4
+          3
         ]
       ],
       "hr": [
@@ -24,7 +24,7 @@
     "included_here": {
       "fa": [
         [
-          5,
+          4,
           18
         ]
       ],
@@ -39,7 +39,7 @@
   "included_ranges": {
     "fa": [
       [
-        5,
+        4,
         18
       ]
     ],
@@ -76,13 +76,13 @@
   },
   "totals": {
     "aligned_source_verses": 404,
-    "persian_in_review_verses": 378,
+    "persian_in_review_verses": 404,
     "croatian_in_review_verses": 404
   },
   "chapter_qa": {
     "4": {
       "verse_count": 26,
-      "persian_in_review_count": 0,
+      "persian_in_review_count": 26,
       "croatian_in_review_count": 26,
       "source_english_sha256": "8b0c777a4cb30afbb39f1979eb5fd5cec5b736f21825cc474b85ec2f1ee993b8"
     },

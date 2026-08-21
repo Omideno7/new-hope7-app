@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "book_id": "judith",
+  "title_fa": "یهودیت",
+  "title_en": "Judith",
+  "title_hr": "Judita",
+  "chapter": 4,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "522607c05f5e6a6ec7cfc48b52325686f1db72b95f4c4c259afc4e8214d2600b",
+  "locales_in_scope": [
+    "fa"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Now the children of Israel, that dwelt in Judea, heard all that Holofernes the chief captain of Nabuchodonosor king of the Assyrians had done to the nations, and after what manner he had spoiled all their temples, and brought them to nought.",
+      "text_fa": "بنی‌اسرائیل که در یهودا ساکن بودند، از همهٔ کارهایی که هولوفرنس، فرماندهٔ کل سپاه نبوکدنصر پادشاه آشوریان، با ملت‌ها کرده و از اینکه چگونه معابدشان را غارت و نابود ساخته بود، آگاه شدند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 2,
+      "text_en": "Therefore they were exceedingly afraid of him, and were troubled for Jerusalem, and for the temple of the Lord their God:",
+      "text_fa": "پس سخت از او ترسیدند و برای اورشلیم و معبد خداوند، خدای خود، به اضطراب افتادند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 3,
+      "text_en": "For they were newly returned from the captivity, and all the people of Judea were lately gathered together: and the vessels, and the altar, and the house, were sanctified after the profanation.",
+      "text_fa": "زیرا به‌تازگی از اسارت بازگشته بودند و مردم یهودا تازه گرد هم آمده بودند؛ ظروف مقدس، مذبح و خانهٔ خدا پس از بی‌حرمتی دوباره تقدیس شده بود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 4,
+      "text_en": "Therefore they sent into all the coasts of Samaria, and the villages and to Bethoron, and Belmen, and Jericho, and to Choba, and Esora, and to the valley of Salem:",
+      "text_fa": "بنابراین به همهٔ نواحی سامره و روستاهای آن، به بیت‌حورون، بلمین، اریحا، خوبا، عیسورا و وادی سالیم پیام فرستادند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 5,
+      "text_en": "And possessed themselves beforehand of all the tops of the high mountains, and fortified the villages that were in them, and laid up victuals for the provision of war: for their fields were of late reaped.",
+      "text_fa": "پیشاپیش قله‌های کوه‌های بلند را تصرف کردند، روستاهای آنجا را استحکام بخشیدند و برای جنگ آذوقه ذخیره نمودند، زیرا کشتزارهایشان تازه درو شده بود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 6,
+      "text_en": "Also Joacim the high priest, which was in those days in Jerusalem, wrote to them that dwelt in Bethulia, and Betomestham, which is over against Esdraelon toward the open country, near to Dothaim,",
+      "text_fa": "یواقیم، کاهن اعظم که در آن روزها در اورشلیم بود، به ساکنان بیتولیا و بیتومستام، که روبه‌روی یزرعیل و نزدیک دوتائیم در سمت دشت قرار داشت، نامه نوشت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 7,
+      "text_en": "Charging them to keep the passages of the hill country: for by them there was an entrance into Judea, and it was easy to stop them that would come up, because the passage was straight, for two men at the most.",
+      "text_fa": "او به آنان فرمان داد گذرگاه‌های کوهستان را نگهبانی کنند؛ زیرا راه ورود به یهودا از آنجا می‌گذشت و چون گذرگاه باریک بود و بیش از دو نفر هم‌زمان نمی‌توانستند عبور کنند، به‌آسانی می‌شد جلوی مهاجمان را گرفت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 8,
+      "text_en": "And the children of Israel did as Joacim the high priest had commanded them, with the ancients of all the people of Israel, which dwelt at Jerusalem.",
+      "text_fa": "بنی‌اسرائیل همان کاری را کردند که یواقیم، کاهن اعظم، و مشایخ تمام قوم اسرائیلِ ساکن اورشلیم به آنان فرمان داده بودند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 9,
+      "text_en": "Then every man of Israel cried to God with great fervency, and with great vehemency did they humble their souls:",
+      "text_fa": "آنگاه همهٔ مردان اسرائیل با شور فراوان نزد خدا فریاد زدند و با شدت بسیار جان‌های خود را فروتن ساختند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 10,
+      "text_en": "Both they, and their wives and their children, and their cattle, and every stranger and hireling, and their servants bought with money, put sackcloth upon their loins.",
+      "text_fa": "آنان، زنان و فرزندانشان، چارپایانشان، هر بیگانه و مزدور و نیز غلامان خریداری‌شده، بر کمر خود پلاس پوشیدند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 11,
+      "text_en": "Thus every man and women, and the little children, and the inhabitants of Jerusalem, fell before the temple, and cast ashes upon their heads, and spread out their sackcloth before the face of the Lord: also they put sackcloth about the altar,",
+      "text_fa": "همهٔ مردان و زنان، کودکان و ساکنان اورشلیم در برابر معبد به خاک افتادند، بر سر خود خاکستر ریختند و پلاس‌هایشان را در حضور خداوند گستردند؛ حتی مذبح را نیز با پلاس پوشاندند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 12,
+      "text_en": "And cried to the God of Israel all with one consent earnestly, that he would not give their children for a prey, and their wives for a spoil, and the cities of their inheritance to destruction, and the sanctuary to profanation and reproach, and for the nations to rejoice at.",
+      "text_fa": "همگی یک‌دل و با جدیت نزد خدای اسرائیل فریاد زدند که فرزندانشان را به غنیمت، زنانشان را به تاراج، شهرهای میراثشان را به نابودی و مکان مقدس را به بی‌حرمتی و رسوایی نسپارد تا ملت‌ها شادی نکنند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 13,
+      "text_en": "So God heard their prayers, and looked upon their afflictions: for the people fasted many days in all Judea and Jerusalem before the sanctuary of the Lord Almighty.",
+      "text_fa": "خدا دعاهایشان را شنید و بر رنجشان نظر کرد؛ زیرا قوم در سراسر یهودا و اورشلیم، در برابر مکان مقدس خداوند قادر مطلق، روزهای بسیار روزه گرفتند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 14,
+      "text_en": "And Joacim the high priest, and all the priests that stood before the Lord, and they which ministered unto the Lord, had their loins girt with sackcloth, and offered the daily burnt offerings, with the vows and free gifts of the people,",
+      "text_fa": "یواقیم کاهن اعظم و همهٔ کاهنانی که در حضور خداوند می‌ایستادند و او را خدمت می‌کردند، پلاس بر کمر بسته بودند و قربانی‌های سوختنی روزانه را همراه با نذرها و هدایای داوطلبانهٔ قوم تقدیم می‌کردند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 15,
+      "text_en": "And had ashes on their mitres, and cried unto the Lord with all their power, that he would look upon all the house of Israel graciously.",
+      "text_fa": "آنان بر دستارهای خود خاکستر داشتند و با تمام قدرت نزد خداوند فریاد می‌زدند تا بر تمام خاندان اسرائیل با لطف نظر کند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    }
+  ]
+}

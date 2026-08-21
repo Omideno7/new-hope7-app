@@ -9,9 +9,9 @@ This review package continues the New Hope 7 Apocrypha work without changing app
 - English title: `Fourth Maccabees`
 - Croatian title: `Četvrta knjiga o Makabejcima`
 - Overall status: `in_review`
-- Persian continuation included here: chapters 5–18
+- Persian continuation included here: chapters 4–18
 - Croatian continuation included here: chapters 4–18
-- Previously prepared ranges intentionally excluded: Persian chapters 1–4; Croatian chapters 1–3
+- Previously prepared ranges intentionally excluded: Persian chapters 1–3; Croatian chapters 1–3
 
 The chapter files include English source text only as an alignment reference. English is not counted as a new translation in this continuation.
 
@@ -32,7 +32,8 @@ The supplied Persian PDF (`Maccabees4(1).pdf`) was used as a secondary terminolo
 - `chapters/chapter-04.in-review.json` through `chapters/chapter-18.in-review.json` — one record per WEBC verse
 - `scripts/validate-apocrypha-review.mjs` — deterministic structural and completeness checks
 
-For chapter 4, Persian text is intentionally `null` and its locale status is `out_of_scope`; this prevents the continuation package from overwriting the previously prepared Persian chapter 4. Every newly included Persian and Croatian translation record is marked `in_review`.
+Chapter 4 now includes complete Persian and Croatian text. Every newly included
+Persian and Croatian translation record is marked `in_review`.
 
 ## Validation
 

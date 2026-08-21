@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "book_id": "judith",
+  "title_fa": "یهودیت",
+  "title_en": "Judith",
+  "title_hr": "Judita",
+  "chapter": 1,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "8c2aa67bb05c8509454fa65c3043f3caa762cb181daaa6bb728610a1da4d576f",
+  "locales_in_scope": [
+    "fa"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "In the twelfth year of the reign of Nabuchodonosor, who reigned in Nineve, the great city; in the days of Arphaxad, which reigned over the Medes in Ecbatane,",
+      "text_fa": "در سال دوازدهم سلطنت نبوکدنصر، که در شهر بزرگ نینوا پادشاهی می‌کرد، و در روزگار ارفکساد، که در اکباتان بر مادها فرمان می‌راند،",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 2,
+      "text_en": "And built in Ecbatane walls round about of stones hewn three cubits broad and six cubits long, and made the height of the wall seventy cubits, and the breadth thereof fifty cubits:",
+      "text_fa": "ارفکساد در اکباتان دیوارهایی از سنگ‌های تراشیده ساخت؛ هر سنگ سه ذراع پهنا و شش ذراع درازا داشت. ارتفاع دیوار را هفتاد ذراع و پهنای آن را پنجاه ذراع قرار داد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 3,
+      "text_en": "And set the towers thereof upon the gates of it an hundred cubits high, and the breadth thereof in the foundation threescore cubits:",
+      "text_fa": "بر فراز دروازه‌های شهر برج‌هایی به ارتفاع صد ذراع بنا کرد که پهنای پیِ آنها شصت ذراع بود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 4,
+      "text_en": "And he made the gates thereof, even gates that were raised to the height of seventy cubits, and the breadth of them was forty cubits, for the going forth of his mighty armies, and for the setting in array of his footmen:",
+      "text_fa": "دروازه‌هایی نیز ساخت که ارتفاعشان به هفتاد ذراع و پهنایشان به چهل ذراع می‌رسید تا سپاهیان نیرومندش از آنها بیرون روند و پیاده‌نظامش صف‌آرایی کند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 5,
+      "text_en": "Even in those days king Nabuchodonosor made war with king Arphaxad in the great plain, which is the plain in the borders of Ragau.",
+      "text_fa": "در همان روزها، نبوکدنصر پادشاه با ارفکساد در دشت بزرگِ مرزهای راگا جنگید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 6,
+      "text_en": "And there came unto him all they that dwelt in the hill country, and all that dwelt by Euphrates, and Tigris and Hydaspes, and the plain of Arioch the king of the Elymeans, and very many nations of the sons of Chelod, assembled themselves to the battle.",
+      "text_fa": "همهٔ ساکنان کوهستان و نیز کسانی که در کنار فرات، دجله و هیداسپس زندگی می‌کردند، همراه با مردمان دشتِ اریوخ، پادشاه عیلامیان، و ملت‌های بسیار از نسل کلود، نزد او آمدند و برای نبرد گرد آمدند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 7,
+      "text_en": "Then Nabuchodonosor king of the Assyrians sent unto all that dwelt in Persia, and to all that dwelt westward, and to those that dwelt in Cilicia, and Damascus, and Libanus, and Antilibanus, and to all that dwelt upon the sea coast,",
+      "text_fa": "آنگاه نبوکدنصر، پادشاه آشوریان، برای همهٔ ساکنان پارس و سرزمین‌های غربی و نیز مردم قیلیقیه، دمشق، لبنان، آنتی‌لبنان و تمامی ساکنان ساحل دریا پیام فرستاد؛",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 8,
+      "text_en": "And to those among the nations that were of Carmel, and Galaad, and the higher Galilee, and the great plain of Esdrelom,",
+      "text_fa": "همچنین برای مردمان کرمل، جلعاد، جلیل علیا و دشت بزرگ یزرعیل،",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 9,
+      "text_en": "And to all that were in Samaria and the cities thereof, and beyond Jordan unto Jerusalem, and Betane, and Chelus, and Kades, and the river of Egypt, and Taphnes, and Ramesse, and all the land of Gesem,",
+      "text_fa": "و برای همهٔ ساکنان سامره و شهرهایش و آن سوی اردن تا اورشلیم، بیتانه، خِلوس، قادش، رود مصر، تحفنحیس، رعمسیس و سراسر سرزمین جوشن،",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 10,
+      "text_en": "Until ye come beyond Tanis and Memphis, and to all the inhabitants of Egypt, until ye come to the borders of Ethiopia.",
+      "text_fa": "تا آن سوی تانیس و ممفیس و برای همهٔ ساکنان مصر تا مرزهای حبشه پیام فرستاد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 11,
+      "text_en": "But all the inhabitants of the land made light of the commandment of Nabuchodonosor king of the Assyrians, neither went they with him to the battle; for they were not afraid of him: yea, he was before them as one man, and they sent away his ambassadors from them without effect, and with disgrace.",
+      "text_fa": "اما همهٔ ساکنان آن سرزمین فرمان نبوکدنصر، پادشاه آشوریان، را بی‌اهمیت شمردند و برای جنگ همراه او نرفتند، زیرا از او نمی‌ترسیدند. او در نظرشان همچون مردی تنها بود؛ پس فرستادگانش را دست‌خالی و با خواری بازگرداندند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 12,
+      "text_en": "Therefore Nabuchodonosor was very angry with all this country, and sware by his throne and kingdom, that he would surely be avenged upon all those coasts of Cilicia, and Damascus, and Syria, and that he would slay with the sword all the inhabitants of the land of Moab, and the children of Ammon, and all Judea, and all that were in Egypt, till ye come to the borders of the two seas.",
+      "text_fa": "از این رو نبوکدنصر بر تمام آن سرزمین سخت خشمگین شد و به تخت و پادشاهی خود سوگند خورد که از همهٔ نواحی قیلیقیه، دمشق و سوریه انتقام بگیرد و همهٔ ساکنان موآب، عمونیان، تمامی یهودا و همهٔ مردم مصر را تا مرز دو دریا با شمشیر از میان ببرد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 13,
+      "text_en": "Then he marched in battle array with his power against king Arphaxad in the seventeenth year, and he prevailed in his battle: for he overthrew all the power of Arphaxad, and all his horsemen, and all his chariots,",
+      "text_fa": "پس در سال هفدهم، با سپاه خود در آرایش جنگی به مقابله با ارفکساد رفت و در نبرد بر او پیروز شد؛ تمام نیروی ارفکساد، سوارانش و ارابه‌هایش را درهم شکست.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 14,
+      "text_en": "And became lord of his cities, and came unto Ecbatane, and took the towers, and spoiled the streets thereof, and turned the beauty thereof into shame.",
+      "text_fa": "بر شهرهای او مسلط شد، به اکباتان آمد، برج‌ها را تصرف کرد، خیابان‌ها را غارت نمود و زیبایی شهر را به رسوایی بدل ساخت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 15,
+      "text_en": "He took also Arphaxad in the mountains of Ragau, and smote him through with his darts, and destroyed him utterly that day.",
+      "text_fa": "ارفکساد را نیز در کوه‌های راگا گرفت، با نیزه‌های خود از پا درآورد و همان روز او را به‌کلی نابود کرد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 16,
+      "text_en": "So he returned afterward to Nineve, both he and all his company of sundry nations being a very great multitude of men of war, and there he took his ease, and banqueted, both he and his army, an hundred and twenty days.",
+      "text_fa": "سپس نبوکدنصر با همهٔ همراهانش، یعنی انبوه عظیمی از جنگجویان ملت‌های گوناگون، به نینوا بازگشت. او و سپاهش صد و بیست روز به استراحت و ضیافت پرداختند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    }
+  ]
+}

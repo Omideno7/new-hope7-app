@@ -1,0 +1,385 @@
+{
+  "schema_version": 1,
+  "book_id": "2_esdras",
+  "title_fa": "دوم اِسدراس",
+  "title_en": "Second Esdras",
+  "title_hr": "Druga Ezdrina",
+  "chapter": 11,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "be76dbc2ef6afe92419b114320d7d1ed35ff297587b674fdcf237c0634e9dded",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Then saw I a dream, and, behold, there came up from the sea an eagle, which had twelve feathered wings, and three heads.",
+      "text_fa": null,
+      "text_hr": "Tada sam vidio san, i gle, iz mora je izašao orao, koji je imao dvanaest pernatih krila i tri glave.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And I saw, and, behold, she spread her wings over all the earth, and all the winds of the air blew on her, and were gathered together.",
+      "text_fa": null,
+      "text_hr": "Vidio sam, i gle, raširi krila po svoj zemlji, i svi vjetrovi nebeski zapuhali su prema njemu i skupili se.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And I beheld, and out of her feathers there grew other contrary feathers; and they became little feathers and small.",
+      "text_fa": null,
+      "text_hr": "Vidio sam kako su iz njegova perja izrasla druga, suprotna pera; postala su sitna i kratka.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "But her heads were at rest: the head in the midst was greater than the other, yet rested it with the residue.",
+      "text_fa": null,
+      "text_hr": "Ali njegove su glave mirovale. Srednja je glava bila veća od drugih, ali je i ona mirovala zajedno s njima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "Moreover I beheld, and, lo, the eagle flew with her feathers, and reigned upon earth, and over them that dwelt therein.",
+      "text_fa": null,
+      "text_hr": "Nadalje sam vidio, i gle, orao leti sa svojim perjem i vlada nad zemljom i nad onima koji prebivaju na njoj.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And I saw that all things under heaven were subject unto her, and no man spake against her, no, not one creature upon earth.",
+      "text_fa": null,
+      "text_hr": "Vidio sam da mu je bilo podložno sve pod nebom; nitko mu se nije protivio, nijedno stvorenje na zemlji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And I beheld, and, lo, the eagle rose upon her talons, and spake to her feathers, saying,",
+      "text_fa": null,
+      "text_hr": "Pogledao sam, i gle, orao se podigao na kandžama i rekao svojemu perju:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "Watch not all at once: sleep every one in his own place, and watch by course:",
+      "text_fa": null,
+      "text_hr": "Ne bdijte svi odjednom: spavajte svatko na svome mjestu i bdijte redom:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "But let the heads be preserved for the last.",
+      "text_fa": null,
+      "text_hr": "Ali neka se glave sačuvaju za kraj.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And I beheld, and, lo, the voice went not out of her heads, but from the midst of her body.",
+      "text_fa": null,
+      "text_hr": "Vidio sam, i gle, glas ne izlazi iz njezinih glava, nego iz sredine njezina tijela.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "And I numbered her contrary feathers, and, behold, there were eight of them.",
+      "text_fa": null,
+      "text_hr": "Izbrojio sam njegova suprotna pera, i gle, bilo ih je osam.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "And I looked, and, behold, on the right side there arose one feather, and reigned over all the earth;",
+      "text_fa": null,
+      "text_hr": "Pogledao sam, i gle, s desne se strane podiglo jedno pero i zavladalo svom zemljom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "And so it was, that when it reigned, the end of it came, and the place thereof appeared no more: so the next following stood up. and reigned, and had a great time;",
+      "text_fa": null,
+      "text_hr": "Kad je zavladalo, došao mu je kraj i više mu se nije vidjelo mjesta. Zatim se podiglo sljedeće, zavladalo i dugo potrajalo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "And it happened, that when it reigned, the end of it came also, like as the first, so that it appeared no more.",
+      "text_fa": null,
+      "text_hr": "Kad je ono zavladalo, i njemu je, kao prvomu, došao kraj te se više nije pojavljivalo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "Then came there a voice unto it, and said,",
+      "text_fa": null,
+      "text_hr": "Tada mu se začuo glas koji je rekao:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "Hear thou that hast borne rule over the earth so long: this I say unto thee, before thou beginnest to appear no more,",
+      "text_fa": null,
+      "text_hr": "Čuj, ti koji si tako dugo vladao zemljom. Ovo ti govorim prije nego što posve nestaneš:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "There shall none after thee attain unto thy time, neither unto the half thereof.",
+      "text_fa": null,
+      "text_hr": "Nitko nakon tebe neće dosegnuti trajanje tvoje vladavine, čak ni polovicu toga vremena.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "Then arose the third, and reigned as the other before, and appeared no more also.",
+      "text_fa": null,
+      "text_hr": "Tada se podiglo treće pero, zavladalo poput prethodnih i također nestalo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "So went it with all the residue one after another, as that every one reigned, and then appeared no more.",
+      "text_fa": null,
+      "text_hr": "Tako je bilo i sa svima preostalima, jednim za drugim: svako je zavladalo, a zatim nestalo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "Then I beheld, and, lo, in process of time the feathers that followed stood up upon the right side, that they might rule also; and some of them ruled, but within a while they appeared no more:",
+      "text_fa": null,
+      "text_hr": "Potom sam vidio kako su se, s vremenom, sljedeća pera podizala s desne strane da i ona zavladaju. Neka su vladala, ali su ubrzo nestala.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "For some of them were set up, but ruled not.",
+      "text_fa": null,
+      "text_hr": "Neka su se podigla, ali nisu zavladala.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "After this I looked, and, behold, the twelve feathers appeared no more, nor the two little feathers:",
+      "text_fa": null,
+      "text_hr": "Nakon toga pogledao sam, i gle, dvanaest pera i ona dva mala pera više se nisu pojavljivali.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "And there was no more upon the eagle’s body, but three heads that rested, and six little wings.",
+      "text_fa": null,
+      "text_hr": "Na tijelu orla više nije bilo ništa, osim tri glave koje su počivale i šest malih krila.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "Then saw I also that two little feathers divided themselves from the six, and remained under the head that was upon the right side: for the four continued in their place.",
+      "text_fa": null,
+      "text_hr": "Tada sam također vidio da su se dva mala pera odvojila od šest, i ostala ispod glave koja je bila na desnoj strani: jer su četiri ostala na svom mjestu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "And I beheld, and, lo, the feathers that were under the wing thought to set up themselves and to have the rule.",
+      "text_fa": null,
+      "text_hr": "Pogledao sam, i gle, pera pod krilom namjeravala su se podići i zavladati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "And I beheld, and, lo, there was one set up, but shortly it appeared no more.",
+      "text_fa": null,
+      "text_hr": "Pogledao sam, i gle, jedno se podiglo, ali je ubrzo nestalo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "And the second was sooner away than the first.",
+      "text_fa": null,
+      "text_hr": "Drugo je nestalo još brže od prvoga.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "And I beheld, and, lo, the two that remained thought also in themselves to reign:",
+      "text_fa": null,
+      "text_hr": "Pogledao sam, i gle, dva preostala pera također su u sebi naumila zavladati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "And when they so thought, behold, there awaked one of the heads that were at rest, namely, it that was in the midst; for that was greater than the two other heads.",
+      "text_fa": null,
+      "text_hr": "Dok su tako mislila, gle, probudila se jedna od glava koje su mirovale, ona srednja; bila je veća od drugih dviju glava.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "And then I saw that the two other heads were joined with it.",
+      "text_fa": null,
+      "text_hr": "Tada sam vidio da su joj se pridružile druge dvije glave.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "And, behold, the head was turned with them that were with it, and did eat up the two feathers under the wing that would have reigned.",
+      "text_fa": null,
+      "text_hr": "I gle, glava se okrenula zajedno s onima koje su bile uz nju te proždrla dva pera pod krilom koja su htjela zavladati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "But this head put the whole earth in fear, and bare rule in it over all those that dwelt upon the earth with much oppression; and it had the governance of the world more than all the wings that had been.",
+      "text_fa": null,
+      "text_hr": "Ta je glava zastrašila svu zemlju i uz veliko tlačenje zavladala svim njezinim stanovnicima; imala je veću vlast nad svijetom od svih prijašnjih krila.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "And after this I beheld, and, lo, the head that was in the midst suddenly appeared no more, like as the wings.",
+      "text_fa": null,
+      "text_hr": "Nakon toga sam vidio, i gle, srednja je glava iznenada nestala, kao i krila.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 34,
+      "text_en": "But there remained the two heads, which also in like sort ruled upon the earth, and over those that dwelt therein.",
+      "text_fa": null,
+      "text_hr": "Ali ostale su dvije glave, koje su također na sličan način vladale zemljom i onima koji su na njoj prebivali.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 35,
+      "text_en": "And I beheld, and, lo, the head upon the right side devoured it that was upon the left side.",
+      "text_fa": null,
+      "text_hr": "Pogledao sam, i gle, glava s desne strane proždrla je onu s lijeve.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 36,
+      "text_en": "Then I head a voice, which said unto me, Look before thee, and consider the thing that thou seest.",
+      "text_fa": null,
+      "text_hr": "Tada sam začuo glas koji mi je rekao: Pogledaj pred sebe i razmotri ono što vidiš.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 37,
+      "text_en": "And I beheld, and lo, as it were a roaring lion chased out of the wood: and I saw that he sent out a man’s voice unto the eagle, and said,",
+      "text_fa": null,
+      "text_hr": "Pogledao sam, i gle, pojavio se kao ričući lav koji je izišao iz šume. Vidio sam da je ljudskim glasom progovorio orlu:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 38,
+      "text_en": "Hear thou, I will talk with thee, and the Highest shall say unto thee,",
+      "text_fa": null,
+      "text_hr": "Čuj! Govorit ću s tobom, a Svevišnji će ti reći:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 39,
+      "text_en": "Art not thou it that remainest of the four beasts, whom I made to reign in my world, that the end of their times might come through them?",
+      "text_fa": null,
+      "text_hr": "Nisi li ti ona preostala od četiriju zvijeri koje sam postavio da vladaju mojim svijetom, kako bi preko njih došao kraj njihovim vremenima?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 40,
+      "text_en": "And the fourth came, and overcame all the beasts that were past, and had power over the world with great fearfulness, and over the whole compass of the earth with much wicked oppression; and so long time dwelt he upon the earth with deceit.",
+      "text_fa": null,
+      "text_hr": "Četvrta je došla, svladala sve prijašnje zvijeri i s velikim strahom zavladala svijetom, a sa silnim opakim tlačenjem čitavim prostranstvom zemlje; tako je dugo prijevarno prebivala na zemlji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 41,
+      "text_en": "For the earth hast thou not judged with truth.",
+      "text_fa": null,
+      "text_hr": "Jer zemlji nisi sudio po istini.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 42,
+      "text_en": "For thou hast afflicted the meek, thou hast hurt the peaceable, thou hast loved liars, and destroyed the dwellings of them that brought forth fruit, and hast cast down the walls of such as did thee no harm.",
+      "text_fa": null,
+      "text_hr": "Tlačila si krotke, nanosila zlo miroljubivima, ljubila lašce, uništavala domove plodonosnih i rušila zidine onih koji ti nisu naudili.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 43,
+      "text_en": "Therefore is thy wrongful dealing come up unto the Highest, and thy pride unto the Mighty.",
+      "text_fa": null,
+      "text_hr": "Zato je tvoje nepravedno postupanje doprlo do Svevišnjega, a tvoja oholost do Silnoga.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 44,
+      "text_en": "The Highest also hath looked upon the proud times, and, behold, they are ended, and his abominations are fulfilled.",
+      "text_fa": null,
+      "text_hr": "Svevišnji je pogledao i ohola vremena; gle, ona su završila i gadosti su dosegle svoju puninu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 45,
+      "text_en": "And therefore appear no more, thou eagle, nor thy horrible wings, nor thy wicked feathers nor thy malicious heads, nor thy hurtful claws, nor all thy vain body:",
+      "text_fa": null,
+      "text_hr": "Zato se više ne pojavljuj, orle: ni tvoja strašna krila, ni tvoja opaka pera, ni tvoje zlobne glave, ni tvoje pogubne pandže, ni sve tvoje isprazno tijelo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 46,
+      "text_en": "That all the earth may be refreshed, and may return, being delivered from thy violence, and that she may hope for the judgment and mercy of him that made her.",
+      "text_fa": null,
+      "text_hr": "Neka se sva zemlja okrijepi i, oslobođena tvojega nasilja, vrati svojemu miru te se uzda u sud i milosrđe onoga koji ju je stvorio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

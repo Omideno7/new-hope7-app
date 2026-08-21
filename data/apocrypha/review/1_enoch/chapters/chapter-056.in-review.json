@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 56,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "50a486481b5f6c929cb9a56c00b94ef6a349d3c73e3cc8f392ab82f2bee52a82",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And I saw there the hosts of the angels of punishment going, and they held scourges and chains of iron and bronze.",
+      "text_fa": null,
+      "text_hr": "Ondje sam vidio kako prolaze vojske anđela kazne držeći bičeve i lance od željeza i bronce.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And I asked the angel of peace who went with me, saying: ‘To whom are these who hold the scourges going?’",
+      "text_fa": null,
+      "text_hr": "Upitao sam anđela mira koji je išao sa mnom: „Kamo idu ovi što drže bičeve?“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And he said unto me: ‘To their elect and beloved ones that they may be cast into the chasm of the abyss of the valley.",
+      "text_fa": null,
+      "text_hr": "Odgovorio mi je: „K njihovim izabranima i miljenicima, da ih bace u ponor dolinskoga bezdana.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And then that valley shall be filled with their elect and beloved,\nAnd the days of their lives shall be at an end,\nAnd the days of their leading astray shall not thenceforward be reckoned.",
+      "text_fa": null,
+      "text_hr": "Tada će se ta dolina napuniti njihovim izabranima i miljenicima,\ndani njihova života doći će kraju,\na dani njihova zavođenja više se neće brojiti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And in those days the angels shall return\nAnd hurl themselves to the east upon the Parthians and Medes:\nThey shall stir up the kings, so that a spirit of unrest shall come upon them,\nAnd they shall rouse them from their thrones,\nThat they may break forth as lions from their lairs,\nAnd as hungry wolves among their flocks.",
+      "text_fa": null,
+      "text_hr": "U one će se dane anđeli vratiti\ni obrušiti se na istok, na Parte i Međane.\nUznemirit će kraljeve i duh će nemira doći na njih,\npodići će ih s njihovih prijestolja,\nda provale poput lavova iz svojih brloga\ni poput gladnih vukova među svoja stada.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And they shall go up and tread under foot the land of His elect ones,\n[And the land of His elect ones shall be before them a threshing-floor and a highway]:",
+      "text_fa": null,
+      "text_hr": "Uzaći će i zgaziti zemlju njegovih izabranih,\n[a zemlja njegovih izabranih bit će pred njima poput gumna i široke ceste].",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "But the city of my righteous shall be a hindrance to their horses.\nAnd they shall begin to fight among themselves,\nAnd their right hand shall be strong against themselves,\nAnd a man shall not know his brother,\nNor a son his father or his mother,\nTill there be no number of the corpses through their slaughter,\nAnd their punishment be not in vain.",
+      "text_fa": null,
+      "text_hr": "Ali grad mojih pravednika bit će zapreka njihovim konjima.\nPočet će se boriti jedni protiv drugih,\na njihova će desnica biti snažna protiv njih samih.\nČovjek neće poznavati svojega brata\nniti sin svojega oca ili majku,\nsve dok se zbog njihova pokolja više ne budu mogla izbrojiti trupla\ni njihova kazna ne bude uzaludna.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "In those days Sheol shall open its jaws,\nAnd they shall be swallowed up therein,\nAnd their destruction shall be at an end;\nSheol shall devour the sinners in the presence of the elect.’",
+      "text_fa": null,
+      "text_hr": "U one će dane Šeol razjapiti čeljusti\ni oni će biti progutani u njemu.\nNjihovo će uništenje biti dovršeno;\nŠeol će pred izabranima proždrijeti grešnike.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

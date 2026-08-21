@@ -1,0 +1,425 @@
+{
+  "schema_version": 1,
+  "book_id": "2_esdras",
+  "title_fa": "دوم اِسدراس",
+  "title_en": "Second Esdras",
+  "title_hr": "Druga Ezdrina",
+  "chapter": 12,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "55489935c010a6da1d945c5a895c9075434e5f0502df99c4bf93b13c551bc000",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And it came to pass, whiles the lion spake these words unto the eagle, I saw,",
+      "text_fa": null,
+      "text_hr": "I dogodi se, dok je lav govorio ove riječi orlu, vidio sam,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And, behold, the head that remained and the four wings appeared no more, and the two went unto it and set themselves up to reign, and their kingdom was small, and fill of uproar.",
+      "text_fa": null,
+      "text_hr": "I gle, nestali su preostala glava i četiri krila; ona dva pera prišla su joj i postavila se da vladaju, ali njihovo je kraljevstvo bilo maleno i puno meteža.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And I saw, and, behold, they appeared no more, and the whole body of the eagle was burnt so that the earth was in great fear: then awaked I out of the trouble and trance of my mind, and from great fear, and said unto my spirit,",
+      "text_fa": null,
+      "text_hr": "Vidio sam, i gle, i ona su nestala, a čitavo je tijelo orla izgorjelo, tako da je zemlju obuzeo velik strah. Tada sam se, silno prestrašen, probudio iz duševne smetenosti i zanosa te rekao svojemu duhu:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "Lo, this hast thou done unto me, in that thou searchest out the ways of the Highest.",
+      "text_fa": null,
+      "text_hr": "Evo, ovo si mi učinio, tražeći puteve Svevišnjega.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "Lo, yet am I weary in my mind, and very weak in my spirit; and little strength is there in me, for the great fear wherewith I was afflicted this night.",
+      "text_fa": null,
+      "text_hr": "Gle, um mi je još iscrpljen, duh veoma slab, a u meni je malo snage zbog silnoga straha koji me ove noći obuzeo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "Therefore will I now beseech the Highest, that he will comfort me unto the end.",
+      "text_fa": null,
+      "text_hr": "Zato ću sada moliti Svevišnjega, da me utješi do kraja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And I said, Lord that bearest rule, if I have found grace before thy sight, and if I am justified with thee before many others, and if my prayer indeed be come up before thy face;",
+      "text_fa": null,
+      "text_hr": "Rekao sam: Gospodine, Vladaru, ako sam našao milost pred tobom, ako si me opravdao više od mnogih drugih i ako je moja molitva doista doprla pred tvoje lice,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "Comfort me then, and shew me thy servant the interpretation and plain difference of this fearful vision, that thou mayest perfectly comfort my soul.",
+      "text_fa": null,
+      "text_hr": "Utješi me i pokaži svojemu sluzi jasno tumačenje ovoga strašnog viđenja, kako bi potpuno utješio moju dušu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "For thou hast judged me worthy to shew me the last times.",
+      "text_fa": null,
+      "text_hr": "Jer ti si me ocijenio dostojnim da mi pokažeš posljednja vremena.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And he said unto me, This is the interpretation of the vision:",
+      "text_fa": null,
+      "text_hr": "Odgovorio mi je: Ovo je tumačenje viđenja:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "The eagle, whom thou sawest come up from the sea, is the kingdom which was seen in the vision of thy brother Daniel.",
+      "text_fa": null,
+      "text_hr": "Orao kojega si vidio kako izlazi iz mora kraljevstvo je koje je u viđenju vidio tvoj brat Daniel.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "But it was not expounded unto him, therefore now I declare it unto thee.",
+      "text_fa": null,
+      "text_hr": "Njemu to nije bilo protumačeno, a sada ga ja objavljujem tebi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "Behold, the days will come, that there shall rise up a kingdom upon earth, and it shall be feared above all the kingdoms that were before it.",
+      "text_fa": null,
+      "text_hr": "Gle, dolaze dani kada će se na zemlji podići kraljevstvo kojega će se bojati više od svih kraljevstava prije njega.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "In the same shall twelve kings reign, one after another:",
+      "text_fa": null,
+      "text_hr": "U istom će kraljevati dvanaest kraljeva, jedan za drugim:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "Whereof the second shall begin to reign, and shall have more time than any of the twelve.",
+      "text_fa": null,
+      "text_hr": "Drugi od njih počet će vladati i njegova će vladavina trajati dulje od vladavine bilo kojega od dvanaestorice.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "And this do the twelve wings signify, which thou sawest.",
+      "text_fa": null,
+      "text_hr": "A ovo označavaju dvanaest krila, koja si vidio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "As for the voice which thou heardest speak, and that thou sawest not to go out from the heads but from the midst of the body thereof, this is the interpretation:",
+      "text_fa": null,
+      "text_hr": "Što se tiče glasa koji si čuo da govori, i koji si vidio da ne izlazi iz glava nego iz sredine njegova tijela, ovo je tumačenje:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "That after the time of that kingdom there shall arise great strivings, and it shall stand in peril of failing: nevertheless it shall not then fall, but shall be restored again to his beginning.",
+      "text_fa": null,
+      "text_hr": "Da će nakon vremena tog kraljevstva nastati velike borbe i ono će biti u opasnosti od propasti: ipak neće tada pasti, već će se ponovno vratiti na svoj početak.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "And whereas thou sawest the eight small under feathers sticking to her wings, this is the interpretation:",
+      "text_fa": null,
+      "text_hr": "A osam malih pera pod njegovim krilima koja si vidio znače ovo:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "That in him there shall arise eight kings, whose times shall be but small, and their years swift.",
+      "text_fa": null,
+      "text_hr": "U njemu će se podići osam kraljeva, ali njihova će vremena biti kratka, a godine brzo proći.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "And two of them shall perish, the middle time approaching: four shall be kept until their end begin to approach: but two shall be kept unto the end.",
+      "text_fa": null,
+      "text_hr": "Dvojica će propasti kad se približi srednje vrijeme; četvorica će biti sačuvana dok im se ne počne približavati kraj, a dvojica do samoga kraja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "And whereas thou sawest three heads resting, this is the interpretation:",
+      "text_fa": null,
+      "text_hr": "I budući da si vidio tri glave kako počivaju, ovo je tumačenje:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "In his last days shall the most High raise up three kingdoms, and renew many things therein, and they shall have the dominion of the earth,",
+      "text_fa": null,
+      "text_hr": "U njegovim posljednjim danima Svevišnji će podići tri kraljevstva i u njima obnoviti mnogo toga; ona će zavladati zemljom,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "And of those that dwell therein, with much oppression, above all those that were before them: therefore are they called the heads of the eagle.",
+      "text_fa": null,
+      "text_hr": "I njezinim stanovnicima, tlačeći ih više od svih svojih prethodnika; zato su nazvana glavama orla.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "For these are they that shall accomplish his wickedness, and that shall finish his last end.",
+      "text_fa": null,
+      "text_hr": "Oni će dovršiti njegovu opačinu i privesti kraju njegov posljednji svršetak.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "And whereas thou sawest that the great head appeared no more, it signifieth that one of them shall die upon his bed, and yet with pain.",
+      "text_fa": null,
+      "text_hr": "I budući da si vidio da se velika glava više nije pojavila, to označava da će jedan od njih umrijeti na svojoj postelji, ali ipak s bolovima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "For the two that remain shall be slain with the sword.",
+      "text_fa": null,
+      "text_hr": "Jer dvojica koja preostanu bit će ubijena mačem.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "For the sword of the one shall devour the other: but at the last shall he fall through the sword himself.",
+      "text_fa": null,
+      "text_hr": "Jer će mač jednog proždrijeti drugoga, ali će naposljetku sam od mača pasti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "And whereas thou sawest two feathers under the wings passing over the head that is on the right side;",
+      "text_fa": null,
+      "text_hr": "I budući da si vidio dva pera ispod krila kako prolaze iznad glave koja je s desne strane;",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "It signifieth that these are they, whom the Highest hath kept unto their end: this is the small kingdom and full of trouble, as thou sawest.",
+      "text_fa": null,
+      "text_hr": "To znači da su to oni koje je Svevišnji sačuvao do njihova kraja. To je ono maleno kraljevstvo, puno nevolja, koje si vidio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "And the lion, whom thou sawest rising up out of the wood, and roaring, and speaking to the eagle, and rebuking her for her unrighteousness with all the words which thou hast heard;",
+      "text_fa": null,
+      "text_hr": "Lav kojega si vidio kako izlazi iz šume, riče, govori orlu i svim riječima koje si čuo kori ga zbog nepravednosti,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "This is the anointed, which the Highest hath kept for them and for their wickedness unto the end: he shall reprove them, and shall upbraid them with their cruelty.",
+      "text_fa": null,
+      "text_hr": "Jest Pomazanik kojega je Svevišnji sačuvao do kraja za njih i njihovu opačinu. On će ih ukoriti i predbaciti im njihovu okrutnost.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "For he shall set them before him alive in judgment, and shall rebuke them, and correct them.",
+      "text_fa": null,
+      "text_hr": "Postavit će ih žive pred svoj sud, ukoriti ih i kazniti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 34,
+      "text_en": "For the rest of my people shall he deliver with mercy, those that have been pressed upon my borders, and he shall make them joyful until the coming of the day of judgment, whereof I have spoken unto thee from the beginning.",
+      "text_fa": null,
+      "text_hr": "Ostatak mojega naroda milosrdno će izbaviti — one koji su bili pritisnuti unutar mojih granica — i obradovati ih sve do dolaska Sudnjega dana, o kojemu sam ti govorio od početka.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 35,
+      "text_en": "This is the dream that thou sawest, and these are the interpretations.",
+      "text_fa": null,
+      "text_hr": "Ovo je san koji si vidio, a ovo su tumačenja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 36,
+      "text_en": "Thou only hast been meet to know this secret of the Highest.",
+      "text_fa": null,
+      "text_hr": "Samo si ti bio dostojan spoznati ovu tajnu Svevišnjega.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 37,
+      "text_en": "Therefore write all these things that thou hast seen in a book, and hide them:",
+      "text_fa": null,
+      "text_hr": "Zato sve što si vidio zapiši u knjigu i sakrij to.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 38,
+      "text_en": "And teach them to the wise of the people, whose hearts thou knowest may comprehend and keep these secrets.",
+      "text_fa": null,
+      "text_hr": "Pouči o tome mudre među narodom, one za čija srca znaš da mogu razumjeti i sačuvati ove tajne.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 39,
+      "text_en": "But wait thou here thyself yet seven days more, that it may be shewed thee, whatsoever it pleaseth the Highest to declare unto thee. And with that he went his way.",
+      "text_fa": null,
+      "text_hr": "Ali ostani ovdje još sedam dana, kako bi ti se pokazalo sve što ti Svevišnji odluči objaviti. Zatim je otišao.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 40,
+      "text_en": "And it came to pass, when all the people saw that the seven days were past, and I not come again into the city, they gathered them all together, from the least unto the greatest, and came unto me, and said,",
+      "text_fa": null,
+      "text_hr": "Kad je sav narod vidio da je prošlo sedam dana, a ja se nisam vratio u grad, svi su se okupili, od najmanjega do najvećega, došli k meni i rekli:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 41,
+      "text_en": "What have we offended thee? and what evil have we done against thee, that thou forsakest us, and sittest here in this place?",
+      "text_fa": null,
+      "text_hr": "Čime smo ti sagriješili? Kakvo smo zlo učinili protiv tebe da si nas napustio i sjediš ovdje?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 42,
+      "text_en": "For of all the prophets thou only art left us, as a cluster of the vintage, and as a candle in a dark place, and as a haven or ship preserved from the tempest.",
+      "text_fa": null,
+      "text_hr": "Od svih proroka samo si ti ostao nama, poput grozda nakon berbe, poput svjetiljke na mračnom mjestu i poput luke ili lađe sačuvane od oluje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 43,
+      "text_en": "Are not the evils which are come to us sufficient?",
+      "text_fa": null,
+      "text_hr": "Zar nam nisu dovoljna zla koja su nas snašla?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 44,
+      "text_en": "If thou shalt forsake us, how much better had it been for us, if we also had been burned in the midst of Sion?",
+      "text_fa": null,
+      "text_hr": "Ako nas ostaviš, koliko bi bolje bilo za nas da smo i mi spaljeni usred Siona?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 45,
+      "text_en": "For we are not better than they that died there. And they wept with a loud voice. Then answered I them, and said,",
+      "text_fa": null,
+      "text_hr": "Jer nismo bolji od onih koji su ondje umrli. Tada su glasno zaplakali, a ja sam im odgovorio:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 46,
+      "text_en": "Be of good comfort, O Israel; and be not heavy, thou house of Jacob:",
+      "text_fa": null,
+      "text_hr": "Utješi se, Izraele, i ne tuguj, dome Jakovljev.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 47,
+      "text_en": "For the Highest hath you in remembrance, and the Mighty hath not forgotten you in temptation.",
+      "text_fa": null,
+      "text_hr": "Svevišnji vas se sjeća i Silni vas nije zaboravio u kušnji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 48,
+      "text_en": "As for me, I have not forsaken you, neither am I departed from you: but am come into this place, to pray for the desolation of Sion, and that I might seek mercy for the low estate of your sanctuary.",
+      "text_fa": null,
+      "text_hr": "Ja vas nisam napustio niti sam otišao od vas. Došao sam na ovo mjesto moliti zbog opustošenja Siona i tražiti milosrđe za poniženo stanje vašega svetišta.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 49,
+      "text_en": "And now go your way home every man, and after these days will I come unto you.",
+      "text_fa": null,
+      "text_hr": "A sada neka se svatko vrati svojemu domu; nakon ovih dana doći ću k vama.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 50,
+      "text_en": "So the people went their way into the city, like as I commanded them:",
+      "text_fa": null,
+      "text_hr": "Narod se tada vratio u grad, kako sam mu zapovjedio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 51,
+      "text_en": "But I remained still in the field seven days, as the angel commanded me; and did eat only in those days of the flowers of the field, and had my meat of the herbs.",
+      "text_fa": null,
+      "text_hr": "Ostao sam u polju sedam dana, kako mi je anđeo zapovjedio; tih sam dana jeo samo poljsko cvijeće, a bilje mi je bilo hrana.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

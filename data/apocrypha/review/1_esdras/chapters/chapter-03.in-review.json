@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "book_id": "1_esdras",
+  "title_fa": "اول اِسدراس",
+  "title_en": "First Esdras",
+  "title_hr": "Prva Ezdrina",
+  "chapter": 3,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "6cd8daf604dfaec9b07e0d041132a99799d966e20f4c1a9c432f24b805b12e86",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Now when Darius reigned, he made a great feast unto all his subjects, and unto all his household, and unto all the princes of Media and Persia,",
+      "text_fa": null,
+      "text_hr": "Kad je Darije postao kraljem, priredio je veliku gozbu svim svojim podanicima, svemu svojem dvoru i svim knezovima Medije i Perzije,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And to all the governors and captains and lieutenants that were under him, from India unto Ethiopia, of an hundred twenty and seven provinces.",
+      "text_fa": null,
+      "text_hr": "svim namjesnicima, zapovjednicima i upraviteljima pod svojom vlašću, od Indije do Etiopije, u sto dvadeset i sedam pokrajina.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And when they had eaten and drunken, and being satisfied were gone home, then Darius the king went into his bedchamber, and slept, and soon after awaked.",
+      "text_fa": null,
+      "text_hr": "Kad su se najeli i napili te siti otišli kućama, kralj Darije povukao se u svoju spavaonicu, zaspao, a nedugo zatim probudio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "Then three young men, that were of the guard that kept the king’s body, spake one to another;",
+      "text_fa": null,
+      "text_hr": "Tada su tri mladića iz straže koja je čuvala kraljevo tijelo rekla jedan drugomu:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "Let every one of us speak a sentence: he that shall overcome, and whose sentence shall seem wiser than the others, unto him shall the king Darius give great gifts, and great things in token of victory:",
+      "text_fa": null,
+      "text_hr": "„Neka svaki od nas izrekne jednu tvrdnju. Onomu koji pobijedi i čija se tvrdnja pokaže mudrijom od ostalih kralj Darije dat će velike darove i znamenite nagrade pobjede:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "As, to be clothed in purple, to drink in gold, and to sleep upon gold, and a chariot with bridles of gold, and an headtire of fine linen, and a chain about his neck:",
+      "text_fa": null,
+      "text_hr": "odjenut će ga u grimiz, dat će mu da pije iz zlata i spava na zlatu, dat će mu kola sa zlatnim uzdama, povez od finoga lana i lanac oko vrata.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And he shall sit next to Darius because of his wisdom, and shall be called Darius his cousin.",
+      "text_fa": null,
+      "text_hr": "Zbog svoje mudrosti sjedit će do Darija i zvat će ga Darijevim rođakom.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And then every one wrote his sentence, sealed it, and laid it under king Darius his pillow;",
+      "text_fa": null,
+      "text_hr": "Potom je svaki napisao svoju tvrdnju, zapečatio je i položio pod uzglavlje kralja Darija.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And said that, when the king is risen, some will give him the writings; and of whose side the king and the three princes of Persia shall judge that his sentence is the wisest, to him shall the victory be given, as was appointed.",
+      "text_fa": null,
+      "text_hr": "Rekli su: „Kad kralj ustane, netko će mu predati zapise. Onomu za čiju tvrdnju kralj i trojica perzijskih knezova presude da je najmudrija pripast će pobjeda, kako je određeno.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "The first wrote, Wine is the strongest.",
+      "text_fa": null,
+      "text_hr": "Prvi je napisao: „Vino je najjače.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "The second wrote, The king is strongest.",
+      "text_fa": null,
+      "text_hr": "Drugi je napisao: „Kralj je najjači.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "The third wrote, Women are strongest: but above all things Truth beareth away the victory.",
+      "text_fa": null,
+      "text_hr": "Treći je napisao: „Žene su najjače, ali iznad svega Istina odnosi pobjedu.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "Now when the king was risen up, they took their writings, and delivered them unto him, and so he read them:",
+      "text_fa": null,
+      "text_hr": "Kad je kralj ustao, uzeli su svoje zapise i predali mu ih da ih pročita.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "And sending forth he called all the princes of Persia and Media, and the governors, and the captains, and the lieutenants, and the chief officers;",
+      "text_fa": null,
+      "text_hr": "On je poslao glasnike i sazvao sve knezove Perzije i Medije, namjesnike, zapovjednike, upravitelje i najviše službenike.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "And sat him down in the royal seat of judgment; and the writings were read before them.",
+      "text_fa": null,
+      "text_hr": "Sjeo je na kraljevsko sudačko prijestolje, a zapisi su pročitani pred njima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "And he said, Call the young men, and they shall declare their own sentences. So they were called, and came in.",
+      "text_fa": null,
+      "text_hr": "Tada reče: „Pozovite mladiće da sami obrazlože svoje tvrdnje.“ Pozvali su ih i oni su ušli.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "And he said unto them, Declare unto us your mind concerning the writings. Then began the first, who had spoken of the strength of wine;",
+      "text_fa": null,
+      "text_hr": "Kralj im reče: „Izložite nam svoju misao o onome što ste napisali.“ Tada je počeo prvi, onaj koji je govorio o snazi vina.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "And he said thus, O ye men, how exceeding strong is wine! it causeth all men to err that drink it:",
+      "text_fa": null,
+      "text_hr": "Rekao je: „Ljudi, kako je samo silno vino! Ono zavodi svakoga tko ga pije.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "It maketh the mind of the king and of the fatherless child to be all one; of the bondman and of the freeman, of the poor man and of the rich:",
+      "text_fa": null,
+      "text_hr": "Um kralja izjednačuje s umom siročeta, roba sa slobodnjakom, siromaha s bogatašem.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "It turneth also every thought into jollity and mirth, so that a man remembereth neither sorrow nor debt:",
+      "text_fa": null,
+      "text_hr": "Svaku misao okreće prema veselju i radosti, tako da se čovjek ne sjeća ni žalosti ni duga.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "And it maketh every heart rich, so that a man remembereth neither king nor governor; and it maketh to speak all things by talents:",
+      "text_fa": null,
+      "text_hr": "Svako srce čini bogatim, pa se čovjek ne sjeća ni kralja ni namjesnika; navodi ga da o svemu govori bez mjere.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "And when they are in their cups, they forget their love both to friends and brethren, and a little after draw out swords:",
+      "text_fa": null,
+      "text_hr": "Kad se opiju, ljudi zaborave svoju ljubav prema prijateljima i braći te ubrzo potežu mačeve.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "But when they are from the wine, they remember not what they have done.",
+      "text_fa": null,
+      "text_hr": "Ali kad se otrijezne od vina, ne sjećaju se što su učinili.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "O ye men, is not wine the strongest, that enforceth to do thus? And when he had so spoken, he held his peace.",
+      "text_fa": null,
+      "text_hr": "Ljudi, nije li vino najjače kad čovjeka prisiljava na takva djela?“ Kad je to rekao, zašutio je.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

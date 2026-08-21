@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "book_id": "2_esdras",
+  "title_fa": "دوم اِسدراس",
+  "title_en": "Second Esdras",
+  "title_hr": "Druga Ezdrina",
+  "chapter": 3,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "03da879033785d12e6708527efe5aee750ee6b3227e08a824a887da3833263da",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "In the thirtieth year after the ruin of the city I was in Babylon, and lay troubled upon my bed, and my thoughts came up over my heart:",
+      "text_fa": null,
+      "text_hr": "Tridesete godine nakon propasti grada bio sam u Babilonu. Ležao sam uznemiren na svojoj postelji, a misli su mi se rojile u srcu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "For I saw the desolation of Sion, and the wealth of them that dwelt at Babylon.",
+      "text_fa": null,
+      "text_hr": "Jer sam vidio pustoš Siona i bogatstvo onih koji su živjeli u Babilonu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And my spirit was sore moved, so that I began to speak words full of fear to the most High, and said,",
+      "text_fa": null,
+      "text_hr": "I moj je duh bio jako ganut, tako da sam počeo govoriti riječi pune straha Svevišnjem, i rekao sam,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "O Lord, who bearest rule, thou spakest at the beginning, when thou didst plant the earth, and that thyself alone, and commandedst the people,",
+      "text_fa": null,
+      "text_hr": "O Gospodine, Vladaru, ti si govorio na početku, kada si sâm zasadio zemlju i zapovjedio narodu,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And gavest a body unto Adam without soul, which was the workmanship of thine hands, and didst breathe into him the breath of life, and he was made living before thee.",
+      "text_fa": null,
+      "text_hr": "I dao si Adamu tijelo bez duše, koje je bilo djelo tvojih ruku, i udahnuo si mu dah života, i oživio je pred tobom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And thou leadest him into paradise, which thy right hand had planted, before ever the earth came forward.",
+      "text_fa": null,
+      "text_hr": "A ti ga vodiš u raj, koji je tvoja desnica zasadila, prije nego što je zemlja iznikla.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And unto him thou gavest commandment to love thy way: which he transgressed, and immediately thou appointedst death in him and in his generations, of whom came nations, tribes, people, and kindreds, out of number.",
+      "text_fa": null,
+      "text_hr": "Dao si mu zapovijed da ljubi tvoj put; on ju je prekršio, pa si odmah odredio smrt njemu i njegovim naraštajima, od kojih su potekli bezbrojni narodi, plemena, puci i rodovi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And every people walked after their own will, and did wonderful things before thee, and despised thy commandments.",
+      "text_fa": null,
+      "text_hr": "I svaki je narod hodio po svojoj volji i činio divna djela pred tobom, i prezirao je tvoje zapovijedi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And again in process of time thou broughtest the flood upon those that dwelt in the world, and destroyedst them.",
+      "text_fa": null,
+      "text_hr": "I opet si tijekom vremena pustio potop na one koji su živjeli u svijetu i uništio ih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And it came to pass in every of them, that as death was to Adam, so was the flood to these.",
+      "text_fa": null,
+      "text_hr": "Svakomu se od njih dogodilo isto: kao što je Adamu došla smrt, tako je njima došao potop.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "Nevertheless one of them thou leftest, namely, Noah with his household, of whom came all righteous men.",
+      "text_fa": null,
+      "text_hr": "Ipak si ostavio jednoga od njih, naime Nou s domom njegovim, od kojih su potekli svi pravednici.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "And it happened, that when they that dwelt upon the earth began to multiply, and had gotten them many children, and were a great people, they began again to be more ungodly than the first.",
+      "text_fa": null,
+      "text_hr": "Kad su se stanovnici zemlje počeli množiti, dobili su mnogo djece i postali velik narod, ali su ponovno postali bezbožniji od svojih prethodnika.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "Now when they lived so wickedly before thee, thou didst choose thee a man from among them, whose name was Abraham.",
+      "text_fa": null,
+      "text_hr": "Sad kad su živjeli tako opako prije tebe, ti si između njih izabrao sebi čovjeka po imenu Abraham.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "Him thou lovedst, and unto him only thou shewedst thy will:",
+      "text_fa": null,
+      "text_hr": "Njega si volio, i samo njemu si iskazao svoju volju:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "And madest an everlasting covenant with him, promising him that thou wouldest never forsake his seed.",
+      "text_fa": null,
+      "text_hr": "I sklopio s njim vječni savez, obećavši mu da nikada nećeš napustiti njegovo potomstvo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "And unto him thou gavest Isaac, and unto Isaac also thou gavest Jacob and Esau. As for Jacob, thou didst choose him to thee, and put by Esau: and so Jacob became a great multitude.",
+      "text_fa": null,
+      "text_hr": "I njemu si dao Izaka, a Izaku si dao i Jakova i Ezava. Što se tiče Jakova, ti si ga izabrao sebi i postavio uz Ezava; i tako je Jakov postao veliko mnoštvo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "And it came to pass, that when thou leadest his seed out of Egypt, thou broughtest them up to the mount Sinai.",
+      "text_fa": null,
+      "text_hr": "I dogodi se da kad si izveo njegovo potomstvo iz Egipta, doveo si ih na brdo Sinaj.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "And bowing the heavens, thou didst set fast the earth, movedst the whole world, and madest the depths to tremble, and troubledst the men of that age.",
+      "text_fa": null,
+      "text_hr": "I sagnuvši nebesa, ti si učvrstio zemlju, pokrenuo si cijeli svijet i učinio da zadrhtaju dubine i uznemirio si ljude onoga doba.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "And thy glory went through four gates, of fire, and of earthquake, and of wind, and of cold; that thou mightest give the law unto the seed of Jacob, and diligence unto the generation of Israel.",
+      "text_fa": null,
+      "text_hr": "Tvoja je slava prošla kroz četvera vrata — ognja, potresa, vjetra i studeni — da predaš Zakon Jakovljevu potomstvu i revnost Izraelovu naraštaju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "And yet tookest thou not away from them a wicked heart, that thy law might bring forth fruit in them.",
+      "text_fa": null,
+      "text_hr": "Ipak im nisi oduzeo zlo srce kako bi tvoj Zakon u njima donosio plod.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "For the first Adam bearing a wicked heart transgressed, and was overcome; and so be all they that are born of him.",
+      "text_fa": null,
+      "text_hr": "Prvi Adam nosio je zlo srce, sagriješio i bio svladan; isto se dogodilo svima koji su od njega rođeni.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "Thus infirmity was made permanent; and the law (also) in the heart of the people with the malignity of the root; so that the good departed away, and the evil abode still.",
+      "text_fa": null,
+      "text_hr": "Tako je slabost postala trajna, a Zakon je ostao u srcu naroda zajedno sa zloćom korijena; dobro je iščeznulo, a zlo je ostalo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "So the times passed away, and the years were brought to an end: then didst thou raise thee up a servant, called David:",
+      "text_fa": null,
+      "text_hr": "Vremena su prolazila i godine došle do kraja; tada si sebi podigao slugu po imenu David.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "Whom thou commandedst to build a city unto thy name, and to offer incense and oblations unto thee therein.",
+      "text_fa": null,
+      "text_hr": "Kome si zapovjedio da sagradi grad tvome imenu i da ti u njemu prinosi tamjan i darove.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "When this was done many years, then they that inhabited the city forsook thee,",
+      "text_fa": null,
+      "text_hr": "Mnogo godina nakon toga stanovnici toga grada napustili su te,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "And in all things did even as Adam and all his generations had done: for they also had a wicked heart:",
+      "text_fa": null,
+      "text_hr": "I u svemu su činili kao što su činili Adam i svi njegovi naraštaji: jer i oni su imali opako srce:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "And so thou gavest thy city over into the hands of thine enemies.",
+      "text_fa": null,
+      "text_hr": "I tako si predao svoj grad u ruke svojih neprijatelja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "Are their deeds then any better that inhabit Babylon, that they should therefore have the dominion over Sion?",
+      "text_fa": null,
+      "text_hr": "Jesu li djela stanovnika Babilona išta bolja da bi zbog toga imali vlast nad Sionom?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "For when I came thither, and had seen impieties without number, then my soul saw many evildoers in this thirtieth year, so that my heart failed me.",
+      "text_fa": null,
+      "text_hr": "Kad sam došao onamo i vidio bezbrojne opačine, moja je duša u ovoj tridesetoj godini vidjela mnoge zločince, te me srce izdalo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "For I have seen how thou sufferest them sinning, and hast spared wicked doers: and hast destroyed thy people, and hast preserved thine enemies, and hast not signified it.",
+      "text_fa": null,
+      "text_hr": "Vidio sam kako trpiš da griješe i štediš zlotvore; uništio si svoj narod, sačuvao svoje neprijatelje, a nisi objavio razlog.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "I do not remember how this way may be left: Are they then of Babylon better than they of Sion?",
+      "text_fa": null,
+      "text_hr": "Ne razumijem kako se taj poredak može održati. Jesu li Babilonci bolji od Sionaca?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "Or is there any other people that knoweth thee beside Israel? or what generation hath so believed thy covenants as Jacob?",
+      "text_fa": null,
+      "text_hr": "Ili ima li još koji narod koji te poznaje osim Izraela? Ili koji je naraštaj vjerovao savezima tvojim kao Jakov?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "And yet their reward appeareth not, and their labour hath no fruit: for I have gone here and there through the heathen, and I see that they flow in wealth, and think not upon thy commandments.",
+      "text_fa": null,
+      "text_hr": "Pa ipak, njihova se nagrada ne vidi i njihov trud nema ploda. Prošao sam među narodima i vidim da obiluju bogatstvom, a na tvoje zapovijedi ne misle.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 34,
+      "text_en": "Weigh thou therefore our wickedness now in the balance, and their’s also that dwell the world; and so shall thy name no where be found but in Israel.",
+      "text_fa": null,
+      "text_hr": "Izvagni zato na vagi našu zloću i zloću onih koji prebivaju u svijetu; tada se tvoje ime neće naći nigdje osim u Izraelu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 35,
+      "text_en": "Or when was it that they which dwell upon the earth have not sinned in thy sight? or what people have so kept thy commandments?",
+      "text_fa": null,
+      "text_hr": "Je li ikada bilo doba kada stanovnici zemlje nisu sagriješili pred tobom? Ili koji je narod tako čuvao tvoje zapovijedi?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 36,
+      "text_en": "Thou shalt find that Israel by name hath kept thy precepts; but not the heathen.",
+      "text_fa": null,
+      "text_hr": "Vidjet ćeš da je Izrael po imenu držao tvoje zapovijedi; ali ne i pogani.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

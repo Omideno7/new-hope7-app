@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "book_id": "3_maccabees",
+  "title_fa": "سوم مکابیان",
+  "title_en": "Third Maccabees",
+  "title_hr": "Treća knjiga o Makabejcima",
+  "status": "in_review",
+  "prepared_on": "2026-08-21",
+  "included_ranges": {
+    "hr": [
+      [
+        1,
+        7
+      ]
+    ]
+  },
+  "locales_in_scope": [
+    "hr"
+  ],
+  "source_translation": "WEBC",
+  "source_translation_name": "World English Bible Classic",
+  "source_url": "https://ebible.org/eng-web/3MA01.htm",
+  "source_license": "Public Domain",
+  "source_reference": {
+    "source_file": "3_maccabees.webc.json",
+    "source_repository": "hugobelebinda/ScriptureGraph",
+    "source_commit": "cee53ba3e04da62694131a700aa4158fa82d553b"
+  },
+  "versification": "WEBC",
+  "translation_note": "Fresh modern-standard Croatian rendering aligned verse by verse to the public-domain WEBC source.",
+  "totals": {
+    "chapters": 7,
+    "aligned_source_verses": 228,
+    "persian_out_of_scope_verses": 228,
+    "croatian_in_review_verses": 228
+  },
+  "chapter_qa": {
+    "1": {
+      "verse_count": 29,
+      "persian_out_of_scope_count": 29,
+      "croatian_in_review_count": 29,
+      "source_english_sha256": "627cd0d8132255f157738dd112e0095f3af1d8ece05b9ed0dcadd0359d2d1b38"
+    },
+    "2": {
+      "verse_count": 33,
+      "persian_out_of_scope_count": 33,
+      "croatian_in_review_count": 33,
+      "source_english_sha256": "261e825d37a9521f2028ac4c33149ccfd78ee38534f9ad6a8c2ed7a9195cc9e2"
+    },
+    "3": {
+      "verse_count": 30,
+      "persian_out_of_scope_count": 30,
+      "croatian_in_review_count": 30,
+      "source_english_sha256": "beddebacc8b297da5f8e75e2897b135900e27003b615d0c73d8637eca61ba2e6"
+    },
+    "4": {
+      "verse_count": 21,
+      "persian_out_of_scope_count": 21,
+      "croatian_in_review_count": 21,
+      "source_english_sha256": "b61bf6ab71d07dbb1f6f2f83d2c9951e01e38098de99c2383bfc4755a5b63380"
+    },
+    "5": {
+      "verse_count": 51,
+      "persian_out_of_scope_count": 51,
+      "croatian_in_review_count": 51,
+      "source_english_sha256": "29a27ec7b03f088db9ea2c5da3b33badf0f76486ea9887334a37a8e9129ef62e"
+    },
+    "6": {
+      "verse_count": 41,
+      "persian_out_of_scope_count": 41,
+      "croatian_in_review_count": 41,
+      "source_english_sha256": "57797778f7546c8877767c40f69dd50585b3fbfeb91bc72f10d1327f6717f9e0"
+    },
+    "7": {
+      "verse_count": 23,
+      "persian_out_of_scope_count": 23,
+      "croatian_in_review_count": 23,
+      "source_english_sha256": "4ad83f357daa1d6804d7eba9f436eaa2f7bc68906e1df2a17c4301710d2446e3"
+    }
+  }
+}

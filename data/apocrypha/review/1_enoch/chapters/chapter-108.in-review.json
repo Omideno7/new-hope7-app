@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 108,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "746db752fbb98b3e865c07c6f890534336c31c57d70013ae44735035662e7db9",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Another book which Enoch wrote for his son Methuselah and for those who will come after him, and keep the law in the last days.",
+      "text_fa": null,
+      "text_hr": "Još jedna knjiga koju je Henok napisao za svog sina Metušalaha i za one koji će doći poslije njega i držati se zakona u posljednjim danima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "Ye who have done good shall wait for those days till an end is made of those who work evil, and an end of the might of the transgressors.",
+      "text_fa": null,
+      "text_hr": "Vi koji ste činili dobro čekat ćete te dane dok ne dođe kraj onima koji čine zlo i dok ne dođe kraj sili prijestupnika.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And wait ye indeed till sin has passed away, for their names shall be blotted out of the book of life and out of the holy books, and their seed shall be destroyed for ever, and their spirits shall be slain, and they shall cry and make lamentation in a place that is a chaotic wilderness, and =in the fire shall they burn=; for there is no earth there.",
+      "text_fa": null,
+      "text_hr": "Čekajte dok grijeh ne nestane, jer će njihova imena biti izbrisana iz knjige života i svetih knjiga, njihovo sjeme zauvijek uništeno, a duhovi ubijeni. Plakat će i naricati na mjestu kaotične pustinje i =gorjeti u ognju=, jer ondje nema zemlje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And I saw there something like an invisible cloud; for by reason of its depth I could not †look over†, and I saw a flame of fire blazing brightly, and things like shining mountains circling and sweeping to and fro.",
+      "text_fa": null,
+      "text_hr": "Ondje vidjeh nešto poput nevidljiva oblaka. Zbog njegove dubine nisam mogao †pogledom prijeći preko njega†. Vidio sam plamen kako jarko bukti i nešto nalik sjajnim gorama što kruže i jure amo-tamo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And I asked one of the holy angels who was with me and said unto him: ‘What is this shining thing? for it is not a heaven, but only the flame of a blazing fire, and the voice of weeping and crying and lamentation and strong pain.’",
+      "text_fa": null,
+      "text_hr": "Upitah jednoga od svetih anđela koji bijaše sa mnom: ‘Što je ovo što sjaji? Nije nebo, nego samo plamen razbuktaloga ognja i glas plača, vapaja, naricanja i silne boli.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And he said unto me: ‘This place which thou seest—here are cast the spirits of sinners and blasphemers, and of those who work wickedness, and of those who pervert every thing that the Lord hath spoken through the mouth of the prophets—(even) the things that shall be.",
+      "text_fa": null,
+      "text_hr": "I rekao mi je: ‘Ovo mjesto koje vidiš — ovdje su bačeni duhovi grešnika i bogohulnika, i onih koji čine zlo, i onih koji izvrću sve što je Gospodin rekao kroz usta proroka — (čak i) ono što će biti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "For some of them are written and inscribed above in the heaven, in order that the angels may read them and know that which shall befall the sinners, and the spirits of the humble, and of those who have afflicted their bodies, and been recompensed by God; and of those who have been put to shame by wicked men:",
+      "text_fa": null,
+      "text_hr": "Jer neki od njih su napisani i upisani gore na nebu, kako bi ih anđeli mogli čitati i znati što će zadesiti grešnike, i duhove poniznih, i onih koji su izmučili svoja tijela, a Bog im je uzvratio; i onih koje su zli ljudi posramili:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "Who love God and loved neither gold nor silver nor any of the good things which are in the world, but gave over their bodies to torture.",
+      "text_fa": null,
+      "text_hr": "Koji ljube Boga i ne ljubljahu ni zlato, ni srebro, ni nikakva dobra na svijetu, nego predadoše tijela svoja mučenju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "Who, since they came into being, longed not after earthly food, but regarded everything as a passing breath, and lived accordingly, and the Lord tried them much, and their spirits were found pure so that they should bless His name.",
+      "text_fa": null,
+      "text_hr": "Koji, otkad su nastali, nisu čeznuli za zemaljskom hranom, nego su sve smatrali prolaznim dahom, i živjeli su u skladu s tim, i Gospodin ih je mnogo iskušavao, i njihovi su se duhovi našli čisti da blagoslivljaju njegovo ime.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And all the blessings destined for them I have recounted in the books. And He hath assigned them their recompense, because they have been found to be such as loved heaven more than their life in the world, and though they were trodden under foot of wicked men, and experienced abuse and reviling from them and were put to shame, yet they blessed Me.",
+      "text_fa": null,
+      "text_hr": "I sve blagoslove namijenjene njima opisao sam u knjigama. I On im je dodijelio njihovu naknadu, jer je otkriveno da su takvi koji vole nebo više od svog života na svijetu, i iako su bili gaženi pod nogama zlih ljudi, i iskusili zlostavljanje i uvrede od njih i bili posramljeni, ipak su Me blagoslovili.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "And now I will summon the spirits of the good who belong to the generation of light, and I will transform those who were born in darkness, who in the flesh were not recompensed with such honour as their faithfulness deserved.",
+      "text_fa": null,
+      "text_hr": "A sada ću pozvati duhove dobrih koji pripadaju naraštaju svjetla, i preobrazit ću one koji su rođeni u tami, koji u tijelu nisu bili nagrađeni takvom čašću kakvu zaslužuju svojom vjernošću.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "And I will bring forth in shining light those who have loved My holy name, and I will seat each on the throne of his honour.",
+      "text_fa": null,
+      "text_hr": "I izvest ću u blistavom svjetlu one koji su ljubili Moje sveto ime, i svakog ću posaditi na prijestolje njegove časti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "And they shall be resplendent for times without number; for righteousness is the judgement of God; for to the faithful He will give faithfulness in the habitation of upright paths.",
+      "text_fa": null,
+      "text_hr": "Blistat će bezbrojna vremena, jer pravednost je Božji sud; vjernima će On dati vjernost u prebivalištu ravnih staza.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "And they shall see those who were born in darkness led into darkness, while the righteous shall be resplendent.",
+      "text_fa": null,
+      "text_hr": "I vidjet će one koji su rođeni u tami odvedene u tamu, dok će pravednici blistati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "And the sinners shall cry aloud and see them resplendent, and they indeed shall go where days and seasons are prescribed for them.’\n\nPrinted in Great Britain by Richard Clay and Company, Ltd., Bungay, Suffolk.",
+      "text_fa": null,
+      "text_hr": "Grešnici će glasno vikati i gledati ih kako blistaju; oni će doista otići onamo gdje su im određeni dani i razdoblja.’ Tiskano u Velikoj Britaniji u tiskari Richard Clay and Company, Ltd., Bungay, Suffolk.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}
