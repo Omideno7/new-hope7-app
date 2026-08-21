@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "book_id": "judith",
+  "title_fa": "یهودیت",
+  "title_en": "Judith",
+  "title_hr": "Judita",
+  "chapter": 15,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "773ba5ac4a2c4241ce31b5b0213a43f9760d08cad1b447269d222ec38827de06",
+  "locales_in_scope": [
+    "fa"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And when they that were in the tents heard, they were astonished at the thing that was done.",
+      "text_fa": "وقتی کسانی که در خیمه‌ها بودند این خبر را شنیدند، از آنچه رخ داده بود مات و مبهوت شدند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 2,
+      "text_en": "And fear and trembling fell upon them, so that there was no man that durst abide in the sight of his neighbour, but rushing out all together, they fled into every way of the plain, and of the hill country.",
+      "text_fa": "ترس و لرز بر آنان افتاد، به‌گونه‌ای که هیچ‌کس جرئت نداشت در کنار دیگری بماند. همه با هم بیرون ریختند و از هر راهی در دشت و کوهستان گریختند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 3,
+      "text_en": "They also that had camped in the mountains round about Bethulia fled away. Then the children of Israel, every one that was a warrior among them, rushed out upon them.",
+      "text_fa": "کسانی که در کوه‌های پیرامون بیتولیا اردو زده بودند نیز فرار کردند. آنگاه همهٔ جنگجویان بنی‌اسرائیل بر آنان هجوم بردند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 4,
+      "text_en": "Then sent Ozias to Betomasthem, and to Bebai, and Chobai, and Cola and to all the coasts of Israel, such as should tell the things that were done, and that all should rush forth upon their enemies to destroy them.",
+      "text_fa": "عُزیا پیام‌رسانانی به بیتومستام، ببای، خوبای، کولا و تمام نواحی اسرائیل فرستاد تا آنچه رخ داده بود خبر دهند و همه برای نابودی دشمنان خود بیرون آیند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 5,
+      "text_en": "Now when the children of Israel heard it, they all fell upon them with one consent, and slew them unto Chobai: likewise also they that came from Jerusalem, and from all the hill country, (for men had told them what things were done in the camp of their enemies) and they that were in Galaad, and in Galilee, chased them with a great slaughter, until they were past Damascus and the borders thereof.",
+      "text_fa": "وقتی بنی‌اسرائیل خبر را شنیدند، همگی یک‌دل بر دشمن تاختند و آنان را تا خوبای کشتند. کسانی که از اورشلیم و سراسر کوهستان آمده بودند نیز چنین کردند، زیرا ماجرای اردوگاه دشمن را به آنان خبر داده بودند. مردان جلعاد و جلیل نیز آنان را با کشتاری بزرگ تعقیب کردند تا از دمشق و مرزهایش گذشتند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 6,
+      "text_en": "And the residue that dwelt at Bethulia, fell upon the camp of Assur, and spoiled them, and were greatly enriched.",
+      "text_fa": "باقی مردمی که در بیتولیا بودند بر اردوگاه آشور هجوم بردند، آن را غارت کردند و ثروتی عظیم به دست آوردند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 7,
+      "text_en": "And the children of Israel that returned from the slaughter had that which remained; and the villages and the cities, that were in the mountains and in the plain, gat many spoils: for the multitude was very great.",
+      "text_fa": "بنی‌اسرائیلی که از کشتار بازگشتند، آنچه باقی مانده بود تصاحب کردند. روستاها و شهرهای کوهستان و دشت غنیمت فراوانی به دست آوردند، زیرا مقدار آن بسیار زیاد بود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 8,
+      "text_en": "Then Joacim the high priest, and the ancients of the children of Israel that dwelt in Jerusalem, came to behold the good things that God had shewed to Israel, and to see Judith, and to salute her.",
+      "text_fa": "سپس یواقیم کاهن اعظم و مشایخ بنی‌اسرائیلِ ساکن اورشلیم آمدند تا نیکویی‌هایی را که خدا به اسرائیل نشان داده بود ببینند، یهودیت را ملاقات کنند و به او سلام گویند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 9,
+      "text_en": "And when they came unto her, they blessed her with one accord, and said unto her, Thou art the exaltation of Jerusalem, thou art the great glory of Israel, thou art the great rejoicing of our nation:",
+      "text_fa": "وقتی نزد او رسیدند، همگی یک‌صدا برکتش دادند و گفتند: «تو سربلندی اورشلیم، جلال بزرگ اسرائیل و شادی عظیم قوم ما هستی.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 10,
+      "text_en": "Thou hast done all these things by thine hand: thou hast done much good to Israel, and God is pleased therewith: blessed be thou of the Almighty Lord for evermore. And all the people said, So be it.",
+      "text_fa": "همهٔ این کارها را به دست خود انجام دادی؛ نیکویی بزرگی برای اسرائیل به جا آوردی و خدا از آن خشنود است. تا ابد از جانب خداوند قادر مطلق مبارک باشی.» همهٔ قوم گفتند: «آمین.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 11,
+      "text_en": "And the people spoiled the camp the space of thirty days: and they gave unto Judith Holofernes his tent, and all his plate, and beds, and vessels, and all his stuff: and she took it and laid it on her mule; and made ready her carts, and laid them thereon.",
+      "text_fa": "قوم سی روز اردوگاه را غارت کرد. خیمهٔ هولوفرنس، همهٔ ظروف، بسترها، اثاث و تمام وسایلش را به یهودیت دادند. او آنها را گرفت، بر قاطر خود گذاشت، ارابه‌هایش را آماده کرد و باقی اموال را بر آنها نهاد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 12,
+      "text_en": "Then all the women of Israel ran together to see her, and blessed her, and made a dance among them for her: and she took branches in her hand, and gave also to the women that were with her.",
+      "text_fa": "همهٔ زنان اسرائیل برای دیدن او گرد آمدند، برکتش دادند و به افتخارش رقصی ترتیب دادند. یهودیت شاخه‌هایی به دست گرفت و به زنانی که همراهش بودند نیز شاخه داد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 13,
+      "text_en": "And they put a garland of olive upon her and her maid that was with her, and she went before all the people in the dance, leading all the women: and all the men of Israel followed in their armour with garlands, and with songs in their mouths.",
+      "text_fa": "بر سر یهودیت و کنیزی که همراهش بود تاجی از شاخه‌های زیتون گذاشتند. او پیشاپیش تمام قوم حرکت کرد و رقص زنان را رهبری نمود؛ همهٔ مردان اسرائیل نیز با سلاح، تاج‌های گل و سرودهایی بر لب، پشت سرشان رفتند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    }
+  ]
+}

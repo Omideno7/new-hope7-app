@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 18,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "119b03ca8a118672c995cc4dd226abbef9e9c4fd0eec21b3b141c2395a0a4617",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "I saw the treasuries of all the winds; I saw how He had furnished with them the whole creation and the firm foundations of the earth.",
+      "text_fa": null,
+      "text_hr": "Vidjeh riznice svih vjetrova; vidjeh kako je njima opremio sve stvorenje i čvrste temelje zemlje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And I saw the corner-stone of the earth: I saw the four winds which bear [the earth and] the firmament of the heaven.",
+      "text_fa": null,
+      "text_hr": "Vidjeh kamen zaglavni zemlje i četiri vjetra koji nose [zemlju i] nebeski svod.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "〚And I saw how the winds stretch out the vaults of heaven〛, and have their station between heaven and earth: 〚these are the pillars of the heaven〛.",
+      "text_fa": null,
+      "text_hr": "〚Vidjeh kako vjetrovi rastežu svodove neba〛 i kako im je postaja između neba i zemlje: 〚oni su stupovi neba〛.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "I saw the winds of heaven which turn and bring the circumference of the sun and all the stars to their setting.",
+      "text_fa": null,
+      "text_hr": "Vidjeh nebeske vjetrove koji okreću i odvode sunčev krug i sve zvijezde prema njihovu zalazu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "I saw the winds on the earth carrying the clouds: I saw 〚the paths of the angels: I saw〛 at the end of the earth the firmament of the heaven above.",
+      "text_fa": null,
+      "text_hr": "Vidjeh vjetrove na zemlji kako nose oblake. Vidjeh 〚putove anđela; vidjeh〛 na kraju zemlje nebeski svod iznad nje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And I proceeded and saw a place which burns day and night, where there are seven mountains of magnificent stones, three towards the east, and three towards the south.",
+      "text_fa": null,
+      "text_hr": "Nastavih dalje i vidjeh mjesto koje gori danju i noću. Ondje bijaše sedam gora od veličanstvenoga kamenja: tri prema istoku i tri prema jugu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And as for those towards the east ‹one› was of coloured stone, and one of pearl, and one of =jacinth=, and those towards the south of red stone.",
+      "text_fa": null,
+      "text_hr": "Od onih prema istoku ‹jedna› bijaše od šarena kamena, jedna od bisera, a jedna od =hijacinta=; one prema jugu bijahu od crvena kamena.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "But the middle one reached to heaven like the throne of God, of alabaster, and the summit of the throne was of sapphire.",
+      "text_fa": null,
+      "text_hr": "Srednja je sezala do neba poput Božjega prijestolja; bila je od alabastera, a vrh prijestolja od safira.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And I saw a flaming fire. And beyond these mountains",
+      "text_fa": null,
+      "text_hr": "I vidjeh plameni oganj. A iza tih gora",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "is a region, the end of the great earth: there the heavens were completed.",
+      "text_fa": null,
+      "text_hr": "prostire se kraj, svršetak velike zemlje; ondje su nebesa bila dovršena.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "And I saw a deep abyss, with columns 〚of heavenly fire, and among them I saw columns〛 of fire fall, which were beyond measure alike towards the height and towards the depth.",
+      "text_fa": null,
+      "text_hr": "Vidjeh dubok ponor sa stupovima 〚nebeskoga ognja, i među njima vidjeh stupove〛 ognja kako padaju; bili su bez mjere i u visinu i u dubinu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "And beyond that abyss I saw a place which had no firmament of the heaven above, and no firmly founded earth beneath it: there was no water upon it, and no birds, but it was a waste and horrible place.",
+      "text_fa": null,
+      "text_hr": "Iza toga ponora vidjeh mjesto nad kojim nije bilo nebeskoga svoda niti pod njim čvrsto utemeljene zemlje. Na njemu nije bilo vode ni ptica; bijaše to pusto i strašno mjesto.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "I saw there seven stars like great burning mountains, and to me, when I inquired regarding them,",
+      "text_fa": null,
+      "text_hr": "Ondje vidjeh sedam zvijezda nalik velikim gorućim gorama; kada upitah za njih,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "The angel said: ‘This place is the end of heaven and earth: this has become a prison for the stars and the host of heaven.",
+      "text_fa": null,
+      "text_hr": "anđeo reče: ‘Ovo je mjesto svršetak neba i zemlje; postalo je tamnica zvijezdama i nebeskoj vojsci.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "And the stars which roll over the fire are they which have transgressed the commandment of the Lord in the beginning of their rising, because they did not come forth at their appointed times.",
+      "text_fa": null,
+      "text_hr": "Zvijezde koje se kotrljaju nad ognjem one su koje su na početku svojega izlaska prestupile Gospodinovu zapovijed jer nisu izišle u određeno vrijeme.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "And He was wroth with them, and bound them till the time when their guilt should be consummated (even) ⌜for ten thousand years⌝.’",
+      "text_fa": null,
+      "text_hr": "On se razgnjevio na njih i svezao ih dok se ne navrši vrijeme njihove krivnje, ⌜deset tisuća godina⌝.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

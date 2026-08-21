@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 28,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "2aa9682ce6be52fafaf7ec29eab0286cc38e68275fa9a66c9df5d139a60d6c66",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And thence I went 〚towards the east〛, into the midst 〚of the mountain range〛 of the desert, and I saw a wilderness and it was solitary, full of trees =and plants=.",
+      "text_fa": null,
+      "text_hr": "Odatle odoh 〚prema istoku〛, usred 〚gorskoga lanca〛 u pustinji. Vidjeh samotnu pustoš punu drveća =i biljaka=.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "〚And〛 water gushed forth from above.",
+      "text_fa": null,
+      "text_hr": "〚A〛 voda je izvirala odozgor.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "Rushing like a copious watercourse [which flowed] towards the north-west it caused =clouds= and dew to ascend on every side.",
+      "text_fa": null,
+      "text_hr": "Jureći poput obilna vodotoka [koji je tekao] prema sjeverozapadu, podizala je =oblake= i rosu na sve strane.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 74,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "eda1b66ae13c4e15dc7d6b1897f1aa4a62a7ed776ef27b59657d5f213e72270e",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And I saw another course, a law for her, (and) how according to that law she performs her monthly revolution.",
+      "text_fa": null,
+      "text_hr": "Vidio sam još jednu putanju, zakon za Mjesec i način na koji prema tom zakonu dovršava svoj mjesečni ophod.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And all these Uriel, the holy angel who is the leader of them all, showed to me, and their positions, and I wrote down their positions as he showed them to me, and I wrote down their months as they were, and the appearance of their lights till fifteen days were accomplished.",
+      "text_fa": null,
+      "text_hr": "I sve mi je to Uriel, sveti anđeo koji je vođa svih njih, pokazao, i njihove položaje, i zapisao sam njihove položaje kako mi ih je pokazao, i zapisao sam njihove mjesece kakvi su bili, i pojavljivanje njihovih svjetala dok se nije ispunilo petnaest dana.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "In single seventh parts she accomplishes all her light in the east, and in single seventh parts accomplishes all her darkness in the west.",
+      "text_fa": null,
+      "text_hr": "U jednoj sedmini Mjesec prima svu svoju svjetlost na istoku, a u jednoj sedmini dovršava svu svoju tamu na zapadu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And in certain months she alters her settings, and in certain months she pursues her own peculiar course.",
+      "text_fa": null,
+      "text_hr": "U nekim mjesecima mijenja mjesta zalaska, a u nekima slijedi vlastitu posebnu putanju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "In two months the moon sets with the sun in those two middle portals the third and the fourth.",
+      "text_fa": null,
+      "text_hr": "Dva mjeseca Mjesec zalazi sa Suncem na dvojim srednjim vratima, trećim i četvrtim.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "She goes forth for seven days, and turns about and returns again through the portal where the sun rises, and accomplishes all her light: and she recedes from the sun, and in eight days enters the sixth portal from which the sun goes forth.",
+      "text_fa": null,
+      "text_hr": "On ide naprijed sedam dana, okreće se i opet vraća kroz portal gdje sunce izlazi, i ostvaruje svu svoju svjetlost: i on se udaljava od sunca, i za osam dana ulazi u šesti portal iz kojeg sunce izlazi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And when the sun goes forth from the fourth portal she goes forth seven days, until she goes forth from the fifth and turns back again in seven days into the fourth portal and accomplishes all her light: and she recedes and enters into the first portal in eight days.",
+      "text_fa": null,
+      "text_hr": "I kada sunce izađe iz četvrtog portala, on ide naprijed sedam dana, sve dok ne izađe iz petog i ponovno se vrati za sedam dana u četvrti portal i postigne svu svoju svjetlost: i on se povuče i uđe u prvi portal za osam dana.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And she returns again in seven days into the fourth portal from which the sun goes forth.",
+      "text_fa": null,
+      "text_hr": "I on se ponovno vraća za sedam dana u četvrti portal iz kojeg sunce izlazi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "Thus I saw their position—how the moons rose and the sun set in those days.",
+      "text_fa": null,
+      "text_hr": "Tako sam vidio njihov položaj - kako su mjeseci izlazili i sunce zalazilo tih dana.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And if five years are added together the sun has an overplus of thirty days, and all the days which accrue to it for one of those five years, when they are full, amount to 364 days.",
+      "text_fa": null,
+      "text_hr": "Ako se zbroji pet godina, Sunce ima višak od trideset dana; svi dani koji mu se pridodaju tijekom jedne od tih pet punih godina iznose 364 dana.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "And the overplus of the sun and of the stars amounts to six days: in 5 years 6 days every year come to 30 days: and the moon falls behind the sun and stars to the number of 30 days.",
+      "text_fa": null,
+      "text_hr": "Višak Sunca i zvijezda iznosi šest dana: u pet godina, po šest dana svake godine, ukupno trideset dana. Mjesec zaostaje za Suncem i zvijezdama trideset dana.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "And =the sun= and the stars bring in all the years exactly, so that they do not advance or delay their position by a single day unto eternity; but =complete= the years with perfect justice in 364 days.",
+      "text_fa": null,
+      "text_hr": "=Sunce= i zvijezde dovršavaju sve godine posve točno: ne pomiču niti odgađaju svoj položaj ni za jedan dan dovijeka, nego =dovršavaju= godine savršeno pravilno u 364 dana.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "In 3 years there are 1092 days, and in 5 years 1820 days, so that in 8 years there are 2912 days.",
+      "text_fa": null,
+      "text_hr": "U 3 godine ima 1092 dana, a u 5 godina 1820 dana, tako da u 8 godina ima 2912 dana.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "For the moon alone the days amount in 3 years to 1062 days, and in 5 years she falls 50 days behind: [_i. e._ to the sum (of 1770) there is to be added (1000 and) 62 days].",
+      "text_fa": null,
+      "text_hr": "Samo za Mjesec dani iznose u 3 godine 1062 dana, a u 5 godina on zaostaje 50 dana: [_tj._ zbroju (od 1770) treba dodati (1000 i) 62 dana].",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "And in 5 years there are 1770 days, so that for the moon the days in 8 years amount to 2832 days.",
+      "text_fa": null,
+      "text_hr": "A u 5 godina ima 1770 dana, tako da za mjesec dani u 8 godina iznose 2832 dana.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "[For in 8 years she falls behind to the amount of 80 days], all the days she falls behind in 8 years are 80.",
+      "text_fa": null,
+      "text_hr": "[U osam godina zaostaje osamdeset dana]; ukupan broj dana zaostajanja u osam godina jest osamdeset.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "And the year is accurately completed in conformity with their world-stations and the stations of the sun, which rise from the portals through which it (the sun) rises and sets 30 days.",
+      "text_fa": null,
+      "text_hr": "Godina se točno dovršava prema njihovim postajama svijeta i postajama Sunca, koje izlaze na vratima kroz koja Sunce izlazi i zalazi trideset dana.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

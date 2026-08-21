@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 10,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "8281a5c7f2cba2241da854a84f8e24d98728aae3eab984a290fff2461d6dd9b1",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Then said the Most High, the Holy and Great One spake, and sent =Uriel= to the son of Lamech, and said to him:",
+      "text_fa": null,
+      "text_hr": "Tada progovori Svevišnji; Sveti i Veliki posla =Uriela= Lamekovu sinu i reče mu:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "‘‹Go to Noah and› tell him in my name “Hide thyself!”, and reveal to him the end that is approaching: that the whole earth will be destroyed, and a deluge is about to come upon the whole earth, and will destroy all that is on it.",
+      "text_fa": null,
+      "text_hr": "‘‹Idi Noi i› reci mu u moje ime: „Sakrij se!” Objavi mu da se približava svršetak: sva će zemlja biti uništena; potop će doći na svu zemlju i uništiti sve što je na njoj.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And now instruct him that he may escape and his seed may be preserved for all the generations of the world.’",
+      "text_fa": null,
+      "text_hr": "Sada ga pouči kako bi umaknuo te kako bi se njegovo potomstvo sačuvalo za sve naraštaje svijeta.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And again the Lord said to Raphael: ‘Bind Azâzêl hand and foot, and cast him into the darkness: and make an opening in the desert, which is in Dûdâêl, and cast him therein.",
+      "text_fa": null,
+      "text_hr": "Gospodin zatim reče Rafaelu: ‘Sveži Azazelu ruke i noge i baci ga u tamu. Načini otvor u pustinji koja je u Dudaelu i baci ga onamo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And place upon him rough and jagged rocks, and cover him with darkness, and let him abide there for ever, and cover his face that he may not see light.",
+      "text_fa": null,
+      "text_hr": "Položi na njega grubo i oštro kamenje, prekrij ga tamom i neka ondje ostane dovijeka; pokrij mu lice da ne vidi svjetlosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And on the day of the great judgement he shall be cast into the fire.",
+      "text_fa": null,
+      "text_hr": "Na dan velikoga suda bit će bačen u oganj.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And heal the earth which the angels have corrupted, and proclaim the healing of the earth, that they may heal the plague, and that all the children of men may not perish through all the secret things that the Watchers have =disclosed= and have taught their sons.",
+      "text_fa": null,
+      "text_hr": "Iscijeli zemlju koju su anđeli iskvarili i navijesti njezino ozdravljenje, da izliječe pošast i da svi sinovi ljudski ne propadnu zbog svih tajni koje su Stražari =razotkrili= i kojima su poučili svoje sinove.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And the whole earth has been corrupted through the works that were taught by Azâzêl: to him ascribe all sin.’",
+      "text_fa": null,
+      "text_hr": "Sva je zemlja iskvarena djelima kojima je Azazel poučavao; njemu pripiši svaki grijeh.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And to Gabriel said the Lord: ‘Proceed against the bastards and the reprobates, and against the children of fornication: and destroy [the children of fornication and] the children of the Watchers from amongst men: [and cause them to go forth]: send them one against the other that they may destroy each other in battle: for length of days shall they not have.",
+      "text_fa": null,
+      "text_hr": "A Gabrielu Gospodin reče: ‘Kreni protiv kopiladi i odbačenih, protiv djece bluda; uništi [djecu bluda i] djecu Stražara među ljudima [i izvedi ih]. Pošalji ih jedne protiv drugih da se međusobno unište u boju, jer neće imati dug život.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And no request that they (_i. e._ their fathers) make of thee shall be granted unto their fathers on their behalf; for they hope to live an eternal life, and that each one of them will live five hundred years.’",
+      "text_fa": null,
+      "text_hr": "Nijedna molba koju ti upute oni (_tj._ njihovi očevi) za njih neće njihovim očevima biti uslišana; jer se nadaju živjeti vječnim životom i da će svaki od njih živjeti pet stotina godina.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "And the Lord said unto Michael: ‘Go, =bind= Semjâzâ and his associates who have united themselves with women so as to have defiled themselves with them in all their uncleanness.",
+      "text_fa": null,
+      "text_hr": "Gospodin reče Mihaelu: ‘Idi, =sveži= Semjazu i njegove drugove koji su se združili sa ženama i tako se s njima okaljali u svoj njihovoj nečistoći.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "And, when their sons have slain one another, and they have seen the destruction of their beloved ones, bind them fast for seventy generations in the =valleys= of the earth, till the day of their judgement and of their consummation, till the judgement that is for ever and ever is consummated.",
+      "text_fa": null,
+      "text_hr": "Kad njihovi sinovi poubijaju jedni druge i kad budu vidjeli propast svojih ljubljenih, čvrsto ih sveži na sedamdeset naraštaja u =dolinama= zemlje, sve do dana njihova suda i dovršenja, dok se ne izvrši sud za vijeke vjekova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "In those days they shall be led off to the abyss of fire: ‹and› to the torment and the prison in which they shall be confined for ever.",
+      "text_fa": null,
+      "text_hr": "U one će dane biti odvedeni u bezdan ognja, ‹i› u muku i tamnicu u kojoj će zauvijek biti zatočeni.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "And whosoever shall be =condemned= and destroyed will from thenceforth be bound together with them to the end of all generations.",
+      "text_fa": null,
+      "text_hr": "Tko god bude =osuđen= i uništen, od tada će zajedno s njima biti svezan do svršetka svih naraštaja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "And destroy all the spirits of the reprobate, and the children of the Watchers, because they have wronged mankind.",
+      "text_fa": null,
+      "text_hr": "Uništi sve duhove odbačenih i djecu Stražara jer su nanijeli nepravdu čovječanstvu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "Destroy all wrong from the face of the earth, and let every evil work come to an end: and let the plant of righteousness and truth appear: ⌜and it shall prove a blessing: the works of righteousness and truth⌝ shall be planted in truth and joy for evermore.",
+      "text_fa": null,
+      "text_hr": "Ukloni svu nepravdu s lica zemlje i neka svako zlo djelo nestane. Neka se pojavi nasad pravednosti i istine: ⌜bit će na blagoslov, a djela pravednosti i istine⌝ bit će zasađena u istini i radosti dovijeka.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "And then shall all the righteous escape,\nAnd shall live till they beget thousands of children,\nAnd all the days of their youth and their =old age= shall they complete in peace.",
+      "text_fa": null,
+      "text_hr": "Tada će svi pravednici umaći\ni živjeti dok ne rode tisuće djece;\nsve dane svoje mladosti i svoje =starosti=\ndovršit će u miru.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "And then shall the whole earth be tilled in righteousness, and shall all be planted with trees and be full of blessing.",
+      "text_fa": null,
+      "text_hr": "Tada će sva zemlja biti obrađena u pravednosti, sva zasađena drvećem i puna blagoslova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "And all desirable trees shall be planted on it, and they shall plant vines on it: and the vine which they plant thereon shall yield wine in abundance, and as for all the seed which is sown thereon each measure (of it) shall bear a thousand, and each measure of olives shall yield ten presses of oil.",
+      "text_fa": null,
+      "text_hr": "Na njoj će biti posađena sva poželjna stabla i vinogradi; trs posađen na njoj rodit će vinom u obilju. Od svakoga sjemena posijanog na njoj jedna će mjera uroditi tisućom, a jedna mjera maslina dat će deset tijeskova ulja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "And cleanse thou the earth from all oppression, and from all unrighteousness, and from all sin, and from all godlessness: and all the uncleanness that is wrought upon the earth destroy from off the earth.",
+      "text_fa": null,
+      "text_hr": "Očisti zemlju od svakoga tlačenja, od svake nepravde, svakoga grijeha i sve bezbožnosti; uništi svu nečistoću koja se čini na zemlji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "⌜And all the children of men shall become righteous⌝, and all nations shall offer adoration and shall praise Me, and all shall worship Me.",
+      "text_fa": null,
+      "text_hr": "⌜Svi će sinovi ljudski postati pravedni⌝, svi će se narodi klanjati i hvaliti Me, i svi će Me štovati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "And the earth shall be cleansed from all defilement, and from all sin, and from all punishment, and from all torment, and I will never again send (them) upon it from generation to generation and for ever.",
+      "text_fa": null,
+      "text_hr": "Zemlja će biti očišćena od svake okaljanosti, svakoga grijeha, svake kazne i svake muke; nikada ih više neću poslati na nju, od naraštaja do naraštaja i dovijeka.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "book_id": "1_esdras",
+  "title_fa": "اول اِسدراس",
+  "title_en": "First Esdras",
+  "title_hr": "Prva Ezdrina",
+  "status": "in_review",
+  "prepared_on": "2026-08-21",
+  "included_ranges": {
+    "hr": [
+      [
+        1,
+        9
+      ]
+    ]
+  },
+  "source_translation": "KJVA",
+  "source_translation_name": "King James Version with Apocrypha",
+  "source_reference": {
+    "source_file": "1_esdras.kjva.json",
+    "source_book_code": "1ES"
+  },
+  "versification": "KJVA",
+  "totals": {
+    "aligned_source_verses": 448,
+    "persian_in_review_verses": 0,
+    "croatian_in_review_verses": 448
+  },
+  "chapter_qa": {
+    "1": {
+      "verse_count": 58,
+      "persian_in_review_count": 0,
+      "croatian_in_review_count": 58,
+      "source_english_sha256": "6e241a675c62ba553784eb3df805bd0ef9bcc2e3987ce45965c421482652b5ce"
+    },
+    "2": {
+      "verse_count": 30,
+      "persian_in_review_count": 0,
+      "croatian_in_review_count": 30,
+      "source_english_sha256": "69c601f2092a41d277870fee3221914dfebc337b8040e699941367fcf0f929e5"
+    },
+    "3": {
+      "verse_count": 24,
+      "persian_in_review_count": 0,
+      "croatian_in_review_count": 24,
+      "source_english_sha256": "6cd8daf604dfaec9b07e0d041132a99799d966e20f4c1a9c432f24b805b12e86"
+    },
+    "4": {
+      "verse_count": 63,
+      "persian_in_review_count": 0,
+      "croatian_in_review_count": 63,
+      "source_english_sha256": "36750f156602afe3254698ddf84901249469d307b4f8de43d12a22e4d51cb317"
+    },
+    "5": {
+      "verse_count": 73,
+      "persian_in_review_count": 0,
+      "croatian_in_review_count": 73,
+      "source_english_sha256": "e04c42de2d27f32c137d0e59f1ff85867e47b3b7cac74840d82ce0d99a87e117"
+    },
+    "6": {
+      "verse_count": 34,
+      "persian_in_review_count": 0,
+      "croatian_in_review_count": 34,
+      "source_english_sha256": "3d99065228182c7855dffdd8ecd8fb7f9ab40c57d9fe73d3d3e6d0233a85b1f0"
+    },
+    "7": {
+      "verse_count": 15,
+      "persian_in_review_count": 0,
+      "croatian_in_review_count": 15,
+      "source_english_sha256": "baa120fcfcb279fac2bb64a1a269749c65cb99ad49e3c965b3669a1290cfae22"
+    },
+    "8": {
+      "verse_count": 96,
+      "persian_in_review_count": 0,
+      "croatian_in_review_count": 96,
+      "source_english_sha256": "2ab8def6371b38a513f722a8c7e51a45649889b1ef479d5eaf0ef943d26f2dbb"
+    },
+    "9": {
+      "verse_count": 55,
+      "persian_in_review_count": 0,
+      "croatian_in_review_count": 55,
+      "source_english_sha256": "247b2e617195083cc92158d73e3c3eb2919fc4ebabb179dd3058ab7a5c3c07e9"
+    }
+  }
+}

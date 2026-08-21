@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 93,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "73254ce7c044e07cbd7f261e5d0a4362b9e7f400553366205068bb375f628f45",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And after that Enoch both †gave† and began to recount from the books.",
+      "text_fa": null,
+      "text_hr": "I nakon toga Henok je i †dao† i počeo prepričavati iz knjiga.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And Enoch said:\n\n‘Concerning the children of righteousness and concerning the elect of the world,\nAnd concerning the plant of uprightness, I will speak these things,\nYea, I Enoch, will declare (them) unto you, my sons:\nAccording to that which appeared to me in the heavenly vision,\nAnd which I have known through the word of the holy angels,\nAnd have learnt from the heavenly tablets.’",
+      "text_fa": null,
+      "text_hr": "Henok reče: ‘O djeci pravednosti, o izabranima svijeta i o biljci čestitosti govorit ću ove stvari. Da, ja Henok objavit ću ih vama, sinovi moji, prema onome što mi se pokazalo u nebeskom viđenju, što sam spoznao po riječi svetih anđela i naučio s nebeskih ploča.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And Enoch began to recount from the books and said:\n‘I was born the seventh in the first week,\nWhile judgement and righteousness still endured.",
+      "text_fa": null,
+      "text_hr": "I Henok je počeo prepričavati iz knjiga i rekao: 'Rođen sam sedmi u prvom tjednu, Dok su još trajali sud i pravednost.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And after me there shall arise in the second week great wickedness,\nAnd deceit shall have sprung up;\nAnd in it there shall be the first end.\nAnd in it a man shall be saved;\nAnd after it is ended unrighteousness shall grow up,\nAnd a law shall be made for the sinners.",
+      "text_fa": null,
+      "text_hr": "Poslije mene u drugom će tjednu nastati velika zloća i izniknut će prijevara. U njemu će doći prvi svršetak i u njemu će se spasiti čovjek. Kad on završi, nepravda će rasti i za grešnike će biti donesen zakon.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And after that in the third week at its close\nA man shall be elected as the plant of righteous judgement.\nAnd =his posterity= shall become the plant of righteousness for evermore.",
+      "text_fa": null,
+      "text_hr": "I nakon toga u trećem tjednu na kraju Čovjek će biti izabran kao biljka pravednog suda. I =njegovo potomstvo= postat će biljka pravednosti zauvijek.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And after that in the fourth week, at its close,\nVisions of the holy and righteous shall be seen,\nAnd a law for all generations and an enclosure shall be made for them.",
+      "text_fa": null,
+      "text_hr": "Nakon toga, na kraju četvrtoga tjedna, vidjet će se viđenja svetih i pravednih, a za sve naraštaje bit će načinjen zakon i ograda.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And after that in the fifth week, at its close,\nThe house of glory and dominion shall be built for ever.",
+      "text_fa": null,
+      "text_hr": "I nakon toga u petom tjednu, na njegovom kraju, Kuća slave i vlasti bit će izgrađena zauvijek.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And after that in the sixth week all who live in it shall be blinded,\nAnd the hearts of all of them shall godlessly forsake wisdom.\nAnd in it a man shall ascend;\nAnd at its close the house of dominion shall be burnt with fire,\nAnd the whole race of the chosen root shall be dispersed.",
+      "text_fa": null,
+      "text_hr": "Nakon toga, u šestom tjednu, svi koji u njemu žive oslijepjet će, a srca će svih njih bezbožno napustiti mudrost. U njemu će jedan čovjek uzaći; na njegovu će kraju kuća vlasti biti spaljena ognjem, a sav rod izabranoga korijena raspršit će se.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And after that in the seventh week shall an apostate generation arise,\nAnd many shall be its deeds,\nAnd all its deeds shall be apostate.",
+      "text_fa": null,
+      "text_hr": "A nakon toga u sedmom tjednu pojavit će se otpadnički naraštaj, i mnoga će biti njegova djela, i sva njegova djela bit će otpadnička.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And at its close shall be elected\nThe elect righteous of the eternal plant of righteousness,\nTo receive sevenfold instruction concerning all His creation.",
+      "text_fa": null,
+      "text_hr": "Na njegovu će kraju biti izabrani izabrani pravednici vječne biljke pravednosti, da prime sedmerostruku pouku o svemu Njegovu stvorenju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "[For who is there of all the children of men that is able to hear the voice of the Holy One without being troubled? And who can think His thoughts? and who is there that can behold all the works of heaven?",
+      "text_fa": null,
+      "text_hr": "[Jer tko je od sve djece ljudske da može čuti glas Svetoga, a da se ne uznemiri? A tko može misliti Njegove misli? i tko je tamo da može vidjeti sva djela neba?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "And how should there be one who could behold the heaven, and who is there that could understand the things of heaven and see a soul or a spirit and could tell thereof, or ascend and see all their ends and think them or do like them?",
+      "text_fa": null,
+      "text_hr": "I kako bi mogao postojati netko tko bi mogao promatrati nebo, i tko je tamo tko bi mogao razumjeti stvari na nebu i vidjeti dušu ili duh i mogao o tome reći, ili se uzdići i vidjeti sve njihove krajeve i razmišljati o njima ili činiti poput njih?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "And who is there of all men that could know what is the breadth and the length of the earth, and to whom has been shown the measure of all of them?",
+      "text_fa": null,
+      "text_hr": "A tko bi od svih ljudi znao što je širina i duljina zemlje, i kome je pokazana mjera svih njih?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "Or is there any one who could discern the length of the heaven and how great is its height, and upon what it is founded, and how great is the number of the stars, and where all the luminaries rest?]",
+      "text_fa": null,
+      "text_hr": "Ili postoji itko tko bi mogao raspoznati duljinu neba i kolika mu je visina, i na čemu je utemeljeno, i koliki je broj zvijezda, i gdje počivaju sve svjetiljke?]",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

@@ -1,0 +1,273 @@
+{
+  "schema_version": 1,
+  "book_id": "judith",
+  "title_fa": "یهودیت",
+  "title_en": "Judith",
+  "title_hr": "Judita",
+  "chapter": 7,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "82327d3bcbacec9391e51c92d8c02635ac9bf9e778c6624d7d0ebca0d8f0de27",
+  "locales_in_scope": [
+    "fa"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "The next day Holofernes commanded all his army, and all his people which were come to take his part, that they should remove their camp against Bethulia, to take aforehand the ascents of the hill country, and to make war against the children of Israel.",
+      "text_fa": "روز بعد هولوفرنس به تمام سپاه و همهٔ مردمانی که برای یاری او آمده بودند فرمان داد اردوگاهشان را به مقابل بیتولیا منتقل کنند، پیشاپیش راه‌های صعود به کوهستان را بگیرند و با بنی‌اسرائیل بجنگند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 2,
+      "text_en": "Then their strong men removed their camps in that day, and the army of the men of war was an hundred and seventy thousand footmen, and twelve thousand horsemen, beside the baggage, and other men that were afoot among them, a very great multitude.",
+      "text_fa": "جنگجویانشان همان روز اردوگاه را جابه‌جا کردند. سپاه آنان صد و هفتاد هزار پیاده و دوازده هزار سوار داشت، افزون بر بار و بنه و انبوه بسیارِ مردانی که پیاده همراهشان بودند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 3,
+      "text_en": "And they camped in the valley near unto Bethulia, by the fountain, and they spread themselves in breadth over Dothaim even to Belmaim, and in length from Bethulia unto Cynamon, which is over against Esdraelon.",
+      "text_fa": "در درهٔ نزدیک بیتولیا، کنار چشمه، اردو زدند. پهنای اردوگاهشان از دوتائیم تا بلمائیم و درازای آن از بیتولیا تا کینامون، روبه‌روی یزرعیل، گسترده بود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 4,
+      "text_en": "Now the children of Israel, when they saw the multitude of them, were greatly troubled, and said every one to his neighbour, Now will these men lick up the face of the earth; for neither the high mountains, nor the valleys, nor the hills, are able to bear their weight.",
+      "text_fa": "وقتی بنی‌اسرائیل آن انبوه را دیدند، سخت پریشان شدند و به یکدیگر گفتند: «این مردان اکنون سراسر روی زمین را خواهند لیسید؛ نه کوه‌های بلند، نه دره‌ها و نه تپه‌ها توان تحمل سنگینی آنان را دارند.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 5,
+      "text_en": "Then every man took up his weapons of war, and when they had kindled fires upon their towers, they remained and watched all that night.",
+      "text_fa": "پس هر مرد سلاح جنگی خود را برداشت. بر برج‌ها آتش افروختند و تمام شب بیدار ماندند و نگهبانی دادند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 6,
+      "text_en": "But in the second day Holofernes brought forth all his horsemen in the sight of the children of Israel which were in Bethulia,",
+      "text_fa": "روز دوم، هولوفرنس تمام سوارانش را در برابر دیدگان بنی‌اسرائیلِ ساکن بیتولیا بیرون آورد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 7,
+      "text_en": "And viewed the passages up to the city, and came to the fountains of their waters, and took them, and set garrisons of men of war over them, and he himself removed toward his people.",
+      "text_fa": "راه‌های منتهی به شهر را بررسی کرد، به چشمه‌های آب آنان رسید، آنها را تصرف نمود، دسته‌هایی از جنگجویان را برای نگهبانی بر آنها گماشت و خود نزد سپاهش بازگشت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 8,
+      "text_en": "Then came unto him all the chief of the children of Esau, and all the governors of the people of Moab, and the captains of the sea coast, and said,",
+      "text_fa": "آنگاه همهٔ سران ادومیان، فرمانداران موآب و سرداران ساحل نزد او آمدند و گفتند:",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 9,
+      "text_en": "Let our lord now hear a word, that there be not an overthrow in thine army.",
+      "text_fa": "«سرور ما اکنون سخنی بشنود تا سپاهش شکست نخورد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 10,
+      "text_en": "For this people of the children of Israel do not trust in their spears, but in the height of the mountains wherein they dwell, because it is not easy to come up to the tops of their mountains.",
+      "text_fa": "این قوم بنی‌اسرائیل به نیزه‌های خود اعتماد ندارند، بلکه به بلندی کوه‌هایی که در آنها زندگی می‌کنند تکیه دارند، زیرا صعود به قله‌های کوه‌هایشان آسان نیست.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 11,
+      "text_en": "Now therefore, my lord, fight not against them in battle array, and there shall not so much as one man of thy people perish.",
+      "text_fa": "پس اکنون، ای سرور ما، در نبردی صف‌آرا با آنان نجنگ؛ در این صورت حتی یک نفر از سپاه تو نیز کشته نخواهد شد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 12,
+      "text_en": "Remain in thy camp, and keep all the men of thine army, and let thy servants get into their hands the fountain of water, which issueth forth of the foot of the mountain:",
+      "text_fa": "در اردوگاه خود بمان و تمام مردان سپاهت را نگاه دار. بگذار خدمتگزارانت چشمهٔ آبی را که از پای کوه جاری می‌شود در اختیار بگیرند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 13,
+      "text_en": "For all the inhabitants of Bethulia have their water thence; so shall thirst kill them, and they shall give up their city, and we and our people shall go up to the tops of the mountains that are near, and will camp upon them, to watch that none go out of the city.",
+      "text_fa": "زیرا همهٔ ساکنان بیتولیا آب خود را از آنجا می‌گیرند. آنگاه تشنگی آنان را خواهد کشت و شهرشان را تسلیم خواهند کرد. ما و مردمانمان نیز به قله‌های کوه‌های نزدیک می‌رویم و آنجا اردو می‌زنیم تا مراقب باشیم هیچ‌کس از شهر بیرون نرود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 14,
+      "text_en": "So they and their wives and their children shall be consumed with fire, and before the sword come against them, they shall be overthrown in the streets where they dwell.",
+      "text_fa": "بدین‌سان آنان، زنان و فرزندانشان از تشنگی خواهند سوخت و پیش از آنکه شمشیر به ایشان برسد، در خیابان‌های محل زندگی خود بر زمین خواهند افتاد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 15,
+      "text_en": "Thus shalt thou render them an evil reward; because they rebelled, and met not thy person peaceably.",
+      "text_fa": "این‌گونه به سبب شورششان و اینکه با صلح به استقبال تو نیامدند، پاداشی سخت به آنان خواهی داد.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 16,
+      "text_en": "And these words pleased Holofernes and all his servants, and he appointed to do as they had spoken.",
+      "text_fa": "این سخنان هولوفرنس و همهٔ خدمتگزارانش را خشنود ساخت و او تصمیم گرفت مطابق گفتهٔ آنان عمل کند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 17,
+      "text_en": "So the camp of the children of Ammon departed, and with them five thousand of the Assyrians, and they pitched in the valley, and took the waters, and the fountains of the waters of the children of Israel.",
+      "text_fa": "پس اردوگاه عمونیان همراه با پنج هزار آشوری حرکت کرد. آنان در دره اردو زدند و آب‌ها و چشمه‌های بنی‌اسرائیل را تصرف کردند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 18,
+      "text_en": "Then the children of Esau went up with the children of Ammon, and camped in the hill country over against Dothaim: and they sent some of them toward the south, and toward the east over against Ekrebel, which is near unto Chusi, that is upon the brook Mochmur; and the rest of the army of the Assyrians camped in the plain, and covered the face of the whole land; and their tents and carriages were pitched to a very great multitude.",
+      "text_fa": "ادومیان همراه عمونیان بالا رفتند و در کوهستان روبه‌روی دوتائیم اردو زدند. گروهی را به جنوب و گروهی را به شرق، روبه‌روی اکرِبل در نزدیکی خوسی که کنار نهر موخمور است، فرستادند. باقی سپاه آشور در دشت اردو زد و سراسر روی زمین را پوشاند؛ خیمه‌ها و بارهایشان انبوهی عظیم بود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 19,
+      "text_en": "Then the children of Israel cried unto the Lord their God, because their heart failed, for all their enemies had compassed them round about, and there was no way to escape out from among them.",
+      "text_fa": "آنگاه بنی‌اسرائیل نزد خداوند، خدای خود، فریاد زدند، زیرا دلشان از ترس فروریخته بود؛ دشمنان از هر سو محاصره‌شان کرده بودند و هیچ راه گریزی نداشتند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 20,
+      "text_en": "Thus all the company of Assur remained about them, both their footmen, chariots, and horsemen, four and thirty days, so that all their vessels of water failed all the inhabitants of Bethulia.",
+      "text_fa": "تمام سپاه آشور، پیاده‌نظام، ارابه‌ها و سواران، سی‌وچهار روز پیرامون آنان ماندند تا همهٔ ظرف‌های آب ساکنان بیتولیا خالی شد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 21,
+      "text_en": "And the cisterns were emptied, and they had not water to drink their fill for one day; for they gave them drink by measure.",
+      "text_fa": "آب‌انبارها تهی شد و برای یک روز کامل نیز آب کافی برای نوشیدن نداشتند؛ آب را جیره‌بندی می‌کردند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 22,
+      "text_en": "Therefore their young children were out of heart, and their women and young men fainted for thirst, and fell down in the streets of the city, and by the passages of the gates, and there was no longer any strength in them.",
+      "text_fa": "کودکانشان بی‌حال شدند، زنان و جوانان از تشنگی از هوش رفتند و در خیابان‌های شهر و کنار گذرگاه‌های دروازه‌ها بر زمین افتادند؛ دیگر هیچ نیرویی در آنان نمانده بود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 23,
+      "text_en": "Then all the people assembled to Ozias, and to the chief of the city, both young men, and women, and children, and cried with a loud voice, and said before all the elders,",
+      "text_fa": "آنگاه همهٔ قوم، مردان جوان، زنان و کودکان، نزد عُزیا و سران شهر گرد آمدند، با صدای بلند فریاد زدند و در حضور همهٔ مشایخ گفتند:",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 24,
+      "text_en": "God be judge between us and you: for ye have done us great injury, in that ye have not required peace of the children of Assur.",
+      "text_fa": "«خدا میان ما و شما داوری کند، زیرا با درخواست نکردن صلح از آشوریان، آسیبی بزرگ به ما رساندید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 25,
+      "text_en": "For now we have no helper: but God hath sold us into their hands, that we should be thrown down before them with thirst and great destruction.",
+      "text_fa": "اکنون یاوری نداریم؛ خدا ما را به دست آنان فروخته تا از تشنگی و نابودی عظیم در برابرشان بر زمین بیفتیم.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 26,
+      "text_en": "Now therefore call them unto you, and deliver the whole city for a spoil to the people of Holofernes, and to all his army.",
+      "text_fa": "پس ایشان را فراخوانید و تمام شهر را برای غارت به هولوفرنس و همهٔ سپاهش تسلیم کنید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 27,
+      "text_en": "For it is better for us to be made a spoil unto them, than to die for thirst: for we will be his servants, that our souls may live, and not see the death of our infants before our eyes, nor our wives nor our children to die.",
+      "text_fa": "برای ما بهتر است غنیمت آنان شویم تا از تشنگی بمیریم. خدمتگزارشان خواهیم شد تا جانمان زنده بماند و مرگ نوزادانمان و جان دادن زنان و فرزندانمان را در برابر چشمان خود نبینیم.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 28,
+      "text_en": "We take to witness against you the heaven and the earth, and our God and Lord of our fathers, which punisheth us according to our sins and the sins of our fathers, that he do not according as we have said this day.",
+      "text_fa": "آسمان و زمین و خدا و خداوند پدرانمان را که ما را به سبب گناهان خودمان و نیاکانمان مجازات می‌کند، بر ضد شما شاهد می‌گیریم تا آنچه امروز گفته‌ایم بر سر ما نیاورد.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 29,
+      "text_en": "Then there was great weeping with one consent in the midst of the assembly; and they cried unto the Lord God with a loud voice.",
+      "text_fa": "آنگاه در میان جماعت، همگی سخت گریستند و با صدای بلند نزد خداوند خدا فریاد زدند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 30,
+      "text_en": "Then said Ozias to them, Brethren, be of good courage, let us yet endure five days, in the which space the Lord our God may turn his mercy toward us; for he will not forsake us utterly.",
+      "text_fa": "سپس عُزیا به آنان گفت: «ای برادران، دل قوی دارید. پنج روز دیگر پایداری کنیم؛ شاید در این مدت خداوند، خدای ما، رحمتش را به سوی ما بازگرداند، زیرا هرگز ما را به‌کلی ترک نخواهد کرد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 31,
+      "text_en": "And if these days pass, and there come no help unto us, I will do according to your word.",
+      "text_fa": "اگر این روزها بگذرد و یاری‌ای به ما نرسد، مطابق سخن شما عمل خواهم کرد.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 32,
+      "text_en": "And he dispersed the people, every one to their own charge; and they went unto the walls and towers of their city, and sent the women and children into their houses: and they were very low brought in the city.",
+      "text_fa": "پس قوم را پراکنده کرد و هر کس را به جایگاه خود فرستاد. مردان به دیوارها و برج‌های شهر رفتند و زنان و کودکان را به خانه‌ها فرستادند. مردم شهر سخت خوار و درمانده شده بودند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    }
+  ]
+}

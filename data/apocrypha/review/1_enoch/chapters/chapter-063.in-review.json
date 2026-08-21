@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 63,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "10394ca84e6a2b425327be53df07682c0ace595f24cd18af7b91e3d3818bd1b1",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "In those days shall the mighty and the kings who possess the earth implore (Him) to grant them a little respite from His angels of punishment to whom they were delivered, that they might fall down and worship before the Lord of Spirits, and confess their sins before Him.",
+      "text_fa": null,
+      "text_hr": "U one će dane moćnici i kraljevi koji posjeduju zemlju preklinjati da im dopusti kratak predah od njegovih anđela kazne kojima su bili predani, kako bi mogli pasti ničice, pokloniti se Gospodaru duhova i pred njim priznati svoje grijehe.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And they shall bless and glorify the Lord of Spirits, and say:\n\n‘Blessed is the Lord of Spirits and the Lord of kings,\nAnd the Lord of the mighty and the Lord of the rich,\nAnd the Lord of glory and the Lord of wisdom;",
+      "text_fa": null,
+      "text_hr": "Blagoslivljat će i slaviti Gospodara duhova te govoriti:\n\n„Blagoslovljen je Gospodar duhova i Gospodar kraljeva,\nGospodar moćnika i Gospodar bogataša,\nGospodar slave i Gospodar mudrosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And splendid in every secret thing is Thy power from generation to generation,\nAnd Thy glory for ever and ever:\nDeep are all Thy secrets and innumerable,\nAnd Thy righteousness is beyond reckoning.",
+      "text_fa": null,
+      "text_hr": "Tvoja je moć veličanstvena u svakoj tajni od naraštaja do naraštaja,\na tvoja slava u vijeke vjekova.\nDuboke su sve tvoje tajne i bezbrojne,\na tvoja je pravednost neizmjerna.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "We have now learnt that we should glorify\nAnd bless the Lord of kings and Him who is King over all kings.’",
+      "text_fa": null,
+      "text_hr": "Sada smo spoznali da trebamo slaviti\ni blagoslivljati Gospodara kraljeva, onoga koji je Kralj nad svim kraljevima.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And they shall say:\n‘Would that we had rest to glorify and give thanks\nAnd confess our faith before His glory!",
+      "text_fa": null,
+      "text_hr": "Govorit će:\n„O, kad bismo imali počinka da slavimo i zahvaljujemo\nte ispovjedimo svoju vjeru pred njegovom slavom!",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And now we long for a little rest, but find it not:\nWe follow hard upon (it) and obtain (it) not:\nAnd light has vanished from before us,\nAnd darkness is our dwelling-place for ever and ever:",
+      "text_fa": null,
+      "text_hr": "Sada čeznemo za kratkim počinkom, ali ga ne nalazimo.\nUporno ga slijedimo, ali ga ne dosežemo.\nSvjetlost je nestala pred nama,\na tama je naše prebivalište u vijeke vjekova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "For we have not believed before Him,\nNor glorified the name of the Lord of Spirits, [nor glorified our Lord]\nBut our hope was in the sceptre of our kingdom,\nAnd in our glory.",
+      "text_fa": null,
+      "text_hr": "Jer nismo vjerovali pred njim\nniti smo slavili ime Gospodara duhova [niti slavili svojega Gospodina],\nnego smo se uzdali u žezlo svojega kraljevstva\ni u svoju slavu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And in the day of our suffering and tribulation He saves us not,\nAnd we find no respite for confession,\nThat our Lord is true in all His works, and in His judgements and His justice;\nAnd His judgements have no respect of persons.",
+      "text_fa": null,
+      "text_hr": "U dan naše patnje i nevolje on nas ne spašava\ni ne nalazimo predaha da ispovjedimo\nkako je naš Gospodin istinit u svim svojim djelima, sudovima i pravdi\nte kako njegovi sudovi nisu pristrani.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And we pass away from before His face on account of our works,\nAnd all our sins are reckoned up in righteousness.’",
+      "text_fa": null,
+      "text_hr": "Zbog svojih djela odlazimo ispred njegova lica,\na svi su naši grijesi pravedno izbrojeni.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "Now they will say unto themselves: ‘Our souls are full of unrighteous gain, but it does not prevent us from descending from the midst thereof into the †burden† of Sheol.’",
+      "text_fa": null,
+      "text_hr": "Tada će reći sami sebi: „Naše su duše pune nepravedna dobitka, ali ni to nas ne sprečava da se iz njegove sredine spustimo u †breme† Šeola.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "And after that their faces shall be filled with darkness\nAnd shame before that Son of Man,\nAnd they shall be driven from his presence,\nAnd the sword shall abide before his face in their midst.",
+      "text_fa": null,
+      "text_hr": "Nakon toga njihova će se lica ispuniti tamom\ni sramotom pred tim Sinom Čovječjim.\nBit će protjerani iz njegove nazočnosti,\na mač će pred njegovim licem prebivati među njima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "Thus spake the Lord of Spirits: ‘This is the ordinance and judgement with respect to the mighty and the kings and the exalted and those who possess the earth before the Lord of Spirits.’",
+      "text_fa": null,
+      "text_hr": "Ovako govori Gospodar duhova: „Ovo je odredba i sud o moćnicima, kraljevima, uzvišenima i onima koji posjeduju zemlju pred Gospodarom duhova.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

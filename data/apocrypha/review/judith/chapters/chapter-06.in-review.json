@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "book_id": "judith",
+  "title_fa": "یهودیت",
+  "title_en": "Judith",
+  "title_hr": "Judita",
+  "chapter": 6,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "4b04f370e5ac93e28a8edfdbfc0d27e8e22c6fb048e1b36bd65e0a0db04563f8",
+  "locales_in_scope": [
+    "fa"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And when the tumult of men that were about the council was ceased, Holofernes the chief captain of the army of Assur said unto Achior and all the Moabites before all the company of other nations,",
+      "text_fa": "پس از آنکه غوغای مردانی که گرد شورا بودند فرو نشست، هولوفرنس، فرماندهٔ کل سپاه آشور، در حضور همهٔ ملت‌های گردآمده به اخیور و تمام موآبیان گفت:",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 2,
+      "text_en": "And who art thou, Achior, and the hirelings of Ephraim, that thou hast prophesied against us as to day, and hast said, that we should not make war with the people of Israel, because their God will defend them? and who is God but Nabuchodonosor?",
+      "text_fa": "«تو کیستی، ای اخیور، و شما مزدوران افرایم کیستید که امروز بر ضد ما پیشگویی کرده و گفته‌اید با قوم اسرائیل نجنگیم، زیرا خدایشان از آنان دفاع خواهد کرد؟ مگر خدایی جز نبوکدنصر وجود دارد؟",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 3,
+      "text_en": "He will send his power, and will destroy them from the face of the earth, and their God shall not deliver them: but we his servants will destroy them as one man; for they are not able to sustain the power of our horses.",
+      "text_fa": "او قدرت خود را خواهد فرستاد و آنان را از روی زمین نابود خواهد کرد؛ خدایشان نجاتشان نخواهد داد. ما، خدمتگزاران نبوکدنصر، ایشان را همچون یک تن نابود خواهیم ساخت، زیرا نمی‌توانند در برابر قدرت اسب‌های ما بایستند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 4,
+      "text_en": "For with them we will tread them under foot, and their mountains shall be drunken with their blood, and their fields shall be filled with their dead bodies, and their footsteps shall not be able to stand before us, for they shall utterly perish, saith king Nabuchodonosor, lord of all the earth: for he said, None of my words shall be in vain.",
+      "text_fa": "با اسب‌هایمان آنان را پایمال خواهیم کرد؛ کوه‌هایشان از خونشان سیراب و کشتزارهایشان از اجسادشان پُر خواهد شد. پاهایشان در برابر ما استوار نخواهد ماند و به‌کلی نابود خواهند شد. نبوکدنصر، پادشاه و فرمانروای سراسر زمین، چنین گفته است؛ زیرا او گفته که هیچ‌یک از سخنانش بی‌نتیجه نخواهد ماند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 5,
+      "text_en": "And thou, Achior, an hireling of Ammon, which hast spoken these words in the day of thine iniquity, shalt see my face no more from this day, until I take vengeance of this nation that came out of Egypt.",
+      "text_fa": "و تو، ای اخیور، مزدور عمونی که در روز شرارت خود این سخنان را گفتی، از امروز دیگر روی مرا نخواهی دید تا از این قومی که از مصر بیرون آمده‌اند انتقام بگیرم.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 6,
+      "text_en": "And then shall the sword of mine army, and the multitude of them that serve me, pass through thy sides, and thou shalt fall among their slain, when I return.",
+      "text_fa": "آنگاه شمشیر سپاه من و انبوه خدمتگزارانم پهلویت را خواهد شکافت و وقتی بازگردم، در میان کشتگان آنان خواهی افتاد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 7,
+      "text_en": "Now therefore my servants shall bring thee back into the hill country, and shall set thee in one of the cities of the passages:",
+      "text_fa": "اکنون خدمتگزارانم تو را به کوهستان خواهند برد و در یکی از شهرهای کنار گذرگاه‌ها خواهند گذاشت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 8,
+      "text_en": "And thou shalt not perish, till thou be destroyed with them.",
+      "text_fa": "تو نخواهی مرد تا زمانی که همراه آنان نابود شوی.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 9,
+      "text_en": "And if thou persuade thyself in thy mind that they shall be taken, let not thy countenance fall: I have spoken it, and none of my words shall be in vain.",
+      "text_fa": "اگر در دل خود اطمینان داری که آنان اسیر نخواهند شد، چهره‌ات غمگین نشود. من سخن گفته‌ام و هیچ‌یک از سخنانم بی‌نتیجه نخواهد ماند.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 10,
+      "text_en": "Then Holofernes commanded his servants, that waited in his tent, to take Achior, and bring him to Bethulia, and deliver him into the hands of the children of Israel.",
+      "text_fa": "سپس هولوفرنس به خدمتگزارانی که در خیمه‌اش آماده بودند فرمان داد اخیور را بگیرند، به بیتولیا ببرند و به دست بنی‌اسرائیل بسپارند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 11,
+      "text_en": "So his servants took him, and brought him out of the camp into the plain, and they went from the midst of the plain into the hill country, and came unto the fountains that were under Bethulia.",
+      "text_fa": "خدمتگزارانش او را گرفتند، از اردوگاه به دشت بردند، از میان دشت به کوهستان رفتند و به چشمه‌های زیر بیتولیا رسیدند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 12,
+      "text_en": "And when the men of the city saw them, they took up their weapons, and went out of the city to the top of the hill: and every man that used a sling kept them from coming up by casting of stones against them.",
+      "text_fa": "وقتی مردان شهر آنان را دیدند، سلاح‌هایشان را برداشتند و از شهر به بالای کوه رفتند. همهٔ فلاخن‌اندازان با پرتاب سنگ مانع بالا آمدن آنان شدند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 13,
+      "text_en": "Nevertheless having gotten privily under the hill, they bound Achior, and cast him down, and left him at the foot of the hill, and returned to their lord.",
+      "text_fa": "اما خدمتگزاران مخفیانه به زیر کوه رسیدند، اخیور را بستند، او را پایین انداختند و در پای کوه رها کردند؛ سپس نزد سرورشان بازگشتند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 14,
+      "text_en": "But the Israelites descended from their city, and came unto him, and loosed him, and brought him to Bethulia, and presented him to the governors of the city:",
+      "text_fa": "اسرائیلیان از شهر پایین آمدند، نزد اخیور رفتند، بندهایش را باز کردند، او را به بیتولیا بردند و در حضور حاکمان شهر قرار دادند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 15,
+      "text_en": "Which were in those days Ozias the son of Micha, of the tribe of Simeon, and Chabris the son of Gothoniel, and Charmis the son of Melchiel.",
+      "text_fa": "حاکمان شهر در آن روزها عُزیا پسر میخا از قبیلهٔ شمعون، خابریس پسر گوتونیئل و خارمیس پسر ملکیئل بودند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 16,
+      "text_en": "And they called together all the ancients of the city, and all their youth ran together, and their women, to the assembly, and they set Achior in the midst of all their people. Then Ozias asked him of that which was done.",
+      "text_fa": "آنان همهٔ مشایخ شهر را فراخواندند. تمام جوانان و زنان نیز به آن گردهمایی شتافتند و اخیور را در میان قوم قرار دادند. آنگاه عُزیا از او پرسید چه اتفاقی افتاده است.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 17,
+      "text_en": "And he answered and declared unto them the words of the council of Holofernes, and all the words that he had spoken in the midst of the princes of Assur, and whatsoever Holofernes had spoken proudly against the house of Israel.",
+      "text_fa": "اخیور پاسخ داد و سخنان شورای هولوفرنس، همهٔ آنچه را در میان امیران آشور گفته بود و هر سخن متکبرانه‌ای را که هولوفرنس بر ضد خاندان اسرائیل گفته بود، برایشان بازگو کرد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 18,
+      "text_en": "Then the people fell down and worshipped God, and cried unto God. saying,",
+      "text_fa": "آنگاه قوم به خاک افتادند، خدا را پرستش کردند و نزد او فریاد زده، گفتند:",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 19,
+      "text_en": "O Lord God of heaven, behold their pride, and pity the low estate of our nation, and look upon the face of those that are sanctified unto thee this day.",
+      "text_fa": "«ای خداوند، خدای آسمان، به غرور آنان بنگر، بر خواری قوم ما رحم کن و امروز بر چهرهٔ کسانی که برای تو تقدیس شده‌اند نظر فرما.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 20,
+      "text_en": "Then they comforted Achior, and praised him greatly.",
+      "text_fa": "سپس اخیور را دلداری دادند و بسیار ستودند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 21,
+      "text_en": "And Ozias took him out of the assembly unto his house, and made a feast to the elders; and they called on the God of Israel all that night for help.",
+      "text_fa": "عُزیا او را از میان جماعت به خانهٔ خود برد و برای مشایخ ضیافتی برپا کرد. آنان تمام آن شب برای یاری نزد خدای اسرائیل دعا کردند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 24,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "09c0290945458c394e341594a161194599ed413a2ef5a74890c9958d28dd1ce5",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "〚And from thence I went to another place of the earth〛, and he showed me a mountain range of fire which burnt 〚day and〛 night.",
+      "text_fa": null,
+      "text_hr": "〚Odatle odoh na drugo mjesto na zemlji〛, a on mi pokaza gorski lanac od ognja koji je gorio 〚danju i〛 noću.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And I went beyond it and saw seven magnificent mountains all differing each from the other, and the stones (thereof) were magnificent and beautiful, magnificent as a whole, of glorious appearance and fair exterior: 〚three towards〛 the east, 〚one〛 founded on the other, and three towards the south, 〚one〛 upon the other, and deep rough ravines, no one of which joined with any other.",
+      "text_fa": null,
+      "text_hr": "Pođoh dalje i vidjeh sedam veličanstvenih gora, svaku različitu od drugih. Njihovo kamenje bijaše veličanstveno i lijepo; sve bijahu veličanstvene, slavna izgleda i krasne vanjštine: 〚tri prema〛 istoku, 〚jedna〛 utemeljena na drugoj, i tri prema jugu, 〚jedna〛 nad drugom. Među njima bijahu duboke, hrapave gudure, od kojih se nijedna nije spajala s drugom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And the seventh mountain was in the midst of these, and it excelled them in height, resembling the seat of a throne: and fragrant trees encircled the throne.",
+      "text_fa": null,
+      "text_hr": "Sedma je gora bila usred njih i nadvisivala ih visinom, nalik prijestolju; prijestolje su okruživala mirisna stabla.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And amongst them was a tree such as I had never yet smelt, neither was any amongst them nor were others like it: it had a fragrance beyond all fragrance, and its leaves and blooms and wood wither not for ever: and its fruit 〚is beautiful, and its fruit〛 resembles the dates of a palm.",
+      "text_fa": null,
+      "text_hr": "Među njima bijaše stablo kakvo nikada prije nisam pomirisao; nijedno drugo među njima, niti igdje drugdje, nije mu bilo nalik. Miris mu bijaše jači od svakoga mirisa; lišće, cvjetovi i drvo ne venu dovijeka, a plod mu 〚je lijep i plod mu〛 nalikuje datuljama palme.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "Then I said: ‘⌜How⌝ beautiful is this tree, and fragrant, and its leaves are fair, and its blooms 〚very〛 delightful in appearance.’",
+      "text_fa": null,
+      "text_hr": "Tada rekoh: ‘⌜Kako⌝ je lijepo i mirisno ovo stablo! Lišće mu je krasno, a cvjetovi su mu 〚veoma〛 ugodni na pogled.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "Then answered Michael, one of the holy 〚and honoured〛 angels who was with me, and was their leader,",
+      "text_fa": null,
+      "text_hr": "Tada odgovori Mihael, jedan od svetih 〚i čašćenih〛 anđela koji bijaše sa mnom i njihov vođa,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

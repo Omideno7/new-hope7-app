@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "book_id": "4_maccabees",
+  "title_fa": "مکابیان چهارم",
+  "title_en": "Fourth Maccabees",
+  "title_hr": "Četvrta knjiga o Makabejcima",
+  "chapter": 14,
+  "status": "in_review",
+  "source_translation": "WEBC",
+  "versification": "WEBC",
+  "source_english_sha256": "13b35b3b8e584fde28ff0f08d258a56fe14b3a077a0fee6a3ffc2e0007b096cb",
+  "locales_in_scope": [
+    "fa",
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "More that this, they even urged them on to this mistreatment; so that they not only despised pains themselves, but they even got the better of their affections of brotherly love.",
+      "text_fa": "فراتر از این، آنان حتی یکدیگر را به تحمل این بدرفتاری برمی‌انگیختند؛ چنان‌که نه تنها خود دردها را خوار می‌شمردند، بلکه بر عواطفِ محبت برادرانهٔ خویش نیز چیره می‌شدند.",
+      "text_hr": "Štoviše, čak su jedni druge poticali da podnesu to zlostavljanje, tako da ne samo što su sami prezirali boli nego su nadvladali i osjećaje bratske ljubavi.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "Reasoning is more royal than a king, and freer than freemen!",
+      "text_fa": "عقل از پادشاه نیز شاهانه‌تر و از آزادگان آزادتر است!",
+      "text_hr": "Razum je kraljevskiji od kralja i slobodniji od slobodnih ljudi!",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "What a sacred and harmonious concert of the seven kindred as concerning piety!",
+      "text_fa": "هم‌سرایی آن هفت خویشاوند در باب دینداری چه مقدس و هماهنگ بود!",
+      "text_hr": "Kakav li sveti i skladni zbor sedmorice srodnika u pobožnosti!",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "None of the seven youths turned cowardly or shrank back from death.",
+      "text_fa": "هیچ‌یک از آن هفت جوان بزدلی نشان نداد و از مرگ واپس ننشست.",
+      "text_hr": "Nijedan od sedmorice mladića nije se ponio kukavički niti je ustuknuo pred smrću.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "But all of them, as though running the road to immortality, hastened on to death through tortures.",
+      "text_fa": "بلکه همگی، گویی در راه نامیرایی می‌دویدند، از میان شکنجه‌ها به سوی مرگ شتافتند.",
+      "text_hr": "Naprotiv, svi su, kao da trče putem prema besmrtnosti, kroz mučenja hitali u smrt.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "For just as hands and feet are moved sympathetically with the directions of the soul, so those holy youths agreed to death for religion’s sake, as through the immortal soul of religion.",
+      "text_fa": "زیرا همان‌گونه که دست‌ها و پاها همدلانه با رهنمودهای جان به حرکت درمی‌آیند، آن جوانان مقدس نیز، گویی به‌واسطهٔ جان نامیرای دینداری، به‌خاطر دینداری مرگ را پذیرفتند.",
+      "text_hr": "Jer kao što se ruke i noge složno pokreću prema naputcima duše, tako su i oni sveti mladići, kao po besmrtnoj duši pobožnosti, pristali na smrt radi pobožnosti.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "O holy seven of harmonious kindred! For as the seven days of creation, about religion,",
+      "text_fa": "ای هفت خویشاوند مقدس و هماهنگ! زیرا همان‌گونه که هفت روز آفرینش پیرامون دینداری‌اند،",
+      "text_hr": "O sveta sedmorice skladnih srodnika! Jer kao što je sedam dana stvaranja povezano s pobožnošću,",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "so the youths, circling around the number seven, annulled the fear of torments.",
+      "text_fa": "آن جوانان نیز با گرد آمدن بر عدد هفت، ترس از عذاب‌ها را باطل ساختند.",
+      "text_hr": "tako su mladići, okupljeni oko broja sedam, poništili strah od muka.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "We now shudder at the recital of the affliction of those young men; but they not only saw, and not only heard the immediate execution of the threat, but undergoing it, persevered; and that through the pains of fire.",
+      "text_fa": "ما اکنون از بازگویی رنج آن جوانان به لرزه می‌افتیم؛ اما آنان نه تنها اجرای بی‌درنگِ تهدید را دیدند و شنیدند، بلکه خود آن را تحمل کردند و در میان دردهای آتش پایدار ماندند.",
+      "text_hr": "Mi sada dršćemo dok pripovijedamo o patnji tih mladića; a oni ne samo da su vidjeli i čuli kako se prijetnja odmah izvršava nego su je i sami podnosili te ustrajali kroz boli ognja.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "What could be more painful? For the power of fire, being sharp and quick, speedily dissolved their bodies.",
+      "text_fa": "چه چیزی می‌توانست دردناک‌تر باشد؟ زیرا نیروی تیز و سریع آتش، بدن‌هایشان را به‌شتاب از هم فرو می‌پاشید.",
+      "text_hr": "Što bi moglo biti bolnije? Jer je oštra i brza snaga ognja naglo razarala njihova tijela.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "Don’t think it wonderful that reasoning ruled over those men in their torments, when even a woman’s mind despised more manifold pains.",
+      "text_fa": "شگفت مدارید که عقل در میان عذاب‌ها بر آن مردان فرمان راند، هنگامی که حتی ذهن یک زن نیز دردهایی گوناگون‌تر را خوار شمرد.",
+      "text_hr": "Ne smatrajte čudom što je razum vladao tim muškarcima u njihovim mukama, kad je čak i um jedne žene prezreo još raznovrsnije boli.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "For the mother of those seven youths endured the rackings of each of her children.",
+      "text_fa": "زیرا مادر آن هفت جوان، شکنجه شدن تک‌تک فرزندانش را تاب آورد.",
+      "text_hr": "Jer je majka one sedmorice mladića podnijela mučenje svakoga svojeg djeteta.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "Consider how comprehensive is the love of offspring, which draws every one to sympathy of affection,",
+      "text_fa": "بنگرید که محبت به فرزند تا چه اندازه فراگیر است، محبتی که هر کس را به همدردیِ عاطفی می‌کشاند؛",
+      "text_hr": "Promotrite koliko je sveobuhvatna ljubav prema potomstvu, koja svakoga privlači suosjećanju iz ljubavi,",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "where irrational animals possess a similar sympathy and love for their offspring with men.",
+      "text_fa": "چراکه حیوانات بی‌عقل نیز، همانند آدمیان، نسبت به زادگان خود همدردی و محبتی مشابه دارند.",
+      "text_hr": "jer i nerazumne životinje, poput ljudi, osjećaju sličnu sućut i ljubav prema svojem potomstvu.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "The tame birds frequenting the roofs of our houses defend their fledglings.",
+      "text_fa": "پرندگان اهلی که بر بام خانه‌های ما رفت‌وآمد دارند، از جوجه‌های خود دفاع می‌کنند.",
+      "text_hr": "Pitome ptice koje često slijeću na krovove naših kuća brane svoje ptiće.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "Others build their nests and hatch their young on the tops of mountains, in the precipices of valleys, and the holes and tops of trees, and keep intruders away.",
+      "text_fa": "برخی دیگر بر فراز کوه‌ها، در پرتگاه‌های دره‌ها، و در سوراخ‌ها و بالای درختان آشیانه می‌سازند و جوجه‌هایشان را از تخم بیرون می‌آورند و مزاحمان را دور نگه می‌دارند.",
+      "text_hr": "Druge grade gnijezda i legu mlade na vrhovima planina, na liticama dolina te u dupljama i na krošnjama drveća, pa drže uljeze podalje.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "If not able to do this, they fly circling round them in agony of affection, calling out in their own note, and save their offspring in whatever manner they are able.",
+      "text_fa": "و اگر نتوانند چنین کنند، از دردِ محبت گرد آنان پرواز می‌کنند و با آواز ویژهٔ خود فریاد می‌زنند و به هر شیوه‌ای که بتوانند، زادگان خویش را نجات می‌دهند.",
+      "text_hr": "Ako to ne mogu, u tjeskobi ljubavi lete kružeći oko njih, glasaju se vlastitim zovom i spašavaju svoje potomstvo kako god mogu.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "But why should we point attention to the sympathy toward children shown by irrational animals?",
+      "text_fa": "اما چرا باید توجه را به همدردی حیوانات بی‌عقل با فرزندانشان جلب کنیم؟",
+      "text_hr": "Ali zašto bismo svraćali pozornost na sućut koju nerazumne životinje pokazuju prema mladima?",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "Even bees, at the season of honey-making, attack all who approach, and pierce with their sting, as with a sword, those who draw near their hive, and repel them even to death.",
+      "text_fa": "حتی زنبورها در فصل عسل‌سازی به هر که نزدیک شود حمله می‌کنند و کسانی را که به کندویشان نزدیک می‌شوند، با نیش خود چون شمشیر می‌درند و تا پای مرگ عقب می‌رانند.",
+      "text_hr": "Čak i pčele u doba spravljanja meda napadaju sve koji im priđu te žalcem, kao mačem, probadaju one koji se približe njihovoj košnici i odbijaju ih sve do smrti.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "But sympathy with her children didn’t turn away the mother of the young men, who had a spirit kindred with that of Abraham.",
+      "text_fa": "اما همدردی با فرزندان، مادر آن جوانان را که روحی هم‌سرشت با ابراهیم داشت، از راهش بازنگرداند.",
+      "text_hr": "Ali sućut prema djeci nije odvratila majku tih mladića, čiji je duh bio srodan Abrahamovu.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    }
+  ]
+}

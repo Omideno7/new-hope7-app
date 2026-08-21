@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "book_id": "1_esdras",
+  "title_fa": "اول اِسدراس",
+  "title_en": "First Esdras",
+  "title_hr": "Prva Ezdrina",
+  "chapter": 7,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "baa120fcfcb279fac2bb64a1a269749c65cb99ad49e3c965b3669a1290cfae22",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Then Sisinnes the governor of Celosyria and Phenice, and Sathrabuzanes, with their companions following the commandments of king Darius,",
+      "text_fa": null,
+      "text_hr": "Tada su Sisines, upravitelj Koelesirije i Fenicije, Satrabuzan i njihovi drugovi, izvršavajući zapovijedi kralja Darija,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "Did very carefully oversee the holy works, assisting the ancients of the Jews and governors of the temple.",
+      "text_fa": null,
+      "text_hr": "vrlo pomno nadgledali svete radove i pomagali židovskim starješinama i hramskim upraviteljima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And so the holy works prospered, when Aggeus and Zacharias the prophets prophesied.",
+      "text_fa": null,
+      "text_hr": "Tako su sveti radovi dobro napredovali dok su proroci Hagaj i Zaharija prorokovali.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And they finished these things by the commandment of the Lord God of Israel, and with the consent of Cyrus, Darius, and Artexerxes, kings of Persia.",
+      "text_fa": null,
+      "text_hr": "Dovršili su ih po zapovijedi Gospodina, Boga Izraelova, i uz odobrenje perzijskih kraljeva Kira, Darija i Artakserksa.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And thus was the holy house finished in the three and twentieth day of the month Adar, in the sixth year of Darius king of the Persians",
+      "text_fa": null,
+      "text_hr": "Sveti je Dom dovršen dvadeset i trećega dana mjeseca adara, šeste godine kraljevanja perzijskoga kralja Darija.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And the children of Israel, the priests, and the Levites, and others that were of the captivity, that were added unto them, did according to the things written in the book of Moses.",
+      "text_fa": null,
+      "text_hr": "Izraelovi sinovi, svećenici, leviti i drugi povratnici iz sužanjstva koji su im se pridružili postupili su prema onome što je zapisano u Mojsijevoj knjizi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And to the dedication of the temple of the Lord they offered an hundred bullocks two hundred rams, four hundred lambs;",
+      "text_fa": null,
+      "text_hr": "Za posvećenje Hrama Gospodnjega prinijeli su sto junaca, dvije stotine ovnova i četiri stotine janjaca,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And twelve goats for the sin of all Israel, according to the number of the chief of the tribes of Israel.",
+      "text_fa": null,
+      "text_hr": "te dvanaest jaraca za grijeh svega Izraela, prema broju poglavara izraelskih plemena.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "The priests also and the Levites stood arrayed in their vestments, according to their kindreds, in the service of the Lord God of Israel, according to the book of Moses: and the porters at every gate.",
+      "text_fa": null,
+      "text_hr": "Svećenici i leviti stajali su odjeveni u svoje haljine, po rodovima, u službi Gospodina, Boga Izraelova, prema Mojsijevoj knjizi; vratari su bili na svim vratima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And the children of Israel that were of the captivity held the passover the fourteenth day of the first month, after that the priests and the Levites were sanctified.",
+      "text_fa": null,
+      "text_hr": "Izraelovi sinovi koji su se vratili iz sužanjstva svetkovali su Pashu četrnaestoga dana prvoga mjeseca, nakon što su se svećenici i leviti posvetili.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "They that were of the captivity were not all sanctified together: but the Levites were all sanctified together.",
+      "text_fa": null,
+      "text_hr": "Povratnici iz sužanjstva nisu se svi posvetili u isto vrijeme, ali svi su se leviti zajedno posvetili.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "And so they offered the passover for all them of the captivity, and for their brethren the priests, and for themselves.",
+      "text_fa": null,
+      "text_hr": "Zato su zaklali pashalne žrtve za sve povratnike iz sužanjstva, za svoju braću svećenike i za sebe.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "And the children of Israel that came out of the captivity did eat, even all they that had separated themselves from the abominations of the people of the land, and sought the Lord.",
+      "text_fa": null,
+      "text_hr": "Jeli su Izraelovi sinovi koji su se vratili iz sužanjstva, i svi koji su se odvojili od gadosti naroda zemlje te tražili Gospodina.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "And they kept the feast of unleavened bread seven days, making merry before the Lord,",
+      "text_fa": null,
+      "text_hr": "Sedam su dana svetkovali Blagdan beskvasnih kruhova, radujući se pred Gospodinom,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "For that he had turned the counsel of the king of Assyria toward them, to strengthen their hands in the works of the Lord God of Israel.",
+      "text_fa": null,
+      "text_hr": "jer je on okrenuo srce asirskoga kralja prema njima i ojačao njihove ruke u djelu Gospodina, Boga Izraelova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

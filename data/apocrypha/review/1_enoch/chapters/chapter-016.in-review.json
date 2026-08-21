@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 16,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "ec6c3205d9f990ba7b9cb475246f954618484aac6337d71d4fc826846ecf8f52",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "From the days of the slaughter and destruction and death ⌜of the giants⌝, from the souls of whose flesh the spirits, having gone forth, shall destroy without incurring judgement—thus shall they destroy until the day of the consummation, the great ⌜judgement⌝ in which the age shall be consummated over the Watchers and the godless, yea, shall be wholly consummated.”",
+      "text_fa": null,
+      "text_hr": "Od dana pokolja, uništenja i smrti ⌜divova⌝, duhovi koji iziđu iz duša njihova tijela uništavat će a da sami ne podliježu sudu. Tako će uništavati sve do dana dovršenja, velikoga ⌜suda⌝ u kojemu će se dovršiti vijek nad Stražarima i bezbožnicima; da, bit će posve dovršen.”",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And now as to the Watchers who have sent thee to intercede for them, who had been 〚aforetime〛 in heaven, (say to them):",
+      "text_fa": null,
+      "text_hr": "A sada, o Stražarima koji su te poslali da posreduješ za njih i koji su nekoć bili 〚na nebu〛, (reci im):",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "“You have been in heaven, but ⌜all⌝ the mysteries had not yet been revealed to you, and you knew worthless ones, and these in the hardness of your hearts you have made known to the women, and through these mysteries women and men work much evil on earth.”",
+      "text_fa": null,
+      "text_hr": "„Bili ste na nebu, ali vam još nisu bile otkrivene ⌜sve⌝ tajne. Upoznali ste one bezvrijedne te ste ih u tvrdoći svojega srca obznanili ženama; tim tajnama žene i muškarci čine mnogo zla na zemlji.”",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "Say to them therefore: “You have no peace.”’",
+      "text_fa": null,
+      "text_hr": "Reci im stoga: „Nemate mira.”’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "book_id": "judith",
+  "title_fa": "یهودیت",
+  "title_en": "Judith",
+  "title_hr": "Judita",
+  "chapter": 12,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "e453b1610842a980823b81dad208bdbe2efe6aa9c25cd528e9d008990a2d7dea",
+  "locales_in_scope": [
+    "fa"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Then he commanded to bring her in where his plate was set; and bade that they should prepare for her of his own meats, and that she should drink of his own wine.",
+      "text_fa": "سپس هولوفرنس فرمان داد یهودیت را به جایی ببرند که ظروف سفره‌اش چیده شده بود. دستور داد از خوراک خود او برای یهودیت آماده کنند و از شراب خودش به او بنوشانند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 2,
+      "text_en": "And Judith said, I will not eat thereof, lest there be an offence: but provision shall be made for me of the things that I have brought.",
+      "text_fa": "یهودیت گفت: «از آن خوراک نخواهم خورد تا مرتکب گناه نشوم؛ آنچه با خود آورده‌ام برایم کافی خواهد بود.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 3,
+      "text_en": "Then Holofernes said unto her, If thy provision should fail, how should we give thee the like? for there be none with us of thy nation.",
+      "text_fa": "هولوفرنس به او گفت: «اگر آذوقه‌ات تمام شود، چگونه خوراکی همانند آن به تو بدهیم؟ زیرا از قوم تو کسی در میان ما نیست.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 4,
+      "text_en": "Then said Judith unto him As thy soul liveth, my lord, thine handmaid shall not spend those things that I have, before the Lord work by mine hand the things that he hath determined.",
+      "text_fa": "یهودیت گفت: «ای سرورم، به جان تو سوگند، پیش از آنکه خداوند آنچه را مقرر کرده به دست من انجام دهد، کنیزت آذوقه‌ای را که همراه دارد تمام نخواهد کرد.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 5,
+      "text_en": "Then the servants of Holofernes brought her into the tent, and she slept till midnight, and she arose when it was toward the morning watch,",
+      "text_fa": "خدمتگزاران هولوفرنس او را به خیمه بردند. یهودیت تا نیمه‌شب خوابید و نزدیک پاس صبحگاهی برخاست.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 6,
+      "text_en": "And sent to Holofernes, saving, Let my lord now command that thine handmaid may go forth unto prayer.",
+      "text_fa": "برای هولوفرنس پیام فرستاد و گفت: «سرورم فرمان دهد کنیزت برای دعا بیرون برود.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 7,
+      "text_en": "Then Holofernes commanded his guard that they should not stay her: thus she abode in the camp three days, and went out in the night into the valley of Bethulia, and washed herself in a fountain of water by the camp.",
+      "text_fa": "هولوفرنس به نگهبانانش دستور داد مانع او نشوند. یهودیت سه روز در اردوگاه ماند؛ هر شب به درهٔ بیتولیا بیرون می‌رفت و در چشمهٔ آب کنار اردوگاه خود را می‌شست.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 8,
+      "text_en": "And when she came out, she besought the Lord God of Israel to direct her way to the raising up of the children of her people.",
+      "text_fa": "وقتی از آب بیرون می‌آمد، نزد خداوند خدای اسرائیل دعا می‌کرد که راهش را برای سربلند کردن فرزندان قوم خود هدایت کند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 9,
+      "text_en": "So she came in clean, and remained in the tent, until she did eat her meat at evening.",
+      "text_fa": "سپس پاک به خیمه بازمی‌گشت و تا هنگام خوردن غذای عصر در آنجا می‌ماند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 10,
+      "text_en": "And in the fourth day Holofernes made a feast to his own servants only, and called none of the officers to the banquet.",
+      "text_fa": "روز چهارم، هولوفرنس تنها برای خدمتگزاران ویژهٔ خود ضیافتی ترتیب داد و هیچ‌یک از افسران را به مهمانی دعوت نکرد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 11,
+      "text_en": "Then said he to Bagoas the eunuch, who had charge over all that he had, Go now, and persuade this Hebrew woman which is with thee, that she come unto us, and eat and drink with us.",
+      "text_fa": "او به باگواس، خواجه‌ای که سرپرست تمام دارایی‌اش بود، گفت: «برو و این زن عبرانی را که نزد توست قانع کن پیش ما بیاید و با ما بخورد و بنوشد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 12,
+      "text_en": "For, lo, it will be a shame for our person, if we shall let such a woman go, not having had her company; for if we draw her not unto us, she will laugh us to scorn.",
+      "text_fa": "زیرا اگر چنین زنی را بی‌آنکه با او هم‌نشین شویم رها کنیم، برای ما ننگ خواهد بود؛ اگر او را به سوی خود نکشانیم، ما را به ریشخند خواهد گرفت.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 13,
+      "text_en": "Then went Bagoas from the presence of Holofernes, and came to her, and he said, Let not this fair damsel fear to come to my lord, and to be honoured in his presence, and drink wine, and be merry with us and be made this day as one of the daughters of the Assyrians, which serve in the house of Nabuchodonosor.",
+      "text_fa": "باگواس از حضور هولوفرنس بیرون رفت، نزد یهودیت آمد و گفت: «این دوشیزهٔ زیبا نترسد که نزد سرورم بیاید، در حضور او احترام یابد، با ما شراب بنوشد و شاد باشد و امروز همچون یکی از دختران آشوری شود که در کاخ نبوکدنصر خدمت می‌کنند.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 14,
+      "text_en": "Then said Judith unto him, Who am I now, that I should gainsay my lord? surely whatsoever pleaseth him I will do speedily, and it shall be my joy unto the day of my death.",
+      "text_fa": "یهودیت به او گفت: «من کیستم که با سرورم مخالفت کنم؟ هر چه او را خشنود سازد بی‌درنگ انجام خواهم داد و تا روز مرگم مایهٔ شادی من خواهد بود.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 15,
+      "text_en": "So she arose, and decked herself with her apparel and all her woman’s attire, and her maid went and laid soft skins on the ground for her over against Holofernes, which she had received of Bagoas for her daily use, that she might sit and eat upon them.",
+      "text_fa": "پس برخاست و خود را با جامه‌ها و همهٔ آرایش زنانه‌اش آراست. کنیزش پوست‌های نرم را که باگواس برای استفادهٔ روزانه به او داده بود، روبه‌روی هولوفرنس بر زمین گسترد تا یهودیت بر آنها بنشیند و غذا بخورد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 16,
+      "text_en": "Now when Judith came in and sat down, Holofernes his heart was ravished with her, and his mind was moved, and he desired greatly her company; for he waited a time to deceive her, from the day that he had seen her.",
+      "text_fa": "وقتی یهودیت وارد شد و نشست، دل هولوفرنس شیفتهٔ او شد، ذهنش به هیجان آمد و سخت مشتاق هم‌نشینی با او شد؛ زیرا از روز نخست دیدار یهودیت منتظر فرصتی بود تا او را بفریبد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 17,
+      "text_en": "Then said Holofernes unto her, Drink now, and be merry with us.",
+      "text_fa": "هولوفرنس به او گفت: «اکنون بنوش و با ما شاد باش.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 18,
+      "text_en": "So Judith said, I will drink now, my lord, because my life is magnified in me this day more than all the days since I was born.",
+      "text_fa": "یهودیت گفت: «ای سرورم، اکنون می‌نوشم، زیرا امروز زندگی‌ام بیش از همهٔ روزهای پس از تولدم در نظرم گرامی شده است.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 19,
+      "text_en": "Then she took and ate and drank before him what her maid had prepared.",
+      "text_fa": "سپس آنچه کنیزش آماده کرده بود در حضور هولوفرنس خورد و نوشید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 20,
+      "text_en": "And Holofernes took great delight in her, and drank more wine than he had drunk at any time in one day since he was born.",
+      "text_fa": "هولوفرنس از حضور او بسیار لذت برد و بیش از هر روز دیگری از زمان تولدش شراب نوشید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    }
+  ]
+}

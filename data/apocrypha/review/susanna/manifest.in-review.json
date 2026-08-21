@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "book_id": "susanna",
+  "title_fa": "سوسنا",
+  "title_en": "Susanna",
+  "title_hr": "Suzana",
+  "status": "in_review",
+  "prepared_on": "2026-08-21",
+  "included_ranges": {
+    "fa": [
+      [
+        1,
+        1
+      ]
+    ]
+  },
+  "source_translation": "KJVA",
+  "source_translation_name": "King James Version with Apocrypha",
+  "source_reference": {
+    "source_file": "bible-apocrypha-en-v57.js",
+    "source_book_code": "SUS"
+  },
+  "versification": "KJVA",
+  "totals": {
+    "aligned_source_verses": 64,
+    "persian_in_review_verses": 64,
+    "croatian_in_review_verses": 0
+  },
+  "chapter_qa": {
+    "1": {
+      "verse_count": 64,
+      "persian_in_review_count": 64,
+      "croatian_in_review_count": 0,
+      "source_english_sha256": "f948fa7060c77731645f45c54d05807a2ead535a27d779359061522529dc386e"
+    }
+  }
+}

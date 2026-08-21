@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 43,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "5a13c7a7824a4f68efe6e8cde2e794cd5071241f06617b4542afab9fa4d6b6e5",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And I saw other lightnings and the stars of heaven, and I saw how He called them all by their names and they hearkened unto Him.",
+      "text_fa": null,
+      "text_hr": "Vidio sam druge munje i zvijezde nebeske; vidio sam kako ih je sve pozvao po imenu i one su ga poslušale.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And I saw how they are weighed in a righteous balance according to their proportions of light: (I saw) the width of their spaces and the day of their appearing, and how their revolution produces lightning: and (I saw) their revolution according to the number of the angels, and (how) they keep faith with each other.",
+      "text_fa": null,
+      "text_hr": "Vidio sam kako se važu na pravednoj tezulji prema omjeru svoje svjetlosti: vidio sam širinu njihovih prostora i dan njihova pojavljivanja, kako njihovo kruženje proizvodi munju, njihovo kruženje prema broju anđela i kako ostaju vjerne jedna drugoj.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And I asked the angel who went with me who showed me what was hidden: ‘What are these?’",
+      "text_fa": null,
+      "text_hr": "Upitao sam anđela koji je išao sa mnom i pokazivao mi što je skriveno: „Što je to?“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And he said to me: ‘The Lord of Spirits hath showed thee their parabolic meaning (lit. ‘their parable’): these are the names of the holy who dwell on the earth and believe in the name of the Lord of Spirits for ever and ever.’",
+      "text_fa": null,
+      "text_hr": "Odgovorio mi je: „Gospodar duhova pokazao ti je njihovo značenje u prispodobi, doslovno ‘njihovu prispodobu’. To su imena svetih koji prebivaju na zemlji i vjeruju u ime Gospodara duhova u vijeke vjekova.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

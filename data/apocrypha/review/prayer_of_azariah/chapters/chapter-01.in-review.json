@@ -1,0 +1,561 @@
+{
+  "schema_version": 1,
+  "book_id": "prayer_of_azariah",
+  "title_fa": "دعای عزریا",
+  "title_en": "Prayer of Azariah",
+  "title_hr": "Molitva Azarijina",
+  "chapter": 1,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "f01782617f2541b9421c521a45c329c0d0615e23e105eebad22ac840533e150f",
+  "locales_in_scope": [
+    "fa"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And they walked in the midst of the fire, praising God, and blessing the Lord.",
+      "text_fa": "آنان در میان آتش راه می‌رفتند، خدا را می‌ستودند و خداوند را متبارک می‌خواندند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 2,
+      "text_en": "Then Azarias stood up, and prayed on this manner; and opening his mouth in the midst of the fire said,",
+      "text_fa": "آنگاه عزریا برخاست و چنین دعا کرد؛ او در میان آتش دهان گشود و گفت:",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 3,
+      "text_en": "Blessed art thou, O Lord God of our fathers: thy name is worthy to be praised and glorified for evermore:",
+      "text_fa": "متبارکی تو، ای خداوند، خدای پدران ما؛ نام تو شایستهٔ ستایش و جلال تا ابد است.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 4,
+      "text_en": "For thou art righteous in all the things that thou hast done to us: yea, true are all thy works, thy ways are right, and all thy judgments truth.",
+      "text_fa": "زیرا در هر آنچه با ما کرده‌ای عادل هستی؛ همهٔ کارهایت راست، راه‌هایت درست و داوری‌هایت برحق است.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 5,
+      "text_en": "In all the things that thou hast brought upon us, and upon the holy city of our fathers, even Jerusalem, thou hast executed true judgment: for according to truth and judgment didst thou bring all these things upon us because of our sins.",
+      "text_fa": "در هر آنچه بر ما و بر شهر مقدس پدرانمان، یعنی اورشلیم، وارد آوردی، داوری راستین به‌جا آوردی؛ زیرا به سبب گناهان ما، همهٔ این امور را مطابق راستی و عدالت بر ما آوردی.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 6,
+      "text_en": "For we have sinned and committed iniquity, departing from thee.",
+      "text_fa": "زیرا ما گناه کرده و شرارت ورزیده‌ایم و از تو روی گردانده‌ایم.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 7,
+      "text_en": "In all things have we trespassed, and not obeyed thy commandments, nor kept them, neither done as thou hast commanded us, that it might go well with us.",
+      "text_fa": "در همه‌چیز خطا کرده‌ایم؛ از فرمان‌هایت اطاعت نکرده، آنها را نگاه نداشته و آنچه را برای کامیابی‌مان فرمان داده بودی انجام نداده‌ایم.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 8,
+      "text_en": "Wherefore all that thou hast brought upon us, and every thing that thou hast done to us, thou hast done in true judgment.",
+      "text_fa": "پس هر آنچه بر ما آوردی و هر کاری که با ما کردی، بر پایهٔ داوری راستین انجام دادی.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 9,
+      "text_en": "And thou didst deliver us into the hands of lawless enemies, most hateful forsakers of God, and to an unjust king, and the most wicked in all the world.",
+      "text_fa": "ما را به دست دشمنان بی‌شریعت، بی‌دینان بسیار منفور، و پادشاهی ستمکار و شریرتر از همهٔ مردم جهان سپردی.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 10,
+      "text_en": "And now we cannot open our mouths, we are become a shame and reproach to thy servants; and to them that worship thee.",
+      "text_fa": "اکنون دیگر نمی‌توانیم دهان بگشاییم؛ نزد خدمتگزارانت و پرستندگانت مایهٔ شرم و رسوایی شده‌ایم.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 11,
+      "text_en": "Yet deliver us not up wholly, for thy name’s sake, neither disannul thou thy covenant:",
+      "text_fa": "بااین‌حال، به‌خاطر نام خود ما را یکسره تسلیم مکن و عهدت را باطل مساز.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 12,
+      "text_en": "And cause not thy mercy to depart from us, for thy beloved Abraham’s sake, for thy servant Issac’s sake, and for thy holy Israel’s sake;",
+      "text_fa": "به‌خاطر ابراهیمِ محبوبت، اسحاقِ خدمتگزارت و اسرائیلِ مقدست، رحمت خود را از ما دور مکن؛",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 13,
+      "text_en": "To whom thou hast spoken and promised, that thou wouldest multiply their seed as the stars of heaven, and as the sand that lieth upon the seashore.",
+      "text_fa": "همان کسانی که با آنان سخن گفتی و وعده دادی نسلشان را همچون ستارگان آسمان و شن‌های کنار دریا فراوان سازی.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 14,
+      "text_en": "For we, O Lord, are become less than any nation, and be kept under this day in all the world because of our sins.",
+      "text_fa": "زیرا ما، ای خداوند، از هر قومی کمتر شده‌ایم و امروز به سبب گناهانمان در سراسر جهان خوار و زیردست مانده‌ایم.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 15,
+      "text_en": "Neither is there at this time prince, or prophet, or leader, or burnt offering, or sacrifice, or oblation, or incense, or place to sacrifice before thee, and to find mercy.",
+      "text_fa": "اکنون نه امیری داریم، نه پیامبری و نه رهبری؛ نه قربانی سوختنی، نه قربانی، نه هدیه، نه بخور و نه مکانی که در حضورت قربانی کنیم و رحمت بیابیم.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 16,
+      "text_en": "Nevertheless in a contrite heart and an humble spirit let us be accepted.",
+      "text_fa": "بااین‌همه، ما را با دلی شکسته و روحی فروتن بپذیر.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 17,
+      "text_en": "Like as in the burnt offerings of rams and bullocks, and like as in ten thousands of fat lambs: so let our sacrifice be in thy sight this day, and grant that we may wholly go after thee: for they shall not be confounded that put their trust in thee.",
+      "text_fa": "چنان‌که قوچ‌ها و گاوها به قربانی سوختنی تقدیم می‌شوند و ده‌ها هزار برهٔ فربه قربانی می‌گردند، بگذار قربانی ما نیز امروز در نظرت چنین باشد؛ و عطا کن که به‌طور کامل از پی تو برویم، زیرا آنان که بر تو توکل می‌کنند سرافکنده نخواهند شد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 18,
+      "text_en": "And now we follow thee with all our heart, we fear thee, and seek thy face.",
+      "text_fa": "اکنون با تمامی دل از پی تو می‌آییم، از تو می‌ترسیم و روی تو را می‌طلبیم.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 19,
+      "text_en": "Put us not to shame: but deal with us after thy lovingkindness, and according to the multitude of thy mercies.",
+      "text_fa": "ما را رسوا مکن، بلکه مطابق محبتت و فراوانی رحمت‌هایت با ما رفتار کن.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 20,
+      "text_en": "Deliver us also according to thy marvellous works, and give glory to thy name, O Lord: and let all them that do thy servants hurt be ashamed;",
+      "text_fa": "ما را بر پایهٔ کارهای شگفتت رهایی بخش و نام خود را جلال بده، ای خداوند؛ و همهٔ کسانی را که به خدمتگزارانت آزار می‌رسانند شرمسار ساز.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 21,
+      "text_en": "And let them be confounded in all their power and might, and let their strength be broken;",
+      "text_fa": "بگذار با همهٔ قدرت و توانشان رسوا شوند و نیروی ایشان درهم شکسته شود؛",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 22,
+      "text_en": "And let them know that thou art God, the only God, and glorious over the whole world.",
+      "text_fa": "تا بدانند که تو خدا هستی، خدای یگانه، و بر سراسر جهان پرجلالی.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 23,
+      "text_en": "And the king’s servants, that put them in, ceased not to make the oven hot with rosin, pitch, tow, and small wood;",
+      "text_fa": "خدمتگزاران پادشاه که آنان را در کوره انداخته بودند، پیوسته کوره را با صمغ، قیر، الیاف کتان و هیزم‌های ریز شعله‌ورتر می‌کردند؛",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 24,
+      "text_en": "So that the flame streamed forth above the furnace forty and nine cubits.",
+      "text_fa": "چنان‌که شعلهٔ آتش تا چهل‌ونه ذراع بالاتر از کوره زبانه کشید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 25,
+      "text_en": "And it passed through, and burned those Chaldeans it found about the furnace.",
+      "text_fa": "شعله پیش رفت و کلدانیانی را که پیرامون کوره یافت، سوزاند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 26,
+      "text_en": "But the angel of the Lord came down into the oven together with Azarias and his fellows, and smote the flame of the fire out of the oven;",
+      "text_fa": "اما فرشتهٔ خداوند همراه عزریا و یارانش به درون کوره فرود آمد و شعلهٔ آتش را از کوره بیرون راند؛",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 27,
+      "text_en": "And made the midst of the furnace as it had been a moist whistling wind, so that the fire touched them not at all, neither hurt nor troubled them.",
+      "text_fa": "و درون کوره را همچون نسیمی خنک و نمناک ساخت، به‌گونه‌ای که آتش اصلاً به آنان نرسید و نه آسیبی زد و نه آزرده‌شان کرد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 28,
+      "text_en": "Then the three, as out of one mouth, praised, glorified, and blessed, God in the furnace, saying,",
+      "text_fa": "آنگاه آن سه تن، گویی با یک دهان، در کوره خدا را ستودند، جلال دادند و متبارک خواندند و گفتند:",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 29,
+      "text_en": "Blessed art thou, O Lord God of our fathers: and to be praised and exalted above all for ever.",
+      "text_fa": "متبارکی تو، ای خداوند، خدای پدران ما؛ تو تا ابد شایسته‌ای که برتر از همه ستوده و سرافراز شوی.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 30,
+      "text_en": "And blessed is thy glorious and holy name: and to be praised and exalted above all for ever.",
+      "text_fa": "نام پرجلال و مقدست متبارک است؛ نامت تا ابد شایسته است که برتر از همه ستوده و سرافراز شود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 31,
+      "text_en": "Blessed art thou in the temple of thine holy glory: and to be praised and glorified above all for ever.",
+      "text_fa": "متبارکی تو در معبد جلال مقدست؛ تو تا ابد شایسته‌ای که برتر از همه ستوده و جلال داده شوی.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 32,
+      "text_en": "Blessed art thou that beholdest the depths, and sittest upon the cherubims: and to be praised and exalted above all for ever.",
+      "text_fa": "متبارکی تو که ژرفاها را می‌بینی و بر کروبیان نشسته‌ای؛ تو تا ابد شایسته‌ای که برتر از همه ستوده و سرافراز شوی.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 33,
+      "text_en": "Blessed art thou on the glorious throne of thy kingdom: and to be praised and glorified above all for ever.",
+      "text_fa": "متبارکی تو بر تخت پرجلال پادشاهی‌ات؛ تو تا ابد شایسته‌ای که برتر از همه ستوده و جلال داده شوی.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 34,
+      "text_en": "Blessed art thou in the firmament of heaven: and above all to be praised and glorified for ever.",
+      "text_fa": "متبارکی تو در سپهر آسمان؛ تو تا ابد شایسته‌ای که برتر از همه ستوده و جلال داده شوی.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 35,
+      "text_en": "O all ye works of the Lord, bless ye the Lord: praise and exalt him above all for ever,",
+      "text_fa": "ای همهٔ آفریده‌های خداوند، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 36,
+      "text_en": "O ye heavens, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای آسمان‌ها، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 37,
+      "text_en": "O ye angels of the Lord, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای فرشتگان خداوند، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 38,
+      "text_en": "O all ye waters that be above the heaven, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای همهٔ آب‌های بالای آسمان، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 39,
+      "text_en": "O all ye powers of the Lord, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای همهٔ قدرت‌های خداوند، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 40,
+      "text_en": "O ye sun and moon, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای خورشید و ماه، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 41,
+      "text_en": "O ye stars of heaven, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای ستارگان آسمان، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 42,
+      "text_en": "O every shower and dew, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای هر باران و شبنم، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 43,
+      "text_en": "O all ye winds, bless ye the Lord: praise and exalt him above all for ever,",
+      "text_fa": "ای همهٔ بادها، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 44,
+      "text_en": "O ye fire and heat, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای آتش و گرما، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 45,
+      "text_en": "O ye winter and summer, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای زمستان و تابستان، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 46,
+      "text_en": "O ye dews and storms of snow, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای شبنم‌ها و بوران‌های برف، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 47,
+      "text_en": "O ye nights and days, bless ye the Lord: bless and exalt him above all for ever.",
+      "text_fa": "ای شب‌ها و روزها، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه متبارک خوانید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 48,
+      "text_en": "O ye light and darkness, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای روشنایی و تاریکی، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 49,
+      "text_en": "O ye ice and cold, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای یخ و سرما، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 50,
+      "text_en": "O ye frost and snow, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای یخبندان و برف، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 51,
+      "text_en": "O ye lightnings and clouds, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای آذرخش‌ها و ابرها، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 52,
+      "text_en": "O let the earth bless the Lord: praise and exalt him above all for ever.",
+      "text_fa": "بگذار زمین خداوند را متبارک خواند؛ او را تا ابد برتر از همه بستاید و سرافراز سازد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 53,
+      "text_en": "O ye mountains and little hills, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای کوه‌ها و تپه‌ها، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 54,
+      "text_en": "O all ye things that grow in the earth, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای همهٔ روییدنی‌های زمین، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 55,
+      "text_en": "O ye mountains, bless ye the Lord: Praise and exalt him above all for ever.",
+      "text_fa": "ای کوه‌ها، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 56,
+      "text_en": "O ye seas and rivers, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای دریاها و رودها، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 57,
+      "text_en": "O ye whales, and all that move in the waters, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای نهنگان و همهٔ جنبندگان آب‌ها، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 58,
+      "text_en": "O all ye fowls of the air, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای همهٔ پرندگان آسمان، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 59,
+      "text_en": "O all ye beasts and cattle, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای همهٔ جانوران و چارپایان، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 60,
+      "text_en": "O ye children of men, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای فرزندان آدمیان، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 61,
+      "text_en": "O Israel, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای اسرائیل، خداوند را متبارک بخوان؛ او را تا ابد برتر از همه بستای و سرافراز ساز.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 62,
+      "text_en": "O ye priests of the Lord, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای کاهنان خداوند، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 63,
+      "text_en": "O ye servants of the Lord, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای خدمتگزاران خداوند، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 64,
+      "text_en": "O ye spirits and souls of the righteous, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای ارواح و جان‌های پارسایان، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 65,
+      "text_en": "O ye holy and humble men of heart, bless ye the Lord: praise and exalt him above all for ever.",
+      "text_fa": "ای مقدسان و فروتنانِ دل، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 66,
+      "text_en": "O Ananias, Azarias, and Misael, bless ye the Lord: praise and exalt him above all for ever: for he hath delivered us from hell, and saved us from the hand of death, and delivered us out of the midst of the furnace and burning flame: even out of the midst of the fire hath he delivered us.",
+      "text_fa": "ای حنانیا، عزریا و میشائیل، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید، زیرا ما را از عالم مردگان رهانید، از چنگ مرگ نجات داد و از میان کوره و شعلهٔ سوزان بیرون آورد؛ آری، از میان آتش رهایی‌مان بخشید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 67,
+      "text_en": "O give thanks unto the Lord, because he is gracious: for his mercy endureth for ever.",
+      "text_fa": "خداوند را شکر کنید، زیرا نیکوست و رحمتش تا ابد پایدار است.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 68,
+      "text_en": "O all ye that worship the Lord, bless the God of gods, praise him, and give him thanks: for his mercy endureth for ever.",
+      "text_fa": "ای همهٔ پرستندگان خداوند، خدای خدایان را متبارک خوانید؛ او را بستایید و شکر کنید، زیرا رحمتش تا ابد پایدار است.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    }
+  ]
+}

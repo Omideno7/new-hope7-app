@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "book_id": "4_maccabees",
+  "title_fa": "مکابیان چهارم",
+  "title_en": "Fourth Maccabees",
+  "title_hr": "Četvrta knjiga o Makabejcima",
+  "chapter": 17,
+  "status": "in_review",
+  "source_translation": "WEBC",
+  "versification": "WEBC",
+  "source_english_sha256": "4a1498e4b6d360aa53f6095227617df40f73d900f3ed6b7b1c2f7d7901ca9e12",
+  "locales_in_scope": [
+    "fa",
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Some of the spearbearers said that when she herself was about to be seized for the purpose of being put to death, she threw herself on the pile, rather than let them touch her body.",
+      "text_fa": "برخی از نیزه‌داران گفتند هنگامی که می‌خواستند خودِ او را برای کشتن بگیرند، به‌جای آنکه بگذارد بدنش را لمس کنند، خود را بر تودهٔ آتش افکند.",
+      "text_hr": "Neki su kopljonoše rekli da se, kad su upravo htjeli uhvatiti i nju da je pogube, bacila na lomaču radije nego da im dopusti dotaknuti njezino tijelo.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "O you mother, who together with seven children destroyed the violence of the tyrant, and rendered void his wicked intentions, and exhibited the nobleness of faith!",
+      "text_fa": "ای مادر، که همراه هفت فرزندت خشونت ستمگر را درهم شکستی، نیات شریرانه‌اش را باطل ساختی و بزرگواری ایمان را آشکار کردی!",
+      "text_hr": "O majko, koja si zajedno sa sedmero djece uništila nasilje tiranina, osujetila njegove opake namjere i pokazala plemenitost vjere!",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "For you, like a house bravely built on the pillar of your children, bore the shock of tortures without swaying.",
+      "text_fa": "زیرا تو، همچون خانه‌ای که استوار بر ستون فرزندانت بنا شده باشد، ضربهٔ شکنجه‌ها را بی‌آنکه بلرزی تحمل کردی.",
+      "text_hr": "Jer ti si, poput kuće čvrsto sagrađene na stupu svoje djece, podnijela udar mučenja ne pokolebavši se.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "Cheer up, therefore, O holy-minded mother! Hold the firm hope of your steadfastness with God.",
+      "text_fa": "پس دل قوی دار، ای مادر پاک‌اندیش! به امید استوارِ پایداری‌ات نزد خدا چنگ زن.",
+      "text_hr": "Stoga se ohrabri, o majko sveta uma! Čvrsto se drži nade u svoju postojanost kod Boga.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "Not so gracious does the moon appear with the stars in heaven, as you are established as honorable before God, and fixed in the sky with your sons whom you illuminated with religion to the stars.",
+      "text_fa": "ماه در کنار ستارگان آسمان به اندازهٔ تو دل‌انگیز نیست؛ زیرا تو در پیشگاه خدا باعزت استوار شده‌ای و همراه پسرانت که با دینداری چون ستارگان روشنشان کردی، در آسمان جای گرفته‌ای.",
+      "text_hr": "Mjesec sa zvijezdama na nebu ne izgleda tako ljupko kao ti, časno postavljena pred Bogom i učvršćena na nebu sa svojim sinovima, koje si pobožnošću obasjala poput zvijezda.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "For your bearing of children was after the manner of a child of Abraham.",
+      "text_fa": "زیرا فرزندآوری تو همانند فرزند ابراهیم بود.",
+      "text_hr": "Jer tvoje je rađanje djece bilo po uzoru na dijete Abrahamovo.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "If it were lawful for us to paint as on a tablet the religion of your story, the spectators wouldn’t shudder at seeing the mother of seven children enduring for the sake of religion various tortures even to death.",
+      "text_fa": "اگر برای ما روا بود که دینداریِ سرگذشتت را همچون تصویری بر لوح نقش کنیم، بینندگان از دیدن مادر هفت فرزند که به‌خاطر دینداری شکنجه‌های گوناگون را تا دم مرگ تحمل می‌کرد، به لرزه نمی‌افتادند.",
+      "text_hr": "Kad bi nam bilo dopušteno na ploči naslikati pobožnost tvoje pripovijesti, promatrači ne bi zadrhtali gledajući majku sedmero djece kako radi pobožnosti podnosi raznovrsna mučenja sve do smrti.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "It would have been a worthwhile thing to have inscribed on the tomb itself these words as a memorial to those of the nation,",
+      "text_fa": "شایسته بود که این سخنان را بر خودِ آرامگاه، به عنوان یادبودی برای افراد قوم، بنگارند:",
+      "text_hr": "Bilo bi vrijedno na samoj grobnici uklesati ove riječi kao spomen pripadnicima naroda:",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "“Here an aged priest, an aged woman, and seven sons, are buried through the violence of a tyrant, who wished to destroy the society of the Hebrews.",
+      "text_fa": "«اینجا کاهنی سالخورده، زنی سالخورده و هفت پسر به سبب خشونت ستمگری دفن شده‌اند که می‌خواست جامعهٔ عبرانیان را نابود کند.",
+      "text_hr": "„Ovdje su pokopani ostarjeli svećenik, ostarjela žena i sedam sinova, zbog nasilja tiranina koji je htio uništiti zajednicu Hebreja.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "These also avenged their nation, looking to God, and enduring torments to death.”",
+      "text_fa": "اینان نیز با چشم دوختن به خدا و تحمل عذاب‌ها تا مرگ، انتقام قوم خویش را گرفتند.»",
+      "text_hr": "Oni su i osvetili svoj narod, gledajući prema Bogu i podnoseći muke sve do smrti.“",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "For it was truly a divine contest which was carried through by them.",
+      "text_fa": "زیرا آن نبردی به‌راستی الهی بود که آنان به انجام رساندند.",
+      "text_hr": "Jer bila je to uistinu božanska borba koju su oni iznijeli do kraja.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "For at that time virtue presided over the contest, approving the victory through endurance, namely, immortality, eternal life.",
+      "text_fa": "زیرا در آن هنگام فضیلت بر نبرد ریاست داشت و پیروزی حاصل از پایداری، یعنی نامیرایی و زندگی جاودان، را تأیید می‌کرد.",
+      "text_hr": "Jer tada je krepost predsjedala borbom, potvrđujući pobjedu ostvarenu ustrajnošću, to jest besmrtnost i vječni život.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "Eleazar was the first to contend. The mother of the seven children entered the contest, and the kindred contended.",
+      "text_fa": "الیعازار نخستین کسی بود که وارد نبرد شد. مادر هفت فرزند به میدان آمد و آن خویشاوندان نیز نبرد کردند.",
+      "text_hr": "Eleazar se prvi borio. Majka sedmero djece ušla je u borbu, a srodnici su se borili.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "The tyrant was the antagonist; and the world and living men were the spectators.",
+      "text_fa": "ستمگر هماورد بود؛ و جهان و مردمان زنده تماشاگران بودند.",
+      "text_hr": "Tiranin je bio protivnik, a svijet i živi ljudi promatrači.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "Reverence for God conquered, and crowned her own athletes.",
+      "text_fa": "حرمت خدا پیروز شد و پهلوانان خود را تاج نهاد.",
+      "text_hr": "Strahopoštovanje prema Bogu pobijedilo je i okrunilo vlastite borce.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "Who didn’t admire those champions of true legislation? Who were not amazed?",
+      "text_fa": "چه کسی آن قهرمانان شریعت راستین را تحسین نکرد؟ چه کسی شگفت‌زده نشد؟",
+      "text_hr": "Tko se nije divio tim prvacima istinskoga Zakona? Tko nije ostao zapanjen?",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "The tyrant himself, and all their council, admired their endurance,",
+      "text_fa": "خودِ ستمگر و همهٔ اعضای شورای او پایداری آنان را تحسین کردند؛",
+      "text_hr": "Sam tiranin i cijelo njegovo vijeće divili su se njihovoj izdržljivosti,",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "through which, they also now stand beside the divine throne and live a blessed life.",
+      "text_fa": "و به‌سبب همین پایداری، اکنون نیز در کنار تخت الهی ایستاده‌اند و زندگی مبارکی دارند.",
+      "text_hr": "po kojoj sada stoje uz božansko prijestolje i žive blaženim životom.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "For Moses says, “All the saints are under your hands.”",
+      "text_fa": "زیرا موسی می‌گوید: «همهٔ مقدسان زیر دستان تو هستند.»",
+      "text_hr": "Jer Mojsije kaže: „Svi su sveti pod tvojim rukama.“",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "These, therefore, having been sanctified through God, have been honored not only with this honor, but that also by the fact that because of them, the enemy didn’t overcome our nation.",
+      "text_fa": "پس اینان که به‌واسطهٔ خدا تقدیس شده‌اند، نه تنها به این افتخار سرافراز گشتند، بلکه به این نیز که به‌خاطر آنان، دشمن بر قوم ما چیره نشد.",
+      "text_hr": "Oni su, dakle, budući da ih je Bog posvetio, bili počašćeni ne samo ovom čašću nego i time što zbog njih neprijatelj nije nadvladao naš narod.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "That tyrant was punished and their country purified.",
+      "text_fa": "آن ستمگر مجازات شد و سرزمینشان پاک گردید.",
+      "text_hr": "Onaj je tiranin bio kažnjen, a njihova zemlja očišćena.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "For they became the ransom to the sin of the nation. The Divine Providence saved Israel, which was afflicted before, by the blood of those pious ones and the death that appeased wrath.",
+      "text_fa": "زیرا آنان فدیهٔ گناه قوم شدند. مشیت الهی، اسرائیل را که پیش از آن در رنج بود، به‌واسطهٔ خون آن دینداران و مرگی که خشم را فرونشاند نجات داد.",
+      "text_hr": "Jer postali su otkupninom za grijeh naroda. Božanska providnost spasila je Izraela, koji je prije bio pritisnut nevoljom, krvlju tih pobožnih ljudi i smrću koja je utišala srdžbu.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "For the tyrant Antiochus, looking to their courageous virtue and to their endurance in torture, proclaimed that endurance as an example to his soldiers.",
+      "text_fa": "زیرا ستمگر، آنتیوخوس، چون فضیلت دلیرانهٔ آنان و پایداری‌شان را در شکنجه دید، آن پایداری را نمونه‌ای برای سربازان خود اعلام کرد.",
+      "text_hr": "Jer je tiranin Antioh, gledajući njihovu hrabru krepost i ustrajnost u mučenju, tu ustrajnost proglasio primjerom svojim vojnicima.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "They proved to be to him noble and brave for land battles and for sieges; and he conquered and stormed the towns of all his enemies.",
+      "text_fa": "آنان نزد او برای نبردهای زمینی و محاصره‌ها شریف و دلیر شناخته شدند؛ و او شهرهای همهٔ دشمنانش را شکست داد و به تصرف درآورد.",
+      "text_hr": "Pokazali su mu se plemenitima i hrabrima za kopnene bitke i opsade; te je on pobijedio i na juriš zauzeo gradove svih svojih neprijatelja.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    }
+  ]
+}

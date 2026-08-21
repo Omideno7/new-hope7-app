@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 76,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "cfe18c4ef7161c7017ad3c98043fc265152f45497301ef359698cffba786b6f0",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And at the ends of the earth I saw twelve portals open to all the =quarters= (of the heaven), from which the winds go forth and blow over the earth.",
+      "text_fa": null,
+      "text_hr": "I na krajevima zemlje vidio sam dvanaest portala otvorenih prema svim =četvrtinama= (neba), iz kojih vjetrovi izlaze i pušu nad zemljom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "Three of them are open on the face (_i. e._ the east) of the heavens, and three in the west, and three on the right (_i. e._ the south) of the heaven, and three on the left (_i. e._ the north).",
+      "text_fa": null,
+      "text_hr": "Troja su otvorena na prednjoj strani neba (_tj._ na istoku), troja na zapadu, troja zdesna (_tj._ na jugu), a troja slijeva (_tj._ na sjeveru).",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And the three first are those of the east, and three are of †the north, and three [after those on the left] of the south†, and three of the west.",
+      "text_fa": null,
+      "text_hr": "I tri prva su oni od istoka, a tri su od †sjevera, a tri [nakon onih s lijeve strane] od juga†, a tri od zapada.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "Through four of these come winds of blessing and prosperity, and from those eight come hurtful winds: when they are sent, they bring destruction on all the earth and on the water upon it, and on all who dwell thereon, and on everything which is in the water and on the land.",
+      "text_fa": null,
+      "text_hr": "Kroz četiri od njih dolaze vjetrovi blagoslova i blagostanja, a od onih osam dolaze štetni vjetrovi: kada su poslani, donose uništenje na svu zemlju i na vodu na njoj, i na sve koji žive na njoj, i na sve što je u vodi i na zemlji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And the first wind from those portals, called the east wind, comes forth through the first portal which is in the east, inclining towards the south: from it come forth desolation, drought, heat, and destruction.",
+      "text_fa": null,
+      "text_hr": "I prvi vjetar iz tih portala, zvan istočni vjetar, izlazi kroz prvi portal koji je na istoku, nagnut prema jugu: iz njega izlaze pustoš, suša, vrućina i uništenje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And through the second portal in the middle comes what is fitting, and from it there come rain and fruitfulness and prosperity and dew; and through the third portal which lies toward the north come cold and drought.",
+      "text_fa": null,
+      "text_hr": "I kroz drugi portal u sredini dolazi ono što je prikladno, a iz toga dolazi kiša i plodnost i blagostanje i rosa; a kroz treći portal koji se nalazi prema sjeveru dolaze hladnoća i suša.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And after these come forth the south winds through three portals: through the first portal of them inclining to the east comes forth a hot wind.",
+      "text_fa": null,
+      "text_hr": "A nakon njih izlaze južni vjetrovi kroz tri portala: kroz prvi njihov portal nagnut prema istoku izlazi vrući vjetar.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And through the middle portal next to it there come forth fragrant smells, and dew and rain, and prosperity and health.",
+      "text_fa": null,
+      "text_hr": "A kroz srednji portal pored njega izlaze mirisni mirisi, i rosa i kiša, i blagostanje i zdravlje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And through the third portal lying to the west come forth dew and rain, locusts and desolation.",
+      "text_fa": null,
+      "text_hr": "I kroz treći portal koji leži na zapadu izlaze rosa i kiša, skakavci i pustoš.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And after these the north winds: from the seventh portal in the east come dew and rain, locusts and desolation.",
+      "text_fa": null,
+      "text_hr": "A nakon njih sjeverni vjetrovi: sa sedmog portala na istoku dolaze rosa i kiša, skakavci i pustoš.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "And from the middle portal come in a direct direction health and rain and dew and prosperity; and through the third portal in the west come cloud and hoar-frost, and snow and rain, and dew and locusts.",
+      "text_fa": null,
+      "text_hr": "A iz srednjeg portala dolaze u izravnom smjeru zdravlje i kiša i rosa i blagostanje; i kroz treći portal na zapadu dolaze oblak i inje, i snijeg i kiša, i rosa i skakavci.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "And after these [four] are the west winds: through the first portal adjoining the north come forth dew and hoar-frost, and cold and snow and frost.",
+      "text_fa": null,
+      "text_hr": "A nakon ova [četiri] su zapadni vjetrovi: kroz prvi portal koji graniči sa sjeverom izlazi rosa i inje, i hladnoća i snijeg i mraz.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "And from the middle portal come forth dew and rain, and prosperity and blessing; and through the last portal which adjoins the south come forth drought and desolation, and burning and destruction.",
+      "text_fa": null,
+      "text_hr": "A iz srednjeg portala izlazi rosa i kiša, i blagostanje i blagoslov; i kroz posljednji portal koji se nadovezuje na jug izlazi suša i pustoš, i paljenje i uništenje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "And the twelve portals of the four =quarters= of the heaven are therewith completed, and all their laws and all their plagues and all their benefactions have I shown to thee, my son Methuselah.",
+      "text_fa": null,
+      "text_hr": "Time su dovršena dvanaestera vrata četiriju =četvrtina= neba. Sve njihove zakone, sva njihova zla i sva njihova dobročinstva pokazao sam ti, sine moj Metušalaše.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

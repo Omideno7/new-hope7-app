@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 99,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "8c4e0c197fcfd4448aed1f44ee17bc5b37585d1a46b1bf76296fcbb75c130fa7",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Woe to you who work godlessness,\nAnd glory in lying, and extol them:\nYe shall perish, and no happy life shall be yours.",
+      "text_fa": null,
+      "text_hr": "Teško vama koji činite bezboštvo, slavite se lažima i veličate ih: nestat ćete i sretan život neće biti vaš.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "Woe to them who pervert the words of uprightness,\nAnd transgress the eternal law,\nAnd transform themselves into what they were not [into sinners]:\nThey shall be trodden under foot upon the earth.",
+      "text_fa": null,
+      "text_hr": "Teško onima koji izvrću riječi čestitosti, krše vječni zakon i pretvaraju se u ono što nisu bili [u grešnike]: bit će zgaženi na zemlji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "In those days make ready, ye righteous, to raise your prayers as =a= memorial,\nAnd place them as a testimony before the angels,\nThat they may place the sin of the sinners for a memorial before the Most High.",
+      "text_fa": null,
+      "text_hr": "U one se dane pripravite, pravednici, uzdići svoje molitve kao =spomen= i postaviti ih kao svjedočanstvo pred anđelima, da grijeh grešnika stave kao spomen pred Svevišnjega.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "In those days the nations shall be stirred up,\nAnd the families of the nations shall arise on the day of destruction.",
+      "text_fa": null,
+      "text_hr": "U one dane narodi će se uzburkati, i obitelji će naroda ustati na dan uništenja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And in those days the destitute shall go forth and carry off their children,\nAnd they shall abandon them, so that their children shall perish through them:\nYea, they shall abandon their children (that are still) sucklings, and not return to them,\nAnd shall have no pity on their beloved ones.",
+      "text_fa": null,
+      "text_hr": "U one će dane siromašni izići i odnijeti svoju djecu, pa ih napustiti da zbog njih propadnu. Da, napustit će svoju djecu dok su još dojenčad, neće im se vratiti i neće se smilovati svojim ljubljenima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And again I swear to you, ye sinners, that sin is prepared for a day of unceasing bloodshed.",
+      "text_fa": null,
+      "text_hr": "I opet vam se kunem, vi grešnici, da je grijeh pripremljen za dan neprekidnog krvoprolića.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And they who worship stones, and grave images of gold and silver and wood ‹and stone› and clay, and those who worship impure spirits and demons, and all kinds of idols not according to knowledge, shall get no manner of help from them.",
+      "text_fa": null,
+      "text_hr": "A oni koji se klanjaju kamenju, i kipovima od zlata i srebra i drva ‹i kamena› i gline, i oni koji se klanjaju nečistim duhovima i demonima, i svakojakim idolima koji nisu u skladu sa znanjem, neće dobiti nikakvu pomoć od njih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And they shall become godless by reason of the folly of their hearts,\nAnd their eyes shall be blinded through the fear of their hearts,\nAnd through visions in their dreams.",
+      "text_fa": null,
+      "text_hr": "Postat će bezbožni zbog ludosti svojih srca; oči će im oslijepjeti od straha njihova srca i od viđenja u njihovim snovima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "Through these they shall become godless and fearful;\nFor they shall have wrought all their work in a lie,\nAnd shall have worshipped a stone:\nTherefore in an instant shall they perish.",
+      "text_fa": null,
+      "text_hr": "Po njima će postati bezbožni i strašljivi, jer će sva svoja djela činiti u laži i klanjati se kamenu; zato će u trenu nestati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "But in those days blessed are all they who accept the words of wisdom, and understand them,\nAnd observe the paths of the Most High, and walk in the path of His righteousness,\nAnd become not godless with the godless;\nFor they shall be saved.",
+      "text_fa": null,
+      "text_hr": "Ali u one su dane blaženi svi koji prihvate i razumiju riječi mudrosti, čuvaju staze Svevišnjega, hode stazom Njegove pravednosti i ne postanu bezbožni s bezbožnicima, jer će biti spašeni.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "Woe to you who spread evil to your neighbours;\nFor you shall be slain in Sheol.",
+      "text_fa": null,
+      "text_hr": "Teško vama koji širite zlo među svojim bližnjima, jer ćete biti ubijeni u šeolu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "Woe to you who make deceitful and false measures,\nAnd (to them) who cause bitterness on the earth;\nFor they shall thereby be utterly consumed.",
+      "text_fa": null,
+      "text_hr": "Teško vama koji pravite varljive i lažne mjere, i onima koji nanose gorčinu zemlji, jer ćete time biti posve uništeni.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "Woe to you who build your houses through the grievous toil of others,\nAnd all their building materials are the bricks and stones of sin;\nI tell you ye shall have no peace.",
+      "text_fa": null,
+      "text_hr": "Teško vama koji gradite svoje kuće teškim mukom drugih, i sav njihov građevinski materijal su cigle i kamenje grijeha; Kažem vam da nećete imati mira.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "Woe to them who reject the measure and eternal heritage of their fathers,\nAnd whose souls follow after idols;\nFor they shall have no rest.",
+      "text_fa": null,
+      "text_hr": "Teško onima koji odbacuju mjeru i vječnu baštinu svojih otaca, A čije duše slijede idole; Jer oni neće imati odmora.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "Woe to them who work unrighteousness and help oppression,\nAnd slay their neighbours until the day of the great judgement.",
+      "text_fa": null,
+      "text_hr": "Teško onima koji čine nepravdu, pomažu tlačenje i ubijaju svoje bližnje sve do dana velikoga suda.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "For He shall cast down your glory,\nAnd bring affliction on your hearts,\nAnd shall arouse =His fierce indignation=,\nAnd destroy you all with the sword;\nAnd all the holy and righteous shall remember your sins.",
+      "text_fa": null,
+      "text_hr": "On će oboriti vašu slavu, donijeti nevolju u vaša srca, probuditi =svoj žestoki gnjev= i sve vas uništiti mačem; svi će se sveti i pravedni spominjati vaših grijeha.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

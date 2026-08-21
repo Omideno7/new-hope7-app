@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "book_id": "4_maccabees",
+  "title_fa": "مکابیان چهارم",
+  "title_en": "Fourth Maccabees",
+  "title_hr": "Četvrta knjiga o Makabejcima",
+  "chapter": 12,
+  "status": "in_review",
+  "source_translation": "WEBC",
+  "versification": "WEBC",
+  "source_english_sha256": "f72712f6fcb406a52f3a12313dc6bded099e8a8a6016b975d0b84405bfcc883b",
+  "locales_in_scope": [
+    "fa",
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "When he, too, had undergone blessed martyrdom, and died in the cauldron into which he had been thrown, the seventh, the youngest of all, came forward,",
+      "text_fa": "چون او نیز شهادت مبارک را از سر گذراند و در دیگی که به درونش افکنده شده بود جان سپرد، هفتمین برادر که از همه کوچک‌تر بود پیش آمد،",
+      "text_hr": "Kad je i on prošao blaženo mučeništvo i umro u kotlu u koji su ga bacili, pristupio je sedmi, najmlađi od svih,",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "whom the tyrant pitying, though he had been dreadfully reproached by his kindred,",
+      "text_fa": "و ستمگر، با آنکه برادران آن جوان سخت نکوهشش کرده بودند، بر او دل سوزاند،",
+      "text_hr": "a tiranin se sažalio na njega, premda su ga njegova braća strašno prekorila,",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "seeing him already encompassed with chains, had him brought nearer, and endeavored to counsel him, saying,",
+      "text_fa": "و چون دید که از پیش در زنجیر است، فرمان داد او را نزدیک‌تر بیاورند و کوشید پندش دهد و گفت:",
+      "text_hr": "pa je, vidjevši ga već okovana lancima, naredio da ga dovedu bliže i pokušao ga savjetovati govoreći:",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "“You see the end of the madness of your kindred, for they have died in torture through disobedience. You, if disobedient, having been miserably tormented, will yourself perish prematurely.",
+      "text_fa": "«فرجام جنون خویشاوندانت را می‌بینی؛ آنان به سبب نافرمانی زیر شکنجه جان دادند. تو نیز اگر نافرمانی کنی، پس از تحمل شکنجه‌ای جانکاه، پیش از هنگام هلاک خواهی شد.",
+      "text_hr": "„Vidiš svršetak ludosti svoje braće: umrli su u mukama zbog neposluha. Ako i ti budeš neposlušan, nakon bijednih muka i sam ćeš prerano propasti.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "But if you obey, you will be my friend, and have a charge over the affairs of the kingdom.”",
+      "text_fa": "اما اگر اطاعت کنی، دوست من خواهی شد و عهده‌دار امور پادشاهی خواهی بود.»",
+      "text_hr": "Ali ako poslušaš, bit ćeš moj prijatelj i upravljat ćeš poslovima kraljevstva.”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "Having thus exhorted him, he sent for the boy’s mother, that, by showing compassion to her for the loss of so many sons, he might incline her, through the hope of safety, to make the survivor obedient.",
+      "text_fa": "پس از آنکه بدین‌گونه او را اندرز داد، در پی مادر پسر فرستاد تا با ابراز همدردی برای از دست دادن آن همه پسر، او را با امید رهایی ترغیب کند که پسر بازمانده را به اطاعت وادارد.",
+      "text_hr": "Pošto ga je tako opomenuo, poslao je po dječakovu majku kako bi je, pokazujući joj suosjećanje zbog gubitka tolikih sinova, nadom u spas naveo da preživjeloga učini poslušnim.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "He, after his mother had urged him on in the Hebrew tongue, (as we will soon relate) said,",
+      "text_fa": "او پس از آنکه مادرش به زبان عبری تشویقش کرد — چنان‌که به‌زودی بازخواهیم گفت — گفت:",
+      "text_hr": "Pošto ga je majka potaknula na hebrejskom jeziku — kao što ćemo uskoro ispripovjediti — rekao je:",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "“Release me that I may speak to the king and all his friends.”",
+      "text_fa": "«آزادم کنید تا با پادشاه و همهٔ دوستانش سخن بگویم.»",
+      "text_hr": "„Oslobodite me da mogu govoriti kralju i svim njegovim prijateljima.”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "They, rejoicing exceedingly at the promise of the youth, quickly let him go.",
+      "text_fa": "آنان که از وعدهٔ جوان بسیار شادمان شده بودند، بی‌درنگ آزادش کردند.",
+      "text_hr": "Silno se radujući mladićevu obećanju, brzo su ga oslobodili.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "He, running up to the pans, said,",
+      "text_fa": "او دوان‌دوان به سوی تاوه‌ها رفت و گفت:",
+      "text_hr": "Potrčavši prema tavama, rekao je:",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "“Impious tyrant, and most blasphemous man, were you not ashamed, having received prosperity and a kingdom from God, to kill His servants, and to rack the doers of godliness?",
+      "text_fa": "«ای ستمگر بی‌دین و ای کفرگوی‌ترین انسان، آیا شرم نکردی که با وجود دریافت کامیابی و پادشاهی از خدا، خادمان او را بکشی و کسانی را که به دینداری عمل می‌کنند بر شکنجه‌گاه عذاب دهی؟",
+      "text_hr": "„Bezbožni tiranine i najbogohulniji čovječe, zar se nisi stidio, pošto si od Boga primio blagostanje i kraljevstvo, ubijati njegove sluge i na spravi mučiti one koji vrše pobožnost?",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "Therefore the divine vengeance is reserving you for eternal fire and torments, which will cling to you for all time.",
+      "text_fa": "ازاین‌رو انتقام الهی تو را برای آتش و عذاب‌های جاودان نگاه می‌دارد؛ عذاب‌هایی که تا ابد دامنگیرت خواهند بود.",
+      "text_hr": "Stoga te božanska osveta čuva za vječni oganj i muke koje će zauvijek prianjati uza te.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "Weren’t you ashamed, man as you are, yet most savage, to cut out the tongues of men of like feeling and origin, and having thus abused to torture them?",
+      "text_fa": "آیا شرم نکردی که با آنکه انسانی اما وحشی‌ترینی، زبان مردانی همدل و هم‌تبار را ببری و پس از چنین بی‌حرمتی‌ای شکنجه‌شان کنی؟",
+      "text_hr": "Zar se nisi stidio, premda si čovjek, a ipak najdivljiji, rezati jezike ljudima istih osjećaja i podrijetla te ih nakon takva zlostavljanja mučiti?",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "But they, bravely dying, fulfilled their religion toward God.",
+      "text_fa": "اما آنان با دلاوری جان سپردند و دینداری خود را نسبت به خدا به کمال رساندند.",
+      "text_hr": "Ali oni su, hrabro umirući, do kraja ispunili svoju pobožnost prema Bogu.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "But you will groan as you deserve for having slain without cause the champions of virtue.",
+      "text_fa": "اما تو چنان‌که سزاواری ناله خواهی کرد، زیرا قهرمانان فضیلت را بی‌سبب کشتی.",
+      "text_hr": "A ti ćeš stenati kako zaslužuješ jer si bez razloga pogubio prvake kreposti.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "Therefore,” he continued, “I myself, being about to die,",
+      "text_fa": "سپس ادامه داد: «ازاین‌رو من نیز که اکنون در آستانهٔ مرگم،",
+      "text_hr": "Stoga”, nastavio je, „i ja, koji ću sada umrijeti,",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "will not forsake my kindred.",
+      "text_fa": "خویشاوندانم را ترک نخواهم کرد.",
+      "text_hr": "neću napustiti svoju braću.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "I call upon the God of my fathers to be merciful to my race.",
+      "text_fa": "از خدای پدرانم می‌خواهم که بر قوم من رحم کند.",
+      "text_hr": "Zazivam Boga svojih otaca da se smiluje mojemu rodu.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "But you, both living and dead, he will punish.”",
+      "text_fa": "اما تو را چه در زندگی و چه پس از مرگ کیفر خواهد داد.»",
+      "text_hr": "A tebe će kazniti i za života i nakon smrti.”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "Thus having prayed, he hurled himself into the pans; and so expired.",
+      "text_fa": "چون بدین‌سان دعا کرد، خود را به درون تاوه‌ها افکند و جان سپرد.",
+      "text_hr": "Pošto se tako pomolio, bacio se u tave i tako izdahnuo.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    }
+  ]
+}

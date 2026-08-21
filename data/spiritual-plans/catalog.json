@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "plans": [
+    {
+      "id": "prayer-30",
+      "file": "data/spiritual-plans/prayer-30.json",
+      "order": 1,
+      "featured": true
+    },
+    {
+      "id": "grace-14",
+      "file": "data/spiritual-plans/grace-14.json",
+      "order": 2,
+      "featured": true
+    },
+    {
+      "id": "fasting-7",
+      "file": "data/spiritual-plans/fasting-7.json",
+      "order": 3,
+      "featured": true
+    },
+    {
+      "id": "obedience-10",
+      "file": "data/spiritual-plans/obedience-10.json",
+      "order": 4,
+      "featured": false
+    },
+    {
+      "id": "salvation-10",
+      "file": "data/spiritual-plans/salvation-10.json",
+      "order": 5,
+      "featured": false
+    },
+    {
+      "id": "mind-renewal-14",
+      "file": "data/spiritual-plans/mind-renewal-14.json",
+      "order": 6,
+      "featured": true
+    }
+  ]
+}

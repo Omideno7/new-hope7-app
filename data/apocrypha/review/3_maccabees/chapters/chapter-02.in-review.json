@@ -1,0 +1,281 @@
+{
+  "schema_version": 1,
+  "book_id": "3_maccabees",
+  "title_fa": "سوم مکابیان",
+  "title_en": "Third Maccabees",
+  "title_hr": "Treća knjiga o Makabejcima",
+  "chapter": 2,
+  "status": "in_review",
+  "source_translation": "WEBC",
+  "versification": "WEBC",
+  "source_english_sha256": "261e825d37a9521f2028ac4c33149ccfd78ee38534f9ad6a8c2ed7a9195cc9e2",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Now it was that the high priest Simon bowed his knees near the holy place, spread out his hands in reverent form, and uttered the following prayer:",
+      "text_fa": null,
+      "text_hr": "Tada je veliki svećenik Šimun kleknuo pokraj svetoga mjesta, pobožno raširio ruke i izrekao ovu molitvu:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "“O Lord, Lord, King of the heavens, and Ruler of the whole creation, Holy among the holy, sole Governor, Almighty, give ear to us who are oppressed by a wicked and profane one, who celebrates in his confidence and strength.",
+      "text_fa": null,
+      "text_hr": "„Gospodine, Gospodine, Kralju nebesa i Vladaru svega stvorenja, Sveti nad svetima, jedini Upravitelju, Svemogući, poslušaj nas koje tlači zao i bezbožan čovjek što se razmeće svojim pouzdanjem i snagom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "It is you, the Creator of all, the Lord of the universe, who are a righteous Governor, and judge all who act with pride and insolence.",
+      "text_fa": null,
+      "text_hr": "Ti si Stvoritelj svega, Gospodar svemira, pravedni Upravitelj, koji sudiš svima što postupaju oholo i drsko.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "It was you who destroyed the former workers of unrighteousness, among whom were the giants, who trusted in their strength and daring, by covering them with a measureless flood.",
+      "text_fa": null,
+      "text_hr": "Ti si uništio nekadašnje počinitelje nepravde, među njima i divove koji su se uzdali u svoju snagu i smjelost, prekrivši ih neizmjernim potopom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "It was you who made the Sodomites, those workers of exceedingly iniquity, men notorious for their vices, an example to later generations, when you covered them with fire and brimstone.",
+      "text_fa": null,
+      "text_hr": "Sodomljane, počinitelje krajnjega bezakonja i ljude zloglasne po porocima, učinio si primjerom kasnijim naraštajima kad si ih zasuo ognjem i sumporom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "You made known your power when you caused the bold Pharaoh, the enslaver of your people, to pass through the ordeal of many and diverse inflictions.",
+      "text_fa": null,
+      "text_hr": "Svoju si moć pokazao kad si drskoga faraona, porobljivača svojega naroda, podvrgnuo mnogim i različitim pošastima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "You rolled the depths of the sea over him when he pursued with chariots and with a multitude of followers, and gave a safe passage to those who put their trust in you, the Lord of the whole creation.",
+      "text_fa": null,
+      "text_hr": "Kad ih je gonio s bojnim kolima i mnoštvom pratitelja, nad njim si sklopio morske dubine, a onima koji su se uzdali u tebe, Gospodara svega stvorenja, omogućio siguran prolaz.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "These saw and felt the works of your hands, and praised you, the Almighty.",
+      "text_fa": null,
+      "text_hr": "Oni su vidjeli i iskusili djela tvojih ruku te hvalili tebe, Svemogućega.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "You, O King, when you created the immeasurable and measureless earth, chose this city. You made this place sacred to your name, even though you need nothing. You glorified it with your illustrious presence, after constructing it to the glory of your great and honorable name.",
+      "text_fa": null,
+      "text_hr": "Ti si, Kralju, stvorio neizmjernu i nemjerljivu zemlju pa izabrao ovaj grad. Ovo si mjesto posvetio svojemu imenu, premda ti ništa nije potrebno, i proslavio ga svojom slavnom nazočnošću, uredio ga na slavu svojega velikog i časnog imena.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "You promised, out of love for the people of Israel, that if we fall away from you, become afflicted, and then come to this house and pray, you would hear our prayer.",
+      "text_fa": null,
+      "text_hr": "Iz ljubavi prema izraelskom narodu obećao si da ćeš, ako otpadnemo od tebe, zapadnemo u nevolju, a potom dođemo u ovaj Dom i pomolimo se, uslišati našu molitvu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "Truly you are faithful and true.",
+      "text_fa": null,
+      "text_hr": "Uistinu, ti si vjeran i istinit.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "When you often aided our fathers when hard pressed and humiliated, and delivered them out of great dangers,",
+      "text_fa": null,
+      "text_hr": "Mnogo si puta pomagao našim ocima kad su bili pritisnuti i poniženi te ih izbavljao iz velikih opasnosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "see now, holy King, how through our many and great sins we are crushed and made subject to our enemies, and have become weak and powerless.",
+      "text_fa": null,
+      "text_hr": "Pogledaj sada, sveti Kralju, kako smo zbog svojih mnogih i velikih grijeha satrti, podvrgnuti neprijateljima te smo postali slabi i nemoćni.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "In our low condition, this bold and profane man seeks to dishonor this your holy place, consecrated out of the earth to the name of your Majesty.",
+      "text_fa": null,
+      "text_hr": "Dok smo ovako poniženi, ovaj drski i bezbožni čovjek nastoji obeščastiti tvoje sveto mjesto, koje je među svim mjestima na zemlji posvećeno imenu tvojega Veličanstva.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "Your dwelling place, the heaven of heavens, is indeed unapproachable to men.",
+      "text_fa": null,
+      "text_hr": "Tvoje prebivalište, nebo nad nebesima, ljudima je doista nepristupačno.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "But since it seemed good to you to exhibit your glory among your people Israel, you sanctified this place.",
+      "text_fa": null,
+      "text_hr": "Ali budući da ti je bilo milo objaviti svoju slavu među svojim narodom Izraelom, posvetio si ovo mjesto.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "Don’t punish us by means of the uncleanness of their men, and don’t chastise us by means of their profanity, lest the lawless ones should boast in their rage, and exult in exuberant pride of speech, and say,",
+      "text_fa": null,
+      "text_hr": "Nemoj nas kazniti nečistoćom njihovih ljudi niti nas pokarati njihovim svetogrđem, da se bezakonici u svojem bijesu ne bi hvalili i u razmetljivoj oholosti klicali:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "‘We have trampled upon the holy house, as idolatrous houses are trampled upon.’",
+      "text_fa": null,
+      "text_hr": "‘Sveti smo Dom izgazili kao što se gaze idolopoklonički hramovi.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "Blot out our iniquities, do away with our errors, and show your compassion in this hour.",
+      "text_fa": null,
+      "text_hr": "Izbriši naša bezakonja, ukloni naše zablude i pokaži nam svoje milosrđe u ovom času.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "Let your mercies quickly go before us. Grant us peace, that the downcast and broken hearted may praise you with their mouth.”",
+      "text_fa": null,
+      "text_hr": "Neka nam tvoje smilovanje brzo iziđe ususret. Podari nam mir da te klonuli i slomljeni srcem mogu hvaliti svojim ustima.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "At that time God, who sees all things, who is beyond all Holy among the holy, heard that prayer, so suitable, and scourged the man who was greatly uplifted with scorn and insolence.",
+      "text_fa": null,
+      "text_hr": "Tada je Bog, koji sve vidi i nadilazi sve, Sveti nad svetima, uslišao tu primjerenu molitvu te kaznio čovjeka koji se silno uznio u poruzi i drskosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "Shaking him back and forth as a reed is shaken with the wind, he threw him down on the pavement, powerless, with limbs paralyzed, and by a righteous judgment deprived of the ability to speak.",
+      "text_fa": null,
+      "text_hr": "Zatresao ga je kao trsku na vjetru i oborio na kameni pod; ostao je nemoćan i uzetih udova, a pravednim mu je sudom oduzeta sposobnost govora.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "His friends and bodyguards, seeing the swift recompense which had suddenly overtaken him, struck with exceeding terror, and fearing that he would die, speedily removed him.",
+      "text_fa": null,
+      "text_hr": "Kad su njegovi prijatelji i tjelohranitelji vidjeli kako ga je iznenada stigla brza odmazda, silno su se prestrašili te su ga, bojeći se da će umrijeti, žurno odnijeli.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "When in course of time he had come to himself, this severe punishment caused no repentance within him, but he departed with bitter threatenings.",
+      "text_fa": null,
+      "text_hr": "Nakon što je s vremenom došao k sebi, ta ga stroga kazna nije navela na pokajanje, nego je otišao uz gorke prijetnje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "He proceeded to Egypt, grew worse in wickedness through his previously mentioned companions in wine, who were lost to all goodness,",
+      "text_fa": null,
+      "text_hr": "Vratio se u Egipat i postajao sve gori u zloći pod utjecajem već spomenutih sudrugova u pijankama, ljudi u kojima nije ostalo ništa dobro.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "and not satisfied with countless acts of impiety, his audacity so increased that he raised evil reports there, and many of his friends, watching his purpose attentively, joined in furthering his will.",
+      "text_fa": null,
+      "text_hr": "Nezadovoljan bezbrojnim bezbožnim djelima, postao je toliko drzak da je ondje počeo širiti zlobne glasine; mnogi njegovi prijatelji, pomno prateći njegovu namjeru, pomagali su mu da provede svoju volju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "His purpose was to inflict a public stigma upon our race. Therefore he erected a stone pillar in the courtyard, and caused the following inscription to be engraved upon it:",
+      "text_fa": null,
+      "text_hr": "Naumio je javno obilježiti naš rod sramotom. Stoga je u dvorištu podigao kameni stup i dao na njemu uklesati ovaj natpis:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "“Entrance to this temple is to be refused to all those who would not sacrifice. All the Jews were to be registered among the slaves. Those who resisted are to be forcibly seized and put to death.",
+      "text_fa": null,
+      "text_hr": "„Ulazak u ovaj hram zabranjuje se svima koji ne prinose žrtve. Svi Židovi moraju biti upisani među robove, a one koji se odupru treba silom uhvatiti i pogubiti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "Those who are thus registered are to be marked on their persons by the ivy-leaf symbol of Dionysus, and to be reduced to these limited rights.”",
+      "text_fa": null,
+      "text_hr": "Upisane treba na tijelu obilježiti znakom Dionizova bršljanova lista i svesti im prava na propisani ograničeni opseg.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "To do away with the appearance of hating them all, he had it written underneath, that if any of them should elect to enter the community of those initiated in the rites, these should have equal rights with the Alexandrians.",
+      "text_fa": null,
+      "text_hr": "Kako ne bi izgledalo da ih sve mrzi, ispod je dao napisati da će svaki od njih koji odluči pristupiti zajednici posvećenih u obrede dobiti jednaka prava kao Aleksandrijci.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "Some of those who were over the city, therefore, abhorring any approach to the city of piety, unhesitatingly gave in to the king, and expected to derive some great honor from a future connection with him.",
+      "text_fa": null,
+      "text_hr": "Stoga su neki među stanovnicima grada, kojima je bio odbojan svaki korak prema gradu pobožnosti, bez oklijevanja popustili kralju, očekujući da će budućom povezanošću s njim steći veliku čast.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "A nobler spirit, however, prompted the majority to cling to their religious observances, and by paying money that they might live unmolested, these sought to escape the registration,",
+      "text_fa": null,
+      "text_hr": "Većinu je, međutim, plemenitiji duh potaknuo da se drže svojih vjerskih propisa. Plaćali su novac kako bi mogli živjeti neuznemiravano i izbjeći upisivanje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "cheerfully looking forward to future aid, they abhorred their own apostates, considering them to be national foes, and depriving them of common fellowship and mutual help.",
+      "text_fa": null,
+      "text_hr": "Radosno su očekivali buduću pomoć, a vlastitih se otpadnika gnušali, smatrajući ih neprijateljima naroda te im uskraćujući zajedništvo i uzajamnu pomoć.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

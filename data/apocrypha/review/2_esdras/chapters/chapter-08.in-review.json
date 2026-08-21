@@ -1,0 +1,521 @@
+{
+  "schema_version": 1,
+  "book_id": "2_esdras",
+  "title_fa": "دوم اِسدراس",
+  "title_en": "Second Esdras",
+  "title_hr": "Druga Ezdrina",
+  "chapter": 8,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "26d61538d2b8817707f82576cfef66dc4dd9014979c5fb1a852a7fa39ef6621a",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And he answered me, saying, The most High hath made this world for many, but the world to come for few.",
+      "text_fa": null,
+      "text_hr": "Odgovorio mi je: Svevišnji je ovaj svijet stvorio za mnoge, a budući za malobrojne.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "I will tell thee a similitude, Esdras; As when thou askest the earth, it shall say unto thee, that it giveth much mould whereof earthen vessels are made, but little dust that gold cometh of: even so is the course of this present world.",
+      "text_fa": null,
+      "text_hr": "Kazat ću ti usporedbu, Ezra. Upitaš li zemlju, reći će ti da daje mnogo gline od koje nastaju zemljane posude, ali malo praha od kojega nastaje zlato. Tako je i u ovome svijetu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "There be many created, but few shall be saved.",
+      "text_fa": null,
+      "text_hr": "Mnogo ih je stvoreno, ali malo će ih biti spašeno.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "So answered I and said, Swallow then down, O my soul, understanding, and devour wisdom.",
+      "text_fa": null,
+      "text_hr": "Odgovorio sam: Upij, dušo moja, razum i proždiraj mudrost.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "For thou hast agreed to give ear, and art willing to prophesy: for thou hast no longer space than only to live.",
+      "text_fa": null,
+      "text_hr": "Pristala si slušati i voljna si prorokovati, jer nemaš drugoga vremena osim onoga koje ti je dano živjeti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "O Lord, if thou suffer not thy servant, that we may pray before thee, and thou give us seed unto our heart, and culture to our understanding, that there may come fruit of it; how shall each man live that is corrupt, who beareth the place of a man?",
+      "text_fa": null,
+      "text_hr": "O Gospodine, dopusti svojemu sluzi da se moli pred tobom. Daj sjeme našemu srcu i obradu našemu razumu kako bi donijeli plod. Kako će inače živjeti svaki raspadljiv čovjek koji zauzima mjesto čovjeka?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "For thou art alone, and we all one workmanship of thine hands, like as thou hast said.",
+      "text_fa": null,
+      "text_hr": "Jer ti si jedini, a svi smo mi jedno djelo tvojih ruku, kao što si rekao.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "For when the body is fashioned now in the mother’s womb, and thou givest it members, thy creature is preserved in fire and water, and nine months doth thy workmanship endure thy creature which is created in her.",
+      "text_fa": null,
+      "text_hr": "Kada se tijelo oblikuje u majčinoj utrobi i ti mu daješ udove, tvoje se stvorenje čuva u ognju i vodi; devet mjeseci tvoja tvorevina nosi stvorenje oblikovano u njoj.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "But that which keepeth and is kept shall both be preserved: and when the time cometh, the womb preserved delivereth up the things that grew in it.",
+      "text_fa": null,
+      "text_hr": "I ono što čuva i ono što je čuvano bit će sačuvano; kad dođe vrijeme, sačuvana utroba predaje ono što je u njoj raslo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "For thou hast commanded out of the parts of the body, that is to say, out of the breasts, milk to be given, which is the fruit of the breasts,",
+      "text_fa": null,
+      "text_hr": "Zapovjedio si da iz dijelova tijela, to jest iz dojki, poteče mlijeko, plod dojki,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "That the thing which is fashioned may be nourished for a time, till thou disposest it to thy mercy.",
+      "text_fa": null,
+      "text_hr": "Kako bi se oblikovano stvorenje hranilo neko vrijeme, dok ga ne predaš svojemu milosrđu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "Thou broughtest it up with thy righteousness, and nurturedst it in thy law, and reformedst it with thy judgment.",
+      "text_fa": null,
+      "text_hr": "Odgojio si ga svojom pravednošću, othranio svojim Zakonom i obnovio svojim sudom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "And thou shalt mortify it as thy creature, and quicken it as thy work.",
+      "text_fa": null,
+      "text_hr": "Umrtvit ćeš ga kao svoje stvorenje i oživiti kao djelo svojih ruku.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "If therefore thou shalt destroy him which with so great labour was fashioned, it is an easy thing to be ordained by thy commandment, that the thing which was made might be preserved.",
+      "text_fa": null,
+      "text_hr": "Ako uništiš onoga koji je oblikovan uz toliki trud, lako je tvojom zapovijedi odrediti da ono što je načinjeno bude sačuvano.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "Now therefore, Lord, I will speak; touching man in general, thou knowest best; but touching thy people, for whose sake I am sorry;",
+      "text_fa": null,
+      "text_hr": "Sada ću, Gospodine, govoriti. Što se čovjeka općenito tiče, ti najbolje znaš; ali govorim o tvojemu narodu radi kojega tugujem,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "And for thine inheritance, for whose cause I mourn; and for Israel, for whom I am heavy; and for Jacob, for whose sake I am troubled;",
+      "text_fa": null,
+      "text_hr": "O tvojoj baštini za kojom žalim, o Izraelu zbog kojega sam žalostan i o Jakovu zbog kojega sam uznemiren.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "Therefore will I begin to pray before thee for myself and for them: for I see the falls of us that dwell in the land.",
+      "text_fa": null,
+      "text_hr": "Zato ću se pred tobom početi moliti za sebe i za njih, jer vidim padove nas koji prebivamo u zemlji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "But I have heard the swiftness of the judge which is to come.",
+      "text_fa": null,
+      "text_hr": "Čuo sam kako brzo dolazi Sudac.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "Therefore hear my voice, and understand my words, and I shall speak before thee. This is the beginning of the words of Esdras, before he was taken up: and I said,",
+      "text_fa": null,
+      "text_hr": "Zato čuj moj glas i razumi moje riječi, i ja ću govoriti pred tobom. Ovo je početak Esdrinih riječi, prije nego što je bio uzdignut: i ja sam rekao,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "O Lord, thou that dwellest in everlastingness which beholdest from above things in the heaven and in the air;",
+      "text_fa": null,
+      "text_hr": "O Gospodine, ti koji prebivaš u vječnosti i odozgor gledaš ono što je na nebu i u zraku,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "Whose throne is inestimable; whose glory may not be comprehended; before whom the hosts of angels stand with trembling,",
+      "text_fa": null,
+      "text_hr": "Čije je prijestolje neprocjenjivo i slava neshvatljiva, pred kojim čete anđela stoje dršćući,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "Whose service is conversant in wind and fire; whose word is true, and sayings constant; whose commandment is strong, and ordinance fearful;",
+      "text_fa": null,
+      "text_hr": "Čija se služba izvršava u vjetru i ognju, čija je riječ istinita, a kazivanja postojana, čija je zapovijed snažna, a naredba strašna,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "Whose look drieth up the depths, and indignation maketh the mountains to melt away; which the truth witnesseth:",
+      "text_fa": null,
+      "text_hr": "Čiji pogled isušuje bezdane, a gnjev topi planine — o čemu istina svjedoči —",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "O hear the prayer of thy servant, and give ear to the petition of thy creature.",
+      "text_fa": null,
+      "text_hr": "Usliši molitvu sluge svoga i poslušaj molbu stvorenja svoga.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "For while I live I will speak, and so long as I have understanding I will answer.",
+      "text_fa": null,
+      "text_hr": "Jer dok sam živ, govorit ću, i dok god imam razuma, odgovarat ću.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "O look not upon the sins of thy people; but on them which serve thee in truth.",
+      "text_fa": null,
+      "text_hr": "Ne gledaj na grijehe svoga naroda; nego na one koji ti služe u istini.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "Regard not the wicked inventions of the heathen, but the desire of those that keep thy testimonies in afflictions.",
+      "text_fa": null,
+      "text_hr": "Ne obaziri se na zle izmišljotine pogana, nego na želje onih koji čuvaju tvoja svjedočanstva u nevoljama.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "Think not upon those that have walked feignedly before thee: but remember them, which according to thy will have known thy fear.",
+      "text_fa": null,
+      "text_hr": "Ne misli na one koji su prijetvorno hodali pred tobom: već se sjeti onih koji su prema tvojoj volji upoznali strah tvoj.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "Let it not be thy will to destroy them which have lived like beasts; but to look upon them that have clearly taught thy law.",
+      "text_fa": null,
+      "text_hr": "Neka ne bude tvoja volja uništiti one koji su živjeli poput zvijeri, nego pogledaj na one koji su jasno poučavali tvoj Zakon.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "Take thou no indignation at them which are deemed worse than beasts; but love them that always put their trust in thy righteousness and glory.",
+      "text_fa": null,
+      "text_hr": "Ne gnjevi se na one koje smatraju gorima od zvijeri, nego ljubi one koji se uvijek uzdaju u tvoju pravednost i slavu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "For we and our fathers do languish of such diseases: but because of us sinners thou shalt be called merciful.",
+      "text_fa": null,
+      "text_hr": "Jer mi i naši očevi klonemo od takvih bolesti: ali zbog nas grješnika ti ćeš se zvati milosrdnim.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "For if thou hast a desire to have mercy upon us, thou shalt be called merciful, to us namely, that have no works of righteousness.",
+      "text_fa": null,
+      "text_hr": "Jer ako nam se želiš smilovati, milosrdnim ćeš se zvati, nama, naime, koji nemamo djela pravednosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "For the just, which have many good works laid up with thee, shall out of their own deeds receive reward.",
+      "text_fa": null,
+      "text_hr": "Jer pravednici, koji imaju mnoga dobra djela kod tebe, iz svojih će djela primiti plaću.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 34,
+      "text_en": "For what is man, that thou shouldest take displeasure at him? or what is a corruptible generation, that thou shouldest be so bitter toward it?",
+      "text_fa": null,
+      "text_hr": "Jer što je čovjek da se na njega ljutiš? Ili što je raspadljiv naraštaj da si tako ogorčen na njega?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 35,
+      "text_en": "For in truth them is no man among them that be born, but he hath dealt wickedly; and among the faithful there is none which hath not done amiss.",
+      "text_fa": null,
+      "text_hr": "Uistinu, među rođenima nema čovjeka koji nije činio zlo, niti među vjernima ikoga tko nije pogriješio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 36,
+      "text_en": "For in this, O Lord, thy righteousness and thy goodness shall be declared, if thou be merciful unto them which have not the confidence of good works.",
+      "text_fa": null,
+      "text_hr": "U tome će se, Gospodine, pokazati tvoja pravednost i dobrota: ako budeš milosrdan prema onima koji nemaju pouzdanja u svoja dobra djela.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 37,
+      "text_en": "Then answered he me, and said, Some things hast thou spoken aright, and according unto thy words it shall be.",
+      "text_fa": null,
+      "text_hr": "Tada mi je odgovorio: Neke stvari si dobro rekao i bit će po tvojim riječima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 38,
+      "text_en": "For indeed I will not think on the disposition of them which have sinned before death, before judgment, before destruction:",
+      "text_fa": null,
+      "text_hr": "Jer doista neću misliti na nakane onih koji su sagriješili prije smrti, suda i propasti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 39,
+      "text_en": "But I will rejoice over the disposition of the righteous, and I will remember also their pilgrimage, and the salvation, and the reward, that they shall have.",
+      "text_fa": null,
+      "text_hr": "Radovat ću se nakanama pravednika i sjećati se njihova putovanja, spasenja i nagrade koju će primiti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 40,
+      "text_en": "Like as I have spoken now, so shall it come to pass.",
+      "text_fa": null,
+      "text_hr": "Kao što sam sada govorio, tako će se i dogoditi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 41,
+      "text_en": "For as the husbandman soweth much seed upon the ground, and planteth many trees, and yet the thing that is sown good in his season cometh not up, neither doth all that is planted take root: even so is it of them that are sown in the world; they shall not all be saved.",
+      "text_fa": null,
+      "text_hr": "Kao što ratar sije mnogo sjemena i sadi mnoga stabla, ali ne nikne sve što je dobro posijano niti se ukorijeni sve što je posađeno, tako je i s onima koji su posijani u svijetu: neće se svi spasiti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 42,
+      "text_en": "I answered then and said, If I have found grace, let me speak.",
+      "text_fa": null,
+      "text_hr": "Tada sam odgovorio i rekao: Ako sam našao milost, pusti me da govorim.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 43,
+      "text_en": "Like as the husbandman’s seed perisheth, if it come not up, and receive not thy rain in due season; or if there come too much rain, and corrupt it:",
+      "text_fa": null,
+      "text_hr": "Kao što ratarovo sjeme propada ako ne nikne i ne primi tvoju kišu u pravo vrijeme, ili ako ga preobilna kiša uništi,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 44,
+      "text_en": "Even so perisheth man also, which is formed with thy hands, and is called thine own image, because thou art like unto him, for whose sake thou hast made all things, and likened him unto the husbandman’s seed.",
+      "text_fa": null,
+      "text_hr": "Tako propada i čovjek oblikovan tvojim rukama, koji se naziva tvojom slikom. Nalik si njemu; radi njega si sve stvorio i usporedio ga s ratarovim sjemenom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 45,
+      "text_en": "Be not wroth with us but spare thy people, and have mercy upon thine own inheritance: for thou art merciful unto thy creature.",
+      "text_fa": null,
+      "text_hr": "Ne ljuti se na nas, nego poštedi svoj narod i smiluj se vlastitoj baštini: jer si milostiv prema svome stvorenju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 46,
+      "text_en": "Then answered he me, and said, Things present are for the present, and things to cometh for such as be to come.",
+      "text_fa": null,
+      "text_hr": "Tada mi je odgovorio: Sadašnje je za sada, a ono što dolazi za ono što će doći.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 47,
+      "text_en": "For thou comest far short that thou shouldest be able to love my creature more than I: but I have ofttimes drawn nigh unto thee, and unto it, but never to the unrighteous.",
+      "text_fa": null,
+      "text_hr": "Daleko si od toga da možeš ljubiti moje stvorenje više od mene. Ja sam se često približavao tebi i njemu, ali nikada nepravedniku.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 48,
+      "text_en": "In this also thou art marvellous before the most High:",
+      "text_fa": null,
+      "text_hr": "I u tome si divan pred Svevišnjim:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 49,
+      "text_en": "In that thou hast humbled thyself, as it becometh thee, and hast not judged thyself worthy to be much glorified among the righteous.",
+      "text_fa": null,
+      "text_hr": "U tome što si se ponizio, kako ti dolikuje, i nisi sebe smatrao dostojnim da budeš mnogo slavljen među pravednicima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 50,
+      "text_en": "For many great miseries shall be done to them that in the latter time shall dwell in the world, because they have walked in great pride.",
+      "text_fa": null,
+      "text_hr": "Mnoge će velike nevolje zadesiti one koji će u posljednje vrijeme prebivati u svijetu, jer su hodili u velikoj oholosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 51,
+      "text_en": "But understand thou for thyself, and seek out the glory for such as be like thee.",
+      "text_fa": null,
+      "text_hr": "Ali razumi ti sam i traži slavu za one koji su tebi slični.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 52,
+      "text_en": "For unto you is paradise opened, the tree of life is planted, the time to come is prepared, plenteousness is made ready, a city is builded, and rest is allowed, yea, perfect goodness and wisdom.",
+      "text_fa": null,
+      "text_hr": "Jer vama je raj otvoren, drvo života je posađeno, vrijeme koje dolazi je pripremljeno, obilje je pripremljeno, grad je izgrađen, a odmor je dopušten, da, savršena dobrota i mudrost.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 53,
+      "text_en": "The root of evil is sealed up from you, weakness and the moth is hid from you, and corruption is fled into hell to be forgotten:",
+      "text_fa": null,
+      "text_hr": "Korijen zla zapečaćen je daleko od vas, slabost i moljac od vas su skriveni, a raspadljivost je pobjegla u podzemlje da bude zaboravljena.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 54,
+      "text_en": "Sorrows are passed, and in the end is shewed the treasure of immortality.",
+      "text_fa": null,
+      "text_hr": "Tuge prolaze, a na kraju se pokazuje blago besmrtnosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 55,
+      "text_en": "And therefore ask thou no more questions concerning the multitude of them that perish.",
+      "text_fa": null,
+      "text_hr": "I zato ne postavljaj više pitanja o mnoštvu onih koji nestaju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 56,
+      "text_en": "For when they had taken liberty, they despised the most High, thought scorn of his law, and forsook his ways.",
+      "text_fa": null,
+      "text_hr": "Jer kad su uzeli slobodu, prezreli su Svevišnjega, prezirali njegov zakon i napustili njegove putove.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 57,
+      "text_en": "Moreover they have trodden down his righteous,",
+      "text_fa": null,
+      "text_hr": "Štoviše, pogazili su njegova Pravednika,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 58,
+      "text_en": "And said in their heart, that there is no God; yea, and that knowing they must die.",
+      "text_fa": null,
+      "text_hr": "I u srcu govorili da Boga nema, premda su znali da moraju umrijeti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 59,
+      "text_en": "For as the things aforesaid shalt receive you, so thirst and pain are prepared for them: for it was not his will that men should come to nought:",
+      "text_fa": null,
+      "text_hr": "Kao što će vas primiti prije spomenute stvari, tako su za njih pripravljeni žeđ i bol, jer nije bila njegova volja da ljudi propadnu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 60,
+      "text_en": "But they which be created have defiled the name of him that made them, and were unthankful unto him which prepared life for them.",
+      "text_fa": null,
+      "text_hr": "Ali oni koji su stvoreni oskvrnili su ime onoga koji ih je stvorio i bili su nezahvalni onome koji im je pripremio život.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 61,
+      "text_en": "And therefore is my judgment now at hand.",
+      "text_fa": null,
+      "text_hr": "I stoga je moj sud sada pri ruci.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 62,
+      "text_en": "These things have I not shewed unto all men, but unto thee, and a few like thee. Then answered I and said,",
+      "text_fa": null,
+      "text_hr": "Ovo nisam pokazao svim ljudima, osim tebi i nekolicini tebi sličnim. Tada sam odgovorio i rekao:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 63,
+      "text_en": "Behold, O Lord, now hast thou shewed me the multitude of the wonders, which thou wilt begin to do in the last times: but at what time, thou hast not shewed me.",
+      "text_fa": null,
+      "text_hr": "Gle, Gospodine, sada si mi pokazao mnoštvo čudesa, koja ćeš početi činiti u posljednja vremena: ali u koje vrijeme, nisi mi pokazao.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

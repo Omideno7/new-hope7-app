@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 83,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "0d8e14bbfe7f0560415c240c455587de8185024182b5ffc5202da9f1cb43fd1e",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And now, my son Methuselah, I will show thee all my visions which I have seen, recounting them before thee.",
+      "text_fa": null,
+      "text_hr": "A sada, sine moj Metušalaše, pokazat ću ti sve svoje viđenja koje sam vidio, prepričavajući ih pred tobom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "Two visions I saw before I took a wife, and the one was quite unlike the other: the first when I was learning to write, the second before I took thy mother, (when) I saw a terrible vision. And regarding them I prayed to the Lord.",
+      "text_fa": null,
+      "text_hr": "Dvije viđenja koje sam vidio prije nego što sam se oženio, a jedna je bila sasvim drugačija od druge: prvu kad sam učio pisati, drugu prije nego što sam uzeo tvoju majku, (kada) sam vidio strašnu viđenje. I za njih sam se molio Gospodinu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "I had laid me down in the house of my grandfather Mahalalel, (when) I saw in a vision how the heaven collapsed and was borne off and fell to the earth.",
+      "text_fa": null,
+      "text_hr": "Legao sam u kući svojega djeda Mahalalela kada u viđenju ugledah kako se nebo ruši, odnosi i pada na zemlju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And when it fell to the earth I saw how the earth was swallowed up in a great abyss, and mountains were suspended on mountains, and hills sank down on hills, and high trees were rent from their stems, and hurled down and sunk in the abyss.",
+      "text_fa": null,
+      "text_hr": "I kad je pao na zemlju, vidio sam kako je zemlja bila progutana u velikom ponoru, i planine su visjele na planinama, i brda su se srušila na brda, i visoka stabla su bila otrgnuta od svojih stabljika, i bačena dolje i potopljena u ponor.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And thereupon a word fell into my mouth, and I lifted up (my voice) to cry aloud, and said: ‘The earth is destroyed.’",
+      "text_fa": null,
+      "text_hr": "Tada mi riječ dođe u usta, podigoh glas, glasno povikah i rekoh: ‘Zemlja je uništena!’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And my grandfather Mahalalel waked me as I lay near him, and said unto me: ‘Why dost thou cry so, my son, and why dost thou make such lamentation?’",
+      "text_fa": null,
+      "text_hr": "I moj djed Mahalalel me probudio dok sam ležao blizu njega, i rekao mi: ‘Zašto tako plačeš, sine moj, i zašto tako naričeš?’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And I recounted to him the whole vision which I had seen, and he said unto me: ‘A terrible thing hast thou seen, my son, and of grave moment is thy dream-vision as to the secrets of all the sin of the earth: it must sink into the abyss and be destroyed with a great destruction.",
+      "text_fa": null,
+      "text_hr": "Ispripovjedih mu cijelo viđenje koje sam vidio, a on mi reče: ‘Strašno si vidio, sine moj, i vrlo je ozbiljno tvoje viđenje u snu o tajnama svih grijeha zemlje. Zemlja mora potonuti u bezdan i biti uništena velikom propašću.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And now, my son, arise and make petition to the Lord of glory, since thou art a believer, that a remnant may remain on the earth, and that He may not destroy the whole earth.",
+      "text_fa": null,
+      "text_hr": "A sada, sine moj, ustani i uputi molbu Gospodaru Slave, jer si vjeran, da ostatak ostane na zemlji i da On ne uništi svu zemlju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "My son, from heaven all this will come upon the earth, and upon the earth there will be great destruction.’",
+      "text_fa": null,
+      "text_hr": "Sine moj, s neba će sve ovo doći na zemlju, a na zemlji će biti veliko uništenje.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "After that I arose and prayed and implored and besought, and wrote down my prayer for the generations of the world, and I will show everything to thee, my son Methuselah.",
+      "text_fa": null,
+      "text_hr": "Potom ustadoh, molih, preklinjah i zaklinjah te zapisah svoju molitvu za naraštaje svijeta. Sve ću ti pokazati, sine moj Metušalaše.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "And when I had gone forth below and seen the heaven, and the sun rising in the east, and the moon setting in the west, and a few stars, and the whole earth, and everything as †He had known† it in the beginning, then I blessed the Lord of judgement and extolled Him because He had made the sun to go forth from the windows of the east, †and he ascended and rose on the face of the heaven, and set out and kept traversing the path shown unto him.",
+      "text_fa": null,
+      "text_hr": "Kad sam izišao i ugledao nebo, Sunce kako izlazi na istoku, Mjesec kako zalazi na zapadu, nekoliko zvijezda, cijelu zemlju i sve kako je †On to poznavao† od početka, blagoslovih Gospodara Suda i veličah Ga jer je učinio da Sunce iziđe kroz istočne prozore, †uspne se i uzdigne na lice neba te krene i nastavi prelaziti put koji mu je pokazan.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

@@ -1,0 +1,891 @@
+{
+  "schema_version": 1,
+  "scope_id": "new_hope_7_apocrypha_19",
+  "prepared_on": "2026-08-21",
+  "branch": "agent/next-plans-logo-240",
+  "status": "coverage_complete_review_pending",
+  "publication_gate": "Do not publish in_review translations until editorial approval.",
+  "invariant": {
+    "exact_book_count": 19,
+    "duplicate_umbrella_titles_excluded": [
+      "additions_to_daniel"
+    ],
+    "out_of_scope_titles": [
+      "Odes",
+      "Jubilees",
+      "Meqabyan",
+      "Psalms of Solomon"
+    ]
+  },
+  "locale_coverage": {
+    "en": {
+      "covered_books": 19,
+      "reference_ready": 19,
+      "in_review": 0,
+      "chapter_count": 307,
+      "verse_or_segment_count": 7501
+    },
+    "fa": {
+      "covered_books": 19,
+      "draft_existing": 14,
+      "in_review": 5,
+      "in_review_rows": 917
+    },
+    "hr": {
+      "covered_books": 19,
+      "prepared_existing": 13,
+      "in_review": 6,
+      "in_review_rows": 3023
+    }
+  },
+  "versification_policy": "Preserve each source's numbering; do not require equal cross-language verse counts. Alignment is keyed by book, source versification, chapter, and verse/segment.",
+  "review_validation": {
+    "judith": {
+      "aligned_review_rows": 339,
+      "persian_in_review_rows": 339,
+      "croatian_in_review_rows": 0,
+      "included_chapters": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ]
+    },
+    "prayer_of_azariah": {
+      "aligned_review_rows": 68,
+      "persian_in_review_rows": 68,
+      "croatian_in_review_rows": 0,
+      "included_chapters": [
+        1
+      ]
+    },
+    "susanna": {
+      "aligned_review_rows": 64,
+      "persian_in_review_rows": 64,
+      "croatian_in_review_rows": 0,
+      "included_chapters": [
+        1
+      ]
+    },
+    "bel_and_the_dragon": {
+      "aligned_review_rows": 42,
+      "persian_in_review_rows": 42,
+      "croatian_in_review_rows": 0,
+      "included_chapters": [
+        1
+      ]
+    },
+    "4_maccabees": {
+      "aligned_review_rows": 404,
+      "persian_in_review_rows": 404,
+      "croatian_in_review_rows": 404,
+      "included_chapters": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18
+      ]
+    },
+    "1_esdras": {
+      "aligned_review_rows": 448,
+      "persian_in_review_rows": 0,
+      "croatian_in_review_rows": 448,
+      "included_chapters": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    "2_esdras": {
+      "aligned_review_rows": 874,
+      "persian_in_review_rows": 0,
+      "croatian_in_review_rows": 874,
+      "included_chapters": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ]
+    },
+    "1_enoch": {
+      "aligned_review_rows": 1062,
+      "persian_in_review_rows": 0,
+      "croatian_in_review_rows": 1062,
+      "included_chapters": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108
+      ]
+    },
+    "3_maccabees": {
+      "aligned_review_rows": 228,
+      "persian_in_review_rows": 0,
+      "croatian_in_review_rows": 228,
+      "included_chapters": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    "psalm_151": {
+      "aligned_review_rows": 7,
+      "persian_in_review_rows": 0,
+      "croatian_in_review_rows": 7,
+      "included_chapters": [
+        1
+      ]
+    }
+  },
+  "books": [
+    {
+      "order": 1,
+      "book_id": "1_esdras",
+      "title_fa": "اول اِسدراس",
+      "title_en": "First Esdras",
+      "title_hr": "Prva Ezdrina",
+      "english": {
+        "status": "reference_ready",
+        "source_file": "sources/en/1_esdras.en.json",
+        "source_translation": "KJVA",
+        "source_name": "King James Version with Apocrypha",
+        "source_url": "https://ebible.org/bible/details.php?id=eng-kjv",
+        "source_license": "Public Domain",
+        "versification": "KJVA normalized for the New Hope 7 nineteen-book set",
+        "chapter_count": 9,
+        "verse_or_segment_count": 448,
+        "canonical_build_input": "1_esdras.kjva.json"
+      },
+      "persian": {
+        "status": "draft_existing",
+        "review_path": null
+      },
+      "croatian": {
+        "status": "coverage_complete_in_review",
+        "review_path": "review/1_esdras",
+        "prior_prepared_chapters": [],
+        "new_review_chapters": [
+          [
+            1,
+            9
+          ]
+        ]
+      }
+    },
+    {
+      "order": 2,
+      "book_id": "2_esdras",
+      "title_fa": "دوم اِسدراس",
+      "title_en": "Second Esdras",
+      "title_hr": "Druga Ezdrina",
+      "english": {
+        "status": "reference_ready",
+        "source_file": "sources/en/2_esdras.en.json",
+        "source_translation": "KJVA",
+        "source_name": "King James Version with Apocrypha",
+        "source_url": "https://ebible.org/bible/details.php?id=eng-kjv",
+        "source_license": "Public Domain",
+        "versification": "KJVA normalized for the New Hope 7 nineteen-book set",
+        "chapter_count": 16,
+        "verse_or_segment_count": 874,
+        "canonical_build_input": "2_esdras.kjva.json"
+      },
+      "persian": {
+        "status": "draft_existing",
+        "review_path": null
+      },
+      "croatian": {
+        "status": "coverage_complete_in_review",
+        "review_path": "review/2_esdras",
+        "prior_prepared_chapters": [],
+        "new_review_chapters": [
+          [
+            1,
+            16
+          ]
+        ]
+      }
+    },
+    {
+      "order": 3,
+      "book_id": "tobit",
+      "title_fa": "طوبیت",
+      "title_en": "Tobit",
+      "title_hr": "Tobija",
+      "english": {
+        "status": "reference_ready",
+        "source_file": "sources/en/tobit.en.json",
+        "source_translation": "KJVA",
+        "source_name": "King James Version with Apocrypha",
+        "source_url": "https://ebible.org/bible/details.php?id=eng-kjv",
+        "source_license": "Public Domain",
+        "versification": "KJVA normalized for the New Hope 7 nineteen-book set",
+        "chapter_count": 14,
+        "verse_or_segment_count": 244,
+        "canonical_build_input": "tobit.kjva.json"
+      },
+      "persian": {
+        "status": "draft_existing",
+        "review_path": null
+      },
+      "croatian": {
+        "status": "prepared_existing",
+        "review_path": null
+      }
+    },
+    {
+      "order": 4,
+      "book_id": "judith",
+      "title_fa": "یهودیت",
+      "title_en": "Judith",
+      "title_hr": "Judita",
+      "english": {
+        "status": "reference_ready",
+        "source_file": "sources/en/judith.en.json",
+        "source_translation": "KJVA",
+        "source_name": "King James Version with Apocrypha",
+        "source_url": "https://ebible.org/bible/details.php?id=eng-kjv",
+        "source_license": "Public Domain",
+        "versification": "KJVA normalized for the New Hope 7 nineteen-book set",
+        "chapter_count": 16,
+        "verse_or_segment_count": 339,
+        "canonical_build_input": "judith.kjva.json"
+      },
+      "persian": {
+        "status": "coverage_complete_in_review",
+        "review_path": "review/judith",
+        "prior_prepared_chapters": [],
+        "new_review_chapters": [
+          [
+            1,
+            16
+          ]
+        ]
+      },
+      "croatian": {
+        "status": "prepared_existing",
+        "review_path": null
+      }
+    },
+    {
+      "order": 5,
+      "book_id": "additions_to_esther",
+      "title_fa": "افزوده‌های استر",
+      "title_en": "Additions to Esther",
+      "title_hr": "Dodaci Esteri",
+      "english": {
+        "status": "reference_ready",
+        "source_file": "sources/en/additions_to_esther.en.json",
+        "source_translation": "KJVA",
+        "source_name": "King James Version with Apocrypha",
+        "source_url": "https://ebible.org/bible/details.php?id=eng-kjv",
+        "source_license": "Public Domain",
+        "versification": "KJVA normalized for the New Hope 7 nineteen-book set",
+        "chapter_count": 7,
+        "verse_or_segment_count": 105,
+        "canonical_build_input": "additions_to_esther.kjva.json"
+      },
+      "persian": {
+        "status": "draft_existing",
+        "review_path": null
+      },
+      "croatian": {
+        "status": "prepared_existing",
+        "review_path": null
+      }
+    },
+    {
+      "order": 6,
+      "book_id": "wisdom_of_solomon",
+      "title_fa": "حکمت سلیمان",
+      "title_en": "Wisdom of Solomon",
+      "title_hr": "Knjiga Mudrosti",
+      "english": {
+        "status": "reference_ready",
+        "source_file": "sources/en/wisdom_of_solomon.en.json",
+        "source_translation": "KJVA",
+        "source_name": "King James Version with Apocrypha",
+        "source_url": "https://ebible.org/bible/details.php?id=eng-kjv",
+        "source_license": "Public Domain",
+        "versification": "KJVA normalized for the New Hope 7 nineteen-book set",
+        "chapter_count": 19,
+        "verse_or_segment_count": 436,
+        "canonical_build_input": "wisdom_of_solomon.kjva.json"
+      },
+      "persian": {
+        "status": "draft_existing",
+        "review_path": null
+      },
+      "croatian": {
+        "status": "prepared_existing",
+        "review_path": null
+      }
+    },
+    {
+      "order": 7,
+      "book_id": "sirach",
+      "title_fa": "حکمت یشوع بن سیراخ",
+      "title_en": "Sirach / Ecclesiasticus",
+      "title_hr": "Sirah",
+      "english": {
+        "status": "reference_ready",
+        "source_file": "sources/en/sirach.en.json",
+        "source_translation": "KJVA",
+        "source_name": "King James Version with Apocrypha",
+        "source_url": "https://ebible.org/bible/details.php?id=eng-kjv",
+        "source_license": "Public Domain",
+        "versification": "KJVA normalized for the New Hope 7 nineteen-book set",
+        "chapter_count": 51,
+        "verse_or_segment_count": 1393,
+        "canonical_build_input": "sirach.kjva.json"
+      },
+      "persian": {
+        "status": "draft_existing",
+        "review_path": null
+      },
+      "croatian": {
+        "status": "prepared_existing",
+        "review_path": null
+      }
+    },
+    {
+      "order": 8,
+      "book_id": "baruch",
+      "title_fa": "باروخ",
+      "title_en": "Baruch",
+      "title_hr": "Baruh",
+      "english": {
+        "status": "reference_ready",
+        "source_file": "sources/en/baruch.en.json",
+        "source_translation": "KJVA",
+        "source_name": "King James Version with Apocrypha",
+        "source_url": "https://ebible.org/bible/details.php?id=eng-kjv",
+        "source_license": "Public Domain",
+        "versification": "KJVA normalized for the New Hope 7 nineteen-book set",
+        "chapter_count": 5,
+        "verse_or_segment_count": 140,
+        "canonical_build_input": "baruch.kjva.json"
+      },
+      "persian": {
+        "status": "draft_existing",
+        "review_path": null
+      },
+      "croatian": {
+        "status": "prepared_existing",
+        "review_path": null
+      }
+    },
+    {
+      "order": 9,
+      "book_id": "letter_of_jeremiah",
+      "title_fa": "نامه ارمیا",
+      "title_en": "Letter of Jeremiah",
+      "title_hr": "Jeremijino pismo",
+      "english": {
+        "status": "reference_ready",
+        "source_file": "sources/en/letter_of_jeremiah.en.json",
+        "source_translation": "KJVA",
+        "source_name": "King James Version with Apocrypha",
+        "source_url": "https://ebible.org/bible/details.php?id=eng-kjv",
+        "source_license": "Public Domain",
+        "versification": "KJVA normalized for the New Hope 7 nineteen-book set",
+        "chapter_count": 1,
+        "verse_or_segment_count": 73,
+        "canonical_build_input": "letter_of_jeremiah.kjva.json"
+      },
+      "persian": {
+        "status": "draft_existing",
+        "review_path": null
+      },
+      "croatian": {
+        "status": "prepared_existing",
+        "review_path": null
+      }
+    },
+    {
+      "order": 10,
+      "book_id": "prayer_of_azariah",
+      "title_fa": "دعای عزریا و سرود سه جوان",
+      "title_en": "Prayer of Azariah and Song of the Three",
+      "title_hr": "Molitva Azarijina i Pjesma trojice mladića",
+      "english": {
+        "status": "reference_ready",
+        "source_file": "sources/en/prayer_of_azariah.en.json",
+        "source_translation": "KJVA",
+        "source_name": "King James Version with Apocrypha",
+        "source_url": "https://ebible.org/bible/details.php?id=eng-kjv",
+        "source_license": "Public Domain",
+        "versification": "KJVA normalized for the New Hope 7 nineteen-book set",
+        "chapter_count": 1,
+        "verse_or_segment_count": 68,
+        "canonical_build_input": "prayer_of_azariah.kjva.json"
+      },
+      "persian": {
+        "status": "coverage_complete_in_review",
+        "review_path": "review/prayer_of_azariah",
+        "prior_prepared_chapters": [],
+        "new_review_chapters": [
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      "croatian": {
+        "status": "prepared_existing",
+        "review_path": null
+      }
+    },
+    {
+      "order": 11,
+      "book_id": "susanna",
+      "title_fa": "سوسنا",
+      "title_en": "Susanna",
+      "title_hr": "Suzana",
+      "english": {
+        "status": "reference_ready",
+        "source_file": "sources/en/susanna.en.json",
+        "source_translation": "KJVA",
+        "source_name": "King James Version with Apocrypha",
+        "source_url": "https://ebible.org/bible/details.php?id=eng-kjv",
+        "source_license": "Public Domain",
+        "versification": "KJVA normalized for the New Hope 7 nineteen-book set",
+        "chapter_count": 1,
+        "verse_or_segment_count": 64,
+        "canonical_build_input": "susanna.kjva.json"
+      },
+      "persian": {
+        "status": "coverage_complete_in_review",
+        "review_path": "review/susanna",
+        "prior_prepared_chapters": [],
+        "new_review_chapters": [
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      "croatian": {
+        "status": "prepared_existing",
+        "review_path": null
+      }
+    },
+    {
+      "order": 12,
+      "book_id": "bel_and_the_dragon",
+      "title_fa": "بِل و اژدها",
+      "title_en": "Bel and the Dragon",
+      "title_hr": "Bel i Zmaj",
+      "english": {
+        "status": "reference_ready",
+        "source_file": "sources/en/bel_and_the_dragon.en.json",
+        "source_translation": "KJVA",
+        "source_name": "King James Version with Apocrypha",
+        "source_url": "https://ebible.org/bible/details.php?id=eng-kjv",
+        "source_license": "Public Domain",
+        "versification": "KJVA normalized for the New Hope 7 nineteen-book set",
+        "chapter_count": 1,
+        "verse_or_segment_count": 42,
+        "canonical_build_input": "bel_and_the_dragon.kjva.json"
+      },
+      "persian": {
+        "status": "coverage_complete_in_review",
+        "review_path": "review/bel_and_the_dragon",
+        "prior_prepared_chapters": [],
+        "new_review_chapters": [
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      "croatian": {
+        "status": "prepared_existing",
+        "review_path": null
+      }
+    },
+    {
+      "order": 13,
+      "book_id": "prayer_of_manasseh",
+      "title_fa": "دعای منسی",
+      "title_en": "Prayer of Manasseh",
+      "title_hr": "Molitva Manašeova",
+      "english": {
+        "status": "reference_ready",
+        "source_file": "sources/en/prayer_of_manasseh.en.json",
+        "source_translation": "WEBC",
+        "source_name": "World English Bible Classic",
+        "source_url": "https://ebible.org/eng-web/MAN01.htm",
+        "source_license": "Public Domain",
+        "versification": "WEBC",
+        "chapter_count": 1,
+        "verse_or_segment_count": 15,
+        "canonical_build_input": "prayer_of_manasseh.webc.json"
+      },
+      "persian": {
+        "status": "draft_existing",
+        "review_path": null
+      },
+      "croatian": {
+        "status": "prepared_existing",
+        "review_path": null
+      }
+    },
+    {
+      "order": 14,
+      "book_id": "1_maccabees",
+      "title_fa": "اول مکابیان",
+      "title_en": "First Maccabees",
+      "title_hr": "Prva knjiga o Makabejcima",
+      "english": {
+        "status": "reference_ready",
+        "source_file": "sources/en/1_maccabees.en.json",
+        "source_translation": "KJVA",
+        "source_name": "King James Version with Apocrypha",
+        "source_url": "https://ebible.org/bible/details.php?id=eng-kjv",
+        "source_license": "Public Domain",
+        "versification": "KJVA normalized for the New Hope 7 nineteen-book set",
+        "chapter_count": 16,
+        "verse_or_segment_count": 924,
+        "canonical_build_input": "1_maccabees.kjva.json"
+      },
+      "persian": {
+        "status": "draft_existing",
+        "review_path": null
+      },
+      "croatian": {
+        "status": "prepared_existing",
+        "review_path": null
+      }
+    },
+    {
+      "order": 15,
+      "book_id": "2_maccabees",
+      "title_fa": "دوم مکابیان",
+      "title_en": "Second Maccabees",
+      "title_hr": "Druga knjiga o Makabejcima",
+      "english": {
+        "status": "reference_ready",
+        "source_file": "sources/en/2_maccabees.en.json",
+        "source_translation": "KJVA",
+        "source_name": "King James Version with Apocrypha",
+        "source_url": "https://ebible.org/bible/details.php?id=eng-kjv",
+        "source_license": "Public Domain",
+        "versification": "KJVA normalized for the New Hope 7 nineteen-book set",
+        "chapter_count": 15,
+        "verse_or_segment_count": 555,
+        "canonical_build_input": "2_maccabees.kjva.json"
+      },
+      "persian": {
+        "status": "draft_existing",
+        "review_path": null
+      },
+      "croatian": {
+        "status": "prepared_existing",
+        "review_path": null
+      }
+    },
+    {
+      "order": 16,
+      "book_id": "1_enoch",
+      "title_fa": "کتاب اول خنوخ",
+      "title_en": "First Enoch",
+      "title_hr": "Prva Henokova",
+      "english": {
+        "status": "reference_ready",
+        "source_file": "sources/en/1_enoch.en.json",
+        "source_translation": "R. H. Charles",
+        "source_name": "The Book of Enoch",
+        "source_url": "https://www.gutenberg.org/ebooks/77935",
+        "source_license": "Public domain in the United States; Project Gutenberg reuse and trademark terms apply to its packaged eBook. Check local law outside the United States.",
+        "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+        "chapter_count": 108,
+        "verse_or_segment_count": 1062,
+        "canonical_build_input": "1_enoch.rh_charles.en.json"
+      },
+      "persian": {
+        "status": "draft_existing",
+        "review_path": null
+      },
+      "croatian": {
+        "status": "coverage_complete_in_review",
+        "review_path": "review/1_enoch",
+        "prior_prepared_chapters": [],
+        "new_review_chapters": [
+          [
+            1,
+            108
+          ]
+        ]
+      }
+    },
+    {
+      "order": 17,
+      "book_id": "3_maccabees",
+      "title_fa": "سوم مکابیان",
+      "title_en": "Third Maccabees",
+      "title_hr": "Treća knjiga o Makabejcima",
+      "english": {
+        "status": "reference_ready",
+        "source_file": "sources/en/3_maccabees.en.json",
+        "source_translation": "WEBC",
+        "source_name": "World English Bible Classic",
+        "source_url": "https://ebible.org/eng-web/3MA01.htm",
+        "source_license": "Public Domain",
+        "versification": "WEBC",
+        "chapter_count": 7,
+        "verse_or_segment_count": 228,
+        "canonical_build_input": "3_maccabees.webc.json"
+      },
+      "persian": {
+        "status": "draft_existing",
+        "review_path": null
+      },
+      "croatian": {
+        "status": "coverage_complete_in_review",
+        "review_path": "review/3_maccabees",
+        "prior_prepared_chapters": [],
+        "new_review_chapters": [
+          [
+            1,
+            7
+          ]
+        ]
+      }
+    },
+    {
+      "order": 18,
+      "book_id": "4_maccabees",
+      "title_fa": "چهارم مکابیان",
+      "title_en": "Fourth Maccabees",
+      "title_hr": "Četvrta knjiga o Makabejcima",
+      "english": {
+        "status": "reference_ready",
+        "source_file": "sources/en/4_maccabees.en.json",
+        "source_translation": "WEBC",
+        "source_name": "World English Bible Classic",
+        "source_url": "https://ebible.org/eng-web/4MA.htm",
+        "source_license": "Public Domain",
+        "versification": "WEBC",
+        "chapter_count": 18,
+        "verse_or_segment_count": 484,
+        "canonical_build_input": "4_maccabees.webc.json"
+      },
+      "persian": {
+        "status": "coverage_complete_in_review",
+        "review_path": "review/4_maccabees",
+        "prior_prepared_chapters": [
+          [
+            1,
+            3
+          ]
+        ],
+        "new_review_chapters": [
+          [
+            4,
+            18
+          ]
+        ]
+      },
+      "croatian": {
+        "status": "coverage_complete_in_review",
+        "review_path": "review/4_maccabees",
+        "prior_prepared_chapters": [
+          [
+            1,
+            3
+          ]
+        ],
+        "new_review_chapters": [
+          [
+            4,
+            18
+          ]
+        ]
+      }
+    },
+    {
+      "order": 19,
+      "book_id": "psalm_151",
+      "title_fa": "مزمور ۱۵۱",
+      "title_en": "Psalm 151",
+      "title_hr": "Psalam 151",
+      "english": {
+        "status": "reference_ready",
+        "source_file": "sources/en/psalm_151.en.json",
+        "source_translation": "WEBC",
+        "source_name": "World English Bible Classic",
+        "source_url": "https://ebible.org/eng-web/PS201.htm",
+        "source_license": "Public Domain",
+        "versification": "WEBC",
+        "chapter_count": 1,
+        "verse_or_segment_count": 7,
+        "canonical_build_input": "psalm_151.webc.json"
+      },
+      "persian": {
+        "status": "draft_existing",
+        "review_path": null
+      },
+      "croatian": {
+        "status": "coverage_complete_in_review",
+        "review_path": "review/psalm_151",
+        "prior_prepared_chapters": [],
+        "new_review_chapters": [
+          [
+            1,
+            1
+          ]
+        ]
+      }
+    }
+  ]
+}

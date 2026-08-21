@@ -1,0 +1,250 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 69,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "a4a762b67f8c6f1500b5ae9e4bba053794f538b14b21bc70a19bd489f36b438c",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And after this judgement they shall terrify and =make= them =to tremble= because they have shown this to those who dwell on the earth.",
+      "text_fa": null,
+      "text_hr": "Nakon toga suda prestrašivat će ih i =učiniti= da =dršću= jer su to pokazali stanovnicima zemlje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And behold the names of those angels [and these are their names: the first of them is Samjâzâ, the second Artâqîfâ, and the third Armên, the fourth Kôkabêl, the fifth †Tûrâêl†, the sixth Rûmjâl, the seventh Dânjâl, the eighth †Nêqâêl†, the ninth Barâqêl, the tenth Azâzêl, the eleventh Armârôs, the twelfth Batarjâl, the thirteenth †Busasêjal†, the fourteenth Hanânêl, the fifteenth †Tûrêl†, and the sixteenth Sîmâpêsîêl, the seventeenth Jetrêl, the eighteenth Tûmâêl, the nineteenth Tûrêl, the twentieth †Rûmâêl†, the twenty-first †Azâzêl†.",
+      "text_fa": null,
+      "text_hr": "A ovo su imena tih anđela [ovo su njihova imena: prvi je Samjâzâ, drugi Artâqîfâ, treći Armên, četvrti Kôkabêl, peti †Tûrâêl†, šesti Rûmjâl, sedmi Dânjâl, osmi †Nêqâêl†, deveti Barâqêl, deseti Azazel, jedanaesti Armârôs, dvanaesti Batarjâl, trinaesti †Busasêjal†, četrnaesti Hanânêl, petnaesti †Tûrêl†, šesnaesti Sîmâpêsîêl, sedamnaesti Jetrêl, osamnaesti Tûmâêl, devetnaesti Tûrêl, dvadeseti †Rûmâêl†, a dvadeset i prvi Azazel.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And these are the chiefs of their angels and their names, and their chief ones over hundreds and over fifties and over tens.]",
+      "text_fa": null,
+      "text_hr": "To su poglavari njihovih anđela i njihova imena te njihovi poglavari nad stotinama, pedesetinama i desetinama.]",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "The name of the first Jeqôn: that is, the one who led astray [all] the sons of =God=, and brought them down to the earth, and led them astray through the daughters of men.",
+      "text_fa": null,
+      "text_hr": "Prvi se zove Jeqôn. On je zaveo [sve] sinove =Božje=, doveo ih na zemlju i zaveo preko kćeri ljudskih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And the second was named Asbeêl: he imparted to the holy sons of =God= evil counsel, and led them astray so that they defiled their bodies with the daughters of men.",
+      "text_fa": null,
+      "text_hr": "Drugi se zove Asbeêl. On je svetim sinovima =Božjim= dao zao savjet i zaveo ih da svoja tijela oskvrnu s kćerima ljudskim.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And the third was named Gâdreêl: he it is who showed the children of men all the blows of death, and he led astray Eve, and showed [the weapons of death to the sons of men] the shield and the coat of mail, and the sword for battle, and all the weapons of death to the children of men.",
+      "text_fa": null,
+      "text_hr": "Treći se zove Gâdreêl. On je sinovima ljudskim pokazao sve smrtonosne udarce, zaveo Evu i pokazao [sinovima ljudskim oružja smrti:] štit, oklop, mač za boj i sva smrtonosna oružja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And from his hand they have proceeded against those who dwell on the earth from that day and for evermore.",
+      "text_fa": null,
+      "text_hr": "Iz njegove ruke ona izlaze protiv stanovnika zemlje od onoga dana i zauvijek.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And the fourth was named Pênêmûe: he taught the children of men the bitter and the sweet, and he taught them all the secrets of their wisdom.",
+      "text_fa": null,
+      "text_hr": "Četvrti se zove Pênêmûe. On je sinove ljudske poučio gorkomu i slatkomu te im otkrio sve tajne njihove mudrosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And he instructed mankind in writing with ink and paper, and thereby many sinned from eternity to eternity and until this day.",
+      "text_fa": null,
+      "text_hr": "Poučio je čovječanstvo pisanju tintom i papirom, pa su zbog toga mnogi griješili od vječnosti do vječnosti i sve do današnjega dana.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "For men were not created for such a purpose, to give confirmation to their good faith with pen and ink.",
+      "text_fa": null,
+      "text_hr": "Ljudi nisu stvoreni zato da perom i tintom potvrđuju svoju vjernost.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "For men were created exactly like the angels, to the intent that they should continue pure and righteous, and death, which destroys everything, could not have taken hold of them; but through this their knowledge they are perishing, and through this power †it is consuming me†.",
+      "text_fa": null,
+      "text_hr": "Ljudi su stvoreni upravo poput anđela, da zauvijek ostanu čisti i pravedni, pa ih smrt koja sve uništava ne bi mogla zahvatiti. Ali zbog ovoga svojeg znanja propadaju, a zbog te moći †ono proždire mene†.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "And the fifth was named Kâsdejâ: this is he who showed the children of men all the wicked smitings of spirits and demons, and the smitings of the embryo in the womb, that it may pass away, and [the smitings of the soul] the bites of the serpent, and the smitings which befall through the noontide heat, the son of the serpent named Tabâ’ĕt.",
+      "text_fa": null,
+      "text_hr": "Peti se zove Kâsdejâ. On je sinovima ljudskim pokazao sve opake udarce duhova i zloduha, udarce zametku u utrobi da propadne, [udarce duši], ugrize zmije i udarce koji dolaze od podnevne žege, od sina zmije zvanoga Tabâ’ĕt.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "And this is the =task= of Kâsbeêl, the chief of the oath which he showed to the holy ones when he dwelt high above in glory, and its name is Bîqâ.",
+      "text_fa": null,
+      "text_hr": "Ovo je =zadaća= Kâsbeêla, poglavara zakletve koju je pokazao svetima dok je prebivao visoko gore u slavi; ime joj je Bîqâ.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "This (angel) requested Michael to show him the hidden name, that he might enunciate it in the oath, so that those might quake before that name and oath who revealed all that was in secret to the children of men.",
+      "text_fa": null,
+      "text_hr": "Taj je anđeo zamolio Mihaela da mu pokaže skriveno ime kako bi ga izgovorio u zakletvi, da pred tim imenom i zakletvom zadršću oni koji su sinovima ljudskim otkrili sve što je bilo tajno.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "And this is the power of this oath, for it is powerful and strong, and he placed this oath Akâe in the hand of Michael.",
+      "text_fa": null,
+      "text_hr": "To je snaga ove zakletve: ona je moćna i snažna, a on je tu zakletvu Akâe predao u Mihaelovu ruku.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "And these are the secrets of this oath....\n\nAnd they are strong through his oath:\nAnd the heaven was suspended before the world was created,\nAnd for ever.",
+      "text_fa": null,
+      "text_hr": "Ovo su tajne te zakletve....\n\nOne su snažne po njegovoj zakletvi:\nnebo je bilo obješeno prije stvaranja svijeta\ni tako ostaje zauvijek.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "And through it the earth was founded upon the water,\nAnd from the secret recesses of the mountains come beautiful waters,\nFrom the creation of the world and unto eternity.",
+      "text_fa": null,
+      "text_hr": "Po njoj je zemlja utemeljena nad vodom,\na iz skrivenih udubina planina dolaze prekrasne vode\nod stvaranja svijeta do vječnosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "And through that oath the sea was created,\nAnd †as its foundation† He set for it the sand against the time of (its) anger,\nAnd it dare not pass beyond it from the creation of the world unto eternity.",
+      "text_fa": null,
+      "text_hr": "Po toj je zakletvi stvoreno more,\na †za njegov temelj† postavio mu je pijesak kao granicu u vrijeme njegove srdžbe.\nMore se od stvaranja svijeta do vječnosti ne usuđuje prijeći tu granicu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "And through that oath are the depths made fast,\nAnd abide and stir not from their place from eternity to eternity.",
+      "text_fa": null,
+      "text_hr": "Po toj su zakletvi dubine učvršćene,\nostaju na svojem mjestu i ne pomiču se od vječnosti do vječnosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "And through that oath the sun and moon complete their course,\nAnd deviate not from their ordinance from eternity to eternity.",
+      "text_fa": null,
+      "text_hr": "Po toj zakletvi sunce i mjesec dovršavaju svoj tijek\ni od vječnosti do vječnosti ne odstupaju od svoje odredbe.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "And through that oath the stars complete their course,\nAnd He calls them by their names,\nAnd they answer Him from eternity to eternity.",
+      "text_fa": null,
+      "text_hr": "Po toj zakletvi zvijezde dovršavaju svoj tijek.\nOn ih zove po imenu,\na one mu odgovaraju od vječnosti do vječnosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "[And in like manner the spirits of the water, and of the winds, and of all zephyrs, and (their) paths from all the quarters of the winds.",
+      "text_fa": null,
+      "text_hr": "[Na isti način duhovi vode i vjetrova, svi povjetarci i njihove staze iz svih smjerova vjetrova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "And there are preserved the voices of the thunder and the light of the lightnings: and there are preserved the chambers of the hail and the chambers of the hoar-frost, and the chambers of the mist, and the chambers of the rain and the dew.",
+      "text_fa": null,
+      "text_hr": "Ondje se čuvaju glasovi groma i svjetlost munja; ondje se čuvaju odaje tuče, odaje inja, odaje magle te odaje kiše i rose.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "And all these believe and give thanks before the Lord of Spirits, and glorify (Him) with all their power, and their food is in every act of thanksgiving: they thank and glorify and extol the name of the Lord of Spirits for ever and ever.]",
+      "text_fa": null,
+      "text_hr": "Svi oni vjeruju i zahvaljuju pred Gospodarom duhova te ga slave svom svojom snagom. Njihova je hrana u svakome činu zahvaljivanja: zahvaljuju, slave i uzvisuju ime Gospodara duhova u vijeke vjekova.]",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "And this oath is mighty over them,\nAnd through it [they are preserved and] their paths are preserved,\nAnd their course is not destroyed.",
+      "text_fa": null,
+      "text_hr": "Ta je zakletva moćna nad njima.\nPo njoj [su sačuvani i] njihove su staze sačuvane,\na njihov tijek nije uništen.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "And there was great joy amongst them,\nAnd they blessed and glorified and extolled,\nBecause the name of that Son of Man had been revealed unto them.",
+      "text_fa": null,
+      "text_hr": "Među njima je zavladala velika radost.\nBlagoslivljali su, slavili i uzvisivali\njer im je bilo objavljeno ime toga Sina Čovječjega.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "And he sat on the throne of his glory,\nAnd the sum of judgement was given unto the Son of Man,\nAnd he caused the sinners to pass away and be destroyed from off the face of the earth,\nAnd those who have led the world astray.",
+      "text_fa": null,
+      "text_hr": "On sjede na prijestolje svoje slave,\na ukupnost suda bi predana Sinu Čovječjemu.\nDao je da grešnici i oni koji su zaveli svijet\nnestanu i budu uništeni s lica zemlje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "With chains shall they be bound,\nAnd in their assemblage-place of destruction shall they be imprisoned,\nAnd all their works vanish from the face of the earth.",
+      "text_fa": null,
+      "text_hr": "Bit će svezani lancima\ni zatočeni na svojem zbornome mjestu uništenja,\na sva će njihova djela nestati s lica zemlje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "And from henceforth there shall be nothing corruptible,\nFor that Son of Man has appeared,\nAnd has seated himself on the throne of his glory,\nAnd all evil shall pass away before his face,\nAnd the word of that Son of Man shall go forth\nAnd be strong before the Lord of Spirits.\n\nThis is the third Parable of Enoch.",
+      "text_fa": null,
+      "text_hr": "Od tada više neće biti ničega propadljivog,\njer se pojavio taj Sin Čovječji\ni sjeo na prijestolje svoje slave.\nSve će zlo proći pred njegovim licem,\na riječ toga Sina Čovječjega izići će\ni biti snažna pred Gospodarom duhova.\n\nOvo je Treća Henokova prispodoba.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

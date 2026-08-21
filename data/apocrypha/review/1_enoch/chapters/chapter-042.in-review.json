@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 42,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "dcecb2d661fd1ef546004e81bbceeb0e30219e5cbdce3d7c6bad9275802ea211",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Wisdom found no place where she might dwell;\nThen a dwelling-place was assigned her in the heavens.",
+      "text_fa": null,
+      "text_hr": "Mudrost nije našla mjesta gdje bi prebivala;\nstoga joj je određeno prebivalište na nebesima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "Wisdom went forth to make her dwelling among the children of men,\nAnd found no dwelling-place:\nWisdom returned to her place\nAnd took her seat among the angels.",
+      "text_fa": null,
+      "text_hr": "Mudrost je izišla da se nastani među sinovima ljudskim,\nali nije našla prebivališta.\nVratila se na svoje mjesto\ni sjela među anđele.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And unrighteousness went forth from her chambers:\nWhom she sought not she found,\nAnd dwelt with them,\nAs rain in a desert,\nAnd dew on a thirsty land.",
+      "text_fa": null,
+      "text_hr": "A nepravda je izišla iz svojih odaja.\nNašla je one koje nije tražila\ni nastanila se među njima,\npoput kiše u pustinji\ni rose na žednoj zemlji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

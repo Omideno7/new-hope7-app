@@ -1,0 +1,1032 @@
+{
+  "id": "prayer-30",
+  "version": 1,
+  "durationDays": 30,
+  "category": "prayer",
+  "icon": "🙏",
+  "theme": "prayer",
+  "localized": {
+    "fa": {
+      "title": "۳۰ روز دعا در روح و به زبان‌ها",
+      "subtitle": "از حضور پدر تا یک زندگی پیوسته و روح‌هدایت‌شده در دعا",
+      "description": "یک مسیر عملی و مبتنی بر کلام برای رشد در دعای شخصی به زبان‌ها، همراه با پرستش، شفاعت، شنیدن و دعای قابل‌فهم.",
+      "goal": "ساختن عادت روزانهٔ دعای در روح که عیسی را جلال دهد، ایمان را بنا کند و با محبت و کلام خدا هماهنگ بماند.",
+      "pastoralNote": "این پلن برای ایماندارانی است که عطای زبان‌ها را تجربه کرده‌اند یا با آرامش آن را از خدا می‌طلبند. هیچ واژه‌ای را با فشار تولید نکن و خودت را با دیگری مقایسه نکن. ارزش و نجات تو به این عطا وابسته نیست. دعای شخصی به زبان‌ها جای کلام، محبت و دعای قابل‌فهم را نمی‌گیرد؛ و کاربرد عمومی آن باید مطابق نظم و تفسیرِ اول قرنتیان ۱۴ باشد."
+    },
+    "en": {
+      "title": "30 Days of Prayer in the Spirit and Tongues",
+      "subtitle": "From the Father’s presence to a continual, Spirit-led life of prayer",
+      "description": "A practical, Scripture-rooted journey in personal prayer in tongues, joined with worship, intercession, listening, and prayer with understanding.",
+      "goal": "Build a daily habit of prayer in the Spirit that glorifies Jesus, strengthens faith, and remains governed by love and God’s Word.",
+      "pastoralNote": "This plan is for believers who practice the gift of tongues or are peacefully asking God for it. Do not force sounds or compare yourself with anyone. Your salvation and worth do not depend on this gift. Private prayer in tongues does not replace Scripture, love, or prayer with understanding; public use should follow the order and interpretation taught in 1 Corinthians 14."
+    },
+    "hr": {
+      "title": "30 dana molitve u Duhu i jezicima",
+      "subtitle": "Od Očeve prisutnosti do trajnog života molitve vođene Duhom",
+      "description": "Praktično putovanje ukorijenjeno u Pismu kroz osobnu molitvu u jezicima, uz štovanje, zagovor, slušanje i molitvu s razumijevanjem.",
+      "goal": "Izgraditi svakodnevnu naviku molitve u Duhu koja proslavlja Isusa, izgrađuje vjeru te ostaje vođena ljubavlju i Božjom Riječju.",
+      "pastoralNote": "Ovaj je plan za vjernike koji prakticiraju dar jezika ili ga mirno traže od Boga. Nemoj prisiljavati glasove niti se uspoređivati s drugima. Tvoje spasenje i vrijednost ne ovise o ovom daru. Osobna molitva u jezicima ne zamjenjuje Pismo, ljubav ni molitvu s razumijevanjem; javna uporaba treba slijediti red i tumačenje iz 1. Korinćanima 14."
+    }
+  },
+  "foundationalScriptures": ["1 Corinthians 14:2", "1 Corinthians 14:4", "1 Corinthians 14:14-15", "Jude 1:20", "Romans 8:26-27", "Acts 2:4"],
+  "spiritPractices": {
+    "fa": [
+      "پنج دقیقه در حضور پدر آرام بمان. نخست با فهم خود او را «پدر» بخوان، سپس بدون عجله اجازه بده دعایت به زبان‌ها ادامه یابد و تمام توجهت را بر محبت او نگه دار.",
+      "از روح‌القدس بخواه امروز استاد دعایت باشد. پنج دقیقه به زبان‌ها دعا کن و در پایان با کلمات قابل‌فهم آنچه دربارهٔ عیسی در دلت برجسته شده بیان کن.",
+      "سه دقیقه با زبان قابل‌فهم عیسی را پرستش کن، سپس هفت دقیقه به زبان‌ها ادامه بده. هر بار ذهنت منحرف شد، با نام عیسی توجهت را بازگردان.",
+      "یک شخص یا مکان را که به پادشاهی خدا نیاز دارد در ذهن بگیر. خواسته‌ات را روشن بیان کن و هفت دقیقه به زبان‌ها برای همان موضوع شفاعت کن.",
+      "اراده و برنامهٔ امروزت را به خدا تسلیم کن. چهار دقیقه با فهم و چهار دقیقه به زبان‌ها دعا کن؛ بعد یک قدم اطاعتی را که باید برداری یادداشت کن.",
+      "نیازهای امروزت را کوتاه و صادقانه به پدر بگو. سپس هشت دقیقه به زبان‌ها دعا کن و هر دقیقه با یک جملهٔ شکرگزاری به زبان قابل‌فهم مکث کن.",
+      "اگر روح‌القدس گناه یا نگرش نادرستی را یادآوری می‌کند، آن را اعتراف و بخشش مسیح را دریافت کن. سپس هشت دقیقه با وجدانی پاک به زبان‌ها دعا کن.",
+      "نام کسی را که باید ببخشی نزد خدا بیاور و آگاهانه او را برکت بده. بعد هشت دقیقه به زبان‌ها دعا کن و اجازه بده محبت خدا واکنشت را نرم کند.",
+      "افسسیان ۶:۱۰–۱۸ را آهسته بخوان. پس از پوشیدن هر بخش از اسلحهٔ خدا در دعا، نه دقیقه به زبان‌ها با آرامش و اقتدار مسیح بایست.",
+      "دعایت را با اعتراف به خداوندی عیسی آغاز کن. ده دقیقه به زبان‌ها دعا کن و هر چند دقیقه یک‌بار بگو: «عیسی، ارادهٔ تو و جلال تو را می‌طلبم.»",
+      "از روح‌القدس بخواه ضعف تو را یاری کند. ده دقیقه به زبان‌ها دعا کن؛ لازم نیست همه‌چیز را بفهمی، اما قلبت را در ایمان و تسلیم فعال نگه دار.",
+      "اول قرنتیان ۱۴:۱۴–۱۵ را بخوان. پنج دقیقه به زبان‌ها و پنج دقیقه با فهم دعا کن تا هر دو شیوه در زندگی دعایت جای سالم و کتاب‌مقدسی داشته باشند.",
+      "یک وعدهٔ مشخص از کلام را با صدای بلند بخوان. یازده دقیقه به زبان‌ها دعا کن و ایمان خود را بر شخصیت خدا بنا کن، نه بر شدت احساساتت.",
+      "پیش از هر درخواست سه دلیل برای شکرگزاری بگو. یازده دقیقه به زبان‌ها دعا کن و هرگاه دلت آرام شد، شکر تازه‌ای را با فهم بیان کن.",
+      "نام یک فرد نیازمند را بنویس. دوازده دقیقه به زبان‌ها در شکاف بایست؛ سپس با فهم برای نیازهای شناخته‌شدهٔ او دعای کوتاهی بکن.",
+      "اعضای خانواده را یکی‌یکی نام ببر. دوازده دقیقه به زبان‌ها برای نجات، شفا، اتحاد و هدایت آنان شفاعت کن و در پایان یک اقدام محبت‌آمیز انتخاب کن.",
+      "کلیسا، شبانان و خادمان را به حضور خدا بیاور. دوازده دقیقه به زبان‌ها دعا کن و سپس برای پاکی، حکمت و ثمردهی آنان به زبان قابل‌فهم دعا کن.",
+      "یک رهبر و یک ملت را مشخص کن. سیزده دقیقه به زبان‌ها شفاعت کن، بدون قضاوت یا شعار؛ بعد با فهم برای عدالت، صلح و آزادی انجیل دعا کن.",
+      "برای شخصی که نیاز به شفا دارد با شفقت دعا کن. سیزده دقیقه به زبان‌ها ادامه بده و نتیجه را بدون فشار یا وعدهٔ انسانی به محبت و حکمت خدا بسپار.",
+      "یک تصمیم واقعی را پیش خدا بگذار. سیزده دقیقه به زبان‌ها دعا کن، دو دقیقه سکوت کن و سپس هر جهت احتمالی را با کلام و حکمت ایمانداران بالغ بسنج.",
+      "با تمرکز بر پیروزی صلیب چهارده دقیقه به زبان‌ها دعا کن. صدایت را برای ایجاد هیجان بالا نبر؛ در آرامش، حقیقت اقتدار و حفاظت مسیح را اعلام کن.",
+      "برای چهارده دقیقه نگهبان دعا باش: به زبان‌ها دعا کن و هر نام یا موضوعی که با آرامش به ذهنت می‌آید یادداشت کن تا بعداً با فهم برای آن دعا کنی.",
+      "موضوعی را که پاسخ آن دیر شده انتخاب کن. پانزده دقیقه به زبان‌ها با پایداری دعا کن و در پایان اعلام کن که اعتماد تو به شخصیت خدا وابسته است، نه زمان پاسخ.",
+      "دو دقیقه در سکوت بنشین، پانزده دقیقه به زبان‌ها دعا کن و دوباره دو دقیقه ساکت بمان. هر فکر را وحی تلقی نکن؛ آنچه دریافت می‌کنی با کلام بیازما.",
+      "یک مزمور را با فهم دعا کن و جمله‌ای از آن را نگه دار. پانزده دقیقه به زبان‌ها ادامه بده و هرگاه تمرکزت کم شد به همان جملهٔ کلام بازگرد.",
+      "نخست احساس واقعی‌ات را بی‌پرده به خدا بگو. سپس شانزده دقیقه به زبان‌ها دعا کن و اجازه بده حضور او اضطراب، خشم یا اندوه را به تسلیم تبدیل کند.",
+      "اگر ممکن است با یک ایماندار بالغ و مورداعتماد زمانی برای دعا بگذار؛ در غیر این صورت تنها دعا کن. شانزده دقیقه با نظم، محبت و توجه به عیسی در روح دعا کنید.",
+      "در زمان روزهٔ انتخابی‌ات، هفده دقیقه به زبان‌ها دعا کن. گرسنگی یا میل به رسانه را علامتی برای بازگشت به حضور خدا و شفاعت قرار بده.",
+      "برای درخواستی بی‌پاسخ هجده دقیقه به زبان‌ها دعا کن، اما خدا را معامله نکن. در پایان سه حقیقت تغییرناپذیر دربارهٔ محبت و وفاداری او بنویس.",
+      "بیست دقیقه به زبان‌ها دعا کن و آن را با پرستش، سکوت و دعای قابل‌فهم متعادل ساز. سپس زمان و ریتم واقع‌بینانه‌ای برای ادامهٔ این عادت در هفته‌های آینده بنویس."
+    ],
+    "en": [
+      "Rest in the Father’s presence for five minutes. First address Him as Father with your understanding, then gently continue in tongues while keeping your attention on His love.",
+      "Ask the Holy Spirit to be your teacher in prayer today. Pray in tongues for five minutes, then express in understandable words whatever became clearer to you about Jesus.",
+      "Worship Jesus with understanding for three minutes, then continue in tongues for seven. Whenever your mind wanders, return your attention through the name of Jesus.",
+      "Hold before God one person or place that needs His kingdom. State the request clearly, then intercede in tongues for that same subject for seven minutes.",
+      "Surrender today’s plans and preferences to God. Pray four minutes with understanding and four in tongues; afterward, write down one obedient step you need to take.",
+      "Briefly and honestly tell the Father today’s needs. Pray in tongues for eight minutes, pausing each minute to offer one sentence of thanksgiving with understanding.",
+      "If the Holy Spirit brings a sin or wrong attitude to mind, confess it and receive Christ’s cleansing. Then pray in tongues for eight minutes with a clear conscience.",
+      "Bring before God the name of someone you need to forgive and deliberately bless them. Pray in tongues for eight minutes, letting God’s love soften your response.",
+      "Read Ephesians 6:10–18 slowly. After putting on each part of God’s armor in prayer, stand for nine minutes in tongues with Christ’s peace and authority.",
+      "Begin by confessing the lordship of Jesus. Pray in tongues for ten minutes, pausing to say, “Jesus, I seek Your will and Your glory.”",
+      "Ask the Holy Spirit to help your weakness. Pray in tongues for ten minutes; you do not need to understand everything, but keep your heart active in faith and surrender.",
+      "Read 1 Corinthians 14:14–15. Pray five minutes in tongues and five with understanding so both expressions retain a healthy, biblical place in your prayer life.",
+      "Read one specific promise of Scripture aloud. Pray in tongues for eleven minutes, rooting faith in God’s character rather than in the intensity of your feelings.",
+      "Name three reasons for gratitude before making a request. Pray in tongues for eleven minutes, and whenever peace rises, voice a fresh thanksgiving with understanding.",
+      "Write the name of one person in need. Stand in the gap in tongues for twelve minutes, then pray briefly with understanding for the needs you know.",
+      "Name your family members one by one. Intercede in tongues for twelve minutes for salvation, healing, unity, and guidance, then choose one practical act of love.",
+      "Bring your church, pastors, and servants before God. Pray in tongues for twelve minutes, then pray with understanding for their purity, wisdom, and fruitfulness.",
+      "Choose one leader and one nation. Intercede in tongues for thirteen minutes without judgment or slogans, then pray with understanding for justice, peace, and gospel freedom.",
+      "Pray compassionately for someone who needs healing. Continue in tongues for thirteen minutes, entrusting the outcome to God’s love and wisdom without pressure or human promises.",
+      "Place a real decision before God. Pray in tongues for thirteen minutes, sit quietly for two, then test any possible direction by Scripture and the wisdom of mature believers.",
+      "Pray in tongues for fourteen minutes while focusing on the cross’s victory. Do not raise your voice to manufacture intensity; calmly affirm Christ’s authority and protection.",
+      "Serve as a prayer watchman for fourteen minutes: pray in tongues and note any names or concerns that peacefully come to mind so you can pray for them with understanding later.",
+      "Choose a request whose answer has been delayed. Persevere in tongues for fifteen minutes, then declare that your trust rests in God’s character, not in the timing of an answer.",
+      "Sit silently for two minutes, pray in tongues for fifteen, then become quiet for two more. Do not treat every thought as revelation; test what you receive by Scripture.",
+      "Pray one psalm with understanding and hold onto one sentence from it. Continue in tongues for fifteen minutes, returning to that sentence whenever focus weakens.",
+      "First tell God honestly what you feel. Then pray in tongues for sixteen minutes, allowing His presence to turn anxiety, anger, or grief toward surrender.",
+      "If possible, arrange prayer with a trusted mature believer; otherwise pray alone. Pray in the Spirit for sixteen minutes with order, love, and attention centered on Jesus.",
+      "During your chosen fast, pray in tongues for seventeen minutes. Let hunger or the urge for media become a signal to return to God’s presence and intercession.",
+      "Pray in tongues for eighteen minutes over an unanswered request without bargaining with God. Finish by writing three unchanging truths about His love and faithfulness.",
+      "Pray in tongues for twenty minutes, balanced with worship, silence, and prayer with understanding. Then write a realistic time and rhythm for continuing this habit in the coming weeks."
+    ],
+    "hr": [
+      "Pet minuta miruj u Očevoj prisutnosti. Najprije mu se obrati kao Ocu s razumijevanjem, zatim nježno nastavi u jezicima držeći pozornost na njegovoj ljubavi.",
+      "Zamoli Duha Svetoga da danas bude tvoj učitelj molitve. Moli pet minuta u jezicima, a zatim razumljivim riječima izrazi što ti je o Isusu postalo jasnije.",
+      "Tri minute štuj Isusa s razumijevanjem, zatim sedam minuta nastavi u jezicima. Kad misli odlutaju, vrati pozornost po Isusovu imenu.",
+      "Pred Bogom drži jednu osobu ili mjesto kojem treba njegovo kraljevstvo. Jasno izreci molbu, zatim sedam minuta zagovaraj u jezicima za isti predmet.",
+      "Predaj Bogu današnje planove i želje. Moli četiri minute s razumijevanjem i četiri u jezicima; zatim zapiši jedan korak poslušnosti.",
+      "Kratko i iskreno reci Ocu današnje potrebe. Moli osam minuta u jezicima, svake minute zastajući kako bi s razumijevanjem izrekao jednu zahvalu.",
+      "Ako Duh Sveti podsjeti na grijeh ili pogrešan stav, priznaj ga i primi Kristovo očišćenje. Zatim osam minuta moli u jezicima čiste savjesti.",
+      "Donesi Bogu ime osobe kojoj trebaš oprostiti i svjesno je blagoslovi. Osam minuta moli u jezicima dopuštajući Božjoj ljubavi da omekša tvoju reakciju.",
+      "Polako pročitaj Efežanima 6:10–18. Nakon što u molitvi odjeneš svaki dio Božje opreme, devet minuta stoj u jezicima u Kristovu miru i autoritetu.",
+      "Započni priznanjem da je Isus Gospodin. Deset minuta moli u jezicima i povremeno reci: „Isuse, tražim tvoju volju i tvoju slavu.“",
+      "Zamoli Duha Svetoga da pomogne tvojoj slabosti. Deset minuta moli u jezicima; ne moraš sve razumjeti, ali srce drži aktivnim u vjeri i predanju.",
+      "Pročitaj 1. Korinćanima 14:14–15. Pet minuta moli u jezicima i pet s razumijevanjem kako bi oba izraza imala zdravo, biblijsko mjesto.",
+      "Naglas pročitaj jedno određeno obećanje Pisma. Jedanaest minuta moli u jezicima ukorjenjujući vjeru u Božjem karakteru, a ne u jačini osjećaja.",
+      "Prije molbe navedi tri razloga za zahvalnost. Jedanaest minuta moli u jezicima, a kad osjetiš mir, s razumijevanjem izreci novu zahvalu.",
+      "Zapiši ime jedne osobe u potrebi. Dvanaest minuta stoj u procjepu u jezicima, a zatim s razumijevanjem kratko moli za potrebe koje poznaješ.",
+      "Imenuj članove obitelji jednoga po jednog. Dvanaest minuta zagovaraj u jezicima za spasenje, iscjeljenje, jedinstvo i vodstvo, zatim odaberi jedno djelo ljubavi.",
+      "Donesi Bogu svoju crkvu, pastore i služitelje. Dvanaest minuta moli u jezicima, zatim s razumijevanjem za njihovu čistoću, mudrost i plodnost.",
+      "Odaberi jednog vođu i jedan narod. Trinaest minuta zagovaraj u jezicima bez osude i slogana, zatim s razumijevanjem za pravdu, mir i slobodu evanđelja.",
+      "Sa suosjećanjem moli za osobu kojoj treba iscjeljenje. Nastavi trinaest minuta u jezicima, bez pritiska i ljudskih obećanja predajući ishod Božjoj ljubavi i mudrosti.",
+      "Stavi stvarnu odluku pred Boga. Trinaest minuta moli u jezicima, dvije minute budi tih, zatim svaki mogući smjer provjeri Pismom i mudrošću zrelih vjernika.",
+      "Četrnaest minuta moli u jezicima usredotočen na pobjedu križa. Ne podiži glas radi stvaranja napetosti; mirno potvrdi Kristov autoritet i zaštitu.",
+      "Četrnaest minuta budi molitveni stražar: moli u jezicima i zapiši imena ili brige koje ti mirno dolaze na um kako bi poslije molio s razumijevanjem.",
+      "Odaberi molbu čiji odgovor kasni. Ustraj petnaest minuta u jezicima, zatim izjavi da tvoje pouzdanje počiva u Božjem karakteru, ne u vremenu odgovora.",
+      "Dvije minute sjedi u tišini, petnaest minuta moli u jezicima, pa opet dvije minute šuti. Ne smatraj svaku misao objavom; sve provjeri Pismom.",
+      "S razumijevanjem moli jedan psalam i zadrži jednu njegovu rečenicu. Petnaest minuta nastavi u jezicima, vraćajući se toj rečenici kad oslabi pozornost.",
+      "Najprije iskreno reci Bogu što osjećaš. Zatim šesnaest minuta moli u jezicima dopuštajući njegovoj prisutnosti da tjeskobu, ljutnju ili tugu vodi prema predanju.",
+      "Ako možeš, moli s pouzdanim zrelim vjernikom; inače moli sam. Šesnaest minuta molite u Duhu, uredno, u ljubavi i s pozornošću na Isusu.",
+      "Tijekom izabranog posta sedamnaest minuta moli u jezicima. Neka glad ili želja za medijima postane znak za povratak Božjoj prisutnosti i zagovoru.",
+      "Osamnaest minuta moli u jezicima za neodgovorenu molbu bez trgovanja s Bogom. Završi zapisivanjem triju nepromjenjivih istina o njegovoj ljubavi i vjernosti.",
+      "Dvadeset minuta moli u jezicima, uravnoteženo sa štovanjem, tišinom i molitvom s razumijevanjem. Zatim zapiši realno vrijeme i ritam za nastavak ove navike."
+    ]
+  },
+  "days": [
+    {
+      "day": 1,
+      "scriptures": ["Matthew 6:6", "Hebrews 4:16"],
+      "content": {
+        "fa": {
+          "title": "ورود به حضور پدر",
+          "devotional": "دعا پیش از آنکه فهرستی از نیازها باشد، ملاقات فرزند با پدر است. عیسی ما را به اتاق خلوت دعوت می‌کند؛ جایی که نمایش برای مردم پایان می‌یابد و دل در برابر خدا صادق می‌شود. به‌سبب کار کامل مسیح، با ترس وارد نمی‌شویم، بلکه با اطمینان به تخت فیض نزدیک می‌شویم. امروز هدفت گرفتن چیزی از خدا نیست؛ نخست خودِ او را بجوی.",
+          "reflection": "وقتی تنها با خدا هستم، چه چیزی مانع صداقت و آرامش من می‌شود؟",
+          "action": "ده دقیقه در سکوت بنشین، خدا را «پدر» خطاب کن و بدون عجله قلبت را با او در میان بگذار.",
+          "prayer": "ای پدر، به‌واسطهٔ عیسی نزد تو می‌آیم. ترس و نمایش را از من دور کن و مرا در حضور خود آرام ساز.",
+          "declaration": "من در مسیح پذیرفته شده‌ام و با اطمینان به حضور پدر نزدیک می‌شوم."
+        },
+        "en": {
+          "title": "Entering the Father’s Presence",
+          "devotional": "Prayer is first a child meeting the Father, not a list of demands. Jesus invites us into the secret place where performance ends and the heart becomes honest before God. Because of Christ’s finished work, we do not approach in fear; we come confidently to the throne of grace. Today, do not begin by trying to obtain something. Begin by seeking God Himself.",
+          "reflection": "What keeps me from being honest and at rest when I am alone with God?",
+          "action": "Sit quietly for ten minutes, address God as Father, and share your heart without rushing.",
+          "prayer": "Father, I come through Jesus. Remove fear and performance, and teach my heart to rest in Your presence.",
+          "declaration": "I am accepted in Christ and I approach my Father with confidence."
+        },
+        "hr": {
+          "title": "Ulazak u Očevu prisutnost",
+          "devotional": "Molitva je najprije susret djeteta s Ocem, a ne popis zahtjeva. Isus nas poziva u skrovito mjesto gdje prestaje predstava pred ljudima i srce postaje iskreno pred Bogom. Zbog dovršenog Kristova djela ne pristupamo u strahu, nego smjelo dolazimo prijestolju milosti. Danas nemoj prvo pokušavati nešto dobiti; najprije traži samoga Boga.",
+          "reflection": "Što me sprječava da budem iskren i miran kada sam nasamo s Bogom?",
+          "action": "Sjedi deset minuta u tišini, obrati se Bogu kao Ocu i bez žurbe mu otvori srce.",
+          "prayer": "Oče, dolazim po Isusu. Ukloni strah i glumu te nauči moje srce počivati u tvojoj prisutnosti.",
+          "declaration": "Prihvaćen sam u Kristu i smjelo pristupam svojem Ocu."
+        }
+      }
+    },
+    {
+      "day": 2,
+      "scriptures": ["Luke 11:1-4", "Matthew 6:9-13"],
+      "content": {
+        "fa": {
+          "title": "عیسی، استاد دعا",
+          "devotional": "شاگردان از عیسی نخواستند چگونه موعظه یا معجزه کنند؛ گفتند: «به ما دعا کردن بیاموز.» دعای ربانی یک فرمول بی‌روح نیست، بلکه نقشه‌ای برای رابطه است: شناخت پدر، تقدیس نام او، طلب پادشاهی، اعتماد برای نیازها، بخشش و حفاظت. هر بخش جهت قلب را اصلاح می‌کند تا دعا فقط حول «من» نچرخد، بلکه با خواست خدا همسو شود.",
+          "reflection": "کدام بخش از الگوی عیسی معمولاً در دعاهای من غایب است؟",
+          "action": "دعای ربانی را آهسته بخوان و بعد از هر جمله، با کلمات خودت یک دقیقه دعا کن.",
+          "prayer": "عیسی خداوند، امروز مرا شاگرد دعا بساز و دعاهایم را با قلب پدر هماهنگ کن.",
+          "declaration": "من از عیسی دعا کردن می‌آموزم و دعایم بر اساس الگوی او شکل می‌گیرد."
+        },
+        "en": {
+          "title": "Jesus, the Teacher of Prayer",
+          "devotional": "The disciples did not ask Jesus how to preach or perform miracles; they said, “Teach us to pray.” The Lord’s Prayer is not a lifeless formula but a map of relationship: knowing the Father, honoring His name, seeking His kingdom, trusting Him for provision, receiving and extending forgiveness, and asking for protection. Each movement turns prayer away from self-centeredness and aligns the heart with God.",
+          "reflection": "Which part of Jesus’ pattern is usually missing from my prayers?",
+          "action": "Read the Lord’s Prayer slowly. Pause after every phrase and pray it in your own words for one minute.",
+          "prayer": "Lord Jesus, make me Your student in prayer and align my prayers with the Father’s heart.",
+          "declaration": "I learn to pray from Jesus, and His pattern shapes my prayer life."
+        },
+        "hr": {
+          "title": "Isus, učitelj molitve",
+          "devotional": "Učenici nisu pitali Isusa kako propovijedati ili činiti čudesa; rekli su: „Nauči nas moliti.“ Očenaš nije beživotna formula, nego karta odnosa: upoznati Oca, častiti njegovo ime, tražiti njegovo kraljevstvo, pouzdati se za opskrbu, primiti i pružiti oprost te moliti zaštitu. Svaki dio odvraća molitvu od sebičnosti i usklađuje srce s Bogom.",
+          "reflection": "Koji dio Isusova obrasca najčešće nedostaje u mojim molitvama?",
+          "action": "Polako pročitaj Očenaš. Nakon svake rečenice zastani i jednu minutu moli vlastitim riječima.",
+          "prayer": "Gospodine Isuse, učini me svojim učenikom u molitvi i uskladi moje molitve s Očevim srcem.",
+          "declaration": "Učim moliti od Isusa i njegov obrazac oblikuje moj molitveni život."
+        }
+      }
+    },
+    {
+      "day": 3,
+      "scriptures": ["Matthew 6:9", "Psalm 100:4"],
+      "content": {
+        "fa": {
+          "title": "با پرستش آغاز کن",
+          "devotional": "وقتی می‌گوییم «نام تو مقدس باد»، ذهن از بزرگی مشکل به بزرگی خدا منتقل می‌شود. پرستش انکار واقعیت نیست؛ قرار دادن واقعیت زیر حاکمیت کسی است که از آن بزرگ‌تر است. شکرگزاری دروازهٔ توجه را می‌گشاید و یادآوری صفات خدا—وفاداری، محبت، عدالت و قدرت—ایمان را برای ادامهٔ دعا بیدار می‌کند.",
+          "reflection": "امروز لازم است کدام صفت خدا را بیش از مشکل خود ببینم؟",
+          "action": "پنج صفت خدا را بنویس و برای هر کدام یک دلیل شخصی برای شکرگزاری بگو.",
+          "prayer": "خدای قدوس، نام تو برتر از هر نام است. چشمانم را از ترس بردار و بر جلال خودت ثابت کن.",
+          "declaration": "خدای من بزرگ، نیکو و وفادار است؛ من با شکرگزاری وارد حضور او می‌شوم."
+        },
+        "en": {
+          "title": "Begin with Worship",
+          "devotional": "When we pray, “Hallowed be Your name,” attention moves from the size of the problem to the greatness of God. Worship does not deny reality; it places reality beneath the rule of the One who is greater. Thanksgiving opens the gate of attention, and remembering God’s faithfulness, love, justice, and power awakens faith for the rest of prayer.",
+          "reflection": "Which attribute of God do I need to see more clearly than my problem today?",
+          "action": "Write five attributes of God and give one personal reason to thank Him for each.",
+          "prayer": "Holy God, Your name is above every name. Lift my eyes from fear and fix them on Your glory.",
+          "declaration": "My God is great, good, and faithful; I enter His presence with thanksgiving."
+        },
+        "hr": {
+          "title": "Započni štovanjem",
+          "devotional": "Kada molimo: „Sveti se ime tvoje“, pogled prelazi s veličine problema na veličinu Boga. Štovanje ne poriče stvarnost; ono stvarnost stavlja pod vlast Onoga koji je veći. Zahvaljivanje otvara vrata pažnje, a sjećanje na Božju vjernost, ljubav, pravednost i snagu budi vjeru za nastavak molitve.",
+          "reflection": "Koju Božju osobinu danas trebam vidjeti jasnije od svojega problema?",
+          "action": "Napiši pet Božjih osobina i za svaku navedi osobni razlog zahvalnosti.",
+          "prayer": "Sveti Bože, tvoje je ime iznad svakog imena. Podigni moj pogled sa straha i usmjeri ga na svoju slavu.",
+          "declaration": "Moj Bog je velik, dobar i vjeran; u njegovu prisutnost ulazim sa zahvalnošću."
+        }
+      }
+    },
+    {
+      "day": 4,
+      "scriptures": ["Matthew 6:10", "Romans 14:17"],
+      "content": {
+        "fa": {
+          "title": "پادشاهی تو بیاید",
+          "devotional": "طلب پادشاهی یعنی دعوت از فرمانروایی خدا به افکار، تصمیم‌ها، روابط و محیط ما. پادشاهی خدا فقط رویدادی در آینده نیست؛ عدالت، سلامتی و شادی روح‌القدس باید امروز از زندگی ما نمایان شود. دعای پادشاهی ما را از تماشاگر به همکار خدا تبدیل می‌کند: می‌پرسیم «پدر، می‌خواهی در این موقعیت چه چیزی را از طریق من آشکار کنی؟»",
+          "reflection": "کدام بخش زندگی من هنوز در برابر فرمانروایی خدا مقاومت می‌کند؟",
+          "action": "یک موقعیت آشفته را نام ببر و مشخصاً برای عدالت، سلامتی و شادی خدا در آن دعا کن.",
+          "prayer": "پدر، پادشاهی تو در من و از طریق من بیاید. اراده‌ات را در این موقعیت آشکار کن.",
+          "declaration": "من حامل عدالت، سلامتی و شادی پادشاهی خدا هستم."
+        },
+        "en": {
+          "title": "Let Your Kingdom Come",
+          "devotional": "Seeking the kingdom invites God’s rule into our thoughts, choices, relationships, and surroundings. His kingdom is not only a future event; the Spirit’s righteousness, peace, and joy are to become visible through us today. Kingdom prayer moves us from spectators to God’s coworkers. We ask, “Father, what do You want to reveal through me in this situation?”",
+          "reflection": "Which area of my life still resists God’s loving rule?",
+          "action": "Name one troubled situation and pray specifically for God’s righteousness, peace, and joy to enter it.",
+          "prayer": "Father, let Your kingdom come in me and through me. Reveal Your will in this situation.",
+          "declaration": "I carry the righteousness, peace, and joy of God’s kingdom."
+        },
+        "hr": {
+          "title": "Dođi kraljevstvo tvoje",
+          "devotional": "Tražiti kraljevstvo znači pozvati Božju vlast u misli, odluke, odnose i okolinu. Njegovo kraljevstvo nije samo budući događaj; pravednost, mir i radost Duha trebaju danas postati vidljivi kroz nas. Molitva za kraljevstvo pretvara nas iz promatrača u Božje suradnike. Pitamo: „Oče, što želiš pokazati kroz mene u ovoj situaciji?“",
+          "reflection": "Koje područje mojega života još odolijeva Božjoj dobroj vlasti?",
+          "action": "Imenuj jednu nemirnu situaciju i posebno moli da u nju dođu Božja pravednost, mir i radost.",
+          "prayer": "Oče, neka tvoje kraljevstvo dođe u meni i kroz mene. Objavi svoju volju u ovoj situaciji.",
+          "declaration": "Nosim pravednost, mir i radost Božjega kraljevstva."
+        }
+      }
+    },
+    {
+      "day": 5,
+      "scriptures": ["Matthew 6:10", "1 John 5:14", "Romans 12:2"],
+      "content": {
+        "fa": {
+          "title": "ارادهٔ تو انجام شود",
+          "devotional": "دعا تلاش برای مجبور کردن خدا به پذیرفتن نقشهٔ ما نیست؛ جایی است که خواسته‌های ما در نور حکمت او تصفیه می‌شود. تسلیم به ارادهٔ خدا انفعال نیست، بلکه اعتماد فعال به نیکویی پدر است. کلام ذهن را تازه می‌کند تا تشخیص دهیم چه چیزی نیکو، پسندیده و کامل است و بعد با اطمینان همان را بطلبیم.",
+          "reflection": "آیا خواسته‌ای هست که نتیجهٔ آن را بیش از حضور و حکمت خدا می‌خواهم؟",
+          "action": "آن خواسته را بنویس و زیرش اضافه کن: «پدر، آن را به روش و زمان تو می‌سپارم.»",
+          "prayer": "پدر حکیم، خواسته‌هایم را پاک کن و مرا با ارادهٔ نیکوی خود همسو ساز.",
+          "declaration": "من به حکمت پدر اعتماد می‌کنم و ارادهٔ او برای من نیکوست."
+        },
+        "en": {
+          "title": "Let Your Will Be Done",
+          "devotional": "Prayer is not an attempt to force God into our plan; it is where our desires are refined in the light of His wisdom. Surrender is not passivity but active trust in the Father’s goodness. Scripture renews the mind so we can recognize what is good, pleasing, and complete, then ask for it with confidence.",
+          "reflection": "Is there an outcome I desire more than God’s presence and wisdom?",
+          "action": "Write that request and add beneath it: “Father, I entrust this to Your way and Your timing.”",
+          "prayer": "Wise Father, purify my desires and align me with Your good will.",
+          "declaration": "I trust the Father’s wisdom, and His will toward me is good."
+        },
+        "hr": {
+          "title": "Budi volja tvoja",
+          "devotional": "Molitva nije pokušaj da Boga prisilimo na svoj plan; u njoj se naše želje pročišćavaju svjetlom njegove mudrosti. Predanje nije pasivnost, nego aktivno pouzdanje u Očevu dobrotu. Pismo obnavlja um da prepoznamo što je dobro, ugodno i savršeno te to s pouzdanjem tražimo.",
+          "reflection": "Postoji li ishod koji želim više od Božje prisutnosti i mudrosti?",
+          "action": "Napiši tu molbu i ispod dodaj: „Oče, povjeravam je tvojem načinu i tvojem vremenu.“",
+          "prayer": "Mudri Oče, pročisti moje želje i uskladi me sa svojom dobrom voljom.",
+          "declaration": "Pouzdajem se u Očevu mudrost i njegova je volja za mene dobra."
+        }
+      }
+    },
+    {
+      "day": 6,
+      "scriptures": ["Matthew 6:11", "Philippians 4:19"],
+      "content": {
+        "fa": {
+          "title": "نان امروز",
+          "devotional": "عیسی به ما می‌آموزد برای «امروز» درخواست کنیم. نگرانی می‌خواهد بار فردا را بر دوش امروز بگذارد، اما اعتماد، نیاز همین روز را به پدر می‌سپارد. نان روزانه فقط خوراک نیست؛ حکمت، قوت، فرصت، کار و هر آن چیزی است که برای اطاعت امروز لازم داریم. خدا منبع ماست، حتی وقتی کانال تأمین تغییر می‌کند.",
+          "reflection": "کدام نیاز امروز بیشترین نگرانی را در من ایجاد کرده است؟",
+          "action": "نیاز را دقیق بنویس، از خدا درخواست کن و یک قدم مسئولانه‌ای را که امروز می‌توانی برداری مشخص کن.",
+          "prayer": "پدر تأمین‌کننده، نان امروز مرا عطا کن و مرا از اضطراب فردا آزاد ساز.",
+          "declaration": "خدای من منبع من است و نیاز امروز مرا بر حسب دولت خود برآورده می‌سازد."
+        },
+        "en": {
+          "title": "Bread for Today",
+          "devotional": "Jesus teaches us to ask for “today.” Anxiety places tomorrow’s weight on today’s shoulders, but trust places this day’s needs in the Father’s hands. Daily bread includes food, wisdom, strength, opportunity, work, and everything needed to obey today. God remains our source even when the channel of provision changes.",
+          "reflection": "Which need is creating the most anxiety in me today?",
+          "action": "Write the need clearly, ask God for it, and identify one responsible step you can take today.",
+          "prayer": "Providing Father, give me today’s bread and free me from tomorrow’s anxiety.",
+          "declaration": "God is my source and supplies today’s need according to His riches."
+        },
+        "hr": {
+          "title": "Kruh za danas",
+          "devotional": "Isus nas uči tražiti za „danas“. Tjeskoba stavlja teret sutrašnjice na današnja ramena, a pouzdanje predaje današnje potrebe Ocu. Svagdanji kruh uključuje hranu, mudrost, snagu, priliku, posao i sve što trebamo za današnju poslušnost. Bog ostaje naš izvor čak i kada se kanal opskrbe promijeni.",
+          "reflection": "Koja potreba danas u meni stvara najviše tjeskobe?",
+          "action": "Jasno napiši potrebu, zamoli Boga i odredi jedan odgovoran korak koji danas možeš poduzeti.",
+          "prayer": "Oče koji se brineš, daj mi današnji kruh i oslobodi me brige za sutra.",
+          "declaration": "Bog je moj izvor i podmiruje današnju potrebu prema svojem bogatstvu."
+        }
+      }
+    },
+    {
+      "day": 7,
+      "scriptures": ["Matthew 6:12", "1 John 1:9"],
+      "content": {
+        "fa": {
+          "title": "صداقت، اعتراف و پاکی",
+          "devotional": "گناه پنهان قلب را سنگین و دعا را مبهم می‌کند، اما اعتراف صادقانه ما را دوباره در نور قرار می‌دهد. اعتراف به معنای پرداخت دوبارهٔ بهای بخشش نیست؛ موافقت با حقیقت خدا و دریافت پاکی‌ای است که مسیح فراهم کرده. روح‌القدس محکوم نمی‌کند؛ او مشخص و مهربان نشان می‌دهد چه چیزی باید رها شود تا مشارکت تازه گردد.",
+          "reflection": "روح‌القدس امروز مرا نسبت به کدام نگرش، کلام یا عمل متوجه می‌کند؟",
+          "action": "بدون توجیه آن را نام ببر، از خدا بخشش را دریافت کن و اگر لازم است قدم جبران بردار.",
+          "prayer": "پدر، قلبم را تفتیش کن. اعتراف می‌کنم، بخشش تو را می‌پذیرم و در نور تو راه می‌روم.",
+          "declaration": "خون عیسی مرا پاک می‌کند و من در نور و آزادی راه می‌روم."
+        },
+        "en": {
+          "title": "Honesty, Confession, and Cleansing",
+          "devotional": "Hidden sin weighs down the heart and clouds prayer, but honest confession brings us back into the light. Confession does not repay the price of forgiveness; it agrees with God’s truth and receives the cleansing Christ provided. The Holy Spirit does not vaguely condemn. He lovingly identifies what must be released so fellowship can be renewed.",
+          "reflection": "Which attitude, word, or action is the Holy Spirit bringing to my attention?",
+          "action": "Name it without excuse, receive God’s forgiveness, and take a step of restitution if needed.",
+          "prayer": "Father, search my heart. I confess, receive Your forgiveness, and choose to walk in Your light.",
+          "declaration": "The blood of Jesus cleanses me, and I walk in light and freedom."
+        },
+        "hr": {
+          "title": "Iskrenost, priznanje i očišćenje",
+          "devotional": "Skriveni grijeh opterećuje srce i zamagljuje molitvu, ali iskreno priznanje vraća nas u svjetlo. Priznanje ne plaća ponovno cijenu oprosta; ono se slaže s Božjom istinom i prima očišćenje koje je Krist osigurao. Duh Sveti ne osuđuje neodređeno, nego s ljubavlju pokazuje što treba otpustiti da bi se zajedništvo obnovilo.",
+          "reflection": "Na koji me stav, riječ ili postupak Duh Sveti danas upozorava?",
+          "action": "Imenuj to bez opravdanja, primi Božji oprost i, ako treba, poduzmi korak ispravljanja.",
+          "prayer": "Oče, istraži moje srce. Priznajem, primam tvoj oprost i biram hoditi u tvojem svjetlu.",
+          "declaration": "Isusova me krv čisti i hodim u svjetlu i slobodi."
+        }
+      }
+    },
+    {
+      "day": 8,
+      "scriptures": ["Mark 11:25", "Ephesians 4:32"],
+      "content": {
+        "fa": {
+          "title": "دعا با قلب بخشنده",
+          "devotional": "نبخشیدن، زندانی ساختن خود با بدهی دیگری است. بخشش به معنای انکار درد، تأیید ظلم یا حذف مرزهای سالم نیست؛ واگذاری حق انتقام به خدا و آزاد کردن قلب از سم تلخی است. ما می‌بخشیم چون در مسیح بخشیده شده‌ایم. گاهی احساسات دیرتر همراه می‌شوند، اما تصمیم ایمان می‌تواند امروز آغاز شود.",
+          "reflection": "نام چه کسی یا چه زخمی هنگام دعا در ذهنم بازمی‌گردد؟",
+          "action": "نام آن شخص را نزد خدا ببر، حق داوری را به او بسپار و برای شفای قلبت دعا کن.",
+          "prayer": "پدر، همان‌گونه که مرا بخشیدی، قدرت بده ببخشم. مرا از تلخی آزاد و در حقیقت شفا بده.",
+          "declaration": "من بدهی را به خدا می‌سپارم و قلبم را برای آزادی و محبت باز می‌کنم."
+        },
+        "en": {
+          "title": "Praying with a Forgiving Heart",
+          "devotional": "Unforgiveness ties us to another person’s debt. Forgiveness does not deny pain, approve injustice, or remove wise boundaries. It hands the right of vengeance to God and frees the heart from bitterness. We forgive because we have been forgiven in Christ. Feelings may follow slowly, but a decision of faith can begin today.",
+          "reflection": "Whose name or which wound keeps returning to my mind during prayer?",
+          "action": "Bring that person before God, surrender judgment to Him, and ask for healing in your own heart.",
+          "prayer": "Father, as You forgave me, give me power to forgive. Free me from bitterness and heal me in truth.",
+          "declaration": "I release the debt to God and open my heart to freedom and love."
+        },
+        "hr": {
+          "title": "Molitva sa srcem koje oprašta",
+          "devotional": "Neopraštanje nas veže uz tuđi dug. Oprost ne poriče bol, ne odobrava nepravdu i ne ukida mudre granice. On predaje pravo osvete Bogu i oslobađa srce od gorčine. Opraštamo jer je nama oprošteno u Kristu. Osjećaji možda kasne, ali odluka vjere može početi danas.",
+          "reflection": "Čije se ime ili koja rana stalno vraća u moje misli tijekom molitve?",
+          "action": "Donesi tu osobu pred Boga, njemu predaj sud i moli za iscjeljenje vlastitoga srca.",
+          "prayer": "Oče, kao što si meni oprostio, daj mi snagu oprostiti. Oslobodi me gorčine i iscijeli me u istini.",
+          "declaration": "Dug predajem Bogu i otvaram srce slobodi i ljubavi."
+        }
+      }
+    },
+    {
+      "day": 9,
+      "scriptures": ["Matthew 6:13", "1 Corinthians 10:13"],
+      "content": {
+        "fa": {
+          "title": "حفاظت در برابر وسوسه",
+          "devotional": "عیسی به ما یاد می‌دهد پیش از سقوط دعا کنیم، نه فقط پس از آن. فروتنی می‌پذیرد که هیچ‌کس از وسوسه بالاتر نیست. خدا راه فرار فراهم می‌کند، اما دعا باید با تصمیم عملی همراه شود: شناخت محرک‌ها، دوری از موقعیت خطرناک، پاسخ با کلام و درخواست کمک. پیروزی اغلب در انتخاب کوچک پیش از لحظهٔ بحران ساخته می‌شود.",
+          "reflection": "محرک تکراری من چیست و معمولاً چه زمانی آسیب‌پذیرتر هستم؟",
+          "action": "یک راه فرار عملی تعیین کن و یک آیه را برای پاسخ به وسوسه حفظ کن.",
+          "prayer": "پدر، مرا از شر حفظ کن، دیدگانم را بیدار ساز و قوت اطاعت در لحظهٔ انتخاب بده.",
+          "declaration": "در هر وسوسه، خدا راه خروج می‌دهد و من در قدرت روح انتخاب درست می‌کنم."
+        },
+        "en": {
+          "title": "Protection from Temptation",
+          "devotional": "Jesus teaches us to pray before a fall, not only after one. Humility admits that no one is above temptation. God provides a way out, yet prayer must join practical wisdom: recognizing triggers, leaving dangerous situations, answering with Scripture, and asking for help. Victory is often built by a small choice made before the crisis.",
+          "reflection": "What is my recurring trigger, and when am I most vulnerable?",
+          "action": "Choose one practical escape route and memorize one verse to answer temptation.",
+          "prayer": "Father, deliver me from evil, keep me watchful, and strengthen me to obey in the moment of choice.",
+          "declaration": "God provides a way out, and by the Spirit I choose what is right."
+        },
+        "hr": {
+          "title": "Zaštita od kušnje",
+          "devotional": "Isus nas uči moliti prije pada, a ne samo nakon njega. Poniznost priznaje da nitko nije iznad kušnje. Bog daje izlaz, ali molitva treba biti združena s praktičnom mudrošću: prepoznati okidače, napustiti opasnu situaciju, odgovoriti Pismom i zatražiti pomoć. Pobjeda se često gradi malom odlukom prije krize.",
+          "reflection": "Koji je moj ponavljajući okidač i kada sam najranjiviji?",
+          "action": "Odredi jedan praktičan izlaz i nauči jedan redak kojim ćeš odgovoriti kušnji.",
+          "prayer": "Oče, izbavi me od zla, učini me budnim i ojačaj me za poslušnost u trenutku odluke.",
+          "declaration": "Bog daje izlaz i po Duhu biram ono što je ispravno."
+        }
+      }
+    },
+    {
+      "day": 10,
+      "scriptures": ["John 14:13-14", "John 16:23-24"],
+      "content": {
+        "fa": {
+          "title": "دعا در نام عیسی",
+          "devotional": "نام عیسی واژه‌ای جادویی در پایان دعا نیست. دعا در نام او یعنی آمدن بر اساس مقام، شایستگی، شخصیت و ارادهٔ او. ما پاسخ را به‌خاطر نیکویی خود طلب نمی‌کنیم؛ به‌خاطر اتحادمان با مسیح نزد پدر می‌آییم. هرگاه درخواست با شخصیت و مأموریت عیسی هماهنگ است، می‌توانیم با جسارت و فروتنی بخواهیم.",
+          "reflection": "این درخواست چگونه با شخصیت و مقصود عیسی هماهنگ است؟",
+          "action": "یکی از درخواست‌هایت را بازنویسی کن تا به‌روشنی جلال عیسی و خیر دیگران را دنبال کند.",
+          "prayer": "پدر، در نام عیسی می‌آیم. درخواست‌هایم را با شخصیت پسر تو هماهنگ و ایمانم را استوار کن.",
+          "declaration": "من بر شایستگی عیسی تکیه می‌کنم و در نام او با اطمینان دعا می‌کنم."
+        },
+        "en": {
+          "title": "Praying in Jesus’ Name",
+          "devotional": "Jesus’ name is not a magic phrase added to the end of a prayer. To pray in His name is to come on the basis of His authority, merit, character, and will. We do not ask because we are good enough; we approach the Father because we are united with Christ. When a request agrees with Jesus’ character and mission, we may ask with both boldness and humility.",
+          "reflection": "How does this request agree with the character and purpose of Jesus?",
+          "action": "Rewrite one request so it clearly seeks Jesus’ glory and the good of others.",
+          "prayer": "Father, I come in Jesus’ name. Align my requests with Your Son and establish my faith.",
+          "declaration": "I rest on Jesus’ merit and pray confidently in His name."
+        },
+        "hr": {
+          "title": "Molitva u Isusovo ime",
+          "devotional": "Isusovo ime nije čarobna rečenica na kraju molitve. Moliti u njegovo ime znači doći na temelju njegova autoriteta, zasluge, karaktera i volje. Ne tražimo zato što smo dovoljno dobri, nego pristupamo Ocu jer smo sjedinjeni s Kristom. Kada je molba usklađena s Isusovim karakterom i poslanjem, možemo tražiti smjelo i ponizno.",
+          "reflection": "Kako je ova molba usklađena s Isusovim karakterom i svrhom?",
+          "action": "Preoblikuj jednu molbu tako da jasno traži Isusovu slavu i dobro drugih.",
+          "prayer": "Oče, dolazim u Isusovo ime. Uskladi moje molbe sa svojim Sinom i učvrsti moju vjeru.",
+          "declaration": "Počivam na Isusovoj zasluzi i s pouzdanjem molim u njegovo ime."
+        }
+      }
+    },
+    {
+      "day": 11,
+      "scriptures": ["Romans 8:26-27", "Jude 1:20"],
+      "content": {
+        "fa": {
+          "title": "دعا به یاری روح‌القدس",
+          "devotional": "ضعف در دعا پایان راه نیست؛ مکانی است که روح‌القدس به یاری ما می‌آید. گاهی موضوع را می‌دانیم اما کلمات نداریم، و گاهی حتی نمی‌دانیم چه باید بخواهیم. روح خدا ذهن و دل را با ارادهٔ پدر هماهنگ می‌کند. به جای فشار برای تولید احساس، حضور او را بپذیر، کلام را بخوان و اجازه بده دعا از درون مشارکت برخیزد.",
+          "reflection": "در کدام موضوع احساس می‌کنم نمی‌دانم چگونه دعا کنم؟",
+          "action": "آن موضوع را به روح‌القدس بسپار و پانزده دقیقه آرام، با فهم و در صورت عادت ایمانی‌ات در روح دعا کن.",
+          "prayer": "روح‌القدس، به ضعف من کمک کن و دعاهایم را با ارادهٔ پدر هماهنگ ساز.",
+          "declaration": "من در دعا تنها نیستم؛ روح خدا در من کار می‌کند و مرا یاری می‌دهد."
+        },
+        "en": {
+          "title": "Praying with the Holy Spirit’s Help",
+          "devotional": "Weakness in prayer is not the end; it is where the Holy Spirit comes alongside us. Sometimes we know the burden but lack words, and sometimes we do not even know what to ask. The Spirit aligns mind and heart with the Father’s will. Instead of forcing emotion, welcome His presence, read the Word, and let prayer rise from fellowship.",
+          "reflection": "In which situation do I honestly not know how to pray?",
+          "action": "Entrust it to the Holy Spirit and pray quietly for fifteen minutes—with understanding and, according to your practice of faith, in the Spirit.",
+          "prayer": "Holy Spirit, help my weakness and align my prayer with the Father’s will.",
+          "declaration": "I am not alone in prayer; God’s Spirit works within me and helps me."
+        },
+        "hr": {
+          "title": "Molitva uz pomoć Duha Svetoga",
+          "devotional": "Slabost u molitvi nije kraj; upravo ondje Duh Sveti dolazi u pomoć. Ponekad poznajemo teret, ali nemamo riječi, a ponekad ni ne znamo što tražiti. Duh usklađuje um i srce s Očevom voljom. Umjesto da proizvodiš osjećaje, primi njegovu prisutnost, čitaj Riječ i dopusti da molitva izraste iz zajedništva.",
+          "reflection": "U kojoj situaciji iskreno ne znam kako moliti?",
+          "action": "Povjeri je Duhu Svetome i petnaest minuta mirno moli—razumom i, prema svojoj praksi vjere, u Duhu.",
+          "prayer": "Duše Sveti, pomozi mojoj slabosti i uskladi moju molitvu s Očevom voljom.",
+          "declaration": "Nisam sam u molitvi; Božji Duh djeluje u meni i pomaže mi."
+        }
+      }
+    },
+    {
+      "day": 12,
+      "scriptures": ["John 15:7", "Isaiah 55:10-11"],
+      "content": {
+        "fa": {
+          "title": "کلام، زبان دعا",
+          "devotional": "ماندن کلام در ما، خواسته‌ها را تعلیم می‌دهد. وقتی وعده، فرمان یا شخصیت خدا را در دعا بازمی‌گوییم، خدا را از چیزی آگاه نمی‌کنیم؛ ایمان خود را بر حقیقت استوار می‌سازیم. دعا بر اساس کلام، تکرار بی‌فکر آیات نیست؛ فهم متن، پذیرش مقصود آن و پاسخ دادن به خدا با همان حقیقت است.",
+          "reflection": "کدام وعده یا فرمان کتاب‌مقدس باید امروز به دعای من تبدیل شود؟",
+          "action": "یک آیه را بنویس، مفهومش را با یک جمله توضیح بده و آن را به دعای شخصی تبدیل کن.",
+          "prayer": "پدر، کلامت را در من زنده کن تا درخواست‌هایم از حقیقت تو برخیزد.",
+          "declaration": "کلام مسیح در من ساکن است و دعای من با حقیقت خدا هماهنگ می‌شود."
+        },
+        "en": {
+          "title": "The Word Gives Language to Prayer",
+          "devotional": "When the Word abides in us, it trains our desires. Praying a promise, command, or truth about God does not inform Him of something new; it anchors our faith in what is true. Scripture-shaped prayer is not mindless repetition. It understands the text, receives its purpose, and answers God with that truth.",
+          "reflection": "Which biblical promise or command needs to become my prayer today?",
+          "action": "Write one verse, explain its meaning in one sentence, and turn it into a personal prayer.",
+          "prayer": "Father, make Your Word alive in me so my requests rise from Your truth.",
+          "declaration": "Christ’s Word dwells in me, and my prayer agrees with God’s truth."
+        },
+        "hr": {
+          "title": "Riječ daje jezik molitvi",
+          "devotional": "Kada Riječ prebiva u nama, ona odgaja naše želje. Moleći obećanje, zapovijed ili istinu o Bogu ne govorimo mu nešto novo, nego sidrimo vjeru u istini. Molitva oblikovana Pismom nije bezumno ponavljanje. Ona razumije tekst, prima njegovu svrhu i odgovara Bogu tom istinom.",
+          "reflection": "Koje biblijsko obećanje ili zapovijed danas treba postati moja molitva?",
+          "action": "Napiši jedan redak, objasni njegovo značenje jednom rečenicom i pretvori ga u osobnu molitvu.",
+          "prayer": "Oče, oživi svoju Riječ u meni da moje molbe izviru iz tvoje istine.",
+          "declaration": "Kristova Riječ prebiva u meni i moja je molitva usklađena s Božjom istinom."
+        }
+      }
+    },
+    {
+      "day": 13,
+      "scriptures": ["Mark 11:24", "James 1:5-6"],
+      "content": {
+        "fa": {
+          "title": "درخواست با ایمان",
+          "devotional": "ایمان به معنای انکار نشانه‌های ظاهری یا ساختن یقین مصنوعی نیست؛ تکیه بر شخصیت خدای راستگوست. دعا با ایمان درخواست را روشن به خدا می‌سپارد و سپس در انتظار، از دو دلی تغذیه نمی‌کند. ایمان ممکن است هنوز اشک داشته باشد، اما جهت خود را عوض نمی‌کند. سپاسگزاری پس از دعا اعلام می‌کند که موضوع در دستان امین پدر است.",
+          "reflection": "بعد از دعا، چه افکاری دوباره مرا به ترس و دو دلی بازمی‌گرداند؟",
+          "action": "یک درخواست مشخص مطرح کن و هر بار نگرانی برگشت، با یک جملهٔ شکرگزاری پاسخ بده.",
+          "prayer": "خدای وفادار، نگاهم را از نوسان احساسات بردار و بر شخصیت تغییرناپذیرت ثابت کن.",
+          "declaration": "من به خدای راستگو اعتماد می‌کنم و درخواست خود را در دستان او می‌گذارم."
+        },
+        "en": {
+          "title": "Asking in Faith",
+          "devotional": "Faith does not deny visible facts or manufacture certainty; it rests on the character of the truthful God. Faith makes a clear request and then refuses to feed double-mindedness while waiting. Faith may still have tears, but it does not change direction. Thanksgiving after prayer declares that the matter is in the Father’s faithful hands.",
+          "reflection": "After I pray, which thoughts pull me back into fear and divided loyalty?",
+          "action": "Make one specific request. Whenever anxiety returns, answer it with one sentence of thanksgiving.",
+          "prayer": "Faithful God, lift my focus from changing feelings and fix it on Your unchanging character.",
+          "declaration": "I trust the God who cannot lie and place my request in His hands."
+        },
+        "hr": {
+          "title": "Tražiti u vjeri",
+          "devotional": "Vjera ne poriče vidljive činjenice niti proizvodi umjetnu sigurnost; ona počiva na karakteru Boga koji govori istinu. Vjera jasno iznosi molbu i zatim, dok čeka, odbija hraniti podijeljenost. Vjera može imati suze, ali ne mijenja smjer. Zahvaljivanje nakon molitve objavljuje da je stvar u vjernim Očevim rukama.",
+          "reflection": "Koje me misli nakon molitve vraćaju strahu i podijeljenosti?",
+          "action": "Iznesi jednu jasnu molbu. Kad se tjeskoba vrati, odgovori joj jednom rečenicom zahvalnosti.",
+          "prayer": "Vjerni Bože, odvrati moj pogled od promjenjivih osjećaja i učvrsti ga na svojem nepromjenjivom karakteru.",
+          "declaration": "Pouzdajem se u Boga koji ne može lagati i svoju molbu stavljam u njegove ruke."
+        }
+      }
+    },
+    {
+      "day": 14,
+      "scriptures": ["Philippians 4:6-7", "1 Thessalonians 5:18"],
+      "content": {
+        "fa": {
+          "title": "شکرگزاری در میان درخواست",
+          "devotional": "پولس نمی‌گوید برای هر اتفاق بد شکر کنیم، بلکه در هر وضعیت شکرگزار بمانیم. شکرگزاری درد را کوچک نمی‌کند؛ حضور و وفاداری خدا را در میان آن بزرگ می‌بیند. وقتی درخواست با شکرگزاری همراه می‌شود، اضطراب همهٔ فضای درون را اشغال نمی‌کند و سلامتی خدا نگهبان قلب و ذهن می‌گردد.",
+          "reflection": "در همین وضعیت دشوار، سه نشانهٔ وفاداری خدا چیست؟",
+          "action": "پیش از تکرار درخواستت، سه دقیقه فقط برای کارهایی که خدا انجام داده شکر کن.",
+          "prayer": "پدر، در میان ناتمام‌ها نیز تو را شکر می‌کنم. سلامتی خود را نگهبان قلب و ذهنم قرار بده.",
+          "declaration": "شکرگزاری دهان مرا پر می‌کند و سلامتی خدا از قلب من محافظت می‌کند."
+        },
+        "en": {
+          "title": "Thanksgiving within Petition",
+          "devotional": "Paul does not say to call every painful event good; he tells us to remain thankful in every circumstance. Thanksgiving does not minimize pain. It magnifies God’s presence and faithfulness within it. When petition is joined with thanksgiving, anxiety no longer occupies the whole inner world, and God’s peace stands guard over heart and mind.",
+          "reflection": "What are three signs of God’s faithfulness within this difficult situation?",
+          "action": "Before repeating your request, spend three minutes thanking God only for what He has already done.",
+          "prayer": "Father, I thank You even among unfinished matters. Let Your peace guard my heart and mind.",
+          "declaration": "Thanksgiving fills my mouth, and God’s peace protects my heart."
+        },
+        "hr": {
+          "title": "Zahvaljivanje usred molbe",
+          "devotional": "Pavao ne kaže da svaki bolan događaj trebamo nazvati dobrim, nego da u svakoj okolnosti ostanemo zahvalni. Zahvaljivanje ne umanjuje bol; ono u njoj veliča Božju prisutnost i vjernost. Kada je molba povezana sa zahvalnošću, tjeskoba više ne zauzima cijeli unutarnji prostor, a Božji mir čuva srce i um.",
+          "reflection": "Koja su tri znaka Božje vjernosti u ovoj teškoj situaciji?",
+          "action": "Prije nego ponoviš molbu, tri minute zahvaljuj samo za ono što je Bog već učinio.",
+          "prayer": "Oče, zahvaljujem ti i usred nedovršenoga. Neka tvoj mir čuva moje srce i um.",
+          "declaration": "Zahvalnost ispunjava moja usta, a Božji mir čuva moje srce."
+        }
+      }
+    },
+    {
+      "day": 15,
+      "scriptures": ["1 Timothy 2:1-4", "Ezekiel 22:30"],
+      "content": {
+        "fa": {
+          "title": "ایستادن در شکاف",
+          "devotional": "شفاعت یعنی بار دیگری را در حضور خدا حمل کردن، بی‌آنکه کنترل زندگی او را به دست بگیریم. شفیع میان نیاز و وعده می‌ایستد و محبت خدا را برای شخص، شهر یا ملت طلب می‌کند. این دعا از قضاوت فاصله می‌گیرد و به همدلی نزدیک می‌شود. خدا به دنبال دل‌هایی است که به جای شکایت از تاریکی، نور را بطلبند.",
+          "reflection": "خدا امروز نام چه شخص یا گروهی را بر قلب من می‌گذارد؟",
+          "action": "نام سه نفر را بنویس و برای نجات، حفاظت، حکمت و ملاقاتشان با خدا دعا کن.",
+          "prayer": "پدر، قلب شفیع به من بده. مرا از قضاوت پاک کن و محبتت را از طریق دعای من جاری ساز.",
+          "declaration": "من با محبت در شکاف می‌ایستم و ارادهٔ نیکوی خدا را برای دیگران می‌طلبم."
+        },
+        "en": {
+          "title": "Standing in the Gap",
+          "devotional": "Intercession carries another person’s burden before God without trying to control that person’s life. An intercessor stands between need and promise, asking for God’s mercy over a person, city, or nation. This kind of prayer moves away from judgment and toward compassion. God seeks hearts that ask for light instead of merely complaining about darkness.",
+          "reflection": "Whose name, or which group, is God placing on my heart today?",
+          "action": "Write three names and pray for salvation, protection, wisdom, and an encounter with God.",
+          "prayer": "Father, give me an intercessor’s heart. Cleanse me from judgment and release Your love through my prayer.",
+          "declaration": "I stand in the gap with love and seek God’s good will for others."
+        },
+        "hr": {
+          "title": "Stajati u procjepu",
+          "devotional": "Zagovor nosi teret druge osobe pred Bogom bez pokušaja upravljanja njezinim životom. Zagovornik stoji između potrebe i obećanja te traži Božje milosrđe za osobu, grad ili narod. Takva molitva napušta osudu i približava se suosjećanju. Bog traži srca koja mole za svjetlo umjesto da samo prigovaraju tami.",
+          "reflection": "Čije ime ili koju skupinu Bog danas stavlja na moje srce?",
+          "action": "Napiši tri imena i moli za spasenje, zaštitu, mudrost i susret s Bogom.",
+          "prayer": "Oče, daj mi srce zagovornika. Očisti me od osude i kroz moju molitvu oslobodi svoju ljubav.",
+          "declaration": "S ljubavlju stojim u procjepu i tražim Božju dobru volju za druge."
+        }
+      }
+    },
+    {
+      "day": 16,
+      "scriptures": ["Joshua 24:15", "Acts 16:31"],
+      "content": {
+        "fa": {
+          "title": "دعا برای خانواده",
+          "devotional": "خانواده محل عمیق‌ترین محبت‌ها و گاهی عمیق‌ترین زخم‌هاست. دعا برای خانواده نباید ابزار اجبار باشد؛ ما اعضای خانواده را به خدا می‌سپاریم و برای نجات، حکمت، اتحاد و حفاظت می‌ایستیم. هم‌زمان اجازه می‌دهیم خدا نخست رفتار خود ما را تغییر دهد تا پاسخ دعا را با محبت، صبر و راستی زندگی کنیم.",
+          "reflection": "من در کدام رابطهٔ خانوادگی باید پیش از تغییر دیگری، خودم تغییر کنم؟",
+          "action": "برای هر عضو خانواده یک برکت مشخص بنویس و امروز یک عمل محبت‌آمیز بدون انتظار پاسخ انجام بده.",
+          "prayer": "پدر، خانهٔ ما را لمس کن. نجات، آشتی و حکمت عطا کن و مرا نمونهٔ محبت مسیح بساز.",
+          "declaration": "خانهٔ من زیر دعای ایمان است و من محبت مسیح را در خانواده زندگی می‌کنم."
+        },
+        "en": {
+          "title": "Praying for Family",
+          "devotional": "Family holds some of our deepest love and sometimes our deepest wounds. Prayer for family must never become a tool of control. We entrust each person to God and stand for salvation, wisdom, unity, and protection. At the same time, we allow God to change us first so we can live the answer through love, patience, and truth.",
+          "reflection": "In which family relationship do I need to change before demanding change from someone else?",
+          "action": "Write one specific blessing for each family member and do one loving act today without expecting a return.",
+          "prayer": "Father, touch our home. Bring salvation, reconciliation, and wisdom, and make me an example of Christ’s love.",
+          "declaration": "My home is covered by believing prayer, and I live Christ’s love within my family."
+        },
+        "hr": {
+          "title": "Molitva za obitelj",
+          "devotional": "Obitelj nosi neke od naših najdubljih ljubavi, ali ponekad i najdubljih rana. Molitva za obitelj ne smije postati sredstvo kontrole. Svaku osobu povjeravamo Bogu i stojimo za spasenje, mudrost, jedinstvo i zaštitu. Istodobno dopuštamo Bogu da najprije mijenja nas kako bismo odgovor živjeli u ljubavi, strpljenju i istini.",
+          "reflection": "U kojem se obiteljskom odnosu trebam promijeniti prije nego što zahtijevam promjenu drugoga?",
+          "action": "Napiši jedan poseban blagoslov za svakog člana obitelji i danas učini jedno djelo ljubavi bez očekivanja uzvrata.",
+          "prayer": "Oče, dotakni naš dom. Donesi spasenje, pomirenje i mudrost te me učini primjerom Kristove ljubavi.",
+          "declaration": "Moj je dom pokriven molitvom vjere i u obitelji živim Kristovu ljubav."
+        }
+      }
+    },
+    {
+      "day": 17,
+      "scriptures": ["Ephesians 3:14-21", "Colossians 4:2-4"],
+      "content": {
+        "fa": {
+          "title": "دعا برای کلیسا و خدمت",
+          "devotional": "کلیسا فقط برنامه یا ساختمان نیست؛ بدن مسیح و خانوادهٔ خداست. به جای تمرکز بر ضعف‌ها، می‌توانیم مانند پولس برای قوت روحانی، ریشه‌دار شدن در محبت، شناخت مسیح و باز شدن درهای کلام دعا کنیم. دعا برای خادمان نیز فقط طلب موفقیت نیست؛ طلب پاکی، شجاعت، حکمت و وفاداری در مأموریت است.",
+          "reflection": "دعاهای من برای کلیسا بیشتر شکایت است یا شفاعت؟",
+          "action": "برای رهبران، خادمان و اعضای کلیسایت بر اساس افسسیان ۳ نام‌به‌نام دعا کن.",
+          "prayer": "خداوند کلیسا، بدنت را در محبت بنا کن و درهای مؤثر برای کلام و نجات بگشا.",
+          "declaration": "کلیسای مسیح در محبت قوت می‌گیرد و کلام خدا با قدرت پیش می‌رود."
+        },
+        "en": {
+          "title": "Praying for the Church and Ministry",
+          "devotional": "The church is not merely a program or building; it is Christ’s body and God’s family. Instead of centering on weaknesses, we can pray as Paul did for spiritual strength, roots in love, knowledge of Christ, and open doors for the Word. Prayer for ministers is not merely a request for success, but for purity, courage, wisdom, and faithfulness to the mission.",
+          "reflection": "Are my words about the church shaped more by complaint or intercession?",
+          "action": "Pray by name for leaders, ministers, and members of your church using Ephesians 3.",
+          "prayer": "Lord of the church, build Your body in love and open effective doors for the Word and salvation.",
+          "declaration": "Christ’s church is strengthened in love, and God’s Word advances with power."
+        },
+        "hr": {
+          "title": "Molitva za Crkvu i službu",
+          "devotional": "Crkva nije samo program ili zgrada; ona je Kristovo tijelo i Božja obitelj. Umjesto usredotočenosti na slabosti, možemo poput Pavla moliti za duhovnu snagu, ukorijenjenost u ljubavi, poznavanje Krista i otvorena vrata Riječi. Za službenike ne molimo samo uspjeh, nego čistoću, hrabrost, mudrost i vjernost poslanju.",
+          "reflection": "Govore li moje riječi o Crkvi više iz prigovora ili iz zagovora?",
+          "action": "Na temelju Efežanima 3 poimence moli za vođe, službenike i članove svoje crkve.",
+          "prayer": "Gospodine Crkve, izgrađuj svoje tijelo u ljubavi i otvori djelotvorna vrata Riječi i spasenju.",
+          "declaration": "Kristova Crkva jača u ljubavi, a Božja Riječ napreduje u sili."
+        }
+      }
+    },
+    {
+      "day": 18,
+      "scriptures": ["1 Timothy 2:1-2", "Proverbs 21:1"],
+      "content": {
+        "fa": {
+          "title": "دعا برای رهبران و ملت‌ها",
+          "devotional": "دعای کتاب‌مقدسی برای حاکمان وابسته به موافقت سیاسی ما نیست. ما برای حکمت، عدالت، صلح و آزادی انجام ارادهٔ خدا دعا می‌کنیم، چون تصمیم‌های رهبران بر زندگی بسیاری اثر می‌گذارد. دعا جای مسئولیت مدنی یا بیان حقیقت را نمی‌گیرد؛ قلب ما را از نفرت حفظ می‌کند تا حتی در مخالفت، از روح مسیح دور نشویم.",
+          "reflection": "آیا نگاه سیاسی من اجازه داده خشم، جای شفاعت را بگیرد؟",
+          "action": "برای رهبران محلی و ملی، هر کدام با نام، حکمت، عدالت و ترس خدا را بطلب.",
+          "prayer": "ای پادشاه ملت‌ها، قلب رهبران را هدایت کن، ظلم را متوقف ساز و راه صلح و عدالت را بگشا.",
+          "declaration": "من برای شهر و ملت خود با ایمان دعا می‌کنم و قلبم را از نفرت حفظ می‌نمایم."
+        },
+        "en": {
+          "title": "Praying for Leaders and Nations",
+          "devotional": "Biblical prayer for rulers does not depend on political agreement. We ask for wisdom, justice, peace, and freedom to do God’s will because leaders’ decisions affect many lives. Prayer does not replace civic responsibility or truthful speech; it protects our hearts from hatred so that even in disagreement we do not lose the spirit of Christ.",
+          "reflection": "Has political anger displaced intercession in my heart?",
+          "action": "Pray by name for local and national leaders, asking for wisdom, justice, and the fear of God.",
+          "prayer": "King of the nations, direct leaders’ hearts, restrain injustice, and open paths of peace and righteousness.",
+          "declaration": "I pray in faith for my city and nation, and I guard my heart from hatred."
+        },
+        "hr": {
+          "title": "Molitva za vođe i narode",
+          "devotional": "Biblijska molitva za vladare ne ovisi o političkom slaganju. Molimo za mudrost, pravdu, mir i slobodu da se vrši Božja volja jer odluke vođa utječu na mnoge živote. Molitva ne zamjenjuje građansku odgovornost ni istinit govor; ona čuva srce od mržnje da ni u neslaganju ne izgubimo Kristov duh.",
+          "reflection": "Je li politička ljutnja u mojem srcu istisnula zagovor?",
+          "action": "Poimence moli za lokalne i državne vođe, tražeći mudrost, pravdu i strah Božji.",
+          "prayer": "Kralju naroda, usmjeri srca vođa, zaustavi nepravdu i otvori putove mira i pravednosti.",
+          "declaration": "U vjeri molim za svoj grad i narod te čuvam srce od mržnje."
+        }
+      }
+    },
+    {
+      "day": 19,
+      "scriptures": ["James 5:14-16", "Psalm 103:2-3"],
+      "content": {
+        "fa": {
+          "title": "دعا برای شفا",
+          "devotional": "خدا خود را شفا‌دهنده آشکار کرده و کلیسا مأمور است با ایمان برای بیماران دعا کند. ما درد را کوچک نمی‌شماریم و درمان پزشکی را دشمن ایمان نمی‌دانیم؛ با محبت، فروتنی و انتظار به خدا روی می‌آوریم. نتیجه را به او می‌سپاریم، اما از درخواست کردن دست نمی‌کشیم. دعای شفا باید بیمار را گرامی بدارد، نه اینکه او را به‌خاطر بیماری سرزنش کند.",
+          "reflection": "آیا می‌توانم بدون فشار یا سرزنش، با محبت و ایمان برای شفا دعا کنم؟",
+          "action": "با اجازهٔ شخص، کوتاه و مشخص برای شفای او دعا کن و در صورت نیاز او را به مراقبت پزشکی تشویق کن.",
+          "prayer": "خداوند شفا‌دهنده، رحمت و قدرتت را آشکار کن؛ بدن، جان و دل را لمس و قوت تازه عطا فرما.",
+          "declaration": "خدا نیکو و شفا‌دهنده است؛ من با محبت دعا می‌کنم و نتیجه را به او می‌سپارم."
+        },
+        "en": {
+          "title": "Praying for Healing",
+          "devotional": "God reveals Himself as healer, and the church is instructed to pray in faith for the sick. We do not minimize pain or treat medical care as an enemy of faith. We come with love, humility, and expectation. We entrust the outcome to God without ceasing to ask. Healing prayer must honor the person and never blame them for being ill.",
+          "reflection": "Can I pray for healing with faith and love, without pressure or blame?",
+          "action": "With the person’s permission, pray briefly and specifically for healing, and encourage appropriate medical care where needed.",
+          "prayer": "Healing Lord, reveal Your mercy and power; touch body, soul, and heart, and give renewed strength.",
+          "declaration": "God is good and He heals; I pray with love and entrust the outcome to Him."
+        },
+        "hr": {
+          "title": "Molitva za iscjeljenje",
+          "devotional": "Bog se objavljuje kao iscjelitelj, a Crkvi nalaže da u vjeri moli za bolesne. Ne umanjujemo bol niti medicinsku skrb smatramo neprijateljem vjere. Dolazimo s ljubavlju, poniznošću i očekivanjem. Ishod povjeravamo Bogu, ali ne prestajemo tražiti. Molitva za iscjeljenje treba poštovati osobu i nikada je kriviti zbog bolesti.",
+          "reflection": "Mogu li moliti za iscjeljenje s vjerom i ljubavlju, bez pritiska ili okrivljavanja?",
+          "action": "Uz dopuštenje osobe, kratko i konkretno moli za iscjeljenje te, gdje treba, ohrabri odgovarajuću medicinsku skrb.",
+          "prayer": "Gospodine koji iscjeljuješ, objavi milosrđe i silu; dotakni tijelo, dušu i srce te daj novu snagu.",
+          "declaration": "Bog je dobar i iscjeljuje; molim s ljubavlju i ishod povjeravam njemu."
+        }
+      }
+    },
+    {
+      "day": 20,
+      "scriptures": ["James 1:5", "Colossians 1:9-10"],
+      "content": {
+        "fa": {
+          "title": "دعا برای حکمت",
+          "devotional": "حکمت فقط دانستن اطلاعات بیشتر نیست؛ دیدن موقعیت از منظر خدا و عمل کردن در زمان درست است. خدا کسی را که با فروتنی می‌پرسد سرزنش نمی‌کند. گاهی پاسخ به شکل یک آیه، مشورت سالم، آرامش درونی یا بسته شدن دری می‌آید. دعای حکمت باید با آمادگی برای اطاعت همراه باشد؛ وگرنه فقط تأیید خواستهٔ قبلی خود را می‌جوییم.",
+          "reflection": "اگر پاسخ خدا با ترجیح من متفاوت باشد، آیا آمادهٔ اطاعت هستم؟",
+          "action": "مسئله را در یک جمله بنویس، سه اصل کتاب‌مقدسی مرتبط را پیدا کن و از یک ایماندار بالغ مشورت بگیر.",
+          "prayer": "پدر حکیم، فهم روحانی عطا کن تا اراده‌ات را بشناسم و با شجاعت انجام دهم.",
+          "declaration": "خدا با سخاوت حکمت می‌دهد و من برای شنیدن و اطاعت آماده‌ام."
+        },
+        "en": {
+          "title": "Praying for Wisdom",
+          "devotional": "Wisdom is more than having information; it sees a situation from God’s perspective and acts at the right time. God does not shame the person who asks humbly. An answer may come through Scripture, sound counsel, inward peace, or a closed door. Prayer for wisdom must include readiness to obey; otherwise we only seek confirmation of a choice already made.",
+          "reflection": "If God’s answer differs from my preference, am I ready to obey?",
+          "action": "Write the issue in one sentence, identify three relevant biblical principles, and seek counsel from a mature believer.",
+          "prayer": "Wise Father, give spiritual understanding so I may know Your will and courageously do it.",
+          "declaration": "God gives wisdom generously, and I am ready to listen and obey."
+        },
+        "hr": {
+          "title": "Molitva za mudrost",
+          "devotional": "Mudrost je više od informacija; ona vidi situaciju iz Božje perspektive i djeluje u pravo vrijeme. Bog ne posramljuje onoga tko ponizno traži. Odgovor može doći kroz Pismo, zdrav savjet, unutarnji mir ili zatvorena vrata. Molitva za mudrost mora uključiti spremnost na poslušnost; inače samo tražimo potvrdu već donesene odluke.",
+          "reflection": "Ako se Božji odgovor razlikuje od moje želje, jesam li spreman poslušati?",
+          "action": "Napiši problem jednom rečenicom, pronađi tri povezana biblijska načela i potraži savjet zrelog vjernika.",
+          "prayer": "Mudri Oče, daj mi duhovno razumijevanje da upoznam tvoju volju i hrabro je izvršim.",
+          "declaration": "Bog velikodušno daje mudrost, a ja sam spreman slušati i poslušati."
+        }
+      }
+    },
+    {
+      "day": 21,
+      "scriptures": ["Ephesians 6:18", "2 Corinthians 10:3-5"],
+      "content": {
+        "fa": {
+          "title": "دعا در نبرد روحانی",
+          "devotional": "نبرد روحانی نباید ما را گرفتار ترس یا تمرکز افراطی بر تاریکی کند. پیروزی از آنِ مسیح است و سلاح‌های ما حقیقت، عدالت، ایمان، کلام و دعای پایدارند. بسیاری از میدان‌های نبرد در افکار شکل می‌گیرند؛ هر اندیشه باید با حقیقت خدا سنجیده و اسیر اطاعت مسیح شود. ما از جایگاه اقتدار او می‌ایستیم، نه برای کسب آن.",
+          "reflection": "کدام دروغ یا الگوی فکری باید امروز در برابر حقیقت خدا تسلیم شود؟",
+          "action": "دروغ را بنویس و روبه‌روی آن یک حقیقت کتاب‌مقدسی قرار بده؛ آن حقیقت را با صدای بلند اعلام کن.",
+          "prayer": "خداوند عیسی، ذهنم را با حقیقتت محافظت کن و مرا در پیروزی کامل خود استوار نگه دار.",
+          "declaration": "من در مسیح می‌ایستم؛ افکارم مطیع حقیقت‌اند و تاریکی بر من سلطه ندارد."
+        },
+        "en": {
+          "title": "Prayer in Spiritual Battle",
+          "devotional": "Spiritual warfare must not trap us in fear or an unhealthy fascination with darkness. Christ has won, and our weapons are truth, righteousness, faith, the Word, and persevering prayer. Many battles take shape in thought. Every idea must be tested by God’s truth and brought under Christ’s obedience. We stand from His authority, not in order to earn it.",
+          "reflection": "Which lie or thought pattern must surrender to God’s truth today?",
+          "action": "Write the lie and place a biblical truth beside it; speak that truth aloud.",
+          "prayer": "Lord Jesus, guard my mind with Your truth and establish me in Your complete victory.",
+          "declaration": "I stand in Christ; my thoughts submit to truth, and darkness has no rule over me."
+        },
+        "hr": {
+          "title": "Molitva u duhovnoj borbi",
+          "devotional": "Duhovna borba ne smije nas zarobiti strahom ni nezdravom zaokupljenošću tamom. Krist je pobijedio, a naše su oružje istina, pravednost, vjera, Riječ i ustrajna molitva. Mnoge bitke nastaju u mislima. Svaku misao treba ispitati Božjom istinom i podložiti Kristu. Stojimo iz njegova autoriteta, a ne da bismo ga zaslužili.",
+          "reflection": "Koja laž ili misaoni obrazac danas mora ustuknuti pred Božjom istinom?",
+          "action": "Napiši laž i uz nju biblijsku istinu; izgovori tu istinu naglas.",
+          "prayer": "Gospodine Isuse, čuvaj moj um svojom istinom i učvrsti me u svojoj potpunoj pobjedi.",
+          "declaration": "Stojim u Kristu; moje su misli podložne istini i tama nema vlast nada mnom."
+        }
+      }
+    },
+    {
+      "day": 22,
+      "scriptures": ["Colossians 4:2", "Matthew 26:40-41"],
+      "content": {
+        "fa": {
+          "title": "بیدار و هوشیار در دعا",
+          "devotional": "خواب‌آلودگی روحانی همیشه جسمی نیست؛ گاهی عادت، حواس‌پرتی و بی‌تفاوتی است. عیسی شاگردان را دعوت کرد بیدار بمانند و دعا کنند. هوشیاری یعنی توجه به حرکت خدا، وضعیت قلب و نیاز اطرافیان. نظم زمانی، خاموش کردن اعلان‌ها و یادداشت موضوعات دعا می‌تواند ذهن پراکنده را دوباره متمرکز کند.",
+          "reflection": "بزرگ‌ترین عامل حواس‌پرتی من در دعا چیست؟",
+          "action": "برای فردا زمان و مکان مشخص دعا تعیین کن و تلفن را در آن زمان روی حالت بی‌صدا بگذار.",
+          "prayer": "خداوندا، روح مرا بیدار نگه دار؛ مرا نسبت به صدای تو و نیاز مردم حساس ساز.",
+          "declaration": "من در دعا بیدار، شکرگزار و هوشیار می‌مانم."
+        },
+        "en": {
+          "title": "Watchful in Prayer",
+          "devotional": "Spiritual sleepiness is not always physical; it may be routine, distraction, or indifference. Jesus called His disciples to watch and pray. Watchfulness pays attention to God’s movement, the condition of the heart, and the needs around us. A set time, silenced notifications, and a written prayer list can help a scattered mind become attentive again.",
+          "reflection": "What is my greatest source of distraction in prayer?",
+          "action": "Set a specific time and place for tomorrow’s prayer, and silence your phone during it.",
+          "prayer": "Lord, keep my spirit awake and make me sensitive to Your voice and to people’s needs.",
+          "declaration": "I remain watchful, thankful, and alert in prayer."
+        },
+        "hr": {
+          "title": "Budnost u molitvi",
+          "devotional": "Duhovna pospanost nije uvijek tjelesna; može biti rutina, rastresenost ili ravnodušnost. Isus je pozvao učenike da bdiju i mole. Budnost prati Božje djelovanje, stanje srca i potrebe oko nas. Određeno vrijeme, utišane obavijesti i zapisan popis molitve mogu ponovno usredotočiti raspršen um.",
+          "reflection": "Što mi najviše odvlači pažnju u molitvi?",
+          "action": "Odredi točno vrijeme i mjesto za sutrašnju molitvu te tijekom nje utišaj telefon.",
+          "prayer": "Gospodine, drži moj duh budnim i učini me osjetljivim na tvoj glas i potrebe ljudi.",
+          "declaration": "Ostajem budan, zahvalan i pažljiv u molitvi."
+        }
+      }
+    },
+    {
+      "day": 23,
+      "scriptures": ["Luke 18:1-8", "Galatians 6:9"],
+      "content": {
+        "fa": {
+          "title": "پایداری بدون خستگی",
+          "devotional": "تکرار دعا همیشه نشانهٔ بی‌ایمانی نیست؛ گاهی بیان پایداری و رابطه است. عیسی داستان بیوهٔ مصر را گفت تا شاگردان همیشه دعا کنند و دلسرد نشوند. پایداری نمی‌کوشد خدا را با تعداد کلمات متقاعد کند؛ قلب را در موضع اعتماد نگه می‌دارد تا زمان وعده فرا رسد. انتظار، شخصیت و ظرفیت ما را نیز می‌سازد.",
+          "reflection": "در کدام درخواست به‌سبب تأخیر، امید خود را از دست داده‌ام؟",
+          "action": "آن درخواست را با تاریخ بنویس و هفته‌ای یک زمان ثابت برای پیگیری آن در دعا تعیین کن.",
+          "prayer": "پدر وفادار، در انتظار مرا خسته و تلخ نساز؛ ایمان پایدار و قلب نرم عطا کن.",
+          "declaration": "من در نیکویی خدا دلسرد نمی‌شوم و در زمان مناسب ثمر خواهم دید."
+        },
+        "en": {
+          "title": "Persevering without Losing Heart",
+          "devotional": "Repeated prayer is not always unbelief; it can express perseverance and relationship. Jesus told the story of the persistent widow so His disciples would always pray and not lose heart. Perseverance does not persuade God by the number of words. It keeps the heart positioned in trust until the appointed time, while waiting also forms our character and capacity.",
+          "reflection": "Which delayed answer has caused me to lose hope?",
+          "action": "Write that request with today’s date and set a regular weekly time to continue praying for it.",
+          "prayer": "Faithful Father, keep me from weariness and bitterness while I wait; give me enduring faith and a tender heart.",
+          "declaration": "I do not lose heart in God’s goodness, and in due time I will see fruit."
+        },
+        "hr": {
+          "title": "Ustrajati bez malaksalosti",
+          "devotional": "Ponavljana molitva nije uvijek nevjera; može izražavati ustrajnost i odnos. Isus je ispričao priču o upornoj udovici da učenici uvijek mole i ne klonu. Ustrajnost ne uvjerava Boga mnoštvom riječi, nego drži srce u pouzdanju do određenoga vremena. Čekanje pritom oblikuje naš karakter i sposobnost.",
+          "reflection": "Zbog kojega sam odgođenog odgovora izgubio nadu?",
+          "action": "Napiši tu molbu s današnjim datumom i odredi stalno tjedno vrijeme za molitvu.",
+          "prayer": "Vjerni Oče, dok čekam sačuvaj me od umora i gorčine; daj mi postojanu vjeru i nježno srce.",
+          "declaration": "Ne malakšem u Božjoj dobroti i u pravo ću vrijeme vidjeti plod."
+        }
+      }
+    },
+    {
+      "day": 24,
+      "scriptures": ["1 Samuel 3:9-10", "Psalm 46:10"],
+      "content": {
+        "fa": {
+          "title": "سکوت و شنیدن",
+          "devotional": "دعا گفت‌وگوست، نه سخنرانی یک‌طرفه. شنیدن خدا به معنای دنبال کردن هر احساس یا فکر ناگهانی نیست. آنچه می‌شنویم باید با شخصیت مسیح، متن کتاب‌مقدس و حکمت سالم سنجیده شود. سکوت، درون ما را آرام می‌کند تا انگیزه‌ها آشکار شوند و صدای کلامی که قبلاً خوانده‌ایم واضح‌تر گردد.",
+          "reflection": "آیا برای شنیدن جا می‌گذارم یا تمام زمان دعا را با سخن گفتن پر می‌کنم؟",
+          "action": "پس از خواندن یک مزمور، پنج دقیقه در سکوت بمان و هر فکر را بدون عجله یادداشت کن؛ بعد آن را با کلام بسنج.",
+          "prayer": "خداوندا، بگو زیرا خادمت می‌شنود. مرا از خیال‌پردازی دور و در حقیقتت هدایت کن.",
+          "declaration": "من صدای شبان نیکو را با کلام او می‌سنجم و با فروتنی پیروی می‌کنم."
+        },
+        "en": {
+          "title": "Silence and Listening",
+          "devotional": "Prayer is conversation, not a one-sided speech. Hearing God does not mean following every feeling or sudden thought. What we sense must be tested by Christ’s character, the written Word, and sound wisdom. Silence settles the inner world so motives can be exposed and the voice of Scripture already read can become clearer.",
+          "reflection": "Do I make room to listen, or fill all my prayer time with speaking?",
+          "action": "After reading a psalm, remain silent for five minutes. Write thoughts without rushing, then test them by Scripture.",
+          "prayer": "Speak, Lord, for Your servant is listening. Keep me from imagination and guide me in Your truth.",
+          "declaration": "I test the Good Shepherd’s voice by His Word and follow with humility."
+        },
+        "hr": {
+          "title": "Tišina i slušanje",
+          "devotional": "Molitva je razgovor, a ne jednosmjeran govor. Čuti Boga ne znači slijediti svaki osjećaj ili iznenadnu misao. Ono što opažamo treba ispitati Kristovim karakterom, pisanom Riječju i zdravom mudrošću. Tišina smiruje unutarnji svijet da se otkriju motivi i jasnije čuje već pročitana Riječ.",
+          "reflection": "Ostavljam li prostor za slušanje ili cijelo vrijeme molitve ispunim govorom?",
+          "action": "Nakon čitanja psalma ostani pet minuta u tišini. Zapiši misli bez žurbe, a zatim ih ispitaj Pismom.",
+          "prayer": "Govori, Gospodine, sluga tvoj sluša. Sačuvaj me od mašte i vodi me u svojoj istini.",
+          "declaration": "Glas Dobroga Pastira provjeravam njegovom Riječju i ponizno ga slijedim."
+        }
+      }
+    },
+    {
+      "day": 25,
+      "scriptures": ["Psalm 23:1-4", "Psalm 119:105"],
+      "content": {
+        "fa": {
+          "title": "دعا کردن مزامیر",
+          "devotional": "مزامیر به دعا واژگان کامل انسان را می‌دهند: شادی، ترس، توبه، امید، خشم، حیرت و پرستش. آن‌ها یاد می‌دهند احساسات را پنهان نکنیم، اما اجازه ندهیم احساس آخرین کلمه را بگوید. مزمور از واقعیت شروع می‌کند و قلب را به سوی شخصیت خدا می‌برد. با مزامیر می‌توانیم صادق و در عین حال ایمان‌دار دعا کنیم.",
+          "reflection": "کدام عبارت مزمور ۲۳ دقیقاً وضعیت امروز مرا بیان می‌کند؟",
+          "action": "مزمور ۲۳ را اول‌شخص بخوان و بعد هر آیه را به یک دعای کوتاه تبدیل کن.",
+          "prayer": "ای شبان من، امروز مرا هدایت کن، جانم را تازه ساز و در وادی‌ها حضور خود را آشکار نما.",
+          "declaration": "خداوند شبان من است؛ در حضور او هدایت، قوت و امنیت دارم."
+        },
+        "en": {
+          "title": "Praying the Psalms",
+          "devotional": "The Psalms give prayer the full vocabulary of human experience: joy, fear, repentance, hope, anger, wonder, and worship. They teach us not to hide emotion, while refusing to let emotion have the final word. A psalm begins with reality and leads the heart toward God’s character. With the Psalms we can pray honestly and faithfully at the same time.",
+          "reflection": "Which phrase in Psalm 23 most clearly describes my situation today?",
+          "action": "Read Psalm 23 in the first person, then turn each verse into a short personal prayer.",
+          "prayer": "My Shepherd, guide me today, restore my soul, and reveal Your presence in every valley.",
+          "declaration": "The Lord is my Shepherd; in His presence I have guidance, strength, and security."
+        },
+        "hr": {
+          "title": "Moliti psalme",
+          "devotional": "Psalmi daju molitvi cijeli rječnik ljudskog iskustva: radost, strah, pokajanje, nadu, ljutnju, čuđenje i štovanje. Uče nas ne skrivati osjećaje, ali im ne dopuštaju posljednju riječ. Psalam počinje stvarnošću i vodi srce prema Božjem karakteru. Uz psalme možemo istodobno moliti iskreno i u vjeri.",
+          "reflection": "Koja rečenica Psalma 23 danas najbolje opisuje moju situaciju?",
+          "action": "Pročitaj Psalam 23 u prvom licu, a zatim svaki redak pretvori u kratku osobnu molitvu.",
+          "prayer": "Pastiru moj, vodi me danas, obnovi moju dušu i objavi svoju prisutnost u svakoj dolini.",
+          "declaration": "Gospodin je moj Pastir; u njegovoj prisutnosti imam vodstvo, snagu i sigurnost."
+        }
+      }
+    },
+    {
+      "day": 26,
+      "scriptures": ["Psalm 62:8", "Psalm 13:1-6"],
+      "content": {
+        "fa": {
+          "title": "ریختن دل در حضور خدا",
+          "devotional": "ایمان واقعی مجبور نیست وانمود کند همه چیز خوب است. داوود پرسش‌های سخت خود را نزد خدا آورد، اما همان‌جا تصمیم گرفت به محبت او اعتماد کند. مرثیهٔ کتاب‌مقدسی شکایت بی‌هدف نیست؛ مسیر درد به حضور، درخواست و امید است. خدا از صداقت محترمانه نمی‌ترسد. قلبی که درد را نزد او می‌ریزد، دیگر مجبور نیست آن را در تنهایی حمل کند.",
+          "reflection": "چه اندوهی را از خدا پنهان کرده‌ام چون فکر می‌کنم نباید چنین احساسی داشته باشم؟",
+          "action": "دعایی در چهار بخش بنویس: درد من، پرسش من، درخواست من و حقیقتی که انتخاب می‌کنم به آن اعتماد کنم.",
+          "prayer": "پدر، دلم را نزد تو می‌ریزم. در پرسش‌هایم نزدیک بمان و امید مرا بر محبت پایدار خود بنا کن.",
+          "declaration": "من درد را تنها حمل نمی‌کنم؛ حضور وفادار خدا پناه من است."
+        },
+        "en": {
+          "title": "Pouring Out the Heart",
+          "devotional": "Real faith does not pretend everything is fine. David brought difficult questions to God and, in the same place, chose to trust His steadfast love. Biblical lament is not aimless complaint; it moves from pain into presence, petition, and hope. God is not threatened by reverent honesty. A heart poured out before Him no longer carries pain alone.",
+          "reflection": "Which grief have I hidden from God because I think I should not feel it?",
+          "action": "Write a prayer in four parts: my pain, my question, my request, and the truth I choose to trust.",
+          "prayer": "Father, I pour out my heart before You. Stay near in my questions and anchor my hope in Your steadfast love.",
+          "declaration": "I do not carry pain alone; God’s faithful presence is my refuge."
+        },
+        "hr": {
+          "title": "Izliti srce pred Bogom",
+          "devotional": "Prava vjera ne mora glumiti da je sve dobro. David je teška pitanja donio Bogu i upravo ondje odlučio pouzdati se u njegovu postojanu ljubav. Biblijska tužaljka nije besciljno prigovaranje; ona vodi od boli u prisutnost, molbu i nadu. Bog se ne boji iskrenosti pune poštovanja. Srce izliveno pred njim više ne nosi bol samo.",
+          "reflection": "Koju sam tugu skrivao od Boga jer mislim da je ne bih smio osjećati?",
+          "action": "Napiši molitvu u četiri dijela: moja bol, moje pitanje, moja molba i istina kojoj odlučujem vjerovati.",
+          "prayer": "Oče, izlijevam srce pred tobom. Ostani blizu u mojim pitanjima i usidri nadu u svojoj postojanoj ljubavi.",
+          "declaration": "Bol ne nosim sam; Božja vjerna prisutnost moje je utočište."
+        }
+      }
+    },
+    {
+      "day": 27,
+      "scriptures": ["Matthew 18:19-20", "Acts 4:29-31"],
+      "content": {
+        "fa": {
+          "title": "قدرت دعای متحد",
+          "devotional": "دعای جمعی فقط چند دعای انفرادی در یک اتاق نیست؛ هم‌صدایی بدن مسیح حول ارادهٔ خداست. توافق کتاب‌مقدسی به معنای فشار آوردن بر خدا یا حذف تشخیص نیست، بلکه یکی شدن در کلام، محبت و هدف است. کلیسای نخست در تهدید، برای راحتی دعا نکرد؛ برای شجاعت و ادامهٔ مأموریت دعا کرد و از روح‌القدس پر شد.",
+          "reflection": "آیا در دعا با دیگران فقط شنونده‌ام یا با قلب و ایمان مشارکت می‌کنم؟",
+          "action": "با یک یا دو ایماندار زمان کوتاهی تعیین کن و دربارهٔ یک موضوع مشخص با هم دعا کنید.",
+          "prayer": "خداوندا، ما را در محبت و حقیقت متحد کن و شجاعت بده کلامت را با قوت اعلام کنیم.",
+          "declaration": "وقتی در نام عیسی متحد می‌شویم، او در میان ماست و کلیسا با قوت پیش می‌رود."
+        },
+        "en": {
+          "title": "The Strength of United Prayer",
+          "devotional": "Corporate prayer is more than several private prayers in one room; it is Christ’s body agreeing around God’s will. Biblical agreement does not pressure God or remove discernment. It becomes one in the Word, love, and purpose. Under threat, the early church did not merely ask for comfort. They asked for boldness to continue the mission and were filled with the Holy Spirit.",
+          "reflection": "When others pray, am I only listening, or do I join with heart and faith?",
+          "action": "Set a short time with one or two believers and pray together about one specific matter.",
+          "prayer": "Lord, unite us in love and truth, and give us boldness to speak Your Word with power.",
+          "declaration": "When we unite in Jesus’ name, He is among us and the church advances with power."
+        },
+        "hr": {
+          "title": "Snaga zajedničke molitve",
+          "devotional": "Zajednička molitva više je od nekoliko privatnih molitava u istoj prostoriji; ona je Kristovo tijelo složno oko Božje volje. Biblijsko slaganje ne pritišće Boga niti ukida razlučivanje, nego nas ujedinjuje u Riječi, ljubavi i svrsi. Pod prijetnjom prva Crkva nije tražila samo udobnost, nego hrabrost za nastavak poslanja i bila je ispunjena Duhom Svetim.",
+          "reflection": "Kada drugi mole, samo slušam ili se pridružujem srcem i vjerom?",
+          "action": "Dogovori kratko vrijeme s jednim ili dvoje vjernika i zajedno molite za jednu konkretnu stvar.",
+          "prayer": "Gospodine, ujedini nas u ljubavi i istini te nam daj hrabrost naviještati tvoju Riječ u sili.",
+          "declaration": "Kada smo složni u Isusovo ime, on je među nama i Crkva napreduje u sili."
+        }
+      }
+    },
+    {
+      "day": 28,
+      "scriptures": ["Acts 13:2-3", "Matthew 6:16-18"],
+      "content": {
+        "fa": {
+          "title": "دعا همراه با روزه",
+          "devotional": "روزه خدا را مجبور نمی‌کند؛ اشتهای جسم و حواس‌پرتی را کنار می‌زند تا توجه به خدا عمیق‌تر شود. در اعمال ۱۳، عبادت و روزه محیطی برای شنیدن و مأموریت فراهم کرد. روزه باید پنهان، فروتنانه و با حکمت باشد. اگر روزهٔ غذایی برای سلامتت مناسب نیست، می‌توانی با مشورت لازم از شکل دیگری از امتناع و تمرکز روحانی استفاده کنی.",
+          "reflection": "چه چیزی بیش از همه توجه و اشتهای روحانی مرا پراکنده می‌کند؟",
+          "action": "برای یک بازهٔ امن و مشخص از غذا یا یک حواس‌پرتی صرف‌نظر کن و زمان آزادشده را به دعا و کلام بده.",
+          "prayer": "پدر، انگیزه‌ام را پاک کن و در این روزه گوش مرا برای شنیدن و قلبم را برای اطاعت آماده ساز.",
+          "declaration": "روزهٔ من نمایش نیست؛ من با فروتنی خدا را می‌جویم و برای اطاعت آماده می‌شوم."
+        },
+        "en": {
+          "title": "Prayer Joined with Fasting",
+          "devotional": "Fasting does not force God; it quiets bodily appetite and distraction so attention to Him can deepen. In Acts 13, worship and fasting created space for hearing and mission. A fast should be humble, discreet, and wise. If food fasting is not medically appropriate, seek suitable guidance and choose another form of abstinence and spiritual focus.",
+          "reflection": "What most distracts my attention and dulls my spiritual appetite?",
+          "action": "For a safe, defined period, abstain from food or one distraction and give the freed time to prayer and Scripture.",
+          "prayer": "Father, purify my motive and prepare my ears to hear and my heart to obey during this fast.",
+          "declaration": "My fast is not a performance; I seek God humbly and prepare to obey."
+        },
+        "hr": {
+          "title": "Molitva povezana s postom",
+          "devotional": "Post ne prisiljava Boga; on utišava tjelesni apetit i rastresenost kako bi se pažnja prema Bogu produbila. U Djelima 13 štovanje i post stvorili su prostor za slušanje i poslanje. Post treba biti ponizan, nenametljiv i mudar. Ako post od hrane nije zdravstveno prikladan, potraži odgovarajući savjet i izaberi drugi oblik odricanja i duhovne usredotočenosti.",
+          "reflection": "Što najviše raspršuje moju pažnju i otupljuje duhovnu glad?",
+          "action": "Tijekom sigurnog i određenog razdoblja odreci se hrane ili jedne smetnje te oslobođeno vrijeme posveti molitvi i Pismu.",
+          "prayer": "Oče, pročisti moju pobudu i tijekom posta pripremi uši za slušanje, a srce za poslušnost.",
+          "declaration": "Moj post nije predstava; ponizno tražim Boga i pripremam se poslušati."
+        }
+      }
+    },
+    {
+      "day": 29,
+      "scriptures": ["Psalm 27:13-14", "Habakkuk 2:3"],
+      "content": {
+        "fa": {
+          "title": "وقتی پاسخ دیر می‌رسد",
+          "devotional": "تأخیر همیشه رد شدن نیست. بین وعده و تحقق، خدا ممکن است شرایط، دیگران و خود ما را آماده کند. انتظار منفعلانه نیست؛ ادامهٔ وفاداری در حالی است که هنوز نتیجه دیده نمی‌شود. ما زمان‌بندی خدا را نمی‌فهمیم، اما می‌توانیم در نیکویی او ریشه بدوانیم، درخواست را تازه کنیم و وظیفهٔ امروز را انجام دهیم.",
+          "reflection": "این انتظار چه چیزی را در شخصیت من آشکار یا اصلاح کرده است؟",
+          "action": "دو ستون بنویس: «چیزی که به خدا می‌سپارم» و «چیزی که امروز مسئول انجام آن هستم.»",
+          "prayer": "پدر، در فاصلهٔ وعده و تحقق مرا وفادار نگه دار؛ امیدم را تازه و قدم امروزم را روشن کن.",
+          "declaration": "تأخیر امید مرا نمی‌کشد؛ من منتظر خدا می‌مانم و قوت تازه می‌یابم."
+        },
+        "en": {
+          "title": "When the Answer Seems Delayed",
+          "devotional": "Delay is not always denial. Between promise and fulfillment, God may be preparing circumstances, other people, and us. Waiting is not passive; it continues faithfully while the outcome remains unseen. We may not understand God’s timing, yet we can root ourselves in His goodness, renew the request, and carry out today’s responsibility.",
+          "reflection": "What has this waiting season exposed or corrected in my character?",
+          "action": "Make two columns: “What I entrust to God” and “What I am responsible to do today.”",
+          "prayer": "Father, keep me faithful between promise and fulfillment; renew my hope and make today’s step clear.",
+          "declaration": "Delay does not destroy my hope; I wait for God and receive new strength."
+        },
+        "hr": {
+          "title": "Kada odgovor kasni",
+          "devotional": "Odgoda nije uvijek odbijanje. Između obećanja i ispunjenja Bog može pripremati okolnosti, druge ljude i nas. Čekanje nije pasivno; ono vjerno nastavlja dok se ishod još ne vidi. Možda ne razumijemo Božje vrijeme, ali možemo se ukorijeniti u njegovoj dobroti, obnoviti molbu i izvršiti današnju odgovornost.",
+          "reflection": "Što je ovo razdoblje čekanja otkrilo ili ispravilo u mojem karakteru?",
+          "action": "Napravi dva stupca: „Što povjeravam Bogu“ i „Što sam odgovoran učiniti danas“.",
+          "prayer": "Oče, sačuvaj me vjernim između obećanja i ispunjenja; obnovi nadu i razjasni današnji korak.",
+          "declaration": "Odgoda ne uništava moju nadu; čekam Boga i primam novu snagu."
+        }
+      }
+    },
+    {
+      "day": 30,
+      "scriptures": ["1 Thessalonians 5:17", "Ephesians 6:18", "Colossians 4:2"],
+      "content": {
+        "fa": {
+          "title": "یک زندگی در دعا",
+          "devotional": "هدف این سی روز فقط ساختن یک زمان دعا نبود؛ پرورش آگاهی پیوسته از حضور خداست. «پیوسته دعا کنید» یعنی هر لحظه می‌تواند به مشارکت تبدیل شود: پیش از تصمیم، در مسیر کار، هنگام شنیدن خبر و در برخورد با مردم. زمان خلوت ریشه است و دعای روزانه میوهٔ آن. اکنون یک ریتم ساده و ماندگار بساز تا دعا پس از پایان پلن ادامه یابد.",
+          "reflection": "کدام عادت این سی روز باید به بخشی ثابت از زندگی من تبدیل شود؟",
+          "action": "قانون شخصی دعایت را بنویس: زمان خلوت روزانه، یک یادآور کوتاه در روز و یک زمان شفاعت هفتگی.",
+          "prayer": "پدر، مرا انسانی در دعا بساز. حضور تو را در تمام روز به یادم آور و زندگی‌ام را پاسخ گفت‌وگو با تو قرار بده.",
+          "declaration": "من در حضور خدا زندگی می‌کنم؛ دعا نفس روحانی و سبک زندگی من است."
+        },
+        "en": {
+          "title": "A Life of Prayer",
+          "devotional": "The goal of these thirty days was not only to create a prayer appointment, but to cultivate continual awareness of God’s presence. “Pray without ceasing” means every moment can become fellowship: before a choice, on the way to work, while hearing news, and in encounters with people. The secret place is the root, and prayer through the day is its fruit. Build a simple rhythm that continues after this plan.",
+          "reflection": "Which practice from these thirty days should become a permanent part of my life?",
+          "action": "Write your personal rule of prayer: a daily secret-place time, one brief daily reminder, and one weekly intercession time.",
+          "prayer": "Father, make me a person of prayer. Remind me of Your presence throughout the day and make my life a response to You.",
+          "declaration": "I live in God’s presence; prayer is my spiritual breath and way of life."
+        },
+        "hr": {
+          "title": "Život molitve",
+          "devotional": "Cilj ovih trideset dana nije bio samo odrediti termin molitve, nego razviti stalnu svijest o Božjoj prisutnosti. „Bez prestanka molite“ znači da svaki trenutak može postati zajedništvo: prije odluke, na putu na posao, pri slušanju vijesti i u susretu s ljudima. Skrovito mjesto je korijen, a molitva kroz dan njegov plod. Izgradi jednostavan ritam koji će trajati i nakon plana.",
+          "reflection": "Koja praksa iz ovih trideset dana treba postati trajni dio mojega života?",
+          "action": "Napiši svoje osobno pravilo molitve: dnevno vrijeme nasamo, jedan kratki podsjetnik dnevno i jedno tjedno vrijeme zagovora.",
+          "prayer": "Oče, učini me čovjekom molitve. Podsjećaj me na svoju prisutnost kroz dan i učini moj život odgovorom tebi.",
+          "declaration": "Živim u Božjoj prisutnosti; molitva je moj duhovni dah i način života."
+        }
+      }
+    }
+  ]
+}

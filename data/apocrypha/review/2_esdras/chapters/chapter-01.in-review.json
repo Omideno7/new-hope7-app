@@ -1,0 +1,337 @@
+{
+  "schema_version": 1,
+  "book_id": "2_esdras",
+  "title_fa": "دوم اِسدراس",
+  "title_en": "Second Esdras",
+  "title_hr": "Druga Ezdrina",
+  "chapter": 1,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "4c17a09d9e9223718157689910c638620a0fb1546e31295d0a13c08e05c4e09b",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "The second book of the prophet Esdras, the son of Saraias, the son of Azarias, the son of Helchias, the son of Sadamias, the son of Sadoc, the son of Achitob,",
+      "text_fa": null,
+      "text_hr": "Druga knjiga proroka Ezre, sina Sarajina, sina Azarijina, sina Helkijina, sina Sadamijina, sina Sadokova, sina Ahitobova,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "The son of Achias, the son of Phinees, the son of Heli, the son of Amarias, the son of Aziei, the son of Marimoth, the son of Arna, the son of Ozias, the son of Borith, the son of Abisei, the son of Phinees, the son of Eleazar,",
+      "text_fa": null,
+      "text_hr": "Sin Ahije, sina Fineja, sina Elija, sina Amarije, sina Aziela, sina Marimota, sina Arne, sina Ozije, sina Borita, sina Abiseja, sina Fineja, sina Eleazara,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "The son of Aaron, of the tribe of Levi; which was captive in the land of the Medes, in the reign of Artexerxes king of the Persians.",
+      "text_fa": null,
+      "text_hr": "Sin Aronov, iz Levijeva plemena; koji je bio zarobljen u zemlji Medijaca, za vrijeme vladavine Artekserksa, kralja Perzijanaca.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And the word of the Lord came unto me, saying,",
+      "text_fa": null,
+      "text_hr": "I došla mi je riječ Gospodnja:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "Go thy way, and shew my people their sinful deeds, and their children their wickedness which they have done against me; that they may tell their children’s children:",
+      "text_fa": null,
+      "text_hr": "Idi i pokaži mojemu narodu njegova grešna djela, a njegovoj djeci opačine koje su počinili protiv mene, da ih prenesu djeci svoje djece:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "Because the sins of their fathers are increased in them: for they have forgotten me, and have offered unto strange gods.",
+      "text_fa": null,
+      "text_hr": "Jer su im se umnožili grijesi njihovih otaca, jer su me zaboravili i žrtvovali su tuđim bogovima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "Am not I even he that brought them out of the land of Egypt, from the house of bondage? but they have provoked me unto wrath, and despised my counsels.",
+      "text_fa": null,
+      "text_hr": "Nisam li ja čak onaj koji ih je izveo iz zemlje egipatske, iz kuće ropstva? Ali oni su me razgnjevili i prezreli moje savjete.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "Pull thou off then the hair of thy head, and cast all evil upon them, for they have not been obedient unto my law, but it is a rebellious people.",
+      "text_fa": null,
+      "text_hr": "Počupaj onda kosu sa svoje glave i baci svo zlo na njih, jer nisu bili poslušni mom zakonu, ali to je narod buntovan.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "How long shall I forbear them, into whom I have done so much good?",
+      "text_fa": null,
+      "text_hr": "Dokle ću ih podnositi, kojima sam toliko dobra učinio?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "Many kings have I destroyed for their sakes; Pharaoh with his servants and all his power have I smitten down.",
+      "text_fa": null,
+      "text_hr": "Radi njih sam oborio mnoge kraljeve; porazio sam faraona, njegove sluge i svu njegovu vojsku.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "All the nations have I destroyed before them, and in the east I have scattered the people of two provinces, even of Tyrus and Sidon, and have slain all their enemies.",
+      "text_fa": null,
+      "text_hr": "Pred njima sam uništio sve narode, a na istoku sam raspršio stanovnike dviju pokrajina, Tira i Sidona, te istrijebio sve njihove neprijatelje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "Speak thou therefore unto them, saying, Thus saith the Lord,",
+      "text_fa": null,
+      "text_hr": "Reci im, dakle, ovako govori Gospodin:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "I led you through the sea and in the beginning gave you a large and safe passage; I gave you Moses for a leader, and Aaron for a priest.",
+      "text_fa": null,
+      "text_hr": "Proveo sam vas kroz more i od početka vam dao širok i siguran prolaz; dao sam vam Mojsija za vođu, a Arona za svećenika.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "I gave you light in a pillar of fire, and great wonders have I done among you; yet have ye forgotten me, saith the Lord.",
+      "text_fa": null,
+      "text_hr": "Dao sam vam svjetlo u stupu ognjenom, i velika sam čudesa učinio među vama; a ipak ste me zaboravili, govori Gospodin.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "Thus saith the Almighty Lord, The quails were as a token to you; I gave you tents for your safeguard: nevertheless ye murmured there,",
+      "text_fa": null,
+      "text_hr": "Ovako govori Gospodin Svemogući: Prepelice su vam bile znak; Dao sam vam šatore za vašu zaštitu, ipak ste ondje mrmljali,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "And triumphed not in my name for the destruction of your enemies, but ever to this day do ye yet murmur.",
+      "text_fa": null,
+      "text_hr": "Ali niste se radovali u moje ime zbog propasti svojih neprijatelja; sve do današnjega dana još mrmljate.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "Where are the benefits that I have done for you? when ye were hungry and thirsty in the wilderness, did ye not cry unto me,",
+      "text_fa": null,
+      "text_hr": "Gdje su dobrobiti koje sam učinio za vas? Kad ste bili gladni i žedni u pustinji, niste li vikali k meni,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "Saying, Why hast thou brought us into this wilderness to kill us? it had been better for us to have served the Egyptians, than to die in this wilderness.",
+      "text_fa": null,
+      "text_hr": "Govoreći: Zašto si nas doveo u ovu pustinju da nas ubiješ? Bolje nam je bilo da smo služili Egipćanima, nego da umremo u ovoj pustinji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "Then had I pity upon your mournings, and gave you manna to eat; so ye did eat angels’ bread.",
+      "text_fa": null,
+      "text_hr": "Tada sam se sažalio na vaše jadikovanje i dao vam manu za hranu; jeli ste anđeoski kruh.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "When ye were thirsty, did I not cleave the rock, and waters flowed out to your fill? for the heat I covered you with the leaves of the trees.",
+      "text_fa": null,
+      "text_hr": "Kad ste ožednjeli, nisam li rascijepio stijenu pa su vam vode obilno potekle? Od žege sam vas zaklanjao lišćem drveća.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "I divided among you a fruitful land, I cast out the Canaanites, the Pherezites, and the Philistines, before you: what shall I yet do more for you? saith the Lord.",
+      "text_fa": null,
+      "text_hr": "Podijelio sam među vama plodnu zemlju, istjerao sam ispred vas Kanaance, Ferezeje i Filistejce: što da vam još učinim? Govori Gospodin.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "Thus saith the Almighty Lord, When ye were in the wilderness, in the river of the Amorites, being athirst, and blaspheming my name,",
+      "text_fa": null,
+      "text_hr": "Ovako govori Gospodin Svemogući: Kad ste bili u pustinji, kod rijeke Amor, bili ste žedni i hulili ime moje,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "I gave you not fire for your blasphemies, but cast a tree in the water, and made the river sweet.",
+      "text_fa": null,
+      "text_hr": "Nisam na vas poslao oganj zbog vašega bogohuljenja, nego sam bacio drvo u vodu i učinio rijeku slatkom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "What shall I do unto thee, O Jacob? thou, Juda, wouldest not obey me: I will turn me to other nations, and unto those will I give my name, that they may keep my statutes.",
+      "text_fa": null,
+      "text_hr": "Što da ti učinim, Jakove? Ti me, Judo, nisi poslušao: drugim ću se narodima obratiti i njima ću dati svoje ime da drže moje zakone.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "Seeing ye have forsaken me, I will forsake you also; when ye desire me to be gracious unto you, I shall have no mercy upon you.",
+      "text_fa": null,
+      "text_hr": "Budući da ste mene napustili, i ja ću napustiti vas; kad budete od mene tražili milost, neću vam je iskazati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "Whensoever ye shall call upon me, I will not hear you: for ye have defiled your hands with blood, and your feet are swift to commit manslaughter.",
+      "text_fa": null,
+      "text_hr": "Kad god me zazovete, neću vas uslišati, jer ste krvlju okaljali ruke, a noge su vam brze prolijevati krv.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "Ye have not as it were forsaken me, but your own selves, saith the Lord.",
+      "text_fa": null,
+      "text_hr": "Niste napustili mene, nego same sebe, govori Gospodin.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "Thus saith the Almighty Lord, Have I not prayed you as a father his sons, as a mother her daughters, and a nurse her young babes,",
+      "text_fa": null,
+      "text_hr": "Ovako govori Gospodin Svemogući: Nisam li vas molio kao otac svoje sinove, kao majka svoje kćeri i kao dojilja svoju djecu,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "That ye would be my people, and I should be your God; that ye would be my children, and I should be your father?",
+      "text_fa": null,
+      "text_hr": "Da vi budete moj narod, a ja da budem vaš Bog; da vi budete moja djeca, a ja vaš otac?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "I gathered you together, as a hen gathereth her chickens under her wings: but now, what shall I do unto you? I will cast you out from my face.",
+      "text_fa": null,
+      "text_hr": "Skupio sam vas kao što kokoš skuplja svoje piliće pod krila: ali što ću vam sada? Odbacit ću vas od svojega lica.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "When ye offer unto me, I will turn my face from you: for your solemn feastdays, your new moons, and your circumcisions, have I forsaken.",
+      "text_fa": null,
+      "text_hr": "Kad mi prinesete žrtvu, odvratit ću lice svoje od vas, jer sam vaše svečane blagdane, vaše mlade mjesece i vaša obrezivanja napustio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "I sent unto you my servants the prophets, whom ye have taken and slain, and torn their bodies in pieces, whose blood I will require of your hands, saith the Lord.",
+      "text_fa": null,
+      "text_hr": "Poslao sam k vama svoje sluge, proroke, koje ste uhvatili i ubili, i rastrgali im tijela, čiju ću krv tražiti iz vaših ruku, govori Gospodin.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "Thus saith the Almighty Lord, Your house is desolate, I will cast you out as the wind doth stubble.",
+      "text_fa": null,
+      "text_hr": "Ovako govori Gospodin Svemogući: Vaša je kuća opustjela; razasut ću vas kao što vjetar raznosi strnjiku.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 34,
+      "text_en": "And your children shall not be fruitful; for they have despised my commandment, and done the thing that is an evil before me.",
+      "text_fa": null,
+      "text_hr": "I djeca vaša neće biti plodna; jer su prezreli moju zapovijed i učinili ono što je zlo preda mnom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 35,
+      "text_en": "Your houses will I give to a people that shall come; which not having heard of me yet shall believe me; to whom I have shewed no signs, yet they shall do that I have commanded them.",
+      "text_fa": null,
+      "text_hr": "Vaše ću kuće dati narodu koji će doći. Oni koji za mene još nisu čuli povjerovat će mi; premda im nisam pokazao znakove, izvršavat će ono što sam zapovjedio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 36,
+      "text_en": "They have seen no prophets, yet they shall call their sins to remembrance, and acknowledge them.",
+      "text_fa": null,
+      "text_hr": "Oni nisu vidjeli proroke, a ipak će se prisjetiti svojih grijeha i priznati ih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 37,
+      "text_en": "I take to witness the grace of the people to come, whose little ones rejoice in gladness: and though they have not seen me with bodily eyes, yet in spirit they believe the thing that I say.",
+      "text_fa": null,
+      "text_hr": "Svjedočim o milosti naroda koji dolazi, čija se djeca raduju u veselju. Premda me nisu vidjeli tjelesnim očima, u duhu vjeruju onomu što govorim.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 38,
+      "text_en": "And now, brother, behold what glory; and see the people that come from the east:",
+      "text_fa": null,
+      "text_hr": "A sada, brate, pogledaj tu slavu; vidi ljude koji dolaze s istoka.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 39,
+      "text_en": "Unto whom I will give for leaders, Abraham, Isaac, and Jacob, Oseas, Amos, and Micheas, Joel, Abdias, and Jonas,",
+      "text_fa": null,
+      "text_hr": "Njima ću za vođe dati Abrahama, Izaka i Jakova, Hošeu, Amosa i Miheja, Joela, Obadiju i Jonu,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 40,
+      "text_en": "Nahum, and Abacuc, Sophonias, Aggeus, Zachary, and Malachy, which is called also an angel of the Lord.",
+      "text_fa": null,
+      "text_hr": "Nahuma, Habakuka, Sefaniju, Hagaja, Zahariju i Malahiju, koji se naziva i anđelom Gospodnjim.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

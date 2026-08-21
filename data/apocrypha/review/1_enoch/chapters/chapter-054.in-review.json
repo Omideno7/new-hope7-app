@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 54,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "65f1d824349ff84dfb2c7f121e114abdf9fc54cd0145aa46e52cffe6b518ec03",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And I looked and turned to another part of the earth, and saw there a deep valley with burning fire.",
+      "text_fa": null,
+      "text_hr": "Pogledao sam, okrenuo se prema drugome dijelu zemlje i ondje vidio duboku dolinu s razbuktalom vatrom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And they brought the kings and the mighty, and began to cast them into this deep valley.",
+      "text_fa": null,
+      "text_hr": "Doveli su kraljeve i moćnike te ih počeli bacati u tu duboku dolinu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And there mine eyes saw how they made these their instruments, iron chains of immeasurable weight.",
+      "text_fa": null,
+      "text_hr": "Ondje su moje oči vidjele kako im izrađuju oruđa: željezne lance neizmjerne težine.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And I asked the angel of peace who went with me, saying: ‘For whom are these chains being prepared?’",
+      "text_fa": null,
+      "text_hr": "Upitao sam anđela mira koji je išao sa mnom: „Za koga se pripravljaju ovi lanci?“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And he said unto me: ‘These are being prepared for the hosts of Azâzêl, so that they may take them and cast them into the abyss of complete condemnation, and they shall cover their jaws with rough stones as the Lord of Spirits commanded.",
+      "text_fa": null,
+      "text_hr": "Odgovorio mi je: „Pripravljaju se za Azazelove vojske, da ih njima uhvate i bace u bezdan potpune osude. Njihova će usta prekriti grubim kamenjem, kako je zapovjedio Gospodar duhova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And Michael, and Gabriel, and Raphael, and Phanuel shall take hold of them on that great day, and cast them on that day into the burning furnace, that the Lord of Spirits may take vengeance on them for their unrighteousness in becoming subject to Satan and leading astray those who dwell on the earth.’",
+      "text_fa": null,
+      "text_hr": "Mihael, Gabriel, Rafael i Fanuel uhvatit će ih onoga velikog dana i baciti ih toga dana u užarenu peć, da im se Gospodar duhova osveti zbog nepravde kojom su se podložili Sotoni i zaveli stanovnike zemlje.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "‘And in those days shall punishment come from the Lord of Spirits, and He will open all the chambers of waters which are above the heavens, and of the fountains which are beneath the earth.",
+      "text_fa": null,
+      "text_hr": "„U one će dane kazna doći od Gospodara duhova. Otvorit će sve odaje voda koje su iznad nebesa i izvore koji su pod zemljom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And all the waters shall be joined with the waters: that which is above the heavens is the masculine, and the water which is beneath the earth is the feminine.",
+      "text_fa": null,
+      "text_hr": "Sve će se vode sjediniti: voda iznad nebesa muška je, a voda pod zemljom ženska.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And they shall destroy all who dwell on the earth and those who dwell under the ends of the heaven.",
+      "text_fa": null,
+      "text_hr": "One će uništiti sve stanovnike zemlje i one koji prebivaju pod krajevima neba.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And =when= they have recognized their unrighteousness which they have wrought on the earth, then by these shall they perish.’",
+      "text_fa": null,
+      "text_hr": "Kad spoznaju nepravdu koju su činili na zemlji, tim će vodama propasti.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

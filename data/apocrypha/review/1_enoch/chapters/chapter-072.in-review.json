@@ -1,0 +1,314 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 72,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "62f5bab03ad4cd78caad64a92a78e8abe5e806743843276998dc2d4ea13f811e",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "The Book of the courses of the luminaries of the heaven, the relations of each, according to their classes, their dominion and their seasons, according to their names and places of origin, and according to their months, which Uriel, the holy angel, who was with me, who is their guide, showed me; and he showed me all their laws exactly as they are, and how it is with regard to all the years of the world and unto eternity, till the new creation is accomplished which dureth till eternity.",
+      "text_fa": null,
+      "text_hr": "Knjiga o putanjama nebeskih svjetlila, o odnosima svakoga od njih prema njihovim razredima, vlasti i razdobljima, prema njihovim imenima i mjestima podrijetla te prema njihovim mjesecima; sve mi je to pokazao Uriel, sveti anđeo koji bijaše sa mnom i njihov je vodič. Pokazao mi je sve njihove zakone točno onakvima kakvi jesu i kako vrijede za sve godine svijeta sve do vječnosti, dok se ne dovrši novo stvaranje koje će trajati zauvijek.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And this is the first law of the luminaries: the luminary the Sun has its rising in the eastern portals of the heaven, and its setting in the western portals of the heaven.",
+      "text_fa": null,
+      "text_hr": "Ovo je prvi zakon svjetlila: svjetlilo zvano Sunce izlazi na istočnim vratima neba, a zalazi na zapadnim vratima neba.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And I saw six portals in which the sun rises, and six portals in which the sun sets: and the moon rises and sets in these portals, and the leaders of the stars and those whom they lead: six in the east and six in the west, and all following each other in accurately corresponding order: also many windows to the right and left of these portals.",
+      "text_fa": null,
+      "text_hr": "Vidio sam šest vrata kroz koja Sunce izlazi i šest vrata kroz koja zalazi. Na tim vratima izlazi i zalazi i Mjesec, zajedno s vođama zvijezda i zvijezdama koje oni vode: šest vrata na istoku i šest na zapadu, poredanih točno jedno za drugim, te mnogo prozora desno i lijevo od tih vrata.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And first there goes forth the great luminary, named the Sun, and his circumference is like the circumference of the heaven, and he is quite filled with illuminating and heating fire.",
+      "text_fa": null,
+      "text_hr": "I prvo izlazi velika svjetiljka, po imenu Sunce, a njegov opseg je poput opsega neba, i on je sasvim ispunjen vatrom koja osvjetljava i grije.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "The chariot on which he ascends, the wind drives, and the sun goes down from the heaven and returns through the north in order to reach the east, and is so guided that he comes to the appropriate (lit. ‘that’) portal and shines in the face of the heaven.",
+      "text_fa": null,
+      "text_hr": "Kola na kojima se uspinje pokreće vjetar. Sunce zalazi s neba i vraća se preko sjevera da bi stiglo na istok; tako se vodi do odgovarajućih vrata i obasjava lice neba.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "In this way he rises in the first month in the great portal, which is the fourth [those six portals in the east].",
+      "text_fa": null,
+      "text_hr": "Na ovaj način on ustaje u prvom mjesecu u velikom portalu, koji je četvrti [onih šest portala na istoku].",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And in that fourth portal from which the sun rises in the first month are twelve window-openings, from which proceed a flame when they are opened in their season.",
+      "text_fa": null,
+      "text_hr": "A u tom četvrtom portalu iz kojeg sunce izlazi u prvom mjesecu nalazi se dvanaest prozorskih otvora, iz kojih izlazi plamen kada se otvore u svoje doba.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "When the sun rises in the heaven, he comes forth through that fourth portal thirty mornings in succession, and sets accurately in the fourth portal in the west of the heaven.",
+      "text_fa": null,
+      "text_hr": "Kada sunce izađe na nebu, ono izlazi kroz taj četvrti portal trideset uzastopnih jutara, i zalazi točno na četvrtom portalu na zapadu neba.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And during this period the day becomes daily longer and the night nightly shorter to the thirtieth morning.",
+      "text_fa": null,
+      "text_hr": "I tijekom ovog razdoblja dan postaje svaki dan duži, a noć svake noći kraća do tridesetog jutra.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "On that day the day is longer than the night by a ninth part, and the day amounts exactly to ten parts and the night to eight parts.",
+      "text_fa": null,
+      "text_hr": "Toga dana dan je duži od noći za devetinu, a dan iznosi točno deset dijelova, a noć osam dijelova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "And the sun rises from that fourth portal, and sets in the fourth and returns to the fifth portal of the east thirty mornings, and rises from it and sets in the fifth portal.",
+      "text_fa": null,
+      "text_hr": "I sunce izlazi iz tog četvrtog portala, i zalazi u četvrtom i vraća se na peti portal na istoku trideset jutara, i izlazi iz njega i zalazi u petom portalu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "And then the day becomes longer by †two† parts and amounts to eleven parts, and the night becomes shorter and amounts to seven parts.",
+      "text_fa": null,
+      "text_hr": "I tada dan postaje duži za †dva† dijela i iznosi jedanaest dijelova, a noć postaje kraća i iznosi sedam dijelova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "And it returns to the east and enters into the sixth portal, and rises and sets in the sixth portal one and thirty mornings on account of its sign.",
+      "text_fa": null,
+      "text_hr": "I vraća se na istok i ulazi u šesti portal, i izlazi i zalazi u šestom portalu trideset i jedno jutro zbog svog znaka.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "On that day the day becomes longer than the night, and the day becomes double the night, and the day becomes twelve parts, and the night is shortened and becomes six parts.",
+      "text_fa": null,
+      "text_hr": "Toga dana dan postaje duži od noći, i dan postaje dvostruko veći od noći, i dan postaje dvanaest dijelova, a noć se skraćuje i postaje šest dijelova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "And the sun mounts up to make the day shorter and the night longer, and the sun returns to the east and enters into the sixth portal, and rises from it and sets thirty mornings.",
+      "text_fa": null,
+      "text_hr": "I sunce se penje da bi dan bio kraći, a noć duža, i sunce se vraća na istok i ulazi u šesti portal, i izlazi iz njega i zalazi trideset jutara.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "And when thirty mornings are accomplished, the day decreases by exactly one part, and becomes eleven parts, and the night seven.",
+      "text_fa": null,
+      "text_hr": "A kada se navrši trideset jutara, dan se smanjuje za točno jedan dio, i postaje jedanaest dijelova, a noć sedam.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "And the sun goes forth from that sixth portal in the west, and goes to the east and rises in the fifth portal for thirty mornings, and sets in the west again in the fifth western portal.",
+      "text_fa": null,
+      "text_hr": "I sunce izlazi iz tog šestog portala na zapadu, ide prema istoku i izlazi u petom portalu trideset jutara, i opet zalazi na zapadu u petom zapadnom portalu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "On that day the day decreases by †two† parts, and amounts to ten parts and the night to eight parts.",
+      "text_fa": null,
+      "text_hr": "Tog dana dan se smanjuje za †dva† dijela, i iznosi deset dijelova, a noć na osam dijelova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "And the sun goes forth from that fifth portal and sets in the fifth portal of the west, and rises in the fourth portal for one and thirty mornings on account of its sign, and sets in the west.",
+      "text_fa": null,
+      "text_hr": "I sunce izlazi iz tog petog portala i zalazi na petom portalu na zapadu, i izlazi na četvrtom portalu trideset i jedno jutro zbog svog znaka, i zalazi na zapadu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "On that day the day is equalised with the night, [and becomes of equal length], and the night amounts to nine parts and the day to nine parts.",
+      "text_fa": null,
+      "text_hr": "Toga dana dan se izjednačava s noći, [i postaje jednake dužine], te noć iznosi devet dijelova, a dan devet dijelova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "And the sun rises from that portal and sets in the west, and returns to the east and rises thirty mornings in the third portal and sets in the west in the third portal.",
+      "text_fa": null,
+      "text_hr": "I sunce izlazi iz tog portala i zalazi na zapadu, i vraća se na istok i izlazi trideset jutara na trećem portalu i zalazi na zapadu na trećem portalu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "And on that day the night becomes longer than the day, and night becomes longer than night, and day shorter than day till the thirtieth morning, and the night amounts exactly to ten parts and the day to eight parts.",
+      "text_fa": null,
+      "text_hr": "I toga dana noć postaje duža od dana, i noć postaje duža od noći, a dan kraći od dana do tridesetog jutra, i noć iznosi točno deset dijelova, a dan osam dijelova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "And the sun rises from that third portal and sets in the third portal in the west and returns to the east, and for thirty mornings rises in the second portal in the east, and in like manner sets in the second portal in the west of the heaven.",
+      "text_fa": null,
+      "text_hr": "I sunce izlazi iz tog trećeg portala i zalazi u trećem portalu na zapadu i vraća se na istok, i trideset jutara izlazi u drugom portalu na istoku, i na sličan način zalazi u drugom portalu na zapadu neba.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "And on that day the night amounts to eleven parts and the day to seven parts.",
+      "text_fa": null,
+      "text_hr": "I tog dana noć se sastoji od jedanaest dijelova, a dan od sedam dijelova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "And the sun rises on that day from that second portal and sets in the west in the second portal, and returns to the east into the first portal for one and thirty mornings, and sets in the first portal in the west of the heaven.",
+      "text_fa": null,
+      "text_hr": "I sunce izađe tog dana iz tog drugog portala i zađe na zapadu u drugom portalu, i vrati se na istok u prvi portal za trideset i jedno jutro, i zađe u prvom portalu na zapadu neba.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "And on that day the night becomes longer and amounts to the double of the day: and the night amounts exactly to twelve parts and the day to six.",
+      "text_fa": null,
+      "text_hr": "I tog dana noć postaje duža i iznosi dvostruko od dana: i noć iznosi točno dvanaest dijelova, a dan šest.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "And the sun has (therewith) traversed the divisions of his orbit and turns again on those divisions of his orbit, and enters that portal thirty mornings and sets also in the west opposite to it.",
+      "text_fa": null,
+      "text_hr": "I sunce je (time) prešlo dionice svoje orbite i ponovno se okreće na tim dionicama svoje orbite, i ulazi u taj portal trideset jutara i zalazi također na zapadu nasuprot njemu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "And on that night has the night decreased in length by a †ninth† part, and the night has become eleven parts and the day seven parts.",
+      "text_fa": null,
+      "text_hr": "I te noći noć se smanjila za †deveti† dio, te je noć postala jedanaest dijelova, a dan sedam dijelova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "And the sun has returned and entered into the second portal in the east, and returns on those his divisions of his orbit for thirty mornings, rising and setting.",
+      "text_fa": null,
+      "text_hr": "I sunce se vratilo i ušlo u drugi portal na istoku, i vraća se na tim svojim dijelovima svoje orbite trideset jutara, izlazeći i zalazeći.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "And on that day the night decreases in length, and the night amounts to ten parts and the day to eight.",
+      "text_fa": null,
+      "text_hr": "I toga dana noć se skrati, i noć iznosi deset dijelova, a dan osam.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "And on that day the sun rises from that portal, and sets in the west, and returns to the east, and rises in the third portal for one and thirty mornings, and sets in the west of the heaven.",
+      "text_fa": null,
+      "text_hr": "I tog dana sunce izlazi iz tog portala, i zalazi na zapadu, i vraća se na istok, i izlazi na trećem portalu za trideset i jedno jutro, i zalazi na zapadu neba.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "On that day the night decreases and amounts to nine parts, and the day to nine parts, and the night is equal to the day and the year is exactly as to its days three hundred and sixty-four.",
+      "text_fa": null,
+      "text_hr": "Toga dana noć se smanjuje i iznosi devet dijelova, a dan devet dijelova, a noć je jednaka danu, a godina je točno kao svojih dana tri stotine šezdeset i četiri.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "And the length of the day and of the night, and the shortness of the day and of the night arise—through the course of the sun these distinctions are made (lit. ‘they are separated’).",
+      "text_fa": null,
+      "text_hr": "Duljina i kratkoća dana i noći nastaju kretanjem Sunca; po njemu se te razlike stvaraju (doslovno: ‘razdvajaju se’).",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 34,
+      "text_en": "So it comes that its course becomes daily longer, and its course nightly shorter.",
+      "text_fa": null,
+      "text_hr": "Tako dolazi do toga da njegov tok postaje svakim danom duži, a tok svake noći kraći.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 35,
+      "text_en": "And this is the law and the course of the sun, and his return as often as he returns sixty times and rises, _i. e._ the great luminary which is named the Sun, for ever and ever.",
+      "text_fa": null,
+      "text_hr": "I ovo je zakon i tok sunca, i njegov povratak onoliko često koliko se vraća šezdeset puta i izlazi, _tj._ velika svjetiljka koja se zove Sunce, zauvijek i zauvijek.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 36,
+      "text_en": "And that which (thus) rises is the great luminary, and is so named according to its appearance, according as the Lord commanded.",
+      "text_fa": null,
+      "text_hr": "A ono što (tako) izlazi je velika svjetiljka, i tako je nazvana prema svom izgledu, prema onome kako je Gospod naredio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 37,
+      "text_en": "As he rises, so he sets and decreases not, and rests not, but runs day and night, and his light is sevenfold brighter than that of the moon; but as regards size they are both equal.",
+      "text_fa": null,
+      "text_hr": "Kako izlazi, tako zalazi i ne zalazi, i ne odmara se, nego trči danju i noću, a njegova je svjetlost sedam puta svjetlija od mjesečeve; ali što se tiče veličine, oboje su jednaki.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

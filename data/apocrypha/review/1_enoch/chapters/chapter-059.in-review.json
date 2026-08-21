@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 59,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "5478b2bc44380de5d5836a602d5e7d0f0847f08ded509b85fbb468e550faa979",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "[In those days mine eyes saw the secrets of the lightnings, and of the lights, and the judgements they execute (lit. ‘their judgement’): and they lighten for a blessing or a curse as the Lord of Spirits willeth.",
+      "text_fa": null,
+      "text_hr": "[U one su dane moje oči vidjele tajne munja i svjetala te sudove koje izvršavaju, doslovno „njihov sud“: one svijetle na blagoslov ili prokletstvo kako hoće Gospodar duhova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And there I saw the secrets of the thunder, and how when it resounds above in the heaven, the sound thereof is heard, and he caused me to see the =judgements= executed on the earth, whether they be for well-being and blessing, or for a curse, according to the word of the Lord of Spirits.",
+      "text_fa": null,
+      "text_hr": "Ondje sam vidio tajne groma: kako se, kad odjekne gore na nebu, čuje njegov zvuk. Pokazao mi je =sudove= koji se izvršavaju na zemlji, bilo za dobrobit i blagoslov bilo za prokletstvo, prema riječi Gospodara duhova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And after that all the secrets of the lights and lightnings were shown to me, and they lighten for blessing and for satisfying.]",
+      "text_fa": null,
+      "text_hr": "Nakon toga pokazane su mi sve tajne svjetala i munja, a one svijetle radi blagoslova i okrjepe.]",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

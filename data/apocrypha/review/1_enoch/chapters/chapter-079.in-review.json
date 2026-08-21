@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 79,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "7624682bb0a64478d180d91957ccbc98a86b8d820cea12b5a6f3ba76b245e496",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And now, my son, I have shown thee everything, and the law of all the stars of the heaven is completed.",
+      "text_fa": null,
+      "text_hr": "A sada, sine moj, sve sam ti pokazao, i zakon svih zvijezda na nebu je ispunjen.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And he showed me all the laws of these for every day, and for every season of bearing rule, and for every year, and for its going forth, and for the order prescribed to it every month and every week:",
+      "text_fa": null,
+      "text_hr": "Pokazao mi je sve te zakone za svaki dan, za svako razdoblje vlasti, za svaku godinu i njezin početak te za red koji joj je određen za svaki mjesec i svaki tjedan:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And the waning of the moon which takes place in the sixth portal: for in this sixth portal her light is accomplished, and after that there is the beginning of the waning:",
+      "text_fa": null,
+      "text_hr": "I opadanje Mjeseca koje nastaje na šestim vratima: na tim se šestim vratima dovršava njegova svjetlost, a nakon toga počinje opadanje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "‹And the waning› which takes place in the first portal in its season, till one hundred and seventy-seven days are accomplished: reckoned according to weeks, twenty-five (weeks) and two days.",
+      "text_fa": null,
+      "text_hr": "‹To opadanje› nastaje na prvim vratima u određeno doba, dok se ne navrši 177 dana — računajući po tjednima, dvadeset i pet tjedana i dva dana.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "She falls behind the sun and the order of the stars exactly five days in the course of one period, and when this place which thou seest has been traversed.",
+      "text_fa": null,
+      "text_hr": "Mjesec zaostaje za Suncem i poretkom zvijezda točno pet dana u jednom razdoblju, kada prijeđe mjesto koje vidiš.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "Such is the picture and sketch of every luminary which Uriel the archangel, who is their leader, showed unto me.",
+      "text_fa": null,
+      "text_hr": "Takav je prikaz i nacrt svakog svjetlila koji mi je pokazao arkanđeo Uriel, njihov vođa.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

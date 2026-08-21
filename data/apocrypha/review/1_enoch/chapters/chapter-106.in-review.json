@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 106,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "bc1d3addb477eeb1541242af04c87325dde494d45d75aa6da9912465a85d03de",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And after some days my son Methuselah took a wife for his son Lamech, and she became pregnant by him and bore a son.",
+      "text_fa": null,
+      "text_hr": "I nakon nekoliko dana moj sin Metušalah uze ženu za svog sina Lameka, i ona zatrudnje s njim i rodi sina.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And his body was white as snow and red as the blooming of a rose, and the hair of his head †and his long locks were white as wool, and his eyes beautiful†. And when he opened his eyes, he lighted up the whole house like the sun, and the whole house was very bright.",
+      "text_fa": null,
+      "text_hr": "I njegovo tijelo bijaše bijelo kao snijeg i crveno kao ruža u cvatu, a kosa na njegovoj glavi †i njegovi dugi pramenovi bijahu bijeli kao vuna, a njegove oči lijepe†. I kad je otvorio oči, obasjao je cijelu kuću poput sunca, i cijela je kuća bila vrlo svijetla.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And thereupon he arose in the hands of the midwife, opened his mouth, and †conversed with† the Lord of righteousness.",
+      "text_fa": null,
+      "text_hr": "I tada je ustao u rukama babice, otvorio usta i †razgovarao s† Gospodarom pravde.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And his father Lamech was afraid of him and fled, and came to his father Methuselah.",
+      "text_fa": null,
+      "text_hr": "Njegov ga se otac Lamech uplašio, pobjegao je i došao svome ocu Metušalahu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And he said unto him: ‘I have begotten a strange son, diverse from and unlike man, and resembling the sons of the God of heaven; and his nature is different, and he is not like us, and his eyes are as the rays of the sun, and his countenance is glorious.",
+      "text_fa": null,
+      "text_hr": "Reče mu: ‘Rodio mi se neobičan sin, različit od čovjeka i njemu nenalik, sličan sinovima Boga nebeskoga. Narav mu je drukčija i nije poput nas; oči su mu kao sunčeve zrake, a lice veličanstveno.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And it seems to me that he is not sprung from me but from the angels, and I fear that in his days a wonder may be wrought on the earth.",
+      "text_fa": null,
+      "text_hr": "I čini mi se da on nije potekao od mene nego od anđela, i bojim se da bi se u njegovim danima čudo moglo dogoditi na zemlji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And now, my father, I am here to petition thee and implore thee that thou mayest go to Enoch, our father, and learn from him the truth, for his dwelling-place is amongst the angels.’",
+      "text_fa": null,
+      "text_hr": "A sada, moj oče, ovdje sam da te molim i preklinjem da možeš otići do Henoka, našeg oca, i od njega naučiti istinu, jer je njegovo prebivalište među anđelima.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And when Methuselah heard the words of his son, he came to me to the ends of the earth; for he had heard that I was there, and he cried aloud, and I heard his voice and I came to him. And I said unto him: ‘Behold, here am I, my son, =wherefore= hast thou come to me?’",
+      "text_fa": null,
+      "text_hr": "I kad je Metušalah čuo riječi svoga sina, došao je k meni do kraja zemlje; jer on je čuo da sam ondje, i povikao je glasno, a ja sam čuo njegov glas i došao sam k njemu. I rekoh mu: ‘Evo me, sine moj, =zašto= si došao k meni?’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And he answered and said: ‘Because of a great cause of anxiety have I come to thee, and because of a disturbing vision have I approached.",
+      "text_fa": null,
+      "text_hr": "On odgovori: ‘Došao sam k tebi zbog velike tjeskobe i pristupio zbog uznemirujućega viđenja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And now, my father, hear me: unto Lamech my son there hath been born a son, the like of whom there is none, and his nature is not like man’s nature, and the colour of his body is whiter than snow and redder than the bloom of a rose, and the hair of his head is whiter than white wool, and his eyes are like the rays of the sun, and he opened his eyes and thereupon lighted up the whole house.",
+      "text_fa": null,
+      "text_hr": "A sada, oče moj, poslušaj me: mojemu sinu Lameku rodio se sin kojemu nema slična. Narav mu nije kao ljudska, tijelo mu je bjelje od snijega i crvenije od ružina cvijeta, kosa bjelja od bijele vune, a oči poput sunčevih zraka. Kad je otvorio oči, osvijetlio je cijelu kuću.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "And he arose in the hands of the midwife, and opened his mouth and blessed the Lord of heaven.",
+      "text_fa": null,
+      "text_hr": "I ustade u rukama babice, otvori usta i blagoslovi Gospodara neba.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "And his father Lamech became afraid and fled to me, and did not believe that he was sprung from him, but that he was in the likeness of the angels of heaven; and behold I have come to thee that thou mayest make known to me the truth.’",
+      "text_fa": null,
+      "text_hr": "I njegov se otac Lamek uplaši i pobježe k meni, i ne vjerovaše da je od njega potekao, nego da je sličan anđelima nebeskim; i evo došao sam k tebi da mi obznaniš istinu.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "And I, Enoch, answered and said unto him: ‘The Lord will do a new thing on the earth, and this I have already seen in a vision, and make known to thee that in the generation of my father Jared some of the =angels= of heaven transgressed the word of the Lord.",
+      "text_fa": null,
+      "text_hr": "Ja, Henok, odgovorih mu: ‘Gospodin će učiniti nešto novo na zemlji. To sam već vidio u viđenju. Objavljujem ti da su u naraštaju mojega oca Jareda neki od nebeskih =anđela= prekršili Gospodnju riječ.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "And behold they commit sin and transgress the law, and have united themselves with women and commit sin with them, and have married some of them, and have begotten children by them.",
+      "text_fa": null,
+      "text_hr": "I gle, oni su počinili grijeh i prekršili zakon, i sjedinili su se sa ženama i počinili grijeh s njima, i oženili su neke od njih, i rađali su djecu od njih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "Yea, there shall come a great destruction over the whole earth, and there shall be a deluge and a great destruction for one year.",
+      "text_fa": null,
+      "text_hr": "Da, doći će veliko uništenje po cijeloj zemlji, i bit će potop i veliko uništenje godinu dana.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "And this son who has been born unto you shall be left on the earth, and his three children shall be saved with him: when all mankind that are on the earth shall die [he and his sons shall be saved].",
+      "text_fa": null,
+      "text_hr": "I ovaj sin koji ti se rodio bit će ostavljen na zemlji, a njegovo troje djece bit će spašeno s njim: kad cijelo čovječanstvo koje je na zemlji umre [on i njegovi sinovi bit će spašeni].",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "And they shall produce on the earth giants not according to the spirit, but according to the flesh, and there shall be a great punishment on the earth, and the earth shall be cleansed from all impurity.",
+      "text_fa": null,
+      "text_hr": "I proizvest će na zemlji divove ne po duhu, nego po tijelu, i bit će velika kazna na zemlji, i zemlja će biti očišćena od svake nečistoće.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "And now make known to thy son Lamech that he who has been born is in truth his son, and call his name Noah; for he shall be left to you, and he and his sons shall be saved from the destruction, which shall come upon the earth on account of all the sin and all the unrighteousness, which shall be consummated on the earth in his days.",
+      "text_fa": null,
+      "text_hr": "A sada objavi svojemu sinu Lameku da je rođeni dječak uistinu njegov sin i nadjeni mu ime Noa. On će ostati s vama, a on i njegovi sinovi bit će spašeni od uništenja koje će doći na zemlju zbog svega grijeha i sve nepravde što će se dovršiti na zemlji u njegove dane.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "And after that there shall be still more unrighteousness than that which was first consummated on the earth; for I know the mysteries of the holy ones; for He, the Lord, has showed me and informed me, and I have read (them) in the heavenly tablets.",
+      "text_fa": null,
+      "text_hr": "I nakon toga će biti još više nepravde od one koja je bila najprije izvršena na zemlji; jer ja znam otajstva svetih; jer mi je On, Gospodin, pokazao i obavijestio me, i ja sam (ih) pročitao na nebeskim pločama.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

@@ -1,0 +1,242 @@
+{
+  "schema_version": 1,
+  "book_id": "4_maccabees",
+  "title_fa": "مکابیان چهارم",
+  "title_en": "Fourth Maccabees",
+  "title_hr": "Četvrta knjiga o Makabejcima",
+  "chapter": 8,
+  "status": "in_review",
+  "source_translation": "WEBC",
+  "versification": "WEBC",
+  "source_english_sha256": "a1a415dc1fffb46ae731388b015210772d2bb82c14d729a2d7415d118d06b455",
+  "locales_in_scope": [
+    "fa",
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "then, indeed, vehemently swayed with emotion, he commanded to bring others of the adult Hebrews, and if they would eat of the unclean thing, to let them go when they had eaten; but if they objected, to torment them more grievously.",
+      "text_fa": "آنگاه به‌راستی سخت گرفتار هیجان شد و فرمان داد دیگر عبرانیان بالغ را بیاورند؛ اگر از چیز ناپاک بخورند، پس از خوردن آزادشان کنند، اما اگر سر باز زنند، سخت‌تر شکنجه‌شان دهند.",
+      "text_hr": "tada je, silno uzburkan strašću, zapovjedio da dovedu druge odrasle Hebreje; ako budu jeli od nečistoga, neka ih nakon jela puste, ali ako odbiju, neka ih još teže muče.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "The tyrant having given this charge, seven kindred were brought into his presence, along with their aged mother. They were handsome, modest, well-born, and altogether comely.",
+      "text_fa": "پس از آنکه ستمگر این فرمان را داد، هفت تن از یک خاندان را همراه با مادر سالخورده‌شان به حضورش آوردند. آنان خوش‌سیما، باوقار، نیک‌نژاد و از هر لحاظ آراسته بودند.",
+      "text_hr": "Kad je tiranin izdao tu zapovijed, pred njega dovedoše sedmoricu iz iste obitelji zajedno s njihovom ostarjelom majkom. Bili su lijepi, skromni, plemenita roda i u svemu naočiti.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "When the tyrant saw them encircling their mother as in a dance, he was pleased with them. Being struck with their becoming and innocent manner, smiled at them, and calling them near, said,",
+      "text_fa": "چون ستمگر دید که آنان همچون در حلقهٔ رقصی گرد مادرشان را گرفته‌اند، از ایشان خشنود شد. از وقار و معصومیت رفتارشان تأثیر پذیرفت، به آنان لبخند زد، ایشان را نزدیک فراخواند و گفت:",
+      "text_hr": "Kad ih je tiranin vidio kako okružuju majku kao u kolu, obradovao im se. Zadivljen njihovim doličnim i nedužnim držanjem, nasmiješio im se, pozvao ih bliže i rekao:",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "“O youths, with favorable feelings, I admire the beauty of each of you. Greatly honouring so numerous a band of kindred, I not only counsel you not to share the madness of the old man who has been tortured before,",
+      "text_fa": "«ای جوانان، با نظر لطف زیبایی هر یک از شما را می‌ستایم. چون این جمع پرشمار از خویشاوندان را بسیار حرمت می‌نهم، نه‌تنها به شما اندرز می‌دهم که در دیوانگی پیرمردی که پیش از این شکنجه شد شریک نشوید،",
+      "text_hr": "„O mladići, s naklonošću se divim ljepoti svakoga od vas. Budući da veoma poštujem tako brojnu skupinu srodnika, ne samo da vam savjetujem da ne sudjelujete u ludosti starca koji je prije vas bio mučen,",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "but I beg you to yield, and to enjoy my friendship; for I possess the power, not only of punishing those who disobey my commands, but of doing good to those who obey them.",
+      "text_fa": "بلکه از شما تمنا دارم تسلیم شوید و از دوستی من بهره‌مند گردید؛ زیرا من نه‌تنها قدرت مجازات کسانی را دارم که از فرمان‌هایم سرپیچی می‌کنند، بلکه می‌توانم به اطاعت‌کنندگان نیز نیکی کنم.",
+      "text_hr": "nego vas molim da popustite i uživate moje prijateljstvo; jer imam moć ne samo kazniti one koji ne slušaju moje zapovijedi nego i činiti dobro onima koji ih slušaju.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "Put confidence in me, then, and you will receive places of authority in my government, if you forsake your national way of life,",
+      "text_fa": "پس به من اعتماد کنید؛ اگر شیوهٔ زندگی قومی خود را ترک کنید، در حکومت من مناصب قدرت خواهید یافت،",
+      "text_hr": "Pouzdajte se, dakle, u mene pa ćete dobiti položaje vlasti u mojoj upravi ako napustite način života svoga naroda",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "and, conforming to the Greek way of life, alter your rule and revel in youth’s delights.",
+      "text_fa": "و با سازگار کردن خود با شیوهٔ زندگی یونانی، قاعدهٔ خویش را دگرگون کنید و در لذت‌های جوانی خوش بگذرانید.",
+      "text_hr": "te, prilagodivši se grčkom načinu života, promijenite svoja pravila i uživate u radostima mladosti.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "For if you provoke me by your disobedience, you will compel me to destroy every one of you with terrible punishments by tortures.",
+      "text_fa": "زیرا اگر با نافرمانی خود مرا برانگیزید، وادارم خواهید کرد که تک‌تک شما را با کیفرهای هولناکِ شکنجه نابود کنم.",
+      "text_hr": "Jer ako me svojom neposlušnošću izazovete, prisilit ćete me da svakoga od vas uništim strašnim kaznama i mukama.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "Have mercy, then, upon your own selves, whom I, although an enemy, am compassionate for your age and attractive appearance.",
+      "text_fa": "پس بر خودتان رحم کنید؛ من با آنکه دشمنتان هستم، به‌خاطر سن و ظاهر دلپذیرتان بر شما شفقت دارم.",
+      "text_hr": "Smilujte se, dakle, sami sebi; jer ja, premda sam neprijatelj, suosjećam s vama zbog vaše dobi i privlačna izgleda.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "Won’t you consider this: that if you disobey, there will be nothing left for you but to die in torture?”",
+      "text_fa": "آیا اندیشه نمی‌کنید که اگر نافرمانی کنید، چیزی جز مردن زیر شکنجه برایتان باقی نخواهد ماند؟»",
+      "text_hr": "Nećete li razmisliti o tome da vam, ako ne poslušate, neće preostati ništa drugo nego umrijeti u mukama?”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "When he had said this, he ordered the instruments of torture to be brought forward, that fear might prevail upon them to eat unclean meat.",
+      "text_fa": "چون این سخن را گفت، فرمان داد ابزارهای شکنجه را پیش آورند تا شاید ترس آنان را به خوردن گوشت ناپاک وادارد.",
+      "text_hr": "Kad je to rekao, zapovjedio je da donesu sprave za mučenje kako bi ih strah naveo da jedu nečisto meso.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "When the spearman brought forward the wheels, the racks, the hooks, caldrons, pans, finger-racks, iron hands and wedges, and bellows, the tyrant continued:",
+      "text_fa": "چون نیزه‌دار چرخ‌ها، دستگاه‌های کشش، قلاب‌ها، دیگ‌ها، تابه‌ها، فشاردهنده‌های انگشت، دست‌های آهنین، گوه‌ها و دم‌های آتش‌افروزی را پیش آورد، ستمگر ادامه داد:",
+      "text_hr": "Kad je kopljonoša donio kotače, sprave za rastezanje, kuke, kotlove, tave, sprave za stezanje prstiju, željezne šake, klinove i mjehove, tiranin nastavi:",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "“Fear, young men, and the righteousness which you worship will be merciful to you if you transgress because of compulsion.”",
+      "text_fa": "«ای جوانان، بترسید؛ آن عدالتی که می‌پرستید، اگر از سر اجبار تخلف کنید، بر شما رحم خواهد کرد.»",
+      "text_hr": "„Bojte se, mladići, i pravednost koju štujete bit će vam milostiva ako zbog prisile prestupite.”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "Now they having listened to these words of persuasion, and seeing the fearful instruments, not only were not afraid, but even answered the arguments of the tyrant, and through their good reasoning destroyed his power.",
+      "text_fa": "آنان چون این سخنان ترغیب‌آمیز را شنیدند و ابزارهای هولناک را دیدند، نه‌تنها نترسیدند، بلکه حتی به استدلال‌های ستمگر پاسخ دادند و با عقل نیک خود قدرت او را درهم شکستند.",
+      "text_hr": "A oni, čuvši te nagovaračke riječi i vidjevši strašne sprave, ne samo da se nisu uplašili nego su odgovorili na dokaze tiranina i svojim dobrim razumom uništili njegovu moć.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "Now let’s consider the matter. Had any of them been weak-spirited and cowardly among them, what reasoning would they have employed but these?",
+      "text_fa": "حال بیایید موضوع را بررسی کنیم. اگر یکی از آنان سست‌دل و بزدل می‌بود، عقلش چه استدلالی جز اینها پیش می‌نهاد؟",
+      "text_hr": "Razmotrimo sada stvar. Da je itko među njima bio slaba duha i kukavica, kakvim bi se razumom poslužio osim ovakvim?",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "“O wretched that we are, and exceedingly senseless! When the king exhorts us, and calls us to his bounty, should we not obey him?",
+      "text_fa": "«وای بر ما شوربختان و سخت بی‌خردان! وقتی پادشاه ترغیبمان می‌کند و ما را به بخشندگی خود فرامی‌خواند، آیا نباید از او اطاعت کنیم؟",
+      "text_hr": "„O kako smo bijedni i silno bezumni! Kad nas kralj opominje i poziva da primimo njegovu darežljivost, zar ga ne bismo trebali poslušati?",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "Why do we cheer ourselves with vain counsels, and venture upon a disobedience bringing death?",
+      "text_fa": "چرا خود را با مشورت‌های بیهوده دلگرم می‌کنیم و به نافرمانی‌ای دست می‌زنیم که مرگ می‌آورد؟",
+      "text_hr": "Zašto se hrabrimo ispraznim savjetima i upuštamo u neposlušnost koja donosi smrt?",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "Shall we not fear, O kindred, the instruments of torture and weigh the threatenings of torment and shun this vain-glory and destructive pride?",
+      "text_fa": "ای خویشاوندان، آیا از ابزارهای شکنجه نترسیم، تهدیدهای عذاب را نسنجیم و از این خودنمایی بیهوده و غرور نابودکننده نگریزیم؟",
+      "text_hr": "Zar se, o rođaci, nećemo bojati sprava za mučenje, odvagnuti prijetnje mukama i kloniti se ove taštine i pogubne oholosti?",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "Let’s have compassion upon our age and relent over the years of our mother.",
+      "text_fa": "بر جوانی خود شفقت آوریم و به سال‌های عمر مادرمان دل بسوزانیم.",
+      "text_hr": "Smilujmo se svojoj mladosti i popustimo zbog godina svoje majke.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "Let’s bear in mind that we will be dying as rebels.",
+      "text_fa": "به یاد داشته باشیم که همچون شورشیان خواهیم مرد.",
+      "text_hr": "Imajmo na umu da ćemo umrijeti kao buntovnici.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "Divine Justice will pardon us if we fear the king through necessity.",
+      "text_fa": "عدالت الهی ما را خواهد بخشید، اگر از سر ناچاری از پادشاه بترسیم.",
+      "text_hr": "Božanska Pravda oprostit će nam ako se iz nužde bojimo kralja.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "Why withdraw ourselves from a most sweet life, and deprive ourselves of this pleasant world?",
+      "text_fa": "چرا خود را از شیرین‌ترین زندگی کنار بکشیم و از این جهان دلپذیر محروم سازیم؟",
+      "text_hr": "Zašto da se povučemo iz najslađega života i lišimo se ovoga ugodnog svijeta?",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "Let’s not oppose necessity, nor seek vain-glory by our own torture.",
+      "text_fa": "با ضرورت مخالفت نکنیم و با شکنجه کردن خود در پی خودنمایی بیهوده نباشیم.",
+      "text_hr": "Ne protivimo se nužnosti niti vlastitim mučenjem tražimo ispraznu slavu.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "The law itself wouldn’t arbitrarily put us to death because we dread torture.",
+      "text_fa": "خود شریعت ما را خودسرانه به مرگ محکوم نخواهد کرد، چون از شکنجه می‌ترسیم.",
+      "text_hr": "Sam Zakon ne bi nas samovoljno usmrtio zato što strahujemo od mučenja.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "Why has such angry zeal taken root in us, and such fatal obstinacy approved itself to us, when we might live unmolested by the king?”",
+      "text_fa": "چرا چنین غیرت خشمگینی در ما ریشه دوانده و چنین سرسختی مرگباری در نظرمان پسندیده آمده است، وقتی می‌توانیم بی‌مزاحمت پادشاه زندگی کنیم؟»",
+      "text_hr": "Zašto se u nama ukorijenila takva gnjevna revnost i zašto nam se svidjela takva kobna tvrdoglavost, kad bismo mogli živjeti a da nas kralj ne uznemirava?”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "But the young men didn’t say or think anything of this kind when about to be tortured.",
+      "text_fa": "اما هنگامی که آن جوانان در آستانهٔ شکنجه بودند، نه چیزی از این دست گفتند و نه چنین اندیشیدند.",
+      "text_hr": "Ali mladići, kad su ih trebali mučiti, ništa od toga nisu ni rekli ni pomislili.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "For they were well aware of the sufferings, and masters of the pains.",
+      "text_fa": "زیرا آنان به رنج‌ها نیک آگاه و بر دردها چیره بودند.",
+      "text_hr": "Jer dobro su poznavali patnje i gospodarili bolima.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "So that as soon as the tyrant had ceased counselling them to eat the unclean, they all with one voice, as from the same heart said:",
+      "text_fa": "پس همین که ستمگر از اندرز دادن به آنان برای خوردن چیز ناپاک بازایستاد، همگی یک‌صدا، چنان‌که از یک دل، گفتند:",
+      "text_hr": "Stoga, čim im je tiranin prestao savjetovati da jedu ono što je nečisto, svi jednoglasno, kao iz istoga srca, rekoše:",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    }
+  ]
+}

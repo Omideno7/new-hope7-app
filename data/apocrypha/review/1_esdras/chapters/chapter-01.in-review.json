@@ -1,0 +1,481 @@
+{
+  "schema_version": 1,
+  "book_id": "1_esdras",
+  "title_fa": "اول اِسدراس",
+  "title_en": "First Esdras",
+  "title_hr": "Prva Ezdrina",
+  "chapter": 1,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "6e241a675c62ba553784eb3df805bd0ef9bcc2e3987ce45965c421482652b5ce",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And Josias held the feast of the passover in Jerusalem unto his Lord, and offered the passover the fourteenth day of the first month;",
+      "text_fa": null,
+      "text_hr": "Josija je u Jeruzalemu proslavio Pashu Gospodinu svojemu i prinio pashalnu žrtvu četrnaestoga dana prvoga mjeseca.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "Having set the priests according to their daily courses, being arrayed in long garments, in the temple of the Lord.",
+      "text_fa": null,
+      "text_hr": "Svećenike je rasporedio prema njihovim dnevnim redovima; odjeveni u duge haljine stajali su u Hramu Gospodnjem.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And he spake unto the Levites, the holy ministers of Israel, that they should hallow themselves unto the Lord, to set the holy ark of the Lord in the house that king Solomon the son of David had built:",
+      "text_fa": null,
+      "text_hr": "Levitima, svetim službenicima Izraela, rekao je neka se posvete Gospodinu i sveti Kovčeg Gospodnji postave u Dom koji je sagradio kralj Salomon, sin Davidov.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And said, Ye shall no more bear the ark upon your shoulders: now therefore serve the Lord your God, and minister unto his people Israel, and prepare you after your families and kindreds,",
+      "text_fa": null,
+      "text_hr": "Rekao im je: „Nećete više nositi Kovčeg na ramenima. Sada služite Gospodinu, Bogu svojemu, i njegovu narodu Izraelu; pripravite se po svojim obiteljima i rodovima,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "According as David the king of Israel prescribed, and according to the magnificence of Solomon his son: and standing in the temple according to the several dignity of the families of you the Levites, who minister in the presence of your brethren the children of Israel,",
+      "text_fa": null,
+      "text_hr": "prema odredbama izraelskoga kralja Davida i prema veličanstvenom ustroju njegova sina Salomona. Zauzmite mjesta u Hramu po dostojanstvu pojedinih levitskih obitelji koje služe pred svojom braćom, sinovima Izraelovim.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "Offer the passover in order, and make ready the sacrifices for your brethren, and keep the passover according to the commandment of the Lord, which was given unto Moses.",
+      "text_fa": null,
+      "text_hr": "Redom koljite pashalne žrtve, pripravite žrtve svojoj braći i svetkujte Pashu prema zapovijedi Gospodnjoj danoj Mojsiju.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And unto the people that was found there Josias gave thirty thousand lambs and kids, and three thousand calves: these things were given of the king’s allowance, according as he promised, to the people, to the priests, and to the Levites.",
+      "text_fa": null,
+      "text_hr": "Narodu koji se ondje našao Josija je dao trideset tisuća jaganjaca i kozlića te tri tisuće teladi. To je, prema svojem obećanju, dao iz kraljevskih zaliha narodu, svećenicima i levitima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And Helkias, Zacharias, and Syelus, the governors of the temple, gave to the priests for the passover two thousand and six hundred sheep, and three hundred calves.",
+      "text_fa": null,
+      "text_hr": "Helkija, Zaharija i Sijel, predstojnici Hrama, dali su svećenicima za Pashu dvije tisuće i šest stotina ovaca te tri stotine teladi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And Jeconias, and Samaias, and Nathanael his brother, and Assabias, and Ochiel, and Joram, captains over thousands, gave to the Levites for the passover five thousand sheep, and seven hundred calves.",
+      "text_fa": null,
+      "text_hr": "Jekonija, Šemaja, njegov brat Natanael, Hašabija, Okiel i Joram, tisućnici, dali su levitima za Pashu pet tisuća ovaca i sedam stotina teladi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And when these things were done, the priests and Levites, having the unleavened bread, stood in very comely order according to the kindreds,",
+      "text_fa": null,
+      "text_hr": "Kad je sve to bilo uređeno, svećenici i leviti s beskvasnim kruhovima stali su u lijepu poretku po rodovima",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "And according to the several dignities of the fathers, before the people, to offer to the Lord, as it is written in the book of Moses: and thus did they in the morning.",
+      "text_fa": null,
+      "text_hr": "i po dostojanstvu pojedinih očinskih kuća, pred narodom, da prinose Gospodinu kako je napisano u Mojsijevoj knjizi. Tako su činili ujutro.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "And they roasted the passover with fire, as appertaineth: as for the sacrifices, they sod them in brass pots and pans with a good savour,",
+      "text_fa": null,
+      "text_hr": "Pashalne su žrtve pekli na vatri kako je propisano, a ostale su žrtve kuhali u mjedenim loncima i tavama, šireći ugodan miris.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "And set them before all the people: and afterward they prepared for themselves, and for the priests their brethren, the sons of Aaron.",
+      "text_fa": null,
+      "text_hr": "Zatim su ih stavili pred sav narod, a poslije pripravili jelo za sebe i za svoju braću svećenike, Aronove sinove.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "For the priests offered the fat until night: and the Levites prepared for themselves, and the priests their brethren, the sons of Aaron.",
+      "text_fa": null,
+      "text_hr": "Jer su svećenici sve do noći prinosili pretilinu, pa su leviti pripravljali za sebe i za svoju braću svećenike, Aronove sinove.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "The holy singers also, the sons of Asaph, were in their order, according to the appointment of David, to wit, Asaph, Zacharias, and Jeduthun, who was of the king’s retinue.",
+      "text_fa": null,
+      "text_hr": "I sveti pjevači, Asafovi sinovi, stajali su po svojim redovima prema Davidovoj odredbi: Asaf, Zaharija i Jedutun, koji je bio u kraljevoj pratnji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "Moreover the porters were at every gate; it was not lawful for any to go from his ordinary service: for their brethren the Levites prepared for them.",
+      "text_fa": null,
+      "text_hr": "Vratari su bili na svim vratima. Nitko nije smio napustiti svoju redovitu službu, jer su njihova braća leviti pripravljala za njih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "Thus were the things that belonged to the sacrifices of the Lord accomplished in that day, that they might hold the passover,",
+      "text_fa": null,
+      "text_hr": "Tako je toga dana bilo dovršeno sve što je pripadalo žrtvama Gospodnjim, da bi mogli svetkovati Pashu",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "And offer sacrifices upon the altar of the Lord, according to the commandment of king Josias.",
+      "text_fa": null,
+      "text_hr": "i prinositi žrtve na žrtveniku Gospodnjem, prema zapovijedi kralja Josije.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "So the children of Israel which were present held the passover at that time, and the feast of sweet bread seven days.",
+      "text_fa": null,
+      "text_hr": "Izraelovi sinovi koji su bili nazočni tada su svetkovali Pashu i sedam dana Blagdan beskvasnih kruhova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "And such a passover was not kept in Israel since the time of the prophet Samuel.",
+      "text_fa": null,
+      "text_hr": "Takva se Pasha nije svetkovala u Izraelu još od vremena proroka Samuela.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "Yea, all the kings of Israel held not such a passover as Josias, and the priests, and the Levites, and the Jews, held with all Israel that were found dwelling at Jerusalem.",
+      "text_fa": null,
+      "text_hr": "Nijedan izraelski kralj nije svetkovao takvu Pashu kakvu su svetkovali Josija, svećenici, leviti i Judejci sa svim Izraelcima koji su prebivali u Jeruzalemu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "In the eighteenth year of the reign of Josias was this passover kept.",
+      "text_fa": null,
+      "text_hr": "Ta je Pasha svetkovana osamnaeste godine Josijina kraljevanja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "And the works or Josias were upright before his Lord with an heart full of godliness.",
+      "text_fa": null,
+      "text_hr": "Josijina su djela bila pravedna pred njegovim Gospodinom, a srce mu je bilo puno pobožnosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "As for the things that came to pass in his time, they were written in former times, concerning those that sinned, and did wickedly against the Lord above all people and kingdoms, and how they grieved him exceedingly, so that the words of the Lord rose up against Israel.",
+      "text_fa": null,
+      "text_hr": "O događajima iz njegova vremena od davnine je zapisano: o onima koji su griješili i činili zlo protiv Gospodina više od svih naroda i kraljevstava te ga silno žalostili, tako da su se riječi Gospodnje podigle protiv Izraela.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "Now after all these acts of Josias it came to pass, that Pharaoh the king of Egypt came to raise war at Carchamis upon Euphrates: and Josias went out against him.",
+      "text_fa": null,
+      "text_hr": "Poslije svih tih Josijinih djela egipatski je faraon došao zaratiti kod Karkemiša na Eufratu, a Josija mu je izišao ususret.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "But the king of Egypt sent to him, saying, What have I to do with thee, O king of Judea?",
+      "text_fa": null,
+      "text_hr": "No egipatski mu je kralj poslao poruku: „Što ja imam s tobom, kralju Judeje?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "I am not sent out from the Lord God against thee; for my war is upon Euphrates: and now the Lord is with me, yea, the Lord is with me hasting me forward: depart from me, and be not against the Lord.",
+      "text_fa": null,
+      "text_hr": "Gospodin Bog nije me poslao protiv tebe; moj je rat na Eufratu. Sada je Gospodin sa mnom i požuruje me. Makni mi se s puta i ne protivi se Gospodinu.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "Howbeit Josias did not turn back his chariot from him, but undertook to fight with him, not regarding the words of the prophet Jeremy spoken by the mouth of the Lord:",
+      "text_fa": null,
+      "text_hr": "Ipak, Josija nije okrenuo svoja kola od njega, nego se upustio u boj, ne obazirući se na riječi proroka Jeremije izgovorene iz usta Gospodnjih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "But joined battle with him in the plain of Magiddo, and the princes came against king Josias.",
+      "text_fa": null,
+      "text_hr": "S njim se sukobio na ravnici kod Megida, a zapovjednici su navalili na kralja Josiju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "Then said the king unto his servants, Carry me away out of the battle; for I am very weak. And immediately his servants took him away out of the battle.",
+      "text_fa": null,
+      "text_hr": "Tada kralj reče svojim slugama: „Odnesite me iz bitke, jer sam veoma iznemogao.“ Njegove su ga sluge odmah odnijele iz bitke.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "Then gat he up upon his second chariot; and being brought back to Jerusalem died, and was buried in his father’s sepulchre.",
+      "text_fa": null,
+      "text_hr": "Potom se popeo na svoja druga kola; odvezli su ga natrag u Jeruzalem, gdje je umro i bio pokopan u grobnici svojih otaca.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "And in all Jewry they mourned for Josias, yea, Jeremy the prophet lamented for Josias, and the chief men with the women made lamentation for him unto this day: and this was given out for an ordinance to be done continually in all the nation of Israel.",
+      "text_fa": null,
+      "text_hr": "Po svoj su Judeji tugovali za Josijom. Prorok Jeremija naricao je za njim, a prvaci sa ženama oplakuju ga sve do danas. Određeno je da se to trajno čini u svemu izraelskom narodu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "These things are written in the book of the stories of the kings of Judah, and every one of the acts that Josias did, and his glory, and his understanding in the law of the Lord, and the things that he had done before, and the things now recited, are reported in the book of the kings of Israel and Judea.",
+      "text_fa": null,
+      "text_hr": "To je zapisano u knjizi pripovijesti o judejskim kraljevima. Sva Josijina djela, njegova slava, njegovo razumijevanje Zakona Gospodnjega, ono što je učinio prije i ovo što je upravo ispripovijedano, zabilježeni su u Knjizi kraljeva Izraela i Judeje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 34,
+      "text_en": "And the people took Joachaz the son of Josias, and made him king instead of Josias his father, when he was twenty and three years old.",
+      "text_fa": null,
+      "text_hr": "Narod je uzeo Josijina sina Joahaza i, kad su mu bile dvadeset i tri godine, postavio ga za kralja umjesto njegova oca Josije.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 35,
+      "text_en": "And he reigned in Judea and in Jerusalem three months: and then the king of Egypt deposed him from reigning in Jerusalem.",
+      "text_fa": null,
+      "text_hr": "Kraljevao je u Judeji i Jeruzalemu tri mjeseca, a zatim ga je egipatski kralj svrgnuo s vlasti u Jeruzalemu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 36,
+      "text_en": "And he set a tax upon the land of an hundred talents of silver and one talent of gold.",
+      "text_fa": null,
+      "text_hr": "Zemlji je nametnuo danak od sto talenata srebra i jednoga talenta zlata.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 37,
+      "text_en": "The king of Egypt also made king Joacim his brother king of Judea and Jerusalem.",
+      "text_fa": null,
+      "text_hr": "Egipatski kralj postavio je njegova brata Jojakima za kralja Judeje i Jeruzalema.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 38,
+      "text_en": "And he bound Joacim and the nobles: but Zaraces his brother he apprehended, and brought him out of Egypt.",
+      "text_fa": null,
+      "text_hr": "Jojakima i velikaše dao je svezati, a njegova brata Zarakesa uhvatio je i odveo iz Egipta.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 39,
+      "text_en": "Five and twenty years old was Joacim when he was made king in the land of Judea and Jerusalem; and he did evil before the Lord.",
+      "text_fa": null,
+      "text_hr": "Jojakimu je bilo dvadeset i pet godina kad je postao kraljem u Judeji i Jeruzalemu; činio je zlo pred Gospodinom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 40,
+      "text_en": "Wherefore against him Nabuchodonosor the king of Babylon came up, and bound him with a chain of brass, and carried him into Babylon.",
+      "text_fa": null,
+      "text_hr": "Zato je protiv njega došao babilonski kralj Nabukodonozor, svezao ga mjedenim lancem i odveo u Babilon.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 41,
+      "text_en": "Nabuchodonosor also took of the holy vessels of the Lord, and carried them away, and set them in his own temple at Babylon.",
+      "text_fa": null,
+      "text_hr": "Nabukodonozor je odnio i dio svetih posuda Gospodnjih te ih smjestio u svoj hram u Babilonu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 42,
+      "text_en": "But those things that are recorded of him, and of his uncleanness and impiety, are written in the chronicles of the kings.",
+      "text_fa": null,
+      "text_hr": "Ostalo što je zapisano o njemu, o njegovoj nečistoći i bezbožnosti, nalazi se u ljetopisima kraljeva.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 43,
+      "text_en": "And Joacim his son reigned in his stead: he was made king being eighteen years old;",
+      "text_fa": null,
+      "text_hr": "Umjesto njega zakraljio se njegov sin Jojakin; bilo mu je osamnaest godina kad je postao kraljem.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 44,
+      "text_en": "And reigned but three months and ten days in Jerusalem; and did evil before the Lord.",
+      "text_fa": null,
+      "text_hr": "U Jeruzalemu je kraljevao samo tri mjeseca i deset dana i činio je zlo pred Gospodinom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 45,
+      "text_en": "So after a year Nabuchodonosor sent and caused him to be brought into Babylon with the holy vessels of the Lord;",
+      "text_fa": null,
+      "text_hr": "Nakon godinu dana Nabukodonozor je poslao po njega te ga dao dovesti u Babilon zajedno sa svetim posudama Gospodnjim.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 46,
+      "text_en": "And made Zedechias king of Judea and Jerusalem, when he was one and twenty years old; and he reigned eleven years:",
+      "text_fa": null,
+      "text_hr": "Za kralja Judeje i Jeruzalema postavio je Sidkiju kad mu je bila dvadeset i jedna godina; kraljevao je jedanaest godina.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 47,
+      "text_en": "And he did evil also in the sight of the Lord, and cared not for the words that were spoken unto him by the prophet Jeremy from the mouth of the Lord.",
+      "text_fa": null,
+      "text_hr": "I on je činio zlo u očima Gospodnjim i nije mario za riječi koje mu je prorok Jeremija govorio iz usta Gospodnjih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 48,
+      "text_en": "And after that king Nabuchodonosor had made him to swear by the name of the Lord, he forswore himself, and rebelled; and hardening his neck, his heart, he transgressed the laws of the Lord God of Israel.",
+      "text_fa": null,
+      "text_hr": "Premda ga je kralj Nabukodonozor zakleo imenom Gospodnjim, prekršio je zakletvu i pobunio se. Ukrućivši vrat i otvrdnuvši srce, prestupio je zakone Gospodina, Boga Izraelova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 49,
+      "text_en": "The governors also of the people and of the priests did many things against the laws, and passed all the pollutions of all nations, and defiled the temple of the Lord, which was sanctified in Jerusalem.",
+      "text_fa": null,
+      "text_hr": "I poglavari naroda i svećenika mnogo su činili protiv Zakona, nadmašili su nečistoće svih naroda i oskvrnuli Hram Gospodnji, posvećen u Jeruzalemu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 50,
+      "text_en": "Nevertheless the God of their fathers sent by his messenger to call them back, because he spared them and his tabernacle also.",
+      "text_fa": null,
+      "text_hr": "Ipak, Bog njihovih otaca slao je svojega glasnika da ih pozove natrag, jer je štedio njih i svoje Prebivalište.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 51,
+      "text_en": "But they had his messengers in derision; and, look, when the Lord spake unto them, they made a sport of his prophets:",
+      "text_fa": null,
+      "text_hr": "Ali oni su se rugali njegovim glasnicima; kad im je Gospodin govorio, ismijavali su njegove proroke.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 52,
+      "text_en": "So far forth, that he, being wroth with his people for their great ungodliness, commanded the kings of the Chaldees to come up against them;",
+      "text_fa": null,
+      "text_hr": "Napokon se zbog velike bezbožnosti svojega naroda razgnjevio i zapovjedio kaldejskim kraljevima da pođu protiv njih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 53,
+      "text_en": "Who slew their young men with the sword, yea, even within the compass of their holy temple, and spared neither young man nor maid, old man nor child, among them; for he delivered all into their hands.",
+      "text_fa": null,
+      "text_hr": "Oni su mačem pobili njihove mladiće, čak i unutar svetoga Hrama, i nisu poštedjeli ni mladića ni djevojku, ni starca ni dijete; sve ih je predao u njihove ruke.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 54,
+      "text_en": "And they took all the holy vessels of the Lord, both great and small, with the vessels of the ark of God, and the king’s treasures, and carried them away into Babylon.",
+      "text_fa": null,
+      "text_hr": "Uzeli su sve svete posude Gospodnje, velike i male, zajedno s posudama Kovčega Božjega i kraljevskim blagom, te ih odnijeli u Babilon.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 55,
+      "text_en": "As for the house of the Lord, they burnt it, and brake down the walls of Jerusalem, and set fire upon her towers:",
+      "text_fa": null,
+      "text_hr": "Dom Gospodnji spalili su, jeruzalemske zidine porušili, a njegove kule zapalili.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 56,
+      "text_en": "And as for her glorious things, they never ceased till they had consumed and brought them all to nought: and the people that were not slain with the sword he carried unto Babylon:",
+      "text_fa": null,
+      "text_hr": "Nisu prestajali dok nisu uništili i sasvim zatrli sve njegove slavne stvari; narod koji nije poginuo od mača odveli su u Babilon.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 57,
+      "text_en": "Who became servants to him and his children, till the Persians reigned, to fulfil the word of the Lord spoken by the mouth of Jeremy:",
+      "text_fa": null,
+      "text_hr": "Postali su robovi Nabukodonozoru i njegovim sinovima sve dok nisu zavladali Perzijanci, da se ispuni riječ Gospodnja izgovorena na usta Jeremijina:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 58,
+      "text_en": "Until the land had enjoyed her sabbaths, the whole time of her desolation shall she rest, until the full term of seventy years.",
+      "text_fa": null,
+      "text_hr": "„Dok se zemlja ne nauživa svojih subota, počivat će sve vrijeme svoje pustoši, dok se ne navrši punih sedamdeset godina.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

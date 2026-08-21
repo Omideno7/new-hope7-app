@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 50,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "90427c80d53c6b05a48f386344d19eb742077a9109386510baafd50b4180c485",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And in those days a change shall take place for the holy and elect,\nAnd the light of days shall abide upon them,\nAnd glory and honour shall turn to the holy,",
+      "text_fa": null,
+      "text_hr": "U one će se dane dogoditi promjena za svete i izabrane;\nsvjetlost dana prebivat će nad njima,\na slava i čast okrenut će se svetima,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "On the day of affliction on which evil shall have been treasured up against the sinners.\nAnd the righteous shall be victorious in the name of the Lord of Spirits:\nAnd He will cause the others to witness (this),\nThat they may repent\nAnd forgo the works of their hands.",
+      "text_fa": null,
+      "text_hr": "u dan nevolje kad zlo bude nagomilano protiv grešnika.\nPravedni će pobijediti u ime Gospodara duhova,\na on će dati drugima da to vide\nkako bi se pokajali\ni odrekli djela svojih ruku.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "They shall have no honour through the name of the Lord of Spirits,\nYet through His name shall they be saved,\nAnd the Lord of Spirits will have compassion on them,\nFor His compassion is great.",
+      "text_fa": null,
+      "text_hr": "Neće steći časti po imenu Gospodara duhova,\nali će se po njegovu imenu spasiti.\nGospodar duhova smilovat će im se,\njer je njegovo milosrđe veliko.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And He is righteous also in His judgement,\nAnd in the presence of His glory unrighteousness also shall not maintain itself:\nAt His judgement the unrepentant shall perish before Him.",
+      "text_fa": null,
+      "text_hr": "On je pravedan i u svojem sudu,\na pred njegovom se slavom nepravda neće održati.\nNa njegovu će sudu nepokajani propasti pred njim.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And from henceforth I will have no mercy on them, saith the Lord of Spirits.",
+      "text_fa": null,
+      "text_hr": "„Od tada im se više neću smilovati“, govori Gospodar duhova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

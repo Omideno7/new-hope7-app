@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 92,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "512c16f9f597e83729d9fd1ecb444b5e65df0e66dda2e3e1d1ff28595a261d50",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "The book written by Enoch—[Enoch indeed wrote this complete doctrine of wisdom, (which is) praised of all men and a judge of all the earth] for all my children who shall dwell on the earth; and for the future generations who shall observe uprightness and peace.",
+      "text_fa": null,
+      "text_hr": "Knjiga koju je napisao Henok — [Henok je doista napisao ovu potpunu pouku mudrosti, koju hvale svi ljudi i koja sudi svoj zemlji] — za svu moju djecu koja će živjeti na zemlji i za buduće naraštaje koji će čuvati čestitost i mir.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "Let not your spirit be troubled on account of the times;\nFor the Holy and Great One has appointed days for all things.",
+      "text_fa": null,
+      "text_hr": "Neka se vaš duh ne uznemiruje zbog vremena; Jer Sveti i Veliki je za sve odredio dane.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And the righteous one shall arise from sleep,\n[Shall arise] and walk in the paths of righteousness,\nAnd all his path and conversation shall be in eternal goodness and grace.",
+      "text_fa": null,
+      "text_hr": "Pravednik će ustati iz sna, [ustat će] i hodati stazama pravednosti, a sav njegov put i življenje bit će u vječnoj dobroti i milosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "He will be gracious to the righteous and give him eternal uprightness,\nAnd He will give him power so that he shall be (endowed) with goodness and righteousness,\nAnd he shall walk in eternal light.",
+      "text_fa": null,
+      "text_hr": "On će biti milostiv prema pravedniku i dat će mu vječnu čestitost, i On će mu dati moć da bude (obdaren) dobrotom i pravednošću, i hodit će u vječnom svjetlu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And sin shall perish in darkness for ever,\nAnd shall no more be seen from that day forevermore.",
+      "text_fa": null,
+      "text_hr": "I grijeh će nestati u tami zauvijek, i neće se više vidjeti od toga dana zauvijek.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

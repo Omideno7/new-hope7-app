@@ -2,7 +2,7 @@
   "id": "./new-hope7-app-v239",
   "name": "New Hope 7",
   "short_name": "OmideNo7",
-  "description": "New Hope 7 Church app v2.3.9.33 with Croatia-reference notifications, secure school offline audio, direct startup, and persistent offline access.",
+  "description": "New Hope 7 Church app with trilingual spiritual plans, secure progress sync, fasting journal, and offline access.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -11,10 +11,22 @@
   "theme_color": "#0f766e",
   "icons": [
     {
-      "src": "assets/logo.png",
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

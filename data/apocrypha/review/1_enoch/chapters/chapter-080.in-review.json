@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 80,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "0bdfd483e354301858da60d52819c49abb1f9bba2707cabc67b7816a514aef93",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And in those days the angel Uriel answered and said to me: ‘Behold, I have shown thee everything, Enoch, and I have revealed everything to thee that thou shouldest see this sun and this moon, and the leaders of the stars of the heaven and all those who turn them, their tasks and times and departures.",
+      "text_fa": null,
+      "text_hr": "U one dane anđeo Uriel odgovori mi: ‘Gle, sve sam ti pokazao, Henoče, i sve ti otkrio da bi vidio Sunce, Mjesec, vođe nebeskih zvijezda i sve koji ih okreću, njihove zadaće, vremena i izlaske.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And in the days of the sinners the years shall be shortened,\nAnd their seed shall be tardy on their lands and fields,\nAnd all things on the earth shall alter,\nAnd shall not appear in their time:\nAnd the rain shall be kept back,\nAnd the heaven shall withhold (it).",
+      "text_fa": null,
+      "text_hr": "U dane grešnika godine će se skratiti, njihovo će sjeme kasniti na njihovim njivama i poljima, sve će se na zemlji promijeniti i ništa se neće pojaviti u svoje vrijeme. Kiša će biti uskraćena i nebo će je zadržati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And in those times the fruits of the earth shall be backward,\nAnd shall not grow in their time,\nAnd the fruits of the trees shall be withheld in their time.",
+      "text_fa": null,
+      "text_hr": "U ta će vremena plodovi zemlje kasniti i neće rasti u svoje doba, a plodovi drveća bit će uskraćeni u svoje vrijeme.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And the moon shall alter her order,\nAnd not appear at her time.",
+      "text_fa": null,
+      "text_hr": "Mjesec će promijeniti svoj poredak i neće se pojaviti u određeno vrijeme.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "[And in those days the =sun= shall be seen and he shall journey in the =evening= †on the extremity of the great chariot in† the west]\nAnd shall shine more brightly than accords with the order of light.",
+      "text_fa": null,
+      "text_hr": "[U one dane vidjet će se =Sunce= kako putuje prema =večeri= †na kraju velikih kola na† zapadu], i sjat će jače nego što odgovara poretku svjetlosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And many chiefs of the stars shall transgress the order (prescribed);\nAnd these shall alter their orbits and tasks,\nAnd not appear at the seasons prescribed to them.",
+      "text_fa": null,
+      "text_hr": "Mnogi će poglavari zvijezda prekršiti propisani poredak; promijenit će svoje putanje i zadaće te se neće pojavljivati u razdobljima koja su im određena.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And the whole order of the stars shall be concealed from the sinners,\nAnd the thoughts of those on the earth shall err concerning them,\n[And they shall be altered from all their ways],\nYea, they shall err and take them to be gods.",
+      "text_fa": null,
+      "text_hr": "Cijeli će poredak zvijezda biti skriven grešnicima. Misli stanovnika zemlje o njima će zabludjeti [i oni će skrenuti sa svih svojih putova]; da, pogriješit će i smatrati ih bogovima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And evil shall be multiplied upon them,\nAnd punishment shall come upon them\nSo as to destroy all.’",
+      "text_fa": null,
+      "text_hr": "Zlo će se nad njima umnožiti i stići će ih kazna koja će ih sve uništiti.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

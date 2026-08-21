@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 32,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "d52eb466fd16bacd4c6cedea4b0a76b60aa00259d26290c918fe29221b44826b",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "[variant E] And after these fragrant odours, as I looked towards the north over the mountains I saw seven mountains full of choice nard and fragrant trees and cinnamon and pepper.\n\n[variant G^g] To the north-east I beheld seven mountains full of choice nard and mastic and cinnamon and pepper.",
+      "text_fa": null,
+      "text_hr": "[varijanta E] Nakon tih mirisa pogledah preko gora prema sjeveru i vidjeh sedam gora punih birana narda, mirisnoga drveća, cimeta i papra.\n\n[varijanta G^g] Prema sjeveroistoku ugledah sedam gora punih birana narda, tršlje, cimeta i papra.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And thence I went over the summits of ⌜all⌝ these mountains, far towards the east ⌜of the earth⌝, and passed above the Erythraean sea, and went far from it, and passed over 〚the angel〛 Zotîêl.",
+      "text_fa": null,
+      "text_hr": "Odatle prijeđoh preko vrhova ⌜svih⌝ tih gora, daleko prema istoku ⌜zemlje⌝. Pređoh iznad Eritrejskoga mora, udaljih se od njega i prođoh iznad 〚anđela〛 Zotiela.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "[variant E] And I came to the Garden of Righteousness, and saw beyond those trees many large trees growing there and of goodly fragrance, large, very beautiful and glorious, and the tree of wisdom whereof they eat and know great wisdom.\n\n[variant G^g] And I came to the Garden of Righteousness, and from afar off trees more numerous than these trees and great—†two† trees there, very great, beautiful, and glorious, and magnificent, and the tree of knowledge, whose holy fruit they eat and know great wisdom.",
+      "text_fa": null,
+      "text_hr": "[varijanta E] Dođoh u Vrt Pravednosti i iza onih stabala vidjeh kako rastu mnoga velika stabla ugodna mirisa, velika, veoma lijepa i slavna, te stablo mudrosti s kojega jedu i spoznaju veliku mudrost.\n\n[varijanta G^g] Dođoh u Vrt Pravednosti i izdaleka vidjeh stabla brojnija i veća od ovih — ondje bijahu †dva† stabla, veoma velika, lijepa, slavna i veličanstvena, te stablo spoznaje čiji sveti plod jedu i spoznaju veliku mudrost.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "⌜That tree is in height like the fir, and its leaves are⌝ like (those of) the Carob tree: and its fruit is like the clusters of the vine, very beautiful: and the fragrance of the tree penetrates afar.",
+      "text_fa": null,
+      "text_hr": "⌜To je stablo visoko poput jele, a lišće mu je⌝ poput lišća rogača. Plod mu je poput grozdova loze, veoma lijep, a miris stabla prodire daleko.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "Then I said: ‘⌜How⌝ beautiful is the tree, and how attractive is its look!’",
+      "text_fa": null,
+      "text_hr": "Tada rekoh: ‘⌜Kako⌝ je lijepo ovo stablo i kako je privlačan njegov izgled!’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "Then Raphael, the holy angel who was with me, answered me 〚and said〛: ‘This is the tree of wisdom, of which thy father old (in years) and thy aged mother, who were before thee, have eaten, and they learnt wisdom and their eyes were opened, and they knew that they were naked and they were driven out of the garden.’",
+      "text_fa": null,
+      "text_hr": "Rafael, sveti anđeo koji bijaše sa mnom, odgovori mi 〚i reče〛: ‘To je stablo mudrosti s kojega su jeli tvoj ostarjeli otac i tvoja vremešna majka koji bijahu prije tebe. Spoznali su mudrost, oči su im se otvorile, spoznali su da su goli i bili su istjerani iz vrta.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

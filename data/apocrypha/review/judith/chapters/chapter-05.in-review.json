@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "book_id": "judith",
+  "title_fa": "یهودیت",
+  "title_en": "Judith",
+  "title_hr": "Judita",
+  "chapter": 5,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "6e183f4e837d2b3de6fdba168ed86fc9953cff30b3c96ada4fa2da1e880463e4",
+  "locales_in_scope": [
+    "fa"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Then was it declared to Holofernes, the chief captain of the army of Assur, that the children of Israel had prepared for war, and had shut up the passages of the hill country, and had fortified all the tops of the high hills and had laid impediments in the champaign countries:",
+      "text_fa": "به هولوفرنس، فرماندهٔ کل سپاه آشور، خبر دادند که بنی‌اسرائیل برای جنگ آماده شده‌اند، گذرگاه‌های کوهستان را بسته‌اند، همهٔ قله‌های بلند را استحکام بخشیده‌اند و در دشت‌ها موانعی قرار داده‌اند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 2,
+      "text_en": "Wherewith he was very angry, and called all the princes of Moab, and the captains of Ammon, and all the governors of the sea coast,",
+      "text_fa": "او از شنیدن این خبر سخت خشمگین شد و همهٔ امیران موآب، سرداران عمون و فرمانداران ساحل را فراخواند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 3,
+      "text_en": "And he said unto them, Tell me now, ye sons of Chanaan, who this people is, that dwelleth in the hill country, and what are the cities that they inhabit, and what is the multitude of their army, and wherein is their power and strength, and what king is set over them, or captain of their army;",
+      "text_fa": "به آنان گفت: «ای کنعانیان، اکنون به من بگویید این مردمی که در کوهستان ساکن‌اند چه کسانی هستند، در چه شهرهایی زندگی می‌کنند، شمار سپاهشان چقدر است، قدرت و نیرویشان در چیست و چه پادشاه یا فرمانده‌ای بر آنان حکومت می‌کند؟",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 4,
+      "text_en": "And why have they determined not to come and meet me, more than all the inhabitants of the west.",
+      "text_fa": "چرا آنان، برخلاف همهٔ ساکنان غرب، تصمیم گرفته‌اند برای استقبال از من نیایند؟»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 5,
+      "text_en": "Then said Achior, the captain of all the sons of Ammon, Let my lord now hear a word from the mouth of thy servant, and I will declare unto thee the truth concerning this people, which dwelleth near thee, and inhabiteth the hill countries: and there shall no lie come out of the mouth of thy servant.",
+      "text_fa": "آنگاه اخیور، فرماندهٔ تمام عمونیان، گفت: «سرورم، سخنی از دهان خدمتگزارت بشنو. حقیقت را دربارهٔ این قوم که در نزدیکی تو و در کوهستان ساکن‌اند برایت بازگو خواهم کرد و هیچ دروغی از دهان خدمتگزارت بیرون نخواهد آمد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 6,
+      "text_en": "This people are descended of the Chaldeans:",
+      "text_fa": "این قوم از نسل کلدانیان هستند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 7,
+      "text_en": "And they sojourned heretofore in Mesopotamia, because they would not follow the gods of their fathers, which were in the land of Chaldea.",
+      "text_fa": "در گذشته در میان‌رودان اقامت گزیدند، زیرا نمی‌خواستند از خدایان پدرانشان که در سرزمین کلدانیان بود پیروی کنند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 8,
+      "text_en": "For they left the way of their ancestors, and worshipped the God of heaven, the God whom they knew: so they cast them out from the face of their gods, and they fled into Mesopotamia, and sojourned there many days.",
+      "text_fa": "آنان راه نیاکان خود را ترک کردند و خدای آسمان را که شناخته بودند پرستیدند. پس کلدانیان آنان را از حضور خدایان خود بیرون راندند و ایشان به میان‌رودان گریختند و روزهای بسیار در آنجا اقامت کردند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 9,
+      "text_en": "Then their God commanded them to depart from the place where they sojourned, and to go into the land of Chanaan: where they dwelt, and were increased with gold and silver, and with very much cattle.",
+      "text_fa": "سپس خدایشان به آنان فرمان داد محل اقامت خود را ترک کنند و به سرزمین کنعان بروند. در آنجا ساکن شدند و طلا و نقره و چارپایان بسیار به دست آوردند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 10,
+      "text_en": "But when a famine covered all the land of Chanaan, they went down into Egypt, and sojourned there, while they were nourished, and became there a great multitude, so that one could not number their nation.",
+      "text_fa": "اما هنگامی که قحطی سراسر کنعان را فراگرفت، به مصر فرود آمدند و تا زمانی که خوراک داشتند در آنجا ماندند. شمارشان در مصر چنان افزایش یافت که قومشان را نمی‌شد شمرد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 11,
+      "text_en": "Therefore the king of Egypt rose up against them, and dealt subtilly with them, and brought them low with labouring in brick, and made them slaves.",
+      "text_fa": "پس پادشاه مصر بر ضد آنان برخاست، با نیرنگ با ایشان رفتار کرد، آنان را با خشت‌سازی و کار سخت خوار ساخت و به بردگی کشید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 12,
+      "text_en": "Then they cried unto their God, and he smote all the land of Egypt with incurable plagues: so the Egyptians cast them out of their sight.",
+      "text_fa": "آنگاه نزد خدای خود فریاد زدند و او سراسر سرزمین مصر را به بلاهای درمان‌ناپذیر مبتلا کرد؛ پس مصریان آنان را از حضور خود بیرون راندند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 13,
+      "text_en": "And God dried the Red sea before them,",
+      "text_fa": "خدا دریای سرخ را پیش رویشان خشک کرد،",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 14,
+      "text_en": "And brought them to mount Sina, and Cades-Barne, and cast forth all that dwelt in the wilderness.",
+      "text_fa": "آنان را به کوه سینا و قادش‌برنیع آورد و همهٔ ساکنان بیابان را از برابرشان بیرون راند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 15,
+      "text_en": "So they dwelt in the land of the Amorites, and they destroyed by their strength all them of Esebon, and passing over Jordan they possessed all the hill country.",
+      "text_fa": "پس در سرزمین اموریان ساکن شدند، با نیروی خود همهٔ مردم حشبون را نابود کردند و با عبور از اردن تمام کوهستان را به تصرف درآوردند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 16,
+      "text_en": "And they cast forth before them the Chanaanite, the Pherezite, the Jebusite, and the Sychemite, and all the Gergesites, and they dwelt in that country many days.",
+      "text_fa": "کنعانیان، فرزیان، یبوسیان، شکیمیان و همهٔ جرجاشیان را از برابر خود بیرون راندند و روزهای بسیار در آن سرزمین زیستند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 17,
+      "text_en": "And whilst they sinned not before their God, they prospered, because the God that hateth iniquity was with them.",
+      "text_fa": "تا زمانی که در حضور خدای خود گناه نمی‌کردند، کامیاب بودند، زیرا خدایی که از بی‌عدالتی بیزار است با آنان بود.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 18,
+      "text_en": "But when they departed from the way which he appointed them, they were destroyed in many battles very sore, and were led captives into a land that was not their’s, and the temple of their God was cast to the ground, and their cities were taken by the enemies.",
+      "text_fa": "اما وقتی از راهی که خدا برایشان مقرر کرده بود منحرف شدند، در نبردهای بسیار به‌شدت شکست خوردند، به سرزمینی بیگانه به اسارت برده شدند، معبد خدایشان با خاک یکسان شد و دشمنان شهرهایشان را تصرف کردند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 19,
+      "text_en": "But now are they returned to their God, and are come up from the places where they were scattered, and have possessed Jerusalem, where their sanctuary is, and are seated in the hill country; for it was desolate.",
+      "text_fa": "ولی اکنون به سوی خدای خود بازگشته‌اند، از مکان‌هایی که در آنها پراکنده بودند بیرون آمده‌اند، اورشلیم را که مکان مقدسشان در آن است دوباره به تصرف درآورده‌اند و در کوهستانی که ویران شده بود ساکن‌اند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 20,
+      "text_en": "Now therefore, my lord and governor, if there be any error against this people, and they sin against their God, let us consider that this shall be their ruin, and let us go up, and we shall overcome them.",
+      "text_fa": "پس اکنون، ای سرور و فرماندهٔ من، اگر این قوم خطایی مرتکب شده‌اند و به خدای خود گناه می‌کنند، بدانیم که همین سبب نابودی‌شان خواهد شد؛ آنگاه بالا برویم و بر آنان پیروز شویم.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 21,
+      "text_en": "But if there be no iniquity in their nation, let my lord now pass by, lest their Lord defend them, and their God be for them, and we become a reproach before all the world.",
+      "text_fa": "اما اگر در قومشان بی‌عدالتی نیست، سرورم از آنان بگذرد؛ مبادا خداوندشان از ایشان دفاع کند و خدایشان به سود آنان برخیزد و ما در برابر تمام جهان رسوا شویم.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 22,
+      "text_en": "And when Achior had finished these sayings, all the people standing round about the tent murmured, and the chief men of Holofernes, and all that dwelt by the sea side, and in Moab, spake that he should kill him.",
+      "text_fa": "وقتی اخیور سخنانش را به پایان رساند، همهٔ مردمی که پیرامون خیمه ایستاده بودند همهمه کردند. بزرگان هولوفرنس و تمام ساحل‌نشینان و موآبیان گفتند که باید او را بکشند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 23,
+      "text_en": "For, say they, we will not be afraid of the face of the children of Israel: for, lo, it is a people that have no strength nor power for a strong battle",
+      "text_fa": "آنان گفتند: «ما از بنی‌اسرائیل نخواهیم ترسید؛ زیرا این قوم نه نیرو دارد و نه قدرتی برای نبردی سخت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 24,
+      "text_en": "Now therefore, lord Holofernes, we will go up, and they shall be a prey to be devoured of all thine army.",
+      "text_fa": "پس اکنون، سرور ما هولوفرنس، بالا خواهیم رفت و آنان لقمه‌ای خواهند شد که تمام سپاه تو آن را فرو خواهد بلعید.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    }
+  ]
+}

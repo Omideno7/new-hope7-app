@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 70,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "8b6bd8fbd570b778ebfbfdb06f1f49ea8a5a8577a6265e8d611340dfa61e5069",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And it came to pass after this that his name during his lifetime was raised aloft to that Son of Man and to the Lord of Spirits from amongst those who dwell on the earth.",
+      "text_fa": null,
+      "text_hr": "Nakon toga njegovo je ime još za njegova života bilo uzdignuto iz sredine stanovnika zemlje k tome Sinu Čovječjemu i Gospodaru duhova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And he was raised aloft on the chariots of the spirit and his name vanished among them.",
+      "text_fa": null,
+      "text_hr": "Bio je uzdignut na kolima duha, a njegovo je ime iščezlo među njima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And from that day I was no longer numbered amongst them; and he set me between the two winds, between the north and the west, where the angels took the cords to measure for me the place for the elect and righteous.",
+      "text_fa": null,
+      "text_hr": "Od toga dana više se nisam ubrajao među njih. Postavio me između dva vjetra, između sjevera i zapada, gdje su anđeli uzeli užad da mi izmjere mjesto za izabrane i pravedne.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And there I saw the first fathers and the righteous who from the beginning dwell in that place.",
+      "text_fa": null,
+      "text_hr": "Ondje sam vidio prve oce i pravedne koji od početka prebivaju na tome mjestu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

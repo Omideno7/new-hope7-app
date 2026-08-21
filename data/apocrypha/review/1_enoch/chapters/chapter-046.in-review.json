@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 46,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "1ce0f300b2233ceb7d83ce1bfb386e49ab481f24686e90c89ae230c1775b9136",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And there I saw One, who had a head of days,\nAnd His head was white like wool,\nAnd with Him was another being whose countenance had the appearance of a man,\nAnd his face was full of graciousness, like one of the holy angels.",
+      "text_fa": null,
+      "text_hr": "Ondje sam vidio Onoga koji je imao Glavu Dana,\na glava mu je bila bijela poput vune.\nS njim je bilo drugo biće čije je lice imalo obličje čovjeka,\na bilo je puno miline poput lica jednoga od svetih anđela.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And I asked the =angel= who went with me and showed me all the hidden things, concerning that Son of Man, who he was, and whence he was, (and) why he went with the Head of Days?",
+      "text_fa": null,
+      "text_hr": "Upitao sam anđela koji je išao sa mnom i pokazivao mi sve što je skriveno o tome Sinu Čovječjemu: tko je, odakle dolazi i zašto ide s Glavom Dana?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And he answered and said unto me:\n\nThis is the Son of Man who hath righteousness,\nWith whom dwelleth righteousness,\nAnd who revealeth all the treasures of that which is hidden,\nBecause the Lord of Spirits hath chosen him,\nAnd whose lot hath the pre-eminence before the Lord of Spirits in uprightness for ever.",
+      "text_fa": null,
+      "text_hr": "Odgovorio mi je:\n\n„To je Sin Čovječji koji ima pravednost,\nu kojem prebiva pravednost\ni koji otkriva sve riznice onoga što je skriveno,\njer ga je Gospodar duhova izabrao,\na njegov je dio zbog čestitosti zauvijek uzvišen pred Gospodarom duhova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And this Son of Man whom thou hast seen\nShall †raise up† the kings and the mighty from their seats,\n[And the strong from their thrones]\nAnd shall loosen the reins of the strong,\nAnd break the teeth of the sinners;",
+      "text_fa": null,
+      "text_hr": "Taj Sin Čovječji kojega si vidio\n†podignut će† kraljeve i moćnike s njihovih sjedišta,\n[i snažne s njihovih prijestolja],\nrazriješit će uzde snažnih\ni polomiti zube grešnicima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "[And he shall put down the kings from their thrones and kingdoms]\nBecause they do not extol and praise Him,\nNor humbly acknowledge whence the kingdom was bestowed upon them.",
+      "text_fa": null,
+      "text_hr": "[Zbacit će kraljeve s njihovih prijestolja i iz njihovih kraljevstava],\njer njega ne uzvisuju niti hvale\ni ponizno ne priznaju odakle im je darovano kraljevstvo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And he shall put down the countenance of the strong,\nAnd shall fill them with shame.\nAnd darkness shall be their dwelling,\nAnd worms shall be their bed,\nAnd they shall have no hope of rising from their beds,\nBecause they do not extol the name of the Lord of Spirits.",
+      "text_fa": null,
+      "text_hr": "Oborit će lice snažnih\ni ispuniti ih sramotom.\nTama će biti njihovo prebivalište,\na crvi njihova postelja.\nNeće biti nade da ustanu sa svojih postelja,\njer ne uzvisuju ime Gospodara duhova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And these are they who †judge† the stars of heaven,\n[And raise their hands against the Most High],\n†And tread upon the earth and dwell upon it†.\nAnd all their deeds manifest unrighteousness,\nAnd their power rests upon their riches,\nAnd their faith is in the †gods† which they have made with their hands,\nAnd they deny the name of the Lord of Spirits,",
+      "text_fa": null,
+      "text_hr": "To su oni koji †sude† zvijezdama nebeskim,\n[podižu ruke protiv Svevišnjega],\n†gaze zemlju i prebivaju na njoj†.\nSva njihova djela očituju nepravdu,\na njihova moć počiva na njihovu bogatstvu.\nUzdaju se u †bogove† koje su načinili vlastitim rukama\ni niječu ime Gospodara duhova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And they persecute the houses of His congregations,\nAnd the faithful who hang upon the name of the Lord of Spirits.",
+      "text_fa": null,
+      "text_hr": "Progone domove njegovih zajednica\ni vjerne koji se oslanjaju na ime Gospodara duhova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

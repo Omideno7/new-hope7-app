@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 94,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "6d53581b0080588da41cbc8b86431c41e1f8d9f2fdfe0f6840dc7fb9dd4d2726",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And now I say unto you, my sons, love righteousness and walk therein;\nFor the paths of righteousness are worthy of acceptation,\nBut the paths of unrighteousness shall suddenly be destroyed and vanish.",
+      "text_fa": null,
+      "text_hr": "A sada vam kažem, sinovi moji, ljubite pravednost i hodite po njoj; Jer su staze pravednosti dostojne prihvaćanja, Ali staze nepravednosti iznenada će biti uništene i nestati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And to certain men of a generation shall the paths of violence and of death be revealed,\nAnd they shall hold themselves afar from them,\nAnd shall not follow them.",
+      "text_fa": null,
+      "text_hr": "I određenim ljudima jedne generacije otkrit će se staze nasilja i smrti, i držat će se daleko od njih, i neće ih slijediti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And now I say unto you the righteous:\nWalk not in the paths of wickedness, nor on the paths of death,\nAnd draw not nigh to them, lest ye be destroyed.",
+      "text_fa": null,
+      "text_hr": "A sada govorim vama, pravednici: ne hodajte stazama zloće ni stazama smrti i ne približavajte im se, da ne budete uništeni.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "But seek and choose for yourselves righteousness and an elect life,\nAnd walk in the paths of peace,\nAnd ye shall live and prosper.",
+      "text_fa": null,
+      "text_hr": "Tražite i izaberite sebi pravednost i izabrani život; hodajte stazama mira pa ćete živjeti i napredovati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And hold fast my words in the thoughts of your hearts,\nAnd suffer them not to be effaced from your hearts;\nFor know that sinners will tempt men to =evilly-entreat= wisdom,\nSo that no place may be found for her,\nAnd no manner of temptation may minish.",
+      "text_fa": null,
+      "text_hr": "Čvrsto držite moje riječi u mislima svojega srca i ne dopustite da se iz njega izbrišu. Znajte da će grešnici navoditi ljude da se =opako ophode= prema mudrosti, tako da joj se ne nađe mjesta i da je nikakva kušnja ne umanji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "Woe to those who build unrighteousness and oppression,\nAnd lay deceit as a foundation;\nFor they shall be suddenly overthrown,\nAnd they shall have no peace.",
+      "text_fa": null,
+      "text_hr": "Teško onima koji grade nepravdu i tlačenje te prijevaru polažu za temelj, jer će iznenada biti oboreni i neće imati mira.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "Woe to those who build their houses with sin;\nFor from all their foundations shall they be overthrown,\nAnd by the sword shall they fall.\n[And those who acquire gold and silver in judgement suddenly shall perish.]",
+      "text_fa": null,
+      "text_hr": "Teško onima koji svoje kuće grijehom grade; Jer iz svih će temelja biti srušeni, i od mača će pasti. [A oni koji steknu zlato i srebro na sudu iznenada će propasti.]",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "Woe to you, ye rich, for ye have trusted in your riches,\nAnd from your riches shall ye depart,\nBecause ye have not remembered the Most High in the days of your riches.",
+      "text_fa": null,
+      "text_hr": "Teško vama, bogataši, jer ste se pouzdali u svoje bogatstvo. Od svojega ćete bogatstva otići jer se niste spomenuli Svevišnjega u dane svojega obilja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "Ye have committed blasphemy and unrighteousness,\nAnd have become ready for the day of slaughter,\nAnd the day of darkness and the day of the great judgement.",
+      "text_fa": null,
+      "text_hr": "Počinili ste bogohuljenje i nepravdu, i bili spremni za dan klanja, i dan tame i dan velikoga suda.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "Thus I speak and declare unto you:\nHe who hath created you will overthrow you,\nAnd for your fall there shall be no compassion,\nAnd your Creator will rejoice at your destruction.",
+      "text_fa": null,
+      "text_hr": "Ovako vam govorim i izjavljujem: Onaj koji vas je stvorio oborit će vas; pri vašem padu neće biti samilosti i vaš će se Stvoritelj radovati vašoj propasti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "And your righteous ones in those days shall be\nA reproach to the sinners and the godless.",
+      "text_fa": null,
+      "text_hr": "Vaši će pravednici u one dane biti prijekor grešnicima i bezbožnicima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

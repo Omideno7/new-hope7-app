@@ -1,0 +1,634 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 89,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "0d2244e3cce6670420b97428705cd9a4be424d7cbbc16e9b065361aea87db88d",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And one of those four went to that white bull and instructed him in a secret, without his being terrified: he was born a bull and became a man, and built for himself a great vessel and dwelt thereon; and three bulls dwelt with him in that vessel and they were covered in.",
+      "text_fa": null,
+      "text_hr": "Jedan od četvorice ode do bijeloga bika i povjeri mu tajnu, a da ga nije prestrašio. Bik se rodio kao bik, a postao čovjekom; sagradio je sebi veliku lađu i nastanio se u njoj. Tri su bika boravila s njim u lađi i bili su natkriveni.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And again I raised mine eyes towards heaven and saw a lofty roof, with seven water torrents thereon, and those torrents flowed with much water into an enclosure.",
+      "text_fa": null,
+      "text_hr": "I opet sam podigao svoje oči prema nebu i vidio sam uzvišeni krov, sa sedam vodenih bujica na njemu, a te su bujice tekle s mnogo vode u ograđeni prostor.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And I saw again, and behold fountains were opened on the surface of that great enclosure, and that water began to swell and rise upon the surface, and I saw that enclosure till all its surface was covered with water.",
+      "text_fa": null,
+      "text_hr": "Ponovno pogledah i gle, izvori se otvoriše na površini velikoga ograđenog prostora. Voda je počela bujati i dizati se na površini, a ja sam gledao taj prostor dok mu voda nije prekrila cijelu površinu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And the water, the darkness, and mist increased upon it; and as I looked at the height of that water, that water had risen above the height of that enclosure, and was streaming over that enclosure, and it stood upon the earth.",
+      "text_fa": null,
+      "text_hr": "I voda, tama i magla se povećaše na njemu; i dok sam gledao u visinu te vode, ta se voda podigla iznad visine tog ograđenog prostora, i tekla je preko tog ograđenog prostora, i stala je na zemlju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And all the cattle of that enclosure were gathered together until I saw how they sank and were swallowed up and perished in that water.",
+      "text_fa": null,
+      "text_hr": "I sva stoka iz tog ograđenog prostora bila je skupljena dok nisam vidio kako su potonula i kako su progutana i nestala u toj vodi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "But that vessel floated on the water, while all the oxen and elephants and camels and asses sank to the bottom with all the animals, so that I could no longer see them, and they were not able to escape, (but) perished and sank into the depths.",
+      "text_fa": null,
+      "text_hr": "Ali ta je posuda plutala po vodi, dok su svi volovi i slonovi i deve i magarci potonuli na dno sa svim životinjama, tako da ih više nisam mogao vidjeti, i nisu mogli pobjeći, (nego) su poginuli i potonuli u dubine.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And again I saw in the vision till those water torrents were removed from that high roof, and the chasms of the earth were levelled up and other abysses were opened.",
+      "text_fa": null,
+      "text_hr": "I opet sam vidio u viđenju dok te vodene bujice nisu bile uklonjene s tog visokog krova, a ponori zemlje su bili poravnati i drugi ponori su bili otvoreni.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "Then the water began to run down into these, till the earth became visible; but that vessel settled on the earth, and the darkness retired and light appeared.",
+      "text_fa": null,
+      "text_hr": "Tada je voda počela teći u njih, sve dok zemlja nije postala vidljiva; ali ta se posuda smjestila na zemlju, tama se povukla i svjetlo se pojavilo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "But that white bull which had become a man came out of that vessel, and the three bulls with him, and one of those three was white like that bull, and one of them was red as blood, and one black: and that white bull departed from them.",
+      "text_fa": null,
+      "text_hr": "Ali onaj bijeli bik koji je postao čovjek izašao je iz te posude, i tri bika s njim, a jedan od te trojice je bio bijel poput tog bika, i jedan od njih je bio crven kao krv, a jedan crn: i taj bijeli bik je otišao od njih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And they began to bring forth beasts of the field and birds, so that there arose different genera: lions, tigers, wolves, dogs, hyenas, wild boars, foxes, squirrels, swine, falcons, vultures, kites, eagles, and ravens; and among them was born a white bull.",
+      "text_fa": null,
+      "text_hr": "I počeli su izvoditi poljske zvijeri i ptice, tako da su nastali različiti rodovi: lavovi, tigrovi, vukovi, psi, hijene, divlje svinje, lisice, vjeverice, svinje, sokolovi, lešinari, zmajevi, orlovi i gavrani; a među njima se rodio bijeli bik.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "And they began to bite one another; but that white bull which was born amongst them begat a wild ass and a white bull with it, and the wild asses multiplied.",
+      "text_fa": null,
+      "text_hr": "I počeli su se gristi; ali onaj bijeli bik koji se rodio među njima rodio je divljeg magarca i bijelog bika s njim, i divlji magarci su se množili.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "But that bull which was born from him begat a black wild boar and a white sheep; and the former begat many boars, but that sheep begat twelve sheep.",
+      "text_fa": null,
+      "text_hr": "Bik koji se od njega rodio dobio je crnoga divljeg vepra i bijelu ovcu. Prvi je dobio mnogo veprova, a ovca je ojanjila dvanaest ovaca.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "And when those twelve sheep had grown, they gave up one of them to the asses, and those asses again gave up that sheep to the wolves, and that sheep grew up among the wolves.",
+      "text_fa": null,
+      "text_hr": "I kad je tih dvanaest ovaca naraslo, jednu su od njih predali magarcima, a ti su magarci opet predali tu ovcu vukovima, i ta je ovca odrasla među vukovima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "And the Lord brought the eleven sheep to live with it and to pasture with it among the wolves: and they multiplied and became many flocks of sheep.",
+      "text_fa": null,
+      "text_hr": "I Gospod dovede jedanaest ovaca da žive s njima i da pasu s njima među vukovima; i one se namnožiše i postadoše mnoga stada ovaca.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "And the wolves began to fear them, and they oppressed them until they destroyed their little ones, and they cast their young into a river of much water: but those sheep began to cry aloud on account of their little ones, and to complain unto their Lord.",
+      "text_fa": null,
+      "text_hr": "I vukovi su ih se počeli bojati, i tlačili su ih sve dok nisu uništili njihovu mladunčad, i bacili svoje mlade u rijeku punu vode: ali su te ovce počele glasno plakati zbog svoje dječice i žaliti se svome Gospodaru.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "And a sheep which had been saved from the wolves fled and escaped to the wild asses; and I saw the sheep how they lamented and cried, and besought their Lord with all their might, till that Lord of the sheep descended at the voice of the sheep from a lofty abode, and came to them and pastured them.",
+      "text_fa": null,
+      "text_hr": "Ovca koja se spasila od vukova pobježe i ode k divljim magarcima. Vidio sam ovce kako jadikuju, plaču i svom snagom mole svojega Gospodara, dok Gospodar ovaca na njihov glas nije sišao iz uzvišenoga prebivališta, došao k njima i pasao ih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "And He called that sheep which had escaped the wolves, and spake with it concerning the wolves that it should admonish them not to touch the sheep.",
+      "text_fa": null,
+      "text_hr": "I pozvao je onu ovcu koja je pobjegla od vukova, i razgovarao s njom o vukovima da ih opomene da ne diraju ovce.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "And the sheep went to the wolves according to the word of the Lord, and another sheep met it and went with it, and the two went and entered together into the assembly of those wolves, and spake with them and admonished them not to touch the sheep from henceforth.",
+      "text_fa": null,
+      "text_hr": "I ovca je otišla k vukovima prema riječi Gospodnjoj, a druga ovca ju je srela i otišla s njom, i njih dvoje su otišli i zajedno ušli u skup tih vukova, i razgovarali s njima i opomenuli ih da od sada pa nadalje ne diraju ovce.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "And thereupon I saw the wolves, and how they oppressed the sheep exceedingly with all their power; and the sheep cried aloud.",
+      "text_fa": null,
+      "text_hr": "I tada sam vidio vukove, i kako silno tlače ovce svom svojom snagom; a ovce su glasno plakale.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "And the Lord came to the sheep and they began to smite those wolves: and the wolves began to make lamentation; but the sheep became quiet and forthwith ceased to cry out.",
+      "text_fa": null,
+      "text_hr": "Gospodin dođe k ovcama i poče udarati vukove; vukovi počeše naricati, a ovce se utišaše i odmah prestadoše vikati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "And I saw the sheep till they departed from amongst the wolves; but the eyes of the wolves were blinded, and those wolves departed in pursuit of the sheep with all their power.",
+      "text_fa": null,
+      "text_hr": "I vidio sam ovce dok nisu otišle od vukova; ali su oči vukova bile zaslijepljene, i ti su vukovi svom snagom krenuli u potjeru za ovcama.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "And the Lord of the sheep went with them, as their leader, and all His sheep followed Him: and His face was dazzling and glorious and terrible to behold.",
+      "text_fa": null,
+      "text_hr": "I Gospodar ovaca je išao s njima, kao njihov vođa, i sve Njegove ovce su Ga slijedile: a Njegovo lice je bilo blistavo i slavno i strašno za vidjeti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "But the wolves began to pursue those sheep till they reached a sea of water.",
+      "text_fa": null,
+      "text_hr": "Ali vukovi su počeli progoniti te ovce sve dok nisu stigle do vodenog mora.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "And that sea was divided, and the water stood on this side and on that before their face, and their Lord led them and placed Himself between them and the wolves.",
+      "text_fa": null,
+      "text_hr": "More se razdvojilo i voda je pred njima stala s jedne i druge strane. Njihov ih je Gospodar vodio i stao između njih i vukova.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "And as those wolves did not yet see the sheep, they proceeded into the midst of that sea, and the wolves followed the sheep, and [those wolves] ran after them into that sea.",
+      "text_fa": null,
+      "text_hr": "I kako ti vukovi još nisu vidjeli ovce, krenuli su usred tog mora, a vukovi su slijedili ovce, i [ti vukovi] su potrčali za njima u to more.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "And when they saw the Lord of the sheep, they turned to flee before His face, but that sea gathered itself together, and became as it had been created, and the water swelled and rose till it covered those wolves.",
+      "text_fa": null,
+      "text_hr": "Kad ugledaše Gospodara ovaca, okrenuše se i pokušaše pobjeći pred Njegovim licem. Ali more se sklopilo i vratilo u prijašnje stanje; voda nabujala, podigla se i prekrila vukove.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "And I saw till all the wolves who pursued those sheep perished and were drowned.",
+      "text_fa": null,
+      "text_hr": "I vidio sam sve dok svi vukovi koji su progonili te ovce ne izginuše i utopiše se.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "But the sheep escaped from that water and went forth into a wilderness, where there was no water and no grass; and they began to open their eyes and to see; and I saw the Lord of the sheep pasturing them and giving them water and grass, and that sheep going and leading them.",
+      "text_fa": null,
+      "text_hr": "Ovce iziđoše iz vode i odoše u pustinju bez vode i trave. Počele su otvarati oči i gledati. Vidio sam Gospodara ovaca kako ih pase i daje im vodu i travu, a onu ovcu kako ide pred njima i vodi ih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "And that sheep ascended to the summit of that lofty rock, and the Lord of the sheep sent it to them.",
+      "text_fa": null,
+      "text_hr": "I ta se ovca popela na vrh te uzvišene stijene, a Gospodar ovaca poslao ju je k njima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "And after that I saw the Lord of the sheep who stood before them, and His appearance was great and terrible and majestic, and all those sheep saw Him and were afraid before His face.",
+      "text_fa": null,
+      "text_hr": "I nakon toga sam vidio Gospodara ovaca koji je stajao pred njima, i Njegov izgled je bio velik, užasan i veličanstven, i sve te ovce su Ga vidjele i uplašile su se pred Njegovim licem.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "And they all feared and trembled because of Him, and they cried to that sheep with them [which was amongst them]: “We are not able to stand before our Lord or to behold Him.”",
+      "text_fa": null,
+      "text_hr": "I svi su se bojali i drhtali zbog Njega, i povikali su onoj ovci s njima [koja je bila među njima]: \"Nismo u stanju stati pred našeg Gospodara niti Ga gledati.\"",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "And that sheep which led them again ascended to the summit of that rock, but the sheep began to be blinded and to wander from the way which he had showed them, but that sheep wot not thereof.",
+      "text_fa": null,
+      "text_hr": "I ta ovca koja ih je vodila ponovno se popela na vrh te stijene, ali su ovce počele biti zaslijepljene i lutati od puta koji im je pokazao, ali ta ovca nije znala za to.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "And the Lord of the sheep was wrathful exceedingly against them, and that sheep discovered it, and went down from the summit of the rock, and came to the sheep, and found the greatest part of them blinded and fallen away.",
+      "text_fa": null,
+      "text_hr": "I Gospodar ovaca bio je silno gnjevan na njih, i ta je ovca to otkrila, i sišla s vrha stijene, i došla do ovaca, i našla najveći dio njih oslijepljen i otpao.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 34,
+      "text_en": "And when they saw it they feared and trembled at its presence, and desired to return to their folds.",
+      "text_fa": null,
+      "text_hr": "Kad su je ugledale, uplašile su se i zadrhtale pred njom te se poželjele vratiti u svoje torove.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 35,
+      "text_en": "And that sheep took other sheep with it, and came to those sheep which had fallen away, and began to slay them; and the sheep feared its presence, and thus that sheep brought back those sheep that had fallen away, and they returned to their folds.",
+      "text_fa": null,
+      "text_hr": "Ta ovca uze sa sobom druge ovce, dođe do otpalih ovaca i poče ih ubijati. Ovce su se bojale njezine prisutnosti; tako je ona vratila otpale ovce i one se vratiše u svoje torove.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 36,
+      "text_en": "And I saw in this vision till that sheep became a man and built a house for the Lord of the sheep, and placed all the sheep in that house.",
+      "text_fa": null,
+      "text_hr": "I vidio sam u ovoj viđenju dok ta ovca nije postala čovjekom i izgradila kuću za Gospodara ovaca, i smjestila sve ovce u tu kuću.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 37,
+      "text_en": "And I saw till this sheep which had met that sheep which led them fell asleep: and I saw till all the great sheep perished and little ones arose in their place, and they came to a pasture, and approached a stream of water.",
+      "text_fa": null,
+      "text_hr": "I vidio sam dok ova ovca koja je susrela onu ovcu koja ih je vodila nije zaspala; i vidio sam dok sve velike ovce ne izginuše i male ustadoše na svoje mjesto, i dođoše do pašnjaka i približiše se potoku vode.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 38,
+      "text_en": "Then that sheep, their leader which had become a man, withdrew from them and fell asleep, and all the sheep sought it and cried over it with a great crying.",
+      "text_fa": null,
+      "text_hr": "Tada se ona ovca, njihov vođa koji je postao čovjekom, povukla od njih i zaspala. Sve su ga ovce tražile i nad njim glasno plakale.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 39,
+      "text_en": "And I saw till they left off crying for that sheep and crossed that stream of water, and there arose the =two= sheep as leaders in the place of those which had led them and fallen asleep (lit. “had fallen asleep and led them”).",
+      "text_fa": null,
+      "text_hr": "I vidio sam dok nisu prestale plakati za tom ovcom i prešle taj potok vode, i tamo su ustale =dvije= ovce kao vođe umjesto onih koji su ih vodili i zaspali (doslovno \"zaspali i vodili ih\").",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 40,
+      "text_en": "And I saw till the sheep came to a goodly place, and a pleasant and glorious land, and I saw till those sheep were satisfied; and that house stood amongst them in the pleasant land.",
+      "text_fa": null,
+      "text_hr": "I vidio sam dok ovce nisu došle na lijepo mjesto, u ugodnu i slavnu zemlju, i vidio sam dok te ovce nisu bile zadovoljne; a ta je kuća stajala među njima u ugodnoj zemlji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 41,
+      "text_en": "And sometimes their eyes were opened, and sometimes blinded, till another sheep arose and led them and brought them all back, and their eyes were opened.",
+      "text_fa": null,
+      "text_hr": "I ponekad su njihove oči bile otvorene, a ponekad zaslijepljene, sve dok druga ovca nije ustala i povela ih i vratila ih sve natrag, i njihove oči su bile otvorene.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 42,
+      "text_en": "And the dogs and the foxes and the wild boars began to devour those sheep till the Lord of the sheep raised up [another sheep] a ram from their midst, which led them.",
+      "text_fa": null,
+      "text_hr": "Psi, lisice i divlje svinje počeše proždirati ovce, dok Gospodar ovaca nije iz njihove sredine podigao [drugu ovcu], ovna koji ih je vodio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 43,
+      "text_en": "And that ram began to butt on either side those dogs, foxes, and wild boars till he had destroyed them †all†.",
+      "text_fa": null,
+      "text_hr": "I taj je ovan počeo udarati s obje strane te pse, lisice i divlje svinje dok ih nije †sve† uništio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 44,
+      "text_en": "And that sheep whose eyes were opened saw that ram, which was amongst the sheep, =till= it †forsook its glory† and began to butt those sheep, and trampled upon them, and behaved itself unseemly.",
+      "text_fa": null,
+      "text_hr": "I ta ovca čije su oči bile otvorene vidjela je onog ovna, koji je bio među ovcama, =sve dok= nije †napustio svoju slavu† i počeo udarati te ovce, i gaziti ih, i ponašati se nedolično.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 45,
+      "text_en": "And the Lord of the sheep sent the =lamb= to another =lamb= and raised it to being a ram and leader of the sheep instead of that ram which had †forsaken its glory†.",
+      "text_fa": null,
+      "text_hr": "Gospodar ovaca posla =janje= drugomu =janjetu= i podiže ga da postane ovan i vođa ovaca umjesto ovna koji je †napustio svoju slavu†.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 46,
+      "text_en": "And it went to it and spake to it alone, and raised it to being a ram, and made it the prince and leader of the sheep; but during all these things those dogs oppressed the sheep.",
+      "text_fa": null,
+      "text_hr": "I otišlo je do njega i razgovaralo s njim nasamo, i odgojilo ga u ovna, i učinilo ga princem i vođom ovaca; ali tijekom svih tih stvari ti su psi tlačili ovce.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 47,
+      "text_en": "And the first ram pursued that second ram, and that second ram arose and fled before it; and I saw till those dogs pulled down the firsts ram.",
+      "text_fa": null,
+      "text_hr": "I prvi ovan je progonio drugog ovna, a drugi ovan je ustao i pobjegao pred njim; i vidio sam dok oni psi nisu povukli prvog ovna.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 48,
+      "text_en": "And that second ram arose and led the [little] sheep.",
+      "text_fa": null,
+      "text_hr": "Drugi ovan ustade i povede [malu] ovcu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 49,
+      "text_en": "And those sheep grew and multiplied; but all the dogs, and foxes, and wild boars feared and fled before it, and that ram butted and killed the wild beasts, and those wild beasts had no longer any power among the sheep and robbed them no more of aught. 48^b. And that ram begat many sheep and fell asleep; and a little sheep became ram in its stead, and became prince and leader of those sheep.",
+      "text_fa": null,
+      "text_hr": "I te su ovce rasle i množile se; ali su se svi psi, lisice i divlje svinje bojali i bježali pred njim, a taj je ovan udarao i ubijao divlje zvijeri, a te divlje zvijeri više nisu imale nikakve moći među ovcama i nisu im više ništa otimale. 48^b. I taj ovan okoti mnogo ovaca i zaspa; i ovčica je postala ovan umjesto nje, i postala princ i vođa tih ovaca.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 50,
+      "text_en": "And that house became great and broad, and it was built for those sheep: ‹and› a tower lofty and great was built on the house for the Lord of the sheep, and that house was low, but the tower was elevated and lofty, and the Lord of the sheep stood on that tower and they offered a full table before Him.",
+      "text_fa": null,
+      "text_hr": "I ta je kuća postala velika i široka, i bila je sagrađena za te ovce: ‹i› toranj, uzvišen i velik, sagrađen je na kući za Gospodara ovaca, i ta je kuća bila niska, ali je toranj bio uzdignut i uzvišen, i Gospodar ovaca je stajao na toj kuli i ponudili su pun stol pred Njim.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 51,
+      "text_en": "And again I saw those sheep that they again erred and went many ways, and forsook that their house, and the Lord of the sheep called some from amongst the sheep and sent them to the sheep, but the sheep began to slay them.",
+      "text_fa": null,
+      "text_hr": "I opet sam vidio one ovce da su opet pogriješile i otišle mnogo puteva, i napustile tu svoju kuću, i Gospodar ovaca je pozvao neke od ovaca i poslao ih ovcama, ali su ih ovce počele ubijati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 52,
+      "text_en": "And one of them was saved and was not slain, and it sped away and cried aloud over the sheep; and they sought to slay it, but the Lord of the sheep saved it from the sheep, and brought it up to me, and caused it to dwell there.",
+      "text_fa": null,
+      "text_hr": "I jedan od njih je spašen i nije ubijen, te je odjurio i glasno plakao nad ovcama; i oni su ga htjeli zaklati, ali ga je Gospodar ovaca spasio od ovaca, doveo ga k meni i učinio da ondje prebiva.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 53,
+      "text_en": "And many other sheep He sent to those sheep to testify unto them and lament over them.",
+      "text_fa": null,
+      "text_hr": "I mnoge druge ovce je poslao tim ovcama da im svjedoče i nariču nad njima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 54,
+      "text_en": "And after that I saw that when they forsook the house of the Lord and His tower they fell away entirely, and their eyes were blinded; and I saw the Lord of the sheep how He wrought much slaughter amongst them in their herds until those sheep invited that slaughter and betrayed His place.",
+      "text_fa": null,
+      "text_hr": "Nakon toga vidjeh: kad su napustile Dom Gospodnji i Njegovu kulu, posve su otpale i oči su im oslijepjele. Gospodar ovaca učinio je velik pokolj među njihovim stadima, sve dok te ovce nisu prizvale taj pokolj i izdale Njegovo mjesto.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 55,
+      "text_en": "And He gave them over into the hands of the lions and tigers, and wolves and hyenas, and into the hand of the foxes, and to all the wild beasts, and those wild beasts began to tear in pieces those sheep.",
+      "text_fa": null,
+      "text_hr": "I predao ih je u ruke lavova i tigrova, vukova i hijena, i u ruke lisica, i svim divljim zvijerima, i te su divlje zvijeri počele komadati te ovce.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 56,
+      "text_en": "And I saw that He forsook that their house and their tower and gave them all into the hand of the lions, to tear and devour them, into the hand of all the wild beasts.",
+      "text_fa": null,
+      "text_hr": "I vidjeh da je On napustio tu njihovu kuću i njihovu kulu i dao ih sve u ruke lavovima, da ih rastrgnu i prožderu, u ruke svim divljim zvijerima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 57,
+      "text_en": "And I began to cry aloud with all my power, and to appeal to the Lord of the sheep, and to represent to Him in regard to the sheep that they were devoured by all the wild beasts.",
+      "text_fa": null,
+      "text_hr": "Počeh iz sve snage glasno vikati, zazivati Gospodara ovaca i iznositi Mu kako ovce proždiru sve divlje zvijeri.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 58,
+      "text_en": "But He remained unmoved, though He saw it, and rejoiced that they were devoured and swallowed and robbed, and left them to be devoured in the hand of all the beasts.",
+      "text_fa": null,
+      "text_hr": "Ali On je ostao nepomičan, iako je to vidio, i radovao se što su pojedeni i progutani i opljačkani, i ostavio ih da budu prožderane u rukama svih zvijeri.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 59,
+      "text_en": "And He called seventy shepherds, and cast those sheep to them that they might pasture them, and He spake to the shepherds and their companions: “Let each individual of you pasture the sheep henceforward, and everything that I shall command you that do ye.",
+      "text_fa": null,
+      "text_hr": "I pozvao je sedamdeset pastira, i dao im te ovce da ih pasu, i rekao je pastirima i njihovim drugovima: “Neka svaki od vas od sada pase ovce, i činite sve što vam zapovjedim.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 60,
+      "text_en": "And I will deliver them over unto you duly numbered, and tell you which of them are to be destroyed—and them destroy ye.” And He gave over unto them those sheep.",
+      "text_fa": null,
+      "text_hr": "I predat ću vam ih propisno pobrojane, i reći ću vam koje od njih treba uništiti - i njih uništite vi.\" I predao im je te ovce.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 61,
+      "text_en": "And He called another and spake unto him: “Observe and mark everything that the shepherds will do to those sheep; for they will destroy more of them than I have commanded them.",
+      "text_fa": null,
+      "text_hr": "I pozvao je drugoga i rekao mu: “Promatraj i označi sve što će pastiri učiniti tim ovcama; jer će ih uništiti više nego što sam im naredio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 62,
+      "text_en": "And every excess and the destruction which will be wrought through the shepherds, record (namely) how many they destroy according to my command, and how many according to their own caprice: record against every individual shepherd all the destruction he effects.",
+      "text_fa": null,
+      "text_hr": "Zapiši svaki prekomjerni pokolj i uništenje koje pastiri počine: koliko ih unište po mojoj zapovijedi, a koliko po vlastitoj samovolji. Za svakoga pojedinog pastira zapiši sav pokolj koji počini.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 63,
+      "text_en": "And read out before me by number how many they destroy, and how many they deliver over for destruction, that I may have this as a testimony against them, and know every deed of the shepherds, that I may =comprehend= and see what they do, whether or not they abide by my command which I have commanded them.",
+      "text_fa": null,
+      "text_hr": "I pročitaj preda mnom po broju koliko su ih uništili i koliko su ih predali na uništenje, kako bih imao ovo kao svjedočanstvo protiv njih, i znao svako djelo pastira, kako bih mogao =shvatiti= i vidjeti što čine, drže li se ili ne moje zapovijedi koju sam im zapovjedio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 64,
+      "text_en": "But they shall not know it, and thou shalt not declare it to them, nor admonish them, but only record against each individual all the destruction which the shepherds effect each in his time, and lay it all before me.”",
+      "text_fa": null,
+      "text_hr": "Ali oni to neće znati, i nećeš im to objaviti, niti ih opomenuti, nego samo zabilježi protiv svakog pojedinca svo uništenje koje pastiri izvrše svaki u svoje vrijeme, i sve to izloži preda mnom.”",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 65,
+      "text_en": "And I saw till those shepherds pastured in their season, and they began to slay and to destroy more than they were bidden, and they delivered those sheep into the hand of the lions.",
+      "text_fa": null,
+      "text_hr": "I vidio sam dok ti pastiri nisu pasli u svoje vrijeme, i počeli su ubijati i uništavati više nego što im je bilo naređeno, i predali su te ovce u ruke lavovima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 66,
+      "text_en": "And the lions and tigers ate and devoured the greater part of those sheep, and the wild boars ate along with them; and they burnt that tower and demolished that house.",
+      "text_fa": null,
+      "text_hr": "I lavovi i tigrovi su pojeli i proždirali veći dio tih ovaca, a divlje svinje jele su zajedno s njima; te su spalili tu kulu i srušili onu kuću.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 67,
+      "text_en": "And I became exceedingly sorrowful over that tower because that house of the sheep was demolished, and afterwards I was unable to see if those sheep entered that house.",
+      "text_fa": null,
+      "text_hr": "I postao sam jako tužan zbog te kule jer je ta kuća od ovaca bila srušena, a poslije nisam mogao vidjeti jesu li te ovce ušle u tu kuću.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 68,
+      "text_en": "And the shepherds and their associates delivered over those sheep to all the wild beasts, to devour them, and each one of them received in his time a definite number: it was written by the other in a book how many each one of them destroyed of them.",
+      "text_fa": null,
+      "text_hr": "Pastiri i njihovi drugovi predali su ovce svim divljim zvijerima da ih prožderu. Svaki je pastir u svoje vrijeme primio određen broj, a onaj drugi zapisivao je u knjigu koliko ih je svaki uništio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 69,
+      "text_en": "And each one slew and destroyed many more than was prescribed; and I began to weep and lament on account of those sheep.",
+      "text_fa": null,
+      "text_hr": "I svaki je pobio i uništio mnogo više nego što je propisano; i počeo sam plakati i jadikovati zbog tih ovaca.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 70,
+      "text_en": "And thus in the vision I saw that one who wrote how he wrote down every one that was destroyed by those shepherds, day by day, and carried up and laid down and showed actually the whole book to the Lord of the sheep—(even) everything that they had done, and all that each one of them had made away with, and all that they had given over to destruction.",
+      "text_fa": null,
+      "text_hr": "I tako sam u viđenju vidio onoga koji je zapisao kako je zapisao sve što su ti pastiri uništili, dan po dan, i nosio gore i položio i zapravo pokazao cijelu knjigu Gospodaru ovaca—(čak) sve što su učinili, i sve što je svaki od njih uništio, i sve što su predali uništenju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 71,
+      "text_en": "And the book was read before the Lord of the sheep, and He took the book from his hand and read it and sealed it and laid it down.",
+      "text_fa": null,
+      "text_hr": "I knjiga je pročitana pred Gospodarom ovaca, i On je uzeo knjigu iz njegove ruke i pročitao je, zapečatio je i položio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 72,
+      "text_en": "And forthwith I saw how the shepherds pastured for twelve hours, and behold three of those sheep turned back and came and entered and began to build up all that had fallen down of that house; but the wild boars tried to hinder them, but they were not able.",
+      "text_fa": null,
+      "text_hr": "I odmah sam vidio kako su pastiri pasli dvanaest sati, i gle, tri od tih ovaca su se vratile i došle i ušle i počele graditi sve što je srušeno od te kuće; ali su ih divlje svinje pokušale spriječiti, ali nisu uspjele.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 73,
+      "text_en": "And they began again to build as before, and they reared up that tower, and it was named the high tower; and they began again to place a table before the tower, but all the bread on it was polluted and not pure.",
+      "text_fa": null,
+      "text_hr": "Ponovno su počeli graditi kao prije i podigli su kulu, koja je nazvana Visoka kula. Opet su počeli postavljati stol pred kulu, ali sav je kruh na njemu bio okaljan i nečist.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 74,
+      "text_en": "And as touching all this the eyes of those sheep were blinded so that they saw not, and (the eyes of) their shepherds likewise; and they delivered them in large numbers to their shepherds for destruction, and they trampled the sheep with their feet and devoured them.",
+      "text_fa": null,
+      "text_hr": "I dok su dodirivali sve ovo, oči tih ovaca su bile zaslijepljene tako da nisu vidjele, a (oči) njihovih pastira isto tako; te su ih u velikom broju predavali svojim pastirima na uništenje, a oni su gazili ovce nogama i jeli ih.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 75,
+      "text_en": "And the Lord of the sheep remained unmoved till all the sheep were dispersed over the field and mingled with them (_i. e._ the beasts), and they (_i. e._ the shepherds) did not save them out of the hand of the beasts.",
+      "text_fa": null,
+      "text_hr": "Gospodar ovaca ostao je nepomičan dok se sve ovce nisu raspršile poljem i pomiješale s njima (_tj._ zvijerima), a oni (_tj._ pastiri) nisu ih izbavili iz ruku zvijeri.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 76,
+      "text_en": "And this one who wrote the book carried it up, and showed it and read it before the Lord of the sheep, and implored Him on their account, and besought Him on their account as he showed Him all the doings of the shepherds, and gave testimony before Him against all the shepherds.",
+      "text_fa": null,
+      "text_hr": "I ovaj koji je napisao knjigu iznio ju je, i pokazao je i pročitao pred Gospodarom ovaca, i molio Ga za njih, i molio Ga za njih dok Mu je pokazivao sva djela pastira, i svjedočio pred Njim protiv svih pastira.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 77,
+      "text_en": "And he took the actual book and laid it down beside Him and departed.",
+      "text_fa": null,
+      "text_hr": "I on je uzeo pravu knjigu, položio je pored sebe i otišao.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

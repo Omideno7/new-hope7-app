@@ -1,0 +1,577 @@
+{
+  "schema_version": 1,
+  "book_id": "2_esdras",
+  "title_fa": "دوم اِسدراس",
+  "title_en": "Second Esdras",
+  "title_hr": "Druga Ezdrina",
+  "chapter": 7,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "aae5b35b528855cfd137b49444cd580ec0a70efca925546a0c766bc875f8cc55",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And when I had made an end of speaking these words, there was sent unto me the angel which had been sent unto me the nights afore:",
+      "text_fa": null,
+      "text_hr": "I kad sam prestao govoriti ove riječi, poslan mi je anđeo koji mi je bio poslan prethodne noći:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And he said unto me, Up, Esdras, and hear the words that I am come to tell thee.",
+      "text_fa": null,
+      "text_hr": "I rekao mi je, Ustani, Ezra, i čuj riječi koje sam ti došao reći.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And I said, Speak on, my God. Then said he unto me, The sea is set in a wide place, that it might be deep and great.",
+      "text_fa": null,
+      "text_hr": "A ja sam rekao, Govori, moj Bože. Tada mi je rekao: More je na širokom mjestu, da bude duboko i veliko.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "But put the case the entrance were narrow, and like a river;",
+      "text_fa": null,
+      "text_hr": "Ali zamisli da je ulaz uzak i nalik rijeci.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "Who then could go into the sea to look upon it, and to rule it? if he went not through the narrow, how could he come into the broad?",
+      "text_fa": null,
+      "text_hr": "Tko bi onda mogao ući u more da ga promatra i da njime vlada? Ako nije prošao kroz usko, kako bi mogao doći u široko?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "There is also another thing; A city is builded, and set upon a broad field, and is full of all good things:",
+      "text_fa": null,
+      "text_hr": "Postoji još jedna stvar; Grad je sagrađen i postavljen na širokom polju i pun je svih dobara.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "The entrance thereof is narrow, and is set in a dangerous place to fall, like as if there were a fire on the right hand, and on the left a deep water:",
+      "text_fa": null,
+      "text_hr": "Ulaz mu je uzak, i postavljen je na opasno mjesto za pad, kao da je s desne strane vatra, a s lijeve duboka voda:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And one only path between them both, even between the fire and the water, so small that there could but one man go there at once.",
+      "text_fa": null,
+      "text_hr": "I jedan jedini put između njih dvojice, čak i između vatre i vode, tako malen da je samo jedan čovjek mogao tamo proći odjednom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "If this city now were given unto a man for an inheritance, if he never shall pass the danger set before it, how shall he receive this inheritance?",
+      "text_fa": null,
+      "text_hr": "Kad bi ovaj grad sada bio dan čovjeku u nasljedstvo, ako on nikada ne prođe opasnost koja je pred njim, kako će primiti ovo nasljedstvo?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And I said, It is so, Lord. Then said he unto me, Even so also is Israel’s portion.",
+      "text_fa": null,
+      "text_hr": "Rekao sam: Tako je, Gospodine. Tada mi je rekao: To je i Izraelov dio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "Because for their sakes I made the world: and when Adam transgressed my statutes, then was decreed that now is done.",
+      "text_fa": null,
+      "text_hr": "Radi njih sam stvorio svijet; kada je Adam prekršio moje uredbe, određeno je ono što je sada nastupilo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "Then were the entrances of this world made narrow, full of sorrow and travail: they are but few and evil, full of perils, and very painful.",
+      "text_fa": null,
+      "text_hr": "Tada su prolazi ovoga svijeta postali uski, puni žalosti i muke; malobrojni su i tegobni, puni opasnosti i veoma bolni.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "For the entrances of the elder world were wide and sure, and brought immortal fruit.",
+      "text_fa": null,
+      "text_hr": "Prolazi prijašnjega svijeta bili su široki i sigurni te su donosili besmrtan plod.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "If then they that live labour not to enter these strait and vain things, they can never receive those that are laid up for them.",
+      "text_fa": null,
+      "text_hr": "Ako se živi ne trude proći kroz te uske i tegobne prolaze, nikada neće primiti ono što je za njih pohranjeno.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "Now therefore why disquietest thou thyself, seeing thou art but a corruptible man? and why art thou moved, whereas thou art but mortal?",
+      "text_fa": null,
+      "text_hr": "Zašto se dakle uznemiruješ, kad si raspadljiv čovjek? Zašto se potresaš, kad si smrtnik?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "Why hast thou not considered in thy mind this thing that is to come, rather than that which is present?",
+      "text_fa": null,
+      "text_hr": "Zašto u svom umu nisi razmišljao o onome što će doći, a ne o onome što je sada?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "Then answered I and said, O Lord that bearest rule, thou hast ordained in thy law, that the righteous should inherit these things, but that the ungodly should perish.",
+      "text_fa": null,
+      "text_hr": "Tada sam odgovorio i rekao: Gospodine koji vladaš, ti si odredio u svom zakonu da pravednici posjeduju ove stvari, a da bezbožnici propadnu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "Nevertheless the righteous shall suffer strait things, and hope for wide: for they that have done wickedly have suffered the strait things, and yet shall not see the wide.",
+      "text_fa": null,
+      "text_hr": "Ipak, pravednici će podnijeti nevolje i nadati se prostranstvu; oni koji su činili zlo pretrpjeli su nevolje, ali prostranstvo neće ugledati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "And he said unto me. There is no judge above God, and none that hath understanding above the Highest.",
+      "text_fa": null,
+      "text_hr": "I rekao mi je. Nema suca iznad Boga, niti ima razuma iznad Svevišnjeg.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "For there be many that perish in this life, because they despise the law of God that is set before them.",
+      "text_fa": null,
+      "text_hr": "Jer ima mnogo onih koji propadaju u ovom životu, jer preziru Božji zakon koji im je postavljen.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "For God hath given strait commandment to such as came, what they should do to live, even as they came, and what they should observe to avoid punishment.",
+      "text_fa": null,
+      "text_hr": "Bog je onima koji su došli dao strogu zapovijed što trebaju činiti da bi živjeli i što trebaju obdržavati da bi izbjegli kaznu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "Nevertheless they were not obedient unto him; but spake against him, and imagined vain things;",
+      "text_fa": null,
+      "text_hr": "Ali oni ga nisu poslušali, nego su mu se protivili i smišljali isprazne stvari.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "And deceived themselves by their wicked deeds; and said of the most High, that he is not; and knew not his ways:",
+      "text_fa": null,
+      "text_hr": "Zavarali su sami sebe svojim zlim djelima, rekli za Svevišnjega da ne postoji i nisu poznavali njegove putove.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "But his law have they despised, and denied his covenants; in his statutes have they not been faithful, and have not performed his works.",
+      "text_fa": null,
+      "text_hr": "Prezreli su njegov Zakon, zanijekali njegove saveze, nisu bili vjerni njegovim uredbama niti su vršili njegova djela.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "And therefore, Esdras, for the empty are empty things, and for the full are the full things.",
+      "text_fa": null,
+      "text_hr": "Zato, Ezra, ispraznima pripadaju isprazne stvari, a punima one koje su pune.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "Behold, the time shall come, that these tokens which I have told thee shall come to pass, and the bride shall appear, and she coming forth shall be seen, that now is withdrawn from the earth.",
+      "text_fa": null,
+      "text_hr": "Gle, doći će vrijeme da će se ovi znakovi koje sam ti rekao ostvariti, i nevjesta će se pojaviti, i vidjet će se ona kako izlazi, a koja je sada povučena sa zemlje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "And whosoever is delivered from the foresaid evils shall see my wonders.",
+      "text_fa": null,
+      "text_hr": "I tko god se izbavi od gore navedenih zala, vidjet će moja čuda.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "For my son Jesus shall be revealed with those that be with him, and they that remain shall rejoice within four hundred years.",
+      "text_fa": null,
+      "text_hr": "Jer će se moj sin Isus objaviti s onima koji budu s njim, a oni koji ostanu radovat će se za četiri stotine godina.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "After these years shall my son Christ die, and all men that have life.",
+      "text_fa": null,
+      "text_hr": "Nakon ovih godina umrijet će moj sin Krist i svi ljudi koji imaju život.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "And the world shall be turned into the old silence seven days, like as in the former judgments: so that no man shall remain.",
+      "text_fa": null,
+      "text_hr": "Svijet će se na sedam dana vratiti u drevnu tišinu, kao pri prijašnjim sudovima, tako da nitko neće ostati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "And after seven days the world, that yet awaketh not, shall be raised up, and that shall die that is corrupt",
+      "text_fa": null,
+      "text_hr": "Nakon sedam dana svijet, koji još nije budan, bit će podignut, a ono što je raspadljivo umrijet će.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "And the earth shall restore those that are asleep in her, and so shall the dust those that dwell in silence, and the secret places shall deliver those souls that were committed unto them.",
+      "text_fa": null,
+      "text_hr": "Zemlja će vratiti one koji u njoj spavaju, prah one koji prebivaju u tišini, a skrovita mjesta predat će duše koje su im bile povjerene.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "And the most High shall appear upon the seat of judgment, and misery shall pass away, and the long suffering shall have an end:",
+      "text_fa": null,
+      "text_hr": "Svevišnji će se pojaviti na sudačkom prijestolju; nevolja će proći i dugotrpljivosti doći kraj.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 34,
+      "text_en": "But judgment only shall remain, truth shall stand, and faith shall wax strong:",
+      "text_fa": null,
+      "text_hr": "Ostat će samo sud; istina će stajati, a vjera jačati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 35,
+      "text_en": "And the work shall follow, and the reward shall be shewed, and the good deeds shall be of force, and wicked deeds shall bear no rule.",
+      "text_fa": null,
+      "text_hr": "Djelo će uslijediti, nagrada će se pokazati, dobra će djela imati snagu, a zla neće vladati.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 36,
+      "text_en": "Then said I, Abraham prayed first for the Sodomites, and Moses for the fathers that sinned in the wilderness:",
+      "text_fa": null,
+      "text_hr": "Tada sam rekao, Abraham se najprije molio za Sodomljane, a Mojsije za očeve koji su sagriješili u pustinji:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 37,
+      "text_en": "And Jesus after him for Israel in the time of Achan:",
+      "text_fa": null,
+      "text_hr": "Nakon njega Jošua za Izrael u Akanovo vrijeme,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 38,
+      "text_en": "And Samuel and David for the destruction: and Solomon for them that should come to the sanctuary:",
+      "text_fa": null,
+      "text_hr": "Samuel i David za vrijeme propasti, a Salomon za one koji će doći u svetište,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 39,
+      "text_en": "And Helias for those that received rain; and for the dead, that he might live:",
+      "text_fa": null,
+      "text_hr": "Ilija za one koji su primili kišu i za mrtvoga da bi oživio,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 40,
+      "text_en": "And Ezechias for the people in the time of Sennacherib: and many for many.",
+      "text_fa": null,
+      "text_hr": "I Ezekija za narod u vrijeme Senaheriba: i mnogi za mnoge.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 41,
+      "text_en": "Even so now, seeing corruption is grown up, and wickedness increased, and the righteous have prayed for the ungodly: wherefore shall it not be so now also?",
+      "text_fa": null,
+      "text_hr": "Tako je i sada, budući da je pokvarenost rasla, i zloća se povećala, a pravednici su se molili za bezbožnike: zašto i sada neće biti tako?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 42,
+      "text_en": "He answered me, and said, This present life is not the end where much glory doth abide; therefore have they prayed for the weak.",
+      "text_fa": null,
+      "text_hr": "Odgovorio mi je: Ovaj život nije svršetak u kojem prebiva velika slava; zato su se molili za slabe.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 43,
+      "text_en": "But the day of doom shall be the end of this time, and the beginning of the immortality for to come, wherein corruption is past,",
+      "text_fa": null,
+      "text_hr": "Dan osude bit će kraj ovoga vremena i početak buduće besmrtnosti, kada će raspadljivost proći,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 44,
+      "text_en": "Intemperance is at an end, infidelity is cut off, righteousness is grown, and truth is sprung up.",
+      "text_fa": null,
+      "text_hr": "Neumjerenosti će doći kraj, nevjera će biti odsječena, pravednost će rasti, a istina niknuti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 45,
+      "text_en": "Then shall no man be able to save him that is destroyed, nor to oppress him that hath gotten the victory.",
+      "text_fa": null,
+      "text_hr": "Tada nitko neće moći spasiti onoga koji je izgubljen niti tlačiti onoga koji je izvojevao pobjedu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 46,
+      "text_en": "I answered then and said, This is my first and last saying, that it had been better not to have given the earth unto Adam: or else, when it was given him, to have restrained him from sinning.",
+      "text_fa": null,
+      "text_hr": "Odgovorio sam: Ovo je moja prva i posljednja riječ: bilo bi bolje da zemlja nije bila dana Adamu ili da je, nakon što mu je dana, bio spriječen sagriješiti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 47,
+      "text_en": "For what profit is it for men now in this present time to live in heaviness, and after death to look for punishment?",
+      "text_fa": null,
+      "text_hr": "Kakva je korist ljudima da sada žive u žalosti, a nakon smrti očekuju kaznu?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 48,
+      "text_en": "O thou Adam, what hast thou done? for though it was thou that sinned, thou art not fallen alone, but we all that come of thee.",
+      "text_fa": null,
+      "text_hr": "O ti Adame, što si učinio? Jer iako si ti sagriješio, nisi pao sam, nego svi mi koji od tebe nastajemo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 49,
+      "text_en": "For what profit is it unto us, if there be promised us an immortal time, whereas we have done the works that bring death?",
+      "text_fa": null,
+      "text_hr": "Kakva nam je korist ako nam je obećano besmrtno vrijeme, dok smo činili djela koja donose smrt?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 50,
+      "text_en": "And that there is promised us an everlasting hope, whereas ourselves being most wicked are made vain?",
+      "text_fa": null,
+      "text_hr": "Kakva je korist što nam je obećana vječna nada, kad smo se mi, veoma zli, predali ispraznosti?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 51,
+      "text_en": "And that there are laid up for us dwellings of health and safety, whereas we have lived wickedly?",
+      "text_fa": null,
+      "text_hr": "I što su nam pripravljena prebivališta zdravlja i sigurnosti, kad smo živjeli opako?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 52,
+      "text_en": "And that the glory of the most High is kept to defend them which have led a wary life, whereas we have walked in the most wicked ways of all?",
+      "text_fa": null,
+      "text_hr": "I što se slava Svevišnjega čuva da obrani one koji su živjeli oprezno, kad smo mi hodili najgorim putovima?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 53,
+      "text_en": "And that there should be shewed a paradise, whose fruit endureth for ever, wherein is security and medicine, since we shall not enter into it?",
+      "text_fa": null,
+      "text_hr": "I što će se pokazati raj čiji plod traje dovijeka i u kojem su sigurnost i lijek, kad mi u njega nećemo ući?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 54,
+      "text_en": "(For we have walked in unpleasant places.)",
+      "text_fa": null,
+      "text_hr": "Jer hodili smo tegobnim mjestima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 55,
+      "text_en": "And that the faces of them which have used abstinence shall shine above the stars, whereas our faces shall be blacker than darkness?",
+      "text_fa": null,
+      "text_hr": "I što će lica onih koji su živjeli uzdržljivo sjati jače od zvijezda, kad će naša lica biti crnja od tame?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 56,
+      "text_en": "For while we lived and committed iniquity, we considered not that we should begin to suffer for it after death.",
+      "text_fa": null,
+      "text_hr": "Dok smo živjeli i činili opačine, nismo mislili da ćemo nakon smrti zbog njih trpjeti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 57,
+      "text_en": "Then answered he me, and said, This is the condition of the battle, which man that is born upon the earth shall fight;",
+      "text_fa": null,
+      "text_hr": "Tada mi je odgovorio: Ovo je uvjet bitke u kojoj će se boriti čovjek koji je rođen na zemlji;",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 58,
+      "text_en": "That, if he be overcome, he shall suffer as thou hast said: but if he get the victory, he shall receive the thing that I say.",
+      "text_fa": null,
+      "text_hr": "Da će, ako bude pobijeđen, patiti kao što si rekao: ali ako dobije pobjedu, primit će ono što kažem.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 59,
+      "text_en": "For this is the life whereof Moses spake unto the people while he lived, saying, Choose thee life, that thou mayest live.",
+      "text_fa": null,
+      "text_hr": "Jer ovo je život o kojem je Mojsije govorio narodu dok je bio živ, govoreći: Izaberi sebi život da živiš.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 60,
+      "text_en": "Nevertheless they believed not him, nor yet the prophets after him, no nor me which have spoken unto them,",
+      "text_fa": null,
+      "text_hr": "Ipak nisu vjerovali njemu, ni prorocima poslije njega, ni meni koji sam im govorio,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 61,
+      "text_en": "That there should not be such heaviness in their destruction, as shall be joy over them that are persuaded to salvation.",
+      "text_fa": null,
+      "text_hr": "U njihovoj propasti neće biti takve žalosti kakva će biti radost nad onima koji su uvjereni u spasenje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 62,
+      "text_en": "I answered then, and said, I know, Lord, that the most High is called merciful, in that he hath mercy upon them which are not yet come into the world,",
+      "text_fa": null,
+      "text_hr": "Odgovorio sam: Znam, Gospodine, da se Svevišnji naziva milosrdnim jer iskazuje milosrđe onima koji još nisu došli na svijet,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 63,
+      "text_en": "And upon those also that turn to his law;",
+      "text_fa": null,
+      "text_hr": "I onima koji se obrate njegovu Zakonu,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 64,
+      "text_en": "And that he is patient, and long suffereth those that have sinned, as his creatures;",
+      "text_fa": null,
+      "text_hr": "Da je strpljiv i dugo podnosi one koji su sagriješili, jer su njegova stvorenja,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 65,
+      "text_en": "And that he is bountiful, for he is ready to give where it needeth;",
+      "text_fa": null,
+      "text_hr": "Da je darežljiv i spreman dati gdje je potrebno,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 66,
+      "text_en": "And that he is of great mercy, for he multiplieth more and more mercies to them that are present, and that are past, and also to them which are to come.",
+      "text_fa": null,
+      "text_hr": "I da je prepun milosrđa, jer sve više umnaža milosrđe prema sadašnjima, prošlima i budućima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 67,
+      "text_en": "For if he shall not multiply his mercies, the world would not continue with them that inherit therein.",
+      "text_fa": null,
+      "text_hr": "Kad ne bi umnažao svoje milosrđe, svijet ne bi opstao sa svojim baštinicima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 68,
+      "text_en": "And he pardoneth; for if he did not so of his goodness, that they which have committed iniquities might be eased of them, the ten thousandth part of men should not remain living.",
+      "text_fa": null,
+      "text_hr": "On oprašta; kad u svojoj dobroti ne bi olakšavao teret onima koji su počinili opačine, ni desettisućiti dio ljudi ne bi ostao živ.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 69,
+      "text_en": "And being judge, if he should not forgive them that are cured with his word, and put out the multitude of contentions,",
+      "text_fa": null,
+      "text_hr": "Budući da je sudac, kad ne bi opraštao onima koje je njegova riječ izliječila i utišao mnoštvo prijepora,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 70,
+      "text_en": "There should be very few left peradventure in an innumerable multitude.",
+      "text_fa": null,
+      "text_hr": "Od bezbrojnoga bi mnoštva možda ostalo tek nekoliko ljudi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

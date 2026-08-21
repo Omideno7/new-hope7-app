@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 67,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "72007c7acfc40e0b5b9fa8119cddcbd7d6fb765d27a65e5e529052a61379f9e6",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And in those days the word of God came unto me, and He said unto me: ‘Noah, thy lot has come up before Me, a lot without blame, a lot of love and uprightness.",
+      "text_fa": null,
+      "text_hr": "U one dane došla mi je riječ Božja i Bog mi je rekao: „Noa, tvoj je dio došao preda me — dio bez prijekora, dio ljubavi i čestitosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And now the angels are making a wooden (building), and when they have completed that task I will place My hand upon it and preserve it, and there shall come forth from it the seed of life, and a change shall set in so that the earth will not remain without inhabitant.",
+      "text_fa": null,
+      "text_hr": "Anđeli sada izrađuju drvenu građevinu. Kad dovrše taj zadatak, položit ću na nju svoju ruku i sačuvati je. Iz nje će izići sjeme života i nastupit će promjena, tako da zemlja neće ostati bez stanovnika.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And I will make fast thy seed before me for ever and ever, and I will spread abroad those who dwell with thee: it shall not =be unfruitful= on the face of the earth, but it shall be blessed and multiply on the earth in the name of the Lord.’",
+      "text_fa": null,
+      "text_hr": "Učvrstit ću tvoje potomstvo preda mnom u vijeke vjekova i rasprostraniti one koji prebivaju s tobom. Ono neće =ostati bez ploda= na licu zemlje, nego će biti blagoslovljeno i umnožit će se na zemlji u ime Gospodnje.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And He will imprison those angels, who have shown unrighteousness, in that burning valley which my grandfather Enoch had formerly shown to me in the west among the mountains of gold and silver and iron and soft metal and tin.",
+      "text_fa": null,
+      "text_hr": "On će zatočiti one anđele koji su pokazali nepravdu u užarenoj dolini koju mi je moj djed Henok prije pokazao na zapadu, među planinama zlata, srebra, željeza, meke kovine i kositra.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And I saw that valley in which there was a great convulsion and a convulsion of the waters.",
+      "text_fa": null,
+      "text_hr": "Vidio sam tu dolinu u kojoj je vladalo silno komešanje, kao i komešanje voda.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And when all this took place, from that fiery molten metal and from the convulsion thereof in that place, there was produced a smell of sulphur, and it was connected with those waters, and that valley of the angels who had led astray (mankind) burned beneath that land.",
+      "text_fa": null,
+      "text_hr": "Kad se sve to dogodilo, iz užarene rastaljene kovine i njezina komešanja na tome mjestu podigao se miris sumpora i pomiješao s tim vodama; dolina anđela koji su zaveli čovječanstvo gorjela je pod tom zemljom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And through its valleys proceed streams of fire, where these angels are punished who had led astray those who dwell upon the earth.",
+      "text_fa": null,
+      "text_hr": "Kroz njezine doline teku rijeke vatre u kojima se kažnjavaju anđeli što su zaveli stanovnike zemlje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "But those waters shall in those days serve for the kings and the mighty and the exalted, and those who dwell on the earth, for the healing of the body, but for the punishment of the spirit; now their spirit is full of lust, that they may be punished in their body, for they have denied the Lord of Spirits and see their punishment daily, and yet believe not in His name.",
+      "text_fa": null,
+      "text_hr": "U one će dane te vode služiti kraljevima, moćnicima, uzvišenima i stanovnicima zemlje za ozdravljenje tijela, ali i za kaznu duha. Njihov je duh sada pun požude, pa će biti kažnjeni u svojem tijelu: zanijekali su Gospodara duhova, svakodnevno gledaju svoju kaznu, a ipak ne vjeruju u njegovo ime.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And in proportion as the burning of their bodies becomes severe, a corresponding change shall take place in their spirit for ever and ever; for before the Lord of Spirits none shall utter an idle word.",
+      "text_fa": null,
+      "text_hr": "Kako se bude pojačavalo izgaranje njihovih tijela, tako će se u vijeke vjekova događati odgovarajuća promjena u njihovu duhu, jer pred Gospodarom duhova nitko neće izgovoriti ispraznu riječ.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "For the judgement shall come upon them, because they believe in the lust of their body and deny the Spirit of the Lord.",
+      "text_fa": null,
+      "text_hr": "Sud će doći na njih jer vjeruju požudi svojega tijela, a niječu Duha Gospodnjega.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "And those same waters shall undergo a change in those days; for when those angels are punished in these waters, these water-springs shall change their temperature, and when the angels ascend, this water of the springs shall change and become cold.",
+      "text_fa": null,
+      "text_hr": "U one će se dane iste vode promijeniti. Kad anđeli budu kažnjeni u tim vodama, izvori će promijeniti svoju temperaturu; kad anđeli uzađu, voda će se u izvorima promijeniti i ohladiti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "And I heard Michael answering and saying: ‘This judgement wherewith the angels are judged is a testimony for the kings and the mighty who possess the earth.’",
+      "text_fa": null,
+      "text_hr": "Čuo sam Mihaela kako odgovara: „Ovaj sud kojim su anđeli osuđeni svjedočanstvo je kraljevima i moćnicima koji posjeduju zemlju.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "Because these waters of judgement minister to the healing of the body of the =kings= and the lust of their body; therefore they will not see and will not believe that those waters will change and become a fire which burns for ever.",
+      "text_fa": null,
+      "text_hr": "Budući da te vode suda služe ozdravljenju tijela =kraljeva= i požudi njihova tijela, oni neće vidjeti niti vjerovati da će se te vode promijeniti i postati vatra koja gori zauvijek.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

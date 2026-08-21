@@ -1,0 +1,322 @@
+{
+  "schema_version": 1,
+  "book_id": "4_maccabees",
+  "title_fa": "مکابیان چهارم",
+  "title_en": "Fourth Maccabees",
+  "title_hr": "Četvrta knjiga o Makabejcima",
+  "chapter": 5,
+  "status": "in_review",
+  "source_translation": "WEBC",
+  "versification": "WEBC",
+  "source_english_sha256": "b57f7ceba56bb2674cdff9a094717bdb6beabfbfd904f37611e1542aa38e4b28",
+  "locales_in_scope": [
+    "fa",
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "The tyrant Antiochus, therefore, sitting in public state with his assessors upon a certain lofty place, with his armed troops standing in a circle around him,",
+      "text_fa": "پس ستمگر، آنتیوخوس، در جایگاهی بلند در برابر همگان، همراه با مشاورانش بر مسند نشسته بود و سربازان مسلحش حلقه‌وار پیرامون او ایستاده بودند،",
+      "text_hr": "Tiranin Antioh sjedio je, dakle, javno sa svojim vijećnicima na nekom uzvišenom mjestu, dok su njegove naoružane čete stajale u krugu oko njega,",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "commanded his spearbearers to seize every one of the Hebrews, and to compel them to taste swine’s flesh and things offered to idols.",
+      "text_fa": "و به نیزه‌داران خود فرمان داد تا همهٔ عبرانیان را بگیرند و وادارشان کنند از گوشت خوک و خوراک‌های تقدیم‌شده به بت‌ها بچشند.",
+      "text_hr": "te je zapovjedio svojim kopljonošama da pohvataju sve Hebreje i prisile ih kušati svinjetinu i ono što je prineseno idolima.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "Should any of them be unwilling to eat the accursed food, they were to be tortured on the wheel and so killed.",
+      "text_fa": "اگر کسی از آنان نمی‌خواست آن خوراک ملعون را بخورد، می‌بایست بر چرخ شکنجه عذابش دهند و بدین‌گونه او را بکشند.",
+      "text_hr": "Ako tko od njih ne bi htio jesti prokletu hranu, trebalo ga je mučiti na kotaču i tako pogubiti.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "When many had been seized, a foremost man of the assembly, a Hebrew, by name Eleazar, a priest by family, by profession a lawyer, and advanced in years, and for this reason known to many of the king’s followers, was brought near to him.",
+      "text_fa": "پس از آنکه بسیاری را گرفتند، مردی برجسته از میان جماعت، عبرانی‌ای به نام الیعازار، که از خاندان کاهنان و در کار خود شریعت‌دان بود و سالخورده و از همین رو نزد بسیاری از ملازمان پادشاه شناخته‌شده بود، به حضور او آورده شد.",
+      "text_hr": "Kad su mnogi bili uhvaćeni, pred njega dovedoše ugledna čovjeka iz zajednice, Hebreja imenom Eleazar, iz svećeničke obitelji i po zvanju poznavatelja Zakona; bio je poodmakle dobi te su ga zbog toga poznavali mnogi kraljevi sljedbenici.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "Antiochus, seeing him, said,",
+      "text_fa": "آنتیوخوس چون او را دید، گفت:",
+      "text_hr": "Kad ga Antioh ugleda, reče:",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "“I would counsel you, old man, before your tortures begin, to taste the swine’s flesh, and save your life; for I feel respect for your age and hoary head, which since you have had so long, you appear to me to be no philosopher in retaining the superstition of the Jews.",
+      "text_fa": "«ای پیرمرد، به تو اندرز می‌دهم که پیش از آغاز شکنجه‌هایت، از گوشت خوک بچشی و جان خود را نجات دهی؛ زیرا من به سن و موی سپیدت احترام می‌گذارم، اما با آنکه این همه سال آن را داشته‌ای، چون هنوز به خرافهٔ یهودیان پایبندی، به نظرم اهل فلسفه نیستی.",
+      "text_hr": "„Savjetujem ti, starče, da prije početka mučenja kušaš svinjetinu i spasiš svoj život. Poštujem tvoju dob i sijedu glavu; no premda je već tako dugo nosiš, čini mi se da nisi filozof kad se još držiš židovskoga praznovjerja.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "For therefore, since nature has conferred upon you the most excellent flesh of this animal, do you loathe it?",
+      "text_fa": "زیرا حال که طبیعت بهترین گوشت این حیوان را به تو ارزانی داشته است، چرا از آن بیزاری؟",
+      "text_hr": "Zašto se, dakle, gnušaš najboljega mesa ove životinje kad ti ga je priroda podarila?",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "It seems senseless not to enjoy what is pleasant, yet not disgraceful; and from notions of sinfulness, to reject the gifts of nature.",
+      "text_fa": "بی‌خردی به نظر می‌رسد که آدمی از آنچه لذت‌بخش و در عین حال بی‌ننگ است بهره نبرد و به سبب تصورات گناه‌آلود بودن، عطایای طبیعت را رد کند.",
+      "text_hr": "Čini se bezumnim ne uživati u onome što je ugodno, a nije sramotno, te zbog predodžbe o grješnosti odbacivati darove prirode.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "You will be acting, I think, still more senselessly, if you follow vain conceits about the truth.",
+      "text_fa": "به گمان من، اگر از پندارهای بیهوده دربارهٔ حقیقت پیروی کنی، باز هم بی‌خردانه‌تر رفتار خواهی کرد.",
+      "text_hr": "Mislim da ćeš postupiti još bezumnije budeš li slijedio isprazne predodžbe o istini.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "You will, moreover, be despising me to your own punishment.",
+      "text_fa": "افزون بر این، با خوار شمردن من، کیفر خود را فراهم خواهی کرد.",
+      "text_hr": "Osim toga, prezret ćeš me na vlastitu kaznu.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "Won’t you awake from your trifling philosophy, give up the folly of your notions, and regaining understanding worthy of your age, search into the truth of an expedient course?",
+      "text_fa": "آیا از فلسفه‌بافی ناچیز خود بیدار نمی‌شوی، از نابخردی اندیشه‌هایت دست نمی‌کشی و با بازیافتن فهمی درخور سن خود، حقیقت راهی سودمند را نمی‌جویی؟",
+      "text_hr": "Nećeš li se prenuti iz svoje beznačajne filozofije, odreći se ludosti svojih predodžbi i, povrativši razbor dostojan svoje dobi, istražiti istinu korisnoga puta?",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "Won’t you respect my kindly admonition and have pity on your own years?",
+      "text_fa": "آیا اندرز خیرخواهانهٔ مرا محترم نخواهی شمرد و بر سال‌های عمر خود رحم نخواهی کرد؟",
+      "text_hr": "Nećeš li uvažiti moju dobrohotnu opomenu i sažaliti se nad vlastitim godinama?",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "For bear in mind that if there is any power which watches over this religion of yours, it will pardon you for all transgressions of the law which you commit through compulsion.”",
+      "text_fa": "زیرا به یاد داشته باش که اگر نیرویی پاسبان این دینداری شما باشد، همهٔ تخلف‌هایی را که به اجبار از شریعت می‌کنی، بر تو خواهد بخشید.»",
+      "text_hr": "Imaj na umu: ako postoji kakva sila koja bdije nad tom tvojom pobožnošću, oprostit će ti sve prijestupe protiv Zakona koje počiniš pod prisilom.”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "While the tyrant incited him in this manner to the unlawful eating of meat, Eleazar begged permission to speak.",
+      "text_fa": "هنگامی که ستمگر بدین‌گونه او را به خوردن گوشت برخلاف شریعت برمی‌انگیخت، الیعازار اجازه خواست سخن بگوید.",
+      "text_hr": "Dok ga je tiranin tako poticao da protuzakonito jede meso, Eleazar zamoli dopuštenje da govori.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "Having received permission to speak, he began to address the people as follows:",
+      "text_fa": "چون اجازهٔ سخن گفتن یافت، مردم را چنین خطاب کرد:",
+      "text_hr": "Dobivši dopuštenje da govori, poče se ovako obraćati narodu:",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "“We, O Antiochus, who are persuaded that we live under a divine law, consider no compulsion to be so forcible as obedience to that law.",
+      "text_fa": "«ای آنتیوخوس، ما که یقین داریم زیر فرمان شریعتی الهی زندگی می‌کنیم، هیچ اجباری را نیرومندتر از اطاعت آن شریعت نمی‌دانیم.",
+      "text_hr": "„O Antioše, mi koji smo uvjereni da živimo pod božanskim Zakonom, ne smatramo nijednu prisilu tako snažnom kao poslušnost tomu Zakonu.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "Therefore we consider that we ought not to transgress the law in any way.",
+      "text_fa": "پس بر این باوریم که به هیچ روی نباید از شریعت تخلف کنیم.",
+      "text_hr": "Stoga držimo da ni na koji način ne smijemo prekršiti Zakon.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "Indeed, were our law (as you suppose) not truly divine, and if we wrongly think it divine, we would have no right even in that case to destroy our sense of religion.",
+      "text_fa": "در حقیقت، حتی اگر شریعت ما — چنان‌که تو می‌پنداری — به‌راستی الهی نبود و ما به خطا آن را الهی می‌دانستیم، باز هم حق نداشتیم حس دینداری خود را نابود کنیم.",
+      "text_hr": "Doista, čak i kad naš Zakon ne bi bio istinski božanski, kako ti pretpostavljaš, i kad bismo ga pogrešno smatrali božanskim, ni tada ne bismo imali pravo uništiti svoj osjećaj pobožnosti.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "Don’t think that eating unclean meat is a trifling offense.",
+      "text_fa": "گمان مبر که خوردن گوشت ناپاک تخلفی ناچیز است.",
+      "text_hr": "Ne misli da je jedenje nečistoga mesa beznačajan prijestup.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "For transgression of the law, whether in small or great matters, is of equal importance;",
+      "text_fa": "زیرا تخلف از شریعت، خواه در امور کوچک و خواه در امور بزرگ، به یک اندازه اهمیت دارد؛",
+      "text_hr": "Jer prijestup protiv Zakona, bilo u malim bilo u velikim stvarima, jednako je važan,",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "for in either case the law is equally slighted.",
+      "text_fa": "زیرا در هر دو حال، شریعت به یک اندازه خوار شمرده می‌شود.",
+      "text_hr": "jer se u oba slučaja Zakon jednako omalovažava.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "But you deride our philosophy, as though we lived in it irrationally.",
+      "text_fa": "اما تو فلسفهٔ ما را به ریشخند می‌گیری، چنان‌که گویی بی‌خردانه بر پایهٔ آن زندگی می‌کنیم.",
+      "text_hr": "Ali ti ismijavaš našu filozofiju kao da po njoj živimo bez razuma.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "Yet it instructs us in self-control, so that we are superior to all pleasures and lusts; and it trains us in courage, so that we cheerfully undergo every grievance.",
+      "text_fa": "حال آنکه این فلسفه خویشتنداری را به ما می‌آموزد تا بر همهٔ لذت‌ها و شهوت‌ها چیره باشیم؛ و ما را در دلیری پرورش می‌دهد تا هر سختی را با شادمانی تحمل کنیم.",
+      "text_hr": "Ona nas ipak poučava samosvladavanju, da budemo iznad svih užitaka i požuda, te nas uvježbava u hrabrosti, da radosno podnosimo svaku nevolju.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "It instructs us in justice, so that in all our dealings we give what is due. It teaches us piety, so that we properly worship the one and only God.",
+      "text_fa": "دادگری را به ما می‌آموزد تا در همهٔ دادوستدهایمان حق هر کس را ادا کنیم. دینداری را به ما تعلیم می‌دهد تا خدای یگانه را به شایستگی عبادت کنیم.",
+      "text_hr": "Poučava nas pravednosti, da u svim svojim poslovima dajemo ono što smo dužni. Uči nas pobožnosti, da ispravno štujemo jedinoga Boga.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "That is why we don’t eat the unclean; for believing that the law was established by God, we are convinced that the Creator of the world, in giving his laws, sympathizes with our nature.",
+      "text_fa": "از همین روست که خوراک ناپاک نمی‌خوریم؛ زیرا چون ایمان داریم شریعت را خدا برقرار کرده است، یقین داریم که آفریدگار جهان در دادن احکام خود با طبیعت ما همدلی دارد.",
+      "text_hr": "Zato ne jedemo ono što je nečisto; jer vjerujući da je Zakon ustanovio Bog, uvjereni smo da Stvoritelj svijeta, dajući svoj Zakon, suosjeća s našom naravi.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "Those things which are suitable for our souls, he has directed us to eat; but those which are not, he has forbidden.",
+      "text_fa": "او فرمان داده است آنچه را برای جان‌های ما مناسب است بخوریم، اما آنچه را مناسب نیست منع کرده است.",
+      "text_hr": "Zapovjedio nam je jesti ono što odgovara našim dušama, a zabranio ono što im ne odgovara.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "But, tyrant-like, you not only force us to break the law, but also to eat, that you may ridicule us as we thus profanely eat.",
+      "text_fa": "اما تو ستمگرانه نه‌تنها ما را وادار می‌کنی شریعت را بشکنیم، بلکه مجبورمان می‌کنی بخوریم تا وقتی بدین‌گونه حرمت‌شکنانه می‌خوریم، ما را به ریشخند بگیری.",
+      "text_hr": "Ali ti nas, poput tiranina, ne prisiljavaš samo da prekršimo Zakon nego i da jedemo, kako bi nam se rugao dok tako svetogrdno jedemo.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "But you won’t have this cause of laughter against me,",
+      "text_fa": "اما من چنین دستاویزی برای خندیدن به تو نخواهم داد،",
+      "text_hr": "Ali protiv mene nećeš imati takav razlog za smijeh,",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "nor will I transgress the sacred oaths of my forefathers to keep the law.",
+      "text_fa": "و سوگندهای مقدس نیاکانم را برای نگاه‌داشت شریعت نخواهم شکست.",
+      "text_hr": "niti ću prekršiti svete zakletve svojih predaka da ću držati Zakon.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "No, not if you pluck out my eyes, and consume my entrails.",
+      "text_fa": "نه، حتی اگر چشمانم را از حدقه درآوری و اندرونم را بسوزانی.",
+      "text_hr": "Neću, ni ako mi iskopaš oči i sažežeš utrobu.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "I am not so old, and void of courage as to not be youthful in reason and in defense of my religion.",
+      "text_fa": "من آن‌قدر پیر و تهی از دلیری نیستم که عقل و دفاعم از دینداری، نیروی جوانی نداشته باشد.",
+      "text_hr": "Nisam toliko star ni lišen hrabrosti da ne bih bio mladenački snažan u razumu i obrani svoje vjere.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "Now then, prepare your wheels, and kindle a fiercer flame.",
+      "text_fa": "پس اکنون چرخ‌های شکنجه‌ات را آماده کن و شعله‌ای سوزان‌تر برافروز.",
+      "text_hr": "Stoga sada pripravi svoje kotače i raspiri žešći plamen.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "I will not so pity my old age, as on my account to break the law of my country.",
+      "text_fa": "چندان بر پیری خود رحم نخواهم کرد که به خاطر خویشتن شریعت سرزمینم را بشکنم.",
+      "text_hr": "Neću se toliko sažaliti nad svojom starošću da bih radi sebe prekršio Zakon svoje zemlje.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 34,
+      "text_en": "I will not play false to you, O law, my instructor, or forsake you, O beloved self-control!",
+      "text_fa": "ای شریعت، ای آموزگارم، به تو خیانت نخواهم کرد؛ و ای خویشتنداری محبوب، تو را ترک نخواهم گفت!",
+      "text_hr": "Neću te iznevjeriti, o Zakone, učitelju moj, niti ću te ostaviti, o ljubljeno samosvladavanje!",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 35,
+      "text_en": "I will not put you to shame, O philosopher Reason, or deny you, O honored priesthood and knowledge of the law.",
+      "text_fa": "ای عقل حکیم، تو را سرافکنده نخواهم کرد؛ و ای کهانت ارجمند و شناخت شریعت، شما را انکار نخواهم نمود.",
+      "text_hr": "Neću te osramotiti, o filozofski razume, niti vas zanijekati, o časno svećeništvo i poznavanje Zakona.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 36,
+      "text_en": "Mouth! You shall not pollute my old age, nor the full stature of a perfect life.",
+      "text_fa": "ای دهان! نه پیری مرا آلوده خواهی کرد و نه تمامیت یک زندگی کامل را.",
+      "text_hr": "Usta! Nećete okaljati moju starost ni puninu savršena života.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 37,
+      "text_en": "My ancestors will receive me as pure, not having feared your compulsion, even to death.",
+      "text_fa": "نیاکانم مرا پاک خواهند پذیرفت، زیرا حتی تا پای مرگ از اجبار تو نترسیده‌ام.",
+      "text_hr": "Moji će me preci primiti čistoga, jer se nisam uplašio tvoje prisile, čak ni do smrti.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 38,
+      "text_en": "For you will rule like a tyrant over the ungodly, but you will not lord it over my thoughts about religion, either by your arguments, or through deeds.”",
+      "text_fa": "زیرا تو چون ستمگر بر بی‌دینان فرمان خواهی راند، اما نه با استدلال‌هایت و نه با اعمالت بر اندیشه‌های من دربارهٔ دینداری فرمانروا نخواهی شد.»",
+      "text_hr": "Jer ćeš kao tiranin vladati nad bezbožnima, ali nećeš zagospodariti mojim mislima o pobožnosti, ni svojim dokazima ni svojim djelima.”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    }
+  ]
+}

@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "book_id": "3_maccabees",
+  "title_fa": "سوم مکابیان",
+  "title_en": "Third Maccabees",
+  "title_hr": "Treća knjiga o Makabejcima",
+  "chapter": 7,
+  "status": "in_review",
+  "source_translation": "WEBC",
+  "versification": "WEBC",
+  "source_english_sha256": "4ad83f357daa1d6804d7eba9f436eaa2f7bc68906e1df2a17c4301710d2446e3",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "“King Ptolemy Philopator to the commanders throughout Egypt, and to all who are set over affairs, joy and strength.",
+      "text_fa": null,
+      "text_hr": "„Kralj Ptolemej Filopator zapovjednicima po cijelom Egiptu i svima postavljenima nad državnim poslovima: radost i snaga!",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "We, too, and our children are well. God has directed our affairs as we wish.",
+      "text_fa": null,
+      "text_hr": "I mi i naša djeca dobro smo. Bog je naše poslove usmjerio prema našim željama.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "Certain of our friends out of malice vehemently urged us to punish the Jews of our realm in a body, with the infliction of a monstrous punishment.",
+      "text_fa": null,
+      "text_hr": "Neki su nas naši prijatelji iz zlobe žestoko nagovarali da sve Židove u našem kraljevstvu zajednički kaznimo stravičnom kaznom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "They pretended that our affairs would never be in a good state till this took place. Such, they said, was the hatred borne by the Jews to all other people.",
+      "text_fa": null,
+      "text_hr": "Tvrdili su da naši poslovi neće nikada biti u dobrom stanju dok se to ne izvrši, jer Židovi, navodno, toliko mrze sve druge ljude.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "They brought them fettered in grievous chains as slaves, no, as traitors. Without enquiry or examination they endeavored to annihilate them. They buckled themselves with a savage cruelty, worse than Scythian custom.",
+      "text_fa": null,
+      "text_hr": "Doveli su ih okovane teškim lancima kao robove — štoviše, kao izdajice. Bez istrage i provjere pokušali su ih istrijebiti, opasavši se divljačkom okrutnošću gorom i od skitskih običaja.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "For this cause we severely threatened them; yet, with the clemency which we usually extend to all men, we at length permitted them to live. Finding that the God of heaven cast a shield of protection over the Jews so as to preserve them, and that he fought for them as a father always fights for his sons,",
+      "text_fa": null,
+      "text_hr": "Zbog toga smo im strogo zaprijetili. Ipak smo, iz blagosti koju običavamo iskazivati svim ljudima, naposljetku dopustili Židovima da žive. Uvidjeli smo da ih nebeski Bog štiti poput štita i čuva te se za njih bori kao što se otac uvijek bori za svoje sinove.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "and taking into consideration their constancy and fidelity toward us and toward our ancestors, we have, as we ought, acquitted them of every sort of charge.",
+      "text_fa": null,
+      "text_hr": "Uzevši u obzir i njihovu postojanost i vjernost prema nama i našim precima, oslobodili smo ih, kako je i pravedno, svake optužbe.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "We have dismissed them to their several homes, telling all men everywhere to do them no wrong, or unrighteously revile them about the past.",
+      "text_fa": null,
+      "text_hr": "Otpustili smo ih svakoga njegovu domu i svima posvuda zapovjedili da im ne nanose zlo niti ih nepravedno vrijeđaju zbog onoga što se dogodilo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "For know this, that should we conceive any evil design, or in any way aggrieve them, we shall ever have as our adversary, not man, but the highest God, the ruler of all might. From Him there will be no escape, as the avenger of such deeds. Farewell.”",
+      "text_fa": null,
+      "text_hr": "Znajte: smislimo li protiv njih ikakvo zlo ili ih na bilo koji način ožalostimo, za protivnika nećemo imati čovjeka, nego Svevišnjega Boga, Vladara sve sile. Od njega, osvetnika takvih djela, neće biti bijega. Budite zdravo!“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "When they had received this letter, they didn’t hurry to depart immediately. They petitioned the king to be allowed to inflict fitting punishment upon those of their race who had willingly transgressed the holy god, and the law of God.",
+      "text_fa": null,
+      "text_hr": "Kad su primili to pismo, nisu odmah požurili na put. Zamolili su kralja da im dopusti primjereno kazniti pripadnike njihova roda koji su svojevoljno prestupili protiv svetoga Boga i Božjega Zakona.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "They alleged that men who had for their bellies’ sake transgressed the ordinances of God, would never be faithful to the interests of the king.",
+      "text_fa": null,
+      "text_hr": "Tvrdili su da oni koji su radi svojega trbuha pogazili Božje odredbe nikada neće biti vjerni ni kraljevim interesima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "The king admitted the truth of this reasoning, and commended them. Full power was given them, without warrant or special commission, to destroy those who had transgressed the law of God boldly in every part of the king’s dominions.",
+      "text_fa": null,
+      "text_hr": "Kralj je priznao istinitost tih riječi i pohvalio ih. Dao im je punu vlast da, bez pojedinačnoga naloga ili posebne ovlasti, po svim dijelovima kraljevstva pogube one koji su se drsko ogriješili o Božji Zakon.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "Their priests, then, as it was appropriate, saluted him with good wishes, and all the people echoed with the “Hallelujah!” Then they joyfully departed.",
+      "text_fa": null,
+      "text_hr": "Njihovi su mu svećenici potom, kako je dolikovalo, uputili dobre želje, a sav je narod odgovorio: „Aleluja!“ Zatim su radosno otišli.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "Then they punished and shamefully destroyed every polluted Jew that fell in their way,",
+      "text_fa": null,
+      "text_hr": "Kažnjavali su i na sramotan način pogubljivali svakoga oskvrnjenog Židova na kojega su naišli.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "slaying this way, in that day, more than three hundred men, and esteeming this destruction of the wicked a season of joy.",
+      "text_fa": null,
+      "text_hr": "Tako su toga dana ubili više od tri stotine ljudi, a uništenje zlikovaca smatrali su vremenom radosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "They themselves having held closely to their God to death, and having enjoyed a full deliverance, departed from the city garlanded with sweet-flowered wreaths of every kind. Uttering exclamations of joy, with songs of praise, and melodious hymns, they thanked the God of their fathers, the eternal Savior of Israel.",
+      "text_fa": null,
+      "text_hr": "Oni sami ostali su čvrsto uz svojega Boga sve do smrti i primili potpuno izbavljenje. Izišli su iz grada ovjenčani vijencima svakovrsna mirisnog cvijeća; uz radosne povike, pjesme hvale i skladne hvalospjeve zahvaljivali su Bogu svojih otaca, vječnom Spasitelju Izraela.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "Having arrived at Ptolemais, called from the specialty of that district “Rose-bearing”, where the fleet, in accordance with the general wish, waited for them seven days,",
+      "text_fa": null,
+      "text_hr": "Stigli su u Ptolemaidu, koju su zbog osobitosti toga kraja zvali „Ružonosna“. Ondje ih je, prema zajedničkoj želji, brodovlje čekalo sedam dana.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "they partook of a banquet of deliverance, for the king generously granted them all the means of securing a return home.",
+      "text_fa": null,
+      "text_hr": "Sudjelovali su u gozbi izbavljenja jer im je kralj velikodušno dao sve što im je bilo potrebno za povratak kući.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "They were accordingly brought back in peace, while they gave utterance to appropriate thanks; and they determined to observe these days during their sojourn as days of joyfulness.",
+      "text_fa": null,
+      "text_hr": "Tako su u miru vraćeni svojim domovima, iskazujući primjerenu zahvalnost, i odlučili su da će tijekom svojega boravka u tuđini te dane svetkovati kao dane radosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "These they registered as sacred upon a pillar, when they had dedicated the place of their festivity to be one of prayer. They departed unharmed, free, abundant in joy, preserved by the king’s command, by land, by sea, and by river, each to his own home.",
+      "text_fa": null,
+      "text_hr": "Upisali su ih kao svete dane na stupu, pošto su mjesto svoje svečanosti posvetili za molitvu. Otišli su neozlijeđeni, slobodni i ispunjeni radošću; kraljeva ih je zapovijed štitila na kopnu, moru i rijeci dok se svaki nije vratio svojemu domu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "They had more weight than before among their enemies, and were honored and feared. No one in any way robbed them of their goods.",
+      "text_fa": null,
+      "text_hr": "Među svojim su neprijateljima sada imali veći ugled nego prije; bili su čašćeni i ulijevali strah. Nitko im ni na koji način nije oduzeo imovinu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "Every man received back his own, according to inventory, those who had obtained their goods, giving them up with the greatest terror. For the greatest God made perfect wonders for their salvation.",
+      "text_fa": null,
+      "text_hr": "Svatko je prema popisu ponovno primio ono što mu je pripadalo, a oni koji su uzeli njihova dobra vraćali su ih u najvećem strahu. Jer je Svevišnji Bog za njihovo spasenje učinio savršena čudesa.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "Blessed be the Redeemer of Israel forever! Amen.",
+      "text_fa": null,
+      "text_hr": "Blagoslovljen bio Otkupitelj Izraela zauvijek! Amen.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

@@ -1,3 +1,10 @@
+import {
+  bindPlansTabsV240,
+  renderPlansTabsV240,
+  renderSpiritualPlansV240,
+  renderSpiritualProfileSummaryV240
+} from './nh7-spiritual-plans-v240.js';
+
 // NH7 v2.2.3 targeted update: Bible navigation, protected content, reliable analytics, and secure PDF viewer.
 const $ = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
@@ -762,7 +769,7 @@ function nh7TrackRenderedContentV223(route,params={}){
   let type=route,id='';
   if(route==='daily'){type='daily_content';id=String(params.tab||state.dailyTab||'word')+':'+String(params.gday||params.day||userCycleDay(365));}
   else if(route==='bible'&&params.mode==='chapter'){type='bible_chapter';id=String(params.bookId||'')+':'+String(params.chapter||1);}
-  else if(route==='plans'){type='reading_plan';id=String(params.plan||params.day||'overview');}
+  else if(route==='plans'){type=params.tab==='bible'?'reading_plan':'spiritual_plan';id=String(params.plan||params.tab||params.day||'overview');}
   else if(route==='library'){type='library_section';id=String(params.tab||nh7LibraryTab||'public');}
   else {id=JSON.stringify(params||{}).slice(0,160)||'overview';}
   nh7TrackContentV223(type,id,title,false,0);
@@ -792,7 +799,8 @@ function badgeName(id){
     first_verse:{fa:'اولین آیه ذخیره‌شده',en:'First Saved Verse',hr:'Prvi spremljeni stih'},
     daily_1:{fa:'شروع روزانه',en:'Daily Starter',hr:'Dnevni početak'},
     gratitude_1:{fa:'شروع شکرگزاری',en:'Gratitude Starter',hr:'Početak zahvalnosti'},
-    plan_1:{fa:'شروع مطالعه کتاب‌مقدس',en:'Bible Plan Starter',hr:'Početak biblijskog plana'}
+    plan_1:{fa:'شروع مطالعه کتاب‌مقدس',en:'Bible Plan Starter',hr:'Početak biblijskog plana'},
+    spiritual_plan_1:{fa:'شروع پلن روحانی',en:'Spiritual Plan Starter',hr:'Početak duhovnog plana'}
   };
   return names[id]?.[state.lang] || id;
 }
@@ -1242,17 +1250,24 @@ async function revealVerse(el){
   const ref=el.dataset.revealRef||'';
   const box=el.nextElementSibling;
   if(!box) return;
-  if(!box.classList.contains('hidden')){ box.classList.add('hidden'); box.innerHTML=''; return; }
+  if(!box.classList.contains('hidden')){ box.classList.add('hidden'); box.innerHTML=''; el.setAttribute('aria-expanded','false'); return; }
   const parsed=parseRef(ref);
-  let text='';
+  let verses=[];
   if(parsed){
     const data=await loadBook(parsed.bookId);
-    const v=(data.verses||[]).find(x=>Number(x.chapter)===parsed.chapter && Number(x.verse)===parsed.verse);
-    text=v ? (v.text?.[state.lang]||v.text?.en||'') : '';
+    verses=(data.verses||[]).filter(verse=>{
+      const position=(Number(verse.chapter)*1000)+Number(verse.verse);
+      return position>=parsed.startPosition&&position<=parsed.endPosition;
+    }).slice(0,50);
   }
-  text=text || el.dataset.fallbackText || '';
-  box.innerHTML = text ? `<p><strong>${html(localizeRef(ref))}</strong></p><p>${html(text)}</p>` : `<p>${html(localizeRef(ref))}</p>`;
+  const lines=verses.map(verse=>{
+    const value=String(verse.text?.[state.lang]||verse.text?.en||'').replace(/^\s*\d+\.\s*/, '');
+    return `<p class="inline-verse-line"><b>${localNum(verse.verse)}</b><span>${html(value)}</span></p>`;
+  }).join('');
+  const fallback=el.dataset.fallbackText||'';
+  box.innerHTML = `<p><strong>${html(localizeRef(ref))}</strong></p>${lines||(fallback?`<p>${html(fallback)}</p>`:'')}`;
   box.classList.remove('hidden');
+  el.setAttribute('aria-expanded','true');
   addPoints(1);
 }
 
@@ -1437,16 +1452,43 @@ function localizeRef(ref){
   return localText(s);
 }
 function parseRef(ref){
-  const m=String(ref||'').match(/^(.+?)\s+(\d+):(\d+)/); if(!m) return null;
-  const name=m[1].trim().toLowerCase(); const chapter=Number(m[2]); const verse=Number(m[3]);
+  const m=String(ref||'').trim().match(/^(.+?)\s+(\d+):(\d+)(?:\s*[-–—]\s*(?:(\d+):)?(\d+))?/); if(!m) return null;
+  const name=m[1].trim().toLowerCase(),chapter=Number(m[2]),verse=Number(m[3]);
+  const endChapter=Number(m[4]||chapter),endVerse=Number(m[5]||verse);
   const b=(state.bible.books||[]).find(x=>bibleNameAliases(x).some(n=>String(n).toLowerCase()===name));
-  return b?{bookId:b.id,chapter,verse}:null;
+  if(!b||endChapter<chapter||(endChapter===chapter&&endVerse<verse))return null;
+  return{bookId:b.id,chapter,verse,endChapter,endVerse,startPosition:(chapter*1000)+verse,endPosition:(endChapter*1000)+endVerse};
 }
 
-async function plans(){
+function spiritualPlansContext(){
+  return {
+    view,
+    getLang:()=>state.lang,
+    navigate,
+    localNum,
+    localizeRef,
+    jfetch,
+    addPoints,
+    isLoggedIn:isAccountLoggedIn,
+    userId:()=>String(authSession()?.user?.id||''),
+    authEmail,
+    cloudFetch,
+    saveCloud,
+    syncCloudQueue
+  };
+}
+async function plans(params={}){
+  if(window.NH7_SPIRITUAL_PLANS_V240===false || params.tab==='bible'){
+    await readingPlans();
+    return;
+  }
+  await renderSpiritualPlansV240(spiritualPlansContext(),params);
+}
+async function readingPlans(){
   const d=await jfetch('data/bible/plans/reading_plans_1yr_2yr.json'); await loadBibleMeta();
   const plans=d.plans||[];
-  view.innerHTML=card(tr('plans'), `<div class="list">${plans.map((p,i)=>`<button class="list-btn" data-show-plan="${i}"><strong>${html(p.title?.[state.lang]||p.title?.en)}</strong><small>${localNum(p.durationDays||p.days?.length)} ${tr('day')}</small></button>`).join('')}</div><div id="planDetail"></div>`);
+  view.innerHTML=renderPlansTabsV240(spiritualPlansContext(),'bible')+card(tr('plans'), `<div class="list">${plans.map((p,i)=>`<button class="list-btn" data-show-plan="${i}"><strong>${html(p.title?.[state.lang]||p.title?.en)}</strong><small>${localNum(p.durationDays||p.days?.length)} ${tr('day')}</small></button>`).join('')}</div><div id="planDetail"></div>`);
+  bindPlansTabsV240(spiritualPlansContext());
   $$('[data-show-plan]').forEach(btn=>btn.onclick=()=>showPlan(plans[Number(btn.dataset.showPlan)]));
 }
 function planBookName(bookId){ const b=state.bible.books?.find(x=>x.id===bookId); return b?.names?.[state.lang] || b?.names?.en || bookId; }
@@ -2009,8 +2051,10 @@ async function account(){
   const session=authSession();
   if(isAccountLoggedIn()){
     const profile=getKnownUserProfile(); const email=authEmail()||profile.email||'';
-    view.innerHTML=card(tr('account'), `<h3>${tr('myAccess')}</h3><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||session?.user?.user_metadata?.full_name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(email)}</p></div><button class="danger-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button>`);
-    $('#logoutAccountBtn')?.addEventListener('click',logoutAccount); return;
+    view.innerHTML=card(tr('account'), `<h3>${tr('myAccess')}</h3><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||session?.user?.user_metadata?.full_name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(email)}</p></div><button class="danger-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button>`)+`<div id="nh7PlansProfileSummary"><section class="card"><p>...</p></section></div>`;
+    $('#logoutAccountBtn')?.addEventListener('click',logoutAccount);
+    await renderSpiritualProfileSummaryV240(spiritualPlansContext(),$('#nh7PlansProfileSummary')).catch(console.warn);
+    return;
   }
   view.innerHTML=card(tr('account'), `<p class="muted">${tr('signedOut')}</p><p>${tr('signInHint')}</p><input id="accountEmail" type="email" autocomplete="email" placeholder="${tr('email')}"><div class="password-wrap"><input id="accountPassword" type="password" autocomplete="current-password" placeholder="${tr('password')}"><button type="button" class="password-eye" data-toggle-password="accountPassword">👁</button></div><button class="primary-btn wide-btn" id="signInBtn">${tr('signIn')}</button><button class="link-button" id="forgotPasswordToggle">${tr('forgotPassword')}</button><div id="forgotPasswordPanel" class="hidden"><input id="resetEmail" type="email" placeholder="${tr('email')}"><button class="secondary-btn" id="resetPasswordBtn">${tr('resetPassword')}</button><p id="resetMsg" class="muted"></p></div>`);
   $('#signInBtn')?.addEventListener('click',signInAccount);

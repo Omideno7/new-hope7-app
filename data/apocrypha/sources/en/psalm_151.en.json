@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "book_id": "psalm_151",
+  "title_fa": "مزمور ۱۵۱",
+  "title_en": "Psalm 151",
+  "title_hr": "Psalam 151",
+  "source_translation": "WEBC",
+  "source_name": "World English Bible Classic",
+  "source_url": "https://ebible.org/eng-web/PS201.htm",
+  "source_license": "Public Domain",
+  "versification": "WEBC",
+  "chapter_count": 1,
+  "verse_count": 7,
+  "chapters": [
+    {
+      "chapter": 1,
+      "verses": [
+        {
+          "verse": 1,
+          "text_en": "I was small among my brothers, and youngest in my father’s house. I tended my father’s sheep."
+        },
+        {
+          "verse": 2,
+          "text_en": "My hands formed a musical instrument, and my fingers tuned a lyre."
+        },
+        {
+          "verse": 3,
+          "text_en": "Who shall tell my Lord? The Lord himself, he himself hears."
+        },
+        {
+          "verse": 4,
+          "text_en": "He sent forth his angel and took me from my father’s sheep, and he anointed me with his anointing oil."
+        },
+        {
+          "verse": 5,
+          "text_en": "My brothers were handsome and tall; but the Lord didn’t take pleasure in them."
+        },
+        {
+          "verse": 6,
+          "text_en": "I went out to meet the Philistine, and he cursed me by his idols."
+        },
+        {
+          "verse": 7,
+          "text_en": "But I drew his own sword and beheaded him, and removed reproach from the children of Israel."
+        }
+      ]
+    }
+  ]
+}

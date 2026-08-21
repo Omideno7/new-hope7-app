@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "book_id": "4_maccabees",
+  "title_fa": "مکابیان چهارم",
+  "title_en": "Fourth Maccabees",
+  "title_hr": "Četvrta knjiga o Makabejcima",
+  "chapter": 11,
+  "status": "in_review",
+  "source_translation": "WEBC",
+  "versification": "WEBC",
+  "source_english_sha256": "f615860da7d29fa4b20703fc0494fcbd075b5ad2c999276a11f9b8298e3aea0c",
+  "locales_in_scope": [
+    "fa",
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "When he had died, disfigured in his torments, the fifth leaped forward, and said,",
+      "text_fa": "چون او در حالی که زیر شکنجه‌ها از ریخت افتاده بود جان سپرد، پنجمی پیش جست و گفت:",
+      "text_hr": "Kad je umro, unakažen u svojim mukama, peti je iskočio naprijed i rekao:",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "“I don’t intend, O tyrant, to get excused from the torment which is on behalf of virtue.",
+      "text_fa": "«ای ستمگر، قصد ندارم از شکنجه‌ای که در راه فضیلت است معاف شوم.",
+      "text_hr": "„Ne namjeravam, tiranine, izbjeći muku koja se podnosi radi kreposti.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "But I have come of my own accord, that by my death you may owe heavenly vengeance and punishment for more crimes.",
+      "text_fa": "بلکه به خواست خود آمده‌ام تا با مرگ من، در برابر انتقام آسمانی، برای جنایت‌های بیشتری سزاوار کیفر شوی.",
+      "text_hr": "Nego sam došao svojevoljno kako bi zbog moje smrti postao dužan nebeskoj osveti i kazni za još više zločina.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "O you hater of virtue and of men, what have we done that you thus revel in our blood?",
+      "text_fa": "ای دشمن فضیلت و انسان‌ها، چه کرده‌ایم که این‌چنین از خون ما کام می‌گیری؟",
+      "text_hr": "O mrzitelju kreposti i ljudi, što smo učinili da se tako naslađuješ našom krvlju?",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "Does it seem evil to you that we worship the Founder of all things, and live according to his surpassing law?",
+      "text_fa": "آیا در نظرت بد است که ما بنیان‌گذار همه‌چیز را می‌پرستیم و مطابق شریعت برتر او زندگی می‌کنیم؟",
+      "text_hr": "Čini li ti se zlim što štujemo Utemeljitelja svega i živimo prema njegovu uzvišenom Zakonu?",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "But this is worthy of honors, not torments,",
+      "text_fa": "حال آنکه این سزاوار افتخار است، نه شکنجه،",
+      "text_hr": "A to je dostojno počasti, a ne muka,",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "if you had been capable of the higher feelings of men, and possessed the hope of salvation from God.",
+      "text_fa": "اگر توانایی احساسات والاتر انسانی را داشتی و از امید نجات از سوی خدا برخوردار بودی.",
+      "text_hr": "kad bi bio sposoban za uzvišenije ljudske osjećaje i imao nadu u spasenje od Boga.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "Behold now, being alien from God, you make war against those who are religious toward God.”",
+      "text_fa": "اینک چون از خدا بیگانه‌ای، با کسانی می‌جنگی که در برابر خدا دیندارند.»",
+      "text_hr": "Evo, sada otuđen od Boga, ratuješ protiv onih koji su pobožni pred Bogom.”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "As he said this, the spearbearers bound him and drew him to the rack,",
+      "text_fa": "در حالی که این را می‌گفت، نیزه‌داران او را بستند و به سوی شکنجه‌گاه کشیدند،",
+      "text_hr": "Dok je to govorio, kopljanici su ga svezali i odvukli do sprave za mučenje,",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "to which binding him at his knees, and fastening them with iron fetters, they bent down his loins upon the wedge of the wheel; and his body was then dismembered, scorpion-fashion.",
+      "text_fa": "زانوهایش را به آن بستند و با بندهای آهنین محکم کردند، کمرش را بر گوهٔ چرخ خم کردند و سپس بدنش را به شکل کژدم از هم گسستند.",
+      "text_hr": "svezali ga za nju u koljenima i učvrstili ih željeznim okovima, pa su mu slabine savili preko klina kotača; tijelo mu je tada raskomadano u položaju škorpiona.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "With his breath thus confined, and his body strangled, he said,",
+      "text_fa": "در حالی که نفسش بدین‌سان تنگ و بدنش فشرده شده بود، گفت:",
+      "text_hr": "Dok mu je dah tako bio sputan, a tijelo stisnuto, rekao je:",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "“A great favor you bestow upon us, O tyrant, by enabling us to manifest our adherence to the law by means of nobler sufferings.”",
+      "text_fa": "«ای ستمگر، چه لطف بزرگی به ما می‌کنی که امکان می‌دهی با رنج‌هایی والاتر، دلبستگی خود را به شریعت آشکار سازیم.»",
+      "text_hr": "„Veliku nam milost iskazuješ, tiranine, omogućujući nam da plemenitijim patnjama očitujemo svoju privrženost Zakonu.”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "He also being dead, the sixth, quite a youth, was brought out. On the tyrant asking him whether he would eat and be delivered, he said,",
+      "text_fa": "چون او نیز جان سپرد، ششمی را که بسیار جوان بود بیرون آوردند. هنگامی که ستمگر از او پرسید آیا خواهد خورد تا رها شود، گفت:",
+      "text_hr": "Kad je i on umro, izveli su šestoga, još posve mladoga. Na tiraninovo pitanje hoće li jesti i biti izbavljen, rekao je:",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "“I am indeed younger than my brothers, but in understanding I am as old.",
+      "text_fa": "«درست است که از برادرانم جوان‌ترم، اما در فهم به اندازهٔ آنان بالغ هستم.",
+      "text_hr": "„Doista sam mlađi od svoje braće, ali po razumijevanju jednako sam star.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "I was born and reared to the same end. We are bound to die also on behalf of the same cause.",
+      "text_fa": "من برای همان مقصود زاده و پرورش یافته‌ام. ما وظیفه داریم در راه همان آرمان نیز بمیریم.",
+      "text_hr": "Rođen sam i odgojen za istu svrhu. Dužni smo i umrijeti radi istoga cilja.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "So if you think it is proper to torment us for not eating the unclean, then torment!”",
+      "text_fa": "پس اگر شایسته می‌دانی که به سبب نخوردن خوراک ناپاک شکنجه‌مان کنی، شکنجه کن!»",
+      "text_hr": "Stoga, ako smatraš prikladnim mučiti nas jer ne jedemo nečisto, onda muči!”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "As he said this, they brought him to the wheel.",
+      "text_fa": "چون این را گفت، او را به سوی چرخ بردند.",
+      "text_hr": "Dok je to govorio, doveli su ga do kotača.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "Extended upon this, with limbs racked and dislocated, he was gradually roasted from beneath.",
+      "text_fa": "او را بر آن کشیدند و در حالی که اعضایش کشیده و از مفصل درآمده بود، از زیر به‌تدریج بریانش کردند.",
+      "text_hr": "Rastegnut na njemu, udova istegnutih i iščašenih, polako je odozdo pečen.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "Having heated sharp spits, they approached them to his back; and having transfixed his sides, they burned away his entrails.",
+      "text_fa": "سیخ‌های تیز را گداختند و به پشتش نزدیک کردند؛ سپس آنها را از پهلوهایش گذراندند و اندرونش را سوزاندند.",
+      "text_hr": "Usijali su oštre ražnjeve i približili ih njegovim leđima; zatim su mu njima proboli bokove i spalili utrobu.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "He, while tormented, said, “O good and holy contest, in which for the sake of religion, we kindred have been called to the arena of pain, and have not been conquered.",
+      "text_fa": "او در میان شکنجه گفت: «ای پیکار نیکو و مقدس که در آن ما برادران به خاطر دینداری به میدان درد فراخوانده شده‌ایم و شکست نخورده‌ایم.",
+      "text_hr": "Dok su ga mučili, rekao je: „O dobra i sveta borbo, u kojoj smo mi braća radi pobožnosti pozvani u arenu boli i nismo bili pobijeđeni.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "For religious understanding, O tyrant, is unconquered.",
+      "text_fa": "زیرا فهم دیندارانه، ای ستمگر، شکست‌ناپذیر است.",
+      "text_hr": "Jer je pobožni razum, tiranine, nepobjediv.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "Armed with upright virtue, I also will depart with my kindred.",
+      "text_fa": "من نیز مسلح به فضیلت راستین، همراه خویشاوندانم از این جهان خواهم رفت.",
+      "text_hr": "Naoružan čestitom krepošću, i ja ću otići sa svojom braćom.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "I, too, bearing with me a great avenger, O inventor of tortures, and enemy of the truly pious.",
+      "text_fa": "من نیز انتقام‌گیری بزرگ را با خود می‌برم، ای مبدع شکنجه‌ها و دشمن دینداران راستین.",
+      "text_hr": "I ja ću sa sobom povesti velikoga osvetnika, o izumitelju mučenja i neprijatelju istinski pobožnih.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "We six youths have destroyed your tyranny.",
+      "text_fa": "ما شش جوان، ستمگری تو را نابود کرده‌ایم.",
+      "text_hr": "Nas šestorica mladića uništili smo tvoju tiraniju.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "For isn’t your inability to overrule our reasoning, and to compel us to eat the unclean, your destruction?",
+      "text_fa": "زیرا آیا ناتوانی‌ات از چیره شدن بر عقل ما و واداشتنمان به خوردن خوراک ناپاک، همان نابودی تو نیست؟",
+      "text_hr": "Jer nije li tvoja propast to što ne možeš nadvladati naš razum niti nas prisiliti da jedemo nečisto?",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "Your fire is cold to us. Your racks are painless, and your violence harmless.",
+      "text_fa": "آتش تو برای ما سرد است؛ آلات شکنجه‌ات بی‌درد و خشونتت بی‌زیان است.",
+      "text_hr": "Tvoj nam je oganj hladan. Tvoje su sprave za rastezanje bezbolne, a tvoje nasilje bezopasno.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "For the guards not of a tyrant but of a divine law are our defenders. Through this we keep our reasoning unconquered.”",
+      "text_fa": "زیرا مدافعان ما نه نگهبانان یک ستمگر، بلکه پاسداران شریعت الهی‌اند. به‌واسطهٔ این شریعت عقل خود را شکست‌ناپذیر نگاه می‌داریم.»",
+      "text_hr": "Jer naši branitelji nisu stražari tiranina, nego čuvari božanskoga Zakona. Po njemu čuvamo svoj razum nepobjedivim.”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    }
+  ]
+}

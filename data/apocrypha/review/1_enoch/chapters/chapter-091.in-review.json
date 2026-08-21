@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 91,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "b967aaccb33bc991f65f6b4c5f920434e30b17e6910fd025092d6f4f57d909f1",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "‘And now, my son Methuselah, call to me all thy brothers,\nAnd gather together to me all the sons of thy mother,\nFor the word calls me,\nAnd the spirit is poured out upon me,\nThat I may show you everything\nThat shall befall you for ever.’",
+      "text_fa": null,
+      "text_hr": "‘A sada, sine moj Metušalaše, pozovi k meni svu svoju braću i okupi oko mene sve sinove svoje majke. Riječ me zove i duh je izliven na mene da vam pokažem sve što će vas snaći dovijeka.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And thereupon Methuselah went and summoned to him all his brothers and assembled his relatives.",
+      "text_fa": null,
+      "text_hr": "I tada je Metušalah otišao i pozvao k sebi svu svoju braću i okupio svoju rodbinu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And he spake unto all the children of righteousness and said:\n\n‘Hear, ye sons of Enoch, all the words of your father,\nAnd hearken aright to the voice of my mouth;\nFor I exhort you and say unto you, beloved:\nLove uprightness and walk therein.",
+      "text_fa": null,
+      "text_hr": "Obrati se svim sinovima pravednosti i reče: ‘Čujte, sinovi Henokovi, sve riječi svojega oca i pomno poslušajte glas mojih usta. Potičem vas i govorim vam, ljubljeni: ljubite čestitost i hodajte u njoj.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "And draw not nigh to uprightness with a double heart,\nAnd associate not with those of a double heart,\nBut walk in righteousness, my sons.\nAnd it shall guide you on good paths,\nAnd righteousness shall be your companion.",
+      "text_fa": null,
+      "text_hr": "Ne približavajte se čestitosti dvolična srca i ne družite se s dvoličnima, nego hodajte u pravednosti, sinovi moji. Ona će vas voditi dobrim stazama i pravednost će vam biti suputnica.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "For I know that violence =must= increase on the earth,\nAnd a great chastisement be executed on the earth,\nAnd all unrighteousness come to an end:\nYea, it shall be cut off from its roots,\nAnd its whole structure be destroyed.",
+      "text_fa": null,
+      "text_hr": "Znam da se nasilje =mora= umnožiti na zemlji, da će se na zemlji izvršiti velika kazna i da će svakoj nepravdi doći kraj. Da, bit će iščupana iz korijena i cijela će joj građevina biti uništena.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And unrighteousness shall again be consummated on the earth,\nAnd all the deeds of unrighteousness and of violence\nAnd transgression shall prevail in a twofold degree.",
+      "text_fa": null,
+      "text_hr": "I nepravda će opet biti dovršena na zemlji, i sva djela nepravednosti i nasilja A prijestup će prevladati u dvostrukom stupnju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And when sin and unrighteousness and blasphemy\nAnd violence in all kinds of deeds increase,\nAnd apostasy and transgression and uncleanness increase,\nA great chastisement shall come from heaven upon all these,\nAnd the holy Lord will come forth with wrath and chastisement\nTo execute judgement on earth.",
+      "text_fa": null,
+      "text_hr": "Kad se umnože grijeh, nepravda, bogohuljenje i nasilje u svakovrsnim djelima, kad porastu otpadništvo, prijestup i nečistoća, velika će kazna doći s neba na sve to. Sveti će Gospodin izići u gnjevu i s kaznom da izvrši sud na zemlji.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "In those days violence shall be cut off from its roots,\nAnd the roots of unrighteousness together with deceit,\nAnd they shall be destroyed from under heaven.",
+      "text_fa": null,
+      "text_hr": "U tim danima nasilje će biti odsječeno iz korijena, i korijeni nepravde zajedno s prijevarom, i oni će biti uništeni ispod neba.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "And all the idols of the heathen shall be abandoned,\nAnd the temples burned with fire,\nAnd they shall remove them from the whole earth,\nAnd they (_i. e._ the heathen) shall be cast into the judgement of fire,\nAnd shall perish in wrath and in grievous judgement for ever.",
+      "text_fa": null,
+      "text_hr": "Svi će idoli pogana biti napušteni, hramovi spaljeni ognjem i uklonjeni sa sve zemlje. Oni (_tj._ pogani) bit će bačeni na sud ognja i zauvijek propasti u gnjevu i teškom sudu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And the righteous shall arise from their sleep,\nAnd wisdom shall arise and be given unto them.",
+      "text_fa": null,
+      "text_hr": "I pravednici će ustati iz sna svoga, i mudrost će ustati i bit će im dana.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "[And after that the roots of unrighteousness shall be cut off, and the sinners shall be destroyed by the sword ... shall be cut off from the blasphemers in every place, and those who plan violence and those who commit blasphemy shall perish by the sword.]",
+      "text_fa": null,
+      "text_hr": "[I nakon toga će korijenje nepravednosti biti sasječeno, a grešnici će biti uništeni mačem ... bit će istrijebljeni od bogohulnika posvuda, a oni koji planiraju nasilje i oni koji čine bogohuljenje izginut će od mača.]",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "And after that there shall be another, the eighth week, that of righteousness,\nAnd a sword shall be given to it that a righteous judgement may be executed on the oppressors,\nAnd sinners shall be delivered into the hands of the righteous.",
+      "text_fa": null,
+      "text_hr": "Nakon toga doći će drugi, osmi tjedan — tjedan pravednosti. Njemu će se dati mač da se izvrši pravedan sud nad tlačiteljima, a grešnici će biti predani u ruke pravednika.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "And at its close they shall acquire houses through their righteousness,\nAnd a house shall be built for the Great King in glory for evermore,",
+      "text_fa": null,
+      "text_hr": "I na kraju će steći kuće svojom pravednošću, i sagradit će se kuća za Velikog Kralja u slavi zauvijek,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "[14d] And all mankind shall look to the path of uprightness.\n\n[14a] And after that, in the ninth week, the righteous judgement shall be revealed to the whole world,\n\n[14b] And all the works of the godless shall vanish from all the earth,\n\n[14c] And the world shall be written down for destruction.",
+      "text_fa": null,
+      "text_hr": "[14d] I cijelo će čovječanstvo gledati na put čestitosti. [14a] A nakon toga, u devetom tjednu, pravedni će se sud objaviti cijelom svijetu, [14b] I sva će djela bezbožnika nestati sa cijele zemlje, [14c] I svijet će biti zapisan za uništenje.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "And after this, in the tenth week in the seventh part,\nThere shall be the great eternal judgement,\nIn which He will execute vengeance amongst the angels.",
+      "text_fa": null,
+      "text_hr": "I nakon toga, u desetom tjednu u sedmom dijelu, Bit će veliki vječni sud, U kojem će On izvršiti osvetu među anđelima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "And the first heaven shall depart and pass away,\nAnd a new heaven shall appear,\nAnd all the powers of the heavens shall give sevenfold light.",
+      "text_fa": null,
+      "text_hr": "I prvo će nebo otići i proći, i pojavit će se novo nebo, i sve će sile nebeske dati sedmerostruku svjetlost.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "And after that there will be many weeks without number for ever,\nAnd all shall be in goodness and righteousness,\nAnd sin shall no more be mentioned for ever.",
+      "text_fa": null,
+      "text_hr": "I nakon toga će biti mnogo tjedana bez broja zauvijek, i sve će biti u dobru i pravednosti, i grijeh se više neće spominjati zauvijek.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "And now I tell you, my sons, and show you\nThe paths of righteousness, and the paths of violence.\nYea, I will show them to you again,\nThat ye may know what will come to pass.",
+      "text_fa": null,
+      "text_hr": "A sada vam, sinovi moji, govorim i pokazujem staze pravednosti i staze nasilja. Da, ponovno ću vam ih pokazati da biste znali što će se dogoditi.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "And now, hearken unto me, my sons,\nAnd walk in the paths of righteousness,\nAnd walk not in the paths of violence;\nFor all who walk in the paths of unrighteousness shall perish for =ever=.’",
+      "text_fa": null,
+      "text_hr": "A sada me poslušajte, sinovi moji: hodajte stazama pravednosti i ne hodajte stazama nasilja, jer svi koji hodaju stazama nepravde nestat će =zauvijek=.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

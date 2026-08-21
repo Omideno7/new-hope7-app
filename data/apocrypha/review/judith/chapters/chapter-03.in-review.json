@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "book_id": "judith",
+  "title_fa": "یهودیت",
+  "title_en": "Judith",
+  "title_hr": "Judita",
+  "chapter": 3,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "79683606332da4f676ff0f24dc313518c90261c28234e4e76b3f01d3291b8beb",
+  "locales_in_scope": [
+    "fa"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "So they sent ambassadors unto him to treat of peace, saying,",
+      "text_fa": "پس نمایندگانی نزد هولوفرنس فرستادند تا دربارهٔ صلح مذاکره کنند و گفتند:",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 2,
+      "text_en": "Behold, we the servants of Nabuchodonosor the great king lie before thee; use us as shall be good in thy sight.",
+      "text_fa": "«اینک ما، خدمتگزاران نبوکدنصر پادشاه بزرگ، در برابر تو به خاک افتاده‌ایم؛ هر چه در نظرت نیکوست با ما انجام بده.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 3,
+      "text_en": "Behold, our houses, and all our places, and all our fields of wheat, and flocks, and herds, and all the lodges of our tents lie before thy face; use them as it pleaseth thee.",
+      "text_fa": "خانه‌ها، همهٔ محل‌های سکونت، تمام کشتزارهای گندم، گله‌ها، رمه‌ها و خیمه‌هایمان پیش روی توست؛ هر طور می‌پسندی از آنها استفاده کن.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 4,
+      "text_en": "Behold, even our cities and the inhabitants thereof are thy servants; come and deal with them as seemeth good unto thee.",
+      "text_fa": "شهرهای ما و ساکنانشان نیز خدمتگزاران تو هستند؛ بیا و هر چه در نظرت پسندیده است با آنان انجام بده.»",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 5,
+      "text_en": "So the men came to Holofernes, and declared unto him after this manner.",
+      "text_fa": "آن مردان نزد هولوفرنس آمدند و این سخنان را به او گفتند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 6,
+      "text_en": "Then came he down toward the sea coast, both he and his army, and set garrisons in the high cities, and took out of them chosen men for aid.",
+      "text_fa": "آنگاه او و سپاهش به سوی ساحل فرود آمدند. در شهرهای مرتفع پادگان‌هایی برپا کرد و مردان برگزیدهٔ آن شهرها را برای یاری به سپاهش گرفت.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 7,
+      "text_en": "So they and all the country round about received them with garlands, with dances, and with timbrels.",
+      "text_fa": "مردم آن نواحی و سراسر سرزمین پیرامون با تاج‌های گل، رقص و دف از آنان استقبال کردند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 8,
+      "text_en": "Yet he did cast down their frontiers, and cut down their groves: for he had decreed to destroy all the gods of the land, that all nations should worship Nabuchodonosor only, and that all tongues and tribes should call upon him as god.",
+      "text_fa": "با این همه، هولوفرنس زیارتگاه‌هایشان را ویران کرد و بیشه‌های مقدسشان را برید؛ زیرا تصمیم گرفته بود همهٔ خدایان آن سرزمین را نابود کند تا تمام ملت‌ها تنها نبوکدنصر را بپرستند و همهٔ زبان‌ها و قبایل او را خدا بخوانند.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 9,
+      "text_en": "Also he came over against Esdraelon near unto Judea, over against the great strait of Judea.",
+      "text_fa": "سپس به روبه‌روی یزرعیل، در نزدیکی یهودا و مقابل گذرگاه بزرگ یهودا رسید.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    },
+    {
+      "verse": 10,
+      "text_en": "And he pitched between Geba and Scythopolis, and there he tarried a whole month, that he might gather together all the carriages of his army.",
+      "text_fa": "میان جِبا و بیت‌شان اردو زد و یک ماه در آنجا ماند تا همهٔ تجهیزات و بارهای سپاهش را گرد آورد.",
+      "text_hr": null,
+      "status_fa": "in_review",
+      "status_hr": "out_of_scope"
+    }
+  ]
+}

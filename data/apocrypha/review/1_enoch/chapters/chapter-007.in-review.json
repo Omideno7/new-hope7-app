@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 7,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "70e3e605f2a49254c2b7341b78db0085545049b15d3cfc11259c6f6705f4787a",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "And all the others together with them took unto themselves wives, and each chose for himself one, and they began to go in unto them and to defile themselves with them, and they taught them charms and enchantments, and the cutting of roots, and made them acquainted with plants.",
+      "text_fa": null,
+      "text_hr": "Svi ostali zajedno s njima uzeše sebi žene; svaki izabra jednu za sebe. Počeše im prilaziti i s njima se kaljati; učili su ih čarolijama, bajanju i rezanju korijenja te ih upoznali s biljkama.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "And they became pregnant, and they bare great giants, whose height was three thousand ells:",
+      "text_fa": null,
+      "text_hr": "One zatrudnješe i rodiše goleme divove, visoke tri tisuće lakata.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "Who consumed all the acquisitions of men. And when men could no longer sustain them,",
+      "text_fa": null,
+      "text_hr": "Oni su proždirali sav ljudski trud; kad ih ljudi više nisu mogli uzdržavati,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "The giants turned against them and devoured mankind.",
+      "text_fa": null,
+      "text_hr": "divovi se okrenuše protiv njih i počeli proždirati čovječanstvo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "And they began to sin against birds, and beasts, and reptiles, and fish, and to devour one another’s flesh, and drink the blood.",
+      "text_fa": null,
+      "text_hr": "Počeše griješiti protiv ptica, zvijeri, gmazova i riba, proždirati meso jedni drugima i piti krv.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "Then the earth laid accusation against the lawless ones.",
+      "text_fa": null,
+      "text_hr": "Tada zemlja optuži bezakonike.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "chapter": 104,
+  "status": "in_review",
+  "status_hr": "in_review",
+  "source_translation": "R. H. Charles",
+  "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
+  "source_english_sha256": "c78de623b4f66676529b55f217fda99e442074b18fb2acb50eb966bce3a0ddd1",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "I swear unto you, that in heaven the angels remember you for good before the glory of the Great One: and your names are written before the glory of the Great One.",
+      "text_fa": null,
+      "text_hr": "Kunem vam se da vas se na nebu anđeli sjećaju po dobru pred slavom Velikog: i vaša su imena zapisana pred slavom Velikog.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "Be hopeful; for aforetime ye were put to shame through ill and affliction; but now ye shall shine as the lights of heaven, ye shall shine and ye shall be seen, and the portals of heaven shall be opened to you.",
+      "text_fa": null,
+      "text_hr": "Nadajte se! Prije ste bili osramoćeni zbog zla i nevolje, ali sada ćete sjati poput nebeskih svjetlila; sjat ćete i bit ćete viđeni, a vrata neba otvorit će vam se.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "And in your cry, cry for judgement, and it shall appear to you; for all your tribulation shall be visited on the rulers, and on all who helped those who plundered you.",
+      "text_fa": null,
+      "text_hr": "U svojem vapaju vapite za sudom i on će vam se pokazati, jer će sva vaša nevolja biti osvećena na vladarima i svima koji su pomagali onima koji su vas pljačkali.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "Be hopeful, and cast not away your hope; for ye shall have great joy as the angels of heaven.",
+      "text_fa": null,
+      "text_hr": "Imajte nade i ne odbacujte svoju nadu; jer ćete imati veliku radost kao anđeli nebeski.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "What shall ye be obliged to do? Ye shall not have to hide on the day of the great judgement and ye shall not be found as sinners, and the eternal judgement shall be far from you for all the generations of the world.",
+      "text_fa": null,
+      "text_hr": "Što ćete biti dužni učiniti? Nećete se morati skrivati na dan velikoga suda i nećete se naći kao grešnici, a vječni će sud biti daleko od vas za sve naraštaje svijeta.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "And now fear not, ye righteous, when ye see the sinners growing strong and prospering in their ways: be not companions with them, but keep afar from their violence; for ye shall become companions of the hosts of heaven.",
+      "text_fa": null,
+      "text_hr": "A sada se ne bojte, vi pravednici, kad vidite grješnike kako jačaju i napreduju na svojim putovima: ne budite im drugovi, nego se držite podalje od njihova nasilja; jer postat ćete drugovi vojske nebeske.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And, although ye sinners say: “All our sins shall not be searched out and written down,” nevertheless they shall write down all your sins every day.",
+      "text_fa": null,
+      "text_hr": "I, iako vi grešnici kažete: “Svi naši grijesi neće biti istraženi i zapisani,” ipak će oni svaki dan zapisivati sve vaše grijehe.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "And now I show unto you that light and darkness, day and night, see all your sins.",
+      "text_fa": null,
+      "text_hr": "I sada vam pokazujem da svjetlost i tama, dan i noć, vide sve vaše grijehe.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "Be not godless in your hearts, and lie not and alter not the words of uprightness, nor charge with lying the words of the Holy Great One, nor take account of your idols; for all your lying and all your godlessness issue not in righteousness, but in great sin.",
+      "text_fa": null,
+      "text_hr": "Ne budite bezbožni u svojim srcima, i ne lažite i ne mijenjajte riječi pravednosti, niti optužujte lažima riječi Svetoga Velikog, niti uzimajte u obzir svoje idole; jer sva vaša laž i sve vaše bezboštvo ne proizlaze iz pravednosti, nego iz velikog grijeha.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "And now I know this mystery, that sinners will alter and pervert the words of righteousness in many ways, and will speak wicked words, and lie, and practise great deceits, and write books concerning their words.",
+      "text_fa": null,
+      "text_hr": "I sada znam ovu tajnu, da će grešnici izmijeniti i izvrnuti riječi pravednosti na mnoge načine, i da će govoriti zle riječi, i lagati, i prakticirati velike prijevare, i pisati knjige o njihovim riječima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "But when they write down truthfully all my words in their languages, and do not change or minish aught from my words, but write them all down truthfully—all that I first testified concerning them.",
+      "text_fa": null,
+      "text_hr": "Ali kad zapišu istinito sve moje riječi na svojim jezicima, i ne promijene niti umanje ništa od mojih riječi, nego ih sve zapišu istinito - sve što sam prvi put svjedočio o njima.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "Then, I know another mystery, that books shall be given to the righteous and the wise to become a cause of joy and uprightness and much wisdom.",
+      "text_fa": null,
+      "text_hr": "Zatim, znam još jednu tajnu, da će knjige biti dane pravednima i mudrima da postanu uzrokom radosti, čestitosti i mnogo mudrosti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "And to them shall the books be given, and they shall believe in them and rejoice over them, and then shall all the righteous who have learnt therefrom all the paths of uprightness be recompensed.’",
+      "text_fa": null,
+      "text_hr": "I njima će knjige biti date, i oni će vjerovati u njih i radovati im se, i tada će svi pravednici koji su od njih naučili sve staze čestitosti biti nagrađeni.’",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

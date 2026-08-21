@@ -1,0 +1,521 @@
+{
+  "schema_version": 1,
+  "book_id": "1_esdras",
+  "title_fa": "اول اِسدراس",
+  "title_en": "First Esdras",
+  "title_hr": "Prva Ezdrina",
+  "chapter": 4,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "versification": "KJVA",
+  "source_english_sha256": "36750f156602afe3254698ddf84901249469d307b4f8de43d12a22e4d51cb317",
+  "locales_in_scope": [
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Then the second, that had spoken of the strength of the king, began to say,",
+      "text_fa": null,
+      "text_hr": "Tada je drugi, onaj koji je govorio o kraljevoj snazi, počeo ovako:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "O ye men, do not men excel in strength that bear rule over sea and land and all things in them?",
+      "text_fa": null,
+      "text_hr": "„Ljudi, nisu li najjači oni koji vladaju morem i kopnom i svime što je na njima?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "But yet the king is more mighty: for he is lord of all these things, and hath dominion over them; and whatsoever he commandeth them they do.",
+      "text_fa": null,
+      "text_hr": "Ipak je kralj moćniji, jer je gospodar svega toga i nad svime vlada; što god im zapovjedi, oni učine.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "If he bid them make war the one against the other, they do it: if he send them out against the enemies, they go, and break down mountains walls and towers.",
+      "text_fa": null,
+      "text_hr": "Ako im zapovjedi da ratuju jedni protiv drugih, oni to čine. Ako ih pošalje protiv neprijatelja, odlaze i ruše planinske utvrde, zidine i kule.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "They slay and are slain, and transgress not the king’s commandment: if they get the victory, they bring all to the king, as well the spoil, as all things else.",
+      "text_fa": null,
+      "text_hr": "Ubijaju i bivaju ubijeni, a ne prestupaju kraljevu zapovijed. Ako pobijede, kralju donose sve: plijen i sve ostalo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "Likewise for those that are no soldiers, and have not to do with wars, but use husbandry, when they have reaped again that which they had sown, they bring it to the king, and compel one another to pay tribute unto the king.",
+      "text_fa": null,
+      "text_hr": "Tako i oni koji nisu vojnici niti se bave ratom, nego obrađuju zemlju: kad požanju ono što su posijali, donose to kralju i prisiljavaju jedni druge da kralju plate danak.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "And yet he is but one man: if he command to kill, they kill; if he command to spare, they spare;",
+      "text_fa": null,
+      "text_hr": "A kralj je samo jedan čovjek. Ako zapovjedi da se ubije, ubijaju; ako zapovjedi da se poštedi, pošteđuju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "If he command to smite, they smite; if he command to make desolate, they make desolate; if he command to build, they build;",
+      "text_fa": null,
+      "text_hr": "Ako zapovjedi da se udari, udaraju; ako da se opustoši, pustoše; ako da se gradi, grade.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "If he command to cut down, they cut down; if he command to plant, they plant.",
+      "text_fa": null,
+      "text_hr": "Ako zapovjedi da se siječe, sijeku; ako da se sadi, sade.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "So all his people and his armies obey him: furthermore he lieth down, he eateth and drinketh, and taketh his rest:",
+      "text_fa": null,
+      "text_hr": "Tako mu se pokoravaju sav njegov narod i njegove vojske. A on lijega, jede, pije i odmara se,",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "And these keep watch round about him, neither may any one depart, and do his own business, neither disobey they him in any thing.",
+      "text_fa": null,
+      "text_hr": "dok oni stražare oko njega. Nitko ne smije otići baviti se vlastitim poslom niti mu se u ičemu usprotiviti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "O ye men, how should not the king be mightiest, when in such sort he is obeyed? And he held his tongue.",
+      "text_fa": null,
+      "text_hr": "Ljudi, kako kralj ne bi bio najmoćniji kad mu se tako pokoravaju?“ Potom je zašutio.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "Then the third, who had spoken of women, and of the truth, (this was Zorobabel) began to speak.",
+      "text_fa": null,
+      "text_hr": "Tada je treći, onaj koji je govorio o ženama i o Istini — a to je bio Zorobabel — počeo govoriti:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "O ye men, it is not the great king, nor the multitude of men, neither is it wine, that excelleth; who is it then that ruleth them, or hath the lordship over them? are they not women?",
+      "text_fa": null,
+      "text_hr": "„Ljudi, ne nadvisuje sve ni veliki kralj, ni mnoštvo ljudi, ni vino. Tko onda njima vlada i tko njima gospodari? Nisu li to žene?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "Women have borne the king and all the people that bear rule by sea and land.",
+      "text_fa": null,
+      "text_hr": "Žene su rodile kralja i sve ljude koji vladaju morem i kopnom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "Even of them came they: and they nourished them up that planted the vineyards, from whence the wine cometh.",
+      "text_fa": null,
+      "text_hr": "Od žena su rođeni i one su odgojile one koji sade vinograde iz kojih dolazi vino.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "These also make garments for men; these bring glory unto men; and without women cannot men be.",
+      "text_fa": null,
+      "text_hr": "One također izrađuju odjeću muškarcima, one muškarcima donose slavu; bez žena muškarci ne mogu živjeti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "Yea, and if men have gathered together gold and silver, or any other goodly thing, do they not love a woman which is comely in favour and beauty?",
+      "text_fa": null,
+      "text_hr": "Čak i ako su muškarci nagomilali zlato, srebro ili koju drugu dragocjenost, neće li ipak zavoljeti ženu lijepa lica i stasa?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "And letting all those things go, do they not gape, and even with open mouth fix their eyes fast on her; and have not all men more desire unto her than unto silver or gold, or any goodly thing whatsoever?",
+      "text_fa": null,
+      "text_hr": "Neće li zanemariti sve te stvari, otvorenih usta zuriti u nju i željeti je više od srebra, zlata ili bilo koje druge dragocjenosti?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "A man leaveth his own father that brought him up, and his own country, and cleaveth unto his wife.",
+      "text_fa": null,
+      "text_hr": "Čovjek ostavlja vlastita oca koji ga je odgojio i svoju domovinu te prianja uza svoju ženu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "He sticketh not to spend his life with his wife. and remembereth neither father, nor mother, nor country.",
+      "text_fa": null,
+      "text_hr": "Ne oklijeva provesti život sa svojom ženom i više se ne sjeća ni oca, ni majke, ni domovine.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "By this also ye must know that women have dominion over you: do ye not labour and toil, and give and bring all to the woman?",
+      "text_fa": null,
+      "text_hr": "Po tome morate spoznati da žene vladaju nad vama: ne radite li i ne mučite li se te sve dajete i donosite ženi?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "Yea, a man taketh his sword, and goeth his way to rob and to steal, to sail upon the sea and upon rivers;",
+      "text_fa": null,
+      "text_hr": "Čovjek uzima mač i odlazi pljačkati i krasti, ploviti morem i rijekama.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "And looketh upon a lion, and goeth in the darkness; and when he hath stolen, spoiled, and robbed, he bringeth it to his love.",
+      "text_fa": null,
+      "text_hr": "Suočava se s lavom i ide po mraku, a kad nakrade, opljačka i otme, sve donosi svojoj dragoj.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "Wherefore a man loveth his wife better than father or mother.",
+      "text_fa": null,
+      "text_hr": "Zato čovjek voli svoju ženu više nego oca ili majku.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "Yea, many there be that have run out of their wits for women, and become servants for their sakes.",
+      "text_fa": null,
+      "text_hr": "Mnogi su zbog žena izgubili razum i postali njihovim slugama.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "Many also have perished, have erred, and sinned, for women.",
+      "text_fa": null,
+      "text_hr": "Mnogi su zbog žena i propali, zastranili i sagriješili.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "And now do ye not believe me? is not the king great in his power? do not all regions fear to touch him?",
+      "text_fa": null,
+      "text_hr": "Zar mi sada ne vjerujete? Nije li kralj velik u svojoj moći? Ne boje li ga se dotaknuti sve zemlje?",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "Yet did I see him and Apame the king’s concubine, the daughter of the admirable Bartacus, sitting at the right hand of the king,",
+      "text_fa": null,
+      "text_hr": "Ipak sam vidio njega i Apamu, kraljevu inoču, kćer uglednoga Bartaka, kako sjedi kralju zdesna.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "And taking the crown from the king’s head, and setting it upon her own head; she also struck the king with her left hand.",
+      "text_fa": null,
+      "text_hr": "Skinula je krunu s kraljeve glave i stavila je na svoju, a zatim kralja udarila lijevom rukom.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "And yet for all this the king gaped and gazed upon her with open mouth: if she laughed upon him, he laughed also: but if she took any displeasure at him, the king was fain to flatter, that she might be reconciled to him again.",
+      "text_fa": null,
+      "text_hr": "Unatoč svemu tome kralj ju je otvorenih usta gledao. Kad mu se nasmiješila, smijao se i on; ako bi se na njega rasrdila, kralj joj se morao umiljavati dok se opet ne bi pomirila s njim.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "O ye men, how can it be but women should be strong, seeing they do thus?",
+      "text_fa": null,
+      "text_hr": "Ljudi, kako žene ne bi bile snažne kad čine takve stvari?“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 33,
+      "text_en": "Then the king and the princes looked one upon another: so he began to speak of the truth.",
+      "text_fa": null,
+      "text_hr": "Tada se kralj i knezovi pogledaše, a Zorobabel poče govoriti o Istini:",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 34,
+      "text_en": "O ye men, are not women strong? great is the earth, high is the heaven, swift is the sun in his course, for he compasseth the heavens round about, and fetcheth his course again to his own place in one day.",
+      "text_fa": null,
+      "text_hr": "„Ljudi, nisu li žene snažne? Velika je zemlja, visoko je nebo, a sunce je brzo na svojem putu: obilazi cijela nebesa i za jedan se dan vraća na svoje mjesto.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 35,
+      "text_en": "Is he not great that maketh these things? therefore great is the truth, and stronger than all things.",
+      "text_fa": null,
+      "text_hr": "Nije li velik onaj koji je sve to stvorio? Zato je Istina velika i snažnija od svega.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 36,
+      "text_en": "All the earth crieth upon the truth, and the heaven blesseth it: all works shake and tremble at it, and with it is no unrighteous thing.",
+      "text_fa": null,
+      "text_hr": "Sva zemlja zaziva Istinu, a nebo je blagoslivlja. Sva djela dršću i trepere pred njom, a u njoj nema nikakve nepravde.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 37,
+      "text_en": "Wine is wicked, the king is wicked, women are wicked, all the children of men are wicked, and such are all their wicked works; and there is no truth in them; in their unrighteousness also they shall perish.",
+      "text_fa": null,
+      "text_hr": "Vino je nepravedno, kralj je nepravedan, žene su nepravedne, svi su ljudski sinovi nepravedni i nepravedna su sva njihova djela. U njima nema istine i u svojoj će nepravdi propasti.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 38,
+      "text_en": "As for the truth, it endureth, and is always strong; it liveth and conquereth for evermore.",
+      "text_fa": null,
+      "text_hr": "Istina pak ostaje i uvijek je snažna; ona živi i pobjeđuje zauvijek.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 39,
+      "text_en": "With her there is no accepting of persons or rewards; but she doeth the things that are just, and refraineth from all unjust and wicked things; and all men do well like of her works.",
+      "text_fa": null,
+      "text_hr": "Ona nije pristrana i ne prima mita; čini što je pravedno, a kloni se svake nepravde i zloće. Svim se ljudima sviđaju njezina djela.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 40,
+      "text_en": "Neither in her judgment is any unrighteousness; and she is the strength, kingdom, power, and majesty, of all ages. Blessed be the God of truth.",
+      "text_fa": null,
+      "text_hr": "U njezinu sudu nema nepravde. Ona je snaga, kraljevstvo, moć i veličanstvo svih vjekova. Blagoslovljen neka je Bog Istine.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 41,
+      "text_en": "And with that he held his peace. And all the people then shouted, and said, Great is Truth, and mighty above all things.",
+      "text_fa": null,
+      "text_hr": "Tada je zašutio, a sav je narod povikao: „Velika je Istina i moćnija od svega!“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 42,
+      "text_en": "Then said the king unto him, Ask what thou wilt more than is appointed in the writing, and we will give it thee, because thou art found wisest; and thou shalt sit next me, and shalt be called my cousin.",
+      "text_fa": null,
+      "text_hr": "Kralj mu zatim reče: „Zatraži što god želiš povrh onoga što je određeno u zapisu i dat ćemo ti, jer si se pokazao najmudrijim. Sjedit ćeš do mene i zvat će te mojim rođakom.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 43,
+      "text_en": "Then said he unto the king, Remember thy vow, which thou hast vowed to build Jerusalem, in the day when thou camest to thy kingdom,",
+      "text_fa": null,
+      "text_hr": "On reče kralju: „Sjeti se zavjeta kojim si se, onoga dana kad si preuzeo kraljevstvo, zavjetovao da ćeš ponovno izgraditi Jeruzalem",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 44,
+      "text_en": "And to send away all the vessels that were taken away out of Jerusalem, which Cyrus set apart, when he vowed to destroy Babylon, and to send them again thither.",
+      "text_fa": null,
+      "text_hr": "i poslati natrag sve posude odnesene iz Jeruzalema, koje je Kir izdvojio kad se zavjetovao da će razoriti Babilon i vratiti ih onamo.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 45,
+      "text_en": "Thou also hast vowed to build up the temple, which the Edomites burned when Judea was made desolate by the Chaldees.",
+      "text_fa": null,
+      "text_hr": "Zavjetovao si se i da ćeš ponovno izgraditi Hram koji su Edomci spalili kad su Kaldejci opustošili Judeju.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 46,
+      "text_en": "And now, O lord the king, this is that which I require, and which I desire of thee, and this is the princely liberality proceeding from thyself: I desire therefore that thou make good the vow, the performance whereof with thine own mouth thou hast vowed to the King of heaven.",
+      "text_fa": null,
+      "text_hr": "A sada, gospodaru kralju, ovo od tebe tražim i želim; to je velikodušnost dostojna kralja koja proizlazi iz tebe samoga. Molim te, ispuni zavjet za koji si se vlastitim ustima zavjetovao Kralju nebeskomu.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 47,
+      "text_en": "Then Darius the king stood up, and kissed him, and wrote letters for him unto all the treasurers and lieutenants and captains and governors, that they should safely convey on their way both him, and all those that go up with him to build Jerusalem.",
+      "text_fa": null,
+      "text_hr": "Tada kralj Darije ustade, poljubi ga i napisa za njega pisma svim rizničarima, upraviteljima, zapovjednicima i namjesnicima, da na putu sigurno provedu njega i sve koji s njim pođu graditi Jeruzalem.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 48,
+      "text_en": "He wrote letters also unto the lieutenants that were in Celosyria and Phenice, and unto them in Libanus, that they should bring cedar wood from Libanus unto Jerusalem, and that they should build the city with him.",
+      "text_fa": null,
+      "text_hr": "Napisao je pisma i upraviteljima u Koelesiriji i Feniciji te onima na Libanonu, da iz Libanona dovezu cedrovinu u Jeruzalem i da zajedno s njim izgrade grad.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 49,
+      "text_en": "Moreover he wrote for all the Jews that went out of his realm up into Jewry, concerning their freedom, that no officer, no ruler, no lieutenant, nor treasurer, should forcibly enter into their doors;",
+      "text_fa": null,
+      "text_hr": "Za sve Židove koji iz njegova kraljevstva pođu u Judeju napisao je da budu slobodni te da nijedan službenik, vladar, upravitelj ni rizničar ne smije silom ulaziti u njihove kuće.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 50,
+      "text_en": "And that all the country which they hold should be free without tribute; and that the Edomites should give over the villages of the Jews which then they held:",
+      "text_fa": null,
+      "text_hr": "Sva zemlja kojom budu upravljali neka bude oslobođena danka, a Edomci neka vrate židovska sela koja tada drže.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 51,
+      "text_en": "Yea, that there should be yearly given twenty talents to the building of the temple, until the time that it were built;",
+      "text_fa": null,
+      "text_hr": "Za gradnju Hrama neka se svake godine daje dvadeset talenata, sve dok ne bude dovršen.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 52,
+      "text_en": "And other ten talents yearly, to maintain the burnt offerings upon the altar every day, as they had a commandment to offer seventeen:",
+      "text_fa": null,
+      "text_hr": "Još deset talenata godišnje neka se daje za sedamnaest žrtava paljenica koje je prema zapovijedi trebalo svakoga dana prinositi na žrtveniku.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 53,
+      "text_en": "And that all they that went from Babylon to build the city should have free liberty, as well they as their posterity, and all the priests that went away.",
+      "text_fa": null,
+      "text_hr": "Svi koji iz Babilona pođu graditi grad neka uživaju slobodu — i oni i njihovi potomci, kao i svi svećenici koji pođu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 54,
+      "text_en": "He wrote also concerning. the charges, and the priests’ vestments wherein they minister;",
+      "text_fa": null,
+      "text_hr": "Pisao je i o troškovima te o svećeničkim haljinama u kojima obavljaju službu.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 55,
+      "text_en": "And likewise for the charges of the Levites, to be given them until the day that the house were finished, and Jerusalem builded up.",
+      "text_fa": null,
+      "text_hr": "Odredio je i da se pokrivaju troškovi levita sve do dana kad Dom bude dovršen i Jeruzalem ponovno izgrađen.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 56,
+      "text_en": "And he commanded to give to all that kept the city pensions and wages.",
+      "text_fa": null,
+      "text_hr": "Zapovjedio je da se svima koji čuvaju grad daju mirovine i plaće.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 57,
+      "text_en": "He sent away also all the vessels from Babylon, that Cyrus had set apart; and all that Cyrus had given in commandment, the same charged he also to be done, and sent unto Jerusalem.",
+      "text_fa": null,
+      "text_hr": "Iz Babilona je poslao sve posude koje je Kir izdvojio. Zapovjedio je da se učini sve što je Kir već bio naredio i da se sve pošalje u Jeruzalem.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 58,
+      "text_en": "Now when this young man was gone forth, he lifted up his face to heaven toward Jerusalem, and praised the King of heaven,",
+      "text_fa": null,
+      "text_hr": "Kad je mladić izišao, podigao je lice prema nebu, u smjeru Jeruzalema, i hvalio Kralja nebeskoga.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 59,
+      "text_en": "And said, From thee cometh victory, from thee cometh wisdom, and thine is the glory, and I am thy servant.",
+      "text_fa": null,
+      "text_hr": "Rekao je: „Od tebe dolazi pobjeda, od tebe dolazi mudrost; tvoja je slava, a ja sam tvoj sluga.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 60,
+      "text_en": "Blessed art thou, who hast given me wisdom: for to thee I give thanks, O Lord of our fathers.",
+      "text_fa": null,
+      "text_hr": "Blagoslovljen si ti koji si mi dao mudrost. Zahvaljujem ti, Gospodine naših otaca.“",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 61,
+      "text_en": "And so he took the letters, and went out, and came unto Babylon, and told it all his brethren.",
+      "text_fa": null,
+      "text_hr": "Potom je uzeo pisma, otišao u Babilon i sve ispripovijedao svojoj braći.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 62,
+      "text_en": "And they praised the God of their fathers, because he had given them freedom and liberty",
+      "text_fa": null,
+      "text_hr": "Oni su hvalili Boga svojih otaca jer im je dao slobodu i dopuštenje",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 63,
+      "text_en": "To go up, and to build Jerusalem, and the temple which is called by his name: and they feasted with instruments of musick and gladness seven days.",
+      "text_fa": null,
+      "text_hr": "da pođu izgraditi Jeruzalem i Hram koji nosi njegovo ime. Sedam su dana slavili uz glazbala i radost.",
+      "status_fa": "out_of_scope",
+      "status_hr": "in_review"
+    }
+  ]
+}

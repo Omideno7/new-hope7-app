@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "book_id": "judith",
+  "title_fa": "یهودیت",
+  "title_en": "Judith",
+  "title_hr": "Judita",
+  "status": "in_review",
+  "prepared_on": "2026-08-21",
+  "included_ranges": {
+    "fa": [
+      [
+        1,
+        16
+      ]
+    ]
+  },
+  "source_translation": "KJVA",
+  "source_translation_name": "King James Version with Apocrypha",
+  "source_url": "https://www.gutenberg.org/ebooks/124",
+  "source_license": "Public Domain in the United States",
+  "source_note": "The English alignment is copied exactly from the bundled KJVA Judith text, sourced by the project from Project Gutenberg eBook 124. Persian is a new verse-by-verse review translation; Croatian is outside this package's scope.",
+  "versification": "KJVA",
+  "locales_in_scope": [
+    "fa"
+  ],
+  "totals": {
+    "chapters": 16,
+    "aligned_source_verses": 339,
+    "persian_in_review_verses": 339,
+    "croatian_out_of_scope_verses": 339
+  },
+  "chapter_qa": {
+    "1": {
+      "verse_count": 16,
+      "persian_in_review_count": 16,
+      "croatian_out_of_scope_count": 16,
+      "source_english_sha256": "8c2aa67bb05c8509454fa65c3043f3caa762cb181daaa6bb728610a1da4d576f"
+    },
+    "2": {
+      "verse_count": 28,
+      "persian_in_review_count": 28,
+      "croatian_out_of_scope_count": 28,
+      "source_english_sha256": "08ba2ba4908c7845493d2201b510bd2f7ae9835e02a93fb58f33709cec024ab2"
+    },
+    "3": {
+      "verse_count": 10,
+      "persian_in_review_count": 10,
+      "croatian_out_of_scope_count": 10,
+      "source_english_sha256": "79683606332da4f676ff0f24dc313518c90261c28234e4e76b3f01d3291b8beb"
+    },
+    "4": {
+      "verse_count": 15,
+      "persian_in_review_count": 15,
+      "croatian_out_of_scope_count": 15,
+      "source_english_sha256": "522607c05f5e6a6ec7cfc48b52325686f1db72b95f4c4c259afc4e8214d2600b"
+    },
+    "5": {
+      "verse_count": 24,
+      "persian_in_review_count": 24,
+      "croatian_out_of_scope_count": 24,
+      "source_english_sha256": "6e183f4e837d2b3de6fdba168ed86fc9953cff30b3c96ada4fa2da1e880463e4"
+    },
+    "6": {
+      "verse_count": 21,
+      "persian_in_review_count": 21,
+      "croatian_out_of_scope_count": 21,
+      "source_english_sha256": "4b04f370e5ac93e28a8edfdbfc0d27e8e22c6fb048e1b36bd65e0a0db04563f8"
+    },
+    "7": {
+      "verse_count": 32,
+      "persian_in_review_count": 32,
+      "croatian_out_of_scope_count": 32,
+      "source_english_sha256": "82327d3bcbacec9391e51c92d8c02635ac9bf9e778c6624d7d0ebca0d8f0de27"
+    },
+    "8": {
+      "verse_count": 36,
+      "persian_in_review_count": 36,
+      "croatian_out_of_scope_count": 36,
+      "source_english_sha256": "9543753b208ee6461e189526acacb7c4ca715e9fba62037a31f40967f01711b1"
+    },
+    "9": {
+      "verse_count": 14,
+      "persian_in_review_count": 14,
+      "croatian_out_of_scope_count": 14,
+      "source_english_sha256": "bf5c258a8b2df3f94d3947d111785488dc2e70e89aa261d3dbd24d7d59cd8248"
+    },
+    "10": {
+      "verse_count": 23,
+      "persian_in_review_count": 23,
+      "croatian_out_of_scope_count": 23,
+      "source_english_sha256": "df5b286a08fc83243953c0d51b8fc163812f6aab6023ebafb94546366e3ab234"
+    },
+    "11": {
+      "verse_count": 23,
+      "persian_in_review_count": 23,
+      "croatian_out_of_scope_count": 23,
+      "source_english_sha256": "23388541789b855d9b502f7cb996ccbd0ce62d18dcb0900da7e9e7a2d22de7dd"
+    },
+    "12": {
+      "verse_count": 20,
+      "persian_in_review_count": 20,
+      "croatian_out_of_scope_count": 20,
+      "source_english_sha256": "e453b1610842a980823b81dad208bdbe2efe6aa9c25cd528e9d008990a2d7dea"
+    },
+    "13": {
+      "verse_count": 20,
+      "persian_in_review_count": 20,
+      "croatian_out_of_scope_count": 20,
+      "source_english_sha256": "f8360f1e7ecf0ecc5388f1069326a70acd8e5b4b66f2ee7f70ef87d909a42ba8"
+    },
+    "14": {
+      "verse_count": 19,
+      "persian_in_review_count": 19,
+      "croatian_out_of_scope_count": 19,
+      "source_english_sha256": "3fe818ed6fa892fc0b9a1d083d62bb9ca8fef012a91aac0c03a461e75c099630"
+    },
+    "15": {
+      "verse_count": 13,
+      "persian_in_review_count": 13,
+      "croatian_out_of_scope_count": 13,
+      "source_english_sha256": "773ba5ac4a2c4241ce31b5b0213a43f9760d08cad1b447269d222ec38827de06"
+    },
+    "16": {
+      "verse_count": 25,
+      "persian_in_review_count": 25,
+      "croatian_out_of_scope_count": 25,
+      "source_english_sha256": "c6757ab95ce3429d023b4084e268477b6abfbd0b60c657804a05c6734711c197"
+    }
+  }
+}
