@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#1d4ed8" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>New Hope 7 — 2.4.0 Release Candidate</title>
+  <link rel="icon" href="assets/logo.png" />
+  <link rel="stylesheet" href="css/styles.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/v2.2.0.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/v2.2.2.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/v2.2.3.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/v2.2.4.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/v2.3.0-access-bible.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/v2.3.4-my-notes.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/nh7-book-reader-v280.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-library-collections-v322.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-secure-media-v270.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-secure-media-watermark-v272.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-apocrypha-v270.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-spiritual-plans-v240.css?v=2.4.0.241" />
+  <style>
+    .nh7-rc-banner{position:relative;z-index:20;padding:8px 12px;background:#fff3cd;border-bottom:1px solid #ead28d;color:#594400;text-align:center;font:700 12px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+    .nh7-rc-banner b{margin-inline-end:6px}.nh7-rc-banner span{font-weight:500}
+  </style>
+  <script>
+    window.NH7_VERSION = '2.4.0.241-RC';
+    window.NH7_RELEASE_CHANNEL = 'release_candidate';
+    window.NH7_DISABLE_PREVIEW_SERVICE_WORKER = true;
+    window.NH7_DISABLE_PREVIEW_PUSH = true;
+  </script>
+</head>
+<body>
+  <div class="nh7-rc-banner"><b>NEW HOPE 7 · RELEASE CANDIDATE 2.4.0.241</b><span>QA only — production users are not affected</span></div>
+  <div id="amenGate" class="amen-gate hidden" role="dialog" aria-modal="true">
+    <div class="amen-card">
+      <img src="assets/logo.png" alt="OmideNo7" class="amen-logo" />
+      <h1 id="amenTitle">OmideNo7</h1>
+      <p id="amenMessage">God is with you today.</p>
+      <button id="amenButton" class="primary-btn">Amen</button>
+    </div>
+  </div>
+
+  <div id="appShell" class="app-shell">
+    <header class="topbar">
+      <button id="backBtn" class="icon-btn hidden" aria-label="Back">‹</button>
+      <div class="brand">
+        <img src="assets/logo.png" alt="" />
+        <div><strong>OmideNo7 Church</strong><small id="breadcrumb">Home</small></div>
+      </div>
+      <button id="inboxBtn" class="icon-btn inbox-top-btn" aria-label="Inbox">📥<span id="inboxBadge" class="inbox-badge hidden">0</span></button>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">EN</option><option value="fa">FA</option><option value="hr">HR</option>
+      </select>
+    </header>
+    <main id="view" class="view"></main>
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <button data-route="home" class="nav-item active"><span>⌂</span><small data-i18n="nav.home">Home</small></button>
+      <button data-route="daily" class="nav-item"><span>☀</span><small data-i18n="nav.daily">Daily</small></button>
+      <button data-route="bible" class="nav-item"><span>📖</span><small data-i18n="nav.bible">Bible</small></button>
+      <button data-route="plans" class="nav-item"><span>✓</span><small data-i18n="nav.plans">Plans</small></button>
+      <button data-route="school" class="nav-item"><span>🎓</span><small data-i18n="nav.school">School</small></button>
+      <button data-route="more" class="nav-item"><span>☰</span><small data-i18n="nav.more">More</small></button>
+    </nav>
+  </div>
+
+  <template id="loadingTpl"><section class="card"><p>Loading...</p></section></template>
+  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.12.0/mammoth.browser.min.js" defer></script>
+  <script src="js/nh7-security-core-v340.js?v=3.4.1"></script>
+  <script src="js/nh7-qna-i18n-v341.js?v=2.3.9.36"></script>
+  <script src="js/nh7-offline-startup-v327.js?v=2.3.9.33"></script>
+  <script src="js/nh7-auto-update-v335.js?v=2.3.9.35"></script>
+  <script src="js/nh7-notifications-zagreb-v334.js?v=2.3.9.35e"></script>
+  <script src="js/nh7-offline-core-v327.js?v=2.3.9.33"></script>
+  <script src="js/nh7-offline-data-v329.js?v=2.3.9.33"></script>
+  <script src="js/nh7-audio-route-stability-v330.js?v=2.3.9.33"></script>
+  <script src="js/nh7-access-bootstrap-v230.js?v=2.3.9.33"></script>
+  <script src="js/nh7-auth-signup-guard-v343.js?v=2.3.9.38"></script>
+  <script src="https://raw.githack.com/Omideno7/new-hope7-app/a2ab31a71b6f3c2ae3a9959c408af062412d6a00/js/nh7-school-registration-v342.js?v=2.3.9.40"></script>
+  <script src="js/nh7-offline-playback-bridge-v332.js?v=2.3.9.33"></script>
+  <script src="js/nh7-offline-persistence-v323.js?v=2.3.9.33"></script>
+  <script src="https://raw.githack.com/Omideno7/new-hope7-app/a2ab31a71b6f3c2ae3a9959c408af062412d6a00/js/nh7-auth-recovery-v342.js?v=2.3.9.40"></script>
+  <script src="https://raw.githack.com/Omideno7/new-hope7-app/a2ab31a71b6f3c2ae3a9959c408af062412d6a00/js/app.js?v=2.3.9.40" type="module"></script>
+  <script src="js/nh7-spiritual-plans-bridge-v240.js?v=2.4.0.241" type="module"></script>
+  <script src="js/nh7-app-enhancements-v230.js?v=2.3.9.33" type="module"></script>
+  <script src="js/nh7-my-notes-v234.js?v=2.3.9.33" type="module"></script>
+  <script src="js/nh7-book-reader-v281.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-library-language-v321.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-library-collections-v322.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-school-media-session-v262.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-secure-media-v270.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-school-audio-native-v337.js?v=2.3.9.35b" defer></script>
+  <script src="js/nh7-secure-media-fix-v271.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-large-mov-native-fallback-v273.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-secure-media-watermark-v272.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-apocrypha-preview-v240.js?v=2.4.0.241" defer></script>
+  <script src="js/nh7-apocrypha-v270.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-protected-audio-gate-v316.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-ui-stability-v329.js?v=2.3.9.33" defer></script>
+</body>
+</html>
