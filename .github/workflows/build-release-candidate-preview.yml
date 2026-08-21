@@ -3,6 +3,9 @@ name: Build New Hope 7 release-candidate preview
 on:
   push:
     branches: [release-candidate-2.4.0-preview]
+  pull_request:
+    branches: [release-candidate-2.4.0-preview]
+    types: [opened, reopened, synchronize]
 
 permissions:
   contents: write
@@ -34,7 +37,6 @@ jobs:
           version = '2.4.0.241'
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          # Keep the current production shell, but identify this branch as the next release.
           s = re.sub(r"window\.NH7_VERSION\s*=\s*'[^']+'", f"window.NH7_VERSION = '{version}'", s)
           s = re.sub(r'manifest\.json\?v=[^"\']+', f'manifest.json?v={version}', s)
           if 'css/nh7-spiritual-plans-v240.css' not in s:
@@ -47,14 +49,12 @@ jobs:
               s = s.replace(anchor, preview_script + anchor)
           p.write_text(s, encoding='utf-8')
 
-          # Admin keeps the latest production security/RBAC shell and loads next-release analytics.
           p = Path('admin.html')
           s = p.read_text(encoding='utf-8')
           s = re.sub(r'css/admin-v2\.3\.5-analytics\.css\?v=[^"\']+', f'css/admin-v2.3.5-analytics.css?v={version}', s)
           s = re.sub(r'js/admin-v2\.3\.5-analytics\.js\?v=[^"\']+', f'js/admin-v2.3.5-analytics.js?v={version}', s)
           p.write_text(s, encoding='utf-8')
 
-          # Bootstrap points to this release candidate without touching production main.
           p = Path('app-v239.html')
           s = p.read_text(encoding='utf-8')
           s = re.sub(r'manifest\.json\?v=[^"\']+', f'manifest.json?v={version}', s)
