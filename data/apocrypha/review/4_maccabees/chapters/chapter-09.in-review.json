@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "book_id": "4_maccabees",
+  "title_fa": "مکابیان چهارم",
+  "title_en": "Fourth Maccabees",
+  "title_hr": "Četvrta knjiga o Makabejcima",
+  "chapter": 9,
+  "status": "in_review",
+  "source_translation": "WEBC",
+  "versification": "WEBC",
+  "source_english_sha256": "154044474eec7b2cb3b9b8712d599840369569ee2b9e9f52369fe986ffe13886",
+  "locales_in_scope": [
+    "fa",
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "“Why do you delay, O tyrant? For we are more ready to die than to transgress the injunctions of our fathers.",
+      "text_fa": "«چرا درنگ می‌کنی، ای ستمگر؟ زیرا ما برای مردن آماده‌تریم تا برای سرپیچی از احکام پدرانمان.",
+      "text_hr": "„Zašto oklijevaš, tiranine? Jer spremniji smo umrijeti nego prekršiti odredbe svojih otaca.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "We would be disgracing our fathers if we didn’t obey the law, and take knowledge for our guide.",
+      "text_fa": "اگر از شریعت اطاعت نکنیم و معرفت را راهنمای خود نسازیم، پدرانمان را رسوا خواهیم کرد.",
+      "text_hr": "Osramotili bismo svoje oce kad ne bismo bili poslušni Zakonu i uzeli spoznaju za vodiča.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "O tyrant, counselor of law-breaking, do not, hating us as you do, pity us more than we pity ourselves.",
+      "text_fa": "ای ستمگر، ای رایزن شریعت‌شکنی، با آنکه از ما نفرت داری، بیش از آنچه خودمان بر خویش ترحم می‌کنیم، بر ما ترحم مکن.",
+      "text_hr": "Tiranine, savjetniče kršenja Zakona, premda nas mrziš, nemoj nas žaliti više nego što mi žalimo sami sebe.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "For we consider your escape to be worse than death.",
+      "text_fa": "زیرا رهایی‌ای را که تو می‌دهی، بدتر از مرگ می‌دانیم.",
+      "text_hr": "Jer izbavljenje koje ti nudiš smatramo gorim od smrti.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "You try to scare us by threatening us with death by tortures, as though you had learned nothing by the death of Eleazar.",
+      "text_fa": "می‌کوشی با تهدید به مرگ زیر شکنجه ما را بترسانی، گویی از مرگ الیعازار هیچ نیاموخته‌ای.",
+      "text_hr": "Pokušavaš nas zastrašiti prijeteći nam smrću u mukama, kao da ništa nisi naučio iz Eleazarove smrti.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "But if aged men of the Hebrews have died in the cause of religion after enduring torture, more rightly should we younger men die, scorning your cruel tortures, which our aged instructor overcame.",
+      "text_fa": "اما اگر پیرمردان عبرانی پس از تحمل شکنجه در راه دینداری جان سپرده‌اند، چقدر سزاوارتر است که ما جوان‌ترها با خوار شمردن شکنجه‌های بی‌رحمانه‌ات بمیریم؛ همان شکنجه‌هایی که آموزگار سالخوردهٔ ما بر آنها چیره شد.",
+      "text_hr": "Ali ako su ostarjeli Hebreji, podnijevši mučenje, umrli radi pobožnosti, koliko je pravednije da mi mlađi umremo prezirući tvoja okrutna mučenja, koja je svladao naš ostarjeli učitelj.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "Make the attempt, then, O tyrant. If you put us to death for our religion, don’t think that you harm us by torturing us.",
+      "text_fa": "پس بکوش، ای ستمگر. اگر ما را به سبب دینداری‌مان می‌کشی، گمان مکن که با شکنجه کردن به ما زیان می‌رسانی.",
+      "text_hr": "Pokušaj onda, tiranine. Ako nas pogubiš zbog naše pobožnosti, nemoj misliti da nam mučenjem nanosiš štetu.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "For we through this ill-treatment and endurance will gain the rewards of virtue.",
+      "text_fa": "زیرا از رهگذر این بدرفتاری و پایداری، پاداش‌های فضیلت را به دست خواهیم آورد.",
+      "text_hr": "Jer ćemo po ovom zlostavljanju i ustrajnosti zadobiti nagrade kreposti.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "But you, for the wicked and despotic slaughter of us, will, from the Divine vengeance, endure eternal torture by fire.”",
+      "text_fa": "اما تو به سبب کشتار شریرانه و خودکامه‌ات از ما، بر اثر انتقام الهی عذاب جاودان در آتش را تحمل خواهی کرد.»",
+      "text_hr": "A ti ćeš zbog svojega opakog i samovoljnog pokolja nad nama, po božanskoj osveti, trpjeti vječne muke u ognju.”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "When they had said this, the tyrant was not only exasperated against them for being disobedient, but enraged with them for being ungrateful.",
+      "text_fa": "چون این را گفتند، ستمگر نه‌تنها از نافرمانی‌شان سخت خشمگین شد، بلکه از ناسپاسی‌شان نیز به غضب آمد.",
+      "text_hr": "Kad su to rekli, tiranin nije bio samo razjaren njihovom neposlušnošću nego se na njih razgnjevio i zbog nezahvalnosti.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "So, at his bidding, the torturers brought the oldest of them, and tearing through his tunic, bound his hands and arms on each side with straps.",
+      "text_fa": "پس به فرمان او، شکنجه‌گران بزرگ‌ترینشان را آوردند و پس از دریدن جامه‌اش، دست‌ها و بازوانش را از دو سو با تسمه بستند.",
+      "text_hr": "Stoga su na njegovu zapovijed mučitelji doveli najstarijega među njima, razderali mu tuniku te mu s obje strane remenjem svezali šake i ruke.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "When they had labored hard without effect in scourging him, they hurled him on the wheel.",
+      "text_fa": "چون با وجود تلاش بسیار، تازیانه زدنشان بر او اثری نکرد، وی را بر چرخ افکندند.",
+      "text_hr": "Kad su se uzalud iscrpili bičujući ga, bacili su ga na kotač.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "The noble youth, extended upon this, became dislocated.",
+      "text_fa": "آن جوان شریف که بر آن کشیده شده بود، اندام‌هایش از مفصل درآمد.",
+      "text_hr": "Plemenitom mladiću, rastegnutom na njemu, iščašili su se udovi.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "With every member disjointed, he denounced the tyrant, saying,",
+      "text_fa": "در حالی که همهٔ اعضایش از مفصل جدا شده بود، ستمگر را نکوهش کرد و گفت:",
+      "text_hr": "Dok mu je svaki ud bio iščašen, osudio je tiranina govoreći:",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "“O most accursed tyrant, and enemy of heavenly justice, and cruel-hearted, I am no murderer, nor sacrilegious man, whom you torture, but a defender of the Divine law.”",
+      "text_fa": "«ای ملعون‌ترین ستمگر، ای دشمن عدالت آسمانی و ای سنگدل، من که شکنجه‌ام می‌کنی نه قاتلم و نه حرمت‌شکن، بلکه مدافع شریعت الهی هستم.»",
+      "text_hr": "„O najprokletiji tiranine, neprijatelju nebeske pravde i okrutna srca, ja kojega mučiš nisam ni ubojica ni svetogrdnik, nego branitelj božanskoga Zakona.”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "And when the spearmen said, “Consent to eat, that you may be released from your tortures,”",
+      "text_fa": "و چون نیزه‌داران گفتند: «رضایت بده که بخوری تا از شکنجه‌هایت رها شوی»،",
+      "text_hr": "A kad su kopljanici rekli: „Pristani jesti kako bi bio oslobođen muka”,",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "he answered, “Not so powerful, O accursed lackeys, is your wheel, as to stifle my reasoning. Cut my limbs, and burn my flesh, and twist my joints.",
+      "text_fa": "پاسخ داد: «ای چاکران ملعون، چرخ شما آن‌قدر نیرومند نیست که عقل مرا خاموش کند. اعضایم را ببرید، گوشتم را بسوزانید و مفاصلم را بپیچانید.",
+      "text_hr": "odgovorio je: „Prokleti sluge, vaš kotač nije toliko moćan da uguši moj razum. Sijecite mi udove, palite mi meso i izvrćite mi zglobove.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "For through all my torments I will convince you that the children of the Hebrews are alone unconquered on behalf of virtue.”",
+      "text_fa": "زیرا در میان همهٔ عذاب‌هایم به شما ثابت خواهم کرد که تنها فرزندان عبرانیان‌اند که در دفاع از فضیلت شکست‌ناپذیرند.»",
+      "text_hr": "Jer ću vas kroz sve svoje muke uvjeriti da su jedino djeca Hebreja nepobjediva u obrani kreposti.”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "While he was saying this, they heaped up fuel, and setting fire to it, strained him on the wheel still more.",
+      "text_fa": "هنگامی که این سخنان را می‌گفت، هیزم انباشتند و آن را آتش زدند و او را بر چرخ بیشتر کشیدند.",
+      "text_hr": "Dok je to govorio, nagomilali su gorivo, zapalili ga i još ga jače rastegnuli na kotaču.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "The wheel was defiled all over with blood. The hot ashes were quenched by the droppings of gore, and pieces of flesh were scattered about the axles of the machine.",
+      "text_fa": "چرخ سراسر به خون آلوده شد. خاکستر داغ با قطره‌های خونابه خاموش می‌شد و پاره‌های گوشت پیرامون محورهای دستگاه پراکنده بود.",
+      "text_hr": "Kotač je posvuda bio oskvrnjen krvlju. Vruć pepeo gasile su kaplje krvi, a komadi mesa bili su razasuti oko osovina sprave.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "Although the framework of his bones was now destroyed, the high-minded and Abrahamic youth didn’t groan.",
+      "text_fa": "با آنکه دیگر ساختار استخوان‌هایش در هم شکسته بود، آن جوان والاهمت و ابراهیمی ناله نکرد.",
+      "text_hr": "Premda mu je kostur već bio razoren, taj uzvišeni mladić, Abrahamov potomak, nije zajaukao.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "But, as though transformed by fire into immortality, he nobly endured the rackings, saying,",
+      "text_fa": "بلکه گویی آتش او را به جاودانگی دگرگون کرده بود، بزرگوارانه کشیده شدن بر شکنجه‌گاه را تحمل کرد و گفت:",
+      "text_hr": "Nego je, kao da ga je oganj preobrazio u besmrtnost, plemenito podnosio rastezanje govoreći:",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "“Imitate me, O kindred. Never desert your station, nor renounce my brotherhood in courage. Fight the holy and honorable fight of religion,",
+      "text_fa": "«ای برادران، از من سرمشق بگیرید. هرگز موضع خود را ترک نکنید و از برادری با من در دلیری دست نکشید. پیکار مقدس و شرافتمندانهٔ دینداری را بجنگید،",
+      "text_hr": "„Braćo, nasljedujte me. Nikada ne napuštajte svoje mjesto niti se odričite bratstva sa mnom u hrabrosti. Bijte svetu i časnu borbu pobožnosti,",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "by which means our just and paternal Providence, becoming merciful to the nation, will punish the pestilent tyrant.”",
+      "text_fa": "تا از این راه مشیت عادل و پدرانهٔ ما بر قوم رحمت آورد و ستمگر تباهکار را کیفر دهد.»",
+      "text_hr": "po kojoj će se naša pravedna i očinska Providnost smilovati narodu i kazniti pogubnoga tiranina.”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "Saying this, the revered youth abruptly closed his life.",
+      "text_fa": "آن جوان گرامی با گفتن این سخنان ناگهان جان سپرد.",
+      "text_hr": "Rekavši to, štovani je mladić naglo okončao život.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "When all admired his courageous soul, the spearmen brought forward him who was second oldest, and having put on iron gauntlets with sharp hooks, bound him to the rack.",
+      "text_fa": "در حالی که همه جان دلیر او را می‌ستودند، نیزه‌داران دومین برادر بزرگ‌تر را پیش آوردند و پس از پوشیدن دستکش‌های آهنین قلاب‌دار، او را به شکنجه‌گاه بستند.",
+      "text_hr": "Dok su se svi divili njegovoj hrabroj duši, kopljanici su doveli drugoga po starosti te ga, navukavši željezne rukavice s oštrim kukama, svezali za spravu za mučenje.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "When, on enquiring whether he would eat before he was tortured, they heard his noble sentiment.",
+      "text_fa": "وقتی از او پرسیدند آیا پیش از شکنجه شدن خواهد خورد، پاسخ بزرگوارانه‌اش را شنیدند.",
+      "text_hr": "Kad su ga upitali hoće li jesti prije nego što ga muče, čuli su njegov plemenit odgovor.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "After they with the iron gauntlets had violently dragged all the flesh from the neck to the chin, the panther-like animals tore off the very skin of his head, but he, bearing with firmness this misery, said,",
+      "text_fa": "پس از آنکه با دستکش‌های آهنین تمام گوشت گردن تا چانه‌اش را به خشونت کندند، آن جانوران پلنگ‌صفت پوست سرش را نیز برکندند؛ اما او این رنج را با استواری تحمل کرد و گفت:",
+      "text_hr": "Pošto su mu željeznim rukavicama silovito sastrugali sve meso od vrata do brade, te su mu zvijeri nalik panterama oderale i samu kožu s glave; ali on je tu nevolju čvrsto podnio i rekao:",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "“How sweet is every form of death for the religion of our fathers!” Then he said to the tyrant,",
+      "text_fa": "«هر گونه مرگ در راه دینداری پدرانمان چه شیرین است!» سپس به ستمگر گفت:",
+      "text_hr": "„Kako je sladak svaki oblik smrti radi pobožnosti naših otaca!” Zatim je rekao tiraninu:",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "“Don’t you think, most cruel of all tyrants, that you are now tortured more than I, finding your arrogant conception of tyranny conquered by our perseverance in behalf of our religion?",
+      "text_fa": "«ای بی‌رحم‌ترینِ همهٔ ستمگران، آیا نمی‌اندیشی که اکنون تو بیش از من شکنجه می‌شوی، چون می‌بینی تصور متکبرانه‌ات از ستمگری به پایداری ما در راه دینداری‌مان شکست خورده است؟",
+      "text_hr": "„Najokrutniji od svih tiranina, ne misliš li da si sada mučen više od mene, jer vidiš kako je tvoju oholu zamisao tiranije pobijedila naša ustrajnost radi naše pobožnosti?",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "For I lighten my suffering by the pleasures which are connected with virtue.",
+      "text_fa": "زیرا من رنجم را با لذت‌هایی که با فضیلت پیوند دارند سبک می‌کنم.",
+      "text_hr": "Jer ja svoju patnju olakšavam radostima povezanima s krepošću.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "But you are tortured with threatenings for impiety. You won’t escape, most corrupt tyrant, the vengeance of Divine wrath.”",
+      "text_fa": "اما تو با تهدیدهای برخاسته از بی‌دینی‌ات عذاب می‌کشی. ای فاسدترین ستمگر، از انتقام خشم الهی نخواهی گریخت.»",
+      "text_hr": "Ali tebe muče prijetnje zbog tvoje bezbožnosti. Najpokvareniji tiranine, nećeš umaći osveti božanskoga gnjeva.”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    }
+  ]
+}

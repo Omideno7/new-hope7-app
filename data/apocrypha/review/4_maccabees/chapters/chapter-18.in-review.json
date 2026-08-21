@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "book_id": "4_maccabees",
+  "title_fa": "مکابیان چهارم",
+  "title_en": "Fourth Maccabees",
+  "title_hr": "Četvrta knjiga o Makabejcima",
+  "chapter": 18,
+  "status": "in_review",
+  "source_translation": "WEBC",
+  "versification": "WEBC",
+  "source_english_sha256": "a7eef378eda363aff59064a36e1c4bacc495da31f2e0d110259eaec3a92fc473",
+  "locales_in_scope": [
+    "fa",
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "O Israelite children, descendants of the seed of Abraham, obey this law and in every way be religious,",
+      "text_fa": "ای فرزندان اسرائیلی، ای نوادگانِ نسل ابراهیم، از این شریعت اطاعت کنید و از هر جهت دیندار باشید؛",
+      "text_hr": "O djeco Izraelova, potomci sjemena Abrahamova, slušajte ovaj Zakon i budite pobožni u svemu,",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "knowing that religious reasoning is lord of the emotions, and those not only inward but outward.",
+      "text_fa": "زیرا می‌دانید که عقل برخاسته از دینداری بر عواطف فرمانرواست، نه تنها بر عواطف درونی بلکه بر عواطف بیرونی نیز.",
+      "text_hr": "znajući da je pobožni razum gospodar osjećaja, i to ne samo unutarnjih nego i vanjskih.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "Therefore those people who gave up their bodies to pains for the sake of religion were not only admired by men, but were deemed worthy of a divine portion.",
+      "text_fa": "پس آن کسان که بدن‌های خود را به‌خاطر دینداری به دردها سپردند، نه تنها مورد تحسین مردم قرار گرفتند، بلکه شایستهٔ نصیبی الهی نیز شمرده شدند.",
+      "text_hr": "Stoga su oni koji su svoja tijela predali bolima radi pobožnosti ne samo zadobili divljenje ljudi nego su smatrani i dostojnima božanskoga dijela.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "The nation through them obtained peace, and having renewed the observance of the law in their country, drove the enemy out of the land.",
+      "text_fa": "قوم به‌واسطهٔ آنان به صلح دست یافت و پس از آنکه رعایت شریعت را در سرزمین خود از نو برقرار کرد، دشمن را از آن سرزمین بیرون راند.",
+      "text_hr": "Narod je po njima zadobio mir te je, obnovivši držanje Zakona u svojoj zemlji, istjerao neprijatelja iz zemlje.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "The tyrant Antiochus was both punished on earth, and is punished now that he is dead; for when he was quite unable to compel the Israelites to adopt foreign customs, and to desert the manner of life of their fathers,",
+      "text_fa": "ستمگر، آنتیوخوس، هم بر زمین مجازات شد و هم اکنون که مرده است مجازات می‌شود؛ زیرا چون به‌هیچ‌وجه نتوانست اسرائیلیان را وادارد که رسوم بیگانگان را بپذیرند و شیوهٔ زندگی پدران خود را ترک کنند،",
+      "text_hr": "Tiranin Antioh bio je kažnjen i na zemlji, a kažnjava se i sada kad je mrtav; jer kad nikako nije mogao prisiliti Izraelce da prihvate tuđe običaje i napuste način života svojih otaca,",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "then, departing from Jerusalem, he made war against the Persians.",
+      "text_fa": "آنگاه از اورشلیم رفت و با پارسیان جنگ کرد.",
+      "text_hr": "tada je otišao iz Jeruzalema i zaratio protiv Perzijanaca.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "The righteous mother of the seven children spoke also as follows to her offspring: “I was a pure virgin, and didn’t go beyond my father’s house, but I took care of the rib from which woman was made.",
+      "text_fa": "مادر پارسای آن هفت فرزند نیز به زادگان خود چنین گفت: «من دوشیزه‌ای پاک بودم و از خانهٔ پدرم پا فراتر ننهادم، بلکه از دنده‌ای که زن از آن ساخته شد پاسداری کردم.",
+      "text_hr": "Pravedna majka sedmero djece ovako je još govorila svojem potomstvu: „Bila sam čista djevica i nisam izlazila iz kuće svojega oca, nego sam čuvala rebro od kojega je žena načinjena.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "No destroyer of the desert or ravisher of the plain injured me, nor did the destructive, deceitful snake make plunder of my chaste virginity. I remained with my husband during the time of my maturity.",
+      "text_fa": "هیچ نابودگر بیابان و هیچ ربایندهٔ دشت به من آسیب نرساند؛ و آن مار تباهگر و فریبکار نیز دوشیزگی پاکدامنانه‌ام را به تاراج نبرد. در روزگار بالندگی‌ام با شوهرم ماندم.",
+      "text_hr": "Nijedan pustošitelj pustinje ni otimač ravnice nije mi naudio, niti je pogubna i prijevarna zmija opljačkala moju čednu djevičansku čistoću. U doba svoje zrelosti ostala sam uz muža.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "When these, my children, arrived at maturity, their father died. He was blessed! For having sought out a life of fertility in children, he was not grieved with a period of loss of children.",
+      "text_fa": "هنگامی که این فرزندانم به بلوغ رسیدند، پدرشان درگذشت. او مبارک بود! زیرا زندگی‌ای پربار از فرزندان را جست و با دورهٔ از دست دادن فرزندان اندوهگین نشد.",
+      "text_hr": "Kad su ova moja djeca stasala, njihov je otac umro. Bio je blažen! Jer tražeći život plodan djecom, nije bio ožalošćen vremenom gubitka djece.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "He used to teach you, when yet with you, the law and the prophets.",
+      "text_fa": "تا هنگامی که با شما بود، شریعت و پیامبران را به شما تعلیم می‌داد.",
+      "text_hr": "Dok je još bio s vama, poučavao vas je Zakonu i prorocima.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "He used to read to you about the slaying of Abel by Cain, the offering up of Isaac, and the imprisonment of Joseph.",
+      "text_fa": "برای شما دربارهٔ کشته شدن هابیل به دست قائن، تقدیم اسحاق به عنوان قربانی، و زندانی شدن یوسف می‌خواند.",
+      "text_hr": "Čitao vam je o tome kako je Kajin ubio Abela, o prinošenju Izaka i o Josipovu zatočeništvu.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "He used to tell you of the zealous Phinehas, and informed you of Ananias, Azarias, and Misael in the fire.",
+      "text_fa": "از فینحاسِ غیور برایتان می‌گفت و شما را از حنانیا، عزریا و میشائیل در میان آتش آگاه می‌کرد.",
+      "text_hr": "Pripovijedao vam je o revnom Pinhasu i govorio vam o Ananiji, Azariji i Misaelu u ognju.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "He used to glorify Daniel, who was in the den of lions, and pronounce him blessed.",
+      "text_fa": "دانیال را که در لانهٔ شیران بود می‌ستود و او را مبارک می‌خواند.",
+      "text_hr": "Slavio je Daniela, koji je bio u lavljoj jami, i nazivao ga blaženim.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "He used to remind you of the scripture of Esaias, which says, “Even if you pass through the fire, it won’t burn you.”",
+      "text_fa": "نوشتهٔ اشعیا را به یادتان می‌آورد که می‌گوید: «حتی اگر از میان آتش بگذری، تو را نخواهد سوزاند.»",
+      "text_hr": "Podsjećao vas je na Pismo Izaijino, koje kaže: „Čak i ako prođeš kroz oganj, neće te spaliti.“",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "He chanted to you David, the hymn writer, who says, “Many are the afflictions of the just.”",
+      "text_fa": "سرودِ داوودِ سرودسرا را برایتان می‌خواند که می‌گوید: «رنج‌های عادلان بسیار است.»",
+      "text_hr": "Pjevao vam je riječi Davida, pisca hvalospjeva, koji kaže: „Mnoge su nevolje pravednih.“",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "He declared the proverbs of Solomon, who says, “He is a tree of life to all those who do His will.”",
+      "text_fa": "امثال سلیمان را بیان می‌کرد که می‌گوید: «او برای همهٔ کسانی که اراده‌اش را به‌جا می‌آورند، درخت حیات است.»",
+      "text_hr": "Kazivao je izreke Salomona, koji kaže: „On je stablo života svima koji vrše Njegovu volju.“",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "He used to confirm what Ezekiel said: “Will these dry bones live?”",
+      "text_fa": "آنچه حزقیال گفته بود تصدیق می‌کرد: «آیا این استخوان‌های خشک زنده خواهند شد؟»",
+      "text_hr": "Potvrđivao je ono što je Ezekiel rekao: „Hoće li ove suhe kosti oživjeti?“",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "For he didn’t forget the song which Moses taught, proclaiming, “I will kill, and I will make alive.”",
+      "text_fa": "زیرا سرودی را که موسی تعلیم داد از یاد نمی‌برد؛ سرودی که اعلام می‌کند: «من خواهم کشت و من زنده خواهم ساخت.»",
+      "text_hr": "Jer nije zaboravljao pjesmu koju je Mojsije naučavao i koja objavljuje: „Ja ću usmrtiti i ja ću oživiti.“",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "This is our life and the length of our days.",
+      "text_fa": "این است زندگی ما و درازی روزهای ما.",
+      "text_hr": "To je naš život i duljina naših dana.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "O that bitter, and yet not bitter, day when the bitter tyrant of the Greeks, quenching fire with fire in his cruel caldrons, brought with boiling rage the seven sons of the daughter of Abraham to the rack, and to all his torments!",
+      "text_fa": "ای آن روز تلخ و بااین‌حال نه تلخ، که ستمگر تلخ‌کام یونانیان، در دیگ‌های بی‌رحمانهٔ خود آتش را با آتش فرومی‌نشاند و با خشم جوشان، هفت پسرِ دختر ابراهیم را به چرخ شکنجه و همهٔ عذاب‌هایش سپرد!",
+      "text_hr": "O gorki, a ipak ne gorki dane, kada je gorki tiranin Grka, gaseći oganj ognjem u svojim svirepim kotlovima, u kipućem bijesu doveo sedam sinova Abrahamove kćeri na spravu za mučenje i na sve svoje muke!",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "He pierced the balls of their eyes, and cut out their tongues, and put them to death with varied tortures.",
+      "text_fa": "او حدقه‌های چشمانشان را سوراخ کرد، زبان‌هایشان را برید و با شکنجه‌های گوناگون آنان را کشت.",
+      "text_hr": "Probio im je očne jabučice, iščupao jezike i usmrtio ih raznovrsnim mučenjima.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "Therefore divine retribution pursued and will pursue the pestilent wretch.",
+      "text_fa": "ازاین‌رو مکافات الهی آن فرومایهٔ آفت‌صفت را تعقیب کرد و تعقیب خواهد کرد.",
+      "text_hr": "Zato je božanska odmazda progonila i progonit će toga pogubnog bijednika.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "But the children of Abraham, with their victorious mother, are assembled together to the choir of their father, having received pure and immortal souls from God.",
+      "text_fa": "اما فرزندان ابراهیم همراه مادر پیروزمندشان، پس از آنکه جان‌هایی پاک و نامیرا از خدا دریافت کردند، گرد آمده و به گروه هم‌سرایان پدرشان پیوسته‌اند.",
+      "text_hr": "Ali Abrahamova djeca, zajedno sa svojom pobjedničkom majkom, okupljena su u zbor svojega oca, primivši od Boga čiste i besmrtne duše.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "To him be glory forever and ever. Amen.",
+      "text_fa": "او را تا ابدالآباد جلال باد. آمین.",
+      "text_hr": "Njemu neka je slava u vijeke vjekova. Amen.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    }
+  ]
+}

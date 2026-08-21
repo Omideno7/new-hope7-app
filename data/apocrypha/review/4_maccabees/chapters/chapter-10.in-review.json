@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "book_id": "4_maccabees",
+  "title_fa": "مکابیان چهارم",
+  "title_en": "Fourth Maccabees",
+  "title_hr": "Četvrta knjiga o Makabejcima",
+  "chapter": 10,
+  "status": "in_review",
+  "source_translation": "WEBC",
+  "versification": "WEBC",
+  "source_english_sha256": "4e38889f0864cea97e3201b8ecb37b6e30c12beba82b54f0a03c650d1f1ddb76",
+  "locales_in_scope": [
+    "fa",
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "Now this one endured this praiseworthy death. The third was brought along, and exhorted by many to taste and save his life.",
+      "text_fa": "این یکی نیز آن مرگ ستودنی را تحمل کرد. سپس سومی را آوردند و بسیاری تشویقش کردند که از خوراک بچشد و جانش را نجات دهد.",
+      "text_hr": "Ovaj je, dakle, podnio tu hvalevrijednu smrt. Doveli su trećega, a mnogi su ga poticali da okusi hranu i spasi svoj život.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "But he cried out and said, “Don’t you know that the father of those who are dead is my father also, and that the same mother bore me, and that I was brought up in the same way?",
+      "text_fa": "اما فریاد زد و گفت: «آیا نمی‌دانید که پدر آن جان‌سپردگان، پدر من نیز هست؛ همان مادر مرا زاده و من نیز به همان شیوه پرورش یافته‌ام؟",
+      "text_hr": "Ali on je povikao i rekao: „Zar ne znate da je otac onih koji su umrli i moj otac, da me rodila ista majka i da sam odgojen na isti način?",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "I don’t renounce the noble relationship of my kindred.",
+      "text_fa": "من از پیوند شریف خویشاوندی‌ام چشم نمی‌پوشم.",
+      "text_hr": "Ne odričem se plemenite veze sa svojom braćom.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "Now then, whatever instrument of vengeance you have, apply it to my body, for you aren’t able to touch my soul, even if you want to.”",
+      "text_fa": "اکنون هر ابزار کیفری که داری بر بدنم به کار ببر، زیرا حتی اگر بخواهی نیز نمی‌توانی به جانم دست برسانی.»",
+      "text_hr": "Sada, dakle, primijeni na moje tijelo svaku spravu za kaznu koju imaš, jer moju dušu ne možeš dotaknuti čak ni ako to želiš.”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "But they, highly incensed at his boldness of speech, dislocated his hands and feet with racking engines, and wrenching them from their sockets, dismembered him.",
+      "text_fa": "اما آنان که از گستاخی سخنش سخت خشمگین شده بودند، با دستگاه‌های کشش دست‌ها و پاهایش را از مفصل درآوردند و با جدا کردنشان از کاسهٔ مفصل، اندام‌هایش را از هم گسستند.",
+      "text_hr": "Ali oni, silno razjareni smjelošću njegova govora, spravama za rastezanje iščašili su mu ruke i noge te su ga, čupajući ih iz zglobova, raskomadali.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "They dragged around his fingers, his arms, his legs, and his ankles.",
+      "text_fa": "انگشتان، بازوان، ساق‌ها و مچ پاهایش را می‌کشیدند.",
+      "text_hr": "Vukli su mu prste, ruke, noge i gležnjeve.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "Not being able by any means to strangle him, they tore off his skin, together with the extreme tips of his fingers, and then dragged him to the wheel,",
+      "text_fa": "چون به هیچ وسیله نتوانستند خفه‌اش کنند، پوستش را همراه با سرانگشتانش کندند و سپس او را به سوی چرخ کشاندند،",
+      "text_hr": "Budući da ga nikako nisu mogli ugušiti, odrali su mu kožu zajedno sa samim vršcima prstiju, a zatim ga odvukli do kotača,",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "around which his vertebral joints were loosened, and he saw his own flesh torn to shreds, and streams of blood flowing from his entrails.",
+      "text_fa": "که بر گرد آن، پیوند مهره‌های ستون فقراتش از هم گسست و او گوشت خود را دید که پاره‌پاره می‌شد و جوی‌های خون را که از اندرونش روان بود.",
+      "text_hr": "oko kojega su mu se razdvojili zglobovi kralježaka; gledao je vlastito meso kako se kida u komade i potoke krvi kako teku iz njegove utrobe.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "When about to die, he said,",
+      "text_fa": "چون نزدیک بود بمیرد، گفت:",
+      "text_hr": "Kad je bio na samrti, rekao je:",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "“We, O accursed tyrant, suffer this for the sake of Divine education and virtue.",
+      "text_fa": "«ای ستمگر ملعون، ما این رنج را به خاطر تربیت الهی و فضیلت تحمل می‌کنیم.",
+      "text_hr": "„Prokleti tiranine, mi ovo trpimo radi božanske pouke i kreposti.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "But you, for your impiety and blood shedding, will endure unceasing torments.”",
+      "text_fa": "اما تو به سبب بی‌دینی و خون‌ریزی‌ات، عذاب‌های بی‌پایان را تحمل خواهی کرد.»",
+      "text_hr": "Ali ti ćeš zbog svoje bezbožnosti i prolijevanja krvi trpjeti neprestane muke.”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "Thus having died worthily of his kindred, they dragged forward the fourth, saying,",
+      "text_fa": "پس چون بدین‌سان درخور خاندان خویش جان سپرد، چهارمی را پیش کشیدند و گفتند:",
+      "text_hr": "Pošto je tako umro dostojan svoje braće, dovukli su četvrtoga govoreći:",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "“Don’t share the madness of your kindred, but respect the king and save yourself.”",
+      "text_fa": "«در جنون خویشاوندانت شریک مشو، بلکه به پادشاه حرمت بگذار و خود را نجات بده.»",
+      "text_hr": "„Ne dijeli ludost svoje braće, nego iskaži poštovanje kralju i spasi se.”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "But he said to them, “You don’t have a fire so scorching as to make me play the coward.",
+      "text_fa": "اما به آنان گفت: «آتشی آن‌قدر سوزان ندارید که مرا بزدل گرداند.",
+      "text_hr": "Ali on im je rekao: „Nemate ognja toliko žarkog da bi me učinio kukavicom.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "By the blessed death of my kindred, and the eternal punishment of the tyrant, and the glorious life of the pious, I will not repudiate the noble brotherhood.",
+      "text_fa": "به مرگ مبارک خویشاوندانم، به کیفر جاودان ستمگر و به زندگی پرجلال دینداران سوگند که برادری شریف خود را انکار نخواهم کرد.",
+      "text_hr": "Tako mi blažene smrti moje braće, vječne kazne tiranina i slavnog života pobožnih, neću se odreći plemenitoga bratstva.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "Invent, O tyrant, tortures, that you may learn, even through them, that I am the brother of those tormented before.”",
+      "text_fa": "ای ستمگر، شکنجه‌ها ابداع کن تا حتی از طریق آنها دریابی که من برادر کسانی هستم که پیش از من شکنجه شدند.»",
+      "text_hr": "Izmišljaj mučenja, tiranine, kako bi čak i po njima spoznao da sam brat onih koji su prije mene bili mučeni.”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "When he had said this, the blood-thirsty, murderous, and unholy Antiochus ordered his tongue to be cut out.",
+      "text_fa": "چون این را گفت، آنتیوخوس خون‌خوار، آدمکش و ناپاک فرمان داد زبانش را ببرند.",
+      "text_hr": "Kad je to rekao, krvožedni, ubilački i nesveti Antioh zapovjedio je da mu odrežu jezik.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "But he said, “Even if you take away the organ of speech, God still hears the silent.",
+      "text_fa": "اما او گفت: «حتی اگر ابزار سخن گفتن را از من بگیری، خدا همچنان خاموشان را می‌شنود.",
+      "text_hr": "Ali on je rekao: „Čak i ako oduzmeš organ govora, Bog ipak čuje nijeme.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "Behold, my tongue is extended, cut it off; for in spite of that you won’t silence our reasoning.",
+      "text_fa": "اینک زبانم دراز شده است؛ آن را ببر، زیرا با این همه عقل ما را خاموش نخواهی کرد.",
+      "text_hr": "Evo, moj je jezik ispružen; odsijeci ga, jer unatoč tomu nećeš utišati naš razum.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "We gladly lose our limbs on behalf of God.",
+      "text_fa": "ما با شادی اعضای خود را در راه خدا از دست می‌دهیم.",
+      "text_hr": "Radosno gubimo svoje udove radi Boga.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "But God will speedily find you, since you cut off the tongue, the instrument of divine melody.”",
+      "text_fa": "اما خدا به‌زودی به سراغت خواهد آمد، زیرا زبان را که ابزار نغمهٔ الهی است، بریدی.»",
+      "text_hr": "Ali Bog će te ubrzo sustići jer si odsjekao jezik, oruđe božanskoga napjeva.”",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    }
+  ]
+}

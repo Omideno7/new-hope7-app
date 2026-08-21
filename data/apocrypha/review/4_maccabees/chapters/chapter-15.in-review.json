@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "book_id": "4_maccabees",
+  "title_fa": "مکابیان چهارم",
+  "title_en": "Fourth Maccabees",
+  "title_hr": "Četvrta knjiga o Makabejcima",
+  "chapter": 15,
+  "status": "in_review",
+  "source_translation": "WEBC",
+  "versification": "WEBC",
+  "source_english_sha256": "c38c1e43e87ed71d562bc161b7794f524a25f2525a7451ed40dbd896dea6ed04",
+  "locales_in_scope": [
+    "fa",
+    "hr"
+  ],
+  "verses": [
+    {
+      "verse": 1,
+      "text_en": "O reasoning of the sons, lord over the emotions, and religion more desirable to a mother than children!",
+      "text_fa": "ای عقلِ پسران که بر عواطف فرمانروا بودی، و ای دینداری که نزد مادر خواستنی‌تر از فرزندان بودی!",
+      "text_hr": "O razume sinova, gospodaru osjećaja, i pobožnosti majci poželjnija od djece!",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 2,
+      "text_en": "The mother, when two things were set before her, religion and the safety of her seven sons for a time, on the conditional promise of a tyrant,",
+      "text_fa": "هنگامی که دو چیز پیش روی مادر نهاده شد، یکی دینداری و دیگری نجات موقت هفت پسرش بر پایهٔ وعدهٔ مشروطِ ستمگر،",
+      "text_hr": "Kad su pred majku stavljene dvije mogućnosti — pobožnost ili privremena sigurnost njezinih sedam sinova na temelju uvjetnog obećanja tiranina —",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 3,
+      "text_en": "rather elected the religion which according to God preserves to eternal life.",
+      "text_fa": "او دینداری را برگزید که مطابق خواست خدا، انسان را برای زندگی جاودان نگاه می‌دارد.",
+      "text_hr": "radije je izabrala pobožnost koja, po Božjoj volji, čuva čovjeka za vječni život.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 4,
+      "text_en": "In what way can I describe ethically the affections of parents toward their children, the resemblance of soul and of form impressed into the small type of a child in a wonderful manner, especially through the greater sympathy of mothers with the feelings of those born of them!",
+      "text_fa": "چگونه می‌توانم به‌گونه‌ای شایسته عواطف والدین نسبت به فرزندانشان، شباهت جان و چهره که به‌طرزی شگفت در پیکر کوچک کودک نقش می‌بندد، و به‌ویژه همدلی بیشتر مادران با احساسات زادگانشان را وصف کنم!",
+      "text_hr": "Kako da s moralnog stajališta opišem osjećaje roditelja prema djeci, sličnost duše i lika koja se na čudesan način utiskuje u maleni obličaj djeteta, a osobito veću sućut majki prema osjećajima onih koje su rodile!",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 5,
+      "text_en": "For by how much mothers are by nature weak in disposition and prolific in offspring, by so much the fonder they are of children.",
+      "text_fa": "زیرا هرچه مادران به طبیعت از نظر بنیه ناتوان‌تر و در زادن پربارترند، به همان اندازه دلبسته‌تر به فرزندان‌اند.",
+      "text_hr": "Jer što su majke po naravi slabije građe i plodnije u rađanju, to su privrženije djeci.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 6,
+      "text_en": "Of all mothers, the mother of the seven was the fondest of children, who in seven childbirths had deeply engendered love toward them.",
+      "text_fa": "از میان همهٔ مادران، مادر آن هفت تن بیش از همه فرزنددوست بود؛ او در هفت زایمان، محبتی ژرف نسبت به آنان در خود پدید آورده بود.",
+      "text_hr": "Od svih majki, majka sedmorice bila je najprivrženija djeci, jer je kroz sedam porođaja duboko u sebi začela ljubav prema njima.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 7,
+      "text_en": "Through her many pains undergone in connection with each one, she was compelled to feel sympathy with them;",
+      "text_fa": "به سبب دردهای بسیاری که در پیوند با هر یک از آنان تحمل کرده بود، ناگزیر با ایشان همدردی می‌کرد؛",
+      "text_hr": "Zbog mnogih boli koje je podnijela za svakoga od njih, bila je nagnana suosjećati s njima;",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 8,
+      "text_en": "yet, through fear of God, she neglected the temporary salvation of her children.",
+      "text_fa": "بااین‌حال، از ترس خدا نجات موقت فرزندانش را نادیده گرفت.",
+      "text_hr": "ipak je zbog straha Božjega zanemarila privremeno spasenje svoje djece.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 9,
+      "text_en": "Not only so, but on account of the excellent disposition to the law, her maternal affection toward them was increased.",
+      "text_fa": "نه تنها این، بلکه به سبب دلبستگی والای آنان به شریعت، مهر مادری او نسبت به ایشان فزونی یافت.",
+      "text_hr": "I ne samo to, nego je zbog njihove izvrsne privrženosti Zakonu njezina majčinska ljubav prema njima još više rasla.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 10,
+      "text_en": "For they were both just and temperate, and courageous, high-minded, fond of their kindred, and so fond of their mother that even to death they obeyed her by observing the law.",
+      "text_fa": "زیرا آنان دادگر و خویشتندار و دلیر و بلندهمت و دوستدار خویشاوندان خود بودند، و چنان به مادرشان محبت داشتند که با نگاه داشتن شریعت، حتی تا پای مرگ از او اطاعت کردند.",
+      "text_hr": "Jer bili su pravedni i umjereni, hrabri, plemenita duha i privrženi svojem rodu, a majku su toliko ljubili da su joj, držeći Zakon, bili poslušni sve do smrti.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 11,
+      "text_en": "Yet, though there were so many circumstances connected with love of children to draw on a mother to sympathy, in the case of none of them were the various tortures able to pervert her principle.",
+      "text_fa": "بااین‌همه، هرچند عوامل بسیاری برخاسته از محبت به فرزند، مادر را به همدردی فرامی‌خواند، شکنجه‌های گوناگونِ هیچ‌یک از آنان نتوانست اصلِ استوار او را منحرف سازد.",
+      "text_hr": "Pa ipak, premda je toliko okolnosti povezanih s ljubavlju prema djeci vuklo majku prema sućuti, raznovrsna mučenja nijednoga od njih nisu mogla izopačiti njezino načelo.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 12,
+      "text_en": "But she inclined each one separately and all together to death for religion.",
+      "text_fa": "بلکه هر یک را جداگانه و همه را با هم، به مرگ در راه دینداری ترغیب کرد.",
+      "text_hr": "Naprotiv, svakoga pojedinačno i sve zajedno poticala je na smrt radi pobožnosti.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 13,
+      "text_en": "O holy nature and parental feeling, and reward of bringing up children, and unconquerable maternal affection!",
+      "text_fa": "ای سرشت مقدس و احساس پدر و مادری، ای پاداش پرورش فرزندان، و ای مهر مادری شکست‌ناپذیر!",
+      "text_hr": "O sveta naravi i roditeljski osjećaju, o nagrado odgoja djece i nepobjediva majčinska ljubavi!",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 14,
+      "text_en": "At the racking and roasting of each one of them, the observant mother was prevented by religion from changing.",
+      "text_fa": "هنگامی که هر یک از آنان بر چرخ شکنجه کشیده و بریان می‌شد، دینداری مانع شد که مادرِ نظاره‌گر از تصمیم خود بازگردد.",
+      "text_hr": "Dok su svakoga od njih rastezali na spravi i pekli, pobožnost je priječila majci koja je to promatrala da promijeni odluku.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 15,
+      "text_en": "She saw her children’s flesh dissolving around the fire, and their extremities quivering on the ground, and the flesh of their heads dropped forward down to their beards, like masks.",
+      "text_fa": "او می‌دید که گوشت فرزندانش پیرامون آتش از هم می‌گسلد، اندام‌هایشان بر زمین می‌لرزد، و گوشت سرهایشان چون نقاب تا ریش‌هایشان به جلو فرو می‌افتد.",
+      "text_hr": "Gledala je kako se meso njezine djece raspada oko ognja, kako im udovi podrhtavaju na tlu i kako im se meso s glava poput maski spušta naprijed sve do brada.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 16,
+      "text_en": "O you mother, who was tried at this time with bitterer pangs than those at birth!",
+      "text_fa": "ای مادر، که در آن هنگام با دردهایی تلخ‌تر از درد زایمان آزموده شدی!",
+      "text_hr": "O majko, koja si tada bila iskušana bolima gorčima od porođajnih!",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 17,
+      "text_en": "O you only woman who have produced perfect holiness!",
+      "text_fa": "ای یگانه زنی که قدوسیتی کامل به بار آوردی!",
+      "text_hr": "O jedina ženo koja si rodila savršenu svetost!",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 18,
+      "text_en": "Your firstborn, expiring, didn’t turn you, nor the second, looking miserable in his torments, nor the third, breathing out his soul.",
+      "text_fa": "نه جان دادنِ نخست‌زاده‌ات تو را از راه بازگرداند، نه حال زارِ دومی در عذاب‌هایش، و نه سومی که جان می‌سپرد.",
+      "text_hr": "Nije te odvratio ni prvorođenac dok je izdisao, ni drugi dok je bijedno izgledao u svojim mukama, ni treći dok je ispuštao dušu.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 19,
+      "text_en": "You didn’t weep when you saw each of their eyes looking sternly at their tortures, and their nostrils foreboding death!",
+      "text_fa": "آنگاه که دیدی چشمان هر یک با سختی به شکنجه‌هایش می‌نگرد و بینی‌هایشان مرگ را پیش‌آگهی می‌دهد، اشک نریختی!",
+      "text_hr": "Nisi plakala kad si vidjela kako oči svakoga od njih strogo motre njihove muke, a njihove nosnice navješćuju smrt!",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 20,
+      "text_en": "When you saw children’s flesh heaped upon children’s flesh that had been torn off, heads decapitated upon heads, dead falling upon the dead, and a choir of children turned through torture into a burying ground, you didn’t lament.",
+      "text_fa": "وقتی گوشت فرزندی را دیدی که بر گوشتِ کنده‌شدهٔ فرزندی دیگر انباشته شده، سرهای بریده را بر سرها، مردگان را که بر مردگان می‌افتادند، و گروه هم‌سرای فرزندانت را که بر اثر شکنجه به گورستان بدل شده بود، زاری نکردی.",
+      "text_hr": "Kad si vidjela meso djece nagomilano na otrgnutu mesu druge djece, odsječene glave na glavama, mrtve kako padaju na mrtve i zbor djece koji se mučenjem pretvorio u groblje, nisi naricala.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 21,
+      "text_en": "Not so do siren melodies or songs of swans attract the hearers to listening, O voices of children calling on your mother in the midst of torments!",
+      "text_fa": "نه نغمه‌های سیرن‌ها و نه آواز قوها شنوندگان را این‌چنین به گوش سپردن جذب می‌کنند؛ ای آواهای فرزندانی که در میان شکنجه‌ها مادر خود را می‌خواندید!",
+      "text_hr": "Pjesme sirena ni pjev labudova ne privlače slušatelje da slušaju tako kao vi, o glasovi djece koja su usred muka dozivala svoju majku!",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 22,
+      "text_en": "With what and what manner of torments was the mother herself tortured, as her sons were undergoing the wheel and the fires!",
+      "text_fa": "هنگامی که پسرانش چرخ شکنجه و آتش‌ها را تحمل می‌کردند، خودِ مادر با چه بسیار و چه گونه عذاب‌ها شکنجه می‌شد!",
+      "text_hr": "Kakvim je sve i kolikim mukama bila mučena sama majka dok su njezini sinovi podnosili kotač i ognjeve!",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 23,
+      "text_en": "But religious reasoning, having strengthened her courage in the midst of sufferings, enabled her to forego, for the time, parental love.",
+      "text_fa": "اما عقل برخاسته از دینداری، چون دلاوری او را در میان رنج‌ها استوار کرده بود، وی را توانا ساخت تا برای مدتی از محبت مادری چشم بپوشد.",
+      "text_hr": "Ali pobožni razum, ojačavši njezinu hrabrost usred patnji, omogućio joj je da se za neko vrijeme odrekne roditeljske ljubavi.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 24,
+      "text_en": "Although seeing the destruction of seven children, the noble mother, after one embrace, stripped off her feelings through faith in God.",
+      "text_fa": "با آنکه نابودی هفت فرزند را می‌دید، آن مادر شریف پس از یک بار در آغوش کشیدنشان، به‌واسطهٔ ایمان به خدا عواطف خود را از تن به در کرد.",
+      "text_hr": "Premda je gledala propast sedmero djece, plemenita je majka, nakon jednoga zagrljaja, vjerom u Boga odbacila svoje osjećaje.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 25,
+      "text_en": "For just as in a council room, seeing in her own soul vehement counselors, nature and parentage and love of her children, and the racking of her children,",
+      "text_fa": "زیرا گویی در تالار شورایی، در جان خود مشاورانی پرشور می‌دید: سرشت، مادری، محبت به فرزندان، و شکنجه شدن آنان؛",
+      "text_hr": "Jer kao u vijećnici, u vlastitoj je duši gledala silovite savjetnike: narav, roditeljstvo, ljubav prema djeci i njihovo mučenje;",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 26,
+      "text_en": "she holding two votes, one for the death, the other for the preservation of her children,",
+      "text_fa": "و دو رأی در دست داشت: یکی به مرگ و دیگری به حفظ فرزندانش؛",
+      "text_hr": "držala je dva glasa, jedan za smrt, a drugi za očuvanje svoje djece;",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 27,
+      "text_en": "didn’t lean to that which would have saved her children for the safety of a brief space.",
+      "text_fa": "اما به آن رأیی متمایل نشد که فرزندانش را برای زمانی کوتاه نجات می‌داد.",
+      "text_hr": "ali se nije priklonila onomu što bi njezinu djecu spasilo tek na kratko vrijeme.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 28,
+      "text_en": "But this daughter of Abraham remembered his holy fortitude.",
+      "text_fa": "بلکه این دختر ابراهیم، دلاوری مقدس او را به یاد آورد.",
+      "text_hr": "Naprotiv, ova Abrahamova kći sjetila se njegove svete postojanosti.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 29,
+      "text_en": "O holy mother of a nation, avenger of the law, defender of religion, and prime bearer in the battle of the affections!",
+      "text_fa": "ای مادر مقدس قوم، ای انتقام‌گیرندهٔ شریعت، مدافع دینداری، و پیشگام در نبرد با عواطف!",
+      "text_hr": "O sveta majko naroda, osvetnice Zakona, braniteljice pobožnosti i prvakinjo u borbi protiv osjećaja!",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 30,
+      "text_en": "O you nobler in endurance than males, and more courageous than men in perseverance!",
+      "text_fa": "ای تو که در تحمل از مردان بزرگوارتر و در پایداری از ایشان دلیرتری!",
+      "text_hr": "O ti koja si u podnošenju plemenitija od muškoga roda, a u ustrajnosti hrabrija od muškaraca!",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 31,
+      "text_en": "For like Noah’s ship, bearing the world in the world-filling flood, bore up against the waves,",
+      "text_fa": "زیرا همان‌گونه که کشتی نوح، جهان را در توفانی که جهان را فراگرفته بود حمل کرد و در برابر امواج پایدار ماند،",
+      "text_hr": "Jer kao što je Noina lađa, noseći svijet u potopu koji je ispunio svijet, odoljela valovima,",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    },
+    {
+      "verse": 32,
+      "text_en": "so you, the guardian of the law, when surrounded on every side by the flood of emotions, and assaulted by violent storms which were the torments of your children, bore up nobly against the storms against religion.",
+      "text_fa": "تو نیز، ای نگاهبان شریعت، هنگامی که از هر سو در سیلاب عواطف احاطه شدی و با تندبادهای سهمگینِ شکنجهٔ فرزندانت روبه‌رو گشتی، بزرگوارانه در برابر توفان‌هایی که بر ضد دینداری بود ایستادگی کردی.",
+      "text_hr": "tako si i ti, čuvarice Zakona, okružena sa svih strana poplavom osjećaja i napadnuta silovitim olujama mučenja svoje djece, plemenito odoljela olujama usmjerenima protiv pobožnosti.",
+      "status_fa": "in_review",
+      "status_hr": "in_review"
+    }
+  ]
+}
