@@ -318,7 +318,7 @@ async function authApi(path,options={}){
   const headers=Object.assign({'apikey':SUPABASE_CONFIG.key,'Content-Type':'application/json'},options.headers||{});
   const r=await fetch(SUPABASE_CONFIG.url+'/auth/v1/'+path,Object.assign({},options,{headers}));
   const text=await r.text(); let data={}; try{data=text?JSON.parse(text):{}}catch(e){data={message:text}}
-  if(!r.ok) throw new Error(data.msg||data.message||data.error_description||text||r.statusText);
+  if(!r.ok){const error=new Error(data.msg||data.message||data.error_description||text||r.statusText);error.status=r.status;error.code=String(data.code||data.error_code||'');throw error}
   return data;
 }
 async function invokeEdgeFunction(name,payload={}){
@@ -387,6 +387,23 @@ async function signInOrClaimLegacyAccount(email,password){
       throw claimErr;
     }
   }
+}
+
+function accountLoginError(error){
+  const code=String(error?.code||'').toLowerCase(),message=String(error?.message||'').toLowerCase();
+  const invalid=code==='invalid_credentials'||message.includes('invalid login credentials')||message.includes('invalid credentials')||message.includes('wrong password');
+  if(invalid)return state.lang==='fa'
+    ?'ایمیل یا رمز عبور درست نیست. اگر این ایمیل قبلاً حساب داشته است، «فراموشی رمز عبور» را بزنید و یک رمز تازه بسازید.'
+    :state.lang==='hr'
+      ?'E-mail ili lozinka nisu ispravni. Ako je ovaj e-mail već imao račun, odaberite „Zaboravili ste lozinku?” i postavite novu lozinku.'
+      :'The email or password is incorrect. If this email had an account before, choose “Forgot password” and set a new password.';
+  if(code==='email_not_confirmed'||message.includes('email not confirmed'))return state.lang==='fa'
+    ?'ایمیل این حساب هنوز تأیید نشده است. ایمیل تأیید و پوشه Spam/Junk را بررسی کنید.'
+    :state.lang==='hr'
+      ?'E-mail računa još nije potvrđen. Provjerite poruku za potvrdu i mapu Spam/Junk.'
+      :'This account email is not confirmed yet. Check the confirmation email and Spam/Junk.';
+  if(!navigator.onLine||message==='failed to fetch')return state.lang==='fa'?'اینترنت در دسترس نیست. اتصال را بررسی کنید.':state.lang==='hr'?'Nema internetske veze. Provjerite vezu.':'No internet connection. Check your connection.';
+  return String(error?.message||tr('loginFailed'));
 }
 
 function deviceId(){
@@ -468,12 +485,7 @@ async function saveRegistrationCloud(data){
       p_type:data.kind||'general',p_email:data.email||'',p_device_id:deviceId(),p_language:state.lang,p_payload:payload
     });
     return Array.isArray(result)?result[0]:result;
-  }catch(e){
-    console.warn('Registration RPC unavailable; using compatible fallback',e);
-    const row={device_id:deviceId(),type:data.kind||'general',status:'pending',language:state.lang,payload};
-    await saveCloud({type:'insert',table:'registrations',payload:row});
-    return {status:'pending',created:true};
-  }
+  }catch(e){console.warn('Registration RPC unavailable',e);throw e}
 }
 function accountCloudEmail(){return isAccountLoggedIn()?authEmail():''}
 function accountProgressKey(key){const k=String(key||'');return k.startsWith('nh7_')?k:'nh7_'+k}
@@ -875,22 +887,29 @@ async function collectRegistration(kind){
   if(password.length<6){alert(tr('passwordMin'));return}if(password!==confirmPassword){alert(tr('passwordMismatch'));return}
   setBusy(true,say('درخواست دریافت شد؛ لطفاً صبر کنید…','Request received; please wait…','Zahtjev je primljen; pričekajte…'));
   try{
+    let existingAccount=false,resetLinkSent=false;
     try{
-      const session=await authApi('signup',{method:'POST',body:JSON.stringify({email:data.email,password,data:{full_name:(data.firstName+' '+data.lastName).trim(),language:state.lang}})});
-      if(session?.access_token)saveAuthSession(session);
+      const created=await authApi('signup?redirect_to='+encodeURIComponent(NH7_PASSWORD_RESET_URL),{method:'POST',body:JSON.stringify({email:data.email,password,data:{full_name:(data.firstName+' '+data.lastName).trim(),language:state.lang}})});
+      if(created?.access_token)saveAuthSession(created);
+      else if(Array.isArray(created?.user?.identities)&&created.user.identities.length===0)existingAccount=true;
     }catch(e){
       const msg=String(e.message||'').toLowerCase();
-      if(!msg.includes('already')&&!msg.includes('registered')&&!msg.includes('exists'))console.warn('Account creation',e);
+      existingAccount=msg.includes('already')||msg.includes('registered')||msg.includes('exists')||String(e?.code||'').toLowerCase()==='user_already_exists';
+      if(!existingAccount)throw e;
+    }
+    if(existingAccount){
+      try{const signed=await authApi('token?grant_type=password',{method:'POST',body:JSON.stringify({email:data.email,password})});if(signed?.access_token){saveAuthSession(signed);existingAccount=false}}
+      catch(loginError){try{localStorage.setItem('nh7_recovery_requested_at',String(Date.now()));await authApi('recover?redirect_to='+encodeURIComponent(NH7_PASSWORD_RESET_URL),{method:'POST',body:JSON.stringify({email:data.email})});resetLinkSent=true}catch(error){console.warn('Existing-account recovery',error)}}
     }
     localStorage.removeItem(EXPLICIT_LOGOUT_KEY);localStorage.setItem('nh7_manual_email',data.email);localStorage.setItem('nh7_user_profile',JSON.stringify({name:(data.firstName+' '+data.lastName).trim(),email:data.email,phone:data.phone||''}));
     const key=kind==='meeting'?'nh7_meeting_access':'nh7_school_access';localStorage.setItem(key,JSON.stringify(data));
     const result=await saveRegistrationCloud(data),finalStatus=String(result?.status||'pending');
     data.status=finalStatus;localStorage.setItem(key,JSON.stringify(data));
-    const message=finalStatus==='approved'?say('ثبت‌نام شما تأیید شده است.','Your registration is approved.','Vaša registracija je odobrena.'):say('ثبت‌نام شما با موفقیت انجام شد. اکنون باید منتظر تأیید مدیر مدرسه بمانید.','Your registration was submitted successfully. Please wait for school administrator approval.','Registracija je uspješno poslana. Pričekajte odobrenje administratora škole.');
+    const message=existingAccount?(resetLinkSent?say('درخواست شما ذخیره شد. این ایمیل از قبل حساب داشته است؛ لینک تعیین رمز تازه ارسال شد. ایمیل و پوشه Spam/Junk را بررسی کنید و سپس با رمز جدید وارد شوید.','Your request was saved. This email already had an account, so a password-reset link was sent. Check your email and Spam/Junk, set a new password, then sign in.','Vaš zahtjev je spremljen. Ovaj e-mail već ima račun pa je poslana poveznica za obnovu lozinke. Provjerite e-mail i Spam/Junk, postavite novu lozinku i prijavite se.'):say('درخواست شما ذخیره شد. این ایمیل از قبل حساب دارد؛ از صفحه ورود «فراموشی رمز عبور» را بزنید و رمز تازه بسازید.','Your request was saved. This email already has an account; use “Forgot password” on the sign-in page to set a new password.','Vaš zahtjev je spremljen. Ovaj e-mail već ima račun; na prijavi odaberite „Zaboravili ste lozinku?” i postavite novu lozinku.')):finalStatus==='approved'?say('ثبت‌نام شما تأیید شده است.','Your registration is approved.','Vaša registracija je odobrena.'):say('ثبت‌نام شما با موفقیت انجام شد. اکنون باید منتظر تأیید مدیر مدرسه بمانید.','Your registration was submitted successfully. Please wait for school administrator approval.','Registracija je uspješno poslana. Pričekajte odobrenje administratora škole.');
     setBusy(false,'✓ '+message);alert(message);
     setTimeout(()=>{if(data.salvationPrayer==='no')navigate('salvation',{},true);else render(kind==='meeting'?'meetings':'school',{},true)},250);
   }catch(e){
-    console.warn(e);setBusy(false,say('درخواست روی دستگاه ذخیره شد و پس از اتصال دوباره همگام می‌شود.','Request saved on this device and will sync when online.','Zahtjev je spremljen i sinkronizirat će se kad budete online.'));
+    console.warn(e);setBusy(false,say('درخواست هنوز ثبت نشده است. اینترنت را بررسی کنید و دوباره تلاش کنید.','The request has not been submitted yet. Check your connection and try again.','Zahtjev još nije poslan. Provjerite vezu i pokušajte ponovno.'));
     alert(statusEl?.textContent||String(e.message||e));
   }
 }
@@ -1653,10 +1672,7 @@ async function signInSchool(){
     navigate('school',{},true);
   }catch(e){
     console.warn('School sign-in failed',e);
-    const message=String(e?.message||'');
-    alert(message&&message!=='Failed to fetch'
-      ? message
-      : tr('loginFailed'));
+    alert(accountLoginError(e));
   }
 }
 
@@ -2041,10 +2057,7 @@ async function signInAccount(){
     navigate('school',{},true);
   }catch(e){
     console.warn('Account sign-in failed',e);
-    const message=String(e?.message||'');
-    alert(message&&message!=='Failed to fetch'
-      ? message
-      : tr('loginFailed'));
+    alert(accountLoginError(e));
   }
 }
 function bindPasswordToggles(){
@@ -2070,7 +2083,8 @@ async function resetPassword(){
   if(!email){alert(tr('requiredField'));return}
   const msg=$('#resetMsg');
   try{
-    await authApi('recover',{method:'POST',body:JSON.stringify({email,redirect_to:NH7_PASSWORD_RESET_URL})});
+    localStorage.setItem('nh7_recovery_requested_at',String(Date.now()));
+    await authApi('recover?redirect_to='+encodeURIComponent(NH7_PASSWORD_RESET_URL),{method:'POST',body:JSON.stringify({email})});
     if(msg)msg.textContent=tr('resetPasswordSent');
     alert(tr('resetPasswordSent'));
   }catch(e){

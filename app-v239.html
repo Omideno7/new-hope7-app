@@ -7,7 +7,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <link rel="manifest" href="manifest.json?v=2.3.9.38">
+  <link rel="manifest" href="manifest.json?v=2.3.9.39">
   <link rel="apple-touch-icon" href="assets/logo.png">
   <title>New Hope 7</title>
   <style>html,body{margin:0;min-height:100%;background:#f6fbfa}#fallback{display:none;max-width:520px;margin:20vh auto;padding:22px;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;text-align:center;color:#102033}#fallback.show{display:block}</style>
@@ -19,7 +19,7 @@
   const WORKER='./service-worker.js',SHELL_CACHE='nh7-shell-stable',shellRequest=new Request('./index.html');
   async function register(){if(!('serviceWorker'in navigator))return null;try{const r=await navigator.serviceWorker.register(WORKER,{scope:'./',updateViaCache:'none'});try{await r.update()}catch(_){}if(r.waiting)r.waiting.postMessage({type:'SKIP_WAITING'});return r}catch(_){return null}}
   async function cached(){if(!('caches'in window))return null;try{const c=await caches.open(SHELL_CACHE);return await c.match(shellRequest,{ignoreSearch:true})||await caches.match(shellRequest,{ignoreSearch:true})}catch(_){return null}}
-  async function online(){const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),4000);try{const r=await fetch('./index.html?v=2.3.9.38&t='+Date.now(),{cache:'no-store',signal:controller.signal,headers:{'Cache-Control':'no-cache, no-store, must-revalidate'}});if(!r.ok)throw new Error('HTTP '+r.status);if('caches'in window){const c=await caches.open(SHELL_CACHE);await c.put(shellRequest,r.clone())}return r}finally{clearTimeout(timer)}}
+  async function online(){const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),4000);try{const r=await fetch('./index.html?v=2.3.9.39&t='+Date.now(),{cache:'no-store',signal:controller.signal,headers:{'Cache-Control':'no-cache, no-store, must-revalidate'}});if(!r.ok)throw new Error('HTTP '+r.status);if('caches'in window){const c=await caches.open(SHELL_CACHE);await c.put(shellRequest,r.clone())}return r}finally{clearTimeout(timer)}}
   try{const registration=register();let response=null;if(navigator.onLine){try{response=await online()}catch(_){response=await cached()}}else response=await cached();if(!response){await registration;response=await cached()}if(!response)throw new Error('offline_not_ready');const html=await response.text();document.open();document.write(html);document.close()}catch(error){const box=document.getElementById('fallback'),text=document.getElementById('fallbackText');box.classList.add('show');text.textContent=error?.message==='offline_not_ready'?'برای اولین اجرا یک‌بار اینترنت را وصل کنید.':'برنامه باز نشد. دوباره تلاش کنید.'}
 })();
 </script>

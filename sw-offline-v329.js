@@ -1,4 +1,4 @@
-const VERSION='v2.3.9.34-school-hotfix';
+const VERSION='v2.3.9.39-auth-registration-hotfix';
 const CORE_CACHE='nh7-core-'+VERSION;
 const SHELL_CACHE='nh7-shell-stable';
 const DATA_CACHE='nh7-data-stable-v329';
@@ -11,9 +11,9 @@ const SHELL_URL='./index.html';
 const APP_URL='./app-v239.html';
 const OFFLINE_URL='./offline/index.html';
 const CORE_ASSETS=[
-  './','./index.html','./app-v239.html','./manifest.json','./version.json',OFFLINE_URL,
+  './','./index.html','./app-v239.html','./reset-password.html','./manifest.json','./version.json',OFFLINE_URL,
   './assets/logo.png','./css/styles.css','./css/v2.2.0.css','./css/v2.2.2.css','./css/v2.2.3.css','./css/v2.2.4.css','./css/v2.3.0-access-bible.css','./css/v2.3.4-my-notes.css','./css/nh7-book-reader-v280.css','./css/nh7-library-collections-v322.css','./css/nh7-secure-media-v270.css','./css/nh7-secure-media-watermark-v272.css','./css/nh7-apocrypha-v270.css',
-  './js/nh7-offline-startup-v327.js','./js/nh7-auto-update-v325.js','./js/nh7-offline-core-v327.js','./js/nh7-offline-data-v329.js','./js/nh7-access-bootstrap-v230.js','./js/nh7-offline-playback-bridge-v326.js','./js/nh7-offline-persistence-v323.js','./js/app.js','./js/nh7-app-enhancements-v230.js','./js/nh7-my-notes-v234.js','./js/nh7-book-reader-v281.js','./js/nh7-library-language-v321.js','./js/nh7-library-collections-v322.js','./js/nh7-school-media-session-v262.js','./js/nh7-secure-media-v270.js','./js/nh7-secure-media-fix-v271.js','./js/nh7-large-mov-native-fallback-v273.js','./js/nh7-secure-media-watermark-v272.js','./js/nh7-apocrypha-v270.js','./js/nh7-protected-audio-gate-v316.js','./js/nh7-ui-stability-v329.js',
+  './js/nh7-offline-startup-v327.js','./js/nh7-auto-update-v325.js','./js/nh7-offline-core-v327.js','./js/nh7-offline-data-v329.js','./js/nh7-access-bootstrap-v230.js','./js/nh7-auth-signup-guard-v343.js','./js/nh7-school-registration-v342.js','./js/nh7-auth-recovery-v342.js','./js/nh7-offline-playback-bridge-v326.js','./js/nh7-offline-persistence-v323.js','./js/app.js','./js/nh7-app-enhancements-v230.js','./js/nh7-my-notes-v234.js','./js/nh7-book-reader-v281.js','./js/nh7-library-language-v321.js','./js/nh7-library-collections-v322.js','./js/nh7-school-media-session-v262.js','./js/nh7-secure-media-v270.js','./js/nh7-secure-media-fix-v271.js','./js/nh7-large-mov-native-fallback-v273.js','./js/nh7-secure-media-watermark-v272.js','./js/nh7-apocrypha-v270.js','./js/nh7-protected-audio-gate-v316.js','./js/nh7-ui-stability-v329.js',
   './data/app/opening_messages_365.json','./data/church/church_config.json','./data/church/about.json','./data/daily/daily_word_365.json','./data/daily/faith_proclamations_365.json','./data/daily/daily_juice_365.json','./data/gratitude/gratitude_plan_30_days.json','./data/salvation/need_salvation.json','./data/school/school_content.json','./data/school/foundation_exam_50_trilingual.json','./data/bible/plans/reading_plans_1yr_2yr.json','./data/bible/groups/bible_group_01_18.json','./data/bible/groups/bible_group_19_39.json','./data/bible/groups/bible_group_40_66.json'
 ];
 function canonicalRequest(raw){const url=new URL(typeof raw==='string'?raw:raw.url,self.location.origin);return new Request(url.origin+url.pathname,{method:'GET'})}
