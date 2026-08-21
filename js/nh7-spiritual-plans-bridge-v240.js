@@ -6,7 +6,7 @@ import {
   renderSpiritualProfileSummaryV240
 } from './nh7-spiritual-plans-v240.js';
 
-const RC='2.4.0.242-spiritual-bridge';
+const RC='2.4.0.243-spiritual-bridge';
 const SUPABASE_URL='https://gpzcwffxnddhaeaogdyo.supabase.co';
 const SUPABASE_KEY='sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37';
 const SESSION_KEY='nh7_user_session_v170';
@@ -18,7 +18,7 @@ let bibleMetaPromise=null,bibleBooks=[];
 const view=()=>document.getElementById('view');
 const lang=()=>{const v=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return ['fa','en','hr'].includes(v)?v:'en'};
 const localNum=value=>lang()==='fa'?String(value).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]):String(value);
-const jfetch=async path=>{const r=await fetch(path,{cache:'no-store'});if(!r.ok)throw new Error(`${path}: HTTP ${r.status}`);return r.json()};
+const jfetch=async path=>{const r=await fetch(path,{cache:'no-store'});if(!r.ok)throw new Error(`${path}: HTTP ${r.status}`);const data=await r.json();if(String(path).endsWith('data/spiritual-plans/prayer-30.json')&&data?.localized){for(const locale of ['fa','en','hr'])if(data.localized[locale])delete data.localized[locale].pastoralNote;}return data};
 function session(){try{return JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch(_){return null}}
 function loggedIn(){const s=session();return !!(s?.access_token&&localStorage.getItem(LOGOUT_KEY)!=='1')}
 function userId(){return String(session()?.user?.id||'')}
