@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+  <title>New Hope 7 QA Loader</title>
+  <style>html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#07111d;color:#fff}main{min-height:100vh;display:grid;place-items:center;padding:24px;box-sizing:border-box;text-align:center}.box{max-width:520px}.spin{width:42px;height:42px;border:4px solid rgba(255,255,255,.22);border-top-color:#fff;border-radius:50%;margin:0 auto 18px;animation:s .85s linear infinite}@keyframes s{to{transform:rotate(360deg)}}small{opacity:.7}</style>
+</head>
+<body>
+<main><div class="box"><div class="spin"></div><h2>New Hope 7 — QA</h2><p>Loading Release Candidate 2.4.0.243…</p><small>Production users are not affected.</small></div></main>
+<script>
+(async()=>{
+  const commit='89ca3e4b6e0addfe1fbd918b400af673bc88c342';
+  const raw=`https://raw.githubusercontent.com/Omideno7/new-hope7-app/${commit}/rc-full.html`;
+  const assets=`https://raw.githack.com/Omideno7/new-hope7-app/${commit}/`;
+  try{
+    const r=await fetch(raw,{cache:'no-store'});
+    if(!r.ok) throw new Error('RC source HTTP '+r.status);
+    let html=await r.text();
+    html=html.replace('<head>','<head>\n  <base href="'+assets+'">\n  <meta name="robots" content="noindex,nofollow,noarchive">');
+    html=html.replace('QA only — production users are not affected','QA on official New Hope 7 preview path — production users are not affected');
+    document.open(); document.write(html); document.close();
+  }catch(error){
+    document.body.innerHTML='<main><div class="box"><h2>Preview could not load</h2><p>'+String(error&&error.message||error)+'</p><p>Please refresh this page.</p></div></main>';
+  }
+})();
+</script>
+</body>
+</html>
