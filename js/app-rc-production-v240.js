@@ -1,0 +1,2218 @@
+// NH7 v2.2.3 targeted update: Bible navigation, protected content, reliable analytics, and secure PDF viewer.
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+const view = $('#view');
+const STORE_PREFIX = 'nh7_';
+
+const state = {
+  lang: localStorage.getItem('nh7_lang') || 'en',
+  route: 'home',
+  params: {},
+  stack: [],
+  data: {},
+  bible: { groups:{}, books:null, verses:null, book:null, chapter:null },
+  dailyTab: 'word'
+};
+
+
+const OFFLINE_MEDIA_PREFIX='nh7_offline_media_';
+const NATIVE_OFFLINE_DIR='offline_media';
+function capacitorPlugin(name){return window.Capacitor?.Plugins?.[name]||window.Capacitor?.[name]||null}
+function isNativeCapacitor(){try{return !!(window.Capacitor?.isNativePlatform?.()||['ios','android'].includes(window.Capacitor?.getPlatform?.()))}catch(e){return false}}
+function offlineMetaKey(url){const s=String(url||'');return OFFLINE_MEDIA_PREFIX+simpleHash(s)+'_'+s.length}
+function offlineMeta(url){try{return JSON.parse(localStorage.getItem(offlineMetaKey(url))||'null')}catch(e){return null}}
+function saveOfflineMeta(url,data){localStorage.setItem(offlineMetaKey(url),JSON.stringify(Object.assign({url,at:new Date().toISOString()},data||{})))}
+function removeOfflineMeta(url){localStorage.removeItem(offlineMetaKey(url))}
+function simpleHash(value){let h=2166136261;for(let i=0;i<value.length;i++){h^=value.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(16)}
+(function migrateOfflineMediaKeys(){
+  const marker='nh7_offline_media_key_v2';
+  if(localStorage.getItem(marker)==='1')return;
+  const remove=[];
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(k?.startsWith(OFFLINE_MEDIA_PREFIX))remove.push(k);
+  }
+  remove.forEach(k=>localStorage.removeItem(k));
+  localStorage.setItem(marker,'1');
+})();
+function mediaExtension(url){try{const m=new URL(url,location.href).pathname.match(/\.([a-zA-Z0-9]{2,6})$/);if(m)return'.'+m[1].toLowerCase()}catch(e){}return'.bin'}
+function nativeOfflinePath(url){return `${NATIVE_OFFLINE_DIR}/${simpleHash(url)}${mediaExtension(url)}`}
+async function nativeFileUri(path){const F=capacitorPlugin('Filesystem');if(!F)throw new Error('Filesystem plugin unavailable');return(await F.getUri({directory:'DATA',path})).uri}
+function playableNativeUri(uri){try{return window.Capacitor?.convertFileSrc?window.Capacitor.convertFileSrc(uri):uri}catch(e){return uri}}
+async function ensureNativeOfflineDir(){const F=capacitorPlugin('Filesystem');if(!F)throw new Error('Filesystem plugin unavailable');try{await F.mkdir({directory:'DATA',path:NATIVE_OFFLINE_DIR,recursive:true})}catch(e){if(!String(e?.message||'').toLowerCase().includes('exist'))throw e}}
+function swMessage(type,payload={}){return new Promise(async(resolve,reject)=>{if(!('serviceWorker'in navigator)){reject(new Error('Service worker unavailable'));return}try{const reg=await navigator.serviceWorker.ready;const target=navigator.serviceWorker.controller||reg.active||reg.waiting;if(!target){reject(new Error('Service worker is not active'));return}const channel=new MessageChannel();const timer=setTimeout(()=>reject(new Error('Offline request timed out')),120000);channel.port1.onmessage=e=>{clearTimeout(timer);const d=e.data||{};d.ok===false?reject(new Error(d.error||'Offline action failed')):resolve(d)};target.postMessage(Object.assign({type},payload),[channel.port2])}catch(e){reject(e)}})}
+async function offlineMediaStatus(url){if(!url)return{cached:false};if(isNativeCapacitor()){const F=capacitorPlugin('Filesystem'),m=offlineMeta(url);if(!F||!m?.path)return{cached:false};try{const st=await F.stat({directory:'DATA',path:m.path});return{cached:true,bytes:Number(st?.size||m.bytes||0),path:m.path,uri:m.uri||''}}catch(e){removeOfflineMeta(url);return{cached:false}}}try{return await swMessage('MEDIA_STATUS',{url})}catch(e){return{cached:false}}}
+async function nativeDownloadForOffline(url,title,button){const F=capacitorPlugin('Filesystem'),T=capacitorPlugin('FileTransfer');if(!F||!T)throw new Error('Native file plugins unavailable');await ensureNativeOfflineDir();const path=nativeOfflinePath(url),targetUri=await nativeFileUri(path);let handle=null;try{if(button&&T.addListener)handle=await T.addListener('progress',p=>{if(p?.type==='download'&&p.lengthComputable&&p.contentLength>0){const n=Math.min(100,Math.round(Number(p.bytes||0)/Number(p.contentLength)*100));button.textContent=(state.lang==='fa'?'در حال دانلود ':state.lang==='hr'?'Preuzimanje ':'Downloading ')+n+'%'}});await T.downloadFile({url,path:targetUri,progress:true,connectTimeout:60000,readTimeout:120000});const st=await F.stat({directory:'DATA',path});saveOfflineMeta(url,{title:title||'',path,uri:targetUri,bytes:Number(st?.size||0),native:true});return{bytes:Number(st?.size||0),path,uri:targetUri}}finally{try{await handle?.remove?.()}catch(e){}}}
+async function downloadForOffline(url,title,button){if(!url)return;const original=button?.textContent||'';try{if(button){button.disabled=true;button.textContent=state.lang==='fa'?'در حال دانلود…':state.lang==='hr'?'Preuzimanje…':'Downloading…'}const r=isNativeCapacitor()?await nativeDownloadForOffline(url,title,button):await swMessage('DOWNLOAD_URL',{url,title:title||''});if(!isNativeCapacitor())saveOfflineMeta(url,{title:title||'',bytes:r.bytes||0,native:false});if(button){button.textContent=state.lang==='fa'?'دانلود شد ✓':state.lang==='hr'?'Preuzeto ✓':'Downloaded ✓';button.dataset.offlineCached='1'}}catch(e){console.warn('Offline download failed',e);const d=String(e?.message||'');alert(state.lang==='fa'?'دانلود آفلاین انجام نشد.'+(d?'\n'+d:''):state.lang==='hr'?'Izvanmrežno preuzimanje nije uspjelo.'+(d?'\n'+d:''):'Offline download failed.'+(d?'\n'+d:''));if(button)button.textContent=original}finally{if(button)button.disabled=false}}
+async function removeOfflineDownload(url,button){try{if(isNativeCapacitor()){const F=capacitorPlugin('Filesystem'),m=offlineMeta(url);if(F&&m?.path)try{await F.deleteFile({directory:'DATA',path:m.path})}catch(e){}removeOfflineMeta(url)}else{await swMessage('REMOVE_URL',{url});removeOfflineMeta(url)}if(button){button.textContent=state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline';button.dataset.offlineCached='0'}}catch(e){console.warn(e)}}
+async function refreshOfflineButtons(){const bs=$$('[data-offline-download]');await Promise.all(bs.map(async b=>{const u=b.dataset.offlineDownload;if(!u)return;const st=await offlineMediaStatus(u);b.dataset.offlineCached=st.cached?'1':'0';b.textContent=st.cached?(state.lang==='fa'?'آفلاین آماده ✓':state.lang==='hr'?'Offline spremno ✓':'Offline ready ✓'):(state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline')}))}
+async function resolveOfflineMediaUrl(url){if(!url||!isNativeCapacitor())return url;const st=await offlineMediaStatus(url);if(!st.cached)return url;const m=offlineMeta(url);let uri=m?.uri||st.uri||'';if(!uri&&m?.path)uri=await nativeFileUri(m.path);return uri?playableNativeUri(uri):url}
+async function clearDownloadedMedia(){if(isNativeCapacitor()){const F=capacitorPlugin('Filesystem');if(F)try{await F.rmdir({directory:'DATA',path:NATIVE_OFFLINE_DIR,recursive:true})}catch(e){}const ks=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith(OFFLINE_MEDIA_PREFIX))ks.push(k)}ks.forEach(k=>localStorage.removeItem(k));return}await swMessage('CLEAR_MEDIA')}
+async function prepareCoreOffline(button){const old=button?.textContent||'';try{if(button){button.disabled=true;button.textContent=state.lang==='fa'?'در حال آماده‌سازی…':state.lang==='hr'?'Priprema…':'Preparing…'}if(isNativeCapacitor()){localStorage.setItem('nh7_offline_core_ready',new Date().toISOString());alert(state.lang==='fa'?'محتوای اصلی داخل برنامه نصب شده و برای استفاده آفلاین آماده است.':state.lang==='hr'?'Osnovni sadržaj ugrađen je u aplikaciju i spreman je za offline korištenje.':'Core content is bundled in the app and ready offline.')}else{const r=await swMessage('CACHE_CORE');localStorage.setItem('nh7_offline_core_ready',new Date().toISOString());alert(state.lang==='fa'?`محتوای اصلی برای استفاده آفلاین آماده شد. (${r.cached||0} فایل)`:state.lang==='hr'?'Osnovni sadržaj je spreman za offline korištenje.':'Core content is ready for offline use.')}}catch(e){console.warn(e);alert(state.lang==='fa'?'آماده‌سازی آفلاین کامل نشد. دوباره تلاش کنید.':'Offline preparation did not finish. Please try again.')}finally{if(button){button.disabled=false;button.textContent=old}}}
+async function offlineStorageSummary(){if(isNativeCapacitor()){let count=0,bytes=0;for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!k?.startsWith(OFFLINE_MEDIA_PREFIX))continue;try{const m=JSON.parse(localStorage.getItem(k)||'{}');if(m.native){count++;bytes+=Number(m.bytes||0)}}catch(e){}}const mb=(bytes/1048576).toFixed(1);return state.lang==='fa'?`${count} فایل رسانه‌ای (${mb} مگابایت) روی دستگاه ذخیره شده است.`:state.lang==='hr'?`${count} medijskih datoteka (${mb} MB) spremljeno je na uređaju.`:`${count} media files (${mb} MB) are stored on this device.`}try{const r=await swMessage('OFFLINE_STATUS');const mb=(Number(r.mediaBytes||0)/1048576).toFixed(1);return state.lang==='fa'?`${r.coreCount||0} فایل اصلی و ${r.mediaCount||0} فایل رسانه‌ای (${mb} مگابایت) آماده آفلاین است.`:state.lang==='hr'?`${r.coreCount||0} osnovnih i ${r.mediaCount||0} medijskih datoteka (${mb} MB) spremljeno je offline.`:`${r.coreCount||0} core files and ${r.mediaCount||0} media files (${mb} MB) are available offline.`}catch(e){return state.lang==='fa'?'وضعیت فضای آفلاین در دسترس نیست.':'Offline storage status unavailable.'}}
+
+const sermonPlayerState={audio:null,current:null,saveTimer:null,cloudTimer:null,analyticsSessionId:'',analyticsTotalSeconds:0,analyticsLastFlushedSeconds:0,analyticsLastWallAt:0,analyticsSending:false,analyticsSeekCount:0,analyticsMaxRate:1,analyticsStartedPosition:0};
+function sermonProgressKey(id){return 'nh7_sermon_progress_'+String(id)}
+function sermonNoteKey(id){return 'nh7_sermon_note_'+String(id)}
+function formatAudioTime(sec){sec=Math.max(0,Number(sec)||0);const h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),ss=Math.floor(sec%60);return h?`${h}:${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`:`${m}:${String(ss).padStart(2,'0')}`}
+function sermonDurationSeconds(item){const exact=Number(item?.duration_seconds||0);if(exact>0)return exact;const mins=Number(item?.duration_minutes||0);return mins>0?Math.round(mins*60):0}
+function sermonDurationLabel(item){const sec=sermonDurationSeconds(item);return sec?formatAudioTime(sec):''}
+function audioAnalyticsMeta(item={}){
+  const id=String(item.analytics_id||item.id||'');
+  const type=String(item.analytics_type||(id.startsWith('school-')?'school':id.startsWith('bible-')?'audio_bible':'sermon'));
+  return {
+    mediaType:['sermon','school','audio_bible'].includes(type)?type:'sermon',
+    mediaId:id,
+    title:String(item['title_'+state.lang]||item.title_fa||item.title_en||item.title_hr||item.title||'Audio'),
+    topic:String(item.analytics_topic||item.topic||item.category_name||''),
+    sourceGroup:String(item.analytics_source_group||item.course_code||item.book_code||item.category_id||''),
+    language:String(item.analytics_language||state.lang||'fa'),
+    duration:sermonDurationSeconds(item)
+  };
+}
+function newAudioAnalyticsSession(item){
+  sermonPlayerState.analyticsSessionId='aud_'+(globalThis.crypto?.randomUUID?globalThis.crypto.randomUUID():Date.now()+'_'+Math.random().toString(36).slice(2));
+  sermonPlayerState.analyticsTotalSeconds=0;
+  sermonPlayerState.analyticsLastFlushedSeconds=0;
+  sermonPlayerState.analyticsLastWallAt=Date.now();
+  sermonPlayerState.analyticsSeekCount=0;
+  sermonPlayerState.analyticsMaxRate=1;
+  sermonPlayerState.analyticsStartedPosition=Math.max(0,Math.round(Number(sermonPlayerState.audio?.currentTime||0)));
+  sermonPlayerState.current=Object.assign({},sermonPlayerState.current||{},audioAnalyticsMeta(item));
+}
+function captureAudioListenTime(){
+  const a=sermonPlayerState.audio;if(!a||a.paused||!sermonPlayerState.current)return;
+  const now=Date.now(),last=Number(sermonPlayerState.analyticsLastWallAt||now),delta=Math.min(5,Math.max(0,(now-last)/1000));
+  sermonPlayerState.analyticsLastWallAt=now;
+  if(delta>0&&delta<10)sermonPlayerState.analyticsTotalSeconds+=delta;
+}
+async function flushAudioAnalytics(eventName='progress',force=false){
+  const a=sermonPlayerState.audio,cur=sermonPlayerState.current,sid=sermonPlayerState.analyticsSessionId;
+  if(!cur||!sid||!navigator.onLine)return false;
+  captureAudioListenTime();
+  const total=Math.floor(sermonPlayerState.analyticsTotalSeconds||0),unsent=Math.max(0,total-Number(sermonPlayerState.analyticsLastFlushedSeconds||0));
+  if(!force&&unsent<15)return false;
+  if(sermonPlayerState.analyticsSending)return false;
+  sermonPlayerState.analyticsSending=true;
+  try{
+    const payload={
+      p_session_id:sid,p_device_id:deviceId(),p_user_email:currentUserEmail()||'',
+      p_media_type:cur.mediaType||'sermon',p_media_id:cur.mediaId||String(cur.id||''),
+      p_title:cur.title||'',p_topic:cur.topic||'',p_source_group:cur.sourceGroup||'',
+      p_language:cur.language||state.lang,p_duration_seconds:Math.round((Number.isFinite(a?.duration)&&a.duration)||cur.duration||0),
+      p_position_seconds:Math.round(a?.currentTime||0),p_delta_seconds:total,p_event:eventName,
+      p_playback_rate:Number(a?.playbackRate||1),p_seek_count:Number(sermonPlayerState.analyticsSeekCount||0),
+      p_started_position_seconds:Number(sermonPlayerState.analyticsStartedPosition||0)
+    };
+    try{await cloudRpc('nh7_track_audio_session_v222',payload)}catch(e){
+      await cloudRpc('nh7_track_audio_session_v221',{
+        p_session_id:payload.p_session_id,p_device_id:payload.p_device_id,p_user_email:payload.p_user_email,
+        p_media_type:payload.p_media_type,p_media_id:payload.p_media_id,p_title:payload.p_title,p_topic:payload.p_topic,
+        p_source_group:payload.p_source_group,p_language:payload.p_language,p_duration_seconds:payload.p_duration_seconds,
+        p_position_seconds:payload.p_position_seconds,p_delta_seconds:payload.p_delta_seconds,p_event:payload.p_event
+      })
+    }
+    sermonPlayerState.analyticsLastFlushedSeconds=Math.max(sermonPlayerState.analyticsLastFlushedSeconds||0,total);
+    return true;
+  }catch(e){
+    console.warn('Audio analytics sync failed',e);
+    return false;
+  }finally{sermonPlayerState.analyticsSending=false}
+}
+const appSectionLastSent=new Map();
+function trackAppSection(section){
+  section=String(section||'').trim();if(!section||!navigator.onLine)return;
+  const now=Date.now(),last=appSectionLastSent.get(section)||Number(localStorage.getItem('nh7_section_track_'+section)||0);
+  if(now-last<15*60*1000)return;
+  appSectionLastSent.set(section,now);localStorage.setItem('nh7_section_track_'+section,String(now));
+  cloudRpc('nh7_track_app_section_v222',{p_section:section,p_device_id:deviceId(),p_user_email:currentUserEmail()||''}).catch(()=>cloudRpc('nh7_track_app_section_v221',{p_section:section,p_device_id:deviceId(),p_user_email:currentUserEmail()||''}).catch(()=>{}));
+}
+function ensureSermonPlayer(){
+  if(sermonPlayerState.audio)return sermonPlayerState.audio;
+  const audio=new Audio();audio.preload='metadata';sermonPlayerState.audio=audio;
+  const sync=()=>{
+    const cur=sermonPlayerState.current;if(!cur)return;
+    if(!audio.paused)captureAudioListenTime();
+    const snapshot={time:audio.currentTime,duration:audio.duration||cur.duration||0,updatedAt:new Date().toISOString()};
+    clearTimeout(sermonPlayerState.saveTimer);
+    sermonPlayerState.saveTimer=setTimeout(()=>localStorage.setItem(sermonProgressKey(cur.id),JSON.stringify(snapshot)),500);
+    clearTimeout(sermonPlayerState.cloudTimer);
+    sermonPlayerState.cloudTimer=setTimeout(()=>saveProgressCloud(sermonProgressKey(cur.id),snapshot).catch(console.warn),5000);
+    if((sermonPlayerState.analyticsTotalSeconds-sermonPlayerState.analyticsLastFlushedSeconds)>=15)flushAudioAnalytics('progress').catch(()=>{});
+    updateInlineSermonPlayers();
+  };
+  ['timeupdate','loadedmetadata','durationchange'].forEach(ev=>audio.addEventListener(ev,sync));
+  audio.addEventListener('seeking',()=>{sermonPlayerState.analyticsSeekCount=Math.min(1000,Number(sermonPlayerState.analyticsSeekCount||0)+1)});
+  audio.addEventListener('ratechange',()=>{sermonPlayerState.analyticsMaxRate=Math.max(Number(sermonPlayerState.analyticsMaxRate||1),Number(audio.playbackRate||1))});
+  audio.addEventListener('play',()=>{sermonPlayerState.analyticsLastWallAt=Date.now();sync();flushAudioAnalytics('play',true).catch(()=>{})});
+  audio.addEventListener('pause',()=>{sync();flushAudioAnalytics('pause',true).catch(()=>{})});
+  audio.addEventListener('ended',()=>{
+    captureAudioListenTime();
+    // A pause/progress flush may still be in flight. Retry once so completion is not lost.
+    flushAudioAnalytics('ended',true).then(ok=>{if(!ok)setTimeout(()=>flushAudioAnalytics('ended',true).catch(()=>{}),600)}).catch(()=>{});
+    if(sermonPlayerState.current){
+      const key=sermonProgressKey(sermonPlayerState.current.id);
+      const snapshot={time:0,duration:audio.duration||0,completed:true,updatedAt:new Date().toISOString()};
+      localStorage.setItem(key,JSON.stringify(snapshot));
+      saveProgressCloud(key,snapshot).catch(console.warn);
+    }
+    updateInlineSermonPlayers();
+  });
+  return audio;
+}
+function updateInlineSermonPlayers(){
+  const audio=sermonPlayerState.audio,cur=sermonPlayerState.current;
+  document.querySelectorAll('[data-inline-player]').forEach(panel=>{
+    const same=cur&&String(cur.id)===String(panel.dataset.inlinePlayer);
+    panel.classList.toggle('hidden',!same);
+    if(!same)return;
+    const play=panel.querySelector('[data-inline-play]'),seek=panel.querySelector('[data-inline-seek]'),now=panel.querySelector('[data-inline-now]'),total=panel.querySelector('[data-inline-total]'),speed=panel.querySelector('[data-inline-speed]');
+    if(play)play.textContent=audio?.paused?'▶':'❚❚';
+    if(now)now.textContent=formatAudioTime(audio?.currentTime||0);
+    if(total)total.textContent=formatAudioTime((Number.isFinite(audio?.duration)&&audio.duration)||cur.duration||0);
+    if(seek)seek.value=Number.isFinite(audio?.duration)&&audio.duration?Math.round((audio.currentTime/audio.duration)*1000):0;
+    if(speed)speed.value=String(audio?.playbackRate||1);
+  });
+  document.querySelectorAll('[data-sermon-play]').forEach(btn=>{const same=cur&&String(cur.id)===String(btn.dataset.sermonPlay);btn.textContent=same&&!audio?.paused?'❚❚':`▶ ${same?tr('continueListening'):tr('listenAudio')}`});
+}
+async function playSermon(item,restart=false){
+  if(!item?.audio_url)return;const audio=ensureSermonPlayer(),same=sermonPlayerState.current&&String(sermonPlayerState.current.id)===String(item.id);
+  if(same&&!restart){audio.paused?audio.play():audio.pause();updateInlineSermonPlayers();return}
+  if(sermonPlayerState.current)await flushAudioAnalytics('switch',true).catch(()=>{});
+  const meta=audioAnalyticsMeta(item);
+  sermonPlayerState.current={id:item.id,title:meta.title,audio_url:item.audio_url,duration:meta.duration,mediaType:meta.mediaType,mediaId:meta.mediaId,topic:meta.topic,sourceGroup:meta.sourceGroup,language:meta.language};
+  newAudioAnalyticsSession(item);
+  const sourceUrl=await resolveOfflineMediaUrl(item.audio_url).catch(()=>item.audio_url);audio.src=sourceUrl;audio.playbackRate=Number(localStorage.getItem('nh7_sermon_speed')||1);
+  audio.addEventListener('loadedmetadata',function restore(){audio.removeEventListener('loadedmetadata',restore);if(!restart){try{const st=JSON.parse(localStorage.getItem(sermonProgressKey(item.id))||'{}');if(st.time>5&&(!audio.duration||st.time<audio.duration-10))audio.currentTime=st.time}catch(e){}}audio.play().catch(()=>{});updateInlineSermonPlayers()});
+  if('mediaSession'in navigator){navigator.mediaSession.metadata=new MediaMetadata({title:sermonPlayerState.current.title,artist:'New Hope 7',artwork:item.cover_url?[{src:item.cover_url}]:[]});try{navigator.mediaSession.setActionHandler('seekbackward',()=>audio.currentTime=Math.max(0,audio.currentTime-15));navigator.mediaSession.setActionHandler('seekforward',()=>audio.currentTime=Math.min(audio.duration||Infinity,audio.currentTime+30));navigator.mediaSession.setActionHandler('play',()=>audio.play());navigator.mediaSession.setActionHandler('pause',()=>audio.pause())}catch(e){}}
+  updateInlineSermonPlayers();
+}
+function openSermonNote(item){
+  let modal=document.getElementById('sermonNoteModal');if(!modal){modal=document.createElement('div');modal.id='sermonNoteModal';modal.className='sermon-note-modal hidden';document.body.appendChild(modal)}
+  const title=item['title_'+state.lang]||item.title_fa||item.title_en||tr('sermonNotes');const note=localStorage.getItem(sermonNoteKey(item.id))||'';
+  modal.innerHTML=`<div class="sermon-note-dialog"><div class="note-dialog-head"><h3>${html(title)}</h3><button class="icon-btn" data-close-note>×</button></div><p class="muted">${tr('sermonNotes')}</p><textarea id="sermonModalNote" rows="8" placeholder="${tr('notes')}">${html(note)}</textarea><div class="button-row"><button class="primary-btn" data-save-modal-note="${html(item.id)}">${tr('saveSermonNote')}</button><button class="secondary-btn" data-close-note>${tr('back')}</button></div></div>`;
+  modal.classList.remove('hidden');
+  modal.querySelectorAll('[data-close-note]').forEach(b=>b.onclick=()=>modal.classList.add('hidden'));
+  modal.querySelector('[data-save-modal-note]')?.addEventListener('click',async e=>{const value=(modal.querySelector('#sermonModalNote')?.value||'').slice(0,5000);localStorage.setItem(sermonNoteKey(item.id),value);saveNoteCloud('sermon_note_'+item.id,value).catch(console.warn);e.currentTarget.textContent=tr('saved')});
+  modal.onclick=e=>{if(e.target===modal)modal.classList.add('hidden')};
+}
+
+
+const T = {
+  en:{
+    'nav.home':'Home','nav.daily':'Daily','nav.bible':'Bible','nav.plans':'Plans','nav.school':'School','nav.more':'More',
+    home:'Home',daily:'Daily',bible:'Bible',plans:'Plans',school:'School',more:'More',audio:'Audio Messages',salvation:'Need Salvation',about:'About Church',settings:'Settings',gratitude:'Gratitude Plan',meetings:'Church Meetings',youversion:'My Church on YouVersion',amen:'Amen',read:'I read; unlock next day',register:'Register',requestAccess:'Request access',pending:'Pending review',approved:'Approved',guest:'Guest',login:'Registration / Access',offline:'Offline mode active',search:'Search',oldtestament:'Old Testament',newtestament:'New Testament',chapters:'Chapters',back:'Back',save:'Save',saved:'Saved',notes:'Notes',assignment:'Assignment',fullLesson:'Full Written Lesson',playAudio:'Audio',
+    appTitle:'OmideNo7 Church',welcome:'Welcome to the OmideNo7 Church app',todayMessage:'Today’s message',continueToday:'Continue today',savedVerses:'My saved verses',progress:'My progress',points:'Points',badges:'Badges',nextMeeting:'Next church meeting',enableNotifications:'Enable notifications',notifications:'Notifications',notificationStatus:'Notification status',notificationEnabled:'Notifications are allowed on this device.',notificationDenied:'Notifications are blocked by the browser.',notificationDefault:'Notifications are not active yet.',language:'Language',clearProgress:'Clear local progress',refreshData:'Refresh app data',version:'App version',dailyWord:'Daily Word',faithProclamation:'Faith Proclamation',dailyJuice:'Daily Juice',gratitudeCourse:'Gratitude Course',day:'Day',mainVerse:'Main Verse',message:'Message',prayer:'Prayer / Confession',proclamation:'Proclamation',actionStep:'Action Step',furtherStudy:'Further Study',openVerse:'Open verse',startCourse:'Start course',completeDay:'Save and complete this day',lockedUntilTomorrow:'The next day will unlock tomorrow.',completed:'Completed',notStarted:'Not started',videos:'New Birth Videos',part:'Part',ourVision:'Our Vision',ourBeliefs:'Our Beliefs',churchIntro:'Church Introduction',meetingsInfo:'Meeting Information',contact:'Contact',openToday:'Open today’s reading',noSavedVerses:'No saved verses yet.',readings:'Readings',openToRead:'Open to read',bookmarks:'Bookmarks',noAudio:'Audio files will be added soon.',audioFormat:'Audio files must be MP3.',schoolAccessText:'To enter the school, register and wait for admin approval.',meetingAccessText:'After school registration and admin approval, the meeting link and security code are shown here. A separate meeting registration is not required.',registerDone:'Your request was sent to admin. Please wait for approval.',name:'Name',email:'Email',book:'Book',chapter:'Chapter',verseSaved:'Verse saved',dailyCompleted:'Today’s item completed',all:'All',showVerse:'Show verse',hideVerse:'Hide verse'
+  },
+  fa:{
+    'nav.home':'خانه','nav.daily':'روزانه','nav.bible':'کتاب','nav.plans':'برنامه‌ها','nav.school':'مدرسه','nav.more':'بیشتر',
+    home:'خانه',daily:'روزانه',bible:'کتاب‌مقدس',plans:'برنامه‌ها',school:'مدرسه',more:'بیشتر',audio:'پیام‌های صوتی',salvation:'نیاز به نجات',about:'درباره کلیسا',settings:'تنظیمات',gratitude:'دوره شکرگزاری',meetings:'جلسات کلیسا',youversion:'کلیسای من در YouVersion',amen:'آمین',read:'خواندم؛ روز بعد باز شود',register:'ثبت‌نام',requestAccess:'درخواست دسترسی',pending:'در انتظار تأیید',approved:'تأیید شده',guest:'مهمان',login:'ثبت‌نام / دسترسی',offline:'حالت آفلاین فعال است',search:'جستجو',oldtestament:'عهد عتیق',newtestament:'عهد جدید',chapters:'باب‌ها',back:'برگشت',save:'ذخیره',saved:'ذخیره شد',notes:'یادداشت‌ها',assignment:'تکلیف',fullLesson:'متن کامل درس',playAudio:'صوت',
+    appTitle:'کلیسای امیدنو۷',welcome:'به اپ کلیسای امید نو ۷ خوش آمدید',todayMessage:'پیام امروز',continueToday:'ادامه امروز',savedVerses:'آیات ذخیره‌شده من',progress:'پیشرفت من',points:'امتیازها',badges:'مدال‌ها',nextMeeting:'جلسه بعدی کلیسا',enableNotifications:'فعال‌سازی اعلان‌ها',notifications:'اعلان‌ها',notificationStatus:'وضعیت اعلان‌ها',notificationEnabled:'اعلان‌ها روی این دستگاه فعال هستند.',notificationDenied:'اعلان‌ها توسط مرورگر مسدود شده‌اند.',notificationDefault:'اعلان‌ها هنوز فعال نشده‌اند.',language:'زبان برنامه',clearProgress:'پاک کردن پیشرفت محلی',refreshData:'تازه‌سازی داده‌های اپ',version:'نسخه برنامه',dailyWord:'کلام روزانه',faithProclamation:'اعلان ایمان',dailyJuice:'آبمیوه روزانه',gratitudeCourse:'دوره شکرگزاری',day:'روز',mainVerse:'آیه اصلی',message:'پیام',prayer:'دعا / اعتراف',proclamation:'اعلان',actionStep:'قدم عملی',furtherStudy:'مطالعه بیشتر',openVerse:'باز کردن آیه',startCourse:'شروع دوره',completeDay:'ذخیره و تکمیل این روز',lockedUntilTomorrow:'روز بعد فردا باز می‌شود.',completed:'کامل شد',notStarted:'شروع نشده',videos:'ویدیوهای تولد تازه',part:'قسمت',ourVision:'رویای ما',ourBeliefs:'اعتقادات ما',churchIntro:'معرفی کلیسا',meetingsInfo:'اطلاعات جلسات',contact:'ارتباط با ما',openToday:'باز کردن مطالعه امروز',noSavedVerses:'هنوز آیه‌ای ذخیره نشده است.',readings:'مطالعه‌ها',openToRead:'برای خواندن باز کن',bookmarks:'آیات ذخیره‌شده',noAudio:'فایل‌های صوتی به‌زودی اضافه می‌شوند.',audioFormat:'فایل‌های صوتی باید با فرمت MP3 باشند.',schoolAccessText:'برای ورود به مدرسه، ثبت‌نام کنید و منتظر تأیید ادمین بمانید.',meetingAccessText:'بعد از ثبت‌نام در مدرسه و تأیید ادمین، لینک جلسه و کد امنیتی همین‌جا نمایش داده می‌شود. ثبت‌نام جداگانه برای جلسه لازم نیست.',registerDone:'درخواست شما روی این دستگاه ذخیره شد. تأیید ادمین بعداً از طریق سیستم امن وصل می‌شود.',name:'نام',email:'ایمیل',book:'کتاب',chapter:'باب',verseSaved:'آیه ذخیره شد',dailyCompleted:'مورد امروز کامل شد',all:'همه',showVerse:'نمایش آیه',hideVerse:'بستن آیه'
+  },
+  hr:{
+    'nav.home':'Početna','nav.daily':'Dnevno','nav.bible':'Biblija','nav.plans':'Planovi','nav.school':'Škola','nav.more':'Više',
+    home:'Početna',daily:'Dnevno',bible:'Biblija',plans:'Planovi',school:'Škola',more:'Više',audio:'Audio poruke',salvation:'Trebam spasenje',about:'O crkvi',settings:'Postavke',gratitude:'Plan zahvalnosti',meetings:'Crkveni sastanci',youversion:'Moja crkva na YouVersionu',amen:'Amen',read:'Pročitao sam; otključaj sljedeći dan',register:'Registracija',requestAccess:'Zatraži pristup',pending:'Čeka odobrenje',approved:'Odobreno',guest:'Gost',login:'Registracija / Pristup',offline:'Izvanmrežni način je aktivan',search:'Pretraži',oldtestament:'Stari zavjet',newtestament:'Novi zavjet',chapters:'Poglavlja',back:'Natrag',save:'Spremi',saved:'Spremljeno',notes:'Bilješke',assignment:'Zadatak',fullLesson:'Cijela pisana lekcija',playAudio:'Audio',
+    appTitle:'Crkva OmideNo7',welcome:'Dobrodošli u aplikaciju crkve OmideNo7',todayMessage:'Današnja poruka',continueToday:'Nastavi danas',savedVerses:'Moji spremljeni stihovi',progress:'Moj napredak',points:'Bodovi',badges:'Medalje',nextMeeting:'Sljedeći crkveni sastanak',enableNotifications:'Uključi obavijesti',notifications:'Obavijesti',notificationStatus:'Status obavijesti',notificationEnabled:'Obavijesti su dopuštene na ovom uređaju.',notificationDenied:'Preglednik je blokirao obavijesti.',notificationDefault:'Obavijesti još nisu aktivne.',language:'Jezik aplikacije',clearProgress:'Obriši lokalni napredak',refreshData:'Osvježi podatke aplikacije',version:'Verzija aplikacije',dailyWord:'Dnevna Riječ',faithProclamation:'Proglas vjere',dailyJuice:'Dnevni sok',gratitudeCourse:'Tečaj zahvalnosti',day:'Dan',mainVerse:'Glavni stih',message:'Poruka',prayer:'Molitva / Ispovijed',proclamation:'Proglas',actionStep:'Praktični korak',furtherStudy:'Daljnje proučavanje',openVerse:'Otvori stih',startCourse:'Započni tečaj',completeDay:'Spremi i dovrši ovaj dan',lockedUntilTomorrow:'Sljedeći dan otključava se sutra.',completed:'Dovršeno',notStarted:'Nije započeto',videos:'Video lekcije o novom rođenju',part:'Dio',ourVision:'Naša vizija',ourBeliefs:'Naša vjerovanja',churchIntro:'Uvod o crkvi',meetingsInfo:'Informacije o sastancima',contact:'Kontakt',openToday:'Otvori današnje čitanje',noSavedVerses:'Još nema spremljenih stihova.',readings:'Čitanja',openToRead:'Otvori za čitanje',bookmarks:'Spremljeni stihovi',noAudio:'Audio datoteke bit će uskoro dodane.',audioFormat:'Audio datoteke moraju biti u MP3 formatu.',schoolAccessText:'Za ulazak u školu registrirajte se i pričekajte odobrenje administratora.',meetingAccessText:'Nakon registracije za školu i odobrenja administratora ovdje se prikazuju poveznica sastanka i sigurnosni kod. Posebna registracija za sastanak nije potrebna.',registerDone:'Vaš je zahtjev spremljen na ovom uređaju. Odobrenje administratora kasnije će biti povezano sigurnim sustavom.',name:'Ime',email:'Email',book:'Knjiga',chapter:'Poglavlje',verseSaved:'Stih je spremljen',dailyCompleted:'Današnja stavka je dovršena',all:'Sve',showVerse:'Prikaži stih',hideVerse:'Sakrij stih'
+  }
+};
+
+
+const EXTRA_T = {
+  en:{
+    loginAccount:'Sign in / restore access',logoutAccount:'Sign out from this device',restoreAccess:'Restore access by email',restoreAccessHint:'Enter the email you used for school registration to restore approved access on this device.',restoreAccessDone:'Access check completed. If your email is approved, school and meeting access are now restored.',accountActions:'Account access',
+    myNotes:'My notes',showSavedVerses:'Show saved verses',showMyNotes:'Show my notes',hide:'Hide',noNotes:'No notes yet.',registrationForm:'Registration Form',firstName:'First Name',lastName:'Last Name',birthDate:'Date of Birth',city:'City',country:'Country of Residence',spiritualAge:'How long have you been a believer?',churchMember:'Are you a member of a church?',churchName:'Church name',pastorName:'Pastor name',waterBaptism:'Have you received water baptism?',salvationPrayer:'Have you prayed the prayer of salvation?',eventsInterest:'Interested in in-person seminars/conferences?',testimony:'Testimony of coming to faith',howFound:'How did you hear about OmideNo7?',phone:'Phone number',requiredField:'Please complete all required fields.',yes:'Yes',no:'No',submitRegistration:'Submit registration',goToSalvation:'Go to salvation prayer',schoolNotApproved:'Your school access is waiting for admin approval.',meetingNotApproved:'Your meeting access is waiting for admin approval.',finalExam:'Final Exam',submitExam:'Submit exam',correctAnswers:'Correct answers',openReadingHere:'Show reading here',closeReading:'Close reading',oldAndNew:'Old Testament + New Testament',savedVersesCollapsed:'Saved verses are available here.',notesCollapsed:'All your notes are collected here.'
+  },
+  fa:{
+    loginAccount:'ورود / بازیابی دسترسی',logoutAccount:'خروج از حساب در این دستگاه',restoreAccess:'بازیابی دسترسی با ایمیل',restoreAccessHint:'ایمیلی را که برای ثبت‌نام مدرسه استفاده کرده‌اید وارد کنید تا دسترسی تأییدشده در این دستگاه بازیابی شود.',restoreAccessDone:'بررسی دسترسی انجام شد. اگر این ایمیل تأیید شده باشد، دسترسی مدرسه و جلسات بازیابی شد.',accountActions:'دسترسی حساب',
+    myNotes:'یادداشت‌های من',showSavedVerses:'نمایش آیات ذخیره‌شده',showMyNotes:'نمایش یادداشت‌های من',hide:'بستن',noNotes:'هنوز یادداشتی ذخیره نشده است.',registrationForm:'فرم ثبت‌نام',firstName:'نام',lastName:'نام خانوادگی',birthDate:'تاریخ تولد',city:'شهر محل سکونت',country:'کشور محل سکونت',spiritualAge:'چند وقت است ایمان آورده‌اید؟',churchMember:'آیا عضو کلیسایی هستید؟',churchName:'نام کلیسا',pastorName:'نام شبان',waterBaptism:'آیا تعمید آب گرفته‌اید؟',salvationPrayer:'آیا دعای نجات را خوانده‌اید؟',eventsInterest:'آیا علاقه به شرکت در سمینارها و کنفرانس‌های حضوری دارید؟',testimony:'شهادت ایمان‌آوری شما',howFound:'از چه طریقی با کلیسای امید نو ۷ آشنا شده‌اید؟',phone:'شماره تماس',requiredField:'لطفاً همه فیلدهای ضروری را کامل کنید.',yes:'بله',no:'خیر',submitRegistration:'ارسال ثبت‌نام',goToSalvation:'رفتن به دعای نجات',schoolNotApproved:'دسترسی شما به مدرسه در انتظار تأیید ادمین است.',meetingNotApproved:'دسترسی شما به جلسات در انتظار تأیید ادمین است.',finalExam:'امتحان پایان دوره',submitExam:'ارسال امتحان',correctAnswers:'پاسخ‌های درست',openReadingHere:'نمایش مطالعه در همین صفحه',closeReading:'بستن مطالعه',oldAndNew:'عهد عتیق + عهد جدید',savedVersesCollapsed:'آیات ذخیره‌شده شما اینجا قرار دارد.',notesCollapsed:'همه یادداشت‌های شما اینجا جمع می‌شود.'
+  },
+  hr:{
+    loginAccount:'Prijava / obnova pristupa',logoutAccount:'Odjavi se s ovog uređaja',restoreAccess:'Obnovi pristup putem emaila',restoreAccessHint:'Unesite email koji ste koristili za registraciju u školu kako biste obnovili odobreni pristup na ovom uređaju.',restoreAccessDone:'Provjera pristupa je završena. Ako je email odobren, pristup školi i sastancima je obnovljen.',accountActions:'Pristup računu',
+    myNotes:'Moje bilješke',showSavedVerses:'Prikaži spremljene stihove',showMyNotes:'Prikaži moje bilješke',hide:'Sakrij',noNotes:'Još nema spremljenih bilješki.',registrationForm:'Obrazac za registraciju',firstName:'Ime',lastName:'Prezime',birthDate:'Datum rođenja',city:'Grad prebivališta',country:'Država prebivališta',spiritualAge:'Koliko dugo ste vjernik?',churchMember:'Jeste li član crkve?',churchName:'Naziv crkve',pastorName:'Ime pastora',waterBaptism:'Jeste li primili krštenje u vodi?',salvationPrayer:'Jeste li molili molitvu spasenja?',eventsInterest:'Zanimate li se za seminare i konferencije uživo?',testimony:'Svjedočanstvo obraćenja',howFound:'Kako ste čuli za crkvu OmideNo7?',phone:'Broj telefona',requiredField:'Molimo ispunite sva obavezna polja.',yes:'Da',no:'Ne',submitRegistration:'Pošalji registraciju',goToSalvation:'Idi na molitvu spasenja',schoolNotApproved:'Vaš pristup školi čeka odobrenje administratora.',meetingNotApproved:'Vaš pristup sastancima čeka odobrenje administratora.',finalExam:'Završni ispit',submitExam:'Pošalji ispit',correctAnswers:'Točni odgovori',openReadingHere:'Prikaži čitanje ovdje',closeReading:'Zatvori čitanje',oldAndNew:'Stari zavjet + Novi zavjet',savedVersesCollapsed:'Spremljeni stihovi dostupni su ovdje.',notesCollapsed:'Sve vaše bilješke skupljene su ovdje.'
+  }
+};
+Object.keys(EXTRA_T).forEach(lang=>Object.assign(T[lang], EXTRA_T[lang]));
+
+const QA_T = {
+  en:{qna:'Questions & Answers',askQuestion:'Ask a question',questionText:'Write your question',submitQuestion:'Submit question',publicAnswers:'Public answered questions',myQuestions:'My questions',answered:'Answered',waitingAnswer:'Waiting for answer',questionSent:'Your question was sent. It will be answered by the church team.',noQuestions:'No questions yet.',anonymousNote:'Questions and answers are shown publicly without showing the person’s name.',answer:'Answer'},
+  fa:{qna:'پرسش و پاسخ',askQuestion:'پرسش خود را بنویسید',questionText:'متن پرسش',submitQuestion:'ارسال پرسش',publicAnswers:'پرسش‌ها و پاسخ‌های عمومی',myQuestions:'پرسش‌های من',answered:'پاسخ داده شده',waitingAnswer:'در انتظار پاسخ',questionSent:'پرسش شما ارسال شد. خادمین کلیسا پاسخ خواهند داد.',noQuestions:'هنوز پرسشی ثبت نشده است.',anonymousNote:'پرسش‌ها و پاسخ‌ها بدون نمایش نام شخص، به‌صورت گمنام برای دیگر کاربران نمایش داده می‌شود.',answer:'پاسخ'},
+  hr:{qna:'Pitanja i odgovori',askQuestion:'Postavite pitanje',questionText:'Napišite svoje pitanje',submitQuestion:'Pošalji pitanje',publicAnswers:'Javna odgovorena pitanja',myQuestions:'Moja pitanja',answered:'Odgovoreno',waitingAnswer:'Čeka odgovor',questionSent:'Vaše pitanje je poslano. Crkveni služitelji će odgovoriti.',noQuestions:'Još nema pitanja.',anonymousNote:'Pitanja i odgovori prikazuju se javno bez imena osobe.',answer:'Odgovor'}
+};
+Object.keys(QA_T).forEach(lang=>Object.assign(T[lang], QA_T[lang]));
+
+const AUDIO_BIBLE_T = {
+  en:{audioBible:'Audio Bible',audioBibleIntro:'Choose a testament, then a book and chapter.',uploadedChapters:'Uploaded chapters',chapterAudio:'Chapter audio',noChapterAudio:'No chapter audio has been published yet.',oldTestament:'Old Testament',newTestament:'New Testament',backToBooks:'Back to books',downloadOffline:'Download offline'},
+  fa:{audioBible:'کتاب مقدس صوتی',audioBibleIntro:'ابتدا عهد، سپس کتاب و باب مورد نظر را انتخاب کنید.',uploadedChapters:'باب‌های صوتی موجود',chapterAudio:'فایل صوتی باب',noChapterAudio:'هنوز فایل صوتی برای این کتاب منتشر نشده است.',oldTestament:'عهد عتیق',newTestament:'عهد جدید',backToBooks:'بازگشت به فهرست کتاب‌ها',downloadOffline:'دانلود برای آفلاین'},
+  hr:{audioBible:'Audio Biblija',audioBibleIntro:'Odaberite zavjet, zatim knjigu i poglavlje.',uploadedChapters:'Prenesena poglavlja',chapterAudio:'Audio poglavlja',noChapterAudio:'Za ovu knjigu još nema objavljenog audio zapisa.',oldTestament:'Stari zavjet',newTestament:'Novi zavjet',backToBooks:'Natrag na knjige',downloadOffline:'Preuzmi offline'}
+};
+Object.keys(AUDIO_BIBLE_T).forEach(lang=>Object.assign(T[lang], AUDIO_BIBLE_T[lang]));
+
+const MEETING_T = {
+  en:{meetingApproved:'Your meeting access is approved.',meetingDetails:'Meeting details',meetingLink:'Meeting link',accessCode:'Access code',securityCode:'Security code',phoneNumber:'Phone number',openMeeting:'Open meeting',notConfigured:'Meeting details are not configured yet by admin.',checkingApproval:'Checking your approval status...',syncApproval:'Refresh approval status'},
+  fa:{meetingApproved:'دسترسی شما به جلسه تأیید شده است.',meetingDetails:'اطلاعات ورود به جلسه',meetingLink:'لینک جلسه',accessCode:'کد دسترسی',securityCode:'کد امنیتی',phoneNumber:'شماره تماس',openMeeting:'باز کردن جلسه',notConfigured:'اطلاعات جلسه هنوز توسط ادمین تنظیم نشده است.',checkingApproval:'در حال بررسی وضعیت تأیید شما...',syncApproval:'تازه‌سازی وضعیت تأیید'},
+  hr:{meetingApproved:'Vaš pristup sastanku je odobren.',meetingDetails:'Podaci za pristup sastanku',meetingLink:'Link sastanka',accessCode:'Pristupni kod',securityCode:'Sigurnosni kod',phoneNumber:'Telefonski broj',openMeeting:'Otvori sastanak',notConfigured:'Podaci za sastanak još nisu postavljeni od administratora.',checkingApproval:'Provjera statusa odobrenja...',syncApproval:'Osvježi status odobrenja'}
+};
+Object.keys(MEETING_T).forEach(lang=>Object.assign(T[lang], MEETING_T[lang]));
+
+
+const INBOX_T = {
+  en:{inbox:'Inbox',unread:'Unread',markAllRead:'Mark all as read',noInboxMessages:'No messages yet.',notificationInbox:'Notification Inbox',readMessage:'Read message',newMessage:'New message',messageRead:'Message marked as read',dailyWordReminder:'Daily Word is ready',faithReminder:'Faith proclamation is ready',juiceReminder:'Daily Juice is ready',gratitudeReminder:'Gratitude reminder',morningMeetingReminder:'Morning prayer meeting reminder',sundayMeetingReminder:'Sunday church meeting reminder',notificationAutoNote:'Automatic push sending uses OneSignal + Supabase Edge Function. This inbox also keeps messages inside the app.',deleteMessage:'Delete message',deleteAllInbox:'Delete all visible messages',cleanInbox:'Clean old mixed-language messages',deleteConfirm:'Delete this message?',deleteAllConfirm:'Delete all visible inbox messages?'},
+  fa:{inbox:'صندوق ورودی',unread:'خوانده‌نشده',markAllRead:'علامت‌گذاری همه به‌عنوان خوانده‌شده',noInboxMessages:'هنوز پیامی دریافت نشده است.',notificationInbox:'صندوق ورودی اعلان‌ها',readMessage:'خواندن پیام',newMessage:'پیام جدید',messageRead:'پیام خوانده شد',dailyWordReminder:'کلام روزانه آماده است',faithReminder:'اعلان ایمان آماده است',juiceReminder:'آبمیوه روزانه آماده است',gratitudeReminder:'یادآوری شکرگزاری',morningMeetingReminder:'یادآوری جلسه دعای صبحگاهی',sundayMeetingReminder:'یادآوری جلسه کلیسای یکشنبه',notificationAutoNote:'ارسال خودکار اعلان‌ها با OneSignal و Supabase Edge Function انجام می‌شود. این صندوق، پیام‌ها را داخل اپ هم نگه می‌دارد.',deleteMessage:'پاک کردن پیام',deleteAllInbox:'پاک کردن همه پیام‌های نمایان',cleanInbox:'پاک‌سازی پیام‌های زبان دیگر',deleteConfirm:'این پیام پاک شود؟',deleteAllConfirm:'همه پیام‌های نمایان صندوق ورودی پاک شوند؟'},
+  hr:{inbox:'Ulazna pošta',unread:'Nepročitano',markAllRead:'Označi sve kao pročitano',noInboxMessages:'Još nema poruka.',notificationInbox:'Ulazna pošta obavijesti',readMessage:'Pročitaj poruku',newMessage:'Nova poruka',messageRead:'Poruka je pročitana',dailyWordReminder:'Dnevna Riječ je spremna',faithReminder:'Proglas vjere je spreman',juiceReminder:'Dnevni sok je spreman',gratitudeReminder:'Podsjetnik zahvalnosti',morningMeetingReminder:'Podsjetnik za jutarnju molitvu',sundayMeetingReminder:'Podsjetnik za nedjeljni sastanak',notificationAutoNote:'Automatsko slanje push obavijesti koristi OneSignal + Supabase Edge Function. Ova ulazna pošta čuva poruke i u aplikaciji.',deleteMessage:'Obriši poruku',deleteAllInbox:'Obriši sve vidljive poruke',cleanInbox:'Očisti stare poruke na drugim jezicima',deleteConfirm:'Obrisati ovu poruku?',deleteAllConfirm:'Obrisati sve vidljive poruke iz ulazne pošte?'}
+};
+Object.keys(INBOX_T).forEach(lang=>Object.assign(T[lang], INBOX_T[lang]));
+
+// V1.5.0 production-fix labels
+Object.assign(T.en, {openSingleVerse:'Open this verse', openWholeChapter:'Open full chapter', deleteSavedVerse:'Delete saved verse', writeNote:'Write note', saveNote:'Save note', share:'Share', undoComplete:'Undo completion', viewPreviousDays:'View previous days', selectDay:'Select day', approvedRefreshHint:'If approved access is not visible, tap Refresh approval status or refresh app data from Settings.'});
+Object.assign(T.fa, {openSingleVerse:'باز کردن همین آیه', openWholeChapter:'باز کردن کل فصل', deleteSavedVerse:'حذف آیه ذخیره‌شده', writeNote:'نوشتن یادداشت', saveNote:'ذخیره یادداشت', share:'اشتراک‌گذاری', undoComplete:'لغو تکمیل امروز', viewPreviousDays:'مشاهده روزهای قبلی', selectDay:'انتخاب روز', approvedRefreshHint:'اگر دسترسی تأیید شده هنوز دیده نمی‌شود، «تازه‌سازی وضعیت تأیید» یا «تازه‌سازی داده‌های اپ» را بزنید.'});
+Object.assign(T.hr, {openSingleVerse:'Otvori ovaj stih', openWholeChapter:'Otvori cijelo poglavlje', deleteSavedVerse:'Izbriši spremljeni stih', writeNote:'Napiši bilješku', saveNote:'Spremi bilješku', share:'Podijeli', undoComplete:'Poništi završetak', viewPreviousDays:'Prikaži prethodne dane', selectDay:'Odaberi dan', approvedRefreshHint:'Ako se odobreni pristup ne vidi, dodirnite Osvježi status odobrenja ili Osvježi podatke aplikacije u postavkama.'});
+
+Object.assign(T.en, {highlight:'Highlight', account:'Account', forgotPassword:'Forgot password?', resetPassword:'Send password reset email', resetPasswordSent:'If this email exists, a reset link has been sent.', enterSchool:'Enter school', refreshApproval:'Refresh approval status', enterMeeting:'Enter meeting', myAccess:'My access', previousDay:'Previous day', today:'Today', nextDay:'Next day', alreadyAsked:'This question has already been submitted. Please wait for the answer in the app.', questionSent:'Your question was submitted anonymously to the public list. Please wait up to two weeks for the answer in the app.', qnaWaitNotice:'After submitting a question, please wait up to two weeks. The answer will appear inside the app.', askQuestionOnce:'Please do not submit the same question more than once.'});
+Object.assign(T.fa, {highlight:'هایلایت', account:'حساب کاربری', forgotPassword:'فراموشی رمز عبور؟', resetPassword:'ارسال لینک بازیابی رمز', resetPasswordSent:'اگر این ایمیل در سیستم وجود داشته باشد، لینک بازیابی رمز ارسال شد.', enterSchool:'ورود به مدرسه', refreshApproval:'تازه‌سازی وضعیت تأیید', enterMeeting:'ورود به جلسه', myAccess:'دسترسی من', previousDay:'روز قبل', today:'امروز', nextDay:'روز بعد', alreadyAsked:'این سؤال قبلاً ثبت شده است. لطفاً منتظر پاسخ در اپ بمانید.', questionSent:'سؤال شما ثبت شد. برای همه به صورت گمنام نمایش داده می‌شود. لطفاً تا دو هفته منتظر پاسخ در اپ بمانید.', qnaWaitNotice:'بعد از ثبت سؤال، لطفاً تا دو هفته منتظر پاسخ باشید. پاسخ داخل اپ نمایش داده می‌شود.', askQuestionOnce:'لطفاً سؤال تکراری ثبت نکنید.'});
+Object.assign(T.hr, {highlight:'Označi', account:'Račun', forgotPassword:'Zaboravili ste lozinku?', resetPassword:'Pošalji email za reset lozinke', resetPasswordSent:'Ako ova email adresa postoji, poveznica za reset je poslana.', enterSchool:'Uđi u školu', refreshApproval:'Osvježi status odobrenja', enterMeeting:'Uđi u sastanak', myAccess:'Moj pristup', previousDay:'Prethodni dan', today:'Danas', nextDay:'Sljedeći dan', alreadyAsked:'Ovo pitanje je već poslano. Molimo pričekajte odgovor u aplikaciji.', questionSent:'Vaše pitanje je poslano anonimno na javni popis. Pričekajte odgovor u aplikaciji do dva tjedna.', qnaWaitNotice:'Nakon slanja pitanja pričekajte do dva tjedna. Odgovor će se prikazati u aplikaciji.', askQuestionOnce:'Nemojte slati isto pitanje više puta.'});
+Object.assign(T.en,{library:'Books & Handouts',publicLibrary:'Public books',ministersLibrary:'Ministers library',openPdf:'Open PDF',protectedLibrary:'Protected ministry resources',enterAccessCode:'Enter the access code provided by the church',invalidAccessCode:'The access code is invalid, expired, or has reached its limit.',libraryEmpty:'No published books or handouts yet.',pdfExpires:'The secure PDF link is valid for 10 minutes.'});
+Object.assign(T.fa,{library:'کتاب‌ها و جزوه‌ها',publicLibrary:'کتاب‌ها و جزوه‌های عمومی',ministersLibrary:'کتابخانه خادمان',openPdf:'باز کردن PDF',protectedLibrary:'منابع محافظت‌شده خادمان',enterAccessCode:'کدی را که کلیسا در اختیار شما گذاشته وارد کنید',invalidAccessCode:'کد نامعتبر است، منقضی شده یا سقف استفاده آن تمام شده است.',libraryEmpty:'هنوز کتاب یا جزوه‌ای منتشر نشده است.',pdfExpires:'لینک امن PDF ده دقیقه اعتبار دارد.'});
+Object.assign(T.hr,{library:'Knjige i materijali',publicLibrary:'Javne knjige',ministersLibrary:'Knjižnica za služitelje',openPdf:'Otvori PDF',protectedLibrary:'Zaštićeni materijali za služitelje',enterAccessCode:'Unesite pristupni kod koji ste dobili od crkve',invalidAccessCode:'Kod nije valjan, istekao je ili je dosegnuo ograničenje.',libraryEmpty:'Još nema objavljenih knjiga ili materijala.',pdfExpires:'Sigurna PDF poveznica vrijedi 10 minuta.'});
+
+
+
+
+const V170_T = {
+  en:{signIn:'Sign in',signUp:'Create account',password:'Password',confirmPassword:'Confirm password',showPassword:'Show password',hidePassword:'Hide password',signedOut:'You are signed out.',signInHint:'Enter your email and password to sign in.',loginFailed:'Email or password is incorrect.',passwordMismatch:'Passwords do not match.',passwordMin:'Password must be at least 6 characters.',accountCreated:'Account created. If email confirmation is enabled, check your email.',legacyRestore:'Restore approved access for an older account',sermons:'Sermons',watchYouTube:'Watch on YouTube',listenAudio:'Listen in app',sermonSearch:'Search sermons',allCategories:'All categories',noSermons:'No published sermons yet.',duration:'Duration',notificationNativeUnsupported:'Native notifications are not available in this build.',notificationSettingsOpen:'Open notification settings',notificationUpdated:'Notification schedule updated.',loginRequired:'Please sign in to continue.',sermonNotes:'Notes for this sermon',saveSermonNote:'Save note',continueListening:'Continue listening',restart:'Restart',closePlayer:'Close player',back15:'Back 15 seconds',forward30:'Forward 30 seconds',playbackSpeed:'Playback speed',nowPlaying:'Now playing',listened:'Listened'},
+  fa:{signIn:'ورود',signUp:'ساخت حساب',password:'رمز عبور',confirmPassword:'تکرار رمز عبور',showPassword:'نمایش رمز',hidePassword:'پنهان کردن رمز',signedOut:'شما از حساب خارج هستید.',signInHint:'برای ورود، ایمیل و رمز عبور خود را وارد کنید.',loginFailed:'ایمیل یا رمز عبور صحیح نیست.',passwordMismatch:'رمز عبور و تکرار آن یکسان نیستند.',passwordMin:'رمز عبور باید حداقل ۶ حرف باشد.',accountCreated:'حساب ساخته شد. اگر تأیید ایمیل فعال باشد، ایمیل خود را بررسی کنید.',legacyRestore:'بازیابی دسترسی تأییدشده حساب‌های قدیمی',sermons:'موعظه‌ها',watchYouTube:'تماشا در YouTube',listenAudio:'گوش دادن در اپ',sermonSearch:'جستجوی موعظه',allCategories:'همه دسته‌بندی‌ها',noSermons:'هنوز موعظه‌ای منتشر نشده است.',duration:'مدت',notificationNativeUnsupported:'اعلان بومی در این نسخه نصب‌شده در دسترس نیست.',notificationSettingsOpen:'باز کردن تنظیمات اعلان‌ها',notificationUpdated:'برنامه اعلان‌ها به‌روزرسانی شد.',loginRequired:'لطفاً ابتدا وارد حساب شوید.',sermonNotes:'یادداشت این موعظه',saveSermonNote:'ذخیره یادداشت',continueListening:'ادامه شنیدن',restart:'شروع از ابتدا',closePlayer:'بستن پخش‌کننده',back15:'۱۵ ثانیه عقب',forward30:'۳۰ ثانیه جلو',playbackSpeed:'سرعت پخش',nowPlaying:'در حال پخش',listened:'شنیده‌شده'},
+  hr:{signIn:'Prijava',signUp:'Izradi račun',password:'Lozinka',confirmPassword:'Potvrdi lozinku',showPassword:'Prikaži lozinku',hidePassword:'Sakrij lozinku',signedOut:'Odjavljeni ste.',signInHint:'Unesite email i lozinku za prijavu.',loginFailed:'Email ili lozinka nisu ispravni.',passwordMismatch:'Lozinke se ne podudaraju.',passwordMin:'Lozinka mora imati najmanje 6 znakova.',accountCreated:'Račun je izrađen. Ako je potvrda emaila uključena, provjerite email.',legacyRestore:'Obnovi odobreni pristup starijeg računa',sermons:'Propovijedi',watchYouTube:'Gledaj na YouTubeu',listenAudio:'Slušaj u aplikaciji',sermonSearch:'Pretraži propovijedi',allCategories:'Sve kategorije',noSermons:'Još nema objavljenih propovijedi.',duration:'Trajanje',notificationNativeUnsupported:'Izvorne obavijesti nisu dostupne u ovoj verziji.',notificationSettingsOpen:'Otvori postavke obavijesti',notificationUpdated:'Raspored obavijesti je ažuriran.',loginRequired:'Najprije se prijavite.',sermonNotes:'Bilješke za ovu propovijed',saveSermonNote:'Spremi bilješku',continueListening:'Nastavi slušati',restart:'Počni ispočetka',closePlayer:'Zatvori reproduktor',back15:'15 sekundi natrag',forward30:'30 sekundi naprijed',playbackSpeed:'Brzina reprodukcije',nowPlaying:'Sada svira',listened:'Poslušano'}
+};
+Object.keys(V170_T).forEach(l=>Object.assign(T[l],V170_T[l]));
+Object.assign(T.en,{schoolExistingLogin:'Sign in to school',schoolNewRegistration:'New registration',schoolLoginHelp:'Already registered? Sign in with the same email and password on any device.',sermonNoteButton:'Notes'});
+Object.assign(T.fa,{schoolExistingLogin:'ورود به مدرسه',schoolNewRegistration:'ثبت‌نام جدید',schoolLoginHelp:'اگر قبلاً ثبت‌نام کرده‌اید، در هر دستگاه با همان ایمیل و رمز عبور وارد شوید.',sermonNoteButton:'یادداشت'});
+Object.assign(T.hr,{schoolExistingLogin:'Prijava u školu',schoolNewRegistration:'Nova registracija',schoolLoginHelp:'Ako ste se već registrirali, prijavite se istim emailom i lozinkom na bilo kojem uređaju.',sermonNoteButton:'Bilješke'});
+
+const NEW_BIRTH_VIDEOS = [
+  'https://youtu.be/u-G6r7rYNEE?is=8kokBIcdqkvQGayt',
+  'https://youtu.be/_NNh_EZYKTk?is=4UkXpWX2ziuZOyuI',
+  'https://youtu.be/NkhUL9CTWcs?is=b1RAH8qmJwNMFciF',
+  'https://youtu.be/LbJ1Fba5sww?is=kFsEup6CxLNId6Pb',
+  'https://youtu.be/BYyCOXIA944?is=29lwY491PLjLwqdl',
+  'https://youtu.be/ByEg4dcb6zs?is=gzcGJdHnEzKgXqe9'
+];
+
+
+const SUPABASE_CONFIG = {
+  url: 'https://gpzcwffxnddhaeaogdyo.supabase.co',
+  key: 'sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37'
+};
+const CLOUD_ENABLED = Boolean(SUPABASE_CONFIG.url && SUPABASE_CONFIG.key);
+const AUTH_SESSION_KEY='nh7_user_session_v170';
+const EXPLICIT_LOGOUT_KEY='nh7_explicit_logout';
+const NH7_PASSWORD_RESET_URL='https://omideno7.github.io/new-hope7-app/reset-password.html';
+const LEGACY_SCHOOL_SESSION_KEY='nh7_legacy_school_session_v1';
+function clearLegacySchoolSession(){localStorage.removeItem(LEGACY_SCHOOL_SESSION_KEY)}
+function isLegacySchoolLoggedIn(){return false}
+function isSchoolIdentityAvailable(){return isAccountLoggedIn()}
+
+function authSession(){ try{return JSON.parse(localStorage.getItem(AUTH_SESSION_KEY)||'null')}catch(e){return null} }
+function saveAuthSession(v){ if(v){localStorage.setItem(AUTH_SESSION_KEY,JSON.stringify(v));localStorage.removeItem(EXPLICIT_LOGOUT_KEY);}else localStorage.removeItem(AUTH_SESSION_KEY); }
+function isExplicitlyLoggedOut(){ return localStorage.getItem(EXPLICIT_LOGOUT_KEY)==='1'; }
+function isAccountLoggedIn(){ const x=authSession(); return !!(x&&x.access_token&&!isExplicitlyLoggedOut()); }
+async function authApi(path,options={}){
+  const headers=Object.assign({'apikey':SUPABASE_CONFIG.key,'Content-Type':'application/json'},options.headers||{});
+  const r=await fetch(SUPABASE_CONFIG.url+'/auth/v1/'+path,Object.assign({},options,{headers}));
+  const text=await r.text(); let data={}; try{data=text?JSON.parse(text):{}}catch(e){data={message:text}}
+  if(!r.ok){const error=new Error(data.msg||data.message||data.error_description||text||r.statusText);error.status=r.status;error.code=String(data.code||data.error_code||'');throw error}
+  return data;
+}
+async function invokeEdgeFunction(name,payload={}){
+  if(!CLOUD_ENABLED)throw new Error('Cloud disabled');
+  const headers={
+    'apikey':SUPABASE_CONFIG.key,
+    'Content-Type':'application/json'
+  };
+  const r=await fetch(SUPABASE_CONFIG.url+'/functions/v1/'+name,{
+    method:'POST',
+    headers,
+    body:JSON.stringify(payload||{})
+  });
+  const text=await r.text();let data={};
+  try{data=text?JSON.parse(text):{}}catch(e){data={message:text}}
+  if(!r.ok){
+    const err=new Error(data.error||data.message||text||r.statusText);
+    err.code=data.code||'';
+    throw err;
+  }
+  return data;
+}
+
+async function refreshUserSession(){
+  const old=authSession(); if(!old?.refresh_token)return null;
+  try{const d=await authApi('token?grant_type=refresh_token',{method:'POST',body:JSON.stringify({refresh_token:old.refresh_token})});saveAuthSession(d);return d}catch(e){saveAuthSession(null);return null}
+}
+function authEmail(){ return String(authSession()?.user?.email||'').trim().toLowerCase(); }
+
+async function signInOrClaimLegacyAccount(email,password){
+  try{
+    return await authApi('token?grant_type=password',{
+      method:'POST',
+      body:JSON.stringify({email,password})
+    });
+  }catch(loginErr){
+    const claimPayload={email,password,device_id:deviceId(),language:state.lang};
+    const runClaim=async payload=>{
+      const claimed=await invokeEdgeFunction('nh7-claim-legacy-auth',payload);
+      const session=claimed?.session||claimed;
+      if(!session?.access_token)throw new Error('No authenticated session was returned.');
+      return session;
+    };
+    try{
+      return await runClaim(claimPayload);
+    }catch(claimErr){
+      const code=String(claimErr?.code||'');
+      if(code==='ACCOUNT_EXISTS'||code==='EXISTING_CONFIRMED_ACCOUNT')throw loginErr;
+      if(code==='PROFILE_VERIFICATION_REQUIRED'){
+        const dobPrompt=state.lang==='fa'
+          ?'برای تأیید حساب قدیمی، تاریخ تولدی را که هنگام ثبت‌نام نوشته‌اید به شکل سال-ماه-روز وارد کنید. مثال: 1980-09-19'
+          :state.lang==='hr'
+            ?'Za potvrdu starog računa unesite datum rođenja iz prijave u obliku GGGG-MM-DD.'
+            :'To verify the old account, enter the date of birth used during registration in YYYY-MM-DD format.';
+        const phonePrompt=state.lang==='fa'
+          ?'شماره تلفنی را که هنگام ثبت‌نام نوشته‌اید وارد کنید.'
+          :state.lang==='hr'
+            ?'Unesite telefonski broj korišten pri registraciji.'
+            :'Enter the phone number used during registration.';
+        const birthDate=window.prompt(dobPrompt,'')?.trim()||'';
+        if(!birthDate)throw claimErr;
+        const phone=window.prompt(phonePrompt,'')?.trim()||'';
+        if(!phone)throw claimErr;
+        return await runClaim(Object.assign({},claimPayload,{birth_date:birthDate,phone}));
+      }
+      throw claimErr;
+    }
+  }
+}
+
+function accountLoginError(error){
+  const code=String(error?.code||'').toLowerCase(),message=String(error?.message||'').toLowerCase();
+  const invalid=code==='invalid_credentials'||message.includes('invalid login credentials')||message.includes('invalid credentials')||message.includes('wrong password');
+  if(invalid)return state.lang==='fa'
+    ?'ایمیل یا رمز عبور درست نیست. اگر این ایمیل قبلاً حساب داشته است، «فراموشی رمز عبور» را بزنید و یک رمز تازه بسازید.'
+    :state.lang==='hr'
+      ?'E-mail ili lozinka nisu ispravni. Ako je ovaj e-mail već imao račun, odaberite „Zaboravili ste lozinku?” i postavite novu lozinku.'
+      :'The email or password is incorrect. If this email had an account before, choose “Forgot password” and set a new password.';
+  if(code==='email_not_confirmed'||message.includes('email not confirmed'))return state.lang==='fa'
+    ?'ایمیل این حساب هنوز تأیید نشده است. ایمیل تأیید و پوشه Spam/Junk را بررسی کنید.'
+    :state.lang==='hr'
+      ?'E-mail računa još nije potvrđen. Provjerite poruku za potvrdu i mapu Spam/Junk.'
+      :'This account email is not confirmed yet. Check the confirmation email and Spam/Junk.';
+  if(!navigator.onLine||message==='failed to fetch')return state.lang==='fa'?'اینترنت در دسترس نیست. اتصال را بررسی کنید.':state.lang==='hr'?'Nema internetske veze. Provjerite vezu.':'No internet connection. Check your connection.';
+  return String(error?.message||tr('loginFailed'));
+}
+
+function deviceId(){
+  let id=localStorage.getItem('nh7_device_id');
+  if(!id){ id='dev_'+(globalThis.crypto?.randomUUID ? globalThis.crypto.randomUUID() : Date.now()+'_'+Math.random().toString(16).slice(2)); localStorage.setItem('nh7_device_id',id); }
+  return id;
+}
+function currentUserEmail(){
+  if(isExplicitlyLoggedOut()) return '';
+  const ae=authEmail(); if(ae) return ae;
+  try{
+    const manual=(localStorage.getItem('nh7_manual_email')||'').trim().toLowerCase();
+    const m=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{}');
+    const sc=JSON.parse(localStorage.getItem('nh7_school_access')||'{}');
+    return (manual || sc.email || m.email || '').trim().toLowerCase();
+  }catch(e){ return (localStorage.getItem('nh7_manual_email')||'').trim().toLowerCase(); }
+}
+async function cloudFetch(path, options={}){
+  if(!CLOUD_ENABLED) throw new Error('Cloud disabled');
+  const makeHeaders=()=>Object.assign({
+    'apikey': SUPABASE_CONFIG.key,
+    'Authorization': 'Bearer '+(authSession()?.access_token||SUPABASE_CONFIG.key),
+    'Content-Type':'application/json','Prefer':'return=representation',
+    'x-device-id': deviceId(),'x-user-email': currentUserEmail()
+  }, options.headers||{});
+  let res=await fetch(SUPABASE_CONFIG.url + '/rest/v1/' + path, Object.assign({}, options, {headers:makeHeaders()}));
+  if(!res.ok){
+    const txt=await res.text().catch(()=>'');
+    if((res.status===401||txt.toLowerCase().includes('jwt expired')) && await refreshUserSession()){
+      res=await fetch(SUPABASE_CONFIG.url + '/rest/v1/' + path, Object.assign({}, options, {headers:makeHeaders()}));
+      if(res.ok){if(res.status===204)return null;return res.json().catch(()=>null)}
+      throw new Error(await res.text().catch(()=>res.statusText));
+    }
+    throw new Error(txt || res.statusText);
+  }
+  if(res.status===204) return null;
+  return res.json().catch(()=>null);
+}
+
+async function cloudRpc(name, payload={}){
+  return cloudFetch('rpc/'+name, {method:'POST', body:JSON.stringify(payload)});
+}
+function enqueueCloud(op){
+  const q=JSON.parse(localStorage.getItem('nh7_cloud_queue')||'[]');
+  q.push(Object.assign({id:Date.now()+'_'+Math.random().toString(16).slice(2),createdAt:new Date().toISOString()},op));
+  localStorage.setItem('nh7_cloud_queue',JSON.stringify(q));
+  localStorage.setItem('nh7_cloud_status','queued');
+}
+async function syncCloudQueue(){
+  if(!navigator.onLine)return;
+  const q=JSON.parse(localStorage.getItem('nh7_cloud_queue')||'[]');
+  if(!q.length){localStorage.setItem('nh7_cloud_status','synced');return}
+  const remaining=[],activeEmail=authEmail();
+  for(const op of q){
+    if(op.owner_email&&String(op.owner_email).toLowerCase()!==activeEmail){
+      remaining.push(op);
+      continue;
+    }
+    try{
+      if(op.type==='insert')await cloudFetch(op.table,{method:'POST',body:JSON.stringify(op.payload)});
+      if(op.type==='upsert')await cloudFetch(op.table+'?on_conflict='+encodeURIComponent(op.conflict||'device_id'),{method:'POST',headers:{'Prefer':'resolution=merge-duplicates,return=representation'},body:JSON.stringify(op.payload)});
+      if(op.type==='delete')await cloudFetch(op.path,{method:'DELETE'});
+    }catch(e){console.warn('Cloud sync failed',e);remaining.push(op)}
+  }
+  localStorage.setItem('nh7_cloud_queue',JSON.stringify(remaining));
+  localStorage.setItem('nh7_cloud_status',remaining.length?'queued':'synced');
+}
+async function saveCloud(op){ enqueueCloud(op); await syncCloudQueue(); }
+function cloudStatusText(){
+  const s=localStorage.getItem('nh7_cloud_status')||'local';
+  if(state.lang==='fa') return s==='synced'?'ذخیره ابری همگام است.':s==='queued'?'چند مورد برای همگام‌سازی ابری در صف است.':'ذخیره محلی فعال است؛ بعد از ساخت جدول‌ها ذخیره ابری فعال می‌شود.';
+  if(state.lang==='hr') return s==='synced'?'Cloud spremanje je sinkronizirano.':s==='queued'?'Neke stavke čekaju sinkronizaciju u oblak.':'Lokalno spremanje je aktivno; cloud se uključuje nakon stvaranja tablica.';
+  return s==='synced'?'Cloud save is synced.':s==='queued'?'Some items are waiting for cloud sync.':'Local save is active; cloud starts after the tables are created.';
+}
+async function saveRegistrationCloud(data){
+  const payload=Object.assign({},data,{device_id:deviceId()});
+  try{
+    const result=await cloudRpc('nh7_submit_registration_v3',{
+      p_type:data.kind||'general',p_email:data.email||'',p_device_id:deviceId(),p_language:state.lang,p_payload:payload
+    });
+    return Array.isArray(result)?result[0]:result;
+  }catch(e){console.warn('Registration RPC unavailable',e);throw e}
+}
+function accountCloudEmail(){return isAccountLoggedIn()?authEmail():''}
+function accountProgressKey(key){const k=String(key||'');return k.startsWith('nh7_')?k:'nh7_'+k}
+async function saveVerseCloud(ref){
+  await saveCloud({type:'upsert',table:'saved_verses',conflict:'device_id,ref',payload:{device_id:deviceId(),ref,language:state.lang}});
+  const email=accountCloudEmail();
+  if(email)await saveCloud({
+    type:'upsert',
+    table:'nh7_account_saved_verses',
+    conflict:'user_email,ref',
+    owner_email:email,
+    payload:{user_email:email,ref,language:state.lang,updated_at:new Date().toISOString()}
+  });
+}
+async function deleteVerseCloud(ref){
+  await saveCloud({type:'delete',path:'saved_verses?device_id=eq.'+encodeURIComponent(deviceId())+'&ref=eq.'+encodeURIComponent(ref)});
+  const email=accountCloudEmail();
+  if(email)await saveCloud({
+    type:'delete',
+    owner_email:email,
+    path:'nh7_account_saved_verses?user_email=eq.'+encodeURIComponent(email)+'&ref=eq.'+encodeURIComponent(ref)
+  });
+}
+async function saveNoteCloud(key,content){
+  await saveCloud({type:'upsert',table:'user_notes',conflict:'device_id,note_key',payload:{device_id:deviceId(),note_key:key,content,language:state.lang,updated_at:new Date().toISOString()}});
+  const email=accountCloudEmail();
+  if(email)await saveCloud({
+    type:'upsert',
+    table:'nh7_account_notes',
+    conflict:'user_email,note_key',
+    owner_email:email,
+    payload:{user_email:email,note_key:key,content,language:state.lang,updated_at:new Date().toISOString()}
+  });
+}
+async function saveProgressCloud(key,value){
+  await saveCloud({type:'upsert',table:'user_progress',conflict:'device_id,progress_key',payload:{device_id:deviceId(),progress_key:key,value,language:state.lang,updated_at:new Date().toISOString()}});
+  const email=accountCloudEmail();
+  if(email)await saveCloud({
+    type:'upsert',
+    table:'nh7_account_progress',
+    conflict:'user_email,progress_key',
+    owner_email:email,
+    payload:{user_email:email,progress_key:accountProgressKey(key),value,language:state.lang,updated_at:new Date().toISOString()}
+  });
+}
+function restoreAccountProgressValue(key,value){
+  if(key==='nh7_gratitude_completed'&&value&&Array.isArray(value.completed)){
+    localStorage.setItem(key,JSON.stringify(value.completed));
+    return;
+  }
+  if(value&&typeof value==='object'&&!Array.isArray(value)&&Object.prototype.hasOwnProperty.call(value,'__raw')){
+    localStorage.setItem(key,String(value.__raw??''));
+    return;
+  }
+  localStorage.setItem(key,JSON.stringify(value??{}));
+}
+async function restoreAccountCloudData(force=false){
+  const email=accountCloudEmail();
+  if(!email||!navigator.onLine)return false;
+  const marker='nh7_account_cloud_restore_'+email;
+  if(!force&&sessionStorage.getItem(marker)==='1')return true;
+  try{
+    const [notes,progress,verses]=await Promise.all([
+      cloudFetch('nh7_account_notes?select=note_key,content,updated_at&user_email=eq.'+encodeURIComponent(email),{method:'GET'}),
+      cloudFetch('nh7_account_progress?select=progress_key,value,updated_at&user_email=eq.'+encodeURIComponent(email),{method:'GET'}),
+      cloudFetch('nh7_account_saved_verses?select=ref&user_email=eq.'+encodeURIComponent(email),{method:'GET'})
+    ]);
+    (Array.isArray(notes)?notes:[]).forEach(row=>{
+      const key='nh7_'+String(row.note_key||'');
+      if(row.content!=null)localStorage.setItem(key,String(row.content));
+    });
+    (Array.isArray(progress)?progress:[]).forEach(row=>{
+      const key=accountProgressKey(row.progress_key);
+      if(key)restoreAccountProgressValue(key,row.value);
+    });
+    const cloudRefs=(Array.isArray(verses)?verses:[]).map(x=>String(x.ref||'')).filter(Boolean);
+    if(cloudRefs.length){
+      let local=[];try{local=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]')}catch(e){}
+      localStorage.setItem('nh7_bookmarks',JSON.stringify([...new Set([...(Array.isArray(local)?local:[]),...cloudRefs])]));
+    }
+    sessionStorage.setItem(marker,'1');
+    localStorage.setItem('nh7_account_cloud_restored_at',new Date().toISOString());
+    return true;
+  }catch(e){
+    console.warn('Account cloud restore failed',e);
+    return false;
+  }
+}
+function schoolSnapshotCacheKey(email){return 'nh7_school_snapshot_'+String(email||'').trim().toLowerCase()}
+function readSchoolSnapshotCache(email){
+  try{
+    const v=JSON.parse(localStorage.getItem(schoolSnapshotCacheKey(email))||'null');
+    return v&&Array.isArray(v.progress)&&Array.isArray(v.assignments)?v:null;
+  }catch(e){return null}
+}
+function invalidateSchoolSnapshot(email=currentUserEmail()){if(email)localStorage.removeItem(schoolSnapshotCacheKey(email))}
+async function getSchoolSnapshot(email=currentUserEmail(),force=false){
+  email=String(email||'').trim().toLowerCase();
+  const cached=readSchoolSnapshotCache(email);
+  if(!email||!isAccountLoggedIn())return Object.assign({progress:[],assignments:[],from_cache:true,error:'login_required'},cached||{});
+  if(!navigator.onLine)return Object.assign({progress:[],assignments:[],from_cache:true,offline:true},cached||{});
+  try{
+    let snapshot=null;
+    try{
+      snapshot=await cloudRpc('nh7_get_my_school_snapshot_v2110',{});
+      if(Array.isArray(snapshot))snapshot=snapshot[0]||{};
+    }catch(rpcError){
+      console.warn('School snapshot RPC unavailable; using REST fallback',rpcError);
+      const [progress,assignments]=await Promise.all([
+        cloudFetch('school_progress?select=*&user_email=eq.'+encodeURIComponent(email),{method:'GET'}),
+        cloudFetch('school_assignments?select=*&user_email=eq.'+encodeURIComponent(email),{method:'GET'})
+      ]);
+      snapshot={progress:Array.isArray(progress)?progress:[],assignments:Array.isArray(assignments)?assignments:[]};
+    }
+    const clean={
+      progress:Array.isArray(snapshot?.progress)?snapshot.progress:[],
+      assignments:Array.isArray(snapshot?.assignments)?snapshot.assignments:[],
+      saved_at:new Date().toISOString(),
+      from_cache:false
+    };
+    localStorage.setItem(schoolSnapshotCacheKey(email),JSON.stringify(clean));
+    return clean;
+  }catch(e){
+    console.warn('School snapshot load failed',e);
+    return Object.assign({progress:[],assignments:[],from_cache:true,error:String(e?.message||e)},cached||{});
+  }
+}
+async function saveQuestionCloud(item){
+  const profile=getKnownUserProfile();
+  const questionText=typeof item==='string'?item:item?.question;
+  const clientId=typeof item==='object'?(item.client_question_id||item.id||''):'';
+  const payload={device_id:deviceId(),client_question_id:clientId||null,question_text:questionText,author_name:profile.name||null,author_email:(currentUserEmail()||profile.email||null),language:state.lang,status:'pending'};
+  await saveCloud({type:'insert',table:'qa_questions',payload});
+}
+async function saveInboxCloud(item){
+  const payload={
+    id:String(item.id),
+    device_id:deviceId(),
+    user_email:currentUserEmail() || null,
+    title:item.title,
+    body:item.body,
+    category:item.category || 'app',
+    language:item.language || item.lang || state.lang,
+    delivered_at:item.createdAt || new Date().toISOString(),
+    read_at:item.read ? (item.readAt || new Date().toISOString()) : null
+  };
+  await saveCloud({type:'upsert', table:'notification_inbox', conflict:'id', payload});
+}
+
+async function fetchLatestRegistration(kind){
+  if(!CLOUD_ENABLED || !navigator.onLine) return null;
+  const localKey = kind==='meeting' ? 'nh7_meeting_access' : 'nh7_school_access';
+  try{
+    const local = JSON.parse(localStorage.getItem(localKey)||'{}');
+    const email = (currentUserEmail() || local.email || '').trim().toLowerCase();
+    const normalize = (row)=>Object.assign({}, row?.payload||{}, {
+      email: (row?.payload?.email || row?.email || email || local.email || '').trim().toLowerCase(),
+      status: row?.status || 'pending',
+      cloudId: row?.registration_id || row?.id || local.cloudId || '',
+      approvedBy: (row?.approved || row?.status==='approved') ? 'admin' : (local.approvedBy||''),
+      syncedAt: new Date().toISOString()
+    });
+
+    // Preferred v2 RPC: uses the signed-in account email, returns the approved row and its profile payload.
+    try{
+      const rpcRows = await cloudRpc('nh7_registration_access_v2', {p_type:kind, p_email:email, p_device_id:deviceId()});
+      const r = Array.isArray(rpcRows) ? rpcRows[0] : rpcRows;
+      if(r && r.found){
+        const data = Object.assign({}, local, r.payload||{}, normalize(r));
+        localStorage.setItem(localKey, JSON.stringify(data));
+        if(kind==='school') localStorage.setItem('nh7_user_profile', JSON.stringify({name:String((data.firstName||'')+' '+(data.lastName||'')).trim(),email:data.email||email,phone:data.phone||''}));
+        return data;
+      }
+    }catch(v2Err){ console.warn('Registration v2 RPC unavailable, using legacy lookup', v2Err); }
+
+    // Legacy secure RPC fallback.
+    try{
+      const rpcRows = await cloudRpc('nh7_registration_status', {p_type:kind, p_email:email, p_device_id:deviceId()});
+      const r = Array.isArray(rpcRows) ? rpcRows[0] : rpcRows;
+      if(r && r.found){
+        const data = Object.assign({}, local, normalize(r));
+        localStorage.setItem(localKey, JSON.stringify(data));
+        return data;
+      }
+    }catch(rpcErr){ console.warn('Registration RPC status check failed, using REST fallback', rpcErr); }
+
+    // Robust REST fallback: load recent rows and match locally by email or device.
+    let rows = await cloudFetch(`registrations?select=*&type=eq.${encodeURIComponent(kind)}&order=updated_at.desc,created_at.desc&limit=300`, {method:'GET'}).catch(()=>[]);
+    rows = Array.isArray(rows) ? rows : [];
+    const dev = deviceId();
+    const matches = rows.filter(r=>{
+      const p=r.payload||{};
+      const re=String(p.email||'').trim().toLowerCase();
+      return (email && re===email) || String(r.device_id||'')===dev;
+    });
+    const row = matches.find(r=>r.status==='approved') || matches[0] || null;
+    if(row){ const data=normalize(row); localStorage.setItem(localKey, JSON.stringify(data)); return data; }
+  }catch(e){ console.warn('Registration status check failed', e); }
+  return null;
+}
+function defaultMeetingSettings(){
+  return {
+    id:'fallback',
+    meeting_url:'https://fccdl.in/i/omideno7church',
+    phone_number:'',
+    access_code:'',
+    security_code:'789987',
+    extra_info: state.lang==='fa' ? 'جلسه دعا هر روز ساعت ۵ صبح به وقت کرواسی برگزار می‌شود. برای ورود، روی لینک جلسه بزنید و فقط کد امنیتی را وارد کنید.' : (state.lang==='hr' ? 'Molitveni sastanak održava se svaki dan u 05:00 po hrvatskom vremenu. Za ulazak otvorite poveznicu i unesite samo sigurnosni kod.' : 'Prayer meeting is held daily at 05:00 Croatia time. To join, open the meeting link and enter only the security code.')
+  };
+}
+async function fetchMeetingSettings(){
+  if(!CLOUD_ENABLED || !navigator.onLine) return defaultMeetingSettings();
+  try{
+    // v1.6.4: use a security-definer RPC so approved school/meeting users always receive
+    // the latest admin-edited meeting link and security code. This avoids RLS/header/cache
+    // issues that caused the app to fall back to the old built-in meeting details.
+    try{
+      const rpc = await cloudRpc('nh7_get_meeting_settings', {
+        p_email: currentUserEmail(),
+        p_device_id: deviceId()
+      });
+      const row = Array.isArray(rpc) ? rpc[0] : rpc;
+      if(row && (row.meeting_url || row.security_code || row.extra_info)){
+        return Object.assign(defaultMeetingSettings(), row, {phone_number:'', access_code:''});
+      }
+    }catch(rpcErr){
+      console.warn('Meeting settings RPC failed, trying REST fallback', rpcErr);
+    }
+
+    const rows = await cloudFetch('meeting_settings?select=*&id=eq.active&limit=1&_ts='+Date.now(), {method:'GET', headers:{'Cache-Control':'no-cache'}});
+    const row = Array.isArray(rows) ? rows[0] : null;
+    return row ? Object.assign(defaultMeetingSettings(), row, {phone_number:'', access_code:''}) : defaultMeetingSettings();
+  }catch(e){ console.warn('Meeting settings load failed', e); return defaultMeetingSettings(); }
+}
+function renderMeetingDetails(settings){
+  if(!settings) return `<div class="notice">${tr('notConfigured')}</div>`;
+  const link = settings.meeting_url || '';
+  const security = settings.security_code || '';
+  const extra = settings.extra_info || defaultMeetingSettings().extra_info || '';
+  return `<div class="notice"><h3>${tr('meetingDetails')}</h3>
+    ${link?`<p><strong>${tr('meetingLink')}:</strong> <a class="primary-btn inline-link" href="${html(link)}" target="_blank" rel="noopener">${tr('openMeeting')}</a></p>`:''}
+    ${security?`<p><strong>${tr('securityCode')}:</strong> <span class="code-box">${html(security)}</span></p>`:''}
+    ${extra?`<p>${html(extra)}</p>`:''}
+  </div>`;
+}
+
+function tr(k){ return T[state.lang]?.[k] || T.en[k] || k; }
+function l223(fa,en,hr){return state.lang==='fa'?fa:state.lang==='hr'?hr:en}
+Object.assign(T.en,{writtenBible:'Written Bible',apocrypha:'Apocrypha',bookList:'Book list',previousBook:'Previous book',nextBook:'Next book',previousChapter:'Previous chapter',nextChapter:'Next chapter',noteAvailable:'A note is saved for this verse',close:'Close',openExternal:'Open in browser',securePdfLoading:'Preparing the secure PDF…',schoolContentRequired:'School registration is required',schoolContentGate:'This protected teaching resource is available after school registration and administrator approval.',goToSchoolRegistration:'Go to school registration'});
+Object.assign(T.fa,{writtenBible:'کتاب مقدس',apocrypha:'کتاب‌های اپوکریفا',bookList:'فهرست کتاب‌ها',previousBook:'کتاب قبلی',nextBook:'کتاب بعدی',previousChapter:'باب قبلی',nextChapter:'باب بعدی',noteAvailable:'برای این آیه یادداشت ذخیره شده است',close:'بستن',openExternal:'باز کردن در مرورگر',securePdfLoading:'در حال آماده‌سازی فایل امن PDF…',schoolContentRequired:'ثبت‌نام مدرسه لازم است',schoolContentGate:'این منبع آموزشی محافظت‌شده پس از ثبت‌نام در مدرسه و تأیید مدیر در دسترس قرار می‌گیرد.',goToSchoolRegistration:'رفتن به ثبت‌نام مدرسه'});
+Object.assign(T.hr,{writtenBible:'Biblija',apocrypha:'Apokrifi',bookList:'Popis knjiga',previousBook:'Prethodna knjiga',nextBook:'Sljedeća knjiga',previousChapter:'Prethodno poglavlje',nextChapter:'Sljedeće poglavlje',noteAvailable:'Za ovaj redak spremljena je bilješka',close:'Zatvori',openExternal:'Otvori u pregledniku',securePdfLoading:'Priprema sigurne PDF datoteke…',schoolContentRequired:'Potrebna je registracija za školu',schoolContentGate:'Ovaj zaštićeni nastavni sadržaj dostupan je nakon registracije za školu i odobrenja administratora.',goToSchoolRegistration:'Idi na registraciju za školu'});
+
+let nh7SchoolApprovalCacheV223={at:0,value:false,status:'none'};
+async function nh7ApprovedSchoolAccessV223(force=false){
+  const now=Date.now();
+  if(!force&&now-nh7SchoolApprovalCacheV223.at<60000)return nh7SchoolApprovalCacheV223.value;
+  let access={};
+  try{access=JSON.parse(localStorage.getItem('nh7_school_access')||'{}')||{}}catch(e){}
+  try{const cloud=await fetchLatestRegistration('school');if(cloud)access=cloud}catch(e){console.warn('School access check',e)}
+  const status=String(access?.status||'none').toLowerCase();
+  const value=status==='approved'||access?.approvedBy==='admin';
+  nh7SchoolApprovalCacheV223={at:now,value,status};
+  return value;
+}
+function nh7RenderSchoolGateV223(resourceLabel=''){
+  const status=nh7SchoolApprovalCacheV223.status;
+  const statusText=status==='pending'?tr('pending'):tr('notStarted');
+  view.innerHTML=card(tr('schoolContentRequired'),`<div class="nh7-school-content-gate"><div class="nh7-gate-icon">🎓</div><h2>${html(tr('schoolContentRequired'))}</h2><p>${html(tr('schoolContentGate'))}</p>${resourceLabel?`<p class="muted">${html(resourceLabel)}</p>`:''}<span class="badge">${html(statusText)}</span><div class="button-row"><button class="primary-btn" data-go="school" data-params='{"form":true}'>${html(tr('goToSchoolRegistration'))}</button><button class="secondary-btn" data-go="account">${html(tr('account'))}</button></div></div>`);
+  return false;
+}
+async function nh7RequireSchoolAccessV223(resourceLabel=''){
+  if(await nh7ApprovedSchoolAccessV223())return true;
+  return nh7RenderSchoolGateV223(resourceLabel);
+}
+
+const nh7ContentTrackLastV223=new Map();
+function nh7TrackContentV223(contentType,contentId,title,completed=false,engagedSeconds=0){
+  if(!navigator.onLine)return;
+  const key=[contentType,contentId,completed?'done':'open'].join('|'),now=Date.now();
+  if(!completed&&now-(nh7ContentTrackLastV223.get(key)||0)<60000)return;
+  nh7ContentTrackLastV223.set(key,now);
+  cloudRpc('nh7_track_content_v223',{p_content_type:String(contentType||'other'),p_content_id:String(contentId||''),p_title:String(title||''),p_language:state.lang,p_device_id:deviceId(),p_user_email:currentUserEmail()||'',p_event:completed?'complete':'open',p_engaged_seconds:Math.max(0,Math.round(Number(engagedSeconds)||0))}).catch(()=>{});
+}
+function nh7TrackRenderedContentV223(route,params={}){
+  const title=(view.querySelector('h1,h2,h3,strong')?.textContent||tr(route)||route).trim();
+  let type=route,id='';
+  if(route==='daily'){type='daily_content';id=String(params.tab||state.dailyTab||'word')+':'+String(params.gday||params.day||userCycleDay(365));}
+  else if(route==='bible'&&params.mode==='chapter'){type='bible_chapter';id=String(params.bookId||'')+':'+String(params.chapter||1);}
+  else if(route==='plans'){type='reading_plan';id=String(params.plan||params.day||'overview');}
+  else if(route==='library'){type='library_section';id=String(params.tab||nh7LibraryTab||'public');}
+  else {id=JSON.stringify(params||{}).slice(0,160)||'overview';}
+  nh7TrackContentV223(type,id,title,false,0);
+}
+
+function pick(obj){ return (obj && (obj[state.lang] ?? obj.en ?? obj.fa ?? obj.hr)) || ''; }
+function html(s){ return String(s ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])).replace(/\n/g,'<br>'); }
+function todayKey(d=new Date()){ return d.toISOString().slice(0,10); }
+function dateDiffDays(a,b){ const A=new Date(a+'T00:00:00'); const B=new Date(b+'T00:00:00'); return Math.max(0, Math.floor((B-A)/86400000)); }
+function firstUseDate(){let d=localStorage.getItem('nh7_first_use_date');if(!d){d=todayKey();localStorage.setItem('nh7_first_use_date',d);saveProgressCloud('nh7_first_use_date',{__raw:d}).catch(console.warn)}return d}
+function userCycleDay(total){ return ((dateDiffDays(firstUseDate(), todayKey())) % total) + 1; }
+function localNum(n){ return state.lang==='fa' ? String(n).replace(/\d/g, d=>'۰۱۲۳۴۵۶۷۸۹'[d]) : String(n); }
+function localText(s){ return state.lang==='fa' ? String(s).replace(/\d/g, d=>'۰۱۲۳۴۵۶۷۸۹'[d]) : String(s); }
+async function jfetch(path){ if(state.data[path]) return state.data[path]; const res=await fetch(path, {cache:'no-cache'}); if(!res.ok) throw new Error(path); const data=await res.json(); state.data[path]=data; return data; }
+function itemsOf(data){ return data.items || data.days || data.proclamations || []; }
+
+function addPoints(amount,badgeId){
+  const g=JSON.parse(localStorage.getItem('nh7_gamification')||'{"points":0,"badges":[]}');
+  g.points=(g.points||0)+amount;
+  if(badgeId&&!g.badges.includes(badgeId))g.badges.push(badgeId);
+  localStorage.setItem('nh7_gamification',JSON.stringify(g));
+  saveProgressCloud('nh7_gamification',g).catch(console.warn);
+}
+function gamification(){ return JSON.parse(localStorage.getItem('nh7_gamification') || '{"points":0,"badges":[]}'); }
+function badgeName(id){
+  const names = {
+    first_verse:{fa:'اولین آیه ذخیره‌شده',en:'First Saved Verse',hr:'Prvi spremljeni stih'},
+    daily_1:{fa:'شروع روزانه',en:'Daily Starter',hr:'Dnevni početak'},
+    gratitude_1:{fa:'شروع شکرگزاری',en:'Gratitude Starter',hr:'Početak zahvalnosti'},
+    plan_1:{fa:'شروع مطالعه کتاب‌مقدس',en:'Bible Plan Starter',hr:'Početak biblijskog plana'}
+  };
+  return names[id]?.[state.lang] || id;
+}
+
+function setLang(lang){
+  state.lang=lang; localStorage.setItem('nh7_lang',lang);
+  document.documentElement.lang=lang; document.body.dir = lang==='fa'?'rtl':'ltr';
+  $('#langSelect').value=lang;
+  $$('[data-i18n]').forEach(el=>el.textContent=tr(el.dataset.i18n));
+  const brandStrong = $('.brand strong'); if(brandStrong) brandStrong.textContent = tr('appTitle');
+  render(state.route, state.params, true);
+}
+function setCrumb(t){ $('#breadcrumb').textContent=t; $('#backBtn').classList.toggle('hidden', state.stack.length===0); $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.route===state.route)); }
+function navigate(route, params={}, replace=false){
+  if(!replace && state.route) state.stack.push({route:state.route, params:state.params});
+  state.route=route; state.params=params||{};
+  try{ const url='#'+encodeURIComponent(route)+(Object.keys(state.params).length?':'+encodeURIComponent(JSON.stringify(state.params)):''); replace ? history.replaceState({route,params:state.params},'',url) : history.pushState({route,params:state.params},'',url); }catch(e){}
+  render(route, state.params);
+}
+function back(){
+  const prev=state.stack.pop();
+  if(prev){ state.route=prev.route; state.params=prev.params; render(prev.route, prev.params, true); try{ history.replaceState({route:prev.route,params:prev.params},'', '#'+encodeURIComponent(prev.route)); }catch(e){} return; }
+  if(state.route && state.route!=='home'){ state.route='home'; state.params={}; render('home',{},true); try{ history.replaceState({route:'home',params:{}},'', '#home'); }catch(e){} }
+}
+function card(title, body, cls=''){ return `<section class="card ${cls}">${title?`<h2>${html(title)}</h2>`:''}${body}</section>`; }
+function tile(route, emoji, title, sub='', params={}){ return `<button class="tile" data-go="${html(route)}" data-params='${html(JSON.stringify(params||{}))}'><span class="emoji">${emoji}</span><strong>${html(title)}</strong>${sub?`<small>${html(sub)}</small>`:''}</button>`; }
+function notice(text){ return `<div class="notice">${html(text)}</div>`; }
+function registrationStatus(access={}){ return access.status==='pending'?tr('pending'):(access.status==='approved'?tr('approved'):tr('guest')); }
+function optionYesNo(value=''){ return `<option value="">---</option><option value="yes" ${value==='yes'?'selected':''}>${tr('yes')}</option><option value="no" ${value==='no'?'selected':''}>${tr('no')}</option>`; }
+function normalizeQuestionText(q){ return String(q||'').trim().replace(/\s+/g,' ').toLowerCase(); }
+function getKnownUserProfile(){
+  try{
+    const s=JSON.parse(localStorage.getItem('nh7_school_access')||'{}');
+    const m=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{}');
+    const cached=JSON.parse(localStorage.getItem('nh7_user_profile')||'{}');
+    const session=authSession();
+    const p=Object.assign({}, m||{}, s||{});
+    const metadataName=String(session?.user?.user_metadata?.full_name||session?.user?.user_metadata?.name||'').trim();
+    const registrationName=String((p.firstName||'')+' '+(p.lastName||'')).trim();
+    return {name:registrationName||cached.name||metadataName, email:String(p.email||cached.email||currentUserEmail()||'').trim().toLowerCase(), phone:String(p.phone||cached.phone||'').trim()};
+  }catch(e){ return {name:String(authSession()?.user?.user_metadata?.full_name||''),email:currentUserEmail(),phone:''}; }
+}
+
+function registrationFormHtml(kind, access={}){
+  const v=(k)=>html(access[k]||'');
+  const dobHint = state.lang==='fa' ? 'روز / ماه / سال' : (state.lang==='hr' ? 'dan / mjesec / godina' : 'day / month / year');
+  return card(tr('registrationForm'), `
+    <div class="form-row"><input id="reg_firstName" required placeholder="${tr('firstName')} *" value="${v('firstName')}"></div>
+    <div class="form-row"><input id="reg_lastName" required placeholder="${tr('lastName')} *" value="${v('lastName')}"></div>
+    <div class="form-row"><label for="reg_birthDate"><strong>${tr('birthDate')} *</strong><small>${dobHint}</small></label><input id="reg_birthDate" required type="date" aria-label="${tr('birthDate')}" value="${v('birthDate')}"></div>
+    <div class="form-row"><input id="reg_city" required placeholder="${tr('city')} *" value="${v('city')}"></div>
+    <div class="form-row"><input id="reg_country" required placeholder="${tr('country')} *" value="${v('country')}"></div>
+    <div class="form-row"><input id="reg_spiritualAge" required placeholder="${tr('spiritualAge')} *" value="${v('spiritualAge')}"></div>
+    <div class="form-row"><label>${tr('churchMember')} *</label><select id="reg_churchMember" required>${optionYesNo(access.churchMember)}</select></div>
+    <div class="form-row"><input id="reg_churchName" required placeholder="${tr('churchName')} *" value="${v('churchName')}"></div>
+    <div class="form-row"><input id="reg_pastorName" required placeholder="${tr('pastorName')} *" value="${v('pastorName')}"></div>
+    <div class="form-row"><label>${tr('waterBaptism')} *</label><select id="reg_waterBaptism" required>${optionYesNo(access.waterBaptism)}</select></div>
+    <div class="form-row"><label>${tr('salvationPrayer')} *</label><select id="reg_salvationPrayer" required>${optionYesNo(access.salvationPrayer)}</select></div>
+    <div class="form-row"><label>${tr('eventsInterest')} *</label><select id="reg_eventsInterest" required>${optionYesNo(access.eventsInterest)}</select></div>
+    <div class="form-row"><textarea id="reg_testimony" required placeholder="${tr('testimony')} *">${v('testimony')}</textarea></div>
+    <div class="form-row"><input id="reg_howFound" required placeholder="${tr('howFound')} *" value="${v('howFound')}"></div>
+    <div class="form-row"><input id="reg_phone" required placeholder="${tr('phone')} *" value="${v('phone')}"></div>
+    <div class="form-row"><input id="reg_email" required type="email" placeholder="${tr('email')} *" value="${v('email')}"></div>
+    <div class="form-row password-wrap"><input id="reg_password" required type="password" minlength="6" placeholder="${tr('password')} *"><button type="button" class="password-eye" data-toggle-password="reg_password">👁</button></div>
+    <div class="form-row password-wrap"><input id="reg_confirmPassword" required type="password" minlength="6" placeholder="${tr('confirmPassword')} *"><button type="button" class="password-eye" data-toggle-password="reg_confirmPassword">👁</button></div>
+    <button class="primary-btn registration-submit-btn" data-submit-registration="${kind}">${tr('submitRegistration')}</button>
+    <div class="registration-submit-status" id="registrationSubmitStatus" role="status" aria-live="polite"></div>
+  `);
+}
+async function collectRegistration(kind){
+  const button=document.querySelector(`[data-submit-registration="${CSS.escape(kind)}"]`),statusEl=document.getElementById('registrationSubmitStatus');
+  if(button?.dataset.submitting==='1')return;
+  const say=(fa,en,hr)=>state.lang==='fa'?fa:state.lang==='hr'?hr:en;
+  const setBusy=(busy,text='')=>{if(button){button.dataset.submitting=busy?'1':'0';button.disabled=busy;button.classList.toggle('is-busy',busy);button.textContent=text||(busy?say('در حال ثبت درخواست…','Submitting request…','Slanje zahtjeva…'):tr('submitRegistration'))}if(statusEl){statusEl.textContent=text||'';statusEl.classList.toggle('success',!busy&&!!text)}};
+  const fields=['firstName','lastName','birthDate','city','country','spiritualAge','churchMember','churchName','pastorName','waterBaptism','salvationPrayer','eventsInterest','testimony','howFound','phone','email'];
+  const data={status:'pending',submittedAt:new Date().toISOString(),kind};
+  for(const f of fields){const el=$('#reg_'+f);data[f]=(el?.value||'').trim();if(!data[f]){alert(tr('requiredField'));el?.focus();return}}
+  data.email=data.email.toLowerCase();
+  const password=$('#reg_password')?.value||'',confirmPassword=$('#reg_confirmPassword')?.value||'';
+  if(password.length<6){alert(tr('passwordMin'));return}if(password!==confirmPassword){alert(tr('passwordMismatch'));return}
+  setBusy(true,say('درخواست دریافت شد؛ لطفاً صبر کنید…','Request received; please wait…','Zahtjev je primljen; pričekajte…'));
+  try{
+    let existingAccount=false,resetLinkSent=false;
+    try{
+      const created=await authApi('signup?redirect_to='+encodeURIComponent(NH7_PASSWORD_RESET_URL),{method:'POST',body:JSON.stringify({email:data.email,password,data:{full_name:(data.firstName+' '+data.lastName).trim(),language:state.lang}})});
+      if(created?.access_token)saveAuthSession(created);
+      else if(Array.isArray(created?.user?.identities)&&created.user.identities.length===0)existingAccount=true;
+    }catch(e){
+      const msg=String(e.message||'').toLowerCase();
+      existingAccount=msg.includes('already')||msg.includes('registered')||msg.includes('exists')||String(e?.code||'').toLowerCase()==='user_already_exists';
+      if(!existingAccount)throw e;
+    }
+    if(existingAccount){
+      try{const signed=await authApi('token?grant_type=password',{method:'POST',body:JSON.stringify({email:data.email,password})});if(signed?.access_token){saveAuthSession(signed);existingAccount=false}}
+      catch(loginError){try{localStorage.setItem('nh7_recovery_requested_at',String(Date.now()));await authApi('recover?redirect_to='+encodeURIComponent(NH7_PASSWORD_RESET_URL),{method:'POST',body:JSON.stringify({email:data.email})});resetLinkSent=true}catch(error){console.warn('Existing-account recovery',error)}}
+    }
+    localStorage.removeItem(EXPLICIT_LOGOUT_KEY);localStorage.setItem('nh7_manual_email',data.email);localStorage.setItem('nh7_user_profile',JSON.stringify({name:(data.firstName+' '+data.lastName).trim(),email:data.email,phone:data.phone||''}));
+    const key=kind==='meeting'?'nh7_meeting_access':'nh7_school_access';localStorage.setItem(key,JSON.stringify(data));
+    const result=await saveRegistrationCloud(data),finalStatus=String(result?.status||'pending');
+    data.status=finalStatus;localStorage.setItem(key,JSON.stringify(data));
+    const message=existingAccount?(resetLinkSent?say('درخواست شما ذخیره شد. این ایمیل از قبل حساب داشته است؛ لینک تعیین رمز تازه ارسال شد. ایمیل و پوشه Spam/Junk را بررسی کنید و سپس با رمز جدید وارد شوید.','Your request was saved. This email already had an account, so a password-reset link was sent. Check your email and Spam/Junk, set a new password, then sign in.','Vaš zahtjev je spremljen. Ovaj e-mail već ima račun pa je poslana poveznica za obnovu lozinke. Provjerite e-mail i Spam/Junk, postavite novu lozinku i prijavite se.'):say('درخواست شما ذخیره شد. این ایمیل از قبل حساب دارد؛ از صفحه ورود «فراموشی رمز عبور» را بزنید و رمز تازه بسازید.','Your request was saved. This email already has an account; use “Forgot password” on the sign-in page to set a new password.','Vaš zahtjev je spremljen. Ovaj e-mail već ima račun; na prijavi odaberite „Zaboravili ste lozinku?” i postavite novu lozinku.')):finalStatus==='approved'?say('ثبت‌نام شما تأیید شده است.','Your registration is approved.','Vaša registracija je odobrena.'):say('ثبت‌نام شما با موفقیت انجام شد. اکنون باید منتظر تأیید مدیر مدرسه بمانید.','Your registration was submitted successfully. Please wait for school administrator approval.','Registracija je uspješno poslana. Pričekajte odobrenje administratora škole.');
+    setBusy(false,'✓ '+message);alert(message);
+    setTimeout(()=>{if(data.salvationPrayer==='no')navigate('salvation',{},true);else render(kind==='meeting'?'meetings':'school',{},true)},250);
+  }catch(e){
+    console.warn(e);setBusy(false,say('درخواست هنوز ثبت نشده است. اینترنت را بررسی کنید و دوباره تلاش کنید.','The request has not been submitted yet. Check your connection and try again.','Zahtjev još nije poslan. Provjerite vezu i pokušajte ponovno.'));
+    alert(statusEl?.textContent||String(e.message||e));
+  }
+}
+function collectNotes(){
+  const out=[];
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(!k) continue;
+    if(k.startsWith('nh7_note_') || k.startsWith('nh7_gratitude_note_')){
+      const val=localStorage.getItem(k);
+      if(val) out.push({key:k.replace(/^nh7_/,'').replace(/_/g,' '), text:val});
+    }
+  }
+  return out;
+}
+function savedVersesPanel(bookmarks){
+  const unique=[...new Set((bookmarks||[]).filter(Boolean))];
+  const items=unique.slice().reverse().map(ref=>`
+    <div class="saved-verse-card">
+      <strong>${html(localizeRef(ref))}</strong>
+      <div class="button-row saved-verse-actions">
+        <button class="secondary-btn" data-open-ref="${html(ref)}" data-open-ref-mode="verse">${tr('openSingleVerse')}</button>
+        <button class="secondary-btn" data-open-ref="${html(ref)}" data-open-ref-mode="chapter">${tr('openWholeChapter')}</button>
+        <button class="danger-btn" data-delete-bookmark="${html(ref)}">${tr('deleteSavedVerse')}</button>
+      </div>
+    </div>`).join('');
+  return `<button class="secondary-btn" data-toggle-panel="savedVersesPanel">${tr('showSavedVerses')}</button><div id="savedVersesPanel" class="collapsible-panel hidden">${unique.length?`<div class="list">${items}</div>`:`<p class="muted">${tr('noSavedVerses')}</p>`}</div>`;
+}
+function notesPanel(){
+  const notes=collectNotes();
+  return `<button class="secondary-btn" data-toggle-panel="notesPanel">${tr('showMyNotes')}</button><div id="notesPanel" class="collapsible-panel hidden">${notes.length?`<div class="list">${notes.reverse().map(n=>`<div class="notice"><strong>${html(n.key)}</strong><p>${html(n.text)}</p></div>`).join('')}</div>`:`<p class="muted">${tr('noNotes')}</p>`}</div>`;
+}
+
+
+
+function inboxMessages(){
+  return JSON.parse(localStorage.getItem('nh7_inbox_messages')||'[]');
+}
+function setInboxMessages(arr){
+  localStorage.setItem('nh7_inbox_messages', JSON.stringify(arr));
+  updateInboxBadge();
+}
+function inboxDeletedIds(){
+  try{ return new Set(JSON.parse(localStorage.getItem('nh7_inbox_deleted_ids')||'[]').map(String)); }catch(e){ return new Set(); }
+}
+function setInboxDeletedIds(set){
+  localStorage.setItem('nh7_inbox_deleted_ids', JSON.stringify(Array.from(set).slice(-500)));
+}
+function markInboxDeleted(ids){
+  const deleted=inboxDeletedIds();
+  ids.filter(Boolean).map(String).forEach(id=>deleted.add(id));
+  setInboxDeletedIds(deleted);
+}
+function rawInboxLanguage(m){ return String(m.language || m.lang || '').toLowerCase(); }
+function rawInboxLooksLikeOtherLanguage(m){
+  const key=inboxMessageKey(m);
+  if(!key) return false;
+  const lang=rawInboxLanguage(m);
+  if(lang && lang!==state.lang) return true;
+  const text=(String(m.title||'')+' '+String(m.body||'')).toLowerCase();
+  if(state.lang==='fa') return /daily word|faith proclamation|daily juice|gratitude reminder|morning prayer|sunday church|dnevni|podsjetnik|proglas vjere|zahvalnosti|molitv/.test(text);
+  if(state.lang==='en') return /کلام روزانه|اعلان ایمان|آبمیوه|آب حیات|شکرگزاری|صبحگاهی|یکشنبه|dnevni|podsjetnik|proglas vjere|zahvalnosti|molitv/.test(text);
+  if(state.lang==='hr') return /کلام روزانه|اعلان ایمان|آبمیوه|آب حیات|شکرگزاری|صبحگاهی|یکشنبه|daily word|faith proclamation|daily juice|gratitude reminder|morning prayer|sunday church/.test(text);
+  return false;
+}
+function cleanupInboxLanguage(){
+  const deleted=inboxDeletedIds();
+  const cleaned=inboxMessages().filter(m=>!deleted.has(String(m.id)) && !rawInboxLooksLikeOtherLanguage(m));
+  if(cleaned.length!==inboxMessages().length) setInboxMessages(cleaned);
+}
+function inboxUserKey(){return (currentUserEmail()?'email:'+currentUserEmail():'device:'+deviceId()).toLowerCase()}
+async function saveInboxReceipt(messageId,changes={}){
+  if(!messageId)return; const payload={user_key:inboxUserKey(),message_id:String(messageId),device_id:deviceId(),user_email:currentUserEmail()||null,read_at:changes.read_at||null,deleted_at:changes.deleted_at||null,updated_at:new Date().toISOString()};
+  try{await cloudFetch('notification_inbox_receipts?on_conflict=user_key,message_id',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify(payload)})}catch(e){console.warn('Inbox receipt sync failed',e)}
+}
+async function fetchInboxReceipts(){
+  try{const rows=await cloudFetch(`notification_inbox_receipts?select=message_id,read_at,deleted_at&user_key=eq.${encodeURIComponent(inboxUserKey())}&limit=500`,{method:'GET'});return Array.isArray(rows)?rows:[]}catch(e){return []}
+}
+
+async function deleteInboxCloud(id){
+  if(!id)return; await saveInboxReceipt(id,{deleted_at:new Date().toISOString()});
+}
+function deleteInboxLocal(id){
+  const target=inboxMessages().find(m=>String(m.id)===String(id));
+  const canonical=target?inboxCanonicalGroup(target):String(id);
+  const ids=[];
+  const remaining=inboxMessages().filter(m=>{const match=String(m.id)===String(id)||inboxCanonicalGroup(m)===canonical;if(match){ids.push(String(m.id));return false}return true});
+  markInboxDeleted([canonical,...ids]); setInboxMessages(remaining);
+  ids.filter(x=>!x.startsWith('scheduled:')).forEach(x=>deleteInboxCloud(x));
+}
+function deleteVisibleInbox(){
+  const groups=new Set(inboxDisplayMessages().map(inboxCanonicalGroup)); const ids=[];
+  const remaining=inboxMessages().filter(m=>{if(groups.has(inboxCanonicalGroup(m))){ids.push(String(m.id));return false}return true});
+  markInboxDeleted([...groups,...ids]); setInboxMessages(remaining);
+  ids.filter(x=>!x.startsWith('scheduled:')).forEach(x=>deleteInboxCloud(x));
+}
+const INBOX_LOCALIZED_MESSAGES = {
+  daily_word:{
+    en:['Daily Word is ready','Receive God’s Word today and start your day in faith.'],
+    fa:['کلام روزانه آماده است','امروز کلام خدا را دریافت کن و روزت را با ایمان شروع کن.'],
+    hr:['Dnevna Riječ je spremna','Primi Božju Riječ danas i započni dan u vjeri.']
+  },
+  faith:{
+    en:['Faith proclamation is ready','It is time for your faith proclamation; speak the Word.'],
+    fa:['اعلان ایمان آماده است','وقت اعلان ایمان است؛ کلام را با دهانت اعلام کن.'],
+    hr:['Proglas vjere je spreman','Vrijeme je za proglas vjere; izgovori Riječ.']
+  },
+  daily_juice:{
+    en:['Daily Juice is ready','Today’s Daily Juice is ready; take a few minutes to strengthen your spirit.'],
+    fa:['آب حیات روزانه آماده است','آب حیات روزانه امروز آماده است؛ چند دقیقه برای تقویت روح خود وقت بگذار.'],
+    hr:['Dnevni sok je spreman','Današnji Daily Juice je spreman; odvoji nekoliko minuta za svoj duh.']
+  },
+  gratitude:{
+    en:['Gratitude reminder','End today with thanksgiving and remember God’s goodness.'],
+    fa:['یادآوری شکرگزاری','امروز را با شکرگزاری به پایان برسان و نیکویی خدا را به یاد آور.'],
+    hr:['Podsjetnik zahvalnosti','Završi dan zahvalnošću i sjeti se Božje dobrote.']
+  },
+  morning_meeting:{
+    en:['Morning prayer meeting reminder','The morning prayer meeting starts in 5 minutes.'],
+    fa:['یادآوری جلسه دعای صبحگاهی','جلسه دعای صبحگاهی کلیسا ۵ دقیقه دیگر آغاز می‌شود.'],
+    hr:['Podsjetnik za jutarnju molitvu','Jutarnji molitveni sastanak počinje za 5 minuta.']
+  },
+  sunday_service:{
+    en:['Sunday church meeting reminder','The Sunday church meeting is ready. Tap to join.'],
+    fa:['یادآوری جلسه کلیسای یکشنبه','جلسه کلیسای یکشنبه آماده است. برای ورود به جلسه کلیک کن.'],
+    hr:['Podsjetnik za nedjeljni sastanak','Nedjeljni crkveni sastanak je spreman. Dodirni za ulazak.']
+  }
+};
+function inboxMessageKey(m){
+  const c=String(m.category||'').toLowerCase();
+  const t=String(m.title||'').toLowerCase();
+  const b=String(m.body||'').toLowerCase();
+  if(c==='daily_word' || t.includes('daily word') || t.includes('کلام روزانه') || t.includes('dnevna riječ')) return 'daily_word';
+  if(c==='faith' || t.includes('faith proclamation') || t.includes('اعلان ایمان') || t.includes('proglas vjere')) return 'faith';
+  if(c==='daily_juice' || c==='juice' || t.includes('daily juice') || t.includes('آبمیوه') || t.includes('آب حیات') || t.includes('dnevni sok')) return 'daily_juice';
+  if(c==='gratitude' || t.includes('gratitude') || t.includes('شکرگزاری') || t.includes('zahvalnosti')) return 'gratitude';
+  if(c==='morning_meeting' || t.includes('morning prayer') || t.includes('دعای صبحگاهی') || t.includes('jutarnju molitvu')) return 'morning_meeting';
+  if(c==='sunday_service' || t.includes('sunday church') || t.includes('یکشنبه') || t.includes('nedjeljni')) return 'sunday_service';
+  if(c==='meeting' && (b.includes('morning') || b.includes('صبح') || b.includes('jutarnji'))) return 'morning_meeting';
+  if(c==='meeting' && (b.includes('sunday') || b.includes('یکشنبه') || b.includes('nedjeljni'))) return 'sunday_service';
+  return '';
+}
+function inboxDateKey(m){
+  const raw=String(m.createdAt||m.delivered_at||new Date().toISOString());
+  const d=new Date(raw); if(Number.isNaN(d.getTime())) return raw.slice(0,10);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function inboxCanonicalGroup(m){
+  const key=inboxMessageKey(m);
+  return key ? `scheduled:${key}:${inboxDateKey(m)}` : `message:${String(m.id)}`;
+}
+function normalizedInboxMessage(m){
+  const lang = String(m.language || m.lang || '').toLowerCase();
+  const key = inboxMessageKey(m);
+  if(lang && lang!==state.lang && !key) return null;
+  if(key && INBOX_LOCALIZED_MESSAGES[key]){
+    const [title, body] = INBOX_LOCALIZED_MESSAGES[key][state.lang] || INBOX_LOCALIZED_MESSAGES[key].en;
+    return Object.assign({}, m, {title, body, category:key, displayLang:state.lang});
+  }
+  if(lang && lang!==state.lang) return null;
+  return Object.assign({}, m, {displayLang: lang || state.lang});
+}
+function inboxDisplayMessages(){
+  const deleted=inboxDeletedIds();
+  const seen=new Map();
+  inboxMessages().filter(m=>!deleted.has(String(m.id)) && !deleted.has(inboxCanonicalGroup(m))).map(normalizedInboxMessage).filter(Boolean).forEach(m=>{
+    const group=inboxCanonicalGroup(m);
+    const existing=seen.get(group);
+    if(!existing) seen.set(group,m);
+    else {
+      const mLocal=(m.language||m.lang)===state.lang;
+      const eLocal=(existing.language||existing.lang)===state.lang;
+      if(mLocal&&!eLocal) seen.set(group,m);
+      else if(m.read && !existing.read) seen.set(group,{...m,read:false});
+    }
+  });
+  return Array.from(seen.values()).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt)));
+}
+function unreadCount(){ return inboxDisplayMessages().filter(m=>!m.read).length; }
+function updateInboxBadge(){
+  const count=unreadCount();
+  const badge=$('#inboxBadge');
+  if(badge){ badge.textContent=count>99?'99+':String(count); badge.classList.toggle('hidden', count===0); }
+  if('setAppBadge' in navigator){ try{ count>0 ? navigator.setAppBadge(count) : navigator.clearAppBadge(); }catch(e){} }
+}
+function addInboxMessage(title, body, category='app', id=null){
+  const arr=inboxMessages();
+  const scheduled=!!INBOX_LOCALIZED_MESSAGES[String(category||'').toLowerCase()];
+  const mid=scheduled ? `scheduled:${category}:${todayKey()}` : (id ? String(id) : `${category}:${globalThis.crypto?.randomUUID?globalThis.crypto.randomUUID():Date.now()}`);
+  if(inboxDeletedIds().has(mid)) return;
+  if(arr.some(m=>String(m.id)===mid || inboxCanonicalGroup(m)===mid)) return;
+  const item={id:mid,title,body,category,createdAt:new Date().toISOString(),read:false,lang:state.lang,language:state.lang};
+  arr.unshift(item); setInboxMessages(arr.slice(0,150));
+  if(!scheduled) saveInboxCloud(item).catch(console.warn);
+}
+function notificationBodies(){
+  if(state.lang==='fa') return {
+    daily:'امروز کلام خدا را دریافت کن و روزت را با ایمان شروع کن.',
+    faith:'وقت اعلان ایمان است؛ کلام را با دهانت اعلام کن.',
+    juice:'آبمیوه روزانه امروز آماده است؛ چند دقیقه برای تقویت روح خود وقت بگذار.',
+    gratitude:'امروز را با شکرگزاری به پایان برسان و نیکویی خدا را به یاد آور.',
+    morning:'جلسه دعای صبحگاهی کلیسا ۵ دقیقه دیگر آغاز می‌شود.',
+    sunday:'جلسه کلیسای یکشنبه آماده است. برای ورود به جلسه کلیک کن.'
+  };
+  if(state.lang==='hr') return {
+    daily:'Primi Božju Riječ danas i započni dan u vjeri.',
+    faith:'Vrijeme je za proglas vjere; izgovori Riječ.',
+    juice:'Današnji Daily Juice je spreman; odvoji nekoliko minuta za svoj duh.',
+    gratitude:'Završi dan zahvalnošću i sjeti se Božje dobrote.',
+    morning:'Jutarnji molitveni sastanak počinje za 5 minuta.',
+    sunday:'Nedjeljni crkveni sastanak je spreman. Dodirni za ulazak.'
+  };
+  return {
+    daily:'Receive God’s Word today and start your day in faith.',
+    faith:'It is time for your faith proclamation; speak the Word.',
+    juice:'Today’s Daily Juice is ready; take a few minutes to strengthen your spirit.',
+    gratitude:'End today with thanksgiving and remember God’s goodness.',
+    morning:'The morning prayer meeting starts in 5 minutes.',
+    sunday:'The Sunday church meeting is ready. Tap to join.'
+  };
+}
+async function maybeCreateScheduledInboxMessages(){
+  if(localStorage.getItem('nh7_notifications_permission')!=='granted')return;const rows=await fetchNotificationSchedules();const now=new Date();const dateKey=todayKey();
+  for(const row of rows){let compare=now;if(row.timezone_mode&&row.timezone_mode!=='local'){try{const parts=new Intl.DateTimeFormat('en-CA',{timeZone:row.timezone_mode,weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(now);const hh=Number(parts.find(p=>p.type==='hour')?.value||0),mm=Number(parts.find(p=>p.type==='minute')?.value||0),wd=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(parts.find(p=>p.type==='weekday')?.value);const [th,tm]=String(row.time_value||'00:00').split(':').map(Number);if(Array.isArray(row.days_of_week)&&!row.days_of_week.includes(wd))continue;if(hh>th||(hh===th&&mm>=tm))addInboxMessage(scheduleText(row,'title'),scheduleText(row,'body'),row.key,row.key+'_'+dateKey)}catch(e){}}else{const [th,tm]=String(row.time_value||'00:00').split(':').map(Number);if(Array.isArray(row.days_of_week)&&!row.days_of_week.includes(now.getDay()))continue;if(now.getHours()>th||(now.getHours()===th&&now.getMinutes()>=tm))addInboxMessage(scheduleText(row,'title'),scheduleText(row,'body'),row.key,row.key+'_'+dateKey)}}
+}
+async function refreshInboxFromCloud(){
+  try{
+    const email=currentUserEmail();
+    const q=email?`notification_inbox?select=id,title,body,category,language,delivered_at,read_at,admin_deleted_at&or=(device_id.eq.${encodeURIComponent(deviceId())},user_email.eq.${encodeURIComponent(email)})&order=delivered_at.desc&limit=100`:`notification_inbox?select=id,title,body,category,language,delivered_at,read_at,admin_deleted_at&device_id=eq.${encodeURIComponent(deviceId())}&order=delivered_at.desc&limit=100`;
+    const rawOwnRows=await cloudFetch(q,{method:'GET'}); const ownRows=Array.isArray(rawOwnRows)?rawOwnRows:[];
+    let globalRows=[];try{globalRows=await cloudFetch(`notification_inbox?select=id,title,body,category,language,delivered_at,read_at,admin_deleted_at&device_id=is.null&user_email=is.null&language=eq.${encodeURIComponent(state.lang)}&order=delivered_at.desc&limit=100`,{method:'GET'})}catch(e){}
+    const receipts=await fetchInboxReceipts(); const receiptMap=new Map(receipts.map(r=>[String(r.message_id),r])); const deleted=inboxDeletedIds();
+    const local=inboxMessages().filter(x=>!deleted.has(String(x.id))); const byId=new Map(local.map(x=>[String(x.id),x]));
+    [...ownRows,...(Array.isArray(globalRows)?globalRows:[])].forEach(r=>{const id=String(r.id),rc=receiptMap.get(id);if(r.admin_deleted_at||rc?.deleted_at||deleted.has(id)){byId.delete(id);if(r.admin_deleted_at)deleted.add(id);return}const old=byId.get(id)||{};byId.set(id,{...old,id,title:r.title,body:r.body,category:r.category||'cloud',language:r.language||state.lang,createdAt:r.delivered_at,read:!!(rc?.read_at||r.read_at),readAt:rc?.read_at||r.read_at||null,lang:r.language||state.lang})});
+    localStorage.setItem('nh7_inbox_deleted_ids',JSON.stringify(Array.from(deleted).slice(-1000))); setInboxMessages(Array.from(byId.values()).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt))).slice(0,200)); updateInboxBadge();
+  }catch(e){console.warn('Inbox cloud refresh failed',e)}
+}
+async function inbox(){
+  cleanupInboxLanguage();
+  maybeCreateScheduledInboxMessages(); await refreshInboxFromCloud();
+  cleanupInboxLanguage();
+  const arr=inboxDisplayMessages();
+  const body = arr.length ? `<div class="list inbox-list">${arr.map((m,i)=>`<div class="list-btn inbox-item ${m.read?'read':'unread'}"><button class="list-btn inbox-item ${m.read?'read':'unread'}" data-inbox-open="${html(m.id)}"><strong>${m.read?'':'● '}${html(m.title)}</strong><small>${new Date(m.createdAt).toLocaleString()} • ${m.read?tr('completed'):tr('unread')}</small></button><div id="inbox-${html(String(m.id).replace(/[^a-zA-Z0-9_-]/g,'_'))}" class="accordion-panel hidden"><p>${html(m.body)}</p><button class="danger-btn" data-inbox-delete="${html(m.id)}">${tr('deleteMessage')}</button></div></div>`).join('')}</div>` : `<p class="muted">${tr('noInboxMessages')}</p>`;
+  view.innerHTML = card(tr('notificationInbox'), `<p class="muted">${tr('notificationAutoNote')}</p><div class="button-row"><span class="badge">${tr('unread')}: ${localNum(unreadCount())}</span><button class="secondary-btn" id="markAllRead">${tr('markAllRead')}</button><button class="secondary-btn" id="cleanInboxLang">${tr('cleanInbox')}</button><button class="danger-btn" id="deleteVisibleInbox">${tr('deleteAllInbox')}</button></div>${body}`);
+  $('#markAllRead')?.addEventListener('click',()=>{ const now=new Date().toISOString(); const all=inboxMessages().map(m=>({...m,read:true,readAt:now})); setInboxMessages(all); all.filter(m=>!String(m.id).startsWith('scheduled:')).forEach(m=>saveInboxReceipt(m.id,{read_at:now})); render('inbox',{},true); });
+  $('#cleanInboxLang')?.addEventListener('click',()=>{ cleanupInboxLanguage(); render('inbox',{},true); });
+  $('#deleteVisibleInbox')?.addEventListener('click',()=>{ if(confirm(tr('deleteAllConfirm'))){ deleteVisibleInbox(); render('inbox',{},true); } });
+}
+
+async function showAmen(){
+  const data=await jfetch('data/app/opening_messages_365.json').catch(()=>null);
+  const it=data?.items?.[userCycleDay(data.items?.length||365)-1];
+  const msg = it ? (it[state.lang] || it.en || it.fa || it.hr) : null;
+  $('#amenTitle').textContent = msg?.title || tr('appTitle');
+  $('#amenMessage').textContent = msg?.message || tr('welcome');
+  $('#amenButton').textContent = tr('amen');
+  $('#amenGate').classList.remove('hidden');
+}
+
+async function render(route, params={}, preserve=false){
+  view.innerHTML='<section class="card"><p>...</p></section>';
+  try{
+    if(route==='home') await home();
+    else if(route==='daily') await daily(params);
+    else if(route==='bible') await bible(params);
+    else if(route==='plans') await plans(params);
+    else if(route==='school') await school(params);
+    else if(route==='more') await more();
+    else if(route==='library') await library(params);
+    else if(route==='audio') await audio(params);
+    else if(route==='audioBible') await audioBible(params);
+    else if(route==='apocrypha') await apocrypha(params);
+    else if(route==='salvation') await salvation(params);
+    else if(route==='about') await about();
+    else if(route==='meetings') await meetings(params);
+    else if(route==='settings') await settings();
+    else if(route==='qna') await qna();
+    else if(route==='inbox') await inbox();
+    else if(route==='gratitude'){ state.dailyTab='gratitude'; await daily(Object.assign({}, params, {tab:'gratitude'})); }
+    else if(route==='account') await account();
+    else await home();
+    bindDynamic();
+    const detail=params?.lesson?':lesson':params?.exam?':exam':params?.mode==='chapter'?':chapter':params?.book?':book':params?.tab?':'+String(params.tab):'';
+    trackAppSection(String(route||'home')+detail);
+    nh7TrackRenderedContentV223(route,params);
+    setCrumb(tr(route));
+  }catch(e){ console.error(e); view.innerHTML=card('Error',`<p>${html(e.message)}</p>`); }
+}
+
+async function home(){
+  const g=gamification();
+  const bookmarks=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]');
+  const dailyDay=userCycleDay(365);
+  const badgeHtml = g.badges?.length ? g.badges.map(b=>`<span class="badge">🏅 ${html(badgeName(b))}</span>`).join(' ') : `<span class="muted">${tr('notStarted')}</span>`;
+  view.innerHTML =
+    card(tr('appTitle'), `<p>${tr('welcome')}</p><div class="button-row"><button class="primary-btn" data-go="daily">${tr('continueToday')}</button><button class="secondary-btn" id="quickNotify">${tr('enableNotifications')}</button></div>`, 'hero') +
+    card(tr('todayMessage'), `<p>${tr('day')} ${localNum(dailyDay)}</p><div class="button-row"><button class="secondary-btn" data-go="daily" data-params='{"tab":"word"}'>${tr('dailyWord')}</button><button class="secondary-btn" data-go="daily" data-params='{"tab":"faith"}'>${tr('faithProclamation')}</button><button class="secondary-btn" data-go="daily" data-params='{"tab":"juice"}'>${tr('dailyJuice')}</button></div>`) +
+    card(tr('savedVerses'), `<p class="muted">${tr('savedVersesCollapsed')}</p>${savedVersesPanel(bookmarks)}`) +
+    card(tr('myNotes'), `<p class="muted">${tr('notesCollapsed')}</p>${notesPanel()}`) +
+    card(tr('progress'), `<p><strong>${tr('points')}:</strong> ${localNum(g.points||0)}</p><p><strong>${tr('badges')}:</strong> ${badgeHtml}</p>`) +
+    `<div class="grid">${tile('bible','📖',tr('bible'))}${tile('plans','✓',tr('plans'))}${tile('school','🎓',tr('school'))}${tile('meetings','☎',tr('meetings'))}</div>`;
+  $('#quickNotify')?.addEventListener('click', enableNotifications);
+}
+
+
+async function fetchDynamicDailyItem(contentType,day){
+  // Always ask Supabase for the newest saved version. Do not keep stale daily
+  // content in memory or the browser HTTP cache after an admin edit.
+  if(!CLOUD_ENABLED) return null;
+  try{
+    const rows=await cloudFetch(`daily_content?select=content_data,updated_at&content_type=eq.${encodeURIComponent(contentType)}&day_number=eq.${Number(day)}&is_active=eq.true&order=updated_at.desc&limit=1`,{method:'GET',cache:'no-store'});
+    let item=Array.isArray(rows)&&rows[0]?.content_data?rows[0].content_data:null;
+    if(typeof item==='string'){
+      try{ item=JSON.parse(item); }catch(_){ item=null; }
+    }
+    return item&&typeof item==='object'?item:null;
+  }catch(e){console.warn('Dynamic daily content fallback',e);return null}
+}
+function mergeDailyItem(localItem,remoteItem){return remoteItem&&typeof remoteItem==='object'?Object.assign({},localItem||{},remoteItem):localItem}
+async function daily(params={}){
+  Object.keys(dailyContentCache).forEach(k=>delete dailyContentCache[k]);
+  if(params.tab) state.dailyTab = params.tab;
+  const tabs=[['word',tr('dailyWord')],['faith',tr('faithProclamation')],['juice',tr('dailyJuice')],['gratitude',tr('gratitudeCourse')]];
+  let out=`<div class="tabs">${tabs.map(([id,label])=>`<button class="tab ${state.dailyTab===id?'active':''}" data-dailytab="${id}">${html(label)}</button>`).join('')}</div>`;
+  if(state.dailyTab==='word') out += await renderDailyType('data/daily/daily_word_365.json','message','prayer','word',null,params);
+  if(state.dailyTab==='faith') out += await renderDailyType('data/daily/faith_proclamations_365.json','proclamation',null,'faith',null,params);
+  if(state.dailyTab==='juice') out += await renderDailyType('data/daily/daily_juice_365.json','message','prayer','juice','actionStep',params);
+  if(state.dailyTab==='gratitude') out += await renderGratitude();
+  view.innerHTML=out;
+}
+async function renderDailyType(path, mainKey, prayerKey, type, extraKey, params={}){
+  const d=await jfetch(path); const list=itemsOf(d); const todayDay=userCycleDay(list.length);
+  let day=Number(params.day||0); if(!day || day<1 || day>list.length) day=todayDay;
+  let it=list[day-1]||{};
+  const dynamicType=type==='word'?'daily_word':type==='juice'?'daily_juice':type;
+  it=mergeDailyItem(it,await fetchDynamicDailyItem(dynamicType,day));
+  const prev=Math.max(1,day-1), next=Math.min(list.length,day+1);
+  const nav=`<div class="button-row daily-nav"><button class="secondary-btn" data-go="daily" data-params='${html(JSON.stringify({tab:type==='word'?'word':type,day:prev}))}' ${day===1?'disabled':''}>${tr('previousDay')}</button><button class="secondary-btn" data-go="daily" data-params='${html(JSON.stringify({tab:type==='word'?'word':type,day:todayDay}))}'>${tr('today')}</button><button class="secondary-btn" data-go="daily" data-params='${html(JSON.stringify({tab:type==='word'?'word':type,day:next}))}' ${day===list.length?'disabled':''}>${tr('nextDay')}</button></div>`;
+  return nav + await dailyDetail(it, day, list.length, mainKey, prayerKey, type, extraKey);
+}
+function verseRevealButton(ref, fallbackText=''){
+  if(!ref) return '';
+  const safeRef=html(ref);
+  const safeText=html(fallbackText||'');
+  return `<button class="verse-ref-btn" data-reveal-ref="${safeRef}" data-fallback-text="${safeText}">${html(localizeRef(ref))}</button><div class="inline-verse hidden"></div>`;
+}
+async function revealVerse(el){
+  await loadBibleMeta();
+  const ref=el.dataset.revealRef||'';
+  const box=el.nextElementSibling;
+  if(!box) return;
+  if(!box.classList.contains('hidden')){ box.classList.add('hidden'); box.innerHTML=''; return; }
+  const parsed=parseRef(ref);
+  let text='';
+  if(parsed){
+    const data=await loadBook(parsed.bookId);
+    const v=(data.verses||[]).find(x=>Number(x.chapter)===parsed.chapter && Number(x.verse)===parsed.verse);
+    text=v ? (v.text?.[state.lang]||v.text?.en||'') : '';
+  }
+  text=text || el.dataset.fallbackText || '';
+  box.innerHTML = text ? `<p><strong>${html(localizeRef(ref))}</strong></p><p>${html(text)}</p>` : `<p>${html(localizeRef(ref))}</p>`;
+  box.classList.remove('hidden');
+  addPoints(1);
+}
+
+async function dailyDetail(it, day, total, mainKey, prayerKey, type, extraKey){
+  await loadBibleMeta();
+  const title=pick(it.title)||`${tr('day')} ${localNum(day)}`;
+  const verse=it.mainVerse || {};
+  const doneKey='nh7_daily_done_'+type+'-'+day;
+  const isDone=!!localStorage.getItem(doneKey);
+  let body=`<span class="badge">${tr('day')} ${localNum(day)} / ${localNum(total)}</span>`;
+  if(isDone) body+=`<div class="notice success-notice">${tr('dailyCompleted')}</div>`;
+  if(verse.reference || pick(verse.text)) body += `<h3>${tr('mainVerse')}</h3><div class="notice verse-card">${verse.reference?verseRevealButton(verse.reference,pick(verse.text)):`<p>${html(pick(verse.text))}</p>`}</div>`;
+  if(it[mainKey]) body += `<h3>${mainKey==='proclamation'?tr('proclamation'):tr('message')}</h3><p>${html(pick(it[mainKey]))}</p>`;
+  if(extraKey && it[extraKey]) body += `<h3>${tr('actionStep')}</h3>${renderMulti(it[extraKey])}`;
+  if(prayerKey && it[prayerKey]) body += `<h3>${tr('prayer')}</h3><p>${html(pick(it[prayerKey]))}</p>`;
+  if(Array.isArray(it.furtherStudy) && it.furtherStudy.length){
+    body += `<h3>${tr('furtherStudy')}</h3><div class="list">${it.furtherStudy.map(fs=>`<div class="verse-list-item">${verseRevealButton(fs.reference||'',pick(fs.text))}</div>`).join('')}</div>`;
+  }
+  body += `<div class="button-row"><button class="primary-btn" data-complete-daily="${type}-${day}">${isDone?tr('dailyCompleted'):tr('completeDay')}</button></div>`;
+  return card(title, body);
+}
+function renderMulti(v){
+  if(Array.isArray(v?.[state.lang])) return `<ul>${v[state.lang].map(x=>`<li>${html(x)}</li>`).join('')}</ul>`;
+  if(Array.isArray(v)) return `<ul>${v.map(x=>`<li>${html(pick(x)||x)}</li>`).join('')}</ul>`;
+  return `<p>${html(pick(v)||v)}</p>`;
+}
+async function renderGratitude(){
+  const data=await jfetch('data/gratitude/gratitude_plan_30_days.json'); const list=itemsOf(data);
+  let start=localStorage.getItem('nh7_gratitude_start');
+  if(!start){ return card(tr('gratitudeCourse'), `<p>${tr('gratitudeCourse')} - ${localNum(list.length||30)} ${tr('day')}</p><button class="primary-btn" id="startGratitude">${tr('startCourse')}</button>`); }
+  const daysSince=dateDiffDays(start,todayKey());
+  const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]');
+  const unlocked=Math.min(daysSince+1, list.length);
+  let requested=Number(state.params?.gday||0);
+  const nextDay=Math.min((completed.length+1), list.length);
+  const current=requested && requested<=unlocked ? requested : Math.min(nextDay, unlocked);
+  const it=list[current-1]||list[0];
+  const isDone=completed.includes(current);
+  const dayButtons=Array.from({length:unlocked},(_,i)=>i+1).map(n=>`<button class="secondary-btn ${n===current?'active-day':''}" data-go="daily" data-params='${html(JSON.stringify({tab:'gratitude',gday:n}))}'>${tr('day')} ${localNum(n)}${completed.includes(n)?' ✓':''}</button>`).join('');
+  let body=`<span class="badge">${tr('day')} ${localNum(current)} / ${localNum(list.length)}</span>`;
+  body+=`<div class="notice"><strong>${tr('viewPreviousDays')}</strong><div class="button-row day-selector">${dayButtons}</div></div>`;
+  if(isDone) body+=`<div class="notice success-notice">${tr('completed')}</div>`;
+  if(it.mainVerse) body+=`<h3>${tr('mainVerse')}</h3><div class="notice verse-card">${verseRevealButton(it.mainVerse.reference||'',pick(it.mainVerse.text))}</div>`;
+  body+=`<h3>${tr('message')}</h3><p>${html(pick(it.teaching))}</p>`;
+  if(it.dailyTasks) body+=`<h3>${tr('actionStep')}</h3>${renderMulti(it.dailyTasks)}`;
+  if(it.understandingQuestions) body+=`<h3>${tr('notes')}</h3>${renderMulti(it.understandingQuestions)}`;
+  const savedNote=localStorage.getItem('nh7_gratitude_note_'+current)||'';
+  body+=`<textarea id="gratitudeNote" placeholder="${tr('notes')}">${html(savedNote)}</textarea><div class="button-row"><button class="primary-btn" id="completeGratitude" data-gratitude-day="${current}">${isDone?tr('dailyCompleted'):tr('completeDay')}</button>${isDone?`<button class="secondary-btn" id="undoGratitude" data-gratitude-day="${current}">${tr('undoComplete')}</button>`:''}</div>`;
+  return card(pick(it.title), body);
+}
+
+async function loadBibleMeta(){
+  if(state.bible.books) return;
+  const planData = await jfetch('data/bible/plans/reading_plans_1yr_2yr.json').catch(()=>null);
+  if(planData?.books?.length) state.bible.books = planData.books;
+  else {
+    const groups=await Promise.all(['01_18','19_39','40_66'].map(g=>jfetch(`data/bible/groups/bible_group_${g}.json`)));
+    state.bible.books=groups.flatMap(g=>g.books||[]).sort((a,b)=>a.order-b.order);
+  }
+}
+async function loadBook(bookId){
+  await loadBibleMeta();
+  const b=state.bible.books.find(x=>x.id===bookId);
+  if(!b) return null;
+  const group=b.order<=18?'01_18':b.order<=39?'19_39':'40_66';
+  if(!state.bible.groups[group]) state.bible.groups[group]=await jfetch(`data/bible/groups/bible_group_${group}.json`);
+  return {book:b, verses:state.bible.groups[group].verses.filter(v=>v.bookId===bookId)};
+}
+async function bible(params={}){
+  await loadBibleMeta();
+  if(params.q)return bibleSearch(params.q);
+  if(params.mode==='book')return bibleBook(params.bookId,params.testament||'');
+  if(params.mode==='chapter')return bibleChapter(params.bookId,Number(params.chapter||1));
+  if(!params.section&&!params.testament){
+    view.innerHTML=card(tr('book'),`<p class="muted">${html(l223('منبع مورد نظر خود را انتخاب کنید.','Choose the resource you want to open.','Odaberite sadržaj koji želite otvoriti.'))}</p><div class="grid nh7-book-hub">${tile('bible','📖',tr('writtenBible'),l223('عهد عتیق و عهد جدید','Old and New Testaments','Stari i Novi zavjet'),{section:'written'})}${tile('audioBible','🎧📖',tr('audioBible'),l223('کتاب مقدس صوتی','Audio Bible','Audio Biblija'))}${tile('apocrypha','📜',tr('apocrypha'),l223('کتاب‌های تاریخی اپوکریفا','Apocryphal books','Apokrifne knjige'))}${tile('library','📚',tr('library'),l223('کتاب‌ها و جزوه‌ها','Books and handouts','Knjige i materijali'))}</div>`);
+    return;
+  }
+  if(!params.testament){
+    view.innerHTML=card(tr('writtenBible'),`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible">‹ ${html(tr('back'))}</button></div><div class="form-row"><input id="bibleSearch" class="search-box" placeholder="${tr('search')}"></div><button class="secondary-btn" id="runBibleSearch">${tr('search')}</button><div class="grid">${tile('bible','📜',tr('oldtestament'),'',{section:'written',testament:'OT'})}${tile('bible','✝',tr('newtestament'),'',{section:'written',testament:'NT'})}</div>`);
+    return;
+  }
+  const testament=String(params.testament).toUpperCase();
+  const books=state.bible.books.filter(b=>b.testament===testament);
+  view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written'}))}'>‹ ${html(tr('back'))}</button></div>`+renderBookList(testament==='OT'?tr('oldtestament'):tr('newtestament'),books,testament);
+}
+function renderBookList(title,books,testament=''){return card(title,`<div class="grid">${books.map(b=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:testament||b.testament,bookId:b.id}))}'><strong>${html(b.names[state.lang]||b.names.en)}</strong><small>${localNum(b.chapters)} ${tr('chapters')}</small></button>`).join('')}</div>`)}
+async function bibleBook(bookId,testament=''){
+  const data=await loadBook(bookId);if(!data)return bible({section:'written'});
+  const chapters=Array.from({length:data.book.chapters},(_,i)=>i+1),test=data.book.testament||testament;
+  view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written',testament:test}))}'>‹ ${html(tr('bookList'))}</button></div>`+card(data.book.names[state.lang]||data.book.names.en,`<div class="grid">${chapters.map(ch=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:ch}))}'><strong>${tr('chapter')} ${localNum(ch)}</strong></button>`).join('')}</div>`);
+}
+async function bibleChapter(bookId,chapter){
+  const data=await loadBook(bookId);if(!data)return bible({section:'written'});
+  chapter=Math.min(Math.max(1,Number(chapter)||1),Number(data.book.chapters)||1);
+  const verses=data.verses.filter(v=>Number(v.chapter)===chapter),focusVerse=Number(state.params?.verse||0),title=`${data.book.names[state.lang]||data.book.names.en} ${localNum(chapter)}`;
+  let savedRefs=[];try{savedRefs=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]')}catch(e){}
+  const savedRefSet=new Set(Array.isArray(savedRefs)?savedRefs:[]);
+  const rows=verses.map(v=>{
+    const ref=v.reference?.en||`${data.book.names.en} ${chapter}:${v.verse}`,key='nh7_bible_state_'+String(v.id||ref).replace(/[^a-zA-Z0-9_-]/g,'_');
+    let st={};try{st=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}if(savedRefSet.has(ref))st.saved=true;
+    const color=st.highlightColor||'yellow',cls=['reader-verse'];if(st.highlight)cls.push('highlighted','highlight-'+color);if(focusVerse===Number(v.verse))cls.push('saved-focus');
+    const noteBoxId='noteBox_'+String(v.id||ref).replace(/[^a-zA-Z0-9_-]/g,'_');
+    const colors=['yellow','red','green','blue'];
+    return `<span class="${cls.join(' ')}" id="v-${v.verse}" data-verse-key="${html(key)}" tabindex="0"><sup class="num">${localNum(v.verse)}</sup><span class="verse-text">${html(v.text?.[state.lang]||v.text?.en||'')}</span>${st.note?`<button class="verse-note-marker" data-note-marker="${html(noteBoxId)}" aria-label="${html(tr('noteAvailable'))}" title="${html(tr('noteAvailable'))}">📓</button>`:''}<span class="verse-tools hidden" aria-label="Verse actions"><button class="secondary-btn" data-bookmark="${html(ref)}">${st.saved?'★':'☆'} ${tr('save')}</button><span class="highlight-control"><button class="secondary-btn" data-highlight-menu="${html(key)}">✦ ${tr('highlight')}</button><span class="highlight-palette hidden" data-highlight-palette="${html(key)}">${colors.map(c=>`<button type="button" class="highlight-dot ${c} ${st.highlight&&color===c?'active':''}" data-highlight-color="${c}" data-highlight-key="${html(key)}" aria-label="${c}"></button>`).join('')}<button type="button" class="highlight-clear" data-highlight-clear="${html(key)}" aria-label="Clear">×</button></span></span><button class="secondary-btn" data-note-verse="${html(noteBoxId)}">📝 ${tr('writeNote')}</button><button class="secondary-btn" data-share-verse="${html(ref)}" data-share-text="${html(v.text?.[state.lang]||v.text?.en||'')}">↗ ${tr('share')}</button></span><span id="${html(noteBoxId)}" class="verse-note-box hidden"><div class="verse-note-head"><strong>📓 ${html(tr('notes'))}</strong><button type="button" class="icon-btn" data-close-verse-note>×</button></div><textarea data-note-input="${html(key)}" maxlength="1000" placeholder="${tr('writeNote')}">${html(st.note||'')}</textarea><button class="primary-btn" data-save-verse-note="${html(key)}">${tr('saveNote')}</button></span></span>`;
+  }).join(' ');
+  const idx=state.bible.books.findIndex(b=>b.id===bookId),prevBook=idx>0?state.bible.books[idx-1]:null,nextBook=idx>=0&&idx<state.bible.books.length-1?state.bible.books[idx+1]:null;
+  const topNav=`<div class="bible-book-nav"><button class="secondary-btn" ${prevBook?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:prevBook.testament,bookId:prevBook.id}))}'`:'disabled'}>‹ ${html(tr('previousBook'))}</button><button class="primary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written',testament:data.book.testament}))}'>☷ ${html(tr('bookList'))}</button><button class="secondary-btn" ${nextBook?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:nextBook.testament,bookId:nextBook.id}))}'`:'disabled'}>${html(tr('nextBook'))} ›</button></div>`;
+  const prevChapter=chapter>1?chapter-1:null,nextChapter=chapter<data.book.chapters?chapter+1:null;
+  const bottomNav=`<div class="bible-chapter-nav"><button class="secondary-btn" ${prevChapter?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:prevChapter}))}'`:'disabled'}>‹ ${html(tr('previousChapter'))}</button><span>${tr('chapter')} ${localNum(chapter)} / ${localNum(data.book.chapters)}</span><button class="secondary-btn" ${nextChapter?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:nextChapter}))}'`:'disabled'}>${html(tr('nextChapter'))} ›</button></div>`;
+  view.innerHTML=card(title,`${topNav}<p class="muted bible-reader-hint">${html(l223('برای نمایش ابزارها روی آیه بزنید؛ برای باب بعدی یا قبلی صفحه را به چپ یا راست بکشید.','Tap a verse for tools; swipe left or right to change chapter.','Dodirnite redak za alate; povucite lijevo ili desno za drugo poglavlje.'))}</p><div class="reader continuous-reader" data-bible-swipe="1">${rows}</div>${bottomNav}`);
+  bindBibleChapterSwipe(prevChapter?{bookId,chapter:prevChapter}:null,nextChapter?{bookId,chapter:nextChapter}:null);
+  if(focusVerse)setTimeout(()=>document.getElementById('v-'+focusVerse)?.scrollIntoView({behavior:'smooth',block:'center'}),150);
+}
+function bindBibleChapterSwipe(prev,next){
+  const reader=document.querySelector('[data-bible-swipe]');if(!reader)return;let sx=0,sy=0,tracking=false;
+  reader.addEventListener('touchstart',e=>{if(e.touches.length!==1||e.target.closest('button,textarea,input,a'))return;tracking=true;sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
+  reader.addEventListener('touchend',e=>{if(!tracking||!e.changedTouches.length)return;tracking=false;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)<65||Math.abs(dx)<Math.abs(dy)*1.35)return;const target=dx<0?next:prev;if(target)navigate('bible',{section:'written',mode:'chapter',bookId:target.bookId,chapter:target.chapter});},{passive:true});
+}
+const NH7_APOCRYPHA_BOOKS_V223=[
+ {en:'Tobit',fa:'طوبیت',hr:'Tobija'},{en:'Judith',fa:'یهودیت',hr:'Judita'},{en:'Wisdom of Solomon',fa:'حکمت سلیمان',hr:'Knjiga Mudrosti'},{en:'Sirach',fa:'حکمت یشوع بن سیراخ',hr:'Sirah'},{en:'Baruch',fa:'باروخ',hr:'Baruh'},{en:'1 Maccabees',fa:'اول مکابیان',hr:'1. Makabejcima'},{en:'2 Maccabees',fa:'دوم مکابیان',hr:'2. Makabejcima'},{en:'Additions to Esther',fa:'افزوده‌های استر',hr:'Dodaci Esteri'},{en:'Additions to Daniel',fa:'افزوده‌های دانیال',hr:'Dodaci Danielu'}
+];
+async function apocrypha(params={}){
+  if(!await nh7RequireSchoolAccessV223(tr('apocrypha')))return;
+  await loadLibraryCatalog();
+  const apoRows=nh7LibraryCatalog.filter(x=>(x.resource_type||'library')==='apocrypha');
+  if(params.book!==undefined){
+    const idx=Number(params.book),b=NH7_APOCRYPHA_BOOKS_V223[idx]||NH7_APOCRYPHA_BOOKS_V223[0],code=String(b.en||'').toLowerCase().replace(/[^a-z0-9]+/g,'_'),rows=apoRows.filter(x=>String(x.apocrypha_book||'').toLowerCase()===code||libraryText(x,'title').toLowerCase().includes(String(b[state.lang]||b.en).toLowerCase()));
+    view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="apocrypha">‹ ${html(tr('back'))}</button></div>`+card(b[state.lang]||b.en,`<div class="library-user-grid">${rows.map(x=>libraryUserCardV224(x,true)).join('')||`<p class="muted">${html(l223('هنوز فایل تأییدشده‌ای برای این کتاب بارگذاری نشده است.','No approved file has been uploaded for this book yet.','Za ovu knjigu još nema odobrene datoteke.'))}</p>`}</div>`);return
+  }
+  const countByBook=i=>{const code=String(NH7_APOCRYPHA_BOOKS_V223[i].en||'').toLowerCase().replace(/[^a-z0-9]+/g,'_');return apoRows.filter(x=>String(x.apocrypha_book||'').toLowerCase()===code).length};
+  view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible">‹ ${html(tr('back'))}</button></div>`+card(tr('apocrypha'),`<p class="muted">${html(l223('کتاب‌های اپوکریفا به‌صورت PDF یا Word از پنل مدیریت منتشر می‌شوند.','Apocrypha books are published as PDF or Word documents from the admin panel.','Apokrifne knjige objavljuju se kao PDF ili Word dokumenti.'))}</p><div class="grid">${NH7_APOCRYPHA_BOOKS_V223.map((b,i)=>`<button class="tile compact" data-go="apocrypha" data-params='${html(JSON.stringify({book:i}))}'><strong>${html(b[state.lang]||b.en)}</strong><small>${localNum(countByBook(i))}</small></button>`).join('')}</div>`);
+}
+async function bibleSearch(q){
+  await loadBibleMeta(); let out=[];
+  for(const g of ['01_18','19_39','40_66']){ if(!state.bible.groups[g]) state.bible.groups[g]=await jfetch(`data/bible/groups/bible_group_${g}.json`); const found=state.bible.groups[g].verses.filter(v=>(v.text?.[state.lang]||v.text?.en||'').toLowerCase().includes(q.toLowerCase())).slice(0,8); out.push(...found); if(out.length>=20) break; }
+  view.innerHTML=card(tr('search'), out.length?`<div class="list">${out.slice(0,20).map(v=>`<button class="list-btn" data-go="bible" data-params='${html(JSON.stringify({mode:'chapter',bookId:v.bookId,chapter:v.chapter}))}'><strong>${html(localizeRef(v.reference?.en||''))}</strong><small>${html((v.text?.[state.lang]||v.text?.en||'').slice(0,180))}</small></button>`).join('')}</div>`:`<p class="muted">${tr('notStarted')}</p>`);
+}
+function bibleNameAliases(book){
+  const out=[book.names?.en, book.names?.fa, book.names?.hr, book.id].filter(Boolean);
+  if(book.id==='PSA') out.push('Psalm','Psalms','Ps','مزمور','مزامیر');
+  if(book.id==='SNG') out.push('Song of Solomon','Song of Songs','Canticles','غزل غزلها','غزل غزل‌ها');
+  if(book.id==='1SA') out.push('1 Samuel','First Samuel','اول سموئیل');
+  if(book.id==='2SA') out.push('2 Samuel','Second Samuel','دوم سموئیل');
+  if(book.id==='1KI') out.push('1 Kings','First Kings','اول پادشاهان');
+  if(book.id==='2KI') out.push('2 Kings','Second Kings','دوم پادشاهان');
+  if(book.id==='1CO') out.push('1 Corinthians','First Corinthians','اول قرنتیان');
+  if(book.id==='2CO') out.push('2 Corinthians','Second Corinthians','دوم قرنتیان');
+  if(book.id==='1TH') out.push('1 Thessalonians','First Thessalonians','اول تسالونیکیان');
+  if(book.id==='2TH') out.push('2 Thessalonians','Second Thessalonians','دوم تسالونیکیان');
+  if(book.id==='1TI') out.push('1 Timothy','First Timothy','اول تیموتائوس');
+  if(book.id==='2TI') out.push('2 Timothy','Second Timothy','دوم تیموتائوس');
+  if(book.id==='1PE') out.push('1 Peter','First Peter','اول پطرس');
+  if(book.id==='2PE') out.push('2 Peter','Second Peter','دوم پطرس');
+  if(book.id==='1JN') out.push('1 John','First John','اول یوحنا');
+  if(book.id==='2JN') out.push('2 John','Second John','دوم یوحنا');
+  if(book.id==='3JN') out.push('3 John','Third John','سوم یوحنا');
+  return [...new Set(out)];
+}
+
+const BOOK_REF_FALLBACK = {"fa": {"Genesis": "پیدایش", "Exodus": "خروج", "Leviticus": "لاویان", "Numbers": "اعداد", "Deuteronomy": "تثنیه", "Joshua": "یوشع", "Judges": "داوران", "Ruth": "روت", "1 Samuel": "اول سموئیل", "2 Samuel": "دوم سموئیل", "1 Kings": "اول پادشاهان", "2 Kings": "دوم پادشاهان", "1 Chronicles": "اول تواریخ", "2 Chronicles": "دوم تواریخ", "Ezra": "عزرا", "Nehemiah": "نحمیا", "Esther": "استر", "Job": "ایوب", "Psalms": "مزامیر", "Proverbs": "امثال", "Ecclesiastes": "جامعه", "Song of Songs": "غزل غزل‌ها", "Isaiah": "اشعیا", "Jeremiah": "ارمیا", "Lamentations": "مراثی", "Ezekiel": "حزقیال", "Daniel": "دانیال", "Hosea": "هوشع", "Joel": "یوئیل", "Amos": "عاموس", "Obadiah": "عوبدیا", "Jonah": "یونس", "Micah": "میکاه", "Nahum": "ناحوم", "Habakkuk": "حبقوق", "Zephaniah": "صفنیا", "Haggai": "حجی", "Zechariah": "زکریا", "Malachi": "ملاکی", "Matthew": "متی", "Mark": "مرقس", "Luke": "لوقا", "John": "یوحنا", "Acts": "اعمال رسولان", "Romans": "رومیان", "1 Corinthians": "اول قرنتیان", "2 Corinthians": "دوم قرنتیان", "Galatians": "غلاطیان", "Ephesians": "افسسیان", "Philippians": "فیلیپیان", "Colossians": "کولسیان", "1 Thessalonians": "اول تسالونیکیان", "2 Thessalonians": "دوم تسالونیکیان", "1 Timothy": "اول تیموتائوس", "2 Timothy": "دوم تیموتائوس", "Titus": "تیتوس", "Philemon": "فیلیمون", "Hebrews": "عبرانیان", "James": "یعقوب", "1 Peter": "اول پطرس", "2 Peter": "دوم پطرس", "1 John": "اول یوحنا", "2 John": "دوم یوحنا", "3 John": "سوم یوحنا", "Jude": "یهودا", "Revelation": "مکاشفه", "Psalm": "مزامیر", "Ps": "مزامیر", "Song of Solomon": "غزل غزل‌ها", "First Samuel": "اول سموئیل", "Second Samuel": "دوم سموئیل", "First Kings": "اول پادشاهان", "Second Kings": "دوم پادشاهان", "First Chronicles": "اول تواریخ", "Second Chronicles": "دوم تواریخ", "First Corinthians": "اول قرنتیان", "Second Corinthians": "دوم قرنتیان", "First Thessalonians": "اول تسالونیکیان", "Second Thessalonians": "دوم تسالونیکیان", "First Timothy": "اول تیموتائوس", "Second Timothy": "دوم تیموتائوس", "First Peter": "اول پطرس", "Second Peter": "دوم پطرس", "First John": "اول یوحنا", "Second John": "دوم یوحنا", "Third John": "سوم یوحنا"}, "hr": {"Genesis": "Postanak", "Exodus": "Izlazak", "Leviticus": "Levitski zakonik", "Numbers": "Brojevi", "Deuteronomy": "Ponovljeni zakon", "Joshua": "Jošua", "Judges": "Suci", "Ruth": "Ruta", "1 Samuel": "1. Samuelova", "2 Samuel": "2. Samuelova", "1 Kings": "1. Kraljevima", "2 Kings": "2. Kraljevima", "1 Chronicles": "1. Ljetopisa", "2 Chronicles": "2. Ljetopisa", "Ezra": "Ezra", "Nehemiah": "Nehemija", "Esther": "Estera", "Job": "Job", "Psalms": "Psalmi", "Proverbs": "Mudre izreke", "Ecclesiastes": "Propovjednik", "Song of Songs": "Pjesma nad pjesmama", "Isaiah": "Izaija", "Jeremiah": "Jeremija", "Lamentations": "Tužaljke", "Ezekiel": "Ezekiel", "Daniel": "Daniel", "Hosea": "Hošea", "Joel": "Joel", "Amos": "Amos", "Obadiah": "Obadija", "Jonah": "Jona", "Micah": "Mihej", "Nahum": "Nahum", "Habakkuk": "Habakuk", "Zephaniah": "Sefanija", "Haggai": "Hagaj", "Zechariah": "Zaharija", "Malachi": "Malahija", "Matthew": "Matej", "Mark": "Marko", "Luke": "Luka", "John": "Ivan", "Acts": "Djela apostolska", "Romans": "Rimljanima", "1 Corinthians": "1. Korinćanima", "2 Corinthians": "2. Korinćanima", "Galatians": "Galaćanima", "Ephesians": "Efežanima", "Philippians": "Filipljanima", "Colossians": "Kološanima", "1 Thessalonians": "1. Solunjanima", "2 Thessalonians": "2. Solunjanima", "1 Timothy": "1. Timoteju", "2 Timothy": "2. Timoteju", "Titus": "Titu", "Philemon": "Filemonu", "Hebrews": "Hebrejima", "James": "Jakovljeva", "1 Peter": "1. Petrova", "2 Peter": "2. Petrova", "1 John": "1. Ivanova", "2 John": "2. Ivanova", "3 John": "3. Ivanova", "Jude": "Judina", "Revelation": "Otkrivenje", "Psalm": "Psalmi", "Ps": "Psalmi", "Song of Solomon": "Pjesma nad pjesmama"}};
+
+function localizeRef(ref){
+  if(!ref) return '';
+  let s=String(ref).trim();
+  const pairs=[];
+  const books=state.bible.books||[];
+  for(const b of books){
+    for(const alias of bibleNameAliases(b)){
+      const loc=b.names?.[state.lang] || b.names?.en || alias;
+      if(alias && loc) pairs.push([String(alias), String(loc)]);
+    }
+  }
+  const fb=BOOK_REF_FALLBACK[state.lang] || {};
+  for(const [en,loc] of Object.entries(fb)) pairs.push([en,loc]);
+  const unique=[]; const seen=new Set();
+  for(const [en,loc] of pairs){ const k=en.toLowerCase(); if(!seen.has(k)){ seen.add(k); unique.push([en,loc]); } }
+  unique.sort((a,b)=>b[0].length-a[0].length);
+  for(const [en,loc] of unique){
+    const re=new RegExp('^'+en.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?=\\s|\\.|,|:|$)','i');
+    if(re.test(s)){ s=s.replace(re,loc); break; }
+  }
+  return localText(s);
+}
+function parseRef(ref){
+  const m=String(ref||'').match(/^(.+?)\s+(\d+):(\d+)/); if(!m) return null;
+  const name=m[1].trim().toLowerCase(); const chapter=Number(m[2]); const verse=Number(m[3]);
+  const b=(state.bible.books||[]).find(x=>bibleNameAliases(x).some(n=>String(n).toLowerCase()===name));
+  return b?{bookId:b.id,chapter,verse}:null;
+}
+
+async function plans(){
+  const d=await jfetch('data/bible/plans/reading_plans_1yr_2yr.json'); await loadBibleMeta();
+  const plans=d.plans||[];
+  view.innerHTML=card(tr('plans'), `<div class="list">${plans.map((p,i)=>`<button class="list-btn" data-show-plan="${i}"><strong>${html(p.title?.[state.lang]||p.title?.en)}</strong><small>${localNum(p.durationDays||p.days?.length)} ${tr('day')}</small></button>`).join('')}</div><div id="planDetail"></div>`);
+  $$('[data-show-plan]').forEach(btn=>btn.onclick=()=>showPlan(plans[Number(btn.dataset.showPlan)]));
+}
+function planBookName(bookId){ const b=state.bible.books?.find(x=>x.id===bookId); return b?.names?.[state.lang] || b?.names?.en || bookId; }
+function renderReading(r){
+  const start=Number(r.startChapter); const end=Number(r.endChapter ?? r.startChapter);
+  const label=start===end?`${planBookName(r.bookId)} ${localNum(start)}`:`${planBookName(r.bookId)} ${localNum(start)}–${localNum(end)}`;
+  return `<button class="list-btn" data-read-range='${html(JSON.stringify({bookId:r.bookId,startChapter:start,endChapter:end}))}'><strong>${html(label)}</strong><small>${tr('openReadingHere')}</small></button><div class="inline-reading hidden"></div>`;
+}
+async function revealReadingRange(el){
+  const box=el.nextElementSibling; if(!box) return;
+  if(!box.classList.contains('hidden')){ box.classList.add('hidden'); box.innerHTML=''; el.querySelector('small').textContent=tr('openReadingHere'); return; }
+  const r=JSON.parse(el.dataset.readRange||'{}'); const data=await loadBook(r.bookId); if(!data) return;
+  let htmlOut='';
+  for(let ch=Number(r.startChapter); ch<=Number(r.endChapter||r.startChapter); ch++){
+    const verses=data.verses.filter(v=>Number(v.chapter)===ch);
+    htmlOut += `<h3>${html((data.book.names[state.lang]||data.book.names.en)+' '+localNum(ch))}</h3><div class="reader compact-reader">${verses.map(v=>`<div class="reader-verse"><span class="num">${localNum(v.verse)}</span><span>${html(v.text?.[state.lang]||v.text?.en||'')}</span></div>`).join('')}</div>`;
+  }
+  box.innerHTML=htmlOut; box.classList.remove('hidden'); el.querySelector('small').textContent=tr('closeReading'); addPoints(2);
+}
+function showPlan(p){
+  const key='nh7_plan_'+(p.id||'plan'); const prog=JSON.parse(localStorage.getItem(key)||'{"completed":[]}');
+  const total=p.days?.length||p.durationDays||365; const current=Math.min((prog.completed?.length||0)+1,total); const day=(p.days||[]).find(x=>Number(x.day)===current)||p.days?.[0]||{};
+  const percent=Math.round(((prog.completed?.length||0)/total)*100);
+  $('#planDetail').innerHTML=card(p.title?.[state.lang]||p.title?.en, `<span class="badge">${tr('oldAndNew')}</span><div class="progress"><span style="width:${percent}%"></span></div><p><strong>${tr('day')} ${localNum(current)}</strong> / ${localNum(total)}</p><h3>${tr('readings')}</h3><div class="list">${(day.readings||[]).map(renderReading).join('')}</div><button class="primary-btn" id="markRead">${tr('read')}</button>`);
+  $('#markRead').onclick=()=>{if(!prog.completed.includes(current))prog.completed.push(current);localStorage.setItem(key,JSON.stringify(prog));saveProgressCloud(key,prog).catch(console.warn);addPoints(10,'plan_1');showPlan(p);bindDynamic()};
+  bindDynamic();
+}
+
+
+async function loadSchoolContent(){
+  const fallback=await jfetch('data/school/school_content.json');
+  const baseLessons=Array.isArray(fallback?.lessons)?fallback.lessons:[];
+  try{
+    const rows=await cloudFetch('school_lessons?select=*&is_active=eq.true&order=lesson_order.asc',{method:'GET'});
+    if(Array.isArray(rows)&&rows.length){
+      const baseByCode=new Map(baseLessons.map(x=>[String(x.lesson_code||''),x]));
+      const rawCloud=rows.map(r=>({
+        row:r,
+        code:String(r.lesson_code||''),
+        order:Number(r.lesson_order||999),
+        content:(r.content_data&&typeof r.content_data==='object')?r.content_data:{}
+      })).filter(x=>x.code);
+
+      // Detect accidental copies where several different lesson codes contain the exact same lesson content.
+      const fingerprintCount=new Map();
+      const audioCount=new Map();
+      rawCloud.forEach(x=>{
+        const c=x.content||{};
+        const fp=JSON.stringify({
+          translations:c.translations||null,
+          written:c.written||null,
+          audio:c.audio||null,
+          video:c.video||null,
+          pdf:c.pdf||null
+        });
+        x.fingerprint=fp;
+        fingerprintCount.set(fp,(fingerprintCount.get(fp)||0)+1);
+        const src=String(c.audio?.src||'').trim();
+        if(src)audioCount.set(src,(audioCount.get(src)||0)+1);
+      });
+
+      const byCode=new Map(baseLessons.map(x=>[String(x.lesson_code||''),x]));
+      rawCloud.forEach(x=>{
+        const base=baseByCode.get(x.code)||null;
+        const c=x.content||{};
+        const embeddedCode=String(c.lesson_code||'').trim();
+        const mismatchedCode=embeddedCode&&embeddedCode!==x.code;
+        const duplicatedWholeContent=(fingerprintCount.get(x.fingerprint)||0)>1;
+        const duplicatedAudio=String(c.audio?.src||'').trim()&&(audioCount.get(String(c.audio.src).trim())||0)>1;
+
+        let merged;
+        if(base&&(mismatchedCode||duplicatedWholeContent)){
+          // A copied/mismatched cloud row must not replace the correct bundled lesson.
+          merged=Object.assign({},base,{lesson_code:x.code,lesson_order:x.order});
+        }else{
+          merged=Object.assign({},base||{},c,{lesson_code:x.code,lesson_order:x.order});
+          // If only the audio URL was accidentally copied, keep the correct bundled audio.
+          if(base&&duplicatedAudio){
+            merged.audio=Object.assign({},c.audio||{},base.audio||{});
+          }
+        }
+        byCode.set(x.code,merged);
+      });
+
+      const merged=[...byCode.values()].sort((a,b)=>Number(a.lesson_order||999)-Number(b.lesson_order||999));
+      return Object.assign({},fallback,{lessons:merged});
+    }
+  }catch(e){console.warn('school cloud fallback',e)}
+  return fallback;
+}
+function schoolCourseInfo(l){
+  const c=l?.course||l?.program||{};
+  const code=String(c.code||'foundation_school');
+  const defaults={fa:'مدرسه بنیادی مسیحی',en:'Christian Foundation School',hr:'Škola kršćanskih temelja'};
+  const title=(c.title&&typeof c.title==='object')?c.title:{fa:c.title_fa,en:c.title_en,hr:c.title_hr};
+  return {code,title:{fa:title?.fa||defaults.fa,en:title?.en||defaults.en,hr:title?.hr||defaults.hr},order:Number(c.order||1)};
+}
+
+function lessonHasAssignment(l){return ['fa','en','hr'].some(x=>String(l?.translations?.[x]?.assignment_question||'').trim())}
+function assignmentGroupKey(lessonCode){const code=String(lessonCode||'');const m=code.match(/^(class_\d+)[a-z]?_/i);return m?m[1].toLowerCase():code}
+function assignmentIsCompleted(row){return !!row&&['submitted','approved'].includes(String(row.status||'').toLowerCase())}
+function assignmentScoreValue(row){if(!assignmentIsCompleted(row))return 0;const n=Number(row.score_percent);return Math.max(0,Math.min(100,Number.isFinite(n)?n:100))}
+function courseAssignmentSummary(d,courseCode,rows=[]){
+  const lessons=(Array.isArray(d?.lessons)?d.lessons:[]).filter(l=>schoolCourseInfo(l).code===courseCode&&lessonHasAssignment(l));
+  const byLesson=new Map((Array.isArray(rows)?rows:[]).filter(r=>String(r.course_code||'foundation_school')===String(courseCode)).map(r=>[String(r.lesson_code||''),r]));
+  const groups=new Map();
+  lessons.forEach(l=>{const key=assignmentGroupKey(l.lesson_code);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(l)});
+  const units=[...groups.entries()].map(([key,items])=>{const scores=items.map(l=>assignmentScoreValue(byLesson.get(String(l.lesson_code||''))));const complete=items.every(l=>assignmentIsCompleted(byLesson.get(String(l.lesson_code||''))));return {key,items,complete,score:scores.length?Math.round(scores.reduce((a,b)=>a+b,0)/scores.length):0}});
+  const total=units.length,completed=units.filter(x=>x.complete).length,percent=total?Math.round(units.reduce((s,x)=>s+x.score,0)/total):100;
+  return {lessons,units,total,completed,percent,rows:byLesson};
+}
+function assignmentStatusText(row){const s=String(row?.status||'').toLowerCase();if(state.lang==='fa')return s==='approved'?'تأیید شده':s==='needs_revision'?'نیاز به اصلاح':s==='submitted'?'ارسال شده؛ در انتظار بررسی':'ارسال نشده';if(state.lang==='hr')return s==='approved'?'Odobreno':s==='needs_revision'?'Potrebna dorada':s==='submitted'?'Poslano; čeka pregled':'Nije poslano';return s==='approved'?'Approved':s==='needs_revision'?'Needs revision':s==='submitted'?'Submitted; awaiting review':'Not submitted'}
+async function submitSchoolAssignment(courseCode,lessonCode,answerText){
+  const answer=String(answerText||'').trim();
+  if(answer.length<10){
+    alert(state.lang==='fa'?'لطفاً پاسخ تکلیف را کامل‌تر بنویسید.':state.lang==='hr'?'Molimo napišite potpuniji odgovor na zadatak.':'Please write a more complete assignment answer.');
+    return;
+  }
+  localStorage.setItem('nh7_note_school-'+lessonCode,answer);
+  saveNoteCloud('note_school-'+lessonCode,answer).catch(console.warn);
+  if(!navigator.onLine){
+    alert(state.lang==='fa'?'پاسخ به‌صورت پیش‌نویس در دستگاه و حساب ابری ذخیره شد. برای ارسال رسمی به اینترنت متصل شوید.':state.lang==='hr'?'Odgovor je spremljen kao skica na uređaju i u oblaku. Povežite se s internetom za službenu predaju.':'The answer was saved as a draft on the device and in your cloud account. Connect to the internet to submit it.');
+    return;
+  }
+  if(!isAccountLoggedIn()){
+    alert(tr('loginRequired'));
+    return;
+  }
+  const profile=getKnownUserProfile();
+  try{
+    await cloudRpc('nh7_submit_school_assignment',{
+      p_course_code:courseCode,
+      p_lesson_code:lessonCode,
+      p_answer_text:answer,
+      p_language:state.lang,
+      p_user_name:profile.name||''
+    });
+    invalidateSchoolSnapshot(currentUserEmail());
+    await getSchoolSnapshot(currentUserEmail(),true);
+    alert(state.lang==='fa'?'تکلیف با موفقیت ارسال شد و در نمره تکالیف محاسبه می‌شود.':state.lang==='hr'?'Zadatak je uspješno poslan i uračunava se u ocjenu zadataka.':'The assignment was submitted successfully and counts toward the assignment grade.');
+    navigate('school',{lesson:lessonCode},true);
+  }catch(e){
+    console.warn('Official assignment submit failed',e);
+    const raw=String(e?.message||'');
+    const missing=/PGRST202|nh7_submit_school_assignment|function.*not found|schema cache/i.test(raw);
+    const message=missing
+      ? (state.lang==='fa'?'تابع ارسال رسمی تکلیف هنوز در Supabase نصب نشده است. فایل SQL نهایی این نسخه را یک‌بار اجرا کنید.':state.lang==='hr'?'Funkcija za službenu predaju još nije instalirana u Supabaseu. Pokrenite završnu SQL datoteku ove verzije.':'The official assignment function is not installed in Supabase yet. Run this version’s final SQL file once.')
+      : (state.lang==='fa'?'ارسال رسمی تکلیف انجام نشد. اتصال اینترنت و ورود حساب را بررسی کنید و دوباره تلاش کنید.':state.lang==='hr'?'Službena predaja nije uspjela. Provjerite internet i prijavu pa pokušajte ponovno.':'The official submission failed. Check your internet connection and account sign-in, then try again.');
+    alert(message+(raw&&!missing?'\n'+raw:''));
+  }
+}
+
+async function school(params={}){
+  const d=await loadSchoolContent();
+  if(params.login){
+    view.innerHTML=card(tr('schoolExistingLogin'),`<p>${tr('schoolLoginHelp')}</p><input id="schoolLoginEmail" type="email" autocomplete="email" placeholder="${tr('email')}"><div class="password-wrap"><input id="schoolLoginPassword" type="password" autocomplete="current-password" placeholder="${tr('password')}"><button type="button" class="password-eye" data-toggle-password="schoolLoginPassword">👁</button></div><button class="primary-btn wide-btn" id="schoolSignInBtn">${tr('schoolExistingLogin')}</button><button class="link-button" data-go="account">${tr('forgotPassword')}</button><button class="secondary-btn wide-btn" data-go="school">${tr('back')}</button>`);
+    $('#schoolSignInBtn')?.addEventListener('click',signInSchool);bindPasswordToggles();return;
+  }
+  if(params.form){view.innerHTML=registrationFormHtml('school',JSON.parse(localStorage.getItem('nh7_school_access')||'{}'));return}
+  if(!isSchoolIdentityAvailable()){
+    view.innerHTML=card(tr('school'),`<p>${tr('schoolAccessText')}</p><p class="muted">${tr('schoolLoginHelp')}</p><div class="school-entry-actions"><button class="primary-btn wide-btn" data-go="school" data-params='{"login":true}'>${tr('schoolExistingLogin')}</button><button class="secondary-btn wide-btn" data-go="school" data-params='{"form":true}'>${tr('schoolNewRegistration')}</button></div>`);return;
+  }
+  let access=JSON.parse(localStorage.getItem('nh7_school_access')||'{"status":"none"}');
+  const cloudAccess=await fetchLatestRegistration('school');if(cloudAccess)access=cloudAccess;
+  const approved=access.status==='approved'||access.approvedBy==='admin';
+  if(!approved){
+    const status=access.status==='pending'?`<span class="badge">${tr('pending')}</span>`:'';
+    view.innerHTML=card(tr('school'),`<p>${tr('schoolAccessText')}</p>${status}<p class="muted">${access.status==='pending'?tr('approvedRefreshHint'):tr('schoolNotApproved')}</p><div class="school-entry-actions">${access.status==='pending'?'':`<button class="primary-btn wide-btn" data-go="school" data-params='{"form":true}'>${tr('schoolNewRegistration')}</button>`}<button class="secondary-btn wide-btn" data-go="school">${tr('refreshApproval')}</button><button class="secondary-btn wide-btn" id="schoolLogoutBtn">${tr('logoutAccount')}</button></div>`);
+    $('#schoolLogoutBtn')?.addEventListener('click',()=>logoutAccount('school'));return;
+  }
+  if(params.lesson)return schoolLesson(d,params.lesson);
+  if(params.exam)return schoolCourseExam(d,params.exam);
+  const profile=getKnownUserProfile();
+  let courseExams=[];const email=currentUserEmail();
+  try{courseExams=await cloudFetch('school_exams?select=*&exam_scope=eq.course&is_active=eq.true&order=sort_order.asc',{method:'GET'})}catch(e){console.warn('course exams unavailable',e)}
+  const schoolSnapshot=await getSchoolSnapshot(email,true);
+  const courseProgress=schoolSnapshot.progress||[],courseAssignments=schoolSnapshot.assignments||[];
+  const schoolSyncNotice=schoolSnapshot.error
+    ? `<div class="notice">${state.lang==='fa'?'نمایش وضعیت کلاس‌ها از نسخه ذخیره‌شده انجام شد. برای تازه‌سازی، اتصال اینترنت و ورود حساب را بررسی کنید.':state.lang==='hr'?'Status nastave prikazan je iz spremljene kopije. Provjerite internet i prijavu za osvježavanje.':'Class status is shown from the saved copy. Check internet and sign-in to refresh.'}</div>`
+    : '';
+  const progressByCode=new Map((Array.isArray(courseProgress)?courseProgress:[]).map(x=>[String(x.lesson_code||''),x]));
+  const examByCourse=new Map((Array.isArray(courseExams)?courseExams:[]).map(x=>[String(x.course_code||String(x.lesson_code||'').replace(/^course:/,'')),x]));
+  view.innerHTML=card(tr('school'),`<span class="badge">${tr('approved')}</span><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(profile.email||currentUserEmail()||'')}</p></div><p class="success-text">${tr('enterSchool')}</p>${schoolSyncNotice}<div class="button-row"><button class="secondary-btn" data-go="account">${tr('accountActions')}</button><button class="secondary-btn" id="schoolLogoutBtn">${tr('logoutAccount')}</button></div><div class="list">${(()=>{const groups=new Map();d.lessons.forEach(l=>{const c=schoolCourseInfo(l);if(!groups.has(c.code))groups.set(c.code,{info:c,lessons:[]});groups.get(c.code).lessons.push(l)});return [...groups.values()].sort((a,b)=>a.info.order-b.info.order).map(g=>{const exam=examByCourse.get(g.info.code),summary=progressByCode.get('course:'+g.info.code),assignment=courseAssignmentSummary(d,g.info.code,courseAssignments);const lessons=g.lessons.sort((a,b)=>Number(a.lesson_order||999)-Number(b.lesson_order||999));const completed=lessons.filter(l=>progressByCode.get(l.lesson_code)?.completed_at).length;const lessonsLocked=exam?.require_course_completion===true&&completed<lessons.length;const assignmentsLocked=exam?.require_assignments_before_exam===true&&assignment.completed<assignment.total;const locked=lessonsLocked||assignmentsLocked;const examTitle=exam?.['title_'+state.lang]||exam?.title_en||tr('finalExam');return `<section class="school-course-group"><h3>${html(g.info.title[state.lang]||g.info.title.en)}</h3><p class="muted">${state.lang==='fa'?'پیشرفت دوره':state.lang==='hr'?'Napredak tečaja':'Course progress'}: ${localNum(completed)} / ${localNum(lessons.length)}</p>${assignment.total?`<p class="muted">${state.lang==='fa'?'تکالیف دارای نمره':state.lang==='hr'?'Ocjenjivani zadaci':'Graded assignments'}: ${localNum(assignment.completed)} / ${localNum(assignment.total)} · ${localNum(assignment.percent)}%</p>`:''}${lessons.map(l=>`<button class="list-btn" data-go="school" data-params='${html(JSON.stringify({lesson:l.lesson_code}))}'><strong>${html(l.translations?.[state.lang]?.class_title||l.translations?.en?.class_title)}</strong><small>${html(l.translations?.[state.lang]?.lesson_title||'')}${progressByCode.get(l.lesson_code)?.completed_at?' · ✅':''}${assignmentIsCompleted(assignment.rows.get(String(l.lesson_code||'')))?' · 📓':''}</small></button>`).join('')}${exam?`<button class="primary-btn wide-btn" ${locked?'disabled':''} data-go="school" data-params='${html(JSON.stringify({exam:g.info.code}))}'>📝 ${html(examTitle)}${summary?.exam_score!=null?' · '+html(summary.exam_score)+'%':''}</button>${locked?`<p class="muted">${lessonsLocked?(state.lang==='fa'?'برای ورود به آزمون ابتدا همه درس‌ها را تکمیل کنید.':state.lang==='hr'?'Za pristup ispitu najprije završite sve lekcije.':'Complete all lessons before taking the exam.'):(state.lang==='fa'?'برای ورود به آزمون ابتدا تکالیف لازم را ارسال کنید.':state.lang==='hr'?'Za pristup ispitu najprije predajte potrebne zadatke.':'Submit the required assignments before taking the exam.')}</p>`:''}`:''}</section>`}).join('')})()}</div>`);
+  $('#schoolLogoutBtn')?.addEventListener('click',()=>logoutAccount('school'));
+}
+async function signInSchool(){
+  const email=($('#schoolLoginEmail')?.value||'').trim().toLowerCase(),password=$('#schoolLoginPassword')?.value||'';
+  if(!email||!password){alert(tr('requiredField'));return}
+  try{
+    const data=await signInOrClaimLegacyAccount(email,password);
+    if(!data?.access_token)throw new Error('Authenticated session was not returned.');
+    saveAuthSession(data);
+    clearLegacySchoolSession();
+    localStorage.setItem('nh7_manual_email',email);
+    localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
+
+    const schoolAccess=await fetchLatestRegistration('school');
+    if(schoolAccess)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},schoolAccess,{email})));
+
+    if(!isAccountLoggedIn())throw new Error('School login completed without an authenticated session.');
+    await restoreAccountCloudData(true);
+    invalidateSchoolSnapshot(email);
+    await getSchoolSnapshot(email,true);
+    navigate('school',{},true);
+  }catch(e){
+    console.warn('School sign-in failed',e);
+    alert(accountLoginError(e));
+  }
+}
+
+async function schoolLesson(d, code){
+  const l=d.lessons.find(x=>x.lesson_code===code);if(!l){navigate('school',{},true);return}
+  const tx=l.translations?.[state.lang]||l.translations?.en||{};const wr=l.written?.[state.lang]||l.written?.en||{};const courseCode=schoolCourseInfo(l).code;
+  let audioSrc=l.audio?.src||'';const bundledLesson=(Array.isArray(d?.lessons)?d.lessons:[]).find(x=>x.lesson_code===code);if(!audioSrc&&bundledLesson?.audio?.src)audioSrc=bundledLesson.audio.src;
+  const audioId='school-'+code;const duration=Number(l.audio?.duration_seconds||0)||Math.round(Number(l.audio?.duration_minutes||0)*60)||0;
+  const item={id:audioId,audio_url:audioSrc,duration_seconds:duration,title_fa:l.translations?.fa?.lesson_title||l.translations?.fa?.class_title||code,title_en:l.translations?.en?.lesson_title||l.translations?.en?.class_title||code,title_hr:l.translations?.hr?.lesson_title||l.translations?.hr?.class_title||code,analytics_type:'school',analytics_id:code,analytics_topic:(l.translations?.[state.lang]?.class_title||l.translations?.en?.class_title||courseCode),analytics_source_group:courseCode,analytics_language:state.lang,course_code:courseCode};window.__sermonMap=window.__sermonMap||{};window.__sermonMap[audioId]=item;
+  let schoolExam=null,schoolProgress=null,schoolAssignment=null;const email=currentUserEmail();
+  try{const ex=await cloudFetch('school_exams?select=*&lesson_code=eq.'+encodeURIComponent(code)+'&is_active=eq.true&order=sort_order.asc&limit=1',{method:'GET'});schoolExam=Array.isArray(ex)?ex[0]:null}catch(e){console.warn('school exam',e)}
+  const schoolSnapshot=await getSchoolSnapshot(email,false);
+  schoolProgress=(schoolSnapshot.progress||[]).find(x=>String(x.lesson_code||'')===String(code))||null;
+  schoolAssignment=(schoolSnapshot.assignments||[]).find(x=>String(x.lesson_code||'')===String(code))||null;
+  let progress={};try{progress=JSON.parse(localStorage.getItem(sermonProgressKey(audioId))||'{}')}catch(e){}
+  const durationLabel=duration?formatAudioTime(duration):formatAudioTime(progress.duration||0);
+  const player=audioSrc?`<article class="sermon-card school-audio-card" data-sermon-card="${html(audioId)}"><div class="sermon-card-main"><span class="sermon-placeholder">🎧</span><div class="sermon-card-copy"><strong>${html(tx.lesson_title||tx.class_title||tr('playAudio'))}</strong><small>${tr('duration')}: ${localText(durationLabel||'0:00')} · MP3</small><div class="sermon-card-actions"><button class="primary-btn compact-player-btn" data-sermon-play="${html(audioId)}">▶ ${progress.time>5?tr('continueListening'):tr('listenAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(audioSrc)}" data-offline-title="${html(tx.lesson_title||tx.class_title||tr('playAudio'))}">${state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline'}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(audioId)}"><div class="inline-player-controls"><button class="player-round" data-inline-back>↶15</button><button class="player-main" data-inline-play>▶</button><button class="player-round" data-inline-forward>30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek type="range" min="0" max="1000" value="0"><span data-inline-total>${durationLabel||'0:00'}</span></div></div></article>`:'';
+  const examHtml=schoolExam?renderSchoolExamBlock(schoolExam,schoolProgress):'';const completeLabel=schoolProgress?.completed_at?(state.lang==='fa'?'تکمیل شده ✓':state.lang==='hr'?'Završeno ✓':'Completed ✓'):(state.lang==='fa'?'علامت‌گذاری درس به‌عنوان تکمیل‌شده':state.lang==='hr'?'Označi lekciju završenom':'Mark lesson complete');
+  const assignmentQuestion=String(tx.assignment_question||'').trim();const assignmentDraft=schoolAssignment?.answer_text||localStorage.getItem('nh7_note_school-'+code)||'';const assignmentApproved=String(schoolAssignment?.status||'').toLowerCase()==='approved';
+  const assignmentHtml=assignmentQuestion?`<section class="school-assignment"><h3>${tr('assignment')}</h3><p>${html(assignmentQuestion)}</p><div class="notice"><strong>${state.lang==='fa'?'وضعیت':state.lang==='hr'?'Status':'Status'}:</strong> ${html(assignmentStatusText(schoolAssignment))}${schoolAssignment?.admin_feedback?`<p>${html(schoolAssignment.admin_feedback)}</p>`:''}</div><textarea id="schoolAssignmentAnswer" rows="7" ${assignmentApproved?'disabled':''} placeholder="${state.lang==='fa'?'پاسخ تکلیف را اینجا بنویسید':state.lang==='hr'?'Ovdje napišite odgovor na zadatak':'Write your assignment answer here'}">${html(assignmentDraft)}</textarea><div class="button-row"><button class="secondary-btn" id="saveSchoolAssignmentDraft" ${assignmentApproved?'disabled':''}>${state.lang==='fa'?'ذخیره پیش‌نویس':state.lang==='hr'?'Spremi skicu':'Save draft'}</button><button class="primary-btn" id="submitSchoolAssignment" ${assignmentApproved?'disabled':''}>${assignmentApproved?(state.lang==='fa'?'تکلیف تأیید شده':state.lang==='hr'?'Zadatak odobren':'Assignment approved'):(state.lang==='fa'?'ارسال رسمی تکلیف':state.lang==='hr'?'Predaj zadatak':'Submit assignment')}</button></div><p class="muted">${state.lang==='fa'?'این تکلیف بخشی از ۳۰٪ نمره تکالیف دوره است.':state.lang==='hr'?'Ovaj zadatak dio je 30% ocjene za zadatke.':'This assignment is part of the 30% assignment grade.'}</p></section>`:'';
+  view.innerHTML=card(tx.class_title||tr('school'),`${l.image?.url?`<img src="${html(l.image.url)}" alt="${html(tx.class_title||tx.lesson_title||tr('school'))}" style="width:100%;max-height:360px;object-fit:cover;border-radius:18px;margin-bottom:12px">`:''}<p>${html(tx.lesson_text||'')}</p>${player}${l.video?.url?`<p><a class="secondary-btn" href="${html(l.video.url)}" target="_blank" rel="noopener">Video</a></p>`:''}${l.pdf?.url?`<p><a class="secondary-btn" href="${html(l.pdf.url)}" target="_blank" rel="noopener">PDF</a> <button class="secondary-btn" data-offline-download="${html(l.pdf.url)}" data-offline-title="PDF ${html(tx.lesson_title||code)}">${state.lang==='fa'?'دانلود PDF برای آفلاین':state.lang==='hr'?'Preuzmi PDF offline':'Download PDF offline'}</button></p>`:''}<button class="primary-btn wide-btn" id="completeSchoolLesson">${completeLabel}</button>${assignmentHtml}<h3>${tr('fullLesson')}</h3><p>${html(wr.text||'')}</p>${examHtml}`);
+  $('#completeSchoolLesson')?.addEventListener('click',()=>saveSchoolProgress(code,{completed_at:new Date().toISOString(),progress_percent:100}));
+  $('#saveSchoolAssignmentDraft')?.addEventListener('click',e=>{const answer=$('#schoolAssignmentAnswer')?.value||'';localStorage.setItem('nh7_note_school-'+code,answer);saveNoteCloud('note_school-'+code,answer).catch(console.warn);e.currentTarget.textContent=tr('saved')});
+  $('#submitSchoolAssignment')?.addEventListener('click',()=>submitSchoolAssignment(courseCode,code,$('#schoolAssignmentAnswer')?.value||''));
+  $('#submitSchoolExam')?.addEventListener('click',()=>submitSchoolExam(schoolExam,code));bindInlineSermonControls();updateInlineSermonPlayers();refreshOfflineButtons().catch(()=>{});
+}
+
+
+function examLocalized(exam,prefix,fallback=''){return exam?.[prefix+'_'+state.lang]||exam?.[prefix+'_en']||exam?.[prefix+'_fa']||fallback}
+function examQuestionText(q){return q?.question?.[state.lang]||q?.question?.en||q?.question?.fa||q?.question||''}
+function examOptionText(o){return o?.[state.lang]||o?.en||o?.fa||o||''}
+function stableExamHash(value){let h=2166136261;for(const ch of String(value||'')){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
+function examRandom(seed){let a=seed>>>0;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function seededShuffle(list,seed){const out=list.slice(),rnd=examRandom(seed);for(let i=out.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[out[i],out[j]]=[out[j],out[i]]}return out}
+function prepareExamForAttempt(exam,attemptNumber,email){let qs=Array.isArray(exam?.questions)?exam.questions.slice():[];if(exam?.shuffle_questions){const seed=stableExamHash(String(exam.id||exam.lesson_code||'exam')+'|'+String(email||'')+'|'+String(attemptNumber||1));qs=seededShuffle(qs,seed)}const count=Number(exam?.questions_per_attempt||0);if(count>0&&count<qs.length)qs=qs.slice(0,count);return Object.assign({},exam,{questions:qs})}
+function renderExamQuestions(exam,namePrefix='exam_q_'){const qs=Array.isArray(exam?.questions)?exam.questions:[];let lastSection='';return qs.map((q,i)=>{const section=q?.section?.[state.lang]||q?.section?.en||'';const heading=section&&section!==lastSection?(lastSection=section,`<h3 class="exam-section-title">${html(section)}</h3>`):'';const opts=Array.isArray(q.options)?q.options:[];return `${heading}<fieldset data-exam-q="${i}"><legend>${i+1}. ${html(examQuestionText(q))}</legend>${opts.map((o,j)=>`<label class="exam-option"><input type="radio" name="${namePrefix}${i}" value="${j}"> ${html(examOptionText(o))}</label>`).join('')}</fieldset>`}).join('')}
+function renderSchoolExamBlock(exam,progress){const qs=Array.isArray(exam?.questions)?exam.questions:[];if(!qs.length)return '';const title=examLocalized(exam,'title',tr('exam')),intro=examLocalized(exam,'intro','');return `<section class="school-exam"><h3>${html(title)}</h3>${intro?`<p>${html(intro)}</p>`:''}<p class="muted">${state.lang==='fa'?'نمره قبولی':state.lang==='hr'?'Prolazna ocjena':'Passing score'}: ${Number(exam.passing_score||70)}% · ${localNum(qs.length)} ${state.lang==='fa'?'سؤال':state.lang==='hr'?'pitanja':'questions'}</p>${renderExamQuestions(exam)}<button class="primary-btn wide-btn" id="submitSchoolExam">${state.lang==='fa'?'ارسال آزمون':state.lang==='hr'?'Pošalji ispit':'Submit exam'}</button>${progress?.exam_score!=null?`<p class="notice">${state.lang==='fa'?'آخرین نمره':state.lang==='hr'?'Zadnji rezultat':'Latest score'}: ${html(progress.exam_score)}%</p>`:''}</section>`}
+function collectExamAnswers(exam,namePrefix='exam_q_'){const qs=Array.isArray(exam?.questions)?exam.questions:[];let correct=0,answered=0;const answers=qs.map((q,i)=>{const el=document.querySelector(`input[name="${namePrefix}${i}"]:checked`);const selected=el?Number(el.value):null;if(selected!==null){answered++;if(selected===Number(q.correct))correct++}return {question_number:Number(q.number||i+1),selected,correct:Number(q.correct),is_correct:selected!==null&&selected===Number(q.correct)}});return {answers,correct,answered,total:qs.length}}
+function examResultMessage(exam,passed){return examLocalized(exam,passed?'pass_message':'fail_message',passed?(state.lang==='fa'?'تبریک! شما قبول شدید.':state.lang==='hr'?'Čestitamo! Položili ste.':'Congratulations! You passed.'):(state.lang==='fa'?'بهتر است درس‌ها را یک بار دیگر مطالعه کنید و دوباره در آزمون شرکت کنید.':state.lang==='hr'?'Preporučujemo da ponovno proučite lekcije i opet pristupite ispitu.':'Please review the lessons and take the exam again.'))}
+async function saveSchoolProgress(lessonCode,patch={}){
+  const email=currentUserEmail();
+  if(!email||!isAccountLoggedIn()){alert(tr('loginRequired'));return}
+  const profile=getKnownUserProfile();
+  const payload=Object.assign({user_email:email,user_name:profile.name||'',lesson_code:lessonCode,updated_at:new Date().toISOString()},patch);
+  try{
+    await cloudFetch('school_progress?on_conflict=user_email,lesson_code',{
+      method:'POST',
+      headers:{Prefer:'resolution=merge-duplicates,return=minimal'},
+      body:JSON.stringify(payload)
+    });
+    invalidateSchoolSnapshot(email);
+    await getSchoolSnapshot(email,true);
+    alert(state.lang==='fa'?'پیشرفت ذخیره شد.':state.lang==='hr'?'Napredak je spremljen.':'Progress saved.');
+    navigate('school',{lesson:lessonCode},true);
+  }catch(e){
+    console.warn('School progress save failed',e);
+    alert(state.lang==='fa'?'ذخیره پیشرفت انجام نشد. ورود حساب و اتصال اینترنت را بررسی کنید.':state.lang==='hr'?'Napredak nije spremljen. Provjerite prijavu i internet.':'Could not save progress. Check your account sign-in and internet connection.');
+  }
+}
+async function submitSchoolExam(exam,lessonCode){if(!exam)return;const result=collectExamAnswers(exam);if(result.answered<result.total){alert(state.lang==='fa'?'لطفاً به همه سؤال‌ها پاسخ بده.':state.lang==='hr'?'Odgovorite na sva pitanja.':'Please answer all questions.');return}const score=Math.round((result.correct/Math.max(1,result.total))*100),passed=score>=Number(exam.passing_score||70);await saveSchoolProgress(lessonCode,{exam_id:exam.id,exam_score:score,exam_passed:passed,exam_attempted_at:new Date().toISOString()});alert((state.lang==='fa'?'نمره شما: ':state.lang==='hr'?'Vaš rezultat: ':'Your score: ')+score+'%\n\n'+examResultMessage(exam,passed))}
+async function schoolCourseExam(d,courseCode){
+  const email=currentUserEmail();if(!email){alert(tr('loginRequired'));navigate('school',{},true);return}
+  let exam=null,attempts=[],assignments=[];
+  try{const rows=await cloudFetch('school_exams?select=*&exam_scope=eq.course&course_code=eq.'+encodeURIComponent(courseCode)+'&is_active=eq.true&order=sort_order.asc&limit=1',{method:'GET'});exam=Array.isArray(rows)?rows[0]:null}catch(e){console.warn('course exam',e)}
+  if(!exam){view.innerHTML=card(tr('finalExam'),`<p class="muted">${state.lang==='fa'?'آزمون فعالی برای این دوره پیدا نشد.':state.lang==='hr'?'Nije pronađen aktivan ispit za ovaj tečaj.':'No active exam was found for this course.'}</p><button class="secondary-btn wide-btn" data-go="school">${tr('back')}</button>`);return}
+  try{attempts=await cloudFetch('school_exam_attempts?select=*&exam_id=eq.'+encodeURIComponent(exam.id)+'&user_email=eq.'+encodeURIComponent(email)+'&order=submitted_at.desc',{method:'GET'})}catch(e){console.warn('exam attempts',e)}
+  try{const snapshot=await getSchoolSnapshot(email,false);assignments=(snapshot.assignments||[]).filter(x=>String(x.course_code||'foundation_school')===String(courseCode))}catch(e){console.warn('exam assignments',e)}
+  const used=Array.isArray(attempts)?attempts.length:0,max=Number(exam.max_attempts||3),passedAlready=Array.isArray(attempts)&&attempts.some(x=>x.passed),remaining=passedAlready?0:Math.max(0,max-used),latest=attempts?.[0];const attemptNumber=used+1,attemptExam=prepareExamForAttempt(exam,attemptNumber,email),qs=Array.isArray(attemptExam.questions)?attemptExam.questions:[],title=examLocalized(exam,'title',tr('finalExam')),intro=examLocalized(exam,'intro',''),assignment=courseAssignmentSummary(d,courseCode,assignments);const examWeight=Number(exam.exam_weight??70),assignmentWeight=Number(exam.assignment_weight??30),assignmentLocked=exam.require_assignments_before_exam===true&&assignment.completed<assignment.total;
+  view.innerHTML=card(title,`${intro?`<p>${html(intro)}</p>`:''}<div class="notice"><p><strong>${state.lang==='fa'?'ساختار نمره':state.lang==='hr'?'Struktura ocjene':'Grade structure'}:</strong> ${localNum(examWeight)}% ${state.lang==='fa'?'آزمون':state.lang==='hr'?'ispit':'exam'} + ${localNum(assignmentWeight)}% ${state.lang==='fa'?'تکالیف':state.lang==='hr'?'zadaci':'assignments'}</p><p><strong>${state.lang==='fa'?'نمره فعلی تکالیف':state.lang==='hr'?'Trenutačna ocjena zadataka':'Current assignment score'}:</strong> ${localNum(assignment.percent)}% (${localNum(assignment.completed)} / ${localNum(assignment.total)})</p><p><strong>${state.lang==='fa'?'حد قبولی نهایی':state.lang==='hr'?'Završni prag prolaza':'Final passing score'}:</strong> ${Number(exam.passing_score||70)}%</p><p><strong>${state.lang==='fa'?'تعداد سؤال این تلاش':state.lang==='hr'?'Broj pitanja u ovom pokušaju':'Questions in this attempt'}:</strong> ${localNum(qs.length)}</p><p><strong>${state.lang==='fa'?'فرصت باقی‌مانده':state.lang==='hr'?'Preostali pokušaji':'Attempts remaining'}:</strong> ${localNum(remaining)} / ${localNum(max)}</p>${exam.shuffle_questions?`<p class="muted">${state.lang==='fa'?'ترتیب سؤال‌ها برای هر تلاش تغییر می‌کند.':state.lang==='hr'?'Redoslijed pitanja mijenja se pri svakom pokušaju.':'Question order changes on each attempt.'}</p>`:''}${latest?`<p><strong>${state.lang==='fa'?'آخرین نتیجه نهایی':state.lang==='hr'?'Posljednji završni rezultat':'Latest final result'}:</strong> ${html(latest.final_score_percent??latest.score_percent)}% ${latest.passed?'✓':''}</p>`:''}</div>${remaining>0&&!assignmentLocked?`${renderExamQuestions(attemptExam,'course_exam_q_')}<button class="primary-btn wide-btn" id="submitCourseExam">${state.lang==='fa'?'ثبت و دریافت نتیجه':state.lang==='hr'?'Pošalji i prikaži rezultat':'Submit and view result'}</button>`:assignmentLocked?`<p class="notice">${state.lang==='fa'?'ابتدا همه تکالیف لازم را ارسال کنید.':state.lang==='hr'?'Najprije predajte sve potrebne zadatke.':'Submit all required assignments first.'}</p>`:passedAlready?`<p class="notice" style="background:#ecfdf3;color:#08783d">${html(examResultMessage(exam,true))}</p>`:`<p class="notice">${state.lang==='fa'?'فرصت‌های تعیین‌شده برای این آزمون تمام شده است. لطفاً با مدیر مدرسه تماس بگیرید.':state.lang==='hr'?'Iskoristili ste sve dopuštene pokušaje. Obratite se administratoru škole.':'You have used all allowed attempts. Please contact the school administrator.'}</p>`}<button class="secondary-btn wide-btn" data-go="school">${tr('back')}</button><div id="courseExamResult"></div>`);
+  $('#submitCourseExam')?.addEventListener('click',()=>submitCourseExam(exam,attemptExam,courseCode,used,assignment));
+}
+async function submitCourseExam(exam,attemptExam,courseCode,usedAttempts=0,assignment={percent:100,completed:0,total:0}){
+  const button=$('#submitCourseExam');if(button?.disabled)return;const result=collectExamAnswers(attemptExam,'course_exam_q_');if(result.answered<result.total){alert(state.lang==='fa'?'لطفاً به همه سؤال‌ها پاسخ بدهید.':state.lang==='hr'?'Molimo odgovorite na sva pitanja.':'Please answer all questions.');return}if(button){button.disabled=true;button.textContent=state.lang==='fa'?'در حال ثبت نتیجه…':state.lang==='hr'?'Spremanje rezultata…':'Saving result…'}
+  const email=currentUserEmail(),profile=getKnownUserProfile(),objectiveScore=Math.round(result.correct/Math.max(1,result.total)*100),examWeight=Number(exam.exam_weight??70),assignmentWeight=Number(exam.assignment_weight??30),weightTotal=Math.max(1,examWeight+assignmentWeight),assignmentScore=Number(assignment.percent??100),finalScore=Math.round((objectiveScore*examWeight+assignmentScore*assignmentWeight)/weightTotal),passed=finalScore>=Number(exam.passing_score||70),submitted=new Date().toISOString(),attemptNumber=Number(usedAttempts||0)+1;
+  const attempt={exam_id:exam.id,user_email:email,user_name:profile.name||'',course_code:courseCode,lesson_code:'course:'+courseCode,attempt_number:attemptNumber,correct_count:result.correct,total_questions:result.total,objective_score_percent:objectiveScore,assignment_score_percent:assignmentScore,final_score_percent:finalScore,assignment_completed_count:Number(assignment.completed||0),assignment_total_count:Number(assignment.total||0),score_percent:finalScore,passed,answers:result.answers,submitted_at:submitted};
+  try{await cloudFetch('school_exam_attempts',{method:'POST',body:JSON.stringify(attempt)});await cloudFetch('school_progress?on_conflict=user_email,lesson_code',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({user_email:email,user_name:profile.name||'',lesson_code:'course:'+courseCode,progress_percent:passed?100:finalScore,completed_at:passed?submitted:null,exam_id:exam.id,exam_score:finalScore,objective_score_percent:objectiveScore,assignment_score_percent:assignmentScore,final_score_percent:finalScore,exam_passed:passed,exam_attempted_at:submitted,updated_at:submitted})});invalidateSchoolSnapshot(email);await getSchoolSnapshot(email,true);const msg=examResultMessage(exam,passed),box=$('#courseExamResult');if(box)box.innerHTML=`<section class="notice" style="${passed?'background:#ecfdf3;color:#08783d':''}"><h3>${passed?'✓ ':''}${state.lang==='fa'?'نتیجه نهایی':state.lang==='hr'?'Završni rezultat':'Final result'}</h3><p><strong>${state.lang==='fa'?'آزمون کتبی':state.lang==='hr'?'Pisani ispit':'Written exam'}:</strong> ${localNum(result.correct)} / ${localNum(result.total)} · ${localNum(objectiveScore)}% × ${localNum(examWeight)}%</p><p><strong>${state.lang==='fa'?'تکالیف':state.lang==='hr'?'Zadaci':'Assignments'}:</strong> ${localNum(assignmentScore)}% × ${localNum(assignmentWeight)}%</p><p><strong>${state.lang==='fa'?'نمره نهایی':state.lang==='hr'?'Završna ocjena':'Final grade'}:</strong> ${localNum(finalScore)}%</p><p>${html(msg)}</p></section>`;window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})}catch(e){console.warn(e);alert(state.lang==='fa'?'ثبت نتیجه انجام نشد. لطفاً دوباره تلاش کنید.':state.lang==='hr'?'Rezultat nije spremljen. Pokušajte ponovno.':'The result could not be saved. Please try again.');if(button){button.disabled=false;button.textContent=state.lang==='fa'?'ثبت و دریافت نتیجه':state.lang==='hr'?'Pošalji i prikaži rezultat':'Submit and view result'}}
+}
+function bindInlineSermonControls(){
+  $$('[data-sermon-play]').forEach(b=>b.onclick=e=>{e.stopPropagation();const item=window.__sermonMap?.[String(b.dataset.sermonPlay)];if(item)playSermon(item)});
+  $$('[data-sermon-note]').forEach(b=>b.onclick=e=>{e.stopPropagation();const item=window.__sermonMap?.[String(b.dataset.sermonNote)];if(item)openSermonNote(item)});
+  $$('[data-inline-player]').forEach(panel=>{const id=String(panel.dataset.inlinePlayer);panel.querySelector('[data-inline-play]')?.addEventListener('click',()=>{const item=window.__sermonMap?.[id];if(item)playSermon(item)});panel.querySelector('[data-inline-back]')?.addEventListener('click',()=>{const a=ensureSermonPlayer();a.currentTime=Math.max(0,a.currentTime-15)});panel.querySelector('[data-inline-forward]')?.addEventListener('click',()=>{const a=ensureSermonPlayer();a.currentTime=Math.min(a.duration||Infinity,a.currentTime+30)});panel.querySelector('[data-inline-seek]')?.addEventListener('input',e=>{const a=ensureSermonPlayer();if(Number.isFinite(a.duration))a.currentTime=(Number(e.target.value)/1000)*a.duration});panel.querySelector('[data-inline-speed]')?.addEventListener('change',e=>{const a=ensureSermonPlayer();a.playbackRate=Number(e.target.value)||1;localStorage.setItem('nh7_sermon_speed',String(a.playbackRate));saveProgressCloud('nh7_sermon_speed',{__raw:String(a.playbackRate)}).catch(console.warn)})});
+}
+
+async function audio(params={}){
+  if(!await nh7RequireSchoolAccessV223(tr('audio')))return;
+  let categories=[],sermons=[];
+  try{
+    categories=await cloudFetch('sermon_categories?select=*&is_active=eq.true&order=sort_order.asc,name_fa.asc',{method:'GET'}); sermons=await cloudFetch('sermons?select=*&is_published=eq.true&order=sort_order.asc,published_at.desc',{method:'GET'});
+  }catch(e){console.warn('Dynamic sermons unavailable; using bundled audio list',e)}
+  if(Array.isArray(sermons)&&sermons.length){
+    const catId=params.cat||''; const q=String(params.q||'').trim().toLowerCase();
+    const filtered=sermons.filter(x=>(!catId||String(x.category_id)===String(catId))&&(!q||[x.title_fa,x.title_en,x.title_hr,x.description_fa,x.description_en,x.description_hr].some(v=>String(v||'').toLowerCase().includes(q))));
+    window.__sermonMap=Object.fromEntries(sermons.map(x=>{const c=categories.find(v=>String(v.id)===String(x.category_id));const topic=c?.['name_'+state.lang]||c?.name_fa||c?.name_en||'';return[String(x.id),Object.assign({},x,{analytics_type:'sermon',analytics_id:String(x.id),analytics_topic:topic,analytics_source_group:String(x.category_id||''),analytics_language:state.lang})]}));
+    if(params.open){const x=sermons.find(v=>String(v.id)===String(params.open));if(x)playSermon(x);navigate('audio',{cat:catId,q:params.q||''},true);return}
+    const list=filtered.length?`<div class="sermon-list">${filtered.map(x=>{const title=x['title_'+state.lang]||x.title_fa||x.title_en;let progress={};try{progress=JSON.parse(localStorage.getItem(sermonProgressKey(x.id))||'{}')}catch(e){}const duration=sermonDurationLabel(x)||formatAudioTime(progress.duration||0);return `<article class="sermon-card" data-sermon-card="${html(x.id)}"><div class="sermon-card-main">${x.cover_url?`<img src="${html(x.cover_url)}" alt="">`:'<span class="sermon-placeholder">🎙</span>'}<div class="sermon-card-copy"><strong>${html(title)}</strong><small>${duration?`${tr('duration')}: ${localText(duration)} · `:''}${x.youtube_url?'YouTube · ':''}${x.audio_url?'MP3':''}</small><div class="sermon-card-actions">${x.audio_url?`<button class="primary-btn compact-player-btn" data-sermon-play="${html(x.id)}">▶ ${progress.time>5?tr('continueListening'):tr('listenAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(x.audio_url)}" data-offline-title="${html(title)}">${state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline'}</button>`:''}<button class="secondary-btn compact-player-btn" data-sermon-note="${html(x.id)}">📝 ${tr('sermonNoteButton')}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(x.id)}"><div class="inline-player-controls"><button class="player-round" data-inline-back>↶15</button><button class="player-main" data-inline-play>▶</button><button class="player-round" data-inline-forward>30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek type="range" min="0" max="1000" value="0"><span data-inline-total>${duration||'0:00'}</span></div></div></article>`}).join('')}</div>`:`<p class="muted">${tr('noSermons')}</p>`;
+    view.innerHTML=card(tr('sermons'),`<input id="sermonSearch" placeholder="${tr('sermonSearch')}" value="${html(params.q||'')}"><div class="tabs"><button class="tab ${!catId?'active':''}" data-go="audio">${tr('allCategories')}</button>${(categories||[]).map(c=>`<button class="tab ${String(catId)===String(c.id)?'active':''}" data-go="audio" data-params='${html(JSON.stringify({cat:c.id}))}'>${html(c['name_'+state.lang]||c.name_fa||c.name_en)}</button>`).join('')}</div>${list}`);
+    $('#sermonSearch')?.addEventListener('change',e=>navigate('audio',{cat:catId,q:e.target.value},true));bindInlineSermonControls();updateInlineSermonPlayers();return;
+  }
+  const d=await jfetch('data/audio/messages.json');
+  if(params.cat){
+    const c=d.categories.find(x=>x.id===params.cat),items=c?.items||[],topic=pick(c?.title)||tr('audio');
+    window.__sermonMap=Object.fromEntries(items.map(it=>{const id='bundled-'+String(it.id||simpleHash(it.src||it.title||''));return[id,{id,audio_url:it.src||'',title_fa:it.title?.fa||it.title?.en||'Audio',title_en:it.title?.en||it.title?.fa||'Audio',title_hr:it.title?.hr||it.title?.en||'Audio',analytics_type:'sermon',analytics_id:String(it.id||id),analytics_topic:topic,analytics_source_group:String(c?.id||''),analytics_language:state.lang}]}));
+    const list=items.length?`<div class="sermon-list">${items.map(it=>{const id='bundled-'+String(it.id||simpleHash(it.src||it.title||'')),title=pick(it.title)||it.title||'Audio';let progress={};try{progress=JSON.parse(localStorage.getItem(sermonProgressKey(id))||'{}')}catch(e){}const duration=formatAudioTime(progress.duration||0);return`<article class="sermon-card" data-sermon-card="${html(id)}"><div class="sermon-card-main"><span class="sermon-placeholder">🎧</span><div class="sermon-card-copy"><strong>${html(title)}</strong><small>${duration!=='0:00'?`${tr('duration')}: ${localText(duration)} · `:''}MP3</small><div class="sermon-card-actions"><button class="primary-btn compact-player-btn" data-sermon-play="${html(id)}">▶ ${progress.time>5?tr('continueListening'):tr('listenAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(it.src||'')}" data-offline-title="${html(title)}">${state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline'}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(id)}"><div class="inline-player-controls"><button class="player-round" data-inline-back>↶15</button><button class="player-main" data-inline-play>▶</button><button class="player-round" data-inline-forward>30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek type="range" min="0" max="1000" value="0"><span data-inline-total>${duration}</span></div></div></article>`}).join('')}</div>`:`<p class="muted">${tr('noAudio')}</p>`;
+    view.innerHTML=card(topic,list);bindInlineSermonControls();updateInlineSermonPlayers();return
+  }
+  view.innerHTML=card(tr('audio'),`<div class="grid">${d.categories.map(c=>tile('audio','🎧',pick(c.title),`${tr('all')}: ${localNum((c.items||[]).length)}`,{cat:c.id})).join('')}</div>`);
+}
+
+function audioBibleTitle(row){return row?.['name_'+state.lang]||row?.name_en||row?.name_fa||row?.code||''}
+function audioBibleChapterTitle(row){
+  const n=Number(row?.chapter_number||0);
+  if(row?.['title_'+state.lang])return row['title_'+state.lang];
+  return `${tr('chapter')} ${localNum(n)}`;
+}
+async function audioBible(params={}){
+  if(!await nh7RequireSchoolAccessV223(tr('audioBible')))return;
+  let books=[],chapters=[];
+  try{
+    [books,chapters]=await Promise.all([
+      cloudFetch('audio_bible_books_v220?select=*&is_active=eq.true&order=book_order.asc',{method:'GET',cache:'no-store'}),
+      cloudFetch('audio_bible_chapters_v220?select=*&is_published=eq.true&language=eq.'+encodeURIComponent(state.lang)+'&order=book_code.asc,chapter_number.asc',{method:'GET',cache:'no-store'})
+    ]);
+  }catch(e){
+    console.warn('Audio Bible load failed',e);
+    view.innerHTML=card(tr('audioBible'),`<p class="muted">${html(tr('noChapterAudio'))}</p>`);
+    return;
+  }
+  books=Array.isArray(books)?books:[]; chapters=Array.isArray(chapters)?chapters:[];
+  const testament=String(params.testament||'');
+  const bookCode=String(params.book||'');
+  if(!testament){
+    const oldCount=chapters.filter(c=>books.find(b=>b.book_code===c.book_code)?.testament==='old').length;
+    const newCount=chapters.filter(c=>books.find(b=>b.book_code===c.book_code)?.testament==='new').length;
+    view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible">‹ ${html(tr('back'))}</button></div>`+card(tr('audioBible'),`<p class="muted">${html(tr('audioBibleIntro'))}</p><div class="grid">${tile('audioBible','📜',tr('oldTestament'),`${tr('uploadedChapters')}: ${localNum(oldCount)}`,{testament:'old'})}${tile('audioBible','✝',tr('newTestament'),`${tr('uploadedChapters')}: ${localNum(newCount)}`,{testament:'new'})}</div>`);
+    return;
+  }
+  const testamentBooks=books.filter(b=>String(b.testament)===testament);
+  if(!bookCode){
+    const cards=testamentBooks.map(b=>{
+      const count=chapters.filter(c=>String(c.book_code)===String(b.book_code)).length;
+      return tile('audioBible','📘',audioBibleTitle(b),`${tr('uploadedChapters')}: ${localNum(count)} / ${localNum(b.chapter_count||0)}`,{testament,book:b.book_code});
+    }).join('');
+    view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="audioBible">‹ ${html(tr('back'))}</button></div>`+card(testament==='old'?tr('oldTestament'):tr('newTestament'),`<p class="muted">${html(tr('audioBibleIntro'))}</p><div class="grid">${cards}</div>`);
+    return;
+  }
+  const book=books.find(b=>String(b.book_code)===bookCode);
+  const rows=chapters.filter(c=>String(c.book_code)===bookCode).sort((a,b)=>Number(a.chapter_number)-Number(b.chapter_number));
+  window.__audioBibleMap=Object.fromEntries(rows.map(r=>['bible-'+String(r.id),{id:'bible-'+String(r.id),title_fa:`${book?.name_fa||''} — باب ${r.chapter_number}`,title_en:`${book?.name_en||''} — Chapter ${r.chapter_number}`,title_hr:`${book?.name_hr||''} — Poglavlje ${r.chapter_number}`,audio_url:r.audio_url,duration_seconds:r.duration_seconds||0,cover_url:r.cover_url||'',analytics_type:'audio_bible',analytics_id:String(r.id),analytics_topic:audioBibleTitle(book),analytics_source_group:String(book?.book_code||''),analytics_language:r.language||state.lang,book_code:String(book?.book_code||'')}]));
+  const list=rows.length?`<div class="sermon-list">${rows.map(r=>{
+    const id='bible-'+String(r.id),title=audioBibleChapterTitle(r),duration=formatAudioTime(r.duration_seconds||0),progress=(()=>{try{return JSON.parse(localStorage.getItem(sermonProgressKey(id))||'{}')}catch(e){return{}}})();
+    return `<article class="sermon-card" data-sermon-card="${html(id)}"><div class="sermon-card-main"><span class="sermon-placeholder">🔊</span><div class="sermon-card-copy"><strong>${html(title)}</strong><small>${duration?`${tr('duration')}: ${duration}`:''}</small><div class="sermon-card-actions"><button class="primary-btn compact-player-btn" data-sermon-play="${html(id)}">▶ ${progress.time>5?tr('continueListening'):tr('playAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(r.audio_url)}" data-offline-title="${html(audioBibleTitle(book)+' '+title)}">${tr('downloadOffline')}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(id)}"><div class="inline-player-controls"><button class="player-round" data-inline-back>↶15</button><button class="player-main" data-inline-play>▶</button><button class="player-round" data-inline-forward>30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek type="range" min="0" max="1000" value="0"><span data-inline-total>${duration||'0:00'}</span></div></div></article>`;
+  }).join('')}</div>`:`<p class="muted">${html(tr('noChapterAudio'))}</p>`;
+  view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="audioBible" data-params='${html(JSON.stringify({testament}))}'>‹ ${html(tr('bookList'))}</button></div>`+card(audioBibleTitle(book)||tr('audioBible'),`<p class="muted">${html(testament==='old'?tr('oldTestament'):tr('newTestament'))}</p>${list}`);
+  window.__sermonMap=Object.assign(window.__sermonMap||{},window.__audioBibleMap||{});bindInlineSermonControls();updateInlineSermonPlayers();
+}
+
+async function salvation(){
+  const d=await jfetch('data/salvation/need_salvation.json');
+  const sections=(d.sections||[]).filter(s=>s.id!=='new_birth_videos');
+  const introText = state.lang==='fa'
+    ? 'برای مطالعه هر بخش، روی عنوان آن بزنید.'
+    : state.lang==='hr'
+      ? 'Za čitanje svakog dijela dodirnite njegov naslov.'
+      : 'Tap each title to open its content.';
+  const sectionButtons = sections.map((s,i)=>`
+    <button class="list-btn accordion-toggle" data-salvation-toggle="salvation-section-${i}">
+      <strong>${html(pick(s.title))}</strong>
+      <small>${state.lang==='fa'?'برای باز کردن کلیک کنید':state.lang==='hr'?'Dodirnite za otvaranje':'Tap to open'}</small>
+    </button>
+    <div id="salvation-section-${i}" class="accordion-panel hidden">
+      <p>${html(pick(s.content))}</p>
+    </div>`).join('');
+  const videoList = `<div class="list">${NEW_BIRTH_VIDEOS.map((url,i)=>`<a class="list-btn link-card" href="${html(url)}" target="_blank" rel="noopener"><strong>${tr('part')} ${localNum(i+1)}: ${state.lang==='fa'?'تولد تازه':state.lang==='hr'?'Novo rođenje':'New Birth'}</strong><small>YouTube</small></a>`).join('')}</div>`;
+  const videosAccordion = `
+    <button class="list-btn accordion-toggle" data-salvation-toggle="salvation-videos">
+      <strong>${tr('videos')}</strong>
+      <small>${state.lang==='fa'?'نمایش ویدیوها':state.lang==='hr'?'Prikaži video lekcije':'Show videos'}</small>
+    </button>
+    <div id="salvation-videos" class="accordion-panel hidden">${videoList}</div>`;
+  view.innerHTML=card(tr('salvation'), `<p class="muted">${introText}</p><div class="list">${sectionButtons}${videosAccordion}</div>`);
+  bindDynamic();
+}
+async function about(){
+  const d=await jfetch('data/church/about.json');
+  view.innerHTML=card(tr('about'), `<h3>${tr('churchIntro')}</h3><p>${html(d.intro?.[state.lang]||'')}</p><h3>${tr('ourVision')}</h3><p>${html(d.vision?.[state.lang]||'')}</p><h3>${tr('ourBeliefs')}</h3><p>${html(d.beliefs?.[state.lang]||'')}</p><div class="button-row"><a class="secondary-btn" href="https://www.bible.com/organizations/da6136d1-04cd-4243-a52b-f9ba7f32ec79?utm_source=yvapp&utm_medium=share&utm_content=partner-page" target="_blank" rel="noopener">${tr('youversion')}</a></div>`);
+}
+async function meetings(params={}){
+  if(isExplicitlyLoggedOut()){view.innerHTML=card(tr('meetings'),`<p>${tr('loginRequired')}</p><button class="primary-btn" data-go="account">${tr('signIn')}</button>`);return;}
+  let meetingAccess=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{"status":"none"}');
+  let schoolAccess=JSON.parse(localStorage.getItem('nh7_school_access')||'{"status":"none"}');
+
+  // From v1.6.1 onward, approved School access also grants Church Meeting access.
+  // No separate meeting registration and no guest entrance for security.
+  const cloudSchool = await fetchLatestRegistration('school');
+  if(cloudSchool) schoolAccess = cloudSchool;
+  const cloudMeeting = await fetchLatestRegistration('meeting');
+  if(cloudMeeting) meetingAccess = cloudMeeting;
+
+  const schoolApproved = schoolAccess.status==='approved' || schoolAccess.approvedBy==='admin';
+  const meetingApproved = meetingAccess.status==='approved' || meetingAccess.approvedBy==='admin';
+  const approved = schoolApproved || meetingApproved;
+  let details='';
+  if(approved){
+    const settings = await fetchMeetingSettings();
+    details = `<p class="success-text">${tr('meetingApproved')}</p>` + renderMeetingDetails(settings);
+  }
+  const buttons = approved
+    ? `<div class="button-row"><button class="secondary-btn" data-go="meetings">${tr('refreshApproval')}</button></div>`
+    : `<div class="button-row"><button class="primary-btn" data-go="school" data-params='{"form":true}'>${tr('register')} ${tr('school')}</button><button class="secondary-btn" data-go="meetings">${tr('refreshApproval')}</button></div>`;
+  const notApprovedText = state.lang==='fa'
+    ? 'برای امنیت جلسه، ورود مهمان نداریم. اگر در مدرسه ثبت‌نام کرده‌اید، پس از تأیید ادمین همین بخش لینک و کد جلسه را نشان می‌دهد.'
+    : (state.lang==='hr' ? 'Zbog sigurnosti nema ulaska kao gost. Nakon registracije za školu i odobrenja administratora ovdje će se prikazati poveznica i kod sastanka.' : 'For meeting security, guest access is not available. After school registration and admin approval, the meeting link and codes will appear here.');
+  view.innerHTML=card(tr('meetings'), `<p>${tr('meetingAccessText')}</p>${approved?'':`<p class="muted">${notApprovedText}</p>`}<span class="badge">${approved?tr('approved'):(schoolAccess.status==='pending'||meetingAccess.status==='pending'?tr('pending'):tr('notStarted'))}</span>${details}${buttons}`);
+}
+
+let nh7LibraryTab=sessionStorage.getItem('nh7_library_tab')||'public';
+let nh7LibraryCatalog=[];
+function libraryText(row,key){return row?.[key+'_'+state.lang]||row?.[key+'_en']||row?.[key+'_fa']||row?.[key+'_hr']||''}
+function librarySize(bytes){bytes=Number(bytes||0);if(bytes<1024*1024)return Math.max(1,Math.round(bytes/1024))+' KB';return (bytes/1024/1024).toFixed(1)+' MB'}
+async function loadLibraryCatalog(){
+  try{const rows=await cloudFetch('nh7_library_items_v224?select=*&order=resource_type.asc,audience.asc,sort_order.asc,created_at.desc',{method:'GET',cache:'no-store'});nh7LibraryCatalog=Array.isArray(rows)?rows:[]}catch(e){console.warn('Library catalog',e);nh7LibraryCatalog=[]}
+  return nh7LibraryCatalog;
+}
+let nh7LibraryBlobUrlV224='';
+function nh7ClosePdfViewerV223(){if(nh7LibraryBlobUrlV224){URL.revokeObjectURL(nh7LibraryBlobUrlV224);nh7LibraryBlobUrlV224=''}document.getElementById('nh7PdfViewerV223')?.remove();document.body.classList.remove('nh7-modal-open')}
+function nh7PdfErrorTextV223(err){
+  const raw=String(err?.code||err?.message||err||'').trim(),key=raw.toLowerCase();
+  if(key.includes('school_approval_required'))return tr('schoolContentGate');
+  if(key.includes('invalid_code')||key.includes('code_invalid')||key.includes('expired')||key.includes('max_uses'))return tr('invalidAccessCode');
+  if(key.includes('item_not_found')||key.includes('not_found'))return l223('این فایل پیدا نشد یا دیگر منتشر نشده است.','This file was not found or is no longer published.','Datoteka nije pronađena ili više nije objavljena.');
+  if(key.includes('storage')||key.includes('signed_url')||key.includes('no signed url'))return l223('لینک امن فایل ساخته نشد. چند لحظه بعد دوباره تلاش کنید.','The secure file link could not be created. Please try again shortly.','Sigurna poveznica nije stvorena. Pokušajte ponovno.');
+  if(key.includes('failed to fetch')||key.includes('network'))return l223('ارتباط اینترنتی برقرار نشد. پنجره را ببندید و دوباره تلاش کنید.','The network connection failed. Close this window and try again.','Mrežna veza nije uspjela. Zatvorite prozor i pokušajte ponovno.');
+  return raw||l223('فایل باز نشد. پنجره را ببندید و دوباره تلاش کنید.','The file could not be opened. Close this window and try again.','Datoteka se nije mogla otvoriti.');
+}
+function nh7ShowPdfViewerV223(title=''){
+  nh7ClosePdfViewerV223();const modal=document.createElement('div');modal.id='nh7PdfViewerV223';modal.className='nh7-pdf-viewer-modal';modal.innerHTML=`<div class="nh7-pdf-viewer-dialog"><div class="nh7-pdf-viewer-head"><strong>${html(title||tr('library'))}</strong><div><a class="secondary-btn hidden" id="nh7PdfExternalV223" target="_blank" rel="noopener">${html(tr('openExternal'))}</a><button class="icon-btn" type="button" data-pdf-close aria-label="${html(tr('close'))}">×</button></div></div><div class="nh7-pdf-loading" id="nh7PdfLoadingV223"><div class="spinner"></div><p>${html(tr('securePdfLoading'))}</p></div><iframe class="hidden" id="nh7PdfFrameV223" title="Document"></iframe><div class="nh7-docx-reader hidden" id="nh7DocxReaderV224"></div></div>`;document.body.appendChild(modal);document.body.classList.add('nh7-modal-open');modal.querySelectorAll('[data-pdf-close]').forEach(b=>b.onclick=nh7ClosePdfViewerV223);modal.onclick=e=>{if(e.target===modal)nh7ClosePdfViewerV223()};return modal;
+}
+async function openLibraryPdf(item){
+  if(!item)return;if(!await nh7RequireSchoolAccessV223(tr('library')))return;
+  let code='';if(item.audience==='ministers'){
+    let saved=null;try{saved=JSON.parse(sessionStorage.getItem('nh7_minister_library_code')||'null')}catch(e){}
+    if(saved&&Date.now()-Number(saved.at||0)<12*60*60*1000)code=String(saved.code||'');
+    if(!code)code=String(prompt(tr('enterAccessCode'),'')||'').trim();if(!code)return;
+  }
+  const title=libraryText(item,'title')||item.file_name||'Document',modal=nh7ShowPdfViewerV223(title);
+  try{
+    const d=await invokeEdgeFunction('nh7-library-access',{item_id:item.id,code,device_id:deviceId(),user_email:currentUserEmail()||''});
+    if(!d?.signed_url)throw new Error(d?.error||'No signed URL');
+    if(item.audience==='ministers')sessionStorage.setItem('nh7_minister_library_code',JSON.stringify({code,at:Date.now()}));
+    trackAppSection('library:'+item.audience+':open');nh7TrackContentV223((item.resource_type||'library')==='apocrypha'?'apocrypha':'library_pdf',String(item.id),title);
+    const external=modal.querySelector('#nh7PdfExternalV223'),loading=modal.querySelector('#nh7PdfLoadingV223'),mime=String(d.mime_type||item.mime_type||'application/pdf').toLowerCase();external.href=d.signed_url;external.classList.remove('hidden');
+    const response=await fetch(d.signed_url,{cache:'no-store'});if(!response.ok)throw new Error('Document download failed: '+response.status);
+    const blob=await response.blob();
+    if(mime.includes('wordprocessingml')||/\.docx$/i.test(d.file_name||item.file_name||'')){
+      if(!window.mammoth)throw new Error(l223('نمایش Word هنوز بارگذاری نشده است؛ دوباره تلاش کنید.','Word reader is not loaded yet. Please retry.','Čitač Worda nije učitan. Pokušajte ponovno.'));
+      const reader=modal.querySelector('#nh7DocxReaderV224'),result=await window.mammoth.convertToHtml({arrayBuffer:await blob.arrayBuffer()});reader.innerHTML=`<article class="nh7-docx-page"><h1>${html(title)}</h1>${result.value}</article>`;reader.classList.remove('hidden');
+    }else{
+      nh7LibraryBlobUrlV224=URL.createObjectURL(blob);const frame=modal.querySelector('#nh7PdfFrameV223');frame.src=nh7LibraryBlobUrlV224+'#toolbar=1&navpanes=0&view=FitH';frame.classList.remove('hidden');
+    }
+    loading?.classList.add('hidden');
+  }catch(e){
+    if(item.audience==='ministers')sessionStorage.removeItem('nh7_minister_library_code');
+    const loading=modal.querySelector('#nh7PdfLoadingV223');if(loading)loading.innerHTML=`<div class="notice"><strong>${html(item.audience==='ministers'?tr('invalidAccessCode'):tr('library'))}</strong><p>${html(nh7PdfErrorTextV223(e))}</p><button class="secondary-btn" type="button" data-pdf-close>${html(tr('close'))}</button></div>`;modal.querySelectorAll('[data-pdf-close]').forEach(b=>b.onclick=nh7ClosePdfViewerV223);
+  }
+}
+
+function libraryUserCardV224(x,isApocrypha=false){const mime=String(x.mime_type||'application/pdf'),label=mime.includes('wordprocessingml')||/\.docx$/i.test(x.file_name||'')?'DOCX':'PDF';return `<article class="library-user-card"><div class="library-user-icon">${label}</div><span class="library-audience ${html(x.audience)}">${x.audience==='ministers'?'🔒 '+tr('ministersLibrary'):'🌍 '+tr('publicLibrary')}</span><h3>${html(libraryText(x,'title')||x.file_name||label)}</h3><p>${html(libraryText(x,'description')||'')}</p><small class="muted">${html(x.file_name||'')} · ${librarySize(x.file_size)}</small><div class="button-row"><button class="primary-btn" data-library-open="${html(x.id)}">${x.audience==='ministers'?'🔐':'📖'} ${html(isApocrypha?l223('باز کردن','Open','Otvori'):tr('openPdf'))}</button></div></article>`}
+
+async function library(params={}){
+  if(!await nh7RequireSchoolAccessV223(tr('library')))return;
+  nh7LibraryTab=params.tab||nh7LibraryTab||'public';sessionStorage.setItem('nh7_library_tab',nh7LibraryTab);
+  await loadLibraryCatalog();
+  const rows=nh7LibraryCatalog.filter(x=>x.audience===nh7LibraryTab&&(x.resource_type||'library')==='library');
+  const title=nh7LibraryTab==='ministers'?tr('ministersLibrary'):tr('publicLibrary');
+  const cards=rows.map(x=>libraryUserCardV224(x,false)).join('');
+  view.innerHTML=card(tr('library'),`<div class="library-user-tabs"><button class="${nh7LibraryTab==='public'?'primary-btn':'secondary-btn'}" data-library-tab="public">${tr('publicLibrary')}</button><button class="${nh7LibraryTab==='ministers'?'primary-btn':'secondary-btn'}" data-library-tab="ministers">🔒 ${tr('ministersLibrary')}</button></div>${nh7LibraryTab==='ministers'?`<div class="library-lock-note">${tr('protectedLibrary')}<br>${tr('enterAccessCode')}</div>`:''}<h2>${title}</h2><div class="library-user-grid">${cards||`<p class="muted">${tr('libraryEmpty')}</p>`}</div><p class="muted small">${tr('pdfExpires')}</p>`);
+}
+
+async function more(){ view.innerHTML=`<div class="grid">${tile('audio','🎧',tr('audio'))}${tile('salvation','✝',tr('salvation'))}${tile('daily','🙏',tr('gratitude'),'',{tab:'gratitude'})}${tile('meetings','☎',tr('meetings'))}${tile('qna','❓',tr('qna'))}${tile('inbox','📥',tr('inbox'), unreadCount()?`${tr('unread')}: ${localNum(unreadCount())}`:'')}${tile('account','👤',tr('account'))}${tile('about','ℹ',tr('about'))}${tile('settings','⚙',tr('settings'))}</div>`; }
+
+async function fetchMyQuestionsCloud(){
+  const profile=getKnownUserProfile();
+  const email=String(currentUserEmail()||profile.email||'').trim().toLowerCase();
+  try{
+    const rows=await cloudRpc('nh7_my_questions_v220',{p_email:email||null,p_device_id:deviceId()});
+    return Array.isArray(rows)?rows:[];
+  }catch(e){
+    console.warn('My Q&A sync failed',e);
+    try{
+      const filters=[];
+      if(email)filters.push(`author_email.eq.${encodeURIComponent(email)}`);
+      filters.push(`device_id.eq.${encodeURIComponent(deviceId())}`);
+      return await cloudFetch(`qa_questions?select=id,question_text,answer_text,status,language,created_at,answered_at&or=(${filters.join(',')})&order=created_at.desc&limit=100`,{method:'GET',cache:'no-store'});
+    }catch(_){return []}
+  }
+}
+function mergeMyQuestionState(localRows,cloudRows){
+  const map=new Map();
+  for(const q of (localRows||[])){
+    const key=normalizeQuestionText(q.question||q.question_text);
+    if(key)map.set(key,Object.assign({},q));
+  }
+  for(const q of (cloudRows||[])){
+    const key=normalizeQuestionText(q.question_text||q.question);
+    if(!key)continue;
+    const prev=map.get(key)||{};
+    map.set(key,Object.assign({},prev,{
+      id:q.id||prev.id,
+      question:q.question_text||q.question||prev.question,
+      status:(String(q.answer_text||q.answer||'').trim()?'answered':String(q.status||prev.status||'pending')).toLowerCase(),
+      answer:q.answer_text||q.answer||'',
+      answeredAt:q.answered_at||prev.answeredAt||null,
+      createdAt:q.created_at||prev.createdAt||new Date().toISOString()
+    }));
+  }
+  const out=[...map.values()].sort((a,b)=>String(a.createdAt||'').localeCompare(String(b.createdAt||'')));
+  localStorage.setItem('nh7_my_questions',JSON.stringify(out));
+  return out;
+}
+async function qna(){
+  let local=[];try{local=JSON.parse(localStorage.getItem('nh7_my_questions')||'[]')}catch(e){local=[]}
+  local=Array.isArray(local)?local:[];
+  let ownCloud=[],answered=[];
+  try{ownCloud=await cloudRpc('nh7_my_questions_v220',{p_device_id:deviceId()});if(!Array.isArray(ownCloud))ownCloud=ownCloud?[ownCloud]:[]}catch(e){console.warn('My Q&A cloud sync failed',e)}
+  try{answered=await cloudFetch('qa_questions?select=id,question_text,answer_text,language,answered_at&status=eq.answered&order=answered_at.desc&limit=50',{method:'GET'})}catch(e){console.warn('Q&A load failed',e)}
+  const map=new Map();
+  const keyFor=q=>String(q.client_question_id||q.id||'')||('q:'+normalizeQuestionText(q.question||q.question_text||''));
+  local.forEach(q=>map.set(keyFor(q),q));
+  ownCloud.forEach(row=>{
+    const key=keyFor(row),old=map.get(key)||local.find(q=>normalizeQuestionText(q.question)===normalizeQuestionText(row.question_text))||{};
+    map.set(key,{...old,id:row.client_question_id||old.id||row.id,client_question_id:row.client_question_id||old.client_question_id||'',cloud_id:row.id,question:row.question_text,status:String(row.answer_text||'').trim()?'answered':(row.status||'pending'),answer:row.answer_text||'',createdAt:row.created_at||old.createdAt,answeredAt:row.answered_at||null,updatedAt:row.updated_at||null});
+  });
+  const my=Array.from(map.values()).filter(q=>q&&q.question).sort((a,b)=>String(a.createdAt||'').localeCompare(String(b.createdAt||'')));
+  localStorage.setItem('nh7_my_questions',JSON.stringify(my));
+  const tapText=state.lang==='fa'?'برای دیدن پاسخ کلیک کنید':state.lang==='hr'?'Dodirnite za prikaz odgovora':'Tap to view answer';
+  const openText=state.lang==='fa'?'برای باز کردن کلیک کنید':state.lang==='hr'?'Dodirnite za otvaranje':'Tap to open';
+  const myHtml=my.length?`<div class="list">${my.slice().reverse().map((q,i)=>{const done=String(q.answer||'').trim().length>0||q.status==='answered';return `<button class="list-btn qna-answer-toggle" data-qna-answer="myq-${i}"><strong>${html(q.question)}</strong><small>${done?tr('answered'):tr('waitingAnswer')} • ${tapText}</small></button><div id="myq-${i}" class="accordion-panel hidden">${done?`<p><strong>${tr('answer')}:</strong> ${html(q.answer)}</p>`:`<p class="muted">${tr('waitingAnswer')}</p>`}</div>`}).join('')}</div>`:`<p class="muted">${tr('noQuestions')}</p>`;
+  const answeredHtml=answered&&answered.length?`<div class="list">${answered.map((q,i)=>`<button class="list-btn qna-answer-toggle" data-qna-answer="pubq-${i}"><strong>${html(q.question_text)}</strong><small>${tapText}</small></button><div id="pubq-${i}" class="accordion-panel hidden"><p><strong>${tr('answer')}:</strong> ${html(q.answer_text||'')}</p></div>`).join('')}</div>`:`<p class="muted">${tr('noQuestions')}</p>`;
+  view.innerHTML=card(tr('qna'),`<p class="muted">${tr('anonymousNote')}</p><div class="notice"><p>${tr('qnaWaitNotice')}</p><p>${tr('askQuestionOnce')}</p></div><h3>${tr('askQuestion')}</h3><textarea id="qaQuestion" placeholder="${tr('questionText')}" required></textarea><button class="primary-btn" id="submitQa">${tr('submitQuestion')}</button><div class="qna-section"><button class="secondary-btn wide-btn" data-qna-toggle="myQuestionsPanel">${tr('myQuestions')} <span>${openText}</span></button><div id="myQuestionsPanel" class="accordion-panel hidden">${myHtml}</div></div><div class="qna-section"><button class="secondary-btn wide-btn" data-qna-toggle="publicAnswersPanel">${tr('publicAnswers')} <span>${openText}</span></button><div id="publicAnswersPanel" class="accordion-panel hidden">${answeredHtml}</div></div>`);
+  $('#submitQa').onclick=async()=>{
+    const question=($('#qaQuestion').value||'').trim();if(!question){alert(tr('requiredField'));return}
+    const norm=normalizeQuestionText(question),duplicateLocal=my.some(q=>normalizeQuestionText(q.question)===norm),duplicatePublic=(answered||[]).some(q=>normalizeQuestionText(q.question_text)===norm);
+    if(duplicateLocal||duplicatePublic){alert(tr('alreadyAsked'));return}
+    const id=(globalThis.crypto?.randomUUID?.()||('q-'+Date.now()+'-'+Math.random().toString(16).slice(2))),item={id,client_question_id:id,question,status:'pending',answer:'',createdAt:new Date().toISOString()};
+    const arr=[...my,item];localStorage.setItem('nh7_my_questions',JSON.stringify(arr));
+    await saveQuestionCloud(item).catch(console.warn);alert(tr('questionSent'));render('qna',{},true);
+  };
+}
+async function account(){
+  const session=authSession();
+  if(isAccountLoggedIn()){
+    const profile=getKnownUserProfile(); const email=authEmail()||profile.email||'';
+    view.innerHTML=card(tr('account'), `<h3>${tr('myAccess')}</h3><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||session?.user?.user_metadata?.full_name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(email)}</p></div><button class="danger-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button>`);
+    $('#logoutAccountBtn')?.addEventListener('click',logoutAccount); return;
+  }
+  view.innerHTML=card(tr('account'), `<p class="muted">${tr('signedOut')}</p><p>${tr('signInHint')}</p><input id="accountEmail" type="email" autocomplete="email" placeholder="${tr('email')}"><div class="password-wrap"><input id="accountPassword" type="password" autocomplete="current-password" placeholder="${tr('password')}"><button type="button" class="password-eye" data-toggle-password="accountPassword">👁</button></div><button class="primary-btn wide-btn" id="signInBtn">${tr('signIn')}</button><button class="link-button" id="forgotPasswordToggle">${tr('forgotPassword')}</button><div id="forgotPasswordPanel" class="hidden"><input id="resetEmail" type="email" placeholder="${tr('email')}"><button class="secondary-btn" id="resetPasswordBtn">${tr('resetPassword')}</button><p id="resetMsg" class="muted"></p></div>`);
+  $('#signInBtn')?.addEventListener('click',signInAccount);
+  $('#forgotPasswordToggle')?.addEventListener('click',()=>$('#forgotPasswordPanel')?.classList.toggle('hidden'));
+  $('#resetPasswordBtn')?.addEventListener('click',resetPassword);
+  bindPasswordToggles();
+}
+async function signInAccount(){
+  const email=($('#accountEmail')?.value||'').trim().toLowerCase(),password=$('#accountPassword')?.value||'';
+  if(!email||!password){alert(tr('requiredField'));return}
+  try{
+    const data=await signInOrClaimLegacyAccount(email,password);
+    if(!data?.access_token)throw new Error('Authenticated session was not returned.');
+    saveAuthSession(data);
+    clearLegacySchoolSession();
+    localStorage.setItem('nh7_manual_email',email);
+    localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
+
+    const school=await fetchLatestRegistration('school');
+    const meeting=await fetchLatestRegistration('meeting');
+    if(school)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},school,{email})));
+    if(meeting)localStorage.setItem('nh7_meeting_access',JSON.stringify(Object.assign({},meeting,{email})));
+
+    if(!isAccountLoggedIn())throw new Error('Account sign-in completed without an authenticated session.');
+    await restoreAccountCloudData(true);
+    invalidateSchoolSnapshot(email);
+    await getSchoolSnapshot(email,true);
+    navigate('school',{},true);
+  }catch(e){
+    console.warn('Account sign-in failed',e);
+    alert(accountLoginError(e));
+  }
+}
+function bindPasswordToggles(){
+  $$('[data-toggle-password]').forEach(btn=>btn.onclick=()=>{const input=$('#'+btn.dataset.togglePassword);if(!input)return;input.type=input.type==='password'?'text':'password';btn.textContent=input.type==='password'?'👁':'🙈';});
+}
+
+async function loginRestoreAccess(){
+  const email=($('#loginEmail')?.value||'').trim().toLowerCase(); if(!email){alert(tr('requiredField'));return}
+  localStorage.setItem('nh7_manual_email',email); localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
+  try{const school=await fetchLatestRegistration('school');const meeting=await fetchLatestRegistration('meeting');if(school)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},school,{email})));if(meeting)localStorage.setItem('nh7_meeting_access',JSON.stringify(Object.assign({},meeting,{email})));}catch(e){console.warn(e)}
+  alert(tr('restoreAccessDone'));render('account',{},true);
+}
+async function logoutAccount(targetRoute='account'){
+  if(typeof targetRoute!=='string')targetRoute='account';
+  if(!confirm(state.lang==='fa'?'از حساب خارج شوید؟':state.lang==='hr'?'Odjaviti se?':'Sign out?'))return;
+  const session=authSession(); try{if(session?.access_token)await authApi('logout',{method:'POST',headers:{Authorization:'Bearer '+session.access_token}})}catch(e){}
+  saveAuthSession(null); clearLegacySchoolSession(); localStorage.setItem(EXPLICIT_LOGOUT_KEY,'1');
+  ['nh7_manual_email','nh7_school_access','nh7_meeting_access'].forEach(k=>localStorage.removeItem(k));
+  state.stack=[]; state.params={}; alert(tr('signedOut')); navigate(targetRoute==='school'?'school':'account',{},true);
+}
+async function resetPassword(){
+  const email=(($('#resetEmail')?.value||$('#accountEmail')?.value||'')).trim().toLowerCase();
+  if(!email){alert(tr('requiredField'));return}
+  const msg=$('#resetMsg');
+  try{
+    localStorage.setItem('nh7_recovery_requested_at',String(Date.now()));
+    await authApi('recover?redirect_to='+encodeURIComponent(NH7_PASSWORD_RESET_URL),{method:'POST',body:JSON.stringify({email})});
+    if(msg)msg.textContent=tr('resetPasswordSent');
+    alert(tr('resetPasswordSent'));
+  }catch(e){
+    console.warn('Password reset request failed',e);
+    const text=String(e?.message||'');
+    if(msg)msg.textContent=text||tr('loginFailed');
+    alert(text||tr('loginFailed'));
+  }
+}
+
+let notificationSettingsCache=null;
+let dailyContentCache={};
+
+function nativeLocalNotifications(){return window.Capacitor?.Plugins?.LocalNotifications||window.Capacitor?.LocalNotifications||null}
+async function fetchNotificationSchedules(force=false){
+  if(notificationSettingsCache&&!force)return notificationSettingsCache;
+  try{const rows=await cloudFetch('notification_schedules?select=*&is_active=eq.true&order=sort_order.asc',{method:'GET'});if(Array.isArray(rows)&&rows.length){notificationSettingsCache=rows;return rows}}catch(e){console.warn(e)}
+  notificationSettingsCache=[
+    {key:'daily_word',time_value:'07:00',timezone_mode:'local',days_of_week:[0,1,2,3,4,5,6],title_fa:'کلام روزانه آماده است',body_fa:'امروز کلام خدا را دریافت کن.',title_en:'Daily Word is ready',body_en:'Receive God’s Word today.',title_hr:'Dnevna Riječ je spremna',body_hr:'Primi Božju Riječ danas.'},
+    {key:'faith',time_value:'12:00',timezone_mode:'local',days_of_week:[0,1,2,3,4,5,6],title_fa:'اعلان ایمان آماده است',body_fa:'وقت اعلان ایمان است.',title_en:'Faith proclamation is ready',body_en:'It is time for your faith proclamation.',title_hr:'Proglas vjere je spreman',body_hr:'Vrijeme je za proglas vjere.'},
+    {key:'daily_juice',time_value:'17:00',timezone_mode:'local',days_of_week:[0,1,2,3,4,5,6],title_fa:'آب حیات روزانه آماده است',body_fa:'چند دقیقه برای تقویت روح خود وقت بگذار.',title_en:'Daily Juice is ready',body_en:'Take a few minutes to strengthen your spirit.',title_hr:'Dnevni sok je spreman',body_hr:'Odvoji nekoliko minuta za svoj duh.'},
+    {key:'gratitude',time_value:'21:00',timezone_mode:'local',days_of_week:[0,1,2,3,4,5,6],title_fa:'یادآوری شکرگزاری',body_fa:'امروز را با شکرگزاری به پایان برسان.',title_en:'Gratitude reminder',body_en:'End today with thanksgiving.',title_hr:'Podsjetnik zahvalnosti',body_hr:'Završi dan zahvalnošću.'},
+    {key:'morning_meeting',time_value:'04:55',timezone_mode:'Europe/Zagreb',days_of_week:[0,1,2,3,4,5,6],title_fa:'یادآوری دعای صبحگاهی',body_fa:'جلسه دعا پنج دقیقه دیگر آغاز می‌شود.',title_en:'Morning prayer reminder',body_en:'Prayer meeting starts in five minutes.',title_hr:'Podsjetnik jutarnje molitve',body_hr:'Molitveni sastanak počinje za pet minuta.'},
+    {key:'sunday_service',time_value:'19:55',timezone_mode:'Europe/Zagreb',days_of_week:[0],title_fa:'یادآوری جلسه یکشنبه',body_fa:'جلسه یکشنبه پنج دقیقه دیگر آغاز می‌شود.',title_en:'Sunday service reminder',body_en:'Sunday service starts in five minutes.',title_hr:'Podsjetnik nedjeljne službe',body_hr:'Nedjeljna služba počinje za pet minuta.'}
+  ];return notificationSettingsCache;
+}
+function scheduleText(row,field){return row[field+'_'+state.lang]||row[field+'_en']||row[field+'_fa']||''}
+function zonedScheduleDate(baseDay,hh,mm,zone){
+  if(!zone||zone==='local'){const d=new Date(baseDay);d.setHours(hh,mm,0,0);return d}
+  const guess=new Date(Date.UTC(baseDay.getFullYear(),baseDay.getMonth(),baseDay.getDate(),hh,mm,0));
+  try{const parts=new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).formatToParts(guess);const val=t=>Number(parts.find(p=>p.type===t)?.value||0);const asUTC=Date.UTC(val('year'),val('month')-1,val('day'),val('hour'),val('minute'),val('second'));return new Date(guess.getTime()-(asUTC-guess.getTime()))}catch(e){return guess}
+}
+async function scheduleNativeNotifications(){
+  const Native=nativeLocalNotifications();if(!Native)return false;const settings=await fetchNotificationSchedules(true);try{const pending=(await Native.getPending()).notifications||[];if(pending.length)await Native.cancel({notifications:pending.map(x=>({id:x.id}))})}catch(e){}
+  const now=new Date();const notifications=[];let id=17000;
+  for(const row of settings){const [hh,mm]=String(row.time_value||'00:00').split(':').map(Number);for(let plus=0;plus<14;plus++){const base=new Date(now);base.setDate(base.getDate()+plus);const d=zonedScheduleDate(base,hh,mm,row.timezone_mode);if(d<=now)continue;let dow=d.getDay();if(row.timezone_mode&&row.timezone_mode!=='local'){try{const wd=new Intl.DateTimeFormat('en-US',{timeZone:row.timezone_mode,weekday:'short'}).format(d);dow=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(wd)}catch(e){}}if(Array.isArray(row.days_of_week)&&!row.days_of_week.includes(dow))continue;notifications.push({id:id++,title:scheduleText(row,'title'),body:scheduleText(row,'body'),schedule:{at:d,allowWhileIdle:true},extra:{route:row.target_route||'home',notificationKey:row.key}})}}
+  if(notifications.length)await Native.schedule({notifications});return true;
+}
+async function notificationPermissionStatus(){const Native=nativeLocalNotifications();if(Native){try{const p=await Native.checkPermissions();return p.display==='granted'?'granted':p.display==='denied'?'denied':'default'}catch(e){}}return typeof Notification==='undefined'?'default':Notification.permission}
+
+async function settings(){
+  const perm=await notificationPermissionStatus();const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');const schedules=await fetchNotificationSchedules();const offlineSummary=await offlineStorageSummary();
+  view.innerHTML=card(tr('settings'),`<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice">${schedules.map(x=>`<p><strong>${html(scheduleText(x,'title'))}</strong> — ${html(x.time_value||'')} ${x.timezone_mode&&x.timezone_mode!=='local'?`(${html(x.timezone_mode)})`:''}</p>`).join('')}</div><h3>${state.lang==='fa'?'استفاده آفلاین کامل':state.lang==='hr'?'Potpuni izvanmrežni način':'Full offline access'}</h3><p>${html(offlineSummary)}</p><p class="muted">${state.lang==='fa'?'محتوای اصلی شامل کتاب‌مقدس، پیام‌های روزانه، دوره شکرگزاری، معرفی کلیسا و نسخه داخلی مدرسه است. فایل‌های صوتی و PDF را از کنار همان محتوا جداگانه دانلود کنید.':state.lang==='hr'?'Osnovni sadržaj uključuje Bibliju, dnevni sadržaj, zahvalnost i školu. Audio i PDF datoteke preuzmite uz svaki sadržaj.':'Core content includes the Bible, daily content, gratitude, church information and the built-in school. Download audio and PDF files individually beside each item.'}</p><div class="button-row"><button class="primary-btn" id="prepareOffline">${state.lang==='fa'?'آماده‌سازی محتوای اصلی برای آفلاین':state.lang==='hr'?'Pripremi osnovni sadržaj offline':'Prepare core content offline'}</button><button class="secondary-btn" id="clearOfflineMedia">${state.lang==='fa'?'پاک‌کردن فایل‌های دانلودشده':state.lang==='hr'?'Obriši preuzete datoteke':'Clear downloaded media'}</button></div><h3>${state.lang==='fa'?'ذخیره ابری / همگام‌سازی':state.lang==='hr'?'Cloud / sinkronizacija':'Cloud / sync'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>New Hope 7 v1.9.2 Offline-First Internal Build</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
+  $('#settingsLang').value=state.lang;$('#settingsLang').onchange=e=>setLang(e.target.value);$('#enableNotify').onclick=enableNotifications;
+  $('#prepareOffline')?.addEventListener('click',e=>prepareCoreOffline(e.currentTarget));
+  $('#clearOfflineMedia')?.addEventListener('click',async()=>{if(!confirm(state.lang==='fa'?'همه فایل‌های صوتی و PDF دانلودشده از حافظه آفلاین پاک شوند؟':'Clear all downloaded offline media?'))return;try{await clearDownloadedMedia();alert(tr('saved'));render('settings',{},true)}catch(e){console.warn(e)}});
+  $('#clearCache').onclick=async()=>{try{await swMessage('CACHE_CORE');if('serviceWorker'in navigator){const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.update()))}}catch(e){}alert(tr('saved'));location.reload()};
+  $('#syncCloud')?.addEventListener('click',async()=>{await syncCloudQueue();await refreshInboxFromCloud();notificationSettingsCache=null;alert(cloudStatusText());render('settings',{},true)});
+}
+async function enableNotifications(){
+  let perm='default';const Native=nativeLocalNotifications();
+  try{
+    if(Native){const p=await Native.requestPermissions();perm=p.display==='granted'?'granted':p.display==='denied'?'denied':'default';if(perm==='granted')await scheduleNativeNotifications();}
+    else if(window.OneSignalDeferred&&typeof Notification!=='undefined'){
+      await new Promise(resolve=>{let done=false;const finish=()=>{if(!done){done=true;resolve()}};setTimeout(finish,7000);window.OneSignalDeferred.push(async OneSignal=>{try{if(OneSignal.Notifications?.requestPermission){const result=await OneSignal.Notifications.requestPermission();perm=result===true?'granted':Notification.permission}const settings=await fetchNotificationSchedules();const tags={app:'new_hope_7',language:state.lang,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'local',inbox_enabled:'true'};settings.forEach(x=>tags[x.key+'_time']=x.time_value);if(OneSignal.User?.addTags)await OneSignal.User.addTags(tags)}catch(e){console.warn(e)}finish()})});
+      if(Notification.permission!=='granted')perm=await Notification.requestPermission();else perm='granted';
+    }else if(typeof Notification!=='undefined'){perm=await Notification.requestPermission()}
+    else perm='default';
+  }catch(e){console.warn(e)}
+  localStorage.setItem('nh7_notifications_permission',perm);localStorage.setItem('nh7_notifications_timezone',Intl.DateTimeFormat().resolvedOptions().timeZone||'local');
+  if(perm==='granted'){addInboxMessage(tr('notificationEnabled'),state.lang==='fa'?'اعلان‌ها با موفقیت فعال شدند.':state.lang==='hr'?'Obavijesti su uspješno uključene.':'Notifications are enabled.','system','notifications_enabled_'+todayKey());alert(tr('notificationEnabled'))}
+  else if(perm==='denied')alert(tr('notificationDenied'));else alert(state.lang==='fa'?'اجازه اعلان فعال نشد. لطفاً اجازه را در تنظیمات گوشی بررسی کنید.':tr('notificationDefault'));
+  render(state.route,state.params,true);
+}
+
+function bindDynamic(){
+  $$('[data-library-tab]').forEach(el=>el.onclick=()=>{nh7LibraryTab=el.dataset.libraryTab||'public';render('library',{tab:nh7LibraryTab},true)});
+  $$('[data-library-open]').forEach(el=>el.onclick=()=>openLibraryPdf(nh7LibraryCatalog.find(x=>String(x.id)===String(el.dataset.libraryOpen))));
+  $$('[data-go]').forEach(el=>el.onclick=()=>navigate(el.dataset.go, JSON.parse(el.dataset.params||'{}')));
+  $$('[data-offline-download]').forEach(el=>el.onclick=async()=>{const url=el.dataset.offlineDownload;if(el.dataset.offlineCached==='1'){if(confirm(state.lang==='fa'?'این فایل از حافظه آفلاین پاک شود؟':'Remove this offline download?'))await removeOfflineDownload(url,el)}else await downloadForOffline(url,el.dataset.offlineTitle||'',el)});
+  refreshOfflineButtons().catch(()=>{});
+  $$('.reader-verse').forEach(el=>{el.onclick=e=>{if(e.target.closest('button,textarea,input,a,.verse-tools,.verse-note-box'))return;const was=el.classList.contains('verse-selected');$$('.reader-verse.verse-selected').forEach(v=>{v.classList.remove('verse-selected');v.querySelector('.verse-tools')?.classList.add('hidden');v.querySelector('.verse-note-box')?.classList.add('hidden')});if(!was){el.classList.add('verse-selected');el.querySelector('.verse-tools')?.classList.remove('hidden')}};el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click()}}});
+  $$('.verse-tools,.verse-note-box').forEach(el=>el.onclick=e=>e.stopPropagation());
+  $$('[data-dailytab]').forEach(el=>el.onclick=()=>{ state.dailyTab=el.dataset.dailytab; render('daily',{},true); });
+  $$('[data-save-note]').forEach(el=>el.onclick=()=>{ const content=el.previousElementSibling?.value||''; localStorage.setItem('nh7_note_'+el.dataset.saveNote, content); saveNoteCloud('note_'+el.dataset.saveNote, content).catch(console.warn); el.textContent=tr('saved'); });
+  $$('[data-bookmark]').forEach(el=>el.onclick=()=>{ const arr=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]'); if(!arr.includes(el.dataset.bookmark)) arr.push(el.dataset.bookmark); localStorage.setItem('nh7_bookmarks',JSON.stringify(arr)); try{ const key=el.closest('.reader-verse')?.dataset?.verseKey; if(key){ const st=JSON.parse(localStorage.getItem(key)||'{}'); st.saved=true; localStorage.setItem(key,JSON.stringify(st)); }}catch(e){} saveVerseCloud(el.dataset.bookmark).catch(console.warn); addPoints(5,'first_verse'); el.textContent='★ '+tr('saved'); });
+  $$('[data-delete-bookmark]').forEach(el=>el.onclick=(ev)=>{ev.stopPropagation();const ref=el.dataset.deleteBookmark;const arr=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]').filter(x=>String(x)!==String(ref));localStorage.setItem('nh7_bookmarks',JSON.stringify(arr));deleteVerseCloud(ref).catch(console.warn);render(state.route,state.params,true)});
+  $$('[data-highlight]').forEach(el=>el.onclick=()=>el.closest('.reader-verse')?.classList.toggle('highlighted'));
+  $$('[data-highlight-menu]').forEach(el=>el.onclick=e=>{e.stopPropagation();const key=el.dataset.highlightMenu,p=document.querySelector(`[data-highlight-palette="${CSS.escape(key)}"]`);document.querySelectorAll('.highlight-palette').forEach(x=>{if(x!==p)x.classList.add('hidden')});p?.classList.toggle('hidden')});
+  $$('[data-highlight-color]').forEach(el=>el.onclick=e=>{e.stopPropagation();const key=el.dataset.highlightKey,color=el.dataset.highlightColor,st=JSON.parse(localStorage.getItem(key)||'{}'),verse=el.closest('.reader-verse');st.highlight=true;st.highlightColor=color;localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);verse?.classList.remove('highlight-yellow','highlight-red','highlight-green','highlight-blue');verse?.classList.add('highlighted','highlight-'+color);el.closest('.highlight-palette')?.querySelectorAll('.highlight-dot').forEach(x=>x.classList.toggle('active',x===el));el.closest('.highlight-palette')?.classList.add('hidden')});
+  $$('[data-highlight-clear]').forEach(el=>el.onclick=e=>{e.stopPropagation();const key=el.dataset.highlightClear,st=JSON.parse(localStorage.getItem(key)||'{}'),verse=el.closest('.reader-verse');st.highlight=false;delete st.highlightColor;localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);verse?.classList.remove('highlighted','highlight-yellow','highlight-red','highlight-green','highlight-blue');el.closest('.highlight-palette')?.classList.add('hidden')});
+  $$('[data-note-verse],[data-note-marker]').forEach(el=>el.onclick=()=>{const id=el.dataset.noteVerse||el.dataset.noteMarker,box=$('#'+CSS.escape(id));if(box){$$('.verse-note-box').forEach(x=>{if(x!==box)x.classList.add('hidden')});box.classList.toggle('hidden')}});
+  $$('[data-close-verse-note]').forEach(el=>el.onclick=()=>el.closest('.verse-note-box')?.classList.add('hidden'));
+  $$('[data-save-verse-note]').forEach(el=>el.onclick=()=>{const key=el.dataset.saveVerseNote,input=$(`[data-note-input="${CSS.escape(key)}"]`),verse=el.closest('.reader-verse');let st={};try{st=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}st.note=(input?.value||'').slice(0,1000);localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);let marker=verse?.querySelector('.verse-note-marker');if(st.note&&!marker&&verse){marker=document.createElement('button');marker.type='button';marker.className='verse-note-marker';marker.dataset.noteMarker=el.closest('.verse-note-box')?.id||'';marker.textContent='📓';marker.title=tr('noteAvailable');marker.onclick=()=>el.closest('.verse-note-box')?.classList.toggle('hidden');verse.querySelector('.verse-text')?.after(marker)}else if(!st.note&&marker)marker.remove();el.textContent=tr('saved');setTimeout(()=>el.closest('.verse-note-box')?.classList.add('hidden'),350)});
+  $$('[data-share-verse]').forEach(el=>el.onclick=async()=>{ const txt=`${localizeRef(el.dataset.shareVerse)} — ${el.dataset.shareText||''}`; try{ if(navigator.share) await navigator.share({text:txt}); else { await navigator.clipboard.writeText(txt); alert(tr('saved')); } }catch(e){} });
+  $$('[data-complete-daily]').forEach(el=>el.onclick=()=>{ const key='nh7_daily_done_'+el.dataset.completeDaily; if(!localStorage.getItem(key)){ localStorage.setItem(key,'1'); saveProgressCloud(key,{done:true,at:new Date().toISOString()}).catch(console.warn); addPoints(3,'daily_1'); } el.textContent=tr('dailyCompleted'); });
+  $$('[data-open-ref]').forEach(el=>el.onclick=async()=>{ await loadBibleMeta(); const ref=parseRef(el.dataset.openRef); if(ref){ const params={mode:'chapter',bookId:ref.bookId,chapter:ref.chapter}; if((el.dataset.openRefMode||'verse')==='verse') params.verse=ref.verse; navigate('bible',params); } });
+  $$('[data-reveal-ref]').forEach(el=>el.onclick=()=>revealVerse(el));
+  $$('[data-read-range]').forEach(el=>el.onclick=()=>revealReadingRange(el));
+  $$('[data-toggle-panel]').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.togglePanel); if(p){ p.classList.toggle('hidden'); el.textContent=p.classList.contains('hidden')?(el.dataset.togglePanel==='notesPanel'?tr('showMyNotes'):tr('showSavedVerses')):tr('hide'); }});
+  $$('[data-salvation-toggle]').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.salvationToggle); if(p){ p.classList.toggle('hidden'); const small=el.querySelector('small'); if(small) small.textContent=p.classList.contains('hidden') ? (state.lang==='fa'?'برای باز کردن کلیک کنید':state.lang==='hr'?'Dodirnite za otvaranje':'Tap to open') : tr('hide'); }});
+  $$('[data-qna-toggle]').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.qnaToggle); if(p){ p.classList.toggle('hidden'); const sp=el.querySelector('span'); if(sp) sp.textContent=p.classList.contains('hidden') ? (state.lang==='fa'?'برای باز کردن کلیک کنید':state.lang==='hr'?'Dodirnite za otvaranje':'Tap to open') : tr('hide'); }});
+  $$('.qna-answer-toggle').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.qnaAnswer); if(p){ p.classList.toggle('hidden'); }});
+  $$('[data-inbox-open]').forEach(el=>el.onclick=()=>{ const id=el.dataset.inboxOpen; const safe=String(id).replace(/[^a-zA-Z0-9_-]/g,'_'); const p=$('#inbox-'+safe); if(p) p.classList.toggle('hidden'); const at=new Date().toISOString(); const arr=inboxMessages().map(m=>String(m.id)===String(id)?{...m,read:true,readAt:at}:m); setInboxMessages(arr); saveInboxReceipt(id,{read_at:at}).catch(console.warn); updateInboxBadge(); });
+  $$('[data-inbox-delete]').forEach(el=>el.onclick=(ev)=>{ ev.stopPropagation(); const id=el.dataset.inboxDelete; if(confirm(tr('deleteConfirm'))){ deleteInboxLocal(id); render('inbox',{},true); } });
+  $$('[data-submit-registration]').forEach(el=>el.onclick=()=>collectRegistration(el.dataset.submitRegistration)); bindPasswordToggles();
+  const run=$('#runBibleSearch'); if(run) run.onclick=()=>navigate('bible',{q:$('#bibleSearch').value},true);
+  $('#startGratitude')?.addEventListener('click',()=>{const start=todayKey();localStorage.setItem('nh7_gratitude_start',start);saveProgressCloud('nh7_gratitude_start',{__raw:start}).catch(console.warn);addPoints(5,'gratitude_1');render('daily',{tab:'gratitude'},true)});
+  $('#completeGratitude')?.addEventListener('click',(ev)=>{ const current=Number(ev.currentTarget.dataset.gratitudeDay||1); const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]'); if(!completed.includes(current)) completed.push(current); completed.sort((a,b)=>a-b); localStorage.setItem('nh7_gratitude_completed',JSON.stringify(completed)); const gnote=$('#gratitudeNote')?.value||''; localStorage.setItem('nh7_gratitude_note_'+current,gnote); saveNoteCloud('gratitude_note_'+current, gnote).catch(console.warn); saveProgressCloud('gratitude_completed',{completed}).catch(console.warn); addPoints(10,'gratitude_1'); render('daily',{tab:'gratitude',gday:current},true); });
+  $('#undoGratitude')?.addEventListener('click',(ev)=>{ const current=Number(ev.currentTarget.dataset.gratitudeDay||1); const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]').filter(x=>Number(x)!==current); localStorage.setItem('nh7_gratitude_completed',JSON.stringify(completed)); saveProgressCloud('gratitude_completed',{completed}).catch(console.warn); render('daily',{tab:'gratitude',gday:current},true); });
+}
+
+window.addEventListener('pagehide',()=>{flushAudioAnalytics('pagehide',true).catch(()=>{})});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)flushAudioAnalytics('hidden',true).catch(()=>{})});
+window.addEventListener('popstate', (ev)=>{ const st=ev.state||{}; if(st.route){ state.route=st.route; state.params=st.params||{}; render(state.route,state.params,true); } else { back(); } });
+try{ history.replaceState({route:state.route,params:state.params},'', '#'+encodeURIComponent(state.route)); }catch(e){}
+$('#langSelect').onchange=e=>setLang(e.target.value);
+$('#inboxBtn')?.addEventListener('click',()=>navigate('inbox',{},false));
+$('#backBtn').onclick=back;
+$$('.nav-item').forEach(b=>b.onclick=()=>{ state.stack=[]; navigate(b.dataset.route,{},true); });
+$('#amenButton').onclick=()=>$('#amenGate').classList.add('hidden');
+window.addEventListener('online',async()=>{$('.offline')?.remove();await syncCloudQueue().catch(console.warn);if(isAccountLoggedIn()){await restoreAccountCloudData(true).catch(console.warn);invalidateSchoolSnapshot(authEmail());await getSchoolSnapshot(authEmail(),true).catch(console.warn);if(state.route==='school')render('school',state.params,true)}});
+window.addEventListener('offline',()=>{ if(!$('.offline')){ const d=document.createElement('div'); d.className='offline'; d.textContent=tr('offline'); document.body.appendChild(d);} });
+if('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js').catch(console.warn);
+try{const Native=nativeLocalNotifications();Native?.addListener?.('localNotificationActionPerformed',ev=>{const route=ev?.notification?.extra?.route||'home';navigate(route,{},true)});}catch(e){}
+async function bootstrapApp(){
+  clearLegacySchoolSession();
+  if(isAccountLoggedIn()){
+    await restoreAccountCloudData(true).catch(console.warn);
+    await getSchoolSnapshot(authEmail(),true).catch(console.warn);
+  }
+  setLang(state.lang);
+  ensureSermonPlayer();
+  syncCloudQueue().catch(console.warn);
+  refreshInboxFromCloud().catch(console.warn);
+  maybeCreateScheduledInboxMessages().catch(console.warn);
+  notificationPermissionStatus().then(p=>{if(p==='granted'&&nativeLocalNotifications())scheduleNativeNotifications().catch(console.warn)}).catch(console.warn);
+  updateInboxBadge();
+  showAmen();
+}
+bootstrapApp().catch(console.warn);
