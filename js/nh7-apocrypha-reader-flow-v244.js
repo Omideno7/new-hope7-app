@@ -22,7 +22,7 @@ async function setColor(verse,color){const book=await currentBook();if(!book)ret
 async function clearColor(verse){const book=await currentBook();if(!book)return;const chapter=currentChapter(),article=$(`.nh7-apo-verse[data-apo-verse="${CSS.escape(String(verse))}"]`),main=article?.querySelector('.nh7-apo-verse-main');localStorage.removeItem(key(BASE,book.book_id,chapter,verse));localStorage.removeItem(key(COLOR,book.book_id,chapter,verse));if(main)removeColorClasses(main);const palette=article?.querySelector('[data-nh7-apo-palette]');if(palette)for(const b of $$('[data-nh7-apo-color]',palette))b.setAttribute('aria-pressed','false')}
 document.addEventListener('click',e=>{const color=e.target.closest?.('[data-nh7-apo-color]');if(color){e.preventDefault();e.stopPropagation();setColor(Number(color.dataset.verse),color.dataset.nh7ApoColor);return}const clear=e.target.closest?.('[data-nh7-apo-clear]');if(clear){e.preventDefault();e.stopPropagation();clearColor(Number(clear.dataset.nh7ApoClear));return}if(e.target.closest?.('.nh7-apo-verse-main'))setTimeout(decorate,0)},false);
 document.addEventListener('change',e=>{if(e.target.matches?.('[data-rc-apo-chapter]')||e.target.id==='langSelect')setTimeout(decorate,50)},true);
-const observer=new MutationObserver(()=>setTimeout(decorate,0));observer.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+const observer=new MutationObserver(()=>setTimeout(decorate,0));observer.observe(document.documentElement,{childList:true,subtree:true});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',decorate,{once:true});else decorate();
 window.NH7_APOCRYPHA_FLOW_VERSION=VERSION;
 })();
