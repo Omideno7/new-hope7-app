@@ -10,33 +10,10 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "aed60d2c4b9a13472b274d972ac4f0176ef8e5142d7dc333a6e892a36252f5a9",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And it came to pass after this that I saw another host of wagons, and men riding thereon, and coming on the winds from the east, and from the west to the south.",
-      "text_fa": null,
-      "text_hr": "Nakon toga vidio sam drugu vojsku bojnih kola i ljude kako se na njima voze, dolazeći na vjetrovima s istoka i sa zapada prema jugu.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And the noise of their wagons was heard, and when this turmoil took place the holy ones from heaven remarked it, and the pillars of the earth were moved from their place, and the sound thereof was heard from the one end of heaven to the other, in one day.",
-      "text_fa": null,
-      "text_hr": "Čuo se tutanj njihovih kola. Kad je nastao taj metež, sveti s neba opazili su ga, stupovi zemlje pomaknuli su se sa svojih mjesta, a njihov se zvuk u jednome danu čuo od jednoga kraja neba do drugoga.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And they shall all fall down and worship the Lord of Spirits. And this is the end of the second Parable.",
-      "text_fa": null,
-      "text_hr": "Svi će pasti ničice i pokloniti se Gospodaru duhova. To je kraj Druge prispodobe.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And it came to pass after this that I saw another host of wagons, and men riding thereon, and coming on the winds from the east, and from the west to the south.","text_fa":"و پس از این، سپاه دیگری از ارابه‌ها دیدم و مردانی که بر آنها سوار بودند و بر بادها، از شرق و از غرب به سوی جنوب می‌آمدند.","text_hr":"Nakon toga vidio sam drugu vojsku bojnih kola i ljude kako se na njima voze, dolazeći na vjetrovima s istoka i sa zapada prema jugu.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And the noise of their wagons was heard, and when this turmoil took place the holy ones from heaven remarked it, and the pillars of the earth were moved from their place, and the sound thereof was heard from the one end of heaven to the other, in one day.","text_fa":"و صدای ارابه‌هایشان شنیده شد؛ و هنگامی که این آشوب رخ داد، مقدسان آسمان آن را مشاهده کردند، و ستون‌های زمین از جای خود حرکت کردند، و در همان یک روز صدای آن از یک سوی آسمان تا سوی دیگر شنیده شد.","text_hr":"Čuo se tutanj njihovih kola. Kad je nastao taj metež, sveti s neba opazili su ga, stupovi zemlje pomaknuli su se sa svojih mjesta, a njihov se zvuk u jednome danu čuo od jednoga kraja neba do drugoga.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And they shall all fall down and worship the Lord of Spirits. And this is the end of the second Parable.","text_fa":"و همه به خاک خواهند افتاد و خداوندِ ارواح را پرستش خواهند کرد. و این پایان تمثیل دوم است.","text_hr":"Svi će pasti ničice i pokloniti se Gospodaru duhova. To je kraj Druge prispodobe.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
