@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "book_id": "prayer_of_manasseh",
+  "title_fa": "دعای منسی",
+  "title_en": "Prayer of Manasseh",
+  "title_hr": "Molitva Manašeova",
+  "status": "in_review",
+  "prepared_on": "2026-08-22",
+  "included_ranges": {
+    "fa": [[1,1]],
+    "hr": [[1,1]]
+  },
+  "source_translation": "WEBC",
+  "source_translation_name": "World English Bible Classic",
+  "source_url": "https://ebible.org/eng-web/MAN01.htm",
+  "source_license": "Public Domain",
+  "versification": "WEBC",
+  "translation_note": "Fresh New Hope 7 Persian and Croatian renderings from WEBC; target-language wording is natural and readable while preserving source meaning.",
+  "totals": {
+    "aligned_source_verses": 15,
+    "persian_in_review_verses": 15,
+    "croatian_in_review_verses": 15
+  },
+  "chapter_qa": {
+    "1": {
+      "verse_count": 15,
+      "persian_in_review_count": 15,
+      "croatian_in_review_count": 15
+    }
+  }
+}
