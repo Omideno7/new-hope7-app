@@ -1,8 +1,11 @@
-/* New Hope 7 v2.4.5 RC — overlays fresh in-house FA/HR translations onto canonical English runtime. */
+/* New Hope 7 v2.4.6 RC — overlays fresh in-house FA/HR translations onto canonical English runtime. */
 (()=>{'use strict';
 if(window.__NH7_APO_TRANSLATION_OVERLAY_V245__)return;window.__NH7_APO_TRANSLATION_OVERLAY_V245__=true;
-const VERSION='2.4.5.1-apocrypha-translation-overlay';
-const REGISTRY='data/apocrypha/review/translation-overlays-v245.json?v=2452';
+const VERSION='2.4.6-apocrypha-translation-overlay';
+const REGISTRIES=[
+  'data/apocrypha/review/translation-overlays-v245.json?v=2452',
+  'data/apocrypha/review/translation-overlays-v246-continuation.json?v=2461'
+];
 const TARGET=/data\/apocrypha\/runtime\/apocrypha-browser-19\.preview\.json(?:[?#]|$)/;
 const previousFetch=window.fetch.bind(window);
 let overlaysPromise=null;
@@ -24,7 +27,27 @@ function mergeDocument(runtime,doc){if(!doc?.book_id)return;const books=indexBoo
     }}
   }
 }
-async function loadOverlays(){if(overlaysPromise)return overlaysPromise;overlaysPromise=(async()=>{const rr=await previousFetch(REGISTRY,{cache:'no-store'});if(!rr.ok)throw new Error('Overlay registry HTTP '+rr.status);const reg=await rr.json();const docs=[];for(const path of reg.files||[]){try{const r=await previousFetch(path,{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);docs.push(await r.json())}catch(e){console.warn('NH7 overlay file failed',path,e)}}return docs})().catch(e=>{console.warn('NH7 overlay registry failed',e);return[]});return overlaysPromise}
+async function loadOverlays(){
+  if(overlaysPromise)return overlaysPromise;
+  overlaysPromise=(async()=>{
+    const docs=[],seenPaths=new Set();
+    for(const registryUrl of REGISTRIES){
+      try{
+        const rr=await previousFetch(registryUrl,{cache:'no-store'});
+        if(!rr.ok)throw new Error('HTTP '+rr.status);
+        const reg=await rr.json();
+        for(const path of reg.files||[]){
+          if(seenPaths.has(path))continue;
+          seenPaths.add(path);
+          try{const r=await previousFetch(path,{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);docs.push(await r.json())}
+          catch(e){console.warn('NH7 overlay file failed',path,e)}
+        }
+      }catch(e){console.warn('NH7 overlay registry failed',registryUrl,e)}
+    }
+    return docs;
+  })().catch(e=>{console.warn('NH7 overlay loading failed',e);return[]});
+  return overlaysPromise;
+}
 window.fetch=async function nh7ApocryphaOverlayFetch(input,init={}){if(!isTarget(input))return previousFetch(input,init);const response=await previousFetch(input,init);if(!response.ok)return response;try{const data=await response.clone().json();for(const doc of await loadOverlays())mergeDocument(data,doc);return new Response(JSON.stringify(data),{status:response.status,statusText:response.statusText,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'}})}catch(e){console.warn('NH7 Apocrypha overlay merge failed',e);return response}};
 window.NH7_APOCRYPHA_TRANSLATION_OVERLAY_VERSION=VERSION;
 })();
