@@ -10,145 +10,24 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "c13fca5cc66a49abfaa61823c110a3224ee896642b4a617a7be913c60b00ebc3",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And it came to pass after this that my spirit was translated\nAnd it ascended into the heavens:\nAnd I saw the =holy sons of God=.\nThey were stepping on flames of fire:\nTheir garments were white [and their raiment],\nAnd their faces shone like snow.",
-      "text_fa": null,
-      "text_hr": "Nakon toga moj je duh bio prenesen\ni uzašao na nebesa.\nVidio sam =svete sinove Božje=.\nKoračali su po ognjenim plamenovima;\nnjihove su haljine [i njihovo ruho] bile bijele,\na lica su im sjala poput snijega.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And I saw two streams of fire,\nAnd the light of that fire shone like hyacinth,\nAnd I fell on my face before the Lord of Spirits.",
-      "text_fa": null,
-      "text_hr": "Vidio sam dvije ognjene rijeke,\na svjetlost te vatre sjala je poput hijacinta.\nPao sam ničice pred Gospodarom duhova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And the angel Michael [one of the archangels] seized me by my right hand,\nAnd lifted me up and led me forth into all the secrets,\nAnd he showed me all the secrets of righteousness.",
-      "text_fa": null,
-      "text_hr": "Anđeo Mihael [jedan od arkanđela] uhvatio me za desnicu,\npodigao i poveo kroz sve tajne\nte mi pokazao sve tajne pravednosti.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "And he showed me all the secrets of the ends of the heaven,\nAnd all the chambers of all the stars, and all the luminaries,\nWhence they proceed before the face of the holy ones.",
-      "text_fa": null,
-      "text_hr": "Pokazao mi je sve tajne krajeva neba,\nsve odaje svih zvijezda i svih svjetlila,\nodakle izlaze pred licem svetih.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "And he translated my spirit into the heaven of heavens,\nAnd I saw there as it were a structure built of crystals,\nAnd between those crystals tongues of living fire.",
-      "text_fa": null,
-      "text_hr": "Prenio je moj duh u nebo nad nebesima.\nOndje sam vidio građevinu kao da je sagrađena od kristala,\na među kristalima jezike žive vatre.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "And my spirit saw the girdle which girt that house of fire,\nAnd on its four sides were streams full of living fire,\nAnd they girt that house.",
-      "text_fa": null,
-      "text_hr": "Moj je duh vidio pojas koji je opasivao tu ognjenu kuću.\nNa njezine četiri strane bile su rijeke pune žive vatre\ni one su opasivale kuću.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 7,
-      "text_en": "And round about were Seraphin, Cherubin, and Ophannin:\nAnd these are they who sleep not,\nAnd guard the throne of His glory.",
-      "text_fa": null,
-      "text_hr": "Uokolo su bili serafini, kerubini i ofanini.\nTo su oni koji ne spavaju\ni koji čuvaju prijestolje njegove slave.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 8,
-      "text_en": "And I saw angels who could not be counted.\nA thousand thousands, and ten thousand times ten thousand.\nEncircling that house,\nAnd Michael, and Raphael, and Gabriel, and Phanuel,\nAnd the holy angels who are above the heavens,\nGo in and out of that house.",
-      "text_fa": null,
-      "text_hr": "Vidio sam nebrojene anđele:\ntisuću tisuća i deset tisuća puta deset tisuća\nokruživalo je tu kuću.\nMihael, Rafael, Gabriel i Fanuel\nte sveti anđeli koji su iznad nebesa\nulazili su i izlazili iz te kuće.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 9,
-      "text_en": "And they came forth from that house,\nAnd Michael and Gabriel, Raphael and Phanuel,\nAnd many holy angels without number.",
-      "text_fa": null,
-      "text_hr": "Iz kuće su izišli\nMihael i Gabriel, Rafael i Fanuel\nte bezbroj svetih anđela.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 10,
-      "text_en": "And with them the Head of Days,\nHis head white and pure as wool,\nAnd His raiment indescribable.",
-      "text_fa": null,
-      "text_hr": "S njima je bio Glava Dana,\nglave bijele i čiste poput vune,\na njegova se odjeća nije mogla opisati.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 11,
-      "text_en": "And I fell on my face,\nAnd my whole body became relaxed,\nAnd my spirit was transfigured;\nAnd I cried with a loud voice,\nwith the spirit of power,\nAnd blessed and glorified and extolled.",
-      "text_fa": null,
-      "text_hr": "Pao sam ničice,\ncijelo mi se tijelo opustilo,\na duh mi se preobrazio.\nPovikao sam snažnim glasom,\nduhom moći,\nte blagoslivljao, slavio i uzvisivao.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 12,
-      "text_en": "And these blessings which went forth out of my mouth were well pleasing before that Head of Days.",
-      "text_fa": null,
-      "text_hr": "Blagoslovi koji su izlazili iz mojih usta bili su ugodni pred Glavom Dana.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 13,
-      "text_en": "And that Head of Days came with Michael and Gabriel, Raphael and Phanuel, thousands and ten thousands of angels without number.\n\n[Lost passage wherein the Son of Man was described as accompanying the Head of Days, and Enoch asked one of the angels (as in 46^3) concerning the Son of Man as to who he was.]",
-      "text_fa": null,
-      "text_hr": "Glava Dana došao je s Mihaelom i Gabrielom, Rafaelom i Fanuelom te s tisućama i desecima tisuća nebrojenih anđela.\n\n[Izgubljen je odlomak u kojem je Sin Čovječji opisan kako prati Glavu Dana, a Henok pita jednoga od anđela, kao u 46³, tko je taj Sin Čovječji.]",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 14,
-      "text_en": "And he (_i. e._ the angel) came to me and greeted me with His voice, and said unto me:\n\n‘=This is= the Son of Man who is born unto righteousness;\nAnd righteousness abides over =him=,\nAnd the righteousness of the Head of Days forsakes =him= not.’",
-      "text_fa": null,
-      "text_hr": "On — to jest anđeo — prišao mi je, pozdravio me svojim glasom i rekao:\n\n„=Ovo je= Sin Čovječji rođen za pravednost.\nPravednost prebiva nad =njim=,\na pravednost Glave Dana ne napušta =ga=.“",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 15,
-      "text_en": "And he said unto me:\n‘He proclaims unto thee peace in the name of the world to come;\nFor from hence has proceeded peace since the creation of the world,\nAnd so shall it be unto thee for ever and for ever and ever.",
-      "text_fa": null,
-      "text_hr": "Rekao mi je:\n„On ti navješćuje mir u ime budućega svijeta,\njer odatle mir izlazi od stvaranja svijeta.\nTako će biti i tebi zauvijek, u vijeke vjekova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 16,
-      "text_en": "And all shall walk in =his= ways since righteousness never forsakes =him=:\nWith =him= will be their dwelling-places, and with =him= their heritage,\nAnd they shall not be separated from =him= for ever and ever and ever.",
-      "text_fa": null,
-      "text_hr": "Svi će hoditi njegovim putovima jer pravednost nikada ne napušta =ga=.\nS =njim= će biti njihova prebivališta i s =njim= njihova baština.\nOd =njega= se neće odvojiti u vijeke vjekova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 17,
-      "text_en": "And so there shall be length of days with that Son of Man,\nAnd the righteous shall have peace and an upright way,\nIn the name of the Lord of Spirits for ever and ever.’",
-      "text_fa": null,
-      "text_hr": "S tim će Sinom Čovječjim biti podaren dug život,\na pravedni će imati mir i čestit put\nu ime Gospodara duhova u vijeke vjekova.“",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And it came to pass after this that my spirit was translated\nAnd it ascended into the heavens:\nAnd I saw the =holy sons of God=.\nThey were stepping on flames of fire:\nTheir garments were white [and their raiment],\nAnd their faces shone like snow.","text_fa":"و پس از این، روح من منتقل شد\nو به آسمان‌ها صعود کرد؛\nو =پسران مقدس خدا= را دیدم.\nآنان بر شعله‌های آتش گام برمی‌داشتند؛\nجامه‌هایشان [و پوشششان] سفید بود،\nو چهره‌هایشان همچون برف می‌درخشید.","text_hr":"Nakon toga moj je duh bio prenesen\ni uzašao na nebesa.\nVidio sam =svete sinove Božje=.\nKoračali su po ognjenim plamenovima;\nnjihove su haljine [i njihovo ruho] bile bijele,\na lica su im sjala poput snijega.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And I saw two streams of fire,\nAnd the light of that fire shone like hyacinth,\nAnd I fell on my face before the Lord of Spirits.","text_fa":"و دو نهر آتش دیدم،\nو نور آن آتش همچون یاقوتِ سنبلی می‌درخشید،\nو در حضور خداوندِ ارواح به روی خود افتادم.","text_hr":"Vidio sam dvije ognjene rijeke,\na svjetlost te vatre sjala je poput hijacinta.\nPao sam ničice pred Gospodarom duhova.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And the angel Michael [one of the archangels] seized me by my right hand,\nAnd lifted me up and led me forth into all the secrets,\nAnd he showed me all the secrets of righteousness.","text_fa":"و فرشته میکائیل [یکی از فرشتگان مقرب] دست راست مرا گرفت،\nو مرا بلند کرد و به میان همهٔ اسرار برد،\nو همهٔ اسرار عدالت را به من نشان داد.","text_hr":"Anđeo Mihael [jedan od arkanđela] uhvatio me za desnicu,\npodigao i poveo kroz sve tajne\nte mi pokazao sve tajne pravednosti.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"And he showed me all the secrets of the ends of the heaven,\nAnd all the chambers of all the stars, and all the luminaries,\nWhence they proceed before the face of the holy ones.","text_fa":"و همهٔ اسرار انتهای آسمان را به من نشان داد،\nو همهٔ حجره‌های تمام ستارگان و همهٔ اجرام نورانی را،\nو اینکه از کجا در حضور مقدسان بیرون می‌آیند.","text_hr":"Pokazao mi je sve tajne krajeva neba,\nsve odaje svih zvijezda i svih svjetlila,\nodakle izlaze pred licem svetih.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"And he translated my spirit into the heaven of heavens,\nAnd I saw there as it were a structure built of crystals,\nAnd between those crystals tongues of living fire.","text_fa":"و روح مرا به آسمانِ آسمان‌ها منتقل کرد؛\nو در آنجا سازه‌ای دیدم که گویی از بلورها ساخته شده بود،\nو میان آن بلورها زبان‌های آتش زنده بود.","text_hr":"Prenio je moj duh u nebo nad nebesima.\nOndje sam vidio građevinu kao da je sagrađena od kristala,\na među kristalima jezike žive vatre.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"And my spirit saw the girdle which girt that house of fire,\nAnd on its four sides were streams full of living fire,\nAnd they girt that house.","text_fa":"و روح من کمربندی را دید که آن خانهٔ آتش را احاطه کرده بود؛\nو در چهار سوی آن، نهرهایی پر از آتش زنده بود،\nو آن نهرها خانه را دربر گرفته بودند.","text_hr":"Moj je duh vidio pojas koji je opasivao tu ognjenu kuću.\nNa njezine četiri strane bile su rijeke pune žive vatre\ni one su opasivale kuću.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":7,"text_en":"And round about were Seraphin, Cherubin, and Ophannin:\nAnd these are they who sleep not,\nAnd guard the throne of His glory.","text_fa":"و در اطراف، سرافیان و کروبیان و اوفانیم بودند؛\nاینان همان کسانی‌اند که نمی‌خوابند،\nو از تخت جلال او نگهبانی می‌کنند.","text_hr":"Uokolo su bili serafini, kerubini i ofanini.\nTo su oni koji ne spavaju\ni koji čuvaju prijestolje njegove slave.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":8,"text_en":"And I saw angels who could not be counted.\nA thousand thousands, and ten thousand times ten thousand.\nEncircling that house,\nAnd Michael, and Raphael, and Gabriel, and Phanuel,\nAnd the holy angels who are above the heavens,\nGo in and out of that house.","text_fa":"و فرشتگانی دیدم که قابل شمارش نبودند؛\nهزاران هزار و ده‌هزاران ده‌هزار،\nکه آن خانه را احاطه کرده بودند.\nو میکائیل و رافائل و جبرائیل و فنوئل،\nو فرشتگان مقدسی که بالای آسمان‌ها هستند،\nبه آن خانه وارد و از آن خارج می‌شدند.","text_hr":"Vidio sam nebrojene anđele:\ntisuću tisuća i deset tisuća puta deset tisuća\nokruživalo je tu kuću.\nMihael, Rafael, Gabriel i Fanuel\nte sveti anđeli koji su iznad nebesa\nulazili su i izlazili iz te kuće.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":9,"text_en":"And they came forth from that house,\nAnd Michael and Gabriel, Raphael and Phanuel,\nAnd many holy angels without number.","text_fa":"و از آن خانه بیرون آمدند؛\nمیکائیل و جبرائیل، رافائل و فنوئل،\nو فرشتگان مقدس بی‌شمار.","text_hr":"Iz kuće su izišli\nMihael i Gabriel, Rafael i Fanuel\nte bezbroj svetih anđela.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":10,"text_en":"And with them the Head of Days,\nHis head white and pure as wool,\nAnd His raiment indescribable.","text_fa":"و همراه آنان سرِ روزها بود؛\nسر او سفید و پاک همچون پشم،\nو جامه‌اش وصف‌ناپذیر بود.","text_hr":"S njima je bio Glava Dana,\nglave bijele i čiste poput vune,\na njegova se odjeća nije mogla opisati.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":11,"text_en":"And I fell on my face,\nAnd my whole body became relaxed,\nAnd my spirit was transfigured;\nAnd I cried with a loud voice,\nwith the spirit of power,\nAnd blessed and glorified and extolled.","text_fa":"و به روی خود افتادم؛\nتمام بدنم سست شد،\nو روحم دگرگون گردید؛\nو با صدایی بلند،\nبا روح قدرت فریاد زدم،\nو برکت دادم و جلال بخشیدم و بلند کردم.","text_hr":"Pao sam ničice,\ncijelo mi se tijelo opustilo,\na duh mi se preobrazio.\nPovikao sam snažnim glasom,\nduhom moći,\nte blagoslivljao, slavio i uzvisivao.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":12,"text_en":"And these blessings which went forth out of my mouth were well pleasing before that Head of Days.","text_fa":"و این برکت‌هایی که از دهانم بیرون آمد، در حضور آن سرِ روزها پسندیده بود.","text_hr":"Blagoslovi koji su izlazili iz mojih usta bili su ugodni pred Glavom Dana.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":13,"text_en":"And that Head of Days came with Michael and Gabriel, Raphael and Phanuel, thousands and ten thousands of angels without number.\n\n[Lost passage wherein the Son of Man was described as accompanying the Head of Days, and Enoch asked one of the angels (as in 46^3) concerning the Son of Man as to who he was.]","text_fa":"و آن سرِ روزها همراه میکائیل و جبرائیل، رافائل و فنوئل، و هزاران و ده‌هزاران فرشتهٔ بی‌شمار آمد.\n\n[بخشی از متن مفقود است که در آن پسر انسان همراه سرِ روزها توصیف شده بود، و خنوخ از یکی از فرشتگان ـ همانند 46^3 ـ دربارهٔ پسر انسان پرسید که او کیست.]","text_hr":"Glava Dana došao je s Mihaelom i Gabrielom, Rafaelom i Fanuelom te tisućama i desecima tisuća nebrojenih anđela.\n\n[Izgubljen je odlomak u kojem je Sin Čovječji opisan kako prati Glavu Dana, a Henok je pitao jednoga od anđela (kao u 46^3) tko je Sin Čovječji.]","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":14,"text_en":"And he (i.e. the angel) came to me and greeted me with His voice, and said unto me:\n‘=This is= the Son of Man who is born unto righteousness,\nAnd righteousness abides over =him=,\nAnd the righteousness of the Head of Days forsakes =him= not.’","text_fa":"و او (یعنی فرشته) نزد من آمد و با صدای او به من سلام کرد و گفت:\n«=این همان= پسر انسان است که برای عدالت زاده شده است؛\nو عدالت بر =او= ساکن است،\nو عدالتِ سرِ روزها =او= را ترک نمی‌کند.»","text_hr":"On (tj. anđeo) došao mi je, pozdravio me Njegovim glasom i rekao:\n‘=Ovo je= Sin Čovječji koji je rođen za pravednost;\npravednost prebiva nad =njim=,\na pravednost Glave Dana ne napušta =ga=.’","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":15,"text_en":"And he said unto me:\n‘He proclaims unto thee peace in the name of the world to come;\nFor from hence has proceeded peace since the creation of the world,\nAnd so shall it be unto thee for ever and for ever and ever.","text_fa":"و به من گفت:\n«او در نام جهان آینده به تو صلح اعلام می‌کند؛\nزیرا از اینجا، از زمان آفرینش جهان، صلح بیرون آمده است؛\nو برای تو نیز تا ابد و تا ابدالآباد چنین خواهد بود.","text_hr":"Rekao mi je:\n‘On ti naviješta mir u ime svijeta koji dolazi;\njer odavde mir proizlazi od stvaranja svijeta\ni tako će tebi biti zauvijek i u vijeke vjekova.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":16,"text_en":"And all shall walk in =his= ways since righteousness never forsaketh =him=:\nWith =him= will be their dwelling-places, and with =him= their heritage,\nAnd they shall not be separated from =him= for ever and ever and ever.","text_fa":"و همه در راه‌های =او= خواهند رفت، زیرا عدالت هرگز =او= را ترک نمی‌کند؛\nمنزلگاه‌های آنان با =او= خواهد بود و میراثشان با =او=؛\nو تا ابد و تا ابدالآباد از =او= جدا نخواهند شد.","text_hr":"Svi će hoditi =njegovim= putovima jer pravednost nikada ne napušta =njega=.\nS =njim= će biti njihova prebivališta i s =njim= njihova baština,\ni neće se odvojiti od =njega= zauvijek i u vijeke vjekova.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":17,"text_en":"And so there shall be length of days with that Son of Man,\nAnd the righteous shall have peace and an upright way\nIn the name of the Lord of Spirits for ever and ever.’","text_fa":"و بدین‌گونه با آن پسر انسان طولِ روزها خواهد بود،\nو پارسایان صلح و راهی راست خواهند داشت،\nدر نام خداوندِ ارواح تا ابد.»","text_hr":"Tako će s tim Sinom Čovječjim biti dugi dani,\na pravedni će imati mir i pravi put\nu ime Gospodara duhova u vijeke vjekova.’","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
