@@ -10,89 +10,17 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "7b07234c05ea2c198e6d07ab5dc6f25e5345d5617f3adefcca26d3de24e759d9",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And after that I saw thousands of thousands and ten thousand times ten thousand, I saw a multitude beyond number and reckoning, who stood before the Lord of Spirits.",
-      "text_fa": null,
-      "text_hr": "Nakon toga vidio sam tisuće tisuća i deset tisuća puta deset tisuća; vidio sam mnoštvo kojemu nije bilo ni broja ni računa kako stoji pred Gospodarom duhova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And on the four sides of the Lord of Spirits I saw four presences, different from those that sleep not, and I learnt their names: for the angel who went with me made known to me their names, and showed me all the hidden things.",
-      "text_fa": null,
-      "text_hr": "Na četiri strane Gospodara duhova vidio sam četiri lika, različita od onih koji ne spavaju, i doznao njihova imena. Anđeo koji je išao sa mnom otkrio mi je njihova imena i pokazao mi sve što je skriveno.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And I heard the voices of those four presences as they uttered praises before the Lord of glory.",
-      "text_fa": null,
-      "text_hr": "Čuo sam glasove tih četiriju likova kako izriču hvale pred Gospodarom slave.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "The first voice blesses the Lord of Spirits for ever and ever.",
-      "text_fa": null,
-      "text_hr": "Prvi glas blagoslivlja Gospodara duhova u vijeke vjekova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "And the second voice I heard blessing the Elect One and the elect ones who hang upon the Lord of Spirits.",
-      "text_fa": null,
-      "text_hr": "Drugi sam glas čuo kako blagoslivlja Izabranoga i izabrane koji ovise o Gospodaru duhova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "And the third voice I heard =pray and intercede= for those who dwell on the earth and =supplicate= in the name of the Lord of Spirits.",
-      "text_fa": null,
-      "text_hr": "Treći sam glas čuo kako moli i zauzima se za stanovnike zemlje te usrdno preklinje u ime Gospodara duhova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 7,
-      "text_en": "And I heard the fourth voice fending off the Satans and forbidding them to come before the Lord of Spirits to accuse them who dwell on the earth.",
-      "text_fa": null,
-      "text_hr": "Čuo sam četvrti glas kako odbija sotone i zabranjuje im pristupiti pred Gospodara duhova da optužuju stanovnike zemlje.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 8,
-      "text_en": "After that I asked the angel of peace who went with me, who showed me everything that is hidden: ‘Who are these four presences which I have seen and whose words I have heard and written down?’",
-      "text_fa": null,
-      "text_hr": "Nakon toga upitao sam anđela mira koji je išao sa mnom i pokazivao mi sve što je skriveno: „Tko su ta četiri lika koja sam vidio i čije sam riječi čuo i zapisao?“",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 9,
-      "text_en": "And he said to me: ‘This first is Michael, the merciful and long-suffering: and the second, who is set over all the diseases and all the wounds of the children of men, is Raphael: and the third, who is set over all the powers, is Gabriel: and the fourth, who is set over the repentance unto hope of those who inherit eternal life, is named Phanuel.’",
-      "text_fa": null,
-      "text_hr": "Rekao mi je: „Prvi je Mihael, milosrdan i strpljiv; drugi, postavljen nad svim bolestima i svim ranama sinova ljudskih, jest Rafael; treći, postavljen nad svim silama, jest Gabriel; a četvrti, postavljen nad pokajanjem koje vodi k nadi onih što baštine vječni život, zove se Fanuel.“",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 10,
-      "text_en": "And these are the four angels of the Lord of Spirits and the four voices I heard in those days.",
-      "text_fa": null,
-      "text_hr": "To su četiri anđela Gospodara duhova i četiri glasa koja sam čuo u one dane.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And after that I saw thousands of thousands and ten thousand times ten thousand, I saw a multitude beyond number and reckoning, who stood before the Lord of Spirits.","text_fa":"پس از آن هزاران هزار و ده‌هزاران ده‌هزار دیدم؛ جمعیتی فراتر از هر شمار و حساب که در حضور خداوندِ ارواح ایستاده بودند.","text_hr":"Nakon toga vidio sam tisuće tisuća i deset tisuća puta deset tisuća; vidio sam mnoštvo kojemu nije bilo ni broja ni računa kako stoji pred Gospodarom duhova.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And on the four sides of the Lord of Spirits I saw four presences, different from those that sleep not, and I learnt their names: for the angel who went with me made known to me their names, and showed me all the hidden things.","text_fa":"در چهار سوی خداوندِ ارواح، چهار حضور دیدم که با آنان که نمی‌خوابند متفاوت بودند؛ و نام‌هایشان را آموختم، زیرا فرشته‌ای که با من همراه بود نام‌های آنان را به من شناساند و همهٔ امور پنهان را نشانم داد.","text_hr":"Na četiri strane Gospodara duhova vidio sam četiri lika, različita od onih koji ne spavaju, i doznao njihova imena. Anđeo koji je išao sa mnom otkrio mi je njihova imena i pokazao mi sve što je skriveno.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And I heard the voices of those four presences as they uttered praises before the Lord of glory.","text_fa":"و صدای آن چهار حضور را شنیدم که در پیشگاه خداوندِ جلال ستایش می‌کردند.","text_hr":"Čuo sam glasove tih četiriju likova kako izriču hvale pred Gospodarom slave.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"The first voice blesses the Lord of Spirits for ever and ever.","text_fa":"صدای نخست، خداوندِ ارواح را تا ابد برکت می‌دهد.","text_hr":"Prvi glas blagoslivlja Gospodara duhova u vijeke vjekova.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"And the second voice I heard blessing the Elect One and the elect ones who hang upon the Lord of Spirits.","text_fa":"و صدای دوم را شنیدم که برگزیده و برگزیدگانی را که وابسته به خداوندِ ارواح‌اند برکت می‌داد.","text_hr":"Drugi sam glas čuo kako blagoslivlja Izabranoga i izabrane koji ovise o Gospodaru duhova.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"And the third voice I heard =pray and intercede= for those who dwell on the earth and =supplicate= in the name of the Lord of Spirits.","text_fa":"و صدای سوم را شنیدم که برای ساکنان زمین =دعا و شفاعت می‌کرد= و به نام خداوندِ ارواح =التماس می‌نمود=.","text_hr":"Treći sam glas čuo kako moli i zauzima se za stanovnike zemlje te usrdno preklinje u ime Gospodara duhova.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":7,"text_en":"And I heard the fourth voice fending off the Satans and forbidding them to come before the Lord of Spirits to accuse them who dwell on the earth.","text_fa":"و صدای چهارم را شنیدم که شیطان‌ها را دور می‌کرد و به آنان اجازه نمی‌داد به حضور خداوندِ ارواح بیایند تا ساکنان زمین را متهم کنند.","text_hr":"Čuo sam četvrti glas kako odbija sotone i zabranjuje im pristupiti pred Gospodara duhova da optužuju stanovnike zemlje.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":8,"text_en":"After that I asked the angel of peace who went with me, who showed me everything that is hidden: ‘Who are these four presences which I have seen and whose words I have heard and written down?’","text_fa":"پس از آن از فرشتهٔ صلح که همراه من بود و همهٔ امور پنهان را به من نشان می‌داد پرسیدم: «این چهار حضور که دیده‌ام و سخنانشان را شنیده و نوشته‌ام، چه کسانی هستند؟»","text_hr":"Nakon toga upitao sam anđela mira koji je išao sa mnom i pokazivao mi sve što je skriveno: „Tko su ta četiri lika koja sam vidio i čije sam riječi čuo i zapisao?“","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":9,"text_en":"And he said to me: ‘This first is Michael, the merciful and long-suffering: and the second, who is set over all the diseases and all the wounds of the children of men, is Raphael: and the third, who is set over all the powers, is Gabriel: and the fourth, who is set over the repentance unto hope of those who inherit eternal life, is named Phanuel.’","text_fa":"و او به من گفت: «نخستین، میکائیل است، رحیم و بردبار؛ دومین که بر همهٔ بیماری‌ها و همهٔ زخم‌های فرزندان انسان گماشته شده، رافائل است؛ سومین که بر همهٔ قدرت‌ها گماشته شده، جبرائیل است؛ و چهارمین که بر توبه‌ای که به امیدِ وارثان حیات جاودان می‌انجامد گماشته شده، فنوئل نام دارد.»","text_hr":"Rekao mi je: „Prvi je Mihael, milosrdan i strpljiv; drugi, postavljen nad svim bolestima i svim ranama sinova ljudskih, jest Rafael; treći, postavljen nad svim silama, jest Gabriel; a četvrti, postavljen nad pokajanjem koje vodi k nadi onih što baštine vječni život, zove se Fanuel.“","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":10,"text_en":"And these are the four angels of the Lord of Spirits and the four voices I heard in those days.","text_fa":"و اینان چهار فرشتهٔ خداوندِ ارواح و همان چهار صدایی هستند که در آن روزها شنیدم.","text_hr":"To su četiri anđela Gospodara duhova i četiri glasa koja sam čuo u one dane.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
