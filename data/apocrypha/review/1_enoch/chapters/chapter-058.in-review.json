@@ -10,57 +10,13 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "9f04e15a73142baa1e68fb21483ba8b54e80adf1d4d345416073a7dad006e873",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And I began to speak the third Parable concerning the righteous and elect.",
-      "text_fa": null,
-      "text_hr": "Počeo sam govoriti Treću prispodobu o pravednima i izabranima.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "Blessed are ye, ye righteous and elect,\nFor glorious shall be your lot.",
-      "text_fa": null,
-      "text_hr": "Blago vama, pravedni i izabrani,\njer će slavna biti vaša baština.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And the righteous shall be in the light of the sun,\nAnd the elect in the light of eternal life:\nThe days of their life shall be unending,\nAnd the days of the holy without number.",
-      "text_fa": null,
-      "text_hr": "Pravedni će biti u svjetlosti sunca,\na izabrani u svjetlosti vječnoga života.\nDanima njihova života neće biti kraja,\na danima svetih neće biti broja.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "And they shall seek the light and find righteousness with the Lord of Spirits:\nThere shall be peace to the righteous in the name of the Eternal Lord.",
-      "text_fa": null,
-      "text_hr": "Tražit će svjetlost i naći pravednost kod Gospodara duhova.\nPravednima će biti mir u ime Vječnoga Gospodina.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "And after this it shall be said to the holy in heaven\nThat they should seek out the secrets of righteousness, the heritage of faith:\nFor it has become bright as the sun upon earth,\nAnd the darkness is past.",
-      "text_fa": null,
-      "text_hr": "Nakon toga svetima na nebu bit će rečeno\nda potraže tajne pravednosti, baštinu vjere,\njer je ona postala sjajna poput sunca nad zemljom,\na tama je prošla.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "And there shall be a light that never =endeth=,\nAnd to a limit (lit. ‘number’) of days they shall not come,\nFor the darkness shall first have been destroyed,\n[And the light established before the Lord of Spirits]\nAnd the light of uprightness established for ever before the Lord of Spirits.",
-      "text_fa": null,
-      "text_hr": "Bit će svjetlost koja nikada =ne prestaje=\ni oni neće doći do granice — doslovno „broja“ — dana,\njer će tama prije toga biti uništena,\n[a svjetlost učvršćena pred Gospodarom duhova]\ni svjetlost čestitosti zauvijek utvrđena pred Gospodarom duhova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And I began to speak the third Parable concerning the righteous and elect.","text_fa":"و شروع کردم تمثیل سوم را دربارهٔ پارسایان و برگزیدگان بیان کنم.","text_hr":"Počeo sam govoriti Treću prispodobu o pravednima i izabranima.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"Blessed are ye, ye righteous and elect,\nFor glorious shall be your lot.","text_fa":"خوشا به حال شما، ای پارسایان و برگزیدگان،\nزیرا نصیب شما پرجلال خواهد بود.","text_hr":"Blago vama, pravedni i izabrani,\njer će slavna biti vaša baština.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And the righteous shall be in the light of the sun,\nAnd the elect in the light of eternal life:\nThe days of their life shall be unending,\nAnd the days of the holy without number.","text_fa":"و پارسایان در نور خورشید خواهند بود،\nو برگزیدگان در نور حیات جاودان؛\nروزهای زندگی آنان پایانی نخواهد داشت،\nو روزهای مقدسان بی‌شمار خواهد بود.","text_hr":"Pravedni će biti u svjetlosti sunca,\na izabrani u svjetlosti vječnoga života.\nDanima njihova života neće biti kraja,\na danima svetih neće biti broja.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"And they shall seek the light and find righteousness with the Lord of Spirits:\nThere shall be peace to the righteous in the name of the Eternal Lord.","text_fa":"و نور را خواهند طلبید و نزد خداوندِ ارواح عدالت را خواهند یافت؛\nو برای پارسایان در نام خداوندِ جاودان، صلح خواهد بود.","text_hr":"Tražit će svjetlost i naći pravednost kod Gospodara duhova.\nPravednima će biti mir u ime Vječnoga Gospodina.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"And after this it shall be said to the holy in heaven\nThat they should seek out the secrets of righteousness, the heritage of faith:\nFor it has become bright as the sun upon earth,\nAnd the darkness is past.","text_fa":"و پس از این به مقدسان آسمان گفته خواهد شد\nکه اسرار عدالت، یعنی میراث ایمان، را بجویند؛\nزیرا آن بر زمین مانند خورشید روشن شده است،\nو تاریکی گذشته است.","text_hr":"Nakon toga svetima na nebu bit će rečeno\nda potraže tajne pravednosti, baštinu vjere,\njer je ona postala sjajna poput sunca nad zemljom,\na tama je prošla.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"And there shall be a light that never =endeth=,\nAnd to a limit (lit. ‘number’) of days they shall not come,\nFor the darkness shall first have been destroyed,\n[And the light established before the Lord of Spirits]\nAnd the light of uprightness established for ever before the Lord of Spirits.","text_fa":"و نوری خواهد بود که هرگز =پایان نمی‌یابد=،\nو آنان به حدّی ـ به‌لفظ، «شماری» ـ از روزها نخواهند رسید؛\nزیرا پیش از آن تاریکی نابود شده خواهد بود،\n[و نور در حضور خداوندِ ارواح استوار شده خواهد بود]،\nو نور راستی تا ابد در حضور خداوندِ ارواح برقرار خواهد ماند.","text_hr":"Bit će svjetlost koja nikada =ne prestaje=\ni oni neće doći do granice — doslovno „broja“ — dana,\njer će tama prije toga biti uništena,\n[a svjetlost učvršćena pred Gospodarom duhova]\ni svjetlost čestitosti zauvijek utvrđena pred Gospodarom duhova.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
