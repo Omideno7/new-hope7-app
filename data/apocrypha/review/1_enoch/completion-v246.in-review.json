@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "title_fa": "اول خنوخ",
+  "title_en": "1 Enoch",
+  "title_hr": "Prva Henokova knjiga",
+  "status": "in_review",
+  "source_translation": "R. H. Charles",
+  "baseline_manifest": "data/apocrypha/review/1_enoch/manifest.in-review.json",
+  "chapter_count": 108,
+  "verse_count": 1062,
+  "included_ranges": {
+    "fa": [[1,108]],
+    "hr": [[1,108]]
+  },
+  "totals": {
+    "source_english": 1062,
+    "persian_in_review": 1062,
+    "croatian_in_review": 1062,
+    "missing_persian": 0,
+    "missing_croatian": 0
+  },
+  "reader_overlay_registered": true,
+  "audit_state": "book_complete_pending_corpus_audit",
+  "audit_notes": [
+    "R. H. Charles critical brackets, daggers, lettered subverses and parallel readings are intentionally preserved for final audit.",
+    "Canonical source chapter 108 verse 15 currently contains a printer-imprint line after the translated text; flag for source-normalization review before final release."
+  ]
+}
