@@ -10,41 +10,11 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "ad4d229668bf1936bb041f7a8abacfeb84cb149da5a31bb81bf56708826cc249",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And from thence I went to the ends of the earth and saw there great beasts, and each differed from the other; and (I saw) birds also differing in appearance and beauty and voice, the one differing from the other.",
-      "text_fa": null,
-      "text_hr": "Odatle odoh do krajeva zemlje i ondje vidjeh velike zvijeri, svaku različitu od druge; vidjeh i ptice koje su se razlikovale izgledom, ljepotom i glasom, jedna od druge.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And to the east of those beasts I saw the ends of the earth whereon the heaven rests, and the portals of the heaven open.",
-      "text_fa": null,
-      "text_hr": "Istočno od tih zvijeri vidjeh krajeve zemlje na kojima počiva nebo i otvorena vrata neba.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And I saw how the stars of heaven come forth, and I counted the portals out of which they proceed, and wrote down all their outlets, of each individual star by itself, according to their number and their names, their courses and their positions, and their times and their months, as Uriel the holy angel who was with me showed me.",
-      "text_fa": null,
-      "text_hr": "Vidjeh kako izlaze nebeske zvijezde; prebrojih vrata kroz koja izlaze i zapisa sve njihove izlaze, za svaku zvijezdu napose, prema njihovu broju i imenima, njihovim putanjama i položajima, njihovim vremenima i mjesecima, kako mi je pokazao sveti anđeo Uriel koji bijaše sa mnom.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "He showed all things to me and wrote them down for me: also their names he wrote for me, and their laws and their companies.",
-      "text_fa": null,
-      "text_hr": "Sve mi je pokazao i zapisao za mene; zapisao mi je i njihova imena, njihove zakone i njihove skupine.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And from thence I went to the ends of the earth and saw there great beasts, and each differed from the other; and (I saw) birds also differing in appearance and beauty and voice, the one differing from the other.","text_fa":"از آنجا به انتهای زمین رفتم و در آنجا جانوران بزرگی دیدم که هر یک با دیگری متفاوت بود؛ همچنین پرندگانی دیدم که در ظاهر، زیبایی و صدا با یکدیگر تفاوت داشتند.","text_hr":"Odatle odoh do krajeva zemlje i ondje vidjeh velike zvijeri, svaku različitu od druge; vidjeh i ptice koje su se razlikovale izgledom, ljepotom i glasom, jedna od druge.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And to the east of those beasts I saw the ends of the earth whereon the heaven rests, and the portals of the heaven open.","text_fa":"در شرق آن جانوران، انتهای زمین را دیدم که آسمان بر آن قرار گرفته بود، و دروازه‌های آسمان را گشوده دیدم.","text_hr":"Istočno od tih zvijeri vidjeh krajeve zemlje na kojima počiva nebo i otvorena vrata neba.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And I saw how the stars of heaven come forth, and I counted the portals out of which they proceed, and wrote down all their outlets, of each individual star by itself, according to their number and their names, their courses and their positions, and their times and their months, as Uriel the holy angel who was with me showed me.","text_fa":"دیدم که ستارگان آسمان چگونه بیرون می‌آیند؛ دروازه‌هایی را که از آنها خارج می‌شوند شمردم و همهٔ محل‌های خروجشان را نوشتم، برای هر ستاره به‌طور جداگانه، مطابق شمار و نام‌هایشان، مسیرها و جایگاه‌هایشان، زمان‌ها و ماه‌هایشان؛ همان‌گونه که اوریئل، فرشتهٔ مقدسی که همراه من بود، به من نشان داد.","text_hr":"Vidjeh kako izlaze nebeske zvijezde; prebrojih vrata kroz koja izlaze i zapisa sve njihove izlaze, za svaku zvijezdu napose, prema njihovu broju i imenima, njihovim putanjama i položajima, njihovim vremenima i mjesecima, kako mi je pokazao sveti anđeo Uriel koji bijaše sa mnom.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"He showed all things to me and wrote them down for me: also their names he wrote for me, and their laws and their companies.","text_fa":"او همه‌چیز را به من نشان داد و برایم نوشت؛ نام‌های آنها، قوانینشان و گروه‌هایشان را نیز برای من ثبت کرد.","text_hr":"Sve mi je pokazao i zapisao za mene; zapisao mi je i njihova imena, njihove zakone i njihove skupine.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
