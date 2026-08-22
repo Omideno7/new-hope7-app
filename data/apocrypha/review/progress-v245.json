@@ -21,15 +21,14 @@
     {"book_id":"baruch","verses":140,"fa":140,"hr":140},
     {"book_id":"wisdom_of_solomon","verses":436,"fa":436,"hr":436},
     {"book_id":"2_maccabees","verses":555,"fa":555,"hr":555},
-    {"book_id":"1_maccabees","verses":924,"fa":924,"hr":924}
+    {"book_id":"1_maccabees","verses":924,"fa":924,"hr":924},
+    {"book_id":"1_enoch","verses":1062,"fa":1062,"hr":1062}
   ],
-  "complete_book_count": 17,
-  "complete_fresh_verse_rows": 5046,
-  "in_progress_books": [
-    {"book_id":"1_enoch","verses":1062,"fa":856,"hr":1062,"chapters_fa_complete":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90],"next_chapter":91}
-  ],
-  "remaining_books": ["sirach","1_enoch"],
-  "next_book": "1_enoch",
+  "complete_book_count": 18,
+  "complete_fresh_verse_rows": 6108,
+  "in_progress_books": [],
+  "remaining_books": ["sirach"],
+  "next_book": "sirach",
   "release_ready": false,
-  "blocking_reason": "Fresh New Hope 7 Persian translation is in progress for First Enoch; Sirach is not yet complete; final corpus audit has not yet passed."
+  "blocking_reason": "Fresh New Hope 7 corpus remains incomplete for Sirach; final corpus audit has not yet passed."
 }
