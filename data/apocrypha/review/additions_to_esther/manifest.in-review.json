@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "book_id": "additions_to_esther",
+  "title_fa": "افزوده‌های استر",
+  "title_en": "Additions to Esther",
+  "title_hr": "Dodaci Esteri",
+  "status": "in_review",
+  "prepared_on": "2026-08-22",
+  "included_ranges": {"fa":[[1,7]],"hr":[[1,7]]},
+  "source_translation": "KJVA",
+  "source_translation_name": "King James Version with Apocrypha",
+  "source_file": "data/apocrypha/sources/en/additions_to_esther.en.json",
+  "source_license": "Public Domain",
+  "versification": "KJVA normalized for the New Hope 7 nineteen-book set",
+  "translation_note": "Fresh New Hope 7 Persian translation from the public-domain KJVA source. Fresh canonical-aligned Croatian in-review rows were already present in the RC runtime and are retained.",
+  "totals": {"aligned_source_verses":105,"persian_in_review_verses":105,"croatian_in_review_verses":105},
+  "chapter_qa": {
+    "1":{"verse_count":10,"persian_in_review_count":10,"croatian_in_review_count":10},
+    "2":{"verse_count":12,"persian_in_review_count":12,"croatian_in_review_count":12},
+    "3":{"verse_count":6,"persian_in_review_count":6,"croatian_in_review_count":6},
+    "4":{"verse_count":18,"persian_in_review_count":18,"croatian_in_review_count":18},
+    "5":{"verse_count":19,"persian_in_review_count":19,"croatian_in_review_count":19},
+    "6":{"verse_count":16,"persian_in_review_count":16,"croatian_in_review_count":16},
+    "7":{"verse_count":24,"persian_in_review_count":24,"croatian_in_review_count":24}
+  }
+}
