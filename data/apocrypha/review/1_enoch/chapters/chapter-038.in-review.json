@@ -10,57 +10,13 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "e7e412701af7d86bff85b9e8bfbb86d9ebecef1e8cc591265def4beec9948f54",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "The first Parable.\nWhen the congregation of the righteous shall appear,\nAnd sinners shall be judged for their sins,\nAnd shall be driven from the face of the earth,",
-      "text_fa": null,
-      "text_hr": "Prva prispodoba.\nKad se pojavi zajednica pravednika,\nkad grešnici budu osuđeni zbog svojih grijeha\ni protjerani s lica zemlje,",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And when the Righteous One shall appear before the eyes of the righteous,\nWhose elect works hang upon the Lord of Spirits,\nAnd light shall appear to the righteous and the elect who dwell on the earth,\nWhere then will be the dwelling of the sinners,\nAnd where the resting-place of those who have denied the Lord of Spirits?\nIt had been good for them if they had not been born.",
-      "text_fa": null,
-      "text_hr": "i kad se Pravednik pojavi pred očima pravednih,\nčija izabrana djela ovise o Gospodaru duhova,\ni kad svjetlost zasja pravednima i izabranima koji prebivaju na zemlji,\ngdje će tada biti prebivalište grešnika\ni gdje počivalište onih koji su zanijekali Gospodara duhova?\nBolje bi im bilo da se nisu ni rodili.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "When the secrets of the righteous shall be revealed and the sinners judged,\nAnd the godless driven from the presence of the righteous and elect,",
-      "text_fa": null,
-      "text_hr": "Kad se otkriju tajne pravednika i grešnicima bude suđeno,\na bezbožnici budu protjerani iz nazočnosti pravednih i izabranih,",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "From that time those that possess the earth shall no longer be powerful and exalted:\nAnd they shall not be able to behold the face of the holy,\nFor the Lord of Spirits =has caused His light to appear=\nOn the face of the holy, righteous, and elect.",
-      "text_fa": null,
-      "text_hr": "od toga časa posjednici zemlje više neće biti moćni ni uzvišeni\ni neće moći gledati lice svetih,\njer je Gospodar duhova učinio da njegova svjetlost zasja\nna licu svetih, pravednih i izabranih.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "Then shall the kings and the mighty perish\nAnd be given into the hands of the righteous and holy.",
-      "text_fa": null,
-      "text_hr": "Tada će kraljevi i moćnici propasti\ni biti predani u ruke pravednih i svetih.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "And thenceforward none shall seek for themselves mercy from the Lord of Spirits:\nFor their life is at an end.",
-      "text_fa": null,
-      "text_hr": "Od tada nitko od njih neće moći tražiti milosrđe od Gospodara duhova,\njer je njihov život došao kraju.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"The first Parable.\nWhen the congregation of the righteous shall appear,\nAnd sinners shall be judged for their sins,\nAnd shall be driven from the face of the earth,","text_fa":"تمثیل نخست.\nهنگامی که جماعت پارسایان آشکار شود،\nو گناهکاران به سبب گناهانشان داوری شوند،\nو از روی زمین رانده گردند،","text_hr":"Prva prispodoba.\nKad se pojavi zajednica pravednika,\nkad grešnici budu osuđeni zbog svojih grijeha\ni protjerani s lica zemlje,","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And when the Righteous One shall appear before the eyes of the righteous,\nWhose elect works hang upon the Lord of Spirits,\nAnd light shall appear to the righteous and the elect who dwell on the earth,\nWhere then will be the dwelling of the sinners,\nAnd where the resting-place of those who have denied the Lord of Spirits?\nIt had been good for them if they had not been born.","text_fa":"و هنگامی که آن پارسا در برابر دیدگان پارسایان ظاهر شود،\nآنانی که اعمال برگزیده‌شان وابسته به خداوندِ ارواح است،\nو نور بر پارسایان و برگزیدگانی که بر زمین ساکن‌اند بتابد،\nآن زمان منزل گناهکاران کجا خواهد بود؟\nو آرامگاه کسانی که خداوندِ ارواح را انکار کرده‌اند کجا خواهد بود؟\nبرای آنان بهتر بود اگر هرگز زاده نمی‌شدند.","text_hr":"i kad se Pravednik pojavi pred očima pravednih,\nčija izabrana djela ovise o Gospodaru duhova,\ni kad svjetlost zasja pravednima i izabranima koji prebivaju na zemlji,\ngdje će tada biti prebivalište grešnika\ni gdje počivalište onih koji su zanijekali Gospodara duhova?\nBolje bi im bilo da se nisu ni rodili.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"When the secrets of the righteous shall be revealed and the sinners judged,\nAnd the godless driven from the presence of the righteous and elect,","text_fa":"هنگامی که اسرار پارسایان آشکار شود و گناهکاران داوری گردند،\nو بی‌خدایان از حضور پارسایان و برگزیدگان رانده شوند،","text_hr":"Kad se otkriju tajne pravednika i grešnicima bude suđeno,\na bezbožnici budu protjerani iz nazočnosti pravednih i izabranih,","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"From that time those that possess the earth shall no longer be powerful and exalted:\nAnd they shall not be able to behold the face of the holy,\nFor the Lord of Spirits =has caused His light to appear=\nOn the face of the holy, righteous, and elect.","text_fa":"از آن زمان، کسانی که زمین را در اختیار دارند دیگر نیرومند و بلندمرتبه نخواهند بود؛\nو نخواهند توانست به چهرهٔ مقدسان بنگرند،\nزیرا خداوندِ ارواح =نور خود را آشکار ساخته است=\nبر چهرهٔ مقدسان، پارسایان و برگزیدگان.","text_hr":"od toga časa posjednici zemlje više neće biti moćni ni uzvišeni\ni neće moći gledati lice svetih,\njer je Gospodar duhova učinio da njegova svjetlost zasja\nna licu svetih, pravednih i izabranih.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"Then shall the kings and the mighty perish\nAnd be given into the hands of the righteous and holy.","text_fa":"آنگاه پادشاهان و قدرتمندان هلاک خواهند شد\nو به دست پارسایان و مقدسان سپرده خواهند شد.","text_hr":"Tada će kraljevi i moćnici propasti\ni biti predani u ruke pravednih i svetih.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"And thenceforward none shall seek for themselves mercy from the Lord of Spirits:\nFor their life is at an end.","text_fa":"و از آن پس هیچ‌یک از آنان نخواهد توانست برای خود از خداوندِ ارواح رحمت بطلبد؛\nزیرا زندگی‌شان به پایان رسیده است.","text_hr":"Od tada nitko od njih neće moći tražiti milosrđe od Gospodara duhova,\njer je njihov život došao kraju.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
