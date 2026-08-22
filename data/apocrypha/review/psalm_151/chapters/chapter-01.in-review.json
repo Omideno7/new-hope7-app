@@ -9,64 +9,63 @@
   "source_translation": "WEBC",
   "versification": "WEBC",
   "source_english_sha256": "5966c8b7d492ed62f0735e167200936065647a6c7b268afa2ec0ff5b9e60f129",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
+  "translation_note": "Fresh New Hope 7 Persian and Croatian renderings from the public-domain WEBC reference. Persian is intentionally natural and readable while preserving the source meaning.",
   "verses": [
     {
       "verse": 1,
       "text_en": "I was small among my brothers, and youngest in my father’s house. I tended my father’s sheep.",
-      "text_fa": null,
+      "text_fa": "در میان برادرانم کوچک بودم و در خانهٔ پدرم از همه جوان‌تر. گوسفندان پدرم را شبانی می‌کردم.",
       "text_hr": "Bio sam malen među svojom braćom i najmlađi u kući svoga oca. Čuvao sam ovce svoga oca.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 2,
       "text_en": "My hands formed a musical instrument, and my fingers tuned a lyre.",
-      "text_fa": null,
+      "text_fa": "دستانم سازی ساخت و انگشتانم چنگ را کوک کرد.",
       "text_hr": "Moje su ruke načinile glazbalo, a moji su prsti ugodili liru.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 3,
       "text_en": "Who shall tell my Lord? The Lord himself, he himself hears.",
-      "text_fa": null,
+      "text_fa": "چه کسی آن را به خداوند من خواهد گفت؟ خودِ خداوند می‌شنود؛ آری، او خود می‌شنود.",
       "text_hr": "Tko će kazati mome Gospodinu? Sam Gospodin, on sam sluša.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 4,
       "text_en": "He sent forth his angel and took me from my father’s sheep, and he anointed me with his anointing oil.",
-      "text_fa": null,
+      "text_fa": "او فرشتهٔ خود را فرستاد، مرا از میان گوسفندان پدرم برگرفت و با روغنِ مسح خود مرا مسح کرد.",
       "text_hr": "Poslao je svoga anđela i uzeo me od ovaca moga oca; pomazao me uljem svojega pomazanja.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 5,
       "text_en": "My brothers were handsome and tall; but the Lord didn’t take pleasure in them.",
-      "text_fa": null,
+      "text_fa": "برادرانم خوش‌سیما و بلندبالا بودند، اما خداوند از آنان خشنود نشد.",
       "text_hr": "Moja su braća bila lijepa i visoka, ali Gospodinu nisu bila po volji.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 6,
       "text_en": "I went out to meet the Philistine, and he cursed me by his idols.",
-      "text_fa": null,
+      "text_fa": "برای رویارویی با آن فلسطینی بیرون رفتم، و او به نام بت‌هایش مرا نفرین کرد.",
       "text_hr": "Izašao sam ususret Filistejcu, a on me prokleo svojim idolima.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     },
     {
       "verse": 7,
       "text_en": "But I drew his own sword and beheaded him, and removed reproach from the children of Israel.",
-      "text_fa": null,
+      "text_fa": "اما شمشیر خودش را از غلاف کشیدم، سرش را از تن جدا کردم و ننگ را از فرزندان اسرائیل برداشتم.",
       "text_hr": "Ali izvukao sam njegov vlastiti mač, odrubio mu glavu i skinuo sramotu sa sinova Izraelovih.",
-      "status_fa": "out_of_scope",
+      "status_fa": "in_review",
       "status_hr": "in_review"
     }
   ]
