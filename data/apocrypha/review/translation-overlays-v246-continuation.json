@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "version": "2.4.6",
+  "status": "in_review",
+  "policy": "Continuation registry for fresh New Hope 7 translations after the v245 base registry.",
+  "files": [
+    "data/apocrypha/review/1_enoch/chapters/chapter-021.in-review.json",
+    "data/apocrypha/review/1_enoch/chapters/chapter-022.in-review.json",
+    "data/apocrypha/review/1_enoch/chapters/chapter-023.in-review.json",
+    "data/apocrypha/review/1_enoch/chapters/chapter-024.in-review.json",
+    "data/apocrypha/review/1_enoch/chapters/chapter-025.in-review.json",
+    "data/apocrypha/review/1_enoch/chapters/chapter-026.in-review.json",
+    "data/apocrypha/review/1_enoch/chapters/chapter-027.in-review.json",
+    "data/apocrypha/review/1_enoch/chapters/chapter-028.in-review.json",
+    "data/apocrypha/review/1_enoch/chapters/chapter-029.in-review.json",
+    "data/apocrypha/review/1_enoch/chapters/chapter-030.in-review.json"
+  ]
+}
