@@ -10,89 +10,17 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "8e01f52a9b72f866f30b5e45937c7a4c1798e069631aec0299f93fccb5f37675",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And he said unto me:\n\n‘Observe, Enoch, these heavenly tablets,\nAnd read what is written thereon,\nAnd mark every individual fact.’",
-      "text_fa": null,
-      "text_hr": "Reče mi: ‘Promatraj, Henoče, ove nebeske ploče, pročitaj što je na njima napisano i pomno zabilježi svaku činjenicu.’",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And I observed the heavenly tablets, and read everything which was written (thereon) and understood everything, and read the book of all the deeds of mankind, and of all the children of flesh that shall be upon the earth to the remotest generations.",
-      "text_fa": null,
-      "text_hr": "I promatrao sam nebeske ploče, i čitao sve što je napisano (na njima) i razumio sve, i čitao sam knjigu svih djela čovječanstva, i sve djece tijela koja će biti na zemlji do najudaljenijih naraštaja.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And forthwith I blessed the great Lord, the King of glory for ever, in that He has made all the works of the world.\n\nAnd I extolled the Lord because of His patience,\nAnd blessed Him because of the children of men.",
-      "text_fa": null,
-      "text_hr": "Odmah sam blagoslovio velikoga Gospodina, Kralja Slave dovijeka, jer je stvorio sva djela svijeta. Slavio sam Gospodina zbog Njegove strpljivosti i blagoslovio Ga zbog sinova ljudskih.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "And after that I said:\n\n‘Blessed is the man who dies in righteousness and goodness,\nConcerning whom there is no book of unrighteousness written,\nAnd against whom no day of judgement shall be found.’",
-      "text_fa": null,
-      "text_hr": "Nakon toga rekoh: ‘Blago čovjeku koji umre u pravednosti i dobroti, protiv kojega nije napisana knjiga nepravde i protiv kojega se neće naći krivnja na dan suda.’",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "And those seven holy ones brought me and placed me on the earth before the door of my house, and said to me: ‘Declare everything to thy son Methuselah, and show to all thy children that no flesh is righteous in the sight of the Lord, for He is their Creator.",
-      "text_fa": null,
-      "text_hr": "Tada me onih sedam svetih dovede i postavi na zemlju pred vrata moje kuće. Rekoše mi: ‘Sve objavi svojemu sinu Metušalahu i pokaži svoj svojoj djeci da nijedno tijelo nije pravedno pred Gospodinom, jer On je njihov Stvoritelj.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "One year we will leave thee with thy son, till thou givest thy (last) commands, that thou mayest teach thy children and record (it) for them, and testify to all thy children; and in the second year they shall take thee from their midst.",
-      "text_fa": null,
-      "text_hr": "Jednu ćemo te godinu ostaviti s tvojim sinom, dok ne izdaš svoje posljednje zapovijedi, poučiš svoju djecu, sve im zapišeš i posvjedočiš svoj svojoj djeci; druge će te godine uzeti iz njihove sredine.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 7,
-      "text_en": "Let thy heart be strong,\nFor the good shall announce righteousness to the good;\nThe righteous with the righteous shall rejoice,\nAnd shall offer congratulation to one another.",
-      "text_fa": null,
-      "text_hr": "Neka ti srce bude snažno, jer će dobri navješćivati pravednost dobrima; pravednik će se radovati s pravednikom i jedan će drugomu čestitati.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 8,
-      "text_en": "But the sinners shall die with the sinners,\nAnd the apostate go down with the apostate.",
-      "text_fa": null,
-      "text_hr": "Ali grešnik će umrijeti s grešnikom, a otpadnik će potonuti s otpadnikom.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 9,
-      "text_en": "And those who practise righteousness shall die on account of the deeds of men,\nAnd be taken away on account of the doings of the godless.’",
-      "text_fa": null,
-      "text_hr": "Oni koji vrše pravednost umrijet će zbog ljudskih djela i bit će odvedeni zbog djela bezbožnika.’",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 10,
-      "text_en": "And in those days they ceased to speak to me, and I came to my people, blessing the Lord of the world.",
-      "text_fa": null,
-      "text_hr": "I u one dane prestadoše mi govoriti, i ja sam došao k svome narodu, blagoslivljajući Gospodara svijeta.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And he said unto me:\n\n‘Observe, Enoch, these heavenly tablets,\nAnd read what is written thereon,\nAnd mark every individual fact.’","text_fa":"و به من گفت:\n\n«ای خنوخ، این لوح‌های آسمانی را بنگر،\nآنچه بر آنها نوشته شده بخوان،\nو هر حقیقت را جداگانه به خاطر بسپار.»","text_hr":"Reče mi: ‘Promatraj, Henoče, ove nebeske ploče, pročitaj što je na njima napisano i pomno zabilježi svaku činjenicu.’","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And I observed the heavenly tablets, and read everything which was written (thereon) and understood everything, and read the book of all the deeds of mankind, and of all the children of flesh that shall be upon the earth to the remotest generations.","text_fa":"لوح‌های آسمانی را نگریستم، هرچه بر آنها نوشته شده بود خواندم و همه را فهمیدم؛ و کتاب همهٔ اعمال بشر و همهٔ فرزندان جسم را که تا دورترین نسل‌ها بر زمین خواهند بود خواندم.","text_hr":"I promatrao sam nebeske ploče, i čitao sve što je napisano (na njima) i razumio sve, i čitao sam knjigu svih djela čovječanstva, i sve djece tijela koja će biti na zemlji do najudaljenijih naraštaja.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And forthwith I blessed the great Lord, the King of glory for ever, in that He has made all the works of the world.\n\nAnd I extolled the Lord because of His patience,\nAnd blessed Him because of the children of men.","text_fa":"آنگاه بی‌درنگ خداوند بزرگ، پادشاه جلال تا ابد را برکت دادم، زیرا همهٔ کارهای جهان را آفریده است.\n\nو خداوند را به سبب شکیبایی‌اش ستودم\nو او را به خاطر فرزندان آدمیان برکت دادم.","text_hr":"Odmah sam blagoslovio velikoga Gospodina, Kralja Slave dovijeka, jer je stvorio sva djela svijeta. Slavio sam Gospodina zbog Njegove strpljivosti i blagoslovio Ga zbog sinova ljudskih.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"And after that I said:\n\n‘Blessed is the man who dies in righteousness and goodness,\nConcerning whom there is no book of unrighteousness written,\nAnd against whom no day of judgement shall be found.’","text_fa":"و پس از آن گفتم:\n\n«خوشا به حال انسانی که در عدالت و نیکویی می‌میرد؛\nکسی که هیچ کتابی از بی‌عدالتی درباره‌اش نوشته نشده\nو هیچ روز داوری بر ضد او یافت نخواهد شد.»","text_hr":"Nakon toga rekoh: ‘Blago čovjeku koji umre u pravednosti i dobroti, protiv kojega nije napisana knjiga nepravde i protiv kojega se neće naći krivnja na dan suda.’","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"And those seven holy ones brought me and placed me on the earth before the door of my house, and said to me: ‘Declare everything to thy son Methuselah, and show to all thy children that no flesh is righteous in the sight of the Lord, for He is their Creator.","text_fa":"و آن هفت قدوس مرا آوردند و بر زمین، جلوی درِ خانه‌ام گذاشتند و گفتند: «همه‌چیز را برای پسرت متوشالح بازگو کن و به همهٔ فرزندانت نشان بده که هیچ جسمی در نظر خداوند عادل نیست، زیرا او آفرینندهٔ آنهاست.","text_hr":"Tada me onih sedam svetih dovede i postavi na zemlju pred vrata moje kuće. Rekoše mi: ‘Sve objavi svojemu sinu Metušalahu i pokaži svoj svojoj djeci da nijedno tijelo nije pravedno pred Gospodinom, jer On je njihov Stvoritelj.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"One year we will leave thee with thy son, till thou givest thy (last) commands, that thou mayest teach thy children and record (it) for them, and testify to all thy children; and in the second year they shall take thee from their midst.","text_fa":"یک سال تو را نزد پسرت می‌گذاریم تا فرمان‌های نهایی خود را بدهی، فرزندانت را تعلیم دهی، برایشان بنویسی و به همهٔ فرزندانت شهادت بدهی؛ و در سال دوم تو را از میان آنان خواهند برد.","text_hr":"Jednu ćemo te godinu ostaviti s tvojim sinom, dok ne izdaš svoje posljednje zapovijedi, poučiš svoju djecu, sve im zapišeš i posvjedočiš svoj svojoj djeci; druge će te godine uzeti iz njihove sredine.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":7,"text_en":"Let thy heart be strong,\nFor the good shall announce righteousness to the good;\nThe righteous with the righteous shall rejoice,\nAnd shall offer congratulation to one another.","text_fa":"دل تو قوی باشد،\nزیرا نیکان عدالت را به نیکان اعلام خواهند کرد؛\nعادلان با عادلان شادی خواهند کرد\nو یکدیگر را شادباش خواهند گفت.","text_hr":"Neka ti srce bude snažno, jer će dobri navješćivati pravednost dobrima; pravednik će se radovati s pravednikom i jedan će drugomu čestitati.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":8,"text_en":"But the sinners shall die with the sinners,\nAnd the apostate go down with the apostate.","text_fa":"اما گناهکاران با گناهکاران خواهند مرد،\nو مرتدان با مرتدان فرود خواهند رفت.","text_hr":"Ali grešnik će umrijeti s grešnikom, a otpadnik će potonuti s otpadnikom.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":9,"text_en":"And those who practise righteousness shall die on account of the deeds of men,\nAnd be taken away on account of the doings of the godless.’","text_fa":"و کسانی که عدالت را به عمل می‌آورند به سبب اعمال مردم خواهند مرد،\nو به سبب کردار بی‌خدایان از میان برداشته خواهند شد.»","text_hr":"Oni koji vrše pravednost umrijet će zbog ljudskih djela i bit će odvedeni zbog djela bezbožnika.’","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":10,"text_en":"And in those days they ceased to speak to me, and I came to my people, blessing the Lord of the world.","text_fa":"و در آن روزها دیگر با من سخن نگفتند، و من نزد قوم خود بازگشتم و خداوند جهان را برکت می‌دادم.","text_hr":"I u one dane prestadoše mi govoriti, i ja sam došao k svome narodu, blagoslivljajući Gospodara svijeta.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
