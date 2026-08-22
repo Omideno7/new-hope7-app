@@ -10,73 +10,15 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "b4d7067eedafdfeb4e9e2ac4b1b00a9ff65dfd4eb2816930dbceabdcc92e5ba9",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And after this law I saw another law dealing with the smaller luminary, which is named the Moon.",
-      "text_fa": null,
-      "text_hr": "Nakon toga zakona vidio sam drugi zakon, koji se odnosi na manje svjetlilo zvano Mjesec.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And her circumference is like the circumference of the heaven, and her chariot in which she rides is driven by the wind, and light is given to her in (definite) measure.",
-      "text_fa": null,
-      "text_hr": "Njegov je opseg poput opsega neba. Kola kojima se vozi pokreće vjetar, a svjetlost mu se daje u određenoj mjeri.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And her rising and setting changes every month: and her days are like the days of the sun, and when her light is uniform (_i. e._ full) it amounts to the seventh part of the light of the sun.",
-      "text_fa": null,
-      "text_hr": "Njegov se izlazak i zalazak mijenjaju svakoga mjeseca. Dani su mu poput Sunčevih, a kad mu je svjetlost jednolika (_tj._ puna), on iznosi sedminu Sunčeve svjetlosti.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "And thus she rises. And her first phase in the east comes forth on the thirtieth morning: and on that day she becomes visible, and constitutes for you the first phase of the moon on the thirtieth day together with the sun in the portal where the sun rises.",
-      "text_fa": null,
-      "text_hr": "Ovako izlazi: njegova prva mijena na istoku nastupa tridesetoga jutra. Toga dana postaje vidljiv i označuje vam prvu Mjesečevu mijenu tridesetoga dana, zajedno sa Suncem na vratima kroz koja Sunce izlazi.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "And the one half of her goes forth by a seventh part, and her whole circumference is empty, without light, with the exception of one-seventh part of it, (and) the fourteenth part of her light.",
-      "text_fa": null,
-      "text_hr": "Jedna njegova polovica napreduje za sedminu, dok mu je sav krug prazan i bez svjetlosti, osim jedne njegove sedmine i četrnaestine njegove svjetlosti.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "And when she receives one-seventh part of the half of her light, her light amounts to one-seventh part and the half thereof.",
-      "text_fa": null,
-      "text_hr": "Kad primi jednu sedminu polovice svoje svjetlosti, svjetlost mu iznosi jednu sedminu i polovicu nje.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 7,
-      "text_en": "And she sets with the sun, and when the sun rises the moon rises with him and receives the half of one part of light, and in that night in the beginning of her morning [in the commencement of the lunar day] the moon sets with the sun, and is invisible that night with the fourteen parts and the half of one of them.",
-      "text_fa": null,
-      "text_hr": "Zalazi sa Suncem. Kad Sunce iziđe, Mjesec izlazi s njim i prima polovicu jednoga dijela svjetlosti. Te noći, na početku njegova jutra [na početku lunarnoga dana], Mjesec zalazi sa Suncem i nevidljiv je s četrnaest dijelova i polovicom jednoga od njih.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 8,
-      "text_en": "And she rises on that day with exactly a seventh part, and comes forth and recedes from the rising of the sun, and in her remaining days she becomes bright in the (remaining) thirteen parts.",
-      "text_fa": null,
-      "text_hr": "Toga dana izlazi s točno jednom sedminom, udaljava se od Sunčeva izlaska i tijekom preostalih dana svjetlost mu raste u preostalih trinaest dijelova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And after this law I saw another law dealing with the smaller luminary, which is named the Moon.","text_fa":"و پس از این قانون، قانون دیگری را دیدم که مربوط به جرم نورانی کوچک‌تر است، همان که ماه نامیده می‌شود.","text_hr":"Nakon ovog zakona vidio sam drugi zakon koji se odnosi na manju svjetiljku, koja se zove Mjesec.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And her circumference is like the circumference of the heaven, and her chariot in which she rides is driven by the wind, and light is given to her in (definite) measure.","text_fa":"و محیط آن مانند محیط آسمان است؛ ارابه‌ای که ماه بر آن حرکت می‌کند به وسیلهٔ باد رانده می‌شود، و نور به اندازه‌ای (معین) به آن داده می‌شود.","text_hr":"Njezin je opseg poput opsega neba, kola na kojima se vozi pokreće vjetar, a svjetlost joj se daje u određenoj mjeri.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And her rising and setting change every month: and her days are like the days of the sun, and when her light is uniform (i.e. full) it amounts to the seventh part of the light of the sun.","text_fa":"و طلوع و غروب آن هر ماه تغییر می‌کند؛ روزهایش مانند روزهای خورشید است، و هنگامی که نورش کامل و یکدست است، برابر با یک‌هفتم نور خورشید می‌شود.","text_hr":"Njezin se izlazak i zalazak mijenjaju svakoga mjeseca; njezini su dani poput Sunčevih dana, a kad joj je svjetlost jednolična, odnosno puna, iznosi sedminu Sunčeve svjetlosti.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"And thus she rises. And her first phase in the east comes forth on the thirtieth morning: and on that day she becomes visible, and constitutes for you the first phase of the moon on the thirtieth day together with the sun in the portal where the sun rises.","text_fa":"و بدین‌گونه طلوع می‌کند. نخستین مرحلهٔ آن در شرق در صبح سی‌ام پدیدار می‌شود؛ و در آن روز قابل رؤیت می‌گردد و برای شما نخستین مرحلهٔ ماه را در روز سی‌ام تشکیل می‌دهد، همراه با خورشید و در همان دروازه‌ای که خورشید از آن طلوع می‌کند.","text_hr":"Tako ona izlazi. Njezina prva mijena na istoku pojavljuje se tridesetoga jutra; toga dana postaje vidljiva i predstavlja vam prvu mjesečevu mijenu tridesetoga dana, zajedno sa Suncem na vratima na kojima Sunce izlazi.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"And the one half of her goes forth by a seventh part, and her whole circumference is empty, without light, with the exception of one-seventh part of it, (and) the †fourteenth part† of her light.","text_fa":"و نیمی از آن به اندازهٔ یک‌هفتم بیرون می‌آید، و تمام محیط آن خالی و بدون نور است، جز یک‌هفتم آن، (و) †یک‌چهاردهم† نورش.","text_hr":"Jedna njezina polovica izlazi za sedminu, a cijeli joj je opseg prazan, bez svjetlosti, osim jedne sedmine njezina opsega i †četrnaestine† njezine svjetlosti.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"And when she receives one-seventh part of the half of her light, her light amounts to one-seventh part and the half thereof.","text_fa":"و هنگامی که یک‌هفتم از نصف نور خود را دریافت می‌کند، نورش به یک‌هفتم و نصفِ آن می‌رسد.","text_hr":"Kad primi jednu sedminu polovice svoje svjetlosti, njezina svjetlost iznosi jednu sedminu i polovicu te sedmine.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":7,"text_en":"And she sets with the sun, and when the sun rises the moon rises with him and receives the half of one part of light, and in that night in the beginning of her morning [in the commencement of the lunar day] the moon sets with the sun, and is invisible that night with the fourteen parts and the half of one of them.","text_fa":"و همراه خورشید غروب می‌کند؛ و هنگامی که خورشید طلوع می‌کند، ماه نیز با آن طلوع کرده و نصفِ یک بخش نور را دریافت می‌کند. و در آن شب، در آغاز صبحش [در آغاز روز قمری]، ماه همراه خورشید غروب می‌کند و در آن شب، با چهارده بخش و نصف یکی از آنها، نامرئی است.","text_hr":"Zalazi sa Suncem. Kad Sunce izađe, Mjesec izlazi s njim i prima polovicu jednoga dijela svjetlosti. Te noći, na početku njegova jutra [na početku mjesečeva dana], Mjesec zalazi sa Suncem i te je noći nevidljiv s četrnaest dijelova i polovinom jednoga od njih.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":8,"text_en":"And she rises on that day with exactly a seventh part, and comes forth and recedes from the rising of the sun, and in her remaining days she becomes bright in the (remaining) thirteen parts.","text_fa":"و در آن روز دقیقاً با یک‌هفتم طلوع می‌کند؛ بیرون می‌آید و از محل طلوع خورشید فاصله می‌گیرد، و در روزهای باقی‌ماندهٔ خود در سیزده بخش (باقی‌مانده) روشن می‌شود.","text_hr":"Toga dana izlazi s točno jednom sedminom, pojavljuje se i udaljuje od izlaska Sunca, a u preostalim danima postaje svijetla u preostalih trinaest dijelova.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
