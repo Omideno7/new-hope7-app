@@ -10,57 +10,13 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "2c0e48e34aaea21ca2f2779f7be823810c856afcfb1b460c6547bccdbcdd11fe",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And I lifted up my hands in righteousness and blessed the Holy and Great One, and spake with the breath of my mouth, and with the tongue of flesh, which God has made for the children of the flesh of men, that they should speak therewith, and He gave them breath and a tongue and a mouth that they should speak therewith:",
-      "text_fa": null,
-      "text_hr": "I podigoh svoje ruke u pravednosti i blagoslovih Svetoga i Velikoga, i progovorih dahom svojih usta i tjelesnim jezikom, koji je Bog načinio za tjelesnu djecu ljudsku, da njime govore, i dade im dah, jezik i usta da njime govore:",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "‘Blessed be Thou, O Lord, King,\nGreat and mighty in Thy greatness,\nLord of the whole creation of the heaven,\nKing of kings and God of the whole world.\nAnd Thy power and kingship and greatness abide for ever and ever,\nAnd throughout all generations Thy dominion:\nAnd all the heavens are Thy throne for ever,\nAnd the whole earth Thy footstool for ever and ever.",
-      "text_fa": null,
-      "text_hr": "‘Blagoslovljen budi, Gospodine, Kralju, Velik i moćan u svojoj veličini, Gospodar svega stvorenja neba, Kralj kraljeva i Bog svega svijeta. A Tvoja moć i kraljevstvo i veličina ostaju u vijeke vjekova, i kroz sve naraštaje Tvoja vlast: i sva su nebesa Tvoje prijestolje zauvijek, i sva zemlja podnožje tvojim nogama u vijeke vjekova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "For Thou hast made and Thou rulest all things,\nAnd nothing is too hard for Thee,\nWisdom departs not =from the place of Thy throne=,\n=Nor turns away= from Thy presence.\nAnd Thou knowest and seest and hearest everything,\nAnd there is nothing hidden from Thee [for Thou seest everything].",
-      "text_fa": null,
-      "text_hr": "Jer Ti si stvorio i Ti vladaš svim stvarima, i ništa ti nije teško, Mudrost ne odstupa =od mjesta Tvoga prijestolja=, =Niti se odvraća= od Tvoga prisustva. A Ti znaš i vidiš i čuješ sve, i ništa Tebi nije skriveno [jer Ti sve vidiš].",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "And now the angels of Thy heavens are guilty of trespass,\nAnd upon the flesh of men abideth Thy wrath until the great day of judgement.",
-      "text_fa": null,
-      "text_hr": "I sada su anđeli Tvog neba krivi za prijestup, i na tijelu ljudskom ostaje tvoj gnjev do velikog dana suda.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "And now, O God and Lord and Great King,\nI implore and beseech Thee to fulfil my prayer,\nTo leave me a posterity on earth,\nAnd not to destroy all the flesh of man,\nAnd make the earth without inhabitant,\nSo that there should be an eternal destruction.",
-      "text_fa": null,
-      "text_hr": "A sada, Bože, Gospodine i Veliki Kralju, molim Te i preklinjem da ispuniš moju molitvu, da mi ostaviš potomstvo na zemlji, da ne uništiš svako ljudsko tijelo i ne učiniš zemlju bez stanovnika, kako ne bi nastala vječna propast.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "And now, my Lord, destroy from the earth the flesh which has aroused Thy wrath,\nBut the flesh of righteousness and uprightness establish as a plant of the eternal seed,\nAnd hide not Thy face from the prayer of Thy servant, O Lord.’",
-      "text_fa": null,
-      "text_hr": "A sada, Gospodaru moj, ukloni sa zemlje tijelo koje je izazvalo Tvoj gnjev, ali tijelo pravednosti i čestitosti učvrsti kao biljku vječnoga sjemena. Ne skrivaj svoje lice od molitve svojega sluge, Gospodine.’",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And I lifted up my hands in righteousness and blessed the Holy and Great One, and spake with the breath of my mouth, and with the tongue of flesh, which God has made for the children of the flesh of men, that they should speak therewith, and He gave them breath and a tongue and a mouth that they should speak therewith:","text_fa":"و دستان خود را در عدالت برافراشتم و آن قدوس و عظیم را برکت دادم؛ با نفس دهانم و با زبان جسمانی سخن گفتم، همان زبانی که خدا برای فرزندان جسمِ آدمیان ساخته تا با آن سخن بگویند؛ و به آنان نفس و زبان و دهان داد تا با آنها سخن گویند:","text_hr":"I podigoh svoje ruke u pravednosti i blagoslovih Svetoga i Velikoga, i progovorih dahom svojih usta i tjelesnim jezikom, koji je Bog načinio za tjelesnu djecu ljudsku, da njime govore, i dade im dah, jezik i usta da njime govore:","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"‘Blessed be Thou, O Lord, King,\nGreat and mighty in Thy greatness,\nLord of the whole creation of the heaven,\nKing of kings and God of the whole world.\nAnd Thy power and kingship and greatness abide for ever and ever,\nAnd throughout all generations Thy dominion:\nAnd all the heavens are Thy throne for ever,\nAnd the whole earth Thy footstool for ever and ever.","text_fa":"«مبارک باشی، ای خداوند، ای پادشاه،\nکه در عظمت خود بزرگ و توانایی،\nای خداوندِ تمام آفرینش آسمان،\nای پادشاه پادشاهان و خدای سراسر جهان.\nقدرت و پادشاهی و عظمت تو تا ابد باقی است،\nو فرمانروایی تو در همهٔ نسل‌ها؛\nتمام آسمان‌ها تا ابد تخت تو هستند،\nو سراسر زمین تا ابدالآباد پای‌انداز توست.","text_hr":"‘Blagoslovljen budi, Gospodine, Kralju, Velik i moćan u svojoj veličini, Gospodar svega stvorenja neba, Kralj kraljeva i Bog svega svijeta. A Tvoja moć i kraljevstvo i veličina ostaju u vijeke vjekova, i kroz sve naraštaje Tvoja vlast: i sva su nebesa Tvoje prijestolje zauvijek, i sva zemlja podnožje tvojim nogama u vijeke vjekova.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"For Thou hast made and Thou rulest all things,\nAnd nothing is too hard for Thee,\nWisdom departs not =from the place of Thy throne=,\n=Nor turns away= from Thy presence.\nAnd Thou knowest and seest and hearest everything,\nAnd there is nothing hidden from Thee [for Thou seest everything].","text_fa":"زیرا تو همه‌چیز را آفریده‌ای و بر همه‌چیز فرمان می‌رانی،\nو هیچ‌چیز برای تو دشوار نیست.\nحکمت =از جایگاه تخت تو= دور نمی‌شود\nو =از حضور تو روی برنمی‌گرداند=.\nتو همه‌چیز را می‌دانی و می‌بینی و می‌شنوی،\nو هیچ‌چیز از تو پنهان نیست [زیرا تو همه‌چیز را می‌بینی].","text_hr":"Jer Ti si stvorio i Ti vladaš svim stvarima, i ništa ti nije teško, Mudrost ne odstupa =od mjesta Tvoga prijestolja=, =Niti se odvraća= od Tvoga prisustva. A Ti znaš i vidiš i čuješ sve, i ništa Tebi nije skriveno [jer Ti sve vidiš].","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"And now the angels of Thy heavens are guilty of trespass,\nAnd upon the flesh of men abideth Thy wrath until the great day of judgement.","text_fa":"و اکنون فرشتگان آسمان‌های تو مرتکب تجاوز شده‌اند،\nو خشم تو تا روز بزرگ داوری بر جسم آدمیان باقی است.","text_hr":"I sada su anđeli Tvog neba krivi za prijestup, i na tijelu ljudskom ostaje tvoj gnjev do velikog dana suda.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"And now, O God and Lord and Great King,\nI implore and beseech Thee to fulfil my prayer,\nTo leave me a posterity on earth,\nAnd not to destroy all the flesh of man,\nAnd make the earth without inhabitant,\nSo that there should be an eternal destruction.","text_fa":"و اکنون، ای خدا و خداوند و پادشاه بزرگ،\nاز تو التماس می‌کنم که دعایم را به انجام رسانی؛\nنسلی برای من بر زمین باقی بگذاری،\nتمام جسم بشر را نابود نکنی\nو زمین را بی‌سکنه نسازی،\nتا ویرانی ابدی پدید نیاید.","text_hr":"A sada, Bože, Gospodine i Veliki Kralju, molim Te i preklinjem da ispuniš moju molitvu, da mi ostaviš potomstvo na zemlji, da ne uništiš svako ljudsko tijelo i ne učiniš zemlju bez stanovnika, kako ne bi nastala vječna propast.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"And now, my Lord, destroy from the earth the flesh which has aroused Thy wrath,\nBut the flesh of righteousness and uprightness establish as a plant of the eternal seed,\nAnd hide not Thy face from the prayer of Thy servant, O Lord.’","text_fa":"و اکنون، ای خداوند من، آن جسمی را که خشم تو را برانگیخته از زمین نابود کن؛\nاما جسمِ عدالت و راستی را همچون نهالِ بذری ابدی استوار ساز،\nو ای خداوند، روی خود را از دعای خادمت پنهان مکن.»","text_hr":"A sada, Gospodaru moj, ukloni sa zemlje tijelo koje je izazvalo Tvoj gnjev, ali tijelo pravednosti i čestitosti učvrsti kao biljku vječnoga sjemena. Ne skrivaj svoje lice od molitve svojega sluge, Gospodine.’","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
