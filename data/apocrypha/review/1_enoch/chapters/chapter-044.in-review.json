@@ -10,17 +10,8 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "8361bea5880cda9d39c098e972db769cbd18098a43a1625399dc0579b403f993",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "Also another phenomenon I saw in regard to the lightnings: how some of the stars arise and become lightnings and cannot part with their new form.",
-      "text_fa": null,
-      "text_hr": "Vidio sam i drugu pojavu povezanu s munjama: neke zvijezde izlaze, postaju munje i više se ne mogu rastati od svojega novog oblika.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"Also another phenomenon I saw in regard to the lightnings: how some of the stars arise and become lightnings and cannot part with their new form.","text_fa":"همچنین پدیده‌ای دیگر دربارهٔ برق‌ها دیدم: اینکه چگونه بعضی از ستارگان برمی‌خیزند و به برق تبدیل می‌شوند و دیگر نمی‌توانند از شکل تازهٔ خود جدا شوند.","text_hr":"Vidio sam i drugu pojavu povezanu s munjama: neke zvijezde izlaze, postaju munje i više se ne mogu rastati od svojega novog oblika.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
