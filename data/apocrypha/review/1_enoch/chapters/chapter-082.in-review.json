@@ -10,169 +10,27 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "ac62359f6faf692bed87bd04bc9fe71b28273f1a94867214197ace9d57aedb22",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And now, my son Methuselah, all these things I am recounting to thee and writing down for thee, and I have revealed to thee everything, and given thee books concerning all these: so preserve, my son Methuselah, the books from thy father’s hand, and (see) that thou deliver them to the generations of the world.",
-      "text_fa": null,
-      "text_hr": "A sada, sine moj Metušalah, sve ove stvari ti prepričavam i zapisujem za tebe, i otkrio sam ti sve, i dao ti knjige o svemu ovome: zato sačuvaj, sine moj Metušalah, knjige iz ruke svoga oca, i (pobrini se) da ih predaš naraštajima svijeta.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "I have given wisdom to thee and to thy children,\n[And thy children that shall be to thee],\nThat they may give it to their children for generations,\nThis wisdom (namely) that passeth their thought.",
-      "text_fa": null,
-      "text_hr": "Dao sam mudrost tebi i tvojoj djeci [i tvojoj djeci koja će ti se roditi], da je predaju svojoj djeci kroz naraštaje — ovu mudrost koja nadilazi njihove misli.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And those who understand it shall not sleep,\nBut shall listen with the ear that they may learn this wisdom,\nAnd it shall please those that eat thereof better than good food.",
-      "text_fa": null,
-      "text_hr": "Oni koji je razumiju neće spavati, nego će prikloniti uho da nauče ovu mudrost, a onima koji je kušaju bit će ugodnija od dobre hrane.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "Blessed are all the righteous, blessed are all those who walk in the way of righteousness and sin not as the sinners in the reckoning of all their days in which the sun traverses the heaven, entering into and departing from the portals for thirty days with the heads of thousands of the order of the stars, together with the four which are intercalated which divide the four portions of the year, which lead them and enter with them four days.",
-      "text_fa": null,
-      "text_hr": "Blagoslovljeni svi pravednici, blaženi svi oni koji hodaju putem pravednosti i griješe ne kao grešnici pri računanju svih svojih dana u kojima sunce prolazi nebom, ulazeći i izlazeći iz portala trideset dana s glavama tisuća reda zvijezda, zajedno s četiri umetnute koje dijele četiri dijela godine, koja ih vodi i ulazi s njima četiri dana.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "Owing to them men shall be at fault and not reckon them in the =whole reckoning of the year=: yea, men shall be at fault, and not recognize them accurately.",
-      "text_fa": null,
-      "text_hr": "Zbog njih će ljudi griješiti i neće ih uračunati u =cijelo računanje godine=: da, ljudi će biti krivi i neće ih točno prepoznati.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "For they belong to the reckoning of the year and are truly recorded (thereon) for ever, one in the first portal and one in the third, and one in the fourth and one in the sixth, and the year is completed in three hundred and sixty-four days.",
-      "text_fa": null,
-      "text_hr": "Jer oni pripadaju računanju godine i uistinu su (na njemu) zauvijek zabilježeni, jedan u prvom portalu i jedan u trećem, i jedan u četvrtom i jedan u šestom, a godina je završena za tri stotine šezdeset i četiri dana.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 7,
-      "text_en": "And the account thereof is accurate and the recorded reckoning thereof exact; for the luminaries, and months and festivals, and years and days, has Uriel shown and revealed to me, =to whom= the Lord of the whole creation of the world has =subjected= the host of heaven.",
-      "text_fa": null,
-      "text_hr": "Račun je točan i njegovo bilježenje precizno. Uriel mi je pokazao i otkrio svjetlila, mjesece, blagdane, godine i dane — on, =kojemu= je Gospodar svega stvorenoga svijeta =podložio= nebesku vojsku.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 8,
-      "text_en": "And he has power over night and day in the heaven to cause the light to give light to men—sun, moon, and stars, and all the powers of the heaven which revolve in their circular chariots.",
-      "text_fa": null,
-      "text_hr": "On ima vlast nad danom i noći na nebu, da svjetlila daju svjetlost ljudima — Sunce, Mjesec, zvijezde i sve nebeske sile koje se okreću u svojim kružnim kolima.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 9,
-      "text_en": "And these are the orders of the stars, which set in their places, and in their seasons and festivals and months.",
-      "text_fa": null,
-      "text_hr": "I ovo su redovi zvijezda, koje zalaze na svoja mjesta, i u svojim godišnjim dobima, svetkovinama i mjesecima.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 10,
-      "text_en": "And these are the names of those who lead them, who watch =that they= enter at their times, in their orders, in their seasons, in their months, in their periods of dominion, and in their positions.",
-      "text_fa": null,
-      "text_hr": "A ovo su imena onih koji ih vode, koji paze da uđu u vrijeme njihovo, u redovima svojim, u godišnjim dobima, u mjesecima, u razdobljima vladanja i na položajima.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 11,
-      "text_en": "Their four leaders who divide the four parts of the year enter first; and after them the twelve leaders of the orders who divide the months; and for the three hundred and sixty (days) there are heads over thousands who divide the days; and for the four intercalary days there are the leaders which sunder the four parts of the year.",
-      "text_fa": null,
-      "text_hr": "Njihova četiri vođe koji dijele četiri dijela godine ulaze prvi; a nakon njih dvanaest vođa redova koji dijele mjesece; a za tri stotine i šezdeset (dana) postoje glave nad tisućama koji dijele dane; a za četiri interkalarna dana postoje predvodnici koji razdvajaju četiri dijela godine.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 12,
-      "text_en": "And these heads over thousands are intercalated between leader and leader, each behind a station, but their leaders make the division.",
-      "text_fa": null,
-      "text_hr": "I ti glavari nad tisućama raspoređeni su između vođe i vođe, svaki iza svoje stanice, ali njihovi vođe čine podjelu.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 13,
-      "text_en": "And these are the names of the leaders who divide the four parts of the year which are ordained: Mîlkî’êl, Hel’emmêlêk, and Mêl’êjal, and Nârêl.",
-      "text_fa": null,
-      "text_hr": "A ovo su imena vođa koji dijele četiri dijela godine koji su određeni: Mîlkî’êl, Hel’emmêlêk, i Mêl’êjal, i Nârêl.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 14,
-      "text_en": "And the names of those who lead them: Adnâr’êl, and Îjâsûsa’êl, and ‘Elômê’êl—these three follow the leaders of the orders, and there is one that follows the three leaders of the orders which follow those leaders of stations that divide the four parts of the year.",
-      "text_fa": null,
-      "text_hr": "I imena onih koji ih vode: Adnâr’êl, i Îjâsûsa’êl, i ‘Elômê’êl — ova trojica slijede vođe redova, a postoji jedan koji slijedi tri vođe redova koji slijede one vođe postaja koje dijele četiri dijela godine.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 15,
-      "text_en": "In the beginning of the year Melkejâl rises first and rules, who is named †Tam’âinî, and sun† and all the days of his dominion whilst he bears rule are ninety-one days.",
-      "text_fa": null,
-      "text_hr": "Početkom godine prvi ustaje i vlada Melkejâl, koji se zove †Tam’âinî, i sunce† i svi dani njegove vladavine dok on vlada su devedeset i jedan dan.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 16,
-      "text_en": "And these are the signs of the days which are to be seen on earth in the days of his dominion: sweat, and heat, and calms; and all the trees bear fruit, and leaves are produced on all the trees, and the harvest of wheat, and the rose-flowers, and all the flowers which come forth in the field, but the trees of the winter season become withered.",
-      "text_fa": null,
-      "text_hr": "I ovo su znakovi dana koji će se vidjeti na zemlji u danima njegove vladavine: znoj, i vrućina, i smiraj; i sva stabla rađaju plodove, i lišće se proizvodi na svim stablima, i žetva pšenice, i cvjetovi ruža, i sve cvijeće koje iznikne u polju, ali drveće zimske sezone se suši.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 17,
-      "text_en": "And these are the names of the leaders which are under them: Berka’êl, Zêlebs’êl, and another who is added a head of a thousand, called Hîlûjâsěph: and the days of the dominion of this (leader) are at an end.",
-      "text_fa": null,
-      "text_hr": "Ovo su imena vođa pod njima: Berka’êl, Zêlebs’êl i još jedan pridružen glavaru tisuće, po imenu Hîlûjâsěph. Dani vladavine ovoga vođe tada završavaju.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 18,
-      "text_en": "The next leader after him is Hêl’emmêlêk, whom one names the shining sun, and all the days of his light are ninety-one days.",
-      "text_fa": null,
-      "text_hr": "Sljedeći vođa nakon njega je Hêl’emmêlêk, kojeg se zove blistavo sunce, a svi dani njegove svjetlosti su devedeset i jedan dan.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 19,
-      "text_en": "And these are the signs of (his) days on the earth: glowing heat and dryness, and the trees ripen their fruits and produce all their fruits ripe and ready, and the sheep pair and become pregnant, and all the fruits of the earth are gathered in, and everything that is in the fields, and the winepress: these things take place in the days of his dominion.",
-      "text_fa": null,
-      "text_hr": "I ovo su znakovi (njegovih) dana na zemlji: žarka vrućina i suhoća, i drveće sazrijeva svoje plodove i rađa sve svoje plodove zrele i spremne, i ovce se pare i postaju trudne, i svi plodovi zemlje su sabrani, i sve što je u poljima, i tijesak: te se stvari zbivaju u danima njegove vladavine.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 20,
-      "text_en": "These are the names, and the orders, and the leaders of those heads of thousands: Gîdâ’îjal, Kê’êl, and Hê’êl, and the name of the head of a thousand which is added to them, Asfâ’êl’: and the days of his dominion are at an end.",
-      "text_fa": null,
-      "text_hr": "Ovo su imena, redovi i vođe tih tisućnika: Gîdâ’îjal, Kê’êl i Hê’êl, i ime tisućnikovog glavara koji im je pridodan, Asfâ’êl’: i dani njegove vladavine su pri kraju.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And now, my son Methuselah, all these things I am recounting to thee and writing down for thee, and I have revealed to thee everything, and given thee books concerning all these: so preserve, my son Methuselah, the books from thy father’s hand, and (see) that thou deliver them to the generations of the world.","text_fa":"و اکنون، ای پسرم متوشالح، همهٔ این چیزها را برای تو بازگو می‌کنم و می‌نویسم؛ همه‌چیز را برایت آشکار کرده و کتاب‌هایی دربارهٔ آنها به تو داده‌ام. پس ای پسرم متوشالح، کتاب‌هایی را که از دست پدرت گرفته‌ای حفظ کن و بکوش آنها را به نسل‌های جهان بسپاری.","text_hr":"A sada, sine moj Metušalah, sve ove stvari ti prepričavam i zapisujem za tebe, i otkrio sam ti sve, i dao ti knjige o svemu ovome: zato sačuvaj, sine moj Metušalah, knjige iz ruke svoga oca, i (pobrini se) da ih predaš naraštajima svijeta.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"I have given wisdom to thee and to thy children,\n[And thy children that shall be to thee],\nThat they may give it to their children for generations,\nThis wisdom (namely) that passeth their thought.","text_fa":"حکمت را به تو و فرزندانت داده‌ام،\n[و به فرزندانی که برای تو خواهند بود]،\nتا آن را نسل‌به‌نسل به فرزندان خود بسپارند؛\nاین حکمتی که از اندیشهٔ آنان فراتر می‌رود.","text_hr":"Dao sam mudrost tebi i tvojoj djeci [i tvojoj djeci koja će ti se roditi], da je predaju svojoj djeci kroz naraštaje — ovu mudrost koja nadilazi njihove misli.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And those who understand it shall not sleep,\nBut shall listen with the ear that they may learn this wisdom,\nAnd it shall please those that eat thereof better than good food.","text_fa":"و آنان که آن را می‌فهمند به خواب غفلت نخواهند رفت،\nبلکه گوش خواهند سپرد تا این حکمت را بیاموزند؛\nو برای کسانی که از آن می‌خورند از خوراک نیکو خوشایندتر خواهد بود.","text_hr":"Oni koji je razumiju neće spavati, nego će prikloniti uho da nauče ovu mudrost, a onima koji je kušaju bit će ugodnija od dobre hrane.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"Blessed are all the righteous, blessed are all those who walk in the way of righteousness and sin not as the sinners in the reckoning of all their days in which the sun traverses the heaven, entering into and departing from the portals for thirty days with the heads of thousands of the order of the stars, together with the four which are intercalated which divide the four portions of the year, which lead them and enter with them four days.","text_fa":"مبارک‌اند همهٔ عادلان؛ مبارک‌اند همهٔ کسانی که در راه عدالت گام می‌زنند و مانند گناهکاران در محاسبهٔ روزهایشان خطا نمی‌کنند؛ روزهایی که خورشید در آنها آسمان را می‌پیماید و سی روز از دروازه‌ها وارد و خارج می‌شود، همراه با سرانِ هزارگانِ نظم ستارگان و آن چهار روزِ افزوده که چهار بخش سال را تقسیم می‌کنند و آنها را هدایت کرده و چهار روز با ایشان وارد می‌شوند.","text_hr":"Blagoslovljeni svi pravednici, blaženi svi oni koji hodaju putem pravednosti i griješe ne kao grešnici pri računanju svih svojih dana u kojima sunce prolazi nebom, ulazeći i izlazeći iz portala trideset dana s glavama tisuća reda zvijezda, zajedno s četiri umetnute koje dijele četiri dijela godine, koja ih vodi i ulazi s njima četiri dana.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"Owing to them men shall be at fault and not reckon them in the =whole reckoning of the year=: yea, men shall be at fault, and not recognize them accurately.","text_fa":"به سبب این چهار روز، مردم دچار خطا می‌شوند و آنها را در =محاسبهٔ کامل سال= به شمار نمی‌آورند؛ آری، مردم خطا خواهند کرد و آنها را به‌درستی نخواهند شناخت.","text_hr":"Zbog njih će ljudi griješiti i neće ih uračunati u =cijelo računanje godine=: da, ljudi će biti krivi i neće ih točno prepoznati.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"For they belong to the reckoning of the year and are truly recorded (thereon) for ever, one in the first portal and one in the third, and one in the fourth and one in the sixth, and the year is completed in three hundred and sixty-four days.","text_fa":"زیرا آنها به محاسبهٔ سال تعلق دارند و برای همیشه به‌درستی در آن ثبت شده‌اند: یکی در دروازهٔ نخست، یکی در سوم، یکی در چهارم و یکی در ششم؛ و سال در سیصدوشصت‌وچهار روز کامل می‌شود.","text_hr":"Jer oni pripadaju računanju godine i uistinu su (na njemu) zauvijek zabilježeni, jedan u prvom portalu i jedan u trećem, i jedan u četvrtom i jedan u šestom, a godina je završena za tri stotine šezdeset i četiri dana.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":7,"text_en":"And the account thereof is accurate and the recorded reckoning thereof exact; for the luminaries, and months and festivals, and years and days, has Uriel shown and revealed to me, =to whom= the Lord of the whole creation of the world has =subjected= the host of heaven.","text_fa":"محاسبهٔ آن دقیق و ثبت شمارش آن درست است؛ زیرا اوریئل نورافشان‌ها، ماه‌ها، اعیاد، سال‌ها و روزها را به من نشان داد و آشکار کرد؛ همان کسی =که= خداوندِ تمام آفرینش جهان، سپاه آسمان را =زیر فرمان او قرار داده است=.","text_hr":"Račun je točan i njegovo bilježenje precizno. Uriel mi je pokazao i otkrio svjetlila, mjesece, blagdane, godine i dane — on, =kojemu= je Gospodar svega stvorenoga svijeta =podložio= nebesku vojsku.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":8,"text_en":"And he has power over night and day in the heaven to cause the light to give light to men—sun, moon, and stars, and all the powers of the heaven which revolve in their circular chariots.","text_fa":"و او بر شب و روز در آسمان اختیار دارد تا نور به انسان‌ها روشنایی بدهد: خورشید، ماه، ستارگان و همهٔ نیروهای آسمان که در ارابه‌های دایره‌وار خود می‌گردند.","text_hr":"On ima vlast nad danom i noći na nebu, da svjetlila daju svjetlost ljudima — Sunce, Mjesec, zvijezde i sve nebeske sile koje se okreću u svojim kružnim kolima.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":9,"text_en":"And these are the orders of the stars, which set in their places, and in their seasons and festivals and months.","text_fa":"و اینها نظم‌های ستارگان‌اند که در جایگاه‌های خود و در فصل‌ها، اعیاد و ماه‌های خویش غروب می‌کنند.","text_hr":"I ovo su redovi zvijezda, koje zalaze na svoja mjesta, i u svojim godišnjim dobima, svetkovinama i mjesecima.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":10,"text_en":"And these are the names of those who lead them, who watch =that they= enter at their times, in their orders, in their seasons, in their months, in their periods of dominion, and in their positions.","text_fa":"و اینها نام کسانی است که آنها را هدایت می‌کنند و مراقب‌اند =که آنها= در زمان‌های مقرر، در نظم‌ها، فصل‌ها، ماه‌ها، دوره‌های فرمانروایی و جایگاه‌های خود وارد شوند.","text_hr":"A ovo su imena onih koji ih vode, koji paze da uđu u vrijeme njihovo, u redovima svojim, u godišnjim dobima, u mjesecima, u razdobljima vladanja i na položajima.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":11,"text_en":"Their four leaders who divide the four parts of the year enter first; and after them the twelve leaders of the orders who divide the months; and for the three hundred and sixty (days) there are heads over thousands who divide the days; and for the four intercalary days there are the leaders which sunder the four parts of the year.","text_fa":"چهار رهبر آنان که چهار بخش سال را تقسیم می‌کنند نخست وارد می‌شوند؛ پس از آنها دوازده رهبرِ نظم‌ها که ماه‌ها را تقسیم می‌کنند؛ و برای سیصدوشصت روز، سرانِ هزارگان هستند که روزها را تقسیم می‌کنند؛ و برای چهار روز افزوده، رهبرانی هستند که چهار بخش سال را از هم جدا می‌سازند.","text_hr":"Njihova četiri vođe koji dijele četiri dijela godine ulaze prvi; a nakon njih dvanaest vođa redova koji dijele mjesece; a za tri stotine i šezdeset (dana) postoje glave nad tisućama koji dijele dane; a za četiri interkalarna dana postoje predvodnici koji razdvajaju četiri dijela godine.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":12,"text_en":"And these heads over thousands are intercalated between leader and leader, each behind a station, but their leaders make the division.","text_fa":"و این سرانِ هزارگان میان یک رهبر و رهبر دیگر قرار داده شده‌اند، هر یک پشت یک جایگاه؛ اما رهبرانشان تقسیم را انجام می‌دهند.","text_hr":"I ti glavari nad tisućama raspoređeni su između vođe i vođe, svaki iza svoje stanice, ali njihovi vođe čine podjelu.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":13,"text_en":"And these are the names of the leaders who divide the four parts of the year which are ordained: Mîlkî’êl, Hel’emmêlêk, and Mêl’êjal, and Nârêl.","text_fa":"و اینها نام رهبرانی است که چهار بخش مقرر سال را تقسیم می‌کنند: میلکی‌اِل، هِل‌اِمِّلِک، مِل‌اِیال و نارِئل.","text_hr":"A ovo su imena vođa koji dijele četiri dijela godine koji su određeni: Mîlkî’êl, Hel’emmêlêk, i Mêl’êjal, i Nârêl.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":14,"text_en":"And the names of those who lead them: Adnâr’êl, and Îjâsûsa’êl, and ‘Elômê’êl—these three follow the leaders of the orders, and there is one that follows the three leaders of the orders which follow those leaders of stations that divide the four parts of the year.","text_fa":"و نام کسانی که آنها را هدایت می‌کنند: اَدنارئل، ایاسوسائل و اِلومئل. این سه، رهبرانِ نظم‌ها را دنبال می‌کنند؛ و یکی نیز پس از آن سه رهبرِ نظم حرکت می‌کند که خود پیرو رهبرانِ جایگاه‌هایی هستند که چهار بخش سال را تقسیم می‌کنند.","text_hr":"I imena onih koji ih vode: Adnâr’êl, i Îjâsûsa’êl, i ‘Elômê’êl — ova trojica slijede vođe redova, a postoji jedan koji slijedi tri vođe redova koji slijede one vođe postaja koje dijele četiri dijela godine.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":15,"text_en":"In the beginning of the year Melkejâl rises first and rules, who is named †Tam’âinî, and sun† and all the days of his dominion whilst he bears rule are ninety-one days.","text_fa":"در آغاز سال، مِلکِیال نخست برمی‌خیزد و فرمان می‌راند؛ او †تام‌آینی، و خورشید† نامیده می‌شود؛ و تمام روزهای فرمانروایی او نودویک روز است.","text_hr":"Početkom godine prvi ustaje i vlada Melkejâl, koji se zove †Tam’âinî, i sunce† i svi dani njegove vladavine dok on vlada su devedeset i jedan dan.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":16,"text_en":"And these are the signs of the days which are to be seen on earth in the days of his dominion: sweat, and heat, and calms; and all the trees bear fruit, and leaves are produced on all the trees, and the harvest of wheat, and the rose-flowers, and all the flowers which come forth in the field, but the trees of the winter season become withered.","text_fa":"و اینها نشانه‌های روزهایی است که در دوران فرمانروایی او بر زمین دیده می‌شود: عرق، گرما و آرامش باد؛ همهٔ درختان میوه می‌دهند، بر همهٔ درختان برگ می‌روید، گندم برداشت می‌شود، گل‌های رز و همهٔ گل‌های صحرا می‌شکفند؛ اما درختان فصل زمستان پژمرده می‌شوند.","text_hr":"I ovo su znakovi dana koji će se vidjeti na zemlji u danima njegove vladavine: znoj, i vrućina, i smiraj; i sva stabla rađaju plodove, i lišće se proizvodi na svim stablima, i žetva pšenice, i cvjetovi ruža, i sve cvijeće koje iznikne u polju, ali drveće zimske sezone se suši.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":17,"text_en":"And these are the names of the leaders which are under them: Berka’êl, Zêlebs’êl, and another who is added a head of a thousand, called Hîlûjâsěph: and the days of the dominion of this (leader) are at an end.","text_fa":"و اینها نام رهبرانی است که زیر فرمان آنها هستند: بِرکائل، زِلِبسئل، و دیگری که به‌عنوان سرِ هزار افزوده شده و هیلویاسِف نام دارد؛ و روزهای فرمانروایی این رهبر به پایان می‌رسد.","text_hr":"Ovo su imena vođa pod njima: Berka’êl, Zêlebs’êl i još jedan pridružen glavaru tisuće, po imenu Hîlûjâsěph. Dani vladavine ovoga vođe tada završavaju.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":18,"text_en":"The next leader after him is Hêl’emmêlêk, whom one names the shining sun, and all the days of his light are ninety-one days.","text_fa":"رهبر بعد از او هِل‌اِمِّلِک است که «خورشید درخشان» نامیده می‌شود؛ و تمام روزهای نور او نودویک روز است.","text_hr":"Sljedeći vođa nakon njega je Hêl’emmêlêk, kojeg se zove blistavo sunce, a svi dani njegove svjetlosti su devedeset i jedan dan.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":19,"text_en":"And these are the signs of (his) days on the earth: glowing heat and dryness, and the trees ripen their fruits and produce all their fruits ripe and ready, and the sheep pair and become pregnant, and all the fruits of the earth are gathered in, and everything that is in the fields, and the winepress: these things take place in the days of his dominion.","text_fa":"و اینها نشانه‌های روزهای او بر زمین است: گرمای سوزان و خشکی؛ درختان میوه‌های خود را می‌رسانند و همهٔ میوه‌ها رسیده و آماده می‌شوند؛ گوسفندان جفت‌گیری کرده آبستن می‌شوند؛ همهٔ محصولات زمین و هرچه در کشتزارهاست گردآوری می‌شود و چرخُشت نیز به کار می‌افتد. این امور در روزهای فرمانروایی او رخ می‌دهد.","text_hr":"I ovo su znakovi (njegovih) dana na zemlji: žarka vrućina i suhoća, i drveće sazrijeva svoje plodove i rađa sve svoje plodove zrele i spremne, i ovce se pare i postaju trudne, i svi plodovi zemlje su sabrani, i sve što je u poljima, i tijesak: te se stvari zbivaju u danima njegove vladavine.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":20,"text_en":"These are the names, and the orders, and the leaders of those heads of thousands: Gîdâ’îjal, Kê’êl, and Hê’êl, and the name of the head of a thousand which is added to them, Asfâ’êl’: and the days of his dominion are at an end.","text_fa":"اینها نام‌ها، نظم‌ها و رهبران آن سرانِ هزارگان‌اند: گیدائیال، کِئل و هِئل؛ و نام سرِ هزاری که به آنها افزوده شده اَسفائل است؛ و روزهای فرمانروایی او به پایان می‌رسد.","text_hr":"Ovo su imena, redovi i vođe tih tisućnika: Gîdâ’îjal, Kê’êl i Hê’êl, i ime tisućnikovog glavara koji im je pridodan, Asfâ’êl’: i dani njegove vladavine su pri kraju.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
