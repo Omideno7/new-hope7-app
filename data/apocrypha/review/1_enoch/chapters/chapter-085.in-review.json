@@ -10,89 +10,17 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "aa75152358ce3b7d3235bee6cb659879207196a8cf7f91b9684d85aa1f44fcb8",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And after this I saw another dream, and I will show the whole dream to thee, my son.",
-      "text_fa": null,
-      "text_hr": "I nakon ovoga vidjeh još jedan san, i pokazat ću ti cijeli san, sine moj.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And Enoch lifted up (his voice) and spake to his son Methuselah: ‘To thee, my son, will I speak: hear my words—incline thine ear to the dream-vision of thy father.",
-      "text_fa": null,
-      "text_hr": "Henok podiže glas i obrati se svojemu sinu Metušalahu: ‘Govorit ću s tobom, sine moj; poslušaj moje riječi i prigni uho viđenju iz sna svojega oca.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "Before I took thy mother Edna, I saw in a vision on my bed, and behold a bull came forth from the earth, and that bull was white; and after it came forth a heifer, and along with this (latter) came forth two bulls, one of them black and the other red.",
-      "text_fa": null,
-      "text_hr": "Prije nego što sam uzeo tvoju majku Ednu, vidio sam u viđenju na svojoj postelji — i gle, iz zemlje iziđe bijeli bik. Nakon njega iziđe junica, a s njom iziđoše dva bika, jedan crn, a drugi riđ.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "And that black bull gored the red one and pursued him over the earth, and thereupon I could no longer see that red bull.",
-      "text_fa": null,
-      "text_hr": "I taj crni bik je probo crvenog i progonio ga preko zemlje, i tada više nisam mogao vidjeti tog crvenog bika.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "But that black bull grew and that heifer went with him, and I saw that many oxen proceeded from him which resembled and followed him.",
-      "text_fa": null,
-      "text_hr": "Crni je bik rastao, a junica je išla s njim. Vidio sam da od njega potječu mnogi volovi koji su mu nalikovali i slijedili ga.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "And that cow, that first one, went from the presence of that first bull in order to seek that red one, but found him not, and lamented with a great lamentation over him and sought him.",
-      "text_fa": null,
-      "text_hr": "Ta prva krava ode od prvoga bika tražiti riđega, ali ga ne nađe; silno je jadikovala za njim i tražila ga.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 7,
-      "text_en": "And I looked till that first bull came to her and quieted her, and from that time onward she cried no more.",
-      "text_fa": null,
-      "text_hr": "I gledao sam sve dok joj nije došao onaj prvi bik i utišao je, i od tada više nije plakala.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 8,
-      "text_en": "And after that she bore another white bull, and after him she bore many bulls and black cows.",
-      "text_fa": null,
-      "text_hr": "Nakon toga je rodila još jednog bijelog bika, a nakon njega je rodila mnogo bikova i crnih krava.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 9,
-      "text_en": "And I saw in my sleep that white bull likewise grow and become a great white bull, and from him proceeded many white bulls, and they resembled him.",
-      "text_fa": null,
-      "text_hr": "I vidio sam u snu da je bijeli bik isto tako rastao i postao veliki bijeli bik, a od njega su potekli mnogi bijeli bikovi, i sličili su mu.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 10,
-      "text_en": "And they began to beget many white bulls, which resembled them, one following the other, (even) many.",
-      "text_fa": null,
-      "text_hr": "I počeli su rađati mnoge bijele bikove, koji su nalikovali njima, jedan za drugim, (čak) mnogo.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And after this I saw another dream, and I will show the whole dream to thee, my son.","text_fa":"و پس از این، خواب دیگری دیدم و ای پسرم، تمام آن خواب را به تو نشان خواهم داد.","text_hr":"I nakon ovoga vidjeh još jedan san, i pokazat ću ti cijeli san, sine moj.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And Enoch lifted up (his voice) and spake to his son Methuselah: ‘To thee, my son, will I speak: hear my words—incline thine ear to the dream-vision of thy father.","text_fa":"و خنوخ صدای خود را بلند کرد و به پسرش متوشالح گفت: «ای پسرم، با تو سخن می‌گویم؛ سخنانم را بشنو و گوش خود را به رؤیای خواب پدرت بسپار.","text_hr":"Henok podiže glas i obrati se svojemu sinu Metušalahu: ‘Govorit ću s tobom, sine moj; poslušaj moje riječi i prigni uho viđenju iz sna svojega oca.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"Before I took thy mother Edna, I saw in a vision on my bed, and behold a bull came forth from the earth, and that bull was white; and after it came forth a heifer, and along with this (latter) came forth two bulls, one of them black and the other red.","text_fa":"پیش از آنکه مادرت اِدنا را به همسری بگیرم، بر بسترم رؤیایی دیدم: ناگاه گاو نری از زمین بیرون آمد و آن گاو سفید بود. پس از آن، ماده‌گاوی بیرون آمد و همراه او دو گاو نر دیگر پدیدار شدند؛ یکی سیاه و دیگری سرخ.","text_hr":"Prije nego što sam uzeo tvoju majku Ednu, vidio sam u viđenju na svojoj postelji — i gle, iz zemlje iziđe bijeli bik. Nakon njega iziđe junica, a s njom iziđoše dva bika, jedan crn, a drugi riđ.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"And that black bull gored the red one and pursued him over the earth, and thereupon I could no longer see that red bull.","text_fa":"و آن گاو نر سیاه، گاو سرخ را با شاخ زد و او را بر زمین تعقیب کرد؛ و پس از آن دیگر آن گاو سرخ را ندیدم.","text_hr":"I taj crni bik je probo crvenog i progonio ga preko zemlje, i tada više nisam mogao vidjeti tog crvenog bika.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"But that black bull grew and that heifer went with him, and I saw that many oxen proceeded from him which resembled and followed him.","text_fa":"اما آن گاو سیاه بزرگ شد و آن ماده‌گاو با او رفت؛ و دیدم که گاوان بسیاری از او پدید آمدند که شبیه او بودند و از او پیروی می‌کردند.","text_hr":"Crni je bik rastao, a junica je išla s njim. Vidio sam da od njega potječu mnogi volovi koji su mu nalikovali i slijedili ga.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"And that cow, that first one, went from the presence of that first bull in order to seek that red one, but found him not, and lamented with a great lamentation over him and sought him.","text_fa":"و آن ماده‌گاو، همان نخستین، از نزد گاو نر اول رفت تا آن گاو سرخ را بجوید، اما او را نیافت؛ با ماتمی بزرگ برایش گریست و در پی او گشت.","text_hr":"Ta prva krava ode od prvoga bika tražiti riđega, ali ga ne nađe; silno je jadikovala za njim i tražila ga.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":7,"text_en":"And I looked till that first bull came to her and quieted her, and from that time onward she cried no more.","text_fa":"و نگاه کردم تا آن گاو نر نخست نزد او آمد و آرامش کرد؛ و از آن زمان دیگر گریه نکرد.","text_hr":"I gledao sam sve dok joj nije došao onaj prvi bik i utišao je, i od tada više nije plakala.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":8,"text_en":"And after that she bore another white bull, and after him she bore many bulls and black cows.","text_fa":"پس از آن، گاو نر سفید دیگری زایید، و پس از او گاوان نر بسیار و ماده‌گاوان سیاه به دنیا آورد.","text_hr":"Nakon toga je rodila još jednog bijelog bika, a nakon njega je rodila mnogo bikova i crnih krava.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":9,"text_en":"And I saw in my sleep that white bull likewise grow and become a great white bull, and from him proceeded many white bulls, and they resembled him.","text_fa":"و در خواب دیدم که آن گاو سفید نیز رشد کرد و به گاو نر سفید بزرگی تبدیل شد؛ و از او گاوان نر سفید بسیاری پدید آمدند که شبیه او بودند.","text_hr":"I vidio sam u snu da je bijeli bik isto tako rastao i postao veliki bijeli bik, a od njega su potekli mnogi bijeli bikovi, i sličili su mu.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":10,"text_en":"And they began to beget many white bulls, which resembled them, one following the other, (even) many.","text_fa":"و آنها شروع کردند به آوردن گاوان نر سفید بسیاری که شبیه خودشان بودند؛ یکی پس از دیگری، شمار فراوانی.","text_hr":"I počeli su rađati mnoge bijele bikove, koji su nalikovali njima, jedan za drugim, (čak) mnogo.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
