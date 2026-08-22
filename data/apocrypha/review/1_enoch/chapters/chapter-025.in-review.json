@@ -10,65 +10,14 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "2f4dbdbc62d04d3159c097d53de66475a4d38f5d9a6319011cb2ae0d8c55c92b",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And he said unto me: ‘Enoch, why dost thou ask me regarding the fragrance of the tree, and ⌜why⌝ dost thou wish to learn the truth?’",
-      "text_fa": null,
-      "text_hr": "On mi reče: ‘Henok, zašto me pitaš o mirisu toga stabla i ⌜zašto⌝ želiš spoznati istinu?’",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "Then I answered him, 〚saying〛: ‘I wish to know about everything, but especially about this tree.’",
-      "text_fa": null,
-      "text_hr": "Odgovorih mu 〚govoreći〛: ‘Želim doznati o svemu, ali osobito o ovome stablu.’",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And he answered, saying: ‘This high mountain 〚which thou hast seen〛, whose summit is like the throne of God, is His throne, where the Holy Great One, the Lord of Glory, the Eternal King will sit, when He shall come down to visit the earth with goodness.",
-      "text_fa": null,
-      "text_hr": "On odgovori: ‘Ova visoka gora 〚koju si vidio〛, čiji je vrh nalik Božjem prijestolju, Njegovo je prijestolje. Ondje će Sveti i Veliki, Gospodin Slave, Vječni Kralj, sjediti kada siđe posjetiti zemlju u dobroti.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "And as for this fragrant tree no mortal is permitted to touch it till the great judgement, when He shall take vengeance on all and bring (everything) to its consummation for ever. It shall then be given to the righteous and holy.",
-      "text_fa": null,
-      "text_hr": "Što se tiče ovoga mirisnoga stabla, nijednom ga smrtniku nije dopušteno dotaknuti do velikoga suda, kada On izvrši osvetu nad svima i sve zauvijek dovede do dovršenja. Tada će ono biti dano pravednima i svetima.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "Its fruit =shall be= for food to the elect: it shall be transplanted to the holy place, to the temple of the Lord, the Eternal King.",
-      "text_fa": null,
-      "text_hr": "Njegov =će plod biti= hrana izabranima; bit će presađeno na sveto mjesto, uz Hram Gospodina, Vječnoga Kralja.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "Then shall they rejoice with joy and be glad.\nAnd into the holy place shall they enter;\nAnd its fragrance shall be in their bones,\nAnd they shall live a long life on earth,\nSuch as thy fathers lived:\nAnd in their days shall no 〚sorrow or〛 plague\nOr torment or calamity touch them.’",
-      "text_fa": null,
-      "text_hr": "Tada će klicati od radosti i veseliti se.\nUći će na sveto mjesto;\nnjegov će miris prožeti njihove kosti\ni dugo će živjeti na zemlji,\nkao što su živjeli tvoji očevi.\nU njihove ih dane neće dotaknuti nikakva 〚žalost ni〛 pošast,\nni muka ni nesreća.’",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 7,
-      "text_en": "Then blessed I the God of Glory, the Eternal King, who hath prepared such things for the righteous, and hath created them and promised to give to them.",
-      "text_fa": null,
-      "text_hr": "Tada blagoslovih Boga Slave, Vječnoga Kralja, koji je takvo što pripravio pravednima, stvorio to i obećao da će im dati.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And he said unto me: ‘Enoch, why dost thou ask me regarding the fragrance of the tree, and ⌜why⌝ dost thou wish to learn the truth?’","text_fa":"و او به من گفت: «خنوخ، چرا دربارهٔ عطر این درخت از من می‌پرسی و ⌜چرا⌝ می‌خواهی حقیقت را بدانی؟»","text_hr":"On mi reče: ‘Henok, zašto me pitaš o mirisu toga stabla i ⌜zašto⌝ želiš spoznati istinu?’","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"Then I answered him, 〚saying〛: ‘I wish to know about everything, but especially about this tree.’","text_fa":"آنگاه 〚گفتم و〛 پاسخ دادم: «می‌خواهم دربارهٔ همه‌چیز بدانم، اما به‌ویژه دربارهٔ این درخت.»","text_hr":"Odgovorih mu 〚govoreći〛: ‘Želim doznati o svemu, ali osobito o ovome stablu.’","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And he answered, saying: ‘This high mountain 〚which thou hast seen〛, whose summit is like the throne of God, is His throne, where the Holy Great One, the Lord of Glory, the Eternal King will sit, when He shall come down to visit the earth with goodness.","text_fa":"او پاسخ داد: «این کوه بلند 〚که دیده‌ای〛 و قله‌اش مانند تخت خداست، تخت اوست؛ جایی که آن قدوسِ عظیم، خداوندِ جلال و پادشاه جاودان خواهد نشست، هنگامی که با نیکویی برای دیدار زمین فرود آید.","text_hr":"On odgovori: ‘Ova visoka gora 〚koju si vidio〛, čiji je vrh nalik Božjem prijestolju, Njegovo je prijestolje. Ondje će Sveti i Veliki, Gospodin Slave, Vječni Kralj, sjediti kada siđe posjetiti zemlju u dobroti.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"And as for this fragrant tree no mortal is permitted to touch it till the great judgement, when He shall take vengeance on all and bring (everything) to its consummation for ever. It shall then be given to the righteous and holy.","text_fa":"و دربارهٔ این درخت خوشبو: هیچ انسان فانی اجازه ندارد تا پیش از داوری بزرگ آن را لمس کند؛ هنگامی که او از همه انتقام بگیرد و همه‌چیز را برای همیشه به فرجام برساند. آنگاه این درخت به پارسایان و مقدسان داده خواهد شد.","text_hr":"Što se tiče ovoga mirisnoga stabla, nijednom ga smrtniku nije dopušteno dotaknuti do velikoga suda, kada On izvrši osvetu nad svima i sve zauvijek dovede do dovršenja. Tada će ono biti dano pravednima i svetima.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"Its fruit =shall be= for food to the elect: it shall be transplanted to the holy place, to the temple of the Lord, the Eternal King.","text_fa":"میوهٔ آن =خوراکِ= برگزیدگان خواهد بود؛ و آن درخت به مکان مقدس، به معبد خداوند، پادشاه جاودان، منتقل خواهد شد.","text_hr":"Njegov =će plod biti= hrana izabranima; bit će presađeno na sveto mjesto, uz Hram Gospodina, Vječnoga Kralja.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"Then shall they rejoice with joy and be glad.\nAnd into the holy place shall they enter;\nAnd its fragrance shall be in their bones,\nAnd they shall live a long life on earth,\nSuch as thy fathers lived:\nAnd in their days shall no 〚sorrow or〛 plague\nOr torment or calamity touch them.’","text_fa":"آنگاه با شادی به وجد خواهند آمد و خوشحال خواهند شد.\nو به مکان مقدس داخل خواهند شد؛\nو عطر آن در استخوان‌هایشان خواهد بود،\nو بر زمین عمر درازی خواهند داشت،\nهمان‌گونه که پدرانت زندگی کردند؛\nو در روزگار آنان هیچ 〚اندوه یا〛 بلا،\nو هیچ عذاب یا مصیبتی به آنان نخواهد رسید.»","text_hr":"Tada će klicati od radosti i veseliti se.\nUći će na sveto mjesto;\nnjegov će miris prožeti njihove kosti\ni dugo će živjeti na zemlji,\nkao što su živjeli tvoji očevi.\nU njihove ih dane neće dotaknuti nikakva 〚žalost ni〛 pošast,\nni muka ni nesreća.’","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":7,"text_en":"Then blessed I the God of Glory, the Eternal King, who hath prepared such things for the righteous, and hath created them and promised to give to them.","text_fa":"آنگاه خدای جلال، پادشاه جاودان را برکت دادم؛ همان که این چیزها را برای پارسایان آماده کرده، آنها را آفریده و وعده داده است که به ایشان عطا کند.","text_hr":"Tada blagoslovih Boga Slave, Vječnoga Kralja, koji je takvo što pripravio pravednima, stvorio to i obećao da će im dati.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
