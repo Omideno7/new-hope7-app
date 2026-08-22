@@ -6,61 +6,18 @@
   "title_hr": "Prva Henokova knjiga",
   "chapter": 12,
   "status": "in_review",
+  "status_fa": "in_review",
   "status_hr": "in_review",
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "d394115a2bc64527983fdf251e21544169510cc620f6055ba6a5cc609e94ecea",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa","hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "Before these things Enoch was hidden, and no one of the children of men knew where he was hidden, and where he abode, and what had become of him.",
-      "text_fa": null,
-      "text_hr": "Prije tih događaja Henok bijaše skriven; nitko od sinova ljudskih nije znao gdje je skriven, gdje boravi ni što se s njim dogodilo.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And his activities had to do with the Watchers, and his days were with the holy ones.",
-      "text_fa": null,
-      "text_hr": "Njegovo je djelovanje bilo povezano sa Stražarima, a njegovi dani sa svetima.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And I, Enoch, was blessing the Lord of =majesty= and the King of the ages, and lo! the Watchers called me—Enoch the scribe—and said to me:",
-      "text_fa": null,
-      "text_hr": "Ja, Henok, blagoslivljao sam Gospodina =veličanstva= i Kralja vjekova, kad gle! Stražari me pozvaše — Henoka, pisara — i rekoše mi:",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "‘Enoch, thou scribe of righteousness, go, †declare† to the Watchers of the heaven who have left the high heaven, the holy eternal place, and have defiled themselves with women, and have done as the children of earth do, and have taken unto themselves wives: “Ye have wrought great destruction on the earth:",
-      "text_fa": null,
-      "text_hr": "‘Henok, pisaru pravednosti, idi i †objavi† nebeskim Stražarima koji su napustili visoko nebo, sveto vječno mjesto, okaljali se sa ženama, postupili kao sinovi zemlje i uzeli sebi žene: „Veliku ste propast prouzročili na zemlji.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "And ye shall have no peace nor forgiveness of sin: and inasmuch as †they† delight themselves in †their† children,",
-      "text_fa": null,
-      "text_hr": "Nećete imati mira ni oproštenja grijeha; i koliko god se †oni† radovali †svojoj† djeci,",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "The murder of †their† beloved ones shall †they† see, and over the destruction of †their† children shall †they† lament, and shall make supplication unto eternity, but mercy and peace shall ye not attain.”’",
-      "text_fa": null,
-      "text_hr": "†vidjet će† ubojstvo †svojih† ljubljenih, oplakivat će propast †svoje† djece i moliti dovijeka, ali milosrđe i mir nećete postići.”’",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"Before these things Enoch was hidden, and no one of the children of men knew where he was hidden, and where he abode, and what had become of him.","text_fa":"پیش از این رویدادها خنوخ پنهان شده بود و هیچ‌یک از فرزندان آدمیان نمی‌دانستند کجا پنهان است، کجا اقامت دارد و چه بر سرش آمده است.","text_hr":"Prije tih događaja Henok bijaše skriven; nitko od sinova ljudskih nije znao gdje je skriven, gdje boravi ni što se s njim dogodilo.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And his activities had to do with the Watchers, and his days were with the holy ones.","text_fa":"کارهای او با دیدبانان ارتباط داشت و روزهایش در میان مقدسان می‌گذشت.","text_hr":"Njegovo je djelovanje bilo povezano sa Stražarima, a njegovi dani sa svetima.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And I, Enoch, was blessing the Lord of =majesty= and the King of the ages, and lo! the Watchers called me—Enoch the scribe—and said to me:","text_fa":"و من، خنوخ، خداوندِ =جلال= و پادشاه اعصار را برکت می‌دادم که ناگاه دیدبانان مرا ـ خنوخِ کاتب ـ فراخواندند و به من گفتند:","text_hr":"Ja, Henok, blagoslivljao sam Gospodina =veličanstva= i Kralja vjekova, kad gle! Stražari me pozvaše — Henoka, pisara — i rekoše mi:","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"‘Enoch, thou scribe of righteousness, go, †declare† to the Watchers of the heaven who have left the high heaven, the holy eternal place, and have defiled themselves with women, and have done as the children of earth do, and have taken unto themselves wives: “Ye have wrought great destruction on the earth:","text_fa":"«ای خنوخ، کاتب پارسایی، برو و به دیدبانان آسمان که آسمان بلند، آن مکان مقدس و جاودان، را ترک کرده‌اند و با زنان خود را آلوده ساخته‌اند و همچون فرزندان زمین عمل کرده و برای خود زن گرفته‌اند، †اعلام کن†: “شما ویرانی عظیمی بر زمین پدید آورده‌اید.","text_hr":"‘Henok, pisaru pravednosti, idi i †objavi† nebeskim Stražarima koji su napustili visoko nebo, sveto vječno mjesto, okaljali se sa ženama, postupili kao sinovi zemlje i uzeli sebi žene: „Veliku ste propast prouzročili na zemlji.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"And ye shall have no peace nor forgiveness of sin: and inasmuch as †they† delight themselves in †their† children,","text_fa":"و برای شما نه صلح خواهد بود و نه آمرزش گناه؛ و هرچند †آنان† از †فرزندان خود† شادمان می‌شوند،","text_hr":"Nećete imati mira ni oproštenja grijeha; i koliko god se †oni† radovali †svojoj† djeci,","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"The murder of †their† beloved ones shall †they† see, and over the destruction of †their† children shall †they† lament, and shall make supplication unto eternity, but mercy and peace shall ye not attain.”’","text_fa":"†آنان† کشتار عزیزان †خود† را خواهند دید و برای نابودی †فرزندان خود† ماتم خواهند گرفت و تا ابد التماس خواهند کرد؛ اما شما به رحمت و صلح دست نخواهید یافت.”»","text_hr":"†vidjet će† ubojstvo †svojih† ljubljenih, oplakivat će propast †svoje† djece i moliti dovijeka, ali milosrđe i mir nećete postići.”’","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
