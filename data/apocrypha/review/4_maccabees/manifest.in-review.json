@@ -1,174 +1,39 @@
 {
-  "schema_version": 1,
-  "book_id": "4_maccabees",
-  "title_fa": "مکابیان چهارم",
-  "title_en": "Fourth Maccabees",
-  "title_hr": "Četvrta knjiga o Makabejcima",
-  "status": "in_review",
-  "prepared_on": "2026-08-21",
-  "continuation_boundaries": {
-    "previously_prepared": {
-      "fa": [
-        [
-          1,
-          3
-        ]
-      ],
-      "hr": [
-        [
-          1,
-          3
-        ]
-      ]
-    },
-    "included_here": {
-      "fa": [
-        [
-          4,
-          18
-        ]
-      ],
-      "hr": [
-        [
-          4,
-          18
-        ]
-      ]
-    }
-  },
-  "included_ranges": {
-    "fa": [
-      [
-        4,
-        18
-      ]
-    ],
-    "hr": [
-      [
-        4,
-        18
-      ]
-    ]
-  },
-  "source_translation": "WEBC",
-  "source_translation_name": "World English Bible, Catholic/Deuterocanon",
-  "source_url": "https://ebible.org/eng-web/4MA.htm",
-  "source_license": "Public Domain",
-  "source_mirror": {
-    "repository": "hugobelebinda/ScriptureGraph",
-    "commit": "cee53ba3e04da62694131a700aa4158fa82d553b"
-  },
-  "versification": "WEBC",
-  "known_versification_variants": [
-    {
-      "chapter": 8,
-      "webc_verse_count": 28,
-      "alternate_verse_count": 29,
-      "note": "Some modern editions divide chapter 8 into 29 verses; this package preserves WEBC numbering."
-    }
-  ],
-  "secondary_reference": {
-    "file_name": "Maccabees4(1).pdf",
-    "page_count": 36,
-    "chapter_5_starts_on_pdf_page": 13,
-    "final_text_on_pdf_page": 36,
-    "purpose": "Persian terminology and chapter-boundary review only"
-  },
-  "totals": {
-    "aligned_source_verses": 404,
-    "persian_in_review_verses": 404,
-    "croatian_in_review_verses": 404
-  },
-  "chapter_qa": {
-    "4": {
-      "verse_count": 26,
-      "persian_in_review_count": 26,
-      "croatian_in_review_count": 26,
-      "source_english_sha256": "8b0c777a4cb30afbb39f1979eb5fd5cec5b736f21825cc474b85ec2f1ee993b8"
-    },
-    "5": {
-      "verse_count": 38,
-      "persian_in_review_count": 38,
-      "croatian_in_review_count": 38,
-      "source_english_sha256": "b57f7ceba56bb2674cdff9a094717bdb6beabfbfd904f37611e1542aa38e4b28"
-    },
-    "6": {
-      "verse_count": 35,
-      "persian_in_review_count": 35,
-      "croatian_in_review_count": 35,
-      "source_english_sha256": "cd470134c5569a544ae296f9c9c3cf12153036ce32313c9b3d41b9cf7e7747e4"
-    },
-    "7": {
-      "verse_count": 25,
-      "persian_in_review_count": 25,
-      "croatian_in_review_count": 25,
-      "source_english_sha256": "eef6b0c05a5656481b0b884393692c1090fe87ec5ef87a97dbe9f7f69ced1e43"
-    },
-    "8": {
-      "verse_count": 28,
-      "persian_in_review_count": 28,
-      "croatian_in_review_count": 28,
-      "source_english_sha256": "a1a415dc1fffb46ae731388b015210772d2bb82c14d729a2d7415d118d06b455"
-    },
-    "9": {
-      "verse_count": 32,
-      "persian_in_review_count": 32,
-      "croatian_in_review_count": 32,
-      "source_english_sha256": "154044474eec7b2cb3b9b8712d599840369569ee2b9e9f52369fe986ffe13886"
-    },
-    "10": {
-      "verse_count": 21,
-      "persian_in_review_count": 21,
-      "croatian_in_review_count": 21,
-      "source_english_sha256": "4e38889f0864cea97e3201b8ecb37b6e30c12beba82b54f0a03c650d1f1ddb76"
-    },
-    "11": {
-      "verse_count": 27,
-      "persian_in_review_count": 27,
-      "croatian_in_review_count": 27,
-      "source_english_sha256": "f615860da7d29fa4b20703fc0494fcbd075b5ad2c999276a11f9b8298e3aea0c"
-    },
-    "12": {
-      "verse_count": 20,
-      "persian_in_review_count": 20,
-      "croatian_in_review_count": 20,
-      "source_english_sha256": "f72712f6fcb406a52f3a12313dc6bded099e8a8a6016b975d0b84405bfcc883b"
-    },
-    "13": {
-      "verse_count": 27,
-      "persian_in_review_count": 27,
-      "croatian_in_review_count": 27,
-      "source_english_sha256": "38fb2004c27dea5ac232c170e513d6b11b1538cf87cf64b0694d8e916901bb32"
-    },
-    "14": {
-      "verse_count": 20,
-      "persian_in_review_count": 20,
-      "croatian_in_review_count": 20,
-      "source_english_sha256": "13b35b3b8e584fde28ff0f08d258a56fe14b3a077a0fee6a3ffc2e0007b096cb"
-    },
-    "15": {
-      "verse_count": 32,
-      "persian_in_review_count": 32,
-      "croatian_in_review_count": 32,
-      "source_english_sha256": "c38c1e43e87ed71d562bc161b7794f524a25f2525a7451ed40dbd896dea6ed04"
-    },
-    "16": {
-      "verse_count": 25,
-      "persian_in_review_count": 25,
-      "croatian_in_review_count": 25,
-      "source_english_sha256": "f85931d4dafdd43f82d0caa86f42ccd61c904589fbf6ac57962c27ddd5ea9598"
-    },
-    "17": {
-      "verse_count": 24,
-      "persian_in_review_count": 24,
-      "croatian_in_review_count": 24,
-      "source_english_sha256": "4a1498e4b6d360aa53f6095227617df40f73d900f3ed6b7b1c2f7d7901ca9e12"
-    },
-    "18": {
-      "verse_count": 24,
-      "persian_in_review_count": 24,
-      "croatian_in_review_count": 24,
-      "source_english_sha256": "a7eef378eda363aff59064a36e1c4bacc495da31f2e0d110259eaec3a92fc473"
-    }
+  "schema_version":1,
+  "book_id":"4_maccabees",
+  "title_fa":"مکابیان چهارم",
+  "title_en":"Fourth Maccabees",
+  "title_hr":"Četvrta knjiga o Makabejcima",
+  "status":"in_review",
+  "prepared_on":"2026-08-22",
+  "included_ranges":{"fa":[[1,18]],"hr":[[1,18]]},
+  "locales_in_scope":["fa","hr"],
+  "source_translation":"WEBC",
+  "source_translation_name":"World English Bible Classic",
+  "source_url":"https://ebible.org/eng-web/4MA.htm",
+  "source_license":"Public Domain",
+  "versification":"WEBC",
+  "known_versification_variants":[{"chapter":8,"webc_verse_count":28,"alternate_verse_count":29,"note":"Some modern editions divide chapter 8 into 29 verses; this project preserves WEBC numbering."}],
+  "translation_note":"Complete New Hope 7 FA/HR corpus aligned to WEBC. Chapters 1-3 were freshly retranslated in v2.4.5 to remove any provenance ambiguity; chapters 4-18 are the fresh project review translations already aligned to the same public-domain source.",
+  "totals":{"chapters":18,"aligned_source_verses":484,"persian_in_review_verses":484,"croatian_in_review_verses":484},
+  "chapter_qa":{
+    "1":{"verse_count":35,"persian_in_review_count":35,"croatian_in_review_count":35},
+    "2":{"verse_count":24,"persian_in_review_count":24,"croatian_in_review_count":24},
+    "3":{"verse_count":21,"persian_in_review_count":21,"croatian_in_review_count":21},
+    "4":{"verse_count":26,"persian_in_review_count":26,"croatian_in_review_count":26,"source_english_sha256":"8b0c777a4cb30afbb39f1979eb5fd5cec5b736f21825cc474b85ec2f1ee993b8"},
+    "5":{"verse_count":38,"persian_in_review_count":38,"croatian_in_review_count":38,"source_english_sha256":"b57f7ceba56bb2674cdff9a094717bdb6beabfbfd904f37611e1542aa38e4b28"},
+    "6":{"verse_count":35,"persian_in_review_count":35,"croatian_in_review_count":35,"source_english_sha256":"cd470134c5569a544ae296f9c9c3cf12153036ce32313c9b3d41b9cf7e7747e4"},
+    "7":{"verse_count":25,"persian_in_review_count":25,"croatian_in_review_count":25,"source_english_sha256":"eef6b0c05a5656481b0b884393692c1090fe87ec5ef87a97dbe9f7f69ced1e43"},
+    "8":{"verse_count":28,"persian_in_review_count":28,"croatian_in_review_count":28,"source_english_sha256":"a1a415dc1fffb46ae731388b015210772d2bb82c14d729a2d7415d118d06b455"},
+    "9":{"verse_count":32,"persian_in_review_count":32,"croatian_in_review_count":32,"source_english_sha256":"154044474eec7b2cb3b9b8712d599840369569ee2b9e9f52369fe986ffe13886"},
+    "10":{"verse_count":21,"persian_in_review_count":21,"croatian_in_review_count":21,"source_english_sha256":"4e38889f0864cea97e3201b8ecb37b6e30c12beba82b54f0a03c650d1f1ddb76"},
+    "11":{"verse_count":27,"persian_in_review_count":27,"croatian_in_review_count":27,"source_english_sha256":"f615860da7d29fa4b20703fc0494fcbd075b5ad2c999276a11f9b8298e3aea0c"},
+    "12":{"verse_count":20,"persian_in_review_count":20,"croatian_in_review_count":20,"source_english_sha256":"f72712f6fcb406a52f3a12313dc6bded099e8a8a6016b975d0b84405bfcc883b"},
+    "13":{"verse_count":27,"persian_in_review_count":27,"croatian_in_review_count":27,"source_english_sha256":"38fb2004c27dea5ac232c170e513d6b11b1538cf87cf64b0694d8e916901bb32"},
+    "14":{"verse_count":20,"persian_in_review_count":20,"croatian_in_review_count":20,"source_english_sha256":"13b35b3b8e584fde28ff0f08d258a56fe14b3a077a0fee6a3ffc2e0007b096cb"},
+    "15":{"verse_count":32,"persian_in_review_count":32,"croatian_in_review_count":32,"source_english_sha256":"c38c1e43e87ed71d562bc161b7794f524a25f2525a7451ed40dbd896dea6ed04"},
+    "16":{"verse_count":25,"persian_in_review_count":25,"croatian_in_review_count":25,"source_english_sha256":"f85931d4dafdd43f82d0caa86f42ccd61c904589fbf6ac57962c27ddd5ea9598"},
+    "17":{"verse_count":24,"persian_in_review_count":24,"croatian_in_review_count":24,"source_english_sha256":"4a1498e4b6d360aa53f6095227617df40f73d900f3ed6b7b1c2f7d7901ca9e12"},
+    "18":{"verse_count":24,"persian_in_review_count":24,"croatian_in_review_count":24,"source_english_sha256":"a7eef378eda363aff59064a36e1c4bacc495da31f2e0d110259eaec3a92fc473"}
   }
 }
