@@ -10,33 +10,10 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "8d5e1a67ecd6543f87cbcf20f16fd21701092fd774bff26a25e3c1325319cb28",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And I saw other mountains, and amongst them were ⌜groves of⌝ trees, and there flowed forth from them nectar, which is named sarara and galbanum.",
-      "text_fa": null,
-      "text_hr": "Vidjeh druge gore, a među njima ⌜gajeve⌝ stabala iz kojih je tekao nektar, nazvan sarara i galbanum.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And beyond these mountains I saw another mountain ⌜to the east of the ends of the earth⌝, 〚whereon were aloe trees〛, and all the trees were full =of stacte=, being like almond trees.",
-      "text_fa": null,
-      "text_hr": "Iza tih gora vidjeh drugu goru ⌜istočno od krajeva zemlje⌝, 〚na kojoj su rasla stabla aloje〛. Sva su stabla bila puna =stakte= i nalik bademima.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And when one =burnt= it, it smelt sweeter than any fragrant odour.",
-      "text_fa": null,
-      "text_hr": "Kad bi se to =zapalilo=, mirisalo je slađe od svakoga mirisa.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And I saw other mountains, and amongst them were ⌜groves of⌝ trees, and there flowed forth from them nectar, which is named sarara and galbanum.","text_fa":"کوه‌های دیگری دیدم و در میان آنها ⌜بیشه‌هایی از⌝ درختان بود؛ و از آنها شهدی جاری می‌شد که سارارا و گالبانوم نامیده می‌شود.","text_hr":"Vidjeh druge gore, a među njima ⌜gajeve⌝ stabala iz kojih je tekao nektar, nazvan sarara i galbanum.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And beyond these mountains I saw another mountain ⌜to the east of the ends of the earth⌝, 〚whereon were aloe trees〛, and all the trees were full =of stacte=, being like almond trees.","text_fa":"فراتر از این کوه‌ها، کوهی دیگر ⌜در شرقِ انتهای زمین⌝ دیدم، 〚که درختان آلوئه بر آن بود〛؛ و همهٔ درختان پر از =استاکته= بودند و به درختان بادام شباهت داشتند.","text_hr":"Iza tih gora vidjeh drugu goru ⌜istočno od krajeva zemlje⌝, 〚na kojoj su rasla stabla aloje〛. Sva su stabla bila puna =stakte= i nalik bademima.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And when one =burnt= it, it smelt sweeter than any fragrant odour.","text_fa":"و هنگامی که آن را =می‌سوزاندند=، رایحه‌اش از هر عطر خوشبوی دیگری شیرین‌تر بود.","text_hr":"Kad bi se to =zapalilo=, mirisalo je slađe od svakoga mirisa.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
