@@ -1,37 +1,17 @@
 {
   "schema_version": 1,
   "book_id": "prayer_of_azariah",
-  "title_fa": "دعای عزریا",
-  "title_en": "Prayer of Azariah",
-  "title_hr": "Molitva Azarijina",
+  "title_fa": "دعای عزریا و سرود سه جوان",
+  "title_en": "Prayer of Azariah and Song of the Three Holy Children",
+  "title_hr": "Molitva Azarijina i Pjesma trojice mladića",
   "status": "in_review",
-  "prepared_on": "2026-08-21",
-  "included_ranges": {
-    "fa": [
-      [
-        1,
-        1
-      ]
-    ]
-  },
+  "prepared_on": "2026-08-22",
+  "included_ranges": {"fa":[[1,1]],"hr":[[1,1]]},
   "source_translation": "KJVA",
   "source_translation_name": "King James Version with Apocrypha",
-  "source_reference": {
-    "source_file": "bible-apocrypha-en-v57.js",
-    "source_book_code": "PRA"
-  },
-  "versification": "KJVA",
-  "totals": {
-    "aligned_source_verses": 68,
-    "persian_in_review_verses": 68,
-    "croatian_in_review_verses": 0
-  },
-  "chapter_qa": {
-    "1": {
-      "verse_count": 68,
-      "persian_in_review_count": 68,
-      "croatian_in_review_count": 0,
-      "source_english_sha256": "f01782617f2541b9421c521a45c329c0d0615e23e105eebad22ac840533e150f"
-    }
-  }
+  "source_reference": {"source_file":"data/apocrypha/sources/en/prayer_of_azariah.en.json","source_book_code":"PRA"},
+  "versification": "KJVA normalized for the New Hope 7 nineteen-book set",
+  "translation_note": "Fresh New Hope 7 Persian and Croatian translations from the public-domain KJVA reference. Croatian is stored as a translation overlay and is not copied from the prior prepared Croatian source.",
+  "totals": {"aligned_source_verses":68,"persian_in_review_verses":68,"croatian_in_review_verses":68},
+  "chapter_qa": {"1":{"verse_count":68,"persian_in_review_count":68,"croatian_in_review_count":68,"source_english_sha256":"f01782617f2541b9421c521a45c329c0d0615e23e105eebad22ac840533e150f"}}
 }
