@@ -10,49 +10,12 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "59c87c0ffdc8b6e15f8877d505ba2a7a010cb03d6bda7e2d31e6f96bc588b48c",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And in those days shall the earth also give back that which has been entrusted to it,\nAnd Sheol also shall give back that which it has received,\nAnd hell shall give back that which it owes.",
-      "text_fa": null,
-      "text_hr": "U one će dane zemlja vratiti ono što joj je bilo povjereno,\nŠeol će vratiti ono što je primio,\na pakao ono što duguje.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And he shall choose the righteous and holy from among them:\nFor the day has drawn nigh that they should be saved.",
-      "text_fa": null,
-      "text_hr": "On će među njima izabrati pravedne i svete,\njer se približio dan njihova spasenja.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And the Elect One shall in those days sit on My throne,\nAnd his mouth shall pour forth all the secrets of wisdom and counsel:\nFor the Lord of Spirits hath given (them) to him and hath glorified him.",
-      "text_fa": null,
-      "text_hr": "U one će dane Izabrani sjesti na moje prijestolje,\na njegova će usta izlijevati sve tajne mudrosti i savjeta,\njer mu ih je Gospodar duhova dao i proslavio ga.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "And in those days shall the mountains leap like rams,\nAnd the hills also shall skip like lambs satisfied with milk,\nAnd the faces of [all] the angels in heaven shall be lighted up with joy.",
-      "text_fa": null,
-      "text_hr": "U one će dane planine poskakivati poput ovnova,\na brežuljci skakati poput janjaca nasićenih mlijekom;\nlica [svih] anđela na nebu sjat će od radosti.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "[5a] For in those days the Elect One shall arise,\n\n[5b] And the earth shall rejoice,\n\n[5c] And the righteous shall dwell upon it,\n\n[5d] And the elect shall walk thereon.",
-      "text_fa": null,
-      "text_hr": "[5a] Jer u one će dane Izabrani ustati,\n\n[5b] i zemlja će se radovati,\n\n[5c] pravedni će prebivati na njoj,\n\n[5d] a izabrani hoditi po njoj.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And in those days shall the earth also give back that which has been entrusted to it,\nAnd Sheol also shall give back that which it has received,\nAnd hell shall give back that which it owes.","text_fa":"و در آن روزها زمین آنچه را که به آن سپرده شده است بازخواهد داد،\nو شِئول نیز آنچه را دریافت کرده بازخواهد گرداند،\nو دوزخ آنچه را بدهکار است پس خواهد داد.","text_hr":"U one će dane zemlja vratiti ono što joj je bilo povjereno,\nŠeol će vratiti ono što je primio,\na pakao ono što duguje.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And he shall choose the righteous and holy from among them:\nFor the day has drawn nigh that they should be saved.","text_fa":"و او پارسایان و مقدسان را از میان آنان برخواهد گزید؛\nزیرا روز نجاتشان نزدیک شده است.","text_hr":"On će među njima izabrati pravedne i svete,\njer se približio dan njihova spasenja.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And the Elect One shall in those days sit on My throne,\nAnd his mouth shall pour forth all the secrets of wisdom and counsel:\nFor the Lord of Spirits hath given (them) to him and hath glorified him.","text_fa":"و در آن روزها برگزیده بر تخت من خواهد نشست،\nو دهان او همهٔ اسرار حکمت و مشورت را جاری خواهد ساخت؛\nزیرا خداوندِ ارواح آنها را به او داده و او را جلال بخشیده است.","text_hr":"U one će dane Izabrani sjesti na moje prijestolje,\na njegova će usta izlijevati sve tajne mudrosti i savjeta,\njer mu ih je Gospodar duhova dao i proslavio ga.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"And in those days shall the mountains leap like rams,\nAnd the hills also shall skip like lambs satisfied with milk,\nAnd the faces of [all] the angels in heaven shall be lighted up with joy.","text_fa":"و در آن روزها کوه‌ها مانند قوچ‌ها جست‌وخیز خواهند کرد،\nو تپه‌ها همچون بره‌هایی که از شیر سیر شده‌اند خواهند جهید،\nو چهرهٔ [همهٔ] فرشتگان در آسمان از شادی روشن خواهد شد.","text_hr":"U one će dane planine poskakivati poput ovnova,\na brežuljci skakati poput janjaca nasićenih mlijekom;\nlica [svih] anđela na nebu sjat će od radosti.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"[5a] For in those days the Elect One shall arise,\n\n[5b] And the earth shall rejoice,\n\n[5c] And the righteous shall dwell upon it,\n\n[5d] And the elect shall walk thereon.","text_fa":"[5a] زیرا در آن روزها برگزیده برخواهد خاست،\n\n[5b] و زمین شادی خواهد کرد،\n\n[5c] و پارسایان بر آن ساکن خواهند شد،\n\n[5d] و برگزیدگان بر آن راه خواهند رفت.","text_hr":"[5a] Jer u one će dane Izabrani ustati,\n\n[5b] i zemlja će se radovati,\n\n[5c] pravedni će prebivati na njoj,\n\n[5d] a izabrani hoditi po njoj.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
