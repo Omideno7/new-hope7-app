@@ -6,45 +6,16 @@
   "title_hr": "Prva Henokova knjiga",
   "chapter": 8,
   "status": "in_review",
+  "status_fa": "in_review",
   "status_hr": "in_review",
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "a979c890cc3ad00ae74e108202b7292115496ed8cf1048b890f60e6670eb09df",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa","hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And Azâzêl taught men to make swords, and knives, and shields, and breastplates, and made known to them =the metals= ‹of the earth› and the art of working them, and bracelets, and ornaments, and the use of antimony, and the beautifying of the eyelids, and all kinds of costly stones, and all colouring tinctures.",
-      "text_fa": null,
-      "text_hr": "Azazel je ljude naučio izrađivati mačeve, noževe, štitove i oklope; otkrio im je =kovine= ‹zemlje› i umijeće njihove obrade, narukvice, nakit, uporabu antimona, uljepšavanje očnih kapaka, svakojako drago kamenje i sve bojene premaze.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And there arose much godlessness, and they committed fornication, and they were led astray, and became corrupt in all their ways.",
-      "text_fa": null,
-      "text_hr": "Nastade velika bezbožnost: činili su blud, zastranili i iskvarili se na svim svojim putovima.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "Semjâzâ taught enchantments, and root-cuttings, Armârôs the resolving of enchantments, Barâqîjâl, (taught) astrology, Kôkabêl the constellations, =Ezêqêêl the knowledge of the clouds=, ‹Araqiêl the signs of the earth, Shamsiêl the signs of the sun›, and Sariêl the course of the moon.",
-      "text_fa": null,
-      "text_hr": "Semjaza ih je učio čarolijama i rezanju korijenja, Armaros razrješavanju čarolija, Barakijal zvjezdoznanstvu, Kokabel zviježđima, =Ezekiel spoznaji oblaka=, ‹Arakiel znakovima zemlje, Šamsiel znakovima sunca›, a Sariel putanji mjeseca.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "And as men perished, they cried, and their cry went up to heaven....",
-      "text_fa": null,
-      "text_hr": "Dok su ljudi propadali, zavapiše, a njihov se vapaj uzdignu na nebo....",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And Azâzêl taught men to make swords, and knives, and shields, and breastplates, and made known to them =the metals= ‹of the earth› and the art of working them, and bracelets, and ornaments, and the use of antimony, and the beautifying of the eyelids, and all kinds of costly stones, and all colouring tinctures.","text_fa":"عَزازیل به آدمیان آموخت شمشیر، چاقو، سپر و زره بسازند؛ و =فلزات= ‹زمین› و هنر کار کردن با آنها را به ایشان شناساند، همچنین دستبندها و زیورها، استفاده از سرمه، آرایش پلک‌ها، انواع سنگ‌های گران‌بها و همهٔ مواد رنگ‌آمیزی را.","text_hr":"Azazel je ljude naučio izrađivati mačeve, noževe, štitove i oklope; otkrio im je =kovine= ‹zemlje› i umijeće njihove obrade, narukvice, nakit, uporabu antimona, uljepšavanje očnih kapaka, svakojako drago kamenje i sve bojene premaze.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And there arose much godlessness, and they committed fornication, and they were led astray, and became corrupt in all their ways.","text_fa":"بدین‌گونه بی‌دینی فراوان شد؛ آنان مرتکب زنا شدند، گمراه گشتند و در همهٔ راه‌هایشان فاسد شدند.","text_hr":"Nastade velika bezbožnost: činili su blud, zastranili i iskvarili se na svim svojim putovima.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"Semjâzâ taught enchantments, and root-cuttings, Armârôs the resolving of enchantments, Barâqîjâl, (taught) astrology, Kôkabêl the constellations, =Ezêqêêl the knowledge of the clouds=, ‹Araqiêl the signs of the earth, Shamsiêl the signs of the sun›, and Sariêl the course of the moon.","text_fa":"سِمیازا افسون‌ها و بریدن ریشه‌ها را آموخت؛ آرماروس، گشودن افسون‌ها را؛ باراقیئِل، ستاره‌شناسی را؛ کوکابئِل، صورت‌های فلکی را؛ =اِزِقیئِل، شناخت ابرها را=؛ ‹آراقیئِل، نشانه‌های زمین را؛ شَمسئیل، نشانه‌های خورشید را›؛ و ساریئِل، مسیر ماه را.","text_hr":"Semjaza ih je učio čarolijama i rezanju korijenja, Armaros razrješavanju čarolija, Barakijal zvjezdoznanstvu, Kokabel zviježđima, =Ezekiel spoznaji oblaka=, ‹Arakiel znakovima zemlje, Šamsiel znakovima sunca›, a Sariel putanji mjeseca.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"And as men perished, they cried, and their cry went up to heaven....","text_fa":"و هنگامی که آدمیان نابود می‌شدند، فریاد برآوردند و فریادشان به آسمان بالا رفت....","text_hr":"Dok su ljudi propadali, zavapiše, a njihov se vapaj uzdignu na nebo....","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
