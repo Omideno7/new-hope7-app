@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "version": "2.4.5",
+  "updated_on": "2026-08-22",
+  "scope_books": 19,
+  "policy": "A book is complete only when the canonical English source and fresh New Hope 7 Persian and Croatian translations cover every source verse.",
+  "complete_books": [
+    {"book_id":"psalm_151","verses":7,"fa":7,"hr":7},
+    {"book_id":"prayer_of_manasseh","verses":15,"fa":15,"hr":15},
+    {"book_id":"susanna","verses":64,"fa":64,"hr":64},
+    {"book_id":"bel_and_the_dragon","verses":42,"fa":42,"hr":42},
+    {"book_id":"prayer_of_azariah","verses":68,"fa":68,"hr":68},
+    {"book_id":"letter_of_jeremiah","verses":73,"fa":73,"hr":73}
+  ],
+  "complete_book_count": 6,
+  "complete_fresh_verse_rows": 269,
+  "known_fresh_hr_complete_waiting_for_fa": [
+    {"book_id":"1_esdras","verses":448},
+    {"book_id":"2_esdras","verses":874},
+    {"book_id":"3_maccabees","verses":228}
+  ],
+  "next_book": "additions_to_esther",
+  "release_ready": false,
+  "blocking_reason": "Fresh FA/HR corpus is not complete for all 19 books; final corpus audit has not yet passed."
+}
