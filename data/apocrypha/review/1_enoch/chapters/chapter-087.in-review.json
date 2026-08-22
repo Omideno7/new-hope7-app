@@ -10,41 +10,11 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "33a087ca4bff21dc2707e16437500f3a4feffdf5f4238fb4893c5f996e691f2b",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And again I saw how they began to gore each other and to devour each other, and the earth began to cry aloud.",
-      "text_fa": null,
-      "text_hr": "I opet sam vidio kako su počeli bosti jedni druge i proždirati jedni druge, a zemlja je počela glasno plakati.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And I raised mine eyes again to heaven, and I saw in the vision, and behold there came forth from heaven beings who were like white men: and four went forth from that place and three with them.",
-      "text_fa": null,
-      "text_hr": "I podigoh svoje oči ponovno prema nebu, i vidjeh u viđenju, i gle, iziđoše s neba bića koja bijahu poput bijelih ljudi: i četvorica su izašla s tog mjesta i trojica s njima.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And those three that had last come forth grasped me by my hand and took me up, away from the generations of the earth, and raised me up to a lofty place, and showed me a tower raised high above the earth, and all the hills were lower.",
-      "text_fa": null,
-      "text_hr": "I ona trojica koja su posljednja izašla zgrabiše me za ruku i odvedoše me gore, daleko od naraštaja zemlje, i podigoše me na uzvišeno mjesto, i pokazaše mi toranj visoko iznad zemlje, a sva su brda bila niža.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "And one said unto me: ‘Remain here till thou seest everything that befalls those elephants, camels, and asses, and the stars and the oxen, and all of them.’",
-      "text_fa": null,
-      "text_hr": "I jedan mi je rekao: ‘Ostani ovdje dok ne vidiš sve što zadesi te slonove, deve i magarce, i zvijezde i volove, i sve njih.’",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And again I saw how they began to gore each other and to devour each other, and the earth began to cry aloud.","text_fa":"و باز دیدم که چگونه شروع کردند یکدیگر را با شاخ بزنند و یکدیگر را ببلعند؛ و زمین با صدای بلند فریاد برآورد.","text_hr":"I opet sam vidio kako su počeli bosti jedni druge i proždirati jedni druge, a zemlja je počela glasno plakati.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And I raised mine eyes again to heaven, and I saw in the vision, and behold there came forth from heaven beings who were like white men: and four went forth from that place and three with them.","text_fa":"و بار دیگر چشمانم را به آسمان بلند کردم و در رؤیا دیدم که موجوداتی شبیه مردان سفید از آسمان بیرون آمدند؛ چهار تن از آن مکان بیرون آمدند و سه تن نیز همراهشان بودند.","text_hr":"I podigoh svoje oči ponovno prema nebu, i vidjeh u viđenju, i gle, iziđoše s neba bića koja bijahu poput bijelih ljudi: i četvorica su izašla s tog mjesta i trojica s njima.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And those three that had last come forth grasped me by my hand and took me up, away from the generations of the earth, and raised me up to a lofty place, and showed me a tower raised high above the earth, and all the hills were lower.","text_fa":"و آن سه تن که در آخر بیرون آمده بودند دستم را گرفتند و مرا از نسل‌های زمین بالا بردند و به مکانی بلند رساندند؛ و برجی را به من نشان دادند که بسیار بالاتر از زمین برپا شده بود و همهٔ تپه‌ها از آن کوتاه‌تر بودند.","text_hr":"I ona trojica koja su posljednja izašla zgrabiše me za ruku i odvedoše me gore, daleko od naraštaja zemlje, i podigoše me na uzvišeno mjesto, i pokazaše mi toranj visoko iznad zemlje, a sva su brda bila niža.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"And one said unto me: ‘Remain here till thou seest everything that befalls those elephants, camels, and asses, and the stars and the oxen, and all of them.’","text_fa":"و یکی به من گفت: «اینجا بمان تا همهٔ آنچه بر سر آن فیل‌ها، شترها، الاغ‌ها، ستارگان، گاوان و همهٔ آنها می‌آید ببینی.»","text_hr":"I jedan mi je rekao: ‘Ostani ovdje dok ne vidiš sve što zadesi te slonove, deve i magarce, i zvijezde i volove, i sve njih.’","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
