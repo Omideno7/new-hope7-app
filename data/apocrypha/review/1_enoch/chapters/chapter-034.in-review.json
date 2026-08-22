@@ -10,33 +10,10 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "dd22998665f10684d183a147d99e062d3c068bbdfb9f9794882b4bd44ea47aae",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And from thence I went towards the north to the ends of the earth, and there I saw a great and glorious device at the ends of the whole earth.",
-      "text_fa": null,
-      "text_hr": "Odatle odoh prema sjeveru, do krajeva zemlje. Ondje na krajevima cijele zemlje vidjeh velik i slavan poredak.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And here I saw three portals of heaven open in the heaven: through each of them proceed north winds: when they blow there is cold, hail, frost, snow, dew, and rain.",
-      "text_fa": null,
-      "text_hr": "Ondje vidjeh troja nebeska vrata otvorena na nebu. Kroz svaka od njih izlaze sjeverni vjetrovi; kad pušu, donose hladnoću, tuču, mraz, snijeg, rosu i kišu.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And out of one portal they blow for good: but when they blow through the other two portals, †it is with violence and affliction on the earth, and they blow with violence.†",
-      "text_fa": null,
-      "text_hr": "Kroz jedna vrata pušu na dobro, ali kad pušu kroz druga dvoja, †čine to silovito i donose nevolju zemlji; silovito pušu.†",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And from thence I went towards the north to the ends of the earth, and there I saw a great and glorious device at the ends of the whole earth.","text_fa":"از آنجا به سوی شمال، تا انتهای زمین رفتم و در آنجا، در انتهای سراسر زمین، نظمی عظیم و باشکوه دیدم.","text_hr":"Odatle odoh prema sjeveru, do krajeva zemlje. Ondje na krajevima cijele zemlje vidjeh velik i slavan poredak.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And here I saw three portals of heaven open in the heaven: through each of them proceed north winds: when they blow there is cold, hail, frost, snow, dew, and rain.","text_fa":"در آنجا سه دروازهٔ آسمان را گشوده دیدم. از هر یک از آنها بادهای شمالی بیرون می‌آیند؛ و هنگامی که می‌وزند، سرما، تگرگ، یخبندان، برف، شبنم و باران پدید می‌آید.","text_hr":"Ondje vidjeh troja nebeska vrata otvorena na nebu. Kroz svaka od njih izlaze sjeverni vjetrovi; kad pušu, donose hladnoću, tuču, mraz, snijeg, rosu i kišu.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And out of one portal they blow for good: but when they blow through the other two portals, †it is with violence and affliction on the earth, and they blow with violence.†","text_fa":"از یکی از دروازه‌ها برای نیکی می‌وزند؛ اما هنگامی که از دو دروازهٔ دیگر می‌وزند، †با خشونت می‌وزند و بر زمین رنج و مصیبت می‌آورند؛ آری، با شدت می‌وزند.†","text_hr":"Kroz jedna vrata pušu na dobro, ali kad pušu kroz druga dvoja, †čine to silovito i donose nevolju zemlji; silovito pušu.†","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
