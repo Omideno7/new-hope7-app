@@ -10,65 +10,14 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "d4f3a7c46221e9b0cc1e2327ef635da1c0ce746e70328de48f777423fe0735e9",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "There mine eyes saw a deep valley with open mouths, and all who dwell on the earth and sea and islands shall bring to him gifts and presents and tokens of homage, but that deep valley shall not become full.",
-      "text_fa": null,
-      "text_hr": "Ondje su moje oči vidjele duboku dolinu razjapljenih usta. Svi koji prebivaju na zemlji, moru i otocima donosit će mu darove, poklone i znakove pokornosti, ali ta se duboka dolina neće napuniti.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And their hands commit lawless deeds,\nAnd the sinners devour all whom they lawlessly =oppress=:\nYet the sinners shall be destroyed before the face of the Lord of Spirits,\nAnd they shall be banished from off the face of His earth,\nAnd they shall perish for ever and ever.",
-      "text_fa": null,
-      "text_hr": "Njihove ruke čine bezakona djela,\na grešnici proždiru sve koje bezakono =tlače=.\nIpak će grešnici biti uništeni pred licem Gospodara duhova,\nprotjerani s lica njegove zemlje\ni propasti u vijeke vjekova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "For I saw all the angels of punishment abiding (there) and preparing all the instruments of Satan.",
-      "text_fa": null,
-      "text_hr": "Vidio sam sve anđele kazne kako ondje borave i pripravljaju sva Sotonina oruđa.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "And I asked the angel of peace who went with me: ‘For whom are they preparing these instruments?’",
-      "text_fa": null,
-      "text_hr": "Upitao sam anđela mira koji je išao sa mnom: „Za koga pripravljaju ta oruđa?“",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "And he said unto me: ‘They prepare these for the kings and the mighty of this earth, that they may thereby be destroyed.",
-      "text_fa": null,
-      "text_hr": "Odgovorio mi je: „Pripravljaju ih za kraljeve i moćnike ove zemlje da njima budu uništeni.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "And after this the Righteous and Elect One shall cause the house of his congregation to appear: henceforth they shall be no more hindered in the name of the Lord of Spirits.",
-      "text_fa": null,
-      "text_hr": "Nakon toga Pravednik i Izabrani dat će da se pojavi dom njegove zajednice; od tada više neće biti priječeni u ime Gospodara duhova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 7,
-      "text_en": "And these mountains shall not stand as the earth before his righteousness,\nBut the hills shall be as a fountain of water,\nAnd the righteous shall have rest from the oppression of sinners.’",
-      "text_fa": null,
-      "text_hr": "Te planine pred njegovom pravednošću neće ostati čvrste poput zemlje,\nnego će brežuljci postati poput izvora vode,\na pravedni će počinuti od tlačenja grešnika.“",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"There mine eyes saw a deep valley with open mouths, and all who dwell on the earth and sea and islands shall bring to him gifts and presents and tokens of homage, but that deep valley shall not become full.","text_fa":"در آنجا چشمانم دره‌ای ژرف با دهانه‌هایی گشوده دید؛ و همهٔ ساکنان زمین و دریا و جزایر برای او هدایا، پیشکش‌ها و نشانه‌های احترام خواهند آورد، اما آن درهٔ ژرف پر نخواهد شد.","text_hr":"Ondje su moje oči vidjele duboku dolinu razjapljenih usta. Svi koji prebivaju na zemlji, moru i otocima donosit će mu darove, poklone i znakove pokornosti, ali ta se duboka dolina neće napuniti.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And their hands commit lawless deeds,\nAnd the sinners devour all whom they lawlessly =oppress=:\nYet the sinners shall be destroyed before the face of the Lord of Spirits,\nAnd they shall be banished from off the face of His earth,\nAnd they shall perish for ever and ever.","text_fa":"و دست‌های آنان اعمال بی‌قانون انجام می‌دهد،\nو گناهکاران همهٔ کسانی را که به ناحق =ستم می‌کنند= می‌بلعند؛\nاما گناهکاران در حضور خداوندِ ارواح نابود خواهند شد،\nو از روی زمین او رانده خواهند شد،\nو تا ابد هلاک خواهند گردید.","text_hr":"Njihove ruke čine bezakona djela,\na grešnici proždiru sve koje bezakono =tlače=.\nIpak će grešnici biti uništeni pred licem Gospodara duhova,\nprotjerani s lica njegove zemlje\ni propasti u vijeke vjekova.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"For I saw all the angels of punishment abiding (there) and preparing all the instruments of Satan.","text_fa":"زیرا همهٔ فرشتگان مجازات را دیدم که (در آنجا) ساکن بودند و همهٔ ابزارهای شیطان را آماده می‌کردند.","text_hr":"Vidio sam sve anđele kazne kako ondje borave i pripravljaju sva Sotonina oruđa.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"And I asked the angel of peace who went with me: ‘For whom are they preparing these instruments?’","text_fa":"و از فرشتهٔ صلح که همراه من بود پرسیدم: «این ابزارها را برای چه کسانی آماده می‌کنند؟»","text_hr":"Upitao sam anđela mira koji je išao sa mnom: „Za koga pripravljaju ta oruđa?“","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"And he said unto me: ‘They prepare these for the kings and the mighty of this earth, that they may thereby be destroyed.","text_fa":"او به من گفت: «اینها را برای پادشاهان و قدرتمندان این زمین آماده می‌کنند تا به وسیلهٔ آنها نابود شوند.","text_hr":"Odgovorio mi je: „Pripravljaju ih za kraljeve i moćnike ove zemlje da njima budu uništeni.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"And after this the Righteous and Elect One shall cause the house of his congregation to appear: henceforth they shall be no more hindered in the name of the Lord of Spirits.","text_fa":"و پس از این، آن پارسا و برگزیده خانهٔ جماعت خود را آشکار خواهد ساخت؛ و از آن پس آنان در نام خداوندِ ارواح دیگر مانعی نخواهند داشت.","text_hr":"Nakon toga Pravednik i Izabrani dat će da se pojavi dom njegove zajednice; od tada više neće biti priječeni u ime Gospodara duhova.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":7,"text_en":"And these mountains shall not stand as the earth before his righteousness,\nBut the hills shall be as a fountain of water,\nAnd the righteous shall have rest from the oppression of sinners.’","text_fa":"و این کوه‌ها در برابر عدالت او همچون زمین استوار نخواهند ماند،\nبلکه تپه‌ها مانند چشمهٔ آب خواهند شد،\nو پارسایان از ستم گناهکاران آرامش خواهند یافت.»","text_hr":"Te planine pred njegovom pravednošću neće ostati čvrste poput zemlje,\nnego će brežuljci postati poput izvora vode,\na pravedni će počinuti od tlačenja grešnika.“","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
