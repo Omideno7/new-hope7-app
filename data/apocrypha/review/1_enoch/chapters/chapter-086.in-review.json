@@ -10,57 +10,13 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "58ad8a4df58ec79d1439581043e023d05aa2e007718630ac9ad15f9e3106498a",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And again I saw with mine eyes as I slept, and I saw the heaven above, and behold a star fell from heaven, and it arose and ate and pastured amongst those oxen.",
-      "text_fa": null,
-      "text_hr": "Dok sam spavao, ponovno pogledah i ugledah nebo iznad sebe. Gle, s neba pade zvijezda; ustala je, jela i pasla među onim volovima.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And after that I saw the large and the black oxen, and behold they all changed their stalls and pastures and their cattle, and began to live with each other.",
-      "text_fa": null,
-      "text_hr": "Nakon toga ugledah velike crne volove. Gle, svi promijeniše svoje obore, pašnjake i stada te počeše živjeti jedni s drugima.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And again I saw in the vision, and looked towards the heaven, and behold I saw many stars descend and cast themselves down from heaven to that first star, and they became bulls amongst those cattle and pastured with them [amongst them].",
-      "text_fa": null,
-      "text_hr": "Ponovno sam gledao u viđenju i pogledao prema nebu. Gle, vidio sam mnogo zvijezda kako silaze i bacaju se s neba prema prvoj zvijezdi; postale su bikovi među onim stadom i pasle s njima [među njima].",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "And I looked at them and saw, and behold they all let out their privy members, like horses, and began to cover the cows of the oxen, and they all became pregnant and bare elephants, camels and asses.",
-      "text_fa": null,
-      "text_hr": "Pogledah ih i vidjeh kako su svi izbacili svoje spolne udove poput konja te počeli općiti s kravama. Sve su krave zatrudnjele i rodile slonove, deve i magarce.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "And all the oxen feared them and were affrighted at them, and began to bite with their teeth and to devour, and to gore with their horns.",
-      "text_fa": null,
-      "text_hr": "Svi su ih se volovi bojali i bili prestrašeni; oni ih počeše gristi zubima, proždirati i bosti svojim rogovima.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "And they began moreover to devour those oxen; and behold all the children of the earth began to tremble and quake before them and to flee from them.",
-      "text_fa": null,
-      "text_hr": "Nastavili su proždirati volove; i gle, sva djeca zemlje počeše pred njima drhtati, strepiti i bježati.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And again I saw with mine eyes as I slept, and I saw the heaven above, and behold a star fell from heaven, and it arose and ate and pastured amongst those oxen.","text_fa":"و باز در خواب با چشمانم دیدم؛ آسمان را در بالا دیدم و ناگاه ستاره‌ای از آسمان افتاد. آن ستاره برخاست و در میان آن گاوان خورد و چرا کرد.","text_hr":"Dok sam spavao, ponovno pogledah i ugledah nebo iznad sebe. Gle, s neba pade zvijezda; ustala je, jela i pasla među onim volovima.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And after that I saw the large and the black oxen, and behold they all changed their stalls and pastures and their cattle, and began to live with each other.","text_fa":"پس از آن، گاوان بزرگ و سیاه را دیدم؛ و ناگاه همهٔ آنها آغل‌ها، چراگاه‌ها و گله‌های خود را تغییر دادند و شروع کردند با یکدیگر زندگی کنند.","text_hr":"Nakon toga ugledah velike crne volove. Gle, svi promijeniše svoje obore, pašnjake i stada te počeše živjeti jedni s drugima.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And again I saw in the vision, and looked towards the heaven, and behold I saw many stars descend and cast themselves down from heaven to that first star, and they became bulls amongst those cattle and pastured with them [amongst them].","text_fa":"و باز در رؤیا دیدم و به سوی آسمان نگاه کردم؛ ناگاه ستارگان بسیاری را دیدم که فرود آمدند و خود را از آسمان نزد آن ستارهٔ نخست افکندند؛ و در میان آن گله به گاوان نر تبدیل شدند و با آنها [در میانشان] چرا کردند.","text_hr":"Ponovno sam gledao u viđenju i pogledao prema nebu. Gle, vidio sam mnogo zvijezda kako silaze i bacaju se s neba prema prvoj zvijezdi; postale su bikovi među onim stadom i pasle s njima [među njima].","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"And I looked at them and saw, and behold they all let out their privy members, like horses, and began to cover the cows of the oxen, and they all became pregnant and bare elephants, camels and asses.","text_fa":"به آنها نگریستم و دیدم که همه اندام جنسی خود را مانند اسبان آشکار کردند و با ماده‌گاوان جفت شدند؛ و همهٔ آن ماده‌گاوان آبستن شدند و فیل‌ها، شترها و الاغ‌ها زاییدند.","text_hr":"Pogledah ih i vidjeh kako su svi izbacili svoje spolne udove poput konja te počeli općiti s kravama. Sve su krave zatrudnjele i rodile slonove, deve i magarce.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"And all the oxen feared them and were affrighted at them, and began to bite with their teeth and to devour, and to gore with their horns.","text_fa":"همهٔ گاوان از آنها ترسیدند و هراسان شدند؛ و آنها شروع کردند با دندان گاز گرفتن و دریدن، و با شاخ‌های خود زدن.","text_hr":"Svi su ih se volovi bojali i bili prestrašeni; oni ih počeše gristi zubima, proždirati i bosti svojim rogovima.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"And they began moreover to devour those oxen; and behold all the children of the earth began to tremble and quake before them and to flee from them.","text_fa":"و افزون بر این شروع کردند آن گاوان را ببلعند؛ و ناگاه همهٔ فرزندان زمین در برابرشان به لرزه افتادند، ترسیدند و از آنها گریختند.","text_hr":"Nastavili su proždirati volove; i gle, sva djeca zemlje počeše pred njima drhtati, strepiti i bježati.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
