@@ -6,109 +6,24 @@
   "title_hr": "Prva Henokova knjiga",
   "chapter": 15,
   "status": "in_review",
+  "status_fa": "in_review",
   "status_hr": "in_review",
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "6599dead24812cb586abe0a45b6ad5c1831d9b81774545473522be7a51f12521",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa","hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And He answered and said to me, and I heard His voice: ‘Fear not, Enoch, thou righteous man and scribe of righteousness: approach hither and hear my voice.",
-      "text_fa": null,
-      "text_hr": "On mi odgovori, i čuh Njegov glas: ‘Ne boj se, Henok, pravedni čovječe i pisaru pravednosti. Priđi i čuj moj glas.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And go, say to 〚the Watchers of heaven〛, who have sent thee to intercede 〚for them: “You should intercede〛 for men, and not men for you:",
-      "text_fa": null,
-      "text_hr": "Idi i reci 〚nebeskim Stražarima〛 koji su te poslali da posreduješ 〚za njih: „Vi biste trebali posredovati〛 za ljude, a ne ljudi za vas.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "Wherefore have ye left the high, holy, and eternal heaven, and lain with women, and defiled yourselves with the daughters of men and taken to yourselves wives, and done like the children of earth, and begotten giants (as your) sons.",
-      "text_fa": null,
-      "text_hr": "Zašto ste napustili visoko, sveto i vječno nebo, legli sa ženama, okaljali se kćerima ljudskim, uzeli sebi žene, postupili poput sinova zemlje i rodili divove kao svoje sinove?",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "And though ye were holy, spiritual, living the eternal life, you have defiled yourselves with the blood of women, and have begotten (children) with the blood of flesh, and, =as the children= of men, have lusted after flesh and blood as those ⌜also⌝ do who die and perish.",
-      "text_fa": null,
-      "text_hr": "Premda ste bili sveti i duhovni te živjeli vječnim životom, okaljali ste se krvlju žena i rodili djecu krvlju tijela; =poput sinova= ljudskih poželjeli ste tijelo i krv, kao što to čine ⌜i⌝ oni koji umiru i propadaju.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "Therefore have I given them wives also that they might impregnate them, and beget children by them, that thus nothing might be wanting to them on earth.",
-      "text_fa": null,
-      "text_hr": "Zato sam i njima dao žene da ih oplode i s njima rode djecu, kako im na zemlji ništa ne bi nedostajalo.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "But you were ⌜formerly⌝ spiritual, living the eternal life, and immortal for all generations of the world.",
-      "text_fa": null,
-      "text_hr": "Ali vi ste ⌜prije⌝ bili duhovni, živjeli vječnim životom i bili besmrtni kroz sve naraštaje svijeta.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 7,
-      "text_en": "And therefore I have not appointed wives for you; for as for the spiritual ones of the heaven, in heaven is their dwelling.",
-      "text_fa": null,
-      "text_hr": "Zato vam nisam odredio žene; jer prebivalište nebeskih duhovnih bića jest nebo.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 8,
-      "text_en": "And now, the giants, who are produced from the spirits and flesh, shall be called evil spirits upon the earth, and on the earth shall be their dwelling.",
-      "text_fa": null,
-      "text_hr": "A sada će se divovi, rođeni od duhova i tijela, zvati zlim duhovima na zemlji, i na zemlji će im biti prebivalište.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 9,
-      "text_en": "Evil spirits have proceeded from their bodies; because they are born from =men=, 〚and〛 from the holy Watchers is their beginning and primal origin; ⌜they shall be evil spirits on earth, and⌝ evil spirits shall they be called.",
-      "text_fa": null,
-      "text_hr": "Zli su duhovi izišli iz njihovih tijela. Budući da su rođeni od =ljudi=, 〚a〛 od svetih Stražara potječu njihov početak i prvotno podrijetlo, ⌜bit će zli duhovi na zemlji i⌝ zlim će se duhovima zvati.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 10,
-      "text_en": "[As for the spirits of heaven, in heaven shall be their dwelling, but as for the spirits of the earth which were born upon the earth, on the earth shall be their dwelling.]",
-      "text_fa": null,
-      "text_hr": "[Što se tiče duhova neba, prebivalište će im biti na nebu; ali duhovima zemlje, rođenima na zemlji, prebivalište će biti na zemlji.]",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 11,
-      "text_en": "And the spirits of the giants =afflict=, oppress, destroy, attack, do battle, and work destruction on the earth, and cause trouble: they take no food, ⌜but nevertheless hunger⌝ and thirst, and cause offences.",
-      "text_fa": null,
-      "text_hr": "Duhovi divova =muče=, tlače, uništavaju, napadaju, ratuju, pustoše zemlju i uzrokuju nevolje. Ne jedu ništa, ⌜ali ipak gladuju⌝ i žeđaju te navode na prijestupe.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 12,
-      "text_en": "And these spirits shall rise up against the children of men and against the women, because they have proceeded ⌜from them⌝.",
-      "text_fa": null,
-      "text_hr": "Ti će duhovi ustajati protiv sinova ljudskih i protiv žena jer su ⌜od njih⌝ potekli.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And He answered and said to me, and I heard His voice: ‘Fear not, Enoch, thou righteous man and scribe of righteousness: approach hither and hear my voice.","text_fa":"او پاسخ داد و با من سخن گفت و صدایش را شنیدم: «ای خنوخ، مرد پارسا و کاتب پارسایی، نترس؛ نزدیک بیا و صدای مرا بشنو.","text_hr":"On mi odgovori, i čuh Njegov glas: ‘Ne boj se, Henok, pravedni čovječe i pisaru pravednosti. Priđi i čuj moj glas.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And go, say to 〚the Watchers of heaven〛, who have sent thee to intercede 〚for them: “You should intercede〛 for men, and not men for you:","text_fa":"برو و به 〚دیدبانان آسمان〛 که تو را برای شفاعت 〚از جانب خود فرستاده‌اند بگو: “این شما هستید که باید⌝ برای آدمیان شفاعت کنید، نه آدمیان برای شما.","text_hr":"Idi i reci 〚nebeskim Stražarima〛 koji su te poslali da posreduješ 〚za njih: „Vi biste trebali posredovati〛 za ljude, a ne ljudi za vas.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"Wherefore have ye left the high, holy, and eternal heaven, and lain with women, and defiled yourselves with the daughters of men and taken to yourselves wives, and done like the children of earth, and begotten giants (as your) sons.","text_fa":"چرا آسمان بلند، مقدس و جاودان را ترک کردید، با زنان همبستر شدید، خود را با دختران آدمیان آلوده ساختید، برای خود زن گرفتید و همچون فرزندان زمین رفتار کردید و غول‌ها را به عنوان پسران خود به وجود آوردید؟","text_hr":"Zašto ste napustili visoko, sveto i vječno nebo, legli sa ženama, okaljali se kćerima ljudskim, uzeli sebi žene, postupili poput sinova zemlje i rodili divove kao svoje sinove?","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"And though ye were holy, spiritual, living the eternal life, you have defiled yourselves with the blood of women, and have begotten (children) with the blood of flesh, and, =as the children= of men, have lusted after flesh and blood as those ⌜also⌝ do who die and perish.","text_fa":"با اینکه مقدس و روحانی بودید و زندگی جاودان داشتید، خود را با خون زنان آلوده کردید و با خون جسم فرزندانی آوردید؛ و =همچون فرزندان= آدمیان مشتاق جسم و خون شدید، همان‌گونه که کسانی ⌜نیز⌝ چنین می‌کنند که می‌میرند و نابود می‌شوند.","text_hr":"Premda ste bili sveti i duhovni te živjeli vječnim životom, okaljali ste se krvlju žena i rodili djecu krvlju tijela; =poput sinova= ljudskih poželjeli ste tijelo i krv, kao što to čine ⌜i⌝ oni koji umiru i propadaju.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"Therefore have I given them wives also that they might impregnate them, and beget children by them, that thus nothing might be wanting to them on earth.","text_fa":"از این رو به آنان زن داده‌ام تا آنان را بارور کنند و از ایشان فرزند بیاورند، تا در زمین چیزی برایشان کم نباشد.","text_hr":"Zato sam i njima dao žene da ih oplode i s njima rode djecu, kako im na zemlji ništa ne bi nedostajalo.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"But you were ⌜formerly⌝ spiritual, living the eternal life, and immortal for all generations of the world.","text_fa":"اما شما ⌜پیش‌تر⌝ روحانی بودید، زندگی جاودان داشتید و در تمام نسل‌های جهان فناناپذیر بودید.","text_hr":"Ali vi ste ⌜prije⌝ bili duhovni, živjeli vječnim životom i bili besmrtni kroz sve naraštaje svijeta.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":7,"text_en":"And therefore I have not appointed wives for you; for as for the spiritual ones of the heaven, in heaven is their dwelling.","text_fa":"از همین رو برای شما زن مقرر نکردم، زیرا جایگاه موجودات روحانی آسمان، در آسمان است.","text_hr":"Zato vam nisam odredio žene; jer prebivalište nebeskih duhovnih bića jest nebo.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":8,"text_en":"And now, the giants, who are produced from the spirits and flesh, shall be called evil spirits upon the earth, and on the earth shall be their dwelling.","text_fa":"و اکنون غول‌هایی که از روح و جسم به وجود آمده‌اند، بر زمین «ارواح شریر» نامیده خواهند شد و جایگاهشان بر زمین خواهد بود.","text_hr":"A sada će se divovi, rođeni od duhova i tijela, zvati zlim duhovima na zemlji, i na zemlji će im biti prebivalište.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":9,"text_en":"Evil spirits have proceeded from their bodies; because they are born from =men=, 〚and〛 from the holy Watchers is their beginning and primal origin; ⌜they shall be evil spirits on earth, and⌝ evil spirits shall they be called.","text_fa":"ارواح شریر از بدن‌های آنان بیرون آمده‌اند؛ زیرا از =آدمیان= زاده شده‌اند و 〚در عین حال〛 آغاز و منشأ نخستینشان از دیدبانان مقدس است؛ ⌜پس بر زمین ارواح شریر خواهند بود و⌝ «ارواح شریر» نامیده خواهند شد.","text_hr":"Zli su duhovi izišli iz njihovih tijela. Budući da su rođeni od =ljudi=, 〚a〛 od svetih Stražara potječu njihov početak i prvotno podrijetlo, ⌜bit će zli duhovi na zemlji i⌝ zlim će se duhovima zvati.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":10,"text_en":"[As for the spirits of heaven, in heaven shall be their dwelling, but as for the spirits of the earth which were born upon the earth, on the earth shall be their dwelling.]","text_fa":"[اما ارواح آسمان، جایگاهشان در آسمان خواهد بود؛ و ارواح زمین که بر زمین زاده شده‌اند، جایگاهشان بر زمین خواهد بود.]","text_hr":"[Što se tiče duhova neba, prebivalište će im biti na nebu; ali duhovima zemlje, rođenima na zemlji, prebivalište će biti na zemlji.]","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":11,"text_en":"And the spirits of the giants =afflict=, oppress, destroy, attack, do battle, and work destruction on the earth, and cause trouble: they take no food, ⌜but nevertheless hunger⌝ and thirst, and cause offences.","text_fa":"ارواح غول‌ها =آزار می‌دهند=، ستم می‌کنند، نابود می‌سازند، حمله می‌کنند، می‌جنگند، بر زمین ویرانی به بار می‌آورند و آشوب ایجاد می‌کنند؛ خوراکی نمی‌خورند، ⌜با این حال گرسنه⌝ و تشنه می‌شوند و سبب لغزش‌ها می‌گردند.","text_hr":"Duhovi divova =muče=, tlače, uništavaju, napadaju, ratuju, pustoše zemlju i uzrokuju nevolje. Ne jedu ništa, ⌜ali ipak gladuju⌝ i žeđaju te navode na prijestupe.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":12,"text_en":"And these spirits shall rise up against the children of men and against the women, because they have proceeded ⌜from them⌝.","text_fa":"و این ارواح علیه فرزندان آدمیان و علیه زنان برخ خواهند خاست، زیرا ⌜از آنان⌝ پدید آمده‌اند.","text_hr":"Ti će duhovi ustajati protiv sinova ljudskih i protiv žena jer su ⌜od njih⌝ potekli.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
