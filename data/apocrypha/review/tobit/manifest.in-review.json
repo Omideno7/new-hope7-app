@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "book_id": "tobit",
+  "title_fa": "طوبیت",
+  "title_en": "Tobit",
+  "title_hr": "Tobija",
+  "status": "in_review",
+  "prepared_on": "2026-08-22",
+  "included_ranges": {"fa":[[1,14]],"hr":[[1,14]]},
+  "locales_in_scope": ["fa","hr"],
+  "source_translation": "KJVA",
+  "source_translation_name": "King James Version with Apocrypha",
+  "source_license": "Public Domain",
+  "source_blob_sha": "f99e92d1b66cbc25eaa358236c72f11901f7df4d",
+  "versification": "KJVA",
+  "translation_note": "Fresh New Hope 7 Persian and Croatian translations aligned verse by verse to the public-domain KJVA source.",
+  "translation_files": [
+    "data/apocrypha/review/tobit/translations/chapters-01-04.fa-hr.in-review.json",
+    "data/apocrypha/review/tobit/translations/chapters-05-08.fa-hr.in-review.json",
+    "data/apocrypha/review/tobit/translations/chapters-09-14.fa-hr.in-review.json"
+  ],
+  "totals": {"chapters":14,"aligned_source_verses":244,"persian_in_review_verses":244,"croatian_in_review_verses":244},
+  "chapter_qa": {
+    "1":{"verse_count":22,"fa":22,"hr":22},
+    "2":{"verse_count":14,"fa":14,"hr":14},
+    "3":{"verse_count":17,"fa":17,"hr":17},
+    "4":{"verse_count":21,"fa":21,"hr":21},
+    "5":{"verse_count":22,"fa":22,"hr":22},
+    "6":{"verse_count":17,"fa":17,"hr":17},
+    "7":{"verse_count":18,"fa":18,"hr":18},
+    "8":{"verse_count":21,"fa":21,"hr":21},
+    "9":{"verse_count":6,"fa":6,"hr":6},
+    "10":{"verse_count":12,"fa":12,"hr":12},
+    "11":{"verse_count":19,"fa":19,"hr":19},
+    "12":{"verse_count":22,"fa":22,"hr":22},
+    "13":{"verse_count":18,"fa":18,"hr":18},
+    "14":{"verse_count":15,"fa":15,"hr":15}
+  }
+}
