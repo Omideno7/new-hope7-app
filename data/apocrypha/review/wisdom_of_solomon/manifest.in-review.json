@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "book_id": "wisdom_of_solomon",
+  "title_fa": "حکمت سلیمان",
+  "title_en": "Wisdom of Solomon",
+  "title_hr": "Knjiga Mudrosti",
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "source_translation_name": "King James Version with Apocrypha",
+  "source_license": "Public Domain",
+  "versification": "KJVA",
+  "chapter_count": 19,
+  "aligned_source_verses": 436,
+  "persian_in_review_verses": 436,
+  "croatian_in_review_verses": 436,
+  "included_ranges": {
+    "fa": [[1,19]],
+    "hr": [[1,19]]
+  },
+  "translation_files": [
+    "data/apocrypha/review/wisdom_of_solomon/translations/chapters-01-05.fa-hr.in-review.json",
+    "data/apocrypha/review/wisdom_of_solomon/translations/chapters-06-10.fa-hr.in-review.json",
+    "data/apocrypha/review/wisdom_of_solomon/translations/chapters-11-15.fa-hr.in-review.json",
+    "data/apocrypha/review/wisdom_of_solomon/translations/chapters-16-19.fa-hr.in-review.json"
+  ],
+  "qa_state": "translation_complete_pending_final_corpus_audit"
+}
