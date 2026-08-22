@@ -10,73 +10,15 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "54c6a4a33b55ae4cc39fe1d65c767600e28ee5c6e86824706c57754d4768a3d8",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And the first =quarter= is called the east, because it is the first: and the second, the south, because the Most High =will descend= there, yea, there in quite a special sense will He who is blessed for ever =descend=.",
-      "text_fa": null,
-      "text_hr": "Prva se =četvrtina= zove istok jer je prva; druga se zove jug jer će Svevišnji ondje =sići=. Da, ondje će u posve osobitom smislu Onaj koji je blagoslovljen dovijeka =sići=.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And the west =quarter= is named the diminished, because there all the luminaries of the heaven wane and go down.",
-      "text_fa": null,
-      "text_hr": "A zapadna =četvrt= nazvana je smanjenom, jer tamo sva svjetla nebeska jenjavaju i silaze.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And the fourth =quarter=, named the north, is divided into three parts: the first of them is for the dwelling of men: and the second contains seas of water, and the abysses and forests and rivers, and darkness and clouds; and the third part contains the garden of righteousness.",
-      "text_fa": null,
-      "text_hr": "A četvrta =četvrt=, nazvana sjever, podijeljena je na tri dijela: prvi od njih je za stanovanje ljudi: a drugi sadrži mora vode, i ponore i šume i rijeke, i tamu i oblake; a treći dio sadrži vrt pravednosti.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "I saw seven high mountains, higher than all the mountains which are on the earth: and thence comes forth hoar-frost, and days, seasons, and years pass away.",
-      "text_fa": null,
-      "text_hr": "Vidio sam sedam visokih planina, viših od svih planina koje su na zemlji: i odande izlazi inje, i prolaze dani, godišnja doba i godine.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "I saw seven rivers on the earth larger than all the rivers: one of them coming from the †west† pours its waters into the Great Sea.",
-      "text_fa": null,
-      "text_hr": "Vidio sam sedam rijeka na zemlji većih od svih rijeka: jedna od njih koja dolazi sa †zapada† izlijeva svoje vode u Veliko more.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "And these two come from the north to the sea and pour their waters into the Erythraean Sea in the east.",
-      "text_fa": null,
-      "text_hr": "Dvije rijeke dolaze sa sjevera do mora i izlijevaju svoje vode u Eritrejsko more na istoku.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 7,
-      "text_en": "And the remaining four come forth on the side of the north to their own sea, ‹two of them to› the Erythraean Sea, and two into the Great Sea and discharge themselves there [and some say: into the desert].",
-      "text_fa": null,
-      "text_hr": "A preostala četvorica izlaze na sjevernu stranu prema vlastitom moru, ‹dva od njih› u Eritrejsko more, a dvojica u Veliko more i tamo se ispuštaju [a neki kažu: u pustinju].",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 8,
-      "text_en": "Seven great islands I saw in the sea and in the mainland: two in the mainland and five in the Great Sea.",
-      "text_fa": null,
-      "text_hr": "Sedam velikih otoka koje sam vidio u moru i na kopnu: dva na kopnu i pet u Velikom moru.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And the first =quarter= is called the east, because it is the first: and the second, the south, because the Most High =will descend= there, yea, there in quite a special sense will He who is blessed for ever =descend=.","text_fa":"نخستین =جهت= شرق نامیده می‌شود، زیرا نخستین است؛ و دومین، جنوب، زیرا Svevišnji در آنجا =فرود خواهد آمد=؛ آری، در معنایی ویژه، آن که تا ابد مبارک است در آنجا =فرود خواهد آمد=.","text_hr":"Prva se =četvrtina= zove istok jer je prva; druga se zove jug jer će Svevišnji ondje =sići=. Da, ondje će u posve osobitom smislu Onaj koji je blagoslovljen dovijeka =sići=.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And the west =quarter= is named the diminished, because there all the luminaries of the heaven wane and go down.","text_fa":"و =جهت= غرب «کاستی‌یافته» نامیده می‌شود، زیرا در آنجا همهٔ نورافشان‌های آسمان رو به کاهش می‌روند و فرود می‌آیند.","text_hr":"A zapadna =četvrt= nazvana je smanjenom, jer tamo sva svjetla nebeska jenjavaju i silaze.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And the fourth =quarter=, named the north, is divided into three parts: the first of them is for the dwelling of men: and the second contains seas of water, and the abysses and forests and rivers, and darkness and clouds; and the third part contains the garden of righteousness.","text_fa":"و چهارمین =جهت= که شمال نام دارد به سه بخش تقسیم شده است: بخش نخست برای سکونت آدمیان است؛ بخش دوم شامل دریاهای آب، ژرفناها، جنگل‌ها، رودها، تاریکی و ابرهاست؛ و بخش سوم باغ عدالت را دربر دارد.","text_hr":"A četvrta =četvrt=, nazvana sjever, podijeljena je na tri dijela: prvi od njih je za stanovanje ljudi: a drugi sadrži mora vode, i ponore i šume i rijeke, i tamu i oblake; a treći dio sadrži vrt pravednosti.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"I saw seven high mountains, higher than all the mountains which are on the earth: and thence comes forth hoar-frost, and days, seasons, and years pass away.","text_fa":"هفت کوه بلند دیدم، بلندتر از همهٔ کوه‌های روی زمین؛ و از آنجا یخ‌بندان برمی‌خیزد و روزها، فصل‌ها و سال‌ها می‌گذرند.","text_hr":"Vidio sam sedam visokih planina, viših od svih planina koje su na zemlji: i odande izlazi inje, i prolaze dani, godišnja doba i godine.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"I saw seven rivers on the earth larger than all the rivers: one of them coming from the †west† pours its waters into the Great Sea.","text_fa":"هفت رود بر زمین دیدم که از همهٔ رودها بزرگ‌تر بودند؛ یکی از آنها که از †غرب† می‌آید، آب خود را به دریای بزرگ می‌ریزد.","text_hr":"Vidio sam sedam rijeka na zemlji većih od svih rijeka: jedna od njih koja dolazi sa †zapada† izlijeva svoje vode u Veliko more.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"And these two come from the north to the sea and pour their waters into the Erythraean Sea in the east.","text_fa":"و این دو رود از شمال به سوی دریا می‌آیند و آب خود را در دریای اریتره در شرق می‌ریزند.","text_hr":"Dvije rijeke dolaze sa sjevera do mora i izlijevaju svoje vode u Eritrejsko more na istoku.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":7,"text_en":"And the remaining four come forth on the side of the north to their own sea, ‹two of them to› the Erythraean Sea, and two into the Great Sea and discharge themselves there [and some say: into the desert].","text_fa":"و چهار رود باقی‌مانده از سمت شمال به سوی دریای خود می‌روند؛ ‹دو تای آنها به› دریای اریتره، و دو تای دیگر به دریای بزرگ می‌ریزند و در آنجا تخلیه می‌شوند [و برخی می‌گویند: در بیابان].","text_hr":"A preostala četvorica izlaze na sjevernu stranu prema vlastitom moru, ‹dva od njih› u Eritrejsko more, a dvojica u Veliko more i tamo se ispuštaju [a neki kažu: u pustinju].","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":8,"text_en":"Seven great islands I saw in the sea and in the mainland: two in the mainland and five in the Great Sea.","text_fa":"هفت جزیرهٔ بزرگ دیدم، در دریا و در خشکی: دو تا در خشکی و پنج تا در دریای بزرگ.","text_hr":"Sedam velikih otoka koje sam vidio u moru i na kopnu: dva na kopnu i pet u Velikom moru.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
