@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "version": "2.4.5.1",
+  "version": "2.4.6",
   "updated_on": "2026-08-22",
   "scope_books": 19,
   "policy": "A book is complete only when the canonical English source and fresh New Hope 7 Persian and Croatian translations cover every source verse.",
@@ -26,7 +26,7 @@
   "complete_book_count": 17,
   "complete_fresh_verse_rows": 5046,
   "in_progress_books": [
-    {"book_id":"1_enoch","verses":1062,"fa":168,"hr":1062,"chapters_fa_complete":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],"next_chapter":21}
+    {"book_id":"1_enoch","verses":1062,"fa":228,"hr":1062,"chapters_fa_complete":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],"next_chapter":31}
   ],
   "remaining_books": ["sirach","1_enoch"],
   "next_book": "1_enoch",
