@@ -25,7 +25,7 @@
   "complete_book_count": 16,
   "complete_fresh_verse_rows": 4122,
   "in_progress_books": [
-    {"book_id":"1_maccabees","verses":924,"fa":436,"hr":436,"chapters_complete":[1,2,3,4,5,6,7],"next_chapter":8}
+    {"book_id":"1_maccabees","verses":924,"fa":468,"hr":468,"chapters_complete":[1,2,3,4,5,6,7,8],"next_chapter":9}
   ],
   "known_fresh_hr_complete_waiting_for_fa": [
     {"book_id":"1_enoch","chapters":108}
@@ -33,5 +33,5 @@
   "remaining_books": ["sirach","1_maccabees","1_enoch"],
   "next_book": "1_maccabees",
   "release_ready": false,
-  "blocking_reason": "Fresh FA/HR corpus is not complete for the remaining 3 books; First Maccabees is complete through chapter 7; final corpus audit has not yet passed."
+  "blocking_reason": "Fresh FA/HR corpus is not complete for the remaining 3 books; First Maccabees is complete through chapter 8; final corpus audit has not yet passed."
 }
