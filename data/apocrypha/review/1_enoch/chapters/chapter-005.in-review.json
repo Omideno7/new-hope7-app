@@ -6,85 +6,21 @@
   "title_hr": "Prva Henokova knjiga",
   "chapter": 5,
   "status": "in_review",
+  "status_fa": "in_review",
   "status_hr": "in_review",
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "261868852beb3e19374c7fb581a6caf5157785a25995e359e305fee1ee97f186",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa","hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "Observe 〚ye〛 how the trees cover themselves with green leaves and bear fruit: wherefore give ye heed ⌜and know⌝ with regard to all ⌜His works⌝, and recognize how He that liveth for ever hath made them so.",
-      "text_fa": null,
-      "text_hr": "Promatrajte 〚dakle〛 kako se stabla odijevaju zelenim lišćem i donose plod. Zato pomno gledajte ⌜i spoznajte⌝ sva ⌜Njegova djela⌝ te uvidite kako ih je načinio Onaj koji živi dovijeka.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And ⌜all⌝ His works go on ⌜thus⌝ from year to year ⌜for ever⌝, and all the tasks ⌜which⌝ they accomplish for Him, and ⌜their tasks⌝ change not, but according as 〚God〛 hath ordained so is it done.",
-      "text_fa": null,
-      "text_hr": "I ⌜sva⌝ Njegova djela traju ⌜tako⌝ iz godine u godinu ⌜dovijeka⌝; sve zadaće ⌜koje⌝ za Njega izvršavaju ne mijenjaju se, nego se vrši onako kako je 〚Bog〛 odredio.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And behold how the sea and the rivers in like manner accomplish ⌜and change not⌝ their tasks ⌜from His commandments⌝.",
-      "text_fa": null,
-      "text_hr": "Pogledajte kako more i rijeke na isti način izvršavaju ⌜i ne mijenjaju⌝ svoje zadaće ⌜prema Njegovim zapovijedima⌝.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "But ye—ye have not been steadfast, nor done the commandments of the Lord,\nBut ye have turned away and spoken proud and hard words\nWith your impure mouths against His greatness.\nOh, ye hard-hearted, ye shall find no peace.",
-      "text_fa": null,
-      "text_hr": "Ali vi — vi niste bili postojani niti ste vršili Gospodinove zapovijedi,\nnego ste se odvratili i svojim nečistim ustima\ngovorili ohole i grube riječi protiv Njegove veličine.\nO tvrdokorni, nećete naći mira.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "Therefore shall ye execrate your days,\nAnd the years of your life shall perish,\nAnd ⌜the years of your destruction⌝ shall be multiplied in eternal execration,\nAnd ye shall find no mercy.",
-      "text_fa": null,
-      "text_hr": "Zato ćete proklinjati svoje dane,\ngodine će vašega života propasti,\na ⌜godine vaše propasti⌝ umnožit će se u vječnom prokletstvu\ni nećete naći milosrđa.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "[6a] In those days ye shall make your names an eternal execration unto all the righteous,\n\n[6b] And by you shall ⌜all⌝ who curse, curse.\n\n[6c] ⌜And all⌝ the sinners ⌜and godless⌝ shall imprecate by you,\n\n[6d] ⌜And all the ... shall rejoice,\n\n[6e] And there shall be forgiveness of sins,\n\n[6f] And every mercy and peace and forbearance:\n\n[6g] There shall be salvation unto them, a goodly light.\n\n[6i] And for all of you sinners there shall be no salvation,\n\n[6j] But on you all shall abide a curse⌝.",
-      "text_fa": null,
-      "text_hr": "[6a] U one dane učinit ćete svoja imena vječnim prokletstvom među svim pravednicima.\n\n[6b] Vama će se ⌜svi⌝ koji proklinju služiti u svojim kletvama.\n\n[6c] ⌜Svi⌝ grešnici ⌜i bezbožnici⌝ proklinjat će vas.\n\n[6d] ⌜A svi će se ... radovati.\n\n[6e] Bit će oproštenja grijeha,\n\n[6f] svakoga milosrđa, mira i strpljivosti.\n\n[6g] Njima će doći spasenje, divna svjetlost.\n\n[6i] Ali za sve vas grešnike neće biti spasenja,\n\n[6j] nego će na svima vama ostati prokletstvo⌝.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 7,
-      "text_en": "[7c] And for you, the godless, there shall be a curse.\n\n[7a] But for the elect there shall be light and grace and peace,\n\n[7b] And they shall inherit the earth.",
-      "text_fa": null,
-      "text_hr": "[7c] A za vas bezbožnike bit će prokletstvo.\n\n[7a] Ali za izabrane bit će svjetlosti, milosti i mira,\n\n[7b] i oni će baštiniti zemlju.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 8,
-      "text_en": "And then there shall be bestowed upon the elect wisdom,\nAnd they shall all live and never again sin,\nEither through ungodliness or through pride;\nBut they who are wise shall be humble.",
-      "text_fa": null,
-      "text_hr": "Tada će izabranima biti darovana mudrost;\nsvi će živjeti i više nikada neće griješiti,\nni bezbožnošću ni ohološću,\nnego će mudri biti ponizni.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 9,
-      "text_en": "And they shall not again transgress,\nNor shall they sin all the days of their life,\nNor shall they die of (the divine) anger or wrath,\nBut they shall complete the number of the days of their life.\nAnd their lives shall be increased in peace,\nAnd the years of their joy shall be multiplied,\nIn eternal gladness and peace,\nAll the days of their life.",
-      "text_fa": null,
-      "text_hr": "Više neće prestupati\nniti će griješiti u sve dane svojega života.\nNeće umirati od (božanske) srdžbe ili gnjeva,\nnego će dovršiti puni broj dana svojega života.\nŽivot će im se produžiti u miru,\ngodine njihove radosti umnožit će se\nu vječnoj radosti i miru\nkroz sve dane njihova života.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"Observe 〚ye〛 how the trees cover themselves with green leaves and bear fruit: wherefore give ye heed ⌜and know⌝ with regard to all ⌜His works⌝, and recognize how He that liveth for ever hath made them so.","text_fa":"بنگرید 〚و ببینید〛 چگونه درختان خود را با برگ‌های سبز می‌پوشانند و میوه می‌آورند؛ پس به همهٔ ⌜کارهای او⌝ توجه کنید ⌜و آنها را بشناسید⌝ و دریابید که آن کسی که تا ابد زنده است چگونه آنها را چنین آفریده است.","text_hr":"Promatrajte 〚dakle〛 kako se stabla odijevaju zelenim lišćem i donose plod. Zato pomno gledajte ⌜i spoznajte⌝ sva ⌜Njegova djela⌝ te uvidite kako ih je načinio Onaj koji živi dovijeka.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And ⌜all⌝ His works go on ⌜thus⌝ from year to year ⌜for ever⌝, and all the tasks ⌜which⌝ they accomplish for Him, and ⌜their tasks⌝ change not, but according as 〚God〛 hath ordained so is it done.","text_fa":"و ⌜همهٔ⌝ کارهای او ⌜بدین‌گونه⌝ سال به سال ⌜تا ابد⌝ ادامه می‌یابند؛ و تمام وظایفی ⌜که⌝ برای او انجام می‌دهند و ⌜کارهایشان⌝ تغییر نمی‌کند، بلکه همان‌گونه که 〚خدا〛 مقرر کرده است انجام می‌شود.","text_hr":"I ⌜sva⌝ Njegova djela traju ⌜tako⌝ iz godine u godinu ⌜dovijeka⌝; sve zadaće ⌜koje⌝ za Njega izvršavaju ne mijenjaju se, nego se vrši onako kako je 〚Bog〛 odredio.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And behold how the sea and the rivers in like manner accomplish ⌜and change not⌝ their tasks ⌜from His commandments⌝.","text_fa":"و بنگرید که دریا و رودها نیز به همین ترتیب وظایف خود را ⌜مطابق فرمان‌های او انجام می‌دهند و تغییر نمی‌دهند⌝.","text_hr":"Pogledajte kako more i rijeke na isti način izvršavaju ⌜i ne mijenjaju⌝ svoje zadaće ⌜prema Njegovim zapovijedima⌝.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"But ye—ye have not been steadfast, nor done the commandments of the Lord,\nBut ye have turned away and spoken proud and hard words\nWith your impure mouths against His greatness.\nOh, ye hard-hearted, ye shall find no peace.","text_fa":"اما شما ـ شما استوار نمانده‌اید و فرمان‌های خداوند را انجام نداده‌اید،\nبلکه روی گردانده و با دهان‌های ناپاک خود\nسخنان مغرورانه و سخت علیه عظمت او گفته‌اید.\nای سخت‌دلان، شما آرامش نخواهید یافت.","text_hr":"Ali vi — vi niste bili postojani niti ste vršili Gospodinove zapovijedi,\nnego ste se odvratili i svojim nečistim ustima\ngovorili ohole i grube riječi protiv Njegove veličine.\nO tvrdokorni, nećete naći mira.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"Therefore shall ye execrate your days,\nAnd the years of your life shall perish,\nAnd ⌜the years of your destruction⌝ shall be multiplied in eternal execration,\nAnd ye shall find no mercy.","text_fa":"از این رو روزهای خود را نفرین خواهید کرد،\nو سال‌های زندگی‌تان نابود خواهد شد،\nو ⌜سال‌های هلاکت شما⌝ در نفرینی ابدی افزون خواهد گشت،\nو رحمتی نخواهید یافت.","text_hr":"Zato ćete proklinjati svoje dane,\ngodine će vašega života propasti,\na ⌜godine vaše propasti⌝ umnožit će se u vječnom prokletstvu\ni nećete naći milosrđa.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"[6a] In those days ye shall make your names an eternal execration unto all the righteous,\n\n[6b] And by you shall ⌜all⌝ who curse, curse.\n\n[6c] ⌜And all⌝ the sinners ⌜and godless⌝ shall imprecate by you,\n\n[6d] ⌜And all the ... shall rejoice,\n\n[6e] And there shall be forgiveness of sins,\n\n[6f] And every mercy and peace and forbearance:\n\n[6g] There shall be salvation unto them, a goodly light.\n\n[6i] And for all of you sinners there shall be no salvation,\n\n[6j] But on you all shall abide a curse⌝.","text_fa":"[6a] در آن روزها نام‌های خود را برای همهٔ پارسایان به نفرینی ابدی تبدیل خواهید کرد.\n\n[6b] و ⌜همهٔ⌝ کسانی که نفرین می‌کنند، با نام شما نفرین خواهند کرد.\n\n[6c] ⌜و همهٔ⌝ گناهکاران ⌜و بی‌دینان⌝ با نام شما نفرین خواهند نمود.\n\n[6d] ⌜و همهٔ ... شادی خواهند کرد.\n\n[6e] و آمرزش گناهان خواهد بود،\n\n[6f] و هرگونه رحمت و صلح و بردباری؛\n\n[6g] نجات و نوری نیکو برای آنان خواهد بود.\n\n[6i] اما برای همهٔ شما گناهکاران هیچ نجاتی نخواهد بود،\n\n[6j] بلکه نفرین بر همهٔ شما باقی خواهد ماند⌝.","text_hr":"[6a] U one dane učinit ćete svoja imena vječnim prokletstvom među svim pravednicima.\n\n[6b] Vama će se ⌜svi⌝ koji proklinju služiti u svojim kletvama.\n\n[6c] ⌜Svi⌝ grešnici ⌜i bezbožnici⌝ proklinjat će vas.\n\n[6d] ⌜A svi će se ... radovati.\n\n[6e] Bit će oproštenja grijeha,\n\n[6f] svakoga milosrđa, mira i strpljivosti.\n\n[6g] Njima će doći spasenje, divna svjetlost.\n\n[6i] Ali za sve vas grešnike neće biti spasenja,\n\n[6j] nego će na svima vama ostati prokletstvo⌝.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":7,"text_en":"[7c] And for you, the godless, there shall be a curse.\n\n[7a] But for the elect there shall be light and grace and peace,\n\n[7b] And they shall inherit the earth.","text_fa":"[7c] و برای شما بی‌دینان نفرین خواهد بود.\n\n[7a] اما برای برگزیدگان نور و فیض و صلح خواهد بود،\n\n[7b] و آنان زمین را به میراث خواهند برد.","text_hr":"[7c] A za vas bezbožnike bit će prokletstvo.\n\n[7a] Ali za izabrane bit će svjetlosti, milosti i mira,\n\n[7b] i oni će baštiniti zemlju.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":8,"text_en":"And then there shall be bestowed upon the elect wisdom,\nAnd they shall all live and never again sin,\nEither through ungodliness or through pride;\nBut they who are wise shall be humble.","text_fa":"آنگاه حکمت به برگزیدگان عطا خواهد شد،\nو همهٔ آنان زندگی خواهند کرد و دیگر هرگز گناه نخواهند ورزید،\nنه از راه بی‌دینی و نه از راه غرور؛\nبلکه آنان که حکیم‌اند فروتن خواهند بود.","text_hr":"Tada će izabranima biti darovana mudrost;\nsvi će živjeti i više nikada neće griješiti,\nni bezbožnošću ni ohološću,\nnego će mudri biti ponizni.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":9,"text_en":"And they shall not again transgress,\nNor shall they sin all the days of their life,\nNor shall they die of (the divine) anger or wrath,\nBut they shall complete the number of the days of their life.\nAnd their lives shall be increased in peace,\nAnd the years of their joy shall be multiplied,\nIn eternal gladness and peace,\nAll the days of their life.","text_fa":"دیگر از فرمان تجاوز نخواهند کرد،\nو در تمام روزهای زندگی خود گناه نخواهند ورزید،\nو از (خشم الهی) یا غضب نخواهند مرد،\nبلکه شمار کامل روزهای زندگی خود را به پایان خواهند رساند.\nزندگی‌شان در صلح افزوده خواهد شد،\nو سال‌های شادی‌شان بسیار خواهد گردید،\nدر شادی و صلحی جاودان،\nدر تمام روزهای زندگی‌شان.","text_hr":"Više neće prestupati\nniti će griješiti u sve dane svojega života.\nNeće umirati od (božanske) srdžbe ili gnjeva,\nnego će dovršiti puni broj dana svojega života.\nŽivot će im se produžiti u miru,\ngodine njihove radosti umnožit će se\nu vječnoj radosti i miru\nkroz sve dane njihova života.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
