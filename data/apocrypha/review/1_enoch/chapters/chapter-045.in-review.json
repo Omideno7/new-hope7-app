@@ -10,57 +10,13 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "c81d4979ff17ac74a5ff1cf71bd99707a8e8ec9adbf2800ecff6c994765ad8b2",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And this is the Second Parable concerning those who deny the name of the dwelling of the holy ones and the Lord of Spirits.",
-      "text_fa": null,
-      "text_hr": "Ovo je Druga prispodoba o onima koji niječu ime prebivališta svetih i Gospodara duhova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And into the heaven they shall not ascend,\nAnd on the earth they shall not come:\nSuch shall be the lot of the sinners\nWho have denied the name of the Lord of Spirits,\nWho are thus preserved for the day of suffering and tribulation.",
-      "text_fa": null,
-      "text_hr": "Oni neće uzaći na nebo\nniti će doći na zemlju.\nTakva će biti baština grešnika\nkoji su zanijekali ime Gospodara duhova\ni tako se čuvaju za dan patnje i nevolje.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "On that day Mine Elect, One shall sit on the throne of glory\nAnd shall =try= their works,\nAnd their places of rest shall be innumerable.\nAnd their souls shall grow strong within them when they see Mine elect ones,\nAnd those who have called upon My glorious name:",
-      "text_fa": null,
-      "text_hr": "Toga će dana moj Izabrani sjesti na prijestolje slave\ni ispitati njihova djela,\na njegovim počivalištima neće biti broja.\nNjihove će duše ojačati u njima kad vide moje izabrane\ni one koji su zazvali moje slavno ime.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "Then will I cause Mine Elect One to dwell among them.\nAnd I will transform the heaven and make it an eternal blessing and light,",
-      "text_fa": null,
-      "text_hr": "Tada ću svojega Izabranoga nastaniti među njima.\nPreobrazit ću nebo i učiniti ga vječnim blagoslovom i svjetlošću.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "And I will transform the earth and make it a blessing:\nAnd I will cause Mine elect ones to dwell upon it:\nBut the sinners and evil-doers shall not set foot thereon.",
-      "text_fa": null,
-      "text_hr": "Preobrazit ću zemlju i učiniti je blagoslovom,\nte na njoj nastaniti svoje izabrane.\nAli grešnici i zločinci neće na nju stupiti.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "For I have provided and satisfied with peace My righteous ones,\nAnd have caused them to dwell before Me:\nBut for the sinners there is judgement impending with Me,\nSo that I shall destroy them from the face of the earth.",
-      "text_fa": null,
-      "text_hr": "Jer svojim sam pravednicima pribavio mir i njime ih nasitio\nte ih nastanio pred sobom.\nAli kod mene grešnike čeka sud,\nda ih uništim s lica zemlje.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And this is the Second Parable concerning those who deny the name of the dwelling of the holy ones and the Lord of Spirits.","text_fa":"و این تمثیل دوم است دربارهٔ کسانی که نامِ منزلگاه مقدسان و خداوندِ ارواح را انکار می‌کنند.","text_hr":"Ovo je Druga prispodoba o onima koji niječu ime prebivališta svetih i Gospodara duhova.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And into the heaven they shall not ascend,\nAnd on the earth they shall not come:\nSuch shall be the lot of the sinners\nWho have denied the name of the Lord of Spirits,\nWho are thus preserved for the day of suffering and tribulation.","text_fa":"آنان به آسمان صعود نخواهند کرد،\nو بر زمین نیز نخواهند آمد؛\nچنین خواهد بود نصیب گناهکارانی\nکه نام خداوندِ ارواح را انکار کرده‌اند،\nو برای روز رنج و مصیبت نگاه داشته شده‌اند.","text_hr":"Oni neće uzaći na nebo\nniti će doći na zemlju.\nTakva će biti baština grešnika\nkoji su zanijekali ime Gospodara duhova\ni tako se čuvaju za dan patnje i nevolje.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"On that day Mine Elect, One shall sit on the throne of glory\nAnd shall =try= their works,\nAnd their places of rest shall be innumerable.\nAnd their souls shall grow strong within them when they see Mine elect ones,\nAnd those who have called upon My glorious name:","text_fa":"در آن روز برگزیدهٔ من بر تخت جلال خواهد نشست\nو اعمال آنان را =خواهد آزمود=،\nو آرامگاه‌های آنان بی‌شمار خواهد بود.\nو هنگامی که برگزیدگان من\nو کسانی را که نام پرجلال مرا خوانده‌اند ببینند، جان‌هایشان در درونشان قوت خواهد گرفت.","text_hr":"Toga će dana moj Izabrani sjesti na prijestolje slave\ni ispitati njihova djela,\na njegovim počivalištima neće biti broja.\nNjihove će duše ojačati u njima kad vide moje izabrane\ni one koji su zazvali moje slavno ime.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"Then will I cause Mine Elect One to dwell among them.\nAnd I will transform the heaven and make it an eternal blessing and light,","text_fa":"آنگاه برگزیدهٔ خود را در میان آنان ساکن خواهم کرد.\nو آسمان را دگرگون خواهم ساخت و آن را به برکتی جاودان و نوری ابدی تبدیل خواهم کرد،","text_hr":"Tada ću svojega Izabranoga nastaniti među njima.\nPreobrazit ću nebo i učiniti ga vječnim blagoslovom i svjetlošću.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"And I will transform the earth and make it a blessing:\nAnd I will cause Mine elect ones to dwell upon it:\nBut the sinners and evil-doers shall not set foot thereon.","text_fa":"و زمین را دگرگون خواهم کرد و آن را برکت خواهم ساخت؛\nو برگزیدگان خود را بر آن ساکن خواهم نمود؛\nاما گناهکاران و بدکاران بر آن قدم نخواهند گذاشت.","text_hr":"Preobrazit ću zemlju i učiniti je blagoslovom,\nte na njoj nastaniti svoje izabrane.\nAli grešnici i zločinci neće na nju stupiti.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"For I have provided and satisfied with peace My righteous ones,\nAnd have caused them to dwell before Me:\nBut for the sinners there is judgement impending with Me,\nSo that I shall destroy them from the face of the earth.","text_fa":"زیرا برای پارسایان خود صلح فراهم کرده و آنان را از آن سیر ساخته‌ام،\nو ایشان را در حضور خود ساکن کرده‌ام؛\nاما نزد من داوری برای گناهکاران در پیش است،\nتا آنان را از روی زمین نابود کنم.","text_hr":"Jer svojim sam pravednicima pribavio mir i njime ih nasitio\nte ih nastanio pred sobom.\nAli kod mene grešnike čeka sud,\nda ih uništim s lica zemlje.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
