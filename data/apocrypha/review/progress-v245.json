@@ -13,19 +13,17 @@
     {"book_id":"letter_of_jeremiah","verses":73,"fa":73,"hr":73},
     {"book_id":"additions_to_esther","verses":105,"fa":105,"hr":105},
     {"book_id":"3_maccabees","verses":228,"fa":228,"hr":228},
-    {"book_id":"4_maccabees","verses":484,"fa":484,"hr":484}
+    {"book_id":"4_maccabees","verses":484,"fa":484,"hr":484},
+    {"book_id":"judith","verses":339,"fa":339,"hr":339}
   ],
-  "complete_book_count": 9,
-  "complete_fresh_verse_rows": 1086,
+  "complete_book_count": 10,
+  "complete_fresh_verse_rows": 1425,
   "known_fresh_hr_complete_waiting_for_fa": [
     {"book_id":"1_esdras","verses":448},
     {"book_id":"2_esdras","verses":874}
   ],
-  "partial_books": [
-    {"book_id":"judith","verses":339,"fa":339,"hr":69,"hr_completed_chapters":[1,2,3,4]}
-  ],
-  "next_book": "judith",
-  "next_range": "chapters 5-8 Croatian",
+  "remaining_books": ["1_esdras","2_esdras","tobit","wisdom_of_solomon","sirach","baruch","1_maccabees","2_maccabees","1_enoch"],
+  "next_book": "1_enoch",
   "release_ready": false,
-  "blocking_reason": "Fresh FA/HR corpus is not complete for all 19 books; final corpus audit has not yet passed."
+  "blocking_reason": "Fresh FA/HR corpus is not complete for the remaining 9 books; final corpus audit has not yet passed."
 }
