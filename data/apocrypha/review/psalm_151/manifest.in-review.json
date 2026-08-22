@@ -5,30 +5,26 @@
   "title_en": "Psalm 151",
   "title_hr": "Psalam 151",
   "status": "in_review",
-  "prepared_on": "2026-08-21",
+  "prepared_on": "2026-08-22",
   "included_ranges": {
-    "hr": [
-      [
-        1,
-        1
-      ]
-    ]
+    "fa": [[1,1]],
+    "hr": [[1,1]]
   },
   "source_translation": "WEBC",
   "source_translation_name": "World English Bible Classic",
   "source_url": "https://ebible.org/eng-web/PS201.htm",
   "source_license": "Public Domain",
   "versification": "WEBC",
-  "translation_note": "Fresh project Croatian rendering; prior page-based draft was used only for terminology comparison.",
+  "translation_note": "Fresh New Hope 7 Persian and Croatian renderings from the public-domain WEBC reference. Persian wording is natural and readable while preserving the source meaning.",
   "totals": {
     "aligned_source_verses": 7,
-    "persian_in_review_verses": 0,
+    "persian_in_review_verses": 7,
     "croatian_in_review_verses": 7
   },
   "chapter_qa": {
     "1": {
       "verse_count": 7,
-      "persian_in_review_count": 0,
+      "persian_in_review_count": 7,
       "croatian_in_review_count": 7,
       "source_english_sha256": "5966c8b7d492ed62f0735e167200936065647a6c7b268afa2ec0ff5b9e60f129"
     }
