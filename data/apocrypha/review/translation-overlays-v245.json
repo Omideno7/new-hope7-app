@@ -45,6 +45,8 @@
     "data/apocrypha/review/2_esdras/translations/chapters-15-16.fa.in-review.json",
     "data/apocrypha/review/tobit/translations/chapters-01-04.fa-hr.in-review.json",
     "data/apocrypha/review/tobit/translations/chapters-05-08.fa-hr.in-review.json",
-    "data/apocrypha/review/tobit/translations/chapters-09-14.fa-hr.in-review.json"
+    "data/apocrypha/review/tobit/translations/chapters-09-14.fa-hr.in-review.json",
+    "data/apocrypha/review/baruch/translations/chapters-01-02.fa-hr.in-review.json",
+    "data/apocrypha/review/baruch/translations/chapters-03-05.fa-hr.in-review.json"
   ]
 }

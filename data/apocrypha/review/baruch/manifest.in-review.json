@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "book_id": "baruch",
+  "title_fa": "باروخ",
+  "title_en": "Baruch",
+  "title_hr": "Baruh",
+  "status": "in_review",
+  "prepared_on": "2026-08-22",
+  "included_ranges": {"fa":[[1,5]],"hr":[[1,5]]},
+  "locales_in_scope": ["fa","hr"],
+  "source_translation": "KJVA",
+  "source_translation_name": "King James Version with Apocrypha",
+  "source_license": "Public Domain",
+  "source_blob_sha": "c4bba44f7a92c858cb4e43fa5ffdcff270b59d63",
+  "versification": "KJVA",
+  "translation_files": [
+    "data/apocrypha/review/baruch/translations/chapters-01-02.fa-hr.in-review.json",
+    "data/apocrypha/review/baruch/translations/chapters-03-05.fa-hr.in-review.json"
+  ],
+  "totals": {"chapters":5,"aligned_source_verses":140,"persian_in_review_verses":140,"croatian_in_review_verses":140},
+  "chapter_qa": {
+    "1":{"verse_count":22,"fa":22,"hr":22},
+    "2":{"verse_count":35,"fa":35,"hr":35},
+    "3":{"verse_count":37,"fa":37,"hr":37},
+    "4":{"verse_count":37,"fa":37,"hr":37},
+    "5":{"verse_count":9,"fa":9,"hr":9}
+  }
+}
