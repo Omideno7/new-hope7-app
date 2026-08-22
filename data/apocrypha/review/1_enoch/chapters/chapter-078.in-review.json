@@ -10,145 +10,24 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "cfb37ef4f584e86b54ab024f7d5c8cd1339761833fb03a02252410b3e44dd40f",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And the names of the sun are the following: the first Orjârês, and the second Tômâs.",
-      "text_fa": null,
-      "text_hr": "A imena sunca su sljedeća: prvo Orjârês, a drugo Tômâs.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And the moon has four names: the first name is Asônjâ, the second Eblâ, the third Benâsê, and the fourth Erâe.",
-      "text_fa": null,
-      "text_hr": "I mjesec ima četiri imena: prvo ime je Asônjâ, drugo Eblâ, treće Benâsê, a četvrto Erâe.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "These are the two great luminaries: their circumference is like the circumference of the heaven, and the size of the circumference of both is alike.",
-      "text_fa": null,
-      "text_hr": "Ovo su dva velika svjetla: njihov opseg je poput opsega neba, a veličina opsega oba je jednaka.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "In the circumference of the sun there are seven portions of light which are added to it more than to the moon, and in definite measures it is transferred till the seventh portion of the sun is exhausted.",
-      "text_fa": null,
-      "text_hr": "U Sunčevu krugu nalazi se sedam dijelova svjetlosti više nego u Mjesečevu. Svjetlost se u određenim mjerama prenosi dok se ne iscrpi sedmi dio Sunčeve svjetlosti.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "And they set and enter the portals of the west, and make their revolution by the north, and come forth through the eastern portals on the face of the heaven.",
-      "text_fa": null,
-      "text_hr": "Zalaze i ulaze kroz zapadna vrata, obilaze prema sjeveru i izlaze kroz istočna vrata na lice neba.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "And when the moon rises one-fourteenth part appears in the heaven: [the light becomes full in her]: on the fourteenth day she accomplishes her light.",
-      "text_fa": null,
-      "text_hr": "Kad Mjesec iziđe, na nebu se pojavi jedna četrnaestina [svjetlost u njemu postaje puna]; četrnaestoga dana dovršava svoju svjetlost.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 7,
-      "text_en": "And fifteen parts of light are transferred to her till the fifteenth day (when) her light is accomplished, according to the sign of the year, and she becomes fifteen parts, and the moon grows by (the addition of) fourteenth parts.",
-      "text_fa": null,
-      "text_hr": "Do petnaestoga dana prenese mu se petnaest dijelova svjetlosti, kada mu se svjetlost ispuni prema znaku godine. Njegova svjetlost tada ima petnaest dijelova, a Mjesec raste za dodatnih četrnaest dijelova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 8,
-      "text_en": "And in her waning (the moon) decreases on the first day to fourteen parts of her light, on the second to thirteen parts of light, on the third to twelve, on the fourth to eleven, on the fifth to ten, on the sixth to nine, on the seventh to eight, on the eighth to seven, on the ninth to six, on the tenth to five, on the eleventh to four, on the twelfth to three, on the thirteenth to two, on the fourteenth to the half of a seventh, and all her remaining light disappears wholly on the fifteenth.",
-      "text_fa": null,
-      "text_hr": "I u svom opadanju (Mjesec) se smanjuje prvog dana na četrnaest dijelova svjetla, drugog na trinaest dijelova svjetla, trećeg na dvanaest, četvrtog na jedanaest, petog na deset, šestog na devet, sedmog na osam, osmog na sedam, devetog na šest, desetog na pet, na jedanaesti na četiri, na dvanaesti na tri, na trinaesti na dva, na četrnaesti na polovicu sedme, a svo njegovo preostalo svjetlo potpuno nestaje na petnaestom.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 9,
-      "text_en": "And in certain months the month has twenty-nine days and once twenty-eight.",
-      "text_fa": null,
-      "text_hr": "I u određenim mjesecima mjesec ima dvadeset i devet dana, a jednom dvadeset i osam.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 10,
-      "text_en": "And Uriel showed me another law: when light is transferred to the moon, and on which side it is transferred to her by the sun.",
-      "text_fa": null,
-      "text_hr": "Uriel mi je pokazao još jedan zakon: kada se svjetlost prenosi na Mjesec i s koje mu je strane Sunce prenosi.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 11,
-      "text_en": "During all the period during which the moon is growing in her light, she is transferring it to herself when opposite to the sun during fourteen days [her light is accomplished in the heaven], and when she is illumined throughout, her light is accomplished in the heaven.",
-      "text_fa": null,
-      "text_hr": "Tijekom cijeloga razdoblja u kojem Mjesecu raste svjetlost, on je prima dok je četrnaest dana nasuprot Suncu [njegova se svjetlost dovršava na nebu]. Kad je posve osvijetljen, njegova se svjetlost dovršava na nebu.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 12,
-      "text_en": "And on the first day she is called the new moon, for on that day the light rises upon her.",
-      "text_fa": null,
-      "text_hr": "Prvoga dana zove se mladi Mjesec, jer toga dana svjetlost izlazi nad njim.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 13,
-      "text_en": "She becomes full moon exactly on the day when the sun sets in the west, and from the east she rises at night, and the moon shines the whole night through till the sun rises over against her and the moon is seen over against the sun.",
-      "text_fa": null,
-      "text_hr": "Postaje pun Mjesec upravo onoga dana kada Sunce zađe na zapadu, a on noću iziđe s istoka. Mjesec sja cijelu noć dok Sunce ne iziđe nasuprot njemu i dok se Mjesec ne nađe nasuprot Suncu.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 14,
-      "text_en": "On the side whence the light of the moon comes forth, there again she wanes till all the light vanishes and all the days of the month are at an end, and her circumference is empty, void of light.",
-      "text_fa": null,
-      "text_hr": "Na strani s koje Mjesečeva svjetlost izlazi on ponovno slabi dok sva svjetlost ne nestane i ne završe svi dani mjeseca; tada mu je krug prazan i bez svjetlosti.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 15,
-      "text_en": "And three months she makes of thirty days, and at her time she makes three months of twenty-nine days each, in which she accomplishes her waning in the first period of time, and in the first portal for one hundred and seventy-seven days.",
-      "text_fa": null,
-      "text_hr": "Tri mjeseca ima po trideset dana, a u svojem razdoblju ima tri mjeseca po dvadeset i devet dana. U njima dovršava svoje opadanje u prvom vremenskom razdoblju i na prvim vratima tijekom 177 dana.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 16,
-      "text_en": "And in the time of her going out she appears for three months (of) thirty days each, and for three months she appears (of) twenty-nine each.",
-      "text_fa": null,
-      "text_hr": "U vrijeme svojega izlaženja pojavljuje se tri mjeseca po trideset dana i tri mjeseca po dvadeset i devet dana.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 17,
-      "text_en": "At night she appears like a man for twenty days each time, and by day she appears like the heaven, and there is nothing else in her save her light.",
-      "text_fa": null,
-      "text_hr": "Noću se svaki put pojavljuje poput čovjeka tijekom dvadeset dana, a danju poput neba; u njemu nema ničega osim njegove svjetlosti.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And the names of the sun are the following: the first Orjârês, and the second Tômâs.","text_fa":"و نام‌های خورشید چنین است: نخست اُریارِس، و دوم توماس.","text_hr":"A imena sunca su sljedeća: prvo Orjârês, a drugo Tômâs.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And the moon has four names: the first name is Asônjâ, the second Eblâ, the third Benâsê, and the fourth Erâe.","text_fa":"و ماه چهار نام دارد: نام نخست آسونیا، دوم اِبلا، سوم بِناسه، و چهارم اِرائه.","text_hr":"I mjesec ima četiri imena: prvo ime je Asônjâ, drugo Eblâ, treće Benâsê, a četvrto Erâe.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"These are the two great luminaries: their circumference is like the circumference of the heaven, and the size of the circumference of both is alike.","text_fa":"اینها دو نورافشان بزرگ‌اند؛ محیط آنها مانند محیط آسمان است و اندازهٔ محیط هر دو یکسان است.","text_hr":"Ovo su dva velika svjetla: njihov opseg je poput opsega neba, a veličina opsega oba je jednaka.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"In the circumference of the sun there are seven portions of light which are added to it more than to the moon, and in definite measures it is transferred till the seventh portion of the sun is exhausted.","text_fa":"در محیط خورشید هفت سهم نور وجود دارد که بیش از ماه به آن افزوده شده است؛ و این نور با اندازه‌های معین منتقل می‌شود تا سهم هفتم نور خورشید به پایان برسد.","text_hr":"U Sunčevu krugu nalazi se sedam dijelova svjetlosti više nego u Mjesečevu. Svjetlost se u određenim mjerama prenosi dok se ne iscrpi sedmi dio Sunčeve svjetlosti.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"And they set and enter the portals of the west, and make their revolution by the north, and come forth through the eastern portals on the face of the heaven.","text_fa":"آنها غروب می‌کنند و وارد دروازه‌های غرب می‌شوند، از راه شمال گردش خود را انجام می‌دهند و از دروازه‌های شرقی بر چهرهٔ آسمان بیرون می‌آیند.","text_hr":"Zalaze i ulaze kroz zapadna vrata, obilaze prema sjeveru i izlaze kroz istočna vrata na lice neba.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"And when the moon rises one-fourteenth part appears in the heaven: [the light becomes full in her]: on the fourteenth day she accomplishes her light.","text_fa":"و هنگامی که ماه طلوع می‌کند، یک چهاردهم آن در آسمان پدیدار می‌شود؛ [نور در آن کامل می‌گردد]؛ و در روز چهاردهم، نور خود را کامل می‌کند.","text_hr":"Kad Mjesec iziđe, na nebu se pojavi jedna četrnaestina [svjetlost u njemu postaje puna]; četrnaestoga dana dovršava svoju svjetlost.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":7,"text_en":"And fifteen parts of light are transferred to her till the fifteenth day (when) her light is accomplished, according to the sign of the year, and she becomes fifteen parts, and the moon grows by (the addition of) fourteenth parts.","text_fa":"تا روز پانزدهم، پانزده سهم نور به آن منتقل می‌شود و در آن روز نورش مطابق نشانهٔ سال کامل می‌گردد؛ و به پانزده سهم می‌رسد، و ماه با افزوده‌شدن سهم‌های چهاردهم رشد می‌کند.","text_hr":"Do petnaestoga dana prenese mu se petnaest dijelova svjetlosti, kada mu se svjetlost ispuni prema znaku godine. Njegova svjetlost tada ima petnaest dijelova, a Mjesec raste za dodatnih četrnaest dijelova.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":8,"text_en":"And in her waning (the moon) decreases on the first day to fourteen parts of her light, on the second to thirteen parts of light, on the third to twelve, on the fourth to eleven, on the fifth to ten, on the sixth to nine, on the seventh to eight, on the eighth to seven, on the ninth to six, on the tenth to five, on the eleventh to four, on the twelfth to three, on the thirteenth to two, on the fourteenth to the half of a seventh, and all her remaining light disappears wholly on the fifteenth.","text_fa":"و هنگام کاسته‌شدن، ماه در روز نخست به چهارده سهم نور، روز دوم به سیزده سهم، روز سوم به دوازده، روز چهارم به یازده، روز پنجم به ده، روز ششم به نه، روز هفتم به هشت، روز هشتم به هفت، روز نهم به شش، روز دهم به پنج، روز یازدهم به چهار، روز دوازدهم به سه، روز سیزدهم به دو، روز چهاردهم به نصفِ یک هفتم کاهش می‌یابد؛ و در روز پانزدهم تمام نور باقی‌مانده‌اش کاملاً ناپدید می‌شود.","text_hr":"I u svom opadanju (Mjesec) se smanjuje prvog dana na četrnaest dijelova svjetla, drugog na trinaest dijelova svjetla, trećeg na dvanaest, četvrtog na jedanaest, petog na deset, šestog na devet, sedmog na osam, osmog na sedam, devetog na šest, desetog na pet, na jedanaesti na četiri, na dvanaesti na tri, na trinaesti na dva, na četrnaesti na polovicu sedme, a svo njegovo preostalo svjetlo potpuno nestaje na petnaestom.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":9,"text_en":"And in certain months the month has twenty-nine days and once twenty-eight.","text_fa":"و در برخی ماه‌ها، ماه بیست‌ونه روز دارد و یک بار بیست‌وهشت روز.","text_hr":"I u određenim mjesecima mjesec ima dvadeset i devet dana, a jednom dvadeset i osam.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":10,"text_en":"And Uriel showed me another law: when light is transferred to the moon, and on which side it is transferred to her by the sun.","text_fa":"و اوریئل قانون دیگری به من نشان داد: اینکه نور چه هنگام به ماه منتقل می‌شود و خورشید از کدام سو آن را به ماه می‌رساند.","text_hr":"Uriel mi je pokazao još jedan zakon: kada se svjetlost prenosi na Mjesec i s koje mu je strane Sunce prenosi.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":11,"text_en":"During all the period during which the moon is growing in her light, she is transferring it to herself when opposite to the sun during fourteen days [her light is accomplished in the heaven], and when she is illumined throughout, her light is accomplished in the heaven.","text_fa":"در تمام مدتی که نور ماه رو به افزایش است، هنگامی که طی چهارده روز در برابر خورشید قرار دارد، نور را به خود می‌گیرد [و نورش در آسمان کامل می‌شود]؛ و وقتی سراسر روشن شد، نورش در آسمان به کمال می‌رسد.","text_hr":"Tijekom cijeloga razdoblja u kojem Mjesecu raste svjetlost, on je prima dok je četrnaest dana nasuprot Suncu [njegova se svjetlost dovršava na nebu]. Kad je posve osvijetljen, njegova se svjetlost dovršava na nebu.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":12,"text_en":"And on the first day she is called the new moon, for on that day the light rises upon her.","text_fa":"و در روز نخست، «ماه نو» نامیده می‌شود، زیرا در آن روز نور بر آن طلوع می‌کند.","text_hr":"Prvoga dana zove se mladi Mjesec, jer toga dana svjetlost izlazi nad njim.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":13,"text_en":"She becomes full moon exactly on the day when the sun sets in the west, and from the east she rises at night, and the moon shines the whole night through till the sun rises over against her and the moon is seen over against the sun.","text_fa":"ماه دقیقاً در روزی کامل می‌شود که خورشید در غرب غروب می‌کند و ماه شب‌هنگام از شرق طلوع می‌کند؛ و تمام شب می‌درخشد تا خورشید در برابرش طلوع کند و ماه روبه‌روی خورشید دیده شود.","text_hr":"Postaje pun Mjesec upravo onoga dana kada Sunce zađe na zapadu, a on noću iziđe s istoka. Mjesec sja cijelu noć dok Sunce ne iziđe nasuprot njemu i dok se Mjesec ne nađe nasuprot Suncu.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":14,"text_en":"On the side whence the light of the moon comes forth, there again she wanes till all the light vanishes and all the days of the month are at an end, and her circumference is empty, void of light.","text_fa":"از همان سویی که نور ماه پدیدار می‌شود، دوباره رو به کاستی می‌رود تا تمام نور ناپدید شود و همهٔ روزهای ماه به پایان برسد؛ آنگاه محیط آن خالی و بی‌نور می‌شود.","text_hr":"Na strani s koje Mjesečeva svjetlost izlazi on ponovno slabi dok sva svjetlost ne nestane i ne završe svi dani mjeseca; tada mu je krug prazan i bez svjetlosti.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":15,"text_en":"And three months she makes of thirty days, and at her time she makes three months of twenty-nine days each, in which she accomplishes her waning in the first period of time, and in the first portal for one hundred and seventy-seven days.","text_fa":"و سه ماه را سی‌روزه می‌سازد، و در زمان خود سه ماه دیگر را هر یک بیست‌ونه‌روزه؛ در این مدت، کاهش نور خود را در دورهٔ نخست زمان و در دروازهٔ نخست، طی صدوهفتادوهفت روز کامل می‌کند.","text_hr":"Tri mjeseca ima po trideset dana, a u svojem razdoblju ima tri mjeseca po dvadeset i devet dana. U njima dovršava svoje opadanje u prvom vremenskom razdoblju i na prvim vratima tijekom 177 dana.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":16,"text_en":"And in the time of her going out she appears for three months (of) thirty days each, and for three months she appears (of) twenty-nine each.","text_fa":"و در زمان بیرون‌آمدنش، سه ماه هر یک سی روز پدیدار می‌شود، و سه ماه هر یک بیست‌ونه روز.","text_hr":"U vrijeme svojega izlaženja pojavljuje se tri mjeseca po trideset dana i tri mjeseca po dvadeset i devet dana.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":17,"text_en":"At night she appears like a man for twenty days each time, and by day she appears like the heaven, and there is nothing else in her save her light.","text_fa":"در شب، هر بار به مدت بیست روز همچون انسانی پدیدار می‌شود؛ و در روز همچون آسمان دیده می‌شود، و جز نورش چیزی در آن نیست.","text_hr":"Noću se svaki put pojavljuje poput čovjeka tijekom dvadeset dana, a danju poput neba; u njemu nema ničega osim njegove svjetlosti.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
