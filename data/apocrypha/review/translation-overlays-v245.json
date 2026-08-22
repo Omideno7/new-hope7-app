@@ -13,6 +13,13 @@
     "data/apocrypha/review/prayer_of_azariah/chapters/chapter-01.in-review.json",
     "data/apocrypha/review/prayer_of_azariah/translations/chapter-01.hr.in-review.json",
     "data/apocrypha/review/letter_of_jeremiah/chapters/chapter-01.in-review.json",
-    "data/apocrypha/review/additions_to_esther/translations/fa.in-review.json"
+    "data/apocrypha/review/additions_to_esther/translations/fa.in-review.json",
+    "data/apocrypha/review/3_maccabees/translations/chapter-01.fa.in-review.json",
+    "data/apocrypha/review/3_maccabees/translations/chapter-02.fa.in-review.json",
+    "data/apocrypha/review/3_maccabees/translations/chapter-03.fa.in-review.json",
+    "data/apocrypha/review/3_maccabees/translations/chapter-04.fa.in-review.json",
+    "data/apocrypha/review/3_maccabees/translations/chapter-05.fa.in-review.json",
+    "data/apocrypha/review/3_maccabees/translations/chapter-06.fa.in-review.json",
+    "data/apocrypha/review/3_maccabees/translations/chapter-07.fa.in-review.json"
   ]
 }
