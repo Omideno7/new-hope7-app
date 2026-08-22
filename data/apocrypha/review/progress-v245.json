@@ -25,12 +25,11 @@
   ],
   "complete_book_count": 17,
   "complete_fresh_verse_rows": 5046,
-  "in_progress_books": [],
-  "known_fresh_hr_complete_waiting_for_fa": [
-    {"book_id":"1_enoch","chapters":108}
+  "in_progress_books": [
+    {"book_id":"1_enoch","verses":1062,"fa":74,"hr":1062,"chapters_fa_complete":[1,2,3,4,5,6,7,8,9,10],"next_chapter":11}
   ],
   "remaining_books": ["sirach","1_enoch"],
   "next_book": "1_enoch",
   "release_ready": false,
-  "blocking_reason": "Fresh New Hope 7 corpus is not complete for Sirach and First Enoch; final corpus audit has not yet passed."
+  "blocking_reason": "Fresh New Hope 7 Persian translation is in progress for First Enoch; Sirach is not yet complete; final corpus audit has not yet passed."
 }
