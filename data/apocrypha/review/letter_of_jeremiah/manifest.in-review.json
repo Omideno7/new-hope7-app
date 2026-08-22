@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "book_id": "letter_of_jeremiah",
+  "title_fa": "نامه ارمیا",
+  "title_en": "Letter of Jeremiah",
+  "title_hr": "Jeremijino pismo",
+  "status": "in_review",
+  "prepared_on": "2026-08-22",
+  "included_ranges": {"fa":[[1,1]],"hr":[[1,1]]},
+  "source_translation": "KJVA",
+  "source_translation_name": "King James Version with Apocrypha",
+  "source_file": "data/apocrypha/sources/en/letter_of_jeremiah.en.json",
+  "source_license": "Public Domain",
+  "versification": "KJVA normalized for the New Hope 7 nineteen-book set",
+  "translation_note": "Fresh New Hope 7 Persian and Croatian translations from the public-domain KJVA reference.",
+  "totals": {"aligned_source_verses":73,"persian_in_review_verses":73,"croatian_in_review_verses":73},
+  "chapter_qa": {"1":{"verse_count":73,"persian_in_review_count":73,"croatian_in_review_count":73}}
+}
