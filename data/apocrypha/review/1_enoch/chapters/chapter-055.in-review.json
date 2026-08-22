@@ -10,41 +10,11 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "0bff8df20ca5460e7d4dcec816c8f7960c44a1c26515884d33641dcd83dafe98",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And after that the Head of Days repented and said: ‘In vain have I destroyed all who dwell on the earth.’",
-      "text_fa": null,
-      "text_hr": "Nakon toga Glava Dana požalio je i rekao: „Uzalud sam uništio sve stanovnike zemlje.“",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And He sware by His great name: ‘Henceforth I will not do so to all who dwell on the earth, and I will set a sign in the heaven: and this shall be a pledge of good faith between Me and them for ever, so long as heaven is above the earth. And this is in accordance with My command.’",
-      "text_fa": null,
-      "text_hr": "Zakleo se svojim velikim imenom: „Od sada više neću tako postupiti sa svim stanovnicima zemlje. Postavit ću znak na nebu i on će zauvijek biti zalog vjernosti između mene i njih, sve dok je nebo nad zemljom. Tako sam zapovjedio.“",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "‘When I have desired to take hold of them by the hand of the angels on the day of tribulation and pain =because of= this, I will cause My chastisement and My wrath to abide upon them, saith God, the Lord of Spirits.",
-      "text_fa": null,
-      "text_hr": "„Kad na dan nevolje i boli =zbog= ovoga poželim da ih uhvate ruke anđela, dat ću da moja kazna i srdžba počivaju na njima“, govori Bog, Gospodar duhova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "Ye †mighty kings† who dwell on the earth, ye shall have to behold Mine Elect One, how he sits on the throne of glory and judges Azâzêl, and all his associates, and all his hosts in the name of the Lord of Spirits.’",
-      "text_fa": null,
-      "text_hr": "Vi †moćni kraljevi† koji prebivate na zemlji morat ćete gledati mojega Izabranoga kako sjedi na prijestolju slave i u ime Gospodara duhova sudi Azazelu, svim njegovim drugovima i svim njegovim vojskama.“",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And after that the Head of Days repented and said: ‘In vain have I destroyed all who dwell on the earth.’","text_fa":"و پس از آن سرِ روزها پشیمان شد و گفت: «بیهوده همهٔ ساکنان زمین را نابود کردم.»","text_hr":"Nakon toga Glava Dana požalio je i rekao: „Uzalud sam uništio sve stanovnike zemlje.“","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And He sware by His great name: ‘Henceforth I will not do so to all who dwell on the earth, and I will set a sign in the heaven: and this shall be a pledge of good faith between Me and them for ever, so long as heaven is above the earth. And this is in accordance with My command.’","text_fa":"و به نام عظیم خود سوگند خورد: «از این پس با همهٔ ساکنان زمین چنین نخواهم کرد؛ و نشانه‌ای در آسمان قرار خواهم داد، و این تا ابد، تا زمانی که آسمان بر فراز زمین است، پیمان وفاداری میان من و آنان خواهد بود. و این مطابق فرمان من است.»","text_hr":"Zakleo se svojim velikim imenom: „Od sada više neću tako postupiti sa svim stanovnicima zemlje. Postavit ću znak na nebu i on će zauvijek biti zalog vjernosti između mene i njih, sve dok je nebo nad zemljom. Tako sam zapovjedio.“","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"‘When I have desired to take hold of them by the hand of the angels on the day of tribulation and pain =because of= this, I will cause My chastisement and My wrath to abide upon them, saith God, the Lord of Spirits.","text_fa":"«هنگامی که در روز مصیبت و درد =به سبب= این امر بخواهم آنان را به دست فرشتگان بگیرم، مجازات و غضب خود را بر آنان قرار خواهم داد؛» چنین می‌گوید خدا، خداوندِ ارواح.","text_hr":"„Kad na dan nevolje i boli =zbog= ovoga poželim da ih uhvate ruke anđela, dat ću da moja kazna i srdžba počivaju na njima“, govori Bog, Gospodar duhova.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"Ye †mighty kings† who dwell on the earth, ye shall have to behold Mine Elect One, how he sits on the throne of glory and judges Azâzêl, and all his associates, and all his hosts in the name of the Lord of Spirits.’","text_fa":"ای †پادشاهان نیرومند† که بر زمین ساکنید، باید برگزیدهٔ مرا ببینید که چگونه بر تخت جلال می‌نشیند و عزازیل، همهٔ همراهانش و تمام سپاهیانش را در نام خداوندِ ارواح داوری می‌کند.»","text_hr":"Vi †moćni kraljevi† koji prebivate na zemlji morat ćete gledati mojega Izabranoga kako sjedi na prijestolju slave i u ime Gospodara duhova sudi Azazelu, svim njegovim drugovima i svim njegovim vojskama.“","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
