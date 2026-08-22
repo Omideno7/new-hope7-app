@@ -6,21 +6,13 @@
   "title_hr": "Prva Henokova knjiga",
   "chapter": 4,
   "status": "in_review",
+  "status_fa": "in_review",
   "status_hr": "in_review",
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "b132f2a7eb2ae3c2a5cfc2de31a5e66a4f3c393f519580db8e7e6a1440f5665e",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa","hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And again, observe ye the days of summer how the sun is above the earth over against it. And you seek shade and shelter by reason of the heat of the sun, and the earth also burns with glowing heat, and so you cannot tread on the earth, or on a rock by reason of its heat.",
-      "text_fa": null,
-      "text_hr": "I opet, promatrajte ljetne dane: kako je sunce nad zemljom, nasuprot njoj. Zbog sunčeve žege tražite hlad i zaklon, a zemlja također gori od žarke vrućine, pa zbog te žege ne možete stupiti ni na zemlju ni na stijenu.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And again, observe ye the days of summer how the sun is above the earth over against it. And you seek shade and shelter by reason of the heat of the sun, and the earth also burns with glowing heat, and so you cannot tread on the earth, or on a rock by reason of its heat.","text_fa":"و باز به روزهای تابستان بنگرید؛ چگونه خورشید بر فراز زمین و در برابر آن قرار دارد. از شدت گرمای خورشید در پی سایه و پناهگاه می‌گردید، و زمین نیز از حرارت سوزان می‌گدازد، تا آنجا که به سبب گرمایش نمی‌توانید بر زمین یا بر صخره قدم بگذارید.","text_hr":"I opet, promatrajte ljetne dane: kako je sunce nad zemljom, nasuprot njoj. Zbog sunčeve žege tražite hlad i zaklon, a zemlja također gori od žarke vrućine, pa zbog te žege ne možete stupiti ni na zemlju ni na stijenu.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
