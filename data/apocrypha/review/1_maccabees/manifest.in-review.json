@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "book_id": "1_maccabees",
+  "title_en": "First Maccabees",
+  "title_fa": "اول مکابیان",
+  "title_hr": "Prva knjiga o Makabejcima",
+  "status": "in_review",
+  "prepared_on": "2026-08-22",
+  "source": {
+    "translation": "KJVA",
+    "license": "Public Domain",
+    "versification": "KJVA normalized for the New Hope 7 nineteen-book set",
+    "path": "data/apocrypha/sources/en/1_maccabees.en.json",
+    "git_blob_sha": "3f174e47929be4d1520c7bb641e3f70d65bbcda7"
+  },
+  "chapter_count": 16,
+  "verse_count": 924,
+  "totals": {
+    "source_english": 924,
+    "persian_in_review": 924,
+    "croatian_in_review": 924,
+    "missing_persian": 0,
+    "missing_croatian": 0
+  },
+  "chapter_verse_counts": {
+    "1":64,
+    "2":70,
+    "3":60,
+    "4":61,
+    "5":68,
+    "6":63,
+    "7":50,
+    "8":32,
+    "9":73,
+    "10":89,
+    "11":74,
+    "12":53,
+    "13":53,
+    "14":49,
+    "15":41,
+    "16":24
+  },
+  "translation_policy": "Fresh New Hope 7 Persian and Croatian translations from the public-domain English reference. All rows remain in_review until final corpus audit.",
+  "reader_overlay_registered": true,
+  "audit_state": "book_complete_pending_corpus_audit"
+}
