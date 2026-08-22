@@ -10,81 +10,16 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "dbaced7db5c022e33fdcb8aea5d9ef6c4a2e252fa8e84909c28634bb0deb3c87",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And after those days in that place where I had seen all the visions of that which is hidden—for I had been carried off in a whirlwind and they had borne me towards the west—",
-      "text_fa": null,
-      "text_hr": "Nakon tih dana, na mjestu gdje sam vidio sva viđenja onoga što je skriveno — jer me vihor odnio i ponio prema zapadu —",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "There mine eyes saw all the secret things of heaven that shall be, a mountain of iron, and a mountain of copper, and a mountain of silver, and a mountain of gold, and a mountain of soft metal, and a mountain of lead.",
-      "text_fa": null,
-      "text_hr": "ondje su moje oči vidjele sve buduće tajne nebesa: planinu od željeza, planinu od bakra, planinu od srebra, planinu od zlata, planinu od meke kovine i planinu od olova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And I asked the angel who went with me, saying, ‘What things are these which I have seen in secret?’",
-      "text_fa": null,
-      "text_hr": "Upitao sam anđela koji je išao sa mnom: „Što je to što sam vidio u skrovitosti?“",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "And he said unto me: ‘All these things which thou hast seen shall serve the dominion of His Anointed that he may be potent and mighty on the earth.’",
-      "text_fa": null,
-      "text_hr": "Odgovorio mi je: „Sve što si vidio služit će vlasti njegova Pomazanika, da bude silan i moćan na zemlji.“",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "And that angel of peace answered, saying unto me: ‘Wait a little and there shall be revealed unto thee all the secret things, which surround the Lord of Spirits.",
-      "text_fa": null,
-      "text_hr": "Anđeo mira rekao mi je: „Pričekaj malo i bit će ti otkrivene sve tajne koje okružuju Gospodara duhova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "And these mountains which thine eyes have seen, The mountain of iron, and the mountain of copper, and the mountain of silver,\nAnd the mountain of gold, and the mountain of soft metal, and the mountain of lead,\nAll these shall be in the presence of the Elect One,\nAs wax before the fire,\nAnd like the water which streams down from above [upon those mountains],\nAnd they shall become powerless before his feet.",
-      "text_fa": null,
-      "text_hr": "Ove planine koje su tvoje oči vidjele — planina od željeza, planina od bakra, planina od srebra,\nplanina od zlata, planina od meke kovine i planina od olova —\nsve će one pred Izabranim biti\npoput voska pred vatrom\ni poput vode koja odozgo teče [niz te planine];\npred njegovim će nogama izgubiti svu snagu.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 7,
-      "text_en": "And it shall come to pass in those days that none shall be saved,\nEither by gold or by silver,\nAnd none be able to escape.",
-      "text_fa": null,
-      "text_hr": "U one se dane nitko neće spasiti\nni zlatom ni srebrom\ni nitko neće moći umaći.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 8,
-      "text_en": "And there shall be no iron for war,\nNor shall one clothe oneself with a breastplate.\nBronze shall be of no service,\nAnd tin [shall be of no service and] shall not be esteemed,\nAnd lead shall not be desired.",
-      "text_fa": null,
-      "text_hr": "Neće biti željeza za rat\nniti će se tko odjenuti u oklop.\nBronca neće biti ni od kakve koristi,\na kositar [neće biti ni od kakve koristi i] neće se cijeniti;\nolovo neće biti poželjno.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 9,
-      "text_en": "And all these things shall be [denied and] destroyed from the surface of the earth,\nWhen the Elect One shall appear before the face of the Lord of Spirits.’",
-      "text_fa": null,
-      "text_hr": "Sve će to biti [odbačeno i] uništeno s lica zemlje\nkad se Izabrani pojavi pred licem Gospodara duhova.“",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And after those days in that place where I had seen all the visions of that which is hidden—for I had been carried off in a whirlwind and they had borne me towards the west—","text_fa":"و پس از آن روزها، در همان مکانی که همهٔ رؤیاهای امور پنهان را دیده بودم ـ زیرا گردبادی مرا ربوده و به سوی غرب برده بود ـ","text_hr":"Nakon tih dana, na mjestu gdje sam vidio sva viđenja onoga što je skriveno — jer me vihor odnio i ponio prema zapadu —","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"There mine eyes saw all the secret things of heaven that shall be, a mountain of iron, and a mountain of copper, and a mountain of silver, and a mountain of gold, and a mountain of soft metal, and a mountain of lead.","text_fa":"در آنجا چشمانم همهٔ امور پنهان آسمان را که در آینده خواهد بود دید: کوهی از آهن، کوهی از مس، کوهی از نقره، کوهی از طلا، کوهی از فلز نرم و کوهی از سرب.","text_hr":"ondje su moje oči vidjele sve buduće tajne nebesa: planinu od željeza, planinu od bakra, planinu od srebra, planinu od zlata, planinu od meke kovine i planinu od olova.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And I asked the angel who went with me, saying, ‘What things are these which I have seen in secret?’","text_fa":"و از فرشته‌ای که همراه من بود پرسیدم: «این چیزهایی که در نهان دیده‌ام چیستند؟»","text_hr":"Upitao sam anđela koji je išao sa mnom: „Što je to što sam vidio u skrovitosti?“","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"And he said unto me: ‘All these things which thou hast seen shall serve the dominion of His Anointed that he may be potent and mighty on the earth.’","text_fa":"او به من گفت: «همهٔ این چیزهایی که دیده‌ای در خدمت فرمانروایی مسح‌شدهٔ او خواهند بود، تا او بر زمین قدرتمند و نیرومند باشد.»","text_hr":"Odgovorio mi je: „Sve što si vidio služit će vlasti njegova Pomazanika, da bude silan i moćan na zemlji.“","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"And that angel of peace answered, saying unto me: ‘Wait a little and there shall be revealed unto thee all the secret things, which surround the Lord of Spirits.","text_fa":"و آن فرشتهٔ صلح پاسخ داد و به من گفت: «اندکی صبر کن، و همهٔ امور پنهانی که خداوندِ ارواح را احاطه کرده‌اند به تو آشکار خواهد شد.","text_hr":"Anđeo mira rekao mi je: „Pričekaj malo i bit će ti otkrivene sve tajne koje okružuju Gospodara duhova.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"And these mountains which thine eyes have seen, The mountain of iron, and the mountain of copper, and the mountain of silver,\nAnd the mountain of gold, and the mountain of soft metal, and the mountain of lead,\nAll these shall be in the presence of the Elect One,\nAs wax before the fire,\nAnd like the water which streams down from above [upon those mountains],\nAnd they shall become powerless before his feet.","text_fa":"و این کوه‌هایی که چشمانت دیده است ـ کوه آهن، کوه مس، کوه نقره،\nکوه طلا، کوه فلز نرم و کوه سرب ـ\nهمهٔ اینها در حضور برگزیده،\nهمچون موم در برابر آتش خواهند بود،\nو مانند آبی که از بالا [بر آن کوه‌ها] جاری می‌شود؛\nو در برابر پاهای او قدرت خود را از دست خواهند داد.","text_hr":"Ove planine koje su tvoje oči vidjele — planina od željeza, planina od bakra, planina od srebra,\nplanina od zlata, planina od meke kovine i planina od olova —\nsve će one pred Izabranim biti\npoput voska pred vatrom\ni poput vode koja odozgo teče [niz te planine];\npred njegovim će nogama izgubiti svu snagu.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":7,"text_en":"And it shall come to pass in those days that none shall be saved,\nEither by gold or by silver,\nAnd none be able to escape.","text_fa":"و در آن روزها چنین خواهد شد که هیچ‌کس نجات نخواهد یافت،\nنه به وسیلهٔ طلا و نه نقره،\nو هیچ‌کس قادر به فرار نخواهد بود.","text_hr":"U one se dane nitko neće spasiti\nni zlatom ni srebrom\ni nitko neće moći umaći.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":8,"text_en":"And there shall be no iron for war,\nNor shall one clothe oneself with a breastplate.\nBronze shall be of no service,\nAnd tin [shall be of no service and] shall not be esteemed,\nAnd lead shall not be desired.","text_fa":"و آهنی برای جنگ وجود نخواهد داشت،\nو کسی زره بر تن نخواهد کرد.\nبرنز سودی نخواهد داشت،\nو قلع [هیچ سودی نخواهد داشت و] ارزشی نخواهد داشت،\nو سرب خواستنی نخواهد بود.","text_hr":"Neće biti željeza za rat\nniti će se tko odjenuti u oklop.\nBronca neće biti ni od kakve koristi,\na kositar [neće biti ni od kakve koristi i] neće se cijeniti;\nolovo neće biti poželjno.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":9,"text_en":"And all these things shall be [denied and] destroyed from the surface of the earth,\nWhen the Elect One shall appear before the face of the Lord of Spirits.’","text_fa":"و همهٔ این چیزها [رد و] از سطح زمین نابود خواهند شد،\nهنگامی که برگزیده در حضور خداوندِ ارواح ظاهر شود.»","text_hr":"Sve će to biti [odbačeno i] uništeno s lica zemlje\nkad se Izabrani pojavi pred licem Gospodara duhova.“","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
