@@ -21,10 +21,11 @@
     {"book_id":"1_esdras","verses":448},
     {"book_id":"2_esdras","verses":874}
   ],
-  "known_fresh_fa_complete_waiting_for_hr": [
-    {"book_id":"judith","verses":339}
+  "partial_books": [
+    {"book_id":"judith","verses":339,"fa":339,"hr":69,"hr_completed_chapters":[1,2,3,4]}
   ],
   "next_book": "judith",
+  "next_range": "chapters 5-8 Croatian",
   "release_ready": false,
   "blocking_reason": "Fresh FA/HR corpus is not complete for all 19 books; final corpus audit has not yet passed."
 }
