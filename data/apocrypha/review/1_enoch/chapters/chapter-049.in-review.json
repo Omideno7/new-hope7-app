@@ -10,41 +10,11 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "ebf03ebc26e52032b3a4b317a3c608fc03edb72b6620b1dfffb58bc23341c029",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "For wisdom is poured out like water,\nAnd glory faileth not before him for evermore.",
-      "text_fa": null,
-      "text_hr": "Jer mudrost se izlijeva poput vode,\na slava pred njim ne prestaje zauvijek.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "For he is mighty in all the secrets of righteousness,\nAnd unrighteousness shall disappear as a shadow,\nAnd have no continuance;\nBecause the Elect One standeth before the Lord of Spirits,\nAnd his glory is for ever and ever,\nAnd his might unto all generations.",
-      "text_fa": null,
-      "text_hr": "Moćan je u svim tajnama pravednosti,\na nepravda će nestati poput sjene\ni neće opstati,\njer Izabrani stoji pred Gospodarom duhova.\nNjegova slava traje u vijeke vjekova,\na njegova moć kroz sve naraštaje.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And in him dwells the spirit of wisdom,\nAnd the spirit which gives insight,\nAnd the spirit of understanding and of might,\nAnd the spirit of those who have fallen asleep in righteousness.",
-      "text_fa": null,
-      "text_hr": "U njemu prebiva duh mudrosti,\nduh koji daje uvid,\nduh razboritosti i snage\ni duh onih koji su usnuli u pravednosti.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "And he shall judge the secret things,\nAnd none shall be able to utter a lying word before him;\nFor he is the Elect One before the Lord of Spirits according to His good pleasure.",
-      "text_fa": null,
-      "text_hr": "On će suditi skrivenim stvarima\ni nitko pred njim neće moći izgovoriti lažnu riječ,\njer je on Izabrani pred Gospodarom duhova prema njegovoj dobrohotnosti.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"For wisdom is poured out like water,\nAnd glory faileth not before him for evermore.","text_fa":"زیرا حکمت همچون آب ریخته می‌شود،\nو جلال در حضور او تا ابد زایل نمی‌گردد.","text_hr":"Jer mudrost se izlijeva poput vode,\na slava pred njim ne prestaje zauvijek.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"For he is mighty in all the secrets of righteousness,\nAnd unrighteousness shall disappear as a shadow,\nAnd have no continuance;\nBecause the Elect One standeth before the Lord of Spirits,\nAnd his glory is for ever and ever,\nAnd his might unto all generations.","text_fa":"زیرا او در همهٔ اسرار عدالت نیرومند است،\nو ناراستی همچون سایه ناپدید خواهد شد\nو دوام نخواهد آورد؛\nزیرا برگزیده در حضور خداوندِ ارواح ایستاده است،\nو جلال او تا ابد باقی است،\nو قدرتش در همهٔ نسل‌ها.","text_hr":"Moćan je u svim tajnama pravednosti,\na nepravda će nestati poput sjene\ni neće opstati,\njer Izabrani stoji pred Gospodarom duhova.\nNjegova slava traje u vijeke vjekova,\na njegova moć kroz sve naraštaje.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And in him dwells the spirit of wisdom,\nAnd the spirit which gives insight,\nAnd the spirit of understanding and of might,\nAnd the spirit of those who have fallen asleep in righteousness.","text_fa":"و در او روح حکمت ساکن است،\nو روحی که بصیرت می‌بخشد،\nو روح فهم و قدرت،\nو روح آنان که در عدالت به خواب رفته‌اند.","text_hr":"U njemu prebiva duh mudrosti,\nduh koji daje uvid,\nduh razboritosti i snage\ni duh onih koji su usnuli u pravednosti.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"And he shall judge the secret things,\nAnd none shall be able to utter a lying word before him;\nFor he is the Elect One before the Lord of Spirits according to His good pleasure.","text_fa":"و او امور پنهان را داوری خواهد کرد،\nو هیچ‌کس نخواهد توانست در حضور او سخنی دروغ بگوید؛\nزیرا او برگزیدهٔ خداوندِ ارواح است، مطابق خشنودی او.","text_hr":"On će suditi skrivenim stvarima\ni nitko pred njim neće moći izgovoriti lažnu riječ,\njer je on Izabrani pred Gospodarom duhova prema njegovoj dobrohotnosti.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
