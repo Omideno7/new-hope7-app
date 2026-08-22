@@ -27,6 +27,11 @@
     "data/apocrypha/review/judith/translations/chapters-01-04.hr.in-review.json",
     "data/apocrypha/review/judith/translations/chapters-05-08.hr.in-review.json",
     "data/apocrypha/review/judith/translations/chapters-09-12.hr.in-review.json",
-    "data/apocrypha/review/judith/translations/chapters-13-16.hr.in-review.json"
+    "data/apocrypha/review/judith/translations/chapters-13-16.hr.in-review.json",
+    "data/apocrypha/review/1_esdras/translations/chapters-01-03.fa.in-review.json",
+    "data/apocrypha/review/1_esdras/translations/chapters-04-06.fa.in-review.json",
+    "data/apocrypha/review/1_esdras/translations/chapter-07.fa.in-review.json",
+    "data/apocrypha/review/1_esdras/translations/chapter-08.fa.in-review.json",
+    "data/apocrypha/review/1_esdras/translations/chapter-09.fa.in-review.json"
   ]
 }
