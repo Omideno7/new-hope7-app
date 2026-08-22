@@ -10,105 +10,19 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "9b28759748a778f5be2ab2446b5f94081ecf33ea765049a9c60909c20f9e9f93",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And in those days Noah saw the earth that it had sunk down and its destruction was nigh.",
-      "text_fa": null,
-      "text_hr": "U one je dane Noa vidio da je zemlja potonula i da se približilo njezino uništenje.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And he arose from thence and went to the ends of the earth, and cried aloud to his grandfather Enoch: and Noah said three times with an embittered voice: ‘Hear me, hear me, hear me.’",
-      "text_fa": null,
-      "text_hr": "Ustao je odande, otišao do krajeva zemlje i glasno povikao svojemu djedu Henoku. Noa je tri puta ogorčenim glasom rekao: „Čuj me, čuj me, čuj me!“",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And I said unto him: ‘Tell me what it is that is falling out on the earth that the earth is in such evil plight and shaken, lest perchance I shall perish with it.’",
-      "text_fa": null,
-      "text_hr": "Rekao sam mu: „Kaži mi što se događa na zemlji da je u tako zlu stanju i da se trese, da možda ne propadnem zajedno s njom.“",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "And thereupon there was a great commotion on the earth, and a voice was heard from heaven, and I fell on my face.",
-      "text_fa": null,
-      "text_hr": "Tada je nastao silan potres na zemlji, začuo se glas s neba, a ja sam pao ničice.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "And Enoch my grandfather came and stood by me, and said unto me: ‘Why hast thou cried unto me with a bitter cry and weeping?",
-      "text_fa": null,
-      "text_hr": "Moj djed Henok došao je, stao kraj mene i rekao: „Zašto si me zazvao gorkim krikom i plačem?",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "And a command has gone forth from the presence of the Lord concerning those who dwell on the earth that their ruin is accomplished because they have learnt all the secrets of the angels, and all the violence of the Satans, and all their powers—the most secret ones—and all the power of those who practise sorcery, and the power of witchcraft, and the power of those who make molten images for the whole earth:",
-      "text_fa": null,
-      "text_hr": "Iz nazočnosti Gospodnje izišla je zapovijed o stanovnicima zemlje da je njihova propast dovršena. Saznali su sve tajne anđela, sve nasilje sotona i sve njihove sile — one najskrivenije — zatim svu moć onih koji se bave vračanjem, moć čarobnjaštva i moć onih koji za svu zemlju izrađuju lijevane likove.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 7,
-      "text_en": "And how silver is produced from the dust of the earth, and how soft metal originates in the earth.",
-      "text_fa": null,
-      "text_hr": "Saznali su kako se srebro dobiva iz praha zemaljskoga i kako meka kovina nastaje u zemlji.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 8,
-      "text_en": "For lead and tin are not produced from the earth like the first: it is a fountain that produces them, and an angel stands therein, and that angel is pre-eminent.’",
-      "text_fa": null,
-      "text_hr": "Olovo i kositar ne nastaju iz zemlje poput onoga prvoga; proizvodi ih izvor u kojem stoji jedan anđeo, a taj je anđeo iznad ostalih.“",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 9,
-      "text_en": "And after that my grandfather Enoch took hold of me by my hand and raised me up, and said unto me: ‘Go, for I have asked the Lord of Spirits as touching this commotion on the earth.",
-      "text_fa": null,
-      "text_hr": "Nakon toga moj me djed Henok uzeo za ruku, podigao i rekao: „Pođi, jer sam o tome potresu na zemlji pitao Gospodara duhova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 10,
-      "text_en": "And He said unto me: “Because of their unrighteousness their judgement has been determined upon and shall not be =withheld= by Me for ever. Because of the =sorceries= which they have searched out and learnt, the earth and those who dwell upon it shall be destroyed.”",
-      "text_fa": null,
-      "text_hr": "Rekao mi je: ‘Zbog njihove nepravde njihov je sud određen i ja ga neću zauvijek =odgađati=. Zbog =čarolija= koje su istražili i naučili bit će uništeni zemlja i oni koji na njoj prebivaju.’",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 11,
-      "text_en": "And these—they have no =place of repentance= for ever, because they have shown them what was hidden, and they are the damned: but as for thee, my son, the Lord of Spirits knows that thou art pure, and guiltless of this reproach concerning the secrets.",
-      "text_fa": null,
-      "text_hr": "Oni zauvijek nemaju =mjesta za pokajanje= jer su ljudima pokazali ono što je bilo skriveno; oni su prokleti. Ali za tebe, sine moj, Gospodar duhova zna da si čist i nedužan za ovaj prijekor zbog tajni.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 12,
-      "text_en": "And He has destined thy name to be among the holy,\nAnd will preserve thee amongst those who dwell on the earth,\nAnd has destined thy righteous seed both for kingship and for great honours,\nAnd from thy seed shall proceed a fountain of the righteous and holy without number for ever.’",
-      "text_fa": null,
-      "text_hr": "Odredio je da tvoje ime bude među svetima,\nsačuvat će te među stanovnicima zemlje\ni odredio je tvojemu pravednom potomstvu kraljevstvo i velike časti.\nIz tvojega će potomstva poteći nebrojen izvor pravednih i svetih zauvijek.“",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And in those days Noah saw the earth that it had sunk down and its destruction was nigh.","text_fa":"و در آن روزها نوح دید که زمین فرو نشسته و نابودی آن نزدیک شده است.","text_hr":"U one je dane Noa vidio da je zemlja potonula i da se približilo njezino uništenje.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And he arose from thence and went to the ends of the earth, and cried aloud to his grandfather Enoch: and Noah said three times with an embittered voice: ‘Hear me, hear me, hear me.’","text_fa":"و از آنجا برخاست و به انتهای زمین رفت و با صدای بلند خنوخ، جدّ خود را صدا زد؛ و نوح سه بار با صدایی آکنده از تلخی گفت: «مرا بشنو، مرا بشنو، مرا بشنو.»","text_hr":"Ustao je odande, otišao do krajeva zemlje i glasno povikao svojemu djedu Henoku. Noa je tri puta ogorčenim glasom rekao: „Čuj me, čuj me, čuj me!“","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And I said unto him: ‘Tell me what it is that is falling out on the earth that the earth is in such evil plight and shaken, lest perchance I shall perish with it.’","text_fa":"و به او گفتم: «به من بگو بر زمین چه اتفاقی می‌افتد که زمین در چنین وضعیت هولناکی است و می‌لرزد؛ مبادا من نیز همراه آن هلاک شوم.»","text_hr":"Rekao sam mu: „Kaži mi što se događa na zemlji da je u tako zlu stanju i da se trese, da možda ne propadnem zajedno s njom.“","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"And thereupon there was a great commotion on the earth, and a voice was heard from heaven, and I fell on my face.","text_fa":"در پی آن آشوبی عظیم بر زمین پدید آمد و صدایی از آسمان شنیده شد، و من به روی خود بر زمین افتادم.","text_hr":"Tada je nastao silan potres na zemlji, začuo se glas s neba, a ja sam pao ničice.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"And Enoch my grandfather came and stood by me, and said unto me: ‘Why hast thou cried unto me with a bitter cry and weeping?","text_fa":"و خنوخ، جدّ من، آمد و کنارم ایستاد و به من گفت: «چرا با فریادی تلخ و با گریه مرا صدا زدی؟","text_hr":"Moj djed Henok došao je, stao kraj mene i rekao: „Zašto si me zazvao gorkim krikom i plačem?","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"And a command has gone forth from the presence of the Lord concerning those who dwell on the earth that their ruin is accomplished because they have learnt all the secrets of the angels, and all the violence of the Satans, and all their powers—the most secret ones—and all the power of those who practise sorcery, and the power of witchcraft, and the power of those who make molten images for the whole earth:","text_fa":"و فرمانی از حضور خداوند دربارهٔ ساکنان زمین صادر شده است که نابودی آنان به انجام رسیده، زیرا همهٔ اسرار فرشتگان و تمام خشونتِ شیطان‌ها و همهٔ قدرت‌های آنان ـ پنهان‌ترین آنها ـ و تمام قدرت کسانی را که جادوگری می‌کنند، و قدرت افسونگری، و قدرت کسانی را که برای سراسر زمین بت‌های ریخته‌شده می‌سازند، آموخته‌اند؛","text_hr":"Iz nazočnosti Gospodnje izišla je zapovijed o stanovnicima zemlje da je njihova propast dovršena. Saznali su sve tajne anđela, sve nasilje sotona i sve njihove sile — one najskrivenije — zatim svu moć onih koji se bave vračanjem, moć čarobnjaštva i moć onih koji za svu zemlju izrađuju lijevane likove.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":7,"text_en":"And how silver is produced from the dust of the earth, and how soft metal originates in the earth.","text_fa":"و اینکه نقره چگونه از خاک زمین به دست می‌آید و فلز نرم چگونه در زمین پدید می‌آید.","text_hr":"Saznali su kako se srebro dobiva iz praha zemaljskoga i kako meka kovina nastaje u zemlji.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":8,"text_en":"For lead and tin are not produced from the earth like the first: it is a fountain that produces them, and an angel stands therein, and that angel is pre-eminent.’","text_fa":"زیرا سرب و قلع مانند آن نخستین از زمین پدید نمی‌آیند؛ چشمه‌ای آنها را پدید می‌آورد، و فرشته‌ای در آن ایستاده است، و آن فرشته برتر است.»","text_hr":"Olovo i kositar ne nastaju iz zemlje poput onoga prvoga; proizvodi ih izvor u kojem stoji jedan anđeo, a taj je anđeo iznad ostalih.“","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":9,"text_en":"And after that my grandfather Enoch took hold of me by my hand and raised me up, and said unto me: ‘Go, for I have asked the Lord of Spirits as touching this commotion on the earth.","text_fa":"و پس از آن خنوخ، جدّ من، دستم را گرفت و مرا بلند کرد و به من گفت: «برو، زیرا دربارهٔ این آشوب روی زمین از خداوندِ ارواح پرسیده‌ام.","text_hr":"Nakon toga moj me djed Henok uzeo za ruku, podigao i rekao: „Pođi, jer sam o tome potresu na zemlji pitao Gospodara duhova.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":10,"text_en":"And He said unto me: “Because of their unrighteousness their judgement has been determined upon and shall not be =withheld= by Me for ever. Because of the =sorceries= which they have searched out and learnt, the earth and those who dwell upon it shall be destroyed.”","text_fa":"و او به من گفت: «به سبب ناراستی آنان، داوری‌شان تعیین شده است و من آن را تا ابد =به تأخیر نخواهم انداخت=. به سبب =جادوهایی= که جست‌وجو کرده و آموخته‌اند، زمین و ساکنان آن نابود خواهند شد.»","text_hr":"Rekao mi je: ‘Zbog njihove nepravde njihov je sud određen i ja ga neću zauvijek =odgađati=. Zbog =čarolija= koje su istražili i naučili bit će uništeni zemlja i oni koji na njoj prebivaju.’","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":11,"text_en":"And these—they have no =place of repentance= for ever, because they have shown them what was hidden, and they are the damned: but as for thee, my son, the Lord of Spirits knows that thou art pure, and guiltless of this reproach concerning the secrets.","text_fa":"و اینان ـ برای همیشه هیچ =جایی برای توبه= ندارند، زیرا آنچه پنهان بود به آنان نشان داده‌اند، و خود ملعون‌اند. اما دربارهٔ تو، پسرم، خداوندِ ارواح می‌داند که پاک هستی و در این سرزنش مربوط به اسرار، بی‌گناهی.","text_hr":"Oni zauvijek nemaju =mjesta za pokajanje= jer su ljudima pokazali ono što je bilo skriveno; oni su prokleti. Ali za tebe, sine moj, Gospodar duhova zna da si čist i nedužan za ovaj prijekor zbog tajni.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":12,"text_en":"And He has destined thy name to be among the holy,\nAnd will preserve thee amongst those who dwell on the earth,\nAnd has destined thy righteous seed both for kingship and for great honours,\nAnd from thy seed shall proceed a fountain of the righteous and holy without number for ever.’","text_fa":"و او مقرر کرده است که نام تو در میان مقدسان باشد،\nو تو را در میان ساکنان زمین حفظ خواهد کرد؛\nو نسل پارسای تو را هم برای پادشاهی و هم برای افتخارات عظیم مقرر کرده است،\nو از نسل تو چشمه‌ای بی‌شمار از پارسایان و مقدسان تا ابد بیرون خواهد آمد.»","text_hr":"Odredio je da tvoje ime bude među svetima,\nsačuvat će te među stanovnicima zemlje\ni odredio je tvojemu pravednom potomstvu kraljevstvo i velike časti.\nIz tvojega će potomstva poteći nebrojen izvor pravednih i svetih zauvijek.“","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
