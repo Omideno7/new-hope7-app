@@ -20,18 +20,17 @@
     {"book_id":"tobit","verses":244,"fa":244,"hr":244},
     {"book_id":"baruch","verses":140,"fa":140,"hr":140},
     {"book_id":"wisdom_of_solomon","verses":436,"fa":436,"hr":436},
-    {"book_id":"2_maccabees","verses":555,"fa":555,"hr":555}
+    {"book_id":"2_maccabees","verses":555,"fa":555,"hr":555},
+    {"book_id":"1_maccabees","verses":924,"fa":924,"hr":924}
   ],
-  "complete_book_count": 16,
-  "complete_fresh_verse_rows": 4122,
-  "in_progress_books": [
-    {"book_id":"1_maccabees","verses":924,"fa":757,"hr":757,"chapters_complete":[1,2,3,4,5,6,7,8,9,10,11,12],"next_chapter":13}
-  ],
+  "complete_book_count": 17,
+  "complete_fresh_verse_rows": 5046,
+  "in_progress_books": [],
   "known_fresh_hr_complete_waiting_for_fa": [
     {"book_id":"1_enoch","chapters":108}
   ],
-  "remaining_books": ["sirach","1_maccabees","1_enoch"],
-  "next_book": "1_maccabees",
+  "remaining_books": ["sirach","1_enoch"],
+  "next_book": "1_enoch",
   "release_ready": false,
-  "blocking_reason": "Fresh FA/HR corpus is not complete for the remaining 3 books; First Maccabees is complete through chapter 12; final corpus audit has not yet passed."
+  "blocking_reason": "Fresh New Hope 7 corpus is not complete for Sirach and First Enoch; final corpus audit has not yet passed."
 }
