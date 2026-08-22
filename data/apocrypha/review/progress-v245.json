@@ -18,15 +18,16 @@
     {"book_id":"1_esdras","verses":448,"fa":448,"hr":448},
     {"book_id":"2_esdras","verses":874,"fa":874,"hr":874},
     {"book_id":"tobit","verses":244,"fa":244,"hr":244},
-    {"book_id":"baruch","verses":140,"fa":140,"hr":140}
+    {"book_id":"baruch","verses":140,"fa":140,"hr":140},
+    {"book_id":"wisdom_of_solomon","verses":436,"fa":436,"hr":436}
   ],
-  "complete_book_count": 14,
-  "complete_fresh_verse_rows": 3131,
+  "complete_book_count": 15,
+  "complete_fresh_verse_rows": 3567,
   "known_fresh_hr_complete_waiting_for_fa": [
     {"book_id":"1_enoch","chapters":108}
   ],
-  "remaining_books": ["wisdom_of_solomon","sirach","1_maccabees","2_maccabees","1_enoch"],
-  "next_book": "wisdom_of_solomon",
+  "remaining_books": ["sirach","1_maccabees","2_maccabees","1_enoch"],
+  "next_book": "2_maccabees",
   "release_ready": false,
-  "blocking_reason": "Fresh FA/HR corpus is not complete for the remaining 5 books; final corpus audit has not yet passed."
+  "blocking_reason": "Fresh FA/HR corpus is not complete for the remaining 4 books; final corpus audit has not yet passed."
 }
