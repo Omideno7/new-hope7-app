@@ -10,113 +10,20 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "186921e3aade6fcf17ceb14e54badcbd4641cc094e4ba11c9fb1de3d2ea6394a",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And I saw in those days how long cords were given to those angels, and they took to themselves wings and flew, and they went towards the north.",
-      "text_fa": null,
-      "text_hr": "U one sam dane vidio kako su tim anđelima dana duga užad. Uzeli su krila, poletjeli i otišli prema sjeveru.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And I asked the angel, saying unto him: ‘Why have those (angels) taken these cords and gone off?’ And he said unto me: ‘They have gone to measure.’",
-      "text_fa": null,
-      "text_hr": "Upitao sam anđela: „Zašto su ti anđeli uzeli užad i otišli?“ Odgovorio mi je: „Otišli su mjeriti.“",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And the angel who went with me said unto me:\n‘These shall bring the measures of the righteous,\nAnd the ropes of the righteous to the righteous,\nThat they may stay themselves on the name of the Lord of Spirits for ever and ever.",
-      "text_fa": null,
-      "text_hr": "Anđeo koji je išao sa mnom rekao mi je:\n„Oni će donijeti mjere pravednih\ni užad pravednih pravednicima,\nda se u vijeke vjekova oslanjaju na ime Gospodara duhova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "The elect shall begin to dwell with the elect,\nAnd those are the measures which shall be given to faith\nAnd which shall strengthen righteousness.",
-      "text_fa": null,
-      "text_hr": "Izabrani će početi prebivati s izabranima.\nTo su mjere koje će biti dane vjeri\ni koje će učvrstiti pravednost.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "And these measures shall reveal all the secrets of the depths of the earth,\nAnd those who have been destroyed by the desert,\nAnd those who have been devoured by the beasts,\nAnd those who have been devoured by the fish of the sea,\nThat they may return and stay themselves\nOn the day of the Elect One;\nFor none shall be destroyed before the Lord of Spirits,\nAnd none can be destroyed.",
-      "text_fa": null,
-      "text_hr": "Te će mjere otkriti sve tajne zemaljskih dubina,\none koje je uništila pustinja,\none koje su proždrle zvijeri\ni one koje su proždrle morske ribe,\nda se mogu vratiti i osloniti\nu dan Izabranoga.\nJer pred Gospodarom duhova nitko neće biti uništen\nniti itko može biti uništen.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "And all who dwell above in the heaven received a command and power and one voice and one light like unto fire.",
-      "text_fa": null,
-      "text_hr": "Svi stanovnici neba gore primili su jednu zapovijed, jednu moć, jedan glas i jednu svjetlost nalik vatri.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 7,
-      "text_en": "And that One (with) their first words they blessed,\nAnd extolled and lauded with wisdom,\nAnd they were wise in utterance and in the spirit of life.",
-      "text_fa": null,
-      "text_hr": "Njega su blagoslovili svojim prvim riječima,\nuzvisivali ga i mudro hvalili;\nbili su mudri u govoru i u duhu života.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 8,
-      "text_en": "And the Lord of Spirits placed the Elect One on the throne of glory.\nAnd he shall judge all the works of the holy above in the heaven,\nAnd in the balance shall their deeds be weighed.",
-      "text_fa": null,
-      "text_hr": "Gospodar duhova postavio je Izabranoga na prijestolje slave.\nOn će suditi svim djelima svetih gore na nebu,\na njihova će se djela vagati na tezulji.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 9,
-      "text_en": "And when he shall lift up his countenance\nTo judge their secret ways according to the word of the name of the Lord of Spirits,\nAnd their path according to the way of the righteous judgement of the Lord of Spirits,\nThen shall they all with one voice speak and bless,\nAnd glorify and extol and sanctify the name of the Lord of Spirits.",
-      "text_fa": null,
-      "text_hr": "Kad podigne lice\nda sudi njihovim tajnim putovima prema riječi imena Gospodara duhova\ni njihovoj stazi prema putu pravednoga suda Gospodara duhova,\ntada će svi jednim glasom govoriti i blagoslivljati,\nslaviti, uzvisivati i svetiti ime Gospodara duhova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 10,
-      "text_en": "And He will summon all the host of the heavens, and all the holy ones above, and the host of God, the Cherubin, Seraphin, and Ophannin, and all the angels of power, and all the angels of principalities, and the Elect One, and the other powers on the earth (and) over the water.",
-      "text_fa": null,
-      "text_hr": "On će sazvati svu vojsku nebesa, sve svete gore, Božju vojsku, kerubine, serafine i ofanine, sve anđele moći, sve anđele poglavarstava, Izabranoga i ostale sile na zemlji i nad vodom.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 11,
-      "text_en": "On that day shall they raise one voice, and bless and glorify and exalt in the spirit of faith, and in the spirit of wisdom, and in the spirit of patience, and in the spirit of mercy, and in the spirit of judgement and of peace, and in the spirit of goodness, and shall all say with one voice: “Blessed is He, and may the name of the Lord of Spirits be blessed for ever and ever.”",
-      "text_fa": null,
-      "text_hr": "Toga će dana podići jedan glas te blagoslivljati, slaviti i uzvisivati u duhu vjere, duhu mudrosti, duhu strpljivosti, duhu milosrđa, duhu suda i mira te duhu dobrote. Svi će jednim glasom reći: „Blagoslovljen je on i neka ime Gospodara duhova bude blagoslovljeno u vijeke vjekova.“",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 12,
-      "text_en": "All who sleep not above in heaven shall bless Him:\nAll the holy ones who are in heaven shall bless him,\nAnd all the elect who dwell in the garden of life:\nAnd every spirit of light who is able to bless, and glorify, and extol, and hallow Thy blessed name,\nAnd all flesh shall beyond measure glorify and bless Thy name for ever and ever.",
-      "text_fa": null,
-      "text_hr": "Svi koji ne spavaju gore na nebu blagoslivljat će ga;\nsvi sveti na nebu blagoslivljat će ga,\nsvi izabrani koji prebivaju u vrtu života\ni svaki duh svjetlosti koji može blagoslivljati, slaviti, uzvisivati i svetiti tvoje blagoslovljeno ime.\nSve će tijelo preko svake mjere slaviti i blagoslivljati tvoje ime u vijeke vjekova.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 13,
-      "text_en": "For great is the mercy of the Lord of Spirits, and He is long-suffering,\nAnd all His works and all that He has created\nHe has revealed to the righteous and elect,\nIn the name of the Lord of Spirits.’",
-      "text_fa": null,
-      "text_hr": "Jer veliko je milosrđe Gospodara duhova i on je strpljiv.\nSva svoja djela i sve što je stvorio\notkrio je pravednima i izabranima\nu ime Gospodara duhova.“",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And I saw in those days how long cords were given to those angels, and they took to themselves wings and flew, and they went towards the north.","text_fa":"و در آن روزها دیدم که چگونه ریسمان‌های بلند به آن فرشتگان داده شد؛ آنان بال گرفتند و پرواز کردند و به سوی شمال رفتند.","text_hr":"U one sam dane vidio kako su tim anđelima dana duga užad. Uzeli su krila, poletjeli i otišli prema sjeveru.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And I asked the angel, saying unto him: ‘Why have those (angels) taken these cords and gone off?’ And he said unto me: ‘They have gone to measure.’","text_fa":"و از فرشته پرسیدم: «چرا آن (فرشتگان) این ریسمان‌ها را برداشته و رفته‌اند؟» و او به من گفت: «برای اندازه‌گیری رفته‌اند.»","text_hr":"Upitao sam anđela: „Zašto su ti anđeli uzeli užad i otišli?“ Odgovorio mi je: „Otišli su mjeriti.“","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And the angel who went with me said unto me:\n‘These shall bring the measures of the righteous,\nAnd the ropes of the righteous to the righteous,\nThat they may stay themselves on the name of the Lord of Spirits for ever and ever.","text_fa":"و فرشته‌ای که همراه من بود به من گفت:\n«اینان اندازه‌های پارسایان را خواهند آورد،\nو ریسمان‌های پارسایان را به پارسایان خواهند رساند،\nتا آنان تا ابد به نام خداوندِ ارواح تکیه کنند.","text_hr":"Anđeo koji je išao sa mnom rekao mi je:\n„Oni će donijeti mjere pravednih\ni užad pravednih pravednicima,\nda se u vijeke vjekova oslanjaju na ime Gospodara duhova.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"The elect shall begin to dwell with the elect,\nAnd those are the measures which shall be given to faith\nAnd which shall strengthen righteousness.","text_fa":"برگزیدگان با برگزیدگان ساکن خواهند شد،\nو اینها همان اندازه‌هایی هستند که به ایمان داده خواهند شد\nو عدالت را استوار خواهند ساخت.","text_hr":"Izabrani će početi prebivati s izabranima.\nTo su mjere koje će biti dane vjeri\ni koje će učvrstiti pravednost.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"And these measures shall reveal all the secrets of the depths of the earth,\nAnd those who have been destroyed by the desert,\nAnd those who have been devoured by the beasts,\nAnd those who have been devoured by the fish of the sea,\nThat they may return and stay themselves\nOn the day of the Elect One;\nFor none shall be destroyed before the Lord of Spirits,\nAnd none can be destroyed.","text_fa":"و این اندازه‌ها همهٔ اسرار ژرفای زمین را آشکار خواهند کرد،\nو کسانی را که بیابان نابود کرده است،\nو کسانی را که جانوران دریده‌اند،\nو کسانی را که ماهیان دریا بلعیده‌اند،\nتا بازگردند و استوار بایستند\nدر روز برگزیده؛\nزیرا هیچ‌کس در حضور خداوندِ ارواح نابود نخواهد شد،\nو هیچ‌کس نمی‌تواند نابود شود.","text_hr":"Te će mjere otkriti sve tajne zemaljskih dubina,\none koje je uništila pustinja,\none koje su proždrle zvijeri\ni one koje su proždrle morske ribe,\nda se mogu vratiti i osloniti\nu dan Izabranoga.\nJer pred Gospodarom duhova nitko neće biti uništen\nniti itko može biti uništen.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"And all who dwell above in the heaven received a command and power and one voice and one light like unto fire.","text_fa":"و همهٔ کسانی که در بالای آسمان ساکن‌اند یک فرمان و یک قدرت و یک صدا و یک نور مانند آتش دریافت کردند.","text_hr":"Svi stanovnici neba gore primili su jednu zapovijed, jednu moć, jedan glas i jednu svjetlost nalik vatri.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":7,"text_en":"And that One (with) their first words they blessed,\nAnd extolled and lauded with wisdom,\nAnd they were wise in utterance and in the spirit of life.","text_fa":"و آنان با نخستین سخنان خود آن یگانه را برکت دادند،\nو با حکمت او را بلند کردند و ستودند،\nو در گفتار و در روح حیات حکیم بودند.","text_hr":"Njega su blagoslovili svojim prvim riječima,\nuzvisivali ga i mudro hvalili;\nbili su mudri u govoru i u duhu života.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":8,"text_en":"And the Lord of Spirits placed the Elect One on the throne of glory.\nAnd he shall judge all the works of the holy above in the heaven,\nAnd in the balance shall their deeds be weighed.","text_fa":"و خداوندِ ارواح برگزیده را بر تخت جلال قرار داد.\nو او همهٔ اعمال مقدسانِ بالای آسمان را داوری خواهد کرد،\nو اعمال آنان در ترازو سنجیده خواهد شد.","text_hr":"Gospodar duhova postavio je Izabranoga na prijestolje slave.\nOn će suditi svim djelima svetih gore na nebu,\na njihova će se djela vagati na tezulji.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":9,"text_en":"And when he shall lift up his countenance\nTo judge their secret ways according to the word of the name of the Lord of Spirits,\nAnd their path according to the way of the righteous judgement of the Lord of Spirits,\nThen shall they all with one voice speak and bless,\nAnd glorify and extol and sanctify the name of the Lord of Spirits.","text_fa":"و هنگامی که چهرهٔ خود را بلند کند\nتا راه‌های پنهان آنان را مطابق کلامِ نام خداوندِ ارواح داوری کند،\nو مسیر آنان را مطابق راهِ داوری عادلانهٔ خداوندِ ارواح،\nآنگاه همه با یک صدا سخن خواهند گفت و برکت خواهند داد،\nو نام خداوندِ ارواح را جلال خواهند داد، بلند خواهند کرد و مقدس خواهند شمرد.","text_hr":"Kad podigne lice\nda sudi njihovim tajnim putovima prema riječi imena Gospodara duhova\ni njihovoj stazi prema putu pravednoga suda Gospodara duhova,\ntada će svi jednim glasom govoriti i blagoslivljati,\nslaviti, uzvisivati i svetiti ime Gospodara duhova.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":10,"text_en":"And He will summon all the host of the heavens, and all the holy ones above, and the host of God, the Cherubin, Seraphin, and Ophannin, and all the angels of power, and all the angels of principalities, and the Elect One, and the other powers on the earth (and) over the water.","text_fa":"و او همهٔ لشکر آسمان‌ها، همهٔ مقدسان بالا، و لشکر خدا ـ کروبیان، سرافیان و اوفانیم ـ و همهٔ فرشتگان قدرت، همهٔ فرشتگان ریاست‌ها، و برگزیده، و دیگر قدرت‌های روی زمین (و) بر آب را فرا خواهد خواند.","text_hr":"On će sazvati svu vojsku nebesa, sve svete gore, Božju vojsku, kerubine, serafine i ofanine, sve anđele moći, sve anđele poglavarstava, Izabranoga i ostale sile na zemlji i nad vodom.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":11,"text_en":"On that day shall they raise one voice, and bless and glorify and exalt in the spirit of faith, and in the spirit of wisdom, and in the spirit of patience, and in the spirit of mercy, and in the spirit of judgement and of peace, and in the spirit of goodness, and shall all say with one voice: “Blessed is He, and may the name of the Lord of Spirits be blessed for ever and ever.”","text_fa":"در آن روز همه یک صدا برخواهند آورد و در روح ایمان، روح حکمت، روح بردباری، روح رحمت، روح داوری و صلح، و روح نیکویی برکت خواهند داد و جلال خواهند بخشید و بلند خواهند کرد؛ و همه با یک صدا خواهند گفت: «متبارک است او، و نام خداوندِ ارواح تا ابد متبارک باد.»","text_hr":"Toga će dana podići jedan glas te blagoslivljati, slaviti i uzvisivati u duhu vjere, duhu mudrosti, duhu strpljivosti, duhu milosrđa, duhu suda i mira te duhu dobrote. Svi će jednim glasom reći: „Blagoslovljen je on i neka ime Gospodara duhova bude blagoslovljeno u vijeke vjekova.“","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":12,"text_en":"All who sleep not above in heaven shall bless Him:\nAll the holy ones who are in heaven shall bless him,\nAnd all the elect who dwell in the garden of life:\nAnd every spirit of light who is able to bless, and glorify, and extol, and hallow Thy blessed name,\nAnd all flesh shall beyond measure glorify and bless Thy name for ever and ever.","text_fa":"همهٔ کسانی که در بالای آسمان نمی‌خوابند او را برکت خواهند داد؛\nهمهٔ مقدسانی که در آسمان‌اند او را برکت خواهند داد،\nو همهٔ برگزیدگانی که در باغ حیات ساکن‌اند؛\nو هر روح نور که قادر است نام متبارک تو را برکت دهد، جلال بخشد، بلند کند و مقدس بشمارد؛\nو تمام بشر، فراتر از اندازه، نام تو را تا ابد جلال خواهد داد و برکت خواهد خواند.","text_hr":"Svi koji ne spavaju gore na nebu blagoslivljat će ga;\nsvi sveti na nebu blagoslivljat će ga,\nsvi izabrani koji prebivaju u vrtu života\ni svaki duh svjetlosti koji može blagoslivljati, slaviti, uzvisivati i svetiti tvoje blagoslovljeno ime.\nSve će tijelo preko svake mjere slaviti i blagoslivljati tvoje ime u vijeke vjekova.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":13,"text_en":"For great is the mercy of the Lord of Spirits, and He is long-suffering,\nAnd all His works and all that He has created\nHe has revealed to the righteous and elect,\nIn the name of the Lord of Spirits.’","text_fa":"زیرا رحمت خداوندِ ارواح عظیم است و او بردبار است،\nو همهٔ اعمال خود و هر آنچه آفریده است\nبه پارسایان و برگزیدگان آشکار کرده،\nدر نام خداوندِ ارواح.»","text_hr":"Jer veliko je milosrđe Gospodara duhova i on je strpljiv.\nSva svoja djela i sve što je stvorio\notkrio je pravednima i izabranima\nu ime Gospodara duhova.“","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
