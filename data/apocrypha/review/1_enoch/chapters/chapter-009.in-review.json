@@ -6,101 +6,23 @@
   "title_hr": "Prva Henokova knjiga",
   "chapter": 9,
   "status": "in_review",
+  "status_fa": "in_review",
   "status_hr": "in_review",
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "b8f056755dcd35f31e66414a9c47166766dfd2500055d306ffa734871f67f210",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa","hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And then Michael, Uriel, Raphael, and Gabriel looked down from heaven and saw much blood being shed upon the earth, and all lawlessness being wrought upon the earth.",
-      "text_fa": null,
-      "text_hr": "Tada Mihael, Uriel, Rafael i Gabriel pogledaše s neba i vidješe mnogo krvi prolivene po zemlji i sve bezakonje koje se na njoj činilo.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And they said one to another: ‘The earth, made †without inhabitant, cries the voice of their crying† up to the gates of heaven.",
-      "text_fa": null,
-      "text_hr": "Rekoše jedan drugomu: ‘Opustošena zemlja †glasom njihovih vapaja viče† sve do vrata nebeskih.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "〚And now to you, the holy ones of heaven〛, the souls of men make their suit, saying, “Bring our cause before the Most High”.’",
-      "text_fa": null,
-      "text_hr": "〚A sada vama, sveti nebeski,〛 duše se ljudi tuže govoreći: „Iznesite našu parnicu pred Svevišnjega.”’",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "And they said to the Lord =of the ages=: ‘Lord of lords, God of gods, King of kings ‹and God of the ages›, the throne of Thy glory (standeth) unto all the generations of the ages, and Thy name holy and glorious and blessed unto all the ages!",
-      "text_fa": null,
-      "text_hr": "I rekoše Gospodinu =vjekova=: ‘Gospodaru gospodara, Bože bogova, Kralju kraljeva ‹i Bože vjekova›, prijestolje Tvoje slave stoji kroz sve naraštaje vjekova, a Tvoje je ime sveto, slavno i blagoslovljeno u sve vjekove!",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "Thou hast made all things, and power over all things hast Thou: and all things are naked and open in Thy sight, and all things Thou seest, and nothing can hide itself from Thee.",
-      "text_fa": null,
-      "text_hr": "Ti si sve stvorio i nad svime imaš vlast; sve je pred Tobom golo i otkriveno, sve vidiš i ništa se od Tebe ne može skriti.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "Thou seest what Azâzêl hath done, who hath taught all unrighteousness on earth and revealed the eternal secrets which were (preserved) in heaven, which men were striving to =learn=:",
-      "text_fa": null,
-      "text_hr": "Vidiš što je učinio Azazel, koji je podučio svemu bezakonju na zemlji i otkrio vječne tajne čuvane na nebu, koje su ljudi nastojali =naučiti=.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 7,
-      "text_en": "And Semjâzâ, to whom Thou hast given authority to bear rule over his associates.",
-      "text_fa": null,
-      "text_hr": "I Semjaza, kojemu si dao vlast da vlada nad svojim drugovima.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 8,
-      "text_en": "And they have gone to the daughters of men upon the earth, and have slept with the women, and have defiled themselves, and revealed to them all kinds of sins.",
-      "text_fa": null,
-      "text_hr": "Otišli su kćerima ljudskim na zemlji, legli sa ženama, okaljali se i otkrili im svakojake grijehe.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 9,
-      "text_en": "And the women have borne giants, and the whole earth has thereby been filled with blood and unrighteousness.",
-      "text_fa": null,
-      "text_hr": "Žene su rodile divove te se sva zemlja zbog toga napunila krvlju i bezakonjem.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 10,
-      "text_en": "And now, behold, the souls of those who have died are crying and making their suit to the gates of heaven, and their lamentations have ascended: and cannot =cease= because of the lawless deeds which are wrought on the earth.",
-      "text_fa": null,
-      "text_hr": "A sada, gle, duše umrlih vape i tuže se pred vratima nebeskim; njihovi su se jecaji uzdigli i ne mogu =prestati= zbog bezakonih djela koja se čine na zemlji.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 11,
-      "text_en": "And Thou knowest all things before they come to pass, and Thou seest these things and Thou dost suffer them, and Thou dost not say to us what we are to do to them in regard to these.’",
-      "text_fa": null,
-      "text_hr": "Ti poznaješ sve prije nego što se dogodi; vidiš to i dopuštaš im, a ne govoriš nam što da im učinimo zbog svega ovoga.’",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And then Michael, Uriel, Raphael, and Gabriel looked down from heaven and saw much blood being shed upon the earth, and all lawlessness being wrought upon the earth.","text_fa":"آنگاه میکائیل، اوریئل، رافائل و جبرائیل از آسمان به پایین نگریستند و دیدند خون بسیاری بر زمین ریخته می‌شود و هرگونه بی‌شریعتی بر زمین انجام می‌گیرد.","text_hr":"Tada Mihael, Uriel, Rafael i Gabriel pogledaše s neba i vidješe mnogo krvi prolivene po zemlji i sve bezakonje koje se na njoj činilo.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And they said one to another: ‘The earth, made †without inhabitant, cries the voice of their crying† up to the gates of heaven.","text_fa":"و به یکدیگر گفتند: «زمین که †از ساکنان تهی شده، صدای فریاد آنان را† تا دروازه‌های آسمان بالا می‌برد.","text_hr":"Rekoše jedan drugomu: ‘Opustošena zemlja †glasom njihovih vapaja viče† sve do vrata nebeskih.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"〚And now to you, the holy ones of heaven〛, the souls of men make their suit, saying, “Bring our cause before the Most High”.’","text_fa":"〚و اکنون ای مقدسان آسمان، نزد شماست که〛 جان‌های آدمیان شکایت خود را مطرح می‌کنند و می‌گویند: «دادخواهی ما را نزد آن متعال ببرید.»»","text_hr":"〚A sada vama, sveti nebeski,〛 duše se ljudi tuže govoreći: „Iznesite našu parnicu pred Svevišnjega.”’","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"And they said to the Lord =of the ages=: ‘Lord of lords, God of gods, King of kings ‹and God of the ages›, the throne of Thy glory (standeth) unto all the generations of the ages, and Thy name holy and glorious and blessed unto all the ages!","text_fa":"و به خداوند =اعصار= گفتند: «ای خداوندِ خداوندان، خدای خدایان، پادشاه پادشاهان ‹و خدای اعصار›، تخت جلال تو در تمام نسل‌های اعصار پابرجاست و نام تو در همهٔ اعصار مقدس و پرجلال و مبارک است!","text_hr":"I rekoše Gospodinu =vjekova=: ‘Gospodaru gospodara, Bože bogova, Kralju kraljeva ‹i Bože vjekova›, prijestolje Tvoje slave stoji kroz sve naraštaje vjekova, a Tvoje je ime sveto, slavno i blagoslovljeno u sve vjekove!","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"Thou hast made all things, and power over all things hast Thou: and all things are naked and open in Thy sight, and all things Thou seest, and nothing can hide itself from Thee.","text_fa":"تو همه‌چیز را آفریده‌ای و بر همه‌چیز قدرت داری؛ همه‌چیز در برابر دیدگان تو عریان و آشکار است، همه را می‌بینی و هیچ‌چیز نمی‌تواند خود را از تو پنهان کند.","text_hr":"Ti si sve stvorio i nad svime imaš vlast; sve je pred Tobom golo i otkriveno, sve vidiš i ništa se od Tebe ne može skriti.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"Thou seest what Azâzêl hath done, who hath taught all unrighteousness on earth and revealed the eternal secrets which were (preserved) in heaven, which men were striving to =learn=:","text_fa":"تو می‌بینی عَزازیل چه کرده است؛ همان که تمام ناراستی را بر زمین آموخت و رازهای جاودانی را که در آسمان (محفوظ) بود آشکار ساخت، رازهایی که آدمیان می‌کوشیدند =بیاموزند=.","text_hr":"Vidiš što je učinio Azazel, koji je podučio svemu bezakonju na zemlji i otkrio vječne tajne čuvane na nebu, koje su ljudi nastojali =naučiti=.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":7,"text_en":"And Semjâzâ, to whom Thou hast given authority to bear rule over his associates.","text_fa":"و سِمیازا را نیز می‌بینی، که به او اختیار داده بودی بر همراهانش فرمان براند.","text_hr":"I Semjaza, kojemu si dao vlast da vlada nad svojim drugovima.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":8,"text_en":"And they have gone to the daughters of men upon the earth, and have slept with the women, and have defiled themselves, and revealed to them all kinds of sins.","text_fa":"آنان نزد دختران آدمیان بر زمین رفته‌اند، با زنان همبستر شده‌اند، خود را آلوده ساخته‌اند و انواع گناهان را به آنان آشکار کرده‌اند.","text_hr":"Otišli su kćerima ljudskim na zemlji, legli sa ženama, okaljali se i otkrili im svakojake grijehe.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":9,"text_en":"And the women have borne giants, and the whole earth has thereby been filled with blood and unrighteousness.","text_fa":"و زنان غول‌ها را زاده‌اند و بدین سبب تمام زمین از خون و ناراستی پر شده است.","text_hr":"Žene su rodile divove te se sva zemlja zbog toga napunila krvlju i bezakonjem.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":10,"text_en":"And now, behold, the souls of those who have died are crying and making their suit to the gates of heaven, and their lamentations have ascended: and cannot =cease= because of the lawless deeds which are wrought on the earth.","text_fa":"و اکنون بنگر؛ جان‌های کسانی که مرده‌اند فریاد می‌زنند و شکایت خود را تا دروازه‌های آسمان می‌برند؛ ناله‌هایشان بالا رفته و به سبب اعمال بی‌شریعتی که بر زمین انجام می‌شود نمی‌تواند =خاموش شود=.","text_hr":"A sada, gle, duše umrlih vape i tuže se pred vratima nebeskim; njihovi su se jecaji uzdigli i ne mogu =prestati= zbog bezakonih djela koja se čine na zemlji.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":11,"text_en":"And Thou knowest all things before they come to pass, and Thou seest these things and Thou dost suffer them, and Thou dost not say to us what we are to do to them in regard to these.’","text_fa":"و تو همه‌چیز را پیش از وقوعش می‌دانی؛ این امور را می‌بینی و تحملشان می‌کنی، اما به ما نمی‌گویی دربارهٔ آنان چه باید بکنیم.»","text_hr":"Ti poznaješ sve prije nego što se dogodi; vidiš to i dopuštaš im, a ne govoriš nam što da im učinimo zbog svega ovoga.’","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
