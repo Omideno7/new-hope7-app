@@ -6,77 +6,20 @@
   "title_hr": "Prva Henokova knjiga",
   "chapter": 17,
   "status": "in_review",
+  "status_fa": "in_review",
   "status_hr": "in_review",
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "a3ca00aedc43bc650c5cddaab6ba318aa13da83ab355fdf0d2ee75660eda7bbd",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa","hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And they took ⌜and⌝ brought me to a place in which those who were there were like flaming fire, and when they wished, they appeared as men.",
-      "text_fa": null,
-      "text_hr": "Oni me ⌜uzeše i⌝ dovedoše na mjesto gdje su tamošnji stanovnici bili poput plamenoga ognja, a kad bi htjeli, izgledali su kao ljudi.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And they brought me to the place of darkness, and to a mountain the point of whose summit reached to heaven.",
-      "text_fa": null,
-      "text_hr": "Dovedoše me na mjesto tame i do gore čiji je vrh sezao do neba.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And I saw the places of the luminaries ⌜and the treasuries of the stars⌝ and of the thunder, ⌜and⌝ in the =uttermost depths=, where were a fiery bow and arrows and their quiver, 〚and a fiery sword〛 and all the lightnings.",
-      "text_fa": null,
-      "text_hr": "Vidjeh mjesta svjetlila, ⌜riznice zvijezda⌝ i gromova, ⌜i⌝ u =najdubljim dubinama= ognjeni luk, strijele i njihov tobolac, 〚ognjeni mač〛 i sve munje.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "And they took me to the living waters, and to the fire of the west, which receives every setting of the sun.",
-      "text_fa": null,
-      "text_hr": "Odveli su me do živih voda i do ognja na zapadu koji prima svaki zalazak sunca.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "And I came to a river of fire in which the fire flows like water and discharges itself into the great sea towards the west.",
-      "text_fa": null,
-      "text_hr": "Dođoh do rijeke ognja u kojoj oganj teče poput vode i ulijeva se u veliko more prema zapadu.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "I saw the great rivers and came to the great ⌜river and to the great⌝ darkness, and went to the place where no flesh walks.",
-      "text_fa": null,
-      "text_hr": "Vidjeh velike rijeke i dođoh do velike ⌜rijeke i do velike⌝ tame, pa odoh na mjesto kojim ne hodi nijedno tijelo.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 7,
-      "text_en": "I saw the mountains of the darkness of winter and the place whence all the waters of the deep flow.",
-      "text_fa": null,
-      "text_hr": "Vidjeh gore zimske tame i mjesto odakle izviru sve vode bezdana.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 8,
-      "text_en": "I saw the mouths of all the rivers of the earth and the mouth of the deep.",
-      "text_fa": null,
-      "text_hr": "Vidjeh ušća svih zemaljskih rijeka i otvor bezdana.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And they took ⌜and⌝ brought me to a place in which those who were there were like flaming fire, and when they wished, they appeared as men.","text_fa":"آنان مرا ⌜گرفتند و⌝ به جایی بردند که موجودات آنجا مانند آتش شعله‌ور بودند و هرگاه می‌خواستند به شکل انسان ظاهر می‌شدند.","text_hr":"Oni me ⌜uzeše i⌝ dovedoše na mjesto gdje su tamošnji stanovnici bili poput plamenoga ognja, a kad bi htjeli, izgledali su kao ljudi.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And they brought me to the place of darkness, and to a mountain the point of whose summit reached to heaven.","text_fa":"مرا به جایگاه تاریکی و نزد کوهی بردند که نوک قله‌اش تا آسمان می‌رسید.","text_hr":"Dovedoše me na mjesto tame i do gore čiji je vrh sezao do neba.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And I saw the places of the luminaries ⌜and the treasuries of the stars⌝ and of the thunder, ⌜and⌝ in the =uttermost depths=, where were a fiery bow and arrows and their quiver, 〚and a fiery sword〛 and all the lightnings.","text_fa":"و جایگاه‌های نورافشان‌ها ⌜و خزانه‌های ستارگان⌝ و رعد را دیدم؛ ⌜و⌝ در =ژرف‌ترین اعماق=، کمانی آتشین، تیرها و ترکش آنها، 〚شمشیری آتشین〛 و همهٔ برق‌ها قرار داشت.","text_hr":"Vidjeh mjesta svjetlila, ⌜riznice zvijezda⌝ i gromova, ⌜i⌝ u =najdubljim dubinama= ognjeni luk, strijele i njihov tobolac, 〚ognjeni mač〛 i sve munje.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"And they took me to the living waters, and to the fire of the west, which receives every setting of the sun.","text_fa":"مرا نزد آب‌های زنده و آتشِ مغرب بردند، همان آتشی که هر غروب خورشید را دریافت می‌کند.","text_hr":"Odveli su me do živih voda i do ognja na zapadu koji prima svaki zalazak sunca.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"And I came to a river of fire in which the fire flows like water and discharges itself into the great sea towards the west.","text_fa":"به رودخانه‌ای از آتش رسیدم که آتش در آن مانند آب جاری بود و به دریای بزرگ در سمت غرب می‌ریخت.","text_hr":"Dođoh do rijeke ognja u kojoj oganj teče poput vode i ulijeva se u veliko more prema zapadu.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"I saw the great rivers and came to the great ⌜river and to the great⌝ darkness, and went to the place where no flesh walks.","text_fa":"رودهای بزرگ را دیدم و به ⌜رود بزرگ و به⌝ تاریکی عظیم رسیدم و به جایی رفتم که هیچ جسمی در آن راه نمی‌رود.","text_hr":"Vidjeh velike rijeke i dođoh do velike ⌜rijeke i do velike⌝ tame, pa odoh na mjesto kojim ne hodi nijedno tijelo.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":7,"text_en":"I saw the mountains of the darkness of winter and the place whence all the waters of the deep flow.","text_fa":"کوه‌های تاریکی زمستان و جایی را دیدم که همهٔ آب‌های ژرفا از آن جاری می‌شوند.","text_hr":"Vidjeh gore zimske tame i mjesto odakle izviru sve vode bezdana.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":8,"text_en":"I saw the mouths of all the rivers of the earth and the mouth of the deep.","text_fa":"دهانه‌های همهٔ رودهای زمین و دهانهٔ ژرفا را دیدم.","text_hr":"Vidjeh ušća svih zemaljskih rijeka i otvor bezdana.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
