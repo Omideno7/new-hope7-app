@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "book_id": "2_maccabees",
+  "title_fa": "دوم مکابیان",
+  "title_en": "Second Maccabees",
+  "title_hr": "Druga knjiga o Makabejcima",
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "source_translation_name": "King James Version with Apocrypha",
+  "source_license": "Public Domain",
+  "versification": "KJVA",
+  "chapter_count": 15,
+  "aligned_source_verses": 555,
+  "persian_in_review_verses": 555,
+  "croatian_in_review_verses": 555,
+  "included_ranges": {"fa": [[1,15]], "hr": [[1,15]]},
+  "translation_files": [
+    "data/apocrypha/review/2_maccabees/translations/chapters-01-03.fa-hr.in-review.json",
+    "data/apocrypha/review/2_maccabees/translations/chapters-04-05.fa-hr.in-review.json",
+    "data/apocrypha/review/2_maccabees/translations/chapters-06-07.fa-hr.in-review.json",
+    "data/apocrypha/review/2_maccabees/translations/chapters-08-10.fa-hr.in-review.json",
+    "data/apocrypha/review/2_maccabees/translations/chapters-11-12.fa-hr.in-review.json",
+    "data/apocrypha/review/2_maccabees/translations/chapters-13-15.fa-hr.in-review.json"
+  ],
+  "qa_state": "translation_complete_pending_final_corpus_audit"
+}
