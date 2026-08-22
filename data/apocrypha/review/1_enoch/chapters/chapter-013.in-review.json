@@ -6,93 +6,22 @@
   "title_hr": "Prva Henokova knjiga",
   "chapter": 13,
   "status": "in_review",
+  "status_fa": "in_review",
   "status_hr": "in_review",
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "948bbe519a2ca32ff63fd6f7ca95d752b08bc598d6ef7b439ee0bf15f239db4a",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa","hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And Enoch went and said: ‘Azâzêl, thou shalt have no peace: a severe sentence has gone forth against thee to put thee in bonds:",
-      "text_fa": null,
-      "text_hr": "Henok ode i reče: ‘Azazele, nećeš imati mira. Protiv tebe je izrečena teška presuda da budeš okovan.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And thou shalt not have toleration nor †request† granted to thee, because of the unrighteousness which thou hast taught, and because of all the works of godlessness and unrighteousness and sin which thou hast shown to men.’",
-      "text_fa": null,
-      "text_hr": "Neće ti biti dana ni pošteda niti će ti †molba† biti uslišana zbog nepravde kojoj si poučavao te zbog svih djela bezbožnosti, nepravde i grijeha koja si pokazao ljudima.’",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "Then I went and spoke to them all together, and they were all afraid, and fear and trembling seized them.",
-      "text_fa": null,
-      "text_hr": "Zatim odoh i obratih se svima zajedno. Svi se uplašiše te ih obuzeše strah i trepet.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "And they besought me to draw up a petition for them that they might find forgiveness, and to read their petition in the presence of the Lord of heaven.",
-      "text_fa": null,
-      "text_hr": "Zamoliše me da za njih sastavim molbu kako bi našli oproštenje i da njihovu molbu pročitam pred Gospodinom neba.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "For from thenceforward they could not speak (with Him) nor lift up their eyes to heaven for shame of their sins for which they had been condemned.",
-      "text_fa": null,
-      "text_hr": "Jer od tada više nisu mogli govoriti (s Njim) niti podići oči prema nebu zbog sramote svojih grijeha za koje su bili osuđeni.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 6,
-      "text_en": "Then I wrote out their petition, and the prayer †in regard to their spirits and their deeds individually and in regard to their requests that they should have forgiveness and length ‹of days›†.",
-      "text_fa": null,
-      "text_hr": "Tada zapisah njihovu molbu i molitvu †o njihovim duhovima i pojedinačnim djelima te o njihovim prošnjama da dobiju oproštenje i duljinu ‹dana›†.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 7,
-      "text_en": "And I went off and sat down at the waters of Dan, in the land of Dan, to the south of the west of Hermon: I read their petition till I fell asleep.",
-      "text_fa": null,
-      "text_hr": "Otišao sam i sjeo kraj voda Dana, u zemlji Danovoj, jugozapadno od Hermona. Čitao sam njihovu molbu dok nisam zaspao.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 8,
-      "text_en": "And behold a dream came to me, and visions fell down upon me, and I saw visions of chastisement, ⌜and a voice came bidding (me)⌝ to tell it to the sons of heaven, and reprimand them.",
-      "text_fa": null,
-      "text_hr": "I gle, dođe mi san, viđenja se spustiše na me i vidjeh viđenja kazne; ⌜a glas mi zapovjedi⌝ da ih ispričam sinovima neba i ukorim ih.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 9,
-      "text_en": "And when I awaked, I came unto them, and they were all sitting gathered together, weeping in ’Abelsjâîl, which is between Lebanon and Sênêsêr, with their faces covered.",
-      "text_fa": null,
-      "text_hr": "Kad se probudih, dođoh k njima. Svi su zajedno sjedili i plakali u Abelsjailu, između Libanona i Senesera, pokrivenih lica.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 10,
-      "text_en": "And I recounted before them all the visions which I had seen in sleep, and I began to speak the words of righteousness, and to reprimand the heavenly Watchers.",
-      "text_fa": null,
-      "text_hr": "Ispripovjedih im sva viđenja koja sam vidio u snu te počeh govoriti riječi pravednosti i koriti nebeske Stražare.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And Enoch went and said: ‘Azâzêl, thou shalt have no peace: a severe sentence has gone forth against thee to put thee in bonds:","text_fa":"خنوخ رفت و گفت: «ای عَزازیل، برای تو صلحی نخواهد بود؛ حکمی سخت علیه تو صادر شده تا در بندت کنند.","text_hr":"Henok ode i reče: ‘Azazele, nećeš imati mira. Protiv tebe je izrečena teška presuda da budeš okovan.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And thou shalt not have toleration nor †request† granted to thee, because of the unrighteousness which thou hast taught, and because of all the works of godlessness and unrighteousness and sin which thou hast shown to men.’","text_fa":"هیچ مهلت و گذشتی به تو داده نخواهد شد و هیچ †درخواستی† برایت پذیرفته نمی‌شود، به سبب ناراستی‌ای که آموخته‌ای و به سبب همهٔ اعمال بی‌دینی و ناراستی و گناهی که به آدمیان نشان داده‌ای.»","text_hr":"Neće ti biti dana ni pošteda niti će ti †molba† biti uslišana zbog nepravde kojoj si poučavao te zbog svih djela bezbožnosti, nepravde i grijeha koja si pokazao ljudima.’","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"Then I went and spoke to them all together, and they were all afraid, and fear and trembling seized them.","text_fa":"سپس رفتم و با همهٔ آنان یکجا سخن گفتم؛ همگی ترسیدند و ترس و لرز آنان را فرا گرفت.","text_hr":"Zatim odoh i obratih se svima zajedno. Svi se uplašiše te ih obuzeše strah i trepet.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"And they besought me to draw up a petition for them that they might find forgiveness, and to read their petition in the presence of the Lord of heaven.","text_fa":"از من خواستند برایشان دادخواستی بنویسم تا شاید آمرزش بیابند و آن درخواست را در حضور خداوند آسمان بخوانم.","text_hr":"Zamoliše me da za njih sastavim molbu kako bi našli oproštenje i da njihovu molbu pročitam pred Gospodinom neba.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"For from thenceforward they could not speak (with Him) nor lift up their eyes to heaven for shame of their sins for which they had been condemned.","text_fa":"زیرا از آن پس به سبب شرمساری از گناهانی که برای آنها محکوم شده بودند، دیگر نمی‌توانستند (با او) سخن بگویند یا چشمان خود را به سوی آسمان بلند کنند.","text_hr":"Jer od tada više nisu mogli govoriti (s Njim) niti podići oči prema nebu zbog sramote svojih grijeha za koje su bili osuđeni.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_en":"Then I wrote out their petition, and the prayer †in regard to their spirits and their deeds individually and in regard to their requests that they should have forgiveness and length ‹of days›†.","text_fa":"پس درخواست آنان و دعایی را †دربارهٔ ارواحشان، کارهای فردی‌شان و تقاضاهایشان برای آمرزش و طول ‹روزها›† نوشتم.","text_hr":"Tada zapisah njihovu molbu i molitvu †o njihovim duhovima i pojedinačnim djelima te o njihovim prošnjama da dobiju oproštenje i duljinu ‹dana›†.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":7,"text_en":"And I went off and sat down at the waters of Dan, in the land of Dan, to the south of the west of Hermon: I read their petition till I fell asleep.","text_fa":"سپس رفتم و کنار آب‌های دان، در سرزمین دان، در جنوب‌غربی حِرمون نشستم و درخواست آنان را خواندم تا به خواب رفتم.","text_hr":"Otišao sam i sjeo kraj voda Dana, u zemlji Danovoj, jugozapadno od Hermona. Čitao sam njihovu molbu dok nisam zaspao.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":8,"text_en":"And behold a dream came to me, and visions fell down upon me, and I saw visions of chastisement, ⌜and a voice came bidding (me)⌝ to tell it to the sons of heaven, and reprimand them.","text_fa":"و اینک خوابی بر من آمد و رؤیاها بر من فرود آمدند؛ رؤیاهای مجازات را دیدم و ⌜صدایی آمد و به من فرمان داد⌝ آن را برای فرزندان آسمان بازگو کنم و آنان را توبیخ نمایم.","text_hr":"I gle, dođe mi san, viđenja se spustiše na me i vidjeh viđenja kazne; ⌜a glas mi zapovjedi⌝ da ih ispričam sinovima neba i ukorim ih.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":9,"text_en":"And when I awaked, I came unto them, and they were all sitting gathered together, weeping in ’Abelsjâîl, which is between Lebanon and Sênêsêr, with their faces covered.","text_fa":"وقتی بیدار شدم نزد آنان رفتم؛ همه در اَبِلس‌یائیل، میان لبنان و سِنِسِر، گرد هم نشسته بودند، گریه می‌کردند و صورت‌هایشان پوشیده بود.","text_hr":"Kad se probudih, dođoh k njima. Svi su zajedno sjedili i plakali u Abelsjailu, između Libanona i Senesera, pokrivenih lica.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":10,"text_en":"And I recounted before them all the visions which I had seen in sleep, and I began to speak the words of righteousness, and to reprimand the heavenly Watchers.","text_fa":"تمام رؤیاهایی را که در خواب دیده بودم برای آنان بازگو کردم و شروع به بیان سخنان پارسایی و توبیخ دیدبانان آسمانی نمودم.","text_hr":"Ispripovjedih im sva viđenja koja sam vidio u snu te počeh govoriti riječi pravednosti i koriti nebeske Stražare.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
