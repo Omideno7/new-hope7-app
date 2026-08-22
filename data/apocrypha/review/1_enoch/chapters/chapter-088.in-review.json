@@ -10,33 +10,10 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "d5b16c043300bc653fd1741e651c48bbf0fc18eb4640789f2d55d3d7284693b4",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And I saw one of those four who had come forth first, and he seized that first star which had fallen from the heaven, and bound it hand and foot and cast it into an abyss: now that abyss was narrow and deep, and horrible and dark.",
-      "text_fa": null,
-      "text_hr": "I vidio sam jednog od one četvorice koji su prvi izašli, i on je zgrabio onu prvu zvijezdu koja je pala s neba, i vezao joj ruke i noge i bacio je u ponor: sada je ponor bio uzak i dubok, i užasan i mračan.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And one of them drew a sword, and gave it to those elephants and camels and asses: then they began to smite each other, and the whole earth quaked because of them.",
-      "text_fa": null,
-      "text_hr": "I jedan od njih isuka mač i dade ga tim slonovima, devama i magarcima: tada se oni počeše međusobno udarati, i cijela se zemlja tresla od njih.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "And as I was beholding in the vision, lo, one of the four who had come forth stoned (them) from heaven, and gathered and took all the great stars whose privy members were like those of horses, and bound them all hand and foot, and cast them in an abyss of the earth.",
-      "text_fa": null,
-      "text_hr": "Dok sam gledao u viđenju, gle, jedan od četvorice koji su izišli zasuo ih je kamenjem s neba. Okupio je i uzeo sve velike zvijezde čiji su spolni udovi bili poput konjskih, svezao im ruke i noge i bacio ih u zemaljski bezdan.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And I saw one of those four who had come forth first, and he seized that first star which had fallen from the heaven, and bound it hand and foot and cast it into an abyss: now that abyss was narrow and deep, and horrible and dark.","text_fa":"و یکی از آن چهار تن را که نخست بیرون آمده بودند دیدم؛ او آن ستارهٔ نخست را که از آسمان افتاده بود گرفت، دست و پایش را بست و در ژرفنایی افکند. آن ژرفنا باریک و عمیق، هولناک و تاریک بود.","text_hr":"I vidio sam jednog od one četvorice koji su prvi izašli, i on je zgrabio onu prvu zvijezdu koja je pala s neba, i vezao joj ruke i noge i bacio je u ponor: sada je ponor bio uzak i dubok, i užasan i mračan.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And one of them drew a sword, and gave it to those elephants and camels and asses: then they began to smite each other, and the whole earth quaked because of them.","text_fa":"و یکی از آنها شمشیری کشید و آن را به آن فیل‌ها، شترها و الاغ‌ها داد؛ آنگاه آنها شروع کردند یکدیگر را بزنند و سراسر زمین به سبب آنان لرزید.","text_hr":"I jedan od njih isuka mač i dade ga tim slonovima, devama i magarcima: tada se oni počeše međusobno udarati, i cijela se zemlja tresla od njih.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"And as I was beholding in the vision, lo, one of the four who had come forth stoned (them) from heaven, and gathered and took all the great stars whose privy members were like those of horses, and bound them all hand and foot, and cast them in an abyss of the earth.","text_fa":"و همچنان که در رؤیا نگاه می‌کردم، ناگاه یکی از آن چهار تن که بیرون آمده بودند از آسمان بر آنان سنگ بارید؛ و همهٔ ستارگان بزرگ را که اندام جنسی‌شان مانند اسبان بود گرد آورد و گرفت، دست و پای همه را بست و آنان را در ژرفنای زمین افکند.","text_hr":"Dok sam gledao u viđenju, gle, jedan od četvorice koji su izišli zasuo ih je kamenjem s neba. Okupio je i uzeo sve velike zvijezde čiji su spolni udovi bili poput konjskih, svezao im ruke i noge i bacio ih u zemaljski bezdan.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
