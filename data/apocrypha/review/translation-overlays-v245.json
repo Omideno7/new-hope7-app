@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "version": "2.4.5",
+  "status": "in_review",
+  "policy": "Only fresh New Hope 7 translations listed here may overlay the canonical English runtime.",
+  "files": [
+    "data/apocrypha/review/psalm_151/chapters/chapter-01.in-review.json",
+    "data/apocrypha/review/prayer_of_manasseh/chapters/chapter-01.in-review.json",
+    "data/apocrypha/review/susanna/chapters/chapter-01.in-review.json",
+    "data/apocrypha/review/susanna/translations/chapter-01.hr.in-review.json"
+  ]
+}
