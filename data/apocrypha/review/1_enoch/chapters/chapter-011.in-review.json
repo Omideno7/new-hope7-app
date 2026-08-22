@@ -6,29 +6,14 @@
   "title_hr": "Prva Henokova knjiga",
   "chapter": 11,
   "status": "in_review",
+  "status_fa": "in_review",
   "status_hr": "in_review",
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "7472b647d1b6da270341623e36101bd15bc38516b7710ee7d3137159c8a4d81c",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa","hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "And in those days I will open the store chambers of blessing which are in the heaven, so as to send them down ⌜upon the earth⌝ over the work and labour of the children of men.",
-      "text_fa": null,
-      "text_hr": "U one dane otvorit ću riznice blagoslova na nebu da ih pošaljem ⌜na zemlju⌝, na djelo i trud sinova ljudskih.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "And truth and peace shall be associated together throughout all the days of the world and throughout all the generations =of men=.’",
-      "text_fa": null,
-      "text_hr": "Istina i mir bit će združeni kroz sve dane svijeta i kroz sve naraštaje =ljudi=.’",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"And in those days I will open the store chambers of blessing which are in the heaven, so as to send them down ⌜upon the earth⌝ over the work and labour of the children of men.","text_fa":"و در آن روزها خزانه‌های برکتی را که در آسمان است خواهم گشود تا آنها را ⌜بر زمین⌝، بر کار و زحمت فرزندان آدمیان فرو فرستم.","text_hr":"U one dane otvorit ću riznice blagoslova na nebu da ih pošaljem ⌜na zemlju⌝, na djelo i trud sinova ljudskih.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"And truth and peace shall be associated together throughout all the days of the world and throughout all the generations =of men=.’","text_fa":"و راستی و صلح در تمام روزهای جهان و در همهٔ نسل‌های =آدمیان= با یکدیگر همراه خواهند بود.»","text_hr":"Istina i mir bit će združeni kroz sve dane svijeta i kroz sve naraštaje =ljudi=.’","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
