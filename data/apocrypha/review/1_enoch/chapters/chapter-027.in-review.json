@@ -10,49 +10,12 @@
   "source_translation": "R. H. Charles",
   "versification": "R. H. Charles source numbering normalized to logical chapters 1-108 and contiguous integer verses; lettered subverses and parallel E/G^g readings are preserved in merged text/source_parts",
   "source_english_sha256": "e7ab2a40168af43d8cc7d99f5029f2bc136a44a6d44249632e820f6a4f1fd768",
-  "locales_in_scope": [
-    "hr"
-  ],
+  "locales_in_scope": ["fa", "hr"],
   "verses": [
-    {
-      "verse": 1,
-      "text_en": "Then said I: ‘For what object is this blessed land, which is entirely filled with trees, and this accursed valley 〚between?〛’",
-      "text_fa": null,
-      "text_hr": "Tada rekoh: ‘Čemu služi ova blagoslovljena zemlja, posve ispunjena drvećem, i ova prokleta dolina 〚između njih?〛’",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 2,
-      "text_en": "[common reading] 〚Then Uriel, one of the holy angels who was with me, answered and said: ‘This〛 valley is for those who are accursed for ever: here shall all ⌜the accursed⌝ be gathered together who utter with their lips against the Lord unseemly words and of His glory speak hard things.\n\n[variant E · continuation] Here shall they be gathered together, and here shall be their place of judgement.\n\n[variant G^g · continuation] Here shall they be gathered together, and here shall be the place of their habitation.",
-      "text_fa": null,
-      "text_hr": "[zajedničko čitanje] 〚Tada Uriel, jedan od svetih anđela koji bijaše sa mnom, odgovori: ‘Ova〛 je dolina za one koji su zauvijek prokleti. Ovdje će se okupiti svi ⌜prokleti⌝ koji svojim usnama protiv Gospodina izgovaraju nedolične riječi i grubo govore o Njegovoj slavi.\n\n[varijanta E · nastavak] Ovdje će biti okupljeni i ovdje će biti mjesto njihova suda.\n\n[varijanta G^g · nastavak] Ovdje će biti okupljeni i ovdje će biti mjesto njihova prebivališta.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 3,
-      "text_en": "[variant E] In the last days there shall be upon them the spectacle of righteous judgement in the presence of the righteous for ever: here shall the merciful bless the Lord of Glory, the Eternal King.\n\n[variant G^g] In the last times, in the days of the true judgement in the presence of the righteous for ever: here shall the =godly= bless the Lord of Glory, the Eternal King.",
-      "text_fa": null,
-      "text_hr": "[varijanta E] U posljednje će dane pred pravednicima dovijeka biti izloženi prizoru pravednoga suda; ovdje će milosrdni blagoslivljati Gospodina Slave, Vječnoga Kralja.\n\n[varijanta G^g] U posljednja vremena, u dane istinskoga suda pred pravednicima dovijeka, ovdje će =pobožni= blagoslivljati Gospodina Slave, Vječnoga Kralja.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 4,
-      "text_en": "In the days of judgement over the former, they shall bless Him for the mercy in accordance with which He has assigned them (their lot).’",
-      "text_fa": null,
-      "text_hr": "U dane suda nad onima prije spomenutima blagoslivljat će Ga zbog milosrđa po kojemu im je dodijelio (njihov dio).’",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    },
-    {
-      "verse": 5,
-      "text_en": "Then I blessed the Lord of Glory and set forth His ⌜glory⌝ and lauded Him gloriously.",
-      "text_fa": null,
-      "text_hr": "Tada blagoslovih Gospodina Slave, objavih Njegovu ⌜slavu⌝ i slavno Ga hvalih.",
-      "status_fa": "out_of_scope",
-      "status_hr": "in_review"
-    }
+    {"verse":1,"text_en":"Then said I: ‘For what object is this blessed land, which is entirely filled with trees, and this accursed valley 〚between?〛’","text_fa":"آنگاه گفتم: «این سرزمین مبارک که سراسر از درختان پوشیده شده، و این درهٔ ملعون 〚در میان آنها〛، برای چه منظوری است؟»","text_hr":"Tada rekoh: ‘Čemu služi ova blagoslovljena zemlja, posve ispunjena drvećem, i ova prokleta dolina 〚između njih?〛’","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_en":"[common reading] 〚Then Uriel, one of the holy angels who was with me, answered and said: ‘This〛 valley is for those who are accursed for ever: here shall all ⌜the accursed⌝ be gathered together who utter with their lips against the Lord unseemly words and of His glory speak hard things.\n\n[variant E · continuation] Here shall they be gathered together, and here shall be their place of judgement.\n\n[variant G^g · continuation] Here shall they be gathered together, and here shall be the place of their habitation.","text_fa":"[قرائت مشترک] 〚آنگاه اوریئل، یکی از فرشتگان مقدس که همراه من بود، پاسخ داد و گفت: «این〛 دره برای کسانی است که تا ابد ملعون‌اند؛ در اینجا همهٔ ⌜ملعونان⌝ که با لب‌های خود سخنان ناشایست بر ضد خداوند می‌گویند و دربارهٔ جلال او سخنان سخت بر زبان می‌آورند، گرد آورده خواهند شد.\n\n[گونهٔ E · ادامه] در اینجا گرد آورده خواهند شد و اینجا جای داوری آنان خواهد بود.\n\n[گونهٔ G^g · ادامه] در اینجا گرد آورده خواهند شد و اینجا مکان اقامت آنان خواهد بود.","text_hr":"[zajedničko čitanje] 〚Tada Uriel, jedan od svetih anđela koji bijaše sa mnom, odgovori: ‘Ova〛 je dolina za one koji su zauvijek prokleti. Ovdje će se okupiti svi ⌜prokleti⌝ koji svojim usnama protiv Gospodina izgovaraju nedolične riječi i grubo govore o Njegovoj slavi.\n\n[varijanta E · nastavak] Ovdje će biti okupljeni i ovdje će biti mjesto njihova suda.\n\n[varijanta G^g · nastavak] Ovdje će biti okupljeni i ovdje će biti mjesto njihova prebivališta.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_en":"[variant E] In the last days there shall be upon them the spectacle of righteous judgement in the presence of the righteous for ever: here shall the merciful bless the Lord of Glory, the Eternal King.\n\n[variant G^g] In the last times, in the days of the true judgement in the presence of the righteous for ever: here shall the =godly= bless the Lord of Glory, the Eternal King.","text_fa":"[گونهٔ E] در روزهای آخر، آنان در حضور پارسایان تا ابد در معرض منظرهٔ داوری عادلانه خواهند بود؛ در اینجا رحیمان، خداوندِ جلال، پادشاه جاودان را برکت خواهند داد.\n\n[گونهٔ G^g] در زمان‌های آخر، در روزهای داوری حقیقی و در حضور پارسایان تا ابد، در اینجا =خداپرستان= خداوندِ جلال، پادشاه جاودان را برکت خواهند داد.","text_hr":"[varijanta E] U posljednje će dane pred pravednicima dovijeka biti izloženi prizoru pravednoga suda; ovdje će milosrdni blagoslivljati Gospodina Slave, Vječnoga Kralja.\n\n[varijanta G^g] U posljednja vremena, u dane istinskoga suda pred pravednicima dovijeka, ovdje će =pobožni= blagoslivljati Gospodina Slave, Vječnoga Kralja.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_en":"In the days of judgement over the former, they shall bless Him for the mercy in accordance with which He has assigned them (their lot).’","text_fa":"در روزهای داوری بر آن گروه پیشین، او را به سبب رحمتی که بر پایهٔ آن سهم آنان را تعیین کرده است، برکت خواهند داد.»","text_hr":"U dane suda nad onima prije spomenutima blagoslivljat će Ga zbog milosrđa po kojemu im je dodijelio (njihov dio).’","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_en":"Then I blessed the Lord of Glory and set forth His ⌜glory⌝ and lauded Him gloriously.","text_fa":"آنگاه خداوندِ جلال را برکت دادم، ⌜جلال⌝ او را اعلام کردم و او را با شکوه ستودم.","text_hr":"Tada blagoslovih Gospodina Slave, objavih Njegovu ⌜slavu⌝ i slavno Ga hvalih.","status_fa":"in_review","status_hr":"in_review"}
   ]
 }
