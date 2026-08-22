@@ -26,7 +26,7 @@
   "complete_book_count": 17,
   "complete_fresh_verse_rows": 5046,
   "in_progress_books": [
-    {"book_id":"1_enoch","verses":1062,"fa":129,"hr":1062,"chapters_fa_complete":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],"next_chapter":16}
+    {"book_id":"1_enoch","verses":1062,"fa":168,"hr":1062,"chapters_fa_complete":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],"next_chapter":21}
   ],
   "remaining_books": ["sirach","1_enoch"],
   "next_book": "1_enoch",
