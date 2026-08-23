@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "audit_version": "2.5.0",
-  "generated_at": "2026-08-23T07:16:54.267Z",
+  "generated_at": "2026-08-23T07:18:37.117Z",
   "branch": "release-candidate-2.4.0-preview",
-  "commit": "c88387b330f7b9d453fc884e062282230ce81e59",
+  "commit": "fb1931ce339465ddbb4082027d14d9b300540197",
   "scope": {
     "books": 19,
     "canonical_rows": 7501
@@ -226,30 +226,11 @@
     }
   },
   "blocker_summary": {},
-  "warning_summary": {
-    "OVERLAY_NON_SOURCE_SKIPPED": 4
-  },
+  "warning_summary": {},
   "blocker_count": 0,
-  "warning_count": 4,
+  "warning_count": 0,
   "blockers": [],
-  "warnings": [
-    {
-      "code": "OVERLAY_NON_SOURCE_SKIPPED",
-      "detail": "data/apocrypha/review/sirach/translations/chapters-31-35.fa-hr.in-review.json: sirach|32|25"
-    },
-    {
-      "code": "OVERLAY_NON_SOURCE_SKIPPED",
-      "detail": "data/apocrypha/review/sirach/translations/chapters-31-35.fa-hr.in-review.json: sirach|32|25"
-    },
-    {
-      "code": "OVERLAY_NON_SOURCE_SKIPPED",
-      "detail": "data/apocrypha/review/sirach/translations/chapters-31-35.fa-hr.in-review.json: sirach|32|26"
-    },
-    {
-      "code": "OVERLAY_NON_SOURCE_SKIPPED",
-      "detail": "data/apocrypha/review/sirach/translations/chapters-31-35.fa-hr.in-review.json: sirach|32|26"
-    }
-  ],
+  "warnings": [],
   "structural_release_gate_passed": true,
   "note": "Machine corpus gate mirrors fresh-filter + hardened Reader overlay. Integrated browser/mobile QA remains a separate final gate."
 }
