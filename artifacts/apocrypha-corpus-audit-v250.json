@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "audit_version": "2.5.0",
-  "generated_at": "2026-08-23T07:15:14.210Z",
+  "generated_at": "2026-08-23T07:16:54.267Z",
   "branch": "release-candidate-2.4.0-preview",
-  "commit": "8d788410dbe9be2824f0de9889a984af5c9cfc1f",
+  "commit": "c88387b330f7b9d453fc884e062282230ce81e59",
   "scope": {
     "books": 19,
     "canonical_rows": 7501
@@ -78,7 +78,7 @@
       "en": 228,
       "fa": 228,
       "hr": 228,
-      "text_issues": 1
+      "text_issues": 0
     },
     "4_maccabees": {
       "en": 484,
@@ -225,20 +225,13 @@
       "hr": []
     }
   },
-  "blocker_summary": {
-    "TEXT_PLACEHOLDER": 1
-  },
+  "blocker_summary": {},
   "warning_summary": {
     "OVERLAY_NON_SOURCE_SKIPPED": 4
   },
-  "blocker_count": 1,
+  "blocker_count": 0,
   "warning_count": 4,
-  "blockers": [
-    {
-      "code": "TEXT_PLACEHOLDER",
-      "detail": "3_maccabees|6|24|hr"
-    }
-  ],
+  "blockers": [],
   "warnings": [
     {
       "code": "OVERLAY_NON_SOURCE_SKIPPED",
@@ -257,6 +250,6 @@
       "detail": "data/apocrypha/review/sirach/translations/chapters-31-35.fa-hr.in-review.json: sirach|32|26"
     }
   ],
-  "structural_release_gate_passed": false,
+  "structural_release_gate_passed": true,
   "note": "Machine corpus gate mirrors fresh-filter + hardened Reader overlay. Integrated browser/mobile QA remains a separate final gate."
 }
