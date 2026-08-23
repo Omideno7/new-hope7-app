@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "book_id": "2_maccabees",
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "source_license": "Public Domain",
+  "audit_reason": "Final corpus audit corrections for a verified Persian unit error and a flagged Croatian text-sanity row.",
+  "chapters": [
+    {
+      "chapter": 11,
+      "verses": [
+        {"verse":5,"text_fa":"پس وارد یهودیه شد و به بیت‌صور، شهری استوار که حدود پنج فرلانگ از اورشلیم فاصله داشت، نزدیک شد و آن را سخت محاصره کرد.","status_fa":"in_review"}
+      ]
+    },
+    {
+      "chapter": 15,
+      "verses": [
+        {"verse":10,"text_hr":"Kad je tako pobudio njihova srca, dao im je upute, pokazujući im pritom nevjernost pogana i kršenje zakletava.","status_hr":"in_review"}
+      ]
+    }
+  ]
+}
