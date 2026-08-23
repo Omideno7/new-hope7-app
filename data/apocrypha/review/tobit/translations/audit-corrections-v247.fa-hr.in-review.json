@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "book_id": "tobit",
+  "title_en": "Tobit",
+  "title_fa": "طوبیت",
+  "title_hr": "Tobija",
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "audit_reason": "Corrections found during final corpus audit; later overlay wins without mutating the earlier translation batch.",
+  "chapters": [
+    {
+      "chapter": 1,
+      "verses": [
+        {
+          "verse": 2,
+          "text_fa": "او در زمان اِنِمِسَر، پادشاه آشوریان، از تیشبه به اسارت برده شد؛ تیشبه در سمت راست آن شهری قرار داشت که به‌درستی «نفتالی» نامیده می‌شد، در جلیل بالاتر از اَشیر.",
+          "text_hr": "U vrijeme Enemesara, kralja Asiraca, bio je odveden u sužanjstvo iz Tišbe; Tišba je bila s desne strane onoga grada koji se pravilno zvao Naftali, u Galileji iznad Ašera.",
+          "status_fa": "in_review",
+          "status_hr": "in_review"
+        }
+      ]
+    },
+    {
+      "chapter": 14,
+      "verses": [
+        {
+          "verse": 11,
+          "text_fa": "پس، پسرم، بنگر صدقه چه می‌کند و عدالت چگونه نجات می‌دهد.» وقتی این سخنان را به پایان رساند، در بستر جان سپرد؛ صد و پنجاه‌وهشت سال داشت و پسرش او را با احترام دفن کرد.",
+          "text_hr": "Zato, sine moj, gledaj što čini milostinja i kako pravednost izbavlja.” Kad je završio ove riječi, izdahnu na postelji u dobi od sto pedeset i osam godina, a sin ga časno pokopa.",
+          "status_fa": "in_review",
+          "status_hr": "in_review"
+        }
+      ]
+    }
+  ]
+}
