@@ -1,0 +1,39 @@
+/* New Hope 7 Admin QA v3.6.1 — reliable recipient scrolling on iPhone/iPad and mobile browsers. */
+.nh7-v360-compose{min-width:0!important;overflow:visible!important}
+.nh7-v360-recipient-picker{
+  display:block!important;
+  position:relative!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+  height:min(48dvh,440px)!important;
+  min-height:230px!important;
+  max-height:min(48dvh,440px)!important;
+  overflow-x:hidden!important;
+  overflow-y:scroll!important;
+  -webkit-overflow-scrolling:touch!important;
+  overscroll-behavior-y:contain!important;
+  touch-action:pan-y!important;
+  scrollbar-gutter:stable;
+  isolation:isolate;
+  z-index:2;
+}
+.nh7-v360-recipient-picker .nh7-v360-recipient{
+  min-height:56px;
+  box-sizing:border-box;
+  flex:0 0 auto;
+  touch-action:pan-y!important;
+  -webkit-user-select:none;
+  user-select:none;
+}
+.nh7-v360-recipient-picker .nh7-v360-recipient>span{min-width:0;flex:1}
+.nh7-v360-recipient-picker .nh7-v360-recipient strong,
+.nh7-v360-recipient-picker .nh7-v360-recipient small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nh7-v360-recipient-picker input[type="checkbox"]{touch-action:manipulation!important}
+.nh7-v361-recipient-scroll-hint{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:6px 2px 8px;color:#667085;font-size:.76rem;line-height:1.5}
+.nh7-v361-recipient-scroll-hint button{border:0;background:#edf8f5;color:#08735e;border-radius:999px;padding:6px 10px;font:inherit;font-weight:800;cursor:pointer}
+@media(max-width:620px){
+  .nh7-v360-recipient-picker{height:min(54dvh,430px)!important;max-height:min(54dvh,430px)!important;min-height:250px!important}
+}
+@supports(-webkit-touch-callout:none){
+  .nh7-v360-recipient-picker{transform:translateZ(0);will-change:scroll-position}
+}
