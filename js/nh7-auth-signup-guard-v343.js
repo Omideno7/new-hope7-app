@@ -1,4 +1,4 @@
-/* New Hope 7 v3.4.3 — distinguish a real new signup from Supabase's obfuscated existing-user response */
+/* New Hope 7 v3.5.1 — duplicate-account guard + canonical registration bootstrap */
 (()=>{'use strict';
   if(window.__NH7_SIGNUP_GUARD_V343__) return;
   window.__NH7_SIGNUP_GUARD_V343__=true;
@@ -24,5 +24,16 @@
     }
     return response;
   };
-  window.NH7_AUTH_SIGNUP_GUARD_VERSION='3.4.3';
+  window.NH7_AUTH_SIGNUP_GUARD_VERSION='3.5.1';
+
+  /* This file is loaded synchronously before the legacy registration patch.
+     Load the canonical engine here so its capture handler is registered first. */
+  if(!window.__NH7_CANONICAL_REGISTRATION_V351__){
+    const src='js/nh7-registration-canonical-v351.js?v=3.5.1';
+    if(document.readyState==='loading'){
+      document.write('<script src="'+src+'"><\\/script>');
+    }else if(!document.querySelector('script[data-nh7-canonical-registration]')){
+      const script=document.createElement('script');script.src=src;script.dataset.nh7CanonicalRegistration='1';script.async=false;document.head.appendChild(script);
+    }
+  }
 })();
