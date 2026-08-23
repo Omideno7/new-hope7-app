@@ -31,7 +31,7 @@
   if(!window.__NH7_CANONICAL_REGISTRATION_V351__){
     const src='js/nh7-registration-canonical-v351.js?v=3.5.1';
     if(document.readyState==='loading'){
-      document.write('<script src="'+src+'"><\\/script>');
+      document.write('<script src="'+src+'"><'+'/script>');
     }else if(!document.querySelector('script[data-nh7-canonical-registration]')){
       const script=document.createElement('script');script.src=src;script.dataset.nh7CanonicalRegistration='1';script.async=false;document.head.appendChild(script);
     }
