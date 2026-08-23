@@ -8,7 +8,7 @@ on:
       - scripts/apocrypha-corpus-audit-v247.mjs
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   audit:
@@ -19,6 +19,19 @@ jobs:
       - name: Run corpus audit
         shell: bash
         run: node scripts/apocrypha-corpus-audit-v247.mjs || true
+      - name: Commit audit report back to RC
+        if: always()
+        shell: bash
+        run: |
+          if [ -f artifacts/apocrypha-corpus-audit-v247.json ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add artifacts/apocrypha-corpus-audit-v247.json
+            if ! git diff --cached --quiet; then
+              git commit -m "test(apocrypha): record corpus audit result"
+              git push
+            fi
+          fi
       - name: Upload audit report
         if: always()
         uses: actions/upload-artifact@v4
