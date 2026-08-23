@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "audit_version": "2.5.0",
-  "generated_at": "2026-08-23T07:19:52.659Z",
+  "generated_at": "2026-08-23T07:20:14.848Z",
   "branch": "release-candidate-2.4.0-preview",
-  "commit": "9a158304e04923a866ebbb21bbafb7424cfb841e",
+  "commit": "420e4f418e854f43bff072a1d3ead30d24b18304",
   "scope": {
     "books": 19,
     "canonical_rows": 7501
@@ -27,8 +27,8 @@
     },
     {
       "path": "data/apocrypha/review/translation-overlays-v247-audit-corrections.json",
-      "declared": 8,
-      "loaded": 8
+      "declared": 9,
+      "loaded": 9
     }
   ],
   "by_book": {
