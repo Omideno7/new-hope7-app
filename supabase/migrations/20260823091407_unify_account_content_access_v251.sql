@@ -121,4 +121,4 @@ revoke execute on function public.nh7_admin_school_video_disable_code_v260(uuid)
 delete from public.nh7_school_video_grants_v260;
 delete from public.nh7_school_video_codes_v260;
 delete from public.nh7_library_user_grants_v230;
-delete from public.nh7_library_access_codes_v222;
+delete from public.nh7_library_access_codes;
