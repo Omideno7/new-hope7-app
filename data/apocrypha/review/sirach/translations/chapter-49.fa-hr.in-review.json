@@ -1,0 +1,24 @@
+{
+  "schema_version":1,
+  "book_id":"sirach",
+  "status":"in_review",
+  "source_translation":"KJVA",
+  "chapters":[{"chapter":49,"verses":[
+    {"verse":1,"text_fa":"یاد یوشیا مانند ترکیب عطری است که با هنر عطار ساخته شده؛ در دهان همه چون عسل شیرین و مانند موسیقی در ضیافت شراب دلپذیر است.","text_hr":"Spomen na Jošiju poput je mirisne mješavine koju pripravlja vješt ljekarnik; sladak je poput meda u svim ustima i poput glazbe na vinskoj gozbi.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":2,"text_fa":"او در بازگرداندن قوم به راه راست رفتار کرد و پلیدی‌های شرارت را از میان برد.","text_hr":"Ispravno je postupao u obraćenju naroda i uklonio gnusobe bezakonja.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":3,"text_fa":"دل خود را به سوی خداوند هدایت کرد و در روزگار بی‌خدایان پرستش خدا را استوار ساخت.","text_hr":"Usmjerio je srce prema Gospodinu i u vrijeme bezbožnika učvrstio štovanje Boga.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":4,"text_fa":"جز داوود، حزقیا و یوشیا، دیگران لغزیدند؛ زیرا پادشاهان یهودا شریعت خدای متعال را ترک کردند.","text_hr":"Svi osim Davida, Ezekije i Jošije pokazali su nedostatak, jer su judejski kraljevi ostavili Zakon Svevišnjega.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":5,"text_fa":"پس خدا قدرتشان را به دیگران و جلالشان را به قومی بیگانه سپرد.","text_hr":"Zato je njihovu moć predao drugima, a njihovu slavu tuđemu narodu.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":6,"text_fa":"شهر برگزیدهٔ قدس را سوزاندند و کوچه‌هایش را مطابق نبوت ارمیا ویران کردند.","text_hr":"Spalili su izabrani grad Svetišta i opustošili njegove ulice prema Jeremijinu proroštvu.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":7,"text_fa":"با ارمیا بدرفتاری کردند، با اینکه پیامبری بود که در رحم مادر تقدیس شده بود تا ریشه‌کن کند، فرو افکند و ویران سازد و نیز بنا کند و بکارد.","text_hr":"Zlo su postupali s Jeremijom, premda je bio prorok posvećen još u majčinoj utrobi da iskorjenjuje, ruši i razara, ali i da gradi i sadi.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":8,"text_fa":"حزقیال بود که رؤیای پرجلالی را دید که بر ارابهٔ کروبیان به او نشان داده شد.","text_hr":"Ezekiel je vidio slavno viđenje koje mu je bilo pokazano na kolima kerubina.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":9,"text_fa":"او دشمنان را زیر تصویر باران یاد کرد و کسانی را که راه راست می‌رفتند هدایت نمود.","text_hr":"Spomenuo je neprijatelje pod slikom kiše i usmjerio one koji su hodili pravim putem.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":10,"text_fa":"یاد دوازده پیامبر نیز مبارک باد و استخوان‌هایشان از جای خود دوباره شکوفا شود؛ زیرا یعقوب را تسلی دادند و با امیدی استوار آنان را رهایی بخشیدند.","text_hr":"Neka je blagoslovljen spomen dvanaestorice proroka i neka njihove kosti ponovno procvjetaju iz svojega mjesta, jer su tješili Jakova i izbavljali ga sigurnom nadom.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":11,"text_fa":"چگونه زروبابل را بزرگ بداریم؟ او مانند انگشتری مُهر بر دست راست بود.","text_hr":"Kako ćemo veličati Zerubabela? Bio je poput pečatnjaka na desnici.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":12,"text_fa":"همچنین یشوع پسر یوصاداق؛ آنان در روزگار خود خانه را ساختند و معبد مقدسی برای خداوند برپا کردند که برای جلال جاودان آماده شده بود.","text_hr":"Takav je bio i Jošua, Josedekov sin; u svoje su vrijeme sagradili Dom i podigli sveti Hram Gospodinu, pripravljen za vječnu slavu.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":13,"text_fa":"در میان برگزیدگان، نحمیا نیز بود که آوازه‌اش بزرگ است؛ دیوارهای فرو ریخته را برای ما برپا کرد، دروازه‌ها و پشت‌بندها را نصب نمود و ویرانه‌های ما را دوباره ساخت.","text_hr":"Među izabranima bio je i Nehemija, velika glasa; podigao nam je srušene zidine, postavio vrata i zasune te obnovio naše ruševine.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":14,"text_fa":"بر زمین کسی مانند خنوخ آفریده نشد، زیرا او از زمین برداشته شد.","text_hr":"Na zemlji nije bio stvoren čovjek poput Henoka, jer je bio uzet sa zemlje.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":15,"text_fa":"و جوانی مانند یوسف زاده نشد؛ فرمانروای برادرانش و تکیه‌گاه قوم، که حتی استخوان‌هایش مورد توجه خداوند بود.","text_hr":"Nije se rodio ni mladić poput Josipa, upravitelja svoje braće i oslonca naroda, čije su kosti bile pred Gospodnjim pogledom.","status_fa":"in_review","status_hr":"in_review"},
+    {"verse":16,"text_fa":"سام و شیث در میان مردم بسیار گرامی بودند، و آدم نیز در آفرینش برتر از هر موجود زنده بود.","text_hr":"Šem i Šet bili su veoma čašćeni među ljudima, a Adam iznad svakoga živog stvorenja u stvaranju.","status_fa":"in_review","status_hr":"in_review"}
+  ]}]
+}
