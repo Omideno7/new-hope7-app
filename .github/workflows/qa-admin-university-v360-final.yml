@@ -2,7 +2,11 @@ name: QA Admin University v360 Final
 on:
   push:
     branches: [agent/admin-university-messaging-360]
+    paths-ignore:
+      - artifacts/qa-admin-university-v360-final.json
   workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   gate:
     runs-on: ubuntu-latest
@@ -47,4 +51,27 @@ jobs:
           grep -q 'external_id' supabase/functions/nh7-admin-messaging-v360/index.ts
           grep -q 'nh7_app_presence_daily_v360' supabase/migrations/20260823190000_admin_university_messaging_v360.sql
           grep -q 'School Completion Achievement' js/nh7-school-achievement-badge-v360.js
-          echo 'v360 static gate passed'
+      - name: Persist passing gate
+        run: |
+          mkdir -p artifacts
+          cat > artifacts/qa-admin-university-v360-final.json <<'JSON'
+          {
+            "qa_version": "3.6.0-final",
+            "static_gate": "passed",
+            "javascript_syntax": "passed",
+            "production_shell_delta": "three isolated app loaders only",
+            "admin_messaging": "present",
+            "student_information_system": "present",
+            "user_analytics": "present",
+            "certificate_center": "present",
+            "achievement_medal": "present",
+            "backend_source": "present"
+          }
+          JSON
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add artifacts/qa-admin-university-v360-final.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'qa(result): v360 final static gate passed'
+            git push origin HEAD:agent/admin-university-messaging-360
+          fi
