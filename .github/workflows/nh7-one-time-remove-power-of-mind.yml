@@ -1,0 +1,14 @@
+name: NH7 one-time library cleanup
+on:
+  push:
+    paths:
+      - '.github/workflows/nh7-one-time-remove-power-of-mind.yml'
+permissions:
+  contents: read
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remove retired library PDF through Storage API
+        run: |
+          curl --fail --silent --show-error 'https://gpzcwffxnddhaeaogdyo.supabase.co/functions/v1/nh7-one-time-remove-power-of-mind'
