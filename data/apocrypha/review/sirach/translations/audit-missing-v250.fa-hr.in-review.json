@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "book_id": "sirach",
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "source_license": "Public Domain",
+  "audit_reason": "Final corpus audit restored canonical Sirach references omitted from earlier translation batches.",
+  "chapters": [
+    {
+      "chapter": 26,
+      "verses": [
+        {"verse":19,"text_fa":"پسرم، شکوفهٔ جوانی‌ات را سالم نگاه دار و نیروی خود را به بیگانگان مده.","text_hr":"Sine moj, sačuvaj cvijet svoje mladosti zdravim i ne daj svoju snagu strancima.","status_fa":"in_review","status_hr":"in_review"},
+        {"verse":20,"text_fa":"هنگامی که در سراسر کشتزار ملکی بارور به دست آوردی، آن را با بذر خود بکار و به نیکویی نسل خویش اعتماد کن.","text_hr":"Kad stekneš plodan posjed po cijelom polju, zasij ga vlastitim sjemenom, pouzdajući se u dobrotu svoga roda.","status_fa":"in_review","status_hr":"in_review"},
+        {"verse":21,"text_fa":"بدین‌سان نسلی که از خود باقی می‌گذاری سرافراز خواهد شد، زیرا به اصالت نیکوی خود اعتماد دارد.","text_hr":"Tako će se uzvisiti potomstvo koje ostaviš, pouzdano u svoje dobro podrijetlo.","status_fa":"in_review","status_hr":"in_review"},
+        {"verse":22,"text_fa":"زن فاحشه چون آب دهان شمرده می‌شود، اما زن شوهردار برای شوهرش برجی در برابر مرگ است.","text_hr":"Bludnica se smatra poput pljuvačke, ali udana žena svome je mužu kula protiv smrti.","status_fa":"in_review","status_hr":"in_review"},
+        {"verse":23,"text_fa":"زن شریر نصیب مرد شریر می‌شود، اما زن خداپرست به کسی داده می‌شود که از خداوند می‌ترسد.","text_hr":"Zla žena daje se kao dio zlu čovjeku, a pobožna žena onomu koji se boji Gospodina.","status_fa":"in_review","status_hr":"in_review"},
+        {"verse":24,"text_fa":"زن بی‌عفت شرم را خوار می‌شمارد، اما زن پاکدامن شوهرش را حرمت خواهد نهاد.","text_hr":"Nečasna žena prezire sram, a časna žena poštovat će svoga muža.","status_fa":"in_review","status_hr":"in_review"},
+        {"verse":25,"text_fa":"زن بی‌شرم همچون سگ شمرده می‌شود، اما زن باحیا از خداوند خواهد ترسید.","text_hr":"Bestidna žena smatrat će se poput psa, a stidljiva će se žena bojati Gospodina.","status_fa":"in_review","status_hr":"in_review"},
+        {"verse":26,"text_fa":"زنی که شوهرش را حرمت می‌نهد نزد همه خردمند شمرده خواهد شد، اما آن که در غرور خود او را بی‌حرمت می‌کند نزد همه بی‌خدا شمرده خواهد شد.","text_hr":"Ženu koja poštuje svoga muža svi će smatrati mudrom, a onu koja ga u svojoj oholosti obeščašćuje svi će smatrati bezbožnom.","status_fa":"in_review","status_hr":"in_review"},
+        {"verse":27,"text_fa":"زنی پرسر و صدا و ستیزه‌جو را برای راندن دشمنان خواهند جست.","text_hr":"Glasnu i svadljivu ženu tražit će da rastjera neprijatelje.","status_fa":"in_review","status_hr":"in_review"},
+        {"verse":28,"text_fa":"دو چیز دل مرا اندوهگین می‌کند و سومی مرا به خشم می‌آورد: مرد جنگاوری که گرفتار فقر است؛ مردان خردمندی که قدرشان دانسته نمی‌شود؛ و کسی که از عدالت به گناه بازمی‌گردد؛ خداوند چنین کسی را برای شمشیر آماده می‌کند.","text_hr":"Dvije stvari žaloste moje srce, a treća me razgnjevljuje: ratnik koji trpi siromaštvo; razumni ljudi koje se ne cijeni; i onaj koji se od pravednosti vraća grijehu — Gospodin takvoga pripravlja za mač.","status_fa":"in_review","status_hr":"in_review"},
+        {"verse":29,"text_fa":"بازرگان به‌سختی می‌تواند خود را از خطاکاری نگاه دارد و فروشنده از گناه رها نخواهد بود.","text_hr":"Trgovac će se teško sačuvati od nepravde, a preprodavač neće biti slobodan od grijeha.","status_fa":"in_review","status_hr":"in_review"}
+      ]
+    },
+    {
+      "chapter": 31,
+      "verses": [
+        {"verse":31,"text_fa":"هنگام شراب‌نوشی همسایه‌ات را سرزنش مکن و در شادی‌اش تحقیرش مکن؛ سخنان آزاردهنده به او مگو و با اصرار به نوشیدن بر او فشار نیاور.","text_hr":"Ne kori svoga bližnjega dok pije vino i ne preziri ga u njegovu veselju; ne govori mu uvredljive riječi i ne navaljuj na njega tjerajući ga da pije.","status_fa":"in_review","status_hr":"in_review"}
+      ]
+    },
+    {
+      "chapter": 33,
+      "verses": [
+        {"verse":26,"text_fa":"یوغ و طوق گردن را خم می‌کند؛ شکنجه و عذاب نیز برای خدمتگزار شریر چنین است.","text_hr":"Jaram i ovratnik savijaju vrat; tako su muke i kazne za zloga slugu.","status_fa":"in_review","status_hr":"in_review"},
+        {"verse":27,"text_fa":"او را به کار بفرست تا بیکار نماند، زیرا بیکاری شرارت‌های بسیار می‌آموزد.","text_hr":"Pošalji ga na rad da ne bude besposlen, jer besposlica uči mnogim zlima.","status_fa":"in_review","status_hr":"in_review"},
+        {"verse":28,"text_fa":"او را به کاری که مناسبش است بگمار؛ اگر فرمان نمی‌برد، بندهای سنگین‌تری بر او بگذار.","text_hr":"Postavi ga na posao koji mu priliči; ako nije poslušan, stavi na njega teže okove.","status_fa":"in_review","status_hr":"in_review"},
+        {"verse":29,"text_fa":"اما با هیچ‌کس زیاده‌روی مکن و هیچ کاری را بدون سنجیدگی انجام مده.","text_hr":"Ali ni prema kome ne budi pretjeran i ništa ne čini bez razboritosti.","status_fa":"in_review","status_hr":"in_review"},
+        {"verse":30,"text_fa":"اگر خدمتگزاری داری، او را مانند خودت بدان، زیرا او را به بهایی خریده‌ای.","text_hr":"Ako imaš slugu, neka ti bude kao ti sam, jer si ga kupio za cijenu.","status_fa":"in_review","status_hr":"in_review"},
+        {"verse":31,"text_fa":"اگر خدمتگزاری داری، با او مانند برادر رفتار کن، زیرا همانند جان خود به او نیاز داری؛ اگر با او بدرفتاری کنی و از تو بگریزد، از کدام راه خواهی رفت تا او را پیدا کنی؟","text_hr":"Ako imaš slugu, postupaj s njim kao s bratom, jer ga trebaš kao vlastitu dušu; ako s njim loše postupaš i pobjegne od tebe, kojim ćeš putem poći da ga tražiš?","status_fa":"in_review","status_hr":"in_review"}
+      ]
+    },
+    {
+      "chapter": 34,
+      "verses": [
+        {"verse":26,"text_fa":"چنین است حال کسی که برای گناهان خود روزه می‌گیرد و سپس بازمی‌گردد و همان کار را انجام می‌دهد؛ چه کسی دعای او را خواهد شنید؟ یا فروتنی او چه سودی برایش دارد؟","text_hr":"Tako je i s čovjekom koji posti zbog svojih grijeha, a zatim se vrati i učini isto: tko će uslišati njegovu molitvu, ili kakva mu je korist od njegova poniženja?","status_fa":"in_review","status_hr":"in_review"}
+      ]
+    }
+  ]
+}
