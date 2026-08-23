@@ -6,6 +6,7 @@ on:
       - release-candidate-2.4.0-preview
     paths:
       - scripts/apocrypha-corpus-audit-v247.mjs
+      - artifacts/apocrypha-audit-trigger-v247.txt
 
 permissions:
   contents: write
