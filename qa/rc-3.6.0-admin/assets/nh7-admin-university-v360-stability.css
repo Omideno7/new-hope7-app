@@ -1,0 +1,7 @@
+/* New Hope 7 v3.6.0 — keep the user-centric analytics view stable after legacy panel rerenders. */
+body[data-nh7-admin-tab="analytics"] #nh7V360AnalyticsTop ~ .panel-card:not(.nh7-v360-account-analytics):not(#nh7V360AdvancedAnalytics),
+body[data-nh7-admin-tab="analytics"] #nh7V360AnalyticsTop ~ .nh7-v223-root,
+body[data-nh7-admin-tab="analytics"] #nh7V360AnalyticsTop ~ .nh7-v222-root,
+body[data-nh7-admin-tab="analytics"] #nh7V360AnalyticsTop ~ .nh7-analytics-v222{display:none!important}
+body[data-nh7-admin-tab="analytics"] #nh7V360AdvancedAnalytics{display:block!important}
+body[data-nh7-admin-tab="analytics"] #nh7V360AdvancedAnalytics>summary{cursor:pointer;font-weight:800;padding:10px 12px;border:1px solid #dcebea;border-radius:14px;background:#f7fbfa}
