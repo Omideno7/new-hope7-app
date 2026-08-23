@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "version": "2.4.6",
+  "version": "2.5.0",
   "updated_on": "2026-08-23",
   "scope_books": 19,
   "policy": "A book is complete only when the canonical English source and fresh New Hope 7 Persian and Croatian translations cover every source verse.",
@@ -29,7 +29,17 @@
   "complete_fresh_verse_rows": 7501,
   "in_progress_books": [],
   "remaining_books": [],
-  "next_book": "corpus_audit",
+  "next_book": "integrated_full_app_qa",
+  "machine_corpus_audit": {
+    "version": "2.5.0",
+    "report": "artifacts/apocrypha-corpus-audit-v250.json",
+    "english": 7501,
+    "persian": 7501,
+    "croatian": 7501,
+    "blockers": 0,
+    "warnings": 0,
+    "passed": true
+  },
   "release_ready": false,
-  "blocking_reason": "All nineteen books now have complete fresh Persian and Croatian translation coverage; final corpus audit, source/versification checks, legacy-leakage checks, and integrated reader QA are still required before release."
+  "blocking_reason": "Machine corpus audit passed with zero blockers and zero warnings. Integrated full-app QA and user approval are still required before production release."
 }
