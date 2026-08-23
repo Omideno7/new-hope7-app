@@ -1,4 +1,4 @@
-name: Apocrypha Corpus Audit v2.4.9
+name: Apocrypha Corpus Audit v2.5.0
 
 on:
   push:
@@ -23,12 +23,12 @@ jobs:
         if: always()
         shell: bash
         run: |
-          if [ -f artifacts/apocrypha-corpus-audit-v249.json ]; then
+          if [ -f artifacts/apocrypha-corpus-audit-v250.json ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add artifacts/apocrypha-corpus-audit-v249.json
+            git add artifacts/apocrypha-corpus-audit-v250.json
             if ! git diff --cached --quiet; then
-              git commit -m "test(apocrypha): record reader-equivalent corpus audit"
+              git commit -m "test(apocrypha): record v2.5.0 final corpus audit"
               git push
             fi
           fi
@@ -36,6 +36,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: apocrypha-corpus-audit-v249
-          path: artifacts/apocrypha-corpus-audit-v249.json
+          name: apocrypha-corpus-audit-v250
+          path: artifacts/apocrypha-corpus-audit-v250.json
           if-no-files-found: ignore
