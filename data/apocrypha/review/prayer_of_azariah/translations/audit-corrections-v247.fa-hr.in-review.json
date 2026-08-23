@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "book_id": "prayer_of_azariah",
+  "title_en": "Prayer of Azariah and Song of the Three Holy Children",
+  "title_fa": "دعای عزریا و سرود سه جوان",
+  "title_hr": "Molitva Azarijina i Pjesma trojice mladića",
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "audit_reason": "Verse 55 in the imported English snapshot duplicates the mountains line; canonical Song of the Three reading is fountains. This localized correction aligns FA/HR with that reading; the runtime English display is normalized by the audit overlay loader.",
+  "chapters": [
+    {
+      "chapter": 1,
+      "verses": [
+        {
+          "verse": 55,
+          "text_fa": "ای چشمه‌ها، خداوند را متبارک خوانید؛ او را تا ابد برتر از همه بستایید و سرافراز سازید.",
+          "text_hr": "Izvori, blagoslivljajte Gospodina; hvalite ga i uzvisujte dovijeka.",
+          "status_fa": "in_review",
+          "status_hr": "in_review"
+        }
+      ]
+    }
+  ]
+}
