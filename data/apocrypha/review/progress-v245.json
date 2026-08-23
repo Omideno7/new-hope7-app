@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "version": "2.4.6",
-  "updated_on": "2026-08-22",
+  "updated_on": "2026-08-23",
   "scope_books": 19,
   "policy": "A book is complete only when the canonical English source and fresh New Hope 7 Persian and Croatian translations cover every source verse.",
   "complete_books": [
@@ -22,13 +22,14 @@
     {"book_id":"wisdom_of_solomon","verses":436,"fa":436,"hr":436},
     {"book_id":"2_maccabees","verses":555,"fa":555,"hr":555},
     {"book_id":"1_maccabees","verses":924,"fa":924,"hr":924},
-    {"book_id":"1_enoch","verses":1062,"fa":1062,"hr":1062}
+    {"book_id":"1_enoch","verses":1062,"fa":1062,"hr":1062},
+    {"book_id":"sirach","verses":1393,"fa":1393,"hr":1393}
   ],
-  "complete_book_count": 18,
-  "complete_fresh_verse_rows": 6108,
+  "complete_book_count": 19,
+  "complete_fresh_verse_rows": 7501,
   "in_progress_books": [],
-  "remaining_books": ["sirach"],
-  "next_book": "sirach",
+  "remaining_books": [],
+  "next_book": "corpus_audit",
   "release_ready": false,
-  "blocking_reason": "Fresh New Hope 7 corpus remains incomplete for Sirach; final corpus audit has not yet passed."
+  "blocking_reason": "All nineteen books now have complete fresh Persian and Croatian translation coverage; final corpus audit, source/versification checks, legacy-leakage checks, and integrated reader QA are still required before release."
 }
