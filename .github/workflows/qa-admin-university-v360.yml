@@ -1,0 +1,36 @@
+name: QA Admin University v360
+on:
+  push:
+    branches: [agent/admin-university-messaging-360]
+  workflow_dispatch:
+jobs:
+  static-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: JavaScript syntax
+        run: |
+          node --check js/nh7-admin-university-v360-runtime-guard.js
+          node --check js/nh7-admin-university-v360.js
+          node --check js/nh7-push-identity-v360.js
+          node --check js/nh7-app-presence-v360.js
+          node --check js/nh7-school-achievement-badge-v360.js
+      - name: Required feature assertions
+        run: |
+          grep -q "renderMessagesV360" js/nh7-admin-university-v360.js
+          grep -q "renderStudentsV360" js/nh7-admin-university-v360.js
+          grep -q "renderCertificatesV360" js/nh7-admin-university-v360.js
+          grep -q "nh7V360OpenStudentEmail" js/nh7-admin-university-v360.js
+          grep -q "nh7V360SendCampaign" js/nh7-admin-university-v360.js
+          grep -q "storage://" js/nh7-admin-university-v360.js
+          grep -q "nh7_admin_issue_school_certificate_v218" js/nh7-admin-university-v360.js
+          grep -q "nh7-admin-messaging-v360" js/nh7-admin-university-v360.js
+          grep -q "NH7_ADMIN_RC_V360" admin-v239-stable.html
+          grep -q "nh7-school-achievement-badge-v360.js" index.html
+          grep -q "nh7-push-identity-v360.js" index.html
+          grep -q "nh7-app-presence-v360.js" index.html
+          test -f supabase/migrations/20260823190000_admin_university_messaging_v360.sql
+          test -f supabase/functions/nh7-admin-messaging-v360/index.ts
