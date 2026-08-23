@@ -1,5 +1,6 @@
 /* New Hope 7 Admin v3.3.8 — stable mobile search, focus, caret and scroll preservation. */
 (()=>{'use strict';
+if(window.__NH7_ADMIN_SEARCH_STABILITY_V338__)return;window.__NH7_ADMIN_SEARCH_STABILITY_V338__=true;
 const VERSION='3.3.8-admin-search-stability';
 if(typeof renderRequests!=='function')return;
 const normalize=value=>String(value??'').toLocaleLowerCase().replace(/[يى]/g,'ی').replace(/ك/g,'ک').replace(/[\u200c\u200f\u202a-\u202e]/g,' ').replace(/\s+/g,' ').trim();
