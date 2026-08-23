@@ -1,7 +1,7 @@
-/* New Hope 7 v2.4.7 RC — overlays fresh in-house FA/HR translations onto canonical English runtime. */
+/* New Hope 7 v2.4.8 RC — overlays fresh in-house FA/HR translations onto canonical English runtime. */
 (()=>{'use strict';
 if(window.__NH7_APO_TRANSLATION_OVERLAY_V245__)return;window.__NH7_APO_TRANSLATION_OVERLAY_V245__=true;
-const VERSION='2.4.7-apocrypha-translation-overlay';
+const VERSION='2.4.8-apocrypha-translation-overlay';
 const REGISTRIES=[
   'data/apocrypha/review/translation-overlays-v245.json?v=2452',
   'data/apocrypha/review/translation-overlays-v246-continuation.json?v=2461',
@@ -15,13 +15,15 @@ function indexBooks(data){const out=new Map();for(const book of data?.books||[])
 function ensureChapter(book,no){let ch=(book.chapters||[]).find(x=>Number(x.chapter)===Number(no));if(!ch){ch={chapter:Number(no),verses:[]};book.chapters=book.chapters||[];book.chapters.push(ch);book.chapters.sort((a,b)=>Number(a.chapter)-Number(b.chapter))}return ch}
 function ensureVerse(ch,no){let v=(ch.verses||[]).find(x=>Number(x.verse)===Number(no));if(!v){v={verse:Number(no),text_en:null,text_fa:null,text_hr:null};ch.verses=ch.verses||[];ch.verses.push(v);ch.verses.sort((a,b)=>Number(a.verse)-Number(b.verse))}return v}
 function applyLocalizedRow(v,row,loc,textField,statusField){const text=String(row?.[textField]||'').trim(),status=String(row?.[statusField]||'');if(status==='in_review'&&text){v['text_'+loc]=row[textField];v['status_'+loc]='in_review'}}
-function mergeDocument(runtime,doc){if(!doc?.book_id)return;const books=indexBooks(runtime);const book=books.get(String(doc.book_id));if(!book)return;
+function mergeDocument(runtime,doc){if(!doc?.book_id)return;const books=indexBooks(runtime);const book=books.get(String(doc.book_id));if(!book)return;const declared=String(doc.language||'');
   if(Array.isArray(doc.verses)){
     const ch=ensureChapter(book,Number(doc.chapter||1));
-    for(const row of doc.verses||[]){const v=ensureVerse(ch,row.verse);applyLocalizedRow(v,row,'fa','text_fa','status_fa');applyLocalizedRow(v,row,'hr','text_hr','status_hr')}
+    for(const row of doc.verses||[]){const v=ensureVerse(ch,row.verse);
+      if(['fa','hr'].includes(declared)){const text=String(row.text||'').trim();if(text){v['text_'+declared]=row.text;v['status_'+declared]='in_review'}}
+      else{applyLocalizedRow(v,row,'fa','text_fa','status_fa');applyLocalizedRow(v,row,'hr','text_hr','status_hr')}
+    }
   }
   if(Array.isArray(doc.chapters)){
-    const declared=String(doc.language||'');
     for(const chapter of doc.chapters){const ch=ensureChapter(book,chapter.chapter);for(const row of chapter.verses||[]){const v=ensureVerse(ch,row.verse);
       if(['fa','hr'].includes(declared)){const text=String(row.text||'').trim();if(text){v['text_'+declared]=row.text;v['status_'+declared]='in_review'}}
       else{applyLocalizedRow(v,row,'fa','text_fa','status_fa');applyLocalizedRow(v,row,'hr','text_hr','status_hr')}
