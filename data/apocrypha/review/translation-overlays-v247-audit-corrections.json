@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "version": "2.4.7",
+  "status": "in_review",
+  "policy": "Final-audit correction overlays loaded after all translation registries so verified corrections take precedence without rewriting earlier review batches.",
+  "files": [
+    "data/apocrypha/review/tobit/translations/audit-corrections-v247.fa-hr.in-review.json"
+  ]
+}
