@@ -1,0 +1,287 @@
+{
+  "schema_version": 1,
+  "qa_version": "2.5.1-final",
+  "generated_at": "2026-08-23T09:33:49.002Z",
+  "branch": "agent/ministers-id-access-reader-251",
+  "commit": "158268a413352aa3c19842b6555b0e73af04ec8c",
+  "total": 53,
+  "passed": 53,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "JS_SYNTAX_js/nh7-account-content-access-v251.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "JS_SYNTAX_js/nh7-reader-ux-v251.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "JS_SYNTAX_js/nh7-admin-content-access-v251.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "JS_SYNTAX_js/admin-v2.3.5-analytics.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "JS_SYNTAX_js/nh7-apocrypha-reader-flow-v244.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "RC_VERSION_251",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "RC_ACCOUNT_ACCESS",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "RC_READER_UX",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "RC_APO_CSS_251",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "APO_COLOR_yellow",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "APO_COLOR_green",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "APO_COLOR_blue",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "APO_COLOR_pink",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "APO_COLOR_purple",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "READER_data-v251-font-minus",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "READER_data-v251-font-plus",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "READER_data-nh7-apo-save",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "READER_nh7-saved-inline-v251",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "READER_pendingReaderTop",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "READER_scrollReaderStart",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ACCESS_nh7_my_content_access_v251",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ACCESS_nh7_library_items_v251",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ACCESS_nh7_library_collections_public_v251",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ACCESS_nh7-library-access-v251",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ACCESS_nh7-school-media-access-v251",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ACCESS_NO_PASSWORD_PROMPT",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ACCESS_HIDES_UNGRANTED_LIBRARY",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ACCESS_HIDES_UNGRANTED_MEDIA",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ADMIN_LOCAL_CORE",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ADMIN_ACCESS_MANAGER_LOADED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ADMIN_nh7_admin_content_access_dashboard_v251",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ADMIN_nh7_admin_content_access_grant_v251",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ADMIN_nh7_admin_content_access_revoke_v251",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ADMIN_library_all",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ADMIN_library_collection",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ADMIN_library_item",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ADMIN_media_all",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ADMIN_video_item",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ADMIN_LEGACY_CODE_CONTROLS_DISABLED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "NO_PARALLEL_ADMIN_UI",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "MIGRATION_supabase/migrations/20260823101500_account_content_access_v251.sql",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "MIGRATION_supabase/migrations/20260823111000_minister_account_access_v251.sql",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "MIGRATION_supabase/migrations/20260823112500_unify_account_content_access_v251.sql",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "FINAL_MIGRATION_UNIFIED_SOURCE",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "FINAL_MIGRATION_DROPS_PARALLEL",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "FINAL_MIGRATION_IGNORES_LEGACY_CODES",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "FINAL_MIGRATION_REVOKES_CODE_CREATE",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "EDGE_supabase/functions/nh7-library-access-v251/index.ts",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "EDGE_supabase/functions/nh7-school-media-access-v251/index.ts",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "LIB_EDGE_ID_AUTH",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "MEDIA_EDGE_ID_AUTH",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "SAVED_VERSE_BIBLE_RESOLVER",
+      "ok": true,
+      "detail": "GEN 1:1"
+    },
+    {
+      "name": "APOCRYPHA_RUNTIME_19_BOOKS",
+      "ok": true,
+      "detail": "books=19"
+    }
+  ],
+  "bible_probe": {
+    "id": "GEN.1.1",
+    "bookId": "GEN",
+    "chapter": 1,
+    "verse": 1,
+    "has_fa": true,
+    "has_en": true,
+    "has_hr": true
+  },
+  "release_candidate_static_gate_passed": true
+}
