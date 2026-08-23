@@ -1,0 +1,221 @@
+{
+  "schema_version": 1,
+  "qa_version": "2.5.1",
+  "generated_at": "2026-08-23T09:27:45.125Z",
+  "checks": [
+    {
+      "name": "syntax:js/nh7-account-content-access-v251.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "syntax:js/nh7-reader-ux-v251.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "syntax:js/nh7-admin-content-access-v251.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "syntax:js/admin-v2.3.5-analytics.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "syntax:js/nh7-apocrypha-reader-flow-v244.js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "rc-version-2.5.1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "rc-loads-account-access",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "rc-loads-reader-ux",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "rc-apocrypha-css-v251",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "apo-highlight-visible-yellow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "apo-highlight-visible-green",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "apo-highlight-visible-blue",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "apo-highlight-visible-pink",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "apo-highlight-visible-purple",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "reader-font-minus",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "reader-font-plus",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "apo-save-button",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "saved-verse-inline-text",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "chapter-nav-scroll-top",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "access-uses-unified-rpc",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "access-rewrites-library-edge",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "access-rewrites-media-edge",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "access-hides-minister-tab-without-grant",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "access-hides-media-without-grant",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "access-no-password-prompt",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "admin-loader-local-core",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "admin-loader-account-manager",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "admin-loader-no-jsdelivr",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "admin-account-search",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "admin-grant-rpc",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "admin-revoke-rpc",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "admin-library-all",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "admin-library-collection",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "admin-library-item",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "admin-media-all",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "admin-video-item",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "admin-disables-legacy-code-ui",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "obsolete-parallel-ui-removed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "unified-migration-present",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "migration-drops-parallel-table",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "migration-retains-code-signatures-but-ignores-code",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "migration-revokes-code-creation",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "total": 42,
+  "passed": 42,
+  "failed": 0,
+  "release_candidate_static_gate_passed": true
+}
