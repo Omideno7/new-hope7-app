@@ -1,0 +1,2 @@
+trigger: 2026-08-23T08:55:00+02:00
+purpose: run full 7501-row Apocrypha corpus audit on release-candidate-2.4.0-preview
