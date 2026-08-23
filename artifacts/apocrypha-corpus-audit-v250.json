@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "audit_version": "2.5.0",
-  "generated_at": "2026-08-23T07:20:14.848Z",
+  "generated_at": "2026-08-23T07:22:01.632Z",
   "branch": "release-candidate-2.4.0-preview",
-  "commit": "420e4f418e854f43bff072a1d3ead30d24b18304",
+  "commit": "fb3ade6a0214a0cb5a76b4740aad13651adfc5ac",
   "scope": {
     "books": 19,
     "canonical_rows": 7501
