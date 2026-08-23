@@ -1,61 +1,65 @@
-# New Hope 7 — Apocrypha / Deuterocanon Corpus Audit v2.4.7
+# New Hope 7 — Apocrypha / Deuterocanon Corpus Audit v2.5.0
 
 Date: 2026-08-23
 Branch: `release-candidate-2.4.0-preview`
 Translation-complete baseline: `a2a7e5fa72763c5632d485f199ea3ea3f7ae6a38`
-Status: `in_review` — NOT release-ready yet
+Machine audit report: `artifacts/apocrypha-corpus-audit-v250.json`
+Status: MACHINE CORPUS GATE PASSED — integrated full-app QA / user approval pending
 
-## Scope
+## Scope and result
 
 - 19 books in the New Hope 7 Apocrypha / Deuterocanon set.
-- 7,501 canonical English source verse rows represented in the project progress manifest.
-- Fresh Persian and Croatian coverage is recorded for every source verse row.
-- Final release remains blocked until corpus audit and integrated Reader QA are complete.
+- 7,501 canonical English source verse rows.
+- Final merged Reader coverage: EN 7,501 / FA 7,501 / HR 7,501.
+- Missing localized rows: 0.
+- Machine blockers: 0.
+- Machine warnings: 0.
+- Per-book counts match the canonical source and progress manifest.
+- Reader overlay no longer creates non-source chapters or verses; stale/misaligned overlay references are rejected.
 
-## Audit phase 1 — completed checks
+## Verified final-audit corrections
 
-### Corpus completion / Reader registration
+1. **Tobit 1:2** — removed introduced Kadesh (`قادش / Kadeš`) because it is not present in the project KJVA source row.
+2. **Tobit 14:11** — corrected malformed Persian age to `صد و پنجاه‌وهشت سال` (158).
+3. **Prayer of Azariah 1:55** — normalized the known imported-source duplicate to the canonical fountains reading: FA `چشمه‌ها`, HR `Izvori`, Reader EN `O ye fountains...`.
+4. **1 Enoch 108:15** — stripped the R. H. Charles printer imprint from Reader display in EN/FA/HR while retaining the immutable source snapshot for provenance.
+5. **1 Enoch 74–75** — restored 26 Persian rows found missing by the machine audit.
+6. **Sirach** — restored 19 omitted canonical FA/HR rows: 26:19–29, 31:31, 33:26–31 and 34:26.
+7. **Sirach 32** — removed two stale non-source rows (32:25–26) that duplicated the beginning of chapter 33.
+8. **2 Maccabees 11:5** — corrected Persian distance from the erroneous `بیست فرسنگ` to the KJVA source wording `پنج فرلانگ`.
+9. **Baruch 1:10** — restored the KJVA source-specific manna wording (`مَنّا / manu`) instead of the earlier generic rendering.
+10. **Text-sanity cleanups** — cleaned the flagged Croatian rows at 3 Maccabees 6:24, 4 Maccabees 13:22, 2 Maccabees 15:10 and 1 Enoch 90:28.
+11. **Overlay compatibility** — added support for declared-language single-chapter files (`language: fa/hr` with `verses[].text`), fixing Reader application of files such as Third Maccabees Persian.
 
-- Progress manifest records 19/19 books complete for EN + fresh FA + fresh HR coverage.
-- Sirach manifest records 51 chapters and 1,393 source / FA / HR verse rows with zero missing localized rows.
-- Sirach translation files from chapters 1–51 are registered in the continuation overlay registry.
-- Audit corrections are isolated in `translation-overlays-v247-audit-corrections.json`, loaded after the translation registries so verified corrections win without rewriting the original review batches.
+## Targeted difficult-source review
 
-### Verified corrections
+### Second Esdras 15–16
 
-1. **Tobit 1:2**
-   - Problem: FA/HR review text had introduced Kadesh (`قادش / Kadeš`), which is not present in the project's KJVA source row.
-   - Action: audit correction overlay now follows the actual KJVA wording without the introduced place name.
+The previously flagged rows 15:32, 15:35–40, 15:54 and 16:50 were compared again with the project KJVA source.
 
-2. **Tobit 14:11**
-   - Problem: Persian age was malformed as `صدوهشت‌وپنج` while the KJVA source and Croatian text say 158.
-   - Action: Persian corrected to `صد و پنجاه‌وهشت سال`.
-
-3. **Prayer of Azariah 1:55**
-   - Problem: imported English snapshot duplicates the mountains line at verse 55. The canonical Song of the Three sequence has **fountains** here; the fresh Croatian review already documented and used `Izvori`.
-   - Action: FA correction uses `چشمه‌ها`, HR remains `Izvori`, and the RC Reader normalizes the English display to `O ye fountains...`.
-   - Note: the immutable imported source snapshot remains traceable; the Reader display normalization is explicitly audit-scoped.
-
-4. **1 Enoch 108:15**
-   - Problem: the R. H. Charles print snapshot carries the printer imprint (`Printed in Great Britain...`) inside the final verse, and that artifact was also carried into FA/HR review text.
-   - Action: RC Reader now strips the printer imprint from EN/FA/HR display at 108:15 while preserving the source snapshot for provenance.
-
-### Targeted high-risk review — Second Esdras 15–16
-
-Compared the previously flagged difficult rows against the project's KJVA source, including 15:32, 15:35–40, 15:54 and 16:50.
-
-- No missing or displaced verse was found in these targeted references.
-- 15:32 follows the awkward KJVA source construction and remains source-faithful.
+- No missing or displaced verse was found.
+- 15:32 follows the awkward KJVA construction.
 - 15:35–40 preserves the KJVA star/cloud/storm imagery without verse-number shifts.
-- 15:54 remains a continuation of 15:53 in the KJVA punctuation/structure and is represented as a separate normalized verse as required by project versification.
-- 16:50 remains semantically difficult because the KJVA pronoun chain is itself ambiguous; current FA is retained for now and remains `in_review` for final style/readability pass.
+- 15:54 remains a continuation of 15:53 in KJVA punctuation but is correctly represented as a separate normalized verse.
+- 16:50 has an ambiguous KJVA pronoun chain; the current rendering remains source-faithful and `in_review` for any later editorial style pass.
 
-## Remaining audit gates
+## Machine gate details
 
-1. Enumerate every book/chapter/verse against its canonical source and assert no missing, duplicate, out-of-order or overlay-created non-source references.
-2. Assert non-empty EN/FA/HR display text for all 7,501 rows after all registries and audit corrections are applied.
-3. Scan FA/HR for placeholders, control characters, `/n/n`, Cyrillic leakage, legacy/prepared text leakage and accidental source/editorial metadata.
-4. Recheck source translation, license, versification and source snapshot/checksum metadata per book.
-5. Review other known textual/versification exceptions and document the chosen normalization.
-6. Integrated Reader QA: language switching, chapter navigation, verse tools/highlights, mobile flow and fresh-cache behavior.
-7. Only after all blockers are zero: change `release_ready` to true and prepare the release candidate for store testing / production approval.
+The final validator mirrors the RC Reader pipeline: canonical runtime → fresh localized filter → base translation registry → continuation registry → final-audit correction registry → documented display normalizations.
+
+It verifies:
+
+- canonical book/chapter/verse identity and source counts;
+- exact 7,501-row source/runtime alignment;
+- complete EN/FA/HR display coverage after overlays;
+- no missing or duplicate canonical references;
+- no blank localized rows;
+- no TODO/TBD/translation placeholders, control characters, `/n/n`, Cyrillic leakage in Croatian, legacy/Razgah markers or printer metadata in final displayed text;
+- source translation/license/versification metadata presence;
+- regression assertions for the verified audit corrections above.
+
+Final report result: `structural_release_gate_passed: true`, `blocker_count: 0`, `warning_count: 0`.
+
+## Remaining release gate
+
+The only remaining gate is integrated full-app QA on the pinned RC build: app startup, authentication paths, Books/Apocrypha navigation, all 19 titles, EN/FA/HR switching, chapter navigation, Reader flow, verse tools/highlights, cache freshness and general mobile/full-app regression checks. Production release remains blocked until the user completes this QA and explicitly approves release.
