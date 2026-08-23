@@ -6,6 +6,7 @@ on:
       - release-candidate-2.4.0-preview
     paths:
       - scripts/apocrypha-corpus-audit-v249.mjs
+      - scripts/cleanup-sirach-stale-v250.mjs
       - data/apocrypha/review/**
       - js/nh7-apocrypha-translation-overlay-v245.js
 
@@ -18,21 +19,25 @@ jobs:
     steps:
       - name: Checkout RC
         uses: actions/checkout@v4
+      - name: Remove known stale non-source Sirach rows
+        shell: bash
+        run: node scripts/cleanup-sirach-stale-v250.mjs
       - name: Run corpus audit
         shell: bash
         run: node scripts/apocrypha-corpus-audit-v249.mjs || true
-      - name: Commit audit report back to RC
+      - name: Commit cleanup and audit report back to RC
         if: always()
         shell: bash
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/apocrypha/review/sirach/translations/chapters-31-35.fa-hr.in-review.json
           if [ -f artifacts/apocrypha-corpus-audit-v250.json ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add artifacts/apocrypha-corpus-audit-v250.json
-            if ! git diff --cached --quiet; then
-              git commit -m "test(apocrypha): record v2.5.0 final corpus audit"
-              git push
-            fi
+          fi
+          if ! git diff --cached --quiet; then
+            git commit -m "test(apocrypha): clean stale Sirach rows and record final audit"
+            git push
           fi
       - name: Upload audit report
         if: always()
