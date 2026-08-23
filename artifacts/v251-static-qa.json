@@ -1,0 +1,271 @@
+{
+  "schema_version": 1,
+  "qa_version": "2.5.1",
+  "generated_at": "2026-08-23T09:28:30.308Z",
+  "branch": "agent/ministers-id-access-reader-251",
+  "commit": "5d17a8c114d004233c23e1a3f0eb5e7abb1d4c7f",
+  "checks": [
+    {
+      "name": "JS_SYNTAX_js/nh7-account-content-access-v251.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "JS_SYNTAX_js/nh7-reader-ux-v251.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "JS_SYNTAX_js/nh7-admin-content-access-v251.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "JS_SYNTAX_js/admin-v2.3.5-analytics.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "JS_SYNTAX_js/nh7-apocrypha-reader-flow-v244.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "RC_VERSION",
+      "ok": false,
+      "detail": "rc-full must be 2.4.0.251-RC"
+    },
+    {
+      "name": "RC_ACCOUNT_BRIDGE",
+      "ok": true,
+      "detail": "account bridge missing from rc-full"
+    },
+    {
+      "name": "RC_READER_BRIDGE",
+      "ok": true,
+      "detail": "reader UX bridge missing from rc-full"
+    },
+    {
+      "name": "RC_APO_CSS_251",
+      "ok": true,
+      "detail": "Apocrypha flow CSS is not cache-busted to v2.5.1"
+    },
+    {
+      "name": "ACCOUNT_BRIDGE_nh7_library_items_v251",
+      "ok": true,
+      "detail": "missing nh7_library_items_v251"
+    },
+    {
+      "name": "ACCOUNT_BRIDGE_nh7_library_collections_public_v251",
+      "ok": true,
+      "detail": "missing nh7_library_collections_public_v251"
+    },
+    {
+      "name": "ACCOUNT_BRIDGE_nh7-library-access-v251",
+      "ok": true,
+      "detail": "missing nh7-library-access-v251"
+    },
+    {
+      "name": "ACCOUNT_BRIDGE_nh7-school-media-access-v251",
+      "ok": true,
+      "detail": "missing nh7-school-media-access-v251"
+    },
+    {
+      "name": "ACCOUNT_BRIDGE_nh7_my_content_access_v251",
+      "ok": true,
+      "detail": "missing nh7_my_content_access_v251"
+    },
+    {
+      "name": "ACCOUNT_NO_PASSWORD_PROMPT",
+      "ok": true,
+      "detail": "v2.5.1 account bridge itself must not prompt for passwords"
+    },
+    {
+      "name": "ADMIN_ACCESS_nh7_admin_content_access_dashboard_v251",
+      "ok": true,
+      "detail": "missing nh7_admin_content_access_dashboard_v251"
+    },
+    {
+      "name": "ADMIN_ACCESS_nh7_admin_content_access_grant_v251",
+      "ok": true,
+      "detail": "missing nh7_admin_content_access_grant_v251"
+    },
+    {
+      "name": "ADMIN_ACCESS_nh7_admin_content_access_revoke_v251",
+      "ok": true,
+      "detail": "missing nh7_admin_content_access_revoke_v251"
+    },
+    {
+      "name": "ADMIN_ACCESS_library_all",
+      "ok": true,
+      "detail": "missing library_all"
+    },
+    {
+      "name": "ADMIN_ACCESS_library_collection",
+      "ok": true,
+      "detail": "missing library_collection"
+    },
+    {
+      "name": "ADMIN_ACCESS_library_item",
+      "ok": true,
+      "detail": "missing library_item"
+    },
+    {
+      "name": "ADMIN_ACCESS_media_all",
+      "ok": true,
+      "detail": "missing media_all"
+    },
+    {
+      "name": "ADMIN_ACCESS_video_item",
+      "ok": true,
+      "detail": "missing video_item"
+    },
+    {
+      "name": "NO_DUPLICATE_MINISTER_UI",
+      "ok": true,
+      "detail": "duplicate grant UI should not exist"
+    },
+    {
+      "name": "READER_UX_nh7_reader_font_scale_v251",
+      "ok": true,
+      "detail": "missing nh7_reader_font_scale_v251"
+    },
+    {
+      "name": "READER_UX_data-v251-font-minus",
+      "ok": true,
+      "detail": "missing data-v251-font-minus"
+    },
+    {
+      "name": "READER_UX_data-v251-font-plus",
+      "ok": true,
+      "detail": "missing data-v251-font-plus"
+    },
+    {
+      "name": "READER_UX_data-nh7-apo-save",
+      "ok": true,
+      "detail": "missing data-nh7-apo-save"
+    },
+    {
+      "name": "READER_UX_nh7-saved-inline-v251",
+      "ok": true,
+      "detail": "missing nh7-saved-inline-v251"
+    },
+    {
+      "name": "READER_UX_pendingReaderTop",
+      "ok": true,
+      "detail": "missing pendingReaderTop"
+    },
+    {
+      "name": "APO_COLOR_DATA_ATTR",
+      "ok": true,
+      "detail": "Apocrypha palette JS must use data-nh7-apo-color"
+    },
+    {
+      "name": "APO_COLOR_yellow",
+      "ok": true,
+      "detail": "missing visible yellow palette selector"
+    },
+    {
+      "name": "APO_COLOR_green",
+      "ok": true,
+      "detail": "missing visible green palette selector"
+    },
+    {
+      "name": "APO_COLOR_blue",
+      "ok": true,
+      "detail": "missing visible blue palette selector"
+    },
+    {
+      "name": "APO_COLOR_pink",
+      "ok": true,
+      "detail": "missing visible pink palette selector"
+    },
+    {
+      "name": "APO_COLOR_purple",
+      "ok": true,
+      "detail": "missing visible purple palette selector"
+    },
+    {
+      "name": "SAVED_VERSE_BIBLE_RESOLVER",
+      "ok": true,
+      "detail": "Current resolver could not find GEN 1:1 in bundled group JSON; resolver must be adapted to actual schema"
+    },
+    {
+      "name": "JSON_PARSE_data/bible/plans/reading_plans_1yr_2yr.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "JSON_PARSE_data/bible/groups/bible_group_01_18.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "JSON_PARSE_data/apocrypha/runtime/apocrypha-browser-19.preview.json",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "bible_probe": {
+    "book": "GEN",
+    "order": 1,
+    "current_resolver_found": true,
+    "shape": {
+      "topKeys": [
+        "page",
+        "version",
+        "status",
+        "licenseNotes",
+        "books",
+        "verses"
+      ],
+      "isArray": false
+    },
+    "current_resolver_sample": {
+      "id": "GEN.1.1",
+      "bookId": "GEN",
+      "bookOrder": 1,
+      "testament": "OT",
+      "chapter": 1,
+      "verse": 1,
+      "reference": {
+        "fa": "پیدایش 1:1",
+        "en": "Genesis 1:1",
+        "hr": "Postanak 1:1"
+      },
+      "text": {
+        "fa": "در ابتدا، خدا آسمانها و زمین را آفرید.",
+        "en": "1. In the beginning God created the heaven and the earth.",
+        "hr": "U početku je Bog stvorio nebo i zemlju."
+      },
+      "translations": {
+        "fa": "Persian TPV (مژده برای عصر جدید)",
+        "en": "KJV",
+        "hr": "BKJ"
+      },
+      "keywords": [],
+      "originalLanguageNotes": [],
+      "userFeatures": {
+        "highlight": true,
+        "bold": true,
+        "notes": true,
+        "bookmark": true,
+        "share": true
+      },
+      "faFallback": {
+        "used": false
+      },
+      "faSource": "PersianTPVBible.xml / Persian TPV (مژده برای عصر جدید)"
+    }
+  },
+  "blocker_count": 1,
+  "warning_count": 0,
+  "blockers": [
+    {
+      "code": "RC_VERSION",
+      "detail": "rc-full must be 2.4.0.251-RC"
+    }
+  ],
+  "warnings": [],
+  "passed": false
+}
