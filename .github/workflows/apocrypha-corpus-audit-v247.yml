@@ -6,6 +6,8 @@ on:
       - release-candidate-2.4.0-preview
     paths:
       - scripts/apocrypha-corpus-audit-v249.mjs
+      - data/apocrypha/review/**
+      - js/nh7-apocrypha-translation-overlay-v245.js
 
 permissions:
   contents: write
