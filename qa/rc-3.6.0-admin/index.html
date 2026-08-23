@@ -8,23 +8,20 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>New Hope 7 Admin QA — RC 3.6.0</title>
+  <title>New Hope 7 Admin QA — RC 3.6.1</title>
   <style>
     html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;background:linear-gradient(180deg,#e9f8f6,#f7fbff);color:#102033}
     body{display:grid;place-items:center;padding:24px;box-sizing:border-box}
     main{width:min(620px,100%);background:#fff;border:1px solid #d8ecea;border-radius:24px;padding:24px;text-align:center;box-shadow:0 18px 55px rgba(15,118,110,.16)}
     .spinner{width:46px;height:46px;margin:0 auto 16px;border:5px solid #dff4f0;border-top-color:#0f766e;border-radius:50%;animation:spin .8s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
-    h1{font-size:1.25rem;margin:0 0 8px}
-    p{color:#667085;line-height:1.8;margin:0}
-    .error{color:#b42318;margin-top:14px;white-space:pre-wrap;font-weight:700}
-    .retry{display:none;margin:16px auto 0;border:0;border-radius:14px;padding:11px 18px;background:#0f766e;color:#fff;font:inherit;font-weight:800}
+    h1{font-size:1.25rem;margin:0 0 8px}p{color:#667085;line-height:1.8;margin:0}.error{color:#b42318;margin-top:14px;white-space:pre-wrap;font-weight:700}.retry{display:none;margin:16px auto 0;border:0;border-radius:14px;padding:11px 18px;background:#0f766e;color:#fff;font:inherit;font-weight:800}
   </style>
 </head>
 <body>
 <main id="loaderCard">
   <div class="spinner"></div>
-  <h1>New Hope 7 — Admin University RC 3.6.0</h1>
+  <h1>New Hope 7 — Admin University RC 3.6.1</h1>
   <p>پنل مدیریت آزمایشی در حال بارگذاری است.</p>
   <div id="error" class="error"></div>
   <button id="retry" class="retry" type="button">تلاش دوباره</button>
@@ -32,31 +29,23 @@
 <script>
 (async()=>{
   'use strict';
-  const BUILD='3.6.0-rc2-same-origin';
+  const BUILD='3.6.1-rc-recipient-scroll';
   const ROOT=new URL('../../',location.href);
   const QA='qa/rc-3.6.0-admin/assets/';
   const errorBox=document.getElementById('error');
   const retry=document.getElementById('retry');
   retry.addEventListener('click',()=>location.replace(location.pathname+'?reload='+Date.now()));
-  const fail=(message)=>{
-    errorBox.textContent='خطا در بارگذاری پنل آزمایشی:\n'+message;
-    retry.style.display='block';
-  };
+  const fail=message=>{errorBox.textContent='خطا در بارگذاری پنل آزمایشی:\n'+message;retry.style.display='block'};
   try{
     const source=new URL('admin.html?qa='+encodeURIComponent(BUILD)+'-'+Date.now(),ROOT);
-    const response=await fetch(source.href,{
-      cache:'no-store',
-      headers:{'Cache-Control':'no-cache, no-store, must-revalidate','Pragma':'no-cache'}
-    });
+    const response=await fetch(source.href,{cache:'no-store',headers:{'Cache-Control':'no-cache, no-store, must-revalidate','Pragma':'no-cache'}});
     if(!response.ok)throw new Error('Admin HTML '+response.status);
     let html=await response.text();
     if(!html.includes('<body'))throw new Error('Admin HTML is incomplete');
-
     html=html.replace(/<base\b[^>]*>/gi,'');
     html=html.replace('<head>','<head><base href="'+ROOT.href+'"><meta name="robots" content="noindex,nofollow,noarchive"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">');
     html=html.replace(/\s*<script id="nh7AdminRbacRuntime"[^>]*><\/script>/i,'');
     html=html.replace('admin-manifest.json?v=2.3.6','admin-manifest.json?v='+BUILD);
-
     html=html.replace('</head>',`
 <link rel="stylesheet" href="css/admin-v2.3.9-clean-scroll-v300.css?v=${BUILD}">
 <link rel="stylesheet" href="css/admin-v2.3.9-clean-features-v311.css?v=${BUILD}">
@@ -65,9 +54,9 @@
 <link rel="stylesheet" href="css/nh7-library-collections-v322.css?v=${BUILD}">
 <link rel="stylesheet" href="${QA}nh7-admin-university-v360.css?v=${BUILD}">
 <link rel="stylesheet" href="${QA}nh7-admin-university-v360-stability.css?v=${BUILD}">
+<link rel="stylesheet" href="${QA}nh7-admin-recipient-scroll-v361.css?v=${BUILD}">
 <style>.nh7-admin-version-v235,.nh7-clean-scroll-badge,.nh7-stable-final-badge,.nh7-fix12-badge,.nh7-stable-badge{display:none!important}</style>
 </head>`);
-
     html=html.replace('</body>',`
 <script src="js/admin-v2.3.9-clean-scroll-v300.js?v=${BUILD}"><\/script>
 <script src="js/admin-v2.3.9-library-clean-v311.js?v=${BUILD}"><\/script>
@@ -93,6 +82,7 @@
 <script>window.NH7_ADMIN_RC_V360=true;window.NH7_ADMIN_RC_BUILD='${BUILD}';<\/script>
 <script src="${QA}nh7-admin-university-v360-runtime-guard.js?v=${BUILD}"><\/script>
 <script src="${QA}nh7-admin-university-v360.js?v=${BUILD}"><\/script>
+<script src="${QA}nh7-admin-recipient-scroll-v361.js?v=${BUILD}"><\/script>
 <script>
 (()=>{
   document.documentElement.dataset.nh7AdminBuild='${BUILD}';
@@ -100,51 +90,19 @@
   let checks=0;
   const verify=()=>{
     checks++;
-    const baseReady=window.NH7_ADMIN_CLEAN_SCROLL_VERSION&&
-      window.NH7_ADMIN_VIDEO_FINAL_VERSION&&
-      window.NH7_ADMIN_VIDEO_SAVE_SYNC_VERSION&&
-      window.NH7_ADMIN_VIDEO_PERSON_ACCESS_VERSION&&
-      window.NH7_ADMIN_LIBRARY_CLEAN_VERSION&&
-      window.NH7_ADMIN_APOCRYPHA_CATALOG_VERSION&&
-      window.NH7_ADMIN_APOCRYPHA_TEXT_ONLY_VERSION&&
-      window.NH7_ADMIN_LIBRARY_COLLECTIONS_VERSION&&
-      window.NH7_ADMIN_STUDENT_CLEAN_VERSION&&
-      window.NH7_ADMIN_STUDENT_STATE_VERSION&&
-      window.NH7_ADMIN_AUDIO_CLEAN_VERSION&&
-      window.NH7_ADMIN_UI_DOCUMENTS_VERSION&&
-      window.NH7_ADMIN_FIX12_BOOTSTRAP_VERSION&&
-      window.NH7_ADMIN_REGISTRATION_REQUESTS_VERSION&&
-      window.NH7_ADMIN_APPROVAL_EMAIL_VERSION&&
-      window.NH7_ADMIN_APPROVAL_EMAIL_UI_VERSION&&
-      window.NH7_ADMIN_REGISTRATION_EMAIL_ACTIONS_VERSION&&
-      window.NH7_ADMIN_REQUEST_SEARCH_VERSION&&
-      window.NH7_ADMIN_NOTIFICATIONS_ZAGREB_VERSION&&
-      window.NH7_ADMIN_QNA_I18N_VERSION&&
-      window.NH7_ADMIN_RBAC_VERSION;
-    const universityReady=window.NH7_ADMIN_UNIVERSITY_GUARD_VERSION&&window.NH7_ADMIN_UNIVERSITY_VERSION;
-    if(baseReady&&universityReady){
-      if(requested&&typeof setTab==='function'&&requested!==window.activeTab)setTab(requested);
-      return;
-    }
-    if(checks<12)return setTimeout(verify,500);
-    console.error('RC 3.6.0 modules did not all load',{baseReady,universityReady});
-    const note=document.createElement('div');
-    note.className='notice danger';
-    note.style.margin='12px';
-    note.textContent='بعضی ماژول‌های نسخه آزمایشی بارگذاری نشدند. صفحه را یک‌بار تازه‌سازی کنید.';
-    document.body.prepend(note);
+    const baseReady=window.NH7_ADMIN_CLEAN_SCROLL_VERSION&&window.NH7_ADMIN_VIDEO_FINAL_VERSION&&window.NH7_ADMIN_VIDEO_SAVE_SYNC_VERSION&&window.NH7_ADMIN_VIDEO_PERSON_ACCESS_VERSION&&window.NH7_ADMIN_LIBRARY_CLEAN_VERSION&&window.NH7_ADMIN_APOCRYPHA_CATALOG_VERSION&&window.NH7_ADMIN_APOCRYPHA_TEXT_ONLY_VERSION&&window.NH7_ADMIN_LIBRARY_COLLECTIONS_VERSION&&window.NH7_ADMIN_STUDENT_CLEAN_VERSION&&window.NH7_ADMIN_STUDENT_STATE_VERSION&&window.NH7_ADMIN_AUDIO_CLEAN_VERSION&&window.NH7_ADMIN_UI_DOCUMENTS_VERSION&&window.NH7_ADMIN_FIX12_BOOTSTRAP_VERSION&&window.NH7_ADMIN_REGISTRATION_REQUESTS_VERSION&&window.NH7_ADMIN_APPROVAL_EMAIL_VERSION&&window.NH7_ADMIN_APPROVAL_EMAIL_UI_VERSION&&window.NH7_ADMIN_REGISTRATION_EMAIL_ACTIONS_VERSION&&window.NH7_ADMIN_REQUEST_SEARCH_VERSION&&window.NH7_ADMIN_NOTIFICATIONS_ZAGREB_VERSION&&window.NH7_ADMIN_QNA_I18N_VERSION&&window.NH7_ADMIN_RBAC_VERSION;
+    const universityReady=window.NH7_ADMIN_UNIVERSITY_GUARD_VERSION&&window.NH7_ADMIN_UNIVERSITY_VERSION&&window.NH7_ADMIN_RECIPIENT_SCROLL_VERSION;
+    if(baseReady&&universityReady){if(requested&&typeof setTab==='function'&&requested!==window.activeTab)setTab(requested);return}
+    if(checks<14)return setTimeout(verify,500);
+    console.error('RC 3.6.1 modules did not all load',{baseReady,universityReady});
+    const note=document.createElement('div');note.className='notice danger';note.style.margin='12px';note.textContent='بعضی ماژول‌های نسخه آزمایشی بارگذاری نشدند. صفحه را یک‌بار تازه‌سازی کنید.';document.body.prepend(note);
   };
   setTimeout(verify,700);
 })();
 <\/script>
 </body>`);
-    document.open();
-    document.write(html);
-    document.close();
-  }catch(error){
-    console.error(error);
-    fail(error&&error.message?error.message:String(error));
-  }
+    document.open();document.write(html);document.close();
+  }catch(error){console.error(error);fail(error&&error.message?error.message:String(error))}
 })();
 </script>
 </body>
