@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "book_id": "4_maccabees",
+  "chapter": 13,
+  "language": "hr",
+  "status": "in_review",
+  "source_translation": "WEBC",
+  "audit_reason": "Final corpus text-sanity audit replacement for the flagged Croatian row.",
+  "verses": [
+    {"verse":22,"text":"Naoružan čestitom krepošću, i ja ću otići sa svojom braćom."}
+  ]
+}
