@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+  <title>New Hope 7 Admin QA — RC 3.6.0</title>
+  <style>html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#07111d;color:#fff}main{min-height:100vh;display:grid;place-items:center;padding:24px;box-sizing:border-box;text-align:center}.box{max-width:600px}.spin{width:44px;height:44px;border:4px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;margin:0 auto 18px;animation:s .85s linear infinite}@keyframes s{to{transform:rotate(360deg)}}small{opacity:.72;line-height:1.7}</style>
+</head>
+<body>
+<main><div class="box"><div class="spin"></div><h2>New Hope 7 — Admin University QA</h2><p>Loading RC 3.6.0…</p><small>QA only. Campaign and student-email buttons are dry-run; no real campaign, email, or official certificate is sent/issued from this preview.</small></div></main>
+<script>
+(async()=>{
+  const commit='78d606823734d6b07993d26cccf8aa73681caf79';
+  const raw=`https://raw.githubusercontent.com/Omideno7/new-hope7-app/${commit}/admin-v239-stable.html`;
+  const assets=`https://raw.githack.com/Omideno7/new-hope7-app/${commit}/`;
+  try{
+    const r=await fetch(raw,{cache:'no-store'});if(!r.ok)throw new Error('Admin RC source HTTP '+r.status);
+    let html=await r.text();
+    html=html.replace('<head>','<head>\n  <base href="'+assets+'">\n  <meta name="robots" content="noindex,nofollow,noarchive">\n  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">');
+    html=html.replace('document.open();document.write(html);document.close();',`html=html.replace('<head>','<head><base href="${assets}">');document.open();document.write(html);document.close();`);
+    document.open();document.write(html);document.close();
+  }catch(error){document.body.innerHTML='<main><div class="box"><h2>Admin preview could not load</h2><p>'+String(error&&error.message||error)+'</p><p>Please refresh this page.</p></div></main>'}
+})();
+</script>
+</body>
+</html>
