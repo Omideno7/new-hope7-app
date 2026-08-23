@@ -1,10 +1,11 @@
-/* New Hope 7 v2.4.6 RC — overlays fresh in-house FA/HR translations onto canonical English runtime. */
+/* New Hope 7 v2.4.7 RC — overlays fresh in-house FA/HR translations onto canonical English runtime. */
 (()=>{'use strict';
 if(window.__NH7_APO_TRANSLATION_OVERLAY_V245__)return;window.__NH7_APO_TRANSLATION_OVERLAY_V245__=true;
-const VERSION='2.4.6-apocrypha-translation-overlay';
+const VERSION='2.4.7-apocrypha-translation-overlay';
 const REGISTRIES=[
   'data/apocrypha/review/translation-overlays-v245.json?v=2452',
-  'data/apocrypha/review/translation-overlays-v246-continuation.json?v=2461'
+  'data/apocrypha/review/translation-overlays-v246-continuation.json?v=2461',
+  'data/apocrypha/review/translation-overlays-v247-audit-corrections.json?v=2471'
 ];
 const TARGET=/data\/apocrypha\/runtime\/apocrypha-browser-19\.preview\.json(?:[?#]|$)/;
 const previousFetch=window.fetch.bind(window);
@@ -27,6 +28,14 @@ function mergeDocument(runtime,doc){if(!doc?.book_id)return;const books=indexBoo
     }}
   }
 }
+function cleanNonBookArtifacts(runtime){
+  const book=indexBooks(runtime).get('1_enoch');if(!book)return;
+  const ch=(book.chapters||[]).find(x=>Number(x.chapter)===108);if(!ch)return;
+  const v=(ch.verses||[]).find(x=>Number(x.verse)===15);if(!v)return;
+  if(typeof v.text_en==='string')v.text_en=v.text_en.replace(/\s*Printed in Great Britain by Richard Clay and Company, Ltd\., Bungay, Suffolk\.?\s*$/i,'').trim();
+  if(typeof v.text_hr==='string')v.text_hr=v.text_hr.replace(/\s*Tiskano u Velikoj Britaniji u tiskari Richard Clay and Company, Ltd\., Bungay, Suffolk\.?\s*$/i,'').trim();
+  if(typeof v.text_fa==='string')v.text_fa=v.text_fa.replace(/\s*چاپ‌شده در بریتانیای کبیر توسط Richard Clay and Company, Ltd\.، Bungay، Suffolk\.?\s*$/,'').trim();
+}
 async function loadOverlays(){
   if(overlaysPromise)return overlaysPromise;
   overlaysPromise=(async()=>{
@@ -48,6 +57,6 @@ async function loadOverlays(){
   })().catch(e=>{console.warn('NH7 overlay loading failed',e);return[]});
   return overlaysPromise;
 }
-window.fetch=async function nh7ApocryphaOverlayFetch(input,init={}){if(!isTarget(input))return previousFetch(input,init);const response=await previousFetch(input,init);if(!response.ok)return response;try{const data=await response.clone().json();for(const doc of await loadOverlays())mergeDocument(data,doc);return new Response(JSON.stringify(data),{status:response.status,statusText:response.statusText,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'}})}catch(e){console.warn('NH7 Apocrypha overlay merge failed',e);return response}};
+window.fetch=async function nh7ApocryphaOverlayFetch(input,init={}){if(!isTarget(input))return previousFetch(input,init);const response=await previousFetch(input,init);if(!response.ok)return response;try{const data=await response.clone().json();for(const doc of await loadOverlays())mergeDocument(data,doc);cleanNonBookArtifacts(data);return new Response(JSON.stringify(data),{status:response.status,statusText:response.statusText,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'}})}catch(e){console.warn('NH7 Apocrypha overlay merge failed',e);return response}};
 window.NH7_APOCRYPHA_TRANSLATION_OVERLAY_VERSION=VERSION;
 })();
