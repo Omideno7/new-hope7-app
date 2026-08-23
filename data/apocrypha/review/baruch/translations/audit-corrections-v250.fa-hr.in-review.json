@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "book_id": "baruch",
+  "chapter": 1,
+  "status": "in_review",
+  "source_translation": "KJVA",
+  "source_license": "Public Domain",
+  "audit_reason": "Final fidelity audit restores the source-specific manna wording at Baruch 1:10.",
+  "verses": [
+    {"verse":10,"text_fa":"آنان گفتند: «اینک پول برایتان فرستاده‌ایم تا با آن قربانی‌های سوختنی، قربانی‌های گناه و بخور بخرید، مَنّا آماده کنید و بر مذبح خداوند خدای ما تقدیم نمایید.","text_hr":"Rekli su: „Evo, poslali smo vam novac da kupite paljenice, žrtve za grijeh i tamjan, pripravite manu i prinesete je na žrtveniku Gospodina Boga našega.","status_fa":"in_review","status_hr":"in_review"}
+  ]
+}
