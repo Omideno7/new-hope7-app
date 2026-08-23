@@ -1,0 +1,42 @@
+name: RC 2.5.1 Static QA
+
+on:
+  push:
+    branches:
+      - agent/ministers-id-access-reader-251
+    paths:
+      - scripts/qa-v251.mjs
+      - .github/workflows/qa-v251.yml
+
+permissions:
+  contents: write
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+      - name: Run non-failing static gate
+        shell: bash
+        run: node scripts/qa-v251.mjs || true
+      - name: Commit QA report
+        if: always()
+        shell: bash
+        run: |
+          if [ -f artifacts/qa-v251.json ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add artifacts/qa-v251.json
+            if ! git diff --cached --quiet; then
+              git commit -m "test(v2.5.1): record static QA result"
+              git push
+            fi
+          fi
+      - name: Upload QA report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-v251
+          path: artifacts/qa-v251.json
+          if-no-files-found: ignore
