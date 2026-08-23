@@ -1,0 +1,116 @@
+/* New Hope 7 Admin QA v3.6.2 — single-page recipient flow and clear send controls. */
+body.nh7-v362-messages-open{
+  position:static!important;
+  inset:auto!important;
+  width:auto!important;
+  height:auto!important;
+  min-height:100%!important;
+  max-height:none!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  touch-action:pan-y!important;
+  -webkit-overflow-scrolling:touch!important;
+  padding-bottom:calc(106px + env(safe-area-inset-bottom))!important;
+}
+body.nh7-v362-messages-open .admin-shell,
+body.nh7-v362-messages-open #adminApp,
+body.nh7-v362-messages-open .panel-card,
+body.nh7-v362-messages-open .nh7-v360-message-grid,
+body.nh7-v362-messages-open .nh7-v360-compose,
+body.nh7-v362-messages-open .nh7-v360-history{
+  position:relative!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:visible!important;
+  contain:none!important;
+}
+body.nh7-v362-messages-open .nh7-v360-recipient-picker{
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:visible!important;
+  overscroll-behavior:auto!important;
+  touch-action:pan-y!important;
+  -webkit-overflow-scrolling:auto!important;
+  contain:none!important;
+  border:1px solid #d8e9e7!important;
+  border-radius:16px!important;
+  padding:6px!important;
+  background:#fbfefd!important;
+  box-sizing:border-box!important;
+}
+body.nh7-v362-messages-open .nh7-v360-recipient{
+  display:flex!important;
+  position:relative!important;
+  min-height:54px!important;
+  align-items:flex-start!important;
+  gap:10px!important;
+  padding:10px 9px!important;
+  margin:0!important;
+  border-bottom:1px solid #e8f1f0!important;
+  background:transparent!important;
+  touch-action:manipulation!important;
+  user-select:none;
+  -webkit-user-select:none;
+}
+body.nh7-v362-messages-open .nh7-v360-recipient:last-child{border-bottom:0!important}
+body.nh7-v362-messages-open .nh7-v360-recipient input{
+  width:22px!important;
+  height:22px!important;
+  min-width:22px!important;
+  margin:2px 0 0!important;
+  accent-color:#0f766e;
+}
+body.nh7-v362-messages-open .nh7-v360-recipient span{min-width:0;flex:1}
+body.nh7-v362-messages-open .nh7-v360-recipient strong,
+body.nh7-v362-messages-open .nh7-v360-recipient small{display:block;overflow-wrap:anywhere;word-break:break-word}
+body.nh7-v362-messages-open .nh7-v360-recipient small{margin-top:3px;color:#667085}
+.nh7-v362-recipient-id{font-size:.7rem!important;color:#7a8794!important;direction:ltr;text-align:start}
+.nh7-v362-recipient-tools{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:8px 0 10px;padding:9px;border:1px solid #dcebea;border-radius:14px;background:#f5fbfa}
+.nh7-v362-recipient-tools button{border:1px solid #bddbd7;border-radius:11px;background:#fff;color:#0e6257;padding:8px 10px;font:inherit;font-size:.78rem;font-weight:800;cursor:pointer}
+.nh7-v362-recipient-tools .nh7-v362-selected-count{margin-inline-start:auto;color:#405261;font-size:.78rem;font-weight:800}
+.nh7-v362-control-help{display:grid;gap:8px;margin:10px 0;padding:11px;border:1px solid #d7e9e7;border-radius:15px;background:linear-gradient(180deg,#f8fcfb,#fff)}
+.nh7-v362-control-help strong{display:block;color:#163c49;margin-bottom:2px}
+.nh7-v362-control-help p{margin:0;color:#5c6f7b;font-size:.78rem;line-height:1.65}
+.nh7-v362-language-note,.nh7-v362-qa-note{margin:7px 0;color:#526472;font-size:.78rem;line-height:1.65}
+.nh7-v362-qa-note{padding:9px 10px;border-radius:12px;background:#fff7e6;border:1px solid #f0d89a;color:#785b12;font-weight:750}
+.nh7-v362-template-note{display:block;width:100%;margin-top:3px;color:#667085;font-size:.72rem;line-height:1.5}
+.nh7-v362-send-original{min-height:48px!important;font-size:.94rem!important;font-weight:900!important;box-shadow:0 8px 22px rgba(15,118,110,.2)!important}
+#nh7V362FloatingSend{
+  position:fixed;
+  z-index:2147483200;
+  left:16px;
+  right:16px;
+  bottom:calc(14px + env(safe-area-inset-bottom));
+  display:none;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  min-height:56px;
+  border:0;
+  border-radius:18px;
+  padding:13px 18px;
+  background:linear-gradient(135deg,#0b5faa,#16a765);
+  color:#fff;
+  font:900 1rem/1.2 system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;
+  box-shadow:0 16px 38px rgba(7,70,89,.32);
+  cursor:pointer;
+}
+body.nh7-v362-messages-open #nh7V362FloatingSend{display:flex}
+#nh7V362FloatingSend:disabled{opacity:.62;cursor:wait}
+#nh7V362FloatingSend small{font-size:.68rem;font-weight:700;opacity:.9}
+@media(min-width:861px){
+  body.nh7-v362-messages-open{padding-bottom:24px!important}
+  #nh7V362FloatingSend{left:auto;right:24px;width:260px}
+  html[dir="rtl"] #nh7V362FloatingSend{right:auto;left:24px}
+  body.nh7-v362-messages-open .nh7-v360-recipient-picker{max-height:520px!important;overflow-y:auto!important;overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important}
+}
+@media(max-width:620px){
+  body.nh7-v362-messages-open .nh7-v360-message-grid{display:block!important}
+  body.nh7-v362-messages-open .nh7-v360-history{margin-top:12px!important}
+  .nh7-v362-recipient-tools{position:sticky;top:0;z-index:6;box-shadow:0 5px 14px rgba(15,118,110,.08)}
+  .nh7-v362-recipient-tools .nh7-v362-selected-count{width:100%;margin-inline-start:0}
+}
