@@ -1,12 +1,11 @@
-name: Apocrypha Corpus Audit v2.4.7
+name: Apocrypha Corpus Audit v2.4.8
 
 on:
   push:
     branches:
       - release-candidate-2.4.0-preview
     paths:
-      - scripts/apocrypha-corpus-audit-v247.mjs
-      - artifacts/apocrypha-audit-trigger-v247.txt
+      - scripts/apocrypha-corpus-audit-v248.mjs
 
 permissions:
   contents: write
@@ -19,17 +18,17 @@ jobs:
         uses: actions/checkout@v4
       - name: Run corpus audit
         shell: bash
-        run: node scripts/apocrypha-corpus-audit-v247.mjs || true
+        run: node scripts/apocrypha-corpus-audit-v248.mjs || true
       - name: Commit audit report back to RC
         if: always()
         shell: bash
         run: |
-          if [ -f artifacts/apocrypha-corpus-audit-v247.json ]; then
+          if [ -f artifacts/apocrypha-corpus-audit-v248.json ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add artifacts/apocrypha-corpus-audit-v247.json
+            git add artifacts/apocrypha-corpus-audit-v248.json
             if ! git diff --cached --quiet; then
-              git commit -m "test(apocrypha): record corpus audit result"
+              git commit -m "test(apocrypha): record corrected corpus audit result"
               git push
             fi
           fi
@@ -37,6 +36,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: apocrypha-corpus-audit-v247
-          path: artifacts/apocrypha-corpus-audit-v247.json
+          name: apocrypha-corpus-audit-v248
+          path: artifacts/apocrypha-corpus-audit-v248.json
           if-no-files-found: ignore
