@@ -14,3 +14,12 @@ window.addEventListener('nh7-content-access-v251',schedule);window.addEventListe
 const observer=new MutationObserver(schedule);observer.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','class']});
 setInterval(patch,1200);setTimeout(patch,300);window.NH7_MINISTER_LIBRARY_LOCK_VERSION=VERSION;
 })();
+
+/* RC 2.6.0 bootstrap: rich public-library typography is isolated from the
+   v2.5.3 ministers access logic above. Loading is idempotent and QA-only. */
+(()=>{'use strict';
+if(window.__NH7_LIBRARY_RICH_BOOTSTRAP_V260__)return;window.__NH7_LIBRARY_RICH_BOOTSTRAP_V260__=true;
+const css='css/nh7-library-rich-reader-v260.css?v=2.6.0';
+if(!document.querySelector(`link[href^="css/nh7-library-rich-reader-v260.css"]`)){const l=document.createElement('link');l.rel='stylesheet';l.href=css;document.head.appendChild(l)}
+if(!document.querySelector(`script[src^="js/nh7-library-rich-reader-v260.js"]`)){const s=document.createElement('script');s.src='js/nh7-library-rich-reader-v260.js?v=2.6.0';s.defer=true;document.body.appendChild(s)}
+})();
