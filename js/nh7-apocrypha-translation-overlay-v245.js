@@ -28,13 +28,16 @@ function mergeDocument(runtime,doc){if(!doc?.book_id)return;const books=indexBoo
     }}
   }
 }
-function cleanNonBookArtifacts(runtime){
-  const book=indexBooks(runtime).get('1_enoch');if(!book)return;
-  const ch=(book.chapters||[]).find(x=>Number(x.chapter)===108);if(!ch)return;
-  const v=(ch.verses||[]).find(x=>Number(x.verse)===15);if(!v)return;
-  if(typeof v.text_en==='string')v.text_en=v.text_en.replace(/\s*Printed in Great Britain by Richard Clay and Company, Ltd\., Bungay, Suffolk\.?\s*$/i,'').trim();
-  if(typeof v.text_hr==='string')v.text_hr=v.text_hr.replace(/\s*Tiskano u Velikoj Britaniji u tiskari Richard Clay and Company, Ltd\., Bungay, Suffolk\.?\s*$/i,'').trim();
-  if(typeof v.text_fa==='string')v.text_fa=v.text_fa.replace(/\s*چاپ‌شده در بریتانیای کبیر توسط Richard Clay and Company, Ltd\.، Bungay، Suffolk\.?\s*$/,'').trim();
+function applyAuditDisplayNormalizations(runtime){
+  const books=indexBooks(runtime);
+  const enoch=books.get('1_enoch');
+  if(enoch){const ch=(enoch.chapters||[]).find(x=>Number(x.chapter)===108);const v=(ch?.verses||[]).find(x=>Number(x.verse)===15);if(v){
+    if(typeof v.text_en==='string')v.text_en=v.text_en.replace(/\s*Printed in Great Britain by Richard Clay and Company, Ltd\., Bungay, Suffolk\.?\s*$/i,'').trim();
+    if(typeof v.text_hr==='string')v.text_hr=v.text_hr.replace(/\s*Tiskano u Velikoj Britaniji u tiskari Richard Clay and Company, Ltd\., Bungay, Suffolk\.?\s*$/i,'').trim();
+    if(typeof v.text_fa==='string')v.text_fa=v.text_fa.replace(/\s*چاپ‌شده در بریتانیای کبیر توسط Richard Clay and Company, Ltd\.، Bungay، Suffolk\.?\s*$/,'').trim();
+  }}
+  const azariah=books.get('prayer_of_azariah');
+  if(azariah){const ch=(azariah.chapters||[]).find(x=>Number(x.chapter)===1);const v=(ch?.verses||[]).find(x=>Number(x.verse)===55);if(v){v.text_en='O ye fountains, bless ye the Lord: praise and exalt him above all for ever.'}}
 }
 async function loadOverlays(){
   if(overlaysPromise)return overlaysPromise;
@@ -57,6 +60,6 @@ async function loadOverlays(){
   })().catch(e=>{console.warn('NH7 overlay loading failed',e);return[]});
   return overlaysPromise;
 }
-window.fetch=async function nh7ApocryphaOverlayFetch(input,init={}){if(!isTarget(input))return previousFetch(input,init);const response=await previousFetch(input,init);if(!response.ok)return response;try{const data=await response.clone().json();for(const doc of await loadOverlays())mergeDocument(data,doc);cleanNonBookArtifacts(data);return new Response(JSON.stringify(data),{status:response.status,statusText:response.statusText,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'}})}catch(e){console.warn('NH7 Apocrypha overlay merge failed',e);return response}};
+window.fetch=async function nh7ApocryphaOverlayFetch(input,init={}){if(!isTarget(input))return previousFetch(input,init);const response=await previousFetch(input,init);if(!response.ok)return response;try{const data=await response.clone().json();for(const doc of await loadOverlays())mergeDocument(data,doc);applyAuditDisplayNormalizations(data);return new Response(JSON.stringify(data),{status:response.status,statusText:response.statusText,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'}})}catch(e){console.warn('NH7 Apocrypha overlay merge failed',e);return response}};
 window.NH7_APOCRYPHA_TRANSLATION_OVERLAY_VERSION=VERSION;
 })();
