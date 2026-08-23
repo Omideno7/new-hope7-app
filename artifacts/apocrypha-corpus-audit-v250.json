@@ -1,0 +1,262 @@
+{
+  "schema_version": 1,
+  "audit_version": "2.5.0",
+  "generated_at": "2026-08-23T07:15:14.210Z",
+  "branch": "release-candidate-2.4.0-preview",
+  "commit": "8d788410dbe9be2824f0de9889a984af5c9cfc1f",
+  "scope": {
+    "books": 19,
+    "canonical_rows": 7501
+  },
+  "coverage": {
+    "english": 7501,
+    "persian": 7501,
+    "croatian": 7501
+  },
+  "source_rows": 7501,
+  "registries": [
+    {
+      "path": "data/apocrypha/review/translation-overlays-v245.json",
+      "declared": 88,
+      "loaded": 88
+    },
+    {
+      "path": "data/apocrypha/review/translation-overlays-v246-continuation.json",
+      "declared": 90,
+      "loaded": 90
+    },
+    {
+      "path": "data/apocrypha/review/translation-overlays-v247-audit-corrections.json",
+      "declared": 8,
+      "loaded": 8
+    }
+  ],
+  "by_book": {
+    "psalm_151": {
+      "en": 7,
+      "fa": 7,
+      "hr": 7,
+      "text_issues": 0
+    },
+    "prayer_of_manasseh": {
+      "en": 15,
+      "fa": 15,
+      "hr": 15,
+      "text_issues": 0
+    },
+    "susanna": {
+      "en": 64,
+      "fa": 64,
+      "hr": 64,
+      "text_issues": 0
+    },
+    "bel_and_the_dragon": {
+      "en": 42,
+      "fa": 42,
+      "hr": 42,
+      "text_issues": 0
+    },
+    "prayer_of_azariah": {
+      "en": 68,
+      "fa": 68,
+      "hr": 68,
+      "text_issues": 0
+    },
+    "letter_of_jeremiah": {
+      "en": 73,
+      "fa": 73,
+      "hr": 73,
+      "text_issues": 0
+    },
+    "additions_to_esther": {
+      "en": 105,
+      "fa": 105,
+      "hr": 105,
+      "text_issues": 0
+    },
+    "3_maccabees": {
+      "en": 228,
+      "fa": 228,
+      "hr": 228,
+      "text_issues": 1
+    },
+    "4_maccabees": {
+      "en": 484,
+      "fa": 484,
+      "hr": 484,
+      "text_issues": 0
+    },
+    "judith": {
+      "en": 339,
+      "fa": 339,
+      "hr": 339,
+      "text_issues": 0
+    },
+    "1_esdras": {
+      "en": 448,
+      "fa": 448,
+      "hr": 448,
+      "text_issues": 0
+    },
+    "2_esdras": {
+      "en": 874,
+      "fa": 874,
+      "hr": 874,
+      "text_issues": 0
+    },
+    "tobit": {
+      "en": 244,
+      "fa": 244,
+      "hr": 244,
+      "text_issues": 0
+    },
+    "baruch": {
+      "en": 140,
+      "fa": 140,
+      "hr": 140,
+      "text_issues": 0
+    },
+    "wisdom_of_solomon": {
+      "en": 436,
+      "fa": 436,
+      "hr": 436,
+      "text_issues": 0
+    },
+    "2_maccabees": {
+      "en": 555,
+      "fa": 555,
+      "hr": 555,
+      "text_issues": 0
+    },
+    "1_maccabees": {
+      "en": 924,
+      "fa": 924,
+      "hr": 924,
+      "text_issues": 0
+    },
+    "1_enoch": {
+      "en": 1062,
+      "fa": 1062,
+      "hr": 1062,
+      "text_issues": 0
+    },
+    "sirach": {
+      "en": 1393,
+      "fa": 1393,
+      "hr": 1393,
+      "text_issues": 0
+    }
+  },
+  "missing_refs": {
+    "psalm_151": {
+      "fa": [],
+      "hr": []
+    },
+    "prayer_of_manasseh": {
+      "fa": [],
+      "hr": []
+    },
+    "susanna": {
+      "fa": [],
+      "hr": []
+    },
+    "bel_and_the_dragon": {
+      "fa": [],
+      "hr": []
+    },
+    "prayer_of_azariah": {
+      "fa": [],
+      "hr": []
+    },
+    "letter_of_jeremiah": {
+      "fa": [],
+      "hr": []
+    },
+    "additions_to_esther": {
+      "fa": [],
+      "hr": []
+    },
+    "3_maccabees": {
+      "fa": [],
+      "hr": []
+    },
+    "4_maccabees": {
+      "fa": [],
+      "hr": []
+    },
+    "judith": {
+      "fa": [],
+      "hr": []
+    },
+    "1_esdras": {
+      "fa": [],
+      "hr": []
+    },
+    "2_esdras": {
+      "fa": [],
+      "hr": []
+    },
+    "tobit": {
+      "fa": [],
+      "hr": []
+    },
+    "baruch": {
+      "fa": [],
+      "hr": []
+    },
+    "wisdom_of_solomon": {
+      "fa": [],
+      "hr": []
+    },
+    "2_maccabees": {
+      "fa": [],
+      "hr": []
+    },
+    "1_maccabees": {
+      "fa": [],
+      "hr": []
+    },
+    "1_enoch": {
+      "fa": [],
+      "hr": []
+    },
+    "sirach": {
+      "fa": [],
+      "hr": []
+    }
+  },
+  "blocker_summary": {
+    "TEXT_PLACEHOLDER": 1
+  },
+  "warning_summary": {
+    "OVERLAY_NON_SOURCE_SKIPPED": 4
+  },
+  "blocker_count": 1,
+  "warning_count": 4,
+  "blockers": [
+    {
+      "code": "TEXT_PLACEHOLDER",
+      "detail": "3_maccabees|6|24|hr"
+    }
+  ],
+  "warnings": [
+    {
+      "code": "OVERLAY_NON_SOURCE_SKIPPED",
+      "detail": "data/apocrypha/review/sirach/translations/chapters-31-35.fa-hr.in-review.json: sirach|32|25"
+    },
+    {
+      "code": "OVERLAY_NON_SOURCE_SKIPPED",
+      "detail": "data/apocrypha/review/sirach/translations/chapters-31-35.fa-hr.in-review.json: sirach|32|25"
+    },
+    {
+      "code": "OVERLAY_NON_SOURCE_SKIPPED",
+      "detail": "data/apocrypha/review/sirach/translations/chapters-31-35.fa-hr.in-review.json: sirach|32|26"
+    },
+    {
+      "code": "OVERLAY_NON_SOURCE_SKIPPED",
+      "detail": "data/apocrypha/review/sirach/translations/chapters-31-35.fa-hr.in-review.json: sirach|32|26"
+    }
+  ],
+  "structural_release_gate_passed": false,
+  "note": "Machine corpus gate mirrors fresh-filter + hardened Reader overlay. Integrated browser/mobile QA remains a separate final gate."
+}
