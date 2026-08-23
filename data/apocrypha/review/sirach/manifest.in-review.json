@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "book_id": "sirach",
+  "title_en": "Sirach / Ecclesiasticus",
+  "title_fa": "حکمت یشوع بن سیراخ",
+  "title_hr": "Sirah",
+  "status": "in_review",
+  "prepared_on": "2026-08-23",
+  "source": {
+    "translation": "KJVA",
+    "name": "King James Version with Apocrypha",
+    "license": "Public Domain",
+    "versification": "KJVA normalized for the New Hope 7 nineteen-book set",
+    "path": "data/apocrypha/sources/en/sirach.en.json",
+    "git_blob_sha": "e05a790f3df0d9f85876a2afecc2eb7f0a2de251",
+    "snapshot_sha256": "1165788907a8bbe93c3299d89eb5134d942038e5dca2c0832beb13e8f72441d0"
+  },
+  "chapter_count": 51,
+  "verse_count": 1393,
+  "totals": {
+    "source_english": 1393,
+    "persian_in_review": 1393,
+    "croatian_in_review": 1393,
+    "missing_persian": 0,
+    "missing_croatian": 0
+  },
+  "translation_files": [
+    "translations/chapters-01-03.fa-hr.in-review.json",
+    "translations/chapters-04-05.fa-hr.in-review.json",
+    "translations/chapters-06-10.fa-hr.in-review.json",
+    "translations/chapters-11-15.fa-hr.in-review.json",
+    "translations/chapters-16-20.fa-hr.in-review.json",
+    "translations/chapters-21-25.fa-hr.in-review.json",
+    "translations/chapters-26-30.fa-hr.in-review.json",
+    "translations/chapters-31-35.fa-hr.in-review.json",
+    "translations/chapters-36-40.fa-hr.in-review.json",
+    "translations/chapters-41-45.fa-hr.in-review.json",
+    "translations/chapter-46.fa-hr.in-review.json",
+    "translations/chapter-47.fa-hr.in-review.json",
+    "translations/chapter-48.fa-hr.in-review.json",
+    "translations/chapter-49.fa-hr.in-review.json",
+    "translations/chapter-50.fa-hr.in-review.json",
+    "translations/chapter-51.fa-hr.in-review.json"
+  ],
+  "translation_policy": "Fresh New Hope 7 Persian and Croatian translations from the public-domain KJVA English reference. All rows remain in_review until final corpus audit.",
+  "reader_overlay_registered": true,
+  "audit_state": "book_complete_pending_corpus_audit"
+}
