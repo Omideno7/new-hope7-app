@@ -1,0 +1,12 @@
+{
+  "qa_version": "3.6.0-final",
+  "static_gate": "passed",
+  "javascript_syntax": "passed",
+  "production_shell_delta": "three isolated app loaders only",
+  "admin_messaging": "present",
+  "student_information_system": "present",
+  "user_analytics": "present",
+  "certificate_center": "present",
+  "achievement_medal": "present",
+  "backend_source": "present"
+}
