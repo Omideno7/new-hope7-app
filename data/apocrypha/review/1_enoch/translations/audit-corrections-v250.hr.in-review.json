@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "book_id": "1_enoch",
+  "chapter": 90,
+  "language": "hr",
+  "status": "in_review",
+  "source_translation": "R. H. Charles",
+  "audit_reason": "Final corpus text-sanity audit replacement for the flagged Croatian row.",
+  "verses": [
+    {"verse":28,"text":"Ustao sam da vidim kako su složili onu staru kuću; odnijeli su sve stupove, sve grede i ukrase kuće, sve zajedno s njom, odnijeli je i položili na mjesto na jugu zemlje."}
+  ]
+}
