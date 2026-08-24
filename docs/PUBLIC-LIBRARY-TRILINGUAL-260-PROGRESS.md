@@ -7,8 +7,8 @@ All titles in this batch are intended for the Public Library. Each finished titl
 | # | Canonical title | Source material | Source language | PDF pages | Target | Status |
 |---|---|---|---|---:|---|---|
 | 1 | How to Receive a Miracle and Retain It | `how-to-receive-a-miracle-and-retain-it.pdf` | EN | 64 | FA/EN/HR | trilingual_content_complete — 4 sections / 96 aligned blocks |
-| 2 | Seven Things the Holy Spirit Will Do in You | Persian official edition uploaded | FA | 50 | FA/EN/HR | source_structuring |
-| 3 | Don't Stop Here! — A Spiritual Journey to Greater Impact | English PDF uploaded | EN | 77 | FA/EN/HR | queued |
+| 2 | Seven Things the Holy Spirit Will Do in You | Persian official edition uploaded | FA | 50 | FA/EN/HR | trilingual_content_complete — 11 sections / 131 aligned blocks |
+| 3 | Don't Stop Here! — A Spiritual Journey to Greater Impact | English PDF uploaded | EN | 77 | FA/EN/HR | trilingual_content_complete — 6 sections / 128 aligned blocks |
 | 4 | When God Visits You | English + Persian editions uploaded | EN primary, FA reference | 85 EN / 68 FA | FA/EN/HR | source_structuring |
 | 5 | Praying the Right Way | English PDF uploaded | EN | 73 | FA/EN/HR | queued |
 | 6 | How to Pray Effectively — Volume One | English PDF uploaded | EN | 84 | FA/EN/HR | queued |
@@ -28,6 +28,26 @@ All titles in this batch are intended for the Public Library. Each finished titl
 - One obvious PDF page-break extraction artifact in Mark 5:25–34 reference was repaired.
 - Source-authored Scripture reference peculiarities are preserved rather than silently rewritten.
 - Content remains unpublished while legal/QA gates are open.
+
+### 2. Seven Things the Holy Spirit Will Do in You
+
+- Supplied official Persian edition cleaned and restructured into Introduction + 10 chapters.
+- Broken Persian spacing, punctuation, extraction joins and repeated heading artifacts cleaned without changing the source teaching.
+- Fresh English translation complete.
+- Fresh Croatian translation complete.
+- Chapter 9 was rechecked against the supplied PDF and rebuilt into clean semantic blocks around Romans 8:11, Acts 14 and John 1.
+- Structural parity audit: FA/EN/HR = 11 sections / 131 aligned blocks; no empty blocks.
+- Draft Library record remains `is_published=false` / `reader_status=none` pending final QA/import.
+
+### 3. Don't Stop Here! — A Spiritual Journey to Greater Impact
+
+- English source cleaned from supplied PDF; running headers, page numbers, decorative repeated titles and backmatter excluded.
+- Introduction + Gilgal + Bethel + Jericho + Jordan + Conclusion represented as 128 semantic blocks.
+- One obvious page-break split in Joshua 5:13–15 was repaired; source-authored wording/reference peculiarities otherwise remain preserved.
+- Fresh Persian translation complete.
+- Fresh Croatian translation complete.
+- Structural parity audit: EN/FA/HR = 6 sections / 128 aligned blocks; no empty blocks.
+- Draft Library record remains unpublished pending final QA/import.
 
 ## Reader implementation
 
