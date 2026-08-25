@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>New Hope 7 — Books Review</title>
+  <link rel="icon" href="assets/logo.png">
+  <style>
+    :root{--ink:#102033;--muted:#667085;--bg:#f3f8fb;--card:#fff;--line:#dce7ee;--blue:#0b5faa;--green:#16a765;--danger:#b42318}
+    *{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#edf8f6,#f7fbff);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif}.wrap{max-width:980px;margin:0 auto;padding:14px 12px 80px}.top{position:sticky;top:0;z-index:20;margin:-14px -12px 14px;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;background:rgba(247,251,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:10px}.brand img{width:44px;height:44px;border-radius:13px}.brand h1{font-size:1.03rem;margin:0}.brand p{font-size:.8rem;color:var(--muted);margin:2px 0 0}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.btn,.lang{border:0;border-radius:12px;padding:10px 12px;font-weight:750;cursor:pointer}.btn{background:#eef5f9;color:#234}.btn.primary{background:linear-gradient(135deg,var(--blue),var(--green));color:#fff}.btn.danger{background:#fef3f2;color:var(--danger)}.lang{background:#fff;border:1px solid var(--line);min-width:54px}.lang.active{background:#102033;color:#fff}.notice{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;border-radius:16px;padding:12px;margin:12px 0}.ok{background:#ecfdf3;color:#08783d;border-color:#abefc6}.error{background:#fef3f2;color:#b42318;border-color:#fecdca}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 8px 24px rgba(16,32,51,.06)}.book{cursor:pointer;text-align:start}.book:hover{transform:translateY(-1px)}.book h3{margin:0 0 6px;font-size:1rem}.meta{font-size:.82rem;color:var(--muted)}.pill{display:inline-flex;margin-top:8px;padding:4px 8px;border-radius:999px;background:#ecfdf3;color:#08783d;font-size:.76rem;font-weight:800}.reader{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 10px 30px rgba(16,32,51,.07);overflow:hidden}.reader-head{position:sticky;top:112px;z-index:10;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);padding:12px 14px;border-bottom:1px solid var(--line)}.reader-head h2{margin:0;font-size:1.08rem}.reader-body{padding:18px;font-size:1rem;line-height:1.95;white-space:pre-wrap;word-break:break-word}.hidden{display:none!important}.loading{padding:28px;text-align:center;color:var(--muted)}.login-box{text-align:center;padding:26px}.small{font-size:.82rem;color:var(--muted)}
+    @media(max-width:700px){.grid{grid-template-columns:1fr}.wrap{padding-left:9px;padding-right:9px}.reader-body{padding:14px;font-size:.98rem}.reader-head{top:126px}.toolbar{gap:6px}.btn,.lang{padding:9px 10px}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <img src="assets/logo.png" alt="New Hope 7">
+      <div><h1 id="pageTitle">پیش‌نمایش کتاب‌های New Hope 7</h1><p id="pageSub">محیط بررسی ادمین — جدا از اپ اصلی</p></div>
+    </div>
+    <div class="toolbar">
+      <button class="lang" data-lang="fa" onclick="setLang('fa')">FA</button>
+      <button class="lang" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang" data-lang="hr" onclick="setLang('hr')">HR</button>
+      <button class="btn" onclick="showList()" id="listBtn">فهرست کتاب‌ها</button>
+      <a class="btn" href="admin.html" id="adminBtn">پنل ادمین</a>
+    </div>
+  </header>
+
+  <div id="status" class="notice">در حال بررسی دسترسی ادمین...</div>
+  <section id="loginBox" class="card login-box hidden">
+    <h2>ورود ادمین لازم است</h2>
+    <p>ابتدا در همین مرورگر وارد پنل ادمین شوید، سپس به این صفحه برگردید و آن را تازه‌سازی کنید.</p>
+    <a class="btn primary" href="admin.html">باز کردن پنل ادمین</a>
+  </section>
+
+  <section id="listView" class="hidden">
+    <div id="bookGrid" class="grid"></div>
+  </section>
+
+  <section id="readerView" class="reader hidden">
+    <div class="reader-head">
+      <h2 id="readerTitle"></h2>
+      <div id="readerMeta" class="meta"></div>
+    </div>
+    <div id="readerBody" class="reader-body"></div>
+  </section>
+</div>
+<script>
+const SUPABASE_URL='https://gpzcwffxnddhaeaogdyo.supabase.co';
+const SUPABASE_KEY='sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37';
+let lang=localStorage.getItem('nh7_books_review_lang')||'fa';
+let books=[];
+let currentBook=null;
+const copy={
+ fa:{title:'پیش‌نمایش کتاب‌های New Hope 7',sub:'محیط بررسی ادمین — جدا از اپ اصلی',list:'فهرست کتاب‌ها',admin:'پنل ادمین',loading:'در حال بارگذاری...',ready:'آماده برای بررسی',sections:'بخش',loginTitle:'ورود ادمین لازم است',loginText:'ابتدا در همین مرورگر وارد پنل ادمین شوید، سپس به این صفحه برگردید و آن را تازه‌سازی کنید.',openAdmin:'باز کردن پنل ادمین',denied:'دسترسی ادمین تأیید نشد. لطفاً دوباره وارد پنل ادمین شوید.',empty:'کتابی برای بررسی پیدا نشد.'},
+ en:{title:'New Hope 7 Books Preview',sub:'Admin review environment — separate from the main app',list:'Book list',admin:'Admin panel',loading:'Loading...',ready:'Ready for review',sections:'sections',loginTitle:'Admin login required',loginText:'Sign in to the admin panel in this browser first, then return here and refresh this page.',openAdmin:'Open admin panel',denied:'Admin access could not be verified. Please sign in again.',empty:'No review books were found.'},
+ hr:{title:'Pregled knjiga New Hope 7',sub:'Okruženje za administratorsku provjeru — odvojeno od glavne aplikacije',list:'Popis knjiga',admin:'Admin panel',loading:'Učitavanje...',ready:'Spremno za pregled',sections:'odjeljaka',loginTitle:'Potrebna je prijava administratora',loginText:'Najprije se prijavite u administratorski panel u ovom pregledniku, zatim se vratite i osvježite ovu stranicu.',openAdmin:'Otvori admin panel',denied:'Administratorski pristup nije potvrđen. Prijavite se ponovno.',empty:'Nisu pronađene knjige za pregled.'}
+};
+function token(){return localStorage.getItem('nh7_admin_token')||''}
+function refreshToken(){return localStorage.getItem('nh7_admin_refresh_token')||''}
+async function renewToken(){
+  const rt=refreshToken(); if(!rt)return '';
+  const r=await fetch(SUPABASE_URL+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:rt}),cache:'no-store'});
+  if(!r.ok)return '';
+  const d=await r.json();
+  if(d.access_token)localStorage.setItem('nh7_admin_token',d.access_token);
+  if(d.refresh_token)localStorage.setItem('nh7_admin_refresh_token',d.refresh_token);
+  return d.access_token||'';
+}
+async function rpc(payload){
+  let t=token(); if(!t)throw Object.assign(new Error('login_required'),{code:'login_required'});
+  const call=async()=>fetch(SUPABASE_URL+'/rest/v1/rpc/nh7_admin_books_review_v362',{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+t,'Content-Type':'application/json'},body:JSON.stringify(payload||{}),cache:'no-store'});
+  let r=await call();
+  if(r.status===401){t=await renewToken();if(t)r=await call()}
+  const text=await r.text(); let data={}; try{data=text?JSON.parse(text):{}}catch(_){data={message:text}}
+  if(!r.ok)throw Object.assign(new Error(data.message||data.error||r.statusText),{status:r.status,code:data.code||''});
+  return data;
+}
+function t(k){return copy[lang]?.[k]||copy.en[k]||k}
+function bookTitle(b){return b?.['title_'+lang]||b?.title_en||b?.title_fa||b?.title_hr||'Book'}
+function applyLang(){
+  document.documentElement.lang=lang;document.documentElement.dir=lang==='fa'?'rtl':'ltr';
+  document.getElementById('pageTitle').textContent=t('title');document.getElementById('pageSub').textContent=t('sub');document.getElementById('listBtn').textContent=t('list');document.getElementById('adminBtn').textContent=t('admin');
+  document.querySelectorAll('.lang').forEach(x=>x.classList.toggle('active',x.dataset.lang===lang));
+  const lb=document.getElementById('loginBox');if(!lb.classList.contains('hidden')){lb.querySelector('h2').textContent=t('loginTitle');lb.querySelector('p').textContent=t('loginText');lb.querySelector('a').textContent=t('openAdmin')}
+  if(currentBook)renderReader(); else renderList();
+}
+function setLang(v){lang=v;localStorage.setItem('nh7_books_review_lang',v);applyLang()}
+function showStatus(msg,cls='notice'){const el=document.getElementById('status');el.className=cls;el.textContent=msg;el.classList.remove('hidden')}
+function hideStatus(){document.getElementById('status').classList.add('hidden')}
+function renderList(){
+  if(!books.length)return;
+  const grid=document.getElementById('bookGrid');grid.innerHTML='';
+  books.forEach(b=>{const el=document.createElement('article');el.className='card book';const h=document.createElement('h3');h.textContent=bookTitle(b);const meta=document.createElement('div');meta.className='meta';const langs=(b.available_languages||[]).filter(Boolean).join(' · ').toUpperCase();meta.textContent=langs;const p=document.createElement('span');p.className='pill';p.textContent='✓ '+t('ready');el.append(h,meta,p);el.onclick=()=>openBook(b.id);grid.appendChild(el)});
+}
+function showList(){currentBook=null;document.getElementById('readerView').classList.add('hidden');document.getElementById('listView').classList.remove('hidden');renderList();history.replaceState(null,'',location.pathname+'?v=review-1')}
+async function openBook(id){
+  showStatus(t('loading'));
+  try{const d=await rpc({p_book_id:id});if(!d?.ok||!d.book)throw new Error('not_found');currentBook=d.book;document.getElementById('listView').classList.add('hidden');document.getElementById('readerView').classList.remove('hidden');renderReader();hideStatus();history.replaceState(null,'',location.pathname+'?book='+encodeURIComponent(id)+'&lang='+lang+'&v=review-1');window.scrollTo({top:0,behavior:'smooth'})}catch(e){showStatus(t('denied'),'notice error')}
+}
+function renderReader(){
+  if(!currentBook)return;const payload=currentBook.reader_text?.[lang]||currentBook.reader_text?.en||currentBook.reader_text?.fa||currentBook.reader_text?.hr||{};
+  document.getElementById('readerTitle').textContent=bookTitle(currentBook);document.getElementById('readerMeta').textContent=(payload.pages?.length||currentBook.reader_page_count||0)+' '+t('sections');const body=document.getElementById('readerBody');body.dir=lang==='fa'?'rtl':'ltr';body.textContent=payload.text||'';
+}
+async function init(){
+  applyLang();
+  if(!token()){showStatus(t('loginText'),'notice');document.getElementById('loginBox').classList.remove('hidden');return}
+  showStatus(t('loading'));
+  try{const d=await rpc({p_book_id:null});books=Array.isArray(d?.books)?d.books:[];if(!books.length){showStatus(t('empty'),'notice');return}document.getElementById('loginBox').classList.add('hidden');document.getElementById('listView').classList.remove('hidden');hideStatus();renderList();const q=new URLSearchParams(location.search),book=q.get('book');if(q.get('lang')&&['fa','en','hr'].includes(q.get('lang'))){lang=q.get('lang');applyLang()}if(book&&books.some(b=>b.id===book))openBook(book)}catch(e){console.warn(e);showStatus(t('denied'),'notice error');document.getElementById('loginBox').classList.remove('hidden')}
+}
+init();
+</script>
+</body>
+</html>
