@@ -1,0 +1,65 @@
+name: Validate New Hope 7 Complete QA v3.7.4
+
+on:
+  push:
+    branches:
+      - qa/final-integration-v372-20260825
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nh7-complete-qa-v374
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact QA commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Validate QA JavaScript
+        run: |
+          node --check js/nh7-apocrypha-source-pin-v373.js
+          node --check js/nh7-apocrypha-fresh-v372.js
+          node --check js/nh7-saved-apocrypha-open-v372.js
+          node --check js/nh7-library-v372.js
+          node --check js/nh7-registration-recovery-v372.js
+          node --check js/nh7-school-guide-gate-v374.js
+
+      - name: Validate QA HTML inline scripts
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const files=['qa/final-v373/index.html','qa/final-v373/app.html','qa/final-v373/admin-tools.html'];
+          for(const file of files){
+            const html=fs.readFileSync(file,'utf8');
+            const blocks=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(match=>match[1]).filter(Boolean);
+            blocks.forEach((code,index)=>new Function(code+`\n//# sourceURL=${file}-inline-${index}`));
+            console.log(file,blocks.length,'inline scripts parsed');
+          }
+          NODE
+
+      - name: Validate approved Apocrypha source and feature wiring
+        run: |
+          grep -q "a8521f7b87ee68b7bdbbfd081ed63e679e9bad5a" js/nh7-apocrypha-source-pin-v373.js
+          grep -q "a8521f7b87ee68b7bdbbfd081ed63e679e9bad5a" qa/final-v373/app.html
+          grep -q "nh7-school-guide-gate-v374.js" qa/final-v373/app.html
+          grep -q "nh7-school-exam-v344.js" qa/final-v373/app.html
+          grep -q "nh7-registration-recovery-v372.js" qa/final-v373/app.html
+          grep -q "nh7-library-v372.js" qa/final-v373/app.html
+          grep -q "nh7-saved-apocrypha-open-v372.js" qa/final-v373/app.html
+          grep -q "nh7_admin_content_access_grant_v251" qa/final-v373/admin-tools.html
+          grep -q "nh7_admin_delete_account_full_v372" qa/final-v373/admin-tools.html
+          grep -q "nh7_admin_registration_delete_v350" qa/final-v373/admin-tools.html
+          test -f supabase/migrations/20260825193000_school_audio_assignment_exam_gate_v373.sql
+          grep -q "nh7_school_exam_session_v373" supabase/migrations/20260825193000_school_audio_assignment_exam_gate_v373.sql
+          grep -q "nh7_submit_school_assignment_v373" supabase/migrations/20260825193000_school_audio_assignment_exam_gate_v373.sql
+          grep -q "nh7_submit_school_exam_v373" supabase/migrations/20260825193000_school_audio_assignment_exam_gate_v373.sql
+
+      - name: Confirm validation-only workflow
+        run: echo "QA validation complete; no deployment job exists in this workflow."
