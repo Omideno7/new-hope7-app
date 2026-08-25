@@ -10,7 +10,7 @@ const REPO='Omideno7/new-hope7-app';
 const RC='a8521f7b87ee68b7bdbbfd081ed63e679e9bad5a';
 const MAIN='3c010053f8c76fa860571b99076ec116ba83c3c9';
 const PROVEN='a4235c6c0c38d24abf4dbd6a975f2a03c196de60';
-const QA='c9568a85d34bfae667c9437a601e02ee6d884b4b';
+const QA='86ac4087dab7386b3849718a8a2dfdacf337ca95';
 const rcBase=`https://raw.githack.com/${REPO}/${RC}/`;
 const mainBase=`https://raw.githack.com/${REPO}/${MAIN}/`;
 const provenBase=`https://raw.githack.com/${REPO}/${PROVEN}/`;
@@ -55,8 +55,9 @@ try{
 <script src="${qaBase}js/nh7-saved-apocrypha-open-v372.js?v=${tag}"><\/script>
 <script src="${provenBase}js/nh7-account-content-access-v251.js?v=${tag}"><\/script>
 <script src="${provenBase}js/nh7-minister-library-lock-v253.js?v=${tag}"><\/script>
-<script src="${qaBase}js/nh7-school-guide-gate-v373.js?v=${tag}"><\/script>`;
- html=html.replace('</body>',late+`<div id="nh7QaHealth373" style="position:fixed;right:8px;bottom:calc(74px + env(safe-area-inset-bottom));z-index:2147482000;background:#725600;color:#fff;border-radius:999px;padding:7px 10px;font:800 11px system-ui">QA 3.7.3 · loading</div><script>(()=>{let n=0;const c=()=>{n++;const ok=!!(window.NH7_APOCRYPHA_TRANSLATION_OVERLAY_VERSION&&window.NH7_APOCRYPHA_SOURCE_PIN_VERSION&&window.NH7_APOCRYPHA_FRESH_VERSION&&window.NH7_SAVED_APOCRYPHA_OPEN_VERSION&&window.NH7_LIBRARY_VERSION&&window.NH7_REGISTRATION_RECOVERY_VERSION&&window.NH7_SCHOOL_GUIDE_GATE_VERSION),e=document.getElementById('nh7QaHealth373');if(e){e.textContent=ok?'QA 3.7.3 ✓':'QA 3.7.3 · loading';e.style.background=ok?'#08783d':'#725600'}if(!ok&&n<30)setTimeout(c,400);if(!ok&&n===30)console.warn('[NH7 QA health]',{overlay:window.NH7_APOCRYPHA_TRANSLATION_OVERLAY_VERSION,pin:window.NH7_APOCRYPHA_SOURCE_PIN_VERSION,apo:window.NH7_APOCRYPHA_FRESH_VERSION,saved:window.NH7_SAVED_APOCRYPHA_OPEN_VERSION,library:window.NH7_LIBRARY_VERSION,registration:window.NH7_REGISTRATION_RECOVERY_VERSION,school:window.NH7_SCHOOL_GUIDE_GATE_VERSION})};setTimeout(c,500)})()<\/script></body>`);
+<script src="${qaBase}js/nh7-school-guide-gate-v374.js?v=${tag}"><\/script>
+<script src="${mainBase}js/nh7-school-exam-v344.js?v=${tag}"><\/script>`;
+ html=html.replace('</body>',late+`<div id="nh7QaHealth373" style="position:fixed;right:8px;bottom:calc(74px + env(safe-area-inset-bottom));z-index:2147482000;background:#725600;color:#fff;border-radius:999px;padding:7px 10px;font:800 11px system-ui">QA 3.7.3 · loading</div><script>(()=>{let n=0;const c=()=>{n++;const ok=!!(window.NH7_APOCRYPHA_TRANSLATION_OVERLAY_VERSION&&window.NH7_APOCRYPHA_SOURCE_PIN_VERSION&&window.NH7_APOCRYPHA_FRESH_VERSION&&window.NH7_SAVED_APOCRYPHA_OPEN_VERSION&&window.NH7_LIBRARY_VERSION&&window.NH7_REGISTRATION_RECOVERY_VERSION&&window.NH7_SCHOOL_GUIDE_GATE_VERSION&&window.NH7_SCHOOL_EXAM_VERSION),e=document.getElementById('nh7QaHealth373');if(e){e.textContent=ok?'QA 3.7.3 ✓':'QA 3.7.3 · loading';e.style.background=ok?'#08783d':'#725600'}if(!ok&&n<30)setTimeout(c,400);if(!ok&&n===30)console.warn('[NH7 QA health]',{overlay:window.NH7_APOCRYPHA_TRANSLATION_OVERLAY_VERSION,pin:window.NH7_APOCRYPHA_SOURCE_PIN_VERSION,apo:window.NH7_APOCRYPHA_FRESH_VERSION,saved:window.NH7_SAVED_APOCRYPHA_OPEN_VERSION,library:window.NH7_LIBRARY_VERSION,registration:window.NH7_REGISTRATION_RECOVERY_VERSION,school:window.NH7_SCHOOL_GUIDE_GATE_VERSION,exam:window.NH7_SCHOOL_EXAM_VERSION})};setTimeout(c,500)})()<\/script></body>`);
  const guard=`<script>(()=>{'use strict';window.NH7_DISABLE_PREVIEW_SERVICE_WORKER=true;window.NH7_DISABLE_PREVIEW_PUSH=true;window.NH7_QA_SOURCES={approvedRC:'${RC}',main:'${MAIN}',qa:'${QA}'};try{if('serviceWorker'in navigator)Object.defineProperty(navigator.serviceWorker,'register',{configurable:true,value:async()=>({scope:location.pathname})})}catch(e){console.warn(e)}})()<\/script>`;html=html.replace('</head>',guard+'\n</head>');document.open();document.write(html);document.close();
 }catch(error){fail(error)}})();
 </script></body></html>
