@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta http-equiv="Cache-Control" content="no-store,no-cache,must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>New Hope 7 — Final Integration QA 3.7.0</title>
+  <style>
+    html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;background:#eef4ff;color:#13213d}
+    main{min-height:100vh;display:grid;place-items:center;padding:24px;box-sizing:border-box;text-align:center}
+    .box{width:min(590px,100%);background:#fff;border:1px solid #d5e1f4;border-radius:22px;padding:28px;box-sizing:border-box;box-shadow:0 18px 55px rgba(34,62,112,.13)}
+    .logo{width:82px;height:82px;object-fit:contain;margin-bottom:12px}h1{font-size:22px;margin:0 0 10px}p{line-height:1.75;margin:8px 0}.muted{color:#6a758d;font-size:13px}.spin{width:42px;height:42px;border:4px solid #dbe6fa;border-top-color:#1d4ed8;border-radius:50%;margin:20px auto 14px;animation:s .85s linear infinite}.error{display:none;background:#fff0f0;color:#8f2323;border-radius:14px;padding:15px;margin-top:18px;white-space:pre-wrap;text-align:right}button{border:0;border-radius:10px;padding:11px 18px;background:#1d4ed8;color:#fff;font:700 14px inherit;cursor:pointer;margin-top:12px}@keyframes s{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+<main><div class="box">
+  <img class="logo" src="../../assets/logo.png" alt="New Hope 7" onerror="this.style.display='none'">
+  <h1>در حال آماده‌سازی نسخهٔ نهایی آزمایشی New Hope 7</h1>
+  <p>اپ کامل، ۱۹ کتاب اپوکریفا، Reader و آیات ذخیره‌شده، ثبت‌نام جدید و کنترل دسترسی در یک نسخهٔ ایزوله یکپارچه می‌شوند.</p>
+  <div class="spin"></div>
+  <p class="muted">FINAL QA 3.7.0 — این مسیر به نسخهٔ کاربران یا Main انتشار نهایی اعمال نمی‌شود.</p>
+  <div id="qaError" class="error"></div>
+</div></main>
+<script>
+(async()=>{
+  'use strict';
+  const REPO='Omideno7/new-hope7-app';
+  const PROVEN_RC='a4235c6c0c38d24abf4dbd6a975f2a03c196de60';
+  const MAIN_BASELINE='af15adc6f27d8338069d0cd90e086e380d129cab';
+  const APO_FIX='e35ed1dcc417a4e6a5d3dc2188544d777156a4d6';
+  const RC_BASE=`https://raw.githack.com/${REPO}/${PROVEN_RC}/`;
+  const MAIN_BASE=`https://raw.githack.com/${REPO}/${MAIN_BASELINE}/`;
+  const QA_BASE=`https://raw.githack.com/${REPO}/${APO_FIX}/`;
+  const SOURCE=`https://raw.githubusercontent.com/${REPO}/${PROVEN_RC}/rc-full.html?v=3700`;
+  const TAG='3700-'+Date.now();
+  const errorBox=document.getElementById('qaError');
+  function fail(error){
+    console.error('[NH7 FINAL QA 3.7.0]',error);document.querySelector('.spin')?.remove();
+    errorBox.style.display='block';errorBox.textContent='نسخهٔ آزمایشی بارگذاری نشد.\n\n'+String(error?.message||error||'Unknown error');
+    const b=document.createElement('button');b.type='button';b.textContent='تلاش دوباره';b.onclick=()=>location.replace(location.pathname+'?reload='+Date.now());errorBox.appendChild(document.createElement('br'));errorBox.appendChild(b);
+  }
+  try{
+    if('serviceWorker' in navigator){try{const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(r=>r.unregister()))}catch(e){console.warn(e)}}
+    if('caches' in window){try{const keys=await caches.keys();await Promise.all(keys.filter(k=>/nh7|new.?hope|omideno/i.test(k)).map(k=>caches.delete(k)))}catch(e){console.warn(e)}}
+    const response=await fetch(SOURCE,{cache:'no-store'});if(!response.ok)throw new Error('Proven RC source HTTP '+response.status);
+    let html=await response.text();if(!html.includes('app-rc-production-v240.js'))throw new Error('The proven RC app module is missing.');
+    html=html.replace('<head>',`<head>\n<base href="${RC_BASE}">\n<meta name="robots" content="noindex,nofollow,noarchive">`);
+    html=html.replace(/<title>[\s\S]*?<\/title>/i,'<title>New Hope 7 — Final Integration QA 3.7.0</title>');
+    html=html.replace("window.NH7_VERSION = '2.5.3-RC';","window.NH7_VERSION = '3.7.0-FINAL-QA';");
+    html=html.replace("window.NH7_RELEASE_CHANNEL = 'release_candidate';","window.NH7_RELEASE_CHANNEL = 'final_qa';\n    window.NH7_FINAL_QA_370=true;");
+    html=html.replace(/<div class="nh7-rc-banner">[\s\S]*?<\/div>/i,'<div class="nh7-rc-banner"><b>NEW HOPE 7 · FINAL QA 3.7.0</b><span>نسخهٔ کامل آزمایشی — هنوز برای کاربران منتشر نشده است</span></div>');
+
+    const strip=[
+      /\s*<script src="js\/nh7-auth-signup-guard-v343\.js[^\"]*"><\/script>/gi,
+      /\s*<script src="js\/nh7-school-registration-v342\.js[^\"]*"><\/script>/gi,
+      /\s*<script src="js\/nh7-auth-recovery-v342\.js[^\"]*"><\/script>/gi,
+      /\s*<script src="js\/nh7-apocrypha-preview-v240\.js[^\"]*"[^>]*><\/script>/gi,
+      /\s*<script src="js\/nh7-apocrypha-reader-flow-v244\.js[^\"]*"[^>]*><\/script>/gi,
+      /\s*<script src="js\/nh7-apocrypha-polish-v252\.js[^\"]*"[^>]*><\/script>/gi
+    ];
+    strip.forEach(pattern=>{html=html.replace(pattern,'')});
+
+    const currentRegistration=`
+<script src="${MAIN_BASE}js/nh7-auth-signup-guard-v343.js?v=${TAG}"><\/script>
+<script src="${MAIN_BASE}js/nh7-school-registration-v342.js?v=${TAG}"><\/script>
+<script src="${MAIN_BASE}js/nh7-auth-recovery-v342.js?v=${TAG}"><\/script>
+<script src="${MAIN_BASE}js/nh7-registration-canonical-v353.js?v=${TAG}"><\/script>
+<script src="${MAIN_BASE}js/nh7-push-account-bind-v361.js?v=${TAG}" defer><\/script>`;
+    const appTag=/<script src="js\/app-rc-production-v240\.js[^\"]*" type="module"><\/script>/i;
+    if(!appTag.test(html))throw new Error('The proven RC application tag was not found.');
+    html=html.replace(appTag,currentRegistration+'\n$&');
+
+    const readerTag=/<script src="js\/nh7-reader-ux-v251\.js[^\"]*" defer><\/script>/i;
+    if(!readerTag.test(html))throw new Error('Saved-verse Reader UX module was not found.');
+    html=html.replace(readerTag,`<script src="${QA_BASE}qa/final-20260825/assets/nh7-apocrypha-complete-v370.js?v=${TAG}" defer><\/script>\n$&`);
+
+    const guard=`<script>
+(()=>{'use strict';window.NH7_DISABLE_PREVIEW_SERVICE_WORKER=true;window.NH7_DISABLE_PREVIEW_PUSH=true;window.NH7_QA_SOURCE={provenRC:'${PROVEN_RC}',mainBaseline:'${MAIN_BASELINE}',apocryphaFix:'${APO_FIX}'};try{if('serviceWorker' in navigator){Object.defineProperty(navigator.serviceWorker,'register',{configurable:true,value:async()=>({scope:location.pathname})});}}catch(e){console.warn('[NH7 FINAL QA SW guard]',e)}})();
+<\/script>`;
+    html=html.replace('</head>',guard+'\n<style>.nh7-rc-banner{position:relative!important;z-index:2147483000!important}.nh7-final-qa-health{position:fixed;right:9px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:2147482000;background:#102a43;color:#fff;border-radius:999px;padding:7px 10px;font:700 11px system-ui;box-shadow:0 5px 18px rgba(0,0,0,.2);opacity:.88}</style>\n</head>');
+    html=html.replace('</body>',`<div class="nh7-final-qa-health" id="nh7FinalQaHealth">QA 3.7.0</div><script>
+(()=>{'use strict';let n=0;const check=()=>{n++;const el=document.getElementById('nh7FinalQaHealth');const ok=!!(window.NH7_READER_UX_VERSION&&window.NH7_SAVED_VERSES_CHAPTER_VERSION&&window.NH7_APOCRYPHA_COMPLETE_VERSION);if(el){el.textContent=ok?'QA 3.7.0 ✓':'QA 3.7.0 · loading';el.style.background=ok?'#08783d':'#7a4b00'}if(!ok&&n<20)setTimeout(check,400);if(!ok&&n===20)console.warn('[NH7 FINAL QA] optional overlay health check incomplete',{reader:window.NH7_READER_UX_VERSION,saved:window.NH7_SAVED_VERSES_CHAPTER_VERSION,apo:window.NH7_APOCRYPHA_COMPLETE_VERSION});};setTimeout(check,500)})();
+<\/script></body>`);
+    document.open();document.write(html);document.close();
+  }catch(error){fail(error)}
+})();
+</script>
+</body>
+</html>
