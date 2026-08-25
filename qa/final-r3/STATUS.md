@@ -1,103 +1,76 @@
-# New Hope 7 — Final QA R3.1 3.9.1
+# New Hope 7 — Final QA R3.3 3.9.3
 
 **Branch:** `qa/final-integration-20260825-r3`  
-**Approved UI baseline:** RC 2.5.1 commit `a6b0f6465e2d7f3e335b528a116d962cbe8f5b20`  
+**Approved content/UI baseline:** RC 2.5.1 commit `a6b0f6465e2d7f3e335b528a116d962cbe8f5b20`  
 **Current production baseline retained:** `main` app `2.3.9.44`
 
-## Apocrypha translation source
+## Current QA scope
 
-R3.1 keeps the exact approved translation pipeline from RC 2.5.1. It first suppresses legacy third-party Persian/Croatian text and then applies the three fresh New Hope 7 registries prepared from the English source:
+R3.3 keeps the approved 19-book trilingual Apocrypha translations and Reader, six Spiritual Plans, nine trilingual library books, the current School/exam safeguards, the live Admin sermon archive and the personal one-device video portal. Nothing from R3.3 has been merged into `main` yet.
 
-1. `translation-overlays-v245.json`
-2. `translation-overlays-v246-continuation.json`
-3. `translation-overlays-v247-audit-corrections.json`
+## Apocrypha Reader
 
-The CI hydration and merge test fails if any of the 19 books lacks complete fresh Persian or Croatian coverage.
+- All 19 books have complete fresh Persian and Croatian project translations over the English source.
+- Verses flow continuously like the Bible, with compact superscript verse numbers.
+- A− / A+ scaling, notes, copy, share and exact Saved Verse navigation remain active.
+- R3.3 fixes the Safari highlight regression: yellow, green, blue, pink and purple classes now override the transparent inline-reader background.
+- The Apocrypha star is now a true toggle:
+  - first press saves locally and syncs the signed-in account;
+  - second press removes the same reference locally and from `nh7_account_saved_verses`;
+  - verse metadata remains available for the Saved Verses panel.
 
-## Apocrypha Reader behavior
+## Live sermons
 
-R3.1 retains all approved Reader functions and changes the visual flow to match the written Bible more closely:
+- The obsolete bundled first-version archive remains disabled.
+- The current archive is loaded through authenticated RPC `nh7_sermon_catalog_v392`.
+- The catalogue reflects current Admin uploads and categories rather than a static bundled JSON.
 
-- 19-book trilingual catalogue.
-- Fresh New Hope 7 Persian and Croatian overlays from the English source.
-- Verses flow continuously after one another instead of each verse occupying a separate row.
-- Verse numbers appear as compact superscript markers.
-- Tapping a verse still opens its tools without breaking the stored verse structure.
-- Previous/next book and chapter navigation.
-- Chapter selector and swipe navigation.
-- A− / A+ text scaling.
-- Highlight, private note, copy, share and saved verse.
-- Direct navigation from a saved Apocrypha verse to its exact book, chapter and verse.
+## Personal video access
 
-The continuous layout is implemented as a presentation overlay. It does not rewrite, combine or remove verse records, so saved references, notes and highlights remain verse-specific.
+- The video entry shows a visible password form rather than a generic Load failed screen.
+- A personal password is restricted to its assigned account and first device.
+- The backend supports all videos, one video or a selected set of videos.
+- Secure signed playback and account/device watermarking remain active.
 
-## Live sermon archive
+## Secure self-service account deletion
 
-A database audit on 2026-08-25 found:
+R3.3 adds **More → Account → Permanently delete account** for signed-in non-admin users.
 
-- **109 published sermons**.
-- **109 sermons with audio URLs**.
-- **9 active sermon categories**.
-- Latest published record dated 2026-08-24.
+The client requires:
 
-The reason R3 previously displayed the first-version bundled archive was an RLS mismatch: `public.sermons` allowed administrators to manage/read rows, but there was no read policy for ordinary approved School accounts. The client therefore received no cloud sermon rows and silently loaded `data/audio/messages.json`.
+1. current account password;
+2. exact account email confirmation;
+3. the word `DELETE`;
+4. a permanence acknowledgement checkbox;
+5. final confirmation.
 
-R3.1 corrects this in two layers:
+The password is reauthenticated through Supabase Auth before deletion. The database function then verifies the authenticated/confirmed identity, exact email and `DELETE` phrase, and refuses owner or administrator accounts.
 
-1. Migration `20260825214500_sermon_archive_approved_access_v391.sql` allows signed-in administrators and fully approved School accounts to select only published sermons.
-2. The QA bridge blocks the obsolete bundled `data/audio/messages.json` fallback completely. When the cloud archive is unavailable, the user sees a clear sign-in/approval message rather than old sermons.
+The permanent deletion transaction removes the Auth account and linked New Hope 7 data, including registrations, School progress/audio/assignments/exams/certificates, saved verses, notes, plans, messages, content grants, video codes/grants, sessions and associated device records. A hashed audit record is retained without storing the deleted email in plain text.
 
-A simulated authenticated, non-owner approved School account was verified against the new policy and could see all **109** published sermons.
+The deletion path was exercised inside a rollback transaction using a non-admin account. The transaction completed successfully and the rollback confirmed that the test account remained present.
 
-## Spiritual Plans restored
+## Merge strategy
 
-The exact approved RC plan module and catalogue remain active:
+R3.3 must **not** replace `main` as a whole. The production release procedure is:
 
-1. 30 Days of Prayer and Speaking in Tongues (`prayer-30`)
-2. Life in Grace (`grace-14`)
-3. Fasting and Prayer (`fasting-7`, with fasting-type teaching)
-4. Obedience and Blessing (`obedience-10`)
-5. Salvation and New Life in Christ (`salvation-10`)
-6. Change Your Thinking (`mind-renewal-14` in the approved RC snapshot)
+1. create a fresh release branch from the latest `main`;
+2. transfer only approved R3.3 modules, migrations and data;
+3. reconcile same-file changes manually so newer `main` functionality is retained;
+4. review the complete diff for accidental deletions;
+5. run CI and full regression tests;
+6. merge the reviewed release branch into `main`.
 
-The future production normalization must still address the previously requested 30-day expansion of Change Your Thinking; the approved RC snapshot itself remains 14 days.
+Therefore the intended result is that current `main` features remain and the approved R3.3 changes are added. Only explicitly obsolete paths, such as the legacy Apocrypha/archive fallback, are removed or bypassed.
 
-## Nine trilingual library books
+## Required user QA before normalization
 
-A direct database audit found nine active, published, Reader-ready public books with substantial Persian, English and Croatian text:
+1. Choose each Apocrypha highlight color and confirm it appears immediately and persists after reopening the chapter.
+2. Save an Apocrypha verse, press the same star again and confirm it is removed from Saved Verses.
+3. Confirm note, share, A−/A+ and direct Saved Verse navigation still work.
+4. Test video password entry with a newly created personal test code.
+5. Open More → Account and confirm the delete-account danger zone is present.
+6. Test permanent deletion only with a disposable test account; verify that login fails afterward and the account disappears from Admin.
+7. Recheck live sermons, Plans, library and School gates.
 
-- How to Receive a Miracle and Retain It
-- Seven Things the Holy Spirit Will Do in You
-- Don't Stop Here! — A Spiritual Journey to Greater Impact
-- When God Visits You
-- Praying the Right Way
-- How to Pray Effectively — Volume One
-- The Counter Attack — Revised Edition
-- Join This Chariot
-- The Holy Spirit & You
-
-Eight books have matching page/section counts in all three languages. `How to Pray Effectively — Volume One` contains the introduction, all 11 teaching chapters and the closing prayer invitation in Persian and Croatian; the English-only front matter, other-books list and Scripture appendix remain flagged for the final editorial pass.
-
-## Current safeguards retained
-
-- Complete registration and canonical signup path.
-- Password recovery eligibility: confirmed Auth email + complete approved School registration.
-- Complete lesson audio before assignment.
-- Assignment required for every lesson before final exam.
-- Secure server-side exam session/scoring and maximum three attempts.
-- School guide in Persian, English and Croatian.
-- `main` remains unchanged by R3.1.
-
-## Required user QA before merge
-
-1. Open an Apocrypha chapter and confirm that verses run continuously like the Bible rather than appearing in separate rows.
-2. Confirm A−/A+, highlight, note, save, copy and share still work on individual verses.
-3. Save one Apocrypha verse and open its exact book/chapter from Saved Verses.
-4. Sign in on the QA domain with a complete, admin-approved School account.
-5. Open Audio Sermons and confirm the current admin archive appears with approximately 109 published sermons and nine categories.
-6. Confirm the obsolete bundled archive is never displayed; an invalid or expired session must show a sign-in message instead.
-7. Confirm all six Spiritual Plan cards.
-8. Confirm the nine trilingual library books.
-9. Retest School audio → assignment → final exam gate.
-
-Only after these checks pass should R3.1 be normalized into production files and merged to `main`.
+Only after these checks pass should R3.3 be normalized onto the latest production `main`.
