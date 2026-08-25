@@ -1,4 +1,4 @@
-name: Validate Final QA R3 3.9.0
+name: Validate Final QA R3 3.9.1
 on:
   push:
     branches: [qa/final-integration-20260825-r3]
@@ -19,8 +19,10 @@ jobs:
           git checkout a6b0f6465e2d7f3e335b528a116d962cbe8f5b20 -- data/apocrypha data/spiritual-plans js/nh7-apocrypha-fresh-filter-v243.js js/nh7-apocrypha-translation-overlay-v245.js js/nh7-apocrypha-preview-v240.js js/nh7-apocrypha-reader-flow-v244.js js/nh7-reader-ux-v251.js
       - name: Validate R3 JavaScript
         run: |
-          node --check qa/final-r3/nh7-qa-bridge-v390.js
+          node --check qa/final-r3/nh7-qa-bridge-v391.js
           node --check qa/final-r3/nh7-apocrypha-saved-nav-v390.js
+          node --check qa/final-r3/nh7-apocrypha-inline-v391.js
+          node --check qa/final-r3/nh7-sermon-archive-guard-v391.js
           node --check scripts/verify-apocrypha-overlays-v390.mjs
           node --check qa/final-r2/nh7-school-rules-v381.js
           node --check qa/final-r2/nh7-registration-ux-v381.js
@@ -39,6 +41,22 @@ jobs:
           grep -q 'data-apo-highlight' js/nh7-apocrypha-preview-v240.js
           grep -q 'data-apo-note' js/nh7-apocrypha-preview-v240.js
           grep -q 'data-apo-share' js/nh7-apocrypha-preview-v240.js
+      - name: Verify continuous Apocrypha layout
+        run: |
+          grep -q 'NH7_APOCRYPHA_INLINE_VERSION=.3.9.1' qa/final-r3/nh7-apocrypha-inline-v391.js
+          grep -q '.nh7-apo-continuous-reader .nh7-apo-verse' qa/final-r3/nh7-apocrypha-inline-v391.js
+          grep -q 'display:inline!important' qa/final-r3/nh7-apocrypha-inline-v391.js
+          grep -q 'vertical-align:super!important' qa/final-r3/nh7-apocrypha-inline-v391.js
+          grep -q '.nh7-apo-verse-tools:not(.hidden)' qa/final-r3/nh7-apocrypha-inline-v391.js
+      - name: Verify live sermon archive safeguards
+        run: |
+          test -f supabase/migrations/20260825214500_sermon_archive_approved_access_v391.sql
+          grep -q 'approved users read published sermons v391' supabase/migrations/20260825214500_sermon_archive_approved_access_v391.sql
+          grep -q 'nh7_school_access_approved_v230' supabase/migrations/20260825214500_sermon_archive_approved_access_v391.sql
+          grep -q 'data\\/audio\\/messages' qa/final-r3/nh7-qa-bridge-v391.js
+          grep -q '3.9.1-live-archive-only' qa/final-r3/nh7-qa-bridge-v391.js
+          grep -q 'NH7_SERMON_ARCHIVE_GUARD_VERSION=.3.9.1' qa/final-r3/nh7-sermon-archive-guard-v391.js
+          grep -q 'آرشیو قدیمی غیرفعال شده است' qa/final-r3/nh7-sermon-archive-guard-v391.js
       - name: Verify Spiritual Plans catalogue
         run: |
           node <<'NODE'
@@ -48,15 +66,15 @@ jobs:
           for(const id of expected){const p=c.plans.find(x=>x.id===id);if(!p||!fs.existsSync(p.file))throw Error('Missing plan '+id)}
           console.log('Spiritual plans:',c.plans.map(x=>x.id));
           NODE
-      - name: Validate R3 launcher inline scripts
+      - name: Validate R3.1 launcher inline scripts
         run: |
           node <<'NODE'
           const fs=require('fs'),f='qa/final-r3/app.html',h=fs.readFileSync(f,'utf8');
           for(const [i,m] of [...h.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].entries())new Function(m[1]+'\n//# sourceURL='+f+'-'+i);
-          for(const s of ['a6b0f6465e2d7f3e335b528a116d962cbe8f5b20','nh7-qa-bridge-v390.js','nh7-apocrypha-saved-nav-v390.js','nh7-school-exam-v344.js','nh7-school-rules-v381.js','nh7-registration-ux-v381.js'])if(!h.includes(s))throw Error('Launcher missing '+s);
+          for(const s of ['3.9.1-FINAL-QA-R3','a6b0f6465e2d7f3e335b528a116d962cbe8f5b20','nh7-qa-bridge-v391.js','nh7-apocrypha-saved-nav-v390.js','nh7-apocrypha-inline-v391.js','nh7-sermon-archive-guard-v391.js','nh7-school-exam-v344.js','nh7-school-rules-v381.js','nh7-registration-ux-v381.js'])if(!h.includes(s))throw Error('Launcher missing '+s);
           NODE
       - name: Verify current main remains untouched
         run: |
           grep -q '"app":"2.3.9.44"' version.json
           grep -q 'nh7-school-exam-v344.js?v=2.3.9.44' index.html
-          echo 'R3 validation passed; no deployment job exists.'
+          echo 'R3.1 validation passed; no deployment job exists.'
