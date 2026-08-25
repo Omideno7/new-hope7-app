@@ -10,7 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with: {ref: '${{ github.sha }}'}
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+      - name: Hydrate approved RC 2.5.1 assets
+        run: |
+          git fetch --depth=1 origin a6b0f6465e2d7f3e335b528a116d962cbe8f5b20
+          git checkout a6b0f6465e2d7f3e335b528a116d962cbe8f5b20 -- data/apocrypha data/spiritual-plans js/nh7-apocrypha-fresh-filter-v243.js js/nh7-apocrypha-translation-overlay-v245.js js/nh7-apocrypha-preview-v240.js js/nh7-apocrypha-reader-flow-v244.js js/nh7-reader-ux-v251.js
       - name: Validate R3 JavaScript
         run: |
           node --check qa/final-r3/nh7-qa-bridge-v390.js
