@@ -32,9 +32,9 @@ try{
  const core=/<script src="js\/app-rc-production-v240\.js[^\"]*" type="module"><\/script>/i;if(!core.test(html))throw Error('Approved RC application core not found');
  const currentAuth=`
 <script src="${MAINBASE}js/nh7-auth-signup-guard-v343.js?v=${tag}"><\/script>
+<script src="${MAINBASE}js/nh7-registration-canonical-v353.js?v=${tag}"><\/script>
 <script src="${MAINBASE}js/nh7-school-registration-v342.js?v=${tag}"><\/script>
 <script src="${MAINBASE}js/nh7-auth-recovery-v342.js?v=${tag}"><\/script>
-<script src="${MAINBASE}js/nh7-registration-canonical-v353.js?v=${tag}"><\/script>
 <script src="${QABASE}qa/final-r3/nh7-qa-bridge-v390.js?v=${tag}"><\/script>`;
  html=html.replace(core,currentAuth+'\n$&');
  const reader=/<script src="js\/nh7-reader-ux-v251\.js[^\"]*" defer><\/script>/i;
