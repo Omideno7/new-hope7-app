@@ -1,10 +1,10 @@
-name: Validate Final QA R3.2 3.9.2
+name: Validate Final QA R3.3 3.9.3
 on:
   push:
     branches: [qa/final-integration-20260825-r3]
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -13,45 +13,43 @@ jobs:
         with:
           ref: ${{ github.sha }}
           fetch-depth: 1
+
       - name: Hydrate approved RC 2.5.1 assets
         run: |
           git fetch --depth=1 origin a6b0f6465e2d7f3e335b528a116d962cbe8f5b20
           git checkout a6b0f6465e2d7f3e335b528a116d962cbe8f5b20 -- data/apocrypha data/spiritual-plans js/nh7-apocrypha-fresh-filter-v243.js js/nh7-apocrypha-translation-overlay-v245.js js/nh7-apocrypha-preview-v240.js js/nh7-apocrypha-reader-flow-v244.js js/nh7-reader-ux-v251.js
-      - name: Build deterministic premerged Apocrypha runtime
-        run: node scripts/build-apocrypha-merged-v392.mjs qa/final-r3/data/apocrypha-19-merged-v392.json
-      - name: Commit refreshed premerged runtime when needed
-        shell: bash
-        run: |
-          set -euo pipefail
-          git reset -- data/apocrypha data/spiritual-plans js/nh7-apocrypha-fresh-filter-v243.js js/nh7-apocrypha-translation-overlay-v245.js js/nh7-apocrypha-preview-v240.js js/nh7-apocrypha-reader-flow-v244.js js/nh7-reader-ux-v251.js || true
-          if [[ -n "$(git status --porcelain -- qa/final-r3/data/apocrypha-19-merged-v392.json)" ]]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add qa/final-r3/data/apocrypha-19-merged-v392.json
-            git commit -m "qa: refresh premerged Apocrypha runtime 3.9.2"
-            git push origin HEAD:refs/heads/qa/final-integration-20260825-r3
-          fi
-      - name: Validate R3.2 JavaScript
+
+      - name: Build verification copy of Apocrypha runtime
+        run: node scripts/build-apocrypha-merged-v392.mjs /tmp/apocrypha-19-merged-v392.json
+
+      - name: Validate R3.3 JavaScript
         run: |
           node --check qa/final-r3/nh7-qa-bridge-v392.js
           node --check qa/final-r3/nh7-apocrypha-saved-nav-v390.js
           node --check qa/final-r3/nh7-apocrypha-inline-v392.js
+          node --check qa/final-r3/nh7-apocrypha-actions-v393.js
           node --check qa/final-r3/nh7-sermon-archive-guard-v392.js
           node --check qa/final-r3/nh7-video-portal-v392.js
+          node --check qa/final-r3/nh7-account-delete-v393.js
           node --check scripts/build-apocrypha-merged-v392.mjs
           node --check scripts/verify-apocrypha-overlays-v390.mjs
           node --check qa/final-r2/nh7-school-rules-v381.js
           node --check qa/final-r2/nh7-registration-ux-v381.js
           node --check js/nh7-school-exam-v344.js
+
       - name: Verify all 19 fresh Apocrypha translations
         run: |
           node scripts/verify-apocrypha-overlays-v390.mjs
           node <<'NODE'
-          const fs=require('fs'),x=JSON.parse(fs.readFileSync('qa/final-r3/data/apocrypha-19-merged-v392.json','utf8'));
-          if(x?.qa_premerged?.version!=='3.9.2'||x?.qa_premerged?.fresh_only!==true)throw Error('Invalid premerged metadata');
-          if(x?.totals?.books!==19)throw Error('Expected 19 premerged books');
-          console.log('Premerged bytes',fs.statSync('qa/final-r3/data/apocrypha-19-merged-v392.json').size);
+          const fs=require('fs');
+          for(const file of ['/tmp/apocrypha-19-merged-v392.json','qa/final-r3/data/apocrypha-19-merged-v392.json']){
+            const x=JSON.parse(fs.readFileSync(file,'utf8'));
+            if(x?.qa_premerged?.version!=='3.9.2'||x?.qa_premerged?.fresh_only!==true)throw Error('Invalid premerged metadata: '+file);
+            if(x?.totals?.books!==19)throw Error('Expected 19 premerged books: '+file);
+          }
+          console.log('Tracked premerged bytes',fs.statSync('qa/final-r3/data/apocrypha-19-merged-v392.json').size);
           NODE
+
       - name: Verify approved Bible-style reader modules
         run: |
           test -f js/nh7-apocrypha-fresh-filter-v243.js
@@ -64,12 +62,19 @@ jobs:
           grep -q 'data-apo-highlight' js/nh7-apocrypha-preview-v240.js
           grep -q 'data-apo-note' js/nh7-apocrypha-preview-v240.js
           grep -q 'data-apo-share' js/nh7-apocrypha-preview-v240.js
-      - name: Verify structural continuous Apocrypha layout
+
+      - name: Verify continuous layout, highlight colors and Save toggle
         run: |
           grep -q "NH7_APOCRYPHA_INLINE_VERSION='3.9.2'" qa/final-r3/nh7-apocrypha-inline-v392.js
           grep -q "main.tagName==='BUTTON'" qa/final-r3/nh7-apocrypha-inline-v392.js
           grep -q "display','contents','important'" qa/final-r3/nh7-apocrypha-inline-v392.js
           grep -q 'vertical-align:super!important' qa/final-r3/nh7-apocrypha-inline-v392.js
+          grep -q "NH7_APOCRYPHA_ACTIONS_VERSION='3.9.3'" qa/final-r3/nh7-apocrypha-actions-v393.js
+          grep -q 'nh7-hl-green{background:#ccefd7!important}' qa/final-r3/nh7-apocrypha-actions-v393.js
+          grep -q "window.addEventListener('click'" qa/final-r3/nh7-apocrypha-actions-v393.js
+          grep -q 'removeLocal(ref)' qa/final-r3/nh7-apocrypha-actions-v393.js
+          grep -q 'syncAccount(ref,true)' qa/final-r3/nh7-apocrypha-actions-v393.js
+
       - name: Verify live sermon and video security contracts
         run: |
           test -f supabase/migrations/20260825221000_sermons_and_personal_video_portal_v392.sql
@@ -82,6 +87,21 @@ jobs:
           grep -q "NH7_SERMON_ARCHIVE_GUARD_VERSION='3.9.2'" qa/final-r3/nh7-sermon-archive-guard-v392.js
           grep -q "NH7_VIDEO_PORTAL_VERSION='3.9.2'" qa/final-r3/nh7-video-portal-v392.js
           grep -q 'data-v392-form' qa/final-r3/nh7-video-portal-v392.js
+
+      - name: Verify secure self-service account deletion
+        run: |
+          test -f supabase/migrations/20260826001500_self_account_delete_v393.sql
+          grep -q 'nh7_delete_my_account_v393' supabase/migrations/20260826001500_self_account_delete_v393.sql
+          grep -q "auth.role()<>'authenticated'" supabase/migrations/20260826001500_self_account_delete_v393.sql
+          grep -q "upper(trim(coalesce(p_confirmation_phrase,'')))<>'DELETE'" supabase/migrations/20260826001500_self_account_delete_v393.sql
+          grep -q 'email_confirmed_at is not null' supabase/migrations/20260826001500_self_account_delete_v393.sql
+          grep -q 'Owner account cannot be self-deleted' supabase/migrations/20260826001500_self_account_delete_v393.sql
+          grep -q 'grant execute on function public.nh7_delete_my_account_v393' supabase/migrations/20260826001500_self_account_delete_v393.sql
+          grep -q "NH7_ACCOUNT_DELETE_VERSION='3.9.3'" qa/final-r3/nh7-account-delete-v393.js
+          grep -q 'grant_type=password' qa/final-r3/nh7-account-delete-v393.js
+          grep -q 'nh7_delete_my_account_v393' qa/final-r3/nh7-account-delete-v393.js
+          grep -q "p_confirmation_phrase:'DELETE'" qa/final-r3/nh7-account-delete-v393.js
+
       - name: Verify Spiritual Plans catalogue
         run: |
           node <<'NODE'
@@ -91,15 +111,17 @@ jobs:
           for(const id of expected){const p=c.plans.find(x=>x.id===id);if(!p||!fs.existsSync(p.file))throw Error('Missing plan '+id)}
           console.log('Spiritual plans:',c.plans.map(x=>x.id));
           NODE
-      - name: Validate R3.2 launcher
+
+      - name: Validate R3.3 launcher
         run: |
           node <<'NODE'
           const fs=require('fs'),f='qa/final-r3/app.html',h=fs.readFileSync(f,'utf8');
           for(const [i,m] of [...h.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].entries())new Function(m[1]+'\n//# sourceURL='+f+'-'+i);
-          for(const s of ['3.9.2-FINAL-QA-R3','a6b0f6465e2d7f3e335b528a116d962cbe8f5b20','023ab1227925075225aada38912bbc60e3e8f589','nh7-qa-bridge-v392.js','nh7-apocrypha-inline-v392.js','nh7-sermon-archive-guard-v392.js','nh7-video-portal-v392.js'])if(!h.includes(s))throw Error('Launcher missing '+s);
+          for(const required of ['3.9.3-FINAL-QA-R3','a6b0f6465e2d7f3e335b528a116d962cbe8f5b20','nh7-apocrypha-actions-v393.js','nh7-account-delete-v393.js'])if(!h.includes(required))throw Error('Launcher missing '+required);
           NODE
+
       - name: Verify current main remains untouched
         run: |
           grep -q '"app":"2.3.9.44"' version.json
           grep -q 'nh7-school-exam-v344.js?v=2.3.9.44' index.html
-          echo 'R3.2 validation passed; no deployment job exists.'
+          echo 'R3.3 validation passed; no deployment job exists.'
