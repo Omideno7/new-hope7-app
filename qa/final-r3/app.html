@@ -1,29 +1,29 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow,noarchive"><meta http-equiv="Cache-Control" content="no-store,no-cache,must-revalidate"><title>New Hope 7 — Final QA R3 3.9.1</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow,noarchive"><meta http-equiv="Cache-Control" content="no-store,no-cache,must-revalidate"><title>New Hope 7 — Final QA R3.2 3.9.2</title>
 <style>html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Segoe UI",Tahoma;background:#eef4ff;color:#13213d}main{min-height:100vh;display:grid;place-items:center;padding:24px}.box{width:min(580px,100%);background:#fff;border:1px solid #d8e4f4;border-radius:22px;padding:26px;text-align:center;box-shadow:0 18px 55px rgba(34,62,112,.13)}.spin{width:42px;height:42px;border:4px solid #dbe6fa;border-top-color:#1d4ed8;border-radius:50%;margin:18px auto;animation:s .8s linear infinite}.err{display:none;background:#fff0f0;color:#8f2323;padding:14px;border-radius:12px;white-space:pre-wrap;text-align:right}@keyframes s{to{transform:rotate(360deg)}}</style>
-</head><body><main><div class="box"><h2>New Hope 7 — Final QA R3.1</h2><p>در حال بارگذاری اپوکریفای پیوسته و آرشیو جدید موعظات…</p><div class="spin"></div><small>RC 2.5.1 approved UI + current registration, School, exam and live sermon safeguards</small><div id="err" class="err"></div></div></main>
+</head><body><main><div class="box"><h2>New Hope 7 — Final QA R3.2</h2><p>در حال بارگذاری اپوکریفای سریع و پیوسته، آرشیو زنده موعظات و ورود امن ویدیوها…</p><div class="spin"></div><small>Approved RC 2.5.1 UI + current registration, School, exam, sermons and personal video access</small><div id="err" class="err"></div></div></main>
 <script>
 (async()=>{'use strict';
 const REPO='Omideno7/new-hope7-app';
 const APPROVED_RC='a6b0f6465e2d7f3e335b528a116d962cbe8f5b20';
 const MAIN='3c010053f8c76fa860571b99076ec116ba83c3c9';
-const ASSETS='1727ab4388b821c745bcbae1a38ad0b6b5656753';
+const ASSETS='023ab1227925075225aada38912bbc60e3e8f589';
 const V252='a4235c6c0c38d24abf4dbd6a975f2a03c196de60';
 const RCBASE=`https://raw.githack.com/${REPO}/${APPROVED_RC}/`,MAINBASE=`https://raw.githack.com/${REPO}/${MAIN}/`,QABASE=`https://raw.githack.com/${REPO}/${ASSETS}/`,V252BASE=`https://raw.githack.com/${REPO}/${V252}/`;
-const SOURCE=`https://raw.githubusercontent.com/${REPO}/${APPROVED_RC}/rc-full.html?r3=391`;
-const tag='391-'+Date.now(),err=document.getElementById('err');
-function fail(e){document.querySelector('.spin')?.remove();err.style.display='block';err.textContent='نسخهٔ R3.1 بارگذاری نشد.\n'+String(e?.message||e)}
+const SOURCE=`https://raw.githubusercontent.com/${REPO}/${APPROVED_RC}/rc-full.html?r3=392`;
+const tag='392-'+Date.now(),err=document.getElementById('err');
+function fail(e){document.querySelector('.spin')?.remove();err.style.display='block';err.textContent='نسخهٔ R3.2 بارگذاری نشد.\n'+String(e?.message||e)}
 try{
  if('serviceWorker'in navigator){try{const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.unregister()))}catch(_){}}
  if('caches'in window){try{for(const k of await caches.keys())if(/nh7|omideno|new.?hope/i.test(k))await caches.delete(k)}catch(_){}}
  const r=await fetch(SOURCE,{cache:'no-store'});if(!r.ok)throw Error('Approved RC HTTP '+r.status);let html=await r.text();
  html=html.replace('<head>',`<head>\n<base href="${RCBASE}">\n<meta name="robots" content="noindex,nofollow,noarchive">`);
- html=html.replace(/<title>[\s\S]*?<\/title>/i,'<title>New Hope 7 — Final QA R3 3.9.1</title>');
- html=html.replace("window.NH7_VERSION = '2.5.1-RC';","window.NH7_VERSION = '3.9.1-FINAL-QA-R3';");
- html=html.replace("window.NH7_RELEASE_CHANNEL = 'release_candidate';","window.NH7_RELEASE_CHANNEL = 'final_qa_r3';");
- html=html.replace(/<div class="nh7-rc-banner">[\s\S]*?<\/div>/i,'<div class="nh7-rc-banner"><b>NEW HOPE 7 · FINAL QA R3.1 · 3.9.1</b><span>اپوکریفای پیوسته + آرشیو زندهٔ موعظات — هنوز در main منتشر نشده است</span></div>');
+ html=html.replace(/<title>[\s\S]*?<\/title>/i,'<title>New Hope 7 — Final QA R3.2 3.9.2</title>');
+ html=html.replace("window.NH7_VERSION = '2.5.1-RC';","window.NH7_VERSION = '3.9.2-FINAL-QA-R3';");
+ html=html.replace("window.NH7_RELEASE_CHANNEL = 'release_candidate';","window.NH7_RELEASE_CHANNEL = 'final_qa_r3_2';");
+ html=html.replace(/<div class="nh7-rc-banner">[\s\S]*?<\/div>/i,'<div class="nh7-rc-banner"><b>NEW HOPE 7 · FINAL QA R3.2 · 3.9.2</b><span>اپوکریفای پیوسته و سریع + آرشیو زنده موعظات + رمز شخصی ویدیو — هنوز در main منتشر نشده است</span></div>');
  for(const pattern of [
   /\s*<script src="js\/nh7-auth-signup-guard-v343\.js[^\"]*"><\/script>/gi,
   /\s*<script src="js\/nh7-school-registration-v342\.js[^\"]*"><\/script>/gi,
@@ -35,20 +35,22 @@ try{
 <script src="${MAINBASE}js/nh7-registration-canonical-v353.js?v=${tag}"><\/script>
 <script src="${MAINBASE}js/nh7-school-registration-v342.js?v=${tag}"><\/script>
 <script src="${MAINBASE}js/nh7-auth-recovery-v342.js?v=${tag}"><\/script>
-<script src="${QABASE}qa/final-r3/nh7-qa-bridge-v391.js?v=${tag}"><\/script>`;
+<script>window.NH7_QA_ASSET_BASE_V392='${QABASE}';<\/script>
+<script src="${QABASE}qa/final-r3/nh7-qa-bridge-v392.js?v=${tag}"><\/script>`;
  html=html.replace(core,currentAuth+'\n$&');
  const reader=/<script src="js\/nh7-reader-ux-v251\.js[^\"]*" defer><\/script>/i;
  const late=`
 <script src="${V252BASE}js/nh7-saved-verses-chapter-v252.js?v=${tag}" defer><\/script>
 <script src="${QABASE}qa/final-r3/nh7-apocrypha-saved-nav-v390.js?v=${tag}" defer><\/script>
-<script src="${QABASE}qa/final-r3/nh7-apocrypha-inline-v391.js?v=${tag}" defer><\/script>
-<script src="${QABASE}qa/final-r3/nh7-sermon-archive-guard-v391.js?v=${tag}" defer><\/script>
+<script src="${QABASE}qa/final-r3/nh7-apocrypha-inline-v392.js?v=${tag}" defer><\/script>
+<script src="${QABASE}qa/final-r3/nh7-sermon-archive-guard-v392.js?v=${tag}" defer><\/script>
+<script src="${QABASE}qa/final-r3/nh7-video-portal-v392.js?v=${tag}" defer><\/script>
 <script src="${MAINBASE}js/nh7-school-exam-v344.js?v=${tag}" defer><\/script>
 <script src="${QABASE}qa/final-r2/nh7-school-rules-v381.js?v=${tag}" defer><\/script>
 <script src="${QABASE}qa/final-r2/nh7-registration-ux-v381.js?v=${tag}" defer><\/script>`;
  if(reader.test(html))html=html.replace(reader,'$&'+late);else html=html.replace('</body>',late+'\n</body>');
  html=html.replace('</head>',`<style>.nh7-rc-banner{position:relative!important;z-index:2147483000!important}.nh7-r3-health{position:fixed;right:9px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:2147482000;background:#7a4b00;color:#fff;border-radius:999px;padding:7px 10px;font:700 11px system-ui;box-shadow:0 5px 18px rgba(0,0,0,.2)}</style></head>`);
- html=html.replace('</body>',`<div class="nh7-r3-health" id="nh7R3Health">R3.1 loading</div><script>(()=>{let n=0;const test=()=>{n++;const ok=!!(window.NH7_APOCRYPHA_TRANSLATION_OVERLAY_VERSION&&window.NH7_SPIRITUAL_PLANS_BRIDGE_VERSION&&window.NH7_READER_UX_VERSION&&window.NH7_QA_BRIDGE_VERSION&&window.NH7_APOCRYPHA_INLINE_VERSION&&window.NH7_SERMON_ARCHIVE_GUARD_VERSION);const e=document.getElementById('nh7R3Health');if(e){e.textContent=ok?'R3.1 3.9.1 ✓':'R3.1 loading';e.style.background=ok?'#08783d':'#7a4b00'}if(!ok&&n<35)setTimeout(test,350)};setTimeout(test,500)})();<\/script></body>`);
+ html=html.replace('</body>',`<div class="nh7-r3-health" id="nh7R3Health">R3.2 loading</div><script>(()=>{let n=0;const test=()=>{n++;const ok=!!(window.NH7_APOCRYPHA_TRANSLATION_OVERLAY_VERSION&&window.NH7_SPIRITUAL_PLANS_BRIDGE_VERSION&&window.NH7_READER_UX_VERSION&&window.NH7_QA_BRIDGE_VERSION==='3.9.2'&&window.NH7_APOCRYPHA_INLINE_VERSION==='3.9.2'&&window.NH7_SERMON_ARCHIVE_GUARD_VERSION==='3.9.2'&&window.NH7_VIDEO_PORTAL_VERSION==='3.9.2');const e=document.getElementById('nh7R3Health');if(e){e.textContent=ok?'R3.2 3.9.2 ✓':'R3.2 loading';e.style.background=ok?'#08783d':'#7a4b00'}if(!ok&&n<40)setTimeout(test,350)};setTimeout(test,500)})();<\/script></body>`);
  document.open();document.write(html);document.close();
 }catch(e){fail(e)}})();
 </script></body></html>
