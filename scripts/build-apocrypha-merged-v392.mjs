@@ -72,7 +72,7 @@ for(const book of runtime.books||[]){
 if(report.length!==19)throw new Error(`Expected 19 books, got ${report.length}`);
 if(incomplete)throw new Error(`${incomplete} books lack complete fresh FA/HR coverage`);
 
-runtime.qa_premerged={version:'3.9.2',source_commit:'a6b0f6465e2d7f3e335b528a116d962cbe8f5b20',overlay_files:seen.size,generated_at:new Date().toISOString(),fresh_only:true};
+runtime.qa_premerged={version:'3.9.2',source_commit:'a6b0f6465e2d7f3e335b528a116d962cbe8f5b20',overlay_files:seen.size,generated_at:'2026-08-23T09:48:13Z',fresh_only:true};
 const output=process.argv[2]||'qa/final-r3/data/apocrypha-19-merged-v392.json';
 fs.mkdirSync(path.dirname(output),{recursive:true});
 fs.writeFileSync(output,JSON.stringify(runtime));
