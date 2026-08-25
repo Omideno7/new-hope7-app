@@ -1,0 +1,66 @@
+name: Validate Final QA R2 3.8.1
+on:
+  push:
+    branches: [qa/final-integration-20260825-r2]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - name: Validate QA JavaScript
+        run: |
+          set -euo pipefail
+          for f in \
+            qa/final-r2/nh7-qa-bridge-v381.js \
+            qa/final-r2/nh7-school-rules-v381.js \
+            qa/final-r2/nh7-registration-ux-v381.js \
+            qa/final-r2/nh7-apocrypha-saved-nav-v381.js \
+            qa/final-r2/nh7-apocrypha-fresh-v381.js; do
+            node --check "$f"
+          done
+      - name: Validate QA HTML inline scripts
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          for(const f of ['qa/final-r2/index.html','qa/final-r2/app.html','qa/final-r2/admin.html','qa/final-r2/admin-tools.html']){
+            if(!fs.existsSync(f))throw new Error('Missing '+f);
+            const h=fs.readFileSync(f,'utf8');
+            const blocks=[...h.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]).filter(Boolean);
+            for(const [i,code] of blocks.entries())new Function(code+'\n//# sourceURL='+f+'-'+i);
+          }
+          NODE
+      - name: Verify fresh-only Apocrypha contract
+        run: |
+          set -euo pipefail
+          grep -q "NH7_APOCRYPHA_FRESH_VERSION='3.8.1'" qa/final-r2/nh7-apocrypha-fresh-v381.js
+          ! grep -q "fa_document" qa/final-r2/nh7-apocrypha-fresh-v381.js
+          ! grep -q "hr_prepared\|croatian_prepared" qa/final-r2/nh7-apocrypha-fresh-v381.js
+          grep -q 'APO:' qa/final-r2/nh7-apocrypha-saved-nav-v381.js
+          grep -q 'data-f381-book' qa/final-r2/nh7-apocrypha-saved-nav-v381.js
+      - name: Verify School and recovery gates
+        run: |
+          set -euo pipefail
+          grep -q 'nh7_school_gate_status_v381' qa/final-r2/nh7-school-rules-v381.js
+          grep -q 'nh7_school_record_audio_v380' qa/final-r2/nh7-qa-bridge-v381.js
+          grep -q 'nh7_submit_school_assignment_v381' qa/final-r2/nh7-qa-bridge-v381.js
+          grep -q 'nh7_school_exam_session_v381' qa/final-r2/nh7-qa-bridge-v381.js
+          grep -q 'nh7_submit_school_exam_v381' qa/final-r2/nh7-qa-bridge-v381.js
+          grep -q 'nh7_recovery_eligibility_v380' qa/final-r2/nh7-registration-ux-v381.js
+      - name: Verify Admin QA tools
+        run: |
+          set -euo pipefail
+          grep -q 'nh7_owner_set_library_item_access_v381' qa/final-r2/admin-tools.html
+          grep -q 'nh7_admin_delete_account_full_v381' qa/final-r2/admin-tools.html
+          grep -q 'nh7_admin_registration_delete_v350' qa/final-r2/admin-tools.html
+          grep -q 'p_test_only' qa/final-r2/admin-tools.html
+      - name: Verify current main baseline retained
+        run: |
+          node --check js/nh7-school-exam-v344.js
+          grep -q '2.3.9.44' version.json
+          grep -q 'nh7-school-exam-v344.js?v=2.3.9.44' index.html
+          echo 'Final QA R2 static validation passed.'
