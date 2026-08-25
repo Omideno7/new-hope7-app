@@ -102,7 +102,7 @@ jobs:
           if(manifest.start_url!=='./index.html')fail('manifest start_url must be ./index.html');
           if(!adminManifest||typeof adminManifest!=='object')fail('admin-manifest.json invalid');
           const school=JSON.parse(fs.readFileSync('data/school/school_content.json','utf8'));
-          if(school.protectedContent!==true)fail('School content must be protected');
+          if(school.meta?.protectedContent!==true)fail('School content must be protected');
           if(!Array.isArray(school.lessons)||school.lessons.length!==0)fail('Protected school lessons must not ship in public bundle');
           console.log('Release metadata OK',version);
           NODE
