@@ -10,8 +10,11 @@ const rbac=read('js/nh7-admin-rbac-v350.js');
 const worker=read('sw-offline-v329.js');
 const migration=read('supabase/migrations/20260821174931_admin_rbac_recovery_v350.sql');
 const version=JSON.parse(read('version.json'));
+const index=read('index.html');
 
-assert(version.app==='2.3.9.40'&&version.admin==='2.3.9.40','release version must be 2.3.9.40');
+assert(/^\d+\.\d+\.\d+\.\d+$/.test(version.app||''),'app release version must be valid');
+assert(version.admin==='2.3.9.40','admin release version must remain 2.3.9.40 until the admin shell is promoted');
+assert(index.includes(`window.NH7_VERSION = '${version.app}'`),'app shell version must match version.json');
 
 assert(!reset.includes('id="openAdmin"'),'public recovery still exposes an admin button');
 assert(!reset.includes("const ADMIN_URL="),'public recovery still contains the admin URL');
@@ -68,4 +71,4 @@ assert(worker.indexOf('if(recoveryRequest(url))')<worker.indexOf('if(adminReques
 assert(worker.includes("rel==='admin-reset-password.html'"),'admin recovery page is not network-first');
 assert(worker.includes("rel.startsWith('js/nh7-admin-')"),'RBAC runtime is not network-first');
 
-console.log('Admin recovery and RBAC v3.5.0 verification passed.');
+console.log('Admin recovery and RBAC v3.5.0 verification passed for app',version.app,'admin',version.admin);
