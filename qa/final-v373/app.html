@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow,noarchive"><meta http-equiv="Cache-Control" content="no-store,no-cache,must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><title>New Hope 7 — Complete QA 3.7.3</title>
+<style>html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;background:#eef4ff;color:#13213d}main{min-height:100vh;display:grid;place-items:center;padding:24px;text-align:center}.box{width:min(590px,100%);background:#fff;border:1px solid #d5e1f4;border-radius:22px;padding:28px;box-shadow:0 18px 55px rgba(34,62,112,.13)}.logo{width:82px;height:82px;object-fit:contain}.spin{width:42px;height:42px;border:4px solid #dbe6fa;border-top-color:#1d4ed8;border-radius:50%;margin:20px auto 14px;animation:s .85s linear infinite}.error{display:none;background:#fff0f0;color:#8f2323;border-radius:14px;padding:15px;margin-top:18px;white-space:pre-wrap;text-align:right}button{border:0;border-radius:10px;padding:11px 18px;background:#1d4ed8;color:#fff;font-weight:800}@keyframes s{to{transform:rotate(360deg)}}</style>
+</head><body><main><div class="box"><img class="logo" src="../../assets/logo.png" alt="New Hope 7"><h1>در حال آماده‌سازی نسخهٔ کامل آزمایشی</h1><p>اپوکریفای تأییدشده، ۹ کتاب سه‌زبانه، Saved Verses، قوانین مدرسه، ثبت‌نام و دسترسی حساب در حال یکپارچه‌سازی است.</p><div class="spin"></div><small>QA 3.7.3 — این صفحه نسخهٔ اصلی کاربران را تغییر نمی‌دهد.</small><div id="qaError" class="error"></div></div></main>
+<script>
+(async()=>{'use strict';
+const REPO='Omideno7/new-hope7-app';
+const RC='a8521f7b87ee68b7bdbbfd081ed63e679e9bad5a';
+const MAIN='3c010053f8c76fa860571b99076ec116ba83c3c9';
+const PROVEN='a4235c6c0c38d24abf4dbd6a975f2a03c196de60';
+const QA='c9568a85d34bfae667c9437a601e02ee6d884b4b';
+const rcBase=`https://raw.githack.com/${REPO}/${RC}/`;
+const mainBase=`https://raw.githack.com/${REPO}/${MAIN}/`;
+const provenBase=`https://raw.githack.com/${REPO}/${PROVEN}/`;
+const qaBase=`https://raw.githack.com/${REPO}/${QA}/`;
+const source=`https://raw.githubusercontent.com/${REPO}/${RC}/rc-full.html?v=3730`;
+const tag='3730-'+Date.now(),errorBox=document.getElementById('qaError');
+function fail(error){console.error('[NH7 Complete QA 3.7.3]',error);document.querySelector('.spin')?.remove();errorBox.style.display='block';errorBox.textContent='نسخهٔ آزمایشی بارگذاری نشد.\n\n'+String(error?.message||error||'Unknown error');const b=document.createElement('button');b.textContent='تلاش دوباره';b.onclick=()=>location.replace(location.pathname+'?reload='+Date.now());errorBox.append(document.createElement('br'),b)}
+try{
+ if('serviceWorker'in navigator){try{const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.unregister()))}catch(_){}}
+ if('caches'in window){try{const ks=await caches.keys();await Promise.all(ks.filter(k=>/nh7|new.?hope|omideno/i.test(k)).map(k=>caches.delete(k)))}catch(_){}}
+ const response=await fetch(source,{cache:'no-store'});if(!response.ok)throw Error('Approved RC source HTTP '+response.status);let html=await response.text();if(!html.includes('2.4.0.250-RC'))throw Error('Approved RC 2.4.0.250 signature missing');
+ html=html.replace('<head>',`<head>\n<base href="${rcBase}">\n<meta name="robots" content="noindex,nofollow,noarchive">`)
+   .replace(/<title>[\s\S]*?<\/title>/i,'<title>New Hope 7 — Complete QA 3.7.3</title>')
+   .replace("window.NH7_VERSION = '2.4.0.250-RC';","window.NH7_VERSION='3.7.3-COMPLETE-QA';")
+   .replace("window.NH7_RELEASE_CHANNEL = 'release_candidate';","window.NH7_RELEASE_CHANNEL='complete_qa';window.NH7_QA_373=true;")
+   .replace(/<div class="nh7-rc-banner">[\s\S]*?<\/div>/i,'<div class="nh7-rc-banner"><b>NEW HOPE 7 · COMPLETE QA 3.7.3</b><span>اپوکریفای تأییدشده RC 2.4.0.250 + اصلاحات کامل جدید — هنوز منتشر نشده</span></div>');
+ const remove=[
+  /\s*<script src="js\/nh7-auth-signup-guard-v343\.js[^\"]*"><\/script>/gi,
+  /\s*<script src="js\/nh7-school-registration-v342\.js[^\"]*"><\/script>/gi,
+  /\s*<script src="js\/nh7-auth-recovery-v342\.js[^\"]*"><\/script>/gi,
+  /\s*<script src="js\/nh7-apocrypha-preview-v240\.js[^\"]*"[^>]*><\/script>/gi,
+  /\s*<script src="js\/nh7-apocrypha-reader-flow-v244\.js[^\"]*"[^>]*><\/script>/gi,
+  /\s*<script src="js\/nh7-apocrypha-v270\.js[^\"]*"[^>]*><\/script>/gi,
+  /\s*<script src="js\/nh7-offline-startup-v327\.js[^\"]*"><\/script>/gi,
+  /\s*<script src="js\/nh7-offline-core-v327\.js[^\"]*"><\/script>/gi,
+  /\s*<script src="js\/nh7-offline-data-v329\.js[^\"]*"><\/script>/gi,
+  /\s*<script src="js\/nh7-offline-playback-bridge-v332\.js[^\"]*"><\/script>/gi,
+  /\s*<script src="js\/nh7-offline-persistence-v323\.js[^\"]*"><\/script>/gi
+ ];remove.forEach(x=>html=html.replace(x,''));
+ const pre=`
+<script src="${qaBase}js/nh7-apocrypha-source-pin-v373.js?v=${tag}"><\/script>
+<script src="${qaBase}js/nh7-library-v372.js?v=${tag}"><\/script>
+<script src="${mainBase}js/nh7-auth-signup-guard-v343.js?v=${tag}"><\/script>
+<script src="${mainBase}js/nh7-auth-recovery-v342.js?v=${tag}"><\/script>
+<script src="${mainBase}js/nh7-registration-canonical-v353.js?v=${tag}"><\/script>
+<script src="${qaBase}js/nh7-registration-recovery-v372.js?v=${tag}"><\/script>`;
+ const app=/<script src="js\/app-rc-production-v240\.js[^\"]*" type="module"><\/script>/i;if(!app.test(html))throw Error('Approved RC app module missing');html=html.replace(app,pre+'\n$&');
+ const late=`
+<script src="${qaBase}js/nh7-apocrypha-fresh-v372.js?v=${tag}"><\/script>
+<script src="${provenBase}js/nh7-reader-ux-v251.js?v=${tag}"><\/script>
+<script src="${provenBase}js/nh7-saved-verses-chapter-v252.js?v=${tag}"><\/script>
+<script src="${qaBase}js/nh7-saved-apocrypha-open-v372.js?v=${tag}"><\/script>
+<script src="${provenBase}js/nh7-account-content-access-v251.js?v=${tag}"><\/script>
+<script src="${provenBase}js/nh7-minister-library-lock-v253.js?v=${tag}"><\/script>
+<script src="${qaBase}js/nh7-school-guide-gate-v373.js?v=${tag}"><\/script>`;
+ html=html.replace('</body>',late+`<div id="nh7QaHealth373" style="position:fixed;right:8px;bottom:calc(74px + env(safe-area-inset-bottom));z-index:2147482000;background:#725600;color:#fff;border-radius:999px;padding:7px 10px;font:800 11px system-ui">QA 3.7.3 · loading</div><script>(()=>{let n=0;const c=()=>{n++;const ok=!!(window.NH7_APOCRYPHA_TRANSLATION_OVERLAY_VERSION&&window.NH7_APOCRYPHA_SOURCE_PIN_VERSION&&window.NH7_APOCRYPHA_FRESH_VERSION&&window.NH7_SAVED_APOCRYPHA_OPEN_VERSION&&window.NH7_LIBRARY_VERSION&&window.NH7_REGISTRATION_RECOVERY_VERSION&&window.NH7_SCHOOL_GUIDE_GATE_VERSION),e=document.getElementById('nh7QaHealth373');if(e){e.textContent=ok?'QA 3.7.3 ✓':'QA 3.7.3 · loading';e.style.background=ok?'#08783d':'#725600'}if(!ok&&n<30)setTimeout(c,400);if(!ok&&n===30)console.warn('[NH7 QA health]',{overlay:window.NH7_APOCRYPHA_TRANSLATION_OVERLAY_VERSION,pin:window.NH7_APOCRYPHA_SOURCE_PIN_VERSION,apo:window.NH7_APOCRYPHA_FRESH_VERSION,saved:window.NH7_SAVED_APOCRYPHA_OPEN_VERSION,library:window.NH7_LIBRARY_VERSION,registration:window.NH7_REGISTRATION_RECOVERY_VERSION,school:window.NH7_SCHOOL_GUIDE_GATE_VERSION})};setTimeout(c,500)})()<\/script></body>`);
+ const guard=`<script>(()=>{'use strict';window.NH7_DISABLE_PREVIEW_SERVICE_WORKER=true;window.NH7_DISABLE_PREVIEW_PUSH=true;window.NH7_QA_SOURCES={approvedRC:'${RC}',main:'${MAIN}',qa:'${QA}'};try{if('serviceWorker'in navigator)Object.defineProperty(navigator.serviceWorker,'register',{configurable:true,value:async()=>({scope:location.pathname})})}catch(e){console.warn(e)}})()<\/script>`;html=html.replace('</head>',guard+'\n</head>');document.open();document.write(html);document.close();
+}catch(error){fail(error)}})();
+</script></body></html>
