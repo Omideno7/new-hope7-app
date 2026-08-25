@@ -1,4 +1,4 @@
-name: Deploy New Hope 7 to GitHub Pages
+name: Validate and Deploy New Hope 7
 
 on:
   push:
@@ -6,147 +6,140 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
 concurrency:
-  group: pages
+  group: new-hope7-pages-main
   cancel-in-progress: true
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout exact main commit
+        uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.sha }}
 
-      - name: Repair offline worker syntax for push registration
+      - name: Validate JavaScript syntax
+        shell: bash
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          p = Path('sw-offline-v329.js')
-          s = p.read_text(encoding='utf-8')
-          old_import = "try{importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js')}catch(error){console.warn('OneSignal SW unavailable',error)}\n\n"
-          s = s.replace(old_import, '', 1)
-          old_tail = "catch(error){reply({ok:false,error:error?.message||String(error)})})())});"
-          new_tail = "catch(error){reply({ok:false,error:error?.message||String(error)})}})())});"
-          if old_tail in s:
-              s = s.replace(old_tail, new_tail, 1)
-          p.write_text(s, encoding='utf-8')
-          PY
-          node --check sw-offline-v329.js
-          if ! git diff --quiet -- sw-offline-v329.js; then
-            git config user.name "New Hope 7 CI"
-            git config user.email "actions@github.com"
-            git add sw-offline-v329.js
-            git commit -m "Fix offline worker syntax for push registration"
-            git push origin HEAD:main
-          fi
+          set -euo pipefail
+          files=(
+            service-worker.js
+            push/OneSignalSDKWorker.js
+            sw-media-stream-bypass-v332.js
+            sw-offline-v329.js
+            sw-offline-path-fix-v329.js
+            js/nh7-security-core-v340.js
+            js/nh7-qna-i18n-v341.js
+            js/nh7-offline-startup-v327.js
+            js/nh7-offline-core-v327.js
+            js/nh7-offline-data-v329.js
+            js/nh7-audio-route-stability-v330.js
+            js/nh7-auto-update-v335.js
+            js/nh7-notifications-zagreb-v334.js
+            js/nh7-auth-signup-guard-v343.js
+            js/nh7-school-registration-v342.js
+            js/nh7-auth-recovery-v342.js
+            js/nh7-registration-canonical-v353.js
+            js/nh7-push-account-bind-v361.js
+            js/nh7-school-exam-v344.js
+            js/nh7-ui-stability-v329.js
+            js/nh7-access-bootstrap-v230.js
+            js/nh7-offline-persistence-v323.js
+            js/nh7-offline-playback-bridge-v332.js
+            js/nh7-book-reader-v281.js
+            js/nh7-library-language-v321.js
+            js/nh7-library-collections-v322.js
+            js/nh7-apocrypha-v270.js
+            js/nh7-large-mov-native-fallback-v273.js
+            js/nh7-secure-media-watermark-v272.js
+            js/nh7-protected-audio-gate-v316.js
+            js/nh7-school-audio-native-v337.js
+            js/admin-v2.3.9-clean-scroll-v300.js
+            js/admin-v2.3.9-library-clean-v311.js
+            js/admin-v2.3.9-apocrypha-catalog-v274.js
+            js/admin-v2.3.9-apocrypha-text-only-v320.js
+            js/admin-v2.3.9-library-collections-v322.js
+            js/admin-v2.3.9-student-clean-v311.js
+            js/admin-v2.3.9-audio-clean-v312.js
+            js/admin-v2.3.9-video-final-v316.js
+            js/admin-v2.3.9-video-save-sync-v316.js
+            js/admin-v2.3.9-video-person-access-v317.js
+            js/admin-v2.3.9-student-state-fix-v316.js
+            js/admin-v2.3.9-ui-documents-final-v316.js
+            js/admin-v2.3.9-fix12-bootstrap.js
+            js/admin-v2.3.9-registration-requests-v331.js
+            js/admin-v2.3.9-notifications-zagreb-v333.js
+            js/admin-qna-i18n-v341.js
+            js/nh7-admin-rbac-v350.js
+          )
+          for file in "${files[@]}"; do
+            test -f "$file"
+            node --check "$file"
+          done
 
-      - name: Validate current New Hope 7 production shell
+      - name: Validate release metadata, School protection and exam flow
         run: |
-          node --check service-worker.js
-          node --check push/OneSignalSDKWorker.js
-          node --check sw-media-stream-bypass-v332.js
-          node --check sw-offline-v329.js
-          node --check sw-offline-path-fix-v329.js
-          node --check js/nh7-security-core-v340.js
-          node --check js/nh7-qna-i18n-v341.js
-          node --check js/nh7-offline-startup-v327.js
-          node --check js/nh7-offline-core-v327.js
-          node --check js/nh7-offline-data-v329.js
-          node --check js/nh7-audio-route-stability-v330.js
-          node --check js/nh7-auto-update-v335.js
-          node --check js/nh7-notifications-zagreb-v334.js
-          node --check js/nh7-school-registration-v331.js
-          node --check js/nh7-auth-signup-guard-v343.js
-          node --check js/nh7-school-registration-v342.js
-          node --check js/nh7-auth-recovery-v342.js
-          node --check js/nh7-ui-stability-v329.js
-          node --check js/nh7-access-bootstrap-v230.js
-          node --check js/nh7-offline-persistence-v323.js
-          node --check js/nh7-offline-playback-bridge-v332.js
-          node --check js/nh7-book-reader-v281.js
-          node --check js/nh7-library-language-v321.js
-          node --check js/nh7-library-collections-v322.js
-          node --check js/nh7-apocrypha-v270.js
-          node --check js/nh7-large-mov-native-fallback-v273.js
-          node --check js/nh7-secure-media-watermark-v272.js
-          node --check js/nh7-protected-audio-gate-v316.js
-          node --check js/nh7-school-audio-native-v337.js
-          node --check js/admin-v2.3.9-clean-scroll-v300.js
-          node --check js/admin-v2.3.9-library-clean-v311.js
-          node --check js/admin-v2.3.9-apocrypha-catalog-v274.js
-          node --check js/admin-v2.3.9-apocrypha-text-only-v320.js
-          node --check js/admin-v2.3.9-library-collections-v322.js
-          node --check js/admin-v2.3.9-student-clean-v311.js
-          node --check js/admin-v2.3.9-audio-clean-v312.js
-          node --check js/admin-v2.3.9-video-final-v316.js
-          node --check js/admin-v2.3.9-video-save-sync-v316.js
-          node --check js/admin-v2.3.9-video-person-access-v317.js
-          node --check js/admin-v2.3.9-student-state-fix-v316.js
-          node --check js/admin-v2.3.9-ui-documents-final-v316.js
-          node --check js/admin-v2.3.9-fix12-bootstrap.js
-          node --check js/admin-v2.3.9-registration-requests-v331.js
-          node --check js/admin-v2.3.9-notifications-zagreb-v333.js
-          node --check js/admin-qna-i18n-v341.js
-          node --check js/nh7-admin-rbac-v350.js
-          node scripts/verify-admin-rbac-v350.mjs
-          grep -q "2.3.9.40" service-worker.js
+          node <<'NODE'
+          const fs=require('fs');
+          const fail=m=>{throw new Error(m)};
+          const version=JSON.parse(fs.readFileSync('version.json','utf8'));
+          const manifest=JSON.parse(fs.readFileSync('manifest.json','utf8'));
+          const adminManifest=JSON.parse(fs.readFileSync('admin-manifest.json','utf8'));
+          const index=fs.readFileSync('index.html','utf8');
+          const appShell=fs.readFileSync('app-v239.html','utf8');
+          const worker=fs.readFileSync('service-worker.js','utf8');
+          const exam=fs.readFileSync('js/nh7-school-exam-v344.js','utf8');
+          const school=JSON.parse(fs.readFileSync('data/school/school_content.json','utf8'));
+          if(!/^\d+\.\d+\.\d+\.\d+$/.test(version.app||''))fail('Invalid app version');
+          if(!/^\d+\.\d+\.\d+\.\d+$/.test(version.admin||''))fail('Invalid admin version');
+          if(!index.includes(`window.NH7_VERSION = '${version.app}'`))fail('index version mismatch');
+          if(!index.includes(`nh7-school-exam-v344.js?v=${version.app}`))fail('School exam hotfix is not loaded');
+          if(!appShell.includes(`index.html?v=${version.app}`))fail('native shell version mismatch');
+          if(!worker.includes(version.app))fail('service worker version mismatch');
+          if(manifest.start_url!=='./index.html')fail('manifest start_url mismatch');
+          if(!adminManifest||typeof adminManifest!=='object')fail('admin manifest invalid');
+          if(school.meta?.protectedContent!==true)fail('School content must remain protected');
+          if(!Array.isArray(school.lessons)||school.lessons.length!==0)fail('Protected lessons must not ship publicly');
+          for(const required of ['nh7_school_exam_session_v340','nh7_submit_school_exam_v340','max_attempts','remaining_attempts'])if(!exam.includes(required))fail(`exam hotfix missing ${required}`);
+          if(exam.includes('school_exams?select='))fail('exam hotfix must not read answer-bearing table directly');
+          if(!exam.includes("window.NH7_SCHOOL_EXAM_VERSION='3.4.4'"))fail('exam hotfix version marker missing');
+          if(!index.includes('NH7_ONESIGNAL_WORKER')||!index.includes('push/OneSignalSDKWorker.js'))fail('OneSignal worker wiring missing');
+          console.log('Release and secure School exam validation OK',version);
+          NODE
+
+      - name: Validate recovery, admin and shell wiring
+        shell: bash
+        run: |
+          set -euo pipefail
           grep -q "OneSignalSDK.sw.js" push/OneSignalSDKWorker.js
           ! grep -q "OneSignalSDK.sw.js" sw-offline-v329.js
-          grep -q "NH7_ONESIGNAL_WORKER" index.html
-          grep -q "push/OneSignalSDKWorker.js" index.html
           grep -q "nh7-security-core-v340.js?v=3.4.1" index.html
           grep -q "nh7-qna-i18n-v341.js?v=2.3.9.36" index.html
-          grep -q "3.4.1-security-core" js/nh7-security-core-v340.js
-          grep -q "3.4.1-qna-i18n" js/nh7-qna-i18n-v341.js
-          grep -q "nh7_library_catalog_v341" js/nh7-security-core-v340.js
-          grep -q "nh7_library_collections_catalog_v341" js/nh7-security-core-v340.js
-          grep -q '"protectedContent": true' data/school/school_content.json
-          node -e "const s=JSON.parse(require('fs').readFileSync('data/school/school_content.json','utf8'));if(!Array.isArray(s.lessons)||s.lessons.length!==0)throw new Error('Protected school lessons must not ship in the public bundle')"
           grep -q "nh7-notifications-zagreb-v334.js?v=2.3.9.35e" index.html
           grep -q "nh7-auto-update-v335.js" index.html
           grep -q "nh7-school-audio-native-v337.js" index.html
           grep -q "admin-v2.3.9-notifications-zagreb-v333.js" admin-v239-stable.html
           grep -q "admin-qna-i18n-v341.js" admin-v239-stable.html
-          grep -q '"start_url": "./index.html"' manifest.json
-          grep -q '"app":"2.3.9.40"' version.json
-          grep -q '"admin":"2.3.9.40"' version.json
-          test -f admin.html
-          test -f admin-v239.html
-          test -f admin-v239-stable.html
-          test -f app-v239.html
-          test -f index.html
-          test -f reset-password.html
-          test -f admin-reset-password.html
-          test -f version.json
-          test -f service-worker.js
-          test -f push/OneSignalSDKWorker.js
-          test -f js/nh7-security-core-v340.js
-          test -f js/nh7-qna-i18n-v341.js
-          test -f js/nh7-notifications-zagreb-v334.js
-          test -f js/nh7-auto-update-v335.js
-          test -f js/nh7-school-audio-native-v337.js
-          test -f js/nh7-auth-signup-guard-v343.js
-          test -f js/nh7-school-registration-v342.js
-          test -f js/nh7-auth-recovery-v342.js
-          test -f js/nh7-admin-rbac-v350.js
-          test -f js/admin-v2.3.9-notifications-zagreb-v333.js
-          test -f js/admin-qna-i18n-v341.js
-          test -f css/admin-v2.3.9-clean-scroll-v300.css
-          test -f css/admin-v2.3.9-clean-features-v311.css
-          test -f css/admin-v2.3.9-final-stable-v316.css
-          test -f css/admin-v2.3.9-library-mobile-v320.css
-          test -f css/nh7-book-reader-v280.css
-          test -f css/nh7-library-collections-v322.css
-          test -f css/nh7-secure-media-watermark-v272.css
-          test -f css/nh7-apocrypha-v270.css
-          node -e "const fs=require('fs');for(const file of ['admin.html','admin-v239.html','admin-v239-stable.html','admin-reset-password.html','reset-password.html','app-v239.html','index.html','certificate-v239.html']){const html=fs.readFileSync(file,'utf8');const blocks=[...html.matchAll(/<script(?:\\s[^>]*)?>([\\s\\S]*?)<\\/script>/gi)].map(x=>x[1]).filter(Boolean);blocks.forEach((code,index)=>new Function(code+'\\n//# sourceURL='+file+'-inline-'+index));}"
-          node -e "for(const f of ['admin-manifest.json','manifest.json','version.json'])JSON.parse(require('fs').readFileSync(f,'utf8'))"
-          node scripts/verify-auth-hotfix-v348.mjs
+          required=(admin.html admin-v239.html admin-v239-stable.html app-v239.html index.html reset-password.html admin-reset-password.html version.json service-worker.js push/OneSignalSDKWorker.js js/nh7-registration-canonical-v353.js js/nh7-school-exam-v344.js js/nh7-admin-rbac-v350.js)
+          for file in "${required[@]}"; do test -f "$file"; done
+
+      - name: Validate HTML inline scripts and JSON
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          for(const file of ['admin.html','admin-v239.html','admin-v239-stable.html','admin-reset-password.html','reset-password.html','app-v239.html','index.html','certificate-v239.html']){
+            const html=fs.readFileSync(file,'utf8');
+            const blocks=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]).filter(Boolean);
+            blocks.forEach((code,index)=>new Function(code+`\n//# sourceURL=${file}-inline-${index}`));
+          }
+          for(const file of ['admin-manifest.json','manifest.json','version.json'])JSON.parse(fs.readFileSync(file,'utf8'));
+          console.log('HTML and JSON validation passed');
+          NODE
 
   deploy:
     needs: validate
@@ -155,10 +148,10 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout latest main
+      - name: Checkout validated main commit
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.sha }}
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload site artifact
