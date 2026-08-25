@@ -78,7 +78,7 @@ jobs:
           grep -q 'nh7_video_authorize_v392' supabase/migrations/20260825221000_sermons_and_personal_video_portal_v392.sql
           grep -q 'code_not_for_account' supabase/migrations/20260825221000_sermons_and_personal_video_portal_v392.sql
           grep -q 'nh7_sermon_catalog_v392' qa/final-r3/nh7-qa-bridge-v392.js
-          grep -q 'data/audio/messages' qa/final-r3/nh7-qa-bridge-v392.js
+          grep -q 'legacy_archive_disabled' qa/final-r3/nh7-qa-bridge-v392.js
           grep -q "NH7_SERMON_ARCHIVE_GUARD_VERSION='3.9.2'" qa/final-r3/nh7-sermon-archive-guard-v392.js
           grep -q "NH7_VIDEO_PORTAL_VERSION='3.9.2'" qa/final-r3/nh7-video-portal-v392.js
           grep -q 'data-v392-form' qa/final-r3/nh7-video-portal-v392.js
@@ -91,12 +91,12 @@ jobs:
           for(const id of expected){const p=c.plans.find(x=>x.id===id);if(!p||!fs.existsSync(p.file))throw Error('Missing plan '+id)}
           console.log('Spiritual plans:',c.plans.map(x=>x.id));
           NODE
-      - name: Parse current QA launcher
+      - name: Validate R3.2 launcher
         run: |
           node <<'NODE'
           const fs=require('fs'),f='qa/final-r3/app.html',h=fs.readFileSync(f,'utf8');
           for(const [i,m] of [...h.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].entries())new Function(m[1]+'\n//# sourceURL='+f+'-'+i);
-          if(!h.includes('a6b0f6465e2d7f3e335b528a116d962cbe8f5b20'))throw Error('Approved RC baseline missing');
+          for(const s of ['3.9.2-FINAL-QA-R3','a6b0f6465e2d7f3e335b528a116d962cbe8f5b20','023ab1227925075225aada38912bbc60e3e8f589','nh7-qa-bridge-v392.js','nh7-apocrypha-inline-v392.js','nh7-sermon-archive-guard-v392.js','nh7-video-portal-v392.js'])if(!h.includes(s))throw Error('Launcher missing '+s);
           NODE
       - name: Verify current main remains untouched
         run: |
