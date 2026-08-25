@@ -1,13 +1,57 @@
 /* New Hope 7 QA v3.8.1 — registration field rules + recovery eligibility UI. */
 (()=>{'use strict';if(window.__NH7_REG_UX_V381__)return;window.__NH7_REG_UX_V381__=true;
 const SB='https://gpzcwffxnddhaeaogdyo.supabase.co',KEY='sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37';let timer=0;
-const lang=()=>{const v=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return['fa','en','hr'].includes(v)?v:'en'},L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
-const emailRx=/^[^\s@]+@[^\s@]+\.[A-Za-z]{2,24}$/;const nameRx=/^[A-Za-zÀ-žآ-یءئؤإأۀة‌\-'. ]{2,70}$/u;const placeRx=/^[A-Za-zÀ-žآ-یءئؤإأۀة0-9‌\-'.(),/ ]{2,100}$/u;
+const lang=()=>{const v=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return['fa','en','hr'].includes(v)?v:'en'};
+const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
+const emailRx=/^[^\s@]+@[^\s@]+\.[A-Za-z]{2,24}$/;
+const nameRx=/^[A-Za-zÀ-žآ-یءئؤإأۀة‌\-'. ]{2,70}$/u;
+const placeRx=/^[A-Za-zÀ-žآ-یءئؤإأۀة0-9‌\-'.(),/ ]{2,100}$/u;
 function digits(v){return String(v||'').replace(/\D/g,'')}
 function setInvalid(el,text=''){if(!el)return;el.setCustomValidity(text);el.classList.toggle('nh7-v381-invalid',!!text);el.title=text||''}
-function ruleMessage(type){const m={name:L('فقط نام واقعی با حروف و فاصله مجاز است.','Use a real name with letters, spaces, hyphen or apostrophe only.','Upišite stvarno ime; dopuštena su slova, razmaci, crtica i apostrof.'),place:L('این فیلد باید اطلاعات واقعی و خوانا داشته باشد.','Enter valid, readable information.','Unesite valjan i čitljiv podatak.'),email:L('آدرس ایمیل معتبر وارد کنید؛ مانند name@gmail.com','Enter a valid email address, e.g. name@gmail.com','Unesite valjanu e-mail adresu, npr. name@gmail.com'),phone:L('شماره تلفن معتبر با ۸ تا ۱۶ رقم وارد کنید.','Enter a valid phone number with 8–16 digits.','Unesite valjan broj telefona s 8–16 znamenki.'),password:L('رمز باید حداقل ۱۰ کاراکتر و شامل حرف بزرگ، حرف کوچک، عدد و نشانه باشد.','Password must be at least 10 characters with uppercase, lowercase, a number and a symbol.','Lozinka mora imati najmanje 10 znakova, veliko i malo slovo, broj i simbol.')};return m[type]}
-function validate(el){if(!el)return true;const id=el.id,v=String(el.value||'').trim();let e='';if(['reg_firstName','reg_lastName','reg_churchName','reg_pastorName'].includes(id)&&v&&!nameRx.test(v))e=ruleMessage('name');else if(['reg_city','reg_country','reg_spiritualAge','reg_howFound'].includes(id)&&v&&!placeRx.test(v))e=ruleMessage('place');else if(id==='reg_email'&&v&&!emailRx.test(v.toLowerCase()))e=ruleMessage('email');else if(id==='reg_phone'&&v&&(digits(v).length<8||digits(v).length>16||!/^[+0-9 ()\-./]+$/.test(v)))e=ruleMessage('phone');else if(id==='reg_password'&&v&&!(v.length>=10&&/[A-Z]/.test(v)&&/[a-z]/.test(v)&&/\d/.test(v)&&/[^A-Za-z0-9\s]/.test(v)&&!(/\s/.test(v))))e=ruleMessage('password');else if(id==='reg_confirmPassword'&&v&&v!==(document.getElementById('reg_password')?.value||''))e=L('تکرار رمز با رمز عبور یکسان نیست.','Password confirmation does not match.','Potvrda lozinke se ne podudara.');setInvalid(el,e);return !e}
-function patchForm(){const ids=['reg_firstName','reg_lastName','reg_churchName','reg_pastorName','reg_city','reg_country','reg_spiritualAge','reg_howFound','reg_email','reg_phone','reg_password','reg_confirmPassword'];for(const id of ids){const el=document.getElementById(id);if(!el||el.dataset.v381)return;el.dataset.v381='1';el.maxLength=id.includes('password')?128:id==='reg_email'?160:id==='reg_phone'?32:100;if(id==='reg_phone'){el.inputMode='tel';el.autocomplete='tel'}if(id==='reg_email'){el.inputMode='email';el.autocomplete='email';el.spellcheck=false}if(id.includes('Name'))el.autocomplete=id==='reg_firstName'?'given-name':id==='reg_lastName'?'family-name':'off';el.addEventListener('input',()=>validate(el));el.addEventListener('blur',()=>validate(el))}const birth=document.getElementById('reg_birthDate');if(birth&&!birth.dataset.v381){birth.dataset.v381='1';birth.type='date';birth.min='1900-01-01';birth.max=new Date().toISOString().slice(0,10)}const submit=document.querySelector('[data-submit-registration]');if(submit&&!submit.dataset.v381Guard){submit.dataset.v381Guard='1';submit.addEventListener('click',e=>{for(const id of ids){const el=document.getElementById(id);if(el&&!validate(el)){e.preventDefault();e.stopImmediatePropagation();el.reportValidity();return}},true)}}
+function ruleMessage(type){const m={
+ name:L('فقط نام واقعی با حروف و فاصله مجاز است.','Use a real name with letters, spaces, hyphen or apostrophe only.','Upišite stvarno ime; dopuštena su slova, razmaci, crtica i apostrof.'),
+ place:L('این فیلد باید اطلاعات واقعی و خوانا داشته باشد.','Enter valid, readable information.','Unesite valjan i čitljiv podatak.'),
+ email:L('آدرس ایمیل معتبر وارد کنید؛ مانند name@gmail.com','Enter a valid email address, e.g. name@gmail.com','Unesite valjanu e-mail adresu, npr. name@gmail.com'),
+ phone:L('شماره تلفن معتبر با ۸ تا ۱۶ رقم وارد کنید.','Enter a valid phone number with 8–16 digits.','Unesite valjan broj telefona s 8–16 znamenki.'),
+ password:L('رمز باید حداقل ۱۰ کاراکتر و شامل حرف بزرگ، حرف کوچک، عدد و نشانه باشد.','Password must be at least 10 characters with uppercase, lowercase, a number and a symbol.','Lozinka mora imati najmanje 10 znakova, veliko i malo slovo, broj i simbol.')
+};return m[type]}
+function validate(el){
+ if(!el)return true;const id=el.id,v=String(el.value||'').trim();let e='';
+ if(['reg_firstName','reg_lastName','reg_churchName','reg_pastorName'].includes(id)&&v&&!nameRx.test(v))e=ruleMessage('name');
+ else if(['reg_city','reg_country','reg_spiritualAge','reg_howFound'].includes(id)&&v&&!placeRx.test(v))e=ruleMessage('place');
+ else if(id==='reg_email'&&v&&!emailRx.test(v.toLowerCase()))e=ruleMessage('email');
+ else if(id==='reg_phone'&&v&&(digits(v).length<8||digits(v).length>16||!/^[+0-9 ()\-./]+$/.test(v)))e=ruleMessage('phone');
+ else if(id==='reg_password'&&v&&!(v.length>=10&&/[A-Z]/.test(v)&&/[a-z]/.test(v)&&/\d/.test(v)&&/[^A-Za-z0-9\s]/.test(v)&&!(/\s/.test(v))))e=ruleMessage('password');
+ else if(id==='reg_confirmPassword'&&v&&v!==(document.getElementById('reg_password')?.value||''))e=L('تکرار رمز با رمز عبور یکسان نیست.','Password confirmation does not match.','Potvrda lozinke se ne podudara.');
+ setInvalid(el,e);return !e;
+}
+function patchForm(){
+ const ids=['reg_firstName','reg_lastName','reg_churchName','reg_pastorName','reg_city','reg_country','reg_spiritualAge','reg_howFound','reg_email','reg_phone','reg_password','reg_confirmPassword'];
+ for(const id of ids){
+   const el=document.getElementById(id);if(!el||el.dataset.v381)continue;el.dataset.v381='1';
+   el.maxLength=id.includes('password')?128:id==='reg_email'?160:id==='reg_phone'?32:100;
+   if(id==='reg_phone'){el.inputMode='tel';el.autocomplete='tel'}
+   if(id==='reg_email'){el.inputMode='email';el.autocomplete='email';el.spellcheck=false}
+   if(id.includes('Name'))el.autocomplete=id==='reg_firstName'?'given-name':id==='reg_lastName'?'family-name':'off';
+   el.addEventListener('input',()=>validate(el));el.addEventListener('blur',()=>validate(el));
+ }
+ const birth=document.getElementById('reg_birthDate');if(birth&&!birth.dataset.v381){birth.dataset.v381='1';birth.type='date';birth.min='1900-01-01';birth.max=new Date().toISOString().slice(0,10)}
+ const submit=document.querySelector('[data-submit-registration]');
+ if(submit&&!submit.dataset.v381Guard){
+   submit.dataset.v381Guard='1';
+   submit.addEventListener('click',e=>{
+     for(const id of ids){const el=document.getElementById(id);if(el&&!validate(el)){e.preventDefault();e.stopImmediatePropagation();el.reportValidity();return}}
+   },true);
+ }
+}
 async function eligibility(email){const r=await fetch(`${SB}/rest/v1/rpc/nh7_recovery_eligibility_v380`,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({p_email:String(email||'').trim().toLowerCase()}),cache:'no-store'});if(!r.ok)return false;const x=await r.json().catch(()=>({}));return x?.allowed===true}
-function patchRecovery(){const email=document.getElementById('resetEmail'),btn=document.getElementById('resetPasswordBtn'),status=document.getElementById('resetMsg');if(!email||!btn)return;if(!email.dataset.v381){email.dataset.v381='1';email.addEventListener('input',()=>{clearTimeout(timer);btn.disabled=true;if(status)status.textContent=L('برای فعال‌شدن بازیابی، ایمیل حساب تأییدشده را وارد کنید.','Enter the email of an approved account to enable recovery.','Unesite e-mail odobrenog računa za aktiviranje obnove.');timer=setTimeout(async()=>{const v=email.value.trim().toLowerCase();if(!emailRx.test(v)){if(status)status.textContent=ruleMessage('email');return}const ok=await eligibility(v).catch(()=>false);btn.disabled=!ok;if(status)status.textContent=ok?L('✓ این حساب برای بازیابی رمز مجاز است.','✓ This account is eligible for password recovery.','✓ Ovaj račun ispunjava uvjete za obnovu lozinke.'):L('بازیابی رمز برای این ایمیل فعال نیست؛ ثبت‌نام باید کامل و توسط ادمین تأیید شده باشد.','Recovery is unavailable for this email; registration must be complete and admin-approved.','Obnova nije dostupna za ovaj e-mail; registracija mora biti potpuna i odobrena.')},450)});btn.disabled=true;email.dispatchEvent(new Event('input'))}}
-const v=document.getElementById('view');if(v)new MutationObserver(()=>{patchForm();patchRecovery()}).observe(v,{childList:true,subtree:true});setTimeout(()=>{patchForm();patchRecovery()},300);window.NH7_REGISTRATION_UX_VERSION='3.8.1';})();
+function patchRecovery(){
+ const email=document.getElementById('resetEmail'),btn=document.getElementById('resetPasswordBtn'),status=document.getElementById('resetMsg');if(!email||!btn||email.dataset.v381)return;
+ email.dataset.v381='1';btn.disabled=true;
+ email.addEventListener('input',()=>{
+   clearTimeout(timer);btn.disabled=true;if(status)status.textContent=L('برای فعال‌شدن بازیابی، ایمیل حساب تأییدشده را وارد کنید.','Enter the email of an approved account to enable recovery.','Unesite e-mail odobrenog računa za aktiviranje obnove.');
+   timer=setTimeout(async()=>{const v=email.value.trim().toLowerCase();if(!emailRx.test(v)){if(status)status.textContent=ruleMessage('email');return}const ok=await eligibility(v).catch(()=>false);btn.disabled=!ok;if(status)status.textContent=ok?L('✓ این حساب برای بازیابی رمز مجاز است.','✓ This account is eligible for password recovery.','✓ Ovaj račun ispunjava uvjete za obnovu lozinke.'):L('بازیابی رمز برای این ایمیل فعال نیست؛ ثبت‌نام باید کامل و توسط ادمین تأیید شده باشد.','Recovery is unavailable for this email; registration must be complete and admin-approved.','Obnova nije dostupna za ovaj e-mail; registracija mora biti potpuna i odobrena.')},450);
+ });
+ email.dispatchEvent(new Event('input'));
+}
+const view=document.getElementById('view');if(view)new MutationObserver(()=>{patchForm();patchRecovery()}).observe(view,{childList:true,subtree:true});setTimeout(()=>{patchForm();patchRecovery()},300);window.NH7_REGISTRATION_UX_VERSION='3.8.1';})();
