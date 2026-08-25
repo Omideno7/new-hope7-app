@@ -3,6 +3,7 @@
 **Date:** 2026-08-25  
 **Branch:** `qa/final-integration-20260825`  
 **Production shell baseline:** `2.3.9.43`  
+**Admin shell baseline:** `2.3.9.40`  
 **Final QA integration label:** `3.7.0`
 
 ## Release rule
@@ -17,9 +18,12 @@ This branch is the only staging source for the next release. Do not merge to `ma
 - Direct database audit found one valid Auth account with complete registration metadata but no School row.
 - The valid orphan was backfilled from its existing verified metadata using an idempotent database repair.
 - Post-repair verification: **0 valid complete-metadata Auth orphans remain**.
-- Repository migration files exist for v3.5.5/v3.5.6, but these manually applied changes are not represented in the hosted `supabase_migrations.schema_migrations` history. Do not use migration-history presence alone as the runtime truth; the actual functions/triggers were verified directly.
+- Duplicate audit: **0 duplicate School email groups / 0 extra duplicate rows**.
+- Current School data audit: 107 School registration rows, with 1 pending request at audit time.
+- Direct execute access to the two sensitive trigger functions is revoked for both `anon` and `authenticated` roles.
+- Repository migration files exist for v3.5.5/v3.5.6, but these manually applied changes are not represented in the hosted `supabase_migrations.schema_migrations` history. Runtime functions/triggers were therefore verified directly rather than inferred from migration history.
 
-**QA status:** Backend repaired and verified. Client flow still needs end-to-end mobile registration test on Final QA.
+**QA status:** Backend repaired, duplicate-free and security-checked. Client flow still needs end-to-end mobile registration test on Final QA.
 
 ## 2. Bible Reader and saved verses
 
@@ -85,11 +89,18 @@ Separate QA utilities remain available for:
 
 ## 6. CI / GitHub Pages
 
-The latest custom `Deploy New Hope 7 to GitHub Pages` workflow on current `main` failed in its validation job. The workflow still contains stale hard-coded version assertions, including assumptions that both app and admin are `2.3.9.40`, while `version.json` currently declares app `2.3.9.43` and admin `2.3.9.40`.
+The previous production workflow had stale hard-coded assertions that treated app and admin as the same `2.3.9.40` version. Final QA corrected this without deploying the QA branch:
 
-Final QA work must make validation version-aware and allow the QA branch to run validation without deploying it. Production deployment must remain restricted to `main`.
+- App/admin versions are validated from `version.json` (`2.3.9.43` / `2.3.9.40`).
+- JavaScript syntax checks pass.
+- Release metadata and protected School bundle checks pass.
+- Auth / registration / recovery checks pass using the current v3.7.0 verifier.
+- Admin RBAC / recovery checks pass with version-aware validation.
+- HTML inline script parsing passes.
+- Final QA integration file checks pass.
+- QA branch deployment is deliberately skipped; only `main` may deploy.
 
-**QA status:** Pending workflow synchronization and green validation.
+**QA status:** **GREEN** on commit `f5c434d95a86ae90fb72eb2423a307ffea4439d7` before this status-only update.
 
 ## 7. Store release status
 
