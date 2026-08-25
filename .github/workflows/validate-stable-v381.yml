@@ -1,0 +1,57 @@
+name: Validate New Hope 7 Stable QA 3.8.1
+
+on:
+  push:
+    branches:
+      - qa-full-integration-v381
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nh7-stable-v381-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-stable:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Validate stable QA files and scripts
+        run: |
+          set -euo pipefail
+          test -f qa/full-integration-v380/app-stable.html
+          test -f qa/full-integration-v380/stable-index.html
+          node <<'NODE'
+          const fs=require('fs');
+          for(const file of ['qa/full-integration-v380/app-stable.html','qa/full-integration-v380/stable-index.html']){
+            const html=fs.readFileSync(file,'utf8');
+            const blocks=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]).filter(x=>x.trim());
+            blocks.forEach((code,i)=>new Function(code+`\n//# sourceURL=${file}-inline-${i}`));
+          }
+          NODE
+          grep -q "QA='qa-full-integration-v381'" qa/full-integration-v380/app-stable.html
+          grep -q "NH7_QA_LIBRARY_V363=true" qa/full-integration-v380/app-stable.html
+          grep -q "NH7_QA_NINE_BOOKS=true" qa/full-integration-v380/app-stable.html
+          grep -q "app-stable.html" qa/full-integration-v380/stable-index.html
+          grep -q "No automatic deployment or merge" qa/full-integration-v380/stable-index.html
+
+      - name: Validate core QA modules and approved asset
+        run: |
+          set -euo pipefail
+          node --check js/nh7-apocrypha-approved-v380.js
+          node --check js/nh7-school-workflow-v380.js
+          node --check js/nh7-registration-rules-v380.js
+          node --check js/nh7-minister-entitlements-v380.js
+          grep -q "a4235c6c0c38d24abf4dbd6a975f2a03c196de60" js/nh7-apocrypha-approved-v380.js
+          curl -fsSL "https://raw.githubusercontent.com/Omideno7/new-hope7-app/a4235c6c0c38d24abf4dbd6a975f2a03c196de60/data/apocrypha/runtime/apocrypha-browser-19.preview.json" -o /tmp/apo.json
+          node -e "const a=require('/tmp/apo.json');if(a.totals?.books!==19||a.books?.length!==19)throw new Error('Approved 19-book asset invalid')"
+
+      - name: Confirm validation-only isolation
+        run: |
+          test "${{ github.ref }}" = "refs/heads/qa-full-integration-v381"
+          echo "Stable QA validation passed; no deploy/merge job exists."
