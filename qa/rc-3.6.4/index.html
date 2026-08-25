@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>New Hope 7 — Integration QA 3.6.4</title>
+  <style>
+    html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;background:#eef4ff;color:#13213d}
+    main{min-height:100vh;display:grid;place-items:center;padding:24px;box-sizing:border-box;text-align:center}
+    .box{width:min(560px,100%);background:#fff;border:1px solid #d5e1f4;border-radius:20px;padding:28px;box-sizing:border-box;box-shadow:0 18px 55px rgba(34,62,112,.13)}
+    .logo{width:82px;height:82px;object-fit:contain;margin-bottom:12px}
+    h2{margin:0 0 12px;font-size:22px}
+    p{line-height:1.75;margin:8px 0}
+    small{display:block;color:#6a758d;line-height:1.7}
+    .spin{width:42px;height:42px;border:4px solid #dbe6fa;border-top-color:#1d4ed8;border-radius:50%;margin:20px auto 14px;animation:s .85s linear infinite}
+    .error{display:none;background:#fff0f0;color:#8f2323;border-radius:14px;padding:15px;margin-top:18px;white-space:pre-wrap;text-align:right}
+    button{border:0;border-radius:10px;padding:11px 18px;background:#1d4ed8;color:#fff;font:700 14px inherit;cursor:pointer;margin-top:12px}
+    @keyframes s{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+<main>
+  <div class="box">
+    <img class="logo" src="../../assets/logo.png" alt="New Hope 7" onerror="this.style.display='none'">
+    <h2>در حال آماده‌سازی نسخهٔ کامل آزمایشی New Hope 7</h2>
+    <p>موتور آزمایش‌شدهٔ ۱۹ کتاب اپوکریفا، تنظیمات Reader و آیات ذخیره‌شده با نسخهٔ جدید ثبت‌نام و ۹ کتاب در حال بررسی یکپارچه می‌شوند.</p>
+    <div class="spin"></div>
+    <small>این مسیر فقط برای QA است و نسخهٔ اصلی کاربران را تغییر نمی‌دهد.</small>
+    <div id="qaError" class="error"></div>
+  </div>
+</main>
+<script>
+(async()=>{
+  'use strict';
+  const AP_COMMIT='a4235c6c0c38d24abf4dbd6a975f2a03c196de60';
+  const MAIN_COMMIT='4aa150fe9e797e731dca181128d3a77c4fd0add7';
+  const REPO='Omideno7/new-hope7-app';
+  const sourceUrl=`https://raw.githubusercontent.com/${REPO}/${AP_COMMIT}/rc-full.html?v=3.6.4`;
+  const apAssets=`https://raw.githack.com/${REPO}/${AP_COMMIT}/`;
+  const mainAssets=`https://raw.githack.com/${REPO}/${MAIN_COMMIT}/`;
+  const cacheTag='3.6.4-'+Date.now();
+  const box=document.getElementById('qaError');
+
+  function fail(error){
+    console.error('[NH7 QA 3.6.4]',error);
+    document.querySelector('.spin')?.remove();
+    if(!box)return;
+    box.style.display='block';
+    box.textContent='نسخهٔ آزمایشی بارگذاری نشد.\n\n'+String(error?.message||error||'Unknown error');
+    const b=document.createElement('button');
+    b.type='button';b.textContent='تلاش دوباره';b.onclick=()=>location.reload();
+    box.appendChild(document.createElement('br'));box.appendChild(b);
+  }
+
+  try{
+    if('serviceWorker' in navigator){
+      try{const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(r=>r.unregister()))}catch(e){console.warn(e)}
+    }
+    if('caches' in window){
+      try{const keys=await caches.keys();await Promise.all(keys.filter(k=>/nh7|new.?hope|omideno/i.test(k)).map(k=>caches.delete(k)))}catch(e){console.warn(e)}
+    }
+
+    const response=await fetch(sourceUrl,{cache:'no-store'});
+    if(!response.ok)throw new Error('RC source HTTP '+response.status);
+    let html=await response.text();
+    if(!html.includes('app-rc-production-v240.js'))throw new Error('The proven RC application module is missing.');
+
+    html=html.replace('<head>',`<head>\n  <base href="${apAssets}">\n  <meta name="robots" content="noindex,nofollow,noarchive">`);
+    html=html.replace(/<title>[\s\S]*?<\/title>/i,'<title>New Hope 7 — Integration QA 3.6.4</title>');
+    html=html.replace("window.NH7_VERSION = '2.5.3-RC';","window.NH7_VERSION = '3.6.4-INTEGRATION-QA';");
+    html=html.replace("window.NH7_RELEASE_CHANNEL = 'release_candidate';","window.NH7_RELEASE_CHANNEL = 'qa_integration';\n    window.NH7_QA_LIBRARY_V363 = true;");
+    html=html.replace(/<div class="nh7-rc-banner">[\s\S]*?<\/div>/i,'<div class="nh7-rc-banner"><b>NEW HOPE 7 · INTEGRATION QA 3.6.4</b><span>۱۹ کتاب اپوکریفا از Runtime آزمایش‌شدهٔ RC 2.5.x — نسخهٔ اصلی کاربران تغییر نکرده است</span></div>');
+
+    const removePatterns=[
+      /\s*<script src="js\/nh7-auth-signup-guard-v343\.js[^\"]*"><\/script>/gi,
+      /\s*<script src="js\/nh7-school-registration-v342\.js[^\"]*"><\/script>/gi,
+      /\s*<script src="js\/nh7-auth-recovery-v342\.js[^\"]*"><\/script>/gi
+    ];
+    removePatterns.forEach(pattern=>{html=html.replace(pattern,'')});
+
+    const integrationScripts=`
+  <script src="${mainAssets}js/nh7-auth-signup-guard-v343.js?v=${cacheTag}"><\/script>
+  <script src="${mainAssets}js/nh7-school-registration-v342.js?v=${cacheTag}"><\/script>
+  <script src="${mainAssets}js/nh7-auth-recovery-v342.js?v=${cacheTag}"><\/script>
+  <script src="${apAssets}js/nh7-qa-library-v363.js?v=${cacheTag}"><\/script>
+  <script src="${mainAssets}js/nh7-registration-canonical-v353.js?v=${cacheTag}"><\/script>`;
+
+    const appTag=/<script src="js\/app-rc-production-v240\.js[^\"]*" type="module"><\/script>/i;
+    if(!appTag.test(html))throw new Error('The proven RC app module tag was not found.');
+    html=html.replace(appTag,integrationScripts+'\n  $&');
+
+    const qaGuard=`<script>
+      window.NH7_DISABLE_PREVIEW_SERVICE_WORKER=true;
+      window.NH7_DISABLE_PREVIEW_PUSH=true;
+      window.NH7_QA_APOCRYPHA_SOURCE='RC-2.5.x-19-books';
+      try{if('serviceWorker' in navigator){Object.defineProperty(navigator.serviceWorker,'register',{configurable:true,value:async()=>({scope:location.pathname})});}}catch(e){console.warn('[NH7 QA SW guard]',e)}
+    <\/script>`;
+    html=html.replace('</head>',qaGuard+'\n</head>');
+
+    document.open();document.write(html);document.close();
+  }catch(error){fail(error)}
+})();
+</script>
+</body>
+</html>
