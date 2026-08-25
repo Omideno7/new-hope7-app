@@ -1,0 +1,83 @@
+name: Validate New Hope 7 Full QA 3.8.0
+
+on:
+  push:
+    branches:
+      - qa/full-integration-20260825-v2
+      - qa-full-integration-v380
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nh7-full-qa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Validate QA JavaScript
+        run: |
+          set -euo pipefail
+          node --check js/nh7-apocrypha-approved-v380.js
+          node --check js/nh7-school-workflow-v380.js
+          node --check js/nh7-registration-rules-v380.js
+          node --check js/nh7-minister-entitlements-v380.js
+
+      - name: Validate QA HTML inline scripts
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const files=[
+            'qa/full-integration-v380/app.html',
+            'qa/full-integration-v380/admin.html',
+            'qa/full-integration-v380/admin-governance.html',
+            'qa/full-integration-v380/index.html'
+          ];
+          for(const file of files){
+            if(!fs.existsSync(file))throw new Error('Missing '+file);
+            const html=fs.readFileSync(file,'utf8');
+            const blocks=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]).filter(x=>x.trim());
+            blocks.forEach((code,i)=>new Function(code+`\n//# sourceURL=${file}-inline-${i}`));
+          }
+          console.log('QA HTML parsed:',files.length);
+          NODE
+
+      - name: Verify approved assets and integration wiring
+        run: |
+          set -euo pipefail
+          grep -q "a4235c6c0c38d24abf4dbd6a975f2a03c196de60" js/nh7-apocrypha-approved-v380.js
+          grep -q "nh7_school_exam_session_v380" js/nh7-school-workflow-v380.js
+          grep -q "nh7_submit_school_exam_v380" js/nh7-school-workflow-v380.js
+          grep -q "nh7_recovery_eligibility_v380" js/nh7-registration-rules-v380.js
+          grep -q "nh7_my_content_access_v380" js/nh7-minister-entitlements-v380.js
+          grep -q "nh7-qa-library-v363.js" qa/full-integration-v380/app.html
+          grep -q "nh7-apocrypha-approved-v380.js" qa/full-integration-v380/app.html
+          grep -q "nh7-school-workflow-v380.js" qa/full-integration-v380/app.html
+          grep -q "nh7-registration-rules-v380.js" qa/full-integration-v380/app.html
+          grep -q "nh7-minister-entitlements-v380.js" qa/full-integration-v380/app.html
+          test -f supabase/migrations/20260825193000_full_integration_qa_v380.sql
+          test -f supabase/migrations/20260825193500_content_access_admin_read_v380.sql
+          grep -q "nh7_owner_account_action_v380" supabase/migrations/20260825193000_full_integration_qa_v380.sql
+          grep -q "nh7_school_record_audio_v380" supabase/migrations/20260825193000_full_integration_qa_v380.sql
+
+      - name: Validate approved 19-book review asset
+        run: |
+          curl -fsSL "https://raw.githubusercontent.com/Omideno7/new-hope7-app/a4235c6c0c38d24abf4dbd6a975f2a03c196de60/data/apocrypha/runtime/apocrypha-browser-19.preview.json" -o /tmp/apocrypha.json
+          node <<'NODE'
+          const a=require('/tmp/apocrypha.json');
+          if(a.asset_id!=='new_hope_7_apocrypha_browser_19_preview')throw new Error('Wrong approved asset');
+          if(a.totals?.books!==19||!Array.isArray(a.books)||a.books.length!==19)throw new Error('Approved asset must contain 19 books');
+          const langs=['en','fa','hr'];
+          for(const l of langs){
+            const available=a.books.filter(b=>(b.chapters||[]).some(c=>(c.verses||[]).some(v=>String(v['text_'+l]||'').trim()))||(l==='fa'&&b.fa_document?.pages?.length)||(l==='hr'&&(b.hr_prepared||b.croatian_prepared)?.chapters?.length)).length;
+            if(available!==19)throw new Error(`${l} effective coverage ${available}/19`);
+          }
+          console.log('Approved Apocrypha coverage: 19/19 EN FA HR');
+          NODE
