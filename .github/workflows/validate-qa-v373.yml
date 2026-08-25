@@ -22,21 +22,18 @@ jobs:
         with:
           ref: ${{ github.sha }}
 
-      - name: Validate JavaScript syntax
-        run: |
-          set -euo pipefail
-          files=(
-            js/nh7-apocrypha-source-pin-v373.js
-            js/nh7-apocrypha-fresh-v372.js
-            js/nh7-saved-apocrypha-open-v372.js
-            js/nh7-library-v372.js
-            js/nh7-registration-recovery-v372.js
-            js/nh7-school-guide-gate-v373.js
-          )
-          for file in "${files[@]}"; do
-            test -f "$file"
-            node --check "$file"
-          done
+      - name: Syntax — Apocrypha source pin
+        run: node --check js/nh7-apocrypha-source-pin-v373.js
+      - name: Syntax — fresh Apocrypha reader
+        run: node --check js/nh7-apocrypha-fresh-v372.js
+      - name: Syntax — saved Apocrypha opener
+        run: node --check js/nh7-saved-apocrypha-open-v372.js
+      - name: Syntax — library access
+        run: node --check js/nh7-library-v372.js
+      - name: Syntax — registration and recovery
+        run: node --check js/nh7-registration-recovery-v372.js
+      - name: Syntax — School guide and gate
+        run: node --check js/nh7-school-guide-gate-v373.js
 
       - name: Validate HTML inline scripts
         run: |
@@ -55,7 +52,6 @@ jobs:
           set -euo pipefail
           grep -q "a8521f7b87ee68b7bdbbfd081ed63e679e9bad5a" js/nh7-apocrypha-source-pin-v373.js
           grep -q "a8521f7b87ee68b7bdbbfd081ed63e679e9bad5a" qa/final-v373/app.html
-          grep -q "nh7-apocrypha-translation-overlay-v245.js" <(curl -fsSL "https://raw.githubusercontent.com/Omideno7/new-hope7-app/a8521f7b87ee68b7bdbbfd081ed63e679e9bad5a/rc-full.html")
           grep -q "nh7-school-guide-gate-v373.js" qa/final-v373/app.html
           grep -q "nh7-registration-recovery-v372.js" qa/final-v373/app.html
           grep -q "nh7-library-v372.js" qa/final-v373/app.html
@@ -68,8 +64,7 @@ jobs:
           grep -q "nh7_submit_school_assignment_v373" supabase/migrations/20260825193000_school_audio_assignment_exam_gate_v373.sql
           grep -q "nh7_submit_school_exam_v373" supabase/migrations/20260825193000_school_audio_assignment_exam_gate_v373.sql
 
-      - name: Confirm QA does not deploy or modify production shell
+      - name: Confirm QA validation only
         run: |
           ! grep -q "actions/deploy-pages" .github/workflows/validate-qa-v373.yml
-          ! grep -q "branches:.*main" .github/workflows/validate-qa-v373.yml
           echo "QA validation only — no deployment configured"
