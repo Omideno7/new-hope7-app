@@ -1,0 +1,54 @@
+name: Validate Final QA R3.7 3.9.7
+on:
+  push:
+    branches: [qa/final-integration-20260825-r3]
+    paths:
+      - 'qa/final-r3/nh7-audio-signed-v397.js'
+      - 'qa/final-r3/app-r37.html'
+      - '.github/workflows/validate-final-r37.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - name: Validate JavaScript and launcher
+        run: |
+          node --check qa/final-r3/nh7-audio-signed-v397.js
+          node <<'NODE'
+          const fs=require('fs');
+          const html=fs.readFileSync('qa/final-r3/app-r37.html','utf8');
+          [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].forEach((m,i)=>new Function(m[1]+`\n//# sourceURL=app-r37-${i}`));
+          for(const required of ['R3.7','3.9.7','nh7-audio-signed-v397.js','99d8eaa32ed1ecbcdf5aecf9e05814ec681dec38','nh7-audio-media-v396'])if(!html.includes(required))throw Error('Launcher missing '+required);
+          NODE
+      - name: Verify custom player controls
+        run: |
+          grep -q 'data-v397-toggle' qa/final-r3/nh7-audio-signed-v397.js
+          grep -q 'data-v397-stop' qa/final-r3/nh7-audio-signed-v397.js
+          grep -q 'data-v397-back' qa/final-r3/nh7-audio-signed-v397.js
+          grep -q 'data-v397-forward' qa/final-r3/nh7-audio-signed-v397.js
+          grep -q 'data-v397-speed-down' qa/final-r3/nh7-audio-signed-v397.js
+          grep -q 'data-v397-speed-up' qa/final-r3/nh7-audio-signed-v397.js
+          grep -q 'data-v397-seek' qa/final-r3/nh7-audio-signed-v397.js
+          grep -q "SPEEDS=\[0.75,1,1.25,1.5,1.75,2\]" qa/final-r3/nh7-audio-signed-v397.js
+      - name: Verify signed School and sermon download ownership
+        run: |
+          grep -q "kind:'sermon',sermon_id" qa/final-r3/nh7-audio-signed-v397.js
+          grep -q "kind:'audio',lesson_code" qa/final-r3/nh7-audio-signed-v397.js
+          grep -q "removeAttribute('data-offline-download')" qa/final-r3/nh7-audio-signed-v397.js
+          grep -q "window.addEventListener('click',intercept,true)" qa/final-r3/nh7-audio-signed-v397.js
+          grep -q 'در حال دانلود ${percent}%' qa/final-r3/nh7-audio-signed-v397.js
+          grep -q 'is-downloaded-v397' qa/final-r3/nh7-audio-signed-v397.js
+      - name: Verify persistent offline architecture
+        run: |
+          grep -q "DB_NAME='nh7-offline-audio-v397'" qa/final-r3/nh7-audio-signed-v397.js
+          grep -q 'indexedDB.open' qa/final-r3/nh7-audio-signed-v397.js
+          grep -q 'idbPut' qa/final-r3/nh7-audio-signed-v397.js
+          grep -q 'URL.createObjectURL' qa/final-r3/nh7-audio-signed-v397.js
+          grep -q "LEGACY_CACHE='nh7-audio-media-v396'" qa/final-r3/nh7-audio-signed-v397.js
+          grep -q "NH7_AUDIO_SIGNED_VERSION='3.9.7'" qa/final-r3/nh7-audio-signed-v397.js
+          echo 'R3.7 custom player and persistent offline validation passed.'
