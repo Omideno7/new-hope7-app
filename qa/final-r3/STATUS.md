@@ -1,76 +1,115 @@
-# New Hope 7 — Final QA R3.3 3.9.3
+# New Hope 7 — Final QA R3.4 3.9.4
 
 **Branch:** `qa/final-integration-20260825-r3`  
 **Approved content/UI baseline:** RC 2.5.1 commit `a6b0f6465e2d7f3e335b528a116d962cbe8f5b20`  
 **Current production baseline retained:** `main` app `2.3.9.44`
 
-## Current QA scope
+## Scope retained from prior QA
 
-R3.3 keeps the approved 19-book trilingual Apocrypha translations and Reader, six Spiritual Plans, nine trilingual library books, the current School/exam safeguards, the live Admin sermon archive and the personal one-device video portal. Nothing from R3.3 has been merged into `main` yet.
+R3.4 retains the approved 19-book Persian/English/Croatian Apocrypha, continuous Bible-style Reader, highlight/notes/Save toggle, six Spiritual Plans, nine trilingual library books, current registration/School/exam gates, live sermon catalogue, personal one-device video portal and secure self-service account deletion.
 
-## Apocrypha Reader
+## Audio playback
 
-- All 19 books have complete fresh Persian and Croatian project translations over the English source.
-- Verses flow continuously like the Bible, with compact superscript verse numbers.
-- A− / A+ scaling, notes, copy, share and exact Saved Verse navigation remain active.
-- R3.3 fixes the Safari highlight regression: yellow, green, blue, pink and purple classes now override the transparent inline-reader background.
-- The Apocrypha star is now a true toggle:
-  - first press saves locally and syncs the signed-in account;
-  - second press removes the same reference locally and from `nh7_account_saved_verses`;
-  - verse metadata remains available for the Saved Verses panel.
+The former RC audio player deferred `audio.play()` until the `loadedmetadata` event and silently swallowed the promise rejection. Safari could therefore show an active Play button but never start playback because the later call was no longer treated as the user gesture.
 
-## Live sermons
+R3.4 installs one capture-level audio controller before the legacy document handlers:
 
-- The obsolete bundled first-version archive remains disabled.
-- The current archive is loaded through authenticated RPC `nh7_sermon_catalog_v392`.
-- The catalogue reflects current Admin uploads and categories rather than a static bundled JSON.
+- public sermon audio starts directly from the original click;
+- School audio first arms the same audio element during the click, then requests the protected signed URL from `nh7-school-media-access`;
+- Play/pause, 15-second rewind, 30-second forward, seek and playback speed use one player state;
+- errors are displayed under the relevant card instead of being swallowed;
+- School listening time continues to be sent to `nh7_school_record_audio_v380` and the audio analytics RPC.
 
-## Personal video access
+The legacy secure-media/audio handlers are removed from the QA shell to avoid duplicate interception and the previous `Run failed`/silent-player path.
 
-- The video entry shows a visible password form rather than a generic Load failed screen.
-- A personal password is restricted to its assigned account and first device.
-- The backend supports all videos, one video or a selected set of videos.
-- Secure signed playback and account/device watermarking remain active.
+## Audio downloads and offline use
 
-## Secure self-service account deletion
+Every sermon and School audio card now supports a real download flow:
 
-R3.3 adds **More → Account → Permanently delete account** for signed-in non-admin users.
+- streamed web download with visible percentage when `Content-Length` is available;
+- Capacitor FileTransfer progress in Android/iOS builds;
+- green checked button after completion;
+- second press offers removal of the downloaded file;
+- downloaded files are stored with stable media IDs, so expiring School signed URLs do not invalidate the offline copy;
+- offline playback uses the downloaded Blob/native file rather than the expired network URL.
 
-The client requires:
+A QA Service Worker caches the immutable shell and prepared core content. Auth, RPC, Edge Function and expiring signed-storage responses are explicitly excluded. The most recent sermon, School and library catalogues are persisted separately for offline UI rendering.
 
-1. current account password;
-2. exact account email confirmation;
-3. the word `DELETE`;
-4. a permanence acknowledgement checkbox;
-5. final confirmation.
+Offline requires a successful online preparation first:
 
-The password is reauthenticated through Supabase Auth before deletion. The database function then verifies the authenticated/confirmed identity, exact email and `DELETE` phrase, and refuses owner or administrator accounts.
+1. Settings → Prepare core content offline;
+2. download each required audio file completely;
+3. then disconnect the network and reopen the app/file.
 
-The permanent deletion transaction removes the Auth account and linked New Hope 7 data, including registrations, School progress/audio/assignments/exams/certificates, saved verses, notes, plans, messages, content grants, video codes/grants, sessions and associated device records. A hashed audit record is retained without storing the deleted email in plain text.
+## Admin users and account directory
 
-The deletion path was exercised inside a rollback transaction using a non-admin account. The transaction completed successfully and the rollback confirmed that the test account remained present.
+The previous RawGit Admin helper depended on `nh7_admin_token` created on another domain. Browser origin isolation meant the token was usually absent, so the UI showed no users/accounts even though the RPCs contained data.
 
-## Merge strategy
+R3.4 adds `admin-tools-v394.html` with direct Supabase Owner login on the QA domain, access-token refresh and automatic retry. Direct database checks showed:
 
-R3.3 must **not** replace `main` as a whole. The production release procedure is:
+- 31 complete approved users available to the content-access dashboard;
+- 71 Auth accounts in the account directory;
+- 36 registration records without a matching Auth account at audit time.
 
-1. create a fresh release branch from the latest `main`;
-2. transfer only approved R3.3 modules, migrations and data;
-3. reconcile same-file changes manually so newer `main` functionality is retained;
-4. review the complete diff for accidental deletions;
-5. run CI and full regression tests;
-6. merge the reviewed release branch into `main`.
+The tool clearly distinguishes an empty **resource** list from an empty **user** list. At audit time there were no active library items with `audience = ministers`, so approved users are available but item-by-item checkboxes appear only after a book/handout is published for ministers.
 
-Therefore the intended result is that current `main` features remain and the approved R3.3 changes are added. Only explicitly obsolete paths, such as the legacy Apocrypha/archive fallback, are removed or bypassed.
+## More menu and Settings
+
+R3.4 removes:
+
+- the duplicate Gratitude tile from More, because Gratitude remains under Daily;
+- legacy/duplicate video tiles from Settings and other nested More pages.
+
+The personal video entry remains only on the root More screen.
+
+Settings controls now provide visible status for:
+
+- language selection;
+- notification permission/scheduling;
+- prepare core content offline;
+- clear downloaded media;
+- refresh app data/cache;
+- cloud-sync request.
+
+## Saved Apocrypha deep links
+
+The previous deep link rendered the Apocrypha catalogue, waited for the 8.8 MB merged asset, then outlined the article element. Because the article uses `display: contents`, the mark was not visible.
+
+R3.4:
+
+- prewarms the merged 19-book runtime as soon as the module loads;
+- covers the intermediate catalogue with a direct-opening overlay;
+- opens the exact book and chapter;
+- scrolls without the slow animated delay;
+- applies a green animated marker to the visible verse trigger for 6.5 seconds.
+
+## Validation status
+
+GitHub Actions validation succeeded for:
+
+- JavaScript and inline HTML syntax;
+- all 19 fresh trilingual Apocrypha books;
+- direct saved-verse navigation;
+- audio playback/download/School authorization contracts;
+- offline Service Worker safeguards;
+- Settings/menu cleanup;
+- Admin direct login and dashboard RPC wiring;
+- sermon/video/account/School contracts;
+- Spiritual Plans catalogue;
+- confirmation that `main` remains `2.3.9.44`.
+
+This is static/integration validation. Real Safari and installed-app playback/download/offline behavior still requires the user QA described below.
 
 ## Required user QA before normalization
 
-1. Choose each Apocrypha highlight color and confirm it appears immediately and persists after reopening the chapter.
-2. Save an Apocrypha verse, press the same star again and confirm it is removed from Saved Verses.
-3. Confirm note, share, A−/A+ and direct Saved Verse navigation still work.
-4. Test video password entry with a newly created personal test code.
-5. Open More → Account and confirm the delete-account danger zone is present.
-6. Test permanent deletion only with a disposable test account; verify that login fails afterward and the account disappears from Admin.
-7. Recheck live sermons, Plans, library and School gates.
+1. Play one MP3 and one M4A sermon; pause/resume and seek.
+2. Open a School lesson, play its protected audio and verify the raw `Run failed` message is absent.
+3. Download one sermon and one School lesson; observe percentage and the green check.
+4. Turn off Wi-Fi/internet and play both downloaded files.
+5. Prepare core content offline, close/reopen the page offline and test Home, Bible, Plans and School screens.
+6. Open Admin Tools 3.9.4, sign in with the Owner account and verify the approved-user and account lists.
+7. Confirm Gratitude is absent from More and video is absent from Settings.
+8. Test every Settings control and confirm a visible response.
+9. Open a saved Apocrypha verse and verify it goes directly to the exact verse with the green marker.
 
-Only after these checks pass should R3.3 be normalized onto the latest production `main`.
+Only after these checks pass should R3.4 be normalized onto a fresh branch created from the latest production `main`.
