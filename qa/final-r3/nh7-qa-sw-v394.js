@@ -1,0 +1,20 @@
+/* New Hope 7 Final QA R3.4 v3.9.4 — offline runtime for the immutable QA client.
+ * Never caches Auth, RPC, Edge Function or expiring signed-storage responses.
+ */
+'use strict';
+const VERSION='3.9.4';
+const SHELL_CACHE='nh7-qa-shell-v394';
+const CORE_CACHE='nh7-core-runtime-v394';
+const MEDIA_CACHE='nh7-media-downloads-v394';
+const ALLOWED_CACHES=new Set([SHELL_CACHE,CORE_CACHE,MEDIA_CACHE]);
+self.addEventListener('install',event=>event.waitUntil(self.skipWaiting()));
+self.addEventListener('activate',event=>event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(key=>/^nh7-qa-shell-v\d+|^nh7-core-runtime-v\d+/.test(key)&&!ALLOWED_CACHES.has(key)).map(key=>caches.delete(key)));await self.clients.claim()})()));
+function sensitive(url){const host=url.hostname.toLowerCase(),path=url.pathname.toLowerCase();if(host.endsWith('.supabase.co')){if(path.includes('/auth/v1/')||path.includes('/rest/v1/')||path.includes('/functions/v1/'))return true;if(path.includes('/storage/v1/object/sign/')||path.includes('/storage/v1/object/authenticated/'))return true;if(url.searchParams.has('token'))return true}return false}
+function cacheableResponse(response){return response&&(response.ok||response.type==='opaque')}
+async function matchAny(request){const direct=await caches.match(request,{ignoreVary:true});if(direct)return direct;if(request.mode==='navigate'){const url=new URL(request.url),withoutSearch=new Request(url.origin+url.pathname,{method:'GET'});return caches.match(withoutSearch,{ignoreSearch:true,ignoreVary:true})}return null}
+async function remember(request,response,cacheName=SHELL_CACHE){if(!cacheableResponse(response))return response;try{const cache=await caches.open(cacheName);await cache.put(request,response.clone())}catch(_){ }return response}
+async function navigation(request){try{return await remember(request,await fetch(request,{cache:'no-store'}))}catch(error){const cached=await matchAny(request);if(cached)return cached;throw error}}
+async function immutable(request){const cached=await matchAny(request);if(cached)return cached;return remember(request,await fetch(request),CORE_CACHE)}
+async function staleWhileRevalidate(request){const cached=await matchAny(request),network=fetch(request).then(response=>remember(request,response,CORE_CACHE)).catch(()=>null);return cached||await network||Response.error()}
+self.addEventListener('fetch',event=>{const request=event.request;if(request.method!=='GET')return;const url=new URL(request.url);if(sensitive(url))return;if(url.pathname.includes('/__nh7_media_v394__/')){event.respondWith(caches.open(MEDIA_CACHE).then(cache=>cache.match(request)).then(response=>response||new Response('Offline media not found',{status:404})));return}if(request.mode==='navigate'){event.respondWith(navigation(request));return}const immutableCommit=/raw\.githack\.com$/i.test(url.hostname)&&/\/new-hope7-app\/[0-9a-f]{40}\//i.test(url.pathname);if(immutableCommit){event.respondWith(immutable(request));return}const staticType=['script','style','image','font','manifest','worker'].includes(request.destination)||/\.(?:js|css|json|png|jpe?g|webp|svg|ico|woff2?|ttf|html)$/i.test(url.pathname);if(staticType)event.respondWith(staleWhileRevalidate(request))});
+self.addEventListener('message',event=>{const data=event.data||{},port=event.ports?.[0],reply=value=>{try{port?.postMessage(value)}catch(_){ }};if(data.type==='NH7_QA_VERSION'){reply({ok:true,version:VERSION});return}if(data.type==='MEDIA_STATUS'){event.waitUntil(caches.open(MEDIA_CACHE).then(cache=>cache.match(data.url)).then(response=>reply({ok:true,cached:!!response})).catch(error=>reply({ok:false,error:String(error)})));return}if(data.type==='REMOVE_URL'){event.waitUntil(caches.open(MEDIA_CACHE).then(cache=>cache.delete(data.url)).then(ok=>reply({ok:true,removed:ok})).catch(error=>reply({ok:false,error:String(error)})));return}if(data.type==='CLEAR_MEDIA')event.waitUntil(caches.delete(MEDIA_CACHE).then(()=>reply({ok:true})).catch(error=>reply({ok:false,error:String(error)})))});
