@@ -1,0 +1,37 @@
+name: Validate Settings hotfix 2.3.9.47
+on:
+  push:
+    branches: [hotfix/settings-feedback-2.3.9.47]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - name: Validate Settings module and shell
+        run: |
+          node --check js/nh7-settings-feedback-v398.js
+          node --check js/nh7-audio-signed-v397.js
+          node <<'NODE'
+          const fs=require('fs'),v=JSON.parse(fs.readFileSync('version.json','utf8')),h=fs.readFileSync('index.html','utf8'),s=fs.readFileSync('js/nh7-settings-feedback-v398.js','utf8'),shell=fs.readFileSync('app-v239.html','utf8'),sw=fs.readFileSync('service-worker.js','utf8');
+          if(v.app!=='2.3.9.47')throw Error('version mismatch');
+          if(!h.includes("window.NH7_VERSION = '2.3.9.47'"))throw Error('index version mismatch');
+          const audio=h.indexOf('js/nh7-audio-signed-v397.js?v=2.3.9.47'),settings=h.indexOf('js/nh7-settings-feedback-v398.js?v=2.3.9.47'),app=h.indexOf('js/app.js?v=2.3.9.47');
+          if(audio<0||settings<0||app<0||audio>settings||settings>app)throw Error('script load order invalid');
+          for(const required of ["NH7_SETTINGS_FEEDBACK_VERSION='3.9.8'","DB_NAME='nh7-offline-audio-v397'",'clearAllDownloads','clearDb','clearCaches','clearNative','data-v398-settings-status','clearOfflineMedia'])if(!s.includes(required))throw Error('Settings module missing '+required);
+          if(!shell.includes('index.html?v=2.3.9.47'))throw Error('native shell mismatch');
+          if(!sw.includes('2.3.9.47')||!sw.includes('settings-feedback-v398'))throw Error('service worker mismatch');
+          for(const file of ['index.html','app-v239.html']){const html=fs.readFileSync(file,'utf8');[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].forEach((m,i)=>new Function(m[1]+`\n//# sourceURL=${file}-${i}`));}
+          NODE
+      - name: Verify complete cleanup targets
+        run: |
+          grep -q "LS_PREFIXES=.*nh7_audio_media_v397" js/nh7-settings-feedback-v398.js
+          grep -q "NATIVE_DIRS=.*offline_audio_v397" js/nh7-settings-feedback-v398.js
+          grep -q "caches.delete" js/nh7-settings-feedback-v398.js
+          grep -q "indexedDB.deleteDatabase" js/nh7-settings-feedback-v398.js
+          grep -q "NH7_AUDIO_SIGNED_V397?.clearAll" js/nh7-settings-feedback-v398.js
+          echo 'Settings hotfix 2.3.9.47 validation passed.'
