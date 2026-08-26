@@ -1,115 +1,125 @@
-# New Hope 7 — Final QA R3.4 3.9.4
+# New Hope 7 — Final QA R3.5 3.9.5
 
 **Branch:** `qa/final-integration-20260825-r3`  
 **Approved content/UI baseline:** RC 2.5.1 commit `a6b0f6465e2d7f3e335b528a116d962cbe8f5b20`  
 **Current production baseline retained:** `main` app `2.3.9.44`
 
-## Scope retained from prior QA
+## Scope retained
 
-R3.4 retains the approved 19-book Persian/English/Croatian Apocrypha, continuous Bible-style Reader, highlight/notes/Save toggle, six Spiritual Plans, nine trilingual library books, current registration/School/exam gates, live sermon catalogue, personal one-device video portal and secure self-service account deletion.
+R3.5 retains the approved 19-book Persian/English/Croatian Apocrypha, Bible-style Reader, highlight/notes/Save toggle, six Spiritual Plans, nine trilingual library books, registration/School/exam gates, live sermon catalogue, personal one-device video portal, Settings cleanup and secure self-service account deletion.
 
-## Audio playback
+## Audio root cause and R3.5 fix
 
-The former RC audio player deferred `audio.play()` until the `loadedmetadata` event and silently swallowed the promise rejection. Safari could therefore show an active Play button but never start playback because the later call was no longer treated as the user gesture.
+The repeated R3.4 playback/download failure was not only a Safari autoplay problem. A direct storage audit found that bucket `church-audio` is **private**, while sermon database rows contain URLs shaped like `/storage/v1/object/public/church-audio/...`. Those stored URLs therefore cannot be treated as public playback/download URLs.
 
-R3.4 installs one capture-level audio controller before the legacy document handlers:
+School audio also lives in the same private bucket, with protected storage paths such as `school/class-01-fa.mp3`.
 
-- public sermon audio starts directly from the original click;
-- School audio first arms the same audio element during the click, then requests the protected signed URL from `nh7-school-media-access`;
-- Play/pause, 15-second rewind, 30-second forward, seek and playback speed use one player state;
-- errors are displayed under the relevant card instead of being swallowed;
-- School listening time continues to be sent to `nh7_school_record_audio_v380` and the audio analytics RPC.
+R3.5 moves both sources to the authenticated media Edge Function:
 
-The legacy secure-media/audio handlers are removed from the QA shell to avoid duplicate interception and the previous `Run failed`/silent-player path.
+- sermon: `{ kind: 'sermon', sermon_id }` -> published sermon lookup -> storage path extraction -> 6-hour signed URL;
+- School: `{ kind: 'audio', lesson_code }` -> `nh7_school_media_authorize_v260` -> protected storage path -> 6-hour signed URL;
+- video portal/video remain on the v3.9.2 account/device-bound authorization functions.
 
-## Audio downloads and offline use
+The live `nh7-school-media-access` Edge Function was deployed as **version 5** with RawGit CORS support and signed sermon audio support.
 
-Every sermon and School audio card now supports a real download flow:
+## Safari playback
 
-- streamed web download with visible percentage when `Content-Length` is available;
-- Capacitor FileTransfer progress in Android/iOS builds;
-- green checked button after completion;
-- second press offers removal of the downloaded file;
-- downloaded files are stored with stable media IDs, so expiring School signed URLs do not invalidate the offline copy;
-- offline playback uses the downloaded Blob/native file rather than the expired network URL.
+The QA launcher removes competing legacy audio/offline handlers from the approved RC shell and loads a single v3.9.5 controller.
 
-A QA Service Worker caches the immutable shell and prepared core content. Auth, RPC, Edge Function and expiring signed-storage responses are explicitly excluded. The most recent sermon, School and library catalogues are persisted separately for offline UI rendering.
+For each sermon/School item it:
 
-Offline requires a successful online preparation first:
+- prewarms signed URLs;
+- uses one HTMLAudioElement for play/pause/seek/speed;
+- shows real status below the card;
+- if Safari blocks async autoplay after the signed URL request, inserts a visible native `<audio controls>` fallback on the same card so the user can start playback explicitly;
+- keeps School listen-time reporting through `nh7_school_record_audio_v380` and analytics through `nh7_track_audio_session_v222`.
 
-1. Settings → Prepare core content offline;
-2. download each required audio file completely;
-3. then disconnect the network and reopen the app/file.
+## Download and offline
 
-## Admin users and account directory
+R3.5 download uses the signed URL, never the raw private URL.
 
-The previous RawGit Admin helper depended on `nh7_admin_token` created on another domain. Browser origin isolation meant the token was usually absent, so the UI showed no users/accounts even though the RPCs contained data.
+- Web download streams the response and shows percentage when Content-Length is available.
+- Android/iOS builds use Capacitor FileTransfer progress.
+- Completion changes the button to green `Downloaded ✓` / localized equivalent.
+- A second press offers deletion.
+- Downloaded files are keyed by a stable media ID rather than the expiring signed URL.
+- Offline playback resolves the downloaded Blob/native file from the stable ID.
 
-R3.4 adds `admin-tools-v394.html` with direct Supabase Owner login on the QA domain, access-token refresh and automatic retry. Direct database checks showed:
+Offline caches:
 
-- 31 complete approved users available to the content-access dashboard;
-- 71 Auth accounts in the account directory;
-- 36 registration records without a matching Auth account at audit time.
+- `nh7-core-v395` for prepared core app content;
+- `nh7-media-v395` for downloaded media;
+- `nh7-qa-shell-v395` for QA shell navigation.
 
-The tool clearly distinguishes an empty **resource** list from an empty **user** list. At audit time there were no active library items with `audience = ministers`, so approved users are available but item-by-item checkboxes appear only after a book/handout is published for ministers.
+Auth, REST/RPC, Edge Function and signed/authenticated storage requests are never cached by the Service Worker.
 
-## More menu and Settings
+Offline setup remains explicit: prepare core content while online and separately download the large audio files required offline.
 
-R3.4 removes:
+## Admin user/account lists
 
-- the duplicate Gratitude tile from More, because Gratitude remains under Daily;
-- legacy/duplicate video tiles from Settings and other nested More pages.
+The old list RPCs used `nh7_is_admin()`, which only recognizes the configured owner email. This caused active delegated admins to receive list errors/empty pages despite having v350 permissions.
 
-The personal video entry remains only on the root More screen.
+Production Supabase now has RBAC-aware read functions:
 
-Settings controls now provide visible status for:
+- `nh7_admin_has_permission_v395`
+- `nh7_admin_content_access_dashboard_v395`
+- `nh7_admin_account_directory_v395`
 
-- language selection;
-- notification permission/scheduling;
-- prepare core content offline;
-- clear downloaded media;
-- refresh app data/cache;
-- cloud-sync request.
+A simulated active delegate with `registrations.view` successfully received:
+
+- **31** complete approved users;
+- **71** Auth accounts.
+
+`admin-tools-v395.html` accepts an active admin for viewing these lists. Sensitive operations remain restricted:
+
+- minister item grants: Owner-only;
+- full account deletion: Owner-only;
+- registration deletion: existing permission-protected RPC.
+
+At audit time there were still **0 active library items with `audience = ministers`**. Therefore the user dropdown should contain approved users, but item checkboxes correctly remain empty until at least one minister book/handout is published.
+
+## More / Settings
+
+The R3.4 Settings overlay remains active in R3.5:
+
+- duplicate Gratitude is removed from More because Gratitude remains under Daily;
+- Video is removed from Settings/nested views and remains only on the root More page;
+- language, notification request, offline preparation, clear downloads, refresh and sync show visible feedback.
 
 ## Saved Apocrypha deep links
 
-The previous deep link rendered the Apocrypha catalogue, waited for the 8.8 MB merged asset, then outlined the article element. Because the article uses `display: contents`, the mark was not visible.
+The R3.4 direct navigation remains active:
 
-R3.4:
+- merged Apocrypha runtime is prewarmed;
+- intermediate catalogue is covered while navigating;
+- exact book/chapter/verse is opened;
+- visible verse trigger receives a green marker rather than the invisible `display: contents` article.
 
-- prewarms the merged 19-book runtime as soon as the module loads;
-- covers the intermediate catalogue with a direct-opening overlay;
-- opens the exact book and chapter;
-- scrolls without the slow animated delay;
-- applies a green animated marker to the visible verse trigger for 6.5 seconds.
+## Validation
 
-## Validation status
-
-GitHub Actions validation succeeded for:
+GitHub Actions R3.5 validation succeeded for:
 
 - JavaScript and inline HTML syntax;
-- all 19 fresh trilingual Apocrypha books;
-- direct saved-verse navigation;
-- audio playback/download/School authorization contracts;
-- offline Service Worker safeguards;
-- Settings/menu cleanup;
-- Admin direct login and dashboard RPC wiring;
-- sermon/video/account/School contracts;
-- Spiritual Plans catalogue;
+- all 19 fresh Apocrypha translations and six Spiritual Plans;
+- signed sermon/School audio architecture;
+- v3.9.5 offline Service Worker safeguards;
+- RBAC Admin list functions and QA tool wiring;
+- existing video/account/School security modules;
 - confirmation that `main` remains `2.3.9.44`.
 
-This is static/integration validation. Real Safari and installed-app playback/download/offline behavior still requires the user QA described below.
+This static/integration validation cannot replace real Safari/device media testing. User QA is still required before normalization/merge.
 
-## Required user QA before normalization
+## Required user QA
 
-1. Play one MP3 and one M4A sermon; pause/resume and seek.
-2. Open a School lesson, play its protected audio and verify the raw `Run failed` message is absent.
-3. Download one sermon and one School lesson; observe percentage and the green check.
-4. Turn off Wi-Fi/internet and play both downloaded files.
-5. Prepare core content offline, close/reopen the page offline and test Home, Bible, Plans and School screens.
-6. Open Admin Tools 3.9.4, sign in with the Owner account and verify the approved-user and account lists.
-7. Confirm Gratitude is absent from More and video is absent from Settings.
-8. Test every Settings control and confirm a visible response.
-9. Open a saved Apocrypha verse and verify it goes directly to the exact verse with the green marker.
+1. Sign in on the QA domain with a complete approved account.
+2. Play one current MP3 sermon and one current M4A sermon. If Safari shows the fallback audio control, press its Play button and confirm playback.
+3. Open a School lesson and play its protected audio; `Run failed` must not appear.
+4. Download one sermon and one School lesson; confirm percentage and the green completion check.
+5. Disable internet and play both downloaded files.
+6. Settings -> Prepare core content offline, then reopen offline and test Home/Bible/Plans/School shell.
+7. Open `admin-tools-v395.html`, sign in with an active admin, and confirm user/account lists. Owner is required for minister grants and full-delete actions.
+8. Confirm Gratitude is absent from More and Video is absent from Settings.
+9. Exercise every Settings control and confirm visible feedback.
+10. Open a saved Apocrypha verse and confirm direct navigation to the exact visibly marked verse.
 
-Only after these checks pass should R3.4 be normalized onto a fresh branch created from the latest production `main`.
+Only after these checks pass should approved R3.5 changes be normalized onto a fresh release branch created from the latest `main`.
