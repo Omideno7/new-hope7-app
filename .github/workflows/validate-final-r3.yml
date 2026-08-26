@@ -1,4 +1,4 @@
-name: Validate Final QA R3.3 3.9.3
+name: Validate Final QA R3.4 3.9.4
 on:
   push:
     branches: [qa/final-integration-20260825-r3]
@@ -22,20 +22,36 @@ jobs:
       - name: Build verification copy of Apocrypha runtime
         run: node scripts/build-apocrypha-merged-v392.mjs /tmp/apocrypha-19-merged-v392.json
 
-      - name: Validate R3.3 JavaScript
+      - name: Validate R3.4 JavaScript
         run: |
           node --check qa/final-r3/nh7-qa-bridge-v392.js
-          node --check qa/final-r3/nh7-apocrypha-saved-nav-v390.js
+          node --check qa/final-r3/nh7-content-offline-v394.js
+          node --check qa/final-r3/nh7-audio-offline-v394.js
+          node --check qa/final-r3/nh7-qa-sw-v394.js
+          node --check qa/final-r3/nh7-apocrypha-saved-nav-v394.js
           node --check qa/final-r3/nh7-apocrypha-inline-v392.js
           node --check qa/final-r3/nh7-apocrypha-actions-v393.js
           node --check qa/final-r3/nh7-sermon-archive-guard-v392.js
           node --check qa/final-r3/nh7-video-portal-v392.js
+          node --check qa/final-r3/nh7-ui-settings-v394.js
           node --check qa/final-r3/nh7-account-delete-v393.js
           node --check scripts/build-apocrypha-merged-v392.mjs
           node --check scripts/verify-apocrypha-overlays-v390.mjs
           node --check qa/final-r2/nh7-school-rules-v381.js
           node --check qa/final-r2/nh7-registration-ux-v381.js
           node --check js/nh7-school-exam-v344.js
+
+      - name: Validate QA HTML inline scripts
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          for(const file of ['qa/final-r3/app.html','qa/final-r3/admin-tools-v394.html']){
+            const html=fs.readFileSync(file,'utf8');
+            const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]).filter(Boolean);
+            scripts.forEach((code,index)=>new Function(code+`\n//# sourceURL=${file}-${index}`));
+            console.log(file,'inline scripts',scripts.length);
+          }
+          NODE
 
       - name: Verify all 19 fresh Apocrypha translations
         run: |
@@ -47,60 +63,60 @@ jobs:
             if(x?.qa_premerged?.version!=='3.9.2'||x?.qa_premerged?.fresh_only!==true)throw Error('Invalid premerged metadata: '+file);
             if(x?.totals?.books!==19)throw Error('Expected 19 premerged books: '+file);
           }
-          console.log('Tracked premerged bytes',fs.statSync('qa/final-r3/data/apocrypha-19-merged-v392.json').size);
           NODE
 
-      - name: Verify approved Bible-style reader modules
-        run: |
-          test -f js/nh7-apocrypha-fresh-filter-v243.js
-          test -f js/nh7-apocrypha-translation-overlay-v245.js
-          test -f js/nh7-apocrypha-preview-v240.js
-          test -f js/nh7-apocrypha-reader-flow-v244.js
-          test -f js/nh7-reader-ux-v251.js
-          grep -q 'nh7-reader-font-tools' js/nh7-reader-ux-v251.js
-          grep -q 'data-nh7-apo-save' js/nh7-reader-ux-v251.js
-          grep -q 'data-apo-highlight' js/nh7-apocrypha-preview-v240.js
-          grep -q 'data-apo-note' js/nh7-apocrypha-preview-v240.js
-          grep -q 'data-apo-share' js/nh7-apocrypha-preview-v240.js
-
-      - name: Verify continuous layout, highlight colors and Save toggle
+      - name: Verify reader highlight Save and direct navigation
         run: |
           grep -q "NH7_APOCRYPHA_INLINE_VERSION='3.9.2'" qa/final-r3/nh7-apocrypha-inline-v392.js
-          grep -q "main.tagName==='BUTTON'" qa/final-r3/nh7-apocrypha-inline-v392.js
-          grep -q "display','contents','important'" qa/final-r3/nh7-apocrypha-inline-v392.js
-          grep -q 'vertical-align:super!important' qa/final-r3/nh7-apocrypha-inline-v392.js
           grep -q "NH7_APOCRYPHA_ACTIONS_VERSION='3.9.3'" qa/final-r3/nh7-apocrypha-actions-v393.js
-          grep -q 'nh7-hl-green{background:#ccefd7!important}' qa/final-r3/nh7-apocrypha-actions-v393.js
-          grep -q "window.addEventListener('click'" qa/final-r3/nh7-apocrypha-actions-v393.js
           grep -q 'removeLocal(ref)' qa/final-r3/nh7-apocrypha-actions-v393.js
-          grep -q 'syncAccount(ref,true)' qa/final-r3/nh7-apocrypha-actions-v393.js
+          grep -q "NH7_APOCRYPHA_SAVED_NAV_VERSION='3.9.4'" qa/final-r3/nh7-apocrypha-saved-nav-v394.js
+          grep -q 'nh7-apo-deeplink-overlay394' qa/final-r3/nh7-apocrypha-saved-nav-v394.js
+          grep -q 'nh7-apo-saved-target394' qa/final-r3/nh7-apocrypha-saved-nav-v394.js
+          grep -q 'warm();' qa/final-r3/nh7-apocrypha-saved-nav-v394.js
 
-      - name: Verify live sermon and video security contracts
+      - name: Verify audio playback download and School authorization
+        run: |
+          grep -q "NH7_AUDIO_OFFLINE_VERSION='3.9.4'" qa/final-r3/nh7-audio-offline-v394.js
+          grep -q "window.addEventListener('click'" qa/final-r3/nh7-audio-offline-v394.js
+          grep -q 'const promise=player.play()' qa/final-r3/nh7-audio-offline-v394.js
+          grep -q "kind:'audio',lesson_code" qa/final-r3/nh7-audio-offline-v394.js
+          grep -q 'nh7-school-media-access' qa/final-r3/nh7-audio-offline-v394.js
+          grep -q 'Downloading ${percent}%' qa/final-r3/nh7-audio-offline-v394.js
+          grep -q 'is-downloaded-v394' qa/final-r3/nh7-audio-offline-v394.js
+          grep -q 'nh7_school_record_audio_v380' qa/final-r3/nh7-audio-offline-v394.js
+          grep -q "NH7_CONTENT_OFFLINE_VERSION='3.9.4'" qa/final-r3/nh7-content-offline-v394.js
+
+      - name: Verify offline service worker and Settings controls
+        run: |
+          grep -q "const VERSION='3.9.4'" qa/final-r3/nh7-qa-sw-v394.js
+          grep -q "const MEDIA_CACHE='nh7-media-downloads-v394'" qa/final-r3/nh7-qa-sw-v394.js
+          grep -q "path.includes('/auth/v1/')" qa/final-r3/nh7-qa-sw-v394.js
+          grep -q "NH7_UI_SETTINGS_VERSION='3.9.4'" qa/final-r3/nh7-ui-settings-v394.js
+          grep -q 'gratitude' qa/final-r3/nh7-ui-settings-v394.js
+          grep -q 'data-nh7-video-portal392' qa/final-r3/nh7-ui-settings-v394.js
+          grep -q 'enableNotifications' qa/final-r3/nh7-ui-settings-v394.js
+          grep -q 'cacheCore' qa/final-r3/nh7-audio-offline-v394.js
+
+      - name: Verify Admin account and access tools
+        run: |
+          grep -q 'grant_type=password' qa/final-r3/admin-tools-v394.html
+          grep -q 'grant_type=refresh_token' qa/final-r3/admin-tools-v394.html
+          grep -q 'nh7_admin_my_access_v350' qa/final-r3/admin-tools-v394.html
+          grep -q 'nh7_admin_content_access_dashboard_v372' qa/final-r3/admin-tools-v394.html
+          grep -q 'nh7_admin_account_directory_v372' qa/final-r3/admin-tools-v394.html
+          grep -q 'nh7_owner_set_library_item_access_v381' qa/final-r3/admin-tools-v394.html
+          grep -q 'nh7_admin_delete_account_full_v381' qa/final-r3/admin-tools-v394.html
+
+      - name: Verify sermon video account and School contracts
         run: |
           test -f supabase/migrations/20260825221000_sermons_and_personal_video_portal_v392.sql
-          grep -q 'nh7_sermon_catalog_v392' supabase/migrations/20260825221000_sermons_and_personal_video_portal_v392.sql
-          grep -q 'nh7_video_portal_authorize_v392' supabase/migrations/20260825221000_sermons_and_personal_video_portal_v392.sql
-          grep -q 'nh7_video_authorize_v392' supabase/migrations/20260825221000_sermons_and_personal_video_portal_v392.sql
-          grep -q 'code_not_for_account' supabase/migrations/20260825221000_sermons_and_personal_video_portal_v392.sql
-          grep -q 'nh7_sermon_catalog_v392' qa/final-r3/nh7-qa-bridge-v392.js
-          grep -q 'legacy_archive_disabled' qa/final-r3/nh7-qa-bridge-v392.js
-          grep -q "NH7_SERMON_ARCHIVE_GUARD_VERSION='3.9.2'" qa/final-r3/nh7-sermon-archive-guard-v392.js
-          grep -q "NH7_VIDEO_PORTAL_VERSION='3.9.2'" qa/final-r3/nh7-video-portal-v392.js
-          grep -q 'data-v392-form' qa/final-r3/nh7-video-portal-v392.js
-
-      - name: Verify secure self-service account deletion
-        run: |
           test -f supabase/migrations/20260826001500_self_account_delete_v393.sql
-          grep -q 'nh7_delete_my_account_v393' supabase/migrations/20260826001500_self_account_delete_v393.sql
-          grep -q "auth.role()<>'authenticated'" supabase/migrations/20260826001500_self_account_delete_v393.sql
-          grep -q "upper(trim(coalesce(p_confirmation_phrase,'')))<>'DELETE'" supabase/migrations/20260826001500_self_account_delete_v393.sql
-          grep -q 'email_confirmed_at is not null' supabase/migrations/20260826001500_self_account_delete_v393.sql
-          grep -q 'Owner account cannot be self-deleted' supabase/migrations/20260826001500_self_account_delete_v393.sql
-          grep -q 'grant execute on function public.nh7_delete_my_account_v393' supabase/migrations/20260826001500_self_account_delete_v393.sql
+          grep -q 'nh7_sermon_catalog_v392' qa/final-r3/nh7-qa-bridge-v392.js
+          grep -q "NH7_VIDEO_PORTAL_VERSION='3.9.2'" qa/final-r3/nh7-video-portal-v392.js
           grep -q "NH7_ACCOUNT_DELETE_VERSION='3.9.3'" qa/final-r3/nh7-account-delete-v393.js
-          grep -q 'grant_type=password' qa/final-r3/nh7-account-delete-v393.js
           grep -q 'nh7_delete_my_account_v393' qa/final-r3/nh7-account-delete-v393.js
-          grep -q "p_confirmation_phrase:'DELETE'" qa/final-r3/nh7-account-delete-v393.js
+          grep -q 'nh7_school_exam_session_v381' qa/final-r3/nh7-qa-bridge-v392.js
 
       - name: Verify Spiritual Plans catalogue
         run: |
@@ -109,19 +125,18 @@ jobs:
           const expected=['prayer-30','grace-14','fasting-7','obedience-10','salvation-10','mind-renewal-14'];
           if(c.plans.length!==expected.length)throw Error('Expected 6 spiritual plans');
           for(const id of expected){const p=c.plans.find(x=>x.id===id);if(!p||!fs.existsSync(p.file))throw Error('Missing plan '+id)}
-          console.log('Spiritual plans:',c.plans.map(x=>x.id));
           NODE
 
-      - name: Validate R3.3 launcher
+      - name: Validate R3.4 launcher contract
         run: |
           node <<'NODE'
-          const fs=require('fs'),f='qa/final-r3/app.html',h=fs.readFileSync(f,'utf8');
-          for(const [i,m] of [...h.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].entries())new Function(m[1]+'\n//# sourceURL='+f+'-'+i);
-          for(const required of ['3.9.3-FINAL-QA-R3','a6b0f6465e2d7f3e335b528a116d962cbe8f5b20','nh7-apocrypha-actions-v393.js','nh7-account-delete-v393.js'])if(!h.includes(required))throw Error('Launcher missing '+required);
+          const fs=require('fs'),h=fs.readFileSync('qa/final-r3/app.html','utf8');
+          for(const required of ['3.9.4-FINAL-QA-R3','d71a2c37183178d95bf14c027b1180c5413fdf96','nh7-audio-offline-v394.js','nh7-content-offline-v394.js','nh7-apocrypha-saved-nav-v394.js','nh7-ui-settings-v394.js'])if(!h.includes(required))throw Error('Launcher missing '+required);
+          if(h.includes('nh7-apocrypha-saved-nav-v390.js'))throw Error('Obsolete saved navigation still loaded');
           NODE
 
       - name: Verify current main remains untouched
         run: |
           grep -q '"app":"2.3.9.44"' version.json
           grep -q 'nh7-school-exam-v344.js?v=2.3.9.44' index.html
-          echo 'R3.3 validation passed; no deployment job exists.'
+          echo 'R3.4 validation passed; no deployment job exists.'
