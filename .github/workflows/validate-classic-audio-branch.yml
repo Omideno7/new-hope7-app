@@ -1,7 +1,7 @@
 name: Validate classic audio hotfix branch
 on:
   push:
-    branches: [hotfix/classic-audio-player-2.3.9.49]
+    branches: [hotfix/classic-audio-player-2.3.9.49-final]
 permissions:
   contents: read
 jobs:
