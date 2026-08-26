@@ -6,3 +6,4 @@
 - Retains signed URLs, persistent offline downloads, speed, seeking, progress, School listening telemetry and sermon analytics.
 - No unrelated production feature is intentionally changed.
 - Default-branch validation trigger: 2026-08-26 19:32 CEST.
+- Registered default-workflow trigger: 2026-08-26 19:35 CEST.
