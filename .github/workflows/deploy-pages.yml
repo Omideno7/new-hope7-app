@@ -39,7 +39,7 @@ jobs:
             js/nh7-offline-core-v327.js
             js/nh7-offline-data-v329.js
             js/nh7-audio-route-stability-v330.js
-            js/nh7-audio-signed-v396.js
+            js/nh7-audio-signed-v397.js
             js/nh7-auto-update-v335.js
             js/nh7-notifications-zagreb-v334.js
             js/nh7-auth-signup-guard-v343.js
@@ -83,7 +83,7 @@ jobs:
             node --check "$file"
           done
 
-      - name: Validate release metadata, School protection, exam and signed audio
+      - name: Validate release metadata, School protection, exam and custom audio
         run: |
           node <<'NODE'
           const fs=require('fs');
@@ -95,7 +95,7 @@ jobs:
           const appShell=fs.readFileSync('app-v239.html','utf8');
           const worker=fs.readFileSync('service-worker.js','utf8');
           const exam=fs.readFileSync('js/nh7-school-exam-v344.js','utf8');
-          const audio=fs.readFileSync('js/nh7-audio-signed-v396.js','utf8');
+          const audio=fs.readFileSync('js/nh7-audio-signed-v397.js','utf8');
           const school=JSON.parse(fs.readFileSync('data/school/school_content.json','utf8'));
           if(!/^\d+\.\d+\.\d+\.\d+$/.test(version.app||''))fail('Invalid app version');
           if(!/^\d+\.\d+\.\d+\.\d+$/.test(version.admin||''))fail('Invalid admin version');
@@ -110,13 +110,26 @@ jobs:
           for(const required of ['nh7_school_exam_session_v340','nh7_submit_school_exam_v340','max_attempts','remaining_attempts'])if(!exam.includes(required))fail(`exam hotfix missing ${required}`);
           if(exam.includes('school_exams?select='))fail('exam hotfix must not read answer-bearing table directly');
           if(!exam.includes("window.NH7_SCHOOL_EXAM_VERSION='3.4.4'"))fail('exam hotfix version marker missing');
-          const audioTag=`js/nh7-audio-signed-v396.js?v=${version.app}`;
+          const audioTag=`js/nh7-audio-signed-v397.js?v=${version.app}`;
           const appTag=`js/app.js?v=${version.app}`;
           const audioIndex=index.indexOf(audioTag),appIndex=index.indexOf(appTag);
-          if(audioIndex<0||appIndex<0||audioIndex>appIndex)fail('signed audio owner must load before app.js');
-          for(const required of ["NH7_AUDIO_SIGNED_VERSION='3.9.6'","kind:'sermon',sermon_id","kind:'audio',lesson_code","removeAttribute('data-offline-download')","window.addEventListener('click',intercept,true)"])if(!audio.includes(required))fail(`signed audio missing ${required}`);
+          if(audioIndex<0||appIndex<0||audioIndex>appIndex)fail('custom audio owner must load before app.js');
+          const audioRequirements=[
+            "NH7_AUDIO_SIGNED_VERSION='3.9.7'",
+            "kind:'sermon',sermon_id",
+            "kind:'audio',lesson_code",
+            "removeAttribute('data-offline-download')",
+            "window.addEventListener('click',intercept,true)",
+            "DB_NAME='nh7-offline-audio-v397'",
+            'indexedDB.open',
+            'data-v397-speed-up',
+            'data-v397-speed-down',
+            'data-v397-stop',
+            'data-v397-seek'
+          ];
+          for(const required of audioRequirements)if(!audio.includes(required))fail(`custom audio missing ${required}`);
           if(!index.includes('NH7_ONESIGNAL_WORKER')||!index.includes('push/OneSignalSDKWorker.js'))fail('OneSignal worker wiring missing');
-          console.log('Release, secure School exam and signed audio validation OK',version);
+          console.log('Release, secure School exam and custom audio validation OK',version);
           NODE
 
       - name: Validate recovery, admin and shell wiring
@@ -130,11 +143,29 @@ jobs:
           grep -q "nh7-notifications-zagreb-v334.js?v=2.3.9.35e" index.html
           grep -q "nh7-auto-update-v335.js" index.html
           grep -q "nh7-school-audio-native-v337.js" index.html
-          grep -q "nh7-audio-signed-v396.js" index.html
+          grep -q "nh7-audio-signed-v397.js" index.html
+          ! grep -q "nh7-audio-signed-v396.js" index.html
           grep -q "admin-v2.3.9-notifications-zagreb-v333.js" admin-v239-stable.html
           grep -q "admin-qna-i18n-v341.js" admin-v239-stable.html
-          required=(admin.html admin-v239.html admin-v239-stable.html app-v239.html index.html reset-password.html admin-reset-password.html version.json service-worker.js push/OneSignalSDKWorker.js js/nh7-registration-canonical-v353.js js/nh7-school-exam-v344.js js/nh7-audio-signed-v396.js js/nh7-admin-rbac-v350.js)
+          required=(admin.html admin-v239.html admin-v239-stable.html app-v239.html index.html reset-password.html admin-reset-password.html version.json service-worker.js push/OneSignalSDKWorker.js js/nh7-registration-canonical-v353.js js/nh7-school-exam-v344.js js/nh7-audio-signed-v397.js js/nh7-admin-rbac-v350.js)
           for file in "${required[@]}"; do test -f "$file"; done
+
+      - name: Validate Edge CORS and custom authentication
+        run: |
+          set -euo pipefail
+          curl -sS -D /tmp/options.headers -o /tmp/options.body -X OPTIONS \
+            -H 'Origin: https://omideno7.github.io' \
+            -H 'Access-Control-Request-Method: POST' \
+            -H 'Access-Control-Request-Headers: authorization,apikey,content-type,x-client-info' \
+            'https://gpzcwffxnddhaeaogdyo.supabase.co/functions/v1/nh7-school-media-access'
+          grep -qi '^access-control-allow-origin: https://omideno7.github.io' /tmp/options.headers
+          code=$(curl -sS -o /tmp/noauth.body -w '%{http_code}' -X POST \
+            -H 'Origin: https://omideno7.github.io' \
+            -H 'Content-Type: application/json' \
+            --data '{"kind":"sermon","sermon_id":"2307950e-7b9e-4dfe-abbf-0dab5b93b8af"}' \
+            'https://gpzcwffxnddhaeaogdyo.supabase.co/functions/v1/nh7-school-media-access')
+          test "$code" = "401"
+          grep -q 'login_required' /tmp/noauth.body
 
       - name: Validate HTML inline scripts and JSON
         run: |
