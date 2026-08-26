@@ -1,0 +1,89 @@
+name: Validate Wave 1A Apocrypha
+on:
+  push:
+    branches: [release/wave1a-apocrypha-23949]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - name: Validate JavaScript syntax
+        run: |
+          set -euo pipefail
+          files=(
+            js/nh7-apocrypha-v270.js
+            js/nh7-apocrypha-preview-v240.js
+            js/nh7-apocrypha-reader-flow-v244.js
+            js/nh7-reader-ux-v251.js
+            js/nh7-saved-verses-chapter-v252.js
+            js/nh7-apocrypha-inline-v392.js
+            js/nh7-apocrypha-actions-v393.js
+            js/nh7-apocrypha-saved-nav-v394.js
+            js/nh7-audio-classic-v400.js
+            js/nh7-school-exam-v344.js
+            js/nh7-settings-controller-v399.js
+          )
+          for file in "${files[@]}"; do test -f "$file"; node --check "$file"; done
+      - name: Verify complete fresh trilingual 19-book runtime
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const path='data/apocrypha/runtime/apocrypha-browser-19.preview.json';
+          const data=JSON.parse(fs.readFileSync(path,'utf8'));
+          if(data?.totals?.books!==19||!Array.isArray(data.books)||data.books.length!==19)throw new Error('Expected exactly 19 Apocrypha books');
+          let totalEn=0,totalFa=0,totalHr=0;
+          for(const book of data.books){
+            let en=0,fa=0,hr=0;
+            if(!book.book_id)throw new Error('Book without book_id');
+            for(const chapter of book.chapters||[]){
+              for(const verse of chapter.verses||[]){
+                if(String(verse.text_en||'').trim())en++;
+                if(String(verse.text_fa||'').trim())fa++;
+                if(String(verse.text_hr||'').trim())hr++;
+              }
+            }
+            if(!en)throw new Error(book.book_id+': missing English reference rows');
+            if(fa!==en)throw new Error(`${book.book_id}: Persian ${fa}/${en}`);
+            if(hr!==en)throw new Error(`${book.book_id}: Croatian ${hr}/${en}`);
+            totalEn+=en;totalFa+=fa;totalHr+=hr;
+          }
+          if(totalFa!==totalEn||totalHr!==totalEn)throw new Error('Trilingual totals do not match');
+          console.log({books:data.books.length,totalEn,totalFa,totalHr});
+          NODE
+      - name: Verify approved reader behavior
+        run: |
+          set -euo pipefail
+          grep -q "NH7_APOCRYPHA_WAVE1A_VERSION" js/nh7-apocrypha-v270.js
+          grep -q "2.4.0.242-apocrypha-bible-style" js/nh7-apocrypha-preview-v240.js
+          grep -q "2.4.0.244-apocrypha-flow-colors" js/nh7-apocrypha-reader-flow-v244.js
+          grep -q "NH7_APOCRYPHA_INLINE_VERSION='3.9.2'" js/nh7-apocrypha-inline-v392.js
+          grep -q "NH7_APOCRYPHA_ACTIONS_VERSION='3.9.3'" js/nh7-apocrypha-actions-v393.js
+          grep -q "NH7_APOCRYPHA_SAVED_NAV_VERSION='3.9.4'" js/nh7-apocrypha-saved-nav-v394.js
+          grep -q 'data-nh7-apo-color' js/nh7-apocrypha-reader-flow-v244.js
+          grep -q 'data-nh7-apo-save' js/nh7-apocrypha-actions-v393.js
+          grep -q 'APO:' js/nh7-apocrypha-saved-nav-v394.js
+          ! grep -q 'fa_document' js/nh7-apocrypha-preview-v240.js
+          ! grep -q 'hr_prepared\|croatian_prepared' js/nh7-apocrypha-preview-v240.js
+      - name: Verify no regression to stable main systems
+        run: |
+          set -euo pipefail
+          grep -q "window.NH7_VERSION = '2.3.9.49'" index.html
+          grep -q 'nh7-audio-classic-v400.js?v=2.3.9.49' index.html
+          grep -q 'nh7-school-exam-v344.js?v=2.3.9.49' index.html
+          grep -q 'nh7-settings-controller-v399.js?v=2.3.9.49' index.html
+          grep -q 'nh7-auth-recovery-v342.js?v=2.3.9.49' index.html
+          grep -q 'nh7-apocrypha-v270.js?v=2.3.9.33' index.html
+          git diff --name-only 2547f7c9322b21d37a6485d8c5baa53c48036b5f...HEAD | sort > /tmp/changed.txt
+          cat /tmp/changed.txt
+          while IFS= read -r file; do
+            case "$file" in
+              docs/RELEASE_ROADMAP_2026_2027_FA.md|.github/workflows/validate-wave1a-apocrypha.yml|data/apocrypha/runtime/apocrypha-browser-19.preview.json|js/nh7-apocrypha-v270.js|js/nh7-apocrypha-preview-v240.js|js/nh7-apocrypha-reader-flow-v244.js|js/nh7-reader-ux-v251.js|js/nh7-saved-verses-chapter-v252.js|js/nh7-apocrypha-inline-v392.js|js/nh7-apocrypha-actions-v393.js|js/nh7-apocrypha-saved-nav-v394.js) ;;
+              *) echo "Forbidden Wave 1A change: $file"; exit 1;;
+            esac
+          done < /tmp/changed.txt
+          echo 'Wave 1A scope is isolated; stable audio, School, exam, auth and settings are unchanged.'
