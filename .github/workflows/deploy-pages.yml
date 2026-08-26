@@ -39,7 +39,7 @@ jobs:
             js/nh7-offline-core-v327.js
             js/nh7-offline-data-v329.js
             js/nh7-audio-route-stability-v330.js
-            js/nh7-audio-signed-v397.js
+            js/nh7-audio-classic-v400.js
             js/nh7-settings-controller-v399.js
             js/nh7-auto-update-v335.js
             js/nh7-notifications-zagreb-v334.js
@@ -60,7 +60,6 @@ jobs:
             js/nh7-large-mov-native-fallback-v273.js
             js/nh7-secure-media-watermark-v272.js
             js/nh7-protected-audio-gate-v316.js
-            js/nh7-school-audio-native-v337.js
             js/admin-v2.3.9-clean-scroll-v300.js
             js/admin-v2.3.9-library-clean-v311.js
             js/admin-v2.3.9-apocrypha-catalog-v274.js
@@ -84,7 +83,7 @@ jobs:
             node --check "$file"
           done
 
-      - name: Validate release metadata, School protection, exam, audio and Settings
+      - name: Validate release metadata, School protection, exam, classic audio and Settings
         run: |
           node <<'NODE'
           const fs=require('fs');
@@ -96,7 +95,7 @@ jobs:
           const appShell=fs.readFileSync('app-v239.html','utf8');
           const worker=fs.readFileSync('service-worker.js','utf8');
           const exam=fs.readFileSync('js/nh7-school-exam-v344.js','utf8');
-          const audio=fs.readFileSync('js/nh7-audio-signed-v397.js','utf8');
+          const audio=fs.readFileSync('js/nh7-audio-classic-v400.js','utf8');
           const settings=fs.readFileSync('js/nh7-settings-controller-v399.js','utf8');
           const school=JSON.parse(fs.readFileSync('data/school/school_content.json','utf8'));
           if(!/^\d+\.\d+\.\d+\.\d+$/.test(version.app||''))fail('Invalid app version');
@@ -104,7 +103,7 @@ jobs:
           if(!index.includes(`window.NH7_VERSION = '${version.app}'`))fail('index version mismatch');
           if(!index.includes(`nh7-school-exam-v344.js?v=${version.app}`))fail('School exam hotfix is not loaded');
           if(!appShell.includes(`index.html?v=${version.app}`))fail('native shell version mismatch');
-          if(!worker.includes(version.app))fail('service worker version mismatch');
+          if(!worker.includes(version.app)||!worker.includes('classic-audio-v400'))fail('service worker version mismatch');
           if(manifest.start_url!=='./index.html')fail('manifest start_url mismatch');
           if(!adminManifest||typeof adminManifest!=='object')fail('admin manifest invalid');
           if(school.meta?.protectedContent!==true)fail('School content must remain protected');
@@ -112,18 +111,33 @@ jobs:
           for(const required of ['nh7_school_exam_session_v340','nh7_submit_school_exam_v340','max_attempts','remaining_attempts'])if(!exam.includes(required))fail(`exam hotfix missing ${required}`);
           if(exam.includes('school_exams?select='))fail('exam hotfix must not read answer-bearing table directly');
           if(!exam.includes("window.NH7_SCHOOL_EXAM_VERSION='3.4.4'"))fail('exam hotfix version marker missing');
-          const audioTag=`js/nh7-audio-signed-v397.js?v=${version.app}`;
+          const audioTag=`js/nh7-audio-classic-v400.js?v=${version.app}`;
           const appTag=`js/app.js?v=${version.app}`;
           const settingsTag=`js/nh7-settings-controller-v399.js?v=${version.app}`;
           const audioIndex=index.indexOf(audioTag),appIndex=index.indexOf(appTag),settingsIndex=index.indexOf(settingsTag);
-          if(audioIndex<0||appIndex<0||settingsIndex<0||audioIndex>appIndex||appIndex>settingsIndex)fail('audio/app/settings load order invalid');
-          const audioRequirements=["NH7_AUDIO_SIGNED_VERSION='3.9.7'","kind:'sermon',sermon_id","kind:'audio',lesson_code","DB_NAME='nh7-offline-audio-v397'",'indexedDB.open','data-v397-speed-up','data-v397-speed-down','data-v397-stop','data-v397-seek'];
-          for(const required of audioRequirements)if(!audio.includes(required))fail(`custom audio missing ${required}`);
+          if(audioIndex<0||appIndex<0||settingsIndex<0||audioIndex>appIndex||appIndex>settingsIndex)fail('classic audio/app/settings load order invalid');
+          const audioRequirements=[
+            "NH7_AUDIO_CLASSIC_VERSION='4.0.0'",
+            "kind:'sermon',sermon_id",
+            "kind:'audio',lesson_code",
+            "DB_NAME='nh7-offline-audio-v397'",
+            'indexedDB.open',
+            'data-classic-toggle',
+            'data-classic-back',
+            'data-classic-forward',
+            'data-classic-speed-up',
+            'data-classic-speed-down',
+            'data-classic-seek',
+            'nh7_school_record_audio_v380',
+            'window.NH7_AUDIO_SIGNED_V397=window.NH7_AUDIO_CLASSIC_V400'
+          ];
+          for(const required of audioRequirements)if(!audio.includes(required))fail(`classic audio missing ${required}`);
+          if(index.includes('nh7-audio-signed-v397.js'))fail('new duplicate audio player must not be loaded');
+          if(index.includes('nh7-school-audio-native-v337.js'))fail('legacy School audio player must not be loaded separately');
           const settingsRequirements=["NH7_SETTINGS_CONTROLLER_VERSION='3.9.9'",'document.addEventListener(\'click\'','clearDownloads','clearIndexedDb','clearCaches','clearNative','nh7SettingsToast399','clearOfflineMedia'];
           for(const required of settingsRequirements)if(!settings.includes(required))fail(`Settings controller missing ${required}`);
-          if(index.includes('nh7-settings-feedback-v398.js'))fail('obsolete Settings overlay must not be loaded');
           if(!index.includes('NH7_ONESIGNAL_WORKER')||!index.includes('push/OneSignalSDKWorker.js'))fail('OneSignal worker wiring missing');
-          console.log('Release, School exam, audio and Settings validation OK',version);
+          console.log('Release, School exam, classic audio and Settings validation OK',version);
           NODE
 
       - name: Validate recovery, admin and shell wiring
@@ -136,14 +150,13 @@ jobs:
           grep -q "nh7-qna-i18n-v341.js?v=2.3.9.36" index.html
           grep -q "nh7-notifications-zagreb-v334.js?v=2.3.9.35e" index.html
           grep -q "nh7-auto-update-v335.js" index.html
-          grep -q "nh7-school-audio-native-v337.js" index.html
-          grep -q "nh7-audio-signed-v397.js" index.html
+          grep -q "nh7-audio-classic-v400.js" index.html
           grep -q "nh7-settings-controller-v399.js" index.html
-          ! grep -q "nh7-settings-feedback-v398.js" index.html
-          ! grep -q "nh7-audio-signed-v396.js" index.html
+          ! grep -q "nh7-audio-signed-v397.js" index.html
+          ! grep -q "nh7-school-audio-native-v337.js" index.html
           grep -q "admin-v2.3.9-notifications-zagreb-v333.js" admin-v239-stable.html
           grep -q "admin-qna-i18n-v341.js" admin-v239-stable.html
-          required=(admin.html admin-v239.html admin-v239-stable.html app-v239.html index.html reset-password.html admin-reset-password.html version.json service-worker.js push/OneSignalSDKWorker.js js/nh7-registration-canonical-v353.js js/nh7-school-exam-v344.js js/nh7-audio-signed-v397.js js/nh7-settings-controller-v399.js js/nh7-admin-rbac-v350.js)
+          required=(admin.html admin-v239.html admin-v239-stable.html app-v239.html index.html reset-password.html admin-reset-password.html version.json service-worker.js push/OneSignalSDKWorker.js js/nh7-registration-canonical-v353.js js/nh7-school-exam-v344.js js/nh7-audio-classic-v400.js js/nh7-settings-controller-v399.js js/nh7-admin-rbac-v350.js)
           for file in "${required[@]}"; do test -f "$file"; done
 
       - name: Validate Edge CORS and custom authentication
