@@ -2,7 +2,7 @@ name: Validate and Deploy New Hope 7
 
 on:
   push:
-    branches: [main]
+    branches: [main, hotfix/classic-audio-player-2.3.9.49]
   workflow_dispatch:
 
 permissions:
@@ -11,14 +11,14 @@ permissions:
   id-token: write
 
 concurrency:
-  group: new-hope7-pages-main
+  group: new-hope7-pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout exact main commit
+      - name: Checkout exact commit
         uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
@@ -190,6 +190,7 @@ jobs:
           NODE
 
   deploy:
+    if: github.ref == 'refs/heads/main'
     needs: validate
     runs-on: ubuntu-latest
     environment:
