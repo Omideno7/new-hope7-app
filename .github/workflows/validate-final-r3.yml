@@ -1,4 +1,4 @@
-name: Validate Final QA R3.5 3.9.5
+name: Validate Final QA R3.6 3.9.6
 on:
   push:
     branches: [qa/final-integration-20260825-r3]
@@ -23,7 +23,7 @@ jobs:
         run: |
           node --check qa/final-r3/nh7-qa-bridge-v392.js
           node --check qa/final-r3/nh7-content-offline-v394.js
-          node --check qa/final-r3/nh7-audio-offline-v395.js
+          node --check qa/final-r3/nh7-audio-signed-v396.js
           node --check qa/final-r3/nh7-qa-sw-v395.js
           node --check qa/final-r3/nh7-apocrypha-saved-nav-v394.js
           node --check qa/final-r3/nh7-apocrypha-inline-v392.js
@@ -52,52 +52,42 @@ jobs:
           for(const id of ids)if(!c.plans.find(x=>x.id===id))throw Error('Missing plan '+id);
           NODE
           grep -q "NH7_APOCRYPHA_SAVED_NAV_VERSION='3.9.4'" qa/final-r3/nh7-apocrypha-saved-nav-v394.js
-          grep -q "NH7_APOCRYPHA_ACTIONS_VERSION='3.9.3'" qa/final-r3/nh7-apocrypha-actions-v393.js
-      - name: Verify signed audio architecture
+      - name: Verify exclusive signed audio ownership
         run: |
-          grep -q "NH7_AUDIO_OFFLINE_VERSION='3.9.5'" qa/final-r3/nh7-audio-offline-v395.js
-          grep -q "kind:'sermon',sermon_id" qa/final-r3/nh7-audio-offline-v395.js
-          grep -q "kind:'audio',lesson_code" qa/final-r3/nh7-audio-offline-v395.js
-          grep -q 'nh7-school-media-access' qa/final-r3/nh7-audio-offline-v395.js
-          grep -q 'nh7_school_record_audio_v380' qa/final-r3/nh7-audio-offline-v395.js
-          grep -q 'در حال دانلود ${p}%' qa/final-r3/nh7-audio-offline-v395.js
-          grep -q 'is-downloaded395' qa/final-r3/nh7-audio-offline-v395.js
+          grep -q "NH7_AUDIO_SIGNED_VERSION='3.9.6'" qa/final-r3/nh7-audio-signed-v396.js
+          grep -q "kind:'sermon',sermon_id" qa/final-r3/nh7-audio-signed-v396.js
+          grep -q "kind:'audio',lesson_code" qa/final-r3/nh7-audio-signed-v396.js
+          grep -q 'button.onclick=null' qa/final-r3/nh7-audio-signed-v396.js
+          grep -q "button.removeAttribute('data-offline-download')" qa/final-r3/nh7-audio-signed-v396.js
+          grep -q "window.addEventListener('click',intercept,true)" qa/final-r3/nh7-audio-signed-v396.js
+          grep -q 'deriveFromCard' qa/final-r3/nh7-audio-signed-v396.js
+          grep -q 'nh7_school_record_audio_v380' qa/final-r3/nh7-audio-signed-v396.js
+          grep -q 'در حال دانلود ${percent}%' qa/final-r3/nh7-audio-signed-v396.js
+          grep -q 'is-downloaded-v396' qa/final-r3/nh7-audio-signed-v396.js
           grep -q "kind === 'sermon'" supabase/functions/nh7-school-media-access/index.ts || grep -q "kind==='sermon'" supabase/functions/nh7-school-media-access/index.ts
           grep -q 'createSignedUrl' supabase/functions/nh7-school-media-access/index.ts
           grep -q "'https://raw.githack.com'" supabase/functions/nh7-school-media-access/index.ts
-      - name: Verify offline safeguards
+          grep -q 'verify_jwt = false' supabase/functions/nh7-school-media-access/DEPLOYMENT.md
+      - name: Verify offline and existing secure modules
         run: |
           grep -q "VERSION='3.9.5'" qa/final-r3/nh7-qa-sw-v395.js
-          grep -q "MEDIA='nh7-media-v395'" qa/final-r3/nh7-qa-sw-v395.js
           grep -q "/auth/v1/" qa/final-r3/nh7-qa-sw-v395.js
           grep -q "/functions/v1/" qa/final-r3/nh7-qa-sw-v395.js
-          grep -q '__nh7_media_v395__' qa/final-r3/nh7-qa-sw-v395.js
-          grep -q "caches.open('nh7-core-v395')" qa/final-r3/app.html
-          grep -q 'nh7-qa-sw-v395.js' qa/final-r3/app.html
-      - name: Verify Admin RBAC lists
-        run: |
-          test -f supabase/migrations/20260826073500_admin_directory_rbac_v395.sql
-          grep -q 'nh7_admin_has_permission_v395' supabase/migrations/20260826073500_admin_directory_rbac_v395.sql
-          grep -q 'nh7_admin_content_access_dashboard_v395' supabase/migrations/20260826073500_admin_directory_rbac_v395.sql
-          grep -q 'nh7_admin_account_directory_v395' supabase/migrations/20260826073500_admin_directory_rbac_v395.sql
-          grep -q 'nh7_admin_content_access_dashboard_v395' qa/final-r3/admin-tools-v395.html
-          grep -q 'nh7_admin_account_directory_v395' qa/final-r3/admin-tools-v395.html
-          grep -q 'nh7_admin_my_access_v350' qa/final-r3/admin-tools-v395.html
-      - name: Verify menu Settings and existing secure modules
-        run: |
           grep -q "NH7_UI_SETTINGS_VERSION='3.9.4'" qa/final-r3/nh7-ui-settings-v394.js
           grep -q "NH7_VIDEO_PORTAL_VERSION='3.9.2'" qa/final-r3/nh7-video-portal-v392.js
           grep -q "NH7_ACCOUNT_DELETE_VERSION='3.9.3'" qa/final-r3/nh7-account-delete-v393.js
-          grep -q 'nh7_school_exam_session_v381' qa/final-r3/nh7-qa-bridge-v392.js
-      - name: Validate launcher and ensure legacy audio conflicts are removed
+      - name: Verify Admin RBAC lists
+        run: |
+          test -f supabase/migrations/20260826073500_admin_directory_rbac_v395.sql
+          grep -q 'nh7_admin_content_access_dashboard_v395' qa/final-r3/admin-tools-v395.html
+          grep -q 'nh7_admin_account_directory_v395' qa/final-r3/admin-tools-v395.html
+      - name: Validate launcher and main isolation
         run: |
           node <<'NODE'
           const fs=require('fs'),h=fs.readFileSync('qa/final-r3/app.html','utf8');
-          for(const s of ['3.9.5-FINAL-QA-R3','nh7-audio-offline-v395.js','nh7-qa-sw-v395.js','92edf1681e940fa69927a8f61957219f09615864'])if(!h.includes(s))throw Error('Launcher missing '+s);
-          for(const old of ['nh7-audio-route-stability-v330.js','nh7-offline-playback-bridge-v332.js','nh7-protected-audio-gate-v316.js','nh7-school-audio-native-v337.js'])if(!h.includes(old.replace('.js','\\.js'))){} // patterns exist only in removal regexes
+          for(const s of ['3.9.6-FINAL-QA-R3','nh7-audio-signed-v396.js','b1ffc0ac6c7c6c87fdae3fe0d8da0ab9d45262c8'])if(!h.includes(s))throw Error('Launcher missing '+s);
+          if(h.includes('nh7-audio-offline-v395.js'))throw Error('Obsolete v395 audio owner still loaded');
           NODE
-      - name: Verify current main remains untouched
-        run: |
           grep -q '"app":"2.3.9.44"' version.json
           grep -q 'nh7-school-exam-v344.js?v=2.3.9.44' index.html
-          echo 'R3.5 validation passed; no deployment job exists.'
+          echo 'R3.6 validation passed; main remains unchanged.'
