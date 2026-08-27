@@ -1,3 +1,4 @@
+# Final-state validation trigger for the current-main Wave 2 library release.
 name: Validate Wave 2 library package on current main baseline
 
 on:
@@ -81,7 +82,7 @@ jobs:
           while IFS= read -r file; do
             [ -z "$file" ] && continue
             case "$file" in
-              index.html|app-v239.html|version.json|admin.html|sw-offline-v329.js|js/app.js|js/nh7-book-reader-v283.js|js/nh7-admin-library-access-v396.js|js/nh7-library-collections-v322.js|.github/workflows/apply-wave2-library-mainready.yml|.github/workflows/validate-wave2-library-mainready.yml) ;;
+              index.html|app-v239.html|version.json|admin.html|sw-offline-v329.js|js/app.js|js/nh7-book-reader-v283.js|js/nh7-admin-library-access-v396.js|js/nh7-library-collections-v322.js|.github/workflows/apply-wave2-library-mainready.yml|.github/workflows/finalize-wave2-library-version.yml|.github/workflows/validate-wave2-library-mainready.yml) ;;
               *) echo "Unexpected Wave 2 mainready change: $file" >&2; exit 1 ;;
             esac
           done <<< "$changed"
