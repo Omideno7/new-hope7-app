@@ -1,0 +1,115 @@
+name: Apply Wave 1B production integration 2.3.9.50
+
+on:
+  push:
+    branches: [release/wave1b-production-23950]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    if: ${{ !contains(github.event.head_commit.message || '', 'production integration 2.3.9.50 applied') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/wave1b-production-23950
+          fetch-depth: 0
+
+      - name: Integrate approved plans into production shell
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          from datetime import datetime, timezone
+          import json
+
+          old_bridge=Path('js/nh7-spiritual-plans-bridge-v410.js')
+          new_bridge=Path('js/nh7-spiritual-plans-v412.js')
+          if old_bridge.exists() and not new_bridge.exists():
+              old_bridge.rename(new_bridge)
+          text=new_bridge.read_text(encoding='utf-8')
+          text=text.replace("const VERSION = '4.1.0';", "const VERSION = '4.1.2';")
+          text=text.replace("const QUEUE_KEY = 'nh7_wave1b_cloud_queue_v410';", "const QUEUE_KEY = 'nh7_spiritual_plans_cloud_queue_v412';")
+          text=text.replace('/* New Hope 7 — Wave 1B spiritual plans QA bridge v4.1.0', '/* New Hope 7 — production spiritual plans bridge v4.1.2')
+          text=text.replace(' * Additive only: the current main app remains untouched. This bridge takes\n * ownership only when the user opens Plans in the dedicated QA shell.\n', ' * Additive integration: this module takes ownership only when the user opens Plans.\n * Existing audio, School, exam, authentication, settings and Apocrypha modules remain isolated.\n')
+          start=text.find('function banner(){')
+          if start >= 0:
+              end=text.find('\nfunction context(){', start)
+              if end < 0: raise SystemExit('banner block end not found')
+              text=text[:start]+'function banner(){}\n'+text[end+1:]
+          text=text.replace('    banner();\n    VIEW.dataset.wave1b = VERSION;', '    VIEW.dataset.spiritualPlans = VERSION;')
+          text=text.replace('    banner();\n', '')
+          text=text.replace("window.NH7_SPIRITUAL_PLANS_WAVE1B_VERSION = VERSION;", "window.NH7_SPIRITUAL_PLANS_VERSION = VERSION;")
+          text=text.replace("window.NH7_SPIRITUAL_PLANS_WAVE1B = { render:renderPlans, sync:syncCloudQueue, active:() => active };", "window.NH7_SPIRITUAL_PLANS = { render:renderPlans, sync:syncCloudQueue, active:() => active };")
+          text=text.replace("if(window.NH7_WAVE1B_AUTO_OPEN || new URLSearchParams(location.search).get('open') === 'plans'){", "if(new URLSearchParams(location.search).get('open') === 'plans'){")
+          text=text.replace("style.textContent = `.nh7-wave1b-banner{position:relative;z-index:9;margin:0 0 12px;padding:9px 12px;border:1px solid #8ac9a4;border-radius:14px;background:#eefcf3;color:#14683d;font:800 .78rem/1.55 system-ui;text-align:center}", "style.textContent = `")
+          new_bridge.write_text(text,encoding='utf-8')
+
+          index=Path('index.html')
+          html=index.read_text(encoding='utf-8').replace('2.3.9.49','2.3.9.50')
+          css='<link rel="stylesheet" href="css/nh7-spiritual-plans-v240.css?v=4.1.2" />'
+          if css not in html:
+              marker='<link rel="stylesheet" href="css/nh7-apocrypha-v270.css?v=2.3.9.33" />'
+              if marker not in html: raise SystemExit('index CSS marker missing')
+              html=html.replace(marker, marker+'\n  '+css)
+          script='<script src="js/nh7-spiritual-plans-v412.js?v=4.1.2" type="module"></script>'
+          if script not in html:
+              marker='  <script src="js/nh7-school-exam-v344.js?v=2.3.9.50" defer></script>'
+              if marker not in html: raise SystemExit('index script marker missing')
+              html=html.replace(marker, marker+'\n  '+script)
+          index.write_text(html,encoding='utf-8')
+
+          shell=Path('app-v239.html')
+          shell.write_text(shell.read_text(encoding='utf-8').replace('2.3.9.49','2.3.9.50'),encoding='utf-8')
+
+          version=Path('version.json')
+          data=json.loads(version.read_text(encoding='utf-8'))
+          data['app']='2.3.9.50'
+          data['updated_at']=datetime.now(timezone.utc).isoformat()
+          version.write_text(json.dumps(data,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
+
+          sw=Path('service-worker.js')
+          sw.write_text(sw.read_text(encoding='utf-8').replace('2.3.9.49','2.3.9.50'),encoding='utf-8')
+
+          offline=Path('sw-offline-v329.js')
+          value=offline.read_text(encoding='utf-8')
+          value=value.replace("const VERSION='v2.3.9.40-recovery-admin-rbac';", "const VERSION='v2.3.9.50-wave1b-plans';")
+          css_marker="'./css/nh7-apocrypha-v270.css',"
+          if "'./css/nh7-spiritual-plans-v240.css'" not in value:
+              if css_marker not in value: raise SystemExit('offline CSS marker missing')
+              value=value.replace(css_marker, css_marker+"'./css/nh7-spiritual-plans-v240.css',")
+          js_marker="'./js/nh7-ui-stability-v329.js',"
+          if "'./js/nh7-spiritual-plans-v412.js'" not in value:
+              if js_marker not in value: raise SystemExit('offline JS marker missing')
+              value=value.replace(js_marker, js_marker+"'./js/nh7-spiritual-plans-v240.js','./js/nh7-spiritual-plans-v412.js',")
+          data_marker="'./data/bible/groups/bible_group_40_66.json'"
+          plans=[
+            './data/spiritual-plans/catalog.json','./data/spiritual-plans/prayer-30.json','./data/spiritual-plans/grace-14.json',
+            './data/spiritual-plans/fasting-7.json','./data/spiritual-plans/fasting-types.json','./data/spiritual-plans/obedience-10.json',
+            './data/spiritual-plans/salvation-10.json','./data/spiritual-plans/mind-renewal-days-01-07.json',
+            './data/spiritual-plans/mind-renewal-days-08-14.json','./data/spiritual-plans/mind-renewal-days-15-18.json',
+            './data/spiritual-plans/mind-renewal-days-19-22.json','./data/spiritual-plans/mind-renewal-days-23-26.json',
+            './data/spiritual-plans/mind-renewal-days-27-30.json'
+          ]
+          if "'./data/spiritual-plans/catalog.json'" not in value:
+              if data_marker not in value: raise SystemExit('offline data marker missing')
+              value=value.replace(data_marker, data_marker+','+','.join(repr(item) for item in plans))
+          offline.write_text(value,encoding='utf-8')
+
+          qa=Path('wave1b-plans.html')
+          if qa.exists(): qa.unlink()
+          PY
+
+          node --check js/nh7-spiritual-plans-v240.js
+          node --check js/nh7-spiritual-plans-v412.js
+
+      - name: Commit production integration
+        run: |
+          if git diff --quiet; then exit 0; fi
+          git config user.name 'Omideno7'
+          git config user.email 'omideno7church@gmail.com'
+          git add -A index.html app-v239.html version.json service-worker.js sw-offline-v329.js js/nh7-spiritual-plans-v412.js js/nh7-spiritual-plans-bridge-v410.js wave1b-plans.html
+          git commit -m 'feat(plans): production integration 2.3.9.50 applied'
+          git push origin HEAD:release/wave1b-production-23950
