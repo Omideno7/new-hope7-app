@@ -1,0 +1,213 @@
+name: Build Android API 36 Candidate
+
+on:
+  push:
+    branches: [release/google-play-api36]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      APP_ID: com.omideno7.newhope7
+      APP_NAME: New Hope 7
+      VERSION_NAME: 2.3.9.50
+      VERSION_CODE: '23950'
+    steps:
+      - name: Checkout exact release candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: /dev/null
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android 16 SDK
+        shell: bash
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager 'platforms;android-36' 'build-tools;36.0.0' 'platform-tools'
+
+      - name: Prepare Capacitor release project
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf native-release
+          mkdir -p native-release/www native-release/assets
+          cp index.html app-v239.html reset-password.html manifest.json version.json native-release/www/
+          for dir in assets css js data offline push; do cp -R "$dir" native-release/www/; done
+          cp assets/logo.png native-release/assets/logo.png
+          cat > native-release/package.json <<'JSON'
+          {
+            "name": "new-hope-7-android-release",
+            "private": true,
+            "version": "2.3.9-50",
+            "dependencies": {
+              "@capacitor/android": "8.5.0",
+              "@capacitor/core": "8.5.0",
+              "@capacitor/file-transfer": "2.0.5",
+              "@capacitor/filesystem": "8.1.3",
+              "@capacitor/local-notifications": "8.3.1"
+            },
+            "devDependencies": {
+              "@capacitor/assets": "3.0.5",
+              "@capacitor/cli": "8.5.0"
+            }
+          }
+          JSON
+          cat > native-release/capacitor.config.json <<'JSON'
+          {
+            "appId": "com.omideno7.newhope7",
+            "appName": "New Hope 7",
+            "webDir": "www",
+            "server": {
+              "androidScheme": "https",
+              "cleartext": false
+            },
+            "android": {
+              "backgroundColor": "#ffffff",
+              "webContentsDebuggingEnabled": false
+            },
+            "plugins": {
+              "LocalNotifications": {
+                "iconColor": "#0f766e"
+              }
+            }
+          }
+          JSON
+          cd native-release
+          npm install --no-audit --no-fund
+          npx cap add android
+          npx cap sync android
+
+      - name: Configure Android release identity and API 36
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+          root=Path('native-release/android')
+          variables=root/'variables.gradle'
+          text=variables.read_text()
+          text=re.sub(r'minSdkVersion\s*=\s*\d+', 'minSdkVersion = 24', text)
+          text=re.sub(r'compileSdkVersion\s*=\s*\d+', 'compileSdkVersion = 36', text)
+          text=re.sub(r'targetSdkVersion\s*=\s*\d+', 'targetSdkVersion = 36', text)
+          variables.write_text(text)
+
+          gradle=root/'app/build.gradle'
+          text=gradle.read_text()
+          text=re.sub(r'versionCode\s*=*\s*\d+', 'versionCode 23950', text)
+          text=re.sub(r'versionName\s*=*\s*["\'][^"\']+["\']', 'versionName "2.3.9.50"', text)
+          text=re.sub(r'minifyEnabled\s*=*\s*false', 'minifyEnabled true', text)
+          if 'shrinkResources' in text:
+              text=re.sub(r'shrinkResources\s*=*\s*false', 'shrinkResources true', text)
+          elif 'minifyEnabled true' in text:
+              text=text.replace('minifyEnabled true', 'minifyEnabled true\n            shrinkResources true', 1)
+          gradle.write_text(text)
+
+          manifest=root/'app/src/main/AndroidManifest.xml'
+          text=manifest.read_text()
+          if 'android.permission.POST_NOTIFICATIONS' not in text:
+              text=text.replace('<manifest', '<manifest', 1).replace('>', '>\n    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />', 1)
+          if 'usesCleartextTraffic' not in text:
+              text=text.replace('<application', '<application android:usesCleartextTraffic="false"', 1)
+          manifest.write_text(text)
+          PY
+
+      - name: Generate branded Android icons and splash resources
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd native-release
+          npx capacitor-assets generate --android --iconBackgroundColor '#ffffff' --iconBackgroundColorDark '#ffffff' --splashBackgroundColor '#ffffff' --splashBackgroundColorDark '#ffffff'
+          npx cap sync android
+
+      - name: Validate native configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd native-release
+          grep -R "applicationId.*com.omideno7.newhope7" android/app/build.gradle
+          grep -R "versionCode.*23950" android/app/build.gradle
+          grep -R 'versionName.*2.3.9.50' android/app/build.gradle
+          grep -R 'compileSdkVersion = 36' android/variables.gradle
+          grep -R 'targetSdkVersion = 36' android/variables.gradle
+          grep -R 'minSdkVersion = 24' android/variables.gradle
+          grep -R 'POST_NOTIFICATIONS' android/app/src/main/AndroidManifest.xml
+          grep -R 'usesCleartextTraffic="false"' android/app/src/main/AndroidManifest.xml
+          test -f android/app/src/main/assets/public/index.html
+          test -f android/app/src/main/assets/public/js/nh7-settings-controller-v403.js
+          test -f android/app/src/main/assets/public/js/nh7-delete-account-v253.js
+
+      - name: Build unsigned release AAB
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd native-release/android
+          chmod +x gradlew
+          ./gradlew bundleRelease --stacktrace
+          test -f app/build/outputs/bundle/release/app-release.aab
+
+      - name: Produce release audit report
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd native-release
+          {
+            echo 'New Hope 7 Android Release Candidate'
+            echo "Commit: $GITHUB_SHA"
+            echo "Package: $APP_ID"
+            echo "Version name: $VERSION_NAME"
+            echo "Version code: $VERSION_CODE"
+            echo 'Capacitor: 8.5.0'
+            echo 'compileSdk: 36'
+            echo 'targetSdk: 36'
+            echo 'minSdk: 24'
+            echo 'Java: 21'
+            echo 'Signing: UNSIGNED candidate — final AAB must use the existing Google Play Upload Key'
+            echo
+            echo 'Plugins:'
+            npm ls --depth=0 || true
+            echo
+            echo 'AAB:'
+            ls -lh android/app/build/outputs/bundle/release/app-release.aab
+            echo
+            echo 'SHA-256:'
+            sha256sum android/app/build/outputs/bundle/release/app-release.aab
+          } > ANDROID_RELEASE_AUDIT.txt
+          rm -rf android/.gradle android/app/build android/build node_modules
+          zip -qr ../New_Hope_7_Android_API36_Project.zip . -x '*.DS_Store'
+
+      - name: Upload unsigned AAB candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: New_Hope_7_API36_UNSIGNED_AAB
+          path: native-release/android/app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload Android project and audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: New_Hope_7_Android_API36_Project
+          path: |
+            New_Hope_7_Android_API36_Project.zip
+            native-release/ANDROID_RELEASE_AUDIT.txt
+          if-no-files-found: error
+          retention-days: 14
