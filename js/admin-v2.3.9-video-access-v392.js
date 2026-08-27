@@ -61,7 +61,7 @@ function scopeText(row){
 function decorateCodes(root){
   const rows=ensureState()?.codes||[],cards=[...root.querySelectorAll(':scope > article.request-card')];
   cards.forEach((card,index)=>{
-    const row=rows[index];if(!row)return;card.querySelector('.nh7-v392-meta')?.remove();
+    const row=rows[index];if(!row)return;const legacyMeta=card.querySelector('.req-meta');if(legacyMeta)legacyMeta.textContent=row.bound_user_email||row.target_email||L('هنوز استفاده نشده','Unused','Nije korišteno');card.querySelector('.nh7-v392-meta')?.remove();
     const target=row.target_email?`${row.target_name||row.target_email} · ${row.target_email}`:L('رمز قدیمی عمومی','Legacy general password','Stara opća lozinka');
     const device=row.bound_device_id?`${L('دستگاه متصل','Bound device','Povezani uređaj')}: •••${String(row.bound_device_id).slice(-8)}`:L('هنوز روی دستگاهی فعال نشده','Not activated on a device yet','Još nije aktivirano na uređaju');
     const activity=[row.granted_at?`${L('فعال‌سازی','Activated','Aktivirano')}: ${dateText(row.granted_at)}`:'',row.last_used_at?`${L('آخرین استفاده','Last used','Zadnje korištenje')}: ${dateText(row.last_used_at)}`:''].filter(Boolean).join(' · ');
