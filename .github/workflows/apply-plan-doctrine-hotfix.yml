@@ -1,0 +1,134 @@
+name: Apply requested spiritual-plan doctrine cleanup
+
+on:
+  push:
+    branches: [release/wave2-library-access-23951]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/wave2-library-access-23951
+          fetch-depth: 0
+
+      - name: Apply requested plan wording and fasting UI cleanup
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          import json
+
+          # 1) Prayer in tongues: replace the pastoral guidance in all three languages.
+          p = Path('data/spiritual-plans/prayer-30.json')
+          data = json.loads(p.read_text(encoding='utf-8'))
+          data['localized']['fa']['pastoralNote'] = 'این پلن برای ایماندارانی است که عطای زبان‌ها را دریافت کرده‌اند یا آن را از خدا می‌طلبند. در دعای شخصی به زبان‌ها، روح انسان به‌وسیلهٔ روح‌القدس دعا می‌کند و خود را بنا می‌نماید (اول قرنتیان ۱۴:۲، ۴، ۱۴؛ یهودا ۲۰). در تعلیم ما، دعا به زبان‌ها جایگاهی برتر و بسیار مؤثر در زندگی دعایی دارد؛ زیرا ما را فراتر از محدودیت فهم انسانی وارد دعای در روح می‌کند. کلام و محبت همواره اساس زندگی مسیحی‌اند؛ و کاربرد عمومی زبان‌ها در اجتماع کلیسا باید مطابق نظم کتاب‌مقدسی اول قرنتیان ۱۴ باشد.'
+          data['localized']['en']['pastoralNote'] = 'This plan is for believers who have received the gift of tongues or are asking God for it. In personal prayer in tongues, the human spirit prays by the Holy Spirit and is built up (1 Corinthians 14:2, 4, 14; Jude 20). In our teaching, prayer in tongues has a higher and especially powerful place in the life of prayer because it carries us beyond the limitation of human understanding into prayer in the Spirit. Scripture and love remain foundational to Christian life, and the public use of tongues in the church gathering should follow the biblical order of 1 Corinthians 14.'
+          data['localized']['hr']['pastoralNote'] = 'Ovaj je plan za vjernike koji su primili dar jezika ili ga traže od Boga. U osobnoj molitvi u jezicima ljudski duh moli po Duhu Svetome i izgrađuje se (1. Korinćanima 14:2, 4, 14; Juda 20). U našem nauku molitva u jezicima ima više i osobito snažno mjesto u molitvenom životu jer nas vodi iznad ograničenja ljudskog razumijevanja u molitvu u Duhu. Pismo i ljubav ostaju temelj kršćanskog života, a javna uporaba jezika na crkvenom okupljanju treba slijediti biblijski red iz 1. Korinćanima 14.'
+          p.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          # 2) Remove the health/safety note from the fasting plan metadata in all languages.
+          p = Path('data/spiritual-plans/fasting-7.json')
+          data = json.loads(p.read_text(encoding='utf-8'))
+          for code in ('fa','en','hr'):
+              data.get('localized',{}).get(code,{}).pop('safety', None)
+          p.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          # 3) Remove safety/medical guidance fields from the fasting teaching data so they do not reappear in another renderer.
+          p = Path('data/spiritual-plans/fasting-types.json')
+          data = json.loads(p.read_text(encoding='utf-8'))
+          for code in ('fa','en','hr'):
+              data.get('localized',{}).get(code,{}).pop('safety', None)
+          for item in data.get('types',[]):
+              for code in ('fa','en','hr'):
+                  item.get('localized',{}).get(code,{}).pop('safety', None)
+          p.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          # 4) Remove the visible safety block, acknowledgement checkbox, validation dependency,
+          #    and safety subsection from the fasting UI in all languages.
+          p = Path('js/nh7-spiritual-plans-v240.js')
+          text = p.read_text(encoding='utf-8')
+          replacements = [
+            ("    safety: 'Health and safety', safetyAck: 'I have read the safety note and will choose a medically appropriate fast.',\n", ''),
+            ("    safety: 'سلامت و ایمنی', safetyAck: 'یادداشت ایمنی را خوانده‌ام و روزه‌ای متناسب با وضعیت سلامتی‌ام انتخاب می‌کنم.',\n", ''),
+            ("    safety: 'Zdravlje i sigurnost', safetyAck: 'Pročitao/la sam sigurnosnu napomenu i odabrat ću medicinski prikladan post.',\n", ''),
+            ("fastingTeachingIntro: 'Each form below includes its purpose, practice, prayer rhythm, boundaries, and safety guidance.'", "fastingTeachingIntro: 'Each form below includes its purpose, practice, prayer rhythm, and companion abstinence.'"),
+            ("fastingTeachingIntro: 'برای هر نوع روزه، هدف، روش اجرا، برنامهٔ دعا، پرهیزها و نکات ایمنی را بخوان.'", "fastingTeachingIntro: 'برای هر نوع روزه، هدف، روش اجرا، برنامهٔ دعا و پرهیزهای همراه را بخوان.'"),
+            ("fastingTeachingIntro: 'Svaki oblik u nastavku uključuje svrhu, praksu, ritam molitve, granice i sigurnosne smjernice.'", "fastingTeachingIntro: 'Svaki oblik u nastavku uključuje svrhu, praksu, ritam molitve i prateća odricanja.'"),
+            ("${type.scriptures?.length ? `<div class=\"nh7-fast-guide-refs\">${type.scriptures.map(reference => scriptureReveal(ctx, reference, true)).join('')}</div>` : ''}<div class=\"nh7-fast-guide-safety\">⚕ ${text(copy.safety || shared.safety || '')}</div>", "${type.scriptures?.length ? `<div class=\"nh7-fast-guide-refs\">${type.scriptures.map(reference => scriptureReveal(ctx, reference, true)).join('')}</div>` : ''}"),
+            ("    <section class=\"card nh7-fasting-form\"><h2>${esc(meta.title || t(ctx, 'fastingJournal'))}</h2><div class=\"nh7-safety-note\"><strong>⚕ ${esc(t(ctx, 'safety'))}</strong><p>${esc(meta.safety || '')}</p></div>\n", "    <section class=\"card nh7-fasting-form\"><h2>${esc(meta.title || t(ctx, 'fastingJournal'))}</h2>\n"),
+            ("        <label class=\"nh7-check-row\"><input id=\"nh7FastingSafety\" type=\"checkbox\" required><span>${esc(t(ctx, 'safetyAck'))}</span></label>\n", ''),
+            ("    const safety = document.querySelector('#nh7FastingSafety')?.checked;\n    if (!typeKey || !purpose || !startDate || !endDate || !safety) { window.alert(t(ctx, 'required')); return; }", "    if (!typeKey || !purpose || !startDate || !endDate) { window.alert(t(ctx, 'required')); return; }")
+          ]
+          for old,new in replacements:
+              if old not in text:
+                  raise SystemExit('Required plans UI marker not found: ' + old[:90])
+              text = text.replace(old,new,1)
+          p.write_text(text, encoding='utf-8')
+
+          # 5) Bump the offline cache so existing QA sessions receive the corrected plan content.
+          p = Path('sw-offline-v329.js')
+          text = p.read_text(encoding='utf-8')
+          old = "const VERSION='v2.3.9.51-wave2-library-qa';"
+          new = "const VERSION='v2.3.9.51-wave2-plan-doctrine';"
+          if old not in text:
+              raise SystemExit('Offline version marker not found')
+          p.write_text(text.replace(old,new,1), encoding='utf-8')
+
+          # 6) Extend Wave 2 validation for these user-requested, isolated plan files.
+          p = Path('.github/workflows/validate-wave2-library-access.yml')
+          text = p.read_text(encoding='utf-8')
+          old = "              index.html|admin.html|sw-offline-v329.js|js/nh7-book-reader-v283.js|js/nh7-admin-library-access-v396.js|.github/workflows/validate-wave2-library-access.yml) ;;"
+          new = "              index.html|admin.html|sw-offline-v329.js|js/nh7-book-reader-v283.js|js/nh7-admin-library-access-v396.js|js/nh7-spiritual-plans-v240.js|data/spiritual-plans/prayer-30.json|data/spiritual-plans/fasting-7.json|data/spiritual-plans/fasting-types.json|.github/workflows/validate-wave2-library-access.yml) ;;"
+          if old not in text:
+              raise SystemExit('Wave 2 allowlist marker not found')
+          text = text.replace(old,new,1)
+          insert = """
+      - name: Validate requested doctrine cleanup
+        run: |
+          set -euo pipefail
+          node --check js/nh7-spiritual-plans-v240.js
+          python <<'PY2'
+          import json
+          prayer=json.load(open('data/spiritual-plans/prayer-30.json',encoding='utf-8'))
+          fasting=json.load(open('data/spiritual-plans/fasting-7.json',encoding='utf-8'))
+          guides=json.load(open('data/spiritual-plans/fasting-types.json',encoding='utf-8'))
+          for code in ('fa','en','hr'):
+              note=prayer['localized'][code]['pastoralNote']
+              assert note and ('1 Corinthians 14' in note or 'اول قرنتیان ۱۴' in note or '1. Korinćanima 14' in note)
+              assert 'safety' not in fasting['localized'][code]
+              assert 'safety' not in guides['localized'][code]
+          for item in guides.get('types',[]):
+              for code in ('fa','en','hr'):
+                  assert 'safety' not in item.get('localized',{}).get(code,{})
+          PY2
+          ! grep -q 'nh7FastingSafety' js/nh7-spiritual-plans-v240.js
+          ! grep -q 'nh7-safety-note' js/nh7-spiritual-plans-v240.js
+          ! grep -q 'nh7-fast-guide-safety' js/nh7-spiritual-plans-v240.js
+          ! grep -q "safetyAck:" js/nh7-spiritual-plans-v240.js
+          grep -q 'دعا به زبان‌ها جایگاهی برتر و بسیار مؤثر' data/spiritual-plans/prayer-30.json
+"""
+          marker = "      - name: Protect unrelated production modules\n"
+          if marker not in text:
+              raise SystemExit('Validation insertion marker not found')
+          text = text.replace(marker, insert + '\n' + marker, 1)
+          p.write_text(text, encoding='utf-8')
+          PY
+
+          node --check js/nh7-spiritual-plans-v240.js
+          python -m json.tool data/spiritual-plans/prayer-30.json >/dev/null
+          python -m json.tool data/spiritual-plans/fasting-7.json >/dev/null
+          python -m json.tool data/spiritual-plans/fasting-types.json >/dev/null
+
+      - name: Commit cleanup and remove this temporary workflow
+        run: |
+          git config user.name 'Omideno7'
+          git config user.email 'omideno7church@gmail.com'
+          git rm .github/workflows/apply-plan-doctrine-hotfix.yml
+          git add data/spiritual-plans/prayer-30.json data/spiritual-plans/fasting-7.json data/spiritual-plans/fasting-types.json js/nh7-spiritual-plans-v240.js sw-offline-v329.js .github/workflows/validate-wave2-library-access.yml
+          git commit -m 'fix(plans): align prayer and fasting content with church teaching'
+          git push origin HEAD:release/wave2-library-access-23951
