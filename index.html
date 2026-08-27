@@ -27,7 +27,7 @@
     window.NH7_ONESIGNAL_APP_ID = '86f4116a-707a-4959-aa3f-7c703f57bf7e';
     window.NH7_VERSION = '2.3.9.50';
     window.NH7_BASE_PATH = new URL('.', window.location.href).pathname;
-    window.NH7_SERVICE_WORKER = window.NH7_BASE_PATH + 'service-worker.js';
+    window.NH7_SERVICE_WORKER = window.NH7_BASE_PATH + 'service-worker.js?v=4.0.3';
     window.NH7_ONESIGNAL_WORKER = window.NH7_BASE_PATH + 'push/OneSignalSDKWorker.js';
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register(window.NH7_SERVICE_WORKER, { scope: window.NH7_BASE_PATH, updateViaCache: 'none' }).catch(console.warn);
@@ -92,24 +92,25 @@
   <script src="https://cdn.jsdelivr.net/npm/mammoth@1.12.0/mammoth.browser.min.js" defer></script>
   <script src="js/nh7-security-core-v340.js?v=3.4.1"></script>
   <script src="js/nh7-qna-i18n-v341.js?v=2.3.9.36"></script>
-  <script src="js/nh7-offline-startup-v327.js?v=2.3.9.50-offline402"></script>
+  <script src="js/nh7-offline-startup-v327.js?v=2.3.9.50-offline403"></script>
   <script src="js/nh7-auto-update-v335.js?v=2.3.9.35"></script>
   <script src="js/nh7-notifications-zagreb-v334.js?v=2.3.9.35e"></script>
-  <script src="js/nh7-offline-core-v327.js?v=2.3.9.50-offline402"></script>
-  <script src="js/nh7-offline-data-v329.js?v=2.3.9.50-offline402"></script>
+  <script src="js/nh7-offline-core-v327.js?v=2.3.9.50-offline403"></script>
+  <script src="js/nh7-offline-data-v329.js?v=2.3.9.50-offline403"></script>
   <script src="js/nh7-audio-route-stability-v330.js?v=2.3.9.33"></script>
   <script src="js/nh7-access-bootstrap-v230.js?v=2.3.9.33"></script>
   <script src="js/nh7-auth-signup-guard-v343.js?v=3.5.5"></script>
   <script src="js/nh7-registration-canonical-v353.js?v=4.0.1"></script>
   <script src="js/nh7-school-registration-v342.js?v=2.3.9.50"></script>
   <script src="js/nh7-registration-final-guard-v401.js?v=4.0.1"></script>
-  <script src="js/nh7-offline-playback-bridge-v332.js?v=2.3.9.50-offline402"></script>
-  <script src="js/nh7-offline-persistence-v323.js?v=2.3.9.50-offline402"></script>
+  <script src="js/nh7-offline-playback-bridge-v332.js?v=2.3.9.50-offline403"></script>
+  <script src="js/nh7-offline-persistence-v323.js?v=2.3.9.50-offline403"></script>
   <script src="js/nh7-auth-recovery-v342.js?v=2.3.9.50"></script>
   <script src="js/nh7-audio-classic-v400.js?v=2.3.9.50"></script>
   <script src="js/app.js?v=2.3.9.50" type="module"></script>
-  <script src="js/nh7-settings-controller-v402.js?v=4.0.2"></script>
+  <script src="js/nh7-settings-controller-v403.js?v=4.0.3"></script>
   <script src="js/nh7-settings-account-v252.js?v=2.5.2" defer></script>
+  <script src="js/nh7-delete-account-v253.js?v=2.5.3" defer></script>
   <script src="js/nh7-app-enhancements-v230.js?v=2.3.9.33" type="module"></script>
   <script src="js/nh7-my-notes-v234.js?v=2.3.9.33" type="module"></script>
   <script src="js/nh7-book-reader-v283.js?v=2.3.9.51" defer></script>
