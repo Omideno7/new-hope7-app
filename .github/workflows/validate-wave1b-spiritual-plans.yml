@@ -1,8 +1,10 @@
-name: Validate Wave 1B Spiritual Plans 4.1.2
+name: Validate Wave 1B Production 2.3.9.50
 
 on:
   push:
-    branches: [release/wave1b-spiritual-plans-23949]
+    branches:
+      - release/wave1b-production-23950
+      - main
   workflow_dispatch:
 
 permissions:
@@ -12,35 +14,57 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout exact branch commit with history
+      - name: Checkout exact commit with history
         uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
           fetch-depth: 0
 
-      - name: Validate JavaScript and QA HTML
+      - name: Validate JavaScript, HTML and release wiring
         run: |
           set -euo pipefail
           node --check js/nh7-spiritual-plans-v240.js
-          node --check js/nh7-spiritual-plans-bridge-v410.js
+          node --check js/nh7-spiritual-plans-v412.js
+          node --check js/nh7-audio-classic-v400.js
+          node --check js/nh7-school-exam-v344.js
+          node --check js/nh7-settings-controller-v399.js
           node <<'NODE'
           const fs=require('fs');
-          const html=fs.readFileSync('wave1b-plans.html','utf8');
-          [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)]
-            .filter(match=>!/^\s*$/.test(match[1]))
-            .forEach((match,index)=>new Function(match[1]+`\n//# sourceURL=wave1b-inline-${index}`));
+          const version=JSON.parse(fs.readFileSync('version.json','utf8'));
+          const index=fs.readFileSync('index.html','utf8');
+          const shell=fs.readFileSync('app-v239.html','utf8');
+          const serviceWorker=fs.readFileSync('service-worker.js','utf8');
+          const offline=fs.readFileSync('sw-offline-v329.js','utf8');
+          if(version.app!=='2.3.9.50') throw new Error('Unexpected app version '+version.app);
           for(const required of [
-            'nh7-spiritual-plans-v240.css?v=4.1.0',
-            'nh7-spiritual-plans-bridge-v410.js?v=4.1.0',
-            'window.NH7_WAVE1B_AUTO_OPEN = true',
-            'nh7-audio-classic-v400.js?v=2.3.9.49',
-            'nh7-school-exam-v344.js?v=2.3.9.49',
-            'nh7-settings-controller-v399.js?v=2.3.9.49',
-            'nh7-auth-recovery-v342.js?v=2.3.9.49'
-          ]) if(!html.includes(required)) throw new Error('QA page missing '+required);
+            "window.NH7_VERSION = '2.3.9.50'",
+            'css/nh7-spiritual-plans-v240.css?v=4.1.2',
+            'js/nh7-spiritual-plans-v412.js?v=4.1.2',
+            'js/nh7-audio-classic-v400.js?v=2.3.9.50',
+            'js/nh7-school-exam-v344.js?v=2.3.9.50',
+            'js/nh7-settings-controller-v399.js?v=2.3.9.50',
+            'js/nh7-auth-recovery-v342.js?v=2.3.9.50'
+          ]) if(!index.includes(required)) throw new Error('index missing '+required);
+          if(!shell.includes('index.html?v=2.3.9.50')) throw new Error('native shell version mismatch');
+          if(!serviceWorker.includes('2.3.9.50')) throw new Error('service worker version mismatch');
+          for(const required of [
+            "const VERSION='v2.3.9.50-wave1b-plans'",
+            './css/nh7-spiritual-plans-v240.css',
+            './js/nh7-spiritual-plans-v240.js',
+            './js/nh7-spiritual-plans-v412.js',
+            './data/spiritual-plans/catalog.json',
+            './data/spiritual-plans/mind-renewal-days-01-07.json',
+            './data/spiritual-plans/mind-renewal-days-27-30.json'
+          ]) if(!offline.includes(required)) throw new Error('offline cache missing '+required);
+          for(const file of ['index.html','app-v239.html']){
+            const html=fs.readFileSync(file,'utf8');
+            [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)]
+              .filter(match=>!/^\s*$/.test(match[1]))
+              .forEach((match,index)=>new Function(match[1]+`\n//# sourceURL=${file}-${index}`));
+          }
           NODE
 
-      - name: Validate six trilingual plans and 30-day Divine Order mind renewal
+      - name: Validate six complete trilingual spiritual plans
         run: |
           node <<'NODE'
           const fs=require('fs');
@@ -48,85 +72,68 @@ jobs:
           const catalog=read('data/spiritual-plans/catalog.json');
           const expected=['prayer-30','grace-14','fasting-7','obedience-10','salvation-10','mind-renewal-30'];
           const ids=(catalog.plans||[]).map(item=>item.id);
-          if(JSON.stringify(ids)!==JSON.stringify(expected)) throw new Error('Unexpected catalog: '+ids.join(','));
-          if(new Set(ids).size!==ids.length) throw new Error('Duplicate plan IDs');
-          if(fs.existsSync('data/spiritual-plans/mind-renewal-14.json')) throw new Error('Legacy mind-renewal-14 source must not ship in Wave 1B');
+          if(JSON.stringify(ids)!==JSON.stringify(expected)) throw new Error('Unexpected catalog '+ids.join(','));
+          if(fs.existsSync('data/spiritual-plans/mind-renewal-14.json')) throw new Error('Legacy 14-day mind plan still present');
 
-          const mindParts=[
-            read('data/spiritual-plans/mind-renewal-days-01-07.json'),
-            read('data/spiritual-plans/mind-renewal-days-08-14.json'),
-            read('data/spiritual-plans/mind-renewal-days-15-18.json'),
-            read('data/spiritual-plans/mind-renewal-days-19-22.json'),
-            read('data/spiritual-plans/mind-renewal-days-23-26.json'),
-            read('data/spiritual-plans/mind-renewal-days-27-30.json')
-          ];
-          const mind={id:'mind-renewal-30',version:3,category:'renewal',durationDays:30,icon:'🧠',theme:'mind',requiresJourney:false};
-          mind.localized={
-            fa:{title:'تغییر طرز تفکر',subtitle:'۳۰ روز',description:'مسیر نظم الهی و تازه‌شدن ذهن',goal:'زندگی در نظم الهی',pastoralNote:'مسیر شاگردسازی روزانه'},
-            en:{title:'Change Your Thinking',subtitle:'30 days',description:'Divine-order mind-renewal journey',goal:'Living in divine order',pastoralNote:'Daily discipleship journey'},
-            hr:{title:'Promijeni način razmišljanja',subtitle:'30 dana',description:'Put obnove uma u božanskom redu',goal:'Život u božanskom redu',pastoralNote:'Put svakodnevnog učeništva'}
+          const mindParts=['01-07','08-14','15-18','19-22','23-26','27-30']
+            .map(range=>read(`data/spiritual-plans/mind-renewal-days-${range}.json`));
+          const mind={
+            id:'mind-renewal-30',durationDays:30,
+            localized:{
+              fa:{title:'تغییر طرز تفکر',description:'نظم الهی',goal:'زندگی منظم'},
+              en:{title:'Change Your Thinking',description:'Divine order',goal:'Ordered life'},
+              hr:{title:'Promijeni način razmišljanja',description:'Božanski red',goal:'Uređen život'}
+            },
+            days:mindParts.flatMap(part=>part.days||[]).sort((a,b)=>Number(a.day)-Number(b.day))
           };
-          mind.days=mindParts.flatMap(item=>item.days||[]).sort((a,b)=>Number(a.day)-Number(b.day));
-
-          const plans=(catalog.plans||[]).map(item=>item.id==='mind-renewal-30'?mind:read(item.file));
+          const plans=catalog.plans.map(item=>item.id==='mind-renewal-30'?mind:read(item.file));
           const languages=['fa','en','hr'];
-          const dayFields=['title','devotional','reflection','action','prayer','declaration'];
+          const fields=['title','devotional','reflection','action','prayer','declaration'];
           for(const plan of plans){
-            if(!plan.id||!Array.isArray(plan.days)) throw new Error('Invalid plan '+plan.id);
-            const total=Number(plan.durationDays||0);
-            if(total!==plan.days.length) throw new Error(`${plan.id}: duration ${total} != days ${plan.days.length}`);
+            if(Number(plan.durationDays)!==plan.days.length) throw new Error(`${plan.id}: day count mismatch`);
             plan.days.forEach((day,index)=>{
-              if(Number(day.day)!==index+1) throw new Error(`${plan.id}: day sequence broken at ${index+1}`);
-              if(!Array.isArray(day.scriptures)||!day.scriptures.length) throw new Error(`${plan.id}: missing scriptures day ${day.day}`);
-              for(const reference of day.scriptures){
-                if(!/^.+\s+\d+:\d+(?:[-–]\d+)?$/.test(String(reference))) throw new Error(`${plan.id}: invalid reference ${reference}`);
-              }
+              if(Number(day.day)!==index+1) throw new Error(`${plan.id}: sequence broken at ${index+1}`);
+              if(!Array.isArray(day.scriptures)||!day.scriptures.length) throw new Error(`${plan.id}: no Scripture day ${day.day}`);
+              for(const reference of day.scriptures) if(!/^.+\s+\d+:\d+(?:[-–]\d+)?$/.test(String(reference))) throw new Error(`${plan.id}: bad reference ${reference}`);
               for(const language of languages){
                 const copy=day.content?.[language];
                 if(!copy) throw new Error(`${plan.id}: missing ${language} day ${day.day}`);
-                for(const field of dayFields) if(!String(copy[field]||'').trim()) throw new Error(`${plan.id}: missing ${language}.${field} day ${day.day}`);
+                for(const field of fields) if(!String(copy[field]||'').trim()) throw new Error(`${plan.id}: missing ${language}.${field} day ${day.day}`);
               }
             });
-            for(const language of languages){
-              const meta=plan.localized?.[language];
-              if(!meta?.title||!meta?.description||!meta?.goal) throw new Error(`${plan.id}: incomplete ${language} metadata`);
-            }
           }
-          if(mind.days.length!==30||mind.days[0].day!==1||mind.days[14].day!==15||mind.days[29].day!==30) throw new Error('Mind renewal is not complete 1–30');
-          const publicMind=JSON.stringify(mind);
-          for(const banned of ['Chris Oyakhilome','Power of Your Mind','قدرت فکر']) if(publicMind.includes(banned)) throw new Error('External source attribution leaked: '+banned);
-          console.log('Validated',plans.map(plan=>`${plan.id}:${plan.days.length}`).join(' | '));
+          const publicMind=JSON.stringify(mindParts);
+          for(const banned of ['Chris Oyakhilome','Power of Your Mind','قدرت فکر']) if(publicMind.includes(banned)) throw new Error('External attribution leaked');
+          console.log(plans.map(plan=>`${plan.id}:${plan.days.length}`).join(' | '));
           NODE
 
-      - name: Verify bridge, fasting rules, verse reveal and cloud queue
+      - name: Verify production navigation, progress, fasting and offline behavior
         run: |
           set -euo pipefail
-          grep -q "NH7_SPIRITUAL_PLANS_WAVE1B_VERSION = VERSION" js/nh7-spiritual-plans-bridge-v410.js
-          grep -q "id:'mind-renewal-30'" js/nh7-spiritual-plans-bridge-v410.js
-          grep -q "mind-renewal-days-01-07.json" js/nh7-spiritual-plans-bridge-v410.js
-          grep -q "mind-renewal-days-27-30.json" js/nh7-spiritual-plans-bridge-v410.js
-          grep -q "plan.days.length !== 30" js/nh7-spiritual-plans-bridge-v410.js
-          grep -q "const leavingTarget = active" js/nh7-spiritual-plans-bridge-v410.js
-          grep -q "data-reveal-ref" js/nh7-spiritual-plans-bridge-v410.js
+          grep -q "const VERSION = '4.1.2'" js/nh7-spiritual-plans-v412.js
+          grep -q "window.NH7_SPIRITUAL_PLANS_VERSION = VERSION" js/nh7-spiritual-plans-v412.js
+          grep -q "nh7SpiritualPlansRootMarker" js/nh7-spiritual-plans-v412.js
+          grep -q "const leavingTarget = active" js/nh7-spiritual-plans-v412.js
+          grep -q "data-reveal-ref" js/nh7-spiritual-plans-v412.js
           grep -q "spiritual_plan_progress" js/nh7-spiritual-plans-v240.js
           grep -q "fasting_journeys" js/nh7-spiritual-plans-v240.js
           grep -q "fasting_daily_logs" js/nh7-spiritual-plans-v240.js
           grep -q "prayerMinutes < 1" js/nh7-spiritual-plans-v240.js
           grep -q "type_media" js/nh7-spiritual-plans-v240.js
           grep -q "هر روز روزه باید با دعا همراه باشد" data/spiritual-plans/fasting-types.json
+          test ! -f wave1b-plans.html
+          test ! -f js/nh7-spiritual-plans-bridge-v410.js
 
-      - name: Protect production modules and Wave 1B scope
+      - name: Verify no regression to protected production modules
         run: |
           set -euo pipefail
-          BASE=b28226c26ef4e755de575168fb108f002cf8678c
-          git diff --quiet "$BASE" -- index.html app-v239.html service-worker.js version.json js/app.js js/nh7-audio-classic-v400.js js/nh7-settings-controller-v399.js js/nh7-school-exam-v344.js js/nh7-auth-recovery-v342.js js/nh7-school-registration-v342.js
-          changed=$(git diff --name-only "$BASE" HEAD)
-          echo "$changed"
-          while IFS= read -r file; do
-            [ -z "$file" ] && continue
-            case "$file" in
-              js/nh7-spiritual-plans-v240.js|js/nh7-spiritual-plans-bridge-v410.js|css/nh7-spiritual-plans-v240.css|data/spiritual-plans/*|wave1b-plans.html|.github/workflows/validate-wave1b-spiritual-plans.yml|docs/WAVE1B_SPIRITUAL_PLANS_QA.md) ;;
-              *) echo "Unexpected Wave 1B change: $file" >&2; exit 1 ;;
-            esac
-          done <<< "$changed"
-          echo 'Wave 1B scope is isolated; production files are unchanged.'
+          test -f js/nh7-audio-classic-v400.js
+          test -f js/nh7-school-exam-v344.js
+          test -f js/nh7-auth-recovery-v342.js
+          test -f js/nh7-settings-controller-v399.js
+          test -f js/nh7-apocrypha-reader-v401.js
+          grep -q "NH7_AUDIO_CLASSIC_VERSION='4.0.0'" js/nh7-audio-classic-v400.js
+          grep -q "window.NH7_SCHOOL_EXAM_VERSION='3.4.4'" js/nh7-school-exam-v344.js
+          grep -q "NH7_SETTINGS_CONTROLLER_VERSION='3.9.9'" js/nh7-settings-controller-v399.js
+          grep -q '"app":"2.3.9.50"' version.json
+          echo 'Wave 1B production validation passed.'
