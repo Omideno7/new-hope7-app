@@ -38,7 +38,7 @@ jobs:
           const match=release.match(/const NH7_RELEASE_ASSETS=\[([\s\S]*?)\];/);if(!match)throw new Error('Release asset list missing');
           const paths=[...match[1].matchAll(/'([^']+)'/g)].map(m=>m[1]);
           const missing=[];
-          for(const p of paths){if(!p.startsWith('./'))continue;const f=p.slice(2);if(!fs.existsSync(f))missing.push(f)}
+          for(const p of paths){if(p==='./')continue;if(!p.startsWith('./'))continue;const f=p.slice(2);if(!fs.existsSync(f))missing.push(f)}
           if(missing.length)throw new Error('Missing release offline assets: '+missing.join(', '));
           const currentScripts=[...index.matchAll(/<script\s+src="(js\/[^"?]+)(?:\?[^\"]*)?"/g)].map(m=>'./'+m[1]);
           const missingFromRelease=currentScripts.filter(p=>!paths.includes(p));
