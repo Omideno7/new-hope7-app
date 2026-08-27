@@ -1,0 +1,33 @@
+name: Final Release QA v403
+
+on:
+  push:
+    branches: [release/final-qa-settings-offline-23950]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate final release files
+        run: |
+          set -euo pipefail
+          for file in service-worker.js sw-navigation-fresh-v403.js sw-release-core-v403.js js/nh7-settings-controller-v403.js js/nh7-delete-account-v253.js js/nh7-offline-core-v327.js js/nh7-offline-data-v329.js; do node --check "$file"; done
+          node <<'NODE'
+          const fs=require('fs');
+          const index=fs.readFileSync('index.html','utf8');
+          const deploy=fs.readFileSync('.github/workflows/deploy-pages.yml','utf8');
+          const worker=fs.readFileSync('service-worker.js','utf8');
+          const release=fs.readFileSync('sw-release-core-v403.js','utf8');
+          for(const tag of ['nh7-settings-controller-v403.js?v=4.0.3','nh7-delete-account-v253.js?v=2.5.3'])if(!index.includes(tag))throw new Error('Missing '+tag);
+          for(const name of ['nh7-settings-controller-v403.js','nh7-delete-account-v253.js','sw-navigation-fresh-v403.js','sw-release-core-v403.js'])if(!deploy.includes(name))throw new Error('Deploy validator missing '+name);
+          if(!worker.includes('sw-navigation-fresh-v403.js?v=4.0.3')||!worker.includes('sw-release-core-v403.js?v=4.0.3'))throw new Error('Worker v403 wiring missing');
+          const m=release.match(/const NH7_RELEASE_ASSETS=\[([\s\S]*?)\];/);if(!m)throw new Error('Release assets missing');
+          const paths=[...m[1].matchAll(/'([^']+)'/g)].map(x=>x[1]);
+          const scripts=[...index.matchAll(/<script\s+src="(js\/[^"?]+)/g)].map(x=>'./'+x[1]);
+          const absent=scripts.filter(x=>!paths.includes(x));if(absent.length)throw new Error('Offline asset coverage missing: '+absent.join(', '));
+          console.log('Final Release QA v403 OK');
+          NODE
