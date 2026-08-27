@@ -270,9 +270,9 @@ Object.assign(T.hr, {openSingleVerse:'Otvori ovaj stih', openWholeChapter:'Otvor
 Object.assign(T.en, {highlight:'Highlight', account:'Account', forgotPassword:'Forgot password?', resetPassword:'Send password reset email', resetPasswordSent:'If this email exists, a reset link has been sent.', enterSchool:'Enter school', refreshApproval:'Refresh approval status', enterMeeting:'Enter meeting', myAccess:'My access', previousDay:'Previous day', today:'Today', nextDay:'Next day', alreadyAsked:'This question has already been submitted. Please wait for the answer in the app.', questionSent:'Your question was submitted anonymously to the public list. Please wait up to two weeks for the answer in the app.', qnaWaitNotice:'After submitting a question, please wait up to two weeks. The answer will appear inside the app.', askQuestionOnce:'Please do not submit the same question more than once.'});
 Object.assign(T.fa, {highlight:'هایلایت', account:'حساب کاربری', forgotPassword:'فراموشی رمز عبور؟', resetPassword:'ارسال لینک بازیابی رمز', resetPasswordSent:'اگر این ایمیل در سیستم وجود داشته باشد، لینک بازیابی رمز ارسال شد.', enterSchool:'ورود به مدرسه', refreshApproval:'تازه‌سازی وضعیت تأیید', enterMeeting:'ورود به جلسه', myAccess:'دسترسی من', previousDay:'روز قبل', today:'امروز', nextDay:'روز بعد', alreadyAsked:'این سؤال قبلاً ثبت شده است. لطفاً منتظر پاسخ در اپ بمانید.', questionSent:'سؤال شما ثبت شد. برای همه به صورت گمنام نمایش داده می‌شود. لطفاً تا دو هفته منتظر پاسخ در اپ بمانید.', qnaWaitNotice:'بعد از ثبت سؤال، لطفاً تا دو هفته منتظر پاسخ باشید. پاسخ داخل اپ نمایش داده می‌شود.', askQuestionOnce:'لطفاً سؤال تکراری ثبت نکنید.'});
 Object.assign(T.hr, {highlight:'Označi', account:'Račun', forgotPassword:'Zaboravili ste lozinku?', resetPassword:'Pošalji email za reset lozinke', resetPasswordSent:'Ako ova email adresa postoji, poveznica za reset je poslana.', enterSchool:'Uđi u školu', refreshApproval:'Osvježi status odobrenja', enterMeeting:'Uđi u sastanak', myAccess:'Moj pristup', previousDay:'Prethodni dan', today:'Danas', nextDay:'Sljedeći dan', alreadyAsked:'Ovo pitanje je već poslano. Molimo pričekajte odgovor u aplikaciji.', questionSent:'Vaše pitanje je poslano anonimno na javni popis. Pričekajte odgovor u aplikaciji do dva tjedna.', qnaWaitNotice:'Nakon slanja pitanja pričekajte do dva tjedna. Odgovor će se prikazati u aplikaciji.', askQuestionOnce:'Nemojte slati isto pitanje više puta.'});
-Object.assign(T.en,{library:'Books & Handouts',publicLibrary:'Public books',ministersLibrary:'Ministers library',openPdf:'Open PDF',protectedLibrary:'Protected ministry resources',enterAccessCode:'Enter the access code provided by the church',invalidAccessCode:'The access code is invalid, expired, or has reached its limit.',libraryEmpty:'No published books or handouts yet.',pdfExpires:'The secure PDF link is valid for 10 minutes.'});
-Object.assign(T.fa,{library:'کتاب‌ها و جزوه‌ها',publicLibrary:'کتاب‌ها و جزوه‌های عمومی',ministersLibrary:'کتابخانه خادمان',openPdf:'باز کردن PDF',protectedLibrary:'منابع محافظت‌شده خادمان',enterAccessCode:'کدی را که کلیسا در اختیار شما گذاشته وارد کنید',invalidAccessCode:'کد نامعتبر است، منقضی شده یا سقف استفاده آن تمام شده است.',libraryEmpty:'هنوز کتاب یا جزوه‌ای منتشر نشده است.',pdfExpires:'لینک امن PDF ده دقیقه اعتبار دارد.'});
-Object.assign(T.hr,{library:'Knjige i materijali',publicLibrary:'Javne knjige',ministersLibrary:'Knjižnica za služitelje',openPdf:'Otvori PDF',protectedLibrary:'Zaštićeni materijali za služitelje',enterAccessCode:'Unesite pristupni kod koji ste dobili od crkve',invalidAccessCode:'Kod nije valjan, istekao je ili je dosegnuo ograničenje.',libraryEmpty:'Još nema objavljenih knjiga ili materijala.',pdfExpires:'Sigurna PDF poveznica vrijedi 10 minuta.'});
+Object.assign(T.en,{library:'Books & Handouts',publicLibrary:'Public books',ministersLibrary:'Ministers library',openPdf:'Open PDF',protectedLibrary:'Ministers-only resources; only items enabled by the administrator for your account are shown.',enterAccessCode:'',invalidAccessCode:'The access code is invalid, expired, or has reached its limit.',libraryEmpty:'No published books or handouts yet.',pdfExpires:'The secure PDF link is valid for 10 minutes.'});
+Object.assign(T.fa,{library:'کتاب‌ها و جزوه‌ها',publicLibrary:'کتاب‌ها و جزوه‌های عمومی',ministersLibrary:'کتابخانه خادمان',openPdf:'باز کردن PDF',protectedLibrary:'منابع مخصوص خادمان؛ فقط مواردی که ادمین برای حساب شما فعال کرده نمایش داده می‌شوند.',enterAccessCode:'',invalidAccessCode:'کد نامعتبر است، منقضی شده یا سقف استفاده آن تمام شده است.',libraryEmpty:'هنوز کتاب یا جزوه‌ای منتشر نشده است.',pdfExpires:'لینک امن PDF ده دقیقه اعتبار دارد.'});
+Object.assign(T.hr,{library:'Knjige i materijali',publicLibrary:'Javne knjige',ministersLibrary:'Knjižnica za služitelje',openPdf:'Otvori PDF',protectedLibrary:'Materijali samo za služitelje; prikazuju se samo stavke koje je administrator omogućio za vaš račun.',enterAccessCode:'',invalidAccessCode:'Kod nije valjan, istekao je ili je dosegnuo ograničenje.',libraryEmpty:'Još nema objavljenih knjiga ili materijala.',pdfExpires:'Sigurna PDF poveznica vrijedi 10 minuta.'});
 
 
 
@@ -1893,7 +1893,10 @@ let nh7LibraryCatalog=[];
 function libraryText(row,key){return row?.[key+'_'+state.lang]||row?.[key+'_en']||row?.[key+'_fa']||row?.[key+'_hr']||''}
 function librarySize(bytes){bytes=Number(bytes||0);if(bytes<1024*1024)return Math.max(1,Math.round(bytes/1024))+' KB';return (bytes/1024/1024).toFixed(1)+' MB'}
 async function loadLibraryCatalog(){
-  try{const rows=await cloudFetch('nh7_library_items_v224?select=*&order=resource_type.asc,audience.asc,sort_order.asc,created_at.desc',{method:'GET',cache:'no-store'});nh7LibraryCatalog=Array.isArray(rows)?rows:[]}catch(e){console.warn('Library catalog',e);nh7LibraryCatalog=[]}
+  try{
+    const bundle=await cloudRpc('nh7_library_catalog_v396',{});
+    nh7LibraryCatalog=Array.isArray(bundle?.items)?bundle.items:[];
+  }catch(e){console.warn('Library catalog',e);nh7LibraryCatalog=[]}
   return nh7LibraryCatalog;
 }
 let nh7LibraryBlobUrlV224='';
@@ -1912,11 +1915,7 @@ function nh7ShowPdfViewerV223(title=''){
 }
 async function openLibraryPdf(item){
   if(!item)return;if(!await nh7RequireSchoolAccessV223(tr('library')))return;
-  let code='';if(item.audience==='ministers'){
-    let saved=null;try{saved=JSON.parse(sessionStorage.getItem('nh7_minister_library_code')||'null')}catch(e){}
-    if(saved&&Date.now()-Number(saved.at||0)<12*60*60*1000)code=String(saved.code||'');
-    if(!code)code=String(prompt(tr('enterAccessCode'),'')||'').trim();if(!code)return;
-  }
+  const code='';
   const title=libraryText(item,'title')||item.file_name||'Document',modal=nh7ShowPdfViewerV223(title);
   try{
     const d=await invokeEdgeFunction('nh7-library-access',{item_id:item.id,code,device_id:deviceId(),user_email:currentUserEmail()||''});
@@ -1948,7 +1947,7 @@ async function library(params={}){
   const rows=nh7LibraryCatalog.filter(x=>x.audience===nh7LibraryTab&&(x.resource_type||'library')==='library');
   const title=nh7LibraryTab==='ministers'?tr('ministersLibrary'):tr('publicLibrary');
   const cards=rows.map(x=>libraryUserCardV224(x,false)).join('');
-  view.innerHTML=card(tr('library'),`<div class="library-user-tabs"><button class="${nh7LibraryTab==='public'?'primary-btn':'secondary-btn'}" data-library-tab="public">${tr('publicLibrary')}</button><button class="${nh7LibraryTab==='ministers'?'primary-btn':'secondary-btn'}" data-library-tab="ministers">🔒 ${tr('ministersLibrary')}</button></div>${nh7LibraryTab==='ministers'?`<div class="library-lock-note">${tr('protectedLibrary')}<br>${tr('enterAccessCode')}</div>`:''}<h2>${title}</h2><div class="library-user-grid">${cards||`<p class="muted">${tr('libraryEmpty')}</p>`}</div><p class="muted small">${tr('pdfExpires')}</p>`);
+  view.innerHTML=card(tr('library'),`<div class="library-user-tabs"><button class="${nh7LibraryTab==='public'?'primary-btn':'secondary-btn'}" data-library-tab="public">${tr('publicLibrary')}</button><button class="${nh7LibraryTab==='ministers'?'primary-btn':'secondary-btn'}" data-library-tab="ministers">🔒 ${tr('ministersLibrary')}</button></div>${nh7LibraryTab==='ministers'?`<div class="library-lock-note">${tr('protectedLibrary')}</div>`:''}<h2>${title}</h2><div class="library-user-grid">${cards||`<p class="muted">${tr('libraryEmpty')}</p>`}</div><p class="muted small">${tr('pdfExpires')}</p>`);
 }
 
 async function more(){ view.innerHTML=`<div class="grid">${tile('audio','🎧',tr('audio'))}${tile('salvation','✝',tr('salvation'))}${tile('daily','🙏',tr('gratitude'),'',{tab:'gratitude'})}${tile('meetings','☎',tr('meetings'))}${tile('qna','❓',tr('qna'))}${tile('inbox','📥',tr('inbox'), unreadCount()?`${tr('unread')}: ${localNum(unreadCount())}`:'')}${tile('account','👤',tr('account'))}${tile('about','ℹ',tr('about'))}${tile('settings','⚙',tr('settings'))}</div>`; }

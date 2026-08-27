@@ -25,12 +25,12 @@ async function load(force=false){
   if(!navigator.onLine){applyCache(readCache());scheduleMount();return}
   loading=true;
   try{
-    const[cRes,iRes]=await Promise.all([
-      fetch(`${URL}/rest/v1/nh7_library_collections_public_v322?select=*&order=audience.asc,sort_order.asc`,{headers:headers(),cache:'no-store'}),
-      fetch(`${URL}/rest/v1/nh7_library_items_v224?select=id,collection_id,audience,resource_type&resource_type=eq.library`,{headers:headers(),cache:'no-store'})
-    ]);
-    if(!cRes.ok)throw new Error(await cRes.text());if(!iRes.ok)throw new Error(await iRes.text());
-    collections=await cRes.json();const items=await iRes.json();itemMap=new Map((Array.isArray(items)?items:[]).map(row=>[String(row.id),row]));lastLoad=Date.now();saveCache(Array.isArray(items)?items:[])
+    const response=await fetch(`${URL}/rest/v1/rpc/nh7_library_catalog_v396`,{method:'POST',headers:headers(),body:'{}',cache:'no-store'});
+    if(!response.ok)throw new Error(await response.text());
+    const raw=await response.json(),bundle=Array.isArray(raw)?raw[0]:raw;
+    collections=Array.isArray(bundle?.collections)?bundle.collections:[];
+    const items=Array.isArray(bundle?.items)?bundle.items:[];
+    itemMap=new Map(items.map(row=>[String(row.id),row]));lastLoad=Date.now();saveCache(items)
   }catch(error){console.warn('Library collections',error);if(!applyCache(readCache())){collections=[];itemMap=new Map()}}
   finally{loading=false;scheduleMount()}
 }
