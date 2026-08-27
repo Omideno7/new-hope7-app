@@ -300,6 +300,11 @@ document.addEventListener('click', event => {
   const verse = active && event.target.closest?.('[data-reveal-ref]');
   if(verse){ event.preventDefault(); event.stopPropagation(); revealVerse(verse); return; }
   if(event.target.closest?.('#backBtn') && handleBack(event)) return;
+  const leavingTarget = active && event.target.closest?.('[data-route],[data-go],#inboxBtn');
+  if(leavingTarget && !plansTarget(leavingTarget)){
+    active=false; currentParams={tab:'spiritual'};
+    return;
+  }
   const target = plansTarget(event.target);
   if(!target || suspendedClick) return;
   event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
