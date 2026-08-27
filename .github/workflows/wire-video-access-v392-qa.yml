@@ -1,0 +1,93 @@
+name: Wire Video Access v392 QA
+
+on:
+  push:
+    branches: [release/final-qa-video-access-v392]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  wire:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/final-qa-video-access-v392
+          fetch-depth: 0
+      - name: Wire v392 video access safely
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+
+          # Admin: activate stable video manager plus v392 person/multi-video access.
+          p=Path('admin.html')
+          s=p.read_text(encoding='utf-8')
+          marker='  <script src="js/admin-v2.3.9-document-select-fix5.js?v=2.3.9-f6"></script>\n'
+          addition='  <script src="js/admin-v2.3.9-video-final-v316.js?v=3.1.6"></script>\n  <script src="js/admin-v2.3.9-video-access-v392.js?v=3.9.2"></script>\n'
+          if 'admin-v2.3.9-video-access-v392.js' not in s:
+              if marker not in s: raise SystemExit('admin document marker not found')
+              s=s.replace(marker,marker+addition,1)
+          p.write_text(s,encoding='utf-8')
+
+          # Client: keep portal password per account, not globally, and handle wrong-account codes.
+          p=Path('js/nh7-secure-media-v270.js')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace("const VERSION='2.7.0-secure-media';","const VERSION='2.7.1-secure-media-v392';",1)
+          old="function storedCode(){return String(localStorage.getItem(PORTAL_CODE_KEY)||'').trim()}\nfunction saveCode(code){localStorage.setItem(PORTAL_CODE_KEY,String(code||'').trim())}\nfunction clearCode(){localStorage.removeItem(PORTAL_CODE_KEY)}"
+          new="function portalCodeKey(){return PORTAL_CODE_KEY+':'+email()}\nfunction storedCode(){return String(localStorage.getItem(portalCodeKey())||'').trim()}\nfunction saveCode(code){localStorage.setItem(portalCodeKey(),String(code||'').trim());localStorage.removeItem(PORTAL_CODE_KEY)}\nfunction clearCode(){localStorage.removeItem(portalCodeKey());localStorage.removeItem(PORTAL_CODE_KEY)}"
+          if old not in s: raise SystemExit('client code-storage block not found')
+          s=s.replace(old,new,1)
+          needle="if(code.includes('device_bound_elsewhere'))return L('این رمز قبلاً به حساب یا دستگاه دیگری متصل شده و قابل انتقال نیست.','This password is already bound to another account or device.','Lozinka je već vezana uz drugi račun ili uređaj.');"
+          insert="if(code.includes('code_not_for_account'))return L('این رمز برای حساب دیگری صادر شده است. با حساب درست وارد شوید یا رمز مربوط به این حساب را وارد کنید.','This password was issued for a different account. Sign in with the correct account or enter the password assigned to this account.','Ova lozinka je izdana za drugi račun. Prijavite se ispravnim računom ili unesite lozinku dodijeljenu ovom računu.');"
+          if insert not in s:
+              if needle not in s: raise SystemExit('client error mapping marker not found')
+              s=s.replace(needle,insert+needle,1)
+          s=s.replace("const bad=['invalid_code','expired','grant_revoked','device_bound_elsewhere','code_required'].includes(String(error.code||''));","const bad=['invalid_code','expired','grant_revoked','device_bound_elsewhere','code_required','code_not_for_account'].includes(String(error.code||''));",1)
+          s=s.replace("['invalid_code','expired','grant_revoked'].includes(String(error.code||''))","['invalid_code','expired','grant_revoked','code_not_for_account'].includes(String(error.code||''))",1)
+          p.write_text(s,encoding='utf-8')
+
+          # Bust only the secure-media module cache. Keep the global app version unchanged.
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          old='  <script src="js/nh7-secure-media-v270.js?v=2.3.9.33" defer></script>'
+          new='  <script src="js/nh7-secure-media-v270.js?v=2.3.9.50-video392" defer></script>'
+          if old in s: s=s.replace(old,new,1)
+          elif new not in s: raise SystemExit('index secure-media loader not found')
+          p.write_text(s,encoding='utf-8')
+          PY
+
+          node --check js/admin-v2.3.9-video-final-v316.js
+          node --check js/admin-v2.3.9-video-access-v392.js
+          node --check js/nh7-secure-media-v270.js
+
+          grep -q "nh7_video_portal_authorize_v392" supabase/functions/nh7-school-media-access/index.ts
+          grep -q "nh7_video_authorize_v392" supabase/functions/nh7-school-media-access/index.ts
+          ! grep -q "nh7_video_portal_authorize_v270" supabase/functions/nh7-school-media-access/index.ts
+          ! grep -q "nh7_video_authorize_v270" supabase/functions/nh7-school-media-access/index.ts
+          grep -q "kind === 'sermon'" supabase/functions/nh7-school-media-access/index.ts
+          grep -q "raw.githack.com" supabase/functions/nh7-school-media-access/index.ts
+          grep -q "code_not_for_account" js/nh7-secure-media-v270.js
+          grep -q "PORTAL_CODE_KEY+':'+email()" js/nh7-secure-media-v270.js
+          grep -q "nh7_admin_school_video_create_person_code_v392" js/admin-v2.3.9-video-access-v392.js
+
+          python3 <<'PY'
+          from pathlib import Path
+          a=Path('admin.html').read_text(encoding='utf-8')
+          assert a.count('admin-v2.3.9-video-final-v316.js') == 1
+          assert a.count('admin-v2.3.9-video-access-v392.js') == 1
+          assert a.index('admin-v2.3.9-document-select-fix5.js') < a.index('admin-v2.3.9-video-final-v316.js') < a.index('admin-v2.3.9-video-access-v392.js') < a.index('nh7-admin-rbac-v350.js')
+          i=Path('index.html').read_text(encoding='utf-8')
+          assert 'js/nh7-secure-media-v270.js?v=2.3.9.50-video392' in i
+          print('Video v392 QA wiring OK')
+          PY
+
+          if git diff --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add admin.html index.html js/nh7-secure-media-v270.js
+          git commit -m 'fix(qa): activate account-bound video access v392'
+          git push origin HEAD:release/final-qa-video-access-v392
