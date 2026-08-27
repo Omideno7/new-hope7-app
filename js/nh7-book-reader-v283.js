@@ -7,7 +7,6 @@ const VERSION='2.8.3-book-reader';
 const URL='https://gpzcwffxnddhaeaogdyo.supabase.co';
 const KEY='sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37';
 const SESSION_KEY='nh7_user_session_v170';
-const CODE_KEY='nh7_minister_library_code';
 const POS_PREFIX='nh7_book_position_';
 let catalog=new Map(),catalogBusy=false,lastCatalog=0,modal=null,book=null,pageIndex=0,searchTimer=0,refreshing=null;
 
@@ -40,31 +39,29 @@ async function headers(){const value=await ensureSession();const token=String(va
 function titleOf(row){const l=lang();return row?.['title_'+l]||row?.title_en||row?.title_fa||row?.title_hr||row?.file_name||L('کتاب','Book','Knjiga')}
 const SELECT_FIELDS='id,title_fa,title_en,title_hr,audience,resource_type,apocrypha_book,reader_mode,reader_language,reader_status,reader_available,reader_page_count,collection_id';
 
+async function catalogBundle(){
+  const current=await ensureSession();
+  if(!current?.access_token)return null;
+  const response=await fetch(`${URL}/rest/v1/rpc/nh7_library_catalog_v396`,{method:'POST',headers:await headers(),body:'{}',cache:'no-store'});
+  if(!response.ok)throw new Error(await response.text());
+  const data=await response.json();
+  return Array.isArray(data)?data[0]:data;
+}
 async function loadCatalog(force=false){
   if(catalogBusy||(!force&&Date.now()-lastCatalog<15000))return;
-  const current=await ensureSession();
-  if(!current?.access_token)return;
   catalogBusy=true;
   try{
-    const response=await fetch(`${URL}/rest/v1/nh7_library_items_v224?select=${SELECT_FIELDS}&reader_available=eq.true`,{headers:await headers(),cache:'no-store'});
-    if(!response.ok)throw new Error(await response.text());
-    const rows=await response.json();
-    catalog=new Map((Array.isArray(rows)?rows:[]).map(row=>[String(row.id),row]));
+    const bundle=await catalogBundle();
+    const rows=Array.isArray(bundle?.items)?bundle.items.filter(row=>row.reader_available):[];
+    catalog=new Map(rows.map(row=>[String(row.id),row]));
     lastCatalog=Date.now();
   }catch(error){console.warn('[NH7 book catalog]',error)}finally{catalogBusy=false;decorate()}
 }
 async function ensureItem(id){
   id=String(id||'');
   if(catalog.has(id))return catalog.get(id);
-  const current=await ensureSession();
-  if(!current?.access_token)return null;
-  try{
-    const response=await fetch(`${URL}/rest/v1/nh7_library_items_v224?select=${SELECT_FIELDS}&id=eq.${encodeURIComponent(id)}&reader_available=eq.true&limit=1`,{headers:await headers(),cache:'no-store'});
-    if(!response.ok)throw new Error(await response.text());
-    const rows=await response.json(),item=Array.isArray(rows)?rows[0]:null;
-    if(item)catalog.set(id,item);
-    return item||null;
-  }catch(error){console.warn('[NH7 book item]',error);return null}
+  await loadCatalog(true);
+  return catalog.get(id)||null;
 }
 function decorate(){
   document.querySelectorAll('[data-library-open]').forEach(fileButton=>{
@@ -90,7 +87,6 @@ function decorate(){
     }
   });
 }
-function savedMinisterCode(){try{const data=JSON.parse(sessionStorage.getItem(CODE_KEY)||'null');return data&&Date.now()-Number(data.at||0)<12*60*60*1000?String(data.code||''):''}catch(_){return''}}
 async function readerRpc(item,code=''){
   const current=await ensureSession();
   const response=await fetch(`${URL}/rest/v1/rpc/nh7_library_reader_access_v250`,{method:'POST',headers:await headers(),body:JSON.stringify({p_item_id:item.id,p_code:code,p_device_id:deviceId(),p_user_email:userEmail(current)}),cache:'no-store'});
@@ -104,7 +100,6 @@ function accessError(data){
   if(code==='login_required')return L('برای مطالعه کتاب ابتدا وارد حساب شوید.','Sign in before reading.','Prijavite se prije čitanja.');
   if(code==='school_approval_required')return L('دسترسی مدرسه شما هنوز تأیید نشده است.','Your school access is not approved yet.','Pristup školi još nije odobren.');
   if(code==='content_access_required')return L('این کتاب مخصوص خادمان است و هنوز برای حساب شما فعال نشده است.','This ministers-only book has not been enabled for your account.','Ova knjiga za služitelje još nije omogućena za vaš račun.');
-  if(['code_required','invalid_code','expired','max_uses'].includes(code))return L('کد کتابخانه خادمان نامعتبر یا منقضی است.','The ministers library code is invalid or expired.','Kod knjižnice nije valjan ili je istekao.');
   if(code==='reader_not_ready')return L('نسخهٔ کتاب داخل اپ هنوز آماده نشده است.','The in-app book is not ready yet.','Knjiga u aplikaciji još nije spremna.');
   return data?.message||L('کتاب باز نشد.','The book could not be opened.','Knjiga se nije mogla otvoriti.');
 }
@@ -154,14 +149,7 @@ async function openBook(id){
   if(!item){alert(L('نسخهٔ متنی این کتاب پیدا نشد.','The text edition of this book was not found.','Tekstualno izdanje knjige nije pronađeno.'));return false}
   const current=await ensureSession();
   if(!current?.access_token){alert(L('برای مطالعه کتاب ابتدا وارد حساب شوید.','Sign in before reading.','Prijavite se prije čitanja.'));return false}
-  let code=item.audience==='ministers'?savedMinisterCode():'';
-  let data=await readerRpc(item,code).catch(error=>({allowed:false,code:'request_failed',message:error.message}));
-  if(!data?.allowed&&item.audience==='ministers'&&['code_required','invalid_code','expired','max_uses'].includes(String(data?.code||''))){
-    code=String(prompt(L('کد کتابخانه خادمان را وارد کنید:','Enter the ministers library code:','Unesite kod knjižnice:'),'')||'').trim();
-    if(!code)return false;
-    data=await readerRpc(item,code).catch(error=>({allowed:false,code:'request_failed',message:error.message}));
-    if(data?.allowed)sessionStorage.setItem(CODE_KEY,JSON.stringify({code,at:Date.now()}));
-  }
+  const data=await readerRpc(item,'').catch(error=>({allowed:false,code:'request_failed',message:error.message}));
   if(!data?.allowed){alert(accessError(data));return false}
   const pages=makePages(readerPayload(data)),position=readPosition(item.id);
   book={item,data,pages,language:data.reader_language||lang()};
