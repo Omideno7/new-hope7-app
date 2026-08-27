@@ -110,24 +110,24 @@ async function fetchJson(path){
   throw new Error(`${path} — HTTP ${response.status}`);
 }
 async function mergedMindRenewal(){
-  const [base, ...extensions] = await Promise.all([
-    fetchJson('data/spiritual-plans/mind-renewal-14.json'),
+  const parts = await Promise.all([
+    fetchJson('data/spiritual-plans/mind-renewal-days-01-07.json'),
+    fetchJson('data/spiritual-plans/mind-renewal-days-08-14.json'),
     fetchJson('data/spiritual-plans/mind-renewal-days-15-18.json'),
     fetchJson('data/spiritual-plans/mind-renewal-days-19-22.json'),
     fetchJson('data/spiritual-plans/mind-renewal-days-23-26.json'),
     fetchJson('data/spiritual-plans/mind-renewal-days-27-30.json')
   ]);
-  const plan = structuredClone(base);
-  plan.id = 'mind-renewal-30';
-  plan.version = 2;
-  plan.durationDays = 30;
-  plan.foundationalScriptures = ['Romans 12:2','Philippians 4:8-9','2 Corinthians 10:4-5','Colossians 3:1-3','James 1:22-25'];
-  plan.localized = {
-    fa:{ title:'تغییر طرز تفکر', subtitle:'۳۰ روز برای تازه‌شدن ذهن و ساختن یک زندگی منظم و کلام‌محور', description:'یک مسیر عملی برای شناخت و سنجش افکار، جایگزین‌کردن دروغ با حقیقت، نظم‌دادن به توجه، زبان، عادت‌ها، روابط و تصمیم‌ها و زندگی از هویت تازه در مسیح.', goal:'ذهن خود را هر روز زیر نور کلام و هدایت روح‌القدس تازه کنیم تا فکر، گفتار و رفتار ما نظم، صلح و ثمر پادشاهی را آشکار سازد.', pastoralNote:'این مسیر برای شاگردسازی روزانه طراحی شده است. هر دریافت را با کتاب‌مقدس، شخصیت عیسی، محبت، پاکی و حکمت بسنج و تغییر را با قدم‌های کوچک و وفادارانه به زندگی تبدیل کن.' },
-    en:{ title:'Change Your Thinking', subtitle:'30 days to renew the mind and build an ordered, Scripture-shaped life', description:'A practical journey to recognize and test thoughts, replace lies with truth, bring order to attention, speech, habits, relationships, and decisions, and live from your new identity in Christ.', goal:'Renew the mind each day under Scripture and the Holy Spirit so thought, speech, and action reveal the order, peace, and fruit of God’s kingdom.', pastoralNote:'This journey is designed for daily discipleship. Test every impression by Scripture, the character of Jesus, love, purity, and wisdom, then turn renewal into life through small and faithful steps.' },
-    hr:{ title:'Promijeni način razmišljanja', subtitle:'30 dana obnove uma i izgradnje uređenog života oblikovanog Pismom', description:'Praktično putovanje prepoznavanja i provjeravanja misli, zamjene laži istinom, uređivanja pažnje, govora, navika, odnosa i odluka te življenja iz novog identiteta u Kristu.', goal:'Svakodnevno obnavljati um Pismom i pod vodstvom Duha Svetoga kako bi misli, riječi i djela očitovali red, mir i plod Božjega kraljevstva.', pastoralNote:'Ovo je putovanje namijenjeno svakodnevnom učeništvu. Svaki dojam provjeri Pismom, Isusovim karakterom, ljubavlju, čistoćom i mudrošću te obnovu pretvori u život malim i vjernim koracima.' }
+  const plan = {
+    id:'mind-renewal-30', version:3, durationDays:30, category:'renewal', icon:'🧠', theme:'mind', requiresJourney:false,
+    foundationalScriptures:['1 Corinthians 14:33','Romans 12:2','Philippians 4:8-9','2 Corinthians 10:4-5','James 1:22-25'],
+    localized:{
+      fa:{ title:'تغییر طرز تفکر', subtitle:'۳۰ روز برای تازه‌شدن ذهن و ورود به نظم الهی', description:'یک مسیر عملی بر پایهٔ تعلیم نظم الهی برای هماهنگ‌کردن فکر، زبان، عادت‌ها، زمان، مال، روابط، خانواده و خدمت با کلام و هدایت روح‌القدس.', goal:'از آشفتگی ذهنی و زندگی پراکنده بیرون بیاییم و با قدم‌های روشن، پاسخگویی و قدرت روح‌القدس، نظم، صلح و ثمر پادشاهی را در زندگی آشکار کنیم.', pastoralNote:'این پلن برای شاگردسازی روزانه طراحی شده است. نظم حقیقی فقط ظاهر و کنترل انسانی نیست؛ از ارتباط با روح‌القدس، اطاعت از کلام، توبه، برنامهٔ عملی و وفاداری روزانه شکل می‌گیرد.' },
+      en:{ title:'Change Your Thinking', subtitle:'30 days to renew the mind and enter divine order', description:'A practical journey through divine order, aligning thought, speech, habits, time, finances, relationships, family, and service with Scripture and the Holy Spirit’s guidance.', goal:'Leave mental confusion and scattered living, then reveal kingdom order, peace, and fruit through clear steps, accountability, and the Holy Spirit’s power.', pastoralNote:'This plan is designed for daily discipleship. True order is not outward control; it grows through fellowship with the Holy Spirit, obedience to Scripture, repentance, practical structure, and daily faithfulness.' },
+      hr:{ title:'Promijeni način razmišljanja', subtitle:'30 dana obnove uma i ulaska u božanski red', description:'Praktično putovanje kroz božanski red koje usklađuje misli, govor, navike, vrijeme, financije, odnose, obitelj i služenje s Pismom i vodstvom Duha Svetoga.', goal:'Izaći iz misaone zbrke i raspršenog života te jasnim koracima, odgovornošću i snagom Duha Svetoga očitovati red, mir i plod Kraljevstva.', pastoralNote:'Ovaj je plan namijenjen svakodnevnom učeništvu. Istinski red nije vanjska kontrola; raste iz zajedništva s Duhom Svetim, poslušnosti Pismu, pokajanja, praktične strukture i svakodnevne vjernosti.' }
+    },
+    days:parts.flatMap(item => item.days || []).sort((a,b) => Number(a.day)-Number(b.day))
   };
-  plan.days = [...(base.days || []), ...extensions.flatMap(item => item.days || [])].sort((a,b) => Number(a.day)-Number(b.day));
   if(plan.days.length !== 30 || plan.days.some((item,index) => Number(item.day) !== index+1)) throw new Error('mind-renewal-30 integrity check failed');
   return plan;
 }
