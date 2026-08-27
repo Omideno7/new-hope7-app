@@ -23,12 +23,13 @@ jobs:
           set -euo pipefail
           node --check js/nh7-book-reader-v283.js
           node --check js/nh7-admin-library-access-v396.js
+          node --check js/nh7-spiritual-plans-v240.js
           node --check js/app.js
           node --check js/nh7-admin-rbac-v350.js
           grep -q 'js/nh7-book-reader-v283.js?v=2.3.9.51-wave2' index.html
           ! grep -q 'js/nh7-book-reader-v281.js' index.html
           grep -q 'js/nh7-admin-library-access-v396.js?v=3.9.6-wave2' admin.html
-          grep -q "const VERSION='v2.3.9.51-wave2-library-qa'" sw-offline-v329.js
+          grep -q "const VERSION='v2.3.9.51-wave2-plan-doctrine'" sw-offline-v329.js
           grep -q "'./js/nh7-book-reader-v283.js'" sw-offline-v329.js
           node <<'NODE'
           const fs=require('fs');
@@ -69,18 +70,40 @@ jobs:
           grep -q 'nh7_admin_access_v350' js/nh7-admin-library-access-v396.js
           grep -q 'refresh_token' js/nh7-admin-library-access-v396.js
 
+      - name: Validate requested plan doctrine adjustments
+        run: |
+          set -euo pipefail
+          python -m json.tool data/spiritual-plans/prayer-30.json >/dev/null
+          python -m json.tool data/spiritual-plans/fasting-7.json >/dev/null
+          python <<'PY'
+          import json
+          prayer=json.load(open('data/spiritual-plans/prayer-30.json',encoding='utf-8'))
+          fasting=json.load(open('data/spiritual-plans/fasting-7.json',encoding='utf-8'))
+          assert 'جایگاهی برتر و بسیار مؤثر' in prayer['localized']['fa']['pastoralNote']
+          assert 'higher and especially powerful place' in prayer['localized']['en']['pastoralNote']
+          assert 'više i osobito snažno mjesto' in prayer['localized']['hr']['pastoralNote']
+          for code in ('fa','en','hr'):
+              assert fasting['localized'][code].get('safety','').strip()
+          PY
+          ! grep -q 'nh7FastingSafety' js/nh7-spiritual-plans-v240.js
+          ! grep -q 'safetyAck:' js/nh7-spiritual-plans-v240.js
+          ! grep -q 'nh7-fast-guide-safety' js/nh7-spiritual-plans-v240.js
+          grep -q "safety: 'یادداشت عملی'" js/nh7-spiritual-plans-v240.js
+          grep -q "safety: 'Practical note'" js/nh7-spiritual-plans-v240.js
+          grep -q "safety: 'Praktična napomena'" js/nh7-spiritual-plans-v240.js
+
       - name: Protect unrelated production modules
         run: |
           set -euo pipefail
           BASE=717b02e37da61c807226497f8c71eceb511fc931
-          git diff --quiet "$BASE" -- js/app.js js/nh7-audio-classic-v400.js js/nh7-school-exam-v344.js js/nh7-auth-recovery-v342.js js/nh7-settings-controller-v399.js js/nh7-apocrypha-runtime-patch-v402.js js/nh7-apocrypha-actions-v393.js data/apocrypha/runtime/apocrypha-browser-19.preview.json data/spiritual-plans
+          git diff --quiet "$BASE" -- js/app.js js/nh7-audio-classic-v400.js js/nh7-school-exam-v344.js js/nh7-auth-recovery-v342.js js/nh7-settings-controller-v399.js js/nh7-apocrypha-runtime-patch-v402.js js/nh7-apocrypha-actions-v393.js data/apocrypha/runtime/apocrypha-browser-19.preview.json data/spiritual-plans/catalog.json data/spiritual-plans/grace-14.json data/spiritual-plans/fasting-types.json data/spiritual-plans/obedience-10.json data/spiritual-plans/salvation-10.json data/spiritual-plans/mind-renewal-days-01-07.json data/spiritual-plans/mind-renewal-days-08-14.json data/spiritual-plans/mind-renewal-days-15-18.json data/spiritual-plans/mind-renewal-days-19-22.json data/spiritual-plans/mind-renewal-days-23-26.json data/spiritual-plans/mind-renewal-days-27-30.json
           changed=$(git diff --name-only "$BASE" HEAD)
           echo "$changed"
           while IFS= read -r file; do
             [ -z "$file" ] && continue
             case "$file" in
-              index.html|admin.html|sw-offline-v329.js|js/nh7-book-reader-v283.js|js/nh7-admin-library-access-v396.js|.github/workflows/validate-wave2-library-access.yml) ;;
+              index.html|admin.html|sw-offline-v329.js|js/nh7-book-reader-v283.js|js/nh7-admin-library-access-v396.js|js/nh7-spiritual-plans-v240.js|data/spiritual-plans/prayer-30.json|data/spiritual-plans/fasting-7.json|.github/workflows/validate-wave2-library-access.yml) ;;
               *) echo "Unexpected Wave 2 change: $file" >&2; exit 1 ;;
             esac
           done <<< "$changed"
-          echo 'Wave 2 library QA scope is isolated and protected modules are unchanged.'
+          echo 'Wave 2 scope is isolated and unrelated production modules are unchanged.'
