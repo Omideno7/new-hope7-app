@@ -1,0 +1,216 @@
+{
+  "version": 1,
+  "plan_id": "mind-renewal-30",
+  "days": [
+    {
+      "day": 8,
+      "scriptures": ["Mark 1:35-38", "John 5:19"],
+      "content": {
+        "fa": {
+          "title": "از نظم زندگی عیسی بیاموز",
+          "devotional": "عیسی با وجود نیازهای فراوان مردم، از حضور پدر، زمان‌بندی و مأموریت خود جدا نشد. او دعا می‌کرد، می‌دانست کجا برود، چه کاری انجام دهد و چه زمانی از فشار جمعیت عبور کند. ذهن تازه به هر صدای فوری پاسخ نمی‌دهد؛ از حضور خدا اولویت می‌گیرد.",
+          "reflection": "کدام فشار فوری مرا از مأموریت اصلی امروز دور می‌کند؟",
+          "action": "پیش از پاسخ‌دادن به درخواست‌های امروز، ده دقیقه در سکوت دعا کن و سه اولویت اصلی را بنویس.",
+          "prayer": "عیسی خداوند، مرا تعلیم بده از حضور پدر زندگی و تصمیم بگیرم.",
+          "declaration": "من به هر فشار واکنش نشان نمی‌دهم؛ اولویت‌هایم را از حضور خدا دریافت می‌کنم."
+        },
+        "en": {
+          "title": "Learn from the Order of Jesus’ Life",
+          "devotional": "Although many people needed Him, Jesus did not separate His life from the Father’s presence, timing, and mission. He prayed, knew where to go, what to do, and when to move beyond the pressure of the crowd. A renewed mind does not answer every urgent voice; it receives priorities from God’s presence.",
+          "reflection": "Which urgent pressure is pulling me away from today’s primary assignment?",
+          "action": "Before responding to today’s demands, pray quietly for ten minutes and write your three main priorities.",
+          "prayer": "Lord Jesus, teach me to live and decide from the Father’s presence.",
+          "declaration": "I do not react to every pressure; I receive my priorities from God’s presence."
+        },
+        "hr": {
+          "title": "Uči iz reda Isusova života",
+          "devotional": "Iako ga je trebalo mnogo ljudi, Isus nije odvojio život od Očeve prisutnosti, vremena i poslanja. Molio je, znao kamo ići, što činiti i kada se odmaknuti od pritiska mnoštva. Obnovljen um ne odgovara svakom hitnom glasu, nego prioritete prima u Božjoj prisutnosti.",
+          "reflection": "Koji me hitan pritisak udaljava od današnje glavne zadaće?",
+          "action": "Prije odgovora na današnje zahtjeve moli deset minuta u tišini i napiši tri glavna prioriteta.",
+          "prayer": "Gospodine Isuse, nauči me živjeti i odlučivati iz Očeve prisutnosti.",
+          "declaration": "Ne reagiram na svaki pritisak; prioritete primam u Božjoj prisutnosti."
+        }
+      }
+    },
+    {
+      "day": 9,
+      "scriptures": ["1 Corinthians 2:16", "Romans 12:2"],
+      "content": {
+        "fa": {
+          "title": "ذهن مسیح را معیار قرار بده",
+          "devotional": "نظم بیرونی بدون دگرگونی درونی پایدار نمی‌ماند. خدا به ما دعوتی فراتر از مثبت‌اندیشی داده است: اندیشیدن در هماهنگی با ذهن مسیح. این یعنی فکرها را با فروتنی، حقیقت، محبت، پاکی، هدف پادشاهی و اطاعت او بسنجیم.",
+          "reflection": "کدام فکر امروز با شخصیت و روش عیسی هماهنگ نیست؟",
+          "action": "یک تصمیم را با این پنج سؤال بسنج: آیا راست، محبت‌آمیز، پاک، حکیمانه و مطیع خداست؟",
+          "prayer": "روح‌القدس، ذهن مسیح را در من آشکار کن و الگوهای خودمحور را تغییر بده.",
+          "declaration": "من ذهن مسیح را دارم و افکارم را با حقیقت و محبت او می‌سنجم."
+        },
+        "en": {
+          "title": "Make the Mind of Christ Your Standard",
+          "devotional": "External order cannot remain stable without inner transformation. God calls us beyond positive thinking into agreement with the mind of Christ. This means testing thought by His humility, truth, love, purity, kingdom purpose, and obedience.",
+          "reflection": "Which thought today does not agree with the character and way of Jesus?",
+          "action": "Test one decision with five questions: Is it true, loving, pure, wise, and obedient to God?",
+          "prayer": "Holy Spirit, reveal the mind of Christ in me and transform self-centered patterns.",
+          "declaration": "I have the mind of Christ, and I test my thoughts by His truth and love."
+        },
+        "hr": {
+          "title": "Neka Kristov um bude tvoje mjerilo",
+          "devotional": "Vanjski red ne može ostati stabilan bez unutarnje preobrazbe. Bog nas poziva dalje od pozitivnog razmišljanja—u usklađenost s Kristovim umom. To znači provjeravati misli njegovom poniznošću, istinom, ljubavlju, čistoćom, svrhom Kraljevstva i poslušnošću.",
+          "reflection": "Koja današnja misao nije u skladu s Isusovim karakterom i putem?",
+          "action": "Provjeri jednu odluku s pet pitanja: Je li istinita, puna ljubavi, čista, mudra i poslušna Bogu?",
+          "prayer": "Duše Sveti, očituj u meni Kristov um i preobrazi sebične obrasce.",
+          "declaration": "Imam Kristov um i svoje misli provjeravam njegovom istinom i ljubavlju."
+        }
+      }
+    },
+    {
+      "day": 10,
+      "scriptures": ["Proverbs 4:23", "Philippians 4:8"],
+      "content": {
+        "fa": {
+          "title": "ورودی‌های ذهن را نگهبانی کن",
+          "devotional": "ذهن مرتب، دروازه‌های خود را بی‌مراقبت رها نمی‌کند. اخبار، گفت‌وگوها، تصاویر، شبکه‌های اجتماعی و خاطراتی که پیوسته مرور می‌کنیم، مواد اولیهٔ فکر و واکنش ما می‌شوند. نگهبانی ذهن ترس از جهان نیست؛ انتخاب مسئولانهٔ خوراک درونی است.",
+          "reflection": "کدام ورودی این روزها بیشترین آشفتگی، شهوت، ترس یا مقایسه را در من ایجاد می‌کند؟",
+          "action": "یک منبع ناسالم را برای هفت روز حذف یا محدود کن و زمان آزادشده را به کلام و سکوت بده.",
+          "prayer": "خداوندا، به من حکمت بده دروازه‌های ذهنم را با پاکی و آزادی نگهبانی کنم.",
+          "declaration": "من خوراک ذهنم را مسئولانه انتخاب می‌کنم و بر امور راست و پاک می‌اندیشم."
+        },
+        "en": {
+          "title": "Guard the Inputs of the Mind",
+          "devotional": "An ordered mind does not leave its gates unattended. News, conversations, images, social media, and rehearsed memories become the raw material of thought and reaction. Guarding the mind is not fear of the world; it is responsible selection of inner nourishment.",
+          "reflection": "Which input is currently producing the most confusion, lust, fear, or comparison in me?",
+          "action": "Remove or limit one unhealthy source for seven days and give the recovered time to Scripture and silence.",
+          "prayer": "Lord, give me wisdom to guard the gates of my mind with purity and freedom.",
+          "declaration": "I choose the nourishment of my mind responsibly and think on what is true and pure."
+        },
+        "hr": {
+          "title": "Čuvaj ulaze svojega uma",
+          "devotional": "Uređen um ne ostavlja svoja vrata bez nadzora. Vijesti, razgovori, slike, društvene mreže i sjećanja koja stalno ponavljamo postaju građa naših misli i reakcija. Čuvati um ne znači bojati se svijeta, nego odgovorno birati unutarnju hranu.",
+          "reflection": "Koji sadržaj u meni sada stvara najviše zbrke, požude, straha ili uspoređivanja?",
+          "action": "Ukloni ili ograniči jedan nezdrav izvor sedam dana, a oslobođeno vrijeme daj Pismu i tišini.",
+          "prayer": "Gospodine, daj mi mudrost čuvati vrata uma u čistoći i slobodi.",
+          "declaration": "Odgovorno biram hranu svojega uma i razmišljam o onome što je istinito i čisto."
+        }
+      }
+    },
+    {
+      "day": 11,
+      "scriptures": ["Ephesians 4:29", "James 3:9-10"],
+      "content": {
+        "fa": {
+          "title": "زبان را در نظم کلام قرار بده",
+          "devotional": "بی‌نظمی ذهن دیر یا زود در زبان آشکار می‌شود. شکایت، غیبت، دروغ، نفرین و سخن عجولانه هم دیگران را زخمی می‌کنند و هم مسیرهای فکری نادرست را در خود ما عمیق‌تر می‌سازند. زبان تقدیس‌شده حقیقت را با محبت می‌گوید و برای بناکردن به کار می‌رود.",
+          "reflection": "کدام الگوی گفتاری بیشترین بی‌نظمی را در روابط یا ذهن من ایجاد می‌کند؟",
+          "action": "امروز پیش از هر پاسخ حساس سه ثانیه مکث کن و بپرس: آیا این سخن راست، لازم و بنادهنده است؟",
+          "prayer": "روح‌القدس، زبانم را تقدیس کن تا سخنانم حامل حقیقت، فیض و بنا باشند.",
+          "declaration": "زبان من ابزار ساختن است؛ حقیقت را با محبت اعلام می‌کنم."
+        },
+        "en": {
+          "title": "Bring the Tongue under the Order of the Word",
+          "devotional": "Disorder in the mind eventually appears in speech. Complaining, gossip, dishonesty, cursing, and impulsive words wound others and deepen wrong thought patterns within us. A sanctified tongue speaks truth in love and is used to build.",
+          "reflection": "Which speech pattern produces the most disorder in my relationships or mind?",
+          "action": "Before every sensitive reply today, pause for three seconds and ask: Is this true, necessary, and edifying?",
+          "prayer": "Holy Spirit, sanctify my tongue so my words carry truth, grace, and building power.",
+          "declaration": "My tongue is an instrument of building; I speak truth in love."
+        },
+        "hr": {
+          "title": "Stavi jezik pod red Riječi",
+          "devotional": "Nered u umu prije ili poslije pojavi se u govoru. Prigovaranje, ogovaranje, neiskrenost, proklinjanje i nagle riječi ranjavaju druge te produbljuju pogrešne misaone obrasce u nama. Posvećen jezik govori istinu u ljubavi i služi izgradnji.",
+          "reflection": "Koji obrazac govora stvara najviše nereda u mojim odnosima ili umu?",
+          "action": "Prije svakog osjetljivog odgovora zastani tri sekunde i pitaj: Je li ovo istinito, potrebno i izgrađujuće?",
+          "prayer": "Duše Sveti, posveti moj jezik da moje riječi nose istinu, milost i izgradnju.",
+          "declaration": "Moj je jezik sredstvo izgradnje; govorim istinu u ljubavi."
+        }
+      }
+    },
+    {
+      "day": 12,
+      "scriptures": ["Matthew 5:29-30", "Hebrews 12:1"],
+      "content": {
+        "fa": {
+          "title": "منابع پنهان بی‌نظمی را حذف کن",
+          "devotional": "بعضی آشفتگی‌ها فقط با برنامه‌ریزی حل نمی‌شوند؛ ریشه‌ای وجود دارد که باید قطع شود. رابطهٔ ناسالم، عادت مخرب، اعتیاد اطلاعاتی، سرگرمی افراطی یا گناه پنهان می‌تواند هر ساختاری را دوباره فرو بریزد. فیض قدرت می‌دهد آنچه مانع زندگی است جدی و قاطع کنار گذاشته شود.",
+          "reflection": "کدام منبع پنهان، تلاش‌های من برای نظم را مرتب خنثی می‌کند؟",
+          "action": "یک منبع را مشخص کن و امروز یک مرز عملی بساز: حذف، محدودیت، فیلتر، فاصله یا درخواست کمک.",
+          "prayer": "خداوندا، به من شجاعت و قدرت بده آنچه مرا به آشفتگی برمی‌گرداند کنار بگذارم.",
+          "declaration": "من هر مانعی را که نظم خدا را تضعیف می‌کند با فیض او کنار می‌گذارم."
+        },
+        "en": {
+          "title": "Remove Hidden Sources of Disorder",
+          "devotional": "Some confusion is not solved by better scheduling; a root must be cut off. An unhealthy relationship, destructive habit, information addiction, excessive entertainment, or hidden sin can repeatedly collapse every structure. Grace gives power to remove decisively what obstructs life.",
+          "reflection": "Which hidden source repeatedly cancels my efforts toward order?",
+          "action": "Identify one source and establish a practical boundary today: removal, limitation, filtering, distance, or asking for help.",
+          "prayer": "Lord, give me courage and power to remove what keeps pulling me back into disorder.",
+          "declaration": "By God’s grace I remove every obstacle that weakens His order in my life."
+        },
+        "hr": {
+          "title": "Ukloni skrivene izvore nereda",
+          "devotional": "Neka se zbrka ne rješava boljim rasporedom; korijen se mora odrezati. Nezdrav odnos, razorna navika, ovisnost o informacijama, pretjerana zabava ili skriveni grijeh mogu stalno rušiti svaku strukturu. Milost daje snagu odlučno ukloniti ono što ometa život.",
+          "reflection": "Koji skriveni izvor stalno poništava moje napore prema redu?",
+          "action": "Prepoznaj jedan izvor i danas postavi praktičnu granicu: uklanjanje, ograničenje, filtar, udaljavanje ili traženje pomoći.",
+          "prayer": "Gospodine, daj mi hrabrost i snagu ukloniti ono što me vraća u nered.",
+          "declaration": "Božjom milošću uklanjam svaku prepreku koja slabi njegov red u mojem životu."
+        }
+      }
+    },
+    {
+      "day": 13,
+      "scriptures": ["Proverbs 21:5", "Luke 14:28"],
+      "content": {
+        "fa": {
+          "title": "هدف روشن و ساختار عملی بساز",
+          "devotional": "آرزوی نظم بدون هدف و ساختار، به انگیزه‌ای کوتاه‌مدت تبدیل می‌شود. هدف روشن می‌گوید چه چیزی باید تغییر کند؛ ساختار مشخص می‌کند چه زمانی، چگونه، چندبار و با چه منابعی آن تغییر انجام می‌شود. فیض قدرت می‌دهد، اما ما باید نقشه‌ای قابل‌اجرا بسازیم.",
+          "reflection": "کدام خواستهٔ خوب من هنوز به هدفی روشن و قابل‌اندازه‌گیری تبدیل نشده است؟",
+          "action": "یک هدف را با چهار جزء بنویس: نتیجه، زمان، دفعات و نخستین قدم امروز.",
+          "prayer": "پدر، به من حکمت بده هدف‌های روشن و برنامه‌های ساده و وفادارانه بسازم.",
+          "declaration": "من با حکمت برنامه‌ریزی می‌کنم و قدم‌های روشن را با فیض خدا اجرا می‌کنم."
+        },
+        "en": {
+          "title": "Build a Clear Goal and Practical Structure",
+          "devotional": "A desire for order without goals and structure becomes temporary motivation. A clear goal defines what must change; structure determines when, how, how often, and with which resources that change will occur. Grace supplies power, but we must build an actionable plan.",
+          "reflection": "Which good desire has not yet become a clear and measurable goal?",
+          "action": "Write one goal with four parts: result, time, frequency, and today’s first step.",
+          "prayer": "Father, give me wisdom to build clear goals and simple, faithful plans.",
+          "declaration": "I plan with wisdom and carry out clear steps by the grace of God."
+        },
+        "hr": {
+          "title": "Izgradi jasan cilj i praktičnu strukturu",
+          "devotional": "Želja za redom bez cilja i strukture postaje kratkotrajna motivacija. Jasan cilj određuje što se mora promijeniti, a struktura kada, kako, koliko često i kojim sredstvima. Milost daje snagu, ali mi trebamo izgraditi provediv plan.",
+          "reflection": "Koja dobra želja još nije postala jasan i mjerljiv cilj?",
+          "action": "Napiši jedan cilj s četiri dijela: rezultat, vrijeme, učestalost i prvi današnji korak.",
+          "prayer": "Oče, daj mi mudrost izgraditi jasne ciljeve i jednostavne, vjerne planove.",
+          "declaration": "Planiram mudro i provodim jasne korake Božjom milošću."
+        }
+      }
+    },
+    {
+      "day": 14,
+      "scriptures": ["Ecclesiastes 4:9-10", "1 Thessalonians 5:16-18"],
+      "content": {
+        "fa": {
+          "title": "با پاسخگویی و شکرگزاری نظم را تثبیت کن",
+          "devotional": "نظم بدون نگهداری دوباره فرو می‌ریزد. پاسخگویی به یک ایماندار بالغ، ما را از انزوا، توجیه و بازگشت پنهانی به الگوهای قدیمی حفظ می‌کند. شکرگزاری و اعلام روزانه نیز توجه را بر کار خدا نگه می‌دارند و پایداری را تقویت می‌کنند.",
+          "reflection": "چه کسی می‌تواند با محبت، حقیقت و دعا در مسیر تغییر کنار من بایستد؟",
+          "action": "یک شخص قابل‌اعتماد انتخاب کن، هدفت را با او در میان بگذار و زمان گزارش بعدی را تعیین کن؛ سپس سه شکرگزاری بنویس.",
+          "prayer": "خداوندا، مرا در مشارکت سالم، پاسخگویی و شکرگزاری روزانه ثابت نگه دار.",
+          "declaration": "من تنها حرکت نمی‌کنم؛ با پاسخگویی، دعا و شکرگزاری در نظم خدا پایدار می‌مانم."
+        },
+        "en": {
+          "title": "Stabilize Order through Accountability and Thanksgiving",
+          "devotional": "Order collapses again when it is not maintained. Accountability to a mature believer protects us from isolation, excuses, and secret return to old patterns. Daily thanksgiving and declaration keep attention on God’s work and strengthen perseverance.",
+          "reflection": "Who can stand with me in love, truth, and prayer as I change?",
+          "action": "Choose a trustworthy person, share your goal, set the next reporting time, and write three thanksgivings.",
+          "prayer": "Lord, establish me in healthy fellowship, accountability, and daily thanksgiving.",
+          "declaration": "I do not walk alone; through accountability, prayer, and thanksgiving I remain in God’s order."
+        },
+        "hr": {
+          "title": "Učvrsti red odgovornošću i zahvalnošću",
+          "devotional": "Red se ponovno ruši ako ga ne održavamo. Odgovornost prema zrelom vjerniku čuva nas od izolacije, izgovora i skrivenog povratka starim obrascima. Svakodnevna zahvalnost i izjave vjere zadržavaju pažnju na Božjem djelu i jačaju ustrajnost.",
+          "reflection": "Tko može stajati uz mene u ljubavi, istini i molitvi dok se mijenjam?",
+          "action": "Odaberi pouzdanu osobu, podijeli cilj, dogovori sljedeće izvješće i napiši tri zahvalnosti.",
+          "prayer": "Gospodine, učvrsti me u zdravom zajedništvu, odgovornosti i svakodnevnoj zahvalnosti.",
+          "declaration": "Ne hodam sam; odgovornošću, molitvom i zahvalnošću ostajem u Božjem redu."
+        }
+      }
+    }
+  ]
+}
