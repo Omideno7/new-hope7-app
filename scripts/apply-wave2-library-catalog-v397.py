@@ -1,7 +1,7 @@
 from pathlib import Path
 import re
 
-# app.js
+# app.js — authenticated account-based catalog; remove legacy ministers code UI and prompt.
 p=Path('js/app.js')
 text=p.read_text(encoding='utf-8')
 old="""async function loadLibraryCatalog(){
@@ -34,7 +34,7 @@ text=text.replace("protectedLibrary:'منابع محافظت‌شده خادما
 text=text.replace("protectedLibrary:'Zaštićeni materijali za služitelje',enterAccessCode:'Unesite pristupni kod koji ste dobili od crkve'", "protectedLibrary:'Materijali samo za služitelje; prikazuju se samo stavke koje je administrator omogućio za vaš račun.',enterAccessCode:''",1)
 p.write_text(text,encoding='utf-8')
 
-# reader
+# Reader — same catalog RPC and account grants only; never ask user for a ministers code.
 p=Path('js/nh7-book-reader-v283.js')
 text=p.read_text(encoding='utf-8')
 text=text.replace("const CODE_KEY='nh7_minister_library_code';\n",'',1)
@@ -69,7 +69,7 @@ if n!=1: raise SystemExit('reader catalog block not found')
 text=text2
 pattern=r"function savedMinisterCode\(\)\{[\s\S]*?\}\nasync function readerRpc"
 text2,n=re.subn(pattern,'async function readerRpc',text,count=1)
-if n!=1: raise SystemExit('reader saved code block not found')
+if n!=1: raise SystemExit('reader saved-code block not found')
 text=text2
 old="""  let code=item.audience==='ministers'?savedMinisterCode():'';
   let data=await readerRpc(item,code).catch(error=>({allowed:false,code:'request_failed',message:error.message}));
@@ -85,7 +85,7 @@ text=text.replace(old,"  const data=await readerRpc(item,'').catch(error=>({allo
 text=text.replace("  if(['code_required','invalid_code','expired','max_uses'].includes(code))return L('کد کتابخانه خادمان نامعتبر یا منقضی است.','The ministers library code is invalid or expired.','Kod knjižnice nije valjan ili je istekao.');\n",'',1)
 p.write_text(text,encoding='utf-8')
 
-# collections
+# Collection hub — consume the same server bundle so counts and cards agree.
 p=Path('js/nh7-library-collections-v322.js')
 text=p.read_text(encoding='utf-8')
 old="""  try{
@@ -108,21 +108,9 @@ if old not in text: raise SystemExit('collections load block not found')
 text=text.replace(old,new,1)
 p.write_text(text,encoding='utf-8')
 
-# offline cache version
+# Force a clean Wave2 QA cache generation.
 p=Path('sw-offline-v329.js')
 text=p.read_text(encoding='utf-8')
 text,n=re.subn(r"const VERSION='v2\.3\.9\.51-wave2-[^']+';","const VERSION='v2.3.9.51-wave2-library-catalog-v397';",text,count=1)
 if n!=1: raise SystemExit('offline version marker not found')
-p.write_text(text,encoding='utf-8')
-
-# validator
-p=Path('.github/workflows/validate-wave2-library-access.yml')
-text=p.read_text(encoding='utf-8')
-text=text.replace("grep -q \"const VERSION='v2.3.9.51-wave2-plan-doctrine'\" sw-offline-v329.js", "grep -q \"const VERSION='v2.3.9.51-wave2-library-catalog-v397'\" sw-offline-v329.js")
-text=text.replace("grep -q 'nh7_library_items_v224' js/nh7-book-reader-v283.js", "grep -q 'nh7_library_catalog_v396' js/nh7-book-reader-v283.js\n          grep -q 'nh7_library_catalog_v396' js/app.js\n          grep -q 'nh7_library_catalog_v396' js/nh7-library-collections-v322.js\n          ! grep -q \"prompt(tr('enterAccessCode')\" js/app.js\n          ! grep -q 'nh7_minister_library_code' js/nh7-book-reader-v283.js\n          ! grep -q 'کدی را که کلیسا در اختیار شما گذاشته وارد کنید' js/app.js")
-text=text.replace("git diff --quiet \"$BASE\" -- js/app.js js/nh7-audio-classic-v400.js", "git diff --quiet \"$BASE\" -- js/nh7-audio-classic-v400.js")
-oldcase="index.html|admin.html|sw-offline-v329.js|js/nh7-book-reader-v283.js|js/nh7-admin-library-access-v396.js|js/nh7-spiritual-plans-v240.js|data/spiritual-plans/prayer-30.json|data/spiritual-plans/fasting-7.json|.github/workflows/validate-wave2-library-access.yml) ;;"
-newcase="index.html|admin.html|sw-offline-v329.js|js/app.js|js/nh7-library-collections-v322.js|js/nh7-book-reader-v283.js|js/nh7-admin-library-access-v396.js|js/nh7-spiritual-plans-v240.js|data/spiritual-plans/prayer-30.json|data/spiritual-plans/fasting-7.json|.github/workflows/validate-wave2-library-access.yml) ;;"
-if oldcase not in text: raise SystemExit('validation allowlist marker not found')
-text=text.replace(oldcase,newcase,1)
 p.write_text(text,encoding='utf-8')
