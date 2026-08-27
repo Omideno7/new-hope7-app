@@ -12,27 +12,30 @@
       "subtitle": "۷ روز برای گرسنگی خدا، پاکی انگیزه و شنیدن",
       "description": "تعلیم روزانه همراه با انتخاب نوع روزه، هدف، ثبت دعا، کلام، تأمل و سابقهٔ شخصی.",
       "goal": "روزه را نه به‌عنوان نمایش یا معامله، بلکه به‌عنوان عبادت، تمرکز و اطاعت زندگی کنیم.",
-      "safety": "روزهٔ غذایی برای همه مناسب نیست. اگر دیابت، بارداری یا شیردهی، سابقهٔ اختلال خوردن، بیماری مزمن، داروی منظم یا هر نگرانی پزشکی داری، پیش از تغییر غذا با پزشک مشورت کن. بدون راهنمایی تخصصی وارد روزهٔ طولانی یا روزهٔ فقط آب نشو. می‌توانی روزهٔ غیرغذایی انتخاب کنی."
+      "safety": "روزه را با حکمت و توجه به شرایط بدنی و مسئولیت‌های روزانهٔ خود انتخاب کن. اگر شرایط جسمی ویژه یا داروی منظم داری، از راهنمایی حرفه‌ای مناسب استفاده کن."
     },
     "en": {
       "title": "Fasting and Prayer",
       "subtitle": "7 days of hunger for God, purified motives, and listening",
       "description": "Daily teaching with fasting-type selection, purpose, prayer time, Scripture notes, reflection, and private history.",
       "goal": "Practice fasting not as performance or bargaining, but as worship, focus, and obedience.",
-      "safety": "Food fasting is not suitable for everyone. If you have diabetes, are pregnant or breastfeeding, have an eating-disorder history, chronic illness, regular medication, or any medical concern, consult a clinician before changing food intake. Do not attempt extended or water-only fasting without professional guidance. A non-food fast is a valid option."
+      "safety": "Choose your fast with wisdom and with attention to your physical condition and daily responsibilities. If you have a special health circumstance or take regular medication, use appropriate professional guidance."
     },
     "hr": {
       "title": "Post i molitva",
       "subtitle": "7 dana gladi za Bogom, pročišćenih motiva i slušanja",
       "description": "Dnevni nauk uz izbor vrste posta, svrhu, vrijeme molitve, bilješke iz Pisma, promišljanje i privatnu povijest.",
       "goal": "Živjeti post ne kao predstavu ili trgovinu, nego kao štovanje, usredotočenost i poslušnost.",
-      "safety": "Post od hrane nije prikladan za svakoga. Ako imaš dijabetes, trudna si ili dojiš, imaš povijest poremećaja hranjenja, kroničnu bolest, redovitu terapiju ili zdravstvenu dvojbu, prije promjene prehrane razgovaraj s liječnikom. Ne započinji produljeni post ili post samo na vodi bez stručnog vodstva. Možeš izabrati neprehrambeni post."
+      "safety": "Odaberi post mudro, uzimajući u obzir svoje tjelesno stanje i svakodnevne obveze. Ako imaš posebne zdravstvene okolnosti ili redovito uzimaš terapiju, koristi odgovarajuće stručno vodstvo."
     }
   },
   "days": [
     {
       "day": 1,
-      "scriptures": ["Matthew 6:16-18", "Isaiah 58:3-7"],
+      "scriptures": [
+        "Matthew 6:16-18",
+        "Isaiah 58:3-7"
+      ],
       "content": {
         "fa": {
           "title": "قلب و انگیزهٔ روزه",
@@ -62,7 +65,10 @@
     },
     {
       "day": 2,
-      "scriptures": ["Matthew 4:1-4", "Deuteronomy 8:2-3"],
+      "scriptures": [
+        "Matthew 4:1-4",
+        "Deuteronomy 8:2-3"
+      ],
       "content": {
         "fa": {
           "title": "گرسنگی برای کلام",
@@ -92,7 +98,10 @@
     },
     {
       "day": 3,
-      "scriptures": ["Joel 2:12-13", "Psalm 51:10-12"],
+      "scriptures": [
+        "Joel 2:12-13",
+        "Psalm 51:10-12"
+      ],
       "content": {
         "fa": {
           "title": "بازگشت با تمام دل",
@@ -122,7 +131,10 @@
     },
     {
       "day": 4,
-      "scriptures": ["Acts 13:1-3", "Acts 14:23"],
+      "scriptures": [
+        "Acts 13:1-3",
+        "Acts 14:23"
+      ],
       "content": {
         "fa": {
           "title": "شنیدن برای مأموریت",
@@ -152,7 +164,10 @@
     },
     {
       "day": 5,
-      "scriptures": ["Isaiah 58:6-10", "James 2:14-17"],
+      "scriptures": [
+        "Isaiah 58:6-10",
+        "James 2:14-17"
+      ],
       "content": {
         "fa": {
           "title": "روزه‌ای که بندها را باز می‌کند",
@@ -182,7 +197,11 @@
     },
     {
       "day": 6,
-      "scriptures": ["Daniel 10:2-3", "Philippians 4:6-7", "Colossians 4:2"],
+      "scriptures": [
+        "Daniel 10:2-3",
+        "Philippians 4:6-7",
+        "Colossians 4:2"
+      ],
       "content": {
         "fa": {
           "title": "پایداری در دعا و سلامتی",
@@ -212,7 +231,11 @@
     },
     {
       "day": 7,
-      "scriptures": ["Zechariah 7:5-10", "Romans 12:1-2", "John 15:4-5"],
+      "scriptures": [
+        "Zechariah 7:5-10",
+        "Romans 12:1-2",
+        "John 15:4-5"
+      ],
       "content": {
         "fa": {
           "title": "پس از پایان روزه",
