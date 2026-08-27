@@ -131,7 +131,10 @@ jobs:
           test -f js/nh7-school-exam-v344.js
           test -f js/nh7-auth-recovery-v342.js
           test -f js/nh7-settings-controller-v399.js
-          test -f js/nh7-apocrypha-reader-v401.js
+          test -f js/nh7-apocrypha-runtime-patch-v402.js
+          test -f js/nh7-apocrypha-actions-v393.js
+          test -f js/nh7-apocrypha-inline-v392.js
+          test -f js/nh7-apocrypha-saved-nav-v394.js
           grep -q "NH7_AUDIO_CLASSIC_VERSION='4.0.0'" js/nh7-audio-classic-v400.js
           grep -q "window.NH7_SCHOOL_EXAM_VERSION='3.4.4'" js/nh7-school-exam-v344.js
           grep -q "NH7_SETTINGS_CONTROLLER_VERSION='3.9.9'" js/nh7-settings-controller-v399.js
