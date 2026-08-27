@@ -2,15 +2,15 @@ import {
   renderSpiritualPlansV240
 } from './nh7-spiritual-plans-v240.js';
 
-/* New Hope 7 — Wave 1B spiritual plans QA bridge v4.1.0
- * Additive only: the current main app remains untouched. This bridge takes
- * ownership only when the user opens Plans in the dedicated QA shell.
+/* New Hope 7 — production spiritual plans bridge v4.1.2
+ * Additive integration: this module takes ownership only when the user opens Plans.
+ * Existing audio, School, exam, authentication, settings and Apocrypha modules remain isolated.
  */
 
-const VERSION = '4.1.0';
+const VERSION = '4.1.2';
 const SB_URL = 'https://gpzcwffxnddhaeaogdyo.supabase.co';
 const SB_KEY = 'sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37';
-const QUEUE_KEY = 'nh7_wave1b_cloud_queue_v410';
+const QUEUE_KEY = 'nh7_spiritual_plans_cloud_queue_v412';
 const VIEW = document.querySelector('#view');
 const BIBLE_GROUPS = ['01_18', '19_39', '40_66'];
 const bibleCache = { meta:null, groups:new Map() };
@@ -238,12 +238,7 @@ function setNav(){
   const crumb = document.querySelector('#breadcrumb'); if(crumb) crumb.textContent = say('plans');
   const back = document.querySelector('#backBtn'); if(back){ back.classList.remove('hidden'); back.setAttribute('aria-label',say('back')); }
 }
-function banner(){
-  if(document.querySelector('#nh7Wave1BBanner')) return;
-  const node = document.createElement('div');
-  node.id='nh7Wave1BBanner'; node.className='nh7-wave1b-banner'; node.textContent=say('badge');
-  VIEW?.prepend(node);
-}
+function banner(){}
 function context(){
   return {
     view:VIEW,
@@ -267,12 +262,10 @@ async function renderPlans(params={tab:'spiritual'}){
   setNav(); VIEW.innerHTML = `<section class="card"><p>${escapeHtml(say('loading'))}</p></section>`;
   try{
     await renderSpiritualPlansV240(context(), currentParams);
-    banner();
-    VIEW.dataset.wave1b = VERSION;
+    VIEW.dataset.spiritualPlans = VERSION;
   }catch(error){
     console.error('[Wave1B plans]', error);
     VIEW.innerHTML = `<section class="card"><h2>${escapeHtml(say('plans'))}</h2><p>${escapeHtml(error?.message || String(error))}</p></section>`;
-    banner();
   }finally{ rendering=false; }
 }
 function leaveTo(route){
@@ -327,12 +320,12 @@ new MutationObserver(() => {
 }).observe(VIEW || document.body, { childList:true, subtree:false });
 
 const style = document.createElement('style');
-style.textContent = `.nh7-wave1b-banner{position:relative;z-index:9;margin:0 0 12px;padding:9px 12px;border:1px solid #8ac9a4;border-radius:14px;background:#eefcf3;color:#14683d;font:800 .78rem/1.55 system-ui;text-align:center}.nh7-scripture-reveal .inline-verse{padding:11px;border:1px solid #cce0ee;background:#fff}.nh7-scripture-reveal .inline-verse.hidden{display:none}.inline-verse-line{display:grid;grid-template-columns:28px 1fr;gap:8px;margin:5px 0;line-height:1.8}.inline-verse-line b{display:grid;place-items:center;width:24px;height:24px;border-radius:8px;background:#e8f4ff;color:#0565ad;font-size:.72rem}`;
+style.textContent = `.nh7-scripture-reveal .inline-verse{padding:11px;border:1px solid #cce0ee;background:#fff}.nh7-scripture-reveal .inline-verse.hidden{display:none}.inline-verse-line{display:grid;grid-template-columns:28px 1fr;gap:8px;margin:5px 0;line-height:1.8}.inline-verse-line b{display:grid;place-items:center;width:24px;height:24px;border-radius:8px;background:#e8f4ff;color:#0565ad;font-size:.72rem}`;
 document.head.appendChild(style);
 
-window.NH7_SPIRITUAL_PLANS_WAVE1B_VERSION = VERSION;
-window.NH7_SPIRITUAL_PLANS_WAVE1B = { render:renderPlans, sync:syncCloudQueue, active:() => active };
+window.NH7_SPIRITUAL_PLANS_VERSION = VERSION;
+window.NH7_SPIRITUAL_PLANS = { render:renderPlans, sync:syncCloudQueue, active:() => active };
 
-if(window.NH7_WAVE1B_AUTO_OPEN || new URLSearchParams(location.search).get('open') === 'plans'){
+if(new URLSearchParams(location.search).get('open') === 'plans'){
   setTimeout(() => renderPlans({tab:'spiritual'}), 700);
 }
