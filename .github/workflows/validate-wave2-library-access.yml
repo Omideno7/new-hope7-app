@@ -1,0 +1,86 @@
+name: Validate Wave 2 Library and Ministers Access
+
+on:
+  push:
+    branches: [release/wave2-library-access-23951]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact branch commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Validate JavaScript and HTML wiring
+        run: |
+          set -euo pipefail
+          node --check js/nh7-book-reader-v283.js
+          node --check js/nh7-admin-library-access-v396.js
+          node --check js/app.js
+          node --check js/nh7-admin-rbac-v350.js
+          grep -q 'js/nh7-book-reader-v283.js?v=2.3.9.51-wave2' index.html
+          ! grep -q 'js/nh7-book-reader-v281.js' index.html
+          grep -q 'js/nh7-admin-library-access-v396.js?v=3.9.6-wave2' admin.html
+          grep -q "const VERSION='v2.3.9.51-wave2-library-qa'" sw-offline-v329.js
+          grep -q "'./js/nh7-book-reader-v283.js'" sw-offline-v329.js
+          node <<'NODE'
+          const fs=require('fs');
+          for(const file of ['index.html','admin.html']){
+            const html=fs.readFileSync(file,'utf8');
+            [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)]
+              .filter(match=>!/^\s*$/.test(match[1]))
+              .forEach((match,index)=>new Function(match[1]+`\n//# sourceURL=${file}-${index}`));
+          }
+          NODE
+
+      - name: Validate reader behavior and access messages
+        run: |
+          set -euo pipefail
+          grep -q "const VERSION='2.8.3-book-reader'" js/nh7-book-reader-v283.js
+          grep -q 'page?.title' js/nh7-book-reader-v283.js
+          grep -q 'looksLikeHeading' js/nh7-book-reader-v283.js
+          grep -q 'nh7-book-chapter-title' js/nh7-book-reader-v283.js
+          grep -q 'data-book-search-page' js/nh7-book-reader-v283.js
+          grep -q "code==='content_access_required'" js/nh7-book-reader-v283.js
+          grep -q 'nh7_library_reader_access_v250' js/nh7-book-reader-v283.js
+          grep -q 'nh7_library_items_v224' js/nh7-book-reader-v283.js
+          grep -q 'refresh_token' js/nh7-book-reader-v283.js
+          grep -q 'NH7_BOOK_READER_VERSION' js/nh7-book-reader-v283.js
+
+      - name: Validate approved-user access administration
+        run: |
+          set -euo pipefail
+          grep -q "const VERSION='3.9.6'" js/nh7-admin-library-access-v396.js
+          grep -q 'nh7_admin_content_access_dashboard_v395' js/nh7-admin-library-access-v396.js
+          grep -q 'nh7_admin_content_access_grant_v251' js/nh7-admin-library-access-v396.js
+          grep -q 'nh7_admin_content_access_revoke_v251' js/nh7-admin-library-access-v396.js
+          grep -q "scope:'library_all'" js/nh7-admin-library-access-v396.js
+          grep -q "library_collection" js/nh7-admin-library-access-v396.js
+          grep -q "library_item" js/nh7-admin-library-access-v396.js
+          grep -q 'Approved users' js/nh7-admin-library-access-v396.js
+          grep -q 'Nine public books ready' js/nh7-admin-library-access-v396.js
+          grep -q 'nh7_admin_access_v350' js/nh7-admin-library-access-v396.js
+          grep -q 'refresh_token' js/nh7-admin-library-access-v396.js
+
+      - name: Protect unrelated production modules
+        run: |
+          set -euo pipefail
+          BASE=717b02e37da61c807226497f8c71eceb511fc931
+          git diff --quiet "$BASE" -- js/app.js js/nh7-audio-classic-v400.js js/nh7-school-exam-v344.js js/nh7-auth-recovery-v342.js js/nh7-settings-controller-v399.js js/nh7-apocrypha-runtime-patch-v402.js js/nh7-apocrypha-actions-v393.js data/apocrypha/runtime/apocrypha-browser-19.preview.json data/spiritual-plans
+          changed=$(git diff --name-only "$BASE" HEAD)
+          echo "$changed"
+          while IFS= read -r file; do
+            [ -z "$file" ] && continue
+            case "$file" in
+              index.html|admin.html|sw-offline-v329.js|js/nh7-book-reader-v283.js|js/nh7-admin-library-access-v396.js|.github/workflows/validate-wave2-library-access.yml) ;;
+              *) echo "Unexpected Wave 2 change: $file" >&2; exit 1 ;;
+            esac
+          done <<< "$changed"
+          echo 'Wave 2 library QA scope is isolated and protected modules are unchanged.'
