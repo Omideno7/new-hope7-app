@@ -161,14 +161,31 @@ jobs:
           test -f app/build/outputs/bundle/release/app-release.aab
           cp app/build/outputs/bundle/release/app-release.aab ../../New_Hope_7_2.3.9.50_API36_UNSIGNED.aab
 
-      - name: Build side-load QA APK
+      - name: Build side-load QA APK with separate package
         shell: bash
         run: |
           set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+          gradle=Path('native-release/android/app/build.gradle')
+          text=gradle.read_text()
+          if 'applicationIdSuffix ".qa"' not in text:
+              m=re.search(r'buildTypes\s*\{',text)
+              if not m: raise SystemExit('buildTypes block missing')
+              debug='\n        debug {\n            applicationIdSuffix ".qa"\n            versionNameSuffix "-qa"\n        }\n'
+              text=text[:m.end()]+debug+text[m.end():]
+          gradle.write_text(text)
+          strings=Path('native-release/android/app/src/main/res/values/strings.xml')
+          s=strings.read_text()
+          s=s.replace('>New Hope 7<','>New Hope 7 QA<')
+          strings.write_text(s)
+          PY
           cd native-release/android
           ./gradlew assembleDebug --stacktrace
           test -f app/build/outputs/apk/debug/app-debug.apk
-          cp app/build/outputs/apk/debug/app-debug.apk ../../New_Hope_7_2.3.9.50_API36_QA.apk
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging app/build/outputs/apk/debug/app-debug.apk | grep "package: name='com.omideno7.newhope7.qa'"
+          cp app/build/outputs/apk/debug/app-debug.apk ../../New_Hope_7_2.3.9.50_API36_QA_SEPARATE.apk
 
       - name: Produce release audit and project archive
         shell: bash
@@ -178,7 +195,8 @@ jobs:
           {
             echo 'New Hope 7 Android Release Candidate'
             echo "Commit: $GITHUB_SHA"
-            echo "Package: $APP_ID"
+            echo "Release package: $APP_ID"
+            echo 'QA package: com.omideno7.newhope7.qa'
             echo "Version name: $VERSION_NAME"
             echo "Version code: $VERSION_CODE"
             echo 'Capacitor: 8.5.0'
@@ -192,9 +210,9 @@ jobs:
             echo
             npm ls --depth=0 || true
             echo
-            ls -lh ../New_Hope_7_2.3.9.50_API36_UNSIGNED.aab ../New_Hope_7_2.3.9.50_API36_QA.apk
+            ls -lh ../New_Hope_7_2.3.9.50_API36_UNSIGNED.aab ../New_Hope_7_2.3.9.50_API36_QA_SEPARATE.apk
             echo
-            sha256sum ../New_Hope_7_2.3.9.50_API36_UNSIGNED.aab ../New_Hope_7_2.3.9.50_API36_QA.apk
+            sha256sum ../New_Hope_7_2.3.9.50_API36_UNSIGNED.aab ../New_Hope_7_2.3.9.50_API36_QA_SEPARATE.apk
           } > ANDROID_RELEASE_AUDIT.txt
           rm -rf android/.gradle android/app/build android/build node_modules
           zip -qr ../New_Hope_7_Android_API36_Project.zip . -x '*.DS_Store'
@@ -210,8 +228,8 @@ jobs:
       - uses: actions/upload-artifact@v4
         name: Upload QA APK
         with:
-          name: New_Hope_7_API36_QA_APK
-          path: New_Hope_7_2.3.9.50_API36_QA.apk
+          name: New_Hope_7_API36_QA_SEPARATE_APK
+          path: New_Hope_7_2.3.9.50_API36_QA_SEPARATE.apk
           if-no-files-found: error
           retention-days: 14
 
