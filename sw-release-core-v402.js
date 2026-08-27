@@ -1,0 +1,25 @@
+/* New Hope 7 — isolated release core cache v4.0.2
+ * Adds a verified current-build precache without replacing the stable offline worker.
+ */
+'use strict';
+const NH7_RELEASE_CORE_VERSION='4.0.2';
+const NH7_RELEASE_CORE_CACHE='nh7-release-core-v402';
+const NH7_RELEASE_DATA_CACHE='nh7-data-stable-v329';
+const NH7_RELEASE_ASSETS=[
+  './','./index.html','./app-v239.html','./reset-password.html','./manifest.json','./version.json','./offline/index.html',
+  './assets/logo.png',
+  './css/styles.css','./css/v2.2.0.css','./css/v2.2.2.css','./css/v2.2.3.css','./css/v2.2.4.css','./css/v2.3.0-access-bible.css','./css/v2.3.4-my-notes.css','./css/nh7-book-reader-v280.css','./css/nh7-library-collections-v322.css','./css/nh7-secure-media-v270.css','./css/nh7-secure-media-watermark-v272.css','./css/nh7-apocrypha-v270.css','./css/nh7-spiritual-plans-v240.css',
+  './js/nh7-security-core-v340.js','./js/nh7-qna-i18n-v341.js','./js/nh7-offline-startup-v327.js','./js/nh7-auto-update-v335.js','./js/nh7-notifications-zagreb-v334.js','./js/nh7-offline-core-v327.js','./js/nh7-offline-data-v329.js','./js/nh7-audio-route-stability-v330.js','./js/nh7-access-bootstrap-v230.js','./js/nh7-auth-signup-guard-v343.js','./js/nh7-registration-canonical-v353.js','./js/nh7-school-registration-v342.js','./js/nh7-registration-final-guard-v401.js','./js/nh7-offline-playback-bridge-v332.js','./js/nh7-offline-persistence-v323.js','./js/nh7-auth-recovery-v342.js','./js/nh7-audio-classic-v400.js','./js/app.js','./js/nh7-settings-controller-v402.js','./js/nh7-settings-account-v252.js','./js/nh7-app-enhancements-v230.js','./js/nh7-my-notes-v234.js','./js/nh7-book-reader-v283.js','./js/nh7-library-language-v321.js','./js/nh7-library-collections-v322.js','./js/nh7-school-media-session-v262.js','./js/nh7-secure-media-v270.js','./js/nh7-secure-media-fix-v271.js','./js/nh7-large-mov-native-fallback-v273.js','./js/nh7-secure-media-watermark-v272.js','./js/nh7-apocrypha-v270.js','./js/nh7-protected-audio-gate-v316.js','./js/nh7-ui-stability-v329.js','./js/nh7-push-account-bind-v361.js','./js/nh7-school-exam-v344.js','./js/nh7-spiritual-plans-v412.js','./js/nh7-fasting-practical-note-removal-v413.js',
+  './data/app/opening_messages_365.json','./data/church/church_config.json','./data/church/about.json','./data/daily/daily_word_365.json','./data/daily/faith_proclamations_365.json','./data/daily/daily_juice_365.json','./data/gratitude/gratitude_plan_30_days.json','./data/salvation/need_salvation.json','./data/school/school_content.json','./data/school/foundation_exam_50_trilingual.json','./data/bible/plans/reading_plans_1yr_2yr.json','./data/bible/groups/bible_group_01_18.json','./data/bible/groups/bible_group_19_39.json','./data/bible/groups/bible_group_40_66.json','./data/spiritual-plans/catalog.json','./data/spiritual-plans/prayer-30.json','./data/spiritual-plans/grace-14.json','./data/spiritual-plans/fasting-7.json','./data/spiritual-plans/fasting-types.json','./data/spiritual-plans/obedience-10.json','./data/spiritual-plans/salvation-10.json','./data/spiritual-plans/mind-renewal-days-01-07.json','./data/spiritual-plans/mind-renewal-days-08-14.json','./data/spiritual-plans/mind-renewal-days-15-18.json','./data/spiritual-plans/mind-renewal-days-19-22.json','./data/spiritual-plans/mind-renewal-days-23-26.json','./data/spiritual-plans/mind-renewal-days-27-30.json'
+];
+function nh7ReleaseKey(raw){const u=new URL(raw,self.registration.scope);return new Request(u.origin+u.pathname,{method:'GET'})}
+async function nh7CacheReleaseCore(){
+  const core=await caches.open(NH7_RELEASE_CORE_CACHE),data=await caches.open(NH7_RELEASE_DATA_CACHE);let cached=0,failed=[];
+  for(const path of NH7_RELEASE_ASSETS){
+    try{const response=await fetch(new URL(path,self.registration.scope).href,{cache:'no-store'});if(!response.ok){failed.push(path);continue}const target=path.includes('/data/')||path.endsWith('.json')?data:core;await target.put(nh7ReleaseKey(path),response.clone());cached++}catch(_){failed.push(path)}
+  }
+  return{ok:failed.length===0,cached,total:NH7_RELEASE_ASSETS.length,failed};
+}
+self.addEventListener('install',event=>event.waitUntil(nh7CacheReleaseCore().catch(()=>null)));
+self.addEventListener('activate',event=>event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(k=>k.startsWith('nh7-release-core-')&&k!==NH7_RELEASE_CORE_CACHE).map(k=>caches.delete(k)))})()));
+self.addEventListener('message',event=>{const data=event.data||{};if(data.type!=='CACHE_RELEASE_CORE'&&data.type!=='RELEASE_CORE_STATUS')return;const port=event.ports?.[0];event.waitUntil((async()=>{try{if(data.type==='CACHE_RELEASE_CORE'){const result=await nh7CacheReleaseCore();port?.postMessage(result);return}const cache=await caches.open(NH7_RELEASE_CORE_CACHE),keys=await cache.keys();port?.postMessage({ok:true,cached:keys.length,total:NH7_RELEASE_ASSETS.length,version:NH7_RELEASE_CORE_VERSION})}catch(error){port?.postMessage({ok:false,error:error?.message||String(error)})}})())});
