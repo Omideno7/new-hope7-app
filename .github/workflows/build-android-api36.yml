@@ -122,8 +122,11 @@ jobs:
           manifest=root/'app/src/main/AndroidManifest.xml'
           text=manifest.read_text()
           if 'android.permission.POST_NOTIFICATIONS' not in text:
-              pos=text.find('>')
-              text=text[:pos+1]+'\n    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />'+text[pos+1:]
+              match=re.search(r'<manifest\b[^>]*>', text, re.S)
+              if not match:
+                  raise SystemExit('AndroidManifest root element not found')
+              permission='\n    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />'
+              text=text[:match.end()]+permission+text[match.end():]
           if 'usesCleartextTraffic' not in text:
               text=text.replace('<application', '<application android:usesCleartextTraffic="false"', 1)
           manifest.write_text(text)
@@ -150,6 +153,11 @@ jobs:
           grep -R 'minSdkVersion = 24' android/variables.gradle
           grep -R 'POST_NOTIFICATIONS' android/app/src/main/AndroidManifest.xml
           grep -R 'usesCleartextTraffic="false"' android/app/src/main/AndroidManifest.xml
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          ET.parse('android/app/src/main/AndroidManifest.xml')
+          print('AndroidManifest XML OK')
+          PY
           test -f android/app/src/main/assets/public/index.html
           test -f android/app/src/main/assets/public/js/nh7-settings-controller-v403.js
           test -f android/app/src/main/assets/public/js/nh7-delete-account-v253.js
