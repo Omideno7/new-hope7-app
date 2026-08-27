@@ -262,6 +262,11 @@ async function renderPlans(params={tab:'spiritual'}){
   setNav(); VIEW.innerHTML = `<section class="card"><p>${escapeHtml(say('loading'))}</p></section>`;
   try{
     await renderSpiritualPlansV240(context(), currentParams);
+    if(!VIEW.querySelector('#nh7SpiritualPlansRootMarker')){
+      const marker=document.createElement('span');
+      marker.id='nh7SpiritualPlansRootMarker'; marker.hidden=true;
+      VIEW.appendChild(marker);
+    }
     VIEW.dataset.spiritualPlans = VERSION;
   }catch(error){
     console.error('[Wave1B plans]', error);
@@ -315,7 +320,7 @@ new MutationObserver(() => {
   if(!active || rendering) return;
   clearTimeout(restoreTimer);
   restoreTimer = setTimeout(() => {
-    if(active && !document.querySelector('#nh7Wave1BBanner')) renderPlans(currentParams);
+    if(active && !VIEW.querySelector('#nh7SpiritualPlansRootMarker')) renderPlans(currentParams);
   }, 120);
 }).observe(VIEW || document.body, { childList:true, subtree:false });
 
