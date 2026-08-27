@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "plan_id": "mind-renewal-30",
+  "days": [
+    {
+      "day": 27,
+      "scriptures": [
+        "Romans 8:14",
+        "John 16:13"
+      ],
+      "content": {
+        "fa": {
+          "title": "صدای روح را از فشار ذهن جدا کن",
+          "devotional": "هر فکر قوی یا احساس شدید، هدایت روح‌القدس نیست. روح خدا ما را در هماهنگی با کلام، شخصیت عیسی، محبت، پاکی و حکمت هدایت می‌کند؛ بنابراین دریافت‌ها باید سنجیده شوند، نه اینکه بی‌درنگ مطلق تلقی شوند.",
+          "reflection": "من معمولاً هدایت خدا را با کدام فشار درونی اشتباه می‌گیرم؟",
+          "action": "یک تصمیم مهم را بنویس و آن را با کلام، آرامش، حکمت و مشورت ایماندار بالغ بسنج.",
+          "prayer": "روح‌القدس، مرا در حقیقت هدایت کن و از فریب احساس یا عجله حفظ کن.",
+          "declaration": "من با فروتنی هدایت روح‌القدس را می‌شنوم و هر دریافت را با کلام می‌سنجم."
+        },
+        "en": {
+          "title": "Distinguish the Spirit’s Voice from Mental Pressure",
+          "devotional": "Not every strong thought or intense feeling is the Holy Spirit’s guidance. God’s Spirit leads consistently with Scripture, the character of Jesus, love, purity, and wisdom; impressions must therefore be tested, not instantly treated as absolute.",
+          "reflection": "Which inner pressure do I most often confuse with God’s guidance?",
+          "action": "Write one important decision and test it through Scripture, peace, wisdom, and counsel from a mature believer.",
+          "prayer": "Holy Spirit, guide me in truth and protect me from deception, emotion, and haste.",
+          "declaration": "I humbly listen to the Holy Spirit and test every impression by God’s Word."
+        },
+        "hr": {
+          "title": "Razlikuj glas Duha od pritiska uma",
+          "devotional": "Nije svaka snažna misao ili intenzivan osjećaj vodstvo Duha Svetoga. Božji Duh vodi u skladu s Pismom, Isusovim karakterom, ljubavlju, čistoćom i mudrošću; zato dojmove treba provjeriti, a ne odmah smatrati apsolutnima.",
+          "reflection": "Koji unutarnji pritisak najčešće zamijenim za Božje vodstvo?",
+          "action": "Zapiši jednu važnu odluku i provjeri je Pismom, mirom, mudrošću i savjetom zreloga vjernika.",
+          "prayer": "Duše Sveti, vodi me u istini i čuvaj od zablude, emocije i žurbe.",
+          "declaration": "Ponizno slušam Duha Svetoga i svaki dojam provjeravam Božjom Riječju."
+        }
+      }
+    },
+    {
+      "day": 28,
+      "scriptures": [
+        "Haggai 1:5-7",
+        "Lamentations 3:40"
+      ],
+      "content": {
+        "fa": {
+          "title": "بی‌نظمی را صادقانه بررسی کن",
+          "devotional": "تغییر پایدار بدون ارزیابی صادقانه اتفاق نمی‌افتد. خدا ما را به شرم دعوت نمی‌کند، بلکه به نور می‌آورد تا بفهمیم بی‌نظمی در فکر، وقت، زبان، رابطه، مال یا خدمت چگونه شکل گرفته و نخستین قدم اصلاح چیست.",
+          "reflection": "بیشترین بی‌نظمی امروز در کدام بخش زندگی من دیده می‌شود؟",
+          "action": "یک جدول سه‌ستونه بساز: وضعیت فعلی، ریشهٔ مشکل و نخستین قدم اصلاح.",
+          "prayer": "خداوندا، مرا بدون محکومیت اما با صداقت در نور خود بررسی کن.",
+          "declaration": "من از حقیقت فرار نمی‌کنم؛ با کمک روح‌القدس بی‌نظمی را می‌شناسم و اصلاح می‌کنم."
+        },
+        "en": {
+          "title": "Examine Disorder Honestly",
+          "devotional": "Lasting change does not happen without honest evaluation. God does not invite us into shame but into light, so we can see how disorder entered thought, time, speech, relationships, finances, or service—and identify the first step of repair.",
+          "reflection": "Where is disorder most visible in my life today?",
+          "action": "Make three columns: present condition, root cause, and first corrective step.",
+          "prayer": "Lord, examine me in Your light with honesty but without condemnation.",
+          "declaration": "I do not run from truth; with the Holy Spirit’s help I recognize disorder and repair it."
+        },
+        "hr": {
+          "title": "Iskreno preispitaj nered",
+          "devotional": "Trajna promjena ne dolazi bez iskrene procjene. Bog nas ne poziva u sram, nego u svjetlo kako bismo vidjeli kako je nered ušao u misli, vrijeme, govor, odnose, financije ili služenje te prepoznali prvi korak obnove.",
+          "reflection": "Gdje je nered danas najvidljiviji u mojem životu?",
+          "action": "Napravi tri stupca: sadašnje stanje, korijenski uzrok i prvi korektivni korak.",
+          "prayer": "Gospodine, ispitaj me u svojem svjetlu iskreno, ali bez osude.",
+          "declaration": "Ne bježim od istine; uz pomoć Duha Svetoga prepoznajem nered i popravljam ga."
+        }
+      }
+    },
+    {
+      "day": 29,
+      "scriptures": [
+        "Proverbs 21:5",
+        "1 Corinthians 9:24-27"
+      ],
+      "content": {
+        "fa": {
+          "title": "برای ذهن و زندگی، قاعده‌ای ساده بساز",
+          "devotional": "نظم زمانی پایدار می‌شود که به تصمیم‌های روشن و قابل‌تکرار تبدیل گردد. یک برنامهٔ روحانی سالم خشک و مذهبی نیست؛ چارچوبی انعطاف‌پذیر است که دعا، کلام، کار، استراحت، خانواده و خدمت را در جای درست نگه می‌دارد.",
+          "reflection": "کدام بخش روز من بدون چارچوب، بیشترین آشفتگی را ایجاد می‌کند؟",
+          "action": "برای صبح، میانهٔ روز و شب یک قاعدهٔ کوتاه بنویس که در مجموع واقع‌بینانه و قابل‌اجرا باشد.",
+          "prayer": "پدر، برنامه‌ای حکیمانه به من بده که رابطه‌ام با تو و مسئولیت‌هایم را حمایت کند.",
+          "declaration": "من با انضباطی فیض‌محور زندگی می‌کنم و تصمیم‌های روشن را پیوسته اجرا می‌کنم."
+        },
+        "en": {
+          "title": "Build a Simple Rule for Mind and Life",
+          "devotional": "Order becomes sustainable when it turns into clear, repeatable decisions. A healthy spiritual rhythm is not rigid religion; it is a flexible structure that keeps prayer, Scripture, work, rest, family, and service in their proper place.",
+          "reflection": "Which unstructured part of my day creates the most confusion?",
+          "action": "Write one short morning, midday, and evening rhythm that is realistic enough to practice.",
+          "prayer": "Father, give me a wise pattern that supports my relationship with You and my responsibilities.",
+          "declaration": "I live with grace-shaped discipline and consistently practice clear decisions."
+        },
+        "hr": {
+          "title": "Izgradi jednostavno pravilo za um i život",
+          "devotional": "Red postaje održiv kada se pretvori u jasne odluke koje se mogu ponavljati. Zdrav duhovni ritam nije kruta religioznost, nego prilagodljiva struktura koja molitvu, Pismo, rad, odmor, obitelj i služenje drži na pravom mjestu.",
+          "reflection": "Koji neuređeni dio mojega dana stvara najviše zbrke?",
+          "action": "Napiši kratak jutarnji, podnevni i večernji ritam koji je dovoljno realan za svakodnevnu praksu.",
+          "prayer": "Oče, daj mi mudar obrazac koji podupire moj odnos s tobom i moje odgovornosti.",
+          "declaration": "Živim u disciplini oblikovanoj milošću i postojano provodim jasne odluke."
+        }
+      }
+    },
+    {
+      "day": 30,
+      "scriptures": [
+        "James 1:22-25",
+        "Philippians 1:6"
+      ],
+      "content": {
+        "fa": {
+          "title": "تغییر را به یک سبک زندگی تبدیل کن",
+          "devotional": "پایان این سی روز، پایان تازه‌شدن ذهن نیست. حقیقت زمانی در ما ریشه می‌گیرد که شنیدن به عمل، عمل به عادت و عادت به شخصیت تبدیل شود؛ خدا کار نیکوی خود را ادامه می‌دهد و ما هر روز با او همکاری می‌کنیم.",
+          "reflection": "مهم‌ترین تغییری که باید پس از این پلن ادامه بدهم چیست؟",
+          "action": "سه تعهد سی‌روزهٔ بعدی را بنویس: یک حقیقت برای مراقبه، یک عادت برای ادامه و یک رابطه برای پاسخگویی.",
+          "prayer": "پدر، آنچه در من آغاز کردی کامل کن و مرا در زندگی تازه ثابت نگه دار.",
+          "declaration": "ذهن من پیوسته با کلام تازه می‌شود و زندگی‌ام نظم، صلح و ثمر پادشاهی را آشکار می‌کند."
+        },
+        "en": {
+          "title": "Turn Change into a Way of Life",
+          "devotional": "The end of these thirty days is not the end of renewing the mind. Truth takes root when hearing becomes action, action becomes habit, and habit shapes character; God continues His good work as we cooperate with Him each day.",
+          "reflection": "What is the most important change I must continue after this plan?",
+          "action": "Write three commitments for the next thirty days: one truth to meditate on, one habit to continue, and one relationship for accountability.",
+          "prayer": "Father, complete what You began in me and establish me in this renewed life.",
+          "declaration": "My mind is continually renewed by the Word, and my life reveals the order, peace, and fruit of God’s kingdom."
+        },
+        "hr": {
+          "title": "Pretvori promjenu u način života",
+          "devotional": "Završetak ovih trideset dana nije kraj obnove uma. Istina se ukorjenjuje kada slušanje postane djelovanje, djelovanje navika, a navika oblikuje karakter; Bog nastavlja svoje dobro djelo dok svakodnevno surađujemo s njim.",
+          "reflection": "Koju najvažniju promjenu trebam nastaviti nakon ovoga plana?",
+          "action": "Napiši tri obveze za sljedećih trideset dana: jednu istinu za razmatranje, jednu naviku za nastavak i jedan odnos odgovornosti.",
+          "prayer": "Oče, dovrši ono što si započeo u meni i učvrsti me u obnovljenom životu.",
+          "declaration": "Moj se um neprestano obnavlja Riječju, a moj život očituje red, mir i plod Božjega kraljevstva."
+        }
+      }
+    }
+  ]
+}
