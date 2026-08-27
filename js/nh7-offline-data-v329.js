@@ -1,7 +1,7 @@
-/* New Hope 7 v4.0.2 — persistent release offline data */
+/* New Hope 7 v4.0.3 — persistent release offline data */
 (()=>{'use strict';
-const VERSION='4.0.2-offline-data-release';
-const BUILD='2.3.9.50-offline402';
+const VERSION='4.0.3-offline-data-release';
+const BUILD='2.3.9.50-offline403';
 const CACHE='nh7-data-stable-v329';
 const SESSION='nh7_user_session_v170';
 const READY_KEY='nh7_offline_data_ready';
@@ -22,7 +22,7 @@ const CRITICAL=[
 ];
 function parse(value,fallback=null){try{return JSON.parse(value||'')??fallback}catch(_){return fallback}}
 function ready(){const row=parse(localStorage.getItem(READY_KEY),{});return row?.build===BUILD&&Number(row?.saved||0)>=CRITICAL.length}
-function account(){try{return String(JSON.parse(localStorage.getItem(SESSION)||'null')?.user?.email||'guest').trim().toLowerCase()}catch(_){return'guest'}}
+function account(){try{const raw=JSON.parse(localStorage.getItem(SESSION)||'null'),s=raw?.currentSession||raw?.session||raw;return String(s?.user?.email||'guest').trim().toLowerCase()}catch(_){return'guest'}}
 function hash(value){let h=2166136261;for(let i=0;i<String(value).length;i++){h^=String(value).charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(16)}
 function urlOf(input){try{return new URL(typeof input==='string'?input:input instanceof URL?input.href:input?.url||'',location.href)}catch(_){return null}}
 function methodOf(input,init){return String(init?.method||(input instanceof Request?input.method:'GET')||'GET').toUpperCase()}
