@@ -48,7 +48,7 @@ jobs:
           if(!shell.includes('index.html?v=2.3.9.50')) throw new Error('native shell version mismatch');
           if(!serviceWorker.includes('2.3.9.50')) throw new Error('service worker version mismatch');
           for(const required of [
-            "const VERSION='v2.3.9.50-wave1b-plans'",
+            "const VERSION='v2.3.9.51-wave2-library-mainready'",
             './css/nh7-spiritual-plans-v240.css',
             './js/nh7-spiritual-plans-v240.js',
             './js/nh7-spiritual-plans-v412.js',
