@@ -17,13 +17,15 @@ jobs:
         with:
           ref: release/wave1b-spiritual-plans-23949
           fetch-depth: 0
-      - name: Replace legacy 14-day assembly and validator
+      - name: Replace legacy 14-day runtime assembly
         run: |
           python <<'PY'
           from pathlib import Path
-
           bridge=Path('js/nh7-spiritual-plans-bridge-v410.js')
           text=bridge.read_text(encoding='utf-8')
+          if "mind-renewal-days-01-07.json" in text:
+              print('Divine Order assembly already applied.')
+              raise SystemExit(0)
           start=text.index('async function mergedMindRenewal(){')
           end=text.index('async function jfetch(path){',start)
           block="""async function mergedMindRenewal(){
@@ -50,52 +52,13 @@ jobs:
           }
           """
           bridge.write_text(text[:start]+block+text[end:],encoding='utf-8')
-
-          workflow=Path('.github/workflows/validate-wave1b-spiritual-plans.yml')
-          value=workflow.read_text(encoding='utf-8')
-          old="""          const base=read('data/spiritual-plans/mind-renewal-14.json');
-                    const extensions=[
-                      read('data/spiritual-plans/mind-renewal-days-15-18.json'),
-                      read('data/spiritual-plans/mind-renewal-days-19-22.json'),
-                      read('data/spiritual-plans/mind-renewal-days-23-26.json'),
-                      read('data/spiritual-plans/mind-renewal-days-27-30.json')
-                    ];
-                    const mind={...base,id:'mind-renewal-30',version:2,durationDays:30};
-                    mind.localized={
-                      fa:{title:'تغییر طرز تفکر',subtitle:'۳۰ روز',description:'مسیر تازه‌شدن ذهن',goal:'تازه‌شدن روزانه',pastoralNote:'مسیر شاگردسازی روزانه'},
-                      en:{title:'Change Your Thinking',subtitle:'30 days',description:'Mind-renewal journey',goal:'Daily renewal',pastoralNote:'Daily discipleship journey'},
-                      hr:{title:'Promijeni način razmišljanja',subtitle:'30 dana',description:'Putovanje obnove uma',goal:'Svakodnevna obnova',pastoralNote:'Put svakodnevnog učeništva'}
-                    };
-                    mind.days=[...(base.days||[]),...extensions.flatMap(item=>item.days||[])].sort((a,b)=>Number(a.day)-Number(b.day));
-          """
-          new="""          const mindParts=[
-                      read('data/spiritual-plans/mind-renewal-days-01-07.json'),
-                      read('data/spiritual-plans/mind-renewal-days-08-14.json'),
-                      read('data/spiritual-plans/mind-renewal-days-15-18.json'),
-                      read('data/spiritual-plans/mind-renewal-days-19-22.json'),
-                      read('data/spiritual-plans/mind-renewal-days-23-26.json'),
-                      read('data/spiritual-plans/mind-renewal-days-27-30.json')
-                    ];
-                    const mind={id:'mind-renewal-30',version:3,category:'renewal',durationDays:30,icon:'🧠',theme:'mind',requiresJourney:false};
-                    mind.localized={
-                      fa:{title:'تغییر طرز تفکر',subtitle:'۳۰ روز',description:'مسیر نظم الهی و تازه‌شدن ذهن',goal:'زندگی در نظم الهی',pastoralNote:'مسیر شاگردسازی روزانه'},
-                      en:{title:'Change Your Thinking',subtitle:'30 days',description:'Divine-order mind-renewal journey',goal:'Living in divine order',pastoralNote:'Daily discipleship journey'},
-                      hr:{title:'Promijeni način razmišljanja',subtitle:'30 dana',description:'Put obnove uma u božanskom redu',goal:'Život u božanskom redu',pastoralNote:'Put svakodnevnog učeništva'}
-                    };
-                    mind.days=mindParts.flatMap(item=>item.days||[]).sort((a,b)=>Number(a.day)-Number(b.day));
-          """
-          if old not in value:
-              raise SystemExit('Validator mind-renewal block not found')
-          value=value.replace(old,new)
-          value=value.replace("grep -q \"plan.id = 'mind-renewal-30'\" js/nh7-spiritual-plans-bridge-v410.js","grep -q \"id:'mind-renewal-30'\" js/nh7-spiritual-plans-bridge-v410.js")
-          workflow.write_text(value,encoding='utf-8')
           PY
           node --check js/nh7-spiritual-plans-bridge-v410.js
-      - name: Commit patch when changed
+      - name: Commit runtime patch when changed
         run: |
           if git diff --quiet; then exit 0; fi
           git config user.name 'Omideno7'
           git config user.email 'omideno7church@gmail.com'
-          git add js/nh7-spiritual-plans-bridge-v410.js .github/workflows/validate-wave1b-spiritual-plans.yml
+          git add js/nh7-spiritual-plans-bridge-v410.js
           git commit -m 'fix(plans): Divine Order 30-day assembly'
           git push origin HEAD:release/wave1b-spiritual-plans-23949
