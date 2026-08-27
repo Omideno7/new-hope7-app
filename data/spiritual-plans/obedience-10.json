@@ -1,0 +1,330 @@
+{
+  "id": "obedience-10",
+  "version": 1,
+  "durationDays": 10,
+  "category": "discipleship",
+  "icon": "👣",
+  "theme": "obedience",
+  "localized": {
+    "fa": {
+      "title": "اطاعت و برکت",
+      "subtitle": "۱۰ روز برای شنیدن، اعتماد کردن و انجام دادن کلام",
+      "description": "اطاعتِ فرزندانه از محبت آغاز می‌شود، با روح‌القدس هدایت می‌گردد و در شخصیت و ثمر ظاهر می‌شود.",
+      "goal": "از اطاعت ترس‌محور به اطاعت آزاد، کامل و پایدار در مسیح حرکت کنیم."
+    },
+    "en": {
+      "title": "Obedience and Blessing",
+      "subtitle": "10 days to hear, trust, and do the Word",
+      "description": "A child’s obedience begins in love, is led by the Holy Spirit, and becomes visible in character and fruit.",
+      "goal": "Move from fear-driven obedience into free, wholehearted, and enduring obedience in Christ."
+    },
+    "hr": {
+      "title": "Poslušnost i blagoslov",
+      "subtitle": "10 dana slušanja, pouzdanja i vršenja Riječi",
+      "description": "Poslušnost djeteta počinje u ljubavi, vodi je Duh Sveti, a postaje vidljiva u karakteru i plodu.",
+      "goal": "Prijeći iz poslušnosti pokretane strahom u slobodnu, cjelovitu i ustrajnu poslušnost u Kristu."
+    }
+  },
+  "days": [
+    {
+      "day": 1,
+      "scriptures": ["John 14:15", "1 John 5:3", "Romans 8:15"],
+      "content": {
+        "fa": {
+          "title": "اطاعت، پاسخ محبت است",
+          "devotional": "عیسی اطاعت را به محبت پیوند داد، نه به بردگی. فرزند برای خریدن جایگاهش اطاعت نمی‌کند؛ چون جایگاه دارد و قلب پدر را قابل اعتماد می‌داند، پاسخ می‌دهد. روحی که دریافت کرده‌ایم روح ترس و بندگی نیست، بلکه روح فرزندخواندگی است. فرمان خدا باری برای شکستن ما نیست؛ نوری است که آزادی، حفاظت و مشارکت را نگه می‌دارد.",
+          "reflection": "تصویر من از خدا بیشتر پدری قابل اعتماد است یا اربابی که منتظر اشتباه من است؟",
+          "action": "یک فرمان عیسی را انتخاب کن و بنویس چگونه آن فرمان محبت و حفاظت پدر را آشکار می‌کند.",
+          "prayer": "پدر، قلبت را به من بشناسان تا اطاعتم از محبت و اعتماد برخیزد، نه از ترس.",
+          "declaration": "من فرزند خدا هستم؛ با محبت و اعتماد از کلام پدر اطاعت می‌کنم."
+        },
+        "en": {
+          "title": "Obedience Is Love’s Response",
+          "devotional": "Jesus connected obedience with love, not slavery. A child does not obey to purchase a place in the family; the child responds because that place is already secure and the Father’s heart is trustworthy. We received the Spirit of adoption, not bondage and fear. God’s commands are not weights meant to crush us; they are light preserving freedom, protection, and fellowship.",
+          "reflection": "Do I picture God as a trustworthy Father or a master waiting for my mistake?",
+          "action": "Choose one command of Jesus and write how it reveals the Father’s love and protection.",
+          "prayer": "Father, reveal Your heart so my obedience grows from love and trust rather than fear.",
+          "declaration": "I am God’s child; I obey my Father’s Word in love and trust."
+        },
+        "hr": {
+          "title": "Poslušnost je odgovor ljubavi",
+          "devotional": "Isus je poslušnost povezao s ljubavlju, a ne s ropstvom. Dijete ne sluša da kupi mjesto u obitelji; odgovara jer je mjesto već sigurno i Očevo srce vrijedno povjerenja. Primili smo Duha posinstva, a ne ropstva i straha. Božje zapovijedi nisu teret koji nas treba slomiti, nego svjetlo koje čuva slobodu, zaštitu i zajedništvo.",
+          "reflection": "Vidim li Boga kao pouzdanoga Oca ili gospodara koji čeka moju pogrešku?",
+          "action": "Odaberi jednu Isusovu zapovijed i napiši kako ona otkriva Očevu ljubav i zaštitu.",
+          "prayer": "Oče, objavi mi svoje srce da moja poslušnost raste iz ljubavi i povjerenja, a ne iz straha.",
+          "declaration": "Božje sam dijete; u ljubavi i povjerenju slušam Očevu Riječ."
+        }
+      }
+    },
+    {
+      "day": 2,
+      "scriptures": ["Romans 12:1-2", "Proverbs 3:5-6"],
+      "content": {
+        "fa": {
+          "title": "ذهن تازه، اطاعت تازه",
+          "devotional": "رفتار پایدار از ذهنی تازه‌شده سرچشمه می‌گیرد. اگر معیارهای جهان، ترس‌ها و تجربه‌های گذشته همچنان حقیقت نهایی باشند، ارادهٔ خدا غریب یا سنگین به نظر می‌رسد. کلام الگوهای فکر را اصلاح می‌کند تا نیکویی ارادهٔ خدا را تشخیص دهیم. توکل یعنی فهم خود را حذف نکنیم، اما آن را بالاتر از حکمت خدا ننشانیم.",
+          "reflection": "کدام باور قدیمی بیشترین مقاومت را در برابر کلام خدا ایجاد می‌کند؟",
+          "action": "آن باور را بنویس، یک آیهٔ اصلاح‌کننده پیدا کن و امروز یک تصمیم کوچک مطابق آن آیه بگیر.",
+          "prayer": "خداوندا، ذهن مرا با کلامت تازه کن و راه‌هایم را در حکمت خودت مستقیم ساز.",
+          "declaration": "ذهن من با حقیقت تازه می‌شود و ارادهٔ نیکوی خدا را تشخیص می‌دهم."
+        },
+        "en": {
+          "title": "A Renewed Mind, a New Obedience",
+          "devotional": "Lasting behavior grows from a renewed mind. If the world’s patterns, fear, and past experience remain our final truth, God’s will appears foreign or burdensome. The Word corrects thought patterns so we can recognize the goodness of His will. Trust does not discard understanding; it simply refuses to place our understanding above God’s wisdom.",
+          "reflection": "Which old belief creates the strongest resistance to God’s Word?",
+          "action": "Write that belief, find a correcting verse, and make one small decision today that agrees with the verse.",
+          "prayer": "Lord, renew my mind through Your Word and direct my paths in Your wisdom.",
+          "declaration": "My mind is renewed by truth, and I recognize God’s good will."
+        },
+        "hr": {
+          "title": "Obnovljen um, nova poslušnost",
+          "devotional": "Trajno ponašanje raste iz obnovljenoga uma. Ako obrasci svijeta, strah i prošla iskustva ostanu naša konačna istina, Božja će volja izgledati strano ili teško. Riječ ispravlja misaone obrasce kako bismo prepoznali dobrotu Božje volje. Pouzdanje ne odbacuje razum, nego ga odbija postaviti iznad Božje mudrosti.",
+          "reflection": "Koje staro uvjerenje stvara najveći otpor Božjoj Riječi?",
+          "action": "Napiši to uvjerenje, pronađi redak koji ga ispravlja i danas donesi jednu malu odluku u skladu s tim retkom.",
+          "prayer": "Gospodine, obnovi moj um svojom Riječju i usmjeri moje putove svojom mudrošću.",
+          "declaration": "Moj se um obnavlja istinom i prepoznajem Božju dobru volju."
+        }
+      }
+    },
+    {
+      "day": 3,
+      "scriptures": ["James 1:22-25", "Matthew 7:24-27"],
+      "content": {
+        "fa": {
+          "title": "شنونده نباش؛ انجام‌دهنده باش",
+          "devotional": "دانستن حقیقت بدون انجام آن می‌تواند توهم رشد بسازد. یعقوب می‌گوید شنونده‌ای که عمل نمی‌کند خود را فریب می‌دهد. عیسی تفاوت خانهٔ استوار و ویران را در شنیدن نبود، بلکه در انجام دادن قرار داد. عمل، کلام را به ساختار زندگی تبدیل می‌کند. هر مکاشفه باید به یک پاسخ قابل مشاهده منتهی شود.",
+          "reflection": "کدام حقیقت را بارها شنیده‌ام اما هنوز به عمل تبدیل نکرده‌ام؟",
+          "action": "آن حقیقت را به یک عمل مشخص با زمان و مکان معین تبدیل کن و ظرف ۲۴ ساعت انجام بده.",
+          "prayer": "خداوندا، مرا از فریب دانستن بدون عمل حفظ کن و برای انجام کلامت شجاعت بده.",
+          "declaration": "من شنوندهٔ فراموشکار نیستم؛ کلام را انجام می‌دهم و خانه‌ام بر صخره بنا می‌شود."
+        },
+        "en": {
+          "title": "Do Not Only Hear—Do",
+          "devotional": "Knowing truth without practicing it can create an illusion of growth. James says the hearer who does not act deceives himself. Jesus located the difference between the stable and ruined house not in hearing, but in doing. Action turns the Word into the structure of life. Every revelation should lead to a visible response.",
+          "reflection": "Which truth have I heard repeatedly but still not turned into action?",
+          "action": "Turn that truth into one specific action with a time and place, then do it within twenty-four hours.",
+          "prayer": "Lord, protect me from the deception of knowing without doing, and give me courage to practice Your Word.",
+          "declaration": "I am not a forgetful hearer; I do the Word and build my house on the rock."
+        },
+        "hr": {
+          "title": "Ne samo slušati, nego činiti",
+          "devotional": "Poznavanje istine bez primjene može stvoriti privid rasta. Jakov kaže da slušatelj koji ne čini vara samoga sebe. Isus razliku između stabilne i srušene kuće nije stavio u slušanje, nego u izvršavanje. Djelo pretvara Riječ u strukturu života. Svaka objava treba dovesti do vidljivoga odgovora.",
+          "reflection": "Koju sam istinu mnogo puta čuo, ali je još nisam pretvorio u djelo?",
+          "action": "Pretvori tu istinu u jedno konkretno djelo s određenim vremenom i mjestom te ga izvrši u sljedeća dvadeset četiri sata.",
+          "prayer": "Gospodine, sačuvaj me od obmane znanja bez djela i daj mi hrabrost vršiti tvoju Riječ.",
+          "declaration": "Nisam zaboravan slušatelj; vršim Riječ i gradim kuću na stijeni."
+        }
+      }
+    },
+    {
+      "day": 4,
+      "scriptures": ["Luke 5:4-6", "Hebrews 11:8"],
+      "content": {
+        "fa": {
+          "title": "اعتماد وقتی همه چیز را نمی‌فهمی",
+          "devotional": "پطرس تجربه و خستگی شب بی‌حاصل را داشت، اما گفت: «به حکم تو تور را می‌اندازم.» ابراهیم نیز اطاعت کرد بی‌آنکه مقصد را بداند. ایمان ضد عقل نیست؛ می‌پذیرد که دید خدا کامل‌تر از تجربهٔ محدود ماست. گاهی وضوح پس از قدم نخست می‌آید. اطاعت مسئولانه بر کلام روشن حرکت می‌کند، نه بر تکانه‌های بی‌سنجش.",
+          "reflection": "خدا در کدام موضوع قدمی روشن نشان داده اما من منتظر توضیح کامل مانده‌ام؟",
+          "action": "قدم روشن و امن بعدی را مشخص کن، آن را با کلام و مشورت سالم بسنج و سپس انجام بده.",
+          "prayer": "پدر، در نادانسته‌ها به حکمتت اعتماد می‌کنم؛ برای قدم بعدی ایمان و تشخیص عطا کن.",
+          "declaration": "حتی وقتی همهٔ مسیر را نمی‌بینم، بر کلام روشن خدا قدم می‌گذارم."
+        },
+        "en": {
+          "title": "Trust When You Do Not Understand Everything",
+          "devotional": "Peter had experience and a fruitless night behind him, yet he said, “Because You say so, I will let down the nets.” Abraham obeyed without knowing the destination. Faith is not against reason; it recognizes that God’s sight exceeds our limited experience. Clarity sometimes follows the first step. Responsible obedience moves on clear Scripture, not on untested impulses.",
+          "reflection": "Where has God shown a clear step while I keep waiting for the whole explanation?",
+          "action": "Identify the next clear and safe step, test it by Scripture and sound counsel, then act.",
+          "prayer": "Father, I trust Your wisdom in what I cannot see; give me faith and discernment for the next step.",
+          "declaration": "Even when I cannot see the whole path, I step on God’s clear Word."
+        },
+        "hr": {
+          "title": "Pouzdanje kada ne razumiješ sve",
+          "devotional": "Petar je imao iskustvo i neuspješnu noć iza sebe, ali je rekao: „Na tvoju riječ bacit ću mreže.“ Abraham je poslušao ne znajući odredište. Vjera nije protiv razuma; priznaje da Božji pogled nadilazi naše ograničeno iskustvo. Jasnoća ponekad dolazi nakon prvoga koraka. Odgovorna poslušnost kreće po jasnom Pismu, a ne po neispitanim porivima.",
+          "reflection": "Gdje mi je Bog pokazao jasan korak, a ja još čekam potpuno objašnjenje?",
+          "action": "Odredi sljedeći jasan i siguran korak, provjeri ga Pismom i zdravim savjetom te djeluj.",
+          "prayer": "Oče, u onome što ne vidim pouzdajem se u tvoju mudrost; daj mi vjeru i razlučivanje za sljedeći korak.",
+          "declaration": "I kada ne vidim cijeli put, koračam po jasnoj Božjoj Riječi."
+        }
+      }
+    },
+    {
+      "day": 5,
+      "scriptures": ["Romans 8:14", "John 16:13", "Galatians 5:16"],
+      "content": {
+        "fa": {
+          "title": "هدایت روح‌القدس در اطاعت روزانه",
+          "devotional": "فرزندان خدا به‌وسیلهٔ روح خدا هدایت می‌شوند. هدایت روح معمولاً نمایش پرهیاهو نیست؛ او کلام را یادآوری می‌کند، انگیزه را روشن می‌سازد، سلامتی مسیح را حاکم می‌کند و به قدمی پاک دعوت می‌نماید. هر هدایت باید با کتاب‌مقدس و شخصیت عیسی سازگار باشد. روح هرگز ما را به خودخواهی، دروغ یا بی‌مسئولیتی هدایت نمی‌کند.",
+          "reflection": "آیا چیزی را «هدایت روح» نامیده‌ام که در واقع ترجیح یا ترس خودم است؟",
+          "action": "یک تصمیم را با چهار پرسش بسنج: آیا کتاب‌مقدسی، مسیح‌مانند، پاک و مسئولانه است؟",
+          "prayer": "روح‌القدس، انگیزه‌هایم را روشن کن و مرا در تمامی حقیقت و قدم‌های پاک هدایت نما.",
+          "declaration": "من فرزند خدا هستم؛ صدای روح را با کلام می‌سنجم و با اطاعت پیروی می‌کنم."
+        },
+        "en": {
+          "title": "The Holy Spirit Leads Daily Obedience",
+          "devotional": "God’s children are led by God’s Spirit. His leading is often not dramatic. He brings Scripture to mind, exposes motives, lets Christ’s peace rule, and calls us toward a pure step. Every leading must agree with Scripture and Jesus’ character. The Spirit never leads us into selfishness, deception, or irresponsibility.",
+          "reflection": "Have I called something “the Spirit’s leading” when it is actually my preference or fear?",
+          "action": "Test one decision with four questions: Is it biblical, Christlike, pure, and responsible?",
+          "prayer": "Holy Spirit, expose my motives and lead me into all truth and clean steps.",
+          "declaration": "I am God’s child; I test the Spirit’s voice by the Word and follow in obedience."
+        },
+        "hr": {
+          "title": "Duh Sveti vodi svakodnevnu poslušnost",
+          "devotional": "Božju djecu vodi Božji Duh. Njegovo vodstvo često nije dramatično. On podsjeća na Pismo, otkriva motive, daje da Kristov mir vlada i poziva na čist korak. Svako vodstvo treba biti usklađeno s Pismom i Isusovim karakterom. Duh nas nikada ne vodi u sebičnost, prijevaru ili neodgovornost.",
+          "reflection": "Jesam li nešto nazvao „vodstvom Duha“, a zapravo je moja želja ili strah?",
+          "action": "Ispitaj jednu odluku s četiri pitanja: Je li biblijska, nalik Kristu, čista i odgovorna?",
+          "prayer": "Duše Sveti, razotkrij moje motive i vodi me u svu istinu i čiste korake.",
+          "declaration": "Božje sam dijete; glas Duha ispitujem Riječju i slijedim u poslušnosti."
+        }
+      }
+    },
+    {
+      "day": 6,
+      "scriptures": ["John 15:4-5", "Galatians 5:22-23"],
+      "content": {
+        "fa": {
+          "title": "اطاعت و ثمر ماندگار",
+          "devotional": "ثمر روح از فشار برای خوب به‌نظر رسیدن به‌وجود نمی‌آید؛ از ماندن در مسیح رشد می‌کند. اطاعت شاخه را در جریان حیات تاک نگه می‌دارد. تصمیم‌های کوچکِ روزانه—راستی، خویشتنداری، صبر و محبت—به مرور شخصیت را شکل می‌دهند. ثمر برای نمایش شاخه نیست؛ برای تغذیهٔ دیگران و جلال باغبان است.",
+          "reflection": "کدام ثمر روح در روابط روزانهٔ من بیش از همه نیاز به رشد دارد؟",
+          "action": "یک موقعیت امروز را انتخاب کن و پیشاپیش بنویس چگونه آن ثمر را در عمل نشان خواهی داد.",
+          "prayer": "عیسی، مرا در خودت نگه دار؛ حیاتت را در انتخاب‌های من به ثمر قابل دیدن تبدیل کن.",
+          "declaration": "من در مسیح می‌مانم و روح‌القدس ثمر ماندگار در زندگی من می‌پروراند."
+        },
+        "en": {
+          "title": "Obedience and Lasting Fruit",
+          "devotional": "The Spirit’s fruit does not grow from pressure to appear good; it grows from abiding in Christ. Obedience keeps the branch in the vine’s flow of life. Small daily choices—truthfulness, self-control, patience, and love—gradually form character. Fruit is not for the branch’s display; it feeds others and glorifies the Gardener.",
+          "reflection": "Which fruit of the Spirit most needs to grow in my daily relationships?",
+          "action": "Choose one situation today and write beforehand how you will display that fruit in action.",
+          "prayer": "Jesus, keep me abiding in You; turn Your life in me into visible fruit through my choices.",
+          "declaration": "I abide in Christ, and the Holy Spirit grows lasting fruit in my life."
+        },
+        "hr": {
+          "title": "Poslušnost i trajan plod",
+          "devotional": "Plod Duha ne raste iz pritiska da izgledamo dobro, nego iz ostajanja u Kristu. Poslušnost drži granu u tijeku života trsa. Male svakodnevne odluke—istinitost, samokontrola, strpljenje i ljubav—postupno oblikuju karakter. Plod nije za pokazivanje grane; on hrani druge i proslavlja Vinogradara.",
+          "reflection": "Koji plod Duha najviše treba rasti u mojim svakodnevnim odnosima?",
+          "action": "Odaberi jednu današnju situaciju i unaprijed napiši kako ćeš taj plod pokazati djelom.",
+          "prayer": "Isuse, drži me u sebi; pretvori svoj život u meni u vidljiv plod kroz moje odluke.",
+          "declaration": "Ostajem u Kristu i Duh Sveti u mojem životu uzgaja trajan plod."
+        }
+      }
+    },
+    {
+      "day": 7,
+      "scriptures": ["Hebrews 12:5-11", "Psalm 139:23-24"],
+      "content": {
+        "fa": {
+          "title": "پذیرفتن اصلاح پدر",
+          "devotional": "اصلاح خدا رد کردن فرزند نیست؛ نشانهٔ محبت پدری است که ما را برای شریک شدن در قدوسیت تربیت می‌کند. غرور از اصلاح دفاع می‌کند، شرم آن را به محکومیت تبدیل می‌کند، اما فروتنی می‌پرسد: «چه چیزی باید بیاموزم؟» اصلاح ممکن است از کلام، پیامد، رهبر سالم یا وجدان روشن‌شده بیاید و باید با حقیقت و محبت سنجیده شود.",
+          "reflection": "وقتی اصلاح می‌شوم، نخستین واکنش من دفاع، فروپاشی یا یادگیری است؟",
+          "action": "یک اصلاح اخیر را بدون توجیه مرور کن و یک تغییر مشخص برای پاسخ سالم بنویس.",
+          "prayer": "پدر، قلبی تعلیم‌پذیر به من بده؛ مرا بدون محکومیت اصلاح و در عدالت تربیت کن.",
+          "declaration": "من فرزند محبوب خدا هستم؛ اصلاح او را می‌پذیرم و ثمر عدالت می‌دهم."
+        },
+        "en": {
+          "title": "Receiving the Father’s Correction",
+          "devotional": "God’s correction is not rejection of a child; it is the love of a Father training us to share His holiness. Pride defends itself, shame turns correction into condemnation, but humility asks, “What can I learn?” Correction may come through Scripture, consequences, a healthy leader, or an enlightened conscience, and it must always be tested by truth and love.",
+          "reflection": "When corrected, is my first response defense, collapse, or learning?",
+          "action": "Review one recent correction without excuses and write one specific change as a healthy response.",
+          "prayer": "Father, give me a teachable heart; correct me without condemnation and train me in righteousness.",
+          "declaration": "I am God’s beloved child; I receive His correction and produce the fruit of righteousness."
+        },
+        "hr": {
+          "title": "Primiti Očev ispravak",
+          "devotional": "Božji ispravak nije odbacivanje djeteta, nego ljubav Oca koji nas odgaja da sudjelujemo u njegovoj svetosti. Ponos se brani, sram pretvara ispravak u osudu, a poniznost pita: „Što mogu naučiti?“ Ispravak može doći kroz Pismo, posljedice, zdravoga vođu ili prosvijetljenu savjest te ga uvijek treba provjeriti istinom i ljubavlju.",
+          "reflection": "Kada me se ispravlja, reagiram li najprije obranom, slomom ili učenjem?",
+          "action": "Bez opravdanja razmotri jedan nedavni ispravak i napiši jednu konkretnu zdravu promjenu.",
+          "prayer": "Oče, daj mi poučljivo srce; ispravljaj me bez osude i odgajaj u pravednosti.",
+          "declaration": "Ljubljeno sam Božje dijete; primam njegov ispravak i donosim plod pravednosti."
+        }
+      }
+    },
+    {
+      "day": 8,
+      "scriptures": ["Galatians 6:9", "Hebrews 10:35-36"],
+      "content": {
+        "fa": {
+          "title": "اطاعت در فصل خستگی",
+          "devotional": "اطاعت وقتی نتیجه سریع می‌آورد آسان‌تر است؛ اما شخصیت در فصل‌هایی ساخته می‌شود که کار درست هنوز ثمر آشکار ندارد. پایداری یعنی تکرار کورکورانه نیست؛ با خدا بررسی می‌کنیم، روش را اصلاح می‌کنیم و در آنچه او روشن کرده ثابت می‌مانیم. اعتماد خود را دور نمی‌اندازیم، زیرا وعدهٔ برداشت برای کسی است که از نیکوکاری خسته نمی‌شود.",
+          "reflection": "در کدام کار درست به‌سبب ندیدن نتیجه می‌خواهم زود کنار بکشم؟",
+          "action": "علت، روش و ریتم آن کار را مرور کن؛ یک اصلاح سالم انجام بده و برای هفت روز دیگر متعهد بمان.",
+          "prayer": "خداوند، در خستگی قوت تازه بده؛ مرا در کار نیک حکیم، انعطاف‌پذیر و پایدار نگه دار.",
+          "declaration": "من در نیکوکاری دلسرد نمی‌شوم؛ در زمان مقرر برداشت خواهم کرد."
+        },
+        "en": {
+          "title": "Obedience in a Tired Season",
+          "devotional": "Obedience feels easier when results come quickly, but character is formed when the right action has not yet produced visible fruit. Perseverance is not blind repetition. We review with God, improve the method, and remain faithful to what He made clear. We do not throw away confidence, because harvest is promised to those who do not become weary in doing good.",
+          "reflection": "Which right work am I ready to abandon because I cannot yet see results?",
+          "action": "Review its motive, method, and rhythm; make one healthy adjustment and remain committed for seven more days.",
+          "prayer": "Lord, renew my strength in weariness; keep me wise, flexible, and faithful in doing good.",
+          "declaration": "I do not lose heart in doing good; at the proper time I will reap."
+        },
+        "hr": {
+          "title": "Poslušnost u razdoblju umora",
+          "devotional": "Poslušnost je lakša kada rezultati dolaze brzo, ali karakter se oblikuje kada ispravno djelovanje još nema vidljiv plod. Ustrajnost nije slijepo ponavljanje. S Bogom preispitujemo, poboljšavamo način i ostajemo vjerni onome što je jasno pokazao. Ne odbacujemo pouzdanje jer je žetva obećana onima koji se ne umaraju čineći dobro.",
+          "reflection": "Koje ispravno djelo želim napustiti jer još ne vidim rezultate?",
+          "action": "Preispitaj njegov motiv, način i ritam; napravi jednu zdravu prilagodbu i ostani predan još sedam dana.",
+          "prayer": "Gospodine, obnovi moju snagu u umoru; sačuvaj me mudrim, prilagodljivim i vjernim u činjenju dobra.",
+          "declaration": "Ne malakšem čineći dobro; u pravo ću vrijeme žeti."
+        }
+      }
+    },
+    {
+      "day": 9,
+      "scriptures": ["Deuteronomy 28:1-2", "Ephesians 1:3", "Matthew 5:3-12"],
+      "content": {
+        "fa": {
+          "title": "برکت، معامله با خدا نیست",
+          "devotional": "کتاب‌مقدس اطاعت و برکت را به هم پیوند می‌دهد، اما خدا دستگاه معامله نیست که با یک عمل، نتیجهٔ دلخواه را بدهد. در عهد جدید، نقطهٔ شروع ما این است که در مسیح با هر برکت روحانی مبارک شده‌ایم. اطاعت ما را با حکمت و نظم پادشاهی هماهنگ می‌کند و ثمر طبیعی می‌آورد، اما برکت همیشه ثروت یا نبود رنج نیست؛ حضور، شخصیت، سلامتی و مشارکت با خدا نیز برکت‌اند.",
+          "reflection": "آیا برکت را فقط با پول، راحتی و نتیجهٔ فوری اندازه می‌گیرم؟",
+          "action": "ده برکت غیرمالی در مسیح را بنویس و برای هر کدام شکر کن.",
+          "prayer": "پدر، مرا از ذهنیت معامله آزاد کن و چشمم را به برکت‌های عمیق پادشاهی باز ساز.",
+          "declaration": "من در مسیح مبارک هستم؛ از محبت اطاعت می‌کنم، نه برای معامله با خدا."
+        },
+        "en": {
+          "title": "Blessing Is Not a Transaction",
+          "devotional": "Scripture connects obedience and blessing, but God is not a vending machine exchanging one action for our preferred outcome. In the new covenant, our starting point is that we have been blessed in Christ with every spiritual blessing. Obedience aligns us with kingdom wisdom and bears natural fruit, yet blessing is not always wealth or absence of pain. God’s presence, character, peace, and fellowship are also blessing.",
+          "reflection": "Do I measure blessing only by money, comfort, and immediate results?",
+          "action": "List ten nonfinancial blessings you have in Christ and thank God for each.",
+          "prayer": "Father, free me from a transactional mind and open my eyes to the deep blessings of Your kingdom.",
+          "declaration": "I am blessed in Christ; I obey from love, not to bargain with God."
+        },
+        "hr": {
+          "title": "Blagoslov nije trgovina",
+          "devotional": "Pismo povezuje poslušnost i blagoslov, ali Bog nije automat koji jedno djelo mijenja za naš željeni ishod. U novom savezu polazimo od činjenice da smo u Kristu blagoslovljeni svakim duhovnim blagoslovom. Poslušnost nas usklađuje s mudrošću kraljevstva i donosi prirodan plod, ali blagoslov nije uvijek bogatstvo ni život bez boli. Božja prisutnost, karakter, mir i zajedništvo također su blagoslov.",
+          "reflection": "Mjerim li blagoslov samo novcem, udobnošću i brzim rezultatima?",
+          "action": "Napiši deset nefinancijskih blagoslova koje imaš u Kristu i za svaki zahvali.",
+          "prayer": "Oče, oslobodi me trgovačkoga razmišljanja i otvori mi oči za duboke blagoslove svojega kraljevstva.",
+          "declaration": "Blagoslovljen sam u Kristu; slušam iz ljubavi, a ne da trgujem s Bogom."
+        }
+      }
+    },
+    {
+      "day": 10,
+      "scriptures": ["James 1:25", "John 13:17", "Philippians 2:12-13"],
+      "content": {
+        "fa": {
+          "title": "سبک زندگیِ انجام دادن کلام",
+          "devotional": "پایان این پلن مقصد اطاعت نیست؛ آغاز ریتمی تازه است. برکت انجام‌دهنده در لحظهٔ هیجان نیست، در ادامه دادن است. برای اطاعت پایدار، کلام باید خوانده، فهمیده، به عمل کوچک تبدیل و سپس مرور شود. خدا هم خواستن و هم انجام دادن را در ما پدید می‌آورد و ما با مسئولیت پاسخ می‌دهیم. اطاعت روزانه شخصیت مسیح را در عادت‌های واقعی می‌سازد.",
+          "reflection": "برای اینکه این ده روز به یک سبک زندگی تبدیل شود، چه ساختاری لازم دارم؟",
+          "action": "یک چرخهٔ هفتگی بساز: یک آیه، یک عمل، یک شریک پاسخ‌گویی و یک مرور آخر هفته.",
+          "prayer": "پدر، کلامت را در عادت‌های من مجسم کن؛ خواستن و انجام دادن را در من زنده نگه دار.",
+          "declaration": "من انجام‌دهندهٔ کلام هستم؛ اطاعت آزاد و پایدار سبک زندگی من می‌شود."
+        },
+        "en": {
+          "title": "A Lifestyle of Doing the Word",
+          "devotional": "The end of this plan is not the finish line of obedience; it begins a new rhythm. The doer’s blessing is not in a moment of excitement but in continuing. For lasting obedience, the Word must be read, understood, turned into a small action, and reviewed. God produces desire and action within us, and we respond responsibly. Daily obedience forms Christ’s character in real habits.",
+          "reflection": "What structure do I need so these ten days become a way of life?",
+          "action": "Build a weekly cycle: one verse, one action, one accountability partner, and one end-of-week review.",
+          "prayer": "Father, embody Your Word in my habits; keep both desire and action alive within me.",
+          "declaration": "I am a doer of the Word; free and enduring obedience becomes my way of life."
+        },
+        "hr": {
+          "title": "Način života koji vrši Riječ",
+          "devotional": "Kraj ovoga plana nije cilj poslušnosti, nego početak novoga ritma. Blagoslov izvršitelja nije u trenutku uzbuđenja, nego u nastavljanju. Za trajnu poslušnost Riječ treba čitati, razumjeti, pretvoriti u malo djelo i pregledati. Bog u nama proizvodi želju i djelovanje, a mi odgovaramo odgovorno. Svakodnevna poslušnost oblikuje Kristov karakter u stvarnim navikama.",
+          "reflection": "Koju strukturu trebam da ovih deset dana postane način života?",
+          "action": "Izgradi tjedni ciklus: jedan redak, jedno djelo, jedan partner za odgovornost i jedan pregled na kraju tjedna.",
+          "prayer": "Oče, utjelovi svoju Riječ u mojim navikama; održavaj u meni želju i djelovanje.",
+          "declaration": "Vršim Riječ; slobodna i ustrajna poslušnost postaje moj način života."
+        }
+      }
+    }
+  ]
+}

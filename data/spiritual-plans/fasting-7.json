@@ -1,0 +1,244 @@
+{
+  "id": "fasting-7",
+  "version": 1,
+  "durationDays": 7,
+  "category": "fasting",
+  "icon": "🔥",
+  "theme": "fasting",
+  "requiresJourney": true,
+  "localized": {
+    "fa": {
+      "title": "روزه و دعا",
+      "subtitle": "۷ روز برای گرسنگی خدا، پاکی انگیزه و شنیدن",
+      "description": "تعلیم روزانه همراه با انتخاب نوع روزه، هدف، ثبت دعا، کلام، تأمل و سابقهٔ شخصی.",
+      "goal": "روزه را نه به‌عنوان نمایش یا معامله، بلکه به‌عنوان عبادت، تمرکز و اطاعت زندگی کنیم.",
+      "safety": "روزهٔ غذایی برای همه مناسب نیست. اگر دیابت، بارداری یا شیردهی، سابقهٔ اختلال خوردن، بیماری مزمن، داروی منظم یا هر نگرانی پزشکی داری، پیش از تغییر غذا با پزشک مشورت کن. بدون راهنمایی تخصصی وارد روزهٔ طولانی یا روزهٔ فقط آب نشو. می‌توانی روزهٔ غیرغذایی انتخاب کنی."
+    },
+    "en": {
+      "title": "Fasting and Prayer",
+      "subtitle": "7 days of hunger for God, purified motives, and listening",
+      "description": "Daily teaching with fasting-type selection, purpose, prayer time, Scripture notes, reflection, and private history.",
+      "goal": "Practice fasting not as performance or bargaining, but as worship, focus, and obedience.",
+      "safety": "Food fasting is not suitable for everyone. If you have diabetes, are pregnant or breastfeeding, have an eating-disorder history, chronic illness, regular medication, or any medical concern, consult a clinician before changing food intake. Do not attempt extended or water-only fasting without professional guidance. A non-food fast is a valid option."
+    },
+    "hr": {
+      "title": "Post i molitva",
+      "subtitle": "7 dana gladi za Bogom, pročišćenih motiva i slušanja",
+      "description": "Dnevni nauk uz izbor vrste posta, svrhu, vrijeme molitve, bilješke iz Pisma, promišljanje i privatnu povijest.",
+      "goal": "Živjeti post ne kao predstavu ili trgovinu, nego kao štovanje, usredotočenost i poslušnost.",
+      "safety": "Post od hrane nije prikladan za svakoga. Ako imaš dijabetes, trudna si ili dojiš, imaš povijest poremećaja hranjenja, kroničnu bolest, redovitu terapiju ili zdravstvenu dvojbu, prije promjene prehrane razgovaraj s liječnikom. Ne započinji produljeni post ili post samo na vodi bez stručnog vodstva. Možeš izabrati neprehrambeni post."
+    }
+  },
+  "days": [
+    {
+      "day": 1,
+      "scriptures": ["Matthew 6:16-18", "Isaiah 58:3-7"],
+      "content": {
+        "fa": {
+          "title": "قلب و انگیزهٔ روزه",
+          "devotional": "عیسی گفت «وقتی روزه می‌گیرید»، اما هشدار داد آن را نمایش روحانیت نسازیم. روزه برای جلب نگاه مردم یا مجبور کردن خدا نیست؛ کنار گذاشتن چیزی مشروع برای گفتن این است که خدا نیاز عمیق‌تر من است. اشعیا نیز نشان می‌دهد گرسنگی جسم بدون قلب فروتن، عدالت و رحمت می‌تواند بی‌ثمر باشد. نخستین روز را با پاک کردن انگیزه آغاز کن.",
+          "reflection": "اگر هیچ‌کس از روزهٔ من باخبر نشود، آیا هنوز آن را با شادی انجام می‌دهم؟",
+          "action": "هدف روزه را در یک جمله بنویس و مشخص کن چگونه امروز عدالت، مهربانی یا کمک عملی را نیز زندگی می‌کنی.",
+          "prayer": "پدر، انگیزه‌ام را پاک کن. روزهٔ مرا از نمایش و معامله آزاد و به عبادت صادقانه تبدیل کن.",
+          "declaration": "من برای دیده شدن روزه نمی‌گیرم؛ در خلوت، پدر و پادشاهی او را می‌جویم."
+        },
+        "en": {
+          "title": "The Heart and Motive of Fasting",
+          "devotional": "Jesus said, “When you fast,” yet warned against turning it into a display of spirituality. Fasting is not for public attention or to force God; it sets aside something legitimate to say that God is our deeper need. Isaiah also shows that physical hunger without humility, justice, and mercy can be empty. Begin by allowing God to purify your motive.",
+          "reflection": "If no one knew about my fast, would I still practice it with joy?",
+          "action": "Write the purpose of your fast in one sentence and identify one act of justice, kindness, or practical help for today.",
+          "prayer": "Father, purify my motive. Free my fast from performance and bargaining, and make it honest worship.",
+          "declaration": "I do not fast to be seen; in secret I seek the Father and His kingdom."
+        },
+        "hr": {
+          "title": "Srce i motiv posta",
+          "devotional": "Isus je rekao: „Kada postite“, ali je upozorio da post ne pretvorimo u pokazivanje duhovnosti. Ne postimo radi pažnje ljudi niti da prisilimo Boga; odričemo se nečega dopuštenog kako bismo rekli da je Bog naša dublja potreba. Izaija pokazuje da tjelesna glad bez poniznosti, pravde i milosrđa može biti prazna. Započni dopuštajući Bogu da pročisti motiv.",
+          "reflection": "Kad nitko ne bi znao za moj post, bih li ga i dalje radosno držao?",
+          "action": "Napiši svrhu posta jednom rečenicom i odredi jedno djelo pravde, dobrote ili praktične pomoći za danas.",
+          "prayer": "Oče, pročisti moj motiv. Oslobodi moj post predstave i trgovine te ga učini iskrenim štovanjem.",
+          "declaration": "Ne postim da budem viđen; u skrovitosti tražim Oca i njegovo kraljevstvo."
+        }
+      }
+    },
+    {
+      "day": 2,
+      "scriptures": ["Matthew 4:1-4", "Deuteronomy 8:2-3"],
+      "content": {
+        "fa": {
+          "title": "گرسنگی برای کلام",
+          "devotional": "در بیابان، عیسی گرسنگی واقعی را انکار نکرد، اما اعلام کرد انسان فقط با نان زنده نیست. روزه اشتهای جسم را شیطان یا بی‌ارزش نمی‌نامد؛ آن را برای زمانی محدود زیر فرمان اشتهای عمیق‌ترِ شنیدن خدا قرار می‌دهد. هر بار احساس گرسنگی می‌تواند زنگ دعا باشد: «خداوندا، کلامی که امروز مرا زنده می‌کند چیست؟»",
+          "reflection": "در زمان فشار، نخست به کدام خوراک سریع—غذا، تلفن، سرگرمی یا تأیید—پناه می‌برم؟",
+          "action": "در زمان معمول غذا یا سرگرمی، یک بخش کتاب‌مقدس را آهسته بخوان و یک جملهٔ زنده‌کننده یادداشت کن.",
+          "prayer": "خداوندا، اشتهای من را مرتب کن؛ کلامت را شیرین و صدایت را از هر حواس‌پرتی مهم‌تر ساز.",
+          "declaration": "من فقط با نان زنده نیستم؛ کلام زندهٔ خدا روح مرا تغذیه می‌کند."
+        },
+        "en": {
+          "title": "Hunger for the Word",
+          "devotional": "In the wilderness, Jesus did not deny real hunger, but He declared that a person does not live by bread alone. Fasting does not call bodily appetite evil; for a limited time it places it beneath the deeper hunger to hear God. Each feeling of hunger can become a prayer bell: “Lord, what word will give me life today?”",
+          "reflection": "Under pressure, which quick comfort—food, phone, entertainment, or approval—do I reach for first?",
+          "action": "During the usual time for food or entertainment, read a passage slowly and write one life-giving sentence.",
+          "prayer": "Lord, reorder my appetites; make Your Word sweet and Your voice more important than distraction.",
+          "declaration": "I do not live by bread alone; God’s living Word nourishes my spirit."
+        },
+        "hr": {
+          "title": "Glad za Riječju",
+          "devotional": "U pustinji Isus nije poricao stvarnu glad, nego je objavio da čovjek ne živi samo o kruhu. Post ne proglašava tjelesni apetit zlim; na ograničeno ga vrijeme stavlja pod dublju glad za slušanjem Boga. Svaki osjećaj gladi može postati zvono za molitvu: „Gospodine, koja će me riječ danas oživjeti?“",
+          "reflection": "Za kojom brzom utjehom—hranom, telefonom, zabavom ili odobravanjem—prvo posežem pod pritiskom?",
+          "action": "U uobičajeno vrijeme hrane ili zabave polako pročitaj odlomak i zapiši jednu životodavnu rečenicu.",
+          "prayer": "Gospodine, uredi moje želje; učini svoju Riječ slatkom, a svoj glas važnijim od svake smetnje.",
+          "declaration": "Ne živim samo o kruhu; živa Božja Riječ hrani moj duh."
+        }
+      }
+    },
+    {
+      "day": 3,
+      "scriptures": ["Joel 2:12-13", "Psalm 51:10-12"],
+      "content": {
+        "fa": {
+          "title": "بازگشت با تمام دل",
+          "devotional": "روزه در کتاب‌مقدس بارها همراه توبه است، اما توبه صرفاً اندوه یا مجازات جسم نیست. خدا می‌گوید دل‌های خود را چاک دهید، نه فقط لباس‌ها را. توبه تغییر ذهن و جهت است: نام‌گذاری گناه، پذیرفتن حقیقت، دریافت رحمت و برگشتن به راه خدا. روزه فضا می‌سازد تا دفاع‌ها آرام و دل دوباره نرم شود.",
+          "reflection": "کدام الگو را پشیمان می‌شوم اما هنوز جهت عملی آن را تغییر نداده‌ام؟",
+          "action": "آن را صادقانه اعتراف کن، یک محرک را حذف کن و یک قدم جبران یا پاسخ‌گویی مشخص بردار.",
+          "prayer": "خدای رحیم، قلبی پاک در من بیافرین؛ مرا با شادی نجاتت تازه و در راه مستقیم استوار کن.",
+          "declaration": "من با تمام دل به خدا بازمی‌گردم؛ رحمت او مرا پاک و جهت مرا تازه می‌کند."
+        },
+        "en": {
+          "title": "Returning with the Whole Heart",
+          "devotional": "In Scripture, fasting often accompanies repentance, yet repentance is more than sadness or physical punishment. God says to rend the heart, not merely the garment. Repentance changes mind and direction: naming sin, agreeing with truth, receiving mercy, and returning to God’s way. Fasting makes room for defenses to quiet and the heart to become tender again.",
+          "reflection": "Which pattern makes me sorry, yet I have not changed its practical direction?",
+          "action": "Confess it honestly, remove one trigger, and take one specific step of restitution or accountability.",
+          "prayer": "Merciful God, create a clean heart in me; renew the joy of salvation and establish me on a straight path.",
+          "declaration": "I return to God with my whole heart; His mercy cleanses me and redirects my life."
+        },
+        "hr": {
+          "title": "Povratak cijelim srcem",
+          "devotional": "U Pismu post često prati pokajanje, ali pokajanje je više od tuge ili tjelesnog kažnjavanja. Bog kaže da razderemo srce, a ne samo haljine. Pokajanje mijenja um i smjer: imenuje grijeh, slaže se s istinom, prima milosrđe i vraća se Božjem putu. Post stvara prostor da obrane utihnu, a srce ponovno omekša.",
+          "reflection": "Zbog kojega mi je obrasca žao, ali još nisam praktično promijenio smjer?",
+          "action": "Iskreno ga priznaj, ukloni jedan okidač i napravi jedan konkretan korak nadoknade ili odgovornosti.",
+          "prayer": "Milosrdni Bože, stvori u meni čisto srce; obnovi radost spasenja i učvrsti me na ravnom putu.",
+          "declaration": "Cijelim se srcem vraćam Bogu; njegovo me milosrđe čisti i preusmjerava."
+        }
+      }
+    },
+    {
+      "day": 4,
+      "scriptures": ["Acts 13:1-3", "Acts 14:23"],
+      "content": {
+        "fa": {
+          "title": "شنیدن برای مأموریت",
+          "devotional": "کلیسای انطاکیه هنگام عبادت و روزه صدای روح‌القدس را برای مأموریت شنید. هدف شنیدن، داشتن تجربه‌ای جالب نبود؛ جداسازی و فرستادن خادمان بود. روزه توجه را متمرکز می‌کند، اما هر هدایت باید با کلام، مشارکت رهبران بالغ و ثمر روح سنجیده شود. شنیدن واقعی همیشه به اطاعت مسئولانه نزدیک می‌شود.",
+          "reflection": "آیا بیشتر خواهان تجربهٔ شنیدن هستم یا آمادهٔ انجام چیزی که خدا می‌گوید؟",
+          "action": "یک ساعت را به عبادت، خواندن اعمال ۱۳ و شنیدن اختصاص بده؛ آنچه حس می‌کنی را برای سنجش نزد یک ایماندار بالغ ببر.",
+          "prayer": "روح‌القدس، سخن بگو و انگیزه‌ام را برای اطاعت آماده کن؛ مرا در مشارکت و تشخیص سالم هدایت نما.",
+          "declaration": "من برای هیجان نمی‌شنوم؛ صدای روح را می‌سنجم و برای مأموریت اطاعت می‌کنم."
+        },
+        "en": {
+          "title": "Listening for Mission",
+          "devotional": "While the Antioch church worshiped and fasted, the Holy Spirit spoke about mission. The goal of hearing was not an interesting experience; servants were set apart and sent. Fasting focuses attention, but every leading must be tested by Scripture, mature fellowship, and the Spirit’s fruit. Genuine hearing moves toward responsible obedience.",
+          "reflection": "Do I mainly desire the experience of hearing, or am I ready to do what God says?",
+          "action": "Give one hour to worship, Acts 13, and listening; bring what you sense to a mature believer for discernment.",
+          "prayer": "Holy Spirit, speak and prepare my motive for obedience; lead me through healthy fellowship and discernment.",
+          "declaration": "I do not listen for excitement; I test the Spirit’s voice and obey for mission."
+        },
+        "hr": {
+          "title": "Slušati radi poslanja",
+          "devotional": "Dok je antiohijska crkva štovala i postila, Duh Sveti govorio je o poslanju. Cilj slušanja nije bilo zanimljivo iskustvo; službenici su odvojeni i poslani. Post usredotočuje pažnju, ali svako vodstvo treba ispitati Pismom, zrelim zajedništvom i plodom Duha. Istinsko slušanje vodi prema odgovornoj poslušnosti.",
+          "reflection": "Želim li ponajviše iskustvo slušanja ili sam spreman učiniti ono što Bog kaže?",
+          "action": "Jedan sat posveti štovanju, Djelima 13 i slušanju; ono što opažaš donesi zrelom vjerniku na razlučivanje.",
+          "prayer": "Duše Sveti, govori i pripremi moj motiv za poslušnost; vodi me kroz zdravo zajedništvo i razlučivanje.",
+          "declaration": "Ne slušam radi uzbuđenja; ispitujem glas Duha i poslušan sam radi poslanja."
+        }
+      }
+    },
+    {
+      "day": 5,
+      "scriptures": ["Isaiah 58:6-10", "James 2:14-17"],
+      "content": {
+        "fa": {
+          "title": "روزه‌ای که بندها را باز می‌کند",
+          "devotional": "خدا روزه‌ای را می‌خواهد که به شکستن ظلم، تقسیم نان، پناه دادن و پوشاندن نیازمند منتهی شود. محرومیت شخصی که نسبت به درد دیگران بی‌تفاوت بماند، قلب روزه را از دست داده است. آنچه از غذا، خرید یا سرگرمی صرفه‌جویی می‌شود می‌تواند به محبت عملی تبدیل گردد. ایمان زنده، دعای خود را با دست‌های خدمتگزار همراه می‌کند.",
+          "reflection": "روزهٔ من چگونه به سود شخص دیگری و نه فقط تجربهٔ شخصی من تبدیل می‌شود؟",
+          "action": "پول یا زمان آزادشده را به نیاز مشخصی اختصاص بده و یک عمل محرمانهٔ خدمت انجام بده.",
+          "prayer": "خدای عدالت، چشمانم را به نیاز مردم باز کن و روزهٔ مرا به آزادی، سخاوت و رحمت تبدیل نما.",
+          "declaration": "عبادت من با عدالت و محبت همراه است؛ نور خدا از طریق خدمت من طلوع می‌کند."
+        },
+        "en": {
+          "title": "The Fast That Loosens Bonds",
+          "devotional": "God desires a fast that leads to breaking oppression, sharing bread, offering shelter, and clothing those in need. Personal abstinence that remains indifferent to another’s pain misses the heart of fasting. What is saved from food, shopping, or entertainment can become practical love. Living faith joins praying lips with serving hands.",
+          "reflection": "How will my fast benefit another person rather than only deepen my private experience?",
+          "action": "Give saved money or time to a specific need and perform one discreet act of service.",
+          "prayer": "God of justice, open my eyes to people’s needs and turn my fast into freedom, generosity, and mercy.",
+          "declaration": "My worship joins justice and love; God’s light rises through my service."
+        },
+        "hr": {
+          "title": "Post koji razvezuje spone",
+          "devotional": "Bog želi post koji vodi razbijanju tlačenja, dijeljenju kruha, pružanju skloništa i odijevanju potrebnih. Osobno odricanje koje ostaje ravnodušno prema tuđoj boli promašuje srce posta. Ono što se uštedi na hrani, kupnji ili zabavi može postati praktična ljubav. Živa vjera povezuje usne koje mole i ruke koje služe.",
+          "reflection": "Kako će moj post koristiti drugoj osobi, a ne samo produbiti moje privatno iskustvo?",
+          "action": "Ušteđeni novac ili vrijeme usmjeri konkretnoj potrebi i učini jedno diskretno djelo služenja.",
+          "prayer": "Bože pravde, otvori mi oči za potrebe ljudi i pretvori moj post u slobodu, velikodušnost i milosrđe.",
+          "declaration": "Moje štovanje povezuje pravdu i ljubav; Božje svjetlo izlazi kroz moje služenje."
+        }
+      }
+    },
+    {
+      "day": 6,
+      "scriptures": ["Daniel 10:2-3", "Philippians 4:6-7", "Colossians 4:2"],
+      "content": {
+        "fa": {
+          "title": "پایداری در دعا و سلامتی",
+          "devotional": "در میانهٔ روزه ممکن است هیجان اولیه کم شود و خستگی، تحریک‌پذیری یا حواس‌پرتی ظاهر گردد. این لحظه برای محکوم کردن خود نیست؛ فرصتی است تا انگیزه را تازه، بدن را با حکمت مراقبت و دعا را با شکرگزاری ادامه دهیم. پایداری با زورگویی به جسم فرق دارد. محدودیت‌های سالم را رعایت کن و اجازه بده سلامتی خدا قلب و ذهن را نگهبانی کند.",
+          "reflection": "خستگی امروز چه چیزی را دربارهٔ نیازها، عادت‌ها یا واکنش‌های من آشکار کرده است؟",
+          "action": "آب و استراحت کافی را جدی بگیر، برنامه را در صورت نیاز ایمن تنظیم کن و درخواست‌ها را همراه با شکرگزاری بنویس.",
+          "prayer": "پدر، در ضعف امروز سلامتی و قوت عطا کن؛ مرا هم در حکمت جسمانی و هم در پایداری روحانی هدایت نما.",
+          "declaration": "من با حکمت و شکرگزاری پایدار می‌مانم و سلامتی خدا قلبم را محافظت می‌کند."
+        },
+        "en": {
+          "title": "Perseverance, Wisdom, and Peace",
+          "devotional": "During a fast, early excitement may fade and tiredness, irritability, or distraction can appear. This is not a moment for self-condemnation. It is an opportunity to renew the motive, care for the body wisely, and continue prayer with thanksgiving. Perseverance is not abuse of the body. Honor healthy limits and let God’s peace guard heart and mind.",
+          "reflection": "What has today’s discomfort exposed about my needs, habits, or reactions?",
+          "action": "Take hydration and rest seriously, adjust the plan safely if needed, and write your requests together with thanksgiving.",
+          "prayer": "Father, give peace and strength in today’s weakness; lead me in both bodily wisdom and spiritual perseverance.",
+          "declaration": "I persevere with wisdom and thanksgiving, and God’s peace guards my heart."
+        },
+        "hr": {
+          "title": "Ustrajnost, mudrost i mir",
+          "devotional": "Tijekom posta početno uzbuđenje može nestati, a mogu se pojaviti umor, razdražljivost ili rastresenost. To nije trenutak za samoosudu, nego prilika da obnovimo motiv, mudro se brinemo za tijelo i nastavimo molitvu sa zahvalnošću. Ustrajnost nije zlostavljanje tijela. Poštuj zdrave granice i dopusti da Božji mir čuva srce i um.",
+          "reflection": "Što je današnja nelagoda otkrila o mojim potrebama, navikama ili reakcijama?",
+          "action": "Ozbiljno pristupi hidrataciji i odmoru, po potrebi sigurno prilagodi plan te napiši molbe zajedno sa zahvalnošću.",
+          "prayer": "Oče, daj mir i snagu u današnjoj slabosti; vodi me u tjelesnoj mudrosti i duhovnoj ustrajnosti.",
+          "declaration": "Ustrajem s mudrošću i zahvalnošću, a Božji mir čuva moje srce."
+        }
+      }
+    },
+    {
+      "day": 7,
+      "scriptures": ["Zechariah 7:5-10", "Romans 12:1-2", "John 15:4-5"],
+      "content": {
+        "fa": {
+          "title": "پس از پایان روزه",
+          "devotional": "ارزش روزه فقط در روزهای امتناع نیست؛ در ثمر بعد از آن سنجیده می‌شود. خدا از اسرائیل پرسید آیا واقعاً برای او روزه گرفتند و سپس آنان را به عدالت، رحمت و شفقت فراخواند. پایان روزه بازگشت به بی‌توجهی قدیم نیست. یک عادت دعایی، یک اصلاح عملی و یک عمل خدمت را نگه دار تا آنچه خدا آشکار کرده در زندگی بماند.",
+          "reflection": "خدا در این سفر چه چیزی را دربارهٔ خودش و قلب من آشکار کرد که نباید فراموش شود؟",
+          "action": "نتیجهٔ روزه را ثبت کن و سه تعهد بعدی بنویس: یک عادت با خدا، یک تغییر شخصی و یک خدمت به دیگران.",
+          "prayer": "پدر، برای ملاقات این روزها سپاسگزارم. ثمر آن را حفظ کن و زندگی‌ام را قربانی زنده و پیوسته بساز.",
+          "declaration": "روزه پایان یافته، اما ماندن در مسیح، اطاعت و محبت در زندگی من ادامه دارد."
+        },
+        "en": {
+          "title": "After the Fast Ends",
+          "devotional": "The value of a fast is not measured only during abstinence but by the fruit that remains. God asked Israel whether they had truly fasted for Him, then called them to justice, mercy, and compassion. Ending a fast is not returning to former distraction. Keep one prayer rhythm, one practical correction, and one act of service so what God revealed continues in life.",
+          "reflection": "What did God reveal about Himself and my heart that must not be forgotten?",
+          "action": "Record the outcome and write three commitments: one habit with God, one personal change, and one service to others.",
+          "prayer": "Father, thank You for meeting me in these days. Preserve the fruit and make my life a continual living sacrifice.",
+          "declaration": "The fast ends, but abiding in Christ, obedience, and love continue in my life."
+        },
+        "hr": {
+          "title": "Nakon završetka posta",
+          "devotional": "Vrijednost posta ne mjeri se samo tijekom odricanja, nego plodom koji ostaje. Bog je pitao Izrael jesu li doista postili njemu, a zatim ih pozvao na pravdu, milosrđe i suosjećanje. Završetak posta nije povratak staroj rastresenosti. Zadrži jedan molitveni ritam, jednu praktičnu promjenu i jedno djelo služenja kako bi objavljeno nastavilo živjeti.",
+          "reflection": "Što je Bog otkrio o sebi i mojem srcu, a ne smijem zaboraviti?",
+          "action": "Zapiši ishod i tri obveze: jednu naviku s Bogom, jednu osobnu promjenu i jedno služenje drugima.",
+          "prayer": "Oče, hvala ti što si me susreo ovih dana. Sačuvaj plod i učini moj život trajnom živom žrtvom.",
+          "declaration": "Post završava, ali ostajanje u Kristu, poslušnost i ljubav nastavljaju se u mojem životu."
+        }
+      }
+    }
+  ]
+}

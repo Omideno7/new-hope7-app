@@ -1,0 +1,423 @@
+{
+  "version": 1,
+  "localized": {
+    "fa": {
+      "intro": "روزهٔ مسیحی فقط تحمل گرسنگی نیست. ما زمانی را که از غذا، سرگرمی یا عادت‌های معمول آزاد می‌شود به حضور خدا، کلام، توبه، پرستش و شفاعت می‌دهیم. اگر دعا حذف شود، عمل ما به یک محدودیت غذایی تبدیل می‌شود؛ اما وقتی روزه با دعا همراه است، بدن و توجه ما با هم به سوی خدا جهت می‌گیرند.",
+      "prayerTitle": "هر روز روزه باید با دعا همراه باشد",
+      "prayerRhythm": "پیش از شروع، هدف را در یک جمله بنویس. صبح با تسلیم و یک بخش از کلام آغاز کن؛ در میانهٔ روز همان زمانی را که معمولاً صرف غذا یا رسانه می‌شد به دعا و شفاعت بده؛ عصر با شکرگزاری، شنیدن در سکوت و ثبت آنچه آموختی پایان بده. کوتاه یا طولانی بودن دعا مهم‌تر از صادقانه و پیوسته بودن آن نیست.",
+      "abstainTitle": "در زمان روزه از این چیزها نیز روی‌گردان شو",
+      "abstain": [
+        "غیبت، بدگویی، دروغ، شکایت و سخنانی که دیگری را زخمی می‌کند",
+        "خشم کنترل‌نشده، جدال، انتقام، تلخی و نپذیرفتن بخشش",
+        "ناپاکی جنسی، پورنوگرافی و هر محتوایی که ذهن و قلب را آلوده می‌کند",
+        "سرگرمی، شبکه‌های اجتماعی، خرید و مشغولیت‌های غیرضروری که توجه را می‌دزدند",
+        "خودنمایی روحانی؛ لازم نیست دیگران از جزئیات روزهٔ تو باخبر باشند",
+        "بی‌تفاوتی به نیازمند؛ روزه را با مهربانی، عدالت، سخاوت و کمک عملی همراه کن"
+      ],
+      "sharedPractice": "برای هر نوع روزه یک «بله» روشن هم تعریف کن: بله به دعا، کلام، پرستش، توبه، آشتی و خدمت. هدف فقط حذف یک چیز نیست؛ آزاد کردن جا برای خداست.",
+      "safety": "اگر باردار یا شیرده هستی، کودک یا نوجوانی، دیابت یا بیماری مزمن داری، داروی منظم مصرف می‌کنی، سابقهٔ اختلال خوردن داری یا دربارهٔ سلامتت تردید داری، بدون نظر پزشک روزهٔ غذایی نگیر. ضعف شدید، گیجی، غش، درد، گیجی ذهنی یا نشانهٔ نگران‌کننده را نادیده نگیر و روزه را متوقف کن."
+    },
+    "en": {
+      "intro": "Christian fasting is more than enduring hunger. We give the time and attention released from food, entertainment, or ordinary habits to God's presence, Scripture, repentance, worship, and intercession. When prayer is removed, the practice becomes restriction; when fasting and prayer remain together, body and attention turn toward God as one offering.",
+      "prayerTitle": "Every day of fasting must include prayer",
+      "prayerRhythm": "Before beginning, write your purpose in one sentence. Start the morning with surrender and a passage of Scripture; at midday, give the time normally spent on food or media to prayer and intercession; in the evening, close with thanksgiving, quiet listening, and a written reflection. The prayer may be simple, but it must be honest and intentional.",
+      "abstainTitle": "Also turn away from these things while fasting",
+      "abstain": [
+        "Gossip, slander, dishonesty, complaining, and speech that wounds another person",
+        "Uncontrolled anger, quarrelling, revenge, bitterness, and refusal to forgive",
+        "Sexual impurity, pornography, and content that pollutes the mind and heart",
+        "Entertainment, social media, shopping, and unnecessary busyness that steals attention",
+        "Spiritual performance; other people do not need the private details of your fast",
+        "Indifference to people in need; join fasting with kindness, justice, generosity, and practical help"
+      ],
+      "sharedPractice": "Give every fast a clear yes as well as a no: yes to prayer, Scripture, worship, repentance, reconciliation, and service. The goal is not merely to remove something, but to make attentive room for God.",
+      "safety": "If you are pregnant or breastfeeding, a child or teenager, have diabetes or chronic illness, take regular medication, have an eating-disorder history, or have any health concern, do not begin a food fast without clinical advice. Do not ignore severe weakness, dizziness, fainting, pain, confusion, or another alarming symptom; stop the fast and seek appropriate care."
+    },
+    "hr": {
+      "intro": "Kršćanski post nije samo podnošenje gladi. Vrijeme i pažnju oslobođene od hrane, zabave ili uobičajenih navika dajemo Božjoj prisutnosti, Pismu, pokajanju, slavljenju i zagovoru. Bez molitve post postaje tek ograničenje; kada post i molitva ostanu zajedno, tijelo i pažnja zajedno se okreću Bogu.",
+      "prayerTitle": "Svaki dan posta mora uključivati molitvu",
+      "prayerRhythm": "Prije početka napiši svrhu jednom rečenicom. Jutro započni predanjem i odlomkom Pisma; usred dana vrijeme koje bi proveo uz hranu ili medije posveti molitvi i zagovoru; navečer završi zahvalnošću, tihim slušanjem i zapisom. Molitva može biti jednostavna, ali neka bude iskrena i namjerna.",
+      "abstainTitle": "Tijekom posta odvrati se i od ovoga",
+      "abstain": [
+        "Ogovaranja, klevete, neiskrenosti, prigovaranja i riječi koje ranjavaju druge",
+        "Nekontroliranog gnjeva, svađe, osvete, gorčine i odbijanja oprosta",
+        "Spolne nečistoće, pornografije i sadržaja koji onečišćava um i srce",
+        "Zabave, društvenih mreža, kupovanja i nepotrebne zauzetosti koja krade pažnju",
+        "Duhovnog pokazivanja; drugi ne trebaju znati privatne pojedinosti tvoga posta",
+        "Ravnodušnosti prema potrebitima; spoji post s dobrotom, pravdom, darežljivošću i djelatnom pomoći"
+      ],
+      "sharedPractice": "Svakom postu daj jasno da uz jasno ne: da molitvi, Pismu, slavljenju, pokajanju, pomirenju i služenju. Cilj nije samo nešto ukloniti, nego načiniti pažljiv prostor za Boga.",
+      "safety": "Ako si trudna ili dojiš, dijete ili tinejdžer, imaš dijabetes ili kroničnu bolest, uzimaš redovitu terapiju, imaš povijest poremećaja hranjenja ili zdravstvenu dvojbu, ne započinji post od hrane bez savjeta liječnika. Ne zanemaruj izrazitu slabost, vrtoglavicu, nesvjesticu, bol, smetenost ili drugi zabrinjavajući simptom; prekini post i potraži odgovarajuću pomoć."
+    }
+  },
+  "types": [
+    {
+      "key": "partial",
+      "icon": "🥣",
+      "scriptures": ["Daniel 1:8-16", "Matthew 6:16-18"],
+      "localized": {
+        "fa": {
+          "title": "روزهٔ غذایی محدود",
+          "summary": "حذف بعضی خوراکی‌ها یا ساده‌کردن وعده‌ها برای مدتی مشخص",
+          "teachingTitle": "این روزه چیست؟",
+          "teaching": "در روزهٔ محدود، همهٔ غذا حذف نمی‌شود؛ خوراکی‌های لذت‌بخش یا غیرضروری کنار گذاشته می‌شوند و وعده‌ها ساده‌تر می‌گردند. این شکل برای آغاز، کار روزانه یا کسانی که نمی‌توانند کاملاً از غذا پرهیز کنند مناسب‌تر است. ارزش روحانی آن در منوی خاص نیست، بلکه در فروتنی، هدف روشن و وقتی است که آگاهانه به خدا می‌دهی.",
+          "practiceTitle": "چگونه انجام دهم؟",
+          "practice": "پیش از شروع دقیق بنویس چه چیزهایی، در چه ساعت‌هایی و تا چه تاریخی کنار گذاشته می‌شوند؛ مثلاً شیرینی، تنقلات، گوشت یا غذاهای تجملی. غذای ساده را بهانهٔ پرخوری نکن و هر بار که میل به انتخاب قبلی برگشت، آن را به یادآوری دعا تبدیل کن.",
+          "prayerTitle": "برنامهٔ دعا",
+          "prayer": "صبح انگیزه‌ات را به خدا بسپار، پیش از هر وعده یک بخش کوتاه از کلام بخوان و دست‌کم یک بازهٔ ثابت برای شفاعت تعیین کن. پایان روز از خدا بپرس کدام میل یا وابستگی قلبت آشکار شد.",
+          "boundariesTitle": "پرهیزهای همراه",
+          "boundaries": "همراه غذای ساده، از شکایت، عیب‌جویی، عصبانیت و محتوای بی‌هدف دوری کن. سادگی سفره باید به سادگی توجه و سخاوت بیشتر نسبت به نیازمند منتهی شود.",
+          "safety": "ترکیب غذا را طوری انتخاب کن که نیازهای پزشکی و انرژی روزانه رعایت شود. در صورت بیماری یا دارو با پزشک مشورت کن."
+        },
+        "en": {
+          "title": "Partial food fast",
+          "summary": "Remove selected foods or simplify meals for a defined period",
+          "teachingTitle": "What is it?",
+          "teaching": "A partial fast does not remove all food. Pleasurable or nonessential foods are set aside and meals become simple. It can be a wise beginning for people with demanding work or those who cannot abstain completely. Its spiritual value is not a special menu, but humility, a clear purpose, and attention deliberately given to God.",
+          "practiceTitle": "How to practice it",
+          "practice": "Write exactly what will be set aside, during which hours, and until what date—for example sweets, snacks, meat, or elaborate meals. Do not compensate by overeating allowed foods. Whenever the old appetite returns, turn that moment into a prompt to pray.",
+          "prayerTitle": "Prayer plan",
+          "prayer": "Surrender your motive in the morning, read a short passage before each meal, and reserve at least one fixed period for intercession. At day's end, ask God what appetite or dependence was exposed in your heart.",
+          "boundariesTitle": "Companion abstinence",
+          "boundaries": "Along with simple food, turn from complaining, criticism, anger, and aimless content. A simpler table should produce more focused attention and greater generosity toward someone in need.",
+          "safety": "Choose food that still meets medical and daily energy needs. Consult a clinician when illness or medication makes dietary change uncertain."
+        },
+        "hr": {
+          "title": "Djelomični post od hrane",
+          "summary": "Izostavi odabranu hranu ili pojednostavni obroke na određeno vrijeme",
+          "teachingTitle": "Što je to?",
+          "teaching": "Djelomični post ne uklanja svu hranu. Odričemo se hrane koja pruža užitak ili nije nužna, a obroci postaju jednostavni. To može biti mudar početak za zaposlene osobe ili one koji ne mogu potpuno postiti. Duhovna vrijednost nije u posebnom jelovniku, nego u poniznosti, jasnoj svrsi i pažnji svjesno predanoj Bogu.",
+          "practiceTitle": "Kako ga provoditi",
+          "practice": "Točno napiši čega se odričeš, u koje vrijeme i do kojeg datuma—primjerice slatkiša, grickalica, mesa ili raskošnih obroka. Nemoj se prejedati dopuštenom hranom. Kad se želja vrati, pretvori taj trenutak u poziv na molitvu.",
+          "prayerTitle": "Plan molitve",
+          "prayer": "Ujutro predaj motiv Bogu, prije svakog obroka pročitaj kratak odlomak i odredi barem jedno stalno vrijeme za zagovor. Navečer pitaj Boga koja se želja ili ovisnost razotkrila u srcu.",
+          "boundariesTitle": "Prateće odricanje",
+          "boundaries": "Uz jednostavnu hranu odvrati se od prigovaranja, kritiziranja, ljutnje i besciljnog sadržaja. Jednostavniji stol neka donese usredotočeniju pažnju i veću darežljivost prema potrebitima.",
+          "safety": "Odaberi hranu koja zadovoljava zdravstvene potrebe i potrebnu energiju. Kod bolesti ili terapije posavjetuj se s liječnikom."
+        }
+      }
+    },
+    {
+      "key": "daniel",
+      "icon": "🌿",
+      "scriptures": ["Daniel 1:8-16", "Daniel 10:2-3"],
+      "localized": {
+        "fa": {
+          "title": "روزه به شیوهٔ دانیال",
+          "summary": "غذای سادهٔ گیاهی و پرهیز از خوراکی‌های لذت‌بخش برای یک دوره",
+          "teachingTitle": "این روزه چیست؟",
+          "teaching": "این الگو از تصمیم دانیال برای آلوده نکردن خود و دوره‌ای که از خوراکی‌های دلپذیر پرهیز کرد الهام می‌گیرد. هدف تقلید قانونی از یک فهرست غذایی نیست؛ هدف ساده‌سازی، تقدیس و توجه پایدار به خداست. این روزه معمولاً چندروزه است و باید از پیش برنامه‌ریزی شود.",
+          "practiceTitle": "چگونه انجام دهم؟",
+          "practice": "وعده‌هایی ساده بر پایهٔ سبزی، میوه، حبوبات، غلات ساده و آب طراحی کن و خوراکی‌های تجملی، شیرینی و غذاهای فرآوری‌شده را کنار بگذار. فهرست خود را با توجه به سلامت و سنت کلیسا روشن کن تا تصمیم‌های لحظه‌ای تمرکزت را نگیرد.",
+          "prayerTitle": "برنامهٔ دعا",
+          "prayer": "یک موضوع شفاعتی را برای کل دوره انتخاب کن. صبح برای حکمت و پاکی دعا کن، ظهر چند دقیقه در سکوت به کلام بیندیش و شب برای اشخاص و موقعیت‌هایی که خدا بر قلبت گذاشته شفاعت کن.",
+          "boundariesTitle": "پرهیزهای همراه",
+          "boundaries": "از محتوای تحریک‌کننده، تجمل‌طلبی، خرید غیرضروری و گفت‌وگوهایی که حسادت یا مقایسه را تقویت می‌کنند دوری کن. سادگی خوراک را با سادگی زندگی همراه ساز.",
+          "safety": "اگر نیاز غذایی ویژه، حساسیت، دیابت، بارداری یا داروی منظم داری، ترکیب وعده‌ها را با متخصص بررسی کن."
+        },
+        "en": {
+          "title": "Daniel-style fast",
+          "summary": "Simple plant-based food and abstinence from rich foods for a season",
+          "teachingTitle": "What is it?",
+          "teaching": "This pattern draws from Daniel's resolve not to defile himself and from a season when he abstained from pleasant foods. The purpose is not legalistic imitation of one menu; it is simplicity, consecration, and sustained attention to God. It commonly lasts several days and deserves advance planning.",
+          "practiceTitle": "How to practice it",
+          "practice": "Plan simple meals built around vegetables, fruit, legumes, plain grains, and water, setting aside rich sweets and heavily processed food. Define your approach with health needs and church guidance in mind so repeated food decisions do not consume the attention you meant to give God.",
+          "prayerTitle": "Prayer plan",
+          "prayer": "Choose one intercessory burden for the whole period. Pray for wisdom and purity in the morning, meditate quietly on Scripture at midday, and intercede in the evening for the people and situations God has placed on your heart.",
+          "boundariesTitle": "Companion abstinence",
+          "boundaries": "Step away from stimulating content, luxury, unnecessary buying, and conversations that feed envy or comparison. Join simplicity of food to simplicity of life.",
+          "safety": "If you have special nutritional needs, allergies, diabetes, pregnancy, or regular medication, review the meal pattern with a qualified clinician."
+        },
+        "hr": {
+          "title": "Post po Danielovu uzoru",
+          "summary": "Jednostavna biljna hrana i odricanje od ukusnih jela kroz određeno razdoblje",
+          "teachingTitle": "Što je to?",
+          "teaching": "Ovaj obrazac nadahnut je Danielovom odlukom da se ne onečisti i razdobljem kada se odrekao ukusnih jela. Cilj nije legalistički oponašati jedan jelovnik, nego živjeti jednostavnost, posvećenje i trajnu pažnju prema Bogu. Obično traje više dana i traži pripremu.",
+          "practiceTitle": "Kako ga provoditi",
+          "practice": "Planiraj jednostavne obroke od povrća, voća, mahunarki, običnih žitarica i vode te izostavi bogate slastice i jako prerađenu hranu. Odredi pristup prema zdravstvenim potrebama i crkvenim smjernicama kako odluke o hrani ne bi oduzele pažnju namijenjenu Bogu.",
+          "prayerTitle": "Plan molitve",
+          "prayer": "Odaberi jednu zagovornu nakanu za cijelo razdoblje. Ujutro moli za mudrost i čistoću, usred dana u tišini razmišljaj o Pismu, a navečer zagovaraj ljude i situacije koje ti je Bog stavio na srce.",
+          "boundariesTitle": "Prateće odricanje",
+          "boundaries": "Udalji se od podražajnog sadržaja, raskoši, nepotrebne kupnje i razgovora koji hrane zavist ili uspoređivanje. Spoji jednostavnost hrane s jednostavnošću života.",
+          "safety": "Ako imaš posebne prehrambene potrebe, alergije, dijabetes, trudnoću ili redovitu terapiju, provjeri jelovnik s liječnikom."
+        }
+      }
+    },
+    {
+      "key": "sunrise",
+      "icon": "🌅",
+      "scriptures": ["Judges 20:26", "Acts 13:2-3"],
+      "localized": {
+        "fa": {
+          "title": "روزه از طلوع تا غروب",
+          "summary": "پرهیز از غذا در ساعات روز و پایان سنجیده در غروب",
+          "teachingTitle": "این روزه چیست؟",
+          "teaching": "در این شکل، شخص برای یک یا چند روز از طلوع تا غروب از غذا پرهیز می‌کند و پس از آن با یک وعدهٔ سنجیده روزه را می‌گشاید. مرز زمانی روشن به نظم کمک می‌کند، اما هدف مسابقه با ساعت نیست؛ ساعت‌های روز باید به جست‌وجوی خدا و حساسیت نسبت به نیاز دیگران تبدیل شوند.",
+          "practiceTitle": "چگونه انجام دهم؟",
+          "practice": "از شب قبل غذای سنگین نخور، برنامهٔ کار و استراحت را واقع‌بینانه تنظیم کن و دربارهٔ نوشیدن آب تصمیمی ایمن بگیر. در غروب با شکرگزاری و غذای سبک شروع کن؛ شکستن روزه با پرخوری با هدف خویشتن‌داری ناسازگار است.",
+          "prayerTitle": "برنامهٔ دعا",
+          "prayer": "در طلوع خود را به خدا تقدیم کن، زمان معمول ناهار را به دعا و کلام بده و نزدیک غروب یک دورهٔ شفاعت و شنیدن داشته باش. پیش از خوردن، آنچه خدا نشان داده مرور کن.",
+          "boundariesTitle": "پرهیزهای همراه",
+          "boundaries": "در ساعت‌های روز از بحث بیهوده، شبکهٔ اجتماعی و سرگرمی غیرضروری فاصله بگیر. آرامش، مهربانی و تمرکز تو باید نشانهٔ روزه باشد، نه بدخلقی ناشی از گرسنگی.",
+          "safety": "در گرما، کار جسمی سنگین یا بیماری، کم‌آبی می‌تواند خطرناک باشد. آب و دارو را بدون توصیهٔ پزشکی قطع نکن."
+        },
+        "en": {
+          "title": "Sunrise-to-sunset fast",
+          "summary": "Abstain from food during daylight and break the fast thoughtfully at evening",
+          "teachingTitle": "What is it?",
+          "teaching": "In this form, a person abstains from food from sunrise to sunset for one or more days, then breaks the fast with a measured meal. A clear time boundary supports discipline, but the goal is not to race the clock. Daylight hours are offered to seeking God and becoming attentive to the needs of others.",
+          "practiceTitle": "How to practice it",
+          "practice": "Avoid a heavy meal the night before, arrange work and rest realistically, and make a safe decision about hydration. At sunset begin with thanksgiving and light food. Breaking the fast by overeating contradicts the self-control the practice is meant to form.",
+          "prayerTitle": "Prayer plan",
+          "prayer": "Consecrate yourself at sunrise, give the usual lunch period to prayer and Scripture, and keep a period of intercession and listening near sunset. Review what God has shown you before eating.",
+          "boundariesTitle": "Companion abstinence",
+          "boundaries": "During daylight step back from pointless argument, social media, and unnecessary entertainment. Let gentleness, kindness, and focus—not hunger-driven irritability—be the visible fruit of the fast.",
+          "safety": "Heat, heavy physical labor, and illness can make dehydration dangerous. Do not stop water or medication without qualified medical advice."
+        },
+        "hr": {
+          "title": "Post od izlaska do zalaska",
+          "summary": "Odreci se hrane tijekom dana i promišljeno prekini post navečer",
+          "teachingTitle": "Što je to?",
+          "teaching": "U ovom obliku osoba se jedan ili više dana od izlaska do zalaska sunca odriče hrane, a zatim prekida post umjerenim obrokom. Jasna vremenska granica pomaže disciplini, ali cilj nije utrka sa satom. Dnevni sati predaju se traženju Boga i osjetljivosti za potrebe drugih.",
+          "practiceTitle": "Kako ga provoditi",
+          "practice": "Večer prije nemoj jesti težak obrok, realno rasporedi rad i odmor te donesi sigurnu odluku o hidrataciji. Pri zalasku započni zahvalnošću i laganom hranom. Prejedanje nakon posta proturječi samokontroli koju želimo razviti.",
+          "prayerTitle": "Plan molitve",
+          "prayer": "Pri izlasku sunca predaj se Bogu, vrijeme ručka posveti molitvi i Pismu, a pred zalazak odvoji vrijeme za zagovor i slušanje. Prije jela razmotri što ti je Bog pokazao.",
+          "boundariesTitle": "Prateće odricanje",
+          "boundaries": "Tijekom dana udalji se od beskorisnih rasprava, društvenih mreža i nepotrebne zabave. Neka blagost, dobrota i usredotočenost—ne razdražljivost zbog gladi—budu plod posta.",
+          "safety": "Vrućina, težak fizički rad i bolest mogu učiniti dehidraciju opasnom. Ne prekidaj vodu ili terapiju bez stručnog medicinskog savjeta."
+        }
+      }
+    },
+    {
+      "key": "one_meal",
+      "icon": "🍽️",
+      "scriptures": ["Ezra 8:21-23", "Matthew 4:4"],
+      "localized": {
+        "fa": {
+          "title": "حذف یک وعده",
+          "summary": "یک وعده را به زمانی مشخص برای دعا، کلام و خدمت تبدیل کن",
+          "teachingTitle": "این روزه چیست؟",
+          "teaching": "حذف یک وعده شکل کوتاه و قابل‌دسترسی روزه است، اما فقط نخوردن ناهار یا شام نیست. وعدهٔ حذف‌شده یک قرار ملاقات با خدا می‌شود. این انتخاب برای شروع نظم روحانی، روزهای کاری و همراهی جمعی کلیسا مفید است.",
+          "practiceTitle": "چگونه انجام دهم؟",
+          "practice": "وعده و تاریخ را از پیش مشخص کن. اگر امکان دارد از محیط غذا فاصله بگیر، تلفن را کنار بگذار و همان زمان را در خلوت بگذران. مبلغ آن وعده را نیز برای کمک به نیازمند یا خدمت کلیسا کنار بگذار.",
+          "prayerTitle": "برنامهٔ دعا",
+          "prayer": "آغاز زمان با ده دقیقه پرستش، سپس خواندن کلام، دعا برای هدف روزه و چند دقیقه سکوت باشد. وقتی دوباره غذا می‌خوری با شکرگزاری و اعتدال پایان بده.",
+          "boundariesTitle": "پرهیزهای همراه",
+          "boundaries": "زمان آزادشده را با کار بیشتر، اسکرول یا خرید پر نکن. از غرزدن دربارهٔ گرسنگی و اعلام روزه به دیگران دوری کن.",
+          "safety": "اگر حذف وعده با دارو، قند خون یا کار ایمن تو ناسازگار است، شکل غیرغذایی یا غذای ساده را انتخاب کن."
+        },
+        "en": {
+          "title": "One-meal fast",
+          "summary": "Turn one meal into a defined appointment for prayer, Scripture, and service",
+          "teachingTitle": "What is it?",
+          "teaching": "Skipping one meal is an accessible short fast, but it is more than missing lunch or dinner. The absent meal becomes an appointment with God. This choice is useful for beginning spiritual discipline, for working days, and for a church community fasting together.",
+          "practiceTitle": "How to practice it",
+          "practice": "Choose the meal and date beforehand. If possible, leave the eating environment, put the phone away, and spend that same period in a quiet place. Consider setting aside the cost of the meal for someone in need or a ministry of mercy.",
+          "prayerTitle": "Prayer plan",
+          "prayer": "Begin with ten minutes of worship, then read Scripture, pray for the purpose of the fast, and keep several minutes of silence. When you eat again, close with thanksgiving and moderation.",
+          "boundariesTitle": "Companion abstinence",
+          "boundaries": "Do not fill the released time with more work, scrolling, or shopping. Refuse complaining about hunger and avoid announcing the fast to gain attention.",
+          "safety": "If missing a meal conflicts with medication, blood-sugar management, or safe work, choose a non-food consecration or a simple-food fast."
+        },
+        "hr": {
+          "title": "Post jednoga obroka",
+          "summary": "Pretvori jedan obrok u određeno vrijeme za molitvu, Pismo i služenje",
+          "teachingTitle": "Što je to?",
+          "teaching": "Preskakanje jednoga obroka pristupačan je kratki post, ali je više od izostavljenog ručka ili večere. Odsutni obrok postaje susret s Bogom. Ovaj izbor koristan je za početak duhovne discipline, radne dane i zajednički post crkve.",
+          "practiceTitle": "Kako ga provoditi",
+          "practice": "Unaprijed odaberi obrok i datum. Ako možeš, udalji se od prostora za jelo, odloži telefon i isto vrijeme provedi u tišini. Trošak obroka možeš odvojiti za potrebitu osobu ili službu milosrđa.",
+          "prayerTitle": "Plan molitve",
+          "prayer": "Započni s deset minuta slavljenja, zatim čitaj Pismo, moli za svrhu posta i provedi nekoliko minuta u tišini. Kad ponovno jedeš, završi zahvalnošću i umjerenošću.",
+          "boundariesTitle": "Prateće odricanje",
+          "boundaries": "Oslobođeno vrijeme nemoj ispuniti dodatnim radom, pregledavanjem sadržaja ili kupnjom. Odbaci prigovaranje zbog gladi i nemoj najavljivati post radi pažnje.",
+          "safety": "Ako preskakanje obroka nije spojivo s terapijom, šećerom u krvi ili sigurnim radom, odaberi neprehrambenu posvetu ili post jednostavne hrane."
+        }
+      }
+    },
+    {
+      "key": "liquid",
+      "icon": "🥤",
+      "scriptures": ["Nehemiah 1:4", "Psalm 42:1-2"],
+      "localized": {
+        "fa": {
+          "title": "روزهٔ مایعات",
+          "summary": "پرهیز از غذای جامد با مایعات مناسب، فقط با آمادگی و احتیاط",
+          "teachingTitle": "این روزه چیست؟",
+          "teaching": "در روزهٔ مایعات، غذای جامد برای زمانی محدود کنار گذاشته می‌شود و مایعات مناسب مصرف می‌گردد. چون این شکل فشار بیشتری بر بدن دارد، نباید وسیلهٔ اثبات روحانیت یا رقابت باشد. تصمیم باید فروتنانه، زمان‌دار و متناسب با سلامت باشد.",
+          "practiceTitle": "چگونه انجام دهم؟",
+          "practice": "مدت، نوع مایعات و شیوهٔ شروع و پایان را پیش از روزه مشخص کن. برنامهٔ روز را سبک‌تر کن و روزه را با غذای سبک و تدریجی بشکن. اگر برای دعا وقت آزاد تعریف نکرده‌ای، هنوز برنامهٔ روزه کامل نیست.",
+          "prayerTitle": "برنامهٔ دعا",
+          "prayer": "سه قرار کوتاه صبح، ظهر و عصر تعیین کن. هر بار آب یا مایع می‌نوشی، تشنگی روحانی خود را به خدا بگو و برای پرشدن از روح، پاکی قلب و نیازهای دیگران دعا کن.",
+          "boundariesTitle": "پرهیزهای همراه",
+          "boundaries": "از تمرین سنگین، نمایش توانایی، سرگرمی بی‌پایان و رفتار تند دوری کن. فروتنی و آرامش بخشی از روزه‌اند.",
+          "safety": "این گزینه برای بارداری، شیردهی، کودکان، دیابت، اختلال خوردن، بیماری مزمن یا بعضی داروها مناسب نیست مگر پزشک صریحاً تأیید کند."
+        },
+        "en": {
+          "title": "Liquid fast",
+          "summary": "Abstain from solid food while taking suitable liquids, with preparation and caution",
+          "teachingTitle": "What is it?",
+          "teaching": "A liquid fast removes solid food for a limited time while suitable liquids are taken. Because it places greater demands on the body, it must never become proof of spirituality or a competition. The decision should be humble, time-bound, and appropriate to health.",
+          "practiceTitle": "How to practice it",
+          "practice": "Define the duration, permitted liquids, and a gradual beginning and ending before you start. Reduce demanding activity and break the fast with light food. If no time has been intentionally released for prayer, the fasting plan is not yet complete.",
+          "prayerTitle": "Prayer plan",
+          "prayer": "Set three brief appointments in the morning, at midday, and in the evening. Whenever you drink, name your spiritual thirst before God and pray for the Spirit's filling, purity of heart, and the needs of others.",
+          "boundariesTitle": "Companion abstinence",
+          "boundaries": "Avoid heavy exercise, displays of endurance, endless entertainment, and harsh behavior. Humility and gentleness belong to the fast.",
+          "safety": "This option is generally unsuitable in pregnancy, breastfeeding, childhood, diabetes, eating-disorder history, chronic illness, or with some medication unless a clinician explicitly approves it."
+        },
+        "hr": {
+          "title": "Tekući post",
+          "summary": "Odricanje od krute hrane uz primjerene tekućine, pripremu i oprez",
+          "teachingTitle": "Što je to?",
+          "teaching": "Tekući post na ograničeno vrijeme uklanja krutu hranu, dok se uzimaju primjerene tekućine. Budući da više opterećuje tijelo, ne smije postati dokaz duhovnosti ili natjecanje. Odluka treba biti ponizna, vremenski ograničena i primjerena zdravlju.",
+          "practiceTitle": "Kako ga provoditi",
+          "practice": "Prije početka odredi trajanje, dopuštene tekućine te postupan početak i završetak. Smanji zahtjevne aktivnosti i prekini post laganom hranom. Ako nisi oslobodio vrijeme za molitvu, plan posta još nije potpun.",
+          "prayerTitle": "Plan molitve",
+          "prayer": "Odredi tri kratka susreta ujutro, u podne i navečer. Kad god piješ, izreci Bogu svoju duhovnu žeđ i moli za ispunjenje Duhom, čistoću srca i potrebe drugih.",
+          "boundariesTitle": "Prateće odricanje",
+          "boundaries": "Izbjegavaj naporan trening, pokazivanje izdržljivosti, beskrajnu zabavu i grubo ponašanje. Poniznost i blagost dio su posta.",
+          "safety": "Ova mogućnost uglavnom nije primjerena u trudnoći, dojenju, djetinjstvu, dijabetesu, povijesti poremećaja hranjenja, kroničnoj bolesti ili uz neke lijekove bez izričitog odobrenja liječnika."
+        }
+      }
+    },
+    {
+      "key": "water",
+      "icon": "💧",
+      "scriptures": ["Matthew 4:1-4", "Luke 4:1-2"],
+      "localized": {
+        "fa": {
+          "title": "روزهٔ فقط آب (با راهنمایی)",
+          "summary": "شکل فشردهٔ روزهٔ غذایی؛ کوتاه، سنجیده و با راهنمایی پزشکی و شبانی",
+          "teachingTitle": "این روزه چیست؟",
+          "teaching": "روزهٔ فقط آب یک روزهٔ غذایی جدی است و برای همه مناسب نیست. نمونه‌های طولانی کتاب‌مقدسی دعوت عمومی برای تقلید بی‌راهنما نیستند. هدف این روزه شکستن رکورد، تنبیه بدن یا وادارکردن خدا نیست؛ اگر انتخاب شود باید کوتاه، روشن و زیر پوشش حکمت باشد.",
+          "practiceTitle": "چگونه انجام دهم؟",
+          "practice": "بدون تأیید مناسب وارد دورهٔ طولانی نشو. زمان شروع و پایان، میزان آب، استراحت، ارتباط با یک همراه قابل اعتماد و نحوهٔ شکستن روزه را از قبل تعیین کن. در صورت فشار غیرعادی فوراً توقف کن.",
+          "prayerTitle": "برنامهٔ دعا",
+          "prayer": "روز را به بخش‌های کوتاه تقسیم کن: پرستش، خواندن کلام، توبه، شفاعت و سکوت. هر نوشیدن آب یادآور این باشد که حیات و قوت از خداست، نه دلیلی برای نادیده‌گرفتن نیازهای بدن.",
+          "boundariesTitle": "پرهیزهای همراه",
+          "boundaries": "از ورزش سنگین، رانندگی در ضعف، خودنمایی و پنهان‌کردن علائم خطر دوری کن. بلوغ روحانی با بی‌احتیاطی سنجیده نمی‌شود.",
+          "safety": "برای بارداری یا شیردهی، کودکان و نوجوانان، دیابت، بیماری کلیه یا قلب، اختلال خوردن، بیماری مزمن و داروهای منظم انتخاب مناسبی نیست. بدون نظر پزشک و راهنمای شبانی انجام نده."
+        },
+        "en": {
+          "title": "Water-only fast (guided)",
+          "summary": "An intensive food fast—brief, measured, and under medical and pastoral guidance",
+          "teachingTitle": "What is it?",
+          "teaching": "A water-only fast is a serious food fast and is not suitable for everyone. Extended biblical accounts are not a universal invitation to imitate them without guidance. Its purpose is not breaking a record, punishing the body, or forcing God. If chosen, it should be brief, clearly defined, and covered by wisdom.",
+          "practiceTitle": "How to practice it",
+          "practice": "Do not enter an extended period without appropriate approval. Define the beginning and end, hydration, rest, contact with a trusted person, and the way you will break the fast. Stop immediately if unusual strain or concerning symptoms appear.",
+          "prayerTitle": "Prayer plan",
+          "prayer": "Divide the day into short periods of worship, Scripture, repentance, intercession, and silence. Let each drink of water remind you that life and strength come from God—not become a reason to ignore the body's needs.",
+          "boundariesTitle": "Companion abstinence",
+          "boundaries": "Avoid hard exercise, driving while weak, spiritual display, and hiding warning signs. Spiritual maturity is not measured by recklessness.",
+          "safety": "This is unsuitable in pregnancy or breastfeeding, childhood or adolescence, diabetes, kidney or heart disease, eating-disorder history, chronic illness, and many regular medications. Do not attempt it without medical advice and pastoral guidance."
+        },
+        "hr": {
+          "title": "Post samo na vodi (uz vodstvo)",
+          "summary": "Zahtjevan post od hrane—kratak, odmjeren te uz medicinsko i pastoralno vodstvo",
+          "teachingTitle": "Što je to?",
+          "teaching": "Post samo na vodi ozbiljan je post od hrane i nije prikladan za svakoga. Dugi biblijski primjeri nisu opći poziv na oponašanje bez vodstva. Svrha nije rušiti rekorde, kažnjavati tijelo ili prisiliti Boga. Ako se odabere, treba biti kratak, jasno određen i vođen mudrošću.",
+          "practiceTitle": "Kako ga provoditi",
+          "practice": "Ne ulazi u dulje razdoblje bez odgovarajućeg odobrenja. Unaprijed odredi početak i kraj, hidrataciju, odmor, kontakt s pouzdanom osobom i način prekida posta. Odmah stani pojavi li se neuobičajeno opterećenje ili zabrinjavajući simptom.",
+          "prayerTitle": "Plan molitve",
+          "prayer": "Podijeli dan na kratka razdoblja slavljenja, Pisma, pokajanja, zagovora i tišine. Neka svaki gutljaj podsjeti da život i snaga dolaze od Boga, a ne posluži za zanemarivanje potreba tijela.",
+          "boundariesTitle": "Prateće odricanje",
+          "boundaries": "Izbjegavaj naporno vježbanje, vožnju u slabosti, duhovno pokazivanje i skrivanje znakova upozorenja. Duhovna zrelost ne mjeri se nepromišljenošću.",
+          "safety": "Nije prikladno u trudnoći ili dojenju, djetinjstvu ili adolescenciji, dijabetesu, bolesti bubrega ili srca, povijesti poremećaja hranjenja, kroničnoj bolesti i uz mnoge lijekove. Ne provodi bez liječničkog savjeta i pastoralnog vodstva."
+        }
+      }
+    },
+    {
+      "key": "media",
+      "icon": "📵",
+      "scriptures": ["Psalm 101:3", "Philippians 4:8"],
+      "localized": {
+        "fa": {
+          "title": "وقف رسانه‌ای و پرهیز غیرغذایی",
+          "summary": "حذف رسانه و سرگرمی برای بازپس‌گرفتن توجه؛ جایگزین ایمن برای افراد دارای منع پزشکی",
+          "teachingTitle": "این انتخاب چیست؟",
+          "teaching": "کتاب‌مقدس معمولاً روزه را با غذا پیوند می‌دهد؛ پس پرهیز رسانه‌ای را بهتر است «وقف توجه» بدانیم. این عمل می‌تواند همراه روزهٔ غذایی باشد یا برای کسی که منع پزشکی دارد جایگزینی حکیمانه شود. ارزش آن وقتی آشکار می‌شود که زمان آزادشده واقعاً به خدا و دیگران داده شود.",
+          "practiceTitle": "چگونه انجام دهم؟",
+          "practice": "برنامه‌ها، بازی‌ها، سریال‌ها، خبر یا شبکه‌هایی را که کنار می‌گذاری دقیق نام ببر؛ اعلان‌ها را خاموش و میان‌بُرها را حذف کن. برای کار و تماس ضروری یک پنجرهٔ محدود تعریف کن و زمان آزاد را از قبل برای کلام، دعا، خانواده و خدمت برنامه‌ریزی کن.",
+          "prayerTitle": "برنامهٔ دعا",
+          "prayer": "هر بار که ناخودآگاه سراغ تلفن می‌روی، سی ثانیه مکث و دعا کن. یک بازهٔ طولانی‌تر برای شنیدن خدا و یک تماس یا دیدار برای تشویق شخص دیگری اختصاص بده.",
+          "boundariesTitle": "پرهیزهای همراه",
+          "boundaries": "رسانه را با خرید، کار اضافی یا سرگرمی دیگری عوض نکن. از مقایسه، کنجکاوی ناسالم، خبرزدگی و هر محتوای ناپاک روی‌گردان شو.",
+          "safety": "این انتخاب برای کسانی که روزهٔ غذایی برایشان امن نیست مناسب است. نیازهای کاری، مراقبتی و تماس‌های اضطراری را مسئولانه حفظ کن."
+        },
+        "en": {
+          "title": "Media consecration and non-food abstinence",
+          "summary": "Remove media and entertainment to reclaim attention; a safer alternative under medical restriction",
+          "teachingTitle": "What is this practice?",
+          "teaching": "Scripture normally connects fasting with food, so media abstinence is best understood as a consecration of attention. It can accompany a food fast or provide a wise alternative for someone under medical restriction. Its value appears when the released time is genuinely given to God and other people.",
+          "practiceTitle": "How to practice it",
+          "practice": "Name the apps, games, shows, news, or networks you will set aside; silence notifications and remove shortcuts. Define a limited window for necessary work and communication, then schedule the released time for Scripture, prayer, family presence, and service.",
+          "prayerTitle": "Prayer plan",
+          "prayer": "Whenever you reach automatically for the phone, pause and pray for thirty seconds. Reserve one longer period to listen to God and one call or visit that intentionally encourages another person.",
+          "boundariesTitle": "Companion abstinence",
+          "boundaries": "Do not replace media with shopping, extra work, or another form of entertainment. Turn away from comparison, unhealthy curiosity, news obsession, and every form of impure content.",
+          "safety": "This is appropriate when food fasting is unsafe. Preserve necessary work, caregiving, accessibility tools, and emergency communication responsibly."
+        },
+        "hr": {
+          "title": "Medijska posveta i neprehrambeno odricanje",
+          "summary": "Ukloni medije i zabavu radi povratka pažnje; sigurnija mogućnost kod zdravstvenih ograničenja",
+          "teachingTitle": "Što je ova praksa?",
+          "teaching": "Pismo post obično povezuje s hranom, stoga je odricanje od medija najbolje razumjeti kao posvetu pažnje. Može pratiti post od hrane ili biti mudar izbor za osobu sa zdravstvenim ograničenjem. Vrijednost se vidi kada se oslobođeno vrijeme doista preda Bogu i ljudima.",
+          "practiceTitle": "Kako ga provoditi",
+          "practice": "Imenuj aplikacije, igre, serije, vijesti ili mreže kojih se odričeš; utišaj obavijesti i ukloni prečace. Odredi ograničeno vrijeme za nužan rad i komunikaciju te unaprijed rasporedi vrijeme za Pismo, molitvu, obitelj i služenje.",
+          "prayerTitle": "Plan molitve",
+          "prayer": "Kad automatski posegneš za telefonom, zastani i moli trideset sekundi. Odvoji jedno dulje vrijeme za slušanje Boga i jedan poziv ili susret kojim ćeš ohrabriti drugu osobu.",
+          "boundariesTitle": "Prateće odricanje",
+          "boundaries": "Nemoj zamijeniti medije kupnjom, dodatnim radom ili drugom zabavom. Odvrati se od uspoređivanja, nezdrave znatiželje, opsjednutosti vijestima i svakog nečistog sadržaja.",
+          "safety": "Ovo je prikladno kada post od hrane nije siguran. Odgovorno sačuvaj nužan rad, skrb, pomagala pristupačnosti i hitnu komunikaciju."
+        }
+      }
+    },
+    {
+      "key": "custom",
+      "icon": "📝",
+      "scriptures": ["Isaiah 58:6-10", "Zechariah 7:5-10"],
+      "localized": {
+        "fa": {
+          "title": "روزهٔ حکیمانهٔ سفارشی",
+          "summary": "یک تعهد روشن و متناسب با سلامت، برنامه و هدایت شبانی طراحی کن",
+          "teachingTitle": "این روزه چیست؟",
+          "teaching": "گاهی شرایط سلامت، کار یا خانواده به الگویی نیاز دارد که دقیقاً در گزینه‌های دیگر نیست. روزهٔ سفارشی اجازه می‌دهد با صداقت مرزهای مناسب بسازی، اما نباید مبهم باشد. نوع پرهیز، مدت، هدف، برنامهٔ دعا و شیوهٔ خدمت باید روشن و قابل‌سنجش باشند.",
+          "practiceTitle": "چگونه انجام دهم؟",
+          "practice": "پنج جمله بنویس: از چه چیزی پرهیز می‌کنم؛ چه زمانی؛ برای چه هدفی؛ چه زمان‌هایی دعا می‌کنم؛ و چگونه به دیگری خدمت می‌کنم. تصمیم را با یک رهبر روحانی یا همراه بالغ مرور کن و پس از پایان، نتیجه را صادقانه ارزیابی کن.",
+          "prayerTitle": "برنامهٔ دعا",
+          "prayer": "برای هر مرز روزه یک پاسخ دعایی تعیین کن. اگر چیزی را حذف می‌کنی، زمان و توجه آزادشده را دقیقاً به کلام، پرستش، توبه، شفاعت یا خدمت پیوند بده.",
+          "boundariesTitle": "پرهیزهای همراه",
+          "boundaries": "هیچ برنامهٔ سفارشی مجوز ادامهٔ گناه، خودفریبی یا نمایش نیست. سخن، روابط، مصرف پول و استفاده از بدن نیز باید زیر اطاعت مسیح قرار گیرند.",
+          "safety": "مرزهای غذایی را بر پایهٔ توصیهٔ پزشکی تنظیم کن. اگر شک داری، شکل غیرغذایی یا غذای ساده را انتخاب و از رهبر روحانی کمک بگیر."
+        },
+        "en": {
+          "title": "Custom wise fast",
+          "summary": "Design a clear commitment suited to health, schedule, and pastoral guidance",
+          "teachingTitle": "What is it?",
+          "teaching": "Health, work, or family circumstances sometimes require a pattern not represented by another option. A custom fast lets you form honest boundaries, but it must not remain vague. The abstinence, duration, purpose, prayer plan, and form of service should all be clear and measurable.",
+          "practiceTitle": "How to practice it",
+          "practice": "Write five sentences: what I will abstain from; when; for what purpose; when I will pray; and how I will serve someone. Review the decision with a mature believer or pastoral leader, and assess the fruit honestly after it ends.",
+          "prayerTitle": "Prayer plan",
+          "prayer": "Give every boundary a prayer response. When something is removed, connect the released time and attention specifically to Scripture, worship, repentance, intercession, or service.",
+          "boundariesTitle": "Companion abstinence",
+          "boundaries": "No custom plan is permission to continue sin, deceive yourself, or perform for others. Speech, relationships, spending, and the use of the body also come under Christ's obedience.",
+          "safety": "Set food boundaries according to medical advice. When uncertain, choose non-food consecration or simple food and seek pastoral support."
+        },
+        "hr": {
+          "title": "Prilagođeni mudar post",
+          "summary": "Oblikuj jasnu obvezu primjerenu zdravlju, rasporedu i pastoralnom vodstvu",
+          "teachingTitle": "Što je to?",
+          "teaching": "Zdravlje, posao ili obiteljske okolnosti ponekad traže obrazac koji nije među drugim mogućnostima. Prilagođeni post omogućuje iskrene granice, ali ne smije ostati neodređen. Odricanje, trajanje, svrha, plan molitve i služenje trebaju biti jasni i mjerljivi.",
+          "practiceTitle": "Kako ga provoditi",
+          "practice": "Napiši pet rečenica: čega se odričem; kada; s kojom svrhom; kada ću moliti; i kako ću nekome služiti. Pregledaj odluku sa zrelim vjernikom ili pastoralnim voditeljem te nakon završetka iskreno procijeni plod.",
+          "prayerTitle": "Plan molitve",
+          "prayer": "Svakoj granici pridruži molitveni odgovor. Kada nešto ukloniš, oslobođeno vrijeme i pažnju konkretno poveži s Pismom, slavljenjem, pokajanjem, zagovorom ili služenjem.",
+          "boundariesTitle": "Prateće odricanje",
+          "boundaries": "Nijedan prilagođeni plan ne dopušta nastavak grijeha, samozavaravanje ili predstavu za druge. Govor, odnosi, trošenje i uporaba tijela također dolaze pod Kristovu poslušnost.",
+          "safety": "Granice hrane odredi prema liječničkom savjetu. Ako nisi siguran, odaberi neprehrambenu posvetu ili jednostavnu hranu i potraži pastoralnu podršku."
+        }
+      }
+    }
+  ]
+}

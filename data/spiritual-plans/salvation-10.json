@@ -1,0 +1,330 @@
+{
+  "id": "salvation-10",
+  "version": 1,
+  "durationDays": 10,
+  "category": "foundation",
+  "icon": "✝️",
+  "theme": "salvation",
+  "localized": {
+    "fa": {
+      "title": "نجات و زندگی تازه در مسیح",
+      "subtitle": "۱۰ روز برای فهم صلیب، تولد تازه و اطمینان نجات",
+      "description": "از نقشهٔ نجات خدا تا هویت، حیات جاودان و زندگی روزانه با روح‌القدس.",
+      "goal": "انجیل را روشن بفهمیم، نجات را با ایمان دریافت کنیم و از هویت تازه زندگی نماییم."
+    },
+    "en": {
+      "title": "Salvation and New Life in Christ",
+      "subtitle": "10 days to understand the cross, new birth, and assurance",
+      "description": "From God’s plan of redemption to identity, eternal life, and daily life with the Holy Spirit.",
+      "goal": "Understand the gospel clearly, receive salvation by faith, and live from a new identity."
+    },
+    "hr": {
+      "title": "Spasenje i novi život u Kristu",
+      "subtitle": "10 dana razumijevanja križa, novoga rođenja i sigurnosti",
+      "description": "Od Božjega plana otkupljenja do identiteta, vječnoga života i svakodnevnog života s Duhom Svetim.",
+      "goal": "Jasno razumjeti evanđelje, vjerom primiti spasenje i živjeti iz novoga identiteta."
+    }
+  },
+  "days": [
+    {
+      "day": 1,
+      "scriptures": ["John 3:16-17", "Ephesians 1:3-10"],
+      "content": {
+        "fa": {
+          "title": "نجات از قلب محبت خدا آغاز شد",
+          "devotional": "انجیل با تلاش انسان برای رسیدن به خدا آغاز نمی‌شود؛ با محبت خدا که به سوی انسان آمد آغاز می‌شود. پدر پسر را نفرستاد تا جهان را محکوم کند، بلکه تا جهان به‌وسیلهٔ او نجات یابد. نجات نقشهٔ اضطراری پس از شکست نبود؛ در مقصود خدا، همه چیز در مسیح جمع می‌شود. تو موضوع بی‌تفاوتی آسمان نیستی؛ محبت خدا در عیسی به‌طور تاریخی آشکار شده است.",
+          "reflection": "آیا نجات را بیشتر نتیجهٔ جست‌وجوی خودم می‌بینم یا ابتکار محبت خدا؟",
+          "action": "یوحنا ۳:۱۶ را با نام خودت بخوان و سه حقیقت دربارهٔ قلب خدا یادداشت کن.",
+          "prayer": "پدر، چشمانم را به محبت آغازگر خودت باز کن و مرا از تصویر خدای دور و محکوم‌کننده آزاد ساز.",
+          "declaration": "خدا مرا محبت کرد و در عیسی برای نجات من اقدام نمود."
+        },
+        "en": {
+          "title": "Salvation Began in God’s Love",
+          "devotional": "The gospel does not begin with humanity trying to reach God; it begins with God’s love coming toward humanity. The Father did not send the Son to condemn the world but to save it through Him. Redemption was not an emergency plan after failure. God’s purpose has always been to bring everything together in Christ. Heaven is not indifferent to you; God’s love became visible in Jesus in history.",
+          "reflection": "Do I see salvation mainly as my search for God or as God’s loving initiative?",
+          "action": "Read John 3:16 with your own name in view and write three truths about God’s heart.",
+          "prayer": "Father, open my eyes to Your initiating love and free me from the image of a distant, condemning God.",
+          "declaration": "God loved me and acted in Jesus for my salvation."
+        },
+        "hr": {
+          "title": "Spasenje je počelo u Božjoj ljubavi",
+          "devotional": "Evanđelje ne počinje čovjekovim pokušajem da dosegne Boga, nego Božjom ljubavlju koja dolazi čovjeku. Otac nije poslao Sina da osudi svijet, nego da se svijet po njemu spasi. Otkupljenje nije hitni plan nakon pada. Božja je namjera oduvijek bila sve sjediniti u Kristu. Nebo nije ravnodušno prema tebi; Božja ljubav povijesno je postala vidljiva u Isusu.",
+          "reflection": "Vidim li spasenje ponajviše kao svoju potragu za Bogom ili kao Božju inicijativu ljubavi?",
+          "action": "Pročitaj Ivan 3:16 imajući svoje ime na umu i napiši tri istine o Božjem srcu.",
+          "prayer": "Oče, otvori mi oči za svoju ljubav koja prva djeluje i oslobodi me slike udaljenoga Boga koji osuđuje.",
+          "declaration": "Bog me ljubio i u Isusu djelovao za moje spasenje."
+        }
+      }
+    },
+    {
+      "day": 2,
+      "scriptures": ["Isaiah 53:4-6", "1 Peter 2:24", "2 Corinthians 5:21"],
+      "content": {
+        "fa": {
+          "title": "صلیب: او جای ما ایستاد",
+          "devotional": "گناه فقط اشتباه رفتاری نیست؛ جدایی، بدهی و سلطه‌ای است که انسان نمی‌توانست خود حل کند. عیسی بی‌گناه، گناهان ما را در بدن خود بر صلیب حمل کرد. او جایگزین ما شد: آنچه سزاوار ما بود بر او آمد تا آنچه از آنِ اوست—عدالت و حیات—به ما داده شود. صلیب هم عدالت خدا را جدی می‌گیرد و هم عمق محبت او را آشکار می‌سازد.",
+          "reflection": "اگر عیسی واقعاً بدهی را کامل پرداخت کرده، چه چیزی را هنوز می‌کوشم دوباره بپردازم؟",
+          "action": "عبارت «تمام شد» را بنویس و زیر آن گناه یا بدهی‌ای را که به صلیب می‌سپاری نام ببر.",
+          "prayer": "عیسی، برای اینکه جای من ایستادی سپاسگزارم. قربانی کاملت را می‌پذیرم و به کار صلیب چیزی نمی‌افزایم.",
+          "declaration": "عیسی گناهان مرا حمل کرد؛ بدهی پرداخت شده و راه صلح با خدا باز است."
+        },
+        "en": {
+          "title": "The Cross: He Stood in Our Place",
+          "devotional": "Sin is more than poor behavior; it is separation, debt, and dominion that humanity could not solve. The sinless Jesus carried our sins in His body on the cross. He became our substitute: what we deserved came upon Him so that what belonged to Him—righteousness and life—could be given to us. The cross takes God’s justice seriously and reveals the depth of His love.",
+          "reflection": "If Jesus fully paid the debt, what am I still trying to repay?",
+          "action": "Write the words “It is finished,” and beneath them name the sin or debt you entrust to the cross.",
+          "prayer": "Jesus, thank You for standing in my place. I receive Your complete sacrifice and add nothing to the cross.",
+          "declaration": "Jesus carried my sins; the debt is paid and the way to peace with God is open."
+        },
+        "hr": {
+          "title": "Križ: on je stao na naše mjesto",
+          "devotional": "Grijeh je više od lošega ponašanja; on je odvojenost, dug i vlast koju čovjek nije mogao riješiti. Bezgrešni Isus ponio je naše grijehe u svojem tijelu na križ. Postao je naša zamjena: ono što smo zaslužili došlo je na njega da bi se nama dalo ono što pripada njemu—pravednost i život. Križ ozbiljno uzima Božju pravdu i otkriva dubinu njegove ljubavi.",
+          "reflection": "Ako je Isus potpuno platio dug, što ja još pokušavam otplatiti?",
+          "action": "Napiši riječi „Dovršeno je“, a ispod imenuj grijeh ili dug koji povjeravaš križu.",
+          "prayer": "Isuse, hvala ti što si stao na moje mjesto. Primam tvoju potpunu žrtvu i ništa ne dodajem križu.",
+          "declaration": "Isus je ponio moje grijehe; dug je plaćen i put mira s Bogom otvoren."
+        }
+      }
+    },
+    {
+      "day": 3,
+      "scriptures": ["Ephesians 1:7", "Colossians 2:13-14", "1 John 1:9"],
+      "content": {
+        "fa": {
+          "title": "بخشش کامل و پاکی",
+          "devotional": "در مسیح، بخشش وعده‌ای مبهم نیست؛ بر خون او استوار است. سند بدهی که بر ضد ما بود برداشته و به صلیب میخکوب شد. اعتراف گناه خدا را راضی نمی‌کند تا تازه ببخشد؛ ما را با حقیقت همسو می‌سازد تا بخشش فراهم‌شده را دریافت و مشارکت را تازه کنیم. فیض نه پنهان‌کاری می‌آورد و نه مجازات خود؛ ما را به نور و آزادی دعوت می‌کند.",
+          "reflection": "آیا گناهی هست که اعتراف کرده‌ام اما به‌خاطر احساساتم هنوز باور ندارم بخشیده شده است؟",
+          "action": "آن را یک‌بار روشن نزد خدا اعتراف کن، اول یوحنا ۱:۹ را بخوان و از تکرار مجازات خود دست بردار.",
+          "prayer": "پدر، برای بخشش بر اساس خون عیسی سپاسگزارم. مرا در نور، صداقت و آزادی نگه دار.",
+          "declaration": "در مسیح آمرزیده و پاک شده‌ام؛ سند بدهی بر ضد من وجود ندارد."
+        },
+        "en": {
+          "title": "Complete Forgiveness and Cleansing",
+          "devotional": "In Christ, forgiveness is not a vague possibility; it rests on His blood. The written charge against us was canceled and nailed to the cross. Confession does not persuade an unwilling God to forgive. It aligns us with truth so we receive provided forgiveness and renewed fellowship. Grace leads neither to hiding nor self-punishment; it calls us into light and freedom.",
+          "reflection": "Is there a sin I confessed but still believe is unforgiven because my feelings have not changed?",
+          "action": "Confess it clearly once, read 1 John 1:9, and stop repeating self-punishment.",
+          "prayer": "Father, thank You for forgiveness through Jesus’ blood. Keep me in light, honesty, and freedom.",
+          "declaration": "In Christ I am forgiven and cleansed; no record of debt stands against me."
+        },
+        "hr": {
+          "title": "Potpun oprost i očišćenje",
+          "devotional": "U Kristu oprost nije nejasna mogućnost, nego počiva na njegovoj krvi. Zapis duga protiv nas izbrisan je i pribijen na križ. Priznanje ne nagovara nevoljkoga Boga da oprosti, nego nas usklađuje s istinom da primimo osigurani oprost i obnovljeno zajedništvo. Milost ne vodi ni skrivanju ni samokažnjavanju, nego svjetlu i slobodi.",
+          "reflection": "Postoji li grijeh koji sam priznao, ali zbog osjećaja još vjerujem da nije oprošten?",
+          "action": "Jasno ga priznaj jednom, pročitaj 1. Ivanovu 1:9 i prestani ponavljati samokažnjavanje.",
+          "prayer": "Oče, hvala ti za oprost po Isusovoj krvi. Čuvaj me u svjetlu, iskrenosti i slobodi.",
+          "declaration": "U Kristu sam oprošten i očišćen; nikakav zapis duga ne stoji protiv mene."
+        }
+      }
+    },
+    {
+      "day": 4,
+      "scriptures": ["Romans 5:17-19", "2 Corinthians 5:21", "Philippians 3:9"],
+      "content": {
+        "fa": {
+          "title": "هدیهٔ عدالت",
+          "devotional": "عدالت در انجیل مدالی برای کسانی نیست که بی‌نقص عمل کرده‌اند؛ جایگاهی است که به‌واسطهٔ اطاعت مسیح به ایماندار داده می‌شود. همان‌گونه که نافرمانی آدم بر بسیاری اثر گذاشت، اطاعت عیسی راه عادل‌شمردگی را گشود. ما با عدالت خود نزد خدا نمی‌آییم؛ در عدالت مسیح می‌ایستیم و از این جایگاه، زندگی عادلانه را می‌آموزیم.",
+          "reflection": "آیا عدالت را بیشتر عملکرد روزانه می‌دانم یا هویتی که رفتار تازه از آن رشد می‌کند؟",
+          "action": "پیش از هر کار نیک امروز بگو: «این کار را از پذیرش خدا انجام می‌دهم، نه برای کسب آن.»",
+          "prayer": "پدر، هدیهٔ عدالت را عمیقاً به من بشناسان و رفتارم را با جایگاهم در مسیح هماهنگ کن.",
+          "declaration": "من در مسیح عدالت خدا هستم و از جایگاه پذیرش، عادلانه زندگی می‌کنم."
+        },
+        "en": {
+          "title": "The Gift of Righteousness",
+          "devotional": "In the gospel, righteousness is not a medal for flawless performers; it is a standing given to believers through Christ’s obedience. As Adam’s disobedience affected many, Jesus’ obedience opened the way to justification. We do not approach God with a righteousness of our own. We stand in Christ’s righteousness and, from that position, learn to live rightly.",
+          "reflection": "Do I see righteousness mainly as daily performance or as an identity from which new behavior grows?",
+          "action": "Before each good work today say, “I do this from God’s acceptance, not to earn it.”",
+          "prayer": "Father, reveal the gift of righteousness deeply and align my conduct with my standing in Christ.",
+          "declaration": "In Christ I am God’s righteousness, and from acceptance I live rightly."
+        },
+        "hr": {
+          "title": "Dar pravednosti",
+          "devotional": "U evanđelju pravednost nije medalja za besprijekorne, nego položaj dan vjernicima po Kristovoj poslušnosti. Kao što je Adamova neposlušnost utjecala na mnoge, Isusova je poslušnost otvorila put opravdanju. Bogu ne pristupamo s vlastitom pravednošću. Stojimo u Kristovoj pravednosti i iz toga položaja učimo živjeti pravedno.",
+          "reflection": "Vidim li pravednost prvenstveno kao svakodnevni učinak ili kao identitet iz kojega raste novo ponašanje?",
+          "action": "Prije svakoga dobrog djela danas reci: „Ovo činim iz Božjega prihvaćanja, a ne da ga zaradim.“",
+          "prayer": "Oče, duboko mi objavi dar pravednosti i uskladi moje ponašanje s položajem u Kristu.",
+          "declaration": "U Kristu sam Božja pravednost i iz prihvaćenosti živim pravedno."
+        }
+      }
+    },
+    {
+      "day": 5,
+      "scriptures": ["1 Corinthians 15:3-4", "Romans 6:4-5", "1 Peter 1:3"],
+      "content": {
+        "fa": {
+          "title": "قیام: آغاز خلقت تازه",
+          "devotional": "انجیل در قبر پایان نمی‌یابد. عیسی حقیقتاً برخاست و قیام او اعلام کرد گناه، مرگ و تاریکی شکست خورده‌اند. ایماندار فقط از مجازات نجات نیافته؛ با مسیح برای زندگی تازه متحد شده است. امید مسیحی خوش‌بینی مبهم نیست؛ بر رویداد قیام استوار است. همان قدرتی که عیسی را برخیزانید، اکنون ما را برای ترک راه قدیم و قدم زدن در تازگی حیات قوت می‌دهد.",
+          "reflection": "در کدام بخش زندگی هنوز مانند کسی رفتار می‌کنم که قدرت قیام در دسترسش نیست؟",
+          "action": "یک عادت مرده را نام ببر و یک رفتار زنده و تازه را که امروز جایگزینش می‌کنی مشخص کن.",
+          "prayer": "خدای حیات، قدرت قیام را در انتخاب‌های من آشکار کن و مرا در تازگی حیات راه ببر.",
+          "declaration": "عیسی زنده است؛ من با او برخاسته‌ام و در حیات تازه قدم می‌زنم."
+        },
+        "en": {
+          "title": "Resurrection: the Beginning of New Creation",
+          "devotional": "The gospel does not end at the tomb. Jesus truly rose, and His resurrection announced the defeat of sin, death, and darkness. The believer is not only rescued from punishment but united with Christ for new life. Christian hope is not vague optimism; it rests on the event of resurrection. The power that raised Jesus now strengthens us to leave the old way and walk in newness of life.",
+          "reflection": "Where am I still living as though resurrection power were unavailable?",
+          "action": "Name one dead habit and one living, new behavior that will replace it today.",
+          "prayer": "God of life, reveal resurrection power in my choices and lead me in newness of life.",
+          "declaration": "Jesus is alive; I am raised with Him and walk in new life."
+        },
+        "hr": {
+          "title": "Uskrsnuće: početak novoga stvaranja",
+          "devotional": "Evanđelje ne završava na grobu. Isus je doista uskrsnuo, a njegovo je uskrsnuće objavilo poraz grijeha, smrti i tame. Vjernik nije samo spašen od kazne, nego je sjedinjen s Kristom za novi život. Kršćanska nada nije neodređeni optimizam; počiva na događaju uskrsnuća. Snaga koja je podigla Isusa sada nas jača da ostavimo stari put i hodimo u novosti života.",
+          "reflection": "Gdje još živim kao da mi snaga uskrsnuća nije dostupna?",
+          "action": "Imenuj jednu mrtvu naviku i jedno novo, živo ponašanje koje će je danas zamijeniti.",
+          "prayer": "Bože života, objavi snagu uskrsnuća u mojim odlukama i vodi me u novosti života.",
+          "declaration": "Isus je živ; uskrsnuo sam s njim i hodim u novom životu."
+        }
+      }
+    },
+    {
+      "day": 6,
+      "scriptures": ["John 3:3-8", "Titus 3:4-7", "1 Peter 1:23"],
+      "content": {
+        "fa": {
+          "title": "تولد تازه از روح",
+          "devotional": "مسیحیت فقط پذیرفتن مجموعه‌ای از عقاید یا اصلاح ظاهر نیست؛ تولد از بالاست. روح‌القدس بر اساس کلام، حیات خدا را در انسانی که به مسیح ایمان می‌آورد پدید می‌آورد. این کار محصول قدرت ارادهٔ ما نیست، هرچند ارادهٔ ما بعداً با آن همکاری می‌کند. تولد تازه رابطه، طبیعت و مقصد را تغییر می‌دهد: خدا پدر می‌شود و ما وارثان امید حیات جاودان.",
+          "reflection": "آیا ایمانم را فقط تغییر مذهب می‌بینم یا آغاز یک حیات واقعاً تازه؟",
+          "action": "داستان کوتاه خودت را بنویس: پیش از شناخت مسیح، چگونه به او ایمان آوردی و چه چیزی در تو آغاز شد.",
+          "prayer": "روح‌القدس، واقعیت تولد تازه را در من روشن کن و حیات خدا را در همهٔ بخش‌هایم رشد بده.",
+          "declaration": "من از کلام و روح خدا تولد یافته‌ام؛ خدا پدر من و حیات او در من است."
+        },
+        "en": {
+          "title": "Born Anew by the Spirit",
+          "devotional": "Christianity is more than accepting ideas or improving outward behavior; it is birth from above. Through the Word, the Holy Spirit brings God’s life into the person who believes in Christ. This work is not produced by willpower, though our will later cooperates with it. New birth changes relationship, nature, and destiny: God becomes Father, and we become heirs in the hope of eternal life.",
+          "reflection": "Do I view faith merely as changing religion or as the beginning of genuinely new life?",
+          "action": "Write your short story: life before knowing Christ, how you believed, and what began within you.",
+          "prayer": "Holy Spirit, make the reality of new birth clear and grow God’s life in every part of me.",
+          "declaration": "I am born of God’s Word and Spirit; God is my Father and His life is in me."
+        },
+        "hr": {
+          "title": "Nanovo rođen po Duhu",
+          "devotional": "Kršćanstvo je više od prihvaćanja ideja ili popravljanja vanjskoga ponašanja; ono je rođenje odozgor. Po Riječi Duh Sveti unosi Božji život u osobu koja vjeruje Kristu. To djelo ne proizvodi snaga volje, iako naša volja poslije s njime surađuje. Novo rođenje mijenja odnos, narav i odredište: Bog postaje Otac, a mi baštinici nade vječnoga života.",
+          "reflection": "Vidim li vjeru samo kao promjenu religije ili kao početak istinski novoga života?",
+          "action": "Napiši svoju kratku priču: život prije Krista, kako si povjerovao i što je počelo u tebi.",
+          "prayer": "Duše Sveti, razjasni mi stvarnost novoga rođenja i razvijaj Božji život u svakom dijelu mene.",
+          "declaration": "Rođen sam od Božje Riječi i Duha; Bog je moj Otac i njegov je život u meni."
+        }
+      }
+    },
+    {
+      "day": 7,
+      "scriptures": ["Colossians 3:1-4", "Ephesians 2:4-6", "1 Peter 2:9"],
+      "content": {
+        "fa": {
+          "title": "هویت و جایگاه در مسیح",
+          "devotional": "انجیل فقط می‌گوید از چه چیزی نجات یافته‌ایم؛ اعلام می‌کند به چه کسی تعلق داریم. با مسیح زنده و برخیزانیده شده‌ایم، قوم خاص خدا و دعوت‌شده برای اعلام نیکویی‌های او هستیم. هویت در مسیح عنوانی برای غرور نیست؛ امنیتی است برای خدمت. وقتی جایگاه خود را می‌دانیم، لازم نیست از مقایسه، تأیید مردم یا گذشته هویت قرض بگیریم.",
+          "reflection": "بیشتر از کدام منبع هویت می‌گیرم: مسیح، موفقیت، شکست، قومیت یا نظر دیگران؟",
+          "action": "پنج عبارت کتاب‌مقدسی «من در مسیح...» بنویس و یکی را امروز در برابر مقایسه به یاد بیاور.",
+          "prayer": "پدر، چشم قلبم را باز کن تا هویت و دعوت خود را در اتحاد با مسیح بشناسم.",
+          "declaration": "من متعلق به خدا، برخیزانیده با مسیح و دعوت‌شده برای اعلام نور او هستم."
+        },
+        "en": {
+          "title": "Identity and Position in Christ",
+          "devotional": "The gospel tells us more than what we were saved from; it declares whom we belong to. We have been made alive and raised with Christ, chosen as God’s people, and called to declare His goodness. Identity in Christ is not a title for pride but security for service. When we know our position, we no longer borrow identity from comparison, approval, or the past.",
+          "reflection": "Where do I mainly draw identity—from Christ, success, failure, ethnicity, or people’s opinion?",
+          "action": "Write five biblical “In Christ I am…” statements and use one today whenever comparison appears.",
+          "prayer": "Father, open the eyes of my heart to know my identity and calling in union with Christ.",
+          "declaration": "I belong to God, am raised with Christ, and am called to proclaim His light."
+        },
+        "hr": {
+          "title": "Identitet i položaj u Kristu",
+          "devotional": "Evanđelje govori više od onoga od čega smo spašeni; objavljuje komu pripadamo. Oživljeni smo i uskrišeni s Kristom, izabrani kao Božji narod i pozvani naviještati njegovu dobrotu. Identitet u Kristu nije naslov za ponos, nego sigurnost za služenje. Kada poznajemo svoj položaj, više ne posuđujemo identitet od usporedbe, odobravanja ili prošlosti.",
+          "reflection": "Odakle najviše crpim identitet—iz Krista, uspjeha, neuspjeha, narodnosti ili mišljenja ljudi?",
+          "action": "Napiši pet biblijskih izjava „U Kristu ja sam…“ i jednu danas upotrijebi kad se pojavi uspoređivanje.",
+          "prayer": "Oče, otvori oči mojega srca da upoznam identitet i poziv u sjedinjenosti s Kristom.",
+          "declaration": "Pripadam Bogu, uskrišen sam s Kristom i pozvan naviještati njegovo svjetlo."
+        }
+      }
+    },
+    {
+      "day": 8,
+      "scriptures": ["John 17:3", "1 John 5:11-13", "John 10:10"],
+      "content": {
+        "fa": {
+          "title": "حیات جاودان از امروز",
+          "devotional": "حیات جاودان فقط بی‌پایان بودن پس از مرگ نیست؛ کیفیت زندگی خدا و شناخت رابطه‌ای پدر و پسر است که از اکنون آغاز می‌شود. یوحنا می‌گوید کسی که پسر را دارد، حیات را دارد. این حیات در محبت، حقیقت، آزادی و مشارکت ظاهر می‌شود و مرگ جسمانی نمی‌تواند آن را نابود کند. اطمینان ما بر حضور پسر است، نه شدت احساسات روزانه.",
+          "reflection": "آیا حیات جاودان را فقط آینده می‌دانم یا رابطه‌ای که امروز باید زندگی شود؟",
+          "action": "امروز یک ساعت عادی—کار، غذا یا راه رفتن—را آگاهانه در مشارکت با خدا انجام بده.",
+          "prayer": "پدر، مرا در شناخت خود و پسرت عمیق کن تا حیات جاودان در روزهای عادی من آشکار شود.",
+          "declaration": "من پسر را دارم و حیات جاودان را دارم؛ زندگی خدا اکنون در من کار می‌کند."
+        },
+        "en": {
+          "title": "Eternal Life Begins Now",
+          "devotional": "Eternal life is more than endless existence after death; it is God’s quality of life and relational knowledge of the Father and Son beginning now. John says the person who has the Son has life. This life appears in love, truth, freedom, and fellowship, and physical death cannot destroy it. Our assurance rests on having the Son, not on the intensity of daily feelings.",
+          "reflection": "Do I see eternal life only as future, or as a relationship to live today?",
+          "action": "Live one ordinary hour—working, eating, or walking—in conscious fellowship with God.",
+          "prayer": "Father, deepen my knowledge of You and Your Son so eternal life becomes visible in ordinary days.",
+          "declaration": "I have the Son and I have eternal life; God’s life works in me now."
+        },
+        "hr": {
+          "title": "Vječni život počinje sada",
+          "devotional": "Vječni život više je od beskrajnoga postojanja nakon smrti; on je kvaliteta Božjega života i odnosna spoznaja Oca i Sina koja počinje sada. Ivan kaže da onaj tko ima Sina ima život. Taj se život pokazuje u ljubavi, istini, slobodi i zajedništvu, a tjelesna ga smrt ne može uništiti. Naša sigurnost počiva na Sinu, a ne na jačini dnevnih osjećaja.",
+          "reflection": "Vidim li vječni život samo kao budućnost ili kao odnos koji danas trebam živjeti?",
+          "action": "Jedan običan sat—rad, obrok ili hodanje—proživi u svjesnom zajedništvu s Bogom.",
+          "prayer": "Oče, produbi moje poznavanje tebe i tvojega Sina da vječni život postane vidljiv u običnim danima.",
+          "declaration": "Imam Sina i imam vječni život; Božji život sada djeluje u meni."
+        }
+      }
+    },
+    {
+      "day": 9,
+      "scriptures": ["Romans 8:9-16", "1 Corinthians 6:19-20", "Ephesians 1:13-14"],
+      "content": {
+        "fa": {
+          "title": "روح‌القدس در تو ساکن است",
+          "devotional": "نجات فقط تغییر پرونده در آسمان نیست؛ خدا به‌وسیلهٔ روح خود در ایماندار ساکن می‌شود. بدن معبد اوست، روح فرزندخواندگی شهادت می‌دهد که ما فرزندان خدا هستیم و حضور او بیعانهٔ میراث آینده است. این حقیقت به زندگی روزمره وزن می‌دهد: بدن، کلام، تصمیم و رابطهٔ ما مکانی برای آشکار شدن حضور خداست.",
+          "reflection": "اگر واقعاً معبد روح‌القدس هستم، کدام انتخاب روزانه باید تغییر کند؟",
+          "action": "یک تصمیم دربارهٔ بدن، زمان یا گفتارت را امروز آگاهانه به میزبانی حضور روح تبدیل کن.",
+          "prayer": "روح‌القدس، برای سکونتت سپاسگزارم. همهٔ وجودم را پر کن و شخصیت عیسی را از من آشکار ساز.",
+          "declaration": "روح خدا در من ساکن است؛ من فرزند و معبد او هستم."
+        },
+        "en": {
+          "title": "The Holy Spirit Dwells in You",
+          "devotional": "Salvation is more than a changed record in heaven; God comes to dwell in the believer by His Spirit. The body is His temple, the Spirit of adoption testifies that we are God’s children, and His presence is the guarantee of the coming inheritance. This gives weight to ordinary life: body, words, choices, and relationships become places where God’s presence is displayed.",
+          "reflection": "If I truly am the Holy Spirit’s temple, which daily choice needs to change?",
+          "action": "Turn one decision about your body, time, or speech into a conscious act of hosting the Spirit’s presence.",
+          "prayer": "Holy Spirit, thank You for dwelling in me. Fill my whole being and reveal Jesus’ character through me.",
+          "declaration": "God’s Spirit lives in me; I am His child and His temple."
+        },
+        "hr": {
+          "title": "Duh Sveti prebiva u tebi",
+          "devotional": "Spasenje je više od promijenjenoga zapisa na nebu; Bog po svojem Duhu dolazi prebivati u vjerniku. Tijelo je njegov hram, Duh posinstva svjedoči da smo Božja djeca, a njegova je prisutnost jamstvo buduće baštine. To daje težinu običnom životu: tijelo, riječi, odluke i odnosi postaju mjesta očitovanja Božje prisutnosti.",
+          "reflection": "Ako sam doista hram Duha Svetoga, koja se svakodnevna odluka treba promijeniti?",
+          "action": "Jednu odluku o tijelu, vremenu ili govoru danas pretvori u svjestan čin ugošćivanja prisutnosti Duha.",
+          "prayer": "Duše Sveti, hvala ti što prebivaš u meni. Ispuni cijelo moje biće i kroz mene objavi Isusov karakter.",
+          "declaration": "Božji Duh živi u meni; ja sam njegovo dijete i njegov hram."
+        }
+      }
+    },
+    {
+      "day": 10,
+      "scriptures": ["Romans 10:9-13", "1 John 5:11-13", "Colossians 2:6-7"],
+      "content": {
+        "fa": {
+          "title": "اطمینان نجات و ادامهٔ راه",
+          "devotional": "اطمینان نجات بر وعدهٔ خدا و شخص عیسی استوار است، نه بر بی‌نقص بودن احساس یا عملکرد ما. کسی که با قلب ایمان آورده و عیسی را خداوند می‌خواند، بر اساس کلام نجات می‌یابد. این اطمینان به بی‌خیالی منتهی نمی‌شود؛ ریشه‌ها را در مسیح عمیق می‌کند تا همان‌گونه که او را پذیرفتیم، در او راه برویم، در تعلیم بمانیم و در شکرگزاری رشد کنیم.",
+          "reflection": "اطمینان خود را بر چه بنا کرده‌ام: وعدهٔ خدا یا حال روحی و عملکرد امروز؟",
+          "action": "اعتراف ایمان خود را بنویس، با یک ایماندار بالغ در مشارکت بمان و یک گام بعدی مانند تعمید یا شاگردی را مشخص کن.",
+          "prayer": "خداوند عیسی، به تو ایمان دارم و تو را خداوند خود می‌خوانم. مرا در اطمینان، شاگردی و ثمر ثابت نگه دار.",
+          "declaration": "من به عیسی تعلق دارم؛ حیات جاودان دارم و ریشه‌هایم را هر روز در او عمیق می‌کنم."
+        },
+        "en": {
+          "title": "Assurance and the Continuing Journey",
+          "devotional": "Assurance rests on God’s promise and the person of Jesus, not on flawless feelings or performance. The one who believes in the heart and confesses Jesus as Lord is saved according to the Word. This assurance does not lead to carelessness; it roots us more deeply in Christ so that, as we received Him, we walk in Him, remain in teaching, and overflow with thanksgiving.",
+          "reflection": "Is my assurance built on God’s promise or on today’s mood and performance?",
+          "action": "Write your confession of faith, remain connected to a mature believer, and identify a next step such as baptism or discipleship.",
+          "prayer": "Lord Jesus, I believe in You and confess You as my Lord. Establish me in assurance, discipleship, and fruit.",
+          "declaration": "I belong to Jesus; I have eternal life and deepen my roots in Him every day."
+        },
+        "hr": {
+          "title": "Sigurnost spasenja i nastavak puta",
+          "devotional": "Sigurnost počiva na Božjem obećanju i osobi Isusa, a ne na savršenim osjećajima ili djelima. Onaj tko srcem vjeruje i ustima priznaje Isusa Gospodinom spašen je prema Riječi. Takva sigurnost ne vodi nemaru, nego nas dublje ukorjenjuje u Kristu da, kao što smo ga primili, u njemu hodimo, ostanemo u nauku i obilujemo zahvalnošću.",
+          "reflection": "Je li moja sigurnost sagrađena na Božjem obećanju ili na današnjem raspoloženju i učinku?",
+          "action": "Napiši svoje priznanje vjere, ostani povezan sa zrelim vjernikom i odredi sljedeći korak poput krštenja ili učeništva.",
+          "prayer": "Gospodine Isuse, vjerujem u tebe i priznajem te svojim Gospodinom. Učvrsti me u sigurnosti, učeništvu i plodu.",
+          "declaration": "Pripadam Isusu; imam vječni život i svakodnevno produbljujem korijenje u njemu."
+        }
+      }
+    }
+  ]
+}
