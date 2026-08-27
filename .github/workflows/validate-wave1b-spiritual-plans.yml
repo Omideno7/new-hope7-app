@@ -1,0 +1,128 @@
+name: Validate Wave 1B Spiritual Plans 4.1.0
+
+on:
+  push:
+    branches: [release/wave1b-spiritual-plans-23949]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact branch commit with history
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Validate JavaScript and QA HTML
+        run: |
+          set -euo pipefail
+          node --check js/nh7-spiritual-plans-v240.js
+          node --check js/nh7-spiritual-plans-bridge-v410.js
+          node <<'NODE'
+          const fs=require('fs');
+          const html=fs.readFileSync('wave1b-plans.html','utf8');
+          [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)]
+            .filter(match=>!/^\s*$/.test(match[1]))
+            .forEach((match,index)=>new Function(match[1]+`\n//# sourceURL=wave1b-inline-${index}`));
+          for(const required of [
+            'nh7-spiritual-plans-v240.css?v=4.1.0',
+            'nh7-spiritual-plans-bridge-v410.js?v=4.1.0',
+            'window.NH7_WAVE1B_AUTO_OPEN = true',
+            'nh7-audio-classic-v400.js?v=2.3.9.49',
+            'nh7-school-exam-v344.js?v=2.3.9.49',
+            'nh7-settings-controller-v399.js?v=2.3.9.49',
+            'nh7-auth-recovery-v342.js?v=2.3.9.49'
+          ]) if(!html.includes(required)) throw new Error('QA page missing '+required);
+          NODE
+
+      - name: Validate six trilingual plans and 30-day mind renewal
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const read=file=>JSON.parse(fs.readFileSync(file,'utf8'));
+          const catalog=read('data/spiritual-plans/catalog.json');
+          const expected=['prayer-30','grace-14','fasting-7','obedience-10','salvation-10','mind-renewal-30'];
+          const ids=(catalog.plans||[]).map(item=>item.id);
+          if(JSON.stringify(ids)!==JSON.stringify(expected)) throw new Error('Unexpected catalog: '+ids.join(','));
+          if(new Set(ids).size!==ids.length) throw new Error('Duplicate plan IDs');
+
+          const base=read('data/spiritual-plans/mind-renewal-14.json');
+          const extensions=[
+            read('data/spiritual-plans/mind-renewal-days-15-18.json'),
+            read('data/spiritual-plans/mind-renewal-days-19-22.json'),
+            read('data/spiritual-plans/mind-renewal-days-23-26.json'),
+            read('data/spiritual-plans/mind-renewal-days-27-30.json')
+          ];
+          const mind={...base,id:'mind-renewal-30',version:2,durationDays:30};
+          mind.localized={
+            fa:{title:'تغییر طرز تفکر',subtitle:'۳۰ روز',description:'مسیر تازه‌شدن ذهن',goal:'تازه‌شدن روزانه',pastoralNote:'مسیر شاگردسازی روزانه'},
+            en:{title:'Change Your Thinking',subtitle:'30 days',description:'Mind-renewal journey',goal:'Daily renewal',pastoralNote:'Daily discipleship journey'},
+            hr:{title:'Promijeni način razmišljanja',subtitle:'30 dana',description:'Putovanje obnove uma',goal:'Svakodnevna obnova',pastoralNote:'Put svakodnevnog učeništva'}
+          };
+          mind.days=[...(base.days||[]),...extensions.flatMap(item=>item.days||[])].sort((a,b)=>Number(a.day)-Number(b.day));
+
+          const plans=(catalog.plans||[]).map(item=>item.id==='mind-renewal-30'?mind:read(item.file));
+          const languages=['fa','en','hr'];
+          const dayFields=['title','devotional','reflection','action','prayer','declaration'];
+          for(const plan of plans){
+            if(plan.id==='mind-renewal-14') throw new Error('Old 14-day plan leaked into catalog');
+            if(!plan.id||!Array.isArray(plan.days)) throw new Error('Invalid plan '+plan.id);
+            const total=Number(plan.durationDays||0);
+            if(total!==plan.days.length) throw new Error(`${plan.id}: duration ${total} != days ${plan.days.length}`);
+            plan.days.forEach((day,index)=>{
+              if(Number(day.day)!==index+1) throw new Error(`${plan.id}: day sequence broken at ${index+1}`);
+              if(!Array.isArray(day.scriptures)||!day.scriptures.length) throw new Error(`${plan.id}: missing scriptures day ${day.day}`);
+              for(const reference of day.scriptures){
+                if(!/^.+\s+\d+:\d+(?:[-–]\d+)?$/.test(String(reference))) throw new Error(`${plan.id}: invalid reference ${reference}`);
+              }
+              for(const language of languages){
+                const copy=day.content?.[language];
+                if(!copy) throw new Error(`${plan.id}: missing ${language} day ${day.day}`);
+                for(const field of dayFields) if(!String(copy[field]||'').trim()) throw new Error(`${plan.id}: missing ${language}.${field} day ${day.day}`);
+              }
+            });
+            for(const language of languages){
+              const meta=plan.localized?.[language];
+              if(!meta?.title||!meta?.description||!meta?.goal) throw new Error(`${plan.id}: incomplete ${language} metadata`);
+            }
+          }
+          if(mind.days.length!==30||mind.days[14].day!==15||mind.days[29].day!==30) throw new Error('Mind renewal is not complete 1–30');
+          const publicMind=JSON.stringify(mind);
+          for(const banned of ['Chris Oyakhilome','Power of Your Mind','قدرت فکر']) if(publicMind.includes(banned)) throw new Error('Source attribution leaked: '+banned);
+          console.log('Validated',plans.map(plan=>`${plan.id}:${plan.days.length}`).join(' | '));
+          NODE
+
+      - name: Verify bridge, fasting rules, verse reveal and cloud queue
+        run: |
+          set -euo pipefail
+          grep -q "NH7_SPIRITUAL_PLANS_WAVE1B_VERSION = VERSION" js/nh7-spiritual-plans-bridge-v410.js
+          grep -q "plan.id = 'mind-renewal-30'" js/nh7-spiritual-plans-bridge-v410.js
+          grep -q "plan.days.length !== 30" js/nh7-spiritual-plans-bridge-v410.js
+          grep -q "data-reveal-ref" js/nh7-spiritual-plans-bridge-v410.js
+          grep -q "spiritual_plan_progress" js/nh7-spiritual-plans-v240.js
+          grep -q "fasting_journeys" js/nh7-spiritual-plans-v240.js
+          grep -q "fasting_daily_logs" js/nh7-spiritual-plans-v240.js
+          grep -q "prayerMinutes < 1" js/nh7-spiritual-plans-v240.js
+          grep -q "type_media" js/nh7-spiritual-plans-v240.js
+          grep -q "هر روز روزه باید با دعا همراه باشد" data/spiritual-plans/fasting-types.json
+
+      - name: Protect production modules and Wave 1B scope
+        run: |
+          set -euo pipefail
+          BASE=b28226c26ef4e755de575168fb108f002cf8678c
+          git diff --quiet "$BASE" -- index.html app-v239.html service-worker.js version.json js/app.js js/nh7-audio-classic-v400.js js/nh7-settings-controller-v399.js js/nh7-school-exam-v344.js js/nh7-auth-recovery-v342.js js/nh7-school-registration-v342.js
+          changed=$(git diff --name-only "$BASE" HEAD)
+          echo "$changed"
+          while IFS= read -r file; do
+            [ -z "$file" ] && continue
+            case "$file" in
+              js/nh7-spiritual-plans-v240.js|js/nh7-spiritual-plans-bridge-v410.js|css/nh7-spiritual-plans-v240.css|data/spiritual-plans/*|wave1b-plans.html|.github/workflows/validate-wave1b-spiritual-plans.yml|docs/WAVE1B_SPIRITUAL_PLANS_QA.md) ;;
+              *) echo "Unexpected Wave 1B change: $file" >&2; exit 1 ;;
+            esac
+          done <<< "$changed"
+          echo 'Wave 1B scope is isolated; production files are unchanged.'
