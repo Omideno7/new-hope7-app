@@ -18,6 +18,7 @@ jobs:
           set -euo pipefail
           files=(
             js/nh7-apocrypha-v270.js
+            js/nh7-apocrypha-runtime-patch-v402.js
             js/nh7-apocrypha-preview-v240.js
             js/nh7-apocrypha-reader-flow-v244.js
             js/nh7-reader-ux-v251.js
@@ -34,15 +35,32 @@ jobs:
         run: |
           node <<'NODE'
           const fs=require('fs');
-          const path='data/apocrypha/runtime/apocrypha-browser-19.preview.json';
-          const data=JSON.parse(fs.readFileSync(path,'utf8'));
+          const runtimePath='data/apocrypha/runtime/apocrypha-browser-19.preview.json';
+          const patchPath='data/apocrypha/runtime/additions-to-esther-ch1-v402.json';
+          const data=JSON.parse(fs.readFileSync(runtimePath,'utf8'));
+          const patch=JSON.parse(fs.readFileSync(patchPath,'utf8'));
           if(data?.totals?.books!==19||!Array.isArray(data.books)||data.books.length!==19)throw new Error('Expected exactly 19 Apocrypha books');
+          if(patch?.book_id!=='additions_to_esther'||Number(patch.chapter)!==1)throw new Error('Wrong Esther overlay target');
+          const patchNumbers=(patch.verses||[]).map(row=>Number(row.verse)).sort((a,b)=>a-b);
+          if(patchNumbers.join(',')!=='1,2,3')throw new Error('Esther overlay must contain verses 1,2,3');
+          for(const row of patch.verses){
+            for(const locale of ['en','fa','hr']){
+              if(!String(row?.['text_'+locale]||'').trim())throw new Error(`Esther ${row.verse}: missing ${locale}`);
+            }
+          }
+          const esther=data.books.find(book=>book.book_id===patch.book_id);
+          const chapter=(esther?.chapters||[]).find(row=>Number(row.chapter)===1);
+          if(!chapter)throw new Error('Additions to Esther chapter 1 missing');
+          const rows=new Map((chapter.verses||[]).map(row=>[Number(row.verse),row]));
+          for(const row of patch.verses)rows.set(Number(row.verse),Object.assign({},rows.get(Number(row.verse))||{},row));
+          chapter.verses=[...rows.values()].sort((a,b)=>Number(a.verse)-Number(b.verse));
+          if(chapter.verses.slice(0,4).map(row=>Number(row.verse)).join(',')!=='1,2,3,4')throw new Error('Esther chapter 1 still does not start at verse 1');
           let totalEn=0,totalFa=0,totalHr=0;
           for(const book of data.books){
             let en=0,fa=0,hr=0;
             if(!book.book_id)throw new Error('Book without book_id');
-            for(const chapter of book.chapters||[]){
-              for(const verse of chapter.verses||[]){
+            for(const current of book.chapters||[]){
+              for(const verse of current.verses||[]){
                 if(String(verse.text_en||'').trim())en++;
                 if(String(verse.text_fa||'').trim())fa++;
                 if(String(verse.text_hr||'').trim())hr++;
@@ -54,22 +72,38 @@ jobs:
             totalEn+=en;totalFa+=fa;totalHr+=hr;
           }
           if(totalFa!==totalEn||totalHr!==totalEn)throw new Error('Trilingual totals do not match');
-          console.log({books:data.books.length,totalEn,totalFa,totalHr});
+          if(totalEn!==7504)throw new Error(`Expected 7504 effective verses, received ${totalEn}`);
+          console.log({books:data.books.length,totalEn,totalFa,totalHr,estherStart:chapter.verses.slice(0,4).map(row=>row.verse)});
           NODE
       - name: Verify approved reader behavior
         run: |
           set -euo pipefail
-          grep -q "NH7_APOCRYPHA_WAVE1A_VERSION" js/nh7-apocrypha-v270.js
+          grep -q "4.0.2-wave1a-apocrypha" js/nh7-apocrypha-v270.js
+          grep -q "NH7_APOCRYPHA_RUNTIME_PATCH_VERSION" js/nh7-apocrypha-runtime-patch-v402.js
+          grep -q "additions-to-esther-ch1-v402.json" js/nh7-apocrypha-runtime-patch-v402.js
           grep -q "2.4.0.242-apocrypha-bible-style" js/nh7-apocrypha-preview-v240.js
           grep -q "2.4.0.244-apocrypha-flow-colors" js/nh7-apocrypha-reader-flow-v244.js
+          grep -q "4.0.2-visible-swatches" js/nh7-apocrypha-reader-flow-v244.js
+          grep -q 'data-nh7-apo-color="yellow"' js/nh7-apocrypha-reader-flow-v244.js
+          grep -q 'background:#fff2a8!important' js/nh7-apocrypha-reader-flow-v244.js
+          grep -q 'background:#ccefd7!important' js/nh7-apocrypha-reader-flow-v244.js
+          grep -q 'background:#cfe8ff!important' js/nh7-apocrypha-reader-flow-v244.js
+          grep -q 'background:#ffd9e5!important' js/nh7-apocrypha-reader-flow-v244.js
+          grep -q 'background:#e8dcff!important' js/nh7-apocrypha-reader-flow-v244.js
           grep -q "NH7_APOCRYPHA_INLINE_VERSION='3.9.2'" js/nh7-apocrypha-inline-v392.js
           grep -q "NH7_APOCRYPHA_ACTIONS_VERSION='3.9.3'" js/nh7-apocrypha-actions-v393.js
           grep -q "NH7_APOCRYPHA_SAVED_NAV_VERSION='3.9.4'" js/nh7-apocrypha-saved-nav-v394.js
-          grep -q 'data-nh7-apo-color' js/nh7-apocrypha-reader-flow-v244.js
           grep -q 'data-nh7-apo-save' js/nh7-apocrypha-actions-v393.js
           grep -q 'APO:' js/nh7-apocrypha-saved-nav-v394.js
           ! grep -q 'fa_document' js/nh7-apocrypha-preview-v240.js
           ! grep -q 'hr_prepared\|croatian_prepared' js/nh7-apocrypha-preview-v240.js
+          node <<'NODE'
+          const fs=require('fs');
+          const source=fs.readFileSync('js/nh7-apocrypha-v270.js','utf8');
+          const patch=source.indexOf('js/nh7-apocrypha-runtime-patch-v402.js');
+          const reader=source.indexOf('js/nh7-apocrypha-preview-v240.js');
+          if(patch<0||reader<0||patch>reader)throw new Error('Runtime overlay must load before the reader');
+          NODE
       - name: Verify no regression to stable main systems
         run: |
           set -euo pipefail
@@ -83,7 +117,7 @@ jobs:
           cat /tmp/changed.txt
           while IFS= read -r file; do
             case "$file" in
-              docs/RELEASE_ROADMAP_2026_2027_FA.md|.github/workflows/validate-wave1a-apocrypha.yml|data/apocrypha/runtime/apocrypha-browser-19.preview.json|js/nh7-apocrypha-v270.js|js/nh7-apocrypha-preview-v240.js|js/nh7-apocrypha-reader-flow-v244.js|js/nh7-reader-ux-v251.js|js/nh7-saved-verses-chapter-v252.js|js/nh7-apocrypha-inline-v392.js|js/nh7-apocrypha-actions-v393.js|js/nh7-apocrypha-saved-nav-v394.js) ;;
+              docs/RELEASE_ROADMAP_2026_2027_FA.md|.github/workflows/validate-wave1a-apocrypha.yml|data/apocrypha/runtime/apocrypha-browser-19.preview.json|data/apocrypha/runtime/additions-to-esther-ch1-v402.json|js/nh7-apocrypha-v270.js|js/nh7-apocrypha-runtime-patch-v402.js|js/nh7-apocrypha-preview-v240.js|js/nh7-apocrypha-reader-flow-v244.js|js/nh7-reader-ux-v251.js|js/nh7-saved-verses-chapter-v252.js|js/nh7-apocrypha-inline-v392.js|js/nh7-apocrypha-actions-v393.js|js/nh7-apocrypha-saved-nav-v394.js) ;;
               *) echo "Forbidden Wave 1A change: $file"; exit 1;;
             esac
           done < /tmp/changed.txt

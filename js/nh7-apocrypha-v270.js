@@ -1,13 +1,14 @@
-/* New Hope 7 Wave 1A — cautious Apocrypha bootstrap v4.0.1
+/* New Hope 7 Wave 1A — cautious Apocrypha bootstrap v4.0.2
  * Loads only the approved 19-book reader modules. The 8.8 MB translation asset
  * remains lazy and is fetched only when Apocrypha is opened.
  */
 (()=>{'use strict';
-if(window.__NH7_APOCRYPHA_WAVE1A_V401__)return;
-window.__NH7_APOCRYPHA_WAVE1A_V401__=true;
-const VERSION='4.0.1-wave1a-apocrypha';
-const BUILD='wave1a-401';
+if(window.__NH7_APOCRYPHA_WAVE1A_V402__)return;
+window.__NH7_APOCRYPHA_WAVE1A_V402__=true;
+const VERSION='4.0.2-wave1a-apocrypha';
+const BUILD='wave1a-402';
 const SCRIPTS=[
+  'js/nh7-apocrypha-runtime-patch-v402.js',
   'js/nh7-apocrypha-preview-v240.js',
   'js/nh7-apocrypha-reader-flow-v244.js',
   'js/nh7-reader-ux-v251.js',
