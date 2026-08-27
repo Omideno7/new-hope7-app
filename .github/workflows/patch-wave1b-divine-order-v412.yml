@@ -1,0 +1,101 @@
+name: Apply Wave 1B Divine Order plan assembly
+
+on:
+  push:
+    branches: [release/wave1b-spiritual-plans-23949]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: ${{ !contains(github.event.head_commit.message || '', 'Divine Order 30-day assembly') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/wave1b-spiritual-plans-23949
+          fetch-depth: 0
+      - name: Replace legacy 14-day assembly and validator
+        run: |
+          python <<'PY'
+          from pathlib import Path
+
+          bridge=Path('js/nh7-spiritual-plans-bridge-v410.js')
+          text=bridge.read_text(encoding='utf-8')
+          start=text.index('async function mergedMindRenewal(){')
+          end=text.index('async function jfetch(path){',start)
+          block="""async function mergedMindRenewal(){
+            const parts = await Promise.all([
+              fetchJson('data/spiritual-plans/mind-renewal-days-01-07.json'),
+              fetchJson('data/spiritual-plans/mind-renewal-days-08-14.json'),
+              fetchJson('data/spiritual-plans/mind-renewal-days-15-18.json'),
+              fetchJson('data/spiritual-plans/mind-renewal-days-19-22.json'),
+              fetchJson('data/spiritual-plans/mind-renewal-days-23-26.json'),
+              fetchJson('data/spiritual-plans/mind-renewal-days-27-30.json')
+            ]);
+            const plan = {
+              id:'mind-renewal-30', version:3, durationDays:30, category:'renewal', icon:'🧠', theme:'mind', requiresJourney:false,
+              foundationalScriptures:['1 Corinthians 14:33','Romans 12:2','Philippians 4:8-9','2 Corinthians 10:4-5','James 1:22-25'],
+              localized:{
+                fa:{ title:'تغییر طرز تفکر', subtitle:'۳۰ روز برای تازه‌شدن ذهن و ورود به نظم الهی', description:'یک مسیر عملی بر پایهٔ تعلیم نظم الهی برای هماهنگ‌کردن فکر، زبان، عادت‌ها، زمان، مال، روابط، خانواده و خدمت با کلام و هدایت روح‌القدس.', goal:'از آشفتگی ذهنی و زندگی پراکنده بیرون بیاییم و با قدم‌های روشن، پاسخگویی و قدرت روح‌القدس، نظم، صلح و ثمر پادشاهی را در زندگی آشکار کنیم.', pastoralNote:'این پلن برای شاگردسازی روزانه طراحی شده است. نظم حقیقی فقط ظاهر و کنترل انسانی نیست؛ از ارتباط با روح‌القدس، اطاعت از کلام، توبه، برنامهٔ عملی و وفاداری روزانه شکل می‌گیرد.' },
+                en:{ title:'Change Your Thinking', subtitle:'30 days to renew the mind and enter divine order', description:'A practical journey through divine order, aligning thought, speech, habits, time, finances, relationships, family, and service with Scripture and the Holy Spirit’s guidance.', goal:'Leave mental confusion and scattered living, then reveal kingdom order, peace, and fruit through clear steps, accountability, and the Holy Spirit’s power.', pastoralNote:'This plan is designed for daily discipleship. True order is not outward control; it grows through fellowship with the Holy Spirit, obedience to Scripture, repentance, practical structure, and daily faithfulness.' },
+                hr:{ title:'Promijeni način razmišljanja', subtitle:'30 dana obnove uma i ulaska u božanski red', description:'Praktično putovanje kroz božanski red koje usklađuje misli, govor, navike, vrijeme, financije, odnose, obitelj i služenje s Pismom i vodstvom Duha Svetoga.', goal:'Izaći iz misaone zbrke i raspršenog života te jasnim koracima, odgovornošću i snagom Duha Svetoga očitovati red, mir i plod Kraljevstva.', pastoralNote:'Ovaj je plan namijenjen svakodnevnom učeništvu. Istinski red nije vanjska kontrola; raste iz zajedništva s Duhom Svetim, poslušnosti Pismu, pokajanja, praktične strukture i svakodnevne vjernosti.' }
+              },
+              days:parts.flatMap(item => item.days || []).sort((a,b) => Number(a.day)-Number(b.day))
+            };
+            if(plan.days.length !== 30 || plan.days.some((item,index) => Number(item.day) !== index+1)) throw new Error('mind-renewal-30 integrity check failed');
+            return plan;
+          }
+          """
+          bridge.write_text(text[:start]+block+text[end:],encoding='utf-8')
+
+          workflow=Path('.github/workflows/validate-wave1b-spiritual-plans.yml')
+          value=workflow.read_text(encoding='utf-8')
+          old="""          const base=read('data/spiritual-plans/mind-renewal-14.json');
+                    const extensions=[
+                      read('data/spiritual-plans/mind-renewal-days-15-18.json'),
+                      read('data/spiritual-plans/mind-renewal-days-19-22.json'),
+                      read('data/spiritual-plans/mind-renewal-days-23-26.json'),
+                      read('data/spiritual-plans/mind-renewal-days-27-30.json')
+                    ];
+                    const mind={...base,id:'mind-renewal-30',version:2,durationDays:30};
+                    mind.localized={
+                      fa:{title:'تغییر طرز تفکر',subtitle:'۳۰ روز',description:'مسیر تازه‌شدن ذهن',goal:'تازه‌شدن روزانه',pastoralNote:'مسیر شاگردسازی روزانه'},
+                      en:{title:'Change Your Thinking',subtitle:'30 days',description:'Mind-renewal journey',goal:'Daily renewal',pastoralNote:'Daily discipleship journey'},
+                      hr:{title:'Promijeni način razmišljanja',subtitle:'30 dana',description:'Putovanje obnove uma',goal:'Svakodnevna obnova',pastoralNote:'Put svakodnevnog učeništva'}
+                    };
+                    mind.days=[...(base.days||[]),...extensions.flatMap(item=>item.days||[])].sort((a,b)=>Number(a.day)-Number(b.day));
+          """
+          new="""          const mindParts=[
+                      read('data/spiritual-plans/mind-renewal-days-01-07.json'),
+                      read('data/spiritual-plans/mind-renewal-days-08-14.json'),
+                      read('data/spiritual-plans/mind-renewal-days-15-18.json'),
+                      read('data/spiritual-plans/mind-renewal-days-19-22.json'),
+                      read('data/spiritual-plans/mind-renewal-days-23-26.json'),
+                      read('data/spiritual-plans/mind-renewal-days-27-30.json')
+                    ];
+                    const mind={id:'mind-renewal-30',version:3,category:'renewal',durationDays:30,icon:'🧠',theme:'mind',requiresJourney:false};
+                    mind.localized={
+                      fa:{title:'تغییر طرز تفکر',subtitle:'۳۰ روز',description:'مسیر نظم الهی و تازه‌شدن ذهن',goal:'زندگی در نظم الهی',pastoralNote:'مسیر شاگردسازی روزانه'},
+                      en:{title:'Change Your Thinking',subtitle:'30 days',description:'Divine-order mind-renewal journey',goal:'Living in divine order',pastoralNote:'Daily discipleship journey'},
+                      hr:{title:'Promijeni način razmišljanja',subtitle:'30 dana',description:'Put obnove uma u božanskom redu',goal:'Život u božanskom redu',pastoralNote:'Put svakodnevnog učeništva'}
+                    };
+                    mind.days=mindParts.flatMap(item=>item.days||[]).sort((a,b)=>Number(a.day)-Number(b.day));
+          """
+          if old not in value:
+              raise SystemExit('Validator mind-renewal block not found')
+          value=value.replace(old,new)
+          value=value.replace("grep -q \"plan.id = 'mind-renewal-30'\" js/nh7-spiritual-plans-bridge-v410.js","grep -q \"id:'mind-renewal-30'\" js/nh7-spiritual-plans-bridge-v410.js")
+          workflow.write_text(value,encoding='utf-8')
+          PY
+          node --check js/nh7-spiritual-plans-bridge-v410.js
+      - name: Commit patch when changed
+        run: |
+          if git diff --quiet; then exit 0; fi
+          git config user.name 'Omideno7'
+          git config user.email 'omideno7church@gmail.com'
+          git add js/nh7-spiritual-plans-bridge-v410.js .github/workflows/validate-wave1b-spiritual-plans.yml
+          git commit -m 'fix(plans): Divine Order 30-day assembly'
+          git push origin HEAD:release/wave1b-spiritual-plans-23949
