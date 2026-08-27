@@ -22,6 +22,7 @@ jobs:
         run: |
           set -euo pipefail
           node --check js/nh7-book-reader-v283.js
+          node --check js/nh7-library-collections-v322.js
           node --check js/nh7-admin-library-access-v396.js
           node --check js/nh7-spiritual-plans-v240.js
           node --check js/app.js
@@ -29,7 +30,7 @@ jobs:
           grep -q 'js/nh7-book-reader-v283.js?v=2.3.9.51-wave2' index.html
           ! grep -q 'js/nh7-book-reader-v281.js' index.html
           grep -q 'js/nh7-admin-library-access-v396.js?v=3.9.6-wave2' admin.html
-          grep -q "const VERSION='v2.3.9.51-wave2-plan-doctrine'" sw-offline-v329.js
+          grep -q "const VERSION='v2.3.9.51-wave2-library-catalog-v397'" sw-offline-v329.js
           grep -q "'./js/nh7-book-reader-v283.js'" sw-offline-v329.js
           node <<'NODE'
           const fs=require('fs');
@@ -41,7 +42,7 @@ jobs:
           }
           NODE
 
-      - name: Validate reader behavior and access messages
+      - name: Validate account-based catalog, reader and ministers UI
         run: |
           set -euo pipefail
           grep -q "const VERSION='2.8.3-book-reader'" js/nh7-book-reader-v283.js
@@ -51,9 +52,15 @@ jobs:
           grep -q 'data-book-search-page' js/nh7-book-reader-v283.js
           grep -q "code==='content_access_required'" js/nh7-book-reader-v283.js
           grep -q 'nh7_library_reader_access_v250' js/nh7-book-reader-v283.js
-          grep -q 'nh7_library_items_v224' js/nh7-book-reader-v283.js
+          grep -q 'nh7_library_catalog_v396' js/nh7-book-reader-v283.js
+          grep -q 'nh7_library_catalog_v396' js/nh7-library-collections-v322.js
+          grep -q 'nh7_library_catalog_v396' js/app.js
           grep -q 'refresh_token' js/nh7-book-reader-v283.js
           grep -q 'NH7_BOOK_READER_VERSION' js/nh7-book-reader-v283.js
+          ! grep -q 'nh7_minister_library_code' js/nh7-book-reader-v283.js
+          ! grep -q "prompt(tr('enterAccessCode')" js/app.js
+          ! grep -q 'کدی را که کلیسا در اختیار شما گذاشته وارد کنید' js/app.js
+          grep -q 'فقط مواردی که ادمین برای حساب شما فعال کرده نمایش داده می‌شوند' js/app.js
 
       - name: Validate approved-user access administration
         run: |
@@ -63,8 +70,8 @@ jobs:
           grep -q 'nh7_admin_content_access_grant_v251' js/nh7-admin-library-access-v396.js
           grep -q 'nh7_admin_content_access_revoke_v251' js/nh7-admin-library-access-v396.js
           grep -q "scope:'library_all'" js/nh7-admin-library-access-v396.js
-          grep -q "library_collection" js/nh7-admin-library-access-v396.js
-          grep -q "library_item" js/nh7-admin-library-access-v396.js
+          grep -q 'library_collection' js/nh7-admin-library-access-v396.js
+          grep -q 'library_item' js/nh7-admin-library-access-v396.js
           grep -q 'Approved users' js/nh7-admin-library-access-v396.js
           grep -q 'Nine public books ready' js/nh7-admin-library-access-v396.js
           grep -q 'nh7_admin_access_v350' js/nh7-admin-library-access-v396.js
@@ -96,13 +103,13 @@ jobs:
         run: |
           set -euo pipefail
           BASE=717b02e37da61c807226497f8c71eceb511fc931
-          git diff --quiet "$BASE" -- js/app.js js/nh7-audio-classic-v400.js js/nh7-school-exam-v344.js js/nh7-auth-recovery-v342.js js/nh7-settings-controller-v399.js js/nh7-apocrypha-runtime-patch-v402.js js/nh7-apocrypha-actions-v393.js data/apocrypha/runtime/apocrypha-browser-19.preview.json data/spiritual-plans/catalog.json data/spiritual-plans/grace-14.json data/spiritual-plans/fasting-types.json data/spiritual-plans/obedience-10.json data/spiritual-plans/salvation-10.json data/spiritual-plans/mind-renewal-days-01-07.json data/spiritual-plans/mind-renewal-days-08-14.json data/spiritual-plans/mind-renewal-days-15-18.json data/spiritual-plans/mind-renewal-days-19-22.json data/spiritual-plans/mind-renewal-days-23-26.json data/spiritual-plans/mind-renewal-days-27-30.json
+          git diff --quiet "$BASE" -- js/nh7-audio-classic-v400.js js/nh7-school-exam-v344.js js/nh7-auth-recovery-v342.js js/nh7-settings-controller-v399.js js/nh7-apocrypha-runtime-patch-v402.js js/nh7-apocrypha-actions-v393.js data/apocrypha/runtime/apocrypha-browser-19.preview.json data/spiritual-plans/catalog.json data/spiritual-plans/grace-14.json data/spiritual-plans/fasting-types.json data/spiritual-plans/obedience-10.json data/spiritual-plans/salvation-10.json data/spiritual-plans/mind-renewal-days-01-07.json data/spiritual-plans/mind-renewal-days-08-14.json data/spiritual-plans/mind-renewal-days-15-18.json data/spiritual-plans/mind-renewal-days-19-22.json data/spiritual-plans/mind-renewal-days-23-26.json data/spiritual-plans/mind-renewal-days-27-30.json
           changed=$(git diff --name-only "$BASE" HEAD)
           echo "$changed"
           while IFS= read -r file; do
             [ -z "$file" ] && continue
             case "$file" in
-              index.html|admin.html|sw-offline-v329.js|js/nh7-book-reader-v283.js|js/nh7-admin-library-access-v396.js|js/nh7-spiritual-plans-v240.js|data/spiritual-plans/prayer-30.json|data/spiritual-plans/fasting-7.json|.github/workflows/validate-wave2-library-access.yml) ;;
+              index.html|admin.html|sw-offline-v329.js|js/app.js|js/nh7-library-collections-v322.js|js/nh7-book-reader-v283.js|js/nh7-admin-library-access-v396.js|js/nh7-spiritual-plans-v240.js|data/spiritual-plans/prayer-30.json|data/spiritual-plans/fasting-7.json|.github/workflows/validate-wave2-library-access.yml) ;;
               *) echo "Unexpected Wave 2 change: $file" >&2; exit 1 ;;
             esac
           done <<< "$changed"
