@@ -1,4 +1,4 @@
-name: Validate Settings Offline v402
+name: Validate Settings Offline v403
 
 on:
   push:
@@ -16,32 +16,40 @@ jobs:
       - name: Validate JavaScript syntax
         run: |
           set -euo pipefail
-          node --check js/nh7-settings-controller-v402.js
+          node --check js/nh7-settings-controller-v403.js
+          node --check js/nh7-delete-account-v253.js
           node --check js/nh7-offline-core-v327.js
           node --check js/nh7-offline-data-v329.js
-          node --check sw-release-core-v402.js
+          node --check sw-navigation-fresh-v403.js
+          node --check sw-release-core-v403.js
           node --check service-worker.js
-      - name: Validate release offline assets and wiring
+      - name: Validate Settings, Delete Account and fresh shell wiring
         run: |
           node <<'NODE'
           const fs=require('fs');
           const index=fs.readFileSync('index.html','utf8');
-          const settings=fs.readFileSync('js/nh7-settings-controller-v402.js','utf8');
+          const settings=fs.readFileSync('js/nh7-settings-controller-v403.js','utf8');
+          const deletion=fs.readFileSync('js/nh7-delete-account-v253.js','utf8');
           const worker=fs.readFileSync('service-worker.js','utf8');
-          const release=fs.readFileSync('sw-release-core-v402.js','utf8');
+          const nav=fs.readFileSync('sw-navigation-fresh-v403.js','utf8');
+          const release=fs.readFileSync('sw-release-core-v403.js','utf8');
           const core=fs.readFileSync('js/nh7-offline-core-v327.js','utf8');
-          if(!index.includes('nh7-settings-controller-v402.js?v=4.0.2'))throw new Error('Settings v402 not wired');
-          if(index.includes('nh7-settings-controller-v399.js'))throw new Error('Old Settings controller still wired');
-          for(const required of ['nh7-offline-audio-v397','nh7-offline-media-v4','offline_audio_v397','offline_media_v4','prepareOffline','clearOfflineMedia','clearCache','nh7-settings402-status'])if(!settings.includes(required))throw new Error('Settings v402 missing '+required);
-          if(!worker.includes('sw-release-core-v402.js?v=4.0.2'))throw new Error('Release core worker not imported');
-          if(!core.includes("CACHE_RELEASE_CORE"))throw new Error('Offline core does not use release cache');
+          if(!index.includes('nh7-settings-controller-v403.js?v=4.0.3'))throw new Error('Settings v403 not wired');
+          if(!index.includes('nh7-delete-account-v253.js?v=2.5.3'))throw new Error('Delete v253 not wired');
+          if(index.includes('nh7-settings-controller-v402.js'))throw new Error('Old Settings v402 still wired');
+          for(const required of ['nh7-offline-audio-v397','nh7-offline-media-v4','offline_audio_v397','offline_media_v4','prepareOffline','clearOfflineMedia','clearCache','nh7-settings403-status'])if(!settings.includes(required))throw new Error('Settings v403 missing '+required);
+          for(const required of ['currentSession','refresh_token','/auth/v1/user','grant_type=refresh_token','nh7-delete-my-account-v252','stopImmediatePropagation'])if(!deletion.includes(required))throw new Error('Delete v253 missing '+required);
+          if(!worker.includes('sw-navigation-fresh-v403.js?v=4.0.3'))throw new Error('Fresh shell worker not imported');
+          if(!worker.includes('sw-release-core-v403.js?v=4.0.3'))throw new Error('Release core v403 not imported');
+          if(worker.indexOf('sw-navigation-fresh-v403.js')>worker.indexOf('sw-offline-v329.js'))throw new Error('Fresh shell must load before legacy offline worker');
+          for(const required of ['self.registration.scope','cache:\'no-store\'','stopImmediatePropagation','nh7-shell-v403'])if(!nav.includes(required))throw new Error('Fresh shell missing '+required);
+          if(!core.includes('CACHE_RELEASE_CORE'))throw new Error('Offline core does not use release cache');
           const match=release.match(/const NH7_RELEASE_ASSETS=\[([\s\S]*?)\];/);if(!match)throw new Error('Release asset list missing');
           const paths=[...match[1].matchAll(/'([^']+)'/g)].map(m=>m[1]);
-          const missing=[];
-          for(const p of paths){if(p==='./')continue;if(!p.startsWith('./'))continue;const f=p.slice(2);if(!fs.existsSync(f))missing.push(f)}
+          const missing=[];for(const p of paths){if(p==='./'||!p.startsWith('./'))continue;const f=p.slice(2);if(!fs.existsSync(f))missing.push(f)}
           if(missing.length)throw new Error('Missing release offline assets: '+missing.join(', '));
           const currentScripts=[...index.matchAll(/<script\s+src="(js\/[^"?]+)(?:\?[^\"]*)?"/g)].map(m=>'./'+m[1]);
           const missingFromRelease=currentScripts.filter(p=>!paths.includes(p));
           if(missingFromRelease.length)throw new Error('Current app scripts not guaranteed offline: '+missingFromRelease.join(', '));
-          console.log('Settings/offline v402 validation OK. Release assets:',paths.length);
+          console.log('Settings/offline/delete v403 validation OK. Release assets:',paths.length);
           NODE
