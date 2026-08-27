@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "plan_id": "mind-renewal-30",
+  "days": [
+    {
+      "day": 23,
+      "scriptures": [
+        "Matthew 6:21",
+        "Proverbs 21:5"
+      ],
+      "content": {
+        "fa": {
+          "title": "طرز فکر مالی را مرتب کن",
+          "devotional": "پول فقط یک عدد نیست؛ باورهای ما دربارهٔ امنیت، ارزش، ترس و سخاوت را آشکار می‌کند. ذهن تازه از عجله، مقایسه و مصرف بی‌هدف بیرون می‌آید و با برنامه، صداقت و مسئولیت تصمیم می‌گیرد.",
+          "reflection": "کدام باور پنهان بیشترین تأثیر را بر تصمیم‌های مالی من دارد؟",
+          "action": "هزینه‌های یک هفته را مرور کن و یک تصمیم برای حذف اتلاف و یک تصمیم برای سخاوت بنویس.",
+          "prayer": "خداوندا، مرا در مال، امانتدار، آزاد از ترس و آمادهٔ سخاوت بساز.",
+          "declaration": "من پول را با حکمت، صداقت و هدف پادشاهی مدیریت می‌کنم."
+        },
+        "en": {
+          "title": "Bring Order to Financial Thinking",
+          "devotional": "Money is more than a number; it reveals beliefs about security, worth, fear, and generosity. A renewed mind leaves haste, comparison, and aimless spending, then chooses planning, honesty, and responsibility.",
+          "reflection": "Which hidden belief most influences my financial decisions?",
+          "action": "Review one week of spending and write one decision to remove waste and one decision to practice generosity.",
+          "prayer": "Lord, make me faithful with resources, free from fear, and ready to be generous.",
+          "declaration": "I steward money with wisdom, integrity, and kingdom purpose."
+        },
+        "hr": {
+          "title": "Uredi financijsko razmišljanje",
+          "devotional": "Novac je više od broja; otkriva uvjerenja o sigurnosti, vrijednosti, strahu i darežljivosti. Obnovljen um napušta žurbu, uspoređivanje i besciljnu potrošnju te bira planiranje, poštenje i odgovornost.",
+          "reflection": "Koje skriveno uvjerenje najviše utječe na moje financijske odluke?",
+          "action": "Pregledaj troškove jednoga tjedna i napiši jednu odluku za uklanjanje rasipanja te jednu za darežljivost.",
+          "prayer": "Gospodine, učini me vjernim s resursima, slobodnim od straha i spremnim na darežljivost.",
+          "declaration": "Novcem upravljam s mudrošću, poštenjem i svrhom Kraljevstva."
+        }
+      }
+    },
+    {
+      "day": 24,
+      "scriptures": [
+        "Ephesians 4:29-32",
+        "Romans 12:18"
+      ],
+      "content": {
+        "fa": {
+          "title": "روابط سالم از فکر سالم آغاز می‌شوند",
+          "devotional": "بسیاری از درگیری‌ها پیش از آنکه در کلمات دیده شوند، در تفسیرهای ذهنی شکل می‌گیرند. ذهن تازه زود قضاوت نمی‌کند، انگیزهٔ دیگران را حدس نمی‌زند و میان محبت، حقیقت، بخشش و مرزهای سالم تعادل برقرار می‌کند.",
+          "reflection": "در کدام رابطه، تفسیر من از واقعیت قوی‌تر از شواهد شده است؟",
+          "action": "پیش از واکنش، یک سؤال روشن و محترمانه از شخص مقابل بپرس و از حدس‌زدن نیت او خودداری کن.",
+          "prayer": "خداوندا، فکر و زبانم را در روابط با محبت و حقیقت هدایت کن.",
+          "declaration": "من در روابط، شنوا، راستگو، بخشنده و دارای مرزهای سالم هستم."
+        },
+        "en": {
+          "title": "Healthy Relationships Begin with Healthy Thinking",
+          "devotional": "Many conflicts are formed in mental interpretations before they appear in words. A renewed mind does not judge quickly, guess motives, or abandon truth; it holds love, honesty, forgiveness, and healthy boundaries together.",
+          "reflection": "In which relationship has my interpretation become stronger than the evidence?",
+          "action": "Before reacting, ask one clear and respectful question instead of assuming the other person’s motive.",
+          "prayer": "Lord, guide my thoughts and words in relationships with love and truth.",
+          "declaration": "In relationships I listen, speak truth, forgive, and maintain healthy boundaries."
+        },
+        "hr": {
+          "title": "Zdravi odnosi počinju zdravim mislima",
+          "devotional": "Mnogi sukobi nastaju u misaonim tumačenjima prije nego što se pojave u riječima. Obnovljen um ne sudi brzo, ne pogađa tuđe motive i ne napušta istinu; zajedno drži ljubav, iskrenost, oprost i zdrave granice.",
+          "reflection": "U kojem je odnosu moje tumačenje postalo jače od dokaza?",
+          "action": "Prije reakcije postavi jedno jasno i poštljivo pitanje umjesto da pretpostaviš tuđu namjeru.",
+          "prayer": "Gospodine, vodi moje misli i riječi u odnosima ljubavlju i istinom.",
+          "declaration": "U odnosima slušam, govorim istinu, opraštam i čuvam zdrave granice."
+        }
+      }
+    },
+    {
+      "day": 25,
+      "scriptures": [
+        "Colossians 3:12-15",
+        "Joshua 24:15"
+      ],
+      "content": {
+        "fa": {
+          "title": "نظم ذهنی را به خانه بیاور",
+          "devotional": "خانه نخستین جایی است که طرز فکر واقعی ما دیده می‌شود. ذهنی که در حضور خدا مرتب می‌شود، در خانواده مسئولیت را می‌پذیرد، با احترام سخن می‌گوید، نقش خود را روشن می‌سازد و به‌جای کنترل دیگران، محبت و خدمت را انتخاب می‌کند.",
+          "reflection": "کدام عادت فکری من آرامش خانه را تضعیف می‌کند؟",
+          "action": "امروز یک مسئولیت خانوادگی را بدون شکایت انجام بده و یک نفر را آگاهانه تشویق کن.",
+          "prayer": "پدر، خانهٔ ما را با محبت، احترام و نظم حضور خود پر کن.",
+          "declaration": "من در خانه حامل صلح، مسئولیت و محبت مسیح هستم."
+        },
+        "en": {
+          "title": "Bring Mental Order into the Home",
+          "devotional": "Home is the first place where our real way of thinking becomes visible. A mind ordered in God’s presence accepts responsibility, speaks with respect, understands its role, and chooses love and service instead of controlling others.",
+          "reflection": "Which thought habit of mine weakens peace in the home?",
+          "action": "Complete one family responsibility without complaining and intentionally encourage one person.",
+          "prayer": "Father, fill our home with the love, honor, and order of Your presence.",
+          "declaration": "In my home I carry the peace, responsibility, and love of Christ."
+        },
+        "hr": {
+          "title": "Donesi red uma u svoj dom",
+          "devotional": "Dom je prvo mjesto na kojem se vidi naš stvarni način razmišljanja. Um uređen u Božjoj prisutnosti prihvaća odgovornost, govori s poštovanjem, razumije svoju ulogu i bira ljubav i služenje umjesto kontroliranja drugih.",
+          "reflection": "Koja moja misaona navika slabi mir u domu?",
+          "action": "Danas izvrši jednu obiteljsku odgovornost bez prigovaranja i svjesno ohrabri jednu osobu.",
+          "prayer": "Oče, ispuni naš dom ljubavlju, čašću i redom svoje prisutnosti.",
+          "declaration": "U svojem domu nosim Kristov mir, odgovornost i ljubav."
+        }
+      }
+    },
+    {
+      "day": 26,
+      "scriptures": [
+        "1 Corinthians 14:40",
+        "Ephesians 4:15-16"
+      ],
+      "content": {
+        "fa": {
+          "title": "در بدن مسیح با نظم فکر کن",
+          "devotional": "کلیسا جایی برای رقابت، بی‌مسئولیتی یا وابستگی ناسالم نیست؛ بدن زنده‌ای است که هر عضو با محبت و نظم سهم خود را انجام می‌دهد. ذهن تازه هم اقتدار را محترم می‌شمارد و هم هر تعلیم و تصمیم را با کلام و شخصیت مسیح می‌سنجد.",
+          "reflection": "آیا در کلیسا بیشتر مصرف‌کننده‌ام، منتقدم یا عضو مسئول؟",
+          "action": "یک خدمت مشخص، کوچک و قابل‌اندازه‌گیری را برای این هفته انتخاب کن.",
+          "prayer": "خداوندا، مرا عضوی فروتن، مسئول و ثمربخش در بدن مسیح بساز.",
+          "declaration": "من با محبت، نظم و پاسخگویی سهم خود را در بدن مسیح انجام می‌دهم."
+        },
+        "en": {
+          "title": "Think with Order in the Body of Christ",
+          "devotional": "The church is not a place for competition, irresponsibility, or unhealthy dependence; it is a living body in which every member contributes in love and order. A renewed mind respects authority while testing teaching and decisions by Scripture and the character of Christ.",
+          "reflection": "In church life, am I mainly a consumer, a critic, or a responsible member?",
+          "action": "Choose one specific, small, measurable act of service for this week.",
+          "prayer": "Lord, make me a humble, responsible, fruitful member of Christ’s body.",
+          "declaration": "With love, order, and accountability I fulfill my part in the body of Christ."
+        },
+        "hr": {
+          "title": "Razmišljaj uredno u Kristovu tijelu",
+          "devotional": "Crkva nije mjesto natjecanja, neodgovornosti ili nezdrave ovisnosti, nego živo tijelo u kojem svaki ud doprinosi u ljubavi i redu. Obnovljen um poštuje autoritet, ali svako učenje i odluku provjerava Pismom i Kristovim karakterom.",
+          "reflection": "Jesam li u crkvi uglavnom potrošač, kritičar ili odgovoran član?",
+          "action": "Odaberi jedno konkretno, malo i mjerljivo djelo služenja za ovaj tjedan.",
+          "prayer": "Gospodine, učini me poniznim, odgovornim i plodnim članom Kristova tijela.",
+          "declaration": "S ljubavlju, redom i odgovornošću izvršavam svoj dio u Kristovu tijelu."
+        }
+      }
+    }
+  ]
+}
