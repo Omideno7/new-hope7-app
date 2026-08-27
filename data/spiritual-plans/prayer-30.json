@@ -11,24 +11,31 @@
       "subtitle": "از حضور پدر تا یک زندگی پیوسته و روح‌هدایت‌شده در دعا",
       "description": "یک مسیر عملی و مبتنی بر کلام برای رشد در دعای شخصی به زبان‌ها، همراه با پرستش، شفاعت، شنیدن و دعای قابل‌فهم.",
       "goal": "ساختن عادت روزانهٔ دعای در روح که عیسی را جلال دهد، ایمان را بنا کند و با محبت و کلام خدا هماهنگ بماند.",
-      "pastoralNote": "این پلن برای ایماندارانی است که عطای زبان‌ها را تجربه کرده‌اند یا با آرامش آن را از خدا می‌طلبند. هیچ واژه‌ای را با فشار تولید نکن و خودت را با دیگری مقایسه نکن. ارزش و نجات تو به این عطا وابسته نیست. دعای شخصی به زبان‌ها جای کلام، محبت و دعای قابل‌فهم را نمی‌گیرد؛ و کاربرد عمومی آن باید مطابق نظم و تفسیرِ اول قرنتیان ۱۴ باشد."
+      "pastoralNote": "این پلن برای ایماندارانی است که عطای زبان‌ها را دریافت کرده‌اند یا آن را از خدا می‌طلبند. در دعای شخصی به زبان‌ها، روح انسان به‌وسیلهٔ روح‌القدس دعا می‌کند و خود را بنا می‌نماید (اول قرنتیان ۱۴:۲، ۴، ۱۴؛ یهودا ۲۰). در تعلیم ما، دعا به زبان‌ها جایگاهی برتر و بسیار مؤثر در زندگی دعایی دارد؛ زیرا ما را فراتر از محدودیت فهم انسانی وارد دعای در روح می‌کند. کلام و محبت همواره اساس زندگی مسیحی‌اند؛ و کاربرد عمومی زبان‌ها در اجتماع کلیسا باید مطابق نظم کتاب‌مقدسی اول قرنتیان ۱۴ باشد."
     },
     "en": {
       "title": "30 Days of Prayer in the Spirit and Tongues",
       "subtitle": "From the Father’s presence to a continual, Spirit-led life of prayer",
       "description": "A practical, Scripture-rooted journey in personal prayer in tongues, joined with worship, intercession, listening, and prayer with understanding.",
       "goal": "Build a daily habit of prayer in the Spirit that glorifies Jesus, strengthens faith, and remains governed by love and God’s Word.",
-      "pastoralNote": "This plan is for believers who practice the gift of tongues or are peacefully asking God for it. Do not force sounds or compare yourself with anyone. Your salvation and worth do not depend on this gift. Private prayer in tongues does not replace Scripture, love, or prayer with understanding; public use should follow the order and interpretation taught in 1 Corinthians 14."
+      "pastoralNote": "This plan is for believers who have received the gift of tongues or are asking God for it. In personal prayer in tongues, the human spirit prays by the Holy Spirit and is built up (1 Corinthians 14:2, 4, 14; Jude 20). In our teaching, prayer in tongues has a higher and especially powerful place in the life of prayer because it carries us beyond the limitation of human understanding into prayer in the Spirit. Scripture and love remain foundational to Christian life, and the public use of tongues in the church gathering should follow the biblical order of 1 Corinthians 14."
     },
     "hr": {
       "title": "30 dana molitve u Duhu i jezicima",
       "subtitle": "Od Očeve prisutnosti do trajnog života molitve vođene Duhom",
       "description": "Praktično putovanje ukorijenjeno u Pismu kroz osobnu molitvu u jezicima, uz štovanje, zagovor, slušanje i molitvu s razumijevanjem.",
       "goal": "Izgraditi svakodnevnu naviku molitve u Duhu koja proslavlja Isusa, izgrađuje vjeru te ostaje vođena ljubavlju i Božjom Riječju.",
-      "pastoralNote": "Ovaj je plan za vjernike koji prakticiraju dar jezika ili ga mirno traže od Boga. Nemoj prisiljavati glasove niti se uspoređivati s drugima. Tvoje spasenje i vrijednost ne ovise o ovom daru. Osobna molitva u jezicima ne zamjenjuje Pismo, ljubav ni molitvu s razumijevanjem; javna uporaba treba slijediti red i tumačenje iz 1. Korinćanima 14."
+      "pastoralNote": "Ovaj je plan za vjernike koji su primili dar jezika ili ga traže od Boga. U osobnoj molitvi u jezicima ljudski duh moli po Duhu Svetome i izgrađuje se (1. Korinćanima 14:2, 4, 14; Juda 20). U našem nauku molitva u jezicima ima više i osobito snažno mjesto u molitvenom životu jer nas vodi iznad ograničenja ljudskog razumijevanja u molitvu u Duhu. Pismo i ljubav ostaju temelj kršćanskog života, a javna uporaba jezika na crkvenom okupljanju treba slijediti biblijski red iz 1. Korinćanima 14."
     }
   },
-  "foundationalScriptures": ["1 Corinthians 14:2", "1 Corinthians 14:4", "1 Corinthians 14:14-15", "Jude 1:20", "Romans 8:26-27", "Acts 2:4"],
+  "foundationalScriptures": [
+    "1 Corinthians 14:2",
+    "1 Corinthians 14:4",
+    "1 Corinthians 14:14-15",
+    "Jude 1:20",
+    "Romans 8:26-27",
+    "Acts 2:4"
+  ],
   "spiritPractices": {
     "fa": [
       "پنج دقیقه در حضور پدر آرام بمان. نخست با فهم خود او را «پدر» بخوان، سپس بدون عجله اجازه بده دعایت به زبان‌ها ادامه یابد و تمام توجهت را بر محبت او نگه دار.",
@@ -130,7 +137,10 @@
   "days": [
     {
       "day": 1,
-      "scriptures": ["Matthew 6:6", "Hebrews 4:16"],
+      "scriptures": [
+        "Matthew 6:6",
+        "Hebrews 4:16"
+      ],
       "content": {
         "fa": {
           "title": "ورود به حضور پدر",
@@ -160,7 +170,10 @@
     },
     {
       "day": 2,
-      "scriptures": ["Luke 11:1-4", "Matthew 6:9-13"],
+      "scriptures": [
+        "Luke 11:1-4",
+        "Matthew 6:9-13"
+      ],
       "content": {
         "fa": {
           "title": "عیسی، استاد دعا",
@@ -190,7 +203,10 @@
     },
     {
       "day": 3,
-      "scriptures": ["Matthew 6:9", "Psalm 100:4"],
+      "scriptures": [
+        "Matthew 6:9",
+        "Psalm 100:4"
+      ],
       "content": {
         "fa": {
           "title": "با پرستش آغاز کن",
@@ -220,7 +236,10 @@
     },
     {
       "day": 4,
-      "scriptures": ["Matthew 6:10", "Romans 14:17"],
+      "scriptures": [
+        "Matthew 6:10",
+        "Romans 14:17"
+      ],
       "content": {
         "fa": {
           "title": "پادشاهی تو بیاید",
@@ -250,7 +269,11 @@
     },
     {
       "day": 5,
-      "scriptures": ["Matthew 6:10", "1 John 5:14", "Romans 12:2"],
+      "scriptures": [
+        "Matthew 6:10",
+        "1 John 5:14",
+        "Romans 12:2"
+      ],
       "content": {
         "fa": {
           "title": "ارادهٔ تو انجام شود",
@@ -280,7 +303,10 @@
     },
     {
       "day": 6,
-      "scriptures": ["Matthew 6:11", "Philippians 4:19"],
+      "scriptures": [
+        "Matthew 6:11",
+        "Philippians 4:19"
+      ],
       "content": {
         "fa": {
           "title": "نان امروز",
@@ -310,7 +336,10 @@
     },
     {
       "day": 7,
-      "scriptures": ["Matthew 6:12", "1 John 1:9"],
+      "scriptures": [
+        "Matthew 6:12",
+        "1 John 1:9"
+      ],
       "content": {
         "fa": {
           "title": "صداقت، اعتراف و پاکی",
@@ -340,7 +369,10 @@
     },
     {
       "day": 8,
-      "scriptures": ["Mark 11:25", "Ephesians 4:32"],
+      "scriptures": [
+        "Mark 11:25",
+        "Ephesians 4:32"
+      ],
       "content": {
         "fa": {
           "title": "دعا با قلب بخشنده",
@@ -370,7 +402,10 @@
     },
     {
       "day": 9,
-      "scriptures": ["Matthew 6:13", "1 Corinthians 10:13"],
+      "scriptures": [
+        "Matthew 6:13",
+        "1 Corinthians 10:13"
+      ],
       "content": {
         "fa": {
           "title": "حفاظت در برابر وسوسه",
@@ -400,7 +435,10 @@
     },
     {
       "day": 10,
-      "scriptures": ["John 14:13-14", "John 16:23-24"],
+      "scriptures": [
+        "John 14:13-14",
+        "John 16:23-24"
+      ],
       "content": {
         "fa": {
           "title": "دعا در نام عیسی",
@@ -430,7 +468,10 @@
     },
     {
       "day": 11,
-      "scriptures": ["Romans 8:26-27", "Jude 1:20"],
+      "scriptures": [
+        "Romans 8:26-27",
+        "Jude 1:20"
+      ],
       "content": {
         "fa": {
           "title": "دعا به یاری روح‌القدس",
@@ -460,7 +501,10 @@
     },
     {
       "day": 12,
-      "scriptures": ["John 15:7", "Isaiah 55:10-11"],
+      "scriptures": [
+        "John 15:7",
+        "Isaiah 55:10-11"
+      ],
       "content": {
         "fa": {
           "title": "کلام، زبان دعا",
@@ -490,7 +534,10 @@
     },
     {
       "day": 13,
-      "scriptures": ["Mark 11:24", "James 1:5-6"],
+      "scriptures": [
+        "Mark 11:24",
+        "James 1:5-6"
+      ],
       "content": {
         "fa": {
           "title": "درخواست با ایمان",
@@ -520,7 +567,10 @@
     },
     {
       "day": 14,
-      "scriptures": ["Philippians 4:6-7", "1 Thessalonians 5:18"],
+      "scriptures": [
+        "Philippians 4:6-7",
+        "1 Thessalonians 5:18"
+      ],
       "content": {
         "fa": {
           "title": "شکرگزاری در میان درخواست",
@@ -550,7 +600,10 @@
     },
     {
       "day": 15,
-      "scriptures": ["1 Timothy 2:1-4", "Ezekiel 22:30"],
+      "scriptures": [
+        "1 Timothy 2:1-4",
+        "Ezekiel 22:30"
+      ],
       "content": {
         "fa": {
           "title": "ایستادن در شکاف",
@@ -580,7 +633,10 @@
     },
     {
       "day": 16,
-      "scriptures": ["Joshua 24:15", "Acts 16:31"],
+      "scriptures": [
+        "Joshua 24:15",
+        "Acts 16:31"
+      ],
       "content": {
         "fa": {
           "title": "دعا برای خانواده",
@@ -610,7 +666,10 @@
     },
     {
       "day": 17,
-      "scriptures": ["Ephesians 3:14-21", "Colossians 4:2-4"],
+      "scriptures": [
+        "Ephesians 3:14-21",
+        "Colossians 4:2-4"
+      ],
       "content": {
         "fa": {
           "title": "دعا برای کلیسا و خدمت",
@@ -640,7 +699,10 @@
     },
     {
       "day": 18,
-      "scriptures": ["1 Timothy 2:1-2", "Proverbs 21:1"],
+      "scriptures": [
+        "1 Timothy 2:1-2",
+        "Proverbs 21:1"
+      ],
       "content": {
         "fa": {
           "title": "دعا برای رهبران و ملت‌ها",
@@ -670,7 +732,10 @@
     },
     {
       "day": 19,
-      "scriptures": ["James 5:14-16", "Psalm 103:2-3"],
+      "scriptures": [
+        "James 5:14-16",
+        "Psalm 103:2-3"
+      ],
       "content": {
         "fa": {
           "title": "دعا برای شفا",
@@ -700,7 +765,10 @@
     },
     {
       "day": 20,
-      "scriptures": ["James 1:5", "Colossians 1:9-10"],
+      "scriptures": [
+        "James 1:5",
+        "Colossians 1:9-10"
+      ],
       "content": {
         "fa": {
           "title": "دعا برای حکمت",
@@ -730,7 +798,10 @@
     },
     {
       "day": 21,
-      "scriptures": ["Ephesians 6:18", "2 Corinthians 10:3-5"],
+      "scriptures": [
+        "Ephesians 6:18",
+        "2 Corinthians 10:3-5"
+      ],
       "content": {
         "fa": {
           "title": "دعا در نبرد روحانی",
@@ -760,7 +831,10 @@
     },
     {
       "day": 22,
-      "scriptures": ["Colossians 4:2", "Matthew 26:40-41"],
+      "scriptures": [
+        "Colossians 4:2",
+        "Matthew 26:40-41"
+      ],
       "content": {
         "fa": {
           "title": "بیدار و هوشیار در دعا",
@@ -790,7 +864,10 @@
     },
     {
       "day": 23,
-      "scriptures": ["Luke 18:1-8", "Galatians 6:9"],
+      "scriptures": [
+        "Luke 18:1-8",
+        "Galatians 6:9"
+      ],
       "content": {
         "fa": {
           "title": "پایداری بدون خستگی",
@@ -820,7 +897,10 @@
     },
     {
       "day": 24,
-      "scriptures": ["1 Samuel 3:9-10", "Psalm 46:10"],
+      "scriptures": [
+        "1 Samuel 3:9-10",
+        "Psalm 46:10"
+      ],
       "content": {
         "fa": {
           "title": "سکوت و شنیدن",
@@ -850,7 +930,10 @@
     },
     {
       "day": 25,
-      "scriptures": ["Psalm 23:1-4", "Psalm 119:105"],
+      "scriptures": [
+        "Psalm 23:1-4",
+        "Psalm 119:105"
+      ],
       "content": {
         "fa": {
           "title": "دعا کردن مزامیر",
@@ -880,7 +963,10 @@
     },
     {
       "day": 26,
-      "scriptures": ["Psalm 62:8", "Psalm 13:1-6"],
+      "scriptures": [
+        "Psalm 62:8",
+        "Psalm 13:1-6"
+      ],
       "content": {
         "fa": {
           "title": "ریختن دل در حضور خدا",
@@ -910,7 +996,10 @@
     },
     {
       "day": 27,
-      "scriptures": ["Matthew 18:19-20", "Acts 4:29-31"],
+      "scriptures": [
+        "Matthew 18:19-20",
+        "Acts 4:29-31"
+      ],
       "content": {
         "fa": {
           "title": "قدرت دعای متحد",
@@ -940,7 +1029,10 @@
     },
     {
       "day": 28,
-      "scriptures": ["Acts 13:2-3", "Matthew 6:16-18"],
+      "scriptures": [
+        "Acts 13:2-3",
+        "Matthew 6:16-18"
+      ],
       "content": {
         "fa": {
           "title": "دعا همراه با روزه",
@@ -970,7 +1062,10 @@
     },
     {
       "day": 29,
-      "scriptures": ["Psalm 27:13-14", "Habakkuk 2:3"],
+      "scriptures": [
+        "Psalm 27:13-14",
+        "Habakkuk 2:3"
+      ],
       "content": {
         "fa": {
           "title": "وقتی پاسخ دیر می‌رسد",
@@ -1000,7 +1095,11 @@
     },
     {
       "day": 30,
-      "scriptures": ["1 Thessalonians 5:17", "Ephesians 6:18", "Colossians 4:2"],
+      "scriptures": [
+        "1 Thessalonians 5:17",
+        "Ephesians 6:18",
+        "Colossians 4:2"
+      ],
       "content": {
         "fa": {
           "title": "یک زندگی در دعا",
