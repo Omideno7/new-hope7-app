@@ -1,0 +1,47 @@
+name: Validate Settings Offline v402
+
+on:
+  push:
+    branches: [release/final-qa-settings-offline-23950]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate JavaScript syntax
+        run: |
+          set -euo pipefail
+          node --check js/nh7-settings-controller-v402.js
+          node --check js/nh7-offline-core-v327.js
+          node --check js/nh7-offline-data-v329.js
+          node --check sw-release-core-v402.js
+          node --check service-worker.js
+      - name: Validate release offline assets and wiring
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const index=fs.readFileSync('index.html','utf8');
+          const settings=fs.readFileSync('js/nh7-settings-controller-v402.js','utf8');
+          const worker=fs.readFileSync('service-worker.js','utf8');
+          const release=fs.readFileSync('sw-release-core-v402.js','utf8');
+          const core=fs.readFileSync('js/nh7-offline-core-v327.js','utf8');
+          if(!index.includes('nh7-settings-controller-v402.js?v=4.0.2'))throw new Error('Settings v402 not wired');
+          if(index.includes('nh7-settings-controller-v399.js'))throw new Error('Old Settings controller still wired');
+          for(const required of ['nh7-offline-audio-v397','nh7-offline-media-v4','offline_audio_v397','offline_media_v4','prepareOffline','clearOfflineMedia','clearCache','nh7-settings402-status'])if(!settings.includes(required))throw new Error('Settings v402 missing '+required);
+          if(!worker.includes('sw-release-core-v402.js?v=4.0.2'))throw new Error('Release core worker not imported');
+          if(!core.includes("CACHE_RELEASE_CORE"))throw new Error('Offline core does not use release cache');
+          const match=release.match(/const NH7_RELEASE_ASSETS=\[([\s\S]*?)\];/);if(!match)throw new Error('Release asset list missing');
+          const paths=[...match[1].matchAll(/'([^']+)'/g)].map(m=>m[1]);
+          const missing=[];
+          for(const p of paths){if(!p.startsWith('./'))continue;const f=p.slice(2);if(!fs.existsSync(f))missing.push(f)}
+          if(missing.length)throw new Error('Missing release offline assets: '+missing.join(', '));
+          const currentScripts=[...index.matchAll(/<script\s+src="(js\/[^"?]+)(?:\?[^\"]*)?"/g)].map(m=>'./'+m[1]);
+          const missingFromRelease=currentScripts.filter(p=>!paths.includes(p));
+          if(missingFromRelease.length)throw new Error('Current app scripts not guaranteed offline: '+missingFromRelease.join(', '));
+          console.log('Settings/offline v402 validation OK. Release assets:',paths.length);
+          NODE
