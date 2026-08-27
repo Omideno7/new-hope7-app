@@ -10,7 +10,6 @@ permissions:
 
 jobs:
   patch:
-    if: ${{ !contains(github.event.head_commit.message || '', 'account-based library catalog v3.9.7') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -24,7 +23,6 @@ jobs:
           from pathlib import Path
           import re
 
-          # --- app.js: use the authenticated catalog RPC and remove legacy code UI/prompt ---
           p=Path('js/app.js')
           text=p.read_text(encoding='utf-8')
           old="""async function loadLibraryCatalog(){
@@ -60,11 +58,9 @@ jobs:
           text=text.replace("protectedLibrary:'Zaštićeni materijali za služitelje',enterAccessCode:'Unesite pristupni kod koji ste dobili od crkve'", "protectedLibrary:'Materijali samo za služitelje; prikazuju se samo stavke koje je administrator omogućio za vaš račun.',enterAccessCode:''",1)
           p.write_text(text,encoding='utf-8')
 
-          # --- reader v283: catalog RPC + account-based ministers access only ---
           p=Path('js/nh7-book-reader-v283.js')
           text=p.read_text(encoding='utf-8')
           text=text.replace("const CODE_KEY='nh7_minister_library_code';\n",'',1)
-
           pattern=r"async function loadCatalog\(force=false\)\{[\s\S]*?\n\}\nasync function ensureItem\(id\)\{[\s\S]*?\n\}\nfunction decorate\(\)\{"
           replacement="""async function catalogBundle(){
   const current=await ensureSession();
@@ -94,12 +90,10 @@ function decorate(){"""
           text2,n=re.subn(pattern,replacement,text,count=1)
           if n!=1: raise SystemExit('reader catalog block not found')
           text=text2
-
           pattern=r"function savedMinisterCode\(\)\{[\s\S]*?\}\nasync function readerRpc"
           text2,n=re.subn(pattern,'async function readerRpc',text,count=1)
           if n!=1: raise SystemExit('reader saved code block not found')
           text=text2
-
           old="""  let code=item.audience==='ministers'?savedMinisterCode():'';
   let data=await readerRpc(item,code).catch(error=>({allowed:false,code:'request_failed',message:error.message}));
   if(!data?.allowed&&item.audience==='ministers'&&['code_required','invalid_code','expired','max_uses'].includes(String(data?.code||''))){
@@ -116,7 +110,6 @@ function decorate(){"""
           text=text.replace("  if(['code_required','invalid_code','expired','max_uses'].includes(code))return L('کد کتابخانه خادمان نامعتبر یا منقضی است.','The ministers library code is invalid or expired.','Kod knjižnice nije valjan ili je istekao.');\n",'',1)
           p.write_text(text,encoding='utf-8')
 
-          # --- collections: get both collections and item mapping from same catalog RPC ---
           p=Path('js/nh7-library-collections-v322.js')
           text=p.read_text(encoding='utf-8')
           old="""  try{
@@ -139,13 +132,11 @@ function decorate(){"""
           text=text.replace(old,new,1)
           p.write_text(text,encoding='utf-8')
 
-          # --- offline cache version ---
           p=Path('sw-offline-v329.js')
           text=p.read_text(encoding='utf-8')
           text=re.sub(r"const VERSION='v2\.3\.9\.51-wave2-[^']+';","const VERSION='v2.3.9.51-wave2-library-catalog-v397';",text,count=1)
           p.write_text(text,encoding='utf-8')
 
-          # --- validation ---
           p=Path('.github/workflows/validate-wave2-library-access.yml')
           text=p.read_text(encoding='utf-8')
           text=text.replace("grep -q \"const VERSION='v2.3.9.51-wave2-plan-doctrine'\" sw-offline-v329.js", "grep -q \"const VERSION='v2.3.9.51-wave2-library-catalog-v397'\" sw-offline-v329.js")
