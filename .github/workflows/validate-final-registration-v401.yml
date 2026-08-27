@@ -1,0 +1,39 @@
+name: Validate final registration v4.0.1
+on:
+  push:
+    branches: [release/final-store-qa-23950]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/final-store-qa-23950
+      - name: Validate authoritative registration wiring
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check js/nh7-registration-canonical-v353.js
+          node --check js/nh7-registration-final-guard-v401.js
+          node --check js/nh7-settings-account-v252.js
+          node --check js/nh7-admin-push-owner-v400.js
+          python3 <<'PY'
+          from pathlib import Path
+          s=Path('index.html').read_text()
+          canonical=s.index('nh7-registration-canonical-v353.js?v=4.0.1')
+          bootstrap=s.index('nh7-school-registration-v342.js')
+          guard=s.index('nh7-registration-final-guard-v401.js?v=4.0.1')
+          app=s.index('js/app.js?v=2.3.9.50')
+          assert canonical < bootstrap < guard < app
+          g=Path('js/nh7-registration-final-guard-v401.js').read_text()
+          assert 'registration_not_found' in g
+          assert "button.onclick=null" in g
+          assert "nh7_registration_status" in g
+          c=Path('js/nh7-registration-canonical-v353.js').read_text()
+          assert "stopImmediatePropagation" in c
+          assert "nh7_submit_registration_v3" in c
+          print('registration v4.0.1 wiring OK')
+          PY
