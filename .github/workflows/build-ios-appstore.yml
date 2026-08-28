@@ -1,0 +1,237 @@
+name: Build iOS App Store Candidate
+
+on:
+  push:
+    branches: [release/ios-appstore-final]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-ios:
+    runs-on: macos-15
+    timeout-minutes: 45
+    env:
+      APP_ID: com.omideno7.newhope7
+      APP_NAME: New Hope 7
+      MARKETING_VERSION: '1.0'
+      BUILD_NUMBER: '23950'
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+
+      - name: Select Xcode 26+
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'Available Xcodes:'
+          ls -d /Applications/Xcode*.app | sort -V || true
+          XCODE_PATH=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1)
+          if [ -z "${XCODE_PATH:-}" ]; then
+            echo 'Xcode 26+ not found on runner'
+            exit 1
+          fi
+          sudo xcode-select -s "$XCODE_PATH/Contents/Developer"
+          xcodebuild -version
+          xcrun --sdk iphoneos --show-sdk-version
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Prepare Capacitor iOS project
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf ios-release
+          mkdir -p ios-release/www ios-release/assets
+          cp index.html app-v239.html reset-password.html manifest.json version.json ios-release/www/
+          for dir in assets css js data offline push; do cp -R "$dir" ios-release/www/; done
+          cp assets/logo.png ios-release/assets/logo.png
+
+          cat > ios-release/package.json <<'JSON'
+          {
+            "name": "new-hope-7-ios-release",
+            "private": true,
+            "version": "1.0.23950",
+            "dependencies": {
+              "@capacitor/core": "8.5.0",
+              "@capacitor/ios": "8.5.0",
+              "@capacitor/file-transfer": "2.0.5",
+              "@capacitor/filesystem": "8.1.3",
+              "@capacitor/local-notifications": "8.3.1",
+              "onesignal-cordova-plugin": "5.5.3"
+            },
+            "devDependencies": {
+              "@capacitor/assets": "3.0.5",
+              "@capacitor/cli": "8.5.0"
+            }
+          }
+          JSON
+
+          cat > ios-release/capacitor.config.json <<'JSON'
+          {
+            "appId": "com.omideno7.newhope7",
+            "appName": "New Hope 7",
+            "webDir": "www",
+            "ios": {
+              "backgroundColor": "#ffffff",
+              "contentInset": "automatic"
+            },
+            "plugins": {
+              "LocalNotifications": {}
+            }
+          }
+          JSON
+
+          cd ios-release
+          npm install --no-audit --no-fund
+          npx cap add ios
+          npx cap sync ios
+
+      - name: Configure iOS identity, version and push entitlement
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          proj = Path('ios-release/ios/App/App.xcodeproj/project.pbxproj')
+          text = proj.read_text()
+
+          text = re.sub(r'PRODUCT_BUNDLE_IDENTIFIER = [^;]+;', 'PRODUCT_BUNDLE_IDENTIFIER = com.omideno7.newhope7;', text)
+          text = re.sub(r'MARKETING_VERSION = [^;]+;', 'MARKETING_VERSION = 1.0;', text)
+          text = re.sub(r'CURRENT_PROJECT_VERSION = [^;]+;', 'CURRENT_PROJECT_VERSION = 23950;', text)
+          text = re.sub(r'IPHONEOS_DEPLOYMENT_TARGET = [^;]+;', 'IPHONEOS_DEPLOYMENT_TARGET = 15.0;', text)
+
+          if 'CODE_SIGN_ENTITLEMENTS = App/App.entitlements;' not in text:
+            text = text.replace('PRODUCT_BUNDLE_IDENTIFIER = com.omideno7.newhope7;', 'CODE_SIGN_ENTITLEMENTS = App/App.entitlements;\n\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = com.omideno7.newhope7;')
+
+          proj.write_text(text)
+
+          entitlements = Path('ios-release/ios/App/App/App.entitlements')
+          entitlements.write_text('''<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0">\n<dict>\n    <key>aps-environment</key>\n    <string>production</string>\n</dict>\n</plist>\n''')
+
+          info = Path('ios-release/ios/App/App/Info.plist')
+          data = info.read_text()
+          if '<key>UIBackgroundModes</key>' not in data:
+            data = data.replace('</dict>\n</plist>', '    <key>UIBackgroundModes</key>\n    <array>\n        <string>remote-notification</string>\n    </array>\n</dict>\n</plist>')
+          info.write_text(data)
+          PY
+
+      - name: Generate iOS app icons and splash assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd ios-release
+          npx capacitor-assets generate --ios --iconBackgroundColor '#ffffff' --iconBackgroundColorDark '#ffffff' --splashBackgroundColor '#ffffff' --splashBackgroundColorDark '#ffffff'
+          npx cap sync ios
+
+      - name: Validate project configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd ios-release
+          xcodebuild -version
+          SDK_VERSION=$(xcrun --sdk iphoneos --show-sdk-version)
+          echo "iPhoneOS SDK: $SDK_VERSION"
+          MAJOR=${SDK_VERSION%%.*}
+          test "$MAJOR" -ge 26
+          grep -q 'PRODUCT_BUNDLE_IDENTIFIER = com.omideno7.newhope7;' ios/App/App.xcodeproj/project.pbxproj
+          grep -q 'MARKETING_VERSION = 1.0;' ios/App/App.xcodeproj/project.pbxproj
+          grep -q 'CURRENT_PROJECT_VERSION = 23950;' ios/App/App.xcodeproj/project.pbxproj
+          grep -q 'CODE_SIGN_ENTITLEMENTS = App/App.entitlements;' ios/App/App.xcodeproj/project.pbxproj
+          grep -q '<string>production</string>' ios/App/App/App.entitlements
+          grep -q '<string>remote-notification</string>' ios/App/App/Info.plist
+          npm ls onesignal-cordova-plugin --depth=0
+          test -f ios/App/App/public/index.html
+          test -f ios/App/App/public/js/nh7-settings-controller-v403.js
+          test -f ios/App/App/public/js/nh7-delete-account-v253.js
+          echo 'iOS release configuration OK'
+
+      - name: Build Release for iOS Simulator without signing
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd ios-release/ios/App
+          if [ -d App.xcworkspace ]; then
+            xcodebuild \
+              -workspace App.xcworkspace \
+              -scheme App \
+              -configuration Release \
+              -sdk iphonesimulator \
+              -destination 'generic/platform=iOS Simulator' \
+              CODE_SIGNING_ALLOWED=NO \
+              build | tee ../../../IOS_SIMULATOR_BUILD.log
+          else
+            xcodebuild \
+              -project App.xcodeproj \
+              -scheme App \
+              -configuration Release \
+              -sdk iphonesimulator \
+              -destination 'generic/platform=iOS Simulator' \
+              CODE_SIGNING_ALLOWED=NO \
+              build | tee ../../../IOS_SIMULATOR_BUILD.log
+          fi
+
+      - name: Build Release for generic iOS device without signing
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd ios-release/ios/App
+          if [ -d App.xcworkspace ]; then
+            xcodebuild \
+              -workspace App.xcworkspace \
+              -scheme App \
+              -configuration Release \
+              -sdk iphoneos \
+              -destination 'generic/platform=iOS' \
+              CODE_SIGNING_ALLOWED=NO \
+              build | tee ../../../IOS_DEVICE_BUILD.log
+          else
+            xcodebuild \
+              -project App.xcodeproj \
+              -scheme App \
+              -configuration Release \
+              -sdk iphoneos \
+              -destination 'generic/platform=iOS' \
+              CODE_SIGNING_ALLOWED=NO \
+              build | tee ../../../IOS_DEVICE_BUILD.log
+          fi
+
+      - name: Produce iOS release audit and project package
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo 'New Hope 7 iOS App Store Candidate'
+            echo "Commit: $GITHUB_SHA"
+            echo 'Bundle ID: com.omideno7.newhope7'
+            echo 'App Store version: 1.0'
+            echo 'Build number: 23950'
+            echo "Xcode: $(xcodebuild -version | tr '\n' ' ')"
+            echo "iOS SDK: $(xcrun --sdk iphoneos --show-sdk-version)"
+            echo 'Minimum iOS: 15.0'
+            echo 'Capacitor: 8.5.0'
+            echo 'OneSignal Native: onesignal-cordova-plugin 5.5.3'
+            echo 'Push entitlement: production'
+            echo 'Background mode: remote-notification'
+            echo 'Signing: NOT performed in CI; final archive must be signed with the Apple Distribution profile for com.omideno7.newhope7'
+          } > IOS_RELEASE_AUDIT.txt
+          rm -rf ios-release/node_modules ios-release/ios/App/build ios-release/ios/App/DerivedData
+          zip -qr New_Hope_7_iOS_AppStore_Project.zip ios-release IOS_RELEASE_AUDIT.txt IOS_SIMULATOR_BUILD.log IOS_DEVICE_BUILD.log -x '*.DS_Store'
+
+      - name: Upload iOS project and audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: New_Hope_7_iOS_AppStore_Project
+          path: |
+            New_Hope_7_iOS_AppStore_Project.zip
+            IOS_RELEASE_AUDIT.txt
+            IOS_SIMULATOR_BUILD.log
+            IOS_DEVICE_BUILD.log
+          if-no-files-found: error
+          retention-days: 14
