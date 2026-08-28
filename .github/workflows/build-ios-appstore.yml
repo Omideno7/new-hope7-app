@@ -25,13 +25,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          echo 'Available Xcodes:'
-          ls -d /Applications/Xcode*.app | sort -V || true
           XCODE_PATH=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1)
-          if [ -z "${XCODE_PATH:-}" ]; then
-            echo 'Xcode 26+ not found on runner'
-            exit 1
-          fi
+          test -n "${XCODE_PATH:-}"
           sudo xcode-select -s "$XCODE_PATH/Contents/Developer"
           xcodebuild -version
           xcrun --sdk iphoneos --show-sdk-version
@@ -101,15 +96,12 @@ jobs:
 
           proj = Path('ios-release/ios/App/App.xcodeproj/project.pbxproj')
           text = proj.read_text()
-
           text = re.sub(r'PRODUCT_BUNDLE_IDENTIFIER = [^;]+;', 'PRODUCT_BUNDLE_IDENTIFIER = com.omideno7.newhope7;', text)
           text = re.sub(r'MARKETING_VERSION = [^;]+;', 'MARKETING_VERSION = 1.0;', text)
           text = re.sub(r'CURRENT_PROJECT_VERSION = [^;]+;', 'CURRENT_PROJECT_VERSION = 23950;', text)
           text = re.sub(r'IPHONEOS_DEPLOYMENT_TARGET = [^;]+;', 'IPHONEOS_DEPLOYMENT_TARGET = 15.0;', text)
-
           if 'CODE_SIGN_ENTITLEMENTS = App/App.entitlements;' not in text:
             text = text.replace('PRODUCT_BUNDLE_IDENTIFIER = com.omideno7.newhope7;', 'CODE_SIGN_ENTITLEMENTS = App/App.entitlements;\n\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = com.omideno7.newhope7;')
-
           proj.write_text(text)
 
           entitlements = Path('ios-release/ios/App/App/App.entitlements')
@@ -130,14 +122,12 @@ jobs:
           npx capacitor-assets generate --ios --iconBackgroundColor '#ffffff' --iconBackgroundColorDark '#ffffff' --splashBackgroundColor '#ffffff' --splashBackgroundColorDark '#ffffff'
           npx cap sync ios
 
-      - name: Validate project configuration
+      - name: Validate project configuration and local Swift package
         shell: bash
         run: |
           set -euo pipefail
           cd ios-release
-          xcodebuild -version
           SDK_VERSION=$(xcrun --sdk iphoneos --show-sdk-version)
-          echo "iPhoneOS SDK: $SDK_VERSION"
           MAJOR=${SDK_VERSION%%.*}
           test "$MAJOR" -ge 26
           grep -q 'PRODUCT_BUNDLE_IDENTIFIER = com.omideno7.newhope7;' ios/App/App.xcodeproj/project.pbxproj
@@ -147,6 +137,14 @@ jobs:
           grep -q '<string>production</string>' ios/App/App/App.entitlements
           grep -q '<string>remote-notification</string>' ios/App/App/Info.plist
           npm ls onesignal-cordova-plugin --depth=0
+          test -e ios/App/CapApp-SPM
+          echo 'CapApp-SPM listing:'
+          ls -ld ios/App/CapApp-SPM
+          if [ -L ios/App/CapApp-SPM ]; then
+            echo "CapApp-SPM symlink target: $(readlink ios/App/CapApp-SPM)"
+          fi
+          test -f ios/App/CapApp-SPM/Package.swift
+          cat ios/App/CapApp-SPM/Package.swift
           test -f ios/App/App/public/index.html
           test -f ios/App/App/public/js/nh7-settings-controller-v403.js
           test -f ios/App/App/public/js/nh7-delete-account-v253.js
@@ -157,55 +155,28 @@ jobs:
         run: |
           set -euo pipefail
           cd ios-release/ios/App
-          if [ -d App.xcworkspace ]; then
-            xcodebuild \
-              -workspace App.xcworkspace \
-              -scheme App \
-              -configuration Release \
-              -sdk iphonesimulator \
-              -destination 'generic/platform=iOS Simulator' \
-              CODE_SIGNING_ALLOWED=NO \
-              build | tee ../../../IOS_SIMULATOR_BUILD.log
-          else
-            xcodebuild \
-              -project App.xcodeproj \
-              -scheme App \
-              -configuration Release \
-              -sdk iphonesimulator \
-              -destination 'generic/platform=iOS Simulator' \
-              CODE_SIGNING_ALLOWED=NO \
-              build | tee ../../../IOS_SIMULATOR_BUILD.log
-          fi
+          xcodebuild -project App.xcodeproj -scheme App -configuration Release -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build | tee ../../../IOS_SIMULATOR_BUILD.log
 
       - name: Build Release for generic iOS device without signing
         shell: bash
         run: |
           set -euo pipefail
           cd ios-release/ios/App
-          if [ -d App.xcworkspace ]; then
-            xcodebuild \
-              -workspace App.xcworkspace \
-              -scheme App \
-              -configuration Release \
-              -sdk iphoneos \
-              -destination 'generic/platform=iOS' \
-              CODE_SIGNING_ALLOWED=NO \
-              build | tee ../../../IOS_DEVICE_BUILD.log
-          else
-            xcodebuild \
-              -project App.xcodeproj \
-              -scheme App \
-              -configuration Release \
-              -sdk iphoneos \
-              -destination 'generic/platform=iOS' \
-              CODE_SIGNING_ALLOWED=NO \
-              build | tee ../../../IOS_DEVICE_BUILD.log
-          fi
+          xcodebuild -project App.xcodeproj -scheme App -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build | tee ../../../IOS_DEVICE_BUILD.log
 
-      - name: Produce iOS release audit and project package
+      - name: Materialize CapApp-SPM and produce self-contained archive
         shell: bash
         run: |
           set -euo pipefail
+          CAP_DIR='ios-release/ios/App/CapApp-SPM'
+          if [ -L "$CAP_DIR" ]; then
+            REAL_TARGET=$(cd "$(dirname "$CAP_DIR")" && python3 -c 'import os; print(os.path.realpath("CapApp-SPM"))')
+            echo "Materializing CapApp-SPM from $REAL_TARGET"
+            rm "$CAP_DIR"
+            cp -R "$REAL_TARGET" "$CAP_DIR"
+          fi
+          test -f "$CAP_DIR/Package.swift"
+          test -d ios-release/node_modules
           {
             echo 'New Hope 7 iOS App Store Candidate'
             echo "Commit: $GITHUB_SHA"
@@ -219,17 +190,20 @@ jobs:
             echo 'OneSignal Native: onesignal-cordova-plugin 5.5.3'
             echo 'Push entitlement: production'
             echo 'Background mode: remote-notification'
+            echo 'CapApp-SPM: materialized and packaged'
+            echo 'node_modules: retained so local Swift package references remain resolvable on developer Mac'
             echo 'Signing: NOT performed in CI; final archive must be signed with the Apple Distribution profile for com.omideno7.newhope7'
           } > IOS_RELEASE_AUDIT.txt
-          rm -rf ios-release/node_modules ios-release/ios/App/build ios-release/ios/App/DerivedData
-          zip -qr New_Hope_7_iOS_AppStore_Project.zip ios-release IOS_RELEASE_AUDIT.txt IOS_SIMULATOR_BUILD.log IOS_DEVICE_BUILD.log -x '*.DS_Store'
+          rm -rf ios-release/ios/App/build ios-release/ios/App/DerivedData
+          zip -qry New_Hope_7_iOS_AppStore_Project_SELF_CONTAINED.zip ios-release IOS_RELEASE_AUDIT.txt IOS_SIMULATOR_BUILD.log IOS_DEVICE_BUILD.log -x '*.DS_Store'
+          unzip -l New_Hope_7_iOS_AppStore_Project_SELF_CONTAINED.zip | grep 'ios-release/ios/App/CapApp-SPM/Package.swift'
 
-      - name: Upload iOS project and audit
+      - name: Upload self-contained iOS project and audit
         uses: actions/upload-artifact@v4
         with:
-          name: New_Hope_7_iOS_AppStore_Project
+          name: New_Hope_7_iOS_AppStore_Project_SELF_CONTAINED
           path: |
-            New_Hope_7_iOS_AppStore_Project.zip
+            New_Hope_7_iOS_AppStore_Project_SELF_CONTAINED.zip
             IOS_RELEASE_AUDIT.txt
             IOS_SIMULATOR_BUILD.log
             IOS_DEVICE_BUILD.log
