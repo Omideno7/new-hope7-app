@@ -35,7 +35,7 @@ async function reviewAssignmentV246(id,status){
     await loadAll(true);
     alert(status==='approved'
       ?L('تکلیف تأیید و نمره ذخیره شد.','Assignment approved and grade saved.','Zadatak je odobren i ocjena spremljena.')
-      :L('تکلیف برای اصلاح به دانشجو برگشت داده شد. دانشجو می‌تواند آن را ویرایش و دوباره ارسال کند.','Assignment returned for revision. The student can edit and resubmit it.','Zadatak je vraćen na doradu. Student ga može urediti i ponovno poslati.'));
+      :L('تکلیف برای اصلاح به دانشجو برگشت داده شد و تا زمان ارسال مجدد از صف بررسی شما خارج می‌شود.','Assignment returned for revision and removed from your review queue until the student resubmits it.','Zadatak je vraćen na doradu i uklonjen iz reda za pregled dok ga student ponovno ne pošalje.'));
   }catch(e){alert(e?.message||String(e))}
 }
 
@@ -60,12 +60,18 @@ async function deleteAssignmentV246(id){
 function renderAssignmentCardV246(a){
   const score=assignmentScoreForDisplay(a);
   const status=String(a.status||'submitted').toLowerCase();
+
+  // Admin review queue should contain only items that need an admin decision.
+  // A "needs_revision" item remains safely stored for the student, but is hidden
+  // from the admin queue until the student edits and resubmits it. The existing
+  // submit RPC changes its status back to "submitted", so it automatically
+  // appears here again with no database or mobile-app changes required.
+  if(status==='needs_revision')return '';
+
   const scoreHint=status==='submitted'
     ?L('هنوز نمره‌گذاری نشده','Not graded yet','Još nije ocijenjeno')
-    :status==='needs_revision'
-      ?L('نمره موقت؛ پس از ارسال مجدد دوباره بررسی می‌شود','Provisional grade; review again after resubmission','Privremena ocjena; ponovno pregledati nakon ponovne predaje')
-      :L('نمره نهایی تأییدشده','Approved final grade','Odobrena završna ocjena');
-  return `<article class="request-card" data-assignment-id="${E(a.id)}"><div class="req-head"><div><div class="req-name">${E(a.user_name||'-')}</div><div class="req-meta">${E(a.user_email)}<br>${E(typeof assignmentLessonTitle==='function'?assignmentLessonTitle(a.lesson_code):a.lesson_code)} · ${E(a.course_code||'foundation_school')}<br>${E(a.submitted_at?new Date(a.submitted_at).toLocaleString():'')}</div></div><span class="pill ${status==='approved'?'approved':status==='needs_revision'?'rejected':'pending'}">${E(typeof assignmentAdminStatus==='function'?assignmentAdminStatus(status):status)}</span></div><div class="detail-box"><p>${E(a.answer_text||'')}</p></div><div class="grid2"><label>${L('نمره تکلیف (۰ تا ۱۰۰)','Assignment score (0–100)','Ocjena zadatka (0–100)')}<input id="as_score_${E(a.id)}" type="number" inputmode="numeric" min="0" max="100" step="1" value="${score}"><small class="muted">${E(scoreHint)}</small></label><label>${L('بازخورد مدیر','Admin feedback','Povratna informacija administratora')}<textarea id="as_feedback_${E(a.id)}" placeholder="${E(L('در صورت نیاز توضیح یا نکته اصلاحی را بنویسید…','Add feedback or revision instructions if needed…','Po potrebi upišite povratnu informaciju ili upute za doradu…'))}">${E(a.admin_feedback||'')}</textarea></label></div><div class="actions three"><button class="btn primary" onclick="reviewSchoolAssignment('${E(a.id)}','approved')">✓ ${L('تأیید و ثبت نمره','Approve & save grade','Odobri i spremi ocjenu')}</button><button class="btn secondary" onclick="reviewSchoolAssignment('${E(a.id)}','needs_revision')">↻ ${L('نیاز به اصلاح','Needs revision','Potrebna dorada')}</button><button class="btn danger-btn" onclick="nh7DeleteSchoolAssignmentV246('${E(a.id)}')">🗑 ${L('حذف کامل تکلیف','Delete assignment','Izbriši zadatak')}</button></div></article>`;
+    :L('نمره نهایی تأییدشده','Approved final grade','Odobrena završna ocjena');
+  return `<article class="request-card" data-assignment-id="${E(a.id)}"><div class="req-head"><div><div class="req-name">${E(a.user_name||'-')}</div><div class="req-meta">${E(a.user_email)}<br>${E(typeof assignmentLessonTitle==='function'?assignmentLessonTitle(a.lesson_code):a.lesson_code)} · ${E(a.course_code||'foundation_school')}<br>${E(a.submitted_at?new Date(a.submitted_at).toLocaleString():'')}</div></div><span class="pill ${status==='approved'?'approved':'pending'}">${E(typeof assignmentAdminStatus==='function'?assignmentAdminStatus(status):status)}</span></div><div class="detail-box"><p>${E(a.answer_text||'')}</p></div><div class="grid2"><label>${L('نمره تکلیف (۰ تا ۱۰۰)','Assignment score (0–100)','Ocjena zadatka (0–100)')}<input id="as_score_${E(a.id)}" type="number" inputmode="numeric" min="0" max="100" step="1" value="${score}"><small class="muted">${E(scoreHint)}</small></label><label>${L('بازخورد مدیر','Admin feedback','Povratna informacija administratora')}<textarea id="as_feedback_${E(a.id)}" placeholder="${E(L('در صورت نیاز توضیح یا نکته اصلاحی را بنویسید…','Add feedback or revision instructions if needed…','Po potrebi upišite povratnu informaciju ili upute za doradu…'))}">${E(a.admin_feedback||'')}</textarea></label></div><div class="actions three"><button class="btn primary" onclick="reviewSchoolAssignment('${E(a.id)}','approved')">✓ ${L('تأیید و ثبت نمره','Approve & save grade','Odobri i spremi ocjenu')}</button><button class="btn secondary" onclick="reviewSchoolAssignment('${E(a.id)}','needs_revision')">↻ ${L('نیاز به اصلاح','Needs revision','Potrebna dorada')}</button><button class="btn danger-btn" onclick="nh7DeleteSchoolAssignmentV246('${E(a.id)}')">🗑 ${L('حذف کامل تکلیف','Delete assignment','Izbriši zadatak')}</button></div></article>`;
 }
 
 function install(){
