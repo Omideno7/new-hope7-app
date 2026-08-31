@@ -1,0 +1,212 @@
+name: Build Android Native Push QA v4.2.0
+
+on:
+  push:
+    branches: ['qa/android-native-push-v420']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      APP_ID: com.omideno7.newhope7.pushqa
+      APP_NAME: New Hope 7 Push QA
+      VERSION_NAME: 2.3.9.50-pushqa.1
+      VERSION_CODE: '42001'
+      ONESIGNAL_APP_ID: 86f4116a-707a-4959-aa3f-7c703f57bf7e
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout isolated QA branch
+
+      - uses: actions/setup-node@v4
+        name: Set up Node 22
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-java@v4
+        name: Set up Java 21
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: android-actions/setup-android@v3
+        name: Set up Android SDK
+
+      - name: Install Android API 36
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager 'platforms;android-36' 'build-tools;36.0.0' 'platform-tools'
+
+      - name: Validate isolated native push bridge
+        run: |
+          node --check js/nh7-onesignal-native-android-v420.js
+          grep -q "OneSignal Cordova initialize" js/nh7-onesignal-native-android-v420.js
+          grep -q "requestPermission" js/nh7-onesignal-native-android-v420.js
+          grep -q "os.login" js/nh7-onesignal-native-android-v420.js
+
+      - name: Create separate Capacitor QA wrapper
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf native-qa
+          mkdir -p native-qa/www native-qa/assets
+          cp index.html app-v239.html reset-password.html manifest.json version.json native-qa/www/
+          for dir in assets css js data offline push; do cp -R "$dir" native-qa/www/; done
+          cp assets/logo.png native-qa/assets/logo.png
+
+          python3 <<'PY'
+          from pathlib import Path
+          p=Path('native-qa/www/index.html')
+          text=p.read_text()
+          # The Play/PWA Web SDK is intentionally disabled only inside this QA APK.
+          text=text.replace('<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>','<!-- Web OneSignal SDK disabled in Android native-push QA -->')
+          marker='</body>'
+          tag='  <script src="js/nh7-onesignal-native-android-v420.js?v=4.2.0" defer></script>\n'
+          if tag not in text:
+              if marker not in text: raise SystemExit('index.html body marker missing')
+              text=text.replace(marker,tag+marker,1)
+          p.write_text(text)
+          PY
+
+          cat > native-qa/package.json <<'JSON'
+          {
+            "name": "new-hope-7-android-native-push-qa",
+            "private": true,
+            "version": "4.2.0",
+            "dependencies": {
+              "@capacitor/android": "8.5.0",
+              "@capacitor/core": "8.5.0",
+              "@capacitor/file-transfer": "2.0.5",
+              "@capacitor/filesystem": "8.1.3",
+              "@capacitor/local-notifications": "8.3.1",
+              "onesignal-cordova-plugin": "5.5.3"
+            },
+            "devDependencies": {
+              "@capacitor/assets": "3.0.5",
+              "@capacitor/cli": "8.5.0"
+            }
+          }
+          JSON
+
+          cat > native-qa/capacitor.config.json <<'JSON'
+          {
+            "appId": "com.omideno7.newhope7.pushqa",
+            "appName": "New Hope 7 Push QA",
+            "webDir": "www",
+            "server": {"androidScheme":"https","cleartext":false},
+            "android": {"backgroundColor":"#ffffff","webContentsDebuggingEnabled":false},
+            "plugins": {"LocalNotifications":{"iconColor":"#0f766e"}}
+          }
+          JSON
+
+          cd native-qa
+          npm install --no-audit --no-fund
+          npx cap add android
+          npx cap sync android
+
+      - name: Configure Android QA identity and notification permission
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+          root=Path('native-qa/android')
+
+          variables=root/'variables.gradle'
+          text=variables.read_text()
+          text=re.sub(r'minSdkVersion\s*=\s*\d+', 'minSdkVersion = 24', text)
+          text=re.sub(r'compileSdkVersion\s*=\s*\d+', 'compileSdkVersion = 36', text)
+          text=re.sub(r'targetSdkVersion\s*=\s*\d+', 'targetSdkVersion = 36', text)
+          variables.write_text(text)
+
+          gradle=root/'app/build.gradle'
+          text=gradle.read_text()
+          text=re.sub(r'versionCode\s*(?:=\s*)?\d+', 'versionCode 42001', text)
+          text=re.sub(r'versionName\s*(?:=\s*)?["\'][^"\']+["\']', 'versionName "2.3.9.50-pushqa.1"', text)
+          gradle.write_text(text)
+
+          manifest=root/'app/src/main/AndroidManifest.xml'
+          text=manifest.read_text()
+          if 'android.permission.POST_NOTIFICATIONS' not in text:
+              m=re.search(r'<manifest\b[^>]*>',text,re.S)
+              if not m: raise SystemExit('AndroidManifest root missing')
+              text=text[:m.end()]+'\n    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />'+text[m.end():]
+          if 'usesCleartextTraffic' not in text:
+              text=text.replace('<application','<application android:usesCleartextTraffic="false"',1)
+          manifest.write_text(text)
+          PY
+
+      - name: Generate branded Android assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd native-qa
+          npx capacitor-assets generate --android --iconBackgroundColor '#ffffff' --iconBackgroundColorDark '#ffffff' --splashBackgroundColor '#ffffff' --splashBackgroundColorDark '#ffffff' || true
+
+      - name: Validate native OneSignal integration
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd native-qa
+          grep -R "applicationId.*com.omideno7.newhope7.pushqa" android/app/build.gradle
+          grep -R "versionCode.*42001" android/app/build.gradle
+          grep -R 'versionName.*2.3.9.50-pushqa.1' android/app/build.gradle
+          grep -R 'compileSdkVersion = 36' android/variables.gradle
+          grep -R 'targetSdkVersion = 36' android/variables.gradle
+          grep -R 'POST_NOTIFICATIONS' android/app/src/main/AndroidManifest.xml
+          test -f android/app/src/main/assets/public/js/nh7-onesignal-native-android-v420.js
+          grep -q 'nh7-onesignal-native-android-v420.js?v=4.2.0' android/app/src/main/assets/public/index.html
+          if grep -q 'cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js' android/app/src/main/assets/public/index.html; then
+            echo 'Web OneSignal SDK must not be active in native QA' >&2
+            exit 1
+          fi
+          npm ls onesignal-cordova-plugin --depth=0
+          grep -R -i -q 'onesignal' android/capacitor-cordova-android-plugins android/app android/capacitor.settings.gradle
+          echo 'Native OneSignal Cordova bridge detected'
+
+      - name: Build installable QA APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd native-qa/android
+          chmod +x gradlew
+          ./gradlew assembleDebug --stacktrace
+          test -f app/build/outputs/apk/debug/app-debug.apk
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging app/build/outputs/apk/debug/app-debug.apk | grep "package: name='com.omideno7.newhope7.pushqa'"
+          cp app/build/outputs/apk/debug/app-debug.apk ../../New_Hope_7_Android_Push_QA_v420.apk
+
+      - name: Produce QA audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo 'New Hope 7 Android Native Push QA v4.2.0'
+            echo "Commit: $GITHUB_SHA"
+            echo "Package: $APP_ID"
+            echo "Version: $VERSION_NAME ($VERSION_CODE)"
+            echo 'Purpose: isolated Android native OneSignal push verification only'
+            echo 'Main Google Play package remains untouched: com.omideno7.newhope7'
+            echo 'Admin panel remains untouched'
+            echo 'Web/PWA OneSignal SDK disabled only inside this QA APK'
+            echo 'Native plugin: onesignal-cordova-plugin 5.5.3'
+            echo 'Native initialize/login/tags/permission bridge: js/nh7-onesignal-native-android-v420.js'
+            echo 'Android targetSdk: 36'
+            echo 'POST_NOTIFICATIONS: enabled'
+            echo
+            sha256sum New_Hope_7_Android_Push_QA_v420.apk
+          } > ANDROID_PUSH_QA_V420_AUDIT.txt
+
+      - uses: actions/upload-artifact@v4
+        name: Upload separate Android Push QA APK
+        with:
+          name: New_Hope_7_Android_Push_QA_v420
+          path: |
+            New_Hope_7_Android_Push_QA_v420.apk
+            ANDROID_PUSH_QA_V420_AUDIT.txt
+          if-no-files-found: error
+          retention-days: 14
