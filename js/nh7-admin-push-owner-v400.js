@@ -1,12 +1,12 @@
-/* New Hope 7 Admin v4.1.4 — secure admin push binding + admin runtime helpers. */
+/* New Hope 7 Admin v4.1.5 — secure admin push binding + admin runtime helpers. */
 (()=>{'use strict';
 if(window.__NH7_ADMIN_PUSH_OWNER_V400__)return;window.__NH7_ADMIN_PUSH_OWNER_V400__=true;
-const VERSION='4.1.4-admin-push-owner';
+const VERSION='4.1.5-admin-push-owner';
 let syncing=false,lastSync=0;
 function adminReady(){try{return !!(typeof token!=='undefined'&&token&&typeof nh7AdminAccessReady!=='undefined'&&nh7AdminAccessReady===true)}catch(_){return false}}
 function note(message,type='success'){try{if(typeof setMessage==='function')setMessage(message,type)}catch(_){} }
-function loadHelper(src,id){try{if(document.getElementById(id))return;const s=document.createElement('script');s.id=id;s.defer=true;s.src=src+(src.includes('?')?'&':'?')+'v=4.1.4';document.head.appendChild(s)}catch(e){console.warn('[NH7 helper load]',src,e)}}
-function loadRuntimeHelpers(){loadHelper('js/nh7-admin-global-stability-v414.js','nh7AdminGlobalStabilityV414');loadHelper('js/nh7-admin-user-notes-v414.js','nh7AdminUserNotesV414')}
+function loadHelper(src,id,version='4.1.5'){try{const old=document.getElementById(id);if(old&&old.dataset.nh7Version===version)return;if(old)old.remove();const s=document.createElement('script');s.id=id;s.dataset.nh7Version=version;s.defer=true;s.src=src+(src.includes('?')?'&':'?')+'v='+encodeURIComponent(version);document.head.appendChild(s)}catch(e){console.warn('[NH7 helper load]',src,e)}}
+function loadRuntimeHelpers(){loadHelper('js/nh7-admin-global-stability-v414.js','nh7AdminGlobalStabilityV414','4.1.4');loadHelper('js/nh7-admin-user-notes-v414.js','nh7AdminUserNotesV414','4.1.5')}
 async function bindAdminPush(forcePrompt=false){
   if(syncing||!adminReady())return false;
   if(!forcePrompt&&Date.now()-lastSync<15000)return true;
