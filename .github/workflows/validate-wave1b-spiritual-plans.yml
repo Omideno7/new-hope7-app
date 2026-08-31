@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - release/wave1b-production-23950
-      - main
   workflow_dispatch:
 
 permissions:
