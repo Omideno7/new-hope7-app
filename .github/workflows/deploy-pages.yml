@@ -40,6 +40,7 @@ jobs:
             js/nh7-offline-startup-v327.js
             js/nh7-offline-core-v327.js
             js/nh7-offline-data-v329.js
+            js/nh7-offline-data-v422.js
             js/nh7-audio-route-stability-v330.js
             js/nh7-audio-classic-v400.js
             js/nh7-settings-controller-v403.js
@@ -105,6 +106,7 @@ jobs:
           const audio=fs.readFileSync('js/nh7-audio-classic-v400.js','utf8');
           const settings=fs.readFileSync('js/nh7-settings-controller-v403.js','utf8');
           const deletion=fs.readFileSync('js/nh7-delete-account-v253.js','utf8');
+          const offlineData=fs.readFileSync('js/nh7-offline-data-v422.js','utf8');
           const school=JSON.parse(fs.readFileSync('data/school/school_content.json','utf8'));
 
           if(!/^\d+\.\d+\.\d+\.\d+$/.test(version.app||''))fail('Invalid app version');
@@ -135,7 +137,9 @@ jobs:
 
           for(const required of ["NH7_SETTINGS_CONTROLLER_VERSION='4.0.3'",'prepareOffline','clearOffline','refresh','nh7-settings403-status','nh7SettingsToast403'])if(!settings.includes(required))fail(`Settings v403 missing ${required}`);
           for(const required of ["NH7_DELETE_ACCOUNT_VERSION='2.5.3'",'currentSession','refresh_token','/auth/v1/user','grant_type=refresh_token','nh7-delete-my-account-v252','stopImmediatePropagation'])if(!deletion.includes(required))fail(`Delete v253 missing ${required}`);
-          if(!worker.includes('sw-navigation-fresh-v403.js?v=4.0.3')||!worker.includes('sw-release-core-v403.js?v=4.0.3'))fail('v403 service-worker wiring missing');
+          if(!worker.includes('sw-navigation-fresh-v403.js?v=4.0.3')||!worker.includes('sw-release-core-v403.js?v=4.2.2'))fail('service-worker live-catalogue wiring missing');
+          if(!index.includes('js/nh7-offline-data-v422.js?v=4.2.2')||index.includes('js/nh7-offline-data-v329.js?v=2.3.9.50-offline403'))fail('auth-safe live catalogue runtime wiring missing');
+          for(const required of ["4.2.2-auth-safe-catalogue",'response.status>=400&&response.status<500','nh7_remote_catalogue_cache_v422'])if(!offlineData.includes(required))fail(`live catalogue runtime missing ${required}`);
           if(worker.indexOf('sw-navigation-fresh-v403.js')>worker.indexOf('sw-offline-v329.js'))fail('fresh navigation worker must load first');
           for(const required of ['self.registration.scope',"cache:'no-store'",'stopImmediatePropagation','nh7-shell-v403'])if(!nav.includes(required))fail(`fresh shell missing ${required}`);
 
@@ -162,12 +166,13 @@ jobs:
           grep -q "nh7-notifications-zagreb-v334.js?v=2.3.9.35e" index.html
           grep -q "nh7-auto-update-v335.js" index.html
           grep -q "nh7-audio-classic-v400.js" index.html
+          grep -q "nh7-offline-data-v422.js?v=4.2.2" index.html
           grep -q "nh7-settings-controller-v403.js?v=4.0.3" index.html
           grep -q "nh7-delete-account-v253.js?v=2.5.3" index.html
           ! grep -q "nh7-settings-controller-v402.js" index.html
           grep -q "admin-v2.3.9-notifications-zagreb-v333.js" admin-v239-stable.html
           grep -q "admin-qna-i18n-v341.js" admin-v239-stable.html
-          required=(admin.html admin-v239.html admin-v239-stable.html app-v239.html index.html reset-password.html admin-reset-password.html version.json service-worker.js sw-navigation-fresh-v403.js sw-release-core-v403.js push/OneSignalSDKWorker.js js/nh7-registration-canonical-v353.js js/nh7-registration-final-guard-v401.js js/nh7-school-exam-v344.js js/nh7-audio-classic-v400.js js/nh7-settings-controller-v403.js js/nh7-delete-account-v253.js js/nh7-admin-rbac-v350.js)
+          required=(admin.html admin-v239.html admin-v239-stable.html app-v239.html index.html reset-password.html admin-reset-password.html version.json service-worker.js sw-navigation-fresh-v403.js sw-release-core-v403.js push/OneSignalSDKWorker.js js/nh7-registration-canonical-v353.js js/nh7-registration-final-guard-v401.js js/nh7-school-exam-v344.js js/nh7-audio-classic-v400.js js/nh7-offline-data-v422.js js/nh7-settings-controller-v403.js js/nh7-delete-account-v253.js js/nh7-admin-rbac-v350.js)
           for file in "${required[@]}"; do test -f "$file"; done
 
       - name: Validate Edge CORS and custom authentication
