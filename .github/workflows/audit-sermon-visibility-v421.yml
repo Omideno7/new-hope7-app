@@ -1,0 +1,121 @@
+name: Audit Sermon Visibility v4.2.1
+
+on:
+  push:
+    branches: ['audit/sermon-visibility-admin-startup-v421']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SUPABASE_URL: https://gpzcwffxnddhaeaogdyo.supabase.co
+      SUPABASE_KEY: sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout isolated audit branch
+
+      - name: Query public sermon catalogue and storage (read only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p audit-v421
+          api_get(){
+            local path="$1" out="$2"
+            curl --fail-with-body --silent --show-error \
+              -H "apikey: ${SUPABASE_KEY}" \
+              -H "Authorization: Bearer ${SUPABASE_KEY}" \
+              -H 'Accept: application/json' \
+              -H 'Cache-Control: no-cache' \
+              "${SUPABASE_URL}${path}" > "audit-v421/${out}"
+          }
+
+          api_get '/rest/v1/sermon_categories?select=id,name_fa,name_en,name_hr,is_active,sort_order,created_at,updated_at&order=created_at.desc&limit=300' categories.json
+          api_get '/rest/v1/sermons?select=id,category_id,title_fa,title_en,title_hr,audio_url,youtube_url,cover_url,is_published,published_at,created_at,updated_at,sort_order,duration_seconds,duration_minutes&order=created_at.desc&limit=1000' sermons-public.json
+
+          storage_code=$(curl --silent --show-error -o audit-v421/storage-objects.json -w '%{http_code}' \
+            -X POST \
+            -H "apikey: ${SUPABASE_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_KEY}" \
+            -H 'Content-Type: application/json' \
+            --data '{"prefix":"messages/sermons","limit":1000,"offset":0,"sortBy":{"column":"created_at","order":"desc"}}' \
+            "${SUPABASE_URL}/storage/v1/object/list/church-audio")
+          printf '%s\n' "$storage_code" > audit-v421/storage-status.txt
+
+      - name: Build diagnostic summary and probe visible audio URLs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import json, pathlib, subprocess, re
+          root=pathlib.Path('audit-v421')
+          categories=json.loads((root/'categories.json').read_text() or '[]')
+          sermons=json.loads((root/'sermons-public.json').read_text() or '[]')
+          try:
+              objects=json.loads((root/'storage-objects.json').read_text() or '[]')
+          except Exception:
+              objects=[]
+          storage_status=(root/'storage-status.txt').read_text().strip()
+          by_cat={}
+          for row in sermons:
+              by_cat.setdefault(str(row.get('category_id') or ''),[]).append(row)
+          keywords=('تکالیف','مدرسه','نبوی','prophetic','assignment','school')
+          focus=[]
+          for cat in categories:
+              names=' '.join(str(cat.get(k) or '') for k in ('name_fa','name_en','name_hr')).lower()
+              if any(k.lower() in names for k in keywords):
+                  visible=by_cat.get(str(cat.get('id')),[])
+                  focus.append({
+                      'category':cat,
+                      'public_visible_sermon_count':len(visible),
+                      'public_visible_sermons':visible[:50],
+                  })
+          probes=[]
+          for row in sermons[:120]:
+              url=str(row.get('audio_url') or '').strip()
+              if not url:
+                  continue
+              p=subprocess.run(['curl','--silent','--show-error','--location','--range','0-0','--output','/dev/null','--write-out','%{http_code}|%{content_type}|%{url_effective}',url],capture_output=True,text=True,timeout=30)
+              probes.append({'id':row.get('id'),'title_fa':row.get('title_fa'),'url':url,'probe':p.stdout.strip(),'stderr':p.stderr.strip()[:500]})
+          summary={
+              'public_category_count':len(categories),
+              'public_visible_sermon_count':len(sermons),
+              'public_visible_sermons_without_audio_or_youtube':[
+                  x for x in sermons if not str(x.get('audio_url') or '').strip() and not str(x.get('youtube_url') or '').strip()
+              ],
+              'focus_categories':focus,
+              'storage_list_http_status':storage_status,
+              'storage_object_count_if_list_allowed':len(objects) if isinstance(objects,list) else None,
+              'recent_public_sermons':sermons[:80],
+              'audio_url_probes':probes,
+          }
+          (root/'summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2))
+          lines=[
+              f"Public categories: {len(categories)}",
+              f"Public visible sermons: {len(sermons)}",
+              f"Storage list HTTP: {storage_status}",
+              '',
+              'Focus categories:'
+          ]
+          for item in focus:
+              c=item['category']
+              lines.append(f"- {c.get('name_fa') or c.get('name_en')} | active={c.get('is_active')} | visible sermons={item['public_visible_sermon_count']} | id={c.get('id')}")
+          bad=[p for p in probes if not p['probe'].startswith(('200|','206|'))]
+          lines += ['',f'Audio probes: {len(probes)}; non-200/206: {len(bad)}']
+          for p in bad[:50]:
+              lines.append(f"- {p['title_fa']} | {p['probe']} | {p['url']}")
+          (root/'SUMMARY.txt').write_text('\n'.join(lines)+'\n')
+          print((root/'SUMMARY.txt').read_text())
+          PY
+
+      - uses: actions/upload-artifact@v4
+        name: Upload read-only sermon visibility report
+        with:
+          name: NH7_Sermon_Visibility_Audit_v421
+          path: audit-v421/
+          if-no-files-found: error
+          retention-days: 7
