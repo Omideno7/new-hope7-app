@@ -28,7 +28,6 @@ jobs:
             local path="$1" out="$2"
             curl --fail-with-body --silent --show-error \
               -H "apikey: ${SUPABASE_KEY}" \
-              -H "Authorization: Bearer ${SUPABASE_KEY}" \
               -H 'Accept: application/json' \
               -H 'Cache-Control: no-cache' \
               "${SUPABASE_URL}${path}" > "audit-v421/${out}"
@@ -40,7 +39,6 @@ jobs:
           storage_code=$(curl --silent --show-error -o audit-v421/storage-objects.json -w '%{http_code}' \
             -X POST \
             -H "apikey: ${SUPABASE_KEY}" \
-            -H "Authorization: Bearer ${SUPABASE_KEY}" \
             -H 'Content-Type: application/json' \
             --data '{"prefix":"messages/sermons","limit":1000,"offset":0,"sortBy":{"column":"created_at","order":"desc"}}' \
             "${SUPABASE_URL}/storage/v1/object/list/church-audio")
@@ -51,7 +49,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 <<'PY'
-          import json, pathlib, subprocess, re
+          import json, pathlib, subprocess
           root=pathlib.Path('audit-v421')
           categories=json.loads((root/'categories.json').read_text() or '[]')
           sermons=json.loads((root/'sermons-public.json').read_text() or '[]')
@@ -69,11 +67,7 @@ jobs:
               names=' '.join(str(cat.get(k) or '') for k in ('name_fa','name_en','name_hr')).lower()
               if any(k.lower() in names for k in keywords):
                   visible=by_cat.get(str(cat.get('id')),[])
-                  focus.append({
-                      'category':cat,
-                      'public_visible_sermon_count':len(visible),
-                      'public_visible_sermons':visible[:50],
-                  })
+                  focus.append({'category':cat,'public_visible_sermon_count':len(visible),'public_visible_sermons':visible[:50]})
           probes=[]
           for row in sermons[:120]:
               url=str(row.get('audio_url') or '').strip()
@@ -84,9 +78,7 @@ jobs:
           summary={
               'public_category_count':len(categories),
               'public_visible_sermon_count':len(sermons),
-              'public_visible_sermons_without_audio_or_youtube':[
-                  x for x in sermons if not str(x.get('audio_url') or '').strip() and not str(x.get('youtube_url') or '').strip()
-              ],
+              'public_visible_sermons_without_audio_or_youtube':[x for x in sermons if not str(x.get('audio_url') or '').strip() and not str(x.get('youtube_url') or '').strip()],
               'focus_categories':focus,
               'storage_list_http_status':storage_status,
               'storage_object_count_if_list_allowed':len(objects) if isinstance(objects,list) else None,
@@ -94,13 +86,7 @@ jobs:
               'audio_url_probes':probes,
           }
           (root/'summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2))
-          lines=[
-              f"Public categories: {len(categories)}",
-              f"Public visible sermons: {len(sermons)}",
-              f"Storage list HTTP: {storage_status}",
-              '',
-              'Focus categories:'
-          ]
+          lines=[f"Public categories: {len(categories)}",f"Public visible sermons: {len(sermons)}",f"Storage list HTTP: {storage_status}",'','Focus categories:']
           for item in focus:
               c=item['category']
               lines.append(f"- {c.get('name_fa') or c.get('name_en')} | active={c.get('is_active')} | visible sermons={item['public_visible_sermon_count']} | id={c.get('id')}")
