@@ -1,4 +1,4 @@
-name: Audit Supabase Deploy Capability v4.2.6
+name: Audit Supabase Public Catalogue v4.2.6
 
 on:
   push:
@@ -13,21 +13,27 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
-      A: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-      B: ${{ secrets.NH7_SUPABASE_ACCESS_TOKEN }}
-      C: ${{ secrets.NEW_HOPE7_SUPABASE_ACCESS_TOKEN }}
-      D: ${{ secrets.SUPABASE_PROJECT_REF }}
-      E: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      F: ${{ secrets.NH7_SUPABASE_SERVICE_ROLE_KEY }}
+      SB: https://gpzcwffxnddhaeaogdyo.supabase.co
+      KEY: sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37
     steps:
-      - name: Report only credential presence
+      - name: Probe public API paths read only
         shell: bash
         run: |
-          set -euo pipefail
-          present(){ if [ -n "${2:-}" ]; then printf '%s=present\n' "$1"; else printf '%s=absent\n' "$1"; fi; }
-          present SUPABASE_ACCESS_TOKEN "$A"
-          present NH7_SUPABASE_ACCESS_TOKEN "$B"
-          present NEW_HOPE7_SUPABASE_ACCESS_TOKEN "$C"
-          present SUPABASE_PROJECT_REF "$D"
-          present SUPABASE_SERVICE_ROLE_KEY "$E"
-          present NH7_SUPABASE_SERVICE_ROLE_KEY "$F"
+          set -u
+          probe(){
+            label="$1"; shift
+            file="/tmp/${label}.txt"
+            code=$(curl -sS -o "$file" -w '%{http_code}' "$@" || true)
+            echo "=== ${label} status=${code} ==="
+            python3 - "$file" <<'PY'
+          import pathlib,sys
+          p=pathlib.Path(sys.argv[1])
+          text=p.read_text(errors='replace') if p.exists() else ''
+          print(text[:1500].replace('\n',' '))
+          PY
+          }
+          probe auth_settings -H "apikey: $KEY" "$SB/auth/v1/settings"
+          probe categories_apikey -H "apikey: $KEY" -H 'Accept: application/json' "$SB/rest/v1/sermon_categories?select=id,name_fa,is_active,created_at&order=created_at.desc&limit=5"
+          probe sermons_apikey -H "apikey: $KEY" -H 'Accept: application/json' "$SB/rest/v1/sermons?select=id,title_fa,is_published,audio_url,category_id,created_at&is_published=eq.true&order=created_at.desc&limit=10"
+          probe categories_bearer -H "apikey: $KEY" -H "Authorization: Bearer $KEY" -H 'Accept: application/json' "$SB/rest/v1/sermon_categories?select=id,name_fa,is_active,created_at&order=created_at.desc&limit=5"
+          probe sermons_bearer -H "apikey: $KEY" -H "Authorization: Bearer $KEY" -H 'Accept: application/json' "$SB/rest/v1/sermons?select=id,title_fa,is_published,audio_url,category_id,created_at&is_published=eq.true&order=created_at.desc&limit=10"
