@@ -1,28 +1,41 @@
 New Hope 7 sermon catalogue permission diagnosis
 Date: 2026-09-03
 Project: gpzcwffxnddhaeaogdyo
-Mode: read-only HTTP probes; no database rows or permissions were changed.
+Mode: read-only HTTP probes; no production rows or permissions were changed by this audit.
+
+LATEST CHECK AFTER THE USER RAN GRANT
+Checked at: 2026-09-03T21:11:56Z
 
 1. GET /rest/v1/sermon_categories using the active publishable key
 HTTP: 200
-Result: the current catalogue includes the active category:
+Result: the active category is visible:
 - id: 266ea7a2-c1cb-4847-bd53-c8c8341817b0
 - name_fa: تکالیف مدرسه
 - created_at: 2026-09-03T13:25:03.176095+00:00
 
 2. GET /rest/v1/sermons?is_published=eq.true using the same publishable key
-HTTP: 401
-Database code: 42501
-Message: permission denied for table sermons
-Server hint: Grant the required privileges to the current role with: GRANT SELECT ON public.sermons TO anon;
+HTTP: 200
+Result body: []
 
 3. Repeating the request with the publishable key in both apikey and Bearer headers
 Categories HTTP: 200
-Sermons HTTP: 401
-Same database code/message/hint.
+Sermons HTTP: 200
+Sermons result body: []
 
-Conclusion:
-- New category writes are reaching production and are publicly readable.
-- The published sermon rows are blocked at the PostgreSQL table-privilege layer before RLS can return them.
-- This is a server/database permission regression, not an upload-form, category, publication-toggle, or PWA refresh failure.
-- The repository's intended schema grants SELECT on public.sermons to anon and authenticated, so production has drifted from the intended schema.
+Interpretation
+- The earlier table-level 401 permission error is gone. The GRANT was therefore applied successfully.
+- PostgreSQL/PostgREST now allows the request, but Row Level Security returns zero sermon rows.
+- The Admin panel can still see 135 rows because the authenticated Admin policy/role is different.
+- Since the Admin diagnostics report 135/135 rows as is_published=true, an empty anonymous result means the public SELECT RLS policy for published sermons is missing, restricted to the wrong roles, or otherwise not permitting is_published=true rows.
+- The sermon category policy is intact, which explains why users see the new category but no audio items inside it.
+
+Intended repository policy
+- RLS enabled on public.sermons.
+- SELECT for anon and authenticated where is_published is true.
+- Admin management remains governed by the separate Admin policy.
+
+Recommended narrow repair
+- Keep RLS enabled.
+- Keep table SELECT grants.
+- Restore one permissive SELECT policy for anon and authenticated with USING (is_published IS TRUE).
+- Reload the PostgREST schema cache.
