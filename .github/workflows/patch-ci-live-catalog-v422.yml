@@ -32,52 +32,43 @@ jobs:
           p=Path('.github/workflows/deploy-pages.yml')
           text=p.read_text()
 
-          old='''            js/nh7-offline-data-v329.js
-            js/nh7-audio-route-stability-v330.js'''
-          new='''            js/nh7-offline-data-v329.js
-            js/nh7-offline-data-v422.js
-            js/nh7-audio-route-stability-v330.js'''
-          if old in text:
-              text=text.replace(old,new,1)
-          elif '            js/nh7-offline-data-v422.js\n' not in text:
-              raise SystemExit('syntax-list anchor missing')
+          anchor="            js/nh7-offline-data-v329.js\n"
+          addition="            js/nh7-offline-data-v422.js\n"
+          if addition not in text:
+              if anchor not in text: raise SystemExit('syntax-list anchor missing')
+              text=text.replace(anchor,anchor+addition,1)
 
-          old="""          const deletion=fs.readFileSync('js/nh7-delete-account-v253.js','utf8');
-          const school=JSON.parse(fs.readFileSync('data/school/school_content.json','utf8'));"""
-          new="""          const deletion=fs.readFileSync('js/nh7-delete-account-v253.js','utf8');
-          const offlineData=fs.readFileSync('js/nh7-offline-data-v422.js','utf8');
-          const school=JSON.parse(fs.readFileSync('data/school/school_content.json','utf8'));"""
-          if old in text:
-              text=text.replace(old,new,1)
-          elif "const offlineData=fs.readFileSync('js/nh7-offline-data-v422.js','utf8');" not in text:
-              raise SystemExit('runtime-read anchor missing')
+          anchor="          const deletion=fs.readFileSync('js/nh7-delete-account-v253.js','utf8');\n"
+          addition="          const offlineData=fs.readFileSync('js/nh7-offline-data-v422.js','utf8');\n"
+          if addition not in text:
+              if anchor not in text: raise SystemExit('runtime-read anchor missing')
+              text=text.replace(anchor,anchor+addition,1)
 
-          old="""          if(!worker.includes('sw-navigation-fresh-v403.js?v=4.0.3')||!worker.includes('sw-release-core-v403.js?v=4.0.3'))fail('v403 service-worker wiring missing');"""
-          new="""          if(!worker.includes('sw-navigation-fresh-v403.js?v=4.0.3')||!worker.includes('sw-release-core-v403.js?v=4.2.2'))fail('service-worker live-catalogue wiring missing');
-          if(!index.includes('js/nh7-offline-data-v422.js?v=4.2.2')||index.includes('js/nh7-offline-data-v329.js?v=2.3.9.50-offline403'))fail('auth-safe live catalogue runtime wiring missing');
-          for(const required of [\"4.2.2-auth-safe-catalogue\",'response.status>=400&&response.status<500','nh7_remote_catalogue_cache_v422'])if(!offlineData.includes(required))fail(`live catalogue runtime missing ${required}`);"""
-          if old in text:
+          old="          if(!worker.includes('sw-navigation-fresh-v403.js?v=4.0.3')||!worker.includes('sw-release-core-v403.js?v=4.0.3'))fail('v403 service-worker wiring missing');"
+          new="          if(!worker.includes('sw-navigation-fresh-v403.js?v=4.0.3')||!worker.includes('sw-release-core-v403.js?v=4.2.2'))fail('service-worker live-catalogue wiring missing');\n          if(!index.includes('js/nh7-offline-data-v422.js?v=4.2.2')||index.includes('js/nh7-offline-data-v329.js?v=2.3.9.50-offline403'))fail('auth-safe live catalogue runtime wiring missing');\n          for(const required of [\"4.2.2-auth-safe-catalogue\",'response.status>=400&&response.status<500','nh7_remote_catalogue_cache_v422'])if(!offlineData.includes(required))fail(`live catalogue runtime missing ${required}`);"
+          if 'service-worker live-catalogue wiring missing' not in text:
+              if old not in text: raise SystemExit('service-worker validation anchor missing')
               text=text.replace(old,new,1)
-          elif "service-worker live-catalogue wiring missing" not in text:
-              raise SystemExit('service-worker validation anchor missing')
 
-          old="""          required=(admin.html admin-v239.html admin-v239-stable.html app-v239.html index.html reset-password.html admin-reset-password.html version.json service-worker.js sw-navigation-fresh-v403.js sw-release-core-v403.js push/OneSignalSDKWorker.js js/nh7-registration-canonical-v353.js js/nh7-registration-final-guard-v401.js js/nh7-school-exam-v344.js js/nh7-audio-classic-v400.js js/nh7-settings-controller-v403.js js/nh7-delete-account-v253.js js/nh7-admin-rbac-v350.js)"""
-          new="""          required=(admin.html admin-v239.html admin-v239-stable.html app-v239.html index.html reset-password.html admin-reset-password.html version.json service-worker.js sw-navigation-fresh-v403.js sw-release-core-v403.js push/OneSignalSDKWorker.js js/nh7-registration-canonical-v353.js js/nh7-registration-final-guard-v401.js js/nh7-school-exam-v344.js js/nh7-audio-classic-v400.js js/nh7-offline-data-v422.js js/nh7-settings-controller-v403.js js/nh7-delete-account-v253.js js/nh7-admin-rbac-v350.js)"""
-          if old in text:
+          old="          required=(admin.html admin-v239.html admin-v239-stable.html app-v239.html index.html reset-password.html admin-reset-password.html version.json service-worker.js sw-navigation-fresh-v403.js sw-release-core-v403.js push/OneSignalSDKWorker.js js/nh7-registration-canonical-v353.js js/nh7-registration-final-guard-v401.js js/nh7-school-exam-v344.js js/nh7-audio-classic-v400.js js/nh7-settings-controller-v403.js js/nh7-delete-account-v253.js js/nh7-admin-rbac-v350.js)"
+          new="          required=(admin.html admin-v239.html admin-v239-stable.html app-v239.html index.html reset-password.html admin-reset-password.html version.json service-worker.js sw-navigation-fresh-v403.js sw-release-core-v403.js push/OneSignalSDKWorker.js js/nh7-registration-canonical-v353.js js/nh7-registration-final-guard-v401.js js/nh7-school-exam-v344.js js/nh7-audio-classic-v400.js js/nh7-offline-data-v422.js js/nh7-settings-controller-v403.js js/nh7-delete-account-v253.js js/nh7-admin-rbac-v350.js)"
+          if 'js/nh7-offline-data-v422.js js/nh7-settings-controller-v403.js' not in text:
+              if old not in text: raise SystemExit('required-files anchor missing')
               text=text.replace(old,new,1)
-          elif 'js/nh7-offline-data-v422.js js/nh7-settings-controller-v403.js' not in text:
-              raise SystemExit('required-files anchor missing')
 
           p.write_text(text)
           PY
 
-      - name: Run the complete production validation locally
+      - name: Run updated production validation locally
         shell: bash
         run: |
           set -euo pipefail
+          node --check js/nh7-offline-data-v422.js
+          node --check service-worker.js
+          node --check sw-release-core-v403.js
           python3 - <<'PY'
-          import pathlib, re
-          text=pathlib.Path('.github/workflows/deploy-pages.yml').read_text()
+          from pathlib import Path
+          text=Path('.github/workflows/deploy-pages.yml').read_text()
           required=[
             'js/nh7-offline-data-v422.js',
             "sw-release-core-v403.js?v=4.2.2",
@@ -89,9 +80,6 @@ jobs:
               if item not in text: raise SystemExit('missing validation marker: '+item)
           print('CI contract markers OK')
           PY
-          node --check js/nh7-offline-data-v422.js
-          node --check service-worker.js
-          node --check sw-release-core-v403.js
           node <<'NODE'
           const fs=require('fs');
           const fail=m=>{throw new Error(m)};
