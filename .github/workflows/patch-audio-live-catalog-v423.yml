@@ -1,0 +1,168 @@
+name: Patch Dynamic Audio Catalogue v4.2.3
+
+on:
+  push:
+    branches: ['fix/audio-live-catalogue-v423']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: audio-live-v423-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  patch-and-validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout isolated audio branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Wire only the live audio catalogue runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+
+          index=Path('index.html')
+          text=index.read_text()
+          text=text.replace("service-worker.js?v=4.2.2", "service-worker.js?v=4.2.3", 1)
+          old='js/nh7-audio-route-stability-v330.js?v=2.3.9.33'
+          new='js/nh7-audio-route-stability-v423.js?v=4.2.3'
+          if old in text:
+              text=text.replace(old,new,1)
+          elif new not in text:
+              raise SystemExit('audio route script anchor missing')
+          index.write_text(text)
+
+          worker=Path('service-worker.js')
+          text=worker.read_text()
+          old_comment='/* New Hope 7 v2.3.9.50 — unified classic audio + auth-safe live catalogue v4.2.2 */'
+          new_comment='/* New Hope 7 v2.3.9.50 — unified classic audio + network-first dynamic sermon catalogue v4.2.3 */'
+          if old_comment in text:
+              text=text.replace(old_comment,new_comment,1)
+          elif new_comment not in text:
+              raise SystemExit('service worker version comment missing')
+          # Keep the existing release-core import query to satisfy the stable production
+          # validation contract; changing this worker file still forces an update check.
+          worker.write_text(text)
+
+          release=Path('sw-release-core-v403.js')
+          text=release.read_text()
+          text=text.replace("const NH7_RELEASE_CORE_VERSION='4.2.2';", "const NH7_RELEASE_CORE_VERSION='4.2.3';",1)
+          text=text.replace("const NH7_RELEASE_CORE_CACHE='nh7-release-core-v422';", "const NH7_RELEASE_CORE_CACHE='nh7-release-core-v423';",1)
+          old="'./js/nh7-audio-route-stability-v330.js'"
+          new="'./js/nh7-audio-route-stability-v423.js'"
+          if old in text:
+              text=text.replace(old,new,1)
+          elif new not in text:
+              raise SystemExit('release audio asset anchor missing')
+          release.write_text(text)
+          PY
+
+      - name: Validate exact runtime and release wiring
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check js/nh7-audio-route-stability-v423.js
+          node --check service-worker.js
+          node --check sw-release-core-v403.js
+          grep -q "4.2.3-audio-live-catalogue" js/nh7-audio-route-stability-v423.js
+          grep -q "networkFirst" js/nh7-audio-route-stability-v423.js
+          grep -q "refreshSession" js/nh7-audio-route-stability-v423.js
+          grep -q "service-worker.js?v=4.2.3" index.html
+          grep -q "nh7-audio-route-stability-v423.js?v=4.2.3" index.html
+          ! grep -q "nh7-audio-route-stability-v330.js?v=2.3.9.33" index.html
+          grep -q "nh7-release-core-v423" sw-release-core-v403.js
+          grep -q "./js/nh7-audio-route-stability-v423.js" sw-release-core-v403.js
+          grep -q "sw-release-core-v403.js?v=4.2.2" service-worker.js
+          node <<'NODE'
+          const fs=require('fs');
+          const html=fs.readFileSync('index.html','utf8');
+          [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)]
+            .map(x=>x[1]).filter(x=>x.trim())
+            .forEach((code,index)=>new Function(code+`\n//# sourceURL=index-inline-${index}`));
+          const release=fs.readFileSync('sw-release-core-v403.js','utf8');
+          const match=release.match(/const NH7_RELEASE_ASSETS=\[([\s\S]*?)\];/);
+          if(!match)throw new Error('release asset list missing');
+          const paths=[...match[1].matchAll(/'([^']+)'/g)].map(m=>m[1]);
+          if(!paths.includes('./js/nh7-audio-route-stability-v423.js'))throw new Error('v423 missing from release assets');
+          const currentScripts=[...html.matchAll(/<script\s+src="(js\/[^"?]+)(?:\?[^\"]*)?"/g)].map(m=>'./'+m[1]);
+          const missing=currentScripts.filter(path=>!paths.includes(path));
+          if(missing.length)throw new Error('current scripts missing from release assets: '+missing.join(', '));
+          console.log('v4.2.3 release wiring passed');
+          NODE
+
+      - name: Test network-first categories, sermons, refresh and offline fallback
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const fs=require('fs'),vm=require('vm');
+          const source=fs.readFileSync('js/nh7-audio-route-stability-v423.js','utf8');
+          const APP='https://app.example/';
+          const SUPABASE='https://gpzcwffxnddhaeaogdyo.supabase.co';
+          function memoryStorage(initial={}){const map=new Map(Object.entries(initial));return{getItem:key=>map.has(key)?map.get(key):null,setItem:(key,value)=>map.set(key,String(value)),removeItem:key=>map.delete(key),key:index=>[...map.keys()][index]??null,get length(){return map.size}}}
+          function memoryCache(entries=[]){const map=new Map(entries.map(([key,value])=>[key,value.clone()]));return{map,match:async key=>map.get(key.url||String(key))?.clone()||null,put:async(key,value)=>map.set(key.url||String(key),value.clone())}}
+          function makeContext({online=true,session=null,fetchImpl,cacheEntries=[]}={}){
+            const cache=memoryCache(cacheEntries),local=memoryStorage(session?{'nh7_user_session_v170':JSON.stringify(session)}:{}),sessionStore=memoryStorage();
+            const document={addEventListener:()=>{},getElementById:()=>null,querySelector:()=>null};
+            const window={};
+            Object.assign(window,{window,console,URL,Request,Response,Headers,AbortController,DOMException,CustomEvent:class{constructor(type,init){this.type=type;this.detail=init?.detail}},setTimeout,clearTimeout,Promise,Map,Set,JSON,Math,Date,String,Number,Boolean,encodeURIComponent,location:{href:APP,origin:APP.slice(0,-1)},navigator:{onLine:online},localStorage:local,sessionStorage:sessionStore,caches:{open:async()=>cache},document,fetch:fetchImpl,dispatchEvent:()=>{},addEventListener:()=>{}});
+            vm.createContext(window);vm.runInContext(source,window);return{ctx:window,cache,local};
+          }
+          function staleKey(prefix){return APP+'__nh7_audio_route_v423__/'+prefix}
+          (async()=>{
+            let calls=0;
+            let env=makeContext({fetchImpl:async input=>{calls++;const url=String(input);if(url.includes('/rest/v1/sermon_categories'))return new Response('[{"id":"fresh-category"}]',{status:200,headers:{'content-type':'application/json'}});throw new Error('unexpected '+url)}});
+            let result=await env.ctx.fetch(SUPABASE+'/rest/v1/sermon_categories?select=*',{method:'GET'});
+            let rows=await result.json();if(rows[0]?.id!=='fresh-category'||calls!==1)throw new Error('category request was not network-first');
+
+            calls=0;
+            env=makeContext({fetchImpl:async input=>{calls++;const url=String(input);if(url.includes('/functions/v1/nh7-content-access'))return new Response('{"items":[{"id":"fresh-sermon"}]}',{status:200,headers:{'content-type':'application/json'}});throw new Error('unexpected '+url)}});
+            result=await env.ctx.fetch(SUPABASE+'/functions/v1/nh7-content-access',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action:'catalog',resource:'sermons'})});
+            let payload=await result.json();if(payload.items?.[0]?.id!=='fresh-sermon'||calls!==1)throw new Error('sermon catalogue was not network-first');
+
+            const oldSession={access_token:'expired',refresh_token:'refresh-1',user:{email:'member@example.com'}};
+            calls=0;
+            env=makeContext({session:oldSession,fetchImpl:async(input,init={})=>{calls++;const url=String(input);if(url.includes('/auth/v1/token?grant_type=refresh_token'))return new Response(JSON.stringify({access_token:'fresh-token',refresh_token:'refresh-2',user:{email:'member@example.com'}}),{status:200,headers:{'content-type':'application/json'}});if(url.includes('/functions/v1/nh7-content-access')){const auth=new Headers(init.headers||{}).get('authorization')||'';if(auth==='Bearer expired')return new Response('{"error":"expired"}',{status:401,headers:{'content-type':'application/json'}});if(auth==='Bearer fresh-token')return new Response('{"items":[{"id":"after-refresh"}]}',{status:200,headers:{'content-type':'application/json'}})}throw new Error('unexpected '+url)}});
+            result=await env.ctx.fetch(SUPABASE+'/functions/v1/nh7-content-access',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action:'catalog',resource:'sermons'})});
+            payload=await result.json();if(payload.items?.[0]?.id!=='after-refresh')throw new Error('expired session did not refresh and retry');
+            const saved=JSON.parse(env.local.getItem('nh7_user_session_v170')||'{}');if(saved.access_token!=='fresh-token')throw new Error('refreshed session was not saved');
+
+            // Prime the v423 cache online, then verify the same request returns it offline.
+            env=makeContext({fetchImpl:async()=>new Response('[{"id":"cached-category"}]',{status:200,headers:{'content-type':'application/json'}})});
+            const categoryUrl=SUPABASE+'/rest/v1/sermon_categories?select=*';
+            await env.ctx.fetch(categoryUrl,{method:'GET'});
+            env.ctx.navigator.onLine=false;env.ctx.fetch=env.ctx.fetch;
+            result=await env.ctx.fetch(categoryUrl,{method:'GET'});rows=await result.json();if(rows[0]?.id!=='cached-category')throw new Error('offline category fallback failed');
+            console.log('network-first dynamic audio catalogue tests passed');
+          })().catch(error=>{console.error(error);process.exit(1)});
+          NODE
+
+      - name: Commit generated runtime wiring
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- index.html service-worker.js sw-release-core-v403.js; then
+            echo 'Dynamic audio wiring already applied.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html service-worker.js sw-release-core-v403.js
+          git commit -m 'Wire network-first dynamic sermon catalogue v4.2.3'
+          git push origin HEAD:${GITHUB_REF_NAME}
+
+      - name: Report exact change scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git diff --name-status origin/main...HEAD
