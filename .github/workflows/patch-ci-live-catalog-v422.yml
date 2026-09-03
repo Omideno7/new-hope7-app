@@ -1,0 +1,136 @@
+name: Patch CI for Live Sermon Catalogue v4.2.2
+
+on:
+  push:
+    branches: ['fix/ci-live-catalog-v422']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ci-live-catalog-v422-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  patch-and-validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout isolated CI branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Update production validation contract narrowly
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+          p=Path('.github/workflows/deploy-pages.yml')
+          text=p.read_text()
+
+          old='''            js/nh7-offline-data-v329.js
+            js/nh7-audio-route-stability-v330.js'''
+          new='''            js/nh7-offline-data-v329.js
+            js/nh7-offline-data-v422.js
+            js/nh7-audio-route-stability-v330.js'''
+          if old in text:
+              text=text.replace(old,new,1)
+          elif '            js/nh7-offline-data-v422.js\n' not in text:
+              raise SystemExit('syntax-list anchor missing')
+
+          old="""          const deletion=fs.readFileSync('js/nh7-delete-account-v253.js','utf8');
+          const school=JSON.parse(fs.readFileSync('data/school/school_content.json','utf8'));"""
+          new="""          const deletion=fs.readFileSync('js/nh7-delete-account-v253.js','utf8');
+          const offlineData=fs.readFileSync('js/nh7-offline-data-v422.js','utf8');
+          const school=JSON.parse(fs.readFileSync('data/school/school_content.json','utf8'));"""
+          if old in text:
+              text=text.replace(old,new,1)
+          elif "const offlineData=fs.readFileSync('js/nh7-offline-data-v422.js','utf8');" not in text:
+              raise SystemExit('runtime-read anchor missing')
+
+          old="""          if(!worker.includes('sw-navigation-fresh-v403.js?v=4.0.3')||!worker.includes('sw-release-core-v403.js?v=4.0.3'))fail('v403 service-worker wiring missing');"""
+          new="""          if(!worker.includes('sw-navigation-fresh-v403.js?v=4.0.3')||!worker.includes('sw-release-core-v403.js?v=4.2.2'))fail('service-worker live-catalogue wiring missing');
+          if(!index.includes('js/nh7-offline-data-v422.js?v=4.2.2')||index.includes('js/nh7-offline-data-v329.js?v=2.3.9.50-offline403'))fail('auth-safe live catalogue runtime wiring missing');
+          for(const required of [\"4.2.2-auth-safe-catalogue\",'response.status>=400&&response.status<500','nh7_remote_catalogue_cache_v422'])if(!offlineData.includes(required))fail(`live catalogue runtime missing ${required}`);"""
+          if old in text:
+              text=text.replace(old,new,1)
+          elif "service-worker live-catalogue wiring missing" not in text:
+              raise SystemExit('service-worker validation anchor missing')
+
+          old="""          required=(admin.html admin-v239.html admin-v239-stable.html app-v239.html index.html reset-password.html admin-reset-password.html version.json service-worker.js sw-navigation-fresh-v403.js sw-release-core-v403.js push/OneSignalSDKWorker.js js/nh7-registration-canonical-v353.js js/nh7-registration-final-guard-v401.js js/nh7-school-exam-v344.js js/nh7-audio-classic-v400.js js/nh7-settings-controller-v403.js js/nh7-delete-account-v253.js js/nh7-admin-rbac-v350.js)"""
+          new="""          required=(admin.html admin-v239.html admin-v239-stable.html app-v239.html index.html reset-password.html admin-reset-password.html version.json service-worker.js sw-navigation-fresh-v403.js sw-release-core-v403.js push/OneSignalSDKWorker.js js/nh7-registration-canonical-v353.js js/nh7-registration-final-guard-v401.js js/nh7-school-exam-v344.js js/nh7-audio-classic-v400.js js/nh7-offline-data-v422.js js/nh7-settings-controller-v403.js js/nh7-delete-account-v253.js js/nh7-admin-rbac-v350.js)"""
+          if old in text:
+              text=text.replace(old,new,1)
+          elif 'js/nh7-offline-data-v422.js js/nh7-settings-controller-v403.js' not in text:
+              raise SystemExit('required-files anchor missing')
+
+          p.write_text(text)
+          PY
+
+      - name: Run the complete production validation locally
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import pathlib, re
+          text=pathlib.Path('.github/workflows/deploy-pages.yml').read_text()
+          required=[
+            'js/nh7-offline-data-v422.js',
+            "sw-release-core-v403.js?v=4.2.2",
+            'service-worker live-catalogue wiring missing',
+            'auth-safe live catalogue runtime wiring missing',
+            'live catalogue runtime missing'
+          ]
+          for item in required:
+              if item not in text: raise SystemExit('missing validation marker: '+item)
+          print('CI contract markers OK')
+          PY
+          node --check js/nh7-offline-data-v422.js
+          node --check service-worker.js
+          node --check sw-release-core-v403.js
+          node <<'NODE'
+          const fs=require('fs');
+          const fail=m=>{throw new Error(m)};
+          const version=JSON.parse(fs.readFileSync('version.json','utf8'));
+          const index=fs.readFileSync('index.html','utf8');
+          const worker=fs.readFileSync('service-worker.js','utf8');
+          const releaseCore=fs.readFileSync('sw-release-core-v403.js','utf8');
+          const offlineData=fs.readFileSync('js/nh7-offline-data-v422.js','utf8');
+          if(!worker.includes('sw-navigation-fresh-v403.js?v=4.0.3')||!worker.includes('sw-release-core-v403.js?v=4.2.2'))fail('service-worker live-catalogue wiring missing');
+          if(!index.includes('js/nh7-offline-data-v422.js?v=4.2.2')||index.includes('js/nh7-offline-data-v329.js?v=2.3.9.50-offline403'))fail('auth-safe live catalogue runtime wiring missing');
+          for(const required of ["4.2.2-auth-safe-catalogue",'response.status>=400&&response.status<500','nh7_remote_catalogue_cache_v422'])if(!offlineData.includes(required))fail(`live catalogue runtime missing ${required}`);
+          const match=releaseCore.match(/const NH7_RELEASE_ASSETS=\[([\s\S]*?)\];/);if(!match)fail('Release offline asset list missing');
+          const paths=[...match[1].matchAll(/'([^']+)'/g)].map(m=>m[1]);
+          const missing=[];for(const p of paths){if(p==='./'||!p.startsWith('./'))continue;const f=p.slice(2);if(!fs.existsSync(f))missing.push(f)}
+          if(missing.length)fail('Missing release offline assets: '+missing.join(', '));
+          const currentScripts=[...index.matchAll(/<script\s+src="(js\/[^"?]+)(?:\?[^\"]*)?"/g)].map(m=>'./'+m[1]);
+          const missingFromRelease=currentScripts.filter(p=>!paths.includes(p));
+          if(missingFromRelease.length)fail('Current app scripts not guaranteed offline: '+missingFromRelease.join(', '));
+          if(!worker.includes(version.app)||!worker.includes('classic-audio-v400'))fail('service worker version mismatch');
+          console.log('Updated production live-catalogue validation passed');
+          NODE
+
+      - name: Commit CI contract update
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- .github/workflows/deploy-pages.yml; then
+            echo 'Validation contract already updated.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows/deploy-pages.yml
+          git commit -m 'Update production validation for live sermon catalogue v4.2.2'
+          git push origin HEAD:${GITHUB_REF_NAME}
+
+      - name: Report exact scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git diff --name-status origin/main...HEAD
