@@ -1,0 +1,33 @@
+name: Audit Supabase Deploy Capability v4.2.6
+
+on:
+  push:
+    branches: ['audit/supabase-deploy-capability-v426']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      A: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      B: ${{ secrets.NH7_SUPABASE_ACCESS_TOKEN }}
+      C: ${{ secrets.NEW_HOPE7_SUPABASE_ACCESS_TOKEN }}
+      D: ${{ secrets.SUPABASE_PROJECT_REF }}
+      E: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      F: ${{ secrets.NH7_SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - name: Report only credential presence
+        shell: bash
+        run: |
+          set -euo pipefail
+          present(){ if [ -n "${2:-}" ]; then printf '%s=present\n' "$1"; else printf '%s=absent\n' "$1"; fi; }
+          present SUPABASE_ACCESS_TOKEN "$A"
+          present NH7_SUPABASE_ACCESS_TOKEN "$B"
+          present NEW_HOPE7_SUPABASE_ACCESS_TOKEN "$C"
+          present SUPABASE_PROJECT_REF "$D"
+          present SUPABASE_SERVICE_ROLE_KEY "$E"
+          present NH7_SUPABASE_SERVICE_ROLE_KEY "$F"
