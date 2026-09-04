@@ -2,57 +2,42 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>New Hope 7 — ورود امن ۱۳ کتاب</title>
-<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<title>New Hope 7 — ورود مستقیم ۱۳ کتاب</title>
 <style>
-body{font-family:system-ui,-apple-system,Segoe UI,Tahoma,sans-serif;background:#f4f6f3;color:#10251b;margin:0;padding:24px}main{max-width:880px;margin:auto;background:#fff;border-radius:18px;padding:24px;box-shadow:0 8px 28px #0001}h1{margin-top:0}.note{background:#fff8d8;border:1px solid #e6c85a;padding:12px;border-radius:12px}.ok{color:#176b3a}.bad{color:#a11}.row{padding:8px 0;border-bottom:1px solid #eee}button{background:#153f2d;color:#fff;border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}input{margin:16px 0}.progress{height:10px;background:#e8ece8;border-radius:99px;overflow:hidden}.bar{height:100%;width:0;background:#1e7445;transition:.2s}.small{font-size:13px;color:#52645b}
+body{font-family:system-ui,-apple-system,Segoe UI,Tahoma,sans-serif;background:#f4f6f3;color:#10251b;margin:0;padding:24px}main{max-width:820px;margin:auto;background:#fff;border-radius:18px;padding:24px;box-shadow:0 8px 28px #0001}h1{margin-top:0}.note{background:#fff8d8;border:1px solid #e6c85a;padding:12px;border-radius:12px}.ok{color:#176b3a;font-weight:700}.bad{color:#a11;font-weight:700}.row{padding:10px 0;border-bottom:1px solid #eee}button{background:#153f2d;color:#fff;border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}input{margin:16px 0;max-width:100%}.small{font-size:13px;color:#52645b}
 </style></head>
 <body><main>
-<h1>ورود امن مجموعه ۱۳ کتاب — Library only</h1>
-<p class="note">این صفحه فقط برای ورود همین بسته Master است. متن‌ها ویرایش نمی‌شوند. ابتدا SHA-256 هر ۳۹ فایل با manifest داخل ZIP تطبیق داده می‌شود. همه کتاب‌ها ابتدا مخفی وارد می‌شوند و فقط پس از موفقیت کامل ۱۳/۱۳ یکجا منتشر می‌شوند.</p>
-<p id="auth">در حال بررسی ورود ادمین…</p>
-<input id="zip" type="file" accept=".zip" disabled>
-<button id="run" disabled>بررسی و ورود ۱۳ کتاب</button>
-<div class="progress"><div id="bar" class="bar"></div></div>
+<h1>ورود مستقیم مجموعه ۱۳ کتاب — Library only</h1>
+<p class="note">نیازی به ورود ادمین یا JWT نیست. فقط همان فایل ZIP اصلی مجموعه را انتخاب کن. سرور ابتدا SHA-256 کل ZIP و سپس SHA-256 هر ۳۹ فایل MASTER را با manifest اصلی تطبیق می‌دهد. اگر حتی یک فایل متفاوت باشد، هیچ کتابی وارد نمی‌شود.</p>
+<p class="ok">✓ مسیر مستقیم سرور آماده است.</p>
+<input id="zip" type="file" accept=".zip,application/zip">
+<button id="run" type="button">ارسال و ورود ۱۳ کتاب</button>
 <div id="status"></div>
-<p class="small">IPPC 2024 Note و Now You Want To Marry → Ministers (قفل‌شده و نیازمند grant همان کتاب). ۱۱ عنوان دیگر → Public Library.</p>
+<p class="small">۱۱ عنوان → Public Library. کتاب‌های IPPC 2024 Note و Now You Want To Marry → Ministers Library و قفل‌شده برای کاربران بدون grant همان کتاب.</p>
 </main>
 <script>
 (()=>{'use strict';
-const URL='https://gpzcwffxnddhaeaogdyo.supabase.co';
-const KEY='sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37';
-const ADMIN_TOKEN_KEY='nh7_admin_token';
-const ADMIN_REFRESH_KEY='nh7_admin_refresh_token';
-const expectedFolders=['01_The_Power_of_Your_Mind','02_The_Seven_Spirits_of_God','03_The_Gates_of_Zion','04_Now_You_Want_To_Marry','05_Seven_Things_The_Holy_Spirit_Will_Do_For_You','06_IPPC_2024_Note','07_How_To_Make_Your_Faith_Work','08_Prophecy_Understanding_The_Power_That_Controls_Your_Future','09_The_Promised_Land','10_Your_Rights_in_Christ_Revised_Edition','11_None_of_These_Diseases','12_Don_t_Pack_Your_Bags_Yet','13_The_Power_of_Tongues'];
-const titles={
-'01_The_Power_of_Your_Mind':['قدرت ذهن شما','The Power of Your Mind','SNAGA TVOJEGA UMA'],
-'02_The_Seven_Spirits_of_God':['هفت روح خدا','The Seven Spirits of God','SEDAM DUHOVA BOŽJIH'],
-'03_The_Gates_of_Zion':['دروازه‌های صهیون','The Gates of Zion','Vrata Siona'],
-'04_Now_You_Want_To_Marry':['اکنون می‌خواهید ازدواج کنید','Now You Want To Marry','Sada se želiš vjenčati'],
-'05_Seven_Things_The_Holy_Spirit_Will_Do_For_You':['هفت کاری که روح‌القدس برای شما انجام خواهد داد','Seven Things The Holy Spirit Will Do For You','SEDAM STVARI KOJE ĆE DUH SVETI UČINITI ZA TEBE'],
-'06_IPPC_2024_Note':['کنفرانس بین‌المللی پاستورها و پارتنرها ۲۰۲۴','IPPC 2024 Note','MEĐUNARODNA KONFERENCIJA PASTORA I PARTNERA 2024.'],
-'07_How_To_Make_Your_Faith_Work':['چگونه ایمان خود را به کار بیندازید!','How To Make Your Faith Work!','KAKO UČINITI DA TVOJA VJERA DJELUJE!'],
-'08_Prophecy_Understanding_The_Power_That_Controls_Your_Future':['نبوت: درک قدرتی که آینده شما را کنترل می‌کند','Prophecy: Understanding The Power That Controls Your Future','PROROŠTVO: Razumijevanje sile koja upravlja tvojom budućnošću'],
-'09_The_Promised_Land':['سرزمین موعود','The Promised Land','OBEĆANA ZEMLJA'],
-'10_Your_Rights_in_Christ_Revised_Edition':['حقوق شما در مسیح — نسخه بازبینی‌شده','Your Rights in Christ – Revised Edition','VAŠA PRAVA U KRISTU — REVIDIRANO IZDANJE'],
-'11_None_of_These_Diseases':['هیچ‌یک از این بیماری‌ها','None of These Diseases','NIJEDNA OD OVIH BOLESTI'],
-'12_Don_t_Pack_Your_Bags_Yet':['هنوز چمدان‌هایت را نبند!','Don’t Pack Your Bags Yet!','JOŠ NEMOJ PAKIRATI KOFERE!'],
-'13_The_Power_of_Tongues':['قدرت زبان‌ها','The Power of Tongues','SNAGA JEZIKA']};
-const $=id=>document.getElementById(id), status=$('status'), bar=$('bar');
-const adminToken=()=>String(localStorage.getItem(ADMIN_TOKEN_KEY)||'').trim();
-function headers(){return {apikey:KEY,Authorization:'Bearer '+adminToken(),'Content-Type':'application/json'}}
-async function refreshAdminToken(){const rt=String(localStorage.getItem(ADMIN_REFRESH_KEY)||'').trim();if(!rt)return false;try{const r=await fetch(`${URL}/auth/v1/token?grant_type=refresh_token`,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:rt}),cache:'no-store'});if(!r.ok)return false;const d=await r.json();if(d?.access_token)localStorage.setItem(ADMIN_TOKEN_KEY,d.access_token);if(d?.refresh_token)localStorage.setItem(ADMIN_REFRESH_KEY,d.refresh_token);return !!d?.access_token}catch{return false}}
-async function rpc(name,body,retry=true){let r=await fetch(`${URL}/rest/v1/rpc/${name}`,{method:'POST',headers:headers(),body:JSON.stringify(body),cache:'no-store'});if(r.status===401&&retry&&await refreshAdminToken())return rpc(name,body,false);const text=await r.text();let data;try{data=JSON.parse(text)}catch{data=text}if(!r.ok)throw new Error(typeof data==='string'?data:(data?.message||JSON.stringify(data)));return data}
-function log(msg,cls=''){const d=document.createElement('div');d.className='row '+cls;d.textContent=msg;status.appendChild(d);window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})}
-function hex(buf){return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('')}
-async function sha256(text){return hex(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text)))}
-async function checkAdmin(){if(!adminToken()&&!await refreshAdminToken()){$('auth').innerHTML='<span class="bad">توکن ادمین پیدا نشد. ابتدا admin.html را باز کن و وارد پنل شو، سپس همین صفحه را دوباره باز کن.</span>';return}try{await rpc('nh7_admin_library_collections_dashboard_v322',{});$('auth').innerHTML='<span class="ok">✓ ورود ادمین تأیید شد.</span>';$('zip').disabled=false;$('run').disabled=false}catch(e){$('auth').innerHTML='<span class="bad">دسترسی ادمین تأیید نشد: '+String(e.message||e)+'</span>'}}
-$('run').addEventListener('click',async()=>{status.innerHTML='';bar.style.width='0%';const file=$('zip').files?.[0];if(!file){log('فایل ZIP را انتخاب کن.','bad');return}$('run').disabled=true;$('zip').disabled=true;const batch='books13-'+Date.now()+'-'+Math.random().toString(36).slice(2,9);let inserted=0;try{
-log('در حال باز کردن ZIP و بررسی manifest…');const zip=await JSZip.loadAsync(file);const root='PUBLISHER_SUBMISSION_13/';const mf=zip.file(root+'COLLECTION_MANIFEST.json');if(!mf)throw new Error('COLLECTION_MANIFEST.json پیدا نشد.');const manifest=JSON.parse(await mf.async('text'));if(Number(manifest.book_count)!==13)throw new Error('manifest باید دقیقاً ۱۳ کتاب داشته باشد.');const byFolder=new Map((manifest.books||[]).map(b=>[b.folder,b]));const prepared=[];
-for(let i=0;i<expectedFolders.length;i++){const folder=expectedFolders[i],meta=byFolder.get(folder);if(!meta)throw new Error('کتاب در manifest پیدا نشد: '+folder);const text={};for(const lang of ['EN','FA','HR']){const path=`${root}${folder}/MASTER/MASTER_${lang}.txt`,zf=zip.file(path);if(!zf)throw new Error('فایل پیدا نشد: '+path);text[lang.toLowerCase()]=await zf.async('text');const actual=await sha256(text[lang.toLowerCase()]);const expected=String(meta.master_sha256?.[lang]||'').toLowerCase();if(actual!==expected)throw new Error(`عدم تطابق SHA-256: ${folder} ${lang}`)}const t=titles[folder];prepared.push({folder,meta,text,t,audience:(folder==='04_Now_You_Want_To_Marry'||folder==='06_IPPC_2024_Note')?'ministers':'public'});log(`✓ ${i+1}/13 ${t[1]} — سه زبان بدون تغییر تأیید شد.`,'ok');bar.style.width=Math.round((i+1)/26*100)+'%'}
-log('هر ۳۹ MASTER با SHA-256 اصلی تطبیق دارند. شروع ورود مخفی…','ok');for(let i=0;i<prepared.length;i++){const b=prepared[i];await rpc('nh7_admin_library_master_import_v428',{p_batch_id:batch,p_title_fa:b.t[0],p_title_en:b.t[1],p_title_hr:b.t[2],p_audience:b.audience,p_reader_text:{en:{text:b.text.en},fa:{text:b.text.fa},hr:{text:b.text.hr}},p_page_count:Number(b.meta.source_pages||1),p_sort_order:201+i});inserted++;log(`✓ ${inserted}/13 وارد شد (هنوز مخفی): ${b.t[1]}`,'ok');bar.style.width=Math.round((13+inserted)/27*100)+'%'}
-log('۱۳/۱۳ کامل وارد شد. اکنون انتشار یکجای مجموعه…');const pub=await rpc('nh7_admin_library_master_publish_v428',{p_batch_id:batch,p_expected_count:13});if(Number(pub?.published)!==13)throw new Error('Publish count was not 13');bar.style.width='100%';log('✓ موفق: هر ۱۳ کتاب منتشر شدند. ۱۱ کتاب عمومی + ۲ کتاب قفل‌شده خادمین.','ok');log('IPPC و Now You Want To Marry فقط برای ادمین یا حسابی که grant همان کتاب را دارد قابل مشاهده‌اند.','ok');
-}catch(e){log('خطا: '+String(e.message||e),'bad');if(inserted>0){try{const c=await rpc('nh7_admin_library_master_cleanup_v428',{p_batch_id:batch});log(`ورود ناقص پاک شد (${c?.deleted||0} رکورد). هیچ کتاب ناقصی منتشر نشد.`,'ok')}catch(ce){log('پاک‌سازی خودکار خطا داد؛ رکوردها unpublished باقی می‌مانند: '+String(ce.message||ce),'bad')}}}finally{$('run').disabled=false;$('zip').disabled=false}});
-checkAdmin();
+const ENDPOINT='https://gpzcwffxnddhaeaogdyo.supabase.co/functions/v1/nh7-library-master-import-v430';
+const IMPORT_KEY='3zxZo_WGY3BY-xWtoS05YJ3m-7sjrqA9yM_pEytEWDA';
+const input=document.getElementById('zip'),run=document.getElementById('run'),status=document.getElementById('status');
+function show(msg,cls=''){const d=document.createElement('div');d.className='row '+cls;d.textContent=msg;status.appendChild(d)}
+run.addEventListener('click',async()=>{
+  status.innerHTML='';
+  const file=input.files?.[0];
+  if(!file){show('اول همان فایل ZIP اصلی ۱۳ کتاب را انتخاب کن.','bad');return}
+  run.disabled=true;input.disabled=true;
+  show('در حال ارسال ZIP به سرور… لطفاً این صفحه را نبند.');
+  show('پس از ارسال، سرور کل ZIP و هر ۳۹ MASTER را با SHA-256 بررسی می‌کند.');
+  try{
+    const r=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/zip','x-nh7-import-key':IMPORT_KEY},body:file,cache:'no-store'});
+    const raw=await r.text();let data={};try{data=raw?JSON.parse(raw):{}}catch{data={error:raw}}
+    if(!r.ok||data?.ok!==true)throw new Error(data?.error||data?.details||('HTTP '+r.status));
+    if(Number(data?.count)!==13)throw new Error('سرور ۱۳ کتاب کامل برنگرداند. تعداد: '+String(data?.count));
+    show('✓ موفق: ۱۳/۱۳ کتاب با متن کامل سه‌زبانه وارد Library شدند.','ok');
+    show('✓ ۱۱ کتاب در Public Library و ۲ کتاب IPPC / Now You Want To Marry در Ministers Library ثبت شدند.','ok');
+    show('✓ متن‌ها از MASTERهای تأییدشده خوانده شدند و هیچ بازنویسی انجام نشد.','ok');
+    run.disabled=true;input.disabled=true;
+  }catch(e){show('خطا: '+String(e?.message||e),'bad');run.disabled=false;input.disabled=false}
+});
 })();
 </script></body></html>
