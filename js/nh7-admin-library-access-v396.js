@@ -1,192 +1,52 @@
-/* New Hope 7 Admin v3.9.6 — approved-user ministers-library access manager. */
+/* New Hope 7 Admin v4.3.3 — ministers-library grants + account-bound one-time codes. */
 (()=>{'use strict';
-if(window.__NH7_ADMIN_LIBRARY_ACCESS_V396__)return;
-window.__NH7_ADMIN_LIBRARY_ACCESS_V396__=true;
-
-const VERSION='3.9.6';
+if(window.__NH7_ADMIN_LIBRARY_ACCESS_V433__)return;
+window.__NH7_ADMIN_LIBRARY_ACCESS_V433__=true;
+const VERSION='4.3.3';
 const URL='https://gpzcwffxnddhaeaogdyo.supabase.co';
 const KEY='sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37';
-const TOKEN_KEY='nh7_admin_token';
-const REFRESH_KEY='nh7_admin_refresh_token';
+const TOKEN_KEY='nh7_admin_token',REFRESH_KEY='nh7_admin_refresh_token';
 let modal=null,refreshing=null,injectTimer=0;
-const state={loading:false,saving:false,error:'',users:[],items:[],publicItems:[],collections:[],grants:[],selectedUser:'',search:'',scope:'library_all',resource:'',expires:'',note:'',loadedAt:0};
-
-function language(){
-  const select=document.querySelector('#langSelect');
-  const value=String(select?.value||document.documentElement.lang||localStorage.getItem('nh7_admin_lang')||localStorage.getItem('nh7_lang')||'fa').toLowerCase();
-  return ['fa','en','hr'].includes(value)?value:'fa';
-}
+const S={loading:false,saving:false,error:'',users:[],items:[],grants:[],codes:[],selectedUser:'',search:'',scope:'library_all',resource:'',expires:'',note:'',lastCode:null};
+function language(){const v=String(document.querySelector('#langSelect')?.value||document.documentElement.lang||localStorage.getItem('nh7_admin_lang')||'fa').toLowerCase();return ['fa','en','hr'].includes(v)?v:'fa'}
 const L=(fa,en,hr)=>language()==='fa'?fa:language()==='hr'?hr:en;
-const E=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-const uid=value=>/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(value||''))?String(value):'';
+const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=v=>/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(v||''))?String(v):'';
 function token(){return String(localStorage.getItem(TOKEN_KEY)||'')}
 function refreshToken(){return String(localStorage.getItem(REFRESH_KEY)||'')}
-function jwtExpiry(value){try{const part=String(value||'').split('.')[1]||'';const normalized=part.replace(/-/g,'+').replace(/_/g,'/');return Number(JSON.parse(atob(normalized.padEnd(Math.ceil(normalized.length/4)*4,'='))).exp||0)*1000}catch(_){return 0}}
-async function ensureToken(){
-  let access=token();
-  if(access&&jwtExpiry(access)>Date.now()+90000)return access;
-  const refresh=refreshToken();
-  if(!refresh)return access;
-  if(refreshing)return refreshing;
-  refreshing=(async()=>{
-    try{
-      const response=await fetch(`${URL}/auth/v1/token?grant_type=refresh_token`,{method:'POST',cache:'no-store',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:refresh})});
-      const raw=await response.text();let data={};try{data=raw?JSON.parse(raw):{}}catch(_){data={message:raw}}
-      if(!response.ok)throw new Error(data.message||data.error_description||L('نشست مدیریت منقضی شده است.','The admin session has expired.','Administratorska sesija je istekla.'));
-      access=String(data.access_token||'');
-      if(access)localStorage.setItem(TOKEN_KEY,access);
-      if(data.refresh_token)localStorage.setItem(REFRESH_KEY,String(data.refresh_token));
-      return access;
-    }finally{refreshing=null}
-  })();
-  return refreshing;
-}
-async function requestHeaders(){const access=await ensureToken();if(!access)throw new Error(L('ابتدا وارد پنل مدیریت شوید.','Sign in to the admin panel first.','Najprije se prijavite u administratorsku ploču.'));return{apikey:KEY,Authorization:'Bearer '+access,'Content-Type':'application/json'}}
-async function rpc(name,payload={},retry=true){
-  const call=async()=>{
-    const response=await fetch(`${URL}/rest/v1/rpc/${encodeURIComponent(name)}`,{method:'POST',cache:'no-store',headers:await requestHeaders(),body:JSON.stringify(payload||{})});
-    const raw=await response.text();let data=null;try{data=raw?JSON.parse(raw):null}catch(_){data=raw}
-    if(!response.ok){const error=new Error(data?.message||data?.hint||String(data||response.statusText));error.status=response.status;throw error}
-    return data;
-  };
-  try{return await call()}catch(error){if(retry&&error.status===401){localStorage.removeItem(TOKEN_KEY);await ensureToken();return call()}throw error}
-}
-async function rest(path){const response=await fetch(`${URL}/rest/v1/${path}`,{headers:await requestHeaders(),cache:'no-store'});const raw=await response.text();let data=[];try{data=raw?JSON.parse(raw):[]}catch(_){data=[]}if(!response.ok)throw new Error(data?.message||raw||response.statusText);return Array.isArray(data)?data:[]}
-function formatDate(value){if(!value)return L('بدون تاریخ انقضا','No expiration','Bez isteka');try{return new Intl.DateTimeFormat(language()==='fa'?'fa-IR':language()==='hr'?'hr-HR':'en-US',{dateStyle:'medium',timeStyle:'short'}).format(new Date(value))}catch(_){return String(value)}}
-function userOf(id){return state.users.find(row=>String(row.user_id)===String(id))}
-function itemOf(id){return state.items.find(row=>String(row.id)===String(id))}
-function collectionOf(id){return state.collections.find(row=>String(row.id)===String(id))}
-function itemTitle(row){if(!row)return'';const l=language();return row['title_'+l]||row.title_en||row.title_fa||row.title_hr||row.file_name||L('بدون عنوان','Untitled','Bez naslova')}
-function scopeLabel(scope){return scope==='library_all'?L('دسترسی کامل کتابخانه خادمان','All ministers-library access','Cijela knjižnica za služitelje'):scope==='library_collection'?L('دسترسی به یک مجموعه','One collection','Jedna zbirka'):scope==='library_item'?L('دسترسی به یک کتاب یا جزوه','One book or handout','Jedna knjiga ili materijal'):scope}
-function resourceLabel(grant){if(grant.scope==='library_collection')return itemTitle(collectionOf(grant.resource_id));if(grant.scope==='library_item')return itemTitle(itemOf(grant.resource_id));return L('تمام موارد فعلی و آینده','All current and future items','Sve sadašnje i buduće stavke')}
-function currentUserGrants(){return state.grants.filter(row=>String(row.user_id)===String(state.selectedUser))}
-function activeAccessSnapshot(){try{return JSON.parse(localStorage.getItem('nh7_admin_access_v350')||'null')}catch(_){return null}}
-function authorizedEntry(){const access=activeAccessSnapshot();return Boolean(token()&&(access?.is_owner||Array.isArray(access?.permissions)&&access.permissions.includes('registrations.view')))}
-
-function installStyle(){
-  if(document.getElementById('nh7LibraryAccessStyleV396'))return;
-  const style=document.createElement('style');style.id='nh7LibraryAccessStyleV396';style.textContent=`
-.nh7-access-overlay{position:fixed;inset:0;z-index:1500;background:rgba(7,27,40,.62);backdrop-filter:blur(6px);display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:18px}.nh7-access-modal{width:min(1180px,100%);min-height:min(760px,calc(100vh - 36px));background:#f5fbfb;border-radius:26px;border:1px solid rgba(255,255,255,.75);box-shadow:0 28px 90px rgba(0,0,0,.3);padding:16px;margin:auto;direction:rtl}.nh7-access-modal[dir="ltr"]{direction:ltr}.nh7-access-head{position:sticky;top:-18px;z-index:4;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:10px 0 14px;background:rgba(245,251,251,.96);backdrop-filter:blur(12px);border-bottom:1px solid #d8ecea}.nh7-access-head h2{margin:0 0 4px}.nh7-access-head-actions{display:flex;gap:8px}.nh7-access-close{width:44px;height:44px;border:0;border-radius:999px;background:#fff;font-size:1.25rem;box-shadow:0 5px 16px rgba(16,32,51,.12);cursor:pointer}.nh7-access-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:14px 0}.nh7-access-stat{background:#fff;border:1px solid #d8ecea;border-radius:17px;padding:11px}.nh7-access-stat b{display:block;font-size:1.35rem}.nh7-access-stat span{font-size:.78rem;color:#667085}.nh7-access-grid{display:grid;grid-template-columns:minmax(300px,.85fr) minmax(380px,1.15fr);gap:13px}.nh7-access-card{background:#fff;border:1px solid #d8ecea;border-radius:21px;padding:14px;margin-bottom:12px;box-shadow:0 8px 24px rgba(16,32,51,.055)}.nh7-access-card h3{margin:0 0 9px}.nh7-access-users{display:grid;gap:8px;max-height:520px;overflow:auto;padding:2px}.nh7-access-user{border:1px solid #d8ecea;background:#fbfefe;border-radius:16px;padding:11px;text-align:start;cursor:pointer;color:#102033}.nh7-access-user.selected{border-color:#0b76b7;background:#eef8ff;box-shadow:0 0 0 2px rgba(11,118,183,.1)}.nh7-access-user strong,.nh7-access-user small{display:block}.nh7-access-user small{margin-top:3px;color:#667085;word-break:break-word}.nh7-access-user em{display:inline-flex;margin-top:7px;padding:4px 8px;border-radius:999px;background:#ecfdf3;color:#08783d;font-size:.72rem;font-style:normal;font-weight:800}.nh7-access-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.nh7-access-form-grid .wide{grid-column:1/-1}.nh7-access-field label{display:block;font-size:.8rem;font-weight:800;margin-bottom:3px;color:#344054}.nh7-access-field input,.nh7-access-field select,.nh7-access-field textarea{width:100%;border:1px solid #cfe4e2;border-radius:13px;padding:11px;background:#fff}.nh7-access-field textarea{min-height:78px;resize:vertical}.nh7-access-selected{padding:11px;border-radius:15px;background:#eef8f7;border:1px solid #cce9e5;margin-bottom:10px}.nh7-access-selected b,.nh7-access-selected span{display:block}.nh7-access-grant{border:1px solid #d8ecea;border-radius:16px;padding:11px;margin:8px 0;background:#fbfefe}.nh7-access-grant-head{display:flex;justify-content:space-between;gap:9px}.nh7-access-grant p{margin:5px 0;color:#667085;font-size:.82rem}.nh7-access-pill{display:inline-flex;padding:4px 8px;border-radius:999px;background:#ecfdf3;color:#08783d;font-size:.72rem;font-weight:850}.nh7-access-empty{padding:20px;border:1px dashed #cbdeda;border-radius:16px;text-align:center;color:#667085}.nh7-access-notice{padding:11px;border-radius:14px;background:#fff7ed;color:#9a3412;margin:9px 0}.nh7-access-error{background:#fff1f1;color:#a02121}.nh7-access-public-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.nh7-access-public-book{border:1px solid #e1eeee;border-radius:13px;padding:9px;background:#fbfefe}.nh7-access-public-book b,.nh7-access-public-book small{display:block}.nh7-access-public-book small{color:#667085;margin-top:3px}.nh7-access-toast{position:fixed;z-index:1600;left:50%;bottom:24px;transform:translateX(-50%);max-width:min(520px,calc(100vw - 28px));padding:12px 17px;border-radius:14px;background:#102033;color:#fff;box-shadow:0 12px 34px rgba(0,0,0,.25);text-align:center}.nh7-access-toast.good{background:#08783d}.nh7-access-toast.bad{background:#a02121}.nh7-access-tab{position:relative}.nh7-access-tab::after{content:'NEW';position:absolute;top:-5px;inset-inline-end:-5px;font-size:.52rem;padding:2px 4px;border-radius:999px;background:#e11d48;color:#fff;font-weight:900}.nh7-access-body-lock{overflow:hidden!important}
-@media(max-width:850px){.nh7-access-grid{grid-template-columns:1fr}.nh7-access-stats{grid-template-columns:1fr 1fr}.nh7-access-public-list{grid-template-columns:1fr}.nh7-access-users{max-height:360px}}
-@media(max-width:560px){.nh7-access-overlay{padding:0}.nh7-access-modal{border-radius:0;min-height:100vh;padding:12px}.nh7-access-head{top:0}.nh7-access-form-grid{grid-template-columns:1fr}.nh7-access-form-grid .wide{grid-column:auto}.nh7-access-head-actions .btn{padding:10px 8px}.nh7-access-stats{grid-template-columns:1fr 1fr}}
-`;
-  document.head.appendChild(style);
-}
-function toast(message,type='good'){
-  document.querySelector('.nh7-access-toast')?.remove();
-  const node=document.createElement('div');node.className='nh7-access-toast '+type;node.textContent=message;document.body.appendChild(node);setTimeout(()=>node.remove(),3200);
-}
-function closeModal(){modal?.remove();modal=null;document.body.classList.remove('nh7-access-body-lock')}
-function modalShell(){
-  return `<div class="nh7-access-overlay" id="nh7LibraryAccessOverlay"><section class="nh7-access-modal" dir="${language()==='fa'?'rtl':'ltr'}" role="dialog" aria-modal="true"><header class="nh7-access-head"><div><h2>🔐 ${E(L('دسترسی کتابخانه خادمان','Ministers-library access','Pristup knjižnici za služitelje'))}</h2><p class="muted small">${E(L('فقط حساب‌های ثبت‌نام کامل و تأییدشده نمایش داده می‌شوند.','Only fully registered and approved accounts are shown.','Prikazuju se samo potpuno registrirani i odobreni računi.'))}</p></div><div class="nh7-access-head-actions"><button type="button" class="btn secondary" data-access-refresh>⟳ ${E(L('تازه‌سازی','Refresh','Osvježi'))}</button><button type="button" class="nh7-access-close" data-access-close aria-label="${E(L('بستن','Close','Zatvori'))}">×</button></div></header><div data-access-body><div class="nh7-access-empty">${E(L('در حال دریافت کاربران و دسترسی‌ها…','Loading users and access…','Učitavanje korisnika i pristupa…'))}</div></div></section></div>`;
-}
-async function openModal(){
-  installStyle();
-  if(modal){modal.querySelector('.nh7-access-modal')?.scrollTo({top:0,behavior:'smooth'});return}
-  const wrap=document.createElement('div');wrap.innerHTML=modalShell();modal=wrap.firstElementChild;document.body.appendChild(modal);document.body.classList.add('nh7-access-body-lock');bindModal();await loadData(true);
-}
-function bindModal(){
-  modal.addEventListener('click',event=>{
-    if(event.target===modal||event.target.closest('[data-access-close]'))return closeModal();
-    if(event.target.closest('[data-access-refresh]'))return loadData(true);
-    const user=event.target.closest('[data-access-user]');if(user){state.selectedUser=String(user.dataset.accessUser||'');render();return}
-    if(event.target.closest('[data-access-grant]'))return grantAccess();
-    const revoke=event.target.closest('[data-access-revoke]');if(revoke)return revokeAccess(String(revoke.dataset.accessRevoke||''));
-  });
-  modal.addEventListener('input',event=>{
-    if(event.target.matches('[data-access-search]')){state.search=event.target.value;renderUsersOnly();}
-    if(event.target.matches('[data-access-note]'))state.note=event.target.value;
-    if(event.target.matches('[data-access-expires]'))state.expires=event.target.value;
-  });
-  modal.addEventListener('change',event=>{
-    if(event.target.matches('[data-access-scope]')){state.scope=event.target.value;state.resource='';render();}
-    if(event.target.matches('[data-access-resource]'))state.resource=event.target.value;
-  });
-}
-async function loadData(force=false){
-  if(state.loading||(!force&&state.loadedAt&&Date.now()-state.loadedAt<15000))return;
-  state.loading=true;state.error='';render();
-  try{
-    const [dashboard,collections,publicItems]=await Promise.all([
-      rpc('nh7_admin_content_access_dashboard_v395',{}),
-      rest('nh7_library_collections_v322?select=id,slug,title_fa,title_en,title_hr,audience,is_active,sort_order&audience=eq.ministers&is_active=eq.true&order=sort_order.asc'),
-      rest('nh7_library_items_v224?select=id,title_fa,title_en,title_hr,reader_available,reader_page_count,sort_order&audience=eq.public&resource_type=eq.library&order=sort_order.asc')
-    ]);
-    const data=Array.isArray(dashboard)?dashboard[0]:dashboard||{};
-    state.users=Array.isArray(data.users)?data.users:[];
-    state.items=Array.isArray(data.items)?data.items:[];
-    state.grants=Array.isArray(data.grants)?data.grants:[];
-    state.collections=collections;
-    state.publicItems=publicItems;
-    if(state.selectedUser&&!state.users.some(row=>String(row.user_id)===String(state.selectedUser)))state.selectedUser='';
-    state.loadedAt=Date.now();
-  }catch(error){state.error=error.message||String(error)}finally{state.loading=false;render()}
-}
-function filteredUsers(){const q=state.search.trim().toLocaleLowerCase();if(!q)return state.users;return state.users.filter(row=>`${row.display_name||''} ${row.email||''}`.toLocaleLowerCase().includes(q))}
-function userCards(){
-  const rows=filteredUsers();
-  if(!rows.length)return `<div class="nh7-access-empty">${E(L('کاربر تأییدشده‌ای با این جست‌وجو پیدا نشد.','No approved user matched this search.','Nije pronađen odobreni korisnik.'))}</div>`;
-  return rows.map(row=>{const count=state.grants.filter(grant=>String(grant.user_id)===String(row.user_id)).length;return `<button type="button" class="nh7-access-user ${String(state.selectedUser)===String(row.user_id)?'selected':''}" data-access-user="${E(row.user_id)}"><strong>${E(row.display_name||row.email)}</strong><small dir="ltr">${E(row.email)}</small><em>${count?`${count} ${E(L('دسترسی فعال','active access','aktivni pristup'))}`:E(L('بدون دسترسی خادمان','No ministers access','Bez pristupa za služitelje'))}</em></button>`}).join('');
-}
-function resourceOptions(){
-  if(state.scope==='library_collection')return state.collections.map(row=>`<option value="${E(row.id)}" ${String(state.resource)===String(row.id)?'selected':''}>${E(itemTitle(row))}</option>`).join('');
-  if(state.scope==='library_item')return state.items.map(row=>`<option value="${E(row.id)}" ${String(state.resource)===String(row.id)?'selected':''}>${E(itemTitle(row))}</option>`).join('');
-  return'';
-}
-function grantRows(){
-  const grants=currentUserGrants();
-  if(!grants.length)return `<div class="nh7-access-empty">${E(L('برای این حساب هنوز دسترسی کتابخانه خادمان ثبت نشده است.','No ministers-library access has been granted to this account.','Za ovaj račun još nije odobren pristup knjižnici.'))}</div>`;
-  return grants.map(row=>`<article class="nh7-access-grant"><div class="nh7-access-grant-head"><div><span class="nh7-access-pill">${E(scopeLabel(row.scope))}</span><strong style="display:block;margin-top:6px">${E(resourceLabel(row))}</strong></div><button type="button" class="btn danger-btn" data-access-revoke="${E(row.id)}" ${state.saving?'disabled':''}>${E(L('لغو','Revoke','Opozovi'))}</button></div><p>${E(formatDate(row.expires_at))}</p>${row.note?`<p>${E(row.note)}</p>`:''}</article>`).join('');
-}
-function publicBooks(){
-  if(!state.publicItems.length)return `<div class="nh7-access-empty">${E(L('کتاب عمومی آماده‌ای پیدا نشد.','No ready public book was found.','Nije pronađena spremna javna knjiga.'))}</div>`;
-  return `<div class="nh7-access-public-list">${state.publicItems.map((row,index)=>`<div class="nh7-access-public-book"><b>${index+1}. ${E(itemTitle(row))}</b><small>${row.reader_available?`✓ ${E(L('نسخه داخل اپ آماده است','In-app edition ready','Izdanje u aplikaciji spremno'))}`:E(L('نسخه داخل اپ آماده نیست','In-app edition not ready','Izdanje nije spremno'))} · ${Number(row.reader_page_count||0)} ${E(L('بخش','sections','dijelova'))}</small></div>`).join('')}</div>`;
-}
-function editor(){
-  const user=userOf(state.selectedUser),needsResource=state.scope!=='library_all',resourceEmpty=needsResource&&!(state.scope==='library_collection'?state.collections.length:state.items.length);
-  if(!user)return `<div class="nh7-access-empty">${E(L('از فهرست سمت راست یک حساب تأییدشده را انتخاب کنید.','Select an approved account from the user list.','Odaberite odobreni račun s popisa.'))}</div>`;
-  return `<div class="nh7-access-selected"><b>${E(user.display_name||user.email)}</b><span dir="ltr">${E(user.email)}</span></div><div class="nh7-access-form-grid"><div class="nh7-access-field wide"><label>${E(L('نوع دسترسی','Access type','Vrsta pristupa'))}</label><select data-access-scope><option value="library_all" ${state.scope==='library_all'?'selected':''}>${E(scopeLabel('library_all'))}</option><option value="library_collection" ${state.scope==='library_collection'?'selected':''}>${E(scopeLabel('library_collection'))}</option><option value="library_item" ${state.scope==='library_item'?'selected':''} ${!state.items.length?'disabled':''}>${E(scopeLabel('library_item'))}</option></select></div>${needsResource?`<div class="nh7-access-field wide"><label>${E(state.scope==='library_collection'?L('مجموعه','Collection','Zbirka'):L('کتاب یا جزوه','Book or handout','Knjiga ili materijal'))}</label><select data-access-resource ${resourceEmpty?'disabled':''}><option value="">${E(L('انتخاب کنید…','Select…','Odaberite…'))}</option>${resourceOptions()}</select></div>`:''}<div class="nh7-access-field"><label>${E(L('تاریخ انقضا — اختیاری','Expiration — optional','Istek — neobavezno'))}</label><input type="datetime-local" data-access-expires value="${E(state.expires)}"></div><div class="nh7-access-field"><label>${E(L('یادداشت — اختیاری','Note — optional','Napomena — neobavezno'))}</label><input type="text" maxlength="500" data-access-note value="${E(state.note)}" placeholder="${E(L('مثلاً دلیل یا محدوده دسترسی','Reason or access note','Razlog ili napomena'))}"></div><div class="wide"><button type="button" class="btn primary" data-access-grant ${state.saving||resourceEmpty?'disabled':''}>${state.saving?E(L('در حال ذخیره…','Saving…','Spremanje…')):'✓ '+E(L('فعال‌کردن دسترسی','Grant access','Odobri pristup'))}</button></div></div>${!state.items.length?`<div class="nh7-access-notice">${E(L('هنوز کتاب یا جزوه‌ای با برچسب «مخصوص خادمان» بارگذاری نشده است. دسترسی کامل را می‌توان از هم‌اکنون فعال کرد و برای تمام موارد خادمان که بعداً اضافه می‌شوند نیز معتبر خواهد بود.','No item is currently marked as ministers-only. All-access can still be granted now and will cover future ministers items.','Trenutačno nema stavke označene samo za služitelje. Potpuni pristup može se odobriti sada i vrijedit će za buduće stavke.'))}</div>`:''}`;
-}
-function bodyHtml(){
-  if(state.loading&&!state.loadedAt)return `<div class="nh7-access-empty">${E(L('در حال دریافت کاربران و دسترسی‌ها…','Loading users and access…','Učitavanje korisnika i pristupa…'))}</div>`;
-  return `${state.error?`<div class="nh7-access-notice nh7-access-error">${E(state.error)}</div>`:''}<div class="nh7-access-stats"><div class="nh7-access-stat"><b>${state.users.length}</b><span>${E(L('حساب تأییدشده','Approved accounts','Odobreni računi'))}</span></div><div class="nh7-access-stat"><b>${state.publicItems.length}</b><span>${E(L('کتاب عمومی سه‌زبانه','Public trilingual books','Javne trojezične knjige'))}</span></div><div class="nh7-access-stat"><b>${state.items.length}</b><span>${E(L('موارد مخصوص خادمان','Ministers-only items','Stavke za služitelje'))}</span></div><div class="nh7-access-stat"><b>${state.grants.length}</b><span>${E(L('دسترسی فعال','Active grants','Aktivni pristupi'))}</span></div></div><div class="nh7-access-grid"><div><section class="nh7-access-card"><h3>👥 ${E(L('کاربران تأییدشده','Approved users','Odobreni korisnici'))}</h3><input type="search" data-access-search value="${E(state.search)}" placeholder="${E(L('جست‌وجو با نام یا ایمیل…','Search by name or email…','Pretraži po imenu ili e-mailu…'))}"><div class="nh7-access-users" data-access-users>${userCards()}</div></section></div><div><section class="nh7-access-card"><h3>🔑 ${E(L('دادن دسترسی','Grant access','Odobri pristup'))}</h3>${editor()}</section><section class="nh7-access-card"><h3>📋 ${E(L('دسترسی‌های این حساب','Access for this account','Pristupi ovog računa'))}</h3>${state.selectedUser?grantRows():`<div class="nh7-access-empty">${E(L('ابتدا یک حساب را انتخاب کنید.','Select an account first.','Najprije odaberite račun.'))}</div>`}</section><section class="nh7-access-card"><h3>📚 ${E(L('۹ کتاب عمومی آماده','Nine public books ready','Devet javnih knjiga spremno'))}</h3>${publicBooks()}</section></div></div>`;
-}
-function render(){if(!modal)return;const body=modal.querySelector('[data-access-body]');if(body)body.innerHTML=bodyHtml()}
-function renderUsersOnly(){if(!modal)return;const node=modal.querySelector('[data-access-users]');if(node)node.innerHTML=userCards()}
-async function grantAccess(){
-  const user=uid(state.selectedUser);if(!user)return toast(L('یک حساب را انتخاب کنید.','Select an account.','Odaberite račun.'),'bad');
-  let resource=null;
-  if(state.scope!=='library_all'){resource=uid(state.resource);if(!resource)return toast(L('مجموعه یا کتاب را انتخاب کنید.','Select a collection or item.','Odaberite zbirku ili stavku.'),'bad')}
-  state.saving=true;render();
-  try{
-    const expires=state.expires?new Date(state.expires).toISOString():null;
-    await rpc('nh7_admin_content_access_grant_v251',{p_user_id:user,p_scope:state.scope,p_resource_id:resource,p_expires_at:expires,p_note:String(state.note||'').slice(0,500)});
-    state.note='';state.expires='';state.resource='';
-    await loadData(true);
-    toast(L('دسترسی با موفقیت فعال شد.','Access was granted successfully.','Pristup je uspješno odobren.'));
-  }catch(error){toast(error.message||String(error),'bad')}finally{state.saving=false;render()}
-}
-async function revokeAccess(id){
-  id=uid(id);if(!id)return;
-  if(!confirm(L('این دسترسی لغو شود؟','Revoke this access?','Opozvati ovaj pristup?')))return;
-  state.saving=true;render();
-  try{await rpc('nh7_admin_content_access_revoke_v251',{p_id:id});await loadData(true);toast(L('دسترسی لغو شد.','Access was revoked.','Pristup je opozvan.'))}catch(error){toast(error.message||String(error),'bad')}finally{state.saving=false;render()}
-}
-function injectEntry(){
-  clearTimeout(injectTimer);injectTimer=setTimeout(()=>{
-    if(!authorizedEntry())return;
-    document.querySelectorAll('.tabs').forEach(nav=>{
-      if(nav.querySelector('[data-nh7-library-access-entry]'))return;
-      const button=document.createElement('button');button.type='button';button.className='tab nh7-access-tab';button.dataset.nh7LibraryAccessEntry='1';button.textContent='🔐 '+L('دسترسی خادمان','Ministers access','Pristup služitelja');button.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();openModal()});nav.appendChild(button);
-    });
-  },80);
-}
-
-document.addEventListener('keydown',event=>{if(event.key==='Escape'&&modal)closeModal()},true);
-document.querySelector('#langSelect')?.addEventListener('change',()=>{injectEntry();if(modal){modal.querySelector('.nh7-access-modal')?.setAttribute('dir',language()==='fa'?'rtl':'ltr');render()}});
-new MutationObserver(injectEntry).observe(document.documentElement,{childList:true,subtree:true});
-installStyle();
-setInterval(injectEntry,1800);
-setTimeout(injectEntry,600);
-window.NH7_ADMIN_LIBRARY_ACCESS_V396={open:openModal,refresh:()=>loadData(true),version:VERSION};
+function exp(t){try{const p=t.split('.')[1]||'',n=p.replace(/-/g,'+').replace(/_/g,'/');return Number(JSON.parse(atob(n.padEnd(Math.ceil(n.length/4)*4,'='))).exp||0)*1000}catch{return 0}}
+async function ensureToken(){let a=token();if(a&&exp(a)>Date.now()+90000)return a;const r=refreshToken();if(!r)return a;if(refreshing)return refreshing;refreshing=(async()=>{try{const q=await fetch(`${URL}/auth/v1/token?grant_type=refresh_token`,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:r}),cache:'no-store'});const raw=await q.text();let d={};try{d=raw?JSON.parse(raw):{}}catch{d={message:raw}}if(!q.ok)throw new Error(d.message||d.error_description||'Session expired');a=String(d.access_token||'');if(a)localStorage.setItem(TOKEN_KEY,a);if(d.refresh_token)localStorage.setItem(REFRESH_KEY,String(d.refresh_token));return a}finally{refreshing=null}})();return refreshing}
+async function headers(){const a=await ensureToken();if(!a)throw new Error(L('ابتدا وارد پنل مدیریت شوید.','Sign in to Admin first.','Najprije se prijavite u Admin.'));return{apikey:KEY,Authorization:'Bearer '+a,'Content-Type':'application/json'}}
+async function rpc(name,payload={},retry=true){const call=async()=>{const r=await fetch(`${URL}/rest/v1/rpc/${encodeURIComponent(name)}`,{method:'POST',headers:await headers(),body:JSON.stringify(payload),cache:'no-store'});const raw=await r.text();let d=null;try{d=raw?JSON.parse(raw):null}catch{d=raw}if(!r.ok){const e=new Error(d?.message||d?.hint||String(d||r.statusText));e.status=r.status;throw e}return d};try{return await call()}catch(e){if(retry&&e.status===401){localStorage.removeItem(TOKEN_KEY);await ensureToken();return call()}throw e}}
+function title(row){const l=language();return row?.['title_'+l]||row?.title_en||row?.title_fa||row?.title_hr||row?.file_name||'-'}
+function user(){return S.users.find(x=>String(x.user_id)===String(S.selectedUser))}
+function selectedCodes(){return S.codes.filter(x=>String(x.target_user_id)===String(S.selectedUser))}
+function selectedGrants(){return S.grants.filter(x=>String(x.user_id)===String(S.selectedUser))}
+function itemName(id){return title(S.items.find(x=>String(x.id)===String(id)))||'-'}
+function accessSnapshot(){try{return JSON.parse(localStorage.getItem('nh7_admin_access_v350')||'null')}catch{return null}}
+function allowed(){const a=accessSnapshot();return Boolean(token()&&(a?.is_owner||Array.isArray(a?.permissions)&&a.permissions.includes('registrations.view')))}
+function fmt(v){if(!v)return L('بدون انقضا','No expiration','Bez isteka');try{return new Intl.DateTimeFormat(language()==='fa'?'fa-IR':language()==='hr'?'hr-HR':'en-US',{dateStyle:'medium',timeStyle:'short'}).format(new Date(v))}catch{return String(v)}}
+function style(){if(document.getElementById('nh7Access433Style'))return;const s=document.createElement('style');s.id='nh7Access433Style';s.textContent=`.nh7a-ov{position:fixed;inset:0;z-index:1800;background:#071b28a8;backdrop-filter:blur(6px);overflow:auto;padding:16px}.nh7a-box{width:min(1120px,100%);margin:auto;background:#f5fbfb;border-radius:24px;padding:15px;min-height:80vh}.nh7a-head{position:sticky;top:-16px;z-index:4;background:#f5fbfbf5;display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 0 12px;border-bottom:1px solid #d8ecea}.nh7a-head h2{margin:0}.nh7a-close{border:0;border-radius:50%;width:42px;height:42px;background:#fff;font-size:22px}.nh7a-grid{display:grid;grid-template-columns:minmax(280px,.8fr) minmax(380px,1.2fr);gap:12px;margin-top:12px}.nh7a-card{background:#fff;border:1px solid #d8ecea;border-radius:19px;padding:13px;margin-bottom:11px}.nh7a-users{max-height:620px;overflow:auto;display:grid;gap:7px}.nh7a-user{border:1px solid #d8ecea;background:#fbfefe;border-radius:14px;padding:10px;text-align:start;color:#102033}.nh7a-user.sel{border-color:#0b76b7;background:#eef8ff}.nh7a-user small{display:block;color:#667085}.nh7a-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}.nh7a-fields .wide{grid-column:1/-1}.nh7a-fields label{font-size:.8rem;font-weight:800}.nh7a-fields input,.nh7a-fields select{width:100%;padding:10px;border:1px solid #cfe4e2;border-radius:12px;background:white}.nh7a-code{background:#102033;color:white;border-radius:16px;padding:14px;text-align:center;margin:10px 0}.nh7a-code strong{display:block;font:800 1.45rem ui-monospace,monospace;letter-spacing:.08em;direction:ltr}.nh7a-row{border:1px solid #e1eeee;border-radius:14px;padding:10px;margin:7px 0}.nh7a-row p{margin:4px 0;color:#667085;font-size:.82rem}.nh7a-pill{display:inline-block;padding:4px 7px;border-radius:999px;background:#ecfdf3;color:#08783d;font-size:.72rem;font-weight:800}.nh7a-pill.off{background:#f2f4f7;color:#667085}.nh7a-err{background:#fff1f1;color:#a02121;padding:10px;border-radius:12px}.nh7a-note{background:#fff7ed;color:#9a3412;padding:10px;border-radius:12px}.nh7a-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.nh7a-btn{border:0;border-radius:12px;padding:10px 12px;font-weight:800;cursor:pointer}.nh7a-primary{background:linear-gradient(135deg,#0b5faa,#16a765);color:white}.nh7a-secondary{background:#eef8f7;color:#0f766e}.nh7a-danger{background:#fef3f2;color:#b42318}.nh7a-empty{padding:16px;text-align:center;color:#667085;border:1px dashed #d8ecea;border-radius:14px}@media(max-width:800px){.nh7a-grid{grid-template-columns:1fr}.nh7a-users{max-height:330px}}@media(max-width:560px){.nh7a-ov{padding:0}.nh7a-box{border-radius:0;min-height:100vh}.nh7a-fields{grid-template-columns:1fr}.nh7a-fields .wide{grid-column:auto}}`;document.head.appendChild(s)}
+function toast(t,bad=false){const n=document.createElement('div');n.style.cssText=`position:fixed;z-index:1900;left:50%;bottom:22px;transform:translateX(-50%);max-width:90vw;padding:11px 15px;border-radius:13px;color:#fff;background:${bad?'#a02121':'#08783d'};box-shadow:0 10px 30px #0004`;n.textContent=t;document.body.appendChild(n);setTimeout(()=>n.remove(),3600)}
+function close(){modal?.remove();modal=null;document.body.style.overflow=''}
+async function load(){S.loading=true;S.error='';render();try{const [d,c]=await Promise.all([rpc('nh7_admin_content_access_dashboard_v395',{}),rpc('nh7_admin_library_claim_codes_list_v433',{})]);const x=Array.isArray(d)?d[0]:d||{};S.users=Array.isArray(x.users)?x.users:[];S.items=Array.isArray(x.items)?x.items:[];S.grants=Array.isArray(x.grants)?x.grants:[];S.codes=Array.isArray(c)?c:[];if(S.selectedUser&&!S.users.some(u=>String(u.user_id)===String(S.selectedUser)))S.selectedUser=''}catch(e){S.error=e.message||String(e)}finally{S.loading=false;render()}}
+function userList(){const q=S.search.trim().toLowerCase(),rows=S.users.filter(u=>!q||`${u.display_name||''} ${u.email||''}`.toLowerCase().includes(q));if(!rows.length)return `<div class="nh7a-empty">${E(L('کاربری پیدا نشد.','No user found.','Korisnik nije pronađen.'))}</div>`;return rows.map(u=>{const n=S.grants.filter(g=>String(g.user_id)===String(u.user_id)).length,c=S.codes.filter(x=>String(x.target_user_id)===String(u.user_id)&&x.is_active).length;return `<button class="nh7a-user ${String(S.selectedUser)===String(u.user_id)?'sel':''}" data-u="${E(u.user_id)}"><b>${E(u.display_name||u.email)}</b><small dir="ltr">${E(u.email)}</small><small>${n} ${E(L('دسترسی','grants','pristupa'))} · ${c} ${E(L('کد فعال','active codes','aktivnih kodova'))}</small></button>`}).join('')}
+function itemOpts(){return S.items.map(i=>`<option value="${E(i.id)}" ${String(S.resource)===String(i.id)?'selected':''}>${E(title(i))}</option>`).join('')}
+function grants(){const rows=selectedGrants();if(!rows.length)return `<div class="nh7a-empty">${E(L('دسترسی فعالی ندارد.','No active grant.','Nema aktivnog pristupa.'))}</div>`;return rows.map(g=>`<div class="nh7a-row"><span class="nh7a-pill">${E(g.scope==='library_all'?L('همه کتاب‌ها','All books','Sve knjige'):L('یک کتاب','One book','Jedna knjiga'))}</span><b style="display:block;margin-top:5px">${E(g.scope==='library_all'?L('تمام کتاب‌های خادمین','All ministers books','Sve knjige za služitelje'):itemName(g.resource_id))}</b><p>${E(fmt(g.expires_at))}</p><button class="nh7a-btn nh7a-danger" data-revoke-grant="${E(g.id)}">${E(L('لغو دسترسی','Revoke','Opozovi'))}</button></div>`).join('')}
+function codes(){const rows=selectedCodes();if(!rows.length)return `<div class="nh7a-empty">${E(L('هنوز کدی ساخته نشده است.','No code has been created.','Kod još nije izrađen.'))}</div>`;return rows.map(c=>`<div class="nh7a-row"><span class="nh7a-pill ${c.is_active?'':'off'}">${E(c.is_active?L('فعال','Active','Aktivan'):L('استفاده‌شده/لغوشده','Used/revoked','Iskorišten/opozvan'))}</span><b style="display:block;margin-top:5px">${E(c.scope==='library_all'?L('تمام کتاب‌های خادمین','All ministers books','Sve knjige za služitelje'):(c.resource_title||itemName(c.resource_id)))}</b><p dir="ltr">Code: ••••-${E(c.code_hint||'')}</p><p>${E(fmt(c.expires_at))}${c.redeemed_at?' · '+E(L('استفاده شده','Redeemed','Iskorišten')):''}</p>${c.is_active?`<button class="nh7a-btn nh7a-danger" data-revoke-code="${E(c.id)}">${E(L('لغو کد','Revoke code','Opozovi kod'))}</button>`:''}</div>`).join('')}
+function editor(){const u=user();if(!u)return `<div class="nh7a-empty">${E(L('ابتدا یک حساب تأییدشده را انتخاب کن.','Select an approved account first.','Najprije odaberite odobreni račun.'))}</div>`;const one=S.scope==='library_item';return `<div class="nh7a-note"><b>${E(u.display_name||u.email)}</b><div dir="ltr">${E(u.email)}</div></div>${S.lastCode&&String(S.lastCode.user_id)===String(S.selectedUser)?`<div class="nh7a-code"><small>${E(L('این کد را فقط به همین شخص بده','Give this code only to this person','Ovaj kod dajte samo ovoj osobi'))}</small><strong>${E(S.lastCode.code)}</strong><div class="nh7a-actions" style="justify-content:center"><button class="nh7a-btn nh7a-secondary" data-copy-code>${E(L('کپی کد','Copy code','Kopiraj kod'))}</button></div></div>`:''}<div class="nh7a-fields"><div class="wide"><label>${E(L('محدوده دسترسی','Access scope','Opseg pristupa'))}</label><select data-scope><option value="library_all" ${S.scope==='library_all'?'selected':''}>${E(L('همه کتاب‌های خادمین','All ministers-library books','Sve knjige za služitelje'))}</option><option value="library_item" ${one?'selected':''}>${E(L('فقط یک کتاب','Only one book','Samo jedna knjiga'))}</option></select></div>${one?`<div class="wide"><label>${E(L('کتاب','Book','Knjiga'))}</label><select data-resource><option value="">${E(L('انتخاب کتاب…','Select book…','Odaberi knjigu…'))}</option>${itemOpts()}</select></div>`:''}<div><label>${E(L('انقضا — اختیاری','Expiration — optional','Istek — neobavezno'))}</label><input type="datetime-local" data-exp value="${E(S.expires)}"></div><div><label>${E(L('یادداشت — اختیاری','Note — optional','Napomena — neobavezno'))}</label><input data-note maxlength="500" value="${E(S.note)}"></div></div><div class="nh7a-actions"><button class="nh7a-btn nh7a-primary" data-make-code ${S.saving?'disabled':''}>🔑 ${E(L('ساخت کد','Generate code','Izradi kod'))}</button><button class="nh7a-btn nh7a-secondary" data-direct ${S.saving?'disabled':''}>✓ ${E(L('دادن دسترسی مستقیم','Grant directly','Odobri izravno'))}</button></div>`}
+function body(){if(S.loading)return `<div class="nh7a-empty">${E(L('در حال دریافت اطلاعات…','Loading…','Učitavanje…'))}</div>`;return `${S.error?`<div class="nh7a-err">${E(S.error)}</div>`:''}<div class="nh7a-grid"><div class="nh7a-card"><h3>👥 ${E(L('حساب‌های تأییدشده','Approved accounts','Odobreni računi'))}</h3><input data-search type="search" value="${E(S.search)}" placeholder="${E(L('جستجوی نام یا ایمیل','Search name or email','Traži ime ili e-mail'))}" style="width:100%;padding:10px;border:1px solid #cfe4e2;border-radius:12px;margin-bottom:8px"><div class="nh7a-users">${userList()}</div></div><div><div class="nh7a-card"><h3>🔑 ${E(L('دسترسی و ساخت کد','Access & code','Pristup i kod'))}</h3>${editor()}</div><div class="nh7a-card"><h3>📚 ${E(L('دسترسی‌های فعال این حساب','Active grants','Aktivni pristupi'))}</h3>${S.selectedUser?grants():`<div class="nh7a-empty">—</div>`}</div><div class="nh7a-card"><h3>🔐 ${E(L('کدهای این حساب','Codes for this account','Kodovi računa'))}</h3>${S.selectedUser?codes():`<div class="nh7a-empty">—</div>`}</div></div></div>`}
+function render(){if(!modal)return;const b=modal.querySelector('[data-body]');if(b)b.innerHTML=body()}
+function shell(){return `<div class="nh7a-ov"><section class="nh7a-box" dir="${language()==='fa'?'rtl':'ltr'}"><div class="nh7a-head"><div><h2>🔐 ${E(L('کتابخانه خادمین — دسترسی و کد','Ministers Library — access & codes','Knjižnica služitelja — pristup i kodovi'))}</h2><small>${E(L('کد به حساب انتخاب‌شده و محدوده انتخاب‌شده قفل می‌شود.','Codes are locked to the selected account and scope.','Kod je vezan uz odabrani račun i opseg.'))}</small></div><div class="nh7a-actions"><button class="nh7a-btn nh7a-secondary" data-refresh>⟳</button><button class="nh7a-close" data-close>×</button></div></div><div data-body></div></section></div>`}
+async function open(){style();if(modal)return;const w=document.createElement('div');w.innerHTML=shell();modal=w.firstElementChild;document.body.appendChild(modal);document.body.style.overflow='hidden';modal.addEventListener('click',click);modal.addEventListener('input',input);modal.addEventListener('change',change);await load()}
+function input(e){if(e.target.matches('[data-search]')){S.search=e.target.value;render()}if(e.target.matches('[data-note]'))S.note=e.target.value;if(e.target.matches('[data-exp]'))S.expires=e.target.value}
+function change(e){if(e.target.matches('[data-scope]')){S.scope=e.target.value;S.resource='';S.lastCode=null;render()}if(e.target.matches('[data-resource]'))S.resource=e.target.value}
+async function click(e){if(e.target===modal||e.target.closest('[data-close]'))return close();if(e.target.closest('[data-refresh]'))return load();const u=e.target.closest('[data-u]');if(u){S.selectedUser=u.dataset.u;S.lastCode=null;render();return}if(e.target.closest('[data-copy-code]')&&S.lastCode?.code){try{await navigator.clipboard.writeText(S.lastCode.code);toast(L('کد کپی شد.','Code copied.','Kod kopiran.'))}catch{}}if(e.target.closest('[data-make-code]'))return makeCode();if(e.target.closest('[data-direct]'))return directGrant();const rc=e.target.closest('[data-revoke-code]');if(rc)return revokeCode(rc.dataset.revokeCode);const rg=e.target.closest('[data-revoke-grant]');if(rg)return revokeGrant(rg.dataset.revokeGrant)}
+function payloadBase(){const u=uid(S.selectedUser);if(!u)throw new Error(L('حساب را انتخاب کن.','Select an account.','Odaberite račun.'));const one=S.scope==='library_item',r=one?uid(S.resource):null;if(one&&!r)throw new Error(L('کتاب را انتخاب کن.','Select a book.','Odaberite knjigu.'));return{u,r,expires:S.expires?new Date(S.expires).toISOString():null,note:String(S.note||'').slice(0,500)}}
+async function makeCode(){try{const p=payloadBase();S.saving=true;render();const d=await rpc('nh7_admin_library_claim_code_create_v433',{p_user_id:p.u,p_scope:S.scope,p_resource_id:p.r,p_expires_at:p.expires,p_note:p.note});S.lastCode=Array.isArray(d)?d[0]:d;S.note='';S.expires='';await load();toast(L('کد ساخته شد.','Code generated.','Kod je izrađen.'))}catch(e){toast(e.message||String(e),true)}finally{S.saving=false;render()}}
+async function directGrant(){try{const p=payloadBase();S.saving=true;render();await rpc('nh7_admin_content_access_grant_v251',{p_user_id:p.u,p_scope:S.scope,p_resource_id:p.r,p_expires_at:p.expires,p_note:p.note});S.note='';S.expires='';await load();toast(L('دسترسی مستقیم فعال شد.','Direct access granted.','Izravni pristup odobren.'))}catch(e){toast(e.message||String(e),true)}finally{S.saving=false;render()}}
+async function revokeCode(id){if(!confirm(L('این کد لغو شود؟','Revoke this code?','Opozvati ovaj kod?')))return;try{await rpc('nh7_admin_library_claim_code_revoke_v433',{p_id:uid(id)});await load();toast(L('کد لغو شد.','Code revoked.','Kod opozvan.'))}catch(e){toast(e.message||String(e),true)}}
+async function revokeGrant(id){if(!confirm(L('این دسترسی لغو شود؟','Revoke this access?','Opozvati pristup?')))return;try{await rpc('nh7_admin_content_access_revoke_v251',{p_id:uid(id)});await load();toast(L('دسترسی لغو شد.','Access revoked.','Pristup opozvan.'))}catch(e){toast(e.message||String(e),true)}}
+function inject(){clearTimeout(injectTimer);injectTimer=setTimeout(()=>{if(!allowed())return;document.querySelectorAll('.tabs').forEach(nav=>{let b=nav.querySelector('[data-nh7-ministers-access]');if(b)return;b=document.createElement('button');b.type='button';b.className='tab';b.dataset.nh7MinistersAccess='1';b.textContent='🔐 '+L('دسترسی خادمین','Ministers access','Pristup služitelja');b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();open()});nav.appendChild(b)})},80)}
+new MutationObserver(inject).observe(document.documentElement,{childList:true,subtree:true});setInterval(inject,1800);setTimeout(inject,500);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal)close()},true);window.NH7_ADMIN_LIBRARY_ACCESS_V433={open,refresh:load,version:VERSION};
 })();
