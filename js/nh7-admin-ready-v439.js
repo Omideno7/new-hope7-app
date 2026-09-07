@@ -1,8 +1,8 @@
-/* New Hope 7 admin 2.3.9.46: stable session + MASTER isolated from admin render lifecycle. */
-(()=>{'use strict';const RELEASE='2.3.9.46';let checkBusy=false,lastCheck=0;
+/* New Hope 7 admin 2.3.9.47: stable session + MASTER isolated from admin render lifecycle. */
+(()=>{'use strict';const RELEASE='2.3.9.47';let checkBusy=false,lastCheck=0;
 let header=null,resize=null;
 function measureHeader(){const next=document.querySelector('.admin-shell>.topbar');if(header===next)return;resize?.disconnect();header=next;if(!header||!window.ResizeObserver)return;resize=new ResizeObserver(()=>{const h=Math.ceil(header.getBoundingClientRect().height)+'px';if(document.documentElement.style.getPropertyValue('--nh7-admin-header-height')!==h)document.documentElement.style.setProperty('--nh7-admin-header-height',h)});resize.observe(header)}
-function masterLink(){if(document.querySelector('input[type="password"]'))return;const tabs=document.querySelector('.tabs');if(!tabs||document.getElementById('nh7MasterStandaloneLink'))return;const a=document.createElement('a');a.id='nh7MasterStandaloneLink';a.className='tab';a.href='./admin-master.html?v=4.6.0';a.textContent='📚 بارگذاری کتاب MASTER';a.style.textDecoration='none';tabs.appendChild(a)}
+function masterLink(){if(document.querySelector('input[type="password"]'))return;const tabs=document.querySelector('.tabs');if(!tabs||document.getElementById('nh7MasterStandaloneLink'))return;const a=document.createElement('a');a.id='nh7MasterStandaloneLink';a.className='tab';a.href='./admin-master-v462.html?build=4.6.2-'+Date.now();a.textContent='📚 بارگذاری کتاب MASTER';a.style.textDecoration='none';tabs.appendChild(a)}
 function installSessionGuard(){
   if(window.__NH7_ADMIN_SESSION_GUARD_246||!window.nh7AdminAccessReady||typeof token!=='string'||!token||typeof authFetch!=='function')return;
   window.__NH7_ADMIN_SESSION_GUARD_246=true;
@@ -19,8 +19,6 @@ function installSessionGuard(){
         if(rr.ok)return rr.status===204?null:rr.json();
         const retryText=await rr.text();throw Object.assign(new Error(retryText||'Admin request failed after session refresh'),{status:rr.status,code:'ADMIN_REQUEST_FAILED'});
       }
-      // A background request is never allowed to destroy the authenticated admin session.
-      // Server-side authorization still protects every RPC; the UI remains signed in and can retry.
       throw Object.assign(new Error(txt||('Admin request failed: '+r.status)),{status:r.status,code:expired?'ADMIN_SESSION_RETRY':'ADMIN_REQUEST_FAILED'});
     };
     return run();
