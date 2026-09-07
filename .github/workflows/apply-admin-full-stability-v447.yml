@@ -1,0 +1,42 @@
+name: Apply admin full stability 2.3.9.47
+on:
+  push:
+    branches: [fix/admin-full-stability-v447]
+    paths:
+      - scripts/apply-admin-full-stability-v447.py
+      - .github/workflows/apply-admin-full-stability-v447.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - name: Apply guarded patch
+        run: python3 scripts/apply-admin-full-stability-v447.py
+      - name: Check JavaScript syntax and contracts
+        run: |
+          node --check js/nh7-admin-full-stability-v447.js
+          node --check js/admin-v2.3.9-registration-requests-v331.js
+          node - <<'NODE'
+          const fs=require('fs');
+          const stable=fs.readFileSync('admin-v239-stable.html','utf8');
+          const master=fs.readFileSync('admin-master.html','utf8');
+          const version=JSON.parse(fs.readFileSync('version.json','utf8'));
+          if(version.admin!=='2.3.9.47')throw new Error('admin version mismatch');
+          if(!stable.includes('nh7-admin-full-stability-v447.js'))throw new Error('stability runtime missing');
+          if(!master.includes('nh7_admin_library_dashboard_light_v440'))throw new Error('light dashboard missing');
+          if(!master.includes('nh7_admin_library_import_ready_v440'))throw new Error('optimized import missing');
+          console.log('Admin 2.3.9.47 contracts OK');
+          NODE
+      - name: Commit patched source to fix branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add admin-master.html admin-v239-stable.html version.json js/admin-v2.3.9-registration-requests-v331.js
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Apply admin 2.3.9.47 full stability source changes'
+          git push origin HEAD:${{ github.ref_name }}
