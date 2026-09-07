@@ -13,7 +13,11 @@ const APPROVED=row=>STATUS(row)==='approved';
 const REJECTED=row=>['rejected','denied','blocked'].includes(STATUS(row));
 const PENDING=row=>!APPROVED(row)&&!REJECTED(row)&&STATUS(row)!=='archived';
 const DATE=row=>new Date(row?.updated_at||row?.created_at||payload(row).submittedAt||0).getTime()||0;
-let refreshing=false;
+let refreshing=false,deferredRender=false,lastUserInteraction=0;
+const userBusy=()=>Date.now()-lastUserInteraction<1800||!!document.activeElement?.matches?.('input,textarea,select,[contenteditable="true"]')||!!document.querySelector('.request-card details[open]');
+['input','focusin','touchstart','pointerdown','keydown'].forEach(t=>document.addEventListener(t,()=>{lastUserInteraction=Date.now()},true));window.addEventListener('scroll',()=>{lastUserInteraction=Date.now()},{passive:true});
+function flushDeferred(){if(!deferredRender||userBusy())return;deferredRender=false;renderAt(window.scrollY)}
+document.addEventListener('toggle',()=>setTimeout(flushDeferred,50),true);document.addEventListener('focusout',()=>setTimeout(flushDeferred,100),true);
 function rows(){return Array.isArray(state.registrations)?state.registrations:[]}
 function pendingRows(){return rows().filter(PENDING)}
 function requestKey(row){const email=EMAIL_OF(row);return email?TYPE(row)+'|'+email:'id:'+String(row?.id||'')}
@@ -23,7 +27,7 @@ function style(){if(document.getElementById('nh7RegistrationRequestsStyleV331'))
 function requestTab(){return [...document.querySelectorAll('.tab')].find(button=>String(button.getAttribute('onclick')||'').includes('requests'))||null}
 function decorate(){style();const count=pendingRows().length,tab=requestTab();if(tab){let badge=tab.querySelector('.badge');if(count){if(!badge){badge=document.createElement('span');badge.className='badge';tab.appendChild(badge)}badge.textContent=String(count);tab.classList.add('nh7-request-tab-alert-v331')}else{badge?.remove();tab.classList.remove('nh7-request-tab-alert-v331')}}}
 function dedupeLocal(list){const groups=new Map();for(const row of list){const key=requestKey(row);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(row)}const keep=[],remove=[];for(const group of groups.values()){group.sort((a,b)=>Number(APPROVED(b))-Number(APPROVED(a))||DATE(b)-DATE(a));keep.push(group[0]);remove.push(...group.slice(1))}return{keep,remove}}
-async function refreshRegistrations(renderChanged=true){if(refreshing||document.hidden||typeof token==='undefined'||!token||typeof authFetch!=='function')return;refreshing=true;try{const before=rows().map(row=>String(row.id)+'|'+STATUS(row)).join(','),fresh=await authFetch('/rest/v1/registrations?select=*&order=created_at.desc&limit=2000',{method:'GET'});if(!Array.isArray(fresh))return;state.registrations=fresh;const after=fresh.map(row=>String(row.id)+'|'+STATUS(row)).join(',');decorate();if(renderChanged&&before!==after&&typeof activeTab!=='undefined'&&['requests','approved','overview'].includes(activeTab))renderAt()}catch(error){console.warn('Registration refresh',error)}finally{refreshing=false}}
+async function refreshRegistrations(renderChanged=true){if(refreshing||document.hidden||typeof token==='undefined'||!token||typeof authFetch!=='function')return;refreshing=true;try{const before=rows().map(row=>String(row.id)+'|'+STATUS(row)).join(','),fresh=await authFetch('/rest/v1/registrations?select=*&order=created_at.desc&limit=2000',{method:'GET'});if(!Array.isArray(fresh))return;state.registrations=fresh;const after=fresh.map(row=>String(row.id)+'|'+STATUS(row)).join(',');decorate();if(renderChanged&&before!==after&&typeof activeTab!=='undefined'&&['requests','approved','overview'].includes(activeTab)){if(userBusy())deferredRender=true;else renderAt()}}catch(error){console.warn('Registration refresh',error)}finally{refreshing=false}}
 if(typeof getEffectiveStatus==='function')getEffectiveStatus=window.getEffectiveStatus=row=>STATUS(row);
 if(typeof isEffectivePending==='function')isEffectivePending=window.isEffectivePending=PENDING;
 if(typeof isEffectiveApproved==='function')isEffectiveApproved=window.isEffectiveApproved=APPROVED;
