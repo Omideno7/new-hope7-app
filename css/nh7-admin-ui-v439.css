@@ -1,0 +1,11 @@
+/* Scope shared-app header fixes to admin only. */
+.admin-shell>.topbar{display:block!important;min-width:0}
+.admin-shell>.topbar .brand{width:100%;min-width:0;align-items:center}
+.admin-shell>.topbar .brand>div{flex:1;min-width:0}
+.admin-shell>.topbar .brand img{flex:0 0 44px;width:44px;height:44px}
+.admin-shell>.topbar .brand h1,.admin-shell>.topbar .brand p{white-space:normal;overflow-wrap:anywhere}
+.admin-shell>.topbar .top-actions{position:static;min-width:0;width:100%;flex-wrap:wrap}
+.admin-shell>.topbar .top-actions>*{min-width:0}
+body.nh7-f4-open,body.nh7-v239-preview-open,body.nh7-student-modal-open{overflow-y:hidden!important}
+@media(min-width:641px){.admin-shell>.tabs{top:var(--nh7-admin-header-height,150px)!important}}
+@media(max-width:640px){.admin-shell>.topbar .top-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.admin-shell>.topbar .brand h1{font-size:1.05rem}.admin-shell>.topbar .brand p{font-size:.82rem}.admin-shell input,.admin-shell textarea,.admin-shell select{font-size:16px}}
