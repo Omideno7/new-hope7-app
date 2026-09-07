@@ -7,7 +7,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>New Hope 7 Admin — Stable 2.3.9.43</title>
+  <title>New Hope 7 Admin — Stable 2.3.9.44</title>
   <style>
     body{margin:0;min-height:100dvh;display:grid;place-items:center;background:linear-gradient(180deg,#e9f8f6,#f7fbff);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;color:#102033;padding:24px;box-sizing:border-box}
     main{width:min(620px,100%);background:#fff;border:1px solid #d8ecea;border-radius:24px;padding:24px;text-align:center;box-shadow:0 18px 55px rgba(15,118,110,.16)}
@@ -16,16 +16,14 @@
   </style>
 </head>
 <body>
-<main><div class="spinner"></div><h1>New Hope 7 — نسخهٔ پایدار ۲.۳.۹.۴۳</h1><p>پنل مدیریت در حال بارگذاری است.</p><div id="error" class="error"></div></main>
+<main><div class="spinner"></div><h1>New Hope 7 — نسخهٔ پایدار ۲.۳.۹.۴۴</h1><p>پنل مدیریت در حال بارگذاری است.</p><div id="error" class="error"></div></main>
 <script>
 (async()=>{
-  const RELEASE='2.3.9.43';
-  const BUILD='2.3.9.43-ui-v439';
+  const RELEASE='2.3.9.44';
+  const BUILD='2.3.9.44-master450';
   async function latestVersion(){try{const r=await fetch('./version.json?t='+Date.now(),{cache:'no-store',headers:{'Cache-Control':'no-cache, no-store, must-revalidate','Pragma':'no-cache'}});return r.ok?await r.json():null}catch(_){return null}}
   async function checkForUpdate(){const remote=await latestVersion(),latest=String(remote?.admin||'');if(!latest||latest===RELEASE)return;const guard='nh7_admin_redirect_'+latest;if(sessionStorage.getItem(guard)==='1')return;sessionStorage.setItem(guard,'1');const target=new URL('./admin-v239-stable.html',location.href);target.searchParams.set('release','stable-'+latest);target.searchParams.set('update',Date.now().toString());location.replace(target.href)}
   try{
-    // Entry HTML is fetched without waiting for the unrelated version endpoint.
-    // The mounted panel offers an explicit update button instead of discarding edits.
     const response=await fetch('./admin.html?stable='+encodeURIComponent(BUILD)+'-'+Date.now(),{cache:'no-store',headers:{'Cache-Control':'no-cache, no-store, must-revalidate','Pragma':'no-cache'}});
     if(!response.ok)throw new Error('Admin HTML '+response.status);
     let html=await response.text();
@@ -33,7 +31,7 @@
     html=html.replace('admin-manifest.json?v=2.3.6','admin-manifest.json?v='+BUILD);
     html=html.replace('</head>',`<link rel="stylesheet" href="css/admin-v2.3.9-clean-scroll-v300.css?v=${BUILD}"><link rel="stylesheet" href="css/admin-v2.3.9-clean-features-v311.css?v=${BUILD}"><link rel="stylesheet" href="css/admin-v2.3.9-final-stable-v316.css?v=${BUILD}"><link rel="stylesheet" href="css/admin-v2.3.9-library-mobile-v320.css?v=${BUILD}"><link rel="stylesheet" href="css/nh7-library-collections-v322.css?v=${BUILD}"><link rel="stylesheet" href="css/nh7-admin-ui-v439.css?v=${BUILD}"><style>.nh7-admin-version-v235{display:none!important}[data-ready-import-card]{display:none!important}</style></head>`);
     html=html.replace('</body>',`<script src="js/admin-v2.3.9-clean-scroll-v300.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-library-clean-v311.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-apocrypha-catalog-v274.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-apocrypha-text-only-v320.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-library-collections-v322.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-student-clean-v311.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-audio-clean-v312.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-video-final-v316.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-video-save-sync-v316.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-video-person-access-v317.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-student-state-fix-v316.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-ui-documents-final-v316.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-fix12-bootstrap.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-registration-requests-v331.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-registration-approval-email-v344.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-approval-email-ui-v345.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-registration-email-actions-v346.js?v=${BUILD}"><\/script><script src="js/admin-v2.3.9-request-search-focus-v336.js?v=request-search-fix3"><\/script><script src="js/admin-v2.3.9-notifications-zagreb-v333.js?v=${BUILD}"><\/script><script src="js/admin-qna-i18n-v341.js?v=${BUILD}"><\/script><script src="js/nh7-admin-rbac-v350.js?v=${BUILD}"><\/script><script src="js/nh7-admin-ready-v439.js?v=${BUILD}"><\/script></body>`);
-    html=html.replaceAll('2.3.9.42','2.3.9.43').replaceAll('2.3.9.39','2.3.9.43').replaceAll('2.3.9.40','2.3.9.43').replaceAll('2.3.9.41','2.3.9.43');
+    html=html.replaceAll('2.3.9.43','2.3.9.44').replaceAll('2.3.9.42','2.3.9.44').replaceAll('2.3.9.39','2.3.9.44').replaceAll('2.3.9.40','2.3.9.44').replaceAll('2.3.9.41','2.3.9.44');
 
     html=html.replace('</head>',`<script src="js/nh7-admin-ui-stability-v439.js?v=${BUILD}"><\/script></head>`);
     const core=/^function render\(\)\{[^\n]+\}$/m;
@@ -44,7 +42,6 @@
     html=html.replace(/<script src="js\/admin-v2\.3\.5-analytics\.js[^"\n]*"><\/script>/,`<script src="js/admin-v2.3.5-analytics-core-v237.js?v=${BUILD}"><\/script><script src="js/nh7-admin-listening-analytics-v427.js?v=${BUILD}"><\/script><script src="js/nh7-admin-school-workflow-v246.js?v=${BUILD}"><\/script>`);
     html=html.replace('js/admin-v2.3.9-document-runtime-fix4.js?v=2.3.9-f4','js/admin-v2.3.9-document-runtime-fix4.js?v='+BUILD);
     html=html.replaceAll('js/admin-v2.3.9-clean-scroll-v300.js','js/nh7-admin-scroll-v439.js').replaceAll('js/admin-v2.3.9-request-search-focus-v336.js','js/nh7-admin-request-search-v439.js');
-    // Keep the last student implementation, after the analytics compatibility layer.
     const tags=[...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)];
     const last=new Map();for(const m of tags)last.set(m[1].split('?')[0],m.index);
     html=html.replace(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g,(tag,src,offset)=>last.get(src.split('?')[0])===offset?tag:'');
