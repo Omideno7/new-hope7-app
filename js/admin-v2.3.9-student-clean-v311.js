@@ -1,5 +1,6 @@
 /* New Hope 7 Admin v3.1.1 — scroll-safe assignments and student activity */
 (()=>{'use strict';
+if(window.__NH7_STUDENT_CLEAN_V311__)return;window.__NH7_STUDENT_CLEAN_V311__=true;
 const VERSION='3.1.1-student-clean';
 if(typeof state!=='object'||!state)return;
 const L=(fa,en,hr)=>typeof lang!=='undefined'&&lang==='fa'?fa:typeof lang!=='undefined'&&lang==='hr'?hr:en;
