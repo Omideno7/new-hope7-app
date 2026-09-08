@@ -1,0 +1,32 @@
+name: Apply admin listening/session 2.3.9.48
+on:
+  push:
+    branches: [fix/admin-listening-session-v451]
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - name: Apply guarded patch
+        run: python3 scripts/apply-admin-listening-session-v451.py
+      - name: Validate scripts and contracts
+        run: |
+          node --check js/nh7-admin-listening-analytics-v451.js
+          node --check js/nh7-admin-session-keepalive-v451.js
+          grep -q "nh7_admin_student_profile_v451" js/nh7-admin-listening-analytics-v451.js
+          grep -q "2.3.9.48-listening-session" admin-v239-stable.html
+          grep -q "nh7-admin-session-keepalive-v451.js" admin-v239-stable.html
+          node -e "const v=require('./version.json'); if(v.admin!=='2.3.9.48'||v.app!=='2.3.9.50') process.exit(1)"
+      - name: Commit patched source
+        run: |
+          if git diff --quiet; then echo 'No changes'; exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add admin-v239-stable.html version.json
+          git commit -m 'Apply admin 2.3.9.48 listening and session fixes'
+          git push origin HEAD:${{ github.ref_name }}
