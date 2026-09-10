@@ -504,12 +504,14 @@ let nh7StudentClosingV230=false;
 function nh7StudentTextV230(fa,en,hr){try{return lang==='fa'?fa:lang==='hr'?hr:en}catch(_){return fa}}
 function nh7StudentUnlockV230(){
   const html=document.documentElement,body=document.body;
+  // The observer also runs on unrelated DOM updates. Only unlock our own modal.
+  if(!html.classList.contains('nh7-student-profile-open-v230')&&!body.classList.contains('nh7-student-profile-open-v230'))return;
   html.classList.remove('nh7-student-profile-open-v230');
   body.classList.remove('nh7-student-profile-open-v230','nh7-student-lock-v226','nh7-student-modal-open','nh7-student-detail-open-v227','nh7-student-detail-open-v228');
   html.style.removeProperty('overflow');html.style.removeProperty('overscroll-behavior');
   for(const p of ['position','top','left','right','width','overflow','overscroll-behavior'])body.style.removeProperty(p);
   body.style.removeProperty('--nh7-lock-scroll-y');
-  requestAnimationFrame(()=>window.scrollTo(0,nh7StudentScrollYV230));
+  window.scrollTo({top:nh7StudentScrollYV230,left:0,behavior:'instant'});
 }
 function nh7StudentLockV230(){
   if(!document.body.classList.contains('nh7-student-profile-open-v230'))nh7StudentScrollYV230=window.scrollY||document.documentElement.scrollTop||0;
