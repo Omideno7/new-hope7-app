@@ -16,7 +16,12 @@
       if (u.username || u.password) return false;
       if (['http:','https:'].includes(u.protocol) && ['localhost','127.0.0.1','[::1]'].includes(u.hostname)) return true;
       if (u.protocol === 'capacitor:' && u.hostname === 'localhost') return true;
-      return u.protocol === 'https:' && /^new-hope7-test-preview(?:-[a-z0-9-]+)?\.vercel\.app$/i.test(u.hostname);
+      if (u.protocol !== 'https:') return false;
+      if (/^new-hope7-test-preview(?:-[a-z0-9-]+)?\.vercel\.app$/i.test(u.hostname)) return true;
+      if (u.hostname === 'raw.githack.com' || u.hostname === 'rawcdn.githack.com') {
+        return /^\/Omideno7\/new-hope7-app\/(?:qa\/real-device-preview-20260911|[0-9a-f]{40})\/index\.html$/i.test(u.pathname);
+      }
+      return false;
     } catch (_) { return false; }
   }
   function sameSite(a,b){ return a.protocol===b.protocol && a.hostname===b.hostname && a.port===b.port; }
