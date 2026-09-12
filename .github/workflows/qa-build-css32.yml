@@ -1,0 +1,45 @@
+name: QA build exact css32
+on:
+  push:
+    branches:
+      - qa/hybrid-final-20260912
+    paths:
+      - 'qa32-css-gz-*.txt'
+      - '.github/workflows/qa-build-css32.yml'
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: qa/hybrid-final-20260912
+      - name: Reconstruct and validate exact QA CSS
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import base64, gzip, hashlib
+          encoded=''.join(Path(f'qa32-css-gz-{i:02d}.txt').read_text(encoding='utf-8').strip() for i in range(2))
+          compressed=base64.b64decode(encoded)
+          css=gzip.decompress(compressed)
+          sha=hashlib.sha256(css).hexdigest()
+          expected='6b216b459027226727736a24363a4ccdb2b9e93d7159a0da3f6680bdd396ea39'
+          assert len(css)==21907, (len(css), 'expected 21907')
+          assert sha==expected, (sha, expected)
+          Path('qa32.css').write_bytes(css)
+          print('css_bytes=',len(css))
+          print('css_sha256=',sha)
+          PY
+          test "$(git hash-object qa32.css)" = "b94c4c3165a4a15ae74891ce06b78af8f75934ed"
+          echo 'QA32 CSS exact-byte validation OK'
+      - name: Commit reconstructed CSS
+        shell: bash
+        run: |
+          git config user.name 'nh7-qa-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add qa32.css
+          git commit -m 'QA32: reconstruct exact validated hosted CSS' || exit 0
+          git push origin HEAD:qa/hybrid-final-20260912
