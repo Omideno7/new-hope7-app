@@ -1,0 +1,1 @@
+This is the final harmless placeholder before an exact Git tree blob reuse operation.
