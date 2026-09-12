@@ -21,13 +21,15 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-          import base64, gzip, hashlib
+          import base64, gzip, hashlib, re
           src=Path('qa-payload/pre.txt').read_text(encoding='utf-8').strip()
+          src=re.sub(r'\s+','',src)
+          src += '=' * (-len(src) % 4)
           raw=base64.b64decode(src)
           out=gzip.decompress(raw)
           Path('qa-payload/pre.decoded').write_bytes(out)
           Path('qa-payload/pre-decoded-info.txt').write_text(
-              f'bytes={len(out)}\nsha256={hashlib.sha256(out).hexdigest()}\nprefix={out[:120]!r}\n',
+              f'encoded_chars={len(src)}\ncompressed_bytes={len(raw)}\nbytes={len(out)}\nsha256={hashlib.sha256(out).hexdigest()}\nprefix={out[:120]!r}\n',
               encoding='utf-8'
           )
           print('decoded bytes',len(out))
