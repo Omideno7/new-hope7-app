@@ -1,0 +1,46 @@
+name: QA build exact runtime32
+on:
+  push:
+    branches:
+      - qa/hybrid-final-20260912
+    paths:
+      - 'qa32-gz-*.txt'
+      - '.github/workflows/qa-build-runtime32.yml'
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: qa/hybrid-final-20260912
+      - name: Reconstruct and validate exact runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import base64, gzip, hashlib
+          encoded=''.join(Path(f'qa32-gz-{i:02d}.txt').read_text(encoding='utf-8').strip() for i in range(10))
+          compressed=base64.b64decode(encoded)
+          js=gzip.decompress(compressed)
+          sha=hashlib.sha256(js).hexdigest()
+          expected='2d779c0166b9b2a43707de1dd09385d67a88af565426afd1018cdf8aa220e539'
+          assert len(js)==90788, (len(js), 'expected 90788')
+          assert sha==expected, (sha, expected)
+          Path('qa32-core.js').write_bytes(js)
+          print('runtime_bytes=',len(js))
+          print('runtime_sha256=',sha)
+          PY
+          node --check qa32-core.js
+          test "$(git hash-object qa32-core.js)" = "d50da766d858f353d69aaea0d84afd34ba4d0090"
+          echo 'QA32 runtime exact-byte and syntax validation OK'
+      - name: Commit reconstructed runtime
+        shell: bash
+        run: |
+          git config user.name 'nh7-qa-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add qa32-core.js
+          git commit -m 'QA32: reconstruct exact validated hosted runtime' || exit 0
+          git push origin HEAD:qa/hybrid-final-20260912
