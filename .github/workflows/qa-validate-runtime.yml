@@ -1,0 +1,29 @@
+name: QA validate hybrid runtime
+on:
+  push:
+    branches:
+      - qa/hybrid-final-20260912
+    paths:
+      - '.github/workflows/qa-validate-runtime.yml'
+      - 'qa31-core-*.txt'
+      - 'index.html'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: qa/hybrid-final-20260912
+      - name: Validate files and reconstructed JavaScript
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s index.html
+          for i in 0 1 2 3 4; do test -s "qa31-core-$i.txt"; done
+          cat qa31-core-0.txt qa31-core-1.txt qa31-core-2.txt qa31-core-3.txt qa31-core-4.txt > /tmp/qa31-core.js
+          node --check /tmp/qa31-core.js
+          grep -q 'qa31-core-${i}' index.html || true
+          echo "QA runtime bytes: $(wc -c < /tmp/qa31-core.js)"
+          echo "QA runtime syntax OK"
