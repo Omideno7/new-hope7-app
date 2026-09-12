@@ -1,0 +1,1 @@
+Marker creation stops here; next operation is a Git tree reuse.
