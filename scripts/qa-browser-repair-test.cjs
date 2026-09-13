@@ -16,6 +16,7 @@ let activePage=null;
    await ctx.routeWebSocket('**/*',ws=>ws.close());
    await ctx.route('**/*',async route=>{
     const req=route.request(),u=new URL(req.url());
+    if(['blob:','data:'].includes(u.protocol))return route.continue();
     if(u.hostname==='raw.githack.com'&&['GET','HEAD'].includes(req.method())){
      const match=u.pathname.match(/^\/Omideno7\/new-hope7-app\/[^/]+\/(.*)$/);
      if(match){const rel=decodeURIComponent(match[1]);if(!rel.split('/').includes('..')){const f=path.join(ROOT,rel);if(fs.existsSync(f)&&fs.statSync(f).isFile())return route.fulfill({status:200,body:fs.readFileSync(f),contentType:mime(f),headers:{'Access-Control-Allow-Origin':'*'}})}}
