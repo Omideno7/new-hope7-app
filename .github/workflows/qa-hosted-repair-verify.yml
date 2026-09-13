@@ -51,10 +51,17 @@ jobs:
                 const p=await ctx.newPage();active=p;
                 p.on('pageerror',e=>item.errors.push(e.message));
                 p.on('response',r=>{if(r.status()>=400&&r.url().startsWith('https://raw.githack.com/'))item.httpFailures.push({url:r.url(),status:r.status()})});
-                const response=await p.goto(target,{waitUntil:'domcontentloaded',timeout:90000});
-                item.documentStatus=response.status();
-                item.documentHash=crypto.createHash('sha256').update(await response.body()).digest('hex');
-                if(item.documentHash!==expectedHash)throw new Error('Hosted document differs from browser-tested package');
+                let response=await p.goto(target,{waitUntil:'domcontentloaded',timeout:90000});
+                let hash=crypto.createHash('sha256').update(await response.body()).digest('hex');
+                if(hash!==expectedHash&&await p.getByText('Open the page',{exact:true}).isVisible()){
+                  item.hostConfirmation=true;
+                  const navigation=p.waitForNavigation({waitUntil:'domcontentloaded',timeout:90000});
+                  await p.getByText('Open the page',{exact:true}).click();
+                  response=await navigation;
+                  hash=crypto.createHash('sha256').update(await response.body()).digest('hex');
+                }
+                item.documentStatus=response.status();item.documentHash=hash;
+                if(hash!==expectedHash)throw new Error('Hosted document differs from browser-tested package');
                 await p.waitForFunction(()=>document.getElementById('view')?.textContent.trim().length>80,{},{timeout:30000});
                 await p.waitForTimeout(1500);
                 const loadStatus=await p.locator('#nh7QaLoadStatus').allTextContents();
