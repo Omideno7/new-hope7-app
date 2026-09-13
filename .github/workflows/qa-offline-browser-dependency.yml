@@ -1,0 +1,25 @@
+name: QA offline browser dependency
+on:
+  push:
+    branches: [qa/hybrid-final-20260912]
+    paths: ['.github/workflows/qa-offline-browser-dependency.yml']
+permissions:
+  contents: read
+jobs:
+  prepare:
+    if: github.ref == 'refs/heads/qa/hybrid-final-20260912'
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: |
+          npm install --prefix /tmp/offline-browser playwright@1.57.0 --ignore-scripts --no-audit --no-fund
+          PLAYWRIGHT_BROWSERS_PATH="$PWD/browser-binaries" /tmp/offline-browser/node_modules/.bin/playwright install chromium --only-shell
+          tar -czf offline-chromium.tar.gz browser-binaries
+      - uses: actions/upload-artifact@v4
+        with:
+          name: offline-chromium-test-dependency
+          path: offline-chromium.tar.gz
+          retention-days: 1
