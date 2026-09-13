@@ -42,3 +42,4 @@ jobs:
           test "$(sha256sum /tmp/qa32.css | awk '{print $1}')" = "6b216b459027226727736a24363a4ccdb2b9e93d7159a0da3f6680bdd396ea39"
           node --check /tmp/qa32-core.js
           echo "QA32_HOST_OK=$BASE/index.html"
+# retrigger 2026-09-13 final phone QA
