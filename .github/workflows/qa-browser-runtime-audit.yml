@@ -1,0 +1,80 @@
+name: QA browser runtime audit
+on:
+  push:
+    branches: [qa/hybrid-final-20260912]
+    paths: ['.github/workflows/qa-browser-runtime-audit.yml']
+permissions:
+  contents: read
+jobs:
+  audit:
+    if: github.ref == 'refs/heads/qa/hybrid-final-20260912'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test runner
+        run: |
+          npm install --prefix /tmp/nh7-browser playwright@1.55.0 --ignore-scripts --no-audit --no-fund
+          /tmp/nh7-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Reproduce actual runtime without contacting production
+        shell: bash
+        run: |
+          mkdir -p qa-runtime-evidence
+          cp index.html qa32-core.js qa32.css qa31-app.b64 qa-runtime-evidence/
+          node <<'NODE'
+          const fs=require('fs'),path=require('path');
+          const {chromium}=require('/tmp/nh7-browser/node_modules/playwright');
+          const ROOT=process.cwd(),OUT=path.join(ROOT,'qa-runtime-evidence');
+          const report={source:process.env.GITHUB_SHA,mode:'real-browser-local-static-assets-external-APIs-blocked',errors:[],console:[],missing:[],blocked:[],views:[]};
+          const mime=f=>f.endsWith('.js')?'text/javascript':f.endsWith('.css')?'text/css':f.endsWith('.html')?'text/html':f.endsWith('.json')?'application/json':f.endsWith('.png')?'image/png':'text/plain';
+          (async()=>{
+            const b=await chromium.launch({headless:true});
+            const ctx=await b.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,serviceWorkers:'block'});
+            await ctx.route('**/*',async route=>{
+              const req=route.request(),u=new URL(req.url());
+              if(u.hostname==='raw.githack.com'&&['GET','HEAD'].includes(req.method())){
+                const match=u.pathname.match(/^\/Omideno7\/new-hope7-app\/[^/]+\/(.*)$/);
+                if(match&&!match[1].split('/').includes('..')){
+                  const f=path.join(ROOT,decodeURIComponent(match[1]));
+                  if(fs.existsSync(f)&&fs.statSync(f).isFile())return route.fulfill({status:200,body:fs.readFileSync(f),contentType:mime(f),headers:{'Access-Control-Allow-Origin':'*'}});
+                }
+                report.missing.push(u.pathname);
+                return route.fulfill({status:404,body:'Asset missing in QA build',headers:{'Access-Control-Allow-Origin':'*'}});
+              }
+              report.blocked.push({method:req.method(),host:u.hostname,path:u.pathname});
+              return route.fulfill({status:403,contentType:'application/json',body:JSON.stringify({message:'External API deliberately blocked by QA browser audit'}),headers:{'Access-Control-Allow-Origin':'*'}});
+            });
+            const p=await ctx.newPage();
+            p.on('pageerror',e=>report.errors.push({message:e.message,stack:e.stack}));
+            p.on('console',e=>{if(['error','warning'].includes(e.type()))report.console.push({type:e.type(),text:e.text().slice(0,600)})});
+            await p.goto('https://raw.githack.com/Omideno7/new-hope7-app/'+process.env.GITHUB_SHA+'/index.html',{waitUntil:'domcontentloaded',timeout:30000});
+            await p.waitForTimeout(5000);
+            report.initialView=await p.locator('#view').innerText();
+            report.loadStatus=await p.locator('#nh7QaLoadStatus').textContent().catch(()=>null);
+            if(await p.locator('#amenButton').isVisible())await p.locator('#amenButton').click();
+            for(const r of ['home','daily','bible','audio','more']){
+              const button=p.locator('.nav-item[data-route="'+r+'"]');
+              if(await button.count())await button.click({timeout:3000}).catch(e=>report.errors.push({message:'click '+r+': '+e.message}));
+              await p.waitForTimeout(500);
+              report.views.push({route:r,text:(await p.locator('#view').innerText()).slice(0,1500)});
+            }
+            await p.screenshot({path:path.join(OUT,'blank-screen.png')});
+            fs.writeFileSync(path.join(OUT,'runtime-report.json'),JSON.stringify(report,null,2));
+            console.log('RUNTIME_REPORT',JSON.stringify(report,null,2));
+            await b.close();
+            if(!report.initialView.trim()||report.errors.length)process.exitCode=1;
+          })().catch(e=>{report.fatal=String(e);fs.writeFileSync(path.join(OUT,'runtime-report.json'),JSON.stringify(report,null,2));console.error(e);process.exitCode=1});
+          NODE
+      - name: Preserve diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-runtime-evidence
+          path: qa-runtime-evidence/
+          retention-days: 3
