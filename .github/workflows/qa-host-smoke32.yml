@@ -7,6 +7,7 @@ on:
       - 'index.html'
       - 'qa32-core.js'
       - 'qa32.css'
+      - 'qa31-app.b64'
       - '.github/workflows/qa-host-smoke32.yml'
 permissions:
   contents: read
@@ -33,13 +34,27 @@ jobs:
           fetch index.html /tmp/index.html
           fetch qa32-core.js /tmp/qa32-core.js
           fetch qa32.css /tmp/qa32.css
+          fetch qa31-app.b64 /tmp/qa31-app.b64
           grep -q 'Hybrid Final QA 32' /tmp/index.html
           grep -q 'qa32-core.js?v=32' /tmp/index.html
           grep -q 'qa32.css?v=32' /tmp/index.html
+          grep -q "fetch('qa31-app.b64'" /tmp/qa32-core.js
           test "$(wc -c < /tmp/qa32-core.js)" = "90788"
           test "$(sha256sum /tmp/qa32-core.js | awk '{print $1}')" = "2d779c0166b9b2a43707de1dd09385d67a88af565426afd1018cdf8aa220e539"
           test "$(wc -c < /tmp/qa32.css)" = "21907"
           test "$(sha256sum /tmp/qa32.css | awk '{print $1}')" = "6b216b459027226727736a24363a4ccdb2b9e93d7159a0da3f6680bdd396ea39"
           node --check /tmp/qa32-core.js
+          python - <<'PY'
+          import base64,gzip,hashlib
+          from pathlib import Path
+          b64=Path('/tmp/qa31-app.b64').read_bytes().strip()
+          raw=gzip.decompress(base64.b64decode(b64))
+          Path('/tmp/qa31-app.js').write_bytes(raw)
+          print('APP_BYTES',len(raw))
+          print('APP_SHA256',hashlib.sha256(raw).hexdigest())
+          assert b"https://gpzcwffxnddhaeaogdyo.supabase.co" in raw
+          assert b"const SUPABASE_CONFIG" in raw
+          assert b"bootstrapApp().catch(console.warn);" in raw
+          PY
+          node --check /tmp/qa31-app.js
           echo "QA32_HOST_OK=$BASE/index.html"
-# retrigger 2026-09-13 final phone QA
