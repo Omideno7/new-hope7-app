@@ -1,0 +1,136 @@
+name: Isolated Mac QA runtime
+on:
+  push:
+    branches: [qa/hybrid-final-20260912]
+    paths: ['.github/workflows/qa-mac-runtime-20260913.yml']
+permissions:
+  contents: read
+jobs:
+  mac:
+    if: github.ref == 'refs/heads/qa/hybrid-final-20260912'
+    runs-on: macos-latest
+    timeout-minutes: 15
+    steps:
+      - name: Obtain verified official Mac Node binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p runtime/bin source
+          V=v22.23.2
+          curl --fail --retry 3 -L "https://nodejs.org/dist/$V/SHASUMS256.txt" -o runtime/SHASUMS256.txt
+          for ARCH in arm64 x64; do
+            F="node-$V-darwin-$ARCH.tar.gz"
+            curl --fail --retry 3 -L "https://nodejs.org/dist/$V/$F" -o "$F"
+            grep " $F$" runtime/SHASUMS256.txt | shasum -a 256 -c -
+            tar -xzf "$F" "node-$V-darwin-$ARCH/bin/node" "node-$V-darwin-$ARCH/LICENSE"
+            cp "node-$V-darwin-$ARCH/bin/node" "runtime/bin/node-$ARCH"
+            cp "node-$V-darwin-$ARCH/LICENSE" runtime/NODE-LICENSE.txt
+          done
+          chmod 755 runtime/bin/*
+      - name: Compile independent universal WebKit launcher
+        shell: bash
+        run: |
+          cat > source/Launcher.swift <<'SWIFT'
+          import Cocoa
+          import WebKit
+          final class Host: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKUIDelegate {
+            var window: NSWindow!
+            var web: WKWebView!
+            var server: Process?
+            var localOrigin: URL?
+            var pending = ""
+            var starting = true
+            let smoke = CommandLine.arguments.contains("--smoke-test")
+            func applicationDidFinishLaunching(_ n: Notification) {
+              NSApp.setActivationPolicy(.regular)
+              let menu = NSMenu(); let appItem = NSMenuItem(); menu.addItem(appItem)
+              let appMenu = NSMenu(); appMenu.addItem(withTitle: "Quit New Hope 7 QA", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"); appItem.submenu = appMenu
+              let editItem=NSMenuItem(); menu.addItem(editItem); let edit=NSMenu(title:"Edit"); editItem.submenu=edit
+              for (title, action, key) in [("Copy","copy:","c"),("Paste","paste:","v"),("Cut","cut:","x"),("Select All","selectAll:","a")] { edit.addItem(withTitle:title,action:Selector(action),keyEquivalent:key) }
+              NSApp.mainMenu=menu
+              window=NSWindow(contentRect:NSRect(x:0,y:0,width:1100,height:820),styleMask:[.titled,.closable,.miniaturizable,.resizable],backing:.buffered,defer:false)
+              window.title="New Hope 7 — ISOLATED MAC QA"; window.minSize=NSSize(width:440,height:640); window.center()
+              let config=WKWebViewConfiguration(); config.preferences.javaScriptCanOpenWindowsAutomatically=false
+              web=WKWebView(frame:window.contentView!.bounds,configuration:config); web.autoresizingMask=[.width,.height]; web.navigationDelegate=self;web.uiDelegate=self;window.contentView?.addSubview(web)
+              web.loadHTMLString("<html><meta charset='utf-8'><body style='font:20px system-ui;padding:50px' dir='rtl'><h2>New Hope 7 · نسخهٔ مستقل آزمایشی</h2><p>در حال بازشدن برنامه روی همین مک…</p></body></html>",baseURL:nil)
+              if !smoke { window.makeKeyAndOrderFront(nil);NSApp.activate(ignoringOtherApps:true) }
+              let resources=ProcessInfo.processInfo.environment["NH7_QA_RESOURCES"].map{URL(fileURLWithPath:$0)} ?? Bundle.main.resourceURL!
+              #if arch(arm64)
+              let arch="arm64"
+              #else
+              let arch="x64"
+              #endif
+              let process=Process(); process.executableURL=resources.appendingPathComponent("runtime/bin/node-"+arch); process.arguments=[resources.appendingPathComponent("server.cjs").path]
+              var env=ProcessInfo.processInfo.environment; env["NH7_QA_WEB_ROOT"]=resources.appendingPathComponent("web").path; process.environment=env
+              let pipe=Pipe();process.standardOutput=pipe;process.standardError=FileHandle.standardError
+              pipe.fileHandleForReading.readabilityHandler={ [weak self] handle in
+                let data=handle.availableData; guard !data.isEmpty, let text=String(data:data,encoding:.utf8) else{return}
+                DispatchQueue.main.async { self?.received(text) }
+              }
+              process.terminationHandler={ [weak self] _ in DispatchQueue.main.async { if self?.starting == true { self?.fail("The isolated local server could not start. Close another QA copy and try again.") } } }
+              server=process
+              do {try process.run()} catch {fail("Could not start the bundled QA runtime: "+error.localizedDescription)}
+              DispatchQueue.main.asyncAfter(deadline:.now()+25){[weak self] in if self?.starting == true {self?.fail("The isolated test server did not start in time.")}}
+              if smoke { DispatchQueue.main.asyncAfter(deadline:.now()+50){ print("MAC_HOST_SMOKE_TIMEOUT");exit(2) } }
+            }
+            func received(_ text:String){
+              pending += text
+              while let i=pending.firstIndex(of:"\n") {
+                let line=String(pending[..<i]);pending=String(pending[pending.index(after:i)...])
+                if line.hasPrefix("NH7_QA_URL="), let url=URL(string:String(line.dropFirst(11))),url.host=="127.0.0.1",url.scheme=="http" {
+                  localOrigin=url;starting=false;web.load(URLRequest(url:url))
+                }
+              }
+            }
+            func fail(_ text:String){starting=false;if smoke{print("MAC_HOST_SMOKE_ERROR "+text);exit(2)};let alert=NSAlert();alert.messageText="New Hope 7 QA";alert.informativeText=text;alert.runModal()}
+            func applicationShouldTerminateAfterLastWindowClosed(_ sender:NSApplication)->Bool {true}
+            func applicationWillTerminate(_ notification:Notification){server?.terminate()}
+            func webView(_ view:WKWebView,decidePolicyFor action:WKNavigationAction,decisionHandler:@escaping(WKNavigationActionPolicy)->Void){
+              guard let u=action.request.url else{decisionHandler(.cancel);return}
+              if u.scheme=="about" || u.scheme=="blob" {decisionHandler(.allow);return}
+              if u.host=="127.0.0.1",u.scheme=="http",u.port==localOrigin?.port {decisionHandler(.allow);return}
+              decisionHandler(.cancel)
+              if action.navigationType == .linkActivated {let alert=NSAlert();alert.messageText="External links are disabled in this isolated QA app.";alert.informativeText="No production page has been opened.";alert.runModal()}
+            }
+            func webView(_ view:WKWebView,didFinish navigation:WKNavigation!){
+              guard smoke,view.url?.host=="127.0.0.1" else{return}
+              view.evaluateJavaScript("document.body.dataset.smoke") { value,error in
+                if error == nil && (value as? String)=="passed" {print("MAC_HOST_WEBKIT_SMOKE_PASSED");self.server?.terminate();exit(0)}
+                else {print("MAC_HOST_WEBKIT_SMOKE_FAILED");self.server?.terminate();exit(2)}
+              }
+            }
+            func webView(_ view:WKWebView,runJavaScriptAlertPanelWithMessage message:String,initiatedByFrame frame:WKFrameInfo,completionHandler:@escaping()->Void){let a=NSAlert();a.messageText="New Hope 7 QA";a.informativeText=message;a.runModal();completionHandler()}
+            func webView(_ view:WKWebView,runJavaScriptConfirmPanelWithMessage message:String,initiatedByFrame frame:WKFrameInfo,completionHandler:@escaping(Bool)->Void){let a=NSAlert();a.messageText="New Hope 7 QA";a.informativeText=message;a.addButton(withTitle:"OK");a.addButton(withTitle:"Cancel");completionHandler(a.runModal() == .alertFirstButtonReturn)}
+            func webView(_ view:WKWebView,runOpenPanelWith parameters:WKOpenPanelParameters,initiatedByFrame frame:WKFrameInfo,completionHandler:@escaping([URL]?)->Void){let p=NSOpenPanel();p.allowsMultipleSelection=parameters.allowsMultipleSelection;p.canChooseDirectories=false;p.canChooseFiles=true;p.beginSheetModal(for:window){result in completionHandler(result == .OK ? p.urls:nil)}}
+          }
+          let app=NSApplication.shared
+          let host=Host();app.delegate=host;app.run()
+          SWIFT
+          set -euo pipefail
+          SDK=$(xcrun --sdk macosx --show-sdk-path)
+          swiftc -swift-version 5 -O -sdk "$SDK" -target arm64-apple-macosx12.0 source/Launcher.swift -o launcher-arm64
+          swiftc -swift-version 5 -O -sdk "$SDK" -target x86_64-apple-macosx12.0 source/Launcher.swift -o launcher-x64
+          lipo -create launcher-arm64 launcher-x64 -output runtime/NewHope7QALauncher
+          codesign --force --sign - runtime/NewHope7QALauncher
+          lipo -info runtime/NewHope7QALauncher
+      - name: Native WebKit and bundled-runtime smoke check without production access
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p fixture
+          cp -R runtime fixture/runtime
+          cat > fixture/server.cjs <<'JS'
+          const http=require('node:http');
+          const server=http.createServer((req,res)=>{res.writeHead(200,{'Content-Type':'text/html'});res.end('<!doctype html><html><body data-smoke="passed"><button>QA fixture only</button></body></html>')});
+          server.listen(0,'127.0.0.1',()=>console.log('NH7_QA_URL=http://127.0.0.1:'+server.address().port+'/'));
+          JS
+          NH7_QA_RESOURCES="$PWD/fixture" ./runtime/NewHope7QALauncher --smoke-test | tee runtime/native-smoke.txt
+          grep -q MAC_HOST_WEBKIT_SMOKE_PASSED runtime/native-smoke.txt
+          echo 'Universal macOS 12+ launcher; Node 22.23.2; native WebKit fixture verified; main and Production unchanged.' > runtime/BUILD.txt
+          cp source/Launcher.swift runtime/Launcher.swift
+          zip -qry NewHope7-Mac-Runtime.zip runtime
+      - uses: actions/upload-artifact@v4
+        with:
+          name: newhope7-independent-mac-runtime
+          path: NewHope7-Mac-Runtime.zip
+          retention-days: 3
