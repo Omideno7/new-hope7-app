@@ -1,0 +1,130 @@
+name: QA Mac launcher support only
+on:
+  push:
+    branches: [qa/hybrid-final-20260912]
+    paths: ['.github/workflows/qa-mac-runtime-support-20260913.yml']
+permissions:
+  contents: read
+jobs:
+  support:
+    if: github.ref == 'refs/heads/qa/hybrid-final-20260912'
+    runs-on: macos-14
+    timeout-minutes: 12
+    steps:
+      - name: Prepare signed upstream runtime downloads and Mac launcher
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p support/runtime support/launcher
+          V=v24.20.0
+          curl --fail --retry 2 --connect-timeout 15 --max-time 120 -o support/SHASUMS256.txt "https://nodejs.org/dist/$V/SHASUMS256.txt"
+          for ARCH in arm64 x64; do
+            FILE="node-$V-darwin-$ARCH.tar.gz"
+            curl --fail --retry 2 --connect-timeout 15 --max-time 180 -o "$FILE" "https://nodejs.org/dist/$V/$FILE"
+            grep "  $FILE\$" support/SHASUMS256.txt | shasum -a 256 -c -
+            tar -xzf "$FILE" "node-$V-darwin-$ARCH/bin/node" "node-$V-darwin-$ARCH/LICENSE"
+            cp "node-$V-darwin-$ARCH/bin/node" "support/runtime/node-$ARCH"
+            cp "node-$V-darwin-$ARCH/LICENSE" support/runtime/LICENSE-Node.txt
+            chmod 755 "support/runtime/node-$ARCH"
+            codesign --verify --verbose "support/runtime/node-$ARCH"
+          done
+          cat > support/launcher/Main.swift <<'SWIFT'
+          import Cocoa
+          final class AppDelegate: NSObject, NSApplicationDelegate {
+            var process: Process?
+            var window: NSWindow!
+            var label: NSTextField!
+            var readyURL: URL?
+            var output = Data()
+            func applicationDidFinishLaunching(_ note: Notification) {
+              let menu = NSMenu()
+              let top = NSMenuItem(); menu.addItem(top)
+              let submenu = NSMenu(); top.submenu = submenu
+              submenu.addItem(withTitle: "Quit New Hope 7 QA", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+              NSApplication.shared.mainMenu = menu
+              window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 510, height: 235), styleMask: [.titled, .closable, .miniaturizable], backing: .buffered, defer: false)
+              window.title = "New Hope 7 — Independent Mac QA"
+              window.center()
+              label = NSTextField(wrappingLabelWithString: "Starting your independent test app…\n\nProduction changes are blocked.\nThe app opens in Safari. Keep this window open while testing.")
+              label.frame = NSRect(x: 24, y: 80, width: 462, height: 125)
+              window.contentView?.addSubview(label)
+              let open = NSButton(title: "Open test app", target: self, action: #selector(openApp))
+              open.frame = NSRect(x: 24, y: 24, width: 220, height: 35)
+              window.contentView?.addSubview(open)
+              let quit = NSButton(title: "Stop and quit", target: NSApplication.shared, action: #selector(NSApplication.terminate(_:)))
+              quit.frame = NSRect(x: 270, y: 24, width: 210, height: 35)
+              window.contentView?.addSubview(quit)
+              window.makeKeyAndOrderFront(nil)
+              NSApplication.shared.activate(ignoringOtherApps: true)
+              guard let resources = Bundle.main.resourceURL else { label.stringValue = "Missing app resources."; return }
+              #if arch(arm64)
+              let binary = "node-arm64"
+              #else
+              let binary = "node-x64"
+              #endif
+              let task = Process()
+              task.executableURL = resources.appendingPathComponent("runtime/" + binary)
+              task.arguments = [resources.appendingPathComponent("server.cjs").path]
+              task.currentDirectoryURL = resources
+              var env = ProcessInfo.processInfo.environment
+              env.removeValue(forKey: "NODE_OPTIONS")
+              env.removeValue(forKey: "NODE_PATH")
+              task.environment = env
+              let pipe = Pipe()
+              task.standardOutput = pipe
+              task.standardError = FileHandle.nullDevice
+              pipe.fileHandleForReading.readabilityHandler = { [weak self] handle in
+                let data = handle.availableData
+                guard !data.isEmpty, let self = self else { return }
+                self.output.append(data)
+                if let text = String(data: self.output, encoding: .utf8), let line = text.split(separator: "\n").first(where: { $0.hasPrefix("READY ") }), let url = URL(string: String(line.dropFirst(6))) {
+                  pipe.fileHandleForReading.readabilityHandler = nil
+                  DispatchQueue.main.async {
+                    self.readyURL = url
+                    self.label.stringValue = "New Hope 7 QA is running on this Mac.\n\nSafari contains the test version, not the published app.\nQuit this helper when you finish testing."
+                    self.openApp()
+                  }
+                }
+              }
+              task.terminationHandler = { [weak self] task in
+                DispatchQueue.main.async { self?.label.stringValue = "The local test server stopped (code \(task.terminationStatus)). Close the helper and try START-NEW-HOPE-QA.command in the package to see the error." }
+              }
+              do { try task.run(); process = task }
+              catch { label.stringValue = "Could not start the bundled runtime: \(error.localizedDescription)" }
+            }
+            @objc func openApp() {
+              guard let url = readyURL else { return }
+              let config = NSWorkspace.OpenConfiguration()
+              NSWorkspace.shared.open([url], withApplicationAt: URL(fileURLWithPath: "/System/Applications/Safari.app"), configuration: config) { _, error in
+                if error != nil { DispatchQueue.main.async { NSWorkspace.shared.open(url) } }
+              }
+            }
+            func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { true }
+            func applicationWillTerminate(_ note: Notification) { if let p = process, p.isRunning { p.terminate() } }
+          }
+          let app = NSApplication.shared
+          let delegate = AppDelegate()
+          app.delegate = delegate
+          app.setActivationPolicy(.regular)
+          app.run()
+          SWIFT
+          SDK=$(xcrun --sdk macosx --show-sdk-path)
+          swiftc -O -sdk "$SDK" -target arm64-apple-macosx13.5 -framework Cocoa support/launcher/Main.swift -o support/launcher/launcher-arm64
+          swiftc -O -sdk "$SDK" -target x86_64-apple-macosx13.5 -framework Cocoa support/launcher/Main.swift -o support/launcher/launcher-x64
+          lipo -create support/launcher/launcher-arm64 support/launcher/launcher-x64 -output support/launcher/NewHope7QA
+          codesign --force --sign - support/launcher/NewHope7QA
+          lipo -info support/launcher/NewHope7QA
+          file support/launcher/NewHope7QA support/runtime/node-*
+          case "$(uname -m)" in arm64) support/runtime/node-arm64 --version;; x86_64) support/runtime/node-x64 --version;; esac
+          python3 - <<'PY'
+          import json,hashlib,pathlib
+          p=pathlib.Path('support')
+          rows={str(f.relative_to(p)):hashlib.sha256(f.read_bytes()).hexdigest() for f in p.rglob('*') if f.is_file()}
+          (p/'build-report.json').write_text(json.dumps({'runtime':'v24.20.0','macos_minimum':'13.5','launcher_arches':['arm64','x86_64'],'notarized':False,'upstream_checksums_verified':True,'files':rows},indent=2))
+          PY
+          rm support/launcher/launcher-arm64 support/launcher/launcher-x64
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nh7-mac-launcher-support
+          path: support/
+          retention-days: 3
