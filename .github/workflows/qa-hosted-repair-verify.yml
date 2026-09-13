@@ -45,6 +45,7 @@ jobs:
                   const req=route.request(),u=new URL(req.url());
                   if(['blob:','data:'].includes(u.protocol))return route.continue();
                   if(u.protocol==='https:'&&u.hostname==='raw.githack.com'&&u.pathname.startsWith('/Omideno7/new-hope7-app/')&&['GET','HEAD'].includes(req.method()))return route.continue();
+                  if(req.isNavigationRequest()&&req.method()==='POST'&&u.origin===new URL(target).origin&&u.pathname===new URL(target).pathname){item.hostConsentPost=true;return route.continue();}
                   item.blocked.push({host:u.hostname,path:u.pathname,method:req.method()});
                   return route.fulfill({status:403,contentType:'application/json',body:'{"message":"API deliberately intercepted during hosted UI verification"}',headers:{'Access-Control-Allow-Origin':'*'}});
                 });
