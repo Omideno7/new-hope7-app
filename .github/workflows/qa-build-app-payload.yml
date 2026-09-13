@@ -1,0 +1,43 @@
+name: QA build app payload
+on:
+  push:
+    branches:
+      - qa/hybrid-final-20260912
+    paths:
+      - '.github/workflows/qa-build-app-payload.yml'
+permissions:
+  contents: write
+jobs:
+  build:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: qa/hybrid-final-20260912
+      - name: Build QA app payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check js/app.js
+          python - <<'PY'
+          from pathlib import Path
+          import gzip, base64, hashlib
+          raw=Path('js/app.js').read_bytes()
+          gz=gzip.compress(raw, compresslevel=9, mtime=0)
+          b64=base64.b64encode(gz)
+          Path('qa31-app.b64').write_bytes(b64)
+          check=gzip.decompress(base64.b64decode(b64))
+          assert check==raw
+          print('APP_BYTES',len(raw))
+          print('APP_SHA256',hashlib.sha256(raw).hexdigest())
+          print('PAYLOAD_BYTES',len(b64))
+          PY
+      - name: Commit QA app payload
+        shell: bash
+        run: |
+          git config user.name 'nh7-qa-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add qa31-app.b64
+          git commit -m 'QA: add missing application payload' || exit 0
+          git push origin HEAD:qa/hybrid-final-20260912
