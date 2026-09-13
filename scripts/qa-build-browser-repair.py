@@ -13,7 +13,7 @@ skip={'js/nh7-auto-update-v335.js','js/nh7-notifications-zagreb-v334.js','js/nh7
 pre=[p for p in pre if p not in skip]
 post=[list(pair) for pair in post if pair[0] not in skip]
 assert all(isinstance(x,list) and len(x)==2 for x in post)
-sources={p:(root/p).read_text(encoding='utf-8') for p in dict.fromkeys(pre+[p for p,t in post])}
+sources={p:(root/p).read_text(encoding='utf-8') for p in dict.fromkeys(pre+[p for p,t in post]+['js/nh7-spiritual-plans-v240.js'])}
 app=gzip.decompress(base64.b64decode((root/'qa31-app.b64').read_bytes())).decode('utf-8')
 old="if(!('serviceWorker'in navigator)){reject(new Error('Service worker unavailable'));return}"
 assert old in app
@@ -30,9 +30,14 @@ loader="""function load(src,type='classic'){
   const name=src==='__qa_application__.js'?src:src.slice(BASE.length);
   if(!Object.prototype.hasOwnProperty.call(NH7_QA_PACKED_SOURCES,name))return Promise.reject(new Error('Unpackaged startup dependency: '+name));
   return new Promise((resolve,reject)=>{
-    const s=document.createElement('script');
-    const url=URL.createObjectURL(new Blob([NH7_QA_PACKED_SOURCES[name]+'\\n//# sourceURL=nh7qa/'+name],{type:'text/javascript'}));
-    const finish=error=>{clearTimeout(timer);URL.revokeObjectURL(url);error?reject(error):resolve()};
+    const s=document.createElement('script'),dependencies=[];
+    let text=NH7_QA_PACKED_SOURCES[name];
+    if(name==='js/nh7-spiritual-plans-v412.js'){
+      const dependency=URL.createObjectURL(new Blob([NH7_QA_PACKED_SOURCES['js/nh7-spiritual-plans-v240.js']],{type:'text/javascript'}));
+      dependencies.push(dependency);text=text.replace("'./nh7-spiritual-plans-v240.js'",JSON.stringify(dependency));
+    }
+    const url=URL.createObjectURL(new Blob([text+'\\n//# sourceURL=nh7qa/'+name],{type:'text/javascript'}));
+    const finish=error=>{clearTimeout(timer);URL.revokeObjectURL(url);dependencies.forEach(value=>URL.revokeObjectURL(value));error?reject(error):resolve()};
     const timer=setTimeout(()=>finish(new Error('Startup script timed out: '+name)),15000);
     s.async=false;if(type==='module')s.type='module';
     s.onload=()=>finish();s.onerror=()=>finish(new Error('Startup script failed: '+name));
