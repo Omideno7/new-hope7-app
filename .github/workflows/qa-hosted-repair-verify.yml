@@ -1,0 +1,92 @@
+name: QA hosted repaired browser check
+on:
+  push:
+    branches: [qa/hybrid-final-20260912]
+    paths: ['.github/workflows/qa-hosted-repair-verify.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/qa/hybrid-final-20260912'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 6ab0d47450c28b9d0dc0e0b3ae2ca4963685f500
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser verification tools
+        run: |
+          npm install --prefix /tmp/nh7-browser playwright@1.55.0 --ignore-scripts --no-audit --no-fund
+          /tmp/nh7-browser/node_modules/.bin/playwright install --with-deps chromium webkit
+      - name: Test actual public HTTPS page with no locally substituted app files
+        shell: bash
+        run: |
+          mkdir -p hosted-repair-evidence
+          node <<'NODE'
+          const fs=require('fs'),crypto=require('crypto');
+          const {chromium,webkit}=require('/tmp/nh7-browser/node_modules/playwright');
+          const target='https://raw.githack.com/Omideno7/new-hope7-app/6ab0d47450c28b9d0dc0e0b3ae2ca4963685f500/qa-runtime-repaired.html';
+          const expectedHash=crypto.createHash('sha256').update(fs.readFileSync('qa-runtime-repaired.html')).digest('hex');
+          const report={url:target,mode:'actual-HTTPS-assets-live-external-APIs-intercepted',expectedHash,cases:[]};
+          let active;
+          (async()=>{
+            for(const [name,engine] of [['chromium',chromium],['webkit',webkit]]){
+              const browser=await engine.launch({headless:true});
+              for(const language of ['en','fa']){
+                const item={engine:name,language,errors:[],httpFailures:[],blocked:[],views:[]};report.cases.push(item);
+                const ctx=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,serviceWorkers:'block'});
+                await ctx.addInitScript(value=>localStorage.setItem('nh7_lang',value),language);
+                await ctx.routeWebSocket('**/*',ws=>ws.close());
+                await ctx.route('**/*',route=>{
+                  const req=route.request(),u=new URL(req.url());
+                  if(['blob:','data:'].includes(u.protocol))return route.continue();
+                  if(u.protocol==='https:'&&u.hostname==='raw.githack.com'&&u.pathname.startsWith('/Omideno7/new-hope7-app/')&&['GET','HEAD'].includes(req.method()))return route.continue();
+                  item.blocked.push({host:u.hostname,path:u.pathname,method:req.method()});
+                  return route.fulfill({status:403,contentType:'application/json',body:'{"message":"API deliberately intercepted during hosted UI verification"}',headers:{'Access-Control-Allow-Origin':'*'}});
+                });
+                const p=await ctx.newPage();active=p;
+                p.on('pageerror',e=>item.errors.push(e.message));
+                p.on('response',r=>{if(r.status()>=400&&r.url().startsWith('https://raw.githack.com/'))item.httpFailures.push({url:r.url(),status:r.status()})});
+                const response=await p.goto(target,{waitUntil:'domcontentloaded',timeout:90000});
+                item.documentStatus=response.status();
+                item.documentHash=crypto.createHash('sha256').update(await response.body()).digest('hex');
+                if(item.documentHash!==expectedHash)throw new Error('Hosted document differs from browser-tested package');
+                await p.waitForFunction(()=>document.getElementById('view')?.textContent.trim().length>80,{},{timeout:30000});
+                await p.waitForTimeout(1500);
+                const loadStatus=await p.locator('#nh7QaLoadStatus').allTextContents();
+                if(loadStatus.some(x=>/loading|error/i.test(x)))throw new Error('Hosted loader did not finish: '+loadStatus);
+                if(await p.locator('#amenButton').isVisible())await p.locator('#amenButton').click();
+                await p.screenshot({path:'hosted-repair-evidence/'+name+'-'+language+'-home.png'});
+                for(const [route,selector] of [['daily','[data-dailytab="word"]'],['bible','[data-go="bibleText"]'],['more','[data-go="settings"]']]){
+                  await p.locator('.nav-item[data-route="'+route+'"]').click({timeout:6000});
+                  if(route==='bible')await p.waitForFunction(()=>document.getElementById('view')?.textContent.includes('Old and New')||document.getElementById('view')?.textContent.includes('عهد'),{},{timeout:60000});
+                  else await p.locator('#view '+selector).waitFor({state:'visible',timeout:60000});
+                  const text=await p.locator('#view').innerText();
+                  if(text.length<80)throw new Error('Empty or incomplete route: '+route);
+                  item.views.push({route,characters:text.length,preview:text.slice(0,300)});
+                }
+                await p.locator('[data-go="settings"]').click({timeout:6000});
+                await p.waitForFunction(()=>document.getElementById('view')?.querySelectorAll('input,select,button').length>5,{},{timeout:15000});
+                item.settingsControls=await p.locator('#view input,#view select,#view button').count();
+                await p.screenshot({path:'hosted-repair-evidence/'+name+'-'+language+'-settings.png'});
+                if(item.errors.length||item.httpFailures.length)throw new Error('Hosted runtime or HTTP error');
+                item.passed=true;await ctx.close();active=null;
+              }
+              await browser.close();
+            }
+            report.passed=report.cases.length===4&&report.cases.every(x=>x.passed);
+            fs.writeFileSync('hosted-repair-evidence/report.json',JSON.stringify(report,null,2));
+            console.log('HOSTED_BROWSER_REPORT',JSON.stringify(report,null,2));
+          })().catch(async e=>{report.passed=false;report.failure=String(e);if(active){report.failureText=(await active.locator('body').innerText().catch(()=>'' )).slice(0,1500);await active.screenshot({path:'hosted-repair-evidence/failure.png'}).catch(()=>{})}fs.writeFileSync('hosted-repair-evidence/report.json',JSON.stringify(report,null,2));console.error(JSON.stringify(report,null,2));process.exit(1)});
+          NODE
+      - name: Save hosted-browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-hosted-repair-evidence
+          path: hosted-repair-evidence/
+          retention-days: 3
