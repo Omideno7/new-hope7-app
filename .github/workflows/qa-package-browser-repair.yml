@@ -1,0 +1,61 @@
+name: QA packaged browser repair
+on:
+  push:
+    branches: [qa/hybrid-final-20260912]
+    paths:
+      - '.github/workflows/qa-package-browser-repair.yml'
+      - 'scripts/qa-build-browser-repair.py'
+      - 'scripts/qa-browser-repair-test.cjs'
+permissions:
+  contents: write
+jobs:
+  repair:
+    if: github.ref == 'refs/heads/qa/hybrid-final-20260912' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check production reference without modifying it
+        shell: bash
+        run: |
+          test "$GITHUB_REF" = 'refs/heads/qa/hybrid-final-20260912'
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = '657a0dadc01b46e6176bfab791bcd7a1bac2025c'
+      - name: Package the standalone QA document
+        run: python scripts/qa-build-browser-repair.py
+      - name: Install isolated browser testers
+        run: |
+          npm install --prefix /tmp/nh7-browser playwright@1.55.0 --ignore-scripts --no-audit --no-fund
+          /tmp/nh7-browser/node_modules/.bin/playwright install --with-deps chromium webkit
+      - name: Test actual rendering and navigation with all production network intercepted
+        run: node scripts/qa-browser-repair-test.cjs
+      - name: Publish generated repair only to QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = 'refs/heads/qa/hybrid-final-20260912'
+          node -e "if(!require('./qa-repair-evidence/browser-report.json').passed)process.exit(1)"
+          test "$(git ls-remote origin refs/heads/qa/hybrid-final-20260912 | cut -f1)" = "$GITHUB_SHA"
+          git config user.name 'nh7-qa-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -- qa-runtime-repaired.html
+          test "$(git diff --cached --name-only)" = 'qa-runtime-repaired.html'
+          git commit -m 'QA only: browser-verified self-contained startup repair'
+          git push origin HEAD:refs/heads/qa/hybrid-final-20260912
+          SHA=$(git rev-parse HEAD)
+          echo "QA_REPAIR_SHA=$SHA"
+          echo "QA_REPAIR_URL=https://raw.githack.com/Omideno7/new-hope7-app/$SHA/qa-runtime-repaired.html"
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = '657a0dadc01b46e6176bfab791bcd7a1bac2025c'
+      - name: Save browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-packaged-browser-repair-evidence
+          path: |
+            qa-repair-evidence/
+            qa-runtime-repaired.html
+          retention-days: 3
