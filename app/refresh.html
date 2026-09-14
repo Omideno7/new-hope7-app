@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>New Hope 7</title>
+<style>body{margin:0;padding:32px;font-family:system-ui,-apple-system,sans-serif;background:#f0faf8;color:#102033;text-align:center}main{max-width:520px;margin:12vh auto;padding:28px;background:#fff;border-radius:24px}p{line-height:1.8}a{display:block;padding:14px;margin:12px 0;background:#102033;color:#fff;border-radius:12px;text-decoration:none}</style>
+</head>
+<body>
+<main><h1 dir="ltr">New Hope 7</h1>
+<p id="status" role="status">در حال بازکردن صفحهٔ به‌روز دانلود…</p>
+<a href="./">بازکردن صفحهٔ دانلود</a>
+<a href="https://apps.apple.com/hr/app/new-hope-7/id6803187205" dir="ltr">App Store · iPhone &amp; iPad</a>
+</main>
+<script>
+(function () {
+  'use strict';
+  var canonical = new URL('./', window.location.href);
+  var indexUrl = new URL('index.html', canonical);
+  var appScope = new URL('../', canonical).href;
+  var paths = [canonical.pathname, indexUrl.pathname, canonical.pathname.replace(/\/$/, '')];
+  function isLanding(raw) {
+    var url = new URL(raw, canonical);
+    return url.origin === canonical.origin && paths.indexOf(url.pathname) !== -1;
+  }
+  function htmlResponse(html) {
+    return new Response(html, {headers: {'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store'}});
+  }
+  async function openFreshPage() {
+    // A fetch of HTML is not a navigation: the legacy offline worker does not intercept it.
+    var freshUrl = new URL(indexUrl.href);
+    freshUrl.searchParams.set('_nh7_refresh', String(Date.now()));
+    var controller = new AbortController();
+    var timer = setTimeout(function () { controller.abort(); }, 15000);
+    var html;
+    try {
+      var response = await fetch(freshUrl.href, {cache: 'no-store', credentials: 'same-origin', signal: controller.signal});
+      if (!response.ok) throw new Error('Page unavailable');
+      html = await response.text();
+    } finally { clearTimeout(timer); }
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var apple = doc.querySelector('#app-store-link');
+    var logo = doc.querySelector('img.logo');
+    if (!apple || apple.getAttribute('href') !== 'https://apps.apple.com/hr/app/new-hope-7/id6803187205' ||
+        !logo || logo.getAttribute('src') !== './church-logo-d00c2947.png') {
+      throw new Error('Updated page not available yet');
+    }
+    // Refresh only public landing-page HTML entries. Do not remove caches or touch
+    // login sessions, localStorage, IndexedDB, audio, lessons, or other app pages.
+    if ('caches' in window) {
+      try {
+        var names = await caches.keys();
+        for (var name of names) {
+          var cache = await caches.open(name);
+          var keys = await cache.keys();
+          for (var key of keys) {
+            if (key.method === 'GET' && isLanding(key.url)) await cache.put(key, htmlResponse(html));
+          }
+        }
+        var recovery = await caches.open('nh7-public-download-repair-v1');
+        await recovery.put(canonical.href, htmlResponse(html));
+        await recovery.put(indexUrl.href, htmlResponse(html));
+      } catch (_) { /* Cache Storage can be unavailable in private browsers. */ }
+    }
+    // Also revalidate the ordinary HTTP cache for the unchanged printed URL.
+    controller = new AbortController();
+    timer = setTimeout(function () { controller.abort(); }, 8000);
+    try { await fetch(canonical.href, {cache: 'reload', credentials: 'same-origin', signal: controller.signal}); }
+    catch (_) {} finally { clearTimeout(timer); }
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistration(appScope).then(function (registration) {
+        if (registration && registration.scope === appScope) return registration.update();
+      }).catch(function () {});
+    }
+    window.location.replace(canonical.href);
+  }
+  openFreshPage().catch(function () {
+    document.getElementById('status').textContent = 'تازه‌سازی انجام نشد. اتصال اینترنت را بررسی کنید و صفحه را دوباره باز کنید؛ لینک مستقیم اپ‌استور نیز در دسترس است.';
+  });
+}());
+</script>
+</body>
+</html>
