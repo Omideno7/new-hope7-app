@@ -10,61 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
+      - uses: actions/checkout@v4
       - name: Set up browser
         run: |
-          mkdir -p /tmp/qr-browser
-          cd /tmp/qr-browser
-          npm init -y >/dev/null
-          npm install --no-audit --no-fund playwright@1.51.1
-          npx playwright install --with-deps chromium
-      - name: Inspect exact permanent URL, logo, and App Store navigation
-        run: |
-          cd /tmp/qr-browser
-          mkdir -p results
-          cat > check.cjs <<'NODE'
-          const {chromium}=require('playwright');
-          const fs=require('fs');
-          (async()=>{
-            const browser=await chromium.launch();
-            const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
-            const urls=['https://omideno7.github.io/new-hope7-app/app/','https://omideno7.github.io/new-hope7-app/app/index.html?rev=20260914.3'];
-            const report=[];
-            for(let i=0;i<urls.length;i++){
-              const page=await context.newPage();
-              const row={requested:urls[i],errors:[]};
-              page.on('pageerror',e=>row.errors.push(e.message));
-              const response=await page.goto(urls[i],{waitUntil:'networkidle',timeout:45000});
-              row.status=response.status(); row.url=page.url(); row.headers=await response.allHeaders();
-              row.text=await page.locator('body').innerText();
-              row.logo=await page.locator('.logo').evaluate(e=>({src:e.currentSrc,loaded:e.complete&&e.naturalWidth>0,width:e.naturalWidth,height:e.naturalHeight}));
-              row.links=await page.locator('a').evaluateAll(es=>es.map(e=>({text:e.textContent,href:e.href,target:e.target})));
-              fs.writeFileSync(`results/page-${i}.html`,await page.content());
-              await page.screenshot({path:`results/page-${i}.png`,fullPage:true});
-              await page.locator('.logo').screenshot({path:`results/logo-${i}.png`});
-              const button=page.locator('a[href*="apps.apple.com"]').first();
-              if(await button.count()){
-                const popupPromise=page.waitForEvent('popup',{timeout:12000}).catch(()=>null);
-                await button.tap();
-                const popup=await popupPromise;
-                const target=popup||page;
-                try{await target.waitForLoadState('domcontentloaded',{timeout:20000});}catch(e){row.navigationWait=e.message;}
-                row.appleNavigationUrl=target.url();
-                try{row.applePageTitle=await target.title();}catch(e){}
-                if(popup)await popup.close();
-              }
-              report.push(row);
-              console.log('PUBLIC_QR_RESULT '+JSON.stringify(row));
-              await page.close();
-            }
-            fs.writeFileSync('results/report.json',JSON.stringify(report,null,2));
-            await browser.close();
-          })().catch(e=>{console.error(e);process.exitCode=1});
-          NODE
-          node check.cjs
+          mkdir -p /tmp/qr-browser/results
+          python -m pip install playwright==1.51.1
+          python -m playwright install --with-deps chromium
+      - name: Test trapped legacy page and recovery without changing printed URL
+        run: python tests/book-qr-recovery.py
       - name: Save public-page test evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: book-qr-live-evidence
+          name: book-qr-recovery-evidence
           path: /tmp/qr-browser/results/
           retention-days: 3
