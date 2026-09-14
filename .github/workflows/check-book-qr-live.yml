@@ -16,8 +16,8 @@ jobs:
       - name: Set up browsers
         run: |
           mkdir -p /tmp/qr-browser/results
-          python -m pip install playwright==1.51.0
-          python -m playwright install --with-deps chromium webkit
+          python -m pip install playwright==1.51.0 > /tmp/qr-browser/install.log 2>&1 || { tail -80 /tmp/qr-browser/install.log; exit 1; }
+          python -m playwright install --with-deps chromium webkit >> /tmp/qr-browser/install.log 2>&1 || { tail -80 /tmp/qr-browser/install.log; exit 1; }
       - name: Test trapped legacy page and recovery without changing printed URL
         run: python tests/book-qr-recovery.py
       - name: Verify real deployed page, one-time refresh, original logo, and Apple destination
@@ -43,7 +43,7 @@ jobs:
                   context=browser.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True)
                   page=context.new_page()
                   response=page.goto(canonical,wait_until='networkidle',timeout=45000)
-                  assert response.status()==200
+                  assert response.status==200
                   assert page.locator('meta[name="nh7-download-revision"]').get_attribute('content')=='20260914.4'
                   assert page.locator('#app-store-link').get_attribute('href')==apple
                   assert not page.locator('#app-store-link').get_attribute('target')
@@ -63,7 +63,7 @@ jobs:
                   page.wait_for_load_state('domcontentloaded',timeout=30000)
                   title=page.title()
                   assert 'new hope 7' in title.lower(),title
-                  row={'engine':engine,'printedUrl':canonical,'publicStatus':response.status(),'revision':'20260914.4','churchLogoBlobSHA':digest,'recoveryReturnsToUnchangedUrl':True,'appStoreUrlAfterTap':page.url(),'appStoreTitle':title,'sameTab':len(context.pages)==1}
+                  row={'engine':engine,'printedUrl':canonical,'publicStatus':response.status,'revision':'20260914.4','churchLogoBlobSHA':digest,'recoveryReturnsToUnchangedUrl':True,'appStoreUrlAfterTap':page.url,'appStoreTitle':title,'sameTab':len(context.pages)==1}
                   reports.append(row)
                   print('VERIFIED_LIVE_QR '+json.dumps(row))
                   browser.close()
