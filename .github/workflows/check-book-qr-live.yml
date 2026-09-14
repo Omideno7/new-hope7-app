@@ -11,17 +11,68 @@ jobs:
     timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
-      - name: Set up browser
+        with:
+          persist-credentials: false
+      - name: Set up browsers
         run: |
           mkdir -p /tmp/qr-browser/results
           python -m pip install playwright==1.51.0
-          python -m playwright install --with-deps chromium
+          python -m playwright install --with-deps chromium webkit
       - name: Test trapped legacy page and recovery without changing printed URL
         run: python tests/book-qr-recovery.py
+      - name: Verify real deployed page, one-time refresh, original logo, and Apple destination
+        run: |
+          python - <<'PY'
+          import json, time, pathlib, hashlib
+          from urllib.request import Request, urlopen
+          from playwright.sync_api import sync_playwright
+          canonical='https://omideno7.github.io/new-hope7-app/app/'
+          apple='https://apps.apple.com/hr/app/new-hope-7/id6803187205'
+          for attempt in range(18):
+              try:
+                  request=Request(canonical+'index.html?_verify='+str(time.time()),headers={'Cache-Control':'no-cache'})
+                  with urlopen(request,timeout=15) as response: html=response.read().decode('utf-8')
+                  if 'content="20260914.4"' in html: break
+              except Exception: pass
+              time.sleep(5)
+          else: raise AssertionError('Updated public page not yet available')
+          reports=[]
+          with sync_playwright() as p:
+              for engine in ['chromium','webkit']:
+                  browser=getattr(p,engine).launch()
+                  context=browser.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True)
+                  page=context.new_page()
+                  response=page.goto(canonical,wait_until='networkidle',timeout=45000)
+                  assert response.status()==200
+                  assert page.locator('meta[name="nh7-download-revision"]').get_attribute('content')=='20260914.4'
+                  assert page.locator('#app-store-link').get_attribute('href')==apple
+                  assert not page.locator('#app-store-link').get_attribute('target')
+                  source=page.locator('.logo').evaluate('(e)=>e.currentSrc')
+                  image=context.request.get(source)
+                  raw=image.body()
+                  digest=hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
+                  assert digest=='d00c294787c9a003a64fe413f86149036142065c'
+                  assert page.locator('.logo').evaluate('(e)=>e.complete && e.naturalWidth===656')
+                  assert 'بارکد' not in page.content() and 'Coming Soon' not in page.content()
+                  page.goto(canonical+'refresh.html',wait_until='domcontentloaded',timeout=45000)
+                  page.wait_for_url(canonical,timeout=30000)
+                  assert page.locator('#app-store-link').get_attribute('href')==apple
+                  page.screenshot(path='/tmp/qr-browser/results/live-'+engine+'.png',full_page=True)
+                  page.locator('#app-store-link').tap()
+                  page.wait_for_url(apple,timeout=30000)
+                  page.wait_for_load_state('domcontentloaded',timeout=30000)
+                  title=page.title()
+                  assert 'new hope 7' in title.lower(),title
+                  row={'engine':engine,'printedUrl':canonical,'publicStatus':response.status(),'revision':'20260914.4','churchLogoBlobSHA':digest,'recoveryReturnsToUnchangedUrl':True,'appStoreUrlAfterTap':page.url(),'appStoreTitle':title,'sameTab':len(context.pages)==1}
+                  reports.append(row)
+                  print('VERIFIED_LIVE_QR '+json.dumps(row))
+                  browser.close()
+          pathlib.Path('/tmp/qr-browser/results/live-verification.json').write_text(json.dumps(reports,indent=2))
+          PY
       - name: Save public-page test evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: book-qr-recovery-evidence
+          name: book-qr-final-evidence
           path: /tmp/qr-browser/results/
           retention-days: 3
