@@ -14,7 +14,7 @@ jobs:
       - name: Set up browser
         run: |
           mkdir -p /tmp/qr-browser/results
-          python -m pip install playwright==1.51.1
+          python -m pip install playwright==1.51.0
           python -m playwright install --with-deps chromium
       - name: Test trapped legacy page and recovery without changing printed URL
         run: python tests/book-qr-recovery.py
