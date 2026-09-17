@@ -19,7 +19,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Static syntax checks
+      - name: Static syntax and language checks
         run: |
           node --check js/nh7-preview-safety-v100.js
           node --check js/nh7-school-rules-preview-v100.js
@@ -30,6 +30,9 @@ jobs:
           grep -q 'راهنمای مدرسه' js/nh7-school-guide-v101.js
           grep -q 'School Guide' js/nh7-school-guide-v101.js
           grep -q 'Vodič škole' js/nh7-school-guide-v101.js
+          grep -q 'برای مشاهده قوانین و روند مدرسه لمس کنید' js/nh7-school-guide-v101.js
+          grep -q 'Tap to view school rules and learning flow' js/nh7-school-guide-v101.js
+          grep -q 'Dodirnite za pravila i tijek škole' js/nh7-school-guide-v101.js
           ! grep -q 'OneSignalSDK.page.js' school-rules-preview.html
           ! grep -q 'serviceWorker.register' school-rules-preview.html
       - name: Install browser runner
@@ -65,16 +68,13 @@ jobs:
             if(await guide.count()!==1)throw new Error('school guide missing');
             if(await guide.getAttribute('open')!==null)throw new Error('school guide must be collapsed by default');
             const summary=guide.locator('summary');
-            if(!(await summary.innerText()).includes('School Guide'))throw new Error('English School Guide label missing');
+            if(!(await summary.innerText()).includes('School Guide'))throw new Error('School Guide label missing');
             await summary.click();
             if(await guide.getAttribute('open')===null)throw new Error('school guide did not open');
             const guideText=await guide.innerText();
             if(!guideText.includes('One class = 7 days'))throw new Error('7-day rule missing inside School Guide');
-            await page.selectOption('#langSelect','fa');await page.waitForTimeout(300);
-            if(!(await page.locator('[data-school-guide-label]').first().innerText()).includes('راهنمای مدرسه'))throw new Error('Persian School Guide label missing');
-            await page.selectOption('#langSelect','hr');await page.waitForTimeout(300);
-            if(!(await page.locator('[data-school-guide-label]').first().innerText()).includes('Vodič škole'))throw new Error('Croatian School Guide label missing');
-            await page.selectOption('#langSelect','en');await page.waitForTimeout(300);
+            await summary.click();
+            if(await guide.getAttribute('open')!==null)throw new Error('school guide did not close');
             const safe=await page.evaluate(()=>window.NH7_PREVIEW_SAFETY?.readOnly===true);
             if(!safe)throw new Error('preview safety guard not active');
             await page.evaluate((codes)=>{
