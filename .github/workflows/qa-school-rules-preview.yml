@@ -6,6 +6,7 @@ on:
       - school-rules-preview.html
       - js/nh7-preview-safety-v100.js
       - js/nh7-school-rules-preview-v100.js
+      - js/nh7-school-guide-v101.js
       - .github/workflows/qa-school-rules-preview.yml
 permissions:
   contents: read
@@ -22,8 +23,13 @@ jobs:
         run: |
           node --check js/nh7-preview-safety-v100.js
           node --check js/nh7-school-rules-preview-v100.js
+          node --check js/nh7-school-guide-v101.js
           grep -q 'nh7-preview-safety-v100.js' school-rules-preview.html
           grep -q 'nh7-school-rules-preview-v100.js' school-rules-preview.html
+          grep -q 'nh7-school-guide-v101.js' school-rules-preview.html
+          grep -q 'راهنمای مدرسه' js/nh7-school-guide-v101.js
+          grep -q 'School Guide' js/nh7-school-guide-v101.js
+          grep -q 'Vodič škole' js/nh7-school-guide-v101.js
           ! grep -q 'OneSignalSDK.page.js' school-rules-preview.html
           ! grep -q 'serviceWorker.register' school-rules-preview.html
       - name: Install browser runner
@@ -35,7 +41,6 @@ jobs:
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/nh7-school-http.log 2>&1 &
           node <<'NODE'
-          const fs=require('fs');
           const {chromium}=require('/tmp/nh7-school-qa/node_modules/playwright');
           const lessonCodes=['class_01_new_creation','class_02_holy_spirit','class_03_christian_doctrine','class_04a_evangelism','class_04b_cell_ministry','class_05_character_prosperity','class_06_local_assembly','class_07_mobile_technology'];
           (async()=>{
@@ -55,11 +60,21 @@ jobs:
             await page.waitForTimeout(2500);
             if(await page.locator('#amenButton').isVisible().catch(()=>false))await page.locator('#amenButton').click();
             await page.locator('.nav-item[data-route="school"]').click();
-            await page.waitForTimeout(500);
-            const intro=page.locator('[data-school-rules-intro]');
-            if(await intro.count()!==1)throw new Error('pre-registration rules intro missing');
-            const introText=await intro.innerText();
-            if(!introText.includes('One class = 7 days'))throw new Error('7-day rule missing');
+            await page.waitForTimeout(650);
+            const guide=page.locator('[data-school-guide]');
+            if(await guide.count()!==1)throw new Error('school guide missing');
+            if(await guide.getAttribute('open')!==null)throw new Error('school guide must be collapsed by default');
+            const summary=guide.locator('summary');
+            if(!(await summary.innerText()).includes('School Guide'))throw new Error('English School Guide label missing');
+            await summary.click();
+            if(await guide.getAttribute('open')===null)throw new Error('school guide did not open');
+            const guideText=await guide.innerText();
+            if(!guideText.includes('One class = 7 days'))throw new Error('7-day rule missing inside School Guide');
+            await page.selectOption('#langSelect','fa');await page.waitForTimeout(300);
+            if(!(await page.locator('[data-school-guide-label]').first().innerText()).includes('راهنمای مدرسه'))throw new Error('Persian School Guide label missing');
+            await page.selectOption('#langSelect','hr');await page.waitForTimeout(300);
+            if(!(await page.locator('[data-school-guide-label]').first().innerText()).includes('Vodič škole'))throw new Error('Croatian School Guide label missing');
+            await page.selectOption('#langSelect','en');await page.waitForTimeout(300);
             const safe=await page.evaluate(()=>window.NH7_PREVIEW_SAFETY?.readOnly===true);
             if(!safe)throw new Error('preview safety guard not active');
             await page.evaluate((codes)=>{
@@ -72,6 +87,7 @@ jobs:
             const cards=page.locator('.nh7-school-class-card');
             if(await cards.count()!==7)throw new Error('expected seven class cards');
             if(await page.locator('.nh7-school-class-card.is-locked').count()!==6)throw new Error('only class 1 should initially be unlocked');
+            if(await page.locator('[data-preview-only]').count()<1)throw new Error('QA-only UI was not explicitly marked preview-only');
             await page.evaluate(()=>{
               document.querySelector('[data-qa-lessons="class_01"]')?.click();
               document.querySelector('[data-qa-assignments="class_01"]')?.click();
