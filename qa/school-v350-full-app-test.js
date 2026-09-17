@@ -27,14 +27,16 @@ const rows = codes.map((code, i) => ({
   }
 }));
 
+// Full-app content-preservation scenario: Classes 1–3 already passed, Class 4 is now unlocked.
+// This lets us verify both the existing Class 1 lesson route and the 4A+4B grouping on the real app shell.
 const classes = [
-  { class_key:'class_01', class_unlocked:true,  lessons_total:1, lessons_completed:0, assignments_total:1, assignments_approved_count:0, lessons_complete:false, assignments_approved:false, passed_already:false, repeat_required:false, ready:false, remaining_attempts:3 },
-  { class_key:'class_02', class_unlocked:false, lessons_total:1, lessons_completed:0, assignments_total:1, assignments_approved_count:0 },
-  { class_key:'class_03', class_unlocked:false, lessons_total:1, lessons_completed:0, assignments_total:1, assignments_approved_count:0 },
-  { class_key:'class_04', class_unlocked:false, lessons_total:2, lessons_completed:0, assignments_total:2, assignments_approved_count:0 },
-  { class_key:'class_05', class_unlocked:false, lessons_total:1, lessons_completed:0, assignments_total:1, assignments_approved_count:0 },
-  { class_key:'class_06', class_unlocked:false, lessons_total:1, lessons_completed:0, assignments_total:1, assignments_approved_count:0 },
-  { class_key:'class_07', class_unlocked:false, lessons_total:1, lessons_completed:0, assignments_total:1, assignments_approved_count:0 }
+  { class_key:'class_01', class_unlocked:true, passed_already:true, lessons_total:1, lessons_completed:1, lessons_complete:true, assignments_total:1, assignments_approved_count:1, assignments_approved:true, repeat_required:false, ready:false, remaining_attempts:0 },
+  { class_key:'class_02', class_unlocked:true, passed_already:true, lessons_total:1, lessons_completed:1, lessons_complete:true, assignments_total:1, assignments_approved_count:1, assignments_approved:true, repeat_required:false, ready:false, remaining_attempts:0 },
+  { class_key:'class_03', class_unlocked:true, passed_already:true, lessons_total:1, lessons_completed:1, lessons_complete:true, assignments_total:1, assignments_approved_count:1, assignments_approved:true, repeat_required:false, ready:false, remaining_attempts:0 },
+  { class_key:'class_04', class_unlocked:true, passed_already:false, lessons_total:2, lessons_completed:0, lessons_complete:false, assignments_total:2, assignments_approved_count:0, assignments_approved:false, repeat_required:false, ready:false, remaining_attempts:3 },
+  { class_key:'class_05', class_unlocked:false, passed_already:false, lessons_total:1, lessons_completed:0, assignments_total:1, assignments_approved_count:0 },
+  { class_key:'class_06', class_unlocked:false, passed_already:false, lessons_total:1, lessons_completed:0, assignments_total:1, assignments_approved_count:0 },
+  { class_key:'class_07', class_unlocked:false, passed_already:false, lessons_total:1, lessons_completed:0, assignments_total:1, assignments_approved_count:0 }
 ];
 
 (async () => {
@@ -51,15 +53,15 @@ const classes = [
     if (u.hostname === 'media.example.test') return route.fulfill({ status: 200, contentType: 'audio/mpeg', body: '' });
     if (u.hostname === 'gpzcwffxnddhaeaogdyo.supabase.co') {
       if (u.pathname.endsWith('/rest/v1/rpc/nh7_registration_access_v2')) return route.fulfill({ status: 200, contentType: 'application/json', headers: cors, body: JSON.stringify({ found:true, status:'approved', approved:true, email:'qa@example.com', payload:{ email:'qa@example.com', firstName:'QA', lastName:'Student' } }) });
-      if (u.pathname.endsWith('/rest/v1/rpc/nh7_registration_status')) return route.fulfill({ status: 200, contentType: 'application/json', headers: cors, body: JSON.stringify({ found:true, status:'approved', approved:true }) });
-      if (u.pathname.endsWith('/rest/v1/rpc/nh7_get_my_school_snapshot_v2110')) return route.fulfill({ status: 200, contentType: 'application/json', headers: cors, body: JSON.stringify({ progress:[], assignments:[] }) });
-      if (u.pathname.endsWith('/rest/v1/rpc/nh7_school_path_state_v350')) return route.fulfill({ status: 200, contentType: 'application/json', headers: cors, body: JSON.stringify({ classes, final:{ passed_classes:0, required_classes:7, ready:false, passed_already:false } }) });
-      if (u.pathname.endsWith('/rest/v1/school_lessons')) return route.fulfill({ status: 200, contentType: 'application/json', headers: cors, body: JSON.stringify(rows) });
-      if (u.pathname.endsWith('/rest/v1/school_exams')) return route.fulfill({ status: 200, contentType: 'application/json', headers: cors, body: '[]' });
-      if (u.pathname.startsWith('/rest/v1/')) return route.fulfill({ status: 200, contentType: 'application/json', headers: cors, body: '[]' });
-      if (u.pathname.startsWith('/auth/v1/') || u.pathname.startsWith('/functions/v1/')) return route.fulfill({ status: 200, contentType: 'application/json', headers: cors, body: '{}' });
+      if (u.pathname.endsWith('/rest/v1/rpc/nh7_registration_status')) return route.fulfill({ status: 200, contentType:'application/json', headers:cors, body:JSON.stringify({ found:true, status:'approved', approved:true }) });
+      if (u.pathname.endsWith('/rest/v1/rpc/nh7_get_my_school_snapshot_v2110')) return route.fulfill({ status:200, contentType:'application/json', headers:cors, body:JSON.stringify({ progress:[], assignments:[] }) });
+      if (u.pathname.endsWith('/rest/v1/rpc/nh7_school_path_state_v350')) return route.fulfill({ status:200, contentType:'application/json', headers:cors, body:JSON.stringify({ classes, final:{ passed_classes:3, required_classes:7, ready:false, passed_already:false } }) });
+      if (u.pathname.endsWith('/rest/v1/school_lessons')) return route.fulfill({ status:200, contentType:'application/json', headers:cors, body:JSON.stringify(rows) });
+      if (u.pathname.endsWith('/rest/v1/school_exams')) return route.fulfill({ status:200, contentType:'application/json', headers:cors, body:'[]' });
+      if (u.pathname.startsWith('/rest/v1/')) return route.fulfill({ status:200, contentType:'application/json', headers:cors, body:'[]' });
+      if (u.pathname.startsWith('/auth/v1/') || u.pathname.startsWith('/functions/v1/')) return route.fulfill({ status:200, contentType:'application/json', headers:cors, body:'{}' });
     }
-    return route.fulfill({ status: 204, body: '' });
+    return route.fulfill({ status:204, body:'' });
   });
 
   const started = Date.now();
@@ -81,7 +83,10 @@ const classes = [
 
   if (await page.locator('.nh7-school-class-v350').count() !== 7) throw Error('seven-stage wrapper missing');
   if (await page.locator('.school-course-group .list-btn').count() !== 8) throw Error('original 8 lessons not retained');
-  if (await page.locator('.nh7-school-class-v350').nth(3).locator('.list-btn').count() !== 2) throw Error('4A/4B not retained together');
+
+  const originalParams = await page.locator('.school-course-group .list-btn').evaluateAll(btns => btns.map(b => b.dataset.params || ''));
+  if (!originalParams.some(x => x.includes('class_04a_evangelism')) || !originalParams.some(x => x.includes('class_04b_cell_ministry'))) throw Error('source School lost 4A/4B lesson codes');
+  if (await page.locator('.nh7-school-class-v350').nth(3).locator('.list-btn').count() !== 2) throw Error('unlocked Class 4 did not show both 4A and 4B');
 
   await page.locator('.nh7-school-class-v350').nth(0).locator('.list-btn').click({ force:true });
   await page.waitForFunction(() => document.querySelector('#view')?.innerText.includes('EXISTING SCHOOL LESSON TEXT — KEEP ME'), null, { timeout:8000 });
@@ -99,7 +104,7 @@ const classes = [
   const audioSrc = await page.evaluate(() => document.querySelector('audio')?.src || '');
   if (!audioSrc.includes('media.example.test/school-class-1.mp3')) throw Error('shared player did not receive School audio');
 
-  console.log(JSON.stringify({ FULL_APP_SCHOOL_V350_OK:true, schoolMs:Date.now()-started, stages:7, originalLessons:8, textPreserved:true, audioPreserved:true, assignmentPreserved:true }));
+  console.log(JSON.stringify({ FULL_APP_SCHOOL_V350_OK:true, schoolMs:Date.now()-started, stages:7, originalLessons:8, class4Lessons:2, textPreserved:true, audioPreserved:true, assignmentPreserved:true }));
   await page.screenshot({ path:'qa-school-v350-full-app-v3.png', fullPage:true });
   await browser.close();
 })().catch(e => { console.error(e); process.exit(1); });
