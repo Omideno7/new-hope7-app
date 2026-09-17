@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>School v350 QA Harness</title>
+<style>
+body{font-family:system-ui,sans-serif;margin:0;background:#f6f8fb;color:#172033}.view{padding:16px}.school-course-group,.nh7-school-path-v350{max-width:760px;margin:auto}.list-btn,.primary-btn,.secondary-btn{display:block;width:100%;margin:7px 0;padding:10px;border:1px solid #ccd6e2;border-radius:10px;background:#fff}.primary-btn{background:#153d74;color:#fff}.nav-item{margin:8px}.hidden{display:none}.card{max-width:760px;margin:16px auto;padding:16px;background:#fff;border-radius:14px}.notice{padding:10px;border-radius:10px;background:#eef3f8}.muted{color:#667085}
+</style>
+</head>
+<body>
+<header><select id="langSelect"><option value="en">EN</option><option value="fa">FA</option><option value="hr">HR</option></select><button class="nav-item active" data-route="school">School</button></header>
+<main id="view" class="view"></main>
+<script>
+localStorage.setItem('nh7_user_session_v170',JSON.stringify({access_token:'qa-access',user:{id:'qa-user',email:'qa@example.com'}}));
+const LESSONS=['class_01_new_creation','class_02_holy_spirit','class_03_christian_doctrine','class_04a_evangelism','class_04b_cell_ministry','class_05_character_prosperity','class_06_local_assembly','class_07_mobile_technology'];
+function schoolMarkup(){return `<section class="school-course-group"><h3>Existing School Content</h3>${LESSONS.map((code,i)=>`<button class="list-btn" data-go="school" data-params='${JSON.stringify({lesson:code})}' onclick="window.__openedLesson='${code}'"><strong>Existing lesson ${i+1}</strong><small>Existing text/audio entry</small></button>`).join('')}</section>`}
+function renderSchool(){document.getElementById('view').innerHTML=schoolMarkup();document.querySelector('.nav-item[data-route="school"]').classList.add('active')}
+document.querySelector('.nav-item[data-route="school"]').addEventListener('click',renderSchool);
+renderSchool();
+</script>
+<script src="../js/nh7-school-path-v350.js"></script>
+</body>
+</html>
