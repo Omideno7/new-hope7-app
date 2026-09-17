@@ -9,8 +9,8 @@ const SB='https://gpzcwffxnddhaeaogdyo.supabase.co';
 const originalFetch=window.fetch.bind(window);
 const blocked=[];
 const READ_RPC=new Set([
-  'nh7_registration_status','nh7_get_my_school_snapshot_v2110','nh7_school_exam_session_v340',
-  'nh7_get_meeting_settings','nh7_get_my_school_snapshot_v2110','nh7_audio_social_state_v1',
+  'nh7_registration_access_v2','nh7_registration_status','nh7_get_my_school_snapshot_v2110','nh7_school_exam_session_v340',
+  'nh7_get_meeting_settings','nh7_audio_social_state_v1',
   'nh7_library_catalog_v396','nh7_library_reader_access_v250','nh7_library_reader_access_v321',
   'nh7_my_questions_v220','nh7_public_answered_questions_v340','nh7_public_answered_questions_i18n_v341'
 ]);
