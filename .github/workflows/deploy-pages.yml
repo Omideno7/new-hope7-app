@@ -138,7 +138,7 @@ jobs:
           if(index.includes('nh7-school-audio-native-v337.js'))fail('legacy School audio player must not be loaded separately');
 
           for(const required of ["NH7_SETTINGS_CONTROLLER_VERSION='4.0.3'",'prepareOffline','clearOffline','refresh','nh7-settings403-status','nh7SettingsToast403'])if(!settings.includes(required))fail(`Settings v403 missing ${required}`);
-          for(const required of ["NH7_DELETE_ACCOUNT_VERSION='2.5.3'",'currentSession','refresh_token','/auth/v1/user','grant_type=refresh_token','nh7-delete-my-account-v252','stopImmediatePropagation'])if(!deletion.includes(required))fail(`Delete v253 missing ${required}`);
+          for(const required of ["NH7_DELETE_ACCOUNT_VERSION='2.5.4'",'currentSession','refresh_token','/auth/v1/user','grant_type=refresh_token','nh7-delete-my-account-v252','stopImmediatePropagation'])if(!deletion.includes(required))fail(`Delete v253 missing ${required}`);
           if(!worker.includes('sw-navigation-fresh-v403.js?v=4.0.3')||!worker.includes('sw-release-core-v403.js?v=4.2.2'))fail('service-worker live-catalogue wiring missing');
           if(!index.includes('js/nh7-offline-data-v422.js?v=4.2.2')||index.includes('js/nh7-offline-data-v329.js?v=2.3.9.50-offline403'))fail('auth-safe live catalogue runtime wiring missing');
           for(const required of ["4.2.2-auth-safe-catalogue",'response.status>=400&&response.status<500','nh7_remote_catalogue_cache_v422'])if(!offlineData.includes(required))fail(`live catalogue runtime missing ${required}`);
