@@ -1,0 +1,54 @@
+name: QA School v350 RC Natural Load v2
+on:
+  push:
+    branches: [release/school-v350-rc-20260917]
+    paths:
+      - .github/workflows/qa-school-v350-rc-natural-v2.yml
+permissions:
+  contents: read
+jobs:
+  rc-natural-load:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Static RC assertions
+        run: |
+          node --check js/nh7-school-path-v350.js
+          test "$(grep -c 'js/nh7-school-path-v350.js?v=3.5.0' index.html)" -eq 1
+          node - <<'NODE'
+          const fs=require('fs');const h=fs.readFileSync('index.html','utf8');
+          if(h.indexOf('js/nh7-school-path-v350.js')<h.indexOf('js/nh7-school-exam-v344.js'))throw Error('v350 order');
+          console.log('RC_STATIC_OK');
+          NODE
+      - name: Install Chromium
+        run: |
+          npm install --prefix /tmp/nh7-rc playwright@1.55.0 --ignore-scripts --no-audit --no-fund
+          /tmp/nh7-rc/node_modules/.bin/playwright install --with-deps chromium
+      - name: Make browser harness wait for real app bootstrap
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('qa/rc-school-v350-natural-load.js')
+          s=p.read_text()
+          needle="await page.waitForFunction(()=>window.NH7_SCHOOL_PATH_VERSION==='3.5.0',null,{timeout:8000});"
+          s=s.replace(needle,needle+"\n  await page.waitForTimeout(1200);")
+          needle2="await page2.waitForFunction(()=>window.NH7_SCHOOL_PATH_VERSION==='3.5.0',null,{timeout:8000});"
+          s=s.replace(needle2,needle2+"\n  await page2.waitForTimeout(1200);")
+          p.write_text(s)
+          PY
+          node --check qa/rc-school-v350-natural-load.js
+      - name: Run RC mobile natural-load QA
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/nh7-rc-http.log 2>&1 &
+          node qa/rc-school-v350-natural-load.js
+      - name: Upload RC screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: school-v350-rc-natural-v2
+          path: qa-school-v350-rc-natural.png
+          retention-days: 3
