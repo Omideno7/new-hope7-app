@@ -19,7 +19,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Static syntax and language checks
+      - name: Static syntax, module and language checks
         run: |
           node --check js/nh7-preview-safety-v100.js
           node --check js/nh7-school-rules-preview-v100.js
@@ -27,6 +27,10 @@ jobs:
           grep -q 'nh7-preview-safety-v100.js' school-rules-preview.html
           grep -q 'nh7-school-rules-preview-v100.js' school-rules-preview.html
           grep -q 'nh7-school-guide-v101.js' school-rules-preview.html
+          grep -q 'nh7-school-exam-v344.js' school-rules-preview.html
+          grep -q 'nh7-spiritual-plans-v412.js' school-rules-preview.html
+          grep -q 'nh7-settings-controller-v403.js' school-rules-preview.html
+          grep -q 'nh7-app-enhancements-v230.js' school-rules-preview.html
           grep -q 'راهنمای مدرسه' js/nh7-school-guide-v101.js
           grep -q 'School Guide' js/nh7-school-guide-v101.js
           grep -q 'Vodič škole' js/nh7-school-guide-v101.js
@@ -60,10 +64,18 @@ jobs:
               return route.fulfill({status:403,contentType:'text/plain',headers:{'Access-Control-Allow-Origin':'*'},body:'blocked by isolated QA'});
             });
             await page.goto('http://127.0.0.1:4173/school-rules-preview.html',{waitUntil:'domcontentloaded',timeout:30000});
-            await page.waitForTimeout(2500);
+            await page.waitForTimeout(3000);
             if(await page.locator('#amenButton').isVisible().catch(()=>false))await page.locator('#amenButton').click();
+
+            // Updated Plans bridge must be loaded in the full preview.
+            await page.locator('.nav-item[data-route="plans"]').click();
+            await page.waitForTimeout(1400);
+            const plansText=await page.locator('#view').innerText();
+            if(!/Spiritual Plans|Change Your Thinking|Plans/i.test(plansText))throw new Error('updated Plans view did not load');
+
+            // School must retain the new guide and complete progression preview.
             await page.locator('.nav-item[data-route="school"]').click();
-            await page.waitForTimeout(650);
+            await page.waitForTimeout(750);
             const guide=page.locator('[data-school-guide]');
             if(await guide.count()!==1)throw new Error('school guide missing');
             if(await guide.getAttribute('open')!==null)throw new Error('school guide must be collapsed by default');
@@ -106,7 +118,7 @@ jobs:
             if(!repeat)throw new Error('failed exam did not require class repeat');
             if(errors.length)throw new Error('page errors: '+errors.join(' | '));
             await page.screenshot({path:'qa-school-rules-preview.png',fullPage:true});
-            console.log('SCHOOL_RULES_PREVIEW_QA_OK');
+            console.log('FULL_APP_PREVIEW_QA_OK');
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           NODE
