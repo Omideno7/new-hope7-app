@@ -13,10 +13,12 @@ body{font-family:system-ui,sans-serif;margin:0;background:#f6f8fb;color:#172033}
 <main id="view" class="view"></main>
 <script>
 localStorage.setItem('nh7_user_session_v170',JSON.stringify({access_token:'qa-access',user:{id:'qa-user',email:'qa@example.com'}}));
+localStorage.setItem('nh7_lang','en');
 const LESSONS=['class_01_new_creation','class_02_holy_spirit','class_03_christian_doctrine','class_04a_evangelism','class_04b_cell_ministry','class_05_character_prosperity','class_06_local_assembly','class_07_mobile_technology'];
 function schoolMarkup(){return `<section class="school-course-group"><h3>Existing School Content</h3>${LESSONS.map((code,i)=>`<button class="list-btn" data-go="school" data-params='${JSON.stringify({lesson:code})}' onclick="window.__openedLesson='${code}'"><strong>Existing lesson ${i+1}</strong><small>Existing text/audio entry</small></button>`).join('')}</section>`}
 function renderSchool(){document.getElementById('view').innerHTML=schoolMarkup();document.querySelector('.nav-item[data-route="school"]').classList.add('active')}
 document.querySelector('.nav-item[data-route="school"]').addEventListener('click',renderSchool);
+document.getElementById('langSelect').addEventListener('change',e=>{const lang=e.target.value;localStorage.setItem('nh7_lang',lang);document.documentElement.lang=lang;document.body.dir=lang==='fa'?'rtl':'ltr';});
 renderSchool();
 </script>
 <script src="../js/nh7-school-path-v350.js"></script>
