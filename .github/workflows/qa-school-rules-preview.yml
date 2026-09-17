@@ -1,0 +1,103 @@
+name: QA School Rules Preview
+on:
+  push:
+    branches: [feature/school-rules-preview-20260917]
+    paths:
+      - school-rules-preview.html
+      - js/nh7-preview-safety-v100.js
+      - js/nh7-school-rules-preview-v100.js
+      - .github/workflows/qa-school-rules-preview.yml
+permissions:
+  contents: read
+jobs:
+  browser-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Static syntax checks
+        run: |
+          node --check js/nh7-preview-safety-v100.js
+          node --check js/nh7-school-rules-preview-v100.js
+          grep -q 'nh7-preview-safety-v100.js' school-rules-preview.html
+          grep -q 'nh7-school-rules-preview-v100.js' school-rules-preview.html
+          ! grep -q 'OneSignalSDK.page.js' school-rules-preview.html
+          ! grep -q 'serviceWorker.register' school-rules-preview.html
+      - name: Install browser runner
+        run: |
+          npm install --prefix /tmp/nh7-school-qa playwright@1.55.0 --ignore-scripts --no-audit --no-fund
+          /tmp/nh7-school-qa/node_modules/.bin/playwright install --with-deps chromium
+      - name: Run isolated browser QA
+        shell: bash
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/nh7-school-http.log 2>&1 &
+          node <<'NODE'
+          const fs=require('fs');
+          const {chromium}=require('/tmp/nh7-school-qa/node_modules/playwright');
+          const lessonCodes=['class_01_new_creation','class_02_holy_spirit','class_03_christian_doctrine','class_04a_evangelism','class_04b_cell_ministry','class_05_character_prosperity','class_06_local_assembly','class_07_mobile_technology'];
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const ctx=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,serviceWorkers:'block'});
+            const page=await ctx.newPage();
+            const errors=[];
+            page.on('pageerror',e=>errors.push(e.message));
+            await page.route('**/*',async route=>{
+              const req=route.request(),u=new URL(req.url());
+              if(u.hostname==='127.0.0.1')return route.continue();
+              if(u.pathname.endsWith('/rest/v1/rpc/nh7_get_my_school_snapshot_v2110'))return route.fulfill({status:200,contentType:'application/json',headers:{'Access-Control-Allow-Origin':'*'},body:JSON.stringify({progress:[],assignments:[]})});
+              if(u.pathname.endsWith('/rest/v1/rpc/nh7_school_exam_session_v340'))return route.fulfill({status:200,contentType:'application/json',headers:{'Access-Control-Allow-Origin':'*'},body:JSON.stringify({ok:true,exam:{id:'00000000-0000-0000-0000-000000000001',passing_score:70,questions:[{section:{en:'Class 1: The New Creature',fa:'کلاس ۱',hr:'Razred 1'},question:{en:'QA question',fa:'سؤال تست',hr:'QA pitanje'},options:[{en:'A',fa:'الف',hr:'A'},{en:'B',fa:'ب',hr:'B'}]}]}})});
+              return route.fulfill({status:403,contentType:'text/plain',headers:{'Access-Control-Allow-Origin':'*'},body:'blocked by isolated QA'});
+            });
+            await page.goto('http://127.0.0.1:4173/school-rules-preview.html',{waitUntil:'domcontentloaded',timeout:30000});
+            await page.waitForTimeout(2500);
+            if(await page.locator('#amenButton').isVisible().catch(()=>false))await page.locator('#amenButton').click();
+            await page.locator('.nav-item[data-route="school"]').click();
+            await page.waitForTimeout(500);
+            const intro=page.locator('[data-school-rules-intro]');
+            if(await intro.count()!==1)throw new Error('pre-registration rules intro missing');
+            const introText=await intro.innerText();
+            if(!introText.includes('One class = 7 days'))throw new Error('7-day rule missing');
+            const safe=await page.evaluate(()=>window.NH7_PREVIEW_SAFETY?.readOnly===true);
+            if(!safe)throw new Error('preview safety guard not active');
+            await page.evaluate((codes)=>{
+              localStorage.setItem('nh7_user_session_v170',JSON.stringify({access_token:'qa-token'}));
+              document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+              document.querySelector('.nav-item[data-route="school"]').classList.add('active');
+              document.getElementById('view').innerHTML='<section class="school-course-group"><h3>Christian Foundation School</h3>'+codes.map((code,i)=>`<button class="list-btn" data-go="school" data-params='${JSON.stringify({lesson:code})}'><strong>Class ${i<3?i+1:i===3||i===4?4:i}</strong><small>${code}</small></button>`).join('')+'</section>';
+            },lessonCodes);
+            await page.waitForTimeout(800);
+            const cards=page.locator('.nh7-school-class-card');
+            if(await cards.count()!==7)throw new Error('expected seven class cards');
+            if(await page.locator('.nh7-school-class-card.is-locked').count()!==6)throw new Error('only class 1 should initially be unlocked');
+            await page.evaluate(()=>{
+              document.querySelector('[data-qa-lessons="class_01"]')?.click();
+              document.querySelector('[data-qa-assignments="class_01"]')?.click();
+            });
+            await page.waitForTimeout(650);
+            const examButton=page.locator('[data-class-exam="class_01"]');
+            if(await examButton.count()!==1)throw new Error('class exam did not unlock after simulated approved prerequisites');
+            await examButton.click();
+            await page.waitForTimeout(500);
+            if(await page.locator('.nh7-preview-exam-q').count()!==1)throw new Error('class-specific exam question did not render');
+            await page.locator('input[name="nh7pq_0"]').first().check();
+            await page.locator('[data-preview-class-exam-form] button[type="submit"]').click();
+            if(await page.locator('[data-preview-fail="class_01"]').count()!==1)throw new Error('preview result controls missing');
+            await page.locator('[data-preview-fail="class_01"]').click();
+            const repeat=await page.evaluate(()=>JSON.parse(localStorage.getItem('nh7_school_rules_preview_v100')||'{}').repeat?.class_01===true);
+            if(!repeat)throw new Error('failed exam did not require class repeat');
+            if(errors.length)throw new Error('page errors: '+errors.join(' | '));
+            await page.screenshot({path:'qa-school-rules-preview.png',fullPage:true});
+            console.log('SCHOOL_RULES_PREVIEW_QA_OK');
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+      - name: Upload QA screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: school-rules-preview-qa
+          path: qa-school-rules-preview.png
+          retention-days: 3
