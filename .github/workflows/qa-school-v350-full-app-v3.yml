@@ -1,0 +1,43 @@
+name: QA School v350 Full App v3
+on:
+  push:
+    branches: [feature/school-production-candidate-20260917]
+    paths:
+      - js/nh7-school-path-v350.js
+      - js/app.js
+      - index.html
+      - qa/school-v350-full-app-test.js
+      - .github/workflows/qa-school-v350-full-app-v3.yml
+permissions:
+  contents: read
+jobs:
+  full-app:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Static hooks
+        run: |
+          node --check js/nh7-school-path-v350.js
+          node --check qa/school-v350-full-app-test.js
+          grep -Fq "school-audio-card" js/app.js
+          grep -Fq "tx.lesson_text" js/app.js
+          grep -Fq "wr.text" js/app.js
+          grep -Fq "orig.click()" js/nh7-school-path-v350.js
+      - name: Install Chromium
+        run: |
+          npm install --prefix /tmp/nh7-full playwright@1.55.0 --ignore-scripts --no-audit --no-fund
+          /tmp/nh7-full/node_modules/.bin/playwright install --with-deps chromium
+      - name: Run full app School QA
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/nh7-full-http.log 2>&1 &
+          node qa/school-v350-full-app-test.js
+      - name: Upload screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: school-v350-full-app-v3
+          path: qa-school-v350-full-app-v3.png
+          retention-days: 3
