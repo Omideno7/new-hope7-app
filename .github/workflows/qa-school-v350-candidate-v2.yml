@@ -1,0 +1,149 @@
+name: QA School v350 Candidate v2
+on:
+  push:
+    branches: [feature/school-production-candidate-20260917]
+    paths:
+      - js/nh7-school-path-v350.js
+      - qa/school-v350-harness.html
+      - .github/workflows/qa-school-v350-candidate-v2.yml
+permissions:
+  contents: read
+jobs:
+  mobile-progression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Static production checks
+        run: |
+          node --check js/nh7-school-path-v350.js
+          node - <<'NODE'
+          const fs=require('fs');
+          const s=fs.readFileSync('js/nh7-school-path-v350.js','utf8');
+          const must=(x,m)=>{if(!x)throw Error(m)};
+          must(!/Local QA controls|Simulate PASS|Simulate FAIL|Reset Preview/i.test(s),'QA text leaked');
+          for(const x of ['راهنمای مدرسه','School Guide','Vodič škole'])must(s.includes(x),'missing '+x);
+          for(const x of ['class_01','class_02','class_03','class_04','class_05','class_06','class_07'])must(s.includes(x),'missing '+x);
+          console.log('STATIC_OK');
+          NODE
+      - name: Install browser
+        run: |
+          npm install --prefix /tmp/nh7-v350 playwright@1.55.0 --ignore-scripts --no-audit --no-fund
+          /tmp/nh7-v350/node_modules/.bin/playwright install --with-deps chromium
+      - name: Test School progression on mobile
+        shell: bash
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/nh7-http.log 2>&1 &
+          node <<'NODE'
+          const {chromium}=require('/tmp/nh7-v350/node_modules/playwright');
+          const defs=[['class_01',1],['class_02',1],['class_03',1],['class_04',2],['class_05',1],['class_06',1],['class_07',1]];
+          const q=(n,section='Class 1')=>({_nh7_qid:n,number:n,section:{en:section,fa:'کلاس',hr:'Razred'},question:{en:`Question ${n}`,fa:`سؤال ${n}`,hr:`Pitanje ${n}`},options:[{en:'A',fa:'الف',hr:'A'},{en:'B',fa:'ب',hr:'B'}]});
+          const classExam={id:'00000000-0000-0000-0000-000000000101',title_en:'Class 1 Exam',title_fa:'آزمون کلاس ۱',title_hr:'Ispit razreda 1',passing_score:70,questions:[q(1),q(2)]};
+          const finalExam={id:'00000000-0000-0000-0000-000000000199',title_en:'Final Examination',title_fa:'امتحان نهایی',title_hr:'Završni ispit',passing_score:70,questions:Array.from({length:50},(_,i)=>q(i+1,'Final'))};
+          const makeClasses=phase=>defs.map(([key,total],i)=>{
+            const passed=phase==='allpassed'||(phase==='class1passed'&&i===0);
+            const unlocked=i===0||phase==='allpassed'||(phase==='class1passed'&&i===1);
+            let done=passed?total:0, approved=passed?total:0, ready=false, repeat=false;
+            if(i===0&&(phase==='ready'||phase==='readyagain')){done=total;approved=total;ready=true}
+            if(i===0&&phase==='repeat'){done=0;approved=total;repeat=true}
+            if(phase==='allpassed'){done=total;approved=total}
+            return {class_key:key,class_unlocked:unlocked,lessons_total:total,lessons_completed:done,lessons_complete:done===total,assignments_total:total,assignments_approved_count:approved,assignments_approved:approved>=total,passed_already:passed,repeat_required:repeat,ready,remaining_attempts:passed?0:3,week_days:7};
+          });
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const ctx=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,serviceWorkers:'block'});
+            const page=await ctx.newPage();
+            let phase='initial',pathCalls=0,classSubmits=0,finalSubmits=0;
+            const errors=[];page.on('pageerror',e=>errors.push(e.message));
+            await page.route('**/*',async route=>{
+              const u=new URL(route.request().url());
+              if(u.hostname==='127.0.0.1')return route.continue();
+              if(u.hostname!=='gpzcwffxnddhaeaogdyo.supabase.co')return route.fulfill({status:403,body:'blocked'});
+              const cors={'Access-Control-Allow-Origin':'*'};
+              if(u.pathname.endsWith('/rest/v1/rpc/nh7_school_path_state_v350')){
+                pathCalls++;
+                const final=phase==='allpassed'?{passed_classes:7,required_classes:7,ready:true,passed_already:false}:{passed_classes:phase==='class1passed'?1:0,required_classes:7,ready:false,passed_already:false};
+                return route.fulfill({status:200,contentType:'application/json',headers:cors,body:JSON.stringify({classes:makeClasses(phase),final})});
+              }
+              if(u.pathname.endsWith('/rest/v1/rpc/nh7_school_class_exam_session_v350'))return route.fulfill({status:200,contentType:'application/json',headers:cors,body:JSON.stringify({ready:true,exam:classExam})});
+              if(u.pathname.endsWith('/rest/v1/rpc/nh7_submit_school_class_exam_v350')){
+                classSubmits++;
+                if(phase==='ready'){phase='repeat';return route.fulfill({status:200,contentType:'application/json',headers:cors,body:JSON.stringify({passed:false,final_score_percent:55})});}
+                phase='class1passed';return route.fulfill({status:200,contentType:'application/json',headers:cors,body:JSON.stringify({passed:true,final_score_percent:90})});
+              }
+              if(u.pathname.endsWith('/rest/v1/rpc/nh7_school_final_exam_session_v350'))return route.fulfill({status:200,contentType:'application/json',headers:cors,body:JSON.stringify({ready:true,passed_classes:7,required_classes:7,exam:finalExam})});
+              if(u.pathname.endsWith('/rest/v1/rpc/nh7_submit_school_final_exam_v350')){finalSubmits++;return route.fulfill({status:200,contentType:'application/json',headers:cors,body:JSON.stringify({passed:true,final_score_percent:94})});}
+              return route.fulfill({status:200,contentType:'application/json',headers:cors,body:'{}'});
+            });
+
+            const t0=Date.now();
+            await page.goto('http://127.0.0.1:4173/qa/school-v350-harness.html',{waitUntil:'domcontentloaded',timeout:30000});
+            await page.waitForSelector('[data-school-path-v350]',{timeout:5000});
+            const bootMs=Date.now()-t0;
+            const must=async(x,m)=>{if(!(await x))throw Error(m)};
+            await must(page.locator('.nh7-school-class-v350').count().then(n=>n===7),'seven cards');
+            await must(page.locator('.nh7-school-class-v350.is-locked').count().then(n=>n===6),'six initial locks');
+            await must(page.locator('.nh7-school-guide-v350').getAttribute('open').then(v=>v===null),'guide collapsed');
+            await must(page.locator('.nh7-school-class-v350').nth(0).locator('.nh7-class-exam-v350').isDisabled(),'class exam initially locked');
+            await must(page.locator('.nh7-final-v350 button').isDisabled(),'final initially locked');
+            await page.waitForTimeout(800);if(pathCalls!==1)throw Error('unexpected initial RPC loop '+pathCalls);
+
+            await page.locator('.nh7-school-class-v350').nth(0).locator('.list-btn').click();
+            if(await page.evaluate(()=>window.__openedLesson)!=='class_01_new_creation')throw Error('existing lesson route not preserved');
+
+            for(const [lang,label] of [['fa','راهنمای مدرسه'],['hr','Vodič škole'],['en','School Guide']]){
+              await page.selectOption('#langSelect',lang);await page.locator('#langSelect').dispatchEvent('change');
+              await page.waitForFunction(expected=>document.querySelector('.nh7-school-guide-v350 summary')?.innerText.includes(expected),label,{timeout:5000});
+            }
+
+            phase='ready';await page.locator('#langSelect').dispatchEvent('change');
+            await page.waitForFunction(()=>!document.querySelector('.nh7-school-class-v350 .nh7-class-exam-v350')?.disabled,null,{timeout:5000});
+            await page.locator('.nh7-school-class-v350').nth(0).locator('.nh7-class-exam-v350').click();
+            await page.waitForSelector('.nh7-exam-shell-v350',{timeout:5000});
+            if(await page.locator('.nh7-exam-q-v350').count()!==2)throw Error('class questions missing');
+            await page.locator('input[name="nh7_class_exam_v350_0"][value="0"]').check();await page.locator('input[name="nh7_class_exam_v350_1"][value="0"]').check();
+            await page.locator('#nh7ExamSubmitV350').click();await page.waitForSelector('.nh7-result-fail-v350',{timeout:5000});
+            await page.locator('#nh7ExamReturnV350').click();await page.waitForSelector('[data-school-path-v350]',{timeout:5000});
+            if(!(await page.locator('.nh7-school-class-v350').nth(0).innerText()).includes('Repeat class'))throw Error('repeat state missing');
+            if(!String(await page.locator('.nh7-school-class-v350').nth(1).getAttribute('class')).includes('is-locked'))throw Error('class2 unlocked after fail');
+
+            phase='readyagain';await page.locator('#langSelect').dispatchEvent('change');
+            await page.waitForFunction(()=>!document.querySelector('.nh7-school-class-v350 .nh7-class-exam-v350')?.disabled,null,{timeout:5000});
+            await page.locator('.nh7-school-class-v350').nth(0).locator('.nh7-class-exam-v350').click();await page.waitForSelector('.nh7-exam-shell-v350',{timeout:5000});
+            await page.locator('input[name="nh7_class_exam_v350_0"][value="0"]').check();await page.locator('input[name="nh7_class_exam_v350_1"][value="0"]').check();
+            await page.locator('#nh7ExamSubmitV350').click();await page.waitForSelector('.nh7-result-ok-v350',{timeout:5000});
+            await page.locator('#nh7ExamReturnV350').click();await page.waitForSelector('[data-school-path-v350]',{timeout:5000});
+            if(String(await page.locator('.nh7-school-class-v350').nth(1).getAttribute('class')).includes('is-locked'))throw Error('class2 stayed locked after pass');
+
+            phase='allpassed';await page.locator('#langSelect').dispatchEvent('change');
+            await page.waitForFunction(()=>!document.querySelector('.nh7-final-v350 button')?.disabled,null,{timeout:5000});
+            if(await page.locator('.nh7-school-class-v350').nth(3).locator('.list-btn').count()!==2)throw Error('class4 missing 4A/4B');
+            await page.locator('.nh7-final-v350 button').click();await page.waitForSelector('.nh7-exam-shell-v350',{timeout:5000});
+            if(await page.locator('.nh7-exam-q-v350').count()!==50)throw Error('final not 50 questions');
+            for(let i=0;i<50;i++)await page.locator(`input[name="nh7_final_exam_v350_${i}"][value="0"]`).check();
+            await page.locator('#nh7ExamSubmitV350').click();await page.waitForSelector('.nh7-result-ok-v350',{timeout:5000});
+            if(classSubmits!==2||finalSubmits!==1)throw Error(`submission count ${classSubmits}/${finalSubmits}`);
+            if(errors.length)throw Error('page errors '+errors.join(' | '));
+            console.log(JSON.stringify({SCHOOL_V350_QA_OK:true,bootMs,pathCalls,classSubmits,finalSubmits}));
+            await page.screenshot({path:'qa-school-v350-v2.png',fullPage:true});
+            await ctx.close();
+
+            const ctx2=await browser.newContext({viewport:{width:390,height:844},serviceWorkers:'block'}),p2=await ctx2.newPage();
+            await p2.route('**/*',async r=>{const u=new URL(r.request().url());if(u.hostname==='127.0.0.1')return r.continue();if(u.pathname.endsWith('/rest/v1/rpc/nh7_school_path_state_v350'))return r.fulfill({status:404,contentType:'application/json',headers:{'Access-Control-Allow-Origin':'*'},body:JSON.stringify({code:'PGRST202',message:'function not found'})});return r.fulfill({status:403,body:'blocked'});});
+            await p2.goto('http://127.0.0.1:4173/qa/school-v350-harness.html',{waitUntil:'domcontentloaded'});await p2.waitForTimeout(1400);
+            if(await p2.locator('[data-school-path-v350]').count())throw Error('mounted without backend');
+            if(await p2.locator('.school-course-group').evaluate(el=>getComputedStyle(el).display)==='none')throw Error('fallback hid existing School');
+            if(await p2.locator('.school-course-group .list-btn').count()!==8)throw Error('fallback lost lessons');
+            await ctx2.close();await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+      - name: Upload screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: school-v350-candidate-v2
+          path: qa-school-v350-v2.png
+          retention-days: 3
