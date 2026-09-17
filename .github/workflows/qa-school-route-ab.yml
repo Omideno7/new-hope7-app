@@ -53,7 +53,6 @@ jobs:
                 if(u.pathname.endsWith('/rest/v1/school_lessons'))return route.fulfill({status:200,contentType:'application/json',headers:cors,body:JSON.stringify(lessonRows)});
                 if(u.pathname.endsWith('/rest/v1/school_exams'))return route.fulfill({status:200,contentType:'application/json',headers:cors,body:'[]'});
                 if(u.pathname.startsWith('/rest/v1/'))return route.fulfill({status:200,contentType:'application/json',headers:cors,body:'[]'});
-                if(u.pathname.startsWith('/auth/v1/'))return route.fulfill({status:200,contentType:'application/json',headers:cors,body:'{}'});
                 return route.fulfill({status:200,contentType:'application/json',headers:cors,body:'{}'});
               }
               return route.fulfill({status:403,body:'blocked'});
@@ -63,7 +62,7 @@ jobs:
             const ctx=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,serviceWorkers:'block'});
             const page=await ctx.newPage();
             await page.addInitScript(()=>{
-              localStorage.setItem('nh7_user_session_v170',JSON.stringify({access_token:'qa-access',refresh_token:'qa-refresh',user:{id:'11111111-1111-1111-1111-111111111111',email:'qa@example.com'}}));
+              localStorage.setItem('nh7_user_session_v170',JSON.stringify({access_token:'qa-access',user:{id:'11111111-1111-1111-1111-111111111111',email:'qa@example.com'}}));
               localStorage.setItem('nh7_school_access',JSON.stringify({status:'approved',email:'qa@example.com',approvedBy:'admin'}));
               localStorage.removeItem('nh7_explicit_logout');
               localStorage.setItem('nh7_lang','en');
@@ -91,7 +90,6 @@ jobs:
             const A=await prepare(browser);
             const direct=await schoolState(A.page,'direct-school');
             await A.ctx.close();
-
             const B=await prepare(browser);
             const p0=Date.now();await B.page.locator('.nav-item[data-route="plans"]').click();
             let plansOk=true;try{await B.page.waitForFunction(()=>/Spiritual Plans|Change Your Thinking|Duhovni planovi|پلن/.test(document.querySelector('#view')?.innerText||''),null,{timeout:5000})}catch(_){plansOk=false}
@@ -102,6 +100,7 @@ jobs:
             if(!direct.ok)throw new Error('DIRECT_SCHOOL_FAILED');
             if(!plansOk)throw new Error('PLANS_FAILED');
             if(!afterPlans.ok)throw new Error('PLANS_TO_SCHOOL_HANDOFF_FAILED');
+            if(direct.cards!==7||afterPlans.cards!==7)throw new Error('SEVEN_CLASS_RENDER_FAILED');
           })().catch(e=>{console.error(e);process.exit(1)});
           NODE
       - name: Upload screenshot
