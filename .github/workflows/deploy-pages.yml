@@ -55,6 +55,7 @@ jobs:
             js/nh7-registration-final-guard-v401.js
             js/nh7-push-account-bind-v361.js
             js/nh7-school-exam-v344.js
+            js/nh7-school-path-v350.js
             js/nh7-ui-stability-v329.js
             js/nh7-access-bootstrap-v230.js
             js/nh7-offline-persistence-v323.js
@@ -113,6 +114,7 @@ jobs:
           if(!/^\d+\.\d+\.\d+\.\d+$/.test(version.admin||''))fail('Invalid admin version');
           if(!index.includes(`window.NH7_VERSION = '${version.app}'`))fail('index version mismatch');
           if(!index.includes(`nh7-school-exam-v344.js?v=${version.app}`))fail('School exam hotfix is not loaded');
+          if(!index.includes('js/nh7-school-path-v350.js?v=3.5.0'))fail('School path v3.5.0 is not loaded');
           if(!appShell.includes(`index.html?v=${version.app}`))fail('native shell version mismatch');
           if(!worker.includes(version.app)||!worker.includes('classic-audio-v400'))fail('service worker version mismatch');
           if(manifest.start_url!=='./index.html')fail('manifest start_url mismatch');
@@ -127,7 +129,7 @@ jobs:
           const audioTag=`js/nh7-audio-classic-v400.js?v=${version.app}`;
           const appTag=`js/app.js?v=${version.app}`;
           const settingsTag='js/nh7-settings-controller-v403.js?v=4.0.3';
-          const deleteTag='js/nh7-delete-account-v253.js?v=2.5.3';
+          const deleteTag='js/nh7-delete-account-v253.js?v=2.5.4';
           const audioIndex=index.indexOf(audioTag),appIndex=index.indexOf(appTag),settingsIndex=index.indexOf(settingsTag),deleteIndex=index.indexOf(deleteTag);
           if(audioIndex<0||appIndex<0||settingsIndex<0||deleteIndex<0||audioIndex>appIndex||appIndex>settingsIndex||settingsIndex>deleteIndex)fail('audio/app/settings/delete load order invalid');
 
@@ -168,11 +170,11 @@ jobs:
           grep -q "nh7-audio-classic-v400.js" index.html
           grep -q "nh7-offline-data-v422.js?v=4.2.2" index.html
           grep -q "nh7-settings-controller-v403.js?v=4.0.3" index.html
-          grep -q "nh7-delete-account-v253.js?v=2.5.3" index.html
+          grep -q "nh7-delete-account-v253.js?v=2.5.4" index.html
           ! grep -q "nh7-settings-controller-v402.js" index.html
           grep -q "admin-v2.3.9-notifications-zagreb-v333.js" admin-v239-stable.html
           grep -q "admin-qna-i18n-v341.js" admin-v239-stable.html
-          required=(admin.html admin-v239.html admin-v239-stable.html app-v239.html index.html reset-password.html admin-reset-password.html version.json service-worker.js sw-navigation-fresh-v403.js sw-release-core-v403.js push/OneSignalSDKWorker.js js/nh7-registration-canonical-v353.js js/nh7-registration-final-guard-v401.js js/nh7-school-exam-v344.js js/nh7-audio-classic-v400.js js/nh7-offline-data-v422.js js/nh7-settings-controller-v403.js js/nh7-delete-account-v253.js js/nh7-admin-rbac-v350.js)
+          required=(admin.html admin-v239.html admin-v239-stable.html app-v239.html index.html reset-password.html admin-reset-password.html version.json service-worker.js sw-navigation-fresh-v403.js sw-release-core-v403.js push/OneSignalSDKWorker.js js/nh7-registration-canonical-v353.js js/nh7-registration-final-guard-v401.js js/nh7-school-exam-v344.js js/nh7-school-path-v350.js js/nh7-audio-classic-v400.js js/nh7-offline-data-v422.js js/nh7-settings-controller-v403.js js/nh7-delete-account-v253.js js/nh7-admin-rbac-v350.js)
           for file in "${required[@]}"; do test -f "$file"; done
 
       - name: Validate Edge CORS and custom authentication
