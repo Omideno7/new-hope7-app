@@ -10,15 +10,14 @@ function lang(){
   return ['fa','en','hr'].includes(x)?x:'en';
 }
 function L(fa,en,hr){return lang()==='fa'?fa:lang()==='hr'?hr:en}
-function sermonId(card){
-  const id=String(card?.dataset?.sermonCard||'');
-  return UUID.test(id)?id:'';
-}
-function isRealSermon(card){
-  return !!sermonId(card)&&!card.classList.contains('school-audio-card');
+function rawCardId(card){return String(card?.dataset?.sermonCard||'')}
+function sermonId(card){const id=rawCardId(card);return UUID.test(id)?id:''}
+function isAudioMessageCard(card){
+  const id=rawCardId(card);
+  return !!id&&!card.classList.contains('school-audio-card')&&!id.startsWith('bible-');
 }
 function mappedTitle(card){
-  const id=sermonId(card),m=window.__sermonMap?.[id]||{},key='title_'+lang();
+  const id=rawCardId(card),m=window.__sermonMap?.[id]||{},key='title_'+lang();
   return String(m?.[key]||m?.title_fa||m?.title_en||m?.title_hr||card.querySelector('.sermon-card-copy strong,strong')?.textContent||L('موعظه صوتی','Audio sermon','Audio propovijed')).trim();
 }
 function durationText(card){
@@ -78,10 +77,16 @@ function setOpen(card,open,scroll=false){
   if(open)closeOthers(card);
   card.classList.toggle('is-open',!!open);
   card.querySelector('.nh7-audio-row-v445')?.setAttribute('aria-expanded',open?'true':'false');
+  if(open){
+    setTimeout(()=>{
+      window.NH7_SERMON_SOCIAL_PATCH?.();
+      if(sermonId(card))window.NH7_SERMON_SOCIAL_REFRESH_CARD?.(card);
+    },0);
+  }
   if(open&&scroll)setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'start'}),70);
 }
 function ensure(card){
-  if(!isRealSermon(card))return;
+  if(!isAudioMessageCard(card))return;
   card.classList.add('nh7-audio-item-v445');
   let row=card.querySelector(':scope > .nh7-audio-row-v445');
   const title=mappedTitle(card),meta=durationText(card);
@@ -111,14 +116,16 @@ function ensure(card){
 function patch(){
   addStyle();
   document.querySelectorAll('[data-sermon-card]').forEach(ensure);
+  window.NH7_SERMON_SOCIAL_PATCH?.();
 }
 new MutationObserver(()=>{
   clearTimeout(timer);
   timer=setTimeout(patch,70);
 }).observe(document.documentElement,{childList:true,subtree:true});
+window.NH7_AUDIO_LIST_DETAIL_PATCH=patch;
 window.addEventListener('pageshow',patch);
 window.addEventListener('popstate',()=>setTimeout(patch,80));
 addStyle();
 patch();
-window.NH7_AUDIO_LIST_DETAIL_VERSION='4.4.5';
+window.NH7_AUDIO_LIST_DETAIL_VERSION='4.4.6';
 })();
