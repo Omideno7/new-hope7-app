@@ -1,0 +1,121 @@
+# Strong | Persian | English | Croatian | selected reference suggestions (must be corpus-verified before display)
+G979|زندگی طبیعی|Natural life|Zemaljski život|1 John 2:16; Mark 12:44; Luke 8:14
+H5397|نفس حیات|Breath of life|Dah života|Genesis 2:7; Job 32:8; Proverbs 20:27
+G4103|امین / وفادار|Faithful|Vjeran|1 Corinthians 1:9; 2 Timothy 2:13; Revelation 19:11
+G5550|زمان / مدت|Time / duration|Vrijeme / trajanje|Galatians 4:4; Acts 1:7; Hebrews 5:12
+G2540|زمان مناسب / فرصت|Time / opportunity|Vrijeme / prilika|Mark 1:15; 2 Corinthians 6:2; Ephesians 5:16
+G3568|اکنون|Now|Sada|2 Corinthians 6:2; Romans 8:1; John 4:23
+G4594|امروز|Today|Danas|Hebrews 3:7; Luke 4:21; Luke 23:43
+G1656|رحمت|Mercy|Milosrđe|Ephesians 2:4; Matthew 9:13; Titus 3:5
+G5368|دوست داشتن|To love / be fond of|Voljeti / biti privržen|John 21:15-17; John 11:3; Revelation 3:19
+G225|حقیقت|Truth|Istina|John 14:6; John 8:32; John 4:24
+G1391|جلال|Glory|Slava|John 1:14; 2 Corinthians 3:18; Romans 3:23
+G3900|لغزش / تخلف|Trespass / fall|Prijestup / pad|Ephesians 2:1; Romans 5:15; Galatians 6:1
+G458|بی‌قانونی|Lawlessness|Bezakonje|Matthew 7:23; 1 John 3:4; 2 Thessalonians 2:7
+G1994|بازگشتن|To turn back|Obratiti se|Acts 3:19; 1 Peter 2:25; James 5:19-20
+G342|نو شدن|Renewal|Obnova|Romans 12:2; Titus 3:5
+G2537|نو / تازه|New / fresh|Nov / svjež|2 Corinthians 5:17; Revelation 21:5; Ephesians 4:24
+G3501|جدید / جوان|New / young|Nov / mlad|Colossians 3:10; Luke 5:39; Hebrews 12:24
+G3339|دگرگون شدن|To be transformed|Preobraziti se|Romans 12:2; 2 Corinthians 3:18; Matthew 17:2
+G1097|شناختن / دانستن|To know / recognize|Znati / poznavati|John 17:3; Philippians 3:10; 1 John 2:3
+G1492|دانستن|To know|Znati|John 8:55; Romans 8:28; 1 John 5:20
+G991|دیدن / توجه کردن|To see / look|Vidjeti / paziti|John 5:19; Mark 4:24; 1 Corinthians 1:26
+G3708|دیدن / درک کردن|To see / perceive|Vidjeti / opaziti|John 1:18; Hebrews 11:27; Matthew 5:8
+G2334|مشاهده کردن|To observe|Promatrati|John 20:6; John 12:45; Acts 17:22
+G4907|فهم|Understanding|Razumijevanje|Colossians 1:9; 2 Timothy 2:7; Mark 12:33
+G2904|قدرت / توانایی|Might / strength|Moć / snaga|Ephesians 1:19; 1 Timothy 6:16; 1 Peter 5:11
+G2479|قوت|Strength|Snaga|Ephesians 6:10; Mark 12:30; 2 Thessalonians 1:9
+G1093|زمین|Earth / land|Zemlja|Matthew 5:5; Genesis 1:1 LXX; Revelation 21:1
+G3179|منتقل کردن|To transfer|Premjestiti|Colossians 1:13; Acts 13:22
+G2129|برکت|Blessing|Blagoslov|Ephesians 1:3; Galatians 3:14; Hebrews 6:7
+H1293|برکت|Blessing|Blagoslov|Genesis 12:2; Deuteronomy 28:2; Proverbs 10:22
+G129|خون|Blood|Krv|Hebrews 9:12; Matthew 26:28; 1 John 1:7
+H1818|خون|Blood|Krv|Leviticus 17:11; Exodus 12:13; Genesis 4:10
+G859|آمرزش / رهایی|Forgiveness / release|Oproštenje / oslobođenje|Luke 4:18; Acts 2:38; Colossians 1:14
+G5043|فرزند|Child|Dijete|John 1:12; Romans 8:16; 1 John 3:1
+G1080|زادن / زاده شدن|To beget / be born|Začeti / biti rođen|John 1:13; John 3:6; 1 John 5:1
+G509|از بالا / دوباره|From above / again|Odozgo / ponovno|John 3:3; John 3:7; James 1:17
+G1271|اندیشه / فهم|Understanding / thought|Razum / misao|Matthew 22:37; Ephesians 1:18; 1 Peter 1:13
+G5427|طرز فکر|Mindset|Način mišljenja|Romans 8:6-7
+G3309|نگران شدن / توجه داشتن|To worry / care for|Brinuti se|Matthew 6:34; Philippians 4:6; 1 Peter 5:7
+G5401|ترس|Fear|Strah|1 John 4:18; Proverbs 1:7 LXX; Acts 9:31
+G1167|بزدلی|Cowardice|Kukavičluk|2 Timothy 1:7
+G5281|پایداری / صبر|Endurance|Postojanost|James 1:3-4; Romans 5:3-4; Hebrews 12:1
+G189|شنیدن / گزارش|Hearing / report|Slušanje / izvješće|Romans 10:17; Galatians 3:2; Hebrews 4:2
+G191|شنیدن|To hear|Čuti|Matthew 11:15; John 10:27; Revelation 2:7
+G5218|اطاعت|Obedience|Poslušnost|Romans 1:5; 2 Corinthians 10:5; 1 Peter 1:2
+G5545|مسح|Anointing|Pomazanje|1 John 2:20; 1 John 2:27
+H4886|مسح کردن|To anoint|Pomazati|1 Samuel 16:13; Exodus 30:30; Isaiah 61:1
+H3442|یشوع|Jeshua / Yeshua|Ješua|Nehemiah 8:17; Isaiah 12:2; Matthew 1:21
+G2316|خدا|God|Bog|John 1:1; John 4:24; 1 John 4:8
+G5486|عطا / عطای فیض|Gift of grace|Dar milosti|Romans 12:6; 1 Corinthians 12:4
+G1435|هدیه / قربانی|Gift / offering|Dar / prinos|Matthew 5:23; Ephesians 2:8
+G1431|عطای رایگان|Free gift|Besplatan dar|John 4:10; Acts 2:38
+G1248|خدمت|Ministry / service|Služba|Acts 6:4; 2 Corinthians 5:18
+G2099|مبشر|Evangelist|Evanđelist|Ephesians 4:11; 2 Timothy 4:5
+G3101|شاگرد|Disciple|Učenik|Matthew 28:19; Luke 14:27
+G4335|دعا|Prayer|Molitva|Acts 2:42; Philippians 4:6
+G1162|التماس / درخواست|Supplication|Prošnja|Philippians 4:6; 1 Timothy 2:1
+G1783|درخواست / شفاعت|Petition / intercession|Molba / zagovor|1 Timothy 2:1; 1 Timothy 4:5
+G2169|شکرگزاری|Thanksgiving|Zahvaljivanje|Philippians 4:6; Colossians 4:2
+G2999|خدمت پرستشی|Sacred service / worship|Sveta služba|Romans 12:1; Hebrews 9:1
+G3670|اقرار / اعتراف کردن|Confess / acknowledge|Ispovjediti / priznati|Romans 10:9; 1 John 1:9
+G2379|مذبح|Altar|Žrtvenik|Hebrews 13:10; Matthew 5:23
+G3485|معبد / قدس|Temple / sanctuary|Hram / svetište|1 Corinthians 6:19; Ephesians 2:21
+G2411|محوطهٔ معبد|Temple complex|Hramski prostor|Matthew 21:12; Acts 3:1
+G749|کاهن اعظم|High priest|Veliki svećenik|Hebrews 4:14; Hebrews 7:26
+G3772|آسمان|Heaven / sky|Nebo|Matthew 6:10; Ephesians 1:3
+G2937|آفرینش / مخلوق|Creation / creature|Stvaranje / stvorenje|2 Corinthians 5:17; Romans 8:19
+G1504|تصویر|Image|Slika|Colossians 1:15; Romans 8:29
+G3669|شباهت|Likeness|Sličnost|James 3:9; Genesis 1:26
+G4893|وجدان|Conscience|Savjest|Romans 2:15; Hebrews 9:14
+G2307|اراده|Will|Volja|Romans 12:2; Matthew 6:10
+G1013|قصد / تصمیم|Purpose / intention|Namjera|Acts 27:43; Romans 9:19
+G1939|میل شدید / شهوت|Desire / lust|Želja / požuda|Galatians 5:16; 1 John 2:16
+G3806|شور نفسانی|Passion|Strast|Colossians 3:5; 1 Thessalonians 4:5
+G3820|کهنه / قدیمی|Old|Star|Ephesians 4:22; Colossians 3:9
+G659|کنار گذاشتن|Put off|Odložiti|Ephesians 4:22; Hebrews 12:1
+G1746|پوشیدن|Put on|Obući|Romans 13:14; Ephesians 6:11
+G4043|راه رفتن / زیستن|Walk / live|Hodati / živjeti|Galatians 5:16; Ephesians 5:2
+G3598|راه|Way|Put|John 14:6; Acts 9:2
+H571|حقیقت / وفاداری|Truth / faithfulness|Istina / vjernost|Psalm 119:160; Exodus 34:6
+G2917|حکم / داوری صادرشده|Judgment / verdict|Presuda|Romans 8:1; 1 Corinthians 11:29
+H5545|آمرزیدن|Forgive|Oprostiti|Psalm 103:3; 1 Kings 8:30
+G2513|پاک|Clean / pure|Čist|Matthew 5:8; John 15:3
+G2511|پاک کردن|Cleanse|Očistiti|1 John 1:7; John 15:2
+G37|تقدیس کردن|Sanctify|Posvetiti|John 17:17; 1 Thessalonians 5:23
+G3083|فدیه|Ransom|Otkupnina|Mark 10:45; Matthew 20:28
+G487|فدیه|Ransom|Otkupnina|1 Timothy 2:6
+G2644|آشتی دادن|Reconcile|Pomiriti|2 Corinthians 5:18; Romans 5:10
+G5206|فرزندخواندگی / پسرخواندگی|Adoption / sonship|Posinjenje|Romans 8:15; Galatians 4:5
+G2817|میراث|Inheritance|Baština|Ephesians 1:11; Colossians 1:12
+G1860|وعده|Promise|Obećanje|Romans 4:20; Galatians 3:14
+G4972|مُهر کردن|Seal|Zapečatiti|Ephesians 1:13; Ephesians 4:30
+G728|بیعانه / ضمانت|Pledge / guarantee|Zalog / jamstvo|Ephesians 1:14; 2 Corinthians 1:22
+G2015|ظهور|Appearing|Pojavljenje|2 Timothy 4:8; Titus 2:13
+G908|تعمید|Baptism|Krštenje|Romans 6:4; Matthew 28:19
+G907|تعمید دادن / غوطه‌ور کردن|Baptize / immerse|Krstiti / uroniti|Matthew 3:11; Acts 2:38
+G3140|شهادت دادن|Testify|Svjedočiti|John 1:7; John 15:26
+G2784|اعلام کردن / موعظه کردن|Proclaim / preach|Propovijedati|Mark 1:14; 2 Timothy 4:2
+G2782|اعلان / پیام موعظه|Proclamation / preaching|Navještaj|1 Corinthians 1:21; Romans 16:25
+G1321|تعلیم دادن|Teach|Poučavati|Matthew 28:20; Colossians 3:16
+G3870|تشویق / تسلی / ترغیب|Encourage / exhort / comfort|Ohrabriti / potaknuti|1 Thessalonians 5:11; 2 Corinthians 1:4
+G3619|بنا / بنای روحانی|Edification / building|Izgradnja|Ephesians 4:12; 1 Corinthians 14:26
+G3618|بنا کردن|Build up|Izgrađivati|1 Corinthians 8:1; Jude 1:20
+G2590|ثمر|Fruit|Plod|Galatians 5:22; John 15:8
+G288|تاک|Vine|Trs|John 15:1; James 3:12
+G2814|شاخه|Branch|Loza / grana|John 15:2; John 15:5
+G3306|ماندن / ساکن بودن|Abide / remain|Ostati / prebivati|John 15:4; 1 John 2:27
+G2508|پاک‌سازی / هرس کردن|Prune / cleanse|Obrezivati / čistiti|John 15:2
+G4137|پر کردن / کامل کردن|Fill / fulfill|Ispuniti|Matthew 5:17; Ephesians 5:18
+G4129|افزودن / زیاد کردن|Multiply / increase|Umnožiti|Acts 6:7; 2 Peter 1:2
+G838|رشد|Growth|Rast|Colossians 2:19; Ephesians 4:16
+G4687|کاشتن|Sow|Sijati|Mark 4:14; Galatians 6:7
+G4690|بذر / نسل|Seed / offspring|Sjeme / potomstvo|Galatians 3:16; 1 Peter 1:23
+G2325|درو کردن|Reap|Žeti|Galatians 6:7-9; John 4:36
+G2592|ثمر آوردن|Bear fruit|Donositi plod|Colossians 1:10; Mark 4:20
+G228|حقیقی / اصیل|True / genuine|Istinit / pravi|John 15:1; John 17:3
+G5571|دروغین|False / lying|Lažan|John 8:44; Revelation 21:8
+G4105|گمراه کردن|Deceive / lead astray|Zavesti|Matthew 24:4; Galatians 6:7
+G1657|آزادی|Freedom / liberty|Sloboda|Galatians 5:1; 2 Corinthians 3:17
+G1659|آزاد کردن|Set free|Osloboditi|John 8:32; Romans 8:2
