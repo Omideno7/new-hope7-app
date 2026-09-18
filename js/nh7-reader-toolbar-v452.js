@@ -5,7 +5,8 @@ const APP_URL='https://omideno7.github.io/new-hope7-app/app/';
 const lang=()=>{const v=localStorage.getItem('nh7_lang')||'en';return ['fa','en','hr'].includes(v)?v:'en'};
 const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
 const selected=()=>window.NH7BibleBatchV230?.selected;
-const normalizeDigits=v=>String(v||'').replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));\nconst localRef=node=>{
+const normalizeDigits=v=>String(v||'').replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+const localRef=node=>{
  const raw=node.querySelector('[data-bookmark]')?.dataset.bookmark||node.querySelector('[data-share-verse]')?.dataset.shareVerse||'';
  const title=node.closest('.card')?.querySelector('h2')?.textContent?.trim()||'';
  const verse=node.querySelector('.num')?.textContent?.trim()||'';
