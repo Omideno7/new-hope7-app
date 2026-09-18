@@ -1,0 +1,59 @@
+name: Reader Wave v452 QA
+on:
+  push:
+    branches: [feature/bible-toolbar-notes-wave-20260918]
+permissions:
+  contents: read
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Static safety checks
+        run: |
+          node --check js/app.js
+          node --check js/nh7-app-enhancements-v230.js
+          node --check js/nh7-reader-toolbar-v452.js
+          node --check js/nh7-my-notes-categories-v452.js
+          python - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('data/bible/keywords/bible_keywords_v450.json');d=json.loads(p.read_text())
+          assert all(len(d['languages'][x])==2500 for x in ['fa','en','hr'])
+          assert 'data/apocrypha/runtime/apocrypha-browser-19.preview.json' in pathlib.Path('js/nh7-apocrypha-actions-v393.js').read_text()
+          PY
+      - name: Install browser
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Browser QA with external services blocked
+        run: |
+          python - <<'PY'
+          import threading,http.server,socketserver,json
+          from playwright.sync_api import sync_playwright,expect
+          class H(http.server.SimpleHTTPRequestHandler):
+            def log_message(self,*a):pass
+          srv=socketserver.TCPServer(('127.0.0.1',0),H);threading.Thread(target=srv.serve_forever,daemon=True).start()
+          base=f'http://127.0.0.1:{srv.server_address[1]}'
+          with sync_playwright() as pw:
+            b=pw.chromium.launch();c=b.new_context(viewport={'width':390,'height':844},service_workers='block')
+            c.route('**/*',lambda r:r.continue_() if r.request.url.startswith(base) else r.fulfill(status=200,content_type='application/javascript',body=''))
+            p=c.new_page();errs=[];p.on('pageerror',lambda e:errs.append(str(e)));p.goto(base+'/index.html',wait_until='domcontentloaded');p.locator('#amenButton').click()
+            for language in ['en','fa','hr']:
+              p.select_option('#langSelect',language);p.locator('[data-route="bible"]').click();p.locator('[data-go="bible"][data-params=\'{"section":"written"}\']').click();p.locator('[data-go="bible"][data-params*="NT"]').click();p.locator('[data-go="bible"][data-params*="JHN"]').click();p.locator('[data-go="bible"][data-params*="chapter"][data-params*="3"]').click()
+              expect(p.locator('#v-16')).to_be_visible();p.locator('#v-16 .verse-text').click();expect(p.locator('#v-16 .verse-tools')).to_be_visible();expect(p.locator('#v-16 [data-nh7-copy-selected]')).to_be_visible()
+              p.locator('#v-17 .verse-text').click();assert p.evaluate('NH7BibleBatchV230.selected.size')==2
+              p.locator('#v-16 .verse-text').click();assert p.evaluate('NH7BibleBatchV230.selected.size')==1
+              p.locator('#v-16 .verse-text').click();assert p.evaluate('NH7BibleBatchV230.selected.size')==2
+              p.locator('#v-16 [data-clear-bible-selection]').click();assert p.evaluate('NH7BibleBatchV230.selected.size')==1
+              text=p.evaluate('NH7ReaderToolbarV452.shareText()');assert 'New Hope 7' in text and 'new-hope7-app/app/' in text
+              box=p.locator('#v-17 .verse-tools').bounding_box();assert box and box['height']<130 and box['x']>=0 and box['x']+box['width']<=391,box
+              p.evaluate('NH7BibleBatchV230.clearSelection()')
+            assert not errs,errs
+            b.close()
+          srv.shutdown()
+          PY
