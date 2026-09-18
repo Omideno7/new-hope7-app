@@ -11,6 +11,12 @@ html[data-nh7-studio-font] #view p,html[data-nh7-studio-font] #view small,html[d
 '''
 edit('css/nh7-theme-studio-v453.css',lambda s:s if 'Personal fonts must reach legacy Persian' in s else s+font_css)
 
+compact_css='''\n/* v453 compact study shortcut: share the summary row instead of adding a row. */
+#nh7ReaderToolbar452 .nh7-reader-selection-summary452:has(.nh7-reader-study453){display:flex;align-items:center;justify-content:space-between;gap:8px}
+#nh7ReaderToolbar452 .nh7-reader-selection-summary452 .nh7-reader-study453{width:auto;flex:0 0 auto;margin:0;min-height:28px;padding:3px 9px}
+'''
+edit('css/nh7-study-reader-v453.css',lambda s:s if 'v453 compact study shortcut:' in s else s+compact_css)
+
 def theme(s):
     s=s.replace("preset:LABELS[value.preset]?value.preset:'custom',fa:FONT_FA[value.fa]?value.fa:'system',latin:FONT_LATIN[value.latin]?value.latin:'system'","preset:Object.hasOwn(LABELS,value.preset)?value.preset:'custom',fa:Object.hasOwn(FONT_FA,value.fa)?value.fa:'system',latin:Object.hasOwn(FONT_LATIN,value.latin)?value.latin:'system'")
     s=s.replace("x.filter(i=>typeof i.name==='string'","x.filter(i=>i&&typeof i==='object'&&typeof i.id==='string'&&typeof i.name==='string'")
@@ -23,6 +29,8 @@ def lexicon(s):
     if 'Keep the new lexical heading visible' not in s:
         assert marker in s
         s=s.replace(marker," // Keep the new lexical heading visible after opening a long list or related entry.\n window.scrollTo({top:0,behavior:'instant'});document.getElementById('view').scrollTop=0;\n"+marker,1)
+    s=s.replace("bar.prepend(button);button.onclick", "(bar.querySelector('.nh7-reader-selection-summary452')||bar).appendChild(button);button.onclick")
+    s=s.replace("const text=L('زبان اصلیِ آیهٔ منتخب','Original words in selected verse','Izvorne riječi u odabranom retku');if(button.textContent!==text)button.textContent=text;", "const text=L('زبان اصلی','Original words','Izvorne riječi');button.setAttribute('aria-label',L('زبان اصلیِ نخستین آیهٔ منتخب','Original words in the first selected verse','Izvorne riječi u prvom odabranom retku'));if(button.textContent!==text)button.textContent=text;")
     return s
 edit('js/nh7-original-language-v453.js',lexicon)
 
@@ -57,4 +65,4 @@ def test(s):
         s=s.replace("'error':str(error),'checks'","'error':repr(error),'traceback':__import__('traceback').format_exc(),'checks'")
     return s
 edit('scripts/study-v453/browser.py',test)
-print('Typography checked; real inline text clicks now retain all Playwright actionability checks.')
+print('Compact toolbar, typography and real inline text actionability checked.')
