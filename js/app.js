@@ -2226,24 +2226,21 @@ function nh7BindAppearanceSettings(){
 }
 try{matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{if(nh7UiPrefs().theme==='system')nh7UiApply()})}catch(e){}
 nh7UiApply();
-window.NH7_UI_PREFS={apply:nh7UiApply,get:nh7UiPrefs,version:'4.3.0'};
+window.NH7_UI_PREFS={apply:nh7UiApply,get:nh7UiPrefs,version:'4.3.1'};
 
 async function settings(){
-  const perm=await notificationPermissionStatus();
-  const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');
-  const schedules=await fetchNotificationSchedules();
-  const offlineSummary=await offlineStorageSummary();
+  const loadingText=state.lang==='fa'?'در حال بررسی…':state.lang==='hr'?'Provjera…':'Checking…';
   view.innerHTML=card(tr('settings'),`
-    <div class="badge" id="nh7SettingsPreviewBadge">${state.lang==='fa'?'تست تنظیمات 4.3.0':state.lang==='hr'?'Test postavki 4.3.0':'Settings Preview 4.3.0'}</div>
+    <div class="badge" id="nh7SettingsPreviewBadge">${state.lang==='fa'?'تست تنظیمات 4.3.1':state.lang==='hr'?'Test postavki 4.3.1':'Settings Preview 4.3.1'}</div>
     <h3>${tr('language')}</h3>
     <select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select>
     ${nh7AppearanceSettingsHtml()}
     <h3>${tr('notifications')}</h3>
-    <p>${status}</p>
+    <p id="settingsNotificationStatus">${html(loadingText)}</p>
     <button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button>
-    <div class="notice">${schedules.map(x=>`<p><strong>${html(scheduleText(x,'title'))}</strong> — ${html(x.time_value||'')} ${x.timezone_mode&&x.timezone_mode!=='local'?`(${html(x.timezone_mode)})`:''}</p>`).join('')}</div>
+    <div class="notice" id="settingsSchedules"><p class="muted">${html(loadingText)}</p></div>
     <h3>${state.lang==='fa'?'استفاده آفلاین کامل':state.lang==='hr'?'Potpuni izvanmrežni način':'Full offline access'}</h3>
-    <p>${html(offlineSummary)}</p>
+    <p id="settingsOfflineSummary">${html(loadingText)}</p>
     <p class="muted">${state.lang==='fa'?'محتوای اصلی شامل کتاب‌مقدس، پیام‌های روزانه، دوره شکرگزاری، معرفی کلیسا و نسخه داخلی مدرسه است. فایل‌های صوتی و PDF را از کنار همان محتوا جداگانه دانلود کنید.':state.lang==='hr'?'Osnovni sadržaj uključuje Bibliju, dnevni sadržaj, zahvalnost i školu. Audio i PDF datoteke preuzmite uz svaki sadržaj.':'Core content includes the Bible, daily content, gratitude, church information and the built-in school. Download audio and PDF files individually beside each item.'}</p>
     <div class="button-row">
       <button class="primary-btn" id="prepareOffline">${state.lang==='fa'?'آماده‌سازی محتوای اصلی برای آفلاین':state.lang==='hr'?'Pripremi osnovni sadržaj offline':'Prepare core content offline'}</button>
@@ -2253,7 +2250,7 @@ async function settings(){
     <p>${cloudStatusText()}</p>
     <button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button>
     <h3>${tr('version')}</h3>
-    <p>New Hope 7 v2.3.9.50 · Settings Preview 4.3.0</p>
+    <p>New Hope 7 v2.3.9.50 · Settings Preview 4.3.1</p>
     <button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>
   `);
   $('#settingsLang').value=state.lang;
@@ -2280,6 +2277,21 @@ async function settings(){
     alert(cloudStatusText());
     render('settings',{},true);
   });
+
+  Promise.allSettled([
+    notificationPermissionStatus(),
+    fetchNotificationSchedules(),
+    offlineStorageSummary()
+  ]).then(results=>{
+    if(!document.getElementById('settingsLang'))return;
+    const perm=results[0].status==='fulfilled'?results[0].value:'default';
+    const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');
+    const schedules=results[1].status==='fulfilled'&&Array.isArray(results[1].value)?results[1].value:[];
+    const offlineSummary=results[2].status==='fulfilled'?results[2].value:(state.lang==='fa'?'وضعیت آفلاین در دسترس نیست.':state.lang==='hr'?'Offline status nije dostupan.':'Offline status is unavailable.');
+    const n=$('#settingsNotificationStatus');if(n)n.textContent=status;
+    const s=$('#settingsSchedules');if(s)s.innerHTML=schedules.length?schedules.map(x=>`<p><strong>${html(scheduleText(x,'title'))}</strong> — ${html(x.time_value||'')} ${x.timezone_mode&&x.timezone_mode!=='local'?`(${html(x.timezone_mode)})`:''}</p>`).join(''):`<p class="muted">${html(state.lang==='fa'?'برنامه‌ای ثبت نشده است.':state.lang==='hr'?'Nema zakazanih stavki.':'No schedules configured.')}</p>`;
+    const o=$('#settingsOfflineSummary');if(o)o.textContent=String(offlineSummary||'');
+  }).catch(()=>{});
 }
 
 async function enableNotifications(){
