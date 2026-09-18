@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+<title id="title">New Hope 7</title>
+<desc id="desc">New Hope 7 church logo: blue cross with a green growing branch and leaf on a pure white background.</desc>
+<rect width="1024" height="1024" fill="#ffffff"/>
+<!-- Cross -->
+<path d="M238 170H472V330H626V516H472V880H284V516H126V330H238Z" fill="#082f88"/>
+<!-- White separation behind the growing branch -->
+<path d="M500 118 C480 258 410 354 378 470 C340 607 366 735 468 864" fill="none" stroke="#ffffff" stroke-width="102" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- Green growing branch -->
+<path d="M500 118 C480 258 410 354 378 470 C340 607 366 735 468 864" fill="none" stroke="#00cf16" stroke-width="78" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- Leaf -->
+<path d="M420 536 C464 436 520 374 612 334 C700 296 784 300 862 244 C872 370 850 466 764 516 C688 560 600 534 522 554 C478 566 447 584 410 620 C409 587 412 560 420 536Z" fill="#00cf16"/>
+<!-- Leaf highlight -->
+<path d="M526 502 C574 426 648 379 753 354" fill="none" stroke="#ffffff" stroke-width="18" stroke-linecap="round"/>
+<!-- Wordmark -->
+<text x="520" y="650" fill="#082f88" font-family="Georgia, 'Times New Roman', serif" font-size="92" font-weight="700">New Hope</text>
+<text x="640" y="825" fill="#00cf16" font-family="Georgia, 'Times New Roman', serif" font-size="210" font-weight="700">7</text>
+</svg>
