@@ -92,6 +92,7 @@ function enhanceVerses(root=document){
   root.querySelectorAll?.('.nh7-verse-select-v230').forEach(button=>button.remove());
   removeAddedToolbar();
 }
+function deselectVerse(node){if(!node)return;toggleVerse(node,false);node.classList.remove('verse-selected');node.querySelectorAll('.verse-tools,.verse-note-box,.highlight-palette').forEach(n=>n.classList.add('hidden'));}
 function clearSelection(){
   selected.forEach(v=>{v.node?.classList.remove('nh7-verse-selected-v230');v.node?.setAttribute('aria-selected','false')});
   selected.clear();
@@ -100,7 +101,7 @@ function clearSelection(){
 }
 function readState(key){try{return JSON.parse(localStorage.getItem(key)||'{}')}catch(_){return{}}}
 function writeState(key,value){localStorage.setItem(key,JSON.stringify(value))}
-function queueBatch(payload){let q=[];try{q=JSON.parse(localStorage.getItem(QUEUE_KEY)||'[]')}catch(_){};q.push(payload);localStorage.setItem(QUEUE_KEY,JSON.stringify(q.slice(-50)))}
+function queueBatch(payload){let q=[];try{q=JSON.parse(localStorage.getItem(QUEUE_KEY)||'[]')}catch(_){};q.push(payload);localStorage.setItem(QUEUE_KEY,JSON.stringify(q))}
 async function syncPayload(payload){if(!access?.token?.()){queueBatch(payload);return false}try{await access.edge('nh7-content-access',{action:'save_bible_batch',items:payload.items,batch_id:payload.batch_id,language:lang()},true);return true}catch(error){console.warn('Bible batch cloud sync',error);queueBatch(payload);return false}}
 async function flushQueue(){if(!navigator.onLine||!access?.token?.())return;let q=[];try{q=JSON.parse(localStorage.getItem(QUEUE_KEY)||'[]')}catch(_){};if(!q.length)return;const left=[];for(const item of q){try{await access.edge('nh7-content-access',Object.assign({action:'save_bible_batch'},item),true)}catch(_){left.push(item)}}localStorage.setItem(QUEUE_KEY,JSON.stringify(left))}
 function colorName(value){
@@ -133,7 +134,7 @@ async function batchApply(action,value=''){
       if(value==='remove'){st.highlight=false;delete st.highlightColor;info.node.classList.remove('highlighted')}
       else{const color=colorName(value);st.highlight=true;st.highlightColor=color;info.node.classList.add('highlighted','highlight-'+color)}
     }
-    if(action==='note'){st.note=String(value).slice(0,1000);ensureNoteMarker(info,st.note)}
+    if(action==='note'){st.note=String(typeof value==='function'?value(st.note||'',info):value).slice(0,1000);ensureNoteMarker(info,st.note)}
     st.updatedAt=new Date().toISOString();st.batchId=batchId;writeState(info.key,st);
     items.push({verse_key:info.key,verse_ref:info.ref,verse_text:info.text,saved:!!st.saved,highlight_color:st.highlight?String(st.highlightColor||'yellow'):'',note:String(st.note||'')});
   });
