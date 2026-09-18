@@ -1,0 +1,10 @@
+/* New Hope 7 v4.5.2 compact reader actions */
+.reader .reader-verse .verse-tools:not(.hidden){display:flex;align-items:center;gap:5px;flex-wrap:wrap;width:max-content;max-width:min(100%,calc(100vw - 28px));margin:7px 0;padding:6px;border-radius:13px;background:var(--card,#fff);box-shadow:0 5px 18px rgba(15,40,65,.13);box-sizing:border-box}
+.reader .verse-tools>.secondary-btn,.reader .verse-tools>.highlight-control>.secondary-btn{min-height:36px;padding:5px 7px;font-size:.75rem;line-height:1.25;border-radius:9px}
+.reader .verse-tools .nh7-bible-cancel{min-width:34px;font-size:1rem}
+.reader .nh7-verse-selected-v230{box-shadow:inset 0 -3px 0 #1976d2!important}
+.nh7-reader-toast-v452{position:fixed;z-index:2147482000;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translate(-50%,12px);opacity:0;pointer-events:none;padding:8px 14px;border-radius:999px;background:rgba(15,35,55,.92);color:#fff;font-weight:700;font-size:.82rem;transition:.18s ease}
+.nh7-reader-toast-v452.show{opacity:1;transform:translate(-50%,0)}
+html[dir="rtl"] .reader .reader-verse .verse-tools{direction:rtl}
+@media(max-width:390px){.reader .verse-tools>.secondary-btn,.reader .verse-tools>.highlight-control>.secondary-btn{font-size:.7rem;padding:5px 6px}}
+@media(prefers-reduced-motion:reduce){.nh7-reader-toast-v452{transition:none}}
