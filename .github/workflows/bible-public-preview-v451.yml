@@ -1,0 +1,81 @@
+name: Bible Public Preview Verification v451
+on:
+  push:
+    branches: [feature/bible-keywords-v450-preview-20260918]
+    paths: ['.github/workflows/bible-public-preview-v451.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/feature/bible-keywords-v450-preview-20260918'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned browser
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Verify real Preview URL
+        env:
+          BIBLE_PREVIEW_URL: https://raw.githack.com/Omideno7/new-hope7-app/0ccca98240f64cff5b2d4d4e18f962b639431709/bible-preview.html
+        run: |
+          python - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          from urllib.parse import urlparse
+          from playwright.sync_api import sync_playwright, expect
+          url=os.environ['BIBLE_PREVIEW_URL']
+          parsed=urlparse(url)
+          assert parsed.scheme=='https' and parsed.hostname in {'raw.githack.com','rawcdn.githack.com'}
+          assert re.fullmatch(r'/Omideno7/new-hope7-app/[a-f0-9]{40}/bible-preview\.html',parsed.path)
+          output=Path('qa-public');output.mkdir(exist_ok=True)
+          errors=[];requests=[]
+          with sync_playwright() as pw:
+              browser=pw.chromium.launch()
+              context=browser.new_context(viewport={'width':390,'height':844})
+              page=context.new_page();page.set_default_timeout(60000)
+              page.on('pageerror',lambda e:errors.append(str(e)))
+              page.on('request',lambda r:requests.append({'url':r.url,'method':r.method}))
+              try:
+                  response=page.goto(url,wait_until='domcontentloaded',timeout=90000)
+                  assert response and response.status==200
+                  expect(page.locator('#amenButton')).to_be_visible();page.locator('#amenButton').click()
+                  assert page.evaluate('window.NH7_BIBLE_PREVIEW') is True
+                  page.locator('[data-route="bible"]').click()
+                  page.locator('[data-go="bible"][data-params=\'{"section":"written"}\']').click()
+                  page.locator('[data-go="bible"][data-params*="keywords"]').click()
+                  expect(page.locator('[data-bible-keyword]')).to_have_count(120)
+                  page.locator('#bibleKeywordFilter').fill('محبت')
+                  page.locator('[data-bible-keyword="محبت"]').click()
+                  expect(page.locator('[data-bible-hit]').first).to_be_visible()
+                  assert page.locator('[data-bible-hit]').count()>0
+                  page.locator('[data-bible-hit]').first.click()
+                  expect(page.locator('.reader-verse.saved-focus')).to_be_visible()
+                  page.screenshot(path=str(output/'public-preview-mobile.png'))
+                  assert not errors,errors
+                  external=[r for r in requests if urlparse(r['url']).hostname!=parsed.hostname]
+                  assert not external,external
+                  assert all(r['method'] in ['GET','HEAD'] for r in requests)
+                  assert page.evaluate('navigator.serviceWorker.getRegistrations().then(r=>r.length)')==0
+                  report={'status':'passed','url':url,'httpStatus':response.status,'browser':'Chromium','viewport':'390x844','checks':['Immutable URL returns HTTP 200','Isolated Preview initialized','120 keyword buttons loaded','Persian محبت search returns verses','Result opens exact chapter and focuses verse','No external requests or writes','No page errors','No service worker registered'],'pageErrors':errors,'requests':requests}
+                  (output/'public-preview-report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
+                  print(json.dumps(report,ensure_ascii=False,indent=2))
+              except Exception as error:
+                  page.screenshot(path=str(output/'failure.png'),full_page=True)
+                  (output/'failure.json').write_text(json.dumps({'error':str(error),'url':url,'pageErrors':errors,'requests':requests,'body':page.locator('body').inner_text()[:6000]},ensure_ascii=False,indent=2))
+                  raise
+              finally:
+                  context.close();browser.close()
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bible-public-preview-verification-v451
+          path: qa-public/
+          retention-days: 7
