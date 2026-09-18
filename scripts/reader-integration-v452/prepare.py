@@ -18,7 +18,7 @@ lazy_paths=re.findall(r"'([^']+)'",lazy[1]);assert len(lazy_paths)==8
 p=Path('sw-release-core-v403.js');text=original(BASE,str(p)).decode()
 text=text.replace("'4.5.1-bible-keywords'","'4.5.2-reader'").replace("'nh7-release-core-v451-bible-keywords'","'nh7-release-core-v452-reader'")
 code_paths=[name for name in RUNTIME if name.endswith(('.js','.css'))]+['js/nh7-apocrypha-v270.js']
-extra=['./'+x for x in code_paths+lazy_paths if "'./"+x+"'" not in text]
+extra=['./'+x for x in dict.fromkeys(code_paths+lazy_paths) if "'./"+x+"'" not in text]
 assert len(extra)==len(set(extra));marker='\n];';assert text.count(marker)==1
 text=text.replace(marker,',\n  '+','.join(repr(x) for x in extra)+marker,1)
 # The legacy worker ignores query strings. Prefer the new release's exact reader
