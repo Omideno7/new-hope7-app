@@ -4,4 +4,4 @@ importScripts('./sw-navigation-fresh-v403.js?v=4.0.3');
 importScripts('./app/download-worker-v1.js?v=20260914.3');
 importScripts('./sw-offline-v329.js?v=2.3.9.50-classic-audio-v400');
 importScripts('./sw-offline-path-fix-v329.js?v=2.3.9.50');
-importScripts('./sw-release-core-v403.js?v=4.2.2');
+importScripts('./sw-release-core-v403.js?v=4.4.2');
