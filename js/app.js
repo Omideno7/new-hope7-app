@@ -2224,6 +2224,7 @@ async function settings(){
   const schedules=await fetchNotificationSchedules();
   const offlineSummary=await offlineStorageSummary();
   view.innerHTML=card(tr('settings'),`
+    <div class="badge" id="nh7SettingsPreviewBadge">${state.lang==='fa'?'تست تنظیمات 4.2.8':state.lang==='hr'?'Test postavki 4.2.8':'Settings Preview 4.2.8'}</div>
     <h3>${tr('language')}</h3>
     <select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select>
     ${nh7AppearanceSettingsHtml()}
