@@ -2,9 +2,9 @@ name: Study and Theme Studio v453 QA
 on:
   push:
     branches: [feature/reader-lexicon-theme-v453-20260919]
-    paths: ['.github/workflows/study-v453-qa.yml']
+    paths: ['.github/workflows/study-v453-qa.yml','scripts/study-v453/**','js/nh7-theme-studio-v453.js','js/nh7-original-language-v453.js','js/nh7-study-preview-guard-v453.js','css/nh7-theme-studio-v453.css','css/nh7-study-reader-v453.css']
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: study-theme-v453
   cancel-in-progress: true
@@ -12,49 +12,95 @@ jobs:
   verify:
     if: github.ref == 'refs/heads/feature/reader-lexicon-theme-v453-20260919'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     env:
       MAIN_BASE: 259280fe00a7dbc7359c24f997338724961f0c08
+      FEATURE: feature/reader-lexicon-theme-v453-20260919
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Prepare isolated source
+      - name: Prepare isolated source and validate idempotence
         run: |
+          set -euo pipefail
           mkdir -p qa-study453
           git ls-remote origin refs/heads/main > qa-study453/main-before.txt
           test "$(cut -f1 qa-study453/main-before.txt)" = "$MAIN_BASE"
           python scripts/study-v453/prepare.py
-          node --check js/app.js
-          node --check js/nh7-reader-toolbar-v452.js
-          node --check js/nh7-apocrypha-preview-v240.js
-          node --check js/nh7-theme-studio-v453.js
-          node --check js/nh7-original-language-v453.js
+          python scripts/study-v453/finalize.py
+          python scripts/study-v453/build_preview.py
+          find js css -type f -print0 | sort -z | xargs -0 sha256sum > qa-study453/before.txt
+          sha256sum index.html study-preview.html >> qa-study453/before.txt
+          python scripts/study-v453/prepare.py
+          python scripts/study-v453/finalize.py
+          python scripts/study-v453/build_preview.py
+          find js css -type f -print0 | sort -z | xargs -0 sha256sum > qa-study453/after.txt
+          sha256sum index.html study-preview.html >> qa-study453/after.txt
+          diff qa-study453/before.txt qa-study453/after.txt
+          for file in js/app.js js/nh7-reader-toolbar-v452.js js/nh7-apocrypha-preview-v240.js js/nh7-theme-studio-v453.js js/nh7-original-language-v453.js js/nh7-study-preview-app-v453.js js/nh7-study-preview-guard-v453.js; do node --check "$file"; done
           python -m py_compile scripts/study-v453/*.py
-          git diff --exit-code "$MAIN_BASE" -- data/bible data/apocrypha supabase version.json manifest.json
-      - name: Build pinned glossary and locally bundled font assets
+          git diff --check
+          git diff --exit-code "$MAIN_BASE" -- data/bible data/apocrypha supabase version.json manifest.json service-worker.js sw-release-core-v403.js
+      - name: Build pinned glossary and local font assets
         run: |
           python -m pip install fonttools==4.60.1 brotli==1.1.0
           python scripts/study-v453/build_assets.py
-      - name: Preserve non-font evidence
+      - name: Install pinned browser tools
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium webkit
+          mkdir -p "$RUNNER_TEMP/study-agent"
+          npm install --prefix "$RUNNER_TEMP/study-agent" --save-exact agent-browser@0.38.1
+          echo "QA_AGENT_BROWSER=$RUNNER_TEMP/study-agent/node_modules/.bin/agent-browser" >> "$GITHUB_ENV"
+          git show 0554e87363b1bb979f8edaf8609402db08bbd43a:scripts/reader-wave-v452/browser.py > /tmp/reader-previous-regression.py
+      - name: Chromium new feature tests
+        run: QA_ENGINE=chromium python scripts/study-v453/browser.py
+      - name: WebKit new feature tests
+        run: QA_ENGINE=webkit python scripts/study-v453/browser.py
+      - name: Previously accepted reader regression
+        run: QA_ENGINE=chromium python /tmp/reader-previous-regression.py
+      - name: Isolated local Preview verification
+        run: python scripts/study-v453/preview_test.py
+      - name: Commit verified assets to feature branch only
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/$FEATURE"
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MAIN_BASE"
+          test "$(git ls-remote origin "refs/heads/$FEATURE" | cut -f1)" = "$GITHUB_SHA"
+          git add index.html js/app.js js/nh7-reader-toolbar-v452.js js/nh7-apocrypha-preview-v240.js js/nh7-apocrypha-v270.js js/nh7-theme-studio-v453.js js/nh7-study-preview-app-v453.js study-preview.html scripts/study-v453/browser.py data/lexicon assets/fonts/v453 css/nh7-study-preview-*.css
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'feat(study): verified core lexicon, unified Apocrypha and local Theme Studio Preview'
+            git push origin "HEAD:refs/heads/$FEATURE"
+          fi
+          git rev-parse HEAD > qa-study453/tested-commit.txt
+          git ls-remote origin refs/heads/main > qa-study453/main-after.txt
+          diff qa-study453/main-before.txt qa-study453/main-after.txt
+      - name: Verify immutable public Preview
+        run: |
+          export QA_PREVIEW_URL="https://rawcdn.githack.com/Omideno7/new-hope7-app/$(cat qa-study453/tested-commit.txt)/study-preview.html"
+          python scripts/study-v453/preview_test.py
+      - name: Preserve evidence without font binaries
         if: always()
         run: |
           mkdir -p qa-study453
+          if [ -d qa-reader452 ]; then cp -R qa-reader452 qa-study453/previous-reader-regression; fi
           python - <<'PY'
-          import pathlib,tarfile
-          names=['index.html','js/app.js','js/nh7-reader-toolbar-v452.js','js/nh7-apocrypha-preview-v240.js','js/nh7-apocrypha-v270.js','js/nh7-theme-studio-v453.js','js/nh7-original-language-v453.js','css/nh7-theme-studio-v453.css','css/nh7-study-reader-v453.css']
+          import pathlib,tarfile,subprocess,hashlib,json
+          names=['index.html','js/app.js','js/nh7-reader-toolbar-v452.js','js/nh7-apocrypha-preview-v240.js','js/nh7-apocrypha-v270.js','js/nh7-theme-studio-v453.js','js/nh7-original-language-v453.js','js/nh7-study-preview-app-v453.js','js/nh7-study-preview-guard-v453.js','study-preview.html','css/nh7-theme-studio-v453.css','css/nh7-study-reader-v453.css']
           names += [str(p) for p in pathlib.Path('scripts/study-v453').glob('*') if p.is_file()]
           names += [str(p) for p in pathlib.Path('data/lexicon').glob('*') if p.is_file()]
+          names += [str(p) for p in pathlib.Path('css').glob('nh7-study-preview-*.css')]
           with tarfile.open('qa-study453/candidate-source.tgz','w:gz') as tar:
               for name in names:
                   if pathlib.Path(name).is_file():tar.add(name,arcname=name)
+          corpus=[*pathlib.Path('data/bible').rglob('*.json'),*pathlib.Path('data/apocrypha').rglob('*.json')]
+          pathlib.Path('qa-study453/corpus-hashes.json').write_text(json.dumps({str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(corpus)},indent=2))
           PY
       - uses: actions/upload-artifact@v4
         if: always()
