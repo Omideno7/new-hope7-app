@@ -73,7 +73,8 @@ jobs:
           test "$GITHUB_REF" = "refs/heads/$FEATURE"
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MAIN_BASE"
           test "$(git ls-remote origin "refs/heads/$FEATURE" | cut -f1)" = "$GITHUB_SHA"
-          git add index.html js/app.js js/nh7-reader-toolbar-v452.js js/nh7-apocrypha-preview-v240.js js/nh7-apocrypha-v270.js js/nh7-theme-studio-v453.js js/nh7-study-preview-app-v453.js study-preview.html scripts/study-v453/browser.py data/lexicon assets/fonts/v453 css/nh7-study-preview-*.css
+          git add index.html js/app.js js/nh7-reader-toolbar-v452.js js/nh7-apocrypha-preview-v240.js js/nh7-apocrypha-v270.js js/nh7-theme-studio-v453.js js/nh7-study-preview-app-v453.js study-preview.html scripts/study-v453/browser.py scripts/study-v453/build_assets.py data/lexicon assets/fonts/v453 css/nh7-theme-studio-v453.css css/nh7-study-reader-v453.css css/nh7-study-preview-*.css
+          git diff --exit-code -- js css index.html data/lexicon assets/fonts/v453
           if ! git diff --cached --quiet; then
             git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'feat(study): verified core lexicon, unified Apocrypha and local Theme Studio Preview'
             git push origin "HEAD:refs/heads/$FEATURE"
@@ -91,7 +92,7 @@ jobs:
           mkdir -p qa-study453
           if [ -d qa-reader452 ]; then cp -R qa-reader452 qa-study453/previous-reader-regression; fi
           python - <<'PY'
-          import pathlib,tarfile,subprocess,hashlib,json
+          import pathlib,tarfile,hashlib,json
           names=['index.html','js/app.js','js/nh7-reader-toolbar-v452.js','js/nh7-apocrypha-preview-v240.js','js/nh7-apocrypha-v270.js','js/nh7-theme-studio-v453.js','js/nh7-original-language-v453.js','js/nh7-study-preview-app-v453.js','js/nh7-study-preview-guard-v453.js','study-preview.html','css/nh7-theme-studio-v453.css','css/nh7-study-reader-v453.css']
           names += [str(p) for p in pathlib.Path('scripts/study-v453').glob('*') if p.is_file()]
           names += [str(p) for p in pathlib.Path('data/lexicon').glob('*') if p.is_file()]
