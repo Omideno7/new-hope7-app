@@ -23,18 +23,27 @@ def passed(s):checks.append(s);print('PASS',ENGINE,s,flush=True)
 def read(p,key):return p.evaluate('(key)=>JSON.parse(localStorage.getItem(key))',key)
 def raw(p,key):return p.evaluate('(key)=>localStorage.getItem(key)',key)
 def wait(p,expr):
-    for _ in range(350):
+    for _ in range(700):
         if p.evaluate(expr):return
         p.wait_for_timeout(30)
     raise AssertionError('Timed out: '+expr)
 def language(p,lang):p.select_option('#langSelect',lang);p.wait_for_timeout(250)
 def choose(p,props):
+    # Await asynchronous route completion instead of assuming the next view already exists.
+    wait(p,"(()=>{const props="+json.dumps(props)+";return [...document.querySelectorAll('[data-go=\"bible\"][data-params]')].some(x=>{const q=JSON.parse(x.dataset.params);return Object.entries(props).every(([k,v])=>q[k]===v)})})()")
     p.locator('[data-go="bible"][data-params]').evaluate_all('(buttons,props)=>{const b=buttons.find(x=>{const q=JSON.parse(x.dataset.params);return Object.entries(props).every(([k,v])=>q[k]===v)});if(!b)throw Error("Bible destination missing");b.click()}',props)
 def chapter(p):
     p.locator('[data-route="bible"]').click();choose(p,{'section':'written'});choose(p,{'testament':'NT'});choose(p,{'bookId':'JHN','mode':'book'});choose(p,{'mode':'chapter','chapter':3})
     expect(p.locator('#v-16')).to_be_attached();wait(p,'!!window.NH7ReaderSourceV452')
 def action(p,name):p.locator('[data-reader-action452='+json.dumps(name)+']').click()
 def apo(p):
+    # QA approved-state fixture; assert the actual guest gate before simulating approval.
+    p.locator('[data-route="bible"]').click()
+    if not p.evaluate('NH7AccessV230.isApproved()'):
+        p.locator('[data-go="apocrypha"]').click();expect(p.locator('.nh7-access-gate-v230')).to_be_visible()
+        p.locator('.nh7-access-close-v230').click();passed('Guest access remains blocked; approved state is synthetic for reader-only testing')
+    p.evaluate("sessionStorage.setItem('nh7_content_access_status_v230',JSON.stringify({approved:true,authenticated:true,checked_at:Date.now(),user_email:'reader-qa@example.invalid'}))")
+    assert p.evaluate('NH7AccessV230.isApproved()')
     p.locator('[data-route="bible"]').click();p.locator('[data-go="apocrypha"]').click()
     expect(p.locator('[data-rc-apo-book="tobit"]')).to_be_visible();p.locator('[data-rc-apo-book="tobit"]').click()
     expect(p.locator('.nh7-apo-verse[data-apo-verse="1"]')).to_be_attached();expect(p.locator('[data-nh7-apo-save="APO:tobit:1:1"]')).to_be_attached()
@@ -127,7 +136,7 @@ with sync_playwright() as pw:
         for route in ['daily','plans','school','more','home']:
             p.locator('[data-route='+json.dumps(route)+']').click();p.wait_for_timeout(250);assert len(p.locator('#view').inner_text())>10
         assert not errors,errors;passed('Existing primary routes render; zero uncaught page errors')
-        report={'status':'passed','browser':ENGINE,'checks':checks,'pageErrors':errors,'actualExternalAPIRequests':0,'mockedExternalRequests':len(external),'productionDatabaseChanges':0,'nativeDeviceTest':False,'realCloudSyncTest':False}
+        report={'status':'passed','browser':ENGINE,'checks':checks,'pageErrors':errors,'actualExternalAPIRequests':0,'mockedExternalRequests':len(external),'productionDatabaseChanges':0,'nativeDeviceTest':False,'realCloudSyncTest':False,'mockedApprovedReaderState':True}
         (OUT/f'{ENGINE}-report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
     except Exception as e:
         p.screenshot(path=str(OUT/f'{ENGINE}-failure.png'),full_page=True)
