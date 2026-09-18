@@ -71,4 +71,23 @@ def saved(s):
         s=s.replace(marker,marker+'const unified=await window.NH7ReaderToolbarV452?.resolveSaved?.(ref);if(unified)return unified;',1)
     return s
 edit('js/nh7-reader-ux-v251.js',saved)
+
+# This fixture is used only in CI, never in any app entry or production runtime.
+def fixture(s):
+    if 'QA approved-state fixture' not in s:
+        marker='def apo(p):\n';assert marker in s
+        addition='''    # QA approved-state fixture; assert the actual guest gate before simulating approval.
+    p.locator('[data-route="bible"]').click()
+    if not p.evaluate('NH7AccessV230.isApproved()'):
+        p.locator('[data-go="apocrypha"]').click()
+        expect(p.locator('.nh7-access-gate-v230')).to_be_visible()
+        p.locator('.nh7-access-close-v230').click()
+        passed('Guest access remains blocked; approved state is synthetic for reader-only testing')
+    p.evaluate("sessionStorage.setItem('nh7_content_access_status_v230',JSON.stringify({approved:true,authenticated:true,checked_at:Date.now(),user_email:'reader-qa@example.invalid'}))")
+    assert p.evaluate('NH7AccessV230.isApproved()')
+'''
+        s=s.replace(marker,marker+addition,1)
+    s=s.replace("'realCloudSyncTest':False}","'realCloudSyncTest':False,'mockedApprovedReaderState':True}")
+    return s
+edit('scripts/reader-wave-v452/browser.py',fixture)
 print('Reader adapters prepared; corpus and database unchanged.')
