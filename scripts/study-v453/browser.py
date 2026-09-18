@@ -10,7 +10,7 @@ class Quiet(SimpleHTTPRequestHandler):
 server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(Path.cwd())))
 threading.Thread(target=server.serve_forever,daemon=True).start();BASE=f'http://127.0.0.1:{server.server_port}'
 SEED={'nh7_lang':'fa','nh7_bookmarks':'["John 3:16"]','nh7_bible_state_JHN_3_16':json.dumps({'saved':True,'note':'KEEP Bible — فاصله ۱۲۳','highlight':True,'highlightColor':'green','unknown':'KEEP'},ensure_ascii=False),'nh7_apo_note_v242:tobit:1:1':'KEEP Apocrypha note','nh7_sermon_note_qa453':'KEEP Sermon note','nh7_gratitude_note_7':'KEEP Gratitude note','nh7_school_progress_qa453':'KEEP School progress'}
-INIT="""(()=>{if(!/^https?:/.test(location.protocol))return;if(!localStorage.getItem('qa453-seeded')){Object.entries(SEED).forEach(([k,v])=>localStorage.setItem(k,v));localStorage.setItem('qa453-seeded','1')}window.qa453Copies=[];Object.defineProperty(navigator,'clipboard',{value:{writeText:async value=>qa453Copies.push(value)},configurable:true});window.qa453Shares=[];Object.defineProperty(navigator,'share',{value:async value=>qa453Shares.push(value)},configurable:true});})();""".replace('SEED',json.dumps(SEED,ensure_ascii=False))
+INIT="""(()=>{if(!/^https?:/.test(location.protocol))return;if(!localStorage.getItem('qa453-seeded')){Object.entries(SEED).forEach(([k,v])=>localStorage.setItem(k,v));localStorage.setItem('qa453-seeded','1')}window.qa453Copies=[];Object.defineProperty(navigator,'clipboard',{value:{writeText:async value=>qa453Copies.push(value)},configurable:true});window.qa453Shares=[];Object.defineProperty(navigator,'share',{value:async value=>qa453Shares.push(value),configurable:true});})();""".replace('SEED',json.dumps(SEED,ensure_ascii=False))
 def wait(p,expr):
     for _ in range(900):
         if p.evaluate(expr):return
@@ -26,6 +26,16 @@ def settings(p):
     p.locator('[data-route="more"]').click();p.locator('[data-go="settings"]').click();expect(p.locator('#nh7ThemeStudio453')).to_be_visible()
 def change_language(p,language):p.select_option('#langSelect',language);wait(p,'document.documentElement.lang==='+json.dumps(language))
 def raw(p,key):return p.evaluate('(key)=>localStorage.getItem(key)',key)
+def tap_apo_text(p,verse):
+    selector=f'.nh7-apo-verse[data-apo-verse="{verse}"] .nh7-apo-verse-text'
+    trigger=p.locator(f'.nh7-apo-verse[data-apo-verse="{verse}"] .nh7-apo-verse-main')
+    expect(trigger).to_have_attribute('data-nh7-inline392','1')
+    text=p.locator(selector)
+    text.scroll_into_view_if_needed()
+    point=text.evaluate('(n)=>{const r=[...n.getClientRects()].find(r=>r.width>2&&r.height>2);if(!r)throw Error("No text rectangle");const box=n.getBoundingClientRect();return{x:r.left-box.left+Math.min(r.width/2,12),y:r.top-box.top+r.height/2}}')
+    # Locator actionability checks wait for stable layout and the correct event
+    # recipient. Never force the click or replace it with a scripted event.
+    text.click(position=point)
 def mock(route):
     r=route.request
     if r.url.startswith(BASE+'/'):return route.continue_()
@@ -35,8 +45,8 @@ def mock(route):
     return route.fulfill(status=200,content_type='application/json',body=json.dumps({'ok':True,'approved':False,'authenticated':False,'items':[]} if '/functions/' in r.url else []))
 with sync_playwright() as pw:
     browser=getattr(pw,ENGINE).launch(**({'args':['--remote-debugging-port=9222']} if ENGINE=='chromium' else {}))
-    c=browser.new_context(viewport={'width':390,'height':844},service_workers='block');c.route('**/*',mock);c.route_web_socket('**/*',lambda ws:ws.close());c.add_init_script(INIT)
-    p=c.new_page();p.set_default_timeout(30000);expect.set_options(timeout=30000);p.on('pageerror',lambda e:errors.append(str(e)));p.on('dialog',lambda d:d.accept())
+    c=browser.new_context(viewport={'width':390,'height':844},service_workers='block');c.route('**/*',mock);c.route_web_socket('**/*',lambda ws:ws.close());c.add_init_script(INIT);c.add_init_script("(()=>{window.qa453PointerTrace=[];for(const type of ['pointerdown','mousedown','pointerup','mouseup','click'])window.addEventListener(type,e=>{const target=e.target instanceof Element?e.target:null,node=target?.closest('.nh7-apo-verse');const api=window.NH7ReaderToolbarV452;const row={event:type,x:e.clientX,y:e.clientY,target:target?.tagName+'.'+target?.className,book:node?.dataset.readerBook453,chapter:node?.dataset.readerChapter453,verse:node?.dataset.apoVerse,before:api?[...api.selected.keys()]:[],current:window.NH7ApoReaderSourceV452?.current()?.book?.book_id};window.qa453PointerTrace.push(row);if(window.qa453PointerTrace.length>60)window.qa453PointerTrace.shift();setTimeout(()=>row.after=api?[...api.selected.keys()]:[],0);},true)})();")
+    p=c.new_page();p.set_default_timeout(30000);expect.set_options(timeout=30000);p.on('pageerror',lambda e:errors.append({'message':str(e),'stack':e.stack}));p.on('dialog',lambda d:d.accept())
     try:
         p.goto(BASE+'/index.html',wait_until='domcontentloaded');p.locator('#amenButton').click()
         wait(p,'!!window.NH7ThemeStudioV453 && !!window.NH7StudySourceV453 && !!window.NH7OriginalLanguageV453 && !!window.NH7ApoReaderSourceV452')
@@ -80,8 +90,8 @@ with sync_playwright() as pw:
                 before=p.locator('.nh7-apo-verse-text').all_text_contents()
                 p.evaluate('(n)=>NH7ApoReaderSourceV452.toggleLegacy(n)',numbers[0]);assert p.evaluate('NH7ReaderToolbarV452.selected.size')==1
                 expect(p.locator('#nh7ReaderToolbar452')).to_be_visible()
-                p.locator(selector+' .nh7-apo-verse-main').click();assert p.evaluate('NH7ReaderToolbarV452.selected.size')==0
-                for n in numbers[:2]:p.locator(f'.nh7-apo-verse[data-apo-verse="{n}"] .nh7-apo-verse-main').click()
+                tap_apo_text(p,numbers[0]);assert p.evaluate('NH7ReaderToolbarV452.selected.size')==0
+                for n in numbers[:2]:tap_apo_text(p,n)
                 assert p.evaluate('NH7ReaderToolbarV452.selected.size')==min(2,len(numbers))
                 # Even an old handler showing a legacy toolbox cannot display duplicate controls.
                 p.locator('.nh7-apo-verse-tools').evaluate_all('(nodes)=>nodes.forEach(n=>n.classList.remove("hidden"))')
@@ -99,6 +109,12 @@ with sync_playwright() as pw:
             wait(p,'document.documentElement.dataset.nh7Studio==='+json.dumps(preset));assert p.evaluate('NH7ThemeStudioV453.validate(NH7ThemeStudioV453.get()).ok')
             bg=p.evaluate('getComputedStyle(document.body).backgroundColor');expected=p.evaluate('NH7ThemeStudioV453.get().bg');assert bg==f'rgb({int(expected[1:3],16)}, {int(expected[3:5],16)}, {int(expected[5:7],16)})'
         passed('All eight presets apply and meet every configured text/background contrast pair')
+        for mode in ['dark','light']:
+            p.select_option('#nh7ThemeSelect',mode);expect(p.locator('#nh7ThemeStudio453')).to_be_visible()
+            panel_color=p.locator('#nh7AppearancePanel').evaluate('(n)=>getComputedStyle(n).backgroundColor')
+            card=p.evaluate('NH7ThemeStudioV453.get().card')
+            assert panel_color==f'rgb({int(card[1:3],16)}, {int(card[3:5],16)}, {int(card[5:7],16)})'
+        passed('Personal palette remains readable in both legacy modes')
         custom=p.locator('.nh7-studio-custom453');custom.locator('summary').click()
         old=raw(p,'nh7_theme_studio_v453')
         for key,color in [('bg','#ffffff'),('card','#ffffff'),('text','#ffffff')]:p.locator('[data-studio-color453='+json.dumps(key)+']').evaluate('(n,value)=>{n.value=value;n.dispatchEvent(new Event("input",{bubbles:true}))}',color)
@@ -110,9 +126,10 @@ with sync_playwright() as pw:
             for font,family in fonts:
                 if not p.locator('.nh7-studio-custom453').evaluate('(n)=>n.open'):p.locator('.nh7-studio-custom453 summary').click()
                 p.select_option('[data-studio-font453="'+('fa' if locale=='fa' else 'latin')+'"]',font);p.locator('[data-studio-apply453]').click()
-                count=p.evaluate('(family)=>document.fonts.load("16px \\\""+family+"\\\"").then(x=>x.length)',family)
+                count=p.evaluate('(family)=>document.fonts.load(`16px "${family}"`).then(x=>x.length)',family)
                 assert count>0,(font,count)
                 assert family in p.evaluate('getComputedStyle(document.body).fontFamily')
+                assert family in p.locator('#nh7ThemeStudio453 header p').evaluate('(n)=>getComputedStyle(n).fontFamily')
             p.screenshot(path=str(OUT/f'{ENGINE}-theme-studio-{locale}.png'))
         passed('All six bundled font families actually load; Persian and Croatian script choices apply')
         themes=p.locator('#nh7ThemeStudio453 details').last;themes.locator('summary').click();p.locator('[data-studio-name453]').fill('My safe theme 453');p.locator('[data-studio-save453]').click()
@@ -129,5 +146,6 @@ with sync_playwright() as pw:
         report={'status':'passed','browser':ENGINE,'checks':checks,'apocryphaVisits':visits,'pageErrors':errors,'actualExternalAPIRequests':0,'mockedExternalRequests':len(requests),'nativeDeviceTest':False,'realAccountUsed':False}
         (OUT/f'{ENGINE}-report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
     except Exception as error:
-        p.screenshot(path=str(OUT/f'{ENGINE}-failure.png'),full_page=True);(OUT/f'{ENGINE}-failure.json').write_text(json.dumps({'error':str(error),'checks':checks,'pageErrors':errors,'body':p.locator('body').inner_text()[:20000]},ensure_ascii=False,indent=2));raise
+        (OUT/f'{ENGINE}-pointer-trace.json').write_text(json.dumps(p.evaluate('window.qa453PointerTrace||[]'),ensure_ascii=False,indent=2));
+        p.screenshot(path=str(OUT/f'{ENGINE}-failure.png'),full_page=True);(OUT/f'{ENGINE}-failure.json').write_text(json.dumps({'error':repr(error),'traceback':__import__('traceback').format_exc(),'checks':checks,'pageErrors':errors,'body':p.locator('body').inner_text()[:20000]},ensure_ascii=False,indent=2));raise
     finally:c.close();browser.close();server.shutdown()

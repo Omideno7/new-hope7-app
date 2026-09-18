@@ -30,3 +30,7 @@ html[data-nh7-theme="dark"] .nh7-lex-meta453{color:var(--nh7-studio-muted,#b1c6d
 html[data-nh7-theme="dark"] #nh7ReaderToolbar452 .nh7-reader-study453{background:var(--nh7-studio-bg,#284b66);color:var(--nh7-studio-text,#fff)}
 @media(max-width:850px){.nh7-lex-list453{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:480px){.nh7-lex-list453{grid-template-columns:1fr}.nh7-lex-filters453{grid-template-columns:1fr}.nh7-lex-card453{padding:12px}.nh7-lex-detail453 h2{font-size:1.25rem}}
+
+/* v453 compact study shortcut: share the summary row instead of adding a row. */
+#nh7ReaderToolbar452 .nh7-reader-selection-summary452:has(.nh7-reader-study453){display:flex;align-items:center;justify-content:space-between;gap:8px}
+#nh7ReaderToolbar452 .nh7-reader-selection-summary452 .nh7-reader-study453{width:auto;flex:0 0 auto;margin:0;min-height:28px;padding:3px 9px}

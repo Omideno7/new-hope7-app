@@ -319,7 +319,7 @@ const SUPABASE_CONFIG = {
   url: 'https://gpzcwffxnddhaeaogdyo.supabase.co',
   key: 'sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37'
 };
-const CLOUD_ENABLED = Boolean(SUPABASE_CONFIG.url && SUPABASE_CONFIG.key);
+const CLOUD_ENABLED = !window.NH7_STUDY_PREVIEW && Boolean(SUPABASE_CONFIG.url && SUPABASE_CONFIG.key);
 const AUTH_SESSION_KEY='nh7_user_session_v170';
 const EXPLICIT_LOGOUT_KEY='nh7_explicit_logout';
 const NH7_PASSWORD_RESET_URL='https://omideno7.github.io/new-hope7-app/reset-password.html';
@@ -2413,7 +2413,7 @@ $$('.nav-item').forEach(b=>b.onclick=()=>{ state.stack=[]; navigate(b.dataset.ro
 $('#amenButton').onclick=()=>$('#amenGate').classList.add('hidden');
 window.addEventListener('online',async()=>{$('.offline')?.remove();await syncCloudQueue().catch(console.warn);if(isAccountLoggedIn()){await restoreAccountCloudData(true).catch(console.warn);invalidateSchoolSnapshot(authEmail());await getSchoolSnapshot(authEmail(),true).catch(console.warn);if(state.route==='school')render('school',state.params,true)}});
 window.addEventListener('offline',()=>{ if(!$('.offline')){ const d=document.createElement('div'); d.className='offline'; d.textContent=tr('offline'); document.body.appendChild(d);} });
-if('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js').catch(console.warn);
+if(!window.NH7_STUDY_PREVIEW && 'serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js').catch(console.warn);
 try{const Native=nativeLocalNotifications();Native?.addListener?.('localNotificationActionPerformed',ev=>{const route=ev?.notification?.extra?.route||'home';navigate(route,{},true)});}catch(e){}
 async function bootstrapApp(){
   clearLegacySchoolSession();

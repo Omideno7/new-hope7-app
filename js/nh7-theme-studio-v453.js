@@ -24,7 +24,7 @@ let draft=null,lastApplied='',renderKey='',pending=false,ownChange=false;
 function read(key,fallback){try{const value=localStorage.getItem(key);return value===null?fallback:JSON.parse(value)}catch(_){return fallback}}
 function clean(value){
  if(!value||typeof value!=='object'||Array.isArray(value))return null;
- const cfg={preset:LABELS[value.preset]?value.preset:'custom',fa:FONT_FA[value.fa]?value.fa:'system',latin:FONT_LATIN[value.latin]?value.latin:'system'};
+ const cfg={preset:Object.hasOwn(LABELS,value.preset)?value.preset:'custom',fa:Object.hasOwn(FONT_FA,value.fa)?value.fa:'system',latin:Object.hasOwn(FONT_LATIN,value.latin)?value.latin:'system'};
  for(const key of fields){if(!/^#[0-9a-f]{6}$/i.test(value[key]||''))return null;cfg[key]=value[key].toLowerCase()}
  return cfg;
 }
@@ -32,7 +32,7 @@ function luminance(hex){const a=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255
 function contrast(a,b){const x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
 function validate(value){const c=clean(value);if(!c)return{ok:false,failed:['format'],pairs:[]};const pairs=[['text','bg'],['text','card'],['muted','bg'],['muted','card'],['verse','card']].map(([f,b])=>({foreground:f,background:b,ratio:contrast(c[f],c[b])}));return {ok:pairs.every(x=>x.ratio>=4.5),pairs,failed:pairs.filter(x=>x.ratio<4.5).map(x=>x.foreground)}}
 function base(id='hope'){return{preset:id,...PRESETS[id],fa:'system',latin:'system'}}
-function ink(bg){return contrast('#ffffff',bg)>contrast('#102030',bg)?'#ffffff':'#102030'}
+function ink(bg){return contrast('#ffffff',bg)>contrast('#000000',bg)?'#ffffff':'#000000'}
 function clearVariables(){delete root.dataset.nh7Studio;delete root.dataset.nh7StudioFont;for(const k of ['bg','card','text','muted','verse','accent','button-ink','link','line','fa-font','latin-font','font'])root.style.removeProperty('--nh7-studio-'+k)}
 function apply(){
  const c=clean(read(KEY,null));if(!c||!validate(c).ok){clearVariables();lastApplied='';return}
@@ -48,7 +48,7 @@ function apply(){
 }
 function status(text,bad=false){const n=document.getElementById('nh7StudioStatus453');if(n){n.textContent=text;n.dataset.error=bad?'1':'0'}}
 function set(value){const c=clean(value);if(!c||!validate(c).ok)return false;try{localStorage.setItem(KEY,JSON.stringify(c))}catch(_){status(L('ذخیرهٔ ظاهر انجام نشد؛ تنظیم قبلی حفظ شد.','Could not save appearance; the previous setting was kept.','Izgled nije spremljen; prethodna postavka je sačuvana.'),true);return false}lastApplied='';apply();return true}
-function library(){const x=read(SAVED,[]);return Array.isArray(x)?x.filter(i=>typeof i.name==='string'&&i.name.length<=40&&clean(i.config)&&validate(i.config).ok).slice(0,12):[]}
+function library(){const x=read(SAVED,[]);return Array.isArray(x)?x.filter(i=>i&&typeof i==='object'&&typeof i.id==='string'&&typeof i.name==='string'&&i.name.length<=40&&clean(i.config)&&validate(i.config).ok).slice(0,12):[]}
 function reset(){try{localStorage.removeItem(KEY)}catch(_){status(L('بازنشانی انجام نشد.','Reset failed.','Vraćanje nije uspjelo.'),true);return}lastApplied='';clearVariables();window.NH7_UI_PREFS?.apply?.();draft=base();renderKey='';mount();status(L('فقط ظاهر بازنشانی شد؛ یادداشت‌ها و پیشرفت‌ها تغییر نکردند.','Only appearance was reset; notes and progress were unchanged.','Vraćen je samo izgled; bilješke i napredak nisu promijenjeni.'))}
 function preview(){
  const panel=document.getElementById('nh7ThemeStudio453');if(!panel||!draft)return;
@@ -73,7 +73,7 @@ function mount(){
   const b=event.target.closest('button');if(!b)return;
   if(b.dataset.studioPreset453){const fonts={fa:draft.fa,latin:draft.latin};draft={...base(b.dataset.studioPreset453),...fonts};fields.forEach(k=>panel.querySelector(`[data-studio-color453="${k}"]`).value=draft[k]);preview();status(L('پیش‌نمایش آماده است؛ برای ذخیره «اعمال ظاهر» را بزن.','Preview ready. Select Apply appearance to save.','Pregled je spreman. Odaberite Primijeni izgled za spremanje.'))}
   else if(b.hasAttribute('data-studio-apply453')){if(set(draft)){renderKey='';mount();status(L('ظاهر ذخیره و اعمال شد ✓','Appearance saved and applied ✓','Izgled je spremljen i primijenjen ✓'))}}
-  else if(b.hasAttribute('data-studio-auto453')){for(const key of ['text','muted'])draft[key]=['#102030','#ffffff'].sort((a,b)=>Math.min(contrast(b,draft.bg),contrast(b,draft.card))-Math.min(contrast(a,draft.bg),contrast(a,draft.card)))[0];draft.verse=ink(draft.card);if(!validate(draft).ok){draft.card=draft.bg;draft.text=draft.muted=draft.verse=ink(draft.bg)}draft.preset='custom';fields.forEach(k=>panel.querySelector(`[data-studio-color453="${k}"]`).value=draft[k]);preview()}
+  else if(b.hasAttribute('data-studio-auto453')){for(const key of ['text','muted'])draft[key]=['#000000','#ffffff'].sort((a,b)=>Math.min(contrast(b,draft.bg),contrast(b,draft.card))-Math.min(contrast(a,draft.bg),contrast(a,draft.card)))[0];draft.verse=ink(draft.card);if(!validate(draft).ok){draft.card=draft.bg;draft.text=draft.muted=draft.verse=ink(draft.bg)}draft.preset='custom';fields.forEach(k=>panel.querySelector(`[data-studio-color453="${k}"]`).value=draft[k]);preview()}
   else if(b.hasAttribute('data-studio-reset453'))reset();
   else if(b.hasAttribute('data-studio-save453')){const rows=library();if(rows.length>=12){status(L('حداکثر ۱۲ تم؛ ابتدا یکی را حذف کن.','Maximum 12 themes. Remove one first.','Najviše 12 tema. Najprije uklonite jednu.'),true);return}const name=panel.querySelector('[data-studio-name453]').value.trim()||L('تم من','My theme','Moja tema');try{rows.push({id:crypto.randomUUID?.()||String(Date.now()),name,config:clean(draft)});localStorage.setItem(SAVED,JSON.stringify(rows));set(draft);renderKey='';mount();status(L('تم ذخیره شد ✓','Theme saved ✓','Tema je spremljena ✓'))}catch(_){status(L('ذخیره انجام نشد.','Save failed.','Spremanje nije uspjelo.'),true)}}
   else if(b.dataset.studioLoad453){const item=library().find(x=>x.id===b.dataset.studioLoad453);if(item&&set(item.config)){renderKey='';mount()}}

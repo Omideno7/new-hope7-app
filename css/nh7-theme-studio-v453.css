@@ -59,3 +59,12 @@ html[data-nh7-studio] .nh7-reader-note-dialog452 textarea,html[data-nh7-studio] 
 #nh7StudioStatus453{font-size:.85rem;line-height:1.7;margin:10px 0 0;min-height:1.7em}
 .nh7-studio-library453{display:grid;gap:8px;margin-top:12px}.nh7-studio-library453>div{display:flex;gap:5px}.nh7-studio-library453 [data-studio-load453]{flex:1;text-align:start}
 @media(max-width:560px){#view #nh7ThemeStudio453{padding:14px}.nh7-studio-presets453{grid-template-columns:repeat(2,minmax(0,1fr))}.nh7-studio-fields453{grid-template-columns:1fr 1fr}.nh7-studio-fields453 label:has(select){grid-column:1/-1}}
+
+/* v453 legacy surfaces inherit the active personal palette in either base mode. */
+html[data-nh7-studio]{--bg:var(--nh7-studio-bg);--card:var(--nh7-studio-card);--ink:var(--nh7-studio-text);--muted:var(--nh7-studio-muted);--line:var(--nh7-studio-line);--nh7-light-bg:var(--nh7-studio-bg);--nh7-light-card:var(--nh7-studio-card);--nh7-light-ink:var(--nh7-studio-text);--nh7-light-muted:var(--nh7-studio-muted);--nh7-dark-bg:var(--nh7-studio-bg);--nh7-dark-card:var(--nh7-studio-card);--nh7-dark-card-2:var(--nh7-studio-card);--nh7-dark-ink:var(--nh7-studio-text);--nh7-dark-muted:var(--nh7-studio-muted);--nh7-dark-line:var(--nh7-studio-line)}
+html[data-nh7-studio] #view .nh7-appearance-panel,html[data-nh7-studio] #view .nh7-v252-settings-box,html[data-nh7-studio] .nh7-settings403-status,html[data-nh7-studio] .nh7-settings403-toast,html[data-nh7-studio] .sermon-note-dialog{background:var(--nh7-studio-card)!important;color:var(--nh7-studio-text)!important;border-color:var(--nh7-studio-line)!important}
+html[data-nh7-studio] #view .nh7-appearance-panel .nh7-appearance-help{color:var(--nh7-studio-muted)!important}
+
+/* Personal fonts must reach legacy Persian paragraph rules, not just body. */
+html[data-nh7-studio-font] #view p,html[data-nh7-studio-font] #view small,html[data-nh7-studio-font] #view label,html[data-nh7-studio-font] #view h1,html[data-nh7-studio-font] #view h2,html[data-nh7-studio-font] #view h3,html[data-nh7-studio-font] #view li,html[data-nh7-studio-font] #view .verse-text,html[data-nh7-studio-font] #view .nh7-apo-verse-text{font-family:var(--nh7-studio-font)!important}
+#view #nh7ThemeStudio453 .nh7-studio-sample453 p,#view #nh7ThemeStudio453 .nh7-studio-sample453 blockquote,#view #nh7ThemeStudio453 .nh7-studio-sample453 b{font-family:var(--sample-font)!important}
