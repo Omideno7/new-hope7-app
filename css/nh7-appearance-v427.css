@@ -1,0 +1,160 @@
+/* New Hope 7 — Settings + global readability preview v4.2.7
+ * Safe preview layer. No database writes. Loaded after legacy styles.
+ */
+:root{
+  --nh7-light-bg:#eef8ff;
+  --nh7-light-card:#ffffff;
+  --nh7-light-ink:#0b2d4f;
+  --nh7-light-muted:#526f8c;
+  --nh7-dark-bg:#07111f;
+  --nh7-dark-card:#0f1d2e;
+  --nh7-dark-card-2:#12243a;
+  --nh7-dark-ink:#f5f9ff;
+  --nh7-dark-muted:#b8c7d9;
+  --nh7-dark-line:#2c4058;
+}
+html[data-nh7-font] body,
+html[data-nh7-font] button,
+html[data-nh7-font] input,
+html[data-nh7-font] textarea,
+html[data-nh7-font] select{font-family:var(--nh7-user-font)!important}
+
+html[data-nh7-theme="light"] body{background:var(--nh7-light-bg);color:var(--nh7-light-ink)}
+html[data-nh7-theme="light"] .app-shell{background:linear-gradient(180deg,#edf8ff 0%,#fff 75%)}
+html[data-nh7-theme="light"] #view .card:not(.hero){color:var(--nh7-light-ink)}
+html[data-nh7-theme="light"] #view .card:not(.hero) p{color:#173f66}
+html[data-nh7-theme="light"] #view .muted,
+html[data-nh7-theme="light"] #view small{color:var(--nh7-light-muted)}
+html[data-nh7-theme="light"] #view .notice{color:#163a5c}
+html[data-nh7-theme="light"] #view .notice p,
+html[data-nh7-theme="light"] #view .notice strong{color:inherit}
+
+html[data-nh7-theme="dark"]{
+  --bg:var(--nh7-dark-bg);
+  --card:var(--nh7-dark-card);
+  --ink:var(--nh7-dark-ink);
+  --muted:var(--nh7-dark-muted);
+  --brand:#69b8ff;
+  --brand2:#3cc9f5;
+  --accent:#55d58a;
+  --gold:#f4cb64;
+  --line:var(--nh7-dark-line);
+  --danger:#ffaaa8;
+  --shadow:0 16px 44px rgba(0,0,0,.35);
+}
+html[data-nh7-theme="dark"] body{background:var(--nh7-dark-bg)!important;color:var(--nh7-dark-ink)!important}
+html[data-nh7-theme="dark"] .app-shell{background:linear-gradient(180deg,#091626 0%,#07111f 78%)!important;color:var(--nh7-dark-ink)}
+html[data-nh7-theme="dark"] .topbar{background:rgba(7,17,31,.96)!important;border-bottom-color:var(--nh7-dark-line)!important}
+html[data-nh7-theme="dark"] .bottom-nav{background:#0a1728!important;border-top-color:var(--nh7-dark-line)!important}
+html[data-nh7-theme="dark"] .brand strong,
+html[data-nh7-theme="dark"] .brand small,
+html[data-nh7-theme="dark"] .bottom-nav .nav-item,
+html[data-nh7-theme="dark"] .bottom-nav .nav-item small{color:var(--nh7-dark-ink)!important}
+html[data-nh7-theme="dark"] .bottom-nav .nav-item:not(.active){opacity:.88}
+html[data-nh7-theme="dark"] .bottom-nav .nav-item.active{background:#12344a!important;color:#65c5ff!important}
+html[data-nh7-theme="dark"] .bottom-nav .nav-item.active small{color:#65c5ff!important}
+
+html[data-nh7-theme="dark"] #view .card:not(.hero),
+html[data-nh7-theme="dark"] #view .tile,
+html[data-nh7-theme="dark"] #view .list-btn,
+html[data-nh7-theme="dark"] #view .link-card,
+html[data-nh7-theme="dark"] #view .accordion-panel,
+html[data-nh7-theme="dark"] #view .inline-reading,
+html[data-nh7-theme="dark"] #view .verse-list-item,
+html[data-nh7-theme="dark"] #view .saved-verse-card,
+html[data-nh7-theme="dark"] #view .nh7-v252-settings-box,
+html[data-nh7-theme="dark"] #view .nh7-v252-health>div{
+  background:var(--nh7-dark-card)!important;
+  color:var(--nh7-dark-ink)!important;
+  border-color:var(--nh7-dark-line)!important;
+}
+html[data-nh7-theme="dark"] #view .card:not(.hero) h1,
+html[data-nh7-theme="dark"] #view .card:not(.hero) h2,
+html[data-nh7-theme="dark"] #view .card:not(.hero) h3,
+html[data-nh7-theme="dark"] #view .card:not(.hero) h4,
+html[data-nh7-theme="dark"] #view .card:not(.hero) p,
+html[data-nh7-theme="dark"] #view .card:not(.hero) li,
+html[data-nh7-theme="dark"] #view .card:not(.hero) label,
+html[data-nh7-theme="dark"] #view .tile strong,
+html[data-nh7-theme="dark"] #view .list-btn strong{color:var(--nh7-dark-ink)!important}
+html[data-nh7-theme="dark"] #view .muted,
+html[data-nh7-theme="dark"] #view small,
+html[data-nh7-theme="dark"] #view .tile small,
+html[data-nh7-theme="dark"] #view .list-btn small,
+html[data-nh7-theme="dark"] #view .form-row label small{color:var(--nh7-dark-muted)!important}
+html[data-nh7-theme="dark"] #view .notice{
+  background:#13263a!important;
+  color:var(--nh7-dark-ink)!important;
+  border-color:var(--nh7-dark-line)!important;
+  border-inline-start-color:var(--accent)!important;
+}
+html[data-nh7-theme="dark"] #view .notice p,
+html[data-nh7-theme="dark"] #view .notice strong,
+html[data-nh7-theme="dark"] #view .notice label{color:var(--nh7-dark-ink)!important}
+html[data-nh7-theme="dark"] #view input,
+html[data-nh7-theme="dark"] #view textarea,
+html[data-nh7-theme="dark"] #view select,
+html[data-nh7-theme="dark"] .lang-select{
+  background:#0c1929!important;
+  color:var(--nh7-dark-ink)!important;
+  border-color:var(--nh7-dark-line)!important;
+}
+html[data-nh7-theme="dark"] #view input::placeholder,
+html[data-nh7-theme="dark"] #view textarea::placeholder{color:#94a8be!important}
+html[data-nh7-theme="dark"] #view .secondary-btn{
+  background:#17324d!important;
+  color:#b9dcff!important;
+  border-color:#31506e!important;
+}
+html[data-nh7-theme="dark"] #view .danger-btn{background:#3b2027!important;color:#ffb8b7!important;border-color:#6b3540!important}
+html[data-nh7-theme="dark"] #view a{color:#8dcaff!important}
+html[data-nh7-theme="dark"] #view .badge{background:#17324d!important;color:#b9dcff!important}
+html[data-nh7-theme="dark"] #view .tab:not(.active){background:#0f1d2e!important;color:var(--nh7-dark-muted)!important;border-color:var(--nh7-dark-line)!important}
+html[data-nh7-theme="dark"] #view .hero,
+html[data-nh7-theme="dark"] #view .hero h1,
+html[data-nh7-theme="dark"] #view .hero h2,
+html[data-nh7-theme="dark"] #view .hero h3,
+html[data-nh7-theme="dark"] #view .hero p,
+html[data-nh7-theme="dark"] #view .hero small{color:#fff!important}
+
+/* Welcome/Amen card stays high-contrast in every theme. */
+.amen-card{background:#fff!important;color:#0b2d4f!important}
+.amen-card #amenTitle,
+.amen-card h1,
+.amen-card h2,
+.amen-card h3,
+.amen-card p,
+.amen-card small{color:#0b2d4f!important}
+.amen-card #amenMessage{color:#173f66!important}
+.amen-logo{object-fit:contain!important;background:#fff!important;padding:4px!important;width:108px!important;height:108px!important;border-radius:24px!important}
+
+/* Higher quality logo treatment inside the app. */
+.brand img{object-fit:contain!important;background:#fff!important;padding:3px!important;border-radius:16px!important}
+
+/* Appearance controls are rendered directly by app.js. */
+.nh7-appearance-panel{margin:16px 0;padding:15px;border:1px solid var(--line);border-radius:18px;background:rgba(127,127,127,.035)}
+.nh7-appearance-panel h3{margin:0 0 5px}
+.nh7-appearance-panel .nh7-appearance-help{margin:0 0 13px!important;color:var(--muted)!important;font-size:.9rem}
+.nh7-appearance-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.nh7-appearance-grid label{display:flex;flex-direction:column;gap:6px;font-weight:800;font-size:.9rem}
+.nh7-appearance-grid select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:13px;background:var(--card);color:var(--ink)}
+.nh7-appearance-toggle{grid-column:1/-1;display:flex!important;flex-direction:row!important;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;border:1px solid var(--line);border-radius:13px}
+.nh7-appearance-toggle input{width:22px!important;height:22px!important;min-height:22px!important;flex:0 0 22px}
+.nh7-appearance-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
+#nh7AppearanceStatus{font-size:.86rem;font-weight:850;color:var(--accent)}
+html[data-nh7-theme="dark"] .nh7-appearance-panel{background:#0c1929!important;border-color:var(--nh7-dark-line)!important}
+html[data-nh7-theme="dark"] .nh7-appearance-panel .nh7-appearance-help{color:var(--nh7-dark-muted)!important}
+
+/* Optional subtle Home visual. */
+html[data-nh7-home-visual="1"] #view .card.hero{
+  background-image:linear-gradient(135deg,rgba(3,104,200,.94),rgba(9,167,232,.90),rgba(22,184,92,.90)),url("../assets/logo.png")!important;
+  background-repeat:no-repeat!important;
+  background-position:center,right 18px center!important;
+  background-size:auto,100px!important;
+}
+html[data-nh7-home-visual="0"] #view .card.hero{background-image:linear-gradient(135deg,#0268c8 0%,#09a7e8 45%,#16b85c 100%)!important}
+
+.tile,.list-btn,.primary-btn,.secondary-btn,.nav-item{transition:transform .14s ease,filter .14s ease}
+@media(hover:none){.tile:active,.list-btn:active,.primary-btn:active,.secondary-btn:active,.nav-item:active{transform:scale(.98)}}
+@media(max-width:520px){.nh7-appearance-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.tile,.list-btn,.primary-btn,.secondary-btn,.nav-item{transition:none!important}}
