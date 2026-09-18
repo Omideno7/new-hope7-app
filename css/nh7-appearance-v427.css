@@ -126,7 +126,7 @@ html[data-nh7-theme="dark"] #view .hero small{color:#fff!important}
 .amen-card p,
 .amen-card small{color:#0b2d4f!important}
 .amen-card #amenMessage{color:#173f66!important}
-.amen-logo{object-fit:contain!important;background:#fff!important;padding:4px!important;width:108px!important;height:108px!important;border-radius:24px!important}
+.amen-logo{object-fit:contain!important;background:#fff!important;padding:2px!important;width:150px!important;height:150px!important;border-radius:22px!important}
 
 /* Higher quality logo treatment inside the app. */
 .brand img{object-fit:contain!important;background:#fff!important;padding:3px!important;border-radius:16px!important}
