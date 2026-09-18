@@ -23,7 +23,7 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Verify real Preview URL
         env:
-          BIBLE_PREVIEW_URL: https://raw.githack.com/Omideno7/new-hope7-app/0ccca98240f64cff5b2d4d4e18f962b639431709/bible-preview.html
+          BIBLE_PREVIEW_URL: https://rawcdn.githack.com/Omideno7/new-hope7-app/0ccca98240f64cff5b2d4d4e18f962b639431709/bible-preview.html
         run: |
           python - <<'PY'
           import json, os, re
@@ -56,7 +56,7 @@ jobs:
                       expect(page.locator('#amenButton')).to_be_visible()
                       assert page.evaluate('window.NH7_BIBLE_PREVIEW') is True
                       gateway_requests=list(requests);requests.clear();errors.clear()
-                      response=page.reload(wait_until='networkidle',timeout=90000)
+                      response=page.reload(wait_until='domcontentloaded',timeout=90000)
                   expect(page.locator('#amenButton')).to_be_visible();page.locator('#amenButton').click()
                   assert page.evaluate('window.NH7_BIBLE_PREVIEW') is True
                   page.locator('[data-route="bible"]').click()
