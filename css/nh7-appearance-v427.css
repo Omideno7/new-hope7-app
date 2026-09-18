@@ -205,3 +205,6 @@ html[data-nh7-accent] #view a{color:var(--brand)}
 html[data-nh7-theme="dark"] .nh7-theme-quick button{background:#0f1d2e;color:var(--nh7-dark-ink);border-color:var(--nh7-dark-line)}
 html[data-nh7-theme="dark"] .nh7-theme-quick button.is-selected{background:linear-gradient(135deg,var(--brand),var(--brand2))!important;color:#fff!important}
 @media(max-width:480px){.nh7-theme-quick{grid-template-columns:1fr}.nh7-theme-quick button{min-height:44px}}
+
+.nh7-custom-color{width:100%!important;height:44px!important;min-height:44px!important;padding:4px!important;margin-top:8px;border:1px solid var(--line)!important;border-radius:12px!important;background:var(--card)!important}
+html[data-nh7-theme="dark"] .nh7-custom-color{background:#0f1d2e!important;border-color:var(--nh7-dark-line)!important}
