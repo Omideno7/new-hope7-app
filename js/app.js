@@ -1474,6 +1474,7 @@ async function apocrypha(params={}){
 async function bibleSearch(q,options={}){
   await loadBibleMeta();
   q=String(q||'').trim();
+  if(!q)return bible({section:'written'});
   const fromKeywords=String(options?.fromKeywords||'')==='1';
   const lang=state.lang;
   const normalizedQuery=normalizeBibleKeywordTextV450(q,lang);
