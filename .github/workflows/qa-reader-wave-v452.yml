@@ -33,13 +33,17 @@ jobs:
           git ls-remote origin refs/heads/main > qa-reader452/main-before.txt
           test "$(cut -f1 qa-reader452/main-before.txt)" = "$MAIN_BASE"
           python scripts/reader-wave-v452/prepare.py
+          python scripts/reader-wave-v452/finalize.py
+          python scripts/reader-wave-v452/build_preview.py
           find js css -type f -print0 | sort -z | xargs -0 sha256sum > qa-reader452/idempotence-before.txt
-          sha256sum index.html >> qa-reader452/idempotence-before.txt
+          sha256sum index.html reader-preview.html >> qa-reader452/idempotence-before.txt
           python scripts/reader-wave-v452/prepare.py
+          python scripts/reader-wave-v452/finalize.py
+          python scripts/reader-wave-v452/build_preview.py
           find js css -type f -print0 | sort -z | xargs -0 sha256sum > qa-reader452/idempotence-after.txt
-          sha256sum index.html >> qa-reader452/idempotence-after.txt
+          sha256sum index.html reader-preview.html >> qa-reader452/idempotence-after.txt
           diff qa-reader452/idempotence-before.txt qa-reader452/idempotence-after.txt
-          for file in js/app.js js/nh7-app-enhancements-v230.js js/nh7-my-notes-v234.js js/nh7-reader-toolbar-v452.js js/nh7-my-notes-categories-v452.js js/nh7-apocrypha-preview-v240.js js/nh7-apocrypha-actions-v393.js js/nh7-reader-ux-v251.js; do node --check "$file"; done
+          for file in js/app.js js/nh7-app-enhancements-v230.js js/nh7-my-notes-v234.js js/nh7-reader-toolbar-v452.js js/nh7-my-notes-categories-v452.js js/nh7-apocrypha-preview-v240.js js/nh7-apocrypha-actions-v393.js js/nh7-reader-ux-v251.js js/nh7-reader-preview-v452.js js/nh7-reader-preview-app-v452.js; do node --check "$file"; done
           python -m py_compile scripts/reader-wave-v452/*.py
           git diff --check
           git diff --exit-code "$MAIN_BASE" -- data/bible data/apocrypha
@@ -49,6 +53,7 @@ jobs:
           hashes={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
           data=json.loads(pathlib.Path('data/bible/keywords/bible_keywords_v450.json').read_text())
           assert all(len(data['languages'][lang])==2500 for lang in ['fa','en','hr'])
+          assert 'nh7-reader-preview-v452.js' not in pathlib.Path('index.html').read_text()
           pathlib.Path('qa-reader452/corpus-report.json').write_text(json.dumps({'status':'passed','corpusUnchangedFromMain':True,'keywordsPerLanguage':2500,'hashes':hashes},indent=2))
           PY
       - name: Install pinned browser tools
@@ -62,20 +67,26 @@ jobs:
         run: QA_ENGINE=chromium python scripts/reader-wave-v452/browser.py
       - name: WebKit reader and notes tests
         run: QA_ENGINE=webkit python scripts/reader-wave-v452/browser.py
+      - name: Isolated Preview verification
+        run: python scripts/reader-wave-v452/preview_browser.py
       - name: Commit verified adapters to feature branch only
         run: |
           set -euo pipefail
           test "$GITHUB_REF" = "refs/heads/$PREVIEW_BRANCH"
           test "$(git ls-remote origin "refs/heads/$PREVIEW_BRANCH" | cut -f1)" = "$GITHUB_SHA"
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MAIN_BASE"
-          git add index.html js/app.js js/nh7-app-enhancements-v230.js js/nh7-my-notes-v234.js js/nh7-apocrypha-preview-v240.js js/nh7-apocrypha-actions-v393.js js/nh7-reader-ux-v251.js
+          git add index.html js/app.js js/nh7-app-enhancements-v230.js js/nh7-my-notes-v234.js js/nh7-apocrypha-preview-v240.js js/nh7-apocrypha-actions-v393.js js/nh7-reader-ux-v251.js js/nh7-reader-toolbar-v452.js js/nh7-reader-preview-app-v452.js reader-preview.html css/nh7-reader-preview-*.css scripts/reader-wave-v452/browser.py
           if ! git diff --cached --quiet; then
-            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'fix(reader): verified localized reader adapters and preserved legacy user data'
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'fix(reader): verified three-language toolbar, safe notes and isolated Preview'
             git push origin "HEAD:refs/heads/$PREVIEW_BRANCH"
           fi
           git rev-parse HEAD > qa-reader452/tested-commit.txt
           git ls-remote origin refs/heads/main > qa-reader452/main-after.txt
           diff qa-reader452/main-before.txt qa-reader452/main-after.txt
+      - name: Verify actual immutable public Preview
+        run: |
+          export QA_PREVIEW_URL="https://rawcdn.githack.com/Omideno7/new-hope7-app/$(cat qa-reader452/tested-commit.txt)/reader-preview.html"
+          python scripts/reader-wave-v452/preview_browser.py
       - name: Collect candidate evidence
         if: always()
         run: |
@@ -83,8 +94,9 @@ jobs:
           git diff "$MAIN_BASE" -- js css index.html > qa-reader452/reader.patch
           python - <<'PY'
           import pathlib,tarfile
-          names=['index.html','js/app.js','js/nh7-app-enhancements-v230.js','js/nh7-my-notes-v234.js','js/nh7-reader-toolbar-v452.js','js/nh7-my-notes-categories-v452.js','js/nh7-apocrypha-preview-v240.js','js/nh7-apocrypha-actions-v393.js','js/nh7-reader-ux-v251.js','css/nh7-reader-toolbar-v452.css','css/nh7-notes-categories-v452.css']
+          names=['index.html','js/app.js','js/nh7-app-enhancements-v230.js','js/nh7-my-notes-v234.js','js/nh7-reader-toolbar-v452.js','js/nh7-my-notes-categories-v452.js','js/nh7-apocrypha-preview-v240.js','js/nh7-apocrypha-actions-v393.js','js/nh7-reader-ux-v251.js','css/nh7-reader-toolbar-v452.css','css/nh7-notes-categories-v452.css','js/nh7-reader-preview-app-v452.js','js/nh7-reader-preview-v452.js','reader-preview.html']
           names += [str(p) for p in pathlib.Path('scripts/reader-wave-v452').glob('*.py')]
+          names += [str(p) for p in pathlib.Path('css').glob('nh7-reader-preview-*.css')]
           with tarfile.open('qa-reader452/tested-source.tgz','w:gz') as tar:
               for name in names:
                   if pathlib.Path(name).exists():tar.add(name,arcname=name)
