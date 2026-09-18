@@ -5,10 +5,10 @@ on:
     paths:
       - '.github/workflows/preview-bible-v451.yml'
       - 'scripts/bible-preview/**'
-      - 'js/nh7-bible-preview-v451.js'
+      - 'js/nh7-bible-*-v451.js'
       - 'bible-preview.html'
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: bible-preview-v451
   cancel-in-progress: true
@@ -19,40 +19,75 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          persist-credentials: false
-      - name: Validate existing Bible JavaScript
-        run: node --check js/app.js
-      - name: Read-only source audit
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prepare isolated candidate
         run: |
           mkdir -p qa-output
-          python3 - <<'PY'
-          import json, pathlib, subprocess, tarfile
-          root=pathlib.Path('.')
-          paths=subprocess.check_output(['git','ls-files'],text=True).splitlines()
-          selected=[p for p in paths if 'bible' in p.lower() or 'preview' in p.lower() or 'readonly' in p.lower() or 'guard' in p.lower()]
-          print('RELATED_FILES',json.dumps(selected,ensure_ascii=False))
-          p=root/'data/bible/keywords/bible_keywords_v450.json'
-          data=json.loads(p.read_text())
-          print('KEYWORD_METADATA',json.dumps({k:v for k,v in data.items() if k!='languages'},ensure_ascii=False)[:6000])
-          for lang,words in data['languages'].items():
-              assert len(words)==2500,(lang,len(words))
-              assert len({x['term'] for x in words})==2500,lang
-              assert all(x.get('term') and int(x.get('count',0))>0 for x in words),lang
-              print('KEYWORDS',lang,len(words),json.dumps(words[:12],ensure_ascii=False))
-          for p in sorted((root/'data/bible/groups').glob('*.json')):
-              data=json.loads(p.read_text())
-              print('GROUP',p.name,'books',len(data.get('books',[])),'verses',len(data.get('verses',[])))
-              print('SAMPLE',json.dumps(data.get('verses',[])[:1],ensure_ascii=False)[:3000])
-          with tarfile.open('qa-output/source.tgz','w:gz') as tar:
-              for name in paths:
-                  p=root/name
-                  if p.is_file(): tar.add(p,arcname=name,recursive=False)
-          print('SNAPSHOT_BYTES',(root/'qa-output/source.tgz').stat().st_size)
+          git ls-remote origin refs/heads/main > qa-output/main-before.txt
+          python - <<'PY'
+          import base64,gzip,hashlib,json,pathlib
+          p=pathlib.Path('scripts/bible-preview/candidate.b64')
+          if p.exists():
+              encoded=p.read_text().strip()
+              if len(encoded)==17003:
+                  for i,j,old,new in reversed([[2653,2654,'c',''],[2815,2816,'5',''],[13274,13276,'ec','+']]):
+                      assert encoded[i:j]==old
+                      encoded=encoded[:i]+new+encoded[j:]
+              raw=base64.b64decode(encoded)
+              assert hashlib.sha256(raw).hexdigest()=='ede27b180ee00dfeb6d4ab265b6e3029d39e5884259ec651568101d827a81fdc'
+              files=json.loads(gzip.decompress(raw))
+              allowed={'js/nh7-bible-keywords-v451.js','js/nh7-bible-preview-v451.js','css/nh7-bible-keywords-v450.css','scripts/bible-preview/apply.mjs','scripts/bible-preview/audit.mjs','scripts/bible-preview/browser.py'}
+              assert set(files)==allowed
+              for name,text in files.items():
+                  path=pathlib.Path(name);path.parent.mkdir(parents=True,exist_ok=True);path.write_text(text)
           PY
-      - name: Optional additional preview checks
+          node scripts/bible-preview/apply.mjs
+          sha256sum js/app.js js/nh7-app-enhancements-v230.js data/bible/keywords/bible_keywords_v450.json > qa-output/idempotence-before.txt
+          node scripts/bible-preview/apply.mjs
+          sha256sum js/app.js js/nh7-app-enhancements-v230.js data/bible/keywords/bible_keywords_v450.json > qa-output/idempotence-after.txt
+          diff qa-output/idempotence-before.txt qa-output/idempotence-after.txt
+          node --check js/app.js
+          node --check js/nh7-app-enhancements-v230.js
+          node --check js/nh7-bible-keywords-v451.js
+          node --check js/nh7-bible-preview-v451.js
+          node scripts/bible-preview/audit.mjs
+      - name: Install pinned browser test dependency
         run: |
-          if [ -f scripts/bible-preview/audit.mjs ]; then node scripts/bible-preview/audit.mjs; fi
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Test Bible UI without production services
+        run: python scripts/bible-preview/browser.py
+      - name: Commit verified candidate to Preview only
+        env:
+          PREVIEW_BRANCH: feature/bible-keywords-v450-preview-20260918
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/$PREVIEW_BRANCH"
+          test "$(git ls-remote origin "refs/heads/$PREVIEW_BRANCH" | cut -f1)" = "$GITHUB_SHA"
+          rm -f scripts/bible-preview/candidate.b64
+          git add js/app.js js/nh7-app-enhancements-v230.js js/nh7-bible-keywords-v451.js js/nh7-bible-preview-v451.js css/nh7-bible-keywords-v450.css data/bible/keywords/bible_keywords_v450.json index.html service-worker.js sw-release-core-v403.js bible-preview.html scripts/bible-preview/apply.mjs scripts/bible-preview/audit.mjs scripts/bible-preview/browser.py
+          git add -u scripts/bible-preview/candidate.b64 || true
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'fix(bible): verified 2500-word concordance and isolated preview v4.5.1'
+            git push origin "HEAD:refs/heads/$PREVIEW_BRANCH"
+          fi
+          git rev-parse HEAD > qa-output/preview-commit.txt
+          git ls-remote origin refs/heads/main > qa-output/main-after.txt
+          diff qa-output/main-before.txt qa-output/main-after.txt
+      - name: Collect candidate evidence
+        if: always()
+        run: |
+          python - <<'PY'
+          import pathlib,tarfile
+          with tarfile.open('qa-output/candidate.tgz','w:gz') as tar:
+              for name in ['js/app.js','js/nh7-app-enhancements-v230.js','js/nh7-bible-keywords-v451.js','js/nh7-bible-preview-v451.js','css/nh7-bible-keywords-v450.css','data/bible/keywords/bible_keywords_v450.json','index.html','service-worker.js','sw-release-core-v403.js','bible-preview.html','scripts/bible-preview/apply.mjs','scripts/bible-preview/audit.mjs','scripts/bible-preview/browser.py']:
+                  if pathlib.Path(name).exists():tar.add(name,arcname=name)
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
