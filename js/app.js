@@ -2213,7 +2213,7 @@ function nh7BindAppearanceSettings(){
   const tell=message=>{const n=$('#nh7AppearanceStatus');if(!n)return;n.textContent=message;clearTimeout(n.__nh7t);n.__nh7t=setTimeout(()=>{n.textContent=''},1800)};
   const theme=$('#nh7ThemeSelect'),accent=$('#nh7AccentSelect'),size=$('#nh7TextSizeSelect'),font=$('#nh7FontSelect'),home=$('#nh7HomeVisualToggle');
   if(theme)theme.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.theme,e.target.value);nh7UiApply();render('settings',{},true)};
-  $('[data-nh7-theme-quick]').forEach(b=>b.onclick=()=>{nh7UiWrite(NH7_UI_PREF_KEYS.theme,b.dataset.nh7ThemeQuick);nh7UiApply();render('settings',{},true)});
+  Array.from(document.querySelectorAll('[data-nh7-theme-quick]')).forEach(b=>b.onclick=()=>{nh7UiWrite(NH7_UI_PREF_KEYS.theme,b.dataset.nh7ThemeQuick);nh7UiApply();render('settings',{},true)});
   if(accent)accent.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.accent,e.target.value);nh7UiApply();render('settings',{},true)};
   if(size)size.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.size,e.target.value);nh7UiApply();tell('✓')};
   if(font)font.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.font,e.target.value);nh7UiApply();tell('✓')};
