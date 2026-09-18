@@ -139,6 +139,10 @@ with sync_playwright() as pw:
         passed('Note editing and reload persistence; original non-preview data byte-identical')
         page.set_viewport_size({'width':390,'height':844})
         page.locator('#v-16 .verse-text').click()
+        page.wait_for_timeout(350)
+        box=page.locator('#v-16 .verse-tools').bounding_box()
+        assert box and box['height']<=110 and box['x']>=0 and box['x']+box['width']<=390,box
+        passed('Compact mobile action bar remains within the viewport')
         page.screenshot(path=str(OUT/'bible-chapter-mobile.png'))
         external=[r for r in requests if not r['url'].startswith(BASE+'/')]
         writes=[r for r in requests if r['method'] not in ['GET','HEAD']]
