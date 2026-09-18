@@ -2155,7 +2155,8 @@ function nh7UiApply(){
   root.dataset.nh7Accent=p.accent;
   const palettes={blue:['#1d4ed8','#38bdf8','#16a34a'],green:['#15803d','#22c55e','#0f766e'],red:['#b91c1c','#ef4444','#f97316'],purple:['#7e22ce','#a855f7','#db2777'],orange:['#c2410c','#f97316','#f59e0b'],teal:['#0f766e','#14b8a6','#06b6d4'],pink:['#be185d','#ec4899','#a855f7']};
   const palette=palettes[p.accent]||palettes.blue;
-  root.style.setProperty('--brand',palette[0]);root.style.setProperty('--brand2',palette[1]);root.style.setProperty('--accent',palette[2]);
+  const softs={blue:'rgba(29,78,216,.14)',green:'rgba(21,128,61,.14)',red:'rgba(185,28,28,.14)',purple:'rgba(126,34,206,.14)',orange:'rgba(194,65,12,.14)',teal:'rgba(15,118,110,.14)',pink:'rgba(190,24,93,.14)'};
+  root.style.setProperty('--brand',palette[0]);root.style.setProperty('--brand2',palette[1]);root.style.setProperty('--accent',palette[2]);root.style.setProperty('--nh7-module-soft',softs[p.accent]||softs.blue);
   root.style.fontSize=p.size+'%';
   const stack=nh7UiFontStack(p.font);
   if(stack){root.dataset.nh7Font=p.font;root.style.setProperty('--nh7-user-font',stack)}
