@@ -45,5 +45,7 @@ async function share(card){
 function bind(card,r){r.querySelector('[data-like]').onclick=()=>like(card);r.querySelector('[data-bless]').onclick=()=>r.querySelector('[data-compose]').classList.toggle('open');r.querySelector('[data-submit]').onclick=()=>bless(card);r.querySelector('[data-share]').onclick=()=>share(card);r.onclick=e=>{const b=e.target.closest('[data-delete]');if(b)del(card,b.dataset.delete)}}
 function patch(){addStyle();document.querySelectorAll('[data-sermon-card]').forEach(card=>{if(valid(card)){shell(card);load(card)}})}
 function openShared(){const sid=new URL(location.href).searchParams.get('sermon');if(!UUID.test(String(sid||'')))return;let tries=0;const tick=()=>{const card=document.querySelector('[data-sermon-card="'+CSS.escape(sid)+'"]');if(card){card.scrollIntoView({behavior:'smooth',block:'center'});return}if(tries===0)document.querySelector('[data-route="more"]')?.click();if(tries===3)document.querySelector('[data-go="audio"]')?.click();if(tries++<24)setTimeout(tick,300)};setTimeout(tick,500)}
-new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(patch,80)}).observe(document.documentElement,{childList:true,subtree:true});window.addEventListener('pageshow',patch);addStyle();patch();openShared();window.NH7_SERMON_SOCIAL_VERSION='4.4.3';
+window.NH7_SERMON_SOCIAL_PATCH=patch;
+window.NH7_SERMON_SOCIAL_REFRESH_CARD=card=>{if(valid(card)){cache.delete(id(card));shell(card);load(card,true)}};
+new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(patch,80)}).observe(document.documentElement,{childList:true,subtree:true});window.addEventListener('pageshow',patch);addStyle();patch();openShared();window.NH7_SERMON_SOCIAL_VERSION='4.4.6';
 })();
