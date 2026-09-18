@@ -1756,12 +1756,43 @@ function bindInlineSermonControls(){
   $$('[data-inline-player]').forEach(panel=>{const id=String(panel.dataset.inlinePlayer);panel.querySelector('[data-inline-play]')?.addEventListener('click',()=>{const item=window.__sermonMap?.[id];if(item)playSermon(item)});panel.querySelector('[data-inline-back]')?.addEventListener('click',()=>{const a=ensureSermonPlayer();a.currentTime=Math.max(0,a.currentTime-15)});panel.querySelector('[data-inline-forward]')?.addEventListener('click',()=>{const a=ensureSermonPlayer();a.currentTime=Math.min(a.duration||Infinity,a.currentTime+30)});panel.querySelector('[data-inline-seek]')?.addEventListener('input',e=>{const a=ensureSermonPlayer();if(Number.isFinite(a.duration))a.currentTime=(Number(e.target.value)/1000)*a.duration});panel.querySelector('[data-inline-speed]')?.addEventListener('change',e=>{const a=ensureSermonPlayer();a.playbackRate=Number(e.target.value)||1;localStorage.setItem('nh7_sermon_speed',String(a.playbackRate));saveProgressCloud('nh7_sermon_speed',{__raw:String(a.playbackRate)}).catch(console.warn)})});
 }
 
+const NH7_AUDIO_CATALOG_CACHE_V446='nh7_audio_catalog_cache_v446';
+function nh7ReadAudioCatalogCacheV446(){
+  try{
+    const d=JSON.parse(sessionStorage.getItem(NH7_AUDIO_CATALOG_CACHE_V446)||'null');
+    if(!d||!Array.isArray(d.categories)||!Array.isArray(d.sermons)||!d.sermons.length)return null;
+    return d;
+  }catch(e){return null}
+}
+function nh7WriteAudioCatalogCacheV446(categories,sermons){
+  try{
+    if(Array.isArray(categories)&&Array.isArray(sermons)&&sermons.length){
+      sessionStorage.setItem(NH7_AUDIO_CATALOG_CACHE_V446,JSON.stringify({categories,sermons,at:Date.now()}));
+    }
+  }catch(e){}
+}
+function nh7MountAudioEnhancementsV446(){
+  const run=()=>{
+    try{window.NH7_AUDIO_LIST_DETAIL_PATCH?.()}catch(e){}
+    try{window.NH7_SERMON_SOCIAL_PATCH?.()}catch(e){}
+  };
+  requestAnimationFrame(run);
+  setTimeout(run,80);
+  setTimeout(run,260);
+}
+
 async function audio(params={}){
   if(!await nh7RequireSchoolAccessV223(tr('audio')))return;
   let categories=[],sermons=[];
   try{
-    categories=await cloudFetch('sermon_categories?select=*&is_active=eq.true&order=sort_order.asc,name_fa.asc',{method:'GET'}); sermons=await cloudFetch('sermons?select=*&is_published=eq.true&order=sort_order.asc,published_at.desc',{method:'GET'});
-  }catch(e){console.warn('Dynamic sermons unavailable; using bundled audio list',e)}
+    categories=await cloudFetch('sermon_categories?select=*&is_active=eq.true&order=sort_order.asc,name_fa.asc',{method:'GET'});
+    sermons=await cloudFetch('sermons?select=*&is_published=eq.true&order=sort_order.asc,published_at.desc',{method:'GET'});
+    nh7WriteAudioCatalogCacheV446(categories,sermons);
+  }catch(e){
+    console.warn('Dynamic sermons unavailable; trying cached catalog before bundled audio list',e);
+    const cached=nh7ReadAudioCatalogCacheV446();
+    if(cached){categories=cached.categories;sermons=cached.sermons}
+  }
   if(Array.isArray(sermons)&&sermons.length){
     const catId=params.cat||''; const q=String(params.q||'').trim().toLowerCase();
     const filtered=sermons.filter(x=>(!catId||String(x.category_id)===String(catId))&&(!q||[x.title_fa,x.title_en,x.title_hr,x.description_fa,x.description_en,x.description_hr].some(v=>String(v||'').toLowerCase().includes(q))));
@@ -1769,14 +1800,14 @@ async function audio(params={}){
     if(params.open){const x=sermons.find(v=>String(v.id)===String(params.open));if(x)playSermon(x);navigate('audio',{cat:catId,q:params.q||''},true);return}
     const list=filtered.length?`<div class="sermon-list">${filtered.map(x=>{const title=x['title_'+state.lang]||x.title_fa||x.title_en;let progress={};try{progress=JSON.parse(localStorage.getItem(sermonProgressKey(x.id))||'{}')}catch(e){}const duration=sermonDurationLabel(x)||formatAudioTime(progress.duration||0);return `<article class="sermon-card" data-sermon-card="${html(x.id)}"><div class="sermon-card-main">${x.cover_url?`<img src="${html(x.cover_url)}" alt="">`:'<span class="sermon-placeholder">🎙</span>'}<div class="sermon-card-copy"><strong>${html(title)}</strong><small>${duration?`${tr('duration')}: ${localText(duration)} · `:''}${x.youtube_url?'YouTube · ':''}${x.audio_url?'MP3':''}</small><div class="sermon-card-actions">${x.audio_url?`<button class="primary-btn compact-player-btn" data-sermon-play="${html(x.id)}">▶ ${progress.time>5?tr('continueListening'):tr('listenAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(x.audio_url)}" data-offline-title="${html(title)}">${state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline'}</button>`:''}<button class="secondary-btn compact-player-btn" data-sermon-note="${html(x.id)}">📝 ${tr('sermonNoteButton')}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(x.id)}"><div class="inline-player-controls"><button class="player-round" data-inline-back>↶15</button><button class="player-main" data-inline-play>▶</button><button class="player-round" data-inline-forward>30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek type="range" min="0" max="1000" value="0"><span data-inline-total>${duration||'0:00'}</span></div></div></article>`}).join('')}</div>`:`<p class="muted">${tr('noSermons')}</p>`;
     view.innerHTML=card(tr('sermons'),`<input id="sermonSearch" placeholder="${tr('sermonSearch')}" value="${html(params.q||'')}"><div class="tabs"><button class="tab ${!catId?'active':''}" data-go="audio">${tr('allCategories')}</button>${(categories||[]).map(c=>`<button class="tab ${String(catId)===String(c.id)?'active':''}" data-go="audio" data-params='${html(JSON.stringify({cat:c.id}))}'>${html(c['name_'+state.lang]||c.name_fa||c.name_en)}</button>`).join('')}</div>${list}`);
-    $('#sermonSearch')?.addEventListener('change',e=>navigate('audio',{cat:catId,q:e.target.value},true));bindInlineSermonControls();updateInlineSermonPlayers();return;
+    $('#sermonSearch')?.addEventListener('change',e=>navigate('audio',{cat:catId,q:e.target.value},true));bindInlineSermonControls();updateInlineSermonPlayers();nh7MountAudioEnhancementsV446();return;
   }
   const d=await jfetch('data/audio/messages.json');
   if(params.cat){
     const c=d.categories.find(x=>x.id===params.cat),items=c?.items||[],topic=pick(c?.title)||tr('audio');
     window.__sermonMap=Object.fromEntries(items.map(it=>{const id='bundled-'+String(it.id||simpleHash(it.src||it.title||''));return[id,{id,audio_url:it.src||'',title_fa:it.title?.fa||it.title?.en||'Audio',title_en:it.title?.en||it.title?.fa||'Audio',title_hr:it.title?.hr||it.title?.en||'Audio',analytics_type:'sermon',analytics_id:String(it.id||id),analytics_topic:topic,analytics_source_group:String(c?.id||''),analytics_language:state.lang}]}));
     const list=items.length?`<div class="sermon-list">${items.map(it=>{const id='bundled-'+String(it.id||simpleHash(it.src||it.title||'')),title=pick(it.title)||it.title||'Audio';let progress={};try{progress=JSON.parse(localStorage.getItem(sermonProgressKey(id))||'{}')}catch(e){}const duration=formatAudioTime(progress.duration||0);return`<article class="sermon-card" data-sermon-card="${html(id)}"><div class="sermon-card-main"><span class="sermon-placeholder">🎧</span><div class="sermon-card-copy"><strong>${html(title)}</strong><small>${duration!=='0:00'?`${tr('duration')}: ${localText(duration)} · `:''}MP3</small><div class="sermon-card-actions"><button class="primary-btn compact-player-btn" data-sermon-play="${html(id)}">▶ ${progress.time>5?tr('continueListening'):tr('listenAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(it.src||'')}" data-offline-title="${html(title)}">${state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline'}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(id)}"><div class="inline-player-controls"><button class="player-round" data-inline-back>↶15</button><button class="player-main" data-inline-play>▶</button><button class="player-round" data-inline-forward>30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek type="range" min="0" max="1000" value="0"><span data-inline-total>${duration}</span></div></div></article>`}).join('')}</div>`:`<p class="muted">${tr('noAudio')}</p>`;
-    view.innerHTML=card(topic,list);bindInlineSermonControls();updateInlineSermonPlayers();return
+    view.innerHTML=card(topic,list);bindInlineSermonControls();updateInlineSermonPlayers();nh7MountAudioEnhancementsV446();return
   }
   view.innerHTML=card(tr('audio'),`<div class="grid">${d.categories.map(c=>tile('audio','🎧',pick(c.title),`${tr('all')}: ${localNum((c.items||[]).length)}`,{cat:c.id})).join('')}</div>`);
 }
