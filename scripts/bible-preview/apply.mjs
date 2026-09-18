@@ -61,12 +61,16 @@ const head=`\n<meta http-equiv="Content-Security-Policy" content="default-src 's
 preview=preview.replace('<head>','<head>'+head);
 preview=preview.replace('<main id="view"',`<aside class="nh7-preview-notice" dir="rtl"><strong>Preview اختصاصی Bible — نسخهٔ ۴٫۵٫۱</strong><div>ذخیره‌ها و یادداشت‌های این صفحه آزمایشی و جدا هستند؛ هیچ اتصالی به حساب یا پایگاه دادهٔ اصلی برقرار نمی‌شود.</div><div dir="ltr">Bible-only preview · Local test data · No production connection</div><div><button type="button" data-bible-preview-theme="light">روشن / Light</button><button type="button" data-bible-preview-theme="dark">تیره / Dark</button></div></aside><main id="view"`);
 // Keep Preview offline from external font services without changing production styles.
+const previewLogo='data:image/png;base64,'+fs.readFileSync('assets/new-hope7-logo-192.png').toString('base64');
+const inlinePreviewLogo=value=>value.replace(/(?:\.\.\/)?assets\/new-hope7-logo-(?:1024|512|192|180)\.png(?:\?[^\s"'()<>]*)?/g,previewLogo);
 for(const match of [...preview.matchAll(/<link\b[^>]*href="(css\/[^"?]+)(?:\?[^\"]*)?"[^>]*>/g)]){
   const path=match[1],css=fs.readFileSync(path,'utf8');
-  if(!/^@import[^\n]*https?:/m.test(css))continue;
+  const safeCss=inlinePreviewLogo(css.replace(/^@import[^\n]*https?:[^\n]*\n?/gm,''));
+  if(safeCss===css)continue;
   const safePath=path.replace('css/','css/nh7-bible-preview-');
-  fs.writeFileSync(safePath,css.replace(/^@import[^\n]*https?:[^\n]*\n?/gm,''));
+  fs.writeFileSync(safePath,safeCss);
   preview=preview.replace(match[0],match[0].replace(/href="[^\"]*"/,'href="'+safePath+'?v=4.5.1"'));
 }
+preview=inlinePreviewLogo(preview);
 fs.writeFileSync('bible-preview.html',preview);
 console.log('Candidate prepared. Bible corpus and legacy storage keys unchanged.');
