@@ -57,4 +57,25 @@ def test(s):
         assert marker in s;s=s.replace(marker,check+marker,1)
     return s
 edit('scripts/bible-preview/browser.py',test)
+
+# Prevent shrink-to-fit from collapsing the action bar into a tall column.
+compact_tools="""\n/* v451 compact toolbar: bounded width, no tall shrink-to-fit column. */
+.reader .reader-verse .verse-tools:not(.hidden){width:max-content;max-width:calc(100vw - 24px)!important;padding:6px;gap:4px;flex-wrap:wrap;box-sizing:border-box}
+.reader .verse-tools>.secondary-btn,.reader .verse-tools>.highlight-control>.secondary-btn{padding:6px 7px;min-height:38px;font-size:.76rem;line-height:1.3}
+.reader .nh7-bible-cancel{min-width:34px}
+"""
+edit('css/nh7-bible-keywords-v450.css',lambda s:s if 'v451 compact toolbar:' in s else s+compact_tools)
+
+def toolbar_test(s):
+    anchor="        page.screenshot(path=str(OUT/'bible-chapter-mobile.png'))"
+    check="""        page.wait_for_timeout(350)
+        box=page.locator('#v-16 .verse-tools').bounding_box()
+        assert box and box['height']<=110 and box['x']>=0 and box['x']+box['width']<=390,box
+        passed('Compact mobile action bar remains within the viewport')
+"""
+    if 'Compact mobile action bar' not in s:
+        assert anchor in s;s=s.replace(anchor,check+anchor)
+    return s
+edit('scripts/bible-preview/browser.py',toolbar_test)
+
 print('Candidate refinements applied; CSP stays strict and source verse text stays unchanged.')
