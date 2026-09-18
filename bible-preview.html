@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob:; font-src 'self' data:; media-src 'none'; worker-src 'none'; frame-src 'none'; object-src 'none'; form-action 'none'; base-uri 'self'">
+<meta name="robots" content="noindex,nofollow">
+<script src="js/nh7-bible-preview-v451.js?v=4.5.1"></script>
+<style>.nav-item:not([data-route="home"]):not([data-route="bible"]),#inboxBtn,#quickNotify,[data-go]:not([data-go="bible"]):not([data-go="home"]){display:none!important}.nh7-preview-notice{margin:12px;padding:12px;border:1px solid #c2d8e8;border-radius:12px;background:#eef6fc;color:#17344b;line-height:1.7}.nh7-preview-notice button{margin:3px;padding:7px 12px}.nh7-preview-notice{font-size:.78rem;line-height:1.5}.nh7-preview-notice>div[dir="ltr"]{display:none}.nh7-preview-notice button{border:1px solid #9ab6cc;border-radius:8px;background:#fff;color:#17344b}</style>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#1d4ed8" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>New Hope 7 — Bible Preview 4.5.1</title>
+  
+  
+  <link rel="icon" href="assets/new-hope7-logo-192.png?v=4.4.7" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/new-hope7-logo-180.png?v=4.4.7" />
+  <link rel="stylesheet" href="css/styles.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-bible-preview-v2.2.0.css?v=4.5.1" />
+  <link rel="stylesheet" href="css/nh7-bible-preview-v2.2.2.css?v=4.5.1" />
+  <link rel="stylesheet" href="css/v2.2.3.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/nh7-bible-preview-v2.2.4.css?v=4.5.1" />
+  <link rel="stylesheet" href="css/v2.3.0-access-bible.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/v2.3.4-my-notes.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/nh7-book-reader-v280.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-library-collections-v322.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-secure-media-v270.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-secure-media-watermark-v272.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-apocrypha-v270.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-spiritual-plans-v240.css?v=4.1.2" />
+  <link rel="stylesheet" href="css/nh7-appearance-v427.css?v=4.4.7" />
+  <link rel="stylesheet" href="css/nh7-bible-keywords-v450.css?v=4.5.1" />
+  
+  
+</head>
+<body>
+  <div id="amenGate" class="amen-gate hidden" role="dialog" aria-modal="true">
+    <div class="amen-card">
+      <img src="assets/new-hope7-logo-1024.png?v=4.4.7" alt="New Hope 7" class="amen-logo" />
+      <h1 id="amenTitle">OmideNo7</h1>
+      <p id="amenMessage">God is with you today.</p>
+      <button id="amenButton" class="primary-btn">Amen</button>
+    </div>
+  </div>
+
+  <div id="appShell" class="app-shell">
+    <header class="topbar">
+      <button id="backBtn" class="icon-btn hidden" aria-label="Back">‹</button>
+      <div class="brand">
+        <img src="assets/new-hope7-logo-1024.png?v=4.4.7" alt="" />
+        <div>
+          <strong>OmideNo7 Church</strong>
+          <small id="breadcrumb">Home</small>
+        </div>
+      </div>
+      <button id="inboxBtn" class="icon-btn inbox-top-btn" aria-label="Inbox">📥<span id="inboxBadge" class="inbox-badge hidden">0</span></button>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">EN</option>
+        <option value="fa">FA</option>
+        <option value="hr">HR</option>
+      </select>
+    </header>
+
+    <aside class="nh7-preview-notice" dir="rtl"><strong>Preview اختصاصی Bible — نسخهٔ ۴٫۵٫۱</strong><div>ذخیره‌ها و یادداشت‌های این صفحه آزمایشی و جدا هستند؛ هیچ اتصالی به حساب یا پایگاه دادهٔ اصلی برقرار نمی‌شود.</div><div dir="ltr">Bible-only preview · Local test data · No production connection</div><div><button type="button" data-bible-preview-theme="light">روشن / Light</button><button type="button" data-bible-preview-theme="dark">تیره / Dark</button></div></aside><main id="view" class="view"></main>
+
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <button data-route="home" class="nav-item active"><span>⌂</span><small data-i18n="nav.home">Home</small></button>
+      <button data-route="daily" class="nav-item"><span>☀</span><small data-i18n="nav.daily">Daily</small></button>
+      <button data-route="bible" class="nav-item"><span>📖</span><small data-i18n="nav.bible">Bible</small></button>
+      <button data-route="plans" class="nav-item"><span>✓</span><small data-i18n="nav.plans">Plans</small></button>
+      <button data-route="school" class="nav-item"><span>🎓</span><small data-i18n="nav.school">School</small></button>
+      <button data-route="more" class="nav-item"><span>☰</span><small data-i18n="nav.more">More</small></button>
+    </nav>
+  </div>
+
+  <template id="loadingTpl"><section class="card"><p>Loading...</p></section></template>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="js/app.js?v=4.5.1-bible-qa" type="module"></script>
+  
+  
+  
+  <script src="js/nh7-app-enhancements-v230.js?v=4.5.1-bible" type="module"></script>
+  <script src="js/nh7-my-notes-v234.js?v=2.3.9.33" type="module"></script>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</body>
+</html>

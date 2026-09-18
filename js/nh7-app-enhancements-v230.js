@@ -95,6 +95,7 @@ function enhanceVerses(root=document){
 function clearSelection(){
   selected.forEach(v=>{v.node?.classList.remove('nh7-verse-selected-v230');v.node?.setAttribute('aria-selected','false')});
   selected.clear();
+  document.querySelectorAll('.reader-verse').forEach(v=>{v.classList.remove('verse-selected','nh7-verse-selected-v230');v.setAttribute('aria-selected','false');v.querySelectorAll('.verse-tools,.verse-note-box,.highlight-palette').forEach(x=>x.classList.add('hidden'))});
   removeAddedToolbar();
 }
 function readState(key){try{return JSON.parse(localStorage.getItem(key)||'{}')}catch(_){return{}}}
@@ -126,6 +127,7 @@ async function batchApply(action,value=''){
   selected.forEach(info=>{
     const st=readState(info.key);
     if(action==='save'){st.saved=true;bookmarks.add(info.ref);const button=info.node.querySelector('[data-bookmark]');if(button)button.textContent='★ '+t('ذخیره شد','Saved','Spremljeno')}
+    if(action==='unsave'){st.saved=false;bookmarks.delete(info.ref);const button=info.node.querySelector('[data-bookmark]');if(button)button.textContent='☆ '+t('ذخیره','Save','Spremi')}
     if(action==='highlight'){
       info.node.classList.remove('highlight-yellow','highlight-red','highlight-green','highlight-blue');
       if(value==='remove'){st.highlight=false;delete st.highlightColor;info.node.classList.remove('highlighted')}
@@ -139,7 +141,7 @@ async function batchApply(action,value=''){
   await syncPayload({batch_id:batchId,items});
 }
 function selectedText(){return [...selected.values()].map(v=>`${v.ref} — ${v.text}`).join('\n')}
-async function copySelected(share){const text=selectedText();try{if(share&&navigator.share)await navigator.share({text});else{await navigator.clipboard.writeText(text);alert(t('آیات انتخاب‌شده کپی شدند.','Selected verses copied.','Odabrani stihovi su kopirani.'))}}catch(error){console.warn(error)}}
+async function copySelected(share){const text=selectedText();try{if(share&&navigator.share)await navigator.share({text});else{await navigator.clipboard.writeText(text);alert(t('آیات انتخاب‌شده کپی شدند.','Selected verses copied.','Odabrani stihovi su kopirani.'))}clearSelection();}catch(error){console.warn(error)}}
 
 document.addEventListener('click',event=>{
   const share=event.target?.closest?.('[data-share-verse]');
@@ -148,7 +150,7 @@ document.addEventListener('click',event=>{
   const action=event.target?.closest?.('[data-bookmark],[data-highlight-color],[data-highlight-clear],[data-save-verse-note]');
   if(!action)return;
   setTimeout(()=>{
-    if(action.matches('[data-bookmark]'))batchApply('save');
+    if(action.matches('[data-bookmark]')){let refs=[];try{refs=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]')}catch(_){}batchApply([...selected.values()].every(info=>refs.includes(info.ref)||readState(info.key).saved===true)?'unsave':'save');}
     else if(action.matches('[data-highlight-color]'))batchApply('highlight',action.dataset.highlightColor||'yellow');
     else if(action.matches('[data-highlight-clear]'))batchApply('highlight','remove');
     else if(action.matches('[data-save-verse-note]')){
