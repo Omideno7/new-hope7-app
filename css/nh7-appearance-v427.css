@@ -183,3 +183,24 @@ html[data-nh7-theme="dark"] .sermon-note-dialog select{
   color:var(--nh7-dark-ink)!important;
   border-color:var(--nh7-dark-line)!important;
 }
+
+/* Settings 4.3.0 — visible theme choices + module color personalization */
+.nh7-theme-quick-wrap{grid-column:1/-1;display:grid;gap:7px}
+.nh7-appearance-label{font-weight:900;font-size:.92rem;color:var(--ink)}
+.nh7-theme-quick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.nh7-theme-quick button{border:1px solid var(--line);border-radius:14px;padding:11px 8px;background:var(--card);color:var(--ink);font:inherit;font-weight:850}
+.nh7-theme-quick button.is-selected{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff!important;border-color:transparent;box-shadow:0 7px 18px color-mix(in srgb,var(--brand) 25%,transparent)}
+.nh7-accent-control{grid-column:1/-1}
+.nh7-accent-control select{font-weight:850}
+html[data-nh7-accent] #view .primary-btn{background:linear-gradient(135deg,var(--brand),var(--brand2))!important;color:#fff!important}
+html[data-nh7-accent] #view .nav-item.active{background:var(--nh7-module-soft,rgba(29,78,216,.14))!important;color:var(--brand)!important}
+html[data-nh7-accent] #view .nav-item.active small{color:var(--brand)!important}
+html[data-nh7-accent] #view .secondary-btn:not(.danger-btn){border-color:color-mix(in srgb,var(--brand) 24%,transparent)!important}
+html[data-nh7-accent] #view .tile,
+html[data-nh7-accent] #view .list-btn,
+html[data-nh7-accent] #view .link-card{border-color:color-mix(in srgb,var(--brand) 22%,var(--line))!important}
+html[data-nh7-accent] #view .badge{color:var(--brand)}
+html[data-nh7-accent] #view a{color:var(--brand)}
+html[data-nh7-theme="dark"] .nh7-theme-quick button{background:#0f1d2e;color:var(--nh7-dark-ink);border-color:var(--nh7-dark-line)}
+html[data-nh7-theme="dark"] .nh7-theme-quick button.is-selected{background:linear-gradient(135deg,var(--brand),var(--brand2))!important;color:#fff!important}
+@media(max-width:480px){.nh7-theme-quick{grid-template-columns:1fr}.nh7-theme-quick button{min-height:44px}}
