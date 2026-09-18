@@ -115,6 +115,13 @@ function backupsFor(rows){
 }
 async function apply(action,value=''){
   const rows=items();if(!rows.length)return;
+  // Validate before changing any selected state; malformed legacy data is not replaced.
+  bookmarks();
+  const queue=read('nh7_bible_batch_queue_v230',[]);if(!Array.isArray(queue))throw Error('Invalid pending reader data');
+  for(const i of rows){
+    if(i.kind==='bible'){const st=read(i.key,{});if(!st||typeof st!=='object'||Array.isArray(st))throw Error('Invalid verse state')}
+    const meta=read(NOTE_META+encodeURIComponent(i.key),{});if(!meta||typeof meta!=='object'||Array.isArray(meta))throw Error('Invalid note metadata');
+  }
   const notes=action==='note'?new Map(rows.map(i=>[i.key,typeof value==='function'?String(value(noteOf(i),i)):String(value)])):null;
   if(notes)for(const i of rows)if(notes.get(i.key).length>(i.kind==='bible'?1000:2000))throw Error(L('یادداشت بیش از حد طولانی است؛ متن قبلی حفظ شد.','The note is too long; existing text was kept.','Bilješka je preduga; prethodni tekst je sačuvan.'));
   const backup=backupsFor(rows);
@@ -197,9 +204,12 @@ function enhance(){
   if(selectionLang&&selectionLang!==language())clear();
   for(const [key,info] of selected)if(!info.node.isConnected)selected.delete(key);
   document.querySelectorAll('.reader.continuous-reader,.nh7-apo-continuous-reader').forEach(r=>r.classList.add('nh7-reader-managed452'));
+  // A changed route must not retain a note dialog for disconnected verses.
+  if(!items().length&&dialog)closeDialog();
   syncLegacy();paint();
 }
 new MutationObserver(()=>{if(!observerPending){observerPending=true;requestAnimationFrame(enhance)}}).observe(document.documentElement,{childList:true,subtree:true});
+window.addEventListener('change',event=>{if(event.target?.id==='langSelect'){document.getElementById('nh7ReaderToast452')?.classList.remove('show');clear()}},true);
 window.addEventListener('popstate',clear);window.addEventListener('languagechange',clear);window.addEventListener('storage',event=>{if(event.key==='nh7_lang')clear();else if(event.key===BOOKMARKS){if(bar)bar.dataset.signature='';paint()}});
 window.NH7ReaderToolbarV452={VERSION,APP_URL,selected,items,toggle,deselect,clear,shareText,copy,share,apply,displayRef,resolveSaved,enhance,copyText:writeClipboard,notify:toast};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',enhance,{once:true});else enhance();

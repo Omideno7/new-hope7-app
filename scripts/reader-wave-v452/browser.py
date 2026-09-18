@@ -121,6 +121,7 @@ with sync_playwright() as pw:
             if 'یوحنا' in groups.nth(i).locator('summary').inner_text():groups.nth(i).locator('summary').click();break
         remove=p.locator('[data-delete-bookmark="John 3:16"]');expect(remove).to_be_visible();saved_note=read(p,'nh7_bible_state_JHN_3_16')['note'];remove.click()
         wait(p,'!JSON.parse(localStorage.getItem("nh7_bookmarks")).includes("John 3:16")');assert read(p,'nh7_bible_state_JHN_3_16')['saved'] is False
+        assert any(i.get('verse_ref')=='John 3:16' and i.get('saved') is False for i in read(p,'nh7_bible_batch_queue_v230')[-1]['items']), 'Unsave is queued after older saves'
         assert read(p,'nh7_bible_state_JHN_3_16')['note']==saved_note;passed('Six localized note categories; saved book groups; unsave retains notes')
         p.reload(wait_until='domcontentloaded');p.locator('#amenButton').click();chapter(p);assert read(p,'nh7_bible_state_JHN_3_16')['note']==saved_note
         assert raw(p,'nh7_apo_note_v242:tobit:1:1').startswith('Apo original note')

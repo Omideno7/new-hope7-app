@@ -139,7 +139,7 @@ async function batchApply(action,value=''){
     items.push({verse_key:info.key,verse_ref:info.ref,verse_text:info.text,saved:!!st.saved,highlight_color:st.highlight?String(st.highlightColor||'yellow'):'',note:String(st.note||'')});
   });
   localStorage.setItem('nh7_bookmarks',JSON.stringify([...bookmarks]));
-  await syncPayload({batch_id:batchId,items});
+  await syncPayload({batch_id:batchId,items,language:lang()});
 }
 function selectedText(){return [...selected.values()].map(v=>`${v.ref} — ${v.text}`).join('\n')}
 async function copySelected(share){const text=selectedText();try{if(share&&navigator.share)await navigator.share({text});else{await navigator.clipboard.writeText(text);alert(t('آیات انتخاب‌شده کپی شدند.','Selected verses copied.','Odabrani stihovi su kopirani.'))}clearSelection();}catch(error){console.warn(error)}}
@@ -175,5 +175,5 @@ const observer=new MutationObserver(records=>{
 observer.observe(document.documentElement,{childList:true,subtree:true});
 enhanceVerses(document);removeAddedToolbar();
 window.addEventListener('online',flushQueue);window.addEventListener('nh7-access-status',flushQueue);setTimeout(flushQueue,1200);
-window.NH7BibleBatchV230={VERSION,selected,clearSelection,deselectVerse,batchApply,enhanceVerses,toggleVerse};
+window.NH7BibleBatchV230={VERSION,selected,clearSelection,deselectVerse,batchApply,enhanceVerses,toggleVerse,syncPayload};
 })();
