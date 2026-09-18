@@ -1,0 +1,15 @@
+/* New Hope 7 Bible Keywords v4.5.0 */
+.nh7-keyword-wrap{display:grid;gap:14px}
+.nh7-keyword-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.nh7-keyword-count{font-size:.86rem;color:var(--muted);font-weight:800}
+.nh7-keyword-search{width:100%;box-sizing:border-box}
+.nh7-keyword-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px}
+.nh7-keyword-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-height:46px;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);font:inherit;font-weight:800;text-align:start;cursor:pointer}
+.nh7-keyword-btn small{font-size:.72rem;color:var(--muted);font-weight:700;white-space:nowrap}
+.nh7-keyword-btn:active{transform:translateY(1px)}
+.nh7-keyword-empty{padding:16px;border:1px dashed var(--line);border-radius:14px;color:var(--muted)}
+.nh7-bible-search-summary{margin:0 0 10px;color:var(--muted);font-size:.88rem;font-weight:750}
+.nh7-bible-search-results{display:grid;gap:8px}
+html[data-nh7-theme="dark"] .nh7-keyword-btn{background:#0f1d2e;color:var(--nh7-dark-ink);border-color:var(--nh7-dark-line)}
+html[data-nh7-theme="dark"] .nh7-keyword-btn small{color:var(--nh7-dark-muted)}
+@media(max-width:480px){.nh7-keyword-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.nh7-keyword-btn{padding:9px 10px;min-height:44px}}
