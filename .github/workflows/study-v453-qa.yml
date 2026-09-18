@@ -1,0 +1,64 @@
+name: Study and Theme Studio v453 QA
+on:
+  push:
+    branches: [feature/reader-lexicon-theme-v453-20260919]
+    paths: ['.github/workflows/study-v453-qa.yml']
+permissions:
+  contents: read
+concurrency:
+  group: study-theme-v453
+  cancel-in-progress: true
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/feature/reader-lexicon-theme-v453-20260919'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      MAIN_BASE: 259280fe00a7dbc7359c24f997338724961f0c08
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prepare isolated source
+        run: |
+          mkdir -p qa-study453
+          git ls-remote origin refs/heads/main > qa-study453/main-before.txt
+          test "$(cut -f1 qa-study453/main-before.txt)" = "$MAIN_BASE"
+          python scripts/study-v453/prepare.py
+          node --check js/app.js
+          node --check js/nh7-reader-toolbar-v452.js
+          node --check js/nh7-apocrypha-preview-v240.js
+          node --check js/nh7-theme-studio-v453.js
+          node --check js/nh7-original-language-v453.js
+          python -m py_compile scripts/study-v453/*.py
+          git diff --exit-code "$MAIN_BASE" -- data/bible data/apocrypha supabase version.json manifest.json
+      - name: Build pinned glossary and locally bundled font assets
+        run: |
+          python -m pip install fonttools==4.60.1 brotli==1.1.0
+          python scripts/study-v453/build_assets.py
+      - name: Preserve non-font evidence
+        if: always()
+        run: |
+          mkdir -p qa-study453
+          python - <<'PY'
+          import pathlib,tarfile
+          names=['index.html','js/app.js','js/nh7-reader-toolbar-v452.js','js/nh7-apocrypha-preview-v240.js','js/nh7-apocrypha-v270.js','js/nh7-theme-studio-v453.js','js/nh7-original-language-v453.js','css/nh7-theme-studio-v453.css','css/nh7-study-reader-v453.css']
+          names += [str(p) for p in pathlib.Path('scripts/study-v453').glob('*') if p.is_file()]
+          names += [str(p) for p in pathlib.Path('data/lexicon').glob('*') if p.is_file()]
+          with tarfile.open('qa-study453/candidate-source.tgz','w:gz') as tar:
+              for name in names:
+                  if pathlib.Path(name).is_file():tar.add(name,arcname=name)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: study-theme-v453-${{ github.sha }}
+          path: qa-study453/
+          retention-days: 14
