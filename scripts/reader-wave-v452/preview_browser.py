@@ -24,7 +24,7 @@ def choose(p,props):
     p.locator('[data-go="bible"][data-params]').evaluate_all('(buttons,props)=>buttons.find(x=>{const q=JSON.parse(x.dataset.params);return Object.entries(props).every(([k,v])=>q[k]===v)}).click()',props)
 with sync_playwright() as pw:
     browser=pw.chromium.launch();context=browser.new_context(viewport={'width':390,'height':844})
-    context.add_init_script("""window.qaPreviewRaw=localStorage;localStorage.setItem('nh7_bookmarks','[\"Unrelated saved data\"]');localStorage.setItem('nh7_note_unrelated','DO NOT TOUCH');window.qaPreviewCopies=[];Object.defineProperty(navigator,'clipboard',{value:{writeText:async text=>qaPreviewCopies.push(text)},configurable:true});""")
+    context.add_init_script("""(()=>{if(!location.pathname.endsWith('/reader-preview.html'))return;window.qaPreviewRaw=localStorage;localStorage.setItem('nh7_bookmarks','[\"Unrelated saved data\"]');localStorage.setItem('nh7_note_unrelated','DO NOT TOUCH');window.qaPreviewCopies=[];Object.defineProperty(navigator,'clipboard',{value:{writeText:async text=>qaPreviewCopies.push(text)},configurable:true});})();""")
     context.on('page',lambda p:p.on('pageerror',lambda e:errors.append(str(e))))
     context.on('request',lambda r:requests.append({'url':r.url,'method':r.method}))
     p=context.new_page();p.set_default_timeout(60000);expect.set_options(timeout=60000)
