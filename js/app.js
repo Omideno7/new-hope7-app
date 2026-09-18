@@ -1357,9 +1357,59 @@ async function loadBook(bookId){
   if(!state.bible.groups[group]) state.bible.groups[group]=await jfetch(`data/bible/groups/bible_group_${group}.json`);
   return {book:b, verses:state.bible.groups[group].verses.filter(v=>v.bookId===bookId)};
 }
+const NH7_BIBLE_KEYWORDS_DATA_V450='data/bible/keywords/bible_keywords_v450.json';
+let nh7BibleKeywordsCacheV450=null;
+function normalizeBibleKeywordTextV450(value,lang=state.lang){
+  let s=String(value??'').normalize('NFKC').toLowerCase();
+  if(lang==='fa'){
+    return s.replace(/ي/g,'ی').replace(/ك/g,'ک').replace(/ۀ/g,'ه').replace(/ة/g,'ه')
+      .replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g,'').replace(/[\u200c\u200d]/g,'');
+  }
+  return s;
+}
+function bibleKeywordTokensV450(text,lang=state.lang){
+  const s=normalizeBibleKeywordTextV450(text,lang);
+  if(lang==='fa')return s.match(/[\u0621-\u063A\u0641-\u064A\u066E-\u06D3\u06FA-\u06FC]+/g)||[];
+  if(lang==='en')return s.match(/[a-z]+(?:'[a-z]+)?/g)||[];
+  return s.match(/[a-zčćđšž]+/g)||[];
+}
+async function loadBibleKeywordsV450(){
+  if(nh7BibleKeywordsCacheV450)return nh7BibleKeywordsCacheV450;
+  const data=await jfetch(NH7_BIBLE_KEYWORDS_DATA_V450);
+  if(!data?.languages?.fa||!data?.languages?.en||!data?.languages?.hr)throw new Error('Bible keyword data is incomplete');
+  nh7BibleKeywordsCacheV450=data;
+  return data;
+}
+async function bibleKeywordsV450(){
+  const data=await loadBibleKeywordsV450();
+  const words=Array.isArray(data.languages?.[state.lang])?data.languages[state.lang]:data.languages.en||[];
+  const title=l223('کلیدواژه‌های کتاب مقدس','Bible Keywords','Biblijske ključne riječi');
+  const help=l223(
+    '۲۵۰۰ واژه از متن کامل کتاب مقدس. برای پیدا کردن واژه دلخواه جستجو کنید؛ با لمس هر واژه، آیات مربوط باز می‌شوند.',
+    '2,500 words from the complete Bible text. Search for a word, then tap it to open matching verses.',
+    '2.500 riječi iz cjelovitog biblijskog teksta. Pretražite riječ i dodirnite je za povezane retke.'
+  );
+  view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written'}))}'>‹ ${html(tr('back'))}</button></div>`+
+    card(title,`<div class="nh7-keyword-wrap"><div class="nh7-keyword-head"><p class="muted">${html(help)}</p><span class="nh7-keyword-count">${localNum(words.length)} ${html(l223('واژه','words','riječi'))}</span></div><input id="bibleKeywordFilter" class="search-box nh7-keyword-search" placeholder="${html(l223('جستجوی کلیدواژه…','Search keywords…','Pretraži ključne riječi…'))}"><div id="bibleKeywordMeta" class="nh7-keyword-count"></div><div id="bibleKeywordResults" class="nh7-keyword-grid"></div></div>`);
+  const input=$('#bibleKeywordFilter'),box=$('#bibleKeywordResults'),meta=$('#bibleKeywordMeta');
+  const paint=()=>{
+    const q=normalizeBibleKeywordTextV450(input?.value||'',state.lang).trim();
+    const matched=q?words.filter(x=>normalizeBibleKeywordTextV450(x.term,state.lang).includes(q)):words;
+    const shown=matched.slice(0,q?200:120);
+    if(meta)meta.textContent=q
+      ? l223(`${localNum(matched.length)} واژه پیدا شد`,`${localNum(matched.length)} words found`,`Pronađeno: ${localNum(matched.length)}`)
+      : l223('۱۲۰ واژه پرتکرار نمایش داده شده؛ برای جستجو از کادر بالا استفاده کنید.','Showing the 120 most frequent words; use the search box for all 2,500.','Prikazano je 120 najčešćih riječi; koristite pretragu za svih 2.500.');
+    if(box)box.innerHTML=shown.length?shown.map(x=>`<button type="button" class="nh7-keyword-btn" data-bible-keyword="${html(x.term)}"><span>${html(x.term)}</span><small>${localNum(x.count)}</small></button>`).join(''):`<div class="nh7-keyword-empty">${html(l223('واژه‌ای پیدا نشد.','No keyword found.','Ključna riječ nije pronađena.'))}</div>`;
+    box?.querySelectorAll('[data-bible-keyword]').forEach(b=>b.onclick=()=>navigate('bible',{section:'written',q:b.dataset.bibleKeyword,fromKeywords:'1'},true));
+  };
+  input?.addEventListener('input',paint);
+  paint();
+}
+
 async function bible(params={}){
   await loadBibleMeta();
-  if(params.q)return bibleSearch(params.q);
+  if(params.q)return bibleSearch(params.q,params);
+  if(params.mode==='keywords')return bibleKeywordsV450();
   if(params.mode==='book')return bibleBook(params.bookId,params.testament||'');
   if(params.mode==='chapter')return bibleChapter(params.bookId,Number(params.chapter||1));
   if(!params.section&&!params.testament){
@@ -1367,7 +1417,7 @@ async function bible(params={}){
     return;
   }
   if(!params.testament){
-    view.innerHTML=card(tr('writtenBible'),`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible">‹ ${html(tr('back'))}</button></div><div class="form-row"><input id="bibleSearch" class="search-box" placeholder="${tr('search')}"></div><button class="secondary-btn" id="runBibleSearch">${tr('search')}</button><div class="grid">${tile('bible','📜',tr('oldtestament'),'',{section:'written',testament:'OT'})}${tile('bible','✝',tr('newtestament'),'',{section:'written',testament:'NT'})}</div>`);
+    view.innerHTML=card(tr('writtenBible'),`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible">‹ ${html(tr('back'))}</button></div><div class="form-row"><input id="bibleSearch" class="search-box" placeholder="${tr('search')}"></div><button class="secondary-btn" id="runBibleSearch">${tr('search')}</button><div class="grid">${tile('bible','📜',tr('oldtestament'),'',{section:'written',testament:'OT'})}${tile('bible','✝',tr('newtestament'),'',{section:'written',testament:'NT'})}${tile('bible','🔑',l223('کلیدواژه‌ها','Keywords','Ključne riječi'),l223('۲۵۰۰ واژه','2,500 words','2.500 riječi'),{section:'written',mode:'keywords'})}</div>`);
     return;
   }
   const testament=String(params.testament).toUpperCase();
@@ -1421,11 +1471,33 @@ async function apocrypha(params={}){
   const countByBook=i=>{const code=String(NH7_APOCRYPHA_BOOKS_V223[i].en||'').toLowerCase().replace(/[^a-z0-9]+/g,'_');return apoRows.filter(x=>String(x.apocrypha_book||'').toLowerCase()===code).length};
   view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible">‹ ${html(tr('back'))}</button></div>`+card(tr('apocrypha'),`<p class="muted">${html(l223('کتاب‌های اپوکریفا به‌صورت PDF یا Word از پنل مدیریت منتشر می‌شوند.','Apocrypha books are published as PDF or Word documents from the admin panel.','Apokrifne knjige objavljuju se kao PDF ili Word dokumenti.'))}</p><div class="grid">${NH7_APOCRYPHA_BOOKS_V223.map((b,i)=>`<button class="tile compact" data-go="apocrypha" data-params='${html(JSON.stringify({book:i}))}'><strong>${html(b[state.lang]||b.en)}</strong><small>${localNum(countByBook(i))}</small></button>`).join('')}</div>`);
 }
-async function bibleSearch(q){
-  await loadBibleMeta(); let out=[];
-  for(const g of ['01_18','19_39','40_66']){ if(!state.bible.groups[g]) state.bible.groups[g]=await jfetch(`data/bible/groups/bible_group_${g}.json`); const found=state.bible.groups[g].verses.filter(v=>(v.text?.[state.lang]||v.text?.en||'').toLowerCase().includes(q.toLowerCase())).slice(0,8); out.push(...found); if(out.length>=20) break; }
-  view.innerHTML=card(tr('search'), out.length?`<div class="list">${out.slice(0,20).map(v=>`<button class="list-btn" data-go="bible" data-params='${html(JSON.stringify({mode:'chapter',bookId:v.bookId,chapter:v.chapter}))}'><strong>${html(localizeRef(v.reference?.en||''))}</strong><small>${html((v.text?.[state.lang]||v.text?.en||'').slice(0,180))}</small></button>`).join('')}</div>`:`<p class="muted">${tr('notStarted')}</p>`);
+async function bibleSearch(q,options={}){
+  await loadBibleMeta();
+  q=String(q||'').trim();
+  const fromKeywords=String(options?.fromKeywords||'')==='1';
+  const lang=state.lang;
+  const normalizedQuery=normalizeBibleKeywordTextV450(q,lang);
+  let out=[],total=0;
+  for(const g of ['01_18','19_39','40_66']){
+    if(!state.bible.groups[g])state.bible.groups[g]=await jfetch(`data/bible/groups/bible_group_${g}.json`);
+    for(const v of state.bible.groups[g].verses||[]){
+      const txt=v.text?.[lang]||v.text?.en||'';
+      const matched=fromKeywords
+        ? bibleKeywordTokensV450(txt,lang).includes(normalizedQuery)
+        : normalizeBibleKeywordTextV450(txt,lang).includes(normalizedQuery);
+      if(!matched)continue;
+      total++;
+      if(out.length<200)out.push(v);
+    }
+  }
+  const backParams=fromKeywords?{section:'written',mode:'keywords'}:{section:'written'};
+  const summary=total
+    ? l223(`${localNum(total)} آیه پیدا شد${total>200?'؛ ۲۰۰ نتیجهٔ اول نمایش داده می‌شود.':''}`,`${localNum(total)} verses found${total>200?'; showing the first 200.':''}`,`Pronađeno redaka: ${localNum(total)}${total>200?'; prikazano prvih 200.':''}`)
+    : l223('آیه‌ای پیدا نشد.','No verse found.','Nije pronađen nijedan redak.');
+  view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify(backParams))}'>‹ ${html(tr('back'))}</button></div>`+
+    card(tr('search'),`<p class="nh7-bible-search-summary">${html(q)} — ${html(summary)}</p>${out.length?`<div class="list nh7-bible-search-results">${out.map(v=>`<button class="list-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId:v.bookId,chapter:v.chapter,verse:v.verse}))}'><strong>${html(localizeRef(v.reference?.en||''))}</strong><small>${html((v.text?.[lang]||v.text?.en||'').slice(0,220))}</small></button>`).join('')}</div>`:`<div class="nh7-keyword-empty">${html(summary)}</div>`}`);
 }
+
 function bibleNameAliases(book){
   const out=[book.names?.en, book.names?.fa, book.names?.hr, book.id].filter(Boolean);
   if(book.id==='PSA') out.push('Psalm','Psalms','Ps','مزمور','مزامیر');
@@ -2392,7 +2464,7 @@ function bindDynamic(){
   $$('[data-inbox-open]').forEach(el=>el.onclick=()=>{ const id=el.dataset.inboxOpen; const safe=String(id).replace(/[^a-zA-Z0-9_-]/g,'_'); const p=$('#inbox-'+safe); if(p) p.classList.toggle('hidden'); const at=new Date().toISOString(); const arr=inboxMessages().map(m=>String(m.id)===String(id)?{...m,read:true,readAt:at}:m); setInboxMessages(arr); saveInboxReceipt(id,{read_at:at}).catch(console.warn); updateInboxBadge(); });
   $$('[data-inbox-delete]').forEach(el=>el.onclick=(ev)=>{ ev.stopPropagation(); const id=el.dataset.inboxDelete; if(confirm(tr('deleteConfirm'))){ deleteInboxLocal(id); render('inbox',{},true); } });
   $$('[data-submit-registration]').forEach(el=>el.onclick=()=>collectRegistration(el.dataset.submitRegistration)); bindPasswordToggles();
-  const run=$('#runBibleSearch'); if(run) run.onclick=()=>navigate('bible',{q:$('#bibleSearch').value},true);
+  const run=$('#runBibleSearch'); if(run) run.onclick=()=>navigate('bible',{section:'written',q:$('#bibleSearch').value},true);
   $('#startGratitude')?.addEventListener('click',()=>{const start=todayKey();localStorage.setItem('nh7_gratitude_start',start);saveProgressCloud('nh7_gratitude_start',{__raw:start}).catch(console.warn);addPoints(5,'gratitude_1');render('daily',{tab:'gratitude'},true)});
   $('#completeGratitude')?.addEventListener('click',(ev)=>{ const current=Number(ev.currentTarget.dataset.gratitudeDay||1); const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]'); if(!completed.includes(current)) completed.push(current); completed.sort((a,b)=>a-b); localStorage.setItem('nh7_gratitude_completed',JSON.stringify(completed)); const gnote=$('#gratitudeNote')?.value||''; localStorage.setItem('nh7_gratitude_note_'+current,gnote); saveNoteCloud('gratitude_note_'+current, gnote).catch(console.warn); saveProgressCloud('gratitude_completed',{completed}).catch(console.warn); addPoints(10,'gratitude_1'); render('daily',{tab:'gratitude',gday:current},true); });
   $('#undoGratitude')?.addEventListener('click',(ev)=>{ const current=Number(ev.currentTarget.dataset.gratitudeDay||1); const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]').filter(x=>Number(x)!==current); localStorage.setItem('nh7_gratitude_completed',JSON.stringify(completed)); saveProgressCloud('gratitude_completed',{completed}).catch(console.warn); render('daily',{tab:'gratitude',gday:current},true); });
