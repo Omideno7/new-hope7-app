@@ -2155,15 +2155,179 @@ async function scheduleNativeNotifications(){
 }
 async function notificationPermissionStatus(){const Native=nativeLocalNotifications();if(Native){try{const p=await Native.checkPermissions();return p.display==='granted'?'granted':p.display==='denied'?'denied':'default'}catch(e){}}return typeof Notification==='undefined'?'default':Notification.permission}
 
-async function settings(){
-  const perm=await notificationPermissionStatus();const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');const schedules=await fetchNotificationSchedules();const offlineSummary=await offlineStorageSummary();
-  view.innerHTML=card(tr('settings'),`<h3>${tr('language')}</h3><select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select><h3>${tr('notifications')}</h3><p>${status}</p><button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button><div class="notice">${schedules.map(x=>`<p><strong>${html(scheduleText(x,'title'))}</strong> — ${html(x.time_value||'')} ${x.timezone_mode&&x.timezone_mode!=='local'?`(${html(x.timezone_mode)})`:''}</p>`).join('')}</div><h3>${state.lang==='fa'?'استفاده آفلاین کامل':state.lang==='hr'?'Potpuni izvanmrežni način':'Full offline access'}</h3><p>${html(offlineSummary)}</p><p class="muted">${state.lang==='fa'?'محتوای اصلی شامل کتاب‌مقدس، پیام‌های روزانه، دوره شکرگزاری، معرفی کلیسا و نسخه داخلی مدرسه است. فایل‌های صوتی و PDF را از کنار همان محتوا جداگانه دانلود کنید.':state.lang==='hr'?'Osnovni sadržaj uključuje Bibliju, dnevni sadržaj, zahvalnost i školu. Audio i PDF datoteke preuzmite uz svaki sadržaj.':'Core content includes the Bible, daily content, gratitude, church information and the built-in school. Download audio and PDF files individually beside each item.'}</p><div class="button-row"><button class="primary-btn" id="prepareOffline">${state.lang==='fa'?'آماده‌سازی محتوای اصلی برای آفلاین':state.lang==='hr'?'Pripremi osnovni sadržaj offline':'Prepare core content offline'}</button><button class="secondary-btn" id="clearOfflineMedia">${state.lang==='fa'?'پاک‌کردن فایل‌های دانلودشده':state.lang==='hr'?'Obriši preuzete datoteke':'Clear downloaded media'}</button></div><h3>${state.lang==='fa'?'ذخیره ابری / همگام‌سازی':state.lang==='hr'?'Cloud / sinkronizacija':'Cloud / sync'}</h3><p>${cloudStatusText()}</p><button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button><h3>${tr('version')}</h3><p>New Hope 7 v1.9.2 Offline-First Internal Build</p><button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>`);
-  $('#settingsLang').value=state.lang;$('#settingsLang').onchange=e=>setLang(e.target.value);$('#enableNotify').onclick=enableNotifications;
-  $('#prepareOffline')?.addEventListener('click',e=>prepareCoreOffline(e.currentTarget));
-  $('#clearOfflineMedia')?.addEventListener('click',async()=>{if(!confirm(state.lang==='fa'?'همه فایل‌های صوتی و PDF دانلودشده از حافظه آفلاین پاک شوند؟':'Clear all downloaded offline media?'))return;try{await clearDownloadedMedia();alert(tr('saved'));render('settings',{},true)}catch(e){console.warn(e)}});
-  $('#clearCache').onclick=async()=>{try{await swMessage('CACHE_CORE');if('serviceWorker'in navigator){const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.update()))}}catch(e){}alert(tr('saved'));location.reload()};
-  $('#syncCloud')?.addEventListener('click',async()=>{await syncCloudQueue();await refreshInboxFromCloud();notificationSettingsCache=null;alert(cloudStatusText());render('settings',{},true)});
+const NH7_UI_PREF_KEYS={theme:'nh7_ui_theme_v425',size:'nh7_ui_font_size_v425',font:'nh7_ui_font_family_v425',home:'nh7_ui_home_visual_v425',accent:'nh7_ui_accent_v430',custom:'nh7_ui_accent_custom_v431'};
+function nh7UiL(fa,en,hr){return state.lang==='fa'?fa:state.lang==='hr'?hr:en}
+function nh7UiRead(key,fallback){try{return localStorage.getItem(key)||fallback}catch(e){return fallback}}
+function nh7UiWrite(key,value){try{localStorage.setItem(key,value)}catch(e){}}
+function nh7UiPrefs(){
+  const theme=['system','light','dark'].includes(nh7UiRead(NH7_UI_PREF_KEYS.theme,'system'))?nh7UiRead(NH7_UI_PREF_KEYS.theme,'system'):'system';
+  const size=['90','100','110','120'].includes(nh7UiRead(NH7_UI_PREF_KEYS.size,'100'))?nh7UiRead(NH7_UI_PREF_KEYS.size,'100'):'100';
+  const font=['default','system','readable','serif','persian'].includes(nh7UiRead(NH7_UI_PREF_KEYS.font,'default'))?nh7UiRead(NH7_UI_PREF_KEYS.font,'default'):'default';
+  const home=nh7UiRead(NH7_UI_PREF_KEYS.home,'1')==='0'?'0':'1';
+  const accent=['blue','green','red','purple','orange','teal','pink','custom'].includes(nh7UiRead(NH7_UI_PREF_KEYS.accent,'blue'))?nh7UiRead(NH7_UI_PREF_KEYS.accent,'blue'):'blue';
+  const rawCustom=nh7UiRead(NH7_UI_PREF_KEYS.custom,'#2563eb');
+  const custom=/^#[0-9a-fA-F]{6}$/.test(rawCustom)?rawCustom:'#2563eb';
+  return{theme,size,font,home,accent,custom};
 }
+function nh7UiResolvedTheme(mode){
+  if(mode==='light'||mode==='dark')return mode;
+  try{return matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}catch(e){return'light'}
+}
+function nh7UiFontStack(font){
+  if(font==='system')return 'system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif';
+  if(font==='readable')return '"Trebuchet MS",Verdana,Arial,sans-serif';
+  if(font==='serif')return 'Georgia,"Times New Roman",serif';
+  if(font==='persian')return 'Tahoma,"Geeza Pro","Noto Naskh Arabic",Arial,sans-serif';
+  return '';
+}
+function nh7UiApply(){
+  const p=nh7UiPrefs(),root=document.documentElement,resolved=nh7UiResolvedTheme(p.theme);
+  root.dataset.nh7Theme=resolved;
+  root.dataset.nh7ThemeMode=p.theme;
+  root.dataset.nh7HomeVisual=p.home;
+  root.dataset.nh7Accent=p.accent;
+  const palettes={blue:['#1d4ed8','#38bdf8','#16a34a'],green:['#15803d','#22c55e','#0f766e'],red:['#b91c1c','#ef4444','#f97316'],purple:['#7e22ce','#a855f7','#db2777'],orange:['#c2410c','#f97316','#f59e0b'],teal:['#0f766e','#14b8a6','#06b6d4'],pink:['#be185d','#ec4899','#a855f7'],custom:[p.custom,p.custom,p.custom]};
+  const palette=palettes[p.accent]||palettes.blue;
+  const softs={blue:'rgba(29,78,216,.14)',green:'rgba(21,128,61,.14)',red:'rgba(185,28,28,.14)',purple:'rgba(126,34,206,.14)',orange:'rgba(194,65,12,.14)',teal:'rgba(15,118,110,.14)',pink:'rgba(190,24,93,.14)',custom:p.custom+'24'};
+  root.style.setProperty('--brand',palette[0]);root.style.setProperty('--brand2',palette[1]);root.style.setProperty('--accent',palette[2]);root.style.setProperty('--nh7-module-soft',softs[p.accent]||softs.blue);
+  root.style.fontSize=p.size+'%';
+  const stack=nh7UiFontStack(p.font);
+  if(stack){root.dataset.nh7Font=p.font;root.style.setProperty('--nh7-user-font',stack)}
+  else{delete root.dataset.nh7Font;root.style.removeProperty('--nh7-user-font')}
+  const meta=document.querySelector('meta[name="theme-color"]');
+  if(meta)meta.setAttribute('content',resolved==='dark'?'#07111f':palette[0]);
+  try{window.dispatchEvent(new CustomEvent('nh7:ui-preferences',{detail:p}))}catch(e){}
+}
+function nh7AppearanceSettingsHtml(){
+  const p=nh7UiPrefs();
+  const option=(value,label,current)=>`<option value="${value}"${value===current?' selected':''}>${label}</option>`;
+  return `<section class="nh7-appearance-panel" id="nh7AppearancePanel">
+    <h3>🎨 ${nh7UiL('ظاهر و خوانایی','Appearance & readability','Izgled i čitljivost')}</h3>
+    <p class="nh7-appearance-help">${nh7UiL('تم، اندازه نوشته، فونت و رنگ ماژول‌ها را برای همین دستگاه انتخاب کنید. تغییرات فوراً اعمال و ذخیره می‌شوند.','Choose the theme, text size, font and module color for this device. Changes apply and save immediately.','Odaberite temu, veličinu teksta, font i boju modula za ovaj uređaj. Promjene se odmah primjenjuju i spremaju.')}</p>
+    <div class="nh7-appearance-grid">
+      <div class="nh7-theme-quick-wrap"><span class="nh7-appearance-label">${nh7UiL('حالت نمایش','Display mode','Način prikaza')}</span><div class="nh7-theme-quick"><button type="button" data-nh7-theme-quick="system" class="${p.theme==='system'?'is-selected':''}">◐ ${nh7UiL('خودکار','Auto','Auto')}</button><button type="button" data-nh7-theme-quick="light" class="${p.theme==='light'?'is-selected':''}">☀️ ${nh7UiL('روشن','Light','Light')}</button><button type="button" data-nh7-theme-quick="dark" class="${p.theme==='dark'?'is-selected':''}">🌙 ${nh7UiL('تیره','Dark','Dark')}</button></div></div>
+      <label>${nh7UiL('حالت رنگ','Color mode','Način boja')}
+        <select id="nh7ThemeSelect">
+          ${option('system',nh7UiL('خودکار (مطابق دستگاه)','System','Sustav'),p.theme)}
+          ${option('light',nh7UiL('روشن','Light','Svijetlo'),p.theme)}
+          ${option('dark',nh7UiL('تیره','Dark','Tamno'),p.theme)}
+        </select>
+      </label>
+      <label class="nh7-accent-control">${nh7UiL('رنگ ماژول‌ها','Module color','Boja modula')}<select id="nh7AccentSelect">${option('blue',nh7UiL('🔵 آبی','🔵 Blue','🔵 Plava'),p.accent)}${option('green',nh7UiL('🟢 سبز','🟢 Green','🟢 Zelena'),p.accent)}${option('red',nh7UiL('🔴 قرمز','🔴 Red','🔴 Crvena'),p.accent)}${option('purple',nh7UiL('🟣 بنفش','🟣 Purple','🟣 Ljubičasta'),p.accent)}${option('orange',nh7UiL('🟠 نارنجی','🟠 Orange','🟠 Narančasta'),p.accent)}${option('teal',nh7UiL('🟦 فیروزه‌ای','🟦 Teal','🟦 Tirkizna'),p.accent)}${option('pink',nh7UiL('🩷 صورتی','🩷 Pink','🩷 Ružičasta'),p.accent)}${option('custom',nh7UiL('🎨 رنگ دلخواه','🎨 Custom color','🎨 Prilagođena boja'),p.accent)}</select><input id="nh7AccentCustom" class="nh7-custom-color" type="color" value="${p.custom}" aria-label="${nh7UiL('انتخاب رنگ دلخواه','Choose custom color','Odaberi prilagođenu boju')}"></label>
+      <label>${nh7UiL('اندازه نوشته','Text size','Veličina teksta')}
+        <select id="nh7TextSizeSelect">
+          ${option('90',nh7UiL('کوچک','Small','Malo'),p.size)}
+          ${option('100',nh7UiL('معمولی','Normal','Normalno'),p.size)}
+          ${option('110',nh7UiL('بزرگ','Large','Veliko'),p.size)}
+          ${option('120',nh7UiL('خیلی بزرگ','Extra large','Vrlo veliko'),p.size)}
+        </select>
+      </label>
+      <label>${nh7UiL('نوع فونت','Font style','Stil fonta')}
+        <select id="nh7FontSelect">
+          ${option('default',nh7UiL('پیش‌فرض برنامه','App default','Zadano aplikacije'),p.font)}
+          ${option('system',nh7UiL('فونت دستگاه','Device font','Font uređaja'),p.font)}
+          ${option('readable',nh7UiL('خوانا','Readable','Čitljivo'),p.font)}
+          ${option('serif',nh7UiL('کلاسیک','Classic','Klasično'),p.font)}
+          ${option('persian',nh7UiL('مناسب فارسی','Persian friendly','Prilagođeno perzijskom'),p.font)}
+        </select>
+      </label>
+      <label class="nh7-appearance-toggle">
+        <span>${nh7UiL('پس‌زمینه ظریف کارت اصلی Home','Subtle Home card background','Suptilna pozadina početne kartice')}</span>
+        <input id="nh7HomeVisualToggle" type="checkbox"${p.home==='1'?' checked':''}>
+      </label>
+    </div>
+    <div class="nh7-appearance-actions">
+      <button type="button" class="secondary-btn" id="nh7AppearanceReset">↺ ${nh7UiL('بازنشانی ظاهر','Reset appearance','Vrati izgled')}</button>
+      <span id="nh7AppearanceStatus" aria-live="polite"></span>
+    </div>
+  </section>`;
+}
+function nh7BindAppearanceSettings(){
+  const tell=message=>{const n=$('#nh7AppearanceStatus');if(!n)return;n.textContent=message;clearTimeout(n.__nh7t);n.__nh7t=setTimeout(()=>{n.textContent=''},1800)};
+  const theme=$('#nh7ThemeSelect'),accent=$('#nh7AccentSelect'),custom=$('#nh7AccentCustom'),size=$('#nh7TextSizeSelect'),font=$('#nh7FontSelect'),home=$('#nh7HomeVisualToggle');
+  if(theme)theme.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.theme,e.target.value);nh7UiApply();render('settings',{},true)};
+  Array.from(document.querySelectorAll('[data-nh7-theme-quick]')).forEach(b=>b.onclick=()=>{nh7UiWrite(NH7_UI_PREF_KEYS.theme,b.dataset.nh7ThemeQuick);nh7UiApply();render('settings',{},true)});
+  if(accent)accent.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.accent,e.target.value);nh7UiApply();render('settings',{},true)};
+  if(custom)custom.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.custom,e.target.value);nh7UiWrite(NH7_UI_PREF_KEYS.accent,'custom');nh7UiApply();render('settings',{},true)};
+  if(size)size.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.size,e.target.value);nh7UiApply();tell('✓')};
+  if(font)font.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.font,e.target.value);nh7UiApply();tell('✓')};
+  if(home)home.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.home,e.target.checked?'1':'0');nh7UiApply();tell('✓')};
+  $('#nh7AppearanceReset')?.addEventListener('click',()=>{
+    Object.values(NH7_UI_PREF_KEYS).forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});
+    nh7UiApply();
+    render('settings',{},true);
+  });
+}
+try{matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{if(nh7UiPrefs().theme==='system')nh7UiApply()})}catch(e){}
+nh7UiApply();
+window.NH7_UI_PREFS={apply:nh7UiApply,get:nh7UiPrefs,version:'4.3.1'};
+
+async function settings(){
+  const loadingText=state.lang==='fa'?'در حال بررسی…':state.lang==='hr'?'Provjera…':'Checking…';
+  view.innerHTML=card(tr('settings'),`
+    <div class="badge" id="nh7SettingsBadge">${state.lang==='fa'?'تنظیمات 4.3.1':state.lang==='hr'?'Postavke 4.3.1':'Settings 4.3.1'}</div>
+    <h3>${tr('language')}</h3>
+    <select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select>
+    ${nh7AppearanceSettingsHtml()}
+    <h3>${tr('notifications')}</h3>
+    <p id="settingsNotificationStatus">${html(loadingText)}</p>
+    <button class="primary-btn" id="enableNotify">${tr('enableNotifications')}</button>
+    <div class="notice" id="settingsSchedules"><p class="muted">${html(loadingText)}</p></div>
+    <h3>${state.lang==='fa'?'استفاده آفلاین کامل':state.lang==='hr'?'Potpuni izvanmrežni način':'Full offline access'}</h3>
+    <p id="settingsOfflineSummary">${html(loadingText)}</p>
+    <p class="muted">${state.lang==='fa'?'محتوای اصلی شامل کتاب‌مقدس، پیام‌های روزانه، دوره شکرگزاری، معرفی کلیسا و نسخه داخلی مدرسه است. فایل‌های صوتی و PDF را از کنار همان محتوا جداگانه دانلود کنید.':state.lang==='hr'?'Osnovni sadržaj uključuje Bibliju, dnevni sadržaj, zahvalnost i školu. Audio i PDF datoteke preuzmite uz svaki sadržaj.':'Core content includes the Bible, daily content, gratitude, church information and the built-in school. Download audio and PDF files individually beside each item.'}</p>
+    <div class="button-row">
+      <button class="primary-btn" id="prepareOffline">${state.lang==='fa'?'آماده‌سازی محتوای اصلی برای آفلاین':state.lang==='hr'?'Pripremi osnovni sadržaj offline':'Prepare core content offline'}</button>
+      <button class="secondary-btn" id="clearOfflineMedia">${state.lang==='fa'?'پاک‌کردن فایل‌های دانلودشده':state.lang==='hr'?'Obriši preuzete datoteke':'Clear downloaded media'}</button>
+    </div>
+    <h3>${state.lang==='fa'?'ذخیره ابری / همگام‌سازی':state.lang==='hr'?'Cloud / sinkronizacija':'Cloud / sync'}</h3>
+    <p>${cloudStatusText()}</p>
+    <button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button>
+    <h3>${tr('version')}</h3>
+    <p>New Hope 7 v2.3.9.50 · Settings 4.3.1</p>
+    <button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>
+  `);
+  $('#settingsLang').value=state.lang;
+  $('#settingsLang').onchange=e=>setLang(e.target.value);
+  nh7BindAppearanceSettings();
+  $('#enableNotify').onclick=enableNotifications;
+  $('#prepareOffline')?.addEventListener('click',e=>prepareCoreOffline(e.currentTarget));
+  $('#clearOfflineMedia')?.addEventListener('click',async()=>{
+    if(!confirm(state.lang==='fa'?'همه فایل‌های صوتی و PDF دانلودشده از حافظه آفلاین پاک شوند؟':'Clear all downloaded offline media?'))return;
+    try{await clearDownloadedMedia();alert(tr('saved'));render('settings',{},true)}catch(e){console.warn(e)}
+  });
+  $('#clearCache').onclick=async()=>{
+    try{
+      await swMessage('CACHE_CORE');
+      if('serviceWorker'in navigator){const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.update()))}
+    }catch(e){}
+    alert(tr('saved'));
+    location.reload();
+  };
+  $('#syncCloud')?.addEventListener('click',async()=>{
+    await syncCloudQueue();
+    await refreshInboxFromCloud();
+    notificationSettingsCache=null;
+    alert(cloudStatusText());
+    render('settings',{},true);
+  });
+
+  Promise.allSettled([
+    notificationPermissionStatus(),
+    fetchNotificationSchedules(),
+    offlineStorageSummary()
+  ]).then(results=>{
+    if(!document.getElementById('settingsLang'))return;
+    const perm=results[0].status==='fulfilled'?results[0].value:'default';
+    const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');
+    const schedules=results[1].status==='fulfilled'&&Array.isArray(results[1].value)?results[1].value:[];
+    const offlineSummary=results[2].status==='fulfilled'?results[2].value:(state.lang==='fa'?'وضعیت آفلاین در دسترس نیست.':state.lang==='hr'?'Offline status nije dostupan.':'Offline status is unavailable.');
+    const n=$('#settingsNotificationStatus');if(n)n.textContent=status;
+    const s=$('#settingsSchedules');if(s)s.innerHTML=schedules.length?schedules.map(x=>`<p><strong>${html(scheduleText(x,'title'))}</strong> — ${html(x.time_value||'')} ${x.timezone_mode&&x.timezone_mode!=='local'?`(${html(x.timezone_mode)})`:''}</p>`).join(''):`<p class="muted">${html(state.lang==='fa'?'برنامه‌ای ثبت نشده است.':state.lang==='hr'?'Nema zakazanih stavki.':'No schedules configured.')}</p>`;
+    const o=$('#settingsOfflineSummary');if(o)o.textContent=String(offlineSummary||'');
+  }).catch(()=>{});
+}
+
 async function enableNotifications(){
   let perm='default';const Native=nativeLocalNotifications();
   try{
