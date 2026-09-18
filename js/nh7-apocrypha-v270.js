@@ -6,7 +6,7 @@
 if(window.__NH7_APOCRYPHA_WAVE1A_V402__)return;
 window.__NH7_APOCRYPHA_WAVE1A_V402__=true;
 const VERSION='4.0.2-wave1a-apocrypha';
-const BUILD='wave1a-402';
+const BUILD='wave1a-402-reader452';
 const SCRIPTS=[
   'js/nh7-apocrypha-runtime-patch-v402.js',
   'js/nh7-apocrypha-preview-v240.js',

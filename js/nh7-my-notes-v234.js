@@ -73,6 +73,8 @@ function collectNotes(){
     let kind='',text='',stateValue=null;
     if(storageKey.startsWith('nh7_bible_state_')){
       stateValue=safeJson(localStorage.getItem(storageKey),{});text=normalizedText(stateValue?.note);kind='verse';
+    }else if(storageKey.startsWith('nh7_apo_note_v242:')){
+      text=normalizedText(localStorage.getItem(storageKey));kind='apocrypha';
     }else if(storageKey.startsWith('nh7_sermon_note_')){
       text=normalizedText(localStorage.getItem(storageKey));kind='audio';
     }else if(storageKey.startsWith('nh7_gratitude_note_')){
@@ -103,7 +105,7 @@ function renderNotesPanel(){
   if(rendering)return;
   const panel=document.getElementById('notesPanel');if(!panel)return;
   const notes=collectNotes();
-  const signature=notes.map(n=>`${n.storageKey}:${n.text.length}:${n.updatedAt}`).join('|');
+  const signature=lang()+'|'+JSON.stringify(notes.map(n=>[n.storageKey,n.text,n.title,n.updatedAt]));
   if(panel.dataset.nh7NotesSignature===signature)return;
   rendering=true;
   panel.dataset.nh7NotesSignature=signature;
@@ -129,6 +131,7 @@ function scrollToPending(){
 }
 function openNote(storageKey){
   const note=collectNotes().find(n=>n.storageKey===storageKey);if(!note)return;
+  if(note.kind==='apocrypha'){window.NH7_OPEN_SAVED_APOCRYPHA_V394?.('APO:'+storageKey.replace(/^nh7_apo_note_v242:/,''));return;}
   const meta=note.meta||{};
   pendingTarget={kind:note.kind,storageKey};
   if(note.kind==='verse')pendingTarget.verse=Number(meta.verse||note.params?.verse||inferVerseLocation(storageKey).verse||0);
@@ -160,6 +163,7 @@ async function syncVerseState(note){
 async function deleteNote(storageKey){
   const note=collectNotes().find(n=>n.storageKey===storageKey);if(!note)return;
   if(!confirm(t('این یادداشت پاک شود؟','Delete this note?','Obrisati ovu bilješku?')))return;
+  if(note.kind==='apocrypha'){localStorage.removeItem(storageKey);deleteMeta(storageKey);renderNotesPanel();return;}
   if(note.kind==='verse')await syncVerseState(note);else{
     localStorage.removeItem(storageKey);
     const cloudKey=storageKey.replace(/^nh7_/,'');
@@ -207,6 +211,7 @@ document.addEventListener('click',event=>{
 const observer=new MutationObserver(()=>{scheduleRender();if(pendingTarget)setTimeout(scrollToPending,80)});
 observer.observe(document.documentElement,{childList:true,subtree:true});
 window.addEventListener('storage',scheduleRender);
+window.addEventListener('nh7-reader-data452',scheduleRender);
 window.addEventListener('popstate',()=>setTimeout(scrollToPending,250));
 scheduleRender();
 window.NH7MyNotesV234={VERSION,collectNotes,renderNotesPanel,openNote,deleteNote};

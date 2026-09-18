@@ -163,4 +163,5 @@ window.addEventListener('storage',event=>{if([BOOKMARK_KEY,META_KEY].includes(ev
 window.addEventListener('nh7-v251-saved-verse',()=>setTimeout(syncButtons,0));
 setTimeout(()=>{syncButtons();syncHighlightArticles()},300);
 window.NH7_APOCRYPHA_ACTIONS_VERSION='3.9.3';
+window.NH7ApoActionsV452={toggleSave};
 })();

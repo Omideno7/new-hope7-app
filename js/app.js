@@ -2430,3 +2430,31 @@ async function bootstrapApp(){
   showAmen();
 }
 bootstrapApp().catch(console.warn);
+
+
+// Reader localization only. Canonical storage keys stay unchanged.
+window.NH7ReaderSourceV452={
+  recordSaved:()=>addPoints(5,'first_verse'),
+  label:(bookId,chapter,verse,locale=state.lang)=>{
+    const b=state.bible.books?.find(x=>x.id===bookId),n=v=>locale==='fa'?String(v).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]):String(v);
+    return b?`${b.names?.[locale]||b.id} ${n(chapter)}:${n(verse)}`:'';
+  },
+  resolve:async(ref,locale=state.lang)=>{
+    await loadBibleMeta();const p=parseRef(ref);if(!p)return null;
+    const data=await loadBook(p.bookId),v=data?.verses.find(x=>+x.chapter===p.chapter&&+x.verse===p.verse);
+    let text=String(v?.text?.[locale]||'').trim();if(locale==='en')text=text.replace(new RegExp('^\\s*'+p.verse+'\\.\\s+'),'');
+    return{label:window.NH7ReaderSourceV452.label(p.bookId,p.chapter,p.verse,locale),bookName:data?.book.names?.[locale]||p.bookId,bookId:p.bookId,chapter:p.chapter,verse:p.verse,text,kind:locale==='fa'?'کتاب مقدس':locale==='hr'?'Biblija':'Bible'};
+  },
+  removeSaved:async ref=>{
+    await loadBibleMeta();const p=parseRef(ref);if(!p)return;
+    const key=`nh7_bible_state_${p.bookId}_${p.chapter}_${p.verse}`,raw=localStorage.getItem(key);
+    if(raw){
+      const st=JSON.parse(raw);if(!st||typeof st!=='object'||Array.isArray(st))throw Error('Invalid verse state');
+      const pending=JSON.parse(localStorage.getItem('nh7_bible_batch_queue_v230')||'[]');if(!Array.isArray(pending))throw Error('Invalid pending reader data');
+      st.saved=false;localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);
+      // Unsave must follow older queued saves, without deleting their notes or highlights.
+      const row=await window.NH7ReaderSourceV452.resolve(ref,state.lang);
+      await window.NH7BibleBatchV230.syncPayload({batch_id:crypto.randomUUID?.()||String(Date.now()),language:state.lang,items:[{verse_key:key,verse_ref:ref,verse_text:row?.text||'',saved:false,highlight_color:st.highlight?String(st.highlightColor||'yellow'):'',note:String(st.note||'')}]});
+    }
+  }
+};
