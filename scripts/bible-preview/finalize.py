@@ -78,4 +78,24 @@ def toolbar_test(s):
     return s
 edit('scripts/bible-preview/browser.py',toolbar_test)
 
+# Embed the existing logo only in the isolated Preview, avoiding CDN redirects.
+def preview_assets(s):
+    start=s.index('// Keep Preview offline from external font services')
+    end=s.index("fs.writeFileSync('bible-preview.html',preview);",start)
+    block=r"""// Keep Preview offline from external font services without changing production styles.
+const previewLogo='data:image/png;base64,'+fs.readFileSync('assets/new-hope7-logo-192.png').toString('base64');
+const inlinePreviewLogo=value=>value.replace(/(?:\.\.\/)?assets\/new-hope7-logo-(?:1024|512|192|180)\.png(?:\?[^\s"'()<>]*)?/g,previewLogo);
+for(const match of [...preview.matchAll(/<link\b[^>]*href="(css\/[^"?]+)(?:\?[^\"]*)?"[^>]*>/g)]){
+  const path=match[1],css=fs.readFileSync(path,'utf8');
+  const safeCss=inlinePreviewLogo(css.replace(/^@import[^\n]*https?:[^\n]*\n?/gm,''));
+  if(safeCss===css)continue;
+  const safePath=path.replace('css/','css/nh7-bible-preview-');
+  fs.writeFileSync(safePath,safeCss);
+  preview=preview.replace(match[0],match[0].replace(/href="[^\"]*"/,'href="'+safePath+'?v=4.5.1"'));
+}
+preview=inlinePreviewLogo(preview);
+"""
+    return s[:start]+block+s[end:]
+edit('scripts/bible-preview/apply.mjs',preview_assets)
+
 print('Candidate refinements applied; CSP stays strict and source verse text stays unchanged.')
