@@ -1,0 +1,127 @@
+name: Bible Full App Integration v451
+on:
+  push:
+    branches: [feature/bible-keywords-v450-preview-20260918]
+    paths: ['.github/workflows/integrate-bible-v451.yml','scripts/bible-integration/**']
+permissions:
+  contents: write
+concurrency:
+  group: bible-main-integration-v451
+  cancel-in-progress: true
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/feature/bible-keywords-v450-preview-20260918'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      BASE_SHA: eccd9a12c2ac6f216f678c0ea81635d42db830cd
+      SOURCE_SHA: 6d5ac49f1dff841c38bef11b8272b8084487ee2e
+      TARGET_BRANCH: integration/bible-v451-20260918
+      QA_OUTPUT: ${{ runner.temp }}/bible-integration-evidence
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prepare test tools outside production tree
+        run: |
+          set -euo pipefail
+          mkdir -p "$QA_OUTPUT" "$RUNNER_TEMP/nh7-tests"
+          cp scripts/bible-integration/browser.py "$RUNNER_TEMP/nh7-tests/browser.py"
+          node scripts/bible-preview/audit.mjs > "$QA_OUTPUT/corpus-audit.log"
+          cp qa-output/bible-audit.json "$QA_OUTPUT/"
+          git ls-remote origin refs/heads/main > "$QA_OUTPUT/main-before.txt"
+          test "$(cut -f1 "$QA_OUTPUT/main-before.txt")" = "$BASE_SHA"
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium webkit
+          mkdir -p "$RUNNER_TEMP/nh7-agent"
+          cd "$RUNNER_TEMP/nh7-agent"
+          version=$(npm view agent-browser version)
+          npm install --save-exact "agent-browser@$version"
+          echo "QA_AGENT_BROWSER=$RUNNER_TEMP/nh7-agent/node_modules/.bin/agent-browser" >> "$GITHUB_ENV"
+          echo "$version" > "$QA_OUTPUT/agent-browser-version.txt"
+      - name: Check existing main as baseline
+        run: |
+          git checkout --detach "$BASE_SHA"
+          QA_MODE=baseline QA_ENGINE=chromium python "$RUNNER_TEMP/nh7-tests/browser.py"
+      - name: Prepare only reviewed Bible runtime files
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import os,subprocess,json
+          files=['js/app.js','js/nh7-app-enhancements-v230.js','js/nh7-bible-keywords-v451.js','css/nh7-bible-keywords-v450.css','data/bible/keywords/bible_keywords_v450.json','index.html','service-worker.js','sw-release-core-v403.js']
+          for name in files:
+              p=Path(name);p.parent.mkdir(parents=True,exist_ok=True)
+              p.write_bytes(subprocess.check_output(['git','show',os.environ['SOURCE_SHA']+':'+name]))
+          p=Path('js/app.js');s=p.read_text().replace('!window.NH7_BIBLE_PREVIEW && Boolean','Boolean').replace("!window.NH7_BIBLE_PREVIEW && 'serviceWorker'","'serviceWorker'");assert 'NH7_BIBLE_PREVIEW' not in s;p.write_text(s)
+          p=Path('index.html');s=p.read_text().replace('4.5.1-bible-qa','4.5.1-bible-release');assert 'nh7-bible-preview' not in s;p.write_text(s)
+          p=Path('sw-release-core-v403.js');s=p.read_text().replace('4.5.1-bible-keywords-preview','4.5.1-bible-keywords').replace('v451-bible-keywords-preview','v451-bible-keywords');p.write_text(s)
+          output=Path(os.environ['QA_OUTPUT']);(output/'allowed-files.json').write_text(json.dumps(files,indent=2))
+          subprocess.run(['git','diff','--check'],check=True)
+          (output/'candidate.patch').write_bytes(subprocess.check_output(['git','diff']))
+          PY
+          node --check js/app.js
+          node --check js/nh7-app-enhancements-v230.js
+          node --check js/nh7-bible-keywords-v451.js
+          node --check service-worker.js
+          node --check sw-release-core-v403.js
+      - name: Check release assets and cache isolation
+        run: |
+          node --input-type=module <<'JS'
+          import fs from 'node:fs';import vm from 'node:vm';import assert from 'node:assert/strict';
+          const source=fs.readFileSync('sw-release-core-v403.js','utf8');
+          const match=source.match(/const NH7_RELEASE_ASSETS=\[([\s\S]*?)\];/);assert(match);
+          const paths=[...match[1].matchAll(/'([^']+)'/g)].map(m=>m[1]);
+          for(const p of paths)if(p!=='./')assert(fs.existsSync(p),p);
+          for(const p of ['./js/nh7-bible-keywords-v451.js','./data/bible/keywords/bible_keywords_v450.json'])assert(paths.includes(p));
+          const events={},deleted=[],names=['nh7-release-core-vOLD','nh7-data-stable-v329','nh7-media-test','personal-notes'];
+          vm.runInNewContext(source,{self:{addEventListener:(k,fn)=>events[k]=fn},caches:{keys:async()=>names,delete:async k=>deleted.push(k)},URL,Request,console});
+          let done;events.activate({waitUntil:p=>done=p});await done;assert.deepEqual(deleted,['nh7-release-core-vOLD']);
+          fs.writeFileSync(process.env.QA_OUTPUT+'/cache-report.json',JSON.stringify({status:'passed',releaseAssets:paths.length,deletedCaches:deleted,preservedCaches:names.filter(x=>!deleted.includes(x))},null,2));
+          JS
+      - name: Full candidate Chromium regression
+        run: QA_MODE=candidate QA_ENGINE=chromium python "$RUNNER_TEMP/nh7-tests/browser.py"
+      - name: Full candidate WebKit regression
+        run: QA_MODE=candidate QA_ENGINE=webkit python "$RUNNER_TEMP/nh7-tests/browser.py"
+      - name: Commit to integration branch only, never main
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
+          test "$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$BASE_SHA"
+          python - <<'PY'
+          from pathlib import Path
+          import os,json,subprocess
+          files=json.loads((Path(os.environ['QA_OUTPUT'])/'allowed-files.json').read_text())
+          subprocess.run(['git','add','--',*files],check=True)
+          changed=subprocess.check_output(['git','diff','--cached','--name-only'],text=True).splitlines()
+          assert set(changed)==set(files),changed
+          subprocess.run(['git','diff','--cached','--check'],check=True)
+          PY
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'feat(bible): integrate verified 2500-keyword search and safe verse controls v451'
+          git push origin "HEAD:refs/heads/$TARGET_BRANCH"
+          git rev-parse HEAD > "$QA_OUTPUT/integration-commit.txt"
+          git diff --stat "$BASE_SHA" HEAD > "$QA_OUTPUT/changed-files.txt"
+          git ls-remote origin refs/heads/main > "$QA_OUTPUT/main-after.txt"
+          diff "$QA_OUTPUT/main-before.txt" "$QA_OUTPUT/main-after.txt"
+      - name: Collect tested files
+        if: always()
+        run: |
+          python - <<'PY'
+          import os,tarfile,json
+          from pathlib import Path
+          out=Path(os.environ['QA_OUTPUT']);out.mkdir(exist_ok=True)
+          if (out/'allowed-files.json').exists():
+              with tarfile.open(out/'tested-runtime.tgz','w:gz') as t:
+                  for name in json.loads((out/'allowed-files.json').read_text()):t.add(name)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bible-integration-v451-${{ github.sha }}
+          path: ${{ runner.temp }}/bible-integration-evidence/
+          retention-days: 14
