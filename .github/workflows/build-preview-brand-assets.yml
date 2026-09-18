@@ -1,0 +1,83 @@
+name: Build preview brand assets
+
+on:
+  push:
+    branches:
+      - feature/settings-preview-20260918
+    paths:
+      - assets/new-hope7-logo.svg
+      - .github/workflows/build-preview-brand-assets.yml
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout preview branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/settings-preview-20260918
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install SVG renderer
+        run: python -m pip install --disable-pip-version-check cairosvg pillow
+
+      - name: Render app logo PNGs
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import cairosvg
+          from PIL import Image
+
+          svg = Path('assets/new-hope7-logo.svg')
+          sizes = [1024, 512, 192, 180]
+          for size in sizes:
+              out = Path(f'assets/new-hope7-logo-{size}.png')
+              cairosvg.svg2png(
+                  url=str(svg),
+                  write_to=str(out),
+                  output_width=size,
+                  output_height=size,
+                  background_color='#ffffff'
+              )
+              im = Image.open(out).convert('RGB')
+              px = im.load()
+              for y in range(im.height):
+                  for x in range(im.width):
+                      r, g, b = px[x, y]
+                      if r >= 248 and g >= 248 and b >= 248:
+                          px[x, y] = (255, 255, 255)
+              im.save(out, optimize=True)
+          PY
+
+      - name: Verify generated icons
+        run: |
+          python - <<'PY'
+          from PIL import Image
+          from pathlib import Path
+          for size in [1024,512,192,180]:
+              p = Path(f'assets/new-hope7-logo-{size}.png')
+              im = Image.open(p)
+              assert im.size == (size,size), (p, im.size)
+              assert im.getpixel((0,0))[:3] == (255,255,255), (p, im.getpixel((0,0)))
+              print(p, im.size)
+          PY
+
+      - name: Commit generated preview assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/new-hope7-logo-1024.png assets/new-hope7-logo-512.png assets/new-hope7-logo-192.png assets/new-hope7-logo-180.png
+          if git diff --cached --quiet; then
+            echo "Brand assets are already current."
+            exit 0
+          fi
+          git commit -m "test(brand): render approved New Hope 7 app icons"
+          git push origin HEAD:feature/settings-preview-20260918
