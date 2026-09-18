@@ -2434,6 +2434,7 @@ bootstrapApp().catch(console.warn);
 
 // Reader localization only. Canonical storage keys stay unchanged.
 window.NH7ReaderSourceV452={
+  recordSaved:()=>addPoints(5,'first_verse'),
   label:(bookId,chapter,verse,locale=state.lang)=>{
     const b=state.bible.books?.find(x=>x.id===bookId),n=v=>locale==='fa'?String(v).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]):String(v);
     return b?`${b.names?.[locale]||b.id} ${n(chapter)}:${n(verse)}`:'';

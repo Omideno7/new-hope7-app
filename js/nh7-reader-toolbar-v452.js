@@ -152,6 +152,11 @@ async function apply(action,value=''){
       }
     }
   }catch(error){for(const [key,raw] of backup){try{raw==null?localStorage.removeItem(key):localStorage.setItem(key,raw)}catch(_){}}throw error}
+  // Preserve the existing single-verse reward only after a successful new save.
+  if(action==='save'&&rows.length===1&&rows[0].kind==='bible'){
+    const previous=JSON.parse(backup.get(rows[0].key)||'{}'),refs=JSON.parse(backup.get(BOOKMARKS)||'[]');
+    if(previous.saved!==true&&!refs.includes(rows[0].ref))try{window.NH7ReaderSourceV452?.recordSaved?.()}catch(error){console.warn('Reader reward update',error)}
+  }
   if(bar)bar.dataset.signature='';paint();
   bar?.querySelector('[data-reader-palette452]')?.setAttribute('hidden','');
   window.dispatchEvent(new CustomEvent('nh7-reader-data452',{detail:{action,refs:rows.map(i=>i.ref)}}));

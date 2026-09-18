@@ -127,6 +127,19 @@ with sync_playwright() as pw:
         assert raw(p,'nh7_apo_note_v242:tobit:1:1').startswith('Apo original note')
         for key in ['nh7_bible_state_PSA_23_1','nh7_sermon_note_qa-id','nh7_gratitude_note_7','nh7_note_school-qa','nh7_note_private-qa','nh7_daily_done_word-5','nh7_gratitude_completed']:assert raw(p,key)==seed[key],key
         p.locator('#v-16 .verse-text').click()
+        points=(read(p,'nh7_gamification') or {}).get('points',0)
+        action(p,'save');wait(p,'JSON.parse(localStorage.getItem("nh7_bookmarks")).includes("John 3:16")')
+        assert read(p,'nh7_gamification')['points']==points+5
+        assert 'first_verse' in read(p,'nh7_gamification')['badges']
+        action(p,'save');wait(p,'!JSON.parse(localStorage.getItem("nh7_bookmarks")).includes("John 3:16")')
+        assert read(p,'nh7_gamification')['points']==points+5
+        assert read(p,'nh7_bible_state_JHN_3_16')['note']==saved_note
+        old_refs=raw(p,'nh7_bookmarks');old_state=raw(p,'nh7_bible_state_JHN_3_16')
+        p.evaluate('localStorage.setItem("nh7_bookmarks","invalid-legacy-json")')
+        assert p.evaluate('NH7ReaderToolbarV452.apply("save").then(()=>false,()=>true)')
+        assert raw(p,'nh7_bookmarks')=='invalid-legacy-json' and raw(p,'nh7_bible_state_JHN_3_16')==old_state
+        p.evaluate('(value)=>localStorage.setItem("nh7_bookmarks",value)',old_refs)
+        passed('Existing single-save reward and malformed-data protection verified')
         for width in [320,390,768,1280]:
             p.set_viewport_size({'width':width,'height':844});p.wait_for_timeout(100);box=p.locator('#nh7ReaderToolbar452').bounding_box()
             assert box and box['x']>=0 and box['x']+box['width']<=width+1 and box['height']<=125,box
