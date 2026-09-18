@@ -158,3 +158,28 @@ html[data-nh7-home-visual="0"] #view .card.hero{background-image:linear-gradient
 @media(hover:none){.tile:active,.list-btn:active,.primary-btn:active,.secondary-btn:active,.nav-item:active{transform:scale(.98)}}
 @media(max-width:520px){.nh7-appearance-grid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.tile,.list-btn,.primary-btn,.secondary-btn,.nav-item{transition:none!important}}
+
+/* Settings feedback and modal surfaces outside #view. */
+html[data-nh7-theme="dark"] .nh7-settings403-status,
+html[data-nh7-theme="dark"] .nh7-settings403-toast{
+  background:#0c1929!important;
+  color:var(--nh7-dark-ink)!important;
+  border-color:var(--nh7-dark-line)!important;
+}
+html[data-nh7-theme="dark"] .sermon-note-dialog{
+  background:var(--nh7-dark-card)!important;
+  color:var(--nh7-dark-ink)!important;
+  border:1px solid var(--nh7-dark-line)!important;
+}
+html[data-nh7-theme="dark"] .sermon-note-dialog h1,
+html[data-nh7-theme="dark"] .sermon-note-dialog h2,
+html[data-nh7-theme="dark"] .sermon-note-dialog h3,
+html[data-nh7-theme="dark"] .sermon-note-dialog p,
+html[data-nh7-theme="dark"] .sermon-note-dialog label{color:var(--nh7-dark-ink)!important}
+html[data-nh7-theme="dark"] .sermon-note-dialog input,
+html[data-nh7-theme="dark"] .sermon-note-dialog textarea,
+html[data-nh7-theme="dark"] .sermon-note-dialog select{
+  background:#0c1929!important;
+  color:var(--nh7-dark-ink)!important;
+  border-color:var(--nh7-dark-line)!important;
+}
