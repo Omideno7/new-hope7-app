@@ -2164,7 +2164,7 @@ function nh7UiApply(){
   if(stack){root.dataset.nh7Font=p.font;root.style.setProperty('--nh7-user-font',stack)}
   else{delete root.dataset.nh7Font;root.style.removeProperty('--nh7-user-font')}
   const meta=document.querySelector('meta[name="theme-color"]');
-  if(meta)meta.setAttribute('content',resolved==='dark'?'#07111f':'#1d4ed8');
+  if(meta)meta.setAttribute('content',resolved==='dark'?'#07111f':palette[0]);
   try{window.dispatchEvent(new CustomEvent('nh7:ui-preferences',{detail:p}))}catch(e){}
 }
 function nh7AppearanceSettingsHtml(){
@@ -2172,7 +2172,7 @@ function nh7AppearanceSettingsHtml(){
   const option=(value,label,current)=>`<option value="${value}"${value===current?' selected':''}>${label}</option>`;
   return `<section class="nh7-appearance-panel" id="nh7AppearancePanel">
     <h3>🎨 ${nh7UiL('ظاهر و خوانایی','Appearance & readability','Izgled i čitljivost')}</h3>
-    <p class="nh7-appearance-help">${nh7UiL('تم، اندازه نوشته و فونت را برای همین دستگاه انتخاب کنید. تغییرات فوراً اعمال و ذخیره می‌شوند.','Choose the theme, text size and font for this device. Changes apply and save immediately.','Odaberite temu, veličinu teksta i font za ovaj uređaj. Promjene se odmah primjenjuju i spremaju.')}</p>
+    <p class="nh7-appearance-help">${nh7UiL('تم، اندازه نوشته، فونت و رنگ ماژول‌ها را برای همین دستگاه انتخاب کنید. تغییرات فوراً اعمال و ذخیره می‌شوند.','Choose the theme, text size, font and module color for this device. Changes apply and save immediately.','Odaberite temu, veličinu teksta, font i boju modula za ovaj uređaj. Promjene se odmah primjenjuju i spremaju.')}</p>
     <div class="nh7-appearance-grid">
       <div class="nh7-theme-quick-wrap"><span class="nh7-appearance-label">${nh7UiL('حالت نمایش','Display mode','Način prikaza')}</span><div class="nh7-theme-quick"><button type="button" data-nh7-theme-quick="system" class="${p.theme==='system'?'is-selected':''}">◐ ${nh7UiL('خودکار','Auto','Auto')}</button><button type="button" data-nh7-theme-quick="light" class="${p.theme==='light'?'is-selected':''}">☀️ ${nh7UiL('روشن','Light','Light')}</button><button type="button" data-nh7-theme-quick="dark" class="${p.theme==='dark'?'is-selected':''}">🌙 ${nh7UiL('تیره','Dark','Dark')}</button></div></div>
       <label>${nh7UiL('حالت رنگ','Color mode','Način boja')}
