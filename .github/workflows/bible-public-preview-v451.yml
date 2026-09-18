@@ -23,7 +23,7 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Verify real Preview URL
         env:
-          BIBLE_PREVIEW_URL: https://rawcdn.githack.com/Omideno7/new-hope7-app/0ccca98240f64cff5b2d4d4e18f962b639431709/bible-preview.html
+          BIBLE_PREVIEW_URL: https://rawcdn.githack.com/Omideno7/new-hope7-app/6d5ac49f1dff841c38bef11b8272b8084487ee2e/bible-preview.html
         run: |
           python - <<'PY'
           import json, os, re
@@ -70,13 +70,16 @@ jobs:
                   page.locator('[data-bible-hit]').first.click()
                   expect(page.locator('.reader-verse.saved-focus')).to_be_visible()
                   page.wait_for_timeout(350)
+                  logos=page.locator('img[src^="data:image/png;base64,"]')
+                  assert logos.count()>0
+                  assert logos.evaluate_all('(images)=>images.every(img=>img.complete && img.naturalWidth>0)')
                   page.screenshot(path=str(output/'public-preview-mobile.png'))
                   assert not errors,errors
                   external=[r for r in requests if urlparse(r['url']).hostname!=urlparse(page.url).hostname]
                   assert not external,external
                   assert all(r['method'] in ['GET','HEAD'] for r in requests)
                   assert page.evaluate('navigator.serviceWorker.getRegistrations().then(r=>r.length)')==0
-                  report={'status':'passed','url':url,'resolvedUrl':page.url,'hostingNoticeShown':gateway,'httpStatus':response.status,'browser':'Chromium','viewport':'390x844','checks':['Immutable Preview loads successfully','Hosting notice followed through normal Open the page button when present','Isolated Preview initialized','120 keyword buttons loaded','Persian محبت search returns verses','Result opens exact chapter and focuses verse','Application reload and Bible use make no external requests or writes','No page errors or service workers'],'pageErrors':errors,'applicationRequests':requests,'hostingNoticeRequests':gateway_requests}
+                  report={'status':'passed','url':url,'resolvedUrl':page.url,'hostingNoticeShown':gateway,'httpStatus':response.status,'browser':'Chromium','viewport':'390x844','checks':['Immutable Preview loads successfully','Hosting notice followed through normal Open the page button when present','Isolated Preview initialized','120 keyword buttons loaded','Persian محبت search returns verses','Result opens exact chapter and focuses verse','Embedded existing logos render successfully','Application reload and Bible use make no external requests or writes','No page errors or service workers'],'pageErrors':errors,'applicationRequests':requests,'hostingNoticeRequests':gateway_requests}
                   (output/'public-preview-report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
                   print(json.dumps(report,ensure_ascii=False,indent=2))
               except Exception as error:
