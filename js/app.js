@@ -2216,7 +2216,7 @@ function nh7BindAppearanceSettings(){
 }
 try{matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{if(nh7UiPrefs().theme==='system')nh7UiApply()})}catch(e){}
 nh7UiApply();
-window.NH7_UI_PREFS={apply:nh7UiApply,get:nh7UiPrefs,version:'4.2.7'};
+window.NH7_UI_PREFS={apply:nh7UiApply,get:nh7UiPrefs,version:'4.2.8'};
 
 async function settings(){
   const perm=await notificationPermissionStatus();
@@ -2242,7 +2242,7 @@ async function settings(){
     <p>${cloudStatusText()}</p>
     <button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button>
     <h3>${tr('version')}</h3>
-    <p>New Hope 7 v2.3.9.50 · Settings Preview 4.2.7</p>
+    <p>New Hope 7 v2.3.9.50 · Settings Preview 4.2.8</p>
     <button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>
   `);
   $('#settingsLang').value=state.lang;
