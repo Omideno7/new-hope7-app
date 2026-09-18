@@ -34,11 +34,13 @@ jobs:
           test "$(cut -f1 qa-study453/main-before.txt)" = "$MAIN_BASE"
           python scripts/study-v453/prepare.py
           python scripts/study-v453/finalize.py
+          python scripts/study-v453/polish.py
           python scripts/study-v453/build_preview.py
           find js css -type f -print0 | sort -z | xargs -0 sha256sum > qa-study453/before.txt
           sha256sum index.html study-preview.html >> qa-study453/before.txt
           python scripts/study-v453/prepare.py
           python scripts/study-v453/finalize.py
+          python scripts/study-v453/polish.py
           python scripts/study-v453/build_preview.py
           find js css -type f -print0 | sort -z | xargs -0 sha256sum > qa-study453/after.txt
           sha256sum index.html study-preview.html >> qa-study453/after.txt
@@ -73,7 +75,7 @@ jobs:
           test "$GITHUB_REF" = "refs/heads/$FEATURE"
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MAIN_BASE"
           test "$(git ls-remote origin "refs/heads/$FEATURE" | cut -f1)" = "$GITHUB_SHA"
-          git add index.html js/app.js js/nh7-reader-toolbar-v452.js js/nh7-apocrypha-preview-v240.js js/nh7-apocrypha-v270.js js/nh7-theme-studio-v453.js js/nh7-study-preview-app-v453.js study-preview.html scripts/study-v453/browser.py scripts/study-v453/build_assets.py data/lexicon assets/fonts/v453 css/nh7-theme-studio-v453.css css/nh7-study-reader-v453.css css/nh7-study-preview-*.css
+          git add index.html js/app.js js/nh7-reader-toolbar-v452.js js/nh7-apocrypha-preview-v240.js js/nh7-apocrypha-v270.js js/nh7-theme-studio-v453.js js/nh7-original-language-v453.js js/nh7-study-preview-app-v453.js study-preview.html scripts/study-v453/browser.py scripts/study-v453/build_assets.py data/lexicon assets/fonts/v453 css/nh7-theme-studio-v453.css css/nh7-study-reader-v453.css css/nh7-study-preview-*.css
           git diff --exit-code -- js css index.html data/lexicon assets/fonts/v453
           if ! git diff --cached --quiet; then
             git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'feat(study): verified core lexicon, unified Apocrypha and local Theme Studio Preview'
