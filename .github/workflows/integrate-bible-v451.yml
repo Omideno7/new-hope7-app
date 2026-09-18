@@ -17,7 +17,7 @@ jobs:
       BASE_SHA: eccd9a12c2ac6f216f678c0ea81635d42db830cd
       SOURCE_SHA: 6d5ac49f1dff841c38bef11b8272b8084487ee2e
       TARGET_BRANCH: integration/bible-v451-20260918
-      QA_OUTPUT: ${{ runner.temp }}/bible-integration-evidence
+      QA_OUTPUT: /tmp/bible-integration-evidence
     steps:
       - uses: actions/checkout@v4
         with:
@@ -123,5 +123,5 @@ jobs:
         if: always()
         with:
           name: bible-integration-v451-${{ github.sha }}
-          path: ${{ runner.temp }}/bible-integration-evidence/
+          path: /tmp/bible-integration-evidence/
           retention-days: 14
