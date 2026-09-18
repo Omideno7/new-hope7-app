@@ -1,0 +1,117 @@
+name: Reader v452 Main Integration
+on:
+  push:
+    branches: [qa/reader-v452-main-integration-20260919]
+    paths: ['.github/workflows/reader-main-integration-v452.yml','scripts/reader-integration-v452/**']
+permissions:
+  contents: write
+concurrency:
+  group: reader-v452-main-integration
+  cancel-in-progress: true
+jobs:
+  integration:
+    if: github.ref == 'refs/heads/qa/reader-v452-main-integration-20260919'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      BASE_SHA: 569f94080131bf91d64cf7a66684c1159c823d62
+      SOURCE_SHA: 0554e87363b1bb979f8edaf8609402db08bbd43a
+      TARGET_BRANCH: integration/reader-v452-20260919
+      QA_OUTPUT: /tmp/reader-v452-integration-evidence
+      QA_BASELINE: /tmp/reader-v451-baseline
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Preserve test harness and exact baseline
+        run: |
+          set -euo pipefail
+          mkdir -p "$QA_OUTPUT" "$QA_BASELINE" /tmp/reader-v452-tests
+          cp scripts/reader-integration-v452/*.py /tmp/reader-v452-tests/
+          git show "$SOURCE_SHA:scripts/reader-wave-v452/browser.py" > /tmp/reader-v452-tests/browser.py
+          git archive "$BASE_SHA" | tar -xf - -C "$QA_BASELINE"
+          git ls-remote origin refs/heads/main > "$QA_OUTPUT/main-before.txt"
+          test "$(cut -f1 "$QA_OUTPUT/main-before.txt")" = "$BASE_SHA"
+          git checkout --detach "$BASE_SHA"
+          python /tmp/reader-v452-tests/prepare.py
+      - name: Validate runtime scope and all loaded scripts
+        run: |
+          python - <<'PY'
+          import os,json,pathlib,re,subprocess,hashlib
+          out=pathlib.Path(os.environ['QA_OUTPUT']);files=json.loads((out/'allowed-files.json').read_text())
+          index=pathlib.Path('index.html').read_text()
+          for name in files:
+              if name.endswith('.js'):subprocess.run(['node','--check',name],check=True)
+          scripts=re.findall(r'<script\s+src="(js/[^"?]+)',index)
+          for name in scripts:
+              assert pathlib.Path(name).exists(),name
+              subprocess.run(['node','--check',name],check=True)
+          for n,script in enumerate(re.findall(r'<script>([\s\S]*?)</script>',index)):
+              p=out/f'inline-script-{n}.js';p.write_text(script);subprocess.run(['node','--check',str(p)],check=True)
+          assert 'NH7_READER_PREVIEW' not in index and 'reader-preview.html' not in index
+          assert "window.NH7_VERSION = '2.3.9.50'" in index
+          data=[*pathlib.Path('data/bible').rglob('*.json'),*pathlib.Path('data/apocrypha').rglob('*.json')]
+          (out/'corpus-hashes.json').write_text(json.dumps({str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(data)},indent=2))
+          # Existing release pipeline settings are deliberately untouched.
+          subprocess.run(['git','diff','--exit-code',os.environ['BASE_SHA'],'--','.github','data','supabase','version.json','manifest.json','app'],check=True)
+          subprocess.run(['git','diff','--check'],check=True)
+          print('Runtime syntax, all entry scripts, immutable source corpora and native version verified.')
+          PY
+      - name: Install pinned browser tools
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium webkit
+          mkdir -p "$RUNNER_TEMP/reader-agent"
+          npm install --prefix "$RUNNER_TEMP/reader-agent" --save-exact agent-browser@0.38.1
+          echo "QA_AGENT_BROWSER=$RUNNER_TEMP/reader-agent/node_modules/.bin/agent-browser" >> "$GITHUB_ENV"
+      - name: Chromium full-app reader regression
+        run: QA_ENGINE=chromium python /tmp/reader-v452-tests/browser.py
+      - name: WebKit full-app reader regression
+        run: QA_ENGINE=webkit python /tmp/reader-v452-tests/browser.py
+      - name: Real service-worker upgrade and offline data preservation
+        run: python /tmp/reader-v452-tests/cache_upgrade.py
+      - name: Commit verified runtime to integration branch only
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
+          test "$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$BASE_SHA"
+          python - <<'PY'
+          import os,json,pathlib,subprocess
+          files=json.loads((pathlib.Path(os.environ['QA_OUTPUT'])/'allowed-files.json').read_text())
+          subprocess.run(['git','add','--',*files],check=True)
+          changed=subprocess.check_output(['git','diff','--cached','--name-only'],text=True).splitlines()
+          assert set(changed)==set(files),changed
+          subprocess.run(['git','diff','--cached','--check'],check=True)
+          PY
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'feat(reader): integrate phone-approved multilingual toolbar and categorized notes v452'
+          git push origin "HEAD:refs/heads/$TARGET_BRANCH"
+          git rev-parse HEAD > "$QA_OUTPUT/integration-commit.txt"
+          git diff --stat "$BASE_SHA" HEAD > "$QA_OUTPUT/changed-files.txt"
+          git diff "$BASE_SHA" HEAD > "$QA_OUTPUT/runtime.patch"
+          git ls-remote origin refs/heads/main > "$QA_OUTPUT/main-after.txt"
+          diff "$QA_OUTPUT/main-before.txt" "$QA_OUTPUT/main-after.txt"
+      - name: Preserve verification evidence
+        if: always()
+        run: |
+          mkdir -p "$QA_OUTPUT"
+          if [ -d qa-reader452 ]; then cp -R qa-reader452 "$QA_OUTPUT/browser"; fi
+          python - <<'PY'
+          import os,pathlib,tarfile,json
+          out=pathlib.Path(os.environ['QA_OUTPUT'])
+          if (out/'allowed-files.json').exists():
+              with tarfile.open(out/'runtime.tgz','w:gz') as tar:
+                  for name in json.loads((out/'allowed-files.json').read_text()):
+                      if pathlib.Path(name).exists():tar.add(name,arcname=name)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reader-main-integration-v452-${{ github.sha }}
+          path: /tmp/reader-v452-integration-evidence/
+          retention-days: 14
