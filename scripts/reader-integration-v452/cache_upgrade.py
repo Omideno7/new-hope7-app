@@ -77,13 +77,16 @@ with sync_playwright() as pw:
         passed('First read after worker upgrade returns every exact v452 reader asset, not stale v451 code')
         c.set_offline(True);offline=p.evaluate(hash_resources,paths)
         assert online==offline,{'online':online,'offline':offline}
-        shell=p.evaluate("fetch('index.html').then(r=>r.text())");assert '4.5.2-reader-release' in shell and 'nh7-reader-toolbar-v452.js' in shell
-        passed('Approved reader code and current app shell remain available offline')
+        # HTML is served offline for navigation requests, not ordinary fetch().
+        # Read the precise navigation fallback cache without executing the app.
+        shell=p.evaluate("caches.open('nh7-shell-v403').then(c=>c.match(new URL('index.html',location.href))).then(r=>r?r.text():null)")
+        assert shell and '4.5.2-reader-release' in shell and 'nh7-reader-toolbar-v452.js' in shell
+        passed('Approved reader code is fetched offline; navigation fallback contains the current app shell')
         assert p.evaluate('Object.fromEntries(Object.entries(localStorage))')==saved
         assert p.evaluate(verify_media)==media_before
         passed('Notes, bookmarks, progress, four data/media caches and two download databases remain byte-identical')
         assert not errors and not external,{'errors':errors,'external':external}
-        (OUT/'cache-upgrade-report.json').write_text(json.dumps({'status':'passed','checks':checks,'oldWorker':'4.5.1','newWorker':'4.5.2','onlineHashes':online,'offlineHashes':offline,'preservedStorage':True,'preservedDownloadDatabases':True,'pageErrors':errors,'actualExternalRequests':0},ensure_ascii=False,indent=2))
+        (OUT/'cache-upgrade-report.json').write_text(json.dumps({'status':'passed','checks':checks,'oldWorker':'4.5.1','newWorker':'4.5.2','onlineHashes':online,'offlineHashes':offline,'preservedStorage':True,'preservedDownloadDatabases':True,'offlineShellCheck':'exact navigation fallback cache','pageErrors':errors,'actualExternalRequests':0},ensure_ascii=False,indent=2))
     except Exception as error:
         (OUT/'cache-upgrade-failure.json').write_text(json.dumps({'error':str(error),'checks':checks,'pageErrors':errors,'external':external},ensure_ascii=False,indent=2));raise
     finally:c.close();browser.close();server.shutdown()
