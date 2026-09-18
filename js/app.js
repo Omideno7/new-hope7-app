@@ -187,13 +187,30 @@ async function playSermon(item,restart=false){
   if('mediaSession'in navigator){navigator.mediaSession.metadata=new MediaMetadata({title:sermonPlayerState.current.title,artist:'New Hope 7',artwork:item.cover_url?[{src:item.cover_url}]:[]});try{navigator.mediaSession.setActionHandler('seekbackward',()=>audio.currentTime=Math.max(0,audio.currentTime-15));navigator.mediaSession.setActionHandler('seekforward',()=>audio.currentTime=Math.min(audio.duration||Infinity,audio.currentTime+30));navigator.mediaSession.setActionHandler('play',()=>audio.play());navigator.mediaSession.setActionHandler('pause',()=>audio.pause())}catch(e){}}
   updateInlineSermonPlayers();
 }
+function normalizeSermonNoteTextV448(value){
+  return String(value??'')
+    .replace(/&lt;br\s*\/?&gt;/gi,'\n')
+    .replace(/<br\s*\/?>/gi,'\n')
+    .replace(/&nbsp;/gi,' ')
+    .replace(/\u00a0/g,' ')
+    .replace(/\r\n?/g,'\n');
+}
 function openSermonNote(item){
   let modal=document.getElementById('sermonNoteModal');if(!modal){modal=document.createElement('div');modal.id='sermonNoteModal';modal.className='sermon-note-modal hidden';document.body.appendChild(modal)}
-  const title=item['title_'+state.lang]||item.title_fa||item.title_en||tr('sermonNotes');const note=localStorage.getItem(sermonNoteKey(item.id))||'';
-  modal.innerHTML=`<div class="sermon-note-dialog"><div class="note-dialog-head"><h3>${html(title)}</h3><button class="icon-btn" data-close-note>×</button></div><p class="muted">${tr('sermonNotes')}</p><textarea id="sermonModalNote" rows="8" placeholder="${tr('notes')}">${html(note)}</textarea><div class="button-row"><button class="primary-btn" data-save-modal-note="${html(item.id)}">${tr('saveSermonNote')}</button><button class="secondary-btn" data-close-note>${tr('back')}</button></div></div>`;
+  const title=item['title_'+state.lang]||item.title_fa||item.title_en||tr('sermonNotes');
+  const rawNote=localStorage.getItem(sermonNoteKey(item.id))||'';
+  const note=normalizeSermonNoteTextV448(rawNote);
+  modal.innerHTML=`<div class="sermon-note-dialog"><div class="note-dialog-head"><h3>${html(title)}</h3><button class="icon-btn" data-close-note>×</button></div><p class="muted">${tr('sermonNotes')}</p><textarea id="sermonModalNote" rows="8" placeholder="${tr('notes')}"></textarea><div class="button-row"><button class="primary-btn" data-save-modal-note="${html(item.id)}">${tr('saveSermonNote')}</button><button class="secondary-btn" data-close-note>${tr('back')}</button></div></div>`;
+  const textarea=modal.querySelector('#sermonModalNote');
+  if(textarea)textarea.value=note;
   modal.classList.remove('hidden');
   modal.querySelectorAll('[data-close-note]').forEach(b=>b.onclick=()=>modal.classList.add('hidden'));
-  modal.querySelector('[data-save-modal-note]')?.addEventListener('click',async e=>{const value=(modal.querySelector('#sermonModalNote')?.value||'').slice(0,5000);localStorage.setItem(sermonNoteKey(item.id),value);saveNoteCloud('sermon_note_'+item.id,value).catch(console.warn);e.currentTarget.textContent=tr('saved')});
+  modal.querySelector('[data-save-modal-note]')?.addEventListener('click',async e=>{
+    const value=normalizeSermonNoteTextV448(modal.querySelector('#sermonModalNote')?.value||'').slice(0,5000);
+    localStorage.setItem(sermonNoteKey(item.id),value);
+    saveNoteCloud('sermon_note_'+item.id,value).catch(console.warn);
+    e.currentTarget.textContent=tr('saved')
+  });
   modal.onclick=e=>{if(e.target===modal)modal.classList.add('hidden')};
 }
 
