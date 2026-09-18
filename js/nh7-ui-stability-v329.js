@@ -43,6 +43,6 @@ function completeGratitudeDays(){
   })
 }
 function settle(){cleanVideoTile();completeGratitudeDays()}
-document.addEventListener('click',event=>{const settings=event.target.closest?.('[data-go="settings"]');if(!settings)return;event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();renderSettings().catch(error=>{const root=view();if(root)root.innerHTML=`<section class="card"><h2>Error</h2><p>${E(error?.message||error)}</p></section>`})},true);
+document.addEventListener('click',event=>{const settings=event.target.closest?.('[data-go="settings"]');if(!settings)return;if(window.NH7_CANONICAL_SETTINGS===true||window.NH7_CANONICAL_SETTINGS_PREVIEW===true)return;event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();renderSettings().catch(error=>{const root=view();if(root)root.innerHTML=`<section class="card"><h2>Error</h2><p>${E(error?.message||error)}</p></section>`})},true);
 addStyle();const observer=new MutationObserver(()=>requestAnimationFrame(settle));observer.observe(document.documentElement,{childList:true,subtree:true});window.addEventListener('pageshow',settle);setTimeout(settle,300);window.NH7_UI_STABILITY_VERSION=VERSION;
 })();
