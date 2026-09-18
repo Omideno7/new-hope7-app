@@ -2124,7 +2124,7 @@ async function scheduleNativeNotifications(){
 }
 async function notificationPermissionStatus(){const Native=nativeLocalNotifications();if(Native){try{const p=await Native.checkPermissions();return p.display==='granted'?'granted':p.display==='denied'?'denied':'default'}catch(e){}}return typeof Notification==='undefined'?'default':Notification.permission}
 
-const NH7_UI_PREF_KEYS={theme:'nh7_ui_theme_v425',size:'nh7_ui_font_size_v425',font:'nh7_ui_font_family_v425',home:'nh7_ui_home_visual_v425'};
+const NH7_UI_PREF_KEYS={theme:'nh7_ui_theme_v425',size:'nh7_ui_font_size_v425',font:'nh7_ui_font_family_v425',home:'nh7_ui_home_visual_v425',accent:'nh7_ui_accent_v430'};
 function nh7UiL(fa,en,hr){return state.lang==='fa'?fa:state.lang==='hr'?hr:en}
 function nh7UiRead(key,fallback){try{return localStorage.getItem(key)||fallback}catch(e){return fallback}}
 function nh7UiWrite(key,value){try{localStorage.setItem(key,value)}catch(e){}}
@@ -2133,7 +2133,8 @@ function nh7UiPrefs(){
   const size=['90','100','110','120'].includes(nh7UiRead(NH7_UI_PREF_KEYS.size,'100'))?nh7UiRead(NH7_UI_PREF_KEYS.size,'100'):'100';
   const font=['default','system','readable','serif','persian'].includes(nh7UiRead(NH7_UI_PREF_KEYS.font,'default'))?nh7UiRead(NH7_UI_PREF_KEYS.font,'default'):'default';
   const home=nh7UiRead(NH7_UI_PREF_KEYS.home,'1')==='0'?'0':'1';
-  return{theme,size,font,home};
+  const accent=['blue','green','red','purple','orange','teal','pink'].includes(nh7UiRead(NH7_UI_PREF_KEYS.accent,'blue'))?nh7UiRead(NH7_UI_PREF_KEYS.accent,'blue'):'blue';
+  return{theme,size,font,home,accent};
 }
 function nh7UiResolvedTheme(mode){
   if(mode==='light'||mode==='dark')return mode;
@@ -2151,6 +2152,10 @@ function nh7UiApply(){
   root.dataset.nh7Theme=resolved;
   root.dataset.nh7ThemeMode=p.theme;
   root.dataset.nh7HomeVisual=p.home;
+  root.dataset.nh7Accent=p.accent;
+  const palettes={blue:['#1d4ed8','#38bdf8','#16a34a'],green:['#15803d','#22c55e','#0f766e'],red:['#b91c1c','#ef4444','#f97316'],purple:['#7e22ce','#a855f7','#db2777'],orange:['#c2410c','#f97316','#f59e0b'],teal:['#0f766e','#14b8a6','#06b6d4'],pink:['#be185d','#ec4899','#a855f7']};
+  const palette=palettes[p.accent]||palettes.blue;
+  root.style.setProperty('--brand',palette[0]);root.style.setProperty('--brand2',palette[1]);root.style.setProperty('--accent',palette[2]);
   root.style.fontSize=p.size+'%';
   const stack=nh7UiFontStack(p.font);
   if(stack){root.dataset.nh7Font=p.font;root.style.setProperty('--nh7-user-font',stack)}
@@ -2166,6 +2171,7 @@ function nh7AppearanceSettingsHtml(){
     <h3>🎨 ${nh7UiL('ظاهر و خوانایی','Appearance & readability','Izgled i čitljivost')}</h3>
     <p class="nh7-appearance-help">${nh7UiL('تم، اندازه نوشته و فونت را برای همین دستگاه انتخاب کنید. تغییرات فوراً اعمال و ذخیره می‌شوند.','Choose the theme, text size and font for this device. Changes apply and save immediately.','Odaberite temu, veličinu teksta i font za ovaj uređaj. Promjene se odmah primjenjuju i spremaju.')}</p>
     <div class="nh7-appearance-grid">
+      <div class="nh7-theme-quick-wrap"><span class="nh7-appearance-label">${nh7UiL('حالت نمایش','Display mode','Način prikaza')}</span><div class="nh7-theme-quick"><button type="button" data-nh7-theme-quick="system" class="${p.theme==='system'?'is-selected':''}">◐ ${nh7UiL('خودکار','Auto','Auto')}</button><button type="button" data-nh7-theme-quick="light" class="${p.theme==='light'?'is-selected':''}">☀️ ${nh7UiL('روشن','Light','Light')}</button><button type="button" data-nh7-theme-quick="dark" class="${p.theme==='dark'?'is-selected':''}">🌙 ${nh7UiL('تیره','Dark','Dark')}</button></div></div>
       <label>${nh7UiL('حالت رنگ','Color mode','Način boja')}
         <select id="nh7ThemeSelect">
           ${option('system',nh7UiL('خودکار (مطابق دستگاه)','System','Sustav'),p.theme)}
@@ -2173,6 +2179,7 @@ function nh7AppearanceSettingsHtml(){
           ${option('dark',nh7UiL('تیره','Dark','Tamno'),p.theme)}
         </select>
       </label>
+      <label class="nh7-accent-control">${nh7UiL('رنگ ماژول‌ها','Module color','Boja modula')}<select id="nh7AccentSelect">${option('blue',nh7UiL('🔵 آبی','🔵 Blue','🔵 Plava'),p.accent)}${option('green',nh7UiL('🟢 سبز','🟢 Green','🟢 Zelena'),p.accent)}${option('red',nh7UiL('🔴 قرمز','🔴 Red','🔴 Crvena'),p.accent)}${option('purple',nh7UiL('🟣 بنفش','🟣 Purple','🟣 Ljubičasta'),p.accent)}${option('orange',nh7UiL('🟠 نارنجی','🟠 Orange','🟠 Narančasta'),p.accent)}${option('teal',nh7UiL('🟦 فیروزه‌ای','🟦 Teal','🟦 Tirkizna'),p.accent)}${option('pink',nh7UiL('🩷 صورتی','🩷 Pink','🩷 Ružičasta'),p.accent)}</select></label>
       <label>${nh7UiL('اندازه نوشته','Text size','Veličina teksta')}
         <select id="nh7TextSizeSelect">
           ${option('90',nh7UiL('کوچک','Small','Malo'),p.size)}
@@ -2203,8 +2210,10 @@ function nh7AppearanceSettingsHtml(){
 }
 function nh7BindAppearanceSettings(){
   const tell=message=>{const n=$('#nh7AppearanceStatus');if(!n)return;n.textContent=message;clearTimeout(n.__nh7t);n.__nh7t=setTimeout(()=>{n.textContent=''},1800)};
-  const theme=$('#nh7ThemeSelect'),size=$('#nh7TextSizeSelect'),font=$('#nh7FontSelect'),home=$('#nh7HomeVisualToggle');
-  if(theme)theme.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.theme,e.target.value);nh7UiApply();tell('✓')};
+  const theme=$('#nh7ThemeSelect'),accent=$('#nh7AccentSelect'),size=$('#nh7TextSizeSelect'),font=$('#nh7FontSelect'),home=$('#nh7HomeVisualToggle');
+  if(theme)theme.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.theme,e.target.value);nh7UiApply();render('settings',{},true)};
+  $('[data-nh7-theme-quick]').forEach(b=>b.onclick=()=>{nh7UiWrite(NH7_UI_PREF_KEYS.theme,b.dataset.nh7ThemeQuick);nh7UiApply();render('settings',{},true)});
+  if(accent)accent.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.accent,e.target.value);nh7UiApply();render('settings',{},true)};
   if(size)size.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.size,e.target.value);nh7UiApply();tell('✓')};
   if(font)font.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.font,e.target.value);nh7UiApply();tell('✓')};
   if(home)home.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.home,e.target.checked?'1':'0');nh7UiApply();tell('✓')};
@@ -2216,7 +2225,7 @@ function nh7BindAppearanceSettings(){
 }
 try{matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{if(nh7UiPrefs().theme==='system')nh7UiApply()})}catch(e){}
 nh7UiApply();
-window.NH7_UI_PREFS={apply:nh7UiApply,get:nh7UiPrefs,version:'4.2.8'};
+window.NH7_UI_PREFS={apply:nh7UiApply,get:nh7UiPrefs,version:'4.3.0'};
 
 async function settings(){
   const perm=await notificationPermissionStatus();
@@ -2224,7 +2233,7 @@ async function settings(){
   const schedules=await fetchNotificationSchedules();
   const offlineSummary=await offlineStorageSummary();
   view.innerHTML=card(tr('settings'),`
-    <div class="badge" id="nh7SettingsPreviewBadge">${state.lang==='fa'?'تست تنظیمات 4.2.8':state.lang==='hr'?'Test postavki 4.2.8':'Settings Preview 4.2.8'}</div>
+    <div class="badge" id="nh7SettingsPreviewBadge">${state.lang==='fa'?'تست تنظیمات 4.3.0':state.lang==='hr'?'Test postavki 4.3.0':'Settings Preview 4.3.0'}</div>
     <h3>${tr('language')}</h3>
     <select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select>
     ${nh7AppearanceSettingsHtml()}
@@ -2243,7 +2252,7 @@ async function settings(){
     <p>${cloudStatusText()}</p>
     <button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button>
     <h3>${tr('version')}</h3>
-    <p>New Hope 7 v2.3.9.50 · Settings Preview 4.2.8</p>
+    <p>New Hope 7 v2.3.9.50 · Settings Preview 4.3.0</p>
     <button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>
   `);
   $('#settingsLang').value=state.lang;
