@@ -1,0 +1,63 @@
+name: Align Bible Release Validator
+on:
+  push:
+    branches: [feature/bible-keywords-v450-preview-20260918]
+    paths: ['.github/workflows/align-bible-release-validator.yml']
+permissions:
+  contents: write
+jobs:
+  align:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      BASE_MAIN: eccd9a12c2ac6f216f678c0ea81635d42db830cd
+      TESTED_SHA: 569f94080131bf91d64cf7a66684c1159c823d62
+      TARGET_BRANCH: integration/bible-v451-20260918
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 569f94080131bf91d64cf7a66684c1159c823d62
+      - name: Align exact references and execute existing assertions
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/bible-release-alignment
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_MAIN"
+          test "$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$TESTED_SHA"
+          python3 - <<'PY'
+          from pathlib import Path
+          import re,subprocess,textwrap,json
+          p=Path('.github/workflows/deploy-pages.yml');s=p.read_text()
+          changes=[('js/nh7-school-path-v350.js?v=3.5.0','js/nh7-school-path-v351.js?v=3.5.2'),('School path v3.5.0 is not loaded','School path v3.5.2 is not loaded'),('const appTag=`js/app.js?v=${version.app}`;',"const appTag='js/app.js?v=4.5.1-bible-release';"),('sw-release-core-v403.js?v=4.2.2','sw-release-core-v403.js?v=4.5.1')]
+          for old,new in changes:
+              assert s.count(old)==1,old
+              s=s.replace(old,new)
+          p.write_text(s)
+          blocks=re.findall(r"node <<'NODE'\n([\s\S]*?)\n[ \t]*NODE",s)
+          assert len(blocks)==2,len(blocks)
+          outputs=[]
+          for i,block in enumerate(blocks):
+              script=Path('/tmp')/f'nh7-existing-validator-{i}.cjs';script.write_text(textwrap.dedent(block))
+              r=subprocess.run(['node',str(script)],capture_output=True,text=True)
+              print(r.stdout,r.stderr);assert r.returncode==0,r.stderr
+              outputs.append(r.stdout)
+          changed=subprocess.check_output(['git','diff','--name-only'],text=True).splitlines()
+          assert changed==['.github/workflows/deploy-pages.yml'],changed
+          Path('/tmp/bible-release-alignment/report.json').write_text(json.dumps({'status':'passed','changes':changes,'assertionsRemoved':0,'runtimeChanged':False,'existingValidatorOutput':outputs},indent=2))
+          PY
+          git diff --check
+          git diff > /tmp/bible-release-alignment/validator.patch
+      - name: Commit validator alignment to integration only
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_MAIN"
+          test "$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$TESTED_SHA"
+          git add .github/workflows/deploy-pages.yml
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'ci(release): align validator with deployed school path and Bible v451'
+          git push origin "HEAD:refs/heads/$TARGET_BRANCH"
+          git rev-parse HEAD > /tmp/bible-release-alignment/integration-commit.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bible-release-validator-alignment
+          path: /tmp/bible-release-alignment/
+          retention-days: 14
