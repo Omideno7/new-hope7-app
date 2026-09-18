@@ -46,6 +46,7 @@ jobs:
               for name,text in files.items():
                   path=pathlib.Path(name);path.parent.mkdir(parents=True,exist_ok=True);path.write_text(text)
           PY
+          python scripts/bible-preview/finalize.py
           node scripts/bible-preview/apply.mjs
           sha256sum js/app.js js/nh7-app-enhancements-v230.js data/bible/keywords/bible_keywords_v450.json > qa-output/idempotence-before.txt
           node scripts/bible-preview/apply.mjs
@@ -70,7 +71,7 @@ jobs:
           test "$GITHUB_REF" = "refs/heads/$PREVIEW_BRANCH"
           test "$(git ls-remote origin "refs/heads/$PREVIEW_BRANCH" | cut -f1)" = "$GITHUB_SHA"
           rm -f scripts/bible-preview/candidate.b64
-          git add js/app.js js/nh7-app-enhancements-v230.js js/nh7-bible-keywords-v451.js js/nh7-bible-preview-v451.js css/nh7-bible-keywords-v450.css data/bible/keywords/bible_keywords_v450.json index.html service-worker.js sw-release-core-v403.js bible-preview.html scripts/bible-preview/apply.mjs scripts/bible-preview/audit.mjs scripts/bible-preview/browser.py
+          git add js/app.js js/nh7-app-enhancements-v230.js js/nh7-bible-keywords-v451.js js/nh7-bible-preview-v451.js css/nh7-bible-keywords-v450.css css/nh7-bible-preview-*.css data/bible/keywords/bible_keywords_v450.json index.html service-worker.js sw-release-core-v403.js bible-preview.html scripts/bible-preview/apply.mjs scripts/bible-preview/audit.mjs scripts/bible-preview/browser.py
           git add -u scripts/bible-preview/candidate.b64 || true
           if ! git diff --cached --quiet; then
             git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'fix(bible): verified 2500-word concordance and isolated preview v4.5.1'
@@ -85,7 +86,9 @@ jobs:
           python - <<'PY'
           import pathlib,tarfile
           with tarfile.open('qa-output/candidate.tgz','w:gz') as tar:
-              for name in ['js/app.js','js/nh7-app-enhancements-v230.js','js/nh7-bible-keywords-v451.js','js/nh7-bible-preview-v451.js','css/nh7-bible-keywords-v450.css','data/bible/keywords/bible_keywords_v450.json','index.html','service-worker.js','sw-release-core-v403.js','bible-preview.html','scripts/bible-preview/apply.mjs','scripts/bible-preview/audit.mjs','scripts/bible-preview/browser.py']:
+              names=['js/app.js','js/nh7-app-enhancements-v230.js','js/nh7-bible-keywords-v451.js','js/nh7-bible-preview-v451.js','css/nh7-bible-keywords-v450.css','data/bible/keywords/bible_keywords_v450.json','index.html','service-worker.js','sw-release-core-v403.js','bible-preview.html','scripts/bible-preview/apply.mjs','scripts/bible-preview/audit.mjs','scripts/bible-preview/browser.py','scripts/bible-preview/finalize.py']
+              names += [str(p) for p in pathlib.Path('css').glob('nh7-bible-preview-*.css')]
+              for name in names:
                   if pathlib.Path(name).exists():tar.add(name,arcname=name)
           PY
       - uses: actions/upload-artifact@v4
