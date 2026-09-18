@@ -2124,7 +2124,7 @@ async function scheduleNativeNotifications(){
 }
 async function notificationPermissionStatus(){const Native=nativeLocalNotifications();if(Native){try{const p=await Native.checkPermissions();return p.display==='granted'?'granted':p.display==='denied'?'denied':'default'}catch(e){}}return typeof Notification==='undefined'?'default':Notification.permission}
 
-const NH7_UI_PREF_KEYS={theme:'nh7_ui_theme_v425',size:'nh7_ui_font_size_v425',font:'nh7_ui_font_family_v425',home:'nh7_ui_home_visual_v425',accent:'nh7_ui_accent_v430'};
+const NH7_UI_PREF_KEYS={theme:'nh7_ui_theme_v425',size:'nh7_ui_font_size_v425',font:'nh7_ui_font_family_v425',home:'nh7_ui_home_visual_v425',accent:'nh7_ui_accent_v430',custom:'nh7_ui_accent_custom_v431'};
 function nh7UiL(fa,en,hr){return state.lang==='fa'?fa:state.lang==='hr'?hr:en}
 function nh7UiRead(key,fallback){try{return localStorage.getItem(key)||fallback}catch(e){return fallback}}
 function nh7UiWrite(key,value){try{localStorage.setItem(key,value)}catch(e){}}
@@ -2133,8 +2133,10 @@ function nh7UiPrefs(){
   const size=['90','100','110','120'].includes(nh7UiRead(NH7_UI_PREF_KEYS.size,'100'))?nh7UiRead(NH7_UI_PREF_KEYS.size,'100'):'100';
   const font=['default','system','readable','serif','persian'].includes(nh7UiRead(NH7_UI_PREF_KEYS.font,'default'))?nh7UiRead(NH7_UI_PREF_KEYS.font,'default'):'default';
   const home=nh7UiRead(NH7_UI_PREF_KEYS.home,'1')==='0'?'0':'1';
-  const accent=['blue','green','red','purple','orange','teal','pink'].includes(nh7UiRead(NH7_UI_PREF_KEYS.accent,'blue'))?nh7UiRead(NH7_UI_PREF_KEYS.accent,'blue'):'blue';
-  return{theme,size,font,home,accent};
+  const accent=['blue','green','red','purple','orange','teal','pink','custom'].includes(nh7UiRead(NH7_UI_PREF_KEYS.accent,'blue'))?nh7UiRead(NH7_UI_PREF_KEYS.accent,'blue'):'blue';
+  const rawCustom=nh7UiRead(NH7_UI_PREF_KEYS.custom,'#2563eb');
+  const custom=/^#[0-9a-fA-F]{6}$/.test(rawCustom)?rawCustom:'#2563eb';
+  return{theme,size,font,home,accent,custom};
 }
 function nh7UiResolvedTheme(mode){
   if(mode==='light'||mode==='dark')return mode;
@@ -2153,9 +2155,9 @@ function nh7UiApply(){
   root.dataset.nh7ThemeMode=p.theme;
   root.dataset.nh7HomeVisual=p.home;
   root.dataset.nh7Accent=p.accent;
-  const palettes={blue:['#1d4ed8','#38bdf8','#16a34a'],green:['#15803d','#22c55e','#0f766e'],red:['#b91c1c','#ef4444','#f97316'],purple:['#7e22ce','#a855f7','#db2777'],orange:['#c2410c','#f97316','#f59e0b'],teal:['#0f766e','#14b8a6','#06b6d4'],pink:['#be185d','#ec4899','#a855f7']};
+  const palettes={blue:['#1d4ed8','#38bdf8','#16a34a'],green:['#15803d','#22c55e','#0f766e'],red:['#b91c1c','#ef4444','#f97316'],purple:['#7e22ce','#a855f7','#db2777'],orange:['#c2410c','#f97316','#f59e0b'],teal:['#0f766e','#14b8a6','#06b6d4'],pink:['#be185d','#ec4899','#a855f7'],custom:[p.custom,p.custom,p.custom]};
   const palette=palettes[p.accent]||palettes.blue;
-  const softs={blue:'rgba(29,78,216,.14)',green:'rgba(21,128,61,.14)',red:'rgba(185,28,28,.14)',purple:'rgba(126,34,206,.14)',orange:'rgba(194,65,12,.14)',teal:'rgba(15,118,110,.14)',pink:'rgba(190,24,93,.14)'};
+  const softs={blue:'rgba(29,78,216,.14)',green:'rgba(21,128,61,.14)',red:'rgba(185,28,28,.14)',purple:'rgba(126,34,206,.14)',orange:'rgba(194,65,12,.14)',teal:'rgba(15,118,110,.14)',pink:'rgba(190,24,93,.14)',custom:p.custom+'24'};
   root.style.setProperty('--brand',palette[0]);root.style.setProperty('--brand2',palette[1]);root.style.setProperty('--accent',palette[2]);root.style.setProperty('--nh7-module-soft',softs[p.accent]||softs.blue);
   root.style.fontSize=p.size+'%';
   const stack=nh7UiFontStack(p.font);
@@ -2180,7 +2182,7 @@ function nh7AppearanceSettingsHtml(){
           ${option('dark',nh7UiL('تیره','Dark','Tamno'),p.theme)}
         </select>
       </label>
-      <label class="nh7-accent-control">${nh7UiL('رنگ ماژول‌ها','Module color','Boja modula')}<select id="nh7AccentSelect">${option('blue',nh7UiL('🔵 آبی','🔵 Blue','🔵 Plava'),p.accent)}${option('green',nh7UiL('🟢 سبز','🟢 Green','🟢 Zelena'),p.accent)}${option('red',nh7UiL('🔴 قرمز','🔴 Red','🔴 Crvena'),p.accent)}${option('purple',nh7UiL('🟣 بنفش','🟣 Purple','🟣 Ljubičasta'),p.accent)}${option('orange',nh7UiL('🟠 نارنجی','🟠 Orange','🟠 Narančasta'),p.accent)}${option('teal',nh7UiL('🟦 فیروزه‌ای','🟦 Teal','🟦 Tirkizna'),p.accent)}${option('pink',nh7UiL('🩷 صورتی','🩷 Pink','🩷 Ružičasta'),p.accent)}</select></label>
+      <label class="nh7-accent-control">${nh7UiL('رنگ ماژول‌ها','Module color','Boja modula')}<select id="nh7AccentSelect">${option('blue',nh7UiL('🔵 آبی','🔵 Blue','🔵 Plava'),p.accent)}${option('green',nh7UiL('🟢 سبز','🟢 Green','🟢 Zelena'),p.accent)}${option('red',nh7UiL('🔴 قرمز','🔴 Red','🔴 Crvena'),p.accent)}${option('purple',nh7UiL('🟣 بنفش','🟣 Purple','🟣 Ljubičasta'),p.accent)}${option('orange',nh7UiL('🟠 نارنجی','🟠 Orange','🟠 Narančasta'),p.accent)}${option('teal',nh7UiL('🟦 فیروزه‌ای','🟦 Teal','🟦 Tirkizna'),p.accent)}${option('pink',nh7UiL('🩷 صورتی','🩷 Pink','🩷 Ružičasta'),p.accent)}${option('custom',nh7UiL('🎨 رنگ دلخواه','🎨 Custom color','🎨 Prilagođena boja'),p.accent)}</select><input id="nh7AccentCustom" class="nh7-custom-color" type="color" value="${p.custom}" aria-label="${nh7UiL('انتخاب رنگ دلخواه','Choose custom color','Odaberi prilagođenu boju')}"></label>
       <label>${nh7UiL('اندازه نوشته','Text size','Veličina teksta')}
         <select id="nh7TextSizeSelect">
           ${option('90',nh7UiL('کوچک','Small','Malo'),p.size)}
@@ -2211,10 +2213,11 @@ function nh7AppearanceSettingsHtml(){
 }
 function nh7BindAppearanceSettings(){
   const tell=message=>{const n=$('#nh7AppearanceStatus');if(!n)return;n.textContent=message;clearTimeout(n.__nh7t);n.__nh7t=setTimeout(()=>{n.textContent=''},1800)};
-  const theme=$('#nh7ThemeSelect'),accent=$('#nh7AccentSelect'),size=$('#nh7TextSizeSelect'),font=$('#nh7FontSelect'),home=$('#nh7HomeVisualToggle');
+  const theme=$('#nh7ThemeSelect'),accent=$('#nh7AccentSelect'),custom=$('#nh7AccentCustom'),size=$('#nh7TextSizeSelect'),font=$('#nh7FontSelect'),home=$('#nh7HomeVisualToggle');
   if(theme)theme.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.theme,e.target.value);nh7UiApply();render('settings',{},true)};
   Array.from(document.querySelectorAll('[data-nh7-theme-quick]')).forEach(b=>b.onclick=()=>{nh7UiWrite(NH7_UI_PREF_KEYS.theme,b.dataset.nh7ThemeQuick);nh7UiApply();render('settings',{},true)});
   if(accent)accent.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.accent,e.target.value);nh7UiApply();render('settings',{},true)};
+  if(custom)custom.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.custom,e.target.value);nh7UiWrite(NH7_UI_PREF_KEYS.accent,'custom');nh7UiApply();render('settings',{},true)};
   if(size)size.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.size,e.target.value);nh7UiApply();tell('✓')};
   if(font)font.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.font,e.target.value);nh7UiApply();tell('✓')};
   if(home)home.onchange=e=>{nh7UiWrite(NH7_UI_PREF_KEYS.home,e.target.checked?'1':'0');nh7UiApply();tell('✓')};
