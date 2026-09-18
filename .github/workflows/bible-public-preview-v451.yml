@@ -30,21 +30,33 @@ jobs:
           from pathlib import Path
           from urllib.parse import urlparse
           from playwright.sync_api import sync_playwright, expect
+          expect.set_options(timeout=60000)
           url=os.environ['BIBLE_PREVIEW_URL']
           parsed=urlparse(url)
           assert parsed.scheme=='https' and parsed.hostname in {'raw.githack.com','rawcdn.githack.com'}
           assert re.fullmatch(r'/Omideno7/new-hope7-app/[a-f0-9]{40}/bible-preview\.html',parsed.path)
           output=Path('qa-public');output.mkdir(exist_ok=True)
-          errors=[];requests=[]
+          errors=[];requests=[];gateway=False;gateway_requests=[]
           with sync_playwright() as pw:
               browser=pw.chromium.launch()
               context=browser.new_context(viewport={'width':390,'height':844})
+              context.on('page',lambda p:p.on('pageerror',lambda e:errors.append(str(e))))
+              context.on('request',lambda r:requests.append({'url':r.url,'method':r.method}))
               page=context.new_page();page.set_default_timeout(60000)
-              page.on('pageerror',lambda e:errors.append(str(e)))
-              page.on('request',lambda r:requests.append({'url':r.url,'method':r.method}))
               try:
                   response=page.goto(url,wait_until='domcontentloaded',timeout=90000)
                   assert response and response.status==200
+                  notice=page.get_by_text('Open the page',exact=True)
+                  if notice.count() and notice.is_visible():
+                      gateway=True
+                      if notice.get_attribute('target')=='_blank':
+                          with context.expect_page() as opened:notice.click()
+                          page=opened.value
+                      else:notice.click()
+                      expect(page.locator('#amenButton')).to_be_visible()
+                      assert page.evaluate('window.NH7_BIBLE_PREVIEW') is True
+                      gateway_requests=list(requests);requests.clear();errors.clear()
+                      response=page.reload(wait_until='networkidle',timeout=90000)
                   expect(page.locator('#amenButton')).to_be_visible();page.locator('#amenButton').click()
                   assert page.evaluate('window.NH7_BIBLE_PREVIEW') is True
                   page.locator('[data-route="bible"]').click()
@@ -57,18 +69,19 @@ jobs:
                   assert page.locator('[data-bible-hit]').count()>0
                   page.locator('[data-bible-hit]').first.click()
                   expect(page.locator('.reader-verse.saved-focus')).to_be_visible()
+                  page.wait_for_timeout(350)
                   page.screenshot(path=str(output/'public-preview-mobile.png'))
                   assert not errors,errors
-                  external=[r for r in requests if urlparse(r['url']).hostname!=parsed.hostname]
+                  external=[r for r in requests if urlparse(r['url']).hostname!=urlparse(page.url).hostname]
                   assert not external,external
                   assert all(r['method'] in ['GET','HEAD'] for r in requests)
                   assert page.evaluate('navigator.serviceWorker.getRegistrations().then(r=>r.length)')==0
-                  report={'status':'passed','url':url,'httpStatus':response.status,'browser':'Chromium','viewport':'390x844','checks':['Immutable URL returns HTTP 200','Isolated Preview initialized','120 keyword buttons loaded','Persian محبت search returns verses','Result opens exact chapter and focuses verse','No external requests or writes','No page errors','No service worker registered'],'pageErrors':errors,'requests':requests}
+                  report={'status':'passed','url':url,'resolvedUrl':page.url,'hostingNoticeShown':gateway,'httpStatus':response.status,'browser':'Chromium','viewport':'390x844','checks':['Immutable Preview loads successfully','Hosting notice followed through normal Open the page button when present','Isolated Preview initialized','120 keyword buttons loaded','Persian محبت search returns verses','Result opens exact chapter and focuses verse','Application reload and Bible use make no external requests or writes','No page errors or service workers'],'pageErrors':errors,'applicationRequests':requests,'hostingNoticeRequests':gateway_requests}
                   (output/'public-preview-report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
                   print(json.dumps(report,ensure_ascii=False,indent=2))
               except Exception as error:
                   page.screenshot(path=str(output/'failure.png'),full_page=True)
-                  (output/'failure.json').write_text(json.dumps({'error':str(error),'url':url,'pageErrors':errors,'requests':requests,'body':page.locator('body').inner_text()[:6000]},ensure_ascii=False,indent=2))
+                  (output/'failure.json').write_text(json.dumps({'error':str(error),'url':page.url,'pageErrors':errors,'requests':requests,'body':page.locator('body').inner_text()[:6000]},ensure_ascii=False,indent=2))
                   raise
               finally:
                   context.close();browser.close()
