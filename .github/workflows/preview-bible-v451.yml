@@ -1,0 +1,61 @@
+name: Bible Preview QA v451
+on:
+  push:
+    branches: [feature/bible-keywords-v450-preview-20260918]
+    paths:
+      - '.github/workflows/preview-bible-v451.yml'
+      - 'scripts/bible-preview/**'
+      - 'js/nh7-bible-preview-v451.js'
+      - 'bible-preview.html'
+permissions:
+  contents: read
+concurrency:
+  group: bible-preview-v451
+  cancel-in-progress: true
+jobs:
+  audit:
+    if: github.ref == 'refs/heads/feature/bible-keywords-v450-preview-20260918'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Validate existing Bible JavaScript
+        run: node --check js/app.js
+      - name: Read-only source audit
+        run: |
+          mkdir -p qa-output
+          python3 - <<'PY'
+          import json, pathlib, subprocess, tarfile
+          root=pathlib.Path('.')
+          paths=subprocess.check_output(['git','ls-files'],text=True).splitlines()
+          selected=[p for p in paths if 'bible' in p.lower() or 'preview' in p.lower() or 'readonly' in p.lower() or 'guard' in p.lower()]
+          print('RELATED_FILES',json.dumps(selected,ensure_ascii=False))
+          p=root/'data/bible/keywords/bible_keywords_v450.json'
+          data=json.loads(p.read_text())
+          print('KEYWORD_METADATA',json.dumps({k:v for k,v in data.items() if k!='languages'},ensure_ascii=False)[:6000])
+          for lang,words in data['languages'].items():
+              assert len(words)==2500,(lang,len(words))
+              assert len({x['term'] for x in words})==2500,lang
+              assert all(x.get('term') and int(x.get('count',0))>0 for x in words),lang
+              print('KEYWORDS',lang,len(words),json.dumps(words[:12],ensure_ascii=False))
+          for p in sorted((root/'data/bible/groups').glob('*.json')):
+              data=json.loads(p.read_text())
+              print('GROUP',p.name,'books',len(data.get('books',[])),'verses',len(data.get('verses',[])))
+              print('SAMPLE',json.dumps(data.get('verses',[])[:1],ensure_ascii=False)[:3000])
+          with tarfile.open('qa-output/source.tgz','w:gz') as tar:
+              for name in paths:
+                  p=root/name
+                  if p.is_file(): tar.add(p,arcname=name,recursive=False)
+          print('SNAPSHOT_BYTES',(root/'qa-output/source.tgz').stat().st_size)
+          PY
+      - name: Optional additional preview checks
+        run: |
+          if [ -f scripts/bible-preview/audit.mjs ]; then node scripts/bible-preview/audit.mjs; fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bible-preview-qa-${{ github.sha }}
+          path: qa-output/
+          retention-days: 7
