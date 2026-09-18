@@ -174,5 +174,5 @@ const observer=new MutationObserver(records=>{
 observer.observe(document.documentElement,{childList:true,subtree:true});
 enhanceVerses(document);removeAddedToolbar();
 window.addEventListener('online',flushQueue);window.addEventListener('nh7-access-status',flushQueue);setTimeout(flushQueue,1200);
-window.NH7BibleBatchV230={VERSION,selected,clearSelection,batchApply,enhanceVerses,toggleVerse};
+window.NH7BibleBatchV230={VERSION,selected,clearSelection,deselectVerse,batchApply,enhanceVerses,toggleVerse};
 })();
