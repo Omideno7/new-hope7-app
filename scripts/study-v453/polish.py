@@ -27,19 +27,21 @@ def lexicon(s):
 edit('js/nh7-original-language-v453.js',lexicon)
 
 def test(s):
-    if 'def tap_apo_text(' not in s:
-        marker='def mock(route):\n';assert marker in s
-        helper='''def tap_apo_text(p,verse):
+    helper='''def tap_apo_text(p,verse):
     selector=f'.nh7-apo-verse[data-apo-verse="{verse}"] .nh7-apo-verse-text'
     trigger=p.locator(f'.nh7-apo-verse[data-apo-verse="{verse}"] .nh7-apo-verse-main')
     expect(trigger).to_have_attribute('data-nh7-inline392','1')
     text=p.locator(selector)
-    # Click an actual text rectangle, not the centre of a multi-line inline box.
-    text.evaluate('(n)=>n.scrollIntoView({block:"center",inline:"nearest",behavior:"instant"})')
-    point=text.evaluate('(n)=>{const r=[...n.getClientRects()].find(r=>r.width>2&&r.height>2&&r.top>90&&r.bottom<innerHeight-210);if(!r)throw Error("No visible verse text rectangle");const x=r.left+Math.min(r.width/2,12),y=r.top+r.height/2;const hit=document.elementFromPoint(x,y);if(hit?.closest(".nh7-apo-verse")!==n.closest(".nh7-apo-verse"))throw Error("Text hit target does not match requested verse");return{x,y}}')
-    p.mouse.click(point['x'],point['y'])
+    text.scroll_into_view_if_needed()
+    point=text.evaluate('(n)=>{const r=[...n.getClientRects()].find(r=>r.width>2&&r.height>2);if(!r)throw Error("No text rectangle");const box=n.getBoundingClientRect();return{x:r.left-box.left+Math.min(r.width/2,12),y:r.top-box.top+r.height/2}}')
+    # Locator actionability checks wait for stable layout and the correct event
+    # recipient. Never force the click or replace it with a scripted event.
+    text.click(position=point)
 '''
-        s=s.replace(marker,helper+marker,1)
+    if 'def tap_apo_text(' not in s:
+        marker='def mock(route):\n';assert marker in s;s=s.replace(marker,helper+marker,1)
+    else:
+        start=s.index('def tap_apo_text(');end=s.index('def mock(route):',start);s=s[:start]+helper+s[end:]
     s=s.replace("p.locator(selector+' .nh7-apo-verse-main').click();assert p.evaluate('NH7ReaderToolbarV452.selected.size')==0","tap_apo_text(p,numbers[0]);assert p.evaluate('NH7ReaderToolbarV452.selected.size')==0")
     s=s.replace("for n in numbers[:2]:p.locator(f'.nh7-apo-verse[data-apo-verse=\"{n}\"] .nh7-apo-verse-main').click()","for n in numbers[:2]:tap_apo_text(p,n)")
     needle="                assert family in p.evaluate('getComputedStyle(document.body).fontFamily')"
@@ -48,12 +50,11 @@ def test(s):
         assert needle in s;s=s.replace(needle,needle+addition,1)
     if 'window.qa453PointerTrace' not in s:
         marker=';c.add_init_script(INIT)';assert marker in s
-        trace=r'''(()=>{window.qa453PointerTrace=[];for(const type of ['pointerdown','mousedown','pointerup','mouseup','click'])window.addEventListener(type,e=>{const target=e.target instanceof Element?e.target:null,node=target?.closest('.nh7-apo-verse');if(!node)return;const api=window.NH7ReaderToolbarV452;const row={event:type,x:e.clientX,y:e.clientY,target:target.tagName+'.'+target.className,book:node.dataset.readerBook453,chapter:node.dataset.readerChapter453,verse:node.dataset.apoVerse,before:api?[...api.selected.keys()]:[],current:window.NH7ApoReaderSourceV452?.current()?.book?.book_id};window.qa453PointerTrace.push(row);if(window.qa453PointerTrace.length>60)window.qa453PointerTrace.shift();queueMicrotask(()=>row.after=api?[...api.selected.keys()]:[]);},true)})();'''
+        trace=r'''(()=>{window.qa453PointerTrace=[];for(const type of ['pointerdown','mousedown','pointerup','mouseup','click'])window.addEventListener(type,e=>{const target=e.target instanceof Element?e.target:null,node=target?.closest('.nh7-apo-verse');const api=window.NH7ReaderToolbarV452;const row={event:type,x:e.clientX,y:e.clientY,target:target?.tagName+'.'+target?.className,book:node?.dataset.readerBook453,chapter:node?.dataset.readerChapter453,verse:node?.dataset.apoVerse,before:api?[...api.selected.keys()]:[],current:window.NH7ApoReaderSourceV452?.current()?.book?.book_id};window.qa453PointerTrace.push(row);if(window.qa453PointerTrace.length>60)window.qa453PointerTrace.shift();setTimeout(()=>row.after=api?[...api.selected.keys()]:[],0);},true)})();'''
         s=s.replace(marker,marker+';c.add_init_script('+repr(trace)+')',1)
-        marker="p.screenshot(path=str(OUT/f'{ENGINE}-failure.png'),full_page=True);"
-        assert marker in s
+        marker="p.screenshot(path=str(OUT/f'{ENGINE}-failure.png'),full_page=True);";assert marker in s
         s=s.replace(marker,"(OUT/f'{ENGINE}-pointer-trace.json').write_text(json.dumps(p.evaluate('window.qa453PointerTrace||[]'),ensure_ascii=False,indent=2));\n        "+marker,1)
         s=s.replace("'error':str(error),'checks'","'error':repr(error),'traceback':__import__('traceback').format_exc(),'checks'")
     return s
 edit('scripts/study-v453/browser.py',test)
-print('Typography checked; browser-only pointer tracing preserves all original assertions.')
+print('Typography checked; real inline text clicks now retain all Playwright actionability checks.')
