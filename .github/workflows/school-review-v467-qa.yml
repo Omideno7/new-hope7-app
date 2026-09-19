@@ -35,6 +35,20 @@ jobs:
           node --check js/nh7-school-review-v467.js
           node --check js/nh7-school-path-v351.js
           node --check sw-release-core-v403.js
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/school-review-v467/review_qa.py');s=p.read_text()
+          # Playwright's string wait_for_function invokes eval under this CSP.
+          # Wait for the same observable UI state instead. Do not relax the CSP.
+          changes={
+            "p.wait_for_function('window.NH7_REVIEW_PREVIEW_READY===true')":"p.locator('.nh7-review-status467[data-state=needs_revision]').wait_for()",
+            "p.wait_for_function('document.querySelector(\".nh7-review-status467\").dataset.state===\"submitted\"')":"p.locator('.nh7-review-status467[data-state=submitted]').wait_for()"
+          }
+          for before,after in changes.items():
+            assert before in s,before
+            s=s.replace(before,after)
+          p.write_text(s)
+          PY
       - name: Install pinned browser dependencies
         run: |
           python -m pip install playwright==1.55.0
@@ -52,7 +66,8 @@ jobs:
           before=subprocess.check_output(['git','show',base+':js/app.js'],text=True)
           after=Path('js/app.js').read_text()
           for start,end in [('async function school(params={})','async function schoolLesson('),('function examLocalized(', 'function bindInlineSermonControls(')]:
-            assert before[before.index(start):before.index(end)]==after[after.index(start):after.index(end)],start
+            a=before.index(start);b=after.index(start)
+            assert before[a:before.index(end,a)]==after[b:after.index(end,b)],start
           assert 'wrap.innerHTML=guideHtml();' not in Path('js/nh7-school-path-v351.js').read_text()
           print('PASS existing school entry, guide placement, exam submission, audio, themes and celebrations unchanged')
           PY
