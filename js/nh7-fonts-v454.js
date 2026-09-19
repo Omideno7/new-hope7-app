@@ -25,7 +25,7 @@ function read(key){try{const x=JSON.parse(localStorage.getItem(key)||'null');ret
 function choice(which=script()){
  const own=read(KEY);if(own&&Object.hasOwn(fonts,own[which]))return own[which];
  const theme=read('nh7_theme_studio_v453');if(theme&&Object.hasOwn(fonts,theme[which]))return theme[which];
- const old=localStorage.getItem(OLD)||'default';return Object.hasOwn(fonts,old)?old:'default';
+ const old=localStorage.getItem(OLD)||'default';return Object.hasOwn(fonts,old)&&(fonts[old].script==='both'||fonts[old].script===which)?old:'default';
 }
 function announce(text,error=false){message=text;failed=error;const el=document.getElementById('nh7FontStatus454');if(el){el.textContent=text;el.dataset.error=error?'1':'0'}}
 function apply(){

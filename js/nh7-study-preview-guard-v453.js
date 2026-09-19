@@ -1,7 +1,7 @@
 /* Dedicated study-preview.html only. Never load in index.html. */
 (()=>{'use strict';
 if(!location.pathname.endsWith('/study-preview.html'))throw Error('Study Preview entry required');
-const prefix='nh7_preview_study_v453:',raw=window.localStorage;
+const prefix='nh7_preview_study_v454:',raw=window.localStorage;
 const keys=()=>Array.from({length:raw.length},(_,i)=>raw.key(i)).filter(k=>k?.startsWith(prefix)).map(k=>k.slice(prefix.length));
 const methods={getItem:k=>raw.getItem(prefix+String(k)),setItem:(k,v)=>raw.setItem(prefix+String(k),String(v)),removeItem:k=>raw.removeItem(prefix+String(k)),key:i=>keys()[+i]??null,clear:()=>keys().forEach(k=>raw.removeItem(prefix+k))};
 const local=new Proxy(Object.create(null),{get:(_,k)=>k==='length'?keys().length:k===Symbol.toStringTag?'Storage':typeof k==='symbol'?undefined:Object.hasOwn(methods,k)?methods[k]:methods.getItem(k),set:(_,k,v)=>{methods.setItem(k,v);return true},deleteProperty:(_,k)=>{methods.removeItem(k);return true},ownKeys:keys,has:(_,k)=>Object.hasOwn(methods,k)||methods.getItem(k)!==null,getOwnPropertyDescriptor:(_,k)=>methods.getItem(k)===null?undefined:{configurable:true,enumerable:true,writable:true,value:methods.getItem(k)}});

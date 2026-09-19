@@ -29,6 +29,8 @@ def mock(route):
     r=route.request
     if r.url.startswith(BASE+'/'):return route.continue_()
     external.append({'method':r.method,'url':r.url})
+    if r.url.endswith('/functions/v1/nh7-school-media-access'):
+        return route.fulfill(status=200,content_type='application/json',body=json.dumps({'signed_url':BASE+'/qa-study454/sample.wav','expires_in':3600,'mime_type':'audio/wav'}))
     if r.resource_type=='script':return route.fulfill(status=200,content_type='application/javascript',body='')
     if r.resource_type=='stylesheet':return route.fulfill(status=200,content_type='text/css',body='')
     return route.fulfill(status=200,content_type='application/json',body=json.dumps({'ok':True,'authenticated':False,'approved':False,'items':[]} if '/functions/' in r.url else []))
@@ -80,8 +82,10 @@ with sync_playwright() as pw:
         for locale in ['fa','en','hr']:
             language(p,locale);p.locator('[data-route="home"]').click()
             p.evaluate('''async()=>{
-             const id='45400000-0000-4000-8000-000000000001';const blob=await fetch('qa-study454/sample.wav').then(r=>r.blob());
-             await new Promise((resolve,reject)=>{const r=indexedDB.open('nh7-offline-audio-v397',1);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains('media'))r.result.createObjectStore('media',{keyPath:'id'})};r.onerror=()=>reject(r.error);r.onsuccess=()=>{const db=r.result,tx=db.transaction('media','readwrite');tx.objectStore('media').put({id,blob});tx.oncomplete=()=>{db.close();resolve()}}});
+             // signed-stream-fixture-v454: no production token or IndexedDB blob write.
+             const id='45400000-0000-4000-8000-000000000001';
+             const payload=btoa(JSON.stringify({exp:Math.floor(Date.now()/1000)+3600,sub:'synthetic-reader-test'}));
+             localStorage.setItem('nh7_user_session_v170',JSON.stringify({access_token:'test-only.'+payload+'.not-a-valid-signature',user:{email:'reader-qa@example.invalid'}}));
              const item={id,title_fa:'نمونهٔ صوت آزمایشی',title_en:'Synthetic test audio',title_hr:'Probni audio',audio_url:'nh7-private://sermons/qa454',duration_seconds:90};window.__sermonMap=window.__sermonMap||{};window.__sermonMap[id]=item;
              const card=document.createElement('article');card.className='sermon-card';card.dataset.sermonCard=id;card.innerHTML='<div class="sermon-card-copy"><strong>QA audio fixture</strong><div class="sermon-card-actions"><button type="button" data-sermon-play="'+id+'">Play</button></div></div>';document.getElementById('view').append(card);window.NH7_AUDIO_CLASSIC_V400.patch();window.NH7QuickBibleV454.enhance();
             }''')
@@ -107,7 +111,7 @@ with sync_playwright() as pw:
         passed('Existing notes, bookmarks and progress remain unchanged; resetting appearance does not touch them')
         for width in [320,390,768,1280]:p.set_viewport_size({'width':width,'height':844});assert p.evaluate('document.documentElement.scrollWidth<=innerWidth+1'),width
         assert not errors,errors
-        (OUT/f'{ENGINE}-report.json').write_text(json.dumps({'status':'passed','checks':checks,'fontRenderingEvidence':screens,'pageErrors':errors,'mockedRequests':len(external),'actualExternalAPICalls':0,'physicalDeviceTest':False,'realAccountTest':False,'audioTest':'real HTMLAudioElement + synthetic WAV in classic player'},ensure_ascii=False,indent=2))
+        (OUT/f'{ENGINE}-report.json').write_text(json.dumps({'status':'passed','checks':checks,'fontRenderingEvidence':screens,'pageErrors':errors,'mockedRequests':len(external),'actualExternalAPICalls':0,'physicalDeviceTest':False,'realAccountTest':False,'audioTest':'real HTMLAudioElement + synthetic WAV via mocked signed stream in classic player'},ensure_ascii=False,indent=2))
     except Exception as e:
         p.screenshot(path=str(OUT/f'{ENGINE}-failure.png'),full_page=True);(OUT/f'{ENGINE}-failure.json').write_text(json.dumps({'error':str(e),'checks':checks,'pageErrors':errors,'body':p.locator('body').inner_text()[:18000]},ensure_ascii=False,indent=2));raise
     finally:context.close();browser.close();server.shutdown()

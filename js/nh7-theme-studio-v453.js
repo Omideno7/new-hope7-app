@@ -16,8 +16,8 @@ const PRESETS={
  midnight:{bg:'#091522',card:'#142b3c',text:'#f0f6fc',muted:'#b1c6d8',verse:'#f2f1e5',accent:'#76c5ea'},
  sepia:{bg:'#eee2c8',card:'#faf0db',text:'#403323',muted:'#6f5b3e',verse:'#433321',accent:'#785326'}
 };
-const FONT_FA={system:'Tahoma,"Geeza Pro",Arial,sans-serif',vazirmatn:'"NH7 Vazirmatn",Tahoma,sans-serif',naskh:'"NH7 Noto Naskh",Tahoma,serif',estedad:'"NH7 Estedad",Tahoma,sans-serif'};
-const FONT_LATIN={system:'system-ui,-apple-system,"Segoe UI",Arial,sans-serif',inter:'"NH7 Inter",Arial,sans-serif',lora:'"NH7 Lora",Georgia,serif',nunito:'"NH7 Nunito",Arial,sans-serif',classic:'Georgia,"Times New Roman",serif'};
+const FONT_FA={default:'inherit',amiri:'"NH7 Amiri",Tahoma,serif',markazi:'"NH7 Markazi",Tahoma,serif',system:'Tahoma,"Geeza Pro",Arial,sans-serif',vazirmatn:'"NH7 Vazirmatn",Tahoma,sans-serif',naskh:'"NH7 Noto Naskh",Tahoma,serif',estedad:'"NH7 Estedad",Tahoma,sans-serif'};
+const FONT_LATIN={default:'inherit',system:'system-ui,-apple-system,"Segoe UI",Arial,sans-serif',inter:'"NH7 Inter",Arial,sans-serif',lora:'"NH7 Lora",Georgia,serif',nunito:'"NH7 Nunito",Arial,sans-serif',classic:'Georgia,"Times New Roman",serif'};
 const COLOR_NAMES={bg:['پس‌زمینهٔ کل','App background','Pozadina aplikacije'],card:['پس‌زمینهٔ کارت‌ها','Card background','Pozadina kartica'],text:['متن اصلی','Main text','Glavni tekst'],muted:['متن فرعی','Secondary text','Sporedni tekst'],verse:['متن آیات','Verse text','Tekst stihova'],accent:['دکمه‌ها و رنگ تأکید','Buttons and accent','Gumbi i naglasak']};
 const fields=Object.keys(COLOR_NAMES),pick=a=>L(...a);
 let draft=null,lastApplied='',renderKey='',pending=false,ownChange=false;
@@ -81,6 +81,7 @@ function mount(){
  });
 }
 function schedule(){if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;apply();mount()})}
+window.addEventListener('nh7:font454',event=>{if(draft&&event.detail){draft[event.detail.script]=event.detail.id;lastApplied='';apply();preview()}});
 window.addEventListener('nh7:ui-preferences',()=>{lastApplied='';schedule()});window.addEventListener('storage',event=>{if([KEY,SAVED,'nh7_lang'].includes(event.key)){lastApplied='';renderKey='';schedule()}});
 window.addEventListener('change',event=>{if(['langSelect','settingsLang'].includes(event.target.id)){renderKey='';lastApplied='';schedule()}},true);
 new MutationObserver(schedule).observe(document.documentElement,{childList:true,subtree:true});

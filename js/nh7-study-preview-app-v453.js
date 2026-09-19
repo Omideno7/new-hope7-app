@@ -2182,7 +2182,7 @@ function nh7UiWrite(key,value){try{localStorage.setItem(key,value)}catch(e){}}
 function nh7UiPrefs(){
   const theme=['system','light','dark'].includes(nh7UiRead(NH7_UI_PREF_KEYS.theme,'system'))?nh7UiRead(NH7_UI_PREF_KEYS.theme,'system'):'system';
   const size=['90','100','110','120'].includes(nh7UiRead(NH7_UI_PREF_KEYS.size,'100'))?nh7UiRead(NH7_UI_PREF_KEYS.size,'100'):'100';
-  const font=['default','system','readable','serif','persian'].includes(nh7UiRead(NH7_UI_PREF_KEYS.font,'default'))?nh7UiRead(NH7_UI_PREF_KEYS.font,'default'):'default';
+  const font=['default','system','readable','serif','persian',...Object.keys(window.NH7FontsV454?.fonts||{})].includes(nh7UiRead(NH7_UI_PREF_KEYS.font,'default'))?nh7UiRead(NH7_UI_PREF_KEYS.font,'default'):'default';
   const home=nh7UiRead(NH7_UI_PREF_KEYS.home,'1')==='0'?'0':'1';
   const accent=['blue','green','red','purple','orange','teal','pink','custom'].includes(nh7UiRead(NH7_UI_PREF_KEYS.accent,'blue'))?nh7UiRead(NH7_UI_PREF_KEYS.accent,'blue'):'blue';
   const rawCustom=nh7UiRead(NH7_UI_PREF_KEYS.custom,'#2563eb');
@@ -2194,6 +2194,7 @@ function nh7UiResolvedTheme(mode){
   try{return matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}catch(e){return'light'}
 }
 function nh7UiFontStack(font){
+  const added=window.NH7FontsV454?.fonts?.[font];if(added)return added.stack;
   if(font==='system')return 'system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif';
   if(font==='readable')return '"Trebuchet MS",Verdana,Arial,sans-serif';
   if(font==='serif')return 'Georgia,"Times New Roman",serif';
@@ -2462,3 +2463,15 @@ window.NH7ReaderSourceV452={
 
 // Additive study routing; no change to verse identity or text.
 window.NH7StudySourceV453={open:params=>navigate('bible',params)};
+
+// Read-only access for the audio overlay; no navigate() and no audio operations.
+window.NH7QuickBibleSourceV454={
+ books:async()=>{await loadBibleMeta();return state.bible.books.map(b=>({id:b.id,names:{...b.names},chapters:b.chapters}))},
+ chapter:async(bookId,chapter,locale=state.lang)=>{
+  const data=await loadBook(bookId);if(!data)return[];
+  return data.verses.filter(v=>+v.chapter===+chapter).map(v=>{
+   let text=String(v.text?.[locale]||'');if(locale==='en')text=text.replace(new RegExp('^\\s*'+Number(v.verse)+'\\.\\s+'),'');
+   return{verse:+v.verse,text};
+  });
+ }
+};
