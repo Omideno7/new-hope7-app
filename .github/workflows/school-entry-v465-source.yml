@@ -1,0 +1,27 @@
+name: School Entry v465 Source Snapshot
+on:
+  push:
+    branches: [qa/school-entry-v465-20260919]
+    paths: [.github/workflows/school-entry-v465-source.yml]
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 346e274be35ba422a18c96a82810c33f007c1bed
+      - name: Package exact source, not user data or font files
+        run: |
+          mkdir -p source
+          cp index.html service-worker.js sw-release-core-v403.js version.json manifest.json source/
+          cp -R js css source/
+          git rev-parse HEAD > source/BASE_COMMIT
+          find source -type f \( -iname '*.woff*' -o -iname '*.ttf' -o -iname '*.otf' \) -delete
+      - uses: actions/upload-artifact@v4
+        with:
+          name: school-entry-v465-source
+          path: source/
+          retention-days: 3
