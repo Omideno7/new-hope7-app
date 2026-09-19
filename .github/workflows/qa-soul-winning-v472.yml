@@ -64,7 +64,7 @@ jobs:
           grep -q "const STORAGE_KEY='nh7_soul_tracker_v472'" js/nh7-soul-winning-v472.js
           ! grep -Eq 'localStorage\.clear|sessionStorage\.clear|service_role' js/nh7-soul-winning-v472.js
           ! grep -Eq 'fetch\(|XMLHttpRequest|serviceWorker|cloudFetch|cloudRpc' soul-winning-preview.html
-          grep -q 'not sent to Supabase' soul-winning-preview.html
+          grep -q 'no data is sent to Supabase' soul-winning-preview.html
           echo "Local-only data boundary OK"
 
       - name: Validate runtime wiring and release cache
