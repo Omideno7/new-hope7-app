@@ -1,0 +1,47 @@
+name: Verify School Review v467 Phone Preview
+on:
+  push:
+    branches: [feature/school-review-v467-20260919]
+    paths: [.github/workflows/school-review-v467-public-preview.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 377377fd3857f1083150718ce98f46658d39c22b
+      - name: Verify public preview files without production API
+        run: |
+          python - <<'PY'
+          import json,time,urllib.request
+          from pathlib import Path
+          commit='377377fd3857f1083150718ce98f46658d39c22b'
+          origin='https://rawcdn.githack.com/Omideno7/new-hope7-app/'+commit+'/'
+          files=['school-workflow-preview.html','js/nh7-school-workflow-preview-v467.js','js/nh7-school-workflow-v467.js','css/nh7-school-workflow-v467.css','js/nh7-theme-studio-v453.js']
+          out=[]
+          for path in files:
+              url=origin+path
+              error=None
+              for attempt in range(3):
+                  try:
+                      req=urllib.request.Request(url,headers={'User-Agent':'NH7-phone-preview-verification'})
+                      with urllib.request.urlopen(req,timeout=25) as res:
+                          data=res.read();status=res.status;typ=res.headers.get('Content-Type','')
+                      assert data==Path(path).read_bytes(),'Immutable preview differs: '+path
+                      out.append({'path':path,'status':status,'type':typ,'exact_bytes':True})
+                      print('PASS',path,status,typ);error=None;break
+                  except Exception as e:
+                      error=e
+                      if attempt<2:time.sleep(5)
+              if error:raise error
+          Path('phone-preview-report.json').write_text(json.dumps({'commit':commit,'url':origin+'school-workflow-preview.html','files':out,'production_requests':False},indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: school-review-v467-phone-preview
+          path: phone-preview-report.json
+          retention-days: 14
