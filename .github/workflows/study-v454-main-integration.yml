@@ -1,0 +1,100 @@
+name: Study v454 Main Integration
+on:
+  push:
+    branches: [qa/study-v454-integration-20260919]
+    paths: ['scripts/release-v454/trigger.json']
+permissions:
+  contents: write
+concurrency:
+  group: study-v454-main-integration
+  cancel-in-progress: true
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/qa/study-v454-integration-20260919'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      BASE_SHA: 259280fe00a7dbc7359c24f997338724961f0c08
+      TARGET_BRANCH: integration/study-v454-20260919
+      QA_OUTPUT: /tmp/study454-integration
+      QA_BASELINE: /tmp/study452-baseline
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Select exact tested source and preserve harness
+        run: |
+          set -euo pipefail
+          export SOURCE_SHA=$(python -c 'import json,re;d=json.load(open("scripts/release-v454/trigger.json"));s=d["source"];assert re.fullmatch("[a-f0-9]{40}",s);print(s)')
+          echo "SOURCE_SHA=$SOURCE_SHA" >> "$GITHUB_ENV"
+          mkdir -p "$QA_OUTPUT" "$QA_BASELINE"
+          git ls-remote origin refs/heads/main > "$QA_OUTPUT/main-before.txt"
+          test "$(cut -f1 "$QA_OUTPUT/main-before.txt")" = "$BASE_SHA"
+          python scripts/release-v454/setup_tests.py
+          git archive "$BASE_SHA" | tar -xf - -C "$QA_BASELINE"
+          git checkout --detach "$BASE_SHA"
+          python /tmp/study454-tests/prepare.py
+      - name: Install pinned browser tools
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium webkit
+          mkdir -p "$RUNNER_TEMP/study-agent"
+          npm install --prefix "$RUNNER_TEMP/study-agent" --save-exact agent-browser@0.38.1
+          echo "QA_AGENT_BROWSER=$RUNNER_TEMP/study-agent/node_modules/.bin/agent-browser" >> "$GITHUB_ENV"
+      - name: Chromium fonts and uninterrupted classic playback
+        run: timeout --kill-after=10s 180s env QA_ENGINE=chromium python /tmp/study454-tests/browser.py
+      - name: WebKit fonts and uninterrupted classic playback
+        run: timeout --kill-after=10s 180s env QA_ENGINE=webkit python /tmp/study454-tests/browser.py
+      - name: Previously approved reader regression
+        run: timeout --kill-after=10s 180s env QA_ENGINE=chromium python /tmp/study454-tests/reader.py
+      - name: Real worker upgrade and preservation of notes and downloads
+        run: timeout --kill-after=10s 240s python /tmp/study454-tests/cache_upgrade.py
+      - name: Commit to integration branch only
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
+          test "$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$BASE_SHA"
+          python - <<'PY'
+          from pathlib import Path
+          import os,json,subprocess
+          files=json.loads((Path(os.environ['QA_OUTPUT'])/'allowed-files.json').read_text())
+          assert not any('preview' in p and p not in ['js/nh7-apocrypha-preview-v240.js'] for p in files)
+          subprocess.run(['git','add','--',*files],check=True)
+          changed=subprocess.check_output(['git','diff','--cached','--name-only'],text=True).splitlines()
+          assert set(changed)==set(files),{'expected':files,'changed':changed}
+          subprocess.run(['git','diff','--cached','--check'],check=True)
+          PY
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'feat(study): add tested themes, real fonts, complete lexicon core and quick Bible v454'
+          git push origin "HEAD:refs/heads/$TARGET_BRANCH"
+          git rev-parse HEAD > "$QA_OUTPUT/integration-commit.txt"
+          git diff --stat "$BASE_SHA" HEAD > "$QA_OUTPUT/scope.txt"
+          git ls-remote origin refs/heads/main > "$QA_OUTPUT/main-after.txt"
+          diff "$QA_OUTPUT/main-before.txt" "$QA_OUTPUT/main-after.txt"
+      - name: Preserve non-font verification evidence
+        if: always()
+        run: |
+          mkdir -p "$QA_OUTPUT"
+          if [ -d qa-study454 ]; then cp -R qa-study454 "$QA_OUTPUT/study"; fi
+          if [ -d qa-reader452 ]; then cp -R qa-reader452 "$QA_OUTPUT/reader"; fi
+          python - <<'PY'
+          import json,os,tarfile
+          from pathlib import Path
+          out=Path(os.environ['QA_OUTPUT']);path=out/'allowed-files.json'
+          if path.exists():
+              with tarfile.open(out/'runtime-without-fonts.tgz','w:gz') as tar:
+                  for name in json.loads(path.read_text()):
+                      if Path(name).is_file() and not name.endswith(('.woff','.woff2','.ttf','.otf')):tar.add(name,arcname=name)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: study-v454-main-integration-${{ github.sha }}
+          path: /tmp/study454-integration/
+          retention-days: 14
