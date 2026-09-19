@@ -1,3 +1,4 @@
+import {mountMoreReviewV469} from './nh7-store-review-v469.js?v=4.6.9';
 import {createSchoolDraftsV468} from './nh7-school-drafts-v468.js?v=4.6.8';
 import {createBibleKeywordsV451} from './nh7-bible-keywords-v451.js?v=4.5.1';
 // NH7 v2.2.3 targeted update: Bible navigation, protected content, reliable analytics, and secure PDF viewer.
@@ -2061,6 +2062,7 @@ async function library(params={}){
 async function more(){
   const destinations=[['audio','🎧'],['meetings','☎'],['salvation','✝'],['qna','❓'],['account','👤'],['about','ℹ'],['settings','⚙']];
   view.innerHTML=`<div class="grid" data-more-navigation456>${destinations.map(([route,icon])=>tile(route,icon,tr(route))).join('')}</div>`;
+  mountMoreReviewV469(view.querySelector('[data-more-navigation456]'),{language:state.lang});
 }
 
 async function fetchMyQuestionsCloud(){
