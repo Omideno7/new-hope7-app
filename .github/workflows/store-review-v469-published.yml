@@ -1,0 +1,63 @@
+name: Verify Published More Review v469
+on:
+  push:
+    branches: [feature/store-review-v469-preview-20260919]
+    paths: [.github/workflows/store-review-v469-published.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  published:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 0152649b3d557664c23e7b0c4251db19d455a40b
+          fetch-depth: 0
+      - name: Verify release scope and exact published files
+        run: |
+          python - <<'PY'
+          import hashlib,json,subprocess,time,urllib.request
+          from pathlib import Path
+          from datetime import datetime,timezone
+          release='0152649b3d557664c23e7b0c4251db19d455a40b'
+          baseline='2bde658268eeaed0e7873c83aa7fb54c1d37fc8f'
+          tested='414f57d982d6205ab2811774731a6a86ba726a17'
+          files=['js/app.js','index.html','service-worker.js','sw-release-core-v403.js','js/nh7-store-review-v469.js','css/nh7-store-review-v469.css']
+          changed=subprocess.check_output(['git','diff','--name-only',baseline,release],text=True).splitlines()
+          assert sorted(changed)==sorted(files),(changed,files)
+          for p in files:
+              assert Path(p).read_bytes()==subprocess.check_output(['git','show',tested+':'+p]),p+' differs from approved runtime'
+          app=Path('js/app.js').read_text()
+          unhooked=app.replace("import {mountMoreReviewV469} from './nh7-store-review-v469.js?v=4.6.9';\n",'',1).replace("  mountMoreReviewV469(view.querySelector('[data-more-navigation456]'),{language:state.lang});\n",'',1)
+          assert unhooked==subprocess.check_output(['git','show',baseline+':js/app.js'],text=True),'Unrelated app logic changed'
+          assert 'createSchoolDraftsV468' in app
+          assert 'mountStoreReviewV469' not in app
+          for p in ['js/nh7-school-drafts-v468.js','js/nh7-school-path-v351.js','js/nh7-audio-classic-v400.js','js/nh7-theme-studio-v453.js','js/nh7-celebrations-v464.js','js/nh7-settings-controller-v403.js','manifest.json','version.json']:
+              assert Path(p).read_bytes()==subprocess.check_output(['git','show',baseline+':'+p]),p
+          print('PASS six exact approved runtime files; unrelated modules unchanged.')
+          origin='https://omideno7.github.io/new-hope7-app/'
+          rows=[]
+          for p in files:
+              for attempt in range(10):
+                  try:
+                      url=origin+p+'?v=4.6.9&verify='+release
+                      req=urllib.request.Request(url,headers={'Cache-Control':'no-cache','User-Agent':'NH7-approved-release-verification'})
+                      with urllib.request.urlopen(req,timeout=15) as r:
+                          data=r.read();status=r.status;mime=r.headers.get('content-type','')
+                      assert data==Path(p).read_bytes(),p+' live bytes differ'
+                      rows.append({'path':p,'http_status':status,'mime':mime,'matches_approved_release':True,'sha256':hashlib.sha256(data).hexdigest()})
+                      print('PASS live bytes',p,status);break
+                  except Exception:
+                      if attempt==9:raise
+                      time.sleep(6)
+          report={'release':release,'baseline':baseline,'approved_preview':tested,'verified_at':datetime.now(timezone.utc).isoformat(),'six_runtime_paths_only':True,'app_logic_changes':'one import and one More-menu mount only','published_files':rows,'backend_operations':False,'native_store_submission':False,'scope':'Read-only git/blob verification and public static GETs; no real ratings, sign-ins, student records or Supabase operations.'}
+          Path('store-review-v469-publication.json').write_text(json.dumps(report,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: store-review-v469-publication
+          path: store-review-v469-publication.json
+          retention-days: 14
