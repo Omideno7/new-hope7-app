@@ -1,0 +1,47 @@
+name: Verify Published School Guide v466
+on:
+  push:
+    branches: [qa/school-guide-v466-20260919]
+    paths: [.github/workflows/school-guide-v466-published.yml]
+permissions:
+  contents: read
+jobs:
+  published:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 44dfd189832c4a6031562851765811f941e0efe4
+      - name: Read-only comparison of published runtime files
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,json,time,urllib.request
+          sha='44dfd189832c4a6031562851765811f941e0efe4'
+          paths=['js/nh7-school-path-v351.js','index.html','service-worker.js','sw-release-core-v403.js']
+          results=[]
+          for p in paths:
+              expected=Path(p).read_bytes()
+              for attempt in range(8):
+                  try:
+                      req=urllib.request.Request('https://omideno7.github.io/new-hope7-app/'+p+'?verification='+sha+'&attempt='+str(attempt),headers={'Cache-Control':'no-cache','User-Agent':'NH7-release-verification'})
+                      with urllib.request.urlopen(req,timeout=20) as response:
+                          data=response.read();status=response.status
+                      if data==expected:break
+                  except Exception:
+                      if attempt==7:raise
+                  time.sleep(6)
+              else:raise AssertionError('Published file differs: '+p)
+              results.append({'path':p,'status':status,'sha256':hashlib.sha256(data).hexdigest(),'matches_release':True})
+              print('PASS published exact bytes',p)
+          s=Path(paths[0]).read_text()
+          assert 'wrap.innerHTML=guideHtml();' not in s
+          assert 'function guideHtml()' in s and '{guideHtml}' in s
+          Path('publication-report.json').write_text(json.dumps({'commit':sha,'files':results,'scope':'Read-only public static files. No Supabase or account requests.'},indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: school-guide-v466-published
+          path: publication-report.json
+          retention-days: 14
