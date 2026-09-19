@@ -1,6 +1,6 @@
 (()=>{'use strict';
 if(window.__NH7_CELEBRATIONS_V464__)return;window.__NH7_CELEBRATIONS_V464__=1;
-const lang=()=>localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';
+const lang=()=>item('nh7_lang')||document.documentElement.lang||'en';
 const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
 const key=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
 function easter(y){const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mo=Math.floor((h+l-7*m+114)/31),da=(h+l-7*m+114)%31+1;return new Date(y,mo-1,da)}
@@ -25,8 +25,8 @@ function feastText(id){
   stephen:[['این روز استیفان، نخستین شهید ثبت‌شده کلیسای اولیه را به یاد می‌آورد؛ او با ایمان و بخشش تا پایان بر مسیح شهادت داد.','This day remembers Stephen, the first recorded martyr of the early Church, who bore witness to Christ with faith and forgiveness to the end.','Ovaj dan podsjeća na Stjepana, prvog zabilježenog mučenika rane Crkve, koji je do kraja svjedočio za Krista vjerom i oproštenjem.'],'اعمال ۷:۵۴–۶۰','Acts 7:54–60','Djela 7,54–60']
  };const x=texts[id];return x?{body:x[0][lang()==='fa'?0:lang()==='hr'?2:1],verse:x[lang()==='fa'?1:lang()==='hr'?3:2]}:{body:'',verse:''}
 }
-function eventFor(now=new Date()){const y=now.getFullYear(),e=easter(y),today=key(now),rows=[
-[y+'-01-01','holy_name','✝️',L('نام‌گذاری عیسی','Holy Name of Jesus','Sveta Marija Bogorodica')],
+function eventFor(now=new Date()){if(!(now instanceof Date)||!Number.isFinite(now.getTime()))return null;const y=now.getFullYear(),e=easter(y),today=key(now),rows=[
+[y+'-01-01','holy_name','✝️',L('نام‌گذاری عیسی','Holy Name of Jesus','Ime Isusovo')],
 [y+'-01-06','epiphany','✨',L('ظهور مسیح','Epiphany','Bogojavljenje')],
 [key(plus(e,-46)),'ash','🕊️',L('چهارشنبه خاکستر','Ash Wednesday','Pepelnica')],
 [key(plus(e,-7)),'palm','🌿',L('یکشنبه نخل','Palm Sunday','Cvjetnica')],
@@ -43,20 +43,107 @@ function eventFor(now=new Date()){const y=now.getFullYear(),e=easter(y),today=ke
 [y+'-12-25','christmas','⭐',L('میلاد عیسی مسیح','Christmas','Božić')],
 [y+'-12-26','stephen','✝️',L('روز استیفان مقدس','St Stephen’s Day','Sveti Stjepan')]
 ];const x=rows.find(r=>r[0]===today);if(!x)return null;const info=feastText(x[1]);return{key:today,id:x[1],icon:x[2],title:x[3],body:info.body,verse:info.verse}}
-function profile(){try{const s=JSON.parse(localStorage.getItem('nh7_school_access')||'{}'),p=JSON.parse(localStorage.getItem('nh7_user_profile')||'{}');return{name:String(s.firstName||p.name||''),birthDate:String(s.birthDate||p.birthDate||'')}}catch(_){return{name:'',birthDate:''}}}
-function birthday(){const p=profile(),m=p.birthDate.match(/^\d{4}-(\d{2})-(\d{2})$/),n=new Date();return m&&Number(m[1])===n.getMonth()+1&&Number(m[2])===n.getDate()?p:null}
-function modal(icon,title,text,extra=''){document.querySelector('.nh7-celebration-modal464')?.remove();const m=document.createElement('div');m.className='nh7-celebration-modal464';m.innerHTML='<div class="nh7-celebration-dialog464"><button type="button" class="nh7-celebration-close464">×</button><div class="nh7-celebration-symbol464">'+icon+'</div><h2>'+title+'</h2><p>'+text+'</p>'+extra+'</div>';document.body.appendChild(m);m.querySelector('button').onclick=()=>m.remove();m.onclick=e=>{if(e.target===m)m.remove()}}
-function renderHeaderEvent(ev=eventFor()){const row=document.querySelector('.nh7-header-date-row455');if(!row)return;let b=document.getElementById('nh7ChristianToday464');if(!ev){b?.remove();return}if(!b){b=document.createElement('button');b.id='nh7ChristianToday464';b.type='button';b.className='nh7-christian-today464';row.appendChild(b)}b.textContent=ev.icon+' '+ev.title;b.onclick=()=>modal(ev.icon,ev.title,ev.body,'<div class="nh7-feast-verse464">📖 '+ev.verse+'</div>')}
-function header(){renderHeaderEvent(eventFor())}
-function previewEvent(date){const ev=eventFor(date);if(!ev)return null;renderHeaderEvent(ev);const b=document.getElementById('nh7ChristianToday464');if(b)b.click();return ev}
-function birthdayEffects(){
- if(matchMedia('(prefers-reduced-motion: reduce)').matches)return'';
- const sparks=Array.from({length:18},(_,i)=>'<i class="nh7-bday-spark464 s'+(i%6)+'" style="--i:'+i+'"></i>').join('');
- const confetti=Array.from({length:26},(_,i)=>'<b class="nh7-bday-confetti464 c'+(i%5)+'" style="--i:'+i+'"></b>').join('');
- return '<div class="nh7-bday-effects464" aria-hidden="true"><div class="nh7-bday-rocket464 r1"></div><div class="nh7-bday-rocket464 r2"></div><div class="nh7-bday-rocket464 r3"></div><div class="nh7-bday-burst464 b1">'+sparks+'</div><div class="nh7-bday-burst464 b2">'+sparks+'</div><div class="nh7-bday-burst464 b3">'+sparks+'</div>'+confetti+'</div>'
+
+// Read-only profile lookup: a birthday must belong to the currently signed-in account.
+const SESSION='nh7_user_session_v170';
+const remembered=new Set();
+let active=null,scheduled=0,clockTimer=0;
+function read(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch(_){return null}}
+function item(k){try{return localStorage.getItem(k)}catch(_){return null}}
+function identity(){const s=read(SESSION);if(item('nh7_explicit_logout')==='1'||!s?.access_token||!s.user)return null;const email=String(s.user.email||'').trim().toLowerCase(),id=String(s.user.id||email);return id?{id,email,user:s.user}:null}
+function profile(){
+ const account=identity();if(!account)return null;
+ const school=read('nh7_school_access'),cached=read('nh7_user_profile'),metadata=account.user.user_metadata||{};
+ const belongs=x=>x&&typeof x==='object'&&account.email&&String(x.email||x.user_email||'').trim().toLowerCase()===account.email;
+ const rows=[school,cached].filter(belongs);rows.push(metadata);
+ for(const x of rows){const date=String(x.birthDate||x.birth_date||x.date_of_birth||x.dob||'').trim();if(!validBirthDate(date))continue;const name=String(x.firstName||x.first_name||x.name||x.full_name||'').trim().slice(0,100);return {id:account.id,name,birthDate:date}}
+ return null;
 }
-function birthdayGreeting(){const p=birthday();if(!p)return;const seen='nh7_birthday_seen_'+key(new Date());if(localStorage.getItem(seen)==='1')return;localStorage.setItem(seen,'1');modal('🎂',L('تولدت مبارک','Happy Birthday','Sretan rođendan')+(p.name?'، '+p.name:'')+'!',L('دعا می‌کنیم سال تازهٔ زندگی‌ات پر از فیض، سلامتی، حکمت و ثمر برای جلال خداوند باشد.','We pray that your new year of life is filled with grace, health, wisdom and fruit for the glory of God.','Molimo da nova godina tvoga života bude ispunjena milošću، zdravljem, mudrošću i plodom na slavu Božju.'),birthdayEffects()+'<div class="nh7-birthday-blessing464">🎉 ✨ 🎈 ✨ 🎉</div><div class="nh7-feast-verse464">📖 '+L('ارمیا ۲۹:۱۱','Jeremiah 29:11','Jeremija 29,11')+'</div>')}
-function feastGreeting(){const ev=eventFor();if(!ev)return;const seen='nh7_feast_seen_'+ev.key;if(localStorage.getItem(seen)==='1')return;localStorage.setItem(seen,'1');setTimeout(()=>modal(ev.icon,ev.title,ev.body,'<div class="nh7-feast-verse464">📖 '+ev.verse+'</div>'),850)}
-function run(){header();const b=birthday();if(b)setTimeout(birthdayGreeting,500);else feastGreeting()}
-new MutationObserver(header).observe(document.documentElement,{childList:true,subtree:true});window.addEventListener('pageshow',run);setTimeout(run,800);window.NH7_CELEBRATIONS_V464={eventFor,birthday,run,easter,previewEvent,renderHeaderEvent};
+function validBirthDate(value){const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(value);if(!m)return false;const y=+m[1],month=+m[2],d=+m[3],date=new Date(y,month-1,d,12);return y>=1900&&date.getFullYear()===y&&date.getMonth()===month-1&&date.getDate()===d&&value<=key(new Date())}
+function birthday(now=new Date()){const p=profile();if(!p)return null;return p.birthDate.slice(5)===key(now).slice(5)?p:null}
+function seen(k){return remembered.has(k)||item(k)==='1'}
+function markSeen(k){remembered.add(k);try{localStorage.setItem(k,'1')}catch(_){}}
+function node(tag,cls,text){const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n}
+function reduced(){try{return matchMedia('(prefers-reduced-motion: reduce)').matches}catch(_){return true}}
+function birthdayEffects(){
+ if(reduced())return null;
+ const layer=node('div','nh7-bday-effects464');layer.setAttribute('aria-hidden','true');
+ for(let b=0;b<3;b++){
+  layer.append(node('div','nh7-bday-rocket464 r'+(b+1)));
+  const burst=node('div','nh7-bday-burst464 b'+(b+1));
+  for(let i=0;i<18;i++){const spark=node('i','nh7-bday-spark464 s'+i%6);spark.style.setProperty('--i',String(i));burst.append(spark)}layer.append(burst);
+ }
+ for(let i=0;i<26;i++){const confetti=node('b','nh7-bday-confetti464 c'+i%5);confetti.style.setProperty('--i',String(i));confetti.style.setProperty('--drift',i%2?'12px':'-12px');confetti.style.animation='nh7Confetti464 3.4s ease-in '+(.5+i*.035)+'s forwards';layer.append(confetti)}
+ return layer;
+}
+function stopEffects(){if(!active)return;clearTimeout(active.effectsTimer);active.layer?.remove();active.layer=null}
+function closeModal(){
+ if(!active)return;const old=active;stopEffects();active=null;old.overlay.remove();
+ if(old.shell)old.shell.inert=old.wasInert;
+ if(old.focus?.isConnected)try{old.focus.focus({preventScroll:true})}catch(_){}
+}
+function modalCopy(){
+ if(!active)return;const a=active;a.dialog.dir=lang()==='fa'?'rtl':'ltr';a.dialog.lang=lang();
+ a.close.setAttribute('aria-label',L('بستن','Close','Zatvori'));
+ if(a.kind==='birthday'){
+  a.title.textContent=L('تولدت مبارک','Happy Birthday','Sretan rođendan')+(a.person.name?(lang()==='fa'?'، ':', ')+a.person.name:'')+'!';
+  a.body.textContent=L('دعا می‌کنیم سال تازهٔ زندگی‌ات پر از فیض، سلامتی، حکمت و ثمر برای جلال خداوند باشد.','We pray that your new year of life is filled with grace, health, wisdom and fruit for the glory of God.','Molimo da nova godina tvoga života bude ispunjena milošću, zdravljem, mudrošću i plodom na slavu Božju.');
+  a.verse.textContent='📖 '+L('ارمیا ۲۹:۱۱','Jeremiah 29:11','Jeremija 29,11');
+ }else{const ev=eventFor(a.date);if(!ev){closeModal();return}a.title.textContent=ev.title;a.body.textContent=ev.body;a.verse.textContent='📖 '+ev.verse}
+}
+function openModal(kind,person=null,date=new Date()){
+ if(active)return false;
+ const ev=kind==='feast'?eventFor(date):null;if(kind==='feast'&&!ev)return false;
+ const overlay=node('div','nh7-celebration-modal464'),dialog=node('div','nh7-celebration-dialog464');
+ const close=node('button','nh7-celebration-close464','×');close.type='button';
+ const symbol=node('div','nh7-celebration-symbol464',kind==='birthday'?'🎂':ev.icon),title=node('h2'),body=node('p'),verse=node('div','nh7-feast-verse464');
+ title.id='nh7CelebrationTitle464';body.id='nh7CelebrationBody464';dialog.setAttribute('role','dialog');dialog.setAttribute('aria-modal','true');dialog.setAttribute('aria-labelledby',title.id);dialog.setAttribute('aria-describedby',body.id);
+ dialog.append(close,symbol,title,body);let layer=null;
+ if(kind==='birthday'){layer=birthdayEffects();if(layer)dialog.append(layer);const decoration=node('div','nh7-birthday-blessing464','🎉 ✨ 🎈 ✨ 🎉');decoration.setAttribute('aria-hidden','true');dialog.append(decoration)}
+ dialog.append(verse);overlay.append(dialog);
+ const shell=document.getElementById('appShell');active={kind,person,date:new Date(date),overlay,dialog,title,body,verse,close,layer,shell,wasInert:shell?.inert||false,focus:document.activeElement,owner:identity()?.id||'guest'};
+ modalCopy();document.body.append(overlay);if(shell)shell.inert=true;close.focus({preventScroll:true});
+ close.onclick=closeModal;overlay.onclick=e=>{if(e.target===overlay)closeModal()};
+ overlay.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();closeModal()}else if(e.key==='Tab'){e.preventDefault();close.focus()}});
+ if(layer)active.effectsTimer=setTimeout(stopEffects,4800);
+ return true;
+}
+function header(){
+ const row=document.querySelector('.nh7-header-date-row455');if(!row)return;const ev=eventFor();let button=document.getElementById('nh7ChristianToday464');
+ if(!ev){button?.remove();return}
+ if(!button){button=node('button','nh7-christian-today464');button.id='nh7ChristianToday464';button.type='button';row.append(button);button.onclick=()=>openModal('feast')}
+ const label=ev.icon+' '+ev.title;
+ // Do not write identical DOM in an observer callback: no self-triggered mutation loop.
+ if(button.textContent!==label)button.textContent=label;
+ const aria=L('دربارهٔ ','About ','O blagdanu ')+ev.title;
+ if(button.getAttribute('aria-label')!==aria)button.setAttribute('aria-label',aria);
+}
+function canAuto(){
+ if(document.hidden||active)return false;
+ const gate=document.getElementById('amenGate');if(gate&&!gate.classList.contains('hidden')&&!gate.hidden)return false;
+ if(document.querySelector('[aria-modal="true"]:not(.hidden):not([hidden]),dialog[open]'))return false;
+ if(/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName||''))return false;
+ return true;
+}
+function run(){
+ header();if(active){if(active.owner!==(identity()?.id||'guest'))closeModal();else modalCopy()}
+ if(!canAuto())return;
+ const today=key(new Date()),p=birthday();
+ if(p){const k='nh7_birthday_seen_v464:'+encodeURIComponent(p.id)+':'+today;if(!seen(k)&&openModal('birthday',p))markSeen(k);return}
+ const ev=eventFor();if(ev){const k='nh7_feast_seen_v464:'+encodeURIComponent(identity()?.id||'guest')+':'+today;if(!seen(k)&&openModal('feast'))markSeen(k)}
+}
+function schedule(){clearTimeout(scheduled);scheduled=setTimeout(run,100)}
+function clock(){clearTimeout(clockTimer);if(document.hidden)return;run();clockTimer=setTimeout(clock,60000)}
+// Observe only the app view/gate and language, never the header or our own modal subtree.
+const view=document.getElementById('view'),gate=document.getElementById('amenGate');
+if(view)new MutationObserver(schedule).observe(view,{childList:true});
+if(gate)new MutationObserver(schedule).observe(gate,{attributes:true,attributeFilter:['class','hidden']});
+new MutationObserver(schedule).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+window.addEventListener('pageshow',schedule);window.addEventListener('focus',schedule);window.addEventListener('nh7-session-refreshed',schedule);
+window.addEventListener('storage',e=>{if([SESSION,'nh7_explicit_logout','nh7_school_access','nh7_user_profile','nh7_lang'].includes(e.key))schedule()});
+document.addEventListener('change',e=>{if(['langSelect','settingsLang'].includes(e.target?.id))schedule()});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(clockTimer);stopEffects()}else clock()});
+try{matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',e=>{if(e.matches)stopEffects()})}catch(_){}
+setTimeout(clock,900);
+window.NH7_CELEBRATIONS_V464=Object.freeze({VERSION:'4.6.4',eventFor,birthday,run,easter});
 })();

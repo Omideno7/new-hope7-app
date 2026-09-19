@@ -48,7 +48,7 @@
     window.NH7_CANONICAL_SETTINGS = true;
     window.NH7_VERSION = '2.3.9.50';
     window.NH7_BASE_PATH = new URL('.', window.location.href).pathname;
-    window.NH7_SERVICE_WORKER = window.NH7_BASE_PATH + 'service-worker.js?v=4.5.7';
+    window.NH7_SERVICE_WORKER = window.NH7_BASE_PATH + 'service-worker.js?v=4.6.4';
     window.NH7_ONESIGNAL_WORKER = window.NH7_BASE_PATH + 'push/OneSignalSDKWorker.js';
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register(window.NH7_SERVICE_WORKER, { scope: window.NH7_BASE_PATH, updateViaCache: 'none' }).catch(console.warn);
@@ -74,8 +74,8 @@
   <link rel="stylesheet" href="css/nh7-header-date-v455.css?v=4.5.5" />
   <link rel="stylesheet" href="css/nh7-navigation-v456.css?v=4.5.6" />
   <link rel="stylesheet" href="css/nh7-theme-gallery-v457.css?v=4.5.7" />
-  <link rel="stylesheet" href="css/nh7-growth-v463.css?v=4.6.3-preview" />
-  <link rel="stylesheet" href="css/nh7-celebrations-v464.css?v=4.6.4-preview" />
+  <link rel="stylesheet" href="css/nh7-growth-v463.css?v=4.6.3" />
+  <link rel="stylesheet" href="css/nh7-celebrations-v464.css?v=4.6.4" />
 </head>
 <body>
   <div id="amenGate" class="amen-gate hidden" role="dialog" aria-modal="true">
@@ -143,8 +143,8 @@
   <script src="js/nh7-audio-classic-v400.js?v=4.6.1"></script>
   <script src="js/nh7-sermon-social-v443.js?v=4.4.6" defer></script>
   <script src="js/nh7-sermon-list-detail-v445.js?v=4.4.6" defer></script>
-  <script src="js/app.js?v=4.5.7" type="module"></script>
-  <script src="js/nh7-settings-controller-v403.js?v=4.0.3"></script>
+  <script src="js/app.js?v=4.6.4" type="module"></script>
+  <script src="js/nh7-settings-controller-v403.js?v=4.6.4"></script>
   <script src="js/nh7-settings-account-v252.js?v=2.5.2" defer></script>
   <script src="js/nh7-delete-account-v253.js?v=2.5.4" defer></script>
   <script src="js/nh7-app-enhancements-v230.js?v=4.5.2-reader" type="module"></script>
@@ -165,7 +165,7 @@
   <script src="js/nh7-push-account-bind-v361.js?v=3.6.1" defer></script>
   <script src="js/nh7-inbox-badge-sync-v418.js?v=4.1.8" defer></script>
   <script src="js/nh7-school-exam-v344.js?v=2.3.9.50" defer></script>
-  <script src="js/nh7-school-path-v351.js?v=3.5.2" defer></script>
+  <script src="js/nh7-school-path-v351.js?v=4.6.4" defer></script>
   <script src="js/nh7-spiritual-plans-v412.js?v=4.1.2" type="module"></script>
   <script src="js/nh7-fasting-practical-note-removal-v413.js?v=4.1.3" defer></script>
   <script src="js/nh7-theme-studio-v453.js?v=4.5.7" defer></script>
@@ -173,6 +173,6 @@
   <script src="js/nh7-fonts-v454.js?v=4.5.4" defer></script>
   <script src="js/nh7-audio-quick-bible-v454.js?v=4.5.4" defer></script>
   <script src="js/nh7-header-date-v455.js?v=4.5.5" defer></script>
-  <script src="js/nh7-celebrations-v464.js?v=4.6.4-preview"></script>
+  <script src="js/nh7-celebrations-v464.js?v=4.6.4" defer></script>
 </body>
 </html>
