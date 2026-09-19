@@ -1,0 +1,122 @@
+name: Theme Gallery v457 QA
+on:
+  push:
+    branches: [feature/theme-gallery-v457-20260919]
+    paths: ['.github/workflows/theme-gallery-v457.yml','scripts/theme-v457/**','css/nh7-theme-gallery-v457.css']
+permissions:
+  contents: write
+concurrency:
+  group: theme-gallery-v457
+  cancel-in-progress: true
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/feature/theme-gallery-v457-20260919'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      BASE_SHA: 466badb8a151dbdf02d07606a99e9660da1fe04a
+      FEATURE: feature/theme-gallery-v457-20260919
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prepare isolated theme candidate
+        run: |
+          set -euo pipefail
+          mkdir -p qa-theme457 /tmp/theme457-baseline
+          git ls-remote origin refs/heads/main > qa-theme457/main-before.txt
+          test "$(cut -f1 qa-theme457/main-before.txt)" = "$BASE_SHA"
+          git archive "$BASE_SHA" | tar -xf - -C /tmp/theme457-baseline
+          python scripts/theme-v457/prepare.py
+          python scripts/theme-v457/build_preview.py
+          sha256sum js/app.js js/nh7-theme-studio-v453.js index.html theme-preview.html js/nh7-theme-preview-app-v457.js > qa-theme457/before.txt
+          python scripts/theme-v457/prepare.py
+          python scripts/theme-v457/build_preview.py
+          sha256sum js/app.js js/nh7-theme-studio-v453.js index.html theme-preview.html js/nh7-theme-preview-app-v457.js > qa-theme457/after.txt
+          diff qa-theme457/before.txt qa-theme457/after.txt
+          node --check js/app.js
+          node --check js/nh7-theme-studio-v453.js
+          node --check js/nh7-theme-preview-app-v457.js
+          node --check js/nh7-theme-preview-guard-v457.js
+          python -m py_compile scripts/theme-v457/*.py
+          node scripts/theme-v457/audit.mjs
+          git diff --check
+      - name: Install pinned browsers
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium webkit
+          npm install --prefix "$RUNNER_TEMP/theme-agent" --save-exact agent-browser@0.38.1
+          echo "QA_AGENT_BROWSER=$RUNNER_TEMP/theme-agent/node_modules/.bin/agent-browser" >> "$GITHUB_ENV"
+      - name: Reproduce reported old dark-mode conflict
+        run: timeout --kill-after=10s 90s env QA_MODE=baseline QA_ROOT=/tmp/theme457-baseline QA_ENGINE=chromium python scripts/theme-v457/browser.py
+      - name: Chromium themes and data preservation
+        run: timeout --kill-after=10s 180s env QA_ENGINE=chromium python scripts/theme-v457/browser.py
+      - name: WebKit themes and data preservation
+        run: timeout --kill-after=10s 180s env QA_ENGINE=webkit python scripts/theme-v457/browser.py
+      - name: Previously accepted fonts lexicon and uninterrupted audio
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+          s=subprocess.check_output(['git','show','ef2c8e4c2ec40da1d1f368c3a1440c59317afc95:scripts/study-v454/browser.py'],text=True)
+          # Only the intentionally removed control assertion is replaced. All font,
+          # lexicon and actual audio-continuity assertions stay in the regression.
+          old="[('#nh7ThemeSelect option',3),('#nh7TextSizeSelect option',4),('#nh7AccentSelect option',8)]"
+          assert old in s;s=s.replace(old,"[('#nh7ThemeSelect option',0),('#nh7TextSizeSelect option',4),('#nh7AccentSelect option',8)]",1)
+          old="p.locator('[data-studio-preset453=\"sepia\"]').click()";assert old in s
+          s=s.replace(old,"p.locator('[data-theme-group457=\"soft\"]').click();"+old,1)
+          s=s.replace('Actual app retains all previous mode, size, accent and five original font choices','Duplicate mode removed; prior size, accent and five original font choices retained')
+          Path('/tmp/theme457-regression.py').write_text(s)
+          PY
+          timeout --kill-after=10s 180s env QA_ENGINE=chromium python /tmp/theme457-regression.py
+      - name: Isolated local Preview
+        run: timeout --kill-after=10s 180s python scripts/theme-v457/preview_test.py
+      - name: Commit verified theme files to feature only
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/$FEATURE"
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
+          test "$(git ls-remote origin "refs/heads/$FEATURE" | cut -f1)" = "$GITHUB_SHA"
+          git add js/app.js js/nh7-theme-studio-v453.js index.html theme-preview.html js/nh7-theme-preview-app-v457.js js/nh7-theme-preview-guard-v457.js css/nh7-theme-preview-*.css
+          git diff --exit-code -- js css index.html
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'fix(appearance): verified single theme gallery and six additional vivid palettes in Preview'
+            git push origin "HEAD:refs/heads/$FEATURE"
+          fi
+          git rev-parse HEAD > qa-theme457/tested-commit.txt
+          git ls-remote origin refs/heads/main > qa-theme457/main-after.txt
+          diff qa-theme457/main-before.txt qa-theme457/main-after.txt
+      - name: Verify actual immutable public Preview
+        run: |
+          export QA_PREVIEW_URL="https://rawcdn.githack.com/Omideno7/new-hope7-app/$(cat qa-theme457/tested-commit.txt)/theme-preview.html"
+          timeout --kill-after=10s 240s python scripts/theme-v457/preview_test.py
+      - name: Collect evidence without font binaries
+        if: always()
+        run: |
+          mkdir -p qa-theme457
+          if [ -d qa-study454 ]; then cp -R qa-study454 qa-theme457/previous-regression; fi
+          python - <<'PY'
+          from pathlib import Path
+          import tarfile,json,hashlib
+          names=['js/app.js','js/nh7-theme-studio-v453.js','index.html','css/nh7-theme-gallery-v457.css','theme-preview.html','js/nh7-theme-preview-app-v457.js','js/nh7-theme-preview-guard-v457.js']
+          names += [str(p) for p in Path('scripts/theme-v457').glob('*') if p.is_file()]
+          names += [str(p) for p in Path('css').glob('nh7-theme-preview-*.css')]
+          with tarfile.open('qa-theme457/tested-source-no-fonts.tgz','w:gz') as tar:
+              for name in names:
+                  if Path(name).is_file():tar.add(name,arcname=name)
+          paths=[*Path('data/bible').rglob('*.json'),*Path('data/apocrypha').rglob('*.json')]
+          Path('qa-theme457/corpus-hashes.json').write_text(json.dumps({str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(paths)},indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: theme-gallery-v457-${{ github.sha }}
+          path: qa-theme457/
+          retention-days: 14
