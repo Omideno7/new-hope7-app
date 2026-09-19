@@ -17,6 +17,13 @@ p=Path('scripts/v467/qa.py');s=p.read_text()
 a="  if(u.pathname==='/functions/v1/nh7-school-media-access'){"
 b=a+"\n   if(body.kind==='sermon'&&!/^[0-9a-f-]{36}$/i.test(body.sermon_id||''))return new Response(JSON.stringify({code:'invalid_sermon'}),{status:400});"
 assert s.count(a)==1;s=s.replace(a,b)
+# Playwright invokes a function returned by evaluate. Install the fixture in a
+# block with no return; otherwise the fixture itself hangs before the test runs.
+for a,b in [
+ ('p.evaluate("window.fetch=()=>new Promise(()=>{})")','p.evaluate("()=>{window.fetch=()=>new Promise(()=>{});}")'),
+ ('p.evaluate("window.n=0;window.fetch=async()=>{n++;throw new TypeError(\'Load failed\')}")','p.evaluate("()=>{window.n=0;window.fetch=async()=>{n++;throw new TypeError(\'Load failed\')};}")')
+]:
+ assert s.count(a)==1,a;s=s.replace(a,b)
 # New integration regression uses the real security and catalogue wrapper stack.
 marker='  browser.close()'
 extra=r'''  def wrapper_integration():
