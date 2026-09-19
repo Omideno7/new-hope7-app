@@ -62,5 +62,5 @@ window.addEventListener('focus',refreshSchoolPath);
 window.addEventListener('pageshow',refreshSchoolPath);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshSchoolPath()});
 setInterval(refreshSchoolPath,15000);
-schedule(700);window.NH7_SCHOOL_PATH_VERSION='3.5.2';
+schedule(700);window.NH7_SCHOOL_PATH_VERSION='3.5.2';window.NH7SchoolPathV351=Object.assign(window.NH7SchoolPathV351||{},{guideHtml});
 })();
