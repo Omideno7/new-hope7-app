@@ -1,0 +1,15 @@
+export function renderAttemptPreview(language,s){
+const L=(fa,en,hr)=>language==='fa'?fa:language==='hr'?hr:en,E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),N=v=>language==='fa'?String(v).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]):String(v);
+function attemptsV467(s){
+ if(!s||s.graduated||s.passed_already||s.legacy_course_passed||s.class_unlocked===false)return null;
+ const used=Number(s.attempts_used),left=Number(s.remaining_attempts),max=Number(s.exam?.max_attempts);
+ if(!Number.isInteger(used)||used<0||!Number.isInteger(left)||left<0)return null;
+ const total=Number.isInteger(max)&&max>0?max:used+left;
+ return total>0?{used,left,total}:null;
+}
+function attemptsHtmlV467(s){const a=attemptsV467(s);return a?`<p class="nh7-exam-attempts467">${E(L('فرصت باقی‌ماندهٔ آزمون','Exam attempts remaining','Preostali pokušaji ispita'))}: ${E(N(a.left))} / ${E(N(a.total))}</p>`:''}
+function attemptsExhaustedV467(s){const a=attemptsV467(s);return !!a&&a.used>0&&a.left===0}
+function statusText(s){if(s?.graduated)return L('قبولی قبلی حفظ شده','Previous graduation preserved','Prethodni završetak je sačuvan');if(s?.passed_already)return L('قبول شده','Passed','Položeno');if(!s?.class_unlocked)return L('قفل','Locked','Zaključano');if(attemptsExhaustedV467(s))return L('فرصت‌های آزمون تمام شده','No exam attempts remaining','Nema preostalih pokušaja ispita');if(s?.repeat_required)return L('نیاز به تکرار کلاس','Repeat class','Ponovite razred');if(s?.ready)return L('آماده آزمون','Exam ready','Ispit spreman');return L('در حال انجام','In progress','U tijeku')}
+function gateText(s){if(!s?.class_unlocked)return L('این کلاس بعد از قبولی در آزمون کلاس قبل باز می‌شود.','This class unlocks after you pass the previous class exam.','Ovaj razred otključava se nakon prolaza prethodnog ispita.');if(attemptsExhaustedV467(s))return L('فرصت‌های مجاز این آزمون تمام شده است. برای راهنمایی با ادمین مدرسه تماس بگیرید.','All allowed attempts for this exam have been used. Contact the school administrator for guidance.','Iskorišteni su svi dopušteni pokušaji ovog ispita. Obratite se administratoru škole za upute.');if(s?.repeat_required)return L('این کلاس را از ابتدا دوباره بگذرانید و تمام درس‌های آن را دوباره کامل کنید.','Repeat this class from the beginning and complete all of its lessons again.','Ponovite ovaj razred od početka i ponovno dovršite sve lekcije.');if(!s?.lessons_complete)return L('ابتدا تمام درس‌های این کلاس را کامل کنید.','Complete all lessons in this class first.','Najprije dovršite sve lekcije ovog razreda.');if(!s?.assignments_approved)return L('تکالیف ارسال شده باید توسط ادمین تأیید شوند.','Submitted assignments must be approved by the administrator.','Predane zadatke mora odobriti administrator.');if(s?.ready)return L('همه شرایط کامل است؛ آزمون کلاس باز است.','All requirements are complete; the class exam is open.','Svi uvjeti su ispunjeni; ispit je otvoren.');return''}
+return attemptsHtmlV467(s)+`<p>${E(gateText(s))}</p>`;
+}
