@@ -28,6 +28,7 @@ results=[];failures=[]
 def record(name,fn):
  try:fn();results.append(name);print('PASS',name,flush=True)
  except Exception as e:failures.append({'name':name,'error':str(e)});print('FAIL',name,str(e),flush=True)
+def set_date(page,iso):page.evaluate('(iso)=>{window.__qaNow=Date.parse(iso)}',iso)
 with sync_playwright() as pw:
  for engine in ['chromium','webkit']:
   browser=getattr(pw,engine).launch(headless=True)
@@ -38,10 +39,13 @@ with sync_playwright() as pw:
     if r.request.url.startswith(origin):r.continue_()
     else:external.append(r.request.url);r.abort()
    ctx.route('**/*',route)
-   ctx.add_init_script('const v='+json.dumps(values or {})+';for(const [k,x] of Object.entries(v)){localStorage.setItem(k,x)};document.documentElement.lang=v.nh7_lang||"en";document.documentElement.dir=v.nh7_lang==="fa"?"rtl":"ltr";')
-   page.clock.set_fixed_time(datetime.fromisoformat(when.replace('Z','+00:00')))
+   # Test-only clock. Date-only freeze preserves real timers and CSS animations.
+   ms=int(datetime.fromisoformat(when.replace('Z','+00:00')).timestamp()*1000)
+   init='window.__qaNow='+str(ms)+';const RealDate=Date;window.Date=class extends RealDate{constructor(...a){super(...(a.length?a:[window.__qaNow]))}static now(){return window.__qaNow}};'
+   init+='const v='+json.dumps(values or {})+';for(const [k,x] of Object.entries(v)){localStorage.setItem(k,x)};'
+   ctx.add_init_script(init)
    page.goto(origin+('/.qa-celebrations-minimal.html' if minimal else '/.qa-celebrations.html'))
-   page.evaluate('NH7_CELEBRATIONS_V464.run()')
+   page.evaluate('document.documentElement.lang=localStorage.getItem("nh7_lang")||"en";document.documentElement.dir=document.documentElement.lang==="fa"?"rtl":"ltr";NH7_CELEBRATIONS_V464.run()')
    return ctx,page,errors,external
   def safe_storage(page):
    vals=page.evaluate('Object.fromEntries(Object.keys(localStorage).map(k=>[k,localStorage.getItem(k)]))')
@@ -58,6 +62,7 @@ with sync_playwright() as pw:
     a=first.evaluate('(n)=>getComputedStyle(n).transform');p.wait_for_timeout(900);b=first.evaluate('(n)=>getComputedStyle(n).transform');assert a!=b,(a,b)
     p.screenshot(path=str(OUT/f'{engine}-birthday-{language}.png'))
     p.keyboard.press('Tab');assert p.evaluate('document.activeElement.classList.contains("nh7-celebration-close464")')
+    safe_storage(p)
     p.keyboard.press('Escape');assert p.locator('[role=dialog]').count()==0
     p.evaluate('NH7_CELEBRATIONS_V464.run()');p.wait_for_timeout(200);assert p.locator('[role=dialog]').count()==0
     p.reload();p.wait_for_timeout(1100);assert p.locator('[role=dialog]').count()==0
@@ -98,7 +103,7 @@ with sync_playwright() as pw:
    for language in ['fa','en','hr']:
     p.evaluate('(l)=>{localStorage.setItem("nh7_lang",l);document.documentElement.lang=l}',language)
     for day,id in expected.items():
-     p.clock.set_fixed_time(datetime.fromisoformat(day+'T12:00:00+00:00'));p.evaluate('NH7_CELEBRATIONS_V464.run()')
+     set_date(p,day+'T12:00:00Z');p.evaluate('NH7_CELEBRATIONS_V464.run()')
      ev=p.evaluate('NH7_CELEBRATIONS_V464.eventFor()');assert ev['id']==id,(day,ev)
      assert len(ev['body'])>35 and ev['verse']
      assert ev['title'] in p.locator('#nh7ChristianToday464').inner_text()
@@ -122,7 +127,7 @@ with sync_playwright() as pw:
    ctx,p,err,ext=session(seed(),reduced='reduce');assert p.locator('[role=dialog]').count()==1 and p.locator('.nh7-bday-effects464').count()==0;ctx.close()
    ctx,p,err,ext=session(seed(),when='2026-09-18T12:00:00Z')
    p.evaluate('const g=document.getElementById("amenGate");g.hidden=false;g.classList.remove("hidden")')
-   p.clock.set_fixed_time(datetime.fromisoformat('2026-09-19T12:00:00+00:00'));p.evaluate('NH7_CELEBRATIONS_V464.run()');assert p.locator('[role=dialog]').count()==0
+   set_date(p,'2026-09-19T12:00:00Z');p.evaluate('NH7_CELEBRATIONS_V464.run()');assert p.locator('[role=dialog]').count()==0
    p.evaluate('const g=document.getElementById("amenGate");g.hidden=true;g.classList.add("hidden");NH7_CELEBRATIONS_V464.run()');assert p.locator('[role=dialog]').count()==1
    p.wait_for_timeout(5100);assert p.locator('.nh7-bday-effects464').count()==0
    assert not err,err;ctx.close()
