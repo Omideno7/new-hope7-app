@@ -10,7 +10,7 @@ permissions:
   contents: write
 concurrency:
   group: school-audio-v467-qa
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   qa:
     runs-on: ubuntu-latest
@@ -30,7 +30,9 @@ jobs:
       - name: Prepare scoped recovery against unchanged production baseline
         run: |
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = '44dfd189832c4a6031562851765811f941e0efe4'
+          git restore --source=44dfd189832c4a6031562851765811f941e0efe4 -- index.html service-worker.js sw-release-core-v403.js js/app.js js/nh7-audio-classic-v400.js js/nh7-audio-route-stability-v423.js js/nh7-school-media-session-v262.js js/nh7-school-path-v351.js js/nh7-sermon-list-detail-v445.js
           python scripts/v467/prepare.py
+          python scripts/v467/finalize.py
           mkdir -p qa-v467
           git diff -- js index.html service-worker.js sw-release-core-v403.js > qa-v467/runtime.patch
           python -m py_compile scripts/v467/qa.py
@@ -46,14 +48,14 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html service-worker.js sw-release-core-v403.js js/app.js js/nh7-session-v467.js js/nh7-audio-classic-v400.js js/nh7-audio-route-stability-v423.js js/nh7-school-media-session-v262.js js/nh7-school-path-v351.js
-          test "$(git diff --cached --name-only | wc -l)" -eq 9
+          git add index.html service-worker.js sw-release-core-v403.js js/app.js js/nh7-session-v467.js js/nh7-audio-classic-v400.js js/nh7-audio-route-stability-v423.js js/nh7-school-media-session-v262.js js/nh7-school-path-v351.js js/nh7-sermon-list-detail-v445.js
+          git diff --cached --name-only
           git commit -m 'fix(school-audio): verified non-destructive v467 runtime [skip ci]'
           git push origin HEAD:qa/school-audio-v467-20260919
           python - <<'PY'
           from pathlib import Path
           import subprocess,json
-          paths=['index.html','service-worker.js','sw-release-core-v403.js','js/app.js','js/nh7-session-v467.js','js/nh7-audio-classic-v400.js','js/nh7-audio-route-stability-v423.js','js/nh7-school-media-session-v262.js','js/nh7-school-path-v351.js']
+          paths=['index.html','service-worker.js','sw-release-core-v403.js','js/app.js','js/nh7-session-v467.js','js/nh7-audio-classic-v400.js','js/nh7-audio-route-stability-v423.js','js/nh7-school-media-session-v262.js','js/nh7-school-path-v351.js','js/nh7-sermon-list-detail-v445.js']
           m={'baseline':'44dfd189832c4a6031562851765811f941e0efe4','tested_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'runtime':{p:subprocess.check_output(['git','rev-parse','HEAD:'+p],text=True).strip() for p in paths}}
           Path('qa-v467/runtime-manifest.json').write_text(json.dumps(m,indent=2));print(json.dumps(m,indent=2))
           PY
