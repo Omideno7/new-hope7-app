@@ -1,0 +1,40 @@
+name: Verify Navigation v456 Live Main
+on:
+  push:
+    branches: [qa/navigation-v456-release-20260919]
+    paths: ['scripts/navigation-live-trigger456.json']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Read exact published commit
+        run: |
+          python - <<'PY'
+          import os,json,re
+          sha=json.load(open('scripts/navigation-live-trigger456.json'))['main']
+          assert re.fullmatch('[a-f0-9]{40}',sha)
+          with open(os.environ['GITHUB_ENV'],'a') as f:f.write('EXPECTED_SHA='+sha+'\n')
+          PY
+      - name: Confirm main and install browser
+        run: |
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$EXPECTED_SHA"
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Read live bytes and test menu and account routes
+        run: timeout --kill-after=10s 360s python scripts/navigation-live456.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: navigation-v456-live-main-verification
+          path: /tmp/nav456-live-evidence/
+          retention-days: 14
