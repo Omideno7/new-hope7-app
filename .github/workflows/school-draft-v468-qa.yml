@@ -32,6 +32,14 @@ jobs:
         run: |
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = '44dfd189832c4a6031562851765811f941e0efe4'
           python scripts/school-draft-v468/prepare.py
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/school-draft-v468/qa.py');s=p.read_text()
+          old="ctx.add_init_script('for("
+          new="ctx.add_init_script('if(location.origin!==\"null\")for("
+          assert s.count(old)==1
+          p.write_text(s.replace(old,new,1))
+          PY
           python -m py_compile scripts/school-draft-v468/qa.py
           mkdir -p qa-drafts-v468
           git diff 44dfd189832c4a6031562851765811f941e0efe4 -- js/app.js js/nh7-school-drafts-v468.js index.html service-worker.js sw-release-core-v403.js > qa-drafts-v468/runtime.patch
@@ -58,6 +66,11 @@ jobs:
           manifest={'baseline':'44dfd189832c4a6031562851765811f941e0efe4','tested_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'runtime':{p:subprocess.check_output(['git','rev-parse','HEAD:'+p],text=True).strip() for p in paths},'redesign_included':False,'database_operations':False}
           Path('qa-drafts-v468/runtime-manifest.json').write_text(json.dumps(manifest,indent=2));print(json.dumps(manifest,indent=2))
           PY
+      - name: Preserve executed test fixture
+        if: always()
+        run: |
+          mkdir -p qa-drafts-v468
+          cp scripts/school-draft-v468/qa.py qa-drafts-v468/executed-qa.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
