@@ -1,11 +1,13 @@
 from pathlib import Path
-import functools,http.server,threading,json,os
+import functools,http.server,threading,json,os,traceback
 from playwright.sync_api import sync_playwright
 ROOT=Path.cwd();OUT=ROOT/'qa-output';OUT.mkdir(exist_ok=True)
 app=(ROOT/'js/app.js').read_text()
 lesson=app[app.index('async function schoolLesson('):app.index('\nfunction examLocalized(',app.index('async function schoolLesson('))]
 path=(ROOT/'js/nh7-school-path-v351.js').read_text()
 helpers=path[path.index('function attemptsV467('):path.index('function cloneLesson(')]
+preview_helper=(ROOT/'school-review-attempts-preview.mjs').read_text()
+assert helpers.strip() in preview_helper,'Preview attempt examples must match actual candidate source'
 module=r'''
 import {createSchoolReviewV467} from './js/nh7-school-review-v467.js';
 window.QA={lang:'fa',user:'a@example.invalid',row:null,calls:[],cloud:[],offline:false,fail:false,stale:false,delay:false,snapshotFail:false};
@@ -54,21 +56,26 @@ with sync_playwright() as pw:
     assert p.evaluate("localStorage.getItem('nh7_gamification')")== '{"points":12}'
     assert p.evaluate("localStorage.getItem('nh7_audio_media_v397:fixture')")== 'KEEP'
     results.append(engine+': '+name);print('PASS',engine,name,flush=True)
-   except Exception as e:failures.append({'name':engine+': '+name,'error':str(e)});print('FAIL',engine,name,str(e),flush=True)
+   except Exception as e:
+    detail=traceback.format_exc();failures.append({'name':engine+': '+name,'error':detail});print('FAIL',engine,name,detail,flush=True)
+    try:p.screenshot(path=str(OUT/f'{engine}-failure-{len(failures)}.png'),full_page=True)
+    except Exception:pass
    finally:ctx.close()
   for lang,title in [('fa','نیاز به اصلاح'),('en','Needs revision'),('hr','Potrebna dorada')]:
    def basic(p,lang=lang,title=title):
-    p.evaluate('([s,l])=>show(s,l)',['needs_revision',lang]);assert title in p.locator('[data-review-title]').inner_text()
-    assert p.locator('[data-review-feedback-text]').inner_text()=='Administrator feedback fixture'
+    p.evaluate('([s,l])=>show(s,l)',['needs_revision',lang]);assert title in p.locator('[data-review-title]').inner_text(),'localized review title'
+    assert p.locator('[data-review-feedback-text]').inner_text()=='Administrator feedback fixture','review feedback'
     p.locator('#schoolAssignmentAnswer').fill('My revised answer saved on this device')
     p.locator('#saveSchoolAssignmentDraft').click();p.evaluate('redraw()')
-    assert p.locator('#schoolAssignmentAnswer').input_value()=='My revised answer saved on this device'
-    assert p.locator('[data-review-server-text]').inner_text()=='Original server answer'
+    assert p.locator('#schoolAssignmentAnswer').input_value()=='My revised answer saved on this device','draft restored after revisit'
+    p.locator('[data-review-server] summary').click()
+    assert p.locator('[data-review-server-text]').inner_text()=='Original server answer','expanded original answer'
+    p.locator('[data-review-server] summary').click()
     p.screenshot(path=str(OUT/f'{engine}-{lang}-review.png'),full_page=True)
     p.locator('#submitSchoolAssignment').click();p.wait_for_function('QA.calls.length===1 && !document.getElementById("submitSchoolAssignment").disabled')
-    assert p.evaluate('QA.row.status')=='submitted'
-    assert p.evaluate('QA.calls[0].n')=='nh7_submit_school_assignment'
-    p.evaluate('redraw()');assert p.locator('[data-review-message]').inner_text()==''
+    assert p.evaluate('QA.row.status')=='submitted','submitted status'
+    assert p.evaluate('QA.calls[0].n')=='nh7_submit_school_assignment','existing submit RPC'
+    p.evaluate('redraw()');assert p.locator('[data-review-message]').text_content()=='','submitted answer must not be labelled unsent draft'
    scenario('localized revision/draft revisit/one submission '+lang,basic)
   def offline(p):
    p.evaluate('QA.offline=true');p.locator('#schoolAssignmentAnswer').fill('An offline response retained safely');p.locator('#submitSchoolAssignment').click()
@@ -97,7 +104,7 @@ with sync_playwright() as pw:
    assert not p.locator('#submitSchoolAssignment').is_disabled();assert p.locator('#schoolAssignmentAnswer').input_value()=='Typing while checking latest state'
   scenario('cached snapshot never announces fresh approval',stale)
   def quota(p):
-   p.evaluate("Storage.prototype.setItem=()=>{throw Error('quota')}");p.locator('#schoolAssignmentAnswer').fill('Keep typing when quota is exhausted');p.locator('#saveSchoolAssignmentDraft').click()
+   p.evaluate("()=>{Storage.prototype.setItem=()=>{throw Error('quota')}}");p.locator('#schoolAssignmentAnswer').fill('Keep typing when quota is exhausted');p.locator('#saveSchoolAssignmentDraft').click()
    assert p.locator('[data-review-message]').get_attribute('data-error')=='1';assert p.locator('#schoolAssignmentAnswer').input_value().startswith('Keep typing')
    p.locator('#submitSchoolAssignment').click();assert p.evaluate('QA.calls.length')==0
   scenario('storage failure truthful, no silent submission',quota)
@@ -140,7 +147,27 @@ with sync_playwright() as pw:
     p.set_viewport_size({'width':width,'height':844});b=p.locator('.nh7-school-review-v467').bounding_box();assert b['x']>=0 and b['x']+b['width']<=width+1
    p.screenshot(path=str(OUT/f'{engine}-theme-review.png'),full_page=True)
   scenario('all 14 theme palettes and responsive widths',theme)
+  def phone_preview(p):
+   p.goto(origin+'/school-review-preview.html');p.wait_for_function('window.NH7_REVIEW_PREVIEW_READY===true')
+   assert "connect-src 'none'" in p.locator('meta[http-equiv="Content-Security-Policy"]').get_attribute('content')
+   for language in ['fa','en','hr']:
+    p.select_option('#pvLang',language)
+    for status in ['unsubmitted','submitted','needs_revision','approved']:
+     p.locator('[data-sample="'+status+'"]').click()
+     assert p.locator('.nh7-review-status467').get_attribute('data-state')==status
+    p.locator('[data-sample="needs_revision"]').click()
+    p.screenshot(path=str(OUT/f'{engine}-phone-preview-{language}.png'),full_page=True)
+   p.locator('#schoolAssignmentAnswer').fill('Simulated preview submission only')
+   p.locator('#submitSchoolAssignment').click();p.wait_for_function('document.querySelector(".nh7-review-status467").dataset.state==="submitted"')
+   p.locator('#pvReset').click();p.locator('#pvOffline').check();p.locator('#schoolAssignmentAnswer').fill('An offline simulation does not send any data')
+   p.locator('#submitSchoolAssignment').click();assert p.locator('.nh7-review-status467').get_attribute('data-state')=='needs_revision'
+   for n in ['3','2','1','0']:
+    p.select_option('#pvAttempts',n);assert n+' / 3' in p.locator('#pvExam').inner_text()
+   p.select_option('#pvTheme','midnight');p.screenshot(path=str(OUT/f'{engine}-phone-preview-dark.png'),full_page=True)
+   forbidden=p.evaluate('Object.keys(localStorage).filter(k=>/session|school_access|user_profile|assignment_draft/.test(k))');assert forbidden==[],forbidden
+   assert p.evaluate('navigator.serviceWorker.controller===null')
+  scenario('phone preview FA/EN/HR/statuses/offline/theme with no account or backend',phone_preview)
   browser.close()
 server.shutdown()
-report={'passed_groups':len(results),'results':results,'failures':failures,'basis':'Actual schoolLesson extracted from candidate app.js + actual review module + actual path helper source. Synthetic cloud/identity/lesson fixtures; no real account or backend request.'};(OUT/'report.json').write_text(json.dumps(report,indent=2,ensure_ascii=False));print(json.dumps(report,indent=2,ensure_ascii=False))
+report={'passed_groups':len(results),'results':results,'failures':failures,'basis':'Actual schoolLesson extracted from candidate app.js + actual review module + actual path helper source. Synthetic cloud/identity/lesson fixtures; no real account or backend request. Phone preview uses memory-only data and connect-src none.'};(OUT/'report.json').write_text(json.dumps(report,indent=2,ensure_ascii=False));print(json.dumps(report,indent=2,ensure_ascii=False))
 if failures:raise SystemExit(1)
