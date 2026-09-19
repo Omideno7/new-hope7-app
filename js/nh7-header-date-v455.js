@@ -13,12 +13,14 @@ function format(date=new Date(),locale=language()){
   const f=new Intl.DateTimeFormat(LOCALES[locale],{calendar,numberingSystem:locale==='fa'?'arabext':'latn',weekday:'long',year:'numeric',month:'long',day:'numeric'});
   // Never label a silently substituted Gregorian calendar as Persian.
   if(f.resolvedOptions().calendar!==calendar)throw Error('Calendar unavailable');
-  let text=f.format(date);
-  if(locale==='fa'){
-   const parts=f.formatToParts(date),part=type=>parts.find(p=>p.type===type)?.value||'';
-   text=`${part('weekday')}، ${part('day')} ${part('month')} ${part('year')}`;
-   text=text.replace(/[0-9]/g,n=>'۰۱۲۳۴۵۶۷۸۹'[Number(n)]);
-  }
+  const parts=f.formatToParts(date),part=type=>parts.find(p=>p.type===type)?.value||'';
+  if(['weekday','day','month','year'].some(k=>!part(k)))throw Error('Date parts unavailable');
+  // Explicit separators avoid OS/CLDR punctuation differences while retaining
+  // localized month inflection, weekday names, digits and the actual calendar.
+  let text=locale==='fa'?`${part('weekday')}، ${part('day')} ${part('month')} ${part('year')}`:
+   locale==='hr'?`${part('weekday')}, ${part('day')}. ${part('month')} ${part('year')}.`:
+   `${part('weekday')}, ${part('day')} ${part('month')} ${part('year')}`;
+  if(locale==='fa')text=text.replace(/[0-9]/g,n=>'۰۱۲۳۴۵۶۷۸۹'[Number(n)]);
   return {text,iso,calendar,locale,fallback:false};
  }catch(_){
   // Very old engines get an explicitly labelled civil date, never a false Solar Hijri date.
