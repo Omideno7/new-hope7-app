@@ -1187,7 +1187,9 @@ async function showAmen(){
   $('#amenGate').classList.remove('hidden');
 }
 
+let nh7NavigationEpochV456=0;
 async function render(route, params={}, preserve=false){
+  const navigationEpochV456=++nh7NavigationEpochV456;
   view.innerHTML='<section class="card"><p>...</p></section>';
   try{
     if(route==='home') await home();
@@ -1209,12 +1211,13 @@ async function render(route, params={}, preserve=false){
     else if(route==='gratitude'){ state.dailyTab='gratitude'; await daily(Object.assign({}, params, {tab:'gratitude'})); }
     else if(route==='account') await account();
     else await home();
+    if(navigationEpochV456!==nh7NavigationEpochV456)return;
     bindDynamic();
     const detail=params?.lesson?':lesson':params?.exam?':exam':params?.mode==='chapter'?':chapter':params?.book?':book':params?.tab?':'+String(params.tab):'';
     trackAppSection(String(route||'home')+detail);
     nh7TrackRenderedContentV223(route,params);
     setCrumb(tr(route));
-  }catch(e){ console.error(e); view.innerHTML=card('Error',`<p>${html(e.message)}</p>`); }
+  }catch(e){ if(navigationEpochV456!==nh7NavigationEpochV456)return;console.error(e); view.innerHTML=card('Error',`<p>${html(e.message)}</p>`); }
 }
 
 async function home(){
@@ -1228,7 +1231,7 @@ async function home(){
     card(tr('savedVerses'), `<p class="muted">${tr('savedVersesCollapsed')}</p>${savedVersesPanel(bookmarks)}`) +
     card(tr('myNotes'), `<p class="muted">${tr('notesCollapsed')}</p>${notesPanel()}`) +
     card(tr('progress'), `<p><strong>${tr('points')}:</strong> ${localNum(g.points||0)}</p><p><strong>${tr('badges')}:</strong> ${badgeHtml}</p>`) +
-    `<div class="grid">${tile('bible','📖',tr('bible'))}${tile('plans','✓',tr('plans'))}${tile('school','🎓',tr('school'))}${tile('meetings','☎',tr('meetings'))}</div>`;
+    `<div class="grid nh7-home-destinations456" data-home-navigation456>${tile('meetings','☎',tr('meetings'),l223('زمان جلسات و دسترسی به جلسه','Meeting times and access','Vrijeme sastanaka i pristup'))}</div>`;
   $('#quickNotify')?.addEventListener('click', enableNotifications);
 }
 
@@ -1911,6 +1914,7 @@ async function about(){
   view.innerHTML=card(tr('about'), `<h3>${tr('churchIntro')}</h3><p>${html(d.intro?.[state.lang]||'')}</p><h3>${tr('ourVision')}</h3><p>${html(d.vision?.[state.lang]||'')}</p><h3>${tr('ourBeliefs')}</h3><p>${html(d.beliefs?.[state.lang]||'')}</p><div class="button-row"><a class="secondary-btn" href="https://www.bible.com/organizations/da6136d1-04cd-4243-a52b-f9ba7f32ec79?utm_source=yvapp&utm_medium=share&utm_content=partner-page" target="_blank" rel="noopener">${tr('youversion')}</a></div>`);
 }
 async function meetings(params={}){
+  const meetingEpochV456=nh7NavigationEpochV456;
   if(isExplicitlyLoggedOut()){view.innerHTML=card(tr('meetings'),`<p>${tr('loginRequired')}</p><button class="primary-btn" data-go="account">${tr('signIn')}</button>`);return;}
   let meetingAccess=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{"status":"none"}');
   let schoolAccess=JSON.parse(localStorage.getItem('nh7_school_access')||'{"status":"none"}');
@@ -1936,6 +1940,7 @@ async function meetings(params={}){
   const notApprovedText = state.lang==='fa'
     ? 'برای امنیت جلسه، ورود مهمان نداریم. اگر در مدرسه ثبت‌نام کرده‌اید، پس از تأیید ادمین همین بخش لینک و کد جلسه را نشان می‌دهد.'
     : (state.lang==='hr' ? 'Zbog sigurnosti nema ulaska kao gost. Nakon registracije za školu i odobrenja administratora ovdje će se prikazati poveznica i kod sastanka.' : 'For meeting security, guest access is not available. After school registration and admin approval, the meeting link and codes will appear here.');
+  if(meetingEpochV456!==nh7NavigationEpochV456)return;
   view.innerHTML=card(tr('meetings'), `<p>${tr('meetingAccessText')}</p>${approved?'':`<p class="muted">${notApprovedText}</p>`}<span class="badge">${approved?tr('approved'):(schoolAccess.status==='pending'||meetingAccess.status==='pending'?tr('pending'):tr('notStarted'))}</span>${details}${buttons}`);
 }
 
@@ -2001,7 +2006,10 @@ async function library(params={}){
   view.innerHTML=card(tr('library'),`<div class="library-user-tabs"><button class="${nh7LibraryTab==='public'?'primary-btn':'secondary-btn'}" data-library-tab="public">${tr('publicLibrary')}</button><button class="${nh7LibraryTab==='ministers'?'primary-btn':'secondary-btn'}" data-library-tab="ministers">🔒 ${tr('ministersLibrary')}</button></div>${nh7LibraryTab==='ministers'?`<div class="library-lock-note">${tr('protectedLibrary')}</div>`:''}<h2>${title}</h2><div class="library-user-grid">${cards||`<p class="muted">${tr('libraryEmpty')}</p>`}</div><p class="muted small">${tr('pdfExpires')}</p>`);
 }
 
-async function more(){ view.innerHTML=`<div class="grid">${tile('audio','🎧',tr('audio'))}${tile('salvation','✝',tr('salvation'))}${tile('daily','🙏',tr('gratitude'),'',{tab:'gratitude'})}${tile('meetings','☎',tr('meetings'))}${tile('qna','❓',tr('qna'))}${tile('inbox','📥',tr('inbox'), unreadCount()?`${tr('unread')}: ${localNum(unreadCount())}`:'')}${tile('account','👤',tr('account'))}${tile('about','ℹ',tr('about'))}${tile('settings','⚙',tr('settings'))}</div>`; }
+async function more(){
+  const destinations=[['audio','🎧'],['salvation','✝'],['qna','❓'],['account','👤'],['about','ℹ'],['settings','⚙']];
+  view.innerHTML=`<div class="grid" data-more-navigation456>${destinations.map(([route,icon])=>tile(route,icon,tr(route))).join('')}</div>`;
+}
 
 async function fetchMyQuestionsCloud(){
   const profile=getKnownUserProfile();
