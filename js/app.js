@@ -2230,18 +2230,10 @@ function nh7UiApply(){
 function nh7AppearanceSettingsHtml(){
   const p=nh7UiPrefs();
   const option=(value,label,current)=>`<option value="${value}"${value===current?' selected':''}>${label}</option>`;
-  return `<section class="nh7-appearance-panel" id="nh7AppearancePanel">
-    <h3>🎨 ${nh7UiL('ظاهر و خوانایی','Appearance & readability','Izgled i čitljivost')}</h3>
-    <p class="nh7-appearance-help">${nh7UiL('تم، اندازه نوشته، فونت و رنگ ماژول‌ها را برای همین دستگاه انتخاب کنید. تغییرات فوراً اعمال و ذخیره می‌شوند.','Choose the theme, text size, font and module color for this device. Changes apply and save immediately.','Odaberite temu, veličinu teksta, font i boju modula za ovaj uređaj. Promjene se odmah primjenjuju i spremaju.')}</p>
+  return `<section class="nh7-appearance-panel" id="nh7AppearancePanel" data-appearance-basics457>
+    <h3>🎨 ${nh7UiL('فونت، اندازه و رنگ تأکید','Fonts, size and accent','Fontovi, veličina i naglasak')}</h3>
+    <p class="nh7-appearance-help">${nh7UiL('تم را در مجموعهٔ بالا انتخاب کنید. فونت، اندازه و رنگ تأکید از اینجا هم فوراً قابل تغییرند.','Choose a theme in the gallery above. Font, size and accent changes here apply immediately.','Odaberite temu u galeriji iznad. Promjene fonta, veličine i naglaska ovdje se odmah primjenjuju.')}</p>
     <div class="nh7-appearance-grid">
-      <div class="nh7-theme-quick-wrap"><span class="nh7-appearance-label">${nh7UiL('حالت نمایش','Display mode','Način prikaza')}</span><div class="nh7-theme-quick"><button type="button" data-nh7-theme-quick="system" class="${p.theme==='system'?'is-selected':''}">◐ ${nh7UiL('خودکار','Auto','Auto')}</button><button type="button" data-nh7-theme-quick="light" class="${p.theme==='light'?'is-selected':''}">☀️ ${nh7UiL('روشن','Light','Light')}</button><button type="button" data-nh7-theme-quick="dark" class="${p.theme==='dark'?'is-selected':''}">🌙 ${nh7UiL('تیره','Dark','Dark')}</button></div></div>
-      <label>${nh7UiL('حالت رنگ','Color mode','Način boja')}
-        <select id="nh7ThemeSelect">
-          ${option('system',nh7UiL('خودکار (مطابق دستگاه)','System','Sustav'),p.theme)}
-          ${option('light',nh7UiL('روشن','Light','Svijetlo'),p.theme)}
-          ${option('dark',nh7UiL('تیره','Dark','Tamno'),p.theme)}
-        </select>
-      </label>
       <label class="nh7-accent-control">${nh7UiL('رنگ ماژول‌ها','Module color','Boja modula')}<select id="nh7AccentSelect">${option('blue',nh7UiL('🔵 آبی','🔵 Blue','🔵 Plava'),p.accent)}${option('green',nh7UiL('🟢 سبز','🟢 Green','🟢 Zelena'),p.accent)}${option('red',nh7UiL('🔴 قرمز','🔴 Red','🔴 Crvena'),p.accent)}${option('purple',nh7UiL('🟣 بنفش','🟣 Purple','🟣 Ljubičasta'),p.accent)}${option('orange',nh7UiL('🟠 نارنجی','🟠 Orange','🟠 Narančasta'),p.accent)}${option('teal',nh7UiL('🟦 فیروزه‌ای','🟦 Teal','🟦 Tirkizna'),p.accent)}${option('pink',nh7UiL('🩷 صورتی','🩷 Pink','🩷 Ružičasta'),p.accent)}${option('custom',nh7UiL('🎨 رنگ دلخواه','🎨 Custom color','🎨 Prilagođena boja'),p.accent)}</select><input id="nh7AccentCustom" class="nh7-custom-color" type="color" value="${p.custom}" aria-label="${nh7UiL('انتخاب رنگ دلخواه','Choose custom color','Odaberi prilagođenu boju')}"></label>
       <label>${nh7UiL('اندازه نوشته','Text size','Veličina teksta')}
         <select id="nh7TextSizeSelect">
