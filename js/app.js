@@ -809,22 +809,52 @@ function localText(s){ return state.lang==='fa' ? String(s).replace(/\d/g, d=>'�
 async function jfetch(path){ if(state.data[path]) return state.data[path]; const res=await fetch(path, {cache:'no-cache'}); if(!res.ok) throw new Error(path); const data=await res.json(); state.data[path]=data; return data; }
 function itemsOf(data){ return data.items || data.days || data.proclamations || []; }
 
-function addPoints(amount,badgeId){
-  const g=JSON.parse(localStorage.getItem('nh7_gamification')||'{"points":0,"badges":[]}');
-  g.points=(g.points||0)+amount;
-  if(badgeId&&!g.badges.includes(badgeId))g.badges.push(badgeId);
-  localStorage.setItem('nh7_gamification',JSON.stringify(g));
-  saveProgressCloud('nh7_gamification',g).catch(console.warn);
+function nh7GamificationNormalize(raw){
+  const g=raw&&typeof raw==='object'?raw:{};
+  g.points=Math.max(0,Number(g.points||0)||0);
+  g.badges=Array.isArray(g.badges)?[...new Set(g.badges.map(String))]:[];
+  g.activity=g.activity&&typeof g.activity==='object'?g.activity:{};
+  g.activityDays=Array.isArray(g.activityDays)?[...new Set(g.activityDays.filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(String(x))))].sort().slice(-90):[];
+  return g;
 }
-function gamification(){ return JSON.parse(localStorage.getItem('nh7_gamification') || '{"points":0,"badges":[]}'); }
+function nh7GamificationSave(g){const clean=nh7GamificationNormalize(g);localStorage.setItem('nh7_gamification',JSON.stringify(clean));saveProgressCloud('nh7_gamification',clean).catch(console.warn);return clean}
+function addPoints(amount,badgeId,activity='general'){
+  const g=nh7GamificationNormalize(JSON.parse(localStorage.getItem('nh7_gamification')||'{}'));
+  g.points+=Math.max(0,Number(amount||0)||0);
+  if(badgeId&&!g.badges.includes(String(badgeId)))g.badges.push(String(badgeId));
+  for(const [threshold,id] of [[25,'growth_25'],[75,'growth_75'],[150,'growth_150'],[300,'growth_300']])if(g.points>=threshold&&!g.badges.includes(id))g.badges.push(id);
+  const key=String(activity||badgeId||'general');g.activity[key]=Number(g.activity[key]||0)+1;
+  const day=todayKey();if(!g.activityDays.includes(day))g.activityDays.push(day);
+  nh7GamificationSave(g);
+}
+function gamification(){try{return nh7GamificationNormalize(JSON.parse(localStorage.getItem('nh7_gamification')||'{}'))}catch(_){return nh7GamificationNormalize({})}}
+const NH7_GROWTH_LEVELS=[
+  {min:0,fa:'شروع مسیر',en:'Beginning the Journey',hr:'Početak puta'},
+  {min:25,fa:'در حال رشد',en:'Growing',hr:'Rast'},
+  {min:75,fa:'استوار',en:'Steadfast',hr:'Postojan'},
+  {min:150,fa:'پایدار',en:'Faithful',hr:'Vjeran'},
+  {min:300,fa:'ثمرآور',en:'Fruitful',hr:'Plodonosan'},
+  {min:600,fa:'خدمتگزار',en:'Serving',hr:'Služenje'},
+  {min:1000,fa:'استوار در مسیر',en:'Established',hr:'Učvršćen'}
+];
+function nh7GrowthLevel(points){let idx=0;for(let i=0;i<NH7_GROWTH_LEVELS.length;i++)if(points>=NH7_GROWTH_LEVELS[i].min)idx=i;const cur=NH7_GROWTH_LEVELS[idx],next=NH7_GROWTH_LEVELS[idx+1]||null;return{number:idx+1,name:cur[state.lang]||cur.en,min:cur.min,nextMin:next?.min||null,nextName:next?.[state.lang]||next?.en||'',percent:next?Math.max(0,Math.min(100,Math.round((points-cur.min)/(next.min-cur.min)*100))):100}}
+function nh7ActivityStreak(days){const set=new Set(days||[]);let streak=0,d=new Date();for(let i=0;i<366;i++){const key=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');if(!set.has(key)){if(i===0){d.setDate(d.getDate()-1);continue}break}streak++;d.setDate(d.getDate()-1)}return streak}
 function badgeName(id){
-  const names = {
+  const names={
     first_verse:{fa:'اولین آیه ذخیره‌شده',en:'First Saved Verse',hr:'Prvi spremljeni stih'},
-    daily_1:{fa:'شروع روزانه',en:'Daily Starter',hr:'Dnevni početak'},
+    daily_1:{fa:'شروع کلام روزانه',en:'Daily Word Starter',hr:'Početak dnevne Riječi'},
     gratitude_1:{fa:'شروع شکرگزاری',en:'Gratitude Starter',hr:'Početak zahvalnosti'},
-    plan_1:{fa:'شروع مطالعه کتاب‌مقدس',en:'Bible Plan Starter',hr:'Početak biblijskog plana'}
-  };
-  return names[id]?.[state.lang] || id;
+    plan_1:{fa:'شروع برنامه کتاب‌مقدس',en:'Bible Plan Starter',hr:'Početak biblijskog plana'},
+    growth_25:{fa:'قدم‌های استوار',en:'Steady Steps',hr:'Postojani koraci'},
+    growth_75:{fa:'رشد پیوسته',en:'Consistent Growth',hr:'Stalan rast'},
+    growth_150:{fa:'پایداری',en:'Faithful Progress',hr:'Vjeran napredak'},
+    growth_300:{fa:'ثمرآوری',en:'Fruitful Journey',hr:'Plodonosan put'}
+  };return names[id]?.[state.lang]||id;
+}
+function nh7GrowthHtml(g){
+  const level=nh7GrowthLevel(g.points),streak=nh7ActivityStreak(g.activityDays),badges=g.badges||[];
+  const next=level.nextMin==null?nh7UiL('بالاترین مرحله فعلی','Highest current level','Najviša trenutna razina'):nh7UiL(`تا مرحله بعد ${localNum(Math.max(0,level.nextMin-g.points))} امتیاز`,`${Math.max(0,level.nextMin-g.points)} points to next level`,`Još ${Math.max(0,level.nextMin-g.points)} bodova do sljedeće razine`);
+  return `<div class="nh7-growth-dashboard-v458"><div class="nh7-growth-head-v458"><div><span class="nh7-growth-level-v458">${nh7UiL('مرحله','Level','Razina')} ${localNum(level.number)}</span><h3>${html(level.name)}</h3></div><div class="nh7-growth-score-v458"><strong>${localNum(g.points)}</strong><small>${tr('points')}</small></div></div><div class="nh7-growth-track-v458" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${level.percent}"><i style="width:${level.percent}%"></i></div><p class="muted">${html(next)}</p><div class="nh7-growth-stats-v458"><div><strong>🔥 ${localNum(streak)}</strong><span>${nh7UiL('روز استمرار','day streak','dana niza')}</span></div><div><strong>🏅 ${localNum(badges.length)}</strong><span>${tr('badges')}</span></div><div><strong>🌱 ${localNum((g.activityDays||[]).length)}</strong><span>${nh7UiL('روزهای فعال','active days','aktivni dani')}</span></div></div>${badges.length?`<div class="nh7-growth-badges-v458">${badges.map(id=>`<span class="badge">🏅 ${html(badgeName(id))}</span>`).join('')}</div>`:`<p class="muted">${nh7UiL('با مطالعه و تکمیل فعالیت‌ها، دستاوردهای مسیر رشد اینجا ظاهر می‌شوند.','Your growth achievements will appear here as you study and complete activities.','Postignuća rasta pojavit će se ovdje dok učite i dovršavate aktivnosti.')}</p>`}</div>`;
 }
 
 function setLang(lang){
@@ -1229,7 +1259,7 @@ async function home(){
     card(tr('todayMessage'), `<p>${tr('day')} ${localNum(dailyDay)}</p><div class="button-row"><button class="secondary-btn" data-go="daily" data-params='{"tab":"word"}'>${tr('dailyWord')}</button><button class="secondary-btn" data-go="daily" data-params='{"tab":"faith"}'>${tr('faithProclamation')}</button><button class="secondary-btn" data-go="daily" data-params='{"tab":"juice"}'>${tr('dailyJuice')}</button></div>`) +
     card(tr('savedVerses'), `<p class="muted">${tr('savedVersesCollapsed')}</p>${savedVersesPanel(bookmarks)}`) +
     card(tr('myNotes'), `<p class="muted">${tr('notesCollapsed')}</p>${notesPanel()}`) +
-    card(tr('progress'), `<p><strong>${tr('points')}:</strong> ${localNum(g.points||0)}</p><p><strong>${tr('badges')}:</strong> ${g.badges?.length ? g.badges.map(b=>`<span class="badge">🏅 ${html(badgeName(b))}</span>`).join(' ') : `<span class="muted">${tr('notStarted')}</span>`}</p>`);
+    card(tr('progress'), nh7GrowthHtml(g), 'nh7-growth-card-v458');
   $('#quickNotify')?.addEventListener('click', enableNotifications);
 }
 
