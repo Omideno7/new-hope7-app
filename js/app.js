@@ -1230,8 +1230,7 @@ async function home(){
     card(tr('todayMessage'), `<p>${tr('day')} ${localNum(dailyDay)}</p><div class="button-row"><button class="secondary-btn" data-go="daily" data-params='{"tab":"word"}'>${tr('dailyWord')}</button><button class="secondary-btn" data-go="daily" data-params='{"tab":"faith"}'>${tr('faithProclamation')}</button><button class="secondary-btn" data-go="daily" data-params='{"tab":"juice"}'>${tr('dailyJuice')}</button></div>`) +
     card(tr('savedVerses'), `<p class="muted">${tr('savedVersesCollapsed')}</p>${savedVersesPanel(bookmarks)}`) +
     card(tr('myNotes'), `<p class="muted">${tr('notesCollapsed')}</p>${notesPanel()}`) +
-    card(tr('progress'), `<p><strong>${tr('points')}:</strong> ${localNum(g.points||0)}</p><p><strong>${tr('badges')}:</strong> ${badgeHtml}</p>`) +
-    `<div class="grid nh7-home-destinations456" data-home-navigation456>${tile('meetings','☎',tr('meetings'),l223('زمان جلسات و دسترسی به جلسه','Meeting times and access','Vrijeme sastanaka i pristup'))}</div>`;
+    card(tr('progress'), `<p><strong>${tr('points')}:</strong> ${localNum(g.points||0)}</p><p><strong>${tr('badges')}:</strong> ${badgeHtml}</p>`);
   $('#quickNotify')?.addEventListener('click', enableNotifications);
 }
 
@@ -2007,7 +2006,7 @@ async function library(params={}){
 }
 
 async function more(){
-  const destinations=[['audio','🎧'],['salvation','✝'],['qna','❓'],['account','👤'],['about','ℹ'],['settings','⚙']];
+  const destinations=[['audio','🎧'],['meetings','☎'],['salvation','✝'],['qna','❓'],['account','👤'],['about','ℹ'],['settings','⚙']];
   view.innerHTML=`<div class="grid" data-more-navigation456>${destinations.map(([route,icon])=>tile(route,icon,tr(route))).join('')}</div>`;
 }
 
@@ -2286,7 +2285,6 @@ window.NH7_UI_PREFS={apply:nh7UiApply,get:nh7UiPrefs,version:'4.3.1'};
 async function settings(){
   const loadingText=state.lang==='fa'?'در حال بررسی…':state.lang==='hr'?'Provjera…':'Checking…';
   view.innerHTML=card(tr('settings'),`
-    <div class="badge" id="nh7SettingsBadge">${state.lang==='fa'?'تنظیمات 4.3.1':state.lang==='hr'?'Postavke 4.3.1':'Settings 4.3.1'}</div>
     <h3>${tr('language')}</h3>
     <select id="settingsLang"><option value="en">English</option><option value="fa">فارسی</option><option value="hr">Hrvatski</option></select>
     ${nh7AppearanceSettingsHtml()}
@@ -2304,9 +2302,8 @@ async function settings(){
     <h3>${state.lang==='fa'?'ذخیره ابری / همگام‌سازی':state.lang==='hr'?'Cloud / sinkronizacija':'Cloud / sync'}</h3>
     <p>${cloudStatusText()}</p>
     <button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button>
-    <h3>${tr('version')}</h3>
-    <p>New Hope 7 v2.3.9.50 · Settings 4.3.1</p>
     <button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>
+    <p class="muted small nh7-version-footer">New Hope 7 v${html(window.NH7_VERSION||'2.3.9.50')}</p>
   `);
   $('#settingsLang').value=state.lang;
   $('#settingsLang').onchange=e=>setLang(e.target.value);
