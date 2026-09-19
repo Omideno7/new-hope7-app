@@ -1,3 +1,4 @@
+import {createSchoolReviewV467} from './nh7-school-review-v467.js?v=4.6.7';
 import {createBibleKeywordsV451} from './nh7-bible-keywords-v451.js?v=4.5.1';
 // NH7 v2.2.3 targeted update: Bible navigation, protected content, reliable analytics, and secure PDF viewer.
 const $ = (s, r=document) => r.querySelector(s);
@@ -1629,45 +1630,6 @@ function courseAssignmentSummary(d,courseCode,rows=[]){
   return {lessons,units,total,completed,percent,rows:byLesson};
 }
 function assignmentStatusText(row){const s=String(row?.status||'').toLowerCase();if(state.lang==='fa')return s==='approved'?'تأیید شده':s==='needs_revision'?'نیاز به اصلاح':s==='submitted'?'ارسال شده؛ در انتظار بررسی':'ارسال نشده';if(state.lang==='hr')return s==='approved'?'Odobreno':s==='needs_revision'?'Potrebna dorada':s==='submitted'?'Poslano; čeka pregled':'Nije poslano';return s==='approved'?'Approved':s==='needs_revision'?'Needs revision':s==='submitted'?'Submitted; awaiting review':'Not submitted'}
-async function submitSchoolAssignment(courseCode,lessonCode,answerText){
-  const answer=String(answerText||'').trim();
-  if(answer.length<10){
-    alert(state.lang==='fa'?'لطفاً پاسخ تکلیف را کامل‌تر بنویسید.':state.lang==='hr'?'Molimo napišite potpuniji odgovor na zadatak.':'Please write a more complete assignment answer.');
-    return;
-  }
-  localStorage.setItem('nh7_note_school-'+lessonCode,answer);
-  saveNoteCloud('note_school-'+lessonCode,answer).catch(console.warn);
-  if(!navigator.onLine){
-    alert(state.lang==='fa'?'پاسخ به‌صورت پیش‌نویس در دستگاه و حساب ابری ذخیره شد. برای ارسال رسمی به اینترنت متصل شوید.':state.lang==='hr'?'Odgovor je spremljen kao skica na uređaju i u oblaku. Povežite se s internetom za službenu predaju.':'The answer was saved as a draft on the device and in your cloud account. Connect to the internet to submit it.');
-    return;
-  }
-  if(!isAccountLoggedIn()){
-    alert(tr('loginRequired'));
-    return;
-  }
-  const profile=getKnownUserProfile();
-  try{
-    await cloudRpc('nh7_submit_school_assignment',{
-      p_course_code:courseCode,
-      p_lesson_code:lessonCode,
-      p_answer_text:answer,
-      p_language:state.lang,
-      p_user_name:profile.name||''
-    });
-    invalidateSchoolSnapshot(currentUserEmail());
-    await getSchoolSnapshot(currentUserEmail(),true);
-    alert(state.lang==='fa'?'تکلیف با موفقیت ارسال شد و در نمره تکالیف محاسبه می‌شود.':state.lang==='hr'?'Zadatak je uspješno poslan i uračunava se u ocjenu zadataka.':'The assignment was submitted successfully and counts toward the assignment grade.');
-    navigate('school',{lesson:lessonCode},true);
-  }catch(e){
-    console.warn('Official assignment submit failed',e);
-    const raw=String(e?.message||'');
-    const missing=/PGRST202|nh7_submit_school_assignment|function.*not found|schema cache/i.test(raw);
-    const message=missing
-      ? (state.lang==='fa'?'تابع ارسال رسمی تکلیف هنوز در Supabase نصب نشده است. فایل SQL نهایی این نسخه را یک‌بار اجرا کنید.':state.lang==='hr'?'Funkcija za službenu predaju još nije instalirana u Supabaseu. Pokrenite završnu SQL datoteku ove verzije.':'The official assignment function is not installed in Supabase yet. Run this version’s final SQL file once.')
-      : (state.lang==='fa'?'ارسال رسمی تکلیف انجام نشد. اتصال اینترنت و ورود حساب را بررسی کنید و دوباره تلاش کنید.':state.lang==='hr'?'Službena predaja nije uspjela. Provjerite internet i prijavu pa pokušajte ponovno.':'The official submission failed. Check your internet connection and account sign-in, then try again.');
-    alert(message+(raw&&!missing?'\n'+raw:''));
-  }
-}
 
 async function school(params={}){
   const schoolEpochV465=nh7NavigationEpochV456;
@@ -1758,12 +1720,12 @@ async function schoolLesson(d, code){
   const durationLabel=duration?formatAudioTime(duration):formatAudioTime(progress.duration||0);
   const player=audioSrc?`<article class="sermon-card school-audio-card" data-sermon-card="${html(audioId)}"><div class="sermon-card-main"><span class="sermon-placeholder">🎧</span><div class="sermon-card-copy"><strong>${html(tx.lesson_title||tx.class_title||tr('playAudio'))}</strong><small>${tr('duration')}: ${localText(durationLabel||'0:00')} · MP3</small><div class="sermon-card-actions"><button class="primary-btn compact-player-btn" data-sermon-play="${html(audioId)}">▶ ${progress.time>5?tr('continueListening'):tr('listenAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(audioSrc)}" data-offline-title="${html(tx.lesson_title||tx.class_title||tr('playAudio'))}">${state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline'}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(audioId)}"><div class="inline-player-controls"><button class="player-round" data-inline-back>↶15</button><button class="player-main" data-inline-play>▶</button><button class="player-round" data-inline-forward>30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek type="range" min="0" max="1000" value="0"><span data-inline-total>${durationLabel||'0:00'}</span></div></div></article>`:'';
   const examHtml=schoolExam?renderSchoolExamBlock(schoolExam,schoolProgress):'';const completeLabel=schoolProgress?.completed_at?(state.lang==='fa'?'تکمیل شده ✓':state.lang==='hr'?'Završeno ✓':'Completed ✓'):(state.lang==='fa'?'علامت‌گذاری درس به‌عنوان تکمیل‌شده':state.lang==='hr'?'Označi lekciju završenom':'Mark lesson complete');
-  const assignmentQuestion=String(tx.assignment_question||'').trim();const assignmentDraft=schoolAssignment?.answer_text||localStorage.getItem('nh7_note_school-'+code)||'';const assignmentApproved=String(schoolAssignment?.status||'').toLowerCase()==='approved';
-  const assignmentHtml=assignmentQuestion?`<section class="school-assignment"><h3>${tr('assignment')}</h3><p>${html(assignmentQuestion)}</p><div class="notice"><strong>${state.lang==='fa'?'وضعیت':state.lang==='hr'?'Status':'Status'}:</strong> ${html(assignmentStatusText(schoolAssignment))}${schoolAssignment?.admin_feedback?`<p>${html(schoolAssignment.admin_feedback)}</p>`:''}</div><textarea id="schoolAssignmentAnswer" rows="7" ${assignmentApproved?'disabled':''} placeholder="${state.lang==='fa'?'پاسخ تکلیف را اینجا بنویسید':state.lang==='hr'?'Ovdje napišite odgovor na zadatak':'Write your assignment answer here'}">${html(assignmentDraft)}</textarea><div class="button-row"><button class="secondary-btn" id="saveSchoolAssignmentDraft" ${assignmentApproved?'disabled':''}>${state.lang==='fa'?'ذخیره پیش‌نویس':state.lang==='hr'?'Spremi skicu':'Save draft'}</button><button class="primary-btn" id="submitSchoolAssignment" ${assignmentApproved?'disabled':''}>${assignmentApproved?(state.lang==='fa'?'تکلیف تأیید شده':state.lang==='hr'?'Zadatak odobren':'Assignment approved'):(state.lang==='fa'?'ارسال رسمی تکلیف':state.lang==='hr'?'Predaj zadatak':'Submit assignment')}</button></div><p class="muted">${state.lang==='fa'?'این تکلیف بخشی از ۳۰٪ نمره تکالیف دوره است.':state.lang==='hr'?'Ovaj zadatak dio je 30% ocjene za zadatke.':'This assignment is part of the 30% assignment grade.'}</p></section>`:'';
+  const assignmentQuestion=String(tx.assignment_question||'').trim();
+  const reviewV467=createSchoolReviewV467({lang:()=>state.lang,email:currentUserEmail,isLoggedIn:isAccountLoggedIn,name:()=>getKnownUserProfile().name||'',storage:localStorage,online:()=>navigator.onLine,rpc:cloudRpc,snapshot:getSchoolSnapshot,saveNote:saveNoteCloud});
+  const assignmentHtml=assignmentQuestion?reviewV467.render({question:assignmentQuestion,row:schoolAssignment,lesson:code}):'';
   view.innerHTML=card(tx.class_title||tr('school'),`${l.image?.url?`<img src="${html(l.image.url)}" alt="${html(tx.class_title||tx.lesson_title||tr('school'))}" style="width:100%;max-height:360px;object-fit:cover;border-radius:18px;margin-bottom:12px">`:''}<p>${html(tx.lesson_text||'')}</p>${player}${l.video?.url?`<p><a class="secondary-btn" href="${html(l.video.url)}" target="_blank" rel="noopener">Video</a></p>`:''}${l.pdf?.url?`<p><a class="secondary-btn" href="${html(l.pdf.url)}" target="_blank" rel="noopener">PDF</a> <button class="secondary-btn" data-offline-download="${html(l.pdf.url)}" data-offline-title="PDF ${html(tx.lesson_title||code)}">${state.lang==='fa'?'دانلود PDF برای آفلاین':state.lang==='hr'?'Preuzmi PDF offline':'Download PDF offline'}</button></p>`:''}<button class="primary-btn wide-btn" id="completeSchoolLesson">${completeLabel}</button>${assignmentHtml}<h3>${tr('fullLesson')}</h3><p>${html(wr.text||'')}</p>${examHtml}`);
   $('#completeSchoolLesson')?.addEventListener('click',()=>saveSchoolProgress(code,{completed_at:new Date().toISOString(),progress_percent:100}));
-  $('#saveSchoolAssignmentDraft')?.addEventListener('click',e=>{const answer=$('#schoolAssignmentAnswer')?.value||'';localStorage.setItem('nh7_note_school-'+code,answer);saveNoteCloud('note_school-'+code,answer).catch(console.warn);e.currentTarget.textContent=tr('saved')});
-  $('#submitSchoolAssignment')?.addEventListener('click',()=>submitSchoolAssignment(courseCode,code,$('#schoolAssignmentAnswer')?.value||''));
+  reviewV467.bind(view.querySelector('.nh7-school-review-v467'),{row:schoolAssignment,lesson:code,course:courseCode,snapshot:schoolSnapshot});
   $('#submitSchoolExam')?.addEventListener('click',()=>submitSchoolExam(schoolExam,code));bindInlineSermonControls();updateInlineSermonPlayers();refreshOfflineButtons().catch(()=>{});
 }
 
