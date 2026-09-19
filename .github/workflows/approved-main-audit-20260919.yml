@@ -1,0 +1,72 @@
+name: Verify Approved Main Integration
+on:
+  push:
+    branches: [qa/approved-main-audit-20260919]
+    paths: [.github/workflows/approved-main-audit-20260919.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 2bde658268eeaed0e7873c83aa7fb54c1d37fc8f
+          fetch-depth: 0
+      - name: Verify approved history, runtime wiring and deployed bytes
+        run: |
+          python - <<'PY'
+          import hashlib,json,re,subprocess,urllib.request
+          from pathlib import Path
+          from datetime import datetime,timezone
+          main='2bde658268eeaed0e7873c83aa7fb54c1d37fc8f'
+          live=subprocess.check_output(['git','ls-remote','origin','refs/heads/main'],text=True).split()[0]
+          assert live==main,'main changed; do not certify an old checkpoint'
+          approved={'school_hub':'ab8674e96eee2483c37bf40083f4f787810624d6','growth_dashboard':'2df1fabd295a0b2de2eaf1486e41c41242a4c52f','birthday_calendar':'346e274be35ba422a18c96a82810c33f007c1bed','school_login':'5e8e822616b22774560796155e4e181c1671bb8e','guide_only_at_entry':'44dfd189832c4a6031562851765811f941e0efe4','draft_recovery':main}
+          for name,commit in approved.items():
+              subprocess.run(['git','merge-base','--is-ancestor',commit,main],check=True)
+              print('PASS approved commit in main:',name)
+          idx=Path('index.html').read_text();app=Path('js/app.js').read_text();core=Path('sw-release-core-v403.js').read_text()
+          paths=['index.html','service-worker.js','sw-release-core-v403.js','js/app.js','js/nh7-school-drafts-v468.js','js/nh7-school-path-v351.js','js/nh7-theme-studio-v453.js','css/nh7-theme-gallery-v457.css','css/nh7-growth-v463.css','js/nh7-celebrations-v464.js','css/nh7-celebrations-v464.css','js/nh7-header-date-v455.js','css/nh7-header-date-v455.css','js/nh7-bible-keywords-v451.js','data/bible/keywords/bible_keywords_v450.json','js/nh7-audio-classic-v400.js','js/nh7-sermon-social-v443.js','js/nh7-settings-controller-v403.js','css/nh7-navigation-v456.css']
+          for path in paths[3:]:
+              assert path in idx or Path(path).name in app or path.startswith('data/'),path+' not wired'
+              assert path in core,path+' not in release cache'
+          school=Path('js/nh7-school-path-v351.js').read_text()
+          assert 'wrap.innerHTML=guideHtml();' not in school and 'guideHtml' in school
+          assert "if(params.guide)" in app and 'schoolDraftsV468.attach' in app and 'schoolDraftsV468.unmount' in app
+          assert 'nh7GrowthHtml(g)' in app and 'nh7-growth-card-v458' in app
+          home=app[app.index('async function home(){'):app.index('\nasync function fetchDynamicDailyItem')]
+          more=app[app.index('async function more(){'):app.index('\nasync function fetchMyQuestionsCloud')]
+          assert "['meetings','☎']" in more and 'data-go="meetings"' not in home
+          settings=app[app.index('async function settings(){'):]
+          assert 'nh7-version-footer' in settings and '${nh7AppearanceSettingsHtml()}' in settings
+          themes=Path('js/nh7-theme-studio-v453.js').read_text()
+          for theme in ['hope','ocean','forest','royal','sand','rose','midnight','sepia','sapphire','emerald','sunset','orchid','berry','aurora']:assert theme in themes
+          keywords=json.loads(Path('data/bible/keywords/bible_keywords_v450.json').read_text())
+          counts={lang:len(keywords['languages'][lang]) for lang in ['fa','en','hr']};assert set(counts.values())=={2500}
+          for rejected in ['nh7-school-workflow-v467','nh7-school-review-v467','growth-preview.html','school-workflow-preview.html','celebrations-preview.html']:
+              assert rejected not in idx and rejected not in app,rejected+' must not be in runtime'
+          assert 'nh7-session-v467' not in idx,'Unapproved alternative audio/session patch was silently deployed'
+          results=[];base='https://omideno7.github.io/new-hope7-app/'
+          for path in paths:
+              ref=re.search(re.escape(path)+r'\?v=([^"\s]+)',idx)
+              suffix='?v='+ref.group(1) if ref else ''
+              request=urllib.request.Request(base+path+suffix,headers={'Cache-Control':'no-cache','User-Agent':'NH7-approved-release-audit'})
+              with urllib.request.urlopen(request,timeout=25) as response:
+                  data=response.read();status=response.status
+              expected=Path(path).read_bytes()
+              assert data==expected,'Published bytes differ for '+path
+              results.append({'path':path,'status':status,'matches_main':True,'sha256':hashlib.sha256(data).hexdigest()})
+              print('PASS published exact bytes:',path)
+          out={'main':main,'verified_at':datetime.now(timezone.utc).isoformat(),'approved_ancestry':approved,'keyword_counts':counts,'published_files':results,'approved_features_already_in_main':True,'runtime_changes_made':False,'database_operations':False,'native_store_submission':False,'excluded':'Rejected school redesigns, preview/test controls, and PR28 alternative audio/session changes not device-approved as a candidate. Current production audio is confirmed working by the user.','scope':'Read-only git/static code/wiring checks and public static GET byte comparison; not a new native-device or user-account behavioral test.'}
+          Path('approved-main-integration-report.json').write_text(json.dumps(out,ensure_ascii=False,indent=2))
+          print('ALL APPROVED FEATURES ARE ALREADY CONNECTED IN LIVE MAIN; NO DUPLICATE MERGE REQUIRED.')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: approved-main-integration-report
+          path: approved-main-integration-report.json
+          retention-days: 14
