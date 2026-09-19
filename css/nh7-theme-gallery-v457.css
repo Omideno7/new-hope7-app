@@ -33,3 +33,48 @@ html[data-nh7-studio] .bottom-nav .nav-item.active small{color:var(--nh7-studio-
 html[data-nh7-studio] #view .hero .secondary-btn{background:var(--nh7-studio-card)!important;color:var(--nh7-studio-text)!important}
 @media(max-width:380px){#view #nh7ThemeStudio453 [data-theme-group457]{font-size:.74rem}#view #nh7ThemeStudio453 .nh7-studio-mini453{padding:8px}#view #nh7ThemeStudio453 .nh7-studio-mini453 b{padding:7px 9px}}
 @media(prefers-reduced-motion:reduce){#view #nh7ThemeStudio453 .nh7-studio-presets453 button{transition:none;transform:none}}
+
+
+/* v470: daily/audio tabs and sermon surfaces follow the active Studio palette in every state. */
+html[data-nh7-studio] #view .tab{
+  background:var(--nh7-studio-card)!important;
+  color:var(--nh7-studio-text)!important;
+  border-color:var(--nh7-studio-line)!important;
+}
+html[data-nh7-studio] #view .tab.active{
+  background:var(--nh7-studio-accent)!important;
+  color:var(--nh7-studio-button-ink)!important;
+  border-color:var(--nh7-studio-accent)!important;
+}
+html[data-nh7-studio] #view .sermon-card{
+  background:var(--nh7-studio-card)!important;
+  color:var(--nh7-studio-text)!important;
+  border-color:var(--nh7-studio-line)!important;
+}
+html[data-nh7-studio] #view .sermon-card-copy strong,
+html[data-nh7-studio] #view .nh7-audio-row-copy-v445 strong{
+  color:var(--nh7-studio-text)!important;
+}
+html[data-nh7-studio] #view .sermon-card-copy small,
+html[data-nh7-studio] #view .nh7-audio-row-copy-v445 small,
+html[data-nh7-studio] #view .nh7-audio-chevron-v445{
+  color:var(--nh7-studio-muted)!important;
+}
+html[data-nh7-studio] #view .nh7-audio-row-v445{
+  background:var(--nh7-studio-card)!important;
+  color:var(--nh7-studio-text)!important;
+  border-color:var(--nh7-studio-line)!important;
+}
+html[data-nh7-studio] #view .nh7-audio-item-v445.is-open>.nh7-audio-row-v445{
+  background:color-mix(in srgb,var(--nh7-studio-accent) 10%,var(--nh7-studio-card))!important;
+  color:var(--nh7-studio-text)!important;
+  border-bottom-color:var(--nh7-studio-line)!important;
+}
+html[data-nh7-studio] #view .sermon-placeholder{
+  background:var(--nh7-studio-bg)!important;
+  color:var(--nh7-studio-accent)!important;
+  border:1px solid var(--nh7-studio-line)!important;
+}
+html[data-nh7-studio] #view .card:not(.hero)>h2{
+  color:var(--nh7-studio-text)!important;
+}
