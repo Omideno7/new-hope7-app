@@ -1,0 +1,105 @@
+name: Navigation v456 Clean Release
+on:
+  push:
+    branches: [qa/navigation-v456-release-20260919]
+    paths: ['scripts/navigation-release456/**','.github/workflows/navigation-v456-release.yml']
+permissions:
+  contents: write
+concurrency:
+  group: navigation-v456-clean-release
+  cancel-in-progress: true
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/qa/navigation-v456-release-20260919'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      BASE_SHA: 08d3bfb51532163392fe87cd017e316327c38234
+      TARGET: integration/navigation-v456-20260919
+      QA_OUTPUT: /tmp/nav456-release-evidence
+      QA_BASELINE: /tmp/nav455-baseline
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prepare exact runtime-only candidate
+        run: |
+          set -euo pipefail
+          mkdir -p "$QA_OUTPUT" "$QA_BASELINE"
+          git ls-remote origin refs/heads/main > "$QA_OUTPUT/main-before.txt"
+          test "$(cut -f1 "$QA_OUTPUT/main-before.txt")" = "$BASE_SHA"
+          python scripts/navigation-release456/setup_tests.py
+          git archive "$BASE_SHA" | tar -xf - -C "$QA_BASELINE"
+          git checkout --detach "$BASE_SHA"
+          python /tmp/nav456-release-tests/prepare.py
+          sha256sum js/app.js index.html css/nh7-navigation-v456.css service-worker.js sw-release-core-v403.js > "$QA_OUTPUT/before.txt"
+          python /tmp/nav456-release-tests/prepare.py
+          sha256sum js/app.js index.html css/nh7-navigation-v456.css service-worker.js sw-release-core-v403.js > "$QA_OUTPUT/after.txt"
+          diff "$QA_OUTPUT/before.txt" "$QA_OUTPUT/after.txt"
+          python -m py_compile /tmp/nav456-release-tests/*.py
+      - name: Install pinned browsers
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium webkit
+          npm install --prefix "$RUNNER_TEMP/nav-agent" --save-exact agent-browser@0.38.1
+          echo "QA_AGENT_BROWSER=$RUNNER_TEMP/nav-agent/node_modules/.bin/agent-browser" >> "$GITHUB_ENV"
+      - name: Chromium guide-free navigation and data retention
+        run: timeout --kill-after=10s 180s env QA_ENGINE=chromium python /tmp/nav456-release-tests/navigation.py
+      - name: WebKit guide-free navigation and data retention
+        run: timeout --kill-after=10s 180s env QA_ENGINE=webkit python /tmp/nav456-release-tests/navigation.py
+      - name: Verify cloud account wiring with mocked endpoints
+        run: |
+          timeout --kill-after=10s 120s env QA_ENGINE=chromium python /tmp/nav456-release-tests/account_test.py
+          timeout --kill-after=10s 120s env QA_ENGINE=webkit python /tmp/nav456-release-tests/account_test.py
+      - name: Previously accepted fonts glossary and continuous audio
+        run: timeout --kill-after=10s 180s env QA_ENGINE=chromium python /tmp/nav456-release-tests/previous-study.py
+      - name: Real service-worker upgrade with preserved notes and downloads
+        run: timeout --kill-after=10s 240s python /tmp/nav456-release-tests/cache_upgrade.py
+      - name: Commit only the five verified files to integration
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
+          test "$(git ls-remote origin "refs/heads/$TARGET" | cut -f1)" = "$BASE_SHA"
+          python - <<'PY'
+          from pathlib import Path
+          import json,os,subprocess
+          files=json.loads((Path(os.environ['QA_OUTPUT'])/'allowed-files.json').read_text());assert len(files)==5
+          subprocess.run(['git','add','--',*files],check=True)
+          changed=subprocess.check_output(['git','diff','--cached','--name-only'],text=True).splitlines();assert set(changed)==set(files),changed
+          subprocess.run(['git','diff','--cached','--check'],check=True)
+          PY
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'refactor(navigation): publish approved menu cleanup without location guide v456'
+          git push origin "HEAD:refs/heads/$TARGET"
+          git rev-parse HEAD > "$QA_OUTPUT/integration-commit.txt"
+          git diff --stat "$BASE_SHA" HEAD > "$QA_OUTPUT/scope.txt"
+          git ls-remote origin refs/heads/main > "$QA_OUTPUT/main-after.txt"
+          diff "$QA_OUTPUT/main-before.txt" "$QA_OUTPUT/main-after.txt"
+      - name: Preserve verification evidence without font binaries
+        if: always()
+        run: |
+          mkdir -p "$QA_OUTPUT"
+          if [ -d qa-nav456 ]; then cp -R qa-nav456 "$QA_OUTPUT/navigation"; fi
+          if [ -d qa-study454 ]; then cp -R qa-study454 "$QA_OUTPUT/previous-features"; fi
+          cp -R /tmp/nav456-release-tests "$QA_OUTPUT/test-harness" || true
+          python - <<'PY'
+          from pathlib import Path
+          import json,tarfile,os
+          out=Path(os.environ['QA_OUTPUT']);p=out/'allowed-files.json'
+          if p.exists():
+              with tarfile.open(out/'runtime.tgz','w:gz') as t:
+                  for name in json.loads(p.read_text()):
+                      if Path(name).is_file():t.add(name,arcname=name)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: navigation-v456-release-${{ github.sha }}
+          path: /tmp/nav456-release-evidence/
+          retention-days: 14
