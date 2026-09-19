@@ -41,10 +41,21 @@ jobs:
           new="confetti.style.setProperty('--drift',i%2?'12px':'-12px');confetti.style.animation='nh7Confetti464 3.4s ease-in '+(.5+i*.035)+'s forwards';layer.append(confetti)"
           assert old in s
           p.write_text(s.replace(old,new))
-          # The browser must actually animate, rather than pass a static-style check.
           q=Path('scripts/celebrations-v464/release_qa.py');t=q.read_text()
+          t=t.replace('static now(){return window.__qaNow}', 'static now(){return RealDate.now()}')
           old="    a=first.evaluate('(n)=>getComputedStyle(n).transform');p.wait_for_timeout(900);b=first.evaluate('(n)=>getComputedStyle(n).transform');assert a!=b,(a,b)"
-          new="    p.wait_for_function(\"()=>{const n=document.querySelector('.nh7-bday-confetti464');return n&&getComputedStyle(n).transform!=='none'}\",timeout=3200)\n    a=first.evaluate('(n)=>getComputedStyle(n).transform');p.wait_for_timeout(500);b=first.evaluate('(n)=>getComputedStyle(n).transform');assert a!=b and b!='none',(a,b)"
+          new='''    p.bring_to_front()
+              p.wait_for_function("()=>{const n=document.querySelector('.nh7-bday-confetti464');return n&&getComputedStyle(n).transform!=='none'}",timeout=3200)
+              frame_a=p.screenshot(animations='allow')
+              a=first.evaluate('(n)=>({transform:getComputedStyle(n).transform,time:performance.now(),animations:n.getAnimations().map(a=>({time:a.currentTime,state:a.playState}))})')
+              p.wait_for_timeout(600)
+              frame_b=p.screenshot(animations='allow')
+              b=first.evaluate('(n)=>({transform:getComputedStyle(n).transform,time:performance.now(),animations:n.getAnimations().map(a=>({time:a.currentTime,state:a.playState}))})')
+              (OUT/f'{engine}-animation-diagnostic-{language}.json').write_text(json.dumps({'before':a,'after':b,'painted_frames_differ':frame_a!=frame_b},indent=2))
+              assert a['transform']!=b['transform'] and b['transform']!='none' and frame_a!=frame_b,(a,b)
+          '''
+          # Match the four-space indentation of the nested scenario function.
+          lines=new.splitlines();new='\n'.join([lines[0]]+['    '+x.lstrip() for x in lines[1:] if x.strip()])
           assert old in t
           q.write_text(t.replace(old,new))
           PY
