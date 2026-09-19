@@ -1,0 +1,22 @@
+/* Scoped: follows existing Theme Studio. No theme or global element overrides. */
+.nh7-store-review469{--review-bg:var(--nh7-studio-card,var(--card,#fff));--review-ink:var(--nh7-studio-text,var(--ink,#14364d));--review-accent:var(--nh7-studio-accent,var(--brand,#1858a4));color:var(--review-ink);background:var(--review-bg);background:linear-gradient(140deg,color-mix(in srgb,var(--review-accent) 7%,var(--review-bg)),var(--review-bg) 65%);border:1px solid color-mix(in srgb,var(--review-accent) 26%,transparent);border-radius:24px;box-sizing:border-box;margin-block:26px 16px;padding:22px;box-shadow:0 10px 28px rgb(0 0 0 / 5%);font-family:inherit;text-align:start;}
+.nh7-store-review469 *{box-sizing:border-box}
+.nh7-review-head469{display:flex;align-items:center;gap:14px;margin-block-end:16px}
+.nh7-review-symbol469{display:grid;place-items:center;flex:none;width:54px;height:54px;border-radius:18px;background:color-mix(in srgb,var(--review-accent) 12%,var(--review-bg));border:1px solid color-mix(in srgb,var(--review-accent) 22%,transparent);color:var(--review-ink);font-size:36px;line-height:1;}
+.nh7-store-review469 h3{margin:4px 0 0!important;color:var(--review-ink)!important;font-family:inherit;font-weight:800;font-size:1.18rem;line-height:1.5;overflow-wrap:anywhere}
+.nh7-review-brand469{font:700 .65rem/1.5 system-ui,sans-serif;letter-spacing:.15em;color:var(--review-ink)}
+.nh7-store-review469 p{color:var(--review-ink)!important;line-height:1.85;overflow-wrap:anywhere}
+.nh7-store-review469 .nh7-review-intro469{margin:0 0 18px;font-size:.94rem}
+.nh7-store-review-links469{display:grid;grid-template-columns:1fr;gap:10px}
+.nh7-store-review469 a.nh7-review-link469{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:74px;padding:14px 16px;border-radius:16px;text-decoration:none!important;color:var(--review-ink)!important;background:var(--review-bg)!important;border:1.5px solid color-mix(in srgb,var(--review-accent) 58%,var(--review-bg));font-family:inherit;box-shadow:0 3px 10px rgb(0 0 0 / 3%);transition:transform .15s ease,box-shadow .15s ease;}
+.nh7-review-link-copy469{display:grid;gap:3px;min-width:0;font-size:.87rem;font-weight:750;line-height:1.6}
+.nh7-review-link-copy469 bdi{font:750 1rem/1.5 system-ui,sans-serif;text-align:start;justify-self:start}
+.nh7-review-arrow469{display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:50%;background:color-mix(in srgb,var(--review-accent) 12%,var(--review-bg));font:24px/1 system-ui,sans-serif}
+.nh7-store-review469 .nh7-review-note469{margin:16px 0 0;font-size:.77rem}
+.nh7-store-review469 .nh7-review-status469{margin:12px 0 0;font-size:.85rem;font-weight:700}
+.nh7-store-review469 .nh7-review-status469:empty{display:none}
+.nh7-store-review469 a.nh7-review-link469:focus-visible{outline:3px solid var(--review-accent);outline-offset:4px}
+.nh7-store-review469 a.nh7-review-link469:active{transform:scale(.985)}
+@media(hover:hover){.nh7-store-review469 a.nh7-review-link469:hover{box-shadow:0 6px 18px rgb(0 0 0 / 9%)}}
+@media(max-width:360px){.nh7-store-review469{padding:17px;border-radius:20px}.nh7-review-symbol469{width:46px;height:46px;font-size:30px}.nh7-review-head469{gap:10px}}
+@media(prefers-reduced-motion:reduce){.nh7-store-review469 a.nh7-review-link469{transition:none;transform:none}}
