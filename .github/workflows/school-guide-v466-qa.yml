@@ -1,0 +1,89 @@
+name: School Guide Placement v466 QA
+on:
+  push:
+    branches: [qa/school-guide-v466-20260919]
+    paths:
+      - scripts/school-guide-v466/**
+      - .github/workflows/school-guide-v466-qa.yml
+permissions:
+  contents: write
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify production baseline
+        run: test "$(git ls-remote origin refs/heads/main | cut -f1)" = '5e8e822616b22774560796155e4e181c1671bb8e'
+      - name: Install pinned browser dependencies
+        run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium webkit
+      - name: Test original duplicate and corrected guide placement in FA EN HR
+        run: python scripts/school-guide-v466/qa.py
+      - name: Verify scoped changes and protected-cache upgrade
+        run: |
+          python - <<'PY'
+          import subprocess
+          from pathlib import Path
+          base='5e8e822616b22774560796155e4e181c1671bb8e'
+          allowed={'js/nh7-school-path-v351.js','index.html','service-worker.js','sw-release-core-v403.js'}
+          changes=set(subprocess.check_output(['git','diff','--name-only'],text=True).splitlines())
+          assert changes==allowed,changes
+          for p in ['js/app.js','js/nh7-audio-classic-v400.js','js/nh7-celebrations-v464.js','js/nh7-school-exam-v344.js','js/nh7-theme-studio-v453.js']:
+              assert Path(p).read_bytes()==subprocess.check_output(['git','show',base+':'+p]),p
+          Path('qa-output/runtime.diff').write_bytes(subprocess.check_output(['git','diff','--']+sorted(allowed)))
+          PY
+          node <<'JS'
+          const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
+          const stores=new Map(),scope='https://qa.invalid/new-hope7-app/';let generation='old',requests=0;
+          const caches={async keys(){return [...stores.keys()]},async delete(k){return stores.delete(k)},async open(k){if(!stores.has(k))stores.set(k,new Map());const store=stores.get(k);return{async put(r,v){store.set(r.url||String(r),v.clone())},async match(r){return store.get(r.url||String(r))?.clone()},async keys(){return [...store.keys()].map(x=>new Request(x))}}}};
+          function worker(code){const listeners={},self={registration:{scope},addEventListener(k,f){(listeners[k]??=[]).push(f)}};vm.runInNewContext(code,{self,caches,Request,Response,URL,console,fetch:async u=>{requests++;return new Response(generation+':'+String(u))}});return listeners}
+          async function lifecycle(w,k){const jobs=[];for(const f of w[k]||[])f({waitUntil(p){jobs.push(p)}});await Promise.all(jobs)}
+          (async()=>{
+            const prior=worker(fs.readFileSync('qa-output/before-release-core.js','utf8'));await lifecycle(prior,'install');
+            const keep=['nh7-offline-media-v4','nh7-audio-route-v423','nh7-personal-notes-fixture','nh7-data-stable-v329'];
+            for(const k of keep)await(await caches.open(k)).put(new Request(scope+'personal-sentinel'),new Response('KEEP '+k));
+            generation='v466';const next=worker(fs.readFileSync('sw-release-core-v403.js','utf8'));await lifecycle(next,'install');
+            assert(stores.has('nh7-release-core-v465-school-entry'));
+            await lifecycle(next,'activate');assert(!stores.has('nh7-release-core-v465-school-entry'));assert(stores.has('nh7-release-core-v466-school-guide'));
+            for(const k of keep)assert.equal(await(await(await caches.open(k)).match(new Request(scope+'personal-sentinel'))).text(),'KEEP '+k);
+            for(const p of ['js/nh7-school-path-v351.js','js/app.js','js/nh7-celebrations-v464.js','js/nh7-audio-classic-v400.js']){
+              let response,stopped=false;const before=requests;
+              for(const f of next.fetch)f({request:new Request(scope+p+'?v=4.6.6'),respondWith(x){response=x},stopImmediatePropagation(){stopped=true}});
+              assert(stopped);assert.equal(await(await response).text(),'v466:'+scope+p);assert.equal(requests,before);
+            }
+            fs.writeFileSync('qa-output/cache-report.json',JSON.stringify({passed:true,version:'4.6.6-school-guide',protected_caches:keep,offline_routes:4,scope:'Isolated actual release-core JavaScript with synthetic cache API; no network.'},null,2));
+            console.log('PASS cache upgrade: four protected caches preserved and four updated runtime cache routes.');
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - name: Commit only tested runtime to QA branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add js/nh7-school-path-v351.js index.html service-worker.js sw-release-core-v403.js
+          git commit -m 'fix(school): verified removal of duplicate in-school guide [skip ci]'
+          git push origin HEAD:qa/school-guide-v466-20260919
+          python - <<'PY'
+          import subprocess,json
+          from pathlib import Path
+          paths=['js/nh7-school-path-v351.js','index.html','service-worker.js','sw-release-core-v403.js']
+          result={'baseline':'5e8e822616b22774560796155e4e181c1671bb8e','tested_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'runtime_blobs':{p:subprocess.check_output(['git','rev-parse','HEAD:'+p],text=True).strip() for p in paths}}
+          Path('qa-output/runtime-manifest.json').write_text(json.dumps(result,indent=2));print(json.dumps(result,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: school-guide-v466-qa
+          path: qa-output/
+          retention-days: 14
