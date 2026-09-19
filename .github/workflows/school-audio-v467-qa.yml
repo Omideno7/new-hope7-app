@@ -37,7 +37,19 @@ jobs:
           git diff -- js index.html service-worker.js sw-release-core-v403.js > qa-v467/runtime.patch
           python - <<'PY'
           from pathlib import Path
-          p=Path('scripts/v467/qa.py');s=p.read_text();s=s.replace('def run(name,fn):\n','def run(name,fn):\n print("START",name,flush=True)\n');p.write_text(s)
+          p=Path('scripts/v467/qa.py');s=p.read_text()
+          s=s.replace('def run(name,fn):\n','def run(name,fn):\n print("START",name,flush=True)\n')
+          a="  def page(lang='en',baseline=False,school_ui=False):"
+          b="  def page(lang='en',baseline=False,school_ui=False,persistent=False):"
+          assert s.count(a)==1;s=s.replace(a,b)
+          a="   ctx=browser.new_context(viewport={'width':390,'height':844},locale=lang,service_workers='block');p=ctx.new_page();errs=[];p.on('pageerror',lambda e:errs.append(str(e)))"
+          b="   options={'viewport':{'width':390,'height':844},'locale':lang,'service_workers':'block'}\n   ctx=getattr(pw,engine).launch_persistent_context('',headless=True,**options) if persistent else browser.new_context(**options)\n   p=ctx.new_page();errs=[];p.on('pageerror',lambda e:errs.append(str(e)))"
+          assert s.count(a)==1;s=s.replace(a,b)
+          a="  def download_kept():\n   ctx,p,err=page();card(p)"
+          b="  def download_kept():\n   ctx,p,err=page(persistent=(engine=='webkit'));card(p)"
+          assert s.count(a)==1;s=s.replace(a,b)
+          p.write_text(s)
+          Path('qa-v467/storage-test-mode.json').write_text('{"webkit_offline_blob_test":"Fresh temporary persistent browser profile, no real account; real IndexedDB Blob retained after error.","other_tests":"Isolated fresh browser contexts."}')
           PY
           python -m py_compile scripts/v467/qa.py
       - name: Install pinned browser dependencies
