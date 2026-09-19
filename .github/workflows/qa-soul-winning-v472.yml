@@ -1,0 +1,109 @@
+name: Soul Winning v472 Preview QA
+
+on:
+  push:
+    branches:
+      - feature/soul-winning-v472-preview-20260920
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate isolated scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=291b7b84222185f3c5549552345da30fe0883718
+          git diff --name-only "$base"...HEAD > /tmp/changed
+          cat /tmp/changed
+          allowed='^(js/app\.js|js/nh7-soul-winning-v472\.js|css/nh7-soul-winning-v472\.css|index\.html|service-worker\.js|sw-release-core-v403\.js|soul-winning-preview\.html|\.github/workflows/qa-soul-winning-v472\.yml)$'
+          bad=$(grep -Ev "$allowed" /tmp/changed || true)
+          test -z "$bad"
+          ! grep -Eq '^(supabase/|data/|admin|assets/)' /tmp/changed
+
+      - name: Validate JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check --input-type=module < js/nh7-soul-winning-v472.js
+          node --check --input-type=module < js/app.js
+          cp js/nh7-soul-winning-v472.js /tmp/soul.mjs
+          node --input-type=module <<'NODE'
+          import {normalizeStore,stats,STAGES} from 'file:///tmp/soul.mjs';
+          if(STAGES.length!==7)throw new Error('Expected 7 journey stages');
+          const people=[
+            {name:'A',stage:'contact'},
+            {name:'B',stage:'gospel'},
+            {name:'C',stage:'followup'},
+            {name:'D',stage:'salvation'},
+            {name:'E',stage:'church'},
+            {name:'F',stage:'discipleship'},
+            {name:'G',stage:'serving'}
+          ];
+          const clean=normalizeStore({people});
+          const s=stats(clean.people);
+          const want={total:7,gospel:6,salvation:4,church:3,discipleship:2};
+          for(const [k,v] of Object.entries(want))if(s[k]!==v)throw new Error(k+' '+s[k]+' != '+v);
+          if(clean.people.some(p=>!p.id||!Array.isArray(p.history)))throw new Error('Normalization failed');
+          console.log('Journey/stats OK',s);
+          NODE
+
+      - name: Prove no cloud or account writes
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eq 'cloudFetch|cloudRpc|saveProgressCloud|saveNoteCloud|SUPABASE|authApi|fetch\(' js/nh7-soul-winning-v472.js
+          grep -q "const STORAGE_KEY='nh7_soul_tracker_v472'" js/nh7-soul-winning-v472.js
+          ! grep -Eq 'localStorage\.clear|sessionStorage\.clear|service_role' js/nh7-soul-winning-v472.js
+          ! grep -Eq 'fetch\(|XMLHttpRequest|serviceWorker|cloudFetch|cloudRpc' soul-winning-preview.html
+          grep -q 'not sent to Supabase' soul-winning-preview.html
+          echo "Local-only data boundary OK"
+
+      - name: Validate runtime wiring and release cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "createSoulWinningV472" js/app.js
+          grep -q "route==='soulWinning'" js/app.js
+          grep -q "\['soulWinning','🌾'\]" js/app.js
+          grep -q "soulWinning:'Soul Winning'" js/app.js
+          grep -q "soulWinning:'نجات جان‌ها'" js/app.js
+          grep -q "soulWinning:'Osvajanje duša'" js/app.js
+          grep -q "nh7-soul-winning-v472.css?v=4.7.2" index.html
+          grep -q "js/app.js?v=4.7.2" index.html
+          grep -q "service-worker.js?v=4.7.2" index.html
+          grep -q "sw-release-core-v403.js?v=4.7.2" service-worker.js
+          grep -q "'./js/nh7-soul-winning-v472.js'" sw-release-core-v403.js
+          grep -q "'./css/nh7-soul-winning-v472.css'" sw-release-core-v403.js
+          grep -q "nh7-release-core-v472-soul-winning-preview" sw-release-core-v403.js
+
+      - name: Validate preview module script and 14 themes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import re
+          s=open('soul-winning-preview.html',encoding='utf-8').read()
+          blocks=re.findall(r'<script type="module">([\s\S]*?)</script>',s,re.I)
+          assert len(blocks)==1
+          open('/tmp/preview.mjs','w',encoding='utf-8').write(blocks[0])
+          PY
+          node --check /tmp/preview.mjs
+          node <<'NODE'
+          const fs=require('fs');
+          const html=fs.readFileSync('soul-winning-preview.html','utf8');
+          const css=fs.readFileSync('css/nh7-soul-winning-v472.css','utf8');
+          const ids=['hope','ocean','forest','royal','sand','rose','midnight','sepia','sapphire','emerald','sunset','orchid','berry','aurora'];
+          for(const id of ids)if(!html.includes(id+":{")&&!html.includes(id+"':{")&&!html.includes(id+'":{'))throw new Error('Missing theme '+id);
+          if((html.match(/<option value="(?:hope|ocean|forest|royal|sand|rose|midnight|sepia|sapphire|emerald|sunset|orchid|berry|aurora)"/g)||[]).length!==14)throw new Error('Theme selector count');
+          for(const token of ['nh7-sw-stats','nh7-sw-person','nh7-sw-journey','data-sw-add','data-sw-search','data-sw-filter'])if(!html.includes(token)&&!css.includes(token)&&!fs.readFileSync('js/nh7-soul-winning-v472.js','utf8').includes(token))throw new Error('Missing '+token);
+          console.log('Preview structure OK');
+          NODE
