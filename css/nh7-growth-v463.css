@@ -1,0 +1,15 @@
+/* New Hope 7 Growth & Rewards v4.5.8 */
+.nh7-growth-dashboard-v463{display:grid;gap:12px}
+.nh7-growth-head-v463{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.nh7-growth-head-v463 h3{margin:4px 0 0}
+.nh7-growth-level-v463{display:inline-flex;padding:5px 10px;border-radius:999px;background:var(--nh7-module-soft,rgba(29,78,216,.12));font-size:.78rem;font-weight:800}
+.nh7-growth-score-v463{text-align:center;min-width:78px;padding:10px 12px;border-radius:16px;background:var(--nh7-studio-bg,#eef5ff)}
+.nh7-growth-score-v463 strong{display:block;font-size:1.35rem;line-height:1.1}.nh7-growth-score-v463 small{display:block;margin-top:4px}
+.nh7-growth-track-v463{height:10px;border-radius:999px;overflow:hidden;background:var(--nh7-studio-bg,#e7edf5);border:1px solid var(--nh7-studio-line,rgba(0,0,0,.08))}
+.nh7-growth-track-v463 i{display:block;height:100%;border-radius:inherit;background:var(--nh7-studio-accent,var(--brand,#1d4ed8));transition:width .35s ease}
+.nh7-growth-stats-v463{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.nh7-growth-stats-v463>div{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:72px;padding:8px;border-radius:14px;background:var(--nh7-studio-bg,#f5f8fc);text-align:center}
+.nh7-growth-stats-v463 strong{font-size:1rem}.nh7-growth-stats-v463 span{font-size:.72rem;line-height:1.35}
+.nh7-growth-badges-v463{display:flex;flex-wrap:wrap;gap:7px}
+@media(max-width:360px){.nh7-growth-stats-v463{grid-template-columns:1fr}.nh7-growth-head-v463{align-items:flex-start}.nh7-growth-score-v463{min-width:68px}}
+@media(prefers-reduced-motion:reduce){.nh7-growth-track-v463 i{transition:none}}
