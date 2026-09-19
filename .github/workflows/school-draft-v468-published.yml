@@ -1,0 +1,48 @@
+name: Verify Published School Drafts v468
+on:
+  push:
+    branches: [qa/school-draft-v468-20260919]
+    paths: [.github/workflows/school-draft-v468-published.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  published:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 2bde658268eeaed0e7873c83aa7fb54c1d37fc8f
+      - name: Compare live files with merged draft-only release
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import urllib.request,time,hashlib,json
+          commit='2bde658268eeaed0e7873c83aa7fb54c1d37fc8f'
+          root='https://omideno7.github.io/new-hope7-app/'
+          files=['js/app.js','js/nh7-school-drafts-v468.js','index.html','service-worker.js','sw-release-core-v403.js']
+          remaining=set(files);verified={};last={}
+          for attempt in range(12):
+              for path in sorted(remaining):
+                  try:
+                      req=urllib.request.Request(root+path+'?verification='+commit,headers={'Cache-Control':'no-cache','User-Agent':'NH7-draft-release-check'})
+                      with urllib.request.urlopen(req,timeout=15) as r:
+                          data=r.read();status=r.status;mime=r.headers.get('Content-Type','')
+                      assert data==Path(path).read_bytes(),'Live bytes still differ'
+                      verified[path]={'status':status,'content_type':mime,'sha256':hashlib.sha256(data).hexdigest(),'matches_release':True}
+                      remaining.remove(path);print('PASS live exact bytes',path,flush=True)
+                  except Exception as e:last[path]=str(e)
+              if not remaining:break
+              time.sleep(8)
+          report={'commit':commit,'files':verified,'remaining':sorted(remaining),'last_errors':{p:last.get(p) for p in remaining},'scope':'Read-only GET of public static files. No Supabase, student account, submission or native operation.'}
+          Path('publication-report.json').write_text(json.dumps(report,indent=2))
+          print(json.dumps(report,indent=2))
+          assert not remaining,'Publication verification incomplete'
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: school-draft-v468-published
+          path: publication-report.json
+          retention-days: 14
