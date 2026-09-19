@@ -12,10 +12,11 @@ jobs:
   verify:
     if: github.ref == 'refs/heads/feature/fonts-lexicon-quickbible-v454-20260919'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     env:
       MAIN_BASE: 259280fe00a7dbc7359c24f997338724961f0c08
       FEATURE: feature/fonts-lexicon-quickbible-v454-20260919
+      PYTHONUNBUFFERED: '1'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -54,17 +55,17 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/study-agent" --save-exact agent-browser@0.38.1
           echo "QA_AGENT_BROWSER=$RUNNER_TEMP/study-agent/node_modules/.bin/agent-browser" >> "$GITHUB_ENV"
       - name: Chromium rendering and real playback verification
-        run: QA_ENGINE=chromium python scripts/study-v454/browser.py
+        run: timeout --kill-after=10s 180s env QA_ENGINE=chromium python scripts/study-v454/diagnostic_runner.py
       - name: WebKit rendering and real playback verification
-        run: QA_ENGINE=webkit python scripts/study-v454/browser.py
+        run: timeout --kill-after=10s 180s env QA_ENGINE=webkit python scripts/study-v454/diagnostic_runner.py
       - name: Previously approved reader regression
         run: |
           git show 0554e87363b1bb979f8edaf8609402db08bbd43a:scripts/reader-wave-v452/browser.py > /tmp/reader-regression454.py
-          QA_ENGINE=chromium python /tmp/reader-regression454.py
+          timeout --kill-after=10s 180s env QA_ENGINE=chromium python /tmp/reader-regression454.py
       - name: Isolated Preview safety verification
         run: |
           sed 's/nh7_preview_study_v453:/nh7_preview_study_v454:/g' scripts/study-v453/preview_test.py > /tmp/study-preview454-test.py
-          python /tmp/study-preview454-test.py
+          timeout --kill-after=10s 180s python /tmp/study-preview454-test.py
       - name: Commit tested runtime to feature only
         run: |
           set -euo pipefail
@@ -83,7 +84,7 @@ jobs:
       - name: Check actual public Preview
         run: |
           export QA_PREVIEW_URL="https://rawcdn.githack.com/Omideno7/new-hope7-app/$(cat qa-study454/tested-commit.txt)/study-preview.html"
-          python /tmp/study-preview454-test.py
+          timeout --kill-after=10s 240s python /tmp/study-preview454-test.py
       - name: Collect evidence without font files
         if: always()
         run: |
@@ -92,7 +93,6 @@ jobs:
           if [ -d qa-study453 ]; then cp -R qa-study453 qa-study454/preview-check; fi
           python - <<'PY'
           import pathlib,tarfile
-          root=pathlib.Path('.')
           names=['index.html','study-preview.html','js/app.js','js/nh7-theme-studio-v453.js','js/nh7-original-language-v453.js','js/nh7-fonts-v454.js','js/nh7-audio-quick-bible-v454.js','js/nh7-study-preview-app-v453.js','js/nh7-study-preview-guard-v453.js','css/nh7-fonts-quick-bible-v454.css','data/lexicon/original-language-core-v454.json']
           names += [str(p) for p in pathlib.Path('scripts/study-v454').glob('*') if p.is_file()]
           with tarfile.open('qa-study454/verified-source-no-fonts.tgz','w:gz') as t:
