@@ -14,6 +14,19 @@ p.write_text(text)
 # Runtime code is exactly the code tested in the full-app harness.
 for name in files:
  if name!='index.html':assert Path(name).read_bytes()==git(SOURCE,name),name
+# Normalize upstream license whitespace only. Keep every word and copyright notice.
+# Font binaries and all executable runtime files remain byte-identical to SOURCE.
+license_report=[]
+for name in font_files:
+ if not name.endswith('-OFL.txt'):continue
+ p=Path(name);original=git(SOURCE,name).decode('utf-8')
+ normalized='\n'.join(line.rstrip(' \t\r') for line in original.splitlines()).rstrip('\n')+'\n'
+ assert original.split()==normalized.split(),name
+ assert 'SIL OPEN FONT LICENSE' in normalized,name
+ p.write_text(normalized,encoding='utf-8',newline='\n')
+ license_report.append({'path':name,'wordingUnchanged':True,'upstreamSha256':hashlib.sha256(original.encode('utf-8')).hexdigest(),'normalizedSha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+assert len(license_report)==8
+(OUT/'license-format-report.json').write_text(json.dumps({'status':'passed','normalization':'line endings, trailing whitespace and terminal blank lines only','licenses':license_report},indent=2))
 p=Path('sw-release-core-v403.js');text=git(BASE,str(p)).decode()
 text=text.replace("'4.5.2-reader'","'4.5.4-study'").replace("'nh7-release-core-v452-reader'","'nh7-release-core-v454-study'")
 paths=[name for name in files if name.endswith(('.js','.css','.json','.woff2')) and name!='index.html']
@@ -32,5 +45,5 @@ for name in files:
  if name.endswith('.js'):subprocess.run(['node','--check',name],check=True)
 (OUT/'allowed-files.json').write_text(json.dumps(files,indent=2))
 (OUT/'runtime-hashes.json').write_text(json.dumps({name:hashlib.sha256(Path(name).read_bytes()).hexdigest() for name in files},indent=2))
-(OUT/'scope-report.json').write_text(json.dumps({'status':'passed','base':BASE,'testedSource':SOURCE,'runtimeOnlyFiles':files,'cacheHandlerScope':all_paths,'nativeVersionUnchanged':True,'scriptureCorpusUnchanged':True,'classicAudioLogicUnchanged':True,'publicLexiconEntries':60,'bundledFonts':8,'previewFilesExcluded':True},indent=2))
+(OUT/'scope-report.json').write_text(json.dumps({'status':'passed','base':BASE,'testedSource':SOURCE,'runtimeOnlyFiles':files,'cacheHandlerScope':all_paths,'nativeVersionUnchanged':True,'scriptureCorpusUnchanged':True,'classicAudioLogicUnchanged':True,'publicLexiconEntries':60,'bundledFonts':8,'previewFilesExcluded':True,'licenseWordingUnchanged':True},indent=2))
 print('Prepared clean runtime and scoped font/lexicon caches; no user-data migration.')
