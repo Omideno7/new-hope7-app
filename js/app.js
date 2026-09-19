@@ -476,10 +476,11 @@ function nh7WithTimeoutV470(promise,timeoutMs=NH7_FAST_CLOUD_TIMEOUT_V470){
   return Promise.race([Promise.resolve(promise),timeout]).finally(()=>clearTimeout(timer));
 }
 async function nh7TimedCloudFetchV470(path,options={},timeoutMs=NH7_FAST_CLOUD_TIMEOUT_V470){
-  if(typeof AbortController==='undefined')return nh7WithTimeoutV470(cloudFetch(path,options),timeoutMs);
-  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),Math.max(500,Number(timeoutMs)||NH7_FAST_CLOUD_TIMEOUT_V470));
-  try{return await cloudFetch(path,Object.assign({},options,{signal:controller.signal}))}
-  finally{clearTimeout(timer)}
+  const ms=Math.max(500,Number(timeoutMs)||NH7_FAST_CLOUD_TIMEOUT_V470);
+  if(typeof AbortController==='undefined')return nh7WithTimeoutV470(cloudFetch(path,options),ms);
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),ms);
+  try{return await nh7WithTimeoutV470(cloudFetch(path,Object.assign({},options,{signal:controller.signal})),ms)}
+  finally{clearTimeout(timer);controller.abort()}
 }
 function nh7TimedCloudRpcV470(name,payload={},timeoutMs=NH7_FAST_CLOUD_TIMEOUT_V470){
   return nh7TimedCloudFetchV470('rpc/'+name,{method:'POST',body:JSON.stringify(payload)},timeoutMs);
