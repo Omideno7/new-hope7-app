@@ -1,0 +1,94 @@
+name: School Review v467 QA
+on:
+  push:
+    branches: [qa/school-review-v467-20260919]
+    paths:
+      - scripts/school-review-v467/**
+      - js/nh7-school-review-v467.js
+      - css/nh7-school-review-v467.css
+      - .github/workflows/school-review-v467-qa.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: school-review-v467-qa
+  cancel-in-progress: false
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify baseline and prepare candidate only
+        run: |
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = '44dfd189832c4a6031562851765811f941e0efe4'
+          python scripts/school-review-v467/prepare.py
+          node --check js/app.js
+          node --check js/nh7-school-review-v467.js
+          node --check js/nh7-school-path-v351.js
+          node --check sw-release-core-v403.js
+      - name: Install pinned browser dependencies
+        run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium webkit
+      - name: Source-extracted lesson and review UI regression
+        run: python scripts/school-review-v467/review_qa.py
+      - name: Verify unchanged feature code and protected release-cache upgrade
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+          base='44dfd189832c4a6031562851765811f941e0efe4'
+          for p in ['js/nh7-audio-classic-v400.js','js/nh7-celebrations-v464.js','js/nh7-theme-studio-v453.js','js/nh7-school-exam-v344.js','manifest.json']:
+            assert Path(p).read_bytes()==subprocess.check_output(['git','show',base+':'+p]),p
+          before=subprocess.check_output(['git','show',base+':js/app.js'],text=True)
+          after=Path('js/app.js').read_text()
+          for start,end in [('async function school(params={})','async function schoolLesson('),('function examLocalized(', 'function bindInlineSermonControls(')]:
+            assert before[before.index(start):before.index(end)]==after[after.index(start):after.index(end)],start
+          assert 'wrap.innerHTML=guideHtml();' not in Path('js/nh7-school-path-v351.js').read_text()
+          print('PASS existing school entry, guide placement, exam submission, audio, themes and celebrations unchanged')
+          PY
+          node <<'JS'
+          const fs=require('fs'),vm=require('vm'),cp=require('child_process'),assert=require('assert/strict');
+          const stores=new Map(),scope='https://qa.invalid/new-hope7-app/';
+          const caches={async keys(){return [...stores.keys()]},async delete(k){return stores.delete(k)},async open(k){if(!stores.has(k))stores.set(k,new Map());const s=stores.get(k);return{async put(r,v){s.set(r.url||String(r),v.clone())},async match(r){return s.get(r.url||String(r))?.clone()},async keys(){return [...s.keys()].map(x=>new Request(x))}}}};
+          let gen='old';function load(code){const listeners={},self={registration:{scope},addEventListener(k,f){(listeners[k]??=[]).push(f)}};vm.runInNewContext(code,{self,caches,Request,Response,URL,console,fetch:async u=>new Response(gen+':'+String(u))});return listeners}
+          async function event(w,k){const jobs=[];for(const f of w[k]||[])f({waitUntil(p){jobs.push(p)}});await Promise.all(jobs)}
+          (async()=>{const base=load(cp.execFileSync('git',['show','44dfd189832c4a6031562851765811f941e0efe4:sw-release-core-v403.js'],{encoding:'utf8'}));await event(base,'install');
+          const keep=['nh7-offline-media-v4','nh7-offline-audio-v397','nh7-data-stable-v329','nh7-personal-notes-fixture'];for(const k of keep)await(await caches.open(k)).put(new Request(scope+'sentinel'),new Response('KEEP'));
+          gen='new';const newer=load(fs.readFileSync('sw-release-core-v403.js','utf8'));await event(newer,'install');await event(newer,'activate');
+          for(const k of keep)assert.equal(await(await(await caches.open(k)).match(new Request(scope+'sentinel'))).text(),'KEEP');
+          assert((await caches.keys()).includes('nh7-release-core-v467-school-review'));
+          for(const p of ['js/app.js','js/nh7-school-path-v351.js','js/nh7-school-review-v467.js','css/nh7-school-review-v467.css']){let out,stop=false;for(const f of newer.fetch||[])f({request:new Request(scope+p+'?v=4.6.7'),respondWith(p){out=p},stopImmediatePropagation(){stop=true}});assert(stop);assert.equal(await(await out).text(),'new:'+scope+p)}
+          fs.writeFileSync('qa-output/cache-report.json',JSON.stringify({passed:true,protected_caches:keep,offline_routes:4,scope:'Actual release-core in isolated in-memory cache; no production data or native filesystem access.'},null,2));console.log('PASS four protected caches and four versioned runtime routes');
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - name: Commit tested candidate to QA branch only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add js/app.js js/nh7-school-path-v351.js index.html service-worker.js sw-release-core-v403.js
+          git diff --cached > qa-output/runtime-integration.diff
+          git diff --cached --quiet || git commit -m 'test(school): verified v467 review candidate integration [skip ci]'
+          git push origin HEAD:qa/school-review-v467-20260919
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess,json
+          paths=['js/app.js','js/nh7-school-path-v351.js','js/nh7-school-review-v467.js','css/nh7-school-review-v467.css','index.html','service-worker.js','sw-release-core-v403.js']
+          out={'base':'44dfd189832c4a6031562851765811f941e0efe4','tested_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'runtime':{p:subprocess.check_output(['git','rev-parse','HEAD:'+p],text=True).strip() for p in paths},'merged_to_main':False}
+          Path('qa-output/runtime-manifest.json').write_text(json.dumps(out,indent=2));print(json.dumps(out,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: school-review-v467-qa
+          path: qa-output/
+          retention-days: 14
