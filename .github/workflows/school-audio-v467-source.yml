@@ -1,0 +1,45 @@
+name: School Audio v467 Source and Transport
+on:
+  push:
+    branches: [qa/school-audio-v467-20260919]
+    paths: [.github/workflows/school-audio-v467-source.yml]
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 44dfd189832c4a6031562851765811f941e0efe4
+      - name: Snapshot source without production user data
+        run: |
+          mkdir -p source-output
+          git archive --format=zip --output=source-output/source.zip HEAD js css data index.html service-worker.js sw-release-core-v403.js sw-navigation-fresh-v403.js sw-media-stream-bypass-v332.js sw-offline-v329.js sw-offline-path-fix-v329.js app/download-worker-v1.js manifest.json version.json
+          git rev-parse HEAD > source-output/BASE_COMMIT
+      - name: Read-only static availability and CORS preflight
+        run: |
+          python - <<'PY'
+          import urllib.request, urllib.error, json, time
+          from pathlib import Path
+          base='https://gpzcwffxnddhaeaogdyo.supabase.co'
+          origin='https://omideno7.github.io'
+          out=[]
+          rows=[('GET',origin+'/new-hope7-app/data/school/school_content.json',{}),('GET',origin+'/new-hope7-app/js/nh7-audio-classic-v400.js?v=4.6.1',{}),('OPTIONS',base+'/functions/v1/nh7-school-media-access',{'Origin':origin,'Access-Control-Request-Method':'POST','Access-Control-Request-Headers':'apikey,authorization,content-type,x-client-info'}),('OPTIONS',base+'/rest/v1/school_lessons',{'Origin':origin,'Access-Control-Request-Method':'GET','Access-Control-Request-Headers':'apikey,authorization,content-type,prefer,x-device-id,x-user-email'}),('OPTIONS',base+'/auth/v1/token?grant_type=refresh_token',{'Origin':origin,'Access-Control-Request-Method':'POST','Access-Control-Request-Headers':'apikey,content-type'})]
+          for method,url,headers in rows:
+              start=time.monotonic()
+              try:
+                  req=urllib.request.Request(url,method=method,headers=headers)
+                  with urllib.request.urlopen(req,timeout=20) as r:
+                      body=r.read() if method=='GET' else b''
+                      out.append({'method':method,'path':url.split('.co')[-1] if '.co' in url else url,'status':r.status,'seconds':round(time.monotonic()-start,3),'type':r.headers.get('content-type'),'allow_origin':r.headers.get('access-control-allow-origin'),'allow_headers':r.headers.get('access-control-allow-headers'),'bytes':len(body)})
+              except Exception as e:out.append({'method':method,'url':url,'error':str(e)})
+          Path('source-output/transport.json').write_text(json.dumps(out,indent=2))
+          print(json.dumps(out,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: school-audio-v467-source
+          path: source-output/
+          retention-days: 5
