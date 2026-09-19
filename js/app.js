@@ -1670,10 +1670,10 @@ async function submitSchoolAssignment(courseCode,lessonCode,answerText){
 }
 
 async function school(params={}){
-  const d=await loadSchoolContent();
+  const schoolEpochV465=nh7NavigationEpochV456;
   if(!params.login&&!params.form&&!params.lesson&&!params.exam&&!params.enter&&!params.guide){
     const t=(fa,en,hr)=>state.lang==='fa'?fa:state.lang==='hr'?hr:en;
-    view.innerHTML=card(tr('school'),`<p class="muted">${html(t('یکی از گزینه‌های زیر را انتخاب کنید.','Choose one of the options below.','Odaberite jednu od opcija u nastavku.'))}</p><div class="school-entry-actions"><button class="secondary-btn wide-btn" data-go="school" data-params='{"guide":true}'>📘 ${html(t('راهنمای مدرسه','School Guide','Vodič škole'))}</button><button class="primary-btn wide-btn" data-go="school" data-params='{"login":true}'>🔐 ${html(t('ورود به مدرسه','Sign in to School','Prijava u školu'))}</button><button class="secondary-btn wide-btn" data-go="school" data-params='{"form":true}'>📝 ${html(t('ثبت‌نام مدرسه','School Registration','Registracija za školu'))}</button></div><div class="notice"><strong>${html(t('هنوز عضو مدرسه نیستید؟','Not registered yet?','Još niste registrirani?'))}</strong><p>${html(t('برای استفاده از مدرسه، ابتدا «ثبت‌نام مدرسه» را انتخاب کنید و فرم را کامل و دقیق پر کنید. پس از بررسی و تأیید ادمین، ایمیل تأیید دریافت می‌کنید. سپس از بخش «ورود به مدرسه» با همان ایمیل و رمزی که هنگام ثبت‌نام ساخته‌اید وارد شوید.','To use the school, first choose “School Registration” and complete the form carefully and accurately. After the administrator reviews and approves your registration, you will receive a confirmation email. Then use “Sign in to School” with the same email and password you created during registration.','Za korištenje škole najprije odaberite „Registracija za školu” i pažljivo i točno ispunite obrazac. Nakon pregleda i odobrenja administratora primit ćete email potvrde. Zatim se u „Prijava u školu” prijavite istom email adresom i lozinkom koju ste izradili pri registraciji.'))}</p></div>`);
+    view.innerHTML=card(tr('school'),`<p class="muted">${html(t('یکی از گزینه‌های زیر را انتخاب کنید.','Choose one of the options below.','Odaberite jednu od opcija u nastavku.'))}</p><div class="school-entry-actions"><button class="secondary-btn wide-btn" data-go="school" data-params='{"guide":true}'>📘 ${html(t('راهنمای مدرسه','School Guide','Vodič škole'))}</button><button class="primary-btn wide-btn" data-go="school" data-params='{"enter":true}'>🔐 ${html(t('ورود به مدرسه','Sign in to School','Prijava u školu'))}</button><button class="secondary-btn wide-btn" data-go="school" data-params='{"form":true}'>📝 ${html(t('ثبت‌نام مدرسه','School Registration','Registracija za školu'))}</button></div><div class="notice"><strong>${html(t('هنوز عضو مدرسه نیستید؟','Not registered yet?','Još niste registrirani?'))}</strong><p>${html(t('برای استفاده از مدرسه، ابتدا «ثبت‌نام مدرسه» را انتخاب کنید و فرم را کامل و دقیق پر کنید. پس از بررسی و تأیید ادمین، ایمیل تأیید دریافت می‌کنید. سپس از بخش «ورود به مدرسه» با همان ایمیل و رمزی که هنگام ثبت‌نام ساخته‌اید وارد شوید.','To use the school, first choose “School Registration” and complete the form carefully and accurately. After the administrator reviews and approves your registration, you will receive a confirmation email. Then use “Sign in to School” with the same email and password you created during registration.','Za korištenje škole najprije odaberite „Registracija za školu” i pažljivo i točno ispunite obrazac. Nakon pregleda i odobrenja administratora primit ćete email potvrde. Zatim se u „Prijava u školu” prijavite istom email adresom i lozinkom koju ste izradili pri registraciji.'))}</p></div>`);
     return;
   }
   if(params.guide){
@@ -1681,7 +1681,7 @@ async function school(params={}){
     view.innerHTML=guide+`<section class="card"><button class="secondary-btn wide-btn" data-go="school">${html(tr('back'))}</button></section>`;
     return;
   }
-  if(params.login){
+  if(params.login||(params.enter&&!isSchoolIdentityAvailable())){
     view.innerHTML=card(tr('schoolExistingLogin'),`<p>${tr('schoolLoginHelp')}</p><input id="schoolLoginEmail" type="email" autocomplete="email" placeholder="${tr('email')}"><div class="password-wrap"><input id="schoolLoginPassword" type="password" autocomplete="current-password" placeholder="${tr('password')}"><button type="button" class="password-eye" data-toggle-password="schoolLoginPassword">👁</button></div><button class="primary-btn wide-btn" id="schoolSignInBtn">${tr('schoolExistingLogin')}</button><button class="link-button" data-go="account">${tr('forgotPassword')}</button><button class="secondary-btn wide-btn" data-go="school">${tr('back')}</button>`);
     $('#schoolSignInBtn')?.addEventListener('click',signInSchool);bindPasswordToggles();return;
   }
@@ -1690,19 +1690,25 @@ async function school(params={}){
     view.innerHTML=card(tr('school'),`<p>${tr('schoolAccessText')}</p><p class="muted">${tr('schoolLoginHelp')}</p><div class="school-entry-actions"><button class="primary-btn wide-btn" data-go="school" data-params='{"login":true}'>${tr('schoolExistingLogin')}</button><button class="secondary-btn wide-btn" data-go="school" data-params='{"form":true}'>${tr('schoolNewRegistration')}</button></div>`);return;
   }
   let access=JSON.parse(localStorage.getItem('nh7_school_access')||'{"status":"none"}');
-  const cloudAccess=await fetchLatestRegistration('school');if(cloudAccess)access=cloudAccess;
+  const cloudAccess=await fetchLatestRegistration('school');
+  if(schoolEpochV465!==nh7NavigationEpochV456)return;
+  if(cloudAccess)access=cloudAccess;
   const approved=access.status==='approved'||access.approvedBy==='admin';
   if(!approved){
     const status=access.status==='pending'?`<span class="badge">${tr('pending')}</span>`:'';
-    view.innerHTML=card(tr('school'),`<p>${tr('schoolAccessText')}</p>${status}<p class="muted">${access.status==='pending'?tr('approvedRefreshHint'):tr('schoolNotApproved')}</p><div class="school-entry-actions">${access.status==='pending'?'':`<button class="primary-btn wide-btn" data-go="school" data-params='{"form":true}'>${tr('schoolNewRegistration')}</button>`}<button class="secondary-btn wide-btn" data-go="school">${tr('refreshApproval')}</button><button class="secondary-btn wide-btn" id="schoolLogoutBtn">${tr('logoutAccount')}</button></div>`);
+    view.innerHTML=card(tr('school'),`<p>${tr('schoolAccessText')}</p>${status}<p class="muted">${access.status==='pending'?tr('approvedRefreshHint'):tr('schoolNotApproved')}</p><div class="school-entry-actions">${access.status==='pending'?'':`<button class="primary-btn wide-btn" data-go="school" data-params='{"form":true}'>${tr('schoolNewRegistration')}</button>`}<button class="secondary-btn wide-btn" data-go="school" data-params='{"enter":true}'>${tr('refreshApproval')}</button><button class="secondary-btn wide-btn" id="schoolLogoutBtn">${tr('logoutAccount')}</button></div>`);
     $('#schoolLogoutBtn')?.addEventListener('click',()=>logoutAccount('school'));return;
   }
+  // Load protected lessons only after the existing identity and approval checks.
+  const d=await loadSchoolContent();
+  if(schoolEpochV465!==nh7NavigationEpochV456)return;
   if(params.lesson)return schoolLesson(d,params.lesson);
   if(params.exam)return schoolCourseExam(d,params.exam);
   const profile=getKnownUserProfile();
   let courseExams=[];const email=currentUserEmail();
   try{courseExams=await cloudFetch('school_exams?select=*&exam_scope=eq.course&is_active=eq.true&order=sort_order.asc',{method:'GET'})}catch(e){console.warn('course exams unavailable',e)}
   const schoolSnapshot=await getSchoolSnapshot(email,true);
+  if(schoolEpochV465!==nh7NavigationEpochV456)return;
   const courseProgress=schoolSnapshot.progress||[],courseAssignments=schoolSnapshot.assignments||[];
   const schoolSyncNotice=schoolSnapshot.error
     ? `<div class="notice">${state.lang==='fa'?'نمایش وضعیت کلاس‌ها از نسخه ذخیره‌شده انجام شد. برای تازه‌سازی، اتصال اینترنت و ورود حساب را بررسی کنید.':state.lang==='hr'?'Status nastave prikazan je iz spremljene kopije. Provjerite internet i prijavu za osvježavanje.':'Class status is shown from the saved copy. Check internet and sign-in to refresh.'}</div>`
@@ -1730,7 +1736,7 @@ async function signInSchool(){
     await restoreAccountCloudData(true);
     invalidateSchoolSnapshot(email);
     await getSchoolSnapshot(email,true);
-    navigate('school',{},true);
+    navigate('school',{enter:true},true);
   }catch(e){
     console.warn('School sign-in failed',e);
     alert(accountLoginError(e));
