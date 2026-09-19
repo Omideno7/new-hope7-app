@@ -19,14 +19,11 @@ jobs:
       PYTHONUNBUFFERED: '1'
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+        with: {fetch-depth: 0}
       - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
+        with: {node-version: '22'}
       - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
+        with: {python-version: '3.12'}
       - name: Prepare isolated theme candidate
         run: |
           set -euo pipefail
@@ -35,16 +32,15 @@ jobs:
           test "$(cut -f1 qa-theme457/main-before.txt)" = "$BASE_SHA"
           git archive "$BASE_SHA" | tar -xf - -C /tmp/theme457-baseline
           python scripts/theme-v457/prepare.py
+          python scripts/theme-v457/finalize.py
           python scripts/theme-v457/build_preview.py
-          sha256sum js/app.js js/nh7-theme-studio-v453.js index.html theme-preview.html js/nh7-theme-preview-app-v457.js > qa-theme457/before.txt
+          sha256sum js/app.js js/nh7-theme-studio-v453.js css/nh7-theme-gallery-v457.css index.html theme-preview.html js/nh7-theme-preview-app-v457.js > qa-theme457/before.txt
           python scripts/theme-v457/prepare.py
+          python scripts/theme-v457/finalize.py
           python scripts/theme-v457/build_preview.py
-          sha256sum js/app.js js/nh7-theme-studio-v453.js index.html theme-preview.html js/nh7-theme-preview-app-v457.js > qa-theme457/after.txt
+          sha256sum js/app.js js/nh7-theme-studio-v453.js css/nh7-theme-gallery-v457.css index.html theme-preview.html js/nh7-theme-preview-app-v457.js > qa-theme457/after.txt
           diff qa-theme457/before.txt qa-theme457/after.txt
-          node --check js/app.js
-          node --check js/nh7-theme-studio-v453.js
-          node --check js/nh7-theme-preview-app-v457.js
-          node --check js/nh7-theme-preview-guard-v457.js
+          for file in js/app.js js/nh7-theme-studio-v453.js js/nh7-theme-preview-app-v457.js js/nh7-theme-preview-guard-v457.js; do node --check "$file"; done
           python -m py_compile scripts/theme-v457/*.py
           node scripts/theme-v457/audit.mjs
           git diff --check
@@ -66,8 +62,6 @@ jobs:
           from pathlib import Path
           import subprocess
           s=subprocess.check_output(['git','show','ef2c8e4c2ec40da1d1f368c3a1440c59317afc95:scripts/study-v454/browser.py'],text=True)
-          # Only the intentionally removed control assertion is replaced. All font,
-          # lexicon and actual audio-continuity assertions stay in the regression.
           old="[('#nh7ThemeSelect option',3),('#nh7TextSizeSelect option',4),('#nh7AccentSelect option',8)]"
           assert old in s;s=s.replace(old,"[('#nh7ThemeSelect option',0),('#nh7TextSizeSelect option',4),('#nh7AccentSelect option',8)]",1)
           old="p.locator('[data-studio-preset453=\"sepia\"]').click()";assert old in s
@@ -84,7 +78,7 @@ jobs:
           test "$GITHUB_REF" = "refs/heads/$FEATURE"
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
           test "$(git ls-remote origin "refs/heads/$FEATURE" | cut -f1)" = "$GITHUB_SHA"
-          git add js/app.js js/nh7-theme-studio-v453.js index.html theme-preview.html js/nh7-theme-preview-app-v457.js js/nh7-theme-preview-guard-v457.js css/nh7-theme-preview-*.css
+          git add js/app.js js/nh7-theme-studio-v453.js index.html css/nh7-theme-gallery-v457.css theme-preview.html js/nh7-theme-preview-app-v457.js js/nh7-theme-preview-guard-v457.js css/nh7-theme-preview-*.css
           git diff --exit-code -- js css index.html
           if ! git diff --cached --quiet; then
             git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'fix(appearance): verified single theme gallery and six additional vivid palettes in Preview'
