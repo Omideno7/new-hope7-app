@@ -1,0 +1,108 @@
+name: School Review v467 Preview QA
+on:
+  push:
+    branches: [feature/school-review-v467-20260919]
+    paths:
+      - js/nh7-school-workflow-v467.js
+      - css/nh7-school-workflow-v467.css
+      - scripts/school-review-v467/**
+      - .github/workflows/school-review-v467-qa.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: school-review-v467-preview-qa
+  cancel-in-progress: false
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prepare scoped candidate from unchanged production
+        run: |
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = '44dfd189832c4a6031562851765811f941e0efe4'
+          for path in js/app.js js/nh7-school-path-v351.js index.html; do
+            git show "44dfd189832c4a6031562851765811f941e0efe4:$path" > "$path"
+          done
+          python scripts/school-review-v467/prepare.py
+          python scripts/school-review-v467/build_preview.py
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/school-review-v467/qa.py');s=p.read_text()
+          marker="window.tr=s=>s;window.schoolCourseInfo="
+          fix="window.tr=s=>s;window.card=(title,body)=>'<section class=card><h2>'+title+'</h2>'+body+'</section>';window.schoolCourseInfo="
+          assert marker in s
+          p.write_text(s.replace(marker,fix))
+          PY
+      - name: Verify runtime scope and JavaScript
+        run: |
+          node --check js/app.js
+          node --check js/nh7-school-path-v351.js
+          node --check js/nh7-school-workflow-v467.js
+          node --check js/nh7-school-workflow-preview-v467.js
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+          base='44dfd189832c4a6031562851765811f941e0efe4'
+          old=lambda p:subprocess.check_output(['git','show',base+':'+p])
+          unchanged=['service-worker.js','sw-release-core-v403.js','js/nh7-audio-classic-v400.js','js/nh7-audio-route-stability-v423.js','js/nh7-celebrations-v464.js','css/nh7-celebrations-v464.css','js/nh7-theme-studio-v453.js','js/nh7-school-exam-v344.js','version.json','manifest.json']
+          for path in unchanged:assert Path(path).read_bytes()==old(path),path
+          for name in ['school(params={})','signInSchool()']:
+              before=old('js/app.js').decode();after=Path('js/app.js').read_text()
+              marker='async function '+name+'{'
+              def block(s):
+                  a=s.index(marker);b=s.find('\nasync function ',a+1);return s[a:b]
+              assert block(before)==block(after),name
+          s=Path('js/nh7-school-path-v351.js').read_text()
+          assert 'wrap.innerHTML=guideHtml();' not in s
+          assert 'guideHtml' in s and 'nh7_submit_school_class_exam_v351' in s
+          html=Path('school-workflow-preview.html').read_text()
+          assert "connect-src 'none'" in html
+          assert all(term not in html for term in ['OneSignal','serviceWorker','supabase.co','js/app.js'])
+          print('PASS baseline auth/hub/audio/theme/calendar untouched; isolated preview network disabled.')
+          PY
+      - name: Install pinned browser tests
+        run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium webkit
+      - name: Browser assignment and attempt UI regressions
+        run: python scripts/school-review-v467/qa.py
+      - name: Commit verified feature and isolated phone preview only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add js/app.js js/nh7-school-path-v351.js index.html school-workflow-preview.html js/nh7-school-workflow-preview-v467.js
+          git diff --cached --name-only
+          git commit -m 'test(school): verified assignment-review candidate and isolated phone preview [skip ci]'
+          git push origin HEAD:feature/school-review-v467-20260919
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess,json,shutil
+          files=['js/app.js','js/nh7-school-path-v351.js','index.html','js/nh7-school-workflow-v467.js','css/nh7-school-workflow-v467.css','school-workflow-preview.html','js/nh7-school-workflow-preview-v467.js']
+          head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          manifest={'baseline':'44dfd189832c4a6031562851765811f941e0efe4','tested_commit':head,'files':{p:subprocess.check_output(['git','rev-parse','HEAD:'+p],text=True).strip() for p in files},'production_changed':False,'database_writes':False,'phone_approval_required':True,'release_cache_upgrade':'pending before runtime-only production integration'}
+          Path('qa-school-review-v467/runtime-manifest.json').write_text(json.dumps(manifest,indent=2))
+          print(json.dumps(manifest,indent=2))
+          PY
+      - name: Preserve reproducible test fixture
+        if: always()
+        run: |
+          mkdir -p qa-school-review-v467
+          cp scripts/school-review-v467/qa.py qa-school-review-v467/executed-qa.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: school-review-v467-preview-qa
+          path: qa-school-review-v467/
+          retention-days: 14
