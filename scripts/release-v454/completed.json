@@ -1,0 +1,68 @@
+{
+  "release": "study-v454",
+  "status": "main-integrated-pages-deployed-live-verified",
+  "completedDate": "2026-09-19",
+  "repository": "Omideno7/new-hope7-app",
+  "mainCommit": "6239cdc187083ff192137d05207447453a92cce9",
+  "previousMainCommit": "259280fe00a7dbc7359c24f997338724961f0c08",
+  "testedSourceCommit": "ef2c8e4c2ec40da1d1f368c3a1440c59317afc95",
+  "integrationMethod": "fast-forward-only ref update after user approval; no force push",
+  "backupBranch": "backup/pre-study-v454-20260919",
+  "changedFiles": 34,
+  "features": {
+    "existingAppearanceControlsPreserved": true,
+    "themePresets": 8,
+    "bundledPersianFontFamilies": 5,
+    "bundledLatinFontFamilies": 3,
+    "fontChangesApplyImmediately": true,
+    "fullyExplainedLexiconEntries": 60,
+    "explanationLanguages": ["fa", "en", "hr"],
+    "unfinishedLexiconEntriesNotPublished": 220,
+    "audioQuickBible": "book, chapter, verse or reference range; does not navigate away or pause existing classic audio"
+  },
+  "checks": {
+    "integrationWorkflowRun": 35420076931,
+    "integrationResult": "success",
+    "chromiumCheckGroups": 13,
+    "webkitCheckGroups": 13,
+    "readerRegressionCheckGroups": 13,
+    "workerUpgradeCheckGroups": 4,
+    "pagesDeploymentRun": 35420204543,
+    "pagesDeploymentResult": "success",
+    "liveVerificationRun": 35420222491,
+    "liveVerificationResult": "success",
+    "liveStaticFilesExactHashMatches": 34,
+    "liveChromiumCheckGroups": 13,
+    "adminValidationRun": 35420205361,
+    "adminValidationResult": "success",
+    "physicalDeviceTest": false,
+    "realUserAccountTest": false,
+    "audioTest": "real HTMLAudioElement with synthetic WAV via mocked signed stream; no real account writes"
+  },
+  "preservation": {
+    "productionDatabaseWrites": 0,
+    "databaseMigrations": 0,
+    "bibleAndApocryphaCorpusUnchanged": true,
+    "classicAudioSourceUnchanged": true,
+    "nativeVersionAndManifestsUnchanged": true,
+    "previewGuardsExcludedFromMain": true,
+    "syntheticNotesBookmarksProgressAndDownloadsUnchangedDuringWorkerUpgrade": true
+  },
+  "packagingFix": "Only OFL whitespace and line endings normalized; every license word and copyright notice preserved; runtime code and font binaries identical to tested source.",
+  "storeBuildsCreatedOrSubmitted": false,
+  "knownPreExistingCheck": {
+    "workflow": ".github/workflows/deploy-pages.yml",
+    "run": 35420205327,
+    "result": "failure",
+    "message": "School path v3.5.0 is not loaded",
+    "reason": "Legacy validator expects nh7-school-path-v350.js?v=3.5.0. Both previous main 259280f and this release load nh7-school-path-v351.js?v=3.5.2. Workflow was not modified in this scoped release.",
+    "actualPagesDeploymentAndDedicatedReleaseChecks": "success",
+    "followUp": "Update legacy CI assertions in a separate verified maintenance change; do not downgrade the school runtime."
+  },
+  "evidenceArtifacts": {
+    "integrationArtifact": 10577606484,
+    "integrationZipSha256": "61763c9accf064f81a2916353a34919419bfb9ffbc01ef86832dfea4dc5cc3e4",
+    "liveArtifact": 10576882474,
+    "liveZipSha256": "635b0e10eb35d8f02c5cb7cf0393b929f6ba659a9c61062705042559890b6f70"
+  }
+}
