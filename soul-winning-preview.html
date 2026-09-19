@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>New Hope 7 — Soul Winning Preview</title>
+<link rel="stylesheet" href="css/styles.css?v=2.3.9.33">
+<link rel="stylesheet" href="css/nh7-theme-studio-v453.css?v=4.5.3">
+<link rel="stylesheet" href="css/nh7-theme-gallery-v457.css?v=4.7.1">
+<link rel="stylesheet" href="css/nh7-soul-winning-v472.css?v=4.7.2">
+<style>
+  body{margin:0}
+  .sw-preview-shell{max-width:760px;margin:0 auto;min-height:100dvh;background:var(--nh7-studio-bg,#eef8ff)}
+  .sw-preview-toolbar{position:sticky;top:0;z-index:20;padding:10px 12px;background:var(--nh7-studio-card,#fff);border-bottom:1px solid var(--nh7-studio-line,#d9e6f7);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .sw-preview-toolbar strong{margin-inline-end:auto;color:var(--nh7-studio-text,#14364d)}
+  .sw-preview-toolbar select,.sw-preview-toolbar button{min-height:42px;border:1px solid var(--nh7-studio-line,#d9e6f7);border-radius:12px;padding:7px 10px;background:var(--nh7-studio-card,#fff);color:var(--nh7-studio-text,#14364d);font:inherit}
+  #view{padding:14px 14px 40px}
+  .sw-preview-note{font-size:.78rem;color:var(--nh7-studio-muted,#526777);padding:8px 14px 0;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="sw-preview-shell">
+  <div class="sw-preview-toolbar">
+    <strong>New Hope 7 · Soul Winning Preview</strong>
+    <select id="previewLang" aria-label="Language">
+      <option value="fa">FA</option><option value="en">EN</option><option value="hr">HR</option>
+    </select>
+    <select id="previewTheme" aria-label="Theme">
+      <option value="hope">New Hope</option><option value="ocean">Ocean</option><option value="forest">Forest</option>
+      <option value="royal">Royal Purple</option><option value="sand">Warm Sand</option><option value="rose">Rose</option>
+      <option value="midnight">Midnight</option><option value="sepia">Sepia</option><option value="sapphire">Vivid Blue</option>
+      <option value="emerald">Emerald</option><option value="sunset">Sunset</option><option value="orchid">Orchid</option>
+      <option value="berry">Berry</option><option value="aurora">Aurora Night</option>
+    </select>
+    <button id="seedBtn" type="button">نمونه</button>
+    <button id="resetBtn" type="button">پاک‌کردن Preview</button>
+  </div>
+  <p class="sw-preview-note" id="previewNote">این صفحه فقط برای تست است؛ هیچ داده‌ای به Supabase ارسال نمی‌شود.</p>
+  <main id="view" class="view"></main>
+</div>
+<script type="module">
+import {createSoulWinningV472,STORAGE_KEY} from './js/nh7-soul-winning-v472.js?v=4.7.2';
+
+const themes={
+ hope:{bg:'#eef8ff',card:'#ffffff',text:'#14364d',muted:'#526777',verse:'#17364e',accent:'#1858a4'},
+ ocean:{bg:'#e8f5f7',card:'#fbffff',text:'#103e49',muted:'#49666c',verse:'#143d49',accent:'#006b83'},
+ forest:{bg:'#ecf3ec',card:'#fefffb',text:'#23432e',muted:'#526753',verse:'#284432',accent:'#316547'},
+ royal:{bg:'#f0ecf8',card:'#fffaff',text:'#382454',muted:'#6a5779',verse:'#35234d',accent:'#703da0'},
+ sand:{bg:'#f7efe2',card:'#fffaf0',text:'#4b3829',muted:'#76604b',verse:'#4b3829',accent:'#885124'},
+ rose:{bg:'#f9edf1',card:'#fffafc',text:'#562b3b',muted:'#785766',verse:'#542b39',accent:'#a53261'},
+ midnight:{bg:'#091522',card:'#142b3c',text:'#f0f6fc',muted:'#b1c6d8',verse:'#f2f1e5',accent:'#76c5ea'},
+ sepia:{bg:'#eee2c8',card:'#faf0db',text:'#403323',muted:'#6f5b3e',verse:'#433321',accent:'#785326'},
+ sapphire:{bg:'#adc8ff',card:'#f3f6ff',text:'#11274f',muted:'#354d73',verse:'#142e54',accent:'#1944d8'},
+ emerald:{bg:'#8addc3',card:'#eefff7',text:'#073c31',muted:'#255648',verse:'#093d31',accent:'#00724f'},
+ sunset:{bg:'#ffc082',card:'#fff5e9',text:'#4a2309',muted:'#734323',verse:'#4c290e',accent:'#b74509'},
+ orchid:{bg:'#d0afff',card:'#f9f1ff',text:'#331551',muted:'#593b70',verse:'#41195b',accent:'#8031c2'},
+ berry:{bg:'#ffa8bc',card:'#fff0f4',text:'#57122b',muted:'#7b344d',verse:'#4f1b30',accent:'#bb1b57'},
+ aurora:{bg:'#131034',card:'#272250',text:'#faf5ff',muted:'#d0bfea',verse:'#fff5e4',accent:'#efc759'}
+};
+const root=document.documentElement;
+function luminance(hex){const a=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255).map(x=>x<=.04045?x/12.92:((x+.055)/1.055)**2.4);return .2126*a[0]+.7152*a[1]+.0722*a[2]}
+function contrast(a,b){const x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
+function ink(bg){return contrast('#fff',bg)>contrast('#000',bg)?'#fff':'#000'}
+function applyTheme(id){
+ const c=themes[id]||themes.hope;root.dataset.nh7Studio=id;root.dataset.nh7StudioFont='1';
+ for(const k of ['bg','card','text','muted','verse','accent'])root.style.setProperty('--nh7-studio-'+k,c[k]);
+ root.style.setProperty('--nh7-studio-button-ink',ink(c.accent));
+ root.style.setProperty('--nh7-studio-line',c.muted+'66');
+ root.style.setProperty('--bg',c.bg);root.style.setProperty('--card',c.card);root.style.setProperty('--ink',c.text);root.style.setProperty('--muted',c.muted);root.style.setProperty('--line',c.muted+'66');root.style.setProperty('--brand',c.accent);root.style.setProperty('--accent',c.accent);
+ document.querySelector('.sw-preview-shell').style.background=c.bg;
+}
+function setLang(l){
+ localStorage.setItem('nh7_lang',l);document.documentElement.lang=l;document.documentElement.dir=l==='fa'?'rtl':'ltr';document.body.dir=l==='fa'?'rtl':'ltr';
+ preview.render({});
+ document.getElementById('seedBtn').textContent=l==='fa'?'داده نمونه':l==='hr'?'Primjer':'Sample data';
+ document.getElementById('resetBtn').textContent=l==='fa'?'پاک‌کردن Preview':l==='hr'?'Očisti Preview':'Reset Preview';
+ document.getElementById('previewNote').textContent=l==='fa'?'این صفحه فقط برای تست است؛ هیچ داده‌ای به Supabase ارسال نمی‌شود.':l==='hr'?'Ova stranica služi samo za testiranje; podaci se ne šalju u Supabase.':'This page is for testing only; no data is sent to Supabase.';
+}
+const preview=createSoulWinningV472({mount:()=>document.getElementById('view'),lang:()=>localStorage.getItem('nh7_lang')||'fa',navigate:(_route,params)=>preview.render(params||{})});
+document.getElementById('previewLang').value=localStorage.getItem('nh7_lang')||'fa';
+document.getElementById('previewLang').addEventListener('change',e=>setLang(e.target.value));
+document.getElementById('previewTheme').addEventListener('change',e=>{applyTheme(e.target.value);preview.render({})});
+document.getElementById('resetBtn').addEventListener('click',()=>{localStorage.removeItem(STORAGE_KEY);preview.render({})});
+document.getElementById('seedBtn').addEventListener('click',()=>{
+ const n=new Date(),d=x=>new Date(n.getTime()+x*86400000).toISOString().slice(0,10),at=x=>new Date(n.getTime()+x*3600000).toISOString();
+ preview.save({version:1,people:[
+  {id:'demo-1',name:'آرمان / Arman',metDate:d(-18),stage:'gospel',context:'Coffee conversation',nextFollowUp:d(1),notes:'Interested in reading John.',createdAt:at(-400),updatedAt:at(-20),history:[{id:'h1',at:at(-400),type:'created',stage:'gospel',text:'Person added'}]},
+  {id:'demo-2',name:'سارا / Sara',metDate:d(-12),stage:'salvation',context:'Friend introduction',nextFollowUp:d(0),notes:'Prayed the prayer of salvation.',createdAt:at(-300),updatedAt:at(-8),history:[{id:'h2',at:at(-300),type:'created',stage:'gospel',text:'Person added'},{id:'h3',at:at(-8),type:'stage',from:'followup',stage:'salvation',text:'Stage changed'}]},
+  {id:'demo-3',name:'مارکو / Marko',metDate:d(-35),stage:'discipleship',context:'Church event',nextFollowUp:d(-1),notes:'Attending discipleship meetings.',createdAt:at(-700),updatedAt:at(-30),history:[{id:'h4',at:at(-700),type:'created',stage:'gospel',text:'Person added'}]}
+ ]});preview.render({});
+});
+applyTheme('hope');setLang(document.getElementById('previewLang').value);
+</script>
+</body>
+</html>
