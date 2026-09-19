@@ -468,6 +468,22 @@ async function cloudFetch(path, options={}){
 async function cloudRpc(name, payload={}){
   return cloudFetch('rpc/'+name, {method:'POST', body:JSON.stringify(payload)});
 }
+
+const NH7_FAST_CLOUD_TIMEOUT_V470=5000;
+function nh7WithTimeoutV470(promise,timeoutMs=NH7_FAST_CLOUD_TIMEOUT_V470){
+  let timer=0;
+  const timeout=new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('NH7 cloud timeout')),Math.max(500,Number(timeoutMs)||NH7_FAST_CLOUD_TIMEOUT_V470))});
+  return Promise.race([Promise.resolve(promise),timeout]).finally(()=>clearTimeout(timer));
+}
+async function nh7TimedCloudFetchV470(path,options={},timeoutMs=NH7_FAST_CLOUD_TIMEOUT_V470){
+  if(typeof AbortController==='undefined')return nh7WithTimeoutV470(cloudFetch(path,options),timeoutMs);
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),Math.max(500,Number(timeoutMs)||NH7_FAST_CLOUD_TIMEOUT_V470));
+  try{return await cloudFetch(path,Object.assign({},options,{signal:controller.signal}))}
+  finally{clearTimeout(timer)}
+}
+function nh7TimedCloudRpcV470(name,payload={},timeoutMs=NH7_FAST_CLOUD_TIMEOUT_V470){
+  return nh7TimedCloudFetchV470('rpc/'+name,{method:'POST',body:JSON.stringify(payload)},timeoutMs);
+}
 function enqueueCloud(op){
   const q=JSON.parse(localStorage.getItem('nh7_cloud_queue')||'[]');
   q.push(Object.assign({id:Date.now()+'_'+Math.random().toString(16).slice(2),createdAt:new Date().toISOString()},op));
@@ -766,7 +782,21 @@ async function nh7ApprovedSchoolAccessV223(force=false){
   if(!force&&now-nh7SchoolApprovalCacheV223.at<60000)return nh7SchoolApprovalCacheV223.value;
   let access={};
   try{access=JSON.parse(localStorage.getItem('nh7_school_access')||'{}')||{}}catch(e){}
-  try{const cloud=await fetchLatestRegistration('school');if(cloud)access=cloud}catch(e){console.warn('School access check',e)}
+  const localStatus=String(access?.status||'none').toLowerCase();
+  const localValue=localStatus==='approved'||access?.approvedBy==='admin';
+  if(localValue&&!force){
+    nh7SchoolApprovalCacheV223={at:now,value:true,status:localStatus};
+    nh7WithTimeoutV470(fetchLatestRegistration('school'),4000).then(cloud=>{
+      if(!cloud)return;
+      const status=String(cloud?.status||'none').toLowerCase();
+      nh7SchoolApprovalCacheV223={at:Date.now(),value:status==='approved'||cloud?.approvedBy==='admin',status};
+    }).catch(e=>console.warn('School access background check',e));
+    return true;
+  }
+  try{
+    const cloud=await nh7WithTimeoutV470(fetchLatestRegistration('school'),4000);
+    if(cloud)access=cloud;
+  }catch(e){console.warn('School access check',e)}
   const status=String(access?.status||'none').toLowerCase();
   const value=status==='approved'||access?.approvedBy==='admin';
   nh7SchoolApprovalCacheV223={at:now,value,status};
@@ -1835,17 +1865,22 @@ function bindInlineSermonControls(){
 }
 
 const NH7_AUDIO_CATALOG_CACHE_V446='nh7_audio_catalog_cache_v446';
+const NH7_AUDIO_CATALOG_PERSIST_V470='nh7_audio_catalog_cache_v470';
 function nh7ReadAudioCatalogCacheV446(){
-  try{
-    const d=JSON.parse(sessionStorage.getItem(NH7_AUDIO_CATALOG_CACHE_V446)||'null');
-    if(!d||!Array.isArray(d.categories)||!Array.isArray(d.sermons)||!d.sermons.length)return null;
-    return d;
-  }catch(e){return null}
+  for(const [store,key] of [[sessionStorage,NH7_AUDIO_CATALOG_CACHE_V446],[localStorage,NH7_AUDIO_CATALOG_PERSIST_V470]]){
+    try{
+      const d=JSON.parse(store.getItem(key)||'null');
+      if(d&&Array.isArray(d.categories)&&Array.isArray(d.sermons)&&d.sermons.length)return d;
+    }catch(e){}
+  }
+  return null;
 }
 function nh7WriteAudioCatalogCacheV446(categories,sermons){
   try{
     if(Array.isArray(categories)&&Array.isArray(sermons)&&sermons.length){
-      sessionStorage.setItem(NH7_AUDIO_CATALOG_CACHE_V446,JSON.stringify({categories,sermons,at:Date.now()}));
+      const raw=JSON.stringify({categories,sermons,at:Date.now()});
+      sessionStorage.setItem(NH7_AUDIO_CATALOG_CACHE_V446,raw);
+      localStorage.setItem(NH7_AUDIO_CATALOG_PERSIST_V470,raw);
     }
   }catch(e){}
 }
@@ -1862,14 +1897,22 @@ function nh7MountAudioEnhancementsV446(){
 async function audio(params={}){
   if(!await nh7RequireSchoolAccessV223(tr('audio')))return;
   let categories=[],sermons=[];
-  try{
-    categories=await cloudFetch('sermon_categories?select=*&is_active=eq.true&order=sort_order.asc,name_fa.asc',{method:'GET'});
-    sermons=await cloudFetch('sermons?select=*&is_published=eq.true&order=sort_order.asc,published_at.desc',{method:'GET'});
-    nh7WriteAudioCatalogCacheV446(categories,sermons);
-  }catch(e){
-    console.warn('Dynamic sermons unavailable; trying cached catalog before bundled audio list',e);
-    const cached=nh7ReadAudioCatalogCacheV446();
-    if(cached){categories=cached.categories;sermons=cached.sermons}
+  const cached=nh7ReadAudioCatalogCacheV446();
+  const fetchFresh=()=>Promise.all([
+    nh7TimedCloudFetchV470('sermon_categories?select=id,name_fa,name_en,name_hr,sort_order&is_active=eq.true&order=sort_order.asc,name_fa.asc',{method:'GET'},5000),
+    nh7TimedCloudFetchV470('sermons?select=id,category_id,title_fa,title_en,title_hr,description_fa,description_en,description_hr,duration_seconds,duration_minutes,audio_url,youtube_url,cover_url,sort_order,published_at&is_published=eq.true&order=sort_order.asc,published_at.desc',{method:'GET'},5000)
+  ]);
+  if(cached){
+    categories=cached.categories;sermons=cached.sermons;
+    fetchFresh().then(([freshCategories,freshSermons])=>nh7WriteAudioCatalogCacheV446(freshCategories,freshSermons))
+      .catch(e=>console.warn('Audio catalog background refresh failed',e));
+  }else{
+    try{
+      [categories,sermons]=await fetchFresh();
+      nh7WriteAudioCatalogCacheV446(categories,sermons);
+    }catch(e){
+      console.warn('Dynamic sermons unavailable; using bundled audio list',e);
+    }
   }
   if(Array.isArray(sermons)&&sermons.length){
     const catId=params.cat||''; const q=String(params.q||'').trim().toLowerCase();
@@ -2104,33 +2147,81 @@ function mergeMyQuestionState(localRows,cloudRows){
   localStorage.setItem('nh7_my_questions',JSON.stringify(out));
   return out;
 }
-async function qna(){
-  let local=[];try{local=JSON.parse(localStorage.getItem('nh7_my_questions')||'[]')}catch(e){local=[]}
-  local=Array.isArray(local)?local:[];
-  let ownCloud=[],answered=[];
-  try{ownCloud=await cloudRpc('nh7_my_questions_v220',{p_device_id:deviceId()});if(!Array.isArray(ownCloud))ownCloud=ownCloud?[ownCloud]:[]}catch(e){console.warn('My Q&A cloud sync failed',e)}
-  try{answered=await cloudFetch('qa_questions?select=id,question_text,answer_text,language,answered_at&status=eq.answered&order=answered_at.desc&limit=50',{method:'GET'})}catch(e){console.warn('Q&A load failed',e)}
+const NH7_QNA_PUBLIC_CACHE_V470='nh7_qna_public_cache_v470';
+function nh7ReadQnaPublicCacheV470(){
+  try{
+    const d=JSON.parse(localStorage.getItem(NH7_QNA_PUBLIC_CACHE_V470)||'null');
+    return d&&Array.isArray(d.items)?d.items:[];
+  }catch(e){return[]}
+}
+function nh7WriteQnaPublicCacheV470(items){
+  try{if(Array.isArray(items))localStorage.setItem(NH7_QNA_PUBLIC_CACHE_V470,JSON.stringify({items,at:Date.now()}))}catch(e){}
+}
+function nh7MergeOwnQuestionsV470(local,ownCloud){
   const map=new Map();
   const keyFor=q=>String(q.client_question_id||q.id||'')||('q:'+normalizeQuestionText(q.question||q.question_text||''));
-  local.forEach(q=>map.set(keyFor(q),q));
-  ownCloud.forEach(row=>{
-    const key=keyFor(row),old=map.get(key)||local.find(q=>normalizeQuestionText(q.question)===normalizeQuestionText(row.question_text))||{};
+  (Array.isArray(local)?local:[]).forEach(q=>map.set(keyFor(q),q));
+  (Array.isArray(ownCloud)?ownCloud:[]).forEach(row=>{
+    const key=keyFor(row),old=map.get(key)||(Array.isArray(local)?local:[]).find(q=>normalizeQuestionText(q.question)===normalizeQuestionText(row.question_text))||{};
     map.set(key,{...old,id:row.client_question_id||old.id||row.id,client_question_id:row.client_question_id||old.client_question_id||'',cloud_id:row.id,question:row.question_text,status:String(row.answer_text||'').trim()?'answered':(row.status||'pending'),answer:row.answer_text||'',createdAt:row.created_at||old.createdAt,answeredAt:row.answered_at||null,updatedAt:row.updated_at||null});
   });
-  const my=Array.from(map.values()).filter(q=>q&&q.question).sort((a,b)=>String(a.createdAt||'').localeCompare(String(b.createdAt||'')));
-  localStorage.setItem('nh7_my_questions',JSON.stringify(my));
+  const out=Array.from(map.values()).filter(q=>q&&q.question).sort((a,b)=>String(a.createdAt||'').localeCompare(String(b.createdAt||'')));
+  try{localStorage.setItem('nh7_my_questions',JSON.stringify(out))}catch(e){}
+  return out;
+}
+async function qna(opts={}){
+  let local=[];try{local=JSON.parse(localStorage.getItem('nh7_my_questions')||'[]')}catch(e){local=[]}
+  local=Array.isArray(local)?local:[];
+  let answered=nh7ReadQnaPublicCacheV470();
+
+  if(!opts.cacheOnly){
+    const qnaEpochV470=nh7NavigationEpochV456;
+    const sync=Promise.allSettled([
+      nh7TimedCloudRpcV470('nh7_my_questions_v220',{p_device_id:deviceId()},5000),
+      nh7TimedCloudFetchV470('qa_questions?select=id,question_text,answer_text,language,answered_at&status=eq.answered&order=answered_at.desc&limit=50',{method:'GET'},5000)
+    ]);
+    const applyResults=results=>{
+      const ownResult=results?.[0],publicResult=results?.[1];
+      if(ownResult?.status==='fulfilled'){
+        const own=Array.isArray(ownResult.value)?ownResult.value:(ownResult.value?[ownResult.value]:[]);
+        let latest=[];try{latest=JSON.parse(localStorage.getItem('nh7_my_questions')||'[]')}catch(e){}
+        local=nh7MergeOwnQuestionsV470(Array.isArray(latest)?latest:local,own);
+      }else if(ownResult?.reason){console.warn('My Q&A cloud sync failed',ownResult.reason)}
+      if(publicResult?.status==='fulfilled'&&Array.isArray(publicResult.value)){
+        answered=publicResult.value;nh7WriteQnaPublicCacheV470(answered);
+      }else if(publicResult?.reason){console.warn('Q&A load failed',publicResult.reason)}
+    };
+    if(local.length||answered.length){
+      sync.then(results=>{
+        applyResults(results);
+        if(qnaEpochV470!==nh7NavigationEpochV456||state.route!=='qna')return;
+        const draft=$('#qaQuestion')?.value||'';
+        const interacting=!!draft||!!view.querySelector('.qna-section .accordion-panel:not(.hidden)');
+        if(!interacting)qna({cacheOnly:true,draft}).then(()=>bindDynamic()).catch(()=>{});
+      }).catch(()=>{});
+    }else{
+      const results=await sync;
+      applyResults(results);
+    }
+  }else{
+    try{local=JSON.parse(localStorage.getItem('nh7_my_questions')||'[]')}catch(e){local=[]}
+    local=Array.isArray(local)?local:[];
+    answered=nh7ReadQnaPublicCacheV470();
+  }
+
+  const my=local.filter(q=>q&&q.question).sort((a,b)=>String(a.createdAt||'').localeCompare(String(b.createdAt||'')));
   const tapText=state.lang==='fa'?'برای دیدن پاسخ کلیک کنید':state.lang==='hr'?'Dodirnite za prikaz odgovora':'Tap to view answer';
   const openText=state.lang==='fa'?'برای باز کردن کلیک کنید':state.lang==='hr'?'Dodirnite za otvaranje':'Tap to open';
   const myHtml=my.length?`<div class="list">${my.slice().reverse().map((q,i)=>{const done=String(q.answer||'').trim().length>0||q.status==='answered';return `<button class="list-btn qna-answer-toggle" data-qna-answer="myq-${i}"><strong>${html(q.question)}</strong><small>${done?tr('answered'):tr('waitingAnswer')} • ${tapText}</small></button><div id="myq-${i}" class="accordion-panel hidden">${done?`<p><strong>${tr('answer')}:</strong> ${html(q.answer)}</p>`:`<p class="muted">${tr('waitingAnswer')}</p>`}</div>`}).join('')}</div>`:`<p class="muted">${tr('noQuestions')}</p>`;
   const answeredHtml=answered&&answered.length?`<div class="list">${answered.map((q,i)=>`<button class="list-btn qna-answer-toggle" data-qna-answer="pubq-${i}"><strong>${html(q.question_text)}</strong><small>${tapText}</small></button><div id="pubq-${i}" class="accordion-panel hidden"><p><strong>${tr('answer')}:</strong> ${html(q.answer_text||'')}</p></div>`).join('')}</div>`:`<p class="muted">${tr('noQuestions')}</p>`;
-  view.innerHTML=card(tr('qna'),`<p class="muted">${tr('anonymousNote')}</p><div class="notice"><p>${tr('qnaWaitNotice')}</p><p>${tr('askQuestionOnce')}</p></div><h3>${tr('askQuestion')}</h3><textarea id="qaQuestion" placeholder="${tr('questionText')}" required></textarea><button class="primary-btn" id="submitQa">${tr('submitQuestion')}</button><div class="qna-section"><button class="secondary-btn wide-btn" data-qna-toggle="myQuestionsPanel">${tr('myQuestions')} <span>${openText}</span></button><div id="myQuestionsPanel" class="accordion-panel hidden">${myHtml}</div></div><div class="qna-section"><button class="secondary-btn wide-btn" data-qna-toggle="publicAnswersPanel">${tr('publicAnswers')} <span>${openText}</span></button><div id="publicAnswersPanel" class="accordion-panel hidden">${answeredHtml}</div></div>`);
+  view.innerHTML=card(tr('qna'),`<p class="muted">${tr('anonymousNote')}</p><div class="notice"><p>${tr('qnaWaitNotice')}</p><p>${tr('askQuestionOnce')}</p></div><h3>${tr('askQuestion')}</h3><textarea id="qaQuestion" placeholder="${tr('questionText')}" required>${html(opts.draft||'')}</textarea><button class="primary-btn" id="submitQa">${tr('submitQuestion')}</button><div class="qna-section"><button class="secondary-btn wide-btn" data-qna-toggle="myQuestionsPanel">${tr('myQuestions')} <span>${openText}</span></button><div id="myQuestionsPanel" class="accordion-panel hidden">${myHtml}</div></div><div class="qna-section"><button class="secondary-btn wide-btn" data-qna-toggle="publicAnswersPanel">${tr('publicAnswers')} <span>${openText}</span></button><div id="publicAnswersPanel" class="accordion-panel hidden">${answeredHtml}</div></div>`);
   $('#submitQa').onclick=async()=>{
     const question=($('#qaQuestion').value||'').trim();if(!question){alert(tr('requiredField'));return}
     const norm=normalizeQuestionText(question),duplicateLocal=my.some(q=>normalizeQuestionText(q.question)===norm),duplicatePublic=(answered||[]).some(q=>normalizeQuestionText(q.question_text)===norm);
     if(duplicateLocal||duplicatePublic){alert(tr('alreadyAsked'));return}
     const id=(globalThis.crypto?.randomUUID?.()||('q-'+Date.now()+'-'+Math.random().toString(16).slice(2))),item={id,client_question_id:id,question,status:'pending',answer:'',createdAt:new Date().toISOString()};
     const arr=[...my,item];localStorage.setItem('nh7_my_questions',JSON.stringify(arr));
-    await saveQuestionCloud(item).catch(console.warn);alert(tr('questionSent'));render('qna',{},true);
+    await nh7WithTimeoutV470(saveQuestionCloud(item),5000).catch(console.warn);alert(tr('questionSent'));render('qna',{},true);
   };
 }
 async function account(){
