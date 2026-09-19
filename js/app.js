@@ -1642,6 +1642,11 @@ async function submitSchoolAssignment(courseCode,lessonCode,answerText){
 
 async function school(params={}){
   const d=await loadSchoolContent();
+  if(!params.login&&!params.form&&!params.lesson&&!params.exam&&!params.enter){
+    const guide=window.NH7SchoolPathV351?.guideHtml?.()||`<section class="card"><h2>🎓 ${html(tr('school'))}</h2><p>${html(state.lang==='fa'?'قبل از ورود، راهنمای مدرسه را مطالعه کنید.':state.lang==='hr'?'Prije ulaska pročitajte vodič škole.':'Please read the School Guide before entering.')}</p></section>`;
+    view.innerHTML=guide+`<section class="card"><button class="primary-btn wide-btn" data-go="school" data-params='{"enter":true}'>${html(state.lang==='fa'?'ورود به مدرسه':state.lang==='hr'?'Uđi u školu':'Enter School')}</button></section>`;
+    return;
+  }
   if(params.login){
     view.innerHTML=card(tr('schoolExistingLogin'),`<p>${tr('schoolLoginHelp')}</p><input id="schoolLoginEmail" type="email" autocomplete="email" placeholder="${tr('email')}"><div class="password-wrap"><input id="schoolLoginPassword" type="password" autocomplete="current-password" placeholder="${tr('password')}"><button type="button" class="password-eye" data-toggle-password="schoolLoginPassword">👁</button></div><button class="primary-btn wide-btn" id="schoolSignInBtn">${tr('schoolExistingLogin')}</button><button class="link-button" data-go="account">${tr('forgotPassword')}</button><button class="secondary-btn wide-btn" data-go="school">${tr('back')}</button>`);
     $('#schoolSignInBtn')?.addEventListener('click',signInSchool);bindPasswordToggles();return;
