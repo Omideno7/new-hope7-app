@@ -43,7 +43,14 @@ jobs:
           marker="window.tr=s=>s;window.schoolCourseInfo="
           fix="window.tr=s=>s;window.card=(title,body)=>'<section class=card><h2>'+title+'</h2>'+body+'</section>';window.schoolCourseInfo="
           assert marker in s
-          p.write_text(s.replace(marker,fix))
+          s=s.replace(marker,fix)
+          old="p.evaluate(\"Storage.prototype.setItem=()=>{throw Error('quota')}\")"
+          new="p.evaluate(\"()=>{Storage.prototype.setItem=()=>{throw Error('quota')};return true}\")"
+          assert old in s;s=s.replace(old,new)
+          old="p.evaluate(fn+'\\nwindow.schoolLesson=schoolLesson;')"
+          new="p.evaluate('()=>{'+fn+';window.schoolLesson=schoolLesson;}')"
+          assert old in s;s=s.replace(old,new)
+          p.write_text(s)
           PY
       - name: Verify runtime scope and JavaScript
         run: |
@@ -88,7 +95,7 @@ jobs:
           git push origin HEAD:feature/school-review-v467-20260919
           python - <<'PY'
           from pathlib import Path
-          import subprocess,json,shutil
+          import subprocess,json
           files=['js/app.js','js/nh7-school-path-v351.js','index.html','js/nh7-school-workflow-v467.js','css/nh7-school-workflow-v467.css','school-workflow-preview.html','js/nh7-school-workflow-preview-v467.js']
           head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
           manifest={'baseline':'44dfd189832c4a6031562851765811f941e0efe4','tested_commit':head,'files':{p:subprocess.check_output(['git','rev-parse','HEAD:'+p],text=True).strip() for p in files},'production_changed':False,'database_writes':False,'phone_approval_required':True,'release_cache_upgrade':'pending before runtime-only production integration'}
