@@ -1,7 +1,7 @@
 /* New Hope 7 — isolated release core cache v4.0.3 */
 'use strict';
-const NH7_RELEASE_CORE_VERSION='4.6.5-school-entry';
-const NH7_RELEASE_CORE_CACHE='nh7-release-core-v465-school-entry';
+const NH7_RELEASE_CORE_VERSION='4.6.6-school-guide';
+const NH7_RELEASE_CORE_CACHE='nh7-release-core-v466-school-guide';
 const NH7_RELEASE_DATA_CACHE='nh7-data-stable-v329';
 const NH7_RELEASE_ASSETS=[
   './','./index.html','./app-v239.html','./reset-password.html','./manifest.json','./version.json','./offline/index.html',
