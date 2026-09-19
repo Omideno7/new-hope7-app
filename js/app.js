@@ -1,3 +1,4 @@
+import {createSchoolDraftsV468} from './nh7-school-drafts-v468.js?v=4.6.8';
 import {createBibleKeywordsV451} from './nh7-bible-keywords-v451.js?v=4.5.1';
 // NH7 v2.2.3 targeted update: Bible navigation, protected content, reliable analytics, and secure PDF viewer.
 const $ = (s, r=document) => r.querySelector(s);
@@ -15,6 +16,8 @@ const state = {
   dailyTab: 'word'
 };
 
+
+const schoolDraftsV468=createSchoolDraftsV468({account:()=>isAccountLoggedIn()?authSession()?.user:null,lang:()=>state.lang});
 
 const OFFLINE_MEDIA_PREFIX='nh7_offline_media_';
 const NATIVE_OFFLINE_DIR='offline_media';
@@ -1219,6 +1222,7 @@ async function showAmen(){
 
 let nh7NavigationEpochV456=0;
 async function render(route, params={}, preserve=false){
+  schoolDraftsV468.unmount();
   const navigationEpochV456=++nh7NavigationEpochV456;
   view.innerHTML='<section class="card"><p>...</p></section>';
   try{
@@ -1630,6 +1634,7 @@ function courseAssignmentSummary(d,courseCode,rows=[]){
 }
 function assignmentStatusText(row){const s=String(row?.status||'').toLowerCase();if(state.lang==='fa')return s==='approved'?'تأیید شده':s==='needs_revision'?'نیاز به اصلاح':s==='submitted'?'ارسال شده؛ در انتظار بررسی':'ارسال نشده';if(state.lang==='hr')return s==='approved'?'Odobreno':s==='needs_revision'?'Potrebna dorada':s==='submitted'?'Poslano; čeka pregled':'Nije poslano';return s==='approved'?'Approved':s==='needs_revision'?'Needs revision':s==='submitted'?'Submitted; awaiting review':'Not submitted'}
 async function submitSchoolAssignment(courseCode,lessonCode,answerText){
+  const draftTicketV468=schoolDraftsV468.ticket(lessonCode,answerText);
   const answer=String(answerText||'').trim();
   if(answer.length<10){
     alert(state.lang==='fa'?'لطفاً پاسخ تکلیف را کامل‌تر بنویسید.':state.lang==='hr'?'Molimo napišite potpuniji odgovor na zadatak.':'Please write a more complete assignment answer.');
@@ -1647,13 +1652,14 @@ async function submitSchoolAssignment(courseCode,lessonCode,answerText){
   }
   const profile=getKnownUserProfile();
   try{
-    await cloudRpc('nh7_submit_school_assignment',{
+    const draftReceiptV468=await cloudRpc('nh7_submit_school_assignment',{
       p_course_code:courseCode,
       p_lesson_code:lessonCode,
       p_answer_text:answer,
       p_language:state.lang,
       p_user_name:profile.name||''
     });
+    schoolDraftsV468.submitted(draftTicketV468,draftReceiptV468);
     invalidateSchoolSnapshot(currentUserEmail());
     await getSchoolSnapshot(currentUserEmail(),true);
     alert(state.lang==='fa'?'تکلیف با موفقیت ارسال شد و در نمره تکالیف محاسبه می‌شود.':state.lang==='hr'?'Zadatak je uspješno poslan i uračunava se u ocjenu zadataka.':'The assignment was submitted successfully and counts toward the assignment grade.');
@@ -1744,6 +1750,8 @@ async function signInSchool(){
 }
 
 async function schoolLesson(d, code){
+  schoolDraftsV468.flush();
+  const draftOwnerV468=schoolDraftsV468.owner(),draftEpochV468=nh7NavigationEpochV456;
   const l=d.lessons.find(x=>x.lesson_code===code);if(!l){navigate('school',{},true);return}
   const tx=l.translations?.[state.lang]||l.translations?.en||{};const wr=l.written?.[state.lang]||l.written?.en||{};const courseCode=schoolCourseInfo(l).code;
   let audioSrc=l.audio?.src||'';const bundledLesson=(Array.isArray(d?.lessons)?d.lessons:[]).find(x=>x.lesson_code===code);if(!audioSrc&&bundledLesson?.audio?.src)audioSrc=bundledLesson.audio.src;
@@ -1752,6 +1760,7 @@ async function schoolLesson(d, code){
   let schoolExam=null,schoolProgress=null,schoolAssignment=null;const email=currentUserEmail();
   try{const ex=await cloudFetch('school_exams?select=*&lesson_code=eq.'+encodeURIComponent(code)+'&is_active=eq.true&order=sort_order.asc&limit=1',{method:'GET'});schoolExam=Array.isArray(ex)?ex[0]:null}catch(e){console.warn('school exam',e)}
   const schoolSnapshot=await getSchoolSnapshot(email,false);
+  if(draftOwnerV468!==schoolDraftsV468.owner()||draftEpochV468!==nh7NavigationEpochV456)return;
   schoolProgress=(schoolSnapshot.progress||[]).find(x=>String(x.lesson_code||'')===String(code))||null;
   schoolAssignment=(schoolSnapshot.assignments||[]).find(x=>String(x.lesson_code||'')===String(code))||null;
   let progress={};try{progress=JSON.parse(localStorage.getItem(sermonProgressKey(audioId))||'{}')}catch(e){}
@@ -1761,6 +1770,7 @@ async function schoolLesson(d, code){
   const assignmentQuestion=String(tx.assignment_question||'').trim();const assignmentDraft=schoolAssignment?.answer_text||localStorage.getItem('nh7_note_school-'+code)||'';const assignmentApproved=String(schoolAssignment?.status||'').toLowerCase()==='approved';
   const assignmentHtml=assignmentQuestion?`<section class="school-assignment"><h3>${tr('assignment')}</h3><p>${html(assignmentQuestion)}</p><div class="notice"><strong>${state.lang==='fa'?'وضعیت':state.lang==='hr'?'Status':'Status'}:</strong> ${html(assignmentStatusText(schoolAssignment))}${schoolAssignment?.admin_feedback?`<p>${html(schoolAssignment.admin_feedback)}</p>`:''}</div><textarea id="schoolAssignmentAnswer" rows="7" ${assignmentApproved?'disabled':''} placeholder="${state.lang==='fa'?'پاسخ تکلیف را اینجا بنویسید':state.lang==='hr'?'Ovdje napišite odgovor na zadatak':'Write your assignment answer here'}">${html(assignmentDraft)}</textarea><div class="button-row"><button class="secondary-btn" id="saveSchoolAssignmentDraft" ${assignmentApproved?'disabled':''}>${state.lang==='fa'?'ذخیره پیش‌نویس':state.lang==='hr'?'Spremi skicu':'Save draft'}</button><button class="primary-btn" id="submitSchoolAssignment" ${assignmentApproved?'disabled':''}>${assignmentApproved?(state.lang==='fa'?'تکلیف تأیید شده':state.lang==='hr'?'Zadatak odobren':'Assignment approved'):(state.lang==='fa'?'ارسال رسمی تکلیف':state.lang==='hr'?'Predaj zadatak':'Submit assignment')}</button></div><p class="muted">${state.lang==='fa'?'این تکلیف بخشی از ۳۰٪ نمره تکالیف دوره است.':state.lang==='hr'?'Ovaj zadatak dio je 30% ocjene za zadatke.':'This assignment is part of the 30% assignment grade.'}</p></section>`:'';
   view.innerHTML=card(tx.class_title||tr('school'),`${l.image?.url?`<img src="${html(l.image.url)}" alt="${html(tx.class_title||tx.lesson_title||tr('school'))}" style="width:100%;max-height:360px;object-fit:cover;border-radius:18px;margin-bottom:12px">`:''}<p>${html(tx.lesson_text||'')}</p>${player}${l.video?.url?`<p><a class="secondary-btn" href="${html(l.video.url)}" target="_blank" rel="noopener">Video</a></p>`:''}${l.pdf?.url?`<p><a class="secondary-btn" href="${html(l.pdf.url)}" target="_blank" rel="noopener">PDF</a> <button class="secondary-btn" data-offline-download="${html(l.pdf.url)}" data-offline-title="PDF ${html(tx.lesson_title||code)}">${state.lang==='fa'?'دانلود PDF برای آفلاین':state.lang==='hr'?'Preuzmi PDF offline':'Download PDF offline'}</button></p>`:''}<button class="primary-btn wide-btn" id="completeSchoolLesson">${completeLabel}</button>${assignmentHtml}<h3>${tr('fullLesson')}</h3><p>${html(wr.text||'')}</p>${examHtml}`);
+  schoolDraftsV468.attach({element:$('#schoolAssignmentAnswer'),lesson:code,expectedOwner:draftOwnerV468,initialValue:assignmentApproved?(schoolAssignment?.answer_text||''):assignmentDraft,approved:assignmentApproved});
   $('#completeSchoolLesson')?.addEventListener('click',()=>saveSchoolProgress(code,{completed_at:new Date().toISOString(),progress_percent:100}));
   $('#saveSchoolAssignmentDraft')?.addEventListener('click',e=>{const answer=$('#schoolAssignmentAnswer')?.value||'';localStorage.setItem('nh7_note_school-'+code,answer);saveNoteCloud('note_school-'+code,answer).catch(console.warn);e.currentTarget.textContent=tr('saved')});
   $('#submitSchoolAssignment')?.addEventListener('click',()=>submitSchoolAssignment(courseCode,code,$('#schoolAssignmentAnswer')?.value||''));
