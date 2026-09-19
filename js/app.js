@@ -1,3 +1,4 @@
+import {mountStoreReviewV469} from './nh7-store-review-v469.js?v=4.6.9';
 import {createSchoolDraftsV468} from './nh7-school-drafts-v468.js?v=4.6.8';
 import {createBibleKeywordsV451} from './nh7-bible-keywords-v451.js?v=4.5.1';
 // NH7 v2.2.3 targeted update: Bible navigation, protected content, reliable analytics, and secure PDF viewer.
@@ -2356,8 +2357,10 @@ async function settings(){
     <p>${cloudStatusText()}</p>
     <button class="secondary-btn" id="syncCloud">${state.lang==='fa'?'همگام‌سازی اکنون':state.lang==='hr'?'Sinkroniziraj sada':'Sync now'}</button>
     <button class="secondary-btn" id="clearCache">${tr('refreshData')}</button>
+    <div id="nh7StoreReview469"></div>
     <p class="muted small nh7-version-footer">New Hope 7 v${html(window.NH7_VERSION||'2.3.9.50')}</p>
   `);
+  mountStoreReviewV469($('#nh7StoreReview469'),{language:state.lang});
   $('#settingsLang').value=state.lang;
   $('#settingsLang').onchange=e=>setLang(e.target.value);
   nh7BindAppearanceSettings();

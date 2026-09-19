@@ -1,0 +1,15 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),cp=require('child_process');
+const BASE='2bde658268eeaed0e7873c83aa7fb54c1d37fc8f',scope='https://qa.invalid/new-hope7-app/';let version='old',fetches=0;const stores=new Map();
+const caches={async keys(){return [...stores.keys()]},async delete(n){return stores.delete(n)},async open(n){if(!stores.has(n))stores.set(n,new Map());const rows=stores.get(n);return{async put(k,v){rows.set(k.url||String(k),v.clone())},async match(k){return rows.get(k.url||String(k))?.clone()},async keys(){return [...rows.keys()].map(x=>new Request(x))}}}};
+function worker(source){const handlers={};vm.runInNewContext(source,{self:{registration:{scope},addEventListener(k,f){(handlers[k]??=[]).push(f)}},caches,Request,Response,URL,console,fetch:async u=>{fetches++;return new Response(version+':'+String(u))}});return handlers}
+async function lifecycle(w,k){const tasks=[];for(const f of w[k]||[])f({waitUntil(p){tasks.push(p)}});await Promise.all(tasks)}
+(async()=>{
+ const old=worker(cp.execFileSync('git',['show',BASE+':sw-release-core-v403.js'],{encoding:'utf8'}));await lifecycle(old,'install');
+ const protectedNames=['nh7-offline-media-v4','nh7-audio-route-v423','nh7-personal-notes-fixture','nh7-data-stable-v329'];for(const n of protectedNames)await(await caches.open(n)).put(new Request(scope+'sentinel'),new Response('KEEP '+n));
+ version='v469';const next=worker(fs.readFileSync('sw-release-core-v403.js','utf8'));await lifecycle(next,'install');assert((await caches.keys()).includes('nh7-release-core-v468-school-drafts'));await lifecycle(next,'activate');assert((await caches.keys()).includes('nh7-release-core-v469-store-review'));
+ for(const n of protectedNames)assert.equal(await(await(await caches.open(n)).match(new Request(scope+'sentinel'))).text(),'KEEP '+n);
+ const paths=['js/app.js','js/nh7-store-review-v469.js','css/nh7-store-review-v469.css','js/nh7-school-drafts-v468.js','js/nh7-school-path-v351.js','js/nh7-theme-studio-v453.js','js/nh7-celebrations-v464.js','js/nh7-audio-classic-v400.js'];
+ for(const path of paths){let response,stop=false;const before=fetches;for(const f of next.fetch||[])f({request:new Request(scope+path+'?v=4.6.9'),respondWith(p){response=p},stopImmediatePropagation(){stop=true}});assert(stop,path);assert.equal(await(await response).text(),'v469:'+scope+path);assert.equal(fetches,before)}
+ const idx=fs.readFileSync('index.html','utf8');assert(idx.includes('service-worker.js?v=4.6.9'));assert(idx.includes('js/app.js?v=4.6.9'));assert(fs.readFileSync('service-worker.js','utf8').includes('sw-release-core-v403.js?v=4.6.9'));
+ const report={passed:true,baseline:BASE,protected_cache_names:protectedNames,offline_paths:paths,scope:'Actual service-worker release core in isolated synthetic caches; no user-storage or backend operations.'};fs.mkdirSync('qa-store-review-v469',{recursive:true});fs.writeFileSync('qa-store-review-v469/cache-report.json',JSON.stringify(report,null,2));console.log('PASS four protected stores and eight offline runtime routes.');
+})().catch(e=>{console.error(e);process.exit(1)});
