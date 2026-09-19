@@ -1,0 +1,107 @@
+name: Fonts Lexicon Quick Bible v454 QA
+on:
+  push:
+    branches: [feature/fonts-lexicon-quickbible-v454-20260919]
+    paths: ['.github/workflows/study-v454-qa.yml','scripts/study-v454/**','js/nh7-fonts-v454.js','js/nh7-audio-quick-bible-v454.js','css/nh7-fonts-quick-bible-v454.css']
+permissions:
+  contents: write
+concurrency:
+  group: study-v454
+  cancel-in-progress: true
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/feature/fonts-lexicon-quickbible-v454-20260919'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      MAIN_BASE: 259280fe00a7dbc7359c24f997338724961f0c08
+      FEATURE: feature/fonts-lexicon-quickbible-v454-20260919
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prepare minimal corrected runtime
+        run: |
+          set -euo pipefail
+          mkdir -p qa-study454
+          git ls-remote origin refs/heads/main > qa-study454/main-before.txt
+          test "$(cut -f1 qa-study454/main-before.txt)" = "$MAIN_BASE"
+          python scripts/study-v454/prepare.py
+          python scripts/study-v453/build_preview.py
+          find js css data/lexicon -type f -print0 | sort -z | xargs -0 sha256sum > qa-study454/before.txt
+          sha256sum index.html study-preview.html >> qa-study454/before.txt
+          python scripts/study-v454/prepare.py
+          python scripts/study-v453/build_preview.py
+          find js css data/lexicon -type f -print0 | sort -z | xargs -0 sha256sum > qa-study454/after.txt
+          sha256sum index.html study-preview.html >> qa-study454/after.txt
+          diff qa-study454/before.txt qa-study454/after.txt
+          for file in js/app.js js/nh7-theme-studio-v453.js js/nh7-original-language-v453.js js/nh7-fonts-v454.js js/nh7-audio-quick-bible-v454.js js/nh7-study-preview-app-v453.js; do node --check "$file"; done
+          python -m py_compile scripts/study-v454/*.py
+          git diff --exit-code "$MAIN_BASE" -- data/bible data/apocrypha supabase version.json manifest.json service-worker.js sw-release-core-v403.js js/nh7-audio-classic-v400.js
+          git diff --check
+      - name: Build Persian fonts and install browser tools
+        run: |
+          python -m pip install fonttools==4.60.1 brotli==1.1.0 playwright==1.57.0
+          python scripts/study-v454/build_fonts.py
+          python -m playwright install --with-deps chromium webkit
+          mkdir -p "$RUNNER_TEMP/study-agent"
+          npm install --prefix "$RUNNER_TEMP/study-agent" --save-exact agent-browser@0.38.1
+          echo "QA_AGENT_BROWSER=$RUNNER_TEMP/study-agent/node_modules/.bin/agent-browser" >> "$GITHUB_ENV"
+      - name: Chromium rendering and real playback verification
+        run: QA_ENGINE=chromium python scripts/study-v454/browser.py
+      - name: WebKit rendering and real playback verification
+        run: QA_ENGINE=webkit python scripts/study-v454/browser.py
+      - name: Previously approved reader regression
+        run: |
+          git show 0554e87363b1bb979f8edaf8609402db08bbd43a:scripts/reader-wave-v452/browser.py > /tmp/reader-regression454.py
+          QA_ENGINE=chromium python /tmp/reader-regression454.py
+      - name: Isolated Preview safety verification
+        run: |
+          sed 's/nh7_preview_study_v453:/nh7_preview_study_v454:/g' scripts/study-v453/preview_test.py > /tmp/study-preview454-test.py
+          python /tmp/study-preview454-test.py
+      - name: Commit tested runtime to feature only
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/$FEATURE"
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MAIN_BASE"
+          test "$(git ls-remote origin "refs/heads/$FEATURE" | cut -f1)" = "$GITHUB_SHA"
+          git add index.html js/app.js js/nh7-theme-studio-v453.js js/nh7-original-language-v453.js js/nh7-fonts-v454.js js/nh7-study-preview-app-v453.js js/nh7-study-preview-guard-v453.js study-preview.html scripts/study-v453/build_preview.py data/lexicon/original-language-core-v454.json assets/fonts/v454 css/nh7-study-preview-*.css
+          git diff --exit-code -- js css index.html data/lexicon assets/fonts/v454
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'fix(study): verified immediate fonts, explained release core and continuous audio Bible access'
+            git push origin "HEAD:refs/heads/$FEATURE"
+          fi
+          git rev-parse HEAD > qa-study454/tested-commit.txt
+          git ls-remote origin refs/heads/main > qa-study454/main-after.txt
+          diff qa-study454/main-before.txt qa-study454/main-after.txt
+      - name: Check actual public Preview
+        run: |
+          export QA_PREVIEW_URL="https://rawcdn.githack.com/Omideno7/new-hope7-app/$(cat qa-study454/tested-commit.txt)/study-preview.html"
+          python /tmp/study-preview454-test.py
+      - name: Collect evidence without font files
+        if: always()
+        run: |
+          mkdir -p qa-study454
+          if [ -d qa-reader452 ]; then cp -R qa-reader452 qa-study454/reader-regression; fi
+          if [ -d qa-study453 ]; then cp -R qa-study453 qa-study454/preview-check; fi
+          python - <<'PY'
+          import pathlib,tarfile
+          root=pathlib.Path('.')
+          names=['index.html','study-preview.html','js/app.js','js/nh7-theme-studio-v453.js','js/nh7-original-language-v453.js','js/nh7-fonts-v454.js','js/nh7-audio-quick-bible-v454.js','js/nh7-study-preview-app-v453.js','js/nh7-study-preview-guard-v453.js','css/nh7-fonts-quick-bible-v454.css','data/lexicon/original-language-core-v454.json']
+          names += [str(p) for p in pathlib.Path('scripts/study-v454').glob('*') if p.is_file()]
+          with tarfile.open('qa-study454/verified-source-no-fonts.tgz','w:gz') as t:
+              for name in names:
+                  if pathlib.Path(name).is_file():t.add(name,arcname=name)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: study-v454-${{ github.sha }}
+          path: qa-study454/
+          retention-days: 14
