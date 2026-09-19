@@ -1914,32 +1914,30 @@ async function about(){
 async function meetings(params={}){
   const meetingEpochV456=nh7NavigationEpochV456;
   if(isExplicitlyLoggedOut()){view.innerHTML=card(tr('meetings'),`<p>${tr('loginRequired')}</p><button class="primary-btn" data-go="account">${tr('signIn')}</button>`);return;}
-  let meetingAccess=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{"status":"none"}');
-  let schoolAccess=JSON.parse(localStorage.getItem('nh7_school_access')||'{"status":"none"}');
-
-  // From v1.6.1 onward, approved School access also grants Church Meeting access.
-  // No separate meeting registration and no guest entrance for security.
-  const cloudSchool = await fetchLatestRegistration('school');
-  if(cloudSchool) schoolAccess = cloudSchool;
-  const cloudMeeting = await fetchLatestRegistration('meeting');
-  if(cloudMeeting) meetingAccess = cloudMeeting;
-
-  const schoolApproved = schoolAccess.status==='approved' || schoolAccess.approvedBy==='admin';
-  const meetingApproved = meetingAccess.status==='approved' || meetingAccess.approvedBy==='admin';
-  const approved = schoolApproved || meetingApproved;
-  let details='';
-  if(approved){
-    const settings = await fetchMeetingSettings();
-    details = `<p class="success-text">${tr('meetingApproved')}</p>` + renderMeetingDetails(settings);
-  }
-  const buttons = approved
-    ? `<div class="button-row"><button class="secondary-btn" data-go="meetings">${tr('refreshApproval')}</button></div>`
-    : `<div class="button-row"><button class="primary-btn" data-go="school" data-params='{"form":true}'>${tr('register')} ${tr('school')}</button><button class="secondary-btn" data-go="meetings">${tr('refreshApproval')}</button></div>`;
-  const notApprovedText = state.lang==='fa'
-    ? 'برای امنیت جلسه، ورود مهمان نداریم. اگر در مدرسه ثبت‌نام کرده‌اید، پس از تأیید ادمین همین بخش لینک و کد جلسه را نشان می‌دهد.'
-    : (state.lang==='hr' ? 'Zbog sigurnosti nema ulaska kao gost. Nakon registracije za školu i odobrenja administratora ovdje će se prikazati poveznica i kod sastanka.' : 'For meeting security, guest access is not available. After school registration and admin approval, the meeting link and codes will appear here.');
-  if(meetingEpochV456!==nh7NavigationEpochV456)return;
-  view.innerHTML=card(tr('meetings'), `<p>${tr('meetingAccessText')}</p>${approved?'':`<p class="muted">${notApprovedText}</p>`}<span class="badge">${approved?tr('approved'):(schoolAccess.status==='pending'||meetingAccess.status==='pending'?tr('pending'):tr('notStarted'))}</span>${details}${buttons}`);
+  let meetingAccess={status:'none'},schoolAccess={status:'none'};
+  try{meetingAccess=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{"status":"none"}')||meetingAccess}catch(_){}
+  try{schoolAccess=JSON.parse(localStorage.getItem('nh7_school_access')||'{"status":"none"}')||schoolAccess}catch(_){}
+  const approvedNow=()=>schoolAccess.status==='approved'||schoolAccess.approvedBy==='admin'||meetingAccess.status==='approved'||meetingAccess.approvedBy==='admin';
+  const paint=(settings=null,refreshing=false)=>{
+    if(meetingEpochV456!==nh7NavigationEpochV456)return;
+    const approved=approvedNow(),details=approved&&settings?`<p class="success-text">${tr('meetingApproved')}</p>${renderMeetingDetails(settings)}`:'';
+    const buttons=approved?`<div class="button-row"><button class="secondary-btn" data-go="meetings">${tr('refreshApproval')}</button></div>`:`<div class="button-row"><button class="primary-btn" data-go="school" data-params='{"form":true}'>${tr('register')} ${tr('school')}</button><button class="secondary-btn" data-go="meetings">${tr('refreshApproval')}</button></div>`;
+    const notApprovedText=state.lang==='fa'?'برای امنیت جلسه، ورود مهمان نداریم. اگر در مدرسه ثبت‌نام کرده‌اید، پس از تأیید ادمین همین بخش لینک و کد جلسه را نشان می‌دهد.':(state.lang==='hr'?'Zbog sigurnosti nema ulaska kao gost. Nakon registracije za školu i odobrenja administratora ovdje će se prikazati poveznica i kod sastanka.':'For meeting security, guest access is not available. After school registration and admin approval, the meeting link and codes will appear here.');
+    const sync=refreshing?`<p class="muted small">${html(state.lang==='fa'?'در حال بررسی تازه‌ترین وضعیت…':state.lang==='hr'?'Provjera najnovijeg statusa…':'Checking latest status…')}</p>`:'';
+    view.innerHTML=card(tr('meetings'),`<p>${tr('meetingAccessText')}</p>${approved?'':`<p class="muted">${notApprovedText}</p>`}<span class="badge">${approved?tr('approved'):(schoolAccess.status==='pending'||meetingAccess.status==='pending'?tr('pending'):tr('notStarted'))}</span>${details}${sync}${buttons}`);
+    bindDynamic();
+  };
+  // Fast path: render immediately from the last known access and built-in meeting
+  // settings. Network refresh happens afterwards and never blocks opening the module.
+  paint(approvedNow()?defaultMeetingSettings():null,true);
+  const [cloudSchool,cloudMeeting]=await Promise.all([
+    fetchLatestRegistration('school').catch(()=>null),
+    fetchLatestRegistration('meeting').catch(()=>null)
+  ]);
+  if(cloudSchool)schoolAccess=cloudSchool;if(cloudMeeting)meetingAccess=cloudMeeting;
+  let settings=null;
+  if(approvedNow())settings=await fetchMeetingSettings().catch(()=>defaultMeetingSettings());
+  paint(settings|| (approvedNow()?defaultMeetingSettings():null),false);
 }
 
 let nh7LibraryTab=sessionStorage.getItem('nh7_library_tab')||'public';
