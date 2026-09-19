@@ -1,0 +1,52 @@
+name: Verify Published Celebrations v464
+on:
+  push:
+    branches: [qa/celebrations-v464-release-20260919]
+    paths: [.github/workflows/celebrations-v464-published-check.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-publication:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 346e274be35ba422a18c96a82810c33f007c1bed
+          fetch-depth: 0
+      - name: Verify published files and identify inherited legacy-validator mismatch
+        run: |
+          python - <<'PY'
+          import hashlib, json, re, subprocess, urllib.request
+          from pathlib import Path
+          from datetime import datetime, timezone
+          commit='346e274be35ba422a18c96a82810c33f007c1bed'
+          baseline='2df1fabd295a0b2de2eaf1486e41c41242a4c52f'
+          origin='https://omideno7.github.io/new-hope7-app/'
+          files=['index.html','service-worker.js','sw-release-core-v403.js','js/nh7-celebrations-v464.js','css/nh7-celebrations-v464.css']
+          results=[]
+          for path in files:
+              url=origin+path+'?verification='+commit
+              request=urllib.request.Request(url,headers={'Cache-Control':'no-cache','User-Agent':'NH7-release-verification'})
+              with urllib.request.urlopen(request,timeout=25) as response:
+                  data=response.read();status=response.status
+              expected=Path(path).read_bytes()
+              assert data==expected,'Published file differs from release: '+path
+              results.append({'path':path,'status':status,'sha256':hashlib.sha256(data).hexdigest(),'matches_release':True})
+              print('PASS published exact bytes',path,status)
+          wf='.github/workflows/deploy-pages.yml'
+          previous=subprocess.check_output(['git','show',baseline+':'+wf],text=True)
+          current=Path(wf).read_text();assert current==previous
+          old_index=subprocess.check_output(['git','show',baseline+':index.html'],text=True)
+          literal='js/nh7-school-path-v350.js?v=3.5.0'
+          assert literal in previous and literal not in old_index
+          assert 'js/nh7-school-path-v351.js?' in old_index
+          print('CONFIRMED inherited validator expects v350 while baseline already loads v351; validator unchanged by celebrations release.')
+          Path('publication-report.json').write_text(json.dumps({'commit':commit,'verified_at':datetime.now(timezone.utc).isoformat(),'files':results,'legacy_validator':{'unchanged':True,'failure':'School path v3.5.0 is not loaded','baseline_already_uses':'v351'},'scope':'Read-only GET of public static deployed files; no Supabase, authentication, private user data or native changes.'},indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: celebrations-v464-published-verification
+          path: publication-report.json
+          retention-days: 14
