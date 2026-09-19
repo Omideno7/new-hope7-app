@@ -1,0 +1,81 @@
+name: School Entry v465 Regression QA
+on:
+  push:
+    branches: [qa/school-entry-v465-20260919]
+    paths:
+      - scripts/school-entry-v465/**
+      - .github/workflows/school-entry-v465-qa.yml
+permissions:
+  contents: write
+concurrency:
+  group: school-entry-v465-qa
+  cancel-in-progress: false
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONUNBUFFERED: '1'
+      NH7_QA_ENGINES: chromium,webkit
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify unchanged baseline and prepare scoped fix
+        run: |
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = '346e274be35ba422a18c96a82810c33f007c1bed'
+          python scripts/school-entry-v465/prepare.py
+      - name: Install pinned browsers
+        run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium webkit
+      - name: Test actual school entry source in Chromium and WebKit
+        run: python scripts/school-entry-v465/qa.py
+      - name: Verify release cache upgrade retains media and data
+        run: |
+          node <<'JS'
+          const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
+          const scope='https://fixture.invalid/new-hope7-app/',stores=new Map();
+          const keep=['nh7-offline-media-v4','nh7-offline-audio-v397','nh7-personal-notes-fixture','nh7-data-stable-v329'];
+          for(const key of [...keep,'nh7-release-core-v464-celebrations'])stores.set(key,new Map([[scope+'sentinel',new Response('preserved')]]));
+          const caches={async keys(){return [...stores.keys()]},async delete(k){return stores.delete(k)},async open(k){if(!stores.has(k))stores.set(k,new Map());const s=stores.get(k);return{async keys(){return [...s.keys()].map(x=>new Request(x))},async put(r,v){s.set(r.url,v.clone())},async match(r){return s.get(r.url)?.clone()}}}};
+          const listeners={},self={registration:{scope},addEventListener(t,f){(listeners[t]??=[]).push(f)}};
+          const fetch=async input=>{const url=new URL(input.url||input),p=url.pathname.replace('/new-hope7-app/','');return new Response(p==='js/app.js'?fs.readFileSync(p,'utf8'):'fixture:'+p)};
+          vm.runInNewContext(fs.readFileSync('sw-release-core-v403.js','utf8'),{self,caches,fetch,URL,Request,Response,console});
+          (async()=>{
+            for(const type of ['install','activate']){const tasks=[];for(const fn of listeners[type])fn({waitUntil(p){tasks.push(p)}});await Promise.all(tasks)}
+            for(const k of keep)assert.equal(await(await(await caches.open(k)).match(new Request(scope+'sentinel'))).text(),'preserved');
+            assert(!stores.has('nh7-release-core-v464-celebrations'));assert(stores.has('nh7-release-core-v465-school-entry'));
+            let answer;for(const fn of listeners.fetch)fn({request:new Request(scope+'js/app.js?v=4.6.5'),respondWith(p){answer=p},stopImmediatePropagation(){}});
+            assert.equal(await(await answer).text(),fs.readFileSync('js/app.js','utf8'));
+            fs.writeFileSync('qa-output/cache-report.json',JSON.stringify({passed:true,kept:keep,version:'4.6.5-school-entry',scope:'Isolated simulation of actual release-core worker; no real downloads or backend requests.'},null,2));
+            console.log('PASS cache upgrade: four personal/media cache sentinels preserved; corrected app served from new release cache.');
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - name: Commit tested runtime to QA branch only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add js/app.js index.html service-worker.js sw-release-core-v403.js
+          test "$(git diff --cached --name-only | wc -l)" = 4
+          git commit -m 'fix(school): verified entry flow and v465 release cache [skip ci]'
+          git push origin HEAD:qa/school-entry-v465-20260919
+          python - <<'PY'
+          import subprocess,json
+          from pathlib import Path
+          paths=['js/app.js','index.html','service-worker.js','sw-release-core-v403.js']
+          report={'tested_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'runtime_blobs':{p:subprocess.check_output(['git','rev-parse','HEAD:'+p],text=True).strip() for p in paths}}
+          Path('qa-output/runtime-manifest.json').write_text(json.dumps(report,indent=2));print(json.dumps(report,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: school-entry-v465-regression
+          path: qa-output/
+          retention-days: 14
