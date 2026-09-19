@@ -1,7 +1,7 @@
 /* v457: one palette picker, stronger optional colors and readable controls. */
 #view #nh7ThemeStudio453 .nh7-studio-presets453[hidden]{display:none!important}
 #view #nh7ThemeStudio453 .nh7-theme-group-tabs457{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin:8px 0 14px;padding:4px;border-radius:14px;background:var(--nh7-studio-bg,#e8eef6)}
-#view #nh7ThemeStudio453 [data-theme-group457]{min-width:0;min-height:44px;padding:7px 3px;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--nh7-studio-text,#16364c);font:650 .8rem/1.5 inherit;white-space:normal}
+#view #nh7ThemeStudio453 [data-theme-group457]{min-width:0;min-height:44px;padding:7px 3px;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--nh7-studio-text,#16364c);font-family:inherit;font-weight:650;font-size:.8rem;line-height:1.5;white-space:normal}
 #view #nh7ThemeStudio453 [data-theme-group457][aria-selected="true"]{background:var(--nh7-studio-accent,#1858a4)!important;color:var(--nh7-studio-button-ink,#fff)!important;border-color:var(--nh7-studio-accent,#1858a4)!important}
 #view #nh7ThemeStudio453 .nh7-studio-mini453{height:64px;padding:10px;border-radius:10px;box-sizing:border-box}
 #view #nh7ThemeStudio453 .nh7-studio-mini453 i{height:38px;width:10px}
