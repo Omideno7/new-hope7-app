@@ -14,7 +14,7 @@ concurrency:
 jobs:
   qa:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 9
     env:
       PYTHONUNBUFFERED: '1'
     steps:
@@ -35,6 +35,10 @@ jobs:
           python scripts/v467/finalize.py
           mkdir -p qa-v467
           git diff -- js index.html service-worker.js sw-release-core-v403.js > qa-v467/runtime.patch
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/v467/qa.py');s=p.read_text();s=s.replace('def run(name,fn):\n','def run(name,fn):\n print("START",name,flush=True)\n');p.write_text(s)
+          PY
           python -m py_compile scripts/v467/qa.py
       - name: Install pinned browser dependencies
         run: |
@@ -43,7 +47,7 @@ jobs:
       - name: Cache upgrade and unaffected-module safeguards
         run: node scripts/v467/cache.cjs
       - name: School, session and real audio playback regressions
-        run: python scripts/v467/qa.py
+        run: timeout --signal=TERM --kill-after=10s 150s python scripts/v467/qa.py
       - name: Commit verified runtime on QA branch only
         run: |
           git config user.name 'github-actions[bot]'
