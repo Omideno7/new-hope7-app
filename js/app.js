@@ -822,6 +822,7 @@ function addPoints(amount,badgeId,activity='general'){
   const g=nh7GamificationNormalize(JSON.parse(localStorage.getItem('nh7_gamification')||'{}'));
   g.points+=Math.max(0,Number(amount||0)||0);
   if(badgeId&&!g.badges.includes(String(badgeId)))g.badges.push(String(badgeId));
+  for(const [threshold,id] of [[25,'growth_25'],[75,'growth_75'],[150,'growth_150'],[300,'growth_300']])if(g.points>=threshold&&!g.badges.includes(id))g.badges.push(id);
   const key=String(activity||badgeId||'general');g.activity[key]=Number(g.activity[key]||0)+1;
   const day=todayKey();if(!g.activityDays.includes(day))g.activityDays.push(day);
   nh7GamificationSave(g);
