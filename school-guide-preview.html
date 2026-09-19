@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#1d4ed8" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>OmideNo7 Church</title>
+  <script>
+    (function(){
+      try{
+        var mode=localStorage.getItem('nh7_ui_theme_v425')||'system';
+        if(!/^(system|light|dark)$/.test(mode))mode='system';
+        var resolved=mode==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):mode;
+        document.documentElement.dataset.nh7Theme=resolved;
+        document.documentElement.dataset.nh7ThemeMode=mode;
+        document.documentElement.dataset.nh7HomeVisual=localStorage.getItem('nh7_ui_home_visual_v425')==='0'?'0':'1';
+        var size=localStorage.getItem('nh7_ui_font_size_v425')||'100';
+        if(!/^(90|100|110|120)$/.test(size))size='100';
+        document.documentElement.style.fontSize=size+'%';
+      }catch(_){}
+    }());
+  </script>
+  <link rel="manifest" href="manifest.json?v=4.4.7" />
+  <link rel="icon" href="assets/new-hope7-logo-192.png?v=4.4.7" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/new-hope7-logo-180.png?v=4.4.7" />
+  <link rel="stylesheet" href="css/styles.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/v2.2.0.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/v2.2.2.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/v2.2.3.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/v2.2.4.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/v2.3.0-access-bible.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/v2.3.4-my-notes.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/nh7-book-reader-v280.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-library-collections-v322.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-secure-media-v270.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-secure-media-watermark-v272.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-apocrypha-v270.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-spiritual-plans-v240.css?v=4.1.2" />
+  <link rel="stylesheet" href="css/nh7-appearance-v427.css?v=4.4.7" />
+  <link rel="stylesheet" href="css/nh7-bible-keywords-v450.css?v=4.5.1" />
+  <link rel="stylesheet" href="css/nh7-reader-toolbar-v452.css?v=4.5.2-r2" />
+  <link rel="stylesheet" href="css/nh7-notes-categories-v452.css?v=4.5.2-r2" />
+  <script>
+    window.NH7_ONESIGNAL_APP_ID = '86f4116a-707a-4959-aa3f-7c703f57bf7e';
+    window.NH7_CANONICAL_SETTINGS = true;
+    window.NH7_VERSION = '2.3.9.50';
+    window.NH7_BASE_PATH = new URL('.', window.location.href).pathname;
+    window.NH7_SERVICE_WORKER = window.NH7_BASE_PATH + 'service-worker.js?v=4.5.7';
+    window.NH7_ONESIGNAL_WORKER = window.NH7_BASE_PATH + 'push/OneSignalSDKWorker.js';
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register(window.NH7_SERVICE_WORKER, { scope: window.NH7_BASE_PATH, updateViaCache: 'none' }).catch(console.warn);
+    }
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      try {
+        await OneSignal.init({
+          appId: window.NH7_ONESIGNAL_APP_ID,
+          serviceWorkerPath: window.NH7_ONESIGNAL_WORKER,
+          serviceWorkerParam: { scope: window.NH7_BASE_PATH + 'push/' },
+          autoResubscribe: true,
+          notifyButton: { enable: false },
+          allowLocalhostAsSecureOrigin: true
+        });
+      } catch (err) { console.warn('OneSignal init failed', err); }
+    });
+  </script>
+  <!-- preview: OneSignal disabled -->
+  <link rel="stylesheet" href="css/nh7-theme-studio-v453.css?v=4.5.3" />
+  <link rel="stylesheet" href="css/nh7-study-reader-v453.css?v=4.5.3" />
+  <link rel="stylesheet" href="css/nh7-fonts-quick-bible-v454.css?v=4.5.4" />
+  <link rel="stylesheet" href="css/nh7-header-date-v455.css?v=4.5.5" />
+  <link rel="stylesheet" href="css/nh7-navigation-v456.css?v=4.5.6" />
+  <link rel="stylesheet" href="css/nh7-theme-gallery-v457.css?v=4.5.7" />
+</head>
+<body>
+  <div id="amenGate" class="amen-gate hidden" role="dialog" aria-modal="true">
+    <div class="amen-card">
+      <img src="assets/new-hope7-logo-1024.png?v=4.4.7" alt="New Hope 7" class="amen-logo" />
+      <h1 id="amenTitle">OmideNo7</h1>
+      <p id="amenMessage">God is with you today.</p>
+      <button id="amenButton" class="primary-btn">Amen</button>
+    </div>
+  </div>
+
+  <div id="appShell" class="app-shell">
+    <header class="topbar nh7-header-date455">
+      <button id="backBtn" class="icon-btn hidden" aria-label="Back">‹</button>
+      <div class="brand">
+        <img src="assets/new-hope7-logo-1024.png?v=4.4.7" alt="" />
+        <div>
+          <strong>OmideNo7 Church</strong>
+          <small id="breadcrumb">Home</small>
+        </div>
+      </div>
+      <button id="inboxBtn" class="icon-btn inbox-top-btn" aria-label="Inbox">📥<span id="inboxBadge" class="inbox-badge hidden">0</span></button>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">EN</option>
+        <option value="fa">FA</option>
+        <option value="hr">HR</option>
+      </select>
+      <div class="nh7-header-date-row455" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 2v6M17 2v6M3 11h18M7 15h3M14 15h3"/></svg>
+        <time id="nh7HeaderDate455" hidden></time>
+      </div>
+    </header>
+
+    <main id="view" class="view"></main>
+
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <button data-route="home" class="nav-item active"><span>⌂</span><small data-i18n="nav.home">Home</small></button>
+      <button data-route="daily" class="nav-item"><span>☀</span><small data-i18n="nav.daily">Daily</small></button>
+      <button data-route="bible" class="nav-item"><span>📖</span><small data-i18n="nav.bible">Bible</small></button>
+      <button data-route="plans" class="nav-item"><span>✓</span><small data-i18n="nav.plans">Plans</small></button>
+      <button data-route="school" class="nav-item"><span>🎓</span><small data-i18n="nav.school">School</small></button>
+      <button data-route="more" class="nav-item"><span>☰</span><small data-i18n="nav.more">More</small></button>
+    </nav>
+  </div>
+
+  <template id="loadingTpl"><section class="card"><p>Loading...</p></section></template>
+  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.12.0/mammoth.browser.min.js" defer></script>
+  <script src="js/nh7-security-core-v340.js?v=3.4.1"></script>
+  <script src="js/nh7-qna-i18n-v341.js?v=2.3.9.36"></script>
+  <script src="js/nh7-offline-startup-v327.js?v=2.3.9.50-offline403"></script>
+  <script src="js/nh7-auto-update-v335.js?v=2.3.9.35"></script>
+  <script src="js/nh7-notifications-zagreb-v334.js?v=2.3.9.35e"></script>
+  <script src="js/nh7-offline-core-v327.js?v=2.3.9.50-offline403"></script>
+  <script src="js/nh7-offline-data-v422.js?v=4.2.2"></script>
+  <script src="js/nh7-audio-route-stability-v423.js?v=4.6.1"></script>
+  <script src="js/nh7-sermon-catalog-hotfix-v424.js?v=4.2.4"></script>
+  <script src="js/nh7-access-bootstrap-v230.js?v=2.3.9.33"></script>
+  <script src="js/nh7-auth-signup-guard-v343.js?v=3.5.5"></script>
+  <script src="js/nh7-registration-canonical-v353.js?v=4.0.1"></script>
+  <script src="js/nh7-school-registration-v342.js?v=2.3.9.50"></script>
+  <script src="js/nh7-registration-final-guard-v401.js?v=4.0.1"></script>
+  <script src="js/nh7-offline-playback-bridge-v332.js?v=2.3.9.50-offline403"></script>
+  <script src="js/nh7-offline-persistence-v323.js?v=2.3.9.50-offline403"></script>
+  <script src="js/nh7-auth-recovery-v342.js?v=2.3.9.50"></script>
+  <script src="js/nh7-audio-classic-v400.js?v=4.6.1"></script>
+  <script src="js/nh7-sermon-social-v443.js?v=4.4.6" defer></script>
+  <script src="js/nh7-sermon-list-detail-v445.js?v=4.4.6" defer></script>
+  <script src="js/app.js?v=4.6.2-school-preview" type="module"></script>
+  <script src="js/nh7-settings-controller-v403.js?v=4.0.3"></script>
+  <script src="js/nh7-settings-account-v252.js?v=2.5.2" defer></script>
+  <script src="js/nh7-delete-account-v253.js?v=2.5.4" defer></script>
+  <script src="js/nh7-app-enhancements-v230.js?v=4.5.2-reader" type="module"></script>
+  <script src="js/nh7-reader-toolbar-v452.js?v=4.5.3-unified" defer></script>
+  <script src="js/nh7-my-notes-v234.js?v=4.5.2-reader" type="module"></script>
+  <script src="js/nh7-my-notes-categories-v452.js?v=4.5.2-r2" defer></script>
+  <script src="js/nh7-book-reader-v283.js?v=2.3.9.51" defer></script>
+  <script src="js/nh7-library-language-v321.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-library-collections-v322.js?v=2.3.9.51" defer></script>
+  <script src="js/nh7-school-media-session-v262.js?v=2.3.9.50" defer></script>
+  <script src="js/nh7-secure-media-v270.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-secure-media-fix-v271.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-large-mov-native-fallback-v273.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-secure-media-watermark-v272.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-apocrypha-v270.js?v=4.5.3-reader" defer></script>
+  <script src="js/nh7-protected-audio-gate-v316.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-ui-stability-v329.js?v=4.4.7" defer></script>
+  <script src="js/nh7-push-account-bind-v361.js?v=3.6.1" defer></script>
+  <script src="js/nh7-inbox-badge-sync-v418.js?v=4.1.8" defer></script>
+  <script src="js/nh7-school-exam-v344.js?v=2.3.9.50" defer></script>
+  <script src="js/nh7-school-path-v351.js?v=4.6.2-school-preview" defer></script>
+  <script src="js/nh7-spiritual-plans-v412.js?v=4.1.2" type="module"></script>
+  <script src="js/nh7-fasting-practical-note-removal-v413.js?v=4.1.3" defer></script>
+  <script src="js/nh7-theme-studio-v453.js?v=4.5.7" defer></script>
+  <script src="js/nh7-original-language-v453.js?v=4.5.4" defer></script>
+  <script src="js/nh7-fonts-v454.js?v=4.5.4" defer></script>
+  <script src="js/nh7-audio-quick-bible-v454.js?v=4.5.4" defer></script>
+  <script src="js/nh7-header-date-v455.js?v=4.5.5" defer></script>
+</body>
+</html>
