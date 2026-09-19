@@ -91,11 +91,28 @@ async function idbPut(record){const db=await openDb();return new Promise((resolv
 async function idbDelete(id){const db=await openDb();return new Promise(resolve=>{const tx=db.transaction(DB_STORE,'readwrite');tx.objectStore(DB_STORE).delete(id);tx.oncomplete=()=>{db.close();resolve(true)};tx.onerror=tx.onabort=()=>{db.close();resolve(false)}})}
 async function idbClear(){const db=await openDb();return new Promise(resolve=>{const tx=db.transaction(DB_STORE,'readwrite');tx.objectStore(DB_STORE).clear();tx.oncomplete=()=>{db.close();resolve(true)};tx.onerror=tx.onabort=()=>{db.close();resolve(false)}})}
 
-async function edge(payload){
+async function refreshAudioSession(){
+  let session=readSession();if(!session?.refresh_token)return null;
+  try{
+    const response=await fetch(`${SB}/auth/v1/token?grant_type=refresh_token`,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:session.refresh_token}),cache:'no-store'});
+    const text=await response.text();let data={};try{data=text?JSON.parse(text):{}}catch(_){}
+    if(!response.ok||!data?.access_token)return null;
+    // Supabase refresh responses can omit user metadata. Preserve the existing
+    // user object so account identity remains stable across an audio refresh.
+    session=Object.assign({},session,data,{user:data.user||session.user});
+    localStorage.setItem(SESSION_KEY,JSON.stringify(session));
+    return session;
+  }catch(_){return null}
+}
+async function edge(payload,retry=0){
   const token=await accessToken();if(!token)throw Object.assign(new Error('login_required'),{code:'login_required'});
-  const response=await fetch(`${SB}/functions/v1/nh7-school-media-access`,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+token,'Content-Type':'application/json','x-client-info':'nh7-classic-audio-v400'},body:JSON.stringify(Object.assign({device_id:deviceId()},payload)),cache:'no-store'});
+  const response=await fetch(`${SB}/functions/v1/nh7-school-media-access`,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+token,'Content-Type':'application/json','x-client-info':'nh7-classic-audio-v461'},body:JSON.stringify(Object.assign({device_id:deviceId()},payload)),cache:'no-store'});
   const text=await response.text();let data={};try{data=text?JSON.parse(text):{}}catch(_){data={error:text}}
-  if(!response.ok||!data?.signed_url)throw Object.assign(new Error(data?.error||data?.message||text||`HTTP ${response.status}`),{code:data?.code||'',status:response.status});
+  if(response.status===401&&!retry){
+    const refreshed=await refreshAudioSession();
+    if(refreshed?.access_token)return edge(payload,1);
+  }
+  if(!response.ok||!data?.signed_url)throw Object.assign(new Error(data?.error||data?.message||text||`HTTP ${response.status}`),{code:data?.code||(response.status===401?'invalid_session':''),status:response.status});
   return data;
 }
 async function signedUrl(item,force=false){
@@ -280,7 +297,7 @@ new MutationObserver(()=>{clearTimeout(patchTimer);patchTimer=setTimeout(()=>{pa
 setTimeout(()=>{patch();prewarm()},250);
 
 window.NH7_AUDIO_CLASSIC_VERSION='4.0.0';
-window.NH7_AUDIO_SIGNED_VERSION='4.0.0-classic';
+window.NH7_AUDIO_SIGNED_VERSION='4.6.1-401-refresh';
 window.NH7_AUDIO_CLASSIC_V400={patch,prewarm,playItem,downloadItem,clearAll};
 // Compatibility for the Settings cleanup controller introduced in 2.3.9.48.
 window.NH7_AUDIO_SIGNED_V397=window.NH7_AUDIO_CLASSIC_V400;
