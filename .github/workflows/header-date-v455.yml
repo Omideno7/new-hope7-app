@@ -1,0 +1,124 @@
+name: Localized Header Date v455
+on:
+  push:
+    branches: [feature/header-date-v455-20260919]
+    paths: ['scripts/header-date-v455/**','js/nh7-header-date-v455.js','css/nh7-header-date-v455.css','.github/workflows/header-date-v455.yml']
+permissions:
+  contents: write
+concurrency:
+  group: localized-header-date-v455
+  cancel-in-progress: true
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/feature/header-date-v455-20260919'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      BASE_SHA: 6239cdc187083ff192137d05207447453a92cce9
+      TARGET: integration/header-date-v455-20260919
+      QA_OUTPUT: /tmp/date455-evidence
+      QA_BASELINE: /tmp/date454-baseline
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Preserve exact baseline and test files
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/date455-tests "$QA_BASELINE" "$QA_OUTPUT"
+          cp scripts/header-date-v455/* /tmp/date455-tests/
+          cp js/nh7-header-date-v455.js css/nh7-header-date-v455.css /tmp/date455-tests/
+          git show ef2c8e4c2ec40da1d1f368c3a1440c59317afc95:scripts/study-v454/browser.py > /tmp/date455-tests/previous-study.py
+          git show 3052f19ccfa68f29c3eda55891482e913fd4a0df:scripts/reader-integration-v452/cache_upgrade.py > /tmp/date455-tests/cache-upgrade.py
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('/tmp/date455-tests/cache-upgrade.py');s=p.read_text()
+          s=re.sub(r'4\.5\.([12])',lambda m:'4.5.'+{'1':'4','2':'5'}[m[1]],s)
+          s=s.replace("'4.5.5-reader-release'","'nh7-header-date-v455.js'")
+          p.write_text(s)
+          PY
+          git archive "$BASE_SHA" | tar -xf - -C "$QA_BASELINE"
+          git ls-remote origin refs/heads/main > "$QA_OUTPUT/main-before.txt"
+          test "$(cut -f1 "$QA_OUTPUT/main-before.txt")" = "$BASE_SHA"
+          git checkout --detach "$BASE_SHA"
+          cp /tmp/date455-tests/nh7-header-date-v455.js js/
+          cp /tmp/date455-tests/nh7-header-date-v455.css css/
+          python /tmp/date455-tests/prepare.py
+          cp qa-date455/allowed-files.json "$QA_OUTPUT/"
+          python - <<'PY'
+          import re,json,os
+          from pathlib import Path
+          s=Path('sw-release-core-v403.js').read_text()
+          paths=json.loads(re.search(r'const NH7_READER_RELEASE_PATHS_V452=new Set\((\[[^;]+\])\);',s)[1])
+          p=Path(os.environ['QA_OUTPUT'])/'scope-report.json';d=json.loads(Path('qa-date455/scope-report.json').read_text());d['cacheHandlerScope']=paths;p.write_text(json.dumps(d,indent=2))
+          PY
+      - name: Syntax, calendar boundaries and lifecycle tests
+        run: |
+          node --check js/nh7-header-date-v455.js
+          node --check service-worker.js
+          node --check sw-release-core-v403.js
+          node /tmp/date455-tests/unit.mjs
+          python -m py_compile /tmp/date455-tests/*.py
+          git diff --check
+      - name: Install pinned browsers
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium webkit
+          npm install --prefix "$RUNNER_TEMP/date-agent" --save-exact agent-browser@0.38.1
+          echo "QA_AGENT_BROWSER=$RUNNER_TEMP/date-agent/node_modules/.bin/agent-browser" >> "$GITHUB_ENV"
+      - name: Chromium date and full header tests
+        run: timeout --kill-after=10s 180s env QA_ENGINE=chromium python /tmp/date455-tests/browser.py
+      - name: WebKit date and full header tests
+        run: timeout --kill-after=10s 180s env QA_ENGINE=webkit python /tmp/date455-tests/browser.py
+      - name: Previous font, lexicon and uninterrupted audio tests
+        run: timeout --kill-after=10s 180s env QA_ENGINE=chromium python /tmp/date455-tests/previous-study.py
+      - name: Real cache upgrade preserves user data and downloaded media
+        run: timeout --kill-after=10s 240s python /tmp/date455-tests/cache-upgrade.py
+      - name: Commit only five tested runtime files to integration branch
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$BASE_SHA"
+          test "$(git ls-remote origin "refs/heads/$TARGET" | cut -f1)" = "$BASE_SHA"
+          python - <<'PY'
+          import json,subprocess
+          from pathlib import Path
+          files=json.loads(Path('qa-date455/allowed-files.json').read_text());assert len(files)==5
+          subprocess.run(['git','add','--',*files],check=True)
+          changed=subprocess.check_output(['git','diff','--cached','--name-only'],text=True).splitlines();assert set(changed)==set(files),changed
+          subprocess.run(['git','diff','--cached','--check'],check=True)
+          PY
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'feat(header): localized device-local date with Persian and Gregorian calendars v455'
+          git push origin "HEAD:refs/heads/$TARGET"
+          git rev-parse HEAD > "$QA_OUTPUT/integration-commit.txt"
+          git diff --stat "$BASE_SHA" HEAD > "$QA_OUTPUT/scope.txt"
+          git ls-remote origin refs/heads/main > "$QA_OUTPUT/main-after.txt"
+          diff "$QA_OUTPUT/main-before.txt" "$QA_OUTPUT/main-after.txt"
+      - name: Preserve date-only verification evidence
+        if: always()
+        run: |
+          mkdir -p "$QA_OUTPUT"
+          if [ -d qa-date455 ]; then cp -R qa-date455 "$QA_OUTPUT/browser"; fi
+          if [ -d qa-study454 ]; then cp -R qa-study454 "$QA_OUTPUT/previous-regression"; fi
+          python - <<'PY'
+          import tarfile,json,os
+          from pathlib import Path
+          out=Path(os.environ['QA_OUTPUT']);p=out/'allowed-files.json'
+          if p.exists():
+              with tarfile.open(out/'date-runtime.tgz','w:gz') as t:
+                  for name in json.loads(p.read_text()):
+                      if Path(name).is_file():t.add(name,arcname=name)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: header-date-v455-${{ github.sha }}
+          path: /tmp/date455-evidence/
+          retention-days: 14
