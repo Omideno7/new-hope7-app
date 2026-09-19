@@ -10,7 +10,7 @@ class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
 server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(ROOT)));threading.Thread(target=server.serve_forever,daemon=True).start();BASE=f'http://127.0.0.1:{server.server_port}'
 checks=[];errors=[];external=[];visited=[]
-SEED={'nh7_lang':'fa','nh7_offline_media_key_v2':'1','nh7_bookmarks':'["John 3:16"]','nh7_bible_state_JHN_3_16':json.dumps({'saved':True,'note':'Bible note KEEP — فاصله ۱۲۳','highlight':True,'highlightColor':'green'},ensure_ascii=False),'nh7_apo_note_v242:tobit:1:1':'Apocrypha note KEEP','nh7_sermon_note_nav456':'Sermon note KEEP','nh7_gratitude_start':'2026-09-19','nh7_gratitude_completed':'[1]','nh7_gratitude_note_1':'Gratitude note KEEP','nh7_school_progress_nav456':'School progress KEEP','nh7_notifications_enabled_v252':'0','nh7_inbox':json.dumps([{'id':'nav456-inbox','title':'QA message','body':'KEEP inbox body','read':False,'category':'qa','createdAt':'2026-09-19T08:00:00Z'}])}
+SEED={'nh7_lang':'fa','nh7_offline_media_key_v2':'1','nh7_bookmarks':'["John 3:16"]','nh7_bible_state_JHN_3_16':json.dumps({'saved':True,'note':'Bible note KEEP — فاصله ۱۲۳','highlight':True,'highlightColor':'green'},ensure_ascii=False),'nh7_apo_note_v242:tobit:1:1':'Apocrypha note KEEP','nh7_sermon_note_nav456':'Sermon note KEEP','nh7_gratitude_start':'2026-09-19','nh7_gratitude_completed':'[1]','nh7_gratitude_note_1':'Gratitude note KEEP','nh7_school_progress_nav456':'School progress KEEP','nh7_notifications_enabled_v252':'0','nh7_inbox_messages':json.dumps([{'id':'nav456-inbox','title':'QA message','body':'KEEP inbox body','read':False,'category':'qa','createdAt':'2026-09-19T08:00:00Z'}])}
 INIT='(()=>{if(!/^https?:/.test(location.protocol))return;if(!localStorage.getItem("qa456-seeded")){Object.entries('+json.dumps(SEED,ensure_ascii=False)+').forEach(([k,v])=>localStorage.setItem(k,v));localStorage.setItem("qa456-seeded","1")}})();'
 def passed(text):checks.append(text);print('PASS',ENGINE,text,flush=True)
 def wait(p,expr):
@@ -27,7 +27,9 @@ def mock(route):
  return route.fulfill(status=200,content_type='application/json',body=json.dumps({'ok':True,'approved':False,'authenticated':False,'items':[]} if '/functions/' in r.url else []))
 def nav(p,route):
  p.locator('[data-route='+json.dumps(route)+']').click();wait(p,'document.getElementById("view").textContent.trim()!=="..." && document.getElementById("view").textContent.trim().length>5');p.wait_for_timeout(130)
-def assert_no_error(p):assert not p.locator('#view h2').filter(has_text='Error').count(),p.locator('#view').inner_text()
+def assert_no_error(p):
+ wait(p,'document.getElementById("view").textContent.trim()!=="..." && document.getElementById("view").textContent.trim().length>5')
+ assert not p.locator('#view h2').filter(has_text='Error').count(),p.locator('#view').inner_text()
 def home(p):nav(p,'home');expect(p.locator('[data-home-navigation456]')).to_be_visible()
 def more(p):nav(p,'more');expect(p.locator('[data-more-navigation456]')).to_be_visible()
 with sync_playwright() as pw:
@@ -68,6 +70,20 @@ with sync_playwright() as pw:
     more(p);p.locator('[data-more-navigation456] [data-go='+json.dumps(route)+']').click();wait(p,'!document.querySelector("[data-more-navigation456]")');assert_no_error(p);visited.append(route)
    more(p);p.locator('[data-go="audio"]').click();expect(p.locator('.nh7-access-gate-v230')).to_be_visible();p.locator('.nh7-access-close-v230').click()
    expect(p.locator('[data-more-navigation456]')).to_be_visible();passed('Audio access gate and all remaining More links remain intact; no authorization changes')
+   # A deliberately delayed registration lookup tests the real previous navigation race.
+   home(p)
+   p.evaluate("""(()=>{window.qa456NativeFetch=window.fetch;window.qa456Pending=0;window.qa456Started=0;window.fetch=(input,options)=>{const url=typeof input==='string'?input:input.url;if(String(url).includes('registration')){qa456Pending++;qa456Started++;return new Promise(resolve=>setTimeout(resolve,250)).then(()=>qa456NativeFetch(input,options)).finally(()=>qa456Pending--)}return qa456NativeFetch(input,options)}})()""")
+   p.locator('[data-go="meetings"]').click();wait(p,'qa456Started>0');more(p)
+   for _ in range(50):
+    p.wait_for_timeout(150)
+    if p.evaluate('qa456Pending===0'):
+     p.wait_for_timeout(350)
+     if p.evaluate('qa456Pending===0'):break
+   assert p.evaluate('qa456Pending===0')
+   expect(p.locator('[data-more-navigation456]')).to_be_visible()
+   expect(p.locator('.nav-item[data-route="more"]')).to_have_class('nav-item active')
+   p.evaluate('window.fetch=qa456NativeFetch')
+   passed('Late Meetings responses cannot replace the newer More page or its active navigation')
    # Browser back/forward must keep old route IDs and not strand a removed shortcut.
    home(p);p.locator('[data-go="meetings"]').click();wait(p,'!document.querySelector("[data-home-navigation456]")');p.locator('#backBtn').click();expect(p.locator('[data-home-navigation456]')).to_be_visible()
    passed('Existing in-app Back returns from Meetings to Home')
@@ -83,7 +99,10 @@ with sync_playwright() as pw:
    for i in range(8):more(p);expect(p.locator('[data-more-navigation456] .tile[data-go]')).to_have_count(6);home(p);expect(p.locator('[data-home-navigation456] .tile')).to_have_count(1)
    p.reload(wait_until='domcontentloaded');p.locator('#amenButton').click();home(p);expect(p.locator('#quickNotify')).to_be_visible()
    for key,value in SEED.items():
-    if key!='nh7_lang':assert p.evaluate('(k)=>localStorage.getItem(k)',key)==value,key
+    if key=='nh7_inbox_messages':
+     rows=json.loads(p.evaluate('(k)=>localStorage.getItem(k)',key));record=next(x for x in rows if x['id']=='nav456-inbox');assert record['body']=='KEEP inbox body' and record['read'] is False
+    elif key!='nh7_lang':assert p.evaluate('(k)=>localStorage.getItem(k)',key)==value,key
+   expect(p.locator('#inboxBadge')).to_be_visible()
    assert not errors,errors;passed('Repeated navigation/reload preserves notes, saved verses, course progress, unread message and notification preference')
    (OUT/f'{ENGINE}-report.json').write_text(json.dumps({'status':'passed','checks':checks,'visitedDestinations':sorted(set(visited)),'pageErrors':errors,'mockedExternalRequests':len(external),'actualExternalAPICalls':0,'realAccountUsed':False,'physicalDeviceTest':False,'mainModified':False},ensure_ascii=False,indent=2))
  except Exception as e:
