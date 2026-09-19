@@ -1641,9 +1641,14 @@ async function submitSchoolAssignment(courseCode,lessonCode,answerText){
 
 async function school(params={}){
   const d=await loadSchoolContent();
-  if(!params.login&&!params.form&&!params.lesson&&!params.exam&&!params.enter){
-    const guide=window.NH7SchoolPathV351?.guideHtml?.()||`<section class="card"><h2>🎓 ${html(tr('school'))}</h2><p>${html(state.lang==='fa'?'قبل از ورود، راهنمای مدرسه را مطالعه کنید.':state.lang==='hr'?'Prije ulaska pročitajte vodič škole.':'Please read the School Guide before entering.')}</p></section>`;
-    view.innerHTML=guide+`<section class="card"><button class="primary-btn wide-btn" data-go="school" data-params='{"enter":true}'>${html(state.lang==='fa'?'ورود به مدرسه':state.lang==='hr'?'Uđi u školu':'Enter School')}</button></section>`;
+  if(!params.login&&!params.form&&!params.lesson&&!params.exam&&!params.enter&&!params.guide){
+    const t=(fa,en,hr)=>state.lang==='fa'?fa:state.lang==='hr'?hr:en;
+    view.innerHTML=card(tr('school'),`<p class="muted">${html(t('یکی از گزینه‌های زیر را انتخاب کنید.','Choose one of the options below.','Odaberite jednu od opcija u nastavku.'))}</p><div class="school-entry-actions"><button class="secondary-btn wide-btn" data-go="school" data-params='{"guide":true}'>📘 ${html(t('راهنمای مدرسه','School Guide','Vodič škole'))}</button><button class="primary-btn wide-btn" data-go="school" data-params='{"login":true}'>🔐 ${html(t('ورود به مدرسه','Sign in to School','Prijava u školu'))}</button><button class="secondary-btn wide-btn" data-go="school" data-params='{"form":true}'>📝 ${html(t('ثبت‌نام مدرسه','School Registration','Registracija za školu'))}</button></div><div class="notice"><strong>${html(t('هنوز عضو مدرسه نیستید؟','Not registered yet?','Još niste registrirani?'))}</strong><p>${html(t('برای استفاده از مدرسه، ابتدا «ثبت‌نام مدرسه» را انتخاب کنید و فرم را کامل و دقیق پر کنید. پس از بررسی و تأیید ادمین، ایمیل تأیید دریافت می‌کنید. سپس از بخش «ورود به مدرسه» با همان ایمیل و رمزی که هنگام ثبت‌نام ساخته‌اید وارد شوید.','To use the school, first choose “School Registration” and complete the form carefully and accurately. After the administrator reviews and approves your registration, you will receive a confirmation email. Then use “Sign in to School” with the same email and password you created during registration.','Za korištenje škole najprije odaberite „Registracija za školu” i pažljivo i točno ispunite obrazac. Nakon pregleda i odobrenja administratora primit ćete email potvrde. Zatim se u „Prijava u školu” prijavite istom email adresom i lozinkom koju ste izradili pri registraciji.'))}</p></div>`);
+    return;
+  }
+  if(params.guide){
+    const guide=window.NH7SchoolPathV351?.guideHtml?.()||'';
+    view.innerHTML=guide+`<section class="card"><button class="secondary-btn wide-btn" data-go="school">${html(tr('back'))}</button></section>`;
     return;
   }
   if(params.login){
