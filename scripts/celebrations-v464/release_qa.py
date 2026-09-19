@@ -16,6 +16,14 @@ idx=Path('index.html').read_text();links='\n'.join(re.findall(r'<link[^>]+rel="s
 html='''<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#1858a4">'''+links+'''<body><div id="amenGate" class="hidden" hidden></div><div id="appShell" class="app-shell"><header class="topbar nh7-header-date455"><div class="brand"><strong>New Hope 7</strong></div><select id="langSelect"><option>en</option><option>fa</option><option>hr</option></select><div class="nh7-header-date-row455"><time id="nh7HeaderDate455"></time></div></header><main id="view" class="view"><section class="card"><h2>New Hope 7</h2><button id="source">Open</button><textarea id="draft">draft preserved</textarea></section></main></div><script src="js/nh7-theme-studio-v453.js"></script><script src="js/nh7-header-date-v455.js"></script><script src="js/nh7-celebrations-v464.js"></script></body></html>'''
 Path('.qa-celebrations.html').write_text(html)
 Path('.qa-celebrations-minimal.html').write_text(html.replace('<script src="js/nh7-theme-studio-v453.js"></script>','').replace('<script src="js/nh7-header-date-v455.js"></script>',''))
+# Existing styles import Google fonts; provide empty CSS offline, not real requests.
+# Bundled font files and all actual app styles still load from localhost unchanged.
+legacy_font_urls=set()
+for file in subprocess.check_output(['git','ls-tree','-r','--name-only',BASE,'css/'],text=True).splitlines():
+ if file.endswith('.css'):
+  source=subprocess.check_output(['git','show',BASE+':'+file],text=True)
+  legacy_font_urls.update(re.findall(r'https://fonts\.googleapis\.com/[^\s\"\'\)]+',source))
+font_stubs=set()
 class Handler(http.server.SimpleHTTPRequestHandler):
  def log_message(self,*a):pass
 server=http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Handler,directory=str(ROOT)))
@@ -37,9 +45,10 @@ with sync_playwright() as pw:
    errors=[];external=[];page=ctx.new_page();page.on('pageerror',lambda e:errors.append(str(e)))
    def route(r):
     if r.request.url.startswith(origin):r.continue_()
+    elif r.request.resource_type=='stylesheet' and r.request.url in legacy_font_urls:
+     font_stubs.add(r.request.url);r.fulfill(status=200,content_type='text/css',body='/* offline baseline-font fixture */')
     else:external.append(r.request.url);r.abort()
    ctx.route('**/*',route)
-   # Test-only clock. Date-only freeze preserves real timers and CSS animations.
    ms=int(datetime.fromisoformat(when.replace('Z','+00:00')).timestamp()*1000)
    init='window.__qaNow='+str(ms)+';const RealDate=Date;window.Date=class extends RealDate{constructor(...a){super(...(a.length?a:[window.__qaNow]))}static now(){return window.__qaNow}};'
    init+='const v='+json.dumps(values or {})+';for(const [k,x] of Object.entries(v)){localStorage.setItem(k,x)};'
@@ -140,6 +149,6 @@ with sync_playwright() as pw:
   record(engine+': malformed/future DOB and unavailable local storage',invalids)
   browser.close()
 server.shutdown()
-report={'baseline':BASE,'passed_groups':len(results),'results':results,'failures':failures,'scope':'Synthetic local-browser data; no production account or Supabase request. Device/store acceptance remains separate.','calendar_source':'https://www.churchofengland.org/prayer-and-worship/worship-texts-and-resources/common-worship/churchs-year/calendar'}
+report={'baseline':BASE,'passed_groups':len(results),'results':results,'failures':failures,'legacy_google_font_imports_stubbed_offline':sorted(font_stubs),'scope':'Synthetic local-browser data; no production account or Supabase request. Existing external font imports replaced by offline fixture CSS; app CSS and bundled fonts unchanged. Device/store acceptance remains separate.','calendar_source':'https://www.churchofengland.org/prayer-and-worship/worship-texts-and-resources/common-worship/churchs-year/calendar'}
 (OUT/'report.json').write_text(json.dumps(report,indent=2,ensure_ascii=False))
 if failures:raise SystemExit(1)
