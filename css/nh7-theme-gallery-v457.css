@@ -1,0 +1,35 @@
+/* v457: one palette picker, stronger optional colors and readable controls. */
+#view #nh7ThemeStudio453 .nh7-studio-presets453[hidden]{display:none!important}
+#view #nh7ThemeStudio453 .nh7-theme-group-tabs457{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin:8px 0 14px;padding:4px;border-radius:14px;background:var(--nh7-studio-bg,#e8eef6)}
+#view #nh7ThemeStudio453 [data-theme-group457]{min-width:0;min-height:44px;padding:7px 3px;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--nh7-studio-text,#16364c);font:650 .8rem/1.5 inherit;white-space:normal}
+#view #nh7ThemeStudio453 [data-theme-group457][aria-selected="true"]{background:var(--nh7-studio-accent,#1858a4)!important;color:var(--nh7-studio-button-ink,#fff)!important;border-color:var(--nh7-studio-accent,#1858a4)!important}
+#view #nh7ThemeStudio453 .nh7-studio-mini453{height:64px;padding:10px;border-radius:10px;box-sizing:border-box}
+#view #nh7ThemeStudio453 .nh7-studio-mini453 i{height:38px;width:10px}
+#view #nh7ThemeStudio453 .nh7-studio-mini453 b{color:var(--chip-ink)!important;background:var(--chip-card);padding:7px 12px;font-family:inherit}
+#view #nh7ThemeStudio453 .nh7-studio-presets453 button{transition:box-shadow .15s ease,transform .15s ease}
+#view #nh7ThemeStudio453 .nh7-studio-presets453 button:active{transform:scale(.985)}
+#view #nh7ThemeStudio453 #nh7StudioCurrent457{font-size:.8rem;line-height:1.7;margin:12px 0 0;color:var(--nh7-studio-muted,#496172)!important}
+/* Fixed white editor controls caused the earlier dark-mode mismatch. All editor
+   surfaces now derive from the applied palette; draft colors affect the sample only. */
+html[data-nh7-studio] #view #nh7ThemeStudio453{background:var(--nh7-studio-card)!important;color:var(--nh7-studio-text)!important;border-color:var(--nh7-studio-line)!important;border-top:4px solid var(--nh7-studio-accent)!important}
+html[data-nh7-studio] #view #nh7ThemeStudio453 h3,html[data-nh7-studio] #view #nh7ThemeStudio453 label,html[data-nh7-studio] #view #nh7ThemeStudio453 strong,html[data-nh7-studio] #view #nh7ThemeStudio453 summary,html[data-nh7-studio] #view #nh7ThemeStudio453 p{color:var(--nh7-studio-text)!important}
+html[data-nh7-studio] #view #nh7ThemeStudio453 header p,html[data-nh7-studio] #view #nh7ThemeStudio453 .nh7-studio-eyebrow453{color:var(--nh7-studio-muted)!important}
+html[data-nh7-studio] #view #nh7ThemeStudio453 button:not([data-studio-preset453]),html[data-nh7-studio] #view #nh7ThemeStudio453 .nh7-studio-presets453 button{background:var(--nh7-studio-bg);color:var(--nh7-studio-text);border-color:var(--nh7-studio-line)}
+html[data-nh7-studio] #view #nh7ThemeStudio453 .nh7-studio-presets453 button[aria-pressed="true"]{border-color:var(--nh7-studio-accent);box-shadow:0 0 0 2px var(--nh7-studio-accent)}
+html[data-nh7-studio] #view #nh7ThemeStudio453 input,html[data-nh7-studio] #view #nh7ThemeStudio453 select{background:var(--nh7-studio-bg)!important;color:var(--nh7-studio-text)!important;border-color:var(--nh7-studio-line)!important}
+html[data-nh7-studio] #view #nh7ThemeStudio453 details{border-color:var(--nh7-studio-line)}
+html[data-nh7-studio] #view #nh7ThemeStudio453 [data-studio-apply453]{background:var(--nh7-studio-accent)!important;color:var(--nh7-studio-button-ink)!important;border-color:var(--nh7-studio-accent)!important}
+html[data-nh7-studio] #view #nh7ThemeStudio453 [data-studio-contrast453][data-valid="1"]{color:var(--nh7-studio-text)!important}
+html[data-nh7-studio-tone457="dark"] #view #nh7ThemeStudio453 [data-studio-contrast453][data-valid="0"],html[data-nh7-studio-tone457="dark"] #view #nh7ThemeStudio453 #nh7StudioStatus453[data-error="1"]{color:#ffb6b6!important}
+/* Keep sample colors independent, including the deliberately invalid draft test. */
+html[data-nh7-studio] #view #nh7ThemeStudio453 .nh7-studio-sample453 b{color:var(--sample-text)!important}
+html[data-nh7-studio] #view #nh7ThemeStudio453 .nh7-studio-sample453 p{color:var(--sample-muted)!important}
+html[data-nh7-studio] #view #nh7ThemeStudio453 .nh7-studio-sample453 blockquote{color:var(--sample-verse)!important}
+/* Saturated color lives in the surrounding app and accents; scripture stays on
+   the chosen high-contrast reading surface, not a busy gradient or photo. */
+html[data-nh7-studio] #view .tile{border-top:4px solid var(--nh7-studio-accent)!important}
+html[data-nh7-studio] .bottom-nav .nav-item.active{color:var(--nh7-studio-button-ink)!important;background:var(--nh7-studio-accent)!important;border-radius:13px;box-shadow:none}
+html[data-nh7-studio] .bottom-nav .nav-item.active small{color:var(--nh7-studio-button-ink)!important}
+html[data-nh7-studio] #view .hero .secondary-btn{background:var(--nh7-studio-card)!important;color:var(--nh7-studio-text)!important}
+@media(max-width:380px){#view #nh7ThemeStudio453 [data-theme-group457]{font-size:.74rem}#view #nh7ThemeStudio453 .nh7-studio-mini453{padding:8px}#view #nh7ThemeStudio453 .nh7-studio-mini453 b{padding:7px 9px}}
+@media(prefers-reduced-motion:reduce){#view #nh7ThemeStudio453 .nh7-studio-presets453 button{transition:none;transform:none}}
