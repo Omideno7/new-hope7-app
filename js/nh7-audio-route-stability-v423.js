@@ -2,7 +2,7 @@
    Online category/sermon reads are network-first; stale cache is used only when offline
    or when the server is temporarily unavailable. Expired user sessions are refreshed once. */
 (()=>{'use strict';
-const VERSION='4.2.3-audio-live-catalogue';
+const VERSION='4.6.1-audio-live-catalogue';
 const SUPABASE='https://gpzcwffxnddhaeaogdyo.supabase.co';
 const PUBLISHABLE='sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37';
 const CACHE='nh7-audio-route-v423';
@@ -13,7 +13,7 @@ const pending=new Map();
 let authRefresh=null;
 function parse(value,fallback=null){try{return JSON.parse(value||'')??fallback}catch(_){return fallback}}
 function session(){return parse(localStorage.getItem(SESSION_KEY),null)}
-function saveSession(value){if(value?.access_token){localStorage.setItem(SESSION_KEY,JSON.stringify(value));localStorage.removeItem(LOGOUT_KEY);window.dispatchEvent(new CustomEvent('nh7-session-refreshed',{detail:{email:String(value?.user?.email||'').toLowerCase()}}));return true}return false}
+function saveSession(value){if(value?.access_token){const previous=session()||{},merged=Object.assign({},previous,value,{user:value.user||previous.user});localStorage.setItem(SESSION_KEY,JSON.stringify(merged));localStorage.removeItem(LOGOUT_KEY);window.dispatchEvent(new CustomEvent('nh7-session-refreshed',{detail:{email:String(merged?.user?.email||'').toLowerCase()}}));return true}return false}
 function email(){return String(session()?.user?.email||localStorage.getItem('nh7_manual_email')||'').trim().toLowerCase()}
 function signedIn(){return localStorage.getItem(LOGOUT_KEY)!=='1'&&!!session()?.access_token}
 function schoolAccess(){return parse(localStorage.getItem('nh7_school_access'),{})||{}}
@@ -56,7 +56,7 @@ async function refreshSession(){
     try{
       const result=await baseFetch(`${SUPABASE}/auth/v1/token?grant_type=refresh_token`,{method:'POST',cache:'no-store',headers:{apikey:PUBLISHABLE,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:current.refresh_token})});
       const text=await result.text();let data={};try{data=text?JSON.parse(text):{}}catch(_){data={}}
-      if(!result.ok){if(result.status===400||result.status===401){localStorage.removeItem(SESSION_KEY);sessionStorage.removeItem('nh7_content_access_status_v230')}return false}
+      if(!result.ok){if(result.status===400||result.status===401)sessionStorage.removeItem('nh7_content_access_status_v230');return false}
       return saveSession(data);
     }catch(error){console.warn('NH7 audio session refresh',error);return false}
   })().finally(()=>{authRefresh=null});
