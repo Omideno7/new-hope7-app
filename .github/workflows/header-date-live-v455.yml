@@ -1,0 +1,40 @@
+name: Verify Header Date v455 Live
+on:
+  push:
+    branches: [feature/header-date-v455-20260919]
+    paths: ['scripts/header-date-live-trigger455.json']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Load verified release identity
+        run: |
+          python - <<'PY'
+          import re,json,os
+          s=json.load(open('scripts/header-date-live-trigger455.json'))['main']
+          assert re.fullmatch('[a-f0-9]{40}',s)
+          with open(os.environ['GITHUB_ENV'],'a') as env:env.write('EXPECTED_SHA='+s+'\n')
+          PY
+      - name: Confirm main and prepare browser
+        run: |
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$EXPECTED_SHA"
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Verify live date files, language changes and responsive header
+        run: timeout --kill-after=10s 240s python scripts/header-date-live-v455.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: date-v455-live-verification
+          path: /tmp/date455-live/
+          retention-days: 14
