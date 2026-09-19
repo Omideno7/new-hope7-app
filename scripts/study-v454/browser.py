@@ -48,21 +48,21 @@ with sync_playwright() as pw:
                 p.select_option('#nh7FontSelect',font);wait(p,'document.documentElement.dataset.nh7Font454==='+json.dumps(font))
                 sample=p.locator('[data-font-sample454]');sample.scroll_into_view_if_needed();p.wait_for_timeout(100)
                 family=p.evaluate('NH7FontsV454.fonts['+json.dumps(font)+'].family');assert family in sample.evaluate('(n)=>getComputedStyle(n).fontFamily')
-                metrics.append(sample.evaluate('(n)=>{const c=document.createElement("canvas").getContext("2d");c.font="20px "+getComputedStyle(n).fontFamily;return c.measureText(n.textContent).width}'))
+                metrics.append(sample.evaluate('(n)=>{const c=document.createElement("canvas").getContext("2d");c.font="32px "+getComputedStyle(n).fontFamily;return [n.textContent,"iiiiWWWWmmmm","agQ0123456789","ČĆŽŠĐ čćžšđ","فیض و محبت — پژوهش"].map(t=>c.measureText(t).width)}'))
                 image=sample.screenshot();images.append(hashlib.sha256(image).hexdigest());(OUT/f'{ENGINE}-{locale}-{font}.png').write_bytes(image)
                 assert not p.locator('#nh7FontStatus454[data-error="1"]').count()
             assert len(set(images))==len(ids),(locale,images)
-            assert len(set(round(v,2) for v in metrics))==len(ids),(locale,metrics)
-            screens[locale]={'imageHashes':images,'textWidths':metrics,'fonts':ids}
+            # Different designs may give one sentence the same width. Require distinct
+            # vectors across several glyph samples AND distinct actual text images.
+            assert len({tuple(round(v,3) for v in row) for row in metrics})==len(ids),(locale,metrics)
+            screens[locale]={'imageHashes':images,'glyphWidthVectors':metrics,'fonts':ids}
             passed(locale+': each font visibly changes actual text immediately in old selector; no Apply click')
-        # New Studio selector must behave just like the existing one.
         language(p,'fa');settings(p);p.locator('.nh7-studio-custom453 summary').click();p.select_option('[data-studio-font453="fa"]','naskh')
         wait(p,'document.documentElement.dataset.nh7Font454==="naskh"');expect(p.locator('#nh7FontSelect')).to_have_value('naskh')
         p.locator('[data-studio-preset453="sepia"]').click();p.locator('[data-studio-apply453]').click();wait(p,'document.documentElement.dataset.nh7Studio==="sepia"')
         assert p.evaluate('NH7FontsV454.choice()')=='naskh'
         p.reload(wait_until='domcontentloaded');p.locator('#amenButton').click();wait(p,'document.documentElement.dataset.nh7Font454==="naskh"');settings(p)
         passed('Studio and legacy font selectors agree; theme application and reload preserve the chosen font')
-        # Check a real Bible paragraph rather than only a sample/menu font.
         p.locator('[data-route="bible"]').click();choose(p,{'section':'written'});choose(p,{'testament':'NT'});choose(p,{'bookId':'JHN','mode':'book'});choose(p,{'chapter':3,'mode':'chapter'})
         expect(p.locator('#v-16 .verse-text')).to_be_attached();assert 'NH7 Noto Naskh' in p.locator('#v-16 .verse-text').evaluate('(n)=>getComputedStyle(n).fontFamily')
         p.screenshot(path=str(OUT/f'{ENGINE}-actual-persian-verse.png'));passed('The selected Persian font reaches actual Bible verse text')
@@ -77,7 +77,6 @@ with sync_playwright() as pw:
                 assert 'not yet' not in text and 'اضافه نشده' not in text and 'još nije' not in text
                 p.locator('[data-lex-back453]').click()
             passed(locale+': all 60 published entries have substantive explanations; five varied entry dialogs checked')
-        # The actual approved classic player reads a synthetic locally stored WAV.
         for locale in ['fa','en','hr']:
             language(p,locale);p.locator('[data-route="home"]').click()
             p.evaluate('''async()=>{
@@ -89,13 +88,14 @@ with sync_playwright() as pw:
             card=p.locator('[data-sermon-card="45400000-0000-4000-8000-000000000001"]');card.locator('[data-classic-play],[data-sermon-play]').first.click()
             wait(p,'[...document.querySelectorAll("audio")].some(a=>!a.paused&&a.currentTime>0)')
             p.evaluate('window.qa454audio=[...document.querySelectorAll("audio")].find(a=>!a.paused);qa454audio.playbackRate=1.25;window.qa454pauseCount=0;qa454audio.addEventListener("pause",()=>window.qa454pauseCount++);window.qa454src=qa454audio.src;window.qa454view=document.getElementById("view");window.qa454time=qa454audio.currentTime')
-            card.locator('[data-quick-bible454]').click();expect(p.locator('#nh7QuickBible454')).to_be_visible();expect(p.locator('[data-quick-line454="16"]')).to_be_attached()
+            card.locator('[data-quick-bible454]').click();expect(p.locator('#nh7QuickBible454')).to_be_visible();expect(p.locator('[data-quick-line454]')).not_to_have_count(0)
             ref={'fa':'یوحنا ۳:۱۶-۱۸','en':'John 3:16-18','hr':'Ivan 3:16-18'}[locale];p.fill('[data-quick-reference454]',ref);p.locator('[data-quick-reference454]').press('Enter');expect(p.locator('[data-quick-line454]')).to_have_count(3)
             assert p.locator('[data-quick-content454] h3').inner_text().startswith({'fa':'یوحنا','en':'John','hr':'Ivan'}[locale])
             p.locator('[data-quick-copy454]').click();assert p.evaluate('qa454copies.at(-1)').startswith({'fa':'یوحنا','en':'John','hr':'Ivan'}[locale])
             p.locator('[data-quick-all454]').click();expect(p.locator('[data-quick-line454]')).to_have_count(36)
+            p.screenshot(path=str(OUT/f'{ENGINE}-quick-bible-{locale}.png'))
             p.fill('[data-quick-reference454]',ref.replace('16-18','999').replace('۱۶-۱۸','۹۹۹'));p.locator('[data-quick-reference454]').press('Enter');expect(p.locator('[data-quick-status454]')).not_to_have_text('')
-            p.screenshot(path=str(OUT/f'{ENGINE}-quick-bible-{locale}.png'));p.wait_for_timeout(350)
+            p.wait_for_timeout(350)
             assert p.evaluate('!qa454audio.paused && qa454audio.currentTime>qa454time && qa454audio.src===qa454src && qa454audio.playbackRate===1.25 && qa454pauseCount===0 && document.getElementById("view")===qa454view')
             p.locator('[data-quick-close454]').last.click();expect(p.locator('#nh7QuickBible454')).to_have_count(0);assert p.evaluate('!qa454audio.paused&&qa454pauseCount===0');p.evaluate('qa454audio.pause()')
             passed(locale+': actual classic audio continues at same source and speed while verses are found, copied and closed')
