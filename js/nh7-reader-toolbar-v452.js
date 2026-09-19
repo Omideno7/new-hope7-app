@@ -2,7 +2,7 @@
 (()=>{'use strict';
 if(window.__NH7_READER_TOOLBAR_V452__)return;
 window.__NH7_READER_TOOLBAR_V452__=true;
-const VERSION='4.5.2-r2',APP_URL='https://omideno7.github.io/new-hope7-app/app/';
+const VERSION='4.5.3-unified',APP_URL='https://omideno7.github.io/new-hope7-app/app/';
 const selected=new Map(),BOOKMARKS='nh7_bookmarks',NOTE_META='nh7_my_note_meta_v234_';
 let bar=null,dialog=null,lastFocus=null,observerPending=false,selectionLang='',busy=false;
 const language=()=>['fa','en','hr'].includes(localStorage.getItem('nh7_lang'))?localStorage.getItem('nh7_lang'):'en';
@@ -21,7 +21,8 @@ function source(node){
     return{kind:'bible',key,ref,bookId:m[1],chapter:+m[2],verse:+m[3],node};
   }
   const current=window.NH7ApoReaderSourceV452?.current?.(),book=current?.book,verse=+node.dataset.apoVerse;
-  if(!book||!verse||!current.chapter)return null;
+  const stableBook=node.dataset.readerBook453,stableChapter=+node.dataset.readerChapter453;
+  if(!book||!verse||!current.chapter||(stableBook&&stableBook!==book.book_id)||(stableChapter&&stableChapter!==+current.chapter))return null;
   const suffix=`${book.book_id}:${current.chapter}:${verse}`;
   return{kind:'apocrypha',key:'nh7_apo_note_v242:'+suffix,ref:'APO:'+suffix,bookId:book.book_id,chapter:+current.chapter,verse,book,node};
 }
@@ -206,6 +207,7 @@ window.addEventListener('click',handle,true);window.addEventListener('keydown',h
 window.addEventListener('keydown',event=>{if(event.key==='Escape'&&!dialog&&items().length){clear();event.stopImmediatePropagation()}},true);
 function enhance(){
   observerPending=false;
+  document.documentElement.dataset.nh7UnifiedReader453='1';
   if(selectionLang&&selectionLang!==language())clear();
   for(const [key,info] of selected)if(!info.node.isConnected)selected.delete(key);
   document.querySelectorAll('.reader.continuous-reader,.nh7-apo-continuous-reader').forEach(r=>r.classList.add('nh7-reader-managed452'));

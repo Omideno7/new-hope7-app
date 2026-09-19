@@ -1364,6 +1364,7 @@ async function bibleKeywordsV450(params={}){return nh7BibleKeywordsV451.bibleKey
 async function bible(params={}){
   await loadBibleMeta();
   if(params.q)return bibleSearch(params.q,params);
+  if(params.mode==='lexicon')return window.NH7OriginalLanguageV453.render(params);
   if(params.mode==='keywords')return bibleKeywordsV450(params);
   if(params.mode==='book')return bibleBook(params.bookId,params.testament||'');
   if(params.mode==='chapter')return bibleChapter(params.bookId,Number(params.chapter||1));
@@ -1372,7 +1373,7 @@ async function bible(params={}){
     return;
   }
   if(!params.testament){
-    view.innerHTML=card(tr('writtenBible'),`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible">‹ ${html(tr('back'))}</button></div><div class="form-row"><input id="bibleSearch" class="search-box" placeholder="${tr('search')}"></div><button class="secondary-btn" id="runBibleSearch">${tr('search')}</button><div class="grid">${tile('bible','📜',tr('oldtestament'),'',{section:'written',testament:'OT'})}${tile('bible','✝',tr('newtestament'),'',{section:'written',testament:'NT'})}${tile('bible','🔑',l223('کلیدواژه‌ها','Keywords','Ključne riječi'),l223('۲۵۰۰ واژه','2,500 words','2.500 riječi'),{section:'written',mode:'keywords'})}</div>`);
+    view.innerHTML=card(tr('writtenBible'),`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible">‹ ${html(tr('back'))}</button></div><div class="form-row"><input id="bibleSearch" class="search-box" placeholder="${tr('search')}"></div><button class="secondary-btn" id="runBibleSearch">${tr('search')}</button><div class="grid">${tile('bible','📜',tr('oldtestament'),'',{section:'written',testament:'OT'})}${tile('bible','✝',tr('newtestament'),'',{section:'written',testament:'NT'})}${tile('bible','🔑',l223('کلیدواژه‌ها','Keywords','Ključne riječi'),l223('۲۵۰۰ واژه','2,500 words','2.500 riječi'),{section:'written',mode:'keywords'})}${tile('bible','🔤',l223('زبان اصلی','Original languages','Izvorni jezici'),l223('واژه، معنی و ارجاع‌های منتخب','Words, meanings and selected references','Riječi, značenja i odabrani navodi'),{section:'written',mode:'lexicon'})}</div>`);
     return;
   }
   const testament=String(params.testament).toUpperCase();
@@ -2181,7 +2182,7 @@ function nh7UiWrite(key,value){try{localStorage.setItem(key,value)}catch(e){}}
 function nh7UiPrefs(){
   const theme=['system','light','dark'].includes(nh7UiRead(NH7_UI_PREF_KEYS.theme,'system'))?nh7UiRead(NH7_UI_PREF_KEYS.theme,'system'):'system';
   const size=['90','100','110','120'].includes(nh7UiRead(NH7_UI_PREF_KEYS.size,'100'))?nh7UiRead(NH7_UI_PREF_KEYS.size,'100'):'100';
-  const font=['default','system','readable','serif','persian'].includes(nh7UiRead(NH7_UI_PREF_KEYS.font,'default'))?nh7UiRead(NH7_UI_PREF_KEYS.font,'default'):'default';
+  const font=['default','system','readable','serif','persian',...Object.keys(window.NH7FontsV454?.fonts||{})].includes(nh7UiRead(NH7_UI_PREF_KEYS.font,'default'))?nh7UiRead(NH7_UI_PREF_KEYS.font,'default'):'default';
   const home=nh7UiRead(NH7_UI_PREF_KEYS.home,'1')==='0'?'0':'1';
   const accent=['blue','green','red','purple','orange','teal','pink','custom'].includes(nh7UiRead(NH7_UI_PREF_KEYS.accent,'blue'))?nh7UiRead(NH7_UI_PREF_KEYS.accent,'blue'):'blue';
   const rawCustom=nh7UiRead(NH7_UI_PREF_KEYS.custom,'#2563eb');
@@ -2193,6 +2194,7 @@ function nh7UiResolvedTheme(mode){
   try{return matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}catch(e){return'light'}
 }
 function nh7UiFontStack(font){
+  const added=window.NH7FontsV454?.fonts?.[font];if(added)return added.stack;
   if(font==='system')return 'system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif';
   if(font==='readable')return '"Trebuchet MS",Verdana,Arial,sans-serif';
   if(font==='serif')return 'Georgia,"Times New Roman",serif';
@@ -2457,4 +2459,19 @@ window.NH7ReaderSourceV452={
       await window.NH7BibleBatchV230.syncPayload({batch_id:crypto.randomUUID?.()||String(Date.now()),language:state.lang,items:[{verse_key:key,verse_ref:ref,verse_text:row?.text||'',saved:false,highlight_color:st.highlight?String(st.highlightColor||'yellow'):'',note:String(st.note||'')}]});
     }
   }
+};
+
+// Additive study routing; no change to verse identity or text.
+window.NH7StudySourceV453={open:params=>navigate('bible',params)};
+
+// Read-only access for the audio overlay; no navigate() and no audio operations.
+window.NH7QuickBibleSourceV454={
+ books:async()=>{await loadBibleMeta();return state.bible.books.map(b=>({id:b.id,names:{...b.names},chapters:b.chapters}))},
+ chapter:async(bookId,chapter,locale=state.lang)=>{
+  const data=await loadBook(bookId);if(!data)return[];
+  return data.verses.filter(v=>+v.chapter===+chapter).map(v=>{
+   let text=String(v.text?.[locale]||'');if(locale==='en')text=text.replace(new RegExp('^\\s*'+Number(v.verse)+'\\.\\s+'),'');
+   return{verse:+v.verse,text};
+  });
+ }
 };

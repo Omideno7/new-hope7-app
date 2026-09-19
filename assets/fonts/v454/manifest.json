@@ -1,0 +1,18 @@
+[
+  {
+    "font": "amiri",
+    "glyphCoverage": "پچژگکیی۰۱۲۳۴۵۶۷۸۹",
+    "sourceSha256": "ab391c4147d054c48976e98322ad0eefe1427aa0e0502a12a4c75d80a70cfcd7",
+    "sourceCommit": "f2bd09badbc763d8757951d52deec29da27e85fb",
+    "license": "OFL-1.1",
+    "bytes": 149140
+  },
+  {
+    "font": "markazitext",
+    "glyphCoverage": "پچژگکیی۰۱۲۳۴۵۶۷۸۹",
+    "sourceSha256": "424b7331681160ff2a4b209bfc356ea9564d429a7daea43ee4dc28de8ff4f9fe",
+    "sourceCommit": "f2bd09badbc763d8757951d52deec29da27e85fb",
+    "license": "OFL-1.1",
+    "bytes": 86588
+  }
+]

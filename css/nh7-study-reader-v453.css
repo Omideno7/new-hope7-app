@@ -1,0 +1,36 @@
+/* Only hide legacy controls when the unified reader controller is available. */
+html[data-nh7-unified-reader453="1"] #view .nh7-apo-reader-card .nh7-apo-continuous-reader .nh7-apo-verse .nh7-apo-verse-tools,
+html[data-nh7-unified-reader453="1"] #view .nh7-apo-reader-card .nh7-apo-continuous-reader[data-nh7-inline392] .nh7-apo-verse-tools:not(.hidden){display:none!important}
+html[data-nh7-unified-reader453="1"] .nh7-apo-verse-main[aria-selected="true"]{text-decoration:none!important}
+#nh7ReaderToolbar452 .nh7-reader-study453{display:block;width:100%;font-size:.69rem;line-height:1.4;min-height:28px;padding:3px 10px;margin-bottom:3px;background:#e7f3fb;color:#075b94;border-radius:8px}
+html[data-nh7-studio] #nh7ReaderToolbar452 .nh7-reader-study453{background:var(--nh7-studio-bg)!important;color:var(--nh7-studio-text)!important}
+.nh7-lexicon453{overflow-wrap:anywhere}
+.nh7-lex-head453{padding:18px 0 4px}.nh7-lex-eyebrow453{font:700 10px/1.6 system-ui;letter-spacing:.14em;color:var(--muted,#526777)}
+.nh7-lex-head453 h2{margin:7px 0 5px}.nh7-lex-head453 p{font-size:.86rem;margin:0 0 14px}
+.nh7-lex-scope453 p{font-size:.83rem;line-height:1.8;margin:0}
+.nh7-lex-filters453{display:grid;grid-template-columns:minmax(0,1fr) minmax(150px,.45fr);gap:12px;margin:16px 0 10px}
+.nh7-lex-filters453 label{display:grid;gap:7px;font-size:.82rem}
+.nh7-lex-filters453 input,.nh7-lex-filters453 select{min-height:44px;padding:10px 12px;font:inherit;width:100%;box-sizing:border-box}
+.nh7-lex-list453{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}
+.nh7-lex-card453{display:flex;flex-direction:column;gap:9px;text-align:start;min-width:0;padding:15px;border:1px solid var(--line,#d4e3ed);border-radius:15px;background:var(--nh7-studio-card,var(--card,#fff));color:var(--nh7-studio-text,var(--ink,#17364e));cursor:pointer;font:inherit}
+.nh7-lex-card453:hover{box-shadow:0 5px 18px #123a5414;border-color:var(--nh7-studio-accent,var(--brand,#1858a4))}
+.nh7-lex-card453:focus-visible{outline:2px solid var(--nh7-studio-accent,var(--brand,#1858a4));outline-offset:2px}
+.nh7-lex-word453{font-size:.92rem;font-weight:750}.nh7-lex-original453{font:500 1.2rem/1.6 Georgia,'Noto Naskh Arabic',serif;letter-spacing:0}
+.nh7-lex-meta453{font-size:.74rem;color:var(--nh7-studio-muted,var(--muted,#526777));line-height:1.5}
+.nh7-lex-detail453{padding:15px 0}.nh7-lex-detail453 h2{font-size:1.45rem;margin:8px 0}
+.nh7-lex-lemma453{font:500 2rem/1.6 Georgia,'Noto Naskh Arabic',serif;margin:12px 0;text-align:start}
+.nh7-lex-translit453{font-family:Georgia,serif;letter-spacing:.02em}
+.nh7-lex-explanation453{line-height:1.95}
+.nh7-lex-verses453{display:grid;gap:10px;margin:10px 0}
+.nh7-lex-verses453 article{padding:14px;border:1px solid var(--nh7-studio-line,var(--line,#d4e3ed));border-radius:13px;background:var(--nh7-studio-card,var(--card,#fff))}
+.nh7-lex-verses453 p{font-size:.91rem;line-height:1.95;white-space:pre-wrap}
+.nh7-lex-sources453{border-top:1px solid var(--line,#d4e3ed);padding-top:15px;margin-top:15px;font-size:.82rem;line-height:1.85}.nh7-lex-sources453 summary{cursor:pointer;min-height:40px}
+html[data-nh7-theme="dark"] .nh7-lex-card453{background:var(--nh7-studio-card,#142b3c);color:var(--nh7-studio-text,#f0f6fc);border-color:var(--nh7-studio-line,#426077)}
+html[data-nh7-theme="dark"] .nh7-lex-meta453{color:var(--nh7-studio-muted,#b1c6d8)}
+html[data-nh7-theme="dark"] #nh7ReaderToolbar452 .nh7-reader-study453{background:var(--nh7-studio-bg,#284b66);color:var(--nh7-studio-text,#fff)}
+@media(max-width:850px){.nh7-lex-list453{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.nh7-lex-list453{grid-template-columns:1fr}.nh7-lex-filters453{grid-template-columns:1fr}.nh7-lex-card453{padding:12px}.nh7-lex-detail453 h2{font-size:1.25rem}}
+
+/* v453 compact study shortcut: share the summary row instead of adding a row. */
+#nh7ReaderToolbar452 .nh7-reader-selection-summary452:has(.nh7-reader-study453){display:flex;align-items:center;justify-content:space-between;gap:8px}
+#nh7ReaderToolbar452 .nh7-reader-selection-summary452 .nh7-reader-study453{width:auto;flex:0 0 auto;margin:0;min-height:28px;padding:3px 9px}
