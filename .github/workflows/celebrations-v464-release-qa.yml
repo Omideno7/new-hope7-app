@@ -34,6 +34,20 @@ jobs:
         run: |
           python scripts/celebrations-v464/prepare_release.py
           sed -i "s/localStorage.getItem('nh7_lang')/item('nh7_lang')/" js/nh7-celebrations-v464.js
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('js/nh7-celebrations-v464.js');s=p.read_text()
+          old="confetti.style.setProperty('--drift',i%2?'12px':'-12px');layer.append(confetti)"
+          new="confetti.style.setProperty('--drift',i%2?'12px':'-12px');confetti.style.animation='nh7Confetti464 3.4s ease-in '+(.5+i*.035)+'s forwards';layer.append(confetti)"
+          assert old in s
+          p.write_text(s.replace(old,new))
+          # The browser must actually animate, rather than pass a static-style check.
+          q=Path('scripts/celebrations-v464/release_qa.py');t=q.read_text()
+          old="    a=first.evaluate('(n)=>getComputedStyle(n).transform');p.wait_for_timeout(900);b=first.evaluate('(n)=>getComputedStyle(n).transform');assert a!=b,(a,b)"
+          new="    p.wait_for_function(\"()=>{const n=document.querySelector('.nh7-bday-confetti464');return n&&getComputedStyle(n).transform!=='none'}\",timeout=3200)\n    a=first.evaluate('(n)=>getComputedStyle(n).transform');p.wait_for_timeout(500);b=first.evaluate('(n)=>getComputedStyle(n).transform');assert a!=b and b!='none',(a,b)"
+          assert old in t
+          q.write_text(t.replace(old,new))
+          PY
       - name: Install fixed browser test dependencies
         run: |
           python -m pip install playwright==1.55.0
