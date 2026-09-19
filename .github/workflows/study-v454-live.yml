@@ -1,0 +1,44 @@
+name: Verify Study v454 Live Main
+on:
+  push:
+    branches: [qa/study-v454-integration-20260919]
+    paths: ['scripts/release-v454/live-trigger.json']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      BASE_SHA: 259280fe00a7dbc7359c24f997338724961f0c08
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Read exact release checkpoint
+        run: |
+          python - <<'PY'
+          import json,os,re
+          d=json.load(open('scripts/release-v454/live-trigger.json'))
+          with open(os.environ['GITHUB_ENV'],'a') as env:
+              for key,field in [('EXPECTED_SHA','main'),('SOURCE_SHA','source')]:
+                  assert re.fullmatch('[a-f0-9]{40}',d[field]);env.write(key+'='+d[field]+'\n')
+          PY
+      - name: Confirm main and install pinned browser
+        run: |
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$EXPECTED_SHA"
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Verify live bytes and actual user interface
+        run: timeout --kill-after=10s 480s python scripts/release-v454/live.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: study-v454-live-main-verification
+          path: /tmp/study454-live/
+          retention-days: 14
