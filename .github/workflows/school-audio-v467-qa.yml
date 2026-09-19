@@ -1,0 +1,65 @@
+name: School Audio v467 Regression QA
+on:
+  push:
+    branches: [qa/school-audio-v467-20260919]
+    paths:
+      - scripts/v467/**
+      - .github/workflows/school-audio-v467-qa.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: school-audio-v467-qa
+  cancel-in-progress: false
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prepare scoped recovery against unchanged production baseline
+        run: |
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = '44dfd189832c4a6031562851765811f941e0efe4'
+          python scripts/v467/prepare.py
+          mkdir -p qa-v467
+          git diff -- js index.html service-worker.js sw-release-core-v403.js > qa-v467/runtime.patch
+          python -m py_compile scripts/v467/qa.py
+      - name: Install pinned browser dependencies
+        run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium webkit
+      - name: Cache upgrade and unaffected-module safeguards
+        run: node scripts/v467/cache.cjs
+      - name: School, session and real audio playback regressions
+        run: python scripts/v467/qa.py
+      - name: Commit verified runtime on QA branch only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html service-worker.js sw-release-core-v403.js js/app.js js/nh7-session-v467.js js/nh7-audio-classic-v400.js js/nh7-audio-route-stability-v423.js js/nh7-school-media-session-v262.js js/nh7-school-path-v351.js
+          test "$(git diff --cached --name-only | wc -l)" -eq 9
+          git commit -m 'fix(school-audio): verified non-destructive v467 runtime [skip ci]'
+          git push origin HEAD:qa/school-audio-v467-20260919
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess,json
+          paths=['index.html','service-worker.js','sw-release-core-v403.js','js/app.js','js/nh7-session-v467.js','js/nh7-audio-classic-v400.js','js/nh7-audio-route-stability-v423.js','js/nh7-school-media-session-v262.js','js/nh7-school-path-v351.js']
+          m={'baseline':'44dfd189832c4a6031562851765811f941e0efe4','tested_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'runtime':{p:subprocess.check_output(['git','rev-parse','HEAD:'+p],text=True).strip() for p in paths}}
+          Path('qa-v467/runtime-manifest.json').write_text(json.dumps(m,indent=2));print(json.dumps(m,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: school-audio-v467-qa
+          path: qa-v467/
+          retention-days: 14
