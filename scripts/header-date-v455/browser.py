@@ -27,7 +27,8 @@ def mock(route):
 with sync_playwright() as pw:
  browser=getattr(pw,ENGINE).launch(**({'args':['--remote-debugging-port=9222']} if ENGINE=='chromium' and not LIVE else {}))
  context=browser.new_context(viewport={'width':390,'height':844},timezone_id='Europe/Zagreb',service_workers='block');context.route('**/*',mock);context.route_web_socket('**/*',lambda ws:ws.close());context.add_init_script(init)
- page=context.new_page();page.set_default_timeout(30000);expect.set_options(timeout=30000);page.on('pageerror',lambda e:errors.append(str(e)));page.on('dialog',lambda d:d.accept())
+ page=context.new_page();page.set_default_timeout(30000);expect.set_options(timeout=30000)
+ page.on('pageerror',lambda e:errors.append({'message':str(e),'stack':e.stack,'after':checks[-1] if checks else 'startup'}));page.on('dialog',lambda d:d.accept())
  page.clock.set_fixed_time(datetime(2026,9,19,10,0,0,tzinfo=timezone.utc))
  try:
   response=page.goto(BASE+'/index.html',wait_until='domcontentloaded');assert response.status==200
@@ -40,7 +41,6 @@ with sync_playwright() as pw:
   for language,word in [('en','Saturday, 19 September 2026'),('hr','subota, 19. rujna 2026.'),('fa','شنبه، ۲۸ شهریور ۱۴۰۵')]:
    page.select_option('#langSelect',language);expect(date).to_have_text(word);expect(date).to_have_attribute('lang',language);expect(date).to_have_attribute('dir','rtl' if language=='fa' else 'ltr');assert page.locator('#nh7HeaderDate455').count()==1
    passed(language+': language selection updates calendar, weekday, month and direction immediately')
-  # Repainting only the date must not replace view, audio, selection or form nodes.
   page.evaluate('window.qaDateView=document.getElementById("view");window.qaDateHeader=document.querySelector("header.topbar");window.qaDateStorage=Object.fromEntries(Object.entries(localStorage))')
   page.clock.set_fixed_time(datetime(2026,9,20,0,0,1,tzinfo=timezone.utc));page.evaluate('window.dispatchEvent(new Event("focus"))');expect(date).to_have_text('یکشنبه، ۲۹ شهریور ۱۴۰۵')
   assert page.evaluate('qaDateView===document.getElementById("view") && qaDateHeader===document.querySelector("header.topbar")')
@@ -71,12 +71,15 @@ with sync_playwright() as pw:
   for route in ['daily','plans','school','more','bible','home']:
    page.locator('[data-route='+json.dumps(route)+']').click();expect(date).to_be_visible();assert page.locator('#nh7HeaderDate455').count()==1;page.wait_for_timeout(100)
   page.locator('[data-route="more"]').click();page.locator('[data-go="settings"]').click();page.select_option('#settingsLang','hr');expect(date).to_contain_text('rujna')
+  # The date updates immediately. Wait for the existing asynchronous Settings
+  # language render as well before intentionally destroying the document.
+  expect(page.locator('#settingsLang')).to_have_value('hr');expect(page.locator('#view h2').first).to_have_text('Postavke')
+  page.evaluate('document.fonts.ready');page.wait_for_timeout(350)
   page.reload(wait_until='domcontentloaded');page.locator('#amenButton').click();expect(date).to_contain_text('rujna');expect(date).to_have_attribute('lang','hr')
   passed('All primary routes, Settings language selector and reload retain one correctly localized date')
   for key,value in seed.items():
    if key!='nh7_lang':assert page.evaluate('(k)=>localStorage.getItem(k)',key)==value,key
   assert not errors,errors;passed('Old synthetic Bible, Apocrypha, sermon, gratitude and school data unchanged; no uncaught errors')
-  # Independent browser contexts verify the host/device date instead of forcing Zagreb globally.
   for zone,iso in [('America/Los_Angeles','2026-09-18'),('Pacific/Kiritimati','2026-09-19')]:
    c=browser.new_context(timezone_id=zone,service_workers='block');c.route('**/*',mock);c.add_init_script(init);p=c.new_page();p.clock.set_fixed_time(datetime(2026,9,19,0,30,tzinfo=timezone.utc));p.goto(BASE+'/index.html',wait_until='domcontentloaded');p.locator('#amenButton').click();expect(p.locator('#nh7HeaderDate455')).to_have_attribute('datetime',iso);c.close()
   passed('Actual browser contexts show different local dates for Los Angeles and Kiritimati at the same instant')
