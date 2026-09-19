@@ -1641,6 +1641,16 @@ async function submitSchoolAssignment(courseCode,lessonCode,answerText){
 
 async function school(params={}){
   const d=await loadSchoolContent();
+  if(!params.login&&!params.form&&!params.lesson&&!params.exam&&!params.enter&&!params.guide){
+    const t=(fa,en,hr)=>state.lang==='fa'?fa:state.lang==='hr'?hr:en;
+    view.innerHTML=card(tr('school'),`<p class="muted">${html(t('یکی از گزینه‌های زیر را انتخاب کنید.','Choose one of the options below.','Odaberite jednu od opcija u nastavku.'))}</p><div class="school-entry-actions"><button class="secondary-btn wide-btn" data-go="school" data-params='{"guide":true}'>📘 ${html(t('راهنمای مدرسه','School Guide','Vodič škole'))}</button><button class="primary-btn wide-btn" data-go="school" data-params='{"login":true}'>🔐 ${html(t('ورود به مدرسه','Sign in to School','Prijava u školu'))}</button><button class="secondary-btn wide-btn" data-go="school" data-params='{"form":true}'>📝 ${html(t('ثبت‌نام مدرسه','School Registration','Registracija za školu'))}</button></div><div class="notice"><strong>${html(t('هنوز عضو مدرسه نیستید؟','Not registered yet?','Još niste registrirani?'))}</strong><p>${html(t('برای استفاده از مدرسه، ابتدا «ثبت‌نام مدرسه» را انتخاب کنید و فرم را کامل و دقیق پر کنید. پس از بررسی و تأیید ادمین، ایمیل تأیید دریافت می‌کنید. سپس از بخش «ورود به مدرسه» با همان ایمیل و رمزی که هنگام ثبت‌نام ساخته‌اید وارد شوید.','To use the school, first choose “School Registration” and complete the form carefully and accurately. After the administrator reviews and approves your registration, you will receive a confirmation email. Then use “Sign in to School” with the same email and password you created during registration.','Za korištenje škole najprije odaberite „Registracija za školu” i pažljivo i točno ispunite obrazac. Nakon pregleda i odobrenja administratora primit ćete email potvrde. Zatim se u „Prijava u školu” prijavite istom email adresom i lozinkom koju ste izradili pri registraciji.'))}</p></div>`);
+    return;
+  }
+  if(params.guide){
+    const guide=window.NH7SchoolPathV351?.guideHtml?.()||'';
+    view.innerHTML=guide+`<section class="card"><button class="secondary-btn wide-btn" data-go="school">${html(tr('back'))}</button></section>`;
+    return;
+  }
   if(params.login){
     view.innerHTML=card(tr('schoolExistingLogin'),`<p>${tr('schoolLoginHelp')}</p><input id="schoolLoginEmail" type="email" autocomplete="email" placeholder="${tr('email')}"><div class="password-wrap"><input id="schoolLoginPassword" type="password" autocomplete="current-password" placeholder="${tr('password')}"><button type="button" class="password-eye" data-toggle-password="schoolLoginPassword">👁</button></div><button class="primary-btn wide-btn" id="schoolSignInBtn">${tr('schoolExistingLogin')}</button><button class="link-button" data-go="account">${tr('forgotPassword')}</button><button class="secondary-btn wide-btn" data-go="school">${tr('back')}</button>`);
     $('#schoolSignInBtn')?.addEventListener('click',signInSchool);bindPasswordToggles();return;
