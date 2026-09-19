@@ -1,6 +1,6 @@
-"""Navigation-only rendering edits. All route implementations and data contracts stay intact."""
+"""Navigation-only rendering edits plus stale-view fencing; data contracts stay intact."""
 from pathlib import Path
-import hashlib,json,re,subprocess
+import json,re,subprocess
 BASE='08d3bfb51532163392fe87cd017e316327c38234'
 OUT=Path('qa-nav456');OUT.mkdir(exist_ok=True)
 p=Path('js/app.js');s=p.read_text()
@@ -27,19 +27,32 @@ more='''async function more(){
       <dl>${locations.map(([name,location,id])=>`<div data-nav-location456="${id}"><dt>${html(name)}</dt><dd>${html(location)}</dd></div>`).join('')}</dl>
     </details>`;
 }'''
-s=s[:start]+more+s[end:];p.write_text(s)
+s=s[:start]+more+s[end:]
+# Epoch fencing is memory-only: it never cancels a request, changes approval or writes user state.
+fences=[
+ ('async function render(route, params={}, preserve=false){','let nh7NavigationEpochV456=0;\nasync function render(route, params={}, preserve=false){\n  const navigationEpochV456=++nh7NavigationEpochV456;'),
+ ('    bindDynamic();','    if(navigationEpochV456!==nh7NavigationEpochV456)return;\n    bindDynamic();'),
+ ("  }catch(e){ console.error(e); view.innerHTML=card('Error',`<p>${html(e.message)}</p>`); }","  }catch(e){ if(navigationEpochV456!==nh7NavigationEpochV456)return;console.error(e); view.innerHTML=card('Error',`<p>${html(e.message)}</p>`); }"),
+ ('async function meetings(params={}){','async function meetings(params={}){\n  const meetingEpochV456=nh7NavigationEpochV456;'),
+ ("  view.innerHTML=card(tr('meetings'), `<p>${tr('meetingAccessText')}","  if(meetingEpochV456!==nh7NavigationEpochV456)return;\n  view.innerHTML=card(tr('meetings'), `<p>${tr('meetingAccessText')}")
+]
+for before,after in fences:
+ if after not in s:
+  assert s.count(before)==1,before;s=s.replace(before,after,1)
+p.write_text(s)
 p=Path('index.html');s=p.read_text()
 if 'css/nh7-navigation-v456.css' not in s:s=s.replace('</head>','  <link rel="stylesheet" href="css/nh7-navigation-v456.css?v=4.5.6" />\n</head>')
 s=s.replace('js/app.js?v=4.5.4','js/app.js?v=4.5.6-navigation-preview');p.write_text(s)
-# Assert that only the two intended renderers changed in app.js.
+# Reverse the exact reviewed guards, then compare everything except the two menu renderers.
 original=subprocess.check_output(['git','show',BASE+':js/app.js'],text=True)
 def strip_views(text):
+ for before,after in reversed(fences):text=text.replace(after,before)
  text=re.sub(r'async function home\(\)\{[\s\S]*?(?=\n\nasync function fetchDynamicDailyItem)','<HOME>',text)
  return re.sub(r'async function more\(\)\{[\s\S]*?(?=\n\nasync function fetchMyQuestionsCloud)','<MORE>',text)
 assert strip_views(original)==strip_views(Path('js/app.js').read_text()),'Unrelated runtime logic changed'
 assert "$('#quickNotify')?.addEventListener('click', enableNotifications);" in Path('js/app.js').read_text()
 subprocess.run(['git','diff','--exit-code',BASE,'--','data','supabase','version.json','manifest.json','app','service-worker.js','sw-release-core-v403.js'],check=True)
 subprocess.run(['git','diff','--check'],check=True)
-report={'status':'passed','baseline':BASE,'runtimeScope':['js/app.js','index.html','css/nh7-navigation-v456.css'],'changedAppFunctions':['home','more'],'removedGenericHomeTiles':['bible','plans','school'],'removedMoreTiles':['gratitude','meetings','inbox'],'retainedRoutes':True,'dataWritesAdded':0,'storageMigration':False,'notificationPreferencesUnchanged':True,'bottomBarOrderUnchanged':True}
+report={'status':'passed','baseline':BASE,'runtimeScope':['js/app.js','index.html','css/nh7-navigation-v456.css'],'changedMenuFunctions':['home','more'],'staleViewFix':'memory-only render epoch; discard late Meetings markup and stale post-render/error callbacks','removedGenericHomeTiles':['bible','plans','school'],'removedMoreTiles':['gratitude','meetings','inbox'],'retainedRoutes':True,'meetingAuthorizationUnchanged':True,'dataWritesAdded':0,'storageMigration':False,'notificationPreferencesUnchanged':True,'bottomBarOrderUnchanged':True}
 (OUT/'scope-report.json').write_text(json.dumps(report,indent=2))
-print('Only Home/More navigation renderers updated; all destinations and data code preserved.')
+print('Home/More de-duplicated; late Meetings results fenced; existing data and authorization preserved.')
