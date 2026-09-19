@@ -75,7 +75,7 @@
   <link rel="stylesheet" href="css/nh7-navigation-v456.css?v=4.5.6" />
   <link rel="stylesheet" href="css/nh7-theme-gallery-v457.css?v=4.5.7" />
   <link rel="stylesheet" href="css/nh7-growth-v463.css?v=4.6.3-preview" />
-  <link rel="stylesheet" href="css/nh7-celebrations-v464.css?v=4.6.4-preview-3" />
+  <link rel="stylesheet" href="css/nh7-celebrations-v464.css?v=4.6.4-preview-5" />
 </head>
 <body>
   <div id="amenGate" class="amen-gate hidden" role="dialog" aria-modal="true">
@@ -173,7 +173,7 @@
   <script src="js/nh7-fonts-v454.js?v=4.5.4" defer></script>
   <script src="js/nh7-audio-quick-bible-v454.js?v=4.5.4" defer></script>
   <script src="js/nh7-header-date-v455.js?v=4.5.5" defer></script>
-  <script src="js/nh7-celebrations-v464.js?v=4.6.4-preview-4"></script>
+  <script src="js/nh7-celebrations-v464.js?v=4.6.4-preview-5"></script>
 <script>
 addEventListener('load',()=>{setTimeout(()=>{const api=window.NH7_CELEBRATIONS_V464;if(!api)return;const bar=document.createElement('div');bar.style.cssText='position:fixed;z-index:2147483647;left:8px;right:8px;bottom:84px;padding:8px;border-radius:12px;background:#111827;color:white;font:12px system-ui;text-align:center';bar.innerHTML='<b>Preview:</b> <button id="pvBirthday">🎂 Birthday</button> <button id="pvChristmas">⭐ Christmas</button> <button id="pvPentecost">🔥 Pentecost</button>';document.body.appendChild(bar);document.getElementById('pvBirthday').onclick=()=>{const old=localStorage.getItem('nh7_school_access');const n=new Date(),dob='1980-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0');localStorage.setItem('nh7_school_access',JSON.stringify({firstName:'Preview',birthDate:dob,status:'approved'}));localStorage.removeItem('nh7_birthday_seen_'+[n.getFullYear(),String(n.getMonth()+1).padStart(2,'0'),String(n.getDate()).padStart(2,'0')].join('-'));api.run();setTimeout(()=>{if(old)localStorage.setItem('nh7_school_access',old);else localStorage.removeItem('nh7_school_access')},1200)};document.getElementById('pvChristmas').onclick=()=>api.previewEvent(new Date(2026,11,25));document.getElementById('pvPentecost').onclick=()=>api.previewEvent(new Date(2026,4,24));},900)});
 </script></body>
