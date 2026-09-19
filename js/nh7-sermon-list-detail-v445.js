@@ -102,10 +102,10 @@ function ensure(card){
     });
     card.prepend(row);
   }
-  row.querySelector('strong').textContent=title;
+  const heading=row.querySelector('strong');if(heading.textContent!==title)heading.textContent=title;
   const small=row.querySelector('small');
   if(small){
-    small.textContent=meta||L('برای باز کردن موعظه لمس کنید','Tap to open sermon','Dodirnite za otvaranje');
+    const label=meta||L('برای باز کردن موعظه لمس کنید','Tap to open sermon','Dodirnite za otvaranje');if(small.textContent!==label)small.textContent=label;
   }
   const requested=requestedId();
   if(requested&&requested===sermonId(card)&&!card.dataset.nh7RequestedOpened){

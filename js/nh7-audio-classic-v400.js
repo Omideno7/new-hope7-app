@@ -24,6 +24,9 @@ const signed=new Map();
 const derived=new Map();
 const localUrls=new Map();
 let audio=null,current=null,currentPanel=null,patchTimer=0,prewarmBusy=false;
+let selection=0,transitioning=false,preparingId='',playingOwner='';
+const boundCards=new WeakSet(),failedLocal=new Set();
+function text(node,value){if(node&&node.textContent!==String(value))node.textContent=String(value)}
 let listenedPending=0,lastWall=0,lastPosition=0,trackTimer=0,sessionId='';
 
 const $=(s,r=document)=>r.querySelector(s);
@@ -34,19 +37,7 @@ const fmt=value=>{const sec=Math.max(0,Number(value)||0),h=Math.floor(sec/3600),
 
 function readSession(){try{return JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch(_){return null}}
 function jwtExpiry(token){try{const p=String(token||'').split('.')[1]||'',n=p.replace(/-/g,'+').replace(/_/g,'/'),j=JSON.parse(atob(n.padEnd(Math.ceil(n.length/4)*4,'=')));return Number(j.exp||0)*1000}catch(_){return 0}}
-async function accessToken(){
-  try{await window.NH7_SCHOOL_MEDIA_REFRESH?.(false)}catch(_){}
-  let session=readSession();
-  if(session?.access_token&&jwtExpiry(session.access_token)>Date.now()+90000)return String(session.access_token);
-  if(session?.refresh_token){
-    try{
-      const response=await fetch(`${SB}/auth/v1/token?grant_type=refresh_token`,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:session.refresh_token}),cache:'no-store'});
-      const text=await response.text();let data={};try{data=text?JSON.parse(text):{}}catch(_){}
-      if(response.ok&&data?.access_token){localStorage.setItem(SESSION_KEY,JSON.stringify(data));session=data}
-    }catch(_){}
-  }
-  return String(session?.access_token||'');
-}
+async function accessToken(){return await window.NH7_SESSION_V467.token()}
 function accountEmail(){const s=readSession();return String(s?.user?.email||localStorage.getItem('nh7_manual_email')||'').trim().toLowerCase()}
 function deviceId(){let id=localStorage.getItem('nh7_device_id');if(!id){id='dev_'+(crypto.randomUUID?.()||Date.now()+'_'+Math.random().toString(36).slice(2));localStorage.setItem('nh7_device_id',id)}return id}
 function isNative(){try{return!!(window.Capacitor?.isNativePlatform?.()||['ios','android'].includes(window.Capacitor?.getPlatform?.()))}catch(_){return false}}
@@ -91,46 +82,34 @@ async function idbPut(record){const db=await openDb();return new Promise((resolv
 async function idbDelete(id){const db=await openDb();return new Promise(resolve=>{const tx=db.transaction(DB_STORE,'readwrite');tx.objectStore(DB_STORE).delete(id);tx.oncomplete=()=>{db.close();resolve(true)};tx.onerror=tx.onabort=()=>{db.close();resolve(false)}})}
 async function idbClear(){const db=await openDb();return new Promise(resolve=>{const tx=db.transaction(DB_STORE,'readwrite');tx.objectStore(DB_STORE).clear();tx.oncomplete=()=>{db.close();resolve(true)};tx.onerror=tx.onabort=()=>{db.close();resolve(false)}})}
 
-async function refreshAudioSession(){
-  let session=readSession();if(!session?.refresh_token)return null;
-  try{
-    const response=await fetch(`${SB}/auth/v1/token?grant_type=refresh_token`,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:session.refresh_token}),cache:'no-store'});
-    const text=await response.text();let data={};try{data=text?JSON.parse(text):{}}catch(_){}
-    if(!response.ok||!data?.access_token)return null;
-    // Supabase refresh responses can omit user metadata. Preserve the existing
-    // user object so account identity remains stable across an audio refresh.
-    session=Object.assign({},session,data,{user:data.user||session.user});
-    localStorage.setItem(SESSION_KEY,JSON.stringify(session));
-    return session;
-  }catch(_){return null}
-}
+async function refreshAudioSession(rejectedToken=''){return await window.NH7_SESSION_V467.refresh(true,rejectedToken)}
 async function edge(payload,retry=0){
   const token=await accessToken();if(!token)throw Object.assign(new Error('login_required'),{code:'login_required'});
-  const response=await fetch(`${SB}/functions/v1/nh7-school-media-access`,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+token,'Content-Type':'application/json','x-client-info':'nh7-classic-audio-v461'},body:JSON.stringify(Object.assign({device_id:deviceId()},payload)),cache:'no-store'});
+  const response=await window.NH7_SESSION_V467.request(`${SB}/functions/v1/nh7-school-media-access`,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+token,'Content-Type':'application/json','x-client-info':'nh7-classic-audio-v461'},body:JSON.stringify(Object.assign({device_id:deviceId()},payload)),cache:'no-store'},{retryRead:true});
   const text=await response.text();let data={};try{data=text?JSON.parse(text):{}}catch(_){data={error:text}}
   if(response.status===401&&!retry){
-    const refreshed=await refreshAudioSession();
+    const refreshed=await refreshAudioSession(token);
     if(refreshed?.access_token)return edge(payload,1);
   }
   if(!response.ok||!data?.signed_url)throw Object.assign(new Error(data?.error||data?.message||text||`HTTP ${response.status}`),{code:data?.code||(response.status===401?'invalid_session':''),status:response.status});
   return data;
 }
 async function signedUrl(item,force=false){
-  const id=mediaId(item),cached=signed.get(id);
+  const id=accountEmail()+'|'+mediaId(item),cached=signed.get(id);
   if(!force&&cached?.url&&cached.expires>Date.now()+60000)return cached.url;
   if(!force&&cached?.promise)return cached.promise;
-  const promise=(async()=>{const data=isSchool(item)?await edge({kind:'audio',lesson_code:lessonCode(item)}):await edge({kind:'sermon',sermon_id:id});const value={url:String(data.signed_url),expires:Date.now()+Math.max(60,Number(data.expires_in||0)-60)*1000,mime:String(data.mime_type||'audio/mpeg')};signed.set(id,value);return value.url})();
+  const promise=(async()=>{const data=isSchool(item)?await edge({kind:'audio',lesson_code:lessonCode(item)}):await edge({kind:'sermon',sermon_id:mediaId(item)});const value={url:String(data.signed_url),expires:Date.now()+Math.max(60,Number(data.expires_in||0)-60)*1000,mime:String(data.mime_type||'audio/mpeg')};signed.set(id,value);return value.url})();
   signed.set(id,{promise});try{return await promise}catch(error){signed.delete(id);throw error}
 }
 
 function errorText(error){
   const code=String(error?.code||error?.name||error?.message||error||'').toLowerCase();
-  if(code.includes('login_required')||code.includes('invalid_session'))return L('جلسه ورود منقضی شده است؛ دوباره وارد حساب شوید.','Your sign-in session expired; sign in again.','Sesija je istekla; ponovno se prijavite.');
+  if(code.includes('login_required')||code.includes('invalid_session')||code.includes('session_unavailable'))return L('جلسه ورود منقضی شده است؛ دوباره وارد حساب شوید.','Your sign-in session expired; sign in again.','Sesija je istekla; ponovno se prijavite.');
   if(code.includes('school_approval_required'))return L('این حساب هنوز ثبت‌نام کامل و تأییدشده ندارد.','This account does not yet have complete approved registration.','Ovaj račun još nema potpunu odobrenu registraciju.');
   if(code.includes('sermon_not_found')||code.includes('lesson_not_found'))return L('فایل صوتی در سرور پیدا نشد.','The audio file was not found on the server.','Audio datoteka nije pronađena.');
   if(code.includes('signed_url_failed')||code.includes('invalid_path'))return L('ساخت لینک امن فایل صوتی انجام نشد.','The secure audio link could not be created.','Nije moguće izraditi sigurnu audio poveznicu.');
   if(code.includes('notsupported')||code.includes('operation is not supported'))return L('نسخه آفلاین ناسازگار بود؛ دوباره دانلود کنید.','The offline copy was incompatible; download it again.','Offline kopija nije kompatibilna; preuzmite ponovno.');
-  if(code.includes('network')||code.includes('failed to fetch')||code.includes('load failed'))return L('ارتباط با فایل صوتی برقرار نشد. اتصال اینترنت را بررسی کنید.','The audio file could not be reached. Check the connection.','Audio datoteka nije dostupna. Provjerite vezu.');
+  if(code.includes('network')||code.includes('request_timeout')||code.includes('failed to fetch')||code.includes('load failed'))return L('ارتباط با فایل صوتی برقرار نشد. اتصال اینترنت را بررسی کنید.','The audio file could not be reached. Check the connection.','Audio datoteka nije dostupna. Provjerite vezu.');
   return String(error?.message||error||L('پخش یا دانلود فایل صوتی انجام نشد.','Audio playback or download failed.','Reprodukcija ili preuzimanje nije uspjelo.'));
 }
 
@@ -147,17 +126,17 @@ function createPanel(item,forceVisible=false){
   return panel;
 }
 function panelFor(item){return cardFor(item)?.querySelector('[data-classic-player]')||null}
-function setStatus(item,text,type=''){const panel=createPanel(item,true),node=panel?.querySelector('[data-classic-status]');if(!node)return;node.textContent=text||'';node.className=type?'is-'+type:''}
+function setStatus(item,text,type=''){const panel=createPanel(item,true),node=panel?.querySelector('[data-classic-status]');if(!node)return;if(node.textContent!==(text||''))node.textContent=text||'';const cls=type?'is-'+type:'';if(node.className!==cls)node.className=cls}
 function nearestSpeed(value){let best=SPEEDS[0];for(const speed of SPEEDS)if(Math.abs(speed-value)<Math.abs(best-value))best=speed;return best}
 function syncPanel(item){
   const panel=panelFor(item);if(!panel)return;
   const same=current&&mediaId(current)===mediaId(item),now=same?Number(audio?.currentTime||0):Number(readProgress(item).time||0),duration=same&&Number.isFinite(audio?.duration)?audio.duration:durationFor(item),rate=same?Number(audio?.playbackRate||1):Number(localStorage.getItem('nh7_sermon_speed')||1)||1;
   const play=panel.querySelector('[data-classic-toggle]'),seek=panel.querySelector('[data-classic-seek]');
-  if(play){play.disabled=false;play.textContent=same&&!audio?.paused?'❚❚':'▶'}
-  panel.querySelector('[data-classic-now]').textContent=fmt(now);
-  panel.querySelector('[data-classic-total]').textContent=fmt(duration);
+  if(play){play.disabled=false;text(play,same&&!audio?.paused?'❚❚':'▶')}
+  text(panel.querySelector('[data-classic-now]'),fmt(now));
+  text(panel.querySelector('[data-classic-total]'),fmt(duration));
   if(seek)seek.value=duration>0?Math.round(now/duration*1000):0;
-  panel.querySelector('[data-classic-rate]').textContent=`${L('سرعت','Speed','Brzina')} ${nearestSpeed(rate)}×`;
+  text(panel.querySelector('[data-classic-rate]'),`${L('سرعت','Speed','Brzina')} ${nearestSpeed(rate)}×`);
 }
 function showCurrentPanel(item){
   if(currentPanel&&currentPanel!==panelFor(item)&&!currentPanel.closest('.school-audio-card'))currentPanel.hidden=true;
@@ -169,24 +148,24 @@ function ensureAudio(){
   audio=document.createElement('audio');audio.preload='metadata';audio.setAttribute('playsinline','');audio.setAttribute('webkit-playsinline','');audio.hidden=true;document.body.appendChild(audio);
   audio.addEventListener('loadedmetadata',()=>{if(!current)return;const saved=readProgress(current),position=Number(saved.time||0);if(position>5&&Number.isFinite(audio.duration)&&position<audio.duration-5)try{audio.currentTime=position}catch(_){}syncPanel(current)});
   audio.addEventListener('durationchange',()=>current&&syncPanel(current));
-  audio.addEventListener('playing',()=>{if(!current)return;lastWall=Date.now();lastPosition=audio.currentTime;setStatus(current,L('در حال پخش','Playing','Reprodukcija'),'ok');syncPanel(current)});
+  audio.addEventListener('playing',()=>{transitioning=false;if(!current)return;lastWall=Date.now();lastPosition=audio.currentTime;setStatus(current,L('در حال پخش','Playing','Reprodukcija'),'ok');syncPanel(current)});
   audio.addEventListener('waiting',()=>current&&setStatus(current,L('در حال دریافت فایل…','Buffering…','Učitavanje…'),'busy'));
   audio.addEventListener('timeupdate',()=>{if(!current)return;captureListen();saveProgress(current,false);syncPanel(current);scheduleTracking()});
-  audio.addEventListener('pause',()=>{if(!current)return;captureListen();saveProgress(current,false);syncPanel(current);flushTracking(false,true)});
+  audio.addEventListener('pause',()=>{if(!current||transitioning)return;captureListen();saveProgress(current,false);syncPanel(current);flushTracking(false,true)});
   audio.addEventListener('ended',()=>{if(!current)return;captureListen();saveProgress(current,true);setStatus(current,L('پخش کامل شد ✓','Completed ✓','Završeno ✓'),'ok');syncPanel(current);flushTracking(true,true)});
-  audio.addEventListener('error',async()=>{if(!current)return;const id=mediaId(current),local=localUrls.get(id);if(local&&audio.src===local){await removeLocal(current);setStatus(current,L('نسخه آفلاین ناسازگار بود و پاک شد؛ دوباره دانلود کنید.','The offline copy was invalid and was removed; download it again.','Offline kopija nije valjana i uklonjena je; preuzmite ponovno.'),'error')}else setStatus(current,L('فایل صوتی باز نشد.','Audio could not be opened.','Audio se nije mogao otvoriti.'),'error');syncPanel(current)});
+  audio.addEventListener('error',()=>{if(!current)return;const id=mediaId(current),local=localUrls.get(id);if(local&&audio.src===local)failedLocal.add(id);else signed.delete(accountEmail()+'|'+id);transitioning=false;setStatus(current,L('پخش متوقف شد؛ برای تلاش دوباره Play را بزنید. دانلود ذخیره‌شده پاک نشده است.','Playback stopped; tap Play to retry. Your saved download has not been deleted.','Reprodukcija je stala; dodirnite Play za ponovni pokušaj. Spremljeno preuzimanje nije izbrisano.'),'error');syncPanel(current)});
   return audio;
 }
 
 function captureListen(){if(!current||!audio||audio.paused)return;const now=Date.now(),wall=Math.min(5,Math.max(0,(now-(lastWall||now))/1000)),position=Math.max(0,Number(audio.currentTime||0));lastWall=now;if(position>=lastPosition-0.5&&position-lastPosition<8&&wall>0)listenedPending+=wall;lastPosition=position}
 function scheduleTracking(){if(trackTimer||listenedPending<12)return;trackTimer=setTimeout(()=>{trackTimer=0;flushTracking(false,false)},250)}
-async function rpc(name,body){const token=await accessToken();if(!token)throw new Error('login_required');const response=await fetch(`${SB}/rest/v1/rpc/${name}`,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store'});if(!response.ok)throw new Error(await response.text());return response.json().catch(()=>({}))}
+async function rpc(name,body,expectedOwner=accountEmail()){const token=await accessToken();if(!token||expectedOwner!==accountEmail()||localStorage.getItem('nh7_explicit_logout')==='1')throw new Error('login_required');const response=await fetch(`${SB}/rest/v1/rpc/${name}`,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store'});if(!response.ok)throw new Error(await response.text());return response.json().catch(()=>({}))}
 async function flushTracking(ended=false,force=false){
-  if(!current||!navigator.onLine)return;captureListen();const delta=Math.floor(listenedPending);if(!force&&delta<10)return;listenedPending=0;
-  const duration=Math.round((Number.isFinite(audio?.duration)&&audio.duration)||durationFor(current)||0),position=Math.round(audio?.currentTime||0);
+  if(!current||!navigator.onLine)return;captureListen();const tracked=current,trackedSession=sessionId,trackedOwner=playingOwner,delta=Math.floor(listenedPending);if(trackedOwner!==accountEmail())return;if(!force&&delta<10)return;listenedPending=0;
+  const duration=Math.round((Number.isFinite(audio?.duration)&&audio.duration)||durationFor(tracked)||0),position=Math.round(audio?.currentTime||0);
   try{
-    if(isSchool(current))await rpc('nh7_school_record_audio_v380',{p_lesson_code:lessonCode(current),p_position_seconds:ended?duration:position,p_duration_seconds:duration,p_delta_seconds:delta,p_ended:!!ended});
-    await rpc('nh7_track_audio_session_v222',{p_session_id:sessionId||('classic_'+Date.now()),p_device_id:deviceId(),p_user_email:accountEmail(),p_media_type:isSchool(current)?'school':'sermon',p_media_id:isSchool(current)?lessonCode(current):mediaId(current),p_title:titleFor(current),p_topic:String(current.analytics_topic||current.topic||''),p_source_group:String(current.analytics_source_group||current.category_id||''),p_language:lang(),p_duration_seconds:duration,p_position_seconds:position,p_delta_seconds:delta,p_event:ended?'ended':'progress',p_playback_rate:Number(audio?.playbackRate||1),p_seek_count:0,p_started_position_seconds:0}).catch(()=>{});
+    if(isSchool(tracked))await rpc('nh7_school_record_audio_v380',{p_lesson_code:lessonCode(tracked),p_position_seconds:ended?duration:position,p_duration_seconds:duration,p_delta_seconds:delta,p_ended:!!ended},trackedOwner);
+    await rpc('nh7_track_audio_session_v222',{p_session_id:trackedSession||('classic_'+Date.now()),p_device_id:deviceId(),p_user_email:trackedOwner,p_media_type:isSchool(tracked)?'school':'sermon',p_media_id:isSchool(tracked)?lessonCode(tracked):mediaId(tracked),p_title:titleFor(tracked),p_topic:String(tracked.analytics_topic||tracked.topic||''),p_source_group:String(tracked.analytics_source_group||tracked.category_id||''),p_language:lang(),p_duration_seconds:duration,p_position_seconds:position,p_delta_seconds:delta,p_event:ended?'ended':'progress',p_playback_rate:Number(audio?.playbackRate||1),p_seek_count:0,p_started_position_seconds:0},trackedOwner).catch(()=>{});
   }catch(error){console.warn('[NH7 classic audio tracking]',error)}
 }
 
@@ -194,7 +173,7 @@ async function localUrl(item){
   const id=mediaId(item),existing=localUrls.get(id);if(existing)return existing;
   const meta=readMeta(item);if(isNative()){
     const Filesystem=plugin('Filesystem');if(!Filesystem||!meta?.path)return'';
-    try{await Filesystem.stat({directory:'DATA',path:meta.path});const uri=(await Filesystem.getUri({directory:'DATA',path:meta.path})).uri,url=window.Capacitor?.convertFileSrc?window.Capacitor.convertFileSrc(uri):uri;localUrls.set(id,url);return url}catch(_){removeMeta(item);return''}
+    try{await Filesystem.stat({directory:'DATA',path:meta.path});const uri=(await Filesystem.getUri({directory:'DATA',path:meta.path})).uri,url=window.Capacitor?.convertFileSrc?window.Capacitor.convertFileSrc(uri):uri;localUrls.set(id,url);return url}catch(_){return''}
   }
   try{const row=await idbGet(id);if(!row?.blob)return'';const url=URL.createObjectURL(row.blob);localUrls.set(id,url);return url}catch(_){return''}
 }
@@ -204,19 +183,39 @@ async function removeLocal(item){
   else await idbDelete(id).catch(()=>{});
   removeMeta(item);updateDownloadButtons(item,false);
 }
-async function isDownloaded(item){if(isNative()){const meta=readMeta(item),Filesystem=plugin('Filesystem');if(!meta?.path||!Filesystem)return false;try{await Filesystem.stat({directory:'DATA',path:meta.path});return true}catch(_){removeMeta(item);return false}}try{return!!(await idbGet(mediaId(item)))?.blob}catch(_){return false}}
+async function isDownloaded(item){if(isNative()){const meta=readMeta(item),Filesystem=plugin('Filesystem');if(!meta?.path||!Filesystem)return false;try{await Filesystem.stat({directory:'DATA',path:meta.path});return true}catch(_){return false}}try{return!!(await idbGet(mediaId(item)))?.blob}catch(_){return false}}
 
+async function availableLocalUrl(item){let timer;try{return await Promise.race([localUrl(item),new Promise(resolve=>{timer=setTimeout(()=>resolve(''),3500)})])}finally{clearTimeout(timer)}}
 async function playItem(item){
-  if(!supported(item))return;showCurrentPanel(item);const player=ensureAudio();
-  if(current&&mediaId(current)===mediaId(item)&&player.src){if(player.paused){try{await player.play()}catch(error){setStatus(item,errorText(error),'error')}}else player.pause();syncPanel(item);return}
-  const local=await localUrl(item);
-  if(!local&&!navigator.onLine){setStatus(item,L('این فایل هنوز برای آفلاین دانلود نشده است.','This file has not been downloaded for offline use.','Datoteka nije preuzeta za offline rad.'),'error');return}
+  if(!supported(item))return;
+  const id=mediaId(item),who=accountEmail();if(localStorage.getItem('nh7_explicit_logout')==='1'){setStatus(item,errorText({code:'login_required'}),'error');return}if(preparingId===id)return;
+  showCurrentPanel(item);const player=ensureAudio();
+  if(current&&mediaId(current)===id&&playingOwner===who&&player.src&&!player.error){if(player.paused){try{await player.play()}catch(error){setStatus(item,errorText(error),'error')}}else player.pause();syncPanel(item);return}
+  const epoch=++selection;preparingId=id;
+  const valid=()=>epoch===selection&&who===accountEmail()&&localStorage.getItem('nh7_explicit_logout')!=='1';
+  const start=url=>{
+    if(!valid())return Promise.resolve();
+    // Capture the old lesson BEFORE changing current, so pause cannot credit another lesson.
+    if(current){captureListen();saveProgress(current,!!player.ended);flushTracking(false,true)}
+    transitioning=true;player.pause();current=item;playingOwner=who;sessionId='classic_'+(crypto.randomUUID?.()||Date.now());listenedPending=0;lastWall=Date.now();lastPosition=0;
+    player.src=url;player.playbackRate=nearestSpeed(Number(localStorage.getItem('nh7_sermon_speed')||1)||1);player.load();syncPanel(item);
+    return player.play();
+  };
   try{
-    setStatus(item,local?L('در حال بازکردن نسخه دانلودشده…','Opening downloaded copy…','Otvaranje preuzete kopije…'):L('در حال آماده‌سازی فایل صوتی…','Preparing audio…','Priprema audio datoteke…'),'busy');
-    const url=local||await signedUrl(item);current=item;sessionId='classic_'+(crypto.randomUUID?.()||Date.now());listenedPending=0;lastWall=Date.now();lastPosition=0;
-    player.pause();player.src=url;player.playbackRate=nearestSpeed(Number(localStorage.getItem('nh7_sermon_speed')||1)||1);player.load();syncPanel(item);
-    try{await player.play()}catch(error){setStatus(item,L('فایل آماده است؛ دوباره روی Play بزنید.','The file is ready; tap Play again.','Datoteka je spremna; ponovno dodirnite Play.'),'busy')}
-  }catch(error){setStatus(item,errorText(error)+(error?.status?` [${error.status}]`:''),'error')}
+    const ready=signed.get(who+'|'+id),knownLocal=failedLocal.has(id)?'':localUrls.get(id);
+    let playing;
+    // A prewarmed link starts synchronously in the user's gesture (important on Safari).
+    if(knownLocal)playing=start(knownLocal);
+    else if(ready?.url&&ready.expires>Date.now()+60000)playing=start(ready.url);
+    else{
+      const local=failedLocal.has(id)?'':await availableLocalUrl(item);if(!valid())return;
+      if(!local&&!navigator.onLine)throw Object.assign(new Error('network_error'),{code:'network_error'});
+      setStatus(item,L('در حال آماده‌سازی فایل صوتی…','Preparing audio…','Priprema audio datoteke…'),'busy');
+      const url=local||await signedUrl(item);if(!valid())return;playing=start(url);
+    }
+    try{await playing}catch(error){if(!valid())return;if(error?.name==='NotAllowedError')setStatus(item,L('فایل آماده است؛ برای شروع پخش Play را بزنید.','Audio is ready; tap Play to start.','Audio je spreman; dodirnite Play.'),'busy');else if(error?.name!=='AbortError')setStatus(item,errorText(error),'error')}
+  }catch(error){if(valid())setStatus(item,errorText(error)+(error?.status?` [${error.status}]`:''),'error')}
+  finally{if(epoch===selection)preparingId=''}
 }
 
 function downloadLabel(percent){return percent>=100?L('آفلاین آماده ✓','Offline ready ✓','Offline spremno ✓'):L(`در حال دانلود ${percent}%`,`Downloading ${percent}%`,`Preuzimanje ${percent}%`)}
@@ -248,6 +247,7 @@ async function downloadItem(item){
 async function refreshCard(item){const downloaded=await isDownloaded(item);updateDownloadButtons(item,downloaded);syncPanel(item)}
 function ownCard(card){
   const item=deriveFromCard(card);if(!supported(item))return;
+  if(boundCards.has(card)){syncPanel(item);return}boundCards.add(card);
   card.dataset.classicAudioV400='1';
   card.querySelectorAll('.nh7-audio397-player,.nh7-audio396-player,.nh7-school-native-v337').forEach(node=>node.remove());
   card.querySelectorAll('.inline-sermon-player,[data-inline-player]').forEach(node=>node.style.setProperty('display','none','important'));
@@ -256,18 +256,18 @@ function ownCard(card){
   const panel=createPanel(item,isSchool(item));
   if(isSchool(item)){
     card.querySelectorAll('[data-sermon-play],[data-external-classic-download]').forEach(button=>button.style.setProperty('display','none','important'));
-    signedUrl(item).then(()=>setStatus(item,L('فایل صوتی آماده است.','Audio is ready.','Audio je spreman.'),'ok')).catch(error=>setStatus(item,errorText(error),'error'));
+    availableLocalUrl(item).then(local=>local||signedUrl(item)).then(()=>{if(card.isConnected&&(!current||mediaId(current)!==mediaId(item)))setStatus(item,L('فایل صوتی آماده است.','Audio is ready.','Audio je spreman.'),'ok')}).catch(error=>{if(card.isConnected)setStatus(item,errorText(error),'error')});
   }
   refreshCard(item).catch(()=>{});
 }
 function patch(){document.querySelectorAll('[data-sermon-card]').forEach(ownCard)}
-function prewarm(){if(prewarmBusy||!navigator.onLine)return;prewarmBusy=true;const items=$$('[data-sermon-card]').map(deriveFromCard).filter(supported).slice(0,20);(async()=>{try{for(let i=0;i<items.length;i+=4)await Promise.all(items.slice(i,i+4).map(item=>signedUrl(item).catch(()=>null)))}finally{prewarmBusy=false}})()}
+function prewarm(){/* Signing is lazy: current school card or a user gesture only. */}
 
 function itemFromPanelNode(node){return deriveFromCard(node?.closest?.('[data-sermon-card]'))}
 function intercept(event){
   const externalDownload=event.target.closest?.('[data-external-classic-download]');if(externalDownload){const item=itemFromNode(externalDownload);if(supported(item)){event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();downloadItem(item);return true}}
   const externalPlay=event.target.closest?.('[data-classic-play],[data-sermon-play]');if(externalPlay){const item=itemFromNode(externalPlay);if(supported(item)){event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();playItem(item);return true}}
-  const toggle=event.target.closest?.('[data-classic-toggle]');if(toggle){const item=itemFromPanelNode(toggle);if(item){event.preventDefault();event.stopImmediatePropagation();if(current&&mediaId(current)===mediaId(item)&&audio?.src){if(audio.paused)audio.play().catch(error=>setStatus(item,errorText(error),'error'));else audio.pause()}else playItem(item)}return true}
+  const toggle=event.target.closest?.('[data-classic-toggle]');if(toggle){const item=itemFromPanelNode(toggle);if(item){event.preventDefault();event.stopImmediatePropagation();playItem(item)}return true}
   const back=event.target.closest?.('[data-classic-back]');if(back&&audio){event.preventDefault();event.stopImmediatePropagation();audio.currentTime=Math.max(0,audio.currentTime-15);current&&syncPanel(current);return true}
   const forward=event.target.closest?.('[data-classic-forward]');if(forward&&audio){event.preventDefault();event.stopImmediatePropagation();audio.currentTime=Math.min(audio.duration||Infinity,audio.currentTime+30);current&&syncPanel(current);return true}
   const speedDown=event.target.closest?.('[data-classic-speed-down]');if(speedDown&&audio){event.preventDefault();event.stopImmediatePropagation();const currentSpeed=nearestSpeed(audio.playbackRate||1),index=Math.max(0,SPEEDS.indexOf(currentSpeed)-1);audio.playbackRate=SPEEDS[index];localStorage.setItem('nh7_sermon_speed',String(audio.playbackRate));current&&syncPanel(current);return true}
@@ -293,11 +293,13 @@ const style=document.createElement('style');style.id='nh7-audio-classic-v400-sty
 [data-sermon-card].classic-audio-ready>.inline-sermon-player,[data-sermon-card]>.inline-sermon-player{display:none!important}.nh7-classic-audio-v400{margin-top:12px;padding:14px;border-top:1px solid var(--line,#d9e6f7);background:linear-gradient(180deg,#f7fcff,#fff);border-radius:16px}.nh7-classic-audio-v400[hidden]{display:none!important}.nh7-classic-audio-v400>audio{display:none!important}.nh7-classic-audio-v400>[data-classic-status]{margin:0 0 10px!important;font-size:.88rem!important;line-height:1.6!important;color:#4f6b80!important}.nh7-classic-audio-v400>[data-classic-status].is-ok{padding:9px 12px;border-radius:11px;background:#ecfdf3;color:#08783d!important}.nh7-classic-audio-v400>[data-classic-status].is-busy{padding:9px 12px;border-radius:11px;background:#eef7ff;color:#145a8d!important}.nh7-classic-audio-v400>[data-classic-status].is-error{padding:9px 12px;border-radius:11px;background:#fff1f0;color:#a4251c!important}.nh7-classic-mainrow{display:flex;align-items:center;justify-content:center;gap:12px}.nh7-classic-mainrow button{border:0;cursor:pointer}.nh7-classic-mainrow button:disabled{opacity:.42;cursor:default}.nh7-classic-play{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#0476d9,#13b5e8);color:#fff;font-size:21px;font-weight:900;box-shadow:0 8px 20px rgba(4,118,217,.24)}.nh7-classic-skip{width:48px;height:48px;border-radius:50%;background:#e9f6fd;color:#075985;font-size:.8rem;font-weight:900}.nh7-classic-timeline{display:grid;grid-template-columns:48px minmax(0,1fr) 48px;gap:8px;align-items:center;margin-top:12px}.nh7-classic-timeline span{font-size:.78rem;font-variant-numeric:tabular-nums;text-align:center;color:#4f6b80}.nh7-classic-timeline input{width:100%;padding:0;border:0}.nh7-classic-speedrow{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:12px}.nh7-classic-speedrow button{width:42px;height:38px;border:1px solid var(--line,#d9e6f7);border-radius:12px;background:#eef8fd;color:#075985;font-size:20px;font-weight:900;cursor:pointer}.nh7-classic-speedrow strong{min-width:94px;text-align:center;font-size:.88rem;color:#062444}.nh7-classic-audio-v400 .button-row{justify-content:center;margin-top:12px!important}.is-downloaded-v400{background:#e8f8ef!important;border-color:#74c69d!important;color:#08783d!important}.school-audio-card>.sermon-card-actions{margin-bottom:0!important}@media(max-width:760px){.nh7-classic-audio-v400{padding:13px 11px}.nh7-classic-mainrow{gap:10px}}
 `;document.head.appendChild(style);
 
-new MutationObserver(()=>{clearTimeout(patchTimer);patchTimer=setTimeout(()=>{patch();prewarm()},40)}).observe(document.documentElement,{childList:true,subtree:true});
+const observeRoot=document.getElementById('view')||document.body;
+new MutationObserver(records=>{if(!records.some(r=>!r.target.closest?.('[data-classic-player]')&&[...r.addedNodes].some(n=>n.nodeType===1&&(n.matches?.('[data-sermon-card]')||n.querySelector?.('[data-sermon-card]')))))return;clearTimeout(patchTimer);patchTimer=setTimeout(patch,40)}).observe(observeRoot,{childList:true,subtree:true});
+window.addEventListener('storage',e=>{if(e.key===SESSION_KEY||e.key==='nh7_explicit_logout'){selection++;preparingId='';signed.clear();if(audio)audio.pause()}});
 setTimeout(()=>{patch();prewarm()},250);
 
 window.NH7_AUDIO_CLASSIC_VERSION='4.0.0';
-window.NH7_AUDIO_SIGNED_VERSION='4.6.1-401-refresh';
+window.NH7_AUDIO_SIGNED_VERSION='4.6.7-stable-audio';
 window.NH7_AUDIO_CLASSIC_V400={patch,prewarm,playItem,downloadItem,clearAll};
 // Compatibility for the Settings cleanup controller introduced in 2.3.9.48.
 window.NH7_AUDIO_SIGNED_V397=window.NH7_AUDIO_CLASSIC_V400;
