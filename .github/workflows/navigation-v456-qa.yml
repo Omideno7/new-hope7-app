@@ -1,0 +1,108 @@
+name: Navigation Cleanup v456 QA
+on:
+  push:
+    branches: [feature/navigation-cleanup-v456-20260919]
+    paths: ['scripts/navigation-v456/**','css/nh7-navigation-v456.css','.github/workflows/navigation-v456-qa.yml']
+permissions:
+  contents: write
+concurrency:
+  group: navigation-v456
+  cancel-in-progress: true
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/feature/navigation-cleanup-v456-20260919'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      MAIN_BASE: 08d3bfb51532163392fe87cd017e316327c38234
+      FEATURE: feature/navigation-cleanup-v456-20260919
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Preserve baseline and prepare restricted navigation edits
+        run: |
+          set -euo pipefail
+          mkdir -p qa-nav456 /tmp/nav456-baseline
+          git ls-remote origin refs/heads/main > qa-nav456/main-before.txt
+          test "$(cut -f1 qa-nav456/main-before.txt)" = "$MAIN_BASE"
+          git archive "$MAIN_BASE" | tar -xf - -C /tmp/nav456-baseline
+          python scripts/navigation-v456/prepare.py
+          python scripts/navigation-v456/test_fixture.py
+          python scripts/navigation-v456/build_preview.py
+          sha256sum js/app.js index.html navigation-preview.html js/nh7-navigation-preview-app-v456.js > qa-nav456/idempotence-before.txt
+          python scripts/navigation-v456/prepare.py
+          python scripts/navigation-v456/build_preview.py
+          sha256sum js/app.js index.html navigation-preview.html js/nh7-navigation-preview-app-v456.js > qa-nav456/idempotence-after.txt
+          diff qa-nav456/idempotence-before.txt qa-nav456/idempotence-after.txt
+          node --check js/app.js
+          node --check js/nh7-navigation-preview-app-v456.js
+          node --check js/nh7-navigation-preview-guard-v456.js
+          python -m py_compile scripts/navigation-v456/*.py
+          git diff --check
+      - name: Install pinned browsers
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium webkit
+          npm install --prefix "$RUNNER_TEMP/nav-agent" --save-exact agent-browser@0.38.1
+          echo "QA_AGENT_BROWSER=$RUNNER_TEMP/nav-agent/node_modules/.bin/agent-browser" >> "$GITHUB_ENV"
+      - name: Existing main navigation baseline
+        run: timeout --kill-after=10s 120s env QA_MODE=baseline QA_ROOT=/tmp/nav456-baseline QA_ENGINE=chromium python scripts/navigation-v456/browser.py
+      - name: Chromium navigation and preserved data
+        run: timeout --kill-after=10s 180s env QA_ENGINE=chromium python scripts/navigation-v456/browser.py
+      - name: WebKit navigation and preserved data
+        run: timeout --kill-after=10s 180s env QA_ENGINE=webkit python scripts/navigation-v456/browser.py
+      - name: Previously accepted fonts lexicon and uninterrupted audio
+        run: |
+          git show ef2c8e4c2ec40da1d1f368c3a1440c59317afc95:scripts/study-v454/browser.py > /tmp/nav456-study-regression.py
+          timeout --kill-after=10s 180s env QA_ENGINE=chromium python /tmp/nav456-study-regression.py
+      - name: Isolated local Preview
+        run: timeout --kill-after=10s 180s python scripts/navigation-v456/preview_test.py
+      - name: Commit verified navigation and Preview to feature only
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/$FEATURE"
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MAIN_BASE"
+          test "$(git ls-remote origin "refs/heads/$FEATURE" | cut -f1)" = "$GITHUB_SHA"
+          git add js/app.js index.html navigation-preview.html js/nh7-navigation-preview-app-v456.js js/nh7-navigation-preview-guard-v456.js css/nh7-nav-preview-*.css scripts/navigation-v456/browser.py
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'refactor(navigation): verified canonical Home and More entries with isolated Preview'
+            git push origin "HEAD:refs/heads/$FEATURE"
+          fi
+          git rev-parse HEAD > qa-nav456/tested-commit.txt
+          git ls-remote origin refs/heads/main > qa-nav456/main-after.txt
+          diff qa-nav456/main-before.txt qa-nav456/main-after.txt
+      - name: Verify actual immutable public Preview
+        run: |
+          export QA_PREVIEW_URL="https://rawcdn.githack.com/Omideno7/new-hope7-app/$(cat qa-nav456/tested-commit.txt)/navigation-preview.html"
+          timeout --kill-after=10s 240s python scripts/navigation-v456/preview_test.py
+      - name: Preserve evidence without font binaries
+        if: always()
+        run: |
+          mkdir -p qa-nav456
+          if [ -d qa-study454 ]; then cp -R qa-study454 qa-nav456/previous-study-regression; fi
+          python - <<'PY'
+          from pathlib import Path
+          import tarfile,json,hashlib
+          names=['js/app.js','index.html','css/nh7-navigation-v456.css','navigation-preview.html','js/nh7-navigation-preview-app-v456.js','js/nh7-navigation-preview-guard-v456.js']
+          names += [str(p) for p in Path('scripts/navigation-v456').glob('*.py')]
+          names += [str(p) for p in Path('css').glob('nh7-nav-preview-*.css')]
+          with tarfile.open('qa-nav456/runtime-without-fonts.tgz','w:gz') as tar:
+              for name in names:
+                  if Path(name).is_file():tar.add(name,arcname=name)
+          data=[*Path('data/bible').rglob('*.json'),*Path('data/apocrypha').rglob('*.json')]
+          Path('qa-nav456/corpus-hashes.json').write_text(json.dumps({str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(data)},indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: navigation-v456-${{ github.sha }}
+          path: qa-nav456/
+          retention-days: 14
