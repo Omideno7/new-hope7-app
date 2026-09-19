@@ -78,3 +78,12 @@ html[data-nh7-studio] #view .sermon-placeholder{
 html[data-nh7-studio] #view .card:not(.hero)>h2{
   color:var(--nh7-studio-text)!important;
 }
+
+
+/* v471: legacy base-mode dark selector had higher specificity than Studio tabs.
+   When a saved Studio palette is active, its palette owns inactive Daily/Audio tabs. */
+html[data-nh7-studio] #view .tabs .tab:not(.active){
+  background:var(--nh7-studio-card)!important;
+  color:var(--nh7-studio-text)!important;
+  border-color:var(--nh7-studio-line)!important;
+}
