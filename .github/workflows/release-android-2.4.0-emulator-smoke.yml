@@ -1,11 +1,9 @@
-name: Android Current Main Emulator Smoke
+name: Release Android 2.4.0 Emulator Smoke
 
 on:
   workflow_dispatch:
   push:
     branches: [release/native-store-v240-20260921]
-    paths:
-      - '.github/workflows/qa-android-emulator-smoke.yml'
 
 permissions:
   contents: read
@@ -57,7 +55,7 @@ jobs:
           {
             "name": "new-hope-7-android-smoke",
             "private": true,
-            "version": "2.3.9-50",
+            "version": "2.4.0",
             "dependencies": {
               "@capacitor/android": "8.5.0",
               "@capacitor/core": "8.5.0",
