@@ -164,8 +164,8 @@ jobs:
           set -euo pipefail
           cd native-release
           grep -R "applicationId.*com.omideno7.newhope7" android/app/build.gradle
-          grep -R "versionCode.*23950" android/app/build.gradle
-          grep -R 'versionName.*2.3.9.50' android/app/build.gradle
+          grep -R "versionCode.*24001" android/app/build.gradle
+          grep -R 'versionName.*2.4.0' android/app/build.gradle
           grep -R 'compileSdkVersion = 36' android/variables.gradle
           grep -R 'targetSdkVersion = 36' android/variables.gradle
           grep -R 'minSdkVersion = 24' android/variables.gradle
