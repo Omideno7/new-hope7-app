@@ -1,0 +1,76 @@
+name: Admin Review Refresh v474 QA
+
+on:
+  push:
+    branches:
+      - feature/admin-review-refresh-v474-20260920
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate scoped diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=e0b8ad7d4f8e252023fcecb9deb9d022d2e6b7ad
+          git diff --name-only "$base"...HEAD > /tmp/changed
+          cat /tmp/changed
+          allowed='^(js/nh7-admin-review-refresh-v474\.js|js/admin-v2\.3\.9-registration-requests-v331\.js|admin-v239-stable\.html|\.github/workflows/qa-admin-review-v474\.yml)$'
+          bad=$(grep -Ev "$allowed" /tmp/changed || true)
+          test -z "$bad"
+          ! grep -Eq '^(supabase/|data/|assets/|admin\.html$)' /tmp/changed
+
+      - name: Validate JavaScript
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check js/nh7-admin-review-refresh-v474.js
+          node --check js/admin-v2.3.9-registration-requests-v331.js
+
+      - name: Verify automatic polling is removed
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=js/admin-v2.3.9-registration-requests-v331.js
+          ! grep -Eq 'setInterval\(\(\)=>refreshRegistrations|visibilitychange.*refreshRegistrations|pageshow.*refreshRegistrations|setTimeout\(\(\)=>refreshRegistrations' "$file"
+          grep -q 'NH7_ADMIN_REGISTRATION_AUTO_POLL=false' "$file"
+          grep -q "3.4.9-manual-review-refresh" "$file"
+
+      - name: Verify targeted review refresh
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=js/nh7-admin-review-refresh-v474.js
+          grep -q "Promise.allSettled" "$file"
+          grep -q "loadRegistrationFeed" "$file"
+          grep -q "qa_questions?select=" "$file"
+          grep -q "loadSchoolAssignmentsFeed" "$file"
+          grep -q "Check new items" "$file"
+          grep -q "background polling is off" "$file"
+          ! grep -Eq "notification_inbox|sermon_categories|daily_content|school_progress|school_exam_attempts|school_certificates" "$file"
+          ! grep -Eq "setInterval\(" "$file"
+
+      - name: Verify stable admin wiring
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "2.3.9.48-admin-review-v474" admin-v239-stable.html
+          grep -q "nh7-admin-review-refresh-v474.js?v=\${BUILD}" admin-v239-stable.html
+          grep -q "nh7-admin-full-stability-v447.js" admin-v239-stable.html
+          grep -q "nh7-admin-sermon-metadata-v452.js" admin-v239-stable.html
+
+      - name: Verify no destructive storage or backend changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eq "localStorage\.clear|sessionStorage\.clear|service_role|DELETE FROM|DROP TABLE|ALTER TABLE" js/nh7-admin-review-refresh-v474.js
+          echo "Admin review refresh scope OK"
