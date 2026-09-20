@@ -6,7 +6,7 @@ on:
     paths:
       - '.github/workflows/android-selected-push-apk-v478-macos.yml'
       - 'index.html'
-      - 'js/nh7-push-account-bind-v363.js'
+      - 'js/nh7-push-account-bind-v364.js'
       - 'js/nh7-notifications-zagreb-v334.js'
   workflow_dispatch:
 
@@ -36,11 +36,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          node --check js/nh7-push-account-bind-v363.js
-          grep -q "O.login(i.userId)" js/nh7-push-account-bind-v363.js
-          grep -q "User?.pushSubscription" js/nh7-push-account-bind-v363.js
-          grep -q "O.logout" js/nh7-push-account-bind-v363.js
-          grep -q 'nh7-push-account-bind-v363.js?v=3.6.3' index.html
+          node --check js/nh7-push-account-bind-v364.js
+          grep -q "O.login(i.userId)" js/nh7-push-account-bind-v364.js
+          grep -q "User?.pushSubscription" js/nh7-push-account-bind-v364.js
+          grep -q "O.logout" js/nh7-push-account-bind-v364.js
+          grep -q 'nh7-push-account-bind-v364.js?v=3.6.4' index.html
 
       - name: Build isolated QA APK
         shell: bash
@@ -126,9 +126,10 @@ jobs:
           manifest.write_text(t)
           PY
 
-          test -f android/app/src/main/assets/public/js/nh7-push-account-bind-v363.js
-          grep -q 'O.login(i.userId)' android/app/src/main/assets/public/js/nh7-push-account-bind-v363.js
-          grep -q 'User?.pushSubscription' android/app/src/main/assets/public/js/nh7-push-account-bind-v363.js
+          test -f android/app/src/main/assets/public/js/nh7-push-account-bind-v364.js
+          grep -q 'O.login(i.userId)' android/app/src/main/assets/public/js/nh7-push-account-bind-v364.js
+          grep -q 'User?.pushSubscription' android/app/src/main/assets/public/js/nh7-push-account-bind-v364.js
+          grep -q 'getExternalId' android/app/src/main/assets/public/js/nh7-push-account-bind-v364.js
           if grep -q 'cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js' android/app/src/main/assets/public/index.html; then
             echo 'Web OneSignal SDK must not be active in native QA' >&2
             exit 1
