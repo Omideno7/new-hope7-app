@@ -1,6 +1,6 @@
 /* New Hope 7 Admin v4.7.5 — stable manual review refresh.
  * The button/strip are rendered by admin.html itself; this module only performs the targeted refresh.
- * No MutationObserver, delayed DOM injection or manual scroll restoration.
+ * No delayed DOM injection or manual scroll restoration.
  */
 (()=>{'use strict';
 if(window.__NH7_ADMIN_REVIEW_REFRESH_V475__)return;
@@ -25,8 +25,9 @@ function setBusy(on){
   document.querySelectorAll('[data-nh7-review-refresh-v475]').forEach(b=>{
     b.disabled=!!on;
     b.dataset.busy=on?'1':'0';
-    const label=b.querySelector('[data-nh7-review-label-v475]');
-    if(label)label.textContent=on?L('در حال بررسی…','Checking…','Provjera…'):L('بررسی موارد جدید','Check new items','Provjeri nove stavke');
+    b.setAttribute('aria-busy',on?'true':'false');
+    const icon=b.querySelector('[data-nh7-review-icon-v475]');
+    if(icon)icon.textContent=on?'⏳':'🔎';
   });
 }
 function summaryText(c){
@@ -41,6 +42,8 @@ async function refreshReviewQueues(){
   try{if(typeof token==='undefined'||!token||typeof authFetch!=='function')return}catch(_){return}
   refreshing=true;setBusy(true);
   const before=reviewCounts();
+  const sig=list=>(Array.isArray(list)?list:[]).map(x=>[x?.id,x?.status,x?.updated_at,x?.submitted_at,x?.answered_at].join('|')).join(',');
+  const beforeSig=[sig(state?.registrations),sig(state?.questions),sig(state?.schoolAssignments)].join('||');
   try{if(typeof setMessage==='function')setMessage(L('در حال بررسی موارد جدید…','Checking new review items…','Provjera novih stavki…'))}catch(_){}
   try{
     const results=await Promise.allSettled([
@@ -61,7 +64,9 @@ async function refreshReviewQueues(){
     if(errors.length)console.warn('[NH7 review refresh v475]',errors);
     try{lastLoadedAt=new Date().toISOString()}catch(_){}
     try{if(typeof notifyIfNew==='function')notifyIfNew()}catch(_){}
-    if(typeof render==='function')render(false);
+    const afterSig=[sig(state?.registrations),sig(state?.questions),sig(state?.schoolAssignments)].join('||');
+    const changed=beforeSig!==afterSig;
+    if(changed&&typeof render==='function')render(false);
     const after=reviewCounts(),newCount=Math.max(0,after.total-before.total);
     const msg=errors.length
       ?L('بررسی انجام شد، اما یک بخش خطا داشت. دوباره تلاش کنید.','Check completed, but one section had an error. Try again.','Provjera je završena, ali jedan dio ima pogrešku.')
