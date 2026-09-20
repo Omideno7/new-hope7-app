@@ -144,30 +144,29 @@ jobs:
           script: |
             set -eu
             adb install -r native-smoke/android/app/build/outputs/apk/debug/app-debug.apk
-            PACKAGE=com.omideno7.newhope7.qa
-            adb shell pm list packages | grep "$PACKAGE"
-            adb shell am force-stop "$PACKAGE"
-            adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1
+            adb shell pm list packages | grep "com.omideno7.newhope7.qa"
+            adb shell am force-stop "com.omideno7.newhope7.qa"
+            adb shell monkey -p "com.omideno7.newhope7.qa" -c android.intent.category.LAUNCHER 1
             sleep 12
-            PID=$(adb shell pidof "$PACKAGE" | tr -d '\r')
+            PID=$(adb shell pidof "com.omideno7.newhope7.qa" | tr -d '\r')
             test -n "$PID"
             echo "App process alive: $PID"
-            adb shell dumpsys activity activities | grep -E "$PACKAGE|MainActivity" | head -n 20 || true
+            adb shell dumpsys activity activities | grep -E "com.omideno7.newhope7.qa|MainActivity" | head -n 20 || true
             adb shell uiautomator dump /sdcard/window.xml || true
             adb pull /sdcard/window.xml window.xml || true
             adb exec-out screencap -p > android-smoke.png
             adb logcat -d > android-logcat.txt
-            if grep -E "FATAL EXCEPTION|ANR in $PACKAGE|Process: $PACKAGE.*has died" android-logcat.txt; then
+            if grep -E "FATAL EXCEPTION|ANR in com.omideno7.newhope7.qa|Process: com.omideno7.newhope7.qa.*has died" android-logcat.txt; then
               echo 'Fatal Android runtime issue detected'
               exit 1
             fi
             echo 'No fatal Android runtime issue detected'
             adb shell svc wifi disable
             adb shell svc data disable || true
-            adb shell am force-stop "$PACKAGE"
-            adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1
+            adb shell am force-stop "com.omideno7.newhope7.qa"
+            adb shell monkey -p "com.omideno7.newhope7.qa" -c android.intent.category.LAUNCHER 1
             sleep 8
-            PID2=$(adb shell pidof "$PACKAGE" | tr -d '\r')
+            PID2=$(adb shell pidof "com.omideno7.newhope7.qa" | tr -d '\r')
             test -n "$PID2"
             echo "Offline relaunch process alive: $PID2"
             adb exec-out screencap -p > android-smoke-offline.png
