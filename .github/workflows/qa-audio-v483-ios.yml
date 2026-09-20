@@ -1,0 +1,88 @@
+name: Audio v483 iOS Native QA
+
+on:
+  push:
+    branches: ['fix/audio-autonext-media-controls-v483-20260920']
+    paths:
+      - '.github/workflows/qa-audio-v483-ios.yml'
+      - 'index.html'
+      - 'js/app.js'
+      - 'js/nh7-audio-classic-v483.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-ios:
+    runs-on: macos-15
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Select Xcode 26+
+        shell: bash
+        run: |
+          set -euo pipefail
+          XCODE_PATH=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1)
+          test -n "${XCODE_PATH:-}"
+          sudo xcode-select -s "$XCODE_PATH/Contents/Developer"
+      - name: Prepare iOS audio QA wrapper
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf ios-audio-qa
+          mkdir -p ios-audio-qa/www ios-audio-qa/assets
+          cp index.html app-v239.html reset-password.html manifest.json version.json ios-audio-qa/www/
+          for dir in assets css js data offline push; do cp -R "$dir" ios-audio-qa/www/; done
+          cp assets/logo.png ios-audio-qa/assets/logo.png
+          cat > ios-audio-qa/package.json <<'JSON'
+          {
+            "name":"nh7-audio-v483-ios-qa",
+            "private":true,
+            "dependencies":{
+              "@capacitor/core":"8.5.0",
+              "@capacitor/ios":"8.5.0",
+              "@capacitor/file-transfer":"2.0.5",
+              "@capacitor/filesystem":"8.1.3",
+              "@capacitor/local-notifications":"8.3.1",
+              "onesignal-cordova-plugin":"5.5.3"
+            },
+            "devDependencies":{"@capacitor/cli":"8.5.0"}
+          }
+          JSON
+          cat > ios-audio-qa/capacitor.config.json <<'JSON'
+          {"appId":"com.omideno7.newhope7","appName":"New Hope 7","webDir":"www","ios":{"backgroundColor":"#ffffff","contentInset":"automatic"}}
+          JSON
+          cd ios-audio-qa
+          npm install --no-audit --no-fund
+          npx cap add ios
+          npx cap sync ios
+          test -f ios/App/App/public/js/nh7-audio-classic-v483.js
+          grep -q 'navigator.mediaSession.metadata=new MediaMetadata' ios/App/App/public/js/nh7-audio-classic-v483.js
+          grep -q 'nh7-now-playing-v483' ios/App/App/public/js/nh7-audio-classic-v483.js
+          python3 <<'PY'
+          from pathlib import Path
+          p=Path('ios/App/App/Info.plist')
+          s=p.read_text()
+          if '<key>UIBackgroundModes</key>' not in s:
+              s=s.replace('</dict>\n</plist>','    <key>UIBackgroundModes</key>\n    <array>\n        <string>audio</string>\n    </array>\n</dict>\n</plist>')
+          elif '<string>audio</string>' not in s:
+              s=s.replace('<key>UIBackgroundModes</key>\n\t<array>','<key>UIBackgroundModes</key>\n\t<array>\n\t\t<string>audio</string>',1)
+          p.write_text(s)
+          PY
+          grep -q '<string>audio</string>' ios/App/App/Info.plist
+      - name: Build iOS Simulator
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd ios-audio-qa/ios/App
+          xcodebuild -project App.xcodeproj -scheme App -configuration Release -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
+      - name: Build generic iOS device
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd ios-audio-qa/ios/App
+          xcodebuild -project App.xcodeproj -scheme App -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build
