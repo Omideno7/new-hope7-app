@@ -35,7 +35,7 @@
     <button id="seedBtn" type="button">نمونه</button>
     <button id="resetBtn" type="button">پاک‌کردن Preview</button>
   </div>
-  <p class="sw-preview-note" id="previewNote">این صفحه فقط برای تست است؛ هیچ داده‌ای به Supabase ارسال نمی‌شود.</p>
+  <p class="sw-preview-note" id="previewNote">این صفحه فقط برای تست است و داده‌های آن آزمایشی است.</p>
   <main id="view" class="view"></main>
 </div>
 <script type="module">
@@ -74,7 +74,7 @@ function setLang(l){
  preview.render({});
  document.getElementById('seedBtn').textContent=l==='fa'?'داده نمونه':l==='hr'?'Primjer':'Sample data';
  document.getElementById('resetBtn').textContent=l==='fa'?'پاک‌کردن Preview':l==='hr'?'Očisti Preview':'Reset Preview';
- document.getElementById('previewNote').textContent=l==='fa'?'این صفحه فقط برای تست است؛ هیچ داده‌ای به Supabase ارسال نمی‌شود.':l==='hr'?'Ova stranica služi samo za testiranje; podaci se ne šalju u Supabase.':'This page is for testing only; no data is sent to Supabase.';
+ document.getElementById('previewNote').textContent=l==='fa'?'این صفحه فقط برای تست است؛ هیچ داده‌ای به Supabase ارسال نمی‌شود.':l==='hr'?'Ova stranica služi samo za testiranje i sadrži probne podatke.':'This page is for testing only and uses preview data.';
 }
 const preview=createSoulWinningV472({mount:()=>document.getElementById('view'),lang:()=>localStorage.getItem('nh7_lang')||'fa',navigate:(_route,params)=>preview.render(params||{})});
 document.getElementById('previewLang').value=localStorage.getItem('nh7_lang')||'fa';
