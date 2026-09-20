@@ -1,0 +1,114 @@
+name: Admin Blessings v476 QA
+
+on:
+  push:
+    branches:
+      - feature/admin-blessings-v476-20260920
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify scoped diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=52c12d6a6527d5f4b25431f65e64e4b39f9f31dc
+          git diff --name-only "$base"...HEAD > /tmp/changed
+          cat /tmp/changed
+          allowed='^(admin\.html|admin-v239-stable\.html|js/nh7-admin-review-blessings-v476\.js|\.github/workflows/qa-admin-blessings-v476\.yml)$'
+          bad=$(grep -Ev "$allowed" /tmp/changed || true)
+          test -z "$bad"
+          ! grep -Eq '^(supabase/|data/|assets/)' /tmp/changed
+
+      - name: Validate JavaScript and HTML inline scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check js/nh7-admin-review-blessings-v476.js
+          node <<'NODE'
+          const fs=require('fs');
+          for(const file of ['admin.html','admin-v239-stable.html']){
+            const html=fs.readFileSync(file,'utf8');
+            const blocks=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]).filter(Boolean);
+            blocks.forEach((code,index)=>new Function(code+'\n//# sourceURL='+file+'-inline-'+index));
+          }
+          console.log('Admin scripts OK');
+          NODE
+
+      - name: Verify button cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -q '<button class="fab-refresh"' admin.html
+          ! grep -q '<button class="fab-refresh"' admin-v239-stable.html
+          ! grep -q 'nh7-admin-sermon-social-v440.js' admin.html
+          ! grep -q 'nh7-admin-review-refresh-v475.js' admin.html
+          ! grep -q 'nh7-admin-review-refresh-v475.js' admin-v239-stable.html
+          grep -q 'function nh7AdminReviewButtonV476' admin.html
+          top=$(python3 - <<'PY'
+          s=open('admin.html',encoding='utf-8').read()
+          a=s.index('function renderTop()')
+          b=s.index('function tabsHtml()',a)
+          print(s[a:b])
+          PY
+          )
+          ! printf '%s' "$top" | grep -q 'nh7AdminReviewButtonV476()'
+          strip=$(python3 - <<'PY'
+          s=open('admin.html',encoding='utf-8').read()
+          a=s.index('function nh7AdminReviewStripV476()')
+          b=s.index('function renderTop()',a)
+          print(s[a:b])
+          PY
+          )
+          printf '%s' "$strip" | grep -q 'nh7AdminReviewButtonV476()'
+
+      - name: Verify Blessings integration
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "activeTab==='blessings'" admin.html
+          grep -q "nh7Label('برکت‌ها','Blessings','Blagoslovi')" admin.html
+          grep -q "label('برکت‌های تازه','New blessings','Novi blagoslovi')" admin.html
+          grep -q "nh7AdminBlessingsNewCountV476" admin.html
+          grep -q "nh7_admin_sermon_blessings_v440" js/nh7-admin-review-blessings-v476.js
+          grep -q "nh7_sermon_delete_blessing_v440" js/nh7-admin-review-blessings-v476.js
+          grep -q "data-blessing-search-v476" js/nh7-admin-review-blessings-v476.js
+          grep -q "data-blessing-filter-v476" js/nh7-admin-review-blessings-v476.js
+          grep -q "nh7AdminMarkBlessingsSeenV476" js/nh7-admin-review-blessings-v476.js
+
+      - name: Verify four-queue manual refresh
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=js/nh7-admin-review-blessings-v476.js
+          grep -q 'Promise.allSettled' "$file"
+          grep -q 'loadRegistrationFeed' "$file"
+          grep -q 'qa_questions?select=' "$file"
+          grep -q 'loadSchoolAssignmentsFeed' "$file"
+          grep -q 'fetchBlessings()' "$file"
+          grep -q 'New blessings' "$file"
+          ! grep -Eq 'setInterval\(|MutationObserver|scrollTo\(|restoreScroll|prepend\(|insertAdjacent' "$file"
+
+      - name: Verify stable loader
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q '2.3.9.48-admin-blessings-v476' admin-v239-stable.html
+          grep -q 'nh7-admin-review-blessings-v476.js' admin-v239-stable.html
+          ! grep -q 'fab-refresh' admin-v239-stable.html
+
+      - name: Verify no destructive backend/schema code
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eq 'DROP TABLE|ALTER TABLE|CREATE TABLE|DELETE FROM|service_role|localStorage\.clear|sessionStorage\.clear' js/nh7-admin-review-blessings-v476.js
+          echo 'Blessings moderation scope OK'
