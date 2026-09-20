@@ -29,7 +29,8 @@ function statusText(){
 }
 function refreshProviderUi(){
   document.querySelectorAll('[data-nh7-ai-provider-note]').forEach(n=>{n.textContent=statusText();n.className='nh7-ai490-provider '+(providerConfigured===true?'is-ok':providerConfigured===false?'is-warn':'')});
-  document.querySelectorAll('[data-nh7-ai-button]').forEach(btn=>{btn.disabled=providerConfigured!==true;btn.title=providerConfigured===true?'':statusText()});
+  const ready=authReady();
+  document.querySelectorAll('[data-nh7-ai-button]').forEach(btn=>{btn.disabled=!ready;btn.title=ready?'':statusText()});
 }
 async function checkProvider(force=false){
   if(providerConfigured===true&&!force)return true;
@@ -51,9 +52,11 @@ async function checkProvider(force=false){
   return providerCheck;
 }
 async function callAI(payload){
-  if(await checkProvider(true)!==true)throw Object.assign(new Error(statusText()),{code:'PROVIDER_NOT_READY'});
+  if(!authReady())throw Object.assign(new Error(statusText()),{code:'ADMIN_SESSION_NOT_READY'});
+  try{await checkProvider(true)}catch(_){}
   const result=await authFetch('/functions/v1/nh7-admin-ai-v490',{method:'POST',body:JSON.stringify(payload)});
   if(!result?.ok)throw Object.assign(new Error(result?.error||L('AI پاسخ نداد.','AI request failed.','AI zahtjev nije uspio.')),{code:result?.code||''});
+  providerConfigured=true;refreshProviderUi();
   return result;
 }
 function setQnaStatus(id,text,type=''){
@@ -268,7 +271,7 @@ function install(){
   document.addEventListener('change',event=>{
     if(event.target?.id==='sv_audio'){
       const editor=document.getElementById('sermonEditor');if(!editor||autoSermonTried.has(editor))return;
-      autoSermonTried.add(editor);setTimeout(async()=>{const v=sermonTitles(),filled=LANGS.filter(l=>v[l]);if(filled.length!==1)return;try{if(await checkProvider(true)===true)await translateSermonTitles(false)}catch(_){ }},1200);
+      autoSermonTried.add(editor);setTimeout(async()=>{const v=sermonTitles(),filled=LANGS.filter(l=>v[l]);if(filled.length!==1)return;try{if(authReady())await translateSermonTitles(false)}catch(_){ }},1200);
     }
   },true);
   document.addEventListener('nh7:admin-render',()=>{setTimeout(()=>{checkProvider(true).then(()=>scan());},160)});
