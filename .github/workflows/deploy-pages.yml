@@ -173,7 +173,7 @@ jobs:
           grep -q 'Incorrect answers' js/nh7-admin-student-report-v495.js
           grep -q 'PDF / Print' js/nh7-admin-student-report-v495.js
           grep -q 'html2pdf.bundle.min.js' js/nh7-admin-student-report-v495.js
-          grep -q 'outputPdf' js/nh7-admin-student-report-v495.js
+          grep -q "pdf.output('blob')" js/nh7-admin-student-report-v495.js
           grep -q 'nh7CloseStudentReportPreviewV495' js/nh7-admin-student-report-v495.js
           grep -q 'nh7DownloadStudentReportPdfV495' js/nh7-admin-student-report-v495.js
           grep -q 'nh7PrintStudentReportPdfV495' js/nh7-admin-student-report-v495.js
