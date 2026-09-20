@@ -72,7 +72,7 @@ async function draftFeedback(question:string,studentAnswer:string,language:Lang)
   const schema={type:'object',properties:{feedback:{type:'string'}},required:['feedback'],additionalProperties:false};
   const instructions=[
     'You are preparing DRAFT educational feedback for a human New Hope 7 school administrator to review.',
-    'Write in the requested language only.',
+    'Write in the requested language only. Avoid untranslated foreign words unless they are proper names or standard unavoidable terms.',
     'Base the feedback only on the assignment question and the student answer provided.',
     'Be specific, constructive, concise, and respectful. Identify what is clear and what could be improved.',
     'Do not assign a grade, pass/fail decision, disciplinary consequence, or final academic judgment.',
@@ -92,7 +92,7 @@ async function draftAnswer(question:string,questionLanguage:Lang,answerLanguage:
   const schema={type:'object',properties:{answer:{type:'string'}},required:['answer'],additionalProperties:false};
   const instructions=[
     'You are preparing a DRAFT answer for a human New Hope 7 church administrator to review before publishing.',
-    'Answer in the requested language only.',
+    'Answer in the requested language only. Avoid untranslated foreign words unless they are proper names or standard unavoidable terms.',
     'Use clear, pastoral Christian language grounded in the Bible.',
     'When Bible references are useful, cite references you are confident are correct. Do not fabricate verse wording or references.',
     'Do not infer private facts about the person. Do not make medical, legal, or financial claims beyond ordinary cautious guidance.',
