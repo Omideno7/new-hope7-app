@@ -5,7 +5,7 @@ window.__NH7_ADMIN_QNA_AUTOTRANSLATE_V488__=true;
 const VERSION='4.8.8-admin-qna-autotranslate';
 const LANGS=['fa','en','hr'];
 const inflight=new Map(),autoTried=new Set();
-let installed=false,observer=null,scanTimer=0;
+let installed=false,observer=null,scanTimer=0,providerConfigured=null,providerCheck=null;
 const L=(fa,en,hr)=>{const v=String(typeof lang!=='undefined'?lang:'fa').toLowerCase();return v==='fa'?fa:v==='hr'?hr:en};
 const E=v=>typeof h==='function'?h(v):String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const qrow=id=>(typeof state!=='undefined'&&Array.isArray(state.questions))?state.questions.find(x=>String(x.id)===String(id)):null;
@@ -22,7 +22,19 @@ function patchState(q,prefix,data){
 function fillMissing(prefix,id,data){
   for(const l of LANGS){const el=field(prefix,l,id);if(el&&!String(el.value||'').trim()&&data?.[l])el.value=data[l]}
 }
+async function checkProvider(){
+  if(providerCheck)return providerCheck;
+  providerCheck=(async()=>{
+    try{
+      const result=await authFetch('/functions/v1/nh7-admin-translate-v488',{method:'POST',body:JSON.stringify({action:'status'})});
+      providerConfigured=result?.configured===true;return providerConfigured;
+    }catch(_){providerConfigured=false;return false}
+    finally{providerCheck=null}
+  })();
+  return providerCheck;
+}
 async function callTranslate(text,source,kind){
+  if(providerConfigured===false)throw Object.assign(new Error(L('سرویس ترجمه هنوز روی سرور تنظیم نشده است.','Translation provider is not configured on the server.','Servis za prijevod nije konfiguriran na poslužitelju.')),{code:'PROVIDER_NOT_CONFIGURED'});
   const result=await authFetch('/functions/v1/nh7-admin-translate-v488',{method:'POST',body:JSON.stringify({text,source_language:source,kind})});
   if(!result?.ok||!result?.translations)throw Object.assign(new Error(result?.error||L('ترجمه انجام نشد.','Translation failed.','Prijevod nije uspio.')),{code:result?.code||''});
   return result.translations;
@@ -126,14 +138,14 @@ function installObserver(){
       observer.unobserve(box);if(autoTried.has(id))continue;autoTried.add(id);
       const q=qrow(id);if(!q)continue;
       const missing=LANGS.some(l=>!String(q['question_'+l]||'').trim());
-      if(missing)translateQuestion(id,false).catch(()=>{});
+      if(missing&&providerConfigured===true)translateQuestion(id,false).catch(()=>{});
     }
   },{root:null,rootMargin:'120px',threshold:0.01});
 }
 function install(){
   if(installed)return true;
   if(typeof renderQuestionCard!=='function'||typeof authFetch!=='function'||typeof loadAll!=='function')return false;
-  installed=true;installObserver();
+  installed=true;installObserver();checkProvider().then(ok=>{if(ok){mountControls();document.querySelectorAll('.nh7-qna-i18n-box').forEach(box=>observer?.observe(box))}}).catch(()=>{});
   const baseRender=renderQuestionCard;
   renderQuestionCard=function(q){const html=baseRender(q);queueMicrotask(()=>{clearTimeout(scanTimer);scanTimer=setTimeout(mountControls,40)});return html};
   answerQuestion=async function(id){
