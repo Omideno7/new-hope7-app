@@ -52,6 +52,13 @@ jobs:
           cp index.html app-v239.html reset-password.html manifest.json version.json native-smoke/www/
           for dir in assets css js data offline push; do cp -R "$dir" native-smoke/www/; done
           cp assets/logo.png native-smoke/assets/logo.png
+          python3 <<'PY'
+          from pathlib import Path
+          p=Path('native-smoke/www/index.html')
+          text=p.read_text()
+          text=text.replace('<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>','<!-- Web OneSignal SDK disabled inside Android native wrapper; Cordova SDK owns native push -->')
+          p.write_text(text)
+          PY
           cat > native-smoke/package.json <<'JSON'
           {
             "name": "new-hope-7-android-smoke",
@@ -88,6 +95,10 @@ jobs:
           grep -q 'nh7-push-account-bind-v363.js?v=3.6.3' android/app/src/main/assets/public/index.html
           grep -q 'O.login(i.userId)' android/app/src/main/assets/public/js/nh7-push-account-bind-v363.js
           grep -q 'User?.pushSubscription' android/app/src/main/assets/public/js/nh7-push-account-bind-v363.js
+          if grep -q 'cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js' android/app/src/main/assets/public/index.html; then
+            echo 'Web OneSignal SDK must not be active inside the Android native wrapper' >&2
+            exit 1
+          fi
           python3 <<'PY'
           from pathlib import Path
           import re
