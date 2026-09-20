@@ -1,0 +1,82 @@
+name: Croatian Faith v473 QA
+
+on:
+  push:
+    branches:
+      - fix/faith-hr-v473-20260920
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify scoped files only
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=2fb3832890bdc888d6b68232b073824ebf89701c
+          git diff --name-only "$base"...HEAD > /tmp/changed
+          cat /tmp/changed
+          allowed='^(data/daily/faith_proclamations_365\.json|index\.html|service-worker\.js|sw-release-core-v403\.js|\.github/workflows/qa-faith-hr-v473\.yml)$'
+          bad=$(grep -Ev "$allowed" /tmp/changed || true)
+          test -z "$bad"
+
+      - name: Prove only Croatian proclamation strings changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const cp=require('child_process'),fs=require('fs');
+          const base='2fb3832890bdc888d6b68232b073824ebf89701c';
+          const oldData=JSON.parse(cp.execFileSync('git',['show',base+':data/daily/faith_proclamations_365.json'],{encoding:'utf8',maxBuffer:10*1024*1024}));
+          const newData=JSON.parse(fs.readFileSync('data/daily/faith_proclamations_365.json','utf8'));
+          if(oldData.items.length!==365||newData.items.length!==365)throw new Error('Expected 365 days');
+          const clone=x=>JSON.parse(JSON.stringify(x));
+          let changed=0;
+          for(let i=0;i<365;i++){
+            const a=oldData.items[i],b=newData.items[i];
+            if(a.day!==b.day)throw new Error('Day order changed at '+i);
+            const aa=clone(a),bb=clone(b);
+            const oldHr=aa.proclamation.hr,newHr=bb.proclamation.hr;
+            delete aa.proclamation.hr;delete bb.proclamation.hr;
+            if(JSON.stringify(aa)!==JSON.stringify(bb))throw new Error('Non-HR change on day '+a.day);
+            if(oldHr===newHr)throw new Error('HR proclamation not changed on day '+a.day);
+            const en=b.mainVerse?.text?.en||'',hr=b.mainVerse?.text?.hr||'';
+            if(en&&newHr.includes(en))throw new Error('English remains on day '+a.day);
+            if(!hr||!newHr.includes(hr))throw new Error('Croatian verse missing on day '+a.day);
+            changed++;
+          }
+          if(changed!==365)throw new Error('Changed count '+changed);
+          const day4=newData.items.find(x=>x.day===4);
+          const expected='Danas vjerom izjavljujem: Božje sam djelo, stvoren u Kristu za dobra djela.';
+          if(!day4.proclamation.hr.startsWith(expected))throw new Error('Day 4 mismatch');
+          console.log('365/365 Croatian proclamations fixed; no other semantic content changed');
+          NODE
+
+      - name: Validate cache upgrade
+        shell: bash
+        run: |
+          set -euo pipefail
+          node -e "JSON.parse(require('fs').readFileSync('data/daily/faith_proclamations_365.json','utf8'))"
+          node --check service-worker.js
+          node --check sw-release-core-v403.js
+          grep -q "service-worker.js?v=4.7.3" index.html
+          grep -q "sw-release-core-v403.js?v=4.7.3" service-worker.js
+          grep -q "NH7_RELEASE_CORE_VERSION='4.7.3-faith-hr'" sw-release-core-v403.js
+          grep -q "nh7-release-core-v473-faith-hr" sw-release-core-v403.js
+          grep -q "'./data/daily/faith_proclamations_365.json'" sw-release-core-v403.js
+
+      - name: Verify protected areas untouched
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=2fb3832890bdc888d6b68232b073824ebf89701c
+          ! git diff --name-only "$base"...HEAD | grep -Eq '^(js/|css/|supabase/|admin|data/(?!daily/faith_proclamations_365\.json))'
+          echo "No app logic, user storage, School, Audio, Q&A or Supabase code changed"
