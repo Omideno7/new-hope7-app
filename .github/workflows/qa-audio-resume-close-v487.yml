@@ -1,0 +1,50 @@
+name: Audio Resume Close v487 QA
+
+on:
+  push:
+    branches: ['fix/audio-resume-close-v487-20260920']
+    paths:
+      - '.github/workflows/qa-audio-resume-close-v487.yml'
+      - 'index.html'
+      - 'service-worker.js'
+      - 'sw-release-core-v403.js'
+      - 'js/nh7-audio-miniplayer-v487.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate syntax and resume protection
+        run: |
+          set -euo pipefail
+          node --check js/nh7-audio-miniplayer-v487.js
+          grep -q 'function persistProgressBeforeClose' js/nh7-audio-miniplayer-v487.js
+          grep -q 'function writeResumeSnapshot' js/nh7-audio-miniplayer-v487.js
+          grep -q 'nh7_audio_close_resume_v487:' js/nh7-audio-miniplayer-v487.js
+          grep -q "localStorage.setItem('nh7_sermon_progress_'" js/nh7-audio-miniplayer-v487.js
+          grep -q "setTimeout(()=>writeResumeSnapshot(resume),140)" js/nh7-audio-miniplayer-v487.js
+          grep -q "setTimeout(()=>writeResumeSnapshot(resume),500)" js/nh7-audio-miniplayer-v487.js
+          grep -q "removeAttribute('src')" js/nh7-audio-miniplayer-v487.js
+      - name: Validate wiring
+        run: |
+          set -euo pipefail
+          grep -q 'js/nh7-audio-miniplayer-v487.js?v=4.8.7' index.html
+          ! grep -q 'js/nh7-audio-miniplayer-v486.js' index.html
+          grep -q 'sw-release-core-v403.js?v=4.8.7' service-worker.js
+          grep -q "NH7_RELEASE_CORE_VERSION='4.8.7-audio-resume-close'" sw-release-core-v403.js
+          grep -q 'nh7-audio-miniplayer-v487.js' sw-release-core-v403.js
+      - name: Verify close behavior retained
+        run: |
+          set -euo pipefail
+          f=js/nh7-audio-miniplayer-v487.js
+          grep -q 'data-mini-close' "$f"
+          grep -q 'function closeMiniPlayer' "$f"
+          grep -q 'navigator.mediaSession.metadata=null' "$f"
+          grep -q 'close:closeMiniPlayer' "$f"
+          ! grep -Eq 'localStorage\.clear|sessionStorage\.clear|indexedDB\.deleteDatabase|notification_inbox|nh7_admin_campaigns|service_role' "$f"
+          echo 'Audio resume close v487 QA OK'
