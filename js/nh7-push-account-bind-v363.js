@@ -25,6 +25,7 @@ function tags(i=identity()){
   if(i.device)out.device_id=i.device;
   return out;
 }
+function isNativeRuntime(){try{return !!(window.Capacitor?.isNativePlatform?.()||['ios','android'].includes(window.Capacitor?.getPlatform?.())||window.cordova)}catch(_){return !!window.cordova}}
 function nativeOneSignal(){return window.plugins?.OneSignal||null}
 function nativePushSubscription(O=nativeOneSignal()){return O?.User?.pushSubscription||O?.User?.PushSubscription||null}
 async function nativeSubscriptionState(O=nativeOneSignal()){
@@ -107,7 +108,7 @@ async function queueNativeBind(force=false){
     return false;
   }
 }
-function queueBind(){queueWebBind();queueNativeBind(false)}
+function queueBind(){if(isNativeRuntime())queueNativeBind(false);else queueWebBind()}
 window.addEventListener('storage',event=>{if([SESSION_KEY,LOGOUT_KEY,'nh7_device_id','nh7_lang'].includes(event.key))queueBind()});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)queueBind()});
 window.addEventListener('pageshow',queueBind);
