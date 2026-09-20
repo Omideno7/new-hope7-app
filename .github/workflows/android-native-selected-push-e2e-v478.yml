@@ -1,0 +1,170 @@
+name: Android Native Selected Push E2E v478
+
+on:
+  push:
+    branches: ['fix/android-native-selected-push-v478-20260920']
+    paths:
+      - '.github/workflows/android-native-selected-push-e2e-v478.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  e2e:
+    runs-on: macos-14
+    timeout-minutes: 35
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Build isolated E2E APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          TEST_EXTERNAL_ID='nh7-e2e-android-v478'
+          rm -rf native-e2e
+          mkdir -p native-e2e/www native-e2e/assets
+          cp index.html app-v239.html reset-password.html manifest.json version.json native-e2e/www/
+          for dir in assets css js data offline push; do cp -R "$dir" native-e2e/www/; done
+          cp assets/logo.png native-e2e/assets/logo.png
+
+          python3 <<'PY'
+          from pathlib import Path
+          p=Path('native-e2e/www/index.html')
+          text=p.read_text()
+          text=text.replace('<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>','<!-- Web OneSignal SDK disabled in Android native E2E -->')
+          marker='<script src="js/nh7-push-account-bind-v363.js?v=3.6.3" defer></script>'
+          bootstrap="""<script>
+          try{
+            localStorage.setItem('nh7_user_session_v170',JSON.stringify({user:{id:'nh7-e2e-android-v478'}}));
+            localStorage.removeItem('nh7_explicit_logout');
+            localStorage.setItem('nh7_device_id','dev_e2e_android_v478');
+          }catch(e){}
+          </script>
+          """
+          if marker not in text: raise SystemExit('v363 marker missing')
+          text=text.replace(marker,bootstrap+marker,1)
+          p.write_text(text)
+          PY
+
+          cat > native-e2e/package.json <<'JSON'
+          {
+            "name": "new-hope-7-android-native-e2e",
+            "private": true,
+            "version": "4.7.8",
+            "dependencies": {
+              "@capacitor/android": "8.5.0",
+              "@capacitor/core": "8.5.0",
+              "@capacitor/file-transfer": "2.0.5",
+              "@capacitor/filesystem": "8.1.3",
+              "@capacitor/local-notifications": "8.3.1",
+              "onesignal-cordova-plugin": "5.5.3"
+            },
+            "devDependencies": {
+              "@capacitor/cli": "8.5.0"
+            }
+          }
+          JSON
+
+          cat > native-e2e/capacitor.config.json <<'JSON'
+          {
+            "appId": "com.omideno7.newhope7.e2e",
+            "appName": "NH7 Push E2E",
+            "webDir": "www",
+            "server": {"androidScheme":"https","cleartext":false},
+            "android": {"backgroundColor":"#ffffff","webContentsDebuggingEnabled":false}
+          }
+          JSON
+
+          cd native-e2e
+          npm install --no-audit --no-fund
+          npx cap add android
+          npx cap sync android
+
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+          root=Path('android')
+          v=root/'variables.gradle'
+          t=v.read_text()
+          t=re.sub(r'minSdkVersion\s*=\s*\d+', 'minSdkVersion = 24', t)
+          t=re.sub(r'compileSdkVersion\s*=\s*\d+', 'compileSdkVersion = 36', t)
+          t=re.sub(r'targetSdkVersion\s*=\s*\d+', 'targetSdkVersion = 36', t)
+          v.write_text(t)
+          manifest=root/'app/src/main/AndroidManifest.xml'
+          t=manifest.read_text()
+          if 'android.permission.POST_NOTIFICATIONS' not in t:
+              m=re.search(r'<manifest\b[^>]*>',t,re.S)
+              if not m: raise SystemExit('manifest root missing')
+              t=t[:m.end()]+'\n    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />'+t[m.end():]
+          manifest.write_text(t)
+          PY
+
+          node --check www/js/nh7-push-account-bind-v363.js
+          grep -q "O.login(i.userId)" www/js/nh7-push-account-bind-v363.js
+          grep -q "User?.pushSubscription" www/js/nh7-push-account-bind-v363.js
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug --stacktrace
+          test -f app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Boot emulator and wait for native subscription
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: arm64-v8a
+          profile: pixel_5
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
+          script: |
+            set -euo pipefail
+            APK='native-e2e/android/app/build/outputs/apk/debug/app-debug.apk'
+            PACKAGE='com.omideno7.newhope7.e2e'
+            adb install -r "$APK"
+            adb shell am force-stop "$PACKAGE"
+            adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1
+            sleep 15
+            adb logcat -c
+            adb shell input tap 500 900 || true
+            sleep 10
+            adb logcat -d > e2e-prepush-logcat.txt
+            adb shell dumpsys notification > e2e-prepush-notifications.txt
+            echo 'READY_FOR_ONESIGNAL_PUSH'
+            # Keep emulator alive so the controller can send a real OneSignal push.
+            for i in $(seq 1 36); do
+              adb logcat -d > e2e-live-logcat.txt || true
+              adb shell dumpsys notification > e2e-live-notifications.txt || true
+              if grep -Eiq 'NH7 E2E|Selected Push E2E|nh7-e2e-android-v478' e2e-live-notifications.txt e2e-live-logcat.txt; then
+                echo 'E2E_PUSH_VISIBLE'
+                exit 0
+              fi
+              sleep 10
+            done
+            echo 'No matching push observed during E2E window' >&2
+            exit 1
+
+      - name: Upload E2E evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-native-selected-push-e2e-v478
+          path: |
+            e2e-prepush-logcat.txt
+            e2e-prepush-notifications.txt
+            e2e-live-logcat.txt
+            e2e-live-notifications.txt
+          if-no-files-found: ignore
+          retention-days: 7
