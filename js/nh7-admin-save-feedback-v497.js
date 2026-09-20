@@ -153,7 +153,7 @@ function qRow(id){
 function value(id){return String(document.getElementById(id)?.value||'').trim()}
 function qnaSaveStatus(id,text,tone=''){
   const answer=document.getElementById('answer_'+id),card=answer?.closest('.request-card');if(!card)return;
-  let note=card.querySelector('[data-nh7-qna-save-v497="'+CSS.escape(String(id))+'"]');
+  let note=card.querySelector('[data-nh7-qna-save-v497]');
   if(!note){
     note=document.createElement('div');note.dataset.nh7QnaSaveV497=String(id);note.className='nh7-qna-save-v497';
     const actions=[...card.querySelectorAll('.actions')].find(x=>x.querySelector('button[onclick*="answerQuestion"]'));
