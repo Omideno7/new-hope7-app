@@ -1,0 +1,85 @@
+name: Admin Q&A Auto Translate v488 QA
+
+on:
+  push:
+    branches: ['fix/admin-qna-autotranslate-v488-20260920']
+    paths:
+      - '.github/workflows/qa-admin-qna-autotranslate-v488.yml'
+      - 'admin-v239-stable.html'
+      - 'js/nh7-admin-qna-autotranslate-v488.js'
+      - 'supabase/functions/nh7-admin-translate-v488/index.ts'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate scoped diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=efa3ba33e22d5b83d2c60636b5433b58ee86383a
+          git diff --name-only "$base"...HEAD | tee /tmp/changed
+          allowed='^(admin-v239-stable\.html|js/nh7-admin-qna-autotranslate-v488\.js|supabase/functions/nh7-admin-translate-v488/index\.ts|\.github/workflows/qa-admin-qna-autotranslate-v488\.yml)$'
+          bad=$(grep -Ev "$allowed" /tmp/changed || true)
+          test -z "$bad"
+
+      - name: Validate admin JavaScript
+        run: |
+          set -euo pipefail
+          node --check js/nh7-admin-qna-autotranslate-v488.js
+          grep -q 'admin-qna-i18n-v341.js' admin-v239-stable.html
+          grep -q 'nh7-admin-qna-autotranslate-v488.js?v=4.8.8' admin-v239-stable.html
+
+      - name: Verify question auto translate
+        run: |
+          set -euo pipefail
+          f=js/nh7-admin-qna-autotranslate-v488.js
+          grep -q 'IntersectionObserver' "$f"
+          grep -q 'translateQuestion' "$f"
+          grep -q 'persistQuestion' "$f"
+          grep -q "question_'+l" "$f"
+          grep -q 'providerConfigured===true' "$f"
+          grep -q 'fillMissing' "$f"
+
+      - name: Verify answer translate on save
+        run: |
+          set -euo pipefail
+          f=js/nh7-admin-qna-autotranslate-v488.js
+          grep -q 'translateAnswer' "$f"
+          grep -q 'captureAnswerSource' "$f"
+          grep -q 'nh7AnswerSource_' "$f"
+          grep -q "answer_text:text" "$f"
+          grep -q "answer_language:sourceLang" "$f"
+          grep -q "status:'answered'" "$f"
+
+      - name: Verify manual content is preserved
+        run: |
+          set -euo pipefail
+          f=js/nh7-admin-qna-autotranslate-v488.js
+          grep -q "if(el&&!String(el.value||'').trim()" "$f"
+          grep -q 'Never overwrite manual content' "$f"
+          ! grep -q 'localStorage.clear' "$f"
+          ! grep -q 'sessionStorage.clear' "$f"
+
+      - name: Verify secure server translation
+        run: |
+          set -euo pipefail
+          f=supabase/functions/nh7-admin-translate-v488/index.ts
+          grep -q "nh7_is_admin" "$f"
+          grep -q "Admin authentication required" "$f"
+          grep -q "Admin access required" "$f"
+          grep -q "OPENAI_API_KEY" "$f"
+          grep -q "gpt-5.6-luna" "$f"
+          grep -q "json_schema" "$f"
+          grep -q "source-language value must preserve the source text exactly" "$f"
+          grep -q "action||'')==='status'" "$f"
+          ! grep -q "qa_questions" "$f"
+          echo 'Admin Q&A auto-translate v488 QA OK'
