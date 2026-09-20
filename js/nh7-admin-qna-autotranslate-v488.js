@@ -5,6 +5,7 @@ window.__NH7_ADMIN_QNA_AUTOTRANSLATE_V488__=true;
 const VERSION='4.8.8-admin-qna-autotranslate';
 const LANGS=['fa','en','hr'];
 const inflight=new Map(),autoTried=new Set();
+const PREVIEW_ONLY=location.hostname!=='omideno7.github.io';
 let installed=false,observer=null,scanTimer=0,providerConfigured=null,providerCheck=null;
 const L=(fa,en,hr)=>{const v=String(typeof lang!=='undefined'?lang:'fa').toLowerCase();return v==='fa'?fa:v==='hr'?hr:en};
 const E=v=>typeof h==='function'?h(v):String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -42,7 +43,7 @@ async function callTranslate(text,source,kind){
 async function persistQuestion(q,data){
   const id=String(q.id),payload={updated_at:new Date().toISOString()};
   for(const l of LANGS){const v=String(data?.[l]||value('q',l,id)||q?.['question_'+l]||'').trim();if(v)payload['question_'+l]=v}
-  await authFetch('/rest/v1/qa_questions?id=eq.'+encodeURIComponent(id),{method:'PATCH',body:JSON.stringify(payload)});
+  if(!PREVIEW_ONLY)await authFetch('/rest/v1/qa_questions?id=eq.'+encodeURIComponent(id),{method:'PATCH',body:JSON.stringify(payload)});
   Object.assign(q,payload);
 }
 async function translateQuestion(id,manual=false){
@@ -166,6 +167,10 @@ function install(){
     }
     if(originalQ&&!values['question_'+qSource])values['question_'+qSource]=originalQ;
     values['answer_'+sourceLang]=text;
+    if(PREVIEW_ONLY){
+      setStatus(id,L('Preview: ترجمه‌ها فقط نمایش داده شدند و چیزی ذخیره نشد.','Preview: translations are shown but nothing was saved.','Preview: prijevodi su prikazani, ali ništa nije spremljeno.'),'ok');
+      return;
+    }
     try{
       await authFetch('/rest/v1/qa_questions?id=eq.'+encodeURIComponent(id),{
         method:'PATCH',
