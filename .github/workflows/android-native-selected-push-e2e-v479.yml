@@ -133,6 +133,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
+      - name: Checkout E2E runner
+        uses: actions/checkout@v4
+
       - name: Download E2E APK
         uses: actions/download-artifact@v4
         with:
@@ -155,41 +158,7 @@ jobs:
           profile: pixel_5
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
-          script: |
-            set -eu
-            APK='NH7_Android_Native_Push_E2E_v479.apk'
-            PACKAGE='com.omideno7.newhope7'
-            ENDPOINT='https://gpzcwffxnddhaeaogdyo.supabase.co/functions/v1/nh7-os-e2e-android-v478'
-            adb install -r "$APK"
-            adb shell am force-stop "$PACKAGE"
-            adb logcat -c
-            adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1
-            sleep 20
-            adb shell input tap 500 900 || true
-
-            echo 'Waiting for OneSignal AndroidPush subscription...'
-            FOUND=0
-            for i in $(seq 1 18); do
-              BODY=$(curl -fsS "$ENDPOINT" || true)
-              echo "$BODY" > e2e-onesignal-user.json
-              if echo "$BODY" | grep -q '"type":"AndroidPush"'; then
-                FOUND=1
-                echo 'ANDROID_PUSH_SUBSCRIPTION_FOUND'
-                break
-              fi
-              sleep 5
-            done
-            test "$FOUND" = "1"
-
-            SEND=$(curl -fsS -X POST "$ENDPOINT")
-            echo "$SEND" | tee e2e-send-result.json
-            echo "$SEND" | grep -Eq '"id":"[^"]+"'
-            sleep 20
-
-            adb logcat -d > e2e-logcat.txt
-            adb shell dumpsys notification > e2e-notifications.txt
-            grep -Eiq 'NH7 E2E|Selected Push E2E v478' e2e-notifications.txt e2e-logcat.txt
-            echo 'NATIVE_SELECTED_PUSH_E2E_OK'
+          script: bash .github/scripts/android-native-selected-push-e2e-v479.sh
 
       - name: Upload E2E evidence
         if: always()
@@ -201,5 +170,6 @@ jobs:
             e2e-send-result.json
             e2e-logcat.txt
             e2e-notifications.txt
+            e2e-package.txt
           if-no-files-found: ignore
           retention-days: 7
