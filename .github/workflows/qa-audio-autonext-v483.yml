@@ -63,7 +63,7 @@ jobs:
           grep -q 'data-now-back' "$f"
           grep -q 'data-now-forward' "$f"
           grep -q 'NH7_NAVIGATE' js/app.js
-          grep -q 'getState:()=>({current,audio})' "$f"
+          grep -q 'getState:()=>({current,audio,playQueue' "$f"
 
       - name: Verify Lock Screen Media Session
         shell: bash
