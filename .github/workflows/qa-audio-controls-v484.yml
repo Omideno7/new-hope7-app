@@ -1,0 +1,94 @@
+name: Audio Background Controls v484 QA
+
+on:
+  push:
+    branches: ['fix/audio-background-controls-v484-20260920']
+    paths:
+      - '.github/workflows/qa-audio-controls-v484.yml'
+      - 'index.html'
+      - 'service-worker.js'
+      - 'sw-release-core-v403.js'
+      - 'js/app.js'
+      - 'js/nh7-audio-classic-v484.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate JavaScript and wiring
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check js/nh7-audio-classic-v484.js
+          node --check js/app.js
+          node --check service-worker.js
+          node --check sw-release-core-v403.js
+          grep -q 'js/nh7-audio-classic-v484.js?v=4.8.4' index.html
+          ! grep -q 'js/nh7-audio-classic-v483.js' index.html
+          grep -q 'js/app.js?v=4.8.4' index.html
+          grep -q 'sw-release-core-v403.js?v=4.8.4' service-worker.js
+          grep -q "NH7_RELEASE_CORE_VERSION='4.8.4-audio-background-controls'" sw-release-core-v403.js
+          grep -q 'nh7-audio-classic-v484.js' sw-release-core-v403.js
+
+      - name: Verify previous next and auto-next
+        shell: bash
+        run: |
+          set -euo pipefail
+          f=js/nh7-audio-classic-v484.js
+          grep -q 'data-now-prev' "$f"
+          grep -q 'data-now-next' "$f"
+          grep -q 'function playPreviousTrack' "$f"
+          grep -q 'function playNextTrack' "$f"
+          grep -Fq "playNextTrack('auto-ended')" "$f"
+          grep -Fq "safe('nexttrack'" "$f"
+          grep -Fq "safe('previoustrack'" "$f"
+          grep -Fq "for(const card of \$\$('[data-sermon-card]'))" "$f"
+
+      - name: Verify speed controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          f=js/nh7-audio-classic-v484.js
+          grep -q 'data-now-speed-down' "$f"
+          grep -q 'data-now-speed-up' "$f"
+          grep -q 'data-now-rate' "$f"
+          grep -q 'function setPlaybackSpeed' "$f"
+          grep -q 'function changePlaybackSpeed' "$f"
+          grep -q "localStorage.setItem('nh7_sermon_speed'" "$f"
+          grep -q "audio.playbackRate=rate" "$f"
+          grep -q "addEventListener('ratechange'" "$f"
+
+      - name: Verify volume controls and iOS fallback
+        shell: bash
+        run: |
+          set -euo pipefail
+          f=js/nh7-audio-classic-v484.js
+          grep -q 'data-now-volume' "$f"
+          grep -q 'data-now-mute' "$f"
+          grep -q 'data-now-volume-hint' "$f"
+          grep -q 'function probeVolumeControl' "$f"
+          grep -q 'function setMediaVolume' "$f"
+          grep -q 'function toggleMediaMute' "$f"
+          grep -q "localStorage.setItem('nh7_sermon_volume'" "$f"
+          grep -q 'Use phone volume buttons' "$f"
+          grep -q "addEventListener('volumechange'" "$f"
+
+      - name: Verify Media Session and no destructive data changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          f=js/nh7-audio-classic-v484.js
+          grep -q 'navigator.mediaSession.metadata=new MediaMetadata' "$f"
+          grep -q 'setPositionState' "$f"
+          grep -q 'playbackState' "$f"
+          ! grep -Eq 'localStorage\.clear|sessionStorage\.clear|indexedDB\.deleteDatabase' "$f"
+          ! grep -Eq 'notification_inbox|nh7_admin_campaigns|service_role' "$f"
+          grep -q "NH7_AUDIO_CLASSIC_VERSION='4.8.4'" "$f"
+          echo 'Audio v484 controls QA OK'
