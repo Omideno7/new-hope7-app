@@ -80,7 +80,7 @@ jobs:
 
           cat > native-e2e/capacitor.config.json <<'JSON'
           {
-            "appId": "com.omideno7.newhope7.e2e",
+            "appId": "com.omideno7.newhope7",
             "appName": "NH7 Push E2E",
             "webDir": "www",
             "server": {"androidScheme":"https","cleartext":false},
@@ -132,7 +132,7 @@ jobs:
           script: |
             set -euo pipefail
             APK='native-e2e/android/app/build/outputs/apk/debug/app-debug.apk'
-            PACKAGE='com.omideno7.newhope7.e2e'
+            PACKAGE='com.omideno7.newhope7'
             adb install -r "$APK"
             adb shell am force-stop "$PACKAGE"
             adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1
@@ -144,7 +144,7 @@ jobs:
             adb shell dumpsys notification > e2e-prepush-notifications.txt
             echo 'READY_FOR_ONESIGNAL_PUSH'
             # Keep emulator alive so the controller can send a real OneSignal push.
-            for i in $(seq 1 36); do
+            for i in $(seq 1 12); do
               adb logcat -d > e2e-live-logcat.txt || true
               adb shell dumpsys notification > e2e-live-notifications.txt || true
               if grep -Eiq 'NH7 E2E|Selected Push E2E|nh7-e2e-android-v478' e2e-live-notifications.txt e2e-live-logcat.txt; then
