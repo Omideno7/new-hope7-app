@@ -1,0 +1,120 @@
+name: Admin AI Reports v490 QA
+
+on:
+  push:
+    branches: ['feature/admin-ai-reports-v490-20260920']
+    paths:
+      - '.github/workflows/qa-admin-ai-reports-v490.yml'
+      - 'admin-v239-stable.html'
+      - 'index.html'
+      - 'service-worker.js'
+      - 'sw-release-core-v403.js'
+      - 'js/nh7-admin-ai-v490.js'
+      - 'js/nh7-admin-student-report-v490.js'
+      - 'js/nh7-book-reading-telemetry-v490.js'
+      - 'supabase/functions/nh7-admin-ai-v490/index.ts'
+      - 'supabase_v490_library_reading_progress.sql'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate scoped diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=4dbd73910061f37e31d998605c3ac755a5ceed3d
+          git diff --name-only "$base"...HEAD | tee /tmp/changed
+          allowed='^(admin-v239-stable\.html|index\.html|service-worker\.js|sw-release-core-v403\.js|js/nh7-admin-ai-v490\.js|js/nh7-admin-student-report-v490\.js|js/nh7-book-reading-telemetry-v490\.js|supabase/functions/nh7-admin-ai-v490/index\.ts|supabase_v490_library_reading_progress\.sql|\.github/workflows/qa-admin-ai-reports-v490\.yml)$'
+          bad=$(grep -Ev "$allowed" /tmp/changed || true)
+          test -z "$bad"
+
+      - name: Validate browser JavaScript
+        run: |
+          set -euo pipefail
+          node --check js/nh7-admin-ai-v490.js
+          node --check js/nh7-admin-student-report-v490.js
+          node --check js/nh7-book-reading-telemetry-v490.js
+          node --check service-worker.js
+          node --check sw-release-core-v403.js
+
+      - name: Verify Admin AI wiring
+        run: |
+          set -euo pipefail
+          grep -q 'nh7-admin-ai-v490.js?v=4.9.0' admin-v239-stable.html
+          grep -q 'nh7-admin-student-report-v490.js?v=4.9.0' admin-v239-stable.html
+          f=js/nh7-admin-ai-v490.js
+          grep -q 'AI draft answer' "$f"
+          grep -q 'Translate question' "$f"
+          grep -q 'Translate answer' "$f"
+          grep -q 'Auto-translate FA/EN/HR titles' "$f"
+          grep -q 'AI draft feedback' "$f"
+          grep -q 'PREVIEW_ONLY' "$f"
+          grep -q "answerQuestion=window.answerQuestion=saveQnaAnswer" "$f"
+
+      - name: Verify secure AI edge source
+        run: |
+          set -euo pipefail
+          f=supabase/functions/nh7-admin-ai-v490/index.ts
+          grep -q 'nh7_is_admin' "$f"
+          grep -q 'OPENAI_API_KEY' "$f"
+          grep -q 'gpt-5.6-luna' "$f"
+          grep -q "action==='draft_answer'" "$f"
+          grep -q "action==='draft_feedback'" "$f"
+          grep -q "action==='status'" "$f"
+          grep -q "json_schema" "$f"
+          ! grep -q 'SUPABASE_SERVICE_ROLE_KEY.*return' "$f"
+
+      - name: Verify Student Report Center
+        run: |
+          set -euo pipefail
+          f=js/nh7-admin-student-report-v490.js
+          grep -q 'Student Report Center' "$f"
+          grep -q 'nh7_admin_student_profile_v451' "$f"
+          grep -q 'nh7_admin_library_reading_v490' "$f"
+          grep -q 'Incorrect answers' "$f"
+          grep -q 'Audio listening activity' "$f"
+          grep -q 'Library reading' "$f"
+          grep -q 'PDF / Print' "$f"
+          grep -q 'window.print' "$f"
+          grep -q 'Lesson progress' "$f"
+
+      - name: Verify library reading telemetry
+        run: |
+          set -euo pipefail
+          grep -q 'nh7-book-reading-telemetry-v490.js?v=4.9.0' index.html
+          f=js/nh7-book-reading-telemetry-v490.js
+          grep -q 'nh7_library_reading_record_v490' "$f"
+          grep -q 'p_delta_seconds' "$f"
+          grep -q 'p_total_sections' "$f"
+          grep -q 'data-nh7-book-open' "$f"
+          grep -q 'pagehide' "$f"
+          grep -q 'visibilitychange' "$f"
+
+      - name: Verify DB security definition
+        run: |
+          set -euo pipefail
+          f=supabase_v490_library_reading_progress.sql
+          grep -q 'enable row level security' "$f"
+          grep -q 'to authenticated' "$f"
+          grep -q '(select auth.uid()) = user_id' "$f"
+          grep -q 'security invoker' "$f"
+          grep -q 'nh7_is_admin' "$f"
+          grep -q 'revoke all on function public.nh7_admin_library_reading_v490' "$f"
+          grep -q 'revoke all on function public.nh7_library_reading_record_v490' "$f"
+
+      - name: Verify release cache
+        run: |
+          set -euo pipefail
+          grep -q 'sw-release-core-v403.js?v=4.9.0' service-worker.js
+          grep -q "NH7_RELEASE_CORE_VERSION='4.9.0-admin-ai-library-report'" sw-release-core-v403.js
+          grep -q 'nh7-book-reading-telemetry-v490.js' sw-release-core-v403.js
+          echo 'Admin AI + reports v490 QA OK'
