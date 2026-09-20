@@ -46,6 +46,14 @@ jobs:
           for dir in assets css js data offline push; do cp -R "$dir" ios-release/www/; done
           cp assets/logo.png ios-release/assets/logo.png
 
+          python3 <<'PY'
+          from pathlib import Path
+          p=Path('ios-release/www/index.html')
+          text=p.read_text()
+          text=text.replace('<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>','<!-- Web OneSignal SDK disabled inside iOS native wrapper; Cordova SDK owns native push -->')
+          p.write_text(text)
+          PY
+
           cat > ios-release/package.json <<'JSON'
           {
             "name": "new-hope-7-ios-release",
@@ -162,6 +170,10 @@ jobs:
           grep -q 'nh7-push-account-bind-v363.js?v=3.6.2' ios/App/App/public/index.html
           grep -q 'O.login(i.userId)' ios/App/App/public/js/nh7-push-account-bind-v363.js
           grep -q 'User?.pushSubscription' ios/App/App/public/js/nh7-push-account-bind-v363.js
+          if grep -q 'cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js' ios/App/App/public/index.html; then
+            echo 'Web OneSignal SDK must not be active inside the iOS native wrapper' >&2
+            exit 1
+          fi
           echo 'iOS release configuration OK'
 
       - name: Build Release for iOS Simulator without signing
