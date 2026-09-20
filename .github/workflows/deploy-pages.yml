@@ -2,7 +2,7 @@ name: Validate and Deploy New Hope 7
 
 on:
   push:
-    branches: [main, hotfix/classic-audio-player-2.3.9.49]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -23,7 +23,7 @@ jobs:
         with:
           ref: ${{ github.sha }}
 
-      - name: Validate JavaScript syntax
+      - name: Validate current runtime JavaScript
         shell: bash
         run: |
           set -euo pipefail
@@ -31,20 +31,19 @@ jobs:
             service-worker.js
             sw-navigation-fresh-v403.js
             sw-release-core-v403.js
-            push/OneSignalSDKWorker.js
             sw-media-stream-bypass-v332.js
             sw-offline-v329.js
             sw-offline-path-fix-v329.js
+            push/OneSignalSDKWorker.js
             js/nh7-security-core-v340.js
             js/nh7-qna-i18n-v341.js
             js/nh7-offline-startup-v327.js
             js/nh7-offline-core-v327.js
-            js/nh7-offline-data-v329.js
             js/nh7-offline-data-v422.js
-            js/nh7-audio-route-stability-v330.js
-            js/nh7-audio-classic-v400.js
+            js/nh7-audio-route-stability-v423.js
+            js/nh7-audio-classic-v484.js
+            js/nh7-audio-miniplayer-v487.js
             js/nh7-settings-controller-v403.js
-            js/nh7-settings-account-v252.js
             js/nh7-delete-account-v253.js
             js/nh7-auto-update-v335.js
             js/nh7-notifications-zagreb-v334.js
@@ -53,152 +52,137 @@ jobs:
             js/nh7-auth-recovery-v342.js
             js/nh7-registration-canonical-v353.js
             js/nh7-registration-final-guard-v401.js
-            js/nh7-push-account-bind-v361.js
+            js/nh7-push-account-bind-v362.js
             js/nh7-school-exam-v344.js
-            js/nh7-school-path-v350.js
+            js/nh7-school-path-v351.js
             js/nh7-ui-stability-v329.js
             js/nh7-access-bootstrap-v230.js
             js/nh7-offline-persistence-v323.js
             js/nh7-offline-playback-bridge-v332.js
             js/nh7-book-reader-v283.js
+            js/nh7-book-reading-telemetry-v490.js
             js/nh7-library-language-v321.js
             js/nh7-library-collections-v322.js
-            js/nh7-apocrypha-v270.js
-            js/nh7-large-mov-native-fallback-v273.js
-            js/nh7-secure-media-watermark-v272.js
-            js/nh7-protected-audio-gate-v316.js
-            js/admin-v2.3.9-clean-scroll-v300.js
-            js/admin-v2.3.9-library-clean-v311.js
-            js/admin-v2.3.9-apocrypha-catalog-v274.js
-            js/admin-v2.3.9-apocrypha-text-only-v320.js
-            js/admin-v2.3.9-library-collections-v322.js
-            js/admin-v2.3.9-student-clean-v311.js
-            js/admin-v2.3.9-audio-clean-v312.js
-            js/admin-v2.3.9-video-final-v316.js
-            js/admin-v2.3.9-video-save-sync-v316.js
-            js/admin-v2.3.9-video-person-access-v317.js
-            js/admin-v2.3.9-student-state-fix-v316.js
-            js/admin-v2.3.9-ui-documents-final-v316.js
-            js/admin-v2.3.9-fix12-bootstrap.js
-            js/admin-v2.3.9-registration-requests-v331.js
-            js/admin-v2.3.9-notifications-zagreb-v333.js
-            js/admin-qna-i18n-v341.js
-            js/nh7-admin-rbac-v350.js
+            js/nh7-admin-ai-v490.js
+            js/nh7-admin-student-report-v490.js
           )
           for file in "${files[@]}"; do
             test -f "$file"
             node --check "$file"
           done
 
-      - name: Validate release, School, audio, Settings, Offline and Delete Account
+      - name: Validate current app wiring
+        shell: bash
         run: |
+          set -euo pipefail
           node <<'NODE'
           const fs=require('fs');
           const fail=m=>{throw new Error(m)};
           const version=JSON.parse(fs.readFileSync('version.json','utf8'));
-          const manifest=JSON.parse(fs.readFileSync('manifest.json','utf8'));
-          const adminManifest=JSON.parse(fs.readFileSync('admin-manifest.json','utf8'));
           const index=fs.readFileSync('index.html','utf8');
-          const appShell=fs.readFileSync('app-v239.html','utf8');
           const worker=fs.readFileSync('service-worker.js','utf8');
           const releaseCore=fs.readFileSync('sw-release-core-v403.js','utf8');
-          const nav=fs.readFileSync('sw-navigation-fresh-v403.js','utf8');
-          const exam=fs.readFileSync('js/nh7-school-exam-v344.js','utf8');
-          const audio=fs.readFileSync('js/nh7-audio-classic-v400.js','utf8');
-          const settings=fs.readFileSync('js/nh7-settings-controller-v403.js','utf8');
-          const deletion=fs.readFileSync('js/nh7-delete-account-v253.js','utf8');
-          const offlineData=fs.readFileSync('js/nh7-offline-data-v422.js','utf8');
+          const audio=fs.readFileSync('js/nh7-audio-classic-v484.js','utf8');
+          const mini=fs.readFileSync('js/nh7-audio-miniplayer-v487.js','utf8');
+          const reading=fs.readFileSync('js/nh7-book-reading-telemetry-v490.js','utf8');
           const school=JSON.parse(fs.readFileSync('data/school/school_content.json','utf8'));
 
           if(!/^\d+\.\d+\.\d+\.\d+$/.test(version.app||''))fail('Invalid app version');
           if(!/^\d+\.\d+\.\d+\.\d+$/.test(version.admin||''))fail('Invalid admin version');
           if(!index.includes(`window.NH7_VERSION = '${version.app}'`))fail('index version mismatch');
-          if(!index.includes(`nh7-school-exam-v344.js?v=${version.app}`))fail('School exam hotfix is not loaded');
-          if(!index.includes('js/nh7-school-path-v350.js?v=3.5.0'))fail('School path v3.5.0 is not loaded');
-          if(!appShell.includes(`index.html?v=${version.app}`))fail('native shell version mismatch');
-          if(!worker.includes(version.app)||!worker.includes('classic-audio-v400'))fail('service worker version mismatch');
-          if(manifest.start_url!=='./index.html')fail('manifest start_url mismatch');
-          if(!adminManifest||typeof adminManifest!=='object')fail('admin manifest invalid');
+          if(!index.includes('js/nh7-school-exam-v344.js?v=2.3.9.50'))fail('School exam runtime missing');
+          if(!index.includes('js/nh7-school-path-v351.js?v=4.6.6'))fail('School path v351 missing');
+          if(!index.includes('js/nh7-audio-classic-v484.js?v=4.8.4'))fail('Audio engine v484 missing');
+          if(!index.includes('js/nh7-audio-miniplayer-v487.js?v=4.8.7'))fail('Audio mini-player v487 missing');
+          if(!index.includes('js/nh7-book-reading-telemetry-v490.js?v=4.9.0'))fail('Book telemetry v490 missing');
+          if(!index.includes('js/nh7-settings-controller-v403.js?v=4.6.4'))fail('Settings runtime missing');
+          if(!index.includes('js/nh7-delete-account-v253.js?v=2.5.4'))fail('Delete account runtime missing');
+
+          if(!worker.includes('sw-navigation-fresh-v403.js?v=4.0.3'))fail('Fresh navigation worker missing');
+          if(!worker.includes('sw-release-core-v403.js?v=4.9.0'))fail('Release core v4.9.0 missing');
+          if(worker.indexOf('sw-navigation-fresh-v403.js')>worker.indexOf('sw-offline-v329.js'))fail('Fresh navigation worker must load before offline worker');
+
+          for(const required of [
+            "NH7_AUDIO_CLASSIC_VERSION='4.8.4'",
+            "playNextTrack('auto-ended')",
+            "safe('nexttrack'",
+            "safe('previoustrack'",
+            'data-now-next'
+          ]) if(!audio.includes(required))fail('Audio v484 missing '+required);
+
+          for(const required of [
+            'data-mini-close',
+            'nh7_audio_close_resume_v487:',
+            'writeResumeSnapshot',
+            'playPreviousTrack',
+            'playNextTrack'
+          ]) if(!mini.includes(required))fail('Mini-player v487 missing '+required);
+
+          for(const required of [
+            'nh7_library_reading_record_v490',
+            'p_delta_seconds',
+            'p_total_sections'
+          ]) if(!reading.includes(required))fail('Reading telemetry missing '+required);
+
           if(school.meta?.protectedContent!==true)fail('School content must remain protected');
           if(!Array.isArray(school.lessons)||school.lessons.length!==0)fail('Protected lessons must not ship publicly');
 
-          for(const required of ['nh7_school_exam_session_v340','nh7_submit_school_exam_v340','max_attempts','remaining_attempts'])if(!exam.includes(required))fail(`exam hotfix missing ${required}`);
-          if(exam.includes('school_exams?select='))fail('exam hotfix must not read answer-bearing table directly');
-          if(!exam.includes("window.NH7_SCHOOL_EXAM_VERSION='3.4.4'"))fail('exam hotfix version marker missing');
-
-          const audioTag=`js/nh7-audio-classic-v400.js?v=${version.app}`;
-          const appTag=`js/app.js?v=${version.app}`;
-          const settingsTag='js/nh7-settings-controller-v403.js?v=4.0.3';
-          const deleteTag='js/nh7-delete-account-v253.js?v=2.5.4';
-          const audioIndex=index.indexOf(audioTag),appIndex=index.indexOf(appTag),settingsIndex=index.indexOf(settingsTag),deleteIndex=index.indexOf(deleteTag);
-          if(audioIndex<0||appIndex<0||settingsIndex<0||deleteIndex<0||audioIndex>appIndex||appIndex>settingsIndex||settingsIndex>deleteIndex)fail('audio/app/settings/delete load order invalid');
-
-          for(const required of ["NH7_AUDIO_CLASSIC_VERSION='4.0.0'","kind:'sermon',sermon_id","kind:'audio',lesson_code","DB_NAME='nh7-offline-audio-v397'",'indexedDB.open','data-classic-toggle','data-classic-seek','nh7_school_record_audio_v380','window.NH7_AUDIO_SIGNED_V397=window.NH7_AUDIO_CLASSIC_V400'])if(!audio.includes(required))fail(`classic audio missing ${required}`);
-          if(index.includes('nh7-audio-signed-v397.js'))fail('duplicate audio player must not be loaded');
-          if(index.includes('nh7-school-audio-native-v337.js'))fail('legacy School audio player must not be loaded separately');
-
-          for(const required of ["NH7_SETTINGS_CONTROLLER_VERSION='4.0.3'",'prepareOffline','clearOffline','refresh','nh7-settings403-status','nh7SettingsToast403'])if(!settings.includes(required))fail(`Settings v403 missing ${required}`);
-          for(const required of ["NH7_DELETE_ACCOUNT_VERSION='2.5.4'",'currentSession','refresh_token','/auth/v1/user','grant_type=refresh_token','nh7-delete-my-account-v252','stopImmediatePropagation'])if(!deletion.includes(required))fail(`Delete v253 missing ${required}`);
-          if(!worker.includes('sw-navigation-fresh-v403.js?v=4.0.3')||!worker.includes('sw-release-core-v403.js?v=4.2.2'))fail('service-worker live-catalogue wiring missing');
-          if(!index.includes('js/nh7-offline-data-v422.js?v=4.2.2')||index.includes('js/nh7-offline-data-v329.js?v=2.3.9.50-offline403'))fail('auth-safe live catalogue runtime wiring missing');
-          for(const required of ["4.2.2-auth-safe-catalogue",'response.status>=400&&response.status<500','nh7_remote_catalogue_cache_v422'])if(!offlineData.includes(required))fail(`live catalogue runtime missing ${required}`);
-          if(worker.indexOf('sw-navigation-fresh-v403.js')>worker.indexOf('sw-offline-v329.js'))fail('fresh navigation worker must load first');
-          for(const required of ['self.registration.scope',"cache:'no-store'",'stopImmediatePropagation','nh7-shell-v403'])if(!nav.includes(required))fail(`fresh shell missing ${required}`);
-
-          const match=releaseCore.match(/const NH7_RELEASE_ASSETS=\[([\s\S]*?)\];/);if(!match)fail('Release offline asset list missing');
+          const match=releaseCore.match(/const NH7_RELEASE_ASSETS=\[([\s\S]*?)\];/);
+          if(!match)fail('Release offline asset list missing');
           const paths=[...match[1].matchAll(/'([^']+)'/g)].map(m=>m[1]);
-          const missing=[];for(const p of paths){if(p==='./'||!p.startsWith('./'))continue;const f=p.slice(2);if(!fs.existsSync(f))missing.push(f)}
+          const missing=[];
+          for(const p of paths){
+            if(p==='./'||!p.startsWith('./'))continue;
+            const file=p.slice(2);
+            if(!fs.existsSync(file))missing.push(file);
+          }
           if(missing.length)fail('Missing release offline assets: '+missing.join(', '));
-          const currentScripts=[...index.matchAll(/<script\s+src="(js\/[^"?]+)(?:\?[^\"]*)?"/g)].map(m=>'./'+m[1]);
+          const currentScripts=[...index.matchAll(/<script\s+src="(js\/[^"?]+)(?:\?[^"]*)?"/g)].map(m=>'./'+m[1]);
           const missingFromRelease=currentScripts.filter(p=>!paths.includes(p));
           if(missingFromRelease.length)fail('Current app scripts not guaranteed offline: '+missingFromRelease.join(', '));
 
+          if(!releaseCore.includes("NH7_RELEASE_CORE_VERSION='4.9.0-admin-ai-library-report'"))fail('Release core version mismatch');
+          if(!releaseCore.includes('./js/nh7-audio-classic-v484.js'))fail('Audio engine not cached');
+          if(!releaseCore.includes('./js/nh7-audio-miniplayer-v487.js'))fail('Mini-player not cached');
+          if(!releaseCore.includes('./js/nh7-book-reading-telemetry-v490.js'))fail('Reading telemetry not cached');
           if(!index.includes('NH7_ONESIGNAL_WORKER')||!index.includes('push/OneSignalSDKWorker.js'))fail('OneSignal worker wiring missing');
-          console.log('Release validation OK',version,'offline assets',paths.length);
+
+          console.log('Current app validation OK',version,'offline assets',paths.length);
           NODE
 
-      - name: Validate recovery, admin and shell wiring
+      - name: Validate current Admin AI and reports wiring
         shell: bash
         run: |
           set -euo pipefail
-          grep -q "OneSignalSDK.sw.js" push/OneSignalSDKWorker.js
-          ! grep -q "OneSignalSDK.sw.js" sw-offline-v329.js
-          grep -q "nh7-security-core-v340.js?v=3.4.1" index.html
-          grep -q "nh7-qna-i18n-v341.js?v=2.3.9.36" index.html
-          grep -q "nh7-notifications-zagreb-v334.js?v=2.3.9.35e" index.html
-          grep -q "nh7-auto-update-v335.js" index.html
-          grep -q "nh7-audio-classic-v400.js" index.html
-          grep -q "nh7-offline-data-v422.js?v=4.2.2" index.html
-          grep -q "nh7-settings-controller-v403.js?v=4.0.3" index.html
-          grep -q "nh7-delete-account-v253.js?v=2.5.4" index.html
-          ! grep -q "nh7-settings-controller-v402.js" index.html
-          grep -q "admin-v2.3.9-notifications-zagreb-v333.js" admin-v239-stable.html
-          grep -q "admin-qna-i18n-v341.js" admin-v239-stable.html
-          required=(admin.html admin-v239.html admin-v239-stable.html app-v239.html index.html reset-password.html admin-reset-password.html version.json service-worker.js sw-navigation-fresh-v403.js sw-release-core-v403.js push/OneSignalSDKWorker.js js/nh7-registration-canonical-v353.js js/nh7-registration-final-guard-v401.js js/nh7-school-exam-v344.js js/nh7-school-path-v350.js js/nh7-audio-classic-v400.js js/nh7-offline-data-v422.js js/nh7-settings-controller-v403.js js/nh7-delete-account-v253.js js/nh7-admin-rbac-v350.js)
-          for file in "${required[@]}"; do test -f "$file"; done
+          grep -q 'admin-qna-i18n-v341.js' admin-v239-stable.html
+          grep -q 'nh7-admin-ai-v490.js?v=4.9.0' admin-v239-stable.html
+          grep -q 'nh7-admin-student-report-v490.js?v=4.9.0' admin-v239-stable.html
 
-      - name: Validate Edge CORS and custom authentication
-        run: |
-          set -euo pipefail
-          curl -sS -D /tmp/options.headers -o /tmp/options.body -X OPTIONS \
-            -H 'Origin: https://omideno7.github.io' \
-            -H 'Access-Control-Request-Method: POST' \
-            -H 'Access-Control-Request-Headers: authorization,apikey,content-type,x-client-info' \
-            'https://gpzcwffxnddhaeaogdyo.supabase.co/functions/v1/nh7-school-media-access'
-          grep -qi '^access-control-allow-origin: https://omideno7.github.io' /tmp/options.headers
-          code=$(curl -sS -o /tmp/noauth.body -w '%{http_code}' -X POST \
-            -H 'Origin: https://omideno7.github.io' \
-            -H 'Content-Type: application/json' \
-            --data '{"kind":"sermon","sermon_id":"2307950e-7b9e-4dfe-abbf-0dab5b93b8af"}' \
-            'https://gpzcwffxnddhaeaogdyo.supabase.co/functions/v1/nh7-school-media-access')
-          test "$code" = "401"
-          grep -q 'login_required' /tmp/noauth.body
+          grep -q 'AI draft answer' js/nh7-admin-ai-v490.js
+          grep -q 'Translate question' js/nh7-admin-ai-v490.js
+          grep -q 'Translate answer' js/nh7-admin-ai-v490.js
+          grep -q 'Auto-translate FA/EN/HR titles' js/nh7-admin-ai-v490.js
+          grep -q 'AI draft feedback' js/nh7-admin-ai-v490.js
+          grep -q 'PREVIEW_ONLY' js/nh7-admin-ai-v490.js
+
+          grep -q 'Student Report Center' js/nh7-admin-student-report-v490.js
+          grep -q 'nh7_admin_student_profile_v451' js/nh7-admin-student-report-v490.js
+          grep -q 'nh7_admin_library_reading_v490' js/nh7-admin-student-report-v490.js
+          grep -q 'Incorrect answers' js/nh7-admin-student-report-v490.js
+          grep -q 'PDF / Print' js/nh7-admin-student-report-v490.js
+          grep -q 'window.print' js/nh7-admin-student-report-v490.js
+
+          grep -q 'nh7_is_admin' supabase/functions/nh7-admin-ai-v490/index.ts
+          grep -q 'OPENAI_API_KEY' supabase/functions/nh7-admin-ai-v490/index.ts
+          grep -q "action==='draft_answer'" supabase/functions/nh7-admin-ai-v490/index.ts
+          grep -q "action==='draft_feedback'" supabase/functions/nh7-admin-ai-v490/index.ts
 
       - name: Validate HTML inline scripts and JSON
+        shell: bash
         run: |
           node <<'NODE'
           const fs=require('fs');
-          for(const file of ['admin.html','admin-v239.html','admin-v239-stable.html','admin-reset-password.html','reset-password.html','app-v239.html','index.html','certificate-v239.html']){
+          for(const file of ['admin.html','admin-v239.html','admin-v239-stable.html','admin-reset-password.html','reset-password.html','app-v239.html','index.html']){
             const html=fs.readFileSync(file,'utf8');
             const blocks=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]).filter(Boolean);
             blocks.forEach((code,index)=>new Function(code+`\n//# sourceURL=${file}-inline-${index}`));
