@@ -21,7 +21,7 @@ jobs:
           set -euo pipefail
           base=efa3ba33e22d5b83d2c60636b5433b58ee86383a
           git diff --name-only "$base"...HEAD | tee /tmp/changed
-          allowed='^(index\.html|service-worker\.js|sw-release-core-v403\.js|js/app\.js|js/nh7-audio-classic-v483\.js|\.github/workflows/qa-audio-autonext-v483\.yml|\.github/workflows/qa-audio-v483-ios\.yml|\.github/workflows/qa-audio-v483-android\.yml|\.github/workflows/qa-audio-now-playing-v482\.yml|\.github/workflows/qa-audio-v482-ios\.yml|\.github/workflows/qa-audio-v482-android\.yml)
+          allowed='^(index\.html|service-worker\.js|sw-release-core-v403\.js|js/app\.js|js/nh7-audio-classic-v483\.js|\.github/workflows/qa-audio-autonext-v483\.yml|\.github/workflows/qa-audio-v483-ios\.yml|\.github/workflows/qa-audio-v483-android\.yml|\.github/workflows/qa-audio-now-playing-v482\.yml|\.github/workflows/qa-audio-v482-ios\.yml|\.github/workflows/qa-audio-v482-android\.yml)$'
           bad=$(grep -Ev "$allowed" /tmp/changed || true)
           test -z "$bad"
           ! grep -Eq '^(supabase/|admin|data/)' /tmp/changed
