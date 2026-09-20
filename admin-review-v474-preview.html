@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>New Hope 7 — Admin Review Refresh Preview</title>
+<style>
+:root{--bg:#f4f8ff;--card:#fff;--ink:#10284a;--muted:#667085;--brand:#0f766e;--line:#d8ecea;--danger:#b42318}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#e9f8f6,#f7fbff);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif}
+#adminApp{max-width:760px;margin:0 auto;padding:12px 12px 60px}
+.topbar{display:flex;align-items:center;gap:10px;padding:10px 0 14px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:10px;flex:1}.brand img{width:48px;height:48px;border-radius:14px}.brand h1{font-size:1rem;margin:0}.brand p{margin:2px 0 0;color:var(--muted);font-size:.76rem}.top-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.btn{border:0;border-radius:13px;padding:10px 12px;font-weight:800;background:#e7f4f2;color:#0f5e59;font:inherit}.btn.primary{background:var(--brand);color:white}.btn.secondary{background:#e7f4f2;color:#0f5e59}.btn.ghost{background:white;border:1px solid var(--line)}
+.tabs{display:flex;gap:7px;overflow:auto;padding:3px 0 10px}.tab{border:1px solid var(--line);background:white;border-radius:999px;padding:9px 12px;white-space:nowrap}.tab.active{background:var(--brand);color:white}
+.panel-card{background:white;border:1px solid var(--line);border-radius:18px;padding:14px;margin:10px 0;box-shadow:0 10px 28px rgba(15,118,110,.07)}.req-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.muted{color:var(--muted)}.small{font-size:.8rem}.quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}.quick-card{border:1px solid var(--line);border-radius:15px;background:#f9fcfc;padding:12px;text-align:start}.quick-card b,.quick-card span{display:block}.quick-card span{font-size:.77rem;color:var(--muted);margin-top:3px}.quick-card.alert-stat{border-color:#f1b4bd;background:#fff7f8}
+#adminMsg{min-height:24px;padding:6px 2px}.notice{padding:11px;border-radius:14px;background:#eef8ff}
+.preview-banner{position:sticky;top:0;z-index:50;background:#fff4cf;border-bottom:1px solid #ecd58a;padding:8px 12px;text-align:center;font-size:.78rem}
+@media(max-width:560px){.topbar{display:grid}.top-actions{width:100%}.top-actions .btn{flex:1}.quick-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="preview-banner" id="previewBanner">این Preview فقط از داده‌های ساختگی استفاده می‌کند و به دیتابیس اصلی وصل نیست.</div>
+<div id="adminApp"></div>
+<script>
+let lang='fa',token='preview-token',activeTab='overview',lastLoadedAt=new Date().toISOString();
+let lastCounts={pending:2,questions:1,assignments:1};
+let state={
+  registrations:[{id:'r1',status:'pending'},{id:'r2',status:'pending'}],
+  questions:[{id:'q1',status:'new'}],
+  schoolAssignments:[{id:'a1',status:'submitted'}],
+  schoolAssignmentsError:''
+};
+let refreshPass=0;
+function isEffectivePending(r){return String(r?.status||'pending').toLowerCase()==='pending'}
+function loadRegistrationFeed(){return new Promise(resolve=>setTimeout(()=>{refreshPass++;resolve(refreshPass===1?[...state.registrations,{id:'r3',status:'pending'}]:state.registrations)},450))}
+function loadSchoolAssignmentsFeed(){return new Promise(resolve=>setTimeout(()=>resolve(refreshPass===1?[...state.schoolAssignments,{id:'a2',status:'submitted'}]:state.schoolAssignments),520))}
+function authFetch(path){return new Promise(resolve=>setTimeout(()=>{if(path.includes('qa_questions'))resolve(refreshPass===1?[...state.questions,{id:'q2',status:'new'}]:state.questions);else resolve([])},380))}
+function notifyIfNew(){}
+function setMessage(msg,type='muted'){const el=document.getElementById('adminMsg');if(el){el.className=type;el.textContent=msg}}
+function counts(){const pending=state.registrations.filter(isEffectivePending).length,questions=state.questions.filter(q=>!['answered','archived'].includes(String(q.status||'new'))).length,assignments=state.schoolAssignments.filter(a=>String(a.status||'submitted')==='submitted').length;return{pending,newQ:questions,pendingAssignments:assignments}}
+function setTab(tab){activeTab=tab;render(false)}
+function render(){
+ const c=counts(),synced=new Date(lastLoadedAt).toLocaleTimeString(lang==='fa'?'fa-IR':lang==='hr'?'hr-HR':'en-US',{hour:'2-digit',minute:'2-digit'});
+ document.documentElement.lang=lang;document.documentElement.dir=lang==='fa'?'rtl':'ltr';
+ const L=(fa,en,hr)=>lang==='fa'?fa:lang==='hr'?hr:en;
+ document.getElementById('adminApp').innerHTML=`
+  <div class="topbar"><div class="brand"><img src="assets/admin-icon-192.png"><div><h1>${L('پنل مدیریت امیدنو۷','New Hope 7 Admin','Administracija New Hope 7')}</h1><p>${L('بررسی درخواست‌ها و تکالیف','Review requests and assignments','Pregled zahtjeva i zadataka')}</p></div></div><div class="top-actions"><button class="btn ghost" onclick="lang=lang==='fa'?'en':lang==='en'?'hr':'fa';render()">🌐 ${lang.toUpperCase()}</button><button class="btn secondary">⟳ ${L('تازه‌سازی کامل','Full refresh','Potpuno osvježi')}</button></div></div>
+  <div id="adminMsg" class="muted small"></div>
+  <div class="tabs"><button class="tab ${activeTab==='overview'?'active':''}" onclick="setTab('overview')">${L('داشبورد','Dashboard','Nadzorna ploča')}</button><button class="tab ${activeTab==='requests'?'active':''}" onclick="setTab('requests')">${L('درخواست‌ها','Requests','Zahtjevi')}</button><button class="tab ${activeTab==='qa'?'active':''}" onclick="setTab('qa')">Q&A</button><button class="tab ${activeTab==='assignments'?'active':''}" onclick="setTab('assignments')">${L('تکالیف','Assignments','Zadaci')}</button></div>
+  <section class="panel-card"><div class="req-head"><div><h3>${L('داشبورد مدیریت','Admin dashboard','Nadzorna ploča')}</h3><p class="muted small">${L('آخرین همگام‌سازی: ','Last sync: ','Zadnja sinkronizacija: ')}${synced}</p></div></div><div class="quick-grid"><button class="quick-card alert-stat" onclick="setTab('requests')"><b>👤 ${c.pending}</b><span>${L('درخواست‌های در انتظار','Pending requests','Zahtjevi na čekanju')}</span></button><button class="quick-card ${c.newQ?'alert-stat':''}" onclick="setTab('qa')"><b>❓ ${c.newQ}</b><span>${L('پرسش‌های بی‌پاسخ','Unanswered questions','Neodgovorena pitanja')}</span></button><button class="quick-card ${c.pendingAssignments?'alert-stat':''}" onclick="setTab('assignments')"><b>📝 ${c.pendingAssignments}</b><span>${L('تکالیف در انتظار بررسی','Assignments awaiting review','Zadaci za pregled')}</span></button></div></section>
+ `;
+}
+render();
+</script>
+<script src="js/nh7-admin-review-refresh-v474.js?v=4.7.4"></script>
+<script>
+setTimeout(()=>{document.querySelectorAll('[data-nh7-review-refresh-v474]').forEach(b=>b.addEventListener('click',()=>{}))},100);
+</script>
+</body>
+</html>
