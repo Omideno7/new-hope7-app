@@ -64,7 +64,7 @@ jobs:
             js/nh7-library-language-v321.js
             js/nh7-library-collections-v322.js
             js/nh7-admin-ai-v490.js
-            js/nh7-admin-student-report-v493.js
+            js/nh7-admin-student-report-v494.js
             js/admin-v2.3.9-student-clean-v312.js
             js/nh7-admin-school-workflow-v247.js
           )
@@ -158,7 +158,7 @@ jobs:
           set -euo pipefail
           grep -q 'admin-qna-i18n-v341.js' admin-v239-stable.html
           grep -q 'nh7-admin-ai-v490.js?v=4.9.0' admin-v239-stable.html
-          grep -q 'nh7-admin-student-report-v493.js?v=4.9.3' admin-v239-stable.html
+          grep -q 'nh7-admin-student-report-v494.js?v=4.9.4' admin-v239-stable.html
 
           grep -q 'AI draft answer' js/nh7-admin-ai-v490.js
           grep -q 'Translate question' js/nh7-admin-ai-v490.js
@@ -167,19 +167,21 @@ jobs:
           grep -q 'AI draft feedback' js/nh7-admin-ai-v490.js
           grep -q 'PREVIEW_ONLY' js/nh7-admin-ai-v490.js
 
-          grep -q 'Student Report Center' js/nh7-admin-student-report-v493.js
-          grep -q 'nh7_admin_student_profile_v451' js/nh7-admin-student-report-v493.js
-          grep -q 'nh7_admin_library_reading_v490' js/nh7-admin-student-report-v493.js
-          grep -q 'Incorrect answers' js/nh7-admin-student-report-v493.js
-          grep -q 'PDF / Print' js/nh7-admin-student-report-v493.js
-          grep -q 'html2pdf.bundle.min.js' js/nh7-admin-student-report-v493.js
-          grep -q 'outputPdf' js/nh7-admin-student-report-v493.js
-          grep -q 'nh7CloseStudentReportPreviewV493' js/nh7-admin-student-report-v493.js
-          grep -q 'nh7DownloadStudentReportPdfV493' js/nh7-admin-student-report-v493.js
-          grep -q 'nh7PrintStudentReportPdfV493' js/nh7-admin-student-report-v493.js
-          grep -q 'navigator.share' js/nh7-admin-student-report-v493.js
-          grep -q 'canvasHasInk' js/nh7-admin-student-report-v493.js
-          grep -q '#nh7ReportPreviewOverlay .nh7r491-print-surface .nh7r490-report' js/nh7-admin-student-report-v493.js
+          grep -q 'Student Report Center' js/nh7-admin-student-report-v494.js
+          grep -q 'nh7_admin_student_profile_v451' js/nh7-admin-student-report-v494.js
+          grep -q 'nh7_admin_library_reading_v490' js/nh7-admin-student-report-v494.js
+          grep -q 'Incorrect answers' js/nh7-admin-student-report-v494.js
+          grep -q 'PDF / Print' js/nh7-admin-student-report-v494.js
+          grep -q 'html2pdf.bundle.min.js' js/nh7-admin-student-report-v494.js
+          grep -q 'outputPdf' js/nh7-admin-student-report-v494.js
+          grep -q 'nh7CloseStudentReportPreviewV494' js/nh7-admin-student-report-v494.js
+          grep -q 'nh7DownloadStudentReportPdfV494' js/nh7-admin-student-report-v494.js
+          grep -q 'nh7PrintStudentReportPdfV494' js/nh7-admin-student-report-v494.js
+          grep -q 'navigator.share' js/nh7-admin-student-report-v494.js
+          grep -q 'canvasHasInk' js/nh7-admin-student-report-v494.js
+          grep -q 'nh7PdfCaptureHostV494' js/nh7-admin-student-report-v494.js
+          grep -q "width:'960px'" js/nh7-admin-student-report-v494.js
+          grep -q 'width:960' js/nh7-admin-student-report-v494.js
           grep -q 'admin-v2.3.9-student-clean-v312.js' admin-v239-stable.html
           grep -q 'admin-v2.3.9-clean-features-v312.css' admin-v239-stable.html
           grep -q 'nh7-v311-answer' js/admin-v2.3.9-student-clean-v312.js
