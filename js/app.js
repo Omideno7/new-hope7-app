@@ -1,5 +1,6 @@
 import {mountMoreReviewV469} from './nh7-store-review-v469.js?v=4.6.9';
 import {createSchoolDraftsV468} from './nh7-school-drafts-v468.js?v=4.6.8';
+import {createSoulWinningV472} from './nh7-soul-winning-v472.js?v=4.7.2';
 import {createBibleKeywordsV451} from './nh7-bible-keywords-v451.js?v=4.5.1';
 // NH7 v2.2.3 targeted update: Bible navigation, protected content, reliable analytics, and secure PDF viewer.
 const $ = (s, r=document) => r.querySelector(s);
@@ -19,6 +20,7 @@ const state = {
 
 
 const schoolDraftsV468=createSchoolDraftsV468({account:()=>isAccountLoggedIn()?authSession()?.user:null,lang:()=>state.lang});
+const soulWinningV472=createSoulWinningV472({mount:()=>view,lang:()=>state.lang,navigate:(route,params,replace)=>navigate(route,params,replace)});
 
 const OFFLINE_MEDIA_PREFIX='nh7_offline_media_';
 const NATIVE_OFFLINE_DIR='offline_media';
@@ -305,6 +307,9 @@ const V170_T = {
   hr:{signIn:'Prijava',signUp:'Izradi račun',password:'Lozinka',confirmPassword:'Potvrdi lozinku',showPassword:'Prikaži lozinku',hidePassword:'Sakrij lozinku',signedOut:'Odjavljeni ste.',signInHint:'Unesite email i lozinku za prijavu.',loginFailed:'Email ili lozinka nisu ispravni.',passwordMismatch:'Lozinke se ne podudaraju.',passwordMin:'Lozinka mora imati najmanje 6 znakova.',accountCreated:'Račun je izrađen. Ako je potvrda emaila uključena, provjerite email.',legacyRestore:'Obnovi odobreni pristup starijeg računa',sermons:'Propovijedi',watchYouTube:'Gledaj na YouTubeu',listenAudio:'Slušaj u aplikaciji',sermonSearch:'Pretraži propovijedi',allCategories:'Sve kategorije',noSermons:'Još nema objavljenih propovijedi.',duration:'Trajanje',notificationNativeUnsupported:'Izvorne obavijesti nisu dostupne u ovoj verziji.',notificationSettingsOpen:'Otvori postavke obavijesti',notificationUpdated:'Raspored obavijesti je ažuriran.',loginRequired:'Najprije se prijavite.',sermonNotes:'Bilješke za ovu propovijed',saveSermonNote:'Spremi bilješku',continueListening:'Nastavi slušati',restart:'Počni ispočetka',closePlayer:'Zatvori reproduktor',back15:'15 sekundi natrag',forward30:'30 sekundi naprijed',playbackSpeed:'Brzina reprodukcije',nowPlaying:'Sada svira',listened:'Poslušano'}
 };
 Object.keys(V170_T).forEach(l=>Object.assign(T[l],V170_T[l]));
+Object.assign(T.en,{soulWinning:'Soul Winning'});
+Object.assign(T.fa,{soulWinning:'نجات جان‌ها'});
+Object.assign(T.hr,{soulWinning:'Osvajanje duša'});
 Object.assign(T.en,{schoolExistingLogin:'Sign in to school',schoolNewRegistration:'New registration',schoolLoginHelp:'Already registered? Sign in with the same email and password on any device.',sermonNoteButton:'Notes'});
 Object.assign(T.fa,{schoolExistingLogin:'ورود به مدرسه',schoolNewRegistration:'ثبت‌نام جدید',schoolLoginHelp:'اگر قبلاً ثبت‌نام کرده‌اید، در هر دستگاه با همان ایمیل و رمز عبور وارد شوید.',sermonNoteButton:'یادداشت'});
 Object.assign(T.hr,{schoolExistingLogin:'Prijava u školu',schoolNewRegistration:'Nova registracija',schoolLoginHelp:'Ako ste se već registrirali, prijavite se istim emailom i lozinkom na bilo kojem uređaju.',sermonNoteButton:'Bilješke'});
@@ -1264,6 +1269,7 @@ async function render(route, params={}, preserve=false){
     else if(route==='plans') await plans(params);
     else if(route==='school') await school(params);
     else if(route==='more') await more();
+    else if(route==='soulWinning') soulWinningV472.render(params);
     else if(route==='library') await library(params);
     else if(route==='audio') await audio(params);
     else if(route==='audioBible') await audioBible(params);
@@ -2104,7 +2110,7 @@ async function library(params={}){
 }
 
 async function more(){
-  const destinations=[['audio','🎧'],['meetings','☎'],['salvation','✝'],['qna','❓'],['account','👤'],['about','ℹ'],['settings','⚙']];
+  const destinations=[['audio','🎧'],['meetings','☎'],['salvation','✝'],['soulWinning','🌾'],['qna','❓'],['account','👤'],['about','ℹ'],['settings','⚙']];
   view.innerHTML=`<div class="grid" data-more-navigation456>${destinations.map(([route,icon])=>tile(route,icon,tr(route))).join('')}</div>`;
   mountMoreReviewV469(view.querySelector('[data-more-navigation456]'),{language:state.lang});
 }
