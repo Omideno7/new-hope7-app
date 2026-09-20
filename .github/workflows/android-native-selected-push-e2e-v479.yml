@@ -156,7 +156,7 @@ jobs:
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
           script: |
-            set -euo pipefail
+            set -eu
             APK='NH7_Android_Native_Push_E2E_v479.apk'
             PACKAGE='com.omideno7.newhope7'
             ENDPOINT='https://gpzcwffxnddhaeaogdyo.supabase.co/functions/v1/nh7-os-e2e-android-v478'
