@@ -148,9 +148,8 @@ jobs:
             adb shell am force-stop "com.omideno7.newhope7.qa"
             adb shell monkey -p "com.omideno7.newhope7.qa" -c android.intent.category.LAUNCHER 1
             sleep 12
-            PID=$(adb shell pidof "com.omideno7.newhope7.qa" | tr -d '\r')
-            test -n "$PID"
-            echo "App process alive: $PID"
+            test -n "$(adb shell pidof "com.omideno7.newhope7.qa" | tr -d '\r')"
+            adb shell pidof "com.omideno7.newhope7.qa"
             adb shell dumpsys activity activities | grep -E "com.omideno7.newhope7.qa|MainActivity" | head -n 20 || true
             adb shell uiautomator dump /sdcard/window.xml || true
             adb pull /sdcard/window.xml window.xml || true
@@ -166,9 +165,8 @@ jobs:
             adb shell am force-stop "com.omideno7.newhope7.qa"
             adb shell monkey -p "com.omideno7.newhope7.qa" -c android.intent.category.LAUNCHER 1
             sleep 8
-            PID2=$(adb shell pidof "com.omideno7.newhope7.qa" | tr -d '\r')
-            test -n "$PID2"
-            echo "Offline relaunch process alive: $PID2"
+            test -n "$(adb shell pidof "com.omideno7.newhope7.qa" | tr -d '\r')"
+            adb shell pidof "com.omideno7.newhope7.qa"
             adb exec-out screencap -p > android-smoke-offline.png
 
       - name: Upload smoke evidence
