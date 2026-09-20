@@ -1,0 +1,338 @@
+name: Build New Hope 7 iOS 2.4.0
+
+on:
+  push:
+    branches: [release/store-2.4.0-20260920]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-ios:
+    runs-on: macos-15
+    timeout-minutes: 45
+    env:
+      APP_ID: com.omideno7.newhope7
+      APP_NAME: New Hope 7
+      MARKETING_VERSION: '2.4.0'
+      BUILD_NUMBER: '24001'
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+
+      - name: Select Xcode 26+
+        shell: bash
+        run: |
+          set -euo pipefail
+          XCODE_PATH=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1)
+          test -n "${XCODE_PATH:-}"
+          sudo xcode-select -s "$XCODE_PATH/Contents/Developer"
+          xcodebuild -version
+          xcrun --sdk iphoneos --show-sdk-version
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Prepare Capacitor iOS project
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf ios-release
+          mkdir -p ios-release/www ios-release/assets
+          cp index.html app-v239.html reset-password.html manifest.json version.json ios-release/www/
+          for dir in assets css js data offline push; do cp -R "$dir" ios-release/www/; done
+          cp assets/logo.png ios-release/assets/logo.png
+
+          # Native bundle isolation + store release version inside the packaged web bundle only.
+          python3 <<'PY'
+          from pathlib import Path
+          import json
+          p=Path('ios-release/www/index.html')
+          text=p.read_text()
+          text=text.replace("window.NH7_VERSION = '2.3.9.50';","window.NH7_VERSION = '2.4.0.0';")
+          text=text.replace(
+              "if ('serviceWorker' in navigator) {",
+              "if (!window.Capacitor?.isNativePlatform?.() && 'serviceWorker' in navigator) {"
+          )
+          text=text.replace(
+              '<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>',
+              '<!-- Web OneSignal SDK disabled inside iOS native wrapper; native OneSignal owns APNs -->'
+          )
+          p.write_text(text)
+          v=Path('ios-release/www/version.json')
+          obj=json.loads(v.read_text())
+          obj['app']='2.4.0.0'
+          obj['updated_at']='2026-09-20T21:30:00+00:00'
+          v.write_text(json.dumps(obj,ensure_ascii=False,separators=(',',':'))+'\n')
+          PY
+
+          cat > ios-release/package.json <<'JSON'
+          {
+            "name": "new-hope-7-ios-release",
+            "private": true,
+            "version": "2.4.0",
+            "dependencies": {
+              "@capacitor/core": "8.5.0",
+              "@capacitor/ios": "8.5.0",
+              "@capacitor/file-transfer": "2.0.5",
+              "@capacitor/filesystem": "8.1.3",
+              "@capacitor/local-notifications": "8.3.1",
+              "onesignal-cordova-plugin": "5.5.3"
+            },
+            "devDependencies": {
+              "@capacitor/assets": "3.0.5",
+              "@capacitor/cli": "8.5.0"
+            }
+          }
+          JSON
+
+          cat > ios-release/capacitor.config.json <<'JSON'
+          {
+            "appId": "com.omideno7.newhope7",
+            "appName": "New Hope 7",
+            "webDir": "www",
+            "ios": {
+              "backgroundColor": "#ffffff",
+              "contentInset": "automatic"
+            },
+            "plugins": {
+              "LocalNotifications": {}
+            }
+          }
+          JSON
+
+          cd ios-release
+          npm install --no-audit --no-fund
+          npx cap add ios
+          npx cap sync ios
+
+      - name: Configure iOS identity, version, privacy and push entitlement
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          proj = Path('ios-release/ios/App/App.xcodeproj/project.pbxproj')
+          text = proj.read_text()
+          text = re.sub(r'PRODUCT_BUNDLE_IDENTIFIER = [^;]+;', 'PRODUCT_BUNDLE_IDENTIFIER = com.omideno7.newhope7;', text)
+          text = re.sub(r'MARKETING_VERSION = [^;]+;', 'MARKETING_VERSION = 2.4.0;', text)
+          text = re.sub(r'CURRENT_PROJECT_VERSION = [^;]+;', 'CURRENT_PROJECT_VERSION = 24001;', text)
+          text = re.sub(r'IPHONEOS_DEPLOYMENT_TARGET = [^;]+;', 'IPHONEOS_DEPLOYMENT_TARGET = 15.0;', text)
+          if 'CODE_SIGN_ENTITLEMENTS = App/App.entitlements;' not in text:
+            text = text.replace('PRODUCT_BUNDLE_IDENTIFIER = com.omideno7.newhope7;', 'CODE_SIGN_ENTITLEMENTS = App/App.entitlements;\n\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = com.omideno7.newhope7;')
+          proj.write_text(text)
+
+          entitlements = Path('ios-release/ios/App/App/App.entitlements')
+          entitlements.write_text('''<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0">\n<dict>\n    <key>aps-environment</key>\n    <string>production</string>\n</dict>\n</plist>\n''')
+
+          info = Path('ios-release/ios/App/App/Info.plist')
+          import plistlib
+          with info.open('rb') as fh:
+            plist = plistlib.load(fh)
+          modes = list(plist.get('UIBackgroundModes', []))
+          for mode in ('audio', 'remote-notification'):
+            if mode not in modes:
+              modes.append(mode)
+          plist['UIBackgroundModes'] = modes
+          plist.setdefault('NSLocationWhenInUseUsageDescription', 'New Hope 7 uses your location only when you choose to enable location-based notification features.')
+          plist['ITSAppUsesNonExemptEncryption'] = False
+          with info.open('wb') as fh:
+            plistlib.dump(plist, fh, sort_keys=False)
+          PY
+
+      - name: Generate iOS app icons and splash assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd ios-release
+          npx capacitor-assets generate --ios --iconBackgroundColor '#ffffff' --iconBackgroundColorDark '#ffffff' --splashBackgroundColor '#ffffff' --splashBackgroundColorDark '#ffffff'
+          npx cap sync ios
+
+      - name: Validate project configuration and local Swift package
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd ios-release
+          SDK_VERSION=$(xcrun --sdk iphoneos --show-sdk-version)
+          MAJOR=${SDK_VERSION%%.*}
+          test "$MAJOR" -ge 26
+          grep -q 'PRODUCT_BUNDLE_IDENTIFIER = com.omideno7.newhope7;' ios/App/App.xcodeproj/project.pbxproj
+          grep -q 'MARKETING_VERSION = 2.4.0;' ios/App/App.xcodeproj/project.pbxproj
+          grep -q 'CURRENT_PROJECT_VERSION = 24001;' ios/App/App.xcodeproj/project.pbxproj
+          grep -q 'CODE_SIGN_ENTITLEMENTS = App/App.entitlements;' ios/App/App.xcodeproj/project.pbxproj
+          grep -q '<string>production</string>' ios/App/App/App.entitlements
+          grep -q '<string>audio</string>' ios/App/App/Info.plist
+          grep -q '<string>remote-notification</string>' ios/App/App/Info.plist
+          grep -q '<key>NSLocationWhenInUseUsageDescription</key>' ios/App/App/Info.plist
+          grep -q 'New Hope 7 uses your location only when you choose to enable location-based notification features.' ios/App/App/Info.plist
+          grep -q '<key>ITSAppUsesNonExemptEncryption</key>' ios/App/App/Info.plist
+          grep -q '<false/>' ios/App/App/Info.plist
+          npm ls onesignal-cordova-plugin --depth=0
+          test -e ios/App/CapApp-SPM
+          echo 'CapApp-SPM listing:'
+          ls -ld ios/App/CapApp-SPM
+          if [ -L ios/App/CapApp-SPM ]; then
+            echo "CapApp-SPM symlink target: $(readlink ios/App/CapApp-SPM)"
+          fi
+          test -f ios/App/CapApp-SPM/Package.swift
+          test -f ios/App/App/public/index.html
+          test -f ios/App/App/public/js/nh7-settings-controller-v403.js
+          test -f ios/App/App/public/js/nh7-delete-account-v253.js
+          test -f ios/App/App/public/js/nh7-push-account-bind-v364.js
+          test -f ios/App/App/public/js/nh7-audio-classic-v484.js
+          test -f ios/App/App/public/js/nh7-audio-miniplayer-v487.js
+          grep -q 'nh7-push-account-bind-v364.js?v=3.6.4' ios/App/App/public/index.html
+          grep -q "window.NH7_VERSION = '2.4.0.0';" ios/App/App/public/index.html
+          grep -q '"app":"2.4.0.0"' ios/App/App/public/version.json
+          grep -q 'nativePushSubscription' ios/App/App/public/js/nh7-push-account-bind-v364.js
+          grep -q 'navigator.mediaSession' ios/App/App/public/js/nh7-audio-classic-v484.js
+          grep -q "safe('play'" ios/App/App/public/js/nh7-audio-classic-v484.js
+          grep -q "safe('nexttrack'" ios/App/App/public/js/nh7-audio-classic-v484.js
+          grep -q "!window.Capacitor?.isNativePlatform?.()" ios/App/App/public/index.html
+          if grep -q 'cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js' ios/App/App/public/index.html; then
+            echo 'Web OneSignal SDK must not be active inside the iOS native wrapper' >&2
+            exit 1
+          fi
+          echo 'iOS release configuration OK'
+
+      - name: Build Release for iOS Simulator without signing
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd ios-release/ios/App
+          xcodebuild -project App.xcodeproj -scheme App -configuration Release -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build | tee ../../../IOS_SIMULATOR_BUILD.log
+
+      - name: Build Release for generic iOS device without signing
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd ios-release/ios/App
+          xcodebuild -project App.xcodeproj -scheme App -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build | tee ../../../IOS_DEVICE_BUILD.log
+
+      - name: Archive and export signed App Store IPA when signing secrets are configured
+        id: ios_sign
+        shell: bash
+        env:
+          IOS_P12_BASE64: ${{ secrets.IOS_P12_BASE64 }}
+          IOS_P12_PASSWORD: ${{ secrets.IOS_P12_PASSWORD }}
+          IOS_MOBILEPROVISION_BASE64: ${{ secrets.IOS_MOBILEPROVISION_BASE64 }}
+          IOS_TEAM_ID: ${{ secrets.IOS_TEAM_ID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${IOS_P12_BASE64:-}" ] || [ -z "${IOS_P12_PASSWORD:-}" ] || [ -z "${IOS_MOBILEPROVISION_BASE64:-}" ] || [ -z "${IOS_TEAM_ID:-}" ]; then
+            echo "signed=false" >> "$GITHUB_OUTPUT"
+            echo "iOS signing secrets are not configured; keeping self-contained unsigned Xcode project."
+            exit 0
+          fi
+
+          KEYCHAIN="$RUNNER_TEMP/nh7-signing.keychain-db"
+          KEYCHAIN_PASS="nh7-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          P12="$RUNNER_TEMP/distribution.p12"
+          PROFILE="$RUNNER_TEMP/newhope7.mobileprovision"
+          printf '%s' "$IOS_P12_BASE64" | base64 --decode > "$P12"
+          printf '%s' "$IOS_MOBILEPROVISION_BASE64" | base64 --decode > "$PROFILE"
+
+          security create-keychain -p "$KEYCHAIN_PASS" "$KEYCHAIN"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN"
+          security unlock-keychain -p "$KEYCHAIN_PASS" "$KEYCHAIN"
+          security import "$P12" -P "$IOS_P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN"
+          security list-keychain -d user -s "$KEYCHAIN" login.keychain-db
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASS" "$KEYCHAIN"
+
+          security cms -D -i "$PROFILE" > "$RUNNER_TEMP/profile.plist"
+          PROFILE_UUID=$(/usr/libexec/PlistBuddy -c 'Print UUID' "$RUNNER_TEMP/profile.plist")
+          PROFILE_NAME=$(/usr/libexec/PlistBuddy -c 'Print Name' "$RUNNER_TEMP/profile.plist")
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+          cp "$PROFILE" "$HOME/Library/MobileDevice/Provisioning Profiles/$PROFILE_UUID.mobileprovision"
+
+          rm -rf "$RUNNER_TEMP/NewHope7.xcarchive" "$RUNNER_TEMP/ipa-export"
+          cd ios-release/ios/App
+          xcodebuild archive             -project App.xcodeproj             -scheme App             -configuration Release             -destination 'generic/platform=iOS'             -archivePath "$RUNNER_TEMP/NewHope7.xcarchive"             DEVELOPMENT_TEAM="$IOS_TEAM_ID"             CODE_SIGN_STYLE=Manual             CODE_SIGN_IDENTITY="Apple Distribution"             PROVISIONING_PROFILE_SPECIFIER="$PROFILE_NAME"             | tee ../../../IOS_SIGNED_ARCHIVE.log
+
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>teamID</key><string>$IOS_TEAM_ID</string>
+            <key>signingStyle</key><string>manual</string>
+            <key>stripSwiftSymbols</key><true/>
+            <key>uploadBitcode</key><false/>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>com.omideno7.newhope7</key><string>$PROFILE_NAME</string>
+            </dict>
+          </dict>
+          </plist>
+          EOF
+          xcodebuild -exportArchive             -archivePath "$RUNNER_TEMP/NewHope7.xcarchive"             -exportPath "$RUNNER_TEMP/ipa-export"             -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist"             | tee ../../../IOS_EXPORT.log
+          IPA=$(find "$RUNNER_TEMP/ipa-export" -maxdepth 1 -name '*.ipa' -print -quit)
+          test -n "$IPA"
+          cp "$IPA" ../../../New_Hope_7_2.4.0_24001_AppStore.ipa
+          echo "signed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Materialize CapApp-SPM and produce self-contained archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          CAP_DIR='ios-release/ios/App/CapApp-SPM'
+          if [ -L "$CAP_DIR" ]; then
+            REAL_TARGET=$(cd "$(dirname "$CAP_DIR")" && python3 -c 'import os; print(os.path.realpath("CapApp-SPM"))')
+            echo "Materializing CapApp-SPM from $REAL_TARGET"
+            rm "$CAP_DIR"
+            cp -R "$REAL_TARGET" "$CAP_DIR"
+          fi
+          test -f "$CAP_DIR/Package.swift"
+          test -d ios-release/node_modules
+          {
+            echo 'New Hope 7 iOS Store Candidate 2.4.0'
+            echo "Commit: $GITHUB_SHA"
+            echo 'Bundle ID: com.omideno7.newhope7'
+            echo 'App Store version: 2.4.0'
+            echo 'Build number: 24001'
+            echo "Xcode: $(xcodebuild -version | tr '\n' ' ')"
+            echo "iOS SDK: $(xcrun --sdk iphoneos --show-sdk-version)"
+            echo 'Minimum iOS: 15.0'
+            echo 'Capacitor: 8.5.0'
+            echo 'OneSignal Native: onesignal-cordova-plugin 5.5.3'
+            echo 'Push entitlement: production'
+            echo 'Background modes: audio, remote-notification'
+            echo 'Location purpose string: included for SDK API references'
+            echo 'ITSAppUsesNonExemptEncryption: NO'
+            echo 'CapApp-SPM: materialized and packaged'
+            echo 'node_modules: retained so local Swift package references remain resolvable on developer Mac'
+            echo 'Signing: unsigned project always produced; signed IPA is produced automatically when iOS signing secrets are configured.'
+          } > IOS_RELEASE_AUDIT.txt
+          rm -rf ios-release/ios/App/build ios-release/ios/App/DerivedData
+          zip -qry New_Hope_7_iOS_AppStore_Project_SELF_CONTAINED.zip ios-release IOS_RELEASE_AUDIT.txt IOS_SIMULATOR_BUILD.log IOS_DEVICE_BUILD.log -x '*.DS_Store'
+          unzip -l New_Hope_7_iOS_AppStore_Project_SELF_CONTAINED.zip | grep 'ios-release/ios/App/CapApp-SPM/Package.swift'
+
+      - name: Upload signed App Store IPA
+        if: steps.ios_sign.outputs.signed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: New_Hope_7_2.4.0_SIGNED_IPA
+          path: |
+            New_Hope_7_2.4.0_24001_AppStore.ipa
+            IOS_SIGNED_ARCHIVE.log
+            IOS_EXPORT.log
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload self-contained iOS project and audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: New_Hope_7_2.4.0_iOS_AppStore_Project_SELF_CONTAINED
+          path: |
+            New_Hope_7_iOS_AppStore_Project_SELF_CONTAINED.zip
+            IOS_RELEASE_AUDIT.txt
+            IOS_SIMULATOR_BUILD.log
+            IOS_DEVICE_BUILD.log
+          if-no-files-found: error
+          retention-days: 14
