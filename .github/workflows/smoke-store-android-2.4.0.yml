@@ -142,7 +142,7 @@ jobs:
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
           script: |
-            set -euo pipefail
+            set -eu
             adb install -r native-smoke/android/app/build/outputs/apk/debug/app-debug.apk
             PACKAGE=com.omideno7.newhope7.qa
             adb shell pm list packages | grep "$PACKAGE"
