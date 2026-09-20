@@ -17,6 +17,18 @@ function setStatus(id,text,type=''){
   const el=document.getElementById('nh7QnaTranslateStatus_'+id);if(!el)return;
   el.textContent=String(text||'');el.className='nh7-qna-v488-status '+(type?'is-'+type:'');
 }
+function refreshProviderUi(){
+  document.querySelectorAll('[data-qna-v488]').forEach(box=>{
+    const buttons=box.querySelectorAll('[data-nh7-translate-button]');
+    buttons.forEach(btn=>{btn.disabled=providerConfigured!==true;btn.title=providerConfigured===true?'':L('سرویس ترجمه هنوز روی سرور تنظیم نشده است.','Translation provider is not configured on the server.','Servis za prijevod nije konfiguriran na poslužitelju.')});
+    const note=box.querySelector('[data-nh7-provider-note]');
+    if(note){
+      if(providerConfigured===true){note.textContent=L('ترجمه خودکار آماده است ✓','Automatic translation is ready ✓','Automatski prijevod je spreman ✓');note.className='nh7-qna-v488-provider is-ok'}
+      else if(providerConfigured===false){note.textContent=L('برای فعال‌شدن ترجمه، provider سروری باید تنظیم شود.','A server translation provider must be configured to enable translation.','Za prijevod je potrebno konfigurirati poslužiteljski servis.');note.className='nh7-qna-v488-provider is-warn'}
+      else{note.textContent=L('در حال بررسی سرویس ترجمه…','Checking translation service…','Provjera servisa za prijevod…');note.className='nh7-qna-v488-provider'}
+    }
+  });
+}
 function patchState(q,prefix,data){
   for(const l of LANGS)if(data?.[l])q[prefix+'_'+l]=data[l];
 }
@@ -28,8 +40,8 @@ async function checkProvider(){
   providerCheck=(async()=>{
     try{
       const result=await authFetch('/functions/v1/nh7-admin-translate-v488',{method:'POST',body:JSON.stringify({action:'status'})});
-      providerConfigured=result?.configured===true;return providerConfigured;
-    }catch(_){providerConfigured=false;return false}
+      providerConfigured=result?.configured===true;refreshProviderUi();return providerConfigured;
+    }catch(_){providerConfigured=false;refreshProviderUi();return false}
     finally{providerCheck=null}
   })();
   return providerCheck;
@@ -108,8 +120,8 @@ function controls(q){
   const id=String(q.id),source=qlang(q);
   return `<div class="nh7-qna-v488-controls" data-qna-v488="${E(id)}">
     <div class="nh7-qna-v488-buttons">
-      <button type="button" class="btn secondary" onclick="nh7TranslateQuestionV488('${E(id)}',true)">✨ ${E(L('ترجمه سؤال','Translate question','Prevedi pitanje'))}</button>
-      <button type="button" class="btn secondary" onclick="nh7TranslateAnswerV488('${E(id)}',true)">✨ ${E(L('ترجمه پاسخ','Translate answer','Prevedi odgovor'))}</button>
+      <button type="button" class="btn secondary" data-nh7-translate-button onclick="nh7TranslateQuestionV488('${E(id)}',true)">✨ ${E(L('ترجمه سؤال','Translate question','Prevedi pitanje'))}</button>
+      <button type="button" class="btn secondary" data-nh7-translate-button onclick="nh7TranslateAnswerV488('${E(id)}',true)">✨ ${E(L('ترجمه پاسخ','Translate answer','Prevedi odgovor'))}</button>
     </div>
     <label class="nh7-qna-v488-source">${E(L('زبان پاسخ من','My answer language','Jezik mog odgovora'))}
       <select id="nh7AnswerSource_${E(id)}">
@@ -118,6 +130,7 @@ function controls(q){
         <option value="hr" ${source==='hr'?'selected':''}>Hrvatski</option>
       </select>
     </label>
+    <small data-nh7-provider-note class="nh7-qna-v488-provider"></small>
     <small id="nh7QnaTranslateStatus_${E(id)}" class="nh7-qna-v488-status"></small>
   </div>`;
 }
@@ -126,6 +139,7 @@ function mountControls(){
     const any=box.querySelector('textarea[id^="qfa_"]');if(!any)return;
     const id=String(any.id).replace(/^qfa_/,'');const q=qrow(id);if(!q)return;
     if(!box.querySelector('[data-qna-v488]'))box.insertAdjacentHTML('afterbegin',controls(q));
+    refreshProviderUi();
     if(observer&&!autoTried.has(id))observer.observe(box);
   });
 }
@@ -191,7 +205,7 @@ function install(){
   return true;
 }
 const style=document.createElement('style');style.textContent=`
-.nh7-qna-v488-controls{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;align-items:center;padding:10px;margin:0 0 10px;border:1px solid var(--line,#d8ecea);border-radius:14px;background:#f7fbfb}.nh7-qna-v488-buttons{display:flex;gap:7px;flex-wrap:wrap}.nh7-qna-v488-source{min-width:170px;font-size:.8rem}.nh7-qna-v488-source select{margin-top:3px}.nh7-qna-v488-status{grid-column:1/-1;min-height:1.2em;font-size:.78rem}.nh7-qna-v488-status.is-busy{color:#145a8d}.nh7-qna-v488-status.is-ok{color:#08783d}.nh7-qna-v488-status.is-error{color:#b42318}@media(max-width:700px){.nh7-qna-v488-controls{grid-template-columns:1fr}.nh7-qna-v488-source{min-width:0}}
+.nh7-qna-v488-controls{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;align-items:center;padding:10px;margin:0 0 10px;border:1px solid var(--line,#d8ecea);border-radius:14px;background:#f7fbfb}.nh7-qna-v488-buttons{display:flex;gap:7px;flex-wrap:wrap}.nh7-qna-v488-source{min-width:170px;font-size:.8rem}.nh7-qna-v488-source select{margin-top:3px}.nh7-qna-v488-provider{grid-column:1/-1;font-size:.76rem;opacity:.72}.nh7-qna-v488-provider.is-ok{color:#08783d;opacity:1}.nh7-qna-v488-provider.is-warn{color:#b54708;opacity:1}.nh7-qna-v488-buttons button:disabled{opacity:.45;cursor:not-allowed}.nh7-qna-v488-status{grid-column:1/-1;min-height:1.2em;font-size:.78rem}.nh7-qna-v488-status.is-busy{color:#145a8d}.nh7-qna-v488-status.is-ok{color:#08783d}.nh7-qna-v488-status.is-error{color:#b42318}@media(max-width:700px){.nh7-qna-v488-controls{grid-template-columns:1fr}.nh7-qna-v488-source{min-width:0}}
 `;document.head.appendChild(style);
 if(!install()){let n=0;const t=setInterval(()=>{n++;if(install()||n>100)clearInterval(t)},100)}
 })();
