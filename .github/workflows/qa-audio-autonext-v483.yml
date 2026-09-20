@@ -89,7 +89,7 @@ jobs:
           ! grep -q 'js/nh7-audio-classic-v400.js' index.html
           grep -q 'js/app.js?v=4.8.3' index.html
           grep -q 'sw-release-core-v403.js?v=4.8.3' service-worker.js
-          grep -q "NH7_RELEASE_CORE_VERSION='4.8.3-audio-now-playing'" sw-release-core-v403.js
+          grep -q "NH7_RELEASE_CORE_VERSION='4.8.3-audio-auto-next'" sw-release-core-v403.js
           grep -q 'nh7-audio-classic-v483.js' sw-release-core-v403.js
           ! grep -q 'nh7-audio-classic-v400.js' sw-release-core-v403.js
 
