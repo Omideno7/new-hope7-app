@@ -79,6 +79,7 @@ Deno.serve(async(req:Request)=>{
     const admin=await adminIdentity(jwt);
     if(!admin)return json({ok:false,code:'ADMIN_REQUIRED',error:'Admin access required'},403);
     const body=await req.json().catch(()=>({}));
+    if(String(body?.action||'')==='status')return json({ok:true,configured:Boolean(OPENAI_KEY),provider:OPENAI_KEY?'openai':null,version:VERSION});
     const source=lang(body?.source_language);
     const text=clean(body?.text);
     const kind=clean(body?.kind||'qna',30);
