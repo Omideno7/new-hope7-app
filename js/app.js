@@ -912,6 +912,7 @@ function navigate(route, params={}, replace=false){
   try{ const url='#'+encodeURIComponent(route)+(Object.keys(state.params).length?':'+encodeURIComponent(JSON.stringify(state.params)):''); replace ? history.replaceState({route,params:state.params},'',url) : history.pushState({route,params:state.params},'',url); }catch(e){}
   render(route, state.params);
 }
+window.NH7_NAVIGATE=(route,params={},replace=false)=>navigate(route,params,replace);
 function back(){
   const prev=state.stack.pop();
   if(prev){ state.route=prev.route; state.params=prev.params; render(prev.route, prev.params, true); try{ history.replaceState({route:prev.route,params:prev.params},'', '#'+encodeURIComponent(prev.route)); }catch(e){} return; }
