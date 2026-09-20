@@ -64,7 +64,8 @@ jobs:
             js/nh7-library-language-v321.js
             js/nh7-library-collections-v322.js
             js/nh7-admin-ai-v490.js
-            js/nh7-admin-student-report-v490.js
+            js/nh7-admin-student-report-v491.js
+            js/nh7-admin-school-workflow-v247.js
           )
           for file in "${files[@]}"; do
             test -f "$file"
@@ -156,7 +157,7 @@ jobs:
           set -euo pipefail
           grep -q 'admin-qna-i18n-v341.js' admin-v239-stable.html
           grep -q 'nh7-admin-ai-v490.js?v=4.9.0' admin-v239-stable.html
-          grep -q 'nh7-admin-student-report-v490.js?v=4.9.0' admin-v239-stable.html
+          grep -q 'nh7-admin-student-report-v491.js?v=4.9.1' admin-v239-stable.html
 
           grep -q 'AI draft answer' js/nh7-admin-ai-v490.js
           grep -q 'Translate question' js/nh7-admin-ai-v490.js
@@ -165,12 +166,17 @@ jobs:
           grep -q 'AI draft feedback' js/nh7-admin-ai-v490.js
           grep -q 'PREVIEW_ONLY' js/nh7-admin-ai-v490.js
 
-          grep -q 'Student Report Center' js/nh7-admin-student-report-v490.js
-          grep -q 'nh7_admin_student_profile_v451' js/nh7-admin-student-report-v490.js
-          grep -q 'nh7_admin_library_reading_v490' js/nh7-admin-student-report-v490.js
-          grep -q 'Incorrect answers' js/nh7-admin-student-report-v490.js
-          grep -q 'PDF / Print' js/nh7-admin-student-report-v490.js
-          grep -q 'window.print' js/nh7-admin-student-report-v490.js
+          grep -q 'Student Report Center' js/nh7-admin-student-report-v491.js
+          grep -q 'nh7_admin_student_profile_v451' js/nh7-admin-student-report-v491.js
+          grep -q 'nh7_admin_library_reading_v490' js/nh7-admin-student-report-v491.js
+          grep -q 'Incorrect answers' js/nh7-admin-student-report-v491.js
+          grep -q 'PDF / Print' js/nh7-admin-student-report-v491.js
+          grep -q 'window.print' js/nh7-admin-student-report-v491.js
+          grep -q 'nh7CloseStudentReportPreviewV491' js/nh7-admin-student-report-v491.js
+          grep -q 'nh7PrintStudentReportNowV491' js/nh7-admin-student-report-v491.js
+          grep -q 'nh7-admin-school-workflow-v247.js' admin-v239-stable.html
+          grep -q 'nh7-assignment-answer-text' js/nh7-admin-school-workflow-v247.js
+          grep -q 'overflow-wrap:anywhere' js/nh7-admin-school-workflow-v247.js
 
           grep -q 'nh7_is_admin' supabase/functions/nh7-admin-ai-v490/index.ts
           grep -q 'OPENAI_API_KEY' supabase/functions/nh7-admin-ai-v490/index.ts
