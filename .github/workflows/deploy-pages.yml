@@ -52,6 +52,7 @@ jobs:
             js/nh7-auth-recovery-v342.js
             js/nh7-registration-canonical-v353.js
             js/nh7-registration-final-guard-v401.js
+            js/nh7-registration-repeat-guard-v402.js
             js/nh7-push-account-bind-v362.js
             js/nh7-school-exam-v344.js
             js/nh7-school-path-v351.js
@@ -66,6 +67,7 @@ jobs:
             js/nh7-admin-ai-v491.js
             js/nh7-admin-student-report-v496.js
             js/nh7-admin-save-feedback-v497.js
+            js/nh7-admin-registration-dedupe-v332.js
             js/admin-v2.3.9-student-clean-v312.js
             js/nh7-admin-school-workflow-v247.js
           )
@@ -100,6 +102,8 @@ jobs:
           if(!index.includes('js/nh7-book-reading-telemetry-v490.js?v=4.9.0'))fail('Book telemetry v490 missing');
           if(!index.includes('js/nh7-settings-controller-v403.js?v=4.6.4'))fail('Settings runtime missing');
           if(!index.includes('js/nh7-delete-account-v253.js?v=2.5.4'))fail('Delete account runtime missing');
+          if(!index.includes('js/nh7-registration-repeat-guard-v402.js?v=4.0.2'))fail('Registration repeat guard v402 missing');
+          if(!releaseCore.includes('./js/nh7-registration-repeat-guard-v402.js'))fail('Registration repeat guard not cached');
 
           if(!worker.includes('sw-navigation-fresh-v403.js?v=4.0.3'))fail('Fresh navigation worker missing');
           if(!worker.includes('sw-release-core-v403.js?v=4.9.0'))fail('Release core v4.9.0 missing');
@@ -161,6 +165,9 @@ jobs:
           grep -q 'nh7-admin-ai-v491.js?v=4.9.1' admin-v239-stable.html
           grep -q 'nh7-admin-student-report-v496.js?v=4.9.6' admin-v239-stable.html
           grep -q 'nh7-admin-save-feedback-v497.js?v=4.9.7' admin-v239-stable.html
+          grep -q 'nh7-admin-registration-dedupe-v332.js?v=3.3.2' admin-v239-stable.html
+          grep -q 'nh7_admin_cleanup_registration_duplicates_v331' js/nh7-admin-registration-dedupe-v332.js
+          grep -q 'School/Meeting' js/nh7-admin-registration-dedupe-v332.js
 
           grep -q 'AI draft answer' js/nh7-admin-ai-v491.js
           grep -q "typeof nh7AdminAccessReady!=='undefined'" js/nh7-admin-ai-v491.js
@@ -189,6 +196,8 @@ jobs:
           grep -q 'stableAnswerQuestion' js/nh7-admin-save-feedback-v497.js
           grep -q 'nh7-sermon-upload-track-v497' js/nh7-admin-save-feedback-v497.js
           grep -q 'پاسخ و ترجمه‌ها ذخیره شدند' js/nh7-admin-save-feedback-v497.js
+          grep -q 'Waiting for admin approval' js/nh7-registration-repeat-guard-v402.js
+          grep -q 'nh7_registration_status' js/nh7-registration-repeat-guard-v402.js
           grep -q 'canvasHasInk' js/nh7-admin-student-report-v496.js
           grep -q 'nh7PdfCaptureHostV496' js/nh7-admin-student-report-v496.js
           grep -q 'horizontalInkBounds' js/nh7-admin-student-report-v496.js
