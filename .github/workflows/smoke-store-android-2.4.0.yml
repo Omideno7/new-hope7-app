@@ -1,9 +1,9 @@
-name: Android 2.4.0 Emulator Smoke
+name: Android 2.4.0 Ubuntu Emulator Smoke
 
 on:
   workflow_dispatch:
   push:
-    branches: [release/store-2.4.0-20260920]
+    branches: [qa/store-2.4.0-android-smoke-ubuntu]
     paths:
       - '.github/workflows/smoke-store-android-2.4.0.yml'
 
@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   smoke:
-    runs-on: macos-14
+    runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
       - name: Checkout candidate
@@ -28,6 +28,14 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
+
+      - name: Enable KVM for Android Emulator
+        shell: bash
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          ls -l /dev/kvm
 
       - name: Prepare QA Android wrapper
         shell: bash
@@ -129,7 +137,7 @@ jobs:
         with:
           api-level: 30
           target: google_apis
-          arch: arm64-v8a
+          arch: x86_64
           profile: pixel_5
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
