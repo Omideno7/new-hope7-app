@@ -48,7 +48,7 @@
     window.NH7_CANONICAL_SETTINGS = true;
     window.NH7_VERSION = '2.3.9.50';
     window.NH7_BASE_PATH = new URL('.', window.location.href).pathname;
-    window.NH7_SERVICE_WORKER = window.NH7_BASE_PATH + 'service-worker.js?v=4.7.7';
+    window.NH7_SERVICE_WORKER = window.NH7_BASE_PATH + 'service-worker.js?v=4.7.8';
     window.NH7_ONESIGNAL_WORKER = window.NH7_BASE_PATH + 'push/OneSignalSDKWorker.js';
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register(window.NH7_SERVICE_WORKER, { scope: window.NH7_BASE_PATH, updateViaCache: 'none' }).catch(console.warn);
@@ -164,7 +164,7 @@
   <script src="js/nh7-apocrypha-v270.js?v=4.5.3-reader" defer></script>
   <script src="js/nh7-protected-audio-gate-v316.js?v=2.3.9.33" defer></script>
   <script src="js/nh7-ui-stability-v329.js?v=4.4.7" defer></script>
-  <script src="js/nh7-push-account-bind-v362.js?v=3.6.2" defer></script>
+  <script src="js/nh7-push-account-bind-v363.js?v=3.6.3" defer></script>
   <script src="js/nh7-inbox-badge-sync-v418.js?v=4.1.8" defer></script>
   <script src="js/nh7-school-exam-v344.js?v=2.3.9.50" defer></script>
   <script src="js/nh7-school-path-v351.js?v=4.6.6" defer></script>
