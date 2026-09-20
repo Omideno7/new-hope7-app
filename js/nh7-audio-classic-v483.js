@@ -167,7 +167,7 @@ function showCurrentPanel(item){
 function capturePlayQueue(item){
   if(!supported(item))return;
   const wanted=mediaId(item),seen=new Set(),items=[];
-  for(const card of $('[data-sermon-card]')){
+  for(const card of $$('[data-sermon-card]')){
     const candidate=deriveFromCard(card),id=mediaId(candidate);
     if(!supported(candidate)||!id||seen.has(id))continue;
     seen.add(id);items.push(candidate);
