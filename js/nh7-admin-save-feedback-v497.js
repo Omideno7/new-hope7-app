@@ -201,6 +201,15 @@ function install(){
   try{window.saveSermon=stableSaveSermon;saveSermon=stableSaveSermon}catch(_){}
   try{window.inspectSermonAudio=stableInspectSermonAudio;inspectSermonAudio=stableInspectSermonAudio}catch(_){}
   try{window.answerQuestion=stableAnswerQuestion;answerQuestion=stableAnswerQuestion}catch(_){}
+  const cover=document.getElementById('sv_cover');
+  if(cover&&cover.dataset.nh7StableCover497!=='1'){
+    cover.dataset.nh7StableCover497='1';
+    cover.onchange=function(){
+      try{captureSermonDraft()}catch(_){}
+      if(this.files?.[0])sermonCoverFile=this.files[0];
+      setSermonProgress(L('تصویر کاور آمادهٔ آپلود است.','Cover image is ready to upload.','Naslovna slika je spremna za prijenos.'),0,'ready');
+    };
+  }
   ensureSermonUi();
 }
 const style=document.createElement('style');
