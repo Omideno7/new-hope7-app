@@ -3,9 +3,12 @@ name: Android Emulator Smoke Test
 on:
   workflow_dispatch:
   push:
-    branches: [release/google-play-api36]
+    branches: [release/google-play-api36, fix/android-native-selected-push-v478-20260920]
     paths:
       - '.github/workflows/android-emulator-smoke.yml'
+      - 'index.html'
+      - 'js/nh7-push-account-bind-v363.js'
+      - 'js/nh7-notifications-zagreb-v334.js'
 
 permissions:
   contents: read
@@ -28,6 +31,17 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
+
+      - name: Validate selected-user native push binding
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check js/nh7-push-account-bind-v363.js
+          grep -q "O.login(i.userId)" js/nh7-push-account-bind-v363.js
+          grep -q "User?.pushSubscription" js/nh7-push-account-bind-v363.js
+          grep -q "O.logout" js/nh7-push-account-bind-v363.js
+          grep -q 'nh7-push-account-bind-v363.js?v=3.6.3' index.html
+          ! grep -q 'nh7-push-account-bind-v361.js' index.html
 
       - name: Prepare QA Android wrapper
         shell: bash
@@ -70,6 +84,10 @@ jobs:
           npm install --no-audit --no-fund
           npx cap add android
           npx cap sync android
+          test -f android/app/src/main/assets/public/js/nh7-push-account-bind-v363.js
+          grep -q 'nh7-push-account-bind-v363.js?v=3.6.3' android/app/src/main/assets/public/index.html
+          grep -q 'O.login(i.userId)' android/app/src/main/assets/public/js/nh7-push-account-bind-v363.js
+          grep -q 'User?.pushSubscription' android/app/src/main/assets/public/js/nh7-push-account-bind-v363.js
           python3 <<'PY'
           from pathlib import Path
           import re
