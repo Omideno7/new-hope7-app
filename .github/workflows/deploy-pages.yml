@@ -65,6 +65,7 @@ jobs:
             js/nh7-library-collections-v322.js
             js/nh7-admin-ai-v491.js
             js/nh7-admin-student-report-v496.js
+            js/nh7-admin-save-feedback-v497.js
             js/admin-v2.3.9-student-clean-v312.js
             js/nh7-admin-school-workflow-v247.js
           )
@@ -159,6 +160,7 @@ jobs:
           grep -q 'admin-qna-i18n-v341.js' admin-v239-stable.html
           grep -q 'nh7-admin-ai-v491.js?v=4.9.1' admin-v239-stable.html
           grep -q 'nh7-admin-student-report-v496.js?v=4.9.6' admin-v239-stable.html
+          grep -q 'nh7-admin-save-feedback-v497.js?v=4.9.7' admin-v239-stable.html
 
           grep -q 'AI draft answer' js/nh7-admin-ai-v491.js
           grep -q "typeof nh7AdminAccessReady!=='undefined'" js/nh7-admin-ai-v491.js
@@ -182,6 +184,11 @@ jobs:
           grep -q 'nh7DownloadStudentReportPdfV496' js/nh7-admin-student-report-v496.js
           grep -q 'nh7PrintStudentReportPdfV496' js/nh7-admin-student-report-v496.js
           grep -q 'navigator.share' js/nh7-admin-student-report-v496.js
+          grep -q 'uploadWithProgress' js/nh7-admin-save-feedback-v497.js
+          grep -q 'stableSaveSermon' js/nh7-admin-save-feedback-v497.js
+          grep -q 'stableAnswerQuestion' js/nh7-admin-save-feedback-v497.js
+          grep -q 'nh7-sermon-upload-track-v497' js/nh7-admin-save-feedback-v497.js
+          grep -q 'پاسخ و ترجمه‌ها ذخیره شدند' js/nh7-admin-save-feedback-v497.js
           grep -q 'canvasHasInk' js/nh7-admin-student-report-v496.js
           grep -q 'nh7PdfCaptureHostV496' js/nh7-admin-student-report-v496.js
           grep -q 'horizontalInkBounds' js/nh7-admin-student-report-v496.js
