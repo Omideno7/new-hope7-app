@@ -1,0 +1,46 @@
+name: Audio Mini Player Close v486 QA
+
+on:
+  push:
+    branches: ['fix/audio-miniplayer-close-v486-20260920']
+    paths:
+      - '.github/workflows/qa-audio-miniplayer-close-v486.yml'
+      - 'index.html'
+      - 'service-worker.js'
+      - 'sw-release-core-v403.js'
+      - 'js/nh7-audio-miniplayer-v486.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate syntax and close behavior
+        run: |
+          set -euo pipefail
+          node --check js/nh7-audio-miniplayer-v486.js
+          grep -q 'data-mini-close' js/nh7-audio-miniplayer-v486.js
+          grep -q 'function closeMiniPlayer' js/nh7-audio-miniplayer-v486.js
+          grep -q 'persistProgressBeforeClose' js/nh7-audio-miniplayer-v486.js
+          grep -q "removeAttribute('src')" js/nh7-audio-miniplayer-v486.js
+          grep -q 'navigator.mediaSession.metadata=null' js/nh7-audio-miniplayer-v486.js
+          grep -q "setActionHandler(action,null)" js/nh7-audio-miniplayer-v486.js
+          grep -q 'close:closeMiniPlayer' js/nh7-audio-miniplayer-v486.js
+      - name: Validate wiring
+        run: |
+          set -euo pipefail
+          grep -q 'js/nh7-audio-miniplayer-v486.js?v=4.8.6' index.html
+          ! grep -q 'js/nh7-audio-miniplayer-v485.js' index.html
+          grep -q 'sw-release-core-v403.js?v=4.8.6' service-worker.js
+          grep -q "NH7_RELEASE_CORE_VERSION='4.8.6-audio-miniplayer-close'" sw-release-core-v403.js
+          grep -q 'nh7-audio-miniplayer-v486.js' sw-release-core-v403.js
+      - name: Verify no destructive data changes
+        run: |
+          set -euo pipefail
+          f=js/nh7-audio-miniplayer-v486.js
+          ! grep -Eq 'localStorage\.clear|sessionStorage\.clear|indexedDB\.deleteDatabase|notification_inbox|nh7_admin_campaigns|service_role' "$f"
+          echo 'Audio mini-player close v486 QA OK'
