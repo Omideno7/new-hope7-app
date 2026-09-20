@@ -2,7 +2,7 @@ name: Build iOS App Store Candidate
 
 on:
   push:
-    branches: [release/ios-appstore-final]
+    branches: [release/ios-appstore-final, fix/ios-native-selected-push-v478-20260920]
   workflow_dispatch:
 
 permissions:
