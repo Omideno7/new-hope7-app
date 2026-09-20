@@ -63,8 +63,8 @@ jobs:
             js/nh7-book-reading-telemetry-v490.js
             js/nh7-library-language-v321.js
             js/nh7-library-collections-v322.js
-            js/nh7-admin-ai-v490.js
-            js/nh7-admin-student-report-v495.js
+            js/nh7-admin-ai-v491.js
+            js/nh7-admin-student-report-v496.js
             js/admin-v2.3.9-student-clean-v312.js
             js/nh7-admin-school-workflow-v247.js
           )
@@ -157,33 +157,38 @@ jobs:
         run: |
           set -euo pipefail
           grep -q 'admin-qna-i18n-v341.js' admin-v239-stable.html
-          grep -q 'nh7-admin-ai-v490.js?v=4.9.0' admin-v239-stable.html
-          grep -q 'nh7-admin-student-report-v495.js?v=4.9.5' admin-v239-stable.html
+          grep -q 'nh7-admin-ai-v491.js?v=4.9.1' admin-v239-stable.html
+          grep -q 'nh7-admin-student-report-v496.js?v=4.9.6' admin-v239-stable.html
 
-          grep -q 'AI draft answer' js/nh7-admin-ai-v490.js
-          grep -q 'Translate question' js/nh7-admin-ai-v490.js
-          grep -q 'Translate answer' js/nh7-admin-ai-v490.js
-          grep -q 'Auto-translate FA/EN/HR titles' js/nh7-admin-ai-v490.js
-          grep -q 'AI draft feedback' js/nh7-admin-ai-v490.js
-          grep -q 'PREVIEW_ONLY' js/nh7-admin-ai-v490.js
+          grep -q 'AI draft answer' js/nh7-admin-ai-v491.js
+          grep -q "typeof nh7AdminAccessReady!=='undefined'" js/nh7-admin-ai-v491.js
+          grep -q 'nh7AiDraftAnswerV491' js/nh7-admin-ai-v491.js
+          grep -q 'nh7AiTranslateSermonTitlesV491' js/nh7-admin-ai-v491.js
+          grep -q 'Translate question' js/nh7-admin-ai-v491.js
+          grep -q 'Translate answer' js/nh7-admin-ai-v491.js
+          grep -q 'Auto-translate FA/EN/HR titles' js/nh7-admin-ai-v491.js
+          grep -q 'AI draft feedback' js/nh7-admin-ai-v491.js
+          grep -q 'PREVIEW_ONLY' js/nh7-admin-ai-v491.js
 
-          grep -q 'Student Report Center' js/nh7-admin-student-report-v495.js
-          grep -q 'nh7_admin_student_profile_v451' js/nh7-admin-student-report-v495.js
-          grep -q 'nh7_admin_library_reading_v490' js/nh7-admin-student-report-v495.js
-          grep -q 'Incorrect answers' js/nh7-admin-student-report-v495.js
-          grep -q 'PDF / Print' js/nh7-admin-student-report-v495.js
-          grep -q 'html2pdf.bundle.min.js' js/nh7-admin-student-report-v495.js
-          grep -q "pdf.output('blob')" js/nh7-admin-student-report-v495.js
-          grep -q 'nh7CloseStudentReportPreviewV495' js/nh7-admin-student-report-v495.js
-          grep -q 'nh7DownloadStudentReportPdfV495' js/nh7-admin-student-report-v495.js
-          grep -q 'nh7PrintStudentReportPdfV495' js/nh7-admin-student-report-v495.js
-          grep -q 'navigator.share' js/nh7-admin-student-report-v495.js
-          grep -q 'canvasHasInk' js/nh7-admin-student-report-v495.js
-          grep -q 'nh7PdfCaptureHostV495' js/nh7-admin-student-report-v495.js
-          grep -q 'horizontalInkBounds' js/nh7-admin-student-report-v495.js
-          grep -q 'canvasToPdfBlob' js/nh7-admin-student-report-v495.js
-          grep -q 'window.html2canvas' js/nh7-admin-student-report-v495.js
-          grep -q "pdf.addImage" js/nh7-admin-student-report-v495.js
+          grep -q 'Student Report Center' js/nh7-admin-student-report-v496.js
+          grep -q 'nh7_admin_student_profile_v451' js/nh7-admin-student-report-v496.js
+          grep -q 'nh7_admin_library_reading_v490' js/nh7-admin-student-report-v496.js
+          grep -q 'Incorrect answers' js/nh7-admin-student-report-v496.js
+          grep -q 'PDF / Print' js/nh7-admin-student-report-v496.js
+          grep -q 'html2canvas@1.4.1' js/nh7-admin-student-report-v496.js
+          grep -q 'jspdf@2.5.1' js/nh7-admin-student-report-v496.js
+          grep -q "pdf.output('blob')" js/nh7-admin-student-report-v496.js
+          grep -q 'nh7CloseStudentReportPreviewV496' js/nh7-admin-student-report-v496.js
+          grep -q 'nh7DownloadStudentReportPdfV496' js/nh7-admin-student-report-v496.js
+          grep -q 'nh7PrintStudentReportPdfV496' js/nh7-admin-student-report-v496.js
+          grep -q 'navigator.share' js/nh7-admin-student-report-v496.js
+          grep -q 'canvasHasInk' js/nh7-admin-student-report-v496.js
+          grep -q 'nh7PdfCaptureHostV496' js/nh7-admin-student-report-v496.js
+          grep -q 'horizontalInkBounds' js/nh7-admin-student-report-v496.js
+          grep -q 'canvasToPdfBlob' js/nh7-admin-student-report-v496.js
+          grep -q 'window.html2canvas' js/nh7-admin-student-report-v496.js
+          grep -q 'window.jspdf' js/nh7-admin-student-report-v496.js
+          grep -q "pdf.addImage" js/nh7-admin-student-report-v496.js
           grep -q 'admin-v2.3.9-student-clean-v312.js' admin-v239-stable.html
           grep -q 'admin-v2.3.9-clean-features-v312.css' admin-v239-stable.html
           grep -q 'nh7-v311-answer' js/admin-v2.3.9-student-clean-v312.js
