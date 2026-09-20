@@ -1,0 +1,78 @@
+name: Audio Collapsible Mini Player v485 QA
+
+on:
+  push:
+    branches: ['fix/audio-collapsible-miniplayer-v485-20260920']
+    paths:
+      - '.github/workflows/qa-audio-miniplayer-v485.yml'
+      - 'index.html'
+      - 'service-worker.js'
+      - 'sw-release-core-v403.js'
+      - 'js/nh7-audio-miniplayer-v485.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: JavaScript syntax
+        run: |
+          set -euo pipefail
+          node --check js/nh7-audio-miniplayer-v485.js
+          node --check sw-release-core-v403.js
+          node --check service-worker.js
+      - name: Stable engine plus overlay wiring
+        run: |
+          set -euo pipefail
+          grep -q 'js/nh7-audio-classic-v484.js?v=4.8.4' index.html
+          grep -q 'js/nh7-audio-miniplayer-v485.js?v=4.8.5' index.html
+          grep -q 'js/app.js?v=4.8.5' index.html
+          grep -q 'sw-release-core-v403.js?v=4.8.5' service-worker.js
+          grep -q "NH7_RELEASE_CORE_VERSION='4.8.5-audio-collapsible-miniplayer'" sw-release-core-v403.js
+          grep -q 'nh7-audio-miniplayer-v485.js' sw-release-core-v403.js
+      - name: Collapsible mini player behavior
+        run: |
+          set -euo pipefail
+          f=js/nh7-audio-miniplayer-v485.js
+          grep -q 'nh7-mini485-bar' "$f"
+          grep -q 'nh7-mini485-sheet' "$f"
+          grep -q 'setExpanded' "$f"
+          grep -q 'data-mini-expand' "$f"
+          grep -q 'data-mini-collapse' "$f"
+          grep -q "currentRoute!==lastRoute" "$f"
+          grep -q "audio','school','audioBible" "$f"
+          grep -q 'html.nh7-mini485-active .nh7-now-playing-v484' "$f"
+      - name: Playback controls retained
+        run: |
+          set -euo pipefail
+          f=js/nh7-audio-miniplayer-v485.js
+          grep -q 'data-mini-prev' "$f"
+          grep -q 'data-mini-next' "$f"
+          grep -q 'data-mini-toggle' "$f"
+          grep -q 'data-mini-back' "$f"
+          grep -q 'data-mini-forward' "$f"
+          grep -q 'data-mini-speed-down' "$f"
+          grep -q 'data-mini-speed-up' "$f"
+          grep -q 'data-mini-rate' "$f"
+          grep -q 'data-mini-mute' "$f"
+          grep -q 'playPreviousTrack' "$f"
+          grep -q 'playNextTrack' "$f"
+          grep -q 'setPlaybackSpeed' "$f"
+          grep -q 'toggleMediaMute' "$f"
+      - name: No fake volume slider
+        run: |
+          set -euo pipefail
+          f=js/nh7-audio-miniplayer-v485.js
+          ! grep -q 'data-mini-volume' "$f"
+          ! grep -q 'type="range".*volume' "$f"
+          grep -q 'Volume: phone buttons' "$f"
+      - name: No destructive user-data changes
+        run: |
+          set -euo pipefail
+          f=js/nh7-audio-miniplayer-v485.js
+          ! grep -Eq 'localStorage\.clear|sessionStorage\.clear|indexedDB\.deleteDatabase|notification_inbox|nh7_admin_campaigns|service_role' "$f"
+          echo 'Audio v485 mini-player QA OK'
