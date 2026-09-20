@@ -166,10 +166,11 @@ jobs:
           test -f ios/App/App/public/index.html
           test -f ios/App/App/public/js/nh7-settings-controller-v403.js
           test -f ios/App/App/public/js/nh7-delete-account-v253.js
-          test -f ios/App/App/public/js/nh7-push-account-bind-v363.js
-          grep -q 'nh7-push-account-bind-v363.js?v=3.6.3' ios/App/App/public/index.html
-          grep -q 'O.login(i.userId)' ios/App/App/public/js/nh7-push-account-bind-v363.js
-          grep -q 'User?.pushSubscription' ios/App/App/public/js/nh7-push-account-bind-v363.js
+          test -f ios/App/App/public/js/nh7-push-account-bind-v364.js
+          grep -q 'nh7-push-account-bind-v364.js?v=3.6.4' ios/App/App/public/index.html
+          grep -q 'O.login(i.userId)' ios/App/App/public/js/nh7-push-account-bind-v364.js
+          grep -q 'User?.pushSubscription' ios/App/App/public/js/nh7-push-account-bind-v364.js
+          grep -q 'getExternalId' ios/App/App/public/js/nh7-push-account-bind-v364.js
           if grep -q 'cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js' ios/App/App/public/index.html; then
             echo 'Web OneSignal SDK must not be active inside the iOS native wrapper' >&2
             exit 1
