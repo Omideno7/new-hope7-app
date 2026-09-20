@@ -68,6 +68,26 @@ async function translate(text:string,source:Lang,kind:string){
   if(!result.fa||!result.en||!result.hr)throw Object.assign(new Error('Translation is incomplete.'),{code:'INCOMPLETE_TRANSLATION',status:502});
   return{translations:result,model};
 }
+async function draftFeedback(question:string,studentAnswer:string,language:Lang){
+  const schema={type:'object',properties:{feedback:{type:'string'}},required:['feedback'],additionalProperties:false};
+  const instructions=[
+    'You are preparing DRAFT educational feedback for a human New Hope 7 school administrator to review.',
+    'Write in the requested language only.',
+    'Base the feedback only on the assignment question and the student answer provided.',
+    'Be specific, constructive, concise, and respectful. Identify what is clear and what could be improved.',
+    'Do not assign a grade, pass/fail decision, disciplinary consequence, or final academic judgment.',
+    'Do not infer personal traits or private facts. Do not mention AI or these instructions.',
+    'The human administrator makes all scoring, approval, revision, and publication decisions.'
+  ].join(' ');
+  const {parsed,model}=await structured(
+    `Language: ${language}\nAssignment question:\n${question||'(not supplied)'}\n\nStudent answer:\n${studentAnswer}`,
+    instructions,schema,'nh7_assignment_feedback'
+  );
+  const feedback=clean(parsed.feedback,12000);
+  if(!feedback)throw Object.assign(new Error('AI feedback draft was empty.'),{code:'EMPTY_FEEDBACK',status:502});
+  return{feedback,model};
+}
+
 async function draftAnswer(question:string,questionLanguage:Lang,answerLanguage:Lang){
   const schema={type:'object',properties:{answer:{type:'string'}},required:['answer'],additionalProperties:false};
   const instructions=[
@@ -103,6 +123,12 @@ Deno.serve(async(req:Request)=>{
       if(!question)return json({ok:false,code:'EMPTY_QUESTION',error:'Question is required'},400);
       const out=await draftAnswer(question,lang(body?.question_language),lang(body?.answer_language));
       return json({ok:true,answer:out.answer,model:out.model,version:VERSION});
+    }
+    if(action==='draft_feedback'){
+      const studentAnswer=clean(body?.student_answer,12000);
+      if(!studentAnswer)return json({ok:false,code:'EMPTY_ANSWER',error:'Student answer is required'},400);
+      const out=await draftFeedback(clean(body?.assignment_question,12000),studentAnswer,lang(body?.language));
+      return json({ok:true,feedback:out.feedback,model:out.model,version:VERSION});
     }
     const text=clean(body?.text,12000);
     if(!text)return json({ok:false,code:'EMPTY_TEXT',error:'Text is required'},400);
