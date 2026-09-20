@@ -182,8 +182,8 @@ jobs:
           grep -q 'nh7-push-account-bind-v364.js?v=3.6.4' ios/App/App/public/index.html
           grep -q 'nativePushSubscription' ios/App/App/public/js/nh7-push-account-bind-v364.js
           grep -q 'navigator.mediaSession' ios/App/App/public/js/nh7-audio-classic-v484.js
-          grep -q "setActionHandler('play'" ios/App/App/public/js/nh7-audio-classic-v484.js
-          grep -q "setActionHandler('nexttrack'" ios/App/App/public/js/nh7-audio-classic-v484.js
+          grep -q "safe('play'" ios/App/App/public/js/nh7-audio-classic-v484.js
+          grep -q "safe('nexttrack'" ios/App/App/public/js/nh7-audio-classic-v484.js
           grep -q "!window.Capacitor?.isNativePlatform?.()" ios/App/App/public/index.html
           if grep -q 'cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js' ios/App/App/public/index.html; then
             echo 'Web OneSignal SDK must not be active inside the iOS native wrapper' >&2
