@@ -1,0 +1,112 @@
+name: Soul Winning v472 Release QA
+
+on:
+  push:
+    branches:
+      - release/soul-winning-v472-20260920
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify production-only scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=291b7b84222185f3c5549552345da30fe0883718
+          git diff --name-only "$base"...HEAD > /tmp/changed
+          cat /tmp/changed
+          allowed='^(js/app\.js|js/nh7-soul-winning-v472\.js|css/nh7-soul-winning-v472\.css|index\.html|service-worker\.js|sw-release-core-v403\.js|\.github/workflows/qa-soul-winning-v472-release\.yml)$'
+          bad=$(grep -Ev "$allowed" /tmp/changed || true)
+          test -z "$bad"
+          ! grep -Eq '(^|/)(soul-winning-preview\.html|docs/|data/|supabase/|admin|assets/)' /tmp/changed
+
+      - name: Validate modules and tracker logic
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check --input-type=module < js/app.js
+          node --check --input-type=module < js/nh7-soul-winning-v472.js
+          node --check service-worker.js
+          node --check sw-release-core-v403.js
+          cp js/nh7-soul-winning-v472.js /tmp/soul.mjs
+          node --input-type=module <<'NODE'
+          import {normalizeStore,stats,STAGES} from 'file:///tmp/soul.mjs';
+          if(STAGES.length!==7)throw new Error('Expected seven journey stages');
+          const clean=normalizeStore({people:[
+            {name:'A',stage:'contact'},
+            {name:'B',stage:'gospel'},
+            {name:'C',stage:'followup'},
+            {name:'D',stage:'salvation'},
+            {name:'E',stage:'church'},
+            {name:'F',stage:'discipleship'},
+            {name:'G',stage:'serving'}
+          ]});
+          const s=stats(clean.people);
+          const want={total:7,gospel:6,salvation:4,church:3,discipleship:2};
+          for(const [k,v] of Object.entries(want))if(s[k]!==v)throw new Error(k+' mismatch '+s[k]+' != '+v);
+          if(clean.people.some(p=>!p.id||!Array.isArray(p.history)))throw new Error('Normalization failed');
+          console.log('Soul journey logic OK',s);
+          NODE
+
+      - name: Verify privacy and storage boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eqi 'Supabase' js/nh7-soul-winning-v472.js
+          ! grep -Eq 'cloudFetch|cloudRpc|authApi|saveProgressCloud|saveNoteCloud|fetch\(' js/nh7-soul-winning-v472.js
+          ! grep -Eq 'localStorage\.clear|sessionStorage\.clear|service_role' js/nh7-soul-winning-v472.js
+          grep -q "const STORAGE_KEY='nh7_soul_tracker_v472'" js/nh7-soul-winning-v472.js
+          grep -q "نام کوچک یا نام مستعار" js/nh7-soul-winning-v472.js
+          grep -q "first name or nickname" js/nh7-soul-winning-v472.js
+          grep -q "ime ili nadimak" js/nh7-soul-winning-v472.js
+
+      - name: Verify app wiring and cache upgrade
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "createSoulWinningV472" js/app.js
+          grep -q "route==='soulWinning'" js/app.js
+          grep -q "\['soulWinning','🌾'\]" js/app.js
+          grep -q "soulWinning:'Soul Winning'" js/app.js
+          grep -q "soulWinning:'نجات جان‌ها'" js/app.js
+          grep -q "soulWinning:'Osvajanje duša'" js/app.js
+          grep -q "nh7-soul-winning-v472.css?v=4.7.2" index.html
+          grep -q "js/app.js?v=4.7.2" index.html
+          grep -q "service-worker.js?v=4.7.2" index.html
+          grep -q "sw-release-core-v403.js?v=4.7.2" service-worker.js
+          grep -q "NH7_RELEASE_CORE_VERSION='4.7.2-soul-winning'" sw-release-core-v403.js
+          grep -q "nh7-release-core-v472-soul-winning" sw-release-core-v403.js
+          grep -q "'./js/nh7-soul-winning-v472.js'" sw-release-core-v403.js
+          grep -q "'./css/nh7-soul-winning-v472.css'" sw-release-core-v403.js
+
+      - name: Verify compatibility with all 14 approved themes
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const fs=require('fs');
+          const theme=fs.readFileSync('js/nh7-theme-studio-v453.js','utf8');
+          const css=fs.readFileSync('css/nh7-soul-winning-v472.css','utf8');
+          const presets={}; let m;
+          const a=/\b([a-z]+):\{bg:'(#[0-9a-f]{6})',card:'(#[0-9a-f]{6})',text:'(#[0-9a-f]{6})',muted:'(#[0-9a-f]{6})',verse:'(#[0-9a-f]{6})',accent:'(#[0-9a-f]{6})'\}/gi;
+          while((m=a.exec(theme)))presets[m[1]]={card:m[3],text:m[4],accent:m[7]};
+          const b=/"([a-z]+)":\{"bg":"(#[0-9a-f]{6})","card":"(#[0-9a-f]{6})","text":"(#[0-9a-f]{6})","muted":"(#[0-9a-f]{6})","verse":"(#[0-9a-f]{6})","accent":"(#[0-9a-f]{6})"\}/gi;
+          while((m=b.exec(theme)))presets[m[1]]={card:m[3],text:m[4],accent:m[7]};
+          if(Object.keys(presets).length!==14)throw new Error('Expected 14 approved themes');
+          const rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+          const lum=h=>rgb(h).map(v=>v/255).map(x=>x<=.04045?x/12.92:((x+.055)/1.055)**2.4).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);
+          const contrast=(x,y)=>{const A=lum(x),B=lum(y);return (Math.max(A,B)+.05)/(Math.min(A,B)+.05)};
+          let min=99;
+          for(const [id,p] of Object.entries(presets)){const r=contrast(p.text,p.card);min=Math.min(min,r);if(r<4.5)throw new Error(id+' text/card contrast '+r)}
+          for(const token of ['var(--nh7-studio-card)','var(--nh7-studio-text)','var(--nh7-studio-muted)','var(--nh7-studio-accent)'])if(!css.includes(token))throw new Error('Missing theme token '+token);
+          console.log('14-theme Soul Tracker compatibility OK; min text/card contrast',min);
+          NODE
