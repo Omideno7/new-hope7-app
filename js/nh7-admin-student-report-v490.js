@@ -52,6 +52,11 @@
     ];
     return`<div class="nh7r490-summary">${cards.map(([k,v])=>`<div><b>${E(v)}</b><span>${E(k)}</span></div>`).join('')}</div>`;
   }
+  function progressHtml(rows,l){
+    rows=Array.isArray(rows)?rows:[];
+    if(!rows.length)return`<p class="empty">${E(L('پیشرفت درسی ثبت نشده است.','No lesson progress recorded.','Nema zabilježenog napretka lekcija.',l))}</p>`;
+    return`<table><thead><tr><th>${E(L('درس','Lesson','Lekcija',l))}</th><th>${E(L('پیشرفت','Progress','Napredak',l))}</th><th>${E(L('نمره نهایی','Final score','Konačni rezultat',l))}</th><th>${E(L('تکمیل','Completed','Završeno',l))}</th><th>${E(L('آخرین تغییر','Updated','Ažurirano',l))}</th></tr></thead><tbody>${rows.map(x=>`<tr><td>${E(x.lesson_code||'-')}</td><td>${E(x.progress_percent??0)}%</td><td>${E(x.final_score_percent??x.exam_score??'-')}${x.final_score_percent!=null||x.exam_score!=null?'%':''}</td><td>${E(x.completed_at?'✓':'—')}</td><td>${E(fmtDate(x.updated_at,l))}</td></tr>`).join('')}</tbody></table>`;
+  }
   function assignmentsHtml(rows,l){
     rows=Array.isArray(rows)?rows:[];
     if(!rows.length)return`<p class="empty">${E(L('تکلیفی ثبت نشده است.','No assignments recorded.','Nema zabilježenih zadataka.',l))}</p>`;
@@ -85,11 +90,12 @@
   }
   function build(profile,reading,l,email){
     const school=profile?.school||{},activity=profile?.activity||{},reg=school.registration||{};
-    const assignments=school.assignments||[],attempts=school.attempts||[],audio=activity.audio||[],library=activity.library||[];
+    const progress=school.progress||[],assignments=school.assignments||[],attempts=school.attempts||[],audio=activity.audio||[],library=activity.library||[];
     const name=String(reg.user_name||assignments[0]?.user_name||attempts[0]?.user_name||email);
     const html=`<div class="nh7r490-report" dir="${l==='fa'?'rtl':'ltr'}">
     <header><div><h2>New Hope 7 · ${E(L('گزارش دانشجو','Student Report','Izvještaj studenta',l))}</h2><h3>${E(name)}</h3><p>${E(email)} · ${E(L('تاریخ گزارش','Report date','Datum izvještaja',l))}: ${E(fmtDate(new Date(),l))}</p></div><img src="assets/logo.png" alt=""></header>
     ${summaryCards(school,activity,reading,l)}
+    <section><h3>${E(L('پیشرفت درس‌ها','Lesson progress','Napredak lekcija',l))}</h3>${progressHtml(progress,l)}</section>
     <section><h3>${E(L('تکالیف','Assignments','Zadaci',l))}</h3>${assignmentsHtml(assignments,l)}</section>
     <section><h3>${E(L('آزمون‌ها و پاسخ‌های اشتباه','Exams and incorrect answers','Ispiti i netočni odgovori',l))}</h3>${attemptsHtml(attempts,l)}</section>
     <section><h3>${E(L('فعالیت فایل‌های صوتی','Audio listening activity','Aktivnost slušanja audija',l))}</h3>${audioHtml(audio,l)}</section>
