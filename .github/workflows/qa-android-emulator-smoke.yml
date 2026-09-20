@@ -5,7 +5,7 @@ on:
   push:
     branches: [qa/native-store-current-20260920]
     paths:
-      - '.github/workflows/android-emulator-smoke.yml'
+      - '.github/workflows/qa-android-emulator-smoke.yml'
 
 permissions:
   contents: read
