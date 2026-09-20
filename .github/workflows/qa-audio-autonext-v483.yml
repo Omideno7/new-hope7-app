@@ -3,6 +3,13 @@ name: Audio Auto-Next Media Controls v483 QA
 on:
   push:
     branches: ['fix/audio-autonext-media-controls-v483-20260920']
+    paths:
+      - '.github/workflows/qa-audio-autonext-v483.yml'
+      - 'index.html'
+      - 'service-worker.js'
+      - 'sw-release-core-v403.js'
+      - 'js/app.js'
+      - 'js/nh7-audio-classic-v483.js'
   workflow_dispatch:
 
 permissions:
@@ -15,6 +22,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - name: Validate scoped diff
         shell: bash
         run: |
@@ -41,16 +49,14 @@ jobs:
           set -euo pipefail
           f=js/nh7-audio-classic-v483.js
           grep -q 'function capturePlayQueue' "$f"
-          grep -q "for(const card of \$\$('\[data-sermon-card\]'))" "$f"
-          grep -q "playNextTrack('auto-ended')" "$f"
-          grep -q "safe('nexttrack'" "$f"
-          grep -q "safe('previoustrack'" "$f"
+          grep -Fq "for(const card of \$\$('[data-sermon-card]'))" "$f"
+          grep -Fq "playNextTrack('auto-ended')" "$f"
+          grep -Fq "safe('nexttrack'" "$f"
+          grep -Fq "safe('previoustrack'" "$f"
           grep -q 'data-now-next' "$f"
           grep -q 'function playNextTrack' "$f"
           grep -q 'function playPreviousTrack' "$f"
           grep -q "NH7_AUDIO_CLASSIC_VERSION='4.8.3'" "$f"
-          grep -q "nh7-audio-classic-v483.js?v=4.8.3" index.html
-          ! grep -q 'nh7-audio-classic-v482.js' index.html
 
       - name: Verify persistent Now Playing
         shell: bash
@@ -62,6 +68,7 @@ jobs:
           grep -q 'data-now-toggle' "$f"
           grep -q 'data-now-back' "$f"
           grep -q 'data-now-forward' "$f"
+          grep -q 'data-now-next' "$f"
           grep -q 'NH7_NAVIGATE' js/app.js
           grep -q 'getState:()=>({current,audio,playQueue' "$f"
 
@@ -72,12 +79,14 @@ jobs:
           f=js/nh7-audio-classic-v483.js
           grep -q "navigator.mediaSession.metadata=new MediaMetadata" "$f"
           grep -q "setActionHandler(name,handler)" "$f"
-          grep -q "safe('play'" "$f"
-          grep -q "safe('pause'" "$f"
-          grep -q "safe('seekbackward'" "$f"
-          grep -q "safe('seekforward'" "$f"
-          grep -q "safe('seekto'" "$f"
-          grep -q "safe('stop'" "$f"
+          grep -Fq "safe('play'" "$f"
+          grep -Fq "safe('pause'" "$f"
+          grep -Fq "safe('seekbackward'" "$f"
+          grep -Fq "safe('seekforward'" "$f"
+          grep -Fq "safe('seekto'" "$f"
+          grep -Fq "safe('stop'" "$f"
+          grep -Fq "safe('nexttrack'" "$f"
+          grep -Fq "safe('previoustrack'" "$f"
           grep -q 'setPositionState' "$f"
           grep -q 'playbackState' "$f"
 
@@ -86,92 +95,13 @@ jobs:
         run: |
           set -euo pipefail
           grep -q 'js/nh7-audio-classic-v483.js?v=4.8.3' index.html
+          ! grep -q 'js/nh7-audio-classic-v482.js' index.html
           ! grep -q 'js/nh7-audio-classic-v400.js' index.html
           grep -q 'js/app.js?v=4.8.3' index.html
           grep -q 'sw-release-core-v403.js?v=4.8.3' service-worker.js
           grep -q "NH7_RELEASE_CORE_VERSION='4.8.3-audio-auto-next'" sw-release-core-v403.js
           grep -q 'nh7-audio-classic-v483.js' sw-release-core-v403.js
-          ! grep -q 'nh7-audio-classic-v400.js' sw-release-core-v403.js
-
-      - name: Verify no user-data mutation
-        shell: bash
-        run: |
-          set -euo pipefail
-          f=js/nh7-audio-classic-v483.js
-          ! grep -Eq 'localStorage\.clear|sessionStorage\.clear|indexedDB\.deleteDatabase' "$f"
-          ! grep -Eq 'notification_inbox|nh7_admin_campaigns|service_role' "$f"
-          echo 'Audio v483 scoped QA OK'
-
-          bad=$(grep -Ev "$allowed" /tmp/changed || true)
-          test -z "$bad"
-          ! grep -Eq '^(supabase/|admin|data/)' /tmp/changed
-
-      - name: Validate JavaScript
-        shell: bash
-        run: |
-          set -euo pipefail
-          node --check js/nh7-audio-classic-v483.js
-          node --check js/app.js
-          node --check service-worker.js
-          node --check sw-release-core-v403.js
-
-      - name: Verify playback queue and auto-next
-        shell: bash
-        run: |
-          set -euo pipefail
-          f=js/nh7-audio-classic-v483.js
-          grep -q 'function capturePlayQueue' "$f"
-          grep -q "for(const card of \$\$('\[data-sermon-card\]'))" "$f"
-          grep -q "playNextTrack('auto-ended')" "$f"
-          grep -q "safe('nexttrack'" "$f"
-          grep -q "safe('previoustrack'" "$f"
-          grep -q 'data-now-next' "$f"
-          grep -q 'function playNextTrack' "$f"
-          grep -q 'function playPreviousTrack' "$f"
-          grep -q "NH7_AUDIO_CLASSIC_VERSION='4.8.3'" "$f"
-          grep -q "nh7-audio-classic-v483.js?v=4.8.3" index.html
-          ! grep -q 'nh7-audio-classic-v482.js' index.html
-
-      - name: Verify persistent Now Playing
-        shell: bash
-        run: |
-          set -euo pipefail
-          f=js/nh7-audio-classic-v483.js
-          grep -q 'nh7-now-playing-v483' "$f"
-          grep -q 'openCurrentAudio' "$f"
-          grep -q 'data-now-toggle' "$f"
-          grep -q 'data-now-back' "$f"
-          grep -q 'data-now-forward' "$f"
-          grep -q 'NH7_NAVIGATE' js/app.js
-          grep -q 'getState:()=>({current,audio})' "$f"
-
-      - name: Verify Lock Screen Media Session
-        shell: bash
-        run: |
-          set -euo pipefail
-          f=js/nh7-audio-classic-v483.js
-          grep -q "navigator.mediaSession.metadata=new MediaMetadata" "$f"
-          grep -q "setActionHandler(name,handler)" "$f"
-          grep -q "safe('play'" "$f"
-          grep -q "safe('pause'" "$f"
-          grep -q "safe('seekbackward'" "$f"
-          grep -q "safe('seekforward'" "$f"
-          grep -q "safe('seekto'" "$f"
-          grep -q "safe('stop'" "$f"
-          grep -q 'setPositionState' "$f"
-          grep -q 'playbackState' "$f"
-
-      - name: Verify release wiring
-        shell: bash
-        run: |
-          set -euo pipefail
-          grep -q 'js/nh7-audio-classic-v483.js?v=4.8.3' index.html
-          ! grep -q 'js/nh7-audio-classic-v400.js' index.html
-          grep -q 'js/app.js?v=4.8.3' index.html
-          grep -q 'sw-release-core-v403.js?v=4.8.3' service-worker.js
-          grep -q "NH7_RELEASE_CORE_VERSION='4.8.3-audio-now-playing'" sw-release-core-v403.js
-          grep -q 'nh7-audio-classic-v483.js' sw-release-core-v403.js
-          ! grep -q 'nh7-audio-classic-v400.js' sw-release-core-v403.js
+          ! grep -q 'nh7-audio-classic-v482.js' sw-release-core-v403.js
 
       - name: Verify no user-data mutation
         shell: bash
