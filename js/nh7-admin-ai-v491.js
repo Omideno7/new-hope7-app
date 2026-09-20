@@ -199,7 +199,17 @@ function sermonTitles(){
 }
 function sermonSource(){
   const v=sermonTitles(),preferred=currentLang();if(v[preferred])return{language:preferred,text:v[preferred]};
-  for(const l of LANGS)if(v[l])return{language:l,text:v[l]};return{language:'fa',text:''}
+  for(const l of LANGS)if(v[l])return{language:l,text:v[l]};
+  const file=document.getElementById('sv_audio')?.files?.[0];
+  const raw=String(file?.name||'').replace(/\.[^.]+$/,'').replace(/[_-]+/g,' ').replace(/\s+/g,' ').trim();
+  if(raw){
+    const detected=/[\u0600-\u06FF]/.test(raw)?'fa':preferred;
+    const el=document.getElementById('sv_title_'+detected);
+    if(el&&!String(el.value||'').trim())el.value=raw;
+    if(typeof sermonDraft==='object'&&!String(sermonDraft['title_'+detected]||'').trim())sermonDraft['title_'+detected]=raw;
+    return{language:detected,text:raw}
+  }
+  return{language:'fa',text:''}
 }
 async function translateSermonTitles(manual=true){
   const source=sermonSource();if(!source.text){if(manual)alert(L('ابتدا یک عنوان بنویسید یا فایل صوتی را انتخاب کنید.','Enter one title or choose the audio file first.','Najprije unesite naslov ili odaberite audio datoteku.'));return}
