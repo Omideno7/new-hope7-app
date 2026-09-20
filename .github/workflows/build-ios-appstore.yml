@@ -158,9 +158,10 @@ jobs:
           test -f ios/App/App/public/index.html
           test -f ios/App/App/public/js/nh7-settings-controller-v403.js
           test -f ios/App/App/public/js/nh7-delete-account-v253.js
-          test -f ios/App/App/public/js/nh7-push-account-bind-v362.js
-          grep -q 'nh7-push-account-bind-v362.js?v=3.6.2' ios/App/App/public/index.html
-          grep -q 'O.login(i.userId)' ios/App/App/public/js/nh7-push-account-bind-v362.js
+          test -f ios/App/App/public/js/nh7-push-account-bind-v363.js
+          grep -q 'nh7-push-account-bind-v363.js?v=3.6.2' ios/App/App/public/index.html
+          grep -q 'O.login(i.userId)' ios/App/App/public/js/nh7-push-account-bind-v363.js
+          grep -q 'User?.pushSubscription' ios/App/App/public/js/nh7-push-account-bind-v363.js
           echo 'iOS release configuration OK'
 
       - name: Build Release for iOS Simulator without signing
