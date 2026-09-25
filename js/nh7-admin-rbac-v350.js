@@ -35,6 +35,15 @@ const E=value=>typeof h==='function'?h(value):String(value??'').replace(/[&<>"']
 const has=permission=>Boolean(access?.is_owner||access?.permissions?.includes(permission));
 const permissionSet=value=>Array.isArray(value)?value.map(String):[];
 const normalizeAccess=value=>{const row=Array.isArray(value)?value[0]:value;return row&&typeof row==='object'?{is_admin:row.is_admin===true,is_owner:row.is_owner===true,email:String(row.email||''),display_name:String(row.display_name||''),permissions:permissionSet(row.permissions)}:{is_admin:false,is_owner:false,email:'',display_name:'',permissions:[]}};
+async function rbacFetch(url,opt={},timeoutMs=12000){
+  if(typeof fetchWithTimeout==='function')return fetchWithTimeout(url,opt,timeoutMs);
+  if(typeof AbortController==='undefined')return fetch(url,opt);
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeoutMs);
+  try{return await fetch(url,Object.assign({},opt,{signal:controller.signal}))}
+  catch(error){if(error?.name==='AbortError')throw Object.assign(new Error(L('زمان پاسخ سرور تمام شد. کمی بعد دوباره تلاش کنید.','Server response timed out. Please try again shortly.','Odgovor poslužitelja je istekao. Pokušajte ponovno uskoro.')),{status:408,code:'request_timeout'});throw error}
+  finally{clearTimeout(timer)}
+}
+const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 
 function installStyle(){if(document.getElementById('nh7AdminRbacStyleV350'))return;const style=document.createElement('style');style.id='nh7AdminRbacStyleV350';style.textContent=`
 .nh7-rbac-note{margin:12px 0}.nh7-rbac-denied{background:#fff1f1;border-color:#f4caca;color:#a02121}.nh7-rbac-admin-grid{display:grid;grid-template-columns:minmax(280px,.85fr) minmax(320px,1.15fr);gap:14px}.nh7-rbac-permissions{display:grid;gap:8px;margin:10px 0}.nh7-rbac-permission{display:flex;align-items:flex-start;gap:9px;padding:10px;border:1px solid var(--line);border-radius:14px;background:#f8fcfc}.nh7-rbac-permission input{width:auto;margin:3px 0}.nh7-rbac-admin-row{border:1px solid var(--line);border-radius:16px;padding:12px;margin:9px 0}.nh7-rbac-admin-row.inactive{opacity:.68}.nh7-rbac-badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}.nh7-rbac-shell{max-width:960px;margin:0 auto;padding:14px 12px 96px}.nh7-rbac-top{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:12px;margin-bottom:12px;box-shadow:0 8px 24px rgba(16,32,51,.06)}.nh7-rbac-brand{display:flex;align-items:center;gap:10px}.nh7-rbac-brand img{width:48px;height:48px;border-radius:14px}.nh7-rbac-title{margin:0;font-size:1.05rem}.nh7-rbac-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.nh7-rbac-actions select{width:auto;min-width:105px}.nh7-rbac-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.nh7-rbac-summary .stat{margin:0}.nh7-rbac-detail{display:grid;grid-template-columns:minmax(120px,.4fr) 1fr;gap:7px 12px;padding:8px 0;border-bottom:1px dashed #d8ecea}.nh7-rbac-detail:last-child{border-bottom:0}.nh7-rbac-detail span{word-break:break-word}.nh7-rbac-readonly{font-size:.8rem;color:#667085;margin-top:8px}
@@ -42,13 +51,48 @@ function installStyle(){if(document.getElementById('nh7AdminRbacStyleV350'))retu
 `;document.head.appendChild(style)}
 
 function clearStoredSession(){localStorage.removeItem('nh7_admin_token');localStorage.removeItem('nh7_admin_refresh_token');localStorage.removeItem('nh7_admin_access_v350')}
-async function endRemoteSession(value=session.accessToken){if(!value)return;try{await fetch(SUPABASE_URL+'/auth/v1/logout',{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+value}})}catch(_){}}
+async function endRemoteSession(value=session.accessToken){if(!value)return;try{await rbacFetch(SUPABASE_URL+'/auth/v1/logout',{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+value}})}catch(_){}}
 function clearRuntime(nextMode='signed-out'){
   session={accessToken:'',refreshToken:''};access=null;mode=nextMode;token='';refreshToken='';nh7AdminAccessReady=false;clearStoredSession();
 }
 function persistAuthorizedSession(){localStorage.setItem('nh7_admin_token',session.accessToken);if(session.refreshToken)localStorage.setItem('nh7_admin_refresh_token',session.refreshToken);else localStorage.removeItem('nh7_admin_refresh_token');localStorage.setItem('nh7_admin_access_v350',JSON.stringify({is_owner:access?.is_owner===true,email:access?.email||'',permissions:access?.permissions||[]}))}
-async function scopedRefresh(){if(!session.refreshToken)throw Object.assign(new Error('Session expired'),{status:401});const response=await fetch(SUPABASE_URL+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:session.refreshToken})});const raw=await response.text();let data={};try{data=raw?JSON.parse(raw):{}}catch(_){data={message:raw}}if(!response.ok)throw Object.assign(new Error(data.message||data.error_description||'Session expired'),{status:response.status});session={accessToken:data.access_token||'',refreshToken:data.refresh_token||session.refreshToken};if(!session.accessToken)throw Object.assign(new Error('Session expired'),{status:401});if(mode==='owner'){token=session.accessToken;refreshToken=session.refreshToken}if(access?.is_admin)persistAuthorizedSession();return true}
-async function rbacRpc(name,payload={},retry=true){if(mode==='owner'&&typeof token==='string'&&token){session.accessToken=token;session.refreshToken=typeof refreshToken==='string'&&refreshToken?refreshToken:session.refreshToken}const call=async()=>{const response=await fetch(SUPABASE_URL+'/rest/v1/rpc/'+encodeURIComponent(name),{method:'POST',cache:'no-store',headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+session.accessToken,'Content-Type':'application/json'},body:JSON.stringify(payload||{})});const raw=await response.text();let data=null;try{data=raw?JSON.parse(raw):null}catch(_){data=raw}if(!response.ok){const error=new Error(data?.message||data?.error_description||data?.hint||String(data||response.statusText));error.status=response.status;error.code=String(data?.code||'');throw error}return data};try{return await call()}catch(error){if(retry&&error.status===401&&session.refreshToken){await scopedRefresh();return call()}throw error}}
+async function scopedRefresh(){if(!session.refreshToken)throw Object.assign(new Error('Session expired'),{status:401});const response=await rbacFetch(SUPABASE_URL+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:session.refreshToken})});const raw=await response.text();let data={};try{data=raw?JSON.parse(raw):{}}catch(_){data={message:raw}}if(!response.ok)throw Object.assign(new Error(data.message||data.error_description||'Session expired'),{status:response.status});session={accessToken:data.access_token||'',refreshToken:data.refresh_token||session.refreshToken};if(!session.accessToken)throw Object.assign(new Error('Session expired'),{status:401});if(mode==='owner'){token=session.accessToken;refreshToken=session.refreshToken}if(access?.is_admin)persistAuthorizedSession();return true}
+async function rbacRpc(name,payload={},retry=true){
+  if(mode==='owner'&&typeof token==='string'&&token){
+    session.accessToken=token;
+    session.refreshToken=typeof refreshToken==='string'&&refreshToken?refreshToken:session.refreshToken;
+  }
+  const call=async()=>{
+    const response=await rbacFetch(SUPABASE_URL+'/rest/v1/rpc/'+encodeURIComponent(name),{
+      method:'POST',cache:'no-store',
+      headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+session.accessToken,'Content-Type':'application/json'},
+      body:JSON.stringify(payload||{})
+    },12000);
+    const raw=await response.text();let data=null;try{data=raw?JSON.parse(raw):null}catch(_){data=raw}
+    if(!response.ok){
+      const error=new Error(data?.message||data?.error_description||data?.hint||String(data||response.statusText));
+      error.status=response.status;error.code=String(data?.code||'');throw error;
+    }
+    return data;
+  };
+  try{return await call()}
+  catch(error){
+    const transient=[401,403,408,429,500,502,503,504].includes(Number(error?.status||0));
+    if(!retry||!transient)throw error;
+    if(error.status===401||error.status===403){
+      await wait(900);
+      try{return await call()}catch(second){
+        if((second.status===401||second.status===403)&&session.refreshToken){
+          await scopedRefresh();
+          return call();
+        }
+        throw second;
+      }
+    }
+    await wait(900);
+    return call();
+  }
+}
 async function readAccess(){return normalizeAccess(await rbacRpc('nh7_admin_my_access_v350',{}))}
 
 function appendLoginNotice(){if(!notice)return;const card=document.querySelector('.admin-login-card');if(!card||card.querySelector('.nh7-rbac-note'))return;const box=document.createElement('div');box.className='notice nh7-rbac-note '+(mode==='denied'?'nh7-rbac-denied':'');box.textContent=notice;card.prepend(box)}
@@ -84,8 +128,37 @@ async function loadDelegate(silent=false){if(mode!=='delegate'||delegateLoading)
 async function activate(value){access=value;notice='';persistAuthorizedSession();localStorage.setItem('nh7_admin_last_email',access.email||'');if(access.is_owner){mode='owner';token=session.accessToken;refreshToken=session.refreshToken;nh7AdminAccessReady=true;document.getElementById('adminApp')?.classList.add('admin-shell');render();if(legacy.loadAll)await legacy.loadAll(false);if(activeTab==='admins')loadManager()}else{mode='delegate';token='';refreshToken='';nh7AdminAccessReady=false;if(!['requests','approved'].includes(activeTab))activeTab='requests';localStorage.setItem('nh7_admin_tab',activeTab);render();await loadDelegate(true)}if(refreshId)clearInterval(refreshId);refreshId=setInterval(()=>{if(document.hidden)return;if(mode==='owner')loadAll(true);else if(mode==='delegate')loadDelegate(true)},90000)}
 async function bootstrap(){if(!session.accessToken){mode='signed-out';render();return}mode='checking';notice=L('در حال بررسی سطح دسترسی پنل…','Checking panel access…','Provjera pristupa panelu…');render();try{const value=await readAccess();if(!value.is_admin)throw Object.assign(new Error(L('این حساب اجازه ورود به پنل مدیریت را ندارد.','This account does not have admin panel access.','Ovaj račun nema pristup administratorskom panelu.')),{code:'ACCESS_DENIED'});await activate(value)}catch(error){const old=session.accessToken;clearRuntime('denied');notice=error.code==='ACCESS_DENIED'?error.message:L('ورود امن پنل انجام نشد. دوباره وارد شوید.','Secure panel sign-in failed. Sign in again.','Sigurna prijava nije uspjela. Prijavite se ponovno.');await endRemoteSession(old);render()}}
 
-async function secureSignIn(){const email=String(document.getElementById('email')?.value||'').trim().toLowerCase(),password=String(document.getElementById('password')?.value||'');if(!email||!password){notice=L('ایمیل و رمز عبور را کامل وارد کنید.','Enter both email and password.','Unesite e-mail i lozinku.');mode='denied';render();return}mode='checking';notice=L('در حال بررسی حساب و سطح دسترسی…','Checking account and permissions…','Provjera računa i dozvola…');render();try{const response=await fetch(SUPABASE_URL+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password})});const raw=await response.text();let data={};try{data=raw?JSON.parse(raw):{}}catch(_){data={message:raw}}if(!response.ok)throw Object.assign(new Error(data.message||data.error_description||L('ایمیل یا رمز عبور درست نیست.','Invalid email or password.','Neispravan e-mail ili lozinka.')),{status:response.status});session={accessToken:data.access_token||'',refreshToken:data.refresh_token||''};const value=await readAccess();if(!value.is_admin){await endRemoteSession(session.accessToken);clearRuntime('denied');notice=L('این حساب کاربری اجازه ورود به پنل مدیریت را ندارد.','This user account does not have admin panel access.','Ovaj korisnički račun nema pristup administratorskom panelu.');render();return}await activate(value)}catch(error){const old=session.accessToken;clearRuntime('denied');if(old)await endRemoteSession(old);notice=error.status===400?L('ایمیل یا رمز عبور درست نیست.','Invalid email or password.','Neispravan e-mail ili lozinka.'):error.message||L('ورود انجام نشد.','Sign-in failed.','Prijava nije uspjela.');render()}}
-
+let secureSignInBusy=false;
+async function secureSignIn(){
+  if(secureSignInBusy)return;
+  const email=String(document.getElementById('email')?.value||'').trim().toLowerCase(),password=String(document.getElementById('password')?.value||'');
+  if(!email||!password){notice=L('ایمیل و رمز عبور را کامل وارد کنید.','Enter both email and password.','Unesite e-mail i lozinku.');mode='denied';render();return}
+  secureSignInBusy=true;mode='checking';notice=L('در حال بررسی حساب و سطح دسترسی…','Checking account and permissions…','Provjera računa i dozvola…');render();
+  try{
+    const response=await rbacFetch(SUPABASE_URL+'/auth/v1/token?grant_type=password',{
+      method:'POST',headers:{apikey:SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password})
+    },12000);
+    const raw=await response.text();let data={};try{data=raw?JSON.parse(raw):{}}catch(_){data={message:raw}}
+    if(!response.ok)throw Object.assign(new Error(data.message||data.error_description||L('ایمیل یا رمز عبور درست نیست.','Invalid email or password.','Neispravan e-mail ili lozinka.')),{status:response.status});
+    session={accessToken:data.access_token||'',refreshToken:data.refresh_token||''};
+    const value=await readAccess();
+    if(!value.is_admin){
+      await endRemoteSession(session.accessToken);clearRuntime('denied');
+      notice=L('این حساب کاربری اجازه ورود به پنل مدیریت را ندارد.','This user account does not have admin panel access.','Ovaj korisnički račun nema pristup administratorskom panelu.');
+      render();return;
+    }
+    await activate(value);
+  }catch(error){
+    const old=session.accessToken;clearRuntime('denied');if(old)await endRemoteSession(old);
+    const status=Number(error?.status||0);
+    notice=status===400
+      ?L('ایمیل یا رمز عبور درست نیست.','Invalid email or password.','Neispravan e-mail ili lozinka.')
+      :[403,408,429,500,502,503,504].includes(status)
+        ?L('سرویس ورود یا بررسی دسترسی موقتاً پاسخ پایدار نمی‌دهد. اطلاعات پنل پاک نشده است؛ کمی بعد دوباره تلاش کنید.','The sign-in/access service is temporarily unstable. No admin data was deleted; please try again shortly.','Usluga prijave/pristupa privremeno nije stabilna. Podaci nisu izbrisani; pokušajte ponovno uskoro.')
+        :(error.message||L('ورود انجام نشد.','Sign-in failed.','Prijava nije uspjela.'));
+    render();
+  }finally{secureSignInBusy=false}
+}
 async function secureLogout(){const old=mode==='owner'&&typeof token==='string'&&token?token:session.accessToken;if(refreshId){clearInterval(refreshId);refreshId=0}clearRuntime('signed-out');notice='';delegateRows=[];manager={catalog:[],admins:[],loading:false,loaded:false,error:''};if(legacy.logout)legacy.logout();else render();await endRemoteSession(old)}
 
 // Install fail-closed wrappers before any asynchronous authorization call.
