@@ -378,17 +378,26 @@ function ensureAudio(){
 }
 
 function captureListen(){if(!current||!audio||audio.paused)return;const now=Date.now(),wall=Math.min(5,Math.max(0,(now-(lastWall||now))/1000)),position=Math.max(0,Number(audio.currentTime||0));lastWall=now;if(position>=lastPosition-0.5&&position-lastPosition<8&&wall>0)listenedPending+=wall;lastPosition=position}
-function scheduleTracking(){if(trackTimer||listenedPending<300)return;trackTimer=setTimeout(()=>{trackTimer=0;flushTracking(false,false)},250)}
+function scheduleTracking(){if(!isSchool(current)||trackTimer||listenedPending<15)return;trackTimer=setTimeout(()=>{trackTimer=0;flushTracking(false,false)},250)}
 async function rpc(name,body){const token=await accessToken();if(!token)throw new Error('login_required');const response=await fetch(`${SB}/rest/v1/rpc/${name}`,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store'});if(!response.ok)throw new Error(await response.text());return response.json().catch(()=>({}))}
 async function flushTracking(ended=false,force=false){
-  if(!current||!navigator.onLine)return;captureListen();const delta=Math.floor(listenedPending);if(!force&&delta<300)return;listenedPending=0;
-  const duration=Math.round((Number.isFinite(audio?.duration)&&audio.duration)||durationFor(current)||0),position=Math.round(audio?.currentTime||0);
+  if(!current||!navigator.onLine||!isSchool(current))return;
+  captureListen();
+  const delta=Math.floor(listenedPending);
+  if(!force&&delta<15)return;
+  listenedPending=0;
+  const duration=Math.round((Number.isFinite(audio?.duration)&&audio.duration)||durationFor(current)||0);
+  const position=Math.round(audio?.currentTime||0);
   try{
-    if(isSchool(current))await rpc('nh7_school_record_audio_v380',{p_lesson_code:lessonCode(current),p_position_seconds:ended?duration:position,p_duration_seconds:duration,p_delta_seconds:delta,p_ended:!!ended});
-    await rpc('nh7_track_audio_session_v222',{p_session_id:sessionId||('classic_'+Date.now()),p_device_id:deviceId(),p_user_email:accountEmail(),p_media_type:isSchool(current)?'school':'sermon',p_media_id:isSchool(current)?lessonCode(current):mediaId(current),p_title:titleFor(current),p_topic:String(current.analytics_topic||current.topic||''),p_source_group:String(current.analytics_source_group||current.category_id||''),p_language:lang(),p_duration_seconds:duration,p_position_seconds:position,p_delta_seconds:delta,p_event:ended?'ended':'progress',p_playback_rate:Number(audio?.playbackRate||1),p_seek_count:0,p_started_position_seconds:0}).catch(()=>{});
-  }catch(error){console.warn('[NH7 classic audio tracking]',error)}
+    await rpc('nh7_school_record_audio_v380',{
+      p_lesson_code:lessonCode(current),
+      p_position_seconds:ended?duration:position,
+      p_duration_seconds:duration,
+      p_delta_seconds:Math.min(20,Math.max(0,delta)),
+      p_ended:!!ended
+    });
+  }catch(error){console.warn('[NH7 school audio progress]',error)}
 }
-
 async function localUrl(item){
   const id=mediaId(item),existing=localUrls.get(id);if(existing)return existing;
   const meta=readMeta(item);if(isNative()){
@@ -507,7 +516,7 @@ const style=document.createElement('style');style.id='nh7-audio-classic-v400-sty
 new MutationObserver(()=>{clearTimeout(patchTimer);patchTimer=setTimeout(()=>{patch();prewarm()},40)}).observe(document.documentElement,{childList:true,subtree:true});
 setTimeout(()=>{patch();prewarm()},250);
 
-window.NH7_AUDIO_CLASSIC_VERSION='4.8.4-io-preview2';
+window.NH7_AUDIO_CLASSIC_VERSION='4.8.4-io-preview3';
 window.NH7_AUDIO_SIGNED_VERSION='4.6.1-401-refresh';
 window.NH7_AUDIO_CLASSIC_V400={patch,prewarm,playItem,playNextTrack,playPreviousTrack,setPlaybackSpeed,setMediaVolume,toggleMediaMute,downloadItem,clearAll,getState:()=>({current,audio,playQueue:[...playQueue],queueIndex,volumeControlSupported}),openCurrentAudio,syncNowPlaying};
 // Compatibility for the Settings cleanup controller introduced in 2.3.9.48.
