@@ -375,6 +375,11 @@ async function refreshUserSession(){
 }
 function authEmail(){ return String(authSession()?.user?.email||'').trim().toLowerCase(); }
 
+function shouldTryLegacyClaim(error){
+  const status=Number(error?.status||0),code=String(error?.code||'').toLowerCase(),message=String(error?.message||'').toLowerCase();
+  if(!navigator.onLine||status===408||status===429||status>=500)return false;
+  return code==='invalid_credentials'||code==='user_not_found'||message.includes('invalid login credentials')||message.includes('invalid credentials')||message.includes('wrong password')||message.includes('user not found');
+}
 async function signInOrClaimLegacyAccount(email,password){
   try{
     return await authApi('token?grant_type=password',{
@@ -382,6 +387,7 @@ async function signInOrClaimLegacyAccount(email,password){
       body:JSON.stringify({email,password})
     });
   }catch(loginErr){
+    if(!shouldTryLegacyClaim(loginErr))throw loginErr;
     const claimPayload={email,password,device_id:deviceId(),language:state.lang};
     const runClaim=async payload=>{
       const claimed=await invokeEdgeFunction('nh7-claim-legacy-auth',payload);
@@ -430,6 +436,8 @@ function accountLoginError(error){
       ?'E-mail računa još nije potvrđen. Provjerite poruku za potvrdu i mapu Spam/Junk.'
       :'This account email is not confirmed yet. Check the confirmation email and Spam/Junk.';
   if(!navigator.onLine||message==='failed to fetch')return state.lang==='fa'?'اینترنت در دسترس نیست. اتصال را بررسی کنید.':state.lang==='hr'?'Nema internetske veze. Provjerite vezu.':'No internet connection. Check your connection.';
+  if(Number(error?.status||0)===429)return state.lang==='fa'?'سرور موقتاً شلوغ است. چند لحظه بعد دوباره تلاش کنید.':state.lang==='hr'?'Poslužitelj je privremeno zauzet. Pokušajte ponovno za trenutak.':'The server is temporarily busy. Please try again in a moment.';
+  if([408,502,503,504].includes(Number(error?.status||0))||Number(error?.status||0)>=500)return state.lang==='fa'?'ورود حساب انجام نشد چون سرور موقتاً پاسخ نمی‌دهد. اطلاعات شما پاک نشده است؛ کمی بعد دوباره تلاش کنید.':state.lang==='hr'?'Prijava nije dovršena jer poslužitelj privremeno ne odgovara. Vaši podaci nisu obrisani; pokušajte ponovno malo kasnije.':'Sign-in could not finish because the server is temporarily unavailable. Your data was not deleted; please try again shortly.';
   return String(error?.message||tr('loginFailed'));
 }
 
@@ -728,6 +736,16 @@ async function fetchLatestRegistration(kind){
     const row = matches.find(r=>r.status==='approved') || matches[0] || null;
     if(row){ const data=normalize(row); localStorage.setItem(localKey, JSON.stringify(data)); return data; }
   }catch(e){ console.warn('Registration status check failed', e); }
+  return null;
+}
+async function fetchLatestRegistrationWithRetry(kind,attempts=3){
+  let result=null;
+  const total=Math.max(1,Number(attempts)||1);
+  for(let attempt=0;attempt<total;attempt++){
+    result=await fetchLatestRegistration(kind);
+    if(result)return result;
+    if(attempt<total-1)await new Promise(resolve=>setTimeout(resolve,700*(attempt+1)));
+  }
   return null;
 }
 function defaultMeetingSettings(){
@@ -1731,6 +1749,11 @@ async function school(params={}){
     $('#schoolSignInBtn')?.addEventListener('click',signInSchool);bindPasswordToggles();return;
   }
   if(params.form){view.innerHTML=registrationFormHtml('school',JSON.parse(localStorage.getItem('nh7_school_access')||'{}'));return}
+  if(params.syncIssue&&isSchoolIdentityAvailable()){
+    const t=(fa,en,hr)=>state.lang==='fa'?fa:state.lang==='hr'?hr:en;
+    view.innerHTML=card(tr('school'),`<span class="badge">${html(t('حساب وارد شده ✓','Account signed in ✓','Račun je prijavljen ✓'))}</span><p>${html(t('ورود حساب شما موفق بوده، اما سرور موقتاً نتوانست وضعیت دسترسی مدرسه را تأیید کند. هیچ‌یک از اطلاعات یا پیشرفت شما پاک نشده است.','Your account sign-in succeeded, but the server temporarily could not verify School access. None of your data or progress was deleted.','Prijava računa je uspjela, ali poslužitelj privremeno nije mogao potvrditi pristup školi. Nijedan podatak ni napredak nije izbrisan.'))}</p><button class="primary-btn wide-btn" data-go="school" data-params='{"enter":true}'>🔄 ${html(t('تلاش دوباره','Try again','Pokušaj ponovno'))}</button><button class="secondary-btn wide-btn" data-go="account">${html(tr('accountActions'))}</button>`);
+    return;
+  }
   if(!isSchoolIdentityAvailable()){
     view.innerHTML=card(tr('school'),`<p>${tr('schoolAccessText')}</p><p class="muted">${tr('schoolLoginHelp')}</p><div class="school-entry-actions"><button class="primary-btn wide-btn" data-go="school" data-params='{"login":true}'>${tr('schoolExistingLogin')}</button><button class="secondary-btn wide-btn" data-go="school" data-params='{"form":true}'>${tr('schoolNewRegistration')}</button></div>`);return;
   }
@@ -1774,13 +1797,18 @@ async function signInSchool(){
     localStorage.setItem('nh7_manual_email',email);
     localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
 
-    const schoolAccess=await fetchLatestRegistration('school');
+    const schoolAccess=await fetchLatestRegistrationWithRetry('school',3);
     if(schoolAccess)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},schoolAccess,{email})));
 
     if(!isAccountLoggedIn())throw new Error('School login completed without an authenticated session.');
-    await restoreAccountCloudData(true);
+    if(!schoolAccess){
+      alert(state.lang==='fa'?'ورود حساب با موفقیت انجام شد، اما سرور فعلاً نتوانست وضعیت مدرسه را تأیید کند. حساب شما خارج نشده و اطلاعاتتان پاک نشده است. چند لحظه بعد «ورود به مدرسه» را دوباره بزنید.':state.lang==='hr'?'Prijava računa je uspjela, ali poslužitelj trenutno nije mogao potvrditi pristup školi. Ostali ste prijavljeni i vaši podaci nisu obrisani. Pokušajte ponovno za nekoliko trenutaka.':'Your account sign-in succeeded, but the server could not verify School access right now. You are still signed in and your data was not deleted. Please try School again in a moment.');
+      navigate('school',{syncIssue:true},true);
+      return;
+    }
+    restoreAccountCloudData(true).catch(console.warn);
     invalidateSchoolSnapshot(email);
-    await getSchoolSnapshot(email,true);
+    getSchoolSnapshot(email,true).catch(console.warn);
     navigate('school',{enter:true},true);
   }catch(e){
     console.warn('School sign-in failed',e);
@@ -2256,15 +2284,20 @@ async function signInAccount(){
     localStorage.setItem('nh7_manual_email',email);
     localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
 
-    const school=await fetchLatestRegistration('school');
-    const meeting=await fetchLatestRegistration('meeting');
+    const school=await fetchLatestRegistrationWithRetry('school',3);
+    const meeting=await fetchLatestRegistrationWithRetry('meeting',2);
     if(school)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},school,{email})));
     if(meeting)localStorage.setItem('nh7_meeting_access',JSON.stringify(Object.assign({},meeting,{email})));
 
     if(!isAccountLoggedIn())throw new Error('Account sign-in completed without an authenticated session.');
-    await restoreAccountCloudData(true);
+    if(!school){
+      alert(state.lang==='fa'?'ورود حساب با موفقیت انجام شد، اما سرور فعلاً نتوانست وضعیت مدرسه را تأیید کند. حساب شما خارج نشده و اطلاعاتتان پاک نشده است. چند لحظه بعد دوباره وارد بخش مدرسه شوید.':state.lang==='hr'?'Prijava računa je uspjela, ali poslužitelj trenutno nije mogao potvrditi pristup školi. Ostali ste prijavljeni i vaši podaci nisu obrisani. Pokušajte ponovno za nekoliko trenutaka.':'Your account sign-in succeeded, but the server could not verify School access right now. You are still signed in and your data was not deleted. Please open School again in a moment.');
+      navigate('school',{syncIssue:true},true);
+      return;
+    }
+    restoreAccountCloudData(true).catch(console.warn);
     invalidateSchoolSnapshot(email);
-    await getSchoolSnapshot(email,true);
+    getSchoolSnapshot(email,true).catch(console.warn);
     navigate('school',{},true);
   }catch(e){
     console.warn('Account sign-in failed',e);
