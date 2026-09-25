@@ -98,7 +98,7 @@ async function flushAudioAnalytics(eventName='progress',force=false){
   if(!cur||!sid||!navigator.onLine)return false;
   captureAudioListenTime();
   const total=Math.floor(sermonPlayerState.analyticsTotalSeconds||0),unsent=Math.max(0,total-Number(sermonPlayerState.analyticsLastFlushedSeconds||0));
-  if(!force&&unsent<15)return false;
+  if(!force&&unsent<60)return false;
   if(sermonPlayerState.analyticsSending)return false;
   sermonPlayerState.analyticsSending=true;
   try{
@@ -145,7 +145,7 @@ function ensureSermonPlayer(){
     sermonPlayerState.saveTimer=setTimeout(()=>localStorage.setItem(sermonProgressKey(cur.id),JSON.stringify(snapshot)),500);
     clearTimeout(sermonPlayerState.cloudTimer);
     sermonPlayerState.cloudTimer=setTimeout(()=>saveProgressCloud(sermonProgressKey(cur.id),snapshot).catch(console.warn),5000);
-    if((sermonPlayerState.analyticsTotalSeconds-sermonPlayerState.analyticsLastFlushedSeconds)>=15)flushAudioAnalytics('progress').catch(()=>{});
+    if((sermonPlayerState.analyticsTotalSeconds-sermonPlayerState.analyticsLastFlushedSeconds)>=60)flushAudioAnalytics('progress').catch(()=>{});
     updateInlineSermonPlayers();
   };
   ['timeupdate','loadedmetadata','durationchange'].forEach(ev=>audio.addEventListener(ev,sync));
@@ -697,11 +697,14 @@ async function fetchLatestRegistration(kind){
     try{
       const rpcRows = await cloudRpc('nh7_registration_access_v2', {p_type:kind, p_email:email, p_device_id:deviceId()});
       const r = Array.isArray(rpcRows) ? rpcRows[0] : rpcRows;
-      if(r && r.found){
-        const data = Object.assign({}, local, r.payload||{}, normalize(r));
-        localStorage.setItem(localKey, JSON.stringify(data));
-        if(kind==='school') localStorage.setItem('nh7_user_profile', JSON.stringify({name:String((data.firstName||'')+' '+(data.lastName||'')).trim(),email:data.email||email,phone:data.phone||''}));
-        return data;
+      if(r && typeof r.found!=='undefined'){
+        if(r.found){
+          const data = Object.assign({}, local, r.payload||{}, normalize(r));
+          localStorage.setItem(localKey, JSON.stringify(data));
+          if(kind==='school') localStorage.setItem('nh7_user_profile', JSON.stringify({name:String((data.firstName||'')+' '+(data.lastName||'')).trim(),email:data.email||email,phone:data.phone||''}));
+          return data;
+        }
+        return null;
       }
     }catch(v2Err){ console.warn('Registration v2 RPC unavailable, using legacy lookup', v2Err); }
 
@@ -709,10 +712,13 @@ async function fetchLatestRegistration(kind){
     try{
       const rpcRows = await cloudRpc('nh7_registration_status', {p_type:kind, p_email:email, p_device_id:deviceId()});
       const r = Array.isArray(rpcRows) ? rpcRows[0] : rpcRows;
-      if(r && r.found){
-        const data = Object.assign({}, local, normalize(r));
-        localStorage.setItem(localKey, JSON.stringify(data));
-        return data;
+      if(r && typeof r.found!=='undefined'){
+        if(r.found){
+          const data = Object.assign({}, local, normalize(r));
+          localStorage.setItem(localKey, JSON.stringify(data));
+          return data;
+        }
+        return null;
       }
     }catch(rpcErr){ console.warn('Registration RPC status check failed, using REST fallback', rpcErr); }
 
@@ -1224,8 +1230,12 @@ async function maybeCreateScheduledInboxMessages(){
   if(localStorage.getItem('nh7_notifications_permission')!=='granted')return;const rows=await fetchNotificationSchedules();const now=new Date();const dateKey=todayKey();
   for(const row of rows){let compare=now;if(row.timezone_mode&&row.timezone_mode!=='local'){try{const parts=new Intl.DateTimeFormat('en-CA',{timeZone:row.timezone_mode,weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(now);const hh=Number(parts.find(p=>p.type==='hour')?.value||0),mm=Number(parts.find(p=>p.type==='minute')?.value||0),wd=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(parts.find(p=>p.type==='weekday')?.value);const [th,tm]=String(row.time_value||'00:00').split(':').map(Number);if(Array.isArray(row.days_of_week)&&!row.days_of_week.includes(wd))continue;if(hh>th||(hh===th&&mm>=tm))addInboxMessage(scheduleText(row,'title'),scheduleText(row,'body'),row.key,row.key+'_'+dateKey)}catch(e){}}else{const [th,tm]=String(row.time_value||'00:00').split(':').map(Number);if(Array.isArray(row.days_of_week)&&!row.days_of_week.includes(now.getDay()))continue;if(now.getHours()>th||(now.getHours()===th&&now.getMinutes()>=tm))addInboxMessage(scheduleText(row,'title'),scheduleText(row,'body'),row.key,row.key+'_'+dateKey)}}
 }
-async function refreshInboxFromCloud(){
+const INBOX_CLOUD_REFRESH_KEY='nh7_inbox_cloud_refresh_at_v1';
+const INBOX_CLOUD_REFRESH_MS=10*60*1000;
+async function refreshInboxFromCloud(force=false){
   try{
+    const last=Number(localStorage.getItem(INBOX_CLOUD_REFRESH_KEY)||0);
+    if(!force&&last>0&&Date.now()-last<INBOX_CLOUD_REFRESH_MS){updateInboxBadge();return false}
     const email=currentUserEmail();
     const q=email?`notification_inbox?select=id,title,body,category,language,delivered_at,read_at,admin_deleted_at&or=(device_id.eq.${encodeURIComponent(deviceId())},user_email.eq.${encodeURIComponent(email)})&order=delivered_at.desc&limit=100`:`notification_inbox?select=id,title,body,category,language,delivered_at,read_at,admin_deleted_at&device_id=eq.${encodeURIComponent(deviceId())}&order=delivered_at.desc&limit=100`;
     const rawOwnRows=await cloudFetch(q,{method:'GET'}); const ownRows=Array.isArray(rawOwnRows)?rawOwnRows:[];
@@ -1234,11 +1244,13 @@ async function refreshInboxFromCloud(){
     const local=inboxMessages().filter(x=>!deleted.has(String(x.id))); const byId=new Map(local.map(x=>[String(x.id),x]));
     [...ownRows,...(Array.isArray(globalRows)?globalRows:[])].forEach(r=>{const id=String(r.id),rc=receiptMap.get(id);if(r.admin_deleted_at||rc?.deleted_at||deleted.has(id)){byId.delete(id);if(r.admin_deleted_at)deleted.add(id);return}const old=byId.get(id)||{};byId.set(id,{...old,id,title:r.title,body:r.body,category:r.category||'cloud',language:r.language||state.lang,createdAt:r.delivered_at,read:!!(rc?.read_at||r.read_at),readAt:rc?.read_at||r.read_at||null,lang:r.language||state.lang})});
     localStorage.setItem('nh7_inbox_deleted_ids',JSON.stringify(Array.from(deleted).slice(-1000))); setInboxMessages(Array.from(byId.values()).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt))).slice(0,200)); updateInboxBadge();
-  }catch(e){console.warn('Inbox cloud refresh failed',e)}
+    localStorage.setItem(INBOX_CLOUD_REFRESH_KEY,String(Date.now()));
+    return true;
+  }catch(e){console.warn('Inbox cloud refresh failed',e);return false}
 }
 async function inbox(){
   cleanupInboxLanguage();
-  maybeCreateScheduledInboxMessages(); await refreshInboxFromCloud();
+  maybeCreateScheduledInboxMessages(); await refreshInboxFromCloud(true);
   cleanupInboxLanguage();
   const arr=inboxDisplayMessages();
   const body = arr.length ? `<div class="list inbox-list">${arr.map((m,i)=>`<div class="list-btn inbox-item ${m.read?'read':'unread'}"><button class="list-btn inbox-item ${m.read?'read':'unread'}" data-inbox-open="${html(m.id)}"><strong>${m.read?'':'● '}${html(m.title)}</strong><small>${new Date(m.createdAt).toLocaleString()} • ${m.read?tr('completed'):tr('unread')}</small></button><div id="inbox-${html(String(m.id).replace(/[^a-zA-Z0-9_-]/g,'_'))}" class="accordion-panel hidden"><p>${html(m.body)}</p><button class="danger-btn" data-inbox-delete="${html(m.id)}">${tr('deleteMessage')}</button></div></div>`).join('')}</div>` : `<p class="muted">${tr('noInboxMessages')}</p>`;
@@ -2478,7 +2490,7 @@ async function settings(){
   };
   $('#syncCloud')?.addEventListener('click',async()=>{
     await syncCloudQueue();
-    await refreshInboxFromCloud();
+    await refreshInboxFromCloud(true);
     notificationSettingsCache=null;
     alert(cloudStatusText());
     render('settings',{},true);
