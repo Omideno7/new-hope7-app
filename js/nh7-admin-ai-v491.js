@@ -1,11 +1,14 @@
-/* New Hope 7 Admin v4.9.1 — AI Assist: fixed admin-session detection, Q&A/sermon translation and drafts. */
+/* New Hope 7 Admin v4.9.2-preview — AI Assist: isolated 120s AI timeout and cached provider health. */
 (()=>{'use strict';
 if(window.__NH7_ADMIN_AI_V491__)return;
 window.__NH7_ADMIN_AI_V491__=true;
-const VERSION='4.9.1-admin-ai-session-fix';
+const VERSION='4.9.2-admin-ai-120s-preview';
 const LANGS=['fa','en','hr'];
 const PREVIEW_ONLY=location.hostname!=='omideno7.github.io';
-let installed=false,providerConfigured=null,providerCheck=null,scanTimer=0,observer=null;
+let installed=false,providerConfigured=null,providerCheck=null,providerCheckedAt=0,scanTimer=0,observer=null;
+const AI_TIMEOUT_MS=120000;
+const AI_STATUS_TIMEOUT_MS=20000;
+const PROVIDER_CACHE_MS=5*60*1000;
 const inflight=new Map(),autoQuestionTried=new Set(),autoSermonTried=new WeakSet();
 const L=(fa,en,hr)=>{const v=String(typeof lang!=='undefined'?lang:'fa').toLowerCase();return v==='fa'?fa:v==='hr'?hr:en};
 const E=v=>typeof h==='function'?h(v):String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -32,20 +35,49 @@ function refreshProviderUi(){
   const ready=authReady();
   document.querySelectorAll('[data-nh7-ai-button]').forEach(btn=>{btn.disabled=!ready;btn.title=ready?'':statusText()});
 }
+async function aiFunctionFetch(payload,timeoutMs=AI_TIMEOUT_MS){
+  if(!authReady())throw Object.assign(new Error(statusText()),{code:'ADMIN_SESSION_NOT_READY'});
+  const url=SUPABASE_URL+'/functions/v1/nh7-admin-ai-v490';
+  const makeHeaders=()=>({apikey:SUPABASE_KEY,Authorization:'Bearer '+token,'Content-Type':'application/json'});
+  const call=async()=>{
+    const response=typeof fetchWithTimeout==='function'
+      ?await fetchWithTimeout(url,{method:'POST',cache:'no-store',headers:makeHeaders(),body:JSON.stringify(payload)},timeoutMs)
+      :await fetch(url,{method:'POST',cache:'no-store',headers:makeHeaders(),body:JSON.stringify(payload)});
+    const raw=await response.text();let data={};try{data=raw?JSON.parse(raw):{}}catch(_){data={message:raw}}
+    if(!response.ok){
+      const error=new Error(data?.error||data?.message||response.statusText||L('AI پاسخ نداد.','AI request failed.','AI zahtjev nije uspio.'));
+      error.status=response.status;error.code=String(data?.code||'');throw error;
+    }
+    return data;
+  };
+  try{return await call()}
+  catch(error){
+    if((error?.status===401||error?.status===403)&&typeof refreshAdminSession==='function'&&await refreshAdminSession()){
+      return call();
+    }
+    if(String(error?.message||'').toLowerCase().includes('timed out')){
+      throw Object.assign(new Error(L('پاسخ AI بیش از ۱۲۰ ثانیه طول کشید. دوباره تلاش کنید.','The AI response took longer than 120 seconds. Please try again.','AI odgovor je trajao dulje od 120 sekundi. Pokušajte ponovno.')),{code:'AI_TIMEOUT',status:408});
+    }
+    throw error;
+  }
+}
 async function checkProvider(force=false){
-  if(providerConfigured===true&&!force)return true;
+  const fresh=providerCheckedAt&&Date.now()-providerCheckedAt<PROVIDER_CACHE_MS;
+  if(providerConfigured===true&&fresh&&!force)return true;
   if(providerCheck)return providerCheck;
   if(!authReady()){
     providerConfigured=null;refreshProviderUi();return null
   }
   providerCheck=(async()=>{
     try{
-      const result=await authFetch('/functions/v1/nh7-admin-ai-v490',{method:'POST',body:JSON.stringify({action:'status'})});
+      const result=await aiFunctionFetch({action:'status'},AI_STATUS_TIMEOUT_MS);
       providerConfigured=result?.configured===true;
+      providerCheckedAt=Date.now();
       return providerConfigured;
     }catch(error){
       const status=Number(error?.status||0);
-      providerConfigured=(status===401||status===403)?null:false;
+      if(status===401||status===403){providerConfigured=null;providerCheckedAt=0}
+      else if(!fresh){providerConfigured=null}
       return providerConfigured;
     }finally{providerCheck=null;refreshProviderUi()}
   })();
@@ -53,10 +85,12 @@ async function checkProvider(force=false){
 }
 async function callAI(payload){
   if(!authReady())throw Object.assign(new Error(statusText()),{code:'ADMIN_SESSION_NOT_READY'});
-  try{await checkProvider(true)}catch(_){}
-  const result=await authFetch('/functions/v1/nh7-admin-ai-v490',{method:'POST',body:JSON.stringify(payload)});
+  if(providerConfigured!==true||!providerCheckedAt||Date.now()-providerCheckedAt>=PROVIDER_CACHE_MS){
+    try{await checkProvider(false)}catch(_){}
+  }
+  const result=await aiFunctionFetch(payload,AI_TIMEOUT_MS);
   if(!result?.ok)throw Object.assign(new Error(result?.error||L('AI پاسخ نداد.','AI request failed.','AI zahtjev nije uspio.')),{code:result?.code||''});
-  providerConfigured=true;refreshProviderUi();
+  providerConfigured=true;providerCheckedAt=Date.now();refreshProviderUi();
   return result;
 }
 function setQnaStatus(id,text,type=''){
@@ -275,15 +309,15 @@ function install(){
     }
   },true);
   document.addEventListener('nh7:admin-render',()=>{setTimeout(()=>{checkProvider(true).then(()=>scan());},160)});
-  window.addEventListener('pageshow',()=>setTimeout(()=>checkProvider(true).then(()=>scan()),220));
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(()=>checkProvider(true).then(()=>scan()),120)});
+  window.addEventListener('pageshow',()=>setTimeout(()=>checkProvider(false).then(()=>scan()),220));
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(()=>checkProvider(false).then(()=>scan()),120)});
   window.nh7AiTranslateQuestionV491=id=>translateQuestion(id,true).catch(()=>{});
   window.nh7AiTranslateAnswerV491=id=>translateAnswer(id,true).catch(()=>{});
   window.nh7AiDraftAnswerV491=id=>draftAnswer(id);
   window.nh7AiTranslateSermonTitlesV491=manual=>translateSermonTitles(manual!==false);
   window.nh7AiDraftAssignmentFeedbackV491=id=>draftAssignmentFeedback(id);
   window.NH7_ADMIN_AI_VERSION=VERSION;
-  setTimeout(()=>{checkProvider(true).then(()=>scan())},450);
+  setTimeout(()=>{checkProvider(false).then(()=>scan())},450);
   return true;
 }
 const style=document.createElement('style');style.textContent=`
