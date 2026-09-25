@@ -314,10 +314,19 @@ function isExplicitlyLoggedOut(){ return localStorage.getItem(EXPLICIT_LOGOUT_KE
 function isAccountLoggedIn(){ const x=authSession(); return !!(x&&x.access_token&&!isExplicitlyLoggedOut()); }
 async function authApi(path,options={}){
   const headers=Object.assign({'apikey':SUPABASE_CONFIG.key,'Content-Type':'application/json'},options.headers||{});
-  const r=await fetch(SUPABASE_CONFIG.url+'/auth/v1/'+path,Object.assign({},options,{headers}));
-  const text=await r.text(); let data={}; try{data=text?JSON.parse(text):{}}catch(e){data={message:text}}
-  if(!r.ok){const error=new Error(data.msg||data.message||data.error_description||text||r.statusText);error.status=r.status;error.code=String(data.code||data.error_code||'');throw error}
-  return data;
+  const controller=typeof AbortController!=='undefined'?new AbortController():null;
+  const timer=controller?setTimeout(()=>controller.abort(),12000):0;
+  try{
+    const opts=Object.assign({},options,{headers});
+    if(controller&&!options.signal)opts.signal=controller.signal;
+    const r=await fetch(SUPABASE_CONFIG.url+'/auth/v1/'+path,opts);
+    const text=await r.text(); let data={}; try{data=text?JSON.parse(text):{}}catch(e){data={message:text}}
+    if(!r.ok){const error=new Error(data.msg||data.message||data.error_description||text||r.statusText);error.status=r.status;error.code=String(data.code||data.error_code||'');throw error}
+    return data;
+  }catch(e){
+    if(e?.name==='AbortError'){const error=new Error('Authentication request timed out');error.status=408;error.code='request_timeout';throw error}
+    throw e;
+  }finally{if(timer)clearTimeout(timer)}
 }
 async function invokeEdgeFunction(name,payload={}){
   if(!CLOUD_ENABLED)throw new Error('Cloud disabled');
@@ -346,6 +355,11 @@ async function refreshUserSession(){
 }
 function authEmail(){ return String(authSession()?.user?.email||'').trim().toLowerCase(); }
 
+function shouldTryLegacyClaim(error){
+  const status=Number(error?.status||0),code=String(error?.code||'').toLowerCase(),message=String(error?.message||'').toLowerCase();
+  if(!navigator.onLine||status===408||status===429||status>=500)return false;
+  return code==='invalid_credentials'||code==='user_not_found'||message.includes('invalid login credentials')||message.includes('invalid credentials')||message.includes('wrong password')||message.includes('user not found');
+}
 async function signInOrClaimLegacyAccount(email,password){
   try{
     return await authApi('token?grant_type=password',{
@@ -353,6 +367,7 @@ async function signInOrClaimLegacyAccount(email,password){
       body:JSON.stringify({email,password})
     });
   }catch(loginErr){
+    if(!shouldTryLegacyClaim(loginErr))throw loginErr;
     const claimPayload={email,password,device_id:deviceId(),language:state.lang};
     const runClaim=async payload=>{
       const claimed=await invokeEdgeFunction('nh7-claim-legacy-auth',payload);
@@ -401,6 +416,9 @@ function accountLoginError(error){
       ?'E-mail računa još nije potvrđen. Provjerite poruku za potvrdu i mapu Spam/Junk.'
       :'This account email is not confirmed yet. Check the confirmation email and Spam/Junk.';
   if(!navigator.onLine||message==='failed to fetch')return state.lang==='fa'?'اینترنت در دسترس نیست. اتصال را بررسی کنید.':state.lang==='hr'?'Nema internetske veze. Provjerite vezu.':'No internet connection. Check your connection.';
+  const status=Number(error?.status||0);
+  if(status===429)return state.lang==='fa'?'سرور ورود موقتاً شلوغ است. چند لحظه صبر کنید و دوباره فقط یک‌بار تلاش کنید.':state.lang==='hr'?'Poslužitelj za prijavu je privremeno zauzet. Pričekajte malo i pokušajte ponovno.':'The sign-in server is temporarily busy. Wait a moment and try once more.';
+  if(status===408||status===502||status===503||status===504||status>=500)return state.lang==='fa'?'ارتباط با سرور ورود موقتاً برقرار نشد. اطلاعات شما پاک نشده است؛ کمی بعد دوباره تلاش کنید.':state.lang==='hr'?'Veza s poslužiteljem za prijavu privremeno nije uspjela. Vaši podaci nisu izbrisani; pokušajte ponovno uskoro.':'The sign-in server is temporarily unavailable. Your data was not deleted; please try again shortly.';
   return String(error?.message||tr('loginFailed'));
 }
 
@@ -1717,8 +1735,12 @@ async function school(params={}){
   if(!isSchoolIdentityAvailable()){
     view.innerHTML=card(tr('school'),`<p>${tr('schoolAccessText')}</p><p class="muted">${tr('schoolLoginHelp')}</p><div class="school-entry-actions"><button class="primary-btn wide-btn" data-go="school" data-params='{"login":true}'>${tr('schoolExistingLogin')}</button><button class="secondary-btn wide-btn" data-go="school" data-params='{"form":true}'>${tr('schoolNewRegistration')}</button></div>`);return;
   }
+  if(params.syncIssue){
+    view.innerHTML=card(tr('school'),`<div class="notice"><strong>${state.lang==='fa'?'ورود حساب انجام شد ✓':state.lang==='hr'?'Prijava računa je uspjela ✓':'Account sign-in succeeded ✓'}</strong><p>${state.lang==='fa'?'سرور موقتاً نتوانست دسترسی مدرسه را بررسی کند. هیچ اطلاعات یا پیشرفتی پاک نشده است. چند لحظه بعد دوباره تلاش کنید.':state.lang==='hr'?'Poslužitelj trenutačno nije mogao provjeriti pristup školi. Podaci i napredak nisu izbrisani. Pokušajte ponovno za nekoliko trenutaka.':'The server could not verify School access right now. No data or progress was deleted. Try again in a few moments.'}</p></div><div class="school-entry-actions"><button class="primary-btn wide-btn" data-go="school" data-params='{"enter":true}'>${tr('refreshApproval')}</button><button class="secondary-btn wide-btn" data-go="account">${tr('accountActions')}</button></div>`);
+    return;
+  }
   let access=JSON.parse(localStorage.getItem('nh7_school_access')||'{"status":"none"}');
-  const cloudAccess=await fetchLatestRegistration('school');
+  const cloudAccess=await nh7WithTimeoutV470(fetchLatestRegistration('school'),6000).catch(()=>null);
   if(schoolEpochV465!==nh7NavigationEpochV456)return;
   if(cloudAccess)access=cloudAccess;
   const approved=access.status==='approved'||access.approvedBy==='admin';
@@ -1749,6 +1771,7 @@ async function school(params={}){
 async function signInSchool(){
   const email=($('#schoolLoginEmail')?.value||'').trim().toLowerCase(),password=$('#schoolLoginPassword')?.value||'';
   if(!email||!password){alert(tr('requiredField'));return}
+  const button=$('#schoolSignInBtn');if(button)button.disabled=true;
   try{
     const data=await signInOrClaimLegacyAccount(email,password);
     if(!data?.access_token)throw new Error('Authenticated session was not returned.');
@@ -1756,21 +1779,18 @@ async function signInSchool(){
     clearLegacySchoolSession();
     localStorage.setItem('nh7_manual_email',email);
     localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
-
-    const schoolAccess=await fetchLatestRegistration('school');
+    const schoolAccess=await nh7WithTimeoutV470(fetchLatestRegistration('school'),6000).catch(()=>null);
     if(schoolAccess)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},schoolAccess,{email})));
-
     if(!isAccountLoggedIn())throw new Error('School login completed without an authenticated session.');
-    await restoreAccountCloudData(true);
+    restoreAccountCloudData(true).catch(console.warn);
     invalidateSchoolSnapshot(email);
-    await getSchoolSnapshot(email,true);
-    navigate('school',{enter:true},true);
+    getSchoolSnapshot(email,true).catch(console.warn);
+    navigate('school',schoolAccess?{enter:true}:{syncIssue:true},true);
   }catch(e){
     console.warn('School sign-in failed',e);
     alert(accountLoginError(e));
-  }
+  }finally{if(button)button.disabled=false}
 }
-
 async function schoolLesson(d, code){
   schoolDraftsV468.flush();
   const draftOwnerV468=schoolDraftsV468.owner(),draftEpochV468=nh7NavigationEpochV456;
@@ -2231,6 +2251,7 @@ async function account(){
 async function signInAccount(){
   const email=($('#accountEmail')?.value||'').trim().toLowerCase(),password=$('#accountPassword')?.value||'';
   if(!email||!password){alert(tr('requiredField'));return}
+  const button=$('#signInBtn');if(button)button.disabled=true;
   try{
     const data=await signInOrClaimLegacyAccount(email,password);
     if(!data?.access_token)throw new Error('Authenticated session was not returned.');
@@ -2238,21 +2259,18 @@ async function signInAccount(){
     clearLegacySchoolSession();
     localStorage.setItem('nh7_manual_email',email);
     localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
-
-    const school=await fetchLatestRegistration('school');
-    const meeting=await fetchLatestRegistration('meeting');
+    const school=await nh7WithTimeoutV470(fetchLatestRegistration('school'),6000).catch(()=>null);
     if(school)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},school,{email})));
-    if(meeting)localStorage.setItem('nh7_meeting_access',JSON.stringify(Object.assign({},meeting,{email})));
-
+    nh7WithTimeoutV470(fetchLatestRegistration('meeting'),6000).then(meeting=>{if(meeting)localStorage.setItem('nh7_meeting_access',JSON.stringify(Object.assign({},meeting,{email})))}).catch(()=>{});
     if(!isAccountLoggedIn())throw new Error('Account sign-in completed without an authenticated session.');
-    await restoreAccountCloudData(true);
+    restoreAccountCloudData(true).catch(console.warn);
     invalidateSchoolSnapshot(email);
-    await getSchoolSnapshot(email,true);
-    navigate('school',{},true);
+    getSchoolSnapshot(email,true).catch(console.warn);
+    navigate('school',school?{}:{syncIssue:true},true);
   }catch(e){
     console.warn('Account sign-in failed',e);
     alert(accountLoginError(e));
-  }
+  }finally{if(button)button.disabled=false}
 }
 function bindPasswordToggles(){
   $$('[data-toggle-password]').forEach(btn=>btn.onclick=()=>{const input=$('#'+btn.dataset.togglePassword);if(!input)return;input.type=input.type==='password'?'text':'password';btn.textContent=input.type==='password'?'👁':'🙈';});
