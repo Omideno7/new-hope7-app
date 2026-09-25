@@ -98,7 +98,7 @@ async function flushAudioAnalytics(eventName='progress',force=false){
   if(!cur||!sid||!navigator.onLine)return false;
   captureAudioListenTime();
   const total=Math.floor(sermonPlayerState.analyticsTotalSeconds||0),unsent=Math.max(0,total-Number(sermonPlayerState.analyticsLastFlushedSeconds||0));
-  if(!force&&unsent<60)return false;
+  if(!force&&unsent<300)return false;
   if(sermonPlayerState.analyticsSending)return false;
   sermonPlayerState.analyticsSending=true;
   try{
@@ -145,13 +145,13 @@ function ensureSermonPlayer(){
     sermonPlayerState.saveTimer=setTimeout(()=>localStorage.setItem(sermonProgressKey(cur.id),JSON.stringify(snapshot)),500);
     clearTimeout(sermonPlayerState.cloudTimer);
     sermonPlayerState.cloudTimer=setTimeout(()=>saveProgressCloud(sermonProgressKey(cur.id),snapshot).catch(console.warn),5000);
-    if((sermonPlayerState.analyticsTotalSeconds-sermonPlayerState.analyticsLastFlushedSeconds)>=60)flushAudioAnalytics('progress').catch(()=>{});
+    if((sermonPlayerState.analyticsTotalSeconds-sermonPlayerState.analyticsLastFlushedSeconds)>=300)flushAudioAnalytics('progress').catch(()=>{});
     updateInlineSermonPlayers();
   };
   ['timeupdate','loadedmetadata','durationchange'].forEach(ev=>audio.addEventListener(ev,sync));
   audio.addEventListener('seeking',()=>{sermonPlayerState.analyticsSeekCount=Math.min(1000,Number(sermonPlayerState.analyticsSeekCount||0)+1)});
   audio.addEventListener('ratechange',()=>{sermonPlayerState.analyticsMaxRate=Math.max(Number(sermonPlayerState.analyticsMaxRate||1),Number(audio.playbackRate||1))});
-  audio.addEventListener('play',()=>{sermonPlayerState.analyticsLastWallAt=Date.now();sync();flushAudioAnalytics('play',true).catch(()=>{})});
+  audio.addEventListener('play',()=>{sermonPlayerState.analyticsLastWallAt=Date.now();sync()});
   audio.addEventListener('pause',()=>{sync();flushAudioAnalytics('pause',true).catch(()=>{})});
   audio.addEventListener('ended',()=>{
     captureAudioListenTime();
