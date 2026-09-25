@@ -48,5 +48,5 @@ function patch(){addStyle();document.querySelectorAll('[data-sermon-card]').forE
 function openShared(){const sid=new URL(location.href).searchParams.get('sermon');if(!UUID.test(String(sid||'')))return;let tries=0;const tick=()=>{const card=document.querySelector('[data-sermon-card="'+CSS.escape(sid)+'"]');if(card){card.scrollIntoView({behavior:'smooth',block:'center'});return}if(tries===0)document.querySelector('[data-route="more"]')?.click();if(tries===3)document.querySelector('[data-go="audio"]')?.click();if(tries++<24)setTimeout(tick,300)};setTimeout(tick,500)}
 window.NH7_SERMON_SOCIAL_PATCH=patch;
 window.NH7_SERMON_SOCIAL_REFRESH_CARD=card=>{if(valid(card)){cache.delete(id(card));shell(card);load(card,true)}};
-new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(patch,80)}).observe(document.documentElement,{childList:true,subtree:true});window.addEventListener('pageshow',patch);addStyle();patch();openShared();window.NH7_SERMON_SOCIAL_VERSION='4.4.7-io-preview';
+new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(patch,80)}).observe(document.documentElement,{childList:true,subtree:true});window.addEventListener('pageshow',patch);addStyle();patch();openShared();window.NH7_SERMON_SOCIAL_VERSION='4.4.6';
 })();
