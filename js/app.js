@@ -94,37 +94,9 @@ function captureAudioListenTime(){
   if(delta>0&&delta<10)sermonPlayerState.analyticsTotalSeconds+=delta;
 }
 async function flushAudioAnalytics(eventName='progress',force=false){
-  const a=sermonPlayerState.audio,cur=sermonPlayerState.current,sid=sermonPlayerState.analyticsSessionId;
-  if(!cur||!sid||!navigator.onLine)return false;
-  captureAudioListenTime();
-  const total=Math.floor(sermonPlayerState.analyticsTotalSeconds||0),unsent=Math.max(0,total-Number(sermonPlayerState.analyticsLastFlushedSeconds||0));
-  if(!force&&unsent<300)return false;
-  if(sermonPlayerState.analyticsSending)return false;
-  sermonPlayerState.analyticsSending=true;
-  try{
-    const payload={
-      p_session_id:sid,p_device_id:deviceId(),p_user_email:currentUserEmail()||'',
-      p_media_type:cur.mediaType||'sermon',p_media_id:cur.mediaId||String(cur.id||''),
-      p_title:cur.title||'',p_topic:cur.topic||'',p_source_group:cur.sourceGroup||'',
-      p_language:cur.language||state.lang,p_duration_seconds:Math.round((Number.isFinite(a?.duration)&&a.duration)||cur.duration||0),
-      p_position_seconds:Math.round(a?.currentTime||0),p_delta_seconds:total,p_event:eventName,
-      p_playback_rate:Number(a?.playbackRate||1),p_seek_count:Number(sermonPlayerState.analyticsSeekCount||0),
-      p_started_position_seconds:Number(sermonPlayerState.analyticsStartedPosition||0)
-    };
-    try{await cloudRpc('nh7_track_audio_session_v222',payload)}catch(e){
-      await cloudRpc('nh7_track_audio_session_v221',{
-        p_session_id:payload.p_session_id,p_device_id:payload.p_device_id,p_user_email:payload.p_user_email,
-        p_media_type:payload.p_media_type,p_media_id:payload.p_media_id,p_title:payload.p_title,p_topic:payload.p_topic,
-        p_source_group:payload.p_source_group,p_language:payload.p_language,p_duration_seconds:payload.p_duration_seconds,
-        p_position_seconds:payload.p_position_seconds,p_delta_seconds:payload.p_delta_seconds,p_event:payload.p_event
-      })
-    }
-    sermonPlayerState.analyticsLastFlushedSeconds=Math.max(sermonPlayerState.analyticsLastFlushedSeconds||0,total);
-    return true;
-  }catch(e){
-    console.warn('Audio analytics sync failed',e);
-    return false;
-  }finally{sermonPlayerState.analyticsSending=false}
+  // Generic sermon/audio-bible session analytics are intentionally disabled.
+  // Playback progress, offline playback and School listening progress use separate paths.
+  return false;
 }
 const appSectionLastSent=new Map();
 function trackAppSection(section){
@@ -145,7 +117,6 @@ function ensureSermonPlayer(){
     sermonPlayerState.saveTimer=setTimeout(()=>localStorage.setItem(sermonProgressKey(cur.id),JSON.stringify(snapshot)),500);
     clearTimeout(sermonPlayerState.cloudTimer);
     sermonPlayerState.cloudTimer=setTimeout(()=>saveProgressCloud(sermonProgressKey(cur.id),snapshot).catch(console.warn),5000);
-    if((sermonPlayerState.analyticsTotalSeconds-sermonPlayerState.analyticsLastFlushedSeconds)>=300)flushAudioAnalytics('progress').catch(()=>{});
     updateInlineSermonPlayers();
   };
   ['timeupdate','loadedmetadata','durationchange'].forEach(ev=>audio.addEventListener(ev,sync));
