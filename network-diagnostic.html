@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>New Hope 7 — Network & Login Test</title>
+<style>
+:root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;color:#102033;background:#eef8f7}
+*{box-sizing:border-box}body{margin:0;padding:18px;background:linear-gradient(180deg,#e9f8f6,#f7fbff);min-height:100vh}
+main{max-width:720px;margin:auto}.card{background:#fff;border:1px solid #d8ecea;border-radius:20px;padding:16px;margin:12px 0;box-shadow:0 10px 28px rgba(15,118,110,.08)}
+h1{font-size:1.35rem;margin:0 0 8px}h2{font-size:1.05rem;margin:0 0 10px}p{line-height:1.75}.muted{color:#667085;font-size:.9rem}
+button,input{font:inherit;width:100%;padding:12px 13px;border-radius:12px;border:1px solid #cfe3e1;margin:6px 0}
+button{background:#0b5faa;color:white;border:0;font-weight:800;cursor:pointer}.secondary{background:#eef7ff;color:#0b5faa;border:1px solid #bdd8ee}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.result{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #edf2f2}.result:last-child{border-bottom:0}
+.badge{display:inline-block;border-radius:999px;padding:4px 9px;font-size:.8rem;font-weight:800}.ok{background:#e8f8ef;color:#08783d}.warn{background:#fff7e8;color:#9a5b00}.bad{background:#fff0ef;color:#b42318}.idle{background:#f2f4f7;color:#667085}
+#summary{font-weight:800;line-height:1.8}.mono{direction:ltr;text-align:left;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.78rem;word-break:break-word;background:#f8fafc;border-radius:12px;padding:10px;white-space:pre-wrap}
+small{display:block;color:#667085;margin-top:4px}.privacy{font-size:.82rem;color:#475467;background:#f9fafb;border-radius:12px;padding:10px}
+@media(max-width:560px){.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<section class="card">
+<h1>🛡️ تست اتصال New Hope 7</h1>
+<p>این صفحه فقط برای تشخیص مشکل اینترنت، Supabase و ورود حساب است. هیچ تغییری در حساب، مدرسه یا اطلاعات شما ایجاد نمی‌کند.</p>
+<div class="privacy">رمز عبور ذخیره نمی‌شود، در Local Storage نوشته نمی‌شود و در گزارش نمایش داده نمی‌شود. پس از تست، فیلد رمز پاک می‌شود.</div>
+</section>
+
+<section class="card">
+<h2>۱) تست شبکه و Supabase</h2>
+<button id="networkBtn">شروع تست شبکه</button>
+<div id="networkResults"></div>
+</section>
+
+<section class="card">
+<h2>۲) تست ورود حساب</h2>
+<p class="muted">اگر ورود برای شما مشکل دارد، همان ایمیل و رمز حساب مدرسه را وارد کنید. این تست فقط یک Login واقعی انجام می‌دهد و هیچ داده‌ای را تغییر نمی‌دهد.</p>
+<input id="email" type="email" autocomplete="email" placeholder="ایمیل">
+<input id="password" type="password" autocomplete="current-password" placeholder="رمز عبور">
+<button id="loginBtn">تست ورود</button>
+<div id="loginResults"></div>
+</section>
+
+<section class="card">
+<h2>نتیجه</h2>
+<div id="summary">هنوز تست انجام نشده است.</div>
+<p class="muted">پس از پایان تست از همین صفحه اسکرین‌شات بگیرید و برای مدیر New Hope 7 ارسال کنید.</p>
+<button id="copyBtn" class="secondary">کپی گزارش متنی</button>
+<div id="meta" class="mono"></div>
+</section>
+</main>
+<script>
+(()=>{
+'use strict';
+const SB='https://gpzcwffxnddhaeaogdyo.supabase.co';
+const KEY='sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37';
+const networkResults=document.getElementById('networkResults'),loginResults=document.getElementById('loginResults'),summary=document.getElementById('summary'),meta=document.getElementById('meta');
+const report=[];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function badge(kind,text){return '<span class="badge '+kind+'">'+esc(text)+'</span>'}
+function add(container,name,kind,text,detail=''){container.insertAdjacentHTML('beforeend','<div class="result"><div><strong>'+esc(name)+'</strong>'+(detail?'<small>'+esc(detail)+'</small>':'')+'</div>'+badge(kind,text)+'</div>');report.push(name+': '+text+(detail?' — '+detail:''))}
+async function timedFetch(url,opt={},timeout=10000){
+  const ctrl=new AbortController(),start=performance.now(),timer=setTimeout(()=>ctrl.abort(),timeout);
+  try{const res=await fetch(url,Object.assign({},opt,{signal:ctrl.signal,cache:'no-store'}));return{res,ms:Math.round(performance.now()-start),error:null}}
+  catch(error){return{res:null,ms:Math.round(performance.now()-start),error}}
+  finally{clearTimeout(timer)}
+}
+function speedKind(ms){return ms>5000?'warn':'ok'}
+function errorText(error){const n=String(error?.name||''),m=String(error?.message||'');if(n==='AbortError')return'Timeout';if(/failed to fetch/i.test(m))return'Network / blocked path';return m||n||'Unknown error'}
+function updateMeta(){
+  const c=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+  meta.textContent=[
+    'Time: '+new Date().toISOString(),
+    'Online: '+navigator.onLine,
+    'Connection: '+(c?.effectiveType||'unknown')+(c?.rtt!=null?' / RTT '+c.rtt+'ms':''),
+    'Platform: '+navigator.platform,
+    'User agent: '+navigator.userAgent
+  ].join('\n');
+}
+async function networkTest(){
+  report.length=0;networkResults.innerHTML='';loginResults.innerHTML='';summary.textContent='در حال تست…';updateMeta();
+  add(networkResults,'وضعیت مرورگر',navigator.onLine?'ok':'bad',navigator.onLine?'Online ✓':'Offline ✗');
+  if(!navigator.onLine){summary.textContent='❌ دستگاه در حال حاضر آفلاین است.';return false}
+  const auth=await timedFetch(SB+'/auth/v1/settings',{headers:{apikey:KEY}},10000);
+  if(auth.error){add(networkResults,'اتصال به Supabase Auth','bad','ناموفق',errorText(auth.error)+' / '+auth.ms+'ms');summary.textContent='❌ مسیر اینترنت تا Supabase برقرار نشد یا Timeout شد.';return false}
+  add(networkResults,'اتصال به Supabase Auth',auth.res.ok?speedKind(auth.ms):'bad','HTTP '+auth.res.status,auth.ms+'ms');
+  const rest=await timedFetch(SB+'/rest/v1/sermon_categories?select=id&limit=1',{headers:{apikey:KEY}},10000);
+  if(rest.error)add(networkResults,'اتصال به Supabase REST','bad','ناموفق',errorText(rest.error)+' / '+rest.ms+'ms');
+  else add(networkResults,'اتصال به Supabase REST',rest.res.ok?speedKind(rest.ms):(rest.res.status>=500?'warn':'bad'),'HTTP '+rest.res.status,rest.ms+'ms');
+  const good=auth.res?.ok&&rest.res?.ok;
+  summary.textContent=good?(auth.ms>5000||rest.ms>5000?'⚠️ Supabase قابل دسترس است، اما اتصال کند است.':'✅ اتصال اینترنت و مسیر Supabase در این لحظه سالم است.'):'⚠️ اینترنت وجود دارد، اما یکی از سرویس‌های Supabase پاسخ سالم نداد.';
+  return good;
+}
+async function loginTest(){
+  loginResults.innerHTML='';const email=document.getElementById('email').value.trim().toLowerCase(),pw=document.getElementById('password').value;
+  if(!email||!pw){add(loginResults,'ورودی حساب','bad','ایمیل و رمز لازم است');return}
+  document.getElementById('loginBtn').disabled=true;
+  try{
+    const tokenCall=await timedFetch(SB+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password:pw})},12000);
+    document.getElementById('password').value='';
+    if(tokenCall.error){add(loginResults,'درخواست Login','bad','به سرور نرسید',errorText(tokenCall.error)+' / '+tokenCall.ms+'ms');summary.textContent='❌ درخواست Login به Supabase نرسید. احتمال مشکل مسیر اینترنت، DNS، فیلترینگ یا Timeout وجود دارد.';return}
+    let body={};try{body=await tokenCall.res.clone().json()}catch(_){}
+    if(!tokenCall.res.ok){
+      const code=String(body?.error_code||body?.code||'');
+      const msg=String(body?.msg||body?.message||'');
+      const credential=tokenCall.res.status===400&&(/invalid_credentials/i.test(code)||/invalid login credentials/i.test(msg));
+      add(loginResults,'درخواست Login',credential?'warn':(tokenCall.res.status>=500||tokenCall.res.status===429?'warn':'bad'),'HTTP '+tokenCall.res.status,tokenCall.ms+'ms'+(code?' / '+code:''));
+      summary.textContent=credential?'⚠️ ارتباط با Supabase سالم است، اما سرور ایمیل/رمز را قبول نکرد. این خطای شبکه نیست.':'⚠️ درخواست Login به سرور رسید، اما Supabase پاسخ موفق نداد.';
+      return
+    }
+    add(loginResults,'دریافت Session','ok','موفق ✓',tokenCall.ms+'ms');
+    const token=body?.access_token||'';
+    if(!token){add(loginResults,'Access Token','bad','دریافت نشد');summary.textContent='❌ Login پاسخ موفق داد ولی Access Token دریافت نشد.';return}
+    const userCall=await timedFetch(SB+'/auth/v1/user',{headers:{apikey:KEY,Authorization:'Bearer '+token}},10000);
+    if(userCall.error){add(loginResults,'بررسی JWT در Auth','bad','ناموفق',errorText(userCall.error)+' / '+userCall.ms+'ms');summary.textContent='⚠️ Login موفق شد، اما بررسی JWT به مشکل خورد.';return}
+    add(loginResults,'بررسی JWT در Auth',userCall.res.ok?speedKind(userCall.ms):(userCall.res.status===401?'bad':'warn'),'HTTP '+userCall.res.status,userCall.ms+'ms');
+    const restCall=await timedFetch(SB+'/rest/v1/notification_inbox?select=id&limit=1',{headers:{apikey:KEY,Authorization:'Bearer '+token}},10000);
+    if(restCall.error){add(loginResults,'JWT در REST API','bad','ناموفق',errorText(restCall.error)+' / '+restCall.ms+'ms');summary.textContent='⚠️ Login موفق شد، اما REST API قابل دسترس نبود.';return}
+    add(loginResults,'JWT در REST API',restCall.res.ok?speedKind(restCall.ms):(restCall.res.status===401?'bad':'warn'),'HTTP '+restCall.res.status,restCall.ms+'ms');
+    if(userCall.res.status===401||restCall.res.status===401)summary.textContent='❌ Login موفق شد، ولی JWT بعداً با 401 رد شد. این نتیجه برای بررسی Backend مهم است.';
+    else if(userCall.res.ok&&restCall.res.ok)summary.textContent=(tokenCall.ms>5000||userCall.ms>5000||restCall.ms>5000)?'⚠️ ورود کامل موفق است، ولی اتصال کند است.':'✅ Login، JWT و REST API در این لحظه همگی سالم هستند.';
+    else summary.textContent='⚠️ Login انجام شد، اما یکی از تست‌های بعدی پاسخ غیرعادی داشت.';
+  }finally{document.getElementById('password').value='';document.getElementById('loginBtn').disabled=false;updateMeta()}
+}
+document.getElementById('networkBtn').onclick=networkTest;
+document.getElementById('loginBtn').onclick=async()=>{if(!networkResults.children.length)await networkTest();await loginTest()};
+document.getElementById('copyBtn').onclick=async()=>{const text=[summary.textContent,...report,meta.textContent].join('\n');try{await navigator.clipboard.writeText(text);document.getElementById('copyBtn').textContent='کپی شد ✓'}catch(_){alert(text)}};
+updateMeta();
+})();
+</script>
+</body>
+</html>
