@@ -2,7 +2,7 @@
 if(window.__NH7_SERMON_SOCIAL_V440__)return;
 window.__NH7_SERMON_SOCIAL_V440__=true;
 const SB='https://gpzcwffxnddhaeaogdyo.supabase.co',KEY='sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37',AUTH='nh7_user_session_v170';
-const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,cache=new Map();let timer=0;
+const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,cache=new Map();let timer=0;const socialObserver=('IntersectionObserver'in window)?new IntersectionObserver(entries=>{for(const entry of entries){if(!entry.isIntersecting)continue;socialObserver.unobserve(entry.target);entry.target.dataset.nh7SocialObserved='loaded';load(entry.target).catch(()=>{})}},{rootMargin:'700px 0px'}):null;
 const lg=()=>{const x=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return['fa','en','hr'].includes(x)?x:'en'};
 const L=(fa,en,hr)=>lg()==='fa'?fa:lg()==='hr'?hr:en;
 const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -43,7 +43,8 @@ async function share(card){
   }catch(e){}
 }
 function bind(card,r){r.querySelector('[data-like]').onclick=()=>like(card);r.querySelector('[data-bless]').onclick=()=>r.querySelector('[data-compose]').classList.toggle('open');r.querySelector('[data-submit]').onclick=()=>bless(card);r.querySelector('[data-share]').onclick=()=>share(card);r.onclick=e=>{const b=e.target.closest('[data-delete]');if(b)del(card,b.dataset.delete)}}
-function patch(){addStyle();document.querySelectorAll('[data-sermon-card]').forEach(card=>{if(valid(card)){shell(card);load(card)}})}
+function queueLoad(card){if(!valid(card))return;shell(card);if(cache.has(id(card))){load(card);return}if(card.dataset.nh7SocialObserved==='loaded')return;if(!socialObserver){card.dataset.nh7SocialObserved='loaded';load(card).catch(()=>{});return}if(card.dataset.nh7SocialObserved==='1')return;card.dataset.nh7SocialObserved='1';socialObserver.observe(card)}
+function patch(){addStyle();document.querySelectorAll('[data-sermon-card]').forEach(queueLoad)}
 function openShared(){const sid=new URL(location.href).searchParams.get('sermon');if(!UUID.test(String(sid||'')))return;let tries=0;const tick=()=>{const card=document.querySelector('[data-sermon-card="'+CSS.escape(sid)+'"]');if(card){card.scrollIntoView({behavior:'smooth',block:'center'});return}if(tries===0)document.querySelector('[data-route="more"]')?.click();if(tries===3)document.querySelector('[data-go="audio"]')?.click();if(tries++<24)setTimeout(tick,300)};setTimeout(tick,500)}
 window.NH7_SERMON_SOCIAL_PATCH=patch;
 window.NH7_SERMON_SOCIAL_REFRESH_CARD=card=>{if(valid(card)){cache.delete(id(card));shell(card);load(card,true)}};
