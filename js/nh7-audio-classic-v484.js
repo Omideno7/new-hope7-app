@@ -378,10 +378,10 @@ function ensureAudio(){
 }
 
 function captureListen(){if(!current||!audio||audio.paused)return;const now=Date.now(),wall=Math.min(5,Math.max(0,(now-(lastWall||now))/1000)),position=Math.max(0,Number(audio.currentTime||0));lastWall=now;if(position>=lastPosition-0.5&&position-lastPosition<8&&wall>0)listenedPending+=wall;lastPosition=position}
-function scheduleTracking(){if(trackTimer||listenedPending<12)return;trackTimer=setTimeout(()=>{trackTimer=0;flushTracking(false,false)},250)}
+function scheduleTracking(){if(trackTimer||listenedPending<60)return;trackTimer=setTimeout(()=>{trackTimer=0;flushTracking(false,false)},250)}
 async function rpc(name,body){const token=await accessToken();if(!token)throw new Error('login_required');const response=await fetch(`${SB}/rest/v1/rpc/${name}`,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store'});if(!response.ok)throw new Error(await response.text());return response.json().catch(()=>({}))}
 async function flushTracking(ended=false,force=false){
-  if(!current||!navigator.onLine)return;captureListen();const delta=Math.floor(listenedPending);if(!force&&delta<10)return;listenedPending=0;
+  if(!current||!navigator.onLine)return;captureListen();const delta=Math.floor(listenedPending);if(!force&&delta<60)return;listenedPending=0;
   const duration=Math.round((Number.isFinite(audio?.duration)&&audio.duration)||durationFor(current)||0),position=Math.round(audio?.currentTime||0);
   try{
     if(isSchool(current))await rpc('nh7_school_record_audio_v380',{p_lesson_code:lessonCode(current),p_position_seconds:ended?duration:position,p_duration_seconds:duration,p_delta_seconds:delta,p_ended:!!ended});
@@ -504,7 +504,7 @@ const style=document.createElement('style');style.id='nh7-audio-classic-v400-sty
 new MutationObserver(()=>{clearTimeout(patchTimer);patchTimer=setTimeout(()=>{patch();prewarm()},40)}).observe(document.documentElement,{childList:true,subtree:true});
 setTimeout(()=>{patch();prewarm()},250);
 
-window.NH7_AUDIO_CLASSIC_VERSION='4.8.4';
+window.NH7_AUDIO_CLASSIC_VERSION='4.8.4-io-preview';
 window.NH7_AUDIO_SIGNED_VERSION='4.6.1-401-refresh';
 window.NH7_AUDIO_CLASSIC_V400={patch,prewarm,playItem,playNextTrack,playPreviousTrack,setPlaybackSpeed,setMediaVolume,toggleMediaMute,downloadItem,clearAll,getState:()=>({current,audio,playQueue:[...playQueue],queueIndex,volumeControlSupported}),openCurrentAudio,syncNowPlaying};
 // Compatibility for the Settings cleanup controller introduced in 2.3.9.48.
