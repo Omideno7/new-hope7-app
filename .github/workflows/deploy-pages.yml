@@ -68,7 +68,7 @@ jobs:
             js/nh7-admin-student-report-v496.js
             js/nh7-admin-save-feedback-v497.js
             js/nh7-admin-registration-dedupe-v332.js
-            js/admin-v2.3.9-student-clean-v312.js
+            js/admin-v2.3.9-student-clean-v311.js
             js/nh7-admin-school-workflow-v249.js
             js/nh7-admin-assignment-feedback-presets-v499.js
           )
@@ -212,10 +212,12 @@ jobs:
           grep -q 'window.html2canvas' js/nh7-admin-student-report-v496.js
           grep -q 'window.jspdf' js/nh7-admin-student-report-v496.js
           grep -q "pdf.addImage" js/nh7-admin-student-report-v496.js
-          grep -q 'admin-v2.3.9-student-clean-v312.js' admin-v239-stable.html
+          grep -q 'admin-v2.3.9-student-clean-v311.js' admin-v239-stable.html
           grep -q 'admin-v2.3.9-clean-features-v312.css' admin-v239-stable.html
-          grep -q 'nh7-v311-answer' js/admin-v2.3.9-student-clean-v312.js
-          grep -q 'overflow-wrap:anywhere!important' js/admin-v2.3.9-student-clean-v312.js
+          grep -q 'nh7-v311-answer' js/admin-v2.3.9-student-clean-v311.js
+          grep -q 'overflow-wrap:anywhere!important' js/admin-v2.3.9-student-clean-v311.js
+          grep -q 'nh7-v313-feedback-presets' js/admin-v2.3.9-student-clean-v311.js
+          grep -q 'nh7ApplyAssignmentFeedbackPresetV313' js/admin-v2.3.9-student-clean-v311.js
           grep -q 'overflow-wrap:anywhere!important' css/admin-v2.3.9-clean-features-v312.css
 
           grep -q 'nh7_is_admin' supabase/functions/nh7-admin-ai-v490/index.ts
