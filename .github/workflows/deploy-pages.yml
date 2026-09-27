@@ -69,7 +69,8 @@ jobs:
             js/nh7-admin-save-feedback-v497.js
             js/nh7-admin-registration-dedupe-v332.js
             js/admin-v2.3.9-student-clean-v312.js
-            js/nh7-admin-school-workflow-v247.js
+            js/nh7-admin-school-workflow-v249.js
+            js/nh7-admin-assignment-feedback-presets-v499.js
           )
           for file in "${files[@]}"; do
             test -f "$file"
@@ -161,11 +162,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -q 'admin-qna-i18n-v341.js' admin-v239-stable.html
+          grep -q 'admin-qna-i18n-v343.js' admin-v239-stable.html
           grep -q 'nh7-admin-ai-v491.js?v=4.9.1' admin-v239-stable.html
           grep -q 'nh7-admin-student-report-v496.js?v=4.9.6' admin-v239-stable.html
           grep -q 'nh7-admin-save-feedback-v497.js?v=4.9.7' admin-v239-stable.html
           grep -q 'nh7-admin-registration-dedupe-v332.js?v=3.3.2' admin-v239-stable.html
+          grep -q 'nh7-admin-qna-ai-v493.js?v=4.9.3' admin-v239-stable.html
+          grep -q 'nh7-admin-assignment-feedback-presets-v499.js?v=4.9.9' admin-v239-stable.html
+          grep -q 'nh7-admin-school-workflow-v249.js?v=2.4.0.249' admin-v239-stable.html
+          grep -q 'data-nh7-assignment-presets-v499' js/nh7-admin-school-workflow-v249.js
+          grep -q 'assignmentFeedbackPresetOptions' js/nh7-admin-school-workflow-v249.js
+          grep -q 'applyAssignmentFeedbackPreset' js/nh7-admin-school-workflow-v249.js
           grep -q 'nh7_admin_cleanup_registration_duplicates_v331' js/nh7-admin-registration-dedupe-v332.js
           grep -q 'School/Meeting' js/nh7-admin-registration-dedupe-v332.js
 
