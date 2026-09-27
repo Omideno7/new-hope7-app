@@ -15,6 +15,22 @@ const qlang=q=>LANGS.includes(String(q?.language||'').toLowerCase())?String(q.la
 const field=(prefix,l,id)=>document.getElementById(prefix+l+'_'+id);
 const value=(prefix,l,id)=>String(field(prefix,l,id)?.value||'').trim();
 
+function esc(v){return String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
+function controlsHtml(q){
+  const id=String(q.id),source=qlang(q);
+  return '<div class="nh7-ai490-qna" data-nh7-ai-qna="'+esc(id)+'">'
+    +'<div class="nh7-ai490-actions">'
+    +'<button type="button" class="btn secondary" data-nh7-ai-button onclick="window.nh7AiTranslateQuestionV492&&window.nh7AiTranslateQuestionV492(\''+esc(id)+'\')">✨ ترجمه سؤال</button>'
+    +'<button type="button" class="btn primary" data-nh7-ai-button onclick="window.nh7AiDraftAnswerV492&&window.nh7AiDraftAnswerV492(\''+esc(id)+'\')">🤖 پیش‌نویس پاسخ با AI</button>'
+    +'<button type="button" class="btn secondary" data-nh7-ai-button onclick="window.nh7AiTranslateAnswerV492&&window.nh7AiTranslateAnswerV492(\''+esc(id)+'\')">✨ ترجمه پاسخ</button>'
+    +'</div><label>زبان پاسخ من<select id="nh7AiAnswerLang_'+esc(id)+'">'
+    +'<option value="fa" '+(source==='fa'?'selected':'')+'>فارسی</option>'
+    +'<option value="en" '+(source==='en'?'selected':'')+'>English</option>'
+    +'<option value="hr" '+(source==='hr'?'selected':'')+'>Hrvatski</option>'
+    +'</select></label>'
+    +'<small data-nh7-ai-provider-note class="nh7-ai490-provider"></small>'
+    +'<small id="nh7AiQnaStatus_'+esc(id)+'" class="nh7-ai490-status"></small></div>';
+}
 function setStatus(id,text,type=''){
   const el=document.getElementById('nh7AiQnaStatus_'+id);
   if(!el)return;
@@ -214,9 +230,7 @@ function install(){
     if(box.querySelector('[data-nh7-ai-qna]'))return;
     const any=box.querySelector('textarea[id^="qfa_"]');if(!any)return;
     const id=String(any.id).replace(/^qfa_/,'');const q=qrow(id);if(!q)return;
-    const holder=document.createElement('div');
-    holder.innerHTML='<div class="nh7-ai490-qna" data-nh7-ai-qna="'+id+'"><small id="nh7AiQnaStatus_'+id+'" class="nh7-ai490-status">'+L('برای بارگذاری کنترل‌های AI یک بار تازه‌سازی کنید.','Refresh once to load AI controls.','Osvježite jednom za AI kontrole.')+'</small></div>';
-    box.insertBefore(holder.firstElementChild,box.children[1]||null);
+    box.insertAdjacentHTML('afterbegin',controlsHtml(q));
   });
 }
 install();
