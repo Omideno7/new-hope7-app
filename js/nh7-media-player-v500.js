@@ -85,8 +85,8 @@ function ensure(){
         <img class="nh7p500-cover" data-cover alt="">
         <div class="nh7p500-meta"><strong data-full-title></strong><small data-artist></small></div>
         <div class="nh7p500-social">
-          <button type="button" data-like><span data-like-icon>♡</span>\${L('پسندیدن','Like','Sviđa mi se')}</button>
-          <button type="button" data-bless><span>💬</span>\${L('برکت‌ها','Blessings','Blagoslovi')}</button>
+          <button type="button" data-like><span data-like-icon>♡</span>${L('پسندیدن','Like','Sviđa mi se')}</button>
+          <button type="button" data-bless><span>💬</span>${L('برکت‌ها','Blessings','Blagoslovi')}</button>
         </div>
         <input class="nh7p500-seek" data-seek type="range" min="0" max="1000" value="0" aria-label="${L('موقعیت پخش','Playback position','Pozicija reprodukcije')}">
         <div class="nh7p500-time"><span data-now>0:00</span><span data-total>0:00</span></div>
@@ -144,7 +144,7 @@ function likeCurrent(){
   const item=state().current;if(!isSermon(item))return;
   const id=mediaId(item);
   const clickLike=()=>{
-    const card=document.querySelector(\`[data-sermon-card="\${CSS.escape(id)}"]\`);
+    const card=document.querySelector(`[data-sermon-card="${CSS.escape(id)}"]`);
     const like=card?.querySelector('[data-nh7-social-v440] [data-like]');
     if(like){like.click();return true}
     return false;
