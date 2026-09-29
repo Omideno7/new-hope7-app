@@ -180,7 +180,7 @@ function sync(){
   const r=ensure(),s=state(),a=s.audio,item=s.current,active=!!(a&&item&&a.src);
   r.hidden=!active;
   document.documentElement.classList.toggle('nh7p500-active',active);
-  if(!active){setExpanded(false);return}
+  if(!active){expanded=false;const full=r.querySelector('[data-full]');if(full)full.hidden=true;document.documentElement.classList.remove('nh7p500-open');return}
   const duration=Number.isFinite(a.duration)&&a.duration>0?a.duration:(Number(item?.duration_seconds||0)||Number(item?.duration_minutes||0)*60||0);
   const now=Number(a.currentTime||0),progress=duration>0?Math.max(0,Math.min(100,now/duration*100)):0;
   const ttl=titleFor(item),artist=artistFor(item),art=artworkFor(item),rate=Number(a.playbackRate||1);
