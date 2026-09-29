@@ -43,7 +43,7 @@ html.nh7p500-active .nh7-mini485,html.nh7p500-active .nh7-now-playing-v484{displ
 .nh7p500-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.nh7p500-head button{width:40px;height:40px;border:1px solid color-mix(in srgb,var(--nh7p-text) 14%,transparent);border-radius:50%;background:color-mix(in srgb,var(--nh7p-text) 7%,transparent);color:var(--nh7p-text);font-size:1.15rem}.nh7p500-head strong{font-size:.82rem;letter-spacing:.02em;opacity:.88}
 .nh7p500-cover{display:block;width:min(78vw,360px);aspect-ratio:1;object-fit:cover;margin:4.5vh auto 20px;border-radius:28px;box-shadow:0 24px 70px #0009}
 .nh7p500-meta{display:grid;gap:4px;margin-top:auto}.nh7p500-meta strong{font-size:1.18rem;line-height:1.35}.nh7p500-meta small{font-size:.78rem;color:var(--nh7p-muted)}
-.nh7p500-social{display:flex;gap:8px;margin-top:12px}.nh7p500-social button{min-height:38px;border:1px solid color-mix(in srgb,var(--nh7p-text) 14%,transparent);border-radius:999px;background:color-mix(in srgb,var(--nh7p-card) 76%,transparent);color:var(--nh7p-text);padding:0 14px;font-weight:800}.nh7p500-social button span{margin-inline-end:6px}.nh7p500-social [data-like].on{color:#e11d48}
+.nh7p500-social{display:flex;gap:8px;margin-top:12px}.nh7p500-social button{min-height:38px;border:1px solid color-mix(in srgb,var(--nh7p-text) 14%,transparent);border-radius:999px;background:color-mix(in srgb,var(--nh7p-card) 76%,transparent);color:var(--nh7p-text);padding:0 14px;font-weight:800}.nh7p500-social button span{margin-inline-end:6px}.nh7p500-social [data-like].on{color:#e11d48}.nh7p500-social b{font-size:.68rem;margin-inline-start:3px}
 .nh7p500-seek{width:100%;margin-top:18px;accent-color:var(--nh7p-accent)}.nh7p500-time{display:flex;justify-content:space-between;margin-top:4px;font-size:.67rem;color:var(--nh7p-muted)}
 .nh7p500-main{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:20px 0}.nh7p500-main button{width:48px;height:48px;border:0;border-radius:50%;background:color-mix(in srgb,var(--nh7p-text) 8%,transparent);color:var(--nh7p-text);font-weight:900;font-size:.95rem}.nh7p500-main .big{width:72px;height:72px;background:var(--nh7p-text);color:var(--nh7p-bg);font-size:1.3rem;box-shadow:0 8px 30px #0004}.nh7p500-main button:disabled{opacity:.3}
 .nh7p500-tools{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.nh7p500-tools button{min-height:62px;border:1px solid color-mix(in srgb,var(--nh7p-text) 14%,transparent);border-radius:16px;background:color-mix(in srgb,var(--nh7p-card) 76%,transparent);color:var(--nh7p-text);padding:8px 4px;font-weight:800}.nh7p500-tools button span{display:block;font-size:1.05rem}.nh7p500-tools button small{display:block;margin-top:4px;font-size:.62rem;color:var(--nh7p-muted);font-weight:700}
@@ -85,7 +85,7 @@ function ensure(){
         <img class="nh7p500-cover" data-cover alt="">
         <div class="nh7p500-meta"><strong data-full-title></strong><small data-artist></small></div>
         <div class="nh7p500-social">
-          <button type="button" data-like><span data-like-icon>♡</span>${L('پسندیدن','Like','Sviđa mi se')}</button>
+          <button type="button" data-like><span data-like-icon>♡</span>${L('پسندیدن','Like','Sviđa mi se')} <b data-like-count></b></button>
           <button type="button" data-bless><span>💬</span>${L('برکت‌ها','Blessings','Blagoslovi')}</button>
         </div>
         <input class="nh7p500-seek" data-seek type="range" min="0" max="1000" value="0" aria-label="${L('موقعیت پخش','Playback position','Pozicija reprodukcije')}">
@@ -218,6 +218,10 @@ function sync(){
   const nextDisabled=!(s.playQueue?.[s.queueIndex+1]),prevDisabled=!(s.playQueue?.[s.queueIndex-1])&&now<=5;
   r.querySelectorAll('[data-next]').forEach(n=>n.disabled=nextDisabled);r.querySelectorAll('[data-prev]').forEach(n=>n.disabled=prevDisabled);
   const blessingButton=r.querySelector('[data-bless]'),likeButton=r.querySelector('[data-like]');if(blessingButton)blessingButton.hidden=!isSermon(item);if(likeButton)likeButton.hidden=!isSermon(item);
+  if(isSermon(item)){
+    const card=document.querySelector(`[data-sermon-card="${CSS.escape(mediaId(item))}"]`),socialLike=card?.querySelector('[data-nh7-social-v440] [data-like]'),likeIcon=r.querySelector('[data-like-icon]'),likeCount=r.querySelector('[data-like-count]');
+    if(socialLike){const count=socialLike.querySelector('span')?.textContent||'';if(likeIcon)likeIcon.textContent=socialLike.classList.contains('on')?'♥':'♡';if(likeButton)likeButton.classList.toggle('on',socialLike.classList.contains('on'));if(likeCount)likeCount.textContent=count}
+  }
   const blessingPanel=r.querySelector('[data-blessing]');if(blessingPanel&&!isSermon(item))blessingPanel.hidden=true;
   const volumeRow=r.querySelector('[data-volume-row]'),volume=r.querySelector('[data-volume]');
   const canVolume=s.volumeControlSupported!==false;
