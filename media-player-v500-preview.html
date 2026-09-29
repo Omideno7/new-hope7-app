@@ -1,0 +1,20 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{font-family:-apple-system,BlinkMacSystemFont,Arial;margin:0;background:#f3f7fb;color:#062444}.demo{padding:28px 20px 120px}.demo h1{font-size:1.3rem}.demo p{color:#64748b}.bottom-nav{position:fixed;left:0;right:0;bottom:0;height:64px;background:#fff;border-top:1px solid #d9e6f7;display:flex;align-items:center;justify-content:space-around;color:#64748b}</style></head><body>
+<main class="demo"><h1>New Hope 7 — Media Player 2.0 Preview</h1><p>Start state is simulated so you can test the mini player, full player, speed, Bible and Blessings controls without touching Production.</p><div id="view"><div data-sermon-card="123e4567-e89b-12d3-a456-426614174000"><section data-nh7-social-v440><button>Like</button><div>Blessings</div></section></div></div></main><nav class="bottom-nav"><span>⌂ Home</span><span>📖 Bible</span><span>☰ More</span></nav>
+<script>
+localStorage.setItem('nh7_lang','en');
+const audio={src:'mock.mp3',currentTime:62,duration:245,paused:false,playbackRate:1,volume:.8,muted:false,
+ play(){this.paused=false;return Promise.resolve()},pause(){this.paused=true}};
+const current={id:'123e4567-e89b-12d3-a456-426614174000',title_en:'The Power of Prayer',speaker:'Apostle Yuhana',cover_url:'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22512%22 height=%22512%22%3E%3Crect width=%22512%22 height=%22512%22 fill=%22%231d4ed8%22/%3E%3C/svg%3E'};
+window.__calls={next:0,prev:0,bible:0,open:0,social:0,closed:0};
+window.NH7_AUDIO_CLASSIC_V400={
+ getState:()=>({current,audio,playQueue:[current,{id:'b'}],queueIndex:0,volumeControlSupported:true}),
+ playNextTrack:()=>{__calls.next++},playPreviousTrack:()=>{__calls.prev++},
+ setPlaybackSpeed:v=>audio.playbackRate=v,setMediaVolume:v=>audio.volume=+v,toggleMediaMute:()=>audio.muted=!audio.muted,
+ openCurrentAudio:()=>{__calls.open++}
+};
+window.NH7QuickBibleV454={open:()=>{__calls.bible++}};
+window.NH7_SERMON_SOCIAL_REFRESH_CARD=()=>{__calls.social++};
+window.NH7_AUDIO_MINIPLAYER_V487={close:()=>{__calls.closed++;audio.pause()}};
+</script>
+<script src="./js/nh7-media-player-v500.js"></script>
+</body></html>
