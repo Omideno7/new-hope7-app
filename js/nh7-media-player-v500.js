@@ -94,7 +94,7 @@ function ensure(){
         <div class="nh7p500-tools">
           <button type="button" data-speed><span data-rate>1×</span><small>${L('سرعت','Speed','Brzina')}</small></button>
           <button type="button" data-bible><span>📖</span><small>${L('کتاب مقدس','Bible','Biblija')}</small></button>
-          <button type="button" data-bless><span(♡</span><small>${L('برکت‌ها','Blessings','Blagoslovi')}</small></button>
+          <button type="button" data-bless><span>♡</span><small>${L('برکت‌ها','Blessings','Blagoslovi')}</small></button>
           <button type="button" data-mute><span data-mute-icon>🔊</span><small>${L('صدا','Volume','Glasnoća')}</small></button>
         </div>
         <div class="nh7p500-volume" data-volume-row><span>🔈</span><input data-volume type="range" min="0" max="1" step="0.05" value="1"><span>🔊</span></div>
