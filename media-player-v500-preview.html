@@ -1,20 +1,174 @@
-<!doctype html><html><head><meta charset="utf-8"><style>body{font-family:-apple-system,BlinkMacSystemFont,Arial;margin:0;background:#f3f7fb;color:#062444}.demo{padding:28px 20px 120px}.demo h1{font-size:1.3rem}.demo p{color:#64748b}.bottom-nav{position:fixed;left:0;right:0;bottom:0;height:64px;background:#fff;border-top:1px solid #d9e6f7;display:flex;align-items:center;justify-content:space-around;color:#64748b}</style></head><body>
-<main class="demo"><h1>New Hope 7 — Media Player 2.0 Preview</h1><p>Start state is simulated so you can test the mini player, full player, speed, Bible and Blessings controls without touching Production.</p><div id="view"><div data-sermon-card="123e4567-e89b-12d3-a456-426614174000"><section data-nh7-social-v440><button>Like</button><div>Blessings</div></section></div></div></main><nav class="bottom-nav"><span>⌂ Home</span><span>📖 Bible</span><span>☰ More</span></nav>
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#061c25">
+<title>New Hope 7 — Audio Preview</title>
+<style>
+:root{--bg:#06161d;--card:#0b222b;--card2:#0f2b36;--text:#f8fbfc;--muted:#91aab4;--line:#ffffff16;--accent:#29c2c8}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif}body{padding-bottom:152px}
+button,input{font:inherit}.preview-top{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:calc(10px + env(safe-area-inset-top)) 16px 10px;background:#06161de8;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.preview-top strong{font-size:.96rem}.round{width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:#ffffff0b;color:#fff}
+.wrap{max-width:760px;margin:auto;padding:13px 14px 40px}.hero{position:relative;min-height:310px;border-radius:30px;overflow:hidden;background:linear-gradient(150deg,#093e46,#0a212c 52%,#182c42);box-shadow:0 20px 60px #0007}
+.hero:before{content:"";position:absolute;inset:-10%;background:radial-gradient(circle at 50% 15%,#31d9d98b 0 12%,transparent 34%),linear-gradient(135deg,transparent 0 34%,#18c8d029 34% 47%,transparent 47% 100%)}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 28%,#0312182b 48%,#031218e8 100%)}
+.hero-copy{position:absolute;z-index:2;right:20px;left:20px;bottom:20px}.eyebrow{font-size:.68rem;letter-spacing:.15em;font-weight:900;color:#b7f7f7}.hero h1{margin:6px 0 5px;font-size:1.9rem;line-height:1.1}.hero p{margin:0;color:#c4d4da;font-size:.82rem;line-height:1.6;max-width:560px}
+.hero-actions{display:flex;gap:9px;margin-top:14px}.hero-actions button{border:0;border-radius:999px;min-height:44px;padding:0 20px;font-weight:900}.hero-actions .play{background:#fff;color:#06212a}.hero-actions .shuffle{background:#ffffff18;color:#fff;border:1px solid #ffffff1c}
+.search{margin-top:14px;display:flex;gap:9px;align-items:center;background:#ffffff0d;border:1px solid var(--line);border-radius:17px;padding:0 14px;height:48px}.search input{min-width:0;flex:1;border:0;outline:0;background:transparent;color:#fff}.search input::placeholder{color:#819ca6}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:11px 0 4px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}.chip{flex:0 0 auto;border:1px solid var(--line);background:#ffffff09;color:#cad9df;border-radius:999px;padding:8px 13px}.chip.active{background:#dffcff;color:#08252e;border-color:#dffcff;font-weight:850}
+.section{margin-top:22px}.section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:10px}.section-head strong{font-size:1.05rem}.section-head small{color:var(--muted);font-size:.68rem}.shelf{display:flex;gap:11px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none}.shelf::-webkit-scrollbar{display:none}.shelf-card{width:128px;flex:0 0 128px;padding:0;border:0;background:transparent;color:#fff;text-align:right;scroll-snap-align:start}.shelf-art{width:128px;height:128px;border-radius:18px;display:block;background:center/cover no-repeat;box-shadow:0 12px 30px #0004}.shelf-card strong,.shelf-card small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.shelf-card strong{font-size:.75rem;margin-top:7px}.shelf-card small{font-size:.63rem;color:var(--muted);margin-top:3px}
+.sermon-list{border:1px solid var(--line);border-radius:23px;overflow:hidden;background:#ffffff08}.sermon-card{position:relative;padding:9px 10px}.sermon-card+.sermon-card{border-top:1px solid var(--line)}.sermon-card-main{display:grid;grid-template-columns:62px minmax(0,1fr) auto;gap:11px;align-items:center;direction:rtl}.sermon-card-main img{width:62px;height:62px;border-radius:13px;object-fit:cover;grid-column:3}.sermon-card-copy{min-width:0;grid-column:2}.sermon-card-copy strong,.sermon-card-copy small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sermon-card-copy strong{font-size:.9rem}.sermon-card-copy small{font-size:.68rem;color:var(--muted);margin-top:5px}.row-actions{grid-column:1;display:flex;align-items:center;justify-content:flex-end;gap:3px}.row-actions button{width:34px;height:34px;border:0;background:transparent;color:#d8e4e9;border-radius:50%;font-size:1rem}.row-actions .fav.on{color:#ff4d7e}.tap-play{position:absolute;right:10px;top:9px;width:62px;height:62px;border:0;border-radius:13px;background:#0000;color:transparent}.tap-play:active{background:#0004}.more-panel{display:none;gap:7px;flex-wrap:wrap;padding:10px 73px 2px 0}.sermon-card.open .more-panel{display:flex}.more-panel button{border:1px solid var(--line);background:#ffffff0b;color:#e8f1f4;border-radius:11px;padding:8px 10px;font-size:.68rem}
+.empty-note{color:var(--muted);font-size:.72rem;padding:7px 0}.bottom-nav{position:fixed;z-index:1100;left:8px;right:8px;bottom:calc(6px + env(safe-area-inset-bottom));height:64px;border:1px solid var(--line);border-radius:25px;background:#091d25e8;backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:space-around;box-shadow:0 14px 45px #0008}.bottom-nav span{display:grid;place-items:center;gap:2px;color:#91a8b1;font-size:.58rem}.bottom-nav b{font-size:1.2rem;font-weight:500}.bottom-nav .active{color:#7ce3e5}
+.toast{position:fixed;z-index:3000;left:50%;bottom:160px;transform:translateX(-50%) translateY(15px);background:#fff;color:#09222b;padding:10px 14px;border-radius:999px;font-size:.72rem;font-weight:800;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal{position:fixed;z-index:2500;inset:0;background:#000a;display:grid;place-items:end center;padding:14px}.modal[hidden]{display:none}.modal-card{width:min(100%,560px);border:1px solid var(--line);border-radius:25px;background:#0b232d;padding:18px;box-shadow:0 25px 70px #000a}.modal-card h3{margin:0 0 8px}.modal-card p{color:#b8cbd2;line-height:1.7}.modal-card textarea{width:100%;min-height:120px;border:1px solid var(--line);border-radius:14px;background:#ffffff0b;color:#fff;padding:12px}.modal-card button{width:100%;min-height:44px;margin-top:10px;border:0;border-radius:13px;background:#fff;color:#08242d;font-weight:900}
+.preview-extra-tools{display:flex;gap:8px;overflow-x:auto;margin-top:9px;scrollbar-width:none}.preview-extra-tools button{flex:0 0 75px;min-height:58px;border:1px solid #ffffff22;border-radius:15px;background:#ffffff10;color:#fff}.preview-extra-tools span{display:block;font-size:1rem}.preview-extra-tools small{display:block;margin-top:4px;font-size:.57rem;color:#ffffffb7}
+.preview-queue{margin-top:12px;padding:11px;border:1px solid #ffffff20;border-radius:17px;background:#ffffff0b}.preview-queue[hidden]{display:none}.preview-queue strong{font-size:.8rem}.preview-queue-list{display:grid;gap:6px;margin-top:9px}.preview-queue-item{display:grid;grid-template-columns:36px minmax(0,1fr);gap:8px;align-items:center;border:0;border-radius:11px;padding:6px;background:#ffffff0b;color:#fff;text-align:right}.preview-queue-item img{width:36px;height:36px;border-radius:8px}.preview-queue-item b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.67rem}
+.preview-related{margin-top:14px}.preview-related h3{font-size:.8rem}.preview-related-strip{display:flex;gap:9px;overflow-x:auto;scrollbar-width:none}.preview-related-card{width:84px;flex:0 0 84px;border:0;background:transparent;color:#fff;padding:0;text-align:right}.preview-related-card img{width:84px;height:84px;border-radius:13px}.preview-related-card b{display:block;font-size:.6rem;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:430px){.wrap{padding-left:10px;padding-right:10px}.hero{min-height:285px;border-radius:24px}.hero h1{font-size:1.65rem}.shelf-card{width:116px;flex-basis:116px}.shelf-art{width:116px;height:116px}}
+</style>
+</head>
+<body>
+<header class="preview-top"><button class="round" aria-label="Back">‹</button><strong>پیام‌های صوتی</strong><button class="round" aria-label="More">•••</button></header>
+
+<main class="wrap">
+  <section class="hero" id="hero">
+    <div class="hero-copy">
+      <span class="eyebrow">NEW HOPE 7 AUDIO</span>
+      <h1 id="heroTitle">همهٔ پیام‌ها</h1>
+      <p>موعظه‌ها، مجموعه‌های آموزشی و پیام‌های صوتی کلیسا در یک کتابخانهٔ سریع و ساده.</p>
+      <div class="hero-actions"><button class="play" id="playVisible">▶ پخش</button><button class="shuffle" id="shuffleVisible">⤨ تصادفی</button></div>
+    </div>
+  </section>
+
+  <label class="search">⌕ <input id="searchInput" placeholder="جستجو در موعظه‌ها و پیام‌های صوتی"></label>
+  <div class="chips" id="chips"></div>
+
+  <section class="section" id="continueSection">
+    <div class="section-head"><strong>ادامهٔ شنیدن</strong><small>از همان‌جایی که مانده بودی</small></div>
+    <div class="shelf" id="continueShelf"></div>
+  </section>
+
+  <section class="section" id="favoritesSection">
+    <div class="section-head"><strong>علاقه‌مندی‌ها</strong><small>ذخیره‌شده روی این دستگاه</small></div>
+    <div class="shelf" id="favoritesShelf"></div>
+  </section>
+
+  <section class="section" id="recentSection">
+    <div class="section-head"><strong>اخیراً پخش‌شده</strong><small>دسترسی سریع</small></div>
+    <div class="shelf" id="recentShelf"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><strong>پیام‌ها</strong><small id="itemCount"></small></div>
+    <div class="sermon-list" id="sermonList"></div>
+  </section>
+</main>
+
+<nav class="bottom-nav"><span><b>⌂</b>خانه</span><span><b>☀</b>روزانه</span><span><b>📖</b>کتاب مقدس</span><span><b>✓</b>برنامه‌ها</span><span><b>🎓</b>مدرسه</span><span class="active"><b>☰</b>بیشتر</span></nav>
+
+<div class="toast" id="toast"></div>
+<div class="modal" id="simpleModal" hidden><div class="modal-card"><h3 id="modalTitle"></h3><p id="modalText"></p><textarea id="modalNote" hidden placeholder="یادداشت خود را بنویسید..."></textarea><button id="modalClose">بستن</button></div></div>
+
 <script>
-localStorage.setItem('nh7_lang','en');
-const audio={src:'mock.mp3',currentTime:62,duration:245,paused:false,playbackRate:1,volume:.8,muted:false,
- play(){this.paused=false;return Promise.resolve()},pause(){this.paused=true}};
-const current={id:'123e4567-e89b-12d3-a456-426614174000',title_en:'The Power of Prayer',speaker:'Apostle Yuhana',cover_url:'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22512%22 height=%22512%22%3E%3Crect width=%22512%22 height=%22512%22 fill=%22%231d4ed8%22/%3E%3C/svg%3E'};
-window.__calls={next:0,prev:0,bible:0,open:0,social:0,closed:0};
+localStorage.setItem('nh7_lang','fa');
+function art(a,b,mark){
+  var svg='<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="'+a+'"/><stop offset="1" stop-color="'+b+'"/></linearGradient></defs><rect width="800" height="800" rx="80" fill="url(#g)"/><circle cx="400" cy="330" r="190" fill="white" opacity=".08"/><path d="M400 165v330M235 330h330" stroke="white" stroke-width="34" stroke-linecap="round" opacity=".92"/><text x="400" y="650" text-anchor="middle" font-size="68" font-family="Arial" fill="white" opacity=".9">'+mark+'</text></svg>';
+  return 'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(svg);
+}
+var items=[
+{id:'11111111-1111-4111-8111-111111111111',category_id:'prayer',title_fa:'قدرت دعا و مشارکت کلیسا',title_en:'The Power of Prayer',speaker:'یوحنای رسول',duration_seconds:3120,cover_url:art('#0d5961','#071e2b','PRAYER')},
+{id:'22222222-2222-4222-8222-222222222222',category_id:'spirit',title_fa:'راه‌حل نهایی: روح‌القدس',title_en:'The Final Solution: Holy Spirit',speaker:'یوحنای رسول',duration_seconds:2860,cover_url:art('#6a2b91','#151937','SPIRIT')},
+{id:'33333333-3333-4333-8333-333333333333',category_id:'faith',title_fa:'ایمان به خدا در عمل آشکار می‌شود',title_en:'Faith Revealed in Action',speaker:'یوحنای رسول',duration_seconds:3540,cover_url:art('#be5a1f','#391c1d','FAITH')},
+{id:'44444444-4444-4444-8444-444444444444',category_id:'grace',title_fa:'آثار فیض',title_en:'The Effects of Grace',speaker:'یوحنای رسول',duration_seconds:2760,cover_url:art('#1761a7','#09253b','GRACE')},
+{id:'55555555-5555-4555-8555-555555555555',category_id:'kingdom',title_fa:'اقتدار ایماندار در پادشاهی',title_en:'The Believer Authority',speaker:'یوحنای رسول',duration_seconds:3260,cover_url:art('#8b314d','#2c1320','AUTHORITY')},
+{id:'66666666-6666-4666-8666-666666666666',category_id:'faith',title_fa:'ایمان، امید و محبت',title_en:'Faith, Hope and Love',speaker:'یوحنای رسول',duration_seconds:2440,cover_url:art('#297b6c','#102a2a','LOVE')},
+{id:'77777777-7777-4777-8777-777777777777',category_id:'spirit',title_fa:'مسح و جلال خدا',title_en:'Anointing and the Glory of God',speaker:'یوحنای رسول',duration_seconds:2980,cover_url:art('#9b7120','#362810','GLORY')},
+{id:'88888888-8888-4888-8888-888888888888',category_id:'prayer',title_fa:'دعای غالب',title_en:'Prevailing Prayer',speaker:'یوحنای رسول',duration_seconds:3380,cover_url:art('#3152a6','#111b3a','PRAYER')}
+];
+var categories=[['all','همه'],['prayer','دعا'],['spirit','روح‌القدس'],['faith','ایمان'],['grace','فیض'],['kingdom','پادشاهی']];
+var currentCategory='all',favorites=new Set([items[1].id,items[3].id]),recent=[items[2].id,items[0].id],progress={};
+progress[items[0].id]={time:842,duration:items[0].duration_seconds};
+progress[items[2].id]={time:1430,duration:items[2].duration_seconds};
+window.__sermonMap=Object.fromEntries(items.map(function(x){return [x.id,x]}));
+var queue=items.slice(),queueIndex=0;
+var audio={src:'preview:'+items[0].id,currentTime:842,duration:items[0].duration_seconds,paused:true,playbackRate:1,volume:.82,muted:false,play:function(){this.paused=false;return Promise.resolve()},pause:function(){this.paused=true}};
+var current=items[0];
+function fmt(sec){sec=Math.max(0,Number(sec)||0);var m=Math.floor(sec/60),s=Math.floor(sec%60);return m+':'+String(s).padStart(2,'0')}
+function playItem(item){if(!item)return;current=item;queueIndex=Math.max(0,queue.findIndex(function(x){return x.id===item.id}));audio.src='preview:'+item.id;audio.currentTime=(progress[item.id]||{}).time||0;audio.duration=item.duration_seconds;audio.paused=false;recent=[item.id].concat(recent.filter(function(x){return x!==item.id})).slice(0,6);renderShelves();window.NH7_MEDIA_PLAYER_V500&&window.NH7_MEDIA_PLAYER_V500.sync()}
 window.NH7_AUDIO_CLASSIC_V400={
- getState:()=>({current,audio,playQueue:[current,{id:'b'}],queueIndex:0,volumeControlSupported:true}),
- playNextTrack:()=>{__calls.next++},playPreviousTrack:()=>{__calls.prev++},
- setPlaybackSpeed:v=>audio.playbackRate=v,setMediaVolume:v=>audio.volume=+v,toggleMediaMute:()=>audio.muted=!audio.muted,
- openCurrentAudio:()=>{__calls.open++}
+ getState:function(){return {current:current,audio:audio,playQueue:queue,queueIndex:queueIndex,volumeControlSupported:true}},
+ playItem:function(item){playItem(item)},
+ playNextTrack:function(){if(queue[queueIndex+1])playItem(queue[queueIndex+1])},
+ playPreviousTrack:function(){if(audio.currentTime>5){audio.currentTime=0}else if(queue[queueIndex-1])playItem(queue[queueIndex-1])},
+ setPlaybackSpeed:function(v){audio.playbackRate=Number(v)||1},
+ setMediaVolume:function(v){audio.volume=Number(v);audio.muted=false},
+ toggleMediaMute:function(){audio.muted=!audio.muted},
+ openCurrentAudio:function(){var c=document.querySelector('[data-sermon-card="'+current.id+'"]');if(c)c.scrollIntoView({behavior:'smooth',block:'center'})}
 };
-window.NH7QuickBibleV454={open:()=>{__calls.bible++}};
-window.NH7_SERMON_SOCIAL_REFRESH_CARD=()=>{__calls.social++};
-window.NH7_AUDIO_MINIPLAYER_V487={close:()=>{__calls.closed++;audio.pause()}};
+window.NH7_AUDIO_MINIPLAYER_V487={close:function(){audio.pause();audio.src='';window.NH7_MEDIA_PLAYER_V500&&window.NH7_MEDIA_PLAYER_V500.sync()}};
+window.NH7_SERMON_SOCIAL_REFRESH_CARD=function(){};
+window.NH7QuickBibleV454={open:function(){showModal('کتاب مقدس سریع','در نسخهٔ واقعی، کتاب مقدس سریع بدون قطع شدن فایل صوتی در همین‌جا باز می‌شود.',false)}};
+function visibleItems(){var q=(document.getElementById('searchInput').value||'').trim().toLowerCase();return items.filter(function(x){return (currentCategory==='all'||x.category_id===currentCategory)&&(!q||(x.title_fa+' '+x.title_en).toLowerCase().includes(q))})}
+function renderChips(){document.getElementById('chips').innerHTML=categories.map(function(c){return '<button class="chip '+(c[0]===currentCategory?'active':'')+'" data-cat="'+c[0]+'">'+c[1]+'</button>'}).join('')}
+function rowHtml(x){
+ var on=favorites.has(x.id),p=progress[x.id];
+ return '<article class="sermon-card" data-sermon-card="'+x.id+'"><div class="sermon-card-main"><img src="'+x.cover_url+'" alt=""><div class="sermon-card-copy"><strong>'+x.title_fa+'</strong><small>'+(p&&p.time>5?'ادامه از '+fmt(p.time)+' · ':'')+fmt(x.duration_seconds)+' · '+x.speaker+'</small></div><div class="row-actions"><button class="fav '+(on?'on':'')+'" data-fav="'+x.id+'">'+(on?'★':'☆')+'</button><button data-more="'+x.id+'">•••</button></div></div><button class="tap-play" data-play="'+x.id+'">Play</button><div class="more-panel"><button data-note="'+x.id+'">📝 یادداشت</button><button data-download="'+x.id+'">⇩ دانلود</button><button data-share="'+x.id+'">↗ اشتراک</button></div><section data-nh7-social-v440 hidden><button data-bless>برکت</button><div data-compose></div></section></article>'
+}
+function renderList(){var list=visibleItems();document.getElementById('sermonList').innerHTML=list.map(rowHtml).join('')||'<div class="empty-note">موردی پیدا نشد.</div>';document.getElementById('itemCount').textContent=list.length+' فایل'}
+function shelfHtml(arr,sub){return arr.map(function(x){return '<button class="shelf-card" data-play="'+x.id+'"><span class="shelf-art" style="background-image:url(&quot;'+x.cover_url+'&quot;)"></span><strong>'+x.title_fa+'</strong><small>'+sub(x)+'</small></button>'}).join('')}
+function renderShelves(){
+ var cont=items.filter(function(x){return progress[x.id]&&progress[x.id].time>5});
+ var fav=items.filter(function(x){return favorites.has(x.id)});
+ var rec=recent.map(function(id){return window.__sermonMap[id]}).filter(Boolean);
+ document.getElementById('continueShelf').innerHTML=shelfHtml(cont,function(x){return fmt(progress[x.id].time)+' / '+fmt(x.duration_seconds)});
+ document.getElementById('favoritesShelf').innerHTML=shelfHtml(fav,function(x){return x.speaker});
+ document.getElementById('recentShelf').innerHTML=shelfHtml(rec,function(x){return x.speaker});
+ document.getElementById('continueSection').hidden=!cont.length;document.getElementById('favoritesSection').hidden=!fav.length;document.getElementById('recentSection').hidden=!rec.length;
+}
+function render(){renderChips();renderList();renderShelves();document.getElementById('heroTitle').textContent=(categories.find(function(c){return c[0]===currentCategory})||categories[0])[1]+' — پیام‌های صوتی'}
+function showToast(t){var n=document.getElementById('toast');n.textContent=t;n.classList.add('show');clearTimeout(window.__toastT);window.__toastT=setTimeout(function(){n.classList.remove('show')},1400)}
+function showModal(title,text,note){document.getElementById('modalTitle').textContent=title;document.getElementById('modalText').textContent=text||'';document.getElementById('modalNote').hidden=!note;document.getElementById('simpleModal').hidden=false}
+document.addEventListener('click',function(e){
+ var c=e.target.closest('[data-cat]');if(c){currentCategory=c.dataset.cat;render();return}
+ var p=e.target.closest('[data-play]');if(p){playItem(window.__sermonMap[p.dataset.play]);return}
+ var f=e.target.closest('[data-fav]');if(f){favorites.has(f.dataset.fav)?favorites.delete(f.dataset.fav):favorites.add(f.dataset.fav);render();return}
+ var m=e.target.closest('[data-more]');if(m){e.target.closest('.sermon-card').classList.toggle('open');return}
+ var n=e.target.closest('[data-note]');if(n){showModal('یادداشت موعظه',window.__sermonMap[n.dataset.note].title_fa,true);return}
+ var d=e.target.closest('[data-download]');if(d){showToast('برای استفادهٔ آفلاین ذخیره شد');return}
+ var s=e.target.closest('[data-share]');if(s){showToast('لینک اشتراک آماده شد');return}
+});
+document.getElementById('searchInput').addEventListener('input',renderList);
+document.getElementById('playVisible').onclick=function(){var v=visibleItems();if(v[0])playItem(v[0])};
+document.getElementById('shuffleVisible').onclick=function(){var v=visibleItems();if(v.length)playItem(v[Math.floor(Math.random()*v.length)])};
+document.getElementById('modalClose').onclick=function(){document.getElementById('simpleModal').hidden=true};
+render();
+setInterval(function(){if(!audio.paused&&audio.src){audio.currentTime=Math.min(audio.duration,audio.currentTime+1);progress[current.id]={time:audio.currentTime,duration:audio.duration};window.NH7_MEDIA_PLAYER_V500&&window.NH7_MEDIA_PLAYER_V500.sync()}},1000);
 </script>
+
 <script src="./js/nh7-media-player-v500.js"></script>
-</body></html>
+
+<script>
+function decorateFullPlayer(){
+ var r=document.querySelector('.nh7p500');if(!r){setTimeout(decorateFullPlayer,80);return}
+ if(r.dataset.previewDecorated==='1')return;r.dataset.previewDecorated='1';
+ var tools=r.querySelector('.nh7p500-tools');
+ if(tools)tools.insertAdjacentHTML('afterend','<div class="preview-extra-tools"><button data-xfav><span>☆</span><small>علاقه‌مندی</small></button><button data-xnote><span>📝</span><small>یادداشت</small></button><button data-xdownload><span>⇩</span><small>دانلود</small></button><button data-xshare><span>↗</span><small>اشتراک</small></button><button data-xqueue><span>☷</span><small>صف پخش</small></button></div><div class="preview-queue" data-xqueue-panel hidden><strong>بعدی‌ها</strong><div class="preview-queue-list" data-xqueue-list></div></div><section class="preview-related"><h3>مرتبط و پیشنهادی</h3><div class="preview-related-strip" data-xrelated></div></section>');
+ function syncExtras(){
+  var fav=r.querySelector('[data-xfav] span');if(fav)fav.textContent=favorites.has(current.id)?'★':'☆';
+  var q=r.querySelector('[data-xqueue-list]');if(q)q.innerHTML=queue.slice(queueIndex,queueIndex+5).map(function(x){return '<button class="preview-queue-item" data-play="'+x.id+'"><img src="'+x.cover_url+'"><b>'+x.title_fa+'</b></button>'}).join('');
+  var rel=r.querySelector('[data-xrelated]');if(rel){var a=items.filter(function(x){return x.id!==current.id&&(x.category_id===current.category_id)});if(!a.length)a=items.filter(function(x){return x.id!==current.id});rel.innerHTML=a.slice(0,5).map(function(x){return '<button class="preview-related-card" data-play="'+x.id+'"><img src="'+x.cover_url+'"><b>'+x.title_fa+'</b></button>'}).join('')}
+ }
+ r.addEventListener('click',function(e){
+  if(e.target.closest('[data-xfav]')){favorites.has(current.id)?favorites.delete(current.id):favorites.add(current.id);render();syncExtras();return}
+  if(e.target.closest('[data-xnote]')){showModal('یادداشت موعظه',current.title_fa,true);return}
+  if(e.target.closest('[data-xdownload]')){showToast('برای استفادهٔ آفلاین ذخیره شد');return}
+  if(e.target.closest('[data-xshare]')){showToast('لینک اشتراک آماده شد');return}
+  if(e.target.closest('[data-xqueue]')){var p=r.querySelector('[data-xqueue-panel]');p.hidden=!p.hidden;return}
+ });
+ setInterval(syncExtras,650);syncExtras();
+}
+document.readyState==='loading'?document.addEventListener('DOMContentLoaded',function(){setTimeout(decorateFullPlayer,20)}):setTimeout(decorateFullPlayer,20);
+</script>
+</body>
+</html>
