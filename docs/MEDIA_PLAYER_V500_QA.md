@@ -70,3 +70,61 @@ These cannot be certified by the isolated browser harness:
 ## Merge rule
 
 Do not merge this feature branch to main until the user explicitly approves after device/preview review.
+
+
+## Fresh verification — current v500 source
+
+Verified after the Blessings icon markup repair.
+
+- Player source blob SHA: `b84017ddb1297eaa3dedeef028771120ce2f7494`
+- JavaScript syntax: PASS
+- Creates a second audio element: NO
+- Direct Supabase/REST/Edge Function calls from v500 UI: NO
+- Uses existing `NH7_AUDIO_CLASSIC_V400` engine: YES
+- Uses existing `NH7QuickBibleV454`: YES
+- Close delegates to existing v487 safe resume/close path: YES
+
+### Chromium interaction harness — PASS
+
+Because this execution environment blocks browser navigation to localhost, file URLs, and synthetic HTTPS origins, the exact v500 source was injected into an originless Chromium QA page. Native `localStorage` is blocked on originless pages, so only the QA page received an in-memory Storage-compatible object. The application source was not modified for this test.
+
+iPhone-size viewport: 390×844.
+
+Passed:
+- mini-player visible and contained within viewport
+- title/artwork state rendered
+- full player expand/collapse
+- Blessings hidden by default
+- Blessings panel expands on tap
+- Quick Bible callback
+- playback speed 1.00× → 1.25×
+- seek 50% of 245 seconds → 122.5 seconds
+- next / previous callbacks
+- mute callback
+- close delegates to v487
+- resume saved under the existing `nh7_sermon_progress_<id>` key
+- no JavaScript page errors
+- no horizontal overflow
+
+### Language/layout harness — PASS
+
+At 390×844:
+- Persian RTL: PASS; labels `کتاب مقدس`, `برکت‌ها`, `سرعت`, `صدا`; no overflow
+- English LTR: PASS; no overflow
+- Croatian LTR: PASS; labels `Biblija`, `Blagoslovi`, `Brzina`, `Glasnoća`; no overflow
+- School audio: Player remains visible and sermon-only Blessings control is hidden
+
+### Still pending native-device verification
+
+Static/Chromium QA cannot certify:
+- actual iOS lock-screen tap target returning to New Hope 7
+- real lock-screen artwork on device
+- background playback through screen lock/app switching
+- Bluetooth/headset controls
+- native volume behavior
+- real signed sermon playback
+- real offline downloaded audio
+- School telemetry against the live existing runtime
+- safe-area behavior across supported physical iPhone models
+
+No merge to main is authorized by this QA.
