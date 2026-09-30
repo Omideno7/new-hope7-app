@@ -9,6 +9,7 @@ create extension if not exists pgcrypto;
 create table if not exists public.nh7_user_profiles_v502 (
   user_id uuid primary key references auth.users(id) on delete cascade,
   display_name text not null default '',
+  original_photo_path text not null default '',
   photo_path text not null default '',
   photo_position_x numeric(8,3) not null default 0,
   photo_position_y numeric(8,3) not null default 0,
