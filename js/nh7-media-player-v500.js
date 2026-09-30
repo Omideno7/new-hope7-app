@@ -9,11 +9,12 @@ window.__NH7_MEDIA_PLAYER_V500__=true;
 const VERSION='5.0.0-preview-20260930';
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const FAVORITES_KEY='nh7_audio_favorites_v500';
-let root=null,expanded=false,lastTrackKey='',syncTimer=0;
+let root=null,expanded=false,lastTrackKey='',syncTimer=0,seeking=false,seekPreview=0,lastRecentId='';
 
 const lang=()=>{const v=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return ['fa','en','hr'].includes(v)?v:'en'};
 const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
 const engine=()=>window.NH7_AUDIO_CLASSIC_V400||null;
+const isIOSWeb=()=>/iPad|iPhone|iPod/.test(navigator.userAgent)||((navigator.platform==='MacIntel')&&navigator.maxTouchPoints>1);
 const state=()=>engine()?.getState?.()||{};
 const mediaId=item=>String(item?.id||item?.analytics_id||'');
 const isSermon=item=>UUID.test(mediaId(item))&&!mediaId(item).startsWith('school-');
@@ -54,6 +55,7 @@ html.nh7p500-active .nh7-mini485,html.nh7p500-active .nh7-now-playing-v484{displ
 .nh7p500-queue-empty{padding:6px 2px;font-size:.62rem;color:var(--nh7p-muted)}
 .nh7p500-related{margin-top:10px}.nh7p500-related[hidden]{display:none!important}.nh7p500-related-strip{display:flex;gap:7px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}.nh7p500-related-strip::-webkit-scrollbar{display:none}.nh7p500-related-card{width:72px;flex:0 0 72px;border:0;background:transparent;color:var(--nh7p-text);padding:0;text-align:start}.nh7p500-related-card img{display:block;width:72px;height:72px;border-radius:11px;object-fit:cover}.nh7p500-related-card b{display:block;margin-top:4px;font-size:.54rem;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 html[dir="rtl"] .nh7p500-queue-item,html[dir="rtl"] .nh7p500-related-card{text-align:right}
+.nh7p500-toast{position:fixed;z-index:1999;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(8px);max-width:min(88vw,420px);padding:9px 13px;border-radius:999px;background:color-mix(in srgb,var(--nh7p-text) 92%,transparent);color:var(--nh7p-bg);font-size:.68rem;font-weight:800;box-shadow:0 9px 28px #0005;opacity:0;transition:.18s;pointer-events:none}.nh7p500-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .nh7p500-blessing{margin-top:14px;padding:13px;border:1px solid color-mix(in srgb,var(--nh7p-text) 14%,transparent);border-radius:17px;background:color-mix(in srgb,var(--nh7p-card) 72%,transparent)}.nh7p500-blessing[hidden]{display:none!important}.nh7p500-blessing p{margin:0 0 10px;font-size:.78rem;color:var(--nh7p-muted);line-height:1.55}.nh7p500-blessing button{width:100%;min-height:42px;border:0;border-radius:12px;background:var(--nh7p-text);color:var(--nh7p-bg);font-weight:850}
 html.nh7p500-active body #view{padding-bottom:calc(128px + env(safe-area-inset-bottom,0px))!important}html.nh7p500-open,html.nh7p500-open body{overflow:hidden!important}
 html[dir="rtl"] .nh7p500-copy,html[dir="rtl"] .nh7p500-meta{text-align:right}
@@ -145,6 +147,16 @@ function preserveProgress(){
   try{localStorage.setItem('nh7_sermon_progress_'+mediaId(item),JSON.stringify({time:Math.max(0,Number(a.currentTime||0)),duration:Number.isFinite(a.duration)?Number(a.duration||0):Number(item?.duration_seconds||0),completed:false,updatedAt:new Date().toISOString()}))}catch(_){}
 }
 
+function notice(message){
+  const r=ensure();let n=r.querySelector('[data-toast]');
+  if(!n){n=document.createElement('div');n.className='nh7p500-toast';n.dataset.toast='1';r.appendChild(n)}
+  n.textContent=String(message||'');n.classList.add('show');clearTimeout(n._t);n._t=setTimeout(()=>n.classList.remove('show'),2200);
+}
+function rememberRecent(item){
+  if(!isSermon(item))return;const id=mediaId(item);if(!id||id===lastRecentId)return;lastRecentId=id;
+  try{const key='nh7_audio_recent_v500',old=JSON.parse(localStorage.getItem(key)||'[]'),next=[id,...(Array.isArray(old)?old.map(String):[]).filter(x=>x!==id)].slice(0,20);localStorage.setItem(key,JSON.stringify(next))}catch(_){}
+}
+
 function closePlayer(){
   preserveProgress();
   setExpanded(false);
@@ -193,7 +205,11 @@ function shareCurrent(){
   const item=state().current;if(!isSermon(item))return;
   withCurrentCard(card=>{const b=card.querySelector('[data-nh7-social-v440] [data-share]');if(!b)return false;b.click();return true});
 }
-function downloadCurrent(){const item=state().current;if(item)engine()?.downloadItem?.(item)}
+function downloadCurrent(){
+  const item=state().current;if(!item)return;
+  if(window.NH7_PLAYER_TEST_MODE){notice(L('حالت تست امن: فایل آفلاین شما تغییر نمی‌کند.','Safe test: your offline file is not changed.','Sigurni test: offline datoteka se ne mijenja.'));return}
+  engine()?.downloadItem?.(item)
+}
 function toggleQueue(){const p=ensure().querySelector('[data-queue-panel]');if(!p)return;p.hidden=!p.hidden;if(!p.hidden)renderQueue()}
 function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 function renderQueue(){
@@ -239,7 +255,7 @@ function bind(){
     if(event.target.closest('[data-back]')&&a){a.currentTime=Math.max(0,Number(a.currentTime||0)-15);return}
     if(event.target.closest('[data-forward]')&&a){a.currentTime=Math.min(Number.isFinite(a.duration)?a.duration:Infinity,Number(a.currentTime||0)+30);return}
     if(event.target.closest('[data-speed]'))return cycleSpeed();
-    if(event.target.closest('[data-mute]'))return engine()?.toggleMediaMute?.();
+    if(event.target.closest('[data-mute]')){if(isIOSWeb()){notice(L('برای تنظیم حجم صدا از دکمه‌های آیفون استفاده کنید.','Use the iPhone volume buttons to adjust volume.','Za glasnoću koristite tipke na iPhoneu.'));return}return engine()?.toggleMediaMute?.()}
     if(event.target.closest('[data-bible]'))return window.NH7QuickBibleV454?.open?.(event.target.closest('[data-bible]'));
     if(event.target.closest('[data-favorite]'))return toggleFavorite();
     if(event.target.closest('[data-note]'))return openNotes();
@@ -250,13 +266,27 @@ function bind(){
     const qi=event.target.closest('[data-queue-index]');if(qi){const s=state(),x=s.playQueue?.[Number(qi.dataset.queueIndex)];if(x)engine()?.playItem?.(x);return}
     const rel=event.target.closest('[data-related-id]');if(rel){const x=window.__sermonMap?.[String(rel.dataset.relatedId)];if(x)engine()?.playItem?.(x);return}
     if(event.target.closest('[data-like]'))return likeCurrent();
-    if(event.target.closest('[data-bless]')){const p=root.querySelector('[data-blessing]');if(p)p.hidden=!p.hidden;return}
+    if(event.target.closest('[data-bless]'))return openBlessings()
     if(event.target.closest('[data-open-blessings]'))return openBlessings();
   });
   root.addEventListener('input',event=>{
     const {audio:a}=state();
-    if(event.target.matches('[data-seek]')&&a&&Number.isFinite(a.duration)&&a.duration>0){a.currentTime=(Number(event.target.value)/1000)*a.duration;return}
-    if(event.target.matches('[data-volume]'))engine()?.setMediaVolume?.(event.target.value);
+    if(event.target.matches('[data-seek]')&&a&&Number.isFinite(a.duration)&&a.duration>0){
+      seeking=true;seekPreview=(Number(event.target.value)/1000)*a.duration;
+      const n=root.querySelector('[data-now]');if(n)n.textContent=fmt(seekPreview);return
+    }
+    if(event.target.matches('[data-volume]')){
+      if(isIOSWeb()){notice(L('در آیفون، حجم صدا را با دکمه‌های خود گوشی تنظیم کنید.','On iPhone, use the phone volume buttons.','Na iPhoneu koristite tipke za glasnoću.'));return}
+      engine()?.setMediaVolume?.(event.target.value);
+    }
+  });
+  root.addEventListener('change',event=>{
+    const {audio:a}=state();
+    if(event.target.matches('[data-seek]')&&a&&Number.isFinite(a.duration)&&a.duration>0){
+      const target=Math.max(0,Math.min(a.duration,(Number(event.target.value)/1000)*a.duration));
+      try{a.currentTime=target}catch(_){}
+      seekPreview=target;setTimeout(()=>{seeking=false;sync()},180);return
+    }
   });
 }
 
@@ -271,9 +301,10 @@ function sync(){
   r.querySelectorAll('[data-title],[data-full-title]').forEach(n=>n.textContent=ttl);
   r.querySelector('[data-mini-meta]').textContent=`${fmt(now)} · ${rate}×`;
   r.querySelector('[data-artist]').textContent=artist;
-  r.querySelector('[data-now]').textContent=fmt(now);r.querySelector('[data-total]').textContent=fmt(duration);
-  r.querySelector('[data-progress]').style.width=progress+'%';
-  r.querySelector('[data-seek]').value=duration>0?String(Math.round(now/duration*1000)):'0';
+  r.querySelector('[data-now]').textContent=fmt(seeking?seekPreview:now);r.querySelector('[data-total]').textContent=fmt(duration);
+  r.querySelector('[data-progress]').style.width=(seeking&&duration>0?Math.max(0,Math.min(100,seekPreview/duration*100)):progress)+'%';
+  if(!seeking)r.querySelector('[data-seek]').value=duration>0?String(Math.round(now/duration*1000)):'0';
+  rememberRecent(item);
   r.querySelectorAll('[data-play]').forEach(n=>n.textContent=a.paused?'▶':'❚❚');
   r.querySelectorAll('[data-speed]').forEach(n=>{if(n.matches('.nh7p500-speed'))n.textContent=rate+'×'});
   const rateNode=r.querySelector('[data-rate]');if(rateNode)rateNode.textContent=rate+'×';
@@ -288,7 +319,7 @@ function sync(){
   }
   const blessingPanel=r.querySelector('[data-blessing]');if(blessingPanel&&!isSermon(item))blessingPanel.hidden=true;
   const volumeRow=r.querySelector('[data-volume-row]'),volume=r.querySelector('[data-volume]');
-  const canVolume=s.volumeControlSupported!==false;
+  const canVolume=!isIOSWeb()&&s.volumeControlSupported!==false;
   if(volumeRow)volumeRow.hidden=!canVolume;if(volume&&!volume.matches(':active'))volume.value=String(Number(a.volume??1));
   const muteIcon=r.querySelector('[data-mute-icon]');if(muteIcon)muteIcon.textContent=a.muted?'🔇':Number(a.volume||1)<.5?'🔉':'🔊';
   renderQueue();renderRelated();
