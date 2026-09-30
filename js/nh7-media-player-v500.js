@@ -189,12 +189,9 @@ function openNotes(){
   const item=state().current;if(!isSermon(item))return;
   withCurrentCard(card=>{const b=card.querySelector('[data-sermon-note]');if(!b)return false;b.click();return true});
 }
-async function shareCurrent(){
+function shareCurrent(){
   const item=state().current;if(!isSermon(item))return;
-  const id=mediaId(item),title=titleFor(item);
-  const url='https://omideno7.github.io/new-hope7-app/?sermon='+encodeURIComponent(id)+'#audio';
-  const body=L('🎧 '+title+'\n\nاین پیام را در New Hope 7 گوش کنید:\n'+url,'🎧 '+title+'\n\nListen to this message in New Hope 7:\n'+url,'🎧 '+title+'\n\nPoslušajte ovu poruku u New Hope 7:\n'+url);
-  try{if(navigator.share)await navigator.share({title:'New Hope 7 - '+title,text:body});else if(navigator.clipboard)await navigator.clipboard.writeText(body)}catch(_){}
+  withCurrentCard(card=>{const b=card.querySelector('[data-nh7-social-v440] [data-share]');if(!b)return false;b.click();return true});
 }
 function downloadCurrent(){const item=state().current;if(item)engine()?.downloadItem?.(item)}
 function toggleQueue(){const p=ensure().querySelector('[data-queue-panel]');if(!p)return;p.hidden=!p.hidden;if(!p.hidden)renderQueue()}
