@@ -181,3 +181,28 @@ Physical-device QA is still required for:
 - School audio telemetry regression check
 
 No merge to `main` is authorized by this verification.
+
+
+## Safe Integration Preview fixes after iPhone review
+
+Date: 2026-09-30
+
+User-device review exposed five integration issues and all were addressed on the feature branch:
+
+- Audio home still showed the legacy layout: fixed by adding `js/nh7-audio-library-v500.js`, a UI-only layer over the existing `window.__sermonMap` catalog. No new backend query was added.
+- Blessings pill appeared inactive: fixed so the Player Blessings pill opens the existing sermon social/compose flow directly.
+- Safe-test Like incorrectly returned `0`: fixed the Safe Integration interceptor to simulate a local toggle from the currently displayed real count instead of forcing zero. Production Like RPC remains blocked in Safe Test.
+- Safe-test Download could offer to remove an already-downloaded file: fixed so Player Download in `NH7_PLAYER_TEST_MODE` never mutates offline storage and shows a test-mode notice instead.
+- iPhone volume slider did not affect device volume: the software slider is now hidden on iOS; the Player explains that iPhone hardware volume buttons control volume.
+- Seek thumb snapped back while dragging: added a seek-drag guard. UI preview follows the thumb during drag and commits `currentTime` on change/release before sync resumes.
+- Recently Played is now recorded locally under `nh7_audio_recent_v500` for the Audio Library shelves.
+
+Static verification:
+- Player syntax: PASS
+- Audio Library syntax: PASS
+- Audio Library direct backend writes/calls: NONE
+- Safe Integration Service Worker registration: DISABLED
+- Safe Integration OneSignal SDK: DISABLED
+- Production Social writes: BLOCKED in Safe Integration Preview
+- Production School audio telemetry write: BLOCKED in Safe Integration Preview
+- `main`: NOT MODIFIED
