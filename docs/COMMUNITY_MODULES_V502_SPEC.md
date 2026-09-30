@@ -89,3 +89,11 @@ Storage design:
 - User can drag the photo with touch/pointer gestures and zoom from 1x to 3x.
 - The app stores photo framing metadata (`photo_position_x`, `photo_position_y`, `photo_zoom`) so the selected framing is preserved.
 - The original photo can remain intact; the UI applies saved framing metadata when rendering the circular avatar.
+
+
+### Profile crop UX refinement
+- Opening the crop editor locks the page behind it; background scrolling must not occur on iOS/Android.
+- Drag offsets are clamped so the circular frame never exposes empty space.
+- Saving the crop renders a real 512×512 avatar image on a Canvas from the exact visible frame.
+- The profile avatar displays that rendered crop, so the saved result matches the editor pixel-for-pixel.
+- The original private photo is retained separately for future re-editing; the rendered avatar is stored as the normal profile photo.
