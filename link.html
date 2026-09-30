@@ -22,7 +22,7 @@ img{width:88px;height:88px;border-radius:22px}.muted{color:#9db4be;line-height:1
 </main>
 <script>
 (()=>{'use strict';
- const u=new URL(location.href),type=String(u.searchParams.get('type')||''),preview=u.searchParams.get('preview')==='1';
+ const u=new URL(location.href),type=String(u.searchParams.get('type')||''),preview=u.searchParams.get('preview')==='1'||location.hostname==='raw.githack.com'||location.hostname==='rawcdn.githack.com';
  const details=type==='sermon'?'Sermon '+String(u.searchParams.get('id')||''):type==='verse'?'Bible '+String(u.searchParams.get('book')||'')+' '+String(u.searchParams.get('chapter')||'')+':'+String(u.searchParams.get('verse')||''):'New Hope 7';
  document.getElementById('target').textContent=details;
  const fa=(navigator.language||'').toLowerCase().startsWith('fa'),hr=(navigator.language||'').toLowerCase().startsWith('hr');
