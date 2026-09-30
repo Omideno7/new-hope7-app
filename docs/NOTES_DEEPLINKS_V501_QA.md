@@ -31,3 +31,14 @@ Base: `main@2b7e666c9634b31d90627e1c24b4787b71f36c88`
 - Service Worker: untouched.
 - Existing user Notes / Saved Verses / School Progress: no schema or destructive migration.
 - App icon: intentionally not changed.
+
+
+## Auth-gated deep-link flow
+- Installed + signed in → opens exact sermon / exact Bible verse.
+- Installed + signed out → target is stored in `nh7_pending_deep_link_v501`; Account screen asks user to sign in or start registration.
+- Successful Account sign-in → pending target resumes before normal School navigation.
+- Successful School sign-in → pending target resumes before normal School navigation.
+- New registration with an authenticated session → pending target resumes automatically.
+- If email confirmation prevents an immediate authenticated session, pending target remains for up to 7 days and resumes after later sign-in.
+- Not installed → landing page attempts native scheme / Android intent, then falls back to App Store or Google Play.
+- First install deferred target handoff is not yet implemented; after a fresh store install, the original shared link must currently be opened again.
