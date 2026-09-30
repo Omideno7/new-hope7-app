@@ -37,8 +37,10 @@ function injectCss(){
  if(document.getElementById('nh7CommunityV502Css'))return;
  const s=document.createElement('style');s.id='nh7CommunityV502Css';s.textContent=`
  .nh7c502-actions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.nh7c502-note{font-size:.82rem;line-height:1.85;color:var(--muted)}
- .nh7c502-guide details{border:1px solid color-mix(in srgb,var(--text) 13%,transparent);border-radius:14px;padding:10px 12px;margin:8px 0;background:color-mix(in srgb,var(--card) 92%,var(--text) 8%)}
- .nh7c502-guide summary{font-weight:800;cursor:pointer}.nh7c502-guide li{margin:7px 0;line-height:1.9}.nh7c502-phase{border-inline-start:3px solid var(--accent);padding-inline-start:10px;margin:15px 0 8px}
+ .nh7c502-guide details{border:1px solid color-mix(in srgb,var(--text) 13%,transparent);border-radius:14px;padding:0;margin:10px 0;background:color-mix(in srgb,var(--card) 92%,var(--text) 8%);overflow:hidden}
+ .nh7c502-guide summary{font-weight:800;cursor:pointer;padding:14px 16px;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px}
+ .nh7c502-guide summary::-webkit-details-marker{display:none}.nh7c502-guide summary::after{content:'⌄';font-size:1.05rem;transition:transform .18s ease}.nh7c502-guide details[open]>summary::after{transform:rotate(180deg)}
+ .nh7c502-section-body{padding:2px 16px 14px}.nh7c502-topic{padding:10px 0;border-top:1px solid color-mix(in srgb,var(--text) 10%,transparent)}.nh7c502-topic:first-child{border-top:0}.nh7c502-topic h4{margin:4px 0 8px}.nh7c502-guide li{margin:7px 0;line-height:1.9}.nh7c502-phase{border-inline-start:3px solid var(--accent);padding-inline-start:10px;margin:15px 0 8px}
  .nh7c502-verse{border:1px solid color-mix(in srgb,var(--text) 13%,transparent);border-radius:13px;padding:10px;margin:8px 0}.nh7c502-verse strong{display:block}
  .nh7c502-record{border:1px solid color-mix(in srgb,var(--text) 13%,transparent);border-radius:16px;padding:12px}.nh7c502-record audio{width:100%;margin-top:8px}
  .nh7c502-list-card{border:1px solid color-mix(in srgb,var(--text) 13%,transparent);border-radius:16px;padding:12px;margin:9px 0}.nh7c502-audio-head{display:flex;gap:10px;align-items:flex-start}.nh7c502-art{width:50px;height:50px;border-radius:13px;background:color-mix(in srgb,var(--accent) 25%,var(--card));display:grid;place-items:center;font-size:1.45rem;flex:0 0 auto}.nh7c502-copy{flex:1}
@@ -71,7 +73,7 @@ async function renderTestimonies(){
  const publicRows=await publicTestimonies();
  const intro=g.importance.map(x=>'<p>'+esc(x)+'</p>').join('');
  const verses=g.verses.map(v=>'<div class="nh7c502-verse"><strong>'+esc(v[0])+'</strong>'+esc(v[1])+'</div>').join('');
- const guideHtml=g.sections.map((s,si)=>'<div class="nh7c502-phase"><h3>'+esc(s.title)+'</h3></div>'+s.topics.map((t,ti)=>'<details '+(si===0&&ti===0?'open':'')+'><summary>'+esc(t.title)+'</summary><ul>'+t.bullets.map(b=>'<li>'+esc(b)+'</li>').join('')+'</ul></details>').join('')).join('');
+ const guideHtml=g.sections.map(s=>'<details class="nh7c502-section"><summary>'+esc(s.title)+'</summary><div class="nh7c502-section-body">'+s.topics.map(t=>'<section class="nh7c502-topic"><h4>'+esc(t.title)+'</h4><ul>'+t.bullets.map(b=>'<li>'+esc(b)+'</li>').join('')+'</ul></section>').join('')+'</div></details>').join('');
  const cards=publicRows.length?publicRows.map(x=>'<article class="nh7c502-list-card"><div class="nh7c502-audio-head"><div class="nh7c502-art">🎙️</div><div class="nh7c502-copy"><strong>'+esc(x.title||u.testimonies||'Testimony')+'</strong><small>'+esc(x.display_name||'')+'</small><p>'+esc(x.note_text||'')+'</p></div></div>'+(x.published_audio_path?'<audio controls preload="none" style="width:100%;margin-top:8px" src="'+esc(publicAudioUrl(x.published_audio_path))+'"></audio>':'')+'</article>').join(''):'<p class="muted">'+esc(L('هنوز شهادت صوتی منتشر نشده است.','No audio testimony has been published yet.','Još nema objavljenih audio svjedočanstava.'))+'</p>';
  view.innerHTML=
   C().card(g.importanceTitle,intro+verses,'')+
