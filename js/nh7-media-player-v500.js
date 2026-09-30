@@ -9,7 +9,7 @@ window.__NH7_MEDIA_PLAYER_V500__=true;
 const VERSION='5.0.0-preview-20260930';
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const FAVORITES_KEY='nh7_audio_favorites_v500';
-let root=null,expanded=false,lastTrackKey='',syncTimer=0,seeking=false,seekPreview=0,lastRecentId='';
+let root=null,expanded=false,lastTrackKey='',syncTimer=0,seeking=false,seekPreview=0,lastRecentId='',iosVolumeVisual=1;
 
 const lang=()=>{const v=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return ['fa','en','hr'].includes(v)?v:'en'};
 const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
@@ -55,6 +55,7 @@ html.nh7p500-active .nh7-mini485,html.nh7p500-active .nh7-now-playing-v484{displ
 .nh7p500-queue-empty{padding:6px 2px;font-size:.62rem;color:var(--nh7p-muted)}
 .nh7p500-related{margin-top:10px}.nh7p500-related[hidden]{display:none!important}.nh7p500-related-strip{display:flex;gap:7px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}.nh7p500-related-strip::-webkit-scrollbar{display:none}.nh7p500-related-card{width:72px;flex:0 0 72px;border:0;background:transparent;color:var(--nh7p-text);padding:0;text-align:start}.nh7p500-related-card img{display:block;width:72px;height:72px;border-radius:11px;object-fit:cover}.nh7p500-related-card b{display:block;margin-top:4px;font-size:.54rem;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 html[dir="rtl"] .nh7p500-queue-item,html[dir="rtl"] .nh7p500-related-card{text-align:right}
+.nh7p500-social-overlay{position:fixed;inset:0;z-index:1985;display:grid;align-items:end}.nh7p500-social-overlay[hidden]{display:none!important}.nh7p500-social-backdrop{position:absolute;inset:0;border:0;background:#0009}.nh7p500-social-sheet{position:relative;z-index:1;max-height:min(72vh,620px);overflow:auto;border-radius:24px 24px 0 0;padding:14px 16px calc(18px + env(safe-area-inset-bottom,0px));background:var(--nh7p-card);color:var(--nh7p-text);border-top:1px solid var(--nh7p-line);box-shadow:0 -18px 50px #0006;--card:var(--nh7p-card);--ink:var(--nh7p-text);--line:var(--nh7p-line)}.nh7p500-social-sheet .nh7p500-panel-head{position:sticky;top:0;z-index:2;padding-bottom:8px;background:var(--nh7p-card)}.nh7p500-social-proxy>[data-nh7-social-v440]{display:grid!important;margin-top:0!important;padding-top:0!important;border-top:0!important}.nh7p500-social-proxy .nh7s440a{display:none!important}.nh7p500-volume-note{display:none;margin-top:4px;text-align:center;font-size:.52rem;color:var(--nh7p-muted)}.nh7p500-volume-note.show{display:block}
 .nh7p500-toast{position:fixed;z-index:1999;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(8px);max-width:min(88vw,420px);padding:9px 13px;border-radius:999px;background:color-mix(in srgb,var(--nh7p-text) 92%,transparent);color:var(--nh7p-bg);font-size:.68rem;font-weight:800;box-shadow:0 9px 28px #0005;opacity:0;transition:.18s;pointer-events:none}.nh7p500-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .nh7p500-blessing{margin-top:14px;padding:13px;border:1px solid color-mix(in srgb,var(--nh7p-text) 14%,transparent);border-radius:17px;background:color-mix(in srgb,var(--nh7p-card) 72%,transparent)}.nh7p500-blessing[hidden]{display:none!important}.nh7p500-blessing p{margin:0 0 10px;font-size:.78rem;color:var(--nh7p-muted);line-height:1.55}.nh7p500-blessing button{width:100%;min-height:42px;border:0;border-radius:12px;background:var(--nh7p-text);color:var(--nh7p-bg);font-weight:850}
 html.nh7p500-active body #view{padding-bottom:calc(128px + env(safe-area-inset-bottom,0px))!important}html.nh7p500-open,html.nh7p500-open body{overflow:hidden!important}
@@ -116,9 +117,16 @@ function ensure(){
           <button type="button" data-queue><span>☷</span><small>${L('صف پخش','Queue','Red')}</small></button>
         </div>
         <div class="nh7p500-volume" data-volume-row><span>🔈</span><input data-volume type="range" min="0" max="1" step="0.05" value="1"><span>🔊</span></div>
+        <small class="nh7p500-volume-note" data-volume-note>${L('در آیفون، صدای سیستم با دکمه‌های گوشی کنترل می‌شود.','On iPhone, system volume is controlled by the phone buttons.','Na iPhoneu se glasnoća sustava kontrolira tipkama uređaja.')}</small>
         <div class="nh7p500-queue" data-queue-panel><div class="nh7p500-panel-head"><strong>${L('صف پخش','Up Next','Sljedeće')}</strong><button type="button" data-queue-close>×</button></div><div class="nh7p500-queue-list" data-queue-list></div></div>
         <section class="nh7p500-related" data-related-panel hidden><div class="nh7p500-panel-head"><strong>${L('مرتبط و پیشنهادی','Related & Suggested','Povezano i predloženo')}</strong></div><div class="nh7p500-related-strip" data-related-list></div></section>
-        <div class="nh7p500-blessing" data-blessing hidden><p>${L('برای دیدن یا نوشتن برکت‌ها، پیام فعلی باز می‌شود؛ پخش صوت ادامه پیدا می‌کند.','Open the current message to view or write blessings; audio keeps playing.','Otvorite trenutnu poruku za blagoslove; reprodukcija se nastavlja.')}</p><button type="button" data-open-blessings>${L('باز کردن برکت‌ها','Open blessings','Otvori blagoslove')}</button></div>
+      </div>
+      <div class="nh7p500-social-overlay" data-social-overlay hidden>
+        <button type="button" class="nh7p500-social-backdrop" data-social-close aria-label="${L('بستن','Close','Zatvori')}"></button>
+        <section class="nh7p500-social-sheet">
+          <div class="nh7p500-panel-head"><strong>${L('برکت‌ها','Blessings','Blagoslovi')}</strong><button type="button" data-social-close>×</button></div>
+          <div class="nh7p500-social-proxy" data-social-proxy></div>
+        </section>
       </div>
     </section>`;
   document.body.appendChild(root);
@@ -132,7 +140,7 @@ function setExpanded(value){
   if(full)full.hidden=!expanded;
   document.documentElement.classList.toggle('nh7p500-open',expanded);
   if(expanded){const qp=r.querySelector('[data-queue-panel]');if(qp)qp.hidden=false;renderQueue()}
-  if(!expanded){const bp=r.querySelector('[data-blessing]');if(bp)bp.hidden=true}
+  if(!expanded)closeBlessings();
   sync();
 }
 
@@ -225,27 +233,31 @@ function renderRelated(){
   p.hidden=!rel.length;list.innerHTML=rel.map(x=>'<button type="button" class="nh7p500-related-card" data-related-id="'+escapeHtml(mediaId(x))+'"><img src="'+artworkFor(x).replace(/"/g,'&quot;')+'" alt=""><b>'+escapeHtml(titleFor(x))+'</b></button>').join('');
 }
 
+function closeBlessings(){
+  const r=root;if(!r)return;const overlay=r.querySelector('[data-social-overlay]'),proxy=r.querySelector('[data-social-proxy]');
+  if(overlay)overlay.hidden=true;if(proxy){proxy.replaceChildren();delete proxy.dataset.sermonCard}
+}
 function openBlessings(){
   const item=state().current;if(!isSermon(item))return;
-  setExpanded(false);
-  engine()?.openCurrentAudio?.();
+  const r=ensure(),overlay=r.querySelector('[data-social-overlay]'),proxy=r.querySelector('[data-social-proxy]');
+  if(!overlay||!proxy)return;
+  proxy.replaceChildren();proxy.dataset.sermonCard=mediaId(item);overlay.hidden=false;
+  try{window.NH7_SERMON_SOCIAL_PATCH?.()}catch(_){}
   let tries=0;
   const timer=setInterval(()=>{
-    const card=document.querySelector(`[data-sermon-card="${CSS.escape(mediaId(item))}"]`);
-    const social=card?.querySelector('[data-nh7-social-v440]');
-    if(card&&social){
+    const social=proxy.querySelector('[data-nh7-social-v440]');
+    if(social){
       clearInterval(timer);
-      window.NH7_SERMON_SOCIAL_REFRESH_CARD?.(card);
-      social.scrollIntoView({behavior:'smooth',block:'center'});
-      const compose=social.querySelector('[data-compose]');
-      if(compose&&!compose.classList.contains('open'))social.querySelector('[data-bless]')?.click();
-    }else if(tries++>25)clearInterval(timer);
-  },120);
+      try{window.NH7_SERMON_SOCIAL_REFRESH_CARD?.(proxy)}catch(_){}
+      setTimeout(()=>{const compose=social.querySelector('[data-compose]');if(compose&&!compose.classList.contains('open'))social.querySelector('[data-bless]')?.click()},80);
+    }else if(tries++>25){clearInterval(timer);notice(L('بخش برکت‌ها آماده نشد. دوباره تلاش کنید.','Blessings did not load. Please try again.','Blagoslovi se nisu učitali. Pokušajte ponovno.'))}
+  },80);
 }
 
 function bind(){
   root.addEventListener('click',event=>{
     const {audio:a}=state();
+    if(event.target.closest('[data-social-close]'))return closeBlessings();
     if(event.target.closest('[data-expand]'))return setExpanded(true);
     if(event.target.closest('[data-collapse]'))return setExpanded(false);
     if(event.target.closest('[data-close]'))return closePlayer();
@@ -276,7 +288,12 @@ function bind(){
       const n=root.querySelector('[data-now]');if(n)n.textContent=fmt(seekPreview);return
     }
     if(event.target.matches('[data-volume]')){
-      if(isIOSWeb()){notice(L('در آیفون، حجم صدا را با دکمه‌های خود گوشی تنظیم کنید.','On iPhone, use the phone volume buttons.','Na iPhoneu koristite tipke za glasnoću.'));return}
+      if(isIOSWeb()){
+        iosVolumeVisual=Math.max(0,Math.min(1,Number(event.target.value)||0));
+        const bridge=window.NH7_NATIVE_VOLUME_V500;
+        if(bridge?.setVolume){Promise.resolve(bridge.setVolume(iosVolumeVisual)).catch(()=>{});return}
+        notice(L('در این تست وب، iPhone اجازهٔ تغییر صدای سیستم از اسلایدر را نمی‌دهد؛ از دکمه‌های گوشی استفاده کنید.','In this web test, iPhone does not allow system volume changes from the slider; use the phone buttons.','U ovom web testu iPhone ne dopušta promjenu sistemske glasnoće klizačem; koristite tipke uređaja.'));return
+      }
       engine()?.setMediaVolume?.(event.target.value);
     }
   });
@@ -298,6 +315,7 @@ function sync(){
   const duration=Number.isFinite(a.duration)&&a.duration>0?a.duration:(Number(item?.duration_seconds||0)||Number(item?.duration_minutes||0)*60||0);
   const now=Number(a.currentTime||0),progress=duration>0?Math.max(0,Math.min(100,now/duration*100)):0;
   const ttl=titleFor(item),artist=artistFor(item),art=artworkFor(item),rate=Number(a.playbackRate||1);
+  const socialProxy=r.querySelector('[data-social-proxy]');if(socialProxy?.dataset?.sermonCard&&socialProxy.dataset.sermonCard!==mediaId(item))closeBlessings();
   r.querySelectorAll('[data-title],[data-full-title]').forEach(n=>n.textContent=ttl);
   r.querySelector('[data-mini-meta]').textContent=`${fmt(now)} · ${rate}×`;
   r.querySelector('[data-artist]').textContent=artist;
@@ -319,8 +337,10 @@ function sync(){
   }
   const blessingPanel=r.querySelector('[data-blessing]');if(blessingPanel&&!isSermon(item))blessingPanel.hidden=true;
   const volumeRow=r.querySelector('[data-volume-row]'),volume=r.querySelector('[data-volume]');
-  const canVolume=!isIOSWeb()&&s.volumeControlSupported!==false;
-  if(volumeRow)volumeRow.hidden=!canVolume;if(volume&&!volume.matches(':active'))volume.value=String(Number(a.volume??1));
+  const canVolume=s.volumeControlSupported!==false;
+  if(volumeRow)volumeRow.hidden=false;
+  const volumeNote=r.querySelector('[data-volume-note]');if(volumeNote)volumeNote.classList.toggle('show',isIOSWeb());
+  if(volume&&!volume.matches(':active'))volume.value=isIOSWeb()?String(iosVolumeVisual):String(Number(a.volume??1));
   const muteIcon=r.querySelector('[data-mute-icon]');if(muteIcon)muteIcon.textContent=a.muted?'🔇':Number(a.volume||1)<.5?'🔉':'🔊';
   renderQueue();renderRelated();
   const key=mediaId(item)+'|'+art;
