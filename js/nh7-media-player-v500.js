@@ -125,7 +125,7 @@ function ensure(){
         <button type="button" class="nh7p500-social-backdrop" data-social-close aria-label="${L('بستن','Close','Zatvori')}"></button>
         <section class="nh7p500-social-sheet">
           <div class="nh7p500-panel-head"><strong>${L('برکت‌ها','Blessings','Blagoslovi')}</strong><button type="button" data-social-close>×</button></div>
-          <div class="nh7p500-social-proxy" data-social-proxy></div>
+          <div class="nh7p500-social-proxy" data-social-proxy data-nh7-no-quick-bible></div>
         </section>
       </div>
     </section>`;
@@ -241,7 +241,7 @@ function openBlessings(){
   const item=state().current;if(!isSermon(item))return;
   const r=ensure(),overlay=r.querySelector('[data-social-overlay]'),proxy=r.querySelector('[data-social-proxy]');
   if(!overlay||!proxy)return;
-  proxy.replaceChildren();proxy.dataset.sermonCard=mediaId(item);overlay.hidden=false;
+  proxy.replaceChildren();proxy.dataset.sermonCard=mediaId(item);proxy.dataset.nh7NoQuickBible='1';overlay.hidden=false;
   try{window.NH7_SERMON_SOCIAL_PATCH?.()}catch(_){}
   let tries=0;
   const timer=setInterval(()=>{
