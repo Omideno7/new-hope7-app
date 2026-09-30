@@ -206,3 +206,28 @@ Static verification:
 - Production Social writes: BLOCKED in Safe Integration Preview
 - Production School audio telemetry write: BLOCKED in Safe Integration Preview
 - `main`: NOT MODIFIED
+
+
+## Integration stabilization after legacy-UI collision review
+
+Date: 2026-09-30
+
+The iPhone Safe Integration review exposed remaining collisions between the legacy sermon accordion/player UI and Player 2.0. The feature branch now applies these protections:
+
+- Legacy `nh7-sermon-list-detail-v445` accordion enhancement is skipped when Audio Library 2.0 is active.
+- Any already-inserted legacy accordion row is removed by the Audio Library 2.0 mount.
+- Legacy inline/classic player controls are hidden in the Audio Library and whenever Player 2.0 is active.
+- Audio category chips no longer simulate clicks on hidden legacy tabs; they call `NH7_NAVIGATE('audio', params, true)` directly with the category params.
+- Player 2.0 Like, Blessings, Quick Bible and Share controls now use Player-specific selectors so embedded sermon-social controls cannot collide with Player click delegation.
+- Player tool labels use the active theme's high-contrast text variable; Studio theme variables are preferred when a gallery theme is active.
+- Blessings remain in the in-player overlay instead of navigating/scolling to the legacy sermon card.
+
+Static verification:
+- legacy detail script syntax: PASS
+- Audio Library syntax: PASS
+- Player syntax: PASS
+- legacy accordion guard: PASS
+- direct category navigation: PASS
+- unique Player social/Bible selectors: PASS
+- Safe Integration Production-write blocks: still enabled
+- `main`: NOT MODIFIED
