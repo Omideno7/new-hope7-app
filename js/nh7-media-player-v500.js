@@ -49,6 +49,11 @@ html.nh7p500-active .nh7-mini485,html.nh7p500-active .nh7-now-playing-v484{displ
 .nh7p500-main{display:flex;align-items:center;justify-content:space-around;gap:7px;margin:14px 0}.nh7p500-main button{width:40px;height:40px;border:0;border-radius:50%;background:color-mix(in srgb,var(--nh7p-text) 8%,transparent);color:var(--nh7p-text);font-weight:900;font-size:.84rem}.nh7p500-main .big{width:58px;height:58px;background:var(--nh7p-text);color:var(--nh7p-bg);font-size:1.12rem;box-shadow:0 7px 24px #0004}.nh7p500-main button:disabled{opacity:.3}
 .nh7p500-tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.nh7p500-tools button{min-width:0;min-height:44px;border:1px solid color-mix(in srgb,var(--nh7p-text) 14%,transparent);border-radius:12px;background:color-mix(in srgb,var(--nh7p-card) 76%,transparent);color:var(--nh7p-text);padding:5px 2px;font-weight:800}.nh7p500-tools button span{display:block;font-size:.86rem}.nh7p500-tools button small{display:block;margin-top:2px;font-size:.52rem;color:var(--nh7p-muted);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.nh7p500-tools [data-favorite].on{color:#f59e0b}
 .nh7p500-volume{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;margin-top:10px}.nh7p500-volume input{width:100%;accent-color:var(--nh7p-accent)}.nh7p500-volume[hidden]{display:none!important}
+.nh7p500-panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}.nh7p500-panel-head strong{font-size:.74rem}.nh7p500-panel-head button{width:26px;height:26px;border:0;border-radius:50%;background:color-mix(in srgb,var(--nh7p-text) 8%,transparent);color:var(--nh7p-text);padding:0}
+.nh7p500-queue{margin-top:10px;padding:9px;border:1px solid color-mix(in srgb,var(--nh7p-text) 12%,transparent);border-radius:13px;background:color-mix(in srgb,var(--nh7p-card) 72%,transparent)}.nh7p500-queue[hidden]{display:none!important}.nh7p500-queue-list{display:grid;gap:5px}.nh7p500-queue-item{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:7px;align-items:center;width:100%;min-height:40px;border:0;border-radius:10px;background:color-mix(in srgb,var(--nh7p-text) 5%,transparent);color:var(--nh7p-text);padding:3px 6px;text-align:start}.nh7p500-queue-item img{width:34px;height:34px;border-radius:8px;object-fit:cover}.nh7p500-queue-item b{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.64rem}.nh7p500-queue-item small{font-size:.5rem;color:var(--nh7p-muted)}
+.nh7p500-queue-empty{padding:6px 2px;font-size:.62rem;color:var(--nh7p-muted)}
+.nh7p500-related{margin-top:10px}.nh7p500-related[hidden]{display:none!important}.nh7p500-related-strip{display:flex;gap:7px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}.nh7p500-related-strip::-webkit-scrollbar{display:none}.nh7p500-related-card{width:72px;flex:0 0 72px;border:0;background:transparent;color:var(--nh7p-text);padding:0;text-align:start}.nh7p500-related-card img{display:block;width:72px;height:72px;border-radius:11px;object-fit:cover}.nh7p500-related-card b{display:block;margin-top:4px;font-size:.54rem;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html[dir="rtl"] .nh7p500-queue-item,html[dir="rtl"] .nh7p500-related-card{text-align:right}
 .nh7p500-blessing{margin-top:14px;padding:13px;border:1px solid color-mix(in srgb,var(--nh7p-text) 14%,transparent);border-radius:17px;background:color-mix(in srgb,var(--nh7p-card) 72%,transparent)}.nh7p500-blessing[hidden]{display:none!important}.nh7p500-blessing p{margin:0 0 10px;font-size:.78rem;color:var(--nh7p-muted);line-height:1.55}.nh7p500-blessing button{width:100%;min-height:42px;border:0;border-radius:12px;background:var(--nh7p-text);color:var(--nh7p-bg);font-weight:850}
 html.nh7p500-active body #view{padding-bottom:calc(128px + env(safe-area-inset-bottom,0px))!important}html.nh7p500-open,html.nh7p500-open body{overflow:hidden!important}
 html[dir="rtl"] .nh7p500-copy,html[dir="rtl"] .nh7p500-meta{text-align:right}
@@ -109,7 +114,7 @@ function ensure(){
           <button type="button" data-queue><span>☷</span><small>${L('صف پخش','Queue','Red')}</small></button>
         </div>
         <div class="nh7p500-volume" data-volume-row><span>🔈</span><input data-volume type="range" min="0" max="1" step="0.05" value="1"><span>🔊</span></div>
-        <div class="nh7p500-queue" data-queue-panel hidden><div class="nh7p500-panel-head"><strong>${L('صف پخش','Up Next','Sljedeće')}</strong><button type="button" data-queue-close>×</button></div><div class="nh7p500-queue-list" data-queue-list></div></div>
+        <div class="nh7p500-queue" data-queue-panel><div class="nh7p500-panel-head"><strong>${L('صف پخش','Up Next','Sljedeće')}</strong><button type="button" data-queue-close>×</button></div><div class="nh7p500-queue-list" data-queue-list></div></div>
         <section class="nh7p500-related" data-related-panel hidden><div class="nh7p500-panel-head"><strong>${L('مرتبط و پیشنهادی','Related & Suggested','Povezano i predloženo')}</strong></div><div class="nh7p500-related-strip" data-related-list></div></section>
         <div class="nh7p500-blessing" data-blessing hidden><p>${L('برای دیدن یا نوشتن برکت‌ها، پیام فعلی باز می‌شود؛ پخش صوت ادامه پیدا می‌کند.','Open the current message to view or write blessings; audio keeps playing.','Otvorite trenutnu poruku za blagoslove; reprodukcija se nastavlja.')}</p><button type="button" data-open-blessings>${L('باز کردن برکت‌ها','Open blessings','Otvori blagoslove')}</button></div>
       </div>
@@ -124,6 +129,7 @@ function setExpanded(value){
   const r=ensure(),full=r.querySelector('[data-full]');
   if(full)full.hidden=!expanded;
   document.documentElement.classList.toggle('nh7p500-open',expanded);
+  if(expanded){const qp=r.querySelector('[data-queue-panel]');if(qp)qp.hidden=false;renderQueue()}
   if(!expanded){const bp=r.querySelector('[data-blessing]');if(bp)bp.hidden=true}
   sync();
 }
@@ -195,8 +201,8 @@ function toggleQueue(){const p=ensure().querySelector('[data-queue-panel]');if(!
 function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 function renderQueue(){
   const r=ensure(),s=state(),list=r.querySelector('[data-queue-list]');if(!list)return;
-  const q=Array.isArray(s.playQueue)?s.playQueue:[];
-  list.innerHTML=q.map((x,i)=>'<button type="button" class="nh7p500-queue-item '+(i===s.queueIndex?'current':'')+'" data-queue-index="'+i+'"><img src="'+artworkFor(x).replace(/"/g,'&quot;')+'" alt=""><b>'+escapeHtml(titleFor(x))+'</b><small>'+(i===s.queueIndex?L('در حال پخش','Playing','Reproducira se'):'')+'</small></button>').join('');
+  const q=Array.isArray(s.playQueue)?s.playQueue:[],start=Math.max(0,Number(s.queueIndex||0)+1),next=q.slice(start,start+5);
+  list.innerHTML=next.length?next.map((x,offset)=>'<button type="button" class="nh7p500-queue-item" data-queue-index="'+(start+offset)+'"><img src="'+artworkFor(x).replace(/"/g,'&quot;')+'" alt=""><b>'+escapeHtml(titleFor(x))+'</b><small>'+L('بعدی','Next','Sljedeće')+'</small></button>').join(''):'<div class="nh7p500-queue-empty">'+L('فایل دیگری در صف نیست.','No more items in the queue.','Nema više stavki u redu.')+'</div>';
 }
 function renderRelated(){
   const r=ensure(),item=state().current,p=r.querySelector('[data-related-panel]'),list=r.querySelector('[data-related-list]');
