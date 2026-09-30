@@ -69,3 +69,23 @@ Storage design:
 - No existing table is dropped or altered.
 - Notes, Saved Verses, School Progress, Audio, Auth and Player 2.0 are untouched.
 - No app-store release is changed.
+
+
+## Revision — 2026-09-30
+
+### Exact testimony guide
+- The Persian healing-testimony prompts must follow the church-provided wording and content exactly.
+- The prompts remain grouped into four readable sections, but visible question numbers are omitted.
+- The same guide is available in Persian, English, and Croatian.
+- Guided Recording cycles through the same 14 topics without showing numeric labels.
+- Intro explains that sharing a testimony passes on God's love, hope and faith to others.
+- Supporting Scripture references shown in the module:
+  - Mark 5:19
+  - Psalm 66:16
+  - Revelation 12:11
+
+### Profile photo framing
+- After selecting a profile photo, user can open an in-app circular crop/framing editor.
+- User can drag the photo with touch/pointer gestures and zoom from 1x to 3x.
+- The app stores photo framing metadata (`photo_position_x`, `photo_position_y`, `photo_zoom`) so the selected framing is preserved.
+- The original photo can remain intact; the UI applies saved framing metadata when rendering the circular avatar.
