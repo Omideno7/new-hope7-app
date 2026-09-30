@@ -21,7 +21,7 @@ alter table public.nh7_user_profiles_v502 enable row level security;
 
 drop policy if exists nh7_profile_read_own_v502 on public.nh7_user_profiles_v502;
 create policy nh7_profile_read_own_v502 on public.nh7_user_profiles_v502
-for select to authenticated using (user_id=auth.uid());
+for select to authenticated using (user_id=(select auth.uid()));
 
 drop policy if exists nh7_profile_insert_own_v502 on public.nh7_user_profiles_v502;
 create policy nh7_profile_insert_own_v502 on public.nh7_user_profiles_v502
@@ -89,23 +89,18 @@ on public.nh7_testimonies_v502(status,created_at desc);
 alter table public.nh7_testimonies_v502 enable row level security;
 
 drop policy if exists nh7_testimony_public_approved_v502 on public.nh7_testimonies_v502;
-create policy nh7_testimony_public_approved_v502 on public.nh7_testimonies_v502
-for select to anon,authenticated
-using (
-  status='approved'
-  and consent_public=true
-  and nullif(trim(published_audio_path),'') is not null
-);
 
 drop policy if exists nh7_testimony_read_own_v502 on public.nh7_testimonies_v502;
 create policy nh7_testimony_read_own_v502 on public.nh7_testimonies_v502
-for select to authenticated using (user_id=auth.uid());
+for select to authenticated using (user_id=(select auth.uid()));
 
 drop policy if exists nh7_testimony_insert_own_v502 on public.nh7_testimonies_v502;
 create policy nh7_testimony_insert_own_v502 on public.nh7_testimonies_v502
 for insert to authenticated with check (
-  user_id=auth.uid()
+  user_id=(select auth.uid())
   and status='pending'
+  and published_audio_path=''
+  and audio_submission_path like (select auth.uid())::text || '/%'
   and consent_public=true
   and (
     testimony_type<>'healing'
@@ -116,8 +111,13 @@ for insert to authenticated with check (
 drop policy if exists nh7_testimony_update_own_pending_v502 on public.nh7_testimonies_v502;
 create policy nh7_testimony_update_own_pending_v502 on public.nh7_testimonies_v502
 for update to authenticated
-using (user_id=auth.uid() and status='pending')
-with check (user_id=auth.uid() and status='pending');
+using (user_id=(select auth.uid()) and status='pending')
+with check (
+  user_id=(select auth.uid())
+  and status='pending'
+  and published_audio_path=''
+  and audio_submission_path like (select auth.uid())::text || '/%'
+);
 
 insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
 values('nh7-testimony-submissions-v502','nh7-testimony-submissions-v502',false,157286400,
@@ -197,11 +197,58 @@ alter table public.nh7_prayer_requests_v502 enable row level security;
 
 drop policy if exists nh7_prayer_insert_own_v502 on public.nh7_prayer_requests_v502;
 create policy nh7_prayer_insert_own_v502 on public.nh7_prayer_requests_v502
-for insert to authenticated with check (user_id=auth.uid() and status='new');
+for insert to authenticated with check (user_id=(select auth.uid()) and status='new');
 
 drop policy if exists nh7_prayer_read_own_v502 on public.nh7_prayer_requests_v502;
 create policy nh7_prayer_read_own_v502 on public.nh7_prayer_requests_v502
 for select to authenticated using (user_id=auth.uid());
+
+-- =========================================================
+-- Safe public testimony feed.
+-- Only publication-safe fields are returned; private submission paths,
+-- user IDs and health-consent metadata are never exposed.
+-- =========================================================
+create or replace function public.nh7_public_testimony_feed_v502(
+  p_language text default null,
+  p_limit integer default 100
+)
+returns table(
+  id uuid,
+  title text,
+  display_name text,
+  testimony_type text,
+  note_text text,
+  language text,
+  audio_duration_seconds integer,
+  published_audio_path text,
+  published_at timestamptz
+)
+language sql
+stable
+security definer
+set search_path=''
+as $
+  select
+    t.id,
+    t.title,
+    case when t.show_name then t.display_name else '' end as display_name,
+    t.testimony_type,
+    t.note_text,
+    t.language,
+    t.audio_duration_seconds,
+    t.published_audio_path,
+    t.published_at
+  from public.nh7_testimonies_v502 t
+  where t.status='approved'
+    and t.consent_public=true
+    and nullif(trim(t.published_audio_path),'') is not null
+    and (
+      nullif(trim(coalesce(p_language,'')),'') is null
+      or t.language=lower(trim(p_language))
+    )
+  order by t.published_at desc nulls last, t.created_at desc
+  limit greatest(1,least(coalesce(p_limit,100),500));
+$;
 
 -- =========================================================
 -- Owner-only admin RPCs. No Prayer Servant/delegated panel.
@@ -330,8 +377,15 @@ as $$
 declare v_changed boolean:=false;
 begin
   perform private.nh7_admin_require_owner_v350();
-  if trim(coalesce(p_published_audio_path,''))='' then
-    raise exception 'Published audio path is required' using errcode='22023';
+  if trim(coalesce(p_published_audio_path,''))='' or trim(p_published_audio_path) not like 'approved/%' then
+    raise exception 'A valid approved audio path is required' using errcode='22023';
+  end if;
+  if not exists(
+    select 1 from storage.objects o
+    where o.bucket_id='nh7-testimony-published-v502'
+      and o.name=trim(p_published_audio_path)
+  ) then
+    raise exception 'Published testimony audio object was not found' using errcode='P0002';
   end if;
   update public.nh7_testimonies_v502
   set status='approved',
@@ -358,6 +412,18 @@ begin
   return coalesce(v_changed,false);
 end;
 $$;
+
+-- Explicit Data API grants (required as Supabase no longer guarantees automatic exposure for new tables).
+revoke all on table public.nh7_user_profiles_v502 from anon,authenticated;
+revoke all on table public.nh7_testimonies_v502 from anon,authenticated;
+revoke all on table public.nh7_prayer_requests_v502 from anon,authenticated;
+
+grant select,insert,update on table public.nh7_user_profiles_v502 to authenticated;
+grant select,insert,update on table public.nh7_testimonies_v502 to authenticated;
+grant select,insert on table public.nh7_prayer_requests_v502 to authenticated;
+
+revoke all on function public.nh7_public_testimony_feed_v502(text,integer) from public,anon,authenticated,service_role;
+grant execute on function public.nh7_public_testimony_feed_v502(text,integer) to anon,authenticated;
 
 revoke all on function public.nh7_owner_prayer_feed_v502(text,integer) from public,anon,authenticated,service_role;
 revoke all on function public.nh7_owner_prayer_set_status_v502(uuid,text) from public,anon,authenticated,service_role;
