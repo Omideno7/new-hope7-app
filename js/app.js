@@ -979,7 +979,7 @@ async function collectRegistration(kind){
     data.status=finalStatus;localStorage.setItem(key,JSON.stringify(data));
     const message=existingAccount?(resetLinkSent?say('درخواست شما ذخیره شد. این ایمیل از قبل حساب داشته است؛ لینک تعیین رمز تازه ارسال شد. ایمیل و پوشه Spam/Junk را بررسی کنید و سپس با رمز جدید وارد شوید.','Your request was saved. This email already had an account, so a password-reset link was sent. Check your email and Spam/Junk, set a new password, then sign in.','Vaš zahtjev je spremljen. Ovaj e-mail već ima račun pa je poslana poveznica za obnovu lozinke. Provjerite e-mail i Spam/Junk, postavite novu lozinku i prijavite se.'):say('درخواست شما ذخیره شد. این ایمیل از قبل حساب دارد؛ از صفحه ورود «فراموشی رمز عبور» را بزنید و رمز تازه بسازید.','Your request was saved. This email already has an account; use “Forgot password” on the sign-in page to set a new password.','Vaš zahtjev je spremljen. Ovaj e-mail već ima račun; na prijavi odaberite „Zaboravili ste lozinku?” i postavite novu lozinku.')):finalStatus==='approved'?say('ثبت‌نام شما تأیید شده است.','Your registration is approved.','Vaša registracija je odobrena.'):say('ثبت‌نام شما با موفقیت انجام شد. اکنون باید منتظر تأیید مدیر مدرسه بمانید.','Your registration was submitted successfully. Please wait for school administrator approval.','Registracija je uspješno poslana. Pričekajte odobrenje administratora škole.');
     setBusy(false,'✓ '+message);alert(message);
-    setTimeout(()=>{if(data.salvationPrayer==='no')navigate('salvation',{},true);else render(kind==='meeting'?'meetings':'school',{},true)},250);
+    setTimeout(()=>{if(window.NH7DeepLinksV501?.resumePending?.())return;if(data.salvationPrayer==='no')navigate('salvation',{},true);else render(kind==='meeting'?'meetings':'school',{},true)},250);
   }catch(e){
     console.warn(e);setBusy(false,say('درخواست هنوز ثبت نشده است. اینترنت را بررسی کنید و دوباره تلاش کنید.','The request has not been submitted yet. Check your connection and try again.','Zahtjev još nije poslan. Provjerite vezu i pokušajte ponovno.'));
     alert(statusEl?.textContent||String(e.message||e));
@@ -1770,6 +1770,7 @@ async function signInSchool(){
     await restoreAccountCloudData(true);
     invalidateSchoolSnapshot(email);
     await getSchoolSnapshot(email,true);
+    if(window.NH7DeepLinksV501?.resumePending?.())return;
     navigate('school',{enter:true},true);
   }catch(e){
     console.warn('School sign-in failed',e);
@@ -2222,14 +2223,17 @@ async function qna(opts={}){
   };
 }
 async function account(){
-  const session=authSession();
+  const session=authSession(),deepPending=window.NH7DeepLinksV501?.pending?.()||null;
   if(isAccountLoggedIn()){
+    if(deepPending&&window.NH7DeepLinksV501?.resumePending?.())return;
     const profile=getKnownUserProfile(); const email=authEmail()||profile.email||'';
     view.innerHTML=card(tr('account'), `<h3>${tr('myAccess')}</h3><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||session?.user?.user_metadata?.full_name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(email)}</p></div><button class="danger-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button>`);
     $('#logoutAccountBtn')?.addEventListener('click',logoutAccount); return;
   }
-  view.innerHTML=card(tr('account'), `<p class="muted">${tr('signedOut')}</p><p>${tr('signInHint')}</p><input id="accountEmail" type="email" autocomplete="email" placeholder="${tr('email')}"><div class="password-wrap"><input id="accountPassword" type="password" autocomplete="current-password" placeholder="${tr('password')}"><button type="button" class="password-eye" data-toggle-password="accountPassword">👁</button></div><button class="primary-btn wide-btn" id="signInBtn">${tr('signIn')}</button><button class="link-button" id="forgotPasswordToggle">${tr('forgotPassword')}</button><div id="forgotPasswordPanel" class="hidden"><input id="resetEmail" type="email" placeholder="${tr('email')}"><button class="secondary-btn" id="resetPasswordBtn">${tr('resetPassword')}</button><p id="resetMsg" class="muted"></p></div>`);
+  const deepNotice=deepPending?`<div class="notice"><strong>${html(state.lang==='fa'?'برای باز کردن لینک ابتدا وارد حساب شوید یا ثبت‌نام کنید.':state.lang==='hr'?'Za otvaranje poveznice najprije se prijavite ili registrirajte.':'Sign in or register first to open this link.')}</strong><p class="muted">${html(state.lang==='fa'?'بعد از ورود موفق، همان آیه یا موعظه به‌صورت خودکار باز می‌شود.':state.lang==='hr'?'Nakon uspješne prijave automatski će se otvoriti isti stih ili propovijed.':'After successful sign-in, the same verse or sermon will open automatically.')}</p></div>`:'';
+  view.innerHTML=card(tr('account'), `${deepNotice}<p class="muted">${tr('signedOut')}</p><p>${tr('signInHint')}</p><input id="accountEmail" type="email" autocomplete="email" placeholder="${tr('email')}"><div class="password-wrap"><input id="accountPassword" type="password" autocomplete="current-password" placeholder="${tr('password')}"><button type="button" class="password-eye" data-toggle-password="accountPassword">👁</button></div><button class="primary-btn wide-btn" id="signInBtn">${tr('signIn')}</button>${deepPending?`<button class="secondary-btn wide-btn" id="deepLinkRegisterBtn">${html(state.lang==='fa'?'ثبت‌نام جدید':state.lang==='hr'?'Nova registracija':'New registration')}</button>`:''}<button class="link-button" id="forgotPasswordToggle">${tr('forgotPassword')}</button><div id="forgotPasswordPanel" class="hidden"><input id="resetEmail" type="email" placeholder="${tr('email')}"><button class="secondary-btn" id="resetPasswordBtn">${tr('resetPassword')}</button><p id="resetMsg" class="muted"></p></div>`);
   $('#signInBtn')?.addEventListener('click',signInAccount);
+  $('#deepLinkRegisterBtn')?.addEventListener('click',()=>navigate('school',{form:true,deepLink:1},true));
   $('#forgotPasswordToggle')?.addEventListener('click',()=>$('#forgotPasswordPanel')?.classList.toggle('hidden'));
   $('#resetPasswordBtn')?.addEventListener('click',resetPassword);
   bindPasswordToggles();
@@ -2254,6 +2258,7 @@ async function signInAccount(){
     await restoreAccountCloudData(true);
     invalidateSchoolSnapshot(email);
     await getSchoolSnapshot(email,true);
+    if(window.NH7DeepLinksV501?.resumePending?.())return;
     navigate('school',{},true);
   }catch(e){
     console.warn('Account sign-in failed',e);
