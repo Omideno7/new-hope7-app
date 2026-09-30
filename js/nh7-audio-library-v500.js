@@ -26,7 +26,7 @@ function addStyle(){
 .nh7al500-search{display:flex;align-items:center;gap:7px;height:43px;padding:0 12px;border-radius:14px;border:1px solid var(--line,#ffffff20);background:color-mix(in srgb,var(--card,#0c242d) 82%,transparent)}.nh7al500-search input{min-width:0;flex:1;border:0!important;background:transparent!important;outline:0;color:inherit!important;padding:0!important}
 .nh7al500-chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}.nh7al500-chips::-webkit-scrollbar{display:none}.nh7al500-chip{flex:0 0 auto;border:1px solid var(--line,#ffffff20);background:color-mix(in srgb,var(--card,#0c242d) 78%,transparent);color:inherit;border-radius:999px;padding:6px 10px;font-size:.63rem}.nh7al500-chip.active{background:var(--accent,#29c2c8);color:#fff;border-color:var(--accent,#29c2c8);font-weight:850}
 .nh7al500-section{display:grid;gap:6px}.nh7al500-section[hidden]{display:none}.nh7al500-head{display:flex;justify-content:space-between;align-items:center}.nh7al500-head strong{font-size:.74rem}.nh7al500-strip{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}.nh7al500-strip::-webkit-scrollbar{display:none}.nh7al500-card{width:92px;flex:0 0 92px;border:0;background:transparent;color:inherit;padding:0;text-align:start}.nh7al500-card img{width:92px;height:92px;border-radius:13px;object-fit:cover;display:block}.nh7al500-card b{display:block;margin-top:4px;font-size:.58rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.nh7al500-card small{display:block;font-size:.49rem;opacity:.58;margin-top:1px}
-.card:has(#sermonSearch){padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}.card:has(#sermonSearch)>h2{display:none!important}#sermonSearch,.tabs:has([data-go="audio"]){display:none!important}
+.nh7al500-host{padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}.nh7al500-host>h2{display:none!important}#sermonSearch,.nh7al500-host>.tabs{display:none!important}
 .sermon-list{border:1px solid var(--line,#ffffff20)!important;border-radius:13px!important;overflow:hidden!important;background:color-mix(in srgb,var(--card,#0c242d) 70%,transparent)!important}
 .sermon-card{position:relative!important;padding:1px 4px!important}.sermon-card+.sermon-card{border-top:1px solid var(--line,#ffffff20)!important}
 .sermon-card-main{display:grid!important;grid-template-columns:36px minmax(0,1fr) auto!important;gap:6px!important;align-items:center!important;min-height:38px!important}
@@ -67,7 +67,7 @@ function patch(){
  addStyle();
  const search=document.getElementById('sermonSearch'),list=document.querySelector('.sermon-list');
  if(!search||!list||!window.__sermonMap)return;
- const host=search.parentElement;if(!host)return;
+ const host=search.parentElement;if(!host)return;host.classList.add('nh7al500-host');
  if(!host.querySelector(':scope > .nh7al500')){
    const oldTabs=host.querySelector('.tabs');
    const wrap=document.createElement('div');wrap.className='nh7al500';
