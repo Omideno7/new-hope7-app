@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>NH7 Community Preview v2</title>
+<style>
+:root{--bg:#071820;--card:#0d2530;--soft:#113541;--text:#f7fbfd;--muted:#9cb2bb;--line:#ffffff18;--accent:#2bbdc4;--good:#79ddb2;--warn:#ffd685;--danger:#d65d68}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#06141b,#0a222b);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,sans-serif}button,input,textarea,select{font:inherit}
+main{max-width:800px;margin:auto;padding:18px 14px 60px}.top{position:sticky;top:0;z-index:5;background:#071820e8;backdrop-filter:blur(18px);padding:8px 0}.top h1{font-size:1.12rem;margin:5px 0}.badge,.pill{display:inline-block;padding:5px 9px;border:1px solid #ffffff20;border-radius:999px;font-size:.68rem}.badge{color:#c4fbff;border-color:#2bbdc455}.tabs{display:flex;gap:7px;overflow:auto;padding:7px 0}.tabs button{white-space:nowrap;border:1px solid var(--line);border-radius:999px;background:#ffffff08;color:#fff;padding:8px 11px}.tabs button.active{background:var(--accent)}
+.panel{display:none}.panel.active{display:block}.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:15px;margin:12px 0}.muted{color:var(--muted);font-size:.78rem;line-height:1.8}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.tile{min-height:100px;text-align:right;background:var(--soft);color:#fff;border:1px solid var(--line);border-radius:17px;padding:13px}.tile span{font-size:1.6rem;display:block}.tile strong{display:block;margin:6px 0}.field{display:grid;gap:6px;margin:10px 0}.field label{font-size:.78rem;font-weight:800}.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:13px;background:#071820;color:#fff;padding:11px}.field textarea{min-height:130px}.btn{border:0;border-radius:13px;background:var(--accent);color:#fff;padding:10px 13px;font-weight:800}.secondary{background:#ffffff12;border:1px solid var(--line)}.danger{background:var(--danger)}.toolbar,.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.notice{border:1px solid #2bbdc455;background:#2bbdc412;border-radius:14px;padding:11px;font-size:.78rem;line-height:1.8}.warning{border-color:#ffd68555;background:#ffd68512}.success{border-color:#79ddb255;background:#79ddb211}.guide details{border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin:8px 0;background:#ffffff05}.guide summary{font-weight:800}.guide li{margin:7px 0;line-height:1.85}.phase{border-inline-start:3px solid var(--accent);padding-inline-start:10px;margin:12px 0}.record{border:1px solid var(--line);border-radius:16px;padding:12px;background:#071820}.recdot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#e45863;margin-inline-end:6px;animation:p 1s infinite}@keyframes p{50%{opacity:.3}}audio{width:100%;margin-top:8px}.audio,.prayer{border:1px solid var(--line);border-radius:16px;padding:12px;margin:9px 0;background:#ffffff07}.audiohead{display:flex;gap:10px;align-items:flex-start}.art{width:50px;height:50px;border-radius:13px;background:linear-gradient(145deg,#145667,#0b303b);display:grid;place-items:center;font-size:1.45rem}.copy{flex:1}.meta{font-size:.7rem;color:var(--muted)}.avatar{width:90px;height:90px;border-radius:50%;background:#123946;display:grid;place-items:center;font-size:2rem;overflow:hidden}.avatar img{width:100%;height:100%;object-fit:cover}.checks{display:grid;gap:7px;margin:10px 0}.checks label{display:flex;align-items:flex-start;gap:8px;font-size:.78rem;line-height:1.7}.step{border:1px solid var(--line);border-radius:15px;padding:12px;background:#ffffff06;margin:10px 0}.bar{height:5px;background:#ffffff12;border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:var(--accent)}.small{font-size:.72rem}.privacy{border-inline-start:3px solid var(--good)}
+@media(max-width:520px){.grid{grid-template-columns:1fr 1fr}}
+@media print{.top,.tabs,.no-print,.badge{display:none!important}body{background:#fff;color:#111}.card,.prayer{background:#fff;border-color:#aaa}.panel{display:none!important}#adminPrayer.active{display:block!important}.muted,.meta{color:#555}}
+</style>
+</head>
+<body><main>
+<div class="top"><span class="badge">SAFE PREVIEW · LOCAL ONLY</span><h1>New Hope 7 — Prayer + Audio Testimonies + Profile</h1><div class="tabs">
+<button class="active" data-tab="more">More</button><button data-tab="testimonies">شهادت‌ها</button><button data-tab="prayer">درخواست دعا</button><button data-tab="profile">پروفایل</button><button data-tab="adminPrayer">Admin · دعا</button><button data-tab="adminTestimonies">Admin · شهادت</button>
+</div></div>
+
+<section class="panel active" id="more"><div class="card"><h2>بخش «بیشتر»</h2><div class="grid">
+<button class="tile" data-open="testimonies"><span>✨</span><strong>شهادت‌ها</strong><small class="muted">شنیدن و ارسال شهادت صوتی</small></button>
+<button class="tile" data-open="prayer"><span>🙏</span><strong>درخواست دعا</strong><small class="muted">خصوصی؛ مستقیم برای Admin</small></button>
+<button class="tile" data-open="profile"><span>👤</span><strong>پروفایل من</strong><small class="muted">نام و عکس شخصی</small></button>
+<button class="tile"><span>🎧</span><strong>پیام‌های صوتی</strong><small class="muted">بخش فعلی اپ</small></button>
+</div></div></section>
+
+<section class="panel" id="prayer"><div class="card">
+<h2>🙏 درخواست دعا</h2>
+<div class="notice privacy"><strong>خصوصی:</strong> این درخواست فقط به Admin کلیسای امیدنو۷ می‌رسد و عمومی نمی‌شود.</div>
+<p><strong>موضوع درخواست دعای خود را کامل و روشن توضیح دهید</strong> تا دقیقاً بدانیم برای چه مسئله‌ای دعا کنیم. لطفاً بنویسید مشکل از چه زمانی شروع شده، وضعیت فعلی چیست، چه چیزی بیشترین فشار را ایجاد کرده و انتظار دارید برای چه تغییری دعا شود.</p>
+<p class="muted">اگر خودتان موضوع را مرتبط با نبرد روحانی یا نیاز به رهایی می‌دانید، می‌توانید تجربه و نگرانی خود را هم توضیح دهید تا بدانیم چگونه برای شما دعا کنیم. رمز عبور، شماره مدرک هویتی یا اطلاعات بانکی ننویسید.</p>
+<div class="field"><label>نام</label><input id="prayerName" value="Yuhana"></div>
+<div class="field"><label>موضوع و شرح کامل درخواست دعا</label><textarea id="prayerText" placeholder="لطفاً با جزئیات توضیح دهید دقیقاً برای چه چیزی دعا کنیم..."></textarea></div>
+<button class="btn" id="sendPrayer">ارسال خصوصی درخواست دعا</button><div id="prayerMsg" style="margin-top:10px"></div>
+</div></section>
+
+<section class="panel" id="testimonies">
+<div class="card">
+<h2>✨ چرا شهادت خود را به اشتراک بگذاریم؟</h2>
+<p>شهادت شما روایت کاری است که خدا در زندگی‌تان انجام داده است. وقتی آن را روشن، صادقانه و با جزئیات بیان می‌کنید، شنونده می‌تواند مسیر شما را از مشکل تا تغییر و نتیجه دنبال کند و برای دریافت امید و ایمان تشویق شود.</p>
+<div class="notice"><strong>صداقت مهم‌تر از هیجان است:</strong> چیزی را که واقعاً تجربه کرده‌اید بگویید و اغراق نکنید. در شهادت‌های پزشکی، تشخیص، دارو یا نتیجهٔ آزمایش را فقط همان‌طور که واقعاً بوده بیان کنید.</div>
+<p class="muted">ویس ابتدا خصوصی برای Admin ارسال می‌شود. فقط بعد از تأیید شما و Admin در اپ منتشر خواهد شد.</p>
+</div>
+
+<div class="card guide">
+<h2>🎙️ راهنمای ضبط شهادت شفای الهی</h2>
+<p class="muted">لازم نیست ۱۴ جواب جداگانه تایپ کنید؛ این راهنما را ببینید و یک ویس پیوسته ضبط کنید.</p>
+<details open><summary>قبل از ضبط</summary><ul><li>جای آرام، صدای واضح و نزدیک به میکروفن.</li><li>طبیعی، صادقانه و با انرژی صحبت کنید.</li><li>اگر چیزی را دقیق نمی‌دانید، حدس نزنید.</li></ul></details>
+<div class="phase"><strong>بخش ۱ — قبل از شفا</strong></div>
+<details><summary>۱ تا ۴ · معرفی، بیماری، تشخیص و درمان</summary><ol>
+<li>نام، سن، شهر و کشور.</li><li>نام بیماری/عارضه، زمان شروع، علائم، شدت، مدت، تأثیر بر کار و زندگی؛ کارهایی که نمی‌توانستید انجام دهید و وسایل کمکی.</li><li>آزمایش‌ها و تشخیص پزشک؛ در صورت امکان نام پزشکی.</li><li>داروها، درمان‌ها، متخصص و نتیجهٔ درمان.</li></ol></details>
+<div class="phase"><strong>بخش ۲ — رسیدن به جلسه و لحظهٔ دریافت</strong></div>
+<details><summary>۵ تا ۷ · جلسه دعا و تغییر فوری</summary><ol start="5">
+<li>چگونه درباره جلسات دعا شنیدید و چرا تصمیم گرفتید شرکت کنید؟</li><li>حضوری یا آنلاین؟ هنگام عبادت و موعظه چه تجربه‌ای داشتید؟ چه کلمه یا اعلامی برایتان برجسته بود؟</li><li>بعد از دعا چه تغییر فوری دیدید یا احساس کردید؟</li></ol></details>
+<div class="phase"><strong>بخش ۳ — بعد از جلسه</strong></div>
+<details><summary>۸ تا ۱۰ · تغییرات بعدی و پیگیری پزشکی</summary><ol start="8">
+<li>همان شب و روزهای بعد چه تغییراتی داشتید؟</li><li>اکنون چه کارهایی را می‌توانید انجام دهید که قبلاً نمی‌توانستید؟</li><li>آیا هنوز دارو مصرف می‌کنید؟ آیا پزشک/آزمایش پیگیری داشتید و نتیجه چه بود؟</li></ol></details>
+<div class="phase"><strong>بخش ۴ — معنی و دعوت</strong></div>
+<details><summary>۱۱ تا ۱۴ · اهمیت، تأثیر، دعوت و تشکر</summary><ol start="11">
+<li>چرا این اتفاق برای شما معجزه یا پاسخ دعاست؟</li><li>چه تأثیری بر ایمان و زندگی شما گذاشت؟</li><li>چگونه شهادت را با دیگران به اشتراک می‌گذارید و آنها را به جلسات کلیسای امیدنو۷ دعوت می‌کنید؟</li><li>پیام شما برای یوحنای رسول و خادمین کلیسا.</li></ol></details>
+</div>
+
+<div class="card">
+<h2>🎤 ضبط یا ارسال فایل صوتی</h2>
+<div class="field"><label>عنوان کوتاه شهادت</label><input id="testimonyTitle" placeholder="مثلاً: شفای کمر بعد از سه سال درد"></div>
+<div class="field"><label>نام نمایشی</label><input id="testimonyName" value="Yuhana"></div>
+<div class="field"><label>نوع شهادت</label><select id="testimonyType"><option value="healing">شفای الهی</option><option value="answered_prayer">پاسخ دعا</option><option value="salvation">نجات و تولد تازه</option><option value="provision">تدارک و برکت</option><option value="other">سایر</option></select></div>
+<div class="record"><div id="recordStatus" class="muted">آماده برای ضبط</div><div class="toolbar" style="margin-top:8px">
+<button class="btn" id="recordStart">● شروع ضبط</button><button class="btn secondary" id="recordPause" disabled>مکث</button><button class="btn danger" id="recordStop" disabled>توقف</button><button class="btn secondary" id="recordDelete" disabled>حذف</button>
+</div><audio id="recordPlayback" controls hidden></audio>
+<div class="field"><label>یا فایل صوتی آماده را انتخاب کنید</label><input id="audioFile" type="file" accept="audio/*,.mp3,.m4a,.aac,.wav,.webm"></div></div>
+<div class="step"><strong id="stepTitle">راهنمای ضبط · مرحله ۱ از ۴</strong><p id="stepText">خودتان را معرفی کنید و بیماری/مشکل را از ابتدا، همراه با تشخیص و درمان، توضیح دهید.</p><div class="bar"><i id="stepBar" style="width:25%"></i></div><div class="toolbar" style="margin-top:8px"><button class="btn secondary" id="prevStep">قبلی</button><button class="btn secondary" id="nextStep">بعدی</button></div></div>
+<div class="field"><label>توضیح کوتاه اختیاری برای Admin</label><textarea id="testimonyNote" placeholder="اگر نکته‌ای هست که در ویس نگفتید..."></textarea></div>
+<div class="checks"><label><input id="showName" type="checkbox" checked> اجازه می‌دهم در صورت تأیید، نام نمایشی من نشان داده شود.</label><label><input id="consent" type="checkbox"> اجازه می‌دهم این شهادت صوتی پس از بررسی Admin در New Hope 7 منتشر شود.</label><label><input id="healthConsent" type="checkbox"> می‌دانم شهادت شفا ممکن است شامل اطلاعات شخصی مربوط به سلامتی من باشد و با انتشار آن موافقم.</label></div>
+<button class="btn" id="sendTestimony">ارسال خصوصی برای بررسی Admin</button><div id="testimonyMsg" style="margin-top:10px"></div>
+</div>
+
+<div class="card"><h2>🎧 شهادت‌های صوتی تأییدشده</h2><div id="publicTestimonies"></div></div>
+</section>
+
+<section class="panel" id="profile"><div class="card"><h2>👤 پروفایل من</h2><div class="row"><div class="avatar" id="avatar">👤</div><div><strong id="profileName">Yuhana</strong><p class="muted">عکس در فضای خصوصی حساب شما نگهداری می‌شود.</p></div></div><div class="field"><label>نام نمایشی</label><input id="profileNameInput" value="Yuhana"></div><div class="field"><label>عکس پروفایل</label><input id="photoInput" type="file" accept="image/*"></div><div class="toolbar"><button class="btn" id="saveProfile">ذخیره</button><button class="btn secondary" id="removePhoto">حذف عکس</button></div><div id="profileMsg"></div></div></section>
+
+<section class="panel" id="adminPrayer"><div class="card"><div class="row" style="justify-content:space-between"><div><h2>🙏 Admin · درخواست‌های دعا</h2><p class="muted">هیچ Prayer Servant Panel جدا وجود ندارد؛ فقط Admin درخواست‌ها را می‌گیرد.</p></div><span class="pill">Owner only</span></div><div class="toolbar no-print"><button class="btn secondary" data-pf="active">فعال</button><button class="btn secondary" data-pf="all">همه</button><button class="btn" id="printPrayer">خروجی PDF / Print</button></div><div class="notice warning no-print">PDF را می‌توانید بعداً به خادمین دعا بدهید؛ خود خادمین دسترسی مستقیم به پنل ندارند.</div><div id="prayerList"></div></div></section>
+
+<section class="panel" id="adminTestimonies"><div class="card"><h2>✨ Admin · بررسی شهادت‌های صوتی</h2><p class="muted">قبل از تأیید، فایل خصوصی است. بعد از تأیید مثل Audio Card در بخش شهادت‌ها منتشر می‌شود.</p><div id="pendingTestimonies"></div></div></section>
+
+<script>
+const qs=s=>document.querySelector(s),qsa=s=>[...document.querySelectorAll(s)],esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let prayers=[{id:'p1',name:'Sara',text:'چند ماه است در خانواده ما فشار و تنش زیادی وجود دارد. لطفاً برای آرامش، بخشش و احیای روابط دعا کنید.',status:'new'},{id:'p2',name:'Michael',text:'برای تصمیم مهم کاری و هدایت روشن خداوند دعا می‌خواهم.',status:'praying'}];
+let testimonies=[{id:'t0',title:'پاسخ دعا برای خانواده',name:'مریم',type:'answered_prayer',note:'خداوند در یک دوره سخت به خانواده ما آرامش تازه داد.',show:true,status:'approved',url:''}];
+let pf='active',blob=null,url='',rec=null,chunks=[],timer=null,started=0,step=0;
+const steps=['خودتان را معرفی کنید و بیماری/مشکل را از ابتدا، همراه با تشخیص و درمان، توضیح دهید.','توضیح دهید چگونه به جلسه دعا رسیدید، چگونه شرکت کردید و چه کلمه یا دعایی برای شما برجسته بود.','تغییرات فوری و روزهای بعد را بگویید؛ اکنون چه کارهایی می‌توانید انجام دهید و پیگیری پزشکی چه بوده است؟','اهمیت این تجربه، تأثیرش بر زندگی، دعوت دیگران به جلسات و پیام پایانی خود را بیان کنید.'];
+function go(id){qsa('.panel').forEach(x=>x.classList.toggle('active',x.id===id));qsa('[data-tab]').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));render()}
+qsa('[data-tab]').forEach(b=>b.onclick=()=>go(b.dataset.tab));qsa('[data-open]').forEach(b=>b.onclick=()=>go(b.dataset.open));
+function render(){
+ qs('#prayerList').innerHTML=prayers.filter(x=>pf==='all'||x.status!=='completed').map(x=>'<article class="prayer"><div class="row" style="justify-content:space-between"><strong>'+esc(x.name)+'</strong><span class="pill">'+esc(x.status)+'</span></div><p>'+esc(x.text)+'</p><div class="toolbar no-print"><button class="btn secondary" onclick="setPrayer(\''+x.id+'\',\'praying\')">در حال دعا</button><button class="btn" onclick="setPrayer(\''+x.id+'\',\'completed\')">تکمیل</button></div></article>').join('')||'<p class="muted">درخواستی وجود ندارد.</p>';
+ qs('#publicTestimonies').innerHTML=testimonies.filter(x=>x.status==='approved').map(x=>'<article class="audio"><div class="audiohead"><div class="art">🎙️</div><div class="copy"><strong>'+esc(x.title)+'</strong><div class="meta">'+esc(x.show?x.name:'شهادت ناشناس')+' · '+esc(x.type)+'</div><p class="small">'+esc(x.note||'')+'</p></div></div>'+(x.url?'<audio controls src="'+esc(x.url)+'"></audio>':'<div class="notice">در نسخه واقعی اینجا فایل صوتی تأییدشده پخش می‌شود.</div>')+'</article>').join('');
+ qs('#pendingTestimonies').innerHTML=testimonies.filter(x=>x.status==='pending').map(x=>'<article class="audio"><div class="audiohead"><div class="art">🎤</div><div class="copy"><strong>'+esc(x.title)+'</strong><div class="meta">'+esc(x.name)+' · '+esc(x.type)+'</div><p>'+esc(x.note||'')+'</p></div></div>'+(x.url?'<audio controls src="'+esc(x.url)+'"></audio>':'')+'<div class="toolbar"><button class="btn" onclick="reviewT(\''+x.id+'\',\'approved\')">تأیید و انتشار</button><button class="btn danger" onclick="reviewT(\''+x.id+'\',\'rejected\')">رد</button></div></article>').join('')||'<p class="muted">موردی در انتظار نیست.</p>'
+}
+window.setPrayer=(id,s)=>{const x=prayers.find(v=>v.id===id);if(x)x.status=s;render()};window.reviewT=(id,s)=>{const x=testimonies.find(v=>v.id===id);if(x)x.status=s;render()};
+qsa('[data-pf]').forEach(b=>b.onclick=()=>{pf=b.dataset.pf;render()});qs('#printPrayer').onclick=()=>window.print();
+qs('#sendPrayer').onclick=()=>{const name=qs('#prayerName').value.trim(),text=qs('#prayerText').value.trim();if(!name||text.length<20){qs('#prayerMsg').innerHTML='<div class="notice warning">لطفاً درخواست را کامل‌تر توضیح دهید.</div>';return}prayers.unshift({id:'p'+Date.now(),name,text,status:'new'});qs('#prayerText').value='';qs('#prayerMsg').innerHTML='<div class="notice success">خصوصی برای Admin ثبت شد ✓</div>';render()};
+function updateStep(){qs('#stepTitle').textContent='راهنمای ضبط · مرحله '+(step+1)+' از ۴';qs('#stepText').textContent=steps[step];qs('#stepBar').style.width=((step+1)*25)+'%';qs('#prevStep').disabled=step===0;qs('#nextStep').disabled=step===3}qs('#prevStep').onclick=()=>{step=Math.max(0,step-1);updateStep()};qs('#nextStep').onclick=()=>{step=Math.min(3,step+1);updateStep()};updateStep();
+function status(t,on=false){qs('#recordStatus').innerHTML=(on?'<span class="recdot"></span>':'')+esc(t)}
+function revoke(){if(url){URL.revokeObjectURL(url);url=''}}
+qs('#recordStart').onclick=async()=>{try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});const type=['audio/mp4','audio/webm;codecs=opus','audio/webm'].find(x=>MediaRecorder.isTypeSupported?.(x));rec=new MediaRecorder(stream,type?{mimeType:type}:undefined);chunks=[];rec.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};rec.onstop=()=>{clearInterval(timer);blob=new Blob(chunks,{type:rec.mimeType});revoke();url=URL.createObjectURL(blob);qs('#recordPlayback').src=url;qs('#recordPlayback').hidden=false;stream.getTracks().forEach(t=>t.stop());qs('#recordDelete').disabled=false;status('ضبط آماده است ✓')};rec.start(500);started=Date.now();timer=setInterval(()=>{const s=Math.floor((Date.now()-started)/1000);status('در حال ضبط '+String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'),true)},500);qs('#recordStart').disabled=true;qs('#recordPause').disabled=false;qs('#recordStop').disabled=false}catch(e){status('میکروفن در دسترس نیست؛ می‌توانید فایل صوتی انتخاب کنید.')}};
+qs('#recordPause').onclick=()=>{if(!rec)return;if(rec.state==='recording'){rec.pause();status('مکث');qs('#recordPause').textContent='ادامه'}else if(rec.state==='paused'){rec.resume();status('در حال ضبط…',true);qs('#recordPause').textContent='مکث'}};
+qs('#recordStop').onclick=()=>{if(rec&&rec.state!=='inactive')rec.stop();qs('#recordStart').disabled=false;qs('#recordPause').disabled=true;qs('#recordStop').disabled=true;qs('#recordPause').textContent='مکث'};
+qs('#recordDelete').onclick=()=>{blob=null;revoke();qs('#recordPlayback').hidden=true;qs('#recordPlayback').removeAttribute('src');qs('#recordDelete').disabled=true;status('ضبط حذف شد.')};
+qs('#audioFile').onchange=e=>{const f=e.target.files?.[0];if(!f)return;blob=f;revoke();url=URL.createObjectURL(f);qs('#recordPlayback').src=url;qs('#recordPlayback').hidden=false;qs('#recordDelete').disabled=false;status('فایل انتخاب شد: '+f.name)};
+qs('#sendTestimony').onclick=()=>{const title=qs('#testimonyTitle').value.trim(),name=qs('#testimonyName').value.trim(),type=qs('#testimonyType').value,note=qs('#testimonyNote').value.trim(),show=qs('#showName').checked,consent=qs('#consent').checked,hc=qs('#healthConsent').checked;if(!title||!blob||!consent||(type==='healing'&&!hc)){qs('#testimonyMsg').innerHTML='<div class="notice warning">عنوان، فایل صوتی و رضایت انتشار لازم است. برای شهادت شفا رضایت انتشار اطلاعات سلامت هم لازم است.</div>';return}testimonies.unshift({id:'t'+Date.now(),title,name:name||'کاربر New Hope 7',type,note,show,status:'pending',url});qs('#testimonyMsg').innerHTML='<div class="notice success">خصوصی برای Admin ارسال شد ✓</div>';render();go('adminTestimonies')};
+let av='';qs('#photoInput').onchange=e=>{const f=e.target.files?.[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{av=rd.result;qs('#avatar').innerHTML='<img src="'+av+'">'};rd.readAsDataURL(f)};qs('#saveProfile').onclick=()=>{qs('#profileName').textContent=qs('#profileNameInput').value.trim()||'New Hope 7';qs('#profileMsg').innerHTML='<div class="notice success">پروفایل ذخیره شد ✓</div>'};qs('#removePhoto').onclick=()=>{av='';qs('#avatar').textContent='👤';qs('#photoInput').value=''};render();
+</script>
+</main></body></html>
