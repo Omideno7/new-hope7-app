@@ -30,8 +30,29 @@ img{width:88px;height:88px;border-radius:22px}.muted{color:#9db4be;line-height:1
  if(preview)return;
  const ua=navigator.userAgent||'';
  const ios=/iPhone|iPad|iPod/i.test(ua),android=/Android/i.test(ua);
- const store=ios?'https://apps.apple.com/app/id6803187205':android?'https://play.google.com/store/apps/details?id=com.omideno7.newhope7':'';
- if(store)setTimeout(()=>location.replace(store),1100);
+ const iosStore='https://apps.apple.com/app/id6803187205',playStore='https://play.google.com/store/apps/details?id=com.omideno7.newhope7';
+ let scheme='';
+ if(type==='sermon'){
+   const id=String(u.searchParams.get('id')||'');
+   if(id)scheme='newhope7://sermon/'+encodeURIComponent(id);
+ }else if(type==='verse'){
+   const b=String(u.searchParams.get('book')||''),c=String(u.searchParams.get('chapter')||''),v=String(u.searchParams.get('verse')||'');
+   if(b&&c&&v)scheme='newhope7://bible/'+encodeURIComponent(b)+'/'+encodeURIComponent(c)+'/'+encodeURIComponent(v);
+ }
+ let left=false;const markLeft=()=>{if(document.hidden)left=true};document.addEventListener('visibilitychange',markLeft,{once:false});window.addEventListener('pagehide',()=>{left=true},{once:true});
+ if(android&&scheme){
+   const target=scheme.replace(/^newhope7:\/\//,'');
+   const fallback=encodeURIComponent(playStore);
+   location.href='intent://'+target+'#Intent;scheme=newhope7;package=com.omideno7.newhope7;S.browser_fallback_url='+fallback+';end';
+   return;
+ }
+ if(ios&&scheme){
+   const frame=document.createElement('iframe');frame.hidden=true;frame.src=scheme;document.body.appendChild(frame);
+   setTimeout(()=>{try{frame.remove()}catch(_){}if(!left&&!document.hidden)location.replace(iosStore)},1500);
+   return;
+ }
+ if(ios)setTimeout(()=>location.replace(iosStore),500);
+ else if(android)setTimeout(()=>location.replace(playStore),500);
 })();
 </script>
 </body></html>
