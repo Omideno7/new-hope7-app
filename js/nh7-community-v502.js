@@ -42,6 +42,7 @@ function injectCss(){
  .nh7c502-guide summary::-webkit-details-marker{display:none}.nh7c502-guide summary::after{content:'⌄';font-size:1.05rem;transition:transform .18s ease}.nh7c502-guide details[open]>summary::after{transform:rotate(180deg)}
  .nh7c502-section-body{padding:2px 16px 14px}.nh7c502-topic{padding:10px 0;border-top:1px solid color-mix(in srgb,var(--text) 10%,transparent)}.nh7c502-topic:first-child{border-top:0}.nh7c502-topic h4{margin:4px 0 8px}.nh7c502-guide li{margin:7px 0;line-height:1.9}.nh7c502-phase{border-inline-start:3px solid var(--accent);padding-inline-start:10px;margin:15px 0 8px}
  .nh7c502-verse{border:1px solid color-mix(in srgb,var(--text) 13%,transparent);border-radius:13px;padding:10px;margin:8px 0}.nh7c502-verse strong{display:block}
+ .nh7c502-top-accordion{border:0!important;background:transparent!important;margin:0!important}.nh7c502-top-accordion>summary{font-size:1.05rem;font-weight:900;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 0}.nh7c502-top-accordion>summary::-webkit-details-marker{display:none}.nh7c502-top-accordion>summary::after{content:'⌄';font-size:1.1rem;transition:transform .18s ease}.nh7c502-top-accordion[open]>summary::after{transform:rotate(180deg)}.nh7c502-top-body{padding-top:12px}
  .nh7c502-record{border:1px solid color-mix(in srgb,var(--text) 13%,transparent);border-radius:16px;padding:12px}.nh7c502-record audio{width:100%;margin-top:8px}
  .nh7c502-list-card{border:1px solid color-mix(in srgb,var(--text) 13%,transparent);border-radius:16px;padding:12px;margin:9px 0}.nh7c502-audio-head{display:flex;gap:10px;align-items:flex-start}.nh7c502-art{width:50px;height:50px;border-radius:13px;background:color-mix(in srgb,var(--accent) 25%,var(--card));display:grid;place-items:center;font-size:1.45rem;flex:0 0 auto}.nh7c502-copy{flex:1}
  .nh7c502-avatar{width:98px;height:98px;border-radius:50%;overflow:hidden;border:3px solid color-mix(in srgb,var(--text) 18%,transparent);background:color-mix(in srgb,var(--accent) 16%,var(--card));display:grid;place-items:center;font-size:2rem}.nh7c502-avatar img{width:100%;height:100%;object-fit:cover}
@@ -75,9 +76,11 @@ async function renderTestimonies(){
  const verses=g.verses.map(v=>'<div class="nh7c502-verse"><strong>'+esc(v[0])+'</strong>'+esc(v[1])+'</div>').join('');
  const guideHtml=g.sections.map(s=>'<details class="nh7c502-section"><summary>'+esc(s.title)+'</summary><div class="nh7c502-section-body">'+s.topics.map(t=>'<section class="nh7c502-topic"><h4>'+esc(t.title)+'</h4><ul>'+t.bullets.map(b=>'<li>'+esc(b)+'</li>').join('')+'</ul></section>').join('')+'</div></details>').join('');
  const cards=publicRows.length?publicRows.map(x=>'<article class="nh7c502-list-card"><div class="nh7c502-audio-head"><div class="nh7c502-art">🎙️</div><div class="nh7c502-copy"><strong>'+esc(x.title||u.testimonies||'Testimony')+'</strong><small>'+esc(x.display_name||'')+'</small><p>'+esc(x.note_text||'')+'</p></div></div>'+(x.published_audio_path?'<audio controls preload="none" style="width:100%;margin-top:8px" src="'+esc(publicAudioUrl(x.published_audio_path))+'"></audio>':'')+'</article>').join(''):'<p class="muted">'+esc(L('هنوز شهادت صوتی منتشر نشده است.','No audio testimony has been published yet.','Još nema objavljenih audio svjedočanstava.'))+'</p>';
+ const whyHtml='<details class="nh7c502-top-accordion"><summary>'+esc(g.importanceTitle)+'</summary><div class="nh7c502-top-body">'+intro+verses+'</div></details>';
+ const guideTopHtml='<details class="nh7c502-top-accordion"><summary>'+esc(g.guideTitle)+'</summary><div class="nh7c502-top-body"><p class="muted">'+esc(g.goal)+'</p><h3>'+esc(g.tipsTitle)+'</h3><ul>'+g.tips.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul><div class="nh7c502-guide">'+guideHtml+'</div></div></details>';
  view.innerHTML=
-  C().card(g.importanceTitle,intro+verses,'')+
-  C().card(g.guideTitle,'<p class="muted">'+esc(g.goal)+'</p><h3>'+esc(g.tipsTitle)+'</h3><ul>'+g.tips.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul><div class="nh7c502-guide">'+guideHtml+'</div>','')+
+  C().card('',whyHtml,'')+
+  C().card('',guideTopHtml,'')+
   C().card(u.recordTitle,submissionHtml(g,u),'')+
   C().card(u.approvedAudio,cards,'');
  bindTestimonyForm();
