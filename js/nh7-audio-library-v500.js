@@ -35,7 +35,7 @@ function addStyle(){
 .sermon-card-copy{grid-column:2!important;min-width:0!important}.sermon-card-copy>strong,.sermon-card-copy>small{display:block!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}.sermon-card-copy>strong{font-size:.68rem!important;line-height:1.1!important}.sermon-card-copy>small{font-size:.47rem!important;margin-top:0!important;opacity:.6!important}
 .nh7al500-row-actions{grid-column:3;display:flex;align-items:center;gap:0}.nh7al500-row-actions button{width:22px;height:22px;border:0;border-radius:50%;background:transparent;color:inherit;padding:0;font-size:.72rem}.nh7al500-row-actions .on{color:#ff4d7e}
 .sermon-card-actions{display:none!important}.sermon-card.nh7al500-open .sermon-card-actions{display:flex!important;position:absolute;z-index:5;top:40px;inset-inline-end:4px;gap:4px;padding:5px;border:1px solid var(--line,#ffffff20);border-radius:10px;background:var(--card,#0c242d);box-shadow:0 8px 28px #0004}.sermon-card.nh7al500-open .sermon-card-actions button{font-size:.56rem!important;padding:5px 7px!important;min-height:28px!important}
-.inline-sermon-player{display:none!important}.sermon-card>[data-nh7-social-v440]{display:none!important}
+.inline-sermon-player,.nh7al500-host [data-classic-player],.nh7al500-host .nh7-classic-audio-v400{display:none!important}.sermon-card>[data-nh7-social-v440]{display:none!important}
 html[dir="rtl"] .sermon-card-main{direction:rtl!important}html[dir="rtl"] .sermon-card-main>img,html[dir="rtl"] .sermon-placeholder{grid-column:1!important}html[dir="rtl"] .sermon-card-copy{grid-column:2!important;text-align:right!important}html[dir="rtl"] .nh7al500-row-actions{grid-column:3!important}
 html[dir="ltr"] .sermon-card-main{direction:ltr!important}html[dir="ltr"] .sermon-card-copy{text-align:left!important}
 @media(max-width:430px){.nh7al500-hero{min-height:200px;border-radius:20px}.nh7al500-card{width:84px;flex-basis:84px}.nh7al500-card img{width:84px;height:84px}}
@@ -53,6 +53,9 @@ function shelf(items,subtitle){
 function enhanceRows(){
  const favs=readSet(FAV);
  document.querySelectorAll('.sermon-list [data-sermon-card]').forEach(card=>{
+   card.querySelector(':scope > .nh7-audio-row-v445')?.remove();
+   card.classList.remove('nh7-audio-item-v445','is-open');
+   card.querySelectorAll('[data-classic-player],.nh7-classic-audio-v400').forEach(n=>n.hidden=true);
    if(card.dataset.nh7Al500Row==='1')return;card.dataset.nh7Al500Row='1';
    const main=card.querySelector('.sermon-card-main');if(!main)return;
    const sid=String(card.dataset.sermonCard||'');
@@ -72,7 +75,7 @@ function patch(){
    const oldTabs=host.querySelector('.tabs');
    const wrap=document.createElement('div');wrap.className='nh7al500';
    const activeText=oldTabs?.querySelector('.tab.active')?.textContent?.trim()||L('همهٔ پیام‌ها','All Messages','Sve poruke');
-   const chips=oldTabs?[...oldTabs.querySelectorAll('.tab')].map((b,i)=>'<button type="button" class="nh7al500-chip '+(b.classList.contains('active')?'active':'')+'" data-al-chip="'+i+'">'+esc(b.textContent.trim())+'</button>').join(''):'';
+   const chips=oldTabs?[...oldTabs.querySelectorAll('.tab')].map((b,i)=>{const raw=b.dataset.params||'{}';return '<button type="button" class="nh7al500-chip '+(b.classList.contains('active')?'active':'')+'" data-al-chip="'+i+'" data-al-params="'+esc(raw)+'">'+esc(b.textContent.trim())+'</button>'}).join(''):'';
    wrap.innerHTML='<section class="nh7al500-hero"><img class="nh7al500-logo" src="assets/new-hope7-logo-512.png" alt=""><div class="nh7al500-copy"><span class="nh7al500-eye">NEW HOPE 7 AUDIO</span><h2>'+esc(activeText)+'</h2><p>'+esc(L('موعظه‌ها و پیام‌های صوتی کلیسا','Sermons and church audio messages','Propovijedi i audio poruke crkve'))+'</p><div class="nh7al500-actions"><button type="button" class="nh7al500-play" data-al-play-first>▶ '+esc(L('پخش','Play','Reproduciraj'))+'</button><button type="button" class="nh7al500-shuffle" data-al-shuffle>⤨ '+esc(L('تصادفی','Shuffle','Nasumično'))+'</button></div></div></section><label class="nh7al500-search">⌕ <input data-al-search value="'+esc(search.value||'')+'" placeholder="'+esc(search.placeholder||L('جستجو','Search','Pretraži'))+'"></label><div class="nh7al500-chips">'+chips+'</div><section class="nh7al500-section" data-al-continue><div class="nh7al500-head"><strong>'+esc(L('ادامهٔ شنیدن','Continue Listening','Nastavi slušati'))+'</strong></div><div class="nh7al500-strip" data-al-continue-list></div></section><section class="nh7al500-section" data-al-favorites><div class="nh7al500-head"><strong>'+esc(L('علاقه‌مندی‌ها','Favorites','Favoriti'))+'</strong></div><div class="nh7al500-strip" data-al-favorites-list></div></section><section class="nh7al500-section" data-al-recent><div class="nh7al500-head"><strong>'+esc(L('اخیراً پخش‌شده','Recently Played','Nedavno reproducirano'))+'</strong></div><div class="nh7al500-strip" data-al-recent-list></div></section><div class="nh7al500-head"><strong>'+esc(L('همهٔ موعظه‌ها','All Sermons','Sve propovijedi'))+'</strong></div>';
    host.insertBefore(wrap,search);
  }
@@ -91,7 +94,7 @@ document.addEventListener('click',e=>{
  const p=e.target.closest('[data-al-play]');if(p){const x=window.__sermonMap?.[String(p.dataset.alPlay)];if(x)play(x);return}
  if(e.target.closest('[data-al-play-first]')){const card=document.querySelector('.sermon-list [data-sermon-card]');const x=card&&window.__sermonMap?.[String(card.dataset.sermonCard)];if(x)play(x);return}
  if(e.target.closest('[data-al-shuffle]')){const cards=[...document.querySelectorAll('.sermon-list [data-sermon-card]')],card=cards[Math.floor(Math.random()*cards.length)],x=card&&window.__sermonMap?.[String(card.dataset.sermonCard)];if(x)play(x);return}
- const chip=e.target.closest('[data-al-chip]');if(chip){const old=document.querySelector('#sermonSearch')?.parentElement?.querySelector('.tabs');old?.querySelectorAll('.tab')?.[Number(chip.dataset.alChip)]?.click();return}
+ const chip=e.target.closest('[data-al-chip]');if(chip){let params={};try{params=JSON.parse(chip.dataset.alParams||'{}')}catch(_){};window.NH7_NAVIGATE?.('audio',params,true);return}
  const fav=e.target.closest('[data-al-fav]');if(fav){const set=readSet(FAV),sid=String(fav.dataset.alFav);set.has(sid)?set.delete(sid):set.add(sid);try{localStorage.setItem(FAV,JSON.stringify([...set]))}catch(_){};fav.classList.toggle('on',set.has(sid));fav.textContent=set.has(sid)?'★':'☆';patch();window.NH7_MEDIA_PLAYER_V500?.sync?.();return}
  const more=e.target.closest('[data-al-more]');if(more){more.closest('.sermon-card')?.classList.toggle('nh7al500-open');return}
  const cover=e.target.closest('.sermon-card-main>img,.sermon-card-main>.sermon-placeholder');if(cover){const card=cover.closest('[data-sermon-card]'),x=card&&window.__sermonMap?.[String(card.dataset.sermonCard)];if(x)play(x)}
