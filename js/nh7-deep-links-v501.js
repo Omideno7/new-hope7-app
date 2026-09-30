@@ -71,8 +71,13 @@ function clearPending(){try{localStorage.removeItem(PENDING_KEY)}catch(_){}}
 function requireAuth(target){
  if(loggedIn())return false;
  savePending(target);
- const nav=window.NH7_NAVIGATE;
- if(typeof nav==='function')nav('account',{deepLink:1},true);
+ let tries=0;
+ const routeLogin=()=>{
+  const nav=window.NH7_NAVIGATE;
+  if(typeof nav==='function'){nav('account',{deepLink:1},true);return}
+  if(tries++<40)setTimeout(routeLogin,100);
+ };
+ routeLogin();
  return true;
 }
 
