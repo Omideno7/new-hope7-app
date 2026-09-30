@@ -2,7 +2,10 @@
    Web half only; native Universal/App Link association is completed in the store wrappers. */
 (()=>{'use strict';
 if(window.__NH7_DEEP_LINKS_V501__)return;window.__NH7_DEEP_LINKS_V501__=true;
-const VERSION='5.0.1';
+const VERSION='5.0.2';
+const PENDING_KEY='nh7_pending_deep_link_v501';
+const AUTH_KEY='nh7_user_session_v170';
+const LOGOUT_KEY='nh7_explicit_logout';
 const BASE=(location.hostname==='raw.githack.com'||location.hostname==='rawcdn.githack.com')?new URL('link.html',location.href).href:'https://omideno7.github.io/new-hope7-app/link.html';
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const lang=()=>String(localStorage.getItem('nh7_lang')||document.documentElement.lang||'en').toLowerCase();
@@ -45,6 +48,34 @@ document.addEventListener('click',e=>{
  }
 },true);
 
+function loggedIn(){
+ try{
+  if(localStorage.getItem(LOGOUT_KEY)==='1')return false;
+  const s=JSON.parse(localStorage.getItem(AUTH_KEY)||'null');
+  return !!s?.access_token;
+ }catch(_){return false}
+}
+function savePending(target){
+ if(!target)return false;
+ try{localStorage.setItem(PENDING_KEY,JSON.stringify(Object.assign({},target,{savedAt:Date.now()})));return true}catch(_){return false}
+}
+function pending(){
+ try{
+  const v=JSON.parse(localStorage.getItem(PENDING_KEY)||'null');
+  if(!v||!v.type)return null;
+  if(v.savedAt&&Date.now()-Number(v.savedAt)>7*24*60*60*1000){localStorage.removeItem(PENDING_KEY);return null}
+  return v;
+ }catch(_){return null}
+}
+function clearPending(){try{localStorage.removeItem(PENDING_KEY)}catch(_){}}
+function requireAuth(target){
+ if(loggedIn())return false;
+ savePending(target);
+ const nav=window.NH7_NAVIGATE;
+ if(typeof nav==='function')nav('account',{deepLink:1},true);
+ return true;
+}
+
 function queryTarget(){
  const u=new URL(location.href),type=String(u.searchParams.get('type')||u.searchParams.get('nh7_type')||'').toLowerCase();
  const legacySermon=u.searchParams.get('sermon');
@@ -62,23 +93,30 @@ function addStyle(){
  if(document.getElementById('nh7DeepLinkV501Style'))return;
  const s=document.createElement('style');s.id='nh7DeepLinkV501Style';s.textContent='.nh7-deep-link-target-v501{outline:3px solid color-mix(in srgb,var(--accent,#2bbdc4) 80%,#fff)!important;outline-offset:4px!important;border-radius:14px!important;animation:nh7dl501 1s ease 2}@keyframes nh7dl501{50%{filter:brightness(1.2)}}';document.head.appendChild(s)
 }
-function openTarget(target){
- if(!target)return;addStyle();
+function openTarget(target,options={}){
+ if(!target)return false;addStyle();
+ if(!options.skipAuth&&requireAuth(target))return false;
  let tries=0;
  const tick=()=>{
   const nav=window.NH7_NAVIGATE;
   if(typeof nav!=='function'){if(tries++<50)setTimeout(tick,120);return}
   if(target.type==='verse'){
    nav('bible',{section:'written',mode:'chapter',bookId:target.book,chapter:target.chapter,verse:target.verse},true);
-   setTimeout(()=>highlight(document.getElementById('v-'+target.verse)),700);return;
+   clearPending();setTimeout(()=>highlight(document.getElementById('v-'+target.verse)),700);return true;
   }
   if(target.type==='sermon'){
    nav('audio',{},true);
-   let n=0;const find=()=>{const card=document.querySelector('[data-sermon-card="'+CSS.escape(target.id)+'"]');if(card){card.scrollIntoView({behavior:'smooth',block:'center'});highlight(card);return}if(n++<35)setTimeout(find,180)};setTimeout(find,250);
+   let n=0;const find=()=>{const card=document.querySelector('[data-sermon-card="'+CSS.escape(target.id)+'"]');if(card){clearPending();card.scrollIntoView({behavior:'smooth',block:'center'});highlight(card);return}if(n++<35)setTimeout(find,180)};setTimeout(find,250);return true;
   }
  };
  tick();
 }
-const initial=queryTarget();if(initial)setTimeout(()=>openTarget(initial),100);
-window.NH7DeepLinksV501={VERSION,sermonUrl,verseUrl,openTarget,parseVerseKey};
+function resumePending(){
+ const target=pending();if(!target||!loggedIn())return false;
+ setTimeout(()=>openTarget(target,{skipAuth:true}),80);return true;
+}
+const initial=queryTarget();
+if(initial){savePending(initial);setTimeout(()=>openTarget(initial),100)}
+else if(pending()&&loggedIn())setTimeout(resumePending,180);
+window.NH7DeepLinksV501={VERSION,sermonUrl,verseUrl,openTarget,parseVerseKey,pending,savePending,clearPending,resumePending,loggedIn};
 })();
