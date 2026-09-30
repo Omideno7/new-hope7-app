@@ -61,9 +61,17 @@
         '/rest/v1/rpc/nh7_track_app_section_v221',
         '/rest/v1/rpc/nh7_school_record_audio_v380'
       ];
-      function fake(url){
+      function fake(url,init){
         var body='{}';
-        if(String(url).includes('nh7_sermon_toggle_like_v440')) body='{"liked":false,"like_count":0}';
+        if(String(url).includes('nh7_sermon_toggle_like_v440')){
+          var sid='';try{sid=String(JSON.parse((init&&init.body)||'{}').p_sermon_id||'')}catch(_){}
+          var card=sid?document.querySelector('[data-sermon-card="'+sid.replace(/"/g,'\\\"')+'"]'):null;
+          var btn=card&&card.querySelector('[data-nh7-social-v440] [data-like]');
+          var oldCount=Number(btn&&btn.querySelector('span')&&btn.querySelector('span').textContent||0);
+          var oldLiked=!!(btn&&btn.classList.contains('on'));
+          var nextLiked=!oldLiked,nextCount=Math.max(0,oldCount+(nextLiked?1:-1));
+          body=JSON.stringify({liked:nextLiked,like_count:nextCount});
+        }
         return new Response(body,{status:200,headers:{'Content-Type':'application/json','X-NH7-Test-Mode':'blocked-write'}});
       }
       window.fetch=function(input,init){
@@ -71,10 +79,17 @@
         var method=String((init&&init.method)||(input&&input.method)||'GET').toUpperCase();
         if(method!=='GET' && blocked.some(function(x){return String(url).includes(x)})){
           console.info('[NH7 SAFE TEST] blocked Production write:',method,url);
-          return Promise.resolve(fake(url));
+          return Promise.resolve(fake(url,init));
         }
         return nativeFetch(input,init);
       };
+      document.addEventListener('click',function(e){
+        var submit=e.target&&e.target.closest&&e.target.closest('[data-nh7-social-v440] [data-submit]');
+        if(!submit)return;
+        e.preventDefault();e.stopImmediatePropagation();
+        var status=submit.closest('[data-nh7-social-v440]')?.querySelector('[data-status]');
+        if(status)status.textContent='SAFE TEST: Blessing submission is disabled here; Production data is unchanged.';
+      },true);
     }());
   </script>
   <style>
@@ -190,6 +205,7 @@
   <script src="js/nh7-fonts-v454.js?v=4.5.4" defer></script>
   <script src="js/nh7-audio-quick-bible-v454.js?v=4.5.4" defer></script>
   <script src="js/nh7-media-player-v500.js?v=5.0.0-preview-20260930" defer></script>
+  <script src="js/nh7-audio-library-v500.js?v=5.0.0-preview-20260930" defer></script>
   <script src="js/nh7-header-date-v455.js?v=4.5.5" defer></script>
   <script src="js/nh7-celebrations-v464.js?v=4.6.4" defer></script>
 </body>
