@@ -297,14 +297,16 @@ function bind(){
       engine()?.setMediaVolume?.(event.target.value);
     }
   });
-  root.addEventListener('change',event=>{
-    const {audio:a}=state();
-    if(event.target.matches('[data-seek]')&&a&&Number.isFinite(a.duration)&&a.duration>0){
-      const target=Math.max(0,Math.min(a.duration,(Number(event.target.value)/1000)*a.duration));
-      try{a.currentTime=target}catch(_){}
-      seekPreview=target;setTimeout(()=>{seeking=false;sync()},180);return
-    }
-  });
+  const commitSeek=event=>{
+    const {audio:a}=state(),el=event.target;
+    if(!el?.matches?.('[data-seek]')||!a||!Number.isFinite(a.duration)||a.duration<=0)return;
+    const target=Math.max(0,Math.min(a.duration,(Number(el.value)/1000)*a.duration));
+    try{a.currentTime=target}catch(_){}
+    seekPreview=target;setTimeout(()=>{seeking=false;sync()},180);
+  };
+  root.addEventListener('change',commitSeek);
+  root.addEventListener('pointerup',commitSeek);
+  root.addEventListener('touchend',commitSeek,{passive:true});
 }
 
 function sync(){
