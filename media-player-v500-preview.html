@@ -95,7 +95,7 @@ var items=[
 {id:'88888888-8888-4888-8888-888888888888',category_id:'prayer',title_fa:'دعای غالب',title_en:'Prevailing Prayer',speaker:'یوحنای رسول',duration_seconds:3380,cover_url:art('#3152a6','#111b3a','PRAYER')}
 ];
 var categories=[['all','همه'],['prayer','دعا'],['spirit','روح‌القدس'],['faith','ایمان'],['grace','فیض'],['kingdom','پادشاهی']];
-var currentCategory='all',favorites=new Set([items[1].id,items[3].id]),recent=[items[2].id,items[0].id],progress={},liked=new Set([items[0].id,items[2].id]),likeCounts={};likeCounts[items[0].id]=24;likeCounts[items[1].id]=11;likeCounts[items[2].id]=37;likeCounts[items[3].id]=18;
+var currentCategory='all',favorites=new Set([items[1].id,items[3].id]),recent=[items[2].id,items[0].id],progress={},liked=new Set([items[0].id,items[2].id]),likeCounts={};localStorage.setItem('nh7_audio_favorites_v500',JSON.stringify(Array.from(favorites)));likeCounts[items[0].id]=24;likeCounts[items[1].id]=11;likeCounts[items[2].id]=37;likeCounts[items[3].id]=18;
 progress[items[0].id]={time:842,duration:items[0].duration_seconds};
 progress[items[2].id]={time:1430,duration:items[2].duration_seconds};
 window.__sermonMap=Object.fromEntries(items.map(function(x){return [x.id,x]}));
@@ -112,6 +112,7 @@ window.NH7_AUDIO_CLASSIC_V400={
  setPlaybackSpeed:function(v){audio.playbackRate=Number(v)||1},
  setMediaVolume:function(v){audio.volume=Number(v);audio.muted=false},
  toggleMediaMute:function(){audio.muted=!audio.muted},
+ downloadItem:function(){showToast('برای استفادهٔ آفلاین ذخیره شد')},
  openCurrentAudio:function(){var c=document.querySelector('[data-sermon-card="'+current.id+'"]');if(c)c.scrollIntoView({behavior:'smooth',block:'center'})}
 };
 window.NH7_AUDIO_MINIPLAYER_V487={close:function(){audio.pause();audio.src='';window.NH7_MEDIA_PLAYER_V500&&window.NH7_MEDIA_PLAYER_V500.sync()}};
@@ -121,7 +122,7 @@ function visibleItems(){var q=(document.getElementById('searchInput').value||'')
 function renderChips(){document.getElementById('chips').innerHTML=categories.map(function(c){return '<button class="chip '+(c[0]===currentCategory?'active':'')+'" data-cat="'+c[0]+'">'+c[1]+'</button>'}).join('')}
 function rowHtml(x){
  var on=favorites.has(x.id),p=progress[x.id];
- var isLiked=liked.has(x.id),lc=Number(likeCounts[x.id]||0);return '<article class="sermon-card" data-sermon-card="'+x.id+'"><div class="sermon-card-main"><img src="'+x.cover_url+'" alt=""><div class="sermon-card-copy"><strong>'+x.title_fa+'</strong><small>'+(p&&p.time>5?'ادامه از '+fmt(p.time)+' · ':'')+fmt(x.duration_seconds)+' · '+x.speaker+'</small></div><div class="row-actions"><button class="fav '+(on?'on':'')+'" data-fav="'+x.id+'">'+(on?'★':'☆')+'</button><button data-more="'+x.id+'">•••</button></div></div><button class="tap-play" data-play="'+x.id+'">Play</button><div class="more-panel"><button data-note="'+x.id+'">📝 یادداشت</button><button data-download="'+x.id+'">⇩ دانلود</button><button data-share="'+x.id+'">↗ اشتراک</button></div><section data-nh7-social-v440 hidden><button data-like class="'+(isLiked?'on':'')+'">'+(isLiked?'♥':'♡')+' <span>'+lc+'</span></button><button data-bless>برکت</button><div data-compose></div></section></article>'
+ var isLiked=liked.has(x.id),lc=Number(likeCounts[x.id]||0);return '<article class="sermon-card" data-sermon-card="'+x.id+'"><div class="sermon-card-main"><img src="'+x.cover_url+'" alt=""><div class="sermon-card-copy"><strong>'+x.title_fa+'</strong><small>'+(p&&p.time>5?'ادامه از '+fmt(p.time)+' · ':'')+fmt(x.duration_seconds)+' · '+x.speaker+'</small></div><div class="row-actions"><button class="fav '+(on?'on':'')+'" data-fav="'+x.id+'">'+(on?'★':'☆')+'</button><button data-more="'+x.id+'">•••</button></div></div><button class="tap-play" data-play="'+x.id+'">Play</button><div class="more-panel"><button data-note="'+x.id+'" data-sermon-note="'+x.id+'">📝 یادداشت</button><button data-download="'+x.id+'">⇩ دانلود</button><button data-share="'+x.id+'">↗ اشتراک</button></div><section data-nh7-social-v440 hidden><button data-like class="'+(isLiked?'on':'')+'">'+(isLiked?'♥':'♡')+' <span>'+lc+'</span></button><button data-bless>برکت</button><div data-compose></div></section></article>'
 }
 function renderList(){var list=visibleItems();document.getElementById('sermonList').innerHTML=list.map(rowHtml).join('')||'<div class="empty-note">موردی پیدا نشد.</div>';document.getElementById('itemCount').textContent=list.length+' فایل'}
 function shelfHtml(arr,sub){return arr.map(function(x){return '<button class="shelf-card" data-play="'+x.id+'"><span class="shelf-art" style="background-image:url(&quot;'+x.cover_url+'&quot;)"></span><strong>'+x.title_fa+'</strong><small>'+sub(x)+'</small></button>'}).join('')}
@@ -142,7 +143,7 @@ document.addEventListener('click',function(e){
  var socialBless=e.target.closest('[data-nh7-social-v440] [data-bless]');if(socialBless){var compose=socialBless.closest('[data-nh7-social-v440]').querySelector('[data-compose]');compose&&compose.classList.toggle('open');return}
  var c=e.target.closest('[data-cat]');if(c){currentCategory=c.dataset.cat;render();return}
  var p=e.target.closest('[data-play]');if(p){playItem(window.__sermonMap[p.dataset.play]);return}
- var f=e.target.closest('[data-fav]');if(f){favorites.has(f.dataset.fav)?favorites.delete(f.dataset.fav):favorites.add(f.dataset.fav);render();return}
+ var f=e.target.closest('[data-fav]');if(f){favorites.has(f.dataset.fav)?favorites.delete(f.dataset.fav):favorites.add(f.dataset.fav);localStorage.setItem('nh7_audio_favorites_v500',JSON.stringify(Array.from(favorites)));render();window.NH7_MEDIA_PLAYER_V500&&window.NH7_MEDIA_PLAYER_V500.sync();return}
  var m=e.target.closest('[data-more]');if(m){e.target.closest('.sermon-card').classList.toggle('open');return}
  var n=e.target.closest('[data-note]');if(n){showModal('یادداشت موعظه',window.__sermonMap[n.dataset.note].title_fa,true);return}
  var d=e.target.closest('[data-download]');if(d){showToast('برای استفادهٔ آفلاین ذخیره شد');return}
@@ -161,26 +162,9 @@ setInterval(function(){if(!audio.paused&&audio.src){audio.currentTime=Math.min(a
 <script src="./js/nh7-media-player-v500.js"></script>
 
 <script>
-function decorateFullPlayer(){
- var r=document.querySelector('.nh7p500');if(!r){setTimeout(decorateFullPlayer,80);return}
- if(r.dataset.previewDecorated==='1')return;r.dataset.previewDecorated='1';
- var tools=r.querySelector('.nh7p500-tools');
- if(tools){tools.insertAdjacentHTML('beforeend','<button class="preview-extra-tool" data-xfav><span>☆</span><small>علاقه‌مندی</small></button><button class="preview-extra-tool" data-xnote><span>📝</span><small>یادداشت</small></button><button class="preview-extra-tool" data-xdownload><span>⇩</span><small>دانلود</small></button><button class="preview-extra-tool" data-xshare><span>↗</span><small>اشتراک</small></button><button class="preview-extra-tool" data-xqueue><span>☷</span><small>صف پخش</small></button>');tools.insertAdjacentHTML('afterend','<div class="preview-queue" data-xqueue-panel hidden><strong>بعدی‌ها</strong><div class="preview-queue-list" data-xqueue-list></div></div><section class="preview-related"><h3>مرتبط و پیشنهادی</h3><div class="preview-related-strip" data-xrelated></div></section>')}
- function syncExtras(){
-  var fav=r.querySelector('[data-xfav] span');if(fav)fav.textContent=favorites.has(current.id)?'★':'☆';
-  var q=r.querySelector('[data-xqueue-list]');if(q)q.innerHTML=queue.slice(queueIndex,queueIndex+5).map(function(x){return '<button class="preview-queue-item" data-play="'+x.id+'"><img src="'+x.cover_url+'"><b>'+x.title_fa+'</b></button>'}).join('');
-  var rel=r.querySelector('[data-xrelated]');if(rel){var a=items.filter(function(x){return x.id!==current.id&&(x.category_id===current.category_id)});if(!a.length)a=items.filter(function(x){return x.id!==current.id});rel.innerHTML=a.slice(0,5).map(function(x){return '<button class="preview-related-card" data-play="'+x.id+'"><img src="'+x.cover_url+'"><b>'+x.title_fa+'</b></button>'}).join('')}
- }
- r.addEventListener('click',function(e){
-  if(e.target.closest('[data-xfav]')){favorites.has(current.id)?favorites.delete(current.id):favorites.add(current.id);render();syncExtras();return}
-  if(e.target.closest('[data-xnote]')){showModal('یادداشت موعظه',current.title_fa,true);return}
-  if(e.target.closest('[data-xdownload]')){showToast('برای استفادهٔ آفلاین ذخیره شد');return}
-  if(e.target.closest('[data-xshare]')){showToast('لینک اشتراک آماده شد');return}
-  if(e.target.closest('[data-xqueue]')){var p=r.querySelector('[data-xqueue-panel]');p.hidden=!p.hidden;return}
- });
- setInterval(syncExtras,650);syncExtras();
-}
-document.readyState==='loading'?document.addEventListener('DOMContentLoaded',function(){setTimeout(decorateFullPlayer,20)}):setTimeout(decorateFullPlayer,20);
+function syncPreviewFavorites(){try{var a=JSON.parse(localStorage.getItem('nh7_audio_favorites_v500')||'[]'),next=new Set(Array.isArray(a)?a:[]),changed=next.size!==favorites.size||Array.from(next).some(function(id){return !favorites.has(id)});if(changed){favorites=next;renderList();renderShelves()}}catch(_){}}
+setInterval(syncPreviewFavorites,650);
+
 </script>
 </body>
 </html>
