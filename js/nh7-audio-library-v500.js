@@ -29,7 +29,7 @@ function addStyle(){
 .nh7al500-host{padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}.nh7al500-host>h2{display:none!important}#sermonSearch,.nh7al500-host>.tabs{display:none!important}
 .sermon-list{border:1px solid var(--line,#ffffff20)!important;border-radius:13px!important;overflow:hidden!important;background:color-mix(in srgb,var(--card,#0c242d) 70%,transparent)!important}
 .sermon-card{position:relative!important;padding:1px 4px!important}.sermon-card+.sermon-card{border-top:1px solid var(--line,#ffffff20)!important}
-.sermon-card-main{display:grid!important;grid-template-columns:36px minmax(0,1fr) auto!important;gap:6px!important;align-items:center!important;min-height:38px!important}
+.sermon-card-main{display:grid!important;grid-template-columns:36px minmax(0,1fr) auto!important;gap:6px!important;align-items:center!important;min-height:38px!important;cursor:pointer!important}
 .sermon-card-main>img{grid-column:1!important;width:36px!important;height:36px!important;max-width:none!important;border-radius:8px!important;object-fit:cover!important;margin:0!important}
 .sermon-placeholder{grid-column:1!important;width:36px!important;height:36px!important;display:grid!important;place-items:center!important;border-radius:8px!important;background:color-mix(in srgb,var(--text,var(--ink,#fff)) 7%,transparent)!important;font-size:.8rem!important}
 .sermon-card-copy{grid-column:2!important;min-width:0!important}.sermon-card-copy>strong,.sermon-card-copy>small{display:block!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}.sermon-card-copy>strong{font-size:.68rem!important;line-height:1.1!important}.sermon-card-copy>small{font-size:.47rem!important;margin-top:0!important;opacity:.6!important}
@@ -83,9 +83,10 @@ function patch(){
 }
 
 function renderShelves(host){
- const all=listAll(),byId=Object.fromEntries(all.map(x=>[id(x),x])),favs=readSet(FAV),recent=[...readSet(RECENT)];
- const cont=all.filter(x=>{const p=readProgress(x),d=Number(p.duration||x.duration_seconds||0),t=Number(p.time||0);return t>5&&(!d||t<d-15)}).sort((a,b)=>Number(readProgress(b).updatedAt?Date.parse(readProgress(b).updatedAt):0)-Number(readProgress(a).updatedAt?Date.parse(readProgress(a).updatedAt):0));
- const fav=all.filter(x=>favs.has(id(x))),rec=recent.map(x=>byId[x]).filter(Boolean);
+ const visibleIds=new Set([...host.querySelectorAll('.sermon-list [data-sermon-card]')].map(card=>String(card.dataset.sermonCard||'')));
+ const scopedAll=listAll().filter(x=>!visibleIds.size||visibleIds.has(id(x))),byId=Object.fromEntries(scopedAll.map(x=>[id(x),x])),favs=readSet(FAV),recent=[...readSet(RECENT)];
+ const cont=scopedAll.filter(x=>{const p=readProgress(x),d=Number(p.duration||x.duration_seconds||0),t=Number(p.time||0);return t>5&&(!d||t<d-15)}).sort((a,b)=>Number(readProgress(b).updatedAt?Date.parse(readProgress(b).updatedAt):0)-Number(readProgress(a).updatedAt?Date.parse(readProgress(a).updatedAt):0));
+ const fav=scopedAll.filter(x=>favs.has(id(x))),rec=recent.map(x=>byId[x]).filter(Boolean);
  const sets=[['[data-al-continue]','[data-al-continue-list]',cont,x=>{const p=readProgress(x);return p.time?L('ادامه از ','Continue from ','Nastavi od ')+fmt(p.time):''}],['[data-al-favorites]','[data-al-favorites-list]',fav,x=>fmt(x.duration_seconds||0)],['[data-al-recent]','[data-al-recent-list]',rec,x=>fmt(x.duration_seconds||0)]];
  sets.forEach(([secSel,listSel,items,sub])=>{const sec=host.querySelector(secSel),el=host.querySelector(listSel);if(!sec||!el)return;sec.hidden=!items.length;el.innerHTML=shelf(items,sub)});
 }
@@ -97,6 +98,8 @@ document.addEventListener('click',e=>{
  const chip=e.target.closest('[data-al-chip]');if(chip){let params={};try{params=JSON.parse(chip.dataset.alParams||'{}')}catch(_){};window.NH7_NAVIGATE?.('audio',params,true);return}
  const fav=e.target.closest('[data-al-fav]');if(fav){const set=readSet(FAV),sid=String(fav.dataset.alFav);set.has(sid)?set.delete(sid):set.add(sid);try{localStorage.setItem(FAV,JSON.stringify([...set]))}catch(_){};fav.classList.toggle('on',set.has(sid));fav.textContent=set.has(sid)?'★':'☆';patch();window.NH7_MEDIA_PLAYER_V500?.sync?.();return}
  const more=e.target.closest('[data-al-more]');if(more){more.closest('.sermon-card')?.classList.toggle('nh7al500-open');return}
+ const row=e.target.closest('.sermon-card-main');
+ if(row&&!e.target.closest('button,a,input,select,textarea')){const card=row.closest('[data-sermon-card]'),x=card&&window.__sermonMap?.[String(card.dataset.sermonCard)];if(x)play(x);return}
  const cover=e.target.closest('.sermon-card-main>img,.sermon-card-main>.sermon-placeholder');if(cover){const card=cover.closest('[data-sermon-card]'),x=card&&window.__sermonMap?.[String(card.dataset.sermonCard)];if(x)play(x)}
 },true);
 
