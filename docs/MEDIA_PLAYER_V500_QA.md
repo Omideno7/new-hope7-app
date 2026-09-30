@@ -128,3 +128,56 @@ Static/Chromium QA cannot certify:
 - safe-area behavior across supported physical iPhone models
 
 No merge to main is authorized by this QA.
+
+
+## Integration verification — approved visual layout / real control wiring
+
+Verified on 2026-09-30 after the compact 4×2 control layout, RTL/LTR sermon rows, visible Up Next, and Related artwork sizing fixes.
+
+- Current Player source blob SHA: `e9fc2799a759e238aeed2c57b911c10d1e357374`
+- JavaScript syntax: PASS
+- Second audio element created by Player 2.0: NO
+- Direct REST / Supabase / RPC call added by Player 2.0: NO
+- Service Worker modified by this feature branch: NO
+- Stable v4.8.4 audio engine remains playback authority: YES
+- Existing v4.8.7 safe close/resume path reused: YES
+- Existing Quick Bible v4.5.4 reused: YES
+- Existing sermon Like RPC/UI reused: YES
+- Existing Blessings RPC/UI reused: YES
+- Existing sermon Share flow and deep link reused: YES
+- Existing sermon Notes action reused: YES
+- Existing offline download engine reused: YES
+- Favorite is device-local only under `nh7_audio_favorites_v500`: YES
+- Queue reads the stable engine queue and shows up to 5 items after the current track: YES
+- Queue item tap delegates playback to the stable engine: YES
+- Related/Suggested reads the already-loaded sermon catalog; no recommendation backend added: YES
+- Related artwork constrained to 72×72 px: YES
+- Theme colors derive from existing app theme CSS variables: YES
+- Media Session / lock-screen ownership remains exclusively in the stable audio engine: YES
+
+### Existing-client safety check
+
+The feature branch is ahead of `main` and not behind it. Its diff is limited to:
+- `docs/MEDIA_PLAYER_V500_QA.md`
+- `docs/MEDIA_PLAYER_V500_SPEC.md`
+- `index.html`
+- `js/nh7-media-player-v500.js`
+- `media-player-v500-preview.html`
+
+No Production database schema, RLS policy, Edge Function, Service Worker, or existing audio-engine file is modified by Player 2.0.
+
+### Still required before any Production merge
+
+Physical-device QA is still required for:
+- real signed sermon playback on iPhone
+- real offline download and replay
+- iOS background playback
+- lock-screen title/artwork and tap-back target
+- headset / Bluetooth controls
+- interruption recovery (call / Siri / other audio)
+- app background → foreground resume
+- Persian / English / Croatian visual pass on device
+- safe-area pass on supported iPhone sizes
+- School audio telemetry regression check
+
+No merge to `main` is authorized by this verification.
