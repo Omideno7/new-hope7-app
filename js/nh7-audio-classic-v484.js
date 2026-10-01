@@ -435,8 +435,13 @@ async function playItem(item,options={}){
 }
 
 function downloadLabel(percent){return percent>=100?L('آفلاین آماده ✓','Offline ready ✓','Offline spremno ✓'):L(`در حال دانلود ${percent}%`,`Downloading ${percent}%`,`Preuzimanje ${percent}%`)}
-function downloadButtons(item){const card=cardFor(item);return card?$$('[data-classic-download]',card):[]}
-function updateDownloadButtons(item,downloaded,percent=null){for(const button of downloadButtons(item)){button.disabled=percent!==null&&percent<100;button.textContent=percent!==null?downloadLabel(percent):downloaded?downloadLabel(100):L('دانلود برای آفلاین','Download offline','Preuzmi offline');button.classList.toggle('is-downloaded-v400',!!downloaded);button.dataset.offlineCached=downloaded?'1':'0'}const external=cardFor(item)?.querySelector('[data-external-classic-download]');if(external){external.textContent=downloaded?downloadLabel(100):L('دانلود برای آفلاین','Download offline','Preuzmi offline');external.classList.toggle('is-downloaded-v400',!!downloaded)}}
+function emitDownloadStatus(item,downloaded,percent=null){
+  const id=mediaId(item);if(!id)return;
+  const progress=percent===null?(downloaded?100:null):Math.max(0,Math.min(100,Number(percent)||0));
+  try{window.dispatchEvent(new CustomEvent('nh7:audio-download-status',{detail:{id,downloaded:!!downloaded,percent:progress}}))}catch(_){}
+}
+function downloadButtons(item){const card=cardFor(item);return card?$('[data-classic-download]',card):[]}
+function updateDownloadButtons(item,downloaded,percent=null){for(const button of downloadButtons(item)){button.disabled=percent!==null&&percent<100;button.textContent=percent!==null?downloadLabel(percent):downloaded?downloadLabel(100):L('دانلود برای آفلاین','Download offline','Preuzmi offline');button.classList.toggle('is-downloaded-v400',!!downloaded);button.dataset.offlineCached=downloaded?'1':'0'}const external=cardFor(item)?.querySelector('[data-external-classic-download]');if(external){external.textContent=downloaded?downloadLabel(100):L('دانلود برای آفلاین','Download offline','Preuzmi offline');external.classList.toggle('is-downloaded-v400',!!downloaded)}emitDownloadStatus(item,downloaded,percent)}
 function filename(item,url){let ext='.mp3';try{const match=new URL(url).pathname.match(/\.([a-z0-9]{2,6})$/i);if(match)ext='.'+match[1].toLowerCase()}catch(_){}return mediaId(item).replace(/[^a-z0-9._-]+/gi,'_').slice(0,90)+ext}
 async function downloadWeb(item,url){
   const response=await fetch(url,{cache:'no-store'});if(!response.ok)throw Object.assign(new Error(`HTTP ${response.status}`),{status:response.status});
@@ -504,6 +509,7 @@ async function clearAll(){
   for(const url of localUrls.values())if(url?.startsWith('blob:'))URL.revokeObjectURL(url);localUrls.clear();
   const keys=[];for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(key?.startsWith(META_PREFIX)||key?.startsWith(LEGACY_META))keys.push(key)}keys.forEach(key=>localStorage.removeItem(key));
   for(const item of derived.values())updateDownloadButtons(item,false);
+  try{window.dispatchEvent(new CustomEvent('nh7:audio-download-status',{detail:{clearAll:true,downloaded:false,percent:null}}))}catch(_){}
 }
 
 const style=document.createElement('style');style.id='nh7-audio-classic-v400-style';style.textContent=`
@@ -518,7 +524,7 @@ setTimeout(()=>{patch();prewarm()},250);
 
 window.NH7_AUDIO_CLASSIC_VERSION='4.8.4';
 window.NH7_AUDIO_SIGNED_VERSION='4.6.1-401-refresh';
-window.NH7_AUDIO_CLASSIC_V400={patch,prewarm,playItem,playNextTrack,playPreviousTrack,setPlaybackSpeed,setMediaVolume,toggleMediaMute,downloadItem,clearAll,getState:()=>({current,audio,playQueue:[...playQueue],queueIndex,volumeControlSupported}),openCurrentAudio,syncNowPlaying};
+window.NH7_AUDIO_CLASSIC_V400={patch,prewarm,playItem,playNextTrack,playPreviousTrack,setPlaybackSpeed,setMediaVolume,toggleMediaMute,downloadItem,isDownloaded,clearAll,getState:()=>({current,audio,playQueue:[...playQueue],queueIndex,volumeControlSupported}),openCurrentAudio,syncNowPlaying};
 // Compatibility for the Settings cleanup controller introduced in 2.3.9.48.
 window.NH7_AUDIO_SIGNED_V397=window.NH7_AUDIO_CLASSIC_V400;
 })();
