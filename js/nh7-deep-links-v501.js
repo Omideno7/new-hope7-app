@@ -1,4 +1,4 @@
-/* New Hope 7 v5.0.1 — canonical sermon + Bible verse deep links.
+/* New Hope 7 v5.0.2 — canonical sermon + Bible verse deep links.
    Web half only; native Universal/App Link association is completed in the store wrappers. */
 (()=>{'use strict';
 if(window.__NH7_DEEP_LINKS_V501__)return;window.__NH7_DEEP_LINKS_V501__=true;
@@ -13,7 +13,7 @@ const L=(fa,en,hr)=>lang().startsWith('fa')?fa:lang().startsWith('hr')?hr:en;
 function sermonUrl(id){return BASE+'?type=sermon&id='+encodeURIComponent(String(id||''))}
 function verseUrl(book,chapter,verse){return BASE+'?type=verse&book='+encodeURIComponent(String(book||'').toUpperCase())+'&chapter='+encodeURIComponent(Number(chapter)||1)+'&verse='+encodeURIComponent(Number(verse)||1)}
 function parseVerseKey(value){
- const m=String(value||'').match(/^nh7_bible_state_([A-Z0-9]+)_(\d+)_(\d+)$/i);
+ const m=String(value||'').match(/^nh7_bible_state_([A-Z0-9]+)[_-](\d+)[_-](\d+)$/i);
  return m?{book:m[1].toUpperCase(),chapter:Number(m[2]),verse:Number(m[3])}:null;
 }
 async function sharePayload(title,text,url){
@@ -31,7 +31,8 @@ document.addEventListener('click',e=>{
  const verseBtn=e.target.closest?.('[data-share-verse]');
  if(verseBtn){
   const verseEl=verseBtn.closest('.reader-verse'),key=verseEl?.dataset?.verseKey||verseBtn.closest('[data-verse-key]')?.dataset?.verseKey||'';
-  const loc=parseVerseKey(key);if(!loc)return;
+  const explicitBook=String(verseBtn.dataset.deepBook||'').toUpperCase(),explicitChapter=Number(verseBtn.dataset.deepChapter),explicitVerse=Number(verseBtn.dataset.deepVerse);
+  const loc=(explicitBook&&explicitChapter>0&&explicitVerse>0)?{book:explicitBook,chapter:explicitChapter,verse:explicitVerse}:parseVerseKey(key);if(!loc)return;
   e.preventDefault();e.stopImmediatePropagation();
   const ref=String(verseBtn.dataset.shareVerse||'').trim(),verseText=String(verseBtn.dataset.shareText||'').trim(),url=verseUrl(loc.book,loc.chapter,loc.verse);
   const body=L('📖 '+ref+'\n'+verseText+'\n\nباز کردن همین آیه در New Hope 7:','📖 '+ref+'\n'+verseText+'\n\nOpen this verse in New Hope 7:','📖 '+ref+'\n'+verseText+'\n\nOtvori ovaj stih u New Hope 7:');
@@ -100,7 +101,7 @@ function addStyle(){
 }
 function openTarget(target,options={}){
  if(!target)return false;addStyle();
- if(!options.skipAuth&&requireAuth(target))return false;
+ if(!options.skipAuth&&target.type==='sermon'&&requireAuth(target))return false;
  let tries=0;
  const tick=()=>{
   const nav=window.NH7_NAVIGATE;
@@ -121,7 +122,7 @@ function resumePending(){
  setTimeout(()=>openTarget(target,{skipAuth:true}),80);return true;
 }
 const initial=queryTarget();
-if(initial){savePending(initial);setTimeout(()=>openTarget(initial),100)}
+if(initial){if(initial.type==='sermon')savePending(initial);else clearPending();setTimeout(()=>openTarget(initial),100)}
 else if(pending()&&loggedIn())setTimeout(resumePending,180);
 window.NH7DeepLinksV501={VERSION,sermonUrl,verseUrl,openTarget,parseVerseKey,pending,savePending,clearPending,resumePending,loggedIn};
 })();
