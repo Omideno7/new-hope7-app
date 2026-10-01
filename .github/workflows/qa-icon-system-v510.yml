@@ -41,8 +41,11 @@ jobs:
           const html=fs.readFileSync('icon-system-v510-preview.html','utf8');
           const blocks=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]).filter(Boolean);
           blocks.forEach((code,i)=>new Function(code+'\n//# sourceURL=icon-preview-'+i));
-          if(!html.includes('css/nh7-icon-system-v510.css?v=5.1.0')) throw new Error('Icon CSS not wired');
+          if(!html.includes('css/nh7-icon-system-v510.css?v=5.1.1')) throw new Error('Icon CSS not wired');
           if(!html.includes('js/nh7-icon-system-v510.js?v=5.1.0')) throw new Error('Icon JS not wired');
+          if(!html.includes('data-accent="purple"')) throw new Error('Accent preview controls missing');
+          const css=fs.readFileSync('css/nh7-icon-system-v510.css','utf8');
+          for(const token of ['--nh7-icon-theme:var(--accent','--nh7-icon-brand:var(--brand','html[data-nh7-theme="light"]']) if(!css.includes(token)) throw new Error('Theme binding missing: '+token);
           console.log('Preview syntax and wiring OK');
           NODE
 
