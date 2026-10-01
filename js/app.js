@@ -2562,7 +2562,23 @@ function bindDynamic(){
   $$('[data-note-verse],[data-note-marker]').forEach(el=>el.onclick=()=>{const id=el.dataset.noteVerse||el.dataset.noteMarker,box=$('#'+CSS.escape(id));if(box){$$('.verse-note-box').forEach(x=>{if(x!==box)x.classList.add('hidden')});box.classList.toggle('hidden')}});
   $$('[data-close-verse-note]').forEach(el=>el.onclick=()=>el.closest('.verse-note-box')?.classList.add('hidden'));
   $$('[data-save-verse-note]').forEach(el=>el.onclick=()=>{const key=el.dataset.saveVerseNote,input=$(`[data-note-input="${CSS.escape(key)}"]`),verse=el.closest('.reader-verse');let st={};try{st=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}st.note=(window.NH7NoteTextV501?.normalize?.(input?.value||'')??(input?.value||'')).slice(0,1000);localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);let marker=verse?.querySelector('.verse-note-marker');if(st.note&&!marker&&verse){marker=document.createElement('button');marker.type='button';marker.className='verse-note-marker';marker.dataset.noteMarker=el.closest('.verse-note-box')?.id||'';marker.textContent='📓';marker.title=tr('noteAvailable');marker.onclick=()=>el.closest('.verse-note-box')?.classList.toggle('hidden');verse.querySelector('.verse-text')?.after(marker)}else if(!st.note&&marker)marker.remove();el.textContent=tr('saved');setTimeout(()=>el.closest('.verse-note-box')?.classList.add('hidden'),350)});
-  $$('[data-share-verse]').forEach(el=>el.onclick=async()=>{ const txt=`${localizeRef(el.dataset.shareVerse)} — ${el.dataset.shareText||''}`; try{ if(navigator.share) await navigator.share({text:txt}); else { await navigator.clipboard.writeText(txt); alert(tr('saved')); } window.NH7BibleBatchV230?.clearSelection?.(); }catch(e){} });
+  $('[data-share-verse]').forEach(el=>el.onclick=async()=>{ 
+    const ref=localizeRef(el.dataset.shareVerse),txt=`${ref} — ${el.dataset.shareText||''}`;
+    const book=String(el.dataset.deepBook||'').toUpperCase(),chapter=Number(el.dataset.deepChapter),verse=Number(el.dataset.deepVerse);
+    const url=(book&&chapter>0&&verse>0)?'https://omideno7.github.io/new-hope7-app/?target='+encodeURIComponent(`verse:${book}:${chapter}:${verse}`):'';
+    const lead=state.lang==='fa'?'باز کردن همین آیه در New Hope 7:':state.lang==='hr'?'Otvori ovaj stih u New Hope 7:':'Open this verse in New Hope 7:';
+    try{
+      if(navigator.share){
+        const payload={title:'New Hope 7 — '+ref,text:txt+'\n\n'+lead};
+        if(url)payload.url=url;
+        await navigator.share(payload);
+      }else{
+        await navigator.clipboard.writeText(txt+(url?'\n\n'+lead+'\n'+url:''));
+        alert(tr('saved'));
+      }
+      window.NH7BibleBatchV230?.clearSelection?.();
+    }catch(e){}
+  });
   $$('[data-complete-daily]').forEach(el=>el.onclick=()=>{ const key='nh7_daily_done_'+el.dataset.completeDaily; if(!localStorage.getItem(key)){ localStorage.setItem(key,'1'); saveProgressCloud(key,{done:true,at:new Date().toISOString()}).catch(console.warn); addPoints(3,'daily_1'); } el.textContent=tr('dailyCompleted'); });
   $$('[data-open-ref]').forEach(el=>el.onclick=async()=>{ await loadBibleMeta(); const ref=parseRef(el.dataset.openRef); if(ref){ const params={mode:'chapter',bookId:ref.bookId,chapter:ref.chapter}; if((el.dataset.openRefMode||'verse')==='verse') params.verse=ref.verse; navigate('bible',params); } });
   $$('[data-reveal-ref]').forEach(el=>el.onclick=()=>revealVerse(el));
