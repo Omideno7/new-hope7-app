@@ -10,8 +10,8 @@ const BASE=(location.hostname==='raw.githack.com'||location.hostname==='rawcdn.g
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const lang=()=>String(localStorage.getItem('nh7_lang')||document.documentElement.lang||'en').toLowerCase();
 const L=(fa,en,hr)=>lang().startsWith('fa')?fa:lang().startsWith('hr')?hr:en;
-function sermonUrl(id){return BASE+'?type=sermon&id='+encodeURIComponent(String(id||''))}
-function verseUrl(book,chapter,verse){return BASE+'?type=verse&book='+encodeURIComponent(String(book||'').toUpperCase())+'&chapter='+encodeURIComponent(Number(chapter)||1)+'&verse='+encodeURIComponent(Number(verse)||1)}
+function sermonUrl(id){return BASE+'?target='+encodeURIComponent('sermon:'+String(id||''))}
+function verseUrl(book,chapter,verse){return BASE+'?target='+encodeURIComponent('verse:'+String(book||'').toUpperCase()+':'+(Number(chapter)||1)+':'+(Number(verse)||1))}
 function parseVerseKey(value){
  const m=String(value||'').match(/^nh7_bible_state_([A-Z0-9]+)[_-](\d+)[_-](\d+)$/i);
  return m?{book:m[1].toUpperCase(),chapter:Number(m[2]),verse:Number(m[3])}:null;
@@ -83,7 +83,18 @@ function requireAuth(target){
 }
 
 function queryTarget(){
- const u=new URL(location.href),type=String(u.searchParams.get('type')||u.searchParams.get('nh7_type')||'').toLowerCase();
+ const u=new URL(location.href),compact=String(u.searchParams.get('target')||'');
+ if(compact){
+  const parts=compact.split(':');
+  if(parts[0]==='sermon'){
+   const id=String(parts[1]||'');if(UUID.test(id))return{type:'sermon',id};
+  }
+  if(parts[0]==='verse'){
+   const book=String(parts[1]||'').toUpperCase(),chapter=Number(parts[2]),verse=Number(parts[3]);
+   if(/^[A-Z0-9]{2,5}$/.test(book)&&chapter>0&&verse>0)return{type:'verse',book,chapter,verse};
+  }
+ }
+ const type=String(u.searchParams.get('type')||u.searchParams.get('nh7_type')||'').toLowerCase();
  const legacySermon=u.searchParams.get('sermon');
  if(type==='sermon'||legacySermon){
   const id=String(u.searchParams.get('id')||legacySermon||'');if(UUID.test(id))return{type:'sermon',id};
