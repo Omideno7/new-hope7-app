@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#1d4ed8" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>New Hope 7 — Safe Player Integration Test</title>
+  <script>
+    (function(){
+      try{
+        var mode=localStorage.getItem('nh7_ui_theme_v425')||'system';
+        if(!/^(system|light|dark)$/.test(mode))mode='system';
+        var resolved=mode==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):mode;
+        document.documentElement.dataset.nh7Theme=resolved;
+        document.documentElement.dataset.nh7ThemeMode=mode;
+        document.documentElement.dataset.nh7HomeVisual=localStorage.getItem('nh7_ui_home_visual_v425')==='0'?'0':'1';
+        var size=localStorage.getItem('nh7_ui_font_size_v425')||'100';
+        if(!/^(90|100|110|120)$/.test(size))size='100';
+        document.documentElement.style.fontSize=size+'%';
+      }catch(_){}
+    }());
+  </script>
+  <link rel="manifest" href="manifest.json?v=4.4.7" />
+  <link rel="icon" href="assets/new-hope7-logo-192.png?v=4.4.7" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/new-hope7-logo-180.png?v=4.4.7" />
+  <link rel="stylesheet" href="css/styles.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/v2.2.0.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/v2.2.2.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/v2.2.3.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/v2.2.4.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/v2.3.0-access-bible.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/v2.3.4-my-notes.css?v=2.3.9" />
+  <link rel="stylesheet" href="css/nh7-book-reader-v280.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-library-collections-v322.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-secure-media-v270.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-secure-media-watermark-v272.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-apocrypha-v270.css?v=2.3.9.33" />
+  <link rel="stylesheet" href="css/nh7-spiritual-plans-v240.css?v=4.1.2" />
+  <link rel="stylesheet" href="css/nh7-appearance-v427.css?v=4.4.7" />
+  <link rel="stylesheet" href="css/nh7-bible-keywords-v450.css?v=4.5.1" />
+  <link rel="stylesheet" href="css/nh7-reader-toolbar-v452.css?v=4.5.2-r2" />
+  <link rel="stylesheet" href="css/nh7-notes-categories-v452.css?v=4.5.2-r2" />
+  <script>
+    // Branch-only SAFE INTEGRATION TEST.
+    // Read/playback requests are allowed; known Production writes are intercepted.
+    window.NH7_PLAYER_TEST_MODE = true;
+    window.NH7_PLAYER_TEST_ALLOW_DOWNLOADS = true;
+    window.NH7_CANONICAL_SETTINGS = true;
+    window.NH7_VERSION = '2.3.9.50-player-v500-safe-test';
+    window.NH7_BASE_PATH = new URL('.', window.location.href).pathname;
+
+    (function(){
+      var nativeFetch = window.fetch.bind(window);
+      var blocked = [
+        '/rest/v1/rpc/nh7_sermon_toggle_like_v440',
+        '/rest/v1/rpc/nh7_sermon_add_blessing_v440',
+        '/rest/v1/rpc/nh7_sermon_delete_blessing_v440',
+        '/rest/v1/rpc/nh7_track_app_section_v222',
+        '/rest/v1/rpc/nh7_track_app_section_v221',
+        '/rest/v1/rpc/nh7_school_record_audio_v380'
+      ];
+      function fake(url,init){
+        var body='{}';
+        if(String(url).includes('nh7_sermon_toggle_like_v440')){
+          var sid='';try{sid=String(JSON.parse((init&&init.body)||'{}').p_sermon_id||'')}catch(_){}
+          var card=sid?document.querySelector('[data-sermon-card="'+sid.replace(/"/g,'\\\"')+'"]'):null;
+          var btn=card&&card.querySelector('[data-nh7-social-v440] [data-like]');
+          var oldCount=Number(btn&&btn.querySelector('span')&&btn.querySelector('span').textContent||0);
+          var oldLiked=!!(btn&&btn.classList.contains('on'));
+          var nextLiked=!oldLiked,nextCount=Math.max(0,oldCount+(nextLiked?1:-1));
+          body=JSON.stringify({liked:nextLiked,like_count:nextCount});
+        }
+        return new Response(body,{status:200,headers:{'Content-Type':'application/json','X-NH7-Test-Mode':'blocked-write'}});
+      }
+      window.fetch=function(input,init){
+        var url=typeof input==='string'?input:(input&&input.url)||'';
+        var method=String((init&&init.method)||(input&&input.method)||'GET').toUpperCase();
+        if(method!=='GET' && blocked.some(function(x){return String(url).includes(x)})){
+          console.info('[NH7 SAFE TEST] blocked Production write:',method,url);
+          return Promise.resolve(fake(url,init));
+        }
+        return nativeFetch(input,init);
+      };
+      document.addEventListener('click',function(e){
+        var submit=e.target&&e.target.closest&&e.target.closest('[data-nh7-social-v440] [data-submit]');
+        if(!submit)return;
+        e.preventDefault();e.stopImmediatePropagation();
+        var status=submit.closest('[data-nh7-social-v440]')?.querySelector('[data-status]');
+        if(status)status.textContent='SAFE TEST: Blessing submission is disabled here; Production data is unchanged.';
+      },true);
+    }());
+  </script>
+  <style>
+    .nh7-safe-test-badge{position:fixed;z-index:99999;top:calc(6px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);padding:5px 10px;border-radius:999px;background:#111827e6;color:#fff;font:700 10px/1.2 system-ui,-apple-system,sans-serif;box-shadow:0 4px 18px #0005;pointer-events:none;white-space:nowrap}
+  </style>
+  <link rel="stylesheet" href="css/nh7-theme-studio-v453.css?v=4.5.3" />
+  <link rel="stylesheet" href="css/nh7-study-reader-v453.css?v=4.5.3" />
+  <link rel="stylesheet" href="css/nh7-fonts-quick-bible-v454.css?v=4.5.4" />
+  <link rel="stylesheet" href="css/nh7-header-date-v455.css?v=4.5.5" />
+  <link rel="stylesheet" href="css/nh7-navigation-v456.css?v=4.5.6" />
+  <link rel="stylesheet" href="css/nh7-theme-gallery-v457.css?v=4.7.1" />
+  <link rel="stylesheet" href="css/nh7-growth-v463.css?v=4.6.3" />
+  <link rel="stylesheet" href="css/nh7-celebrations-v464.css?v=4.6.4" />
+  <link rel="stylesheet" href="css/nh7-store-review-v469.css?v=4.6.9" />
+  <link rel="stylesheet" href="css/nh7-soul-winning-v472.css?v=4.7.2" />
+</head>
+<body>\n  <div class="nh7-safe-test-badge">SAFE PLAYER DOWNLOAD TEST · social/telemetry writes blocked</div>
+  <div id="amenGate" class="amen-gate hidden" role="dialog" aria-modal="true">
+    <div class="amen-card">
+      <img src="assets/new-hope7-logo-1024.png?v=4.4.7" alt="New Hope 7" class="amen-logo" />
+      <h1 id="amenTitle">OmideNo7</h1>
+      <p id="amenMessage">God is with you today.</p>
+      <button id="amenButton" class="primary-btn">Amen</button>
+    </div>
+  </div>
+
+  <div id="appShell" class="app-shell">
+    <header class="topbar nh7-header-date455">
+      <button id="backBtn" class="icon-btn hidden" aria-label="Back">‹</button>
+      <div class="brand">
+        <img src="assets/new-hope7-logo-1024.png?v=4.4.7" alt="" />
+        <div>
+          <strong>OmideNo7 Church</strong>
+          <small id="breadcrumb">Home</small>
+        </div>
+      </div>
+      <button id="inboxBtn" class="icon-btn inbox-top-btn" aria-label="Inbox">📥<span id="inboxBadge" class="inbox-badge hidden">0</span></button>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">EN</option>
+        <option value="fa">FA</option>
+        <option value="hr">HR</option>
+      </select>
+      <div class="nh7-header-date-row455" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 2v6M17 2v6M3 11h18M7 15h3M14 15h3"/></svg>
+        <time id="nh7HeaderDate455" hidden></time>
+      </div>
+    </header>
+
+    <main id="view" class="view"></main>
+
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <button data-route="home" class="nav-item active"><span>⌂</span><small data-i18n="nav.home">Home</small></button>
+      <button data-route="daily" class="nav-item"><span>☀</span><small data-i18n="nav.daily">Daily</small></button>
+      <button data-route="bible" class="nav-item"><span>📖</span><small data-i18n="nav.bible">Bible</small></button>
+      <button data-route="plans" class="nav-item"><span>✓</span><small data-i18n="nav.plans">Plans</small></button>
+      <button data-route="school" class="nav-item"><span>🎓</span><small data-i18n="nav.school">School</small></button>
+      <button data-route="more" class="nav-item"><span>☰</span><small data-i18n="nav.more">More</small></button>
+    </nav>
+  </div>
+
+  <template id="loadingTpl"><section class="card"><p>Loading...</p></section></template>
+  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.12.0/mammoth.browser.min.js" defer></script>
+  <script src="js/nh7-security-core-v340.js?v=3.4.1"></script>
+  <script src="js/nh7-qna-i18n-v341.js?v=2.3.9.36"></script>
+  <script src="js/nh7-offline-startup-v327.js?v=2.3.9.50-offline403"></script>
+  <script src="js/nh7-auto-update-v335.js?v=2.3.9.35"></script>
+  <script src="js/nh7-notifications-zagreb-v334.js?v=2.3.9.35e"></script>
+  <script src="js/nh7-offline-core-v327.js?v=2.3.9.50-offline403"></script>
+  <script src="js/nh7-offline-data-v422.js?v=4.2.2"></script>
+  <script src="js/nh7-audio-route-stability-v423.js?v=4.6.1"></script>
+  <script src="js/nh7-sermon-catalog-hotfix-v424.js?v=4.2.4"></script>
+  <script src="js/nh7-access-bootstrap-v230.js?v=2.3.9.33"></script>
+  <script src="js/nh7-auth-signup-guard-v343.js?v=3.5.5"></script>
+  <script src="js/nh7-registration-canonical-v353.js?v=4.0.1"></script>
+  <script src="js/nh7-school-registration-v342.js?v=2.3.9.50"></script>
+  <script src="js/nh7-registration-final-guard-v401.js?v=4.0.1"></script>
+  <script src="js/nh7-registration-repeat-guard-v402.js?v=4.0.2"></script>
+  <script src="js/nh7-offline-playback-bridge-v332.js?v=2.3.9.50-offline403"></script>
+  <script src="js/nh7-offline-persistence-v323.js?v=2.3.9.50-offline403"></script>
+  <script src="js/nh7-auth-recovery-v342.js?v=2.3.9.50"></script>
+  <script src="js/nh7-audio-classic-v484.js?v=4.8.4-download-ui-v501"></script>
+  <script src="js/nh7-audio-miniplayer-v487.js?v=4.8.7" defer></script>
+  <script src="js/nh7-sermon-social-v443.js?v=4.4.6" defer></script>
+  <script src="js/nh7-sermon-list-detail-v445.js?v=4.4.6" defer></script>
+  <script src="js/nh7-audio-library-v500.js?v=5.0.0-preview-20260930" defer></script>
+  <script src="js/app.js?v=4.8.5" type="module"></script>
+  <script src="js/nh7-settings-controller-v403.js?v=4.6.4"></script>
+  <script src="js/nh7-settings-account-v252.js?v=2.5.2" defer></script>
+  <script src="js/nh7-delete-account-v253.js?v=2.5.4" defer></script>
+  <script src="js/nh7-app-enhancements-v230.js?v=4.5.2-reader" type="module"></script>
+  <script src="js/nh7-reader-toolbar-v452.js?v=4.5.3-unified" defer></script>
+  <script src="js/nh7-my-notes-v234.js?v=4.5.2-reader" type="module"></script>
+  <script src="js/nh7-my-notes-categories-v452.js?v=4.5.2-r2" defer></script>
+  <script src="js/nh7-book-reader-v283.js?v=2.3.9.51" defer></script>
+  <script src="js/nh7-book-reading-telemetry-v490.js?v=4.9.0" defer></script>
+  <script src="js/nh7-library-language-v321.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-library-collections-v322.js?v=2.3.9.51" defer></script>
+  <script src="js/nh7-school-media-session-v262.js?v=2.3.9.50" defer></script>
+  <script src="js/nh7-secure-media-v270.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-secure-media-fix-v271.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-large-mov-native-fallback-v273.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-secure-media-watermark-v272.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-apocrypha-v270.js?v=4.5.3-reader" defer></script>
+  <script src="js/nh7-protected-audio-gate-v316.js?v=2.3.9.33" defer></script>
+  <script src="js/nh7-ui-stability-v329.js?v=4.4.7" defer></script>
+  <script src="js/nh7-push-account-bind-v362.js?v=3.6.2" defer></script>
+  <script src="js/nh7-inbox-badge-sync-v418.js?v=4.1.8" defer></script>
+  <script src="js/nh7-school-exam-v344.js?v=2.3.9.50" defer></script>
+  <script src="js/nh7-school-path-v351.js?v=4.6.6" defer></script>
+  <script src="js/nh7-spiritual-plans-v412.js?v=4.1.2" type="module"></script>
+  <script src="js/nh7-fasting-practical-note-removal-v413.js?v=4.1.3" defer></script>
+  <script src="js/nh7-theme-studio-v453.js?v=4.5.7" defer></script>
+  <script src="js/nh7-original-language-v453.js?v=4.5.4" defer></script>
+  <script src="js/nh7-fonts-v454.js?v=4.5.4" defer></script>
+  <script src="js/nh7-audio-quick-bible-v454.js?v=4.5.4" defer></script>
+  <script src="js/nh7-media-player-v500.js?v=5.0.1-download-ui" defer></script>
+  <script src="js/nh7-header-date-v455.js?v=4.5.5" defer></script>
+  <script src="js/nh7-celebrations-v464.js?v=4.6.4" defer></script>
+</body>
+</html>
