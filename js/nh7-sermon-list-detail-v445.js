@@ -87,6 +87,7 @@ function setOpen(card,open,scroll=false){
 }
 function ensure(card){
   if(!isAudioMessageCard(card))return;
+  if(window.__NH7_AUDIO_LIBRARY_V500__)return;
   card.classList.add('nh7-audio-item-v445');
   let row=card.querySelector(':scope > .nh7-audio-row-v445');
   const title=mappedTitle(card),meta=durationText(card);
