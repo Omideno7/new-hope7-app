@@ -9,7 +9,7 @@ window.__NH7_MEDIA_PLAYER_V500__=true;
 const VERSION='5.0.2-download-ui';
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const FAVORITES_KEY='nh7_audio_favorites_v500';
-let root=null,expanded=false,lastTrackKey='',syncTimer=0,seeking=false,seekPreview=0,lastRecentId='';
+let root=null,expanded=false,lastTrackKey='',syncTimer=0,seeking=false,seekPreview=0,lastRecentId='',downloadUi=null;
 
 const lang=()=>{const v=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return ['fa','en','hr'].includes(v)?v:'en'};
 const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
@@ -219,20 +219,48 @@ function downloadMirror(item){
 }
 function syncDownloadVisual(item){
   const r=ensure(),button=r.querySelector('[data-download]');if(!button||!item)return;
-  const status=downloadMirror(item),icon=button.querySelector('[data-download-icon]'),label=button.querySelector('[data-download-label]'),bar=button.querySelector('[data-download-progress]');
-  button.classList.toggle('is-downloaded',status.downloaded);
-  button.classList.toggle('is-downloading',!status.downloaded&&status.percent!==null);
-  if(bar)bar.style.width=(status.downloaded?100:(status.percent||0))+'%';
-  if(status.downloaded){if(icon)icon.textContent='✓';if(label)label.textContent=L('دانلود شد','Downloaded','Preuzeto');return}
-  if(status.percent!==null){if(icon)icon.textContent=status.percent+'%';if(label)label.textContent=L('در حال دانلود','Downloading','Preuzimanje');return}
+  const mirrored=downloadMirror(item),id=mediaId(item);
+  if(mirrored.downloaded){downloadUi=null}
+  else if(downloadUi?.id===id&&downloadUi.active&&mirrored.percent!==null)downloadUi.percent=mirrored.percent;
+  const active=downloadUi?.id===id&&downloadUi.active&&!mirrored.downloaded;
+  const percent=mirrored.downloaded?100:(mirrored.percent!==null?mirrored.percent:(active?downloadUi.percent:null));
+  const icon=button.querySelector('[data-download-icon]'),label=button.querySelector('[data-download-label]'),bar=button.querySelector('[data-download-progress]');
+  button.classList.toggle('is-downloaded',mirrored.downloaded);
+  button.classList.toggle('is-downloading',active);
+  if(bar)bar.style.width=(mirrored.downloaded?100:(percent||0))+'%';
+  if(mirrored.downloaded){if(icon)icon.textContent='✓';if(label)label.textContent=L('دانلود شد','Downloaded','Preuzeto');return}
+  if(active){if(icon)icon.textContent=percent!==null?Math.round(percent)+'%':'…';if(label)label.textContent=L('در حال دانلود','Downloading','Preuzimanje');return}
   if(icon)icon.textContent='⇩';if(label)label.textContent=L('دانلود','Download','Preuzmi');
 }
-function downloadCurrent(){
+async function waitForDownloadButton(item,timeoutMs=2500){
+  const started=Date.now();
+  while(Date.now()-started<timeoutMs){
+    const card=currentCard(item),b=card?.querySelector('[data-classic-download]');
+    if(b)return b;
+    await new Promise(resolve=>setTimeout(resolve,60));
+  }
+  return null;
+}
+async function downloadCurrent(){
   const item=state().current;if(!item)return;
-  const status=downloadMirror(item);
+  const id=mediaId(item),status=downloadMirror(item);
   if(status.downloaded){notice(L('این فایل قبلاً دانلود شده است ✓ برای حذف، از تنظیمات > دانلودها استفاده کنید.','This file is already downloaded ✓ Remove it from Settings > Downloads.','Ova je datoteka već preuzeta ✓ Uklonite je u Postavke > Preuzimanja.'));return}
   if(window.NH7_PLAYER_TEST_MODE&&!window.NH7_PLAYER_TEST_ALLOW_DOWNLOADS){notice(L('حالت تست امن: فایل آفلاین شما تغییر نمی‌کند.','Safe test: your offline file is not changed.','Sigurni test: offline datoteka se ne mijenja.'));return}
-  engine()?.downloadItem?.(item);setTimeout(()=>syncDownloadVisual(item),60)
+  if(downloadUi?.active)return;
+  downloadUi={id,active:true,percent:0};syncDownloadVisual(item);
+  const promise=Promise.resolve(engine()?.downloadItem?.(item));
+  const hiddenButton=await waitForDownloadButton(item);
+  let observer=null;
+  if(hiddenButton){
+    const reflect=()=>{const m=downloadMirror(item);if(downloadUi?.id!==id)return;if(m.percent!==null)downloadUi.percent=m.percent;if(m.downloaded)downloadUi.active=false;syncDownloadVisual(item)};
+    observer=new MutationObserver(reflect);observer.observe(hiddenButton,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['class','data-offline-cached','disabled']});reflect();
+  }
+  try{await promise}catch(_){}
+  finally{try{observer?.disconnect()}catch(_){}}
+  for(let i=0;i<12;i++){const m=downloadMirror(item);if(m.downloaded){downloadUi=null;syncDownloadVisual(item);return}await new Promise(resolve=>setTimeout(resolve,120))}
+  if(downloadUi?.id===id)downloadUi=null;
+  syncDownloadVisual(item);
+  if(!downloadMirror(item).downloaded)notice(L('دانلود کامل نشد؛ دوباره تلاش کنید.','Download did not finish; please try again.','Preuzimanje nije dovršeno; pokušajte ponovno.'));
 }
 function toggleQueue(){const p=ensure().querySelector('[data-queue-panel]');if(!p)return;p.hidden=!p.hidden;if(!p.hidden)renderQueue()}
 function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
