@@ -129,7 +129,7 @@ function apply(){
   root.style.setProperty('--ui-bg',base.bg);root.style.setProperty('--ui-card',base.card);root.style.setProperty('--ui-text',text);
   root.style.setProperty('--ui-muted',base.muted);root.style.setProperty('--ui-verse',base.verse);root.style.setProperty('--ui-accent',accent);root.style.setProperty('--ui-icon',icon);
   root.style.setProperty('--ui-line',base.muted+'55');root.style.setProperty('--ui-button-ink',ink(accent));root.style.setProperty('--ui-font-fa',fa.stack);root.style.setProperty('--ui-font-latin',latin.stack);
-  root.style.setProperty('--ui-scale',String((Number(state.fontSize)||100)/100));root.style.setProperty('--ui-depth',(Number(state.depth)||8)+'px');root.style.setProperty('--ui-glow',(Number(state.glow)||18)+'%');
+  root.style.setProperty('--ui-scale',String((Number(state.fontSize)||100)/100));root.style.fontSize=String(Number(state.fontSize)||100)+'%';root.style.setProperty('--ui-depth',(Number(state.depth)||8)+'px');root.style.setProperty('--ui-glow',(Number(state.glow)||18)+'%');
   root.style.colorScheme=isDark(base)?'dark':'light';
   const meta=$('meta[name="theme-color"]');if(meta)meta.setAttribute('content',base.bg);
 
