@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eef8ff">
+<title>New Hope 7 — Appearance Studio Pro Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Baloo+Bhaijaan+2:wght@400;600;700&family=Cairo:wght@400;600;700&family=Changa:wght@400;600;700&family=Inter:wght@400;600;700&family=Lalezar&family=Lora:wght@400;600;700&family=Markazi+Text:wght@400;600;700&family=Merriweather:wght@400;700&family=Montserrat:wght@400;600;700&family=Noto+Kufi+Arabic:wght@400;600;700&family=Noto+Naskh+Arabic:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;600;700&family=Nunito+Sans:wght@400;600;700&family=Open+Sans:wght@400;600;700&family=Playfair+Display:wght@400;600;700&family=Poppins:wght@400;600;700&family=Raleway:wght@400;600;700&family=Reem+Kufi:wght@400;600;700&family=Roboto:wght@400;500;700&family=Source+Sans+3:wght@400;600;700&family=Tajawal:wght@400;500;700&family=Ubuntu:wght@400;500;700&family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/nh7-icon-system-v510.css?v=5.1.1">
+<link rel="stylesheet" href="css/nh7-appearance-studio-v512-preview.css?v=5.1.2">
+</head>
+<body>
+<div class="pro-app">
+  <header class="pro-topbar">
+    <img class="pro-logo" src="assets/new-hope7-logo-512.png" alt="New Hope 7">
+    <div class="pro-brand"><strong>New Hope 7</strong><small>Appearance Studio Pro · Preview واقعی</small></div>
+    <span class="pro-badge">PREVIEW ONLY</span>
+  </header>
+
+  <main class="pro-main">
+    <section class="pro-card">
+      <h2>🎨 Appearance Studio Pro</h2>
+      <p>این Preview روی شاخه تست اجرا می‌شود. تم‌های فعلی حذف نشده‌اند؛ گزینه‌های جدید فقط برای دیدن و لمس‌کردن تجربه آینده اضافه شده‌اند.</p>
+
+      <div class="pro-section">
+        <div class="pro-head"><strong>حالت تم</strong><small>دستی، مطابق سیستم گوشی، یا روز/شب خودکار</small></div>
+        <div class="mode-grid">
+          <button type="button" class="mode-btn tactile active" data-mode="manual">دستی</button>
+          <button type="button" class="mode-btn tactile" data-mode="system">طبق سیستم گوشی</button>
+          <button type="button" class="mode-btn tactile" data-mode="auto">روز / شب خودکار</button>
+        </div>
+        <div class="schedule-box" id="scheduleBox" hidden>
+          <div class="schedule-row">
+            <label>تم روز<select id="dayTheme"></select></label>
+            <label>تم شب<select id="nightTheme"></select></label>
+          </div>
+          <div class="schedule-row">
+            <label>شروع روز<input id="dayStart" type="time" value="07:00"></label>
+            <label>شروع شب<input id="nightStart" type="time" value="19:00"></label>
+          </div>
+          <div class="auto-status" id="autoStatus">حالت دستی فعال است</div>
+        </div>
+      </div>
+
+      <div class="pro-section">
+        <div class="pro-head"><strong>کتابخانه تم‌ها</strong><small>۱۴ تم فعلی + مجموعه جدید</small></div>
+        <div class="tabs">
+          <button type="button" class="chip-btn active tactile" data-theme-group="all">همه</button>
+          <button type="button" class="chip-btn tactile" data-theme-group="current">تم‌های فعلی</button>
+          <button type="button" class="chip-btn tactile" data-theme-group="vivid">رنگی</button>
+          <button type="button" class="chip-btn tactile" data-theme-group="soft">مطالعه</button>
+          <button type="button" class="chip-btn tactile" data-theme-group="modern">مدرن</button>
+          <button type="button" class="chip-btn tactile" data-theme-group="dark">تیره</button>
+          <button type="button" class="chip-btn tactile" data-theme-group="new">فقط جدیدها</button>
+        </div>
+        <div class="theme-grid" id="themeGrid"></div>
+      </div>
+
+      <div class="pro-section">
+        <div class="pro-head"><strong>فونت‌ها و اندازه</strong><small>۱۲ فونت فارسی + ۱۲ فونت انگلیسی/کرواتی</small></div>
+        <div class="control-grid">
+          <label class="control">فونت فارسی<select id="faFont"></select></label>
+          <label class="control">English / Croatian font<select id="latinFont"></select></label>
+        </div>
+        <div class="slider-block">
+          <div class="slider-row">
+            <label for="fontSize">اندازه فونت — تغییر زنده</label>
+            <output id="fontSizeOut">100%</output>
+            <input id="fontSize" type="range" min="80" max="140" step="5" value="100" style="grid-column:1/-1">
+          </div>
+        </div>
+        <div class="font-preview">
+          <strong>در خداوند همیشه شاد باشید؛ باز هم می‌گویم شاد باشید.</strong>
+          <p>Grace, faith and love shape the life of the believer. · Milost, vjera i ljubav.</p>
+        </div>
+      </div>
+
+      <div class="pro-section">
+        <div class="pro-head"><strong>ساخت تم شخصی</strong><small>پس‌زمینه، ماژول، کلید، متن، آیه و آیکون</small></div>
+        <div class="color-grid">
+          <label class="color-control">پس‌زمینه<input id="customBg" type="color" value="#eef8ff"></label>
+          <label class="color-control">کارت / ماژول<input id="customCard" type="color" value="#ffffff"></label>
+          <label class="color-control">کلیدها<input id="customAccent" type="color" value="#1858a4"></label>
+          <label class="color-control">فونت اصلی<input id="customText" type="color" value="#14364d"></label>
+          <label class="color-control">متن آیات<input id="customVerse" type="color" value="#17364e"></label>
+          <label class="color-control">آیکون‌ها<input id="customIcon" type="color" value="#1858a4"></label>
+        </div>
+        <div class="slider-block">
+          <div class="slider-row"><label>شدت رنگ کلیدها</label><output id="accentIntensityOut">100%</output><input id="accentIntensity" type="range" min="20" max="100" step="5" value="100" style="grid-column:1/-1"></div>
+          <div class="slider-row"><label>شدت رنگ فونت</label><output id="textIntensityOut">100%</output><input id="textIntensity" type="range" min="35" max="100" step="5" value="100" style="grid-column:1/-1"></div>
+          <div class="slider-row"><label>شدت رنگ آیکون</label><output id="iconIntensityOut">100%</output><input id="iconIntensity" type="range" min="20" max="100" step="5" value="100" style="grid-column:1/-1"></div>
+        </div>
+        <div id="readability" class="readability">خوانایی مناسب ✓</div>
+        <div class="builder-actions">
+          <button type="button" class="small-btn primary tactile" data-save-custom>ذخیره تم شخصی در Preview</button>
+          <button type="button" class="small-btn tactile" data-reset-custom>بازنشانی Preview</button>
+        </div>
+      </div>
+
+      <div class="pro-section">
+        <div class="pro-head"><strong>حس کلیدها</strong><small>برجسته → هنگام لمس فرو می‌رود → برمی‌گردد</small></div>
+        <div class="slider-block">
+          <div class="slider-row"><label>عمق کلید</label><output id="buttonDepthOut">8px</output><input id="buttonDepth" type="range" min="3" max="12" step="1" value="8" style="grid-column:1/-1"></div>
+          <div class="slider-row"><label>جلوه و درخشش</label><output id="buttonGlowOut">18%</output><input id="buttonGlow" type="range" min="0" max="40" step="2" value="18" style="grid-column:1/-1"></div>
+        </div>
+        <div class="action-row">
+          <button type="button" class="tactile primary" data-nh7-icon="play" data-demo-action aria-label="Play"></button>
+          <button type="button" class="tactile" data-nh7-icon="favorite" data-demo-action aria-label="Favorite"></button>
+          <button type="button" class="tactile" data-nh7-icon="share" data-demo-action aria-label="Share"></button>
+          <button type="button" class="tactile" data-nh7-icon="highlight" data-demo-action aria-label="Highlight"></button>
+        </div>
+      </div>
+
+      <div class="pro-section">
+        <div class="toggle-row">
+          <div class="toggle-copy">
+            <strong>📖 Book Reader / Eye Comfort</strong>
+            <small>با روشن‌شدن، نمونه متن پایین واقعاً به حالت مطالعه تغییر می‌کند.</small>
+          </div>
+          <label class="switch"><input id="readerToggle" type="checkbox"><span></span></label>
+        </div>
+        <div class="reader-options" id="readerOptions" hidden>
+          <button type="button" class="reader-btn tactile active" data-reader-mode="paper">Warm Paper</button>
+          <button type="button" class="reader-btn tactile" data-reader-mode="sepia">Sepia</button>
+          <button type="button" class="reader-btn tactile" data-reader-mode="soft">Soft Gray</button>
+          <button type="button" class="reader-btn tactile" data-reader-mode="night">Night Reading</button>
+        </div>
+      </div>
+    </section>
+
+    <h2 class="live-title">پیش‌نمایش زنده داخل اپ</h2>
+    <p class="live-note">در این قسمت تغییر تم، فونت، اندازه، رنگ، Book Reader و حس فشردن کلید را مستقیم می‌بینی.</p>
+
+    <section class="live-grid">
+      <article class="demo">
+        <h3>🎧 پلیر پیام‌های صوتی</h3>
+        <div class="player-row">
+          <div class="cover">NH7</div>
+          <div class="track"><strong>پیام نمونه کلیسا</strong><small>New Hope 7 Church · 42:18</small></div>
+          <button type="button" class="tactile primary" data-nh7-icon="play" data-demo-action aria-label="Play"></button>
+        </div>
+        <div class="action-row mini-tools">
+          <button type="button" class="tactile" data-nh7-icon="previous" data-demo-action aria-label="Previous"></button>
+          <button type="button" class="tactile" data-nh7-icon="rewind15" data-demo-action aria-label="15 back"></button>
+          <button type="button" class="tactile primary" data-nh7-icon="pause" data-demo-action aria-label="Pause"></button>
+          <button type="button" class="tactile" data-nh7-icon="forward30" data-demo-action aria-label="30 forward"></button>
+          <button type="button" class="tactile" data-nh7-icon="next" data-demo-action aria-label="Next"></button>
+          <button type="button" class="tactile" data-nh7-icon="notes" data-demo-action aria-label="Notes"></button>
+          <button type="button" class="tactile" data-nh7-icon="favorite" data-demo-action aria-label="Favorite"></button>
+          <button type="button" class="tactile download-btn" id="downloadDemo" data-nh7-icon="download" aria-label="Download"><span class="download-label" id="downloadLabel">دانلود</span><i class="download-bar"></i></button>
+        </div>
+      </article>
+
+      <article class="demo">
+        <h3>📖 کتاب مقدس و اپوکریفا</h3>
+        <div class="action-row mini-tools" style="margin-top:0">
+          <button type="button" class="tactile" data-nh7-icon="chapterPrev" data-demo-action aria-label="Previous"></button>
+          <button type="button" class="tactile" data-nh7-icon="search" data-demo-action aria-label="Search"></button>
+          <button type="button" class="tactile" data-nh7-icon="bookmark" data-demo-action aria-label="Save"></button>
+          <button type="button" class="tactile" data-nh7-icon="highlight" data-demo-action aria-label="Highlight"></button>
+          <button type="button" class="tactile" data-nh7-icon="notes" data-demo-action aria-label="Notes"></button>
+          <button type="button" class="tactile" data-nh7-icon="share" data-demo-action aria-label="Share"></button>
+          <button type="button" class="tactile" data-nh7-icon="chapterNext" data-demo-action aria-label="Next"></button>
+        </div>
+        <div class="reader-shell" id="readerDemo" data-reader="paper">
+          <span class="reader-state">BOOK READER ACTIVE</span>
+          <strong>یوحنا ۱</strong>
+          <p><sup>۱</sup> در ابتدا کلمه بود و کلمه نزد خدا بود و کلمه خدا بود. <sup>۲</sup> همان در ابتدا نزد خدا بود. <sup>۳</sup> همه چیز به‌واسطهٔ او آفریده شد.</p>
+        </div>
+      </article>
+
+      <article class="demo">
+        <h3>🎓 مدرسه آنلاین</h3>
+        <div class="school-row">
+          <button type="button" class="tactile" data-nh7-icon="lesson" data-demo-action aria-label="Lesson"></button>
+          <div><strong>درس اول — بنیاد ایمان</strong><small>فایل صوتی، تکلیف و آزمون</small></div>
+          <span class="done">تکمیل شد ✓</span>
+        </div>
+        <div class="action-row mini-tools">
+          <button type="button" class="tactile" data-nh7-icon="audio" data-demo-action aria-label="Audio"></button>
+          <button type="button" class="tactile" data-nh7-icon="assignment" data-demo-action aria-label="Assignment"></button>
+          <button type="button" class="tactile" data-nh7-icon="exam" data-demo-action aria-label="Exam"></button>
+          <button type="button" class="tactile" data-nh7-icon="notes" data-demo-action aria-label="Feedback"></button>
+          <button type="button" class="tactile" data-nh7-icon="download" data-demo-action aria-label="Download"></button>
+        </div>
+      </article>
+
+      <article class="demo">
+        <h3>✨ ماژول نمونه</h3>
+        <p>رنگ این کارت همان رنگی است که در «کارت / ماژول» انتخاب می‌کنی. متن، آیکون و کلیدها نیز جداگانه قابل تنظیم‌اند.</p>
+        <div class="action-row">
+          <button type="button" class="tactile primary" data-nh7-icon="prayer" data-demo-action aria-label="Prayer"></button>
+          <button type="button" class="tactile" data-nh7-icon="testimony" data-demo-action aria-label="Testimony"></button>
+          <button type="button" class="tactile" data-nh7-icon="inbox" data-demo-action aria-label="Inbox"></button>
+          <button type="button" class="tactile" data-nh7-icon="settings" data-demo-action aria-label="Settings"></button>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <nav class="pro-bottom">
+    <button type="button" class="active tactile" data-nh7-icon="home" data-demo-action><small>خانه</small></button>
+    <button type="button" class="tactile" data-nh7-icon="bible" data-demo-action><small>کتاب مقدس</small></button>
+    <button type="button" class="tactile" data-nh7-icon="lesson" data-demo-action><small>مدرسه</small></button>
+    <button type="button" class="tactile" data-nh7-icon="settings" data-demo-action><small>تنظیمات</small></button>
+  </nav>
+
+  <div class="toast" id="toast" role="status"></div>
+</div>
+<script src="js/nh7-icon-system-v510.js?v=5.1.0"></script>
+<script src="js/nh7-appearance-studio-v512-preview.js?v=5.1.2"></script>
+</body>
+</html>
