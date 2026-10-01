@@ -6,15 +6,14 @@
 if(window.__NH7_MEDIA_PLAYER_V500__)return;
 window.__NH7_MEDIA_PLAYER_V500__=true;
 
-const VERSION='5.0.0-preview-20260930';
+const VERSION='5.0.2-download-ui';
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const FAVORITES_KEY='nh7_audio_favorites_v500';
-let root=null,expanded=false,lastTrackKey='',syncTimer=0,seeking=false,seekPreview=0,lastRecentId='',iosVolumeVisual=1;
+let root=null,expanded=false,lastTrackKey='',syncTimer=0,seeking=false,seekPreview=0,lastRecentId='';
 
 const lang=()=>{const v=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return ['fa','en','hr'].includes(v)?v:'en'};
 const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
 const engine=()=>window.NH7_AUDIO_CLASSIC_V400||null;
-const isIOSWeb=()=>/iPad|iPhone|iPod/.test(navigator.userAgent)||((navigator.platform==='MacIntel')&&navigator.maxTouchPoints>1);
 const state=()=>engine()?.getState?.()||{};
 const mediaId=item=>String(item?.id||item?.analytics_id||'');
 const isSermon=item=>UUID.test(mediaId(item))&&!mediaId(item).startsWith('school-');
@@ -49,7 +48,7 @@ html.nh7p500-active .nh7-mini485,html.nh7p500-active .nh7-now-playing-v484,html.
 .nh7p500-seek{width:100%;margin-top:18px;accent-color:var(--nh7p-accent)}.nh7p500-time{display:flex;justify-content:space-between;margin-top:4px;font-size:.67rem;color:var(--nh7p-muted)}
 .nh7p500-main{display:flex;align-items:center;justify-content:space-around;gap:7px;margin:14px 0}.nh7p500-main button{width:40px;height:40px;border:0;border-radius:50%;background:color-mix(in srgb,var(--nh7p-text) 8%,transparent);color:var(--nh7p-text);font-weight:900;font-size:.84rem}.nh7p500-main .big{width:58px;height:58px;background:var(--nh7p-text);color:var(--nh7p-bg);font-size:1.12rem;box-shadow:0 7px 24px #0004}.nh7p500-main button:disabled{opacity:.3}
 .nh7p500-tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.nh7p500-tools button{min-width:0;min-height:44px;border:1px solid color-mix(in srgb,var(--nh7p-text) 18%,transparent);border-radius:12px;background:color-mix(in srgb,var(--nh7p-card) 88%,var(--nh7p-bg));color:var(--nh7p-text)!important;padding:5px 2px;font-weight:850}.nh7p500-tools button span{display:block;font-size:.86rem}.nh7p500-tools button small{display:block;margin-top:2px;font-size:.52rem;color:var(--nh7p-text)!important;opacity:.78;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.nh7p500-tools [data-favorite].on{color:#f59e0b}
-.nh7p500-volume{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;margin-top:10px}.nh7p500-volume input{width:100%;accent-color:var(--nh7p-accent)}.nh7p500-volume[hidden]{display:none!important}
+.nh7p500-tools [data-download]{position:relative;overflow:hidden}.nh7p500-tools [data-download].is-downloaded{border-color:color-mix(in srgb,#16a34a 58%,var(--nh7p-line));background:color-mix(in srgb,#16a34a 12%,var(--nh7p-card))}.nh7p500-tools [data-download].is-downloading{pointer-events:none}.nh7p500-download-progress{display:block;position:absolute;left:5px;right:5px;bottom:3px;height:2px;border-radius:99px;background:color-mix(in srgb,var(--nh7p-text) 14%,transparent);overflow:hidden}.nh7p500-download-progress>b{display:block;height:100%;width:0;background:var(--nh7p-accent);transition:width .18s ease}
 .nh7p500-panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}.nh7p500-panel-head strong{font-size:.74rem}.nh7p500-panel-head button{width:26px;height:26px;border:0;border-radius:50%;background:color-mix(in srgb,var(--nh7p-text) 8%,transparent);color:var(--nh7p-text);padding:0}
 .nh7p500-queue{margin-top:10px;padding:9px;border:1px solid color-mix(in srgb,var(--nh7p-text) 12%,transparent);border-radius:13px;background:color-mix(in srgb,var(--nh7p-card) 72%,transparent)}.nh7p500-queue[hidden]{display:none!important}.nh7p500-queue-list{display:grid;gap:5px}.nh7p500-queue-item{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:7px;align-items:center;width:100%;min-height:40px;border:0;border-radius:10px;background:color-mix(in srgb,var(--nh7p-text) 5%,transparent);color:var(--nh7p-text);padding:3px 6px;text-align:start}.nh7p500-queue-item img{width:34px;height:34px;border-radius:8px;object-fit:cover}.nh7p500-queue-item b{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.64rem}.nh7p500-queue-item small{font-size:.5rem;color:var(--nh7p-muted)}
 .nh7p500-queue-empty{padding:6px 2px;font-size:.62rem;color:var(--nh7p-muted)}
@@ -109,15 +108,12 @@ function ensure(){
         <div class="nh7p500-tools">
           <button type="button" data-speed><span data-rate>1×</span><small>${L('سرعت','Speed','Brzina')}</small></button>
           <button type="button" data-p500-bible><span>📖</span><small>${L('کتاب مقدس','Bible','Biblija')}</small></button>
-          <button type="button" data-mute><span data-mute-icon>🔊</span><small>${L('صدا','Volume','Glasnoća')}</small></button>
           <button type="button" data-favorite><span data-favorite-icon>☆</span><small>${L('علاقه‌مندی','Favorite','Favorit')}</small></button>
           <button type="button" data-note><span>📝</span><small>${L('یادداشت','Notes','Bilješke')}</small></button>
-          <button type="button" data-download><span>⇩</span><small>${L('دانلود','Download','Preuzmi')}</small></button>
+          <button type="button" data-download><span data-download-icon>⇩</span><small data-download-label>${L('دانلود','Download','Preuzmi')}</small><i class="nh7p500-download-progress" aria-hidden="true"><b data-download-progress></b></i></button>
           <button type="button" data-p500-share><span>↗</span><small>${L('اشتراک','Share','Podijeli')}</small></button>
           <button type="button" data-queue><span>☷</span><small>${L('صف پخش','Queue','Red')}</small></button>
         </div>
-        <div class="nh7p500-volume" data-volume-row><span>🔈</span><input data-volume type="range" min="0" max="1" step="0.05" value="1"><span>🔊</span></div>
-        <small class="nh7p500-volume-note" data-volume-note>${L('در آیفون، صدای سیستم با دکمه‌های گوشی کنترل می‌شود.','On iPhone, system volume is controlled by the phone buttons.','Na iPhoneu se glasnoća sustava kontrolira tipkama uređaja.')}</small>
         <div class="nh7p500-queue" data-queue-panel><div class="nh7p500-panel-head"><strong>${L('صف پخش','Up Next','Sljedeće')}</strong><button type="button" data-queue-close>×</button></div><div class="nh7p500-queue-list" data-queue-list></div></div>
         <section class="nh7p500-related" data-related-panel hidden><div class="nh7p500-panel-head"><strong>${L('مرتبط و پیشنهادی','Related & Suggested','Povezano i predloženo')}</strong></div><div class="nh7p500-related-strip" data-related-list></div></section>
       </div>
@@ -213,10 +209,30 @@ function shareCurrent(){
   const item=state().current;if(!isSermon(item))return;
   withCurrentCard(card=>{const b=card.querySelector('[data-nh7-social-v440] [data-share]');if(!b)return false;b.click();return true});
 }
+function downloadMirror(item){
+  const card=currentCard(item);if(!card)return{downloaded:false,percent:null};
+  const b=card.querySelector('[data-classic-download],[data-external-classic-download]');
+  if(!b)return{downloaded:false,percent:null};
+  const downloaded=b.classList.contains('is-downloaded-v400')||b.dataset.offlineCached==='1';
+  const m=String(b.textContent||'').match(/(\d{1,3})\s*%/),percent=m?Math.max(0,Math.min(99,Number(m[1])||0)):null;
+  return{downloaded,percent};
+}
+function syncDownloadVisual(item){
+  const r=ensure(),button=r.querySelector('[data-download]');if(!button||!item)return;
+  const status=downloadMirror(item),icon=button.querySelector('[data-download-icon]'),label=button.querySelector('[data-download-label]'),bar=button.querySelector('[data-download-progress]');
+  button.classList.toggle('is-downloaded',status.downloaded);
+  button.classList.toggle('is-downloading',!status.downloaded&&status.percent!==null);
+  if(bar)bar.style.width=(status.downloaded?100:(status.percent||0))+'%';
+  if(status.downloaded){if(icon)icon.textContent='✓';if(label)label.textContent=L('دانلود شد','Downloaded','Preuzeto');return}
+  if(status.percent!==null){if(icon)icon.textContent=status.percent+'%';if(label)label.textContent=L('در حال دانلود','Downloading','Preuzimanje');return}
+  if(icon)icon.textContent='⇩';if(label)label.textContent=L('دانلود','Download','Preuzmi');
+}
 function downloadCurrent(){
   const item=state().current;if(!item)return;
-  if(window.NH7_PLAYER_TEST_MODE){notice(L('حالت تست امن: فایل آفلاین شما تغییر نمی‌کند.','Safe test: your offline file is not changed.','Sigurni test: offline datoteka se ne mijenja.'));return}
-  engine()?.downloadItem?.(item)
+  const status=downloadMirror(item);
+  if(status.downloaded){notice(L('این فایل قبلاً دانلود شده است ✓ برای حذف، از تنظیمات > دانلودها استفاده کنید.','This file is already downloaded ✓ Remove it from Settings > Downloads.','Ova je datoteka već preuzeta ✓ Uklonite je u Postavke > Preuzimanja.'));return}
+  if(window.NH7_PLAYER_TEST_MODE&&!window.NH7_PLAYER_TEST_ALLOW_DOWNLOADS){notice(L('حالت تست امن: فایل آفلاین شما تغییر نمی‌کند.','Safe test: your offline file is not changed.','Sigurni test: offline datoteka se ne mijenja.'));return}
+  engine()?.downloadItem?.(item);setTimeout(()=>syncDownloadVisual(item),60)
 }
 function toggleQueue(){const p=ensure().querySelector('[data-queue-panel]');if(!p)return;p.hidden=!p.hidden;if(!p.hidden)renderQueue()}
 function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
@@ -267,7 +283,6 @@ function bind(){
     if(event.target.closest('[data-back]')&&a){a.currentTime=Math.max(0,Number(a.currentTime||0)-15);return}
     if(event.target.closest('[data-forward]')&&a){a.currentTime=Math.min(Number.isFinite(a.duration)?a.duration:Infinity,Number(a.currentTime||0)+30);return}
     if(event.target.closest('[data-speed]'))return cycleSpeed();
-    if(event.target.closest('[data-mute]')){if(isIOSWeb()){notice(L('برای تنظیم حجم صدا از دکمه‌های آیفون استفاده کنید.','Use the iPhone volume buttons to adjust volume.','Za glasnoću koristite tipke na iPhoneu.'));return}return engine()?.toggleMediaMute?.()}
     if(event.target.closest('[data-p500-bible]'))return window.NH7QuickBibleV454?.open?.(event.target.closest('[data-p500-bible]'));
     if(event.target.closest('[data-favorite]'))return toggleFavorite();
     if(event.target.closest('[data-note]'))return openNotes();
@@ -286,15 +301,6 @@ function bind(){
     if(event.target.matches('[data-seek]')&&a&&Number.isFinite(a.duration)&&a.duration>0){
       seeking=true;seekPreview=(Number(event.target.value)/1000)*a.duration;
       const n=root.querySelector('[data-now]');if(n)n.textContent=fmt(seekPreview);return
-    }
-    if(event.target.matches('[data-volume]')){
-      if(isIOSWeb()){
-        iosVolumeVisual=Math.max(0,Math.min(1,Number(event.target.value)||0));
-        const bridge=window.NH7_NATIVE_VOLUME_V500;
-        if(bridge?.setVolume){Promise.resolve(bridge.setVolume(iosVolumeVisual)).catch(()=>{});return}
-        notice(L('در این تست وب، iPhone اجازهٔ تغییر صدای سیستم از اسلایدر را نمی‌دهد؛ از دکمه‌های گوشی استفاده کنید.','In this web test, iPhone does not allow system volume changes from the slider; use the phone buttons.','U ovom web testu iPhone ne dopušta promjenu sistemske glasnoće klizačem; koristite tipke uređaja.'));return
-      }
-      engine()?.setMediaVolume?.(event.target.value);
     }
   });
   const commitSeek=event=>{
@@ -337,12 +343,7 @@ function sync(){
     const card=document.querySelector(`[data-sermon-card="${CSS.escape(mediaId(item))}"]`),socialLike=card?.querySelector('[data-nh7-social-v440] [data-like]'),likeIcon=r.querySelector('[data-like-icon]'),likeCount=r.querySelector('[data-like-count]');
     if(socialLike){const count=socialLike.querySelector('span')?.textContent||'';if(likeIcon)likeIcon.textContent=socialLike.classList.contains('on')?'♥':'♡';if(likeButton)likeButton.classList.toggle('on',socialLike.classList.contains('on'));if(likeCount)likeCount.textContent=count}
   }
-  const volumeRow=r.querySelector('[data-volume-row]'),volume=r.querySelector('[data-volume]');
-  const canVolume=s.volumeControlSupported!==false;
-  if(volumeRow)volumeRow.hidden=false;
-  const volumeNote=r.querySelector('[data-volume-note]');if(volumeNote)volumeNote.classList.toggle('show',isIOSWeb());
-  if(volume&&!volume.matches(':active'))volume.value=isIOSWeb()?String(iosVolumeVisual):String(Number(a.volume??1));
-  const muteIcon=r.querySelector('[data-mute-icon]');if(muteIcon)muteIcon.textContent=a.muted?'🔇':Number(a.volume||1)<.5?'🔉':'🔊';
+  syncDownloadVisual(item);
   renderQueue();renderRelated();
   const key=mediaId(item)+'|'+art;
   if(key!==lastTrackKey){lastTrackKey=key;r.querySelector('[data-art]').style.backgroundImage=`url("${art.replace(/"/g,'%22')}")`;r.querySelector('[data-bg]').style.backgroundImage=`url("${art.replace(/"/g,'%22')}")`;r.querySelector('[data-cover]').src=art}
