@@ -1,0 +1,80 @@
+name: QA Appearance Studio Pro v512 Preview
+
+on:
+  push:
+    branches: [feature/appearance-studio-pro-v512-preview-20261002]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify isolated preview scope
+        run: |
+          set -euo pipefail
+          base=4c558757d333d595014473835f8519e6396eed56
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed
+          printf '%s\n' \
+            '.github/workflows/qa-appearance-studio-v512.yml' \
+            'appearance-studio-v512-preview.html' \
+            'css/nh7-appearance-studio-v512-preview.css' \
+            'js/nh7-appearance-studio-v512-preview.js' | sort > /tmp/allowed
+          diff -u /tmp/allowed /tmp/changed
+
+      - name: Validate JavaScript
+        run: |
+          set -euo pipefail
+          node --check js/nh7-appearance-studio-v512-preview.js
+          node --check js/nh7-icon-system-v510.js
+
+      - name: Verify requested appearance features
+        run: |
+          set -euo pipefail
+          grep -q "۱۲ فونت فارسی" appearance-studio-v512-preview.html
+          grep -q "۱۲ فونت انگلیسی" appearance-studio-v512-preview.html
+          grep -q "روز / شب خودکار" appearance-studio-v512-preview.html
+          grep -q "ساخت تم شخصی" appearance-studio-v512-preview.html
+          grep -q "Book Reader / Eye Comfort" appearance-studio-v512-preview.html
+          grep -q "downloadDemo" appearance-studio-v512-preview.html
+          grep -q "classList.add('complete')" js/nh7-appearance-studio-v512-preview.js
+          grep -q "root.style.fontSize" js/nh7-appearance-studio-v512-preview.js
+          grep -q "pointerdown" js/nh7-appearance-studio-v512-preview.js
+          grep -q "translateY(calc(var(--ui-depth) \* .48))" css/nh7-appearance-studio-v512-preview.css
+
+      - name: Count font choices
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const s=fs.readFileSync('js/nh7-appearance-studio-v512-preview.js','utf8');
+          const fa=s.match(/const FA_FONTS=\{([\s\S]*?)\};\nconst LATIN_FONTS=/)?.[1]||'';
+          const la=s.match(/const LATIN_FONTS=\{([\s\S]*?)\};\n\nlet saved=/)?.[1]||'';
+          const count=x=>(x.match(/\{name:/g)||[]).length;
+          if(count(fa)<12) throw new Error('Need at least 12 Persian fonts');
+          if(count(la)<12) throw new Error('Need at least 12 Latin fonts');
+          console.log('Font choices:',count(fa),count(la));
+          NODE
+
+      - name: Validate preview HTML wiring
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const html=fs.readFileSync('appearance-studio-v512-preview.html','utf8');
+          if(!html.includes('css/nh7-appearance-studio-v512-preview.css?v=5.1.2')) throw new Error('CSS not wired');
+          if(!html.includes('js/nh7-appearance-studio-v512-preview.js?v=5.1.2')) throw new Error('JS not wired');
+          if(!html.includes('fonts.googleapis.com')) throw new Error('Preview web fonts missing');
+          console.log('HTML wiring OK');
+          NODE
+
+      - name: Verify Production runtime untouched
+        run: |
+          set -euo pipefail
+          base=968eb672cdd45f3af537cd1ed835fef4edf940e0
+          git diff --exit-code "$base"...HEAD --             index.html js/app.js service-worker.js sw-offline-v329.js sw-release-core-v403.js             js/nh7-media-player-v500.js js/nh7-audio-classic-v484.js             js/nh7-theme-studio-v453.js css/nh7-theme-studio-v453.css css/nh7-theme-gallery-v457.css             'js/nh7-school-*' 'js/nh7-bible-*' 'js/nh7-admin-*' 'supabase/**' 'data/**'
+          echo 'Production runtime remains untouched.'
