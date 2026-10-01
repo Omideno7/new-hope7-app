@@ -2,11 +2,11 @@
    Web half only; native Universal/App Link association is completed in the store wrappers. */
 (()=>{'use strict';
 if(window.__NH7_DEEP_LINKS_V501__)return;window.__NH7_DEEP_LINKS_V501__=true;
-const VERSION='5.0.2';
+const VERSION='5.0.4';
 const PENDING_KEY='nh7_pending_deep_link_v501';
 const AUTH_KEY='nh7_user_session_v170';
 const LOGOUT_KEY='nh7_explicit_logout';
-const BASE=(location.hostname==='raw.githack.com'||location.hostname==='rawcdn.githack.com')?new URL('link.html',location.href).href:'https://omideno7.github.io/new-hope7-app/link.html';
+const BASE=(location.hostname==='raw.githack.com'||location.hostname==='rawcdn.githack.com')?new URL('index.html',location.href).href:'https://omideno7.github.io/new-hope7-app/';
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const lang=()=>String(localStorage.getItem('nh7_lang')||document.documentElement.lang||'en').toLowerCase();
 const L=(fa,en,hr)=>lang().startsWith('fa')?fa:lang().startsWith('hr')?hr:en;
