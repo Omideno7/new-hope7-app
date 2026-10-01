@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eef8ff">
+<title>New Hope 7 — Appearance Real Preview</title>
+<link rel="stylesheet" href="css/nh7-theme-studio-v453.css?v=4.5.3">
+<link rel="stylesheet" href="css/nh7-fonts-quick-bible-v454.css?v=4.5.4">
+<link rel="stylesheet" href="css/nh7-icon-system-v510.css?v=5.1.1">
+<link rel="stylesheet" href="css/nh7-appearance-v511-preview.css?v=5.1.1">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <img class="logo" src="assets/new-hope7-logo-512.png" alt="New Hope 7">
+    <div class="brand"><strong>New Hope 7</strong><small>Settings · Appearance Preview</small></div>
+    <span class="preview-badge">SAFE PREVIEW</span>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>🎨 ظاهر و مطالعه</h2>
+      <p>نسخهٔ واقعیِ نمایشیِ تنظیمات آینده. همهٔ ۱۴ تم فعلی حفظ شده‌اند و گزینه‌های جدید فقط برای Preview اضافه شده‌اند.</p>
+
+      <div class="section">
+        <div class="section-head"><strong>حالت نمایش</strong><small>System / Light / Dark</small></div>
+        <div class="segment">
+          <button type="button" class="pressable" data-mode="system">سیستم</button>
+          <button type="button" class="pressable active" data-mode="light">روشن</button>
+          <button type="button" class="pressable" data-mode="dark">تیره</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><strong>تم‌های آماده</strong><small>۱۴ تم فعلی + تم‌های جدید</small></div>
+        <div class="theme-tabs">
+          <button type="button" class="active pressable" data-theme-group="all">همه</button>
+          <button type="button" class="pressable" data-theme-group="vivid">رنگی</button>
+          <button type="button" class="pressable" data-theme-group="soft">مطالعه</button>
+          <button type="button" class="pressable" data-theme-group="dark">تیره</button>
+          <button type="button" class="pressable" data-theme-group="new">جدید</button>
+        </div>
+        <div class="themes" id="themeCards"></div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><strong>فونت و اندازه</strong><small>همان قابلیت فعلی، بدون حذف</small></div>
+        <div class="fields">
+          <label class="field">فونت فارسی
+            <select id="faFont">
+              <option value="system">سیستم</option>
+              <option value="vazirmatn">Vazirmatn</option>
+              <option value="naskh">Noto Naskh</option>
+              <option value="estedad">Estedad</option>
+              <option value="amiri">Amiri</option>
+              <option value="markazi">Markazi</option>
+            </select>
+          </label>
+          <label class="field">فونت انگلیسی / کرواتی
+            <select id="latinFont">
+              <option value="system">System</option>
+              <option value="inter">Inter</option>
+              <option value="lora">Lora</option>
+              <option value="nunito">Nunito</option>
+              <option value="classic">Classic Serif</option>
+            </select>
+          </label>
+        </div>
+        <div class="size-row" style="margin-top:9px">
+          <button type="button" class="pressable" data-size="90">90%</button>
+          <button type="button" class="pressable active" data-size="100">100%</button>
+          <button type="button" class="pressable" data-size="110">110%</button>
+          <button type="button" class="pressable" data-size="120">120%</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><strong>رنگ متن اصلی</strong><small>با کنترل خوانایی</small></div>
+        <div class="fields">
+          <label class="field">رنگ متن
+            <input id="textColor" type="color" value="#14364d">
+          </label>
+          <div class="field">خوانایی
+            <button type="button" class="auto-btn pressable" data-auto-text>تنظیم خودکار رنگ خوانا</button>
+          </div>
+        </div>
+        <div id="contrastStatus" class="contrast">خوانایی متن مناسب ✓</div>
+      </div>
+
+      <div class="section">
+        <div class="toggle-row">
+          <div class="toggle-copy">
+            <strong>📖 Book Reader / Eye Comfort</strong>
+            <small>فقط بخش‌های خواندنی را آرام‌تر و مناسب مطالعه می‌کند؛ منو و پلیر عادی می‌مانند.</small>
+          </div>
+          <label class="switch"><input id="readerToggle" type="checkbox"><span></span></label>
+        </div>
+        <div id="readerModes" class="reader-modes" hidden>
+          <button type="button" class="pressable active" data-reader-mode="paper">کاغذ گرم</button>
+          <button type="button" class="pressable" data-reader-mode="sepia">سپیا</button>
+          <button type="button" class="pressable" data-reader-mode="soft">خاکستری نرم</button>
+          <button type="button" class="pressable" data-reader-mode="night">مطالعه شب</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="live">
+      <h2>پیش‌نمایش واقعی در اپ</h2>
+      <p>دکمه‌ها را لمس کن؛ حرکت فشاری هم فعال است.</p>
+
+      <article class="demo-card">
+        <h3>🎧 پلیر پیام‌های صوتی</h3>
+        <div class="player">
+          <div class="art">NH7</div>
+          <div class="player-copy"><strong>پیام نمونه کلیسا</strong><small>New Hope 7 Church</small></div>
+          <div class="player-actions">
+            <button type="button" class="action primary pressable" data-nh7-icon="play" data-demo-action></button>
+          </div>
+        </div>
+        <div class="action-row" style="margin-top:12px">
+          <button type="button" class="action pressable" data-nh7-icon="previous" data-demo-action aria-label="Previous"></button>
+          <button type="button" class="action pressable" data-nh7-icon="rewind15" data-demo-action aria-label="Back 15"></button>
+          <button type="button" class="action primary pressable" data-nh7-icon="pause" data-demo-action aria-label="Pause"></button>
+          <button type="button" class="action pressable" data-nh7-icon="forward30" data-demo-action aria-label="Forward 30"></button>
+          <button type="button" class="action pressable" data-nh7-icon="next" data-demo-action aria-label="Next"></button>
+          <button type="button" class="action pressable" data-nh7-icon="favorite" data-demo-action aria-label="Favorite"></button>
+          <button type="button" class="action pressable" data-nh7-icon="download" data-demo-action aria-label="Download"></button>
+          <button type="button" class="action pressable" data-nh7-icon="share" data-demo-action aria-label="Share"></button>
+        </div>
+      </article>
+
+      <article class="demo-card">
+        <h3>📖 کتاب مقدس و اپوکریفا</h3>
+        <div class="bible-toolbar">
+          <button type="button" class="action pressable" data-nh7-icon="chapterPrev" data-demo-action aria-label="Previous chapter"></button>
+          <button type="button" class="action pressable" data-nh7-icon="search" data-demo-action aria-label="Search"></button>
+          <button type="button" class="action pressable" data-nh7-icon="bookmark" data-demo-action aria-label="Bookmark"></button>
+          <button type="button" class="action pressable" data-nh7-icon="highlight" data-demo-action aria-label="Highlight"></button>
+          <button type="button" class="action pressable" data-nh7-icon="notes" data-demo-action aria-label="Notes"></button>
+          <button type="button" class="action pressable" data-nh7-icon="copy" data-demo-action aria-label="Copy"></button>
+          <button type="button" class="action pressable" data-nh7-icon="share" data-demo-action aria-label="Share"></button>
+          <button type="button" class="action pressable" data-nh7-icon="chapterNext" data-demo-action aria-label="Next chapter"></button>
+        </div>
+        <div id="readerDemo" class="reader-demo" data-reader-mode="paper">
+          <p><sup>۱</sup> در ابتدا کلمه بود و کلمه نزد خدا بود و کلمه خدا بود. <sup>۲</sup> همان در ابتدا نزد خدا بود.</p>
+        </div>
+      </article>
+
+      <article class="demo-card">
+        <h3>🎓 مدرسه آنلاین</h3>
+        <div class="school-row">
+          <button type="button" class="action pressable" data-nh7-icon="lesson" data-demo-action aria-label="Lesson"></button>
+          <div><strong style="display:block;font-size:.72rem">درس اول — بنیاد ایمان</strong><small style="color:var(--p-muted);font-size:.58rem">فایل صوتی، تکلیف و وضعیت درس</small></div>
+          <span class="status">تکمیل شد ✓</span>
+        </div>
+        <div class="action-row" style="margin-top:12px">
+          <button type="button" class="action pressable" data-nh7-icon="audio" data-demo-action aria-label="Audio"></button>
+          <button type="button" class="action pressable" data-nh7-icon="assignment" data-demo-action aria-label="Assignment"></button>
+          <button type="button" class="action pressable" data-nh7-icon="exam" data-demo-action aria-label="Exam"></button>
+          <button type="button" class="action pressable" data-nh7-icon="notes" data-demo-action aria-label="Feedback"></button>
+          <button type="button" class="action pressable" data-nh7-icon="download" data-demo-action aria-label="Download"></button>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Preview navigation">
+    <button type="button" class="active pressable" data-nh7-icon="home" data-demo-action><small>خانه</small></button>
+    <button type="button" class="pressable" data-nh7-icon="bible" data-demo-action><small>کتاب مقدس</small></button>
+    <button type="button" class="pressable" data-nh7-icon="lesson" data-demo-action><small>مدرسه</small></button>
+    <button type="button" class="pressable" data-nh7-icon="settings" data-demo-action><small>تنظیمات</small></button>
+  </nav>
+  <div id="toast" class="toast" role="status"></div>
+</div>
+
+<script src="js/nh7-icon-system-v510.js?v=5.1.0"></script>
+<script src="js/nh7-appearance-v511-preview.js?v=5.1.1"></script>
+</body>
+</html>
