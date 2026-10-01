@@ -1,0 +1,54 @@
+name: QA Global Icon System v510 Preview
+
+on:
+  push:
+    branches: [feature/global-icon-system-v510-preview-20261002]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify visual-only scope
+        run: |
+          set -euo pipefail
+          base=968eb672cdd45f3af537cd1ed835fef4edf940e0
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed
+          printf '%s\n' \
+            '.github/workflows/qa-icon-system-v510.yml' \
+            'css/nh7-icon-system-v510.css' \
+            'icon-system-v510-preview.html' \
+            'js/nh7-icon-system-v510.js' | sort > /tmp/allowed
+          diff -u /tmp/allowed /tmp/changed
+
+      - name: Validate icon JavaScript
+        run: |
+          set -euo pipefail
+          node --check js/nh7-icon-system-v510.js
+          ! grep -Eq '\bfetch\s*\(|XMLHttpRequest|supabase|localStorage\.removeItem|indexedDB|serviceWorker\.register' js/nh7-icon-system-v510.js
+
+      - name: Validate preview scripts
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const html=fs.readFileSync('icon-system-v510-preview.html','utf8');
+          const blocks=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]).filter(Boolean);
+          blocks.forEach((code,i)=>new Function(code+'\n//# sourceURL=icon-preview-'+i));
+          if(!html.includes('css/nh7-icon-system-v510.css?v=5.1.0')) throw new Error('Icon CSS not wired');
+          if(!html.includes('js/nh7-icon-system-v510.js?v=5.1.0')) throw new Error('Icon JS not wired');
+          console.log('Preview syntax and wiring OK');
+          NODE
+
+      - name: Verify Production runtime untouched
+        run: |
+          set -euo pipefail
+          base=968eb672cdd45f3af537cd1ed835fef4edf940e0
+          git diff --exit-code "$base"...HEAD --             index.html js/app.js service-worker.js sw-offline-v329.js sw-release-core-v403.js             js/nh7-media-player-v500.js js/nh7-audio-classic-v484.js             'js/nh7-school-*' 'js/nh7-bible-*' 'js/nh7-admin-*' 'supabase/**' 'data/**'
+          echo 'Existing Production runtime is untouched.'
