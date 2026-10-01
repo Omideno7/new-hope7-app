@@ -1,0 +1,109 @@
+name: QA Media Player v500 Candidate
+
+on:
+  push:
+    branches: [release/media-player-v500-candidate-20261002]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify isolated diff scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=d402a7c0b6e7900672fde8635ff0953e601558fb
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed.txt
+          cat > /tmp/allowed.txt <<'EOF'
+.github/workflows/qa-media-player-v500-candidate.yml
+index.html
+js/app.js
+js/nh7-audio-library-v500.js
+js/nh7-audio-quick-bible-v454.js
+js/nh7-media-player-v500.js
+js/nh7-sermon-list-detail-v445.js
+service-worker.js
+sw-offline-v329.js
+sw-release-core-v403.js
+EOF
+          sort -o /tmp/allowed.txt /tmp/allowed.txt
+          diff -u /tmp/allowed.txt /tmp/changed.txt
+
+      - name: Validate affected JavaScript
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check js/app.js
+          node --check js/nh7-audio-library-v500.js
+          node --check js/nh7-audio-quick-bible-v454.js
+          node --check js/nh7-media-player-v500.js
+          node --check js/nh7-sermon-list-detail-v445.js
+          node --check service-worker.js
+          node --check sw-offline-v329.js
+          node --check sw-release-core-v403.js
+
+      - name: Validate Player contract and cache wiring
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'js/nh7-audio-library-v500.js?v=5.0.0-approved-20260930' index.html
+          grep -q 'js/nh7-media-player-v500.js?v=5.0.0-approved-20260930' index.html
+          grep -q 'NH7_AUDIO_LIBRARY_V500_PATCH' js/app.js
+          grep -q 'nh7p500-social-proxy' js/nh7-audio-quick-bible-v454.js
+          grep -q 'if(window.__NH7_AUDIO_LIBRARY_V500__)return;' js/nh7-sermon-list-detail-v445.js
+          grep -q 'NH7_AUDIO_CLASSIC_V400' js/nh7-media-player-v500.js
+          ! grep -Eq "createElement\\(['\"']audio['\"']\\)|<audio" js/nh7-media-player-v500.js
+          ! grep -Eq '\\bfetch\\s*\\(|supabase|cloudRpc|cloudFetch' js/nh7-media-player-v500.js
+          ! grep -Eq '\\bfetch\\s*\\(|supabase|cloudRpc|cloudFetch' js/nh7-audio-library-v500.js
+          grep -q './js/nh7-note-text-v501.js' sw-release-core-v403.js
+          grep -q './js/nh7-audio-library-v500.js' sw-release-core-v403.js
+          grep -q './js/nh7-media-player-v500.js' sw-release-core-v403.js
+          grep -q './js/nh7-note-text-v501.js' sw-offline-v329.js
+          grep -q './js/nh7-audio-library-v500.js' sw-offline-v329.js
+          grep -q './js/nh7-media-player-v500.js' sw-offline-v329.js
+          grep -q 'nh7-release-core-v490-admin-ai-library-report-media500' sw-release-core-v403.js
+          grep -q 'v2.3.9.51-wave2-library-mainready-media500' sw-offline-v329.js
+          grep -q 'sw-release-core-v403.js?v=4.9.0-media500' service-worker.js
+          grep -q 'sw-offline-v329.js?v=2.3.9.50-classic-audio-v400-media500' service-worker.js
+
+      - name: Validate all current app scripts are release cached
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const index=fs.readFileSync('index.html','utf8');
+          const release=fs.readFileSync('sw-release-core-v403.js','utf8');
+          const match=release.match(/const NH7_RELEASE_ASSETS=\[([\s\S]*?)\];/);
+          if(!match) throw new Error('Release asset list missing');
+          const paths=[...match[1].matchAll(/'([^']+)'/g)].map(m=>m[1]);
+          const scripts=[...index.matchAll(/<script\s+src="(js\/[^"?]+)(?:\?[^"]*)?"/g)].map(m=>'./'+m[1]);
+          const missing=scripts.filter(p=>!paths.includes(p));
+          if(missing.length) throw new Error('Scripts missing from release cache: '+missing.join(', '));
+          console.log('Release cache covers',scripts.length,'app scripts');
+          NODE
+
+      - name: Validate HTML JSON and protected scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const fs=require('fs');
+          for(const file of ['admin.html','admin-v239.html','admin-v239-stable.html','admin-reset-password.html','reset-password.html','app-v239.html','index.html']){
+            const html=fs.readFileSync(file,'utf8');
+            const blocks=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]).filter(Boolean);
+            blocks.forEach((code,i)=>new Function(code+'\n//# sourceURL='+file+'-'+i));
+          }
+          for(const file of ['admin-manifest.json','manifest.json','version.json']) JSON.parse(fs.readFileSync(file,'utf8'));
+          NODE
+          base=d402a7c0b6e7900672fde8635ff0953e601558fb
+          test -z "$(git diff --name-only "$base"...HEAD -- 'supabase/**' 'data/**' 'admin*.html' 'js/nh7-admin-*' 'js/nh7-school-*' 'js/nh7-my-notes-*' 'js/nh7-note-text-v501.js')"
+          echo 'Protected areas unchanged.'
