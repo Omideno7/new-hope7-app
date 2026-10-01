@@ -22,8 +22,8 @@ img{width:88px;height:88px;border-radius:22px}.muted{color:#9db4be;line-height:1
 </main>
 <script>
 (()=>{'use strict';
- const u=new URL(location.href),compact=String(u.searchParams.get('target')||''),parts=compact.split(':'),compactType=String(parts[0]||''),type=compactType||String(u.searchParams.get('type')||''),preview=u.searchParams.get('preview')==='1'||location.hostname==='raw.githack.com'||location.hostname==='rawcdn.githack.com';
- const details=type==='sermon'?'Sermon '+String(compactType==='sermon'?(parts[1]||''):(u.searchParams.get('id')||'')):type==='verse'?'Bible '+String(compactType==='verse'?(parts[1]||''):(u.searchParams.get('book')||''))+' '+String(compactType==='verse'?(parts[2]||''):(u.searchParams.get('chapter')||''))+':'+String(compactType==='verse'?(parts[3]||''):(u.searchParams.get('verse')||'')):'New Hope 7';
+ const u=new URL(location.href),type=String(u.searchParams.get('type')||''),preview=u.searchParams.get('preview')==='1'||location.hostname==='raw.githack.com'||location.hostname==='rawcdn.githack.com';
+ const details=type==='sermon'?'Sermon '+String(u.searchParams.get('id')||''):type==='verse'?'Bible '+String(u.searchParams.get('book')||'')+' '+String(u.searchParams.get('chapter')||'')+':'+String(u.searchParams.get('verse')||''):'New Hope 7';
  document.getElementById('target').textContent=details;
  const fa=(navigator.language||'').toLowerCase().startsWith('fa'),hr=(navigator.language||'').toLowerCase().startsWith('hr');
  document.getElementById('message').textContent=fa?'اگر New Hope 7 نصب باشد، این لینک مستقیماً داخل اپ باز می‌شود. در غیر این صورت فروشگاه باز می‌شود.':hr?'Ako je New Hope 7 instaliran, poveznica se otvara izravno u aplikaciji. Inače se otvara trgovina aplikacija.':'If New Hope 7 is installed, this link opens directly in the app. Otherwise, the app store opens.';
@@ -33,10 +33,10 @@ img{width:88px;height:88px;border-radius:22px}.muted{color:#9db4be;line-height:1
  const iosStore='https://apps.apple.com/app/id6803187205',playStore='https://play.google.com/store/search?q=New%20Hope%207&c=apps';
  let scheme='';
  if(type==='sermon'){
-   const id=String(compactType==='sermon'?(parts[1]||''):(u.searchParams.get('id')||''));
+   const id=String(u.searchParams.get('id')||'');
    if(id)scheme='newhope7://sermon/'+encodeURIComponent(id);
  }else if(type==='verse'){
-   const b=String(compactType==='verse'?(parts[1]||''):(u.searchParams.get('book')||'')),c=String(compactType==='verse'?(parts[2]||''):(u.searchParams.get('chapter')||'')),v=String(compactType==='verse'?(parts[3]||''):(u.searchParams.get('verse')||''));
+   const b=String(u.searchParams.get('book')||''),c=String(u.searchParams.get('chapter')||''),v=String(u.searchParams.get('verse')||'');
    if(b&&c&&v)scheme='newhope7://bible/'+encodeURIComponent(b)+'/'+encodeURIComponent(c)+'/'+encodeURIComponent(v);
  }
  let left=false;const markLeft=()=>{if(document.hidden)left=true};document.addEventListener('visibilitychange',markLeft,{once:false});window.addEventListener('pagehide',()=>{left=true},{once:true});

@@ -1,19 +1,19 @@
-/* New Hope 7 v5.0.2 — canonical sermon + Bible verse deep links.
+/* New Hope 7 v5.0.1 — canonical sermon + Bible verse deep links.
    Web half only; native Universal/App Link association is completed in the store wrappers. */
 (()=>{'use strict';
 if(window.__NH7_DEEP_LINKS_V501__)return;window.__NH7_DEEP_LINKS_V501__=true;
-const VERSION='5.0.4';
+const VERSION='5.0.2';
 const PENDING_KEY='nh7_pending_deep_link_v501';
 const AUTH_KEY='nh7_user_session_v170';
 const LOGOUT_KEY='nh7_explicit_logout';
-const BASE=(location.hostname==='raw.githack.com'||location.hostname==='rawcdn.githack.com')?new URL('index.html',location.href).href:'https://omideno7.github.io/new-hope7-app/';
+const BASE=(location.hostname==='raw.githack.com'||location.hostname==='rawcdn.githack.com')?new URL('link.html',location.href).href:'https://omideno7.github.io/new-hope7-app/link.html';
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const lang=()=>String(localStorage.getItem('nh7_lang')||document.documentElement.lang||'en').toLowerCase();
 const L=(fa,en,hr)=>lang().startsWith('fa')?fa:lang().startsWith('hr')?hr:en;
-function sermonUrl(id){return BASE+'?target='+encodeURIComponent('sermon:'+String(id||''))}
-function verseUrl(book,chapter,verse){return BASE+'?target='+encodeURIComponent('verse:'+String(book||'').toUpperCase()+':'+(Number(chapter)||1)+':'+(Number(verse)||1))}
+function sermonUrl(id){return BASE+'?type=sermon&id='+encodeURIComponent(String(id||''))}
+function verseUrl(book,chapter,verse){return BASE+'?type=verse&book='+encodeURIComponent(String(book||'').toUpperCase())+'&chapter='+encodeURIComponent(Number(chapter)||1)+'&verse='+encodeURIComponent(Number(verse)||1)}
 function parseVerseKey(value){
- const m=String(value||'').match(/^nh7_bible_state_([A-Z0-9]+)[_-](\d+)[_-](\d+)$/i);
+ const m=String(value||'').match(/^nh7_bible_state_([A-Z0-9]+)_(\d+)_(\d+)$/i);
  return m?{book:m[1].toUpperCase(),chapter:Number(m[2]),verse:Number(m[3])}:null;
 }
 async function sharePayload(title,text,url){
@@ -31,8 +31,7 @@ document.addEventListener('click',e=>{
  const verseBtn=e.target.closest?.('[data-share-verse]');
  if(verseBtn){
   const verseEl=verseBtn.closest('.reader-verse'),key=verseEl?.dataset?.verseKey||verseBtn.closest('[data-verse-key]')?.dataset?.verseKey||'';
-  const explicitBook=String(verseBtn.dataset.deepBook||'').toUpperCase(),explicitChapter=Number(verseBtn.dataset.deepChapter),explicitVerse=Number(verseBtn.dataset.deepVerse);
-  const loc=(explicitBook&&explicitChapter>0&&explicitVerse>0)?{book:explicitBook,chapter:explicitChapter,verse:explicitVerse}:parseVerseKey(key);if(!loc)return;
+  const loc=parseVerseKey(key);if(!loc)return;
   e.preventDefault();e.stopImmediatePropagation();
   const ref=String(verseBtn.dataset.shareVerse||'').trim(),verseText=String(verseBtn.dataset.shareText||'').trim(),url=verseUrl(loc.book,loc.chapter,loc.verse);
   const body=L('📖 '+ref+'\n'+verseText+'\n\nباز کردن همین آیه در New Hope 7:','📖 '+ref+'\n'+verseText+'\n\nOpen this verse in New Hope 7:','📖 '+ref+'\n'+verseText+'\n\nOtvori ovaj stih u New Hope 7:');
@@ -83,18 +82,7 @@ function requireAuth(target){
 }
 
 function queryTarget(){
- const u=new URL(location.href),compact=String(u.searchParams.get('target')||'');
- if(compact){
-  const parts=compact.split(':');
-  if(parts[0]==='sermon'){
-   const id=String(parts[1]||'');if(UUID.test(id))return{type:'sermon',id};
-  }
-  if(parts[0]==='verse'){
-   const book=String(parts[1]||'').toUpperCase(),chapter=Number(parts[2]),verse=Number(parts[3]);
-   if(/^[A-Z0-9]{2,5}$/.test(book)&&chapter>0&&verse>0)return{type:'verse',book,chapter,verse};
-  }
- }
- const type=String(u.searchParams.get('type')||u.searchParams.get('nh7_type')||'').toLowerCase();
+ const u=new URL(location.href),type=String(u.searchParams.get('type')||u.searchParams.get('nh7_type')||'').toLowerCase();
  const legacySermon=u.searchParams.get('sermon');
  if(type==='sermon'||legacySermon){
   const id=String(u.searchParams.get('id')||legacySermon||'');if(UUID.test(id))return{type:'sermon',id};
@@ -112,7 +100,7 @@ function addStyle(){
 }
 function openTarget(target,options={}){
  if(!target)return false;addStyle();
- if(!options.skipAuth&&target.type==='sermon'&&requireAuth(target))return false;
+ if(!options.skipAuth&&requireAuth(target))return false;
  let tries=0;
  const tick=()=>{
   const nav=window.NH7_NAVIGATE;
@@ -133,7 +121,7 @@ function resumePending(){
  setTimeout(()=>openTarget(target,{skipAuth:true}),80);return true;
 }
 const initial=queryTarget();
-if(initial){if(initial.type==='sermon')savePending(initial);else clearPending();setTimeout(()=>openTarget(initial),100)}
+if(initial){savePending(initial);setTimeout(()=>openTarget(initial),100)}
 else if(pending()&&loggedIn())setTimeout(resumePending,180);
 window.NH7DeepLinksV501={VERSION,sermonUrl,verseUrl,openTarget,parseVerseKey,pending,savePending,clearPending,resumePending,loggedIn};
 })();
