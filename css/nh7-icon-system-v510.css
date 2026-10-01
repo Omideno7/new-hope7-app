@@ -1,56 +1,57 @@
-/* New Hope 7 — Global Icon System v5.1.0 preview
+/* New Hope 7 — Global Icon System v5.1.1 theme preview
  * Visual-only styles. Designed to sit on top of existing buttons without changing behavior.
  */
 :root{
+  --brand:#1d4ed8;--brand2:#38bdf8;--accent:#16a34a;--nh7-module-soft:rgba(29,78,216,.14);
   --nh7-icon-bg:linear-gradient(180deg,rgba(23,39,64,.96),rgba(8,18,33,.98));
-  --nh7-icon-line:rgba(148,163,184,.26);
-  --nh7-icon-shadow:0 10px 24px rgba(2,8,23,.24),inset 0 1px 0 rgba(255,255,255,.08);
+  --nh7-icon-line:rgba(148,163,184,.24);
+  --nh7-icon-shadow:0 7px 18px rgba(2,8,23,.20),inset 0 1px 0 rgba(255,255,255,.07);
   --nh7-icon-text:#f8fafc;
   --nh7-icon-muted:#94a3b8;
-  --nh7-icon-blue:#55a7ff;
-  --nh7-icon-purple:#9c7cff;
+  --nh7-icon-theme:var(--accent,#16a34a);
+  --nh7-icon-brand:var(--brand,#1d4ed8);
+  --nh7-icon-brand2:var(--brand2,#38bdf8);
   --nh7-icon-green:#45d483;
   --nh7-icon-gold:#ffd36b;
   --nh7-icon-pink:#ff7fa3;
-  --nh7-icon-cyan:#70e1ff;
 }
-[data-theme="light"],html:not([data-theme="dark"]){
-  --nh7-icon-bg:linear-gradient(180deg,#ffffff,#eef5ff);
-  --nh7-icon-line:rgba(15,23,42,.14);
-  --nh7-icon-shadow:0 9px 22px rgba(15,23,42,.12),inset 0 1px 0 rgba(255,255,255,.95);
+html[data-nh7-theme="light"]{
+  --nh7-icon-bg:linear-gradient(180deg,#ffffff,#f2f7ff);
+  --nh7-icon-line:rgba(15,23,42,.12);
+  --nh7-icon-shadow:0 6px 16px rgba(15,23,42,.10),inset 0 1px 0 rgba(255,255,255,.95);
   --nh7-icon-text:#0f2742;
   --nh7-icon-muted:#64748b;
 }
-.nh7-icon-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:14px}
+.nh7-icon-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:10px}
 .nh7-icon-btn{
   appearance:none;border:1px solid var(--nh7-icon-line);background:var(--nh7-icon-bg);box-shadow:var(--nh7-icon-shadow);
-  color:var(--nh7-icon-text);min-height:92px;border-radius:22px;padding:12px 9px;display:grid;place-items:center;align-content:center;gap:8px;
+  color:var(--nh7-icon-text);min-height:70px;border-radius:17px;padding:8px 7px;display:grid;place-items:center;align-content:center;gap:5px;
   text-align:center;position:relative;overflow:hidden;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;
 }
 .nh7-icon-btn::before{
   content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.12),transparent 42%);pointer-events:none
 }
 .nh7-icon-btn:active{transform:scale(.97)}
-.nh7-icon-btn strong{font-size:.78rem;line-height:1.2}
-.nh7-icon-btn small{font-size:.62rem;line-height:1.2;color:var(--nh7-icon-muted)}
+.nh7-icon-btn strong{font-size:.69rem;line-height:1.2}
+.nh7-icon-btn small{font-size:.54rem;line-height:1.2;color:var(--nh7-icon-muted)}
 .nh7-ui-icon{
-  width:46px;height:46px;border-radius:16px;display:grid;place-items:center;position:relative;
+  width:34px;height:34px;border-radius:11px;display:grid;place-items:center;position:relative;
   background:linear-gradient(160deg,rgba(255,255,255,.12),rgba(255,255,255,.025));
   border:1px solid rgba(255,255,255,.11);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 6px 15px rgba(2,8,23,.2);
 }
 .nh7-ui-icon::after{
-  content:"";position:absolute;inset:4px;border-radius:12px;box-shadow:inset 0 0 18px color-mix(in srgb,currentColor 18%,transparent);pointer-events:none
+  content:"";position:absolute;inset:3px;border-radius:8px;box-shadow:inset 0 0 13px color-mix(in srgb,currentColor 18%,transparent);pointer-events:none
 }
-.nh7-ui-icon-svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.85;stroke-linecap:round;stroke-linejoin:round;position:relative;z-index:1}
+.nh7-ui-icon-svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.85;stroke-linecap:round;stroke-linejoin:round;position:relative;z-index:1}
 .nh7-ui-icon-svg text{fill:currentColor;stroke:none;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 .nh7-ui-icon-svg rect,.nh7-ui-icon-svg circle{fill:none}
-.nh7-icon-btn[data-tone="blue"] .nh7-ui-icon{color:var(--nh7-icon-blue)}
-.nh7-icon-btn[data-tone="purple"] .nh7-ui-icon{color:var(--nh7-icon-purple)}
+.nh7-icon-btn:not([data-tone]) .nh7-ui-icon,.nh7-icon-btn[data-tone="theme"] .nh7-ui-icon{color:var(--nh7-icon-theme)}
+.nh7-icon-btn[data-tone="brand"] .nh7-ui-icon{color:var(--nh7-icon-brand)}
+.nh7-icon-btn[data-tone="brand2"] .nh7-ui-icon{color:var(--nh7-icon-brand2)}
 .nh7-icon-btn[data-tone="green"] .nh7-ui-icon{color:var(--nh7-icon-green)}
 .nh7-icon-btn[data-tone="gold"] .nh7-ui-icon{color:var(--nh7-icon-gold)}
 .nh7-icon-btn[data-tone="pink"] .nh7-ui-icon{color:var(--nh7-icon-pink)}
-.nh7-icon-btn[data-tone="cyan"] .nh7-ui-icon{color:var(--nh7-icon-cyan)}
 .nh7-icon-btn.is-active{
   border-color:color-mix(in srgb,currentColor 28%,var(--nh7-icon-line));
   box-shadow:0 12px 28px rgba(2,8,23,.28),inset 0 1px 0 rgba(255,255,255,.12)
@@ -71,14 +72,14 @@
 .nh7-icon-section h2{margin:0 0 5px;font-size:1rem}
 .nh7-icon-section p{margin:0 0 16px;font-size:.78rem;color:var(--nh7-icon-muted);line-height:1.6}
 .nh7-icon-download-card{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:12px 14px;border:1px solid var(--nh7-icon-line);border-radius:18px;background:var(--nh7-icon-bg);box-shadow:var(--nh7-icon-shadow)}
-.nh7-icon-download-card .nh7-ui-icon{width:40px;height:40px;border-radius:13px;color:var(--nh7-icon-blue)}
+.nh7-icon-download-card .nh7-ui-icon{width:34px;height:34px;border-radius:11px;color:var(--nh7-icon-theme)}
 .nh7-icon-download-copy{display:grid;gap:6px;min-width:0}.nh7-icon-download-copy strong{font-size:.78rem}.nh7-icon-download-copy small{font-size:.65rem;color:var(--nh7-icon-muted)}
-.nh7-icon-progress{height:5px;border-radius:99px;background:rgba(148,163,184,.2);overflow:hidden}.nh7-icon-progress>i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--nh7-icon-blue),var(--nh7-icon-cyan))}
+.nh7-icon-progress{height:5px;border-radius:99px;background:rgba(148,163,184,.2);overflow:hidden}.nh7-icon-progress>i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--nh7-icon-brand),var(--nh7-icon-theme))}
 .nh7-icon-download-card.is-complete .nh7-ui-icon{color:var(--nh7-icon-green)}.nh7-icon-download-card.is-complete .nh7-icon-progress>i{background:var(--nh7-icon-green)}
 .nh7-icon-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:99px;background:rgba(148,163,184,.12);border:1px solid var(--nh7-icon-line);font-size:.66rem}
 @media(max-width:520px){
-  .nh7-icon-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-  .nh7-icon-btn{min-height:86px;border-radius:18px;padding:10px 6px}
-  .nh7-ui-icon{width:42px;height:42px;border-radius:14px}.nh7-ui-icon-svg{width:25px;height:25px}
-  .nh7-icon-btn strong{font-size:.7rem}.nh7-icon-btn small{font-size:.56rem}
+  .nh7-icon-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+  .nh7-icon-btn{min-height:64px;border-radius:15px;padding:7px 4px}
+  .nh7-ui-icon{width:31px;height:31px;border-radius:10px}.nh7-ui-icon-svg{width:18px;height:18px}
+  .nh7-icon-btn strong{font-size:.62rem}.nh7-icon-btn small{font-size:.49rem}
 }
