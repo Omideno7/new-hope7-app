@@ -1,0 +1,58 @@
+name: QA Player Download UI v501
+
+on:
+  push:
+    branches: [fix/media-player-download-ui-v501-preview-20261002]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify isolated scope
+        run: |
+          set -euo pipefail
+          base=968eb672cdd45f3af537cd1ed835fef4edf940e0
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed
+          printf '%s\n' \
+            '.github/workflows/qa-player-download-ui-v501.yml' \
+            'js/nh7-audio-classic-v484.js' \
+            'js/nh7-media-player-v500.js' \
+            'media-player-v501-download-preview.html' | sort > /tmp/allowed
+          diff -u /tmp/allowed /tmp/changed
+      - name: Validate JavaScript
+        run: |
+          set -euo pipefail
+          node --check js/nh7-audio-classic-v484.js
+          node --check js/nh7-media-player-v500.js
+      - name: Verify download status contract
+        run: |
+          set -euo pipefail
+          grep -q "nh7:audio-download-status" js/nh7-audio-classic-v484.js
+          grep -q "isDownloaded,clearAll" js/nh7-audio-classic-v484.js
+          grep -q "data-download-progress" js/nh7-media-player-v500.js
+          grep -q "Settings > Downloads" js/nh7-media-player-v500.js
+          grep -q "NH7_PLAYER_TEST_ALLOW_DOWNLOADS" js/nh7-media-player-v500.js
+          grep -q "NH7_PLAYER_TEST_ALLOW_DOWNLOADS = true" media-player-v501-download-preview.html
+          ! grep -q "data-volume-row" js/nh7-media-player-v500.js
+          ! grep -q "data-mute" js/nh7-media-player-v500.js
+      - name: Validate preview inline scripts
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const html=fs.readFileSync('media-player-v501-download-preview.html','utf8');
+          const blocks=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]).filter(Boolean);
+          blocks.forEach((code,i)=>new Function(code+'\n//# sourceURL=preview-'+i));
+          console.log('Preview inline scripts OK');
+          NODE
+      - name: Verify protected app areas untouched
+        run: |
+          set -euo pipefail
+          base=968eb672cdd45f3af537cd1ed835fef4edf940e0
+          test -z "$(git diff --name-only "$base"...HEAD -- 'supabase/**' 'data/**' 'admin*.html' 'js/nh7-admin-*' 'js/nh7-school-*' 'js/nh7-my-notes-*' 'js/app.js' 'index.html' 'service-worker.js')"
