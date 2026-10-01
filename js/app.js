@@ -2231,12 +2231,45 @@ async function account(){
     $('#logoutAccountBtn')?.addEventListener('click',logoutAccount); return;
   }
   const deepNotice=deepPending?`<div class="notice"><strong>${html(state.lang==='fa'?'برای باز کردن لینک ابتدا وارد حساب شوید یا ثبت‌نام کنید.':state.lang==='hr'?'Za otvaranje poveznice najprije se prijavite ili registrirajte.':'Sign in or register first to open this link.')}</strong><p class="muted">${html(state.lang==='fa'?'بعد از ورود موفق، همان آیه یا موعظه به‌صورت خودکار باز می‌شود.':state.lang==='hr'?'Nakon uspješne prijave automatski će se otvoriti isti stih ili propovijed.':'After successful sign-in, the same verse or sermon will open automatically.')}</p></div>`:'';
-  view.innerHTML=card(tr('account'), `${deepNotice}<p class="muted">${tr('signedOut')}</p><p>${tr('signInHint')}</p><input id="accountEmail" type="email" autocomplete="email" placeholder="${tr('email')}"><div class="password-wrap"><input id="accountPassword" type="password" autocomplete="current-password" placeholder="${tr('password')}"><button type="button" class="password-eye" data-toggle-password="accountPassword">👁</button></div><button class="primary-btn wide-btn" id="signInBtn">${tr('signIn')}</button>${deepPending?`<button class="secondary-btn wide-btn" id="deepLinkRegisterBtn">${html(state.lang==='fa'?'ثبت‌نام جدید':state.lang==='hr'?'Nova registracija':'New registration')}</button>`:''}<button class="link-button" id="forgotPasswordToggle">${tr('forgotPassword')}</button><div id="forgotPasswordPanel" class="hidden"><input id="resetEmail" type="email" placeholder="${tr('email')}"><button class="secondary-btn" id="resetPasswordBtn">${tr('resetPassword')}</button><p id="resetMsg" class="muted"></p></div>`);
+  const deepSignup=deepPending?`<button class="secondary-btn wide-btn" id="deepLinkRegisterBtn">${tr('signUp')}</button><div id="deepLinkSignupPanel" class="hidden"><input id="deepLinkSignupName" autocomplete="name" placeholder="${tr('name')}"><input id="deepLinkSignupEmail" type="email" autocomplete="email" placeholder="${tr('email')}"><div class="password-wrap"><input id="deepLinkSignupPassword" type="password" autocomplete="new-password" placeholder="${tr('password')}"><button type="button" class="password-eye" data-toggle-password="deepLinkSignupPassword">👁</button></div><div class="password-wrap"><input id="deepLinkSignupConfirm" type="password" autocomplete="new-password" placeholder="${tr('confirmPassword')}"><button type="button" class="password-eye" data-toggle-password="deepLinkSignupConfirm">👁</button></div><button class="primary-btn wide-btn" id="deepLinkCreateAccountBtn">${tr('signUp')}</button><p id="deepLinkSignupMsg" class="muted"></p></div>`:''; 
+  view.innerHTML=card(tr('account'), `${deepNotice}<p class="muted">${tr('signedOut')}</p><p>${tr('signInHint')}</p><input id="accountEmail" type="email" autocomplete="email" placeholder="${tr('email')}"><div class="password-wrap"><input id="accountPassword" type="password" autocomplete="current-password" placeholder="${tr('password')}"><button type="button" class="password-eye" data-toggle-password="accountPassword">👁</button></div><button class="primary-btn wide-btn" id="signInBtn">${tr('signIn')}</button>${deepSignup}<button class="link-button" id="forgotPasswordToggle">${tr('forgotPassword')}</button><div id="forgotPasswordPanel" class="hidden"><input id="resetEmail" type="email" placeholder="${tr('email')}"><button class="secondary-btn" id="resetPasswordBtn">${tr('resetPassword')}</button><p id="resetMsg" class="muted"></p></div>`);
   $('#signInBtn')?.addEventListener('click',signInAccount);
-  $('#deepLinkRegisterBtn')?.addEventListener('click',()=>navigate('school',{form:true,deepLink:1},true));
+  $('#deepLinkRegisterBtn')?.addEventListener('click',()=>$('#deepLinkSignupPanel')?.classList.toggle('hidden'));
+  $('#deepLinkCreateAccountBtn')?.addEventListener('click',createDeepLinkAccount);
   $('#forgotPasswordToggle')?.addEventListener('click',()=>$('#forgotPasswordPanel')?.classList.toggle('hidden'));
   $('#resetPasswordBtn')?.addEventListener('click',resetPassword);
   bindPasswordToggles();
+}
+async function createDeepLinkAccount(){
+  const name=($('#deepLinkSignupName')?.value||'').trim();
+  const email=($('#deepLinkSignupEmail')?.value||'').trim().toLowerCase();
+  const password=$('#deepLinkSignupPassword')?.value||'';
+  const confirmPassword=$('#deepLinkSignupConfirm')?.value||'';
+  const msg=$('#deepLinkSignupMsg'),button=$('#deepLinkCreateAccountBtn');
+  if(!name||!email||!password||!confirmPassword){alert(tr('requiredField'));return}
+  if(password.length<6){alert(tr('passwordMin'));return}
+  if(password!==confirmPassword){alert(tr('passwordMismatch'));return}
+  if(button)button.disabled=true;
+  try{
+    const created=await authApi('signup?redirect_to='+encodeURIComponent(NH7_PASSWORD_RESET_URL),{method:'POST',body:JSON.stringify({email,password,data:{full_name:name,language:state.lang}})});
+    if(Array.isArray(created?.user?.identities)&&created.user.identities.length===0)throw new Error(state.lang==='fa'?'این ایمیل قبلاً ثبت شده است. لطفاً وارد شوید یا فراموشی رمز را بزنید.':state.lang==='hr'?'Ovaj e-mail je već registriran. Prijavite se ili obnovite lozinku.':'This email is already registered. Sign in or use Forgot password.');
+    localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
+    localStorage.setItem('nh7_manual_email',email);
+    localStorage.setItem('nh7_user_profile',JSON.stringify({name,email}));
+    if(created?.access_token){
+      saveAuthSession(created);
+      if(msg)msg.textContent=tr('accountCreated');
+      if(window.NH7DeepLinksV501?.resumePending?.())return;
+      render('account',{},true);
+      return;
+    }
+    if(msg)msg.textContent=tr('accountCreated');
+    alert(state.lang==='fa'?'حساب ساخته شد. ایمیل خود را برای تأیید بررسی کنید؛ بعد از ورود، همان لینک باز می‌شود.':state.lang==='hr'?'Račun je izrađen. Provjerite e-mail za potvrdu; nakon prijave otvorit će se ista poveznica.':'Account created. Check your email for confirmation; after sign-in, the same link will open.');
+  }catch(e){
+    console.warn('Deep-link account creation failed',e);
+    if(msg)msg.textContent=String(e?.message||tr('loginFailed'));
+    alert(String(e?.message||tr('loginFailed')));
+  }finally{if(button)button.disabled=false}
 }
 async function signInAccount(){
   const email=($('#accountEmail')?.value||'').trim().toLowerCase(),password=$('#accountPassword')?.value||'';
