@@ -1,0 +1,59 @@
+name: QA Player Download UI v502
+
+on:
+  push:
+    branches: [fix/media-player-download-ui-v502-preview-20261002]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify isolated scope
+        run: |
+          set -euo pipefail
+          base=968eb672cdd45f3af537cd1ed835fef4edf940e0
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed
+          printf '%s\n' \
+            '.github/workflows/qa-player-download-ui-v502.yml' \
+            'js/nh7-media-player-v500.js' \
+            'media-player-v502-download-preview.html' | sort > /tmp/allowed
+          diff -u /tmp/allowed /tmp/changed
+
+      - name: Validate Player JavaScript
+        run: |
+          set -euo pipefail
+          node --check js/nh7-media-player-v500.js
+
+      - name: Verify playback engine remains untouched
+        run: |
+          set -euo pipefail
+          git diff --exit-code 968eb672cdd45f3af537cd1ed835fef4edf940e0...HEAD -- js/nh7-audio-classic-v484.js js/app.js index.html service-worker.js
+          grep -q "js/nh7-audio-classic-v484.js?v=4.8.4" media-player-v502-download-preview.html
+
+      - name: Verify simplified volume and mirrored download UI
+        run: |
+          set -euo pipefail
+          grep -q "function downloadMirror(item)" js/nh7-media-player-v500.js
+          grep -q "data-download-progress" js/nh7-media-player-v500.js
+          grep -q "Settings > Downloads" js/nh7-media-player-v500.js
+          ! grep -q "data-volume-row" js/nh7-media-player-v500.js
+          ! grep -q "data-mute" js/nh7-media-player-v500.js
+          grep -q "NH7_PLAYER_TEST_ALLOW_DOWNLOADS = true" media-player-v502-download-preview.html
+
+      - name: Validate preview inline scripts
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const html=fs.readFileSync('media-player-v502-download-preview.html','utf8');
+          const blocks=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]).filter(Boolean);
+          blocks.forEach((code,i)=>new Function(code+'\n//# sourceURL=preview-'+i));
+          console.log('Preview inline scripts OK');
+          NODE
