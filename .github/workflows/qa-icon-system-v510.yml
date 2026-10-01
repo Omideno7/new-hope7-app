@@ -24,15 +24,20 @@ jobs:
           printf '%s\n' \
             '.github/workflows/qa-icon-system-v510.yml' \
             'css/nh7-icon-system-v510.css' \
+            'css/nh7-appearance-v511-preview.css' \
             'icon-system-v510-preview.html' \
-            'js/nh7-icon-system-v510.js' | sort > /tmp/allowed
+            'appearance-v511-real-preview.html' \
+            'js/nh7-icon-system-v510.js' \
+            'js/nh7-appearance-v511-preview.js' | sort > /tmp/allowed
           diff -u /tmp/allowed /tmp/changed
 
       - name: Validate icon JavaScript
         run: |
           set -euo pipefail
           node --check js/nh7-icon-system-v510.js
+          node --check js/nh7-appearance-v511-preview.js
           ! grep -Eq '\bfetch\s*\(|XMLHttpRequest|supabase|localStorage\.removeItem|indexedDB|serviceWorker\.register' js/nh7-icon-system-v510.js
+          ! grep -Eq '\bfetch\s*\(|XMLHttpRequest|supabase|indexedDB|serviceWorker\.register' js/nh7-appearance-v511-preview.js
 
       - name: Validate preview scripts
         run: |
@@ -46,6 +51,11 @@ jobs:
           if(!html.includes('data-accent="purple"')) throw new Error('Accent preview controls missing');
           const css=fs.readFileSync('css/nh7-icon-system-v510.css','utf8');
           for(const token of ['--nh7-icon-theme:var(--accent','--nh7-icon-brand:var(--brand','html[data-nh7-theme="light"]']) if(!css.includes(token)) throw new Error('Theme binding missing: '+token);
+          const real=fs.readFileSync('appearance-v511-real-preview.html','utf8');
+          if(!real.includes('js/nh7-appearance-v511-preview.js?v=5.1.1')) throw new Error('Real appearance preview JS not wired');
+          if(!real.includes('css/nh7-appearance-v511-preview.css?v=5.1.1')) throw new Error('Real appearance preview CSS not wired');
+          if(!real.includes('Book Reader / Eye Comfort')) throw new Error('Reader control missing');
+          if(!real.includes('data-theme-group="new"')) throw new Error('New theme group missing');
           console.log('Preview syntax and wiring OK');
           NODE
 
