@@ -61,6 +61,7 @@ async function open(button){
 }
 function enhance(){scheduled=false;
  document.querySelectorAll('[data-sermon-card]').forEach(card=>{
+  if(card.matches('[data-nh7-no-quick-bible],.nh7p500-social-proxy')||card.closest('.nh7p500-social-proxy')){card.querySelectorAll('[data-quick-bible454]').forEach(n=>n.remove());return}
   let b=card.querySelector('[data-quick-bible454]');if(!b){const row=card.querySelector('.sermon-card-actions')||card.querySelector('[data-classic-player] .button-row')||card;b=document.createElement('button');b.type='button';b.dataset.quickBible454='1';b.className='secondary-btn compact-player-btn';row.append(b);b.onclick=e=>{e.preventDefault();e.stopPropagation();open(b)}}
   const text='📖 '+L('کتاب مقدس سریع','Quick Bible','Brza Biblija');if(b.textContent!==text)b.textContent=text;
  });
