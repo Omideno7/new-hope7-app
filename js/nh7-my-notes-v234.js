@@ -22,7 +22,7 @@ function readMeta(storageKey){return safeJson(localStorage.getItem(metaKey(stora
 function saveMeta(storageKey,meta){localStorage.setItem(metaKey(storageKey),JSON.stringify(Object.assign({},readMeta(storageKey),meta,{storageKey,updatedAt:new Date().toISOString()})))}
 function deleteMeta(storageKey){localStorage.removeItem(metaKey(storageKey))}
 function historyLocation(){const s=history.state||{};return{route:String(s.route||''),params:s.params&&typeof s.params==='object'?JSON.parse(JSON.stringify(s.params)):{} }}
-function normalizedText(value){return String(value||'').trim()}
+function normalizedText(value){const text=window.NH7NoteTextV501?.normalize?.(value)??String(value||'');return String(text).trim()}
 function decodeKey(value){try{return decodeURIComponent(String(value||''))}catch(_){return String(value||'')}}
 
 function inferVerseLocation(storageKey){
@@ -212,6 +212,7 @@ const observer=new MutationObserver(()=>{scheduleRender();if(pendingTarget)setTi
 observer.observe(document.documentElement,{childList:true,subtree:true});
 window.addEventListener('storage',scheduleRender);
 window.addEventListener('nh7-reader-data452',scheduleRender);
+window.addEventListener('nh7-note-text-repaired-v501',scheduleRender);
 window.addEventListener('popstate',()=>setTimeout(scrollToPending,250));
 scheduleRender();
 window.NH7MyNotesV234={VERSION,collectNotes,renderNotesPanel,openNote,deleteNote};
