@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="fa" dir="rtl" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>New Hope 7 — Global Icon System Preview</title>
+<link rel="stylesheet" href="css/nh7-icon-system-v510.css?v=5.1.0">
+<style>
+:root{color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Vazirmatn,Tahoma,Arial,sans-serif;background:#07111f;color:#f8fafc}
+body{padding:calc(16px + env(safe-area-inset-top)) 14px calc(30px + env(safe-area-inset-bottom))}
+body.light{background:#eef4fb;color:#0f2742}
+.wrap{width:min(1080px,100%);margin:auto;display:grid;gap:16px}
+.hero{padding:20px;border:1px solid rgba(148,163,184,.2);border-radius:28px;background:linear-gradient(150deg,rgba(20,38,66,.98),rgba(5,14,28,.98));box-shadow:0 16px 44px rgba(2,8,23,.28);overflow:hidden;position:relative}
+body.light .hero{background:linear-gradient(150deg,#fff,#eef5ff)}
+.hero:before{content:"";position:absolute;width:260px;height:260px;border-radius:50%;background:#1d4ed833;filter:blur(40px);left:-80px;top:-110px}
+.hero>*{position:relative;z-index:1}
+.tag{display:inline-flex;padding:6px 10px;border-radius:999px;border:1px solid #60a5fa55;background:#2563eb22;color:#93c5fd;font-size:.72rem;font-weight:800}
+.hero h1{margin:12px 0 8px;font-size:clamp(1.45rem,4vw,2.4rem)}
+.hero p{margin:0;color:#94a3b8;line-height:1.9;font-size:.88rem}
+body.light .hero p{color:#64748b}
+.toolbar{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap}
+.toolbar button{border:1px solid rgba(148,163,184,.25);border-radius:13px;background:#ffffff10;color:inherit;padding:9px 12px;font-weight:800}
+body.light .toolbar button{background:#fff}
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.section-title h2{margin:0;font-size:1rem}.section-title span{font-size:.68rem;color:#94a3b8}
+.preview-section{display:grid;gap:14px}
+.downloads{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.school-grid,.bible-grid,.general-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px}
+.safe{padding:12px 14px;border:1px solid #22c55e55;background:#16a34a12;border-radius:16px;color:#86efac;font-size:.76rem;line-height:1.8}
+body.light .safe{color:#166534}
+@media(max-width:700px){.downloads{grid-template-columns:1fr}.hero{padding:17px}.section-title{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <section class="hero">
+    <span class="tag">VISUAL PREVIEW ONLY · بدون اتصال به اپ اصلی</span>
+    <h1>سیستم آیکون جدید New Hope 7</h1>
+    <p>این صفحه فقط ظاهر آیکون‌ها و دکمه‌ها را نشان می‌دهد. هیچ منطق پخش، دانلود، مدرسه، کتاب مقدس، Supabase، اطلاعات کاربر یا Production در این Preview تغییر نمی‌کند.</p>
+    <div class="toolbar">
+      <button type="button" id="darkBtn">🌙 حالت تیره</button>
+      <button type="button" id="lightBtn">☀️ حالت روشن</button>
+    </div>
+  </section>
+
+  <div class="safe">✅ طراحی به‌صورت ماژول مستقل ساخته شده؛ برای تأیید ظاهر است و هنوز به <strong>main</strong> یا صفحات واقعی اپ وصل نشده است.</div>
+
+  <section class="nh7-icon-section preview-section">
+    <div class="section-title"><h2>🎧 پلیر پیام‌های صوتی</h2><span>Media Player</span></div>
+    <div class="nh7-icon-grid">
+      <button class="nh7-icon-btn" data-tone="cyan" data-nh7-icon="previous"><strong>قبلی</strong><small>Previous</small></button>
+      <button class="nh7-icon-btn is-active" data-tone="blue" data-nh7-icon="play"><strong>پخش</strong><small>Play</small></button>
+      <button class="nh7-icon-btn is-active" data-tone="purple" data-nh7-icon="pause"><strong>توقف</strong><small>Pause</small></button>
+      <button class="nh7-icon-btn" data-tone="cyan" data-nh7-icon="next"><strong>بعدی</strong><small>Next</small></button>
+      <button class="nh7-icon-btn" data-tone="blue" data-nh7-icon="rewind15"><strong>۱۵ ثانیه عقب</strong><small>Rewind</small></button>
+      <button class="nh7-icon-btn" data-tone="blue" data-nh7-icon="forward30"><strong>۳۰ ثانیه جلو</strong><small>Forward</small></button>
+      <button class="nh7-icon-btn" data-tone="purple" data-nh7-icon="speed"><strong>سرعت</strong><small>Speed</small></button>
+      <button class="nh7-icon-btn" data-tone="cyan" data-nh7-icon="queue"><strong>صف پخش</strong><small>Queue</small></button>
+      <button class="nh7-icon-btn" data-tone="blue" data-nh7-icon="bible"><strong>کتاب مقدس</strong><small>Bible</small></button>
+      <button class="nh7-icon-btn" data-tone="gold" data-nh7-icon="notes"><strong>یادداشت</strong><small>Notes</small></button>
+      <button class="nh7-icon-btn" data-tone="pink" data-nh7-icon="heart"><strong>پسندیدن</strong><small>Like</small></button>
+      <button class="nh7-icon-btn" data-tone="purple" data-nh7-icon="blessing"><strong>برکت</strong><small>Blessing</small></button>
+      <button class="nh7-icon-btn is-active" data-tone="gold" data-nh7-icon="favorite"><strong>علاقه‌مندی</strong><small>Favorite</small></button>
+      <button class="nh7-icon-btn is-complete" data-tone="green" data-nh7-icon="download"><strong>دانلود</strong><small>Download</small></button>
+      <button class="nh7-icon-btn" data-tone="blue" data-nh7-icon="share"><strong>اشتراک‌گذاری</strong><small>Share</small></button>
+      <button class="nh7-icon-btn" data-nh7-icon="more"><strong>بیشتر</strong><small>More</small></button>
+    </div>
+
+    <div class="downloads">
+      <div class="nh7-icon-download-card" data-nh7-icon="download">
+        <div class="nh7-icon-download-copy"><strong>در حال دانلود…</strong><div class="nh7-icon-progress"><i style="width:27%"></i></div><small>27%</small></div><b>27%</b>
+      </div>
+      <div class="nh7-icon-download-card" data-nh7-icon="download">
+        <div class="nh7-icon-download-copy"><strong>در حال دانلود…</strong><div class="nh7-icon-progress"><i style="width:72%"></i></div><small>72%</small></div><b>72%</b>
+      </div>
+      <div class="nh7-icon-download-card is-complete" data-nh7-icon="check">
+        <div class="nh7-icon-download-copy"><strong>دانلود شد ✓</strong><div class="nh7-icon-progress"><i style="width:100%"></i></div><small>Ready offline</small></div><b>100%</b>
+      </div>
+    </div>
+  </section>
+
+  <section class="nh7-icon-section preview-section">
+    <div class="section-title"><h2>📖 کتاب مقدس و اپوکریفا</h2><span>Bible & Apocrypha</span></div>
+    <div class="bible-grid">
+      <button class="nh7-icon-btn" data-tone="blue" data-nh7-icon="book"><strong>کتاب‌ها</strong><small>Books</small></button>
+      <button class="nh7-icon-btn" data-tone="cyan" data-nh7-icon="chapterPrev"><strong>باب قبلی</strong><small>Previous chapter</small></button>
+      <button class="nh7-icon-btn" data-tone="cyan" data-nh7-icon="chapterNext"><strong>باب بعدی</strong><small>Next chapter</small></button>
+      <button class="nh7-icon-btn" data-tone="blue" data-nh7-icon="search"><strong>جستجو</strong><small>Search</small></button>
+      <button class="nh7-icon-btn" data-tone="gold" data-nh7-icon="bookmark"><strong>ذخیره آیه</strong><small>Save verse</small></button>
+      <button class="nh7-icon-btn" data-tone="purple" data-nh7-icon="copy"><strong>کپی</strong><small>Copy</small></button>
+      <button class="nh7-icon-btn" data-tone="gold" data-nh7-icon="highlight"><strong>هایلایت</strong><small>Highlight</small></button>
+      <button class="nh7-icon-btn" data-tone="blue" data-nh7-icon="share"><strong>اشتراک آیه</strong><small>Share verse</small></button>
+      <button class="nh7-icon-btn" data-tone="cyan" data-nh7-icon="audio"><strong>صوت</strong><small>Audio</small></button>
+      <button class="nh7-icon-btn" data-tone="purple" data-nh7-icon="bible"><strong>اپوکریفا</strong><small>Apocrypha</small></button>
+    </div>
+  </section>
+
+  <section class="nh7-icon-section preview-section">
+    <div class="section-title"><h2>🎓 مدرسه آنلاین</h2><span>Online School</span></div>
+    <div class="school-grid">
+      <button class="nh7-icon-btn" data-tone="blue" data-nh7-icon="lesson"><strong>درس</strong><small>Lesson</small></button>
+      <button class="nh7-icon-btn" data-tone="cyan" data-nh7-icon="audio"><strong>فایل صوتی</strong><small>Audio lesson</small></button>
+      <button class="nh7-icon-btn" data-tone="gold" data-nh7-icon="assignment"><strong>تکلیف</strong><small>Assignment</small></button>
+      <button class="nh7-icon-btn" data-tone="purple" data-nh7-icon="exam"><strong>آزمون</strong><small>Exam</small></button>
+      <button class="nh7-icon-btn is-complete" data-tone="green" data-nh7-icon="check"><strong>تکمیل شد</strong><small>Completed</small></button>
+      <button class="nh7-icon-btn" data-tone="gold" data-nh7-icon="notes"><strong>بازخورد</strong><small>Feedback</small></button>
+      <button class="nh7-icon-btn" data-tone="green" data-nh7-icon="certificate"><strong>گواهی</strong><small>Certificate</small></button>
+      <button class="nh7-icon-btn" data-tone="blue" data-nh7-icon="download"><strong>دانلود درس</strong><small>Download</small></button>
+    </div>
+  </section>
+
+  <section class="nh7-icon-section preview-section">
+    <div class="section-title"><h2>✨ کلیدهای عمومی اپ</h2><span>General App Actions</span></div>
+    <div class="general-grid">
+      <button class="nh7-icon-btn" data-tone="blue" data-nh7-icon="home"><strong>خانه</strong><small>Home</small></button>
+      <button class="nh7-icon-btn" data-tone="purple" data-nh7-icon="profile"><strong>پروفایل</strong><small>Profile</small></button>
+      <button class="nh7-icon-btn" data-tone="cyan" data-nh7-icon="inbox"><strong>پیام‌ها</strong><small>Inbox</small></button>
+      <button class="nh7-icon-btn" data-tone="purple" data-nh7-icon="prayer"><strong>درخواست دعا</strong><small>Prayer</small></button>
+      <button class="nh7-icon-btn" data-tone="green" data-nh7-icon="testimony"><strong>شهادت</strong><small>Testimony</small></button>
+      <button class="nh7-icon-btn" data-tone="blue" data-nh7-icon="settings"><strong>تنظیمات</strong><small>Settings</small></button>
+      <button class="nh7-icon-btn" data-nh7-icon="more"><strong>بیشتر</strong><small>More</small></button>
+    </div>
+  </section>
+</main>
+
+<script src="js/nh7-icon-system-v510.js?v=5.1.0"></script>
+<script>
+(()=>{'use strict';
+const setTheme=mode=>{
+  const light=mode==='light';
+  document.documentElement.dataset.theme=light?'light':'dark';
+  document.body.classList.toggle('light',light);
+  localStorage.setItem('nh7_icon_preview_theme',mode);
+};
+document.getElementById('darkBtn')?.addEventListener('click',()=>setTheme('dark'));
+document.getElementById('lightBtn')?.addEventListener('click',()=>setTheme('light'));
+setTheme(localStorage.getItem('nh7_icon_preview_theme')||'dark');
+})();
+</script>
+</body>
+</html>
