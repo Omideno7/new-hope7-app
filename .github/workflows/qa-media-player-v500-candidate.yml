@@ -23,19 +23,17 @@ jobs:
           set -euo pipefail
           base=d402a7c0b6e7900672fde8635ff0953e601558fb
           git diff --name-only "$base"...HEAD | sort > /tmp/changed.txt
-          cat > /tmp/allowed.txt <<'EOF'
-.github/workflows/qa-media-player-v500-candidate.yml
-index.html
-js/app.js
-js/nh7-audio-library-v500.js
-js/nh7-audio-quick-bible-v454.js
-js/nh7-media-player-v500.js
-js/nh7-sermon-list-detail-v445.js
-service-worker.js
-sw-offline-v329.js
-sw-release-core-v403.js
-EOF
-          sort -o /tmp/allowed.txt /tmp/allowed.txt
+          printf '%s\n' \
+            '.github/workflows/qa-media-player-v500-candidate.yml' \
+            'index.html' \
+            'js/app.js' \
+            'js/nh7-audio-library-v500.js' \
+            'js/nh7-audio-quick-bible-v454.js' \
+            'js/nh7-media-player-v500.js' \
+            'js/nh7-sermon-list-detail-v445.js' \
+            'service-worker.js' \
+            'sw-offline-v329.js' \
+            'sw-release-core-v403.js' | sort > /tmp/allowed.txt
           diff -u /tmp/allowed.txt /tmp/changed.txt
 
       - name: Validate affected JavaScript
