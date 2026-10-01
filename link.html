@@ -16,7 +16,7 @@ img{width:88px;height:88px;border-radius:22px}.muted{color:#9db4be;line-height:1
 <p class="muted" id="message">Opening New Hope 7…</p>
 <div class="actions">
 <a class="btn ios" href="https://apps.apple.com/app/id6803187205">Open in App Store</a>
-<a class="btn android" href="https://play.google.com/store/apps/details?id=com.omideno7.newhope7">Open in Google Play</a>
+<a class="btn android" href="https://play.google.com/store/search?q=New%20Hope%207&c=apps">Open in Google Play</a>
 </div>
 <div class="target" id="target"></div>
 </main>
@@ -30,7 +30,7 @@ img{width:88px;height:88px;border-radius:22px}.muted{color:#9db4be;line-height:1
  if(preview)return;
  const ua=navigator.userAgent||'';
  const ios=/iPhone|iPad|iPod/i.test(ua),android=/Android/i.test(ua);
- const iosStore='https://apps.apple.com/app/id6803187205',playStore='https://play.google.com/store/apps/details?id=com.omideno7.newhope7';
+ const iosStore='https://apps.apple.com/app/id6803187205',playStore='https://play.google.com/store/search?q=New%20Hope%207&c=apps';
  let scheme='';
  if(type==='sermon'){
    const id=String(u.searchParams.get('id')||'');
@@ -43,7 +43,7 @@ img{width:88px;height:88px;border-radius:22px}.muted{color:#9db4be;line-height:1
  if(android&&scheme){
    const target=scheme.replace(/^newhope7:\/\//,'');
    const fallback=encodeURIComponent(playStore);
-   location.href='intent://'+target+'#Intent;scheme=newhope7;package=com.omideno7.newhope7;S.browser_fallback_url='+fallback+';end';
+   location.href='intent://'+target+'#Intent;scheme=newhope7;S.browser_fallback_url='+fallback+';end';
    return;
  }
  if(ios&&scheme){
