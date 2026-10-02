@@ -1,0 +1,67 @@
+name: QA Player v529 Social Button Fit
+
+on:
+  push:
+    branches:
+      - fix/player-v529-social-buttons-preview-20261002
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify v529 scope
+        run: |
+          set -euo pipefail
+          base=85eef7e9c8abf3bfbc810914fa1abdf3a4a8bd92
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed
+          allowed=(
+            '.github/workflows/qa-player-v529-social-fit.yml'
+            'css/nh7-icons-v517.css'
+            'index.html'
+            'service-worker.js'
+            'sw-offline-v329.js'
+            'sw-release-core-v403.js'
+          )
+          printf '%s\n' "${allowed[@]}" | sort > /tmp/allowed
+          diff -u /tmp/allowed /tmp/changed
+
+      - name: Verify social labels no longer inherit icon box size
+        run: |
+          set -euo pipefail
+          grep -q "button>span:first-child" css/nh7-icons-v517.css
+          grep -q "\[data-like-label\]" css/nh7-icons-v517.css
+          grep -q "\[data-bless-label\]" css/nh7-icons-v517.css
+          grep -q "grid-template-columns:minmax(0,1fr) minmax(0,1fr)" css/nh7-icons-v517.css
+          grep -q "text-overflow:ellipsis" css/nh7-icons-v517.css
+          grep -q "font-size:clamp(10px,2.7vw,12px)" css/nh7-icons-v517.css
+
+      - name: Verify small-screen handling
+        run: |
+          set -euo pipefail
+          grep -q "@media(max-width:360px)" css/nh7-icons-v517.css
+          grep -q "width:16px!important" css/nh7-icons-v517.css
+          grep -q "font-size:10px!important" css/nh7-icons-v517.css
+
+      - name: Verify v529 cache wiring
+        run: |
+          set -euo pipefail
+          grep -q 'css/nh7-icons-v517.css?v=5.2.9-social-fit' index.html
+          grep -q 'service-worker.js?v=4.8.10-player529' index.html
+          grep -q "nh7-release-core-v529-player-social-fit" sw-release-core-v403.js
+          grep -q "5.2.9-player-social-fit" sw-release-core-v403.js
+          grep -q "v2.3.9.64-player529" sw-offline-v329.js
+          grep -q "5.2.9-player529" service-worker.js
+
+      - name: Protect v528 note autosave and unrelated runtime
+        run: |
+          set -euo pipefail
+          base=85eef7e9c8abf3bfbc810914fa1abdf3a4a8bd92
+          git diff --exit-code "$base"...HEAD --             js/nh7-media-player-v500.js js/app.js js/nh7-audio-classic-v484.js js/nh7-audio-library-v500.js js/nh7-icons-v517.js             js/nh7-appearance-personalization-v514.js js/nh7-fonts-v454.js js/nh7-theme-studio-v453.js             css/nh7-appearance-personalization-v514.css css/nh7-player-volume-v521.css             'js/nh7-school-*' 'js/nh7-admin-*' 'supabase/**' 'data/**'
