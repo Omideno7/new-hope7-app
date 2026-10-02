@@ -12,7 +12,7 @@ const LOGOUT_KEY='nh7_explicit_logout';
 const INBOX_KEY='nh7_inbox_messages';
 const DELETED_KEY='nh7_inbox_deleted_ids';
 const OWNER_KEY='nh7_inbox_cache_owner_v418';
-const POLL_MS=30000;
+const POLL_MS=300000;
 const MAX_LOCAL_MESSAGES=200;
 
 let activeSync=null;
