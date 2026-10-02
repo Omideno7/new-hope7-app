@@ -2,7 +2,7 @@
 if(window.__NH7_SERMON_SOCIAL_V440__)return;
 window.__NH7_SERMON_SOCIAL_V440__=true;
 const SB='https://gpzcwffxnddhaeaogdyo.supabase.co',KEY='sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37',AUTH='nh7_user_session_v170';
-const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,cache=new Map();let timer=0;const socialObserver=('IntersectionObserver'in window)?new IntersectionObserver(entries=>{for(const entry of entries){if(!entry.isIntersecting)continue;socialObserver.unobserve(entry.target);entry.target.dataset.nh7SocialObserved='loaded';load(entry.target).catch(()=>{})}},{rootMargin:'700px 0px'}):null;
+const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,cache=new Map();let timer=0;const socialObserver=('IntersectionObserver'in window)?new IntersectionObserver(entries=>{for(const entry of entries){if(!entry.isIntersecting)continue;socialObserver.unobserve(entry.target);entry.target.dataset.nh7SocialObserved='loaded';load(entry.target).catch(()=>{})}},{rootMargin:'80px 0px'}):null;
 const lg=()=>{const x=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return['fa','en','hr'].includes(x)?x:'en'};
 const L=(fa,en,hr)=>lg()==='fa'?fa:lg()==='hr'?hr:en;
 const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
