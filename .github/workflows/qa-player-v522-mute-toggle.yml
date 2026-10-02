@@ -1,0 +1,78 @@
+name: QA Player v522 Mute Toggle
+
+on:
+  push:
+    branches:
+      - fix/player-v522-mute-toggle-20261002
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify v522 scope
+        run: |
+          set -e
+          base=dbfded4a71a094ae73cc9c703b15b83c9fd42560
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed
+          allowed=(
+            '.github/workflows/qa-player-v522-mute-toggle.yml'
+            'css/nh7-player-volume-v521.css'
+            'index.html'
+            'js/nh7-media-player-v500.js'
+            'service-worker.js'
+            'sw-offline-v329.js'
+            'sw-release-core-v403.js'
+          )
+          printf '%s\n' "${allowed[@]}" | sort > /tmp/allowed
+          diff -u /tmp/allowed /tmp/changed
+
+      - name: JavaScript syntax
+        run: |
+          node --check js/nh7-media-player-v500.js
+          node --check service-worker.js
+          node --check sw-offline-v329.js
+          node --check sw-release-core-v403.js
+
+      - name: Verify mute works on iOS and Android
+        run: |
+          grep -q "engine()?.toggleMediaMute?.();sync();return" js/nh7-media-player-v500.js
+          ! grep -q "if(isIOSWeb()).*Use the iPhone volume buttons" js/nh7-media-player-v500.js
+          grep -q "aria-pressed" js/nh7-media-player-v500.js
+          grep -q "classList.toggle('is-muted'" js/nh7-media-player-v500.js
+          grep -q "وصل کردن صدا" js/nh7-media-player-v500.js
+
+      - name: Verify slider remains hidden and mute remains visible
+        run: |
+          grep -q "\[data-volume-row\]" css/nh7-player-volume-v521.css
+          grep -q "\[data-volume-note\]" css/nh7-player-volume-v521.css
+          grep -q "\[data-mute\]" css/nh7-player-volume-v521.css
+          grep -q "display:grid!important" css/nh7-player-volume-v521.css
+          grep -q "data-mute].is-muted" css/nh7-player-volume-v521.css
+
+      - name: Verify 4 plus 4 compact layout
+        run: |
+          grep -q "width:min(277px,100%)" css/nh7-player-volume-v521.css
+          grep -q "flex:0 0 64px!important" css/nh7-player-volume-v521.css
+
+      - name: Verify cache refresh
+        run: |
+          grep -q 'js/nh7-media-player-v500.js?v=5.2.2-mute-toggle' index.html
+          grep -q 'css/nh7-player-volume-v521.css?v=5.2.2' index.html
+          grep -q 'service-worker.js?v=4.8.4-player-mute522' index.html
+          grep -q "nh7-release-core-v522-player-mute-toggle" sw-release-core-v403.js
+          grep -q "v2.3.9.58-player-mute522" sw-offline-v329.js
+          grep -q "5.2.2-player-mute522" service-worker.js
+
+      - name: Protect audio engine and unrelated runtime
+        run: |
+          set -e
+          base=dbfded4a71a094ae73cc9c703b15b83c9fd42560
+          git diff --exit-code "$base"...HEAD --             js/nh7-audio-classic-v484.js             js/nh7-icons-v517.js             js/nh7-fonts-v454.js             js/app.js             'js/nh7-school-*' 'js/nh7-admin-*' 'supabase/**' 'data/**'
