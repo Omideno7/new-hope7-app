@@ -1,4 +1,4 @@
-/* New Hope 7 — Appearance & Personalization v5.1.9
+/* New Hope 7 — Appearance & Personalization v5.2.0
  * Additive local-only appearance controller. No Supabase/account/network writes.
  * Existing users stay on Classic/current appearance until they explicitly opt in.
  */
@@ -43,7 +43,12 @@ const STYLE_LABELS={
  minimal:['مینیمال','Minimal Flat','Minimal Flat'],
  material:['متریال نرم','Material Soft','Material Soft'],
  outline:['خطی تمیز','Outline Clean','Outline Clean'],
- pill:['گرد نرم','Soft Pill','Soft Pill']
+ pill:['گرد نرم','Soft Pill','Soft Pill'],
+ aurora:['آرورا گلس','Aurora Glass','Aurora Glass'],
+ clay:['سه‌بعدی نرم','Clay 3D','Clay 3D'],
+ floating:['کارت‌های شناور','Floating Cards','Floating Cards'],
+ neon:['لبه نئونی','Neon Edge','Neon Edge'],
+ motion:['فلو انیمیشنی','Motion Flow','Motion Flow']
 };
 const FA_FONT_IDS=['system','vazirmatn','naskh','notosansarabic','notokufi','amiri','lalezar','changa','reemkufi','cairo','tajawal','baloo','markazi'];
 const LATIN_FONT_IDS=['system','inter','roboto','opensans','montserrat','poppins','nunito','lora','merriweather','playfair','sourcesans','raleway','ubuntu'];
@@ -165,7 +170,7 @@ function stylePreviewHtml(){
 }
 function dialogHtml(){
  return '<dialog class="nh7-ap514-dialog" id="nh7AppearanceDialog514"><div class="nh7-ap514-shell"><header class="nh7-ap514-head"><button type="button" data-ap514-close aria-label="Close">×</button><div><strong>🎨 '+esc(L('ظاهر و شخصی‌سازی','Appearance & personalization','Izgled i personalizacija'))+'</strong><small>'+esc(L('تمام تنظیمات فقط روی همین دستگاه ذخیره می‌شوند.','All appearance settings are stored on this device only.','Sve postavke izgleda spremaju se samo na ovom uređaju.'))+'</small></div><button type="button" data-ap514-reset title="Reset">↺</button></header><div class="nh7-ap514-body">'+
- card(L('سبک رابط کاربری','Interface style','Stil sučelja'),L('گزینه «اصلی New Hope 7» ساختار فعلی اپ را نگه می‌دارد؛ با انتخاب هر سبک، نمونه پایین همان لحظه تغییر می‌کند.','Classic / Original keeps the current app structure; the sample below updates instantly when you choose a style.','Classic / Original zadržava postojeću strukturu; uzorak ispod se odmah mijenja pri odabiru stila.'),'<div class="nh7-ap514-grid">'+styleCards()+'</div>'+stylePreviewHtml())+
+ card(L('سبک رابط کاربری','Interface style','Stil sučelja'),L('سبک رابط و رنگ‌بندی از هم جدا هستند؛ هر سبک را می‌توان با هر تم یا رنگ شخصی ترکیب کرد. نمونه پایین همان لحظه تغییر می‌کند.','Interface style and color theme are independent; every style can be combined with any theme or custom colors. The sample below updates instantly.','Stil sučelja i boje su odvojeni; svaki stil možete kombinirati s bilo kojom temom ili vlastitim bojama. Uzorak se odmah ažurira.'),'<div class="nh7-ap514-grid">'+styleCards()+'</div>'+stylePreviewHtml())+
  card(L('حالت تم','Theme mode','Način teme'),L('دستی، مطابق روشن/تیره بودن گوشی، یا روز/شب خودکار.','Manual, follow phone light/dark mode, or automatic day/night.','Ručno, prema svijetlom/tamnom načinu uređaja ili automatski dan/noć.'),'<div class="nh7-ap514-tabs"><button class="nh7-ap514-chip" data-ap514-mode="manual">Manual</button><button class="nh7-ap514-chip" data-ap514-mode="system">System</button><button class="nh7-ap514-chip" data-ap514-mode="auto">Day/Night</button></div><div class="nh7-ap514-fields" data-ap514-schedule><label class="nh7-ap514-field">'+esc(L('تم روز','Day theme','Dnevna tema'))+'<select id="nh7ApDayTheme">'+themeOptions(false)+'</select></label><label class="nh7-ap514-field">'+esc(L('تم شب','Night theme','Noćna tema'))+'<select id="nh7ApNightTheme">'+themeOptions(true)+'</select></label><label class="nh7-ap514-field">'+esc(L('شروع روز','Day starts','Početak dana'))+'<input id="nh7ApDayStart" type="time"></label><label class="nh7-ap514-field">'+esc(L('شروع شب','Night starts','Početak noći'))+'<input id="nh7ApNightStart" type="time"></label></div>')+
  card(L('کتابخانه تم‌ها','Theme library','Biblioteka tema'),L('تمام ۱۴ تم قبلی حفظ شده‌اند و تم‌های جدید به آنها اضافه شده‌اند.','All 14 existing themes are preserved and new themes are added.','Svih 14 postojećih tema je sačuvano, a nove su dodane.'),'<div class="nh7-ap514-tabs" data-ap514-groups><button class="nh7-ap514-chip" data-ap514-group="all">'+esc(L('همه','All','Sve'))+'</button><button class="nh7-ap514-chip" data-ap514-group="old">'+esc(L('قبلی‌ها','Existing','Postojeće'))+'</button><button class="nh7-ap514-chip" data-ap514-group="new">'+esc(L('جدیدها','New','Nove'))+'</button><button class="nh7-ap514-chip" data-ap514-group="dark">'+esc(L('تیره','Dark','Tamne'))+'</button><button class="nh7-ap514-chip" data-ap514-group="modern">'+esc(L('مدرن','Modern','Moderne'))+'</button><button class="nh7-ap514-chip" data-ap514-group="soft">'+esc(L('مطالعه','Reading','Čitanje'))+'</button></div><div class="nh7-ap514-grid" id="nh7ApThemeGrid">'+themeCards()+'</div>')+
  card(L('فونت و اندازه نوشته','Fonts & text size','Fontovi i veličina teksta'),L('۱۲ انتخاب فارسی و ۱۲ انتخاب انگلیسی/کرواتی؛ بدون سرویس پولی.','12 Persian and 12 English/Croatian choices; no paid service.','12 perzijskih i 12 engleskih/hrvatskih izbora; bez plaćene usluge.'),'<div class="nh7-ap514-fields"><label class="nh7-ap514-field">'+esc(L('فونت فارسی','Persian font','Perzijski font'))+'<select id="nh7ApFaFont">'+fontOptions(FA_FONT_IDS)+'</select></label><label class="nh7-ap514-field">'+esc(L('فونت انگلیسی / کرواتی','English / Croatian font','Engleski / hrvatski font'))+'<select id="nh7ApLatinFont">'+fontOptions(LATIN_FONT_IDS)+'</select></label></div><div class="nh7-ap514-range"><label>'+esc(L('اندازه نوشته','Text size','Veličina teksta'))+'</label><output id="nh7ApSizeOut"></output><input id="nh7ApSize" type="range" min="80" max="140" step="5"></div>')+
@@ -268,6 +273,6 @@ function start(){
  try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(state.mode==='system'){lastThemeSig='';applyTheme()}})}catch(_){}
  setInterval(()=>{if(state.mode==='auto'){lastThemeSig='';applyTheme()}},60000);
 }
-window.NH7AppearancePersonalizationV514={VERSION:'5.1.9',KEY,get:()=>JSON.parse(JSON.stringify(state)),apply:applyAll,open:openDialog,reset:resetOriginal};
+window.NH7AppearancePersonalizationV514={VERSION:'5.2.0',KEY,get:()=>JSON.parse(JSON.stringify(state)),apply:applyAll,open:openDialog,reset:resetOriginal};
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start,{once:true}):start();
 })();
