@@ -1,4 +1,4 @@
-/* New Hope 7 — Modern SVG Icons v5.1.8
+/* New Hope 7 — Modern SVG Icons v5.1.9
  * Visual-only. Compact icons, theme-aware, touch targets remain unchanged.
  */
 .nh7-icon517{
@@ -243,4 +243,192 @@ html[data-nh7-ui-style514="pill"] .nh7p500 [data-favorite]>[data-favorite-icon]{
   .nh7p500 [data-favorite]>[data-favorite-icon]{
     width:27px!important;height:27px!important;min-width:27px!important;min-height:27px!important
   }
+}
+
+
+/* v519 — single-layer compact colorful player controls */
+
+/* Hide player-owned glyph text completely and center the SVG pseudo icon. */
+.nh7-icon517-dynamic-play{
+  position:relative!important;
+  overflow:hidden!important;
+  color:transparent!important;
+  text-indent:-9999px!important;
+  line-height:0!important
+}
+.nh7-icon517-dynamic-play::before{
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  transform:translate(-50%,-50%)!important;
+  margin:0!important;
+  width:19px!important;
+  height:19px!important;
+  background:var(--nh7-play-icon-color,var(--nh7p-accent,var(--accent,#1858a4)))!important
+}
+.nh7p500-main .big.nh7-icon517-dynamic-play,
+.nh7p500-actions .nh7p500-play.nh7-icon517-dynamic-play{
+  --nh7-play-icon-color:#fff
+}
+.nh7p500-main .big.nh7-icon517-dynamic-play::before{width:22px!important;height:22px!important}
+.nh7p500-actions .nh7p500-play.nh7-icon517-dynamic-play::before{width:16px!important;height:16px!important}
+
+/* Exact compact two-row grid: no stretched empty cards. */
+.nh7p500-tools{
+  grid-template-columns:repeat(4,64px)!important;
+  justify-content:center!important;
+  justify-items:center!important;
+  column-gap:7px!important;
+  row-gap:6px!important;
+  margin-inline:auto!important
+}
+.nh7p500-tools button{
+  width:64px!important;
+  min-width:64px!important;
+  max-width:64px!important;
+  min-height:48px!important;
+  padding:4px 3px 3px!important;
+  display:grid!important;
+  grid-template-rows:24px auto!important;
+  place-items:center!important;
+  align-content:center!important;
+  gap:2px!important;
+  border-radius:12px!important;
+  border:1px solid color-mix(in srgb,var(--nh7-tool-color,var(--nh7p-accent,var(--accent,#1858a4))) 18%,transparent)!important;
+  background:color-mix(in srgb,var(--nh7-tool-color,var(--nh7p-accent,var(--accent,#1858a4))) 7%,var(--nh7p-card,var(--card,#fff)))!important;
+  box-shadow:0 3px 8px #00000012!important;
+  color:var(--nh7-tool-color,var(--nh7p-accent,var(--accent,#1858a4)))!important
+}
+.nh7p500-tools button small{
+  width:100%!important;
+  margin:0!important;
+  font-size:9px!important;
+  line-height:1.15!important;
+  color:var(--nh7p-text,var(--ink,#17364e))!important;
+  opacity:.88!important;
+  text-align:center!important
+}
+
+/* The icon itself is the graphic. Remove the inner white "button inside button". */
+.nh7p500-tools .nh7-icon517-slot,
+.nh7p500-tools>[data-speed]>.nh7-icon517,
+.nh7p500 [data-favorite]>[data-favorite-icon],
+.nh7p500 [data-mute-icon]{
+  width:22px!important;
+  height:22px!important;
+  min-width:22px!important;
+  min-height:22px!important;
+  margin:0!important;
+  padding:0!important;
+  display:grid!important;
+  place-items:center!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:var(--nh7-tool-color,var(--nh7p-accent,var(--accent,#1858a4)))!important;
+  font-size:0!important
+}
+.nh7p500-tools .nh7-icon517-slot .nh7-icon517-svg,
+.nh7p500-tools>[data-speed]>.nh7-icon517 .nh7-icon517-svg,
+.nh7p500 [data-favorite]>[data-favorite-icon]::before{
+  width:19px!important;height:19px!important
+}
+
+/* Dynamic volume glyph is visually replaced, while player logic can keep changing its text. */
+.nh7p500 [data-mute-icon].nh7-icon517-slot-dynamic{
+  position:relative!important;
+  text-indent:-9999px!important;
+  overflow:hidden!important
+}
+.nh7p500 [data-mute-icon].nh7-icon517-slot-dynamic::before{
+  content:"";width:19px;height:19px;display:block;background:currentColor;
+  -webkit-mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M5 10h3l4-3.2v10.4L8 14H5v-4Zm10-1c1.5 1.5 1.5 4.5 0 6m2.6-8.4c3 3 3 7.8 0 10.8'/%3E%3C/svg%3E");
+  mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M5 10h3l4-3.2v10.4L8 14H5v-4Zm10-1c1.5 1.5 1.5 4.5 0 6m2.6-8.4c3 3 3 7.8 0 10.8'/%3E%3C/svg%3E")
+}
+
+/* Semantic colors make the graphic icons visually distinct without nesting extra button surfaces. */
+.nh7p500-tools [data-speed]{--nh7-tool-color:#0f8a8a}
+.nh7p500-tools [data-p500-bible]{--nh7-tool-color:#2563eb}
+.nh7p500-tools [data-mute]{--nh7-tool-color:#7c3aed}
+.nh7p500-tools [data-favorite]{--nh7-tool-color:#d99000}
+.nh7p500-tools [data-note]{--nh7-tool-color:#8b5cf6}
+.nh7p500-tools [data-download]{--nh7-tool-color:#0284c7}
+.nh7p500-tools [data-p500-share]{--nh7-tool-color:#0891b2}
+.nh7p500-tools [data-queue]{--nh7-tool-color:#4f46e5}
+.nh7p500-tools [data-favorite].on{--nh7-tool-color:#d97706}
+.nh7p500-tools [data-download].complete{--nh7-tool-color:#16a34a}
+
+/* Style choice changes only the single outer button, not a second icon-card. */
+html[data-nh7-ui-style514="tactile"] .nh7p500-tools button{
+  box-shadow:0 4px 9px #0000001c,inset 0 1px 0 #ffffffa8!important
+}
+html[data-nh7-ui-style514="glass"] .nh7p500-tools button{
+  background:color-mix(in srgb,var(--nh7-tool-color) 7%,#ffffff68)!important;
+  backdrop-filter:blur(12px)!important;
+  -webkit-backdrop-filter:blur(12px)!important;
+  border-color:#ffffff7d!important;
+  box-shadow:inset 0 1px #ffffff9a,0 3px 9px #0001!important
+}
+html[data-nh7-ui-style514="minimal"] .nh7p500-tools button{
+  background:transparent!important;border-color:transparent!important;box-shadow:none!important
+}
+html[data-nh7-ui-style514="material"] .nh7p500-tools button{
+  background:color-mix(in srgb,var(--nh7-tool-color) 6%,var(--nh7p-card,var(--card,#fff)))!important;
+  border-color:transparent!important;box-shadow:0 2px 5px #0002!important
+}
+html[data-nh7-ui-style514="outline"] .nh7p500-tools button{
+  background:transparent!important;border:1px solid color-mix(in srgb,var(--nh7-tool-color) 55%,transparent)!important;box-shadow:none!important
+}
+html[data-nh7-ui-style514="pill"] .nh7p500-tools button{
+  border-radius:999px!important;
+  background:color-mix(in srgb,var(--nh7-tool-color) 8%,var(--nh7p-card,var(--card,#fff)))!important;
+  border-color:color-mix(in srgb,var(--nh7-tool-color) 20%,transparent)!important;
+  box-shadow:none!important
+}
+
+/* Center transport icons perfectly. */
+.nh7p500-main button,
+.nh7p500-actions button{
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+  line-height:1!important
+}
+.nh7p500-main .nh7-icon517,
+.nh7p500-actions .nh7-icon517{
+  margin:0!important
+}
+
+/* Social buttons: one clean button + one colored graphic icon. */
+.nh7p500-social button{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px!important;
+  min-height:32px!important;
+  padding:0 10px!important;
+  border-radius:999px!important
+}
+.nh7p500-social button>span{
+  width:18px!important;height:18px!important;min-width:18px!important;
+  margin:0!important;display:grid!important;place-items:center!important;
+  background:transparent!important;border:0!important;box-shadow:none!important
+}
+.nh7p500-social .nh7-icon517-social-slot .nh7-icon517-svg{width:17px!important;height:17px!important}
+.nh7p500-social [data-p500-like]{color:#e11d48!important}
+.nh7p500-social [data-p500-bless]{color:#a855f7!important}
+.nh7p500-social [data-like-icon].nh7-icon517-social-slot{
+  font-size:0!important;position:relative;overflow:hidden
+}
+.nh7p500-social [data-like-icon].nh7-icon517-social-slot::before{
+  content:"";width:17px;height:17px;background:currentColor;display:block;
+  -webkit-mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 20.1s-7-4.3-7-9.3A4.1 4.1 0 0 1 12 8a4.1 4.1 0 0 1 7 2.8c0 5-7 9.3-7 9.3Z'/%3E%3C/svg%3E");
+  mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 20.1s-7-4.3-7-9.3A4.1 4.1 0 0 1 12 8a4.1 4.1 0 0 1 7 2.8c0 5-7 9.3-7 9.3Z'/%3E%3C/svg%3E")
+}
+
+/* Mobile keeps 4 columns but with tight spacing. */
+@media(max-width:390px){
+  .nh7p500-tools{grid-template-columns:repeat(4,61px)!important;column-gap:6px!important;row-gap:5px!important}
+  .nh7p500-tools button{width:61px!important;min-width:61px!important;max-width:61px!important}
 }
