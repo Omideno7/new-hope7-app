@@ -8,7 +8,7 @@ const L=(fa,en,hr)=>{const x=String(localStorage.getItem('nh7_lang')||document.d
 const lang=()=>{const x=String(localStorage.getItem('nh7_lang')||document.documentElement.lang||'en').toLowerCase();return x.startsWith('fa')?'fa':x.startsWith('hr')?'hr':'en'};
 const id=x=>String(x?.id||x?.analytics_id||'');
 const title=x=>String(x?.['title_'+lang()]||x?.title_fa||x?.title_en||x?.title_hr||L('موعظه','Sermon','Propovijed'));
-const art=x=>String(x?.cover_url||x?.artwork_url||'assets/new-hope7-logo-512.png');
+const art=x=>{const latest=window.__sermonMap?.[id(x)]||x;return String(latest?.cover_url||latest?.artwork_url||x?.cover_url||x?.artwork_url||'assets/new-hope7-logo-512.png')};
 const fmt=s=>{s=Math.max(0,Number(s)||0);const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),x=Math.floor(s%60);return h?String(h)+':'+String(m).padStart(2,'0')+':'+String(x).padStart(2,'0'):String(m)+':'+String(x).padStart(2,'0')};
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 let timer=0,searchRaf=0,patchTimer=0;
