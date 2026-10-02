@@ -1,0 +1,82 @@
+/* New Hope 7 — Modern SVG Icons v5.1.7
+ * Visual-only. Compact icons, theme-aware, touch targets remain unchanged.
+ */
+.nh7-icon517{
+  width:22px;height:22px;display:inline-grid;place-items:center;flex:0 0 auto;color:currentColor
+}
+.nh7-icon517-svg{
+  width:100%;height:100%;display:block;fill:none;stroke:currentColor;stroke-width:1.85;stroke-linecap:round;stroke-linejoin:round
+}
+.nh7-icon517-svg text{fill:currentColor;stroke:none;font-family:system-ui,-apple-system,sans-serif}
+.nh7-icon517-text{display:inline-flex!important;align-items:center;justify-content:center;gap:6px}
+.nh7-icon517-text>.nh7-icon517{width:18px;height:18px}
+.nh7-icon517-label{min-width:0}
+.nh7-icon517-only{display:inline-grid!important;place-items:center}
+.nh7-icon517-only>.nh7-icon517{width:20px;height:20px}
+
+/* Media Player: exact compact visual language approved in the preview. */
+.nh7p500 .nh7-icon517{color:var(--nh7p-accent,var(--nh7-studio-accent,var(--brand,#1858a4)))}
+.nh7p500-main .nh7-icon517{width:22px;height:22px}
+.nh7p500-main .big .nh7-icon517{width:25px;height:25px}
+.nh7p500-tools .nh7-icon517-slot,
+.nh7p500-tools>.nh7-icon517{
+  width:26px;height:26px;display:grid!important;place-items:center;margin:0 auto 3px;
+  border-radius:9px;color:var(--nh7p-accent,var(--nh7-studio-accent,var(--brand,#1858a4)))
+}
+.nh7p500-tools .nh7-icon517-slot .nh7-icon517-svg{width:19px;height:19px}
+.nh7p500-tools [data-speed]>.nh7-icon517{width:19px;height:19px;margin:0 auto 2px}
+.nh7p500-tools [data-speed]>[data-rate]{font-size:.78rem!important;line-height:1!important}
+
+/* Play/Pause is rendered as a pseudo SVG so the existing player can keep updating textContent safely. */
+.nh7-icon517-dynamic-play{font-size:0!important;position:relative}
+.nh7-icon517-dynamic-play::before{
+  content:"";width:21px;height:21px;display:block;background:currentColor;
+  -webkit-mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M8.5 6.7v10.6c0 1.25 1.4 2 2.45 1.32l8-5.3a1.58 1.58 0 0 0 0-2.64l-8-5.3C9.9 4.7 8.5 5.45 8.5 6.7Z'/%3E%3C/svg%3E");
+  mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M8.5 6.7v10.6c0 1.25 1.4 2 2.45 1.32l8-5.3a1.58 1.58 0 0 0 0-2.64l-8-5.3C9.9 4.7 8.5 5.45 8.5 6.7Z'/%3E%3C/svg%3E")
+}
+.nh7-icon517-dynamic-play[data-nh7-play-state517="pause"]::before{
+  -webkit-mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6.8' y='5.2' width='4' height='13.6' rx='1.4' fill='black'/%3E%3Crect x='13.2' y='5.2' width='4' height='13.6' rx='1.4' fill='black'/%3E%3C/svg%3E");
+  mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6.8' y='5.2' width='4' height='13.6' rx='1.4' fill='black'/%3E%3Crect x='13.2' y='5.2' width='4' height='13.6' rx='1.4' fill='black'/%3E%3C/svg%3E")
+}
+.nh7p500-main .big.nh7-icon517-dynamic-play::before{width:25px;height:25px}
+
+/* Favorite uses the same star silhouette while the existing code keeps updating its original glyph invisibly. */
+.nh7p500 [data-favorite].nh7-icon517-favorite>[data-favorite-icon]{
+  width:26px;height:26px;display:grid!important;place-items:center;margin:0 auto 3px;font-size:0!important;color:var(--nh7p-accent,var(--nh7-studio-accent,var(--brand,#1858a4)))
+}
+.nh7p500 [data-favorite].nh7-icon517-favorite>[data-favorite-icon]::before{
+  content:"";width:19px;height:19px;background:currentColor;
+  -webkit-mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='m12 3.8 2.5 5.1 5.6.8-4.05 3.95.96 5.57L12 16.6l-5.01 2.62.96-5.57L3.9 9.7l5.6-.8L12 3.8Z'/%3E%3C/svg%3E");
+  mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='m12 3.8 2.5 5.1 5.6.8-4.05 3.95.96 5.57L12 16.6l-5.01 2.62.96-5.57L3.9 9.7l5.6-.8L12 3.8Z'/%3E%3C/svg%3E")
+}
+.nh7p500 [data-favorite].on>[data-favorite-icon]{color:#d89b18!important}
+
+/* Bible verse actions */
+.verse-tools .nh7-icon517-text{min-height:36px}
+.verse-tools .nh7-icon517-text>.nh7-icon517{color:var(--nh7-studio-accent,var(--brand,#1858a4))}
+.verse-tools [data-bookmark].is-active>.nh7-icon517{color:#d89b18}
+
+/* School controls */
+.school-audio-card .nh7-icon517-text>.nh7-icon517,
+.school-exam .nh7-icon517-text>.nh7-icon517,
+.school-assignment .nh7-icon517-text>.nh7-icon517{color:var(--nh7-studio-accent,var(--brand,#1858a4))}
+.inline-player-controls .nh7-icon517-only{font-size:0!important}
+.inline-player-controls .nh7-icon517-only>.nh7-icon517{width:20px;height:20px}
+
+/* Tactile style gives SVG icons the approved inset tile treatment without changing click logic. */
+html[data-nh7-ui-style514="tactile"] .nh7p500-tools .nh7-icon517-slot,
+html[data-nh7-ui-style514="tactile"] .nh7p500-tools>[data-speed]>.nh7-icon517,
+html[data-nh7-ui-style514="tactile"] .nh7p500 [data-favorite]>[data-favorite-icon]{
+  background:linear-gradient(160deg,color-mix(in srgb,var(--nh7p-accent,var(--accent,#1858a4)) 17%,#fff),color-mix(in srgb,var(--nh7p-accent,var(--accent,#1858a4)) 7%,transparent));
+  border:1px solid color-mix(in srgb,var(--nh7p-accent,var(--accent,#1858a4)) 22%,transparent);
+  box-shadow:inset 0 1px 0 #ffffff9c,0 4px 10px #0002
+}
+
+/* Keep icon size compact even when global text size is large. */
+@media(max-width:430px){
+  .nh7-icon517{width:20px;height:20px}
+  .nh7p500-tools .nh7-icon517-slot,.nh7p500 [data-favorite]>[data-favorite-icon]{width:25px;height:25px}
+}
+@media(prefers-reduced-motion:reduce){
+  .nh7-icon517-dynamic-play::before{transition:none!important}
+}
