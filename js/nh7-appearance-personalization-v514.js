@@ -1,4 +1,4 @@
-/* New Hope 7 — Appearance & Personalization v5.1.5
+/* New Hope 7 — Appearance & Personalization v5.1.6
  * Additive local-only appearance controller. No Supabase/account/network writes.
  * Existing users stay on Classic/current appearance until they explicitly opt in.
  */
@@ -77,6 +77,23 @@ function configFor(id){
  const text=intensity(p.text,p.card,state.textIntensity),accent=intensity(p.accent,p.card,state.accentIntensity);
  return {preset:p.old?id:'custom',bg:p.bg,card:p.card,text,muted:p.muted,verse:p.verse,accent,fa:state.faFont,latin:state.latinFont};
 }
+function themeInk(bg){return contrast('#ffffff',bg)>=contrast('#000000',bg)?'#ffffff':'#000000'}
+function applyThemeVisual(c){
+ if(!c)return;
+ root.dataset.nh7Studio=c.preset||'custom';root.dataset.nh7StudioFont='1';
+ root.dataset.nh7StudioTone457=lum(c.card)<.2?'dark':'light';
+ root.style.setProperty('color-scheme',lum(c.card)<.2?'dark':'light');
+ for(const k of ['bg','card','text','muted','verse','accent'])root.style.setProperty('--nh7-studio-'+k,c[k]);
+ root.style.setProperty('--nh7-studio-button-ink',themeInk(c.accent));
+ root.style.setProperty('--nh7-studio-line',c.muted+'66');
+ root.style.setProperty('--nh7-studio-link',contrast(c.accent,c.card)>=4.5&&contrast(c.accent,c.bg)>=4.5?c.accent:c.text);
+ document.querySelector('meta[name="theme-color"]')?.setAttribute('content',c.bg);
+}
+function applyFontVisual(){
+ const api=window.NH7FontsV454,langNow=(localStorage.getItem('nh7_lang')||'en'),id=langNow==='fa'?state.faFont:state.latinFont,f=api?.fonts?.[id];
+ if(f?.stack){root.dataset.nh7Ap514Font=id;root.style.setProperty('--nh7-ap514-font',f.stack)}
+ else{delete root.dataset.nh7Ap514Font;root.style.removeProperty('--nh7-ap514-font')}
+}
 function applyTheme(){
  if(applying)return;
  if(state.mode==='manual'&&state.themeId==='current')return;
@@ -85,21 +102,25 @@ function applyTheme(){
  applying=true;
  try{
    const ok=window.NH7ThemeStudioV453?.set?.(cfg);
-   if(ok){lastThemeSig=sig;window.NH7_UI_PREFS?.apply?.()}
+   applyThemeVisual(cfg);
+   if(ok)window.NH7_UI_PREFS?.apply?.();
+   lastThemeSig=sig;
  }finally{applying=false}
 }
 function applyFont(){
  const api=window.NH7FontsV454;if(!api)return;
- const fa=FA_FONT_IDS.includes(state.faFont)?state.faFont:'system',la=LATIN_FONT_IDS.includes(state.latinFont)?state.latinFont:'system';
- if(api.fonts?.[fa])api.choose('fa',fa).catch?.(()=>{});
- if(api.fonts?.[la])api.choose('latin',la).catch?.(()=>{});
+ if(!FA_FONT_IDS.includes(state.faFont))state.faFont='vazirmatn';
+ if(!LATIN_FONT_IDS.includes(state.latinFont))state.latinFont='inter';
+ applyFontVisual();
+ if(api.fonts?.[state.faFont])Promise.resolve(api.choose('fa',state.faFont)).finally(applyFontVisual);
+ if(api.fonts?.[state.latinFont])Promise.resolve(api.choose('latin',state.latinFont)).finally(applyFontVisual);
 }
 function applySize(){const n=Math.max(80,Math.min(140,Number(state.fontSize)||100));root.style.fontSize=n+'%'}
 function applyReader(){
  root.dataset.nh7EyeReader514=state.reader?'1':'0';root.dataset.nh7ReaderMode514=state.readerMode||'paper';
 }
 function applyStyle(){root.dataset.nh7UiStyle514=state.style||'classic';root.style.setProperty('--nh7-ap514-depth',(Number(state.depth)||7)+'px');root.style.setProperty('--nh7-ap514-glow',(Number(state.glow)||14)+'%');const cfg=currentThemeConfig();root.style.setProperty('--nh7-ap514-icon',cfg?.accent||getComputedStyle(root).getPropertyValue('--brand')||'#1858a4')}
-function applyAll(){applyStyle();applySize();applyReader();applyTheme();save();syncOpenDialog()}
+function applyAll(){applyStyle();applySize();applyReader();applyFontVisual();applyTheme();save();syncOpenDialog()}
 function resetOriginal(){
  state={...defaults,style:'classic',themeId:'current'};
  try{localStorage.removeItem(KEY);localStorage.removeItem(SIZE_KEY)}catch(_){}
@@ -159,7 +180,7 @@ function bindDialog(d){
    const s=e.target.closest('[data-ap514-style]');if(s){state.style=s.dataset.ap514Style;applyAll();return}
    const m=e.target.closest('[data-ap514-mode]');if(m){state.mode=m.dataset.ap514Mode;applyAll();return}
    const g=e.target.closest('[data-ap514-group]');if(g){state.themeGroup=g.dataset.ap514Group;syncOpenDialog();save();return}
-   const t=e.target.closest('[data-ap514-theme]');if(t){state.themeId=t.dataset.ap514Theme;state.mode='manual';state.intensityBase=null;lastThemeSig='';if(state.themeId==='current'){window.NH7_UI_PREFS?.apply?.()}else applyTheme();applyAll();return}
+   const t=e.target.closest('[data-ap514-theme]');if(t){state.themeId=t.dataset.ap514Theme;state.mode='manual';state.intensityBase=null;lastThemeSig='';if(state.themeId==='current'){lastThemeSig='';window.NH7_UI_PREFS?.apply?.();applyFontVisual()}else applyTheme();applyAll();return}
    const saved=e.target.closest('[data-ap514-saved]');if(saved){const item=readSavedThemes().find(x=>x.id===saved.dataset.ap514Saved);if(item&&window.NH7ThemeStudioV453?.set?.(item.config)){state.themeId='current';state.mode='manual';applyAll()}return}
    const rr=e.target.closest('[data-ap514-reader]');if(rr){state.readerMode=rr.dataset.ap514Reader;applyAll();return}
    if(e.target.closest('[data-ap514-custom]')){applyCustomFromForm();return}
@@ -224,15 +245,18 @@ function start(){
    const legacySize=Number(localStorage.getItem('nh7_ui_font_size_v425')||100);
    if(Number.isFinite(legacySize))state.fontSize=Math.max(80,Math.min(140,legacySize));
  }
- applyStyle();applySize();applyReader();
+ if(!FA_FONT_IDS.includes(state.faFont))state.faFont='vazirmatn';
+ if(!LATIN_FONT_IDS.includes(state.latinFont))state.latinFont='inter';
+ applyStyle();applySize();applyReader();applyFontVisual();
  if(state.mode!=='manual'||state.themeId!=='current')applyTheme();
  mount();
  new MutationObserver(()=>{if(!pending){pending=true;requestAnimationFrame(()=>{pending=false;mount();applyReader()})}}).observe(document.documentElement,{childList:true,subtree:true});
- window.addEventListener('nh7:ui-preferences',()=>{applySize();applyStyle()});
+ window.addEventListener('nh7:ui-preferences',()=>{applySize();applyStyle();applyFontVisual()});
+ window.addEventListener('change',e=>{if(['langSelect','settingsLang'].includes(e.target?.id))setTimeout(applyFontVisual,0)},true);
  window.addEventListener('storage',e=>{if(e.key===KEY){state=load();applyAll()}});
  try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(state.mode==='system'){lastThemeSig='';applyTheme()}})}catch(_){}
  setInterval(()=>{if(state.mode==='auto'){lastThemeSig='';applyTheme()}},60000);
 }
-window.NH7AppearancePersonalizationV514={VERSION:'5.1.5',KEY,get:()=>JSON.parse(JSON.stringify(state)),apply:applyAll,open:openDialog,reset:resetOriginal};
+window.NH7AppearancePersonalizationV514={VERSION:'5.1.6',KEY,get:()=>JSON.parse(JSON.stringify(state)),apply:applyAll,open:openDialog,reset:resetOriginal};
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start,{once:true}):start();
 })();
