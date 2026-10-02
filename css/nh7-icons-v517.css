@@ -410,10 +410,17 @@ html[data-nh7-ui-style514="pill"] .nh7p500-tools button{
   padding:0 10px!important;
   border-radius:999px!important
 }
-.nh7p500-social button>span{
+.nh7p500-social button>span:first-child{
   width:18px!important;height:18px!important;min-width:18px!important;
   margin:0!important;display:grid!important;place-items:center!important;
   background:transparent!important;border:0!important;box-shadow:none!important
+}
+.nh7p500-social [data-like-label],
+.nh7p500-social [data-bless-label]{
+  width:auto!important;height:auto!important;min-width:0!important;max-width:none!important;
+  margin:0!important;display:inline-block!important;
+  white-space:nowrap!important;overflow:visible!important;text-overflow:clip!important;
+  line-height:1.1!important
 }
 .nh7p500-social .nh7-icon517-social-slot .nh7-icon517-svg{width:17px!important;height:17px!important}
 .nh7p500-social [data-p500-like]{color:#e11d48!important}
@@ -474,4 +481,51 @@ html[data-nh7-ui-style514="pill"] .nh7p500-tools button{
   -webkit-mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='m12 3.8 2.5 5.1 5.6.8-4.05 3.95.96 5.57L12 16.6l-5.01 2.62.96-5.57L3.9 9.7l5.6-.8L12 3.8Z'/%3E%3C/svg%3E")!important;
   mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='m12 3.8 2.5 5.1 5.6.8-4.05 3.95.96 5.57L12 16.6l-5.01 2.62.96-5.57L3.9 9.7l5.6-.8L12 3.8Z'/%3E%3C/svg%3E")!important;
   transform:scale(1.08)
+}
+
+
+/* v529 — keep Like / Blessings text inside its pill in FA / EN / HR. */
+.nh7p500-social{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  gap:7px!important;
+  width:100%!important;
+  align-items:stretch!important;
+}
+.nh7p500-social button{
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  min-height:36px!important;
+  padding:0 9px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:5px!important;
+  overflow:hidden!important;
+  font-size:clamp(10px,2.7vw,12px)!important;
+  line-height:1.1!important;
+}
+.nh7p500-social [data-like-label],
+.nh7p500-social [data-bless-label]{
+  flex:0 1 auto!important;
+  min-width:0!important;
+  max-width:100%!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  text-align:center!important;
+}
+.nh7p500-social [data-like-count]{
+  flex:0 0 auto!important;
+  min-width:auto!important;
+  margin:0!important;
+  font-size:10px!important;
+  line-height:1!important
+}
+@media(max-width:360px){
+  .nh7p500-social{gap:5px!important}
+  .nh7p500-social button{padding:0 7px!important;font-size:10px!important;gap:4px!important}
+  .nh7p500-social button>span:first-child{width:16px!important;height:16px!important;min-width:16px!important}
+  .nh7p500-social .nh7-icon517-social-slot .nh7-icon517-svg{width:15px!important;height:15px!important}
 }
