@@ -1,0 +1,72 @@
+name: QA Appearance Style Lab v513 Preview
+
+on:
+  push:
+    branches: [feature/appearance-style-lab-v513-preview-20261002]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify isolated v513 scope
+        run: |
+          set -euo pipefail
+          base=85bb74b9ef6c87902a88c1a70302603b7a947990
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed
+          printf '%s\n' \
+            '.github/workflows/qa-appearance-style-lab-v513.yml' \
+            'appearance-style-lab-v513-preview.html' \
+            'css/nh7-appearance-style-lab-v513-preview.css' \
+            'js/nh7-appearance-style-lab-v513-preview.js' | sort > /tmp/allowed
+          diff -u /tmp/allowed /tmp/changed
+
+      - name: Validate JavaScript
+        run: |
+          set -euo pipefail
+          node --check js/nh7-appearance-style-lab-v513-preview.js
+          node --check js/nh7-icon-system-v510.js
+
+      - name: Verify six UI styles and overflow fixes
+        run: |
+          set -euo pipefail
+          for style in tactile glass minimal material outline pill; do
+            grep -q "data-style=\"$style\"" appearance-style-lab-v513-preview.html
+            grep -q "data-ui-style=\"$style\"" css/nh7-appearance-style-lab-v513-preview.css
+          done
+          grep -q "width:auto!important" css/nh7-appearance-style-lab-v513-preview.css
+          grep -q "white-space:normal!important" css/nh7-appearance-style-lab-v513-preview.css
+          grep -q "mode-grid{grid-template-columns:1fr}" css/nh7-appearance-style-lab-v513-preview.css
+
+      - name: Verify Book Reader visible preview
+        run: |
+          set -euo pipefail
+          grep -q 'id="readerMini"' appearance-style-lab-v513-preview.html
+          grep -q "mini.classList.toggle('reader-on'" js/nh7-appearance-style-lab-v513-preview.js
+          grep -q 'reader-mini-preview.reader-on\[data-reader="sepia"\]' css/nh7-appearance-style-lab-v513-preview.css
+          grep -q 'reader-mini-preview.reader-on\[data-reader="night"\]' css/nh7-appearance-style-lab-v513-preview.css
+
+      - name: Verify existing v512 capabilities remain
+        run: |
+          set -euo pipefail
+          grep -q "۱۲ فونت فارسی" appearance-style-lab-v513-preview.html
+          grep -q "۱۲ فونت انگلیسی" appearance-style-lab-v513-preview.html
+          grep -q "روز / شب خودکار" appearance-style-lab-v513-preview.html
+          grep -q "ساخت تم شخصی" appearance-style-lab-v513-preview.html
+          grep -q "downloadDemo" appearance-style-lab-v513-preview.html
+          grep -q "classList.add('complete')" js/nh7-appearance-style-lab-v513-preview.js
+          grep -q "root.style.fontSize" js/nh7-appearance-style-lab-v513-preview.js
+
+      - name: Verify Production runtime untouched
+        run: |
+          set -euo pipefail
+          base=968eb672cdd45f3af537cd1ed835fef4edf940e0
+          git diff --exit-code "$base"...HEAD --             index.html js/app.js service-worker.js sw-offline-v329.js sw-release-core-v403.js             js/nh7-media-player-v500.js js/nh7-audio-classic-v484.js             js/nh7-theme-studio-v453.js css/nh7-theme-studio-v453.css css/nh7-theme-gallery-v457.css             'js/nh7-school-*' 'js/nh7-bible-*' 'js/nh7-admin-*' 'supabase/**' 'data/**'
+          echo 'Production runtime remains untouched.'
