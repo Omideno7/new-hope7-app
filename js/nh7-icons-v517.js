@@ -74,7 +74,7 @@ function decoratePlayer(scope=document){
  scope.querySelectorAll('.nh7p500 [data-p500-bible]').forEach(b=>setFirstSlot(b,'bible'));
  scope.querySelectorAll('.nh7p500 [data-mute]').forEach(b=>{b.classList.add('nh7-icon517-mute');const slot=b.querySelector('[data-mute-icon]');if(slot)slot.classList.add('nh7-icon517-slot-dynamic')});
  scope.querySelectorAll('.nh7p500 [data-note]').forEach(b=>setFirstSlot(b,'notes'));
- scope.querySelectorAll('.nh7p500 [data-download]').forEach(b=>setFirstSlot(b,'download'));
+ scope.querySelectorAll('.nh7p500 [data-download]').forEach(b=>{if(b.classList.contains('is-downloading')||b.classList.contains('is-downloaded'))return;setFirstSlot(b,'download','[data-download-icon]')});
  scope.querySelectorAll('.nh7p500 [data-p500-share]').forEach(b=>setFirstSlot(b,'share'));
  scope.querySelectorAll('.nh7p500 [data-queue]').forEach(b=>setFirstSlot(b,'queue'));
  scope.querySelectorAll('.nh7p500 [data-favorite]').forEach(b=>b.classList.add('nh7-icon517-favorite'));
