@@ -1,4 +1,4 @@
-/* New Hope 7 — Appearance & Personalization v5.1.7
+/* New Hope 7 — Appearance & Personalization v5.1.8
  * Additive local-only appearance controller. No Supabase/account/network writes.
  * Existing users stay on Classic/current appearance until they explicitly opt in.
  */
@@ -258,6 +258,6 @@ function start(){
  try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(state.mode==='system'){lastThemeSig='';applyTheme()}})}catch(_){}
  setInterval(()=>{if(state.mode==='auto'){lastThemeSig='';applyTheme()}},60000);
 }
-window.NH7AppearancePersonalizationV514={VERSION:'5.1.7',KEY,get:()=>JSON.parse(JSON.stringify(state)),apply:applyAll,open:openDialog,reset:resetOriginal};
+window.NH7AppearancePersonalizationV514={VERSION:'5.1.8',KEY,get:()=>JSON.parse(JSON.stringify(state)),apply:applyAll,open:openDialog,reset:resetOriginal};
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start,{once:true}):start();
 })();
