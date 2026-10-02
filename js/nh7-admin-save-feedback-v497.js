@@ -2,7 +2,7 @@
 (()=>{'use strict';
 if(window.__NH7_ADMIN_SAVE_FEEDBACK_V497__)return;
 window.__NH7_ADMIN_SAVE_FEEDBACK_V497__=true;
-const VERSION='4.9.7-save-feedback';
+const VERSION='4.9.8-save-feedback';
 let sermonBusy=false,sermonProgress=0,sermonStatus='',sermonTone='';
 
 const L=(fa,en,hr)=>{
@@ -107,46 +107,75 @@ async function stableSaveSermon(){
   if(sermonBusy)return;
   const data=sermonFormData();
   if(!data.title_fa){alert(tr('titleFa'));return}
+  const editId=String(editingSermonId||'');
   const restore=preserveScrollPoint();
   sermonBusy=true;
-  setSermonProgress(L('در حال آماده‌سازی آپلود…','Preparing upload…','Priprema prijenosa…'),0,'busy');
+  setSermonProgress(L('در حال آماده‌سازی ذخیره…','Preparing save…','Priprema spremanja…'),0,'busy');
   try{
+    let currentStored=null;
+    if(editId){
+      try{
+        const rows=await authFetch('/rest/v1/sermons?id=eq.'+encodeURIComponent(editId)+'&select=id,audio_url,cover_url&limit=1',{
+          method:'GET',
+          headers:{'Cache-Control':'no-store'}
+        });
+        currentStored=Array.isArray(rows)?rows[0]||null:null;
+      }catch(error){
+        console.warn('Current sermon media lookup failed; using loaded state fallback',error);
+      }
+      if(!currentStored)currentStored=(state.sermons||[]).find(x=>String(x.id)===editId)||null;
+    }
+
     if(sermonAudioFile){
       data.audio_url=await uploadWithProgress(sermonAudioFile,'messages/sermons',p=>{
         setSermonProgress(
-          L('در حال آپلود فایل صوتی… ','Uploading audio… ','Prijenos audio datoteke… ')+p+'%',
+          L('در حال آپلود فایل صوتی جدید… ','Uploading new audio… ','Prijenos novog audio zapisa… ')+p+'%',
           Math.max(2,Math.min(82,Math.round(p*.82))),
           'busy'
         );
       });
+    }else if(editId&&currentStored&&Object.prototype.hasOwnProperty.call(currentStored,'audio_url')){
+      data.audio_url=currentStored.audio_url||null;
     }
+
     if(sermonCoverFile){
-      setSermonProgress(L('در حال آپلود تصویر…','Uploading cover…','Prijenos naslovnice…'),86,'busy');
-      data.cover_url=await uploadWithProgress(sermonCoverFile,'messages/covers',p=>setSermonProgress(L('در حال آپلود تصویر… ','Uploading cover… ','Prijenos naslovnice… ')+p+'%',86+Math.round(p*.08),'busy'));
+      setSermonProgress(L('در حال آپلود کاور جدید…','Uploading new cover…','Prijenos nove naslovnice…'),86,'busy');
+      data.cover_url=await uploadWithProgress(sermonCoverFile,'messages/covers',p=>
+        setSermonProgress(
+          L('در حال آپلود کاور جدید… ','Uploading new cover… ','Prijenos nove naslovnice… ')+p+'%',
+          86+Math.round(p*.08),
+          'busy'
+        )
+      );
+    }else if(editId&&currentStored&&Object.prototype.hasOwnProperty.call(currentStored,'cover_url')){
+      data.cover_url=currentStored.cover_url||null;
     }
-    setSermonProgress(L('فایل آپلود شد؛ در حال ثبت موعظه…','Upload complete; saving sermon…','Prijenos završen; spremanje propovijedi…'),95,'busy');
-    if(editingSermonId){
-      const old=state.sermons.find(x=>String(x.id)===String(editingSermonId))||{};
-      if(!data.audio_url)data.audio_url=old.audio_url||null;
-      if(!data.cover_url)data.cover_url=old.cover_url||null;
-      await authFetch('/rest/v1/sermons?id=eq.'+encodeURIComponent(editingSermonId),{method:'PATCH',body:JSON.stringify(data)});
+
+    setSermonProgress(L('در حال ثبت تغییرات…','Saving changes…','Spremanje promjena…'),95,'busy');
+    if(editId){
+      await authFetch('/rest/v1/sermons?id=eq.'+encodeURIComponent(editId),{method:'PATCH',body:JSON.stringify(data)});
     }else{
       await authFetch('/rest/v1/sermons',{method:'POST',body:JSON.stringify(data)});
     }
+
     editingSermonId='';
     clearSermonDraft();
     setMessage(tr('saved'),'success');
     await loadAll(true);
     restore();
     sermonBusy=false;
-    setSermonProgress(L('✅ موعظه با موفقیت آپلود و ذخیره شد.','✅ Sermon uploaded and saved successfully.','✅ Propovijed je uspješno prenesena i spremljena.'),100,'ok');
+    setSermonProgress(
+      editId
+        ?L('✅ تغییرات ذخیره شد؛ فایل‌های قبلی که جایگزین نکردی حفظ شدند.','✅ Changes saved; existing files you did not replace were preserved.','✅ Promjene su spremljene; postojeće datoteke koje niste zamijenili ostale su sačuvane.')
+        :L('✅ موعظه با موفقیت آپلود و ذخیره شد.','✅ Sermon uploaded and saved successfully.','✅ Propovijed je uspješno prenesena i spremljena.'),
+      100,'ok'
+    );
   }catch(error){
     sermonBusy=false;
     setSermonProgress(L('❌ آپلود/ذخیره انجام نشد: ','❌ Upload/save failed: ','❌ Prijenos/spremanje nije uspjelo: ')+(error?.message||String(error)),0,'error');
     alert(error?.message||String(error));
   }finally{ensureSermonUi()}
 }
-
 function qRow(id){
   return Array.isArray(state?.questions)?state.questions.find(x=>String(x.id)===String(id)):null;
 }
@@ -229,7 +258,8 @@ style.textContent=`
 .nh7-qna-save-v497.is-error{background:#fef3f2;color:#b42318;font-weight:800}
 `;
 document.head.appendChild(style);
-new MutationObserver(()=>{clearTimeout(window.__nh7SaveFeedbackTimer497);window.__nh7SaveFeedbackTimer497=setTimeout(()=>{install();ensureSermonUi()},80)}).observe(document.documentElement,{childList:true,subtree:true});
+document.addEventListener('nh7:admin-render',()=>{install();ensureSermonUi()});
+window.addEventListener('pageshow',()=>{install();ensureSermonUi()});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else setTimeout(install,0);
 window.NH7_ADMIN_SAVE_FEEDBACK_VERSION=VERSION;
 })();
