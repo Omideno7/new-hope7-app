@@ -14,10 +14,23 @@ const fonts={
  estedad:{stack:'"NH7 Estedad",Tahoma,sans-serif',family:'NH7 Estedad',name:['استعداد — مدرن','Estedad — Persian','Estedad — perzijski'],script:'fa'},
  amiri:{stack:'"NH7 Amiri",Tahoma,serif',family:'NH7 Amiri',name:['امیری — نسخ کلاسیک','Amiri — Persian','Amiri — perzijski'],script:'fa'},
  markazi:{stack:'"NH7 Markazi",Tahoma,serif',family:'NH7 Markazi',name:['مرکزی — کتابی','Markazi Text — Persian','Markazi Text — perzijski'],script:'fa'},
+ geeza:{stack:'"Geeza Pro","Noto Naskh Arabic",Tahoma,serif',name:['Geeza Pro — دستگاه','Geeza Pro — device','Geeza Pro — uređaj'],script:'fa'},
+ damascus:{stack:'Damascus,"Geeza Pro","Noto Naskh Arabic",Tahoma,serif',name:['Damascus — دستگاه','Damascus — device','Damascus — uređaj'],script:'fa'},
+ albayan:{stack:'"Al Bayan","Geeza Pro","Noto Naskh Arabic",Tahoma,serif',name:['Al Bayan — دستگاه','Al Bayan — device','Al Bayan — uređaj'],script:'fa'},
+ kohinoor:{stack:'"Kohinoor Arabic","Geeza Pro","Noto Naskh Arabic",Tahoma,sans-serif',name:['Kohinoor Arabic — دستگاه','Kohinoor Arabic — device','Kohinoor Arabic — uređaj'],script:'fa'},
+ notosansarabic:{stack:'"Noto Sans Arabic",Tahoma,Arial,sans-serif',name:['Noto Sans Arabic — دستگاه','Noto Sans Arabic — device','Noto Sans Arabic — uređaj'],script:'fa'},
+ tahoma:{stack:'Tahoma,Arial,sans-serif',name:['Tahoma / Arial','Tahoma / Arial','Tahoma / Arial'],script:'fa'},
  inter:{stack:'"NH7 Inter",Arial,sans-serif',family:'NH7 Inter',name:['اینتر — لاتین','Inter — modern','Inter — moderni'],script:'latin'},
  lora:{stack:'"NH7 Lora",Georgia,serif',family:'NH7 Lora',name:['لورا — لاتین کتابی','Lora — book serif','Lora — knjiški'],script:'latin'},
  nunito:{stack:'"NH7 Nunito",Arial,sans-serif',family:'NH7 Nunito',name:['نونیتو — لاتین','Nunito Sans — rounded','Nunito Sans — zaobljeni'],script:'latin'},
- classic:{stack:'Georgia,"Times New Roman",serif',name:['جورجیا — لاتین','Georgia / Classic','Georgia / klasični'],script:'latin'}
+ classic:{stack:'Georgia,"Times New Roman",serif',name:['جورجیا — لاتین','Georgia / Classic','Georgia / klasični'],script:'latin'},
+ avenir:{stack:'"Avenir Next",Avenir,system-ui,sans-serif',name:['Avenir Next','Avenir Next','Avenir Next'],script:'latin'},
+ helvetica:{stack:'"Helvetica Neue",Helvetica,Arial,sans-serif',name:['Helvetica Neue','Helvetica Neue','Helvetica Neue'],script:'latin'},
+ trebuchet:{stack:'"Trebuchet MS",Verdana,Arial,sans-serif',name:['Trebuchet','Trebuchet','Trebuchet'],script:'latin'},
+ verdana:{stack:'Verdana,Arial,sans-serif',name:['Verdana','Verdana','Verdana'],script:'latin'},
+ times:{stack:'"Times New Roman",Times,serif',name:['Times New Roman','Times New Roman','Times New Roman'],script:'latin'},
+ arial:{stack:'Arial,Helvetica,sans-serif',name:['Arial','Arial','Arial'],script:'latin'},
+ courier:{stack:'"Courier New",Courier,monospace',name:['Courier New','Courier New','Courier New'],script:'latin'}
 };
 let pending=false,generation=0,last='',message='',failed=false;
 const label=f=>L(...f.name),script=()=>lang()==='fa'?'fa':'latin';
