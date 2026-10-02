@@ -1,0 +1,125 @@
+name: QA Player v529 Final Candidate
+
+on:
+  push:
+    branches:
+      - release/player-v529-final-candidate-20261002
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify final scope
+        run: |
+          set -euo pipefail
+          base=42fe271e122712afe896811ab41fed448bc9d30a
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed
+          allowed=(
+            '.github/workflows/deploy-pages.yml'
+            '.github/workflows/qa-player-v529-final-candidate.yml'
+            'css/nh7-icons-v517.css'
+            'index.html'
+            'js/app.js'
+            'js/nh7-media-player-v500.js'
+            'service-worker.js'
+            'sw-offline-v329.js'
+            'sw-release-core-v403.js'
+          )
+          printf '%s\n' "${allowed[@]}" | sort > /tmp/allowed
+          diff -u /tmp/allowed /tmp/changed
+
+      - name: JavaScript syntax
+        run: |
+          set -euo pipefail
+          node --check js/nh7-media-player-v500.js
+          node --input-type=module --check < js/app.js
+          node --check service-worker.js
+          node --check sw-offline-v329.js
+          node --check sw-release-core-v403.js
+
+      - name: Verify live FA EN HR player localization
+        run: |
+          set -euo pipefail
+          grep -q "function refreshLanguageUI" js/nh7-media-player-v500.js
+          grep -q "data-like-label" js/nh7-media-player-v500.js
+          grep -q "data-bless-label" js/nh7-media-player-v500.js
+          grep -q "data-bible-label" js/nh7-media-player-v500.js
+          grep -q "data-favorite-label" js/nh7-media-player-v500.js
+          grep -q "data-note-label" js/nh7-media-player-v500.js
+          grep -q "data-share-label" js/nh7-media-player-v500.js
+          grep -q "data-queue-label" js/nh7-media-player-v500.js
+          grep -q "Sviđa mi se" js/nh7-media-player-v500.js
+          grep -q "Bilješke" js/nh7-media-player-v500.js
+          grep -q "Podijeli" js/nh7-media-player-v500.js
+          grep -q "e.key==='nh7_lang'" js/nh7-media-player-v500.js
+
+      - name: Verify inline note panel and safe note bridge
+        run: |
+          set -euo pipefail
+          grep -q "data-note-panel" js/nh7-media-player-v500.js
+          grep -q "data-note-input" js/nh7-media-player-v500.js
+          grep -q "data-note-playpause" js/nh7-media-player-v500.js
+          grep -q "data-note-save" js/nh7-media-player-v500.js
+          grep -q "function readInlineNote" js/nh7-media-player-v500.js
+          grep -q "function saveInlineNote" js/nh7-media-player-v500.js
+          grep -q "window.NH7_SERMON_NOTE_BRIDGE_V527" js/app.js
+          grep -q "saveNoteCloud('sermon_note_'+id,clean)" js/app.js
+
+      - name: Verify resilient draft autosave
+        run: |
+          set -euo pipefail
+          grep -q "NOTE_DRAFT_PREFIX='nh7_sermon_note_draft_v528_'" js/nh7-media-player-v500.js
+          grep -q "function writeNoteDraft" js/nh7-media-player-v500.js
+          grep -q "if(id&&input)writeNoteDraft(id,input.value,false)" js/nh7-media-player-v500.js
+          grep -q "pagehide.*flushInlineNoteDraft" js/nh7-media-player-v500.js
+          grep -q "document.hidden.*flushInlineNoteDraft" js/nh7-media-player-v500.js
+          grep -q "Draft restored" js/nh7-media-player-v500.js
+          grep -q "Final save failed; your draft is safe on this device" js/nh7-media-player-v500.js
+
+      - name: Verify multilingual Like and Blessings fit
+        run: |
+          set -euo pipefail
+          grep -q "button>span:first-child" css/nh7-icons-v517.css
+          grep -q "\[data-like-label\]" css/nh7-icons-v517.css
+          grep -q "\[data-bless-label\]" css/nh7-icons-v517.css
+          grep -q "grid-template-columns:minmax(0,1fr) minmax(0,1fr)" css/nh7-icons-v517.css
+          grep -q "font-size:clamp(10px,2.7vw,12px)" css/nh7-icons-v517.css
+
+      - name: Verify earlier player features remain intact
+        run: |
+          set -euo pipefail
+          grep -q "toggleMediaMute" js/nh7-media-player-v500.js
+          grep -q "function downloadMirror(item)" js/nh7-media-player-v500.js
+          grep -q "data-download-progress" js/nh7-media-player-v500.js
+          grep -q "const set=readFavorites(),next=!set.has(id)" js/nh7-media-player-v500.js
+          grep -q "seekEl.style.setProperty('--nh7-seek-pct'" js/nh7-media-player-v500.js
+          grep -q "syncTimer=setInterval(sync,250)" js/nh7-media-player-v500.js
+
+      - name: Verify cache and deploy validator wiring
+        run: |
+          set -euo pipefail
+          grep -q 'js/app.js?v=4.8.6-note-bridge527' index.html
+          grep -q 'js/nh7-media-player-v500.js?v=5.2.8-note-autosave' index.html
+          grep -q 'css/nh7-icons-v517.css?v=5.2.9-social-fit' index.html
+          grep -q 'service-worker.js?v=4.8.10-player529' index.html
+          grep -q "nh7-release-core-v529-player-social-fit" sw-release-core-v403.js
+          grep -q "5.2.9-player-social-fit" sw-release-core-v403.js
+          grep -q "v2.3.9.64-player529" sw-offline-v329.js
+          grep -q "5.2.9-player529" service-worker.js
+          grep -q "sw-release-core-v403.js?v=5.2.9-player529" .github/workflows/deploy-pages.yml
+          grep -q "NH7_RELEASE_CORE_VERSION='5.2.9-player-social-fit'" .github/workflows/deploy-pages.yml
+
+      - name: Protect unrelated production runtime and data
+        run: |
+          set -euo pipefail
+          base=42fe271e122712afe896811ab41fed448bc9d30a
+          git diff --exit-code "$base"...HEAD --             js/nh7-audio-classic-v484.js js/nh7-audio-library-v500.js js/nh7-icons-v517.js             js/nh7-appearance-personalization-v514.js js/nh7-fonts-v454.js js/nh7-theme-studio-v453.js             css/nh7-appearance-personalization-v514.css css/nh7-player-volume-v521.css             'js/nh7-school-*' 'js/nh7-admin-*' 'supabase/**' 'data/**'
+          echo "Unrelated runtime and user-data paths are unchanged."
