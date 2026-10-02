@@ -1,4 +1,4 @@
-/* New Hope 7 — Appearance & Personalization v5.1.8
+/* New Hope 7 — Appearance & Personalization v5.1.9
  * Additive local-only appearance controller. No Supabase/account/network writes.
  * Existing users stay on Classic/current appearance until they explicitly opt in.
  */
@@ -123,10 +123,15 @@ function applyReader(){
 function applyStyle(){root.dataset.nh7UiStyle514=state.style||'classic';root.style.setProperty('--nh7-ap514-depth',(Number(state.depth)||7)+'px');root.style.setProperty('--nh7-ap514-glow',(Number(state.glow)||14)+'%');const cfg=currentThemeConfig();root.style.setProperty('--nh7-ap514-icon',cfg?.accent||getComputedStyle(root).getPropertyValue('--brand')||'#1858a4')}
 function applyAll(){applyStyle();applySize();applyReader();applyFontVisual();applyTheme();save();syncOpenDialog()}
 function resetOriginal(){
- state={...defaults,style:'classic',themeId:'current'};
- try{localStorage.removeItem(KEY);localStorage.removeItem(SIZE_KEY)}catch(_){}
- delete root.dataset.nh7EyeReader514;delete root.dataset.nh7ReaderMode514;root.dataset.nh7UiStyle514='classic';root.style.removeProperty('--nh7-ap514-depth');root.style.removeProperty('--nh7-ap514-glow');root.style.fontSize='';
- window.NH7ThemeStudioV453?.reset?.();window.NH7FontsV454?.reset?.();window.NH7_UI_PREFS?.apply?.();lastThemeSig='';mount();closeDialog();
+ state={...defaults,style:'classic',themeId:'current',faFont:'system',latinFont:'system',fontSize:100,reader:false};
+ try{
+   [KEY,SIZE_KEY,'nh7_ui_theme_v425','nh7_ui_font_size_v425','nh7_ui_font_family_v425','nh7_ui_home_visual_v425','nh7_ui_accent_v430','nh7_ui_accent_custom_v431'].forEach(k=>localStorage.removeItem(k));
+ }catch(_){}
+ delete root.dataset.nh7EyeReader514;delete root.dataset.nh7ReaderMode514;delete root.dataset.nh7Ap514Font;
+ root.dataset.nh7UiStyle514='classic';
+ root.style.removeProperty('--nh7-ap514-depth');root.style.removeProperty('--nh7-ap514-glow');root.style.removeProperty('--nh7-ap514-font');root.style.fontSize='';
+ window.NH7ThemeStudioV453?.reset?.();window.NH7FontsV454?.reset?.();window.NH7_UI_PREFS?.apply?.();
+ lastThemeSig='';mount();closeDialog();
 }
 
 function launcherHtml(){return '<section class="nh7-ap514-launcher" id="nh7AppearanceLauncher514"><div><strong>🎨 '+esc(L('ظاهر و شخصی‌سازی','Appearance & personalization','Izgled i personalizacija'))+'</strong><small>'+esc(L('تم، رنگ، فونت، اندازه نوشته، سبک کلیدها و حالت مطالعه را شخصی‌سازی کنید.','Customize themes, colors, fonts, text size, button style and reading mode.','Prilagodite teme, boje, fontove, veličinu teksta, stil gumba i način čitanja.'))+'</small></div><button type="button" class="nh7-ap514-open" data-ap514-open>'+esc(L('باز کردن','Open','Otvori'))+'</button></section>'}
@@ -155,15 +160,19 @@ function themeCards(){
 function readSavedThemes(){try{const x=JSON.parse(localStorage.getItem('nh7_theme_library_v453')||'[]');return Array.isArray(x)?x.filter(i=>i&&i.config&&validHex(i.config.bg)&&validHex(i.config.card)).slice(0,12):[]}catch(_){return[]}}
 function fontOptions(ids){return ids.map(id=>'<option value="'+id+'">'+esc(L(...(FONT_NAMES[id]||[id,id,id])))+'</option>').join('')}
 function themeOptions(dark){return Object.entries(allThemes()).filter(([,p])=>isDarkTheme(p)===dark).map(([id,p])=>'<option value="'+id+'">'+esc(Array.isArray(p.name)?L(...p.name):p.name)+'</option>').join('')}
+function stylePreviewHtml(){
+ return '<div class="nh7-ap514-live" id="nh7ApStylePreview"><div class="nh7-ap514-live-head"><strong>'+esc(L('پیش‌نمایش زنده','Live preview','Pregled uživo'))+'</strong><small>'+esc(L('با انتخاب هر سبک، همین نمونه فوراً تغییر می‌کند.','Choose a style and this sample changes instantly.','Odaberite stil i ovaj se uzorak odmah mijenja.'))+'</small></div><div class="nh7-ap514-live-module"><span data-ap514-preview-icon="lesson"></span><div><strong>'+esc(L('ماژول نمونه','Sample module','Primjer modula'))+'</strong><small>'+esc(L('کارت‌ها و کلیدها','Cards and controls','Kartice i kontrole'))+'</small></div></div><div class="nh7-ap514-live-player"><div class="nh7-ap514-live-main"><button type="button" tabindex="-1" data-ap514-preview-icon="previous"></button><button type="button" tabindex="-1" data-ap514-preview-icon="rewind15"></button><button type="button" tabindex="-1" class="is-primary" data-ap514-preview-icon="play"></button><button type="button" tabindex="-1" data-ap514-preview-icon="forward30"></button><button type="button" tabindex="-1" data-ap514-preview-icon="next"></button></div><div class="nh7-ap514-live-tools"><button type="button" tabindex="-1" style="--pc:#2563eb"><span data-ap514-preview-icon="bible"></span><small>'+esc(L('کتاب','Bible','Biblija'))+'</small></button><button type="button" tabindex="-1" style="--pc:#8b5cf6"><span data-ap514-preview-icon="notes"></span><small>'+esc(L('یادداشت','Notes','Bilješke'))+'</small></button><button type="button" tabindex="-1" style="--pc:#0284c7"><span data-ap514-preview-icon="download"></span><small>'+esc(L('دانلود','Download','Preuzmi'))+'</small></button><button type="button" tabindex="-1" style="--pc:#d99000"><span data-ap514-preview-icon="favorite"></span><small>'+esc(L('علاقه‌مندی','Favorite','Favorit'))+'</small></button></div></div></div>';
+}
 function dialogHtml(){
  return '<dialog class="nh7-ap514-dialog" id="nh7AppearanceDialog514"><div class="nh7-ap514-shell"><header class="nh7-ap514-head"><button type="button" data-ap514-close aria-label="Close">×</button><div><strong>🎨 '+esc(L('ظاهر و شخصی‌سازی','Appearance & personalization','Izgled i personalizacija'))+'</strong><small>'+esc(L('تمام تنظیمات فقط روی همین دستگاه ذخیره می‌شوند.','All appearance settings are stored on this device only.','Sve postavke izgleda spremaju se samo na ovom uređaju.'))+'</small></div><button type="button" data-ap514-reset title="Reset">↺</button></header><div class="nh7-ap514-body">'+
- card(L('سبک رابط کاربری','Interface style','Stil sučelja'),L('گزینه «اصلی New Hope 7» دقیقاً ساختار فعلی اپ را نگه می‌دارد.','Classic / Original keeps the current app structure exactly as it is.','Classic / Original zadržava postojeću strukturu aplikacije.'),'<div class="nh7-ap514-grid">'+styleCards()+'</div>')+
+ card(L('سبک رابط کاربری','Interface style','Stil sučelja'),L('گزینه «اصلی New Hope 7» ساختار فعلی اپ را نگه می‌دارد؛ با انتخاب هر سبک، نمونه پایین همان لحظه تغییر می‌کند.','Classic / Original keeps the current app structure; the sample below updates instantly when you choose a style.','Classic / Original zadržava postojeću strukturu; uzorak ispod se odmah mijenja pri odabiru stila.'),'<div class="nh7-ap514-grid">'+styleCards()+'</div>'+stylePreviewHtml())+
  card(L('حالت تم','Theme mode','Način teme'),L('دستی، مطابق روشن/تیره بودن گوشی، یا روز/شب خودکار.','Manual, follow phone light/dark mode, or automatic day/night.','Ručno, prema svijetlom/tamnom načinu uređaja ili automatski dan/noć.'),'<div class="nh7-ap514-tabs"><button class="nh7-ap514-chip" data-ap514-mode="manual">Manual</button><button class="nh7-ap514-chip" data-ap514-mode="system">System</button><button class="nh7-ap514-chip" data-ap514-mode="auto">Day/Night</button></div><div class="nh7-ap514-fields" data-ap514-schedule><label class="nh7-ap514-field">'+esc(L('تم روز','Day theme','Dnevna tema'))+'<select id="nh7ApDayTheme">'+themeOptions(false)+'</select></label><label class="nh7-ap514-field">'+esc(L('تم شب','Night theme','Noćna tema'))+'<select id="nh7ApNightTheme">'+themeOptions(true)+'</select></label><label class="nh7-ap514-field">'+esc(L('شروع روز','Day starts','Početak dana'))+'<input id="nh7ApDayStart" type="time"></label><label class="nh7-ap514-field">'+esc(L('شروع شب','Night starts','Početak noći'))+'<input id="nh7ApNightStart" type="time"></label></div>')+
  card(L('کتابخانه تم‌ها','Theme library','Biblioteka tema'),L('تمام ۱۴ تم قبلی حفظ شده‌اند و تم‌های جدید به آنها اضافه شده‌اند.','All 14 existing themes are preserved and new themes are added.','Svih 14 postojećih tema je sačuvano, a nove su dodane.'),'<div class="nh7-ap514-tabs" data-ap514-groups><button class="nh7-ap514-chip" data-ap514-group="all">'+esc(L('همه','All','Sve'))+'</button><button class="nh7-ap514-chip" data-ap514-group="old">'+esc(L('قبلی‌ها','Existing','Postojeće'))+'</button><button class="nh7-ap514-chip" data-ap514-group="new">'+esc(L('جدیدها','New','Nove'))+'</button><button class="nh7-ap514-chip" data-ap514-group="dark">'+esc(L('تیره','Dark','Tamne'))+'</button><button class="nh7-ap514-chip" data-ap514-group="modern">'+esc(L('مدرن','Modern','Moderne'))+'</button><button class="nh7-ap514-chip" data-ap514-group="soft">'+esc(L('مطالعه','Reading','Čitanje'))+'</button></div><div class="nh7-ap514-grid" id="nh7ApThemeGrid">'+themeCards()+'</div>')+
  card(L('فونت و اندازه نوشته','Fonts & text size','Fontovi i veličina teksta'),L('۱۲ انتخاب فارسی و ۱۲ انتخاب انگلیسی/کرواتی؛ بدون سرویس پولی.','12 Persian and 12 English/Croatian choices; no paid service.','12 perzijskih i 12 engleskih/hrvatskih izbora; bez plaćene usluge.'),'<div class="nh7-ap514-fields"><label class="nh7-ap514-field">'+esc(L('فونت فارسی','Persian font','Perzijski font'))+'<select id="nh7ApFaFont">'+fontOptions(FA_FONT_IDS)+'</select></label><label class="nh7-ap514-field">'+esc(L('فونت انگلیسی / کرواتی','English / Croatian font','Engleski / hrvatski font'))+'<select id="nh7ApLatinFont">'+fontOptions(LATIN_FONT_IDS)+'</select></label></div><div class="nh7-ap514-range"><label>'+esc(L('اندازه نوشته','Text size','Veličina teksta'))+'</label><output id="nh7ApSizeOut"></output><input id="nh7ApSize" type="range" min="80" max="140" step="5"></div>')+
  customCard()+
  readerCard()+
- '<div class="nh7-ap514-card"><div class="nh7-ap514-actions"><button class="nh7-ap514-btn primary" data-ap514-close>'+esc(L('تمام شد','Done','Gotovo'))+'</button><button class="nh7-ap514-btn" data-ap514-reset>'+esc(L('بازگشت کامل به ظاهر اصلی New Hope 7','Restore original New Hope 7 appearance','Vrati izvorni izgled New Hope 7'))+'</button></div></div>'+
+ card(L('بازگشت به تنظیمات اولیه','Restore defaults','Vrati zadane postavke'),L('فقط تنظیمات ظاهری، تم، فونت، اندازه و Book Reader به حالت اولیه New Hope 7 برمی‌گردند؛ اطلاعات و فایل‌های شما پاک نمی‌شوند.','Only appearance, theme, font, text size and Book Reader settings return to New Hope 7 defaults; your data and files are not deleted.','Samo izgled, tema, font, veličina teksta i Book Reader vraćaju se na zadano; vaši podaci i datoteke se ne brišu.'),'<div class="nh7-ap514-actions"><button class="nh7-ap514-btn reset" data-ap514-reset>'+esc(L('بازگشت همه تنظیمات ظاهری به حالت اولیه','Reset all appearance settings','Vrati sve postavke izgleda'))+'</button></div>')+
+ '<div class="nh7-ap514-card"><div class="nh7-ap514-actions"><button class="nh7-ap514-btn primary" data-ap514-close>'+esc(L('تمام شد','Done','Gotovo'))+'</button></div></div>'+
  '</div></div></dialog>';
 }
 function card(title,desc,body){return '<section class="nh7-ap514-card"><h3>'+esc(title)+'</h3><p>'+esc(desc)+'</p>'+body+'</section>'}
@@ -236,6 +245,7 @@ function syncOpenDialog(){
  const modes=$('#nh7ApReaderModes',d);if(modes)modes.hidden=!state.reader;
  $$('[data-ap514-reader]',d).forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.ap514Reader===state.readerMode)));
  const proof=$('#nh7ApReaderProof',d);if(proof){proof.dataset.on=state.reader?'1':'0';proof.dataset.mode=state.readerMode}
+ requestAnimationFrame(()=>window.NH7IconsV517?.decorate?.(d));
 }
 function start(){
  if(!localStorage.getItem(KEY)){
@@ -258,6 +268,6 @@ function start(){
  try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(state.mode==='system'){lastThemeSig='';applyTheme()}})}catch(_){}
  setInterval(()=>{if(state.mode==='auto'){lastThemeSig='';applyTheme()}},60000);
 }
-window.NH7AppearancePersonalizationV514={VERSION:'5.1.8',KEY,get:()=>JSON.parse(JSON.stringify(state)),apply:applyAll,open:openDialog,reset:resetOriginal};
+window.NH7AppearancePersonalizationV514={VERSION:'5.1.9',KEY,get:()=>JSON.parse(JSON.stringify(state)),apply:applyAll,open:openDialog,reset:resetOriginal};
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start,{once:true}):start();
 })();
