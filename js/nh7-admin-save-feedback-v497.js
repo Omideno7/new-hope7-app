@@ -2,7 +2,7 @@
 (()=>{'use strict';
 if(window.__NH7_ADMIN_SAVE_FEEDBACK_V497__)return;
 window.__NH7_ADMIN_SAVE_FEEDBACK_V497__=true;
-const VERSION='4.9.8-save-feedback';
+const VERSION='4.9.9-public-sermon-covers';
 let sermonBusy=false,sermonProgress=0,sermonStatus='',sermonTone='';
 
 const L=(fa,en,hr)=>{
@@ -56,12 +56,13 @@ function setSermonProgress(text,progress=0,tone=''){
   ensureSermonUi();
 }
 
-function uploadWithProgress(file,folder,onProgress){
+function uploadWithProgress(file,folder,onProgress,bucket='church-audio'){
   return new Promise((resolve,reject)=>{
     if(!file){resolve('');return}
     const name=String(file.name||'file').toLowerCase().replace(/[^a-z0-9._-]+/g,'-').replace(/^-+|-+$/g,'')||'file';
     const path=folder+'/'+Date.now()+'-'+name;
-    const url=SUPABASE_URL+'/storage/v1/object/church-audio/'+path;
+    const bucketName=String(bucket||'church-audio');
+    const url=SUPABASE_URL+'/storage/v1/object/'+bucketName+'/'+path;
     const xhr=new XMLHttpRequest();
     xhr.open('POST',url,true);
     xhr.setRequestHeader('apikey',SUPABASE_KEY);
@@ -70,7 +71,7 @@ function uploadWithProgress(file,folder,onProgress){
     xhr.setRequestHeader('Content-Type',file.type||'application/octet-stream');
     xhr.upload.onprogress=e=>{if(e.lengthComputable&&typeof onProgress==='function')onProgress(Math.round(e.loaded/e.total*100))};
     xhr.onload=()=>{
-      if(xhr.status>=200&&xhr.status<300)resolve(SUPABASE_URL+'/storage/v1/object/public/church-audio/'+path);
+      if(xhr.status>=200&&xhr.status<300)resolve(SUPABASE_URL+'/storage/v1/object/public/'+bucketName+'/'+path);
       else reject(new Error(xhr.responseText||('Upload failed: '+xhr.status)));
     };
     xhr.onerror=()=>reject(new Error(L('ارتباط هنگام آپلود قطع شد.','Upload network error.','Mrežna pogreška pri prijenosu.')));
@@ -140,12 +141,13 @@ async function stableSaveSermon(){
 
     if(sermonCoverFile){
       setSermonProgress(L('در حال آپلود کاور جدید…','Uploading new cover…','Prijenos nove naslovnice…'),86,'busy');
-      data.cover_url=await uploadWithProgress(sermonCoverFile,'messages/covers',p=>
+      data.cover_url=await uploadWithProgress(sermonCoverFile,'sermons',p=>
         setSermonProgress(
           L('در حال آپلود کاور جدید… ','Uploading new cover… ','Prijenos nove naslovnice… ')+p+'%',
           86+Math.round(p*.08),
           'busy'
-        )
+        ),
+        'nh7-sermon-covers'
       );
     }else if(editId&&currentStored&&Object.prototype.hasOwnProperty.call(currentStored,'cover_url')){
       data.cover_url=currentStored.cover_url||null;
