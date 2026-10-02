@@ -1,4 +1,4 @@
-/* New Hope 7 — Appearance & Personalization v5.1.4
+/* New Hope 7 — Appearance & Personalization v5.1.5
  * Additive UI layer. Classic mode intentionally leaves existing app structure untouched.
  */
 :root{
@@ -115,4 +115,162 @@ html[data-nh7-eye-reader514="1"] .nh7-book-article{font-size:20px;line-height:2.
   html[data-nh7-ui-style514] #view *,html[data-nh7-ui-style514] .bottom-nav *{transition:none!important}
   html[data-nh7-ui-style514="tactile"] #view :is(.primary-btn,.secondary-btn,.icon-btn,.tab,.nav-item,.nh7-book-tool-btn):active,
   html[data-nh7-ui-style514="tactile"] .bottom-nav .nav-item:active{transform:none!important}
+}
+
+
+/* v515 — make style selection visibly affect the real app, including Media Player 500.
+   Classic remains intentionally untouched. */
+
+/* Shared button press behavior outside the settings dialog. */
+html[data-nh7-ui-style514]:not([data-nh7-ui-style514="classic"]) #view button,
+html[data-nh7-ui-style514]:not([data-nh7-ui-style514="classic"]) .bottom-nav button,
+html[data-nh7-ui-style514]:not([data-nh7-ui-style514="classic"]) .nh7p500 button{
+  transition:transform .09s ease,box-shadow .09s ease,background .12s ease,border-color .12s ease!important
+}
+
+/* Tactile — closest to the approved preview. */
+html[data-nh7-ui-style514="tactile"] #view button:not(.nh7-ap514-open),
+html[data-nh7-ui-style514="tactile"] .bottom-nav button,
+html[data-nh7-ui-style514="tactile"] .nh7p500 button{
+  border-radius:13px!important;
+  box-shadow:0 var(--nh7-ap514-depth) calc(var(--nh7-ap514-depth) * 1.35) color-mix(in srgb,var(--nh7-studio-text,var(--ink,#17364e)) 16%,transparent),
+             0 0 15px color-mix(in srgb,var(--nh7-ap514-icon) var(--nh7-ap514-glow),transparent),
+             inset 0 1px 0 rgba(255,255,255,.55)!important
+}
+html[data-nh7-ui-style514="tactile"] #view button:active,
+html[data-nh7-ui-style514="tactile"] .bottom-nav button:active,
+html[data-nh7-ui-style514="tactile"] .nh7p500 button:active{
+  transform:translateY(calc(var(--nh7-ap514-depth) * .45)) scale(.985)!important;
+  box-shadow:0 1px 2px #0002,inset 0 3px 7px #0002!important
+}
+html[data-nh7-ui-style514="tactile"] .nh7p500-mini{
+  border-radius:19px!important;
+  box-shadow:0 14px 34px #0003,inset 0 1px 0 #ffffff4a!important
+}
+html[data-nh7-ui-style514="tactile"] .nh7p500-main button,
+html[data-nh7-ui-style514="tactile"] .nh7p500-tools button,
+html[data-nh7-ui-style514="tactile"] .nh7p500-social button,
+html[data-nh7-ui-style514="tactile"] .nh7p500-head button{
+  background:linear-gradient(180deg,
+    color-mix(in srgb,var(--nh7p-card,var(--card,#fff)) 88%,#fff),
+    color-mix(in srgb,var(--nh7p-card,var(--card,#fff)) 96%,var(--nh7p-bg,var(--bg,#eef8ff))))!important;
+  border:1px solid color-mix(in srgb,var(--nh7p-line,var(--line,#cbd8e1)) 82%,#fff)!important;
+  color:var(--nh7p-accent,var(--accent,#1858a4))!important
+}
+html[data-nh7-ui-style514="tactile"] .nh7p500-main .big,
+html[data-nh7-ui-style514="tactile"] .nh7p500-actions .nh7p500-play{
+  background:linear-gradient(180deg,color-mix(in srgb,var(--nh7p-accent,var(--accent,#1858a4)) 82%,#fff),var(--nh7p-accent,var(--accent,#1858a4)))!important;
+  color:#fff!important;border-color:color-mix(in srgb,var(--nh7p-accent,var(--accent,#1858a4)) 84%,#000)!important
+}
+html[data-nh7-ui-style514="tactile"] .nh7p500-tools button{
+  border-radius:13px!important;min-height:46px!important
+}
+
+/* Glass / Frosted */
+html[data-nh7-ui-style514="glass"] #view :is(.card:not(.hero),.tile,.list-btn,.link-card,.notice,.inline-reading,.accordion-panel,.saved-verse-card),
+html[data-nh7-ui-style514="glass"] .nh7p500-mini,
+html[data-nh7-ui-style514="glass"] .nh7p500-queue{
+  background:color-mix(in srgb,var(--nh7-studio-card,var(--card,#fff)) 66%,transparent)!important;
+  backdrop-filter:blur(22px) saturate(1.18)!important;
+  -webkit-backdrop-filter:blur(22px) saturate(1.18)!important;
+  border-color:color-mix(in srgb,var(--nh7-studio-line,var(--line,#cbd8e1)) 55%,#fff)!important;
+  box-shadow:0 14px 34px #10273b18!important
+}
+html[data-nh7-ui-style514="glass"] #view button,
+html[data-nh7-ui-style514="glass"] .bottom-nav button,
+html[data-nh7-ui-style514="glass"] .nh7p500 :is(.nh7p500-main button,.nh7p500-tools button,.nh7p500-social button,.nh7p500-head button){
+  border-radius:13px!important;
+  background:linear-gradient(180deg,#ffffff38,#ffffff14)!important;
+  border:1px solid #ffffff70!important;
+  box-shadow:inset 0 1px #ffffff80,0 6px 16px #10273b16!important
+}
+html[data-nh7-ui-style514="glass"] .nh7p500-main .big,
+html[data-nh7-ui-style514="glass"] .nh7p500-actions .nh7p500-play{
+  background:color-mix(in srgb,var(--nh7p-accent,var(--accent,#1858a4)) 78%,#fff)!important;color:#fff!important
+}
+html[data-nh7-ui-style514="glass"] #view button:active,
+html[data-nh7-ui-style514="glass"] .nh7p500 button:active{transform:scale(.97)!important}
+
+/* Minimal Flat */
+html[data-nh7-ui-style514="minimal"] #view :is(.card:not(.hero),.tile,.list-btn,.link-card,.notice,.accordion-panel,.saved-verse-card){
+  box-shadow:none!important;border-radius:14px!important
+}
+html[data-nh7-ui-style514="minimal"] #view button,
+html[data-nh7-ui-style514="minimal"] .bottom-nav button,
+html[data-nh7-ui-style514="minimal"] .nh7p500 :is(.nh7p500-main button,.nh7p500-tools button,.nh7p500-social button,.nh7p500-head button){
+  box-shadow:none!important;border-radius:10px!important
+}
+html[data-nh7-ui-style514="minimal"] .nh7p500-tools button,
+html[data-nh7-ui-style514="minimal"] .nh7p500-social button{
+  background:transparent!important;border:1px solid var(--nh7p-line,var(--line,#cbd8e1))!important
+}
+html[data-nh7-ui-style514="minimal"] #view button:active,
+html[data-nh7-ui-style514="minimal"] .nh7p500 button:active{transform:scale(.96)!important}
+
+/* Material Soft */
+html[data-nh7-ui-style514="material"] #view :is(.card:not(.hero),.tile,.list-btn,.link-card,.notice,.accordion-panel,.saved-verse-card),
+html[data-nh7-ui-style514="material"] .nh7p500-mini,
+html[data-nh7-ui-style514="material"] .nh7p500-queue{
+  border-radius:18px!important;box-shadow:0 3px 9px #10273b18,0 12px 26px #10273b0c!important
+}
+html[data-nh7-ui-style514="material"] #view button,
+html[data-nh7-ui-style514="material"] .bottom-nav button,
+html[data-nh7-ui-style514="material"] .nh7p500 :is(.nh7p500-main button,.nh7p500-tools button,.nh7p500-social button,.nh7p500-head button){
+  border-radius:12px!important;box-shadow:0 3px 8px #10273b20!important
+}
+html[data-nh7-ui-style514="material"] #view button:active,
+html[data-nh7-ui-style514="material"] .nh7p500 button:active{
+  transform:translateY(1px) scale(.98)!important;box-shadow:0 1px 2px #10273b1c!important
+}
+
+/* Outline Clean */
+html[data-nh7-ui-style514="outline"] #view :is(.card:not(.hero),.tile,.list-btn,.link-card,.notice,.accordion-panel,.saved-verse-card){
+  box-shadow:none!important;background:transparent!important;border-width:1.5px!important
+}
+html[data-nh7-ui-style514="outline"] #view button,
+html[data-nh7-ui-style514="outline"] .bottom-nav button,
+html[data-nh7-ui-style514="outline"] .nh7p500 :is(.nh7p500-main button,.nh7p500-tools button,.nh7p500-social button,.nh7p500-head button){
+  background:transparent!important;border:1.5px solid var(--nh7-studio-accent,var(--brand,#1858a4))!important;
+  color:var(--nh7-studio-accent,var(--brand,#1858a4))!important;box-shadow:none!important;border-radius:11px!important
+}
+html[data-nh7-ui-style514="outline"] .nh7p500-main .big{
+  background:var(--nh7p-accent,var(--accent,#1858a4))!important;color:#fff!important
+}
+html[data-nh7-ui-style514="outline"] #view button:active,
+html[data-nh7-ui-style514="outline"] .nh7p500 button:active{transform:translateY(1px)!important}
+
+/* Soft Pill */
+html[data-nh7-ui-style514="pill"] #view :is(.card:not(.hero),.tile,.list-btn,.link-card,.notice,.accordion-panel,.saved-verse-card){
+  border-radius:26px!important
+}
+html[data-nh7-ui-style514="pill"] #view button,
+html[data-nh7-ui-style514="pill"] .bottom-nav button,
+html[data-nh7-ui-style514="pill"] .nh7p500 :is(.nh7p500-main button,.nh7p500-tools button,.nh7p500-social button,.nh7p500-head button){
+  border-radius:999px!important
+}
+html[data-nh7-ui-style514="pill"] .nh7p500-tools button{
+  background:color-mix(in srgb,var(--nh7p-accent,var(--accent,#1858a4)) 10%,var(--nh7p-card,var(--card,#fff)))!important;
+  border:1px solid color-mix(in srgb,var(--nh7p-accent,var(--accent,#1858a4)) 24%,transparent)!important
+}
+html[data-nh7-ui-style514="pill"] #view button:active,
+html[data-nh7-ui-style514="pill"] .nh7p500 button:active{transform:scale(.96)!important}
+
+/* Player mini-bar participates in all non-classic styles. */
+html[data-nh7-ui-style514]:not([data-nh7-ui-style514="classic"]) .nh7p500-mini{
+  transition:background .15s ease,border-radius .15s ease,box-shadow .15s ease!important
+}
+
+/* Keep settings text buttons contained on narrow screens. */
+.nh7-ap514-chip,.nh7-ap514-btn,.nh7-ap514-reader-modes button,.nh7-ap514-open{
+  width:auto!important;height:auto!important;max-width:100%;white-space:normal!important;overflow-wrap:anywhere;line-height:1.45
+}
+@media(max-width:430px){
+  .nh7-ap514-tabs{align-items:stretch}
+  .nh7-ap514-chip{min-height:42px}
+}
+
+/* Fonts selected in Personalization should also reach Player 500 surfaces. */
+html[data-nh7-font454] .nh7p500,
+html[data-nh7-studio-font] .nh7p500{
+  font-family:var(--nh7-font454,var(--nh7-studio-font,inherit))!important
 }
