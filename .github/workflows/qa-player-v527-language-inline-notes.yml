@@ -1,0 +1,118 @@
+name: QA Player v527 Language + Inline Notes Preview
+
+on:
+  push:
+    branches:
+      - fix/player-v527-live-language-inline-notes-preview-20261002
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify v527 scope
+        run: |
+          set -euo pipefail
+          base=42fe271e122712afe896811ab41fed448bc9d30a
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed
+          allowed=(
+            '.github/workflows/qa-player-v527-language-inline-notes.yml'
+            'index.html'
+            'js/app.js'
+            'js/nh7-media-player-v500.js'
+            'service-worker.js'
+            'sw-offline-v329.js'
+            'sw-release-core-v403.js'
+          )
+          printf '%s\n' "${allowed[@]}" | sort > /tmp/allowed
+          diff -u /tmp/allowed /tmp/changed
+
+      - name: JavaScript syntax
+        run: |
+          set -euo pipefail
+          node --check js/nh7-media-player-v500.js
+          node --input-type=module --check < js/app.js
+          node --check service-worker.js
+          node --check sw-offline-v329.js
+          node --check sw-release-core-v403.js
+
+      - name: Verify live FA EN HR player labels
+        run: |
+          set -euo pipefail
+          grep -q "function refreshLanguageUI" js/nh7-media-player-v500.js
+          grep -q "data-like-label" js/nh7-media-player-v500.js
+          grep -q "data-bless-label" js/nh7-media-player-v500.js
+          grep -q "data-bible-label" js/nh7-media-player-v500.js
+          grep -q "data-favorite-label" js/nh7-media-player-v500.js
+          grep -q "data-note-label" js/nh7-media-player-v500.js
+          grep -q "data-share-label" js/nh7-media-player-v500.js
+          grep -q "data-queue-label" js/nh7-media-player-v500.js
+          grep -q "Sviđa mi se" js/nh7-media-player-v500.js
+          grep -q "Bilješke" js/nh7-media-player-v500.js
+          grep -q "Podijeli" js/nh7-media-player-v500.js
+          grep -q "lastUiLang" js/nh7-media-player-v500.js
+          grep -q "e.key==='nh7_lang'" js/nh7-media-player-v500.js
+
+      - name: Verify inline notes replace player popup
+        run: |
+          set -euo pipefail
+          grep -q "data-note-panel" js/nh7-media-player-v500.js
+          grep -q "data-note-input" js/nh7-media-player-v500.js
+          grep -q "data-note-playpause" js/nh7-media-player-v500.js
+          grep -q "data-note-save" js/nh7-media-player-v500.js
+          grep -q "function readInlineNote" js/nh7-media-player-v500.js
+          grep -q "function saveInlineNote" js/nh7-media-player-v500.js
+          grep -q "function closeInlineNotes" js/nh7-media-player-v500.js
+          grep -q "NH7_SERMON_NOTE_BRIDGE_V527" js/nh7-media-player-v500.js
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('js/nh7-media-player-v500.js').read_text()
+          start=s.index('function openNotes(){')
+          end=s.index('function shareCurrent()',start)
+          body=s[start:end]
+          assert '[data-sermon-note]' not in body
+          assert 'data-note-panel' in body
+          print('player note button no longer invokes legacy modal')
+          PY
+
+      - name: Verify note save bridge preserves local and cloud behavior
+        run: |
+          set -euo pipefail
+          grep -q "window.NH7_SERMON_NOTE_BRIDGE_V527" js/app.js
+          grep -q "localStorage.setItem(sermonNoteKey(id),clean)" js/app.js
+          grep -q "saveNoteCloud('sermon_note_'+id,clean)" js/app.js
+          grep -q "nh7:sermon-note-saved" js/app.js
+
+      - name: Verify previous player features preserved
+        run: |
+          set -euo pipefail
+          grep -q "toggleMediaMute" js/nh7-media-player-v500.js
+          grep -q "function downloadMirror(item)" js/nh7-media-player-v500.js
+          grep -q "data-download-progress" js/nh7-media-player-v500.js
+          grep -q "const set=readFavorites(),next=!set.has(id)" js/nh7-media-player-v500.js
+          grep -q "seekEl.style.setProperty('--nh7-seek-pct'" js/nh7-media-player-v500.js
+          grep -q "syncTimer=setInterval(sync,250)" js/nh7-media-player-v500.js
+
+      - name: Verify v527 cache wiring
+        run: |
+          set -euo pipefail
+          grep -q 'js/app.js?v=4.8.6-note-bridge527' index.html
+          grep -q 'js/nh7-media-player-v500.js?v=5.2.7-inline-notes' index.html
+          grep -q 'service-worker.js?v=4.8.8-player527' index.html
+          grep -q "nh7-release-core-v527-player-language-inline-notes" sw-release-core-v403.js
+          grep -q "5.2.7-player-language-inline-notes" sw-release-core-v403.js
+          grep -q "v2.3.9.62-player527" sw-offline-v329.js
+          grep -q "5.2.7-player527" service-worker.js
+
+      - name: Protect unrelated production runtime and data
+        run: |
+          set -euo pipefail
+          base=42fe271e122712afe896811ab41fed448bc9d30a
+          git diff --exit-code "$base"...HEAD --             js/nh7-audio-classic-v484.js js/nh7-audio-library-v500.js js/nh7-icons-v517.js             js/nh7-appearance-personalization-v514.js js/nh7-fonts-v454.js js/nh7-theme-studio-v453.js             css/nh7-appearance-personalization-v514.css css/nh7-icons-v517.css css/nh7-player-volume-v521.css             'js/nh7-school-*' 'js/nh7-admin-*' 'supabase/**' 'data/**'
