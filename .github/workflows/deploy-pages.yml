@@ -107,7 +107,7 @@ jobs:
           if(!releaseCore.includes('./js/nh7-registration-repeat-guard-v402.js'))fail('Registration repeat guard not cached');
 
           if(!worker.includes('sw-navigation-fresh-v403.js?v=4.0.3'))fail('Fresh navigation worker missing');
-          if(!worker.includes('sw-release-core-v403.js?v=5.2.3-appearance-player523'))fail('Release core v4.9.0 missing');
+          if(!worker.includes('sw-release-core-v403.js?v=5.2.6-audio526'))fail('Release core v5.2.6 missing');
           if(worker.indexOf('sw-navigation-fresh-v403.js')>worker.indexOf('sw-offline-v329.js'))fail('Fresh navigation worker must load before offline worker');
 
           for(const required of [
@@ -149,7 +149,7 @@ jobs:
           const missingFromRelease=currentScripts.filter(p=>!paths.includes(p));
           if(missingFromRelease.length)fail('Current app scripts not guaranteed offline: '+missingFromRelease.join(', '));
 
-          if(!releaseCore.includes("NH7_RELEASE_CORE_VERSION='5.2.3-appearance-player-integrated'"))fail('Release core version mismatch');
+          if(!releaseCore.includes("NH7_RELEASE_CORE_VERSION='5.2.6-audio-cards-model-c'"))fail('Release core version mismatch');
           if(!releaseCore.includes('./js/nh7-audio-classic-v484.js'))fail('Audio engine not cached');
           if(!releaseCore.includes('./js/nh7-audio-miniplayer-v487.js'))fail('Mini-player not cached');
           if(!releaseCore.includes('./js/nh7-book-reading-telemetry-v490.js'))fail('Reading telemetry not cached');

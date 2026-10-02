@@ -1,4 +1,4 @@
-const VERSION='v2.3.9.59-appearance-player523';
+const VERSION='v2.3.9.61-audio526';
 const CORE_CACHE='nh7-core-'+VERSION;
 const SHELL_CACHE='nh7-shell-stable';
 const DATA_CACHE='nh7-data-stable-v329';

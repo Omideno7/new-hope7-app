@@ -63,6 +63,12 @@ function setFirstSlot(btn,name,selector=':scope > span:first-child'){
  if(slot.dataset.nh7Icon517===name&&slot.querySelector('.nh7-icon517-svg'))return;
  slot.dataset.nh7Icon517=name;slot.classList.add('nh7-icon517-slot');slot.replaceChildren(svg(name));
 }
+function syncDynamicPlay(b){
+ if(!b)return;
+ const t=String(b.textContent||'');
+ b.dataset.nh7PlayState517=/❚|Ⅱ|pause/i.test(t)?'pause':'play';
+ b.classList.add('nh7-icon517-dynamic-play');
+}
 function decoratePlayer(scope=document){
  scope.querySelectorAll('.nh7p500 [data-prev]').forEach(b=>setIconOnly(b,'previous'));
  scope.querySelectorAll('.nh7p500 [data-back]').forEach(b=>setIconOnly(b,'rewind15'));
@@ -80,9 +86,7 @@ function decoratePlayer(scope=document){
  scope.querySelectorAll('.nh7p500 [data-favorite]').forEach(b=>b.classList.add('nh7-icon517-favorite'));
  scope.querySelectorAll('.nh7p500 [data-p500-like]').forEach(b=>{b.classList.add('nh7-icon517-like');const slot=b.querySelector('[data-like-icon]');if(slot)slot.classList.add('nh7-icon517-social-slot')});
  scope.querySelectorAll('.nh7p500 [data-p500-bless]').forEach(b=>{b.classList.add('nh7-icon517-bless');const slot=b.querySelector(':scope > span');if(slot&&slot.dataset.nh7Icon517!=='blessing'){slot.dataset.nh7Icon517='blessing';slot.classList.add('nh7-icon517-social-slot');slot.replaceChildren(svg('blessing'))}});
- scope.querySelectorAll('.nh7p500 [data-play]').forEach(b=>{
-   const t=String(b.textContent||'');b.dataset.nh7PlayState517=/❚|Ⅱ|pause/i.test(t)?'pause':'play';b.classList.add('nh7-icon517-dynamic-play');
- });
+ scope.querySelectorAll('.nh7p500 [data-play]').forEach(syncDynamicPlay);
 }
 function decorateBible(scope=document){
  scope.querySelectorAll('[data-bookmark]').forEach(b=>{const t=String(b.textContent||'');b.classList.toggle('is-active',t.includes('★'));setLeadingIcon(b,'favorite',/^[★☆]\s*/)});
@@ -95,9 +99,7 @@ function decorateBible(scope=document){
 function decorateSchool(scope=document){
  scope.querySelectorAll('[data-inline-back]').forEach(b=>setIconOnly(b,'rewind15'));
  scope.querySelectorAll('[data-inline-forward]').forEach(b=>setIconOnly(b,'forward30'));
- scope.querySelectorAll('[data-inline-play]').forEach(b=>{
-   const t=String(b.textContent||'');b.dataset.nh7PlayState517=/❚|Ⅱ|pause/i.test(t)?'pause':'play';b.classList.add('nh7-icon517-dynamic-play');
- });
+ scope.querySelectorAll('[data-inline-play]').forEach(syncDynamicPlay);
  scope.querySelectorAll('[data-offline-download]').forEach(b=>setLeadingIcon(b,'download',/^[⇩↓]\s*/));
  scope.querySelectorAll('#submitSchoolAssignment').forEach(b=>setLeadingIcon(b,'assignment'));
  scope.querySelectorAll('#submitSchoolExam').forEach(b=>setLeadingIcon(b,'exam'));
@@ -117,8 +119,18 @@ function schedule(){
  requestAnimationFrame(()=>{pending=false;decorate(document)});
 }
 document.addEventListener('DOMContentLoaded',schedule,{once:true});
-new MutationObserver(schedule).observe(document.documentElement,{childList:true,subtree:true,characterData:true});
+new MutationObserver(records=>{
+ let structural=false;
+ for(const record of records){
+   if(record.type==='childList'&&record.addedNodes?.length)structural=true;
+   if(record.type==='characterData'){
+     const button=record.target?.parentElement?.closest?.('.nh7p500 [data-play],[data-inline-play]');
+     if(button)syncDynamicPlay(button);
+   }
+ }
+ if(structural)schedule();
+}).observe(document.documentElement,{childList:true,subtree:true,characterData:true});
 window.addEventListener('nh7:ui-preferences',schedule);
-window.NH7IconsV517={VERSION:'5.1.9',decorate,svg};
+window.NH7IconsV517={VERSION:'5.2.4',decorate,svg};
 schedule();
 })();

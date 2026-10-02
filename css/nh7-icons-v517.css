@@ -460,3 +460,18 @@ html[data-nh7-ui-style514="pill"] .nh7p500-tools button{
   font-size:17px!important;font-weight:950!important;line-height:1!important;
   color:#16a34a!important;background:transparent!important;border:0!important;box-shadow:none!important
 }
+
+
+/* v525 — favorite star has a real OFF/ON visual state. */
+.nh7p500 [data-favorite].nh7-icon517-favorite>[data-favorite-icon]::before{
+  background:currentColor!important;
+  -webkit-mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='1.9' stroke-linejoin='round' d='m12 3.8 2.5 5.1 5.6.8-4.05 3.95.96 5.57L12 16.6l-5.01 2.62.96-5.57L3.9 9.7l5.6-.8L12 3.8Z'/%3E%3C/svg%3E")!important;
+  mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='1.9' stroke-linejoin='round' d='m12 3.8 2.5 5.1 5.6.8-4.05 3.95.96 5.57L12 16.6l-5.01 2.62.96-5.57L3.9 9.7l5.6-.8L12 3.8Z'/%3E%3C/svg%3E")!important;
+  transition:transform .14s ease,color .14s ease!important;
+}
+.nh7p500 [data-favorite].on>[data-favorite-icon]::before{
+  background:#d97706!important;
+  -webkit-mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='m12 3.8 2.5 5.1 5.6.8-4.05 3.95.96 5.57L12 16.6l-5.01 2.62.96-5.57L3.9 9.7l5.6-.8L12 3.8Z'/%3E%3C/svg%3E")!important;
+  mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='m12 3.8 2.5 5.1 5.6.8-4.05 3.95.96 5.57L12 16.6l-5.01 2.62.96-5.57L3.9 9.7l5.6-.8L12 3.8Z'/%3E%3C/svg%3E")!important;
+  transform:scale(1.08)
+}
