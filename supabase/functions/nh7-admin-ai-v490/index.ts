@@ -1,9 +1,10 @@
 // New Hope 7 v4.9.0 — admin-only AI helper for translation and Q&A drafts.
-const VERSION='4.9.0';
+const VERSION='4.9.2';
 const SUPABASE_URL=Deno.env.get('SUPABASE_URL')!;
 const SERVICE_KEY=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const OPENAI_KEY=(Deno.env.get('OPENAI_API_KEY')||'').trim();
 const MODEL=(Deno.env.get('OPENAI_ADMIN_MODEL')||'gpt-5.6-luna').trim();
+const IMAGE_MODEL=(Deno.env.get('OPENAI_IMAGE_MODEL')||'gpt-image-2').trim();
 const CORS={
   'Access-Control-Allow-Origin':'*',
   'Access-Control-Allow-Headers':'authorization, apikey, content-type',
@@ -107,6 +108,55 @@ async function draftAnswer(question:string,questionLanguage:Lang,answerLanguage:
   if(!answer)throw Object.assign(new Error('AI draft was empty.'),{code:'EMPTY_DRAFT',status:502});
   return{answer,model};
 }
+async function generateSermonCover(body:any){
+  if(!OPENAI_KEY)throw Object.assign(new Error('AI image provider is not configured on the server.'),{code:'PROVIDER_NOT_CONFIGURED',status:503});
+  const titleEn=clean(body?.title_en,500);
+  const titleFa=clean(body?.title_fa,500);
+  const titleHr=clean(body?.title_hr,500);
+  const category=clean(body?.category,300);
+  const description=clean(body?.description,1400);
+  const variation=Math.max(0,Math.min(20,Number(body?.variation||0)||0));
+  const theme=titleEn||titleFa||titleHr;
+  if(!theme)throw Object.assign(new Error('A sermon title is required.'),{code:'EMPTY_TITLE',status:400});
+  const prompt=[
+    'Create a premium square 1:1 Christian sermon-cover BACKGROUND artwork for New Hope 7.',
+    'This is background art only. Do NOT render any words, letters, numbers, typography, captions, logos, watermarks, frames, borders, mockups, or UI elements.',
+    'The final image must be full-bleed edge-to-edge with no white margins, no blurred sidebars, no inset poster and no empty border.',
+    'Use a cinematic, reverent, modern church aesthetic with rich natural light, elegant depth, realistic premium photography or refined cinematic realism.',
+    'Warm gold, deep navy, soft teal, ivory and natural church lighting may be used when appropriate, but vary the scene according to the sermon subject.',
+    'Make the visual concept meaningfully specific to the sermon topic rather than generic religious imagery.',
+    'Keep the upper-center and central area visually readable enough that exact branding and title text can later be overlaid by the app.',
+    'Avoid recognizable copyrighted brands or third-party logos. People, if present, should not be identifiable public figures.',
+    'Sermon title/theme: '+theme,
+    titleFa?'Persian title reference: '+titleFa:'',
+    titleHr?'Croatian title reference: '+titleHr:'',
+    category?'Category: '+category:'',
+    description?'Context: '+description:'',
+    variation?('Create a clearly different alternative composition. Variation request #'+variation+'.'):'Create the strongest first composition.'
+  ].filter(Boolean).join('\n');
+
+  const response=await fetch('https://api.openai.com/v1/images/generations',{
+    method:'POST',
+    headers:{Authorization:`Bearer ${OPENAI_KEY}`,'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:IMAGE_MODEL,
+      prompt,
+      size:'1024x1024',
+      quality:'medium',
+      output_format:'webp',
+      background:'opaque',
+      n:1
+    })
+  });
+  const raw=await response.text();let data:any={};
+  try{data=raw?JSON.parse(raw):{}}catch{data={raw}}
+  if(!response.ok)throw Object.assign(new Error(data?.error?.message||raw||`OpenAI image ${response.status}`),{code:'IMAGE_PROVIDER_ERROR',status:502});
+  const image=Array.isArray(data?.data)?data.data[0]:null;
+  const b64=clean(image?.b64_json,8_000_000);
+  if(!b64)throw Object.assign(new Error('AI image generation returned no image.'),{code:'EMPTY_IMAGE',status:502});
+  return{image_base64:b64,mime_type:'image/webp',model:data?.model||IMAGE_MODEL};
+}
+
 Deno.serve(async(req:Request)=>{
   if(req.method==='OPTIONS')return new Response('ok',{headers:CORS});
   if(req.method!=='POST')return json({ok:false,error:'Method not allowed'},405);
@@ -117,7 +167,11 @@ Deno.serve(async(req:Request)=>{
     if(!admin)return json({ok:false,code:'ADMIN_REQUIRED',error:'Admin access required'},403);
     const body=await req.json().catch(()=>({}));
     const action=clean(body?.action||'translate',40);
-    if(action==='status')return json({ok:true,configured:Boolean(OPENAI_KEY),provider:OPENAI_KEY?'openai':null,model:MODEL,version:VERSION});
+    if(action==='status')return json({ok:true,configured:Boolean(OPENAI_KEY),provider:OPENAI_KEY?'openai':null,model:MODEL,image_model:IMAGE_MODEL,version:VERSION});
+    if(action==='generate_sermon_cover'){
+      const out=await generateSermonCover(body);
+      return json({ok:true,image_base64:out.image_base64,mime_type:out.mime_type,model:out.model,version:VERSION});
+    }
     if(action==='draft_answer'){
       const question=clean(body?.question,12000);
       if(!question)return json({ok:false,code:'EMPTY_QUESTION',error:'Question is required'},400);
