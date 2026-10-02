@@ -48,7 +48,8 @@ jobs:
           grep -q "function writeNoteDraft" js/nh7-media-player-v500.js
           grep -q "function flushInlineNoteDraft" js/nh7-media-player-v500.js
           grep -q "function scheduleInlineNoteDraft" js/nh7-media-player-v500.js
-          grep -q "setTimeout(()=>flushInlineNoteDraft(true),300)" js/nh7-media-player-v500.js
+          grep -q "if(id&&input)writeNoteDraft(id,input.value,false)" js/nh7-media-player-v500.js
+          grep -q "Draft auto-saved" js/nh7-media-player-v500.js
           grep -q "pagehide.*flushInlineNoteDraft" js/nh7-media-player-v500.js
           grep -q "document.hidden.*flushInlineNoteDraft" js/nh7-media-player-v500.js
 
