@@ -1,0 +1,68 @@
+name: QA Appearance Personalization v514 Candidate
+
+on:
+  push:
+    branches:
+      - candidate/appearance-personalization-v514-20261002
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scope
+        run: |
+          set -e
+          base=968eb672cdd45f3af537cd1ed835fef4edf940e0
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed
+          printf '%s\n'             '.github/workflows/qa-appearance-personalization-v514.yml'             'css/nh7-appearance-personalization-v514.css'             'index.html'             'js/nh7-appearance-personalization-v514.js'             'js/nh7-fonts-v454.js'             'js/nh7-theme-studio-v453.js'             'service-worker.js'             'sw-offline-v329.js'             'sw-release-core-v403.js' | sort > /tmp/allowed
+          diff -u /tmp/allowed /tmp/changed
+
+      - name: Syntax
+        run: |
+          node --check js/nh7-appearance-personalization-v514.js
+          node --check js/nh7-fonts-v454.js
+          node --check js/nh7-theme-studio-v453.js
+          node --check service-worker.js
+          node --check sw-offline-v329.js
+          node --check sw-release-core-v403.js
+
+      - name: Appearance checks
+        run: |
+          grep -q "style:'classic'" js/nh7-appearance-personalization-v514.js
+          grep -q "themeId:'current'" js/nh7-appearance-personalization-v514.js
+          grep -q "ظاهر و شخصی‌سازی" js/nh7-appearance-personalization-v514.js
+          grep -q "nh7AppearanceLauncher514" js/nh7-appearance-personalization-v514.js
+          grep -q "oledBlack" js/nh7-appearance-personalization-v514.js
+          grep -q "purpleNight" js/nh7-appearance-personalization-v514.js
+          grep -q "nh7-book-article" css/nh7-appearance-personalization-v514.css
+
+      - name: Font checks
+        run: |
+          grep -q "geeza:{stack" js/nh7-fonts-v454.js
+          grep -q "damascus:{stack" js/nh7-fonts-v454.js
+          grep -q "kohinoor:{stack" js/nh7-fonts-v454.js
+          grep -q "courier:{stack" js/nh7-fonts-v454.js
+          grep -q "avenir:" js/nh7-theme-studio-v453.js
+          grep -q "kohinoor:" js/nh7-theme-studio-v453.js
+
+      - name: Wiring checks
+        run: |
+          grep -q 'css/nh7-appearance-personalization-v514.css?v=5.1.4' index.html
+          grep -q 'js/nh7-appearance-personalization-v514.js?v=5.1.4' index.html
+          grep -q "nh7-release-core-v514-appearance-personalization" sw-release-core-v403.js
+          grep -q "v2.3.9.52-appearance514" sw-offline-v329.js
+          grep -q "5.1.4-appearance514" service-worker.js
+
+      - name: Unrelated runtime unchanged
+        run: |
+          set -e
+          base=968eb672cdd45f3af537cd1ed835fef4edf940e0
+          git diff --exit-code "$base"...HEAD --             js/app.js js/nh7-media-player-v500.js js/nh7-audio-classic-v484.js
