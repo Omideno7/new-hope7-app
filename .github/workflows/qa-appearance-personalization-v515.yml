@@ -1,0 +1,75 @@
+name: QA Appearance Personalization v515 Preview
+
+on:
+  push:
+    branches:
+      - fix/appearance-personalization-v515-preview-20261002
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scope
+        run: |
+          set -e
+          base=968eb672cdd45f3af537cd1ed835fef4edf940e0
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed
+          printf '%s\n'             '.github/workflows/qa-appearance-personalization-v515.yml'             'css/nh7-appearance-personalization-v514.css'             'index.html'             'js/nh7-appearance-personalization-v514.js'             'js/nh7-fonts-v454.js'             'js/nh7-theme-studio-v453.js'             'service-worker.js'             'sw-offline-v329.js'             'sw-release-core-v403.js' | sort > /tmp/allowed
+          diff -u /tmp/allowed /tmp/changed
+
+      - name: Syntax
+        run: |
+          node --check js/nh7-appearance-personalization-v514.js
+          node --check js/nh7-fonts-v454.js
+          node --check js/nh7-theme-studio-v453.js
+          node --check service-worker.js
+          node --check sw-offline-v329.js
+          node --check sw-release-core-v403.js
+
+      - name: Verify exact approved font sets
+        run: |
+          grep -q "notokufi" js/nh7-fonts-v454.js
+          grep -q "lalezar" js/nh7-fonts-v454.js
+          grep -q "reemkufi" js/nh7-fonts-v454.js
+          grep -q "baloo" js/nh7-fonts-v454.js
+          grep -q "roboto" js/nh7-fonts-v454.js
+          grep -q "montserrat" js/nh7-fonts-v454.js
+          grep -q "playfair" js/nh7-fonts-v454.js
+          grep -q "ubuntu" js/nh7-fonts-v454.js
+          grep -q "fonts.googleapis.com/css2?family=Baloo" index.html
+          grep -q "FA_FONT_IDS=\['vazirmatn','naskh','notosansarabic','notokufi','amiri','lalezar','changa','reemkufi','cairo','tajawal','baloo','markazi'\]" js/nh7-appearance-personalization-v514.js
+          grep -q "LATIN_FONT_IDS=\['inter','roboto','opensans','montserrat','poppins','nunito','lora','merriweather','playfair','sourcesans','raleway','ubuntu'\]" js/nh7-appearance-personalization-v514.js
+
+      - name: Verify style selection reaches real app and player
+        run: |
+          for style in tactile glass minimal material outline pill; do
+            grep -q "data-nh7-ui-style514=\"$style\"" css/nh7-appearance-personalization-v514.css
+          done
+          grep -q ".nh7p500-tools button" css/nh7-appearance-personalization-v514.css
+          grep -q ".nh7p500-main button" css/nh7-appearance-personalization-v514.css
+          grep -q "#view button" css/nh7-appearance-personalization-v514.css
+          grep -q "style:'classic'" js/nh7-appearance-personalization-v514.js
+          grep -q "themeId:'current'" js/nh7-appearance-personalization-v514.js
+
+      - name: Verify reader and cache versions
+        run: |
+          grep -q "nh7-book-article" css/nh7-appearance-personalization-v514.css
+          grep -q "data-nh7-reader-mode514=\"night\"" css/nh7-appearance-personalization-v514.css
+          grep -q "nh7-release-core-v515-appearance-personalization" sw-release-core-v403.js
+          grep -q "v2.3.9.53-appearance515" sw-offline-v329.js
+          grep -q "5.1.5-appearance515" service-worker.js
+          grep -q "5.1.5" index.html
+
+      - name: Unrelated runtime unchanged
+        run: |
+          set -e
+          base=968eb672cdd45f3af537cd1ed835fef4edf940e0
+          git diff --exit-code "$base"...HEAD --             js/app.js js/nh7-media-player-v500.js js/nh7-audio-classic-v484.js             'js/nh7-school-*' 'js/nh7-admin-*' 'supabase/**' 'data/**'
