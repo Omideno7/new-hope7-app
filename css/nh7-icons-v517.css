@@ -432,3 +432,11 @@ html[data-nh7-ui-style514="pill"] .nh7p500-tools button{
   .nh7p500-tools{grid-template-columns:repeat(4,61px)!important;column-gap:6px!important;row-gap:5px!important}
   .nh7p500-tools button{width:61px!important;min-width:61px!important;max-width:61px!important}
 }
+
+
+/* v519 transport graphics: balanced semantic colors and centered faces. */
+.nh7p500-main [data-prev]{color:#2563eb!important;background:color-mix(in srgb,#2563eb 8%,transparent)!important}
+.nh7p500-main [data-back]{color:#0f8a8a!important;background:color-mix(in srgb,#0f8a8a 8%,transparent)!important}
+.nh7p500-main [data-forward]{color:#0891b2!important;background:color-mix(in srgb,#0891b2 8%,transparent)!important}
+.nh7p500-main [data-next]{color:#4f46e5!important;background:color-mix(in srgb,#4f46e5 8%,transparent)!important}
+.nh7p500-main .big{color:transparent!important;background:var(--nh7p-accent,var(--accent,#1858a4))!important}
