@@ -21,7 +21,7 @@ const mediaId=item=>String(item?.id||item?.analytics_id||'');
 const isSermon=item=>UUID.test(mediaId(item))&&!mediaId(item).startsWith('school-');
 const titleFor=item=>String(item?.['title_'+lang()]||item?.title_fa||item?.title_en||item?.title_hr||item?.title||L('فایل صوتی','Audio','Audio'));
 const artistFor=item=>String(item?.speaker||item?.author||item?.artist||L('کلیسای امیدنو۷','New Hope 7 Church','New Hope 7 Church'));
-const artworkFor=item=>{const raw=String(item?.cover_url||item?.artwork_url||'assets/new-hope7-logo-512.png').trim();try{return new URL(raw,location.href).href}catch(_){return new URL('assets/new-hope7-logo-512.png',location.href).href}};
+const artworkFor=item=>{const latest=window.__sermonMap?.[mediaId(item)]||item;const raw=String(latest?.cover_url||latest?.artwork_url||item?.cover_url||item?.artwork_url||'assets/new-hope7-logo-512.png').trim();try{return new URL(raw,location.href).href}catch(_){return new URL('assets/new-hope7-logo-512.png',location.href).href}};
 const fmt=value=>{const sec=Math.max(0,Number(value)||0),h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=Math.floor(sec%60);return h?`${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`:`${m}:${String(s).padStart(2,'0')}`};
 
 function addStyle(){
