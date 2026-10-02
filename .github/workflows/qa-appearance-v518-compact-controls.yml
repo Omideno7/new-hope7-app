@@ -1,0 +1,56 @@
+name: QA Appearance v518 Compact Controls
+
+on:
+  push:
+    branches:
+      - fix/appearance-personalization-v518-compact-controls-20261002
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Syntax
+        run: |
+          node --check js/nh7-appearance-personalization-v514.js
+          node --check js/nh7-fonts-v454.js
+          node --check js/nh7-icons-v517.js
+          node --check js/nh7-theme-studio-v453.js
+
+      - name: Verify compact player sizing
+        run: |
+          grep -q "Modern SVG Icons v5.1.8" css/nh7-icons-v517.css
+          grep -q "width:34px!important" css/nh7-icons-v517.css
+          grep -q "width:46px!important" css/nh7-icons-v517.css
+          grep -q "min-height:38px!important" css/nh7-icons-v517.css
+          grep -q "width:28px!important" css/nh7-icons-v517.css
+          grep -q "font-size:9px!important" css/nh7-icons-v517.css
+          grep -q "Player typography is deliberately decoupled" css/nh7-icons-v517.css
+
+      - name: Verify all styles keep compact tool buttons
+        run: |
+          for style in tactile glass minimal material outline pill; do
+            grep -q "data-nh7-ui-style514=\"$style\"" css/nh7-icons-v517.css
+          done
+
+      - name: Verify v518 wiring
+        run: |
+          grep -q 'nh7-icons-v517.css?v=5.1.8' index.html
+          grep -q 'nh7-icons-v517.js?v=5.1.8' index.html
+          grep -q 'nh7-appearance-personalization-v514.js?v=5.1.8' index.html
+          grep -q "VERSION:'5.1.8'" js/nh7-appearance-personalization-v514.js
+          grep -q "nh7-release-core-v518-appearance-compact-controls" sw-release-core-v403.js
+          grep -q "v2.3.9.56-appearance518" sw-offline-v329.js
+
+      - name: Protect functional runtime
+        run: |
+          set -e
+          base=22c73e394d9e6ff4ed1a5b5354f7ab643a143a48
+          git diff --exit-code "$base"...HEAD --             js/app.js js/nh7-media-player-v500.js js/nh7-audio-classic-v484.js             js/nh7-icons-v517.js js/nh7-fonts-v454.js js/nh7-theme-studio-v453.js             'js/nh7-school-*' 'js/nh7-admin-*' 'supabase/**' 'data/**'
