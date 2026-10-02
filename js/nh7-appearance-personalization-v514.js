@@ -1,4 +1,4 @@
-/* New Hope 7 — Appearance & Personalization v5.1.6
+/* New Hope 7 — Appearance & Personalization v5.1.7
  * Additive local-only appearance controller. No Supabase/account/network writes.
  * Existing users stay on Classic/current appearance until they explicitly opt in.
  */
@@ -45,9 +45,10 @@ const STYLE_LABELS={
  outline:['خطی تمیز','Outline Clean','Outline Clean'],
  pill:['گرد نرم','Soft Pill','Soft Pill']
 };
-const FA_FONT_IDS=['vazirmatn','naskh','notosansarabic','notokufi','amiri','lalezar','changa','reemkufi','cairo','tajawal','baloo','markazi'];
-const LATIN_FONT_IDS=['inter','roboto','opensans','montserrat','poppins','nunito','lora','merriweather','playfair','sourcesans','raleway','ubuntu'];
+const FA_FONT_IDS=['system','vazirmatn','naskh','notosansarabic','notokufi','amiri','lalezar','changa','reemkufi','cairo','tajawal','baloo','markazi'];
+const LATIN_FONT_IDS=['system','inter','roboto','opensans','montserrat','poppins','nunito','lora','merriweather','playfair','sourcesans','raleway','ubuntu'];
 const FONT_NAMES={
+ system:['فونت خود دستگاه','Device font','Font uređaja'],
  vazirmatn:['وزیرمتن','Vazirmatn','Vazirmatn'],naskh:['Noto Naskh Arabic','Noto Naskh Arabic','Noto Naskh Arabic'],notosansarabic:['Noto Sans Arabic','Noto Sans Arabic','Noto Sans Arabic'],notokufi:['Noto Kufi Arabic','Noto Kufi Arabic','Noto Kufi Arabic'],amiri:['Amiri','Amiri','Amiri'],lalezar:['Lalezar','Lalezar','Lalezar'],changa:['Changa','Changa','Changa'],reemkufi:['Reem Kufi','Reem Kufi','Reem Kufi'],cairo:['Cairo','Cairo','Cairo'],tajawal:['Tajawal','Tajawal','Tajawal'],baloo:['Baloo Bhaijaan 2','Baloo Bhaijaan 2','Baloo Bhaijaan 2'],markazi:['Markazi Text','Markazi Text','Markazi Text'],
  inter:['Inter','Inter','Inter'],roboto:['Roboto','Roboto','Roboto'],opensans:['Open Sans','Open Sans','Open Sans'],montserrat:['Montserrat','Montserrat','Montserrat'],poppins:['Poppins','Poppins','Poppins'],nunito:['Nunito Sans','Nunito Sans','Nunito Sans'],lora:['Lora','Lora','Lora'],merriweather:['Merriweather','Merriweather','Merriweather'],playfair:['Playfair Display','Playfair Display','Playfair Display'],sourcesans:['Source Sans 3','Source Sans 3','Source Sans 3'],raleway:['Raleway','Raleway','Raleway'],ubuntu:['Ubuntu','Ubuntu','Ubuntu']
 };
@@ -109,8 +110,8 @@ function applyTheme(){
 }
 function applyFont(){
  const api=window.NH7FontsV454;if(!api)return;
- if(!FA_FONT_IDS.includes(state.faFont))state.faFont='vazirmatn';
- if(!LATIN_FONT_IDS.includes(state.latinFont))state.latinFont='inter';
+ if(!FA_FONT_IDS.includes(state.faFont))state.faFont='system';
+ if(!LATIN_FONT_IDS.includes(state.latinFont))state.latinFont='system';
  applyFontVisual();
  if(api.fonts?.[state.faFont])Promise.resolve(api.choose('fa',state.faFont)).finally(applyFontVisual);
  if(api.fonts?.[state.latinFont])Promise.resolve(api.choose('latin',state.latinFont)).finally(applyFontVisual);
@@ -245,8 +246,8 @@ function start(){
    const legacySize=Number(localStorage.getItem('nh7_ui_font_size_v425')||100);
    if(Number.isFinite(legacySize))state.fontSize=Math.max(80,Math.min(140,legacySize));
  }
- if(!FA_FONT_IDS.includes(state.faFont))state.faFont='vazirmatn';
- if(!LATIN_FONT_IDS.includes(state.latinFont))state.latinFont='inter';
+ if(!FA_FONT_IDS.includes(state.faFont))state.faFont='system';
+ if(!LATIN_FONT_IDS.includes(state.latinFont))state.latinFont='system';
  applyStyle();applySize();applyReader();applyFontVisual();
  if(state.mode!=='manual'||state.themeId!=='current')applyTheme();
  mount();
@@ -257,6 +258,6 @@ function start(){
  try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(state.mode==='system'){lastThemeSig='';applyTheme()}})}catch(_){}
  setInterval(()=>{if(state.mode==='auto'){lastThemeSig='';applyTheme()}},60000);
 }
-window.NH7AppearancePersonalizationV514={VERSION:'5.1.6',KEY,get:()=>JSON.parse(JSON.stringify(state)),apply:applyAll,open:openDialog,reset:resetOriginal};
+window.NH7AppearancePersonalizationV514={VERSION:'5.1.7',KEY,get:()=>JSON.parse(JSON.stringify(state)),apply:applyAll,open:openDialog,reset:resetOriginal};
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start,{once:true}):start();
 })();
