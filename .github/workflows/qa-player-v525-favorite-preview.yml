@@ -1,0 +1,76 @@
+name: QA Player v525 Favorite + Audio Card Preview
+
+on:
+  push:
+    branches:
+      - fix/player-v525-favorite-toggle-audio-card-preview-20261002
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify scope
+        run: |
+          set -euo pipefail
+          base=dc07033d707edf748c2d9db28128546ce0de5eb5
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed
+          allowed=(
+            '.github/workflows/qa-player-v525-favorite-preview.yml'
+            'audio-card-style-v525-preview.html'
+            'css/nh7-icons-v517.css'
+            'js/nh7-media-player-v500.js'
+          )
+          printf '%s\n' "${allowed[@]}" | sort > /tmp/allowed
+          diff -u /tmp/allowed /tmp/changed
+
+      - name: JavaScript syntax
+        run: |
+          node --check js/nh7-media-player-v500.js
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('audio-card-style-v525-preview.html').read_text()
+          assert '<script>' in s and '</script>' in s
+          print('preview html present')
+          PY
+
+      - name: Verify favorite toggle behavior
+        run: |
+          set -euo pipefail
+          grep -q "const VERSION='5.2.5-favorite-preview'" js/nh7-media-player-v500.js
+          grep -q "const set=readFavorites(),next=!set.has(id)" js/nh7-media-player-v500.js
+          grep -q "next?set.add(id):set.delete(id)" js/nh7-media-player-v500.js
+          grep -q "NH7_AUDIO_LIBRARY_V500_PATCH" js/nh7-media-player-v500.js
+          grep -q "aria-pressed" js/nh7-media-player-v500.js
+          grep -q "حذف از علاقه‌مندی‌ها" js/nh7-media-player-v500.js
+
+      - name: Verify hollow and filled star states
+        run: |
+          set -euo pipefail
+          grep -q "favorite star has a real OFF/ON visual state" css/nh7-icons-v517.css
+          grep -q "stroke-width='1.9'" css/nh7-icons-v517.css
+          grep -q "\[data-favorite\].on>\[data-favorite-icon\]::before" css/nh7-icons-v517.css
+          grep -q "background:#d97706!important" css/nh7-icons-v517.css
+
+      - name: Verify three isolated design models
+        run: |
+          set -euo pipefail
+          grep -q "A — Soft 3D Badge" audio-card-style-v525-preview.html
+          grep -q "B — Soft Glass Card" audio-card-style-v525-preview.html
+          grep -q "C — Minimal Premium Frame" audio-card-style-v525-preview.html
+          grep -q "data-theme=\"light\"" audio-card-style-v525-preview.html
+          grep -q "data-theme=\"night\"" audio-card-style-v525-preview.html
+          grep -q "فقط Preview است" audio-card-style-v525-preview.html
+
+      - name: Protect unrelated runtime
+        run: |
+          set -euo pipefail
+          base=dc07033d707edf748c2d9db28128546ce0de5eb5
+          git diff --exit-code "$base"...HEAD --             js/app.js js/nh7-audio-classic-v484.js js/nh7-audio-library-v500.js             js/nh7-icons-v517.js js/nh7-fonts-v454.js js/nh7-theme-studio-v453.js             css/nh7-appearance-personalization-v514.css css/nh7-player-volume-v521.css             service-worker.js sw-offline-v329.js sw-release-core-v403.js             'js/nh7-school-*' 'js/nh7-admin-*' 'supabase/**' 'data/**'
