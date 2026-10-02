@@ -1,4 +1,4 @@
-/* New Hope 7 — Modern Icon Adapter v5.1.7
+/* New Hope 7 — Modern Icon Adapter v5.1.9
  * Visual-only SVG icon layer. Does not change navigation, audio, school, Bible,
  * auth, storage, network, Supabase, or user data logic.
  */
@@ -18,6 +18,9 @@ const ICONS={
  bible:'<path d="M5.2 5.6c2.8-.6 5.1.1 6.8 1.9v11c-1.7-1.8-4-2.5-6.8-1.9v-11Z"/><path d="M18.8 5.6c-2.8-.6-5.1.1-6.8 1.9v11c1.7-1.8 4-2.5 6.8-1.9v-11Z"/>',
  notes:'<path d="M6.2 4.8h8.4l3.2 3.2v11.2H6.2V4.8Z"/><path d="M14.6 4.8V8h3.2"/><path d="M8.7 11.2h6.5"/><path d="M8.7 14.2h5.1"/><path d="m14.8 18 3.4-3.4 1.2 1.2-3.4 3.4-1.8.5.6-1.7Z"/>',
  favorite:'<path d="m12 4.2 2.3 4.7 5.2.8-3.8 3.7.9 5.2-4.6-2.4-4.6 2.4.9-5.2-3.8-3.7 5.2-.8L12 4.2Z"/>',
+ blessing:'<path d="M12 20.1s-7-4.3-7-9.3A4.1 4.1 0 0 1 12 8a4.1 4.1 0 0 1 7 2.8c0 5-7 9.3-7 9.3Z"/><path d="M12 4.2v4"/><path d="M10 6.2h4"/>',
+ volume:'<path d="M5 10h3l4-3.2v10.4L8 14H5v-4Z"/><path d="M15 9.2c1.5 1.5 1.5 4.1 0 5.6"/><path d="M17.4 6.8c3 3 3 7.4 0 10.4"/>',
+ heart:'<path d="M12 20.1s-7-4.3-7-9.3A4.1 4.1 0 0 1 12 8a4.1 4.1 0 0 1 7 2.8c0 5-7 9.3-7 9.3Z"/>',
  download:'<path d="M12 4.5v9.2"/><path d="m8.5 10.5 3.5 3.5 3.5-3.5"/><path d="M5.2 16.2v2.5h13.6v-2.5"/>',
  check:'<path d="m6.2 12.3 3.5 3.5 8.2-8.2"/>',
  share:'<circle cx="6.2" cy="12" r="2"/><circle cx="17.8" cy="6.2" r="2"/><circle cx="17.8" cy="17.8" r="2"/><path d="m8 11 7.8-3.8"/><path d="m8 13 7.8 3.8"/>',
@@ -69,11 +72,14 @@ function decoratePlayer(scope=document){
    if(!b.querySelector(':scope > .nh7-icon517'))b.prepend(iconSpan('speed'));
  });
  scope.querySelectorAll('.nh7p500 [data-p500-bible]').forEach(b=>setFirstSlot(b,'bible'));
+ scope.querySelectorAll('.nh7p500 [data-mute]').forEach(b=>{b.classList.add('nh7-icon517-mute');const slot=b.querySelector('[data-mute-icon]');if(slot)slot.classList.add('nh7-icon517-slot-dynamic')});
  scope.querySelectorAll('.nh7p500 [data-note]').forEach(b=>setFirstSlot(b,'notes'));
  scope.querySelectorAll('.nh7p500 [data-download]').forEach(b=>setFirstSlot(b,'download'));
  scope.querySelectorAll('.nh7p500 [data-p500-share]').forEach(b=>setFirstSlot(b,'share'));
  scope.querySelectorAll('.nh7p500 [data-queue]').forEach(b=>setFirstSlot(b,'queue'));
  scope.querySelectorAll('.nh7p500 [data-favorite]').forEach(b=>b.classList.add('nh7-icon517-favorite'));
+ scope.querySelectorAll('.nh7p500 [data-p500-like]').forEach(b=>{b.classList.add('nh7-icon517-like');const slot=b.querySelector('[data-like-icon]');if(slot)slot.classList.add('nh7-icon517-social-slot')});
+ scope.querySelectorAll('.nh7p500 [data-p500-bless]').forEach(b=>{b.classList.add('nh7-icon517-bless');const slot=b.querySelector(':scope > span');if(slot&&slot.dataset.nh7Icon517!=='blessing'){slot.dataset.nh7Icon517='blessing';slot.classList.add('nh7-icon517-social-slot');slot.replaceChildren(svg('blessing'))}});
  scope.querySelectorAll('.nh7p500 [data-play]').forEach(b=>{
    const t=String(b.textContent||'');b.dataset.nh7PlayState517=/❚|Ⅱ|pause/i.test(t)?'pause':'play';b.classList.add('nh7-icon517-dynamic-play');
  });
@@ -99,7 +105,13 @@ function decorateSchool(scope=document){
  scope.querySelectorAll('#completeSchoolLesson').forEach(b=>setLeadingIcon(b,'check'));
 }
 let pending=false;
-function decorate(scope=document){decoratePlayer(scope);decorateBible(scope);decorateSchool(scope)}
+function decoratePreview(scope=document){
+ scope.querySelectorAll('[data-ap514-preview-icon]').forEach(n=>{
+   const name=n.dataset.ap514PreviewIcon;if(!name||n.dataset.nh7Icon517===name)return;
+   n.dataset.nh7Icon517=name;n.replaceChildren(svg(name));
+ });
+}
+function decorate(scope=document){decoratePlayer(scope);decorateBible(scope);decorateSchool(scope);decoratePreview(scope)}
 function schedule(){
  if(pending)return;pending=true;
  requestAnimationFrame(()=>{pending=false;decorate(document)});
@@ -107,6 +119,6 @@ function schedule(){
 document.addEventListener('DOMContentLoaded',schedule,{once:true});
 new MutationObserver(schedule).observe(document.documentElement,{childList:true,subtree:true,characterData:true});
 window.addEventListener('nh7:ui-preferences',schedule);
-window.NH7IconsV517={VERSION:'5.1.7',decorate,svg};
+window.NH7IconsV517={VERSION:'5.1.9',decorate,svg};
 schedule();
 })();
