@@ -1,0 +1,42 @@
+/* New Hope 7 — Player Volume UI v5.2.1
+ * App UI uses device/system volume buttons.
+ * Playback engine volume APIs remain intact for a future tested native bridge.
+ */
+
+/* Current cross-platform player: hide non-native volume controls. */
+.nh7p500 [data-mute],
+.nh7p500 [data-volume-row],
+.nh7p500 [data-volume-note]{
+  display:none!important;
+}
+
+/* Seven remaining quick actions: 4 on the first row, 3 centered on the second. */
+.nh7p500-tools{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  justify-content:center!important;
+  align-items:flex-start!important;
+  gap:6px 7px!important;
+  width:min(277px,100%)!important;
+  margin:10px auto 0!important;
+}
+.nh7p500-tools>button{
+  flex:0 0 64px!important;
+  width:64px!important;
+  min-width:64px!important;
+  max-width:64px!important;
+}
+
+/* Keep layout compact on smaller phones. */
+@media(max-width:390px){
+  .nh7p500-tools{
+    width:min(259px,100%)!important;
+    gap:5px 5px!important;
+  }
+  .nh7p500-tools>button{
+    flex-basis:61px!important;
+    width:61px!important;
+    min-width:61px!important;
+    max-width:61px!important;
+  }
+}
