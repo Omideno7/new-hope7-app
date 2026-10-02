@@ -440,3 +440,23 @@ html[data-nh7-ui-style514="pill"] .nh7p500-tools button{
 .nh7p500-main [data-forward]{color:#0891b2!important;background:color-mix(in srgb,#0891b2 8%,transparent)!important}
 .nh7p500-main [data-next]{color:#4f46e5!important;background:color-mix(in srgb,#4f46e5 8%,transparent)!important}
 .nh7p500-main .big{color:transparent!important;background:var(--nh7p-accent,var(--accent,#1858a4))!important}
+
+
+/* Integrated v523 download state: dynamic percentage/check overrides the idle SVG face. */
+.nh7p500-tools [data-download].is-downloading [data-download-icon]{
+  width:22px!important;height:22px!important;min-width:22px!important;min-height:22px!important;
+  display:grid!important;place-items:center!important;
+  font-size:9px!important;font-weight:900!important;line-height:1!important;
+  color:#0284c7!important;background:transparent!important;border:0!important;box-shadow:none!important
+}
+.nh7p500-tools [data-download].is-downloaded{
+  --nh7-tool-color:#16a34a!important;
+  background:color-mix(in srgb,#16a34a 9%,var(--nh7p-card,var(--card,#fff)))!important;
+  border-color:color-mix(in srgb,#16a34a 28%,transparent)!important
+}
+.nh7p500-tools [data-download].is-downloaded [data-download-icon]{
+  width:22px!important;height:22px!important;min-width:22px!important;min-height:22px!important;
+  display:grid!important;place-items:center!important;
+  font-size:17px!important;font-weight:950!important;line-height:1!important;
+  color:#16a34a!important;background:transparent!important;border:0!important;box-shadow:none!important
+}
