@@ -4,7 +4,7 @@ const SUPABASE_URL=Deno.env.get('SUPABASE_URL')!;
 const SERVICE_KEY=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const OPENAI_KEY=(Deno.env.get('OPENAI_API_KEY')||'').trim();
 const MODEL=(Deno.env.get('OPENAI_ADMIN_MODEL')||'gpt-5.6-luna').trim();
-const IMAGE_MODEL=(Deno.env.get('OPENAI_IMAGE_MODEL')||'gpt-image-2').trim();
+const IMAGE_MODEL=(Deno.env.get('OPENAI_IMAGE_MODEL')||'gpt-image-1.5').trim();
 const CORS={
   'Access-Control-Allow-Origin':'*',
   'Access-Control-Allow-Headers':'authorization, apikey, content-type',
