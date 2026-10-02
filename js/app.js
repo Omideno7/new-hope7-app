@@ -179,6 +179,20 @@ function normalizeSermonNoteTextV448(value){
     .replace(/\u00a0/g,' ')
     .replace(/\r\n?/g,'\n');
 }
+window.NH7_SERMON_NOTE_BRIDGE_V527={
+  read:(id)=>{
+    const raw=localStorage.getItem(sermonNoteKey(id))||'';
+    return normalizeSermonNoteTextV448(raw);
+  },
+  save:async(id,value)=>{
+    const clean=normalizeSermonNoteTextV448(value||'').slice(0,5000);
+    localStorage.setItem(sermonNoteKey(id),clean);
+    try{await saveNoteCloud('sermon_note_'+id,clean)}catch(e){console.warn(e)}
+    try{window.dispatchEvent(new CustomEvent('nh7:sermon-note-saved',{detail:{id:String(id),value:clean}}))}catch(e){}
+    return clean;
+  }
+};
+
 function openSermonNote(item){
   let modal=document.getElementById('sermonNoteModal');if(!modal){modal=document.createElement('div');modal.id='sermonNoteModal';modal.className='sermon-note-modal hidden';document.body.appendChild(modal)}
   const title=item['title_'+state.lang]||item.title_fa||item.title_en||tr('sermonNotes');

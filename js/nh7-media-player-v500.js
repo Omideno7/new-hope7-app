@@ -6,10 +6,11 @@
 if(window.__NH7_MEDIA_PLAYER_V500__)return;
 window.__NH7_MEDIA_PLAYER_V500__=true;
 
-const VERSION='5.2.5-favorite-preview';
+const VERSION='5.2.8-note-draft-autosave';
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const FAVORITES_KEY='nh7_audio_favorites_v500';
-let root=null,expanded=false,lastTrackKey='',syncTimer=0,seeking=false,seekPreview=0,lastRecentId='',iosVolumeVisual=1,downloadUi=null;
+const NOTE_DRAFT_PREFIX='nh7_sermon_note_draft_v528_';
+let root=null,expanded=false,lastTrackKey='',syncTimer=0,seeking=false,seekPreview=0,lastRecentId='',iosVolumeVisual=1,downloadUi=null,lastUiLang='',noteDraftTimer=0;
 
 const lang=()=>{const v=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return ['fa','en','hr'].includes(v)?v:'en'};
 const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
@@ -59,6 +60,12 @@ html[dir="rtl"] .nh7p500-queue-item,html[dir="rtl"] .nh7p500-related-card{text-a
 .nh7p500-social-overlay{position:fixed;inset:0;z-index:1985;display:grid;align-items:end}.nh7p500-social-overlay[hidden]{display:none!important}.nh7p500-social-backdrop{position:absolute;inset:0;border:0;background:#0009}.nh7p500-social-sheet{position:relative;z-index:1;max-height:min(72vh,620px);overflow:auto;border-radius:24px 24px 0 0;padding:14px 16px calc(18px + env(safe-area-inset-bottom,0px));background:var(--nh7p-card);color:var(--nh7p-text);border-top:1px solid var(--nh7p-line);box-shadow:0 -18px 50px #0006;--card:var(--nh7p-card);--ink:var(--nh7p-text);--line:var(--nh7p-line)}.nh7p500-social-sheet .nh7p500-panel-head{position:sticky;top:0;z-index:2;padding-bottom:8px;background:var(--nh7p-card)}.nh7p500-social-proxy>[data-nh7-social-v440]{display:grid!important;margin-top:0!important;padding-top:0!important;border-top:0!important}.nh7p500-social-proxy .nh7s440a{display:none!important}.nh7p500-social-proxy textarea{background:var(--nh7p-bg)!important;color:var(--nh7p-text)!important;border-color:var(--nh7p-line)!important}.nh7p500-social-proxy button{color:var(--nh7p-text)!important}.nh7p500-volume-note{display:none;margin-top:4px;text-align:center;font-size:.52rem;color:var(--nh7p-muted)}.nh7p500-volume-note.show{display:block}
 .nh7p500-toast{position:fixed;z-index:1999;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(8px);max-width:min(88vw,420px);padding:9px 13px;border-radius:999px;background:color-mix(in srgb,var(--nh7p-text) 92%,transparent);color:var(--nh7p-bg);font-size:.68rem;font-weight:800;box-shadow:0 9px 28px #0005;opacity:0;transition:.18s;pointer-events:none}.nh7p500-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .nh7p500-blessing{margin-top:14px;padding:13px;border:1px solid color-mix(in srgb,var(--nh7p-text) 14%,transparent);border-radius:17px;background:color-mix(in srgb,var(--nh7p-card) 72%,transparent)}.nh7p500-blessing[hidden]{display:none!important}.nh7p500-blessing p{margin:0 0 10px;font-size:.78rem;color:var(--nh7p-muted);line-height:1.55}.nh7p500-blessing button{width:100%;min-height:42px;border:0;border-radius:12px;background:var(--nh7p-text);color:var(--nh7p-bg);font-weight:850}
+.nh7p500-note{margin-top:10px;padding:11px;border:1px solid color-mix(in srgb,var(--nh7p-text) 14%,transparent);border-radius:15px;background:color-mix(in srgb,var(--nh7p-card) 78%,var(--nh7p-bg));box-shadow:0 8px 20px #00000012}.nh7p500-note[hidden]{display:none!important}
+.nh7p500-note-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.nh7p500-note-head strong{font-size:.76rem}.nh7p500-note-head button{width:27px;height:27px;border:0;border-radius:50%;padding:0;background:color-mix(in srgb,var(--nh7p-text) 8%,transparent);color:var(--nh7p-text)}
+.nh7p500-note-help{margin:5px 0 8px;font-size:.62rem;line-height:1.55;color:var(--nh7p-muted)}
+.nh7p500-note textarea{display:block;width:100%;min-height:118px;resize:vertical;border:1px solid var(--nh7p-line);border-radius:12px;background:color-mix(in srgb,var(--nh7p-bg) 74%,var(--nh7p-card));color:var(--nh7p-text);padding:10px 11px;font:inherit;font-size:.78rem;line-height:1.65;outline:none}.nh7p500-note textarea:focus{border-color:var(--nh7p-accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--nh7p-accent) 16%,transparent)}
+.nh7p500-note-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.nh7p500-note-actions button{min-height:38px;border-radius:11px;font-size:.68rem;font-weight:850}.nh7p500-note-pause{border:1px solid var(--nh7p-line);background:transparent;color:var(--nh7p-text)}.nh7p500-note-save{border:0;background:var(--nh7p-accent);color:#fff}.nh7p500-note-status{display:block;min-height:16px;margin-top:5px;font-size:.58rem;color:var(--nh7p-muted)}
+html[dir="rtl"] .nh7p500-note{text-align:right}html[dir="ltr"] .nh7p500-note{text-align:left}
 html.nh7p500-active body #view{padding-bottom:calc(128px + env(safe-area-inset-bottom,0px))!important}html.nh7p500-open,html.nh7p500-open body{overflow:hidden!important}
 html[dir="rtl"] .nh7p500-copy,html[dir="rtl"] .nh7p500-meta{text-align:right}
 @media(max-width:390px){.nh7p500{left:5px;right:5px}.nh7p500-actions button{width:27px}.nh7p500-cover{width:min(82vw,330px)}.nh7p500-sheet{padding-left:18px;padding-right:18px}.nh7p500-main button{width:38px;height:38px}.nh7p500-main .big{width:56px;height:56px}.nh7p500-tools{gap:5px}.nh7p500-tools button{min-height:44px}}
@@ -95,8 +102,8 @@ function ensure(){
         <img class="nh7p500-cover" data-cover alt="">
         <div class="nh7p500-meta"><strong data-full-title></strong><small data-artist></small></div>
         <div class="nh7p500-social">
-          <button type="button" data-p500-like><span data-like-icon>♡</span>${L('پسندیدن','Like','Sviđa mi se')} <b data-like-count></b></button>
-          <button type="button" data-p500-bless><span>💬</span>${L('برکت‌ها','Blessings','Blagoslovi')}</button>
+          <button type="button" data-p500-like><span data-like-icon>♡</span><span data-like-label>${L('پسندیدن','Like','Sviđa mi se')}</span> <b data-like-count></b></button>
+          <button type="button" data-p500-bless><span>💬</span><span data-bless-label>${L('برکت‌ها','Blessings','Blagoslovi')}</span></button>
         </div>
         <input class="nh7p500-seek" data-seek type="range" min="0" max="1000" value="0" aria-label="${L('موقعیت پخش','Playback position','Pozicija reprodukcije')}">
         <div class="nh7p500-time"><span data-now>0:00</span><span data-total>0:00</span></div>
@@ -109,23 +116,33 @@ function ensure(){
         </div>
         <div class="nh7p500-tools">
           <button type="button" data-speed aria-label="${L('سرعت پخش','Playback speed','Brzina reprodukcije')}"><span data-rate>1×</span></button>
-          <button type="button" data-p500-bible><span>📖</span><small>${L('کتاب مقدس','Bible','Biblija')}</small></button>
+          <button type="button" data-p500-bible><span>📖</span><small data-bible-label>${L('کتاب مقدس','Bible','Biblija')}</small></button>
           <button type="button" data-mute aria-pressed="false"><span data-mute-icon>🔊</span><small>${L('بی‌صدا','Mute','Isključi')}</small></button>
-          <button type="button" data-favorite><span data-favorite-icon>☆</span><small>${L('علاقه‌مندی','Favorite','Favorit')}</small></button>
-          <button type="button" data-note><span>📝</span><small>${L('یادداشت','Notes','Bilješke')}</small></button>
+          <button type="button" data-favorite><span data-favorite-icon>☆</span><small data-favorite-label>${L('علاقه‌مندی','Favorite','Favorit')}</small></button>
+          <button type="button" data-note><span>📝</span><small data-note-label>${L('یادداشت','Notes','Bilješke')}</small></button>
           <button type="button" data-download><span data-download-icon>⇩</span><small data-download-label>${L('دانلود','Download','Preuzmi')}</small><i class="nh7p500-download-progress" aria-hidden="true"><b data-download-progress></b></i></button>
-          <button type="button" data-p500-share><span>↗</span><small>${L('اشتراک','Share','Podijeli')}</small></button>
-          <button type="button" data-queue><span>☷</span><small>${L('صف پخش','Queue','Red')}</small></button>
+          <button type="button" data-p500-share><span>↗</span><small data-share-label>${L('اشتراک','Share','Podijeli')}</small></button>
+          <button type="button" data-queue><span>☷</span><small data-queue-label>${L('صف پخش','Queue','Red')}</small></button>
         </div>
+        <section class="nh7p500-note" data-note-panel hidden>
+          <div class="nh7p500-note-head"><strong data-note-heading>${L('یادداشت این پیام','Notes for this message','Bilješke za ovu poruku')}</strong><button type="button" data-note-close aria-label="${L('بستن','Close','Zatvori')}">×</button></div>
+          <p class="nh7p500-note-help" data-note-help>${L('می‌توانید هنگام نوشتن، صدا را همین‌جا متوقف یا دوباره پخش کنید.','You can pause or resume the audio here while writing your note.','Dok pišete bilješku, ovdje možete pauzirati ili nastaviti reprodukciju.')}</p>
+          <textarea data-note-input rows="6" maxlength="5000" placeholder="${L('یادداشت خود را بنویسید…','Write your note…','Napišite bilješku…')}"></textarea>
+          <div class="nh7p500-note-actions">
+            <button type="button" class="nh7p500-note-pause" data-note-playpause>Ⅱ ${L('مکث صدا','Pause audio','Pauziraj zvuk')}</button>
+            <button type="button" class="nh7p500-note-save" data-note-save>${L('ذخیره یادداشت','Save note','Spremi bilješku')}</button>
+          </div>
+          <small class="nh7p500-note-status" data-note-status></small>
+        </section>
         <div class="nh7p500-volume" data-volume-row><span>🔈</span><input data-volume type="range" min="0" max="1" step="0.05" value="1"><span>🔊</span></div>
         <small class="nh7p500-volume-note" data-volume-note>${L('در آیفون، صدای سیستم با دکمه‌های گوشی کنترل می‌شود.','On iPhone, system volume is controlled by the phone buttons.','Na iPhoneu se glasnoća sustava kontrolira tipkama uređaja.')}</small>
-        <div class="nh7p500-queue" data-queue-panel><div class="nh7p500-panel-head"><strong>${L('صف پخش','Up Next','Sljedeće')}</strong><button type="button" data-queue-close>×</button></div><div class="nh7p500-queue-list" data-queue-list></div></div>
-        <section class="nh7p500-related" data-related-panel hidden><div class="nh7p500-panel-head"><strong>${L('مرتبط و پیشنهادی','Related & Suggested','Povezano i predloženo')}</strong></div><div class="nh7p500-related-strip" data-related-list></div></section>
+        <div class="nh7p500-queue" data-queue-panel><div class="nh7p500-panel-head"><strong data-queue-heading>${L('صف پخش','Up Next','Sljedeće')}</strong><button type="button" data-queue-close>×</button></div><div class="nh7p500-queue-list" data-queue-list></div></div>
+        <section class="nh7p500-related" data-related-panel hidden><div class="nh7p500-panel-head"><strong data-related-heading>${L('مرتبط و پیشنهادی','Related & Suggested','Povezano i predloženo')}</strong></div><div class="nh7p500-related-strip" data-related-list></div></section>
       </div>
       <div class="nh7p500-social-overlay" data-social-overlay hidden>
         <button type="button" class="nh7p500-social-backdrop" data-social-close aria-label="${L('بستن','Close','Zatvori')}"></button>
         <section class="nh7p500-social-sheet">
-          <div class="nh7p500-panel-head"><strong>${L('برکت‌ها','Blessings','Blagoslovi')}</strong><button type="button" data-social-close>×</button></div>
+          <div class="nh7p500-panel-head"><strong data-blessings-heading>${L('برکت‌ها','Blessings','Blagoslovi')}</strong><button type="button" data-social-close>×</button></div>
           <div class="nh7p500-social-proxy" data-social-proxy data-nh7-no-quick-bible></div>
         </section>
       </div>
@@ -142,7 +159,7 @@ function setExpanded(value){
   if(full)full.hidden=!expanded;
   document.documentElement.classList.toggle('nh7p500-open',expanded);
   if(expanded){const qp=r.querySelector('[data-queue-panel]');if(qp)qp.hidden=false;renderQueue();renderRelated()}
-  if(!expanded)closeBlessings();
+  if(!expanded){closeBlessings();closeInlineNotes()}
   sync();
 }
 
@@ -213,9 +230,89 @@ function withCurrentCard(action){
   setExpanded(false);engine()?.openCurrentAudio?.();
   let tries=0;const timer=setInterval(()=>{if(run()||tries++>28)clearInterval(timer)},120);
 }
+function noteDraftKey(id){return NOTE_DRAFT_PREFIX+String(id||'')}
+function normalizeInlineNote(value){
+  const raw=String(value??'').slice(0,5000);
+  return window.NH7NoteTextV501?.normalize?.(raw)??raw;
+}
+function readNoteDraft(id){
+  if(!id)return null;
+  try{
+    const raw=localStorage.getItem(noteDraftKey(id));if(raw===null)return null;
+    try{const d=JSON.parse(raw);if(d&&typeof d==='object'&&typeof d.value==='string')return{value:normalizeInlineNote(d.value),updatedAt:Number(d.updatedAt||0)}}catch(_){}
+    return{value:normalizeInlineNote(raw),updatedAt:0};
+  }catch(_){return null}
+}
+function readSavedInlineNote(item){
+  const id=mediaId(item);if(!id)return'';
+  try{
+    if(window.NH7_SERMON_NOTE_BRIDGE_V527?.read)return String(window.NH7_SERMON_NOTE_BRIDGE_V527.read(id)||'');
+    const raw=localStorage.getItem('nh7_sermon_note_'+id)||'';
+    return normalizeInlineNote(raw);
+  }catch(_){return''}
+}
+function readInlineNote(item){
+  const id=mediaId(item),draft=readNoteDraft(id);
+  return draft!==null?draft.value:readSavedInlineNote(item);
+}
+function writeNoteDraft(id,value,showStatus=true){
+  if(!id)return'';
+  const clean=normalizeInlineNote(value);
+  try{localStorage.setItem(noteDraftKey(id),JSON.stringify({value:clean,updatedAt:Date.now()}))}catch(_){}
+  if(showStatus){
+    const status=ensure().querySelector('[data-note-status]');
+    if(status)status.textContent=L('پیش‌نویس خودکار ذخیره شد ✓','Draft auto-saved ✓','Skica je automatski spremljena ✓');
+  }
+  return clean;
+}
+function flushInlineNoteDraft(showStatus=false){
+  clearTimeout(noteDraftTimer);noteDraftTimer=0;
+  if(!root?.isConnected)return;
+  const p=root.querySelector('[data-note-panel]'),input=root.querySelector('[data-note-input]');
+  const id=String(p?.dataset?.noteId||'');if(!id||!input)return;
+  writeNoteDraft(id,input.value,showStatus);
+}
+function scheduleInlineNoteDraft(){
+  const r=ensure(),p=r.querySelector('[data-note-panel]'),input=r.querySelector('[data-note-input]'),id=String(p?.dataset?.noteId||'');
+  if(id&&input)writeNoteDraft(id,input.value,false);
+  clearTimeout(noteDraftTimer);
+  const status=r.querySelector('[data-note-status]');
+  if(status)status.textContent=L('در حال ذخیرهٔ پیش‌نویس…','Saving draft…','Spremanje skice…');
+  noteDraftTimer=setTimeout(()=>{noteDraftTimer=0;if(status)status.textContent=L('پیش‌نویس خودکار ذخیره شد ✓','Draft auto-saved ✓','Skica je automatski spremljena ✓')},300);
+}
+function closeInlineNotes(){flushInlineNoteDraft(false);const p=ensure().querySelector('[data-note-panel]');if(p)p.hidden=true}
+function refreshNotePlaybackButton(){
+  const r=ensure(),b=r.querySelector('[data-note-playpause]'),a=state().audio;if(!b||!a)return;
+  b.textContent=a.paused?'▶ '+L('ادامه پخش','Resume audio','Nastavi zvuk'):'Ⅱ '+L('مکث صدا','Pause audio','Pauziraj zvuk');
+  b.setAttribute('aria-label',a.paused?L('ادامه پخش','Resume audio','Nastavi zvuk'):L('مکث صدا','Pause audio','Pauziraj zvuk'));
+}
 function openNotes(){
   const item=state().current;if(!isSermon(item))return;
-  withCurrentCard(card=>{const b=card.querySelector('[data-sermon-note]');if(!b)return false;b.click();return true});
+  const r=ensure(),p=r.querySelector('[data-note-panel]'),input=r.querySelector('[data-note-input]');if(!p||!input)return;
+  const id=mediaId(item);
+  if(!p.hidden&&p.dataset.noteId===id){closeInlineNotes();return}
+  flushInlineNoteDraft(false);
+  p.dataset.noteId=id;input.value=readInlineNote(item);p.hidden=false;
+  const status=r.querySelector('[data-note-status]'),draft=readNoteDraft(id);
+  if(status)status.textContent=draft!==null?L('پیش‌نویس بازیابی شد ✓','Draft restored ✓','Skica je vraćena ✓'):'';
+  refreshLanguageUI(true);refreshNotePlaybackButton();
+  requestAnimationFrame(()=>{try{p.scrollIntoView({behavior:'smooth',block:'nearest'})}catch(_){};try{input.focus({preventScroll:true})}catch(_){input.focus()}});
+}
+async function saveInlineNote(){
+  const item=state().current,r=ensure(),p=r.querySelector('[data-note-panel]'),input=r.querySelector('[data-note-input]'),status=r.querySelector('[data-note-status]');
+  if(!item||!p||!input||p.dataset.noteId!==mediaId(item))return;
+  clearTimeout(noteDraftTimer);noteDraftTimer=0;
+  const id=mediaId(item),clean=normalizeInlineNote(input.value);
+  input.value=clean;writeNoteDraft(id,clean,false);
+  try{
+    localStorage.setItem('nh7_sermon_note_'+id,clean);
+    if(window.NH7_SERMON_NOTE_BRIDGE_V527?.save)await window.NH7_SERMON_NOTE_BRIDGE_V527.save(id,clean);
+    try{localStorage.removeItem(noteDraftKey(id))}catch(_){}
+    if(status)status.textContent=L('یادداشت نهایی ذخیره شد ✓','Note saved ✓','Bilješka je spremljena ✓');
+  }catch(_){
+    writeNoteDraft(id,clean,false);
+    if(status)status.textContent=L('ذخیره نهایی انجام نشد؛ پیش‌نویس روی دستگاه محفوظ است.','Final save failed; your draft is safe on this device.','Konačno spremanje nije uspjelo; skica je sigurna na uređaju.');
+  }
 }
 function shareCurrent(){
   const item=state().current;if(!isSermon(item))return;
@@ -310,6 +407,42 @@ function openBlessings(){
   },80);
 }
 
+function refreshLanguageUI(force=false){
+  const r=ensure(),currentLang=lang();if(!force&&lastUiLang===currentLang)return;lastUiLang=currentLang;
+  const text=(sel,value)=>{const n=r.querySelector(sel);if(n)n.textContent=value};
+  const attr=(sel,name,value)=>{r.querySelectorAll(sel).forEach(n=>n.setAttribute(name,value))};
+  text('[data-like-label]',L('پسندیدن','Like','Sviđa mi se'));
+  text('[data-bless-label]',L('برکت‌ها','Blessings','Blagoslovi'));
+  text('[data-bible-label]',L('کتاب مقدس','Bible','Biblija'));
+  text('[data-favorite-label]',L('علاقه‌مندی','Favorite','Favorit'));
+  text('[data-note-label]',L('یادداشت','Notes','Bilješke'));
+  text('[data-share-label]',L('اشتراک','Share','Podijeli'));
+  text('[data-queue-label]',L('صف پخش','Queue','Red'));
+  text('[data-queue-heading]',L('صف پخش','Up Next','Sljedeće'));
+  text('[data-related-heading]',L('مرتبط و پیشنهادی','Related & Suggested','Povezano i predloženo'));
+  text('[data-blessings-heading]',L('برکت‌ها','Blessings','Blagoslovi'));
+  text('[data-note-heading]',L('یادداشت این پیام','Notes for this message','Bilješke za ovu poruku'));
+  text('[data-note-help]',L('می‌توانید هنگام نوشتن، صدا را همین‌جا متوقف یا دوباره پخش کنید.','You can pause or resume the audio here while writing your note.','Dok pišete bilješku, ovdje možete pauzirati ili nastaviti reprodukciju.'));
+  text('[data-note-save]',L('ذخیره یادداشت','Save note','Spremi bilješku'));
+  const noteStatus=r.querySelector('[data-note-status]');if(noteStatus){
+    const raw=String(noteStatus.textContent||'');
+    if(/auto-saved|خودکار|automatski/i.test(raw))noteStatus.textContent=L('پیش‌نویس خودکار ذخیره شد ✓','Draft auto-saved ✓','Skica je automatski spremljena ✓');
+    else if(/restored|بازیابی|vraćena/i.test(raw))noteStatus.textContent=L('پیش‌نویس بازیابی شد ✓','Draft restored ✓','Skica je vraćena ✓');
+  }
+  const input=r.querySelector('[data-note-input]');if(input)input.placeholder=L('یادداشت خود را بنویسید…','Write your note…','Napišite bilješku…');
+  attr('[data-prev]','aria-label',L('قبلی','Previous','Prethodno'));
+  attr('[data-next]','aria-label',L('بعدی','Next','Sljedeće'));
+  attr('[data-close]','aria-label',L('بستن','Close','Zatvori'));
+  attr('[data-collapse]','aria-label',L('جمع کردن','Collapse','Smanji'));
+  attr('[data-social-close]','aria-label',L('بستن','Close','Zatvori'));
+  attr('[data-note-close]','aria-label',L('بستن','Close','Zatvori'));
+  attr('[data-seek]','aria-label',L('موقعیت پخش','Playback position','Pozicija reprodukcije'));
+  attr('[data-speed]','aria-label',L('سرعت پخش','Playback speed','Brzina reprodukcije'));
+  const fav=r.querySelector('[data-favorite]'),on=fav?.classList.contains('on');
+  if(fav)fav.setAttribute('aria-label',on?L('حذف از علاقه‌مندی‌ها','Remove from favorites','Ukloni iz favorita'):L('افزودن به علاقه‌مندی‌ها','Add to favorites','Dodaj u favorite'));
+  renderQueue();renderRelated();refreshNotePlaybackButton();syncDownloadVisual(state().current);
+}
+
 function bind(){
   root.addEventListener('click',event=>{
     const {audio:a}=state();
@@ -327,6 +460,9 @@ function bind(){
     if(event.target.closest('[data-p500-bible]'))return window.NH7QuickBibleV454?.open?.(event.target.closest('[data-p500-bible]'));
     if(event.target.closest('[data-favorite]'))return toggleFavorite();
     if(event.target.closest('[data-note]'))return openNotes();
+    if(event.target.closest('[data-note-close]')){closeInlineNotes();return}
+    if(event.target.closest('[data-note-save]')){saveInlineNote();return}
+    if(event.target.closest('[data-note-playpause]')&&a){a.paused?a.play().catch(()=>{}):a.pause();refreshNotePlaybackButton();return}
     if(event.target.closest('[data-download]'))return downloadCurrent();
     if(event.target.closest('[data-p500-share]')){shareCurrent();return}
     if(event.target.closest('[data-queue]'))return toggleQueue();
@@ -338,6 +474,7 @@ function bind(){
     if(event.target.closest('[data-open-blessings]'))return openBlessings();
   });
   root.addEventListener('input',event=>{
+    if(event.target.matches('[data-note-input]')){scheduleInlineNoteDraft();return}
     const {audio:a}=state();
     if(event.target.matches('[data-seek]')&&a&&Number.isFinite(a.duration)&&a.duration>0){
       seeking=true;seekPreview=(Number(event.target.value)/1000)*a.duration;
@@ -368,6 +505,7 @@ function bind(){
 
 function sync(){
   const r=ensure(),s=state(),a=s.audio,item=s.current,active=!!(a&&item&&a.src);
+  refreshLanguageUI();
   r.hidden=!active;
   document.documentElement.classList.toggle('nh7p500-active',active);
   if(!active){expanded=false;const full=r.querySelector('[data-full]');if(full)full.hidden=true;document.documentElement.classList.remove('nh7p500-open');return}
@@ -375,6 +513,7 @@ function sync(){
   const now=Number(a.currentTime||0),progress=duration>0?Math.max(0,Math.min(100,now/duration*100)):0;
   const ttl=titleFor(item),artist=artistFor(item),art=artworkFor(item),rate=Number(a.playbackRate||1);
   const socialProxy=r.querySelector('[data-social-proxy]');if(socialProxy?.dataset?.sermonCard&&socialProxy.dataset.sermonCard!==mediaId(item))closeBlessings();
+  const notePanel=r.querySelector('[data-note-panel]');if(notePanel&&!notePanel.hidden&&notePanel.dataset.noteId!==mediaId(item)){flushInlineNoteDraft(false);notePanel.dataset.noteId=mediaId(item);const noteInput=r.querySelector('[data-note-input]');if(noteInput)noteInput.value=readInlineNote(item);const noteStatus=r.querySelector('[data-note-status]'),draft=readNoteDraft(mediaId(item));if(noteStatus)noteStatus.textContent=draft!==null?L('پیش‌نویس بازیابی شد ✓','Draft restored ✓','Skica je vraćena ✓'):''};
   r.querySelectorAll('[data-title],[data-full-title]').forEach(n=>n.textContent=ttl);
   r.querySelector('[data-mini-meta]').textContent=`${fmt(now)} · ${rate}×`;
   r.querySelector('[data-artist]').textContent=artist;
@@ -389,6 +528,7 @@ function sync(){
   rememberRecent(item);
   const playGlyph=a.paused?'▶':'❚❚';
   r.querySelectorAll('[data-play]').forEach(n=>{if(n.textContent!==playGlyph)n.textContent=playGlyph;n.dataset.nh7PlayState517=a.paused?'play':'pause'});
+  refreshNotePlaybackButton();
   r.querySelectorAll('[data-speed]').forEach(n=>{if(n.matches('.nh7p500-speed'))n.textContent=rate+'×'});
   const rateNode=r.querySelector('[data-rate]');if(rateNode)rateNode.textContent=rate+'×';
   const nextDisabled=!(s.playQueue?.[s.queueIndex+1]),prevDisabled=!(s.playQueue?.[s.queueIndex-1])&&now<=5;
@@ -417,7 +557,7 @@ function sync(){
   }
 }
 
-function start(){ensure();sync();clearInterval(syncTimer);syncTimer=setInterval(sync,250);window.addEventListener('pageshow',sync);window.addEventListener('change',e=>{if(['langSelect','settingsLang'].includes(e.target?.id)){lastTrackKey='';sync()}},true)}
+function start(){ensure();refreshLanguageUI(true);sync();clearInterval(syncTimer);syncTimer=setInterval(sync,250);window.addEventListener('pageshow',()=>{lastUiLang='';sync()});window.addEventListener('pagehide',()=>flushInlineNoteDraft(false));document.addEventListener('visibilitychange',()=>{if(document.hidden)flushInlineNoteDraft(false)});window.addEventListener('change',e=>{if(['langSelect','settingsLang'].includes(e.target?.id)){lastUiLang='';lastTrackKey='';setTimeout(()=>{refreshLanguageUI(true);sync()},0)}},true);window.addEventListener('storage',e=>{if(e.key==='nh7_lang'){lastUiLang='';refreshLanguageUI(true);sync()}})}
 window.NH7_MEDIA_PLAYER_V500={version:VERSION,sync,setExpanded,close:closePlayer};
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start,{once:true}):start();
 })();
