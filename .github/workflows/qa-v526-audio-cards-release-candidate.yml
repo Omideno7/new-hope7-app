@@ -1,0 +1,126 @@
+name: QA v526 Audio Cards Release Candidate
+
+on:
+  push:
+    branches:
+      - release/v526-audio-card-candidate-20261002
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify release scope
+        run: |
+          set -euo pipefail
+          base=9af5cb43f29ce876cb42abada9414067aefd6f79
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed
+          allowed=(
+            '.github/workflows/deploy-pages.yml'
+            '.github/workflows/qa-v526-audio-cards-release-candidate.yml'
+            'css/nh7-icons-v517.css'
+            'css/nh7-player-volume-v521.css'
+            'index.html'
+            'js/nh7-audio-library-v500.js'
+            'js/nh7-icons-v517.js'
+            'js/nh7-media-player-v500.js'
+            'service-worker.js'
+            'sw-offline-v329.js'
+            'sw-release-core-v403.js'
+          )
+          printf '%s\n' "${allowed[@]}" | sort > /tmp/allowed
+          diff -u /tmp/allowed /tmp/changed
+
+      - name: JavaScript syntax
+        run: |
+          set -euo pipefail
+          node --check js/nh7-audio-library-v500.js
+          node --check js/nh7-icons-v517.js
+          node --check js/nh7-media-player-v500.js
+          node --check service-worker.js
+          node --check sw-offline-v329.js
+          node --check sw-release-core-v403.js
+
+      - name: Verify v524 player progress and performance
+        run: |
+          set -euo pipefail
+          grep -q "const VERSION='5.2.5-favorite-preview'" js/nh7-media-player-v500.js
+          grep -q "seekEl.style.setProperty('--nh7-seek-pct'" js/nh7-media-player-v500.js
+          grep -q "event.target.style.setProperty('--nh7-seek-pct'" js/nh7-media-player-v500.js
+          grep -q "syncTimer=setInterval(sync,250)" js/nh7-media-player-v500.js
+          grep -q "activeAudio.preload!=='auto'" js/nh7-media-player-v500.js
+          grep -q "grid-template-rows:22px 12px" css/nh7-player-volume-v521.css
+          grep -q "Player typography is deliberately decoupled" css/nh7-icons-v517.css
+          grep -q "lock player geometry across every interface theme" css/nh7-player-volume-v521.css
+
+      - name: Verify favorite toggle works both ways
+        run: |
+          set -euo pipefail
+          grep -q "const set=readFavorites(),next=!set.has(id)" js/nh7-media-player-v500.js
+          grep -q "next?set.add(id):set.delete(id)" js/nh7-media-player-v500.js
+          grep -q "NH7_AUDIO_LIBRARY_V500_PATCH" js/nh7-media-player-v500.js
+          grep -q "aria-pressed" js/nh7-media-player-v500.js
+          grep -q "favorite star has a real OFF/ON visual state" css/nh7-icons-v517.css
+          grep -q "\[data-favorite\].on>\[data-favorite-icon\]::before" css/nh7-icons-v517.css
+
+      - name: Verify selected Model C audio cards
+        run: |
+          set -euo pipefail
+          grep -q "selected Model C: Minimal Premium Frame" js/nh7-audio-library-v500.js
+          grep -q "nh7al500-art-c" js/nh7-audio-library-v500.js
+          grep -q "nh7al500-status" js/nh7-audio-library-v500.js
+          grep -q "data-al-kind" js/nh7-audio-library-v500.js
+          grep -q "nh7al500-card-progress" js/nh7-audio-library-v500.js
+          grep -q "now/dur\*100" js/nh7-audio-library-v500.js
+          grep -q "width:96px!important" js/nh7-audio-library-v500.js
+          grep -q "var(--accent" js/nh7-audio-library-v500.js
+          grep -q "var(--card" js/nh7-audio-library-v500.js
+
+      - name: Verify mute, download progress, and compact controls preserved
+        run: |
+          set -euo pipefail
+          grep -q "toggleMediaMute" js/nh7-media-player-v500.js
+          grep -q "function downloadMirror(item)" js/nh7-media-player-v500.js
+          grep -q "data-download-progress" js/nh7-media-player-v500.js
+          grep -q "is-downloaded" js/nh7-icons-v517.js
+          grep -q "\[data-volume-row\]" css/nh7-player-volume-v521.css
+          grep -q "\[data-mute\]" css/nh7-player-volume-v521.css
+          grep -q "display:grid!important" css/nh7-player-volume-v521.css
+
+      - name: Verify production cache wiring
+        run: |
+          set -euo pipefail
+          grep -q 'service-worker.js?v=4.8.7-audio526' index.html
+          grep -q 'css/nh7-icons-v517.css?v=5.2.5-favorite' index.html
+          grep -q 'css/nh7-player-volume-v521.css?v=5.2.4' index.html
+          grep -q 'js/nh7-audio-library-v500.js?v=5.2.6-model-c' index.html
+          grep -q 'js/nh7-icons-v517.js?v=5.2.4' index.html
+          grep -q 'js/nh7-media-player-v500.js?v=5.2.5-favorite' index.html
+          grep -q "nh7-release-core-v526-audio-cards-model-c" sw-release-core-v403.js
+          grep -q "5.2.6-audio-cards-model-c" sw-release-core-v403.js
+          grep -q "v2.3.9.61-audio526" sw-offline-v329.js
+          grep -q "5.2.6-audio526" service-worker.js
+          for asset in css/nh7-icons-v517.css css/nh7-player-volume-v521.css js/nh7-audio-library-v500.js js/nh7-icons-v517.js js/nh7-media-player-v500.js; do
+            grep -q "$asset" sw-release-core-v403.js
+            grep -q "$asset" sw-offline-v329.js
+          done
+
+      - name: Verify deploy validator matches release
+        run: |
+          set -euo pipefail
+          grep -q "sw-release-core-v403.js?v=5.2.6-audio526" .github/workflows/deploy-pages.yml
+          grep -q "NH7_RELEASE_CORE_VERSION='5.2.6-audio-cards-model-c'" .github/workflows/deploy-pages.yml
+
+      - name: Protect unrelated production runtime and user data
+        run: |
+          set -euo pipefail
+          base=9af5cb43f29ce876cb42abada9414067aefd6f79
+          git diff --exit-code "$base"...HEAD --             js/app.js js/nh7-audio-classic-v484.js             js/nh7-appearance-personalization-v514.js js/nh7-fonts-v454.js js/nh7-theme-studio-v453.js             'js/nh7-school-*' 'js/nh7-admin-*' 'supabase/**' 'data/**'
+          echo "Unrelated runtime, School, Admin, Supabase and user-data paths are unchanged."
