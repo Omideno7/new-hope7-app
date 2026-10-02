@@ -132,7 +132,13 @@ function filterVisibleSearchV530(host,value){
  const q=searchNormV530(value),cards=[...list.querySelectorAll('[data-sermon-card]')];
  cards.forEach((card,index)=>{if(card.dataset.nh7SearchOrder==null)card.dataset.nh7SearchOrder=String(index)});
  const rows=cards.map(card=>({card,item:window.__sermonMap?.[String(card.dataset.sermonCard||'')]||{},score:q?searchScoreV530(window.__sermonMap?.[String(card.dataset.sermonCard||'')]||{},q):1,order:Number(card.dataset.nh7SearchOrder||0)}));
- rows.sort((a,b)=>q?(b.score-a.score||a.order-b.order):(a.order-b.order)).forEach(row=>{row.card.hidden=!!q&&row.score<=0;list.appendChild(row.card)});
+ rows.sort((a,b)=>q?(b.score-a.score||a.order-b.order):(a.order-b.order)).forEach(row=>{
+  const hide=!!q&&row.score<=0;
+  row.card.hidden=hide;
+  if(hide)row.card.style.setProperty('display','none','important');
+  else row.card.style.removeProperty('display');
+  list.appendChild(row.card);
+ });
  let status=host.querySelector('[data-al-search-status]');
  if(!status){status=document.createElement('p');status.dataset.alSearchStatus='1';status.className='muted';status.style.margin='-2px 2px 2px';host.querySelector('.nh7al500-search')?.insertAdjacentElement('afterend',status)}
  const count=rows.filter(x=>!q||x.score>0).length;
