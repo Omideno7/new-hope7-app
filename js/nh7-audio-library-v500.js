@@ -11,7 +11,7 @@ const title=x=>String(x?.['title_'+lang()]||x?.title_fa||x?.title_en||x?.title_h
 const art=x=>String(x?.cover_url||x?.artwork_url||'assets/new-hope7-logo-512.png');
 const fmt=s=>{s=Math.max(0,Number(s)||0);const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),x=Math.floor(s%60);return h?String(h)+':'+String(m).padStart(2,'0')+':'+String(x).padStart(2,'0'):String(m)+':'+String(x).padStart(2,'0')};
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
-let timer=0;
+let timer=0,searchRaf=0,patchTimer=0;
 
 function addStyle(){
  if(document.getElementById('nh7AudioLibrary500Style'))return;
@@ -127,24 +127,52 @@ function searchScoreV530(item,query){
  });
  return score
 }
-function filterVisibleSearchV530(host,value){
+function filterVisibleSearchV532(host,value){
  const list=host?.querySelector('.sermon-list');if(!list)return;
  const q=searchNormV530(value),cards=[...list.querySelectorAll('[data-sermon-card]')];
- cards.forEach((card,index)=>{if(card.dataset.nh7SearchOrder==null)card.dataset.nh7SearchOrder=String(index)});
- const rows=cards.map(card=>({card,item:window.__sermonMap?.[String(card.dataset.sermonCard||'')]||{},score:q?searchScoreV530(window.__sermonMap?.[String(card.dataset.sermonCard||'')]||{},q):1,order:Number(card.dataset.nh7SearchOrder||0)}));
- rows.sort((a,b)=>q?(b.score-a.score||a.order-b.order):(a.order-b.order)).forEach(row=>{
-  const hide=!!q&&row.score<=0;
-  row.card.hidden=hide;
-  if(hide)row.card.style.setProperty('display','none','important');
-  else row.card.style.removeProperty('display');
-  list.appendChild(row.card);
+ let count=0;
+ cards.forEach((card,index)=>{
+  if(card.dataset.nh7SearchOrder==null)card.dataset.nh7SearchOrder=String(index);
+  const sid=String(card.dataset.sermonCard||''),item=window.__sermonMap?.[sid]||{};
+  if(!card.dataset.nh7SearchIndex){
+   card.dataset.nh7SearchIndex=[item.title_fa,item.title_en,item.title_hr].map(searchNormV530).filter(Boolean).join(' | ');
+  }
+  const score=q?searchScoreV530(item,q):1,hide=!!q&&score<=0;
+  card.hidden=hide;
+  if(hide){
+   card.style.setProperty('display','none','important');
+   card.style.removeProperty('order');
+  }else{
+   card.style.removeProperty('display');
+   card.style.order=q?String(-score):'';
+   count++;
+  }
  });
  let status=host.querySelector('[data-al-search-status]');
- if(!status){status=document.createElement('p');status.dataset.alSearchStatus='1';status.className='muted';status.style.margin='-2px 2px 2px';host.querySelector('.nh7al500-search')?.insertAdjacentElement('afterend',status)}
- const count=rows.filter(x=>!q||x.score>0).length;
- status.hidden=!q;status.textContent=q?(count?L(count+' نتیجه',count+' result'+(count===1?'':'s'),count+' rezultata'):L('نتیجه‌ای پیدا نشد','No matching sermons','Nema odgovarajućih propovijedi')):'';
- host.querySelectorAll('[data-al-continue],[data-al-favorites],[data-al-recent]').forEach(sec=>{if(q)sec.hidden=true});
- if(!q)renderShelves(host)
+ if(!status){
+  status=document.createElement('p');
+  status.dataset.alSearchStatus='1';
+  status.className='muted';
+  status.style.margin='-2px 2px 2px';
+  host.querySelector('.nh7al500-search')?.insertAdjacentElement('afterend',status);
+ }
+ if(q){
+  status.style.display='';
+  status.textContent=count?L(count+' نتیجه',count+' result'+(count===1?'':'s'),count+' rezultata'):L('نتیجه‌ای پیدا نشد','No matching sermons','Nema odgovarajućih propovijedi');
+ }else{
+  status.style.display='none';
+  status.textContent='';
+ }
+ host.querySelectorAll('[data-al-continue],[data-al-favorites],[data-al-recent]').forEach(sec=>{
+  if(q){
+   sec.hidden=true;
+   sec.style.setProperty('display','none','important');
+  }else{
+   sec.hidden=false;
+   sec.style.removeProperty('display');
+  }
+ });
+ if(!q)renderShelves(host);
 }
 function play(x){window.NH7_AUDIO_CLASSIC_V400?.playItem?.(x)}
 function shelf(items,subtitle,kind='recent'){
@@ -187,7 +215,7 @@ function patch(){
    host.insertBefore(wrap,search);
  }
  enhanceRows();renderShelves(host);
- filterVisibleSearchV530(host,host.querySelector('[data-al-search]')?.value||search.value||'');
+ filterVisibleSearchV532(host,host.querySelector('[data-al-search]')?.value||search.value||'');
 }
 
 function renderShelves(host){
@@ -213,14 +241,25 @@ document.addEventListener('click',e=>{
 
 document.addEventListener('input',e=>{
  const input=e.target.closest('[data-al-search]');if(!input)return;
- clearTimeout(timer);timer=setTimeout(()=>{
-  const host=input.closest('.nh7al500-host'),old=document.getElementById('sermonSearch');
-  if(old)old.value=input.value;
-  filterVisibleSearchV530(host,input.value);
- },120)
+ const host=input.closest('.nh7al500-host'),old=document.getElementById('sermonSearch');
+ if(old)old.value=input.value;
+ if(searchRaf)cancelAnimationFrame(searchRaf);
+ searchRaf=requestAnimationFrame(()=>filterVisibleSearchV532(host,input.value));
 },true);
 
-new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(patch,60)}).observe(document.documentElement,{childList:true,subtree:true});
+new MutationObserver(records=>{
+ const shouldPatch=records.some(record=>{
+  const target=record.target?.nodeType===1?record.target:record.target?.parentElement;
+  if(target?.closest?.('.nh7al500-host'))return false;
+  return [...(record.addedNodes||[])].some(node=>{
+   if(node.nodeType!==1)return false;
+   return node.matches?.('#sermonSearch,.sermon-list')||node.querySelector?.('#sermonSearch,.sermon-list');
+  });
+ });
+ if(!shouldPatch)return;
+ clearTimeout(patchTimer);
+ patchTimer=setTimeout(patch,50);
+}).observe(document.documentElement,{childList:true,subtree:true});
 window.addEventListener('pageshow',patch);
 window.addEventListener('storage',e=>{if([FAV,RECENT].includes(e.key))patch()});
 window.NH7_AUDIO_LIBRARY_V500_PATCH=patch;
