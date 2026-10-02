@@ -1,0 +1,68 @@
+name: QA Appearance v520 Distinct Styles
+
+on:
+  push:
+    branches:
+      - feature/appearance-v520-distinct-styles-preview-20261002
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify v520 scope
+        run: |
+          set -e
+          base=629afa658297f623e5fb92c65355bbfcea48521d
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed
+          allowed=(
+            '.github/workflows/qa-appearance-v520-distinct-styles.yml'
+            'css/nh7-appearance-personalization-v514.css'
+            'index.html'
+            'js/nh7-appearance-personalization-v514.js'
+          )
+          printf '%s\n' "${allowed[@]}" | sort > /tmp/allowed
+          diff -u /tmp/allowed /tmp/changed
+
+      - name: Syntax
+        run: |
+          node --check js/nh7-appearance-personalization-v514.js
+
+      - name: Verify five new style choices
+        run: |
+          for style in aurora clay floating neon motion; do
+            grep -q "$style:" js/nh7-appearance-personalization-v514.js
+            grep -q "data-nh7-ui-style514=\"$style\"" css/nh7-appearance-personalization-v514.css
+          done
+          grep -q "سبک رابط و رنگ‌بندی از هم جدا هستند" js/nh7-appearance-personalization-v514.js
+          grep -q "Aurora Glass" js/nh7-appearance-personalization-v514.js
+          grep -q "Clay 3D" js/nh7-appearance-personalization-v514.js
+          grep -q "Floating Cards" js/nh7-appearance-personalization-v514.js
+          grep -q "Neon Edge" js/nh7-appearance-personalization-v514.js
+          grep -q "Motion Flow" js/nh7-appearance-personalization-v514.js
+
+      - name: Verify motion safety and live preview
+        run: |
+          grep -q "@keyframes nh7Ap520PageIn" css/nh7-appearance-personalization-v514.css
+          grep -q "@keyframes nh7Ap520PreviewPulse" css/nh7-appearance-personalization-v514.css
+          grep -q "prefers-reduced-motion:reduce" css/nh7-appearance-personalization-v514.css
+          grep -q "nh7-ap514-live" css/nh7-appearance-personalization-v514.css
+
+      - name: Verify v520 wiring
+        run: |
+          grep -q 'nh7-appearance-personalization-v514.css?v=5.2.0' index.html
+          grep -q 'nh7-appearance-personalization-v514.js?v=5.2.0' index.html
+          grep -q "VERSION:'5.2.0'" js/nh7-appearance-personalization-v514.js
+
+      - name: Protect functional runtime
+        run: |
+          set -e
+          base=629afa658297f623e5fb92c65355bbfcea48521d
+          git diff --exit-code "$base"...HEAD --             js/app.js js/nh7-media-player-v500.js js/nh7-audio-classic-v484.js             js/nh7-icons-v517.js js/nh7-fonts-v454.js js/nh7-theme-studio-v453.js             service-worker.js sw-offline-v329.js sw-release-core-v403.js             'js/nh7-school-*' 'js/nh7-admin-*' 'supabase/**' 'data/**'
