@@ -1,16 +1,18 @@
-/* New Hope 7 — Player Volume UI v5.2.1
+/* New Hope 7 — Player Mute UI v5.2.2
  * App UI uses device/system volume buttons.
  * Playback engine volume APIs remain intact for a future tested native bridge.
  */
 
-/* Current cross-platform player: hide non-native volume controls. */
-.nh7p500 [data-mute],
+/* Keep mute/unmute available, but hide unreliable in-app volume level controls. */
 .nh7p500 [data-volume-row],
 .nh7p500 [data-volume-note]{
   display:none!important;
 }
+.nh7p500 [data-mute]{
+  display:grid!important;
+}
 
-/* Seven remaining quick actions: 4 on the first row, 3 centered on the second. */
+/* Eight quick actions: 4 on the first row, 4 on the second. */
 .nh7p500-tools{
   display:flex!important;
   flex-wrap:wrap!important;
@@ -39,4 +41,16 @@
     min-width:61px!important;
     max-width:61px!important;
   }
+}
+
+
+/* v522 mute state: speaker icon stays visible and changes clearly when muted. */
+.nh7p500 [data-mute].is-muted{
+  --nh7-tool-color:#dc2626!important;
+  background:color-mix(in srgb,#dc2626 9%,var(--nh7p-card,var(--card,#fff)))!important;
+  border-color:color-mix(in srgb,#dc2626 24%,transparent)!important;
+}
+.nh7p500 [data-mute].is-muted [data-mute-icon]::before{
+  -webkit-mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M5 10h3l4-3.2v10.4L8 14H5v-4Zm10.3 1.2 4.1 4.1m0-4.1-4.1 4.1'/%3E%3C/svg%3E")!important;
+  mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M5 10h3l4-3.2v10.4L8 14H5v-4Zm10.3 1.2 4.1 4.1m0-4.1-4.1 4.1'/%3E%3C/svg%3E")!important;
 }
