@@ -1,0 +1,89 @@
+name: QA Player v528 Note Draft Autosave Preview
+
+on:
+  push:
+    branches:
+      - fix/player-v528-note-draft-autosave-preview-20261002
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify v528 scope
+        run: |
+          set -euo pipefail
+          base=ed249e44cd7914686afff2870a8eb19438a423bc
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed
+          allowed=(
+            '.github/workflows/qa-player-v528-note-autosave.yml'
+            'index.html'
+            'js/nh7-media-player-v500.js'
+            'service-worker.js'
+            'sw-offline-v329.js'
+            'sw-release-core-v403.js'
+          )
+          printf '%s\n' "${allowed[@]}" | sort > /tmp/allowed
+          diff -u /tmp/allowed /tmp/changed
+
+      - name: JavaScript syntax
+        run: |
+          set -euo pipefail
+          node --check js/nh7-media-player-v500.js
+          node --check service-worker.js
+          node --check sw-offline-v329.js
+          node --check sw-release-core-v403.js
+
+      - name: Verify local draft autosave
+        run: |
+          set -euo pipefail
+          grep -q "NOTE_DRAFT_PREFIX='nh7_sermon_note_draft_v528_'" js/nh7-media-player-v500.js
+          grep -q "function writeNoteDraft" js/nh7-media-player-v500.js
+          grep -q "function flushInlineNoteDraft" js/nh7-media-player-v500.js
+          grep -q "function scheduleInlineNoteDraft" js/nh7-media-player-v500.js
+          grep -q "setTimeout(()=>flushInlineNoteDraft(true),300)" js/nh7-media-player-v500.js
+          grep -q "pagehide.*flushInlineNoteDraft" js/nh7-media-player-v500.js
+          grep -q "document.hidden.*flushInlineNoteDraft" js/nh7-media-player-v500.js
+
+      - name: Verify draft restore and explicit final save
+        run: |
+          set -euo pipefail
+          grep -q "Draft restored" js/nh7-media-player-v500.js
+          grep -q "پیش‌نویس بازیابی شد" js/nh7-media-player-v500.js
+          grep -q "localStorage.setItem('nh7_sermon_note_'+id,clean)" js/nh7-media-player-v500.js
+          grep -q "NH7_SERMON_NOTE_BRIDGE_V527?.save" js/nh7-media-player-v500.js
+          grep -q "localStorage.removeItem(noteDraftKey(id))" js/nh7-media-player-v500.js
+          grep -q "Final save failed; your draft is safe on this device" js/nh7-media-player-v500.js
+
+      - name: Verify previous v527 behavior preserved
+        run: |
+          set -euo pipefail
+          grep -q "function refreshLanguageUI" js/nh7-media-player-v500.js
+          grep -q "data-note-panel" js/nh7-media-player-v500.js
+          grep -q "data-note-playpause" js/nh7-media-player-v500.js
+          grep -q "toggleMediaMute" js/nh7-media-player-v500.js
+          grep -q "function downloadMirror(item)" js/nh7-media-player-v500.js
+          grep -q "const set=readFavorites(),next=!set.has(id)" js/nh7-media-player-v500.js
+
+      - name: Verify v528 cache wiring
+        run: |
+          set -euo pipefail
+          grep -q 'js/nh7-media-player-v500.js?v=5.2.8-note-autosave' index.html
+          grep -q 'service-worker.js?v=4.8.9-player528' index.html
+          grep -q "nh7-release-core-v528-player-note-autosave" sw-release-core-v403.js
+          grep -q "5.2.8-player-note-autosave" sw-release-core-v403.js
+          grep -q "v2.3.9.63-player528" sw-offline-v329.js
+          grep -q "5.2.8-player528" service-worker.js
+
+      - name: Protect app bridge and unrelated runtime
+        run: |
+          set -euo pipefail
+          base=ed249e44cd7914686afff2870a8eb19438a423bc
+          git diff --exit-code "$base"...HEAD --             js/app.js js/nh7-audio-classic-v484.js js/nh7-audio-library-v500.js js/nh7-icons-v517.js             js/nh7-appearance-personalization-v514.js js/nh7-fonts-v454.js js/nh7-theme-studio-v453.js             css/nh7-appearance-personalization-v514.css css/nh7-icons-v517.css css/nh7-player-volume-v521.css             'js/nh7-school-*' 'js/nh7-admin-*' 'supabase/**' 'data/**'
