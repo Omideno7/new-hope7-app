@@ -105,6 +105,8 @@ html[data-nh7-eye-reader514="1"][data-nh7-reader-mode514="night"] #view :is(.rea
 /* Open book reader follows global eye comfort mode. */
 html[data-nh7-eye-reader514="1"][data-nh7-reader-mode514="paper"] .nh7-book-article{background:#f8f1e5!important;color:#3f3529!important;line-height:2.12!important}
 html[data-nh7-eye-reader514="1"][data-nh7-reader-mode514="soft"] .nh7-book-article{background:#f1f3f4!important;color:#25313a!important;line-height:2.12!important}
+html[data-nh7-eye-reader514="1"][data-nh7-reader-mode514="sepia"] .nh7-book-article{background:#eee2c8!important;color:#433321!important;line-height:2.12!important}
+html[data-nh7-eye-reader514="1"][data-nh7-reader-mode514="night"] .nh7-book-article{background:#0b0f14!important;color:#e8edf3!important;line-height:2.12!important}
 html[data-nh7-eye-reader514="1"] .nh7-book-article{font-size:20px;line-height:2.12}
 
 @media(max-width:650px){.nh7-ap514-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.nh7-ap514-fields{grid-template-columns:1fr}.nh7-ap514-reader-modes{grid-template-columns:repeat(2,minmax(0,1fr))}}
