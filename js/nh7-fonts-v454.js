@@ -14,32 +14,32 @@ const fonts={
  estedad:{stack:'"NH7 Estedad",Tahoma,sans-serif',family:'NH7 Estedad',name:['استعداد — مدرن','Estedad — Persian','Estedad — perzijski'],script:'fa'},
  amiri:{stack:'"NH7 Amiri",Tahoma,serif',family:'NH7 Amiri',name:['امیری — نسخ کلاسیک','Amiri — Persian','Amiri — perzijski'],script:'fa'},
  markazi:{stack:'"NH7 Markazi",Tahoma,serif',family:'NH7 Markazi',name:['مرکزی — کتابی','Markazi Text — Persian','Markazi Text — perzijski'],script:'fa'},
- notosansarabic:{stack:'"Noto Sans Arabic",Tahoma,Arial,sans-serif',family:'Noto Sans Arabic',name:['Noto Sans Arabic','Noto Sans Arabic','Noto Sans Arabic'],script:'fa'},
- notokufi:{stack:'"Noto Kufi Arabic",Tahoma,sans-serif',family:'Noto Kufi Arabic',name:['Noto Kufi Arabic','Noto Kufi Arabic','Noto Kufi Arabic'],script:'fa'},
- lalezar:{stack:'Lalezar,Tahoma,sans-serif',family:'Lalezar',name:['Lalezar','Lalezar','Lalezar'],script:'fa'},
- changa:{stack:'Changa,Tahoma,sans-serif',family:'Changa',name:['Changa','Changa','Changa'],script:'fa'},
- reemkufi:{stack:'"Reem Kufi",Tahoma,sans-serif',family:'Reem Kufi',name:['Reem Kufi','Reem Kufi','Reem Kufi'],script:'fa'},
- cairo:{stack:'Cairo,Tahoma,sans-serif',family:'Cairo',name:['Cairo','Cairo','Cairo'],script:'fa'},
- tajawal:{stack:'Tajawal,Tahoma,sans-serif',family:'Tajawal',name:['Tajawal','Tajawal','Tajawal'],script:'fa'},
- baloo:{stack:'"Baloo Bhaijaan 2",Tahoma,sans-serif',family:'Baloo Bhaijaan 2',name:['Baloo Bhaijaan 2','Baloo Bhaijaan 2','Baloo Bhaijaan 2'],script:'fa'},
+ notosansarabic:{stack:'"Noto Sans Arabic",Tahoma,Arial,sans-serif',family:'Noto Sans Arabic',name:['Noto Sans Arabic','Noto Sans Arabic','Noto Sans Arabic'],script:'fa',web:true},
+ notokufi:{stack:'"Noto Kufi Arabic",Tahoma,sans-serif',family:'Noto Kufi Arabic',name:['Noto Kufi Arabic','Noto Kufi Arabic','Noto Kufi Arabic'],script:'fa',web:true},
+ lalezar:{stack:'Lalezar,Tahoma,sans-serif',family:'Lalezar',name:['Lalezar','Lalezar','Lalezar'],script:'fa',web:true},
+ changa:{stack:'Changa,Tahoma,sans-serif',family:'Changa',name:['Changa','Changa','Changa'],script:'fa',web:true},
+ reemkufi:{stack:'"Reem Kufi",Tahoma,sans-serif',family:'Reem Kufi',name:['Reem Kufi','Reem Kufi','Reem Kufi'],script:'fa',web:true},
+ cairo:{stack:'Cairo,Tahoma,sans-serif',family:'Cairo',name:['Cairo','Cairo','Cairo'],script:'fa',web:true},
+ tajawal:{stack:'Tajawal,Tahoma,sans-serif',family:'Tajawal',name:['Tajawal','Tajawal','Tajawal'],script:'fa',web:true},
+ baloo:{stack:'"Baloo Bhaijaan 2",Tahoma,sans-serif',family:'Baloo Bhaijaan 2',name:['Baloo Bhaijaan 2','Baloo Bhaijaan 2','Baloo Bhaijaan 2'],script:'fa',web:true},
  geeza:{stack:'"Geeza Pro","Noto Naskh Arabic",Tahoma,serif',name:['Geeza Pro — دستگاه','Geeza Pro — device','Geeza Pro — uređaj'],script:'fa'},
  damascus:{stack:'Damascus,"Geeza Pro","Noto Naskh Arabic",Tahoma,serif',name:['Damascus — دستگاه','Damascus — device','Damascus — uređaj'],script:'fa'},
  albayan:{stack:'"Al Bayan","Geeza Pro","Noto Naskh Arabic",Tahoma,serif',name:['Al Bayan — دستگاه','Al Bayan — device','Al Bayan — uređaj'],script:'fa'},
  kohinoor:{stack:'"Kohinoor Arabic","Geeza Pro","Noto Naskh Arabic",Tahoma,sans-serif',name:['Kohinoor Arabic — دستگاه','Kohinoor Arabic — device','Kohinoor Arabic — uređaj'],script:'fa'},
  tahoma:{stack:'Tahoma,Arial,sans-serif',name:['Tahoma / Arial','Tahoma / Arial','Tahoma / Arial'],script:'fa'},
  inter:{stack:'"NH7 Inter",Arial,sans-serif',family:'NH7 Inter',name:['اینتر — لاتین','Inter — modern','Inter — moderni'],script:'latin'},
- roboto:{stack:'Roboto,Arial,sans-serif',family:'Roboto',name:['Roboto','Roboto','Roboto'],script:'latin'},
- opensans:{stack:'"Open Sans",Arial,sans-serif',family:'Open Sans',name:['Open Sans','Open Sans','Open Sans'],script:'latin'},
- montserrat:{stack:'Montserrat,Arial,sans-serif',family:'Montserrat',name:['Montserrat','Montserrat','Montserrat'],script:'latin'},
- poppins:{stack:'Poppins,Arial,sans-serif',family:'Poppins',name:['Poppins','Poppins','Poppins'],script:'latin'},
+ roboto:{stack:'Roboto,Arial,sans-serif',family:'Roboto',name:['Roboto','Roboto','Roboto'],script:'latin',web:true},
+ opensans:{stack:'"Open Sans",Arial,sans-serif',family:'Open Sans',name:['Open Sans','Open Sans','Open Sans'],script:'latin',web:true},
+ montserrat:{stack:'Montserrat,Arial,sans-serif',family:'Montserrat',name:['Montserrat','Montserrat','Montserrat'],script:'latin',web:true},
+ poppins:{stack:'Poppins,Arial,sans-serif',family:'Poppins',name:['Poppins','Poppins','Poppins'],script:'latin',web:true},
  lora:{stack:'"NH7 Lora",Georgia,serif',family:'NH7 Lora',name:['لورا — لاتین کتابی','Lora — book serif','Lora — knjiški'],script:'latin'},
  nunito:{stack:'"NH7 Nunito",Arial,sans-serif',family:'NH7 Nunito',name:['نونیتو — لاتین','Nunito Sans — rounded','Nunito Sans — zaobljeni'],script:'latin'},
  classic:{stack:'Georgia,"Times New Roman",serif',name:['جورجیا — لاتین','Georgia / Classic','Georgia / klasični'],script:'latin'},
- merriweather:{stack:'Merriweather,Georgia,serif',family:'Merriweather',name:['Merriweather','Merriweather','Merriweather'],script:'latin'},
- playfair:{stack:'"Playfair Display",Georgia,serif',family:'Playfair Display',name:['Playfair Display','Playfair Display','Playfair Display'],script:'latin'},
- sourcesans:{stack:'"Source Sans 3",Arial,sans-serif',family:'Source Sans 3',name:['Source Sans 3','Source Sans 3','Source Sans 3'],script:'latin'},
- raleway:{stack:'Raleway,Arial,sans-serif',family:'Raleway',name:['Raleway','Raleway','Raleway'],script:'latin'},
- ubuntu:{stack:'Ubuntu,Arial,sans-serif',family:'Ubuntu',name:['Ubuntu','Ubuntu','Ubuntu'],script:'latin'},
+ merriweather:{stack:'Merriweather,Georgia,serif',family:'Merriweather',name:['Merriweather','Merriweather','Merriweather'],script:'latin',web:true},
+ playfair:{stack:'"Playfair Display",Georgia,serif',family:'Playfair Display',name:['Playfair Display','Playfair Display','Playfair Display'],script:'latin',web:true},
+ sourcesans:{stack:'"Source Sans 3",Arial,sans-serif',family:'Source Sans 3',name:['Source Sans 3','Source Sans 3','Source Sans 3'],script:'latin',web:true},
+ raleway:{stack:'Raleway,Arial,sans-serif',family:'Raleway',name:['Raleway','Raleway','Raleway'],script:'latin',web:true},
+ ubuntu:{stack:'Ubuntu,Arial,sans-serif',family:'Ubuntu',name:['Ubuntu','Ubuntu','Ubuntu'],script:'latin',web:true},
  avenir:{stack:'"Avenir Next",Avenir,system-ui,sans-serif',name:['Avenir Next','Avenir Next','Avenir Next'],script:'latin'},
  helvetica:{stack:'"Helvetica Neue",Helvetica,Arial,sans-serif',name:['Helvetica Neue','Helvetica Neue','Helvetica Neue'],script:'latin'},
  trebuchet:{stack:'"Trebuchet MS",Verdana,Arial,sans-serif',name:['Trebuchet','Trebuchet','Trebuchet'],script:'latin'},
@@ -67,13 +67,20 @@ function apply(){
 }
 async function choose(which,id){
  if(!['fa','latin'].includes(which)||!Object.hasOwn(fonts,id))return false;
- const request=++generation,f=fonts[id];announce(L('در حال بارگذاری فونت…','Loading font…','Učitavanje fonta…'));
+ const request=++generation,f=fonts[id];announce(L('در حال اعمال فونت…','Applying font…','Primjena fonta…'));
  try{
-  if(f.family){if(!document.fonts?.load)throw Error('Font loading unavailable');const sample=which==='fa'?'پژوهش کتاب مقدس — گچ‌پژ — ۱۲۳':'Čitati riječ: č ć ž š đ — 123';const faces=await document.fonts.load(`20px "${f.family}"`,sample);if(!faces.length||!faces.every(face=>face.status==='loaded'))throw Error('Font did not load')}
-  if(request!==generation)return false;
   const current=read(KEY)||{},next={...current,[which]:id};localStorage.setItem(KEY,JSON.stringify(next));
   if(which===script())localStorage.setItem(OLD,id);
   const theme=read('nh7_theme_studio_v453');if(theme&&Object.hasOwn(theme,which)){theme[which]=id;localStorage.setItem('nh7_theme_studio_v453',JSON.stringify(theme))}
+  last='';apply();
+  if(f.family&&document.fonts?.load){
+    const sample=which==='fa'?'پژوهش کتاب مقدس — گچ‌پژ — ۱۲۳':'Čitati riječ: č ć ž š đ — 123';
+    try{
+      const faces=await document.fonts.load(`20px "${f.family}"`,sample);
+      if(!f.web&&(!faces.length||!faces.every(face=>face.status==='loaded')))throw Error('Bundled font did not load');
+    }catch(err){if(!f.web)throw err}
+  }
+  if(request!==generation)return false;
   last='';apply();announce(L('فونت اعمال و ذخیره شد: ','Font applied and saved: ','Font primijenjen i spremljen: ')+label(f));
   window.dispatchEvent(new CustomEvent('nh7:font454',{detail:{script:which,id}}));mount();return true;
  }catch(_){if(request===generation){announce(L('فونت بارگذاری نشد؛ انتخاب قبلی حفظ شد.','Font could not load; the previous choice was kept.','Font nije učitan; prethodni izbor je sačuvan.'),true);apply();mount()}return false}
