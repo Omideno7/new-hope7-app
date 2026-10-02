@@ -1,0 +1,127 @@
+name: QA Appearance + Player v523 Candidate
+
+on:
+  push:
+    branches:
+      - release/appearance-player-v522-candidate-20261002
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify candidate scope
+        run: |
+          set -euo pipefail
+          base=968eb672cdd45f3af537cd1ed835fef4edf940e0
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed
+          allowed=(
+            '.github/workflows/qa-appearance-player-v523-candidate.yml'
+            'css/nh7-appearance-personalization-v514.css'
+            'css/nh7-icons-v517.css'
+            'css/nh7-player-volume-v521.css'
+            'index.html'
+            'js/nh7-appearance-personalization-v514.js'
+            'js/nh7-fonts-v454.js'
+            'js/nh7-icons-v517.js'
+            'js/nh7-media-player-v500.js'
+            'js/nh7-theme-studio-v453.js'
+            'service-worker.js'
+            'sw-offline-v329.js'
+            'sw-release-core-v403.js'
+          )
+          printf '%s\n' "${allowed[@]}" | sort > /tmp/allowed
+          diff -u /tmp/allowed /tmp/changed
+
+      - name: JavaScript syntax
+        run: |
+          set -euo pipefail
+          node --check js/nh7-appearance-personalization-v514.js
+          node --check js/nh7-fonts-v454.js
+          node --check js/nh7-icons-v517.js
+          node --check js/nh7-media-player-v500.js
+          node --check js/nh7-theme-studio-v453.js
+          node --check service-worker.js
+          node --check sw-offline-v329.js
+          node --check sw-release-core-v403.js
+
+      - name: Verify approved appearance system
+        run: |
+          set -euo pipefail
+          grep -q "system:\['فونت خود دستگاه','Device font','Font uređaja'\]" js/nh7-appearance-personalization-v514.js
+          for style in classic tactile glass minimal material outline pill aurora clay floating neon motion; do
+            grep -q "$style:" js/nh7-appearance-personalization-v514.js
+          done
+          grep -q "function stylePreviewHtml" js/nh7-appearance-personalization-v514.js
+          grep -q "بازگشت به تنظیمات اولیه" js/nh7-appearance-personalization-v514.js
+          grep -q "data-nh7-eye-reader514" css/nh7-appearance-personalization-v514.css
+          grep -q "prefers-reduced-motion:reduce" css/nh7-appearance-personalization-v514.css
+          grep -q "data-more-navigation456" css/nh7-appearance-personalization-v514.css
+
+      - name: Verify compact SVG player UI
+        run: |
+          set -euo pipefail
+          grep -q "NH7IconsV517" js/nh7-icons-v517.js
+          grep -q "grid-template-columns:repeat(4,64px)" css/nh7-icons-v517.css
+          grep -q "data-p500-bless" js/nh7-icons-v517.js
+          grep -q "data-p500-like" js/nh7-icons-v517.js
+          grep -q "data-mute" js/nh7-icons-v517.js
+          grep -q "single-layer compact colorful player controls" css/nh7-icons-v517.css
+
+      - name: Verify mute without volume slider
+        run: |
+          set -euo pipefail
+          grep -q "engine()?.toggleMediaMute?.();sync();return" js/nh7-media-player-v500.js
+          grep -q "data-mute aria-pressed=\"false\"" js/nh7-media-player-v500.js
+          grep -q "\[data-volume-row\]" css/nh7-player-volume-v521.css
+          grep -q "\[data-volume-note\]" css/nh7-player-volume-v521.css
+          grep -q "\[data-mute\]" css/nh7-player-volume-v521.css
+          grep -q "display:grid!important" css/nh7-player-volume-v521.css
+          grep -q "data-mute].is-muted" css/nh7-player-volume-v521.css
+
+      - name: Verify approved download progress survived integration
+        run: |
+          set -euo pipefail
+          grep -q "const VERSION='5.2.3-approved-integrated'" js/nh7-media-player-v500.js
+          grep -q "function downloadMirror(item)" js/nh7-media-player-v500.js
+          grep -q "function syncDownloadVisual(item)" js/nh7-media-player-v500.js
+          grep -q "async function downloadCurrent()" js/nh7-media-player-v500.js
+          grep -q "data-download-icon" js/nh7-media-player-v500.js
+          grep -q "data-download-label" js/nh7-media-player-v500.js
+          grep -q "data-download-progress" js/nh7-media-player-v500.js
+          grep -q "این فایل قبلاً دانلود شده است" js/nh7-media-player-v500.js
+          grep -q "syncDownloadVisual(item);" js/nh7-media-player-v500.js
+          grep -q "is-downloading" js/nh7-icons-v517.js
+          grep -q "is-downloaded" js/nh7-icons-v517.js
+          grep -q "Integrated v523 download state" css/nh7-icons-v517.css
+          grep -q "font-size:9px!important" css/nh7-icons-v517.css
+          grep -q "color:#16a34a!important" css/nh7-icons-v517.css
+
+      - name: Verify cache and runtime wiring
+        run: |
+          set -euo pipefail
+          grep -q 'js/nh7-media-player-v500.js?v=5.2.3-integrated' index.html
+          grep -q 'css/nh7-icons-v517.css?v=5.2.3-integrated' index.html
+          grep -q 'js/nh7-icons-v517.js?v=5.2.3-integrated' index.html
+          grep -q 'service-worker.js?v=4.8.5-appearance-player523' index.html
+          grep -q "nh7-release-core-v523-appearance-player-integrated" sw-release-core-v403.js
+          grep -q "v2.3.9.59-appearance-player523" sw-offline-v329.js
+          grep -q "5.2.3-appearance-player523" service-worker.js
+          for asset in css/nh7-appearance-personalization-v514.css css/nh7-icons-v517.css css/nh7-player-volume-v521.css js/nh7-appearance-personalization-v514.js js/nh7-icons-v517.js js/nh7-media-player-v500.js; do
+            grep -q "$asset" sw-release-core-v403.js
+            grep -q "$asset" sw-offline-v329.js
+          done
+
+      - name: Protect unrelated production runtime and data
+        run: |
+          set -euo pipefail
+          base=968eb672cdd45f3af537cd1ed835fef4edf940e0
+          git diff --exit-code "$base"...HEAD --             js/app.js js/nh7-audio-classic-v484.js js/nh7-audio-library-v500.js             'js/nh7-school-*' 'js/nh7-admin-*' 'supabase/**' 'data/**'
+          echo "Unrelated app logic, audio engine, School, Admin, Supabase and data are unchanged."
