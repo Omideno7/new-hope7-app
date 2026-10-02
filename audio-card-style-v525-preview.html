@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>New Hope 7 — Audio Card Style Preview</title>
+<style>
+:root{
+ --bg:#eef8ff;--card:#ffffff;--ink:#17364e;--muted:#6c8091;--accent:#1858a4;--accent2:#21b978;--line:#d6e4ef;
+ font-family:system-ui,-apple-system,"SF Pro Display","Segoe UI",Tahoma,sans-serif;
+}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#f7fbff,var(--bg));color:var(--ink)}
+main{max-width:760px;margin:auto;padding:18px 16px 40px}
+h1{font-size:1.2rem;margin:0 0 5px}p.lead{font-size:.82rem;line-height:1.7;color:var(--muted);margin:0 0 14px}
+.themebar{display:flex;gap:7px;overflow:auto;margin-bottom:18px}
+.themebar button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 12px;font-weight:800;white-space:nowrap}
+.themebar button.active{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 18%,transparent)}
+.option{margin:0 0 18px;padding:13px;border:1px solid var(--line);border-radius:20px;background:color-mix(in srgb,var(--card) 88%,transparent);box-shadow:0 12px 28px #15324a0c}
+.option-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.option-head strong{font-size:.95rem}.tag{font-size:.65rem;color:var(--muted)}
+.shelf{display:flex;gap:10px;overflow:hidden;padding:6px 2px 12px}
+.audio-card{width:118px;flex:0 0 118px}
+.art{position:relative;width:100%;aspect-ratio:1;border-radius:22px;display:grid;place-items:center;overflow:visible}
+.art img{width:68%;height:68%;object-fit:contain}
+.title{font-size:.72rem;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:7px}
+.meta{font-size:.6rem;color:var(--muted);margin-top:2px}
+.badge{position:absolute;inset-inline-end:7px;top:7px;width:25px;height:25px;border-radius:50%;display:grid;place-items:center;font-size:.72rem;font-weight:900}
+.progress{height:3px;border-radius:999px;background:color-mix(in srgb,var(--ink) 12%,transparent);margin-top:6px;overflow:hidden}
+.progress>i{display:block;height:100%;width:62%;background:var(--accent);border-radius:inherit}
+
+/* A — Soft 3D Badge */
+.model-a .art{
+ background:linear-gradient(145deg,color-mix(in srgb,var(--card) 94%,#fff),color-mix(in srgb,var(--card) 84%,var(--accent)));
+ border:1px solid color-mix(in srgb,var(--accent) 16%,#fff);
+ box-shadow:10px 12px 22px #19334d18,-7px -7px 16px #ffffffb0,inset 0 1px 0 #ffffffc8;
+}
+.model-a .art:after{content:"";position:absolute;inset:8px;border-radius:17px;box-shadow:inset 0 -8px 18px color-mix(in srgb,var(--accent) 8%,transparent),inset 0 1px 0 #fff7;pointer-events:none}
+.model-a .badge{background:linear-gradient(145deg,#fff,color-mix(in srgb,var(--accent) 11%,#fff));color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 20%,#fff);box-shadow:0 5px 12px #102a421f}
+
+/* B — Soft Glass Card */
+.model-b .art{
+ background:linear-gradient(145deg,#ffffff82,#ffffff32);
+ border:1px solid #ffffffa8;
+ box-shadow:0 14px 30px color-mix(in srgb,var(--accent) 16%,transparent),inset 0 1px 0 #fff;
+ backdrop-filter:blur(16px) saturate(1.16);-webkit-backdrop-filter:blur(16px) saturate(1.16);
+}
+.model-b .art:before{content:"";position:absolute;inset:-12px;z-index:-1;border-radius:30px;background:radial-gradient(circle at 20% 15%,color-mix(in srgb,var(--accent) 28%,transparent),transparent 46%),radial-gradient(circle at 90% 85%,color-mix(in srgb,var(--accent2) 22%,transparent),transparent 44%);filter:blur(8px)}
+.model-b .badge{background:#ffffff8c;color:var(--accent);border:1px solid #fff;box-shadow:0 4px 13px #0002;backdrop-filter:blur(10px)}
+
+/* C — Minimal Premium Frame */
+.model-c .art{
+ background:var(--card);
+ border:1px solid color-mix(in srgb,var(--accent) 18%,var(--line));
+ box-shadow:0 9px 20px #15324a12;
+ border-radius:19px;
+}
+.model-c .art img{width:62%;height:62%}
+.model-c .art:after{content:"";position:absolute;inset:5px;border:1px solid color-mix(in srgb,var(--accent) 9%,transparent);border-radius:14px;pointer-events:none}
+.model-c .badge{background:var(--accent);color:white;border:2px solid var(--card);box-shadow:0 3px 9px #0002}
+.choice{width:100%;margin-top:8px;border:1px solid var(--line);border-radius:13px;background:var(--card);color:var(--ink);min-height:40px;font-weight:850}
+.choice:active{transform:scale(.985)}
+.note{font-size:.7rem;color:var(--muted);line-height:1.7;margin-top:14px;padding:10px 12px;border:1px dashed var(--line);border-radius:14px}
+@media(max-width:430px){.audio-card{width:104px;flex-basis:104px}.shelf{gap:9px}.option{padding:11px}}
+</style>
+</head>
+<body>
+<main>
+  <h1>سه مدل برای کارت‌های پیام صوتی</h1>
+  <p class="lead">هر سه مدل اندازه و ساختار ثابتی دارند؛ فقط رنگ، نور و افکتشان با Theme انتخابی هماهنگ می‌شود.</p>
+  <div class="themebar">
+    <button class="active" data-theme="light">روشن آبی</button>
+    <button data-theme="emerald">سبز</button>
+    <button data-theme="night">تیره</button>
+    <button data-theme="violet">بنفش</button>
+  </div>
+
+  <section class="option model-a">
+      <div class="option-head"><strong>A — Soft 3D Badge</strong><span class="tag">برجسته، نرم و سه‌بعدی</span></div>
+      <div class="shelf"><article class="audio-card"><div class="art"><img src="assets/new-hope7-logo-512.png" alt=""><span class="badge">▶</span></div><div class="title">رهبری سلول</div><div class="meta">ادامه از 1:21</div><div class="progress"><i></i></div></article><article class="audio-card"><div class="art"><img src="assets/new-hope7-logo-512.png" alt=""><span class="badge">★</span></div><div class="title">روز بیست و نهم</div><div class="meta">ادامه از 4:03</div><div class="progress"><i></i></div></article><article class="audio-card"><div class="art"><img src="assets/new-hope7-logo-512.png" alt=""><span class="badge">✓</span></div><div class="title">بخشش</div><div class="meta">21:47</div><div class="progress"><i></i></div></article></div>
+      <button class="choice" type="button" data-choice="A">این مدل را می‌پسندم</button>
+    </section><section class="option model-b">
+      <div class="option-head"><strong>B — Soft Glass Card</strong><span class="tag">شیشه‌ای، لوکس و مدرن</span></div>
+      <div class="shelf"><article class="audio-card"><div class="art"><img src="assets/new-hope7-logo-512.png" alt=""><span class="badge">▶</span></div><div class="title">رهبری سلول</div><div class="meta">ادامه از 1:21</div><div class="progress"><i></i></div></article><article class="audio-card"><div class="art"><img src="assets/new-hope7-logo-512.png" alt=""><span class="badge">★</span></div><div class="title">روز بیست و نهم</div><div class="meta">ادامه از 4:03</div><div class="progress"><i></i></div></article><article class="audio-card"><div class="art"><img src="assets/new-hope7-logo-512.png" alt=""><span class="badge">✓</span></div><div class="title">بخشش</div><div class="meta">21:47</div><div class="progress"><i></i></div></article></div>
+      <button class="choice" type="button" data-choice="B">این مدل را می‌پسندم</button>
+    </section><section class="option model-c">
+      <div class="option-head"><strong>C — Minimal Premium Frame</strong><span class="tag">مینیمال، ظریف و حرفه‌ای</span></div>
+      <div class="shelf"><article class="audio-card"><div class="art"><img src="assets/new-hope7-logo-512.png" alt=""><span class="badge">▶</span></div><div class="title">رهبری سلول</div><div class="meta">ادامه از 1:21</div><div class="progress"><i></i></div></article><article class="audio-card"><div class="art"><img src="assets/new-hope7-logo-512.png" alt=""><span class="badge">★</span></div><div class="title">روز بیست و نهم</div><div class="meta">ادامه از 4:03</div><div class="progress"><i></i></div></article><article class="audio-card"><div class="art"><img src="assets/new-hope7-logo-512.png" alt=""><span class="badge">✓</span></div><div class="title">بخشش</div><div class="meta">21:47</div><div class="progress"><i></i></div></article></div>
+      <button class="choice" type="button" data-choice="C">این مدل را می‌پسندم</button>
+    </section>
+
+  <div class="note" id="status">این صفحه فقط Preview است و هیچ تغییری در اپ اصلی ایجاد نمی‌کند.</div>
+</main>
+<script>
+const themes={
+ light:{bg:'#eef8ff',card:'#ffffff',ink:'#17364e',muted:'#6c8091',accent:'#1858a4',accent2:'#21b978',line:'#d6e4ef'},
+ emerald:{bg:'#eefaf5',card:'#ffffff',ink:'#143d34',muted:'#6f867f',accent:'#168b68',accent2:'#50c77b',line:'#d2e9df'},
+ night:{bg:'#0b1620',card:'#122433',ink:'#eef7ff',muted:'#9bb0bf',accent:'#4aa3ff',accent2:'#41d49a',line:'#294052'},
+ violet:{bg:'#f5f0ff',card:'#ffffff',ink:'#362653',muted:'#817592',accent:'#7c3aed',accent2:'#c05cff',line:'#e1d7f4'}
+};
+document.querySelectorAll('[data-theme]').forEach(b=>b.addEventListener('click',()=>{
+ document.querySelectorAll('[data-theme]').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+ const t=themes[b.dataset.theme];for(const [k,v] of Object.entries(t))document.documentElement.style.setProperty('--'+k,v);
+}));
+document.querySelectorAll('[data-choice]').forEach(b=>b.addEventListener('click',()=>{
+ document.getElementById('status').textContent='انتخاب موقت شما: مدل '+b.dataset.choice+' — فقط برای مقایسه در Preview.';
+}));
+</script>
+</body>
+</html>
