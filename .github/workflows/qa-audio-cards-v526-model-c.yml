@@ -1,0 +1,66 @@
+name: QA Audio Cards v526 Model C Preview
+
+on:
+  push:
+    branches:
+      - feature/audio-cards-v526-model-c-preview-20261002
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify v526 scope
+        run: |
+          set -euo pipefail
+          base=ddf01ddc48ddeb08ee16d6f4e4575025a6198032
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed
+          allowed=(
+            '.github/workflows/qa-audio-cards-v526-model-c.yml'
+            'js/nh7-audio-library-v500.js'
+          )
+          printf '%s\n' "${allowed[@]}" | sort > /tmp/allowed
+          diff -u /tmp/allowed /tmp/changed
+
+      - name: JavaScript syntax
+        run: |
+          node --check js/nh7-audio-library-v500.js
+
+      - name: Verify selected Model C card structure
+        run: |
+          set -euo pipefail
+          grep -q "selected Model C: Minimal Premium Frame" js/nh7-audio-library-v500.js
+          grep -q "nh7al500-art-c" js/nh7-audio-library-v500.js
+          grep -q "nh7al500-status" js/nh7-audio-library-v500.js
+          grep -q 'data-al-kind="'+kind+'"' js/nh7-audio-library-v500.js
+          grep -q "continue.*favorite.*recent" js/nh7-audio-library-v500.js
+
+      - name: Verify geometry is theme-stable
+        run: |
+          set -euo pipefail
+          grep -q "width:96px!important" js/nh7-audio-library-v500.js
+          grep -q "height:96px" js/nh7-audio-library-v500.js
+          grep -q "width:64%!important" js/nh7-audio-library-v500.js
+          grep -q "border-radius:19px" js/nh7-audio-library-v500.js
+          grep -q "var(--accent" js/nh7-audio-library-v500.js
+          grep -q "var(--card" js/nh7-audio-library-v500.js
+
+      - name: Verify real continue-list progress
+        run: |
+          set -euo pipefail
+          grep -q "nh7al500-card-progress" js/nh7-audio-library-v500.js
+          grep -q "now/dur\*100" js/nh7-audio-library-v500.js
+          grep -q -- "--nh7-al-progress" js/nh7-audio-library-v500.js
+
+      - name: Protect player favorite and unrelated runtime
+        run: |
+          set -euo pipefail
+          base=ddf01ddc48ddeb08ee16d6f4e4575025a6198032
+          git diff --exit-code "$base"...HEAD --             js/nh7-media-player-v500.js js/nh7-audio-classic-v484.js js/nh7-icons-v517.js             js/app.js js/nh7-fonts-v454.js js/nh7-theme-studio-v453.js             css/nh7-appearance-personalization-v514.css css/nh7-icons-v517.css css/nh7-player-volume-v521.css             service-worker.js sw-offline-v329.js sw-release-core-v403.js             'js/nh7-school-*' 'js/nh7-admin-*' 'supabase/**' 'data/**'
