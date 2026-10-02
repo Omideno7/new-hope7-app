@@ -6,10 +6,10 @@
 if(window.__NH7_MEDIA_PLAYER_V500__)return;
 window.__NH7_MEDIA_PLAYER_V500__=true;
 
-const VERSION='5.0.0-preview-20260930';
+const VERSION='5.2.3-approved-integrated';
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const FAVORITES_KEY='nh7_audio_favorites_v500';
-let root=null,expanded=false,lastTrackKey='',syncTimer=0,seeking=false,seekPreview=0,lastRecentId='',iosVolumeVisual=1;
+let root=null,expanded=false,lastTrackKey='',syncTimer=0,seeking=false,seekPreview=0,lastRecentId='',iosVolumeVisual=1,downloadUi=null;
 
 const lang=()=>{const v=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return ['fa','en','hr'].includes(v)?v:'en'};
 const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
@@ -49,6 +49,7 @@ html.nh7p500-active .nh7-mini485,html.nh7p500-active .nh7-now-playing-v484,html.
 .nh7p500-seek{width:100%;margin-top:18px;accent-color:var(--nh7p-accent)}.nh7p500-time{display:flex;justify-content:space-between;margin-top:4px;font-size:.67rem;color:var(--nh7p-muted)}
 .nh7p500-main{display:flex;align-items:center;justify-content:space-around;gap:7px;margin:14px 0}.nh7p500-main button{width:40px;height:40px;border:0;border-radius:50%;background:color-mix(in srgb,var(--nh7p-text) 8%,transparent);color:var(--nh7p-text);font-weight:900;font-size:.84rem}.nh7p500-main .big{width:58px;height:58px;background:var(--nh7p-text);color:var(--nh7p-bg);font-size:1.12rem;box-shadow:0 7px 24px #0004}.nh7p500-main button:disabled{opacity:.3}
 .nh7p500-tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.nh7p500-tools button{min-width:0;min-height:44px;border:1px solid color-mix(in srgb,var(--nh7p-text) 18%,transparent);border-radius:12px;background:color-mix(in srgb,var(--nh7p-card) 88%,var(--nh7p-bg));color:var(--nh7p-text)!important;padding:5px 2px;font-weight:850}.nh7p500-tools button span{display:block;font-size:.86rem}.nh7p500-tools button small{display:block;margin-top:2px;font-size:.52rem;color:var(--nh7p-text)!important;opacity:.78;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.nh7p500-tools [data-favorite].on{color:#f59e0b}
+.nh7p500-tools [data-download]{position:relative;overflow:hidden}.nh7p500-tools [data-download].is-downloaded{border-color:color-mix(in srgb,#16a34a 58%,var(--nh7p-line));background:color-mix(in srgb,#16a34a 12%,var(--nh7p-card))}.nh7p500-tools [data-download].is-downloading{pointer-events:none}.nh7p500-download-progress{display:block;position:absolute;left:5px;right:5px;bottom:3px;height:2px;border-radius:99px;background:color-mix(in srgb,var(--nh7p-text) 14%,transparent);overflow:hidden}.nh7p500-download-progress>b{display:block;height:100%;width:0;background:var(--nh7p-accent);transition:width .18s ease}
 .nh7p500-volume{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;margin-top:10px}.nh7p500-volume input{width:100%;accent-color:var(--nh7p-accent)}.nh7p500-volume[hidden]{display:none!important}
 .nh7p500-panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}.nh7p500-panel-head strong{font-size:.74rem}.nh7p500-panel-head button{width:26px;height:26px;border:0;border-radius:50%;background:color-mix(in srgb,var(--nh7p-text) 8%,transparent);color:var(--nh7p-text);padding:0}
 .nh7p500-queue{margin-top:10px;padding:9px;border:1px solid color-mix(in srgb,var(--nh7p-text) 12%,transparent);border-radius:13px;background:color-mix(in srgb,var(--nh7p-card) 72%,transparent)}.nh7p500-queue[hidden]{display:none!important}.nh7p500-queue-list{display:grid;gap:5px}.nh7p500-queue-item{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:7px;align-items:center;width:100%;min-height:40px;border:0;border-radius:10px;background:color-mix(in srgb,var(--nh7p-text) 5%,transparent);color:var(--nh7p-text);padding:3px 6px;text-align:start}.nh7p500-queue-item img{width:34px;height:34px;border-radius:8px;object-fit:cover}.nh7p500-queue-item b{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.64rem}.nh7p500-queue-item small{font-size:.5rem;color:var(--nh7p-muted)}
@@ -109,10 +110,10 @@ function ensure(){
         <div class="nh7p500-tools">
           <button type="button" data-speed><span data-rate>1×</span><small>${L('سرعت','Speed','Brzina')}</small></button>
           <button type="button" data-p500-bible><span>📖</span><small>${L('کتاب مقدس','Bible','Biblija')}</small></button>
-          <button type="button" data-mute><span data-mute-icon>🔊</span><small>${L('صدا','Volume','Glasnoća')}</small></button>
+          <button type="button" data-mute aria-pressed="false"><span data-mute-icon>🔊</span><small>${L('بی‌صدا','Mute','Isključi')}</small></button>
           <button type="button" data-favorite><span data-favorite-icon>☆</span><small>${L('علاقه‌مندی','Favorite','Favorit')}</small></button>
           <button type="button" data-note><span>📝</span><small>${L('یادداشت','Notes','Bilješke')}</small></button>
-          <button type="button" data-download><span>⇩</span><small>${L('دانلود','Download','Preuzmi')}</small></button>
+          <button type="button" data-download><span data-download-icon>⇩</span><small data-download-label>${L('دانلود','Download','Preuzmi')}</small><i class="nh7p500-download-progress" aria-hidden="true"><b data-download-progress></b></i></button>
           <button type="button" data-p500-share><span>↗</span><small>${L('اشتراک','Share','Podijeli')}</small></button>
           <button type="button" data-queue><span>☷</span><small>${L('صف پخش','Queue','Red')}</small></button>
         </div>
@@ -213,10 +214,58 @@ function shareCurrent(){
   const item=state().current;if(!isSermon(item))return;
   withCurrentCard(card=>{const b=card.querySelector('[data-nh7-social-v440] [data-share]');if(!b)return false;b.click();return true});
 }
-function downloadCurrent(){
+function downloadMirror(item){
+  const card=currentCard(item);if(!card)return{downloaded:false,percent:null};
+  const b=card.querySelector('[data-classic-download],[data-external-classic-download]');
+  if(!b)return{downloaded:false,percent:null};
+  const downloaded=b.classList.contains('is-downloaded-v400')||b.dataset.offlineCached==='1';
+  const m=String(b.textContent||'').match(/(\d{1,3})\s*%/),percent=m?Math.max(0,Math.min(99,Number(m[1])||0)):null;
+  return{downloaded,percent};
+}
+function syncDownloadVisual(item){
+  const r=ensure(),button=r.querySelector('[data-download]');if(!button||!item)return;
+  const mirrored=downloadMirror(item),id=mediaId(item);
+  if(mirrored.downloaded){downloadUi=null}
+  else if(downloadUi?.id===id&&downloadUi.active&&mirrored.percent!==null)downloadUi.percent=mirrored.percent;
+  const active=downloadUi?.id===id&&downloadUi.active&&!mirrored.downloaded;
+  const percent=mirrored.downloaded?100:(mirrored.percent!==null?mirrored.percent:(active?downloadUi.percent:null));
+  const icon=button.querySelector('[data-download-icon]'),label=button.querySelector('[data-download-label]'),bar=button.querySelector('[data-download-progress]');
+  button.classList.toggle('is-downloaded',mirrored.downloaded);
+  button.classList.toggle('is-downloading',active);
+  if(bar)bar.style.width=(mirrored.downloaded?100:(percent||0))+'%';
+  if(mirrored.downloaded){if(icon)icon.textContent='✓';if(label)label.textContent=L('دانلود شد','Downloaded','Preuzeto');return}
+  if(active){if(icon)icon.textContent=percent!==null?Math.round(percent)+'%':'…';if(label)label.textContent=L('در حال دانلود','Downloading','Preuzimanje');return}
+  if(icon)icon.textContent='⇩';if(label)label.textContent=L('دانلود','Download','Preuzmi');
+}
+async function waitForDownloadButton(item,timeoutMs=2500){
+  const started=Date.now();
+  while(Date.now()-started<timeoutMs){
+    const card=currentCard(item),b=card?.querySelector('[data-classic-download]');
+    if(b)return b;
+    await new Promise(resolve=>setTimeout(resolve,60));
+  }
+  return null;
+}
+async function downloadCurrent(){
   const item=state().current;if(!item)return;
-  if(window.NH7_PLAYER_TEST_MODE){notice(L('حالت تست امن: فایل آفلاین شما تغییر نمی‌کند.','Safe test: your offline file is not changed.','Sigurni test: offline datoteka se ne mijenja.'));return}
-  engine()?.downloadItem?.(item)
+  const id=mediaId(item),status=downloadMirror(item);
+  if(status.downloaded){notice(L('این فایل قبلاً دانلود شده است ✓ برای حذف، از تنظیمات > دانلودها استفاده کنید.','This file is already downloaded ✓ Remove it from Settings > Downloads.','Ova je datoteka već preuzeta ✓ Uklonite je u Postavke > Preuzimanja.'));return}
+  if(window.NH7_PLAYER_TEST_MODE&&!window.NH7_PLAYER_TEST_ALLOW_DOWNLOADS){notice(L('حالت تست امن: فایل آفلاین شما تغییر نمی‌کند.','Safe test: your offline file is not changed.','Sigurni test: offline datoteka se ne mijenja.'));return}
+  if(downloadUi?.active)return;
+  downloadUi={id,active:true,percent:0};syncDownloadVisual(item);
+  const promise=Promise.resolve(engine()?.downloadItem?.(item));
+  const hiddenButton=await waitForDownloadButton(item);
+  let observer=null;
+  if(hiddenButton){
+    const reflect=()=>{const m=downloadMirror(item);if(downloadUi?.id!==id)return;if(m.percent!==null)downloadUi.percent=m.percent;if(m.downloaded)downloadUi.active=false;syncDownloadVisual(item)};
+    observer=new MutationObserver(reflect);observer.observe(hiddenButton,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['class','data-offline-cached','disabled']});reflect();
+  }
+  try{await promise}catch(_){}
+  finally{try{observer?.disconnect()}catch(_){}}
+  for(let i=0;i<12;i++){const m=downloadMirror(item);if(m.downloaded){downloadUi=null;syncDownloadVisual(item);return}await new Promise(resolve=>setTimeout(resolve,120))}
+  if(downloadUi?.id===id)downloadUi=null;
+  syncDownloadVisual(item);
+  if(!downloadMirror(item).downloaded)notice(L('دانلود کامل نشد؛ دوباره تلاش کنید.','Download did not finish; please try again.','Preuzimanje nije dovršeno; pokušajte ponovno.'));
 }
 function toggleQueue(){const p=ensure().querySelector('[data-queue-panel]');if(!p)return;p.hidden=!p.hidden;if(!p.hidden)renderQueue()}
 function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
@@ -267,7 +316,7 @@ function bind(){
     if(event.target.closest('[data-back]')&&a){a.currentTime=Math.max(0,Number(a.currentTime||0)-15);return}
     if(event.target.closest('[data-forward]')&&a){a.currentTime=Math.min(Number.isFinite(a.duration)?a.duration:Infinity,Number(a.currentTime||0)+30);return}
     if(event.target.closest('[data-speed]'))return cycleSpeed();
-    if(event.target.closest('[data-mute]')){if(isIOSWeb()){notice(L('برای تنظیم حجم صدا از دکمه‌های آیفون استفاده کنید.','Use the iPhone volume buttons to adjust volume.','Za glasnoću koristite tipke na iPhoneu.'));return}return engine()?.toggleMediaMute?.()}
+    if(event.target.closest('[data-mute]')){engine()?.toggleMediaMute?.();sync();return}
     if(event.target.closest('[data-p500-bible]'))return window.NH7QuickBibleV454?.open?.(event.target.closest('[data-p500-bible]'));
     if(event.target.closest('[data-favorite]'))return toggleFavorite();
     if(event.target.closest('[data-note]'))return openNotes();
@@ -342,7 +391,8 @@ function sync(){
   if(volumeRow)volumeRow.hidden=false;
   const volumeNote=r.querySelector('[data-volume-note]');if(volumeNote)volumeNote.classList.toggle('show',isIOSWeb());
   if(volume&&!volume.matches(':active'))volume.value=isIOSWeb()?String(iosVolumeVisual):String(Number(a.volume??1));
-  const muteIcon=r.querySelector('[data-mute-icon]');if(muteIcon)muteIcon.textContent=a.muted?'🔇':Number(a.volume||1)<.5?'🔉':'🔊';
+  const muteButton=r.querySelector('[data-mute]'),muteIcon=r.querySelector('[data-mute-icon]');if(muteIcon)muteIcon.textContent=a.muted?'🔇':'🔊';if(muteButton){muteButton.classList.toggle('is-muted',!!a.muted);muteButton.setAttribute('aria-pressed',String(!!a.muted));muteButton.setAttribute('aria-label',a.muted?L('وصل کردن صدا','Unmute','Uključi zvuk'):L('بی‌صدا کردن','Mute','Isključi zvuk'));const label=muteButton.querySelector('small');if(label)label.textContent=a.muted?L('وصل صدا','Unmute','Uključi'):L('بی‌صدا','Mute','Isključi')}
+  syncDownloadVisual(item);
   renderQueue();renderRelated();
   const key=mediaId(item)+'|'+art;
   if(key!==lastTrackKey){lastTrackKey=key;r.querySelector('[data-art]').style.backgroundImage=`url("${art.replace(/"/g,'%22')}")`;r.querySelector('[data-bg]').style.backgroundImage=`url("${art.replace(/"/g,'%22')}")`;r.querySelector('[data-cover]').src=art}
