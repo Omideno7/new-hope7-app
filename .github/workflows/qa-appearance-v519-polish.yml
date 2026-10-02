@@ -1,0 +1,74 @@
+name: QA Appearance v519 Polish Preview
+
+on:
+  push:
+    branches:
+      - fix/appearance-personalization-v519-polish-preview-20261002
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify v519 scope
+        run: |
+          set -e
+          base=c8d95ad4d4d404c17356d2ce16c3ce34b7f47b31
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed
+          allowed=(
+            '.github/workflows/qa-appearance-v519-polish.yml'
+            'css/nh7-appearance-personalization-v514.css'
+            'css/nh7-icons-v517.css'
+            'index.html'
+            'js/nh7-appearance-personalization-v514.js'
+            'js/nh7-icons-v517.js'
+          )
+          printf '%s\n' "${allowed[@]}" | sort > /tmp/allowed
+          diff -u /tmp/allowed /tmp/changed
+
+      - name: Syntax
+        run: |
+          node --check js/nh7-appearance-personalization-v514.js
+          node --check js/nh7-icons-v517.js
+
+      - name: Player icon and layout checks
+        run: |
+          grep -q "single-layer compact colorful player controls" css/nh7-icons-v517.css
+          grep -q "grid-template-columns:repeat(4,64px)" css/nh7-icons-v517.css
+          grep -q "text-indent:-9999px" css/nh7-icons-v517.css
+          grep -q "data-p500-bless" js/nh7-icons-v517.js
+          grep -q "data-p500-like" js/nh7-icons-v517.js
+          grep -q "data-mute" js/nh7-icons-v517.js
+          grep -q "Semantic colors" css/nh7-icons-v517.css
+          grep -q "Center transport icons perfectly" css/nh7-icons-v517.css
+
+      - name: Appearance preview and reset checks
+        run: |
+          grep -q "function stylePreviewHtml" js/nh7-appearance-personalization-v514.js
+          grep -q "پیش‌نمایش زنده" js/nh7-appearance-personalization-v514.js
+          grep -q "بازگشت به تنظیمات اولیه" js/nh7-appearance-personalization-v514.js
+          grep -q "اطلاعات و فایل‌های شما پاک نمی‌شوند" js/nh7-appearance-personalization-v514.js
+          grep -q "nh7-ap514-live-tools" css/nh7-appearance-personalization-v514.css
+          grep -q "data-more-navigation456" css/nh7-appearance-personalization-v514.css
+          grep -q "min-height:78px" css/nh7-appearance-personalization-v514.css
+
+      - name: v519 wiring
+        run: |
+          grep -q 'nh7-icons-v517.css?v=5.1.9' index.html
+          grep -q 'nh7-icons-v517.js?v=5.1.9' index.html
+          grep -q 'nh7-appearance-personalization-v514.js?v=5.1.9' index.html
+          grep -q "VERSION:'5.1.9'" js/nh7-appearance-personalization-v514.js
+          grep -q "VERSION:'5.1.9'" js/nh7-icons-v517.js
+
+      - name: Protect functional runtime
+        run: |
+          set -e
+          base=c8d95ad4d4d404c17356d2ce16c3ce34b7f47b31
+          git diff --exit-code "$base"...HEAD --             js/app.js js/nh7-media-player-v500.js js/nh7-audio-classic-v484.js             js/nh7-fonts-v454.js js/nh7-theme-studio-v453.js             service-worker.js sw-offline-v329.js sw-release-core-v403.js             'js/nh7-school-*' 'js/nh7-admin-*' 'supabase/**' 'data/**'
