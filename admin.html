@@ -452,8 +452,8 @@ function loadCanvasImage(src){
 }
 function fitCanvasTitle(ctx,text,maxWidth,maxLines){
   const words=String(text||'').trim().split(/\s+/).filter(Boolean);
-  for(let size=92;size>=46;size-=2){
-    ctx.font='700 '+size+'px Georgia, "Times New Roman", serif';
+  for(let size=88;size>=44;size-=2){
+    ctx.font='700 '+size+'px "NH7CoverLora", Georgia, "Times New Roman", serif';
     const lines=[];let line='';
     for(const word of words){
       const test=line?line+' '+word:word;
@@ -463,33 +463,44 @@ function fitCanvasTitle(ctx,text,maxWidth,maxLines){
     if(line)lines.push(line);
     if(lines.length<=maxLines&&lines.every(x=>ctx.measureText(x).width<=maxWidth))return{size,lines}
   }
-  ctx.font='700 46px Georgia, "Times New Roman", serif';
+  ctx.font='700 44px "NH7CoverLora", Georgia, "Times New Roman", serif';
   const lines=[];let line='';
   for(const word of words){const test=line?line+' '+word:word;if(ctx.measureText(test).width<=maxWidth)line=test;else{if(line)lines.push(line);line=word}}
   if(line)lines.push(line);
-  return{size:46,lines:lines.slice(0,maxLines)}
+  return{size:44,lines:lines.slice(0,maxLines)}
 }
 async function composeSermonCoverV537(backgroundDataUrl,title){
+  try{if(document.fonts){await Promise.allSettled([document.fonts.load('700 72px "NH7CoverLora"'),document.fonts.load('700 24px "NH7CoverInter"')])}}catch(_){}
   const bg=await loadCanvasImage(backgroundDataUrl);
-  const logo=await loadCanvasImage('assets/new-hope7-logo-512.png');
+  const logo=await loadCanvasImage('assets/new-hope7-logo-transparent.svg');
   const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=1024;
   const ctx=canvas.getContext('2d');
   const scale=Math.max(1024/bg.width,1024/bg.height),w=bg.width*scale,hg=bg.height*scale;
   ctx.drawImage(bg,(1024-w)/2,(1024-hg)/2,w,hg);
-  const shade=ctx.createLinearGradient(0,0,0,650);
-  shade.addColorStop(0,'rgba(5,20,38,.68)');shade.addColorStop(.52,'rgba(5,20,38,.30)');shade.addColorStop(1,'rgba(5,20,38,0)');
-  ctx.fillStyle=shade;ctx.fillRect(0,0,1024,700);
-  const logoSize=76,logoY=58;
-  ctx.drawImage(logo,(1024-logoSize)/2,logoY,logoSize,logoSize);
-  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#ffffff';
-  ctx.font='700 25px Georgia, "Times New Roman", serif';ctx.shadowColor='rgba(0,0,0,.45)';ctx.shadowBlur=12;
-  ctx.fillText('N E W   H O P E   7',512,166);
+  const vignette=ctx.createRadialGradient(512,470,90,512,500,720);
+  vignette.addColorStop(0,'rgba(2,10,25,.06)');vignette.addColorStop(.55,'rgba(2,10,25,.16)');vignette.addColorStop(1,'rgba(2,10,25,.58)');
+  ctx.fillStyle=vignette;ctx.fillRect(0,0,1024,1024);
+  const centerShade=ctx.createLinearGradient(0,250,0,790);
+  centerShade.addColorStop(0,'rgba(3,15,34,.10)');centerShade.addColorStop(.42,'rgba(3,15,34,.34)');centerShade.addColorStop(.62,'rgba(3,15,34,.34)');centerShade.addColorStop(1,'rgba(3,15,34,.08)');
+  ctx.fillStyle=centerShade;ctx.fillRect(0,210,1024,620);
+  const topShade=ctx.createLinearGradient(0,0,0,240);topShade.addColorStop(0,'rgba(2,10,24,.56)');topShade.addColorStop(1,'rgba(2,10,24,0)');
+  ctx.fillStyle=topShade;ctx.fillRect(0,0,1024,260);
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  const logoSize=72,logoY=48;
+  ctx.save();ctx.shadowColor='rgba(0,0,0,.52)';ctx.shadowBlur=18;ctx.shadowOffsetY=3;ctx.drawImage(logo,(1024-logoSize)/2,logoY,logoSize,logoSize);ctx.restore();
+  ctx.save();ctx.font='700 23px "NH7CoverInter", Arial, sans-serif';ctx.fillStyle='rgba(255,255,255,.96)';ctx.shadowColor='rgba(0,0,0,.62)';ctx.shadowBlur=12;ctx.shadowOffsetY=2;ctx.fillText('N E W   H O P E   7',512,151);ctx.restore();
+  const lineGrad=ctx.createLinearGradient(410,0,614,0);lineGrad.addColorStop(0,'rgba(244,214,139,0)');lineGrad.addColorStop(.5,'rgba(244,214,139,.95)');lineGrad.addColorStop(1,'rgba(244,214,139,0)');ctx.fillStyle=lineGrad;ctx.fillRect(410,184,204,2);
   const fitted=fitCanvasTitle(ctx,title,830,4);
-  ctx.font='700 '+fitted.size+'px Georgia, "Times New Roman", serif';
-  const lineHeight=Math.round(fitted.size*1.08),blockHeight=fitted.lines.length*lineHeight,startY=295-blockHeight/2;
-  fitted.lines.forEach((line,index)=>ctx.fillText(line,512,startY+index*lineHeight));
-  ctx.shadowBlur=0;
-  return canvas.toDataURL('image/webp',.92)
+  const lineHeight=Math.round(fitted.size*1.13),titleCenterY=505,startY=titleCenterY-((fitted.lines.length-1)*lineHeight)/2;
+  ctx.font='700 '+fitted.size+'px "NH7CoverLora", Georgia, "Times New Roman", serif';ctx.lineJoin='round';
+  fitted.lines.forEach((line,index)=>{const y=startY+index*lineHeight;ctx.save();ctx.shadowColor='rgba(0,0,0,.78)';ctx.shadowBlur=26;ctx.shadowOffsetY=5;ctx.strokeStyle='rgba(1,8,20,.34)';ctx.lineWidth=Math.max(2,Math.round(fitted.size*.025));ctx.strokeText(line,512,y);ctx.fillStyle='#ffffff';ctx.fillText(line,512,y);ctx.restore()});
+  const titleBottom=startY+((fitted.lines.length-1)*lineHeight),speakerY=Math.min(770,titleBottom+92);
+  ctx.fillStyle='rgba(244,214,139,.88)';ctx.fillRect(450,speakerY-35,124,2);
+  ctx.save();ctx.font='700 22px "NH7CoverInter", Arial, sans-serif';ctx.fillStyle='rgba(255,255,255,.96)';ctx.shadowColor='rgba(0,0,0,.62)';ctx.shadowBlur=14;ctx.shadowOffsetY=2;ctx.fillText('A P O S T L E   Y U H A N A',512,speakerY);ctx.restore();
+  return canvas.toDataURL('image/webp',.94)
+}
+function sermonCoverVisualDirectionV538(){
+  return 'Visual direction: premium cinematic editorial Christian sermon cover, sophisticated and emotionally powerful, one strong symbolic visual idea derived from the sermon theme, realistic high-end lighting and depth, elegant contemporary church aesthetic, full-bleed edge-to-edge artwork, never a white or blank background, never a framed poster or mockup, avoid generic stock-church imagery, keep the central title zone around the middle visually calmer and slightly darker while placing the strongest subject detail toward the sides or lower third, no text and no logo in the generated background.';
 }
 function showSermonCoverPreview(src){
   const img=document.getElementById('nh7SermonCoverPreview'),empty=document.getElementById('nh7SermonCoverPreviewEmpty');
