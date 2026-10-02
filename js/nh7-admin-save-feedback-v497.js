@@ -134,8 +134,8 @@ async function stableSaveSermon(){
           'busy'
         );
       });
-    }else if(editId){
-      data.audio_url=currentStored?.audio_url||null;
+    }else if(editId&&currentStored&&Object.prototype.hasOwnProperty.call(currentStored,'audio_url')){
+      data.audio_url=currentStored.audio_url||null;
     }
 
     if(sermonCoverFile){
@@ -147,8 +147,8 @@ async function stableSaveSermon(){
           'busy'
         )
       );
-    }else if(editId){
-      data.cover_url=currentStored?.cover_url||null;
+    }else if(editId&&currentStored&&Object.prototype.hasOwnProperty.call(currentStored,'cover_url')){
+      data.cover_url=currentStored.cover_url||null;
     }
 
     setSermonProgress(L('در حال ثبت تغییرات…','Saving changes…','Spremanje promjena…'),95,'busy');
