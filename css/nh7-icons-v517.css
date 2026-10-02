@@ -1,4 +1,4 @@
-/* New Hope 7 — Modern SVG Icons v5.1.7
+/* New Hope 7 — Modern SVG Icons v5.1.8
  * Visual-only. Compact icons, theme-aware, touch targets remain unchanged.
  */
 .nh7-icon517{
@@ -79,4 +79,168 @@ html[data-nh7-ui-style514="tactile"] .nh7p500 [data-favorite]>[data-favorite-ico
 }
 @media(prefers-reduced-motion:reduce){
   .nh7-icon517-dynamic-play::before{transition:none!important}
+}
+
+
+/* v518 — compact player controls.
+   Theme/style may change color, depth and shape, but must not enlarge the player UI. */
+.nh7p500{
+  --nh7-control-icon:18px;
+  --nh7-control-face:28px;
+  --nh7-control-hit:36px;
+}
+
+/* Transport row: compact, centered and independent from app text scaling. */
+.nh7p500-main{
+  justify-content:center!important;
+  gap:10px!important;
+  margin:11px 0!important;
+}
+.nh7p500-main button{
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  min-height:34px!important;
+  padding:0!important;
+  flex:0 0 34px!important;
+  font-size:13px!important;
+}
+.nh7p500-main .big{
+  width:46px!important;
+  height:46px!important;
+  min-width:46px!important;
+  min-height:46px!important;
+  flex-basis:46px!important;
+}
+.nh7p500-main .nh7-icon517,
+.nh7p500-main .nh7-icon517-dynamic-play::before{
+  width:18px!important;height:18px!important
+}
+.nh7p500-main .big .nh7-icon517,
+.nh7p500-main .big.nh7-icon517-dynamic-play::before{
+  width:22px!important;height:22px!important
+}
+
+/* Quick tools: outer button is only a touch target; visual face hugs the icon. */
+.nh7p500-tools{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:5px!important;
+  align-items:start!important;
+}
+.nh7p500-tools button{
+  min-width:0!important;
+  min-height:38px!important;
+  height:auto!important;
+  padding:2px 1px!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  border-radius:10px!important;
+  font-size:11px!important;
+}
+.nh7p500-tools button small{
+  margin-top:2px!important;
+  font-size:9px!important;
+  line-height:1.12!important;
+  min-height:10px;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important
+}
+.nh7p500-tools .nh7-icon517-slot,
+.nh7p500-tools>[data-speed]>.nh7-icon517,
+.nh7p500 [data-favorite]>[data-favorite-icon]{
+  width:28px!important;
+  height:28px!important;
+  min-width:28px!important;
+  min-height:28px!important;
+  margin:0 auto 2px!important;
+  border-radius:9px!important
+}
+.nh7p500-tools .nh7-icon517-slot .nh7-icon517-svg,
+.nh7p500-tools>[data-speed]>.nh7-icon517 .nh7-icon517-svg,
+.nh7p500 [data-favorite]>[data-favorite-icon]::before{
+  width:18px!important;height:18px!important
+}
+.nh7p500-tools [data-speed]>[data-rate]{
+  font-size:10px!important;
+  line-height:1!important
+}
+
+/* Keep the visual face compact in every interface style. */
+html[data-nh7-ui-style514="tactile"] .nh7p500-tools button,
+html[data-nh7-ui-style514="glass"] .nh7p500-tools button,
+html[data-nh7-ui-style514="minimal"] .nh7p500-tools button,
+html[data-nh7-ui-style514="material"] .nh7p500-tools button,
+html[data-nh7-ui-style514="outline"] .nh7p500-tools button,
+html[data-nh7-ui-style514="pill"] .nh7p500-tools button{
+  min-height:38px!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important
+}
+
+/* Style differences move to the 28px icon face instead of inflating the whole button. */
+html[data-nh7-ui-style514="glass"] .nh7p500-tools .nh7-icon517-slot,
+html[data-nh7-ui-style514="glass"] .nh7p500-tools>[data-speed]>.nh7-icon517,
+html[data-nh7-ui-style514="glass"] .nh7p500 [data-favorite]>[data-favorite-icon]{
+  background:linear-gradient(180deg,#ffffff55,#ffffff20)!important;
+  border:1px solid #ffffff78!important;
+  box-shadow:inset 0 1px #ffffff90,0 3px 8px #0001!important
+}
+html[data-nh7-ui-style514="minimal"] .nh7p500-tools .nh7-icon517-slot,
+html[data-nh7-ui-style514="minimal"] .nh7p500-tools>[data-speed]>.nh7-icon517,
+html[data-nh7-ui-style514="minimal"] .nh7p500 [data-favorite]>[data-favorite-icon]{
+  background:transparent!important;border:0!important;box-shadow:none!important
+}
+html[data-nh7-ui-style514="material"] .nh7p500-tools .nh7-icon517-slot,
+html[data-nh7-ui-style514="material"] .nh7p500-tools>[data-speed]>.nh7-icon517,
+html[data-nh7-ui-style514="material"] .nh7p500 [data-favorite]>[data-favorite-icon]{
+  background:var(--nh7p-card,var(--card,#fff))!important;
+  border:0!important;box-shadow:0 2px 6px #0002!important
+}
+html[data-nh7-ui-style514="outline"] .nh7p500-tools .nh7-icon517-slot,
+html[data-nh7-ui-style514="outline"] .nh7p500-tools>[data-speed]>.nh7-icon517,
+html[data-nh7-ui-style514="outline"] .nh7p500 [data-favorite]>[data-favorite-icon]{
+  background:transparent!important;
+  border:1px solid var(--nh7p-accent,var(--accent,#1858a4))!important;
+  box-shadow:none!important
+}
+html[data-nh7-ui-style514="pill"] .nh7p500-tools .nh7-icon517-slot,
+html[data-nh7-ui-style514="pill"] .nh7p500-tools>[data-speed]>.nh7-icon517,
+html[data-nh7-ui-style514="pill"] .nh7p500 [data-favorite]>[data-favorite-icon]{
+  border-radius:999px!important;
+  background:color-mix(in srgb,var(--nh7p-accent,var(--accent,#1858a4)) 10%,var(--nh7p-card,var(--card,#fff)))!important;
+  border:1px solid color-mix(in srgb,var(--nh7p-accent,var(--accent,#1858a4)) 20%,transparent)!important;
+  box-shadow:none!important
+}
+
+/* Header/social/mini controls remain compact even at 120–140% text size. */
+.nh7p500-head button{width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;font-size:17px!important}
+.nh7p500-social{gap:5px!important}
+.nh7p500-social button{min-height:30px!important;padding:0 8px!important;font-size:11px!important}
+.nh7p500-social b{font-size:10px!important}
+.nh7p500-actions button{width:27px!important;height:27px!important;min-width:27px!important;min-height:27px!important}
+.nh7p500-actions .nh7-icon517-dynamic-play::before{width:16px!important;height:16px!important}
+
+/* Player typography is deliberately decoupled from Appearance text-size preference. */
+.nh7p500-copy strong{font-size:13px!important}
+.nh7p500-copy small{font-size:10px!important}
+.nh7p500-meta strong{font-size:18px!important}
+.nh7p500-meta small{font-size:12px!important}
+.nh7p500-time{font-size:10px!important}
+.nh7p500-panel-head strong{font-size:12px!important}
+.nh7p500-queue-item b{font-size:10px!important}
+.nh7p500-queue-item small{font-size:8px!important}
+
+/* Small-screen layout stays balanced without changing the 4-column tool structure. */
+@media(max-width:390px){
+  .nh7p500-main{gap:8px!important}
+  .nh7p500-tools{gap:4px!important}
+  .nh7p500-tools button{min-height:36px!important}
+  .nh7p500-tools .nh7-icon517-slot,
+  .nh7p500-tools>[data-speed]>.nh7-icon517,
+  .nh7p500 [data-favorite]>[data-favorite-icon]{
+    width:27px!important;height:27px!important;min-width:27px!important;min-height:27px!important
+  }
 }
