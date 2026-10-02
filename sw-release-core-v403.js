@@ -1,7 +1,7 @@
 /* New Hope 7 — isolated release core cache v4.0.3 */
 'use strict';
-const NH7_RELEASE_CORE_VERSION='5.1.5-appearance-personalization';
-const NH7_RELEASE_CORE_CACHE='nh7-release-core-v515-appearance-personalization';
+const NH7_RELEASE_CORE_VERSION='5.1.6-appearance-personalization';
+const NH7_RELEASE_CORE_CACHE='nh7-release-core-v516-appearance-personalization';
 const NH7_RELEASE_DATA_CACHE='nh7-data-stable-v329';
 const NH7_RELEASE_ASSETS=[
   './','./index.html','./app-v239.html','./reset-password.html','./manifest.json','./version.json','./offline/index.html',
