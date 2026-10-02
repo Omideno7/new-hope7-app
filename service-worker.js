@@ -2,6 +2,6 @@
 importScripts('./sw-media-stream-bypass-v332.js?v=2.3.9.50');
 importScripts('./sw-navigation-fresh-v403.js?v=4.0.3');
 importScripts('./app/download-worker-v1.js?v=20260914.3');
-importScripts('./sw-release-core-v403.js?v=5.1.6-appearance516');
-importScripts('./sw-offline-v329.js?v=2.3.9.54-appearance516');
+importScripts('./sw-release-core-v403.js?v=5.1.7-appearance517');
+importScripts('./sw-offline-v329.js?v=2.3.9.55-appearance517');
 importScripts('./sw-offline-path-fix-v329.js?v=2.3.9.50');
