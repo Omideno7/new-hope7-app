@@ -1,0 +1,62 @@
+name: QA Player v521 Remove Volume UI
+
+on:
+  push:
+    branches:
+      - fix/player-v521-remove-volume-ui-20261002
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scope
+        run: |
+          set -e
+          base=5c74987d13fe6b18199d6a15025a98688bb6b555
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed
+          allowed=(
+            '.github/workflows/qa-player-v521-remove-volume-ui.yml'
+            'css/nh7-player-volume-v521.css'
+            'index.html'
+            'service-worker.js'
+            'sw-offline-v329.js'
+            'sw-release-core-v403.js'
+          )
+          printf '%s\n' "${allowed[@]}" | sort > /tmp/allowed
+          diff -u /tmp/allowed /tmp/changed
+
+      - name: Verify volume UI is hidden
+        run: |
+          grep -q "\[data-mute\]" css/nh7-player-volume-v521.css
+          grep -q "\[data-volume-row\]" css/nh7-player-volume-v521.css
+          grep -q "\[data-volume-note\]" css/nh7-player-volume-v521.css
+          grep -q "display:none!important" css/nh7-player-volume-v521.css
+
+      - name: Verify seven remaining controls are centered
+        run: |
+          grep -q "display:flex!important" css/nh7-player-volume-v521.css
+          grep -q "flex-wrap:wrap!important" css/nh7-player-volume-v521.css
+          grep -q "justify-content:center!important" css/nh7-player-volume-v521.css
+          grep -q "flex:0 0 64px!important" css/nh7-player-volume-v521.css
+
+      - name: Verify cache wiring
+        run: |
+          grep -q 'css/nh7-player-volume-v521.css?v=5.2.1' index.html
+          grep -q 'service-worker.js?v=4.8.3-player-volume521' index.html
+          grep -q "nh7-release-core-v521-player-volume-ui" sw-release-core-v403.js
+          grep -q "v2.3.9.57-player-volume521" sw-offline-v329.js
+          grep -q "5.2.1-player-volume521" service-worker.js
+
+      - name: Protect player and audio logic
+        run: |
+          set -e
+          base=5c74987d13fe6b18199d6a15025a98688bb6b555
+          git diff --exit-code "$base"...HEAD --             js/nh7-media-player-v500.js             js/nh7-audio-classic-v484.js             js/nh7-icons-v517.js             js/app.js             'supabase/**' 'data/**'
