@@ -109,7 +109,7 @@ function ensure(){
         <div class="nh7p500-tools">
           <button type="button" data-speed><span data-rate>1×</span><small>${L('سرعت','Speed','Brzina')}</small></button>
           <button type="button" data-p500-bible><span>📖</span><small>${L('کتاب مقدس','Bible','Biblija')}</small></button>
-          <button type="button" data-mute><span data-mute-icon>🔊</span><small>${L('صدا','Volume','Glasnoća')}</small></button>
+          <button type="button" data-mute aria-pressed="false"><span data-mute-icon>🔊</span><small>${L('بی‌صدا','Mute','Isključi')}</small></button>
           <button type="button" data-favorite><span data-favorite-icon>☆</span><small>${L('علاقه‌مندی','Favorite','Favorit')}</small></button>
           <button type="button" data-note><span>📝</span><small>${L('یادداشت','Notes','Bilješke')}</small></button>
           <button type="button" data-download><span>⇩</span><small>${L('دانلود','Download','Preuzmi')}</small></button>
@@ -267,7 +267,7 @@ function bind(){
     if(event.target.closest('[data-back]')&&a){a.currentTime=Math.max(0,Number(a.currentTime||0)-15);return}
     if(event.target.closest('[data-forward]')&&a){a.currentTime=Math.min(Number.isFinite(a.duration)?a.duration:Infinity,Number(a.currentTime||0)+30);return}
     if(event.target.closest('[data-speed]'))return cycleSpeed();
-    if(event.target.closest('[data-mute]')){if(isIOSWeb()){notice(L('برای تنظیم حجم صدا از دکمه‌های آیفون استفاده کنید.','Use the iPhone volume buttons to adjust volume.','Za glasnoću koristite tipke na iPhoneu.'));return}return engine()?.toggleMediaMute?.()}
+    if(event.target.closest('[data-mute]')){engine()?.toggleMediaMute?.();sync();return}
     if(event.target.closest('[data-p500-bible]'))return window.NH7QuickBibleV454?.open?.(event.target.closest('[data-p500-bible]'));
     if(event.target.closest('[data-favorite]'))return toggleFavorite();
     if(event.target.closest('[data-note]'))return openNotes();
@@ -342,7 +342,7 @@ function sync(){
   if(volumeRow)volumeRow.hidden=false;
   const volumeNote=r.querySelector('[data-volume-note]');if(volumeNote)volumeNote.classList.toggle('show',isIOSWeb());
   if(volume&&!volume.matches(':active'))volume.value=isIOSWeb()?String(iosVolumeVisual):String(Number(a.volume??1));
-  const muteIcon=r.querySelector('[data-mute-icon]');if(muteIcon)muteIcon.textContent=a.muted?'🔇':Number(a.volume||1)<.5?'🔉':'🔊';
+  const muteButton=r.querySelector('[data-mute]'),muteIcon=r.querySelector('[data-mute-icon]');if(muteIcon)muteIcon.textContent=a.muted?'🔇':'🔊';if(muteButton){muteButton.classList.toggle('is-muted',!!a.muted);muteButton.setAttribute('aria-pressed',String(!!a.muted));muteButton.setAttribute('aria-label',a.muted?L('وصل کردن صدا','Unmute','Uključi zvuk'):L('بی‌صدا کردن','Mute','Isključi zvuk'));const label=muteButton.querySelector('small');if(label)label.textContent=a.muted?L('وصل صدا','Unmute','Uključi'):L('بی‌صدا','Mute','Isključi')}
   renderQueue();renderRelated();
   const key=mediaId(item)+'|'+art;
   if(key!==lastTrackKey){lastTrackKey=key;r.querySelector('[data-art]').style.backgroundImage=`url("${art.replace(/"/g,'%22')}")`;r.querySelector('[data-bg]').style.backgroundImage=`url("${art.replace(/"/g,'%22')}")`;r.querySelector('[data-cover]').src=art}
