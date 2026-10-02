@@ -404,3 +404,189 @@ html[data-nh7-ui-style514="pill"] .nh7-ap514-live-tools button{border-radius:999
   .nh7-ap514-live-tools{grid-template-columns:repeat(4,54px);gap:5px}
   .nh7-ap514-live-tools button{width:54px;min-width:54px}
 }
+
+
+/* v520 — five deliberately distinct interface families.
+   All consume Theme Studio variables, so structure/style and colors remain independent. */
+
+/* Aurora Glass: translucent surfaces with accent glow. */
+html[data-nh7-ui-style514="aurora"] body #view{
+  background:
+    radial-gradient(circle at 8% 12%,color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 18%,transparent),transparent 30%),
+    radial-gradient(circle at 92% 18%,color-mix(in srgb,var(--nh7-studio-verse,var(--accent,#24b86a)) 14%,transparent),transparent 32%)
+}
+html[data-nh7-ui-style514="aurora"] #view :is(.card:not(.hero),.tile,.list-btn,.link-card,.notice,.accordion-panel,.saved-verse-card),
+html[data-nh7-ui-style514="aurora"] .nh7p500-mini{
+  background:linear-gradient(145deg,
+    color-mix(in srgb,var(--nh7-studio-card,var(--card,#fff)) 76%,transparent),
+    color-mix(in srgb,var(--nh7-studio-card,var(--card,#fff)) 54%,transparent))!important;
+  border:1px solid color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 24%,#fff)!important;
+  border-radius:24px!important;
+  backdrop-filter:blur(20px) saturate(1.18)!important;
+  -webkit-backdrop-filter:blur(20px) saturate(1.18)!important;
+  box-shadow:0 14px 34px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 18%,transparent),
+             inset 0 1px 0 #ffffff8a!important
+}
+html[data-nh7-ui-style514="aurora"] #view button,
+html[data-nh7-ui-style514="aurora"] .bottom-nav button{
+  border-radius:16px!important;
+  box-shadow:0 6px 18px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 13%,transparent)!important
+}
+html[data-nh7-ui-style514="aurora"] .bottom-nav{
+  background:color-mix(in srgb,var(--nh7-studio-card,var(--card,#fff)) 72%,transparent)!important;
+  backdrop-filter:blur(22px) saturate(1.2)!important;
+  -webkit-backdrop-filter:blur(22px) saturate(1.2)!important
+}
+
+/* Clay 3D: clearly raised cards and press-down controls. */
+html[data-nh7-ui-style514="clay"] #view :is(.card:not(.hero),.tile,.list-btn,.link-card,.notice,.accordion-panel,.saved-verse-card){
+  border:0!important;
+  border-radius:22px!important;
+  background:color-mix(in srgb,var(--nh7-studio-card,var(--card,#fff)) 92%,var(--nh7-studio-accent,var(--brand,#1858a4)))!important;
+  box-shadow:
+    8px 10px 20px color-mix(in srgb,var(--nh7-studio-text,var(--ink,#17364e)) 16%,transparent),
+    -5px -5px 13px #ffffff88,
+    inset 0 1px 0 #ffffffb0!important
+}
+html[data-nh7-ui-style514="clay"] #view button,
+html[data-nh7-ui-style514="clay"] .bottom-nav button,
+html[data-nh7-ui-style514="clay"] .nh7p500 button{
+  border:0!important;
+  border-radius:15px!important;
+  box-shadow:0 7px 13px #00000022,inset 0 1px 0 #ffffff99!important;
+  transform:translateY(0)
+}
+html[data-nh7-ui-style514="clay"] #view button:active,
+html[data-nh7-ui-style514="clay"] .bottom-nav button:active,
+html[data-nh7-ui-style514="clay"] .nh7p500 button:active{
+  transform:translateY(4px) scale(.985)!important;
+  box-shadow:0 2px 4px #00000020,inset 0 3px 8px #00000018!important
+}
+
+/* Floating Cards: stronger whitespace and separated floating modules. */
+html[data-nh7-ui-style514="floating"] #view{
+  padding-inline:18px!important
+}
+html[data-nh7-ui-style514="floating"] #view :is(.card:not(.hero),.tile,.list-btn,.link-card,.notice,.accordion-panel,.saved-verse-card){
+  border:0!important;
+  border-radius:26px!important;
+  background:var(--nh7-studio-card,var(--card,#fff))!important;
+  box-shadow:0 18px 34px color-mix(in srgb,var(--nh7-studio-text,var(--ink,#17364e)) 12%,transparent)!important;
+  margin-bottom:18px!important
+}
+html[data-nh7-ui-style514="floating"] #view .tile{
+  transform:translateY(0);transition:transform .14s ease,box-shadow .14s ease
+}
+html[data-nh7-ui-style514="floating"] #view .tile:active{
+  transform:translateY(3px) scale(.985)!important;
+  box-shadow:0 8px 18px color-mix(in srgb,var(--nh7-studio-text,var(--ink,#17364e)) 12%,transparent)!important
+}
+html[data-nh7-ui-style514="floating"] .bottom-nav{
+  width:min(720px,calc(100% - 24px))!important;
+  bottom:10px!important;
+  border:0!important;border-radius:24px!important;
+  box-shadow:0 10px 28px #00000020!important
+}
+
+/* Neon Edge: clean flat surfaces with luminous theme-colored edge. */
+html[data-nh7-ui-style514="neon"] #view :is(.card:not(.hero),.tile,.list-btn,.link-card,.notice,.accordion-panel,.saved-verse-card),
+html[data-nh7-ui-style514="neon"] .nh7p500-mini{
+  background:color-mix(in srgb,var(--nh7-studio-card,var(--card,#fff)) 96%,transparent)!important;
+  border:1px solid color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 68%,transparent)!important;
+  border-radius:16px!important;
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 16%,transparent),
+             0 0 18px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 18%,transparent)!important
+}
+html[data-nh7-ui-style514="neon"] #view button,
+html[data-nh7-ui-style514="neon"] .bottom-nav button,
+html[data-nh7-ui-style514="neon"] .nh7p500 button{
+  border:1px solid color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 72%,transparent)!important;
+  background:transparent!important;
+  color:var(--nh7-studio-accent,var(--brand,#1858a4))!important;
+  box-shadow:0 0 12px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 18%,transparent)!important
+}
+html[data-nh7-ui-style514="neon"] .nav-item.active{
+  background:color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 12%,transparent)!important;
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 58%,transparent),
+             0 0 14px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 24%,transparent)!important
+}
+
+/* Motion Flow: safe CSS-only page-entry + spring controls.
+   No route logic or data flow is changed. */
+html[data-nh7-ui-style514="motion"] #view > *{
+  animation:nh7Ap520PageIn .30s cubic-bezier(.2,.8,.2,1) both
+}
+html[data-nh7-ui-style514="motion"] #view > *:nth-child(2){animation-delay:.025s}
+html[data-nh7-ui-style514="motion"] #view > *:nth-child(3){animation-delay:.05s}
+html[data-nh7-ui-style514="motion"] #view :is(.card:not(.hero),.tile,.list-btn,.link-card,.notice,.accordion-panel,.saved-verse-card){
+  border-radius:20px!important;
+  box-shadow:0 10px 24px color-mix(in srgb,var(--nh7-studio-text,var(--ink,#17364e)) 10%,transparent)!important
+}
+html[data-nh7-ui-style514="motion"] #view button,
+html[data-nh7-ui-style514="motion"] .bottom-nav button,
+html[data-nh7-ui-style514="motion"] .nh7p500 button{
+  transition:transform .22s cubic-bezier(.2,1.6,.3,1),box-shadow .18s ease,background .18s ease!important;
+  will-change:transform
+}
+html[data-nh7-ui-style514="motion"] #view button:active,
+html[data-nh7-ui-style514="motion"] .bottom-nav button:active,
+html[data-nh7-ui-style514="motion"] .nh7p500 button:active{
+  transform:scale(.92)!important
+}
+html[data-nh7-ui-style514="motion"] .nav-item.active{
+  transform:translateY(-4px) scale(1.04)!important
+}
+html[data-nh7-ui-style514="motion"] .nh7p500-mini{
+  animation:nh7Ap520MiniIn .26s cubic-bezier(.2,.9,.2,1) both
+}
+@keyframes nh7Ap520PageIn{
+  from{opacity:0;transform:translateY(12px) scale(.985);filter:blur(2px)}
+  to{opacity:1;transform:none;filter:none}
+}
+@keyframes nh7Ap520MiniIn{
+  from{opacity:0;transform:translateY(16px) scale(.97)}
+  to{opacity:1;transform:none}
+}
+
+/* v520 live preview: mirror the five new styles in Settings. */
+html[data-nh7-ui-style514="aurora"] .nh7-ap514-live{
+  background:
+    radial-gradient(circle at 15% 0%,color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 18%,transparent),transparent 40%),
+    var(--nh7-studio-bg,var(--bg,#eef8ff))!important
+}
+html[data-nh7-ui-style514="aurora"] .nh7-ap514-live :is(.nh7-ap514-live-module,.nh7-ap514-live-player,.nh7-ap514-live-tools button){
+  background:color-mix(in srgb,var(--nh7-studio-card,var(--card,#fff)) 68%,transparent)!important;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-color:#ffffff70!important;box-shadow:0 8px 18px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 16%,transparent)!important
+}
+html[data-nh7-ui-style514="clay"] .nh7-ap514-live :is(.nh7-ap514-live-module,.nh7-ap514-live-player,.nh7-ap514-live-tools button){
+  border:0!important;box-shadow:5px 6px 12px #00000020,-3px -3px 8px #ffffff9b,inset 0 1px #ffffffaa!important
+}
+html[data-nh7-ui-style514="floating"] .nh7-ap514-live :is(.nh7-ap514-live-module,.nh7-ap514-live-player){
+  border:0!important;border-radius:22px!important;box-shadow:0 13px 24px #00000018!important
+}
+html[data-nh7-ui-style514="neon"] .nh7-ap514-live :is(.nh7-ap514-live-module,.nh7-ap514-live-player,.nh7-ap514-live-tools button){
+  background:transparent!important;border:1px solid var(--nh7-studio-accent,var(--brand,#1858a4))!important;
+  box-shadow:0 0 12px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 22%,transparent)!important
+}
+html[data-nh7-ui-style514="motion"] .nh7-ap514-live :is(.nh7-ap514-live-module,.nh7-ap514-live-player,.nh7-ap514-live-tools button){
+  animation:nh7Ap520PreviewPulse .28s cubic-bezier(.2,.9,.2,1) both
+}
+@keyframes nh7Ap520PreviewPulse{
+  from{opacity:.45;transform:translateY(7px) scale(.97)}
+  to{opacity:1;transform:none}
+}
+
+/* Motion safety. */
+@media(prefers-reduced-motion:reduce){
+  html[data-nh7-ui-style514="motion"] #view > *,
+  html[data-nh7-ui-style514="motion"] .nh7p500-mini,
+  html[data-nh7-ui-style514="motion"] .nh7-ap514-live :is(.nh7-ap514-live-module,.nh7-ap514-live-player,.nh7-ap514-live-tools button){
+    animation:none!important
+  }
+  html[data-nh7-ui-style514="motion"] #view button,
+  html[data-nh7-ui-style514="motion"] .bottom-nav button,
+  html[data-nh7-ui-style514="motion"] .nh7p500 button{
+    transition:none!important
+  }
+}
