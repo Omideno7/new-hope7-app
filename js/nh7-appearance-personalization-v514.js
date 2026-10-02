@@ -1,4 +1,4 @@
-/* New Hope 7 — Appearance & Personalization v5.1.4
+/* New Hope 7 — Appearance & Personalization v5.1.5
  * Additive local-only appearance controller. No Supabase/account/network writes.
  * Existing users stay on Classic/current appearance until they explicitly opt in.
  */
@@ -45,12 +45,11 @@ const STYLE_LABELS={
  outline:['خطی تمیز','Outline Clean','Outline Clean'],
  pill:['گرد نرم','Soft Pill','Soft Pill']
 };
-const FA_FONT_IDS=['system','vazirmatn','naskh','estedad','amiri','markazi','geeza','damascus','albayan','kohinoor','notosansarabic','tahoma'];
-const LATIN_FONT_IDS=['system','inter','lora','nunito','classic','avenir','helvetica','trebuchet','verdana','times','arial','courier'];
+const FA_FONT_IDS=['vazirmatn','naskh','notosansarabic','notokufi','amiri','lalezar','changa','reemkufi','cairo','tajawal','baloo','markazi'];
+const LATIN_FONT_IDS=['inter','roboto','opensans','montserrat','poppins','nunito','lora','merriweather','playfair','sourcesans','raleway','ubuntu'];
 const FONT_NAMES={
- system:['فونت دستگاه','Device font','Font uređaja'],vazirmatn:['وزیرمتن','Vazirmatn','Vazirmatn'],naskh:['نسخ Noto','Noto Naskh','Noto Naskh'],estedad:['استعداد','Estedad','Estedad'],amiri:['امیری','Amiri','Amiri'],markazi:['مرکزی','Markazi Text','Markazi Text'],
- geeza:['Geeza Pro','Geeza Pro','Geeza Pro'],damascus:['Damascus','Damascus','Damascus'],albayan:['Al Bayan','Al Bayan','Al Bayan'],kohinoor:['Kohinoor Arabic','Kohinoor Arabic','Kohinoor Arabic'],notosansarabic:['Noto Sans Arabic','Noto Sans Arabic','Noto Sans Arabic'],tahoma:['Tahoma / Arial','Tahoma / Arial','Tahoma / Arial'],
- inter:['Inter','Inter','Inter'],lora:['Lora','Lora','Lora'],nunito:['Nunito Sans','Nunito Sans','Nunito Sans'],classic:['Georgia / Classic','Georgia / Classic','Georgia / Classic'],avenir:['Avenir Next','Avenir Next','Avenir Next'],helvetica:['Helvetica Neue','Helvetica Neue','Helvetica Neue'],trebuchet:['Trebuchet','Trebuchet','Trebuchet'],verdana:['Verdana','Verdana','Verdana'],times:['Times New Roman','Times New Roman','Times New Roman'],arial:['Arial','Arial','Arial'],courier:['Courier New','Courier New','Courier New']
+ vazirmatn:['وزیرمتن','Vazirmatn','Vazirmatn'],naskh:['Noto Naskh Arabic','Noto Naskh Arabic','Noto Naskh Arabic'],notosansarabic:['Noto Sans Arabic','Noto Sans Arabic','Noto Sans Arabic'],notokufi:['Noto Kufi Arabic','Noto Kufi Arabic','Noto Kufi Arabic'],amiri:['Amiri','Amiri','Amiri'],lalezar:['Lalezar','Lalezar','Lalezar'],changa:['Changa','Changa','Changa'],reemkufi:['Reem Kufi','Reem Kufi','Reem Kufi'],cairo:['Cairo','Cairo','Cairo'],tajawal:['Tajawal','Tajawal','Tajawal'],baloo:['Baloo Bhaijaan 2','Baloo Bhaijaan 2','Baloo Bhaijaan 2'],markazi:['Markazi Text','Markazi Text','Markazi Text'],
+ inter:['Inter','Inter','Inter'],roboto:['Roboto','Roboto','Roboto'],opensans:['Open Sans','Open Sans','Open Sans'],montserrat:['Montserrat','Montserrat','Montserrat'],poppins:['Poppins','Poppins','Poppins'],nunito:['Nunito Sans','Nunito Sans','Nunito Sans'],lora:['Lora','Lora','Lora'],merriweather:['Merriweather','Merriweather','Merriweather'],playfair:['Playfair Display','Playfair Display','Playfair Display'],sourcesans:['Source Sans 3','Source Sans 3','Source Sans 3'],raleway:['Raleway','Raleway','Raleway'],ubuntu:['Ubuntu','Ubuntu','Ubuntu']
 };
 
 const defaults={style:'classic',themeGroup:'all',themeId:'current',mode:'manual',dayTheme:'hope',nightTheme:'oledBlack',dayStart:'07:00',nightStart:'19:00',fontSize:100,faFont:'system',latinFont:'system',reader:false,readerMode:'paper',depth:7,glow:14,accentIntensity:100,textIntensity:100,custom:null};
@@ -234,6 +233,6 @@ function start(){
  try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(state.mode==='system'){lastThemeSig='';applyTheme()}})}catch(_){}
  setInterval(()=>{if(state.mode==='auto'){lastThemeSig='';applyTheme()}},60000);
 }
-window.NH7AppearancePersonalizationV514={VERSION:'5.1.4',KEY,get:()=>JSON.parse(JSON.stringify(state)),apply:applyAll,open:openDialog,reset:resetOriginal};
+window.NH7AppearancePersonalizationV514={VERSION:'5.1.5',KEY,get:()=>JSON.parse(JSON.stringify(state)),apply:applyAll,open:openDialog,reset:resetOriginal};
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start,{once:true}):start();
 })();
