@@ -6,7 +6,7 @@
 if(window.__NH7_MEDIA_PLAYER_V500__)return;
 window.__NH7_MEDIA_PLAYER_V500__=true;
 
-const VERSION='5.2.3-approved-integrated';
+const VERSION='5.2.4-progress-performance';
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const FAVORITES_KEY='nh7_audio_favorites_v500';
 let root=null,expanded=false,lastTrackKey='',syncTimer=0,seeking=false,seekPreview=0,lastRecentId='',iosVolumeVisual=1,downloadUi=null;
@@ -108,7 +108,7 @@ function ensure(){
           <button type="button" data-next aria-label="${L('بعدی','Next','Sljedeće')}">⏭</button>
         </div>
         <div class="nh7p500-tools">
-          <button type="button" data-speed><span data-rate>1×</span><small>${L('سرعت','Speed','Brzina')}</small></button>
+          <button type="button" data-speed aria-label="${L('سرعت پخش','Playback speed','Brzina reprodukcije')}"><span data-rate>1×</span></button>
           <button type="button" data-p500-bible><span>📖</span><small>${L('کتاب مقدس','Bible','Biblija')}</small></button>
           <button type="button" data-mute aria-pressed="false"><span data-mute-icon>🔊</span><small>${L('بی‌صدا','Mute','Isključi')}</small></button>
           <button type="button" data-favorite><span data-favorite-icon>☆</span><small>${L('علاقه‌مندی','Favorite','Favorit')}</small></button>
@@ -137,10 +137,11 @@ function ensure(){
 
 function setExpanded(value){
   expanded=!!value;
+  const activeAudio=state().audio;if(activeAudio&&activeAudio.preload!=='auto')activeAudio.preload='auto';
   const r=ensure(),full=r.querySelector('[data-full]');
   if(full)full.hidden=!expanded;
   document.documentElement.classList.toggle('nh7p500-open',expanded);
-  if(expanded){const qp=r.querySelector('[data-queue-panel]');if(qp)qp.hidden=false;renderQueue()}
+  if(expanded){const qp=r.querySelector('[data-queue-panel]');if(qp)qp.hidden=false;renderQueue();renderRelated()}
   if(!expanded)closeBlessings();
   sync();
 }
@@ -334,6 +335,7 @@ function bind(){
     const {audio:a}=state();
     if(event.target.matches('[data-seek]')&&a&&Number.isFinite(a.duration)&&a.duration>0){
       seeking=true;seekPreview=(Number(event.target.value)/1000)*a.duration;
+      event.target.style.setProperty('--nh7-seek-pct',Math.max(0,Math.min(100,Number(event.target.value)/10))+'%');
       const n=root.querySelector('[data-now]');if(n)n.textContent=fmt(seekPreview);return
     }
     if(event.target.matches('[data-volume]')){
@@ -371,10 +373,16 @@ function sync(){
   r.querySelector('[data-mini-meta]').textContent=`${fmt(now)} · ${rate}×`;
   r.querySelector('[data-artist]').textContent=artist;
   r.querySelector('[data-now]').textContent=fmt(seeking?seekPreview:now);r.querySelector('[data-total]').textContent=fmt(duration);
-  r.querySelector('[data-progress]').style.width=(seeking&&duration>0?Math.max(0,Math.min(100,seekPreview/duration*100)):progress)+'%';
-  if(!seeking)r.querySelector('[data-seek]').value=duration>0?String(Math.round(now/duration*1000)):'0';
+  const seekPct=seeking&&duration>0?Math.max(0,Math.min(100,seekPreview/duration*100)):progress;
+  r.querySelector('[data-progress]').style.width=seekPct+'%';
+  const seekEl=r.querySelector('[data-seek]');
+  if(seekEl){
+    if(!seeking)seekEl.value=duration>0?String(Math.round(now/duration*1000)):'0';
+    seekEl.style.setProperty('--nh7-seek-pct',seekPct+'%');
+  }
   rememberRecent(item);
-  r.querySelectorAll('[data-play]').forEach(n=>n.textContent=a.paused?'▶':'❚❚');
+  const playGlyph=a.paused?'▶':'❚❚';
+  r.querySelectorAll('[data-play]').forEach(n=>{if(n.textContent!==playGlyph)n.textContent=playGlyph;n.dataset.nh7PlayState517=a.paused?'play':'pause'});
   r.querySelectorAll('[data-speed]').forEach(n=>{if(n.matches('.nh7p500-speed'))n.textContent=rate+'×'});
   const rateNode=r.querySelector('[data-rate]');if(rateNode)rateNode.textContent=rate+'×';
   const nextDisabled=!(s.playQueue?.[s.queueIndex+1]),prevDisabled=!(s.playQueue?.[s.queueIndex-1])&&now<=5;
@@ -393,12 +401,17 @@ function sync(){
   if(volume&&!volume.matches(':active'))volume.value=isIOSWeb()?String(iosVolumeVisual):String(Number(a.volume??1));
   const muteButton=r.querySelector('[data-mute]'),muteIcon=r.querySelector('[data-mute-icon]');if(muteIcon)muteIcon.textContent=a.muted?'🔇':'🔊';if(muteButton){muteButton.classList.toggle('is-muted',!!a.muted);muteButton.setAttribute('aria-pressed',String(!!a.muted));muteButton.setAttribute('aria-label',a.muted?L('وصل کردن صدا','Unmute','Uključi zvuk'):L('بی‌صدا کردن','Mute','Isključi zvuk'));const label=muteButton.querySelector('small');if(label)label.textContent=a.muted?L('وصل صدا','Unmute','Uključi'):L('بی‌صدا','Mute','Isključi')}
   syncDownloadVisual(item);
-  renderQueue();renderRelated();
   const key=mediaId(item)+'|'+art;
-  if(key!==lastTrackKey){lastTrackKey=key;r.querySelector('[data-art]').style.backgroundImage=`url("${art.replace(/"/g,'%22')}")`;r.querySelector('[data-bg]').style.backgroundImage=`url("${art.replace(/"/g,'%22')}")`;r.querySelector('[data-cover]').src=art}
+  if(key!==lastTrackKey){
+    lastTrackKey=key;
+    r.querySelector('[data-art]').style.backgroundImage=`url("${art.replace(/"/g,'%22')}")`;
+    r.querySelector('[data-bg]').style.backgroundImage=`url("${art.replace(/"/g,'%22')}")`;
+    r.querySelector('[data-cover]').src=art;
+    renderQueue();renderRelated();
+  }
 }
 
-function start(){ensure();sync();clearInterval(syncTimer);syncTimer=setInterval(sync,350);window.addEventListener('pageshow',sync);window.addEventListener('change',e=>{if(['langSelect','settingsLang'].includes(e.target?.id)){lastTrackKey='';sync()}},true)}
+function start(){ensure();sync();clearInterval(syncTimer);syncTimer=setInterval(sync,250);window.addEventListener('pageshow',sync);window.addEventListener('change',e=>{if(['langSelect','settingsLang'].includes(e.target?.id)){lastTrackKey='';sync()}},true)}
 window.NH7_MEDIA_PLAYER_V500={version:VERSION,sync,setExpanded,close:closePlayer};
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start,{once:true}):start();
 })();
