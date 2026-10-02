@@ -273,10 +273,12 @@ function flushInlineNoteDraft(showStatus=false){
   writeNoteDraft(id,input.value,showStatus);
 }
 function scheduleInlineNoteDraft(){
+  const r=ensure(),p=r.querySelector('[data-note-panel]'),input=r.querySelector('[data-note-input]'),id=String(p?.dataset?.noteId||'');
+  if(id&&input)writeNoteDraft(id,input.value,false);
   clearTimeout(noteDraftTimer);
-  const status=ensure().querySelector('[data-note-status]');
+  const status=r.querySelector('[data-note-status]');
   if(status)status.textContent=L('در حال ذخیرهٔ پیش‌نویس…','Saving draft…','Spremanje skice…');
-  noteDraftTimer=setTimeout(()=>flushInlineNoteDraft(true),300);
+  noteDraftTimer=setTimeout(()=>{noteDraftTimer=0;if(status)status.textContent=L('پیش‌نویس خودکار ذخیره شد ✓','Draft auto-saved ✓','Skica je automatski spremljena ✓')},300);
 }
 function closeInlineNotes(){flushInlineNoteDraft(false);const p=ensure().querySelector('[data-note-panel]');if(p)p.hidden=true}
 function refreshNotePlaybackButton(){
