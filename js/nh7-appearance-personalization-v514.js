@@ -98,12 +98,6 @@ function applyFont(){
 function applySize(){const n=Math.max(80,Math.min(140,Number(state.fontSize)||100));root.style.fontSize=n+'%'}
 function applyReader(){
  root.dataset.nh7EyeReader514=state.reader?'1':'0';root.dataset.nh7ReaderMode514=state.readerMode||'paper';
- document.querySelectorAll('.nh7-book-modal').forEach(m=>{
-   if(!state.reader)return;
-   if(state.readerMode==='sepia')m.dataset.theme='sepia';
-   else if(state.readerMode==='night')m.dataset.theme='dark';
-   else if(m.dataset.theme==='sepia'||m.dataset.theme==='dark')delete m.dataset.theme;
- });
 }
 function applyStyle(){root.dataset.nh7UiStyle514=state.style||'classic';root.style.setProperty('--nh7-ap514-depth',(Number(state.depth)||7)+'px');root.style.setProperty('--nh7-ap514-glow',(Number(state.glow)||14)+'%');const cfg=currentThemeConfig();root.style.setProperty('--nh7-ap514-icon',cfg?.accent||getComputedStyle(root).getPropertyValue('--brand')||'#1858a4')}
 function applyAll(){applyStyle();applySize();applyReader();applyTheme();save();syncOpenDialog()}
@@ -121,7 +115,8 @@ function mount(){
  panel.dataset.nh7Ap514Hidden='1';if(studio)studio.dataset.nh7Ap514Hidden='1';
  let launcher=$('#nh7AppearanceLauncher514');
  if(!launcher){panel.insertAdjacentHTML('beforebegin',launcherHtml());launcher=$('#nh7AppearanceLauncher514')}
- launcher.querySelector('[data-ap514-open]')?.addEventListener('click',openDialog,{once:true});
+ const openBtn=launcher.querySelector('[data-ap514-open]');
+ if(openBtn&&openBtn.dataset.ap514Bound!=='1'){openBtn.dataset.ap514Bound='1';openBtn.addEventListener('click',openDialog)}
 }
 function styleCards(){
  return Object.keys(STYLE_LABELS).map(id=>'<button type="button" class="nh7-ap514-style" data-ap514-style="'+id+'" aria-pressed="'+String(state.style===id)+'"><span class="nh7-ap514-style-demo"><span><i></i><i></i></span><b>'+(id==='classic'?'NH7':'●')+'</b></span><strong>'+esc(L(...STYLE_LABELS[id]))+'</strong></button>').join('');
@@ -165,7 +160,7 @@ function bindDialog(d){
    const s=e.target.closest('[data-ap514-style]');if(s){state.style=s.dataset.ap514Style;applyAll();return}
    const m=e.target.closest('[data-ap514-mode]');if(m){state.mode=m.dataset.ap514Mode;applyAll();return}
    const g=e.target.closest('[data-ap514-group]');if(g){state.themeGroup=g.dataset.ap514Group;syncOpenDialog();save();return}
-   const t=e.target.closest('[data-ap514-theme]');if(t){state.themeId=t.dataset.ap514Theme;state.mode='manual';lastThemeSig='';if(state.themeId==='current'){window.NH7_UI_PREFS?.apply?.()}else applyTheme();applyAll();return}
+   const t=e.target.closest('[data-ap514-theme]');if(t){state.themeId=t.dataset.ap514Theme;state.mode='manual';state.intensityBase=null;lastThemeSig='';if(state.themeId==='current'){window.NH7_UI_PREFS?.apply?.()}else applyTheme();applyAll();return}
    const saved=e.target.closest('[data-ap514-saved]');if(saved){const item=readSavedThemes().find(x=>x.id===saved.dataset.ap514Saved);if(item&&window.NH7ThemeStudioV453?.set?.(item.config)){state.themeId='current';state.mode='manual';applyAll()}return}
    const rr=e.target.closest('[data-ap514-reader]');if(rr){state.readerMode=rr.dataset.ap514Reader;applyAll();return}
    if(e.target.closest('[data-ap514-custom]')){applyCustomFromForm();return}
@@ -181,18 +176,27 @@ function bindDialog(d){
  });
  d.addEventListener('input',e=>{
    if(e.target.id==='nh7ApSize'){state.fontSize=Number(e.target.value);applySize();save();syncOpenDialog()}
-   else if(e.target.id==='nh7ApAccentIntensity'){state.accentIntensity=Number(e.target.value);lastThemeSig='';applyAll()}
-   else if(e.target.id==='nh7ApTextIntensity'){state.textIntensity=Number(e.target.value);lastThemeSig='';applyAll()}
+   else if(e.target.id==='nh7ApAccentIntensity'){state.accentIntensity=Number(e.target.value);lastThemeSig='';if(state.mode==='manual'&&state.themeId==='current')applyCurrentIntensity();applyAll()}
+   else if(e.target.id==='nh7ApTextIntensity'){state.textIntensity=Number(e.target.value);lastThemeSig='';if(state.mode==='manual'&&state.themeId==='current')applyCurrentIntensity();applyAll()}
  });
+}
+function applyCurrentIntensity(){
+ const base=state.intensityBase&&validHex(state.intensityBase.bg)?state.intensityBase:currentThemeConfig();
+ if(!base)return false;
+ if(!state.intensityBase)state.intensityBase={...base};
+ const cfg={...state.intensityBase,preset:'custom',text:intensity(state.intensityBase.text,state.intensityBase.card,state.textIntensity),accent:intensity(state.intensityBase.accent,state.intensityBase.card,state.accentIntensity),fa:state.faFont,latin:state.latinFont};
+ const validation=window.NH7ThemeStudioV453?.validate?.(cfg);
+ if(validation&&!validation.ok)return false;
+ return !!window.NH7ThemeStudioV453?.set?.(cfg);
 }
 function applyCustomFromForm(){
  const d=$('#nh7AppearanceDialog514');if(!d)return;
  const base=currentThemeConfig()||{};
- const cfg={preset:'custom',bg:$('#nh7ApBg',d).value,card:$('#nh7ApCard',d).value,text:$('#nh7ApText',d).value,muted:base.muted||'#526777',verse:$('#nh7ApVerse',d).value,accent:$('#nh7ApAccent',d).value,fa:state.faFont,latin:state.latinFont};
+ const cfg={preset:'custom',bg:$('#nh7ApBg',d).value,card:$('#nh7ApCard',d).value,text:$('#nh7ApText',d).value,muted:$('#nh7ApText',d).value,verse:$('#nh7ApVerse',d).value,accent:$('#nh7ApAccent',d).value,fa:state.faFont,latin:state.latinFont};
  const validation=window.NH7ThemeStudioV453?.validate?.(cfg);
  const out=$('#nh7ApContrast',d);
  if(validation&&!validation.ok){if(out){out.textContent=L('کنتراست بعضی رنگ‌ها برای خوانایی کافی نیست.','Some colors do not have enough contrast for readability.','Neke boje nemaju dovoljan kontrast za čitljivost.');out.classList.add('bad')}return}
- if(window.NH7ThemeStudioV453?.set?.(cfg)){state.themeId='current';state.mode='manual';state.custom=cfg;lastThemeSig='';if(out){out.textContent=L('تم شخصی اعمال شد ✓','Custom theme applied ✓','Vlastita tema je primijenjena ✓');out.classList.remove('bad')}applyAll()}
+ if(window.NH7ThemeStudioV453?.set?.(cfg)){state.themeId='current';state.mode='manual';state.custom=cfg;state.intensityBase=cfg;lastThemeSig='';if(out){out.textContent=L('تم شخصی اعمال شد ✓','Custom theme applied ✓','Vlastita tema je primijenjena ✓');out.classList.remove('bad')}applyAll()}
 }
 function syncOpenDialog(){
  const d=$('#nh7AppearanceDialog514');if(!d)return;
@@ -213,6 +217,14 @@ function syncOpenDialog(){
  const proof=$('#nh7ApReaderProof',d);if(proof){proof.dataset.on=state.reader?'1':'0';proof.dataset.mode=state.readerMode}
 }
 function start(){
+ if(!localStorage.getItem(KEY)){
+   const fonts=window.NH7FontsV454;
+   const fa=fonts?.choice?.('fa'),la=fonts?.choice?.('latin');
+   if(FA_FONT_IDS.includes(fa))state.faFont=fa;
+   if(LATIN_FONT_IDS.includes(la))state.latinFont=la;
+   const legacySize=Number(localStorage.getItem('nh7_ui_font_size_v425')||100);
+   if(Number.isFinite(legacySize))state.fontSize=Math.max(80,Math.min(140,legacySize));
+ }
  applyStyle();applySize();applyReader();
  if(state.mode!=='manual'||state.themeId!=='current')applyTheme();
  mount();
