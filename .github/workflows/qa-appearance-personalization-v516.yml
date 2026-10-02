@@ -1,0 +1,88 @@
+name: QA Appearance Personalization v516 Preview
+
+on:
+  push:
+    branches:
+      - fix/appearance-personalization-v516-preview-20261002
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scope
+        run: |
+          set -e
+          base=968eb672cdd45f3af537cd1ed835fef4edf940e0
+          git diff --name-only "$base"...HEAD | sort > /tmp/changed
+          allowed=(
+            '.github/workflows/qa-appearance-personalization-v514.yml'
+            '.github/workflows/qa-appearance-personalization-v515.yml'
+            '.github/workflows/qa-appearance-personalization-v516.yml'
+            'css/nh7-appearance-personalization-v514.css'
+            'index.html'
+            'js/nh7-appearance-personalization-v514.js'
+            'js/nh7-fonts-v454.js'
+            'js/nh7-theme-studio-v453.js'
+            'service-worker.js'
+            'sw-offline-v329.js'
+            'sw-release-core-v403.js'
+          )
+          printf '%s\n' "${allowed[@]}" | sort > /tmp/allowed
+          diff -u /tmp/allowed /tmp/changed
+
+      - name: Syntax
+        run: |
+          node --check js/nh7-appearance-personalization-v514.js
+          node --check js/nh7-fonts-v454.js
+          node --check js/nh7-theme-studio-v453.js
+          node --check service-worker.js
+          node --check sw-offline-v329.js
+          node --check sw-release-core-v403.js
+
+      - name: Font behavior
+        run: |
+          grep -q "function applyFontVisual" js/nh7-appearance-personalization-v514.js
+          grep -q "data-nh7-ap514-font" css/nh7-appearance-personalization-v514.css
+          grep -q "web:true" js/nh7-fonts-v454.js
+          grep -q "Noto Kufi Arabic" js/nh7-fonts-v454.js
+          grep -q "Lalezar" js/nh7-fonts-v454.js
+          grep -q "Playfair Display" js/nh7-fonts-v454.js
+          grep -q "Source Sans 3" js/nh7-fonts-v454.js
+          grep -q "5.1.6" index.html
+
+      - name: Reader switch containment
+        run: |
+          grep -q "direction:ltr" css/nh7-appearance-personalization-v514.css
+          grep -q "left:3px" css/nh7-appearance-personalization-v514.css
+          grep -q "left:23px" css/nh7-appearance-personalization-v514.css
+          ! grep -q 'nh7-ap514-switch input:checked+span:after{transform:translateX' css/nh7-appearance-personalization-v514.css
+
+      - name: Theme and style visibility
+        run: |
+          grep -q "function applyThemeVisual" js/nh7-appearance-personalization-v514.js
+          grep -q "applyThemeVisual(cfg)" js/nh7-appearance-personalization-v514.js
+          grep -q 'data-nh7-ui-style514="tactile".*nh7p500' css/nh7-appearance-personalization-v514.css || true
+          grep -q ".nh7p500-tools button>span:first-child" css/nh7-appearance-personalization-v514.css
+          for style in tactile glass minimal material outline pill; do
+            grep -q "data-nh7-ui-style514=\"$style\"" css/nh7-appearance-personalization-v514.css
+          done
+
+      - name: Cache refresh
+        run: |
+          grep -q "nh7-release-core-v516-appearance-personalization" sw-release-core-v403.js
+          grep -q "v2.3.9.54-appearance516" sw-offline-v329.js
+          grep -q "5.1.6-appearance516" service-worker.js
+
+      - name: Unrelated runtime unchanged
+        run: |
+          set -e
+          base=968eb672cdd45f3af537cd1ed835fef4edf940e0
+          git diff --exit-code "$base"...HEAD --             js/app.js js/nh7-media-player-v500.js js/nh7-audio-classic-v484.js             'js/nh7-school-*' 'js/nh7-admin-*' 'supabase/**' 'data/**'
