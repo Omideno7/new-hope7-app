@@ -331,3 +331,76 @@ html[data-nh7-ui-style514="minimal"] #view :is(.card:not(.hero),.tile,.list-btn,
   background:transparent!important
 }
 html[data-nh7-ui-style514="pill"] #view :is(.tile,.list-btn,.link-card){border-radius:999px!important}
+
+
+/* v519 — live style preview inside Appearance settings */
+.nh7-ap514-live{
+  margin-top:12px;padding:11px;border:1px solid var(--nh7-studio-line,var(--line,#cbd8e1));border-radius:16px;
+  background:var(--nh7-studio-bg,var(--bg,#eef8ff));color:var(--nh7-studio-text,var(--ink,#17364e))
+}
+.nh7-ap514-live-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:9px}
+.nh7-ap514-live-head strong,.nh7-ap514-live-head small{display:block}.nh7-ap514-live-head strong{font-size:.7rem}.nh7-ap514-live-head small{font-size:.54rem;color:var(--nh7-studio-muted,var(--muted,#64748b));text-align:end}
+.nh7-ap514-live-module{
+  display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;align-items:center;
+  min-height:47px;padding:7px 9px;border:1px solid var(--nh7-studio-line,var(--line,#cbd8e1));border-radius:13px;
+  background:var(--nh7-studio-card,var(--card,#fff));box-shadow:0 4px 10px #10273b10
+}
+.nh7-ap514-live-module>[data-ap514-preview-icon]{width:26px;height:26px;display:grid;place-items:center;color:var(--nh7-studio-accent,var(--brand,#1858a4))}
+.nh7-ap514-live-module .nh7-icon517-svg{width:20px;height:20px}
+.nh7-ap514-live-module strong,.nh7-ap514-live-module small{display:block}.nh7-ap514-live-module strong{font-size:.64rem}.nh7-ap514-live-module small{font-size:.5rem;color:var(--nh7-studio-muted,var(--muted,#64748b))}
+.nh7-ap514-live-player{margin-top:9px;padding:9px;border-radius:13px;background:var(--nh7-studio-card,var(--card,#fff));border:1px solid var(--nh7-studio-line,var(--line,#cbd8e1))}
+.nh7-ap514-live-main{display:flex;justify-content:center;align-items:center;gap:7px}
+.nh7-ap514-live-main button{width:29px;height:29px;min-width:29px;border:0;border-radius:10px;padding:0;display:grid;place-items:center;background:color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 8%,transparent);color:var(--nh7-studio-accent,var(--brand,#1858a4))}
+.nh7-ap514-live-main button.is-primary{width:38px;height:38px;min-width:38px;background:var(--nh7-studio-accent,var(--brand,#1858a4));color:var(--nh7-studio-button-ink,#fff)}
+.nh7-ap514-live-main .nh7-icon517-svg{width:17px;height:17px}.nh7-ap514-live-main .is-primary .nh7-icon517-svg{width:20px;height:20px}
+.nh7-ap514-live-tools{display:grid;grid-template-columns:repeat(4,58px);justify-content:center;gap:6px;margin-top:8px}
+.nh7-ap514-live-tools button{
+  width:58px;min-width:58px;min-height:44px;padding:4px 2px 3px;display:grid;grid-template-rows:21px auto;place-items:center;
+  border-radius:11px;border:1px solid color-mix(in srgb,var(--pc) 18%,transparent);
+  background:color-mix(in srgb,var(--pc) 7%,var(--nh7-studio-card,var(--card,#fff)));color:var(--pc);box-shadow:0 2px 6px #00000010
+}
+.nh7-ap514-live-tools [data-ap514-preview-icon]{width:20px;height:20px;display:grid;place-items:center}
+.nh7-ap514-live-tools .nh7-icon517-svg{width:17px;height:17px}
+.nh7-ap514-live-tools small{font-size:.48rem;color:var(--nh7-studio-text,var(--ink,#17364e));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+
+/* Preview follows the chosen interface style without leaving Settings. */
+html[data-nh7-ui-style514="classic"] .nh7-ap514-live :is(.nh7-ap514-live-module,.nh7-ap514-live-player,.nh7-ap514-live-tools button){box-shadow:none}
+html[data-nh7-ui-style514="tactile"] .nh7-ap514-live :is(.nh7-ap514-live-module,.nh7-ap514-live-player,.nh7-ap514-live-tools button){box-shadow:0 4px 9px #10273b1a,inset 0 1px #ffffff9a}
+html[data-nh7-ui-style514="glass"] .nh7-ap514-live :is(.nh7-ap514-live-module,.nh7-ap514-live-player,.nh7-ap514-live-tools button){
+  background:color-mix(in srgb,var(--nh7-studio-card,var(--card,#fff)) 62%,transparent)!important;
+  backdrop-filter:blur(13px);-webkit-backdrop-filter:blur(13px);border-color:#ffffff72!important;box-shadow:inset 0 1px #ffffff90,0 4px 10px #0001
+}
+html[data-nh7-ui-style514="minimal"] .nh7-ap514-live :is(.nh7-ap514-live-module,.nh7-ap514-live-player,.nh7-ap514-live-tools button){background:transparent!important;box-shadow:none!important;border-color:transparent!important}
+html[data-nh7-ui-style514="material"] .nh7-ap514-live :is(.nh7-ap514-live-module,.nh7-ap514-live-player,.nh7-ap514-live-tools button){box-shadow:0 2px 6px #10273b22}
+html[data-nh7-ui-style514="outline"] .nh7-ap514-live :is(.nh7-ap514-live-module,.nh7-ap514-live-player,.nh7-ap514-live-tools button){background:transparent!important;box-shadow:none!important;border:1px solid var(--nh7-studio-accent,var(--brand,#1858a4))!important}
+html[data-nh7-ui-style514="pill"] .nh7-ap514-live :is(.nh7-ap514-live-module,.nh7-ap514-live-player){border-radius:22px!important}
+html[data-nh7-ui-style514="pill"] .nh7-ap514-live-tools button{border-radius:999px!important}
+
+/* Prominent but non-destructive appearance reset. */
+.nh7-ap514-btn.reset{
+  background:#fff6f1;color:#b45309;border-color:#fdba74;box-shadow:none
+}
+
+/* More page modules keep standard compact dimensions regardless of font/theme scaling. */
+[data-more-navigation456]{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:9px!important
+}
+[data-more-navigation456] .tile{
+  min-height:78px!important;
+  height:auto!important;
+  padding:10px 11px!important;
+  gap:4px!important;
+  border-radius:16px!important;
+  justify-content:center!important
+}
+[data-more-navigation456] .tile .emoji{font-size:21px!important;line-height:1!important}
+[data-more-navigation456] .tile strong{font-size:13px!important;line-height:1.25!important}
+[data-more-navigation456] .tile small{font-size:10px!important;line-height:1.3!important}
+@media(min-width:680px){
+  [data-more-navigation456]{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:390px){
+  .nh7-ap514-live-tools{grid-template-columns:repeat(4,54px);gap:5px}
+  .nh7-ap514-live-tools button{width:54px;min-width:54px}
+}
