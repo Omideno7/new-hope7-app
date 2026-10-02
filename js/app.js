@@ -1895,6 +1895,43 @@ function nh7WriteAudioCatalogCacheV446(categories,sermons){
     }
   }catch(e){}
 }
+function nh7NormalizeSermonSearchV530(value){
+  return String(value||'')
+    .normalize('NFKC')
+    .toLowerCase()
+    .replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g,'')
+    .replace(/[يى]/g,'ی')
+    .replace(/ك/g,'ک')
+    .replace(/[أإٱآ]/g,'ا')
+    .replace(/ۀ/g,'ه')
+    .replace(/\u200c/g,' ')
+    .replace(/[’'`]/g,'')
+    .replace(/[^\p{L}\p{N}]+/gu,' ')
+    .replace(/\s+/g,' ')
+    .trim();
+}
+function nh7FilterSermonsV530(sermons,categoryId,query){
+  const source=(Array.isArray(sermons)?sermons:[]).filter(x=>!categoryId||String(x.category_id)===String(categoryId));
+  const q=nh7NormalizeSermonSearchV530(query);
+  if(!q)return source;
+  const tokens=[...new Set(q.split(' ').filter(Boolean))];
+  return source
+    .map((item,index)=>{
+      const titles=[item.title_fa,item.title_en,item.title_hr].map(nh7NormalizeSermonSearchV530).filter(Boolean);
+      let score=0;
+      for(const t of titles){
+        if(t===q)score=Math.max(score,1000);
+        else if(t.startsWith(q))score=Math.max(score,900);
+        else if(t.includes(q))score=Math.max(score,800);
+        else if(tokens.length&&tokens.every(token=>t.includes(token)))score=Math.max(score,700+tokens.length);
+        else if(tokens.length===1&&t.includes(tokens[0]))score=Math.max(score,600);
+      }
+      return {item,index,score};
+    })
+    .filter(x=>x.score>0)
+    .sort((a,b)=>b.score-a.score||a.index-b.index)
+    .map(x=>x.item);
+}
 function nh7MountAudioEnhancementsV446(){
   const run=()=>{
     try{window.NH7_AUDIO_LIST_DETAIL_PATCH?.()}catch(e){}
@@ -1926,14 +1963,18 @@ async function audio(params={}){
     }
   }
   if(Array.isArray(sermons)&&sermons.length){
-    const catId=params.cat||''; const q=String(params.q||'').trim().toLowerCase();
-    const filtered=sermons.filter(x=>(!catId||String(x.category_id)===String(catId))&&(!q||[x.title_fa,x.title_en,x.title_hr,x.description_fa,x.description_en,x.description_hr].some(v=>String(v||'').toLowerCase().includes(q))));
+    const catId=params.cat||'';
+    const filtered=nh7FilterSermonsV530(sermons,catId,params.q||'');
     window.__sermonMap=Object.fromEntries(sermons.map(x=>{const c=categories.find(v=>String(v.id)===String(x.category_id));const topic=c?.['name_'+state.lang]||c?.name_fa||c?.name_en||'';return[String(x.id),Object.assign({},x,{analytics_type:'sermon',analytics_id:String(x.id),analytics_topic:topic,analytics_source_group:String(x.category_id||''),analytics_language:state.lang})]}));
     if(params.open){const x=sermons.find(v=>String(v.id)===String(params.open));if(x)playSermon(x);navigate('audio',{cat:catId,q:params.q||''},true);return}
     const list=filtered.length?`<div class="sermon-list">${filtered.map(x=>{const title=x['title_'+state.lang]||x.title_fa||x.title_en;let progress={};try{progress=JSON.parse(localStorage.getItem(sermonProgressKey(x.id))||'{}')}catch(e){}const duration=sermonDurationLabel(x)||formatAudioTime(progress.duration||0);return `<article class="sermon-card" data-sermon-card="${html(x.id)}"><div class="sermon-card-main">${x.cover_url?`<img src="${html(x.cover_url)}" alt="">`:'<span class="sermon-placeholder">🎙</span>'}<div class="sermon-card-copy"><strong>${html(title)}</strong><small>${duration?`${tr('duration')}: ${localText(duration)} · `:''}${x.youtube_url?'YouTube · ':''}${x.audio_url?'MP3':''}</small><div class="sermon-card-actions">${x.audio_url?`<button class="primary-btn compact-player-btn" data-sermon-play="${html(x.id)}">▶ ${progress.time>5?tr('continueListening'):tr('listenAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(x.audio_url)}" data-offline-title="${html(title)}">${state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline'}</button>`:''}<button class="secondary-btn compact-player-btn" data-sermon-note="${html(x.id)}">📝 ${tr('sermonNoteButton')}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(x.id)}"><div class="inline-player-controls"><button class="player-round" data-inline-back>↶15</button><button class="player-main" data-inline-play>▶</button><button class="player-round" data-inline-forward>30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek type="range" min="0" max="1000" value="0"><span data-inline-total>${duration||'0:00'}</span></div></div></article>`}).join('')}</div>`:`<p class="muted">${tr('noSermons')}</p>`;
     view.innerHTML=card(tr('sermons'),`<input id="sermonSearch" placeholder="${tr('sermonSearch')}" value="${html(params.q||'')}"><div class="tabs"><button class="tab ${!catId?'active':''}" data-go="audio">${tr('allCategories')}</button>${(categories||[]).map(c=>`<button class="tab ${String(catId)===String(c.id)?'active':''}" data-go="audio" data-params='${html(JSON.stringify({cat:c.id}))}'>${html(c['name_'+state.lang]||c.name_fa||c.name_en)}</button>`).join('')}</div>${list}`);
     try{window.NH7_AUDIO_LIBRARY_V500_PATCH?.()}catch(e){console.warn('Audio Library v500 mount',e)}
-    $('#sermonSearch')?.addEventListener('change',e=>navigate('audio',{cat:catId,q:e.target.value},true));bindInlineSermonControls();updateInlineSermonPlayers();nh7MountAudioEnhancementsV446();return;
+    const sermonSearchEl=$('#sermonSearch');
+    const runSermonSearch=e=>navigate('audio',{cat:catId,q:e.target.value},true);
+    sermonSearchEl?.addEventListener('input',runSermonSearch);
+    sermonSearchEl?.addEventListener('change',runSermonSearch);
+    bindInlineSermonControls();updateInlineSermonPlayers();nh7MountAudioEnhancementsV446();return;
   }
   const d=await jfetch('data/audio/messages.json');
   if(params.cat){
