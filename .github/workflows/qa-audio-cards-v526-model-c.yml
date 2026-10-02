@@ -39,8 +39,10 @@ jobs:
           grep -q "selected Model C: Minimal Premium Frame" js/nh7-audio-library-v500.js
           grep -q "nh7al500-art-c" js/nh7-audio-library-v500.js
           grep -q "nh7al500-status" js/nh7-audio-library-v500.js
-          grep -q 'data-al-kind="'+kind+'"' js/nh7-audio-library-v500.js
-          grep -q "continue.*favorite.*recent" js/nh7-audio-library-v500.js
+          grep -q "data-al-kind" js/nh7-audio-library-v500.js
+          grep -q "data-al-kind=\"continue\"" js/nh7-audio-library-v500.js
+          grep -q "data-al-kind=\"favorite\"" js/nh7-audio-library-v500.js
+          grep -q "data-al-kind=\"recent\"" js/nh7-audio-library-v500.js
 
       - name: Verify geometry is theme-stable
         run: |
