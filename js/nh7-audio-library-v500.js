@@ -38,7 +38,71 @@ function addStyle(){
 .inline-sermon-player,.nh7al500-host [data-classic-player],.nh7al500-host .nh7-classic-audio-v400{display:none!important}.sermon-card>[data-nh7-social-v440]{display:none!important}
 html[dir="rtl"] .sermon-card-main{direction:rtl!important}html[dir="rtl"] .sermon-card-main>img,html[dir="rtl"] .sermon-placeholder{grid-column:1!important}html[dir="rtl"] .sermon-card-copy{grid-column:2!important;text-align:right!important}html[dir="rtl"] .nh7al500-row-actions{grid-column:3!important}
 html[dir="ltr"] .sermon-card-main{direction:ltr!important}html[dir="ltr"] .sermon-card-copy{text-align:left!important}
-@media(max-width:430px){.nh7al500-hero{min-height:200px;border-radius:20px}.nh7al500-card{width:84px;flex-basis:84px}.nh7al500-card img{width:84px;height:84px}}
+
+/* v526 — selected Model C: Minimal Premium Frame.
+   Geometry stays identical in every theme; only theme colors/accents change. */
+.nh7al500-strip{gap:10px!important;padding:4px 2px 10px!important}
+.nh7al500-card{
+  width:96px!important;flex:0 0 96px!important;
+  border:0!important;background:transparent!important;color:inherit!important;
+  padding:0!important;text-align:start!important
+}
+.nh7al500-art-c{
+  position:relative;display:grid;place-items:center;
+  width:96px;height:96px;border-radius:19px;
+  background:var(--card,var(--nh7-studio-card,#fff));
+  border:1px solid color-mix(in srgb,var(--accent,var(--nh7-studio-accent,#1858a4)) 18%,var(--line,#d6e4ef));
+  box-shadow:0 8px 18px color-mix(in srgb,var(--text,var(--nh7-studio-text,#17364e)) 11%,transparent);
+  overflow:hidden;
+  transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease
+}
+.nh7al500-art-c:after{
+  content:"";position:absolute;inset:5px;border-radius:14px;pointer-events:none;
+  border:1px solid color-mix(in srgb,var(--accent,var(--nh7-studio-accent,#1858a4)) 9%,transparent)
+}
+.nh7al500-art-c img{
+  width:64%!important;height:64%!important;max-width:64%!important;
+  border-radius:11px!important;object-fit:contain!important;display:block!important;
+  margin:0!important;filter:saturate(.98) contrast(1.02)
+}
+.nh7al500-card:active .nh7al500-art-c{
+  transform:scale(.975);
+  box-shadow:0 4px 10px color-mix(in srgb,var(--text,var(--nh7-studio-text,#17364e)) 10%,transparent)
+}
+.nh7al500-status{
+  position:absolute;z-index:3;inset-inline-end:6px;top:6px;
+  width:23px;height:23px;border-radius:50%;display:grid;place-items:center;
+  color:#fff;background:var(--accent,var(--nh7-studio-accent,#1858a4));
+  border:2px solid var(--card,var(--nh7-studio-card,#fff));
+  box-shadow:0 3px 8px #0002
+}
+.nh7al500-status:before{font-size:9px;font-weight:950;line-height:1}
+.nh7al500-card[data-al-kind="continue"] .nh7al500-status:before{content:"▶"}
+.nh7al500-card[data-al-kind="favorite"] .nh7al500-status:before{content:"★"}
+.nh7al500-card[data-al-kind="recent"] .nh7al500-status:before{content:"↺";font-size:11px}
+.nh7al500-card b{
+  display:block!important;margin-top:6px!important;font-size:.59rem!important;line-height:1.25!important;
+  white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important
+}
+.nh7al500-card small{
+  display:block!important;font-size:.49rem!important;line-height:1.25!important;
+  opacity:.62!important;margin-top:2px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important
+}
+.nh7al500-card-progress{
+  display:block;height:3px;margin-top:5px;border-radius:999px;overflow:hidden;
+  background:color-mix(in srgb,var(--text,var(--nh7-studio-text,#17364e)) 12%,transparent)
+}
+.nh7al500-card-progress>i{
+  display:block;height:100%;width:var(--nh7-al-progress,0%);
+  border-radius:inherit;background:var(--accent,var(--nh7-studio-accent,#1858a4))
+}
+
+@media(max-width:430px){
+ .nh7al500-hero{min-height:200px;border-radius:20px}
+ .nh7al500-card{width:88px!important;flex-basis:88px!important}
+ .nh7al500-art-c{width:88px;height:88px}
+}
+
 `;document.head.appendChild(s)
 }
 
@@ -46,8 +110,14 @@ function readSet(key){try{const a=JSON.parse(localStorage.getItem(key)||'[]');re
 function readProgress(x){try{return JSON.parse(localStorage.getItem('nh7_sermon_progress_'+id(x))||'{}')}catch(_){return{}}}
 function listAll(){return Object.values(window.__sermonMap||{}).filter(x=>id(x)&&!id(x).startsWith('school-'))}
 function play(x){window.NH7_AUDIO_CLASSIC_V400?.playItem?.(x)}
-function shelf(items,subtitle){
- return items.slice(0,10).map(x=>'<button type="button" class="nh7al500-card" data-al-play="'+esc(id(x))+'"><img src="'+esc(art(x))+'" alt=""><b>'+esc(title(x))+'</b><small>'+esc(subtitle(x))+'</small></button>').join('')
+function shelf(items,subtitle,kind='recent'){
+ return items.slice(0,10).map(x=>{
+   const sid=esc(id(x)),label=esc(title(x)),sub=esc(subtitle(x));
+   const p=kind==='continue'?readProgress(x):{},dur=Math.max(0,Number(p.duration||x.duration_seconds||0)),now=Math.max(0,Number(p.time||0));
+   const pct=kind==='continue'&&dur>0?Math.max(0,Math.min(100,now/dur*100)):0;
+   const progress=kind==='continue'?'<span class="nh7al500-card-progress" aria-hidden="true"><i style="--nh7-al-progress:'+pct.toFixed(1)+'%"></i></span>':'';
+   return '<button type="button" class="nh7al500-card" data-al-play="'+sid+'" data-al-kind="'+kind+'"><span class="nh7al500-art-c"><img src="'+esc(art(x))+'" alt=""><span class="nh7al500-status" aria-hidden="true"></span></span><b>'+label+'</b><small>'+sub+'</small>'+progress+'</button>';
+ }).join('')
 }
 
 function enhanceRows(){
@@ -87,8 +157,8 @@ function renderShelves(host){
  const scopedAll=listAll().filter(x=>!visibleIds.size||visibleIds.has(id(x))),byId=Object.fromEntries(scopedAll.map(x=>[id(x),x])),favs=readSet(FAV),recent=[...readSet(RECENT)];
  const cont=scopedAll.filter(x=>{const p=readProgress(x),d=Number(p.duration||x.duration_seconds||0),t=Number(p.time||0);return t>5&&(!d||t<d-15)}).sort((a,b)=>Number(readProgress(b).updatedAt?Date.parse(readProgress(b).updatedAt):0)-Number(readProgress(a).updatedAt?Date.parse(readProgress(a).updatedAt):0));
  const fav=scopedAll.filter(x=>favs.has(id(x))),rec=recent.map(x=>byId[x]).filter(Boolean);
- const sets=[['[data-al-continue]','[data-al-continue-list]',cont,x=>{const p=readProgress(x);return p.time?L('ادامه از ','Continue from ','Nastavi od ')+fmt(p.time):''}],['[data-al-favorites]','[data-al-favorites-list]',fav,x=>fmt(x.duration_seconds||0)],['[data-al-recent]','[data-al-recent-list]',rec,x=>fmt(x.duration_seconds||0)]];
- sets.forEach(([secSel,listSel,items,sub])=>{const sec=host.querySelector(secSel),el=host.querySelector(listSel);if(!sec||!el)return;sec.hidden=!items.length;el.innerHTML=shelf(items,sub)});
+ const sets=[['[data-al-continue]','[data-al-continue-list]',cont,x=>{const p=readProgress(x);return p.time?L('ادامه از ','Continue from ','Nastavi od ')+fmt(p.time):''},'continue'],['[data-al-favorites]','[data-al-favorites-list]',fav,x=>fmt(x.duration_seconds||0),'favorite'],['[data-al-recent]','[data-al-recent-list]',rec,x=>fmt(x.duration_seconds||0),'recent']];
+ sets.forEach(([secSel,listSel,items,sub,kind])=>{const sec=host.querySelector(secSel),el=host.querySelector(listSel);if(!sec||!el)return;sec.hidden=!items.length;el.innerHTML=shelf(items,sub,kind)});
 }
 
 document.addEventListener('click',e=>{
