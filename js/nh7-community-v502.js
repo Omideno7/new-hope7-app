@@ -3,12 +3,15 @@
 (()=>{'use strict';
 if(window.__NH7_COMMUNITY_V502__)return;window.__NH7_COMMUNITY_V502__=true;
 
-const VERSION='5.0.2';
+const VERSION='5.0.3-release';
 const GUIDE_URL='data/community/testimony_guide_v502.json';
 const PROFILE_BUCKET='nh7-profile-photos-v502';
 const TESTIMONY_PRIVATE='nh7-testimony-submissions-v502';
 const TESTIMONY_PUBLIC='nh7-testimony-published-v502';
-let guideCache=null,recordState={rec:null,stream:null,chunks:[],blob:null,url:'',timer:0,started:0,topic:0};
+const TESTIMONY_MAX_BYTES=60*1024*1024;
+const PROFILE_MAX_BYTES=5*1024*1024;
+const PUBLIC_FEED_TTL_MS=10*60*1000;
+let guideCache=null,publicFeedCache=new Map(),recordState={rec:null,stream:null,chunks:[],blob:null,url:'',timer:0,started:0,topic:0};
 let crop={original:'',cropped:'',x:0,y:0,zoom:1,tx:0,ty:0,tz:1,drag:false,sx:0,sy:0,ox:0,oy:0,scrollY:0};
 
 function C(){const c=window.NH7_COMMUNITY_CTX_V502;if(!c)throw new Error('Community context is not ready.');return c}
@@ -61,10 +64,12 @@ function backendNotice(err){
  return msg;
 }
 async function publicTestimonies(){
+ const key=lang(),cached=publicFeedCache.get(key),now=Date.now();
+ if(cached&&now-cached.at<PUBLIC_FEED_TTL_MS)return cached.rows;
  try{
-  const rows=await C().cloudRpc('nh7_public_testimony_feed_v502',{p_language:lang(),p_limit:100});
-  return Array.isArray(rows)?rows:[];
- }catch(e){console.warn('Public testimony feed unavailable',e);return []}
+  const rows=await C().cloudRpc('nh7_public_testimony_feed_v502',{p_language:key,p_limit:30});
+  const safe=Array.isArray(rows)?rows:[];publicFeedCache.set(key,{at:now,rows:safe});return safe;
+ }catch(e){console.warn('Public testimony feed unavailable',e);return cached?.rows||[]}
 }
 function publicAudioUrl(path){return path?C().publicStorageUrl(TESTIMONY_PUBLIC,path):''}
 
@@ -118,7 +123,7 @@ function bindTestimonyForm(){
  document.getElementById('nh7c502RecordPause').onclick=()=>{const r=recordState.rec;if(!r)return;if(r.state==='recording'){r.pause();document.getElementById('nh7c502RecordPause').textContent=L('ادامه','Resume','Nastavi')}else if(r.state==='paused'){r.resume();document.getElementById('nh7c502RecordPause').textContent=u.pause}};
  document.getElementById('nh7c502RecordStop').onclick=()=>{const r=recordState.rec;if(r&&r.state!=='inactive')r.stop();document.getElementById('nh7c502RecordStart').disabled=false;document.getElementById('nh7c502RecordPause').disabled=true;document.getElementById('nh7c502RecordStop').disabled=true;document.getElementById('nh7c502RecordPause').textContent=u.pause};
  document.getElementById('nh7c502RecordDelete').onclick=()=>{clearRecording();const a=document.getElementById('nh7c502Playback');a.pause();a.removeAttribute('src');a.hidden=true;document.getElementById('nh7c502RecordDelete').disabled=true;recordingStatus(u.ready)};
- document.getElementById('nh7c502AudioFile').onchange=e=>{const f=e.target.files?.[0];if(!f)return;clearRecording();recordState.blob=f;recordState.url=URL.createObjectURL(f);const a=document.getElementById('nh7c502Playback');a.src=recordState.url;a.hidden=false;document.getElementById('nh7c502RecordDelete').disabled=false;recordingStatus(f.name)};
+ document.getElementById('nh7c502AudioFile').onchange=e=>{const f=e.target.files?.[0];if(!f)return;if(f.size>TESTIMONY_MAX_BYTES){e.target.value='';toast(L('حجم فایل صوتی باید کمتر از ۶۰ مگابایت باشد.','Audio file must be smaller than 60 MB.','Audio datoteka mora biti manja od 60 MB.'));return}clearRecording();recordState.blob=f;recordState.url=URL.createObjectURL(f);const a=document.getElementById('nh7c502Playback');a.src=recordState.url;a.hidden=false;document.getElementById('nh7c502RecordDelete').disabled=false;recordingStatus(f.name)};
  document.getElementById('nh7c502Submit').onclick=submitTestimony;
 }
 async function mediaDuration(blob){
@@ -131,13 +136,16 @@ async function submitTestimony(){
  if(!title||!blob||!consent||(type==='healing'&&!health)){toast(L('عنوان، فایل صوتی و رضایت‌های لازم را کامل کنید.','Complete the title, audio, and required consent fields.','Ispunite naslov, audio i potrebne privole.'),'notice');return}
  const session=C().session(),uid=session?.user?.id;if(!uid){requireLogin('testimonies');return}
  const btn=document.getElementById('nh7c502Submit');btn.disabled=true;
+ let uploadedPath='';
  try{
-  const id=crypto.randomUUID?.()||String(Date.now()),path=uid+'/'+id+'.'+extFor(blob);
+  if(Number(blob.size||0)>TESTIMONY_MAX_BYTES)throw new Error(L('حجم فایل صوتی باید کمتر از ۶۰ مگابایت باشد.','Audio file must be smaller than 60 MB.','Audio datoteka mora biti manja od 60 MB.'));
+  const id=crypto.randomUUID?.()||String(Date.now()),path=uid+'/'+id+'.'+extFor(blob);uploadedPath=path;
   await C().storageUpload(TESTIMONY_PRIVATE,path,blob,blob.type||'application/octet-stream',false);
   const duration=await mediaDuration(blob);
   await C().cloudFetch('nh7_testimonies_v502',{method:'POST',body:JSON.stringify({user_id:uid,title,display_name:name||C().profileName()||'',testimony_type:type,note_text:note,language:lang(),show_name:show,consent_public:consent,consent_health_public:health,audio_submission_path:path,audio_mime_type:blob.type||'',audio_duration_seconds:duration,status:'pending'})});
+  uploadedPath='';
   toast(L('شهادت صوتی شما خصوصی برای بررسی Admin ارسال شد ✓','Your audio testimony was sent privately for Admin review ✓','Vaše audio svjedočanstvo privatno je poslano Adminu na pregled ✓'),'notice success-notice');
- }catch(e){toast(backendNotice(e),'notice')}finally{btn.disabled=false}
+ }catch(e){if(uploadedPath)C().storageRemove?.(TESTIMONY_PRIVATE,uploadedPath).catch(()=>{});toast(backendNotice(e),'notice')}finally{btn.disabled=false}
 }
 
 async function renderPrayer(){
@@ -163,7 +171,7 @@ async function renderProfile(){
  if(row?.photo_path){try{avatar=await C().privateStorageObjectUrl(PROFILE_BUCKET,row.photo_path)}catch(_){}}
  view.innerHTML=C().card(u.profileTitle,'<div style="display:flex;gap:12px;align-items:center"><div class="nh7c502-avatar" id="nh7c502Avatar">'+(avatar?'<img src="'+esc(avatar)+'">':'👤')+'</div><div><strong id="nh7c502ProfileName">'+esc(row?.display_name||C().profileName()||'')+'</strong><p class="muted">'+esc(u.profilePrivate)+'</p></div></div><div class="form-row"><label><strong>'+esc(u.displayName)+'</strong></label><input id="nh7c502ProfileNameInput" maxlength="160" value="'+esc(row?.display_name||C().profileName()||'')+'"></div><div class="form-row"><label><strong>'+esc(u.choosePhoto)+'</strong></label><input id="nh7c502PhotoInput" type="file" accept="image/*"></div><div class="nh7c502-actions"><button class="secondary-btn" id="nh7c502AdjustPhoto" disabled>'+esc(u.adjustPhoto)+'</button><button class="primary-btn" id="nh7c502SaveProfile">'+esc(u.saveProfile)+'</button></div><div data-community-msg style="margin-top:10px"></div>');
  ensureCropModal();
- document.getElementById('nh7c502PhotoInput').onchange=e=>{const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{crop.original=String(r.result||'');crop.cropped='';crop.x=0;crop.y=0;crop.zoom=1;document.getElementById('nh7c502AdjustPhoto').disabled=false;openCrop()};r.readAsDataURL(f)};
+ document.getElementById('nh7c502PhotoInput').onchange=e=>{const f=e.target.files?.[0];if(!f)return;if(f.size>PROFILE_MAX_BYTES){e.target.value='';toast(L('حجم عکس پروفایل باید کمتر از ۵ مگابایت باشد.','Profile photo must be smaller than 5 MB.','Fotografija profila mora biti manja od 5 MB.'));return}const r=new FileReader();r.onload=()=>{crop.original=String(r.result||'');crop.cropped='';crop.x=0;crop.y=0;crop.zoom=1;document.getElementById('nh7c502AdjustPhoto').disabled=false;openCrop()};r.readAsDataURL(f)};
  document.getElementById('nh7c502AdjustPhoto').onclick=openCrop;
  document.getElementById('nh7c502SaveProfile').onclick=()=>saveProfile(row);
 }
@@ -204,6 +212,7 @@ async function saveProfile(old){
    await C().storageUpload(PROFILE_BUCKET,photoPath,avatarBlob,'image/jpeg',false);
   }
   await C().cloudFetch('nh7_user_profiles_v502?on_conflict=user_id',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify({user_id:uid,display_name:name,original_photo_path:originalPath,photo_path:photoPath,photo_position_x:crop.x,photo_position_y:crop.y,photo_zoom:crop.zoom,updated_at:new Date().toISOString()})});
+  const stale=[old?.original_photo_path,old?.photo_path].filter(p=>p&&p!==originalPath&&p!==photoPath);if(stale.length)C().storageRemove?.(PROFILE_BUCKET,stale).catch(()=>{});
   try{localStorage.setItem('nh7_user_profile',JSON.stringify({name,email:C().email()}))}catch(_){}
   document.getElementById('nh7c502ProfileName').textContent=name;toast(L('پروفایل ذخیره شد ✓','Profile saved ✓','Profil je spremljen ✓'),'notice success-notice')
  }catch(e){toast(backendNotice(e))}finally{b.disabled=false}
