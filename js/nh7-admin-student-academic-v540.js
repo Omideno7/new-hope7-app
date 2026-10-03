@@ -4,7 +4,7 @@
 (()=>{'use strict';
 if(window.__NH7_ADMIN_STUDENT_ACADEMIC_V540__)return;
 window.__NH7_ADMIN_STUDENT_ACADEMIC_V540__=true;
-const VERSION='5.4.4-student-academic-center';
+const VERSION='5.4.5-student-academic-center';
 
 let view='overview';
 let reportFilter='school_registered';
@@ -15,6 +15,8 @@ let data=null;
 let loading=false;
 let error='';
 let loadedAt=0;
+let waitingForAdminIdle=false;
+let retryingAcademicLoad=false;
 
 const L=(fa,en,hr)=>String(typeof lang!=='undefined'?lang:'fa')==='fa'?fa:String(typeof lang!=='undefined'?lang:'fa')==='hr'?hr:en;
 const E=v=>typeof h==='function'?h(v):String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -124,17 +126,56 @@ function optionLabel(key){
   };
   const a=m[key]||[key,key,key];return lang==='fa'?a[0]:lang==='hr'?a[2]:a[1]
 }
+const nh7AcademicDelay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+function nh7AcademicAdminBusy(){
+  try{return typeof adminLoadInFlight!=='undefined'&&!!adminLoadInFlight}catch(_){return false}
+}
+function nh7AcademicRetriableError(error){
+  const message=String(error?.message||error||'').toLowerCase();
+  return message.includes('57014')||message.includes('statement timeout')||message.includes('request timed out')||message.includes('زمان دریافت اطلاعات');
+}
+async function nh7AcademicWaitForAdminIdle(maxMs=90000){
+  const started=Date.now();
+  let announced=false;
+  while(nh7AcademicAdminBusy()&&Date.now()-started<maxMs){
+    waitingForAdminIdle=true;
+    if(!announced&&activeTab==='students'){announced=true;render()}
+    await nh7AcademicDelay(500);
+  }
+  waitingForAdminIdle=false;
+  // Give the last background RPCs a short quiet window before the report starts.
+  await nh7AcademicDelay(1500);
+}
 async function load(force=false){
   if(loading||!token)return;
   if(data&&!force&&Date.now()-loadedAt<60000)return;
-  loading=true;error='';
+  loading=true;error='';retryingAcademicLoad=false;
   if(activeTab==='students')render();
   try{
-    const raw=await adminRpc('nh7_admin_student_academic_center_v542',{p_inactive_days:inactiveDays},60000);
-    data=unwrap(raw)||{};
-    loadedAt=Date.now();
+    await nh7AcademicWaitForAdminIdle();
+    let lastError=null;
+    for(let attempt=0;attempt<2;attempt++){
+      try{
+        const raw=await adminRpc('nh7_admin_student_academic_center_v542',{p_inactive_days:inactiveDays},60000);
+        data=unwrap(raw)||{};
+        loadedAt=Date.now();
+        lastError=null;
+        break;
+      }catch(e){
+        lastError=e;
+        if(attempt===0&&nh7AcademicRetriableError(e)){
+          retryingAcademicLoad=true;
+          if(activeTab==='students')render();
+          await nh7AcademicDelay(3000);
+          retryingAcademicLoad=false;
+          continue;
+        }
+        throw e;
+      }
+    }
+    if(lastError)throw lastError;
   }catch(e){error=e?.message||String(e)}
-  finally{loading=false;if(activeTab==='students')render()}
+  finally{waitingForAdminIdle=false;retryingAcademicLoad=false;loading=false;if(activeTab==='students')render()}
 }
 function setView(v){view=v;render();if(!data)setTimeout(()=>load(false),0)}
 function setFilter(v){reportFilter=v;render()}
@@ -153,7 +194,12 @@ function nav(){
 }
 function loadingCard(){
   if(error)return'<section class="panel-card"><div class="notice">'+E(error)+'</div><button class="btn secondary" onclick="nh7StudentAcademicReloadV540()">⟳ '+E(L('تلاش دوباره','Retry','Pokušaj ponovno'))+'</button></section>';
-  return'<section class="panel-card"><div class="empty">'+E(L('در حال جمع‌آوری گزارش‌های دانشگاهی…','Loading academic reports…','Učitavanje akademskih izvještaja…'))+'</div></section>'
+  const message=waitingForAdminIdle
+    ?L('در حال تکمیل بارگذاری اولیه پنل… گزارش دانشجو بلافاصله بعد از آن دریافت می‌شود.','Finishing the Admin initial sync… the student report will load immediately afterward.','Dovršava se početna sinkronizacija… izvještaj će se učitati odmah nakon toga.')
+    :retryingAcademicLoad
+      ?L('سرور شلوغ بود؛ گزارش به‌صورت خودکار دوباره در حال دریافت است…','The server was busy; the report is retrying automatically…','Poslužitelj je bio zauzet; izvještaj se automatski ponovno učitava…')
+      :L('در حال جمع‌آوری گزارش‌های دانشگاهی…','Loading academic reports…','Učitavanje akademskih izvještaja…');
+  return'<section class="panel-card"><div class="empty">'+E(message)+'</div></section>'
 }
 function statCard(value,label,filter,alert=false){
   return'<button type="button" class="nh7ac540-stat '+(alert?'alert':'')+'" onclick="nh7StudentAcademicOpenReportV540(\''+filter+'\')"><b>'+E(value)+'</b><span>'+E(label)+'</span></button>'
