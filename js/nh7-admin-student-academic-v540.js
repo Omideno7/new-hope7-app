@@ -4,7 +4,7 @@
 (()=>{'use strict';
 if(window.__NH7_ADMIN_STUDENT_ACADEMIC_V540__)return;
 window.__NH7_ADMIN_STUDENT_ACADEMIC_V540__=true;
-const VERSION='5.4.6-student-academic-center';
+const VERSION='5.4.7-student-academic-center';
 
 let view='overview';
 let reportFilter='school_registered';
@@ -17,6 +17,8 @@ let error='';
 let loadedAt=0;
 let waitingForAdminIdle=false;
 let retryingAcademicLoad=false;
+let groupPdfEnginePromise=null;
+let groupPdfState={key:'',blob:null,promise:null,error:''};
 
 const L=(fa,en,hr)=>String(typeof lang!=='undefined'?lang:'fa')==='fa'?fa:String(typeof lang!=='undefined'?lang:'fa')==='hr'?hr:en;
 const E=v=>typeof h==='function'?h(v):String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -305,15 +307,166 @@ function closeGroupReport(){
   if(modal)modal.remove();
   document.body.classList.remove('nh7ac540-report-open','nh7ac540-printing');
 }
-function printGroupReport(){
-  const modal=document.getElementById('nh7AcademicGroupReportV546');
-  if(!modal)return;
-  document.body.classList.add('nh7ac540-printing');
-  const cleanup=()=>document.body.classList.remove('nh7ac540-printing');
-  window.addEventListener('afterprint',cleanup,{once:true});
-  setTimeout(()=>{try{window.print()}catch(e){cleanup();alert(e?.message||String(e))}},80);
-  setTimeout(cleanup,30000);
+function groupPdfKey(){
+  return [reportFilter,searchValue,inactiveDays,showTests?'1':'0',loadedAt,filteredRows().length].join('|')
 }
+function groupPdfSafeName(){
+  const raw='New-Hope-7-'+String(reportFilter||'students')+'-'+new Date().toISOString().slice(0,10)+'.pdf';
+  return raw.replace(/[^a-zA-Z0-9._-]+/g,'-')
+}
+function loadGroupPdfScript(src,key,ready){
+  if(ready())return Promise.resolve(true);
+  const existing=document.querySelector('script[data-nh7-group-pdf="'+key+'"]');
+  if(existing)return new Promise((resolve,reject)=>{
+    const done=()=>ready()?resolve(true):reject(new Error(key+' loaded but is unavailable'));
+    if(existing.dataset.loaded==='1'){done();return}
+    existing.addEventListener('load',done,{once:true});
+    existing.addEventListener('error',()=>reject(new Error(key+' failed to load')),{once:true});
+  });
+  return new Promise((resolve,reject)=>{
+    const s=document.createElement('script');
+    s.dataset.nh7GroupPdf=key;s.src=src;s.async=true;
+    const timer=setTimeout(()=>reject(new Error(key+' timed out')),25000);
+    s.onload=()=>{clearTimeout(timer);s.dataset.loaded='1';ready()?resolve(true):reject(new Error(key+' global unavailable'))};
+    s.onerror=()=>{clearTimeout(timer);reject(new Error(key+' failed to load'))};
+    document.head.appendChild(s)
+  })
+}
+function loadGroupPdfEngine(){
+  if(groupPdfEnginePromise)return groupPdfEnginePromise;
+  groupPdfEnginePromise=Promise.all([
+    loadGroupPdfScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js','html2canvas-1.4.1',()=>typeof window.html2canvas==='function'),
+    loadGroupPdfScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js','jspdf-2.5.1',()=>typeof window.jspdf?.jsPDF==='function')
+  ]).then(()=>true).catch(error=>{groupPdfEnginePromise=null;throw error});
+  return groupPdfEnginePromise
+}
+function setGroupPdfButton(state,message){
+  const btn=document.getElementById('nh7AcademicGroupPdfBtnV547');
+  const hint=document.getElementById('nh7AcademicGroupPdfHintV547');
+  if(btn){
+    btn.disabled=state!=='ready';
+    btn.textContent=state==='ready'
+      ?'📄 '+L('PDF / چاپ','PDF / Print','PDF / Ispis')
+      :state==='error'
+        ?'⚠ '+L('PDF آماده نشد','PDF failed','PDF nije spreman')
+        :'⏳ '+L('آماده‌سازی PDF…','Preparing PDF…','Priprema PDF-a…')
+  }
+  if(hint&&message)hint.textContent=message
+}
+async function captureGroupPdfPage(titleText,metaText,theadHtml,rowHtml,dir){
+  const host=document.createElement('div');
+  host.className='nh7ac540-pdf-capture-host';
+  host.dir=dir;
+  Object.assign(host.style,{
+    position:'fixed',left:'0',top:'0',width:'1120px',minWidth:'1120px',maxWidth:'1120px',
+    background:'#fff',color:'#102033',zIndex:'2147483000',pointerEvents:'none',
+    overflow:'visible',padding:'22px',margin:'0',boxSizing:'border-box',fontFamily:'Arial, sans-serif'
+  });
+  host.innerHTML=
+    '<div style="display:flex;justify-content:space-between;gap:18px;align-items:flex-end;border-bottom:2px solid #0f766e;padding-bottom:12px;margin-bottom:14px">'+
+      '<div><div style="font-size:24px;font-weight:800">'+E(titleText)+'</div><div style="font-size:13px;color:#667085;margin-top:5px">'+E(metaText)+'</div></div>'+
+      '<div style="font-size:18px;font-weight:800;color:#0f766e;white-space:nowrap">NEW HOPE 7</div>'+
+    '</div>'+
+    '<table style="width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px"><thead>'+theadHtml+'</thead><tbody>'+rowHtml+'</tbody></table>';
+  host.querySelectorAll('th,td').forEach(el=>{
+    el.style.border='1px solid #d7e3e3';el.style.padding='8px';el.style.verticalAlign='top';el.style.textAlign='start';
+    el.style.overflowWrap='anywhere';el.style.wordBreak='break-word'
+  });
+  host.querySelectorAll('th').forEach(el=>{el.style.background='#eef8f7';el.style.fontWeight='800'});
+  host.querySelectorAll('small').forEach(el=>{el.style.color='#667085'});
+  document.body.appendChild(host);
+  try{
+    try{await document.fonts?.ready}catch(_){}
+    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+    const apple=/iPad|iPhone|iPod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+    return await window.html2canvas(host,{
+      scale:apple?1.05:1.2,
+      useCORS:true,allowTaint:false,backgroundColor:'#ffffff',logging:false,
+      scrollX:0,scrollY:0,width:1120,height:Math.max(host.scrollHeight,host.offsetHeight),
+      windowWidth:1180,windowHeight:Math.max(900,Math.min(host.scrollHeight,1800)),
+      x:0,y:0,removeContainer:true
+    })
+  }finally{host.remove()}
+}
+async function createGroupPdfBlob(){
+  const modal=document.getElementById('nh7AcademicGroupReportV546');
+  if(!modal)throw new Error(L('پیش‌نمایش گزارش بسته شده است.','The report preview is closed.','Pregled izvještaja je zatvoren.'));
+  await loadGroupPdfEngine();
+  const table=modal.querySelector('.nh7ac540-print-table');
+  if(!table)throw new Error(L('جدول گزارش پیدا نشد.','Report table not found.','Tablica izvještaja nije pronađena.'));
+  const sourceRows=[...table.querySelectorAll('tbody tr')];
+  const theadHtml=table.querySelector('thead')?.innerHTML||'';
+  const titleText='New Hope 7 · '+optionLabel(reportFilter);
+  const metaText=L('تاریخ گزارش','Report date','Datum izvještaja')+': '+fmtDateTime(new Date())+' · '+sourceRows.length+' '+L('نفر','people','osoba');
+  const dir=lang==='fa'?'rtl':'ltr';
+  const JsPDF=window.jspdf?.jsPDF;
+  if(typeof JsPDF!=='function')throw new Error(L('موتور PDF در دسترس نیست.','PDF engine is unavailable.','PDF sustav nije dostupan.'));
+  const pdf=new JsPDF({orientation:'landscape',unit:'mm',format:'a4',compress:true});
+  const pageW=pdf.internal.pageSize.getWidth(),pageH=pdf.internal.pageSize.getHeight();
+  const margin=7,printW=pageW-margin*2,printH=pageH-margin*2;
+  const rowsPerPage=14;
+  const pages=Math.max(1,Math.ceil(sourceRows.length/rowsPerPage));
+  for(let page=0;page<pages;page++){
+    const chunk=sourceRows.slice(page*rowsPerPage,(page+1)*rowsPerPage).map(row=>row.outerHTML).join('');
+    const pageMeta=metaText+' · '+L('صفحه','Page','Stranica')+' '+(page+1)+'/'+pages;
+    const canvas=await captureGroupPdfPage(titleText,pageMeta,theadHtml,chunk,dir);
+    const img=canvas.toDataURL('image/jpeg',0.92);
+    if(page>0)pdf.addPage('a4','landscape');
+    const ratio=canvas.height/canvas.width;
+    let drawW=printW,drawH=drawW*ratio;
+    if(drawH>printH){drawH=printH;drawW=drawH/ratio}
+    const x=margin+(printW-drawW)/2;
+    pdf.addImage(img,'JPEG',x,margin,drawW,drawH,undefined,'FAST');
+    canvas.width=1;canvas.height=1
+  }
+  const blob=pdf.output('blob');
+  if(!(blob instanceof Blob)||blob.size<1500)throw new Error(L('فایل PDF معتبر ساخته نشد.','A valid PDF could not be created.','Nije moguće izraditi valjan PDF.'));
+  return blob
+}
+function prepareGroupPdf(){
+  const key=groupPdfKey();
+  if(groupPdfState.key===key&&groupPdfState.blob){setGroupPdfButton('ready');return Promise.resolve(groupPdfState.blob)}
+  if(groupPdfState.key===key&&groupPdfState.promise)return groupPdfState.promise;
+  groupPdfState={key,blob:null,promise:null,error:''};
+  setGroupPdfButton('loading',L('PDF در حال آماده‌شدن است؛ بعد از آماده‌شدن دکمه فعال می‌شود.','The PDF is being prepared; the button will enable when ready.','PDF se priprema; gumb će se aktivirati kada bude spreman.'));
+  groupPdfState.promise=createGroupPdfBlob().then(blob=>{
+    groupPdfState.blob=blob;groupPdfState.promise=null;
+    setGroupPdfButton('ready',L('PDF آماده است. دکمه PDF / چاپ را بزن.','PDF is ready. Tap PDF / Print.','PDF je spreman. Dodirnite PDF / Ispis.'));
+    return blob
+  }).catch(error=>{
+    groupPdfState.error=String(error?.message||error);groupPdfState.promise=null;
+    setGroupPdfButton('error',groupPdfState.error);
+    throw error
+  });
+  return groupPdfState.promise
+}
+function groupPdfFile(){
+  const blob=groupPdfState.blob;
+  if(!blob)return null;
+  try{return new File([blob],groupPdfSafeName(),{type:'application/pdf'})}catch(_){return null}
+}
+function groupPdfAction(){
+  const blob=groupPdfState.blob;
+  if(!blob){
+    if(!groupPdfState.promise)prepareGroupPdf().catch(()=>{});
+    alert(L('PDF هنوز آماده نشده است. چند لحظه صبر کن.','The PDF is still preparing. Please wait a moment.','PDF se još priprema. Pričekajte trenutak.'));
+    return
+  }
+  const file=groupPdfFile();
+  const apple=/iPad|iPhone|iPod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  if(apple&&file&&navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}))){
+    navigator.share({
+      files:[file],
+      title:'New Hope 7 · '+optionLabel(reportFilter),
+      text:L('برای چاپ گزینه Print و برای ذخیره گزینه Save to Files را انتخاب کن.','Choose Print to print, or Save to Files to save the PDF.','Odaberite Print za ispis ili Save to Files za spremanje PDF-a.')
+    }).catch(error=>{if(error?.name!=='AbortError')alert(error?.message||String(error))});
+    return
+  }
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download=groupPdfSafeName();a.rel='noopener';document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),60000)
+}
+
 function printGroup(){
   closeGroupReport();
   const list=filteredRows();
@@ -338,12 +491,12 @@ function printGroup(){
       '<div class="nh7ac540-report-toolbar">'+
         '<div class="nh7ac540-report-heading"><strong>New Hope 7 · '+E(optionLabel(reportFilter))+'</strong><small>'+E(L('تاریخ گزارش','Report date','Datum izvještaja'))+': '+E(fmtDateTime(new Date()))+' · '+E(list.length)+' '+E(L('نفر','people','osoba'))+'</small></div>'+
         '<div class="nh7ac540-report-actions">'+
-          '<button type="button" class="btn primary" onclick="nh7StudentAcademicPrintCurrentV546()">🖨 '+E(L('چاپ / ذخیره PDF','Print / Save PDF','Ispis / Spremi PDF'))+'</button>'+
+          '<button type="button" id="nh7AcademicGroupPdfBtnV547" class="btn primary" disabled onclick="nh7StudentAcademicGroupPdfActionV547()">⏳ '+E(L('آماده‌سازی PDF…','Preparing PDF…','Priprema PDF-a…'))+'</button>'+
           '<button type="button" class="btn secondary" onclick="nh7StudentAcademicCsvV540()">⬇ CSV</button>'+
           '<button type="button" class="nh7ac540-report-close" aria-label="'+E(L('بستن','Close','Zatvori'))+'" onclick="nh7StudentAcademicCloseReportV546()">✕</button>'+
         '</div>'+
       '</div>'+
-      '<div class="nh7ac540-report-help">'+E(L('برای PDF، «چاپ / ذخیره PDF» را بزن و از پنجره چاپ گزینهٔ ذخیره/Share PDF را انتخاب کن.','For PDF, tap “Print / Save PDF” and use the print sheet to save or share the PDF.','Za PDF dodirnite “Ispis / Spremi PDF” i spremite ili podijelite PDF iz izbornika ispisa.'))+'</div>'+
+      '<div id="nh7AcademicGroupPdfHintV547" class="nh7ac540-report-help">'+E(L('PDF در حال آماده‌شدن است؛ بعد از آماده‌شدن دکمه فعال می‌شود.','The PDF is being prepared; the button will enable when ready.','PDF se priprema; gumb će se aktivirati kada bude spreman.'))+'</div>'+
       '<div class="nh7ac540-report-body">'+
         '<table class="nh7ac540-print-table"><thead><tr>'+
           '<th>'+E(L('دانشجو','Student','Student'))+'</th>'+
@@ -360,6 +513,7 @@ function printGroup(){
   modal.addEventListener('click',event=>{if(event.target===modal)closeGroupReport()});
   document.body.appendChild(modal);
   document.body.classList.add('nh7ac540-report-open');
+  setTimeout(()=>prepareGroupPdf().catch(()=>{}),50);
 }
 
 function openProfile(encoded){
@@ -475,7 +629,8 @@ function install(){
   window.nh7StudentAcademicCsvV540=downloadCsv;
   window.nh7StudentAcademicPrintV540=printGroup;
   window.nh7StudentAcademicCloseReportV546=closeGroupReport;
-  window.nh7StudentAcademicPrintCurrentV546=printGroupReport;
+  window.nh7StudentAcademicPrintCurrentV546=groupPdfAction;
+  window.nh7StudentAcademicGroupPdfActionV547=groupPdfAction;
   window.nh7StudentAcademicProfileV540=openProfile;
   window.nh7StudentAcademicIndividualReportV540=individualReport;
   window.nh7AddChurchMemberV540=addMember;
