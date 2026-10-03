@@ -56,15 +56,9 @@ async function loadAudioAnalyticsV221(renderAfter=true){
   }catch(e){console.warn('Audio analytics',e);state.audioAnalyticsError=e.message||String(e)}finally{analyticsLoading=false;if(renderAfter)render()}
 }
 const previousLoadAll=loadAll;
-loadAll=async function(silent=false){
-  await previousLoadAll(silent);
-  if(!token)return;
-  // Keep Audio Bible management current, but do not run legacy analytics on every
-  // global Admin refresh. Newer analytics screens can still request analytics explicitly.
-  const jobs=await Promise.allSettled([loadAudioBibleV221()]);
-  jobs.filter(x=>x.status==='rejected').forEach(x=>console.warn('v2.2.1 supplemental load',x.reason));
-  render(false);
-};
+// Audio Bible is loaded once at Admin startup and refreshed by its own actions.
+// Do not attach it to the global 90-second Admin heartbeat.
+loadAll=async function(silent=false){return previousLoadAll(silent)};
 
 // ---------------------------- Audio Bible ----------------------------
 function selectedBook(){return state.audioBibleBooks.find(x=>x.book_code===abBookCode)||state.audioBibleBooks[0]||null}
