@@ -4,7 +4,7 @@
 (()=>{'use strict';
 if(window.__NH7_ADMIN_STUDENT_ACADEMIC_V540__)return;
 window.__NH7_ADMIN_STUDENT_ACADEMIC_V540__=true;
-const VERSION='5.4.0-student-academic-center';
+const VERSION='5.4.1-student-academic-center';
 
 let view='overview';
 let reportFilter='school_registered';
@@ -54,6 +54,8 @@ function matchesFilter(r,key=reportFilter){
     case'all':return true;
     case'school_registered':return !!r.school_registered;
     case'app_no_school':return !!r.app_account_exists&&!r.school_registered;
+    case'app_used_no_school':return !!r.app_activity_seen&&!r.school_registered;
+    case'app_account_no_activity':return !!r.app_account_exists&&!r.app_activity_seen&&!r.school_registered;
     case'registered_never_started':return !!r.school_registered&&!r.started_school;
     case'in_progress':return !!r.school_registered&&!!r.started_school&&!isCompleted(r);
     case'needs_revision':return N(r.revision_assignments)>0;
@@ -62,7 +64,7 @@ function matchesFilter(r,key=reportFilter){
     case'passed':return N(r.passed_attempts)>0;
     case'completed':return isCompleted(r);
     case'inactive':return isStalled(r);
-    case'member_no_app':return !!r.in_church_roster&&!r.app_account_exists;
+    case'member_no_app':return !!r.in_church_roster&&!r.app_account_exists&&!r.app_activity_seen;
     case'roster':return !!r.in_church_roster;
     default:return true;
   }
@@ -78,6 +80,8 @@ function counts(){
     all:list.length,
     school_registered:c('school_registered'),
     app_no_school:c('app_no_school'),
+    app_used_no_school:c('app_used_no_school'),
+    app_account_no_activity:c('app_account_no_activity'),
     never_started:c('registered_never_started'),
     in_progress:c('in_progress'),
     needs_revision:c('needs_revision'),
@@ -95,6 +99,8 @@ function optionLabel(key){
     all:['همه افراد','All identities','Sve osobe'],
     school_registered:['ثبت‌نام‌شده‌های مدرسه','School registered','Registrirani u školi'],
     app_no_school:['حساب اپ بدون ثبت‌نام مدرسه','App account without school registration','Račun bez školske registracije'],
+    app_used_no_school:['فعالیت اپ دیده شده، مدرسه ثبت‌نام نشده','App activity seen, school not registered','Aktivnost u aplikaciji, škola nije registrirana'],
+    app_account_no_activity:['حساب دارد، فعالیت اپ دیده نشده','Account exists, no app activity seen','Račun postoji, nema aktivnosti u aplikaciji'],
     registered_never_started:['ثبت‌نام کرده ولی شروع نکرده','Registered but not started','Registriran, nije započeo'],
     in_progress:['در حال گذراندن مدرسه','School in progress','Škola u tijeku'],
     needs_revision:['تکلیف نیاز به اصلاح','Assignments need revision','Zadaci trebaju doradu'],
@@ -114,7 +120,7 @@ async function load(force=false){
   loading=true;error='';
   if(activeTab==='students')render();
   try{
-    const raw=await adminRpc('nh7_admin_student_academic_center_v540',{p_inactive_days:inactiveDays});
+    const raw=await adminRpc('nh7_admin_student_academic_center_v541',{p_inactive_days:inactiveDays});
     data=unwrap(raw)||{};
     loadedAt=Date.now();
   }catch(e){error=e?.message||String(e)}
@@ -148,7 +154,8 @@ function overview(){
   return'<section class="panel-card"><div class="req-head"><div><h3>🎓 '+E(L('مرکز مدیریت دانشگاهی','Academic Management Center','Centar akademskog upravljanja'))+'</h3><p class="muted small">'+E(L('گزارش‌ها فقط از داده‌های اصلی مدرسه ساخته می‌شوند؛ هیچ Analytics جدیدی برای این داشبورد ذخیره نمی‌شود.','Reports are built from core school records only; this dashboard creates no new analytics data.','Izvještaji koriste samo osnovne školske podatke; ova nadzorna ploča ne stvara novu analitiku.'))+'</p></div><button class="btn secondary" onclick="nh7StudentAcademicReloadV540()">⟳ '+E(L('به‌روزرسانی','Refresh','Osvježi'))+'</button></div>'+
   '<div class="nh7ac540-stats">'+
     statCard(c.school_registered,L('ثبت‌نام مدرسه','School registered','Registrirani u školi'),'school_registered')+
-    statCard(c.app_no_school,L('حساب اپ، بدون مدرسه','App account, no school','Račun bez škole'),'app_no_school',c.app_no_school>0)+
+    statCard(c.app_used_no_school,L('اپ استفاده شده، بدون مدرسه','App used, no school','Aplikacija korištena, bez škole'),'app_used_no_school',c.app_used_no_school>0)+
+    statCard(c.app_account_no_activity,L('حساب دارد، فعالیت دیده نشده','Account, no activity seen','Račun, nema aktivnosti'),'app_account_no_activity',c.app_account_no_activity>0)+
     statCard(c.never_started,L('ثبت‌نام، بدون شروع','Registered, not started','Registrirani, nisu počeli'),'registered_never_started',c.never_started>0)+
     statCard(c.in_progress,L('در حال تحصیل','In progress','U tijeku'),'in_progress')+
     statCard(c.needs_revision,L('نیاز به اصلاح تکلیف','Needs revision','Treba doradu'),'needs_revision',c.needs_revision>0)+
@@ -156,18 +163,18 @@ function overview(){
     statCard(c.passed,L('قبول‌شده','Passed','Položili'),'passed')+
     statCard(c.inactive,L('شروع کرده، متوقف شده','Started, inactive','Započeo, neaktivan'),'inactive',c.inactive>0)+
   '</div>'+
-  '<div class="nh7ac540-note"><strong>'+E(L('وضعیت نصب اپ','App installation status','Status instalacije aplikacije'))+':</strong> '+E(L('برای حفظ هزینه و حریم خصوصی، Tracking جدید نصب/حذف اپ اضافه نشده است. «حساب اپ دارد» یعنی حساب شناخته‌شده در سیستم دارد. برای تشخیص اعضایی که هیچ حسابی ندارند، از فهرست اعضای کلیسا استفاده می‌کنیم.','To keep cost and tracking low, no new install/uninstall tracking is added. “App account” means a known account exists. The church-member registry is used to identify members with no known app account.','Radi nižih troškova ne dodajemo praćenje instalacije/deinstalacije. “Račun u aplikaciji” znači da postoji poznati račun. Popis članova služi za pronalazak članova bez poznatog računa.'))+'</div>'+
+  '<div class="nh7ac540-note"><strong>'+E(L('وضعیت اپ','App status','Status aplikacije'))+':</strong> '+E(L('برای حفظ هزینه و حریم خصوصی، Tracking جدید نصب/حذف اپ اضافه نشده است. «فعالیت اپ دیده شده» یعنی این حساب در دادهٔ موجود واقعاً داخل اپ فعالیت داشته. «بدون حساب/فعالیت شناخته‌شده» به معنی نبودِ مدرک در سیستم است، نه اثبات قطعی نصب‌نبودن اپ.','To keep cost and tracking low, no new install/uninstall tracking is added. “App activity seen” means the existing data confirms activity in the app. “No known account/activity” means there is no evidence in our system, not proof that the app was never installed.','Radi nižih troškova ne dodajemo novo praćenje instalacije/deinstalacije. “Aktivnost u aplikaciji” znači da postojeći podaci potvrđuju korištenje aplikacije. “Nema poznatog računa/aktivnosti” znači da nema dokaza u sustavu, ne nužno da aplikacija nikad nije instalirana.'))+'</div>'+
   '<div class="nh7ac540-actions"><button class="btn primary" onclick="nh7StudentAcademicOpenReportV540(\'needs_revision\')">📝 '+E(L('پیگیری تکالیف نیازمند اصلاح','Follow up revisions','Prati zadatke za doradu'))+'</button><button class="btn secondary" onclick="nh7StudentAcademicOpenReportV540(\'app_no_school\')">📱 '+E(L('حساب‌های بدون ثبت‌نام مدرسه','Accounts without school registration','Računi bez školske registracije'))+'</button><button class="btn secondary" onclick="nh7StudentAcademicSetViewV540(\'members\')">⛪ '+E(L('مدیریت فهرست اعضا','Manage member registry','Upravljaj članovima'))+'</button></div></section>'
 }
 function filterOptions(){
-  const keys=['school_registered','app_no_school','registered_never_started','in_progress','needs_revision','pending_review','exam_failed','passed','completed','inactive','member_no_app','all'];
+  const keys=['school_registered','app_used_no_school','app_account_no_activity','app_no_school','registered_never_started','in_progress','needs_revision','pending_review','exam_failed','passed','completed','inactive','member_no_app','all'];
   return keys.map(k=>'<option value="'+k+'" '+(reportFilter===k?'selected':'')+'>'+E(optionLabel(k))+'</option>').join('')
 }
 function reportTable(){
   const list=filteredRows();
   const body=list.map(r=>'<tr>'+
     '<td><strong>'+E(r.display_name||r.email)+'</strong><br><small>'+E(r.email||'—')+'</small></td>'+
-    '<td>'+E(r.school_registered?L('ثبت‌نام شده','Registered','Registriran'):L('ثبت‌نام نشده','Not registered','Nije registriran'))+'<br><small>'+E(fmtDate(r.registered_at))+'</small></td>'+
+    '<td>'+E(r.app_activity_seen?L('فعالیت دیده شده','Activity seen','Aktivnost zabilježena'):L('فعالیت شناسایی نشده','No identified activity','Nema prepoznate aktivnosti'))+'<br><small>'+E(fmtDate(r.last_app_activity))+'</small></td>'+    '<td>'+E(r.school_registered?L('ثبت‌نام شده','Registered','Registriran'):L('ثبت‌نام نشده','Not registered','Nije registriran'))+'<br><small>'+E(fmtDate(r.registered_at))+'</small></td>'+
     '<td>'+E(N(r.completed_lessons))+'/'+E(N(r.total_lessons))+'<br><small>'+E(N(r.progress_percent))+'%</small></td>'+
     '<td>'+E(N(r.revision_assignments))+' / '+E(N(r.pending_assignments))+'<br><small>'+E(L('اصلاح / بررسی','revision / review','dorada / pregled'))+'</small></td>'+
     '<td>'+E(N(r.best_final_score,0))+'%<br><small>'+E(N(r.exam_attempts))+' '+E(L('تلاش','attempts','pokušaja'))+'</small></td>'+
@@ -176,7 +183,7 @@ function reportTable(){
     '<td><div class="nh7ac540-row-actions">'+(r.school_registered?'<button class="btn ghost" onclick="nh7StudentAcademicProfileV540(\''+encodeURIComponent(r.email)+'\')">'+E(L('پرونده','Profile','Profil'))+'</button><button class="btn ghost" onclick="nh7StudentAcademicIndividualReportV540(\''+encodeURIComponent(r.email)+'\')">PDF</button>':'')+'</div></td>'+
   '</tr>').join('');
   return'<div class="nh7ac540-table-wrap"><table class="nh7ac540-table"><thead><tr>'+
-    '<th>'+E(L('دانشجو','Student','Student'))+'</th><th>'+E(L('ثبت‌نام','Registration','Registracija'))+'</th><th>'+E(L('درس‌ها','Lessons','Lekcije'))+'</th><th>'+E(L('تکالیف','Assignments','Zadaci'))+'</th><th>'+E(L('آزمون','Exam','Ispit'))+'</th><th>'+E(L('آخرین فعالیت','Last activity','Zadnja aktivnost'))+'</th><th>'+E(L('وضعیت','Status','Status'))+'</th><th></th>'+
+    '<th>'+E(L('دانشجو','Student','Student'))+'</th><th>'+E(L('اپ','App','Aplikacija'))+'</th><th>'+E(L('ثبت‌نام','Registration','Registracija'))+'</th><th>'+E(L('درس‌ها','Lessons','Lekcije'))+'</th><th>'+E(L('تکالیف','Assignments','Zadaci'))+'</th><th>'+E(L('آزمون','Exam','Ispit'))+'</th><th>'+E(L('آخرین فعالیت','Last activity','Zadnja aktivnost'))+'</th><th>'+E(L('وضعیت','Status','Status'))+'</th><th></th>'+
   '</tr></thead><tbody>'+body+'</tbody></table></div>'+
   (!list.length?'<div class="empty">'+E(L('موردی با این فیلتر پیدا نشد.','No records match this filter.','Nema zapisa za ovaj filtar.'))+'</div>':'')
 }
@@ -193,8 +200,8 @@ function memberRows(){
 }
 function members(){
   if(!data)return loadingCard();
-  const list=memberRows(),noApp=list.filter(r=>!r.app_account_exists).length,noSchool=list.filter(r=>r.app_account_exists&&!r.school_registered).length;
-  const cards=list.map(r=>'<article class="nh7ac540-member"><div><strong>'+E(r.display_name||r.email)+'</strong><small>'+E(r.email||'—')+(r.phone?' · '+E(r.phone):'')+'</small></div><div class="nh7ac540-member-flags"><span class="pill '+(r.app_account_exists?'approved':'rejected')+'">'+E(r.app_account_exists?L('حساب اپ دارد','App account','Račun postoji'):L('بدون حساب اپ','No app account','Nema računa'))+'</span><span class="pill '+(r.school_registered?'approved':'pending')+'">'+E(r.school_registered?L('مدرسه ثبت‌نام شده','School registered','Škola registrirana'):L('مدرسه ثبت‌نام نشده','School not registered','Škola nije registrirana'))+'</span></div><button class="btn danger-btn" onclick="nh7DeleteChurchMemberV540(\''+E(r.member_id)+'\')">🗑</button></article>').join('');
+  const list=memberRows(),noApp=list.filter(r=>!r.app_account_exists&&!r.app_activity_seen).length,noSchool=list.filter(r=>r.app_activity_seen&&!r.school_registered).length;
+  const cards=list.map(r=>'<article class="nh7ac540-member"><div><strong>'+E(r.display_name||r.email)+'</strong><small>'+E(r.email||'—')+(r.phone?' · '+E(r.phone):'')+'</small></div><div class="nh7ac540-member-flags"><span class="pill '+(r.app_activity_seen?'approved':r.app_account_exists?'pending':'rejected')+'">'+E(r.app_activity_seen?L('فعالیت اپ دیده شده','App activity seen','Aktivnost u aplikaciji'):r.app_account_exists?L('حساب دارد، فعالیت دیده نشده','Account, no activity seen','Račun, nema aktivnosti'):L('بدون حساب/فعالیت شناخته‌شده','No known account/activity','Nema poznatog računa/aktivnosti'))+'</span><span class="pill '+(r.school_registered?'approved':'pending')+'">'+E(r.school_registered?L('مدرسه ثبت‌نام شده','School registered','Škola registrirana'):L('مدرسه ثبت‌نام نشده','School not registered','Škola nije registrirana'))+'</span></div><button class="btn danger-btn" onclick="nh7DeleteChurchMemberV540(\''+E(r.member_id)+'\')">🗑</button></article>').join('');
   return'<section class="panel-card"><div class="req-head"><div><h3>⛪ '+E(L('فهرست اعضای کلیسا','Church Member Registry','Popis članova crkve'))+'</h3><p class="muted small">'+E(L('برای فهمیدن اینکه کدام عضو اصلاً حساب اپ ندارد، فهرست اعضای کلیسا باید اینجا ثبت شود. تطبیق فقط با ایمیل انجام می‌شود.','To identify members with no app account, keep the church roster here. Matching is by email.','Za prepoznavanje članova bez računa vodite popis ovdje. Usklađivanje je prema e-mailu.'))+'</p></div><button class="btn secondary" onclick="nh7DownloadChurchMemberTemplateV540()">⬇ '+E(L('نمونه CSV','CSV template','CSV predložak'))+'</button></div>'+
   '<div class="nh7ac540-stats">'+statCard(list.length,L('اعضای فهرست','Roster members','Članovi'),'roster')+statCard(noApp,L('بدون حساب اپ','No app account','Bez računa'),'member_no_app',noApp>0)+statCard(noSchool,L('حساب اپ، بدون مدرسه','App account, no school','Račun bez škole'),'app_no_school',noSchool>0)+'</div>'+
   '<div class="nh7ac540-member-form"><input id="nh7MemberNameV540" placeholder="'+E(L('نام و نام خانوادگی','Full name','Ime i prezime'))+'"><input id="nh7MemberEmailV540" type="email" placeholder="email@example.com"><input id="nh7MemberPhoneV540" placeholder="'+E(L('تلفن (اختیاری)','Phone (optional)','Telefon (opcionalno)'))+'"><button class="btn primary" onclick="nh7AddChurchMemberV540()">＋ '+E(L('افزودن عضو','Add member','Dodaj člana'))+'</button></div>'+
@@ -210,7 +217,7 @@ function shell(oldDashboard){
 function csvEscape(v){const s=String(v??'');return /[",\n\r]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s}
 function csvRows(){
   const header=[
-    L('نام','Name','Ime'),L('ایمیل','Email','E-mail'),L('حساب اپ','App account','Račun'),
+    L('نام','Name','Ime'),L('ایمیل','Email','E-mail'),L('حساب اپ','App account','Račun'),L('فعالیت اپ دیده شده','App activity seen','Aktivnost u aplikaciji'),L('آخرین فعالیت اپ','Last app activity','Zadnja aktivnost u aplikaciji'),
     L('ثبت‌نام مدرسه','School registered','Registracija škole'),L('درس تکمیل','Completed lessons','Završene lekcije'),
     L('درس باقی‌مانده','Remaining lessons','Preostale lekcije'),L('پیشرفت %','Progress %','Napredak %'),
     L('تکلیف نیاز اصلاح','Needs revision','Treba doradu'),L('تکلیف در انتظار','Pending review','Čeka pregled'),
@@ -218,7 +225,7 @@ function csvRows(){
     L('آخرین فعالیت','Last activity','Zadnja aktivnost'),L('وضعیت','Status','Status')
   ];
   const body=filteredRows().map(r=>[
-    r.display_name,r.email,r.app_account_exists?'yes':'no',r.school_registered?'yes':'no',
+    r.display_name,r.email,r.app_account_exists?'yes':'no',r.app_activity_seen?'yes':'no',r.last_app_activity||'',r.school_registered?'yes':'no',
     r.completed_lessons,r.remaining_lessons,r.progress_percent,r.revision_assignments,r.pending_assignments,
     r.exam_attempts,r.best_final_score??'',r.last_school_activity||'',statusLabel(r.status_code)
   ]);
