@@ -285,3 +285,25 @@ The isolated RPC execution improved from approximately 3.15 seconds to approxima
 The new native build must update in place over the currently published app. Do not change application identifiers, signing identity, Supabase project reference, or persistent storage namespaces in a way that would make the OS treat the app as a new installation.
 
 Older installed builds must remain compatible with the Production backend. Legacy no-op telemetry RPCs remain available for that reason until the active installed base has migrated to the new build.
+
+
+## Additional Admin Library optimization — 2026-10-03
+
+Production migration:
+
+- `20261003172711_optimize_admin_library_dashboard_queries_v1`
+
+What changed:
+- `nh7_admin_library_dashboard_v222()` and `v224()` now aggregate Library access statistics once and join the result, instead of running per-item correlated access-log subqueries.
+- Function names, signatures, Admin checks, JSON shape and ordering remain unchanged.
+- No user-data row, RLS policy, grant or Storage object is modified.
+
+Observed validation:
+- v222 items: 47 before/after-compatible shape
+- v224 items: 47 before/after-compatible shape
+- Library access code array remains unchanged in shape
+- protected user-state row counts did not decrease
+- whole-function latency remained approximately ~1.0s in the verification run
+- shared buffer hits decreased from 2,806 to 2,133 (about 24% less buffer work)
+
+Because Admin Library loading is now on-demand rather than part of the normal heartbeat, this migration is retained for lower database work rather than presented as a major end-to-end latency win.
