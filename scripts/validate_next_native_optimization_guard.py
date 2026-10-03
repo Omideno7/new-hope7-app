@@ -112,9 +112,25 @@ for migration in sorted(migration_dir.glob('*.sql')):
                 break
 
 # A native update must never wipe all local user state.
+# IndexedDB deletion is allowed only for the explicit "Clear Downloads" offline-media
+# databases. Any new deleteDatabase() usage elsewhere fails the release guard.
+SAFE_INDEXED_DB_DELETE = {
+    'js/nh7-settings-controller-v403.js': "const DB_NAMES=['nh7-offline-audio-v397','nh7-offline-media-v4'];",
+    'js/nh7-settings-feedback-v398.js': "const DB_NAME='nh7-offline-audio-v397';",
+    'js/nh7-settings-controller-v399.js': "const DB_NAMES=['nh7-offline-audio-v397'];",
+}
 for runtime in [index, *[str(p.relative_to(ROOT)) for p in (ROOT / 'js').glob('*.js')]]:
-    forbid(runtime, 'localStorage.clear(', 'global localStorage wipe')
-    forbid(runtime, 'indexedDB.deleteDatabase(', 'IndexedDB database deletion')
+    data = text(runtime)
+    if 'localStorage.clear(' in data:
+        errors.append(f"{runtime}: forbidden regression found: global localStorage wipe")
+    if 'indexedDB.deleteDatabase(' in data:
+        safe_decl = SAFE_INDEXED_DB_DELETE.get(runtime)
+        if not safe_decl or safe_decl not in data:
+            errors.append(f"{runtime}: unapproved IndexedDB database deletion")
+            continue
+        for arg in re.findall(r'indexedDB\.deleteDatabase\(([^)]+)\)', data):
+            if arg.strip() not in {'name', 'DB_NAME'}:
+                errors.append(f"{runtime}: unexpected IndexedDB delete target: {arg.strip()}")
 
 if errors:
     print("New Hope 7 next-native optimization guard: FAILED")
