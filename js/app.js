@@ -100,11 +100,8 @@ async function flushAudioAnalytics(eventName='progress',force=false){
 }
 const appSectionLastSent=new Map();
 function trackAppSection(section){
-  section=String(section||'').trim();if(!section||!navigator.onLine)return;
-  const now=Date.now(),last=appSectionLastSent.get(section)||Number(localStorage.getItem('nh7_section_track_'+section)||0);
-  if(now-last<15*60*1000)return;
-  appSectionLastSent.set(section,now);localStorage.setItem('nh7_section_track_'+section,String(now));
-  cloudRpc('nh7_track_app_section_v222',{p_section:section,p_device_id:deviceId(),p_user_email:currentUserEmail()||''}).catch(()=>cloudRpc('nh7_track_app_section_v221',{p_section:section,p_device_id:deviceId(),p_user_email:currentUserEmail()||''}).catch(()=>{}));
+  // Nonessential per-section analytics retired to reduce Supabase I/O.
+  return false;
 }
 function ensureSermonPlayer(){
   if(sermonPlayerState.audio)return sermonPlayerState.audio;
@@ -818,11 +815,8 @@ async function nh7RequireSchoolAccessV223(resourceLabel=''){
 
 const nh7ContentTrackLastV223=new Map();
 function nh7TrackContentV223(contentType,contentId,title,completed=false,engagedSeconds=0){
-  if(!navigator.onLine)return;
-  const key=[contentType,contentId,completed?'done':'open'].join('|'),now=Date.now();
-  if(!completed&&now-(nh7ContentTrackLastV223.get(key)||0)<60000)return;
-  nh7ContentTrackLastV223.set(key,now);
-  cloudRpc('nh7_track_content_v223',{p_content_type:String(contentType||'other'),p_content_id:String(contentId||''),p_title:String(title||''),p_language:state.lang,p_device_id:deviceId(),p_user_email:currentUserEmail()||'',p_event:completed?'complete':'open',p_engaged_seconds:Math.max(0,Math.round(Number(engagedSeconds)||0))}).catch(()=>{});
+  // Nonessential content-open/completion analytics retired to reduce Supabase I/O.
+  return false;
 }
 function nh7TrackRenderedContentV223(route,params={}){
   const title=(view.querySelector('h1,h2,h3,strong')?.textContent||tr(route)||route).trim();
@@ -2133,13 +2127,34 @@ async function meetings(params={}){
 
 let nh7LibraryTab=sessionStorage.getItem('nh7_library_tab')||'public';
 let nh7LibraryCatalog=[];
+const NH7_LIBRARY_CATALOG_CACHE_KEY='nh7_library_catalog_cache_v1';
+const NH7_LIBRARY_CATALOG_CACHE_MS=10*60*1000;
 function libraryText(row,key){return row?.[key+'_'+state.lang]||row?.[key+'_en']||row?.[key+'_fa']||row?.[key+'_hr']||''}
 function librarySize(bytes){bytes=Number(bytes||0);if(bytes<1024*1024)return Math.max(1,Math.round(bytes/1024))+' KB';return (bytes/1024/1024).toFixed(1)+' MB'}
-async function loadLibraryCatalog(){
+async function loadLibraryCatalog(force=false){
+  if(!force&&nh7LibraryCatalog.length)return nh7LibraryCatalog;
+  if(!force){
+    try{
+      const cached=JSON.parse(sessionStorage.getItem(NH7_LIBRARY_CATALOG_CACHE_KEY)||'null');
+      if(cached&&Array.isArray(cached.items)&&Date.now()-Number(cached.at||0)<NH7_LIBRARY_CATALOG_CACHE_MS){
+        nh7LibraryCatalog=cached.items;
+        return nh7LibraryCatalog;
+      }
+    }catch(_){}
+  }
   try{
     const bundle=await cloudRpc('nh7_library_catalog_v396',{});
     nh7LibraryCatalog=Array.isArray(bundle?.items)?bundle.items:[];
-  }catch(e){console.warn('Library catalog',e);nh7LibraryCatalog=[]}
+    try{sessionStorage.setItem(NH7_LIBRARY_CATALOG_CACHE_KEY,JSON.stringify({at:Date.now(),items:nh7LibraryCatalog}))}catch(_){}
+  }catch(e){
+    console.warn('Library catalog',e);
+    if(!nh7LibraryCatalog.length){
+      try{
+        const cached=JSON.parse(sessionStorage.getItem(NH7_LIBRARY_CATALOG_CACHE_KEY)||'null');
+        nh7LibraryCatalog=Array.isArray(cached?.items)?cached.items:[];
+      }catch(_){nh7LibraryCatalog=[]}
+    }
+  }
   return nh7LibraryCatalog;
 }
 let nh7LibraryBlobUrlV224='';
