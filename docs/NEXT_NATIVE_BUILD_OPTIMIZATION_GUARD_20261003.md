@@ -208,3 +208,80 @@ Prefer:
 - database writes only when user state actually changes
 
 Do not optimize by removing user-facing functionality. Optimize network and database behavior instead.
+
+
+## Supabase release hardening applied on 2026-10-03
+
+The following Production-safe optimizations are now part of the next native release baseline:
+
+- `20261003171531_optimize_inbox_rls_initplan_v1`
+  - preserves existing Inbox access semantics
+  - caches stable request/auth helper results per statement via PostgreSQL initPlans
+  - no row deletion, rewrite, truncate or table replacement
+  - rollback is stored under `supabase/rollbacks/`
+
+- `20261003171549_optimize_admin_engagement_analytics_v223`
+  - preserves the existing RPC name/signature and Admin access check
+  - removes duplicate aggregation work
+  - preserves the observed summary and Top-150 item values
+  - no user-data table changes
+  - rollback is stored under `supabase/rollbacks/`
+
+Admin recurring-load optimization was merged into `main` at:
+
+`50f799e1522b508a992279fb06a228678a24bfdb`
+
+Do not create the App Store / Google Play build from a commit older than this baseline.
+
+## User-data preservation gate
+
+Starting with migration history version `20261003171531`, the native optimization guard rejects destructive SQL against protected user-state tables, including:
+
+- Notes / account notes
+- Saved Verses / verse marks
+- account and legacy progress
+- School Progress / legacy school progress
+- School Assignments
+- Registrations
+- spiritual-plan progress
+- Library reading progress
+- School audio progress
+
+The guard also rejects:
+
+- global `localStorage.clear()`
+- `indexedDB.deleteDatabase()`
+
+This protection is intentionally focused on destructive operations. Normal state updates and schema additions remain possible.
+
+## Production verification completed before release hardening
+
+Before and after the Supabase hardening changes, aggregate integrity checks were run for:
+
+- `nh7_account_notes`
+- `nh7_account_saved_verses`
+- `nh7_account_progress`
+- `nh7_account_verse_marks_v230`
+- `school_progress`
+- `school_assignments`
+- `registrations`
+
+No row loss or unexpected update timestamp changes were observed during the schema optimizations.
+
+Inbox receipts RLS read benchmark improved from approximately 1.5 seconds to approximately 0.77 seconds in the no-match full-policy probe.
+
+The Admin Engagement Analytics RPC preserved the baseline summary:
+
+- total opens: 108,613
+- unique users: 753
+- total listened seconds: 3,183,637
+- likely skipped sessions: 324
+- returned items: 150
+
+The isolated RPC execution improved from approximately 3.15 seconds to approximately 2.14 seconds, while recurring Admin analytics/library calls were removed from the general 90-second Admin heartbeat.
+
+## Native update compatibility rule
+
+The new native build must update in place over the currently published app. Do not change application identifiers, signing identity, Supabase project reference, or persistent storage namespaces in a way that would make the OS treat the app as a new installation.
+
+Older installed builds must remain compatible with the Production backend. Legacy no-op telemetry RPCs remain available for that reason until the active installed base has migrated to the new build.
