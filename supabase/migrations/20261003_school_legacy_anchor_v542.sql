@@ -478,6 +478,10 @@ begin
       (e.legacy_graduate or e.final_exam_passed) course_completed,
       (e.legacy_graduate or e.certificate_approved) graduated,
       case
+        when e.legacy_graduate or e.certificate_approved
+          then 'graduated'
+        when e.final_exam_passed
+          then 'completed'
         when coalesce((e.r->>'in_church_roster')::boolean,false)
              and not coalesce((e.r->>'app_account_exists')::boolean,false)
              and not coalesce((e.r->>'app_activity_seen')::boolean,false)
@@ -494,10 +498,6 @@ begin
           then 'final_exam_failed'
         when e.unresolved_failed_class_exams>0
           then 'class_exam_failed'
-        when e.legacy_graduate or e.certificate_approved
-          then 'graduated'
-        when e.final_exam_passed
-          then 'completed'
         when coalesce((e.r->>'school_registered')::boolean,false)
              and nullif(e.r->>'days_since_activity','')::integer>=greatest(1,least(coalesce(p_inactive_days,30),365))
           then 'inactive'
