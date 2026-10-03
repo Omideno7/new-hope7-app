@@ -378,25 +378,11 @@ function ensureAudio(){
 }
 
 function captureListen(){if(!current||!audio||audio.paused)return;const now=Date.now(),wall=Math.min(5,Math.max(0,(now-(lastWall||now))/1000)),position=Math.max(0,Number(audio.currentTime||0));lastWall=now;if(position>=lastPosition-0.5&&position-lastPosition<8&&wall>0)listenedPending+=wall;lastPosition=position}
-function scheduleTracking(){if(!isSchool(current)||trackTimer||listenedPending<15)return;trackTimer=setTimeout(()=>{trackTimer=0;flushTracking(false,false)},250)}
+function scheduleTracking(){return false}
 async function rpc(name,body){const token=await accessToken();if(!token)throw new Error('login_required');const response=await fetch(`${SB}/rest/v1/rpc/${name}`,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store'});if(!response.ok)throw new Error(await response.text());return response.json().catch(()=>({}))}
 async function flushTracking(ended=false,force=false){
-  if(!current||!navigator.onLine||!isSchool(current))return;
-  captureListen();
-  const delta=Math.floor(listenedPending);
-  if(!force&&delta<15)return;
-  listenedPending=0;
-  const duration=Math.round((Number.isFinite(audio?.duration)&&audio.duration)||durationFor(current)||0);
-  const position=Math.round(audio?.currentTime||0);
-  try{
-    await rpc('nh7_school_record_audio_v380',{
-      p_lesson_code:lessonCode(current),
-      p_position_seconds:ended?duration:position,
-      p_duration_seconds:duration,
-      p_delta_seconds:Math.min(20,Math.max(0,delta)),
-      p_ended:!!ended
-    });
-  }catch(error){console.warn('[NH7 school audio progress]',error)}
+  // School listening telemetry retired. Playback and local resume remain unchanged.
+  return false;
 }
 async function localUrl(item){
   const id=mediaId(item),existing=localUrls.get(id);if(existing)return existing;
