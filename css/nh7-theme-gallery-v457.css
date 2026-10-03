@@ -87,3 +87,14 @@ html[data-nh7-studio] #view .tabs .tab:not(.active){
   color:var(--nh7-studio-text)!important;
   border-color:var(--nh7-studio-line)!important;
 }
+
+
+/* v472: daily scripture reference buttons follow the active Studio palette.
+   The legacy base stylesheet hard-codes the New Hope blue/green gradient on
+   .verse-ref-btn; override only while a saved Studio palette is active. */
+html[data-nh7-studio] #view .verse-ref-btn{
+  background:var(--nh7-studio-accent)!important;
+  color:var(--nh7-studio-button-ink)!important;
+  border-color:var(--nh7-studio-accent)!important;
+  box-shadow:0 8px 18px color-mix(in srgb,var(--nh7-studio-accent) 20%,transparent)!important;
+}
