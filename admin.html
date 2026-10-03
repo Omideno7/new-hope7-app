@@ -92,21 +92,6 @@
 .nh7-review-strip-v476{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin:10px 0 14px;padding:12px;border:1px solid #cfe7e3;border-radius:16px;background:linear-gradient(135deg,#f8fcfc,#f6fbff)}
 .nh7-review-strip-v476 strong{display:block}.nh7-review-strip-v476 small{display:block;margin-top:3px;color:#667085;line-height:1.5}
 @media(max-width:620px){.nh7-review-strip-v476{grid-template-columns:1fr}.nh7-review-strip-v476 .btn{width:100%}.top-actions .nh7-review-refresh-v476{flex:1 1 100%}}
-</style>
-<style id="nh7AiCoverStaticV537Style">
-.nh7-ai-cover-v537{margin:14px 0;padding:14px;border:1px solid #cfe4e2;border-radius:20px;background:linear-gradient(145deg,#f9fffd,#f6fbff);box-shadow:0 10px 30px rgba(16,32,51,.05)}
-.nh7-ai-cover-v537-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap;margin-bottom:12px}
-.nh7-ai-cover-v537-head h4{margin:0;font-size:1.02rem}.nh7-ai-cover-v537-head small{display:block;color:#667085;margin-top:4px;line-height:1.55}
-.nh7-ai-cover-v537-grid{display:grid;grid-template-columns:minmax(230px,360px) minmax(0,1fr);gap:14px;align-items:start}
-.nh7-ai-cover-v537-preview{aspect-ratio:1/1;width:100%;overflow:hidden;border-radius:20px;background:linear-gradient(135deg,#eef7f6,#edf3fb);border:1px solid #cfe4e2;display:flex;align-items:center;justify-content:center;position:relative}
-.nh7-ai-cover-v537-preview img{width:100%;height:100%;display:block;object-fit:cover}
-.nh7-ai-cover-v537-empty{padding:24px;text-align:center;color:#667085;font-size:.86rem;line-height:1.7}
-.nh7-ai-cover-v537-controls{display:flex;flex-direction:column;gap:10px}.nh7-ai-cover-v537-actions{display:flex;gap:8px;flex-wrap:wrap}
-.nh7-ai-cover-v537-title{padding:10px 12px;border-radius:14px;background:#fff;border:1px solid #dcebea}.nh7-ai-cover-v537-title b{display:block;margin-bottom:4px}.nh7-ai-cover-v537-title span{direction:ltr;display:block;overflow-wrap:anywhere}
-.nh7-ai-cover-v537-status{min-height:1.4em;padding:8px 10px;border-radius:12px;background:#fff;color:#475467;font-size:.82rem;line-height:1.55}
-.nh7-ai-cover-v537-status.is-busy{color:#175cd3;background:#eff8ff}.nh7-ai-cover-v537-status.is-ok{color:#067647;background:#ecfdf3}.nh7-ai-cover-v537-status.is-error{color:#b42318;background:#fef3f2}
-.nh7-ai-cover-v537-note{font-size:.76rem;color:#667085;line-height:1.65}.nh7-ai-cover-v537 button:disabled{opacity:.48;cursor:not-allowed}
-@media(max-width:760px){.nh7-ai-cover-v537-grid{grid-template-columns:1fr}.nh7-ai-cover-v537-preview{max-width:420px;margin:auto}}
 </style></head>
 <body>
 <main id="adminApp" class="admin-shell"></main>
@@ -129,8 +114,6 @@ let editingSermonId='';
 let sermonDraft={title_fa:'',title_en:'',title_hr:'',description_fa:'',description_en:'',description_hr:'',category_id:'',youtube_url:'',duration_minutes:'',duration_seconds:'',sort_order:100,is_published:true};
 let sermonAudioFile=null;
 let sermonCoverFile=null;
-let sermonAiCover={busy:false,raw_data_url:'',final_data_url:'',title_en:'',variation:0,approved:false,model:'',error:''};
-let sermonCoverPreviewObjectUrl='';
 let sermonAdminSearch='';
 let sermonBulkFiles=[];
 let sermonBulkBusy=false;
@@ -403,212 +386,12 @@ function setSermonFileSelection(kind,file){
   if(!file)return;
   const el=document.getElementById(kind==='audio'?'sv_audio_selected':'sv_cover_selected');
   if(el)el.textContent=(lang==='fa'?'فایل جدید انتخاب‌شده: ':lang==='hr'?'Odabrana nova datoteka: ':'New file selected: ')+file.name;
-  if(kind==='cover')previewManualSermonCover(file);
-}
-function aiCoverL(fa,en,hr){return lang==='fa'?fa:lang==='hr'?hr:en}
-function setSermonAiCoverStatus(text,type=''){
-  const el=document.getElementById('nh7SermonAiCoverStatus');if(!el)return;
-  el.textContent=String(text||'');
-  el.className='nh7-ai-cover-v537-status'+(type?' is-'+type:'');
-}
-function setSermonAiButtonsBusy(busy){
-  document.querySelectorAll('[data-nh7-ai-cover-action]').forEach(btn=>btn.disabled=!!busy);
-}
-function currentSermonEnglishTitle(){
-  return String(document.getElementById('sv_title_en')?.value||sermonDraft.title_en||'').trim()
-}
-function refreshSermonCoverStudioTitle(){
-  const el=document.getElementById('nh7SermonCoverExactTitle');if(el)el.textContent=currentSermonEnglishTitle()||aiCoverL('هنوز عنوان انگلیسی آماده نیست.','English title is not ready yet.','Engleski naslov još nije spreman.');
-}
-async function ensureEnglishSermonTitleForCover(){
-  let en=currentSermonEnglishTitle();if(en)return en;
-  const fa=String(document.getElementById('sv_title_fa')?.value||sermonDraft.title_fa||'').trim();
-  const hr=String(document.getElementById('sv_title_hr')?.value||sermonDraft.title_hr||'').trim();
-  const source=fa?{text:fa,language:'fa'}:hr?{text:hr,language:'hr'}:null;
-  if(!source)throw new Error(aiCoverL('ابتدا عنوان موعظه را وارد کن.','Enter the sermon title first.','Najprije unesite naslov propovijedi.'));
-  setSermonAiCoverStatus(aiCoverL('در حال آماده‌کردن عنوان انگلیسی…','Preparing the English title…','Priprema engleskog naslova…'),'busy');
-  const result=await authFetch('/functions/v1/nh7-admin-ai-v490',{method:'POST',body:JSON.stringify({action:'translate',text:source.text,source_language:source.language,kind:'sermon_title'})});
-  const data=result?.translations||{};
-  for(const l of ['fa','en','hr']){
-    const input=document.getElementById('sv_title_'+l);
-    if(input&&data[l]){input.value=data[l];sermonDraft['title_'+l]=data[l]}
-  }
-  en=String(data.en||'').trim();
-  refreshSermonCoverStudioTitle();
-  if(!en)throw new Error(aiCoverL('ترجمه انگلیسی آماده نشد.','English title translation was not returned.','Engleski prijevod naslova nije vraćen.'));
-  return en
-}
-function sermonCoverCategoryName(){
-  const id=String(document.getElementById('sv_category')?.value||sermonDraft.category_id||'');
-  const row=state.categories.find(x=>String(x.id)===id);
-  return row?(row.name_en||row.name_fa||row.name_hr||''):''
-}
-function loadCanvasImage(src){
-  return new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>reject(new Error(aiCoverL('تصویر برای پیش‌نمایش باز نشد.','The preview image could not be loaded.','Slika pregleda nije se mogla učitati.')));img.src=src})
-}
-function wrapCanvasText(ctx,text,maxWidth){
-  const words=String(text||'').trim().split(/\s+/).filter(Boolean);
-  const lines=[];let line='';
-  for(const word of words){
-    const test=line?line+' '+word:word;
-    if(!line||ctx.measureText(test).width<=maxWidth)line=test;
-    else{lines.push(line);line=word}
-  }
-  if(line)lines.push(line);
-  return lines
-}
-function fitCanvasText(ctx,text,maxWidth,maxLines,maxSize,minSize,weight='700'){
-  for(let size=maxSize;size>=minSize;size-=2){
-    ctx.font=weight+' '+size+'px Georgia, "Times New Roman", serif';
-    const lines=wrapCanvasText(ctx,text,maxWidth);
-    if(lines.length<=maxLines)return{size,lines}
-  }
-  ctx.font=weight+' '+minSize+'px Georgia, "Times New Roman", serif';
-  return{size:minSize,lines:wrapCanvasText(ctx,text,maxWidth).slice(0,maxLines)}
-}
-function splitCoverTitleV538(title){
-  const raw=String(title||'').trim();
-  const paren=raw.match(/^(.+?)\s*(\([^()]+\))$/);
-  if(paren)return{main:paren[1].trim(),sub:paren[2].trim()};
-  const dash=raw.match(/^(.+?)\s+[—–-]\s+(.+)$/);
-  if(dash&&raw.length>42)return{main:dash[1].trim(),sub:dash[2].trim()};
-  return{main:raw,sub:''}
-}
-function coverTextPaletteV538(ctx){
-  try{
-    const sample=ctx.getImageData(180,40,664,430).data;
-    let total=0,count=0;
-    for(let i=0;i<sample.length;i+=64){
-      const r=sample[i],g=sample[i+1],b=sample[i+2];
-      total+=(.2126*r+.7152*g+.0722*b);count++;
-    }
-    const lum=count?total/count:110;
-    return lum>152?{text:'#102b4e',sub:'#173a66',brand:'#102b4e',shadow:'rgba(255,255,255,.38)',veil:'rgba(255,255,255,.20)'}:{text:'#fffaf0',sub:'#fff7e8',brand:'#ffffff',shadow:'rgba(0,0,0,.58)',veil:'rgba(4,15,30,.24)'}
-  }catch(_){
-    return{text:'#fffaf0',sub:'#fff7e8',brand:'#ffffff',shadow:'rgba(0,0,0,.58)',veil:'rgba(4,15,30,.24)'}
-  }
-}
-async function composeSermonCoverV538(backgroundDataUrl,title){
-  const bg=await loadCanvasImage(backgroundDataUrl);
-  const logo=await loadCanvasImage('assets/new-hope7-logo-512.png');
-  const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=1024;
-  const ctx=canvas.getContext('2d');
-  const scale=Math.max(1024/bg.width,1024/bg.height),w=bg.width*scale,hg=bg.height*scale;
-  ctx.drawImage(bg,(1024-w)/2,(1024-hg)/2,w,hg);
-
-  const palette=coverTextPaletteV538(ctx);
-  const veil=ctx.createLinearGradient(0,0,0,610);
-  veil.addColorStop(0,palette.veil);
-  veil.addColorStop(.72,'rgba(5,18,32,.08)');
-  veil.addColorStop(1,'rgba(5,18,32,0)');
-  ctx.fillStyle=veil;ctx.fillRect(0,0,1024,620);
-
-  ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.shadowColor=palette.shadow;ctx.shadowBlur=10;
-
-  const logoSize=58,logoY=44;
-  ctx.drawImage(logo,(1024-logoSize)/2,logoY,logoSize,logoSize);
-
-  ctx.fillStyle=palette.brand;
-  ctx.font='700 20px Georgia, "Times New Roman", serif';
-  ctx.fillText('N E W   H O P E   7',512,126);
-
-  const parts=splitCoverTitleV538(title);
-  const titleTop=184,maxWidth=800;
-
-  if(parts.sub){
-    const mainFit=fitCanvasText(ctx,parts.main,maxWidth,2,74,48,'700');
-    const mainLH=Math.round(mainFit.size*1.04);
-    const mainHeight=mainFit.lines.length*mainLH;
-    ctx.fillStyle=palette.text;
-    ctx.font='700 '+mainFit.size+'px Georgia, "Times New Roman", serif';
-    mainFit.lines.forEach((line,index)=>ctx.fillText(line,512,titleTop+index*mainLH));
-
-    const subMax=parts.sub.length>52?42:46;
-    const subFit=fitCanvasText(ctx,parts.sub,780,3,subMax,32,'600');
-    const subLH=Math.round(subFit.size*1.14);
-    const subTop=titleTop+mainHeight+28;
-    ctx.fillStyle=palette.sub;
-    ctx.font='600 '+subFit.size+'px Georgia, "Times New Roman", serif';
-    subFit.lines.forEach((line,index)=>ctx.fillText(line,512,subTop+index*subLH));
-  }else{
-    const maxSize=parts.main.length<=14?104:parts.main.length<=28?84:70;
-    const maxLines=parts.main.length<=28?2:3;
-    const fit=fitCanvasText(ctx,parts.main,maxWidth,maxLines,maxSize,42,'700');
-    const lineHeight=Math.round(fit.size*1.05);
-    ctx.fillStyle=palette.text;
-    ctx.font='700 '+fit.size+'px Georgia, "Times New Roman", serif';
-    fit.lines.forEach((line,index)=>ctx.fillText(line,512,titleTop+index*lineHeight));
-  }
-
-  ctx.shadowBlur=0;
-  return canvas.toDataURL('image/webp',.93)
-}
-function showSermonCoverPreview(src){
-  const img=document.getElementById('nh7SermonCoverPreview'),empty=document.getElementById('nh7SermonCoverPreviewEmpty');
-  if(img){img.src=src||'';img.hidden=!src}
-  if(empty)empty.hidden=!!src
-}
-function previewManualSermonCover(file){
-  if(!file||!String(file.type||'').startsWith('image/'))return;
-  if(sermonCoverPreviewObjectUrl)try{URL.revokeObjectURL(sermonCoverPreviewObjectUrl)}catch(_){}
-  sermonCoverPreviewObjectUrl=URL.createObjectURL(file);
-  sermonAiCover={busy:false,raw_data_url:'',final_data_url:'',title_en:currentSermonEnglishTitle(),variation:0,approved:true,model:'manual',error:''};
-  showSermonCoverPreview(sermonCoverPreviewObjectUrl);
-  setSermonAiCoverStatus(aiCoverL('کاور دستی انتخاب شد؛ با «ذخیره موعظه» منتشر می‌شود.','Manual cover selected; Save sermon to publish it.','Ručna naslovnica odabrana; spremite propovijed za objavu.'),'ok')
-}
-async function generateAiSermonCover(regenerate=false){
-  if(sermonAiCover.busy)return;
-  captureSermonDraft();
-  sermonAiCover.busy=true;sermonAiCover.approved=false;setSermonAiButtonsBusy(true);
-  try{
-    const titleEn=await ensureEnglishSermonTitleForCover();
-    const variation=regenerate?Math.max(1,Number(sermonAiCover.variation||0)+1):0;
-    setSermonAiCoverStatus(regenerate?aiCoverL('در حال ساخت نسخه تازهٔ کاور…','Generating a new cover variation…','Generiram novu varijantu naslovnice…'):aiCoverL('AI در حال ساخت کاور اختصاصی است…','AI is generating a custom cover…','AI generira prilagođenu naslovnicu…'),'busy');
-    const result=await authFetch('/functions/v1/nh7-admin-ai-v490',{method:'POST',body:JSON.stringify({
-      action:'generate_sermon_cover',
-      title_en:titleEn,
-      title_fa:String(document.getElementById('sv_title_fa')?.value||'').trim(),
-      title_hr:String(document.getElementById('sv_title_hr')?.value||'').trim(),
-      category:sermonCoverCategoryName(),
-      description:String(document.getElementById('sv_description_en')?.value||document.getElementById('sv_description_fa')?.value||'').trim(),
-      variation
-    })});
-    const b64=String(result?.image_base64||'').trim();if(!b64)throw new Error(aiCoverL('AI تصویری برنگرداند.','AI did not return an image.','AI nije vratio sliku.'));
-    const mime=String(result?.mime_type||'image/webp'),raw='data:'+mime+';base64,'+b64;
-    setSermonAiCoverStatus(aiCoverL('در حال اضافه‌کردن لوگو و عنوان دقیق…','Applying the exact logo and title…','Dodajem točan logotip i naslov…'),'busy');
-    const finalData=await composeSermonCoverV538(raw,titleEn);
-    sermonAiCover={busy:false,raw_data_url:raw,final_data_url:finalData,title_en:titleEn,variation,approved:false,model:String(result?.model||''),error:''};
-    showSermonCoverPreview(finalData);
-    document.getElementById('nh7AiCoverApprove')?.removeAttribute('disabled');
-    document.getElementById('nh7AiCoverRegenerate')?.removeAttribute('disabled');
-    setSermonAiCoverStatus(aiCoverL('پیش‌نمایش آماده است. اگر پسندیدی «تأیید کاور» را بزن؛ اگر نه Regenerate کن.','Preview ready. Approve it if you like it, or regenerate another version.','Pregled je spreman. Odobrite ga ili generirajte novu verziju.'),'ok');
-  }catch(error){
-    sermonAiCover.busy=false;sermonAiCover.error=error?.message||String(error);
-    setSermonAiCoverStatus(sermonAiCover.error,'error')
-  }finally{sermonAiCover.busy=false;setSermonAiButtonsBusy(false)}
-}
-async function approveAiSermonCover(){
-  const data=String(sermonAiCover.final_data_url||'');if(!data)return;
-  try{
-    const response=await fetch(data),blob=await response.blob();
-    const safe=(sermonAiCover.title_en||'sermon-cover').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,70)||'sermon-cover';
-    sermonCoverFile=new File([blob],safe+'-ai-cover.webp',{type:'image/webp'});
-    sermonAiCover.approved=true;
-    const el=document.getElementById('sv_cover_selected');if(el)el.textContent=aiCoverL('کاور AI تأیید شد: ','AI cover approved: ','AI naslovnica odobrena: ')+sermonCoverFile.name;
-    setSermonAiCoverStatus(aiCoverL('✓ کاور تأیید شد. حالا «ذخیره موعظه» را بزن تا روی اپ کاربران منتشر شود.','✓ Cover approved. Press “Save sermon” to publish it to the user app.','✓ Naslovnica je odobrena. Pritisnite “Spremi propovijed” za objavu u aplikaciji.'),'ok')
-  }catch(error){setSermonAiCoverStatus(error?.message||String(error),'error')}
-}
-function renderSermonAiCoverStudio(edit){
-  const current=sermonAiCover.final_data_url||(edit?.cover_url||'');
-  const title=String(sermonDraft.title_en||edit?.title_en||'').trim();
-  return '<div class="nh7-ai-cover-v537"><div class="nh7-ai-cover-v537-head"><div><h4>✨ '+h(aiCoverL('استودیوی کاور AI','AI Cover Studio','AI Studio naslovnice'))+'</h4><small>'+h(aiCoverL('AI تصویر موضوعی را می‌سازد؛ لوگوی واقعی New Hope 7 و عنوان انگلیسی دقیق توسط پنل اضافه می‌شود.','AI creates the themed artwork; the panel adds the real New Hope 7 logo and the exact English title.','AI stvara tematsku sliku; panel dodaje pravi New Hope 7 logotip i točan engleski naslov.'))+'</small></div><span class="pill pending">Phase 1</span></div><div class="nh7-ai-cover-v537-grid"><div class="nh7-ai-cover-v537-preview"><img id="nh7SermonCoverPreview" alt="" '+(current?'src="'+h(current)+'"':'hidden')+'><div id="nh7SermonCoverPreviewEmpty" class="nh7-ai-cover-v537-empty" '+(current?'hidden':'')+'>🖼<br>'+h(aiCoverL('هنوز پیش‌نمایشی ساخته نشده است.','No cover preview yet.','Još nema pregleda naslovnice.'))+'</div></div><div class="nh7-ai-cover-v537-controls"><div class="nh7-ai-cover-v537-title"><b>'+h(aiCoverL('عنوان دقیق روی کاور','Exact cover title','Točan naslov na naslovnici'))+'</b><span id="nh7SermonCoverExactTitle">'+h(title||aiCoverL('هنوز عنوان انگلیسی آماده نیست.','English title is not ready yet.','Engleski naslov još nije spreman.'))+'</span></div><div class="nh7-ai-cover-v537-actions"><button type="button" class="btn primary" data-nh7-ai-cover-action onclick="generateAiSermonCover(false)">✨ '+h(aiCoverL('ساخت کاور با AI','Generate AI Cover','Generiraj AI naslovnicu'))+'</button><button id="nh7AiCoverRegenerate" type="button" class="btn secondary" data-nh7-ai-cover-action onclick="generateAiSermonCover(true)" '+(sermonAiCover.final_data_url?'':'disabled')+'>↻ '+h(aiCoverL('ساخت نسخهٔ دیگر','Regenerate','Generiraj ponovno'))+'</button><button id="nh7AiCoverApprove" type="button" class="btn secondary" data-nh7-ai-cover-action onclick="approveAiSermonCover()" '+(sermonAiCover.final_data_url?'':'disabled')+'>✓ '+h(aiCoverL('تأیید کاور','Approve Cover','Odobri naslovnicu'))+'</button></div><div id="nh7SermonAiCoverStatus" class="nh7-ai-cover-v537-status">'+h(sermonAiCover.approved?aiCoverL('کاور تأیید شده و آمادهٔ ذخیره است.','Cover approved and ready to save.','Naslovnica je odobrena i spremna za spremanje.'):aiCoverL('Generate فقط Preview می‌سازد؛ تا زمانی که تأیید و ذخیره نکنی چیزی در اپ کاربران تغییر نمی‌کند.','Generate creates a preview only; nothing changes in the user app until you approve and save.','Generiranje stvara samo pregled; ništa se ne mijenja u aplikaciji dok ne odobrite i spremite.'))+'</div><div class="nh7-ai-cover-v537-note">'+h(aiCoverL('هر Generate/Regenerate یک درخواست تولید تصویر AI است. تأیید دوباره تصویر تولید نمی‌کند.','Each Generate/Regenerate uses one AI image-generation request. Approve does not generate again.','Svako generiranje koristi jedan AI zahtjev za sliku. Odobrenje ne generira ponovno.'))+'</div></div></div></div>'
 }
 function adminSermonFileName(url){
   try{return decodeURIComponent(new URL(String(url||''),location.href).pathname.split('/').filter(Boolean).pop()||'')}catch(_){return String(url||'')}
 }
 function captureSermonDraft(){const ids={title_fa:'sv_title_fa',title_en:'sv_title_en',title_hr:'sv_title_hr',description_fa:'sv_description_fa',description_en:'sv_description_en',description_hr:'sv_description_hr',category_id:'sv_category',youtube_url:'sv_youtube',sort_order:'sv_sort'};for(const [k,id] of Object.entries(ids)){const el=document.getElementById(id);if(el)sermonDraft[k]=el.value}const durationEl=document.getElementById('sv_duration');if(durationEl){sermonDraft.duration_seconds=parseDurationClock(durationEl.value);sermonDraft.duration_minutes=Math.round((sermonDraft.duration_seconds/60)*100)/100}const pub=document.getElementById('sv_published');if(pub)sermonDraft.is_published=pub.checked;const a=document.getElementById('sv_audio');if(a&&a.files&&a.files[0])sermonAudioFile=a.files[0];const c=document.getElementById('sv_cover');if(c&&c.files&&c.files[0])sermonCoverFile=c.files[0]}
-function clearSermonDraft(){sermonDraft={title_fa:'',title_en:'',title_hr:'',description_fa:'',description_en:'',description_hr:'',category_id:'',youtube_url:'',duration_minutes:'',duration_seconds:'',sort_order:100,is_published:true};sermonAudioFile=null;sermonCoverFile=null;sermonAiCover={busy:false,raw_data_url:'',final_data_url:'',title_en:'',variation:0,approved:false,model:'',error:''};if(sermonCoverPreviewObjectUrl)try{URL.revokeObjectURL(sermonCoverPreviewObjectUrl)}catch(_){}sermonCoverPreviewObjectUrl='';
+function clearSermonDraft(){sermonDraft={title_fa:'',title_en:'',title_hr:'',description_fa:'',description_en:'',description_hr:'',category_id:'',youtube_url:'',duration_minutes:'',duration_seconds:'',sort_order:100,is_published:true};sermonAudioFile=null;sermonCoverFile=null;
 // Clear the visible controls too: draft-preservation must not restore a saved file.
 const editor=document.getElementById('sermonEditor');
 if(editor){
@@ -619,7 +402,7 @@ if(editor){
 }}
 function sermonFormData(){captureSermonDraft();return{title_fa:String(sermonDraft.title_fa||'').trim(),title_en:String(sermonDraft.title_en||'').trim(),title_hr:String(sermonDraft.title_hr||'').trim(),description_fa:String(sermonDraft.description_fa||'').trim(),description_en:String(sermonDraft.description_en||'').trim(),description_hr:String(sermonDraft.description_hr||'').trim(),category_id:sermonDraft.category_id||null,youtube_url:String(sermonDraft.youtube_url||'').trim()||null,duration_minutes:Number(sermonDraft.duration_minutes||0)||null,duration_seconds:Number(sermonDraft.duration_seconds||0)||null,sort_order:Number(sermonDraft.sort_order||100),is_published:sermonDraft.is_published!==false,updated_at:new Date().toISOString()}}
 async function saveSermon(){try{const data=sermonFormData();if(!data.title_fa){alert(tr('titleFa'));return}setMessage(tr('uploading'));if(sermonAudioFile)data.audio_url=await storageUpload(sermonAudioFile,'messages/sermons');if(sermonCoverFile)data.cover_url=await storageUpload(sermonCoverFile,'sermons','nh7-sermon-covers');if(editingSermonId){const old=state.sermons.find(x=>x.id===editingSermonId)||{};if(!data.audio_url)data.audio_url=old.audio_url||null;if(!data.cover_url)data.cover_url=old.cover_url||null;await authFetch('/rest/v1/sermons?id=eq.'+editingSermonId,{method:'PATCH',body:JSON.stringify(data)})}else await authFetch('/rest/v1/sermons',{method:'POST',body:JSON.stringify(data)});editingSermonId='';clearSermonDraft();render();setMessage(tr('saved'),'success');await loadAll(true)}catch(e){alert(e.message)}}
-function editSermon(id){const x=state.sermons.find(v=>String(v.id)===String(id));if(!x)return;editingSermonId=String(id);sermonAiCover={busy:false,raw_data_url:'',final_data_url:'',title_en:'',variation:0,approved:false,model:'',error:''};sermonDraft={title_fa:x.title_fa||'',title_en:x.title_en||'',title_hr:x.title_hr||'',description_fa:x.description_fa||'',description_en:x.description_en||'',description_hr:x.description_hr||'',category_id:x.category_id||'',youtube_url:x.youtube_url||'',duration_minutes:x.duration_minutes||'',duration_seconds:x.duration_seconds||Math.round(Number(x.duration_minutes||0)*60)||'',sort_order:x.sort_order||100,is_published:x.is_published!==false};sermonAudioFile=null;sermonCoverFile=null;render();applySermonDraftToEditor();requestAnimationFrame(()=>applySermonDraftToEditor())}
+function editSermon(id){const x=state.sermons.find(v=>String(v.id)===String(id));if(!x)return;editingSermonId=String(id);sermonDraft={title_fa:x.title_fa||'',title_en:x.title_en||'',title_hr:x.title_hr||'',description_fa:x.description_fa||'',description_en:x.description_en||'',description_hr:x.description_hr||'',category_id:x.category_id||'',youtube_url:x.youtube_url||'',duration_minutes:x.duration_minutes||'',duration_seconds:x.duration_seconds||Math.round(Number(x.duration_minutes||0)*60)||'',sort_order:x.sort_order||100,is_published:x.is_published!==false};sermonAudioFile=null;sermonCoverFile=null;render();applySermonDraftToEditor();requestAnimationFrame(()=>applySermonDraftToEditor())}
 async function deleteSermon(id){if(!confirm(tr('confirmDelete')))return;try{await authFetch('/rest/v1/sermons?id=eq.'+id,{method:'DELETE'});await loadAll(true)}catch(e){alert(e.message)}}
 async function saveCategory(){captureSermonDraft();const fa=document.getElementById('cat_fa').value.trim();if(!fa)return;try{const rows=await authFetch('/rest/v1/sermon_categories',{method:'POST',body:JSON.stringify({name_fa:fa,name_en:document.getElementById('cat_en').value.trim()||null,name_hr:document.getElementById('cat_hr').value.trim()||null,sort_order:Number(document.getElementById('cat_sort').value||100)})});if(Array.isArray(rows)&&rows[0]?.id)sermonDraft.category_id=rows[0].id;await loadAll(true);setMessage(tr('draftKept'),'success')}catch(e){alert(e.message)}}
 async function deleteCategory(id){if(!confirm(tr('confirmDelete')))return;try{await authFetch('/rest/v1/sermon_categories?id=eq.'+id,{method:'DELETE'});await loadAll(true)}catch(e){alert(e.message)}}
@@ -647,7 +430,7 @@ function renderSermons(){
   const sermonRows=!state.sermons.length?'<div class="empty">'+tr('empty')+'</div>':visible.map(x=>'<article class="request-card" data-admin-sermon-id="'+h(x.id)+'"><div class="req-head"><div><div class="req-name">'+h(x.title_fa||x.title_en||x.title_hr)+'</div><div class="req-meta">'+h(catName(state.categories.find(c=>c.id===x.category_id)))+' · '+formatDurationClock(x.duration_seconds||Number(x.duration_minutes||0)*60)+' · '+(x.is_published?'✅':'⏸')+'</div></div></div><div class="actions"><button type="button" class="btn secondary" data-id="'+h(x.id)+'" onclick="editSermon(this.dataset.id)">'+tr('editSermon')+'</button><button type="button" class="btn danger-btn" data-id="'+h(x.id)+'" onclick="deleteSermon(this.dataset.id)">'+tr('deleteSermon')+'</button></div></article>').join('');
   const searchBox='<div class="grid2" style="align-items:center;margin:8px 0 12px"><input id="adminSermonSearch" type="search" autocomplete="off" value="'+h(sermonAdminSearch)+'" placeholder="'+h(lang==='fa'?'جستجوی نام موعظه…':lang==='hr'?'Pretraži naslov propovijedi…':'Search sermon title…')+'" oninput="filterAdminSermonCards(this.value)"><div id="adminSermonSearchCount" class="muted small">'+h(q?(visible.length+' '+(lang==='fa'?'نتیجه':lang==='hr'?'rezultata':'results')):(state.sermons.length+' '+(lang==='fa'?'موعظه':lang==='hr'?'propovijedi':'sermons')))+'</div></div>';
   const currentMedia=edit?'<div class="notice small" style="margin:10px 0"><strong>'+(lang==='fa'?'فایل‌های فعلی این موعظه — حفظ می‌شوند':lang==='hr'?'Trenutne datoteke — bit će sačuvane':'Current sermon files — preserved')+'</strong><p style="margin:.35rem 0">'+(lang==='fa'?'برای ویرایش عنوان یا اضافه‌کردن کاور، لازم نیست فایل صوتی را دوباره انتخاب کنی. فقط اگر عمداً می‌خواهی فایل صوتی را عوض کنی، فایل جدید انتخاب کن.':lang==='hr'?'Za promjenu naslova ili dodavanje naslovnice ne morate ponovno birati audio. Odaberite novi audio samo ako ga namjerno želite zamijeniti.':'You do not need to reselect the audio to edit text or add a cover. Choose a new audio file only if you intentionally want to replace it.')+'</p>'+(edit.audio_url?'<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px"><span class="pill approved">✓ '+(lang==='fa'?'فایل صوتی فعلی حفظ می‌شود':lang==='hr'?'Trenutni audio se čuva':'Current audio will be kept')+'</span><code style="direction:ltr;max-width:100%;overflow-wrap:anywhere">'+h(adminSermonFileName(edit.audio_url))+'</code><a class="btn secondary" target="_blank" rel="noopener" href="'+h(edit.audio_url)+'">🎧 '+(lang==='fa'?'تست فایل فعلی':lang==='hr'?'Testiraj trenutni audio':'Test current audio')+'</a></div>':'<p class="muted small">'+(lang==='fa'?'فایل صوتی فعالی برای این رکورد ثبت نشده است.':lang==='hr'?'Nema aktivne audio datoteke.':'No active audio file is recorded.')+'</p>')+(edit.cover_url?'<div style="display:flex;gap:10px;align-items:center;margin-top:10px;flex-wrap:wrap"><img src="'+h(edit.cover_url)+'" alt="" style="width:72px;height:72px;object-fit:cover;border-radius:12px"><div><span class="pill approved">✓ '+(lang==='fa'?'کاور فعلی':lang==='hr'?'Trenutna naslovnica':'Current cover')+'</span><br><code style="direction:ltr;overflow-wrap:anywhere">'+h(adminSermonFileName(edit.cover_url))+'</code><br><a class="btn secondary" target="_blank" rel="noopener" href="'+h(edit.cover_url)+'">🖼 '+(lang==='fa'?'باز کردن کاور':lang==='hr'?'Otvori naslovnicu':'Open cover')+'</a></div></div>':'<p class="muted small" style="margin-top:8px">'+(lang==='fa'?'هنوز کاوری ثبت نشده؛ می‌توانی فقط یک تصویر انتخاب کنی و ذخیره کنی.':lang==='hr'?'Naslovnica još nije spremljena; možete odabrati samo sliku i spremiti.':'No cover is saved yet; you can select only an image and save.')+'</p>')+'</div>':'';
-  return '<section class="panel-card" id="sermonEditor"><h3>'+(edit?tr('editSermon'):tr('addSermon'))+'</h3>'+(edit?'<div class="notice small" style="margin-bottom:10px"><strong>'+(lang==='fa'?'در حال ویرایش: ':lang==='hr'?'Uređivanje: ':'Editing: ')+h(edit.title_fa||edit.title_en||edit.title_hr||'')+'</strong></div>':'')+'<div class="grid2"><input id="sv_title_fa" value="'+h(sermonDraft.title_fa||'')+'" oninput="sermonDraft.title_fa=this.value" placeholder="'+tr('titleFa')+'"><input id="sv_title_en" value="'+h(sermonDraft.title_en||'')+'" oninput="sermonDraft.title_en=this.value;refreshSermonCoverStudioTitle()" placeholder="'+tr('titleEn')+'"><input id="sv_title_hr" value="'+h(sermonDraft.title_hr||'')+'" oninput="sermonDraft.title_hr=this.value" placeholder="'+tr('titleHr')+'"><select id="sv_category" onchange="sermonDraft.category_id=this.value">'+opts+'</select></div><textarea id="sv_description_fa" oninput="sermonDraft.description_fa=this.value" placeholder="'+tr('descriptionFa')+'">'+h(sermonDraft.description_fa||'')+'</textarea><textarea id="sv_description_en" oninput="sermonDraft.description_en=this.value" placeholder="'+tr('descriptionEn')+'">'+h(sermonDraft.description_en||'')+'</textarea><textarea id="sv_description_hr" oninput="sermonDraft.description_hr=this.value" placeholder="'+tr('descriptionHr')+'">'+h(sermonDraft.description_hr||'')+'</textarea><div class="grid2"><input id="sv_youtube" class="ltr" value="'+h(sermonDraft.youtube_url||'')+'" oninput="sermonDraft.youtube_url=this.value" placeholder="'+tr('youtubeUrl')+'"><input id="sv_duration" type="text" inputmode="numeric" value="'+h(formatDurationClock(sermonDraft.duration_seconds||Number(sermonDraft.duration_minutes||0)*60))+'" oninput="sermonDraft.duration_seconds=parseDurationClock(this.value);sermonDraft.duration_minutes=Math.round((sermonDraft.duration_seconds/60)*100)/100" placeholder="mm:ss"><input id="sv_sort" type="number" value="'+h(sermonDraft.sort_order||100)+'" oninput="sermonDraft.sort_order=this.value" placeholder="'+tr('sortOrder')+'"><label><input id="sv_published" type="checkbox" '+(sermonDraft.is_published!==false?'checked':'')+' onchange="sermonDraft.is_published=this.checked"> '+tr('publish')+'</label><label>'+tr('audioFile')+'<input id="sv_audio" type="file" accept=".mp3,.m4a,.mp4,.aac,.wav,audio/mpeg,audio/mp4,audio/aac,audio/wav" onchange="captureSermonDraft();setSermonFileSelection(\'audio\',this.files[0]);inspectSermonAudio(this.files[0])">'+audioName+'</label><label>'+tr('coverFile')+'<input id="sv_cover" type="file" accept="image/*" onchange="captureSermonDraft();if(this.files[0])sermonCoverFile=this.files[0];setSermonFileSelection(\'cover\',this.files[0])">'+coverName+'</label></div>'+currentMedia+renderSermonAiCoverStudio(edit)+'<div data-nh7-sermon-upload-v497="1" class="nh7-sermon-upload-v497"><div class="nh7-sermon-upload-track-v497"><span id="nh7SermonUploadBarV497"></span></div><div id="nh7SermonUploadStatusV497" class="nh7-sermon-upload-text-v497"></div></div><div class="actions"><button type="button" class="btn primary" onclick="saveSermon()">💾 '+tr('saveSermon')+'</button>'+(edit?'<button type="button" class="btn ghost" onclick="editingSermonId=null;clearSermonDraft();render()">'+tr('cancelEdit')+'</button>':'')+'</div></section><section class="panel-card"><h3>'+tr('category')+'</h3><div class="grid2"><input id="cat_fa" placeholder="'+tr('titleFa')+'"><input id="cat_en" placeholder="'+tr('titleEn')+'"><input id="cat_hr" placeholder="'+tr('titleHr')+'"><input id="cat_sort" type="number" value="100" placeholder="'+tr('sortOrder')+'"></div><button class="btn secondary" onclick="saveCategory()">'+tr('addCategory')+'</button><div class="list">'+categoryRows+'</div></section><section class="panel-card"><h3>'+tr('sermons')+'</h3>'+searchBox+'<div id="adminSermonSearchEmpty" class="empty" '+(q&&visible.length===0?'':'hidden style="display:none!important"')+'>'+(lang==='fa'?'موعظه‌ای با این نام پیدا نشد.':lang==='hr'?'Nije pronađena odgovarajuća propovijed.':'No matching sermon found.')+'</div><div id="adminSermonList" class="list">'+sermonRows+'</div></section><section class="panel-card"><h3>'+tr('legacyAudio')+'</h3><p class="muted small">'+tr('legacyHelp')+'</p>'+renderLegacyAudio()+'</section>';
+  return '<section class="panel-card" id="sermonEditor"><h3>'+(edit?tr('editSermon'):tr('addSermon'))+'</h3>'+(edit?'<div class="notice small" style="margin-bottom:10px"><strong>'+(lang==='fa'?'در حال ویرایش: ':lang==='hr'?'Uređivanje: ':'Editing: ')+h(edit.title_fa||edit.title_en||edit.title_hr||'')+'</strong></div>':'')+'<div class="grid2"><input id="sv_title_fa" value="'+h(sermonDraft.title_fa||'')+'" oninput="sermonDraft.title_fa=this.value" placeholder="'+tr('titleFa')+'"><input id="sv_title_en" value="'+h(sermonDraft.title_en||'')+'" oninput="sermonDraft.title_en=this.value" placeholder="'+tr('titleEn')+'"><input id="sv_title_hr" value="'+h(sermonDraft.title_hr||'')+'" oninput="sermonDraft.title_hr=this.value" placeholder="'+tr('titleHr')+'"><select id="sv_category" onchange="sermonDraft.category_id=this.value">'+opts+'</select></div><textarea id="sv_description_fa" oninput="sermonDraft.description_fa=this.value" placeholder="'+tr('descriptionFa')+'">'+h(sermonDraft.description_fa||'')+'</textarea><textarea id="sv_description_en" oninput="sermonDraft.description_en=this.value" placeholder="'+tr('descriptionEn')+'">'+h(sermonDraft.description_en||'')+'</textarea><textarea id="sv_description_hr" oninput="sermonDraft.description_hr=this.value" placeholder="'+tr('descriptionHr')+'">'+h(sermonDraft.description_hr||'')+'</textarea><div class="grid2"><input id="sv_youtube" class="ltr" value="'+h(sermonDraft.youtube_url||'')+'" oninput="sermonDraft.youtube_url=this.value" placeholder="'+tr('youtubeUrl')+'"><input id="sv_duration" type="text" inputmode="numeric" value="'+h(formatDurationClock(sermonDraft.duration_seconds||Number(sermonDraft.duration_minutes||0)*60))+'" oninput="sermonDraft.duration_seconds=parseDurationClock(this.value);sermonDraft.duration_minutes=Math.round((sermonDraft.duration_seconds/60)*100)/100" placeholder="mm:ss"><input id="sv_sort" type="number" value="'+h(sermonDraft.sort_order||100)+'" oninput="sermonDraft.sort_order=this.value" placeholder="'+tr('sortOrder')+'"><label><input id="sv_published" type="checkbox" '+(sermonDraft.is_published!==false?'checked':'')+' onchange="sermonDraft.is_published=this.checked"> '+tr('publish')+'</label><label>'+tr('audioFile')+'<input id="sv_audio" type="file" accept=".mp3,.m4a,.mp4,.aac,.wav,audio/mpeg,audio/mp4,audio/aac,audio/wav" onchange="captureSermonDraft();setSermonFileSelection(\'audio\',this.files[0]);inspectSermonAudio(this.files[0])">'+audioName+'</label><label>'+tr('coverFile')+'<input id="sv_cover" type="file" accept="image/*" onchange="captureSermonDraft();if(this.files[0])sermonCoverFile=this.files[0];setSermonFileSelection(\'cover\',this.files[0])">'+coverName+'</label></div>'+currentMedia+'<div data-nh7-sermon-upload-v497="1" class="nh7-sermon-upload-v497"><div class="nh7-sermon-upload-track-v497"><span id="nh7SermonUploadBarV497"></span></div><div id="nh7SermonUploadStatusV497" class="nh7-sermon-upload-text-v497"></div></div><div class="actions"><button type="button" class="btn primary" onclick="saveSermon()">💾 '+tr('saveSermon')+'</button>'+(edit?'<button type="button" class="btn ghost" onclick="editingSermonId=null;clearSermonDraft();render()">'+tr('cancelEdit')+'</button>':'')+'</div></section><section class="panel-card"><h3>'+tr('category')+'</h3><div class="grid2"><input id="cat_fa" placeholder="'+tr('titleFa')+'"><input id="cat_en" placeholder="'+tr('titleEn')+'"><input id="cat_hr" placeholder="'+tr('titleHr')+'"><input id="cat_sort" type="number" value="100" placeholder="'+tr('sortOrder')+'"></div><button class="btn secondary" onclick="saveCategory()">'+tr('addCategory')+'</button><div class="list">'+categoryRows+'</div></section><section class="panel-card"><h3>'+tr('sermons')+'</h3>'+searchBox+'<div id="adminSermonSearchEmpty" class="empty" '+(q&&visible.length===0?'':'hidden style="display:none!important"')+'>'+(lang==='fa'?'موعظه‌ای با این نام پیدا نشد.':lang==='hr'?'Nije pronađena odgovarajuća propovijed.':'No matching sermon found.')+'</div><div id="adminSermonList" class="list">'+sermonRows+'</div></section><section class="panel-card"><h3>'+tr('legacyAudio')+'</h3><p class="muted small">'+tr('legacyHelp')+'</p>'+renderLegacyAudio()+'</section>';
 }
 async function saveSchedule(key){const row=state.schedules.find(x=>x.key===key)||{};const data={time_value:document.getElementById('ns_time_'+key).value,timezone_mode:document.getElementById('ns_tz_'+key).value,title_fa:document.getElementById('ns_title_fa_'+key).value,body_fa:document.getElementById('ns_body_fa_'+key).value,title_en:document.getElementById('ns_title_en_'+key).value,body_en:document.getElementById('ns_body_en_'+key).value,title_hr:document.getElementById('ns_title_hr_'+key).value,body_hr:document.getElementById('ns_body_hr_'+key).value,is_active:document.getElementById('ns_active_'+key).checked,updated_at:new Date().toISOString()};try{await authFetch('/rest/v1/notification_schedules?key=eq.'+encodeURIComponent(key),{method:'PATCH',body:JSON.stringify(data)});setMessage(tr('saved'),'success');await loadAll(true)}catch(e){alert(e.message)}}
 async function sendBroadcast(){const rows=['fa','en','hr'].map(l=>({id:uuid(),device_id:null,user_email:null,title:document.getElementById('bc_title_'+l).value.trim(),body:document.getElementById('bc_body_'+l).value.trim(),category:'admin_broadcast',language:l,delivered_at:new Date().toISOString(),read_at:null})).filter(x=>x.title&&x.body);if(!rows.length)return;try{await authFetch('/rest/v1/notification_inbox',{method:'POST',body:JSON.stringify(rows)});alert(tr('broadcastSent'));await loadAll(true)}catch(e){alert(e.message)}}
