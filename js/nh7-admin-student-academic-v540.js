@@ -4,7 +4,7 @@
 (()=>{'use strict';
 if(window.__NH7_ADMIN_STUDENT_ACADEMIC_V540__)return;
 window.__NH7_ADMIN_STUDENT_ACADEMIC_V540__=true;
-const VERSION='5.4.2-student-academic-center';
+const VERSION='5.4.4-student-academic-center';
 
 let view='overview';
 let reportFilter='school_registered';
@@ -130,7 +130,7 @@ async function load(force=false){
   loading=true;error='';
   if(activeTab==='students')render();
   try{
-    const raw=await adminRpc('nh7_admin_student_academic_center_v542',{p_inactive_days:inactiveDays});
+    const raw=await adminRpc('nh7_admin_student_academic_center_v542',{p_inactive_days:inactiveDays},60000);
     data=unwrap(raw)||{};
     loadedAt=Date.now();
   }catch(e){error=e?.message||String(e)}
