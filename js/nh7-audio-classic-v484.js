@@ -24,6 +24,8 @@ const signed=new Map();
 const derived=new Map();
 const localUrls=new Map();
 let audio=null,current=null,currentPanel=null,patchTimer=0,prewarmBusy=false,nowPlayingBar=null,playQueue=[],queueIndex=-1,queueBusy=false,volumeControlSupported=null;
+let selection=0;
+const failedLocal=new Set();
 let listenedPending=0,lastWall=0,lastPosition=0,trackTimer=0,sessionId='';
 
 const $=(s,r=document)=>r.querySelector(s);
@@ -34,19 +36,7 @@ const fmt=value=>{const sec=Math.max(0,Number(value)||0),h=Math.floor(sec/3600),
 
 function readSession(){try{return JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch(_){return null}}
 function jwtExpiry(token){try{const p=String(token||'').split('.')[1]||'',n=p.replace(/-/g,'+').replace(/_/g,'/'),j=JSON.parse(atob(n.padEnd(Math.ceil(n.length/4)*4,'=')));return Number(j.exp||0)*1000}catch(_){return 0}}
-async function accessToken(){
-  try{await window.NH7_SCHOOL_MEDIA_REFRESH?.(false)}catch(_){}
-  let session=readSession();
-  if(session?.access_token&&jwtExpiry(session.access_token)>Date.now()+90000)return String(session.access_token);
-  if(session?.refresh_token){
-    try{
-      const response=await fetch(`${SB}/auth/v1/token?grant_type=refresh_token`,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:session.refresh_token}),cache:'no-store'});
-      const text=await response.text();let data={};try{data=text?JSON.parse(text):{}}catch(_){}
-      if(response.ok&&data?.access_token){localStorage.setItem(SESSION_KEY,JSON.stringify(data));session=data}
-    }catch(_){}
-  }
-  return String(session?.access_token||'');
-}
+async function accessToken(){return await window.NH7_SESSION_V467.token()}
 function accountEmail(){const s=readSession();return String(s?.user?.email||localStorage.getItem('nh7_manual_email')||'').trim().toLowerCase()}
 function deviceId(){let id=localStorage.getItem('nh7_device_id');if(!id){id='dev_'+(crypto.randomUUID?.()||Date.now()+'_'+Math.random().toString(36).slice(2));localStorage.setItem('nh7_device_id',id)}return id}
 function isNative(){try{return!!(window.Capacitor?.isNativePlatform?.()||['ios','android'].includes(window.Capacitor?.getPlatform?.()))}catch(_){return false}}
@@ -91,41 +81,29 @@ async function idbPut(record){const db=await openDb();return new Promise((resolv
 async function idbDelete(id){const db=await openDb();return new Promise(resolve=>{const tx=db.transaction(DB_STORE,'readwrite');tx.objectStore(DB_STORE).delete(id);tx.oncomplete=()=>{db.close();resolve(true)};tx.onerror=tx.onabort=()=>{db.close();resolve(false)}})}
 async function idbClear(){const db=await openDb();return new Promise(resolve=>{const tx=db.transaction(DB_STORE,'readwrite');tx.objectStore(DB_STORE).clear();tx.oncomplete=()=>{db.close();resolve(true)};tx.onerror=tx.onabort=()=>{db.close();resolve(false)}})}
 
-async function refreshAudioSession(){
-  let session=readSession();if(!session?.refresh_token)return null;
-  try{
-    const response=await fetch(`${SB}/auth/v1/token?grant_type=refresh_token`,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:session.refresh_token}),cache:'no-store'});
-    const text=await response.text();let data={};try{data=text?JSON.parse(text):{}}catch(_){}
-    if(!response.ok||!data?.access_token)return null;
-    // Supabase refresh responses can omit user metadata. Preserve the existing
-    // user object so account identity remains stable across an audio refresh.
-    session=Object.assign({},session,data,{user:data.user||session.user});
-    localStorage.setItem(SESSION_KEY,JSON.stringify(session));
-    return session;
-  }catch(_){return null}
-}
+async function refreshAudioSession(rejectedToken=''){return await window.NH7_SESSION_V467.refresh(true,rejectedToken)}
 async function edge(payload,retry=0){
   const token=await accessToken();if(!token)throw Object.assign(new Error('login_required'),{code:'login_required'});
-  const response=await fetch(`${SB}/functions/v1/nh7-school-media-access`,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+token,'Content-Type':'application/json','x-client-info':'nh7-classic-audio-v461'},body:JSON.stringify(Object.assign({device_id:deviceId()},payload)),cache:'no-store'});
+  const response=await window.NH7_SESSION_V467.request(`${SB}/functions/v1/nh7-school-media-access`,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+token,'Content-Type':'application/json','x-client-info':'nh7-classic-audio-v484-session-safe'},body:JSON.stringify(Object.assign({device_id:deviceId()},payload)),cache:'no-store'},{retryRead:true});
   const text=await response.text();let data={};try{data=text?JSON.parse(text):{}}catch(_){data={error:text}}
   if(response.status===401&&!retry){
-    const refreshed=await refreshAudioSession();
+    const refreshed=await refreshAudioSession(token);
     if(refreshed?.access_token)return edge(payload,1);
   }
   if(!response.ok||!data?.signed_url)throw Object.assign(new Error(data?.error||data?.message||text||`HTTP ${response.status}`),{code:data?.code||(response.status===401?'invalid_session':''),status:response.status});
   return data;
 }
 async function signedUrl(item,force=false){
-  const id=mediaId(item),cached=signed.get(id);
+  const id=accountEmail()+'|'+mediaId(item),cached=signed.get(id);
   if(!force&&cached?.url&&cached.expires>Date.now()+60000)return cached.url;
   if(!force&&cached?.promise)return cached.promise;
-  const promise=(async()=>{const data=isSchool(item)?await edge({kind:'audio',lesson_code:lessonCode(item)}):await edge({kind:'sermon',sermon_id:id});const value={url:String(data.signed_url),expires:Date.now()+Math.max(60,Number(data.expires_in||0)-60)*1000,mime:String(data.mime_type||'audio/mpeg')};signed.set(id,value);return value.url})();
+  const promise=(async()=>{const data=isSchool(item)?await edge({kind:'audio',lesson_code:lessonCode(item)}):await edge({kind:'sermon',sermon_id:mediaId(item)});const value={url:String(data.signed_url),expires:Date.now()+Math.max(60,Number(data.expires_in||0)-60)*1000,mime:String(data.mime_type||'audio/mpeg')};signed.set(id,value);return value.url})();
   signed.set(id,{promise});try{return await promise}catch(error){signed.delete(id);throw error}
 }
 
 function errorText(error){
   const code=String(error?.code||error?.name||error?.message||error||'').toLowerCase();
-  if(code.includes('login_required')||code.includes('invalid_session'))return L('جلسه ورود منقضی شده است؛ دوباره وارد حساب شوید.','Your sign-in session expired; sign in again.','Sesija je istekla; ponovno se prijavite.');
+  if(code.includes('login_required')||code.includes('invalid_session')||code.includes('session_unavailable'))return L('جلسه ورود منقضی شده است؛ دوباره وارد حساب شوید.','Your sign-in session expired; sign in again.','Sesija je istekla; ponovno se prijavite.');
   if(code.includes('school_approval_required'))return L('این حساب هنوز ثبت‌نام کامل و تأییدشده ندارد.','This account does not yet have complete approved registration.','Ovaj račun još nema potpunu odobrenu registraciju.');
   if(code.includes('sermon_not_found')||code.includes('lesson_not_found'))return L('فایل صوتی در سرور پیدا نشد.','The audio file was not found on the server.','Audio datoteka nije pronađena.');
   if(code.includes('signed_url_failed')||code.includes('invalid_path'))return L('ساخت لینک امن فایل صوتی انجام نشد.','The secure audio link could not be created.','Nije moguće izraditi sigurnu audio poveznicu.');
@@ -373,7 +351,7 @@ function ensureAudio(){
   audio.addEventListener('ended',()=>{if(!current)return;captureListen();saveProgress(current,true);setStatus(current,L('پخش کامل شد ✓','Completed ✓','Završeno ✓'),'ok');syncPanel(current);syncNowPlaying();Promise.resolve(flushTracking(true,true)).finally(()=>{setTimeout(()=>playNextTrack('auto-ended').catch(()=>{}),120)})});
   audio.addEventListener('volumechange',()=>syncNowPlaying());
   audio.addEventListener('ratechange',()=>{syncNowPlaying();syncMediaPosition()});
-  audio.addEventListener('error',async()=>{if(!current)return;const id=mediaId(current),local=localUrls.get(id);if(local&&audio.src===local){await removeLocal(current);setStatus(current,L('نسخه آفلاین ناسازگار بود و پاک شد؛ دوباره دانلود کنید.','The offline copy was invalid and was removed; download it again.','Offline kopija nije valjana i uklonjena je; preuzmite ponovno.'),'error')}else setStatus(current,L('فایل صوتی باز نشد.','Audio could not be opened.','Audio se nije mogao otvoriti.'),'error');syncPanel(current);syncNowPlaying()});
+  audio.addEventListener('error',async()=>{if(!current)return;const id=mediaId(current),local=localUrls.get(id);if(local&&audio.src===local){failedLocal.add(id);if(local.startsWith('blob:'))URL.revokeObjectURL(local);localUrls.delete(id);setStatus(current,L('نسخه آفلاین باز نشد، اما حذف نشده است. بار بعد نسخه آنلاین امتحان می‌شود.','The offline copy could not be opened, but it was not deleted. The online copy will be tried next.','Offline kopija se nije otvorila, ali nije izbrisana. Sljedeći put pokušat će se online verzija.'),'error')}else setStatus(current,L('فایل صوتی باز نشد.','Audio could not be opened.','Audio se nije mogao otvoriti.'),'error');syncPanel(current);syncNowPlaying()});
   return audio;
 }
 
@@ -385,7 +363,7 @@ async function flushTracking(ended=false,force=false){
   return false;
 }
 async function localUrl(item){
-  const id=mediaId(item),existing=localUrls.get(id);if(existing)return existing;
+  const id=mediaId(item);if(failedLocal.has(id))return'';const existing=localUrls.get(id);if(existing)return existing;
   const meta=readMeta(item);if(isNative()){
     const Filesystem=plugin('Filesystem');if(!Filesystem||!meta?.path)return'';
     try{await Filesystem.stat({directory:'DATA',path:meta.path});const uri=(await Filesystem.getUri({directory:'DATA',path:meta.path})).uri,url=window.Capacitor?.convertFileSrc?window.Capacitor.convertFileSrc(uri):uri;localUrls.set(id,url);return url}catch(_){removeMeta(item);return''}
@@ -393,7 +371,7 @@ async function localUrl(item){
   try{const row=await idbGet(id);if(!row?.blob)return'';const url=URL.createObjectURL(row.blob);localUrls.set(id,url);return url}catch(_){return''}
 }
 async function removeLocal(item){
-  const id=mediaId(item),url=localUrls.get(id);if(url?.startsWith('blob:'))URL.revokeObjectURL(url);localUrls.delete(id);
+  const id=mediaId(item);failedLocal.delete(id);const url=localUrls.get(id);if(url?.startsWith('blob:'))URL.revokeObjectURL(url);localUrls.delete(id);
   if(isNative()){const meta=readMeta(item),Filesystem=plugin('Filesystem');if(meta?.path&&Filesystem)try{await Filesystem.deleteFile({directory:'DATA',path:meta.path})}catch(_){} }
   else await idbDelete(id).catch(()=>{});
   removeMeta(item);updateDownloadButtons(item,false);
@@ -402,6 +380,7 @@ async function isDownloaded(item){if(isNative()){const meta=readMeta(item),Files
 
 async function playItem(item,options={}){
   if(!supported(item))return false;
+  const ticket=++selection;
   if(!options?.fromQueue)capturePlayQueue(item);
   else{
     const idx=playQueue.findIndex(candidate=>mediaId(candidate)===mediaId(item));
@@ -411,10 +390,11 @@ async function playItem(item,options={}){
   if(current&&mediaId(current)===mediaId(item)&&player.src){if(player.paused){try{await player.play()}catch(error){setStatus(item,errorText(error),'error')}}else player.pause();syncPanel(item);syncNowPlaying();return true}
   if(current&&mediaId(current)!==mediaId(item)){captureListen();flushTracking(false,true).catch(()=>{})}
   const local=await localUrl(item);
+  if(ticket!==selection)return false;
   if(!local&&!navigator.onLine){setStatus(item,L('این فایل هنوز برای آفلاین دانلود نشده است.','This file has not been downloaded for offline use.','Datoteka nije preuzeta za offline rad.'),'error');return false}
   try{
     setStatus(item,local?L('در حال بازکردن نسخه دانلودشده…','Opening downloaded copy…','Otvaranje preuzete kopije…'):L('در حال آماده‌سازی فایل صوتی…','Preparing audio…','Priprema audio datoteke…'),'busy');
-    const url=local||await signedUrl(item);current=item;sessionId='classic_'+(crypto.randomUUID?.()||Date.now());listenedPending=0;lastWall=Date.now();lastPosition=0;setupMediaSession(item);syncNowPlaying();
+    const url=local||await signedUrl(item);if(ticket!==selection)return false;current=item;sessionId='classic_'+(crypto.randomUUID?.()||Date.now());listenedPending=0;lastWall=Date.now();lastPosition=0;setupMediaSession(item);syncNowPlaying();
     player.pause();player.src=url;player.playbackRate=nearestSpeed(Number(localStorage.getItem('nh7_sermon_speed')||1)||1);player.load();syncPanel(item);
     try{await player.play()}catch(error){setStatus(item,L('فایل آماده است؛ دوباره روی Play بزنید.','The file is ready; tap Play again.','Datoteka je spremna; ponovno dodirnite Play.'),'busy')}
   }catch(error){setStatus(item,errorText(error)+(error?.status?` [${error.status}]`:''),'error')}
@@ -442,7 +422,7 @@ async function downloadItem(item){
   if(await isDownloaded(item)){if(confirm(L('این فایل آفلاین پاک شود؟','Remove this offline file?','Ukloniti ovu offline datoteku?')))await removeLocal(item);return}
   if(!navigator.onLine){setStatus(item,L('برای دانلود به اینترنت نیاز است.','Internet is required to download.','Za preuzimanje je potreban internet.'),'error');return}
   updateDownloadButtons(item,false,0);setStatus(item,L('در حال دریافت فایل…','Downloading file…','Preuzimanje datoteke…'),'busy');
-  try{const url=await signedUrl(item);if(isNative())await downloadNative(item,url);else await downloadWeb(item,url);updateDownloadButtons(item,true,100);setStatus(item,L('فایل برای استفاده آفلاین آماده شد ✓','The file is ready offline ✓','Datoteka je spremna offline ✓'),'ok')}
+  try{const url=await signedUrl(item);if(isNative())await downloadNative(item,url);else await downloadWeb(item,url);failedLocal.delete(mediaId(item));updateDownloadButtons(item,true,100);setStatus(item,L('فایل برای استفاده آفلاین آماده شد ✓','The file is ready offline ✓','Datoteka je spremna offline ✓'),'ok')}
   catch(error){updateDownloadButtons(item,false);setStatus(item,errorText(error)+(error?.status?` [${error.status}]`:''),'error')}
 }
 
@@ -480,6 +460,7 @@ window.addEventListener('pointerdown',event=>{const node=event.target.closest?.(
 window.addEventListener('click',intercept,true);
 window.addEventListener('input',event=>{const seek=event.target.closest?.('[data-classic-seek]');if(seek&&audio&&current&&Number.isFinite(audio.duration)&&audio.duration>0){event.stopImmediatePropagation();audio.currentTime=audio.duration*Number(seek.value||0)/1000;syncPanel(current)}},true);
 window.addEventListener('online',()=>{patch();prewarm()});
+window.addEventListener('storage',event=>{if(event.key===SESSION_KEY||event.key==='nh7_explicit_logout'){selection++;signed.clear();if(audio)audio.pause()}});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)flushTracking(false,true).catch(()=>{})});
 window.addEventListener('pagehide',()=>{flushTracking(false,true).catch(()=>{})});
 window.addEventListener('beforeunload',()=>{flushTracking(false,true).catch(()=>{});for(const url of localUrls.values())if(url?.startsWith('blob:'))URL.revokeObjectURL(url)});
@@ -503,7 +484,7 @@ new MutationObserver(()=>{clearTimeout(patchTimer);patchTimer=setTimeout(()=>{pa
 setTimeout(()=>{patch();prewarm()},250);
 
 window.NH7_AUDIO_CLASSIC_VERSION='4.8.4';
-window.NH7_AUDIO_SIGNED_VERSION='4.6.1-401-refresh';
+window.NH7_AUDIO_SIGNED_VERSION='4.8.6-session-continuity';
 window.NH7_AUDIO_CLASSIC_V400={patch,prewarm,playItem,playNextTrack,playPreviousTrack,setPlaybackSpeed,setMediaVolume,toggleMediaMute,downloadItem,clearAll,getState:()=>({current,audio,playQueue:[...playQueue],queueIndex,volumeControlSupported}),openCurrentAudio,syncNowPlaying};
 // Compatibility for the Settings cleanup controller introduced in 2.3.9.48.
 window.NH7_AUDIO_SIGNED_V397=window.NH7_AUDIO_CLASSIC_V400;
