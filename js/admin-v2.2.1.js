@@ -59,7 +59,9 @@ const previousLoadAll=loadAll;
 loadAll=async function(silent=false){
   await previousLoadAll(silent);
   if(!token)return;
-  const jobs=await Promise.allSettled([loadAudioBibleV221(),loadAudioAnalyticsV221(false)]);
+  // Keep Audio Bible management current, but do not run legacy analytics on every
+  // global Admin refresh. Newer analytics screens can still request analytics explicitly.
+  const jobs=await Promise.allSettled([loadAudioBibleV221()]);
   jobs.filter(x=>x.status==='rejected').forEach(x=>console.warn('v2.2.1 supplemental load',x.reason));
   render(false);
 };
