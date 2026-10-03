@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
+import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -66,6 +67,61 @@ require('js/nh7-school-path-v351.js', 'setInterval(refreshSchoolPath,120000);')
 
 # Stable Library catalog cache.
 require('js/app.js', 'const NH7_LIBRARY_CATALOG_CACHE_MS=10*60*1000;')
+
+# Data-preservation guard for this release and future timestamped migrations.
+# Only migrations at/after the first Supabase hardening migration are scanned,
+# so historical migrations are not re-linted retroactively.
+PROTECTED_DATA_TABLES = (
+    'nh7_account_notes',
+    'nh7_account_progress',
+    'nh7_account_saved_verses',
+    'nh7_account_verse_marks_v230',
+    'nh7_library_reading_progress_v490',
+    'nh7_school_audio_progress_v380',
+    'school_progress',
+    'school_legacy_progress_v542',
+    'school_assignments',
+    'registrations',
+    'saved_verses',
+    'user_notes',
+    'user_progress',
+    'spiritual_plan_progress',
+)
+MIGRATION_FLOOR = 20261003171531
+
+migration_dir = ROOT / 'supabase' / 'migrations'
+for migration in sorted(migration_dir.glob('*.sql')):
+    match = re.match(r'^(\d{14})_', migration.name)
+    if not match or int(match.group(1)) < MIGRATION_FLOOR:
+        continue
+    sql = migration.read_text(encoding='utf-8')
+    sql = re.sub(r'--.*if errors:
+    print("New Hope 7 next-native optimization guard: FAILED")
+    for item in errors:
+        print(f" - {item}")
+    sys.exit(1)
+
+print("New Hope 7 next-native optimization guard: PASS")
+, '', sql, flags=re.MULTILINE).lower().replace('"', '')
+    if re.search(r'\bdrop\s+schema\s+(?:if\s+exists\s+)?public\b', sql):
+        errors.append(f"{migration}: forbidden DROP SCHEMA public")
+    for table in PROTECTED_DATA_TABLES:
+        q = rf'(?:public\.)?{re.escape(table)}'
+        destructive_patterns = (
+            rf'\bdrop\s+table\b[^;]*\b{q}\b',
+            rf'\btruncate(?:\s+table)?\b[^;]*\b{q}\b',
+            rf'\bdelete\s+from\s+{q}\b',
+            rf'\balter\s+table\s+(?:if\s+exists\s+)?{q}\b[^;]*\bdrop\b',
+        )
+        for pattern in destructive_patterns:
+            if re.search(pattern, sql, flags=re.DOTALL):
+                errors.append(f"{migration}: destructive SQL against protected table {table}")
+                break
+
+# A native update must never wipe all local user state.
+for runtime in [index, *[str(p.relative_to(ROOT)) for p in (ROOT / 'js').glob('*.js')]]:
+    forbid(runtime, 'localStorage.clear(', 'global localStorage wipe')
+    forbid(runtime, 'indexedDB.deleteDatabase(', 'IndexedDB database deletion')
 
 if errors:
     print("New Hope 7 next-native optimization guard: FAILED")
