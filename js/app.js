@@ -1597,7 +1597,11 @@ function showPlan(p){
 
 
 async function loadSchoolContent(){
-  const fallback=await jfetch('data/school/school_content.json');
+  // The bundled/public placeholder is optional; its failure must not block protected cloud lessons.
+  const transport=window.NH7_SESSION_V467?.request||fetch;
+  const fallback=await transport('data/school/school_content.json',{cache:'no-cache'},{timeoutMs:4000})
+    .then(r=>{if(!r.ok)throw new Error('placeholder_unavailable');return r.json()})
+    .catch(()=>({meta:{protectedContent:true},lessons:[]}));
   const baseLessons=Array.isArray(fallback?.lessons)?fallback.lessons:[];
   try{
     const rows=await cloudFetch('school_lessons?select=*&is_active=eq.true&order=lesson_order.asc',{method:'GET'});
@@ -1654,7 +1658,8 @@ async function loadSchoolContent(){
       const merged=[...byCode.values()].sort((a,b)=>Number(a.lesson_order||999)-Number(b.lesson_order||999));
       return Object.assign({},fallback,{lessons:merged});
     }
-  }catch(e){console.warn('school cloud fallback',e)}
+  }catch(e){console.warn('school cloud fallback',e);if(!baseLessons.length)throw e}
+  if(!baseLessons.length)throw Object.assign(new Error('school_content_unavailable'),{code:'school_content_unavailable'});
   return fallback;
 }
 function schoolCourseInfo(l){
@@ -1752,7 +1757,14 @@ async function school(params={}){
     $('#schoolLogoutBtn')?.addEventListener('click',()=>logoutAccount('school'));return;
   }
   // Load protected lessons only after the existing identity and approval checks.
-  const d=await loadSchoolContent();
+  let d;
+  try{d=await loadSchoolContent()}catch(error){
+    if(schoolEpochV465!==nh7NavigationEpochV456)return;
+    const t=(fa,en,hr)=>state.lang==='fa'?fa:state.lang==='hr'?hr:en;
+    const message=t('دریافت درس‌ها کامل نشد. ثبت‌نام و پیشرفت شما پاک نشده است. اتصال را بررسی و دوباره تلاش کنید.','Lessons could not be loaded. Your registration and progress have not been cleared. Check your connection and try again.','Lekcije se nisu učitale. Vaša registracija i napredak nisu izbrisani. Provjerite vezu i pokušajte ponovno.');
+    view.innerHTML=card(tr('school'),`<p role="status">${html(message)}</p><button class="primary-btn wide-btn" data-go="school" data-params='${html(JSON.stringify(params))}'>${html(t('تلاش دوباره','Try again','Pokušaj ponovno'))}</button><button class="secondary-btn wide-btn" data-go="school">${html(tr('back'))}</button>`);
+    return;
+  }
   if(schoolEpochV465!==nh7NavigationEpochV456)return;
   if(params.lesson)return schoolLesson(d,params.lesson);
   if(params.exam)return schoolCourseExam(d,params.exam);
