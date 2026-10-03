@@ -10,7 +10,7 @@ let libraryBusy=false,libraryAutoAttempted=false,lastCode='',draft={id:'',title_
 function resetDraft(){draft={id:'',title_fa:'',title_en:'',title_hr:'',description_fa:'',description_en:'',description_hr:'',audience:'public',resource_type:'library',apocrypha_book:'',mime_type:'application/pdf',storage_path:'',file_name:'',file_size:0,cover_url:'',sort_order:100,is_published:true,is_active:true};render()}
 window.nh7LibraryDraftV224=(k,v)=>{draft[k]=v;if(k==='resource_type'&&v!=='apocrypha')draft.apocrypha_book=''};
 window.nh7ResetLibraryDraftV224=resetDraft;
-async function loadLibrary(redraw=true){if(!token||libraryBusy)return;libraryBusy=true;if(redraw)render();try{const r=await adminRpc('nh7_admin_library_dashboard_v224',{});state.libraryV224=(Array.isArray(r)?r[0]:r)||{items:[],codes:[]}}catch(e){state.libraryV224={items:[],codes:[],error:e.message||String(e)}}finally{libraryBusy=false;if(redraw)render()}}
+async function loadLibrary(redraw=true){if(!token||libraryBusy)return;libraryAutoAttempted=true;libraryBusy=true;if(redraw)render();try{const r=await adminRpc('nh7_admin_library_dashboard_v224',{});state.libraryV224=(Array.isArray(r)?r[0]:r)||{items:[],codes:[]}}catch(e){state.libraryV224={items:[],codes:[],error:e.message||String(e)}}finally{libraryBusy=false;if(redraw)render()}}
 window.nh7LoadLibraryV224=loadLibrary;
 window.nh7EditLibraryV224=id=>{const x=(state.libraryV224.items||[]).find(r=>String(r.id)===String(id));if(x){draft=Object.assign({},x);render();setTimeout(()=>document.getElementById('nh7_library_editor_v224')?.scrollIntoView({behavior:'smooth',block:'start'}),80)}};
 function safeName(name){return String(name||'document').replace(/[^a-zA-Z0-9._-]+/g,'-').replace(/^-+|-+$/g,'')||'document'}
