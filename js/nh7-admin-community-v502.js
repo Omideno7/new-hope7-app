@@ -65,13 +65,14 @@ function extension(path,mime){const m=String(path||'').match(/\.([a-z0-9]{2,5})$
 async function approveTestimony(id){
  const t=S.testimonies.find(x=>String(x.id)===String(id));if(!t)return;
  if(!confirm(L('این شهادت صوتی تأیید و در اپ منتشر شود؟','Approve and publish this audio testimony?','Odobriti i objaviti ovo audio svjedočanstvo?')))return;
+ const dest='approved/'+t.id+'.'+extension(t.audio_submission_path,t.audio_mime_type);let copied=false;
  try{
-  const dest='approved/'+t.id+'.'+extension(t.audio_submission_path,t.audio_mime_type);
-  await A().storageCopy(PRIVATE_BUCKET,t.audio_submission_path,PUBLIC_BUCKET,dest);
+  await A().storageCopy(PRIVATE_BUCKET,t.audio_submission_path,PUBLIC_BUCKET,dest);copied=true;
   await A().adminRpc('nh7_owner_testimony_publish_v502',{p_id:t.id,p_published_audio_path:dest});
+  copied=false;
   if(t.audio_submission_path)A().storageRemove?.(PRIVATE_BUCKET,t.audio_submission_path).catch(()=>{});
   await refreshTestimonies()
- }catch(e){alert(backendText(e))}
+ }catch(e){if(copied)A().storageRemove?.(PUBLIC_BUCKET,dest).catch(()=>{});alert(backendText(e))}
 }
 async function rejectTestimony(id){
  if(!confirm(L('این شهادت رد شود؟','Reject this testimony?','Odbiti ovo svjedočanstvo?')))return;
