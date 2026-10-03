@@ -1,0 +1,350 @@
+name: Next Native Android Store Candidate
+
+on:
+  push:
+    branches: [release/native-store-next-20261003]
+  workflow_dispatch:
+    inputs:
+      version_name:
+        description: Android marketing version
+        required: true
+        default: '2.5.0'
+      version_code:
+        description: Android versionCode; must be greater than current Play production 24001
+        required: true
+        default: '25001'
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-upgrade-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      APP_ID: com.omideno7.newhope7
+      APP_NAME: New Hope 7
+      VERSION_NAME: ${{ inputs.version_name || '2.5.0' }}
+      VERSION_CODE: ${{ inputs.version_code || '25001' }}
+
+    steps:
+      - name: Checkout native release candidate
+        uses: actions/checkout@v4
+
+      - name: Validate optimized release invariants
+        run: |
+          python3 scripts/validate_next_native_optimization_guard.py
+          python3 scripts/validate_native_release_candidate.py
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Configure Android SDK 36
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDK_ROOT="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-/usr/local/lib/android/sdk}}"
+          test -d "$SDK_ROOT"
+          echo "ANDROID_HOME=$SDK_ROOT" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=$SDK_ROOT" >> "$GITHUB_ENV"
+          echo "$SDK_ROOT/cmdline-tools/latest/bin" >> "$GITHUB_PATH"
+          echo "$SDK_ROOT/platform-tools" >> "$GITHUB_PATH"
+          yes | "$SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-36' 'build-tools;36.0.0' 'platform-tools'
+
+      - name: Build native web bundle from this exact release commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf native-release
+          mkdir -p native-release/www native-release/assets
+
+          for file in index.html app-v239.html reset-password.html certificate.html support.html manifest.json version.json service-worker.js; do
+            if [ -f "$file" ]; then cp "$file" native-release/www/; fi
+          done
+          for file in sw-*.js; do
+            if [ -f "$file" ]; then cp "$file" native-release/www/; fi
+          done
+          for dir in assets css js data offline push public; do
+            if [ -d "$dir" ]; then cp -R "$dir" native-release/www/; fi
+          done
+          cp assets/logo.png native-release/assets/logo.png
+
+          # Native wrapper isolation: native OneSignal owns push and WebView must not register the web SW.
+          python3 <<'PY'
+          from pathlib import Path
+          p=Path('native-release/www/index.html')
+          text=p.read_text(encoding='utf-8')
+          text=text.replace(
+              "if ('serviceWorker' in navigator) {",
+              "if (!window.Capacitor?.isNativePlatform?.() && 'serviceWorker' in navigator) {"
+          )
+          text=text.replace(
+              '<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>',
+              '<!-- Web OneSignal SDK disabled inside Android native wrapper; native OneSignal owns push -->'
+          )
+          p.write_text(text,encoding='utf-8')
+          PY
+
+          cat > native-release/package.json <<'JSON'
+          {
+            "name": "new-hope-7-android-next",
+            "private": true,
+            "version": "2.5.0",
+            "dependencies": {
+              "@capacitor/android": "8.5.0",
+              "@capacitor/core": "8.5.0",
+              "@capacitor/file-transfer": "2.0.5",
+              "@capacitor/filesystem": "8.1.3",
+              "@capacitor/local-notifications": "8.3.1",
+              "onesignal-cordova-plugin": "5.5.3"
+            },
+            "devDependencies": {
+              "@capacitor/assets": "3.0.5",
+              "@capacitor/cli": "8.5.0"
+            }
+          }
+          JSON
+
+          cat > native-release/capacitor.config.json <<'JSON'
+          {
+            "appId": "com.omideno7.newhope7",
+            "appName": "New Hope 7",
+            "webDir": "www",
+            "server": {"androidScheme":"https","cleartext":false},
+            "android": {"backgroundColor":"#ffffff","webContentsDebuggingEnabled":false},
+            "plugins": {"LocalNotifications":{"iconColor":"#0f766e"}}
+          }
+          JSON
+
+          cd native-release
+          npm install --no-audit --no-fund
+          npx cap add android
+          npx cap sync android
+
+      - name: Configure production identity and release optimization
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+          import os,re
+          root=Path('native-release/android')
+          version_name=os.environ['VERSION_NAME']
+          version_code=os.environ['VERSION_CODE']
+          if not version_code.isdigit() or int(version_code) <= 24001:
+              raise SystemExit('VERSION_CODE must be numeric and > 24001')
+
+          variables=root/'variables.gradle'
+          text=variables.read_text()
+          text=re.sub(r'minSdkVersion\s*=\s*\d+', 'minSdkVersion = 24', text)
+          text=re.sub(r'compileSdkVersion\s*=\s*\d+', 'compileSdkVersion = 36', text)
+          text=re.sub(r'targetSdkVersion\s*=\s*\d+', 'targetSdkVersion = 36', text)
+          variables.write_text(text)
+
+          gradle=root/'app/build.gradle'
+          text=gradle.read_text()
+          text=re.sub(r'versionCode\s*(?:=\s*)?\d+', f'versionCode {version_code}', text)
+          text=re.sub(r'versionName\s*(?:=\s*)?["\'][^"\']+["\']', f'versionName "{version_name}"', text)
+          text=re.sub(r'minifyEnabled\s*(?:=\s*)?false', 'minifyEnabled true', text)
+          if re.search(r'shrinkResources\s*(?:=\s*)?false', text):
+              text=re.sub(r'shrinkResources\s*(?:=\s*)?false', 'shrinkResources true', text)
+          elif 'minifyEnabled true' in text and 'shrinkResources' not in text:
+              text=text.replace('minifyEnabled true', 'minifyEnabled true\n            shrinkResources true', 1)
+          gradle.write_text(text)
+
+          manifest=root/'app/src/main/AndroidManifest.xml'
+          text=manifest.read_text()
+          if 'android.permission.POST_NOTIFICATIONS' not in text:
+              m=re.search(r'<manifest\b[^>]*>',text,re.S)
+              if not m: raise SystemExit('AndroidManifest root missing')
+              text=text[:m.end()]+'\n    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />'+text[m.end():]
+          if 'usesCleartextTraffic' not in text:
+              text=text.replace('<application','<application android:usesCleartextTraffic="false"',1)
+          manifest.write_text(text)
+          PY
+
+      - name: Generate branded Android assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd native-release
+          npx capacitor-assets generate --android --iconBackgroundColor '#ffffff' --iconBackgroundColorDark '#ffffff' --splashBackgroundColor '#ffffff' --splashBackgroundColorDark '#ffffff'
+          npx cap sync android
+
+      - name: Validate packaged feature set and identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd native-release
+          grep -R "applicationId.*com.omideno7.newhope7" android/app/build.gradle
+          grep -R "versionCode.*$VERSION_CODE" android/app/build.gradle
+          grep -R "versionName.*$VERSION_NAME" android/app/build.gradle
+          grep -R 'compileSdkVersion = 36' android/variables.gradle
+          grep -R 'targetSdkVersion = 36' android/variables.gradle
+          grep -R 'minSdkVersion = 24' android/variables.gradle
+          grep -R 'minifyEnabled true' android/app/build.gradle
+          grep -R 'shrinkResources true' android/app/build.gradle
+          grep -R 'POST_NOTIFICATIONS' android/app/src/main/AndroidManifest.xml
+          grep -R 'usesCleartextTraffic="false"' android/app/src/main/AndroidManifest.xml
+
+          test -f android/app/src/main/assets/public/js/nh7-push-account-bind-v364.js
+          test -f android/app/src/main/assets/public/js/nh7-audio-classic-v484.js
+          test -f android/app/src/main/assets/public/js/nh7-audio-miniplayer-v487.js
+          test -f android/app/src/main/assets/public/js/nh7-audio-library-v500.js
+          test -f android/app/src/main/assets/public/js/nh7-media-player-v500.js
+          test -f android/app/src/main/assets/public/js/nh7-appearance-personalization-v514.js
+          test -f android/app/src/main/assets/public/js/nh7-reader-toolbar-v452.js
+          test -f android/app/src/main/assets/public/js/nh7-school-path-v351.js
+          test -f android/app/src/main/assets/public/js/nh7-inbox-badge-sync-v418.js
+          test -f android/app/src/main/assets/public/js/nh7-sermon-social-v443.js
+          test -f android/app/src/main/assets/public/js/nh7-delete-account-v253.js
+
+          grep -q 'nh7-push-account-bind-v364.js?v=3.6.4-native' android/app/src/main/assets/public/index.html
+          grep -q 'nh7-media-player-v500.js?v=5.3.5-cover-sync' android/app/src/main/assets/public/index.html
+          grep -q 'nh7-appearance-personalization-v514.js?v=5.2.0' android/app/src/main/assets/public/index.html
+          grep -q "!window.Capacitor?.isNativePlatform?.()" android/app/src/main/assets/public/index.html
+          if grep -q 'cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js' android/app/src/main/assets/public/index.html; then
+            echo 'Web OneSignal SDK must not be active inside Android native wrapper' >&2
+            exit 1
+          fi
+          grep -q 'confirmNativeExternalId' android/app/src/main/assets/public/js/nh7-push-account-bind-v364.js
+          grep -q 'nh7_inbox_snapshot_v419' android/app/src/main/assets/public/js/nh7-inbox-badge-sync-v418.js
+          grep -q 'nh7_sermon_social_batch_v444' android/app/src/main/assets/public/js/nh7-sermon-social-v443.js
+          npm ls onesignal-cordova-plugin --depth=0
+
+      - name: Build optimized unsigned release AAB
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd native-release/android
+          chmod +x gradlew
+          ./gradlew bundleRelease --stacktrace
+          test -f app/build/outputs/bundle/release/app-release.aab
+          cp app/build/outputs/bundle/release/app-release.aab "../../New_Hope_7_${VERSION_NAME}_API36_UNSIGNED.aab"
+
+      - name: Build baseline and candidate QA APKs for update-in-place test
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+          gradle=Path('native-release/android/app/build.gradle')
+          text=gradle.read_text()
+          if 'applicationIdSuffix ".qa"' not in text:
+              m=re.search(r'buildTypes\s*\{',text)
+              if not m: raise SystemExit('buildTypes block missing')
+              debug='\n        debug {\n            applicationIdSuffix ".qa"\n            versionNameSuffix "-qa"\n        }\n'
+              text=text[:m.end()]+debug+text[m.end():]
+          gradle.write_text(text)
+          PY
+
+          cd native-release/android
+          cp app/build.gradle app/build.gradle.candidate
+
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('app/build.gradle')
+          text=p.read_text()
+          text=re.sub(r'versionCode\s*(?:=\s*)?\d+', 'versionCode 24001', text)
+          text=re.sub(r'versionName\s*(?:=\s*)?["\'][^"\']+["\']', 'versionName "2.4.0"', text)
+          p.write_text(text)
+          PY
+          ./gradlew assembleDebug --stacktrace
+          cp app/build/outputs/apk/debug/app-debug.apk ../../New_Hope_7_QA_BASELINE_24001.apk
+
+          mv app/build.gradle.candidate app/build.gradle
+          ./gradlew assembleDebug --stacktrace
+          cp app/build/outputs/apk/debug/app-debug.apk ../../New_Hope_7_QA_CANDIDATE.apk
+
+      - name: Android emulator update and data-preservation smoke
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          profile: pixel_5
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
+          emulator-boot-timeout: 600
+          script: |
+            set -euo pipefail
+            PACKAGE=com.omideno7.newhope7.qa
+
+            adb install New_Hope_7_QA_BASELINE_24001.apk
+            adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1
+            sleep 6
+            adb shell run-as "$PACKAGE" sh -c 'mkdir -p files && printf nh7-preserve > files/nh7_upgrade_preserve.txt'
+            adb shell run-as "$PACKAGE" cat files/nh7_upgrade_preserve.txt | grep nh7-preserve
+
+            adb install -r New_Hope_7_QA_CANDIDATE.apk
+            adb shell run-as "$PACKAGE" cat files/nh7_upgrade_preserve.txt | grep nh7-preserve
+
+            adb shell am force-stop "$PACKAGE"
+            adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1
+            sleep 12
+            PID=$(adb shell pidof "$PACKAGE" | tr -d '\r')
+            test -n "$PID"
+            adb exec-out screencap -p > android-next-smoke.png
+            adb logcat -d > android-next-logcat.txt
+            if grep -E "FATAL EXCEPTION|ANR in $PACKAGE|Process: $PACKAGE.*has died" android-next-logcat.txt; then
+              echo 'Fatal Android runtime issue detected'
+              exit 1
+            fi
+
+            adb shell svc wifi disable
+            adb shell svc data disable || true
+            adb shell am force-stop "$PACKAGE"
+            adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1
+            sleep 8
+            PID2=$(adb shell pidof "$PACKAGE" | tr -d '\r')
+            test -n "$PID2"
+            adb exec-out screencap -p > android-next-offline.png
+
+      - name: Produce Android release audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo 'New Hope 7 — Next Android Store Candidate'
+            echo "Commit: $GITHUB_SHA"
+            echo "Package ID: $APP_ID"
+            echo "Version: $VERSION_NAME"
+            echo "Version code: $VERSION_CODE"
+            echo 'Baseline production code used for upgrade smoke: 24001'
+            echo 'compileSdk/targetSdk: 36'
+            echo 'minSdk: 24'
+            echo 'Capacitor: 8.5.0'
+            echo 'OneSignal native plugin: 5.5.3'
+            echo 'R8/resource shrinking: enabled'
+            echo 'Native push binding: v364'
+            echo 'Supabase optimization guard: required before build'
+            echo 'Update-in-place sandbox sentinel: verified by emulator job when this step is reached'
+            echo 'Signing: unsigned CI artifact; reuse existing Play upload signing identity for Store upload'
+            echo
+            sha256sum "New_Hope_7_${VERSION_NAME}_API36_UNSIGNED.aab" New_Hope_7_QA_CANDIDATE.apk
+          } > ANDROID_NEXT_RELEASE_AUDIT.txt
+
+      - name: Upload Android candidate artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: New_Hope_7_Android_Next_Candidate
+          path: |
+            New_Hope_7_*_API36_UNSIGNED.aab
+            New_Hope_7_QA_CANDIDATE.apk
+            ANDROID_NEXT_RELEASE_AUDIT.txt
+            android-next-smoke.png
+            android-next-offline.png
+            android-next-logcat.txt
+          if-no-files-found: error
+          retention-days: 14
