@@ -90,24 +90,23 @@ jobs:
           const releaseCore=fs.readFileSync('sw-release-core-v403.js','utf8');
           const audio=fs.readFileSync('js/nh7-audio-classic-v484.js','utf8');
           const mini=fs.readFileSync('js/nh7-audio-miniplayer-v487.js','utf8');
-          const reading=fs.readFileSync('js/nh7-book-reading-telemetry-v490.js','utf8');
-          const school=JSON.parse(fs.readFileSync('data/school/school_content.json','utf8'));
+                    const school=JSON.parse(fs.readFileSync('data/school/school_content.json','utf8'));
 
           if(!/^\d+\.\d+\.\d+\.\d+$/.test(version.app||''))fail('Invalid app version');
           if(!/^\d+\.\d+\.\d+\.\d+$/.test(version.admin||''))fail('Invalid admin version');
           if(!index.includes(`window.NH7_VERSION = '${version.app}'`))fail('index version mismatch');
           if(!index.includes('js/nh7-school-exam-v344.js?v=2.3.9.50'))fail('School exam runtime missing');
-          if(!index.includes('js/nh7-school-path-v351.js?v=4.6.6'))fail('School path v351 missing');
-          if(!index.includes('js/nh7-audio-classic-v484.js?v=4.8.4'))fail('Audio engine v484 missing');
+          if(!index.includes('js/nh7-school-path-v351.js?v=4.6.7-io'))fail('School path v351 optimized runtime missing');
+          if(!index.includes('js/nh7-audio-classic-v484.js?v=4.8.5-no-telemetry'))fail('Audio engine no-telemetry runtime missing');
           if(!index.includes('js/nh7-audio-miniplayer-v487.js?v=4.8.7'))fail('Audio mini-player v487 missing');
-          if(!index.includes('js/nh7-book-reading-telemetry-v490.js?v=4.9.0'))fail('Book telemetry v490 missing');
+          if(index.includes('js/nh7-book-reading-telemetry-v490.js'))fail('Book reading telemetry must stay disabled in the active app');
           if(!index.includes('js/nh7-settings-controller-v403.js?v=4.6.4'))fail('Settings runtime missing');
           if(!index.includes('js/nh7-delete-account-v253.js?v=2.5.4'))fail('Delete account runtime missing');
           if(!index.includes('js/nh7-registration-repeat-guard-v402.js?v=4.0.2'))fail('Registration repeat guard v402 missing');
           if(!releaseCore.includes('./js/nh7-registration-repeat-guard-v402.js'))fail('Registration repeat guard not cached');
 
           if(!worker.includes('sw-navigation-fresh-v403.js?v=4.0.3'))fail('Fresh navigation worker missing');
-          if(!worker.includes('sw-release-core-v403.js?v=5.2.9-player529'))fail('Release core v5.2.9 missing');
+          if(!worker.includes('sw-release-core-v403.js?v=5.3.5-sermon-cover-sync'))fail('Release core v5.3.5 missing');
           if(worker.indexOf('sw-navigation-fresh-v403.js')>worker.indexOf('sw-offline-v329.js'))fail('Fresh navigation worker must load before offline worker');
 
           for(const required of [
@@ -126,12 +125,6 @@ jobs:
             'playNextTrack'
           ]) if(!mini.includes(required))fail('Mini-player v487 missing '+required);
 
-          for(const required of [
-            'nh7_library_reading_record_v490',
-            'p_delta_seconds',
-            'p_total_sections'
-          ]) if(!reading.includes(required))fail('Reading telemetry missing '+required);
-
           if(school.meta?.protectedContent!==true)fail('School content must remain protected');
           if(!Array.isArray(school.lessons)||school.lessons.length!==0)fail('Protected lessons must not ship publicly');
 
@@ -149,10 +142,9 @@ jobs:
           const missingFromRelease=currentScripts.filter(p=>!paths.includes(p));
           if(missingFromRelease.length)fail('Current app scripts not guaranteed offline: '+missingFromRelease.join(', '));
 
-          if(!releaseCore.includes("NH7_RELEASE_CORE_VERSION='5.2.9-player-social-fit'"))fail('Release core version mismatch');
+          if(!releaseCore.includes("NH7_RELEASE_CORE_VERSION='5.3.5-sermon-cover-sync'"))fail('Release core version mismatch');
           if(!releaseCore.includes('./js/nh7-audio-classic-v484.js'))fail('Audio engine not cached');
           if(!releaseCore.includes('./js/nh7-audio-miniplayer-v487.js'))fail('Mini-player not cached');
-          if(!releaseCore.includes('./js/nh7-book-reading-telemetry-v490.js'))fail('Reading telemetry not cached');
           if(!index.includes('NH7_ONESIGNAL_WORKER')||!index.includes('push/OneSignalSDKWorker.js'))fail('OneSignal worker wiring missing');
 
           console.log('Current app validation OK',version,'offline assets',paths.length);
