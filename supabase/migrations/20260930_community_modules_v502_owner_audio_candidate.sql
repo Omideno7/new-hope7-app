@@ -237,7 +237,7 @@ language sql
 stable
 security definer
 set search_path=''
-as $
+as $$
   select
     t.id,
     t.title,
@@ -258,7 +258,7 @@ as $
     )
   order by t.published_at desc nulls last, t.created_at desc
   limit greatest(1,least(coalesce(p_limit,30),100));
-$;
+$$;
 
 -- =========================================================
 -- Owner-only admin RPCs. No Prayer Servant/delegated panel.
@@ -290,7 +290,7 @@ begin
   order by case p.status when 'new' then 0 when 'praying' then 1 else 2 end,p.created_at asc
   limit greatest(1,least(coalesce(p_limit,200),500));
 end;
-$;
+$$;
 
 create or replace function public.nh7_owner_prayer_set_status_v502(
   p_id uuid,
@@ -375,7 +375,7 @@ begin
   order by t.created_at desc
   limit greatest(1,least(coalesce(p_limit,100),500));
 end;
-$;
+$$;
 
 create or replace function public.nh7_owner_testimony_publish_v502(
   p_id uuid,
