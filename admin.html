@@ -182,12 +182,15 @@ async function fetchWithTimeout(url,opt={},timeoutMs=15000){
   finally{clearTimeout(timer)}
 }
 async function authFetch(path,opt={}){
-  const makeHeaders=()=>Object.assign({apikey:SUPABASE_KEY,Authorization:'Bearer '+(token||SUPABASE_KEY),'Content-Type':'application/json',Prefer:'return=representation'},opt.headers||{});
-  let r=await fetchWithTimeout(SUPABASE_URL+path,Object.assign({},opt,{headers:makeHeaders()}));
-  if(!r.ok){const txt=await r.text();if(jwtExpiredText(txt)&&await refreshAdminSession()){r=await fetchWithTimeout(SUPABASE_URL+path,Object.assign({},opt,{headers:makeHeaders()}));if(r.ok)return r.status===204?null:r.json()}if(jwtExpiredText(txt)){logout();alert(lang==='fa'?'نشست ادمین منقضی شد. دوباره وارد شوید.':'Admin session expired. Sign in again.')}throw new Error(txt)}
+  const timeoutMs=Math.max(1000,Number(opt.timeoutMs||15000));
+  const requestOpt=Object.assign({},opt);
+  delete requestOpt.timeoutMs;
+  const makeHeaders=()=>Object.assign({apikey:SUPABASE_KEY,Authorization:'Bearer '+(token||SUPABASE_KEY),'Content-Type':'application/json',Prefer:'return=representation'},requestOpt.headers||{});
+  let r=await fetchWithTimeout(SUPABASE_URL+path,Object.assign({},requestOpt,{headers:makeHeaders()}),timeoutMs);
+  if(!r.ok){const txt=await r.text();if(jwtExpiredText(txt)&&await refreshAdminSession()){r=await fetchWithTimeout(SUPABASE_URL+path,Object.assign({},requestOpt,{headers:makeHeaders()}),timeoutMs);if(r.ok)return r.status===204?null:r.json()}if(jwtExpiredText(txt)){logout();alert(lang==='fa'?'نشست ادمین منقضی شد. دوباره وارد شوید.':'Admin session expired. Sign in again.')}throw new Error(txt)}
   return r.status===204?null:r.json();
 }
-async function adminRpc(name,payload={}){return authFetch('/rest/v1/rpc/'+name,{method:'POST',body:JSON.stringify(payload)})}
+async function adminRpc(name,payload={},timeoutMs=15000){return authFetch('/rest/v1/rpc/'+name,{method:'POST',body:JSON.stringify(payload),timeoutMs})}
 async function loadRegistrationFeed(){
   try{return await adminRpc('nh7_admin_registration_feed_v3',{p_limit:2000,p_offset:0})}
   catch(e){console.warn('Registration feed RPC unavailable; REST fallback',e);return authFetch('/rest/v1/registrations?select=*&order=created_at.desc&limit=2000')}
