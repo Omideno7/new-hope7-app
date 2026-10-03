@@ -4,7 +4,7 @@
 (()=>{'use strict';
 if(window.__NH7_ADMIN_STUDENT_ACADEMIC_V540__)return;
 window.__NH7_ADMIN_STUDENT_ACADEMIC_V540__=true;
-const VERSION='5.4.5-student-academic-center';
+const VERSION='5.4.6-student-academic-center';
 
 let view='overview';
 let reportFilter='school_registered';
@@ -300,12 +300,68 @@ function downloadCsv(){
   a.href=url;a.download='New-Hope-7-'+String(reportFilter||'students')+'-'+new Date().toISOString().slice(0,10)+'.csv';
   document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000)
 }
-function printGroup(){
-  const list=filteredRows(),w=window.open('','_blank');
-  if(!w){alert(L('پنجره گزارش باز نشد.','Report window could not open.','Prozor izvještaja se nije otvorio.'));return}
-  const tr=list.map(r=>'<tr><td>'+E(r.display_name||r.email)+'<br><small>'+E(r.email)+'</small></td><td>'+E(r.completed_lessons)+'/'+E(r.total_lessons)+'</td><td>'+E(r.revision_assignments)+'</td><td>'+E(r.final_exam_attempts)+'</td><td>'+E(r.final_exam_best_score??'—')+'%</td><td>'+E(fmtDate(r.last_school_activity))+'</td><td>'+E(statusLabel(r.academic_status_code||r.status_code))+'</td></tr>').join('');
-  w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>New Hope 7</title><style>body{font-family:Arial,sans-serif;padding:24px;color:#102033}h1{margin:0 0 6px}p{color:#667085}table{width:100%;border-collapse:collapse;margin-top:18px;font-size:12px}th,td{border:1px solid #d7e3e3;padding:7px;text-align:start;vertical-align:top}th{background:#eef8f7}@media print{body{padding:0}}</style></head><body dir="'+(lang==='fa'?'rtl':'ltr')+'"><h1>New Hope 7 · '+E(optionLabel(reportFilter))+'</h1><p>'+E(L('تاریخ گزارش','Report date','Datum izvještaja'))+': '+E(fmtDateTime(new Date()))+' · '+E(list.length)+' '+E(L('نفر','people','osoba'))+'</p><table><thead><tr><th>'+E(L('دانشجو','Student','Student'))+'</th><th>'+E(L('درس‌ها','Lessons','Lekcije'))+'</th><th>'+E(L('اصلاح','Revision','Dorada'))+'</th><th>'+E(L('آزمون‌ها','Exams','Ispiti'))+'</th><th>'+E(L('نمره','Score','Rezultat'))+'</th><th>'+E(L('آخرین فعالیت','Last activity','Zadnja aktivnost'))+'</th><th>'+E(L('وضعیت','Status','Status'))+'</th></tr></thead><tbody>'+tr+'</tbody></table><script>setTimeout(()=>window.print(),250)<\/script></body></html>');w.document.close()
+function closeGroupReport(){
+  const modal=document.getElementById('nh7AcademicGroupReportV546');
+  if(modal)modal.remove();
+  document.body.classList.remove('nh7ac540-report-open','nh7ac540-printing');
 }
+function printGroupReport(){
+  const modal=document.getElementById('nh7AcademicGroupReportV546');
+  if(!modal)return;
+  document.body.classList.add('nh7ac540-printing');
+  const cleanup=()=>document.body.classList.remove('nh7ac540-printing');
+  window.addEventListener('afterprint',cleanup,{once:true});
+  setTimeout(()=>{try{window.print()}catch(e){cleanup();alert(e?.message||String(e))}},80);
+  setTimeout(cleanup,30000);
+}
+function printGroup(){
+  closeGroupReport();
+  const list=filteredRows();
+  const rows=list.map(r=>'<tr>'+
+    '<td><strong>'+E(r.display_name||r.email)+'</strong><br><small>'+E(r.email||'—')+'</small></td>'+
+    '<td>'+E(N(r.completed_lessons))+'/'+E(N(r.total_lessons))+'<br><small>'+E(L('مرحله معتبر','validated','potvrđeno'))+': '+E(N(r.validated_classes))+'/7</small></td>'+
+    '<td>'+E(N(r.revision_assignments))+'<br><small>'+E(L('در انتظار','pending','na čekanju'))+': '+E(N(r.pending_assignments))+'</small></td>'+
+    '<td>'+E(N(r.class_exams_passed))+'/7</td>'+
+    '<td>'+E(r.final_exam_passed?L('قبول','Passed','Položen'):N(r.final_exam_attempts)>0?L('قبول نشده','Not passed','Nije položen'):L('هنوز داده نشده','Not taken','Nije polagan'))+
+      (r.final_exam_best_score==null?'':'<br><small>'+E(N(r.final_exam_best_score))+'%</small>')+'</td>'+
+    '<td>'+E(fmtDate(r.last_school_activity))+'</td>'+
+    '<td>'+E(statusLabel(r.academic_status_code||r.status_code))+'</td>'+
+  '</tr>').join('');
+
+  const modal=document.createElement('div');
+  modal.id='nh7AcademicGroupReportV546';
+  modal.className='nh7ac540-report-modal';
+  modal.setAttribute('role','dialog');
+  modal.setAttribute('aria-modal','true');
+  modal.innerHTML=
+    '<section class="nh7ac540-report-dialog" dir="'+(lang==='fa'?'rtl':'ltr')+'">'+
+      '<div class="nh7ac540-report-toolbar">'+
+        '<div class="nh7ac540-report-heading"><strong>New Hope 7 · '+E(optionLabel(reportFilter))+'</strong><small>'+E(L('تاریخ گزارش','Report date','Datum izvještaja'))+': '+E(fmtDateTime(new Date()))+' · '+E(list.length)+' '+E(L('نفر','people','osoba'))+'</small></div>'+
+        '<div class="nh7ac540-report-actions">'+
+          '<button type="button" class="btn primary" onclick="nh7StudentAcademicPrintCurrentV546()">🖨 '+E(L('چاپ / ذخیره PDF','Print / Save PDF','Ispis / Spremi PDF'))+'</button>'+
+          '<button type="button" class="btn secondary" onclick="nh7StudentAcademicCsvV540()">⬇ CSV</button>'+
+          '<button type="button" class="nh7ac540-report-close" aria-label="'+E(L('بستن','Close','Zatvori'))+'" onclick="nh7StudentAcademicCloseReportV546()">✕</button>'+
+        '</div>'+
+      '</div>'+
+      '<div class="nh7ac540-report-help">'+E(L('برای PDF، «چاپ / ذخیره PDF» را بزن و از پنجره چاپ گزینهٔ ذخیره/Share PDF را انتخاب کن.','For PDF, tap “Print / Save PDF” and use the print sheet to save or share the PDF.','Za PDF dodirnite “Ispis / Spremi PDF” i spremite ili podijelite PDF iz izbornika ispisa.'))+'</div>'+
+      '<div class="nh7ac540-report-body">'+
+        '<table class="nh7ac540-print-table"><thead><tr>'+
+          '<th>'+E(L('دانشجو','Student','Student'))+'</th>'+
+          '<th>'+E(L('درس / مرحله','Lessons / stages','Lekcije / faze'))+'</th>'+
+          '<th>'+E(L('تکالیف','Assignments','Zadaci'))+'</th>'+
+          '<th>'+E(L('آزمون کلاس','Class exams','Razredni ispiti'))+'</th>'+
+          '<th>'+E(L('امتحان نهایی','Final exam','Završni ispit'))+'</th>'+
+          '<th>'+E(L('آخرین فعالیت','Last activity','Zadnja aktivnost'))+'</th>'+
+          '<th>'+E(L('وضعیت','Status','Status'))+'</th>'+
+        '</tr></thead><tbody>'+rows+'</tbody></table>'+
+        (!list.length?'<div class="empty">'+E(L('موردی در این گزارش وجود ندارد.','This report has no records.','Ovaj izvještaj nema zapisa.'))+'</div>':'')+
+      '</div>'+
+    '</section>';
+  modal.addEventListener('click',event=>{if(event.target===modal)closeGroupReport()});
+  document.body.appendChild(modal);
+  document.body.classList.add('nh7ac540-report-open');
+}
+
 function openProfile(encoded){
   const email=decodeURIComponent(encoded);view='profiles';
   try{selectedStudentEmail=email}catch(_){}
@@ -376,6 +432,28 @@ style.textContent=`
 .nh7ac540-note{padding:11px 13px;border-radius:14px;background:#eff8ff;color:#175cd3;line-height:1.7;margin:10px 0}.nh7ac540-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.nh7ac540-toolbar{display:grid;grid-template-columns:minmax(180px,1fr) minmax(200px,1.4fr) minmax(110px,.5fr);gap:8px;margin:12px 0}.nh7ac540-check{display:flex;align-items:center;gap:6px;padding:8px 10px}
 .nh7ac540-table-wrap{overflow:auto;-webkit-overflow-scrolling:touch;border:1px solid #d8ecea;border-radius:14px;margin-top:12px}.nh7ac540-table{width:100%;min-width:980px;border-collapse:collapse;font-size:.82rem}.nh7ac540-table th,.nh7ac540-table td{padding:9px;border-bottom:1px solid #e7efef;text-align:start;vertical-align:top}.nh7ac540-table th{background:#f3faf9;position:sticky;top:0;z-index:1}.nh7ac540-row-actions{display:flex;gap:5px;flex-wrap:wrap}.nh7ac540-row-actions .btn{padding:7px 8px;margin:0;min-width:0}
 .nh7ac540-member-form{display:grid;grid-template-columns:1.2fr 1.2fr 1fr auto;gap:8px;margin:12px 0}.nh7ac540-import{margin:10px 0}.nh7ac540-member-list{display:grid;gap:8px}.nh7ac540-member{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;border:1px solid #d8ecea;border-radius:14px;padding:11px;background:#fff}.nh7ac540-member strong,.nh7ac540-member small{display:block}.nh7ac540-member small{margin-top:3px;color:#667085}.nh7ac540-member-flags{display:flex;gap:5px;flex-wrap:wrap}
+.nh7ac540-report-modal{position:fixed;inset:0;z-index:2147482000;background:rgba(15,35,45,.55);display:flex;align-items:stretch;justify-content:center;padding:max(12px,env(safe-area-inset-top)) 12px max(12px,env(safe-area-inset-bottom));box-sizing:border-box}
+.nh7ac540-report-dialog{width:min(1180px,100%);height:100%;background:#fff;border-radius:22px;box-shadow:0 24px 70px rgba(0,0,0,.28);display:flex;flex-direction:column;overflow:hidden;color:#102033}
+.nh7ac540-report-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid #d8ecea;background:#f8fbfb;position:sticky;top:0;z-index:4}
+.nh7ac540-report-heading strong,.nh7ac540-report-heading small{display:block}.nh7ac540-report-heading strong{font-size:1.05rem}.nh7ac540-report-heading small{margin-top:4px;color:#667085}
+.nh7ac540-report-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.nh7ac540-report-actions .btn{margin:0}
+.nh7ac540-report-close{width:42px;height:42px;border:0;border-radius:50%;background:#fff2cc;color:#7a5200;font-size:1.35rem;font-weight:900;box-shadow:0 4px 14px rgba(0,0,0,.12);cursor:pointer}
+.nh7ac540-report-help{padding:9px 16px;background:#fff8e8;color:#7a5200;font-size:.82rem;line-height:1.6;border-bottom:1px solid #f3dfac}
+.nh7ac540-report-body{padding:16px;overflow:auto;-webkit-overflow-scrolling:touch;flex:1}
+.nh7ac540-print-table{width:100%;border-collapse:collapse;font-size:.78rem;min-width:880px}.nh7ac540-print-table th,.nh7ac540-print-table td{border:1px solid #d7e3e3;padding:8px;text-align:start;vertical-align:top}.nh7ac540-print-table th{background:#eef8f7;position:sticky;top:0}.nh7ac540-print-table small{color:#667085}
+body.nh7ac540-report-open{overflow:hidden}
+@media(max-width:720px){.nh7ac540-report-modal{padding:max(6px,env(safe-area-inset-top)) 6px max(6px,env(safe-area-inset-bottom))}.nh7ac540-report-dialog{border-radius:16px}.nh7ac540-report-toolbar{align-items:flex-start;flex-direction:column}.nh7ac540-report-actions{width:100%}.nh7ac540-report-actions .btn{flex:1}.nh7ac540-report-close{margin-inline-start:auto;position:absolute;top:10px;inset-inline-end:10px}.nh7ac540-report-heading{padding-inline-end:48px}.nh7ac540-report-body{padding:10px}}
+@media print{
+  body.nh7ac540-printing>*:not(#nh7AcademicGroupReportV546){display:none!important}
+  body.nh7ac540-printing{background:#fff!important;overflow:visible!important}
+  body.nh7ac540-printing #nh7AcademicGroupReportV546{position:static!important;display:block!important;background:#fff!important;padding:0!important;overflow:visible!important}
+  body.nh7ac540-printing .nh7ac540-report-dialog{width:100%!important;height:auto!important;max-width:none!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important}
+  body.nh7ac540-printing .nh7ac540-report-toolbar{position:static!important;padding:0 0 10px!important;background:#fff!important;border-bottom:1px solid #aaa!important}
+  body.nh7ac540-printing .nh7ac540-report-actions,body.nh7ac540-printing .nh7ac540-report-help{display:none!important}
+  body.nh7ac540-printing .nh7ac540-report-body{padding:0!important;overflow:visible!important}
+  body.nh7ac540-printing .nh7ac540-print-table{min-width:0!important;font-size:9pt!important}
+  body.nh7ac540-printing .nh7ac540-print-table th{position:static!important;background:#eee!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
 @media(max-width:820px){.nh7ac540-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.nh7ac540-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.nh7ac540-toolbar{grid-template-columns:1fr}.nh7ac540-member-form{grid-template-columns:1fr}.nh7ac540-member{grid-template-columns:1fr}.nh7ac540-member-flags{justify-content:flex-start}}
 `;
 document.head.appendChild(style);
@@ -396,6 +474,8 @@ function install(){
   window.nh7StudentAcademicToggleTestsV540=toggleTests;
   window.nh7StudentAcademicCsvV540=downloadCsv;
   window.nh7StudentAcademicPrintV540=printGroup;
+  window.nh7StudentAcademicCloseReportV546=closeGroupReport;
+  window.nh7StudentAcademicPrintCurrentV546=printGroupReport;
   window.nh7StudentAcademicProfileV540=openProfile;
   window.nh7StudentAcademicIndividualReportV540=individualReport;
   window.nh7AddChurchMemberV540=addMember;
@@ -403,6 +483,10 @@ function install(){
   window.nh7ImportChurchMembersV540=importMembers;
   window.nh7DownloadChurchMemberTemplateV540=downloadTemplate;
   window.NH7_ADMIN_STUDENT_ACADEMIC_VERSION=VERSION;
+  if(!window.__NH7_ACADEMIC_REPORT_ESCAPE_V546__){
+    window.__NH7_ACADEMIC_REPORT_ESCAPE_V546__=true;
+    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.getElementById('nh7AcademicGroupReportV546'))closeGroupReport()},true);
+  }
   if(activeTab==='students'){setTimeout(()=>{load(false);render()},0)}
   return true
 }
