@@ -1219,6 +1219,10 @@ const INBOX_CLOUD_REFRESH_KEY='nh7_inbox_cloud_refresh_at_v1';
 const INBOX_CLOUD_REFRESH_MS=10*60*1000;
 async function refreshInboxFromCloud(force=false){
   try{
+    if(window.NH7_INBOX_BADGE_SYNC?.sync){
+      const shared=await window.NH7_INBOX_BADGE_SYNC.sync(!!force);
+      if(shared?.ok){updateInboxBadge();localStorage.setItem(INBOX_CLOUD_REFRESH_KEY,String(Date.now()));return true}
+    }
     const last=Number(localStorage.getItem(INBOX_CLOUD_REFRESH_KEY)||0);
     if(!force&&last>0&&Date.now()-last<INBOX_CLOUD_REFRESH_MS){updateInboxBadge();return false}
     const email=currentUserEmail();

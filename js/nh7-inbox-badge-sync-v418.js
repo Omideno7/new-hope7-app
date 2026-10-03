@@ -4,7 +4,7 @@
 if(window.__NH7_INBOX_BADGE_SYNC_V418__)return;
 window.__NH7_INBOX_BADGE_SYNC_V418__=true;
 
-const VERSION='4.1.8-inbox-badge-sync';
+const VERSION='4.1.10-inbox-snapshot';
 const SUPABASE_URL='https://gpzcwffxnddhaeaogdyo.supabase.co';
 const SUPABASE_KEY='sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37';
 const SESSION_KEY='nh7_user_session_v170';
@@ -12,7 +12,8 @@ const LOGOUT_KEY='nh7_explicit_logout';
 const INBOX_KEY='nh7_inbox_messages';
 const DELETED_KEY='nh7_inbox_deleted_ids';
 const OWNER_KEY='nh7_inbox_cache_owner_v418';
-const POLL_MS=300000;
+const SYNC_TTL_MS=120000;
+const POLL_MS=900000;
 const MAX_LOCAL_MESSAGES=200;
 
 let activeSync=null;
@@ -71,6 +72,16 @@ async function rest(path,retry=true){
   if(response.status===204)return[];
   const out=await response.json().catch(()=>[]);
   return Array.isArray(out)?out:[];
+}
+async function snapshot(retry=true){
+  const response=await fetch(SUPABASE_URL+'/rest/v1/rpc/nh7_inbox_snapshot_v419',{
+    method:'POST',headers:headers(),cache:'no-store',
+    body:JSON.stringify({p_language:language(),p_message_limit:200,p_receipt_limit:500})
+  });
+  if(response.status===401&&retry){const before=authToken();const refreshed=await refreshSession();if(refreshed||authToken()!==before||authToken()===SUPABASE_KEY)return snapshot(false)}
+  if(!response.ok){const detail=await response.text().catch(()=>'');throw new Error(`Inbox snapshot ${response.status}: ${detail||response.statusText}`)}
+  const out=await response.json().catch(()=>({}));
+  return out&&typeof out==='object'?out:{};
 }
 function ensureOwnerScope(){
   const current=ownerKey(),previous=String(localStorage.getItem(OWNER_KEY)||'');
@@ -145,16 +156,25 @@ function saveMerged(rows,deleted){
 async function doSync(){
   ensureOwnerScope();
   if(!navigator.onLine){paintBadge();return{ok:false,offline:true,count:lastCount}}
-  const email=profileEmail(),device=encodeURIComponent(deviceId()),lang=encodeURIComponent(language());
-  const ownPath=email
-    ?`notification_inbox?select=id,title,body,category,language,delivered_at,read_at,admin_deleted_at&or=(device_id.eq.${device},user_email.eq.${encodeURIComponent(email)})&order=delivered_at.desc&limit=100`
-    :`notification_inbox?select=id,title,body,category,language,delivered_at,read_at,admin_deleted_at&device_id=eq.${device}&order=delivered_at.desc&limit=100`;
-  const globalPath=`notification_inbox?select=id,title,body,category,language,delivered_at,read_at,admin_deleted_at&device_id=is.null&user_email=is.null&language=eq.${lang}&order=delivered_at.desc&limit=100`;
-  const receiptsPath=`notification_inbox_receipts?select=message_id,read_at,deleted_at&user_key=eq.${encodeURIComponent(requestUserKey())}&limit=500`;
-  const [ownRows,globalRows,receipts]=await Promise.all([rest(ownPath),rest(globalPath).catch(()=>[]),rest(receiptsPath).catch(()=>[])]);
+  let cloudRows=[],receipts=[];
+  try{
+    const shot=await snapshot();
+    cloudRows=Array.isArray(shot?.messages)?shot.messages:[];
+    receipts=Array.isArray(shot?.receipts)?shot.receipts:[];
+  }catch(snapshotError){
+    console.warn('[NH7 inbox badge] snapshot fallback',snapshotError);
+    const email=profileEmail(),device=encodeURIComponent(deviceId()),lang=encodeURIComponent(language());
+    const ownPath=email
+      ?`notification_inbox?select=id,title,body,category,language,delivered_at,read_at,admin_deleted_at&or=(device_id.eq.${device},user_email.eq.${encodeURIComponent(email)})&order=delivered_at.desc&limit=100`
+      :`notification_inbox?select=id,title,body,category,language,delivered_at,read_at,admin_deleted_at&device_id=eq.${device}&order=delivered_at.desc&limit=100`;
+    const globalPath=`notification_inbox?select=id,title,body,category,language,delivered_at,read_at,admin_deleted_at&device_id=is.null&user_email=is.null&language=eq.${lang}&order=delivered_at.desc&limit=100`;
+    const receiptsPath=`notification_inbox_receipts?select=message_id,read_at,deleted_at&user_key=eq.${encodeURIComponent(requestUserKey())}&limit=500`;
+    const [ownRows,globalRows,fallbackReceipts]=await Promise.all([rest(ownPath),rest(globalPath).catch(()=>[]),rest(receiptsPath).catch(()=>[])]);
+    cloudRows=[...ownRows,...globalRows];receipts=fallbackReceipts;
+  }
   const receiptMap=new Map(receipts.map(row=>[String(row?.message_id||''),row]));
   const deleted=deletedIds(),byId=new Map(localMessages().filter(row=>!deleted.has(String(row?.id||''))).map(row=>[String(row.id),row]));
-  for(const row of [...ownRows,...globalRows]){
+  for(const row of cloudRows){
     const id=String(row?.id||'');if(!id)continue;
     const receipt=receiptMap.get(id);
     if(row?.admin_deleted_at||receipt?.deleted_at||deleted.has(id)){
@@ -170,7 +190,7 @@ async function doSync(){
 }
 function sync({force=false}={}){
   ensureOwnerScope();
-  if(!force&&Date.now()-lastSuccessfulSync<4000){paintBadge();return Promise.resolve({ok:true,cached:true,count:lastCount})}
+  if(!force&&Date.now()-lastSuccessfulSync<SYNC_TTL_MS){paintBadge();return Promise.resolve({ok:true,cached:true,count:lastCount})}
   if(activeSync)return activeSync;
   activeSync=doSync().catch(error=>{console.warn('[NH7 inbox badge] sync failed',error);return{ok:false,error:String(error?.message||error),count:paintBadge()}}).finally(()=>{activeSync=null});
   return activeSync;
@@ -187,8 +207,9 @@ function hookOneSignal(){
 function start(){
   addStyle();ensureOwnerScope();paintBadge();hookOneSignal();scheduleSync(250,true);
   window.setInterval(()=>{if(!document.hidden&&navigator.onLine)sync()},POLL_MS);
-  ['focus','pageshow','online'].forEach(name=>window.addEventListener(name,()=>scheduleSync(80,true)));
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden)scheduleSync(80,true)});
+  ['focus','pageshow'].forEach(name=>window.addEventListener(name,()=>scheduleSync(120,false)));
+  window.addEventListener('online',()=>scheduleSync(120,true));
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)scheduleSync(120,false)});
   window.addEventListener('storage',event=>{
     if([SESSION_KEY,LOGOUT_KEY,'nh7_manual_email','nh7_school_access','nh7_meeting_access','nh7_device_id','nh7_lang',INBOX_KEY,DELETED_KEY].includes(String(event.key||''))){ensureOwnerScope();paintBadge();scheduleSync(120,true)}
   });
@@ -196,10 +217,10 @@ function start(){
     const target=event.target?.closest?.('#inboxBtn,[data-go="inbox"],[data-inbox-open],[data-inbox-delete],#markAllRead,#deleteVisibleInbox,#cleanInboxLang');
     if(!target)return;
     setTimeout(()=>paintBadge(),120);
-    scheduleSync(700,true);
+    if(target.matches?.('#inboxBtn,[data-go="inbox"]'))scheduleSync(700,false);
   },true);
   new MutationObserver(()=>{clearTimeout(observerTimer);observerTimer=setTimeout(()=>paintBadge(lastCount<0?unreadCount():lastCount),35)}).observe(document.documentElement,{childList:true,subtree:true});
-  window.NH7_INBOX_BADGE_SYNC={version:VERSION,sync:()=>sync({force:true}),count:()=>unreadCount()};
+  window.NH7_INBOX_BADGE_SYNC={version:VERSION,sync:(force=true)=>sync({force:!!force}),count:()=>unreadCount()};
   window.NH7_INBOX_BADGE_SYNC_VERSION=VERSION;
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
