@@ -2,7 +2,7 @@
    No polling. Feature branch only. */
 (()=>{'use strict';
 if(window.__NH7_ADMIN_COMMUNITY_V502__)return;window.__NH7_ADMIN_COMMUNITY_V502__=true;
-const VERSION='5.0.2',PRIVATE_BUCKET='nh7-testimony-submissions-v502',PUBLIC_BUCKET='nh7-testimony-published-v502';
+const VERSION='5.0.3-release',PRIVATE_BUCKET='nh7-testimony-submissions-v502',PUBLIC_BUCKET='nh7-testimony-published-v502';
 const S={prayers:[],testimonies:[],loadingPrayer:false,loadingTestimony:false,errorPrayer:'',errorTestimony:'',prayerFilter:'active',testimonyFilter:'pending',audioUrls:new Map()};
 function A(){const c=window.NH7_ADMIN_COMMUNITY_CTX_V502;if(!c)throw new Error('Admin community context is not ready.');return c}
 function lang(){return A().lang()}
@@ -16,7 +16,7 @@ function pendingTestimonyCount(){return S.testimonies.filter(x=>x.status==='pend
 
 async function refreshPrayer(){
  if(S.loadingPrayer)return;S.loadingPrayer=true;S.errorPrayer='';A().render();
- try{const rows=await A().adminRpc('nh7_owner_prayer_feed_v502',{p_status:S.prayerFilter,p_limit:2000});S.prayers=Array.isArray(rows)?rows:[]}
+ try{const rows=await A().adminRpc('nh7_owner_prayer_feed_v502',{p_status:S.prayerFilter,p_limit:200});S.prayers=Array.isArray(rows)?rows:[]}
  catch(e){S.errorPrayer=backendText(e);console.warn(e)}
  finally{S.loadingPrayer=false;A().render()}
 }
@@ -34,8 +34,9 @@ function renderPrayer(){
  return '<section class="panel-card"><div class="req-head"><div><h3>🙏 '+h(L('درخواست‌های دعا','Prayer Requests','Molitveni zahtjevi'))+'</h3><p class="muted small">'+h(L('فقط Owner/Admin اصلی. هیچ دسترسی مستقیمی برای Prayer Servant ایجاد نشده است.','Owner/Admin only. No separate Prayer Servant access is created.','Samo Owner/Admin. Nema zasebnog pristupa za Prayer Servant.'))+'</p></div><span class="pill pending">'+pendingPrayerCount()+'</span></div><div class="toolbar"><select onchange="nh7AdminCommunityV502.setPrayerFilter(this.value)"><option value="active" '+(S.prayerFilter==='active'?'selected':'')+'>'+h(L('فعال','Active','Aktivno'))+'</option><option value="all" '+(S.prayerFilter==='all'?'selected':'')+'>'+h(L('همه','All','Sve'))+'</option><option value="new" '+(S.prayerFilter==='new'?'selected':'')+'>'+h(L('جدید','New','Novo'))+'</option><option value="praying" '+(S.prayerFilter==='praying'?'selected':'')+'>'+h(L('در حال دعا','Praying','U molitvi'))+'</option><option value="completed" '+(S.prayerFilter==='completed'?'selected':'')+'>'+h(L('تکمیل‌شده','Completed','Završeno'))+'</option></select><button class="btn secondary" onclick="nh7AdminCommunityV502.refreshPrayer()">⟳ '+h(L('تازه‌سازی','Refresh','Osvježi'))+'</button><button class="btn primary" onclick="nh7AdminCommunityV502.exportPrayerPdf()">📄 '+h(L('PDF / چاپ','PDF / Print','PDF / ispis'))+'</button></div>'+prayerRows()+'</section>'
 }
 function setPrayerFilter(v){S.prayerFilter=v;refreshPrayer()}
-function exportPrayerPdf(){
- const rows=S.prayers;if(!rows.length){alert(L('درخواستی برای خروجی وجود ندارد.','No requests to export.','Nema zahtjeva za izvoz.'));return}
+async function exportPrayerPdf(){
+ let rows=[];try{const data=await A().adminRpc('nh7_owner_prayer_export_v502',{p_status:S.prayerFilter,p_limit:2000},30000);rows=Array.isArray(data)?data:[]}catch(e){alert(backendText(e));return}
+ if(!rows.length){alert(L('درخواستی برای خروجی وجود ندارد.','No requests to export.','Nema zahtjeva za izvoz.'));return}
  const w=window.open('','_blank');if(!w){alert(L('مرورگر پنجرهٔ PDF را مسدود کرد.','The browser blocked the PDF window.','Preglednik je blokirao PDF prozor.'));return}
  const title=L('درخواست‌های دعا — کلیسای امیدنو۷','Prayer Requests — New Hope 7 Church','Molitveni zahtjevi — Crkva New Hope 7');
  const body=rows.map((r,i)=>'<article><h3>'+(i+1)+'. '+h(r.requester_name)+' <small>['+h(statusLabel(r.status))+']</small></h3><p>'+h(r.request_text).replace(/\n/g,'<br>')+'</p><div class="date">'+h(date(r.created_at))+'</div></article>').join('');
@@ -45,8 +46,8 @@ function exportPrayerPdf(){
 async function refreshTestimonies(){
  if(S.loadingTestimony)return;S.loadingTestimony=true;S.errorTestimony='';A().render();
  try{
-  const rows=await A().adminRpc('nh7_owner_testimony_feed_v502',{p_status:S.testimonyFilter,p_limit:1000});S.testimonies=Array.isArray(rows)?rows:[];
-  await Promise.all(S.testimonies.filter(x=>x.audio_submission_path).slice(0,30).map(async x=>{try{const url=await A().storageSignedUrl(PRIVATE_BUCKET,x.audio_submission_path,1800);S.audioUrls.set(x.id,url)}catch(_){}}));
+  const rows=await A().adminRpc('nh7_owner_testimony_feed_v502',{p_status:S.testimonyFilter,p_limit:100});S.testimonies=Array.isArray(rows)?rows:[];S.audioUrls.clear();
+  await Promise.all(S.testimonies.filter(x=>x.audio_submission_path).slice(0,20).map(async x=>{try{const url=await A().storageSignedUrl(PRIVATE_BUCKET,x.audio_submission_path,1800);S.audioUrls.set(x.id,url)}catch(_){}}));
  }catch(e){S.errorTestimony=backendText(e);console.warn(e)}
  finally{S.loadingTestimony=false;A().render()}
 }
@@ -68,12 +69,14 @@ async function approveTestimony(id){
   const dest='approved/'+t.id+'.'+extension(t.audio_submission_path,t.audio_mime_type);
   await A().storageCopy(PRIVATE_BUCKET,t.audio_submission_path,PUBLIC_BUCKET,dest);
   await A().adminRpc('nh7_owner_testimony_publish_v502',{p_id:t.id,p_published_audio_path:dest});
+  if(t.audio_submission_path)A().storageRemove?.(PRIVATE_BUCKET,t.audio_submission_path).catch(()=>{});
   await refreshTestimonies()
  }catch(e){alert(backendText(e))}
 }
 async function rejectTestimony(id){
  if(!confirm(L('این شهادت رد شود؟','Reject this testimony?','Odbiti ovo svjedočanstvo?')))return;
- try{await A().adminRpc('nh7_owner_testimony_reject_v502',{p_id:id});await refreshTestimonies()}catch(e){alert(backendText(e))}
+ const t=S.testimonies.find(x=>String(x.id)===String(id));
+ try{await A().adminRpc('nh7_owner_testimony_reject_v502',{p_id:id});if(t?.audio_submission_path)A().storageRemove?.(PRIVATE_BUCKET,t.audio_submission_path).catch(()=>{});await refreshTestimonies()}catch(e){alert(backendText(e))}
 }
 function onTab(t){if(t==='prayer502'&&!S.prayers.length&&!S.loadingPrayer)refreshPrayer();if(t==='testimonies502'&&!S.testimonies.length&&!S.loadingTestimony)refreshTestimonies()}
 
