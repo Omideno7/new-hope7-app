@@ -152,15 +152,16 @@ jobs:
           proj.write_text(text)
 
           entitlements=Path('ios-release/ios/App/App/App.entitlements')
-          entitlements.write_text('''<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>aps-environment</key>
-    <string>production</string>
-</dict>
-</plist>
-''')
+          entitlements.write_text("\n".join([
+              '<?xml version="1.0" encoding="UTF-8"?>',
+              '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">',
+              '<plist version="1.0">',
+              '<dict>',
+              '    <key>aps-environment</key>',
+              '    <string>production</string>',
+              '</dict>',
+              '</plist>',
+          ])+"\n")
 
           info=Path('ios-release/ios/App/App/Info.plist')
           with info.open('rb') as fh:
