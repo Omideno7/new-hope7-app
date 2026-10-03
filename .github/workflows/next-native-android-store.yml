@@ -278,7 +278,7 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
           emulator-boot-timeout: 600
           script: |
-            set -euo pipefail
+            set -eu
             PACKAGE=com.omideno7.newhope7.qa
 
             adb install New_Hope_7_QA_BASELINE_24001.apk
