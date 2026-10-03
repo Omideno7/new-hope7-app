@@ -1,5 +1,8 @@
 -- New Hope 7 v5.0.2 — Community modules candidate (owner-only prayer + audio testimonies).
 -- PREVIEW CANDIDATE ONLY. DO NOT APPLY TO PRODUCTION WITHOUT EXPLICIT APPROVAL.
+-- Release hardening: no Realtime subscription, trigger-driven polling, or background
+-- refresh is introduced by this migration. Client/Admin reads are bounded and
+-- event/on-demand driven; indexes below support the expected feed/ownership paths.
 
 create extension if not exists pgcrypto;
 
@@ -25,11 +28,11 @@ for select to authenticated using (user_id=(select auth.uid()));
 
 drop policy if exists nh7_profile_insert_own_v502 on public.nh7_user_profiles_v502;
 create policy nh7_profile_insert_own_v502 on public.nh7_user_profiles_v502
-for insert to authenticated with check (user_id=auth.uid());
+for insert to authenticated with check (user_id=(select auth.uid()));
 
 drop policy if exists nh7_profile_update_own_v502 on public.nh7_user_profiles_v502;
 create policy nh7_profile_update_own_v502 on public.nh7_user_profiles_v502
-for update to authenticated using (user_id=auth.uid()) with check (user_id=auth.uid());
+for update to authenticated using (user_id=(select auth.uid())) with check (user_id=(select auth.uid()));
 
 insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
 values('nh7-profile-photos-v502','nh7-profile-photos-v502',false,5242880,
@@ -39,24 +42,24 @@ on conflict(id) do update set public=false,file_size_limit=excluded.file_size_li
 drop policy if exists nh7_profile_photo_read_own_v502 on storage.objects;
 create policy nh7_profile_photo_read_own_v502 on storage.objects
 for select to authenticated using (
-  bucket_id='nh7-profile-photos-v502' and (storage.foldername(name))[1]=auth.uid()::text
+  bucket_id='nh7-profile-photos-v502' and (storage.foldername(name))[1]=(select auth.uid())::text
 );
 drop policy if exists nh7_profile_photo_insert_own_v502 on storage.objects;
 create policy nh7_profile_photo_insert_own_v502 on storage.objects
 for insert to authenticated with check (
-  bucket_id='nh7-profile-photos-v502' and (storage.foldername(name))[1]=auth.uid()::text
+  bucket_id='nh7-profile-photos-v502' and (storage.foldername(name))[1]=(select auth.uid())::text
 );
 drop policy if exists nh7_profile_photo_update_own_v502 on storage.objects;
 create policy nh7_profile_photo_update_own_v502 on storage.objects
 for update to authenticated using (
-  bucket_id='nh7-profile-photos-v502' and (storage.foldername(name))[1]=auth.uid()::text
+  bucket_id='nh7-profile-photos-v502' and (storage.foldername(name))[1]=(select auth.uid())::text
 ) with check (
-  bucket_id='nh7-profile-photos-v502' and (storage.foldername(name))[1]=auth.uid()::text
+  bucket_id='nh7-profile-photos-v502' and (storage.foldername(name))[1]=(select auth.uid())::text
 );
 drop policy if exists nh7_profile_photo_delete_own_v502 on storage.objects;
 create policy nh7_profile_photo_delete_own_v502 on storage.objects
 for delete to authenticated using (
-  bucket_id='nh7-profile-photos-v502' and (storage.foldername(name))[1]=auth.uid()::text
+  bucket_id='nh7-profile-photos-v502' and (storage.foldername(name))[1]=(select auth.uid())::text
 );
 
 -- =========================================================
@@ -86,6 +89,11 @@ create table if not exists public.nh7_testimonies_v502 (
 );
 create index if not exists nh7_testimonies_v502_status_created_idx
 on public.nh7_testimonies_v502(status,created_at desc);
+create index if not exists nh7_testimonies_v502_user_created_idx
+on public.nh7_testimonies_v502(user_id,created_at desc);
+create index if not exists nh7_testimonies_v502_public_language_idx
+on public.nh7_testimonies_v502(language,published_at desc)
+where status='approved' and consent_public=true and published_audio_path<>'';
 alter table public.nh7_testimonies_v502 enable row level security;
 
 drop policy if exists nh7_testimony_public_approved_v502 on public.nh7_testimonies_v502;
@@ -120,12 +128,12 @@ with check (
 );
 
 insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
-values('nh7-testimony-submissions-v502','nh7-testimony-submissions-v502',false,157286400,
+values('nh7-testimony-submissions-v502','nh7-testimony-submissions-v502',false,62914560,
 array['audio/mpeg','audio/mp4','audio/aac','audio/x-m4a','audio/wav','audio/webm','video/mp4'])
 on conflict(id) do update set public=false,file_size_limit=excluded.file_size_limit,allowed_mime_types=excluded.allowed_mime_types;
 
 insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
-values('nh7-testimony-published-v502','nh7-testimony-published-v502',true,157286400,
+values('nh7-testimony-published-v502','nh7-testimony-published-v502',true,62914560,
 array['audio/mpeg','audio/mp4','audio/aac','audio/x-m4a','audio/wav','audio/webm','video/mp4'])
 on conflict(id) do update set public=true,file_size_limit=excluded.file_size_limit,allowed_mime_types=excluded.allowed_mime_types;
 
@@ -134,15 +142,15 @@ drop policy if exists nh7_testimony_submission_insert_own_v502 on storage.object
 create policy nh7_testimony_submission_insert_own_v502 on storage.objects
 for insert to authenticated with check (
   bucket_id='nh7-testimony-submissions-v502'
-  and (storage.foldername(name))[1]=auth.uid()::text
+  and (storage.foldername(name))[1]=(select auth.uid())::text
 );
 drop policy if exists nh7_testimony_submission_read_own_or_owner_v502 on storage.objects;
 create policy nh7_testimony_submission_read_own_or_owner_v502 on storage.objects
 for select to authenticated using (
   bucket_id='nh7-testimony-submissions-v502'
   and (
-    (storage.foldername(name))[1]=auth.uid()::text
-    or private.nh7_admin_is_owner_v350()
+    (storage.foldername(name))[1]=(select auth.uid())::text
+    or (select private.nh7_admin_is_owner_v350())
   )
 );
 drop policy if exists nh7_testimony_submission_delete_own_or_owner_v502 on storage.objects;
@@ -150,8 +158,8 @@ create policy nh7_testimony_submission_delete_own_or_owner_v502 on storage.objec
 for delete to authenticated using (
   bucket_id='nh7-testimony-submissions-v502'
   and (
-    (storage.foldername(name))[1]=auth.uid()::text
-    or private.nh7_admin_is_owner_v350()
+    (storage.foldername(name))[1]=(select auth.uid())::text
+    or (select private.nh7_admin_is_owner_v350())
   )
 );
 
@@ -160,22 +168,22 @@ drop policy if exists nh7_testimony_published_owner_insert_v502 on storage.objec
 create policy nh7_testimony_published_owner_insert_v502 on storage.objects
 for insert to authenticated with check (
   bucket_id='nh7-testimony-published-v502'
-  and private.nh7_admin_is_owner_v350()
+  and (select private.nh7_admin_is_owner_v350())
 );
 drop policy if exists nh7_testimony_published_owner_update_v502 on storage.objects;
 create policy nh7_testimony_published_owner_update_v502 on storage.objects
 for update to authenticated using (
   bucket_id='nh7-testimony-published-v502'
-  and private.nh7_admin_is_owner_v350()
+  and (select private.nh7_admin_is_owner_v350())
 ) with check (
   bucket_id='nh7-testimony-published-v502'
-  and private.nh7_admin_is_owner_v350()
+  and (select private.nh7_admin_is_owner_v350())
 );
 drop policy if exists nh7_testimony_published_owner_delete_v502 on storage.objects;
 create policy nh7_testimony_published_owner_delete_v502 on storage.objects
 for delete to authenticated using (
   bucket_id='nh7-testimony-published-v502'
-  and private.nh7_admin_is_owner_v350()
+  and (select private.nh7_admin_is_owner_v350())
 );
 
 -- =========================================================
@@ -193,6 +201,8 @@ create table if not exists public.nh7_prayer_requests_v502 (
 );
 create index if not exists nh7_prayer_requests_v502_status_created_idx
 on public.nh7_prayer_requests_v502(status,created_at desc);
+create index if not exists nh7_prayer_requests_v502_user_created_idx
+on public.nh7_prayer_requests_v502(user_id,created_at desc);
 alter table public.nh7_prayer_requests_v502 enable row level security;
 
 drop policy if exists nh7_prayer_insert_own_v502 on public.nh7_prayer_requests_v502;
@@ -201,7 +211,7 @@ for insert to authenticated with check (user_id=(select auth.uid()) and status='
 
 drop policy if exists nh7_prayer_read_own_v502 on public.nh7_prayer_requests_v502;
 create policy nh7_prayer_read_own_v502 on public.nh7_prayer_requests_v502
-for select to authenticated using (user_id=auth.uid());
+for select to authenticated using (user_id=(select auth.uid()));
 
 -- =========================================================
 -- Safe public testimony feed.
@@ -210,7 +220,7 @@ for select to authenticated using (user_id=auth.uid());
 -- =========================================================
 create or replace function public.nh7_public_testimony_feed_v502(
   p_language text default null,
-  p_limit integer default 100
+  p_limit integer default 30
 )
 returns table(
   id uuid,
@@ -247,7 +257,7 @@ as $
       or t.language=lower(trim(p_language))
     )
   order by t.published_at desc nulls last, t.created_at desc
-  limit greatest(1,least(coalesce(p_limit,100),500));
+  limit greatest(1,least(coalesce(p_limit,30),100));
 $;
 
 -- =========================================================
@@ -255,7 +265,7 @@ $;
 -- =========================================================
 create or replace function public.nh7_owner_prayer_feed_v502(
   p_status text default 'active',
-  p_limit integer default 500
+  p_limit integer default 200
 )
 returns table(
   id uuid,
@@ -278,9 +288,9 @@ begin
     else p.status=lower(p_status)
   end
   order by case p.status when 'new' then 0 when 'praying' then 1 else 2 end,p.created_at asc
-  limit greatest(1,least(coalesce(p_limit,500),2000));
+  limit greatest(1,least(coalesce(p_limit,200),500));
 end;
-$$;
+$;
 
 create or replace function public.nh7_owner_prayer_set_status_v502(
   p_id uuid,
@@ -332,7 +342,7 @@ $$;
 
 create or replace function public.nh7_owner_testimony_feed_v502(
   p_status text default 'pending',
-  p_limit integer default 500
+  p_limit integer default 100
 )
 returns table(
   id uuid,
@@ -363,9 +373,9 @@ begin
   from public.nh7_testimonies_v502 t
   where lower(coalesce(p_status,'pending'))='all' or t.status=lower(p_status)
   order by t.created_at desc
-  limit greatest(1,least(coalesce(p_limit,500),2000));
+  limit greatest(1,least(coalesce(p_limit,100),500));
 end;
-$$;
+$;
 
 create or replace function public.nh7_owner_testimony_publish_v502(
   p_id uuid,
@@ -389,6 +399,7 @@ begin
   end if;
   update public.nh7_testimonies_v502
   set status='approved',
+      audio_submission_path='',
       published_audio_path=trim(p_published_audio_path),
       published_at=now(),
       updated_at=now()
@@ -407,7 +418,7 @@ declare v_changed boolean:=false;
 begin
   perform private.nh7_admin_require_owner_v350();
   update public.nh7_testimonies_v502
-  set status='rejected',published_audio_path='',published_at=null,updated_at=now()
+  set status='rejected',audio_submission_path='',published_audio_path='',published_at=null,updated_at=now()
   where id=p_id returning true into v_changed;
   return coalesce(v_changed,false);
 end;
