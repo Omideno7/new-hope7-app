@@ -95,14 +95,7 @@ for migration in sorted(migration_dir.glob('*.sql')):
     if not match or int(match.group(1)) < MIGRATION_FLOOR:
         continue
     sql = migration.read_text(encoding='utf-8')
-    sql = re.sub(r'--.*if errors:
-    print("New Hope 7 next-native optimization guard: FAILED")
-    for item in errors:
-        print(f" - {item}")
-    sys.exit(1)
-
-print("New Hope 7 next-native optimization guard: PASS")
-, '', sql, flags=re.MULTILINE).lower().replace('"', '')
+    sql = re.sub(r'--.*$', '', sql, flags=re.MULTILINE).lower().replace('"', '')
     if re.search(r'\bdrop\s+schema\s+(?:if\s+exists\s+)?public\b', sql):
         errors.append(f"{migration}: forbidden DROP SCHEMA public")
     for table in PROTECTED_DATA_TABLES:
