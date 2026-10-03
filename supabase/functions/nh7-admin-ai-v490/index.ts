@@ -1,5 +1,5 @@
 // New Hope 7 v4.9.0 — admin-only AI helper for translation and Q&A drafts.
-const VERSION='4.9.2';
+const VERSION='4.9.3';
 const SUPABASE_URL=Deno.env.get('SUPABASE_URL')!;
 const SERVICE_KEY=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const OPENAI_KEY=(Deno.env.get('OPENAI_API_KEY')||'').trim();
@@ -123,9 +123,10 @@ async function generateSermonCover(body:any){
     'This is background art only. Do NOT render any words, letters, numbers, typography, captions, logos, watermarks, frames, borders, mockups, or UI elements.',
     'The final image must be full-bleed edge-to-edge with no white margins, no blurred sidebars, no inset poster and no empty border.',
     'Use a cinematic, reverent, modern church aesthetic with rich natural light, elegant depth, realistic premium photography or refined cinematic realism.',
-    'Warm gold, deep navy, soft teal, ivory and natural church lighting may be used when appropriate, but vary the scene according to the sermon subject.',
+    'Use a restrained premium palette appropriate to the subject: warm gold, deep navy, soft teal, ivory, earthy neutrals and natural church lighting. Avoid oversaturated fantasy colors, generic poster effects, excessive glow, kitsch symbolism, or busy collage-like compositions.',
     'Make the visual concept meaningfully specific to the sermon topic rather than generic religious imagery.',
-    'Keep the upper-center and central area visually readable enough that exact branding and title text can later be overlaid by the app.',
+    'Reserve the upper 40 percent of the square as calm premium negative space for later branding and title typography. Keep this area visually simple, elegant, and low-detail, with no faces, hands, bright focal objects, crosses, books, or other important subjects directly behind the future text.',
+    'Place the main visual subject primarily in the lower 55 percent of the composition, with strong depth and cinematic balance. The image should already feel like a professionally art-directed album or sermon cover before text is added.',
     'Avoid recognizable copyrighted brands or third-party logos. People, if present, should not be identifiable public figures.',
     'Sermon title/theme: '+theme,
     titleFa?'Persian title reference: '+titleFa:'',

@@ -446,46 +446,103 @@ function sermonCoverCategoryName(){
 function loadCanvasImage(src){
   return new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>reject(new Error(aiCoverL('تصویر برای پیش‌نمایش باز نشد.','The preview image could not be loaded.','Slika pregleda nije se mogla učitati.')));img.src=src})
 }
-function fitCanvasTitle(ctx,text,maxWidth,maxLines){
+function wrapCanvasText(ctx,text,maxWidth){
   const words=String(text||'').trim().split(/\s+/).filter(Boolean);
-  for(let size=92;size>=46;size-=2){
-    ctx.font='700 '+size+'px Georgia, "Times New Roman", serif';
-    const lines=[];let line='';
-    for(const word of words){
-      const test=line?line+' '+word:word;
-      if(ctx.measureText(test).width<=maxWidth)line=test;
-      else{if(line)lines.push(line);line=word}
-    }
-    if(line)lines.push(line);
-    if(lines.length<=maxLines&&lines.every(x=>ctx.measureText(x).width<=maxWidth))return{size,lines}
-  }
-  ctx.font='700 46px Georgia, "Times New Roman", serif';
   const lines=[];let line='';
-  for(const word of words){const test=line?line+' '+word:word;if(ctx.measureText(test).width<=maxWidth)line=test;else{if(line)lines.push(line);line=word}}
+  for(const word of words){
+    const test=line?line+' '+word:word;
+    if(!line||ctx.measureText(test).width<=maxWidth)line=test;
+    else{lines.push(line);line=word}
+  }
   if(line)lines.push(line);
-  return{size:46,lines:lines.slice(0,maxLines)}
+  return lines
 }
-async function composeSermonCoverV537(backgroundDataUrl,title){
+function fitCanvasText(ctx,text,maxWidth,maxLines,maxSize,minSize,weight='700'){
+  for(let size=maxSize;size>=minSize;size-=2){
+    ctx.font=weight+' '+size+'px Georgia, "Times New Roman", serif';
+    const lines=wrapCanvasText(ctx,text,maxWidth);
+    if(lines.length<=maxLines)return{size,lines}
+  }
+  ctx.font=weight+' '+minSize+'px Georgia, "Times New Roman", serif';
+  return{size:minSize,lines:wrapCanvasText(ctx,text,maxWidth).slice(0,maxLines)}
+}
+function splitCoverTitleV538(title){
+  const raw=String(title||'').trim();
+  const paren=raw.match(/^(.+?)\s*(\([^()]+\))$/);
+  if(paren)return{main:paren[1].trim(),sub:paren[2].trim()};
+  const dash=raw.match(/^(.+?)\s+[—–-]\s+(.+)$/);
+  if(dash&&raw.length>42)return{main:dash[1].trim(),sub:dash[2].trim()};
+  return{main:raw,sub:''}
+}
+function coverTextPaletteV538(ctx){
+  try{
+    const sample=ctx.getImageData(180,40,664,430).data;
+    let total=0,count=0;
+    for(let i=0;i<sample.length;i+=64){
+      const r=sample[i],g=sample[i+1],b=sample[i+2];
+      total+=(.2126*r+.7152*g+.0722*b);count++;
+    }
+    const lum=count?total/count:110;
+    return lum>152?{text:'#102b4e',sub:'#173a66',brand:'#102b4e',shadow:'rgba(255,255,255,.38)',veil:'rgba(255,255,255,.20)'}:{text:'#fffaf0',sub:'#fff7e8',brand:'#ffffff',shadow:'rgba(0,0,0,.58)',veil:'rgba(4,15,30,.24)'}
+  }catch(_){
+    return{text:'#fffaf0',sub:'#fff7e8',brand:'#ffffff',shadow:'rgba(0,0,0,.58)',veil:'rgba(4,15,30,.24)'}
+  }
+}
+async function composeSermonCoverV538(backgroundDataUrl,title){
   const bg=await loadCanvasImage(backgroundDataUrl);
   const logo=await loadCanvasImage('assets/new-hope7-logo-512.png');
   const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=1024;
   const ctx=canvas.getContext('2d');
   const scale=Math.max(1024/bg.width,1024/bg.height),w=bg.width*scale,hg=bg.height*scale;
   ctx.drawImage(bg,(1024-w)/2,(1024-hg)/2,w,hg);
-  const shade=ctx.createLinearGradient(0,0,0,650);
-  shade.addColorStop(0,'rgba(5,20,38,.68)');shade.addColorStop(.52,'rgba(5,20,38,.30)');shade.addColorStop(1,'rgba(5,20,38,0)');
-  ctx.fillStyle=shade;ctx.fillRect(0,0,1024,700);
-  const logoSize=76,logoY=58;
+
+  const palette=coverTextPaletteV538(ctx);
+  const veil=ctx.createLinearGradient(0,0,0,610);
+  veil.addColorStop(0,palette.veil);
+  veil.addColorStop(.72,'rgba(5,18,32,.08)');
+  veil.addColorStop(1,'rgba(5,18,32,0)');
+  ctx.fillStyle=veil;ctx.fillRect(0,0,1024,620);
+
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.shadowColor=palette.shadow;ctx.shadowBlur=10;
+
+  const logoSize=58,logoY=44;
   ctx.drawImage(logo,(1024-logoSize)/2,logoY,logoSize,logoSize);
-  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#ffffff';
-  ctx.font='700 25px Georgia, "Times New Roman", serif';ctx.shadowColor='rgba(0,0,0,.45)';ctx.shadowBlur=12;
-  ctx.fillText('N E W   H O P E   7',512,166);
-  const fitted=fitCanvasTitle(ctx,title,830,4);
-  ctx.font='700 '+fitted.size+'px Georgia, "Times New Roman", serif';
-  const lineHeight=Math.round(fitted.size*1.08),blockHeight=fitted.lines.length*lineHeight,startY=295-blockHeight/2;
-  fitted.lines.forEach((line,index)=>ctx.fillText(line,512,startY+index*lineHeight));
+
+  ctx.fillStyle=palette.brand;
+  ctx.font='700 20px Georgia, "Times New Roman", serif';
+  ctx.fillText('N E W   H O P E   7',512,126);
+
+  const parts=splitCoverTitleV538(title);
+  const titleTop=184,maxWidth=800;
+
+  if(parts.sub){
+    const mainFit=fitCanvasText(ctx,parts.main,maxWidth,2,74,48,'700');
+    const mainLH=Math.round(mainFit.size*1.04);
+    const mainHeight=mainFit.lines.length*mainLH;
+    ctx.fillStyle=palette.text;
+    ctx.font='700 '+mainFit.size+'px Georgia, "Times New Roman", serif';
+    mainFit.lines.forEach((line,index)=>ctx.fillText(line,512,titleTop+index*mainLH));
+
+    const subMax=parts.sub.length>52?42:46;
+    const subFit=fitCanvasText(ctx,parts.sub,780,3,subMax,32,'600');
+    const subLH=Math.round(subFit.size*1.14);
+    const subTop=titleTop+mainHeight+28;
+    ctx.fillStyle=palette.sub;
+    ctx.font='600 '+subFit.size+'px Georgia, "Times New Roman", serif';
+    subFit.lines.forEach((line,index)=>ctx.fillText(line,512,subTop+index*subLH));
+  }else{
+    const maxSize=parts.main.length<=14?104:parts.main.length<=28?84:70;
+    const maxLines=parts.main.length<=28?2:3;
+    const fit=fitCanvasText(ctx,parts.main,maxWidth,maxLines,maxSize,42,'700');
+    const lineHeight=Math.round(fit.size*1.05);
+    ctx.fillStyle=palette.text;
+    ctx.font='700 '+fit.size+'px Georgia, "Times New Roman", serif';
+    fit.lines.forEach((line,index)=>ctx.fillText(line,512,titleTop+index*lineHeight));
+  }
+
   ctx.shadowBlur=0;
-  return canvas.toDataURL('image/webp',.92)
+  return canvas.toDataURL('image/webp',.93)
 }
 function showSermonCoverPreview(src){
   const img=document.getElementById('nh7SermonCoverPreview'),empty=document.getElementById('nh7SermonCoverPreviewEmpty');
@@ -520,7 +577,7 @@ async function generateAiSermonCover(regenerate=false){
     const b64=String(result?.image_base64||'').trim();if(!b64)throw new Error(aiCoverL('AI تصویری برنگرداند.','AI did not return an image.','AI nije vratio sliku.'));
     const mime=String(result?.mime_type||'image/webp'),raw='data:'+mime+';base64,'+b64;
     setSermonAiCoverStatus(aiCoverL('در حال اضافه‌کردن لوگو و عنوان دقیق…','Applying the exact logo and title…','Dodajem točan logotip i naslov…'),'busy');
-    const finalData=await composeSermonCoverV537(raw,titleEn);
+    const finalData=await composeSermonCoverV538(raw,titleEn);
     sermonAiCover={busy:false,raw_data_url:raw,final_data_url:finalData,title_en:titleEn,variation,approved:false,model:String(result?.model||''),error:''};
     showSermonCoverPreview(finalData);
     document.getElementById('nh7AiCoverApprove')?.removeAttribute('disabled');
