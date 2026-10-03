@@ -7,7 +7,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>New Hope 7 Admin — Stable 2.3.9.58</title>
+  <title>New Hope 7 Admin — Stable 2.3.9.59</title>
   <style>
     body{margin:0;min-height:100dvh;display:grid;place-items:center;background:linear-gradient(180deg,#e9f8f6,#f7fbff);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;color:#102033;padding:24px;box-sizing:border-box}
     main{width:min(620px,100%);background:#fff;border:1px solid #d8ecea;border-radius:24px;padding:24px;text-align:center;box-shadow:0 18px 55px rgba(15,118,110,.16)}
@@ -19,8 +19,8 @@
 <main><div class="spinner"></div><h1>New Hope 7 — نسخهٔ پایدار ۲.۳.۹.۵۶</h1><p>پنل مدیریت در حال بارگذاری است.</p><div id="error" class="error"></div></main>
 <script>
 (async()=>{
-  const RELEASE='2.3.9.58';
-  const BUILD='2.3.9.58-admin-v541';
+  const RELEASE='2.3.9.59';
+  const BUILD='2.3.9.59-admin-v542';
   async function latestVersion(){try{const r=await fetch('./version.json?t='+Date.now(),{cache:'no-store',headers:{'Cache-Control':'no-cache, no-store, must-revalidate','Pragma':'no-cache'}});return r.ok?await r.json():null}catch(_){return null}}
   async function checkForUpdate(){const remote=await latestVersion(),latest=String(remote?.admin||'');if(!latest||latest===RELEASE)return false;const guard='nh7_admin_redirect_'+latest;if(sessionStorage.getItem(guard)==='1')return false;sessionStorage.setItem(guard,'1');const target=new URL('./admin-v239-stable.html',location.href);target.searchParams.set('release','stable-'+latest);target.searchParams.set('update',Date.now().toString());location.replace(target.href);return true}
   try{

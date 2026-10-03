@@ -4,7 +4,7 @@
 (()=>{'use strict';
 if(window.__NH7_ADMIN_STUDENT_ACADEMIC_V540__)return;
 window.__NH7_ADMIN_STUDENT_ACADEMIC_V540__=true;
-const VERSION='5.4.1-student-academic-center';
+const VERSION='5.4.2-student-academic-center';
 
 let view='overview';
 let reportFilter='school_registered';
@@ -27,14 +27,15 @@ function fmtDate(v){if(!v)return'—';try{return new Date(v).toLocaleDateString(
 function fmtDateTime(v){if(!v)return'—';try{return new Date(v).toLocaleString(lang==='fa'?'fa-IR':lang==='hr'?'hr-HR':'en-GB')}catch(_){return String(v)}}
 function statusLabel(code){
   const map={
-    member_no_app:[ 'عضو کلیسا بدون حساب اپ','Church member without app account','Član crkve bez računa u aplikaciji'],
+    member_no_app:['عضو کلیسا بدون حساب/فعالیت شناخته‌شده','Church member without known app account/activity','Član crkve bez poznatog računa/aktivnosti'],
     app_no_school:['حساب اپ دارد، مدرسه ثبت‌نام نکرده','App account, school not registered','Ima račun, škola nije registrirana'],
     registered_never_started:['ثبت‌نام کرده، شروع نکرده','Registered, not started','Registriran, nije započeo'],
     needs_revision:['تکلیف نیاز به اصلاح','Assignment needs revision','Zadatak treba doradu'],
-    exam_failed:['آزمون رد شده','Exam not passed','Ispit nije položen'],
+    class_exam_failed:['آزمون کلاس هنوز قبول نشده','Class exam not yet passed','Razredni ispit još nije položen'],
+    final_exam_failed:['امتحان نهایی هنوز قبول نشده','Final exam not yet passed','Završni ispit još nije položen'],
     completed:['دوره کامل شده','Course completed','Tečaj završen'],
-    passed:['قبول شده','Passed','Položeno'],
-    inactive:['غیرفعال','Inactive','Neaktivan'],
+    graduated:['فارغ‌التحصیل','Graduated','Završio školu'],
+    inactive:['شروع کرده ولی غیرفعال شده','Started but inactive','Započeo, ali neaktivan'],
     in_progress:['در حال تحصیل','In progress','U tijeku'],
     known_user:['کاربر شناخته‌شده','Known user','Poznati korisnik']
   };
@@ -42,12 +43,13 @@ function statusLabel(code){
   return lang==='fa'?a[0]:lang==='hr'?a[2]:a[1]
 }
 function statusClass(row){
-  if(row.revision_assignments>0||row.exam_attempts>0&&row.passed_attempts===0||isStalled(row))return'rejected';
-  if(row.passed_attempts>0||isCompleted(row))return'approved';
+  const code=String(row.academic_status_code||row.status_code||'');
+  if(['needs_revision','class_exam_failed','final_exam_failed','inactive'].includes(code))return'rejected';
+  if(['completed','graduated'].includes(code))return'approved';
   if(row.school_registered)return'pending';
-  return'';
+  return''
 }
-function isCompleted(r){return N(r.total_lessons)>0&&N(r.completed_lessons)>=N(r.total_lessons)&&N(r.passed_attempts)>0}
+function isCompleted(r){return !!r.course_completed}
 function isStalled(r){return !!r.school_registered&&!!r.started_school&&!isCompleted(r)&&N(r.days_since_activity,-1)>=inactiveDays}
 function matchesFilter(r,key=reportFilter){
   switch(key){
@@ -60,12 +62,16 @@ function matchesFilter(r,key=reportFilter){
     case'in_progress':return !!r.school_registered&&!!r.started_school&&!isCompleted(r);
     case'needs_revision':return N(r.revision_assignments)>0;
     case'pending_review':return N(r.pending_assignments)>0;
-    case'exam_failed':return N(r.exam_attempts)>0&&N(r.passed_attempts)===0;
-    case'passed':return N(r.passed_attempts)>0;
-    case'completed':return isCompleted(r);
+    case'class_exam_failed':return N(r.unresolved_failed_class_exams)>0;
+    case'final_exam_failed':return N(r.final_exam_attempts)>0&&!r.final_exam_passed;
+    case'final_exam_passed':return !!r.final_exam_passed;
+    case'completed':return !!r.course_completed;
+    case'graduated':return !!r.graduated;
     case'inactive':return isStalled(r);
     case'member_no_app':return !!r.in_church_roster&&!r.app_account_exists&&!r.app_activity_seen;
     case'roster':return !!r.in_church_roster;
+    case'exam_failed':return N(r.unresolved_failed_class_exams)>0||N(r.final_exam_attempts)>0&&!r.final_exam_passed;
+    case'passed':return !!r.final_exam_passed;
     default:return true;
   }
 }
@@ -86,9 +92,11 @@ function counts(){
     in_progress:c('in_progress'),
     needs_revision:c('needs_revision'),
     pending_review:c('pending_review'),
-    exam_failed:c('exam_failed'),
-    passed:c('passed'),
+    class_exam_failed:c('class_exam_failed'),
+    final_exam_failed:c('final_exam_failed'),
+    final_exam_passed:c('final_exam_passed'),
     completed:c('completed'),
+    graduated:c('graduated'),
     inactive:c('inactive'),
     member_no_app:c('member_no_app'),
     roster:c('roster')
@@ -105,11 +113,13 @@ function optionLabel(key){
     in_progress:['در حال گذراندن مدرسه','School in progress','Škola u tijeku'],
     needs_revision:['تکلیف نیاز به اصلاح','Assignments need revision','Zadaci trebaju doradu'],
     pending_review:['تکلیف در انتظار بررسی','Assignments pending review','Zadaci čekaju pregled'],
-    exam_failed:['آزمون رد شده','Exam not passed','Ispit nije položen'],
-    passed:['قبول‌شده‌ها','Passed','Položili'],
+    class_exam_failed:['آزمون کلاس قبول نشده','Class exam not passed','Razredni ispit nije položen'],
+    final_exam_failed:['امتحان نهایی قبول نشده','Final exam not passed','Završni ispit nije položen'],
+    final_exam_passed:['امتحان نهایی قبول شده','Final exam passed','Završni ispit položen'],
     completed:['دوره کامل‌شده','Course completed','Tečaj završen'],
+    graduated:['فارغ‌التحصیل‌ها','Graduated','Završili školu'],
     inactive:['شروع کرده ولی ادامه نداده','Started but inactive','Započeo pa stao'],
-    member_no_app:['عضو کلیسا بدون حساب اپ','Church member without app account','Član bez računa u aplikaciji'],
+    member_no_app:['عضو کلیسا بدون حساب/فعالیت شناخته‌شده','Church member without known app account/activity','Član bez poznatog računa/aktivnosti'],
     roster:['همه اعضای ثبت‌شده کلیسا','Church member registry','Popis članova crkve']
   };
   const a=m[key]||[key,key,key];return lang==='fa'?a[0]:lang==='hr'?a[2]:a[1]
@@ -120,7 +130,7 @@ async function load(force=false){
   loading=true;error='';
   if(activeTab==='students')render();
   try{
-    const raw=await adminRpc('nh7_admin_student_academic_center_v541',{p_inactive_days:inactiveDays});
+    const raw=await adminRpc('nh7_admin_student_academic_center_v542',{p_inactive_days:inactiveDays});
     data=unwrap(raw)||{};
     loadedAt=Date.now();
   }catch(e){error=e?.message||String(e)}
@@ -151,39 +161,42 @@ function statCard(value,label,filter,alert=false){
 function overview(){
   if(!data)return loadingCard();
   const c=counts();
-  return'<section class="panel-card"><div class="req-head"><div><h3>🎓 '+E(L('مرکز مدیریت دانشگاهی','Academic Management Center','Centar akademskog upravljanja'))+'</h3><p class="muted small">'+E(L('گزارش‌ها فقط از داده‌های اصلی مدرسه ساخته می‌شوند؛ هیچ Analytics جدیدی برای این داشبورد ذخیره نمی‌شود.','Reports are built from core school records only; this dashboard creates no new analytics data.','Izvještaji koriste samo osnovne školske podatke; ova nadzorna ploča ne stvara novu analitiku.'))+'</p></div><button class="btn secondary" onclick="nh7StudentAcademicReloadV540()">⟳ '+E(L('به‌روزرسانی','Refresh','Osvježi'))+'</button></div>'+
+  return'<section class="panel-card"><div class="req-head"><div><h3>🎓 '+E(L('مرکز مدیریت دانشگاهی','Academic Management Center','Centar akademskog upravljanja'))+'</h3><p class="muted small">'+E(L('وضعیت‌ها اکنون بین آزمون کلاس، امتحان نهایی، تکمیل دوره و فارغ‌التحصیلی تفکیک شده‌اند. سابقهٔ معتبر دانشجویان قدیمی حفظ شده و از مرحله بعد قانون جدید اجرا می‌شود.','Statuses now distinguish class exams, the final exam, course completion, and graduation. Valid legacy progress is preserved and the new rules apply from the next stage.','Statusi sada razlikuju razredne ispite, završni ispit, završetak tečaja i diplomiranje. Valjani stari napredak ostaje sačuvan, a nova pravila vrijede od sljedeće faze.'))+'</p></div><button class="btn secondary" onclick="nh7StudentAcademicReloadV540()">⟳ '+E(L('به‌روزرسانی','Refresh','Osvježi'))+'</button></div>'+
   '<div class="nh7ac540-stats">'+
     statCard(c.school_registered,L('ثبت‌نام مدرسه','School registered','Registrirani u školi'),'school_registered')+
     statCard(c.app_used_no_school,L('اپ استفاده شده، بدون مدرسه','App used, no school','Aplikacija korištena, bez škole'),'app_used_no_school',c.app_used_no_school>0)+
-    statCard(c.app_account_no_activity,L('حساب دارد، فعالیت دیده نشده','Account, no activity seen','Račun, nema aktivnosti'),'app_account_no_activity',c.app_account_no_activity>0)+
     statCard(c.never_started,L('ثبت‌نام، بدون شروع','Registered, not started','Registrirani, nisu počeli'),'registered_never_started',c.never_started>0)+
     statCard(c.in_progress,L('در حال تحصیل','In progress','U tijeku'),'in_progress')+
     statCard(c.needs_revision,L('نیاز به اصلاح تکلیف','Needs revision','Treba doradu'),'needs_revision',c.needs_revision>0)+
-    statCard(c.exam_failed,L('قبول‌نشده در آزمون','Exam not passed','Ispit nije položen'),'exam_failed',c.exam_failed>0)+
-    statCard(c.passed,L('قبول‌شده','Passed','Položili'),'passed')+
+    statCard(c.class_exam_failed,L('آزمون کلاس قبول نشده','Class exam not passed','Razredni ispit nije položen'),'class_exam_failed',c.class_exam_failed>0)+
+    statCard(c.final_exam_failed,L('امتحان نهایی قبول نشده','Final exam not passed','Završni ispit nije položen'),'final_exam_failed',c.final_exam_failed>0)+
+    statCard(c.final_exam_passed,L('امتحان نهایی قبول شده','Final exam passed','Završni ispit položen'),'final_exam_passed')+
+    statCard(c.completed,L('دوره کامل شده','Course completed','Tečaj završen'),'completed')+
+    statCard(c.graduated,L('فارغ‌التحصیل','Graduated','Završili školu'),'graduated')+
     statCard(c.inactive,L('شروع کرده، متوقف شده','Started, inactive','Započeo, neaktivan'),'inactive',c.inactive>0)+
   '</div>'+
-  '<div class="nh7ac540-note"><strong>'+E(L('وضعیت اپ','App status','Status aplikacije'))+':</strong> '+E(L('برای حفظ هزینه و حریم خصوصی، Tracking جدید نصب/حذف اپ اضافه نشده است. «فعالیت اپ دیده شده» یعنی این حساب در دادهٔ موجود واقعاً داخل اپ فعالیت داشته. «بدون حساب/فعالیت شناخته‌شده» به معنی نبودِ مدرک در سیستم است، نه اثبات قطعی نصب‌نبودن اپ.','To keep cost and tracking low, no new install/uninstall tracking is added. “App activity seen” means the existing data confirms activity in the app. “No known account/activity” means there is no evidence in our system, not proof that the app was never installed.','Radi nižih troškova ne dodajemo novo praćenje instalacije/deinstalacije. “Aktivnost u aplikaciji” znači da postojeći podaci potvrđuju korištenje aplikacije. “Nema poznatog računa/aktivnosti” znači da nema dokaza u sustavu, ne nužno da aplikacija nikad nije instalirana.'))+'</div>'+
-  '<div class="nh7ac540-actions"><button class="btn primary" onclick="nh7StudentAcademicOpenReportV540(\'needs_revision\')">📝 '+E(L('پیگیری تکالیف نیازمند اصلاح','Follow up revisions','Prati zadatke za doradu'))+'</button><button class="btn secondary" onclick="nh7StudentAcademicOpenReportV540(\'app_no_school\')">📱 '+E(L('حساب‌های بدون ثبت‌نام مدرسه','Accounts without school registration','Računi bez školske registracije'))+'</button><button class="btn secondary" onclick="nh7StudentAcademicSetViewV540(\'members\')">⛪ '+E(L('مدیریت فهرست اعضا','Manage member registry','Upravljaj članovima'))+'</button></div></section>'
+  '<div class="nh7ac540-note"><strong>'+E(L('قانون پیشرفت','Progression rule','Pravilo napredovanja'))+':</strong> '+E(L('از اولین کلاس پس از سابقهٔ Legacy: تکمیل درس‌های همان کلاس → تأیید همه تکالیف لازم → قبولی آزمون همان کلاس → بازشدن کلاس بعد. امتحان نهایی فقط پس از معتبرشدن هر ۷ مرحله باز می‌شود.','From the first class after the legacy anchor: complete the class lessons → all required assignments approved → pass that class exam → unlock the next class. The final exam opens only after all 7 stages are validated.','Od prvog razreda nakon legacy točke: završiti lekcije → odobriti sve potrebne zadatke → položiti ispit tog razreda → otključati sljedeći razred. Završni ispit otvara se tek nakon potvrđenih svih 7 faza.'))+'</div>'+
+  '<div class="nh7ac540-actions"><button class="btn primary" onclick="nh7StudentAcademicOpenReportV540(\'needs_revision\')">📝 '+E(L('پیگیری تکالیف نیازمند اصلاح','Follow up revisions','Prati zadatke za doradu'))+'</button><button class="btn secondary" onclick="nh7StudentAcademicOpenReportV540(\'app_used_no_school\')">📱 '+E(L('اپ استفاده شده ولی مدرسه ثبت‌نام نشده','App used but school not registered','Aplikacija korištena, škola nije registrirana'))+'</button><button class="btn secondary" onclick="nh7StudentAcademicSetViewV540(\'members\')">⛪ '+E(L('مدیریت فهرست اعضا','Manage member registry','Upravljaj članovima'))+'</button></div></section>'
 }
 function filterOptions(){
-  const keys=['school_registered','app_used_no_school','app_account_no_activity','app_no_school','registered_never_started','in_progress','needs_revision','pending_review','exam_failed','passed','completed','inactive','member_no_app','all'];
+  const keys=['school_registered','app_used_no_school','app_account_no_activity','app_no_school','registered_never_started','in_progress','needs_revision','pending_review','class_exam_failed','final_exam_failed','final_exam_passed','completed','graduated','inactive','member_no_app','all'];
   return keys.map(k=>'<option value="'+k+'" '+(reportFilter===k?'selected':'')+'>'+E(optionLabel(k))+'</option>').join('')
 }
 function reportTable(){
   const list=filteredRows();
   const body=list.map(r=>'<tr>'+
     '<td><strong>'+E(r.display_name||r.email)+'</strong><br><small>'+E(r.email||'—')+'</small></td>'+
-    '<td>'+E(r.app_activity_seen?L('فعالیت دیده شده','Activity seen','Aktivnost zabilježena'):L('فعالیت شناسایی نشده','No identified activity','Nema prepoznate aktivnosti'))+'<br><small>'+E(fmtDate(r.last_app_activity))+'</small></td>'+    '<td>'+E(r.school_registered?L('ثبت‌نام شده','Registered','Registriran'):L('ثبت‌نام نشده','Not registered','Nije registriran'))+'<br><small>'+E(fmtDate(r.registered_at))+'</small></td>'+
-    '<td>'+E(N(r.completed_lessons))+'/'+E(N(r.total_lessons))+'<br><small>'+E(N(r.progress_percent))+'%</small></td>'+
+    '<td>'+E(r.app_activity_seen?L('فعالیت دیده شده','Activity seen','Aktivnost zabilježena'):L('فعالیت شناسایی نشده','No identified activity','Nema prepoznate aktivnosti'))+'<br><small>'+E(fmtDate(r.last_app_activity))+'</small></td>'+
+    '<td>'+E(r.school_registered?L('ثبت‌نام شده','Registered','Registriran'):L('ثبت‌نام نشده','Not registered','Nije registriran'))+'<br><small>'+E(fmtDate(r.registered_at))+'</small></td>'+
+    '<td>'+E(N(r.completed_lessons))+'/'+E(N(r.total_lessons))+'<br><small>'+E(L('مرحله معتبر','validated stages','potvrđene faze'))+': '+E(N(r.validated_classes))+'/7'+(N(r.legacy_completed_through_class)>0?' · Legacy '+E(N(r.legacy_completed_through_class)):'')+'</small></td>'+
     '<td>'+E(N(r.revision_assignments))+' / '+E(N(r.pending_assignments))+'<br><small>'+E(L('اصلاح / بررسی','revision / review','dorada / pregled'))+'</small></td>'+
-    '<td>'+E(N(r.best_final_score,0))+'%<br><small>'+E(N(r.exam_attempts))+' '+E(L('تلاش','attempts','pokušaja'))+'</small></td>'+
+    '<td><strong>'+E(r.final_exam_passed?L('نهایی: قبول','Final: passed','Završni: položen'):N(r.final_exam_attempts)>0?L('نهایی: قبول نشده','Final: not passed','Završni: nije položen'):L('نهایی: هنوز باز/داده نشده','Final: not taken yet','Završni: još nije polagan'))+'</strong><br><small>'+E(L('آزمون کلاس قبول‌شده','class exams passed','položeni razredni ispiti'))+': '+E(N(r.class_exams_passed))+' · '+E(L('نمره نهایی','final score','završni rezultat'))+': '+E(r.final_exam_best_score==null?'—':N(r.final_exam_best_score)+'%')+'</small></td>'+
     '<td>'+E(fmtDate(r.last_school_activity))+(r.days_since_activity!=null?'<br><small>'+E(r.days_since_activity)+' '+E(L('روز قبل','days ago','dana'))+'</small>':'')+'</td>'+
-    '<td><span class="pill '+statusClass(r)+'">'+E(statusLabel(r.status_code))+'</span></td>'+
+    '<td><span class="pill '+statusClass(r)+'">'+E(statusLabel(r.academic_status_code||r.status_code))+'</span></td>'+
     '<td><div class="nh7ac540-row-actions">'+(r.school_registered?'<button class="btn ghost" onclick="nh7StudentAcademicProfileV540(\''+encodeURIComponent(r.email)+'\')">'+E(L('پرونده','Profile','Profil'))+'</button><button class="btn ghost" onclick="nh7StudentAcademicIndividualReportV540(\''+encodeURIComponent(r.email)+'\')">PDF</button>':'')+'</div></td>'+
   '</tr>').join('');
   return'<div class="nh7ac540-table-wrap"><table class="nh7ac540-table"><thead><tr>'+
-    '<th>'+E(L('دانشجو','Student','Student'))+'</th><th>'+E(L('اپ','App','Aplikacija'))+'</th><th>'+E(L('ثبت‌نام','Registration','Registracija'))+'</th><th>'+E(L('درس‌ها','Lessons','Lekcije'))+'</th><th>'+E(L('تکالیف','Assignments','Zadaci'))+'</th><th>'+E(L('آزمون','Exam','Ispit'))+'</th><th>'+E(L('آخرین فعالیت','Last activity','Zadnja aktivnost'))+'</th><th>'+E(L('وضعیت','Status','Status'))+'</th><th></th>'+
+    '<th>'+E(L('دانشجو','Student','Student'))+'</th><th>'+E(L('اپ','App','Aplikacija'))+'</th><th>'+E(L('ثبت‌نام','Registration','Registracija'))+'</th><th>'+E(L('درس / مرحله','Lessons / stages','Lekcije / faze'))+'</th><th>'+E(L('تکالیف','Assignments','Zadaci'))+'</th><th>'+E(L('آزمون‌ها','Exams','Ispiti'))+'</th><th>'+E(L('آخرین فعالیت','Last activity','Zadnja aktivnost'))+'</th><th>'+E(L('وضعیت کل','Overall status','Ukupni status'))+'</th><th></th>'+
   '</tr></thead><tbody>'+body+'</tbody></table></div>'+
   (!list.length?'<div class="empty">'+E(L('موردی با این فیلتر پیدا نشد.','No records match this filter.','Nema zapisa za ovaj filtar.'))+'</div>':'')
 }
@@ -219,15 +232,18 @@ function csvRows(){
   const header=[
     L('نام','Name','Ime'),L('ایمیل','Email','E-mail'),L('حساب اپ','App account','Račun'),L('فعالیت اپ دیده شده','App activity seen','Aktivnost u aplikaciji'),L('آخرین فعالیت اپ','Last app activity','Zadnja aktivnost u aplikaciji'),
     L('ثبت‌نام مدرسه','School registered','Registracija škole'),L('درس تکمیل','Completed lessons','Završene lekcije'),
-    L('درس باقی‌مانده','Remaining lessons','Preostale lekcije'),L('پیشرفت %','Progress %','Napredak %'),
+    L('مرحله معتبر از ۷','Validated stages of 7','Potvrđene faze od 7'),L('Legacy تا کلاس','Legacy through class','Legacy do razreda'),
     L('تکلیف نیاز اصلاح','Needs revision','Treba doradu'),L('تکلیف در انتظار','Pending review','Čeka pregled'),
-    L('تلاش آزمون','Exam attempts','Pokušaji ispita'),L('بهترین نمره','Best score','Najbolji rezultat'),
-    L('آخرین فعالیت','Last activity','Zadnja aktivnost'),L('وضعیت','Status','Status')
+    L('آزمون کلاس قبول‌شده','Class exams passed','Položeni razredni ispiti'),L('آزمون کلاس حل‌نشده','Unresolved failed class exams','Nepoloženi razredni ispiti'),
+    L('تلاش امتحان نهایی','Final exam attempts','Pokušaji završnog ispita'),L('امتحان نهایی قبول','Final exam passed','Završni ispit položen'),
+    L('نمره امتحان نهایی','Final exam score','Rezultat završnog ispita'),L('دوره کامل','Course completed','Tečaj završen'),
+    L('فارغ‌التحصیل','Graduated','Završio školu'),L('آخرین فعالیت','Last activity','Zadnja aktivnost'),L('وضعیت','Status','Status')
   ];
   const body=filteredRows().map(r=>[
     r.display_name,r.email,r.app_account_exists?'yes':'no',r.app_activity_seen?'yes':'no',r.last_app_activity||'',r.school_registered?'yes':'no',
-    r.completed_lessons,r.remaining_lessons,r.progress_percent,r.revision_assignments,r.pending_assignments,
-    r.exam_attempts,r.best_final_score??'',r.last_school_activity||'',statusLabel(r.status_code)
+    r.completed_lessons,r.validated_classes,r.legacy_completed_through_class,r.revision_assignments,r.pending_assignments,
+    r.class_exams_passed,r.unresolved_failed_class_exams,r.final_exam_attempts,r.final_exam_passed?'yes':'no',r.final_exam_best_score??'',
+    r.course_completed?'yes':'no',r.graduated?'yes':'no',r.last_school_activity||'',statusLabel(r.academic_status_code||r.status_code)
   ]);
   return[header,...body]
 }
@@ -241,7 +257,7 @@ function downloadCsv(){
 function printGroup(){
   const list=filteredRows(),w=window.open('','_blank');
   if(!w){alert(L('پنجره گزارش باز نشد.','Report window could not open.','Prozor izvještaja se nije otvorio.'));return}
-  const tr=list.map(r=>'<tr><td>'+E(r.display_name||r.email)+'<br><small>'+E(r.email)+'</small></td><td>'+E(r.completed_lessons)+'/'+E(r.total_lessons)+'</td><td>'+E(r.revision_assignments)+'</td><td>'+E(r.exam_attempts)+'</td><td>'+E(r.best_final_score??'—')+'%</td><td>'+E(fmtDate(r.last_school_activity))+'</td><td>'+E(statusLabel(r.status_code))+'</td></tr>').join('');
+  const tr=list.map(r=>'<tr><td>'+E(r.display_name||r.email)+'<br><small>'+E(r.email)+'</small></td><td>'+E(r.completed_lessons)+'/'+E(r.total_lessons)+'</td><td>'+E(r.revision_assignments)+'</td><td>'+E(r.final_exam_attempts)+'</td><td>'+E(r.final_exam_best_score??'—')+'%</td><td>'+E(fmtDate(r.last_school_activity))+'</td><td>'+E(statusLabel(r.academic_status_code||r.status_code))+'</td></tr>').join('');
   w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>New Hope 7</title><style>body{font-family:Arial,sans-serif;padding:24px;color:#102033}h1{margin:0 0 6px}p{color:#667085}table{width:100%;border-collapse:collapse;margin-top:18px;font-size:12px}th,td{border:1px solid #d7e3e3;padding:7px;text-align:start;vertical-align:top}th{background:#eef8f7}@media print{body{padding:0}}</style></head><body dir="'+(lang==='fa'?'rtl':'ltr')+'"><h1>New Hope 7 · '+E(optionLabel(reportFilter))+'</h1><p>'+E(L('تاریخ گزارش','Report date','Datum izvještaja'))+': '+E(fmtDateTime(new Date()))+' · '+E(list.length)+' '+E(L('نفر','people','osoba'))+'</p><table><thead><tr><th>'+E(L('دانشجو','Student','Student'))+'</th><th>'+E(L('درس‌ها','Lessons','Lekcije'))+'</th><th>'+E(L('اصلاح','Revision','Dorada'))+'</th><th>'+E(L('آزمون‌ها','Exams','Ispiti'))+'</th><th>'+E(L('نمره','Score','Rezultat'))+'</th><th>'+E(L('آخرین فعالیت','Last activity','Zadnja aktivnost'))+'</th><th>'+E(L('وضعیت','Status','Status'))+'</th></tr></thead><tbody>'+tr+'</tbody></table><script>setTimeout(()=>window.print(),250)<\/script></body></html>');w.document.close()
 }
 function openProfile(encoded){
