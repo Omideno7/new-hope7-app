@@ -49,19 +49,7 @@ function currentHeaders(input,init={}){
   if(access)headers.set('Authorization','Bearer '+access);else headers.delete('Authorization');
   return headers;
 }
-async function refreshSession(){
-  if(authRefresh)return authRefresh;
-  const current=session();if(!current?.refresh_token)return false;
-  authRefresh=(async()=>{
-    try{
-      const result=await baseFetch(`${SUPABASE}/auth/v1/token?grant_type=refresh_token`,{method:'POST',cache:'no-store',headers:{apikey:PUBLISHABLE,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:current.refresh_token})});
-      const text=await result.text();let data={};try{data=text?JSON.parse(text):{}}catch(_){data={}}
-      if(!result.ok){if(result.status===400||result.status===401)sessionStorage.removeItem('nh7_content_access_status_v230');return false}
-      return saveSession(data);
-    }catch(error){console.warn('NH7 audio session refresh',error);return false}
-  })().finally(()=>{authRefresh=null});
-  return authRefresh;
-}
+async function refreshSession(){return !!(await window.NH7_SESSION_V467?.refresh(true))}
 async function freshRequest(input,init={},ms=10000){
   let requestInit=Object.assign({},init,{headers:currentHeaders(input,init),cache:'no-store'});
   let result=await timeoutFetch(input,requestInit,ms);
