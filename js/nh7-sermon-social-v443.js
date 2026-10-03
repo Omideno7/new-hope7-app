@@ -2,7 +2,7 @@
 if(window.__NH7_SERMON_SOCIAL_V440__)return;
 window.__NH7_SERMON_SOCIAL_V440__=true;
 const SB='https://gpzcwffxnddhaeaogdyo.supabase.co',KEY='sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37',AUTH='nh7_user_session_v170';
-const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,cache=new Map();let timer=0;const socialObserver=('IntersectionObserver'in window)?new IntersectionObserver(entries=>{for(const entry of entries){if(!entry.isIntersecting)continue;socialObserver.unobserve(entry.target);entry.target.dataset.nh7SocialObserved='loaded';load(entry.target).catch(()=>{})}},{rootMargin:'80px 0px'}):null;
+const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,cache=new Map(),batchQueue=new Map();let timer=0,batchTimer=0,batchBusy=false;const socialObserver=('IntersectionObserver'in window)?new IntersectionObserver(entries=>{for(const entry of entries){if(!entry.isIntersecting)continue;socialObserver.unobserve(entry.target);entry.target.dataset.nh7SocialObserved='loaded';queueBatch(entry.target)}},{rootMargin:'80px 0px'}):null;
 const lg=()=>{const x=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return['fa','en','hr'].includes(x)?x:'en'};
 const L=(fa,en,hr)=>lg()==='fa'?fa:lg()==='hr'?hr:en;
 const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -21,8 +21,39 @@ function loginMsg(){return L('\u0628\u0631\u0627\u06cc Like \u06cc\u0627 \u0646\
 function shell(card){let r=card.querySelector('[data-nh7-social-v440]');if(r)return r;r=document.createElement('section');r.className='nh7s440';r.dataset.nh7SocialV440='1';r.innerHTML='<div class="nh7s440a"><button class="nh7s440b" data-like>\u2661 <span>0</span></button><button class="nh7s440b" data-bless>\u270d\ufe0f '+E(L('\u0627\u0634\u062a\u0631\u0627\u06a9 \u0628\u0631\u06a9\u062a','Share a Blessing','Podijeli blagoslov'))+'</button><button class="nh7s440b" data-share>\u2197 '+E(L('\u0627\u0634\u062a\u0631\u0627\u06a9','Share','Podijeli'))+'</button></div><div class="nh7s440c" data-compose><textarea maxlength="800" data-text placeholder="'+E(L('\u0627\u06cc\u0646 \u067e\u06cc\u0627\u0645 \u0686\u0647 \u0628\u0631\u06a9\u062a\u06cc \u0628\u0631\u0627\u06cc \u0634\u0645\u0627 \u062f\u0627\u0634\u062a\u061f','How did this message bless you?','Kako vas je ova poruka blagoslovila?'))+'"></textarea><button class="primary-btn" data-submit>'+E(L('\u0627\u0631\u0633\u0627\u0644 \u0628\u0631\u06a9\u062a','Post Blessing','Objavi blagoslov'))+'</button><small>'+E(signed()?'':loginMsg())+'</small></div><div class="nh7s440status" data-status></div><div class="nh7s440list" data-list></div>';card.appendChild(r);bind(card,r);return r}
 function date(v){try{return new Date(v).toLocaleDateString(lg()==='fa'?'fa-IR':lg()==='hr'?'hr-HR':'en-US')}catch(_){return''}}
 function draw(card,s){const r=shell(card),b=r.querySelector('[data-like]');b.classList.toggle('on',!!s?.liked);b.innerHTML=(s?.liked?'\u2665 ':'\u2661 ')+'<span>'+Number(s?.like_count||0)+'</span>';const a=Array.isArray(s?.blessings)?s.blessings:[];r.querySelector('[data-list]').innerHTML=a.map(x=>'<article class="nh7s440item"><div class="nh7s440head"><strong>'+E(x.display_name||'New Hope 7')+'</strong><small>'+E(date(x.created_at))+'</small>'+(x.can_delete?'<button class="nh7s440del" data-delete="'+E(x.id)+'">'+E(L('\u062d\u0630\u0641','Delete','Izbrisi'))+'</button>':'')+'</div><p>'+E(x.blessing_text||'')+'</p></article>').join('')}
-async function load(card,force=false){const sid=id(card);if(!sid)return;if(!force&&cache.has(sid)){draw(card,cache.get(sid));return}const r=shell(card),st=r.querySelector('[data-status]');try{const s=await rpc('nh7_sermon_social_state_v440',{p_sermon_id:sid,p_limit:20});cache.set(sid,s);draw(card,s);st.textContent=''}catch(e){st.textContent=e.message||String(e)}}
-async function like(card){const r=shell(card),st=r.querySelector('[data-status]');if(!signed()){st.textContent=loginMsg();return}try{const x=await rpc('nh7_sermon_toggle_like_v440',{p_sermon_id:id(card)},true),old=cache.get(id(card))||{};cache.set(id(card),Object.assign({},old,x));draw(card,cache.get(id(card)));st.textContent=''}catch(e){st.textContent=e.message||String(e)}}
+function drawCachedId(sid,state){document.querySelectorAll('[data-sermon-card="'+CSS.escape(String(sid))+'"]').forEach(card=>{if(valid(card))draw(card,state)})}
+async function load(card,force=false){const sid=id(card);if(!sid)return;if(!force&&cache.has(sid)){draw(card,cache.get(sid));return}const r=shell(card),st=r.querySelector('[data-status]');try{const state=await rpc('nh7_sermon_social_state_v440',{p_sermon_id:sid,p_limit:20});cache.set(sid,state);drawCachedId(sid,state);st.textContent=''}catch(e){st.textContent=e.message||String(e)}}
+function queueBatch(card){
+  const sid=id(card);if(!sid)return;
+  shell(card);
+  if(cache.has(sid)){draw(card,cache.get(sid));return}
+  let cards=batchQueue.get(sid);if(!cards){cards=new Set();batchQueue.set(sid,cards)}cards.add(card);
+  clearTimeout(batchTimer);batchTimer=setTimeout(flushBatch,90);
+}
+async function flushBatch(){
+  if(batchBusy||!batchQueue.size)return;
+  batchBusy=true;
+  const batch=[...batchQueue.entries()].slice(0,20);
+  batch.forEach(([sid])=>batchQueue.delete(sid));
+  const ids=batch.map(([sid])=>sid);
+  try{
+    const result=await rpc('nh7_sermon_social_batch_v444',{p_sermon_ids:ids,p_limit:20});
+    const items=Array.isArray(result?.items)?result.items:[];
+    const received=new Set();
+    for(const state of items){
+      const sid=String(state?.sermon_id||'');if(!sid)continue;
+      received.add(sid);cache.set(sid,state);drawCachedId(sid,state);
+    }
+    const missing=batch.filter(([sid])=>!received.has(sid));
+    if(missing.length)await Promise.allSettled(missing.map(([,cards])=>load([...cards][0],true)));
+  }catch(error){
+    await Promise.allSettled(batch.map(([,cards])=>load([...cards][0],true)));
+  }finally{
+    batchBusy=false;
+    if(batchQueue.size){clearTimeout(batchTimer);batchTimer=setTimeout(flushBatch,120)}
+  }
+}
+async function like(card){const r=shell(card),st=r.querySelector('[data-status]'),button=r.querySelector('[data-like]');if(!signed()){st.textContent=loginMsg();return}if(button?.dataset.busy==='1')return;if(button){button.dataset.busy='1';button.disabled=true}try{const sid=id(card),x=await rpc('nh7_sermon_toggle_like_v440',{p_sermon_id:sid},true),old=cache.get(sid)||{};const next=Object.assign({},old,x);cache.set(sid,next);drawCachedId(sid,next);st.textContent=''}catch(e){st.textContent=e.message||String(e)}finally{if(button){button.dataset.busy='0';button.disabled=false}}}
 async function bless(card){const r=shell(card),st=r.querySelector('[data-status]'),ta=r.querySelector('[data-text]');if(!signed()){st.textContent=loginMsg();return}const v=String(ta.value||'').trim();if(v.length<2){st.textContent=L('\u0645\u062a\u0646 \u0628\u0631\u06a9\u062a \u062e\u06cc\u0644\u06cc \u06a9\u0648\u062a\u0627\u0647 \u0627\u0633\u062a.','Blessing text is too short.','Tekst je prekratak.');return}try{await rpc('nh7_sermon_add_blessing_v440',{p_sermon_id:id(card),p_text:v},true);ta.value='';r.querySelector('[data-compose]').classList.remove('open');cache.delete(id(card));await load(card,true);st.textContent=L('\u0628\u0631\u06a9\u062a \u0634\u0645\u0627 \u062b\u0628\u062a \u0634\u062f \u2713','Your blessing was posted \u2713','Blagoslov je objavljen \u2713')}catch(e){st.textContent=e.message||String(e)}}
 async function del(card,bid){if(!confirm(L('\u0627\u06cc\u0646 \u0628\u0631\u06a9\u062a \u062d\u0630\u0641 \u0634\u0648\u062f\u061f','Delete this blessing?','Izbrisati ovaj blagoslov?')))return;try{await rpc('nh7_sermon_delete_blessing_v440',{p_id:bid},true);cache.delete(id(card));await load(card,true)}catch(e){shell(card).querySelector('[data-status]').textContent=e.message||String(e)}}
 async function share(card){
@@ -43,10 +74,10 @@ async function share(card){
   }catch(e){}
 }
 function bind(card,r){r.querySelector('[data-like]').onclick=()=>like(card);r.querySelector('[data-bless]').onclick=()=>r.querySelector('[data-compose]').classList.toggle('open');r.querySelector('[data-submit]').onclick=()=>bless(card);r.querySelector('[data-share]').onclick=()=>share(card);r.onclick=e=>{const b=e.target.closest('[data-delete]');if(b)del(card,b.dataset.delete)}}
-function queueLoad(card){if(!valid(card))return;shell(card);if(cache.has(id(card))){load(card);return}if(card.dataset.nh7SocialObserved==='loaded')return;if(!socialObserver){card.dataset.nh7SocialObserved='loaded';load(card).catch(()=>{});return}if(card.dataset.nh7SocialObserved==='1')return;card.dataset.nh7SocialObserved='1';socialObserver.observe(card)}
+function queueLoad(card){if(!valid(card))return;shell(card);if(cache.has(id(card))){draw(card,cache.get(id(card)));return}if(card.dataset.nh7SocialObserved==='loaded'){queueBatch(card);return}if(!socialObserver){card.dataset.nh7SocialObserved='loaded';queueBatch(card);return}if(card.dataset.nh7SocialObserved==='1')return;card.dataset.nh7SocialObserved='1';socialObserver.observe(card)}
 function patch(){addStyle();document.querySelectorAll('[data-sermon-card]').forEach(queueLoad)}
 function openShared(){const sid=new URL(location.href).searchParams.get('sermon');if(!UUID.test(String(sid||'')))return;let tries=0;const tick=()=>{const card=document.querySelector('[data-sermon-card="'+CSS.escape(sid)+'"]');if(card){card.scrollIntoView({behavior:'smooth',block:'center'});return}if(tries===0)document.querySelector('[data-route="more"]')?.click();if(tries===3)document.querySelector('[data-go="audio"]')?.click();if(tries++<24)setTimeout(tick,300)};setTimeout(tick,500)}
 window.NH7_SERMON_SOCIAL_PATCH=patch;
 window.NH7_SERMON_SOCIAL_REFRESH_CARD=card=>{if(valid(card)){cache.delete(id(card));shell(card);load(card,true)}};
-new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(patch,80)}).observe(document.documentElement,{childList:true,subtree:true});window.addEventListener('pageshow',patch);addStyle();patch();openShared();window.NH7_SERMON_SOCIAL_VERSION='4.4.6';
+new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(patch,80)}).observe(document.documentElement,{childList:true,subtree:true});window.addEventListener('pageshow',patch);addStyle();patch();openShared();window.NH7_SERMON_SOCIAL_VERSION='4.4.8-batched';
 })();
