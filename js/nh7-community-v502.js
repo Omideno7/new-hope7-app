@@ -11,7 +11,7 @@ const TESTIMONY_PUBLIC='nh7-testimony-published-v502';
 const TESTIMONY_MAX_BYTES=60*1024*1024;
 const PROFILE_MAX_BYTES=5*1024*1024;
 const PUBLIC_FEED_TTL_MS=10*60*1000;
-let guideCache=null,publicFeedCache=new Map(),recordState={rec:null,stream:null,chunks:[],blob:null,url:'',timer:0,started:0,topic:0};
+let guideCache=null,publicFeedCache=new Map(),recordState={rec:null,stream:null,chunks:[],blob:null,url:'',timer:0,started:0,topic:0,bytes:0,tooLarge:false};
 let crop={original:'',cropped:'',x:0,y:0,zoom:1,tx:0,ty:0,tz:1,drag:false,sx:0,sy:0,ox:0,oy:0,scrollY:0};
 
 function C(){const c=window.NH7_COMMUNITY_CTX_V502;if(!c)throw new Error('Community context is not ready.');return c}
@@ -102,7 +102,7 @@ function submissionHtml(g,u){
  '<button class="primary-btn wide-btn" id="nh7c502Submit">'+esc(u.submit)+'</button><div data-community-msg style="margin-top:10px"></div>';
 }
 function recordingStatus(text,on=false){const el=document.getElementById('nh7c502RecordStatus');if(el)el.innerHTML=(on?'● ':'')+esc(text)}
-function clearRecording(){try{clearInterval(recordState.timer)}catch(_){};if(recordState.url)URL.revokeObjectURL(recordState.url);recordState={rec:null,stream:null,chunks:[],blob:null,url:'',timer:0,started:0,topic:recordState.topic||0}}
+function clearRecording(){try{clearInterval(recordState.timer)}catch(_){};if(recordState.url)URL.revokeObjectURL(recordState.url);recordState={rec:null,stream:null,chunks:[],blob:null,url:'',timer:0,started:0,topic:recordState.topic||0,bytes:0,tooLarge:false}}
 function bindTestimonyForm(){
  const g=G(),u=U(),topics=g.sections.flatMap(s=>s.topics);
  function updateStep(){const t=topics[recordState.topic];document.getElementById('nh7c502StepTitle').textContent=u.guided+' · '+t.title;document.getElementById('nh7c502StepText').innerHTML='<ul>'+t.bullets.map(b=>'<li>'+esc(b)+'</li>').join('')+'</ul>';document.getElementById('nh7c502StepBar').style.width=((recordState.topic+1)/topics.length*100)+'%';document.getElementById('nh7c502Prev').disabled=recordState.topic===0;document.getElementById('nh7c502Next').disabled=recordState.topic===topics.length-1}
@@ -113,9 +113,9 @@ function bindTestimonyForm(){
   try{
    if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder)throw new Error('unsupported');
    const stream=await navigator.mediaDevices.getUserMedia({audio:true}),type=['audio/mp4','audio/webm;codecs=opus','audio/webm'].find(x=>MediaRecorder.isTypeSupported?.(x));
-   clearRecording();recordState.stream=stream;recordState.chunks=[];recordState.rec=new MediaRecorder(stream,type?{mimeType:type}:undefined);
-   recordState.rec.ondataavailable=e=>{if(e.data?.size)recordState.chunks.push(e.data)};
-   recordState.rec.onstop=()=>{clearInterval(recordState.timer);recordState.blob=new Blob(recordState.chunks,{type:recordState.rec.mimeType||'audio/webm'});recordState.url=URL.createObjectURL(recordState.blob);const a=document.getElementById('nh7c502Playback');a.src=recordState.url;a.hidden=false;stream.getTracks().forEach(t=>t.stop());document.getElementById('nh7c502RecordDelete').disabled=false;recordingStatus('✓')};
+   clearRecording();recordState.stream=stream;recordState.chunks=[];recordState.bytes=0;recordState.tooLarge=false;recordState.rec=new MediaRecorder(stream,type?{mimeType:type}:undefined);
+   recordState.rec.ondataavailable=e=>{if(!e.data?.size)return;recordState.bytes+=e.data.size;if(recordState.bytes>TESTIMONY_MAX_BYTES){recordState.tooLarge=true;if(recordState.rec?.state!=='inactive')recordState.rec.stop();return}recordState.chunks.push(e.data)};
+   recordState.rec.onstop=()=>{clearInterval(recordState.timer);stream.getTracks().forEach(t=>t.stop());if(recordState.tooLarge){recordState.chunks=[];recordState.blob=null;recordState.bytes=0;const a=document.getElementById('nh7c502Playback');a.pause();a.removeAttribute('src');a.hidden=true;document.getElementById('nh7c502RecordStart').disabled=false;document.getElementById('nh7c502RecordPause').disabled=true;document.getElementById('nh7c502RecordStop').disabled=true;document.getElementById('nh7c502RecordDelete').disabled=true;recordingStatus(L('حجم ضبط به ۶۰ مگابایت رسید؛ فایل ذخیره نشد.','Recording reached the 60 MB limit and was not kept.','Snimka je dosegla ograničenje od 60 MB i nije spremljena.'));return}recordState.blob=new Blob(recordState.chunks,{type:recordState.rec.mimeType||'audio/webm'});recordState.url=URL.createObjectURL(recordState.blob);const a=document.getElementById('nh7c502Playback');a.src=recordState.url;a.hidden=false;document.getElementById('nh7c502RecordDelete').disabled=false;recordingStatus('✓')};
    recordState.rec.start(500);recordState.started=Date.now();recordState.timer=setInterval(()=>{const s=Math.floor((Date.now()-recordState.started)/1000);recordingStatus(String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'),true)},500);
    document.getElementById('nh7c502RecordStart').disabled=true;document.getElementById('nh7c502RecordPause').disabled=false;document.getElementById('nh7c502RecordStop').disabled=false;
   }catch(e){recordingStatus(L('میکروفن در دسترس نیست؛ فایل صوتی انتخاب کنید.','Microphone unavailable; choose an audio file.','Mikrofon nije dostupan; odaberite audio datoteku.'))}
@@ -202,20 +202,22 @@ function makeCropData(){const im=document.getElementById('nh7c502CropImage'),s=d
 async function dataUrlBlob(data){const r=await fetch(data);return r.blob()}
 async function saveProfile(old){
  if(!requireLogin('profile'))return;const uid=C().session()?.user?.id,name=document.getElementById('nh7c502ProfileNameInput').value.trim()||C().profileName()||'';
- const b=document.getElementById('nh7c502SaveProfile');b.disabled=true;
+ const b=document.getElementById('nh7c502SaveProfile');b.disabled=true;let newUploads=[];
  try{
   let originalPath=old?.original_photo_path||'',photoPath=old?.photo_path||'';
   if(crop.original){
    const id=crypto.randomUUID?.()||String(Date.now()),originalBlob=await dataUrlBlob(crop.original),avatarData=crop.cropped||makeCropData(),avatarBlob=await dataUrlBlob(avatarData);
+   if(originalBlob.size>PROFILE_MAX_BYTES)throw new Error(L('حجم عکس پروفایل باید کمتر از ۵ مگابایت باشد.','Profile photo must be smaller than 5 MB.','Fotografija profila mora biti manja od 5 MB.'));
    originalPath=uid+'/original-'+id+'.jpg';photoPath=uid+'/avatar-'+id+'.jpg';
-   await C().storageUpload(PROFILE_BUCKET,originalPath,originalBlob,'image/jpeg',false);
-   await C().storageUpload(PROFILE_BUCKET,photoPath,avatarBlob,'image/jpeg',false);
+   await C().storageUpload(PROFILE_BUCKET,originalPath,originalBlob,'image/jpeg',false);newUploads.push(originalPath);
+   await C().storageUpload(PROFILE_BUCKET,photoPath,avatarBlob,'image/jpeg',false);newUploads.push(photoPath);
   }
   await C().cloudFetch('nh7_user_profiles_v502?on_conflict=user_id',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify({user_id:uid,display_name:name,original_photo_path:originalPath,photo_path:photoPath,photo_position_x:crop.x,photo_position_y:crop.y,photo_zoom:crop.zoom,updated_at:new Date().toISOString()})});
+  newUploads=[];
   const stale=[old?.original_photo_path,old?.photo_path].filter(p=>p&&p!==originalPath&&p!==photoPath);if(stale.length)C().storageRemove?.(PROFILE_BUCKET,stale).catch(()=>{});
   try{localStorage.setItem('nh7_user_profile',JSON.stringify({name,email:C().email()}))}catch(_){}
   document.getElementById('nh7c502ProfileName').textContent=name;toast(L('پروفایل ذخیره شد ✓','Profile saved ✓','Profil je spremljen ✓'),'notice success-notice')
- }catch(e){toast(backendNotice(e))}finally{b.disabled=false}
+ }catch(e){if(newUploads.length)C().storageRemove?.(PROFILE_BUCKET,newUploads).catch(()=>{});toast(backendNotice(e))}finally{b.disabled=false}
 }
 
 window.NH7CommunityV502={VERSION,renderTestimonies,renderPrayer,renderProfile,resumePending};
