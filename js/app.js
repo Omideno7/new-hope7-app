@@ -331,7 +331,8 @@ function isExplicitlyLoggedOut(){ return localStorage.getItem(EXPLICIT_LOGOUT_KE
 function isAccountLoggedIn(){ const x=authSession(); return !!(x&&x.access_token&&!isExplicitlyLoggedOut()); }
 async function authApi(path,options={}){
   const headers=Object.assign({'apikey':SUPABASE_CONFIG.key,'Content-Type':'application/json'},options.headers||{});
-  const r=await fetch(SUPABASE_CONFIG.url+'/auth/v1/'+path,Object.assign({},options,{headers}));
+  const transport=window.NH7_SESSION_V467?.request||fetch;
+  const r=await transport(SUPABASE_CONFIG.url+'/auth/v1/'+path,Object.assign({},options,{headers}));
   const text=await r.text(); let data={}; try{data=text?JSON.parse(text):{}}catch(e){data={message:text}}
   if(!r.ok){const error=new Error(data.msg||data.message||data.error_description||text||r.statusText);error.status=r.status;error.code=String(data.code||data.error_code||'');throw error}
   return data;
@@ -358,8 +359,8 @@ async function invokeEdgeFunction(name,payload={}){
 }
 
 async function refreshUserSession(){
-  const old=authSession(); if(!old?.refresh_token)return null;
-  try{const d=await authApi('token?grant_type=refresh_token',{method:'POST',body:JSON.stringify({refresh_token:old.refresh_token})});saveAuthSession(d);return d}catch(e){saveAuthSession(null);return null}
+  // A transient transport failure must never erase a valid saved sign-in.
+  return await window.NH7_SESSION_V467?.refresh(true)||null;
 }
 function authEmail(){ return String(authSession()?.user?.email||'').trim().toLowerCase(); }
 
@@ -417,7 +418,7 @@ function accountLoginError(error){
     :state.lang==='hr'
       ?'E-mail računa još nije potvrđen. Provjerite poruku za potvrdu i mapu Spam/Junk.'
       :'This account email is not confirmed yet. Check the confirmation email and Spam/Junk.';
-  if(!navigator.onLine||message==='failed to fetch')return state.lang==='fa'?'اینترنت در دسترس نیست. اتصال را بررسی کنید.':state.lang==='hr'?'Nema internetske veze. Provjerite vezu.':'No internet connection. Check your connection.';
+  if(!navigator.onLine||/failed to fetch|load failed|network_error|request_timeout/.test(message))return state.lang==='fa'?'اینترنت در دسترس نیست. اتصال را بررسی کنید.':state.lang==='hr'?'Nema internetske veze. Provjerite vezu.':'No internet connection. Check your connection.';
   return String(error?.message||tr('loginFailed'));
 }
 
@@ -444,15 +445,18 @@ async function cloudFetch(path, options={}){
     'Content-Type':'application/json','Prefer':'return=representation',
     'x-device-id': deviceId(),'x-user-email': currentUserEmail()
   }, options.headers||{});
-  let res=await fetch(SUPABASE_CONFIG.url + '/rest/v1/' + path, Object.assign({}, options, {headers:makeHeaders()}));
+  const transport=window.NH7_SESSION_V467?.request||fetch;
+  const readOnly=['GET','HEAD'].includes(String(options.method||'GET').toUpperCase())||/^rpc\/(nh7_registration_access_v2|nh7_registration_status)$/.test(path);
+  const send=()=>transport(SUPABASE_CONFIG.url + '/rest/v1/' + path,Object.assign({},options,{headers:makeHeaders()}),{retryRead:readOnly});
+  let res=await send();
   if(!res.ok){
     const txt=await res.text().catch(()=>'');
     if((res.status===401||txt.toLowerCase().includes('jwt expired')) && await refreshUserSession()){
-      res=await fetch(SUPABASE_CONFIG.url + '/rest/v1/' + path, Object.assign({}, options, {headers:makeHeaders()}));
+      res=await send();
       if(res.ok){if(res.status===204)return null;return res.json().catch(()=>null)}
-      throw new Error(await res.text().catch(()=>res.statusText));
+      throw Object.assign(new Error(await res.text().catch(()=>res.statusText)),{status:res.status});
     }
-    throw new Error(txt || res.statusText);
+    throw Object.assign(new Error(txt || res.statusText),{status:res.status});
   }
   if(res.status===204) return null;
   return res.json().catch(()=>null);
@@ -613,7 +617,7 @@ function readSchoolSnapshotCache(email){
     return v&&Array.isArray(v.progress)&&Array.isArray(v.assignments)?v:null;
   }catch(e){return null}
 }
-function invalidateSchoolSnapshot(email=currentUserEmail()){if(email)localStorage.removeItem(schoolSnapshotCacheKey(email))}
+function invalidateSchoolSnapshot(email=currentUserEmail()){/* Force-refresh callers already bypass cache; keep the last good snapshot as network fallback. */}
 async function getSchoolSnapshot(email=currentUserEmail(),force=false){
   email=String(email||'').trim().toLowerCase();
   const cached=readSchoolSnapshotCache(email);
@@ -630,8 +634,10 @@ async function getSchoolSnapshot(email=currentUserEmail(),force=false){
         cloudFetch('school_progress?select=*&user_email=eq.'+encodeURIComponent(email),{method:'GET'}),
         cloudFetch('school_assignments?select=*&user_email=eq.'+encodeURIComponent(email),{method:'GET'})
       ]);
-      snapshot={progress:Array.isArray(progress)?progress:[],assignments:Array.isArray(assignments)?assignments:[]};
+      if(!Array.isArray(progress)||!Array.isArray(assignments))throw new Error('invalid_school_snapshot');
+      snapshot={progress,assignments};
     }
+    if(!snapshot||!Array.isArray(snapshot.progress)||!Array.isArray(snapshot.assignments))throw new Error('invalid_school_snapshot');
     const clean={
       progress:Array.isArray(snapshot?.progress)?snapshot.progress:[],
       assignments:Array.isArray(snapshot?.assignments)?snapshot.assignments:[],
