@@ -285,3 +285,14 @@ The isolated RPC execution improved from approximately 3.15 seconds to approxima
 The new native build must update in place over the currently published app. Do not change application identifiers, signing identity, Supabase project reference, or persistent storage namespaces in a way that would make the OS treat the app as a new installation.
 
 Older installed builds must remain compatible with the Production backend. Legacy no-op telemetry RPCs remain available for that reason until the active installed base has migrated to the new build.
+
+
+## Library Admin query optimization
+
+Production migration `20261003172711_optimize_admin_library_dashboard_queries_v1` replaces correlated per-item Library access-log scans with one grouped aggregate reused by the v222/v224 Admin dashboard RPCs.
+
+- No Library item, access log, code, user note, saved verse, progress, assignment, registration or storage object is modified.
+- Existing RPC names/signatures and Admin authorization stay unchanged.
+- Exact rollback is stored under `supabase/rollbacks/`.
+- User-data aggregate counts were unchanged across the migration.
+- In the observed isolated v224 RPC run, execution improved from approximately 1.03 s to 0.89 s; the larger release benefit comes from the already-merged change that removes this RPC from the recurring 90-second Admin heartbeat.
