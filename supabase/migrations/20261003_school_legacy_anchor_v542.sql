@@ -266,7 +266,7 @@ set search_path=public
 as $$
 declare
   v_email text := lower(trim(coalesce(auth.jwt()->>'email','')));
-  v_course text := coalesce(nullif(trim(p_course_code,'')),'foundation_school');
+  v_course text := coalesce(nullif(trim(p_course_code),''),'foundation_school');
   v_anchor integer := 0;
   v_legacy_graduate boolean := false;
   v_passed_classes integer := 0;
