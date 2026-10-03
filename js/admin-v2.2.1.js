@@ -128,5 +128,4 @@ window.sendStudentEmailV221=async function(email,name){const subject=document.ge
 const previousRenderActivePanel=renderActivePanel;
 renderActivePanel=function(){if(activeTab==='audiobible')return renderAudioBibleAdminV221();return previousRenderActivePanel()};
 window.NH7_ADMIN_VERSION=V;
-setTimeout(()=>{if(token){loadAudioBibleV221().then(()=>render()).catch(console.warn)}},700);
 })();
