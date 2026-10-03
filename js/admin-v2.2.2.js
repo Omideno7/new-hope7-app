@@ -163,7 +163,9 @@ renderActivePanel=function(){if(activeTab==='analytics')return renderAnalyticsV2
 const previousRenderV222=render;
 render=function(){previousRenderV222();setTimeout(()=>{hydrateQrsV222(document);initSignatureV222()},0)};
 const previousLoadAllV222=loadAll;
-loadAll=async function(silent=false){const r=await previousLoadAllV222(silent);Promise.allSettled([loadAnalyticsV222(false),loadLibraryAdminV222(false)]).then(()=>render());return r};
+// v2.2.3/v2.2.4 supersede these legacy analytics/library panels. Keep their
+// explicit controls for compatibility, but never reload them from the global
+// 90-second Admin heartbeat or automatically at startup.
+loadAll=async function(silent=false){return previousLoadAllV222(silent)};
 window.NH7_ADMIN_VERSION=V;
-setTimeout(()=>{if(token){loadAnalyticsV222(true).catch(console.warn);loadLibraryAdminV222(false).catch(console.warn)}},900);
 })();

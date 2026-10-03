@@ -20,10 +20,11 @@ function chapterFromName(name){const nums=String(name||'').match(/\d{1,3}/g)||[]
 function extOf(name){return (String(name||'').toLowerCase().match(/\.([a-z0-9]+)$/)||[])[1]||'mp3'}
 function safeSegment(v){return String(v||'file').toLowerCase().replace(/[^a-z0-9_-]+/g,'-').replace(/^-+|-+$/g,'')||'file'}
 
+let supplementalLoadedV220=false;
 const baseLoadAll=loadAll;
 loadAll=async function(silent=false){
   await baseLoadAll(silent);
-  if(!token)return;
+  if(!token||supplementalLoadedV220)return;
   try{
     const results=await Promise.allSettled([
       authFetch('/rest/v1/audio_bible_books_v220?select=*&order=book_order.asc'),
@@ -33,9 +34,10 @@ loadAll=async function(silent=false){
     if(results[0].status==='fulfilled')state.audioBibleBooks=results[0].value||[];
     if(results[1].status==='fulfilled')state.audioBibleChapters=results[1].value||[];
     if(results[2].status==='fulfilled')state.documentTemplates=results[2].value||[];
+    supplementalLoadedV220=results.every(x=>x.status==='fulfilled');
     state.messages=(state.messages||[]).filter(x=>!x.admin_deleted_at);
     render(false);
-  }catch(e){console.warn('v2.2.0 supplemental load',e)}
+  }catch(e){supplementalLoadedV220=false;console.warn('v2.2.0 supplemental load',e)}
 };
 
 const baseTabsHtml=tabsHtml;

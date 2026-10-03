@@ -56,13 +56,9 @@ async function loadAudioAnalyticsV221(renderAfter=true){
   }catch(e){console.warn('Audio analytics',e);state.audioAnalyticsError=e.message||String(e)}finally{analyticsLoading=false;if(renderAfter)render()}
 }
 const previousLoadAll=loadAll;
-loadAll=async function(silent=false){
-  await previousLoadAll(silent);
-  if(!token)return;
-  const jobs=await Promise.allSettled([loadAudioBibleV221(),loadAudioAnalyticsV221(false)]);
-  jobs.filter(x=>x.status==='rejected').forEach(x=>console.warn('v2.2.1 supplemental load',x.reason));
-  render(false);
-};
+// Audio Bible is loaded once at Admin startup and refreshed by its own actions.
+// Do not attach it to the global 90-second Admin heartbeat.
+loadAll=async function(silent=false){return previousLoadAll(silent)};
 
 // ---------------------------- Audio Bible ----------------------------
 function selectedBook(){return state.audioBibleBooks.find(x=>x.book_code===abBookCode)||state.audioBibleBooks[0]||null}
@@ -132,5 +128,4 @@ window.sendStudentEmailV221=async function(email,name){const subject=document.ge
 const previousRenderActivePanel=renderActivePanel;
 renderActivePanel=function(){if(activeTab==='audiobible')return renderAudioBibleAdminV221();return previousRenderActivePanel()};
 window.NH7_ADMIN_VERSION=V;
-setTimeout(()=>{if(token){loadAudioBibleV221().then(()=>render()).catch(console.warn);loadAudioAnalyticsV221(false).then(()=>render()).catch(console.warn)}},700);
 })();
