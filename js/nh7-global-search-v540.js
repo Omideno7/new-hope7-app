@@ -1,5 +1,5 @@
-/* New Hope 7 — local-first global search v5.4.0.
-   No Supabase search calls: Bible and bundled audio use packaged assets; dynamic audio uses existing local cache. */
+/* New Hope 7 — local-first global search v5.4.1.
+   No per-keystroke Supabase search. Dynamic audio uses a deduplicated cached catalog warm-up only when needed. */
 export function createGlobalSearchV540(ctx){
   let serial=0,timer=0;
   const norm=value=>String(value||'').normalize('NFKC').toLowerCase()
@@ -54,7 +54,9 @@ export function createGlobalSearchV540(ctx){
     return rows;
   }
   async function audioResults(query,limit=8){
-    const q=norm(query),out=[],seen=new Set(),cached=ctx.audioCache();
+    const q=norm(query),out=[],seen=new Set();
+    let cached=ctx.audioCache();
+    if(!cached&&ctx.audioCatalog)cached=await ctx.audioCatalog().catch(()=>null);
     for(const item of (cached&&cached.sermons)||[]){
       const title=item['title_'+ctx.lang()]||item.title_fa||item.title_en||item.title_hr||'';
       const hay=norm([item.title_fa,item.title_en,item.title_hr,item.description_fa,item.description_en,item.description_hr].join(' '));
