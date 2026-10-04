@@ -2,7 +2,7 @@
    No polling. Feature branch only. */
 (()=>{'use strict';
 if(window.__NH7_ADMIN_COMMUNITY_V502__)return;window.__NH7_ADMIN_COMMUNITY_V502__=true;
-const VERSION='5.0.3-release',PRIVATE_BUCKET='nh7-testimony-submissions-v502',PUBLIC_BUCKET='nh7-testimony-published-v502';
+const VERSION='5.0.4-qa-hardening',PRIVATE_BUCKET='nh7-testimony-submissions-v502',PUBLIC_BUCKET='nh7-testimony-published-v502';
 const S={prayers:[],testimonies:[],loadingPrayer:false,loadingTestimony:false,errorPrayer:'',errorTestimony:'',prayerFilter:'active',testimonyFilter:'pending',audioUrls:new Map()};
 function A(){const c=window.NH7_ADMIN_COMMUNITY_CTX_V502;if(!c)throw new Error('Admin community context is not ready.');return c}
 function lang(){return A().lang()}
@@ -55,7 +55,12 @@ function testimonyRows(){
  if(S.loadingTestimony)return '<div class="empty">'+h(L('در حال بارگذاری…','Loading…','Učitavanje…'))+'</div>';
  if(S.errorTestimony)return '<div class="notice">'+h(S.errorTestimony)+'</div>';
  if(!S.testimonies.length)return '<div class="empty">'+h(L('شهادتی در این وضعیت وجود ندارد.','No testimony in this status.','Nema svjedočanstava u ovom statusu.'))+'</div>';
- return S.testimonies.map(t=>'<article class="request-card"><div class="req-head"><div><div class="req-name">🎙️ '+h(t.title)+'</div><div class="req-meta">'+h(t.display_name||'')+' · '+h(t.testimony_type||'')+' · '+h(date(t.created_at))+'</div></div>'+A().pill(t.status)+'</div>'+(t.note_text?'<p>'+h(t.note_text)+'</p>':'')+(S.audioUrls.get(t.id)?'<audio controls preload="none" style="width:100%;margin:10px 0" src="'+h(S.audioUrls.get(t.id))+'"></audio>':'<div class="notice small">'+h(L('لینک خصوصی فایل هنوز آماده نشده است.','Private audio link is not ready yet.','Privatna audio poveznica još nije spremna.'))+'</div>')+'<div class="actions"><button class="btn primary" onclick="nh7AdminCommunityV502.approveTestimony(\''+h(t.id)+'\')">✅ '+h(L('تأیید و انتشار','Approve & publish','Odobri i objavi'))+'</button><button class="btn danger-btn" onclick="nh7AdminCommunityV502.rejectTestimony(\''+h(t.id)+'\')">⛔ '+h(L('رد','Reject','Odbij'))+'</button></div></article>').join('')
+ return S.testimonies.map(t=>{
+  const pending=String(t.status||'')==='pending';
+  const audio=pending?(S.audioUrls.get(t.id)?'<audio controls preload="none" style="width:100%;margin:10px 0" src="'+h(S.audioUrls.get(t.id))+'"></audio>':'<div class="notice small">'+h(L('لینک خصوصی فایل هنوز آماده نشده است.','Private audio link is not ready yet.','Privatna audio poveznica još nije spremna.'))+'</div>'):'';
+  const actions=pending?'<div class="actions"><button class="btn primary" onclick="nh7AdminCommunityV502.approveTestimony(\''+h(t.id)+'\')">✅ '+h(L('تأیید و انتشار','Approve & publish','Odobri i objavi'))+'</button><button class="btn danger-btn" onclick="nh7AdminCommunityV502.rejectTestimony(\''+h(t.id)+'\')">⛔ '+h(L('رد','Reject','Odbij'))+'</button></div>':'<div class="notice small">'+h(L('بررسی این شهادت تکمیل شده و فقط خواندنی است.','Moderation is complete; this item is read-only.','Moderiranje je završeno; ova stavka je samo za čitanje.'))+'</div>';
+  return '<article class="request-card"><div class="req-head"><div><div class="req-name">🎙️ '+h(t.title)+'</div><div class="req-meta">'+h(t.display_name||'')+' · '+h(t.testimony_type||'')+' · '+h(date(t.created_at))+'</div></div>'+A().pill(t.status)+'</div>'+(t.note_text?'<p>'+h(t.note_text)+'</p>':'')+audio+actions+'</article>';
+ }).join('')
 }
 function renderTestimonies(){
  return '<section class="panel-card"><div class="req-head"><div><h3>✨ '+h(L('شهادت‌های صوتی','Audio Testimonies','Audio svjedočanstva'))+'</h3><p class="muted small">'+h(L('فایل قبل از تأیید خصوصی است. فقط پس از تأیید در اپ منتشر می‌شود.','Audio remains private before approval and is published only after approval.','Audio ostaje privatan prije odobrenja i objavljuje se tek nakon odobrenja.'))+'</p></div><span class="pill pending">'+pendingTestimonyCount()+'</span></div><div class="toolbar"><select onchange="nh7AdminCommunityV502.setTestimonyFilter(this.value)"><option value="pending" '+(S.testimonyFilter==='pending'?'selected':'')+'>'+h(L('در انتظار','Pending','Na čekanju'))+'</option><option value="approved" '+(S.testimonyFilter==='approved'?'selected':'')+'>'+h(L('تأییدشده','Approved','Odobreno'))+'</option><option value="rejected" '+(S.testimonyFilter==='rejected'?'selected':'')+'>'+h(L('ردشده','Rejected','Odbijeno'))+'</option><option value="all" '+(S.testimonyFilter==='all'?'selected':'')+'>'+h(L('همه','All','Sve'))+'</option></select><button class="btn secondary" onclick="nh7AdminCommunityV502.refreshTestimonies()">⟳ '+h(L('تازه‌سازی','Refresh','Osvježi'))+'</button></div>'+testimonyRows()+'</section>'
@@ -63,12 +68,13 @@ function renderTestimonies(){
 function setTestimonyFilter(v){S.testimonyFilter=v;refreshTestimonies()}
 function extension(path,mime){const m=String(path||'').match(/\.([a-z0-9]{2,5})$/i);if(m)return m[1].toLowerCase();return String(mime||'').includes('mp4')?'m4a':String(mime||'').includes('mpeg')?'mp3':'webm'}
 async function approveTestimony(id){
- const t=S.testimonies.find(x=>String(x.id)===String(id));if(!t)return;
+ const t=S.testimonies.find(x=>String(x.id)===String(id));if(!t||t.status!=='pending'||!t.audio_submission_path)return;
  if(!confirm(L('این شهادت صوتی تأیید و در اپ منتشر شود؟','Approve and publish this audio testimony?','Odobriti i objaviti ovo audio svjedočanstvo?')))return;
  const dest='approved/'+t.id+'.'+extension(t.audio_submission_path,t.audio_mime_type);let copied=false;
  try{
   await A().storageCopy(PRIVATE_BUCKET,t.audio_submission_path,PUBLIC_BUCKET,dest);copied=true;
-  await A().adminRpc('nh7_owner_testimony_publish_v502',{p_id:t.id,p_published_audio_path:dest});
+  const published=await A().adminRpc('nh7_owner_testimony_publish_v502',{p_id:t.id,p_published_audio_path:dest});
+  if(published!==true)throw new Error(L('این شهادت دیگر در وضعیت انتظار نیست.','This testimony is no longer pending.','Ovo svjedočanstvo više nije na čekanju.'));
   copied=false;
   if(t.audio_submission_path)A().storageRemove?.(PRIVATE_BUCKET,t.audio_submission_path).catch(()=>{});
   await refreshTestimonies()
@@ -76,8 +82,8 @@ async function approveTestimony(id){
 }
 async function rejectTestimony(id){
  if(!confirm(L('این شهادت رد شود؟','Reject this testimony?','Odbiti ovo svjedočanstvo?')))return;
- const t=S.testimonies.find(x=>String(x.id)===String(id));
- try{await A().adminRpc('nh7_owner_testimony_reject_v502',{p_id:id});if(t?.audio_submission_path)A().storageRemove?.(PRIVATE_BUCKET,t.audio_submission_path).catch(()=>{});await refreshTestimonies()}catch(e){alert(backendText(e))}
+ const t=S.testimonies.find(x=>String(x.id)===String(id));if(!t||t.status!=='pending')return;
+ try{const rejected=await A().adminRpc('nh7_owner_testimony_reject_v502',{p_id:id});if(rejected!==true)throw new Error(L('این شهادت دیگر در وضعیت انتظار نیست.','This testimony is no longer pending.','Ovo svjedočanstvo više nije na čekanju.'));if(t.audio_submission_path)A().storageRemove?.(PRIVATE_BUCKET,t.audio_submission_path).catch(()=>{});await refreshTestimonies()}catch(e){alert(backendText(e))}
 }
 function onTab(t){if(t==='prayer502'&&!S.prayers.length&&!S.loadingPrayer)refreshPrayer();if(t==='testimonies502'&&!S.testimonies.length&&!S.loadingTestimony)refreshTestimonies()}
 
