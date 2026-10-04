@@ -43,3 +43,86 @@
 @media(min-width:620px){.nh7-plan-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.nh7-plan-card{display:flex;flex-direction:column}.nh7-plan-card .wide-btn{margin-top:auto}.nh7-plan-outline{grid-template-columns:repeat(2,minmax(0,1fr))}.nh7-plan-reader{padding:22px}.nh7-devotional-block{padding:18px 20px}}
 @media(max-width:520px){.nh7-plans-tabs{top:72px}.nh7-plans-tabs button{font-size:.71rem;padding:9px 4px}.nh7-hero-mark{display:none}.nh7-plan-stats:has(>div:nth-child(4)){grid-template-columns:repeat(2,minmax(0,1fr))}.nh7-plan-sync{align-items:flex-start;flex-wrap:wrap}.nh7-plan-sync p{min-width:calc(100% - 50px)}.nh7-offline-pill{margin-inline-start:44px}.nh7-reader-head{flex-wrap:wrap}.nh7-reader-head>.nh7-plan-status{margin-inline-start:60px}.nh7-reader-actions{grid-template-columns:1fr 1fr}.nh7-reader-actions [data-nh7-toggle-complete]{grid-column:1/-1;grid-row:1}.nh7-journey-card{align-items:flex-start;flex-direction:column}.nh7-journey-actions{width:100%;flex-direction:row}.nh7-journey-actions button{flex:1}.nh7-form-grid{grid-template-columns:1fr}}
 @supports not (color:color-mix(in srgb,#000,#fff)){.nh7-plan-card{border-color:#cfe1ee;background:#fff}.nh7-plan-icon{background:#eef6ff}.nh7-plan-card::after{background:rgba(4,118,217,.07)}}
+
+
+/* v2.5.0 Final QA — Spiritual/Reading Plans follow the selected Studio theme. */
+html[data-nh7-studio] #view .nh7-plans-tabs{
+  background:color-mix(in srgb,var(--nh7-studio-card) 94%,transparent)!important;
+  border-color:var(--nh7-studio-line)!important;
+  box-shadow:0 8px 24px color-mix(in srgb,var(--nh7-studio-bg) 38%,transparent)!important;
+}
+html[data-nh7-studio] #view .nh7-plans-tabs button{
+  background:transparent!important;color:var(--nh7-studio-muted)!important;
+}
+html[data-nh7-studio] #view .nh7-plans-tabs button.active{
+  background:var(--nh7-studio-accent)!important;color:var(--nh7-studio-button-ink)!important;
+  box-shadow:0 7px 17px color-mix(in srgb,var(--nh7-studio-accent) 24%,transparent)!important;
+}
+html[data-nh7-studio] #view .nh7-plans-hero{
+  background:linear-gradient(135deg,
+    color-mix(in srgb,var(--nh7-studio-accent) 88%,var(--nh7-studio-bg)),
+    color-mix(in srgb,var(--nh7-studio-accent) 60%,var(--nh7-studio-bg)) 55%,
+    var(--nh7-studio-bg))!important;
+  color:var(--nh7-studio-button-ink)!important;
+}
+html[data-nh7-studio] #view .nh7-plans-hero :is(h1,p,.badge){color:var(--nh7-studio-button-ink)!important}
+html[data-nh7-studio] #view :is(.nh7-plan-card,.nh7-plan-stats>div,.nh7-plan-sync,.nh7-plan-outline li,.nh7-pastoral-note,.nh7-scripture-block,.nh7-devotional-block,.nh7-private-note,.nh7-fasting-hero,.nh7-safety-note,.nh7-fasting-covenant,.nh7-fast-type-guide,.nh7-fasting-log,.nh7-journey-card,.nh7-profile-history>div){
+  background:var(--nh7-studio-card)!important;
+  color:var(--nh7-studio-text)!important;
+  border-color:var(--nh7-studio-line)!important;
+}
+html[data-nh7-studio] #view .nh7-plan-card{
+  --plan:var(--nh7-studio-accent)!important;
+  background:linear-gradient(155deg,var(--nh7-studio-card) 42%,color-mix(in srgb,var(--nh7-studio-accent) 7%,var(--nh7-studio-card)))!important;
+  box-shadow:0 15px 35px color-mix(in srgb,var(--nh7-studio-bg) 46%,transparent)!important;
+}
+html[data-nh7-studio] #view .nh7-plan-card::after{
+  background:color-mix(in srgb,var(--nh7-studio-accent) 10%,transparent)!important;
+}
+html[data-nh7-studio] #view :is(.nh7-plan-card,.nh7-plan-stats,.nh7-plan-sync,.nh7-plan-outline,.nh7-pastoral-note,.nh7-scripture-block,.nh7-devotional-block,.nh7-private-note,.nh7-fasting-education,.nh7-fasting-covenant,.nh7-fast-type-guide,.nh7-fasting-log,.nh7-journey-card,.nh7-profile-plans) :is(h1,h2,h3,h4,p,strong,label){
+  color:var(--nh7-studio-text)!important;
+}
+html[data-nh7-studio] #view :is(.nh7-plan-card,.nh7-plan-stats,.nh7-plan-sync,.nh7-plan-outline,.nh7-pastoral-note,.nh7-scripture-block,.nh7-devotional-block,.nh7-private-note,.nh7-fasting-education,.nh7-fasting-covenant,.nh7-fast-type-guide,.nh7-fasting-log,.nh7-journey-card,.nh7-profile-plans) :is(small,.muted,.nh7-plan-duration,.nh7-plan-progress+small){
+  color:var(--nh7-studio-muted)!important;
+}
+html[data-nh7-studio] #view :is(.nh7-plan-icon,.nh7-plan-status,.nh7-offline-pill,.nh7-fasting-education>header>span,.nh7-devotional-block h3 span,.inline-verse-line b){
+  background:color-mix(in srgb,var(--nh7-studio-accent) 12%,var(--nh7-studio-card))!important;
+  color:var(--nh7-studio-accent)!important;
+  border-color:var(--nh7-studio-line)!important;
+}
+html[data-nh7-studio] #view .nh7-plan-status.active,
+html[data-nh7-studio] #view .nh7-plan-status.complete{
+  background:color-mix(in srgb,var(--nh7-studio-accent) 15%,var(--nh7-studio-card))!important;
+  color:var(--nh7-studio-accent)!important;
+}
+html[data-nh7-studio] #view .nh7-plan-progress{
+  background:color-mix(in srgb,var(--nh7-studio-muted) 18%,var(--nh7-studio-card))!important;
+}
+html[data-nh7-studio] #view .nh7-plan-progress span{
+  background:linear-gradient(90deg,var(--nh7-studio-accent),color-mix(in srgb,var(--nh7-studio-accent) 66%,var(--nh7-studio-text)))!important;
+}
+html[data-nh7-studio] #view :is(.nh7-scripture-ref,.nh7-day-picker button,.nh7-fasting-form select,.nh7-private-note textarea){
+  background:var(--nh7-studio-bg)!important;
+  color:var(--nh7-studio-text)!important;
+  border-color:var(--nh7-studio-line)!important;
+}
+html[data-nh7-studio] #view .nh7-scripture-ref :is(span,small){color:inherit!important}
+html[data-nh7-studio] #view .nh7-scripture-ref[aria-expanded="true"],
+html[data-nh7-studio] #view .nh7-day-picker button.current{
+  background:color-mix(in srgb,var(--nh7-studio-accent) 11%,var(--nh7-studio-card))!important;
+  color:var(--nh7-studio-accent)!important;
+  border-color:var(--nh7-studio-accent)!important;
+}
+html[data-nh7-studio] #view .nh7-scripture-reveal .inline-verse{
+  background:color-mix(in srgb,var(--nh7-studio-bg) 72%,var(--nh7-studio-card))!important;
+  color:var(--nh7-studio-verse)!important;
+  border-color:var(--nh7-studio-line)!important;
+}
+html[data-nh7-studio] #view .nh7-scripture-reveal .inline-verse :is(span,b,strong,p){color:inherit!important}
+html[data-nh7-studio] #view .nh7-plans-back{color:var(--nh7-studio-accent)!important}
+html[data-nh7-studio] #view .nh7-plan-card .primary-btn{
+  background:var(--nh7-studio-accent)!important;color:var(--nh7-studio-button-ink)!important;
+}
+html[data-nh7-studio-tone457="dark"] #view :is(.nh7-plan-card,.nh7-plan-stats>div,.nh7-plan-sync,.nh7-plan-outline li,.nh7-pastoral-note,.nh7-scripture-block,.nh7-devotional-block,.nh7-private-note,.nh7-fasting-hero,.nh7-safety-note,.nh7-fasting-covenant,.nh7-fast-type-guide,.nh7-fasting-log,.nh7-journey-card){
+  box-shadow:0 12px 30px rgba(0,0,0,.20)!important;
+}
