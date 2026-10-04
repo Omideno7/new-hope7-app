@@ -2958,16 +2958,14 @@ if('serviceWorker' in navigator) navigator.serviceWorker.register('service-worke
 try{const Native=nativeLocalNotifications();Native?.addListener?.('localNotificationActionPerformed',ev=>{const route=ev?.notification?.extra?.route||'home';navigate(route,{},true)});}catch(e){}
 async function bootstrapApp(){
   clearLegacySchoolSession();
-  if(isAccountLoggedIn()){
-    await restoreAccountCloudData(true).catch(console.warn);
-    await getSchoolSnapshot(authEmail(),true).catch(console.warn);
-  }
+  // Paint cached/local UI first. Account and inbox sync must never block first render.
   setLang(state.lang);
   const profileHeaderBtn=$('#profileHeaderBtn');if(profileHeaderBtn&&!profileHeaderBtn.dataset.nh7BoundV503){profileHeaderBtn.dataset.nh7BoundV503='1';profileHeaderBtn.addEventListener('click',()=>navigate('profile',{}));}
-  await syncHeaderProfileV503().catch(console.warn);
+  syncHeaderProfileV503().catch(console.warn);
   ensureSermonPlayer();
+  if(isAccountLoggedIn())restoreAccountCloudData(false).catch(console.warn);
   syncCloudQueue().catch(console.warn);
-  refreshInboxFromCloud().catch(console.warn);
+  refreshInboxFromCloud(false).catch(console.warn);
   maybeCreateScheduledInboxMessages().catch(console.warn);
   notificationPermissionStatus().then(p=>{if(p==='granted'&&nativeLocalNotifications())scheduleNativeNotifications().catch(console.warn)}).catch(console.warn);
   updateInboxBadge();
