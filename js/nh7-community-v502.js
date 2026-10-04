@@ -3,7 +3,7 @@
 (()=>{'use strict';
 if(window.__NH7_COMMUNITY_V502__)return;window.__NH7_COMMUNITY_V502__=true;
 
-const VERSION='5.0.7-profile-header-finalqa';
+const VERSION='5.0.8-profile-cache-finalqa';
 const GUIDE_URL='data/community/testimony_guide_v502.json';
 const PROFILE_BUCKET='nh7-profile-photos-v502';
 const TESTIMONY_PRIVATE='nh7-testimony-submissions-v502';
@@ -233,8 +233,8 @@ async function renderProfile(){
  const u=U(),view=ctxView(),uid=C().session()?.user?.id;
  let row=null;try{const rows=await C().cloudFetch('nh7_user_profiles_v502?user_id=eq.'+encodeURIComponent(uid)+'&select=*',{method:'GET',cache:'no-store'});row=Array.isArray(rows)?rows[0]:null}catch(e){console.warn('Profile backend unavailable',e)}
  crop.original='';crop.cropped='';crop.dirty=false;crop.x=Number(row?.photo_position_x)||0;crop.y=Number(row?.photo_position_y)||0;crop.zoom=Number(row?.photo_zoom)||1;
- let avatar='';
- if(row?.photo_path){try{avatar=await C().privateStorageObjectUrl(PROFILE_BUCKET,row.photo_path)}catch(_){}}
+ let avatar=C().profileHeaderCachedSrc?.(uid,row?.photo_path)||'';
+ if(!avatar&&row?.photo_path){try{avatar=await C().privateStorageObjectUrl(PROFILE_BUCKET,row.photo_path)}catch(_){}}
  view.innerHTML=C().card(u.profileTitle,'<div style="display:flex;gap:12px;align-items:center"><div class="nh7c502-avatar" id="nh7c502Avatar">'+(avatar?'<img src="'+esc(avatar)+'">':'👤')+'</div><div><strong id="nh7c502ProfileName">'+esc(row?.display_name||C().profileName()||'')+'</strong><p class="muted">'+esc(u.profilePrivate)+'</p></div></div><div class="form-row"><label><strong>'+esc(u.displayName)+'</strong></label><input id="nh7c502ProfileNameInput" maxlength="160" value="'+esc(row?.display_name||C().profileName()||'')+'"></div><div class="form-row"><label><strong>'+esc(u.choosePhoto)+'</strong></label><input id="nh7c502PhotoInput" type="file" accept="image/*"></div><div class="nh7c502-actions"><button class="secondary-btn" id="nh7c502AdjustPhoto" disabled>'+esc(u.adjustPhoto)+'</button><button class="primary-btn" id="nh7c502SaveProfile">'+esc(u.saveProfile)+'</button></div><div data-community-msg style="margin-top:10px"></div>');
  ensureCropModal();
  document.getElementById('nh7c502PhotoInput').onchange=e=>{const f=e.target.files?.[0];if(!f)return;if(f.size>PROFILE_MAX_BYTES){e.target.value='';toast(L('حجم عکس پروفایل باید کمتر از ۵ مگابایت باشد.','Profile photo must be smaller than 5 MB.','Fotografija profila mora biti manja od 5 MB.'));return}const r=new FileReader();r.onload=()=>{crop.original=String(r.result||'');crop.cropped='';crop.dirty=true;crop.x=0;crop.y=0;crop.zoom=1;document.getElementById('nh7c502AdjustPhoto').disabled=false;openCrop()};r.readAsDataURL(f)};
