@@ -82,13 +82,31 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -q 'com.omideno7.newhope7.watchapp' watchos/NewHope7WatchQA.xcodeproj/project.pbxproj
-          grep -q 'com.omideno7.newhope7' watchos/NewHope7Watch/Info.plist
-          grep -q '<string>audio</string>' watchos/NewHope7Watch/Info.plist
-          test -s watchos/Resources/bible_books.json
-          test "$(find watchos/Resources -name 'bible_*.json' | wc -l | tr -d ' ')" -gt 1000
-          grep -q '/rest/v1/sermons' watchos/NewHope7Watch/Audio.swift
-          grep -q 'is_published' watchos/NewHope7Watch/Audio.swift
+          python3 <<'PY'
+          from pathlib import Path
+          import json
+
+          pbx=Path('watchos/NewHope7WatchQA.xcodeproj/project.pbxproj').read_text(encoding='utf-8')
+          info=Path('watchos/NewHope7Watch/Info.plist').read_text(encoding='utf-8')
+          audio=Path('watchos/NewHope7Watch/Audio.swift').read_text(encoding='utf-8')
+          resources=Path('watchos/Resources')
+          books=json.loads((resources/'bible_books.json').read_text(encoding='utf-8'))
+          chapter_files=[p for p in resources.glob('bible_*.json') if p.name!='bible_books.json']
+
+          checks={
+              'bundle_id':'com.omideno7.newhope7.watchapp' in pbx,
+              'companion_id':'com.omideno7.newhope7' in info,
+              'background_audio':'<string>audio</string>' in info,
+              'all_66_books':len(books)==66,
+              'all_1189_chapters':len(chapter_files)==1189,
+              'sermon_rest':'/rest/v1/sermons' in audio,
+              'published_only':'is_published' in audio,
+          }
+          print(checks)
+          failed=[name for name,ok in checks.items() if not ok]
+          if failed:
+              raise SystemExit('Watch QA validation failed: '+', '.join(failed))
+          PY
 
       - name: Upload Watch QA evidence
         uses: actions/upload-artifact@v4
