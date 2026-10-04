@@ -3,7 +3,7 @@
 (()=>{'use strict';
 if(window.__NH7_COMMUNITY_V502__)return;window.__NH7_COMMUNITY_V502__=true;
 
-const VERSION='5.0.4-polish';
+const VERSION='5.0.5-qa-hardening';
 const GUIDE_URL='data/community/testimony_guide_v502.json';
 const PROFILE_BUCKET='nh7-profile-photos-v502';
 const TESTIMONY_PRIVATE='nh7-testimony-submissions-v502';
@@ -13,7 +13,7 @@ const PROFILE_MAX_BYTES=5*1024*1024;
 const PUBLIC_FEED_TTL_MS=10*60*1000;
 const MY_PRAYER_TTL_MS=2*60*1000;
 let guideCache=null,publicFeedCache=new Map(),myPrayerCache={uid:'',at:0,rows:[]},recordState={rec:null,stream:null,chunks:[],blob:null,url:'',timer:0,started:0,topic:0,bytes:0,tooLarge:false};
-let crop={original:'',cropped:'',x:0,y:0,zoom:1,tx:0,ty:0,tz:1,drag:false,sx:0,sy:0,ox:0,oy:0,scrollY:0};
+let crop={original:'',cropped:'',dirty:false,x:0,y:0,zoom:1,tx:0,ty:0,tz:1,drag:false,sx:0,sy:0,ox:0,oy:0,scrollY:0};
 
 function C(){const c=window.NH7_COMMUNITY_CTX_V502;if(!c)throw new Error('Community context is not ready.');return c}
 function lang(){return C().lang()}
@@ -120,7 +120,14 @@ function submissionHtml(g,u){
  '<button class="primary-btn wide-btn" id="nh7c502Submit">'+esc(u.submit)+'</button><div data-community-msg style="margin-top:10px"></div>';
 }
 function recordingStatus(text,on=false){const el=document.getElementById('nh7c502RecordStatus');if(el)el.innerHTML=(on?'● ':'')+esc(text)}
-function clearRecording(){try{clearInterval(recordState.timer)}catch(_){};if(recordState.url)URL.revokeObjectURL(recordState.url);recordState={rec:null,stream:null,chunks:[],blob:null,url:'',timer:0,started:0,topic:recordState.topic||0,bytes:0,tooLarge:false}}
+function clearRecording(){
+ const prev=recordState;
+ try{clearInterval(prev.timer)}catch(_){}
+ try{if(prev.rec&&prev.rec.state!=='inactive'){prev.rec.ondataavailable=null;prev.rec.onstop=null;prev.rec.stop()}}catch(_){}
+ try{prev.stream?.getTracks?.().forEach(t=>t.stop())}catch(_){}
+ if(prev.url)try{URL.revokeObjectURL(prev.url)}catch(_){}
+ recordState={rec:null,stream:null,chunks:[],blob:null,url:'',timer:0,started:0,topic:prev.topic||0,bytes:0,tooLarge:false}
+}
 function bindTestimonyForm(){
  const g=G(),u=U(),topics=g.sections.flatMap(s=>s.topics);
  function updateStep(){const t=topics[recordState.topic];document.getElementById('nh7c502StepTitle').textContent=u.guided+' · '+t.title;document.getElementById('nh7c502StepText').innerHTML='<ul>'+t.bullets.map(b=>'<li>'+esc(b)+'</li>').join('')+'</ul>';document.getElementById('nh7c502StepBar').style.width=((recordState.topic+1)/topics.length*100)+'%';document.getElementById('nh7c502Prev').disabled=recordState.topic===0;document.getElementById('nh7c502Next').disabled=recordState.topic===topics.length-1}
@@ -225,14 +232,14 @@ async function renderProfile(){
  injectCss();await guide();if(!requireLogin('profile'))return;
  const u=U(),view=ctxView(),uid=C().session()?.user?.id;
  let row=null;try{const rows=await C().cloudFetch('nh7_user_profiles_v502?user_id=eq.'+encodeURIComponent(uid)+'&select=*',{method:'GET',cache:'no-store'});row=Array.isArray(rows)?rows[0]:null}catch(e){console.warn('Profile backend unavailable',e)}
- crop.original='';crop.cropped='';crop.x=Number(row?.photo_position_x)||0;crop.y=Number(row?.photo_position_y)||0;crop.zoom=Number(row?.photo_zoom)||1;
+ crop.original='';crop.cropped='';crop.dirty=false;crop.x=Number(row?.photo_position_x)||0;crop.y=Number(row?.photo_position_y)||0;crop.zoom=Number(row?.photo_zoom)||1;
  let avatar='';
  if(row?.photo_path){try{avatar=await C().privateStorageObjectUrl(PROFILE_BUCKET,row.photo_path)}catch(_){}}
  view.innerHTML=C().card(u.profileTitle,'<div style="display:flex;gap:12px;align-items:center"><div class="nh7c502-avatar" id="nh7c502Avatar">'+(avatar?'<img src="'+esc(avatar)+'">':'👤')+'</div><div><strong id="nh7c502ProfileName">'+esc(row?.display_name||C().profileName()||'')+'</strong><p class="muted">'+esc(u.profilePrivate)+'</p></div></div><div class="form-row"><label><strong>'+esc(u.displayName)+'</strong></label><input id="nh7c502ProfileNameInput" maxlength="160" value="'+esc(row?.display_name||C().profileName()||'')+'"></div><div class="form-row"><label><strong>'+esc(u.choosePhoto)+'</strong></label><input id="nh7c502PhotoInput" type="file" accept="image/*"></div><div class="nh7c502-actions"><button class="secondary-btn" id="nh7c502AdjustPhoto" disabled>'+esc(u.adjustPhoto)+'</button><button class="primary-btn" id="nh7c502SaveProfile">'+esc(u.saveProfile)+'</button></div><div data-community-msg style="margin-top:10px"></div>');
  ensureCropModal();
- document.getElementById('nh7c502PhotoInput').onchange=e=>{const f=e.target.files?.[0];if(!f)return;if(f.size>PROFILE_MAX_BYTES){e.target.value='';toast(L('حجم عکس پروفایل باید کمتر از ۵ مگابایت باشد.','Profile photo must be smaller than 5 MB.','Fotografija profila mora biti manja od 5 MB.'));return}const r=new FileReader();r.onload=()=>{crop.original=String(r.result||'');crop.cropped='';crop.x=0;crop.y=0;crop.zoom=1;document.getElementById('nh7c502AdjustPhoto').disabled=false;openCrop()};r.readAsDataURL(f)};
+ document.getElementById('nh7c502PhotoInput').onchange=e=>{const f=e.target.files?.[0];if(!f)return;if(f.size>PROFILE_MAX_BYTES){e.target.value='';toast(L('حجم عکس پروفایل باید کمتر از ۵ مگابایت باشد.','Profile photo must be smaller than 5 MB.','Fotografija profila mora biti manja od 5 MB.'));return}const r=new FileReader();r.onload=()=>{crop.original=String(r.result||'');crop.cropped='';crop.dirty=true;crop.x=0;crop.y=0;crop.zoom=1;document.getElementById('nh7c502AdjustPhoto').disabled=false;openCrop()};r.readAsDataURL(f)};
  document.getElementById('nh7c502AdjustPhoto').onclick=openCrop;
- document.getElementById('nh7c502SaveProfile').onclick=()=>saveProfile(row);
+ document.getElementById('nh7c502SaveProfile').onclick=async()=>{const saved=await saveProfile(row);if(saved)row=saved};
 }
 function ensureCropModal(){
  let m=document.getElementById('nh7c502CropModal');if(m)return;
@@ -247,7 +254,7 @@ function ensureCropModal(){
  document.getElementById('nh7c502Zoom').oninput=e=>{crop.tz=Number(e.target.value)||1;applyCrop()};
  document.getElementById('nh7c502CropReset').onclick=()=>{crop.tx=0;crop.ty=0;crop.tz=1;document.getElementById('nh7c502Zoom').value=1;applyCrop()};
  document.getElementById('nh7c502CropClose').onclick=closeCrop;
- document.getElementById('nh7c502CropSave').onclick=()=>{crop.x=crop.tx;crop.y=crop.ty;crop.zoom=crop.tz;crop.cropped=makeCropData();closeCrop();const a=document.getElementById('nh7c502Avatar');if(a&&crop.cropped)a.innerHTML='<img src="'+crop.cropped+'">'}
+ document.getElementById('nh7c502CropSave').onclick=()=>{crop.x=crop.tx;crop.y=crop.ty;crop.zoom=crop.tz;crop.cropped=makeCropData();crop.dirty=true;closeCrop();const a=document.getElementById('nh7c502Avatar');if(a&&crop.cropped)a.innerHTML='<img src="'+crop.cropped+'">'}
 }
 function openCrop(){
  if(!crop.original)return;crop.tx=crop.x;crop.ty=crop.y;crop.tz=crop.zoom;
@@ -264,7 +271,7 @@ async function saveProfile(old){
  const b=document.getElementById('nh7c502SaveProfile');b.disabled=true;let newUploads=[];
  try{
   let originalPath=old?.original_photo_path||'',photoPath=old?.photo_path||'';
-  if(crop.original){
+  if(crop.dirty&&crop.original){
    const id=crypto.randomUUID?.()||String(Date.now()),originalBlob=await dataUrlBlob(crop.original),avatarData=crop.cropped||makeCropData(),avatarBlob=await dataUrlBlob(avatarData);
    if(originalBlob.size>PROFILE_MAX_BYTES)throw new Error(L('حجم عکس پروفایل باید کمتر از ۵ مگابایت باشد.','Profile photo must be smaller than 5 MB.','Fotografija profila mora biti manja od 5 MB.'));
    originalPath=uid+'/original-'+id+'.jpg';photoPath=uid+'/avatar-'+id+'.jpg';
@@ -276,9 +283,11 @@ async function saveProfile(old){
   const stale=[old?.original_photo_path,old?.photo_path].filter(p=>p&&p!==originalPath&&p!==photoPath);if(stale.length)C().storageRemove?.(PROFILE_BUCKET,stale).catch(()=>{});
   try{localStorage.setItem('nh7_user_profile',JSON.stringify({name,email:C().email()}))}catch(_){}
   document.getElementById('nh7c502ProfileName').textContent=name;
-  if(crop.cropped)Promise.resolve(C().refreshHeaderProfile?.({src:crop.cropped,name})).catch(()=>{});
+  const savedPreview=crop.cropped;crop.dirty=false;
+  if(savedPreview)Promise.resolve(C().refreshHeaderProfile?.({src:savedPreview,name})).catch(()=>{});
   setTimeout(()=>Promise.resolve(C().refreshHeaderProfile?.({force:true,name})).catch(()=>{}),80);
-  toast(L('پروفایل ذخیره شد ✓','Profile saved ✓','Profil je spremljen ✓'),'notice success-notice')
+  toast(L('پروفایل ذخیره شد ✓','Profile saved ✓','Profil je spremljen ✓'),'notice success-notice');
+  return {user_id:uid,display_name:name,original_photo_path:originalPath,photo_path:photoPath,photo_position_x:crop.x,photo_position_y:crop.y,photo_zoom:crop.zoom}
  }catch(e){if(newUploads.length)C().storageRemove?.(PROFILE_BUCKET,newUploads).catch(()=>{});toast(backendNotice(e))}finally{b.disabled=false}
 }
 
