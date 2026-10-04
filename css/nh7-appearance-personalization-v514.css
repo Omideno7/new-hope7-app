@@ -223,36 +223,21 @@ html[data-nh7-ui-style514="material"] .nh7p500 button:active{
   transform:translateY(1px) scale(.98)!important;box-shadow:0 1px 2px #10273b1c!important
 }
 
-/* Outline Clean — crisp layered depth, restrained rather than luminous. */
+/* Outline Clean */
 html[data-nh7-ui-style514="outline"] #view :is(.card:not(.hero),.tile,.list-btn,.link-card,.notice,.accordion-panel,.saved-verse-card){
-  background:color-mix(in srgb,var(--nh7-studio-card,var(--card,#fff)) 90%,var(--nh7-studio-bg,var(--bg,#eef8ff)))!important;
-  border:1.5px solid color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 42%,var(--nh7-studio-line,var(--line,#cbd8e1)))!important;
-  box-shadow:inset 0 1px 0 color-mix(in srgb,#fff 72%,transparent),
-             0 4px 0 color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 11%,var(--nh7-studio-bg,var(--bg,#eef8ff))),
-             0 10px 22px rgba(15,35,55,.10)!important
+  box-shadow:none!important;background:transparent!important;border-width:1.5px!important
 }
 html[data-nh7-ui-style514="outline"] #view button,
 html[data-nh7-ui-style514="outline"] .bottom-nav button,
 html[data-nh7-ui-style514="outline"] .nh7p500 :is(.nh7p500-main button,.nh7p500-tools button,.nh7p500-social button,.nh7p500-head button){
-  background:var(--nh7-studio-card,var(--card,#fff))!important;
-  border:1.5px solid var(--nh7-studio-accent,var(--brand,#1858a4))!important;
-  color:var(--nh7-studio-accent,var(--brand,#1858a4))!important;
-  box-shadow:inset 0 1px 0 color-mix(in srgb,#fff 70%,transparent),
-             0 3px 0 color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 30%,var(--nh7-studio-bg,var(--bg,#eef8ff))),
-             0 7px 14px rgba(15,35,55,.10)!important;
-  border-radius:12px!important
+  background:transparent!important;border:1.5px solid var(--nh7-studio-accent,var(--brand,#1858a4))!important;
+  color:var(--nh7-studio-accent,var(--brand,#1858a4))!important;box-shadow:none!important;border-radius:11px!important
 }
 html[data-nh7-ui-style514="outline"] .nh7p500-main .big{
   background:var(--nh7p-accent,var(--accent,#1858a4))!important;color:#fff!important
 }
 html[data-nh7-ui-style514="outline"] #view button:active,
-html[data-nh7-ui-style514="outline"] .bottom-nav button:active,
-html[data-nh7-ui-style514="outline"] .nh7p500 button:active{
-  transform:translateY(3px)!important;
-  box-shadow:inset 0 1px 0 color-mix(in srgb,#fff 58%,transparent),
-             0 1px 0 color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 24%,var(--nh7-studio-bg,var(--bg,#eef8ff))),
-             0 3px 8px rgba(15,35,55,.08)!important
-}
+html[data-nh7-ui-style514="outline"] .nh7p500 button:active{transform:translateY(1px)!important}
 
 /* Soft Pill */
 html[data-nh7-ui-style514="pill"] #view :is(.card:not(.hero),.tile,.list-btn,.link-card,.notice,.accordion-panel,.saved-verse-card){
@@ -503,43 +488,27 @@ html[data-nh7-ui-style514="floating"] .bottom-nav{
   box-shadow:0 10px 28px #00000020!important
 }
 
-/* Neon Edge — luminous glass/edge depth, intentionally distinct from Outline Clean. */
+/* Neon Edge: clean flat surfaces with luminous theme-colored edge. */
 html[data-nh7-ui-style514="neon"] #view :is(.card:not(.hero),.tile,.list-btn,.link-card,.notice,.accordion-panel,.saved-verse-card),
 html[data-nh7-ui-style514="neon"] .nh7p500-mini{
-  background:linear-gradient(145deg,
-    color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 9%,var(--nh7-studio-card,var(--card,#fff))),
-    color-mix(in srgb,var(--nh7-studio-card,var(--card,#fff)) 92%,transparent))!important;
-  border:1px solid color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 82%,transparent)!important;
-  border-radius:18px!important;
-  box-shadow:inset 0 1px 0 color-mix(in srgb,#fff 34%,transparent),
-             inset 0 0 18px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 8%,transparent),
-             0 0 0 1px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 20%,transparent),
-             0 0 26px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 30%,transparent),
-             0 12px 28px rgba(0,0,0,.16)!important
+  background:color-mix(in srgb,var(--nh7-studio-card,var(--card,#fff)) 96%,transparent)!important;
+  border:1px solid color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 68%,transparent)!important;
+  border-radius:16px!important;
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 16%,transparent),
+             0 0 18px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 18%,transparent)!important
 }
 html[data-nh7-ui-style514="neon"] #view button,
 html[data-nh7-ui-style514="neon"] .bottom-nav button,
 html[data-nh7-ui-style514="neon"] .nh7p500 button{
-  border:1px solid color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 88%,transparent)!important;
-  background:linear-gradient(180deg,
-    color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 12%,transparent),
-    color-mix(in srgb,var(--nh7-studio-card,var(--card,#fff)) 72%,transparent))!important;
+  border:1px solid color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 72%,transparent)!important;
+  background:transparent!important;
   color:var(--nh7-studio-accent,var(--brand,#1858a4))!important;
-  box-shadow:inset 0 0 12px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 10%,transparent),
-             0 0 16px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 34%,transparent),
-             0 5px 16px rgba(0,0,0,.14)!important
-}
-html[data-nh7-ui-style514="neon"] #view button:active,
-html[data-nh7-ui-style514="neon"] .bottom-nav button:active,
-html[data-nh7-ui-style514="neon"] .nh7p500 button:active{
-  transform:translateY(1px) scale(.985)!important;
-  filter:brightness(1.08)
+  box-shadow:0 0 12px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 18%,transparent)!important
 }
 html[data-nh7-ui-style514="neon"] .nav-item.active{
-  background:color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 18%,transparent)!important;
-  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 72%,transparent),
-             inset 0 0 14px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 15%,transparent),
-             0 0 22px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 38%,transparent)!important
+  background:color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 12%,transparent)!important;
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 58%,transparent),
+             0 0 14px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 24%,transparent)!important
 }
 
 /* Motion Flow: safe CSS-only page-entry + spring controls.
@@ -620,4 +589,100 @@ html[data-nh7-ui-style514="motion"] .nh7-ap514-live :is(.nh7-ap514-live-module,.
   html[data-nh7-ui-style514="motion"] .nh7p500 button{
     transition:none!important
   }
+}
+
+
+/* v521 — Outline Clean and Neon Edge get distinct depth without changing app data/layout.
+   Outline = precise layered frame; Neon = luminous floating depth. */
+html[data-nh7-ui-style514="outline"] #view :is(.card:not(.hero),.tile,.list-btn,.link-card,.notice,.accordion-panel,.saved-verse-card),
+html[data-nh7-ui-style514="outline"] .nh7p500-mini,
+html[data-nh7-ui-style514="outline"] .nh7p500-queue{
+  background:linear-gradient(155deg,
+    color-mix(in srgb,var(--nh7-studio-card,var(--card,#fff)) 97%,#fff 3%),
+    var(--nh7-studio-card,var(--card,#fff)))!important;
+  border:1.5px solid color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 62%,var(--nh7-studio-line,var(--line,#cbd8e1)))!important;
+  border-radius:15px!important;
+  box-shadow:
+    4px 5px 0 color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 15%,transparent),
+    0 10px 24px color-mix(in srgb,var(--nh7-studio-text,var(--ink,#17364e)) 10%,transparent),
+    inset 0 1px 0 color-mix(in srgb,#fff 55%,transparent)!important;
+}
+html[data-nh7-ui-style514="outline"] #view button,
+html[data-nh7-ui-style514="outline"] .bottom-nav button,
+html[data-nh7-ui-style514="outline"] .nh7p500 button{
+  background:var(--nh7-studio-card,var(--card,#fff))!important;
+  border:1.5px solid var(--nh7-studio-accent,var(--brand,#1858a4))!important;
+  color:var(--nh7-studio-accent,var(--brand,#1858a4))!important;
+  border-radius:11px!important;
+  box-shadow:
+    3px 4px 0 color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 16%,transparent),
+    inset 0 1px 0 color-mix(in srgb,#fff 52%,transparent)!important;
+}
+html[data-nh7-ui-style514="outline"] #view button:active,
+html[data-nh7-ui-style514="outline"] .bottom-nav button:active,
+html[data-nh7-ui-style514="outline"] .nh7p500 button:active{
+  transform:translate(2px,2px)!important;
+  box-shadow:
+    1px 1px 0 color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 18%,transparent),
+    inset 0 2px 5px color-mix(in srgb,var(--nh7-studio-text,var(--ink,#17364e)) 8%,transparent)!important;
+}
+
+html[data-nh7-ui-style514="neon"] #view :is(.card:not(.hero),.tile,.list-btn,.link-card,.notice,.accordion-panel,.saved-verse-card),
+html[data-nh7-ui-style514="neon"] .nh7p500-mini,
+html[data-nh7-ui-style514="neon"] .nh7p500-queue{
+  background:
+    linear-gradient(145deg,
+      color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 10%,var(--nh7-studio-card,var(--card,#fff))),
+      color-mix(in srgb,var(--nh7-studio-card,var(--card,#fff)) 96%,transparent))!important;
+  border:1px solid color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 82%,transparent)!important;
+  border-radius:20px!important;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 20%,transparent),
+    0 0 12px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 38%,transparent),
+    0 0 30px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 18%,transparent),
+    0 16px 30px color-mix(in srgb,var(--nh7-studio-text,var(--ink,#17364e)) 16%,transparent),
+    inset 0 1px 0 color-mix(in srgb,#fff 28%,transparent)!important;
+}
+html[data-nh7-ui-style514="neon"] #view button,
+html[data-nh7-ui-style514="neon"] .bottom-nav button,
+html[data-nh7-ui-style514="neon"] .nh7p500 button{
+  background:color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 10%,var(--nh7-studio-card,var(--card,#fff)))!important;
+  color:var(--nh7-studio-accent,var(--brand,#1858a4))!important;
+  border:1px solid color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 88%,transparent)!important;
+  border-radius:14px!important;
+  box-shadow:
+    0 0 10px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 34%,transparent),
+    0 7px 18px color-mix(in srgb,var(--nh7-studio-text,var(--ink,#17364e)) 14%,transparent),
+    inset 0 0 12px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 8%,transparent)!important;
+}
+html[data-nh7-ui-style514="neon"] #view button:active,
+html[data-nh7-ui-style514="neon"] .bottom-nav button:active,
+html[data-nh7-ui-style514="neon"] .nh7p500 button:active{
+  transform:translateY(2px) scale(.985)!important;
+  box-shadow:
+    0 0 7px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 26%,transparent),
+    0 3px 8px color-mix(in srgb,var(--nh7-studio-text,var(--ink,#17364e)) 12%,transparent)!important;
+}
+html[data-nh7-ui-style514="neon"] .nav-item.active{
+  background:color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 16%,var(--nh7-studio-card,var(--card,#fff)))!important;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 72%,transparent),
+    0 0 12px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 40%,transparent),
+    0 6px 16px color-mix(in srgb,var(--nh7-studio-text,var(--ink,#17364e)) 12%,transparent)!important;
+}
+
+/* Make the style-picker thumbnails communicate the same difference. */
+.nh7-ap514-style[data-style="outline"] .nh7-ap514-style-demo{
+  background:var(--nh7-studio-card,var(--card,#fff))!important;
+  border:1.5px solid var(--nh7-studio-accent,var(--brand,#1858a4))!important;
+  box-shadow:3px 4px 0 color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 18%,transparent)!important;
+}
+.nh7-ap514-style[data-style="neon"] .nh7-ap514-style-demo{
+  background:linear-gradient(145deg,
+    color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 12%,var(--nh7-studio-card,var(--card,#fff))),
+    var(--nh7-studio-card,var(--card,#fff)))!important;
+  border:1px solid var(--nh7-studio-accent,var(--brand,#1858a4))!important;
+  box-shadow:
+    0 0 10px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1858a4)) 42%,transparent),
+    0 8px 16px color-mix(in srgb,var(--nh7-studio-text,var(--ink,#17364e)) 16%,transparent)!important;
 }
