@@ -1,6 +1,6 @@
 /* New Hope 7 v2.3.4 — unified My Notes for Bible, audio and app sections */
 (()=>{'use strict';
-const VERSION='2.3.4';
+const VERSION='2.3.5';
 const META_PREFIX='nh7_my_note_meta_v234_';
 const SESSION_KEY='nh7_user_session_v170';
 const SUPABASE_URL='https://gpzcwffxnddhaeaogdyo.supabase.co';
@@ -22,7 +22,19 @@ function readMeta(storageKey){return safeJson(localStorage.getItem(metaKey(stora
 function saveMeta(storageKey,meta){localStorage.setItem(metaKey(storageKey),JSON.stringify(Object.assign({},readMeta(storageKey),meta,{storageKey,updatedAt:new Date().toISOString()})))}
 function deleteMeta(storageKey){localStorage.removeItem(metaKey(storageKey))}
 function historyLocation(){const s=history.state||{};return{route:String(s.route||''),params:s.params&&typeof s.params==='object'?JSON.parse(JSON.stringify(s.params)):{} }}
-function normalizedText(value){const text=window.NH7NoteTextV501?.normalize?.(value)??String(value||'');return String(text).trim()}
+function normalizedText(value){
+  let current=value;
+  for(let i=0;i<4;i++){
+    if(current&&typeof current==='object'&&!Array.isArray(current)&&Object.prototype.hasOwnProperty.call(current,'value')){current=current.value;continue}
+    if(typeof current!=='string')break;
+    const raw=current.trim();if(!(raw.startsWith('{')&&raw.endsWith('}')))break;
+    let parsed=null;try{parsed=JSON.parse(raw)}catch(_){break}
+    if(parsed&&typeof parsed==='object'&&!Array.isArray(parsed)&&Object.prototype.hasOwnProperty.call(parsed,'value')){current=parsed.value;continue}
+    break;
+  }
+  const text=window.NH7NoteTextV501?.normalize?.(current)??String(current||'');
+  return String(text).trim();
+}
 function decodeKey(value){try{return decodeURIComponent(String(value||''))}catch(_){return String(value||'')}}
 
 function inferVerseLocation(storageKey){
@@ -213,6 +225,7 @@ observer.observe(document.documentElement,{childList:true,subtree:true});
 window.addEventListener('storage',scheduleRender);
 window.addEventListener('nh7-reader-data452',scheduleRender);
 window.addEventListener('nh7-note-text-repaired-v501',scheduleRender);
+window.addEventListener('nh7-account-data-restored-v544',scheduleRender);
 window.addEventListener('popstate',()=>setTimeout(scrollToPending,250));
 scheduleRender();
 window.NH7MyNotesV234={VERSION,collectNotes,renderNotesPanel,openNote,deleteNote};
