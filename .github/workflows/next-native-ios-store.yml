@@ -259,16 +259,15 @@ jobs:
           rm -rf New_Hope_7_iOS_Test_5_Simulator
           mkdir -p New_Hope_7_iOS_Test_5_Simulator
           cp -R DerivedDataSim/Build/Products/Release-iphonesimulator/App.app New_Hope_7_iOS_Test_5_Simulator/
-          cat > New_Hope_7_iOS_Test_5_Simulator/INSTALL_ON_MAC.txt <<'EOF'
-New Hope 7 — iOS Test 5 Simulator
-1. Install/open Xcode.
-2. Open Xcode > Open Developer Tool > Simulator.
-3. Boot any iPhone simulator running iOS 15 or newer.
-4. Drag App.app onto the Simulator window, or run:
-   xcrun simctl install booted App.app
-5. Open New Hope 7 in the Simulator.
-This is an unsigned simulator test build only. It is not an App Store/TestFlight build.
-EOF
+          printf '%s\n' \
+            'New Hope 7 — iOS Test 5 Simulator' \
+            '1. Install/open Xcode.' \
+            '2. Open Xcode > Open Developer Tool > Simulator.' \
+            '3. Boot any iPhone simulator running iOS 15 or newer.' \
+            '4. Drag App.app onto the Simulator window, or run: xcrun simctl install booted App.app' \
+            '5. Open New Hope 7 in the Simulator.' \
+            'This is an unsigned simulator test build only. It is not an App Store/TestFlight build.' \
+            > New_Hope_7_iOS_Test_5_Simulator/INSTALL_ON_MAC.txt
           zip -qry New_Hope_7_iOS_Test_5_Simulator.zip New_Hope_7_iOS_Test_5_Simulator
 
       - name: Build unsigned Release for generic iOS device
