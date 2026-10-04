@@ -3,9 +3,18 @@
 (()=>{'use strict';
 if(window.__NH7_COMMUNITY_V502__)return;window.__NH7_COMMUNITY_V502__=true;
 
-const VERSION='5.0.8-profile-cache-finalqa';
+const VERSION='5.0.9-profile-local-finalqa';
 const GUIDE_URL='data/community/testimony_guide_v502.json';
 const PROFILE_BUCKET='nh7-profile-photos-v502';
+let profileBackendAvailable=null;
+function profileLocalKey(uid){return 'nh7_profile_local_v502:'+String(uid||'')}
+function readLocalProfile(uid){
+ try{const x=JSON.parse(localStorage.getItem(profileLocalKey(uid))||'null');return x&&typeof x==='object'?x:null}catch(_){return null}
+}
+function writeLocalProfile(uid,row){
+ if(!uid||!row)return;try{localStorage.setItem(profileLocalKey(uid),JSON.stringify(row))}catch(_){}
+}
+
 const TESTIMONY_PRIVATE='nh7-testimony-submissions-v502';
 const TESTIMONY_PUBLIC='nh7-testimony-published-v502';
 const TESTIMONY_MAX_BYTES=60*1024*1024;
@@ -231,10 +240,18 @@ async function renderPrayer(){
 async function renderProfile(){
  injectCss();await guide();if(!requireLogin('profile'))return;
  const u=U(),view=ctxView(),uid=C().session()?.user?.id;
- let row=null;try{const rows=await C().cloudFetch('nh7_user_profiles_v502?user_id=eq.'+encodeURIComponent(uid)+'&select=*',{method:'GET',cache:'no-store'});row=Array.isArray(rows)?rows[0]:null}catch(e){console.warn('Profile backend unavailable',e)}
+ const localRow=readLocalProfile(uid);
+ let row=localRow;
+ try{
+   const rows=await C().cloudFetch('nh7_user_profiles_v502?user_id=eq.'+encodeURIComponent(uid)+'&select=*',{method:'GET',cache:'no-store'});
+   profileBackendAvailable=true;
+   const cloudRow=Array.isArray(rows)?rows[0]:null;
+   if(cloudRow){row=Object.assign({},localRow||{},cloudRow);writeLocalProfile(uid,row)}
+ }catch(e){profileBackendAvailable=false;console.warn('Profile backend unavailable; using local profile',e)}
  crop.original='';crop.cropped='';crop.dirty=false;crop.x=Number(row?.photo_position_x)||0;crop.y=Number(row?.photo_position_y)||0;crop.zoom=Number(row?.photo_zoom)||1;
- let avatar=C().profileHeaderCachedSrc?.(uid,row?.photo_path)||'';
- if(!avatar&&row?.photo_path){try{avatar=await C().privateStorageObjectUrl(PROFILE_BUCKET,row.photo_path)}catch(_){}}
+ let avatar=String(row?.local_avatar_data||'')||C().profileHeaderCachedSrc?.(uid,row?.photo_path)||'';
+ if(!avatar&&profileBackendAvailable&&row?.photo_path){try{avatar=await C().privateStorageObjectUrl(PROFILE_BUCKET,row.photo_path)}catch(_){}}
+ if(avatar)Promise.resolve(C().refreshHeaderProfile?.({src:avatar,path:row?.photo_path||'',name:row?.display_name||C().profileName()||''})).catch(()=>{});
  view.innerHTML=C().card(u.profileTitle,'<div style="display:flex;gap:12px;align-items:center"><div class="nh7c502-avatar" id="nh7c502Avatar">'+(avatar?'<img src="'+esc(avatar)+'">':'👤')+'</div><div><strong id="nh7c502ProfileName">'+esc(row?.display_name||C().profileName()||'')+'</strong><p class="muted">'+esc(u.profilePrivate)+'</p></div></div><div class="form-row"><label><strong>'+esc(u.displayName)+'</strong></label><input id="nh7c502ProfileNameInput" maxlength="160" value="'+esc(row?.display_name||C().profileName()||'')+'"></div><div class="form-row"><label><strong>'+esc(u.choosePhoto)+'</strong></label><input id="nh7c502PhotoInput" type="file" accept="image/*"></div><div class="nh7c502-actions"><button class="secondary-btn" id="nh7c502AdjustPhoto" disabled>'+esc(u.adjustPhoto)+'</button><button class="primary-btn" id="nh7c502SaveProfile">'+esc(u.saveProfile)+'</button></div><div data-community-msg style="margin-top:10px"></div>');
  ensureCropModal();
  document.getElementById('nh7c502PhotoInput').onchange=e=>{const f=e.target.files?.[0];if(!f)return;if(f.size>PROFILE_MAX_BYTES){e.target.value='';toast(L('حجم عکس پروفایل باید کمتر از ۵ مگابایت باشد.','Profile photo must be smaller than 5 MB.','Fotografija profila mora biti manja od 5 MB.'));return}const r=new FileReader();r.onload=()=>{crop.original=String(r.result||'');crop.cropped='';crop.dirty=true;crop.x=0;crop.y=0;crop.zoom=1;document.getElementById('nh7c502AdjustPhoto').disabled=false;openCrop()};r.readAsDataURL(f)};
@@ -280,30 +297,52 @@ function profileOriginalExt(blob){
  return'jpg'
 }
 async function saveProfile(old){
- if(!requireLogin('profile'))return;const uid=C().session()?.user?.id,name=document.getElementById('nh7c502ProfileNameInput').value.trim()||C().profileName()||'';
- const b=document.getElementById('nh7c502SaveProfile');b.disabled=true;let newUploads=[];
+ if(!requireLogin('profile'))return;
+ const uid=C().session()?.user?.id,name=document.getElementById('nh7c502ProfileNameInput').value.trim()||C().profileName()||'';
+ const b=document.getElementById('nh7c502SaveProfile');b.disabled=true;
+ let avatarData=String(old?.local_avatar_data||''),originalPath=old?.original_photo_path||'',photoPath=old?.photo_path||'',newUploads=[];
  try{
-  let originalPath=old?.original_photo_path||'',photoPath=old?.photo_path||'';
   if(crop.dirty&&crop.original){
-   const id=crypto.randomUUID?.()||String(Date.now()),originalBlob=await dataUrlBlob(crop.original),avatarData=crop.cropped||makeCropData();
+   avatarData=crop.cropped||makeCropData();
    if(!/^data:image\/jpeg/i.test(String(avatarData||'')))throw new Error(L('برش عکس کامل نشده است؛ لطفاً عکس را دوباره تنظیم و ذخیره کنید.','The crop is incomplete; please adjust and save the photo again.','Izrezivanje nije dovršeno; ponovno podesite i spremite fotografiju.'));
-   const avatarBlob=await dataUrlBlob(avatarData);
-   if(originalBlob.size>PROFILE_MAX_BYTES)throw new Error(L('حجم عکس پروفایل باید کمتر از ۵ مگابایت باشد.','Profile photo must be smaller than 5 MB.','Fotografija profila mora biti manja od 5 MB.'));
-   originalPath=uid+'/original-'+id+'.'+profileOriginalExt(originalBlob);photoPath=uid+'/avatar-'+id+'.jpg';
-   await C().storageUpload(PROFILE_BUCKET,originalPath,originalBlob,originalBlob.type||'image/jpeg',false);newUploads.push(originalPath);
-   await C().storageUpload(PROFILE_BUCKET,photoPath,avatarBlob,'image/jpeg',false);newUploads.push(photoPath);
   }
-  await C().cloudFetch('nh7_user_profiles_v502?on_conflict=user_id',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify({user_id:uid,display_name:name,original_photo_path:originalPath,photo_path:photoPath,photo_position_x:crop.x,photo_position_y:crop.y,photo_zoom:crop.zoom,updated_at:new Date().toISOString()})});
-  newUploads=[];
-  const stale=[old?.original_photo_path,old?.photo_path].filter(p=>p&&p!==originalPath&&p!==photoPath);if(stale.length)C().storageRemove?.(PROFILE_BUCKET,stale).catch(()=>{});
+  const localSaved={user_id:uid,display_name:name,original_photo_path:originalPath,photo_path:photoPath,photo_position_x:crop.x,photo_position_y:crop.y,photo_zoom:crop.zoom,local_avatar_data:avatarData,updated_at:new Date().toISOString()};
+  writeLocalProfile(uid,localSaved);
   try{const previous=JSON.parse(localStorage.getItem('nh7_user_profile')||'{}');localStorage.setItem('nh7_user_profile',JSON.stringify(Object.assign({},previous&&typeof previous==='object'?previous:{},{name,email:C().email()})))}catch(_){}
   document.getElementById('nh7c502ProfileName').textContent=name;
-  const savedPreview=crop.cropped;crop.dirty=false;
-  if(savedPreview)Promise.resolve(C().refreshHeaderProfile?.({src:savedPreview,path:photoPath,name})).catch(()=>{});
-  else Promise.resolve(C().refreshHeaderProfile?.({force:true,name})).catch(()=>{});
-  toast(L('پروفایل ذخیره شد ✓','Profile saved ✓','Profil je spremljen ✓'),'notice success-notice');
-  return {user_id:uid,display_name:name,original_photo_path:originalPath,photo_path:photoPath,photo_position_x:crop.x,photo_position_y:crop.y,photo_zoom:crop.zoom}
- }catch(e){if(newUploads.length)C().storageRemove?.(PROFILE_BUCKET,newUploads).catch(()=>{});toast(backendNotice(e))}finally{b.disabled=false}
+  if(avatarData){
+    const a=document.getElementById('nh7c502Avatar');if(a)a.innerHTML='<img src="'+esc(avatarData)+'">';
+    await Promise.resolve(C().refreshHeaderProfile?.({src:avatarData,path:photoPath,name})).catch(()=>{});
+  }else await Promise.resolve(C().refreshHeaderProfile?.({force:true,name})).catch(()=>{});
+  crop.dirty=false;
+
+  if(profileBackendAvailable===false){
+    toast(L('پروفایل روی این دستگاه ذخیره شد ✓','Profile saved on this device ✓','Profil je spremljen na ovom uređaju ✓'),'notice success-notice');
+    return localSaved
+  }
+
+  try{
+    if(avatarData&&crop.original){
+      const id=crypto.randomUUID?.()||String(Date.now()),originalBlob=await dataUrlBlob(crop.original),avatarBlob=await dataUrlBlob(avatarData);
+      if(originalBlob.size>PROFILE_MAX_BYTES)throw new Error(L('حجم عکس پروفایل باید کمتر از ۵ مگابایت باشد.','Profile photo must be smaller than 5 MB.','Fotografija profila mora biti manja od 5 MB.'));
+      originalPath=uid+'/original-'+id+'.'+profileOriginalExt(originalBlob);photoPath=uid+'/avatar-'+id+'.jpg';
+      await C().storageUpload(PROFILE_BUCKET,originalPath,originalBlob,originalBlob.type||'image/jpeg',false);newUploads.push(originalPath);
+      await C().storageUpload(PROFILE_BUCKET,photoPath,avatarBlob,'image/jpeg',false);newUploads.push(photoPath);
+    }
+    await C().cloudFetch('nh7_user_profiles_v502?on_conflict=user_id',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify({user_id:uid,display_name:name,original_photo_path:originalPath,photo_path:photoPath,photo_position_x:crop.x,photo_position_y:crop.y,photo_zoom:crop.zoom,updated_at:new Date().toISOString()})});
+    profileBackendAvailable=true;newUploads=[];
+    const synced=Object.assign({},localSaved,{original_photo_path:originalPath,photo_path:photoPath});writeLocalProfile(uid,synced);
+    await Promise.resolve(C().refreshHeaderProfile?.({src:avatarData||C().profileHeaderCachedSrc?.(uid,photoPath)||'',path:photoPath,name})).catch(()=>{});
+    const stale=[old?.original_photo_path,old?.photo_path].filter(p=>p&&p!==originalPath&&p!==photoPath);if(stale.length)C().storageRemove?.(PROFILE_BUCKET,stale).catch(()=>{});
+    toast(L('پروفایل ذخیره شد ✓','Profile saved ✓','Profil je spremljen ✓'),'notice success-notice');
+    return synced
+  }catch(e){
+    profileBackendAvailable=false;
+    if(newUploads.length)C().storageRemove?.(PROFILE_BUCKET,newUploads).catch(()=>{});
+    toast(L('پروفایل روی این دستگاه ذخیره شد ✓','Profile saved on this device ✓','Profil je spremljen na ovom uređaju ✓'),'notice success-notice');
+    return localSaved
+  }
+ }catch(e){toast(String(e?.message||e))}finally{b.disabled=false}
 }
 
 function dispose(){
