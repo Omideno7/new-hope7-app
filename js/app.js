@@ -1488,6 +1488,7 @@ async function home(){
     card(tr('progress'), nh7GrowthHtml(g), 'nh7-growth-card-v458');
   $('#quickNotify')?.addEventListener('click', enableNotifications);
   nh7GlobalSearchV540.mount();
+  nh7WarmAudioCatalogV541();
 }
 
 
@@ -1617,7 +1618,7 @@ async function loadBook(bookId){
   return {book:b, verses:state.bible.groups[group].verses.filter(v=>v.bookId===bookId)};
 }
 const nh7BibleKeywordsV451=createBibleKeywordsV451({state,view,html,card,tr,l223,localNum,jfetch,navigate,localizeRef,loadBibleMeta,showWritten:()=>bible({section:'written'})});
-const nh7GlobalSearchV540=createGlobalSearchV540({lang:()=>state.lang,html,card,localNum,jfetch,navigate,localizeRef,loadBibleMeta,parseRef,pick,normalizeNote:normalizeNoteText,audioCache:()=>nh7ReadAudioCatalogCacheV446(),bible:()=>nh7BibleKeywordsV451});
+const nh7GlobalSearchV540=createGlobalSearchV540({lang:()=>state.lang,html,card,localNum,jfetch,navigate,localizeRef,loadBibleMeta,parseRef,pick,normalizeNote:normalizeNoteText,audioCache:()=>nh7ReadAudioCatalogCacheV446(),audioCatalog:()=>nh7EnsureAudioCatalogV541(),bible:()=>nh7BibleKeywordsV451});
 const nh7ExamReviewV540=createExamReviewV540({lang:()=>state.lang,html,localNum,questionText:examQuestionText,optionText:examOptionText});
 async function bibleKeywordsV450(params={}){return nh7BibleKeywordsV451.bibleKeywords(params);}
 
@@ -2123,6 +2124,8 @@ function bindInlineSermonControls(){
 
 const NH7_AUDIO_CATALOG_CACHE_V446='nh7_audio_catalog_cache_v446';
 const NH7_AUDIO_CATALOG_PERSIST_V470='nh7_audio_catalog_cache_v470';
+const NH7_AUDIO_CATALOG_REFRESH_MS_V541=60*60*1000;
+let nh7AudioCatalogFetchPromiseV541=null;
 function nh7ReadAudioCatalogCacheV446(){
   for(const [store,key] of [[sessionStorage,NH7_AUDIO_CATALOG_CACHE_V446],[localStorage,NH7_AUDIO_CATALOG_PERSIST_V470]]){
     try{
@@ -2140,6 +2143,30 @@ function nh7WriteAudioCatalogCacheV446(categories,sermons){
       localStorage.setItem(NH7_AUDIO_CATALOG_PERSIST_V470,raw);
     }
   }catch(e){}
+}
+async function nh7FetchAudioCatalogRemoteV541(){
+ if(nh7AudioCatalogFetchPromiseV541)return nh7AudioCatalogFetchPromiseV541;
+ nh7AudioCatalogFetchPromiseV541=Promise.all([
+  nh7TimedCloudFetchV470('sermon_categories?select=id,name_fa,name_en,name_hr,sort_order&is_active=eq.true&order=sort_order.asc,name_fa.asc',{method:'GET'},5000),
+  nh7TimedCloudFetchV470('sermons?select=id,category_id,title_fa,title_en,title_hr,description_fa,description_en,description_hr,duration_seconds,duration_minutes,audio_url,youtube_url,cover_url,sort_order,published_at&is_published=eq.true&order=sort_order.asc,published_at.desc',{method:'GET'},5000)
+ ]).then(([categories,sermons])=>{
+  if(Array.isArray(sermons)&&sermons.length)nh7WriteAudioCatalogCacheV446(categories,sermons);
+  return {categories:Array.isArray(categories)?categories:[],sermons:Array.isArray(sermons)?sermons:[]};
+ }).finally(()=>{nh7AudioCatalogFetchPromiseV541=null});
+ return nh7AudioCatalogFetchPromiseV541
+}
+async function nh7EnsureAudioCatalogV541(){
+ const cached=nh7ReadAudioCatalogCacheV446();
+ if(cached)return cached;
+ try{return await nh7FetchAudioCatalogRemoteV541()}catch(e){console.warn('Audio catalog warm-up failed',e);return {categories:[],sermons:[]}}
+}
+function nh7AudioCatalogNeedsRefreshV541(cache){
+ return !cache||!Number(cache.at)||Date.now()-Number(cache.at)>NH7_AUDIO_CATALOG_REFRESH_MS_V541
+}
+function nh7WarmAudioCatalogV541(){
+ const cached=nh7ReadAudioCatalogCacheV446();
+ if(cached)return;
+ setTimeout(()=>nh7FetchAudioCatalogRemoteV541().catch(()=>{}),900);
 }
 function nh7BuildSermonMapV535(categories,sermons){
   return Object.fromEntries((Array.isArray(sermons)?sermons:[]).map(x=>{
@@ -2230,21 +2257,17 @@ async function audio(params={}){
   if(!await nh7RequireSchoolAccessV223(tr('audio')))return;
   let categories=[],sermons=[];
   const cached=nh7ReadAudioCatalogCacheV446();
-  const fetchFresh=()=>Promise.all([
-    nh7TimedCloudFetchV470('sermon_categories?select=id,name_fa,name_en,name_hr,sort_order&is_active=eq.true&order=sort_order.asc,name_fa.asc',{method:'GET'},5000),
-    nh7TimedCloudFetchV470('sermons?select=id,category_id,title_fa,title_en,title_hr,description_fa,description_en,description_hr,duration_seconds,duration_minutes,audio_url,youtube_url,cover_url,sort_order,published_at&is_published=eq.true&order=sort_order.asc,published_at.desc',{method:'GET'},5000)
-  ]);
   if(cached){
     categories=cached.categories;sermons=cached.sermons;
-    fetchFresh().then(([freshCategories,freshSermons])=>nh7ApplyFreshAudioCatalogV535(freshCategories,freshSermons))
-      .catch(e=>console.warn('Audio catalog background refresh failed',e));
-  }else{
-    try{
-      [categories,sermons]=await fetchFresh();
-      nh7WriteAudioCatalogCacheV446(categories,sermons);
-    }catch(e){
-      console.warn('Dynamic sermons unavailable; using bundled audio list',e);
+    if(nh7AudioCatalogNeedsRefreshV541(cached)){
+      nh7FetchAudioCatalogRemoteV541().then(fresh=>nh7ApplyFreshAudioCatalogV535(fresh.categories,fresh.sermons))
+        .catch(e=>console.warn('Audio catalog background refresh failed',e));
     }
+  }else{
+    // First open is instant: bundled audio paints now while the online catalog warms in background.
+    nh7FetchAudioCatalogRemoteV541().then(fresh=>{
+      if(Array.isArray(fresh.sermons)&&fresh.sermons.length&&state.route==='audio')render('audio',params,true);
+    }).catch(e=>console.warn('Dynamic sermons unavailable; using bundled audio list',e));
   }
   if(Array.isArray(sermons)&&sermons.length){
     const catId=params.cat||'';
