@@ -2304,7 +2304,15 @@ async function audio(params={}){
     const c=d.categories.find(x=>x.id===params.cat),items=c?.items||[],topic=pick(c?.title)||tr('audio');
     window.__sermonMap=Object.fromEntries(items.map(it=>{const id='bundled-'+String(it.id||simpleHash(it.src||it.title||''));return[id,{id,audio_url:it.src||'',title_fa:it.title?.fa||it.title?.en||'Audio',title_en:it.title?.en||it.title?.fa||'Audio',title_hr:it.title?.hr||it.title?.en||'Audio',analytics_type:'sermon',analytics_id:String(it.id||id),analytics_topic:topic,analytics_source_group:String(c?.id||''),analytics_language:state.lang}]}));
     const list=items.length?`<div class="sermon-list">${items.map(it=>{const id='bundled-'+String(it.id||simpleHash(it.src||it.title||'')),title=pick(it.title)||it.title||'Audio';let progress={};try{progress=JSON.parse(localStorage.getItem(sermonProgressKey(id))||'{}')}catch(e){}const duration=formatAudioTime(progress.duration||0);return`<article class="sermon-card" data-sermon-card="${html(id)}"><div class="sermon-card-main"><span class="sermon-placeholder">🎧</span><div class="sermon-card-copy"><strong>${html(title)}</strong><small>${duration!=='0:00'?`${tr('duration')}: ${localText(duration)} · `:''}MP3</small><div class="sermon-card-actions"><button class="primary-btn compact-player-btn" data-sermon-play="${html(id)}">▶ ${progress.time>5?tr('continueListening'):tr('listenAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(it.src||'')}" data-offline-title="${html(title)}">${state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline'}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(id)}"><div class="inline-player-controls"><button class="player-round" data-inline-back>↶15</button><button class="player-main" data-inline-play>▶</button><button class="player-round" data-inline-forward>30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek type="range" min="0" max="1000" value="0"><span data-inline-total>${duration}</span></div></div></article>`}).join('')}</div>`:`<p class="muted">${tr('noAudio')}</p>`;
-    view.innerHTML=card(topic,list);bindInlineSermonControls();updateInlineSermonPlayers();nh7MountAudioEnhancementsV446();return
+    view.innerHTML=card(topic,list);bindInlineSermonControls();updateInlineSermonPlayers();nh7MountAudioEnhancementsV446();
+    if(params.openBundled){
+      const wanted=String(params.openBundled),target=items.find(it=>String(it.id||it.src||pick(it.title)||it.title||'')===wanted);
+      if(target){
+        const id='bundled-'+String(target.id||simpleHash(target.src||target.title||'')),item=window.__sermonMap?.[id];
+        if(item)setTimeout(()=>playSermon(item),30)
+      }
+    }
+    return
   }
   view.innerHTML=card(tr('audio'),`<div class="grid">${d.categories.map(c=>tile('audio','🎧',pick(c.title),`${tr('all')}: ${localNum((c.items||[]).length)}`,{cat:c.id})).join('')}</div>`);
 }
@@ -2972,6 +2980,9 @@ async function bootstrapApp(){
   notificationPermissionStatus().then(p=>{if(p==='granted'&&nativeLocalNotifications())scheduleNativeNotifications().catch(console.warn)}).catch(console.warn);
   updateInboxBadge();
   showAmen();
+  // Non-blocking warm-up: bundled/local assets only. This does not add Supabase traffic.
+  const warmLocal=()=>{loadBibleMeta().catch(()=>{});jfetch('data/audio/messages.json').catch(()=>{});jfetch('data/school/school_content.json').catch(()=>{})};
+  if('requestIdleCallback' in window)requestIdleCallback(warmLocal,{timeout:1800});else setTimeout(warmLocal,1200);
 }
 bootstrapApp().catch(console.warn);
 
