@@ -534,7 +534,14 @@ async function syncHeaderProfileV503(opts={}){
   const btn=$('#profileHeaderBtn');if(!btn)return;
   if(!isAccountLoggedIn()){nh7HeaderProfileUidV503='';nh7HeaderProfilePathV503='';if(nh7HeaderProfileObjectUrlV503){URL.revokeObjectURL(nh7HeaderProfileObjectUrlV503);nh7HeaderProfileObjectUrlV503=''}paintHeaderProfileV503();return}
   const uid=authSession()?.user?.id||'';if(!uid){paintHeaderProfileV503();return}
-  if(opts.src){paintHeaderProfileV503(opts.src,opts.name||getKnownUserProfile().name||'');nh7HeaderProfileUidV503=uid;return}
+  if(opts.src){
+    if(nh7HeaderProfileObjectUrlV503&&nh7HeaderProfileObjectUrlV503!==opts.src&&nh7HeaderProfileObjectUrlV503.startsWith('blob:'))URL.revokeObjectURL(nh7HeaderProfileObjectUrlV503);
+    nh7HeaderProfileObjectUrlV503=String(opts.src);
+    if(opts.path)nh7HeaderProfilePathV503=String(opts.path);
+    paintHeaderProfileV503(nh7HeaderProfileObjectUrlV503,opts.name||getKnownUserProfile().name||'');
+    nh7HeaderProfileUidV503=uid;
+    return
+  }
   if(!opts.force&&nh7HeaderProfileUidV503===uid){paintHeaderProfileV503(nh7HeaderProfileObjectUrlV503,opts.name||getKnownUserProfile().name||'');return}
   paintHeaderProfileV503('',getKnownUserProfile().name||'');
   try{
