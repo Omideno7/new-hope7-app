@@ -117,10 +117,15 @@ async function edge(payload,retry=0){
   return data;
 }
 async function signedUrl(item,force=false){
-  const id=mediaId(item),key=accountEmail()+'|'+id,cached=signed.get(key);
+  const id=mediaId(item),owner=accountEmail(),key=owner+'|'+id,cached=signed.get(key);
   if(!force&&cached?.url&&cached.expires>Date.now()+60000)return cached.url;
   if(!force&&cached?.promise)return cached.promise;
-  const promise=(async()=>{const data=isSchool(item)?await edge({kind:'audio',lesson_code:lessonCode(item)}):await edge({kind:'sermon',sermon_id:id});const value={url:String(data.signed_url),expires:Date.now()+Math.max(60,Number(data.expires_in||0)-60)*1000,mime:String(data.mime_type||'audio/mpeg')};signed.set(key,value);return value.url})();
+  const promise=(async()=>{
+    const data=isSchool(item)?await edge({kind:'audio',lesson_code:lessonCode(item)}):await edge({kind:'sermon',sermon_id:id});
+    if(owner!==accountEmail())throw Object.assign(new Error('session_changed'),{code:'session_changed'});
+    const value={url:String(data.signed_url),expires:Date.now()+Math.max(60,Number(data.expires_in||0)-60)*1000,mime:String(data.mime_type||'audio/mpeg')};
+    signed.set(key,value);return value.url
+  })();
   signed.set(key,{promise});try{return await promise}catch(error){signed.delete(key);throw error}
 }
 
