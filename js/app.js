@@ -525,8 +525,8 @@ async function cloudRpc(name, payload={}){
 let nh7HeaderProfileObjectUrlV503='',nh7HeaderProfileUidV503='',nh7HeaderProfilePathV503='';
 function paintHeaderProfileV503(src='',name=''){
   const btn=$('#profileHeaderBtn'),img=$('#profileHeaderImage');if(!btn||!img)return;
-  if(!isAccountLoggedIn()){btn.hidden=true;img.hidden=true;img.removeAttribute('src');btn.querySelector('span')?.removeAttribute('hidden');return}
-  btn.hidden=false;btn.title=name||tr('profile')||'Profile';btn.setAttribute('aria-label',name||tr('profile')||'Profile');
+  if(!isAccountLoggedIn()){btn.hidden=true;btn.classList.add('hidden');img.hidden=true;img.removeAttribute('src');btn.querySelector('span')?.removeAttribute('hidden');return}
+  btn.hidden=false;btn.classList.remove('hidden');btn.title=name||tr('profile')||'Profile';btn.setAttribute('aria-label',name||tr('profile')||'Profile');
   if(src){img.src=src;img.hidden=false;btn.querySelector('span')?.setAttribute('hidden','')}
   else{img.hidden=true;img.removeAttribute('src');btn.querySelector('span')?.removeAttribute('hidden')}
 }
@@ -1730,7 +1730,7 @@ function parseRef(ref){
 async function plans(){
   const d=await jfetch('data/bible/plans/reading_plans_1yr_2yr.json'); await loadBibleMeta();
   const plans=d.plans||[];
-  view.innerHTML=card(tr('plans'), `<div class="list">${plans.map((p,i)=>`<button class="list-btn" data-show-plan="${i}"><strong>${html(p.title?.[state.lang]||p.title?.en)}</strong><small>${localNum(p.durationDays||p.days?.length)} ${tr('day')}</small></button>`).join('')}</div><div id="planDetail"></div>`);
+  view.innerHTML=`<section class="nh7-plans-v534">${card(tr('plans'), `<div class="list">${plans.map((p,i)=>`<button class="list-btn" data-show-plan="${i}"><strong>${html(p.title?.[state.lang]||p.title?.en)}</strong><small>${localNum(p.durationDays||p.days?.length)} ${tr('day')}</small></button>`).join('')}</div><div id="planDetail"></div>`)}</section>`;
   $$('[data-show-plan]').forEach(btn=>btn.onclick=()=>showPlan(plans[Number(btn.dataset.showPlan)]));
 }
 function planBookName(bookId){ const b=state.bible.books?.find(x=>x.id===bookId); return b?.names?.[state.lang] || b?.names?.en || bookId; }
