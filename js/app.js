@@ -1480,11 +1480,13 @@ async function home(){
   const dailyDay=userCycleDay(365);
   view.innerHTML =
     card(tr('appTitle'), `<p>${tr('welcome')}</p><div class="button-row"><button class="primary-btn" data-go="daily">${tr('continueToday')}</button><button class="secondary-btn" id="quickNotify">${tr('enableNotifications')}</button></div>`, 'hero') +
+    nh7GlobalSearchV540.html() +
     card(tr('todayMessage'), `<p>${tr('day')} ${localNum(dailyDay)}</p><div class="button-row"><button class="secondary-btn" data-go="daily" data-params='{"tab":"word"}'>${tr('dailyWord')}</button><button class="secondary-btn" data-go="daily" data-params='{"tab":"faith"}'>${tr('faithProclamation')}</button><button class="secondary-btn" data-go="daily" data-params='{"tab":"juice"}'>${tr('dailyJuice')}</button></div>`) +
     card(tr('savedVerses'), `<p class="muted">${tr('savedVersesCollapsed')}</p>${savedVersesPanel(bookmarks)}`) +
     card(tr('myNotes'), `<p class="muted">${tr('notesCollapsed')}</p>${notesPanel()}`) +
     card(tr('progress'), nh7GrowthHtml(g), 'nh7-growth-card-v458');
   $('#quickNotify')?.addEventListener('click', enableNotifications);
+  nh7GlobalSearchV540.mount();
 }
 
 
@@ -1614,6 +1616,7 @@ async function loadBook(bookId){
   return {book:b, verses:state.bible.groups[group].verses.filter(v=>v.bookId===bookId)};
 }
 const nh7BibleKeywordsV451=createBibleKeywordsV451({state,view,html,card,tr,l223,localNum,jfetch,navigate,localizeRef,loadBibleMeta,showWritten:()=>bible({section:'written'})});
+const nh7GlobalSearchV540=createGlobalSearchV540({lang:()=>state.lang,html,card,localNum,jfetch,navigate,localizeRef,loadBibleMeta,parseRef,pick,normalizeNote:normalizeNoteText,audioCache:()=>nh7ReadAudioCatalogCacheV446(),bible:()=>nh7BibleKeywordsV451});
 async function bibleKeywordsV450(params={}){return nh7BibleKeywordsV451.bibleKeywords(params);}
 
 async function bible(params={}){
