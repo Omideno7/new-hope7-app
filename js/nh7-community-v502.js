@@ -3,7 +3,7 @@
 (()=>{'use strict';
 if(window.__NH7_COMMUNITY_V502__)return;window.__NH7_COMMUNITY_V502__=true;
 
-const VERSION='5.0.5-qa-hardening';
+const VERSION='5.0.6-profile-header-qa';
 const GUIDE_URL='data/community/testimony_guide_v502.json';
 const PROFILE_BUCKET='nh7-profile-photos-v502';
 const TESTIMONY_PRIVATE='nh7-testimony-submissions-v502';
@@ -296,7 +296,7 @@ async function saveProfile(old){
   await C().cloudFetch('nh7_user_profiles_v502?on_conflict=user_id',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify({user_id:uid,display_name:name,original_photo_path:originalPath,photo_path:photoPath,photo_position_x:crop.x,photo_position_y:crop.y,photo_zoom:crop.zoom,updated_at:new Date().toISOString()})});
   newUploads=[];
   const stale=[old?.original_photo_path,old?.photo_path].filter(p=>p&&p!==originalPath&&p!==photoPath);if(stale.length)C().storageRemove?.(PROFILE_BUCKET,stale).catch(()=>{});
-  try{localStorage.setItem('nh7_user_profile',JSON.stringify({name,email:C().email()}))}catch(_){}
+  try{const previous=JSON.parse(localStorage.getItem('nh7_user_profile')||'{}');localStorage.setItem('nh7_user_profile',JSON.stringify(Object.assign({},previous&&typeof previous==='object'?previous:{},{name,email:C().email()})))}catch(_){}
   document.getElementById('nh7c502ProfileName').textContent=name;
   const savedPreview=crop.cropped;crop.dirty=false;
   if(savedPreview)Promise.resolve(C().refreshHeaderProfile?.({src:savedPreview,name})).catch(()=>{});
