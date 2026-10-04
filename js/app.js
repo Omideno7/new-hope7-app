@@ -1598,10 +1598,37 @@ async function bible(params={}){
   view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written'}))}'>‹ ${html(tr('back'))}</button></div>`+renderBookList(testament==='OT'?tr('oldtestament'):tr('newtestament'),books,testament);
 }
 function renderBookList(title,books,testament=''){return card(title,`<div class="grid">${books.map(b=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:testament||b.testament,bookId:b.id}))}'><strong>${html(b.names[state.lang]||b.names.en)}</strong><small>${localNum(b.chapters)} ${tr('chapters')}</small></button>`).join('')}</div>`)}
+
+function bibleAdaptiveSidebar(testament='',bookId='',chapter=0){
+  const activeTest=String(testament||state.bible.books.find(b=>b.id===bookId)?.testament||'OT').toUpperCase();
+  const books=(state.bible.books||[]).filter(b=>b.testament===activeTest);
+  const testamentNav=`<div class="nh7-adaptive-segment">
+    <button class="${activeTest==='OT'?'active':''}" data-go="bible" data-params='${html(JSON.stringify({section:'written',testament:'OT'}))}'>${html(tr('oldtestament'))}</button>
+    <button class="${activeTest==='NT'?'active':''}" data-go="bible" data-params='${html(JSON.stringify({section:'written',testament:'NT'}))}'>${html(tr('newtestament'))}</button>
+  </div>`;
+  const bookRows=books.map(b=>{
+    const selected=String(b.id)===String(bookId);
+    const chapters=selected?Array.from({length:Number(b.chapters)||0},(_,i)=>i+1):[];
+    return `<div class="nh7-adaptive-book ${selected?'is-active':''}">
+      <button class="nh7-adaptive-book-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:activeTest,bookId:b.id}))}'>
+        <strong>${html(b.names[state.lang]||b.names.en)}</strong><small>${localNum(b.chapters)}</small>
+      </button>
+      ${selected?`<div class="nh7-adaptive-chapters">${chapters.map(ch=>`<button class="${Number(chapter)===ch?'active':''}" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',testament:activeTest,bookId:b.id,chapter:ch}))}'>${localNum(ch)}</button>`).join('')}</div>`:''}
+    </div>`;
+  }).join('');
+  return `<aside class="nh7-adaptive-sidebar nh7-bible-sidebar" aria-label="${html(tr('bookList'))}">
+    <div class="nh7-adaptive-sidebar-head"><strong>📖 ${html(tr('writtenBible'))}</strong></div>
+    ${testamentNav}
+    <div class="nh7-adaptive-scroll">${bookRows}</div>
+  </aside>`;
+}
+function adaptiveSplit(sidebar,main,kind=''){return `<div class="nh7-adaptive-split ${kind}">${sidebar}<main class="nh7-adaptive-main">${main}</main></div>`}
 async function bibleBook(bookId,testament=''){
   const data=await loadBook(bookId);if(!data)return bible({section:'written'});
   const chapters=Array.from({length:data.book.chapters},(_,i)=>i+1),test=data.book.testament||testament;
-  view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written',testament:test}))}'>‹ ${html(tr('bookList'))}</button></div>`+card(data.book.names[state.lang]||data.book.names.en,`<div class="grid">${chapters.map(ch=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:ch}))}'><strong>${tr('chapter')} ${localNum(ch)}</strong></button>`).join('')}</div>`);
+  const phoneBack=`<div class="nh7-step-back nh7-phone-only"><button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written',testament:test}))}'>‹ ${html(tr('bookList'))}</button></div>`;
+  const main=phoneBack+card(data.book.names[state.lang]||data.book.names.en,`<div class="grid nh7-chapter-grid">${chapters.map(ch=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:ch}))}'><strong>${tr('chapter')} ${localNum(ch)}</strong></button>`).join('')}</div>`);
+  view.innerHTML=adaptiveSplit(bibleAdaptiveSidebar(test,bookId,0),main,'nh7-bible-adaptive');
 }
 async function bibleChapter(bookId,chapter){
   const data=await loadBook(bookId);if(!data)return bible({section:'written'});
@@ -1621,7 +1648,8 @@ async function bibleChapter(bookId,chapter){
   const topNav=`<div class="bible-book-nav"><button class="secondary-btn" ${prevBook?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:prevBook.testament,bookId:prevBook.id}))}'`:'disabled'}>‹ ${html(tr('previousBook'))}</button><button class="primary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written',testament:data.book.testament}))}'>☷ ${html(tr('bookList'))}</button><button class="secondary-btn" ${nextBook?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:nextBook.testament,bookId:nextBook.id}))}'`:'disabled'}>${html(tr('nextBook'))} ›</button></div>`;
   const prevChapter=chapter>1?chapter-1:null,nextChapter=chapter<data.book.chapters?chapter+1:null;
   const bottomNav=`<div class="bible-chapter-nav"><button class="secondary-btn" ${prevChapter?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:prevChapter}))}'`:'disabled'}>‹ ${html(tr('previousChapter'))}</button><span>${tr('chapter')} ${localNum(chapter)} / ${localNum(data.book.chapters)}</span><button class="secondary-btn" ${nextChapter?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:nextChapter}))}'`:'disabled'}>${html(tr('nextChapter'))} ›</button></div>`;
-  view.innerHTML=card(title,`${topNav}<p class="muted bible-reader-hint">${html(l223('برای نمایش ابزارها روی آیه بزنید؛ برای باب بعدی یا قبلی صفحه را به چپ یا راست بکشید.','Tap a verse for tools; swipe left or right to change chapter.','Dodirnite redak za alate; povucite lijevo ili desno za drugo poglavlje.'))}</p><div class="reader continuous-reader" data-bible-swipe="1">${rows}</div>${bottomNav}`);
+  const chapterMain=card(title,`<div class="nh7-phone-only">${topNav}</div><p class="muted bible-reader-hint">${html(l223('برای نمایش ابزارها روی آیه بزنید؛ برای باب بعدی یا قبلی صفحه را به چپ یا راست بکشید.','Tap a verse for tools; swipe left or right to change chapter.','Dodirnite redak za alate; povucite lijevo ili desno za drugo poglavlje.'))}</p><div class="reader continuous-reader" data-bible-swipe="1">${rows}</div>${bottomNav}`);
+  view.innerHTML=adaptiveSplit(bibleAdaptiveSidebar(data.book.testament,bookId,chapter),chapterMain,'nh7-bible-adaptive');
   bindBibleChapterSwipe(prevChapter?{bookId,chapter:prevChapter}:null,nextChapter?{bookId,chapter:nextChapter}:null);
   if(focusVerse)setTimeout(()=>document.getElementById('v-'+focusVerse)?.scrollIntoView({behavior:'smooth',block:'center'}),150);
 }
@@ -2160,7 +2188,15 @@ async function audio(params={}){
     window.__sermonMap=nh7BuildSermonMapV535(categories,sermons);
     if(params.open){const x=sermons.find(v=>String(v.id)===String(params.open));if(x)playSermon(x);navigate('audio',{cat:catId,q:params.q||''},true);return}
     const list=filtered.length?`<div class="sermon-list">${filtered.map(x=>{const title=x['title_'+state.lang]||x.title_fa||x.title_en;let progress={};try{progress=JSON.parse(localStorage.getItem(sermonProgressKey(x.id))||'{}')}catch(e){}const duration=sermonDurationLabel(x)||formatAudioTime(progress.duration||0);return `<article class="sermon-card" data-sermon-card="${html(x.id)}"><div class="sermon-card-main">${x.cover_url?`<img src="${html(x.cover_url)}" alt="">`:'<span class="sermon-placeholder">🎙</span>'}<div class="sermon-card-copy"><strong>${html(title)}</strong><small>${duration?`${tr('duration')}: ${localText(duration)} · `:''}${x.youtube_url?'YouTube · ':''}${x.audio_url?'MP3':''}</small><div class="sermon-card-actions">${x.audio_url?`<button class="primary-btn compact-player-btn" data-sermon-play="${html(x.id)}">▶ ${progress.time>5?tr('continueListening'):tr('listenAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(x.audio_url)}" data-offline-title="${html(title)}">${state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline'}</button>`:''}<button class="secondary-btn compact-player-btn" data-sermon-note="${html(x.id)}">📝 ${tr('sermonNoteButton')}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(x.id)}"><div class="inline-player-controls"><button class="player-round" data-inline-back>↶15</button><button class="player-main" data-inline-play>▶</button><button class="player-round" data-inline-forward>30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek type="range" min="0" max="1000" value="0"><span data-inline-total>${duration||'0:00'}</span></div></div></article>`}).join('')}</div>`:`<p class="muted">${tr('noSermons')}</p>`;
-    view.innerHTML=card(tr('sermons'),`<input id="sermonSearch" placeholder="${tr('sermonSearch')}" value="${html(params.q||'')}"><div class="tabs"><button class="tab ${!catId?'active':''}" data-go="audio">${tr('allCategories')}</button>${(categories||[]).map(c=>`<button class="tab ${String(catId)===String(c.id)?'active':''}" data-go="audio" data-params='${html(JSON.stringify({cat:c.id}))}'>${html(c['name_'+state.lang]||c.name_fa||c.name_en)}</button>`).join('')}</div>${list}`);
+    const categorySidebar=`<aside class="nh7-adaptive-sidebar nh7-audio-sidebar">
+      <div class="nh7-adaptive-sidebar-head"><strong>🎧 ${html(tr('sermons'))}</strong></div>
+      <div class="nh7-adaptive-scroll nh7-audio-categories">
+        <button class="nh7-adaptive-category ${!catId?'active':''}" data-go="audio">${html(tr('allCategories'))}</button>
+        ${(categories||[]).map(c=>`<button class="nh7-adaptive-category ${String(catId)===String(c.id)?'active':''}" data-go="audio" data-params='${html(JSON.stringify({cat:c.id}))}'>${html(c['name_'+state.lang]||c.name_fa||c.name_en)}</button>`).join('')}
+      </div>
+    </aside>`;
+    const audioMain=card(tr('sermons'),`<input id="sermonSearch" placeholder="${tr('sermonSearch')}" value="${html(params.q||'')}"><div class="tabs nh7-phone-only"><button class="tab ${!catId?'active':''}" data-go="audio">${tr('allCategories')}</button>${(categories||[]).map(c=>`<button class="tab ${String(catId)===String(c.id)?'active':''}" data-go="audio" data-params='${html(JSON.stringify({cat:c.id}))}'>${html(c['name_'+state.lang]||c.name_fa||c.name_en)}</button>`).join('')}</div>${list}`);
+    view.innerHTML=adaptiveSplit(categorySidebar,audioMain,'nh7-audio-adaptive');
     try{window.NH7_AUDIO_LIBRARY_V500_PATCH?.()}catch(e){console.warn('Audio Library v500 mount',e)}
     const sermonSearchEl=$('#sermonSearch');
     const runSermonSearch=e=>navigate('audio',{cat:catId,q:e.target.value},true);
