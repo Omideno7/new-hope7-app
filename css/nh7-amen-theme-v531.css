@@ -1,0 +1,80 @@
+/* New Hope 7 v5.3.1 — Theme-aware opening/Amen screen.
+   Presentation only: no message, account, storage or Supabase behavior changes. */
+
+.amen-gate{
+  background:
+    radial-gradient(circle at 18% 10%,rgba(255,255,255,.10),transparent 32%),
+    linear-gradient(160deg,
+      var(--nh7-studio-accent,var(--brand,#1d4ed8)) 0%,
+      var(--nh7-studio-bg,var(--bg,#071b47)) 72%)!important;
+  color:var(--nh7-studio-text,var(--ink,#10284a))!important;
+  transition:background .22s ease,color .22s ease;
+}
+
+.amen-card{
+  background:var(--nh7-studio-card,var(--card,#fff))!important;
+  color:var(--nh7-studio-text,var(--ink,#10284a))!important;
+  border:1px solid var(--nh7-studio-line,var(--line,#d9e6f7))!important;
+  box-shadow:0 22px 70px rgba(0,0,0,.24)!important;
+  transition:background .22s ease,color .22s ease,border-color .22s ease,box-shadow .22s ease;
+}
+
+.amen-card #amenTitle,
+.amen-card h1,
+.amen-card h2,
+.amen-card h3{
+  color:var(--nh7-studio-text,var(--ink,#10284a))!important;
+}
+
+.amen-card #amenMessage,
+.amen-card p,
+.amen-card small{
+  color:var(--nh7-studio-muted,var(--muted,#64748b))!important;
+}
+
+.amen-card #amenButton{
+  background:var(--nh7-studio-accent,var(--brand,#1d4ed8))!important;
+  color:var(--nh7-studio-button-ink,#fff)!important;
+  border:1px solid var(--nh7-studio-accent,var(--brand,#1d4ed8))!important;
+  box-shadow:0 9px 22px rgba(0,0,0,.16)!important;
+}
+
+.amen-card .amen-logo{
+  background:#fff!important;
+  border:1px solid var(--nh7-studio-line,var(--line,#d9e6f7))!important;
+  box-shadow:0 8px 20px rgba(0,0,0,.10)!important;
+}
+
+/* Match the selected UI style without changing the gate's behavior. */
+html[data-nh7-ui-style514="outline"] .amen-card{
+  border:1.5px solid var(--nh7-studio-accent,var(--brand,#1d4ed8))!important;
+  box-shadow:4px 5px 0 rgba(0,0,0,.08),0 14px 30px rgba(0,0,0,.12)!important;
+}
+html[data-nh7-ui-style514="outline"] .amen-card #amenButton{
+  background:var(--nh7-studio-card,var(--card,#fff))!important;
+  color:var(--nh7-studio-accent,var(--brand,#1d4ed8))!important;
+  border:1.5px solid var(--nh7-studio-accent,var(--brand,#1d4ed8))!important;
+}
+
+html[data-nh7-ui-style514="neon"] .amen-card{
+  border:1px solid var(--nh7-studio-accent,var(--brand,#1d4ed8))!important;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1d4ed8)) 20%,transparent),
+    0 0 22px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1d4ed8)) 25%,transparent),
+    0 20px 46px rgba(0,0,0,.20)!important;
+}
+html[data-nh7-ui-style514="neon"] .amen-card #amenButton{
+  box-shadow:
+    0 0 12px color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1d4ed8)) 42%,transparent),
+    0 8px 20px rgba(0,0,0,.16)!important;
+}
+
+html[data-nh7-ui-style514="glass"] .amen-card{
+  background:color-mix(in srgb,var(--nh7-studio-card,var(--card,#fff)) 78%,transparent)!important;
+  -webkit-backdrop-filter:blur(18px) saturate(1.08);
+  backdrop-filter:blur(18px) saturate(1.08);
+}
+
+@media (prefers-reduced-motion:reduce){
+  .amen-gate,.amen-card{transition:none!important}
+}
