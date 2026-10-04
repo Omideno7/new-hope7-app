@@ -51,7 +51,7 @@
     window.NH7_CANONICAL_SETTINGS = true;
     window.NH7_VERSION = '2.3.9.50';
     window.NH7_BASE_PATH = new URL('.', window.location.href).pathname;
-    window.NH7_SERVICE_WORKER = window.NH7_BASE_PATH + 'service-worker.js?v=4.8.14-sermon-cover535';
+    window.NH7_SERVICE_WORKER = window.NH7_BASE_PATH + 'service-worker.js?v=5.4.0-qa250';
     window.NH7_ONESIGNAL_WORKER = window.NH7_BASE_PATH + 'push/OneSignalSDKWorker.js';
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register(window.NH7_SERVICE_WORKER, { scope: window.NH7_BASE_PATH, updateViaCache: 'none' }).catch(console.warn);
@@ -151,7 +151,7 @@
   <script src="js/nh7-offline-playback-bridge-v332.js?v=2.3.9.50-offline403"></script>
   <script src="js/nh7-offline-persistence-v323.js?v=2.3.9.50-offline403"></script>
   <script src="js/nh7-auth-recovery-v342.js?v=2.3.9.50"></script>
-  <script src="js/nh7-audio-classic-v484.js?v=4.8.5-no-telemetry"></script>
+  <script src="js/nh7-audio-classic-v484.js?v=4.8.6-qa250"></script>
   <script src="js/nh7-audio-miniplayer-v487.js?v=4.8.7" defer></script>
   <script src="js/nh7-sermon-social-v443.js?v=4.4.8-batch" defer></script>
   <script src="js/nh7-sermon-list-detail-v445.js?v=4.4.6" defer></script>
