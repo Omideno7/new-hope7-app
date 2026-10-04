@@ -307,7 +307,7 @@ begin
   end if;
   update public.nh7_prayer_requests_v502
   set status=v_status,updated_at=now(),completed_at=case when v_status='completed' then now() else null end
-  where id=p_id returning true into v_changed;
+  where id=p_id and status='pending' returning true into v_changed;
   return coalesce(v_changed,false);
 end;
 $$;
@@ -403,7 +403,7 @@ begin
       published_audio_path=trim(p_published_audio_path),
       published_at=now(),
       updated_at=now()
-  where id=p_id and consent_public=true
+  where id=p_id and status='pending' and consent_public=true
     and (testimony_type<>'healing' or consent_health_public=true)
   returning true into v_changed;
   return coalesce(v_changed,false);
