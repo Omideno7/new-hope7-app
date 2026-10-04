@@ -98,3 +98,22 @@ html[data-nh7-studio] #view .verse-ref-btn{
   border-color:var(--nh7-studio-accent)!important;
   box-shadow:0 8px 18px color-mix(in srgb,var(--nh7-studio-accent) 20%,transparent)!important;
 }
+
+
+/* v473: revealed Daily scripture content follows the active Studio palette.
+   Fixes white inline-verse surfaces hiding light verse text in dark/night palettes. */
+html[data-nh7-studio] #view .inline-verse,
+html[data-nh7-studio] #view .verse-list-item{
+  background:var(--nh7-studio-card)!important;
+  color:var(--nh7-studio-verse)!important;
+  border-color:var(--nh7-studio-line)!important;
+}
+html[data-nh7-studio] #view .inline-verse p,
+html[data-nh7-studio] #view .inline-verse strong,
+html[data-nh7-studio] #view .verse-list-item p,
+html[data-nh7-studio] #view .verse-list-item strong{
+  color:var(--nh7-studio-verse)!important;
+}
+html[data-nh7-studio-tone457="dark"] #view .inline-verse{
+  box-shadow:0 10px 26px rgba(0,0,0,.26)!important;
+}
