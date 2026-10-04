@@ -26,11 +26,11 @@ def forbid(path, needle, label=None):
 index = "index.html"
 
 # Release runtime signatures.
-require(index, 'js/nh7-audio-classic-v484.js?v=4.8.5-no-telemetry', "audio no-telemetry runtime")
+require(index, 'js/nh7-audio-classic-v484.js?v=4.8.6-qa250', "hardened audio runtime")
 require(index, 'js/nh7-sermon-social-v443.js?v=4.4.8-batch', "batched sermon social runtime")
 require(index, 'js/nh7-inbox-badge-sync-v418.js?v=4.1.10-snapshot', "Inbox snapshot runtime")
 require(index, 'js/nh7-school-path-v351.js?v=4.6.7-io', "School Path low-I/O runtime")
-require(index, 'js/app.js?v=4.8.16-inbox', "shared Inbox/app runtime")
+require(index, 'js/app.js?v=4.8.19-community-qa250', "current Community 2.5.0 app runtime")
 forbid(index, 'nh7-book-reading-telemetry-v490.js', "book reading telemetry script")
 
 # Retired telemetry must not reappear in active clients.
