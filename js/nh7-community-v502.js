@@ -3,7 +3,7 @@
 (()=>{'use strict';
 if(window.__NH7_COMMUNITY_V502__)return;window.__NH7_COMMUNITY_V502__=true;
 
-const VERSION='5.0.6-profile-header-qa';
+const VERSION='5.0.7-profile-header-finalqa';
 const GUIDE_URL='data/community/testimony_guide_v502.json';
 const PROFILE_BUCKET='nh7-profile-photos-v502';
 const TESTIMONY_PRIVATE='nh7-testimony-submissions-v502';
@@ -299,8 +299,8 @@ async function saveProfile(old){
   try{const previous=JSON.parse(localStorage.getItem('nh7_user_profile')||'{}');localStorage.setItem('nh7_user_profile',JSON.stringify(Object.assign({},previous&&typeof previous==='object'?previous:{},{name,email:C().email()})))}catch(_){}
   document.getElementById('nh7c502ProfileName').textContent=name;
   const savedPreview=crop.cropped;crop.dirty=false;
-  if(savedPreview)Promise.resolve(C().refreshHeaderProfile?.({src:savedPreview,name})).catch(()=>{});
-  setTimeout(()=>Promise.resolve(C().refreshHeaderProfile?.({force:true,name})).catch(()=>{}),80);
+  if(savedPreview)Promise.resolve(C().refreshHeaderProfile?.({src:savedPreview,path:photoPath,name})).catch(()=>{});
+  else Promise.resolve(C().refreshHeaderProfile?.({force:true,name})).catch(()=>{});
   toast(L('پروفایل ذخیره شد ✓','Profile saved ✓','Profil je spremljen ✓'),'notice success-notice');
   return {user_id:uid,display_name:name,original_photo_path:originalPath,photo_path:photoPath,photo_position_x:crop.x,photo_position_y:crop.y,photo_zoom:crop.zoom}
  }catch(e){if(newUploads.length)C().storageRemove?.(PROFILE_BUCKET,newUploads).catch(()=>{});toast(backendNotice(e))}finally{b.disabled=false}
