@@ -56,7 +56,53 @@ async function refreshOfflineButtons(){const bs=$$('[data-offline-download]');aw
 async function resolveOfflineMediaUrl(url){if(!url||!isNativeCapacitor())return url;const st=await offlineMediaStatus(url);if(!st.cached)return url;const m=offlineMeta(url);let uri=m?.uri||st.uri||'';if(!uri&&m?.path)uri=await nativeFileUri(m.path);return uri?playableNativeUri(uri):url}
 async function clearDownloadedMedia(){if(isNativeCapacitor()){const F=capacitorPlugin('Filesystem');if(F)try{await F.rmdir({directory:'DATA',path:NATIVE_OFFLINE_DIR,recursive:true})}catch(e){}const ks=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith(OFFLINE_MEDIA_PREFIX))ks.push(k)}ks.forEach(k=>localStorage.removeItem(k));return}await swMessage('CLEAR_MEDIA')}
 async function prepareCoreOffline(button){const old=button?.textContent||'';try{if(button){button.disabled=true;button.textContent=state.lang==='fa'?'در حال آماده‌سازی…':state.lang==='hr'?'Priprema…':'Preparing…'}if(isNativeCapacitor()){localStorage.setItem('nh7_offline_core_ready',new Date().toISOString());alert(state.lang==='fa'?'محتوای اصلی داخل برنامه نصب شده و برای استفاده آفلاین آماده است.':state.lang==='hr'?'Osnovni sadržaj ugrađen je u aplikaciju i spreman je za offline korištenje.':'Core content is bundled in the app and ready offline.')}else{const r=await swMessage('CACHE_CORE');localStorage.setItem('nh7_offline_core_ready',new Date().toISOString());alert(state.lang==='fa'?`محتوای اصلی برای استفاده آفلاین آماده شد. (${r.cached||0} فایل)`:state.lang==='hr'?'Osnovni sadržaj je spreman za offline korištenje.':'Core content is ready for offline use.')}}catch(e){console.warn(e);alert(state.lang==='fa'?'آماده‌سازی آفلاین کامل نشد. دوباره تلاش کنید.':'Offline preparation did not finish. Please try again.')}finally{if(button){button.disabled=false;button.textContent=old}}}
-async function offlineStorageSummary(){if(isNativeCapacitor()){let count=0,bytes=0;for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!k?.startsWith(OFFLINE_MEDIA_PREFIX))continue;try{const m=JSON.parse(localStorage.getItem(k)||'{}');if(m.native){count++;bytes+=Number(m.bytes||0)}}catch(e){}}const mb=(bytes/1048576).toFixed(1);return state.lang==='fa'?`${count} فایل رسانه‌ای (${mb} مگابایت) روی دستگاه ذخیره شده است.`:state.lang==='hr'?`${count} medijskih datoteka (${mb} MB) spremljeno je na uređaju.`:`${count} media files (${mb} MB) are stored on this device.`}try{const r=await swMessage('OFFLINE_STATUS');const mb=(Number(r.mediaBytes||0)/1048576).toFixed(1);return state.lang==='fa'?`${r.coreCount||0} فایل اصلی و ${r.mediaCount||0} فایل رسانه‌ای (${mb} مگابایت) آماده آفلاین است.`:state.lang==='hr'?`${r.coreCount||0} osnovnih i ${r.mediaCount||0} medijskih datoteka (${mb} MB) spremljeno je offline.`:`${r.coreCount||0} core files and ${r.mediaCount||0} media files (${mb} MB) are available offline.`}catch(e){return state.lang==='fa'?'وضعیت فضای آفلاین در دسترس نیست.':'Offline storage status unavailable.'}}
+function classicAudioOfflineSummary(){
+  const seen=new Set();let count=0,bytes=0;
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(!k||(!k.startsWith('nh7_audio_media_v397:')&&!k.startsWith('nh7_audio_media_v396:')))continue;
+    try{
+      const m=JSON.parse(localStorage.getItem(k)||'{}');
+      const id=String(m.id||k.replace(/^nh7_audio_media_v39[67]:/,''));
+      if(seen.has(id))continue;
+      seen.add(id);
+      if(m.native||m.web){count++;bytes+=Math.max(0,Number(m.bytes||0))}
+    }catch(e){}
+  }
+  return {count,bytes}
+}
+async function offlineStorageSummary(){
+  const classic=classicAudioOfflineSummary();
+  if(isNativeCapacitor()){
+    let count=classic.count,bytes=classic.bytes;
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i);
+      if(!k?.startsWith(OFFLINE_MEDIA_PREFIX))continue;
+      try{const m=JSON.parse(localStorage.getItem(k)||'{}');if(m.native){count++;bytes+=Math.max(0,Number(m.bytes||0))}}catch(e){}
+    }
+    const mb=(bytes/1048576).toFixed(1);
+    if(state.lang==='fa')return count+' فایل رسانه‌ای ('+mb+' مگابایت) روی دستگاه ذخیره شده است.';
+    if(state.lang==='hr')return count+' medijskih datoteka ('+mb+' MB) spremljeno je na uređaju.';
+    return count+' media files ('+mb+' MB) are stored on this device.'
+  }
+  try{
+    const r=await swMessage('OFFLINE_STATUS');
+    const mediaCount=Number(r.mediaCount||0)+classic.count;
+    const mediaBytes=Number(r.mediaBytes||0)+classic.bytes;
+    const mb=(mediaBytes/1048576).toFixed(1);
+    if(state.lang==='fa')return Number(r.coreCount||0)+' فایل اصلی و '+mediaCount+' فایل رسانه‌ای ('+mb+' مگابایت) آماده آفلاین است.';
+    if(state.lang==='hr')return Number(r.coreCount||0)+' osnovnih i '+mediaCount+' medijskih datoteka ('+mb+' MB) spremljeno je offline.';
+    return Number(r.coreCount||0)+' core files and '+mediaCount+' media files ('+mb+' MB) are available offline.'
+  }catch(e){
+    if(classic.count){
+      const mb=(classic.bytes/1048576).toFixed(1);
+      if(state.lang==='fa')return classic.count+' فایل صوتی ('+mb+' مگابایت) آفلاین ذخیره شده است.';
+      if(state.lang==='hr')return classic.count+' audio datoteka ('+mb+' MB) spremljeno je offline.';
+      return classic.count+' audio files ('+mb+' MB) are stored offline.'
+    }
+    return state.lang==='fa'?'وضعیت فضای آفلاین در دسترس نیست.':state.lang==='hr'?'Status offline pohrane nije dostupan.':'Offline storage status unavailable.'
+  }
+}
 
 const sermonPlayerState={audio:null,current:null,saveTimer:null,cloudTimer:null,analyticsSessionId:'',analyticsTotalSeconds:0,analyticsLastFlushedSeconds:0,analyticsLastWallAt:0,analyticsSending:false,analyticsSeekCount:0,analyticsMaxRate:1,analyticsStartedPosition:0};
 function sermonProgressKey(id){return 'nh7_sermon_progress_'+String(id)}
@@ -367,9 +413,12 @@ async function refreshUserSession(){
     const merged=Object.assign({},old,d,{user:d?.user||old.user});
     saveAuthSession(merged);return merged;
   }catch(e){
-    // A transient refresh/network failure must not erase the locally saved sign-in.
-    // The failed API call still remains failed; the user can retry or explicitly sign out.
-    console.warn('Session refresh failed; preserving saved session',e);
+    // Preserve the saved sign-in only for transient transport/server failures.
+    // A definitive Auth rejection means the refresh token is no longer usable.
+    const status=Number(e?.status||0),code=String(e?.code||'').toLowerCase(),message=String(e?.message||'').toLowerCase();
+    const rejected=status===400||status===401||/refresh.?token.*(invalid|expired|not.?found)|invalid.?refresh|session.*(invalid|expired)/.test(code+' '+message);
+    if(rejected)saveAuthSession(null);
+    else console.warn('Session refresh failed transiently; preserving saved session',e);
     return null;
   }
 }
