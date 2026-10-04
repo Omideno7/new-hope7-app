@@ -12,7 +12,7 @@ const TESTIMONY_MAX_BYTES=60*1024*1024;
 const PROFILE_MAX_BYTES=5*1024*1024;
 const PUBLIC_FEED_TTL_MS=10*60*1000;
 const MY_PRAYER_TTL_MS=2*60*1000;
-let guideCache=null,publicFeedCache=new Map(),myPrayerCache={uid:'',at:0,rows:[]},prayerFlash='',recordState={rec:null,stream:null,chunks:[],blob:null,url:'',timer:0,started:0,topic:0,bytes:0,tooLarge:false};
+let guideCache=null,publicFeedCache=new Map(),myPrayerCache={uid:'',at:0,rows:[]},recordState={rec:null,stream:null,chunks:[],blob:null,url:'',timer:0,started:0,topic:0,bytes:0,tooLarge:false};
 let crop={original:'',cropped:'',x:0,y:0,zoom:1,tx:0,ty:0,tz:1,drag:false,sx:0,sy:0,ox:0,oy:0,scrollY:0};
 
 function C(){const c=window.NH7_COMMUNITY_CTX_V502;if(!c)throw new Error('Community context is not ready.');return c}
@@ -180,20 +180,32 @@ function renderOwnPrayerRowsV503(){
  if(!ownPrayerRowsV503.length){host.innerHTML='<p class="muted">'+esc(L('هنوز درخواست دعایی ثبت نکرده‌اید.','You have not submitted a prayer request yet.','Još niste poslali molitveni zahtjev.'))+'</p>';return}
  host.innerHTML=ownPrayerRowsV503.map(r=>{
   const status=String(r.status||'new').toLowerCase(),done=status==='completed';
-  return '<article class="nh7c502-prayer-own '+prayerStatusClassV503(status)+'"><div class="nh7c502-prayer-own-head"><span class="nh7c502-prayer-status">'+esc(prayerStatusLabelV503(status))+'</span><small>'+esc(prayerDateV503(r.created_at))+'</small></div><p>'+esc(r.request_text||'')+'</p>'+(done?'<div class="nh7c502-prayer-answer"><span>'+esc(L('اگر پاسخ دعایتان را دریافت کرده‌اید، می‌توانید آن را به‌عنوان شهادت با کلیسا در میان بگذارید.','If you have received an answer to this prayer, you can share it with the church as a testimony.','Ako ste primili odgovor na ovu molitvu, možete ga podijeliti s crkvom kao svjedočanstvo.'))+'</span><button type="button" class="secondary-btn" data-go="testimonies">'+esc(L('ثبت شهادت','Share testimony','Podijeli svjedočanstvo'))+'</button></div>':'')+'</article>';
+  return '<article class="nh7c502-prayer-own '+prayerStatusClassV503(status)+'"><div class="nh7c502-prayer-own-head"><span class="nh7c502-prayer-status">'+esc(prayerStatusLabelV503(status))+'</span><small>'+esc(prayerDateV503(r.created_at))+'</small></div><p>'+esc(r.request_text||'')+'</p>'+(done?'<div class="nh7c502-prayer-answer"><span>'+esc(L('اگر پاسخ دعایتان را دریافت کرده‌اید، می‌توانید آن را به‌عنوان شهادت با کلیسا در میان بگذارید.','If you have received an answer to this prayer, you can share it with the church as a testimony.','Ako ste primili odgovor na ovu molitvu, možete ga podijeliti s crkvom kao svjedočanstvo.'))+'</span><button type="button" class="secondary-btn" data-nh7c502-testimony>'+esc(L('ثبت شهادت','Share testimony','Podijeli svjedočanstvo'))+'</button></div>':'')+'</article>';
  }).join('');
+ host.querySelectorAll('[data-nh7c502-testimony]').forEach(b=>b.onclick=()=>C().navigate('testimonies',{},false));
 }
-async function loadOwnPrayersV503(){
- if(!isLoggedIn())return;const uid=C().session()?.user?.id;if(!uid)return;
- try{const rows=await C().cloudFetch('nh7_prayer_requests_v502?user_id=eq.'+encodeURIComponent(uid)+'&select=id,request_text,status,created_at,updated_at&order=created_at.desc&limit=20',{method:'GET',cache:'no-store'});ownPrayerRowsV503=Array.isArray(rows)?rows:[]}
- catch(e){console.warn('[NH7 own prayer list]',e);ownPrayerRowsV503=[]}
+async function loadOwnPrayersV503(force=false){
+ if(!isLoggedIn())return;const uid=String(C().session()?.user?.id||'');if(!uid)return;
+ const now=Date.now();
+ if(!force&&myPrayerCache.uid===uid&&now-myPrayerCache.at<MY_PRAYER_TTL_MS){
+  ownPrayerRowsV503=myPrayerCache.rows;renderOwnPrayerRowsV503();return;
+ }
+ try{
+  const rows=await C().cloudFetch('nh7_prayer_requests_v502?user_id=eq.'+encodeURIComponent(uid)+'&select=id,request_text,status,created_at,updated_at&order=created_at.desc&limit=20',{method:'GET',cache:'no-store'});
+  ownPrayerRowsV503=Array.isArray(rows)?rows:[];
+  myPrayerCache={uid,at:now,rows:ownPrayerRowsV503};
+ }catch(e){
+  console.warn('[NH7 own prayer list]',e);
+  ownPrayerRowsV503=myPrayerCache.uid===uid?myPrayerCache.rows:[];
+ }
  renderOwnPrayerRowsV503();
 }
 async function renderPrayer(){
  injectCss();const u=(await guide(),U()),view=ctxView();
  view.innerHTML=C().card(u.prayerTitle,'<div class="notice"><strong>'+esc(u.prayerPrivate)+'</strong></div><p>'+esc(u.prayerLead)+'</p><p class="muted">'+esc(u.prayerSpiritual)+'</p><div class="form-row"><label><strong>'+esc(L('نام','Name','Ime'))+'</strong></label><input id="nh7c502PrayerName" maxlength="160" value="'+esc(C().profileName()||'')+'"></div><div class="form-row"><label><strong>'+esc(u.prayerDetail)+'</strong></label><textarea id="nh7c502PrayerText" maxlength="6000" style="min-height:180px"></textarea></div><button class="primary-btn wide-btn" id="nh7c502PrayerSubmit">'+esc(u.sendPrayer)+'</button><div data-community-msg style="margin-top:10px"></div>')+
- C().card(L('درخواست‌های دعای من','My prayer requests','Moji molitveni zahtjevi'),'<p class="muted">'+esc(L('فقط درخواست‌های خودتان در اینجا نمایش داده می‌شود. وضعیت هنگام باز کردن این صفحه تازه می‌شود و هیچ بررسی دائمی در پس‌زمینه انجام نمی‌شود.','Only your own requests are shown here. Status refreshes when you open this page; there is no background polling.','Ovdje se prikazuju samo vaši zahtjevi. Status se osvježava kada otvorite ovu stranicu; nema pozadinskog provjeravanja.'))+'</p><div id="nh7c502OwnPrayers"><p class="muted">'+esc(L('در حال دریافت…','Loading…','Učitavanje…'))+'</p></div>');
+ C().card(L('درخواست‌های دعای من','My prayer requests','Moji molitveni zahtjevi'),'<p class="muted">'+esc(L('فقط درخواست‌های خودتان در اینجا نمایش داده می‌شود. وضعیت هنگام باز کردن صفحه از Cache کوتاه استفاده می‌کند؛ برای گرفتن آخرین وضعیت «تازه‌سازی» را بزنید. هیچ بررسی دائمی در پس‌زمینه انجام نمی‌شود.','Only your own requests are shown here. A short cache is used when opening the page; tap Refresh for the latest status. There is no background polling.','Ovdje se prikazuju samo vaši zahtjevi. Pri otvaranju se koristi kratka predmemorija; dodirnite Osvježi za najnoviji status. Nema pozadinskog provjeravanja.'))+'</p><div class="nh7c502-actions"><button type="button" class="secondary-btn" id="nh7c502PrayerRefresh">'+esc(L('تازه‌سازی وضعیت','Refresh status','Osvježi status'))+'</button></div><div id="nh7c502OwnPrayers"><p class="muted">'+esc(L('در حال دریافت…','Loading…','Učitavanje…'))+'</p></div>');
  await loadOwnPrayersV503();
+ document.getElementById('nh7c502PrayerRefresh').onclick=async()=>{const b=document.getElementById('nh7c502PrayerRefresh');b.disabled=true;try{await loadOwnPrayersV503(true)}finally{b.disabled=false}};
  document.getElementById('nh7c502PrayerSubmit').onclick=async()=>{
   if(!requireLogin('prayerRequest'))return;
   const name=document.getElementById('nh7c502PrayerName').value.trim(),text=document.getElementById('nh7c502PrayerText').value.trim();
@@ -203,8 +215,9 @@ async function renderPrayer(){
   try{
    const created=await C().cloudFetch('nh7_prayer_requests_v502',{method:'POST',body:JSON.stringify({user_id:uid,requester_name:name,request_text:text,status:'new'})});
    document.getElementById('nh7c502PrayerText').value='';
-   const row=Array.isArray(created)?created[0]:null;if(row){ownPrayerRowsV503=[row,...ownPrayerRowsV503.filter(x=>String(x.id)!==String(row.id))].slice(0,20);renderOwnPrayerRowsV503()}
-   toast(L('درخواست دعای شما دریافت شد ✓','Your prayer request was received ✓','Vaš molitveni zahtjev je primljen ✓'),'notice success-notice');
+   const row=Array.isArray(created)?created[0]:null;if(row){ownPrayerRowsV503=[row,...ownPrayerRowsV503.filter(x=>String(x.id)!==String(row.id))].slice(0,20);myPrayerCache={uid,at:Date.now(),rows:ownPrayerRowsV503};renderOwnPrayerRowsV503()}
+   else{myPrayerCache={uid,at:0,rows:ownPrayerRowsV503}}
+   toast(L('درخواست دعای شما دریافت شد و خصوصی ثبت شد ✓','Your prayer request was received and saved privately ✓','Vaš molitveni zahtjev je zaprimljen i privatno spremljen ✓'),'notice success-notice');
   }catch(e){toast(backendNotice(e))}finally{b.disabled=false}
  };
 }
@@ -262,7 +275,10 @@ async function saveProfile(old){
   newUploads=[];
   const stale=[old?.original_photo_path,old?.photo_path].filter(p=>p&&p!==originalPath&&p!==photoPath);if(stale.length)C().storageRemove?.(PROFILE_BUCKET,stale).catch(()=>{});
   try{localStorage.setItem('nh7_user_profile',JSON.stringify({name,email:C().email()}))}catch(_){}
-  document.getElementById('nh7c502ProfileName').textContent=name;Promise.resolve(C().refreshHeaderProfile?.({force:true,src:crop.cropped||'',name})).catch(()=>{});toast(L('پروفایل ذخیره شد ✓','Profile saved ✓','Profil je spremljen ✓'),'notice success-notice')
+  document.getElementById('nh7c502ProfileName').textContent=name;
+  if(crop.cropped)Promise.resolve(C().refreshHeaderProfile?.({src:crop.cropped,name})).catch(()=>{});
+  setTimeout(()=>Promise.resolve(C().refreshHeaderProfile?.({force:true,name})).catch(()=>{}),80);
+  toast(L('پروفایل ذخیره شد ✓','Profile saved ✓','Profil je spremljen ✓'),'notice success-notice')
  }catch(e){if(newUploads.length)C().storageRemove?.(PROFILE_BUCKET,newUploads).catch(()=>{});toast(backendNotice(e))}finally{b.disabled=false}
 }
 
