@@ -27,7 +27,8 @@ index = read("index.html")
 
 required_index = [
     'js/nh7-push-account-bind-v364.js?v=3.6.4-native',
-    'js/nh7-audio-classic-v484.js?v=4.8.5-no-telemetry',
+    'js/nh7-audio-classic-v484.js?v=4.8.6-qa250',
+    'js/app.js?v=4.8.19-community-qa250',
     'js/nh7-audio-miniplayer-v487.js?v=4.8.7',
     'js/nh7-audio-library-v500.js?v=5.3.5-cover-sync',
     'js/nh7-media-player-v500.js?v=5.3.5-cover-sync',
