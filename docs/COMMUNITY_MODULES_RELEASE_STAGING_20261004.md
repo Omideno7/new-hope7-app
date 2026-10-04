@@ -101,3 +101,30 @@ Hardening:
 8. Run Supabase security/performance advisors on the test backend.
 9. Run native in-place upgrade QA with existing user data.
 10. Merge only after explicit release approval.
+
+## QA hardening checkpoint — 2026-10-04
+
+The Community staging branch is synced to the current native release candidate and is **0 commits behind** `release/native-store-next-20261003`.
+
+Additional fixes completed before backend E2E:
+- profile photo saves now track the latest persisted object paths, preventing orphaned images across repeated saves
+- unchanged profile photos are not re-uploaded on name-only saves; re-cropping marks the photo dirty intentionally
+- switching from live recording to file upload now stops the active MediaRecorder and microphone tracks
+- testimony moderation is terminal: Approve/Reject controls are shown only for pending items
+- publish/reject RPCs now enforce `status='pending'` as defense in depth
+- Community/Admin runtime cache tags were bumped so phone QA cannot silently reuse stale JavaScript
+- Storage owner policies no longer call the postgres-only private owner helper directly; an authenticated-only SECURITY DEFINER boolean bridge performs the canonical owner check
+- user runtime, Admin runtime, App module syntax, Admin inline scripts and Index inline scripts all pass static syntax validation after the changes
+
+Production safety re-check:
+- `nh7_user_profiles_v502`: absent in Production
+- `nh7_testimonies_v502`: absent in Production
+- `nh7_prayer_requests_v502`: absent in Production
+- all three Community Storage buckets: absent in Production
+- candidate migration: still NOT applied
+
+Remaining blockers before release:
+1. real Auth/RLS/Storage E2E requires an isolated Supabase development branch or another isolated backend
+2. Android update-in-place smoke must be observed green after the QA launcher fix
+3. final phone QA must cover dark/night verse readability, Outline vs Neon visual separation, Profile photo replacement/re-crop, Prayer submit/refresh/status, and Testimony record/upload/moderation/playback
+4. PR remains Draft; do not merge to the release candidate or `main` until explicit approval
