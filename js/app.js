@@ -1973,6 +1973,25 @@ async function signInSchool(){
   }
 }
 
+function schoolAdaptiveSidebar(d,currentCourse='',currentLesson=''){
+  const groups=new Map();
+  (Array.isArray(d?.lessons)?d.lessons:[]).forEach(l=>{
+    const info=schoolCourseInfo(l);
+    if(!groups.has(info.code))groups.set(info.code,{info,lessons:[]});
+    groups.get(info.code).lessons.push(l);
+  });
+  const content=[...groups.values()].sort((a,b)=>a.info.order-b.info.order).map(g=>{
+    const title=g.info.title?.[state.lang]||g.info.title?.en||g.info.code;
+    const items=g.lessons.sort((a,b)=>Number(a.lesson_order||999)-Number(b.lesson_order||999)).map(l=>{
+      const tx=l.translations?.[state.lang]||l.translations?.en||{};
+      const active=String(l.lesson_code)===String(currentLesson);
+      return `<button class="nh7-school-side-lesson ${active?'active':''}" data-go="school" data-params='${html(JSON.stringify({lesson:l.lesson_code}))}'><strong>${html(tx.lesson_title||tx.class_title||l.lesson_code)}</strong></button>`;
+    }).join('');
+    return `<section class="nh7-school-side-course ${String(g.info.code)===String(currentCourse)?'is-active':''}"><h4>${html(title)}</h4>${items}</section>`;
+  }).join('');
+  return `<aside class="nh7-adaptive-sidebar nh7-school-sidebar"><div class="nh7-adaptive-sidebar-head"><strong>🎓 ${html(tr('school'))}</strong></div><div class="nh7-adaptive-scroll">${content}</div></aside>`;
+}
+
 async function schoolLesson(d, code){
   schoolDraftsV468.flush();
   const draftOwnerV468=schoolDraftsV468.owner(),draftEpochV468=nh7NavigationEpochV456;
@@ -1993,7 +2012,8 @@ async function schoolLesson(d, code){
   const examHtml=schoolExam?renderSchoolExamBlock(schoolExam,schoolProgress):'';const completeLabel=schoolProgress?.completed_at?(state.lang==='fa'?'تکمیل شده ✓':state.lang==='hr'?'Završeno ✓':'Completed ✓'):(state.lang==='fa'?'علامت‌گذاری درس به‌عنوان تکمیل‌شده':state.lang==='hr'?'Označi lekciju završenom':'Mark lesson complete');
   const assignmentQuestion=String(tx.assignment_question||'').trim();const assignmentDraft=normalizeNoteText(schoolAssignment?.answer_text||localStorage.getItem('nh7_note_school-'+code)||'');const assignmentApproved=String(schoolAssignment?.status||'').toLowerCase()==='approved';
   const assignmentHtml=assignmentQuestion?`<section class="school-assignment"><h3>${tr('assignment')}</h3><p>${html(assignmentQuestion)}</p><div class="notice"><strong>${state.lang==='fa'?'وضعیت':state.lang==='hr'?'Status':'Status'}:</strong> ${html(assignmentStatusText(schoolAssignment))}${schoolAssignment?.admin_feedback?`<p>${html(schoolAssignment.admin_feedback)}</p>`:''}</div><textarea id="schoolAssignmentAnswer" rows="7" ${assignmentApproved?'disabled':''} placeholder="${state.lang==='fa'?'پاسخ تکلیف را اینجا بنویسید':state.lang==='hr'?'Ovdje napišite odgovor na zadatak':'Write your assignment answer here'}">${textareaHtml(assignmentDraft)}</textarea><div class="button-row"><button class="secondary-btn" id="saveSchoolAssignmentDraft" ${assignmentApproved?'disabled':''}>${state.lang==='fa'?'ذخیره پیش‌نویس':state.lang==='hr'?'Spremi skicu':'Save draft'}</button><button class="primary-btn" id="submitSchoolAssignment" ${assignmentApproved?'disabled':''}>${assignmentApproved?(state.lang==='fa'?'تکلیف تأیید شده':state.lang==='hr'?'Zadatak odobren':'Assignment approved'):(state.lang==='fa'?'ارسال رسمی تکلیف':state.lang==='hr'?'Predaj zadatak':'Submit assignment')}</button></div><p class="muted">${state.lang==='fa'?'این تکلیف بخشی از ۳۰٪ نمره تکالیف دوره است.':state.lang==='hr'?'Ovaj zadatak dio je 30% ocjene za zadatke.':'This assignment is part of the 30% assignment grade.'}</p></section>`:'';
-  view.innerHTML=card(tx.class_title||tr('school'),`${l.image?.url?`<img src="${html(l.image.url)}" alt="${html(tx.class_title||tx.lesson_title||tr('school'))}" style="width:100%;max-height:360px;object-fit:cover;border-radius:18px;margin-bottom:12px">`:''}<p>${html(tx.lesson_text||'')}</p>${player}${l.video?.url?`<p><a class="secondary-btn" href="${html(l.video.url)}" target="_blank" rel="noopener">Video</a></p>`:''}${l.pdf?.url?`<p><a class="secondary-btn" href="${html(l.pdf.url)}" target="_blank" rel="noopener">PDF</a> <button class="secondary-btn" data-offline-download="${html(l.pdf.url)}" data-offline-title="PDF ${html(tx.lesson_title||code)}">${state.lang==='fa'?'دانلود PDF برای آفلاین':state.lang==='hr'?'Preuzmi PDF offline':'Download PDF offline'}</button></p>`:''}<button class="primary-btn wide-btn" id="completeSchoolLesson">${completeLabel}</button>${assignmentHtml}<h3>${tr('fullLesson')}</h3><p>${html(wr.text||'')}</p>${examHtml}`);
+  const lessonMain=card(tx.class_title||tr('school'),`${l.image?.url?`<img src="${html(l.image.url)}" alt="${html(tx.class_title||tx.lesson_title||tr('school'))}" style="width:100%;max-height:360px;object-fit:cover;border-radius:18px;margin-bottom:12px">`:''}<p>${html(tx.lesson_text||'')}</p>${player}${l.video?.url?`<p><a class="secondary-btn" href="${html(l.video.url)}" target="_blank" rel="noopener">Video</a></p>`:''}${l.pdf?.url?`<p><a class="secondary-btn" href="${html(l.pdf.url)}" target="_blank" rel="noopener">PDF</a> <button class="secondary-btn" data-offline-download="${html(l.pdf.url)}" data-offline-title="PDF ${html(tx.lesson_title||code)}">${state.lang==='fa'?'دانلود PDF برای آفلاین':state.lang==='hr'?'Preuzmi PDF offline':'Download PDF offline'}</button></p>`:''}<button class="primary-btn wide-btn" id="completeSchoolLesson">${completeLabel}</button>${assignmentHtml}<h3>${tr('fullLesson')}</h3><p>${html(wr.text||'')}</p>${examHtml}`);
+  view.innerHTML=adaptiveSplit(schoolAdaptiveSidebar(d,courseCode,code),lessonMain,'nh7-school-adaptive');
   schoolDraftsV468.attach({element:$('#schoolAssignmentAnswer'),lesson:code,expectedOwner:draftOwnerV468,initialValue:assignmentApproved?(schoolAssignment?.answer_text||''):assignmentDraft,approved:assignmentApproved});
   $('#completeSchoolLesson')?.addEventListener('click',()=>saveSchoolProgress(code,{completed_at:new Date().toISOString(),progress_percent:100}));
   $('#saveSchoolAssignmentDraft')?.addEventListener('click',e=>{const input=$('#schoolAssignmentAnswer'),answer=normalizeNoteText(input?.value||'');if(input)input.value=answer;localStorage.setItem('nh7_note_school-'+code,answer);saveNoteCloud('note_school-'+code,answer).catch(console.warn);e.currentTarget.textContent=tr('saved')});
