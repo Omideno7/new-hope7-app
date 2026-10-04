@@ -1,0 +1,118 @@
+name: WatchOS 2.5.0 QA
+
+on:
+  push:
+    branches: [feature/watchos-v2500-20261004]
+  pull_request:
+    branches: [feature/final-qa-v2500-20261004]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-watch:
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode 26+
+        shell: bash
+        run: |
+          set -euo pipefail
+          XCODE_PATH=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1)
+          test -n "${XCODE_PATH:-}"
+          sudo xcode-select -s "$XCODE_PATH/Contents/Developer"
+          xcodebuild -version
+          xcrun --sdk watchos --show-sdk-version
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate compact Watch Bible resources
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf watchos/Resources
+          mkdir -p watchos/Resources
+          python3 <<'PY'
+          import json
+          from pathlib import Path
+
+          root=Path('data/bible/groups')
+          out=Path('watchos/Resources')
+          books=[]
+          chapters={}
+          for src in ['bible_group_01_18.json','bible_group_19_39.json','bible_group_40_66.json']:
+              data=json.loads((root/src).read_text(encoding='utf-8'))
+              for b in data.get('books',[]):
+                  books.append({k:b[k] for k in ('id','order','testament','names','chapters')})
+              for v in data.get('verses',[]):
+                  key=(str(v['bookId']),int(v['chapter']))
+                  chapters.setdefault(key,[]).append({'verse':int(v['verse']),'text':v.get('text',{})})
+          books.sort(key=lambda x:x['order'])
+          (out/'bible_books.json').write_text(json.dumps(books,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
+          for (book,chapter),verses in chapters.items():
+              verses.sort(key=lambda x:x['verse'])
+              (out/f'bible_{book}_{chapter}.json').write_text(json.dumps(verses,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
+          print('books',len(books),'chapters',len(chapters),'files',len(list(out.glob('*.json'))))
+          PY
+          du -sh watchos/Resources
+
+      - name: Generate Watch Xcode project
+        run: |
+          cd watchos
+          xcodegen generate --spec project.yml
+          xcodebuild -project NewHope7WatchQA.xcodeproj -list
+
+      - name: Build Watch simulator
+        shell: bash
+        run: |
+          set -euo pipefail
+          xcodebuild -project watchos/NewHope7WatchQA.xcodeproj -scheme NewHope7Watch -configuration Release -sdk watchsimulator -destination 'generic/platform=watchOS Simulator' CODE_SIGNING_ALLOWED=NO build | tee WATCHOS_SIMULATOR_BUILD.log
+
+      - name: Build generic Watch device
+        shell: bash
+        run: |
+          set -euo pipefail
+          xcodebuild -project watchos/NewHope7WatchQA.xcodeproj -scheme NewHope7Watch -configuration Release -sdk watchos -destination 'generic/platform=watchOS' CODE_SIGNING_ALLOWED=NO build | tee WATCHOS_DEVICE_BUILD.log
+
+      - name: Validate Watch scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+          import json
+
+          pbx=Path('watchos/NewHope7WatchQA.xcodeproj/project.pbxproj').read_text(encoding='utf-8')
+          info=Path('watchos/NewHope7Watch/Info.plist').read_text(encoding='utf-8')
+          audio=Path('watchos/NewHope7Watch/Audio.swift').read_text(encoding='utf-8')
+          resources=Path('watchos/Resources')
+          books=json.loads((resources/'bible_books.json').read_text(encoding='utf-8'))
+          chapter_files=[p for p in resources.glob('bible_*.json') if p.name!='bible_books.json']
+
+          checks={
+              'bundle_id':'com.omideno7.newhope7.watchapp' in pbx,
+              'companion_id':'com.omideno7.newhope7' in info,
+              'background_audio':'<string>audio</string>' in info,
+              'all_66_books':len(books)==66,
+              'all_1189_chapters':len(chapter_files)==1189,
+              'sermon_rest':'/rest/v1/sermons' in audio,
+              'published_only':'is_published' in audio,
+          }
+          print(checks)
+          failed=[name for name,ok in checks.items() if not ok]
+          if failed:
+              raise SystemExit('Watch QA validation failed: '+', '.join(failed))
+          PY
+
+      - name: Upload Watch QA evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: New_Hope_7_WatchOS_2.5.0_QA
+          path: |
+            WATCHOS_SIMULATOR_BUILD.log
+            WATCHOS_DEVICE_BUILD.log
+          retention-days: 14
