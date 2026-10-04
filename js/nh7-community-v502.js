@@ -265,17 +265,32 @@ function fitCrop(){const im=document.getElementById('nh7c502CropImage'),s=docume
 function constrainCrop(){const im=document.getElementById('nh7c502CropImage'),s=document.getElementById('nh7c502CropStage');if(!im?.naturalWidth||!s)return;const base=Number(im.dataset.base)||1,scale=base*crop.tz,w=im.naturalWidth*scale,h=im.naturalHeight*scale,maxX=Math.max(0,(w-s.clientWidth)/2),maxY=Math.max(0,(h-s.clientHeight)/2);crop.tx=Math.max(-maxX,Math.min(maxX,crop.tx));crop.ty=Math.max(-maxY,Math.min(maxY,crop.ty))}
 function applyCrop(){constrainCrop();const im=document.getElementById('nh7c502CropImage');if(im)im.style.transform='translate(-50%,-50%) translate('+crop.tx+'px,'+crop.ty+'px) scale('+crop.tz+')'}
 function makeCropData(){const im=document.getElementById('nh7c502CropImage'),s=document.getElementById('nh7c502CropStage');if(!im?.naturalWidth||!s)return'';constrainCrop();const base=Number(im.dataset.base)||1,scale=base*crop.tz,sw=s.clientWidth/scale,sh=s.clientHeight/scale,imageLeft=s.clientWidth/2+crop.tx-(im.naturalWidth*scale)/2,imageTop=s.clientHeight/2+crop.ty-(im.naturalHeight*scale)/2;let sx=(0-imageLeft)/scale,sy=(0-imageTop)/scale;sx=Math.max(0,Math.min(im.naturalWidth-sw,sx));sy=Math.max(0,Math.min(im.naturalHeight-sh,sy));const cv=document.createElement('canvas');cv.width=512;cv.height=512;const ct=cv.getContext('2d',{alpha:false});ct.fillStyle='#071820';ct.fillRect(0,0,512,512);ct.imageSmoothingEnabled=true;ct.imageSmoothingQuality='high';ct.drawImage(im,sx,sy,sw,sh,0,0,512,512);return cv.toDataURL('image/jpeg',.9)}
-async function dataUrlBlob(data){const r=await fetch(data);return r.blob()}
+async function dataUrlBlob(data){
+ if(!/^data:image\//i.test(String(data||'')))throw new Error(L('خروجی عکس معتبر نیست؛ لطفاً دوباره عکس را تنظیم کنید.','The photo output is invalid; please adjust the photo again.','Izlaz fotografije nije valjan; ponovno podesite fotografiju.'));
+ const r=await fetch(data);const blob=await r.blob();
+ if(!String(blob.type||'').startsWith('image/'))throw new Error(L('فرمت عکس معتبر نیست.','The photo format is invalid.','Format fotografije nije valjan.'));
+ return blob
+}
+function profileOriginalExt(blob){
+ const t=String(blob?.type||'').toLowerCase();
+ if(t.includes('png'))return'png';
+ if(t.includes('webp'))return'webp';
+ if(t.includes('heic'))return'heic';
+ if(t.includes('heif'))return'heif';
+ return'jpg'
+}
 async function saveProfile(old){
  if(!requireLogin('profile'))return;const uid=C().session()?.user?.id,name=document.getElementById('nh7c502ProfileNameInput').value.trim()||C().profileName()||'';
  const b=document.getElementById('nh7c502SaveProfile');b.disabled=true;let newUploads=[];
  try{
   let originalPath=old?.original_photo_path||'',photoPath=old?.photo_path||'';
   if(crop.dirty&&crop.original){
-   const id=crypto.randomUUID?.()||String(Date.now()),originalBlob=await dataUrlBlob(crop.original),avatarData=crop.cropped||makeCropData(),avatarBlob=await dataUrlBlob(avatarData);
+   const id=crypto.randomUUID?.()||String(Date.now()),originalBlob=await dataUrlBlob(crop.original),avatarData=crop.cropped||makeCropData();
+   if(!/^data:image\/jpeg/i.test(String(avatarData||'')))throw new Error(L('برش عکس کامل نشده است؛ لطفاً عکس را دوباره تنظیم و ذخیره کنید.','The crop is incomplete; please adjust and save the photo again.','Izrezivanje nije dovršeno; ponovno podesite i spremite fotografiju.'));
+   const avatarBlob=await dataUrlBlob(avatarData);
    if(originalBlob.size>PROFILE_MAX_BYTES)throw new Error(L('حجم عکس پروفایل باید کمتر از ۵ مگابایت باشد.','Profile photo must be smaller than 5 MB.','Fotografija profila mora biti manja od 5 MB.'));
-   originalPath=uid+'/original-'+id+'.jpg';photoPath=uid+'/avatar-'+id+'.jpg';
-   await C().storageUpload(PROFILE_BUCKET,originalPath,originalBlob,'image/jpeg',false);newUploads.push(originalPath);
+   originalPath=uid+'/original-'+id+'.'+profileOriginalExt(originalBlob);photoPath=uid+'/avatar-'+id+'.jpg';
+   await C().storageUpload(PROFILE_BUCKET,originalPath,originalBlob,originalBlob.type||'image/jpeg',false);newUploads.push(originalPath);
    await C().storageUpload(PROFILE_BUCKET,photoPath,avatarBlob,'image/jpeg',false);newUploads.push(photoPath);
   }
   await C().cloudFetch('nh7_user_profiles_v502?on_conflict=user_id',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify({user_id:uid,display_name:name,original_photo_path:originalPath,photo_path:photoPath,photo_position_x:crop.x,photo_position_y:crop.y,photo_zoom:crop.zoom,updated_at:new Date().toISOString()})});
