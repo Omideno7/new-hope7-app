@@ -2,7 +2,7 @@ name: Next Native iOS Store Candidate
 
 on:
   push:
-    branches: [release/native-store-next-20261003]
+    branches: [release/native-store-next-20261003, feature/final-qa-v2500-20261004]
   workflow_dispatch:
     inputs:
       version_name:
