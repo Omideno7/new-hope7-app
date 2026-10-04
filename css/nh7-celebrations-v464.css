@@ -27,3 +27,16 @@
   .nh7-calendar-item464{grid-template-columns:1fr}
   .nh7-calendar-item464 small{white-space:normal}
 }
+
+.nh7-feast-verse464.is-link{
+  cursor:pointer;
+  border:1px solid var(--nh7-studio-line,var(--line,#d9e6f7));
+  border-radius:12px;
+  padding:10px 12px;
+  background:color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1d4ed8)) 7%,var(--nh7-studio-card,var(--card,#fff)));
+  color:var(--nh7-studio-accent,var(--brand,#1d4ed8));
+}
+.nh7-feast-verse464.is-link:focus-visible{
+  outline:3px solid color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1d4ed8)) 36%,transparent);
+  outline-offset:2px;
+}
