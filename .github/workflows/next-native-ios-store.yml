@@ -144,6 +144,20 @@ jobs:
           text=re.sub(r'MARKETING_VERSION = [^;]+;', f'MARKETING_VERSION = {version};', text)
           text=re.sub(r'CURRENT_PROJECT_VERSION = [^;]+;', f'CURRENT_PROJECT_VERSION = {build};', text)
           text=re.sub(r'IPHONEOS_DEPLOYMENT_TARGET = [^;]+;', 'IPHONEOS_DEPLOYMENT_TARGET = 15.0;', text)
+          if re.search(r'TARGETED_DEVICE_FAMILY = [^;]+;', text):
+              text=re.sub(r'TARGETED_DEVICE_FAMILY = [^;]+;', 'TARGETED_DEVICE_FAMILY = "1,2";', text)
+          else:
+              text=text.replace(
+                  'IPHONEOS_DEPLOYMENT_TARGET = 15.0;',
+                  'IPHONEOS_DEPLOYMENT_TARGET = 15.0;\n\t\t\t\tTARGETED_DEVICE_FAMILY = "1,2";'
+              )
+          if re.search(r'SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = [^;]+;', text):
+              text=re.sub(r'SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = [^;]+;', 'SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;', text)
+          else:
+              text=text.replace(
+                  'TARGETED_DEVICE_FAMILY = "1,2";',
+                  'TARGETED_DEVICE_FAMILY = "1,2";\n\t\t\t\tSUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;'
+              )
           if 'CODE_SIGN_ENTITLEMENTS = App/App.entitlements;' not in text:
               text=text.replace(
                   'PRODUCT_BUNDLE_IDENTIFIER = com.omideno7.newhope7;',
@@ -201,6 +215,8 @@ jobs:
           grep -q "MARKETING_VERSION = $VERSION_NAME;" ios/App/App.xcodeproj/project.pbxproj
           grep -q "CURRENT_PROJECT_VERSION = $BUILD_NUMBER;" ios/App/App.xcodeproj/project.pbxproj
           grep -q 'CODE_SIGN_ENTITLEMENTS = App/App.entitlements;' ios/App/App.xcodeproj/project.pbxproj
+          grep -q 'TARGETED_DEVICE_FAMILY = "1,2";' ios/App/App.xcodeproj/project.pbxproj
+          grep -q 'SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;' ios/App/App.xcodeproj/project.pbxproj
           grep -q '<string>production</string>' ios/App/App/App.entitlements
           grep -q '<string>audio</string>' ios/App/App/Info.plist
           grep -q '<string>remote-notification</string>' ios/App/App/Info.plist
@@ -264,6 +280,8 @@ jobs:
             echo "Version: $VERSION_NAME"
             echo "Build: $BUILD_NUMBER"
             echo 'Minimum iOS: 15.0'
+            echo 'Device family: Universal iPhone + iPad'
+            echo 'Apple silicon Mac destination: enabled (Designed for iPhone/iPad)'
             echo 'Capacitor: 8.5.0'
             echo 'OneSignal native plugin: 5.5.3'
             echo 'Native push binding: v364'
