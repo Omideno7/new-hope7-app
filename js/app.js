@@ -2263,7 +2263,7 @@ async function audio(params={}){
     const runSermonSearch=e=>navigate('audio',{cat:catId,q:e.target.value},true);
     sermonSearchEl?.addEventListener('input',runSermonSearch);
     sermonSearchEl?.addEventListener('change',runSermonSearch);
-    bindInlineSermonControls();updateInlineSermonPlayers();nh7MountAudioEnhancementsV446();return;
+    bindInlineSermonControls();updateInlineSermonPlayers();nh7MountAudioEnhancementsV446();if(params.note){const noteItem=sermons.find(v=>String(v.id)===String(params.note));if(noteItem)setTimeout(()=>openSermonNote(noteItem),40)}return;
   }
   const d=await jfetch('data/audio/messages.json');
   if(params.cat){
