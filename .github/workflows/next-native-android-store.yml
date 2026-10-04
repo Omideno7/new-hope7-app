@@ -268,6 +268,22 @@ jobs:
           ./gradlew assembleDebug --stacktrace
           cp app/build/outputs/apk/debug/app-debug.apk ../../New_Hope_7_QA_CANDIDATE.apk
 
+          # Real-device Test 5 APK: keep production package id but sign with a dedicated
+          # stable QA keystore so repeated Test 5 installs/updates work on physical Android.
+          # This is intentionally NOT the Play production signing identity.
+          keytool -genkeypair -v -keystore ../../nh7-test5.jks -storepass nh7test5 -keypass nh7test5 \
+            -alias nh7test5 -keyalg RSA -keysize 2048 -validity 3650 \
+            -dname "CN=New Hope 7 Test 5, OU=QA, O=Omideno7, L=Zagreb, C=HR"
+          ./gradlew assembleRelease --stacktrace
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" sign \
+            --ks ../../nh7-test5.jks --ks-key-alias nh7test5 \
+            --ks-pass pass:nh7test5 --key-pass pass:nh7test5 \
+            --out ../../New_Hope_7_Test_5_REAL_DEVICE.apk \
+            app/build/outputs/apk/release/app-release-unsigned.apk
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose --print-certs ../../New_Hope_7_Test_5_REAL_DEVICE.apk
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging ../../New_Hope_7_Test_5_REAL_DEVICE.apk | grep "package: name='com.omideno7.newhope7'"
+          rm -f ../../nh7-test5.jks
+
       - name: Enable KVM acceleration for Android emulator
         shell: bash
         run: |
@@ -313,7 +329,7 @@ jobs:
             echo 'Update-in-place sandbox sentinel: verified by emulator job when this step is reached'
             echo 'Signing: unsigned CI artifact; reuse existing Play upload signing identity for Store upload'
             echo
-            sha256sum "New_Hope_7_${VERSION_NAME}_API36_UNSIGNED.aab" New_Hope_7_QA_CANDIDATE.apk
+            sha256sum "New_Hope_7_${VERSION_NAME}_API36_UNSIGNED.aab" New_Hope_7_QA_CANDIDATE.apk New_Hope_7_Test_5_REAL_DEVICE.apk
           } > ANDROID_NEXT_RELEASE_AUDIT.txt
 
       - name: Upload Android candidate artifacts
@@ -323,6 +339,7 @@ jobs:
           path: |
             New_Hope_7_*_API36_UNSIGNED.aab
             New_Hope_7_QA_CANDIDATE.apk
+            New_Hope_7_Test_5_REAL_DEVICE.apk
             ANDROID_NEXT_RELEASE_AUDIT.txt
             android-next-smoke.png
             android-next-offline.png
