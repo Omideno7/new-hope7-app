@@ -121,7 +121,7 @@ jobs:
             "webDir": "www",
             "server": {"androidScheme":"https","cleartext":false},
             "android": {"backgroundColor":"#ffffff","webContentsDebuggingEnabled":false},
-            "plugins": {"LocalNotifications":{"iconColor":"#0f766e"}}
+            "plugins": {"LocalNotifications":{"iconColor":"#0f766e"},"SystemBars":{"insetsHandling":"css"}}
           }
           JSON
 
@@ -209,7 +209,8 @@ jobs:
           test -f android/app/src/main/assets/public/js/nh7-delete-account-v253.js
 
           grep -q 'nh7-push-account-bind-v364.js?v=3.6.4-native' android/app/src/main/assets/public/index.html
-          grep -q 'nh7-media-player-v500.js?v=5.3.5-cover-sync' android/app/src/main/assets/public/index.html
+          grep -q 'nh7-media-player-v500.js?v=5.4.3-fold-mini' android/app/src/main/assets/public/index.html
+          grep -q '"SystemBars":{"insetsHandling":"css"}' capacitor.config.json
           grep -q 'nh7-appearance-personalization-v514.js?v=5.2.1-i18n-finalqa' android/app/src/main/assets/public/index.html
           grep -q "!window.Capacitor?.isNativePlatform?.()" android/app/src/main/assets/public/index.html
           if grep -q 'cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js' android/app/src/main/assets/public/index.html; then

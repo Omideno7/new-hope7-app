@@ -29,8 +29,8 @@ required_index = [
     'js/nh7-push-account-bind-v364.js?v=3.6.4-native',
     'js/nh7-audio-classic-v484.js?v=4.8.6-qa250',
     'js/nh7-audio-miniplayer-v487.js?v=4.8.7',
-    'js/nh7-audio-library-v500.js?v=5.3.5-cover-sync',
-    'js/nh7-media-player-v500.js?v=5.3.5-cover-sync',
+    'js/nh7-audio-library-v500.js?v=5.4.3-fold-audio',
+    'js/nh7-media-player-v500.js?v=5.4.3-fold-mini',
     'js/nh7-appearance-personalization-v514.js?v=5.2.1-i18n-finalqa',
     'css/nh7-theme-gallery-v457.css?v=4.7.3-dark-verse',
     'js/nh7-reader-toolbar-v452.js?v=4.5.3-unified',
@@ -41,7 +41,7 @@ required_index = [
     'js/nh7-my-notes-v234.js?v=4.5.2-reader',
     'js/nh7-community-v502.js?v=5.0.9-profile-local-finalqa',
     'css/nh7-inbox-v542.css?v=5.4.2',
-    'css/nh7-global-search-exam-v540.css?v=5.4.0',
+    'css/nh7-global-search-exam-v540.css?v=5.4.3',
 ]
 for needle in required_index:
     if needle not in index:
@@ -90,6 +90,7 @@ for needle in (
     "shrinkResources true",
     "onesignal-cordova-plugin",
     "@capacitor/android",
+    '"SystemBars":{"insetsHandling":"css"}',
     "public",
 ):
     if needle not in android:

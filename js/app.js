@@ -2,7 +2,7 @@ import {mountMoreReviewV469} from './nh7-store-review-v469.js?v=4.6.9';
 import {createSchoolDraftsV468} from './nh7-school-drafts-v468.js?v=4.6.8';
 import {createSoulWinningV472} from './nh7-soul-winning-v472.js?v=4.7.2';
 import {createBibleKeywordsV451} from './nh7-bible-keywords-v451.js?v=4.5.2-global-search';
-import {createGlobalSearchV540} from './nh7-global-search-v540.js?v=5.4.2-test4';
+import {createGlobalSearchV540} from './nh7-global-search-v540.js?v=5.4.3-test5';
 import {createExamReviewV540} from './nh7-exam-review-v540.js?v=5.4.0';
 // NH7 v2.2.3 targeted update: Bible navigation, protected content, reliable analytics, and secure PDF viewer.
 const $ = (s, r=document) => r.querySelector(s);

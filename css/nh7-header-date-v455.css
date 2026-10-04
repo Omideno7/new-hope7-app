@@ -1,5 +1,5 @@
 /* Dedicated second header row; existing navigation and controls remain in place. */
-#appShell>.topbar.nh7-header-date455{flex-wrap:wrap;row-gap:6px}
+#appShell>.topbar.nh7-header-date455{flex-wrap:wrap;row-gap:6px;padding-top:calc(12px + var(--safe-area-inset-top, env(safe-area-inset-top,0px)))}
 #appShell>.topbar.nh7-header-date455>.brand{flex:1 1 0;min-width:0}
 #appShell>.topbar.nh7-header-date455>.brand>div{min-width:0}
 #appShell>.topbar.nh7-header-date455>.brand strong{overflow:hidden;text-overflow:ellipsis}
