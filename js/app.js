@@ -757,11 +757,13 @@ async function restoreAccountCloudData(force=false){
     ]);
     (Array.isArray(notes)?notes:[]).forEach(row=>{
       const key='nh7_'+String(row.note_key||'');
-      if(row.content!=null)localStorage.setItem(key,String(row.content));
+      // Cloud restore is additive: never overwrite a note already present on this device.
+      if(row.content!=null&&localStorage.getItem(key)===null)localStorage.setItem(key,String(row.content));
     });
     (Array.isArray(progress)?progress:[]).forEach(row=>{
       const key=accountProgressKey(row.progress_key);
-      if(key)restoreAccountProgressValue(key,row.value);
+      // Preserve local progress during app upgrades; cloud fills only missing state.
+      if(key&&localStorage.getItem(key)===null)restoreAccountProgressValue(key,row.value);
     });
     const cloudRefs=(Array.isArray(verses)?verses:[]).map(x=>String(x.ref||'')).filter(Boolean);
     if(cloudRefs.length){
