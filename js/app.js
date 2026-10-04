@@ -523,6 +523,19 @@ async function cloudRpc(name, payload={}){
   return cloudFetch('rpc/'+name, {method:'POST', body:JSON.stringify(payload)});
 }
 let nh7HeaderProfileObjectUrlV503='',nh7HeaderProfileUidV503='',nh7HeaderProfilePathV503='';
+function nh7HeaderProfileCacheKeyV503(uid){return 'nh7_profile_header_v503:'+String(uid||'')}
+function nh7ReadHeaderProfileCacheV503(uid){
+  try{
+    const row=JSON.parse(localStorage.getItem(nh7HeaderProfileCacheKeyV503(uid))||'null');
+    return row&&typeof row==='object'&&typeof row.src==='string'&&row.src.startsWith('data:image/')?row:null;
+  }catch(_){return null}
+}
+function nh7WriteHeaderProfileCacheV503(uid,src,path='',name=''){
+  if(!uid||typeof src!=='string'||!src.startsWith('data:image/'))return;
+  try{localStorage.setItem(nh7HeaderProfileCacheKeyV503(uid),JSON.stringify({src,path:String(path||''),name:String(name||''),at:Date.now()}))}catch(_){}
+}
+function nh7ClearHeaderProfileCacheV503(uid){try{localStorage.removeItem(nh7HeaderProfileCacheKeyV503(uid))}catch(_){}}
+
 function paintHeaderProfileV503(src='',name=''){
   const btn=$('#profileHeaderBtn'),img=$('#profileHeaderImage');if(!btn||!img)return;
   if(!isAccountLoggedIn()){btn.hidden=true;btn.classList.add('hidden');img.hidden=true;img.removeAttribute('src');btn.querySelector('span')?.removeAttribute('hidden');return}
@@ -532,32 +545,45 @@ function paintHeaderProfileV503(src='',name=''){
 }
 async function syncHeaderProfileV503(opts={}){
   const btn=$('#profileHeaderBtn');if(!btn)return;
-  if(!isAccountLoggedIn()){nh7HeaderProfileUidV503='';nh7HeaderProfilePathV503='';if(nh7HeaderProfileObjectUrlV503){URL.revokeObjectURL(nh7HeaderProfileObjectUrlV503);nh7HeaderProfileObjectUrlV503=''}paintHeaderProfileV503();return}
+  if(!isAccountLoggedIn()){nh7HeaderProfileUidV503='';nh7HeaderProfilePathV503='';if(nh7HeaderProfileObjectUrlV503?.startsWith('blob:'))URL.revokeObjectURL(nh7HeaderProfileObjectUrlV503);nh7HeaderProfileObjectUrlV503='';paintHeaderProfileV503();return}
   const uid=authSession()?.user?.id||'';if(!uid){paintHeaderProfileV503();return}
+  const cached=nh7ReadHeaderProfileCacheV503(uid);
+  if(!nh7HeaderProfileObjectUrlV503&&cached?.src){
+    nh7HeaderProfileObjectUrlV503=cached.src;
+    nh7HeaderProfilePathV503=String(cached.path||'');
+    nh7HeaderProfileUidV503=uid;
+    paintHeaderProfileV503(cached.src,cached.name||getKnownUserProfile().name||'');
+  }
   if(opts.src){
     if(nh7HeaderProfileObjectUrlV503&&nh7HeaderProfileObjectUrlV503!==opts.src&&nh7HeaderProfileObjectUrlV503.startsWith('blob:'))URL.revokeObjectURL(nh7HeaderProfileObjectUrlV503);
     nh7HeaderProfileObjectUrlV503=String(opts.src);
     if(opts.path)nh7HeaderProfilePathV503=String(opts.path);
-    paintHeaderProfileV503(nh7HeaderProfileObjectUrlV503,opts.name||getKnownUserProfile().name||'');
+    const name=opts.name||getKnownUserProfile().name||'';
+    nh7WriteHeaderProfileCacheV503(uid,nh7HeaderProfileObjectUrlV503,nh7HeaderProfilePathV503,name);
+    paintHeaderProfileV503(nh7HeaderProfileObjectUrlV503,name);
     nh7HeaderProfileUidV503=uid;
     return
   }
-  if(!opts.force&&nh7HeaderProfileUidV503===uid){paintHeaderProfileV503(nh7HeaderProfileObjectUrlV503,opts.name||getKnownUserProfile().name||'');return}
-  paintHeaderProfileV503('',getKnownUserProfile().name||'');
+  if(!opts.force&&nh7HeaderProfileUidV503===uid){paintHeaderProfileV503(nh7HeaderProfileObjectUrlV503,opts.name||cached?.name||getKnownUserProfile().name||'');return}
+  if(!nh7HeaderProfileObjectUrlV503)paintHeaderProfileV503(cached?.src||'',cached?.name||getKnownUserProfile().name||'');
   try{
     const rows=await cloudFetch('nh7_user_profiles_v502?user_id=eq.'+encodeURIComponent(uid)+'&select=display_name,photo_path&limit=1',{method:'GET',cache:'no-store'});
-    const row=Array.isArray(rows)?rows[0]:null,path=String(row?.photo_path||'');
+    const row=Array.isArray(rows)?rows[0]:null,path=String(row?.photo_path||''),name=String(row?.display_name||cached?.name||getKnownUserProfile().name||'');
     nh7HeaderProfileUidV503=uid;
     if(path&&(!nh7HeaderProfileObjectUrlV503||path!==nh7HeaderProfilePathV503)){
       const url=await window.NH7_COMMUNITY_CTX_V502.privateStorageObjectUrl('nh7-profile-photos-v502',path);
-      if(nh7HeaderProfileObjectUrlV503)URL.revokeObjectURL(nh7HeaderProfileObjectUrlV503);
+      if(nh7HeaderProfileObjectUrlV503?.startsWith('blob:'))URL.revokeObjectURL(nh7HeaderProfileObjectUrlV503);
       nh7HeaderProfileObjectUrlV503=url;nh7HeaderProfilePathV503=path;
     }else if(!path){
-      if(nh7HeaderProfileObjectUrlV503)URL.revokeObjectURL(nh7HeaderProfileObjectUrlV503);
-      nh7HeaderProfileObjectUrlV503='';nh7HeaderProfilePathV503='';
+      if(nh7HeaderProfileObjectUrlV503?.startsWith('blob:'))URL.revokeObjectURL(nh7HeaderProfileObjectUrlV503);
+      nh7HeaderProfileObjectUrlV503='';nh7HeaderProfilePathV503='';nh7ClearHeaderProfileCacheV503(uid);
     }
-    paintHeaderProfileV503(nh7HeaderProfileObjectUrlV503,String(row?.display_name||getKnownUserProfile().name||''));
-  }catch(e){console.warn('[NH7 profile header]',e);paintHeaderProfileV503('',getKnownUserProfile().name||'')}
+    paintHeaderProfileV503(nh7HeaderProfileObjectUrlV503||cached?.src||'',name);
+  }catch(e){
+    console.warn('[NH7 profile header]',e);
+    const fallback=nh7HeaderProfileObjectUrlV503||cached?.src||'';
+    paintHeaderProfileV503(fallback,cached?.name||getKnownUserProfile().name||'');
+  }
 }
 window.NH7_COMMUNITY_CTX_V502={
   lang:()=>state.lang,
@@ -570,6 +596,10 @@ window.NH7_COMMUNITY_CTX_V502={
   email:authEmail,
   profileName:()=>getKnownUserProfile().name||'',
   refreshHeaderProfile:syncHeaderProfileV503,
+  profileHeaderCachedSrc:(uid,path='')=>{
+    const row=nh7ReadHeaderProfileCacheV503(uid);
+    return row&&(!path||!row.path||String(row.path)===String(path))?row.src:'';
+  },
   cloudFetch,
   cloudRpc,
   publicStorageUrl:(bucket,path)=>SUPABASE_CONFIG.url+'/storage/v1/object/public/'+encodeURIComponent(bucket)+'/'+String(path||'').split('/').map(encodeURIComponent).join('/'),
@@ -2913,6 +2943,11 @@ bootstrapApp().catch(console.warn);
 // Reader localization only. Canonical storage keys stay unchanged.
 window.NH7ReaderSourceV452={
   recordSaved:()=>addPoints(5,'first_verse'),
+  open:async ref=>{
+    await loadBibleMeta();const p=parseRef(ref);if(!p)return false;
+    navigate('bible',{section:'written',mode:'chapter',bookId:p.bookId,chapter:p.chapter,verse:p.verse});
+    return true;
+  },
   label:(bookId,chapter,verse,locale=state.lang)=>{
     const b=state.bible.books?.find(x=>x.id===bookId),n=v=>locale==='fa'?String(v).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]):String(v);
     return b?`${b.names?.[locale]||b.id} ${n(chapter)}:${n(verse)}`:'';
