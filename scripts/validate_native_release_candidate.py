@@ -28,7 +28,6 @@ index = read("index.html")
 required_index = [
     'js/nh7-push-account-bind-v364.js?v=3.6.4-native',
     'js/nh7-audio-classic-v484.js?v=4.8.6-qa250',
-    'js/app.js?v=4.8.19-finalqa-notes',
     'js/nh7-audio-miniplayer-v487.js?v=4.8.7',
     'js/nh7-audio-library-v500.js?v=5.3.5-cover-sync',
     'js/nh7-media-player-v500.js?v=5.3.5-cover-sync',
@@ -44,6 +43,9 @@ required_index = [
 for needle in required_index:
     if needle not in index:
         errors.append(f"index.html: missing release runtime {needle}")
+
+if not re.search(r'<script[^>]+src=["\']js/app\.js\?v=[^"\']+["\'][^>]*type=["\']module["\']', index):
+    errors.append("index.html: missing release runtime js/app.js module")
 
 if 'js/nh7-push-account-bind-v362.js?v=3.6.2' in index:
     errors.append("index.html: stale native push binding v362 is still active")
