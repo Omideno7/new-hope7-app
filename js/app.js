@@ -329,7 +329,7 @@ function isLegacySchoolLoggedIn(){return false}
 function isSchoolIdentityAvailable(){return isAccountLoggedIn()}
 
 function authSession(){ try{return JSON.parse(localStorage.getItem(AUTH_SESSION_KEY)||'null')}catch(e){return null} }
-function saveAuthSession(v){ if(v){localStorage.setItem(AUTH_SESSION_KEY,JSON.stringify(v));localStorage.removeItem(EXPLICIT_LOGOUT_KEY);}else localStorage.removeItem(AUTH_SESSION_KEY); }
+function saveAuthSession(v){ if(v){localStorage.setItem(AUTH_SESSION_KEY,JSON.stringify(v));localStorage.removeItem(EXPLICIT_LOGOUT_KEY);}else localStorage.removeItem(AUTH_SESSION_KEY); setTimeout(()=>syncHeaderProfileV503({force:true}).catch(()=>{}),0); }
 function isExplicitlyLoggedOut(){ return localStorage.getItem(EXPLICIT_LOGOUT_KEY)==='1'; }
 function isAccountLoggedIn(){ const x=authSession(); return !!(x&&x.access_token&&!isExplicitlyLoggedOut()); }
 async function authApi(path,options={}){
@@ -464,6 +464,36 @@ async function cloudFetch(path, options={}){
 async function cloudRpc(name, payload={}){
   return cloudFetch('rpc/'+name, {method:'POST', body:JSON.stringify(payload)});
 }
+let nh7HeaderProfileObjectUrlV503='',nh7HeaderProfileUidV503='',nh7HeaderProfilePathV503='';
+function paintHeaderProfileV503(src='',name=''){
+  const btn=$('#profileHeaderBtn'),img=$('#profileHeaderImage');if(!btn||!img)return;
+  if(!isAccountLoggedIn()){btn.hidden=true;img.hidden=true;img.removeAttribute('src');btn.querySelector('span')?.removeAttribute('hidden');return}
+  btn.hidden=false;btn.title=name||tr('profile')||'Profile';btn.setAttribute('aria-label',name||tr('profile')||'Profile');
+  if(src){img.src=src;img.hidden=false;btn.querySelector('span')?.setAttribute('hidden','')}
+  else{img.hidden=true;img.removeAttribute('src');btn.querySelector('span')?.removeAttribute('hidden')}
+}
+async function syncHeaderProfileV503(opts={}){
+  const btn=$('#profileHeaderBtn');if(!btn)return;
+  if(!isAccountLoggedIn()){nh7HeaderProfileUidV503='';nh7HeaderProfilePathV503='';if(nh7HeaderProfileObjectUrlV503){URL.revokeObjectURL(nh7HeaderProfileObjectUrlV503);nh7HeaderProfileObjectUrlV503=''}paintHeaderProfileV503();return}
+  const uid=authSession()?.user?.id||'';if(!uid){paintHeaderProfileV503();return}
+  if(opts.src){paintHeaderProfileV503(opts.src,opts.name||getKnownUserProfile().name||'');nh7HeaderProfileUidV503=uid;return}
+  if(!opts.force&&nh7HeaderProfileUidV503===uid){paintHeaderProfileV503(nh7HeaderProfileObjectUrlV503,opts.name||getKnownUserProfile().name||'');return}
+  paintHeaderProfileV503('',getKnownUserProfile().name||'');
+  try{
+    const rows=await cloudFetch('nh7_user_profiles_v502?user_id=eq.'+encodeURIComponent(uid)+'&select=display_name,photo_path&limit=1',{method:'GET',cache:'no-store'});
+    const row=Array.isArray(rows)?rows[0]:null,path=String(row?.photo_path||'');
+    nh7HeaderProfileUidV503=uid;
+    if(path&&(!nh7HeaderProfileObjectUrlV503||path!==nh7HeaderProfilePathV503)){
+      const url=await window.NH7_COMMUNITY_CTX_V502.privateStorageObjectUrl('nh7-profile-photos-v502',path);
+      if(nh7HeaderProfileObjectUrlV503)URL.revokeObjectURL(nh7HeaderProfileObjectUrlV503);
+      nh7HeaderProfileObjectUrlV503=url;nh7HeaderProfilePathV503=path;
+    }else if(!path){
+      if(nh7HeaderProfileObjectUrlV503)URL.revokeObjectURL(nh7HeaderProfileObjectUrlV503);
+      nh7HeaderProfileObjectUrlV503='';nh7HeaderProfilePathV503='';
+    }
+    paintHeaderProfileV503(nh7HeaderProfileObjectUrlV503,String(row?.display_name||getKnownUserProfile().name||''));
+  }catch(e){console.warn('[NH7 profile header]',e);paintHeaderProfileV503('',getKnownUserProfile().name||'')}
+}
 window.NH7_COMMUNITY_CTX_V502={
   lang:()=>state.lang,
   html,
@@ -474,6 +504,7 @@ window.NH7_COMMUNITY_CTX_V502={
   session:authSession,
   email:authEmail,
   profileName:()=>getKnownUserProfile().name||'',
+  refreshHeaderProfile:syncHeaderProfileV503,
   cloudFetch,
   cloudRpc,
   publicStorageUrl:(bucket,path)=>SUPABASE_CONFIG.url+'/storage/v1/object/public/'+encodeURIComponent(bucket)+'/'+String(path||'').split('/').map(encodeURIComponent).join('/'),
@@ -2723,6 +2754,8 @@ async function bootstrapApp(){
     await getSchoolSnapshot(authEmail(),true).catch(console.warn);
   }
   setLang(state.lang);
+  const profileHeaderBtn=$('#profileHeaderBtn');if(profileHeaderBtn&&!profileHeaderBtn.dataset.nh7BoundV503){profileHeaderBtn.dataset.nh7BoundV503='1';profileHeaderBtn.addEventListener('click',()=>navigate('profile',{}));}
+  await syncHeaderProfileV503().catch(console.warn);
   ensureSermonPlayer();
   syncCloudQueue().catch(console.warn);
   refreshInboxFromCloud().catch(console.warn);
