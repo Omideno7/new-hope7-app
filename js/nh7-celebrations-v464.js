@@ -25,6 +25,13 @@ function feastText(id){
   stephen:[['این روز استیفان، نخستین شهید ثبت‌شده کلیسای اولیه را به یاد می‌آورد؛ او با ایمان و بخشش تا پایان بر مسیح شهادت داد.','This day remembers Stephen, the first recorded martyr of the early Church, who bore witness to Christ with faith and forgiveness to the end.','Ovaj dan podsjeća na Stjepana, prvog zabilježenog mučenika rane Crkve, koji je do kraja svjedočio za Krista vjerom i oproštenjem.'],'اعمال ۷:۵۴–۶۰','Acts 7:54–60','Djela 7,54–60']
  };const x=texts[id];return x?{body:x[0][lang()==='fa'?0:lang()==='hr'?2:1],verse:x[lang()==='fa'?1:lang()==='hr'?3:2]}:{body:'',verse:''}
 }
+const FEAST_REFS464={
+ holy_name:'Luke 2:21',epiphany:'Matthew 2:1',ash:'Joel 2:12',palm:'Matthew 21:1',
+ maundy:'1 Corinthians 11:23',good_friday:'John 19:16',holy_saturday:'Matthew 27:57',
+ easter:'Luke 24:1',easter_monday:'Luke 24:13',ascension:'Acts 1:8',pentecost:'Acts 2:1',
+ pentecost_monday:'Acts 1:8',all_saints:'Hebrews 12:1',christmas_eve:'Luke 2:1',
+ christmas:'Luke 2:10',stephen:'Acts 7:54'
+};
 function annualEvents(y=new Date().getFullYear()){
  const e=easter(Number(y));return[
  [y+'-01-01','holy_name','✝️',L('نام‌گذاری عیسی','Holy Name of Jesus','Ime Isusovo')],
@@ -43,7 +50,7 @@ function annualEvents(y=new Date().getFullYear()){
  [y+'-12-24','christmas_eve','🕯️',L('شب میلاد','Christmas Eve','Badnjak')],
  [y+'-12-25','christmas','⭐',L('میلاد عیسی مسیح','Christmas','Božić')],
  [y+'-12-26','stephen','✝️',L('روز استیفان مقدس','St Stephen’s Day','Sveti Stjepan')]
- ].map(r=>{const info=feastText(r[1]);return{key:r[0],id:r[1],icon:r[2],title:r[3],body:info.body,verse:info.verse}})
+ ].map(r=>{const info=feastText(r[1]);return{key:r[0],id:r[1],icon:r[2],title:r[3],body:info.body,verse:info.verse,ref:FEAST_REFS464[r[1]]||''}})
 }
 function eventFor(now=new Date()){if(!(now instanceof Date)||!Number.isFinite(now.getTime()))return null;const today=key(now);return annualEvents(now.getFullYear()).find(x=>x.key===today)||null}
 
@@ -92,7 +99,16 @@ function modalCopy(){
   a.title.textContent=L('تولدت مبارک','Happy Birthday','Sretan rođendan')+(a.person.name?(lang()==='fa'?'، ':', ')+a.person.name:'')+'!';
   a.body.textContent=L('دعا می‌کنیم سال تازهٔ زندگی‌ات پر از فیض، سلامتی، حکمت و ثمر برای جلال خداوند باشد.','We pray that your new year of life is filled with grace, health, wisdom and fruit for the glory of God.','Molimo da nova godina tvoga života bude ispunjena milošću, zdravljem, mudrošću i plodom na slavu Božju.');
   a.verse.textContent='📖 '+L('ارمیا ۲۹:۱۱','Jeremiah 29:11','Jeremija 29,11');
- }else{const ev=eventFor(a.date);if(!ev){closeModal();return}a.title.textContent=ev.title;a.body.textContent=ev.body;a.verse.textContent='📖 '+ev.verse}
+ }else{
+  const ev=eventFor(a.date);if(!ev){closeModal();return}
+  a.title.textContent=ev.title;a.body.textContent=ev.body;a.verse.textContent='📖 '+ev.verse;
+  a.verse.classList.toggle('is-link',!!ev.ref);
+  a.verse.tabIndex=ev.ref?0:-1;
+  a.verse.setAttribute('role',ev.ref?'button':'note');
+  a.verse.setAttribute('aria-label',ev.ref?L('باز کردن آیه در کتاب مقدس','Open verse in Bible','Otvori redak u Bibliji'):'');
+  a.verse.onclick=ev.ref?()=>{const ref=ev.ref;closeModal();setTimeout(()=>Promise.resolve(window.NH7ReaderSourceV452?.open?.(ref)).catch(()=>{}),0)}:null;
+  a.verse.onkeydown=ev.ref?e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();a.verse.click()}}:null;
+ }
 }
 function openModal(kind,person=null,date=new Date()){
  if(active)return false;
@@ -127,7 +143,7 @@ function openCalendar(){
    const b=node('button','nh7-calendar-item464');b.type='button';
    const date=node('small',null,localDateLabel(ev.key)),name=node('strong',null,ev.icon+' '+ev.title);
    b.append(name,date);
-   b.onclick=()=>{overlay.remove();active=null;openModal('feast',null,new Date(ev.key+'T12:00:00'))};
+   b.onclick=()=>{const date=new Date(ev.key+'T12:00:00');closeModal();setTimeout(()=>openModal('feast',null,date),0)};
    list.append(b)
  });
  dialog.append(close,title,intro,list);overlay.append(dialog);
@@ -179,5 +195,5 @@ document.addEventListener('change',e=>{if(['langSelect','settingsLang'].includes
 document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(clockTimer);stopEffects()}else clock()});
 try{matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',e=>{if(e.matches)stopEffects()})}catch(_){}
 setTimeout(clock,900);
-window.NH7_CELEBRATIONS_V464=Object.freeze({VERSION:'4.6.5-finalqa',eventFor,annualEvents,birthday,run,easter,openCalendar});
+window.NH7_CELEBRATIONS_V464=Object.freeze({VERSION:'4.6.6-calendar-lock-finalqa',eventFor,annualEvents,birthday,run,easter,openCalendar});
 })();
