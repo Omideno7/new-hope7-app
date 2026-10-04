@@ -1335,6 +1335,7 @@ async function showAmen(){
 let nh7NavigationEpochV456=0;
 async function render(route, params={}, preserve=false){
   schoolDraftsV468.unmount();
+  try{window.NH7CommunityV502?.dispose?.()}catch(e){console.warn('[NH7 Community dispose]',e)}
   const navigationEpochV456=++nh7NavigationEpochV456;
   view.innerHTML='<section class="card"><p>...</p></section>';
   try{
