@@ -1,5 +1,5 @@
-/* New Hope 7 — local-first global search v5.4.1.
-   No per-keystroke Supabase search. Dynamic audio uses a deduplicated cached catalog warm-up only when needed. */
+/* New Hope 7 — global search v5.4.3 Final QA.
+   Local-first search with direct audio handoff to the canonical player. */
 export function createGlobalSearchV540(ctx){
   let serial=0,timer=0;
   const norm=value=>String(value||'').normalize('NFKC').toLowerCase()
@@ -62,7 +62,7 @@ export function createGlobalSearchV540(ctx){
       const hay=norm([item.title_fa,item.title_en,item.title_hr,item.description_fa,item.description_en,item.description_hr].join(' '));
       if(!hay.includes(q))continue;
       const id='cloud:'+String(item.id);if(seen.has(id))continue;seen.add(id);
-      out.push({icon:'🎧',title,meta:L('پیام صوتی','Audio message','Audio poruka'),snippet:snippet(item['description_'+ctx.lang()]||item.description_fa||item.description_en||''),action:{route:'audio',params:{open:item.id}}});
+      out.push({icon:'🎧',title,meta:L('پیام صوتی','Audio message','Audio poruka'),snippet:snippet(item['description_'+ctx.lang()]||item.description_fa||item.description_en||''),action:{type:'audio',source:'cloud',item:{id:item.id,audio_url:item.audio_url||'',cover_url:item.cover_url||'',duration_seconds:item.duration_seconds||0,category_id:item.category_id||'',speaker:item.speaker||'',title_fa:item.title_fa||'',title_en:item.title_en||'',title_hr:item.title_hr||''}}});
       if(out.length>=limit)return out;
     }
     try{
@@ -72,7 +72,7 @@ export function createGlobalSearchV540(ctx){
         const hay=norm(title+' '+String(item.description&&item.description[ctx.lang()]||item.description&&item.description.en||''));
         if(!hay.includes(q))continue;
         const id='bundle:'+String(cat.id)+'|'+String(item.id||item.src||title);if(seen.has(id))continue;seen.add(id);
-        out.push({icon:'🎧',title,meta:ctx.pick(cat.title)||L('پیام صوتی','Audio message','Audio poruka'),action:{route:'audio',params:{cat:cat.id,openBundled:String(item.id||item.src||title)}}});
+        out.push({icon:'🎧',title,meta:ctx.pick(cat.title)||L('پیام صوتی','Audio message','Audio poruka'),action:{type:'audio',source:'bundle',cat:cat.id,item:{id:'bundled-'+String(item.id||ctx.hash?.(item.src||title)||item.src||title),audio_url:item.src||'',analytics_type:'sermon',analytics_id:String(item.id||''),analytics_topic:ctx.pick(cat.title)||'',analytics_source_group:String(cat.id||''),analytics_language:ctx.lang(),title_fa:item.title?.fa||item.title?.en||title,title_en:item.title?.en||item.title?.fa||title,title_hr:item.title?.hr||item.title?.en||title}}});
         if(out.length>=limit)return out;
       }
     }catch(_){}
@@ -105,20 +105,22 @@ export function createGlobalSearchV540(ctx){
   }
   function paint(box,result,query){
     if(!box)return;
-    if(result&&result.tooShort){box.innerHTML='<p class="muted">'+ctx.html(L('حداقل دو حرف وارد کنید. جستجو روی خود دستگاه انجام می‌شود.','Type at least two characters. Search runs on this device.','Unesite najmanje dva znaka. Pretraživanje se izvodi na ovom uređaju.'))+'</p>';return}
+    if(result&&result.tooShort){box.innerHTML='<p class="muted">'+ctx.html(L('حداقل دو حرف وارد کنید.','Type at least two characters.','Unesite najmanje dva znaka.'))+'</p>';return}
     const total=(result.bible||[]).length+(result.saved||[]).length+(result.notes||[]).length+(result.audio||[]).length;
     box.innerHTML=total?'<p class="muted nh7-global-meta-v540">'+ctx.html(L('نتایج برای','Results for','Rezultati za'))+': <strong>'+ctx.html(query)+'</strong> · '+ctx.localNum(total)+'</p>'+section('saved',result.saved)+section('notes',result.notes)+section('bible',result.bible)+section('audio',result.audio):'<p class="muted">'+ctx.html(L('نتیجه‌ای پیدا نشد.','No result found.','Nema rezultata.'))+'</p>';
   }
   function htmlBlock(){
-    return ctx.card(L('جستجوی مرکزی','Search everywhere','Pretraži sve'),'<div class="nh7-global-search-v540"><input id="nh7GlobalSearchV540" type="search" autocomplete="off" placeholder="'+ctx.html(L('در کتاب مقدس، آیات ذخیره‌شده، یادداشت‌ها و پیام‌های صوتی جستجو کنید…','Search Bible, saved verses, notes and audio messages…','Pretražite Bibliju, spremljene retke, bilješke i audio poruke…'))+'"><div id="nh7GlobalSearchResultsV540" class="nh7-global-search-results-v540"><p class="muted">'+ctx.html(L('جستجو روی خود دستگاه انجام می‌شود و درخواست لحظه‌ای به Supabase نمی‌فرستد.','Search runs on this device and does not send live search requests to Supabase.','Pretraživanje se izvodi na uređaju i ne šalje upite uživo Supabaseu.'))+'</p></div></div>','nh7-global-search-card-v540');
+    const placeholder=L('جستجوی مرکزی','Search everywhere','Pretraži sve');
+    return ctx.card('','<div class="nh7-global-search-v540"><label class="nh7-global-input-shell-v540" for="nh7GlobalSearchV540"><span class="nh7-global-search-icon-v540" aria-hidden="true">⌕</span><input id="nh7GlobalSearchV540" type="search" autocomplete="off" aria-label="'+ctx.html(placeholder)+'" placeholder="'+ctx.html(placeholder)+'"></label><div id="nh7GlobalSearchResultsV540" class="nh7-global-search-results-v540"></div></div>','nh7-global-search-card-v540');
   }
   function mount(){
     const input=document.getElementById('nh7GlobalSearchV540'),box=document.getElementById('nh7GlobalSearchResultsV540');if(!input||!box)return;
-    const trigger=()=>{clearTimeout(timer);const value=input.value||'',id=++serial;timer=setTimeout(async()=>{box.innerHTML='<p class="muted">'+ctx.html(L('در حال جستجو روی دستگاه…','Searching on this device…','Pretraživanje na uređaju…'))+'</p>';const result=await run(value);if(id!==serial)return;paint(box,result,value)},280)};
+    const trigger=()=>{clearTimeout(timer);const value=input.value||'',id=++serial;timer=setTimeout(async()=>{box.innerHTML='<p class="muted">'+ctx.html(L('در حال جستجو…','Searching…','Pretraživanje…'))+'</p>';const result=await run(value);if(id!==serial)return;paint(box,result,value)},280)};
     input.addEventListener('input',trigger);input.addEventListener('search',trigger);
     box.addEventListener('click',event=>{
       const button=event.target.closest('[data-global-action]');if(!button)return;
       let action={};try{action=JSON.parse(button.dataset.globalAction||'{}')}catch(_){}
+      if(action.type==='audio'&&ctx.openAudio){ctx.openAudio(action);return}
       if(action.route){ctx.navigate(action.route,action.params||{});return}
       if(action.type==='homeNote'){
         const panel=document.getElementById('notesPanel');if(panel)panel.classList.remove('hidden');
