@@ -1,0 +1,34 @@
+/* New Hope 7 v5.4.0 — central search + final exam review */
+.nh7-global-search-v540{display:grid;gap:12px}
+.nh7-global-search-v540 input{
+  width:100%;min-height:48px;padding:12px 14px;border-radius:14px;
+  border:1px solid var(--nh7-studio-line,var(--line,#d9e6f7));
+  background:var(--nh7-studio-card,var(--card,#fff));
+  color:var(--nh7-studio-text,var(--ink,#10284a));font:inherit
+}
+.nh7-global-search-results-v540{display:grid;gap:14px}
+.nh7-global-section-v540{display:grid;gap:8px}
+.nh7-global-section-v540 h4{margin:4px 0;color:var(--nh7-studio-text,var(--ink,#10284a))}
+.nh7-global-section-v540 h4 small{color:var(--nh7-studio-muted,var(--muted,#64748b))}
+.nh7-global-results-list-v540{display:grid;gap:7px}
+.nh7-global-hit-v540{
+  width:100%;display:grid;grid-template-columns:36px minmax(0,1fr) 18px;gap:10px;align-items:center;
+  padding:11px 12px;border-radius:14px;text-align:start;cursor:pointer;font:inherit;
+  border:1px solid var(--nh7-studio-line,var(--line,#d9e6f7));
+  background:var(--nh7-studio-card,var(--card,#fff));color:var(--nh7-studio-text,var(--ink,#10284a))
+}
+.nh7-global-hit-v540 strong{display:block;font-size:.82rem;color:inherit}
+.nh7-global-hit-v540 small{display:block;margin-top:3px;font-size:.69rem;line-height:1.45;color:var(--nh7-studio-muted,var(--muted,#64748b))}
+.nh7-global-hit-icon-v540{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;background:color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1d4ed8)) 10%,transparent)}
+.nh7-global-focus-v540{outline:3px solid color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1d4ed8)) 34%,transparent);outline-offset:3px}
+.nh7-exam-review-v540{margin-top:14px;padding:12px;border:1px solid var(--nh7-studio-line,var(--line,#d9e6f7));border-radius:16px;background:var(--nh7-studio-card,var(--card,#fff));color:var(--nh7-studio-text,var(--ink,#10284a))}
+.nh7-exam-review-v540>summary{cursor:pointer;font-weight:800;color:var(--nh7-studio-accent,var(--brand,#1d4ed8))}
+.nh7-exam-review-v540.success{background:color-mix(in srgb,#16a34a 8%,var(--nh7-studio-card,var(--card,#fff)));border-color:color-mix(in srgb,#16a34a 30%,var(--nh7-studio-line,var(--line,#d9e6f7)))}
+.nh7-exam-wrong-v540{margin-top:10px;padding:11px 12px;border-radius:13px;background:color-mix(in srgb,#dc2626 6%,var(--nh7-studio-card,var(--card,#fff)));border:1px solid color-mix(in srgb,#dc2626 18%,var(--nh7-studio-line,var(--line,#d9e6f7)))}
+.nh7-exam-wrong-v540 strong{display:block;margin-bottom:7px}
+.nh7-exam-wrong-v540 p{margin:5px 0;line-height:1.55}
+.nh7-exam-wrong-v540 p span{font-weight:800}
+@media(min-width:768px){
+  .nh7-global-results-list-v540{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .nh7-global-hit-v540{min-height:76px}
+}
