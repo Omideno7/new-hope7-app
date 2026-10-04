@@ -1,7 +1,8 @@
 import {mountMoreReviewV469} from './nh7-store-review-v469.js?v=4.6.9';
 import {createSchoolDraftsV468} from './nh7-school-drafts-v468.js?v=4.6.8';
 import {createSoulWinningV472} from './nh7-soul-winning-v472.js?v=4.7.2';
-import {createBibleKeywordsV451} from './nh7-bible-keywords-v451.js?v=4.5.1';
+import {createBibleKeywordsV451} from './nh7-bible-keywords-v451.js?v=4.5.2-global-search';
+import {createGlobalSearchV540} from './nh7-global-search-v540.js?v=5.4.0';
 // NH7 v2.2.3 targeted update: Bible navigation, protected content, reliable analytics, and secure PDF viewer.
 const $ = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
@@ -1175,7 +1176,7 @@ function collectNotes(){
     if(!k) continue;
     if(k.startsWith('nh7_note_') || k.startsWith('nh7_gratitude_note_')){
       const val=localStorage.getItem(k);
-      if(val) out.push({key:k.replace(/^nh7_/,'').replace(/_/g,' '), text:val});
+      if(val) out.push({rawKey:k,key:k.replace(/^nh7_/,'').replace(/_/g,' '), text:val});
     }
   }
   return out;
@@ -1195,7 +1196,7 @@ function savedVersesPanel(bookmarks){
 }
 function notesPanel(){
   const notes=collectNotes();
-  return `<button class="secondary-btn" data-toggle-panel="notesPanel">${tr('showMyNotes')}</button><div id="notesPanel" class="collapsible-panel hidden">${notes.length?`<div class="list">${notes.reverse().map(n=>`<div class="notice"><strong>${html(n.key)}</strong><p>${html(n.text)}</p></div>`).join('')}</div>`:`<p class="muted">${tr('noNotes')}</p>`}</div>`;
+  return `<button class="secondary-btn" data-toggle-panel="notesPanel">${tr('showMyNotes')}</button><div id="notesPanel" class="collapsible-panel hidden">${notes.length?`<div class="list">${notes.reverse().map(n=>`<div class="notice" data-note-key="${html(n.rawKey||'')}"><strong>${html(n.key)}</strong><p>${html(n.text)}</p></div>`).join('')}</div>`:`<p class="muted">${tr('noNotes')}</p>`}</div>`;
 }
 
 
