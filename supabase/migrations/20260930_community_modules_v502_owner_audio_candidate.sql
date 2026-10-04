@@ -63,6 +63,25 @@ for delete to authenticated using (
 );
 
 -- =========================================================
+-- Storage owner authorization bridge
+-- =========================================================
+-- Storage RLS executes under the authenticated caller, while the canonical
+-- owner helper intentionally remains private/postgres-only. This narrow bridge
+-- exposes only a boolean owner check and is executable by authenticated users.
+create or replace function public.nh7_storage_owner_check_v502()
+returns boolean
+language sql
+stable
+security definer
+set search_path=''
+as $
+  select private.nh7_admin_is_owner_v350();
+$;
+
+revoke all on function public.nh7_storage_owner_check_v502() from public,anon,authenticated,service_role;
+grant execute on function public.nh7_storage_owner_check_v502() to authenticated;
+
+-- =========================================================
 -- Audio testimonies
 -- Pending audio stays private. Only approved audio is copied to public bucket.
 -- =========================================================
@@ -150,7 +169,7 @@ for select to authenticated using (
   bucket_id='nh7-testimony-submissions-v502'
   and (
     (storage.foldername(name))[1]=(select auth.uid())::text
-    or (select private.nh7_admin_is_owner_v350())
+    or (select public.nh7_storage_owner_check_v502())
   )
 );
 drop policy if exists nh7_testimony_submission_delete_own_or_owner_v502 on storage.objects;
@@ -159,7 +178,7 @@ for delete to authenticated using (
   bucket_id='nh7-testimony-submissions-v502'
   and (
     (storage.foldername(name))[1]=(select auth.uid())::text
-    or (select private.nh7_admin_is_owner_v350())
+    or (select public.nh7_storage_owner_check_v502())
   )
 );
 
@@ -168,22 +187,22 @@ drop policy if exists nh7_testimony_published_owner_insert_v502 on storage.objec
 create policy nh7_testimony_published_owner_insert_v502 on storage.objects
 for insert to authenticated with check (
   bucket_id='nh7-testimony-published-v502'
-  and (select private.nh7_admin_is_owner_v350())
+  and (select public.nh7_storage_owner_check_v502())
 );
 drop policy if exists nh7_testimony_published_owner_update_v502 on storage.objects;
 create policy nh7_testimony_published_owner_update_v502 on storage.objects
 for update to authenticated using (
   bucket_id='nh7-testimony-published-v502'
-  and (select private.nh7_admin_is_owner_v350())
+  and (select public.nh7_storage_owner_check_v502())
 ) with check (
   bucket_id='nh7-testimony-published-v502'
-  and (select private.nh7_admin_is_owner_v350())
+  and (select public.nh7_storage_owner_check_v502())
 );
 drop policy if exists nh7_testimony_published_owner_delete_v502 on storage.objects;
 create policy nh7_testimony_published_owner_delete_v502 on storage.objects
 for delete to authenticated using (
   bucket_id='nh7-testimony-published-v502'
-  and (select private.nh7_admin_is_owner_v350())
+  and (select public.nh7_storage_owner_check_v502())
 );
 
 -- =========================================================
