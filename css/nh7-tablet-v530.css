@@ -22,8 +22,8 @@
   .brand small{max-width:54vw}
 
   .view{
-    margin-inline-start:94px;
-    padding:22px 26px 42px;
+    margin-inline:0;
+    padding:22px 104px 42px;
     min-width:0;
   }
 
@@ -242,7 +242,7 @@
 
 
 @media (min-width:600px) and (max-width:767px){
-  .view{margin-inline-start:78px;padding:18px 16px 36px}
+  .view{margin-inline:0;padding:18px 82px 36px}
   .bottom-nav{width:64px;inset-inline-start:8px;padding:7px 5px}
   .nav-item{min-height:56px}
   .nav-item span{font-size:20px}
@@ -257,7 +257,7 @@
 
 @media (min-width:1024px){
   .topbar{margin-inline:0}
-  .view{margin-inline-start:102px;padding-inline:30px}
+  .view{margin-inline:0;padding-inline:112px}
   .bottom-nav{width:82px}
   .nh7-adaptive-split{grid-template-columns:minmax(260px,25%) minmax(0,1fr);gap:22px}
   .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -268,7 +268,7 @@
 @media (min-width:1366px){
   .app-shell{max-width:1500px}
   .topbar{margin-inline:0}
-  .view{margin-inline-start:112px;padding:28px 36px 48px}
+  .view{margin-inline:0;padding:28px 124px 48px}
   .bottom-nav{width:88px;inset-inline-start:max(14px,calc((100vw - 1500px)/2 + 14px))}
   .nh7-adaptive-split{grid-template-columns:300px minmax(0,1fr);gap:26px}
   .nh7-adaptive-sidebar{top:104px}
