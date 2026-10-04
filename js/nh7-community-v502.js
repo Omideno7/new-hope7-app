@@ -306,5 +306,10 @@ async function saveProfile(old){
  }catch(e){if(newUploads.length)C().storageRemove?.(PROFILE_BUCKET,newUploads).catch(()=>{});toast(backendNotice(e))}finally{b.disabled=false}
 }
 
-window.NH7CommunityV502={VERSION,renderTestimonies,renderPrayer,renderProfile,resumePending};
+function dispose(){
+ try{clearRecording()}catch(_){}
+ try{if(document.getElementById('nh7c502CropModal')?.classList.contains('open'))closeCrop()}catch(_){}
+}
+window.addEventListener('pagehide',dispose);
+window.NH7CommunityV502={VERSION,renderTestimonies,renderPrayer,renderProfile,resumePending,dispose};
 })();
