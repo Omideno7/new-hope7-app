@@ -50,7 +50,17 @@ function injectCss(){
  .nh7c502-list-card{border:1px solid color-mix(in srgb,var(--text) 13%,transparent);border-radius:16px;padding:12px;margin:9px 0}.nh7c502-audio-head{display:flex;gap:10px;align-items:flex-start}.nh7c502-art{width:50px;height:50px;border-radius:13px;background:color-mix(in srgb,var(--accent) 25%,var(--card));display:grid;place-items:center;font-size:1.45rem;flex:0 0 auto}.nh7c502-copy{flex:1}
  .nh7c502-avatar{width:98px;height:98px;border-radius:50%;overflow:hidden;border:3px solid color-mix(in srgb,var(--text) 18%,transparent);background:color-mix(in srgb,var(--accent) 16%,var(--card));display:grid;place-items:center;font-size:2rem}.nh7c502-avatar img{width:100%;height:100%;object-fit:cover}
  html.nh7-crop-lock,body.nh7-crop-lock{overflow:hidden!important;overscroll-behavior:none!important}.nh7c502-crop-modal{position:fixed;inset:0;z-index:4000;background:#000c;display:none;align-items:center;justify-content:center;padding:16px;touch-action:none}.nh7c502-crop-modal.open{display:flex}.nh7c502-crop-card{width:min(94vw,430px);max-height:calc(100dvh - 32px);overflow:auto;overscroll-behavior:contain;background:var(--card);border:1px solid color-mix(in srgb,var(--text) 18%,transparent);border-radius:22px;padding:16px;touch-action:pan-y}.nh7c502-crop-stage{width:280px;height:280px;max-width:78vw;max-height:78vw;margin:12px auto;position:relative;overflow:hidden;border-radius:50%;background:#06141b;border:4px solid #ffffff30;touch-action:none}.nh7c502-crop-stage img{position:absolute;left:50%;top:50%;max-width:none;user-select:none;-webkit-user-drag:none;pointer-events:none;transform-origin:center center}.nh7c502-crop-stage.dragging{cursor:grabbing}
- .nh7c502-range{width:100%}.nh7c502-consents{display:grid;gap:7px;margin:10px 0}.nh7c502-consents label{display:flex;align-items:flex-start;gap:8px;font-size:.82rem;line-height:1.7}
+ .nh7c502-range{width:100%}
+ .nh7c502-prayer-own{border:1px solid var(--line);border-radius:16px;padding:13px;margin:10px 0;background:color-mix(in srgb,var(--card) 94%,var(--accent) 6%)}
+ .nh7c502-prayer-own-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px}.nh7c502-prayer-own-head small{color:var(--muted)}
+ .nh7c502-prayer-status{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:.74rem;font-weight:900;border:1px solid var(--line)}
+ .nh7c502-prayer-own.is-received .nh7c502-prayer-status{color:var(--accent);background:color-mix(in srgb,var(--accent) 9%,var(--card))}
+ .nh7c502-prayer-own.is-praying .nh7c502-prayer-status{color:#9a6300;background:#fff6d8;border-color:#efd790}
+ html[data-nh7-studio-tone457="dark"] .nh7c502-prayer-own.is-praying .nh7c502-prayer-status{color:#ffe19a;background:#4a3510;border-color:#765a24}
+ .nh7c502-prayer-own.is-completed .nh7c502-prayer-status{color:#157347;background:#e9f8ef;border-color:#a9d8ba}
+ html[data-nh7-studio-tone457="dark"] .nh7c502-prayer-own.is-completed .nh7c502-prayer-status{color:#a9efc4;background:#153d2b;border-color:#2e684b}
+ .nh7c502-prayer-own>p{margin:.3rem 0;white-space:pre-wrap}.nh7c502-prayer-answer{margin-top:10px;padding-top:10px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.nh7c502-prayer-answer span{font-size:.82rem;color:var(--muted);line-height:1.7}
+ .nh7c502-consents{display:grid;gap:7px;margin:10px 0}.nh7c502-consents label{display:flex;align-items:flex-start;gap:8px;font-size:.82rem;line-height:1.7}
  .nh7c502-progress{height:5px;background:color-mix(in srgb,var(--text) 12%,transparent);border-radius:999px;overflow:hidden}.nh7c502-progress i{display:block;height:100%;background:var(--accent)}
  `;document.head.appendChild(s)
 }
@@ -148,20 +158,48 @@ async function submitTestimony(){
  }catch(e){if(uploadedPath)C().storageRemove?.(TESTIMONY_PRIVATE,uploadedPath).catch(()=>{});toast(backendNotice(e),'notice')}finally{btn.disabled=false}
 }
 
+let ownPrayerRowsV503=[];
+function prayerStatusLabelV503(status){
+ const v=String(status||'new').toLowerCase();
+ if(v==='praying')return L('در حال دعا','Praying','U molitvi');
+ if(v==='completed')return L('دعا انجام شد','Prayer completed','Molitva dovršena');
+ return L('دریافت شد','Received','Primljeno');
+}
+function prayerStatusClassV503(status){const v=String(status||'new').toLowerCase();return v==='praying'?'is-praying':v==='completed'?'is-completed':'is-received'}
+function prayerDateV503(value){try{return new Intl.DateTimeFormat(lang()==='fa'?'fa-IR':lang()==='hr'?'hr-HR':'en-GB',{dateStyle:'medium'}).format(new Date(value))}catch(_){return String(value||'')}}
+function renderOwnPrayerRowsV503(){
+ const host=document.getElementById('nh7c502OwnPrayers');if(!host)return;
+ if(!ownPrayerRowsV503.length){host.innerHTML='<p class="muted">'+esc(L('هنوز درخواست دعایی ثبت نکرده‌اید.','You have not submitted a prayer request yet.','Još niste poslali molitveni zahtjev.'))+'</p>';return}
+ host.innerHTML=ownPrayerRowsV503.map(r=>{
+  const status=String(r.status||'new').toLowerCase(),done=status==='completed';
+  return '<article class="nh7c502-prayer-own '+prayerStatusClassV503(status)+'"><div class="nh7c502-prayer-own-head"><span class="nh7c502-prayer-status">'+esc(prayerStatusLabelV503(status))+'</span><small>'+esc(prayerDateV503(r.created_at))+'</small></div><p>'+esc(r.request_text||'')+'</p>'+(done?'<div class="nh7c502-prayer-answer"><span>'+esc(L('اگر پاسخ دعایتان را دریافت کرده‌اید، می‌توانید آن را به‌عنوان شهادت با کلیسا در میان بگذارید.','If you have received an answer to this prayer, you can share it with the church as a testimony.','Ako ste primili odgovor na ovu molitvu, možete ga podijeliti s crkvom kao svjedočanstvo.'))+'</span><button type="button" class="secondary-btn" data-go="testimonies">'+esc(L('ثبت شهادت','Share testimony','Podijeli svjedočanstvo'))+'</button></div>':'')+'</article>';
+ }).join('');
+}
+async function loadOwnPrayersV503(){
+ if(!isLoggedIn())return;const uid=C().session()?.user?.id;if(!uid)return;
+ try{const rows=await C().cloudFetch('nh7_prayer_requests_v502?user_id=eq.'+encodeURIComponent(uid)+'&select=id,request_text,status,created_at,updated_at&order=created_at.desc&limit=20',{method:'GET',cache:'no-store'});ownPrayerRowsV503=Array.isArray(rows)?rows:[]}
+ catch(e){console.warn('[NH7 own prayer list]',e);ownPrayerRowsV503=[]}
+ renderOwnPrayerRowsV503();
+}
 async function renderPrayer(){
  injectCss();const u=(await guide(),U()),view=ctxView();
- view.innerHTML=C().card(u.prayerTitle,'<div class="notice"><strong>'+esc(u.prayerPrivate)+'</strong></div><p>'+esc(u.prayerLead)+'</p><p class="muted">'+esc(u.prayerSpiritual)+'</p><div class="form-row"><label><strong>'+esc(L('نام','Name','Ime'))+'</strong></label><input id="nh7c502PrayerName" maxlength="160" value="'+esc(C().profileName()||'')+'"></div><div class="form-row"><label><strong>'+esc(u.prayerDetail)+'</strong></label><textarea id="nh7c502PrayerText" maxlength="6000" style="min-height:180px"></textarea></div><button class="primary-btn wide-btn" id="nh7c502PrayerSubmit">'+esc(u.sendPrayer)+'</button><div data-community-msg style="margin-top:10px"></div>');
+ view.innerHTML=C().card(u.prayerTitle,'<div class="notice"><strong>'+esc(u.prayerPrivate)+'</strong></div><p>'+esc(u.prayerLead)+'</p><p class="muted">'+esc(u.prayerSpiritual)+'</p><div class="form-row"><label><strong>'+esc(L('نام','Name','Ime'))+'</strong></label><input id="nh7c502PrayerName" maxlength="160" value="'+esc(C().profileName()||'')+'"></div><div class="form-row"><label><strong>'+esc(u.prayerDetail)+'</strong></label><textarea id="nh7c502PrayerText" maxlength="6000" style="min-height:180px"></textarea></div><button class="primary-btn wide-btn" id="nh7c502PrayerSubmit">'+esc(u.sendPrayer)+'</button><div data-community-msg style="margin-top:10px"></div>')+
+ C().card(L('درخواست‌های دعای من','My prayer requests','Moji molitveni zahtjevi'),'<p class="muted">'+esc(L('فقط درخواست‌های خودتان در اینجا نمایش داده می‌شود. وضعیت هنگام باز کردن این صفحه تازه می‌شود و هیچ بررسی دائمی در پس‌زمینه انجام نمی‌شود.','Only your own requests are shown here. Status refreshes when you open this page; there is no background polling.','Ovdje se prikazuju samo vaši zahtjevi. Status se osvježava kada otvorite ovu stranicu; nema pozadinskog provjeravanja.'))+'</p><div id="nh7c502OwnPrayers"><p class="muted">'+esc(L('در حال دریافت…','Loading…','Učitavanje…'))+'</p></div>');
+ await loadOwnPrayersV503();
  document.getElementById('nh7c502PrayerSubmit').onclick=async()=>{
   if(!requireLogin('prayerRequest'))return;
   const name=document.getElementById('nh7c502PrayerName').value.trim(),text=document.getElementById('nh7c502PrayerText').value.trim();
   if(!name||text.length<20){toast(L('لطفاً موضوع درخواست دعا را کامل‌تر توضیح دهید.','Please explain your prayer request in more detail.','Molimo detaljnije opišite svoj molitveni zahtjev.'));return}
   const uid=C().session()?.user?.id;if(!uid){requireLogin('prayerRequest');return}
   const b=document.getElementById('nh7c502PrayerSubmit');b.disabled=true;
-  try{await C().cloudFetch('nh7_prayer_requests_v502',{method:'POST',body:JSON.stringify({user_id:uid,requester_name:name,request_text:text,status:'new'})});document.getElementById('nh7c502PrayerText').value='';toast(L('درخواست دعا به‌صورت خصوصی برای Admin ثبت شد ✓','Your prayer request was sent privately to Admin ✓','Vaš molitveni zahtjev privatno je poslan Adminu ✓'),'notice success-notice')}
-  catch(e){toast(backendNotice(e))}finally{b.disabled=false}
+  try{
+   const created=await C().cloudFetch('nh7_prayer_requests_v502',{method:'POST',body:JSON.stringify({user_id:uid,requester_name:name,request_text:text,status:'new'})});
+   document.getElementById('nh7c502PrayerText').value='';
+   const row=Array.isArray(created)?created[0]:null;if(row){ownPrayerRowsV503=[row,...ownPrayerRowsV503.filter(x=>String(x.id)!==String(row.id))].slice(0,20);renderOwnPrayerRowsV503()}
+   toast(L('درخواست دعای شما دریافت شد ✓','Your prayer request was received ✓','Vaš molitveni zahtjev je primljen ✓'),'notice success-notice');
+  }catch(e){toast(backendNotice(e))}finally{b.disabled=false}
  };
 }
-
 async function renderProfile(){
  injectCss();await guide();if(!requireLogin('profile'))return;
  const u=U(),view=ctxView(),uid=C().session()?.user?.id;
@@ -216,7 +254,7 @@ async function saveProfile(old){
   newUploads=[];
   const stale=[old?.original_photo_path,old?.photo_path].filter(p=>p&&p!==originalPath&&p!==photoPath);if(stale.length)C().storageRemove?.(PROFILE_BUCKET,stale).catch(()=>{});
   try{localStorage.setItem('nh7_user_profile',JSON.stringify({name,email:C().email()}))}catch(_){}
-  document.getElementById('nh7c502ProfileName').textContent=name;toast(L('پروفایل ذخیره شد ✓','Profile saved ✓','Profil je spremljen ✓'),'notice success-notice')
+  document.getElementById('nh7c502ProfileName').textContent=name;Promise.resolve(C().refreshHeaderProfile?.({force:true,src:crop.cropped||'',name})).catch(()=>{});toast(L('پروفایل ذخیره شد ✓','Profile saved ✓','Profil je spremljen ✓'),'notice success-notice')
  }catch(e){if(newUploads.length)C().storageRemove?.(PROFILE_BUCKET,newUploads).catch(()=>{});toast(backendNotice(e))}finally{b.disabled=false}
 }
 
