@@ -1,4 +1,4 @@
-/* New Hope 7 v5.3.2 — adaptive tablet / desktop information architecture.
+/* New Hope 7 v5.4.3 — adaptive tablet / fold-safe information architecture.
    Phone layout remains canonical below 768px. */
 
 .nh7-adaptive-sidebar{display:none}
@@ -14,7 +14,7 @@
 
   .topbar{
     margin-inline:0;
-    padding:14px 22px;
+    padding:calc(14px + var(--safe-area-inset-top, env(safe-area-inset-top,0px))) 22px 14px;
     border-radius:0 0 18px 18px;
   }
 
@@ -23,14 +23,16 @@
 
   .view{
     margin-inline:0;
-    padding:22px 104px 42px;
+    padding-block:22px 42px;
+    padding-inline-start:104px;
+    padding-inline-end:24px;
     min-width:0;
   }
 
   /* Tablet navigation rail: same routes, different information architecture. */
   .bottom-nav{
     position:fixed;
-    inset-block:calc(env(safe-area-inset-top) + 102px) 18px;
+    inset-block:calc(var(--safe-area-inset-top, env(safe-area-inset-top,0px)) + 102px) calc(18px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom,0px)));
     inset-inline-start:14px;
     left:auto;
     right:auto;
@@ -82,8 +84,8 @@
     display:flex;
     flex-direction:column;
     position:sticky;
-    top:98px;
-    max-height:calc(100dvh - 122px);
+    top:calc(98px + var(--safe-area-inset-top, env(safe-area-inset-top,0px)));
+    max-height:calc(100dvh - 122px - var(--safe-area-inset-top, env(safe-area-inset-top,0px)));
     overflow:hidden;
     border:1px solid var(--nh7-studio-line,var(--line,#d9e6f7));
     border-radius:20px;
@@ -185,6 +187,7 @@
   }
   .nh7-bible-adaptive .bible-chapter-nav{position:sticky;bottom:10px;z-index:4}
 
+  .nh7-audio-adaptive{grid-template-columns:minmax(190px,22%) minmax(0,1fr);gap:18px}
   .nh7-audio-categories{display:grid;gap:5px}
   .nh7-adaptive-category{
     width:100%;
@@ -242,13 +245,13 @@
 
 
 @media (min-width:600px) and (max-width:767px){
-  .view{margin-inline:0;padding:18px 82px 36px}
+  .view{margin-inline:0;padding-block:18px 36px;padding-inline-start:82px;padding-inline-end:18px}
   .bottom-nav{width:64px;inset-inline-start:8px;padding:7px 5px}
   .nav-item{min-height:56px}
   .nav-item span{font-size:20px}
   .nav-item small{font-size:9px}
   .nh7-adaptive-split{grid-template-columns:minmax(170px,34%) minmax(0,1fr);gap:12px}
-  .nh7-adaptive-sidebar{top:94px;max-height:calc(100dvh - 112px)}
+  .nh7-adaptive-sidebar{top:calc(94px + var(--safe-area-inset-top, env(safe-area-inset-top,0px)));max-height:calc(100dvh - 112px - var(--safe-area-inset-top, env(safe-area-inset-top,0px)))}
   .nh7-adaptive-chapters{grid-template-columns:repeat(4,minmax(0,1fr))}
   .sermon-list{grid-template-columns:1fr}
   .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -257,9 +260,10 @@
 
 @media (min-width:1024px){
   .topbar{margin-inline:0}
-  .view{margin-inline:0;padding-inline:112px}
+  .view{margin-inline:0;padding-inline-start:112px;padding-inline-end:28px}
   .bottom-nav{width:82px}
   .nh7-adaptive-split{grid-template-columns:minmax(260px,25%) minmax(0,1fr);gap:22px}
+  .nh7-audio-adaptive{grid-template-columns:minmax(220px,22%) minmax(0,1fr);gap:18px}
   .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
   .nh7-chapter-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
   .tile{min-height:118px}
@@ -268,10 +272,10 @@
 @media (min-width:1366px){
   .app-shell{max-width:1500px}
   .topbar{margin-inline:0}
-  .view{margin-inline:0;padding:28px 124px 48px}
+  .view{margin-inline:0;padding-block:28px 48px;padding-inline-start:124px;padding-inline-end:36px}
   .bottom-nav{width:88px;inset-inline-start:max(14px,calc((100vw - 1500px)/2 + 14px))}
   .nh7-adaptive-split{grid-template-columns:300px minmax(0,1fr);gap:26px}
-  .nh7-adaptive-sidebar{top:104px}
+  .nh7-adaptive-sidebar{top:calc(104px + var(--safe-area-inset-top, env(safe-area-inset-top,0px)))}
   .sermon-list{grid-template-columns:repeat(3,minmax(0,1fr))}
   .nh7-bible-adaptive .continuous-reader{max-width:900px;font-size:1.08rem}
   .card{padding:24px}
