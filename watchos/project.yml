@@ -1,3 +1,4 @@
+# New Hope 7 watchOS 2.5.0 isolated QA
 name: NewHope7WatchQA
 options:
   deploymentTarget:
