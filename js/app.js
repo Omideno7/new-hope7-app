@@ -410,9 +410,12 @@ async function refreshUserSession(){
     const merged=Object.assign({},old,d,{user:d?.user||old.user});
     saveAuthSession(merged);return merged;
   }catch(e){
-    // A transient refresh/network failure must not erase the locally saved sign-in.
-    // The failed API call still remains failed; the user can retry or explicitly sign out.
-    console.warn('Session refresh failed; preserving saved session',e);
+    // Preserve the saved sign-in only for transient transport/server failures.
+    // A definitive Auth rejection means the refresh token is no longer usable.
+    const status=Number(e?.status||0),code=String(e?.code||'').toLowerCase(),message=String(e?.message||'').toLowerCase();
+    const rejected=status===400||status===401||/refresh.?token.*(invalid|expired|not.?found)|invalid.?refresh|session.*(invalid|expired)/.test(code+' '+message);
+    if(rejected)saveAuthSession(null);
+    else console.warn('Session refresh failed transiently; preserving saved session',e);
     return null;
   }
 }
