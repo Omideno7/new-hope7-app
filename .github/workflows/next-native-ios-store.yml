@@ -235,7 +235,7 @@ jobs:
           test -f ios/App/App/public/js/nh7-delete-account-v253.js
 
           grep -q 'nh7-push-account-bind-v364.js?v=3.6.4-native' ios/App/App/public/index.html
-          grep -q 'nh7-media-player-v500.js?v=5.3.5-cover-sync' ios/App/App/public/index.html
+          grep -q 'nh7-media-player-v500.js?v=5.4.3-fold-mini' ios/App/App/public/index.html
           grep -q 'nh7-appearance-personalization-v514.js?v=5.2.1-i18n-finalqa' ios/App/App/public/index.html
           grep -q "!window.Capacitor?.isNativePlatform?.()" ios/App/App/public/index.html
           if grep -q 'cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js' ios/App/App/public/index.html; then
@@ -252,7 +252,24 @@ jobs:
         run: |
           set -euo pipefail
           cd ios-release/ios/App
-          xcodebuild -project App.xcodeproj -scheme App -configuration Release -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build | tee ../../../IOS_NEXT_SIMULATOR_BUILD.log
+          rm -rf ../../../DerivedDataSim
+          xcodebuild -project App.xcodeproj -scheme App -configuration Release -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath ../../../DerivedDataSim CODE_SIGNING_ALLOWED=NO build | tee ../../../IOS_NEXT_SIMULATOR_BUILD.log
+          test -d ../../../DerivedDataSim/Build/Products/Release-iphonesimulator/App.app
+          cd ../../..
+          rm -rf New_Hope_7_iOS_Test_5_Simulator
+          mkdir -p New_Hope_7_iOS_Test_5_Simulator
+          cp -R DerivedDataSim/Build/Products/Release-iphonesimulator/App.app New_Hope_7_iOS_Test_5_Simulator/
+          cat > New_Hope_7_iOS_Test_5_Simulator/INSTALL_ON_MAC.txt <<'EOF'
+New Hope 7 — iOS Test 5 Simulator
+1. Install/open Xcode.
+2. Open Xcode > Open Developer Tool > Simulator.
+3. Boot any iPhone simulator running iOS 15 or newer.
+4. Drag App.app onto the Simulator window, or run:
+   xcrun simctl install booted App.app
+5. Open New Hope 7 in the Simulator.
+This is an unsigned simulator test build only. It is not an App Store/TestFlight build.
+EOF
+          zip -qry New_Hope_7_iOS_Test_5_Simulator.zip New_Hope_7_iOS_Test_5_Simulator
 
       - name: Build unsigned Release for generic iOS device
         shell: bash
@@ -301,6 +318,7 @@ jobs:
           name: New_Hope_7_iOS_Next_Candidate
           path: |
             New_Hope_7_iOS_Next_SELF_CONTAINED.zip
+            New_Hope_7_iOS_Test_5_Simulator.zip
             IOS_NEXT_RELEASE_AUDIT.txt
             IOS_NEXT_SIMULATOR_BUILD.log
             IOS_NEXT_DEVICE_BUILD.log
