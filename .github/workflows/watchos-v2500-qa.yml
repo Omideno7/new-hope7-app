@@ -3,6 +3,8 @@ name: WatchOS 2.5.0 QA
 on:
   push:
     branches: [feature/watchos-v2500-20261004]
+  pull_request:
+    branches: [feature/final-qa-v2500-20261004]
   workflow_dispatch:
 
 permissions:
