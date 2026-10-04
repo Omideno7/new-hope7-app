@@ -289,39 +289,7 @@ jobs:
           disable-animations: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none -no-snapshot
           emulator-boot-timeout: 600
-          script: |
-            set -eu
-            PACKAGE=com.omideno7.newhope7.qa
-
-            adb install New_Hope_7_QA_BASELINE_24001.apk
-            adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1
-            sleep 6
-            adb shell run-as "$PACKAGE" sh -c 'mkdir -p files && printf nh7-preserve > files/nh7_upgrade_preserve.txt'
-            adb shell run-as "$PACKAGE" cat files/nh7_upgrade_preserve.txt | grep nh7-preserve
-
-            adb install -r New_Hope_7_QA_CANDIDATE.apk
-            adb shell run-as "$PACKAGE" cat files/nh7_upgrade_preserve.txt | grep nh7-preserve
-
-            adb shell am force-stop "$PACKAGE"
-            adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1
-            sleep 12
-            PID=$(adb shell pidof "$PACKAGE" | tr -d '\r')
-            test -n "$PID"
-            adb exec-out screencap -p > android-next-smoke.png
-            adb logcat -d > android-next-logcat.txt
-            if grep -E "FATAL EXCEPTION|ANR in $PACKAGE|Process: $PACKAGE.*has died" android-next-logcat.txt; then
-              echo 'Fatal Android runtime issue detected'
-              exit 1
-            fi
-
-            adb shell svc wifi disable
-            adb shell svc data disable || true
-            adb shell am force-stop "$PACKAGE"
-            adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1
-            sleep 8
-            PID2=$(adb shell pidof "$PACKAGE" | tr -d '\r')
-            test -n "$PID2"
-            adb exec-out screencap -p > android-next-offline.png
+          script: sh scripts/android_upgrade_smoke.sh
 
       - name: Produce Android release audit
         shell: bash
