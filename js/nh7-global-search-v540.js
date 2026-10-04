@@ -62,7 +62,7 @@ export function createGlobalSearchV540(ctx){
       const hay=norm([item.title_fa,item.title_en,item.title_hr,item.description_fa,item.description_en,item.description_hr].join(' '));
       if(!hay.includes(q))continue;
       const id='cloud:'+String(item.id);if(seen.has(id))continue;seen.add(id);
-      out.push({icon:'🎧',title,meta:L('پیام صوتی','Audio message','Audio poruka'),snippet:snippet(item['description_'+ctx.lang()]||item.description_fa||item.description_en||''),action:{route:'audio',params:{q:title}}});
+      out.push({icon:'🎧',title,meta:L('پیام صوتی','Audio message','Audio poruka'),snippet:snippet(item['description_'+ctx.lang()]||item.description_fa||item.description_en||''),action:{route:'audio',params:{open:item.id}}});
       if(out.length>=limit)return out;
     }
     try{
@@ -72,7 +72,7 @@ export function createGlobalSearchV540(ctx){
         const hay=norm(title+' '+String(item.description&&item.description[ctx.lang()]||item.description&&item.description.en||''));
         if(!hay.includes(q))continue;
         const id='bundle:'+String(cat.id)+'|'+String(item.id||item.src||title);if(seen.has(id))continue;seen.add(id);
-        out.push({icon:'🎧',title,meta:ctx.pick(cat.title)||L('پیام صوتی','Audio message','Audio poruka'),action:{route:'audio',params:{cat:cat.id}}});
+        out.push({icon:'🎧',title,meta:ctx.pick(cat.title)||L('پیام صوتی','Audio message','Audio poruka'),action:{route:'audio',params:{cat:cat.id,openBundled:String(item.id||item.src||title)}}});
         if(out.length>=limit)return out;
       }
     }catch(_){}
