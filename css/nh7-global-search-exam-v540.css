@@ -1,11 +1,20 @@
-/* New Hope 7 v5.4.0 — central search + final exam review */
+/* New Hope 7 v5.4.3 — compact central search + final exam review */
 .nh7-global-search-v540{display:grid;gap:12px}
-.nh7-global-search-v540 input{
-  width:100%;min-height:48px;padding:12px 14px;border-radius:14px;
+.nh7-global-search-card-v540{padding:12px!important}
+.nh7-global-search-card-v540>h2{display:none!important}
+.nh7-global-input-shell-v540{
+  width:100%;min-height:50px;display:flex;align-items:center;gap:10px;padding:0 14px;border-radius:16px;
   border:1px solid var(--nh7-studio-line,var(--line,#d9e6f7));
   background:var(--nh7-studio-card,var(--card,#fff));
+  color:var(--nh7-studio-text,var(--ink,#10284a));
+  box-shadow:0 7px 20px color-mix(in srgb,var(--nh7-studio-text,var(--ink,#10284a)) 7%,transparent)
+}
+.nh7-global-search-icon-v540{flex:0 0 auto;font-size:1.35rem;line-height:1;color:var(--nh7-studio-muted,var(--muted,#64748b))}
+.nh7-global-search-v540 input{
+  width:100%;min-width:0;min-height:48px;padding:0;border:0!important;outline:0;background:transparent!important;
   color:var(--nh7-studio-text,var(--ink,#10284a));font:inherit
 }
+.nh7-global-search-v540 input::placeholder{color:var(--nh7-studio-muted,var(--muted,#64748b));opacity:.92}
 .nh7-global-search-results-v540{display:grid;gap:14px}
 .nh7-global-section-v540{display:grid;gap:8px}
 .nh7-global-section-v540 h4{margin:4px 0;color:var(--nh7-studio-text,var(--ink,#10284a))}
