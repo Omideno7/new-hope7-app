@@ -17,6 +17,13 @@ targets:
       - path: Resources
     info:
       path: NewHope7Watch/Info.plist
+      properties:
+        CFBundleDisplayName: New Hope 7
+        WKCompanionAppBundleIdentifier: com.omideno7.newhope7
+        WKRunsIndependentlyOfCompanionApp: true
+        WKWatchOnly: false
+        UIBackgroundModes:
+          - audio
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.omideno7.newhope7.watchapp
