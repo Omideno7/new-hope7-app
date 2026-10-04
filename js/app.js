@@ -3,6 +3,7 @@ import {createSchoolDraftsV468} from './nh7-school-drafts-v468.js?v=4.6.8';
 import {createSoulWinningV472} from './nh7-soul-winning-v472.js?v=4.7.2';
 import {createBibleKeywordsV451} from './nh7-bible-keywords-v451.js?v=4.5.2-global-search';
 import {createGlobalSearchV540} from './nh7-global-search-v540.js?v=5.4.0';
+import {createExamReviewV540} from './nh7-exam-review-v540.js?v=5.4.0';
 // NH7 v2.2.3 targeted update: Bible navigation, protected content, reliable analytics, and secure PDF viewer.
 const $ = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
@@ -1617,6 +1618,7 @@ async function loadBook(bookId){
 }
 const nh7BibleKeywordsV451=createBibleKeywordsV451({state,view,html,card,tr,l223,localNum,jfetch,navigate,localizeRef,loadBibleMeta,showWritten:()=>bible({section:'written'})});
 const nh7GlobalSearchV540=createGlobalSearchV540({lang:()=>state.lang,html,card,localNum,jfetch,navigate,localizeRef,loadBibleMeta,parseRef,pick,normalizeNote:normalizeNoteText,audioCache:()=>nh7ReadAudioCatalogCacheV446(),bible:()=>nh7BibleKeywordsV451});
+const nh7ExamReviewV540=createExamReviewV540({lang:()=>state.lang,html,localNum,questionText:examQuestionText,optionText:examOptionText});
 async function bibleKeywordsV450(params={}){return nh7BibleKeywordsV451.bibleKeywords(params);}
 
 async function bible(params={}){
