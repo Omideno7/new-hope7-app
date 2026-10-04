@@ -1625,8 +1625,41 @@ async function loadBook(bookId){
   if(!state.bible.groups[group]) state.bible.groups[group]=await jfetch(`data/bible/groups/bible_group_${group}.json`);
   return {book:b, verses:state.bible.groups[group].verses.filter(v=>v.bookId===bookId)};
 }
+function nh7FocusGlobalAudioV543(mediaId){
+  const wanted=String(mediaId||'');if(!wanted)return;
+  let tries=0;
+  const timer=setInterval(()=>{
+    tries++;
+    const card=Array.from(document.querySelectorAll('[data-sermon-card]')).find(node=>String(node.dataset.sermonCard||'')===wanted);
+    if(card){
+      clearInterval(timer);
+      try{window.NH7_AUDIO_CLASSIC_V400?.patch?.()}catch(_){}
+      card.scrollIntoView({behavior:'smooth',block:'center'});
+      card.classList.add('nh7-global-focus-v540');
+      setTimeout(()=>card.classList.remove('nh7-global-focus-v540'),1800);
+    }else if(tries>=40)clearInterval(timer);
+  },75);
+}
+function nh7OpenGlobalAudioV543(action={}){
+  const item=action&&action.item&&typeof action.item==='object'?action.item:{};
+  const id=String(item.id||'');
+  const cat=String(item.category_id||action.cat||'');
+  if(action.source==='cloud'&&id&&item.audio_url){
+    try{window.NH7_AUDIO_CLASSIC_V400?.playItem?.(item)}catch(e){console.warn('Global search audio play',e)}
+    navigate('audio',{cat},false);
+    nh7FocusGlobalAudioV543(id);
+    return;
+  }
+  if(action.source==='bundle'&&id&&item.audio_url){
+    try{playSermon(item).catch?.(e=>console.warn('Global search bundled audio play',e))}catch(e){console.warn('Global search bundled audio play',e)}
+    navigate('audio',{cat:String(action.cat||'')},false);
+    nh7FocusGlobalAudioV543(id);
+    return;
+  }
+  navigate('audio',action.source==='bundle'?{cat:String(action.cat||''),openBundled:id}:{cat,open:id},false);
+}
 const nh7BibleKeywordsV451=createBibleKeywordsV451({state,view,html,card,tr,l223,localNum,jfetch,navigate,localizeRef,loadBibleMeta,showWritten:()=>bible({section:'written'})});
-const nh7GlobalSearchV540=createGlobalSearchV540({lang:()=>state.lang,html,card,localNum,jfetch,navigate,localizeRef,loadBibleMeta,parseRef,pick,normalizeNote:normalizeNoteText,audioCache:()=>nh7ReadAudioCatalogCacheV446(),audioCatalog:()=>nh7EnsureAudioCatalogV541(),bible:()=>nh7BibleKeywordsV451});
+const nh7GlobalSearchV540=createGlobalSearchV540({lang:()=>state.lang,html,card,localNum,jfetch,navigate,localizeRef,loadBibleMeta,parseRef,pick,hash:simpleHash,normalizeNote:normalizeNoteText,audioCache:()=>nh7ReadAudioCatalogCacheV446(),audioCatalog:()=>nh7EnsureAudioCatalogV541(),openAudio:nh7OpenGlobalAudioV543,bible:()=>nh7BibleKeywordsV451});
 const nh7ExamReviewV540=createExamReviewV540({lang:()=>state.lang,html,localNum,questionText:examQuestionText,optionText:examOptionText});
 async function bibleKeywordsV450(params={}){return nh7BibleKeywordsV451.bibleKeywords(params);}
 
