@@ -8,3 +8,22 @@
 .nh7-header-date-row455{flex-wrap:wrap}
 .nh7-christian-today464{max-width:100%;white-space:normal;overflow:visible;text-overflow:clip;line-height:1.5;min-height:32px;font-family:inherit;cursor:pointer}
 .nh7-christian-today464:focus-visible,.nh7-celebration-close464:focus-visible{outline:2px solid var(--brand,#1d4ed8);outline-offset:3px}
+
+/* v4.6.5 Final QA — browsable annual Christian calendar. */
+.nh7-calendar-dialog464{width:min(94vw,560px)!important;text-align:inherit!important}
+.nh7-calendar-list464{display:grid;gap:8px;margin-top:14px}
+.nh7-calendar-item464{
+  width:100%;min-height:54px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;
+  padding:11px 13px;border-radius:14px;border:1px solid var(--nh7-studio-line,var(--line,#d9e6f7));
+  background:var(--nh7-studio-card,var(--card,#fff));color:var(--nh7-studio-text,var(--ink,#10284a));
+  text-align:start;font:inherit;cursor:pointer
+}
+.nh7-calendar-item464 strong{font-size:.8rem;color:inherit}
+.nh7-calendar-item464 small{font-size:.68rem;color:var(--nh7-studio-muted,var(--muted,#64748b));white-space:nowrap}
+.nh7-calendar-item464:active{transform:scale(.99)}
+.nh7-christian-calendar464{display:inline-flex;align-items:center;justify-content:center}
+@media(max-width:540px){
+  .nh7-calendar-dialog464{padding-inline:18px!important}
+  .nh7-calendar-item464{grid-template-columns:1fr}
+  .nh7-calendar-item464 small{white-space:normal}
+}
