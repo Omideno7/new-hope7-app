@@ -362,7 +362,16 @@ async function invokeEdgeFunction(name,payload={}){
 
 async function refreshUserSession(){
   const old=authSession(); if(!old?.refresh_token)return null;
-  try{const d=await authApi('token?grant_type=refresh_token',{method:'POST',body:JSON.stringify({refresh_token:old.refresh_token})});saveAuthSession(d);return d}catch(e){saveAuthSession(null);return null}
+  try{
+    const d=await authApi('token?grant_type=refresh_token',{method:'POST',body:JSON.stringify({refresh_token:old.refresh_token})});
+    const merged=Object.assign({},old,d,{user:d?.user||old.user});
+    saveAuthSession(merged);return merged;
+  }catch(e){
+    // A transient refresh/network failure must not erase the locally saved sign-in.
+    // The failed API call still remains failed; the user can retry or explicitly sign out.
+    console.warn('Session refresh failed; preserving saved session',e);
+    return null;
+  }
 }
 function authEmail(){ return String(authSession()?.user?.email||'').trim().toLowerCase(); }
 
@@ -420,7 +429,7 @@ function accountLoginError(error){
     :state.lang==='hr'
       ?'E-mail računa još nije potvrđen. Provjerite poruku za potvrdu i mapu Spam/Junk.'
       :'This account email is not confirmed yet. Check the confirmation email and Spam/Junk.';
-  if(!navigator.onLine||message==='failed to fetch')return state.lang==='fa'?'اینترنت در دسترس نیست. اتصال را بررسی کنید.':state.lang==='hr'?'Nema internetske veze. Provjerite vezu.':'No internet connection. Check your connection.';
+  if(!navigator.onLine||/failed to fetch|load failed|network|abort|timeout/.test(message))return state.lang==='fa'?'اینترنت در دسترس نیست. اتصال را بررسی کنید.':state.lang==='hr'?'Nema internetske veze. Provjerite vezu.':'No internet connection. Check your connection.';
   return String(error?.message||tr('loginFailed'));
 }
 
@@ -453,9 +462,9 @@ async function cloudFetch(path, options={}){
     if((res.status===401||txt.toLowerCase().includes('jwt expired')) && await refreshUserSession()){
       res=await fetch(SUPABASE_CONFIG.url + '/rest/v1/' + path, Object.assign({}, options, {headers:makeHeaders()}));
       if(res.ok){if(res.status===204)return null;return res.json().catch(()=>null)}
-      throw new Error(await res.text().catch(()=>res.statusText));
+      throw Object.assign(new Error(await res.text().catch(()=>res.statusText)),{status:res.status});
     }
-    throw new Error(txt || res.statusText);
+    throw Object.assign(new Error(txt || res.statusText),{status:res.status});
   }
   if(res.status===204) return null;
   return res.json().catch(()=>null);
@@ -686,7 +695,10 @@ function readSchoolSnapshotCache(email){
     return v&&Array.isArray(v.progress)&&Array.isArray(v.assignments)?v:null;
   }catch(e){return null}
 }
-function invalidateSchoolSnapshot(email=currentUserEmail()){if(email)localStorage.removeItem(schoolSnapshotCacheKey(email))}
+function invalidateSchoolSnapshot(email=currentUserEmail()){
+  // Online reads already request fresh server state. Keep the last known-good
+  // snapshot so a temporary network/backend failure cannot make progress look empty.
+}
 async function getSchoolSnapshot(email=currentUserEmail(),force=false){
   email=String(email||'').trim().toLowerCase();
   const cached=readSchoolSnapshotCache(email);
@@ -703,11 +715,13 @@ async function getSchoolSnapshot(email=currentUserEmail(),force=false){
         cloudFetch('school_progress?select=*&user_email=eq.'+encodeURIComponent(email),{method:'GET'}),
         cloudFetch('school_assignments?select=*&user_email=eq.'+encodeURIComponent(email),{method:'GET'})
       ]);
-      snapshot={progress:Array.isArray(progress)?progress:[],assignments:Array.isArray(assignments)?assignments:[]};
+      if(!Array.isArray(progress)||!Array.isArray(assignments))throw new Error('invalid_school_snapshot');
+      snapshot={progress,assignments};
     }
+    if(!snapshot||!Array.isArray(snapshot.progress)||!Array.isArray(snapshot.assignments))throw new Error('invalid_school_snapshot');
     const clean={
-      progress:Array.isArray(snapshot?.progress)?snapshot.progress:[],
-      assignments:Array.isArray(snapshot?.assignments)?snapshot.assignments:[],
+      progress:snapshot.progress,
+      assignments:snapshot.assignments,
       saved_at:new Date().toISOString(),
       from_cache:false
     };
@@ -1668,7 +1682,9 @@ function showPlan(p){
 
 
 async function loadSchoolContent(){
-  const fallback=await jfetch('data/school/school_content.json');
+  // Bundled school content is a safe fallback, but a temporary local-file/cache
+  // failure must not prevent us from trying the authenticated cloud lessons.
+  const fallback=await jfetch('data/school/school_content.json').catch(()=>({meta:{protectedContent:true},lessons:[]}));
   const baseLessons=Array.isArray(fallback?.lessons)?fallback.lessons:[];
   try{
     const rows=await cloudFetch('school_lessons?select=*&is_active=eq.true&order=lesson_order.asc',{method:'GET'});
@@ -1725,7 +1741,8 @@ async function loadSchoolContent(){
       const merged=[...byCode.values()].sort((a,b)=>Number(a.lesson_order||999)-Number(b.lesson_order||999));
       return Object.assign({},fallback,{lessons:merged});
     }
-  }catch(e){console.warn('school cloud fallback',e)}
+  }catch(e){console.warn('school cloud fallback',e);if(!baseLessons.length)throw e}
+  if(!baseLessons.length)throw Object.assign(new Error('school_content_unavailable'),{code:'school_content_unavailable'});
   return fallback;
 }
 function schoolCourseInfo(l){
@@ -1823,7 +1840,18 @@ async function school(params={}){
     $('#schoolLogoutBtn')?.addEventListener('click',()=>logoutAccount('school'));return;
   }
   // Load protected lessons only after the existing identity and approval checks.
-  const d=await loadSchoolContent();
+  let d;
+  try{d=await loadSchoolContent()}catch(error){
+    if(schoolEpochV465!==nh7NavigationEpochV456)return;
+    const t=(fa,en,hr)=>state.lang==='fa'?fa:state.lang==='hr'?hr:en;
+    const message=t(
+      'دریافت درس‌ها کامل نشد. ثبت‌نام و پیشرفت شما پاک نشده است. اتصال را بررسی و دوباره تلاش کنید.',
+      'Lessons could not be loaded. Your registration and progress have not been cleared. Check your connection and try again.',
+      'Lekcije se nisu učitale. Vaša registracija i napredak nisu izbrisani. Provjerite vezu i pokušajte ponovno.'
+    );
+    view.innerHTML=card(tr('school'),`<p role="status">${html(message)}</p><button class="primary-btn wide-btn" data-go="school" data-params='${html(JSON.stringify(params))}'>${html(t('تلاش دوباره','Try again','Pokušaj ponovno'))}</button><button class="secondary-btn wide-btn" data-go="school">${html(tr('back'))}</button>`);
+    return;
+  }
   if(schoolEpochV465!==nh7NavigationEpochV456)return;
   if(params.lesson)return schoolLesson(d,params.lesson);
   if(params.exam)return schoolCourseExam(d,params.exam);
