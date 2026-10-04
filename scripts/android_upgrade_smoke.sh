@@ -1,15 +1,36 @@
 #!/bin/sh
 set -eu
 
-PACKAGE="com.omideno7.newhope7.qa"
+PACKAGE=""
+BASE_PACKAGE="com.omideno7.newhope7"
+MAIN_ACTIVITY="com.omideno7.newhope7.MainActivity"
 BASELINE_APK="New_Hope_7_QA_BASELINE_24001.apk"
 CANDIDATE_APK="New_Hope_7_QA_CANDIDATE.apk"
 SENTINEL="files/nh7_upgrade_preserve.txt"
 
+detect_package() {
+  packages="$(adb shell pm list packages 2>/dev/null | tr -d '\r' | sed -n 's/^package:\(com\.omideno7\.newhope7[^[:space:]]*\)$/\1/p')"
+  count="$(printf '%s\n' "$packages" | sed '/^$/d' | wc -l | tr -d ' ')"
+  if [ "$count" -ne 1 ]; then
+    echo "Expected exactly one New Hope 7 QA package after install; found $count" >&2
+    printf '%s\n' "$packages" >&2
+    exit 1
+  fi
+  PACKAGE="$(printf '%s\n' "$packages" | sed '/^$/d' | head -n 1)"
+  echo "Detected installed QA package: $PACKAGE"
+}
+
 launch_app() {
-  # Keep the complete Android Activity Manager command inside ONE adb-shell
-  # argument. This avoids host-shell/device-shell argument splitting in CI.
-  adb shell "am start -W -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -p '$PACKAGE'" >/tmp/nh7-am-start.txt
+  component="$(adb shell "cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.LAUNCHER '$PACKAGE'" 2>/dev/null | tr -d '\r' | tail -n 1 || true)"
+  case "$component" in
+    */*)
+      adb shell "am start -W -n '$component'" >/tmp/nh7-am-start.txt
+      ;;
+    *)
+      echo "Launcher intent was not resolved; starting Capacitor MainActivity explicitly."
+      adb shell "am start -W -n '$PACKAGE/$MAIN_ACTIVITY'" >/tmp/nh7-am-start.txt
+      ;;
+  esac
   cat /tmp/nh7-am-start.txt
 }
 
@@ -31,6 +52,7 @@ wait_for_pid() {
 
 echo "Installing baseline QA APK..."
 adb install "$BASELINE_APK"
+detect_package
 launch_app
 BASELINE_PID="$(wait_for_pid)"
 test -n "$BASELINE_PID"
