@@ -39,6 +39,9 @@ required_index = [
     'js/nh7-inbox-badge-sync-v418.js?v=4.1.10-snapshot',
     'js/nh7-school-path-v351.js?v=4.6.7-io',
     'js/nh7-my-notes-v234.js?v=4.5.2-reader',
+    'js/nh7-community-v502.js?v=5.0.9-profile-local-finalqa',
+    'css/nh7-inbox-v542.css?v=5.4.2',
+    'css/nh7-global-search-exam-v540.css?v=5.4.0',
 ]
 for needle in required_index:
     if needle not in index:
@@ -54,6 +57,20 @@ require("js/nh7-push-account-bind-v364.js", "confirmNativeExternalId")
 require("js/nh7-push-account-bind-v364.js", "nativePushSubscription")
 require("js/nh7-push-account-bind-v364.js", "isNativeRuntime")
 require("js/nh7-push-account-bind-v364.js", "externalId:confirmedExternalId")
+
+# User data must never be globally cleared during an update.
+# Targeted removeItem calls (logout/cache/media) are allowed; wholesale storage reset is not.
+for runtime_path in (
+    "js/app.js",
+    "js/nh7-community-v502.js",
+    "js/nh7-note-text-v501.js",
+    "js/nh7-school-drafts-v468.js",
+    "js/nh7-offline-persistence-v323.js",
+):
+    runtime = read(runtime_path)
+    for forbidden in ("localStorage.clear(", "sessionStorage.clear(", "indexedDB.deleteDatabase("):
+        if forbidden in runtime:
+            errors.append(f"{runtime_path}: forbidden update-data reset {forbidden}")
 
 # Store identity must remain the same so this installs as an update.
 for wf in (
