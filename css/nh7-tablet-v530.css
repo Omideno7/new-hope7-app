@@ -2,7 +2,6 @@
    Phone layout remains canonical below 768px. */
 
 .nh7-adaptive-sidebar{display:none}
-.nh7-phone-only{display:initial}
 
 @media (min-width:768px){
   .app-shell{
