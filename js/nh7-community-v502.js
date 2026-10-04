@@ -3,7 +3,7 @@
 (()=>{'use strict';
 if(window.__NH7_COMMUNITY_V502__)return;window.__NH7_COMMUNITY_V502__=true;
 
-const VERSION='5.0.3-release';
+const VERSION='5.0.4-polish';
 const GUIDE_URL='data/community/testimony_guide_v502.json';
 const PROFILE_BUCKET='nh7-profile-photos-v502';
 const TESTIMONY_PRIVATE='nh7-testimony-submissions-v502';
@@ -11,7 +11,8 @@ const TESTIMONY_PUBLIC='nh7-testimony-published-v502';
 const TESTIMONY_MAX_BYTES=60*1024*1024;
 const PROFILE_MAX_BYTES=5*1024*1024;
 const PUBLIC_FEED_TTL_MS=10*60*1000;
-let guideCache=null,publicFeedCache=new Map(),recordState={rec:null,stream:null,chunks:[],blob:null,url:'',timer:0,started:0,topic:0,bytes:0,tooLarge:false};
+const MY_PRAYER_TTL_MS=2*60*1000;
+let guideCache=null,publicFeedCache=new Map(),myPrayerCache={uid:'',at:0,rows:[]},prayerFlash='',recordState={rec:null,stream:null,chunks:[],blob:null,url:'',timer:0,started:0,topic:0,bytes:0,tooLarge:false};
 let crop={original:'',cropped:'',x:0,y:0,zoom:1,tx:0,ty:0,tz:1,drag:false,sx:0,sy:0,ox:0,oy:0,scrollY:0};
 
 function C(){const c=window.NH7_COMMUNITY_CTX_V502;if(!c)throw new Error('Community context is not ready.');return c}
@@ -62,6 +63,13 @@ function injectCss(){
  .nh7c502-prayer-own>p{margin:.3rem 0;white-space:pre-wrap}.nh7c502-prayer-answer{margin-top:10px;padding-top:10px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.nh7c502-prayer-answer span{font-size:.82rem;color:var(--muted);line-height:1.7}
  .nh7c502-consents{display:grid;gap:7px;margin:10px 0}.nh7c502-consents label{display:flex;align-items:flex-start;gap:8px;font-size:.82rem;line-height:1.7}
  .nh7c502-progress{height:5px;background:color-mix(in srgb,var(--text) 12%,transparent);border-radius:999px;overflow:hidden}.nh7c502-progress i{display:block;height:100%;background:var(--accent)}
+ .nh7c502-prayer-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.nh7c502-prayer-head h3{margin:0}
+ .nh7c502-prayer-list{display:grid;gap:9px;margin-top:10px}.nh7c502-prayer-item{border:1px solid color-mix(in srgb,var(--text) 13%,transparent);border-radius:15px;padding:12px;background:color-mix(in srgb,var(--card) 96%,var(--accent) 4%)}
+ .nh7c502-prayer-item p{margin:7px 0;white-space:pre-wrap}.nh7c502-prayer-meta{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+ .nh7c502-prayer-status{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:5px 9px;font-size:.76rem;font-weight:850;border:1px solid color-mix(in srgb,var(--accent) 28%,transparent)}
+ .nh7c502-prayer-status[data-status="new"]{background:color-mix(in srgb,#3b82f6 12%,var(--card));color:color-mix(in srgb,#2563eb 86%,var(--text))}
+ .nh7c502-prayer-status[data-status="praying"]{background:color-mix(in srgb,#a855f7 13%,var(--card));color:color-mix(in srgb,#7e22ce 82%,var(--text))}
+ .nh7c502-prayer-status[data-status="completed"]{background:color-mix(in srgb,#22c55e 13%,var(--card));color:color-mix(in srgb,#15803d 84%,var(--text))}
  `;document.head.appendChild(s)
 }
 function backendNotice(err){
