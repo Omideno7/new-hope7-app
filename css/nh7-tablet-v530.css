@@ -1,0 +1,48 @@
+/* New Hope 7 v5.3.0 — tablet and large-screen responsive shell.
+   Phone layout remains unchanged below 768px. */
+@media (min-width:768px){
+  .app-shell{
+    width:100%;
+    max-width:1180px;
+    min-height:100dvh;
+    margin:0 auto;
+  }
+  .topbar{padding:14px 22px}
+  .brand img{width:58px;height:58px}
+  .brand small{max-width:62vw}
+  .view{padding:22px 26px 112px}
+  .bottom-nav{
+    width:min(1180px,100%);
+    padding-inline:18px;
+    grid-template-columns:repeat(6,minmax(92px,1fr));
+  }
+  .nav-item{min-height:58px}
+  .nav-item span{font-size:23px}
+  .nav-item small{font-size:12px}
+  .card{padding:22px;margin-bottom:18px}
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .sermon-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  .school-entry-actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .school-entry-actions>.wide-btn:last-child:nth-child(odd){grid-column:1/-1}
+  .verse-note-box:not(.hidden){width:min(720px,calc(100vw - 56px))}
+  .sermon-note-dialog{width:min(720px,100%)}
+  .nh7-reader-dialog{width:min(1120px,100%)}
+}
+@media (min-width:1024px){
+  .app-shell{max-width:1240px}
+  .view{padding-inline:32px}
+  .bottom-nav{width:min(1240px,100%)}
+  .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .tile{min-height:122px}
+}
+@media (min-width:1366px){
+  .app-shell{max-width:1320px}
+  .view{padding:28px 40px 118px}
+  .bottom-nav{width:min(1320px,100%)}
+  .card{padding:24px}
+}
+@media (min-width:768px) and (orientation:landscape){
+  .sermon-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .school-entry-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .school-entry-actions>.wide-btn:last-child:nth-child(odd){grid-column:auto}
+}
