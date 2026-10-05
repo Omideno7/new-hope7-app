@@ -4,6 +4,7 @@ import time
 import urllib.request
 from pathlib import Path
 import websocket
+import atexit
 
 PACKAGE = 'com.omideno7.newhope7.qa'
 OUT = Path('out')
@@ -11,6 +12,17 @@ OUT.mkdir(exist_ok=True)
 
 def adb(*args):
     return subprocess.check_output(['adb', *args], text=True).strip()
+
+def capture_diagnostics():
+    try:
+        lines = adb('logcat', '-d').splitlines()
+        relevant = [line for line in lines if any(word in line for word in ['Capacitor', 'chromium', 'WebView', 'OneSignal', 'FATAL EXCEPTION'])]
+        (OUT / 'android-webview-logcat.txt').write_text('\n'.join(relevant))
+        print('Native/WebView diagnostic tail:\n' + '\n'.join(relevant[-35:]))
+    except Exception as error:
+        print('Diagnostic capture failed: ' + str(error))
+
+atexit.register(capture_diagnostics)
 
 def connect():
     deadline = time.time() + 100
@@ -72,6 +84,7 @@ adb('install', '-r', 'out/qa-candidate-25002.apk')
 adb('shell', 'am', 'start', '-n', PACKAGE + '/com.omideno7.newhope7.MainActivity')
 ws = connect()
 candidate = ready(ws, True)
+print('Candidate runtime: ' + json.dumps(evaluate(ws, "({userAgent:navigator.userAgent,capacitorType:typeof window.Capacitor,capacitorKeys:Object.keys(window.Capacitor||{}),nativeBridge:typeof window.androidBridge,cordova:typeof window.cordova})")))
 assert candidate['version'] == '2.5.0', candidate
 assert candidate['origin'] == baseline['origin'], (baseline, candidate)
 actual = evaluate(ws, '(() => {const data=' + json.dumps(seed, ensure_ascii=False) + ';return Object.fromEntries(Object.keys(data).map(key=>[key,localStorage.getItem(key)]));})()')
@@ -82,12 +95,17 @@ native = adb('shell', 'run-as', PACKAGE, 'cat', 'files/nh7-upgrade-marker.txt')
 assert native == 'native-user-files-preserved', native
 updater = evaluate(ws, "({version:window.NH7_AUTO_UPDATE_VERSION,platform:window.Capacitor?.getPlatform?.(),native:window.Capacitor?.isNativePlatform?.(),script:[...document.scripts].find(x=>x.src.includes('nh7-auto-update-v335'))?.src})")
 assert updater.get('version') == '2.5.0-native-packaged', updater
+assert updater.get('native') is True and updater.get('platform') == 'android', updater
+native_file = evaluate(ws, "window.Capacitor.Plugins.Filesystem.readFile({directory:'DATA',path:'nh7-upgrade-marker.txt',encoding:'utf8'}).then(x=>x.data.trim())")
+assert native_file == 'native-user-files-preserved', native_file
+push = evaluate(ws, "({cordova:!!window.cordova,oneSignal:!!window.plugins?.OneSignal,initialized:!!window.plugins?.OneSignal?.initialize})")
+assert push['cordova'] and push['oneSignal'] and push['initialized'], push
 assert evaluate(ws, "!!window.NH7CommunityV502 && typeof window.NH7CommunityV502.renderProfile==='function' && typeof window.NH7CommunityV502.renderTestimonies==='function' && typeof window.NH7CommunityV502.renderPrayer==='function'")
 workers = evaluate(ws, "navigator.serviceWorker ? navigator.serviceWorker.getRegistrations().then(x=>x.length) : 0")
 assert workers == 0, workers
 ws.close()
 with (OUT / 'android-25002-upgrade.png').open('wb') as screenshot:
     subprocess.run(['adb', 'exec-out', 'screencap', '-p'], stdout=screenshot, check=True)
-result = {'status': 'PASS', 'baseline': baseline, 'candidate': candidate, 'notes_and_assignment_draft': 'preserved', 'saved_verse_and_highlight': 'preserved', 'indexeddb_state': 'preserved', 'native_user_files': 'preserved', 'native_web_workers': workers, 'community_modules': 'loaded', 'scope': 'isolated QA package, same local origin and native dependencies as production'}
+result = {'status': 'PASS', 'baseline': baseline, 'candidate': candidate, 'notes_and_assignment_draft': 'preserved', 'saved_verse_and_highlight': 'preserved', 'indexeddb_state': 'preserved', 'native_user_files': 'preserved', 'native_bridge': 'android, connected', 'native_filesystem_call': 'PASS', 'native_push_plugin': push, 'native_web_workers': workers, 'community_modules': 'loaded', 'scope': 'isolated QA package, same local origin and native dependencies as production'}
 (OUT / 'upgrade-smoke.json').write_text(json.dumps(result, ensure_ascii=False, indent=2))
 print(json.dumps(result, ensure_ascii=False))

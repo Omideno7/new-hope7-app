@@ -44,6 +44,9 @@ jobs:
           cp native-release/www/assets/new-hope7-logo-1024.png native-release/assets/logo.png
           cd native-release
           npm install --no-audit --no-fund
+          cd ..
+          python3 android-release-25002/patch_native_push_compat.py
+          cd native-release
           npx cap add android
           npx cap sync android
           cd ..
@@ -117,6 +120,12 @@ jobs:
           ./gradlew --no-daemon assembleDebug
           cd ../..
           cp native-release/android/app/build/outputs/apk/debug/app-debug.apk out/qa-candidate-25002.apk
+      - name: Preserve QA APKs for reproducible upgrade verification
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android_25002_QA_APKs
+          path: out/qa-*.apk
+          retention-days: 7
       - name: Prepare the Android upgrade smoke
         run: |
           python3 -m pip install --quiet websocket-client==1.8.0
