@@ -1,0 +1,70 @@
+/* Runtime fonts are bundled under OFL; loaded only when selected. */
+@font-face{font-family:'NH7 Vazirmatn';src:url('../assets/fonts/v453/vazirmatn.woff2') format('woff2');font-style:normal;font-weight:100 900;font-display:swap}
+@font-face{font-family:'NH7 Noto Naskh';src:url('../assets/fonts/v453/notonaskharabic.woff2') format('woff2');font-style:normal;font-weight:400 700;font-display:swap}
+@font-face{font-family:'NH7 Estedad';src:url('../assets/fonts/v453/estedad.woff2') format('woff2');font-style:normal;font-weight:100 900;font-display:swap}
+@font-face{font-family:'NH7 Inter';src:url('../assets/fonts/v453/inter.woff2') format('woff2');font-style:normal;font-weight:100 900;font-display:swap}
+@font-face{font-family:'NH7 Lora';src:url('../assets/fonts/v453/lora.woff2') format('woff2');font-style:normal;font-weight:400 700;font-display:swap}
+@font-face{font-family:'NH7 Nunito';src:url('../assets/fonts/v453/nunitosans.woff2') format('woff2');font-style:normal;font-weight:200 900;font-display:swap}
+html[data-nh7-studio-font] body,html[data-nh7-studio-font] button,html[data-nh7-studio-font] input,html[data-nh7-studio-font] textarea,html[data-nh7-studio-font] select{font-family:var(--nh7-studio-font)!important}
+html[data-nh7-studio] body,html[data-nh7-studio] .app-shell,html[data-nh7-studio] #view{background:var(--nh7-studio-bg)!important;color:var(--nh7-studio-text)!important}
+html[data-nh7-studio] .topbar,html[data-nh7-studio] .bottom-nav{background:var(--nh7-studio-card)!important;border-color:var(--nh7-studio-line)!important;color:var(--nh7-studio-text)!important}
+html[data-nh7-studio] .topbar .brand strong,html[data-nh7-studio] .topbar .brand small,html[data-nh7-studio] .bottom-nav .nav-item,html[data-nh7-studio] .bottom-nav .nav-item small{color:var(--nh7-studio-text)!important}
+html[data-nh7-studio] .bottom-nav .nav-item.active{background:var(--nh7-studio-bg)!important;box-shadow:inset 0 -3px var(--nh7-studio-accent)}
+html[data-nh7-studio] #view .card:not(.hero),html[data-nh7-studio] #view .tile,html[data-nh7-studio] #view .list-btn,html[data-nh7-studio] #view .link-card,html[data-nh7-studio] #view .accordion-panel,html[data-nh7-studio] #view .saved-verse-card,html[data-nh7-studio] #view .nh7-note-category-v452,html[data-nh7-studio] #view .nh7-my-note-card-v234,html[data-nh7-studio] #view .notice,html[data-nh7-studio] #view .inline-reading{background:var(--nh7-studio-card)!important;border-color:var(--nh7-studio-line)!important;color:var(--nh7-studio-text)!important}
+html[data-nh7-studio] #view .card:not(.hero) h1,html[data-nh7-studio] #view .card:not(.hero) h2,html[data-nh7-studio] #view .card:not(.hero) h3,html[data-nh7-studio] #view .card:not(.hero) h4,html[data-nh7-studio] #view .card:not(.hero) p,html[data-nh7-studio] #view .card:not(.hero) li,html[data-nh7-studio] #view .card:not(.hero) label,html[data-nh7-studio] #view .tile strong,html[data-nh7-studio] #view .list-btn strong{color:var(--nh7-studio-text)!important}
+html[data-nh7-studio] #view .card .muted,html[data-nh7-studio] #view .card small,html[data-nh7-studio] #view .tile small,html[data-nh7-studio] #view .list-btn small{color:var(--nh7-studio-muted)!important}
+html[data-nh7-studio] #view input,html[data-nh7-studio] #view textarea,html[data-nh7-studio] #view select,html[data-nh7-studio] .lang-select{background:var(--nh7-studio-card)!important;color:var(--nh7-studio-text)!important;border-color:var(--nh7-studio-line)!important}
+html[data-nh7-studio] #view input::placeholder,html[data-nh7-studio] #view textarea::placeholder{color:var(--nh7-studio-muted)!important;opacity:1}
+html[data-nh7-studio] #view .primary-btn,html[data-nh7-studio] #view .card.hero{background:var(--nh7-studio-accent)!important;background-image:none!important;color:var(--nh7-studio-button-ink)!important}
+html[data-nh7-studio] #view .primary-btn *,html[data-nh7-studio] #view .card.hero h1,html[data-nh7-studio] #view .card.hero h2,html[data-nh7-studio] #view .card.hero h3,html[data-nh7-studio] #view .card.hero p,html[data-nh7-studio] #view .card.hero small{color:var(--nh7-studio-button-ink)!important}
+html[data-nh7-studio] #view .secondary-btn:not(.danger-btn),html[data-nh7-studio] #view .badge{background:var(--nh7-studio-bg)!important;color:var(--nh7-studio-text)!important;border-color:var(--nh7-studio-line)!important}
+html[data-nh7-studio] #view a{color:var(--nh7-studio-link)!important}
+html[data-nh7-studio] #view .reader .verse-text,html[data-nh7-studio] #view .nh7-apo-continuous-reader .nh7-apo-verse-text{color:var(--nh7-studio-verse)!important}
+html[data-nh7-studio] #view .reader .reader-verse.highlighted .verse-text,html[data-nh7-studio] #view .nh7-apo-continuous-reader .is-highlighted .nh7-apo-verse-text{color:#142c40!important}
+html[data-nh7-studio] #nh7ReaderToolbar452,html[data-nh7-studio] .nh7-reader-note-dialog452{background:var(--nh7-studio-card)!important;color:var(--nh7-studio-text)!important;border-color:var(--nh7-studio-line)!important}
+html[data-nh7-studio] #nh7ReaderToolbar452 .nh7-reader-selection-summary452{color:var(--nh7-studio-muted)!important}
+html[data-nh7-studio] #nh7ReaderToolbar452 button:hover,html[data-nh7-studio] #nh7ReaderToolbar452 [aria-pressed=true]{background:var(--nh7-studio-bg)!important;color:var(--nh7-studio-text)!important}
+html[data-nh7-studio] .nh7-reader-note-dialog452 textarea,html[data-nh7-studio] .nh7-reader-note-dialog452 select{background:var(--nh7-studio-card);color:var(--nh7-studio-text);border-color:var(--nh7-studio-line)}
+/* The editor itself stays readable while an invalid draft color is previewed. */
+#view #nh7ThemeStudio453{margin:18px 0;padding:20px;background:#f7fafc!important;color:#16364c!important;border:1px solid #c9d9e5!important;border-radius:22px;box-shadow:0 5px 24px #17364e09}
+#view #nh7ThemeStudio453 h3,#view #nh7ThemeStudio453 label,#view #nh7ThemeStudio453 strong,#view #nh7ThemeStudio453 summary,#view #nh7ThemeStudio453 p{color:#16364c!important}
+#view #nh7ThemeStudio453 header h3{font-size:1.25rem;margin:5px 0 8px}
+#view #nh7ThemeStudio453 header p{font-size:.87rem;line-height:1.7;margin:0 0 16px;color:#496172!important}
+.nh7-studio-eyebrow453{color:#526e80;font:700 10px/1.5 system-ui;letter-spacing:.13em}
+.nh7-studio-presets453{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+#view #nh7ThemeStudio453 .nh7-studio-presets453 button{padding:6px;border:2px solid transparent;border-radius:13px;background:#fff;color:#16364c;font:inherit;cursor:pointer}
+#view #nh7ThemeStudio453 .nh7-studio-presets453 button[aria-pressed=true]{border-color:#25649e;box-shadow:0 0 0 2px #25649e22}
+.nh7-studio-mini453{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--chip-bg);height:45px;padding:8px;border-radius:9px}
+.nh7-studio-mini453 i{width:8px;height:28px;border-radius:5px;background:var(--chip-accent)}
+.nh7-studio-mini453 b{padding:6px 12px;background:var(--chip-card);color:var(--chip-ink);border-radius:7px;font:700 18px/1 system-ui}
+#view #nh7ThemeStudio453 .nh7-studio-presets453 strong{display:block;font-size:.73rem;line-height:1.5;margin-top:6px}
+#view #nh7ThemeStudio453 .nh7-studio-sample453{margin:16px 0;padding:14px;border-radius:15px;background:var(--sample-bg);font-family:var(--sample-font)!important}
+#view #nh7ThemeStudio453 .nh7-studio-sample453>div{padding:16px;background:var(--sample-card);border-radius:10px;color:var(--sample-text)!important}
+#view #nh7ThemeStudio453 .nh7-studio-sample453 p{color:var(--sample-muted)!important;font-size:.86rem}
+#view #nh7ThemeStudio453 .nh7-studio-sample453 blockquote{color:var(--sample-verse)!important;margin:12px 0;font-size:1.07rem;line-height:1.8}
+#view #nh7ThemeStudio453 .nh7-studio-sample453 span{display:inline-block;padding:8px 14px;background:var(--sample-accent);color:var(--sample-button-ink)!important;border-radius:9px;font-size:.8rem}
+#view #nh7ThemeStudio453 details{border-top:1px solid #c9d9e5;padding:12px 0}
+#view #nh7ThemeStudio453 summary{cursor:pointer;font-weight:750;min-height:35px;line-height:1.6}
+.nh7-studio-fields453{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 0}
+#view #nh7ThemeStudio453 label{display:grid;gap:7px;font-size:.82rem}
+#view #nh7ThemeStudio453 input,#view #nh7ThemeStudio453 select{width:100%;box-sizing:border-box;background:#fff!important;color:#16364c!important;border:1px solid #8babbf!important;border-radius:10px;padding:10px;font:inherit;min-height:44px}
+#view #nh7ThemeStudio453 input[type=color]{height:46px;padding:4px;cursor:pointer}
+#view #nh7ThemeStudio453 button:not([data-studio-preset453]){min-height:44px;border:1px solid #8babbf;border-radius:10px;padding:8px 12px;color:#16364c;background:#fff;font:inherit;font-size:.82rem;cursor:pointer}
+#view #nh7ThemeStudio453 [data-studio-apply453]{background:#1858a4!important;color:#fff!important;border-color:#1858a4!important}
+#view #nh7ThemeStudio453 button:disabled{opacity:.45;cursor:not-allowed}
+#view #nh7ThemeStudio453 button:focus-visible,#view #nh7ThemeStudio453 summary:focus-visible{outline:3px solid #246ba6;outline-offset:2px}
+.nh7-studio-actions453{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+#view #nh7ThemeStudio453 [data-studio-contrast453]{font-size:.8rem;line-height:1.7;color:#166534!important}
+#view #nh7ThemeStudio453 [data-studio-contrast453][data-valid="0"],#view #nh7ThemeStudio453 #nh7StudioStatus453[data-error="1"]{color:#a12b24!important}
+#nh7StudioStatus453{font-size:.85rem;line-height:1.7;margin:10px 0 0;min-height:1.7em}
+.nh7-studio-library453{display:grid;gap:8px;margin-top:12px}.nh7-studio-library453>div{display:flex;gap:5px}.nh7-studio-library453 [data-studio-load453]{flex:1;text-align:start}
+@media(max-width:560px){#view #nh7ThemeStudio453{padding:14px}.nh7-studio-presets453{grid-template-columns:repeat(2,minmax(0,1fr))}.nh7-studio-fields453{grid-template-columns:1fr 1fr}.nh7-studio-fields453 label:has(select){grid-column:1/-1}}
+
+/* v453 legacy surfaces inherit the active personal palette in either base mode. */
+html[data-nh7-studio]{--bg:var(--nh7-studio-bg);--card:var(--nh7-studio-card);--ink:var(--nh7-studio-text);--muted:var(--nh7-studio-muted);--line:var(--nh7-studio-line);--nh7-light-bg:var(--nh7-studio-bg);--nh7-light-card:var(--nh7-studio-card);--nh7-light-ink:var(--nh7-studio-text);--nh7-light-muted:var(--nh7-studio-muted);--nh7-dark-bg:var(--nh7-studio-bg);--nh7-dark-card:var(--nh7-studio-card);--nh7-dark-card-2:var(--nh7-studio-card);--nh7-dark-ink:var(--nh7-studio-text);--nh7-dark-muted:var(--nh7-studio-muted);--nh7-dark-line:var(--nh7-studio-line)}
+html[data-nh7-studio] #view .nh7-appearance-panel,html[data-nh7-studio] #view .nh7-v252-settings-box,html[data-nh7-studio] .nh7-settings403-status,html[data-nh7-studio] .nh7-settings403-toast,html[data-nh7-studio] .sermon-note-dialog{background:var(--nh7-studio-card)!important;color:var(--nh7-studio-text)!important;border-color:var(--nh7-studio-line)!important}
+html[data-nh7-studio] #view .nh7-appearance-panel .nh7-appearance-help{color:var(--nh7-studio-muted)!important}
+
+/* Personal fonts must reach legacy Persian paragraph rules, not just body. */
+html[data-nh7-studio-font] #view p,html[data-nh7-studio-font] #view small,html[data-nh7-studio-font] #view label,html[data-nh7-studio-font] #view h1,html[data-nh7-studio-font] #view h2,html[data-nh7-studio-font] #view h3,html[data-nh7-studio-font] #view li,html[data-nh7-studio-font] #view .verse-text,html[data-nh7-studio-font] #view .nh7-apo-verse-text{font-family:var(--nh7-studio-font)!important}
+#view #nh7ThemeStudio453 .nh7-studio-sample453 p,#view #nh7ThemeStudio453 .nh7-studio-sample453 blockquote,#view #nh7ThemeStudio453 .nh7-studio-sample453 b{font-family:var(--sample-font)!important}

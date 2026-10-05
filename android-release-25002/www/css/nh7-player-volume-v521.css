@@ -1,0 +1,160 @@
+/* New Hope 7 — Player Mute UI v5.2.4
+ * App UI uses device/system volume buttons.
+ * Playback engine volume APIs remain intact for a future tested native bridge.
+ */
+
+/* Keep mute/unmute available, but hide unreliable in-app volume level controls. */
+.nh7p500 [data-volume-row],
+.nh7p500 [data-volume-note]{
+  display:none!important;
+}
+.nh7p500 [data-mute]{
+  display:grid!important;
+}
+
+/* Eight quick actions: 4 on the first row, 4 on the second. */
+.nh7p500-tools{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  justify-content:center!important;
+  align-items:flex-start!important;
+  gap:6px 7px!important;
+  width:min(277px,100%)!important;
+  margin:10px auto 0!important;
+}
+.nh7p500-tools>button{
+  flex:0 0 64px!important;
+  width:64px!important;
+  min-width:64px!important;
+  max-width:64px!important;
+}
+
+/* Keep layout compact on smaller phones. */
+@media(max-width:390px){
+  .nh7p500-tools{
+    width:min(259px,100%)!important;
+    gap:5px 5px!important;
+  }
+  .nh7p500-tools>button{
+    flex-basis:61px!important;
+    width:61px!important;
+    min-width:61px!important;
+    max-width:61px!important;
+  }
+}
+
+
+/* v522 mute state: speaker icon stays visible and changes clearly when muted. */
+.nh7p500 [data-mute].is-muted{
+  --nh7-tool-color:#dc2626!important;
+  background:color-mix(in srgb,#dc2626 9%,var(--nh7p-card,var(--card,#fff)))!important;
+  border-color:color-mix(in srgb,#dc2626 24%,transparent)!important;
+}
+.nh7p500 [data-mute].is-muted [data-mute-icon]::before{
+  -webkit-mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M5 10h3l4-3.2v10.4L8 14H5v-4Zm10.3 1.2 4.1 4.1m0-4.1-4.1 4.1'/%3E%3C/svg%3E")!important;
+  mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M5 10h3l4-3.2v10.4L8 14H5v-4Zm10.3 1.2 4.1 4.1m0-4.1-4.1 4.1'/%3E%3C/svg%3E")!important;
+}
+
+
+/* v524 — lock player geometry across every interface theme. */
+html[data-nh7-ui-style514] .nh7p500,
+html[data-nh7-ui-style514] .nh7p500 *{box-sizing:border-box}
+html[data-nh7-ui-style514] .nh7p500-tools{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  justify-content:center!important;
+  align-items:flex-start!important;
+  gap:6px 7px!important;
+  width:min(277px,100%)!important;
+  margin:10px auto 0!important;
+}
+html[data-nh7-ui-style514] .nh7p500-tools>button{
+  flex:0 0 64px!important;
+  width:64px!important;
+  min-width:64px!important;
+  max-width:64px!important;
+  min-height:48px!important;
+  height:48px!important;
+  padding:4px 3px 3px!important;
+  border-radius:12px!important;
+  align-content:center!important;
+}
+html[data-nh7-ui-style514] .nh7p500-main button{
+  width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;flex:0 0 34px!important;padding:0!important
+}
+html[data-nh7-ui-style514] .nh7p500-main .big{
+  width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important;flex:0 0 46px!important
+}
+
+/* Speed control: same footprint as the other tools; icon + rate only. */
+html[data-nh7-ui-style514] .nh7p500-tools [data-speed]{
+  grid-template-rows:22px 12px!important;
+  place-items:center!important;
+  gap:2px!important
+}
+.nh7p500-tools [data-speed]>.nh7-icon517{
+  width:20px!important;height:20px!important;margin:0!important
+}
+.nh7p500-tools [data-speed]>[data-rate]{
+  display:block!important;
+  width:auto!important;height:auto!important;min-width:0!important;min-height:0!important;
+  margin:0!important;padding:0!important;
+  font-size:9px!important;font-weight:850!important;line-height:1!important;
+  color:var(--nh7p-text,var(--ink,#17364e))!important
+}
+.nh7p500-tools [data-speed]>small{display:none!important}
+
+/* v524 seek bar: exact start/end alignment + visible played portion. */
+.nh7p500-seek{
+  --nh7-seek-pct:0%;
+  -webkit-appearance:none!important;
+  appearance:none!important;
+  display:block!important;
+  width:100%!important;
+  height:22px!important;
+  margin:14px 0 0!important;
+  padding:0!important;
+  background:transparent!important;
+  accent-color:transparent!important;
+}
+.nh7p500-seek::-webkit-slider-runnable-track{
+  height:4px!important;
+  border-radius:999px!important;
+  background:linear-gradient(90deg,
+    var(--nh7p-accent,var(--accent,#1858a4)) 0 var(--nh7-seek-pct),
+    color-mix(in srgb,var(--nh7p-text,var(--ink,#17364e)) 18%,transparent) var(--nh7-seek-pct) 100%)!important;
+}
+.nh7p500-seek::-webkit-slider-thumb{
+  -webkit-appearance:none!important;
+  appearance:none!important;
+  width:18px!important;height:18px!important;
+  margin-top:-7px!important;
+  border-radius:50%!important;
+  border:2px solid #fff!important;
+  background:var(--nh7p-accent,var(--accent,#1858a4))!important;
+  box-shadow:0 2px 7px #0003!important;
+}
+.nh7p500-seek::-moz-range-track{
+  height:4px!important;border:0!important;border-radius:999px!important;
+  background:color-mix(in srgb,var(--nh7p-text,var(--ink,#17364e)) 18%,transparent)!important
+}
+.nh7p500-seek::-moz-range-progress{
+  height:4px!important;border-radius:999px!important;background:var(--nh7p-accent,var(--accent,#1858a4))!important
+}
+.nh7p500-seek::-moz-range-thumb{
+  width:18px!important;height:18px!important;border-radius:50%!important;border:2px solid #fff!important;
+  background:var(--nh7p-accent,var(--accent,#1858a4))!important;box-shadow:0 2px 7px #0003!important
+}
+
+/* Keep compact dimensions on narrow phones in every style. */
+@media(max-width:390px){
+  html[data-nh7-ui-style514] .nh7p500-tools{
+    width:min(259px,100%)!important;
+    gap:5px 5px!important;
+  }
+  html[data-nh7-ui-style514] .nh7p500-tools>button{
+    flex-basis:61px!important;
+    width:61px!important;min-width:61px!important;max-width:61px!important;
+    height:47px!important;min-height:47px!important
+  }
+}

@@ -1,0 +1,38 @@
+/* New Hope 7 Admin — library/apocrypha mobile width fix v3.2.0 */
+#nh7_library_editor_v224,
+#nh7_library_editor_v224 *,
+.library-admin-grid,
+.library-admin-grid > *,
+[data-nh7-reader-v311],
+[data-nh7-library-orphans-v274]{box-sizing:border-box;min-width:0;max-width:100%}
+#nh7_library_editor_v224,
+.library-admin-grid,
+[data-nh7-reader-v311],
+[data-nh7-library-orphans-v274]{width:100%;overflow-x:clip}
+.library-admin-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;align-items:start}
+#nh7_library_editor_v224 input,
+#nh7_library_editor_v224 select,
+#nh7_library_editor_v224 textarea,
+[data-nh7-reader-v311] input,
+[data-nh7-reader-v311] select,
+[data-nh7-reader-v311] textarea{display:block;width:100%!important;max-width:100%!important;min-width:0!important}
+#nh7_library_editor_v224 textarea,
+[data-nh7-reader-v311] textarea{resize:vertical;overflow-wrap:anywhere}
+#nh7_library_editor_v224 .grid2,
+#nh7_library_editor_v224 .grid3,
+[data-nh7-reader-v311] .nh7-v311-grid,
+[data-nh7-reader-v311] .nh7-v311-grid3{min-width:0;max-width:100%}
+#nh7_library_editor_v224 .file-drop,
+[data-nh7-reader-v311],
+[data-nh7-library-orphans-v274] .request-card{overflow:hidden;overflow-wrap:anywhere}
+@media(max-width:760px){
+  .library-admin-grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important}
+  #nh7_library_editor_v224 .grid2,
+  #nh7_library_editor_v224 .grid3,
+  [data-nh7-reader-v311] .nh7-v311-grid,
+  [data-nh7-reader-v311] .nh7-v311-grid3{display:grid!important;grid-template-columns:minmax(0,1fr)!important}
+  #nh7_library_editor_v224,
+  [data-nh7-reader-v311],
+  [data-nh7-library-orphans-v274]{padding-inline:12px!important;margin-inline:0!important}
+  body:has(#nh7_library_editor_v224) .admin-shell{overflow-x:hidden!important}
+}

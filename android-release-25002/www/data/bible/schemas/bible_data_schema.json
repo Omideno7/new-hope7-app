@@ -1,0 +1,131 @@
+{
+  "collections": {
+    "bible_books": {
+      "id": "GEN",
+      "order": 1,
+      "testament": "OT",
+      "names": {
+        "fa": "پیدایش",
+        "en": "Genesis",
+        "hr": "Postanak"
+      },
+      "chapters": 50
+    },
+    "bible_verses": {
+      "id": "JHN.3.16",
+      "bookId": "JHN",
+      "chapter": 3,
+      "verse": 16,
+      "text": {
+        "fa": "...",
+        "en": "...",
+        "hr": "..."
+      },
+      "paragraphId": "JHN.3.p4",
+      "searchText": {
+        "fa": "normalized text",
+        "en": "normalized text",
+        "hr": "normalized text"
+      },
+      "keywords": [
+        "salvation",
+        "love",
+        "eternal_life"
+      ],
+      "strongs": [
+        {
+          "word": "world",
+          "lemma": "κόσμος",
+          "transliteration": "kosmos",
+          "strong": "G2889",
+          "explanation": {
+            "fa": "...",
+            "en": "...",
+            "hr": "..."
+          }
+        }
+      ],
+      "crossReferences": [
+        "ROM.5.8",
+        "1JN.4.9"
+      ]
+    },
+    "user_bible_activity": {
+      "userId": "uuid",
+      "verseId": "JHN.3.16",
+      "highlights": [
+        {
+          "color": "yellow",
+          "createdAt": "timestamp"
+        }
+      ],
+      "notes": [
+        {
+          "text": "...",
+          "createdAt": "timestamp",
+          "updatedAt": "timestamp"
+        }
+      ],
+      "bookmarks": [
+        {
+          "createdAt": "timestamp"
+        }
+      ],
+      "boldSelections": [
+        {
+          "start": 0,
+          "end": 24,
+          "createdAt": "timestamp"
+        }
+      ],
+      "shares": [
+        {
+          "platform": "whatsapp",
+          "createdAt": "timestamp"
+        }
+      ]
+    },
+    "reading_plans": {
+      "id": "bible_1_year",
+      "durationDays": 365,
+      "title": {
+        "fa": "پلن یک‌ساله کتاب‌مقدس",
+        "en": "One-Year Bible Plan",
+        "hr": "Jednogodišnji plan Biblije"
+      },
+      "days": [
+        {
+          "day": 1,
+          "readings": [
+            {
+              "bookId": "GEN",
+              "startChapter": 1,
+              "endChapter": 3
+            },
+            {
+              "bookId": "MAT",
+              "startChapter": 1,
+              "endChapter": 1
+            }
+          ]
+        }
+      ]
+    },
+    "user_reading_progress": {
+      "userId": "uuid",
+      "planId": "bible_1_year",
+      "currentDay": 1,
+      "completedDays": [
+        {
+          "day": 1,
+          "completedAt": "timestamp",
+          "points": 25
+        }
+      ],
+      "streak": 1,
+      "badges": [
+        "first_day"
+      ]
+    }
+  }
+}

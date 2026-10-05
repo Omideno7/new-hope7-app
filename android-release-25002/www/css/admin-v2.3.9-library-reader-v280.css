@@ -1,0 +1,11 @@
+/* New Hope 7 Admin v2.8.0 — stable PDF/DOCX to in-app book conversion */
+.nh7-reader-admin-v280{margin:14px 0;border:1px solid #cfe4e2;border-radius:18px;background:#f8fdfc;padding:14px}
+.nh7-reader-admin-v280 h4{margin:0 0 5px}.nh7-reader-admin-v280 p{margin:0;color:#667085;line-height:1.7}
+.nh7-reader-grid-v280{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:12px}
+.nh7-reader-grid-v280 label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#475467}
+.nh7-reader-status-v280{margin:11px 0;padding:10px 12px;border-radius:14px;background:#eef8f7;color:#0f766e;min-height:42px;line-height:1.65}.nh7-reader-status-v280.error{background:#fef3f2;color:#b42318}.nh7-reader-status-v280.needs_ocr{background:#fff7ed;color:#9a3412}.nh7-reader-status-v280.ready{background:#ecfdf3;color:#067647}
+.nh7-reader-progress-v280{height:9px;border-radius:999px;background:#dcebea;overflow:hidden}.nh7-reader-progress-v280 i{display:block;height:100%;width:0;background:linear-gradient(135deg,#0b5faa,#16a765);transition:width .18s ease}
+.nh7-reader-admin-v280 textarea{min-height:260px;font-family:Vazirmatn,Tahoma,Arial,sans-serif;line-height:1.8;white-space:pre-wrap}
+.nh7-reader-actions-v280{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.nh7-reader-actions-v280 button{flex:1;min-width:190px}
+.nh7-reader-badge-v280{display:inline-flex;border-radius:999px;padding:5px 9px;background:#e8f5ff;color:#0b5faa;font-size:.78rem;font-weight:850}
+@media(max-width:760px){.nh7-reader-grid-v280{grid-template-columns:1fr}.nh7-reader-admin-v280 textarea{min-height:220px}}

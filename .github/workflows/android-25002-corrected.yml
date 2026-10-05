@@ -1,0 +1,179 @@
+name: Build Corrected Android 2.5.0 25002
+on:
+  push:
+    branches: [build/android-2.5.0-corrected-25002]
+permissions:
+  contents: read
+jobs:
+  build-and-check-upgrade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Install Android API 36
+        run: |
+          set -euo pipefail
+          export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
+          export ANDROID_HOME=$ANDROID_SDK_ROOT
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> "$GITHUB_ENV"
+          echo "ANDROID_HOME=$ANDROID_HOME" >> "$GITHUB_ENV"
+          echo "$ANDROID_SDK_ROOT/platform-tools" >> "$GITHUB_PATH"
+          SDKMANAGER="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKMANAGER" --licenses >/dev/null || true
+          "$SDKMANAGER" 'platforms;android-36' 'build-tools;36.0.0' 'platform-tools'
+      - name: Verify the approved complete payload and optimization ancestry
+        run: |
+          python3 scripts/validate_next_native_optimization_guard.py
+          python3 android-release-25002/validate_payload.py android-release-25002/www
+      - name: Create the production wrapper from approved Test 5.8
+        run: |
+          set -euo pipefail
+          mkdir -p native-release/assets out/parts
+          cp -a android-release-25002/www native-release/www
+          cp android-release-25002/package.json native-release/package.json
+          cp android-release-25002/capacitor.config.json native-release/capacitor.config.json
+          cp native-release/www/assets/new-hope7-logo-1024.png native-release/assets/logo.png
+          cd native-release
+          npm install --no-audit --no-fund
+          npx cap add android
+          npx cap sync android
+          cd ..
+          python3 android-release-25002/configure_android.py
+          cd native-release
+          npx capacitor-assets generate --android --iconBackgroundColor '#ffffff' --iconBackgroundColorDark '#ffffff' --splashBackgroundColor '#ffffff' --splashBackgroundColorDark '#ffffff'
+          npx cap sync android
+      - name: Build and validate the production AAB
+        run: |
+          set -euo pipefail
+          cd native-release/android
+          chmod +x gradlew
+          ./gradlew --no-daemon bundleRelease
+          cd ../..
+          cp native-release/android/app/build/outputs/bundle/release/app-release.aab out/New_Hope_7_2.5.0_25002_API36_UNSIGNED.aab
+          curl --fail --location --silent --show-error https://github.com/google/bundletool/releases/download/1.18.2/bundletool-all-1.18.2.jar --output "$RUNNER_TEMP/bundletool.jar"
+          java -jar "$RUNNER_TEMP/bundletool.jar" validate --bundle=out/New_Hope_7_2.5.0_25002_API36_UNSIGNED.aab
+          java -jar "$RUNNER_TEMP/bundletool.jar" dump manifest --bundle=out/New_Hope_7_2.5.0_25002_API36_UNSIGNED.aab --module=base > out/AndroidManifest.xml
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,zipfile,hashlib,xml.etree.ElementTree as ET
+          ns='{http://schemas.android.com/apk/res/android}'
+          manifest=ET.parse('out/AndroidManifest.xml').getroot()
+          assert manifest.attrib['package']=='com.omideno7.newhope7'
+          assert manifest.attrib[ns+'versionCode']=='25002'
+          assert manifest.attrib[ns+'versionName']=='2.5.0'
+          assert manifest.find('application').attrib.get(ns+'debuggable','false')=='false'
+          bundle=Path('out/New_Hope_7_2.5.0_25002_API36_UNSIGNED.aab')
+          with zipfile.ZipFile(bundle) as z:
+              for p in Path('android-release-25002/www').rglob('*'):
+                  if p.is_file():
+                      assert z.read('base/assets/public/'+str(p.relative_to('android-release-25002/www')))==p.read_bytes(),str(p)
+          result={'status':'PASS','package':'com.omideno7.newhope7','version':'2.5.0','version_code':25002,'payload_files':384,'payload':'complete approved iOS Test 5.8 with three documented Android adaptations','api':36,'debuggable':False,'unsigned_aab_sha256':hashlib.sha256(bundle.read_bytes()).hexdigest()}
+          Path('out/build-audit.json').write_text(json.dumps(result,indent=2))
+          print(json.dumps(result))
+          PY
+          split -b 20M -d -a 2 out/New_Hope_7_2.5.0_25002_API36_UNSIGNED.aab out/parts/bundle.part
+          sha256sum out/New_Hope_7_2.5.0_25002_API36_UNSIGNED.aab > out/aab-sha256.txt
+      - name: Build the real 2.4.0 baseline and 2.5.0 upgrade test APKs
+        run: |
+          set -euo pipefail
+          git fetch --depth=1 origin 6f18c8040d34787b795b3c97d728a12a40c6ef12
+          mkdir "$RUNNER_TEMP/nh7-old-web"
+          git archive FETCH_HEAD | tar -x -C "$RUNNER_TEMP/nh7-old-web"
+          mv native-release/www native-release/www.candidate
+          mkdir native-release/www
+          for f in index.html app-v239.html manifest.json reset-password.html version.json; do
+            cp "$RUNNER_TEMP/nh7-old-web/$f" native-release/www/
+          done
+          for d in assets css data js offline push; do
+            if [ -d "$RUNNER_TEMP/nh7-old-web/$d" ]; then cp -a "$RUNNER_TEMP/nh7-old-web/$d" native-release/www/; fi
+          done
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,re
+          p=Path('native-release/capacitor.config.json');d=json.loads(p.read_text());d['android']['webContentsDebuggingEnabled']=True;p.write_text(json.dumps(d))
+          p=Path('native-release/android/app/build.gradle');t=p.read_text();Path('native-release/android/app/build.gradle.candidate').write_text(t);t=re.sub(r'versionCode\s+\d+','versionCode 24001',t);t=t.replace('versionName "2.5.0"','versionName "2.4.0"');p.write_text(t)
+          PY
+          cd native-release
+          npx cap copy android
+          cd android
+          ./gradlew --no-daemon assembleDebug
+          cd ../..
+          cp native-release/android/app/build/outputs/apk/debug/app-debug.apk out/qa-baseline-24001.apk
+          rm -rf native-release/www
+          mv native-release/www.candidate native-release/www
+          mv native-release/android/app/build.gradle.candidate native-release/android/app/build.gradle
+          cd native-release
+          npx cap copy android
+          cd android
+          ./gradlew --no-daemon assembleDebug
+          cd ../..
+          cp native-release/android/app/build/outputs/apk/debug/app-debug.apk out/qa-candidate-25002.apk
+      - name: Prepare the Android upgrade smoke
+        run: |
+          python3 -m pip install --quiet websocket-client==1.8.0
+          sudo chmod 666 /dev/kvm
+      - name: Verify update-in-place and preserve actual WebView user state
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: default
+          arch: x86_64
+          profile: pixel_2
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none -no-snapshot
+          emulator-boot-timeout: 600
+          script: python3 android-release-25002/upgrade_smoke.py
+      - name: Upload AAB part 00
+        if: always() && hashFiles('out/parts/bundle.part00') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android_25002_AAB_part00
+          path: out/parts/bundle.part00
+          retention-days: 14
+      - name: Upload AAB part 01
+        if: always() && hashFiles('out/parts/bundle.part01') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android_25002_AAB_part01
+          path: out/parts/bundle.part01
+          retention-days: 14
+      - name: Upload AAB part 02
+        if: always() && hashFiles('out/parts/bundle.part02') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android_25002_AAB_part02
+          path: out/parts/bundle.part02
+          retention-days: 14
+      - name: Upload AAB part 03
+        if: always() && hashFiles('out/parts/bundle.part03') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android_25002_AAB_part03
+          path: out/parts/bundle.part03
+          retention-days: 14
+      - name: Upload AAB part 04
+        if: always() && hashFiles('out/parts/bundle.part04') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android_25002_AAB_part04
+          path: out/parts/bundle.part04
+          retention-days: 14
+      - name: Upload build and upgrade verification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android_25002_Verification
+          path: |
+            out/*.json
+            out/*.xml
+            out/*.txt
+            out/*.png
+          retention-days: 14

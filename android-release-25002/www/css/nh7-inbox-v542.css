@@ -1,0 +1,42 @@
+/* New Hope 7 v5.4.2 — Inbox visual refresh */
+.nh7-inbox-card-v542{overflow:visible}
+.inbox-toolbar-v542{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.inbox-toolbar-v542 .badge{margin-inline-end:auto}
+.inbox-list-v542{display:grid;gap:10px}
+.inbox-card-v542{
+  border:1px solid var(--nh7-studio-line,var(--line,#d9e6f7));
+  border-radius:16px;
+  overflow:hidden;
+  background:var(--nh7-studio-card,var(--card,#fff));
+  color:var(--nh7-studio-text,var(--ink,#10284a));
+  box-shadow:0 6px 18px rgba(15,35,55,.06)
+}
+.inbox-card-v542.unread{
+  border-color:color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1d4ed8)) 42%,var(--nh7-studio-line,var(--line,#d9e6f7)));
+  background:color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1d4ed8)) 5%,var(--nh7-studio-card,var(--card,#fff)))
+}
+.inbox-card-v542.read{opacity:.9}
+.inbox-open-v542{
+  width:100%;display:grid;grid-template-columns:24px minmax(0,1fr) 20px;gap:10px;align-items:center;
+  padding:13px 14px;border:0;background:transparent;color:inherit;text-align:start;font:inherit;cursor:pointer
+}
+.inbox-status-v542{font-weight:900;color:var(--nh7-studio-accent,var(--brand,#1d4ed8));text-align:center}
+.inbox-copy-v542{min-width:0}
+.inbox-copy-v542 strong{display:block;font-size:.84rem;line-height:1.45;color:inherit}
+.inbox-copy-v542 small{display:block;margin-top:4px;font-size:.69rem;color:var(--nh7-studio-muted,var(--muted,#64748b))}
+.inbox-detail-v542{
+  margin:0 12px 12px;padding:13px 14px;border-radius:13px;
+  background:color-mix(in srgb,var(--nh7-studio-bg,var(--bg,#f5f9ff)) 78%,var(--nh7-studio-card,var(--card,#fff)));
+  border:1px solid var(--nh7-studio-line,var(--line,#d9e6f7))
+}
+.inbox-detail-v542 p{white-space:pre-wrap;line-height:1.7;margin:0 0 11px}
+.inbox-time-v542{
+  margin:0 0 12px;padding:9px 10px;border-radius:11px;font-size:.72rem;
+  background:color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#1d4ed8)) 7%,transparent);
+  color:var(--nh7-studio-muted,var(--muted,#64748b))
+}
+.inbox-time-v542 strong{color:var(--nh7-studio-text,var(--ink,#10284a))}
+@media(min-width:768px){
+  .inbox-list-v542{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .inbox-card-v542{height:max-content}
+}

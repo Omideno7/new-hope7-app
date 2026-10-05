@@ -1,0 +1,5479 @@
+{
+  "items": [
+    {
+      "day": 1,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 2,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 3,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 4,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 5,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 6,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 7,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 8,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 9,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 10,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 11,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 12,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 13,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 14,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 15,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 16,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 17,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 18,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 19,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 20,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 21,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 22,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 23,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 24,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 25,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 26,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 27,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 28,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 29,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 30,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 31,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 32,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 33,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 34,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 35,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 36,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 37,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 38,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 39,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 40,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 41,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 42,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 43,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 44,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 45,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 46,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 47,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 48,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 49,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 50,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 51,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 52,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 53,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 54,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 55,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 56,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 57,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 58,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 59,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 60,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 61,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 62,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 63,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 64,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 65,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 66,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 67,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 68,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 69,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 70,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 71,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 72,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 73,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 74,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 75,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 76,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 77,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 78,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 79,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 80,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 81,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 82,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 83,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 84,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 85,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 86,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 87,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 88,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 89,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 90,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 91,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 92,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 93,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 94,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 95,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 96,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 97,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 98,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 99,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 100,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 101,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 102,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 103,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 104,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 105,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 106,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 107,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 108,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 109,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 110,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 111,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 112,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 113,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 114,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 115,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 116,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 117,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 118,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 119,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 120,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 121,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 122,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 123,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 124,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 125,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 126,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 127,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 128,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 129,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 130,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 131,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 132,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 133,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 134,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 135,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 136,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 137,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 138,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 139,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 140,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 141,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 142,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 143,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 144,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 145,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 146,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 147,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 148,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 149,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 150,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 151,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 152,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 153,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 154,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 155,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 156,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 157,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 158,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 159,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 160,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 161,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 162,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 163,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 164,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 165,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 166,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 167,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 168,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 169,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 170,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 171,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 172,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 173,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 174,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 175,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 176,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 177,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 178,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 179,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 180,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 181,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 182,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 183,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 184,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 185,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 186,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 187,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 188,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 189,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 190,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 191,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 192,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 193,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 194,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 195,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 196,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 197,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 198,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 199,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 200,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 201,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 202,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 203,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 204,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 205,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 206,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 207,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 208,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 209,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 210,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 211,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 212,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 213,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 214,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 215,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 216,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 217,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 218,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 219,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 220,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 221,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 222,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 223,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 224,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 225,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 226,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 227,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 228,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 229,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 230,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 231,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 232,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 233,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 234,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 235,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 236,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 237,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 238,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 239,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 240,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 241,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 242,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 243,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 244,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 245,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 246,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 247,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 248,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 249,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 250,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 251,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 252,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 253,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 254,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 255,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 256,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 257,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 258,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 259,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 260,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 261,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 262,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 263,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 264,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 265,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 266,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 267,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 268,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 269,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 270,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 271,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 272,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 273,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 274,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 275,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 276,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 277,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 278,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 279,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 280,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 281,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 282,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 283,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 284,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 285,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 286,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 287,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 288,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 289,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 290,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 291,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 292,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 293,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 294,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 295,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 296,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 297,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 298,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 299,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 300,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 301,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 302,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 303,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 304,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 305,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 306,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 307,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 308,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 309,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 310,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 311,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 312,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 313,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 314,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 315,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 316,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 317,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 318,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 319,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 320,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 321,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 322,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 323,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 324,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 325,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 326,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 327,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 328,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 329,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 330,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 331,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 332,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 333,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 334,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 335,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 336,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 337,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 338,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 339,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 340,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 341,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 342,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 343,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 344,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 345,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 346,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 347,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 348,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 349,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 350,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 351,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 352,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 353,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 354,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 355,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 356,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 357,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 358,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    },
+    {
+      "day": 359,
+      "en": {
+        "title": "The Word gives light.",
+        "message": "Let your heart receive wisdom today."
+      },
+      "fa": {
+        "title": "کلام خدا نور می‌بخشد.",
+        "message": "امروز قلبت حکمت را دریافت کند."
+      },
+      "hr": {
+        "title": "Riječ daje svjetlo.",
+        "message": "Neka tvoje srce danas primi mudrost."
+      }
+    },
+    {
+      "day": 360,
+      "en": {
+        "title": "You are not alone.",
+        "message": "The Holy Spirit strengthens you."
+      },
+      "fa": {
+        "title": "تو تنها نیستی.",
+        "message": "روح‌القدس تو را قوت می‌بخشد."
+      },
+      "hr": {
+        "title": "Nisi sam.",
+        "message": "Duh Sveti te jača."
+      }
+    },
+    {
+      "day": 361,
+      "en": {
+        "title": "Grace is working in you.",
+        "message": "Rise with thanksgiving and expectation."
+      },
+      "fa": {
+        "title": "فیض در تو عمل می‌کند.",
+        "message": "با شکرگزاری و انتظار برخیز."
+      },
+      "hr": {
+        "title": "Milost djeluje u tebi.",
+        "message": "Ustani sa zahvalnošću i očekivanjem."
+      }
+    },
+    {
+      "day": 362,
+      "en": {
+        "title": "Jesus is Lord over today.",
+        "message": "Speak life and move forward."
+      },
+      "fa": {
+        "title": "عیسی خداوند امروز توست.",
+        "message": "حیات را اعلام کن و به پیش برو."
+      },
+      "hr": {
+        "title": "Isus je Gospodar današnjeg dana.",
+        "message": "Govori život i kreni naprijed."
+      }
+    },
+    {
+      "day": 363,
+      "en": {
+        "title": "Peace belongs to you.",
+        "message": "Let Christ rule your heart."
+      },
+      "fa": {
+        "title": "آرامش از آن توست.",
+        "message": "بگذار مسیح بر قلبت حکومت کند."
+      },
+      "hr": {
+        "title": "Mir pripada tebi.",
+        "message": "Neka Krist vlada tvojim srcem."
+      }
+    },
+    {
+      "day": 364,
+      "en": {
+        "title": "You are a new creation.",
+        "message": "Live from your identity in Christ."
+      },
+      "fa": {
+        "title": "تو خلقت تازه هستی.",
+        "message": "از هویت خود در مسیح زندگی کن."
+      },
+      "hr": {
+        "title": "Ti si novo stvorenje.",
+        "message": "Živi iz svog identiteta u Kristu."
+      }
+    },
+    {
+      "day": 365,
+      "en": {
+        "title": "God is with you today.",
+        "message": "Walk in faith, peace, and victory."
+      },
+      "fa": {
+        "title": "خدا امروز با توست.",
+        "message": "در ایمان، آرامش و پیروزی قدم بردار."
+      },
+      "hr": {
+        "title": "Bog je danas s tobom.",
+        "message": "Hodaj u vjeri, miru i pobjedi."
+      }
+    }
+  ]
+}

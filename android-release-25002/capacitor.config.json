@@ -1,0 +1,11 @@
+{
+  "appId": "com.omideno7.newhope7",
+  "appName": "New Hope 7",
+  "webDir": "www",
+  "server": {"androidScheme": "https", "cleartext": false},
+  "android": {"backgroundColor": "#ffffff", "webContentsDebuggingEnabled": false},
+  "plugins": {
+    "LocalNotifications": {"iconColor": "#0f766e"},
+    "SystemBars": {"insetsHandling": "css"}
+  }
+}

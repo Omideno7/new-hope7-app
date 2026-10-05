@@ -1,0 +1,13 @@
+/* New Hope 7 Admin Fix 7 — stable inline document workspace */
+.nh7-f4-fab,.nh7-f4-card,.nh7-f4-overlay,.nh7-f5-cert-select{display:none!important}
+body.nh7-f4-open{overflow:auto!important;position:static!important}
+.nh7-doc-clean-v270{margin:0 0 16px;padding:18px;border:1px solid #b7d8d3;border-radius:22px;background:linear-gradient(135deg,#effcf8,#f1f7ff);box-shadow:0 12px 34px rgba(15,118,110,.12)}
+.nh7-doc-clean-copy h2{margin:0 0 7px;color:#123e69;font-size:1.25rem}.nh7-doc-clean-copy p{margin:0;color:#475467;line-height:1.8}
+.nh7-doc-clean-actions{display:grid;grid-template-columns:minmax(280px,1fr) auto auto;gap:9px;align-items:end;margin-top:14px}.nh7-doc-clean-actions label{display:grid;gap:5px;font-weight:800;color:#344054}.nh7-doc-clean-actions select{width:100%;min-width:0;background:#fff;border:1px solid #b8ceda;border-radius:13px;padding:11px;font-size:16px}
+.nh7-doc-clean-steps{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px dashed #b7d8d3;color:#344054;font-weight:750}.nh7-doc-clean-steps span{display:flex;align-items:center;gap:6px}.nh7-doc-clean-steps b{display:grid;place-items:center;width:27px;height:27px;border-radius:50%;background:#0f766e;color:#fff}.nh7-doc-clean-steps i{font-style:normal;color:#98a2b3}
+.nh7-doc-studio-v239{position:relative!important;inset:auto!important;max-height:none!important;overflow:visible!important;transform:none!important;contain:layout style;background:#fff}
+.nh7-doc-studio-v239 details{scroll-margin-top:88px}.nh7-doc-studio-v239 input,.nh7-doc-studio-v239 select,.nh7-doc-studio-v239 textarea{font-size:16px}
+.nh7-v239-preview-overlay{overscroll-behavior:contain}.nh7-v239-preview-stage{-webkit-overflow-scrolling:touch}
+@media(max-width:900px){.nh7-doc-clean-actions{grid-template-columns:1fr 1fr}.nh7-doc-clean-actions label{grid-column:1/-1}}
+@media(max-width:560px){.nh7-doc-clean-v270{padding:13px;border-radius:18px}.nh7-doc-clean-actions{grid-template-columns:1fr}.nh7-doc-clean-actions label{grid-column:auto}.nh7-doc-clean-actions .btn{width:100%;min-height:46px}.nh7-doc-clean-steps{justify-content:flex-start}.nh7-doc-clean-steps i{display:none}.nh7-doc-clean-steps span{width:100%}}
+@media print{.nh7-doc-clean-v270{display:none!important}}

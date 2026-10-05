@@ -1,0 +1,9 @@
+/* New Hope 7 Admin v3.0.0 — clean scroll recovery */
+html{height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior-y:auto!important;scroll-behavior:auto!important}
+body{position:static!important;inset:auto!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;width:auto!important;height:auto!important;min-height:100%!important;max-height:none!important;overflow-x:hidden!important;overflow-y:auto!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior-y:auto!important}
+.admin-shell{position:relative!important;min-height:100vh!important;height:auto!important;overflow:visible!important;contain:none!important}
+main,.panel-card,.card,.request-card,.list{max-height:none!important}
+body.nh7-f4-open,body.nh7-v239-preview-open,body.nh7-student-modal-open,body.nh7-admin-upload-lock{position:static!important;inset:auto!important;width:auto!important;height:auto!important;max-height:none!important;overflow-y:auto!important}
+/* Real modal surfaces remain fixed and scroll inside themselves. */
+.student-modal-backdrop,.nh7-v239-preview-overlay,#nh7_doc_preview_modal:not(.hidden){position:fixed!important;overflow:auto!important;-webkit-overflow-scrolling:touch!important}
+.nh7-clean-scroll-badge{position:fixed;left:10px;bottom:10px;z-index:2147483647;padding:7px 10px;border-radius:999px;background:#067647;color:#fff;font:800 11px/1.2 system-ui;box-shadow:0 8px 22px rgba(0,0,0,.22);pointer-events:none}

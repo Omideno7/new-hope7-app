@@ -1,0 +1,10 @@
+{
+  "meta": {
+    "app": "New Hope 7",
+    "minimumNotesRequired": 10,
+    "audioLanguage": "fa",
+    "approvalRequired": true,
+    "protectedContent": true
+  },
+  "lessons": []
+}

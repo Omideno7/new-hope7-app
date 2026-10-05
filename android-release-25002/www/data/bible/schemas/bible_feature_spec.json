@@ -1,0 +1,97 @@
+{
+  "bibleReaderFeatures": {
+    "search": {
+      "scope": [
+        "whole_bible",
+        "testament",
+        "book",
+        "current_chapter"
+      ],
+      "languages": [
+        "fa",
+        "en",
+        "hr"
+      ],
+      "normalization": {
+        "fa": "remove diacritics, normalize ی/ي and ک/ك",
+        "en": "lowercase",
+        "hr": "lowercase with diacritics support"
+      }
+    },
+    "highlight": {
+      "colors": [
+        "yellow",
+        "green",
+        "blue",
+        "pink",
+        "purple"
+      ],
+      "perVerse": true,
+      "multiVerse": true
+    },
+    "bold": {
+      "supportsPartialTextSelection": true,
+      "storedAsOffsets": true
+    },
+    "notes": {
+      "perVerse": true,
+      "privateByDefault": true,
+      "editable": true
+    },
+    "bookmarks": {
+      "perVerse": true,
+      "folders": [
+        "prayer",
+        "healing",
+        "faith",
+        "salvation",
+        "personal"
+      ]
+    },
+    "share": {
+      "formats": [
+        "singleVerse",
+        "multiVerse",
+        "imageCard"
+      ],
+      "includeTranslationLabel": true
+    },
+    "keywords": {
+      "perVerse": true,
+      "clickKeywordToRelatedVerses": true
+    },
+    "originalLanguage": {
+      "nt": "Greek lemma/Strong explanation per key word",
+      "ot": "Hebrew lemma/Strong explanation per key word",
+      "display": [
+        "word",
+        "lemma",
+        "transliteration",
+        "pronunciation_fa",
+        "short_explanation",
+        "theological_note"
+      ]
+    }
+  },
+  "readingPlanUX": {
+    "selectPlan": [
+      "1_year",
+      "2_year"
+    ],
+    "dailyScreen": [
+      "readings",
+      "progressBar",
+      "markAsReadButton",
+      "notes",
+      "shareProgress"
+    ],
+    "completionFlow": [
+      "confirmRead",
+      "awardPoints",
+      "updateStreak",
+      "showBadgeIfEarned"
+    ],
+    "manualProgressOnly": true,
+    "doNotAutoAdvanceWithoutButton": true
+  }
+}
