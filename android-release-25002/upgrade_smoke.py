@@ -80,7 +80,8 @@ marker = evaluate(ws, "new Promise((resolve,reject)=>{const req=indexedDB.open('
 assert marker == 'offline-user-state-preserved', marker
 native = adb('shell', 'run-as', PACKAGE, 'cat', 'files/nh7-upgrade-marker.txt')
 assert native == 'native-user-files-preserved', native
-assert evaluate(ws, "window.NH7_AUTO_UPDATE_VERSION") == '2.5.0-native-packaged'
+updater = evaluate(ws, "({version:window.NH7_AUTO_UPDATE_VERSION,platform:window.Capacitor?.getPlatform?.(),native:window.Capacitor?.isNativePlatform?.(),script:[...document.scripts].find(x=>x.src.includes('nh7-auto-update-v335'))?.src})")
+assert updater.get('version') == '2.5.0-native-packaged', updater
 assert evaluate(ws, "!!window.NH7CommunityV502 && typeof window.NH7CommunityV502.renderProfile==='function' && typeof window.NH7CommunityV502.renderTestimonies==='function' && typeof window.NH7CommunityV502.renderPrayer==='function'")
 workers = evaluate(ws, "navigator.serviceWorker ? navigator.serviceWorker.getRegistrations().then(x=>x.length) : 0")
 assert workers == 0, workers
