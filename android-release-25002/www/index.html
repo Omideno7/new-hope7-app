@@ -1,6 +1,24 @@
 <!doctype html>
 <html lang="en" dir="ltr">
 <head>
+
+  <script>
+    // Compatibility for older Android WebViews; current engines keep their APIs.
+    (function(){'use strict';
+      if(!window.Capacitor?.isNativePlatform?.())return;
+      if(!Object.hasOwn)Object.defineProperty(Object,'hasOwn',{configurable:true,writable:true,value:function(object,key){return Object.prototype.hasOwnProperty.call(object,key);}});
+      if(!Array.prototype.at)Object.defineProperty(Array.prototype,'at',{configurable:true,writable:true,value:function(index){
+        if(this==null)throw new TypeError('Invalid array');
+        var object=Object(this),length=Math.min(Math.max(Math.trunc(Number(object.length)||0),0),9007199254740991);
+        var position=Math.trunc(Number(index)||0);if(position<0)position+=length;
+        return position<0||position>=length?undefined:object[position];
+      }});
+      if(!Element.prototype.replaceChildren)Object.defineProperty(Element.prototype,'replaceChildren',{configurable:true,writable:true,value:function(){
+        var fragment=this.ownerDocument.createDocumentFragment();fragment.append.apply(fragment,arguments);
+        while(this.firstChild)this.removeChild(this.firstChild);this.appendChild(fragment);
+      }});
+    }());
+  </script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#1d4ed8" />

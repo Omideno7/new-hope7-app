@@ -67,7 +67,7 @@ def ready(ws, candidate=False):
 seed = {
     'nh7_sermon_note_release_upgrade_test': 'یادداشت موعظه\nخط دوم — saved before update',
     'nh7_note_school-A1': 'تکلیف مدرسه\nMy existing assignment draft',
-    'nh7_bible_state_john_3_16': json.dumps({'saved': True, 'highlight': 'yellow', 'note': 'یادداشت آیه\nKeep this verse'}, ensure_ascii=False, separators=(',', ':')),
+    'nh7_bible_state_john_3_16': json.dumps({'saved': True, 'highlight': True, 'highlightColor': 'yellow', 'note': 'یادداشت آیه\nKeep this verse'}, ensure_ascii=False, separators=(',', ':')),
     'nh7_lang': 'en',
 }
 adb('install', '-r', 'out/qa-baseline-24001.apk')
@@ -79,6 +79,20 @@ evaluate(ws, '(() => {const data=' + json.dumps(seed, ensure_ascii=False) + ';fo
 assert evaluate(ws, "new Promise((resolve,reject)=>{const req=indexedDB.open('nh7-upgrade-preservation-test',1);req.onupgradeneeded=()=>req.result.createObjectStore('state');req.onerror=()=>reject(req.error);req.onsuccess=()=>{const db=req.result,tx=db.transaction('state','readwrite');tx.objectStore('state').put('offline-user-state-preserved','marker');tx.oncomplete=()=>{db.close();resolve(true)};tx.onerror=()=>reject(tx.error)}})")
 ws.close()
 adb('shell', f"run-as {PACKAGE} sh -c 'mkdir -p files; echo native-user-files-preserved > files/nh7-upgrade-marker.txt'")
+# WebView commits localStorage to disk asynchronously. Simulate leaving the app
+# normally, then verify the seeded data survives a real cold restart before
+# upgrading. This separates persistent user data from transient renderer state.
+adb('shell', 'input', 'keyevent', 'KEYCODE_HOME')
+time.sleep(3)
+adb('shell', 'am', 'force-stop', PACKAGE)
+adb('shell', 'am', 'start', '-n', PACKAGE + '/com.omideno7.newhope7.MainActivity')
+ws = connect()
+baseline_cold = ready(ws)
+cold_data = evaluate(ws, '(() => {const data=' + json.dumps(seed, ensure_ascii=False) + ';return Object.fromEntries(Object.keys(data).map(key=>[key,localStorage.getItem(key)]));})()')
+assert cold_data == seed, {'stage': 'baseline cold restart before upgrade', 'expected': seed, 'actual': cold_data}
+ws.close()
+adb('shell', 'input', 'keyevent', 'KEYCODE_HOME')
+time.sleep(2)
 adb('shell', 'am', 'force-stop', PACKAGE)
 adb('install', '-r', 'out/qa-candidate-25002.apk')
 adb('shell', 'am', 'start', '-n', PACKAGE + '/com.omideno7.newhope7.MainActivity')
@@ -89,6 +103,11 @@ assert candidate['version'] == '2.5.0', candidate
 assert candidate['origin'] == baseline['origin'], (baseline, candidate)
 actual = evaluate(ws, '(() => {const data=' + json.dumps(seed, ensure_ascii=False) + ';return Object.fromEntries(Object.keys(data).map(key=>[key,localStorage.getItem(key)]));})()')
 assert actual == seed, {'expected': seed, 'actual': actual}
+notes = evaluate(ws, "window.NH7MyNotesV234.collectNotes().map(x=>({key:x.storageKey,text:x.text}))")
+expected_notes = {key: value for key, value in seed.items() if key.startswith('nh7_sermon_note_') or key.startswith('nh7_note_')}
+expected_notes['nh7_bible_state_john_3_16'] = json.loads(seed['nh7_bible_state_john_3_16'])['note']
+collected = {row['key']: row['text'] for row in notes}
+assert all(collected.get(key) == value for key, value in expected_notes.items()), notes
 marker = evaluate(ws, "new Promise((resolve,reject)=>{const req=indexedDB.open('nh7-upgrade-preservation-test',1);req.onerror=()=>reject(req.error);req.onsuccess=()=>{const db=req.result,tx=db.transaction('state','readonly'),get=tx.objectStore('state').get('marker');get.onsuccess=()=>{resolve(get.result);db.close()};get.onerror=()=>reject(get.error)}})")
 assert marker == 'offline-user-state-preserved', marker
 native = adb('shell', 'run-as', PACKAGE, 'cat', 'files/nh7-upgrade-marker.txt')
@@ -103,9 +122,11 @@ assert push['cordova'] and push['oneSignal'] and push['initialized'], push
 assert evaluate(ws, "!!window.NH7CommunityV502 && typeof window.NH7CommunityV502.renderProfile==='function' && typeof window.NH7CommunityV502.renderTestimonies==='function' && typeof window.NH7CommunityV502.renderPrayer==='function'")
 workers = evaluate(ws, "navigator.serviceWorker ? navigator.serviceWorker.getRegistrations().then(x=>x.length) : 0")
 assert workers == 0, workers
+compat = evaluate(ws, "({hasOwn:Object.hasOwn({a:1},'a'),negativeArrayIndex:[1,2].at(-1),replaceChildren:typeof Element.prototype.replaceChildren})")
+assert compat == {'hasOwn': True, 'negativeArrayIndex': 2, 'replaceChildren': 'function'}, compat
 ws.close()
 with (OUT / 'android-25002-upgrade.png').open('wb') as screenshot:
     subprocess.run(['adb', 'exec-out', 'screencap', '-p'], stdout=screenshot, check=True)
-result = {'status': 'PASS', 'baseline': baseline, 'candidate': candidate, 'notes_and_assignment_draft': 'preserved', 'saved_verse_and_highlight': 'preserved', 'indexeddb_state': 'preserved', 'native_user_files': 'preserved', 'native_bridge': 'android, connected', 'native_filesystem_call': 'PASS', 'native_push_plugin': push, 'native_web_workers': workers, 'community_modules': 'loaded', 'scope': 'isolated QA package, same local origin and native dependencies as production'}
+result = {'status': 'PASS', 'baseline': baseline, 'baseline_cold_restart': 'PASS', 'candidate': candidate, 'notes_and_assignment_draft': 'preserved and readable by My Notes', 'saved_verse_and_highlight': 'preserved', 'indexeddb_state': 'preserved', 'native_user_files': 'preserved', 'native_bridge': 'android, connected', 'native_filesystem_call': 'PASS', 'native_push_plugin': push, 'native_web_workers': workers, 'community_modules': 'loaded', 'older_webview_compatibility': compat, 'scope': 'isolated QA package, same local origin and native dependencies as production'}
 (OUT / 'upgrade-smoke.json').write_text(json.dumps(result, ensure_ascii=False, indent=2))
 print(json.dumps(result, ensure_ascii=False))
