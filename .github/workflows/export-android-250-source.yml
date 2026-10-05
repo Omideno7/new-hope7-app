@@ -17,14 +17,14 @@ jobs:
           git show -s --format='%H %s' HEAD
       - name: Package exact source tree
         run: |
-          tar --exclude='.git' --exclude='./nh7-main-dba24de.tar.gz' -czf nh7-main-dba24de.tar.gz .
-          sha256sum nh7-main-dba24de.tar.gz > nh7-main-dba24de.sha256
+          tar --exclude='.git' -czf /tmp/nh7-main-dba24de.tar.gz .
+          sha256sum /tmp/nh7-main-dba24de.tar.gz > /tmp/nh7-main-dba24de.sha256
       - name: Upload source artifact
         uses: actions/upload-artifact@v4
         with:
           name: nh7-main-dba24de
           path: |
-            nh7-main-dba24de.tar.gz
-            nh7-main-dba24de.sha256
+            /tmp/nh7-main-dba24de.tar.gz
+            /tmp/nh7-main-dba24de.sha256
           if-no-files-found: error
           retention-days: 1
