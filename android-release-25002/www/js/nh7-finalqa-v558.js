@@ -17,6 +17,7 @@ const isNativeAndroid=()=>{
 function ensureAndroidRootScroll(){
   if(!isNativeAndroid())return false;
   const root=document.documentElement,body=document.body;
+  if(root.dataset.nh7AndroidScrollCompat==='1')return true;
   root.dataset.nh7NativeAndroid='1';
   root.style.setProperty('overscroll-behavior','auto','important');
   root.style.setProperty('overscroll-behavior-y','auto','important');
@@ -24,6 +25,7 @@ function ensureAndroidRootScroll(){
     body.style.setProperty('overscroll-behavior','auto','important');
     body.style.setProperty('overscroll-behavior-y','auto','important');
   }
+  root.dataset.nh7AndroidScrollCompat='1';
   return true;
 }
 
@@ -62,7 +64,10 @@ function syncMiniDock(){
     const viewportOffsetTop=window.visualViewport?.offsetTop || 0;
     const viewportBottom=viewportOffsetTop + visualViewportHeight;
     const dock=Math.max(0,Math.round(viewportBottom-r.top+3));
-    document.documentElement.style.setProperty('--nh7-mini-dock-bottom',dock+'px');
+    const value=dock+'px';
+    if(document.documentElement.style.getPropertyValue('--nh7-mini-dock-bottom')!==value){
+      document.documentElement.style.setProperty('--nh7-mini-dock-bottom',value);
+    }
   });
 }
 
