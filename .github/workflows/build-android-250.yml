@@ -26,16 +26,22 @@ jobs:
           distribution: temurin
           java-version: '21'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Install Android API 36
-        run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
+          export ANDROID_HOME=/usr/local/lib/android/sdk
+          SDKMANAGER="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKMANAGER" --licenses >/dev/null || true
+          "$SDKMANAGER" 'platforms;android-36' 'build-tools;36.0.0' 'platform-tools'
 
       - name: Create Android 2.5.0 wrapper from frozen source
         shell: bash
         run: |
           set -euo pipefail
+          export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
+          export ANDROID_HOME=/usr/local/lib/android/sdk
           SRC="$GITHUB_WORKSPACE"
           BUILD="$RUNNER_TEMP/nh7-android-250"
           mkdir -p "$BUILD/www"
@@ -85,6 +91,7 @@ jobs:
 
           python3 - <<'PY'
           from pathlib import Path
+          import re
           p=Path('android/app/build.gradle')
           s=p.read_text()
           s=s.replace('versionCode 1','versionCode 25001')
@@ -96,7 +103,6 @@ jobs:
           v=Path('android/variables.gradle')
           if v.exists():
               t=v.read_text()
-              import re
               t=re.sub(r'compileSdkVersion\s*=\s*\d+', 'compileSdkVersion = 36', t)
               t=re.sub(r'targetSdkVersion\s*=\s*\d+', 'targetSdkVersion = 36', t)
               v.write_text(t)
@@ -157,7 +163,6 @@ jobs:
           </paths>
           XML
 
-          # Use the final church logo as the native launcher icon in all density buckets.
           python3 -m pip install --quiet pillow
           python3 - <<'PY'
           from PIL import Image
@@ -178,7 +183,6 @@ jobs:
               if f.exists(): f.unlink()
           PY
 
-          # Re-sync plugin-generated native configuration after the deterministic release patches.
           npx cap copy android
 
           cd android
