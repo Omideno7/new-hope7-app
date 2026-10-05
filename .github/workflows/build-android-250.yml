@@ -1,0 +1,201 @@
+name: Build Android 2.5.0 AAB
+
+on:
+  push:
+    branches:
+      - build/android-2.5.0-export
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact frozen release source
+        uses: actions/checkout@v4
+        with:
+          ref: dba24de9b35316e5e0a72d83966954988ecd0046
+          fetch-depth: 1
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android API 36
+        run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
+
+      - name: Create Android 2.5.0 wrapper from frozen source
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC="$GITHUB_WORKSPACE"
+          BUILD="$RUNNER_TEMP/nh7-android-250"
+          mkdir -p "$BUILD/www"
+
+          for f in index.html app-v239.html manifest.json reset-password.html version.json; do
+            cp "$SRC/$f" "$BUILD/www/$f"
+          done
+          for d in assets css data js offline push; do
+            cp -a "$SRC/$d" "$BUILD/www/$d"
+          done
+
+          cat > "$BUILD/package.json" <<'JSON'
+          {
+            "name": "new-hope-7-android-release",
+            "private": true,
+            "version": "2.5.0",
+            "dependencies": {
+              "@capacitor/android": "8.5.0",
+              "@capacitor/core": "8.5.0",
+              "@capacitor/file-transfer": "2.0.5",
+              "@capacitor/filesystem": "8.1.3",
+              "@capacitor/local-notifications": "8.3.1",
+              "onesignal-cordova-plugin": "5.5.3"
+            },
+            "devDependencies": {
+              "@capacitor/assets": "3.0.5",
+              "@capacitor/cli": "8.5.0"
+            }
+          }
+          JSON
+
+          cat > "$BUILD/capacitor.config.json" <<'JSON'
+          {
+            "appId": "com.omideno7.newhope7",
+            "appName": "New Hope 7",
+            "webDir": "www",
+            "server": {"androidScheme":"https","cleartext":false},
+            "android": {"backgroundColor":"#ffffff","webContentsDebuggingEnabled":false},
+            "plugins": {"LocalNotifications":{"iconColor":"#0f766e"}}
+          }
+          JSON
+
+          cd "$BUILD"
+          npm install --no-audit --no-fund
+          npx cap add android
+          npx cap sync android
+
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('android/app/build.gradle')
+          s=p.read_text()
+          s=s.replace('versionCode 1','versionCode 25001')
+          s=s.replace('versionName "1.0"','versionName "2.5.0"')
+          if 'minifyEnabled false' in s:
+              s=s.replace('minifyEnabled false', 'minifyEnabled true\n            shrinkResources true')
+          p.write_text(s)
+
+          v=Path('android/variables.gradle')
+          if v.exists():
+              t=v.read_text()
+              import re
+              t=re.sub(r'compileSdkVersion\s*=\s*\d+', 'compileSdkVersion = 36', t)
+              t=re.sub(r'targetSdkVersion\s*=\s*\d+', 'targetSdkVersion = 36', t)
+              v.write_text(t)
+          PY
+
+          cat > android/app/src/main/AndroidManifest.xml <<'XML'
+          <?xml version="1.0" encoding="utf-8" ?>
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+              <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+              <application
+                  android:usesCleartextTraffic="false"
+                  android:allowBackup="true"
+                  android:icon="@mipmap/ic_launcher"
+                  android:label="@string/app_name"
+                  android:roundIcon="@mipmap/ic_launcher_round"
+                  android:supportsRtl="true"
+                  android:theme="@style/AppTheme">
+                  <activity
+                      android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation|density"
+                      android:name=".MainActivity"
+                      android:label="@string/title_activity_main"
+                      android:theme="@style/AppTheme.NoActionBarLaunch"
+                      android:launchMode="singleTask"
+                      android:exported="true">
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN" />
+                          <category android:name="android.intent.category.LAUNCHER" />
+                      </intent-filter>
+                  </activity>
+                  <provider
+                      android:name="androidx.core.content.FileProvider"
+                      android:authorities="${applicationId}.fileprovider"
+                      android:exported="false"
+                      android:grantUriPermissions="true">
+                      <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths" />
+                  </provider>
+              </application>
+              <uses-permission android:name="android.permission.INTERNET" />
+          </manifest>
+          XML
+
+          cat > android/app/src/main/res/values/strings.xml <<'XML'
+          <?xml version='1.0' encoding='utf-8'?>
+          <resources>
+              <string name="app_name">New Hope 7</string>
+              <string name="title_activity_main">New Hope 7</string>
+              <string name="package_name">com.omideno7.newhope7</string>
+              <string name="custom_url_scheme">com.omideno7.newhope7</string>
+          </resources>
+          XML
+
+          mkdir -p android/app/src/main/res/xml
+          cat > android/app/src/main/res/xml/file_paths.xml <<'XML'
+          <?xml version="1.0" encoding="utf-8"?>
+          <paths xmlns:android="http://schemas.android.com/apk/res/android">
+              <external-path name="my_images" path="." />
+              <cache-path name="my_cache_images" path="." />
+          </paths>
+          XML
+
+          # Use the final church logo as the native launcher icon in all density buckets.
+          python3 -m pip install --quiet pillow
+          python3 - <<'PY'
+          from PIL import Image
+          from pathlib import Path
+          src=Path('www/assets/new-hope7-logo-1024.png')
+          if not src.exists():
+              raise SystemExit(f'Missing launcher logo: {src}')
+          img=Image.open(src).convert('RGBA')
+          sizes={'mdpi':48,'hdpi':72,'xhdpi':96,'xxhdpi':144,'xxxhdpi':192}
+          base=Path('android/app/src/main/res')
+          for density,size in sizes.items():
+              d=base/f'mipmap-{density}'
+              d.mkdir(parents=True,exist_ok=True)
+              out=img.resize((size,size),Image.Resampling.LANCZOS)
+              out.save(d/'ic_launcher.png')
+              out.save(d/'ic_launcher_round.png')
+          for f in [base/'mipmap-anydpi-v26/ic_launcher.xml',base/'mipmap-anydpi-v26/ic_launcher_round.xml']:
+              if f.exists(): f.unlink()
+          PY
+
+          # Re-sync plugin-generated native configuration after the deterministic release patches.
+          npx cap copy android
+
+          cd android
+          chmod +x gradlew
+          ./gradlew --no-daemon clean bundleRelease
+
+          OUT="$RUNNER_TEMP/New_Hope_7_2.5.0_25001_API36_UNSIGNED.aab"
+          cp app/build/outputs/bundle/release/app-release.aab "$OUT"
+          sha256sum "$OUT" > "$OUT.sha256"
+          echo "AAB=$OUT" >> "$GITHUB_ENV"
+
+      - name: Upload unsigned AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: New_Hope_7_2.5.0_25001_API36_UNSIGNED
+          path: |
+            ${{ env.AAB }}
+            ${{ env.AAB }}.sha256
+          if-no-files-found: error
+          retention-days: 1
