@@ -1,6 +1,14 @@
-/* New Hope 7 v5.5.5 — root-edge overscroll guard for iOS WKWebView. */
+/* New Hope 7 v5.5.5 — root-edge overscroll guard for iOS WKWebView.
+   IMPORTANT: Android WebView must keep native vertical touch scrolling untouched. */
 (()=>{'use strict';
 if(window.__NH7_FINALQA_V555__)return;window.__NH7_FINALQA_V555__=true;
+
+// This guard exists only to suppress iOS/WKWebView rubber-band gestures.
+// Loading its document-level non-passive touchmove handler on Android can make
+// the root scroller look as if it is already at both edges and freeze swiping.
+const nativePlatform=window.Capacitor?.isNativePlatform?.()?window.Capacitor?.getPlatform?.():'web';
+const isiOS=nativePlatform==='ios'||/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+if(!isiOS){window.__NH7_FINALQA_V555_SKIPPED__='non-ios';return;}
 
 let lastY=0;
 
