@@ -1,0 +1,112 @@
+name: Next 3 Canonical Index Reconcile
+
+on:
+  push:
+    branches: [next/3.0.0]
+    paths:
+      - '.github/workflows/next-3-canonical-index-reconcile.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout Next 3 working source
+        uses: actions/checkout@v4
+        with:
+          ref: next/3.0.0
+          path: work
+          fetch-depth: 1
+
+      - name: Checkout immutable published Android baseline
+        uses: actions/checkout@v4
+        with:
+          ref: baseline/android-2.5.0-25002-published
+          path: baseline
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Build canonical cross-platform index from approved 2.5 payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          root = Path.cwd()
+          src = root / 'baseline' / 'android-release-25002' / 'www' / 'index.html'
+          dst = root / 'work' / 'index.html'
+          text = src.read_text(encoding='utf-8')
+
+          marker = '  <!-- Web OneSignal SDK disabled inside Android native wrapper; native OneSignal owns push -->'
+          if text.count(marker) != 1:
+              raise SystemExit('Expected Android OneSignal marker exactly once')
+
+          web_loader = '''  <!-- Canonical push bootstrap: Web uses OneSignal Web SDK; native shells use the native plugin. -->
+          <script>
+            (function(){
+              'use strict';
+              var cap = window.Capacitor;
+              var isNative = !!(cap && typeof cap.isNativePlatform === 'function' && cap.isNativePlatform());
+              if (isNative) return;
+              var sdk = document.createElement('script');
+              sdk.src = 'https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js';
+              sdk.defer = true;
+              sdk.dataset.nh7WebPush = '1';
+              document.head.appendChild(sdk);
+            }());
+          </script>'''
+          text = text.replace(marker, web_loader, 1)
+
+          required = [
+              "window.NH7_VERSION = '2.5.0';",
+              "if (!window.Capacitor?.isNativePlatform?.() && 'serviceWorker' in navigator)",
+              'id="profileHeaderBtn"',
+              'css/nh7-tablet-v530.css',
+              'css/nh7-global-search-exam-v540.css',
+              'js/nh7-global-search-v540.js',
+              'js/nh7-community-v502.js',
+              'js/nh7-exam-review-v540.js',
+              'js/nh7-finalqa-v555.js',
+              'js/nh7-finalqa-v558.js',
+              'js/nh7-auto-update-v335.js',
+              'window.OneSignalDeferred = window.OneSignalDeferred || []'
+          ]
+          missing = [item for item in required if item not in text]
+          if missing:
+              raise SystemExit('Canonical index missing required 2.5 contracts: ' + ', '.join(missing))
+
+          sdk_url = 'https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js'
+          if text.count(sdk_url) != 1:
+              raise SystemExit('Expected exactly one Web OneSignal SDK URL')
+          if '<script src="' + sdk_url + '"' in text:
+              raise SystemExit('Static Web OneSignal SDK tag must not load inside native shells')
+          if "if (isNative) return;" not in text or "document.head.appendChild(sdk);" not in text:
+              raise SystemExit('Web-only OneSignal loader guard missing')
+
+          dst.write_text(text, encoding='utf-8')
+          print('Canonical index generated from immutable published 2.5 payload.')
+          print('Web OneSignal restored only for non-native runtime.')
+          PY
+
+          cd work
+          git diff --check -- index.html
+          git diff --stat -- index.html
+
+      - name: Commit canonical index only to Next 3
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd work
+          if git diff --quiet -- index.html; then
+            echo 'Canonical index already current; nothing to commit.'
+            exit 0
+          fi
+          git config user.name 'Omideno7'
+          git config user.email 'omideno7church@gmail.com'
+          git add index.html
+          git commit -m 'Canonicalize 2.5 cross-platform index'
+          git push origin HEAD:next/3.0.0
