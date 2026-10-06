@@ -1,4 +1,4 @@
-name: Next 3 Source Parity Audit
+name: Next 3 Source Parity Guard
 
 on:
   push:
@@ -11,7 +11,8 @@ permissions:
 
 jobs:
   source-parity:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
       - name: Checkout Next 3 working source
         uses: actions/checkout@v4
@@ -27,7 +28,7 @@ jobs:
           path: baseline
           persist-credentials: false
 
-      - name: Compare canonical root to published Android payload
+      - name: Enforce approved source parity
         shell: bash
         run: |
           set -euo pipefail
@@ -42,6 +43,12 @@ jobs:
           if not payload.is_dir():
               raise SystemExit(f'Published Android payload missing: {payload}')
 
+          expected_differences = {
+              'index.html': 'canonical cross-platform bootstrap: Web push restored only outside native shells',
+              'js/nh7-admin-community-v502.js': 'newer post-release Admin/Testimony moderation retained',
+              'js/nh7-admin-ready-v439.js': 'newer post-release Admin/Testimony stability retained',
+          }
+
           def digest(path: Path) -> str:
               h = hashlib.sha256()
               with path.open('rb') as fh:
@@ -50,10 +57,7 @@ jobs:
               return h.hexdigest()
 
           payload_files = sorted(p for p in payload.rglob('*') if p.is_file())
-          identical = []
-          different = []
-          payload_only = []
-
+          identical, different, payload_only = [], [], []
           for src in payload_files:
               rel = src.relative_to(payload)
               dst = root / rel
@@ -64,32 +68,77 @@ jobs:
               else:
                   different.append(str(rel))
 
+          actual = set(different)
+          expected = set(expected_differences)
+          unexpected = sorted(actual - expected)
+          missing_expected = sorted(expected - actual)
+
           print(f'IDENTICAL={len(identical)}')
           print(f'DIFFERENT={len(different)}')
           print(f'PAYLOAD_ONLY={len(payload_only)}')
-          print('\n## DIFFERENT')
-          for item in different:
+          print(f'UNEXPECTED_DIFFERENCES={len(unexpected)}')
+          print(f'MISSING_EXPECTED_DIFFERENCES={len(missing_expected)}')
+
+          print('\n## EXPECTED DIFFERENCES')
+          for item in sorted(actual & expected):
+              print(f'{item} :: {expected_differences[item]}')
+          print('\n## UNEXPECTED DIFFERENCES')
+          for item in unexpected:
               print(item)
-          print('\n## PAYLOAD_ONLY')
+          print('\n## PAYLOAD ONLY')
           for item in payload_only:
               print(item)
 
+          # Canonical index must retain the complete 2.5 payload plus Web-only push bootstrap.
+          index = (root / 'index.html').read_text(encoding='utf-8')
+          contracts = [
+              "window.NH7_VERSION = '2.5.0';",
+              "if (!window.Capacitor?.isNativePlatform?.() && 'serviceWorker' in navigator)",
+              "if (isNative) return;",
+              "sdk.src = 'https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js';",
+              'id="profileHeaderBtn"',
+              'css/nh7-tablet-v530.css',
+              'css/nh7-global-search-exam-v540.css',
+              'js/nh7-community-v502.js',
+              'js/nh7-finalqa-v555.js',
+              'js/nh7-finalqa-v558.js',
+          ]
+          missing_contracts = [x for x in contracts if x not in index]
+
           report = workspace / 'source-parity-report.md'
-          report.write_text(
-              '# Next 3 source parity report\n\n'
-              f'- Published Android baseline: `baseline/android-2.5.0-25002-published`\n'
-              f'- Working branch: `next/3.0.0`\n'
-              f'- Identical: **{len(identical)}**\n'
-              f'- Different: **{len(different)}**\n'
-              f'- Payload-only: **{len(payload_only)}**\n\n'
-              '## Different\n' + ''.join(f'- `{x}`\n' for x in different) +
-              '\n## Payload-only\n' + ''.join(f'- `{x}`\n' for x in payload_only),
-              encoding='utf-8'
-          )
+          lines = [
+              '# Next 3 source parity guard', '',
+              '- Published Android baseline: `baseline/android-2.5.0-25002-published`',
+              '- Working branch: `next/3.0.0`',
+              f'- Identical: **{len(identical)}**',
+              f'- Expected differences present: **{len(actual & expected)} / {len(expected)}**',
+              f'- Unexpected differences: **{len(unexpected)}**',
+              f'- Payload-only/missing canonical files: **{len(payload_only)}**',
+              f'- Missing canonical index contracts: **{len(missing_contracts)}**', '',
+              '## Approved intentional differences'
+          ]
+          for item in sorted(expected):
+              lines.append(f'- `{item}` — {expected_differences[item]}')
+          if unexpected:
+              lines += ['', '## Unexpected differences'] + [f'- `{x}`' for x in unexpected]
+          if payload_only:
+              lines += ['', '## Missing canonical files'] + [f'- `{x}`' for x in payload_only]
+          if missing_contracts:
+              lines += ['', '## Missing index contracts'] + [f'- `{x}`' for x in missing_contracts]
+          report.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+
+          if payload_only:
+              raise SystemExit('Source parity failed: published payload files are missing from canonical source')
+          if unexpected:
+              raise SystemExit('Source parity failed: unexpected source differences detected')
+          if missing_expected:
+              raise SystemExit('Source parity failed: approved difference set changed unexpectedly: ' + ', '.join(missing_expected))
+          if missing_contracts:
+              raise SystemExit('Source parity failed: canonical index contract missing')
           PY
           cat source-parity-report.md >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Verify current canonical Android scroll fix
+      - name: Verify published Android scroll compatibility is preserved
         shell: bash
         run: |
           set -euo pipefail
