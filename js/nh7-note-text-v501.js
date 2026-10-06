@@ -2,7 +2,7 @@
    Repairs legacy whitespace encodings without interpreting arbitrary HTML. */
 (()=>{'use strict';
 if(window.__NH7_NOTE_TEXT_V501__)return;window.__NH7_NOTE_TEXT_V501__=true;
-const VERSION='5.0.3-finalqa';
+const VERSION='5.0.4-linebreak-cache';
 
 function unwrap(value){
   let current=value;
@@ -54,6 +54,12 @@ function repairKnownNotes(){
         const raw=localStorage.getItem(key)||'';let st=null;try{st=JSON.parse(raw)}catch(_){continue}
         if(!st||typeof st!=='object'||typeof st.note!=='string')continue;
         const clean=normalize(st.note);if(clean!==st.note){st.note=clean;localStorage.setItem(key,JSON.stringify(st));changed++}
+        continue;
+      }
+      if(key.startsWith('nh7_school_draft_v468:')){
+        const raw=localStorage.getItem(key)||'';let draft=null;try{draft=JSON.parse(raw)}catch(_){continue}
+        if(!draft||typeof draft!=='object'||typeof draft.text!=='string')continue;
+        const clean=normalize(draft.text);if(clean!==draft.text){draft.text=clean;localStorage.setItem(key,JSON.stringify(draft));changed++}
         continue;
       }
       if(!/^(nh7_sermon_note_|nh7_apo_note_v242:|nh7_gratitude_note_|nh7_note_)/.test(key))continue;
