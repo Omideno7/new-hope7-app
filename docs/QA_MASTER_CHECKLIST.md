@@ -2,6 +2,7 @@
 
 Last updated: 2026-10-06
 Working branch: `batch2/critical-stability-v300`
+Continuity / project management protocol: `docs/PROJECT_CONTROL.md`
 
 Status legend:
 - ⬜ Not started
@@ -90,6 +91,8 @@ Status legend:
 ## Change log
 ### 2026-10-06
 - Created persistent Master Checklist in the repository so progress is not dependent on chat history.
+- Added `docs/PROJECT_CONTROL.md` as the mandatory continuity/handoff protocol for future conversations.
+- Defined ChatGPT as project manager; Codex is implementation-only when intentionally delegated, not project owner.
 - Profile candidate migration and rollback prepared on development branch only.
 - Profile display-name database constraint aligned with UI maximum (160 characters), commit `37bd951b5e296fe93d0405fe8edde6cd53d2ee3e`.
 - Production environments remain untouched by this checklist work.
