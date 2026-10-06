@@ -1,0 +1,93 @@
+name: Next 3 Remaining Diff Classifier
+
+on:
+  push:
+    branches: [next/3.0.0]
+    paths:
+      - '.github/workflows/next-3-remaining-diff-classifier.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  classify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout Next 3
+        uses: actions/checkout@v4
+        with:
+          ref: next/3.0.0
+          path: next
+          persist-credentials: false
+
+      - name: Checkout approved Final QA 2.5
+        uses: actions/checkout@v4
+        with:
+          ref: feature/final-qa-v2500-20261004
+          path: approved
+          persist-credentials: false
+
+      - name: Checkout published Android baseline
+        uses: actions/checkout@v4
+        with:
+          ref: baseline/android-2.5.0-25002-published
+          path: baseline
+          persist-credentials: false
+
+      - name: Classify remaining payload differences
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+
+          root = Path.cwd()
+          nxt = root / 'next'
+          approved = root / 'approved'
+          android = root / 'baseline' / 'android-release-25002' / 'www'
+          targets = [
+            'css/nh7-header-date-v455.css',
+            'index.html',
+            'js/app.js',
+            'js/nh7-admin-community-v502.js',
+            'js/nh7-admin-ready-v439.js',
+            'js/nh7-auto-update-v335.js',
+            'js/nh7-media-player-v500.js',
+            'js/nh7-my-notes-categories-v452.js',
+            'js/nh7-my-notes-v234.js',
+            'js/nh7-note-text-v501.js',
+            'js/nh7-soul-winning-v472.js',
+            'js/nh7-spiritual-plans-v240.js',
+            'js/nh7-spiritual-plans-v412.js',
+            'version.json',
+          ]
+
+          def sha(path):
+            if not path.is_file():
+              return None
+            return hashlib.sha256(path.read_bytes()).hexdigest()
+
+          rows = []
+          for rel in targets:
+            n, q, a = sha(nxt/rel), sha(approved/rel), sha(android/rel)
+            if n == q == a:
+              cls = 'ALL_EQUAL'
+            elif n == q and q != a:
+              cls = 'NEXT_EQ_APPROVED__ANDROID_DIFF'
+            elif n == a and n != q:
+              cls = 'NEXT_EQ_ANDROID__APPROVED_DIFF'
+            elif q == a and n != q:
+              cls = 'APPROVED_EQ_ANDROID__NEXT_NEWER_OR_DRIFT'
+            else:
+              cls = 'ALL_DIFFERENT'
+            rows.append((rel, cls, n, q, a))
+            print(f'{cls}\t{rel}')
+
+          report = ['# Remaining source-diff classifier', '', '| File | Classification |', '|---|---|']
+          for rel, cls, *_ in rows:
+            report.append(f'| `{rel}` | `{cls}` |')
+          (root/'remaining-diff-classifier.md').write_text('\n'.join(report)+'\n', encoding='utf-8')
+          PY
+          cat remaining-diff-classifier.md >> "$GITHUB_STEP_SUMMARY"
