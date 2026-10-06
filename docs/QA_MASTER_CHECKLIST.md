@@ -11,6 +11,16 @@ Status legend:
 - ✅ Tested/verified
 - 🚀 Included in approved release
 
+## Progress summary
+- Total tracked items: 55
+- 🧪 Code/fix ready, awaiting QA: 15
+- 🟡 In progress / implementation or review still needed: 25
+- ⬜ Not started / release-stage only: 15
+- ✅ Fully verified on target devices/backends: 0
+- 🚀 Included in approved release: 0
+
+> Count-based snapshot only; items differ significantly in engineering effort. A task is not counted as fully complete until its required real-device/backend QA is done.
+
 ## A. Critical stability and data safety
 - 🧪 Notes / School Assignment line-break normalization — client fixes committed; final device regression QA pending.
 - 🧪 Calendar freeze / lock guard — fix prepared; final device regression QA pending.
@@ -28,8 +38,8 @@ Status legend:
 - 🧪 Profile display-name UI/schema limit aligned at 160 characters.
 
 ## C. Search / Inbox
-- 🟡 Global Search — notes support exists; Bible/audio and navigation behavior require final QA/completion.
-- ⬜ Inbox cleanup — remove developer-facing sentence, improve layout, verify exact sent timestamp.
+- 🧪 Global Search — current module searches Bible, Saved Verses, Notes and Audio; Bible results deep-navigate and Audio results hand off to the player. Real-device regression QA pending.
+- 🧪 Inbox cleanup — current code has no user-facing developer/OneSignal implementation sentence, has redesigned cards/tooling, and shows exact notification timestamps in message detail. Real-device/cloud-delivery QA pending.
 
 ## D. Audio player / offline
 - 🟡 Player performance and start latency.
@@ -95,4 +105,7 @@ Status legend:
 - Defined ChatGPT as project manager; Codex is implementation-only when intentionally delegated, not project owner.
 - Profile candidate migration and rollback prepared on development branch only.
 - Profile display-name database constraint aligned with UI maximum (160 characters), commit `37bd951b5e296fe93d0405fe8edde6cd53d2ee3e`.
+- Verified current Global Search module covers Bible + Saved Verses + Notes + Audio and provides direct result navigation/handoff; moved to 🧪.
+- Verified current Inbox implementation has redesigned cards, cloud refresh/receipts, no developer-facing OneSignal sentence, and exact timestamp rendering; moved to 🧪.
+- Added count-based progress summary for persistent status reporting.
 - Production environments remain untouched by this checklist work.
