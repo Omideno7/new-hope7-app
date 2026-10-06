@@ -1,6 +1,6 @@
 /* New Hope 7 v2.3.4 — unified My Notes for Bible, audio and app sections */
 (()=>{'use strict';
-const VERSION='2.3.4';
+const VERSION='2.3.6-test53';
 const META_PREFIX='nh7_my_note_meta_v234_';
 const SESSION_KEY='nh7_user_session_v170';
 const SUPABASE_URL='https://gpzcwffxnddhaeaogdyo.supabase.co';
@@ -22,7 +22,7 @@ function readMeta(storageKey){return safeJson(localStorage.getItem(metaKey(stora
 function saveMeta(storageKey,meta){localStorage.setItem(metaKey(storageKey),JSON.stringify(Object.assign({},readMeta(storageKey),meta,{storageKey,updatedAt:new Date().toISOString()})))}
 function deleteMeta(storageKey){localStorage.removeItem(metaKey(storageKey))}
 function historyLocation(){const s=history.state||{};return{route:String(s.route||''),params:s.params&&typeof s.params==='object'?JSON.parse(JSON.stringify(s.params)):{} }}
-function normalizedText(value){const text=window.NH7NoteTextV501?.normalize?.(value)??String(value||'');return String(text).trim()}
+function normalizedText(value){let current=value;for(let i=0;i<4;i++){if(current&&typeof current==='object'&&!Array.isArray(current)&&Object.prototype.hasOwnProperty.call(current,'value')){current=current.value;continue}if(typeof current!=='string')break;const raw=current.trim();if(!(raw.startsWith('{')&&raw.endsWith('}')))break;let parsed=null;try{parsed=JSON.parse(raw)}catch(_){break}if(parsed&&typeof parsed==='object'&&!Array.isArray(parsed)&&Object.prototype.hasOwnProperty.call(parsed,'value')){current=parsed.value;continue}break}const text=window.NH7NoteTextV501?.normalize?.(current)??String(current||'');return String(text).trim()}
 function decodeKey(value){try{return decodeURIComponent(String(value||''))}catch(_){return String(value||'')}}
 
 function inferVerseLocation(storageKey){
@@ -57,6 +57,7 @@ function noteTitle(kind,storageKey,meta){
     return t('یادداشت پیام صوتی','Audio message note','Bilješka uz audio poruku');
   }
   if(kind==='gratitude')return `${t('یادداشت شکرگزاری روز','Gratitude note — day','Bilješka zahvalnosti — dan')} ${storageKey.replace(/^nh7_gratitude_note_/,'')}`;
+  if(kind==='plan')return `${t('یادداشت پلن روحانی — روز','Spiritual plan note — day','Bilješka duhovnog plana — dan')} ${meta.dayNumber||''}`.trim();
   if(kind==='generic'&&storageKey.startsWith('nh7_note_school-'))return t('یادداشت درس مدرسه','School lesson note','Bilješka školske lekcije');
   return t('یادداشت من','My note','Moja bilješka');
 }
@@ -64,6 +65,7 @@ function typeLabel(kind){
   if(kind==='verse')return t('آیه','Verse','Stih');
   if(kind==='audio')return t('فایل صوتی','Audio','Audio');
   if(kind==='gratitude')return t('شکرگزاری','Gratitude','Zahvalnost');
+  if(kind==='plan')return t('پلن روحانی','Spiritual plan','Duhovni plan');
   return t('یادداشت','Note','Bilješka');
 }
 function collectNotes(){
@@ -92,6 +94,18 @@ function collectNotes(){
       else location=inferGenericLocation(storageKey);
     }
     notes.push({storageKey,kind,text,title:noteTitle(kind,storageKey,meta),meta,stateValue,route:location.route,params:location.params||{},updatedAt:meta.updatedAt||''});
+  }
+  // Spiritual-plan notes are stored inside one compact per-user JSON document; expose them as virtual My Notes entries.
+  for(let i=0;i<localStorage.length;i++){
+    const planStorageKey=localStorage.key(i);if(!planStorageKey||!planStorageKey.startsWith('nh7_spiritual_plans_v240:'))continue;
+    const data=safeJson(localStorage.getItem(planStorageKey),{});
+    for(const [planId,plan] of Object.entries(data?.plans||{})){
+      for(const [dayKey,day] of Object.entries(plan?.days||{})){
+        const text=normalizedText(day?.note);if(!text)continue;const dayNumber=Number(dayKey)||1;
+        const storageKey='nh7_plan_note|'+encodeURIComponent(planStorageKey)+'|'+encodeURIComponent(planId)+'|'+dayNumber;
+        notes.push({storageKey,kind:'plan',text,title:noteTitle('plan',storageKey,{dayNumber}),meta:{kind:'plan',planId,dayNumber,planStorageKey},stateValue:day,route:'plans',params:{tab:'spiritual',plan:planId,day:dayNumber,start:1},updatedAt:day?.updatedAt||''});
+      }
+    }
   }
   return notes.sort((a,b)=>String(b.updatedAt).localeCompare(String(a.updatedAt))||b.storageKey.localeCompare(a.storageKey));
 }
@@ -127,6 +141,7 @@ function scrollToPending(){
   if(pendingTarget.kind==='verse')target=document.getElementById('v-'+pendingTarget.verse)||document.querySelector(`[data-verse-key="${CSS.escape(pendingTarget.storageKey)}"]`);
   if(pendingTarget.kind==='audio')target=document.querySelector(`[data-sermon-card="${CSS.escape(pendingTarget.id)}"],[data-sermon-play="${CSS.escape(pendingTarget.id)}"]`);
   if(pendingTarget.kind==='generic'&&pendingTarget.lesson)target=document.querySelector('.school-assignment,textarea#schoolAssignmentAnswer');
+  if(pendingTarget.kind==='plan')target=document.querySelector('#nh7PlanNote');
   if(target){target.scrollIntoView({behavior:'smooth',block:'center'});target.classList.add('nh7-note-source-focus-v234');setTimeout(()=>target.classList.remove('nh7-note-source-focus-v234'),2400);pendingTarget=null}
 }
 function openNote(storageKey){
@@ -136,6 +151,7 @@ function openNote(storageKey){
   pendingTarget={kind:note.kind,storageKey};
   if(note.kind==='verse')pendingTarget.verse=Number(meta.verse||note.params?.verse||inferVerseLocation(storageKey).verse||0);
   if(note.kind==='audio')pendingTarget.id=storageKey.replace(/^nh7_sermon_note_/,'');
+  if(note.kind==='plan')pendingTarget.planId=note.meta?.planId||'';
   if(note.kind==='generic'&&storageKey.startsWith('nh7_note_school-'))pendingTarget.lesson=storageKey.replace(/^nh7_note_school-/,'');
   routeTo(note.route||'home',note.params||{});
   setTimeout(scrollToPending,350);setTimeout(scrollToPending,900);setTimeout(scrollToPending,1800);
@@ -164,6 +180,12 @@ async function deleteNote(storageKey){
   const note=collectNotes().find(n=>n.storageKey===storageKey);if(!note)return;
   if(!confirm(t('این یادداشت پاک شود؟','Delete this note?','Obrisati ovu bilješku?')))return;
   if(note.kind==='apocrypha'){localStorage.removeItem(storageKey);deleteMeta(storageKey);renderNotesPanel();return;}
+  if(note.kind==='plan'){
+    const meta=note.meta||{},data=safeJson(localStorage.getItem(meta.planStorageKey),{}),day=data?.plans?.[meta.planId]?.days?.[String(meta.dayNumber)];
+    if(day){day.note='';day.updatedAt=new Date().toISOString();localStorage.setItem(meta.planStorageKey,JSON.stringify(data));}
+    try{await cloudRequest(`spiritual_plan_progress?plan_id=eq.${encodeURIComponent(meta.planId||'')}&day_number=eq.${encodeURIComponent(meta.dayNumber||1)}`,{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify({reflection:'',updated_at:new Date().toISOString()})})}catch(_){}
+    window.dispatchEvent(new CustomEvent('nh7-spiritual-notes-updated-v553'));renderNotesPanel();return;
+  }
   if(note.kind==='verse')await syncVerseState(note);else{
     localStorage.removeItem(storageKey);
     const cloudKey=storageKey.replace(/^nh7_/,'');
@@ -213,6 +235,9 @@ observer.observe(document.documentElement,{childList:true,subtree:true});
 window.addEventListener('storage',scheduleRender);
 window.addEventListener('nh7-reader-data452',scheduleRender);
 window.addEventListener('nh7-note-text-repaired-v501',scheduleRender);
+window.addEventListener('nh7-account-data-restored-v551',scheduleRender);
+window.addEventListener('nh7-account-data-restored-v553',scheduleRender);
+window.addEventListener('nh7-spiritual-notes-updated-v553',scheduleRender);
 window.addEventListener('popstate',()=>setTimeout(scrollToPending,250));
 scheduleRender();
 window.NH7MyNotesV234={VERSION,collectNotes,renderNotesPanel,openNote,deleteNote};

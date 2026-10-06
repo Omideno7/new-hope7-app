@@ -1,7 +1,9 @@
 import {mountMoreReviewV469} from './nh7-store-review-v469.js?v=4.6.9';
 import {createSchoolDraftsV468} from './nh7-school-drafts-v468.js?v=4.6.8';
 import {createSoulWinningV472} from './nh7-soul-winning-v472.js?v=4.7.2';
-import {createBibleKeywordsV451} from './nh7-bible-keywords-v451.js?v=4.5.1';
+import {createBibleKeywordsV451} from './nh7-bible-keywords-v451.js?v=4.5.2-global-search';
+import {createGlobalSearchV540} from './nh7-global-search-v540.js?v=5.4.2-test4';
+import {createExamReviewV540} from './nh7-exam-review-v540.js?v=5.4.0';
 // NH7 v2.2.3 targeted update: Bible navigation, protected content, reliable analytics, and secure PDF viewer.
 const $ = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
@@ -20,7 +22,7 @@ const state = {
 
 
 const schoolDraftsV468=createSchoolDraftsV468({account:()=>isAccountLoggedIn()?authSession()?.user:null,lang:()=>state.lang});
-const soulWinningV472=createSoulWinningV472({mount:()=>view,lang:()=>state.lang,navigate:(route,params,replace)=>navigate(route,params,replace)});
+const soulWinningV472=createSoulWinningV472({mount:()=>view,lang:()=>state.lang,navigate:(route,params,replace)=>navigate(route,params,replace),session:()=>authSession(),accountEmail:()=>accountCloudEmail(),saveProgress:(key,value)=>saveProgressCloud(key,value),cloudFetch:(path,options)=>cloudFetch(path,options)});
 
 const OFFLINE_MEDIA_PREFIX='nh7_offline_media_';
 const NATIVE_OFFLINE_DIR='offline_media';
@@ -56,7 +58,53 @@ async function refreshOfflineButtons(){const bs=$$('[data-offline-download]');aw
 async function resolveOfflineMediaUrl(url){if(!url||!isNativeCapacitor())return url;const st=await offlineMediaStatus(url);if(!st.cached)return url;const m=offlineMeta(url);let uri=m?.uri||st.uri||'';if(!uri&&m?.path)uri=await nativeFileUri(m.path);return uri?playableNativeUri(uri):url}
 async function clearDownloadedMedia(){if(isNativeCapacitor()){const F=capacitorPlugin('Filesystem');if(F)try{await F.rmdir({directory:'DATA',path:NATIVE_OFFLINE_DIR,recursive:true})}catch(e){}const ks=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith(OFFLINE_MEDIA_PREFIX))ks.push(k)}ks.forEach(k=>localStorage.removeItem(k));return}await swMessage('CLEAR_MEDIA')}
 async function prepareCoreOffline(button){const old=button?.textContent||'';try{if(button){button.disabled=true;button.textContent=state.lang==='fa'?'در حال آماده‌سازی…':state.lang==='hr'?'Priprema…':'Preparing…'}if(isNativeCapacitor()){localStorage.setItem('nh7_offline_core_ready',new Date().toISOString());alert(state.lang==='fa'?'محتوای اصلی داخل برنامه نصب شده و برای استفاده آفلاین آماده است.':state.lang==='hr'?'Osnovni sadržaj ugrađen je u aplikaciju i spreman je za offline korištenje.':'Core content is bundled in the app and ready offline.')}else{const r=await swMessage('CACHE_CORE');localStorage.setItem('nh7_offline_core_ready',new Date().toISOString());alert(state.lang==='fa'?`محتوای اصلی برای استفاده آفلاین آماده شد. (${r.cached||0} فایل)`:state.lang==='hr'?'Osnovni sadržaj je spreman za offline korištenje.':'Core content is ready for offline use.')}}catch(e){console.warn(e);alert(state.lang==='fa'?'آماده‌سازی آفلاین کامل نشد. دوباره تلاش کنید.':'Offline preparation did not finish. Please try again.')}finally{if(button){button.disabled=false;button.textContent=old}}}
-async function offlineStorageSummary(){if(isNativeCapacitor()){let count=0,bytes=0;for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!k?.startsWith(OFFLINE_MEDIA_PREFIX))continue;try{const m=JSON.parse(localStorage.getItem(k)||'{}');if(m.native){count++;bytes+=Number(m.bytes||0)}}catch(e){}}const mb=(bytes/1048576).toFixed(1);return state.lang==='fa'?`${count} فایل رسانه‌ای (${mb} مگابایت) روی دستگاه ذخیره شده است.`:state.lang==='hr'?`${count} medijskih datoteka (${mb} MB) spremljeno je na uređaju.`:`${count} media files (${mb} MB) are stored on this device.`}try{const r=await swMessage('OFFLINE_STATUS');const mb=(Number(r.mediaBytes||0)/1048576).toFixed(1);return state.lang==='fa'?`${r.coreCount||0} فایل اصلی و ${r.mediaCount||0} فایل رسانه‌ای (${mb} مگابایت) آماده آفلاین است.`:state.lang==='hr'?`${r.coreCount||0} osnovnih i ${r.mediaCount||0} medijskih datoteka (${mb} MB) spremljeno je offline.`:`${r.coreCount||0} core files and ${r.mediaCount||0} media files (${mb} MB) are available offline.`}catch(e){return state.lang==='fa'?'وضعیت فضای آفلاین در دسترس نیست.':'Offline storage status unavailable.'}}
+function classicAudioOfflineSummary(){
+  const seen=new Set();let count=0,bytes=0;
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(!k||(!k.startsWith('nh7_audio_media_v397:')&&!k.startsWith('nh7_audio_media_v396:')))continue;
+    try{
+      const m=JSON.parse(localStorage.getItem(k)||'{}');
+      const id=String(m.id||k.replace(/^nh7_audio_media_v39[67]:/,''));
+      if(seen.has(id))continue;
+      seen.add(id);
+      if(m.native||m.web){count++;bytes+=Math.max(0,Number(m.bytes||0))}
+    }catch(e){}
+  }
+  return {count,bytes}
+}
+async function offlineStorageSummary(){
+  const classic=classicAudioOfflineSummary();
+  if(isNativeCapacitor()){
+    let count=classic.count,bytes=classic.bytes;
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i);
+      if(!k?.startsWith(OFFLINE_MEDIA_PREFIX))continue;
+      try{const m=JSON.parse(localStorage.getItem(k)||'{}');if(m.native){count++;bytes+=Math.max(0,Number(m.bytes||0))}}catch(e){}
+    }
+    const mb=(bytes/1048576).toFixed(1);
+    if(state.lang==='fa')return count+' فایل رسانه‌ای ('+mb+' مگابایت) روی دستگاه ذخیره شده است.';
+    if(state.lang==='hr')return count+' medijskih datoteka ('+mb+' MB) spremljeno je na uređaju.';
+    return count+' media files ('+mb+' MB) are stored on this device.'
+  }
+  try{
+    const r=await swMessage('OFFLINE_STATUS');
+    const mediaCount=Number(r.mediaCount||0)+classic.count;
+    const mediaBytes=Number(r.mediaBytes||0)+classic.bytes;
+    const mb=(mediaBytes/1048576).toFixed(1);
+    if(state.lang==='fa')return Number(r.coreCount||0)+' فایل اصلی و '+mediaCount+' فایل رسانه‌ای ('+mb+' مگابایت) آماده آفلاین است.';
+    if(state.lang==='hr')return Number(r.coreCount||0)+' osnovnih i '+mediaCount+' medijskih datoteka ('+mb+' MB) spremljeno je offline.';
+    return Number(r.coreCount||0)+' core files and '+mediaCount+' media files ('+mb+' MB) are available offline.'
+  }catch(e){
+    if(classic.count){
+      const mb=(classic.bytes/1048576).toFixed(1);
+      if(state.lang==='fa')return classic.count+' فایل صوتی ('+mb+' مگابایت) آفلاین ذخیره شده است.';
+      if(state.lang==='hr')return classic.count+' audio datoteka ('+mb+' MB) spremljeno je offline.';
+      return classic.count+' audio files ('+mb+' MB) are stored offline.'
+    }
+    return state.lang==='fa'?'وضعیت فضای آفلاین در دسترس نیست.':state.lang==='hr'?'Status offline pohrane nije dostupan.':'Offline storage status unavailable.'
+  }
+}
 
 const sermonPlayerState={audio:null,current:null,saveTimer:null,cloudTimer:null,analyticsSessionId:'',analyticsTotalSeconds:0,analyticsLastFlushedSeconds:0,analyticsLastWallAt:0,analyticsSending:false,analyticsSeekCount:0,analyticsMaxRate:1,analyticsStartedPosition:0};
 function sermonProgressKey(id){return 'nh7_sermon_progress_'+String(id)}
@@ -268,9 +316,9 @@ Object.keys(MEETING_T).forEach(lang=>Object.assign(T[lang], MEETING_T[lang]));
 
 
 const INBOX_T = {
-  en:{inbox:'Inbox',unread:'Unread',markAllRead:'Mark all as read',noInboxMessages:'No messages yet.',notificationInbox:'Notification Inbox',readMessage:'Read message',newMessage:'New message',messageRead:'Message marked as read',dailyWordReminder:'Daily Word is ready',faithReminder:'Faith proclamation is ready',juiceReminder:'Daily Juice is ready',gratitudeReminder:'Gratitude reminder',morningMeetingReminder:'Morning prayer meeting reminder',sundayMeetingReminder:'Sunday church meeting reminder',notificationAutoNote:'Automatic push sending uses OneSignal + Supabase Edge Function. This inbox also keeps messages inside the app.',deleteMessage:'Delete message',deleteAllInbox:'Delete all visible messages',cleanInbox:'Clean old mixed-language messages',deleteConfirm:'Delete this message?',deleteAllConfirm:'Delete all visible inbox messages?'},
-  fa:{inbox:'صندوق ورودی',unread:'خوانده‌نشده',markAllRead:'علامت‌گذاری همه به‌عنوان خوانده‌شده',noInboxMessages:'هنوز پیامی دریافت نشده است.',notificationInbox:'صندوق ورودی اعلان‌ها',readMessage:'خواندن پیام',newMessage:'پیام جدید',messageRead:'پیام خوانده شد',dailyWordReminder:'کلام روزانه آماده است',faithReminder:'اعلان ایمان آماده است',juiceReminder:'آبمیوه روزانه آماده است',gratitudeReminder:'یادآوری شکرگزاری',morningMeetingReminder:'یادآوری جلسه دعای صبحگاهی',sundayMeetingReminder:'یادآوری جلسه کلیسای یکشنبه',notificationAutoNote:'ارسال خودکار اعلان‌ها با OneSignal و Supabase Edge Function انجام می‌شود. این صندوق، پیام‌ها را داخل اپ هم نگه می‌دارد.',deleteMessage:'پاک کردن پیام',deleteAllInbox:'پاک کردن همه پیام‌های نمایان',cleanInbox:'پاک‌سازی پیام‌های زبان دیگر',deleteConfirm:'این پیام پاک شود؟',deleteAllConfirm:'همه پیام‌های نمایان صندوق ورودی پاک شوند؟'},
-  hr:{inbox:'Ulazna pošta',unread:'Nepročitano',markAllRead:'Označi sve kao pročitano',noInboxMessages:'Još nema poruka.',notificationInbox:'Ulazna pošta obavijesti',readMessage:'Pročitaj poruku',newMessage:'Nova poruka',messageRead:'Poruka je pročitana',dailyWordReminder:'Dnevna Riječ je spremna',faithReminder:'Proglas vjere je spreman',juiceReminder:'Dnevni sok je spreman',gratitudeReminder:'Podsjetnik zahvalnosti',morningMeetingReminder:'Podsjetnik za jutarnju molitvu',sundayMeetingReminder:'Podsjetnik za nedjeljni sastanak',notificationAutoNote:'Automatsko slanje push obavijesti koristi OneSignal + Supabase Edge Function. Ova ulazna pošta čuva poruke i u aplikaciji.',deleteMessage:'Obriši poruku',deleteAllInbox:'Obriši sve vidljive poruke',cleanInbox:'Očisti stare poruke na drugim jezicima',deleteConfirm:'Obrisati ovu poruku?',deleteAllConfirm:'Obrisati sve vidljive poruke iz ulazne pošte?'}
+  en:{inbox:'Inbox',unread:'Unread',markAllRead:'Mark all as read',noInboxMessages:'No messages yet.',notificationInbox:'Notification Inbox',readMessage:'Read message',newMessage:'New message',messageRead:'Message marked as read',dailyWordReminder:'Daily Word is ready',faithReminder:'Faith proclamation is ready',juiceReminder:'Daily Juice is ready',gratitudeReminder:'Gratitude reminder',morningMeetingReminder:'Morning prayer meeting reminder',sundayMeetingReminder:'Sunday church meeting reminder',refreshInbox:'Refresh',messageTime:'Notification time',deleteMessage:'Delete message',deleteAllInbox:'Delete all visible messages',cleanInbox:'Clean old mixed-language messages',deleteConfirm:'Delete this message?',deleteAllConfirm:'Delete all visible inbox messages?'},
+  fa:{inbox:'صندوق ورودی',unread:'خوانده‌نشده',markAllRead:'علامت‌گذاری همه به‌عنوان خوانده‌شده',noInboxMessages:'هنوز پیامی دریافت نشده است.',notificationInbox:'صندوق ورودی اعلان‌ها',readMessage:'خواندن پیام',newMessage:'پیام جدید',messageRead:'پیام خوانده شد',dailyWordReminder:'کلام روزانه آماده است',faithReminder:'اعلان ایمان آماده است',juiceReminder:'آبمیوه روزانه آماده است',gratitudeReminder:'یادآوری شکرگزاری',morningMeetingReminder:'یادآوری جلسه دعای صبحگاهی',sundayMeetingReminder:'یادآوری جلسه کلیسای یکشنبه',refreshInbox:'تازه‌سازی',messageTime:'زمان اعلان',deleteMessage:'پاک کردن پیام',deleteAllInbox:'پاک کردن همه پیام‌های نمایان',cleanInbox:'پاک‌سازی پیام‌های زبان دیگر',deleteConfirm:'این پیام پاک شود؟',deleteAllConfirm:'همه پیام‌های نمایان صندوق ورودی پاک شوند؟'},
+  hr:{inbox:'Ulazna pošta',unread:'Nepročitano',markAllRead:'Označi sve kao pročitano',noInboxMessages:'Još nema poruka.',notificationInbox:'Ulazna pošta obavijesti',readMessage:'Pročitaj poruku',newMessage:'Nova poruka',messageRead:'Poruka je pročitana',dailyWordReminder:'Dnevna Riječ je spremna',faithReminder:'Proglas vjere je spreman',juiceReminder:'Dnevni sok je spreman',gratitudeReminder:'Podsjetnik zahvalnosti',morningMeetingReminder:'Podsjetnik za jutarnju molitvu',sundayMeetingReminder:'Podsjetnik za nedjeljni sastanak',refreshInbox:'Osvježi',messageTime:'Vrijeme obavijesti',deleteMessage:'Obriši poruku',deleteAllInbox:'Obriši sve vidljive poruke',cleanInbox:'Očisti stare poruke na drugim jezicima',deleteConfirm:'Obrisati ovu poruku?',deleteAllConfirm:'Obrisati sve vidljive poruke iz ulazne pošte?'}
 };
 Object.keys(INBOX_T).forEach(lang=>Object.assign(T[lang], INBOX_T[lang]));
 
@@ -301,6 +349,9 @@ Object.assign(T.hr,{soulWinning:'Osvajanje duša'});
 Object.assign(T.en,{schoolExistingLogin:'Sign in to school',schoolNewRegistration:'New registration',schoolLoginHelp:'Already registered? Sign in with the same email and password on any device.',sermonNoteButton:'Notes'});
 Object.assign(T.fa,{schoolExistingLogin:'ورود به مدرسه',schoolNewRegistration:'ثبت‌نام جدید',schoolLoginHelp:'اگر قبلاً ثبت‌نام کرده‌اید، در هر دستگاه با همان ایمیل و رمز عبور وارد شوید.',sermonNoteButton:'یادداشت'});
 Object.assign(T.hr,{schoolExistingLogin:'Prijava u školu',schoolNewRegistration:'Nova registracija',schoolLoginHelp:'Ako ste se već registrirali, prijavite se istim emailom i lozinkom na bilo kojem uređaju.',sermonNoteButton:'Bilješke'});
+Object.assign(T.en,{testimonies:'Testimonies',prayerRequest:'Prayer Request',profile:'My Profile'});
+Object.assign(T.fa,{testimonies:'شهادت‌ها',prayerRequest:'درخواست دعا',profile:'پروفایل من'});
+Object.assign(T.hr,{testimonies:'Svjedočanstva',prayerRequest:'Molitveni zahtjev',profile:'Moj profil'});
 
 const NEW_BIRTH_VIDEOS = [
   'https://youtu.be/u-G6r7rYNEE?is=8kokBIcdqkvQGayt',
@@ -326,7 +377,7 @@ function isLegacySchoolLoggedIn(){return false}
 function isSchoolIdentityAvailable(){return isAccountLoggedIn()}
 
 function authSession(){ try{return JSON.parse(localStorage.getItem(AUTH_SESSION_KEY)||'null')}catch(e){return null} }
-function saveAuthSession(v){ if(v){localStorage.setItem(AUTH_SESSION_KEY,JSON.stringify(v));localStorage.removeItem(EXPLICIT_LOGOUT_KEY);}else localStorage.removeItem(AUTH_SESSION_KEY); }
+function saveAuthSession(v){ if(v){localStorage.setItem(AUTH_SESSION_KEY,JSON.stringify(v));localStorage.removeItem(EXPLICIT_LOGOUT_KEY);}else localStorage.removeItem(AUTH_SESSION_KEY); setTimeout(()=>syncHeaderProfileV503({force:true}).catch(()=>{}),0); }
 function isExplicitlyLoggedOut(){ return localStorage.getItem(EXPLICIT_LOGOUT_KEY)==='1'; }
 function isAccountLoggedIn(){ const x=authSession(); return !!(x&&x.access_token&&!isExplicitlyLoggedOut()); }
 async function authApi(path,options={}){
@@ -359,7 +410,19 @@ async function invokeEdgeFunction(name,payload={}){
 
 async function refreshUserSession(){
   const old=authSession(); if(!old?.refresh_token)return null;
-  try{const d=await authApi('token?grant_type=refresh_token',{method:'POST',body:JSON.stringify({refresh_token:old.refresh_token})});saveAuthSession(d);return d}catch(e){saveAuthSession(null);return null}
+  try{
+    const d=await authApi('token?grant_type=refresh_token',{method:'POST',body:JSON.stringify({refresh_token:old.refresh_token})});
+    const merged=Object.assign({},old,d,{user:d?.user||old.user});
+    saveAuthSession(merged);return merged;
+  }catch(e){
+    // Preserve the saved sign-in only for transient transport/server failures.
+    // A definitive Auth rejection means the refresh token is no longer usable.
+    const status=Number(e?.status||0),code=String(e?.code||'').toLowerCase(),message=String(e?.message||'').toLowerCase();
+    const rejected=status===400||status===401||/refresh.?token.*(invalid|expired|not.?found)|invalid.?refresh|session.*(invalid|expired)/.test(code+' '+message);
+    if(rejected)saveAuthSession(null);
+    else console.warn('Session refresh failed transiently; preserving saved session',e);
+    return null;
+  }
 }
 function authEmail(){ return String(authSession()?.user?.email||'').trim().toLowerCase(); }
 
@@ -417,7 +480,7 @@ function accountLoginError(error){
     :state.lang==='hr'
       ?'E-mail računa još nije potvrđen. Provjerite poruku za potvrdu i mapu Spam/Junk.'
       :'This account email is not confirmed yet. Check the confirmation email and Spam/Junk.';
-  if(!navigator.onLine||message==='failed to fetch')return state.lang==='fa'?'اینترنت در دسترس نیست. اتصال را بررسی کنید.':state.lang==='hr'?'Nema internetske veze. Provjerite vezu.':'No internet connection. Check your connection.';
+  if(!navigator.onLine||/failed to fetch|load failed|network|abort|timeout/.test(message))return state.lang==='fa'?'اینترنت در دسترس نیست. اتصال را بررسی کنید.':state.lang==='hr'?'Nema internetske veze. Provjerite vezu.':'No internet connection. Check your connection.';
   return String(error?.message||tr('loginFailed'));
 }
 
@@ -450,9 +513,9 @@ async function cloudFetch(path, options={}){
     if((res.status===401||txt.toLowerCase().includes('jwt expired')) && await refreshUserSession()){
       res=await fetch(SUPABASE_CONFIG.url + '/rest/v1/' + path, Object.assign({}, options, {headers:makeHeaders()}));
       if(res.ok){if(res.status===204)return null;return res.json().catch(()=>null)}
-      throw new Error(await res.text().catch(()=>res.statusText));
+      throw Object.assign(new Error(await res.text().catch(()=>res.statusText)),{status:res.status});
     }
-    throw new Error(txt || res.statusText);
+    throw Object.assign(new Error(txt || res.statusText),{status:res.status});
   }
   if(res.status===204) return null;
   return res.json().catch(()=>null);
@@ -461,6 +524,113 @@ async function cloudFetch(path, options={}){
 async function cloudRpc(name, payload={}){
   return cloudFetch('rpc/'+name, {method:'POST', body:JSON.stringify(payload)});
 }
+let nh7HeaderProfileObjectUrlV503='',nh7HeaderProfileUidV503='',nh7HeaderProfilePathV503='';
+function nh7HeaderProfileCacheKeyV503(uid){return 'nh7_profile_header_v503:'+String(uid||'')}
+function nh7ReadHeaderProfileCacheV503(uid){
+  try{
+    const row=JSON.parse(localStorage.getItem(nh7HeaderProfileCacheKeyV503(uid))||'null');
+    return row&&typeof row==='object'&&typeof row.src==='string'&&row.src.startsWith('data:image/')?row:null;
+  }catch(_){return null}
+}
+function nh7WriteHeaderProfileCacheV503(uid,src,path='',name=''){
+  if(!uid||typeof src!=='string'||!src.startsWith('data:image/'))return;
+  try{localStorage.setItem(nh7HeaderProfileCacheKeyV503(uid),JSON.stringify({src,path:String(path||''),name:String(name||''),at:Date.now()}))}catch(_){}
+}
+function nh7ClearHeaderProfileCacheV503(uid){try{localStorage.removeItem(nh7HeaderProfileCacheKeyV503(uid))}catch(_){}}
+
+function paintHeaderProfileV503(src='',name=''){
+  const btn=$('#profileHeaderBtn'),img=$('#profileHeaderImage');if(!btn||!img)return;
+  if(!isAccountLoggedIn()){btn.hidden=true;btn.classList.add('hidden');img.hidden=true;img.removeAttribute('src');btn.querySelector('span')?.removeAttribute('hidden');return}
+  btn.hidden=false;btn.classList.remove('hidden');btn.title=name||tr('profile')||'Profile';btn.setAttribute('aria-label',name||tr('profile')||'Profile');
+  if(src){img.src=src;img.hidden=false;btn.querySelector('span')?.setAttribute('hidden','')}
+  else{img.hidden=true;img.removeAttribute('src');btn.querySelector('span')?.removeAttribute('hidden')}
+}
+async function syncHeaderProfileV503(opts={}){
+  const btn=$('#profileHeaderBtn');if(!btn)return;
+  if(!isAccountLoggedIn()){nh7HeaderProfileUidV503='';nh7HeaderProfilePathV503='';if(nh7HeaderProfileObjectUrlV503?.startsWith('blob:'))URL.revokeObjectURL(nh7HeaderProfileObjectUrlV503);nh7HeaderProfileObjectUrlV503='';paintHeaderProfileV503();return}
+  const uid=authSession()?.user?.id||'';if(!uid){paintHeaderProfileV503();return}
+  const cached=nh7ReadHeaderProfileCacheV503(uid);
+  if(!nh7HeaderProfileObjectUrlV503&&cached?.src){
+    nh7HeaderProfileObjectUrlV503=cached.src;
+    nh7HeaderProfilePathV503=String(cached.path||'');
+    nh7HeaderProfileUidV503=uid;
+    paintHeaderProfileV503(cached.src,cached.name||getKnownUserProfile().name||'');
+  }
+  if(opts.src){
+    if(nh7HeaderProfileObjectUrlV503&&nh7HeaderProfileObjectUrlV503!==opts.src&&nh7HeaderProfileObjectUrlV503.startsWith('blob:'))URL.revokeObjectURL(nh7HeaderProfileObjectUrlV503);
+    nh7HeaderProfileObjectUrlV503=String(opts.src);
+    if(opts.path)nh7HeaderProfilePathV503=String(opts.path);
+    const name=opts.name||getKnownUserProfile().name||'';
+    nh7WriteHeaderProfileCacheV503(uid,nh7HeaderProfileObjectUrlV503,nh7HeaderProfilePathV503,name);
+    paintHeaderProfileV503(nh7HeaderProfileObjectUrlV503,name);
+    nh7HeaderProfileUidV503=uid;
+    return
+  }
+  if(!opts.force&&nh7HeaderProfileUidV503===uid){paintHeaderProfileV503(nh7HeaderProfileObjectUrlV503,opts.name||cached?.name||getKnownUserProfile().name||'');return}
+  if(!nh7HeaderProfileObjectUrlV503)paintHeaderProfileV503(cached?.src||'',cached?.name||getKnownUserProfile().name||'');
+  try{
+    const rows=await cloudFetch('nh7_user_profiles_v502?user_id=eq.'+encodeURIComponent(uid)+'&select=display_name,photo_path&limit=1',{method:'GET',cache:'no-store'});
+    const row=Array.isArray(rows)?rows[0]:null,path=String(row?.photo_path||''),name=String(row?.display_name||cached?.name||getKnownUserProfile().name||'');
+    nh7HeaderProfileUidV503=uid;
+    if(path&&(!nh7HeaderProfileObjectUrlV503||path!==nh7HeaderProfilePathV503)){
+      const url=await window.NH7_COMMUNITY_CTX_V502.privateStorageObjectUrl('nh7-profile-photos-v502',path);
+      if(nh7HeaderProfileObjectUrlV503?.startsWith('blob:'))URL.revokeObjectURL(nh7HeaderProfileObjectUrlV503);
+      nh7HeaderProfileObjectUrlV503=url;nh7HeaderProfilePathV503=path;
+    }else if(!path){
+      if(nh7HeaderProfileObjectUrlV503?.startsWith('blob:'))URL.revokeObjectURL(nh7HeaderProfileObjectUrlV503);
+      nh7HeaderProfileObjectUrlV503='';nh7HeaderProfilePathV503='';nh7ClearHeaderProfileCacheV503(uid);
+    }
+    paintHeaderProfileV503(nh7HeaderProfileObjectUrlV503||cached?.src||'',name);
+  }catch(e){
+    console.warn('[NH7 profile header]',e);
+    const fallback=nh7HeaderProfileObjectUrlV503||cached?.src||'';
+    paintHeaderProfileV503(fallback,cached?.name||getKnownUserProfile().name||'');
+  }
+}
+window.NH7_COMMUNITY_CTX_V502={
+  lang:()=>state.lang,
+  html,
+  card,
+  view:()=>view,
+  navigate,
+  isLoggedIn:isAccountLoggedIn,
+  session:authSession,
+  email:authEmail,
+  profileName:()=>getKnownUserProfile().name||'',
+  refreshHeaderProfile:syncHeaderProfileV503,
+  profileHeaderCachedSrc:(uid,path='')=>{
+    const row=nh7ReadHeaderProfileCacheV503(uid);
+    return row&&(!path||!row.path||String(row.path)===String(path))?row.src:'';
+  },
+  cloudFetch,
+  cloudRpc,
+  publicStorageUrl:(bucket,path)=>SUPABASE_CONFIG.url+'/storage/v1/object/public/'+encodeURIComponent(bucket)+'/'+String(path||'').split('/').map(encodeURIComponent).join('/'),
+  storageUpload:async(bucket,path,body,contentType='application/octet-stream',upsert=false)=>{
+    const makeHeaders=()=>({apikey:SUPABASE_CONFIG.key,Authorization:'Bearer '+(authSession()?.access_token||SUPABASE_CONFIG.key),'Content-Type':contentType,'x-upsert':upsert?'true':'false'});
+    const url=SUPABASE_CONFIG.url+'/storage/v1/object/'+encodeURIComponent(bucket)+'/'+String(path||'').split('/').map(encodeURIComponent).join('/');
+    let res=await fetch(url,{method:'POST',headers:makeHeaders(),body});
+    if(!res.ok&&(res.status===401||res.status===403)&&await refreshUserSession())res=await fetch(url,{method:'POST',headers:makeHeaders(),body});
+    if(!res.ok)throw new Error(await res.text().catch(()=>res.statusText));
+    return res.json().catch(()=>({}));
+  },
+  storageRemove:async(bucket,paths)=>{
+    const list=(Array.isArray(paths)?paths:[paths]).filter(Boolean);if(!list.length)return{};
+    const makeHeaders=()=>({apikey:SUPABASE_CONFIG.key,Authorization:'Bearer '+(authSession()?.access_token||SUPABASE_CONFIG.key),'Content-Type':'application/json'});
+    const url=SUPABASE_CONFIG.url+'/storage/v1/object/'+encodeURIComponent(bucket);
+    let res=await fetch(url,{method:'DELETE',headers:makeHeaders(),body:JSON.stringify({prefixes:list})});
+    if(!res.ok&&(res.status===401||res.status===403)&&await refreshUserSession())res=await fetch(url,{method:'DELETE',headers:makeHeaders(),body:JSON.stringify({prefixes:list})});
+    if(!res.ok)throw new Error(await res.text().catch(()=>res.statusText));
+    return res.json().catch(()=>({}));
+  },
+  privateStorageObjectUrl:async(bucket,path)=>{
+    const makeHeaders=()=>({apikey:SUPABASE_CONFIG.key,Authorization:'Bearer '+(authSession()?.access_token||SUPABASE_CONFIG.key)});
+    const url=SUPABASE_CONFIG.url+'/storage/v1/object/authenticated/'+encodeURIComponent(bucket)+'/'+String(path||'').split('/').map(encodeURIComponent).join('/');
+    let res=await fetch(url,{headers:makeHeaders()});
+    if(!res.ok&&(res.status===401||res.status===403)&&await refreshUserSession())res=await fetch(url,{headers:makeHeaders()});
+    if(!res.ok)throw new Error(await res.text().catch(()=>res.statusText));
+    return URL.createObjectURL(await res.blob());
+  }
+};
 
 const NH7_FAST_CLOUD_TIMEOUT_V470=5000;
 function nh7WithTimeoutV470(promise,timeoutMs=NH7_FAST_CLOUD_TIMEOUT_V470){
@@ -563,7 +733,20 @@ async function saveProgressCloud(key,value){
     payload:{user_email:email,progress_key:accountProgressKey(key),value,language:state.lang,updated_at:new Date().toISOString()}
   });
 }
+function nh7UnwrapCloudValueV551(value){
+  let current=value;
+  for(let i=0;i<4;i++){
+    if(current&&typeof current==='object'&&!Array.isArray(current)&&Object.prototype.hasOwnProperty.call(current,'value')){current=current.value;continue}
+    if(typeof current!=='string')break;
+    const raw=current.trim();if(!(raw.startsWith('{')&&raw.endsWith('}')))break;
+    let parsed=null;try{parsed=JSON.parse(raw)}catch(_){break}
+    if(parsed&&typeof parsed==='object'&&!Array.isArray(parsed)&&Object.prototype.hasOwnProperty.call(parsed,'value')){current=parsed.value;continue}
+    break;
+  }
+  return current;
+}
 function restoreAccountProgressValue(key,value){
+  value=nh7UnwrapCloudValueV551(value);
   if(key==='nh7_gratitude_completed'&&value&&Array.isArray(value.completed)){
     localStorage.setItem(key,JSON.stringify(value.completed));
     return;
@@ -572,12 +755,43 @@ function restoreAccountProgressValue(key,value){
     localStorage.setItem(key,String(value.__raw??''));
     return;
   }
-  localStorage.setItem(key,JSON.stringify(value??{}));
+  localStorage.setItem(key,typeof value==='string'?value:JSON.stringify(value??{}));
+}
+function nh7MergeBibleStateV551(key,cloudValue){
+  const incoming=nh7UnwrapCloudValueV551(cloudValue);
+  if(!incoming||typeof incoming!=='object'||Array.isArray(incoming)){if(localStorage.getItem(key)===null)restoreAccountProgressValue(key,incoming);return}
+  let local={};try{local=JSON.parse(localStorage.getItem(key)||'{}')}catch(_){local={}}
+  if(!local||typeof local!=='object'||Array.isArray(local))local={};
+  const merged=Object.assign({},incoming,local);
+  if(!String(local.note||'').trim()&&String(incoming.note||'').trim())merged.note=incoming.note;
+  if(local.saved!==true&&incoming.saved===true)merged.saved=true;
+  if(!local.highlight&&incoming.highlight){merged.highlight=true;merged.highlightColor=incoming.highlightColor||merged.highlightColor||'yellow'}
+  localStorage.setItem(key,JSON.stringify(merged));
+}
+function nh7MergeSoulWinningV551(cloudValue){
+  const incoming=nh7UnwrapCloudValueV551(cloudValue);
+  if(!incoming||typeof incoming!=='object'||!Array.isArray(incoming.people))return;
+  let local={};try{local=JSON.parse(localStorage.getItem('nh7_soul_tracker_v472')||'{}')}catch(_){local={}}
+  const map=new Map();
+  for(const row of [...(Array.isArray(incoming.people)?incoming.people:[]),...(Array.isArray(local.people)?local.people:[])]){
+    if(!row||!row.id)continue;const prev=map.get(String(row.id));
+    if(!prev||String(row.updatedAt||'')>=String(prev.updatedAt||''))map.set(String(row.id),row);
+  }
+  const merged={version:Math.max(Number(incoming.version||1),Number(local.version||1)),people:[...map.values()],updatedAt:[incoming.updatedAt,local.updatedAt].filter(Boolean).sort().pop()||new Date().toISOString()};
+  localStorage.setItem('nh7_soul_tracker_v472',JSON.stringify(merged));
+}
+function nh7MergeGamificationV553(cloudValue){
+  const incoming=nh7GamificationNormalize(nh7UnwrapCloudValueV551(cloudValue));
+  let local={};try{local=nh7GamificationNormalize(JSON.parse(localStorage.getItem('nh7_gamification')||'{}'))}catch(_){local=nh7GamificationNormalize({})}
+  const activity={};for(const key of new Set([...Object.keys(incoming.activity||{}),...Object.keys(local.activity||{})]))activity[key]=Math.max(Number(incoming.activity?.[key]||0),Number(local.activity?.[key]||0));
+  const merged=nh7GamificationNormalize({points:Math.max(Number(incoming.points||0),Number(local.points||0)),badges:[...(incoming.badges||[]),...(local.badges||[])],activity,activityDays:[...(incoming.activityDays||[]),...(local.activityDays||[])]});
+  localStorage.setItem('nh7_gamification',JSON.stringify(merged));
+  return merged;
 }
 async function restoreAccountCloudData(force=false){
   const email=accountCloudEmail();
   if(!email||!navigator.onLine)return false;
-  const marker='nh7_account_cloud_restore_'+email;
+  const marker='nh7_account_cloud_restore_v553_'+email;
   if(!force&&sessionStorage.getItem(marker)==='1')return true;
   try{
     const [notes,progress,verses]=await Promise.all([
@@ -585,21 +799,46 @@ async function restoreAccountCloudData(force=false){
       cloudFetch('nh7_account_progress?select=progress_key,value,updated_at&user_email=eq.'+encodeURIComponent(email),{method:'GET'}),
       cloudFetch('nh7_account_saved_verses?select=ref&user_email=eq.'+encodeURIComponent(email),{method:'GET'})
     ]);
+    let verseMarks=[];
+    try{verseMarks=await cloudFetch('nh7_account_verse_marks_v230?select=verse_key,verse_ref,saved,highlight_color,note,updated_at&user_email=eq.'+encodeURIComponent(email),{method:'GET'})}catch(e){console.warn('Verse marks restore unavailable',e)}
     (Array.isArray(notes)?notes:[]).forEach(row=>{
       const key='nh7_'+String(row.note_key||'');
-      if(row.content!=null)localStorage.setItem(key,String(row.content));
+      const incoming=window.NH7NoteTextV501?.normalize?.(nh7UnwrapCloudValueV551(row.content))??String(nh7UnwrapCloudValueV551(row.content)??'');
+      const local=window.NH7NoteTextV501?.normalize?.(localStorage.getItem(key)||'')??String(localStorage.getItem(key)||'');
+      if(incoming&&(!local||local.includes('"updatedAt"')&&local.includes('"value"')))localStorage.setItem(key,String(incoming));
+      if(row.updated_at)localStorage.setItem('nh7_account_item_at:'+key,String(row.updated_at));
     });
     (Array.isArray(progress)?progress:[]).forEach(row=>{
-      const key=accountProgressKey(row.progress_key);
-      if(key)restoreAccountProgressValue(key,row.value);
+      const key=accountProgressKey(row.progress_key);if(!key)return;
+      if(key.startsWith('nh7_bible_state_'))nh7MergeBibleStateV551(key,row.value);
+      else if(key==='nh7_soul_tracker_v472')nh7MergeSoulWinningV551(row.value);
+      else if(key==='nh7_gamification')nh7MergeGamificationV553(row.value);
+      else if(localStorage.getItem(key)===null)restoreAccountProgressValue(key,row.value);
     });
-    const cloudRefs=(Array.isArray(verses)?verses:[]).map(x=>String(x.ref||'')).filter(Boolean);
-    if(cloudRefs.length){
+    const refs=new Set((Array.isArray(verses)?verses:[]).map(x=>String(x.ref||'')).filter(Boolean));
+    (Array.isArray(verseMarks)?verseMarks:[]).forEach(row=>{
+      const key=accountProgressKey(row.verse_key);if(!key||!key.startsWith('nh7_bible_state_'))return;
+      let local={};try{local=JSON.parse(localStorage.getItem(key)||'{}')}catch(_){local={}}
+      if(!local||typeof local!=='object'||Array.isArray(local))local={};
+      if(!String(local.note||'').trim()&&String(row.note||'').trim())local.note=String(row.note);
+      if(row.saved){local.saved=true;if(row.verse_ref)refs.add(String(row.verse_ref))}
+      if(row.highlight_color&&!local.highlight){local.highlight=true;local.highlightColor=String(row.highlight_color)}
+      localStorage.setItem(key,JSON.stringify(local));
+    });
+    if(refs.size){
       let local=[];try{local=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]')}catch(e){}
-      localStorage.setItem('nh7_bookmarks',JSON.stringify([...new Set([...(Array.isArray(local)?local:[]),...cloudRefs])]));
+      localStorage.setItem('nh7_bookmarks',JSON.stringify([...new Set([...(Array.isArray(local)?local:[]),...refs])]));
+    }
+    // One-time account seed after an in-place update. This preserves legacy local progress without polling or extra tables.
+    const legacySeed='nh7_account_legacy_seed_v553_'+email;
+    if(localStorage.getItem(legacySeed)!=='1'){
+      try{const raw=localStorage.getItem('nh7_soul_tracker_v472');if(raw){const soul=JSON.parse(raw);if(Array.isArray(soul?.people)&&soul.people.length)await saveProgressCloud('nh7_soul_tracker_v472',soul)}}catch(_){ }
+      try{const raw=localStorage.getItem('nh7_gamification');if(raw){const growth=nh7GamificationNormalize(JSON.parse(raw));if(growth.points||growth.badges.length||growth.activityDays.length)await saveProgressCloud('nh7_gamification',growth)}}catch(_){ }
+      localStorage.setItem(legacySeed,'1');
     }
     sessionStorage.setItem(marker,'1');
     localStorage.setItem('nh7_account_cloud_restored_at',new Date().toISOString());
+    try{window.NH7NoteTextV501?.repairKnownNotes?.();window.NH7MyNotesV234?.renderNotesPanel?.();window.dispatchEvent(new CustomEvent('nh7-account-data-restored-v551'));window.dispatchEvent(new CustomEvent('nh7-account-data-restored-v553'));setTimeout(()=>{try{render(state.route,state.params,true)}catch(_){}},0);setTimeout(()=>{window.NH7_SPIRITUAL_PLANS?.syncAccount?.().then(()=>window.dispatchEvent(new CustomEvent('nh7-spiritual-notes-updated-v553'))).catch?.(()=>{})},250)}catch(_){ }
     return true;
   }catch(e){
     console.warn('Account cloud restore failed',e);
@@ -613,7 +852,10 @@ function readSchoolSnapshotCache(email){
     return v&&Array.isArray(v.progress)&&Array.isArray(v.assignments)?v:null;
   }catch(e){return null}
 }
-function invalidateSchoolSnapshot(email=currentUserEmail()){if(email)localStorage.removeItem(schoolSnapshotCacheKey(email))}
+function invalidateSchoolSnapshot(email=currentUserEmail()){
+  // Online reads already request fresh server state. Keep the last known-good
+  // snapshot so a temporary network/backend failure cannot make progress look empty.
+}
 async function getSchoolSnapshot(email=currentUserEmail(),force=false){
   email=String(email||'').trim().toLowerCase();
   const cached=readSchoolSnapshotCache(email);
@@ -630,11 +872,13 @@ async function getSchoolSnapshot(email=currentUserEmail(),force=false){
         cloudFetch('school_progress?select=*&user_email=eq.'+encodeURIComponent(email),{method:'GET'}),
         cloudFetch('school_assignments?select=*&user_email=eq.'+encodeURIComponent(email),{method:'GET'})
       ]);
-      snapshot={progress:Array.isArray(progress)?progress:[],assignments:Array.isArray(assignments)?assignments:[]};
+      if(!Array.isArray(progress)||!Array.isArray(assignments))throw new Error('invalid_school_snapshot');
+      snapshot={progress,assignments};
     }
+    if(!snapshot||!Array.isArray(snapshot.progress)||!Array.isArray(snapshot.assignments))throw new Error('invalid_school_snapshot');
     const clean={
-      progress:Array.isArray(snapshot?.progress)?snapshot.progress:[],
-      assignments:Array.isArray(snapshot?.assignments)?snapshot.assignments:[],
+      progress:snapshot.progress,
+      assignments:snapshot.assignments,
       saved_at:new Date().toISOString(),
       from_cache:false
     };
@@ -831,6 +1075,8 @@ function nh7TrackRenderedContentV223(route,params={}){
 
 function pick(obj){ return (obj && (obj[state.lang] ?? obj.en ?? obj.fa ?? obj.hr)) || ''; }
 function html(s){ return String(s ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])).replace(/\n/g,'<br>'); }
+function textareaHtml(s){return String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+function normalizeNoteText(s){return window.NH7NoteTextV501?.normalize?window.NH7NoteTextV501.normalize(s):String(s??'')}
 function todayKey(d=new Date()){ return d.toISOString().slice(0,10); }
 function dateDiffDays(a,b){ const A=new Date(a+'T00:00:00'); const B=new Date(b+'T00:00:00'); return Math.max(0, Math.floor((B-A)/86400000)); }
 function firstUseDate(){let d=localStorage.getItem('nh7_first_use_date');if(!d){d=todayKey();localStorage.setItem('nh7_first_use_date',d);saveProgressCloud('nh7_first_use_date',{__raw:d}).catch(console.warn)}return d}
@@ -898,6 +1144,7 @@ function setLang(lang){
 }
 function setCrumb(t){ $('#breadcrumb').textContent=t; $('#backBtn').classList.toggle('hidden', state.stack.length===0); $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.route===state.route)); }
 function navigate(route, params={}, replace=false){
+  try{window.NH7_MEDIA_PLAYER_V500?.setExpanded?.(false)}catch(_){}
   if(!replace && state.route) state.stack.push({route:state.route, params:state.params});
   state.route=route; state.params=params||{};
   try{ const url='#'+encodeURIComponent(route)+(Object.keys(state.params).length?':'+encodeURIComponent(JSON.stringify(state.params)):''); replace ? history.replaceState({route,params:state.params},'',url) : history.pushState({route,params:state.params},'',url); }catch(e){}
@@ -905,6 +1152,7 @@ function navigate(route, params={}, replace=false){
 }
 window.NH7_NAVIGATE=(route,params={},replace=false)=>navigate(route,params,replace);
 function back(){
+  try{window.NH7_MEDIA_PLAYER_V500?.setExpanded?.(false)}catch(_){}
   const prev=state.stack.pop();
   if(prev){ state.route=prev.route; state.params=prev.params; render(prev.route, prev.params, true); try{ history.replaceState({route:prev.route,params:prev.params},'', '#'+encodeURIComponent(prev.route)); }catch(e){} return; }
   if(state.route && state.route!=='home'){ state.route='home'; state.params={}; render('home',{},true); try{ history.replaceState({route:'home',params:{}},'', '#home'); }catch(e){} }
@@ -1000,7 +1248,7 @@ function collectNotes(){
     if(!k) continue;
     if(k.startsWith('nh7_note_') || k.startsWith('nh7_gratitude_note_')){
       const val=localStorage.getItem(k);
-      if(val) out.push({key:k.replace(/^nh7_/,'').replace(/_/g,' '), text:val});
+      if(val) out.push({rawKey:k,key:k.replace(/^nh7_/,'').replace(/_/g,' '), text:val});
     }
   }
   return out;
@@ -1020,7 +1268,7 @@ function savedVersesPanel(bookmarks){
 }
 function notesPanel(){
   const notes=collectNotes();
-  return `<button class="secondary-btn" data-toggle-panel="notesPanel">${tr('showMyNotes')}</button><div id="notesPanel" class="collapsible-panel hidden">${notes.length?`<div class="list">${notes.reverse().map(n=>`<div class="notice"><strong>${html(n.key)}</strong><p>${html(n.text)}</p></div>`).join('')}</div>`:`<p class="muted">${tr('noNotes')}</p>`}</div>`;
+  return `<button class="secondary-btn" data-toggle-panel="notesPanel">${tr('showMyNotes')}</button><div id="notesPanel" class="collapsible-panel hidden">${notes.length?`<div class="list">${notes.reverse().map(n=>`<div class="notice" data-note-key="${html(n.rawKey||'')}"><strong>${html(n.key)}</strong><p>${html(n.text)}</p></div>`).join('')}</div>`:`<p class="muted">${tr('noNotes')}</p>`}</div>`;
 }
 
 
@@ -1237,13 +1485,19 @@ async function refreshInboxFromCloud(force=false){
     return true;
   }catch(e){console.warn('Inbox cloud refresh failed',e);return false}
 }
+function formatInboxTimestampV542(value,exact=false){
+  const d=new Date(value||'');if(Number.isNaN(d.getTime()))return '';
+  const locale=state.lang==='fa'?'fa-IR':state.lang==='hr'?'hr-HR':'en-GB';
+  try{return new Intl.DateTimeFormat(locale,{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',...(exact?{second:'2-digit'}:{}),timeZoneName:exact?'short':undefined}).format(d)}catch(_){return d.toLocaleString()}
+}
 async function inbox(){
   cleanupInboxLanguage();
-  maybeCreateScheduledInboxMessages(); await refreshInboxFromCloud(true);
+  maybeCreateScheduledInboxMessages(); await refreshInboxFromCloud(false);
   cleanupInboxLanguage();
   const arr=inboxDisplayMessages();
-  const body = arr.length ? `<div class="list inbox-list">${arr.map((m,i)=>`<div class="list-btn inbox-item ${m.read?'read':'unread'}"><button class="list-btn inbox-item ${m.read?'read':'unread'}" data-inbox-open="${html(m.id)}"><strong>${m.read?'':'● '}${html(m.title)}</strong><small>${new Date(m.createdAt).toLocaleString()} • ${m.read?tr('completed'):tr('unread')}</small></button><div id="inbox-${html(String(m.id).replace(/[^a-zA-Z0-9_-]/g,'_'))}" class="accordion-panel hidden"><p>${html(m.body)}</p><button class="danger-btn" data-inbox-delete="${html(m.id)}">${tr('deleteMessage')}</button></div></div>`).join('')}</div>` : `<p class="muted">${tr('noInboxMessages')}</p>`;
-  view.innerHTML = card(tr('notificationInbox'), `<p class="muted">${tr('notificationAutoNote')}</p><div class="button-row"><span class="badge">${tr('unread')}: ${localNum(unreadCount())}</span><button class="secondary-btn" id="markAllRead">${tr('markAllRead')}</button><button class="secondary-btn" id="cleanInboxLang">${tr('cleanInbox')}</button><button class="danger-btn" id="deleteVisibleInbox">${tr('deleteAllInbox')}</button></div>${body}`);
+  const body = arr.length ? `<div class="inbox-list-v542">${arr.map(m=>{const safe=html(String(m.id).replace(/[^a-zA-Z0-9_-]/g,'_')),stamp=formatInboxTimestampV542(m.createdAt),exactStamp=formatInboxTimestampV542(m.createdAt,true);return `<article class="inbox-card-v542 ${m.read?'read':'unread'}"><button class="inbox-open-v542" data-inbox-open="${html(m.id)}"><span class="inbox-status-v542">${m.read?'✓':'●'}</span><span class="inbox-copy-v542"><strong>${html(m.title)}</strong><small>🕒 ${html(stamp)} · ${m.read?tr('completed'):tr('unread')}</small></span><span aria-hidden="true">⌄</span></button><div id="inbox-${safe}" class="accordion-panel inbox-detail-v542 hidden"><p>${html(m.body)}</p><div class="inbox-time-v542"><strong>🕒 ${tr('messageTime')}:</strong> ${html(exactStamp)}</div><button class="danger-btn" data-inbox-delete="${html(m.id)}">${tr('deleteMessage')}</button></div></article>`}).join('')}</div>` : `<p class="muted">${tr('noInboxMessages')}</p>`;
+  view.innerHTML = card(tr('notificationInbox'), `<div class="inbox-toolbar-v542"><span class="badge">${tr('unread')}: ${localNum(unreadCount())}</span><button class="secondary-btn" id="refreshInboxNow">↻ ${tr('refreshInbox')}</button><button class="secondary-btn" id="markAllRead">${tr('markAllRead')}</button><button class="secondary-btn" id="cleanInboxLang">${tr('cleanInbox')}</button><button class="danger-btn" id="deleteVisibleInbox">${tr('deleteAllInbox')}</button></div>${body}`, 'nh7-inbox-card-v542');
+  $('#refreshInboxNow')?.addEventListener('click',async e=>{const b=e.currentTarget;b.disabled=true;try{await refreshInboxFromCloud(true);render('inbox',{},true)}finally{b.disabled=false}});
   $('#markAllRead')?.addEventListener('click',()=>{ const now=new Date().toISOString(); const all=inboxMessages().map(m=>({...m,read:true,readAt:now})); setInboxMessages(all); all.filter(m=>!String(m.id).startsWith('scheduled:')).forEach(m=>saveInboxReceipt(m.id,{read_at:now})); render('inbox',{},true); });
   $('#cleanInboxLang')?.addEventListener('click',()=>{ cleanupInboxLanguage(); render('inbox',{},true); });
   $('#deleteVisibleInbox')?.addEventListener('click',()=>{ if(confirm(tr('deleteAllConfirm'))){ deleteVisibleInbox(); render('inbox',{},true); } });
@@ -1262,6 +1516,7 @@ async function showAmen(){
 let nh7NavigationEpochV456=0;
 async function render(route, params={}, preserve=false){
   schoolDraftsV468.unmount();
+  try{window.NH7CommunityV502?.dispose?.()}catch(e){console.warn('[NH7 Community dispose]',e)}
   const navigationEpochV456=++nh7NavigationEpochV456;
   view.innerHTML='<section class="card"><p>...</p></section>';
   try{
@@ -1271,6 +1526,9 @@ async function render(route, params={}, preserve=false){
     else if(route==='plans') await plans(params);
     else if(route==='school') await school(params);
     else if(route==='more') await more();
+    else if(route==='testimonies') await window.NH7CommunityV502?.renderTestimonies?.();
+    else if(route==='prayerRequest') await window.NH7CommunityV502?.renderPrayer?.();
+    else if(route==='profile') await window.NH7CommunityV502?.renderProfile?.();
     else if(route==='soulWinning') soulWinningV472.render(params);
     else if(route==='library') await library(params);
     else if(route==='audio') await audio(params);
@@ -1300,11 +1558,14 @@ async function home(){
   const dailyDay=userCycleDay(365);
   view.innerHTML =
     card(tr('appTitle'), `<p>${tr('welcome')}</p><div class="button-row"><button class="primary-btn" data-go="daily">${tr('continueToday')}</button><button class="secondary-btn" id="quickNotify">${tr('enableNotifications')}</button></div>`, 'hero') +
+    nh7GlobalSearchV540.html() +
     card(tr('todayMessage'), `<p>${tr('day')} ${localNum(dailyDay)}</p><div class="button-row"><button class="secondary-btn" data-go="daily" data-params='{"tab":"word"}'>${tr('dailyWord')}</button><button class="secondary-btn" data-go="daily" data-params='{"tab":"faith"}'>${tr('faithProclamation')}</button><button class="secondary-btn" data-go="daily" data-params='{"tab":"juice"}'>${tr('dailyJuice')}</button></div>`) +
     card(tr('savedVerses'), `<p class="muted">${tr('savedVersesCollapsed')}</p>${savedVersesPanel(bookmarks)}`) +
     card(tr('myNotes'), `<p class="muted">${tr('notesCollapsed')}</p>${notesPanel()}`) +
     card(tr('progress'), nh7GrowthHtml(g), 'nh7-growth-card-v458');
   $('#quickNotify')?.addEventListener('click', enableNotifications);
+  nh7GlobalSearchV540.mount();
+  nh7WarmAudioCatalogV541();
 }
 
 
@@ -1412,7 +1673,7 @@ async function renderGratitude(){
   if(it.dailyTasks) body+=`<h3>${tr('actionStep')}</h3>${renderMulti(it.dailyTasks)}`;
   if(it.understandingQuestions) body+=`<h3>${tr('notes')}</h3>${renderMulti(it.understandingQuestions)}`;
   const savedNote=localStorage.getItem('nh7_gratitude_note_'+current)||'';
-  body+=`<textarea id="gratitudeNote" placeholder="${tr('notes')}">${html(savedNote)}</textarea><div class="button-row"><button class="primary-btn" id="completeGratitude" data-gratitude-day="${current}">${isDone?tr('dailyCompleted'):tr('completeDay')}</button>${isDone?`<button class="secondary-btn" id="undoGratitude" data-gratitude-day="${current}">${tr('undoComplete')}</button>`:''}</div>`;
+  body+=`<textarea id="gratitudeNote" placeholder="${tr('notes')}">${textareaHtml(normalizeNoteText(savedNote))}</textarea><div class="button-row"><button class="primary-btn" id="completeGratitude" data-gratitude-day="${current}">${isDone?tr('dailyCompleted'):tr('completeDay')}</button>${isDone?`<button class="secondary-btn" id="undoGratitude" data-gratitude-day="${current}">${tr('undoComplete')}</button>`:''}</div>`;
   return card(pick(it.title), body);
 }
 
@@ -1433,7 +1694,31 @@ async function loadBook(bookId){
   if(!state.bible.groups[group]) state.bible.groups[group]=await jfetch(`data/bible/groups/bible_group_${group}.json`);
   return {book:b, verses:state.bible.groups[group].verses.filter(v=>v.bookId===bookId)};
 }
+function nh7FocusGlobalAudioV551(mediaId){
+  const wanted=String(mediaId||'');if(!wanted)return;
+  let tries=0;
+  const timer=setInterval(()=>{
+    tries++;
+    const card=Array.from(document.querySelectorAll('[data-sermon-card]')).find(node=>String(node.dataset.sermonCard||'')===wanted);
+    if(card){
+      clearInterval(timer);card.scrollIntoView({behavior:'smooth',block:'center'});card.classList.add('nh7-global-focus-v540');setTimeout(()=>card.classList.remove('nh7-global-focus-v540'),1800);
+    }else if(tries>=45)clearInterval(timer);
+  },80);
+}
+function nh7OpenGlobalAudioV551(action={}){
+  const item=action&&action.item&&typeof action.item==='object'?action.item:{};
+  const id=String(item.id||'');const cat=String(item.category_id||action.cat||'');
+  if(action.source==='cloud'&&id&&item.audio_url){
+    navigate('audio',{cat,open:id},false);setTimeout(()=>{try{window.NH7_AUDIO_CLASSIC_V400?.playItem?.(item)}catch(e){console.warn('Global search audio play',e)}nh7FocusGlobalAudioV551(id)},120);return;
+  }
+  if(action.source==='bundle'&&id&&item.audio_url){
+    navigate('audio',{cat:String(action.cat||''),openBundled:id},false);setTimeout(()=>{try{playSermon(item).catch?.(e=>console.warn('Global search bundled audio play',e))}catch(e){console.warn(e)}nh7FocusGlobalAudioV551(id)},120);return;
+  }
+  navigate('audio',action.source==='bundle'?{cat:String(action.cat||''),openBundled:id}:{cat,open:id},false);
+}
 const nh7BibleKeywordsV451=createBibleKeywordsV451({state,view,html,card,tr,l223,localNum,jfetch,navigate,localizeRef,loadBibleMeta,showWritten:()=>bible({section:'written'})});
+const nh7GlobalSearchV540=createGlobalSearchV540({lang:()=>state.lang,html,card,localNum,jfetch,navigate,localizeRef,loadBibleMeta,parseRef,pick,hash:simpleHash,normalizeNote:normalizeNoteText,audioCache:()=>nh7ReadAudioCatalogCacheV446(),audioCatalog:()=>nh7EnsureAudioCatalogV541(),openAudio:nh7OpenGlobalAudioV551,bible:()=>nh7BibleKeywordsV451});
+const nh7ExamReviewV540=createExamReviewV540({lang:()=>state.lang,html,localNum,questionText:examQuestionText,optionText:examOptionText});
 async function bibleKeywordsV450(params={}){return nh7BibleKeywordsV451.bibleKeywords(params);}
 
 async function bible(params={}){
@@ -1456,10 +1741,37 @@ async function bible(params={}){
   view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written'}))}'>‹ ${html(tr('back'))}</button></div>`+renderBookList(testament==='OT'?tr('oldtestament'):tr('newtestament'),books,testament);
 }
 function renderBookList(title,books,testament=''){return card(title,`<div class="grid">${books.map(b=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:testament||b.testament,bookId:b.id}))}'><strong>${html(b.names[state.lang]||b.names.en)}</strong><small>${localNum(b.chapters)} ${tr('chapters')}</small></button>`).join('')}</div>`)}
+
+function bibleAdaptiveSidebar(testament='',bookId='',chapter=0){
+  const activeTest=String(testament||state.bible.books.find(b=>b.id===bookId)?.testament||'OT').toUpperCase();
+  const books=(state.bible.books||[]).filter(b=>b.testament===activeTest);
+  const testamentNav=`<div class="nh7-adaptive-segment">
+    <button class="${activeTest==='OT'?'active':''}" data-go="bible" data-params='${html(JSON.stringify({section:'written',testament:'OT'}))}'>${html(tr('oldtestament'))}</button>
+    <button class="${activeTest==='NT'?'active':''}" data-go="bible" data-params='${html(JSON.stringify({section:'written',testament:'NT'}))}'>${html(tr('newtestament'))}</button>
+  </div>`;
+  const bookRows=books.map(b=>{
+    const selected=String(b.id)===String(bookId);
+    const chapters=selected?Array.from({length:Number(b.chapters)||0},(_,i)=>i+1):[];
+    return `<div class="nh7-adaptive-book ${selected?'is-active':''}">
+      <button class="nh7-adaptive-book-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:activeTest,bookId:b.id}))}'>
+        <strong>${html(b.names[state.lang]||b.names.en)}</strong><small>${localNum(b.chapters)}</small>
+      </button>
+      ${selected?`<div class="nh7-adaptive-chapters">${chapters.map(ch=>`<button class="${Number(chapter)===ch?'active':''}" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',testament:activeTest,bookId:b.id,chapter:ch}))}'>${localNum(ch)}</button>`).join('')}</div>`:''}
+    </div>`;
+  }).join('');
+  return `<aside class="nh7-adaptive-sidebar nh7-bible-sidebar" aria-label="${html(tr('bookList'))}">
+    <div class="nh7-adaptive-sidebar-head"><strong>📖 ${html(tr('writtenBible'))}</strong></div>
+    ${testamentNav}
+    <div class="nh7-adaptive-scroll">${bookRows}</div>
+  </aside>`;
+}
+function adaptiveSplit(sidebar,main,kind=''){return `<div class="nh7-adaptive-split ${kind}">${sidebar}<main class="nh7-adaptive-main">${main}</main></div>`}
 async function bibleBook(bookId,testament=''){
   const data=await loadBook(bookId);if(!data)return bible({section:'written'});
   const chapters=Array.from({length:data.book.chapters},(_,i)=>i+1),test=data.book.testament||testament;
-  view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written',testament:test}))}'>‹ ${html(tr('bookList'))}</button></div>`+card(data.book.names[state.lang]||data.book.names.en,`<div class="grid">${chapters.map(ch=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:ch}))}'><strong>${tr('chapter')} ${localNum(ch)}</strong></button>`).join('')}</div>`);
+  const phoneBack=`<div class="nh7-step-back nh7-phone-only"><button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written',testament:test}))}'>‹ ${html(tr('bookList'))}</button></div>`;
+  const main=phoneBack+card(data.book.names[state.lang]||data.book.names.en,`<div class="grid nh7-chapter-grid">${chapters.map(ch=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:ch}))}'><strong>${tr('chapter')} ${localNum(ch)}</strong></button>`).join('')}</div>`);
+  view.innerHTML=adaptiveSplit(bibleAdaptiveSidebar(test,bookId,0),main,'nh7-bible-adaptive');
 }
 async function bibleChapter(bookId,chapter){
   const data=await loadBook(bookId);if(!data)return bible({section:'written'});
@@ -1473,13 +1785,14 @@ async function bibleChapter(bookId,chapter){
     const color=st.highlightColor||'yellow',cls=['reader-verse'];if(st.highlight)cls.push('highlighted','highlight-'+color);if(focusVerse===Number(v.verse))cls.push('saved-focus');
     const noteBoxId='noteBox_'+String(v.id||ref).replace(/[^a-zA-Z0-9_-]/g,'_');
     const colors=['yellow','red','green','blue'];
-    return `<span class="${cls.join(' ')}" id="v-${v.verse}" data-verse-key="${html(key)}" tabindex="0"><sup class="num">${localNum(v.verse)}</sup><span class="verse-text">${html(nh7BibleKeywordsV451.displayText(v))}</span>${st.note?`<button class="verse-note-marker" data-note-marker="${html(noteBoxId)}" aria-label="${html(tr('noteAvailable'))}" title="${html(tr('noteAvailable'))}">📓</button>`:''}<span class="verse-tools hidden" aria-label="Verse actions"><button class="secondary-btn" data-bookmark="${html(ref)}">${st.saved?'★':'☆'} ${tr('save')}</button><span class="highlight-control"><button class="secondary-btn" data-highlight-menu="${html(key)}">✦ ${tr('highlight')}</button><span class="highlight-palette hidden" data-highlight-palette="${html(key)}">${colors.map(c=>`<button type="button" class="highlight-dot ${c} ${st.highlight&&color===c?'active':''}" data-highlight-color="${c}" data-highlight-key="${html(key)}" aria-label="${c}"></button>`).join('')}<button type="button" class="highlight-clear" data-highlight-clear="${html(key)}" aria-label="Clear">×</button></span></span><button class="secondary-btn" data-note-verse="${html(noteBoxId)}">📝 ${tr('writeNote')}</button><button class="secondary-btn" data-share-verse="${html(ref)}" data-share-text="${html(nh7BibleKeywordsV451.displayText(v))}">↗ ${tr('share')}</button><button type="button" class="secondary-btn nh7-bible-cancel" data-clear-bible-selection aria-label="${html(l223('لغو انتخاب','Clear selection','Poništi odabir'))}">×</button></span><span id="${html(noteBoxId)}" class="verse-note-box hidden"><div class="verse-note-head"><strong>📓 ${html(tr('notes'))}</strong><button type="button" class="icon-btn" data-close-verse-note>×</button></div><textarea data-note-input="${html(key)}" maxlength="1000" placeholder="${tr('writeNote')}">${html(window.NH7NoteTextV501?.normalize?.(st.note||'')??(st.note||''))}</textarea><button class="primary-btn" data-save-verse-note="${html(key)}">${tr('saveNote')}</button></span></span>`;
+    return `<span class="${cls.join(' ')}" id="v-${v.verse}" data-verse-key="${html(key)}" tabindex="0"><sup class="num">${localNum(v.verse)}</sup><span class="verse-text">${html(nh7BibleKeywordsV451.displayText(v))}</span>${st.note?`<button class="verse-note-marker" data-note-marker="${html(noteBoxId)}" aria-label="${html(tr('noteAvailable'))}" title="${html(tr('noteAvailable'))}">📓</button>`:''}<span class="verse-tools hidden" aria-label="Verse actions"><button class="secondary-btn" data-bookmark="${html(ref)}">${st.saved?'★':'☆'} ${tr('save')}</button><span class="highlight-control"><button class="secondary-btn" data-highlight-menu="${html(key)}">✦ ${tr('highlight')}</button><span class="highlight-palette hidden" data-highlight-palette="${html(key)}">${colors.map(c=>`<button type="button" class="highlight-dot ${c} ${st.highlight&&color===c?'active':''}" data-highlight-color="${c}" data-highlight-key="${html(key)}" aria-label="${c}"></button>`).join('')}<button type="button" class="highlight-clear" data-highlight-clear="${html(key)}" aria-label="Clear">×</button></span></span><button class="secondary-btn" data-note-verse="${html(noteBoxId)}">📝 ${tr('writeNote')}</button><button class="secondary-btn" data-share-verse="${html(ref)}" data-share-text="${html(nh7BibleKeywordsV451.displayText(v))}">↗ ${tr('share')}</button><button type="button" class="secondary-btn nh7-bible-cancel" data-clear-bible-selection aria-label="${html(l223('لغو انتخاب','Clear selection','Poništi odabir'))}">×</button></span><span id="${html(noteBoxId)}" class="verse-note-box hidden"><div class="verse-note-head"><strong>📓 ${html(tr('notes'))}</strong><button type="button" class="icon-btn" data-close-verse-note>×</button></div><textarea data-note-input="${html(key)}" maxlength="1000" placeholder="${tr('writeNote')}">${textareaHtml(normalizeNoteText(st.note||''))}</textarea><button class="primary-btn" data-save-verse-note="${html(key)}">${tr('saveNote')}</button></span></span>`;
   }).join(' ');
   const idx=state.bible.books.findIndex(b=>b.id===bookId),prevBook=idx>0?state.bible.books[idx-1]:null,nextBook=idx>=0&&idx<state.bible.books.length-1?state.bible.books[idx+1]:null;
   const topNav=`<div class="bible-book-nav"><button class="secondary-btn" ${prevBook?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:prevBook.testament,bookId:prevBook.id}))}'`:'disabled'}>‹ ${html(tr('previousBook'))}</button><button class="primary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written',testament:data.book.testament}))}'>☷ ${html(tr('bookList'))}</button><button class="secondary-btn" ${nextBook?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:nextBook.testament,bookId:nextBook.id}))}'`:'disabled'}>${html(tr('nextBook'))} ›</button></div>`;
   const prevChapter=chapter>1?chapter-1:null,nextChapter=chapter<data.book.chapters?chapter+1:null;
   const bottomNav=`<div class="bible-chapter-nav"><button class="secondary-btn" ${prevChapter?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:prevChapter}))}'`:'disabled'}>‹ ${html(tr('previousChapter'))}</button><span>${tr('chapter')} ${localNum(chapter)} / ${localNum(data.book.chapters)}</span><button class="secondary-btn" ${nextChapter?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:nextChapter}))}'`:'disabled'}>${html(tr('nextChapter'))} ›</button></div>`;
-  view.innerHTML=card(title,`${topNav}<p class="muted bible-reader-hint">${html(l223('برای نمایش ابزارها روی آیه بزنید؛ برای باب بعدی یا قبلی صفحه را به چپ یا راست بکشید.','Tap a verse for tools; swipe left or right to change chapter.','Dodirnite redak za alate; povucite lijevo ili desno za drugo poglavlje.'))}</p><div class="reader continuous-reader" data-bible-swipe="1">${rows}</div>${bottomNav}`);
+  const chapterMain=card(title,`<div class="nh7-phone-only">${topNav}</div><p class="muted bible-reader-hint">${html(l223('برای نمایش ابزارها روی آیه بزنید؛ برای باب بعدی یا قبلی صفحه را به چپ یا راست بکشید.','Tap a verse for tools; swipe left or right to change chapter.','Dodirnite redak za alate; povucite lijevo ili desno za drugo poglavlje.'))}</p><div class="reader continuous-reader" data-bible-swipe="1">${rows}</div>${bottomNav}`);
+  view.innerHTML=adaptiveSplit(bibleAdaptiveSidebar(data.book.testament,bookId,chapter),chapterMain,'nh7-bible-adaptive');
   bindBibleChapterSwipe(prevChapter?{bookId,chapter:prevChapter}:null,nextChapter?{bookId,chapter:nextChapter}:null);
   if(focusVerse)setTimeout(()=>document.getElementById('v-'+focusVerse)?.scrollIntoView({behavior:'smooth',block:'center'}),150);
 }
@@ -1560,7 +1873,7 @@ function parseRef(ref){
 async function plans(){
   const d=await jfetch('data/bible/plans/reading_plans_1yr_2yr.json'); await loadBibleMeta();
   const plans=d.plans||[];
-  view.innerHTML=card(tr('plans'), `<div class="list">${plans.map((p,i)=>`<button class="list-btn" data-show-plan="${i}"><strong>${html(p.title?.[state.lang]||p.title?.en)}</strong><small>${localNum(p.durationDays||p.days?.length)} ${tr('day')}</small></button>`).join('')}</div><div id="planDetail"></div>`);
+  view.innerHTML=`<section class="nh7-plans-v534">${card(tr('plans'), `<div class="list">${plans.map((p,i)=>`<button class="list-btn" data-show-plan="${i}"><strong>${html(p.title?.[state.lang]||p.title?.en)}</strong><small>${localNum(p.durationDays||p.days?.length)} ${tr('day')}</small></button>`).join('')}</div><div id="planDetail"></div>`)}</section>`;
   $$('[data-show-plan]').forEach(btn=>btn.onclick=()=>showPlan(plans[Number(btn.dataset.showPlan)]));
 }
 function planBookName(bookId){ const b=state.bible.books?.find(x=>x.id===bookId); return b?.names?.[state.lang] || b?.names?.en || bookId; }
@@ -1591,7 +1904,9 @@ function showPlan(p){
 
 
 async function loadSchoolContent(){
-  const fallback=await jfetch('data/school/school_content.json');
+  // Bundled school content is a safe fallback, but a temporary local-file/cache
+  // failure must not prevent us from trying the authenticated cloud lessons.
+  const fallback=await jfetch('data/school/school_content.json').catch(()=>({meta:{protectedContent:true},lessons:[]}));
   const baseLessons=Array.isArray(fallback?.lessons)?fallback.lessons:[];
   try{
     const rows=await cloudFetch('school_lessons?select=*&is_active=eq.true&order=lesson_order.asc',{method:'GET'});
@@ -1648,7 +1963,8 @@ async function loadSchoolContent(){
       const merged=[...byCode.values()].sort((a,b)=>Number(a.lesson_order||999)-Number(b.lesson_order||999));
       return Object.assign({},fallback,{lessons:merged});
     }
-  }catch(e){console.warn('school cloud fallback',e)}
+  }catch(e){console.warn('school cloud fallback',e);if(!baseLessons.length)throw e}
+  if(!baseLessons.length)throw Object.assign(new Error('school_content_unavailable'),{code:'school_content_unavailable'});
   return fallback;
 }
 function schoolCourseInfo(l){
@@ -1675,7 +1991,7 @@ function courseAssignmentSummary(d,courseCode,rows=[]){
 function assignmentStatusText(row){const s=String(row?.status||'').toLowerCase();if(state.lang==='fa')return s==='approved'?'تأیید شده':s==='needs_revision'?'نیاز به اصلاح':s==='submitted'?'ارسال شده؛ در انتظار بررسی':'ارسال نشده';if(state.lang==='hr')return s==='approved'?'Odobreno':s==='needs_revision'?'Potrebna dorada':s==='submitted'?'Poslano; čeka pregled':'Nije poslano';return s==='approved'?'Approved':s==='needs_revision'?'Needs revision':s==='submitted'?'Submitted; awaiting review':'Not submitted'}
 async function submitSchoolAssignment(courseCode,lessonCode,answerText){
   const draftTicketV468=schoolDraftsV468.ticket(lessonCode,answerText);
-  const answer=String(answerText||'').trim();
+  const answer=normalizeNoteText(answerText).trim();
   if(answer.length<10){
     alert(state.lang==='fa'?'لطفاً پاسخ تکلیف را کامل‌تر بنویسید.':state.lang==='hr'?'Molimo napišite potpuniji odgovor na zadatak.':'Please write a more complete assignment answer.');
     return;
@@ -1746,7 +2062,18 @@ async function school(params={}){
     $('#schoolLogoutBtn')?.addEventListener('click',()=>logoutAccount('school'));return;
   }
   // Load protected lessons only after the existing identity and approval checks.
-  const d=await loadSchoolContent();
+  let d;
+  try{d=await loadSchoolContent()}catch(error){
+    if(schoolEpochV465!==nh7NavigationEpochV456)return;
+    const t=(fa,en,hr)=>state.lang==='fa'?fa:state.lang==='hr'?hr:en;
+    const message=t(
+      'دریافت درس‌ها کامل نشد. ثبت‌نام و پیشرفت شما پاک نشده است. اتصال را بررسی و دوباره تلاش کنید.',
+      'Lessons could not be loaded. Your registration and progress have not been cleared. Check your connection and try again.',
+      'Lekcije se nisu učitale. Vaša registracija i napredak nisu izbrisani. Provjerite vezu i pokušajte ponovno.'
+    );
+    view.innerHTML=card(tr('school'),`<p role="status">${html(message)}</p><button class="primary-btn wide-btn" data-go="school" data-params='${html(JSON.stringify(params))}'>${html(t('تلاش دوباره','Try again','Pokušaj ponovno'))}</button><button class="secondary-btn wide-btn" data-go="school">${html(tr('back'))}</button>`);
+    return;
+  }
   if(schoolEpochV465!==nh7NavigationEpochV456)return;
   if(params.lesson)return schoolLesson(d,params.lesson);
   if(params.exam)return schoolCourseExam(d,params.exam);
@@ -1789,6 +2116,25 @@ async function signInSchool(){
   }
 }
 
+function schoolAdaptiveSidebar(d,currentCourse='',currentLesson=''){
+  const groups=new Map();
+  (Array.isArray(d?.lessons)?d.lessons:[]).forEach(l=>{
+    const info=schoolCourseInfo(l);
+    if(!groups.has(info.code))groups.set(info.code,{info,lessons:[]});
+    groups.get(info.code).lessons.push(l);
+  });
+  const content=[...groups.values()].sort((a,b)=>a.info.order-b.info.order).map(g=>{
+    const title=g.info.title?.[state.lang]||g.info.title?.en||g.info.code;
+    const items=g.lessons.sort((a,b)=>Number(a.lesson_order||999)-Number(b.lesson_order||999)).map(l=>{
+      const tx=l.translations?.[state.lang]||l.translations?.en||{};
+      const active=String(l.lesson_code)===String(currentLesson);
+      return `<button class="nh7-school-side-lesson ${active?'active':''}" data-go="school" data-params='${html(JSON.stringify({lesson:l.lesson_code}))}'><strong>${html(tx.lesson_title||tx.class_title||l.lesson_code)}</strong></button>`;
+    }).join('');
+    return `<section class="nh7-school-side-course ${String(g.info.code)===String(currentCourse)?'is-active':''}"><h4>${html(title)}</h4>${items}</section>`;
+  }).join('');
+  return `<aside class="nh7-adaptive-sidebar nh7-school-sidebar"><div class="nh7-adaptive-sidebar-head"><strong>🎓 ${html(tr('school'))}</strong></div><div class="nh7-adaptive-scroll">${content}</div></aside>`;
+}
+
 async function schoolLesson(d, code){
   schoolDraftsV468.flush();
   const draftOwnerV468=schoolDraftsV468.owner(),draftEpochV468=nh7NavigationEpochV456;
@@ -1807,12 +2153,13 @@ async function schoolLesson(d, code){
   const durationLabel=duration?formatAudioTime(duration):formatAudioTime(progress.duration||0);
   const player=audioSrc?`<article class="sermon-card school-audio-card" data-sermon-card="${html(audioId)}"><div class="sermon-card-main"><span class="sermon-placeholder">🎧</span><div class="sermon-card-copy"><strong>${html(tx.lesson_title||tx.class_title||tr('playAudio'))}</strong><small>${tr('duration')}: ${localText(durationLabel||'0:00')} · MP3</small><div class="sermon-card-actions"><button class="primary-btn compact-player-btn" data-sermon-play="${html(audioId)}">▶ ${progress.time>5?tr('continueListening'):tr('listenAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(audioSrc)}" data-offline-title="${html(tx.lesson_title||tx.class_title||tr('playAudio'))}">${state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline'}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(audioId)}"><div class="inline-player-controls"><button class="player-round" data-inline-back>↶15</button><button class="player-main" data-inline-play>▶</button><button class="player-round" data-inline-forward>30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek type="range" min="0" max="1000" value="0"><span data-inline-total>${durationLabel||'0:00'}</span></div></div></article>`:'';
   const examHtml=schoolExam?renderSchoolExamBlock(schoolExam,schoolProgress):'';const completeLabel=schoolProgress?.completed_at?(state.lang==='fa'?'تکمیل شده ✓':state.lang==='hr'?'Završeno ✓':'Completed ✓'):(state.lang==='fa'?'علامت‌گذاری درس به‌عنوان تکمیل‌شده':state.lang==='hr'?'Označi lekciju završenom':'Mark lesson complete');
-  const assignmentQuestion=String(tx.assignment_question||'').trim();const assignmentDraft=schoolAssignment?.answer_text||localStorage.getItem('nh7_note_school-'+code)||'';const assignmentApproved=String(schoolAssignment?.status||'').toLowerCase()==='approved';
-  const assignmentHtml=assignmentQuestion?`<section class="school-assignment"><h3>${tr('assignment')}</h3><p>${html(assignmentQuestion)}</p><div class="notice"><strong>${state.lang==='fa'?'وضعیت':state.lang==='hr'?'Status':'Status'}:</strong> ${html(assignmentStatusText(schoolAssignment))}${schoolAssignment?.admin_feedback?`<p>${html(schoolAssignment.admin_feedback)}</p>`:''}</div><textarea id="schoolAssignmentAnswer" rows="7" ${assignmentApproved?'disabled':''} placeholder="${state.lang==='fa'?'پاسخ تکلیف را اینجا بنویسید':state.lang==='hr'?'Ovdje napišite odgovor na zadatak':'Write your assignment answer here'}">${html(assignmentDraft)}</textarea><div class="button-row"><button class="secondary-btn" id="saveSchoolAssignmentDraft" ${assignmentApproved?'disabled':''}>${state.lang==='fa'?'ذخیره پیش‌نویس':state.lang==='hr'?'Spremi skicu':'Save draft'}</button><button class="primary-btn" id="submitSchoolAssignment" ${assignmentApproved?'disabled':''}>${assignmentApproved?(state.lang==='fa'?'تکلیف تأیید شده':state.lang==='hr'?'Zadatak odobren':'Assignment approved'):(state.lang==='fa'?'ارسال رسمی تکلیف':state.lang==='hr'?'Predaj zadatak':'Submit assignment')}</button></div><p class="muted">${state.lang==='fa'?'این تکلیف بخشی از ۳۰٪ نمره تکالیف دوره است.':state.lang==='hr'?'Ovaj zadatak dio je 30% ocjene za zadatke.':'This assignment is part of the 30% assignment grade.'}</p></section>`:'';
-  view.innerHTML=card(tx.class_title||tr('school'),`${l.image?.url?`<img src="${html(l.image.url)}" alt="${html(tx.class_title||tx.lesson_title||tr('school'))}" style="width:100%;max-height:360px;object-fit:cover;border-radius:18px;margin-bottom:12px">`:''}<p>${html(tx.lesson_text||'')}</p>${player}${l.video?.url?`<p><a class="secondary-btn" href="${html(l.video.url)}" target="_blank" rel="noopener">Video</a></p>`:''}${l.pdf?.url?`<p><a class="secondary-btn" href="${html(l.pdf.url)}" target="_blank" rel="noopener">PDF</a> <button class="secondary-btn" data-offline-download="${html(l.pdf.url)}" data-offline-title="PDF ${html(tx.lesson_title||code)}">${state.lang==='fa'?'دانلود PDF برای آفلاین':state.lang==='hr'?'Preuzmi PDF offline':'Download PDF offline'}</button></p>`:''}<button class="primary-btn wide-btn" id="completeSchoolLesson">${completeLabel}</button>${assignmentHtml}<h3>${tr('fullLesson')}</h3><p>${html(wr.text||'')}</p>${examHtml}`);
+  const assignmentQuestion=String(tx.assignment_question||'').trim();const assignmentDraft=normalizeNoteText(schoolAssignment?.answer_text||localStorage.getItem('nh7_note_school-'+code)||'');const assignmentApproved=String(schoolAssignment?.status||'').toLowerCase()==='approved';
+  const assignmentHtml=assignmentQuestion?`<section class="school-assignment"><h3>${tr('assignment')}</h3><p>${html(assignmentQuestion)}</p><div class="notice"><strong>${state.lang==='fa'?'وضعیت':state.lang==='hr'?'Status':'Status'}:</strong> ${html(assignmentStatusText(schoolAssignment))}${schoolAssignment?.admin_feedback?`<p>${html(schoolAssignment.admin_feedback)}</p>`:''}</div><textarea id="schoolAssignmentAnswer" rows="7" ${assignmentApproved?'disabled':''} placeholder="${state.lang==='fa'?'پاسخ تکلیف را اینجا بنویسید':state.lang==='hr'?'Ovdje napišite odgovor na zadatak':'Write your assignment answer here'}">${textareaHtml(assignmentDraft)}</textarea><div class="button-row"><button class="secondary-btn" id="saveSchoolAssignmentDraft" ${assignmentApproved?'disabled':''}>${state.lang==='fa'?'ذخیره پیش‌نویس':state.lang==='hr'?'Spremi skicu':'Save draft'}</button><button class="primary-btn" id="submitSchoolAssignment" ${assignmentApproved?'disabled':''}>${assignmentApproved?(state.lang==='fa'?'تکلیف تأیید شده':state.lang==='hr'?'Zadatak odobren':'Assignment approved'):(state.lang==='fa'?'ارسال رسمی تکلیف':state.lang==='hr'?'Predaj zadatak':'Submit assignment')}</button></div><p class="muted">${state.lang==='fa'?'این تکلیف بخشی از ۳۰٪ نمره تکالیف دوره است.':state.lang==='hr'?'Ovaj zadatak dio je 30% ocjene za zadatke.':'This assignment is part of the 30% assignment grade.'}</p></section>`:'';
+  const lessonMain=card(tx.class_title||tr('school'),`${l.image?.url?`<img src="${html(l.image.url)}" alt="${html(tx.class_title||tx.lesson_title||tr('school'))}" style="width:100%;max-height:360px;object-fit:cover;border-radius:18px;margin-bottom:12px">`:''}<p>${html(tx.lesson_text||'')}</p>${player}${l.video?.url?`<p><a class="secondary-btn" href="${html(l.video.url)}" target="_blank" rel="noopener">Video</a></p>`:''}${l.pdf?.url?`<p><a class="secondary-btn" href="${html(l.pdf.url)}" target="_blank" rel="noopener">PDF</a> <button class="secondary-btn" data-offline-download="${html(l.pdf.url)}" data-offline-title="PDF ${html(tx.lesson_title||code)}">${state.lang==='fa'?'دانلود PDF برای آفلاین':state.lang==='hr'?'Preuzmi PDF offline':'Download PDF offline'}</button></p>`:''}<button class="primary-btn wide-btn" id="completeSchoolLesson">${completeLabel}</button>${assignmentHtml}<h3>${tr('fullLesson')}</h3><p>${html(wr.text||'')}</p>${examHtml}`);
+  view.innerHTML=adaptiveSplit(schoolAdaptiveSidebar(d,courseCode,code),lessonMain,'nh7-school-adaptive');
   schoolDraftsV468.attach({element:$('#schoolAssignmentAnswer'),lesson:code,expectedOwner:draftOwnerV468,initialValue:assignmentApproved?(schoolAssignment?.answer_text||''):assignmentDraft,approved:assignmentApproved});
   $('#completeSchoolLesson')?.addEventListener('click',()=>saveSchoolProgress(code,{completed_at:new Date().toISOString(),progress_percent:100}));
-  $('#saveSchoolAssignmentDraft')?.addEventListener('click',e=>{const answer=$('#schoolAssignmentAnswer')?.value||'';localStorage.setItem('nh7_note_school-'+code,answer);saveNoteCloud('note_school-'+code,answer).catch(console.warn);e.currentTarget.textContent=tr('saved')});
+  $('#saveSchoolAssignmentDraft')?.addEventListener('click',e=>{const input=$('#schoolAssignmentAnswer'),answer=normalizeNoteText(input?.value||'');if(input)input.value=answer;localStorage.setItem('nh7_note_school-'+code,answer);saveNoteCloud('note_school-'+code,answer).catch(console.warn);e.currentTarget.textContent=tr('saved')});
   $('#submitSchoolAssignment')?.addEventListener('click',()=>submitSchoolAssignment(courseCode,code,$('#schoolAssignmentAnswer')?.value||''));
   $('#submitSchoolExam')?.addEventListener('click',()=>submitSchoolExam(schoolExam,code));bindInlineSermonControls();updateInlineSermonPlayers();refreshOfflineButtons().catch(()=>{});
 }
@@ -1858,14 +2205,15 @@ async function schoolCourseExam(d,courseCode){
   try{attempts=await cloudFetch('school_exam_attempts?select=*&exam_id=eq.'+encodeURIComponent(exam.id)+'&user_email=eq.'+encodeURIComponent(email)+'&order=submitted_at.desc',{method:'GET'})}catch(e){console.warn('exam attempts',e)}
   try{const snapshot=await getSchoolSnapshot(email,false);assignments=(snapshot.assignments||[]).filter(x=>String(x.course_code||'foundation_school')===String(courseCode))}catch(e){console.warn('exam assignments',e)}
   const used=Array.isArray(attempts)?attempts.length:0,max=Number(exam.max_attempts||3),passedAlready=Array.isArray(attempts)&&attempts.some(x=>x.passed),remaining=passedAlready?0:Math.max(0,max-used),latest=attempts?.[0];const attemptNumber=used+1,attemptExam=prepareExamForAttempt(exam,attemptNumber,email),qs=Array.isArray(attemptExam.questions)?attemptExam.questions:[],title=examLocalized(exam,'title',tr('finalExam')),intro=examLocalized(exam,'intro',''),assignment=courseAssignmentSummary(d,courseCode,assignments);const examWeight=Number(exam.exam_weight??70),assignmentWeight=Number(exam.assignment_weight??30),assignmentLocked=exam.require_assignments_before_exam===true&&assignment.completed<assignment.total;
-  view.innerHTML=card(title,`${intro?`<p>${html(intro)}</p>`:''}<div class="notice"><p><strong>${state.lang==='fa'?'ساختار نمره':state.lang==='hr'?'Struktura ocjene':'Grade structure'}:</strong> ${localNum(examWeight)}% ${state.lang==='fa'?'آزمون':state.lang==='hr'?'ispit':'exam'} + ${localNum(assignmentWeight)}% ${state.lang==='fa'?'تکالیف':state.lang==='hr'?'zadaci':'assignments'}</p><p><strong>${state.lang==='fa'?'نمره فعلی تکالیف':state.lang==='hr'?'Trenutačna ocjena zadataka':'Current assignment score'}:</strong> ${localNum(assignment.percent)}% (${localNum(assignment.completed)} / ${localNum(assignment.total)})</p><p><strong>${state.lang==='fa'?'حد قبولی نهایی':state.lang==='hr'?'Završni prag prolaza':'Final passing score'}:</strong> ${Number(exam.passing_score||70)}%</p><p><strong>${state.lang==='fa'?'تعداد سؤال این تلاش':state.lang==='hr'?'Broj pitanja u ovom pokušaju':'Questions in this attempt'}:</strong> ${localNum(qs.length)}</p><p><strong>${state.lang==='fa'?'فرصت باقی‌مانده':state.lang==='hr'?'Preostali pokušaji':'Attempts remaining'}:</strong> ${localNum(remaining)} / ${localNum(max)}</p>${exam.shuffle_questions?`<p class="muted">${state.lang==='fa'?'ترتیب سؤال‌ها برای هر تلاش تغییر می‌کند.':state.lang==='hr'?'Redoslijed pitanja mijenja se pri svakom pokušaju.':'Question order changes on each attempt.'}</p>`:''}${latest?`<p><strong>${state.lang==='fa'?'آخرین نتیجه نهایی':state.lang==='hr'?'Posljednji završni rezultat':'Latest final result'}:</strong> ${html(latest.final_score_percent??latest.score_percent)}% ${latest.passed?'✓':''}</p>`:''}</div>${remaining>0&&!assignmentLocked?`${renderExamQuestions(attemptExam,'course_exam_q_')}<button class="primary-btn wide-btn" id="submitCourseExam">${state.lang==='fa'?'ثبت و دریافت نتیجه':state.lang==='hr'?'Pošalji i prikaži rezultat':'Submit and view result'}</button>`:assignmentLocked?`<p class="notice">${state.lang==='fa'?'ابتدا همه تکالیف لازم را ارسال کنید.':state.lang==='hr'?'Najprije predajte sve potrebne zadatke.':'Submit all required assignments first.'}</p>`:passedAlready?`<p class="notice" style="background:#ecfdf3;color:#08783d">${html(examResultMessage(exam,true))}</p>`:`<p class="notice">${state.lang==='fa'?'فرصت‌های تعیین‌شده برای این آزمون تمام شده است. لطفاً با مدیر مدرسه تماس بگیرید.':state.lang==='hr'?'Iskoristili ste sve dopuštene pokušaje. Obratite se administratoru škole.':'You have used all allowed attempts. Please contact the school administrator.'}</p>`}<button class="secondary-btn wide-btn" data-go="school">${tr('back')}</button><div id="courseExamResult"></div>`);
+  const latestReviewV540=latest?nh7ExamReviewV540.render(prepareExamForAttempt(exam,Number(latest.attempt_number||Math.max(1,used)),email),latest.answers,!latest.passed):'';
+  view.innerHTML=card(title,`${intro?`<p>${html(intro)}</p>`:''}<div class="notice"><p><strong>${state.lang==='fa'?'ساختار نمره':state.lang==='hr'?'Struktura ocjene':'Grade structure'}:</strong> ${localNum(examWeight)}% ${state.lang==='fa'?'آزمون':state.lang==='hr'?'ispit':'exam'} + ${localNum(assignmentWeight)}% ${state.lang==='fa'?'تکالیف':state.lang==='hr'?'zadaci':'assignments'}</p><p><strong>${state.lang==='fa'?'نمره فعلی تکالیف':state.lang==='hr'?'Trenutačna ocjena zadataka':'Current assignment score'}:</strong> ${localNum(assignment.percent)}% (${localNum(assignment.completed)} / ${localNum(assignment.total)})</p><p><strong>${state.lang==='fa'?'حد قبولی نهایی':state.lang==='hr'?'Završni prag prolaza':'Final passing score'}:</strong> ${Number(exam.passing_score||70)}%</p><p><strong>${state.lang==='fa'?'تعداد سؤال این تلاش':state.lang==='hr'?'Broj pitanja u ovom pokušaju':'Questions in this attempt'}:</strong> ${localNum(qs.length)}</p><p><strong>${state.lang==='fa'?'فرصت باقی‌مانده':state.lang==='hr'?'Preostali pokušaji':'Attempts remaining'}:</strong> ${localNum(remaining)} / ${localNum(max)}</p>${exam.shuffle_questions?`<p class="muted">${state.lang==='fa'?'ترتیب سؤال‌ها برای هر تلاش تغییر می‌کند.':state.lang==='hr'?'Redoslijed pitanja mijenja se pri svakom pokušaju.':'Question order changes on each attempt.'}</p>`:''}${latest?`<p><strong>${state.lang==='fa'?'آخرین نتیجه نهایی':state.lang==='hr'?'Posljednji završni rezultat':'Latest final result'}:</strong> ${html(latest.final_score_percent??latest.score_percent)}% ${latest.passed?'✓':''}</p>`:''}</div>${latestReviewV540}${remaining>0&&!assignmentLocked?`${renderExamQuestions(attemptExam,'course_exam_q_')}<button class="primary-btn wide-btn" id="submitCourseExam">${state.lang==='fa'?'ثبت و دریافت نتیجه':state.lang==='hr'?'Pošalji i prikaži rezultat':'Submit and view result'}</button>`:assignmentLocked?`<p class="notice">${state.lang==='fa'?'ابتدا همه تکالیف لازم را ارسال کنید.':state.lang==='hr'?'Najprije predajte sve potrebne zadatke.':'Submit all required assignments first.'}</p>`:passedAlready?`<p class="notice" style="background:#ecfdf3;color:#08783d">${html(examResultMessage(exam,true))}</p>`:`<p class="notice">${state.lang==='fa'?'فرصت‌های تعیین‌شده برای این آزمون تمام شده است. لطفاً با مدیر مدرسه تماس بگیرید.':state.lang==='hr'?'Iskoristili ste sve dopuštene pokušaje. Obratite se administratoru škole.':'You have used all allowed attempts. Please contact the school administrator.'}</p>`}<button class="secondary-btn wide-btn" data-go="school">${tr('back')}</button><div id="courseExamResult"></div>`);
   $('#submitCourseExam')?.addEventListener('click',()=>submitCourseExam(exam,attemptExam,courseCode,used,assignment));
 }
 async function submitCourseExam(exam,attemptExam,courseCode,usedAttempts=0,assignment={percent:100,completed:0,total:0}){
   const button=$('#submitCourseExam');if(button?.disabled)return;const result=collectExamAnswers(attemptExam,'course_exam_q_');if(result.answered<result.total){alert(state.lang==='fa'?'لطفاً به همه سؤال‌ها پاسخ بدهید.':state.lang==='hr'?'Molimo odgovorite na sva pitanja.':'Please answer all questions.');return}if(button){button.disabled=true;button.textContent=state.lang==='fa'?'در حال ثبت نتیجه…':state.lang==='hr'?'Spremanje rezultata…':'Saving result…'}
   const email=currentUserEmail(),profile=getKnownUserProfile(),objectiveScore=Math.round(result.correct/Math.max(1,result.total)*100),examWeight=Number(exam.exam_weight??70),assignmentWeight=Number(exam.assignment_weight??30),weightTotal=Math.max(1,examWeight+assignmentWeight),assignmentScore=Number(assignment.percent??100),finalScore=Math.round((objectiveScore*examWeight+assignmentScore*assignmentWeight)/weightTotal),passed=finalScore>=Number(exam.passing_score||70),submitted=new Date().toISOString(),attemptNumber=Number(usedAttempts||0)+1;
   const attempt={exam_id:exam.id,user_email:email,user_name:profile.name||'',course_code:courseCode,lesson_code:'course:'+courseCode,attempt_number:attemptNumber,correct_count:result.correct,total_questions:result.total,objective_score_percent:objectiveScore,assignment_score_percent:assignmentScore,final_score_percent:finalScore,assignment_completed_count:Number(assignment.completed||0),assignment_total_count:Number(assignment.total||0),score_percent:finalScore,passed,answers:result.answers,submitted_at:submitted};
-  try{await cloudFetch('school_exam_attempts',{method:'POST',body:JSON.stringify(attempt)});await cloudFetch('school_progress?on_conflict=user_email,lesson_code',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({user_email:email,user_name:profile.name||'',lesson_code:'course:'+courseCode,progress_percent:passed?100:finalScore,completed_at:passed?submitted:null,exam_id:exam.id,exam_score:finalScore,objective_score_percent:objectiveScore,assignment_score_percent:assignmentScore,final_score_percent:finalScore,exam_passed:passed,exam_attempted_at:submitted,updated_at:submitted})});invalidateSchoolSnapshot(email);await getSchoolSnapshot(email,true);const msg=examResultMessage(exam,passed),box=$('#courseExamResult');if(box)box.innerHTML=`<section class="notice" style="${passed?'background:#ecfdf3;color:#08783d':''}"><h3>${passed?'✓ ':''}${state.lang==='fa'?'نتیجه نهایی':state.lang==='hr'?'Završni rezultat':'Final result'}</h3><p><strong>${state.lang==='fa'?'آزمون کتبی':state.lang==='hr'?'Pisani ispit':'Written exam'}:</strong> ${localNum(result.correct)} / ${localNum(result.total)} · ${localNum(objectiveScore)}% × ${localNum(examWeight)}%</p><p><strong>${state.lang==='fa'?'تکالیف':state.lang==='hr'?'Zadaci':'Assignments'}:</strong> ${localNum(assignmentScore)}% × ${localNum(assignmentWeight)}%</p><p><strong>${state.lang==='fa'?'نمره نهایی':state.lang==='hr'?'Završna ocjena':'Final grade'}:</strong> ${localNum(finalScore)}%</p><p>${html(msg)}</p></section>`;window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})}catch(e){console.warn(e);alert(state.lang==='fa'?'ثبت نتیجه انجام نشد. لطفاً دوباره تلاش کنید.':state.lang==='hr'?'Rezultat nije spremljen. Pokušajte ponovno.':'The result could not be saved. Please try again.');if(button){button.disabled=false;button.textContent=state.lang==='fa'?'ثبت و دریافت نتیجه':state.lang==='hr'?'Pošalji i prikaži rezultat':'Submit and view result'}}
+  try{await cloudFetch('school_exam_attempts',{method:'POST',body:JSON.stringify(attempt)});await cloudFetch('school_progress?on_conflict=user_email,lesson_code',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({user_email:email,user_name:profile.name||'',lesson_code:'course:'+courseCode,progress_percent:passed?100:finalScore,completed_at:passed?submitted:null,exam_id:exam.id,exam_score:finalScore,objective_score_percent:objectiveScore,assignment_score_percent:assignmentScore,final_score_percent:finalScore,exam_passed:passed,exam_attempted_at:submitted,updated_at:submitted})});invalidateSchoolSnapshot(email);await getSchoolSnapshot(email,true);const msg=examResultMessage(exam,passed),box=$('#courseExamResult');if(box)box.innerHTML=`<section class="notice" style="${passed?'background:#ecfdf3;color:#08783d':''}"><h3>${passed?'✓ ':''}${state.lang==='fa'?'نتیجه نهایی':state.lang==='hr'?'Završni rezultat':'Final result'}</h3><p><strong>${state.lang==='fa'?'آزمون کتبی':state.lang==='hr'?'Pisani ispit':'Written exam'}:</strong> ${localNum(result.correct)} / ${localNum(result.total)} · ${localNum(objectiveScore)}% × ${localNum(examWeight)}%</p><p><strong>${state.lang==='fa'?'تکالیف':state.lang==='hr'?'Zadaci':'Assignments'}:</strong> ${localNum(assignmentScore)}% × ${localNum(assignmentWeight)}%</p><p><strong>${state.lang==='fa'?'نمره نهایی':state.lang==='hr'?'Završna ocjena':'Final grade'}:</strong> ${localNum(finalScore)}%</p><p>${html(msg)}</p></section>${nh7ExamReviewV540.render(attemptExam,result.answers,!passed)}`;window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})}catch(e){console.warn(e);alert(state.lang==='fa'?'ثبت نتیجه انجام نشد. لطفاً دوباره تلاش کنید.':state.lang==='hr'?'Rezultat nije spremljen. Pokušajte ponovno.':'The result could not be saved. Please try again.');if(button){button.disabled=false;button.textContent=state.lang==='fa'?'ثبت و دریافت نتیجه':state.lang==='hr'?'Pošalji i prikaži rezultat':'Submit and view result'}}
 }
 function bindInlineSermonControls(){
   $$('[data-sermon-play]').forEach(b=>b.onclick=e=>{e.stopPropagation();const item=window.__sermonMap?.[String(b.dataset.sermonPlay)];if(item)playSermon(item)});
@@ -1875,6 +2223,8 @@ function bindInlineSermonControls(){
 
 const NH7_AUDIO_CATALOG_CACHE_V446='nh7_audio_catalog_cache_v446';
 const NH7_AUDIO_CATALOG_PERSIST_V470='nh7_audio_catalog_cache_v470';
+const NH7_AUDIO_CATALOG_REFRESH_MS_V541=60*60*1000;
+let nh7AudioCatalogFetchPromiseV541=null;
 function nh7ReadAudioCatalogCacheV446(){
   for(const [store,key] of [[sessionStorage,NH7_AUDIO_CATALOG_CACHE_V446],[localStorage,NH7_AUDIO_CATALOG_PERSIST_V470]]){
     try{
@@ -1892,6 +2242,30 @@ function nh7WriteAudioCatalogCacheV446(categories,sermons){
       localStorage.setItem(NH7_AUDIO_CATALOG_PERSIST_V470,raw);
     }
   }catch(e){}
+}
+async function nh7FetchAudioCatalogRemoteV541(){
+ if(nh7AudioCatalogFetchPromiseV541)return nh7AudioCatalogFetchPromiseV541;
+ nh7AudioCatalogFetchPromiseV541=Promise.all([
+  nh7TimedCloudFetchV470('sermon_categories?select=id,name_fa,name_en,name_hr,sort_order&is_active=eq.true&order=sort_order.asc,name_fa.asc',{method:'GET'},5000),
+  nh7TimedCloudFetchV470('sermons?select=id,category_id,title_fa,title_en,title_hr,description_fa,description_en,description_hr,duration_seconds,duration_minutes,audio_url,youtube_url,cover_url,sort_order,published_at&is_published=eq.true&order=sort_order.asc,published_at.desc',{method:'GET'},5000)
+ ]).then(([categories,sermons])=>{
+  if(Array.isArray(sermons)&&sermons.length)nh7WriteAudioCatalogCacheV446(categories,sermons);
+  return {categories:Array.isArray(categories)?categories:[],sermons:Array.isArray(sermons)?sermons:[]};
+ }).finally(()=>{nh7AudioCatalogFetchPromiseV541=null});
+ return nh7AudioCatalogFetchPromiseV541
+}
+async function nh7EnsureAudioCatalogV541(){
+ const cached=nh7ReadAudioCatalogCacheV446();
+ if(cached)return cached;
+ try{return await nh7FetchAudioCatalogRemoteV541()}catch(e){console.warn('Audio catalog warm-up failed',e);return {categories:[],sermons:[]}}
+}
+function nh7AudioCatalogNeedsRefreshV541(cache){
+ return !cache||!Number(cache.at)||Date.now()-Number(cache.at)>NH7_AUDIO_CATALOG_REFRESH_MS_V541
+}
+function nh7WarmAudioCatalogV541(){
+ const cached=nh7ReadAudioCatalogCacheV446();
+ if(cached)return;
+ setTimeout(()=>nh7FetchAudioCatalogRemoteV541().catch(()=>{}),900);
 }
 function nh7BuildSermonMapV535(categories,sermons){
   return Object.fromEntries((Array.isArray(sermons)?sermons:[]).map(x=>{
@@ -1982,21 +2356,17 @@ async function audio(params={}){
   if(!await nh7RequireSchoolAccessV223(tr('audio')))return;
   let categories=[],sermons=[];
   const cached=nh7ReadAudioCatalogCacheV446();
-  const fetchFresh=()=>Promise.all([
-    nh7TimedCloudFetchV470('sermon_categories?select=id,name_fa,name_en,name_hr,sort_order&is_active=eq.true&order=sort_order.asc,name_fa.asc',{method:'GET'},5000),
-    nh7TimedCloudFetchV470('sermons?select=id,category_id,title_fa,title_en,title_hr,description_fa,description_en,description_hr,duration_seconds,duration_minutes,audio_url,youtube_url,cover_url,sort_order,published_at&is_published=eq.true&order=sort_order.asc,published_at.desc',{method:'GET'},5000)
-  ]);
   if(cached){
     categories=cached.categories;sermons=cached.sermons;
-    fetchFresh().then(([freshCategories,freshSermons])=>nh7ApplyFreshAudioCatalogV535(freshCategories,freshSermons))
-      .catch(e=>console.warn('Audio catalog background refresh failed',e));
-  }else{
-    try{
-      [categories,sermons]=await fetchFresh();
-      nh7WriteAudioCatalogCacheV446(categories,sermons);
-    }catch(e){
-      console.warn('Dynamic sermons unavailable; using bundled audio list',e);
+    if(nh7AudioCatalogNeedsRefreshV541(cached)){
+      nh7FetchAudioCatalogRemoteV541().then(fresh=>nh7ApplyFreshAudioCatalogV535(fresh.categories,fresh.sermons))
+        .catch(e=>console.warn('Audio catalog background refresh failed',e));
     }
+  }else{
+    // First open is instant: bundled audio paints now while the online catalog warms in background.
+    nh7FetchAudioCatalogRemoteV541().then(fresh=>{
+      if(Array.isArray(fresh.sermons)&&fresh.sermons.length&&state.route==='audio')render('audio',params,true);
+    }).catch(e=>console.warn('Dynamic sermons unavailable; using bundled audio list',e));
   }
   if(Array.isArray(sermons)&&sermons.length){
     const catId=params.cat||'';
@@ -2004,20 +2374,36 @@ async function audio(params={}){
     window.__sermonMap=nh7BuildSermonMapV535(categories,sermons);
     if(params.open){const x=sermons.find(v=>String(v.id)===String(params.open));if(x)playSermon(x);navigate('audio',{cat:catId,q:params.q||''},true);return}
     const list=filtered.length?`<div class="sermon-list">${filtered.map(x=>{const title=x['title_'+state.lang]||x.title_fa||x.title_en;let progress={};try{progress=JSON.parse(localStorage.getItem(sermonProgressKey(x.id))||'{}')}catch(e){}const duration=sermonDurationLabel(x)||formatAudioTime(progress.duration||0);return `<article class="sermon-card" data-sermon-card="${html(x.id)}"><div class="sermon-card-main">${x.cover_url?`<img src="${html(x.cover_url)}" alt="">`:'<span class="sermon-placeholder">🎙</span>'}<div class="sermon-card-copy"><strong>${html(title)}</strong><small>${duration?`${tr('duration')}: ${localText(duration)} · `:''}${x.youtube_url?'YouTube · ':''}${x.audio_url?'MP3':''}</small><div class="sermon-card-actions">${x.audio_url?`<button class="primary-btn compact-player-btn" data-sermon-play="${html(x.id)}">▶ ${progress.time>5?tr('continueListening'):tr('listenAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(x.audio_url)}" data-offline-title="${html(title)}">${state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline'}</button>`:''}<button class="secondary-btn compact-player-btn" data-sermon-note="${html(x.id)}">📝 ${tr('sermonNoteButton')}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(x.id)}"><div class="inline-player-controls"><button class="player-round" data-inline-back>↶15</button><button class="player-main" data-inline-play>▶</button><button class="player-round" data-inline-forward>30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek type="range" min="0" max="1000" value="0"><span data-inline-total>${duration||'0:00'}</span></div></div></article>`}).join('')}</div>`:`<p class="muted">${tr('noSermons')}</p>`;
-    view.innerHTML=card(tr('sermons'),`<input id="sermonSearch" placeholder="${tr('sermonSearch')}" value="${html(params.q||'')}"><div class="tabs"><button class="tab ${!catId?'active':''}" data-go="audio">${tr('allCategories')}</button>${(categories||[]).map(c=>`<button class="tab ${String(catId)===String(c.id)?'active':''}" data-go="audio" data-params='${html(JSON.stringify({cat:c.id}))}'>${html(c['name_'+state.lang]||c.name_fa||c.name_en)}</button>`).join('')}</div>${list}`);
+    const categorySidebar=`<aside class="nh7-adaptive-sidebar nh7-audio-sidebar">
+      <div class="nh7-adaptive-sidebar-head"><strong>🎧 ${html(tr('sermons'))}</strong></div>
+      <div class="nh7-adaptive-scroll nh7-audio-categories">
+        <button class="nh7-adaptive-category ${!catId?'active':''}" data-go="audio">${html(tr('allCategories'))}</button>
+        ${(categories||[]).map(c=>`<button class="nh7-adaptive-category ${String(catId)===String(c.id)?'active':''}" data-go="audio" data-params='${html(JSON.stringify({cat:c.id}))}'>${html(c['name_'+state.lang]||c.name_fa||c.name_en)}</button>`).join('')}
+      </div>
+    </aside>`;
+    const audioMain=card(tr('sermons'),`<input id="sermonSearch" placeholder="${tr('sermonSearch')}" value="${html(params.q||'')}"><div class="tabs nh7-phone-only"><button class="tab ${!catId?'active':''}" data-go="audio">${tr('allCategories')}</button>${(categories||[]).map(c=>`<button class="tab ${String(catId)===String(c.id)?'active':''}" data-go="audio" data-params='${html(JSON.stringify({cat:c.id}))}'>${html(c['name_'+state.lang]||c.name_fa||c.name_en)}</button>`).join('')}</div>${list}`);
+    view.innerHTML=adaptiveSplit(categorySidebar,audioMain,'nh7-audio-adaptive');
     try{window.NH7_AUDIO_LIBRARY_V500_PATCH?.()}catch(e){console.warn('Audio Library v500 mount',e)}
     const sermonSearchEl=$('#sermonSearch');
     const runSermonSearch=e=>navigate('audio',{cat:catId,q:e.target.value},true);
     sermonSearchEl?.addEventListener('input',runSermonSearch);
     sermonSearchEl?.addEventListener('change',runSermonSearch);
-    bindInlineSermonControls();updateInlineSermonPlayers();nh7MountAudioEnhancementsV446();return;
+    bindInlineSermonControls();updateInlineSermonPlayers();nh7MountAudioEnhancementsV446();if(params.note){const noteItem=sermons.find(v=>String(v.id)===String(params.note));if(noteItem)setTimeout(()=>openSermonNote(noteItem),40)}return;
   }
   const d=await jfetch('data/audio/messages.json');
   if(params.cat){
     const c=d.categories.find(x=>x.id===params.cat),items=c?.items||[],topic=pick(c?.title)||tr('audio');
     window.__sermonMap=Object.fromEntries(items.map(it=>{const id='bundled-'+String(it.id||simpleHash(it.src||it.title||''));return[id,{id,audio_url:it.src||'',title_fa:it.title?.fa||it.title?.en||'Audio',title_en:it.title?.en||it.title?.fa||'Audio',title_hr:it.title?.hr||it.title?.en||'Audio',analytics_type:'sermon',analytics_id:String(it.id||id),analytics_topic:topic,analytics_source_group:String(c?.id||''),analytics_language:state.lang}]}));
     const list=items.length?`<div class="sermon-list">${items.map(it=>{const id='bundled-'+String(it.id||simpleHash(it.src||it.title||'')),title=pick(it.title)||it.title||'Audio';let progress={};try{progress=JSON.parse(localStorage.getItem(sermonProgressKey(id))||'{}')}catch(e){}const duration=formatAudioTime(progress.duration||0);return`<article class="sermon-card" data-sermon-card="${html(id)}"><div class="sermon-card-main"><span class="sermon-placeholder">🎧</span><div class="sermon-card-copy"><strong>${html(title)}</strong><small>${duration!=='0:00'?`${tr('duration')}: ${localText(duration)} · `:''}MP3</small><div class="sermon-card-actions"><button class="primary-btn compact-player-btn" data-sermon-play="${html(id)}">▶ ${progress.time>5?tr('continueListening'):tr('listenAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(it.src||'')}" data-offline-title="${html(title)}">${state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline'}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(id)}"><div class="inline-player-controls"><button class="player-round" data-inline-back>↶15</button><button class="player-main" data-inline-play>▶</button><button class="player-round" data-inline-forward>30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek type="range" min="0" max="1000" value="0"><span data-inline-total>${duration}</span></div></div></article>`}).join('')}</div>`:`<p class="muted">${tr('noAudio')}</p>`;
-    view.innerHTML=card(topic,list);bindInlineSermonControls();updateInlineSermonPlayers();nh7MountAudioEnhancementsV446();return
+    view.innerHTML=card(topic,list);bindInlineSermonControls();updateInlineSermonPlayers();nh7MountAudioEnhancementsV446();
+    if(params.openBundled){
+      const wanted=String(params.openBundled),target=items.find(it=>String(it.id||it.src||pick(it.title)||it.title||'')===wanted);
+      if(target){
+        const id='bundled-'+String(target.id||simpleHash(target.src||target.title||'')),item=window.__sermonMap?.[id];
+        if(item)setTimeout(()=>playSermon(item),30)
+      }
+    }
+    return
   }
   view.innerHTML=card(tr('audio'),`<div class="grid">${d.categories.map(c=>tile('audio','🎧',pick(c.title),`${tr('all')}: ${localNum((c.items||[]).length)}`,{cat:c.id})).join('')}</div>`);
 }
@@ -2213,7 +2599,7 @@ async function library(params={}){
 }
 
 async function more(){
-  const destinations=[['audio','🎧'],['meetings','☎'],['salvation','✝'],['soulWinning','🌾'],['qna','❓'],['account','👤'],['about','ℹ'],['settings','⚙']];
+  const destinations=[['audio','🎧'],['testimonies','✨'],['prayerRequest','🙏'],['profile','👤'],['meetings','☎'],['salvation','✝'],['soulWinning','🌾'],['qna','❓'],['account','🔐'],['about','ℹ'],['settings','⚙']];
   view.innerHTML=`<div class="grid" data-more-navigation456>${destinations.map(([route,icon])=>tile(route,icon,tr(route))).join('')}</div>`;
   mountMoreReviewV469(view.querySelector('[data-more-navigation456]'),{language:state.lang});
 }
@@ -2337,6 +2723,7 @@ async function qna(opts={}){
 async function account(){
   const session=authSession();
   if(isAccountLoggedIn()){
+    if(window.NH7CommunityV502?.resumePending?.())return;
     const profile=getKnownUserProfile(); const email=authEmail()||profile.email||'';
     view.innerHTML=card(tr('account'), `<h3>${tr('myAccess')}</h3><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||session?.user?.user_metadata?.full_name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(email)}</p></div><button class="danger-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button>`);
     $('#logoutAccountBtn')?.addEventListener('click',logoutAccount); return;
@@ -2367,6 +2754,7 @@ async function signInAccount(){
     await restoreAccountCloudData(true);
     invalidateSchoolSnapshot(email);
     await getSchoolSnapshot(email,true);
+    if(window.NH7CommunityV502?.resumePending?.())return;
     navigate('school',{},true);
   }catch(e){
     console.warn('Account sign-in failed',e);
@@ -2636,7 +3024,7 @@ function bindDynamic(){
   $$('[data-highlight-clear]').forEach(el=>el.onclick=e=>{e.stopPropagation();const key=el.dataset.highlightClear,st=JSON.parse(localStorage.getItem(key)||'{}'),verse=el.closest('.reader-verse');st.highlight=false;delete st.highlightColor;localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);verse?.classList.remove('highlighted','highlight-yellow','highlight-red','highlight-green','highlight-blue');el.closest('.highlight-palette')?.classList.add('hidden')});
   $$('[data-note-verse],[data-note-marker]').forEach(el=>el.onclick=()=>{const id=el.dataset.noteVerse||el.dataset.noteMarker,box=$('#'+CSS.escape(id));if(box){$$('.verse-note-box').forEach(x=>{if(x!==box)x.classList.add('hidden')});box.classList.toggle('hidden')}});
   $$('[data-close-verse-note]').forEach(el=>el.onclick=()=>el.closest('.verse-note-box')?.classList.add('hidden'));
-  $$('[data-save-verse-note]').forEach(el=>el.onclick=()=>{const key=el.dataset.saveVerseNote,input=$(`[data-note-input="${CSS.escape(key)}"]`),verse=el.closest('.reader-verse');let st={};try{st=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}st.note=(window.NH7NoteTextV501?.normalize?.(input?.value||'')??(input?.value||'')).slice(0,1000);localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);let marker=verse?.querySelector('.verse-note-marker');if(st.note&&!marker&&verse){marker=document.createElement('button');marker.type='button';marker.className='verse-note-marker';marker.dataset.noteMarker=el.closest('.verse-note-box')?.id||'';marker.textContent='📓';marker.title=tr('noteAvailable');marker.onclick=()=>el.closest('.verse-note-box')?.classList.toggle('hidden');verse.querySelector('.verse-text')?.after(marker)}else if(!st.note&&marker)marker.remove();el.textContent=tr('saved');setTimeout(()=>el.closest('.verse-note-box')?.classList.add('hidden'),350)});
+  $$('[data-save-verse-note]').forEach(el=>el.onclick=()=>{const key=el.dataset.saveVerseNote,input=$(`[data-note-input="${CSS.escape(key)}"]`),verse=el.closest('.reader-verse');let st={};try{st=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}st.note=(window.NH7NoteTextV501?.normalize?.(input?.value||'')??(input?.value||'')).slice(0,1000);localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);const ref=verse?.querySelector('[data-bookmark]')?.dataset.bookmark||verse?.querySelector('[data-share-verse]')?.dataset.shareVerse||'';const verseText=verse?.querySelector('.verse-text')?.textContent||'';try{window.NH7BibleBatchV230?.syncPayload?.({batch_id:crypto.randomUUID?.()||String(Date.now()),language:state.lang,items:[{verse_key:key,verse_ref:ref,verse_text:verseText,saved:!!st.saved,highlight_color:st.highlight?String(st.highlightColor||'yellow'):'',note:String(st.note||'')}]})}catch(_){ }let marker=verse?.querySelector('.verse-note-marker');if(st.note&&!marker&&verse){marker=document.createElement('button');marker.type='button';marker.className='verse-note-marker';marker.dataset.noteMarker=el.closest('.verse-note-box')?.id||'';marker.textContent='📓';marker.title=tr('noteAvailable');marker.onclick=()=>el.closest('.verse-note-box')?.classList.toggle('hidden');verse.querySelector('.verse-text')?.after(marker)}else if(!st.note&&marker)marker.remove();el.textContent=tr('saved');setTimeout(()=>el.closest('.verse-note-box')?.classList.add('hidden'),350)});
   $$('[data-share-verse]').forEach(el=>el.onclick=async()=>{ const txt=`${localizeRef(el.dataset.shareVerse)} — ${el.dataset.shareText||''}`; try{ if(navigator.share) await navigator.share({text:txt}); else { await navigator.clipboard.writeText(txt); alert(tr('saved')); } window.NH7BibleBatchV230?.clearSelection?.(); }catch(e){} });
   $$('[data-complete-daily]').forEach(el=>el.onclick=()=>{ const key='nh7_daily_done_'+el.dataset.completeDaily; if(!localStorage.getItem(key)){ localStorage.setItem(key,'1'); saveProgressCloud(key,{done:true,at:new Date().toISOString()}).catch(console.warn); addPoints(3,'daily_1'); } el.textContent=tr('dailyCompleted'); });
   $$('[data-open-ref]').forEach(el=>el.onclick=async()=>{ await loadBibleMeta(); const ref=parseRef(el.dataset.openRef); if(ref){ const params={mode:'chapter',bookId:ref.bookId,chapter:ref.chapter}; if((el.dataset.openRefMode||'verse')==='verse') params.verse=ref.verse; navigate('bible',params); } });
@@ -2652,7 +3040,7 @@ function bindDynamic(){
   $$('[data-clear-bible-selection]').forEach(el=>el.onclick=()=>window.NH7BibleBatchV230?.clearSelection?.());
   const run=$('#runBibleSearch'); if(run) run.onclick=()=>navigate('bible',{section:'written',q:$('#bibleSearch').value},true);
   $('#startGratitude')?.addEventListener('click',()=>{const start=todayKey();localStorage.setItem('nh7_gratitude_start',start);saveProgressCloud('nh7_gratitude_start',{__raw:start}).catch(console.warn);addPoints(5,'gratitude_1');render('daily',{tab:'gratitude'},true)});
-  $('#completeGratitude')?.addEventListener('click',(ev)=>{ const current=Number(ev.currentTarget.dataset.gratitudeDay||1); const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]'); if(!completed.includes(current)) completed.push(current); completed.sort((a,b)=>a-b); localStorage.setItem('nh7_gratitude_completed',JSON.stringify(completed)); const gnote=$('#gratitudeNote')?.value||''; localStorage.setItem('nh7_gratitude_note_'+current,gnote); saveNoteCloud('gratitude_note_'+current, gnote).catch(console.warn); saveProgressCloud('gratitude_completed',{completed}).catch(console.warn); addPoints(10,'gratitude_1'); render('daily',{tab:'gratitude',gday:current},true); });
+  $('#completeGratitude')?.addEventListener('click',(ev)=>{ const current=Number(ev.currentTarget.dataset.gratitudeDay||1); const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]'); if(!completed.includes(current)) completed.push(current); completed.sort((a,b)=>a-b); localStorage.setItem('nh7_gratitude_completed',JSON.stringify(completed)); const gnote=normalizeNoteText($('#gratitudeNote')?.value||''); localStorage.setItem('nh7_gratitude_note_'+current,gnote); saveNoteCloud('gratitude_note_'+current, gnote).catch(console.warn); saveProgressCloud('gratitude_completed',{completed}).catch(console.warn); addPoints(10,'gratitude_1'); render('daily',{tab:'gratitude',gday:current},true); });
   $('#undoGratitude')?.addEventListener('click',(ev)=>{ const current=Number(ev.currentTarget.dataset.gratitudeDay||1); const completed=JSON.parse(localStorage.getItem('nh7_gratitude_completed')||'[]').filter(x=>Number(x)!==current); localStorage.setItem('nh7_gratitude_completed',JSON.stringify(completed)); saveProgressCloud('gratitude_completed',{completed}).catch(console.warn); render('daily',{tab:'gratitude',gday:current},true); });
 }
 
@@ -2671,18 +3059,21 @@ if('serviceWorker' in navigator) navigator.serviceWorker.register('service-worke
 try{const Native=nativeLocalNotifications();Native?.addListener?.('localNotificationActionPerformed',ev=>{const route=ev?.notification?.extra?.route||'home';navigate(route,{},true)});}catch(e){}
 async function bootstrapApp(){
   clearLegacySchoolSession();
-  if(isAccountLoggedIn()){
-    await restoreAccountCloudData(true).catch(console.warn);
-    await getSchoolSnapshot(authEmail(),true).catch(console.warn);
-  }
+  // Paint cached/local UI first. Account and inbox sync must never block first render.
   setLang(state.lang);
+  const profileHeaderBtn=$('#profileHeaderBtn');if(profileHeaderBtn&&!profileHeaderBtn.dataset.nh7BoundV503){profileHeaderBtn.dataset.nh7BoundV503='1';profileHeaderBtn.addEventListener('click',()=>navigate('profile',{}));}
+  syncHeaderProfileV503().catch(console.warn);
   ensureSermonPlayer();
+  if(isAccountLoggedIn())restoreAccountCloudData(false).catch(console.warn);
   syncCloudQueue().catch(console.warn);
-  refreshInboxFromCloud().catch(console.warn);
+  refreshInboxFromCloud(false).catch(console.warn);
   maybeCreateScheduledInboxMessages().catch(console.warn);
   notificationPermissionStatus().then(p=>{if(p==='granted'&&nativeLocalNotifications())scheduleNativeNotifications().catch(console.warn)}).catch(console.warn);
   updateInboxBadge();
   showAmen();
+  // Non-blocking warm-up: bundled/local assets only. This does not add Supabase traffic.
+  const warmLocal=()=>{loadBibleMeta().catch(()=>{});jfetch('data/audio/messages.json').catch(()=>{});jfetch('data/school/school_content.json').catch(()=>{})};
+  if('requestIdleCallback' in window)requestIdleCallback(warmLocal,{timeout:1800});else setTimeout(warmLocal,1200);
 }
 bootstrapApp().catch(console.warn);
 
@@ -2690,6 +3081,11 @@ bootstrapApp().catch(console.warn);
 // Reader localization only. Canonical storage keys stay unchanged.
 window.NH7ReaderSourceV452={
   recordSaved:()=>addPoints(5,'first_verse'),
+  open:async ref=>{
+    await loadBibleMeta();const p=parseRef(ref);if(!p)return false;
+    navigate('bible',{section:'written',mode:'chapter',bookId:p.bookId,chapter:p.chapter,verse:p.verse});
+    return true;
+  },
   label:(bookId,chapter,verse,locale=state.lang)=>{
     const b=state.bible.books?.find(x=>x.id===bookId),n=v=>locale==='fa'?String(v).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]):String(v);
     return b?`${b.names?.[locale]||b.id} ${n(chapter)}:${n(verse)}`:'';

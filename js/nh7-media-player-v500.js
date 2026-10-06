@@ -6,7 +6,7 @@
 if(window.__NH7_MEDIA_PLAYER_V500__)return;
 window.__NH7_MEDIA_PLAYER_V500__=true;
 
-const VERSION='5.2.8-note-draft-autosave';
+const VERSION='5.5.5-full-overlay-fix';
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const FAVORITES_KEY='nh7_audio_favorites_v500';
 const NOTE_DRAFT_PREFIX='nh7_sermon_note_draft_v528_';
@@ -557,7 +557,14 @@ function sync(){
   }
 }
 
-function start(){ensure();refreshLanguageUI(true);sync();clearInterval(syncTimer);syncTimer=setInterval(sync,250);window.addEventListener('pageshow',()=>{lastUiLang='';sync()});window.addEventListener('pagehide',()=>flushInlineNoteDraft(false));document.addEventListener('visibilitychange',()=>{if(document.hidden)flushInlineNoteDraft(false)});window.addEventListener('change',e=>{if(['langSelect','settingsLang'].includes(e.target?.id)){lastUiLang='';lastTrackKey='';setTimeout(()=>{refreshLanguageUI(true);sync()},0)}},true);window.addEventListener('storage',e=>{if(e.key==='nh7_lang'){lastUiLang='';refreshLanguageUI(true);sync()}})}
+function start(){
+  ensure();refreshLanguageUI(true);sync();clearInterval(syncTimer);
+  document.addEventListener('click',event=>{
+    const routeControl=event.target.closest?.('.nav-item,[data-go],[data-route]');
+    if(routeControl&&expanded)setExpanded(false);
+  },true);
+  window.addEventListener('popstate',()=>{if(expanded)setExpanded(false)});
+syncTimer=setInterval(sync,250);window.addEventListener('pageshow',()=>{lastUiLang='';sync()});window.addEventListener('pagehide',()=>flushInlineNoteDraft(false));document.addEventListener('visibilitychange',()=>{if(document.hidden)flushInlineNoteDraft(false)});window.addEventListener('change',e=>{if(['langSelect','settingsLang'].includes(e.target?.id)){lastUiLang='';lastTrackKey='';setTimeout(()=>{refreshLanguageUI(true);sync()},0)}},true);window.addEventListener('storage',e=>{if(e.key==='nh7_lang'){lastUiLang='';refreshLanguageUI(true);sync()}})}
 window.NH7_MEDIA_PLAYER_V500={version:VERSION,sync,setExpanded,close:closePlayer};
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start,{once:true}):start();
 })();
