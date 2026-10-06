@@ -73,3 +73,26 @@
   color:var(--nh7-studio-muted,var(--nh7-dark-muted,#b8c7d9))!important;
   -webkit-text-fill-color:currentColor!important;
 }
+
+/* v6.0.0 — Bible reader must use the Theme Studio's validated verse color.
+   Base Dark was already covered in v551; this closes the Midnight/Aurora/custom-dark gap. */
+html[data-nh7-studio] #view .reader-verse:not(.highlighted),
+html[data-nh7-studio] #view .reader-verse:not(.highlighted) .verse-text,
+html[data-nh7-studio] #view .compact-reader .reader-verse:not(.highlighted),
+html[data-nh7-studio] #view .compact-reader .reader-verse:not(.highlighted)>span:not(.num),
+html[data-nh7-studio] #view .clean-verse:not(.highlighted),
+html[data-nh7-studio] #view .clean-verse:not(.highlighted) :is(.verse-text,span:not(.num)){
+  color:var(--nh7-studio-verse,var(--nh7-studio-text,#f5f9ff))!important;
+  -webkit-text-fill-color:currentColor!important;
+}
+html[data-nh7-studio] #view .reader-verse{
+  border-bottom-color:var(--nh7-studio-line,var(--line,#d9e6f7))!important;
+}
+/* Existing highlight backgrounds are intentionally light/pastel; keep dark ink on them. */
+html[data-nh7-studio] #view .reader-verse.highlighted,
+html[data-nh7-studio] #view .reader-verse.highlighted .verse-text,
+html[data-nh7-studio] #view .clean-verse.highlighted,
+html[data-nh7-studio] #view .clean-verse.highlighted :is(.verse-text,span:not(.num)){
+  color:#142c40!important;
+  -webkit-text-fill-color:#142c40!important;
+}
