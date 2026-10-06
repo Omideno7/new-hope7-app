@@ -1,0 +1,99 @@
+name: Next 3 Source Parity Audit
+
+on:
+  push:
+    branches:
+      - 'next/3.0.0'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-parity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Next 3 working source
+        uses: actions/checkout@v4
+        with:
+          ref: next/3.0.0
+          path: next
+          persist-credentials: false
+
+      - name: Checkout immutable published Android baseline
+        uses: actions/checkout@v4
+        with:
+          ref: baseline/android-2.5.0-25002-published
+          path: baseline
+          persist-credentials: false
+
+      - name: Compare canonical root to published Android payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+
+          workspace = Path.cwd()
+          root = workspace / 'next'
+          payload = workspace / 'baseline' / 'android-release-25002' / 'www'
+
+          if not payload.is_dir():
+              raise SystemExit(f'Published Android payload missing: {payload}')
+
+          def digest(path: Path) -> str:
+              h = hashlib.sha256()
+              with path.open('rb') as fh:
+                  for chunk in iter(lambda: fh.read(1024 * 1024), b''):
+                      h.update(chunk)
+              return h.hexdigest()
+
+          payload_files = sorted(p for p in payload.rglob('*') if p.is_file())
+          identical = []
+          different = []
+          payload_only = []
+
+          for src in payload_files:
+              rel = src.relative_to(payload)
+              dst = root / rel
+              if not dst.is_file():
+                  payload_only.append(str(rel))
+              elif digest(src) == digest(dst):
+                  identical.append(str(rel))
+              else:
+                  different.append(str(rel))
+
+          print(f'IDENTICAL={len(identical)}')
+          print(f'DIFFERENT={len(different)}')
+          print(f'PAYLOAD_ONLY={len(payload_only)}')
+          print('\n## DIFFERENT')
+          for item in different:
+              print(item)
+          print('\n## PAYLOAD_ONLY')
+          for item in payload_only:
+              print(item)
+
+          report = workspace / 'source-parity-report.md'
+          report.write_text(
+              '# Next 3 source parity report\n\n'
+              f'- Published Android baseline: `baseline/android-2.5.0-25002-published`\n'
+              f'- Working branch: `next/3.0.0`\n'
+              f'- Identical: **{len(identical)}**\n'
+              f'- Different: **{len(different)}**\n'
+              f'- Payload-only: **{len(payload_only)}**\n\n'
+              '## Different\n' + ''.join(f'- `{x}`\n' for x in different) +
+              '\n## Payload-only\n' + ''.join(f'- `{x}`\n' for x in payload_only),
+              encoding='utf-8'
+          )
+          PY
+          cat source-parity-report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Verify current canonical Android scroll fix
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp next/js/nh7-finalqa-v558.js baseline/android-release-25002/www/js/nh7-finalqa-v558.js
+          grep -q "nh7AndroidScrollCompat" next/js/nh7-finalqa-v558.js
+          grep -q "overscroll-behavior-y','auto'" next/js/nh7-finalqa-v558.js
+          echo 'Canonical v558 matches the published Android baseline.'
