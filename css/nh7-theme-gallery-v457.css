@@ -87,3 +87,50 @@ html[data-nh7-studio] #view .tabs .tab:not(.active){
   color:var(--nh7-studio-text)!important;
   border-color:var(--nh7-studio-line)!important;
 }
+
+
+/* v472: daily scripture reference buttons follow the active Studio palette.
+   The legacy base stylesheet hard-codes the New Hope blue/green gradient on
+   .verse-ref-btn; override only while a saved Studio palette is active. */
+html[data-nh7-studio] #view .verse-ref-btn{
+  background:var(--nh7-studio-accent)!important;
+  color:var(--nh7-studio-button-ink)!important;
+  border-color:var(--nh7-studio-accent)!important;
+  box-shadow:0 8px 18px color-mix(in srgb,var(--nh7-studio-accent) 20%,transparent)!important;
+}
+
+
+/* v473: revealed Daily scripture must remain readable in every Studio/dark palette.
+   The reveal container is generated dynamically as .inline-verse and was not
+   covered by the older reader/notice selectors. */
+html[data-nh7-studio] #view :is(.verse-card,.verse-list-item){
+  background:var(--nh7-studio-card)!important;
+  color:var(--nh7-studio-text)!important;
+  border-color:var(--nh7-studio-line)!important;
+}
+html[data-nh7-studio] #view .inline-verse{
+  margin-top:10px;
+  padding:12px 14px;
+  border:1px solid var(--nh7-studio-line)!important;
+  border-radius:14px;
+  background:color-mix(in srgb,var(--nh7-studio-bg) 72%,var(--nh7-studio-card))!important;
+  color:var(--nh7-studio-verse)!important;
+}
+html[data-nh7-studio] #view .inline-verse :is(p,strong,span){
+  color:inherit!important;
+}
+html[data-nh7-studio-tone457="dark"] #view .inline-verse{
+  box-shadow:inset 0 1px 0 color-mix(in srgb,#fff 8%,transparent),
+             0 8px 20px #00000024!important;
+}
+html[data-nh7-theme="dark"] #view .inline-verse{
+  margin-top:10px;
+  padding:12px 14px;
+  border:1px solid var(--nh7-dark-line)!important;
+  border-radius:14px;
+  background:var(--nh7-dark-card-2)!important;
+  color:var(--nh7-dark-ink)!important;
+}
+html[data-nh7-theme="dark"] #view .inline-verse :is(p,strong,span){
+  color:inherit!important;
+}

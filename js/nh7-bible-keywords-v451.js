@@ -109,5 +109,27 @@ export function createBibleKeywordsV451(ctx) {
     box.onclick=e=>{const b=e.target.closest('[data-bible-hit]'),v=b&&matches[Number(b.dataset.bibleHit)];if(v)navigate('bible',{section:'written',mode:'chapter',bookId:v.bookId,chapter:v.chapter,verse:v.verse});};
     paint();
   }
-  return {bibleKeywords,search,displayText};
+  async function find(query,options={}) {
+    const lang=options.lang||state.lang,q=String(query||'').trim(),limit=Math.max(1,Math.min(60,Number(options.limit)||24));
+    if(!q)return [];
+    const needle=normalizeBibleText(q,lang),exact=options.exact===true,out=[],verses=await corpus();
+    for(let i=0;i<verses.length;i++) {
+      if(i%1024===0)await pause();
+      const v=verses[i],text=String(v.text?.[lang]||v.text?.en||'');
+      const hit=exact?bibleTokens(text,lang).includes(needle):normalizeBibleText(text,lang).includes(needle);
+      const ref=String(v.reference?.en||'');
+      if(hit||normalizeBibleText(ref,lang).includes(needle)){
+        out.push({bookId:v.bookId,chapter:Number(v.chapter),verse:Number(v.verse),reference:ref,text:lang==='en'?text.replace(new RegExp('^\\s*'+Number(v.verse)+'\\.\\s+'),''):text});
+        if(out.length>=limit)break;
+      }
+    }
+    return out;
+  }
+  const verseStateKey=v=>'nh7_bible_state_'+String(v.id||v.reference?.en||'').replace(/[^a-zA-Z0-9_-]/g,'_');
+  async function resolveStateKey(key){
+    key=String(key||'');if(!key)return null;
+    const verses=await corpus(),v=verses.find(row=>verseStateKey(row)===key);if(!v)return null;
+    return {bookId:v.bookId,chapter:Number(v.chapter),verse:Number(v.verse),reference:String(v.reference?.en||''),text:displayText(v)};
+  }
+  return {bibleKeywords,search,displayText,find,resolveStateKey};
 }
