@@ -14,7 +14,7 @@ create table if not exists public.nh7_user_profiles_v502 (
   photo_zoom double precision not null default 1,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
-  constraint nh7_user_profiles_v502_display_name_len check (char_length(display_name) <= 120),
+  constraint nh7_user_profiles_v502_display_name_len check (char_length(display_name) <= 160),
   constraint nh7_user_profiles_v502_photo_path_len check (char_length(photo_path) <= 512),
   constraint nh7_user_profiles_v502_original_photo_path_len check (char_length(original_photo_path) <= 512),
   constraint nh7_user_profiles_v502_zoom_range check (photo_zoom between 0.25 and 8)
