@@ -1,0 +1,84 @@
+name: Next 3 Test 5.8 Provenance Audit
+
+on:
+  push:
+    branches: [next/3.0.0]
+    paths:
+      - '.github/workflows/next-3-test58-provenance.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  provenance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout approved Final QA 2.5 source
+        uses: actions/checkout@v4
+        with:
+          ref: feature/final-qa-v2500-20261004
+          path: source
+          persist-credentials: false
+
+      - name: Checkout immutable published Android baseline
+        uses: actions/checkout@v4
+        with:
+          ref: baseline/android-2.5.0-25002-published
+          path: baseline
+          persist-credentials: false
+
+      - name: Compare approved Final QA source with published Android payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+
+          workspace = Path.cwd()
+          source = workspace / 'source'
+          payload = workspace / 'baseline' / 'android-release-25002' / 'www'
+
+          def digest(path: Path) -> str:
+              h = hashlib.sha256()
+              with path.open('rb') as fh:
+                  for chunk in iter(lambda: fh.read(1024 * 1024), b''):
+                      h.update(chunk)
+              return h.hexdigest()
+
+          identical, different, payload_only = [], [], []
+          for src in sorted(p for p in payload.rglob('*') if p.is_file()):
+              rel = src.relative_to(payload)
+              dst = source / rel
+              if not dst.is_file():
+                  payload_only.append(str(rel))
+              elif digest(src) == digest(dst):
+                  identical.append(str(rel))
+              else:
+                  different.append(str(rel))
+
+          print(f'IDENTICAL={len(identical)}')
+          print(f'DIFFERENT={len(different)}')
+          print(f'PAYLOAD_ONLY={len(payload_only)}')
+          print('\n## DIFFERENT')
+          for item in different:
+              print(item)
+          print('\n## PAYLOAD_ONLY')
+          for item in payload_only:
+              print(item)
+
+          report = workspace / 'test58-provenance-report.md'
+          report.write_text(
+              '# Test 5.8 provenance report\n\n'
+              '- Approved source: `feature/final-qa-v2500-20261004`\n'
+              '- Published Android baseline: `baseline/android-2.5.0-25002-published`\n'
+              f'- Identical: **{len(identical)}**\n'
+              f'- Different: **{len(different)}**\n'
+              f'- Payload-only: **{len(payload_only)}**\n\n'
+              '## Different\n' + ''.join(f'- `{x}`\n' for x in different) +
+              '\n## Payload-only\n' + ''.join(f'- `{x}`\n' for x in payload_only),
+              encoding='utf-8'
+          )
+          PY
+          cat test58-provenance-report.md >> "$GITHUB_STEP_SUMMARY"
