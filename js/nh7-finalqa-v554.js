@@ -34,4 +34,19 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)sync()});
 new MutationObserver(sync).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style','data-nh7-theme','data-nh7-studio']});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',watch,{once:true});else watch();
 setTimeout(sync,120);setTimeout(sync,500);
+
+/*
+ * Batch 2 security bootstrap: keep the Ministers Library entitlement guard
+ * isolated from the core Library implementation. The server remains the
+ * authoritative authorization boundary; this script only hardens UI/cache.
+ */
+(function loadMinisterLibraryGuard(){
+  if(window.__NH7_MINISTER_LIBRARY_GUARD_BOOTSTRAP__)return;
+  window.__NH7_MINISTER_LIBRARY_GUARD_BOOTSTRAP__=true;
+  const script=document.createElement('script');
+  script.src='js/nh7-minister-library-access-v600.js?v=6.0.0';
+  script.async=false;
+  script.dataset.nh7MinisterLibraryGuard='1';
+  document.head.appendChild(script);
+})();
 })();
