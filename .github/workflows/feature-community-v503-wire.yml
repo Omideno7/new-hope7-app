@@ -1,65 +1,94 @@
-name: Feature Community v503 Wire and Validate
+name: Feature Community v503 Validation Guard
 
 on:
   push:
     branches:
       - 'feature/community-moderation-prayer-v503'
+  pull_request:
+    branches:
+      - 'next/3.0.0'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  wire-and-validate:
+  validate:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout isolated feature branch
         uses: actions/checkout@v4
         with:
-          ref: feature/community-moderation-prayer-v503
-          fetch-depth: 1
+          fetch-depth: 0
 
-      - name: Wire prayer fix after community runtime
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-          p=Path('index.html')
-          text=p.read_text(encoding='utf-8')
-          patch='  <script src="js/nh7-community-prayer-fix-v503.js?v=5.0.3" defer></script>'
-          if patch not in text:
-              needle='  <script src="js/nh7-community-v502.js?v=5.5.5-recorder-pause" defer></script>'
-              if text.count(needle)!=1:
-                  raise SystemExit('Community runtime script contract changed; refusing unsafe index patch')
-              text=text.replace(needle, needle+'\n'+patch, 1)
-              p.write_text(text,encoding='utf-8')
-          PY
-
-      - name: Static validation
+      - name: Validate JavaScript and wiring contracts
         shell: bash
         run: |
           set -euo pipefail
           node --check js/nh7-admin-testimony-v565.js
+          node --check js/nh7-admin-testimony-core-v565.js
           node --check js/nh7-admin-community-fixes-v503.js
           node --check js/nh7-community-prayer-fix-v503.js
-          test -f js/nh7-admin-testimony-core-v565.js
-          grep -q 'nh7-community-prayer-fix-v503.js?v=5.0.3' index.html
-          grep -q 'nh7_owner_testimony_delete_rejected_v503' supabase/migrations/20261006094500_community_moderation_prayer_v503.sql
-          grep -q 'community.testimony.review' supabase/migrations/20261006094500_community_moderation_prayer_v503.sql
-          grep -q 'status <> '\''rejected'\''' supabase/migrations/20261006094500_community_moderation_prayer_v503.sql
-          git diff --check
+          test "$(git hash-object js/nh7-admin-testimony-core-v565.js)" = "0b31f57500fa02052300bdd816e0159e19989174"
+          grep -q 'nh7-admin-testimony-core-v565.js?v=5.6.5-core' js/nh7-admin-testimony-v565.js
+          grep -q 'nh7-admin-community-fixes-v503.js?v=5.0.3' js/nh7-admin-testimony-v565.js
+          grep -q "'x-upsert':'false'" js/nh7-admin-community-fixes-v503.js
+          grep -q 'nh7_owner_testimony_delete_rejected_v503' js/nh7-admin-community-fixes-v503.js
+          grep -q 'nh7_owner_prayer_feed_v502' js/nh7-admin-community-fixes-v503.js
+          grep -q 'nh7_owner_prayer_set_status_v502' js/nh7-admin-community-fixes-v503.js
+          grep -q 'handlers are live before the history request starts' js/nh7-community-prayer-fix-v503.js
+          if grep -R -n 'service_role' js/nh7-admin-community-fixes-v503.js js/nh7-community-prayer-fix-v503.js; then
+            echo 'Client patch must never contain a service-role credential or role path.' >&2
+            exit 1
+          fi
+          python3 - <<'PY'
+          from pathlib import Path
+          text=Path('index.html').read_text(encoding='utf-8')
+          core='js/nh7-community-v502.js?v=5.5.5-recorder-pause'
+          patch='js/nh7-community-prayer-fix-v503.js?v=5.0.3'
+          app='js/app.js?v=5.5.5-test55'
+          for item in (core,patch,app):
+              if text.count(item)!=1:
+                  raise SystemExit(f'Expected exactly one index reference: {item}')
+          if not (text.index(core)<text.index(patch)<text.index(app)):
+              raise SystemExit('Prayer fix must load after Community runtime and before app module')
+          PY
 
-      - name: Commit isolated wiring if needed
+      - name: Validate migration and rollback contracts
         shell: bash
         run: |
           set -euo pipefail
-          if git diff --quiet -- index.html; then
-            echo 'Feature wiring already current.'
-            exit 0
-          fi
-          git config user.name 'Omideno7'
-          git config user.email 'omideno7church@gmail.com'
-          git add index.html
-          git commit -m 'Wire prayer request reliability patch on isolated feature branch'
-          git push origin HEAD:feature/community-moderation-prayer-v503
+          M=supabase/migrations/20261006094500_community_moderation_prayer_v503.sql
+          R=supabase/rollback/20261006094500_community_moderation_prayer_v503_rollback.sql
+          grep -q 'nh7_testimony_private_admin_delete_v503' "$M"
+          grep -q "community.testimony.review" "$M"
+          grep -q "coalesce(v_row.status, '') <> 'rejected'" "$M"
+          grep -q 'revoke all on function public.nh7_owner_testimony_delete_rejected_v503(uuid) from anon' "$M"
+          grep -q 'grant execute on function public.nh7_owner_testimony_delete_rejected_v503(uuid) to authenticated' "$M"
+          grep -q 'drop function if exists public.nh7_owner_testimony_delete_rejected_v503(uuid)' "$R"
+          grep -q 'drop policy if exists nh7_testimony_private_admin_delete_v503' "$R"
+
+      - name: Enforce feature isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin next/3.0.0 --depth=1
+          git diff --check origin/next/3.0.0...HEAD
+          python3 - <<'PY'
+          import subprocess
+          allowed={
+            '.github/workflows/feature-community-v503-wire.yml',
+            'index.html',
+            'js/nh7-admin-testimony-v565.js',
+            'js/nh7-admin-testimony-core-v565.js',
+            'js/nh7-admin-community-fixes-v503.js',
+            'js/nh7-community-prayer-fix-v503.js',
+            'supabase/migrations/20261006094500_community_moderation_prayer_v503.sql',
+            'supabase/rollback/20261006094500_community_moderation_prayer_v503_rollback.sql',
+          }
+          changed=set(subprocess.check_output(['git','diff','--name-only','origin/next/3.0.0...HEAD'],text=True).splitlines())
+          extra=sorted(changed-allowed)
+          if extra:
+              raise SystemExit('Feature isolation violation: '+', '.join(extra))
+          print('Isolated feature files:', *sorted(changed), sep='\n- ')
+          PY

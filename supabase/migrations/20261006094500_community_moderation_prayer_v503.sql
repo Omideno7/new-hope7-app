@@ -1,5 +1,5 @@
 -- New Hope 7 v5.0.3 — rejected testimony hard delete support.
--- Prepared for isolated QA. DO NOT apply to Production before approval.
+-- Prepared for isolated QA. DO NOT apply to Production before explicit approval.
 begin;
 
 drop policy if exists nh7_testimony_private_admin_delete_v503 on storage.objects;
@@ -34,7 +34,7 @@ begin
     raise exception 'testimony not found';
   end if;
 
-  if v_row.status <> 'rejected' then
+  if coalesce(v_row.status, '') <> 'rejected' then
     raise exception 'only rejected testimony can be permanently deleted';
   end if;
 
