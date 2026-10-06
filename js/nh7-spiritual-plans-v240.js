@@ -517,6 +517,7 @@ function bindDetailEvents(ctx, plan, params) {
   document.querySelector('[data-nh7-save-note]')?.addEventListener('click', async event => {
     const note = document.querySelector('#nh7PlanNote')?.value || '';
     await updateDay(ctx, plan, Number(params.day || 1), { note:String(note).slice(0, 4000) });
+    window.dispatchEvent(new CustomEvent('nh7-spiritual-notes-updated-v553'));
     const state = event.currentTarget.parentElement?.querySelector('.nh7-save-state');
     if (state) state.textContent = t(ctx, navigator.onLine ? 'saved' : 'queued');
   });

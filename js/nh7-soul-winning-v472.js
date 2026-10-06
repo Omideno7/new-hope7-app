@@ -1,8 +1,9 @@
-/* New Hope 7 — Soul Winning Tracker v4.7.2
- * Local-first runtime module. No cloud or account writes in this release.
+/* New Hope 7 — Soul Winning Tracker v4.7.3
+ * Local-first with additive account backup/restore when signed in.
  */
 const STORAGE_KEY='nh7_soul_tracker_v472';
-const VERSION=1;
+const VERSION=2;
+let runtimeOptions={};let cloudHydrated=false,cloudHydrating=null;
 
 const STAGES=[
   {id:'contact',fa:'آشنایی / شخص جدید',en:'New contact',hr:'Novi kontakt'},
@@ -91,7 +92,21 @@ function loadStore(){
 function saveStore(store){
   const clean=normalizeStore({...store,updatedAt:now()});
   localStorage.setItem(STORAGE_KEY,JSON.stringify(clean));
+  try{runtimeOptions.saveProgress?.(STORAGE_KEY,clean)?.catch?.(()=>{})}catch(_){}
   return clean;
+}
+function unwrapCloud(value){let v=value;for(let i=0;i<4;i++){if(v&&typeof v==='object'&&!Array.isArray(v)&&Object.prototype.hasOwnProperty.call(v,'value')){v=v.value;continue}if(typeof v!=='string')break;try{const p=JSON.parse(v);if(p&&typeof p==='object'&&Object.prototype.hasOwnProperty.call(p,'value')){v=p.value;continue}}catch(_){}break}return v}
+function mergeStores(a,b){const A=normalizeStore(a||{}),B=normalizeStore(b||{}),map=new Map();for(const p of [...A.people,...B.people]){const k=String(p.id||'');if(!k)continue;const old=map.get(k);if(!old||String(p.updatedAt||'')>=String(old.updatedAt||''))map.set(k,p)}return normalizeStore({version:VERSION,people:[...map.values()],updatedAt:[A.updatedAt,B.updatedAt].filter(Boolean).sort().pop()||now()})}
+async function hydrateAccountStore(){
+  if(cloudHydrated)return false;if(cloudHydrating)return cloudHydrating;
+  cloudHydrating=(async()=>{try{
+    const email=String(runtimeOptions.accountEmail?.()||'').trim().toLowerCase();if(!email||!navigator.onLine||!runtimeOptions.cloudFetch){cloudHydrated=true;return false}
+    const rows=await runtimeOptions.cloudFetch('nh7_account_progress?select=value,updated_at&user_email=eq.'+encodeURIComponent(email)+'&progress_key=eq.'+encodeURIComponent(STORAGE_KEY)+'&order=updated_at.desc&limit=1',{method:'GET',cache:'no-store'});
+    const local=loadStore(),cloud=Array.isArray(rows)&&rows[0]?unwrapCloud(rows[0].value):null,merged=mergeStores(cloud,local);
+    const changed=JSON.stringify(merged.people)!==JSON.stringify(local.people);localStorage.setItem(STORAGE_KEY,JSON.stringify(merged));
+    if(merged.people.length)try{await runtimeOptions.saveProgress?.(STORAGE_KEY,merged)}catch(_){}
+    cloudHydrated=true;return changed;
+  }catch(e){console.warn('Soul Winning account restore failed',e);cloudHydrated=true;return false}finally{cloudHydrating=null}})();return cloudHydrating
 }
 function stats(people){
   const countAt=id=>people.filter(p=>stageIndex(p.stage)>=stageIndex(id)).length;
@@ -116,6 +131,7 @@ function followUpState(value,t){
 }
 
 export function createSoulWinningV472(options={}){
+  runtimeOptions=options||{};
   const mount=()=>typeof options.mount==='function'?options.mount():document.getElementById('view');
   const lang=()=>safeLang(typeof options.lang==='function'?options.lang():localStorage.getItem('nh7_lang')||document.documentElement.lang||'en');
   const nav=(params={})=>{if(typeof options.navigate==='function')options.navigate('soulWinning',params,true);else render(params)};
@@ -158,6 +174,7 @@ export function createSoulWinningV472(options={}){
       list.querySelectorAll('[data-sw-person]').forEach(b=>b.addEventListener('click',()=>nav({person:b.dataset.swPerson})));
     };
     search?.addEventListener('input',draw);filter?.addEventListener('change',draw);root.querySelector('[data-sw-add]')?.addEventListener('click',()=>nav({new:true}));draw();
+    hydrateAccountStore().then(changed=>{if(changed&&mount()===root)renderDashboard()}).catch(()=>{});
   }
 
   function renderForm(existing=null){

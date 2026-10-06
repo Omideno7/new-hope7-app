@@ -4,12 +4,13 @@ if(window.__NH7_NOTES_CATEGORIES_V452__)return;window.__NH7_NOTES_CATEGORIES_V45
 const language=()=>localStorage.getItem('nh7_lang')||'en',L=(fa,en,hr)=>language()==='fa'?fa:language()==='hr'?hr:en;
 const number=n=>language()==='fa'?String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]):String(n);
 let timer=0,notesBusy=false,savedBusy=false;const expanded=new Set(),resolvedCache=new Map();
-const labels={bible:()=>L('کتاب مقدس','Bible','Biblija'),apocrypha:()=>L('اپوکریفا','Apocrypha','Apokrifi'),audio:()=>L('موعظات و فایل‌های صوتی','Sermons and audio','Propovijedi i audio'),school:()=>L('مدرسه','School','Škola'),gratitude:()=>L('شکرگزاری','Gratitude','Zahvalnost'),other:()=>L('سایر یادداشت‌ها','Other notes','Ostale bilješke')};
+const labels={bible:()=>L('کتاب مقدس','Bible','Biblija'),apocrypha:()=>L('اپوکریفا','Apocrypha','Apokrifi'),audio:()=>L('موعظات و فایل‌های صوتی','Sermons and audio','Propovijedi i audio'),school:()=>L('مدرسه','School','Škola'),gratitude:()=>L('شکرگزاری','Gratitude','Zahvalnost'),plan:()=>L('پلن‌های روحانی','Spiritual plans','Duhovni planovi'),other:()=>L('سایر یادداشت‌ها','Other notes','Ostale bilješke')};
 function category(n){
   const k=n.storageKey||'',m=n.meta||{};
   if(n.kind==='apocrypha'||k.startsWith('nh7_apo_note_v242:'))return'apocrypha';
   if(k.startsWith('nh7_bible_state_'))return'bible';
   if(k.startsWith('nh7_gratitude_note_'))return'gratitude';
+  if(n.kind==='plan'||k.startsWith('nh7_plan_note|'))return'plan';
   if(m.lessonCode||m.route==='school'||k.startsWith('nh7_note_school-')||k.startsWith('nh7_sermon_note_school-'))return'school';
   if(k.startsWith('nh7_sermon_note_'))return'audio';return'other';
 }
@@ -51,7 +52,7 @@ async function notesPanel(){
       if(!groups.has(kind))groups.set(kind,[]);groups.get(kind).push(card);
     });
     const wrap=document.createElement('div');wrap.className='nh7-note-categories-v452';
-    for(const key of ['bible','apocrypha','audio','school','gratitude','other'])if(groups.has(key)){const {group,list}=groupBox('notes:'+key,labels[key](),groups.get(key).length);list.append(...groups.get(key));wrap.append(group)}
+    for(const key of ['bible','apocrypha','audio','school','gratitude','plan','other'])if(groups.has(key)){const {group,list}=groupBox('notes:'+key,labels[key](),groups.get(key).length);list.append(...groups.get(key));wrap.append(group)}
     panel.replaceChildren(wrap);panel.dataset.categories452=signature;
   }finally{notesBusy=false}
 }
@@ -101,5 +102,5 @@ window.addEventListener('click',event=>{
 },true);
 new MutationObserver(schedule).observe(document.documentElement,{childList:true,subtree:true});
 window.addEventListener('storage',schedule);window.addEventListener('nh7-reader-data452',schedule);window.addEventListener('languagechange',schedule);
-window.NH7NotesCategoriesV452={VERSION:'4.5.2-r2',category,enhance};schedule();
+window.NH7NotesCategoriesV452={VERSION:'4.5.3-test53',category,enhance};schedule();
 })();
