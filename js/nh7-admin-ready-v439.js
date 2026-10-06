@@ -34,3 +34,15 @@ document.addEventListener('nh7:admin-render',ready);window.addEventListener('pag
 function initial(){ready();const requested=new URL(location.href).searchParams.get('tab');if(requested&&typeof setTab==='function'&&requested!==activeTab)setTab(requested)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initial,{once:true});else initial();
 })();
+
+/* Additive loader: testimony moderation. Kept outside the core lifecycle so Admin remains stable. */
+(()=>{'use strict';
+  const id='nh7AdminCommunityV502Loader';
+  function load(){
+    if(window.__NH7_ADMIN_COMMUNITY_V502__||document.getElementById(id))return;
+    const s=document.createElement('script');s.id=id;s.src='js/nh7-admin-community-v502.js?v=5.0.2-admin-testimony';s.async=true;
+    s.onerror=()=>console.warn('[NH7 Admin] testimony moderation module failed to load');
+    document.head.appendChild(s);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
+})();
