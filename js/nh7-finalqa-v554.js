@@ -49,4 +49,15 @@ setTimeout(sync,120);setTimeout(sync,500);
   script.dataset.nh7MinisterLibraryGuard='1';
   document.head.appendChild(script);
 })();
+
+/* Batch 2: recover only orphaned Calendar-owned inert states. */
+(function loadCalendarLockGuard(){
+  if(window.__NH7_CALENDAR_LOCK_GUARD_BOOTSTRAP__)return;
+  window.__NH7_CALENDAR_LOCK_GUARD_BOOTSTRAP__=true;
+  const script=document.createElement('script');
+  script.src='js/nh7-calendar-lock-guard-v600.js?v=6.0.0';
+  script.async=false;
+  script.dataset.nh7CalendarLockGuard='1';
+  document.head.appendChild(script);
+})();
 })();
