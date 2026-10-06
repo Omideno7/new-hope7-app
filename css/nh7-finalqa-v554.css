@@ -1,0 +1,90 @@
+/* New Hope 7 v5.5.4 — final fixed app chrome for iOS/iPad QA.
+   Header and phone bottom navigation are pinned to the viewport and the content
+   receives measured padding so no content sits underneath them. */
+html,body{
+  overscroll-behavior:none!important;
+  overflow-x:hidden!important;
+}
+#appShell>.topbar{
+  position:fixed!important;
+  top:0!important;
+  left:50%!important;
+  right:auto!important;
+  transform:translate3d(-50%,0,0)!important;
+  width:min(760px,100%)!important;
+  max-width:760px!important;
+  z-index:2400!important;
+  margin:0!important;
+  backface-visibility:hidden!important;
+  -webkit-backface-visibility:hidden!important;
+  will-change:transform!important;
+}
+#appShell>.view{
+  padding-top:calc(var(--nh7-fixed-header-h,132px) + 14px)!important;
+}
+.bottom-nav{
+  backface-visibility:hidden!important;
+  -webkit-backface-visibility:hidden!important;
+  will-change:transform!important;
+}
+
+/* Phone portrait: bottom navigation must never ride with page scroll. */
+@media (max-width:767px) and (orientation:portrait){
+  .bottom-nav{
+    position:fixed!important;
+    left:50%!important;
+    right:auto!important;
+    bottom:0!important;
+    transform:translate3d(-50%,0,0)!important;
+    width:min(760px,100%)!important;
+    margin:0!important;
+    z-index:2300!important;
+  }
+  #appShell>.view{
+    padding-bottom:calc(var(--nh7-fixed-nav-h,82px) + 16px)!important;
+  }
+  html.nh7p500-active body #view{
+    padding-bottom:calc(var(--nh7-fixed-nav-h,82px) + 86px)!important;
+  }
+}
+
+/* iPhone landscape keeps the compact phone navigation, but both bars stay pinned. */
+@media (orientation:landscape) and (max-height:520px) and (max-width:980px){
+  #appShell>.topbar{
+    position:fixed!important;
+    top:0!important;
+    left:50%!important;
+    transform:translate3d(-50%,0,0)!important;
+    width:100%!important;
+    max-width:none!important;
+  }
+  #appShell>.view{
+    padding-top:calc(var(--nh7-fixed-header-h,64px) + 10px)!important;
+    padding-bottom:calc(var(--nh7-fixed-nav-h,64px) + 12px + env(safe-area-inset-bottom,0px))!important;
+  }
+  .bottom-nav{
+    position:fixed!important;
+    inset:auto calc(8px + env(safe-area-inset-right,0px))
+      calc(5px + env(safe-area-inset-bottom,0px))
+      calc(8px + env(safe-area-inset-left,0px))!important;
+    transform:translate3d(0,0,0)!important;
+    margin:0!important;
+  }
+  html.nh7p500-active body #view{
+    padding-bottom:calc(var(--nh7-fixed-nav-h,64px) + 84px + env(safe-area-inset-bottom,0px))!important;
+  }
+}
+
+/* iPad/tablet: header is fixed too; the existing side navigation rail remains fixed. */
+@media (min-width:768px) and (min-height:521px){
+  #appShell>.topbar{
+    width:min(1440px,100%)!important;
+    max-width:1440px!important;
+  }
+  #appShell>.view{
+    padding-top:calc(var(--nh7-fixed-header-h,124px) + 22px)!important;
+  }
+  .bottom-nav{
+    transform:translate3d(0,0,0)!important;
+  }
+}

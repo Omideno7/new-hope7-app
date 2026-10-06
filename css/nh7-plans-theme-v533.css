@@ -1,0 +1,33 @@
+/* New Hope 7 v5.3.3 — Plans theme integration + balanced fold/tablet canvas. */
+
+/* Reading plans follow the active Studio palette in every state. */
+html[data-nh7-studio] #view .nh7-plans-v534 .card,
+html[data-nh7-studio] #view .nh7-plans-v534 .list-btn,
+html[data-nh7-studio] #view .nh7-plans-v534 .inline-reading{
+  background:var(--nh7-studio-card)!important;
+  color:var(--nh7-studio-text)!important;
+  border-color:var(--nh7-studio-line)!important;
+}
+html[data-nh7-studio] #view .nh7-plans-v534 .list-btn strong,
+html[data-nh7-studio] #view .nh7-plans-v534 .inline-reading h3,
+html[data-nh7-studio] #view .nh7-plans-v534 .reader-verse{
+  color:var(--nh7-studio-text)!important;
+}
+html[data-nh7-studio] #view .nh7-plans-v534 .list-btn small{
+  color:var(--nh7-studio-muted)!important;
+}
+html[data-nh7-studio] #view .nh7-plans-v534 .progress{
+  background:color-mix(in srgb,var(--nh7-studio-muted) 18%,var(--nh7-studio-card))!important;
+}
+html[data-nh7-studio] #view .nh7-plans-v534 .progress>span{
+  background:linear-gradient(90deg,var(--nh7-studio-accent),color-mix(in srgb,var(--nh7-studio-accent) 62%,#fff))!important;
+}
+html[data-nh7-studio] #view .nh7-plans-v534 .badge,
+html[data-nh7-studio] #view .nh7-plans-v534 .primary-btn{
+  background:var(--nh7-studio-accent)!important;
+  color:var(--nh7-studio-button-ink)!important;
+  border-color:var(--nh7-studio-accent)!important;
+}
+html[data-nh7-studio-tone457="dark"] #view .nh7-plans-v534 .inline-reading{
+  background:color-mix(in srgb,var(--nh7-studio-bg) 68%,var(--nh7-studio-card))!important;
+}

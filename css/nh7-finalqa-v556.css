@@ -1,0 +1,75 @@
+/* New Hope 7 v5.5.6 — final dark-mode readability for Library + Apocrypha. */
+
+/* Public / Ministers library collection cards */
+:is(html[data-nh7-theme="dark"],html[data-nh7-studio-tone457="dark"]) #view .nh7-collection-card{
+  background:linear-gradient(
+    180deg,
+    var(--nh7-studio-card,var(--nh7-dark-card-2,#12243a)),
+    var(--nh7-studio-card,var(--nh7-dark-card,#0f1d2e))
+  )!important;
+  border-color:var(--nh7-studio-line,var(--nh7-dark-line,#2c4058))!important;
+  color:var(--nh7-studio-text,var(--nh7-dark-ink,#f5f9ff))!important;
+  -webkit-text-fill-color:var(--nh7-studio-text,var(--nh7-dark-ink,#f5f9ff))!important;
+}
+:is(html[data-nh7-theme="dark"],html[data-nh7-studio-tone457="dark"]) #view .nh7-collection-card strong{
+  color:var(--nh7-studio-text,var(--nh7-dark-ink,#f5f9ff))!important;
+  -webkit-text-fill-color:currentColor!important;
+}
+:is(html[data-nh7-theme="dark"],html[data-nh7-studio-tone457="dark"]) #view .nh7-collection-card small{
+  color:var(--nh7-studio-muted,var(--nh7-dark-muted,#b8c7d9))!important;
+  -webkit-text-fill-color:currentColor!important;
+}
+:is(html[data-nh7-theme="dark"],html[data-nh7-studio-tone457="dark"]) #view .nh7-collection-card em{
+  color:var(--nh7-studio-accent,#63d7bd)!important;
+  -webkit-text-fill-color:currentColor!important;
+}
+
+/* Individual library document cards, when a collection is opened */
+:is(html[data-nh7-theme="dark"],html[data-nh7-studio-tone457="dark"]) #view .library-user-card{
+  background:var(--nh7-studio-card,var(--nh7-dark-card-2,#12243a))!important;
+  border-color:var(--nh7-studio-line,var(--nh7-dark-line,#2c4058))!important;
+  color:var(--nh7-studio-text,var(--nh7-dark-ink,#f5f9ff))!important;
+}
+:is(html[data-nh7-theme="dark"],html[data-nh7-studio-tone457="dark"]) #view .library-user-card :is(h3,p,strong,span){
+  color:var(--nh7-studio-text,var(--nh7-dark-ink,#f5f9ff))!important;
+  -webkit-text-fill-color:currentColor!important;
+}
+:is(html[data-nh7-theme="dark"],html[data-nh7-studio-tone457="dark"]) #view .library-user-card :is(.muted,small){
+  color:var(--nh7-studio-muted,var(--nh7-dark-muted,#b8c7d9))!important;
+  -webkit-text-fill-color:currentColor!important;
+}
+
+/* Apocrypha book selector cards */
+:is(html[data-nh7-theme="dark"],html[data-nh7-studio-tone457="dark"]) #view .nh7-apo-book{
+  background:linear-gradient(
+    135deg,
+    var(--nh7-studio-card,var(--nh7-dark-card-2,#12243a)),
+    var(--nh7-studio-card,var(--nh7-dark-card,#0f1d2e))
+  )!important;
+  border-color:var(--nh7-studio-line,var(--nh7-dark-line,#2c4058))!important;
+  color:var(--nh7-studio-text,var(--nh7-dark-ink,#f5f9ff))!important;
+  -webkit-text-fill-color:var(--nh7-studio-text,var(--nh7-dark-ink,#f5f9ff))!important;
+}
+:is(html[data-nh7-theme="dark"],html[data-nh7-studio-tone457="dark"]) #view .nh7-apo-book strong{
+  color:var(--nh7-studio-text,var(--nh7-dark-ink,#f5f9ff))!important;
+  -webkit-text-fill-color:currentColor!important;
+}
+:is(html[data-nh7-theme="dark"],html[data-nh7-studio-tone457="dark"]) #view .nh7-apo-book small{
+  color:var(--nh7-studio-muted,var(--nh7-dark-muted,#b8c7d9))!important;
+  -webkit-text-fill-color:currentColor!important;
+}
+
+/* Apocrypha file rows, if a book contains downloadable/readable files */
+:is(html[data-nh7-theme="dark"],html[data-nh7-studio-tone457="dark"]) #view .nh7-apo-file-list article{
+  background:var(--nh7-studio-card,var(--nh7-dark-card-2,#12243a))!important;
+  border-color:var(--nh7-studio-line,var(--nh7-dark-line,#2c4058))!important;
+  color:var(--nh7-studio-text,var(--nh7-dark-ink,#f5f9ff))!important;
+}
+:is(html[data-nh7-theme="dark"],html[data-nh7-studio-tone457="dark"]) #view .nh7-apo-file-list article strong{
+  color:var(--nh7-studio-text,var(--nh7-dark-ink,#f5f9ff))!important;
+  -webkit-text-fill-color:currentColor!important;
+}
+:is(html[data-nh7-theme="dark"],html[data-nh7-studio-tone457="dark"]) #view .nh7-apo-file-list article :is(p,small){
+  color:var(--nh7-studio-muted,var(--nh7-dark-muted,#b8c7d9))!important;
+  -webkit-text-fill-color:currentColor!important;
+}
