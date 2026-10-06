@@ -1,9 +1,56 @@
-/* New Hope 7 v5.5.8 — measure exact mini-player dock position. */
+/* New Hope 7 v5.5.8 — precise mini-player dock + Android scroll compatibility. */
 (()=>{'use strict';
 if(window.__NH7_MINI_DOCK_V558__)return;window.__NH7_MINI_DOCK_V558__=true;
 
+const isNativeAndroid=()=>{
+  try{return !!window.Capacitor?.isNativePlatform?.() && window.Capacitor?.getPlatform?.()==='android'}catch(_){return false}
+};
+
+/*
+  The iOS Final-QA styles intentionally disable root overscroll to suppress
+  WKWebView rubber-banding. Some Samsung/Android System WebView builds handle
+  root overscroll-behavior differently and can stop finger panning even though
+  programmatic scrolling still works. Restore the Android browser default only
+  on the native Android wrapper. Do not touch overflow/position because modal,
+  reader and profile-crop flows legitimately use those for temporary locks.
+*/
+function ensureAndroidRootScroll(){
+  if(!isNativeAndroid())return false;
+  const root=document.documentElement,body=document.body;
+  if(root.dataset.nh7AndroidScrollCompat==='1')return true;
+  root.dataset.nh7NativeAndroid='1';
+  root.style.setProperty('overscroll-behavior','auto','important');
+  root.style.setProperty('overscroll-behavior-y','auto','important');
+  if(body){
+    body.style.setProperty('overscroll-behavior','auto','important');
+    body.style.setProperty('overscroll-behavior-y','auto','important');
+  }
+  root.dataset.nh7AndroidScrollCompat='1';
+  return true;
+}
+
+/*
+  Amen is a fixed full-viewport dialog. The canonical app handler adds .hidden;
+  this extra cleanup guarantees that after the user's Amen tap the invisible
+  gate cannot remain in Android/Samsung hit-testing due to a compositor quirk.
+*/
+function cleanupAmenGate(){
+  if(!isNativeAndroid())return;
+  const gate=document.getElementById('amenGate');
+  if(!gate)return;
+  gate.classList.add('hidden');
+  gate.setAttribute('aria-hidden','true');
+  gate.style.setProperty('pointer-events','none','important');
+  ensureAndroidRootScroll();
+}
+
+document.addEventListener('click',event=>{
+  if(event.target?.closest?.('#amenButton'))setTimeout(cleanupAmenGate,0);
+},true);
+
 let raf=0;
 function syncMiniDock(){
+  ensureAndroidRootScroll();
   cancelAnimationFrame(raf);
   raf=requestAnimationFrame(()=>{
     const nav=document.querySelector('.bottom-nav');
@@ -17,7 +64,10 @@ function syncMiniDock(){
     const viewportOffsetTop=window.visualViewport?.offsetTop || 0;
     const viewportBottom=viewportOffsetTop + visualViewportHeight;
     const dock=Math.max(0,Math.round(viewportBottom-r.top+3));
-    document.documentElement.style.setProperty('--nh7-mini-dock-bottom',dock+'px');
+    const value=dock+'px';
+    if(document.documentElement.style.getPropertyValue('--nh7-mini-dock-bottom')!==value){
+      document.documentElement.style.setProperty('--nh7-mini-dock-bottom',value);
+    }
   });
 }
 
@@ -31,8 +81,9 @@ const mo=new MutationObserver(syncMiniDock);
 mo.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style']});
 
 if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',syncMiniDock,{once:true});
+  document.addEventListener('DOMContentLoaded',()=>{ensureAndroidRootScroll();syncMiniDock()},{once:true});
 }else{
+  ensureAndroidRootScroll();
   syncMiniDock();
 }
 setTimeout(syncMiniDock,120);
