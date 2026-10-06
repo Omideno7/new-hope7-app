@@ -35,10 +35,12 @@ jobs:
           set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
+          import re
 
           root = Path.cwd()
+          work = root / 'work'
           src = root / 'baseline' / 'android-release-25002' / 'www' / 'index.html'
-          dst = root / 'work' / 'index.html'
+          dst = work / 'index.html'
           text = src.read_text(encoding='utf-8')
 
           marker = '  <!-- Web OneSignal SDK disabled inside Android native wrapper; native OneSignal owns push -->'
@@ -61,23 +63,32 @@ jobs:
           </script>'''
           text = text.replace(marker, web_loader, 1)
 
-          required = [
+          index_contracts = [
               "window.NH7_VERSION = '2.5.0';",
               "if (!window.Capacitor?.isNativePlatform?.() && 'serviceWorker' in navigator)",
               'id="profileHeaderBtn"',
               'css/nh7-tablet-v530.css',
               'css/nh7-global-search-exam-v540.css',
-              'js/nh7-global-search-v540.js',
               'js/nh7-community-v502.js',
-              'js/nh7-exam-review-v540.js',
               'js/nh7-finalqa-v555.js',
               'js/nh7-finalqa-v558.js',
               'js/nh7-auto-update-v335.js',
               'window.OneSignalDeferred = window.OneSignalDeferred || []'
           ]
-          missing = [item for item in required if item not in text]
+          missing = [item for item in index_contracts if item not in text]
           if missing:
               raise SystemExit('Canonical index missing required 2.5 contracts: ' + ', '.join(missing))
+
+          # Global Search and Exam Review are valid payload modules even when loaded dynamically.
+          required_modules = [
+              'js/nh7-global-search-v540.js',
+              'js/nh7-exam-review-v540.js',
+              'js/nh7-community-v502.js',
+              'js/nh7-push-account-bind-v364.js'
+          ]
+          missing_modules = [rel for rel in required_modules if not (work / rel).is_file()]
+          if missing_modules:
+              raise SystemExit('Required 2.5 modules missing from canonical source: ' + ', '.join(missing_modules))
 
           sdk_url = 'https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js'
           if text.count(sdk_url) != 1:
@@ -87,9 +98,21 @@ jobs:
           if "if (isNative) return;" not in text or "document.head.appendChild(sdk);" not in text:
               raise SystemExit('Web-only OneSignal loader guard missing')
 
+          # Every local src/href referenced directly by the canonical index must resolve.
+          missing_refs = []
+          for ref in re.findall(r'(?:src|href)="([^"]+)"', text):
+              if ref.startswith(('http://','https://','data:','#','mailto:','tel:')):
+                  continue
+              clean = ref.split('?',1)[0].split('#',1)[0].lstrip('./')
+              if clean and not (work / clean).exists():
+                  missing_refs.append(clean)
+          if missing_refs:
+              raise SystemExit('Broken local index references: ' + ', '.join(sorted(set(missing_refs))))
+
           dst.write_text(text, encoding='utf-8')
           print('Canonical index generated from immutable published 2.5 payload.')
           print('Web OneSignal restored only for non-native runtime.')
+          print('All direct local index references resolve.')
           PY
 
           cd work
