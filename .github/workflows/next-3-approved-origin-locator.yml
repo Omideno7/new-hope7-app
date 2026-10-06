@@ -1,0 +1,114 @@
+name: Next 3 Approved Payload Origin Locator
+
+on:
+  push:
+    branches: [next/3.0.0]
+    paths:
+      - '.github/workflows/next-3-approved-origin-locator.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  locate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout published Android baseline
+        uses: actions/checkout@v4
+        with:
+          ref: baseline/android-2.5.0-25002-published
+          path: baseline
+          persist-credentials: false
+
+      - name: Checkout Final QA
+        uses: actions/checkout@v4
+        with:
+          ref: feature/final-qa-v2500-20261004
+          path: c1
+          persist-credentials: false
+
+      - name: Checkout community release
+        uses: actions/checkout@v4
+        with:
+          ref: feature/community-modules-release-20261004
+          path: c2
+          persist-credentials: false
+
+      - name: Checkout release cache fix
+        uses: actions/checkout@v4
+        with:
+          ref: fix/release-cache-invalidation-v250-20261004
+          path: c3
+          persist-credentials: false
+
+      - name: Checkout v250 preview
+        uses: actions/checkout@v4
+        with:
+          ref: release/next-v250-preview
+          path: c4
+          persist-credentials: false
+
+      - name: Checkout native-store next
+        uses: actions/checkout@v4
+        with:
+          ref: release/native-store-next-20261003
+          path: c5
+          persist-credentials: false
+
+      - name: Checkout optimized native
+        uses: actions/checkout@v4
+        with:
+          ref: release/next-native-optimized-20261003
+          path: c6
+          persist-credentials: false
+
+      - name: Checkout 2.5 RC
+        uses: actions/checkout@v4
+        with:
+          ref: release/2.5.0-rc
+          path: c7
+          persist-credentials: false
+
+      - name: Score candidate roots against published complete payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+
+          root=Path.cwd()
+          payload=root/'baseline'/'android-release-25002'/'www'
+          candidates=[
+            ('Final QA','c1'),
+            ('Community release','c2'),
+            ('Release cache fix','c3'),
+            ('v250 preview','c4'),
+            ('Native-store next','c5'),
+            ('Optimized native','c6'),
+            ('2.5 RC','c7'),
+          ]
+          focus=[
+            'css/nh7-header-date-v455.css','index.html','js/app.js',
+            'js/nh7-media-player-v500.js','js/nh7-my-notes-v234.js',
+            'js/nh7-note-text-v501.js','js/nh7-spiritual-plans-v412.js','version.json'
+          ]
+          def digest(p):
+            return hashlib.sha256(p.read_bytes()).hexdigest() if p.is_file() else None
+          pfiles=sorted(p for p in payload.rglob('*') if p.is_file())
+          out=['# Approved payload origin locator','','| Candidate | Exact | Different | Missing | Focus exact/8 |','|---|---:|---:|---:|---:|']
+          for label,folder in candidates:
+            base=root/folder
+            exact=diff=missing=0
+            for src in pfiles:
+              rel=src.relative_to(payload); dst=base/rel
+              if not dst.is_file(): missing+=1
+              elif digest(src)==digest(dst): exact+=1
+              else: diff+=1
+            fx=sum(1 for rel in focus if digest(payload/rel)==digest(base/rel))
+            print(f'{label}: exact={exact} different={diff} missing={missing} focus={fx}/8')
+            out.append(f'| {label} | {exact} | {diff} | {missing} | {fx}/8 |')
+          (root/'origin-locator.md').write_text('\n'.join(out)+'\n',encoding='utf-8')
+          PY
+          cat origin-locator.md >> "$GITHUB_STEP_SUMMARY"
