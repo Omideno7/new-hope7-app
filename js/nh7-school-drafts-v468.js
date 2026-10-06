@@ -7,13 +7,17 @@ export function createSchoolDraftsV468(deps){
   let active=null,sequence=0;
   function account(){try{return deps.account()||null}catch(_){return null}}
   function owner(){const u=account();return u?.id?'id:'+String(u.id):u?.email?'email:'+String(u.email).trim().toLowerCase():''}
+  function normalizeText(value){try{return window.NH7NoteTextV501?.normalize?.(value)??String(value??'')}catch(_){return String(value??'')}}
   const key=(who,lesson)=>PREFIX+encodeURIComponent(who)+':'+encodeURIComponent(lesson);
   function read(who,lesson){
     if(!who||!lesson)return null;
     const k=key(who,lesson);
     try{
       const d=unsaved.get(k)||JSON.parse(localStorage.getItem(k)||'null');
-      return d?.v===1&&d.owner===who&&d.lesson===lesson&&typeof d.text==='string'&&typeof d.pending==='boolean'?d:null;
+      if(!(d?.v===1&&d.owner===who&&d.lesson===lesson&&typeof d.text==='string'&&typeof d.pending==='boolean'))return null;
+      const text=normalizeText(d.text);
+      if(text!==d.text){d.text=text;write(d)}
+      return d;
     }catch(_){return unsaved.get(k)||null}
   }
   function write(d){
@@ -31,7 +35,8 @@ export function createSchoolDraftsV468(deps){
   function flush(){
     const a=active;
     if(!a||a.owner!==owner()||a.element.disabled)return false;
-    const text=a.element.value;
+    const text=normalizeText(a.element.value);
+    if(text!==a.element.value)a.element.value=text;
     if(text===a.last&&!a.failed)return true;
     const d={v:1,owner:a.owner,email:a.email,lesson:a.lesson,text,pending:true,rev:Date.now()+':'+(++sequence)+':'+Math.random().toString(36).slice(2),saved_at:new Date().toISOString()};
     const ok=write(d);a.last=text;a.failed=!ok;warn(a,!ok);return ok;
@@ -45,7 +50,7 @@ export function createSchoolDraftsV468(deps){
     unmount();if(!element||!expectedOwner||expectedOwner!==owner())return;
     const saved=read(expectedOwner,lesson);
     // Assign .value rather than HTML: preserve real newlines, spaces and literal markup.
-    element.value=!approved&&saved?.pending?saved.text:String(initialValue??'');
+    element.value=normalizeText(!approved&&saved?.pending?saved.text:initialValue);
     if(approved)return; // A local draft never replaces an accepted server answer.
     active={element,lesson,owner:expectedOwner,email:String(account()?.email||'').trim().toLowerCase(),last:element.value,failed:!!unsaved.get(key(expectedOwner,lesson)),warning:null};
     for(const name of ['input','change','compositionend','blur'])element.addEventListener(name,flush);
@@ -53,16 +58,16 @@ export function createSchoolDraftsV468(deps){
   }
   function ticket(lesson,text){
     flush();const who=owner(),d=read(who,lesson);
-    return who?{owner:who,lesson,text:String(text??''),rev:d?.rev||null}:null;
+    return who?{owner:who,lesson,text:normalizeText(text),rev:d?.rev||null}:null;
   }
   function submitted(t,receipt){
     const row=Array.isArray(receipt)?receipt[0]:receipt;
-    if(!t||!t.rev||owner()!==t.owner||row?.lesson_code!==t.lesson||typeof row.answer_text!=='string'||row.answer_text.trim()!==t.text.trim()||!['submitted','pending','approved'].includes(String(row.status||'').toLowerCase()))return;
+    if(!t||!t.rev||owner()!==t.owner||row?.lesson_code!==t.lesson||typeof row.answer_text!=='string'||normalizeText(row.answer_text).trim()!==normalizeText(t.text).trim()||!['submitted','pending','approved'].includes(String(row.status||'').toLowerCase()))return;
     const d=read(t.owner,t.lesson);
-    if(!d||d.rev!==t.rev||d.text!==t.text)return; // Typing during submission remains a new draft.
+    if(!d||d.rev!==t.rev||normalizeText(d.text)!==normalizeText(t.text))return; // Typing during submission remains a new draft.
     if(row.user_email&&String(row.user_email).trim().toLowerCase()!==d.email)return;
     // Retain the text, but stop shadowing a newer server answer after this receipt.
-    write({...d,pending:false,submitted_at:row.submitted_at||new Date().toISOString()});
+    write({...d,text:normalizeText(d.text),pending:false,submitted_at:row.submitted_at||new Date().toISOString()});
   }
   // Input saves synchronously; lifecycle events are extra protection, not the only save.
   const hidden=()=>{if(document.hidden)flush()};
