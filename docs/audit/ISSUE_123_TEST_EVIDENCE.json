@@ -1,0 +1,254 @@
+{
+  "baseline": "5d376214295491a0d78b2637477a5bbd58eb14e0",
+  "production_tested": false,
+  "production_remediation_applied": false,
+  "live_supabase_or_device_results": null,
+  "repository_probes": [
+    {
+      "case": "all baseline app/admin/School/Print/PDF/CSV/audio/profile/testimony/notification/SQL sources unchanged",
+      "baseline": "5d376214295491a0d78b2637477a5bbd58eb14e0",
+      "verified": true
+    },
+    {
+      "case": "shared session cache returns prior restricted row without server recheck",
+      "confirmed": true
+    },
+    {
+      "case": "denied server response restores even expired restricted cache",
+      "confirmed": true
+    },
+    {
+      "case": "offline cached UI approval survives explicit logout; not server authority",
+      "confirmed": true
+    },
+    {
+      "case": "seeded Library offline Blob returned independent of identity/expired signed token",
+      "confirmed": true,
+      "identities": 3,
+      "networkRechecks": 0
+    },
+    {
+      "case": "Global Search ignores seeded restricted catalog in FA/EN/HR/FA",
+      "simulated": true,
+      "restrictedResults": 0
+    },
+    {
+      "case": "review-only SQL is gated, rollback-only and outside automatic migrations",
+      "sourceVerified": true
+    }
+  ],
+  "local_postgresql_rehearsal": {
+    "engine": "PGlite 0.3.14 / local PostgreSQL",
+    "productionTested": false,
+    "cases": [
+      {
+        "case": "unverified empty adapters fail closed despite existing synthetic grant",
+        "restrictedRows": 0
+      },
+      {
+        "case": "anonymous",
+        "restrictedRows": 0,
+        "restrictedObjects": 0
+      },
+      {
+        "case": "authenticated without grant",
+        "restrictedRows": 0,
+        "restrictedObjects": 0
+      },
+      {
+        "case": "item grant",
+        "restrictedRows": 1,
+        "restrictedObjects": 1
+      },
+      {
+        "case": "collection grant",
+        "restrictedRows": 2,
+        "restrictedObjects": 2
+      },
+      {
+        "case": "all-library grant",
+        "restrictedRows": 3,
+        "restrictedObjects": 2
+      },
+      {
+        "case": "revoked minister",
+        "restrictedRows": 0,
+        "restrictedObjects": 0
+      },
+      {
+        "case": "expired minister",
+        "restrictedRows": 0,
+        "restrictedObjects": 0
+      },
+      {
+        "case": "explicit server admin",
+        "restrictedRows": 3,
+        "restrictedObjects": 2
+      },
+      {
+        "case": "inactive server admin",
+        "restrictedRows": 0,
+        "restrictedObjects": 0
+      },
+      {
+        "case": "spoofed email/role and direct item ID; grant data protected",
+        "allowed": false
+      },
+      {
+        "case": "same identity immediately after revoke",
+        "restrictedRows": 0,
+        "restrictedObjects": 0
+      },
+      {
+        "case": "fresh login after revoke",
+        "restrictedRows": 0,
+        "restrictedObjects": 0
+      },
+      {
+        "case": "fresh login after grant",
+        "restrictedRows": 1,
+        "restrictedObjects": 1
+      },
+      {
+        "case": "shared-object mapping requires access to every linked restricted item",
+        "itemGrantAllowed": false,
+        "allGrantAllowed": true
+      },
+      {
+        "case": "owning view/definer bypass reproduced; invoker view closes view bypass",
+        "legacyBypassRows": 3,
+        "invokerRows": 0
+      },
+      {
+        "case": "rollback recovery retains deny after savepoint undo",
+        "restrictedRows": 0,
+        "restrictedObjects": 0
+      },
+      {
+        "case": "review transaction leaves no installed candidate",
+        "installed": false
+      },
+      {
+        "case": "read-only metadata inventory executes against synthetic PostgreSQL catalogs",
+        "passed": true
+      }
+    ]
+  },
+  "runtime_changed": false,
+  "existing_checks": {
+    "passed_workflow_steps": [
+      {
+        "workflow": "apply-admin-stability-v439.yml",
+        "step": "Check JavaScript syntax"
+      },
+      {
+        "workflow": "deploy-pages.yml",
+        "step": "Validate current runtime JavaScript"
+      },
+      {
+        "workflow": "deploy-pages.yml",
+        "step": "Validate current app wiring"
+      },
+      {
+        "workflow": "deploy-pages.yml",
+        "step": "Validate current Admin AI and reports wiring"
+      },
+      {
+        "workflow": "deploy-pages.yml",
+        "step": "Validate HTML inline scripts and JSON"
+      },
+      {
+        "workflow": "next-native-optimization-guard.yml",
+        "step": "Validate next native optimization invariants"
+      },
+      {
+        "workflow": "validate-admin-v238.yml",
+        "step": "Check JavaScript syntax"
+      },
+      {
+        "workflow": "validate-admin-v238.yml",
+        "step": "Verify required files and JSON"
+      },
+      {
+        "workflow": "validate-audio-hotfix-23945.yml",
+        "step": "Verify exclusive button ownership and stable offline IDs"
+      },
+      {
+        "workflow": "validate-wave1a-apocrypha.yml",
+        "step": "Validate JavaScript syntax"
+      },
+      {
+        "workflow": "validate-wave1a-apocrypha.yml",
+        "step": "Verify complete fresh trilingual 19-book runtime"
+      },
+      {
+        "workflow": "validate-wave1a-apocrypha.yml",
+        "step": "Verify approved reader behavior"
+      },
+      {
+        "workflow": "validate-wave1b-spiritual-plans.yml",
+        "step": "Validate six complete trilingual spiritual plans"
+      },
+      {
+        "workflow": "validate-wave1b-spiritual-plans.yml",
+        "step": "Verify production navigation, progress, fasting and offline behavior"
+      },
+      {
+        "workflow": "validate-wave1b-spiritual-plans.yml",
+        "step": "Verify no regression to protected production modules"
+      }
+    ],
+    "historical_baseline_failures": [
+      {
+        "workflow": "apply-admin-full-stability-v447.yml",
+        "step": "Check JavaScript syntax and contracts",
+        "baseline_exit": 1
+      },
+      {
+        "workflow": "apply-admin-listening-session-v451.yml",
+        "step": "Validate scripts and contracts",
+        "baseline_exit": 1
+      },
+      {
+        "workflow": "validate-audio-hotfix-23945.yml",
+        "step": "Validate JavaScript and HTML",
+        "baseline_exit": 1
+      },
+      {
+        "workflow": "validate-audio-hotfix-23945.yml",
+        "step": "Validate release metadata and service worker refresh",
+        "baseline_exit": 1
+      },
+      {
+        "workflow": "validate-wave1a-apocrypha.yml",
+        "step": "Verify no regression to stable main systems",
+        "baseline_exit": 1
+      },
+      {
+        "workflow": "validate-wave1b-spiritual-plans.yml",
+        "step": "Validate JavaScript, HTML and release wiring",
+        "baseline_exit": 1
+      }
+    ],
+    "standalone_old_release_checks": "auth-v348 and rbac-v350 fail on both branch and untouched baseline at obsolete 2.3.9.40 assertions",
+    "browser_regressions": [
+      {
+        "command": "NH7_TEST_PRINT121=1 node scripts/verify-report-pdf-v119.cjs",
+        "result": "PASS"
+      },
+      {
+        "command": "node scripts/verify-school-reports-browser-v116.cjs",
+        "result": "PASS"
+      },
+      {
+        "command": "node scripts/verify-i18n-v115.cjs",
+        "result": "PASS"
+      }
+    ],
+    "excluded": [
+      "historical patch/commit steps",
+      "deployment",
+      "live Production Edge CORS/auth probe"
+    ]
+  }
+}
