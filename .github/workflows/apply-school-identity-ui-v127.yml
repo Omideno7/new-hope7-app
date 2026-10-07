@@ -43,8 +43,9 @@ jobs:
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html sw-release-core-v403.js .github/workflows/deploy-pages.yml js/nh7-admin-student-academic-v540.js js/nh7-admin-student-report-v496.js
+          git add index.html sw-release-core-v403.js js/nh7-admin-student-academic-v540.js js/nh7-admin-student-report-v496.js
           git commit -m 'Issue #127: integrate Student Identity UI on feature branch'
           git push origin HEAD:feature/school-identity-credentials
 
-# Corrected patch run: both Admin student tables intentionally receive Student Code.
+# Workflow-file edits are intentionally excluded from the bot commit because
+# GitHub Apps require a separate workflows permission for those paths.
