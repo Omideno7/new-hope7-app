@@ -1,4 +1,4 @@
-/* New Hope 7 Admin feedback colors v5.1.1b
+/* New Hope 7 Admin feedback colors v5.1.1c
  * Success confirmations = green, errors = red, progress/info stays neutral.
  * Safe UI-only layer: no class-attribute observation and no storage/data logic changes.
  */
@@ -17,9 +17,9 @@ function ensureCss(){
   const s=document.createElement('style');
   s.id=STYLE_ID;
   s.textContent=`
-    #adminMsg.${SUCCESS},.notice.${SUCCESS},[role="status"].${SUCCESS},[role="alert"].${SUCCESS}{
+    #adminMsg.${SUCCESS},.notice.${SUCCESS},[role="status"].notice.${SUCCESS},[role="alert"].notice.${SUCCESS}{
       background:#ecfdf3!important;color:#067647!important;border:1px solid #86efac!important;border-inline-start:5px solid #12b76a!important;border-radius:16px!important;padding:12px 14px!important;margin:10px 0!important;font-weight:800!important;box-shadow:0 6px 18px rgba(18,183,106,.08)!important}
-    #adminMsg.${ERROR},.notice.${ERROR},.notice.error,.notice.danger,[role="status"].${ERROR},[role="alert"].${ERROR}{
+    #adminMsg.${ERROR},.notice.${ERROR},.notice.error,.notice.danger,[role="status"].notice.${ERROR},[role="alert"].notice.${ERROR}{
       background:#fef3f2!important;color:#b42318!important;border:1px solid #fda29b!important;border-inline-start:5px solid #d92d20!important;border-radius:16px!important;padding:12px 14px!important;margin:10px 0!important;font-weight:800!important;box-shadow:0 6px 18px rgba(217,45,32,.08)!important}
     #adminMsg.success,.notice.success{background:#ecfdf3!important;color:#067647!important;border:1px solid #86efac!important;border-inline-start:5px solid #12b76a!important;border-radius:16px!important;padding:12px 14px!important;margin:10px 0!important}
     #adminMsg.danger,#adminMsg.error{background:#fef3f2!important;color:#b42318!important;border:1px solid #fda29b!important;border-inline-start:5px solid #d92d20!important;border-radius:16px!important;padding:12px 14px!important;margin:10px 0!important}
@@ -68,7 +68,7 @@ function paint(el,forced){
   applyInline(el,state);
 }
 
-const SELECTORS=['#adminMsg','#nh7StorageMsg','#nh7StorageAuditV509','#nh7StorageAuditV507','#nh7TestimonyMsg','.notice.error','.notice.danger','.notice.success','[role="status"]','[role="alert"]'].join(',');
+const SELECTORS=['#adminMsg','#nh7StorageMsg','#nh7StorageAuditV509','#nh7StorageAuditV507','#nh7TestimonyMsg','.notice.error','.notice.danger','.notice.success','[role="status"].notice','[role="alert"].notice'].join(',');
 function scan(root=document){
   ensureCss();
   if(root instanceof Element&&root.matches?.(SELECTORS))paint(root);
@@ -98,7 +98,12 @@ function boot(){ensureCss();wrapSetMessage();scan()}
 const mo=new MutationObserver(muts=>{
   wrapSetMessage();
   for(const m of muts){
-    if(m.type==='characterData'){const p=m.target.parentElement;if(p)paint(p);continue}
+    if(m.type==='characterData'){
+      const p=m.target.parentElement;
+      const target=p?.matches?.(SELECTORS)?p:p?.closest?.(SELECTORS);
+      if(target)paint(target);
+      continue;
+    }
     if(m.target instanceof Element&&m.target.matches?.(SELECTORS))paint(m.target);
     m.addedNodes?.forEach(n=>{if(n instanceof Element)scan(n)});
   }
@@ -107,5 +112,5 @@ mo.observe(document.documentElement,{subtree:true,childList:true,characterData:t
 
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 setTimeout(boot,500);
-window.NH7AdminMessageFeedbackV511={scan,paint,VERSION:'5.1.1b'};
+window.NH7AdminMessageFeedbackV511={scan,paint,VERSION:'5.1.1c'};
 })();
