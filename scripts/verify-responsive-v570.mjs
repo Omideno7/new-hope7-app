@@ -26,6 +26,9 @@ has(adaptive,'matchMedia(`(min-width:${MIN_SPLIT}px)`).matches','Phone DOM guard
 has(adaptive,'source.click();','Adaptive controls must forward to canonical controls');
 has(adaptive,'fresh.dataset.nh7Signature!==old.dataset.nh7Signature','Observer/sidebar signature guard missing');
 has(adaptive,"new MutationObserver(schedule)",'Adaptive route re-render observer missing');
+must(!adaptive.includes('fetch('),'Adaptive presentation layer must not perform network fetches');
+must(!adaptive.includes('localStorage.setItem'),'Adaptive presentation layer must not write localStorage');
+must(!adaptive.includes('sessionStorage.setItem'),'Adaptive presentation layer must not write sessionStorage');
 
 const offlineNeedle="'./js/nh7-adaptive-layout-v570.js'";
 const occurrences=release.split(offlineNeedle).length-1;
