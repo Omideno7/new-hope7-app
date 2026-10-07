@@ -34,7 +34,7 @@ for(const style of ['tactile','glass','minimal','material','outline','pill','aur
 }
 
 has(appearanceJs,"root.dataset.nh7StudioTone457=lum(c.card)<.2?'dark':'light'",'Theme tone resolver missing');
-has(appearanceJs,"root.style.setProperty('--nh7-studio-verse',c[k])".replace('verse',"'+k+'"),'Theme variable loop changed unexpectedly');
+has(appearanceJs,"for(const k of ['bg','card','text','muted','verse','accent'])root.style.setProperty('--nh7-studio-'+k,c[k]);",'Theme semantic variable writer changed unexpectedly');
 // The controller must remain local-only; it may persist appearance preferences but must not introduce network writes.
 must(!appearanceJs.includes('supabase.functions.invoke'),'Appearance controller must not call Supabase functions');
 
