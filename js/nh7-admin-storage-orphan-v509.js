@@ -1,0 +1,68 @@
+/* New Hope 7 Admin storage orphan audit/cleanup v5.0.9
+ * Manual cleanup only. No destructive action runs during render.
+ * Deletions are counted only after Supabase confirms an object was removed
+ * and a fresh orphan audit verifies that the object is no longer present.
+ */
+(()=>{'use strict';
+if(window.__NH7_ADMIN_STORAGE_ORPHAN_V509__)return;
+window.__NH7_ADMIN_STORAGE_ORPHAN_V509__=true;
+const PRIVATE_BUCKET='nh7-testimony-submissions-v502';
+const PUBLIC_BUCKET='nh7-testimony-published-v502';
+let busy=false,lastAudit=null,auditStarted=false,syncQueued=false;
+function CL(){try{return String(typeof lang!=='undefined'?lang:'fa')}catch(_){return'fa'}}
+function L(fa,en,hr){const x=CL();return x==='fa'?fa:x==='hr'?hr:en}
+function K(){try{return String(typeof SUPABASE_KEY!=='undefined'?SUPABASE_KEY:'')}catch(_){return''}}
+function T(){try{return String(typeof token!=='undefined'?token:'')}catch(_){return''}}
+function H(extra={}){return Object.assign({apikey:K(),Authorization:'Bearer '+T()},extra)}
+function bytes(n){n=Number(n||0);if(n<1024)return n+' B';if(n<1048576)return(n/1024).toFixed(1)+' KB';if(n<1073741824)return(n/1048576).toFixed(1)+' MB';return(n/1073741824).toFixed(2)+' GB'}
+function say(text,bad=false){try{if(typeof setMessage==='function')setMessage(text,bad?'danger':'success')}catch(_){}const x=document.getElementById('nh7StorageMsg');if(x){const c=bad?'notice error':'notice';if(x.className!==c)x.className=c;if(x.textContent!==String(text||''))x.textContent=String(text||'')}}
+async function audit(){return await adminRpc('nh7_owner_community_storage_orphans_v507',{},15000)}
+function rowsOf(a){return [...(Array.isArray(a?.private)?a.private:[]).map(x=>({bucket:PRIVATE_BUCKET,path:String(x?.path||''),bytes:Number(x?.bytes||0)})),...(Array.isArray(a?.public)?a.public:[]).map(x=>({bucket:PUBLIC_BUCKET,path:String(x?.path||''),bytes:Number(x?.bytes||0)}))].filter(x=>x.path)}
+function keyOf(x){return String(x?.bucket||'')+'\n'+String(x?.path||'')}
+function deletedCountFromPayload(data){if(Array.isArray(data))return data.length;if(Array.isArray(data?.data))return data.data.length;if(Array.isArray(data?.objects))return data.objects.length;return 0}
+async function delObj(bucket,path){
+  if(!path)return false;
+  const r=await fetch(`${SUPABASE_URL}/storage/v1/object/${encodeURIComponent(bucket)}`,{method:'DELETE',cache:'no-store',headers:H({'Content-Type':'application/json','Cache-Control':'no-cache'}),body:JSON.stringify({prefixes:[String(path)]})});
+  const text=await r.text().catch(()=>'');
+  let data=null;try{data=text?JSON.parse(text):null}catch(_){}
+  if(!r.ok){const detail=String(data?.message||data?.error||text||(`Storage delete ${r.status}`));throw new Error(detail)}
+  const n=deletedCountFromPayload(data);
+  if(n<1){throw new Error(L('Supabase درخواست حذف را پذیرفت اما هیچ فایلی حذف نشد.','Supabase accepted the delete request but removed zero files.','Supabase je prihvatio zahtjev za brisanje, ali nije izbrisao nijednu datoteku.'))}
+  return true;
+}
+function ensureStatus(){const wrap=document.querySelector('.nh7s504-wrap .panel');if(!wrap)return null;let box=document.getElementById('nh7StorageAuditV509');if(!box){box=document.createElement('div');box.id='nh7StorageAuditV509';box.className='notice';const msg=document.getElementById('nh7StorageMsg');if(msg?.parentNode)msg.insertAdjacentElement('afterend',box);else wrap.prepend(box)}return box}
+function renderAudit(a=lastAudit){if(!a)return;const box=ensureStatus();if(!box)return;const pc=Number(a?.private_count||0),uc=Number(a?.public_count||0),pb=Number(a?.private_bytes||0),ub=Number(a?.public_bytes||0),total=pc+uc;const cls=total?'notice error':'notice';const text=total?L(`فایل یتیم واقعی در Supabase: خصوصی ${pc} (${bytes(pb)}) · عمومی ${uc} (${bytes(ub)})`,`Real orphan files in Supabase: private ${pc} (${bytes(pb)}) · public ${uc} (${bytes(ub)})`,`Stvarne datoteke bez zapisa: privatno ${pc} (${bytes(pb)}) · javno ${uc} (${bytes(ub)})`):L('Storage شهادت‌ها با دیتابیس هماهنگ است؛ فایل یتیم وجود ندارد ✓','Testimony Storage matches the database; no orphan files ✓','Pohrana svjedočanstava odgovara bazi; nema datoteka bez zapisa ✓');if(box.className!==cls)box.className=cls;if(box.textContent!==text)box.textContent=text}
+function ensureButton(){const actions=document.querySelector('.nh7s504-wrap .nh7s504-actions');if(!actions||actions.querySelector('[data-nh7-orphan-clean-v509]'))return;const b=document.createElement('button');b.type='button';b.className='danger-btn';b.dataset.nh7OrphanCleanV509='1';b.textContent='🧹 '+L('پاک‌سازی فایل‌های یتیم','Clean orphan files','Očisti datoteke bez zapisa');b.onclick=()=>cleanup(true);actions.appendChild(b)}
+async function inspect(){if(busy||!T())return false;try{const a=await audit();lastAudit=a;renderAudit(a);return true}catch(e){say(L('بررسی فایل‌های یتیم انجام نشد: ','Orphan audit failed: ','Provjera nije uspjela: ')+String(e?.message||e),true);return false}}
+async function cleanup(ask=true){
+  if(busy||!T())return false;
+  busy=true;
+  try{
+    const before=await audit();lastAudit=before;renderAudit(before);
+    const list=rowsOf(before);
+    if(!list.length){say(L('فایل یتیمی وجود ندارد.','No orphan files were found.','Nema datoteka bez zapisa.'));return true}
+    if(ask&&!confirm(L(`${list.length} فایل صوتی بدون رکورد برای همیشه از Supabase Storage حذف شود؟`,`Permanently delete ${list.length} unreferenced audio files from Supabase Storage?`,`Trajno izbrisati ${list.length} audio datoteka bez zapisa iz Supabase pohrane?`)))return false;
+    const failures=[];
+    for(const item of list){try{await delObj(item.bucket,item.path)}catch(e){failures.push(String(e?.message||e))}}
+    const after=await audit();lastAudit=after;renderAudit(after);auditStarted=true;
+    try{await window.NH7AdminStorageV504?.refresh?.()}catch(_){}
+    const remaining=new Set(rowsOf(after).map(keyOf));
+    const verifiedRemoved=list.filter(x=>!remaining.has(keyOf(x))).length;
+    const remainCount=Number(after?.total_count??remaining.size??0);
+    if(remainCount>0){
+      const detail=failures[0]?` — ${failures[0]}`:'';
+      say(L(`${verifiedRemoved} فایل واقعاً حذف شد؛ ${remainCount} فایل یتیم هنوز باقی است${detail}.`,`Verified ${verifiedRemoved} deleted; ${remainCount} orphan files still remain${detail}.`,`Potvrđeno je brisanje ${verifiedRemoved}; još je ostalo ${remainCount} datoteka bez zapisa${detail}.`),true);
+      return false;
+    }
+    say(L(`${verifiedRemoved} فایل یتیم واقعاً از Supabase Storage حذف شد ✓`,`${verifiedRemoved} orphan files were verified as removed from Supabase Storage ✓`,`Potvrđeno je uklanjanje ${verifiedRemoved} datoteka bez zapisa iz Supabase pohrane ✓`));
+    return true;
+  }catch(e){say(L('پاک‌سازی Storage انجام نشد: ','Storage cleanup failed: ','Čišćenje pohrane nije uspjelo: ')+String(e?.message||e),true);return false}
+  finally{busy=false}
+}
+function patchPermanentDelete(){const storage=window.NH7AdminStorageV504,api=window.NH7AdminTestimonyV565;if(!storage||!api?.deletePermanently)return;storage.del=async id=>{const ok=await api.deletePermanently(id,true);if(ok)await storage.refresh?.()};storage.deleteSelected=async()=>{const ids=[...(storage.state?.selected||[])];if(!ids.length)return;if(!confirm(L(`${ids.length} شهادت انتخاب‌شده و همه فایل‌هایشان برای همیشه حذف شوند؟`,`Permanently delete ${ids.length} selected testimonies and all files?`,`Trajno izbrisati ${ids.length} odabranih svjedočanstava i sve datoteke?`)))return;let done=0;for(const id of ids){if(await api.deletePermanently(id,false))done++}say(L(`${done} شهادت کاملاً حذف شد ✓`,`${done} testimonies permanently deleted ✓`,`${done} svjedočanstava trajno izbrisano ✓`));await storage.refresh?.()}}
+function syncUi(){const wrap=document.querySelector('.nh7s504-wrap');if(!wrap){auditStarted=false;return}ensureButton();patchPermanentDelete();if(!auditStarted){auditStarted=true;setTimeout(inspect,0)}else renderAudit()}
+function scheduleSync(){if(syncQueued)return;syncQueued=true;requestAnimationFrame(()=>{syncQueued=false;syncUi()})}
+const mo=new MutationObserver(scheduleSync);mo.observe(document.documentElement,{subtree:true,childList:true});
+setTimeout(syncUi,250);setTimeout(syncUi,900);
+window.NH7AdminStorageOrphanV509={audit,inspect,cleanup,VERSION:'5.0.9'};
+})();
