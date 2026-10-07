@@ -226,3 +226,89 @@ function start(){
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 window.NH7GlobalSearchV560={VERSION,mount,search:q=>{const root=document.getElementById('nh7GlobalSearch560');if(root)runSearch(root,q)}};
 })();
+
+/* New Hope 7 v5.6.1 — resilient on-device profile photo.
+ * Stores a compressed square photo in persistent local storage so it survives normal
+ * rerenders/app restarts on the same device. No auth, Supabase or account data is changed.
+ */
+(()=>{'use strict';
+if(window.__NH7_PROFILE_PHOTO_V561__)return;window.__NH7_PROFILE_PHOTO_V561__=true;
+
+const VERSION='5.6.1',PHOTO_KEY='nh7_profile_photo_v561';
+let queued=false;
+const lang=()=>{const v=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return ['fa','en','hr'].includes(v)?v:'en'};
+const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
+const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function profile(){
+  let cached={},school={},meeting={};
+  try{cached=JSON.parse(localStorage.getItem('nh7_user_profile')||'{}')||{}}catch(_){}
+  try{school=JSON.parse(localStorage.getItem('nh7_school_access')||'{}')||{}}catch(_){}
+  try{meeting=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{}')||{}}catch(_){}
+  const p=Object.assign({},meeting,school,cached);
+  const registration=String((p.firstName||'')+' '+(p.lastName||'')).trim();
+  return {name:String(cached.name||registration||p.name||'').trim(),email:String(cached.email||p.email||localStorage.getItem('nh7_manual_email')||'').trim()};
+}
+function initials(name){
+  const parts=String(name||'').trim().split(/\s+/).filter(Boolean);if(!parts.length)return'👤';
+  return (parts[0][0]+(parts.length>1?parts[parts.length-1][0]:'')).toUpperCase();
+}
+function readPhoto(){try{const v=localStorage.getItem(PHOTO_KEY)||'';return /^data:image\//.test(v)?v:''}catch(_){return''}}
+function ensureStyle(){
+  if(document.getElementById('nh7ProfilePhoto561Style'))return;
+  const style=document.createElement('style');style.id='nh7ProfilePhoto561Style';style.textContent=`
+    .nh7-profile-avatar561{width:58px;height:58px;flex:0 0 58px;border-radius:50%;display:grid;place-items:center;overflow:hidden;border:2px solid color-mix(in srgb,var(--brand,#1858a4) 20%,transparent);background:color-mix(in srgb,var(--brand,#1858a4) 9%,var(--card,#fff));font-weight:900;font-size:1rem}
+    .nh7-profile-avatar561 img{width:100%;height:100%;object-fit:cover;display:block}
+    .nh7-home-profile561{display:flex;align-items:center;gap:10px;margin:0 0 13px;padding-bottom:11px;border-bottom:1px solid color-mix(in srgb,var(--brand,#1858a4) 12%,transparent)}
+    .nh7-home-profile561 .nh7-profile-avatar561{width:46px;height:46px;flex-basis:46px}.nh7-home-profile561-copy{min-width:0;display:grid;gap:2px}.nh7-home-profile561-copy strong{font-size:.92rem}.nh7-home-profile561-copy small{font-size:.68rem;opacity:.68}
+    .nh7-account-profile561{display:flex;align-items:center;gap:12px;margin:0 0 15px;padding:12px;border:1px solid color-mix(in srgb,var(--brand,#1858a4) 15%,transparent);border-radius:17px;background:color-mix(in srgb,var(--card,#fff) 96%,var(--brand,#1858a4))}.nh7-account-profile561-copy{min-width:0;flex:1}.nh7-account-profile561-copy strong,.nh7-account-profile561-copy small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.nh7-account-profile561-copy small{margin-top:3px;font-size:.7rem;opacity:.68}
+    .nh7-account-profile561-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.nh7-account-profile561-actions label,.nh7-account-profile561-actions button{min-height:34px;padding:7px 10px;border-radius:10px;font-size:.68rem;cursor:pointer}.nh7-profile-file561{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+    @media(max-width:520px){.nh7-account-profile561{align-items:flex-start;flex-wrap:wrap}.nh7-account-profile561-copy{min-width:calc(100% - 78px)}}
+  `;document.head.appendChild(style);
+}
+function avatarHtml(photo,name){return `<span class="nh7-profile-avatar561">${photo?`<img src="${esc(photo)}" alt="">`:esc(initials(name))}</span>`}
+function mountHome(){
+  const marker=document.getElementById('quickNotify'),view=document.getElementById('view');if(!marker||!view)return false;
+  const card=marker.closest('.card')||view.querySelector('.card');if(!card)return false;
+  document.getElementById('nh7HomeProfile561')?.remove();
+  const p=profile(),photo=readPhoto();if(!p.name&&!photo)return false;
+  const row=document.createElement('div');row.id='nh7HomeProfile561';row.className='nh7-home-profile561';
+  row.innerHTML=`${avatarHtml(photo,p.name)}<span class="nh7-home-profile561-copy"><strong>${esc(p.name||L('پروفایل من','My profile','Moj profil'))}</strong><small>${esc(L('خوش آمدید','Welcome','Dobro došli'))}</small></span>`;
+  card.prepend(row);return true;
+}
+function compressPhoto(file){
+  return new Promise((resolve,reject)=>{
+    if(!file||!String(file.type||'').startsWith('image/')){reject(new Error('not_image'));return}
+    const url=URL.createObjectURL(file),img=new Image();
+    img.onload=()=>{try{
+      const size=Math.min(img.naturalWidth||img.width,img.naturalHeight||img.height);if(!size)throw new Error('invalid_image');
+      const canvas=document.createElement('canvas');canvas.width=384;canvas.height=384;const ctx=canvas.getContext('2d');
+      const sx=Math.max(0,((img.naturalWidth||img.width)-size)/2),sy=Math.max(0,((img.naturalHeight||img.height)-size)/2);
+      ctx.drawImage(img,sx,sy,size,size,0,0,384,384);const data=canvas.toDataURL('image/jpeg',.82);URL.revokeObjectURL(url);resolve(data);
+    }catch(error){URL.revokeObjectURL(url);reject(error)}};
+    img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('invalid_image'))};img.src=url;
+  });
+}
+function mountAccount(){
+  const logout=document.getElementById('logoutAccountBtn');if(!logout)return false;
+  const card=logout.closest('.card');if(!card)return false;
+  document.getElementById('nh7AccountProfile561')?.remove();
+  const p=profile(),photo=readPhoto(),box=document.createElement('section');box.id='nh7AccountProfile561';box.className='nh7-account-profile561';
+  box.innerHTML=`${avatarHtml(photo,p.name)}<div class="nh7-account-profile561-copy"><strong>${esc(p.name||L('پروفایل من','My profile','Moj profil'))}</strong>${p.email?`<small>${esc(p.email)}</small>`:''}<div class="nh7-account-profile561-actions"><label class="secondary-btn" for="nh7ProfileFile561">${esc(photo?L('تغییر عکس','Change photo','Promijeni fotografiju'):L('افزودن عکس','Add photo','Dodaj fotografiju'))}</label>${photo?`<button type="button" class="secondary-btn" data-nh7-profile-remove>${esc(L('حذف عکس','Remove photo','Ukloni fotografiju'))}</button>`:''}</div><small>${esc(L('عکس روی همین دستگاه به‌صورت پایدار ذخیره می‌شود.','The photo is stored persistently on this device.','Fotografija se trajno sprema na ovom uređaju.'))}</small></div><input class="nh7-profile-file561" id="nh7ProfileFile561" type="file" accept="image/*">`;
+  const anchor=card.querySelector('h3')||card.firstChild;if(anchor)anchor.insertAdjacentElement('afterend',box);else card.prepend(box);
+  box.querySelector('#nh7ProfileFile561')?.addEventListener('change',async event=>{
+    const file=event.target.files?.[0];if(!file)return;
+    try{const data=await compressPhoto(file);localStorage.setItem(PHOTO_KEY,data);mountAll()}catch(error){console.warn('Profile photo',error);alert(L('ذخیره عکس انجام نشد. لطفاً یک عکس دیگر انتخاب کنید.','The photo could not be saved. Please choose another image.','Fotografija nije spremljena. Odaberite drugu sliku.'))}
+  });
+  box.querySelector('[data-nh7-profile-remove]')?.addEventListener('click',()=>{localStorage.removeItem(PHOTO_KEY);mountAll()});
+  return true;
+}
+function mountAll(){ensureStyle();mountHome();mountAccount()}
+function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;mountAll()})}
+function start(){
+  ensureStyle();mountAll();const view=document.getElementById('view');if(view)new MutationObserver(schedule).observe(view,{subtree:true,childList:true});
+  document.getElementById('langSelect')?.addEventListener('change',()=>setTimeout(mountAll,0));
+  window.addEventListener('storage',event=>{if(event.key===PHOTO_KEY||event.key==='nh7_user_profile')schedule()});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+window.NH7ProfilePhotoV561={VERSION,PHOTO_KEY,mount:mountAll,read:readPhoto};
+})();
