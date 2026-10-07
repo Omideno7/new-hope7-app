@@ -1,6 +1,6 @@
 # New Hope 7 — QA Master Checklist
 
-Last updated: 2026-10-06
+Last updated: 2026-10-07
 Working branch: `batch2/critical-stability-v300`
 Continuity / project management protocol: `docs/PROJECT_CONTROL.md`
 
@@ -13,8 +13,8 @@ Status legend:
 
 ## Progress summary
 - Total tracked items: 55
-- 🧪 Code/fix ready, awaiting QA: 15
-- 🟡 In progress / implementation or review still needed: 25
+- 🧪 Code/fix ready, awaiting QA: 16
+- 🟡 In progress / implementation or review still needed: 24
 - ⬜ Not started / release-stage only: 15
 - ✅ Fully verified on target devices/backends: 0
 - 🚀 Included in approved release: 0
@@ -60,7 +60,7 @@ Status legend:
 - 🟡 Admin panel information architecture / remove duplicates and unnecessary sections.
 - 🟡 In-app Admin access with secure RBAC.
 - 🟡 Sermon admin edit/image/save regression QA.
-- 🟡 Preserve Production hotfixes: Testimony Publish/Delete/Download, Prayer Admin/Delete, Storage Manager, Blessing cleanup, Testimony Player compatibility.
+- 🧪 Preserve Admin community hotfixes: Testimony Publish/Delete/Download, Prayer Admin/Delete, Storage Manager, Blessing cleanup, Testimony Player compatibility — testimony playback regression repaired in v5.0.5; static CI passed; real Admin/Supabase QA pending.
 - ⬜ Certificate Studio final implementation/QA.
 - ⬜ Remove obsolete Analytics UI while keeping required operational functions.
 
@@ -99,6 +99,14 @@ Status legend:
 - ⬜ User approval before Production release.
 
 ## Change log
+### 2026-10-07
+- Root-caused the Testimony Admin playback regression: Storage Manager v5.0.4 overrode the approved v5.6.5 testimony `listen()` runtime after it loaded.
+- Added `js/nh7-admin-testimony-runtime-fix-v505.js` to restore authenticated private-audio playback with signed-URL fallback and blob URL cleanup.
+- Added permanent Delete controls for pending/published testimony review and changed the v5.0.5 deletion path to delete Storage objects before deleting the database row, preventing silent orphaned audio storage.
+- Repaired Storage Manager single/bulk delete entry points to use the safer v5.0.5 deletion path.
+- Added `validate-testimony-v505.yml`; JavaScript syntax and regression-wiring checks passed on commit `694e1d518df5f6f143ec0157764cf11961bb6458`.
+- Production and Supabase Production were not changed.
+
 ### 2026-10-06
 - Created persistent Master Checklist in the repository so progress is not dependent on chat history.
 - Added `docs/PROJECT_CONTROL.md` as the mandatory continuity/handoff protocol for future conversations.
