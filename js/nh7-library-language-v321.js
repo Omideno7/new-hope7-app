@@ -15,7 +15,7 @@ const wrapped=async function(input,init={}){
   const security=window.NH7LibrarySecurityV125,owner=security?.uid();
   const catalog=await security?.catalog();
   if(!owner||!navigator.onLine||owner!==security?.uid()||!catalog?.items.some(row=>String(row.id)===String(body.p_item_id)))return new Response(JSON.stringify({allowed:false,code:'content_access_required'}),{status:403,headers:{'Content-Type':'application/json','Cache-Control':'private, no-store'}});
-  // Preserve the deployed language-aware wire contract; v372 signature/alias must be verified before deployment.
+  // Maintainer verified: v321 authorizes through v230 with auth.uid(); preserve its five-parameter contract.
   const response=await original(raw.replace('/nh7_library_reader_access_v250','/nh7_library_reader_access_v321'),next);
   if(!response.ok)security.invalidate('reader_denied');
   return response;

@@ -1,6 +1,6 @@
 /** Review-only replacement for the Library branch AFTER the existing School approval gate.
  * No service-role client, client identity hints, or DB changes are used here.
- * The deployed index.ts is not in this repository; see the deployment review gate.
+ * Integrated by index.ts only after its unchanged School gate; deployment remains review-only.
  */
 export function filterLibraryCatalog(rows, query='') {
   const params=new URLSearchParams(query);
@@ -23,9 +23,9 @@ export function filterLibraryCatalog(rows, query='') {
   }
   return items;
 }
-export async function libraryCatalog(request, payload, {supabaseUrl,publishableKey,corsHeaders={},fetcher=fetch}) {
+export async function libraryCatalog(request, payload, {supabaseUrl,publishableKey,corsHeaders={},fetcher=fetch,respond}) {
   const headers={...corsHeaders,'Content-Type':'application/json; charset=utf-8','Cache-Control':'private, no-store','Vary':'Authorization, Origin'};
-  const reply=(body,status=200)=>new Response(JSON.stringify(body),{status,headers});
+  const reply=(body,status=200)=>respond?respond(body,status):new Response(JSON.stringify(body),{status,headers});
   const bearer=request.headers.get('Authorization')||'';
   if(!/^Bearer\s+\S+$/i.test(bearer))return reply({error:'login_required'},401);
   const upstreamHeaders={apikey:publishableKey,Authorization:bearer,'Content-Type':'application/json'};
@@ -39,6 +39,6 @@ export async function libraryCatalog(request, payload, {supabaseUrl,publishableK
     const raw=await response.json(),bundle=Array.isArray(raw)?raw[0]:raw;
     if(bundle?.allowed===false)return reply({error:'library_access_denied'},403);
     const items=filterLibraryCatalog(Array.isArray(bundle?.items)?bundle.items:[],String(payload.query||''));
-    return reply({items,user_email:user.email||''});
+    return reply({items,approved:true,user_email:user.email||''});
   }catch(error){return reply({error:error.message?.startsWith('unsupported_library_')?error.message:'library_catalog_unavailable'},error.message?.startsWith('unsupported_library_')?400:503)}
 }

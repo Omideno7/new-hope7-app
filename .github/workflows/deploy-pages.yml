@@ -25,6 +25,11 @@ jobs:
         with:
           ref: ${{ github.sha }}
 
+      - name: Set up validation Node runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
       - name: Validate current runtime JavaScript
         shell: bash
         run: |
@@ -224,6 +229,7 @@ jobs:
           set -euo pipefail
           node --check supabase/functions/nh7-content-access/library-catalog.mjs
           node scripts/verify-library-security-v125.mjs
+          node scripts/verify-content-access-entrypoint-v125.mjs
 
       - name: Validate HTML inline scripts and JSON
         shell: bash

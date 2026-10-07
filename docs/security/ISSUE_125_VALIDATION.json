@@ -80,7 +80,7 @@
       "workflow": "deploy-pages.yml",
       "name": "Validate Ministers Library security",
       "status": "PASS",
-      "output": "PASS Edge adapter: six principals, scoped grants, forged identity/role ignored, no service role, denial/timeout fail closed.\nPASS actual client: UID binding, public-only snapshots, legacy purge, revoke, 403, offline, logout, identity race, freshness expiry; unrelated data preserved.\nPASS actual worker/offline API: old Library bytes cannot be replayed; audio worker cache lookup preserved.\nPASS active reader wrapper: legacy full-text cache deleted; denial/offline never replay text; language-aware online wire contract retained.\nPASS source scope and Library loader ordering.\n"
+      "output": "PASS Edge adapter: six principals, scoped grants, forged identity/role ignored, no service role, denial/timeout fail closed.\nPASS actual client: UID binding, public-only snapshots, legacy purge, revoke, 403, offline, logout, identity race, freshness expiry; unrelated data preserved.\nPASS actual worker/offline API: old Library bytes cannot be replayed; audio worker cache lookup preserved.\nPASS active reader wrapper: legacy full-text cache deleted; denial/offline never replay text; verified v321 five-parameter/language wire contract retained (authorizes via v230/auth.uid, not v372 delegation).\nPASS source scope and Library loader ordering.\nPASS full Edge: 37 before/after cases have identical responses, CORS, School checks, audio signatures and synthetic Bible writes; non-Library source bytes unchanged.\nPASS exact Library path: School-approved non-minister/revoked get zero restricted rows; scoped minister/Admin use caller-JWT v396; anonymous/School denial unchanged; no service-role Library read.\n(node:36955) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
     },
     {
       "workflow": "deploy-pages.yml",
@@ -188,14 +188,14 @@
   ],
   "browser_regressions": [
     {
-      "command": "node scripts/verify-i18n-v115.cjs",
+      "command": "node scripts/verify-library-browser-v125.cjs",
       "status": "PASS",
-      "evidence": "PASS: 11 representative routes, FA → EN → HR → FA; RTL/LTR and navigation labels\nPASS: open appearance dialog translates in place; custom color draft and controls preserved\nPASS: photo picker and crop canvas/zoom survive language switches; photo persistence not changed\nPASS: mounted mini/full player accessibility labels; engine behavior untouched\nPASS: book reader UI switches in place; original document direction and search retained\nPASS: exact-result search → John 3:16; FA/EN/HR verse target and native share payload\nPASS: notes, saved verses, assignments, progress, favorites, download metadata, profile/account fixtures preserved\nAll service calls mocked; intercepted background write attempts: 35\nTestimony/Prayer user routes absent from this main baseline; no feature import or protected Admin edits.\n"
+      "evidence": "PASS actual active Library: FA → EN → HR → FA, restricted render, revocation removes card/reader, denied direct ID, public reader, legacy view routing, 403 and same-tab logout.\n"
     },
     {
-      "command": "node scripts/verify-school-reports-browser-v116.cjs",
+      "command": "node scripts/verify-i18n-v115.cjs",
       "status": "PASS",
-      "evidence": "PASS: enrolled, started/inactive, needs-revision, passed, failed and not-registered groups from one batch RPC\nPASS: 100-row view pagination; complete 1,109-row UTF-8 CSV with stable headers and spreadsheet-formula escaping\nPASS: Print and browser Save as PDF; searchable multi-page document contains first and final rows with unclipped table\nPASS: FA → EN → HR → FA, RTL/LTR and view/Close on phone, tablet/iPad and desktop widths\nPASS: per-student completed/pending lessons, required missing assignment, review state, scores, exam attempts, wrong answers, CSV/PDF; optional failure and cache reuse\nPASS: bounded hangs, one server-timeout retry, stale snapshot retained, UI unlocks; no record mutations or write RPCs; zero page errors\nPASS: real current Admin wrapper, RBAC/stability modules, group → individual report integration and Print; no report-time write calls\nIsolated CSV/PDF evidence: [local artifact directory]\n"
+      "evidence": "PASS: 11 representative routes, FA → EN → HR → FA; RTL/LTR and navigation labels\nPASS: open appearance dialog translates in place; custom color draft and controls preserved\nPASS: photo picker and crop canvas/zoom survive language switches; photo persistence not changed\nPASS: mounted mini/full player accessibility labels; engine behavior untouched\nPASS: book reader UI switches in place; original document direction and search retained\nPASS: exact-result search → John 3:16; FA/EN/HR verse target and native share payload\nPASS: notes, saved verses, assignments, progress, favorites, download metadata, profile/account fixtures preserved\nAll service calls mocked; intercepted background write attempts: 36\nTestimony/Prayer user routes absent from this main baseline; no feature import or protected Admin edits.\n"
     },
     {
       "command": "NH7_TEST_PRINT121=1 node scripts/verify-report-pdf-v119.cjs",
@@ -203,18 +203,49 @@
       "evidence": "PASS #121: real top-level document, full fa report, fresh Print tap, silent-no-op and blocked-popup actionable PDF fallback, print-only CSS and Back\nPASS: persistent toolbar, direct user-gesture Print, complete 203-row Persian group PDF, real PDF structure/pages/images and CSV\nPASS #121: real top-level document, full en report, fresh Print tap, silent-no-op and blocked-popup actionable PDF fallback, print-only CSS and Back\nPASS #121: real top-level document, full hr report, fresh Print tap, silent-no-op and blocked-popup actionable PDF fallback, print-only CSS and Back\nPASS #121: real top-level document, full fa report, fresh Print tap, silent-no-op and blocked-popup actionable PDF fallback, print-only CSS and Back\nPASS: FA → EN → HR → FA; 390/820/1440px controls and Close/Back; cancel pending PDF jobs\nPASS #121: real top-level document, full fa report, fresh Print tap, silent-no-op and blocked-popup actionable PDF fallback, print-only CSS and Back\nPASS: blank output rejection, usable Print/Back during failure, Retry and Escape preserve original report\nPASS: full individual report, long-answer multi-page real PDF, prepared File/Share gesture, cancel and direct-download fallback, source immutability and no remote dependencies\nPDF/PNG/CSV evidence: [local artifact directory]\n"
     },
     {
-      "command": "node scripts/verify-library-browser-v125.cjs",
+      "command": "node scripts/verify-school-reports-browser-v116.cjs",
       "status": "PASS",
-      "evidence": "PASS actual active Library: FA → EN → HR → FA, restricted render, revocation removes card/reader, denied direct ID, public reader, legacy view routing, 403 and same-tab logout.\n"
+      "evidence": "PASS: enrolled, started/inactive, needs-revision, passed, failed and not-registered groups from one batch RPC\nPASS: 100-row view pagination; complete 1,109-row UTF-8 CSV with stable headers and spreadsheet-formula escaping\nPASS: Print and browser Save as PDF; searchable multi-page document contains first and final rows with unclipped table\nPASS: FA → EN → HR → FA, RTL/LTR and view/Close on phone, tablet/iPad and desktop widths\nPASS: per-student completed/pending lessons, required missing assignment, review state, scores, exam attempts, wrong answers, CSV/PDF; optional failure and cache reuse\nPASS: bounded hangs, one server-timeout retry, stale snapshot retained, UI unlocks; no record mutations or write RPCs; zero page errors\nPASS: real current Admin wrapper, RBAC/stability modules, group → individual report integration and Print; no report-time write calls\nIsolated CSV/PDF evidence: [local artifact directory]\n"
     }
   ],
-  "backend_blockers": [
-    "Missing deployed nh7-content-access entrypoint: module cannot be deployed standalone",
-    "Verify deployed v321 reader delegates to current UID-secure v372 before full backend rollout"
-  ],
+  "backend_blockers": [],
   "unrun": [
-    "Full deployed Edge entrypoint Deno check/integration",
     "Live Supabase principal/grant matrix",
-    "Actual Safari/iOS devices"
-  ]
+    "Actual Safari/iOS devices",
+    "Original deployed v4 export byte/hash comparison by agent"
+  ],
+  "resolved_verification": {
+    "source": "Maintainer PR comment and user-supplied authoritative v4 source fragments, read-only live inspection by maintainer",
+    "maintainer_comment": "https://github.com/Omideno7/new-hope7-app/pull/126#issuecomment-6045835711",
+    "deployed_version": 4,
+    "verify_jwt": true,
+    "reported_deployed_sha256": "86061a202cb4a854fa9488ffa2f75f3ab1b31cbf3696eb2ecdbbcb9d9baf893a",
+    "reconstructed_baseline_sha256": "ba45bbb6142f46b122d8809f7a2f2ed6415994d98260e9ec66f58a6264206b1b",
+    "integrated_entrypoint_sha256": "b5999ecd131a43ccd3b0f1ef4833e335af91f6b5609ab7a98edb0ac100d09484",
+    "deployed_source_hash_match": false,
+    "source_limit": "Pasted fragments reformatted/partial scaffold recovered from tracked e581a63; baseline is a reviewable reconstruction, not a byte-identical deployed export. Compare original v4 export before deployment.",
+    "reader_v321_signature": [
+      "p_item_id",
+      "p_code",
+      "p_device_id",
+      "p_user_email",
+      "p_language"
+    ],
+    "reader_v321_authorization": "nh7_library_authorize_v230 with auth.uid; active_v251 required for ministers; no v372 delegation",
+    "v372": "Independently UID/grant-secure; no migration/switch needed"
+  },
+  "entrypoint_regressions": {
+    "command": "node scripts/verify-content-access-entrypoint-v125.mjs",
+    "status": "PASS",
+    "evidence": "PASS full Edge: 37 before/after cases have identical responses, CORS, School checks, audio signatures and synthetic Bible writes; non-Library source bytes unchanged.\nPASS exact Library path: School-approved non-minister/revoked get zero restricted rows; scoped minister/Admin use caller-JWT v396; anonymous/School denial unchanged; no service-role Library read.\n",
+    "non_library_cases": 37,
+    "non_library_source_unchanged": true,
+    "scope": "Exact byte identity outside Library branch/import relative to reconstructed baseline, plus mocked complete handlers. No Production requests or real Bible writes."
+  },
+  "deno_check": {
+    "command": "deno check --no-lock supabase/functions/nh7-content-access/index.ts",
+    "runtime": "Deno 2.9.6",
+    "status": "PASS",
+    "scope": "Complete entrypoint and local adapter; dependency registry reads only, no Supabase connection/deploy."
+  }
 }

@@ -67,17 +67,17 @@ assert.equal((await offlineWindow.NH7OfflineV325.status(signed)).cached,false);a
 console.log('PASS actual worker/offline API: old Library bytes cannot be replayed; audio worker cache lookup preserved.');
 // Execute the active language wrapper: full-text legacy cache is deleted, not read on failure/offline.
 let removedReaderCache='',readerCalls=0;
-window.fetch=async(url,init)=>{readerCalls++;assert(url.endsWith('nh7_library_reader_access_v321'));assert.equal(JSON.parse(init.body).p_language,'en');assert.equal(init.cache,'no-store');return Response.json({allowed:false},{status:403})};
+window.fetch=async(url,init)=>{readerCalls++;assert(url.endsWith('nh7_library_reader_access_v321'));const body=JSON.parse(init.body);assert.deepEqual(body,{p_item_id:minister.id,p_code:'',p_device_id:'fixture-device',p_user_email:'fixture@example.invalid',p_language:'en'});assert.equal(init.cache,'no-store');return Response.json({allowed:false},{status:403})};
 context.caches={delete:async name=>{removedReaderCache=name;return true},open:async()=>{throw new Error('Reader cache must not be opened')}};
 window.caches=context.caches;context.document.documentElement={lang:'en'};
 vm.runInContext(read('js/nh7-library-language-v321.js'),context);
 assert.equal(removedReaderCache,'nh7reader-offline-v327');
-const deniedReader=await window.fetch('https://gpzcwffxnddhaeaogdyo.supabase.co/rest/v1/rpc/nh7_library_reader_access_v250',{method:'POST',body:JSON.stringify({p_item_id:minister.id})});
+const deniedReader=await window.fetch('https://gpzcwffxnddhaeaogdyo.supabase.co/rest/v1/rpc/nh7_library_reader_access_v250',{method:'POST',body:JSON.stringify({p_item_id:minister.id,p_code:'',p_device_id:'fixture-device',p_user_email:'fixture@example.invalid'})});
 assert.equal(deniedReader.status,403);assert.equal(readerCalls,1);
 context.navigator.onLine=false;
-const offlineReader=await window.fetch('https://gpzcwffxnddhaeaogdyo.supabase.co/rest/v1/rpc/nh7_library_reader_access_v250',{method:'POST',body:JSON.stringify({p_item_id:minister.id})});
+const offlineReader=await window.fetch('https://gpzcwffxnddhaeaogdyo.supabase.co/rest/v1/rpc/nh7_library_reader_access_v250',{method:'POST',body:JSON.stringify({p_item_id:minister.id,p_code:'',p_device_id:'fixture-device',p_user_email:'fixture@example.invalid'})});
 assert.equal(offlineReader.status,403);assert.equal(readerCalls,1);
-console.log('PASS active reader wrapper: legacy full-text cache deleted; denial/offline never replay text; language-aware online wire contract retained.');
+console.log('PASS active reader wrapper: legacy full-text cache deleted; denial/offline never replay text; verified v321 five-parameter/language wire contract retained (authorizes via v230/auth.uid, not v372 delegation).');
 // The scope check prevents accidental changes to protected feature implementations.
 const {execFileSync}=await import('node:child_process');
 // Full local checkout can compare scope; shallow CI checkout may not have origin/main.

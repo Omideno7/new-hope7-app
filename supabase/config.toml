@@ -1,0 +1,4 @@
+# Review-only: matches the maintainer-confirmed current Production setting.
+# No deployment is performed by this PR. Never deploy with --no-verify-jwt.
+[functions.nh7-content-access]
+verify_jwt = true
