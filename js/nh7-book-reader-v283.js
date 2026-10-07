@@ -40,12 +40,8 @@ function titleOf(row){const l=lang();return row?.['title_'+l]||row?.title_en||ro
 const SELECT_FIELDS='id,title_fa,title_en,title_hr,audience,resource_type,apocrypha_book,reader_mode,reader_language,reader_status,reader_available,reader_page_count,collection_id';
 
 async function catalogBundle(){
-  const current=await ensureSession();
-  if(!current?.access_token)return null;
-  const response=await fetch(`${URL}/rest/v1/rpc/nh7_library_catalog_v396`,{method:'POST',headers:await headers(),body:'{}',cache:'no-store'});
-  if(!response.ok)throw new Error(await response.text());
-  const data=await response.json();
-  return Array.isArray(data)?data[0]:data;
+  await ensureSession();
+  return window.NH7LibrarySecurityV125?.catalog();
 }
 async function loadCatalog(force=false){
   if(catalogBusy||(!force&&Date.now()-lastCatalog<15000))return;
@@ -55,14 +51,19 @@ async function loadCatalog(force=false){
     const rows=Array.isArray(bundle?.items)?bundle.items.filter(row=>row.reader_available):[];
     catalog=new Map(rows.map(row=>[String(row.id),row]));
     lastCatalog=Date.now();
-  }catch(error){console.warn('[NH7 book catalog]',error)}finally{catalogBusy=false;decorate()}
+  }catch(error){catalog=new Map();console.warn('[NH7 book catalog]',error)}finally{catalogBusy=false;decorate()}
 }
 async function ensureItem(id){
-  id=String(id||'');
-  if(catalog.has(id))return catalog.get(id);
-  await loadCatalog(true);
-  return catalog.get(id)||null;
+  const bundle=await catalogBundle();
+  catalog=new Map((bundle?.items||[]).filter(row=>row.reader_available).map(row=>[String(row.id),row]));
+  return catalog.get(String(id))||null;
 }
+
+window.addEventListener('nh7-library-security',event=>{
+  catalog=new Map(event.detail.bundle.items.filter(row=>row.reader_available).map(row=>[String(row.id),row]));
+  if(book&&!catalog.has(String(book.item.id))){removeModal();book=null}
+  document.querySelectorAll('[data-nh7-book-open]').forEach(button=>{if(!catalog.has(button.dataset.nh7BookOpen))button.remove()});
+});
 function decorate(){
   document.querySelectorAll('[data-library-open]').forEach(fileButton=>{
     const id=String(fileButton.dataset.libraryOpen||''),row=catalog.get(id);
@@ -151,8 +152,11 @@ async function openBook(id){
   if(!item){alert(L('نسخهٔ متنی این کتاب پیدا نشد.','The text edition of this book was not found.','Tekstualno izdanje knjige nije pronađeno.'));return false}
   const current=await ensureSession();
   if(!current?.access_token){alert(L('برای مطالعه کتاب ابتدا وارد حساب شوید.','Sign in before reading.','Prijavite se prije čitanja.'));return false}
+  const owner=window.NH7LibrarySecurityV125?.uid();
   const data=await readerRpc(item,'').catch(error=>({allowed:false,code:'request_failed',message:error.message}));
-  if(!data?.allowed){alert(accessError(data));return false}
+  if(owner!==window.NH7LibrarySecurityV125?.uid())return false;
+  if(!await ensureItem(item.id))return false;
+  if(!data?.allowed){window.NH7LibrarySecurityV125?.invalidate('reader_denied');alert(accessError(data));return false}
   const pages=makePages(readerPayload(data)),position=readPosition(item.id);
   book={item,data,pages,language:data.reader_language||lang()};
   pageIndex=Math.max(0,Math.min(pages.length-1,Number(position.page||0)));

@@ -65,8 +65,11 @@ require('js/nh7-inbox-badge-sync-v418.js', 'Promise.all([rest(ownPath)', "legacy
 require('js/nh7-school-path-v351.js', 'Date.now()-cacheAt<30000')
 require('js/nh7-school-path-v351.js', 'setInterval(refreshSchoolPath,120000);')
 
-# Stable Library catalog cache.
-require('js/app.js', 'const NH7_LIBRARY_CATALOG_CACHE_MS=10*60*1000;')
+# Library snapshots must not persist ministers metadata (#125).
+require('js/app.js', 'NH7LibrarySecurityV125?.catalog()')
+require('js/nh7-library-security-v125.js', "x.audience==='public'")
+require('js/nh7-library-security-v125.js', "v?.uid===id")
+require('js/nh7-library-security-v125.js', "cache:'no-store'")
 
 # Data-preservation guard for this release and future timestamped migrations.
 # Only migrations at/after the first Supabase hardening migration are scanned,

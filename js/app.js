@@ -331,7 +331,7 @@ function isLegacySchoolLoggedIn(){return false}
 function isSchoolIdentityAvailable(){return isAccountLoggedIn()}
 
 function authSession(){ try{return JSON.parse(localStorage.getItem(AUTH_SESSION_KEY)||'null')}catch(e){return null} }
-function saveAuthSession(v){ if(v){localStorage.setItem(AUTH_SESSION_KEY,JSON.stringify(v));localStorage.removeItem(EXPLICIT_LOGOUT_KEY);}else localStorage.removeItem(AUTH_SESSION_KEY); }
+function saveAuthSession(v){ if(v){localStorage.setItem(AUTH_SESSION_KEY,JSON.stringify(v));localStorage.removeItem(EXPLICIT_LOGOUT_KEY);}else localStorage.removeItem(AUTH_SESSION_KEY); window.dispatchEvent(new Event('nh7-library-auth-change')); }
 function isExplicitlyLoggedOut(){ return localStorage.getItem(EXPLICIT_LOGOUT_KEY)==='1'; }
 function isAccountLoggedIn(){ const x=authSession(); return !!(x&&x.access_token&&!isExplicitlyLoggedOut()); }
 async function authApi(path,options={}){
@@ -2138,38 +2138,21 @@ async function meetings(params={}){
 
 let nh7LibraryTab=sessionStorage.getItem('nh7_library_tab')||'public';
 let nh7LibraryCatalog=[];
-const NH7_LIBRARY_CATALOG_CACHE_KEY='nh7_library_catalog_cache_v1';
-const NH7_LIBRARY_CATALOG_CACHE_MS=10*60*1000;
 function libraryText(row,key){return row?.[key+'_'+state.lang]||row?.[key+'_en']||row?.[key+'_fa']||row?.[key+'_hr']||''}
 function librarySize(bytes){bytes=Number(bytes||0);if(bytes<1024*1024)return Math.max(1,Math.round(bytes/1024))+' KB';return (bytes/1024/1024).toFixed(1)+' MB'}
 async function loadLibraryCatalog(force=false){
-  if(!force&&nh7LibraryCatalog.length)return nh7LibraryCatalog;
-  if(!force){
-    try{
-      const cached=JSON.parse(sessionStorage.getItem(NH7_LIBRARY_CATALOG_CACHE_KEY)||'null');
-      if(cached&&Array.isArray(cached.items)&&Date.now()-Number(cached.at||0)<NH7_LIBRARY_CATALOG_CACHE_MS){
-        nh7LibraryCatalog=cached.items;
-        return nh7LibraryCatalog;
-      }
-    }catch(_){}
-  }
-  try{
-    const bundle=await cloudRpc('nh7_library_catalog_v396',{});
-    nh7LibraryCatalog=Array.isArray(bundle?.items)?bundle.items:[];
-    try{sessionStorage.setItem(NH7_LIBRARY_CATALOG_CACHE_KEY,JSON.stringify({at:Date.now(),items:nh7LibraryCatalog}))}catch(_){}
-  }catch(e){
-    console.warn('Library catalog',e);
-    if(!nh7LibraryCatalog.length){
-      try{
-        const cached=JSON.parse(sessionStorage.getItem(NH7_LIBRARY_CATALOG_CACHE_KEY)||'null');
-        nh7LibraryCatalog=Array.isArray(cached?.items)?cached.items:[];
-      }catch(_){nh7LibraryCatalog=[]}
-    }
-  }
+  const bundle=await window.NH7LibrarySecurityV125?.catalog();
+  nh7LibraryCatalog=Array.isArray(bundle?.items)?bundle.items:[];
   return nh7LibraryCatalog;
 }
-let nh7LibraryBlobUrlV224='';
-function nh7ClosePdfViewerV223(){if(nh7LibraryBlobUrlV224){URL.revokeObjectURL(nh7LibraryBlobUrlV224);nh7LibraryBlobUrlV224=''}document.getElementById('nh7PdfViewerV223')?.remove();document.body.classList.remove('nh7-modal-open')}
+window.addEventListener('nh7-library-security',event=>{
+  nh7LibraryCatalog=event.detail.bundle.items;
+  const allowed=new Set(nh7LibraryCatalog.map(row=>String(row.id)));
+  document.querySelectorAll('[data-library-open]').forEach(button=>{if(!allowed.has(button.dataset.libraryOpen))button.closest('.library-user-card')?.remove()});
+  if(event.detail.reason!=='verified'||(nh7LibraryViewerItemV125&&!allowed.has(nh7LibraryViewerItemV125)))nh7ClosePdfViewerV223();
+});
+let nh7LibraryBlobUrlV224='',nh7LibraryViewerItemV125='';
+function nh7ClosePdfViewerV223(){nh7LibraryViewerItemV125='';if(nh7LibraryBlobUrlV224){URL.revokeObjectURL(nh7LibraryBlobUrlV224);nh7LibraryBlobUrlV224=''}document.getElementById('nh7PdfViewerV223')?.remove();document.body.classList.remove('nh7-modal-open')}
 function nh7PdfErrorTextV223(err){
   const raw=String(err?.code||err?.message||err||'').trim(),key=raw.toLowerCase();
   if(key.includes('school_approval_required'))return tr('schoolContentGate');
@@ -2184,16 +2167,20 @@ function nh7ShowPdfViewerV223(title=''){
 }
 async function openLibraryPdf(item){
   if(!item)return;if(!await nh7RequireSchoolAccessV223(tr('library')))return;
+  const owner=window.NH7LibrarySecurityV125?.uid();
   const code='';
   const title=libraryText(item,'title')||item.file_name||'Document',modal=nh7ShowPdfViewerV223(title);
+  nh7LibraryViewerItemV125=String(item.id);
   try{
     const d=await invokeEdgeFunction('nh7-library-access',{item_id:item.id,code,device_id:deviceId(),user_email:currentUserEmail()||''});
+    if(owner!==window.NH7LibrarySecurityV125?.uid()||!modal.isConnected)return;
     if(!d?.signed_url)throw new Error(d?.error||'No signed URL');
     if(item.audience==='ministers')sessionStorage.setItem('nh7_minister_library_code',JSON.stringify({code,at:Date.now()}));
     trackAppSection('library:'+item.audience+':open');nh7TrackContentV223((item.resource_type||'library')==='apocrypha'?'apocrypha':'library_pdf',String(item.id),title);
     const external=modal.querySelector('#nh7PdfExternalV223'),loading=modal.querySelector('#nh7PdfLoadingV223'),mime=String(d.mime_type||item.mime_type||'application/pdf').toLowerCase();external.href=d.signed_url;external.classList.remove('hidden');
     const response=await fetch(d.signed_url,{cache:'no-store'});if(!response.ok)throw new Error('Document download failed: '+response.status);
     const blob=await response.blob();
+    if(owner!==window.NH7LibrarySecurityV125?.uid()||!modal.isConnected)return;
     if(mime.includes('wordprocessingml')||/\.docx$/i.test(d.file_name||item.file_name||'')){
       if(!window.mammoth)throw new Error(l223('نمایش Word هنوز بارگذاری نشده است؛ دوباره تلاش کنید.','Word reader is not loaded yet. Please retry.','Čitač Worda nije učitan. Pokušajte ponovno.'));
       const reader=modal.querySelector('#nh7DocxReaderV224'),result=await window.mammoth.convertToHtml({arrayBuffer:await blob.arrayBuffer()});reader.innerHTML=`<article class="nh7-docx-page"><h1>${html(title)}</h1>${result.value}</article>`;reader.classList.remove('hidden');

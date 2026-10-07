@@ -83,6 +83,21 @@ function protectedRest(url){
 function jsonResponse(body,status=200,extra={}){return new Response(JSON.stringify(body),{status,headers:Object.assign({'Content-Type':'application/json; charset=utf-8','Cache-Control':'private, no-store'},extra)})}
 async function protectedCatalog(url,resource){
   if(!token())return jsonResponse({message:'Registration and approved school access are required.',code:'login_required'},401);
+  if(resource==='library'){
+    // Legacy views use the same current UID-scoped RPC; never call the School-only Edge catalog.
+    const bundle=await window.NH7LibrarySecurityV125?.catalog();
+    let items=bundle?.items||[];
+    for(const [field,filter] of url.searchParams){
+      if(['select','order','limit','offset'].includes(field))continue;
+      if(filter.startsWith('eq.'))items=items.filter(row=>String(row[field])===filter.slice(3));
+      else if(filter.startsWith('is.'))items=items.filter(row=>String(row[field])===filter.slice(3));
+      else return jsonResponse({code:'unsupported_library_filter'},400);
+    }
+    const order=url.searchParams.get('order');if(order){const [field,direction]=order.split('.');items=[...items].sort((a,b)=>String(a[field]??'').localeCompare(String(b[field]??''))*(direction==='desc'?-1:1))}
+    const offset=Math.max(0,Number(url.searchParams.get('offset'))||0),limit=url.searchParams.get('limit');
+    items=items.slice(offset,limit===null?undefined:offset+Math.max(0,Number(limit)||0));
+    return jsonResponse(items);
+  }
   const query=url.searchParams.toString(),stored=readCatalog(resource,query);
   if(!navigator.onLine){
     if(stored)return jsonResponse(stored.items,200,{'X-NH7-Offline':'1'});

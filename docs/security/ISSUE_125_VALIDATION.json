@@ -1,0 +1,220 @@
+{
+  "base": "5d376214295491a0d78b2637477a5bbd58eb14e0",
+  "production_accessed": false,
+  "production_deployed": false,
+  "fixtures": "Synthetic local-only; remote requests mocked",
+  "current_workflow_steps_pass": 16,
+  "historical_failures_reproduced_on_main": 6,
+  "ci": [
+    {
+      "workflow": "apply-admin-full-stability-v447.yml",
+      "name": "Apply guarded patch",
+      "status": "EXCLUDED"
+    },
+    {
+      "workflow": "apply-admin-full-stability-v447.yml",
+      "name": "Check JavaScript syntax and contracts",
+      "status": "FAIL",
+      "output": "[stdin]:5\nif(version.admin!=='2.3.9.47')throw new Error('admin version mismatch');\n                              ^\n\nError: admin version mismatch\n    at [stdin]:5:37\n    at runScriptInThisContext (node:internal/vm:219:10)\n    at node:internal/process/execution:451:12\n    at [stdin]-wrapper:6:24\n    at runScriptInContext (node:internal/process/execution:449:60)\n    at evalFunction (node:internal/process/execution:283:30)\n    at evalTypeScript (node:internal/process/execution:295:3)\n    at node:internal/main/eval_stdin:51:5\n    at Socket.<anonymous> (node:internal/process/execution:205:5)\n    at Socket.emit (node:events:521:24)\n\nNode.js v24.19.0\n",
+      "baseline_exit": 1,
+      "baseline_output": "[stdin]:5\nif(version.admin!=='2.3.9.47')throw new Error('admin version mismatch');\n                              ^\n\nError: admin version mismatch\n    at [stdin]:5:37\n    at runScriptInThisContext (node:internal/vm:219:10)\n    at node:internal/process/execution:451:12\n    at [stdin]-wrapper:6:24\n    at runScriptInContext (node:internal/process/execution:449:60)\n    at evalFunction (node:internal/process/execution:283:30)\n    at evalTypeScript (node:internal/process/execution:295:3)\n    at node:internal/main/eval_stdin:51:5\n    at Socket.<anonymous> (node:internal/process/execution:205:5)\n    at Socket.emit (node:events:521:24)\n\nNode.js v24.19.0\n"
+    },
+    {
+      "workflow": "apply-admin-full-stability-v447.yml",
+      "name": "Commit patched source to fix branch",
+      "status": "EXCLUDED"
+    },
+    {
+      "workflow": "apply-admin-listening-session-v451.yml",
+      "name": "Apply guarded patch",
+      "status": "EXCLUDED"
+    },
+    {
+      "workflow": "apply-admin-listening-session-v451.yml",
+      "name": "Validate scripts and contracts",
+      "status": "FAIL",
+      "output": "",
+      "baseline_exit": 1,
+      "baseline_output": ""
+    },
+    {
+      "workflow": "apply-admin-listening-session-v451.yml",
+      "name": "Commit patched source",
+      "status": "EXCLUDED"
+    },
+    {
+      "workflow": "apply-admin-stability-v439.yml",
+      "name": "Apply version-guarded patch",
+      "status": "EXCLUDED"
+    },
+    {
+      "workflow": "apply-admin-stability-v439.yml",
+      "name": "Check JavaScript syntax",
+      "status": "PASS",
+      "output": ""
+    },
+    {
+      "workflow": "apply-admin-stability-v439.yml",
+      "name": "Commit patched source to this branch only",
+      "status": "EXCLUDED"
+    },
+    {
+      "workflow": "deploy-pages.yml",
+      "name": "Validate current runtime JavaScript",
+      "status": "PASS",
+      "output": ""
+    },
+    {
+      "workflow": "deploy-pages.yml",
+      "name": "Validate current app wiring",
+      "status": "PASS",
+      "output": "Current app validation OK {\n  app: '2.3.9.50',\n  admin: '2.3.9.68',\n  updated_at: '2026-10-07T08:59:00+02:00'\n} offline assets 160\n"
+    },
+    {
+      "workflow": "deploy-pages.yml",
+      "name": "Validate current Admin AI and reports wiring",
+      "status": "PASS",
+      "output": "School report contracts PASS: groups, resolved failure, stalled state, escaping, pending lessons, wrong answers, RTL/LTR, source immutability and bounded timeouts.\nReport PDF #119 PASS: PDF byte offsets/pages/MIME, direct print, File/Share, persistent controls, read-only local runtime and pinned MIT renderer.\nPrint #121 PASS: real local page, validated in-memory handoff, own-realm synchronous tap, no automatic print, explicit no-op/exception recovery, cache wiring and read-only scope.\n"
+    },
+    {
+      "workflow": "deploy-pages.yml",
+      "name": "Validate Ministers Library security",
+      "status": "PASS",
+      "output": "PASS Edge adapter: six principals, scoped grants, forged identity/role ignored, no service role, denial/timeout fail closed.\nPASS actual client: UID binding, public-only snapshots, legacy purge, revoke, 403, offline, logout, identity race, freshness expiry; unrelated data preserved.\nPASS actual worker/offline API: old Library bytes cannot be replayed; audio worker cache lookup preserved.\nPASS active reader wrapper: legacy full-text cache deleted; denial/offline never replay text; language-aware online wire contract retained.\nPASS source scope and Library loader ordering.\n"
+    },
+    {
+      "workflow": "deploy-pages.yml",
+      "name": "Validate HTML inline scripts and JSON",
+      "status": "PASS",
+      "output": "HTML and JSON validation passed\n"
+    },
+    {
+      "workflow": "next-native-optimization-guard.yml",
+      "name": "Validate next native optimization invariants",
+      "status": "PASS",
+      "output": "New Hope 7 next-native optimization guard: PASS\n"
+    },
+    {
+      "workflow": "validate-admin-v238.yml",
+      "name": "Check JavaScript syntax",
+      "status": "PASS",
+      "output": ""
+    },
+    {
+      "workflow": "validate-admin-v238.yml",
+      "name": "Verify required files and JSON",
+      "status": "PASS",
+      "output": ""
+    },
+    {
+      "workflow": "validate-audio-hotfix-23945.yml",
+      "name": "Validate JavaScript and HTML",
+      "status": "FAIL",
+      "output": "[stdin]:5\nif(owner<0||app<0||owner>app)throw Error('Signed audio owner must load before app.js');\n                             ^\n\nError: Signed audio owner must load before app.js\n    at [stdin]:5:36\n    at runScriptInThisContext (node:internal/vm:219:10)\n    at node:internal/process/execution:451:12\n    at [stdin]-wrapper:6:24\n    at runScriptInContext (node:internal/process/execution:449:60)\n    at evalFunction (node:internal/process/execution:283:30)\n    at evalTypeScript (node:internal/process/execution:295:3)\n    at node:internal/main/eval_stdin:51:5\n    at Socket.<anonymous> (node:internal/process/execution:205:5)\n    at Socket.emit (node:events:521:24)\n\nNode.js v24.19.0\n",
+      "baseline_exit": 1,
+      "baseline_output": "[stdin]:5\nif(owner<0||app<0||owner>app)throw Error('Signed audio owner must load before app.js');\n                             ^\n\nError: Signed audio owner must load before app.js\n    at [stdin]:5:36\n    at runScriptInThisContext (node:internal/vm:219:10)\n    at node:internal/process/execution:451:12\n    at [stdin]-wrapper:6:24\n    at runScriptInContext (node:internal/process/execution:449:60)\n    at evalFunction (node:internal/process/execution:283:30)\n    at evalTypeScript (node:internal/process/execution:295:3)\n    at node:internal/main/eval_stdin:51:5\n    at Socket.<anonymous> (node:internal/process/execution:205:5)\n    at Socket.emit (node:events:521:24)\n\nNode.js v24.19.0\n"
+    },
+    {
+      "workflow": "validate-audio-hotfix-23945.yml",
+      "name": "Verify exclusive button ownership and stable offline IDs",
+      "status": "PASS",
+      "output": ""
+    },
+    {
+      "workflow": "validate-audio-hotfix-23945.yml",
+      "name": "Verify Edge CORS and custom authentication",
+      "status": "EXCLUDED"
+    },
+    {
+      "workflow": "validate-audio-hotfix-23945.yml",
+      "name": "Validate release metadata and service worker refresh",
+      "status": "FAIL",
+      "output": "[stdin]:2\nif(v.app!=='2.3.9.45')throw Error('version.json app mismatch');\n                      ^\n\nError: version.json app mismatch\n    at [stdin]:2:29\n    at runScriptInThisContext (node:internal/vm:219:10)\n    at node:internal/process/execution:451:12\n    at [stdin]-wrapper:6:24\n    at runScriptInContext (node:internal/process/execution:449:60)\n    at evalFunction (node:internal/process/execution:283:30)\n    at evalTypeScript (node:internal/process/execution:295:3)\n    at node:internal/main/eval_stdin:51:5\n    at Socket.<anonymous> (node:internal/process/execution:205:5)\n    at Socket.emit (node:events:521:24)\n\nNode.js v24.19.0\n",
+      "baseline_exit": 1,
+      "baseline_output": "[stdin]:2\nif(v.app!=='2.3.9.45')throw Error('version.json app mismatch');\n                      ^\n\nError: version.json app mismatch\n    at [stdin]:2:29\n    at runScriptInThisContext (node:internal/vm:219:10)\n    at node:internal/process/execution:451:12\n    at [stdin]-wrapper:6:24\n    at runScriptInContext (node:internal/process/execution:449:60)\n    at evalFunction (node:internal/process/execution:283:30)\n    at evalTypeScript (node:internal/process/execution:295:3)\n    at node:internal/main/eval_stdin:51:5\n    at Socket.<anonymous> (node:internal/process/execution:205:5)\n    at Socket.emit (node:events:521:24)\n\nNode.js v24.19.0\n"
+    },
+    {
+      "workflow": "validate-wave1a-apocrypha.yml",
+      "name": "Validate JavaScript syntax",
+      "status": "PASS",
+      "output": ""
+    },
+    {
+      "workflow": "validate-wave1a-apocrypha.yml",
+      "name": "Verify complete fresh trilingual 19-book runtime",
+      "status": "PASS",
+      "output": "{\n  books: 19,\n  totalEn: 7504,\n  totalFa: 7504,\n  totalHr: 7504,\n  estherStart: [ 1, 2, 3, 4 ]\n}\n"
+    },
+    {
+      "workflow": "validate-wave1a-apocrypha.yml",
+      "name": "Verify approved reader behavior",
+      "status": "PASS",
+      "output": ""
+    },
+    {
+      "workflow": "validate-wave1a-apocrypha.yml",
+      "name": "Verify no regression to stable main systems",
+      "status": "FAIL",
+      "output": "",
+      "baseline_exit": 1,
+      "baseline_output": ""
+    },
+    {
+      "workflow": "validate-wave1b-spiritual-plans.yml",
+      "name": "Validate JavaScript, HTML and release wiring",
+      "status": "FAIL",
+      "output": "[stdin]:16\n]) if(!index.includes(required)) throw new Error('index missing '+required);\n                                 ^\n\nError: index missing js/nh7-audio-classic-v400.js?v=2.3.9.50\n    at [stdin]:16:40\n    at runScriptInThisContext (node:internal/vm:219:10)\n    at node:internal/process/execution:451:12\n    at [stdin]-wrapper:6:24\n    at runScriptInContext (node:internal/process/execution:449:60)\n    at evalFunction (node:internal/process/execution:283:30)\n    at evalTypeScript (node:internal/process/execution:295:3)\n    at node:internal/main/eval_stdin:51:5\n    at Socket.<anonymous> (node:internal/process/execution:205:5)\n    at Socket.emit (node:events:521:24)\n\nNode.js v24.19.0\n",
+      "baseline_exit": 1,
+      "baseline_output": "[stdin]:16\n]) if(!index.includes(required)) throw new Error('index missing '+required);\n                                 ^\n\nError: index missing js/nh7-audio-classic-v400.js?v=2.3.9.50\n    at [stdin]:16:40\n    at runScriptInThisContext (node:internal/vm:219:10)\n    at node:internal/process/execution:451:12\n    at [stdin]-wrapper:6:24\n    at runScriptInContext (node:internal/process/execution:449:60)\n    at evalFunction (node:internal/process/execution:283:30)\n    at evalTypeScript (node:internal/process/execution:295:3)\n    at node:internal/main/eval_stdin:51:5\n    at Socket.<anonymous> (node:internal/process/execution:205:5)\n    at Socket.emit (node:events:521:24)\n\nNode.js v24.19.0\n"
+    },
+    {
+      "workflow": "validate-wave1b-spiritual-plans.yml",
+      "name": "Validate six complete trilingual spiritual plans",
+      "status": "PASS",
+      "output": "prayer-30:30 | grace-14:14 | fasting-7:7 | obedience-10:10 | salvation-10:10 | mind-renewal-30:30\n"
+    },
+    {
+      "workflow": "validate-wave1b-spiritual-plans.yml",
+      "name": "Verify production navigation, progress, fasting and offline behavior",
+      "status": "PASS",
+      "output": ""
+    },
+    {
+      "workflow": "validate-wave1b-spiritual-plans.yml",
+      "name": "Verify no regression to protected production modules",
+      "status": "PASS",
+      "output": "Wave 1B production validation passed.\n"
+    }
+  ],
+  "browser_regressions": [
+    {
+      "command": "node scripts/verify-i18n-v115.cjs",
+      "status": "PASS",
+      "evidence": "PASS: 11 representative routes, FA → EN → HR → FA; RTL/LTR and navigation labels\nPASS: open appearance dialog translates in place; custom color draft and controls preserved\nPASS: photo picker and crop canvas/zoom survive language switches; photo persistence not changed\nPASS: mounted mini/full player accessibility labels; engine behavior untouched\nPASS: book reader UI switches in place; original document direction and search retained\nPASS: exact-result search → John 3:16; FA/EN/HR verse target and native share payload\nPASS: notes, saved verses, assignments, progress, favorites, download metadata, profile/account fixtures preserved\nAll service calls mocked; intercepted background write attempts: 35\nTestimony/Prayer user routes absent from this main baseline; no feature import or protected Admin edits.\n"
+    },
+    {
+      "command": "node scripts/verify-school-reports-browser-v116.cjs",
+      "status": "PASS",
+      "evidence": "PASS: enrolled, started/inactive, needs-revision, passed, failed and not-registered groups from one batch RPC\nPASS: 100-row view pagination; complete 1,109-row UTF-8 CSV with stable headers and spreadsheet-formula escaping\nPASS: Print and browser Save as PDF; searchable multi-page document contains first and final rows with unclipped table\nPASS: FA → EN → HR → FA, RTL/LTR and view/Close on phone, tablet/iPad and desktop widths\nPASS: per-student completed/pending lessons, required missing assignment, review state, scores, exam attempts, wrong answers, CSV/PDF; optional failure and cache reuse\nPASS: bounded hangs, one server-timeout retry, stale snapshot retained, UI unlocks; no record mutations or write RPCs; zero page errors\nPASS: real current Admin wrapper, RBAC/stability modules, group → individual report integration and Print; no report-time write calls\nIsolated CSV/PDF evidence: [local artifact directory]\n"
+    },
+    {
+      "command": "NH7_TEST_PRINT121=1 node scripts/verify-report-pdf-v119.cjs",
+      "status": "PASS",
+      "evidence": "PASS #121: real top-level document, full fa report, fresh Print tap, silent-no-op and blocked-popup actionable PDF fallback, print-only CSS and Back\nPASS: persistent toolbar, direct user-gesture Print, complete 203-row Persian group PDF, real PDF structure/pages/images and CSV\nPASS #121: real top-level document, full en report, fresh Print tap, silent-no-op and blocked-popup actionable PDF fallback, print-only CSS and Back\nPASS #121: real top-level document, full hr report, fresh Print tap, silent-no-op and blocked-popup actionable PDF fallback, print-only CSS and Back\nPASS #121: real top-level document, full fa report, fresh Print tap, silent-no-op and blocked-popup actionable PDF fallback, print-only CSS and Back\nPASS: FA → EN → HR → FA; 390/820/1440px controls and Close/Back; cancel pending PDF jobs\nPASS #121: real top-level document, full fa report, fresh Print tap, silent-no-op and blocked-popup actionable PDF fallback, print-only CSS and Back\nPASS: blank output rejection, usable Print/Back during failure, Retry and Escape preserve original report\nPASS: full individual report, long-answer multi-page real PDF, prepared File/Share gesture, cancel and direct-download fallback, source immutability and no remote dependencies\nPDF/PNG/CSV evidence: [local artifact directory]\n"
+    },
+    {
+      "command": "node scripts/verify-library-browser-v125.cjs",
+      "status": "PASS",
+      "evidence": "PASS actual active Library: FA → EN → HR → FA, restricted render, revocation removes card/reader, denied direct ID, public reader, legacy view routing, 403 and same-tab logout.\n"
+    }
+  ],
+  "backend_blockers": [
+    "Missing deployed nh7-content-access entrypoint: module cannot be deployed standalone",
+    "Verify deployed v321 reader delegates to current UID-secure v372 before full backend rollout"
+  ],
+  "unrun": [
+    "Full deployed Edge entrypoint Deno check/integration",
+    "Live Supabase principal/grant matrix",
+    "Actual Safari/iOS devices"
+  ]
+}
