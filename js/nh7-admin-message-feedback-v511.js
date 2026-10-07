@@ -114,3 +114,14 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 setTimeout(boot,500);
 window.NH7AdminMessageFeedbackV511={scan,paint,VERSION:'5.1.1c'};
 })();
+
+/* Load the isolated School report print/PDF reliability layer after report runtimes. */
+(()=>{'use strict';
+if(window.__NH7_ADMIN_REPORT_PRINT_LOADER_V117__)return;
+window.__NH7_ADMIN_REPORT_PRINT_LOADER_V117__=true;
+const s=document.createElement('script');
+s.src='js/nh7-admin-report-print-v117.js?v=1.1.7';
+s.async=false;
+s.onerror=()=>console.warn('School report print reliability layer could not be loaded');
+document.head.appendChild(s);
+})();
