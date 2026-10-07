@@ -4,7 +4,7 @@
 (()=>{'use strict';
 if(window.__NH7_ADMIN_STUDENT_ACADEMIC_V540__)return;
 window.__NH7_ADMIN_STUDENT_ACADEMIC_V540__=true;
-const VERSION='5.4.7-student-academic-center';
+const VERSION='5.4.7-issue116-readonly-reports';
 
 let view='overview';
 let reportFilter='school_registered';
@@ -17,8 +17,9 @@ let error='';
 let loadedAt=0;
 let waitingForAdminIdle=false;
 let retryingAcademicLoad=false;
-let groupPdfEnginePromise=null;
-let groupPdfState={key:'',blob:null,promise:null,error:''};
+let pageIndex=0, returnFocus=null, groupSnapshot=null;
+const PAGE_SIZE=100;
+let loadSequence=0, pendingReload=false;
 
 const L=(fa,en,hr)=>String(typeof lang!=='undefined'?lang:'fa')==='fa'?fa:String(typeof lang!=='undefined'?lang:'fa')==='hr'?hr:en;
 const E=v=>typeof h==='function'?h(v):String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -58,6 +59,7 @@ function isStalled(r){return !!r.school_registered&&!!r.started_school&&!isCompl
 function matchesFilter(r,key=reportFilter){
   switch(key){
     case'all':return true;
+    case'not_registered':return !r.school_registered;
     case'school_registered':return !!r.school_registered;
     case'app_no_school':return !!r.app_account_exists&&!r.school_registered;
     case'app_used_no_school':return !!r.app_activity_seen&&!r.school_registered;
@@ -109,6 +111,9 @@ function counts(){
 function optionLabel(key){
   const m={
     all:['همه افراد','All identities','Sve osobe'],
+    not_registered:['ثبت‌نام مدرسه ندارد','Not registered in School','Nije registriran u školi'],
+    exam_failed:['آزمون کلاس یا نهایی قبول نشده','Class or final exam not passed','Razredni ili završni ispit nije položen'],
+    passed:['امتحان نهایی قبول شده','Final exam passed','Završni ispit položen'],
     school_registered:['ثبت‌نام‌شده‌های مدرسه','School registered','Registrirani u školi'],
     app_no_school:['حساب اپ بدون ثبت‌نام مدرسه','App account without school registration','Račun bez školske registracije'],
     app_used_no_school:['فعالیت اپ دیده شده، مدرسه ثبت‌نام نشده','App activity seen, school not registered','Aktivnost u aplikaciji, škola nije registrirana'],
@@ -132,11 +137,7 @@ const nh7AcademicDelay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 function nh7AcademicAdminBusy(){
   try{return typeof adminLoadInFlight!=='undefined'&&!!adminLoadInFlight}catch(_){return false}
 }
-function nh7AcademicRetriableError(error){
-  const message=String(error?.message||error||'').toLowerCase();
-  return message.includes('57014')||message.includes('statement timeout')||message.includes('request timed out')||message.includes('زمان دریافت اطلاعات');
-}
-async function nh7AcademicWaitForAdminIdle(maxMs=90000){
+async function nh7AcademicWaitForAdminIdle(maxMs=3000){
   const started=Date.now();
   let announced=false;
   while(nh7AcademicAdminBusy()&&Date.now()-started<maxMs){
@@ -145,8 +146,7 @@ async function nh7AcademicWaitForAdminIdle(maxMs=90000){
     await nh7AcademicDelay(500);
   }
   waitingForAdminIdle=false;
-  // Give the last background RPCs a short quiet window before the report starts.
-  await nh7AcademicDelay(1500);
+  // Continue after the bounded initial-sync wait; no extra quiet delay.
 }
 async function load(force=false){
   if(loading||!token)return;
@@ -155,20 +155,23 @@ async function load(force=false){
   if(activeTab==='students')render();
   try{
     await nh7AcademicWaitForAdminIdle();
+    const requestDays=inactiveDays,sequence=loadSequence;
     let lastError=null;
     for(let attempt=0;attempt<2;attempt++){
       try{
-        const raw=await adminRpc('nh7_admin_student_academic_center_v542',{p_inactive_days:inactiveDays},60000);
-        data=unwrap(raw)||{};
+        const raw=await reportRequest(adminRpc('nh7_admin_student_academic_center_v542',{p_inactive_days:requestDays},20000),22000);
+        if(sequence!==loadSequence)return;
+        const next=unwrap(raw);if(!Array.isArray(next?.rows))throw new Error(L('پاسخ گزارش معتبر نیست.','Invalid report response.','Nevaljan odgovor izvještaja.'));
+        data={...next,__days:requestDays};
         loadedAt=Date.now();
         lastError=null;
         break;
       }catch(e){
         lastError=e;
-        if(attempt===0&&nh7AcademicRetriableError(e)){
+        if(attempt===0&&/57014|statement timeout/i.test(String(e?.message||e))){
           retryingAcademicLoad=true;
           if(activeTab==='students')render();
-          await nh7AcademicDelay(3000);
+          await nh7AcademicDelay(700);
           retryingAcademicLoad=false;
           continue;
         }
@@ -177,13 +180,16 @@ async function load(force=false){
     }
     if(lastError)throw lastError;
   }catch(e){error=e?.message||String(e)}
-  finally{waitingForAdminIdle=false;retryingAcademicLoad=false;loading=false;if(activeTab==='students')render()}
+  finally{waitingForAdminIdle=false;retryingAcademicLoad=false;loading=false;if(activeTab==='students')render();if(pendingReload){pendingReload=false;setTimeout(()=>load(true),0)}}
 }
+function reportRequest(promise,ms){return new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(new Error(L('زمان دریافت گزارش تمام شد؛ دوباره تلاش کنید.','Report timed out; please retry.','Izvještaj je istekao; pokušajte ponovno.'))),ms);Promise.resolve(promise).then(value=>{clearTimeout(timer);resolve(value)},e=>{clearTimeout(timer);reject(e)})})}
 function setView(v){view=v;render();if(!data)setTimeout(()=>load(false),0)}
-function setFilter(v){reportFilter=v;render()}
-function setInactiveDays(v){inactiveDays=Math.max(1,Math.min(365,N(v,30)));data=null;render();setTimeout(()=>load(true),0)}
-function setSearch(v){searchValue=String(v||'');render()}
-function toggleTests(v){showTests=!!v;render()}
+function setFilter(v){reportFilter=v;pageIndex=0;render()}
+function setInactiveDays(v){inactiveDays=Math.max(1,Math.min(365,N(v,30)));loadSequence++;pageIndex=0;error='';render();if(loading)pendingReload=true;else setTimeout(()=>load(true),0)}
+function setSearch(v){searchValue=String(v||'');pageIndex=0;const input=document.querySelector('[data-academic-search]'),position=input?.selectionStart;render();const next=document.querySelector('[data-academic-search]');next?.focus();if(position!=null)try{next.setSelectionRange(position,position)}catch(_){}}
+function toggleTests(v){showTests=!!v;pageIndex=0;render()}
+function setPage(v){pageIndex=Math.max(0,N(v));render()}
+function reportNotice(){return '<div role="status" aria-live="polite">'+(loading?'<p>'+E(L('در حال به‌روزرسانی؛ گزارش قبلی قابل مشاهده است.','Refreshing; the previous snapshot remains available.','Osvježavanje; prethodni izvještaj ostaje dostupan.'))+'</p>':'')+(error?'<p class="notice">'+E(L('به‌روزرسانی ناموفق بود؛ داده قبلی را می‌بینید. ','Refresh failed; showing the previous snapshot. ','Osvježavanje nije uspjelo; prikazan je prethodni izvještaj. '))+E(error)+'</p><button class="btn secondary" onclick="nh7StudentAcademicReloadV540()">'+E(L('تلاش دوباره','Retry','Pokušaj ponovno'))+'</button>':'')+(loadedAt?'<small>'+E(L('آخرین دریافت','Last loaded','Zadnje učitavanje'))+': '+E(fmtDateTime(loadedAt))+'</small>':'')+'</div>'}
 
 function nav(){
   const items=[
@@ -195,13 +201,13 @@ function nav(){
   return'<div class="nh7ac540-nav">'+items.map(([id,icon,label])=>'<button type="button" class="'+(view===id?'active':'')+'" onclick="nh7StudentAcademicSetViewV540(\''+id+'\')">'+icon+' '+E(label)+'</button>').join('')+'</div>'
 }
 function loadingCard(){
-  if(error)return'<section class="panel-card"><div class="notice">'+E(error)+'</div><button class="btn secondary" onclick="nh7StudentAcademicReloadV540()">⟳ '+E(L('تلاش دوباره','Retry','Pokušaj ponovno'))+'</button></section>';
+  if(error)return'<section class="panel-card"><div class="notice" role="alert">'+E(L('گزارش بارگذاری نشد. ','Report could not load. ','Izvještaj nije učitan. '))+E(error)+'</div><button class="btn secondary" onclick="nh7StudentAcademicReloadV540()">⟳ '+E(L('تلاش دوباره','Retry','Pokušaj ponovno'))+'</button></section>';
   const message=waitingForAdminIdle
     ?L('در حال تکمیل بارگذاری اولیه پنل… گزارش دانشجو بلافاصله بعد از آن دریافت می‌شود.','Finishing the Admin initial sync… the student report will load immediately afterward.','Dovršava se početna sinkronizacija… izvještaj će se učitati odmah nakon toga.')
     :retryingAcademicLoad
       ?L('سرور شلوغ بود؛ گزارش به‌صورت خودکار دوباره در حال دریافت است…','The server was busy; the report is retrying automatically…','Poslužitelj je bio zauzet; izvještaj se automatski ponovno učitava…')
       :L('در حال جمع‌آوری گزارش‌های دانشگاهی…','Loading academic reports…','Učitavanje akademskih izvještaja…');
-  return'<section class="panel-card"><div class="empty">'+E(message)+'</div></section>'
+  return'<section class="panel-card"><div class="empty" role="status" aria-live="polite">'+E(message)+'</div></section>'
 }
 function statCard(value,label,filter,alert=false){
   return'<button type="button" class="nh7ac540-stat '+(alert?'alert':'')+'" onclick="nh7StudentAcademicOpenReportV540(\''+filter+'\')"><b>'+E(value)+'</b><span>'+E(label)+'</span></button>'
@@ -210,7 +216,7 @@ function overview(){
   if(!data)return loadingCard();
   const c=counts();
   return'<section class="panel-card"><div class="req-head"><div><h3>🎓 '+E(L('مرکز مدیریت دانشگاهی','Academic Management Center','Centar akademskog upravljanja'))+'</h3><p class="muted small">'+E(L('وضعیت‌ها اکنون بین آزمون کلاس، امتحان نهایی، تکمیل دوره و فارغ‌التحصیلی تفکیک شده‌اند. سابقهٔ معتبر دانشجویان قدیمی حفظ شده و از مرحله بعد قانون جدید اجرا می‌شود.','Statuses now distinguish class exams, the final exam, course completion, and graduation. Valid legacy progress is preserved and the new rules apply from the next stage.','Statusi sada razlikuju razredne ispite, završni ispit, završetak tečaja i diplomiranje. Valjani stari napredak ostaje sačuvan, a nova pravila vrijede od sljedeće faze.'))+'</p></div><button class="btn secondary" onclick="nh7StudentAcademicReloadV540()">⟳ '+E(L('به‌روزرسانی','Refresh','Osvježi'))+'</button></div>'+
-  '<div class="nh7ac540-stats">'+
+  reportNotice()+'<div class="nh7ac540-stats">'+
     statCard(c.school_registered,L('ثبت‌نام مدرسه','School registered','Registrirani u školi'),'school_registered')+
     statCard(c.app_used_no_school,L('اپ استفاده شده، بدون مدرسه','App used, no school','Aplikacija korištena, bez škole'),'app_used_no_school',c.app_used_no_school>0)+
     statCard(c.never_started,L('ثبت‌نام، بدون شروع','Registered, not started','Registrirani, nisu počeli'),'registered_never_started',c.never_started>0)+
@@ -227,11 +233,12 @@ function overview(){
   '<div class="nh7ac540-actions"><button class="btn primary" onclick="nh7StudentAcademicOpenReportV540(\'needs_revision\')">📝 '+E(L('پیگیری تکالیف نیازمند اصلاح','Follow up revisions','Prati zadatke za doradu'))+'</button><button class="btn secondary" onclick="nh7StudentAcademicOpenReportV540(\'app_used_no_school\')">📱 '+E(L('اپ استفاده شده ولی مدرسه ثبت‌نام نشده','App used but school not registered','Aplikacija korištena, škola nije registrirana'))+'</button><button class="btn secondary" onclick="nh7StudentAcademicSetViewV540(\'members\')">⛪ '+E(L('مدیریت فهرست اعضا','Manage member registry','Upravljaj članovima'))+'</button></div></section>'
 }
 function filterOptions(){
-  const keys=['school_registered','app_used_no_school','app_account_no_activity','app_no_school','registered_never_started','in_progress','needs_revision','pending_review','class_exam_failed','final_exam_failed','final_exam_passed','completed','graduated','inactive','member_no_app','all'];
+  const keys=['school_registered','not_registered','passed','exam_failed','app_used_no_school','app_account_no_activity','app_no_school','registered_never_started','in_progress','needs_revision','pending_review','class_exam_failed','final_exam_failed','final_exam_passed','completed','graduated','inactive','member_no_app','all'];
   return keys.map(k=>'<option value="'+k+'" '+(reportFilter===k?'selected':'')+'>'+E(optionLabel(k))+'</option>').join('')
 }
 function reportTable(){
-  const list=filteredRows();
+  const all=filteredRows();pageIndex=Math.min(pageIndex,Math.max(0,Math.ceil(all.length/PAGE_SIZE)-1));
+  const list=all.slice(pageIndex*PAGE_SIZE,(pageIndex+1)*PAGE_SIZE);
   const body=list.map(r=>'<tr>'+
     '<td><strong>'+E(r.display_name||r.email)+'</strong><br><small>'+E(r.email||'—')+'</small></td>'+
     '<td>'+E(r.app_activity_seen?L('فعالیت دیده شده','Activity seen','Aktivnost zabilježena'):L('فعالیت شناسایی نشده','No identified activity','Nema prepoznate aktivnosti'))+'<br><small>'+E(fmtDate(r.last_app_activity))+'</small></td>'+
@@ -241,9 +248,9 @@ function reportTable(){
     '<td><strong>'+E(r.final_exam_passed?L('نهایی: قبول','Final: passed','Završni: položen'):N(r.final_exam_attempts)>0?L('نهایی: قبول نشده','Final: not passed','Završni: nije položen'):L('نهایی: هنوز باز/داده نشده','Final: not taken yet','Završni: još nije polagan'))+'</strong><br><small>'+E(L('آزمون کلاس قبول‌شده','class exams passed','položeni razredni ispiti'))+': '+E(N(r.class_exams_passed))+' · '+E(L('نمره نهایی','final score','završni rezultat'))+': '+E(r.final_exam_best_score==null?'—':N(r.final_exam_best_score)+'%')+'</small></td>'+
     '<td>'+E(fmtDate(r.last_school_activity))+(r.days_since_activity!=null?'<br><small>'+E(r.days_since_activity)+' '+E(L('روز قبل','days ago','dana'))+'</small>':'')+'</td>'+
     '<td><span class="pill '+statusClass(r)+'">'+E(statusLabel(r.academic_status_code||r.status_code))+'</span></td>'+
-    '<td><div class="nh7ac540-row-actions">'+(r.school_registered?'<button class="btn ghost" onclick="nh7StudentAcademicProfileV540(\''+encodeURIComponent(r.email)+'\')">'+E(L('پرونده','Profile','Profil'))+'</button><button class="btn ghost" onclick="nh7StudentAcademicIndividualReportV540(\''+encodeURIComponent(r.email)+'\')">PDF</button>':'')+'</div></td>'+
+    '<td><div class="nh7ac540-row-actions">'+(r.email?'<button class="btn ghost" onclick="nh7StudentAcademicProfileV540(\''+encodeURIComponent(r.email)+'\')">'+E(L('پرونده','Profile','Profil'))+'</button><button class="btn ghost" onclick="nh7StudentAcademicIndividualReportV540(\''+encodeURIComponent(r.email)+'\')">PDF</button>':'')+'</div></td>'+
   '</tr>').join('');
-  return'<div class="nh7ac540-table-wrap"><table class="nh7ac540-table"><thead><tr>'+
+  return'<div class="nh7ac540-pagination"><button class="btn secondary" '+(pageIndex===0?'disabled':'')+' onclick="nh7StudentAcademicPageV116('+ (pageIndex-1) +')">'+E(L('قبلی','Previous','Prethodno'))+'</button><span>'+E(L('صفحه','Page','Stranica'))+' '+(pageIndex+1)+' / '+Math.max(1,Math.ceil(all.length/PAGE_SIZE))+' · '+all.length+'</span><button class="btn secondary" '+((pageIndex+1)*PAGE_SIZE>=all.length?'disabled':'')+' onclick="nh7StudentAcademicPageV116('+ (pageIndex+1) +')">'+E(L('بعدی','Next','Sljedeće'))+'</button></div><div class="nh7ac540-table-wrap"><table class="nh7ac540-table"><thead><tr>'+
     '<th>'+E(L('دانشجو','Student','Student'))+'</th><th>'+E(L('اپ','App','Aplikacija'))+'</th><th>'+E(L('ثبت‌نام','Registration','Registracija'))+'</th><th>'+E(L('درس / مرحله','Lessons / stages','Lekcije / faze'))+'</th><th>'+E(L('تکالیف','Assignments','Zadaci'))+'</th><th>'+E(L('آزمون‌ها','Exams','Ispiti'))+'</th><th>'+E(L('آخرین فعالیت','Last activity','Zadnja aktivnost'))+'</th><th>'+E(L('وضعیت کل','Overall status','Ukupni status'))+'</th><th></th>'+
   '</tr></thead><tbody>'+body+'</tbody></table></div>'+
   (!list.length?'<div class="empty">'+E(L('موردی با این فیلتر پیدا نشد.','No records match this filter.','Nema zapisa za ovaj filtar.'))+'</div>':'')
@@ -252,7 +259,7 @@ function reports(){
   if(!data)return loadingCard();
   const list=filteredRows();
   return'<section class="panel-card"><div class="req-head"><div><h3>📋 '+E(L('گزارش‌های گروهی دانشجویان','Student Group Reports','Grupni izvještaji studenata'))+'</h3><p class="muted small">'+E(L('گروه را انتخاب کن، سپس همان لیست را CSV بگیر یا برای PDF/چاپ باز کن.','Choose a group, then export the same list as CSV or open a printable/PDF report.','Odaberite grupu, zatim izvezite CSV ili otvorite izvještaj za PDF/ispis.'))+'</p></div><span class="pill">'+E(list.length)+' '+E(L('نفر','people','osoba'))+'</span></div>'+
-  '<div class="nh7ac540-toolbar"><select onchange="nh7StudentAcademicSetFilterV540(this.value)">'+filterOptions()+'</select><input type="search" placeholder="'+E(L('جستجوی نام یا ایمیل…','Search name or email…','Pretraži ime ili e-mail…'))+'" value="'+E(searchValue)+'" oninput="nh7StudentAcademicSearchV540(this.value)"><select onchange="nh7StudentAcademicInactiveDaysV540(this.value)"><option value="7" '+(inactiveDays===7?'selected':'')+'>7 '+E(L('روز','days','dana'))+'</option><option value="14" '+(inactiveDays===14?'selected':'')+'>14 '+E(L('روز','days','dana'))+'</option><option value="30" '+(inactiveDays===30?'selected':'')+'>30 '+E(L('روز','days','dana'))+'</option><option value="60" '+(inactiveDays===60?'selected':'')+'>60 '+E(L('روز','days','dana'))+'</option><option value="90" '+(inactiveDays===90?'selected':'')+'>90 '+E(L('روز','days','dana'))+'</option></select></div>'+
+  reportNotice()+'<div class="nh7ac540-toolbar"><select aria-label="'+E(L('گروه گزارش','Report group','Grupa izvještaja'))+'" onchange="nh7StudentAcademicSetFilterV540(this.value)">'+filterOptions()+'</select><input data-academic-search type="search" aria-label="'+E(L('جستجو','Search','Pretraži'))+'" placeholder="'+E(L('جستجوی نام یا ایمیل…','Search name or email…','Pretraži ime ili e-mail…'))+'" value="'+E(searchValue)+'" oninput="nh7StudentAcademicSearchV540(this.value)"><select aria-label="'+E(L('روزهای عدم فعالیت','Inactive days','Dani neaktivnosti'))+'" onchange="nh7StudentAcademicInactiveDaysV540(this.value)"><option value="7" '+(inactiveDays===7?'selected':'')+'>7 '+E(L('روز','days','dana'))+'</option><option value="14" '+(inactiveDays===14?'selected':'')+'>14 '+E(L('روز','days','dana'))+'</option><option value="30" '+(inactiveDays===30?'selected':'')+'>30 '+E(L('روز','days','dana'))+'</option><option value="60" '+(inactiveDays===60?'selected':'')+'>60 '+E(L('روز','days','dana'))+'</option><option value="90" '+(inactiveDays===90?'selected':'')+'>90 '+E(L('روز','days','dana'))+'</option></select></div>'+
   '<div class="nh7ac540-actions"><button class="btn primary" onclick="nh7StudentAcademicCsvV540()">⬇ CSV</button><button class="btn secondary" onclick="nh7StudentAcademicPrintV540()">📄 PDF / '+E(L('چاپ','Print','Ispis'))+'</button><label class="nh7ac540-check"><input type="checkbox" '+(showTests?'checked':'')+' onchange="nh7StudentAcademicToggleTestsV540(this.checked)"> '+E(L('نمایش حساب‌های تست','Show test accounts','Prikaži test račune'))+'</label></div>'+
   reportTable()+'</section>'
 }
@@ -275,28 +282,19 @@ function shell(oldDashboard){
     (view==='overview'?overview():view==='reports'?reports():view==='members'?members():oldDashboard)
 }
 
-function csvEscape(v){const s=String(v??'');return /[",\n\r]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s}
-function csvRows(){
-  const header=[
-    L('نام','Name','Ime'),L('ایمیل','Email','E-mail'),L('حساب اپ','App account','Račun'),L('فعالیت اپ دیده شده','App activity seen','Aktivnost u aplikaciji'),L('آخرین فعالیت اپ','Last app activity','Zadnja aktivnost u aplikaciji'),
-    L('ثبت‌نام مدرسه','School registered','Registracija škole'),L('درس تکمیل','Completed lessons','Završene lekcije'),
-    L('مرحله معتبر از ۷','Validated stages of 7','Potvrđene faze od 7'),L('Legacy تا کلاس','Legacy through class','Legacy do razreda'),
-    L('تکلیف نیاز اصلاح','Needs revision','Treba doradu'),L('تکلیف در انتظار','Pending review','Čeka pregled'),
-    L('آزمون کلاس قبول‌شده','Class exams passed','Položeni razredni ispiti'),L('آزمون کلاس حل‌نشده','Unresolved failed class exams','Nepoloženi razredni ispiti'),
-    L('تلاش امتحان نهایی','Final exam attempts','Pokušaji završnog ispita'),L('امتحان نهایی قبول','Final exam passed','Završni ispit položen'),
-    L('نمره امتحان نهایی','Final exam score','Rezultat završnog ispita'),L('دوره کامل','Course completed','Tečaj završen'),
-    L('فارغ‌التحصیل','Graduated','Završio školu'),L('آخرین فعالیت','Last activity','Zadnja aktivnost'),L('وضعیت','Status','Status')
-  ];
-  const body=filteredRows().map(r=>[
+function csvEscape(v){let s=String(v??'');if(/^[\s]*[=+@-]/.test(s))s="'"+s;return /[",\n\r]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s}
+function csvRows(list=filteredRows()){
+  const header=['display_name','email','app_account_exists','app_activity_seen','last_app_activity','school_registered','completed_lessons','validated_classes','legacy_completed_through_class','revision_assignments','pending_assignments','class_exams_passed','unresolved_failed_class_exams','final_exam_attempts','final_exam_passed','final_exam_best_score','course_completed','graduated','last_school_activity','status','status_code','total_lessons','pending_lessons','registered_at'];
+  const body=list.map(r=>[
     r.display_name,r.email,r.app_account_exists?'yes':'no',r.app_activity_seen?'yes':'no',r.last_app_activity||'',r.school_registered?'yes':'no',
     r.completed_lessons,r.validated_classes,r.legacy_completed_through_class,r.revision_assignments,r.pending_assignments,
     r.class_exams_passed,r.unresolved_failed_class_exams,r.final_exam_attempts,r.final_exam_passed?'yes':'no',r.final_exam_best_score??'',
-    r.course_completed?'yes':'no',r.graduated?'yes':'no',r.last_school_activity||'',statusLabel(r.academic_status_code||r.status_code)
+    r.course_completed?'yes':'no',r.graduated?'yes':'no',r.last_school_activity||'',statusLabel(r.academic_status_code||r.status_code),r.academic_status_code||r.status_code,r.total_lessons,Math.max(0,N(r.total_lessons)-N(r.completed_lessons)),r.registered_at||''
   ]);
   return[header,...body]
 }
 function downloadCsv(){
-  const text='\uFEFF'+csvRows().map(row=>row.map(csvEscape).join(',')).join('\r\n');
+  const text='\uFEFF'+csvRows(groupSnapshot?.rows||filteredRows()).map(row=>row.map(csvEscape).join(',')).join('\r\n');
   const blob=new Blob([text],{type:'text/csv;charset=utf-8'});
   const url=URL.createObjectURL(blob),a=document.createElement('a');
   a.href=url;a.download='New-Hope-7-'+String(reportFilter||'students')+'-'+new Date().toISOString().slice(0,10)+'.csv';
@@ -304,172 +302,21 @@ function downloadCsv(){
 }
 function closeGroupReport(){
   const modal=document.getElementById('nh7AcademicGroupReportV546');
-  if(modal)modal.remove();
+  if(modal)modal.remove();groupSnapshot=null;if(returnFocus?.isConnected)returnFocus.focus();
   document.body.classList.remove('nh7ac540-report-open','nh7ac540-printing');
 }
-function groupPdfKey(){
-  return [reportFilter,searchValue,inactiveDays,showTests?'1':'0',loadedAt,filteredRows().length].join('|')
-}
-function groupPdfSafeName(){
-  const raw='New-Hope-7-'+String(reportFilter||'students')+'-'+new Date().toISOString().slice(0,10)+'.pdf';
-  return raw.replace(/[^a-zA-Z0-9._-]+/g,'-')
-}
-function loadGroupPdfScript(src,key,ready){
-  if(ready())return Promise.resolve(true);
-  const existing=document.querySelector('script[data-nh7-group-pdf="'+key+'"]');
-  if(existing)return new Promise((resolve,reject)=>{
-    const done=()=>ready()?resolve(true):reject(new Error(key+' loaded but is unavailable'));
-    if(existing.dataset.loaded==='1'){done();return}
-    existing.addEventListener('load',done,{once:true});
-    existing.addEventListener('error',()=>reject(new Error(key+' failed to load')),{once:true});
-  });
-  return new Promise((resolve,reject)=>{
-    const s=document.createElement('script');
-    s.dataset.nh7GroupPdf=key;s.src=src;s.async=true;
-    const timer=setTimeout(()=>reject(new Error(key+' timed out')),25000);
-    s.onload=()=>{clearTimeout(timer);s.dataset.loaded='1';ready()?resolve(true):reject(new Error(key+' global unavailable'))};
-    s.onerror=()=>{clearTimeout(timer);reject(new Error(key+' failed to load'))};
-    document.head.appendChild(s)
-  })
-}
-function loadGroupPdfEngine(){
-  if(groupPdfEnginePromise)return groupPdfEnginePromise;
-  groupPdfEnginePromise=Promise.all([
-    loadGroupPdfScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js','html2canvas-1.4.1',()=>typeof window.html2canvas==='function'),
-    loadGroupPdfScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js','jspdf-2.5.1',()=>typeof window.jspdf?.jsPDF==='function')
-  ]).then(()=>true).catch(error=>{groupPdfEnginePromise=null;throw error});
-  return groupPdfEnginePromise
-}
-function setGroupPdfButton(state,message){
-  const btn=document.getElementById('nh7AcademicGroupPdfBtnV547');
-  const hint=document.getElementById('nh7AcademicGroupPdfHintV547');
-  if(btn){
-    btn.disabled=state!=='ready';
-    btn.textContent=state==='ready'
-      ?'📄 '+L('PDF / چاپ','PDF / Print','PDF / Ispis')
-      :state==='error'
-        ?'⚠ '+L('PDF آماده نشد','PDF failed','PDF nije spreman')
-        :'⏳ '+L('آماده‌سازی PDF…','Preparing PDF…','Priprema PDF-a…')
-  }
-  if(hint&&message)hint.textContent=message
-}
-async function captureGroupPdfPage(titleText,metaText,theadHtml,rowHtml,dir){
-  const host=document.createElement('div');
-  host.className='nh7ac540-pdf-capture-host';
-  host.dir=dir;
-  Object.assign(host.style,{
-    position:'fixed',left:'0',top:'0',width:'1120px',minWidth:'1120px',maxWidth:'1120px',
-    background:'#fff',color:'#102033',zIndex:'2147483000',pointerEvents:'none',
-    overflow:'visible',padding:'22px',margin:'0',boxSizing:'border-box',fontFamily:'Arial, sans-serif'
-  });
-  host.innerHTML=
-    '<div style="display:flex;justify-content:space-between;gap:18px;align-items:flex-end;border-bottom:2px solid #0f766e;padding-bottom:12px;margin-bottom:14px">'+
-      '<div><div style="font-size:24px;font-weight:800">'+E(titleText)+'</div><div style="font-size:13px;color:#667085;margin-top:5px">'+E(metaText)+'</div></div>'+
-      '<div style="font-size:18px;font-weight:800;color:#0f766e;white-space:nowrap">NEW HOPE 7</div>'+
-    '</div>'+
-    '<table style="width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px"><thead>'+theadHtml+'</thead><tbody>'+rowHtml+'</tbody></table>';
-  host.querySelectorAll('th,td').forEach(el=>{
-    el.style.border='1px solid #d7e3e3';el.style.padding='8px';el.style.verticalAlign='top';el.style.textAlign='start';
-    el.style.overflowWrap='anywhere';el.style.wordBreak='break-word'
-  });
-  host.querySelectorAll('th').forEach(el=>{el.style.background='#eef8f7';el.style.fontWeight='800'});
-  host.querySelectorAll('small').forEach(el=>{el.style.color='#667085'});
-  document.body.appendChild(host);
-  try{
-    try{await document.fonts?.ready}catch(_){}
-    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
-    const apple=/iPad|iPhone|iPod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-    return await window.html2canvas(host,{
-      scale:apple?1.05:1.2,
-      useCORS:true,allowTaint:false,backgroundColor:'#ffffff',logging:false,
-      scrollX:0,scrollY:0,width:1120,height:Math.max(host.scrollHeight,host.offsetHeight),
-      windowWidth:1180,windowHeight:Math.max(900,Math.min(host.scrollHeight,1800)),
-      x:0,y:0,removeContainer:true
-    })
-  }finally{host.remove()}
-}
-async function createGroupPdfBlob(){
-  const modal=document.getElementById('nh7AcademicGroupReportV546');
-  if(!modal)throw new Error(L('پیش‌نمایش گزارش بسته شده است.','The report preview is closed.','Pregled izvještaja je zatvoren.'));
-  await loadGroupPdfEngine();
-  const table=modal.querySelector('.nh7ac540-print-table');
-  if(!table)throw new Error(L('جدول گزارش پیدا نشد.','Report table not found.','Tablica izvještaja nije pronađena.'));
-  const sourceRows=[...table.querySelectorAll('tbody tr')];
-  const theadHtml=table.querySelector('thead')?.innerHTML||'';
-  const titleText='New Hope 7 · '+optionLabel(reportFilter);
-  const metaText=L('تاریخ گزارش','Report date','Datum izvještaja')+': '+fmtDateTime(new Date())+' · '+sourceRows.length+' '+L('نفر','people','osoba');
-  const dir=lang==='fa'?'rtl':'ltr';
-  const JsPDF=window.jspdf?.jsPDF;
-  if(typeof JsPDF!=='function')throw new Error(L('موتور PDF در دسترس نیست.','PDF engine is unavailable.','PDF sustav nije dostupan.'));
-  const pdf=new JsPDF({orientation:'landscape',unit:'mm',format:'a4',compress:true});
-  const pageW=pdf.internal.pageSize.getWidth(),pageH=pdf.internal.pageSize.getHeight();
-  const margin=7,printW=pageW-margin*2,printH=pageH-margin*2;
-  const rowsPerPage=14;
-  const pages=Math.max(1,Math.ceil(sourceRows.length/rowsPerPage));
-  for(let page=0;page<pages;page++){
-    const chunk=sourceRows.slice(page*rowsPerPage,(page+1)*rowsPerPage).map(row=>row.outerHTML).join('');
-    const pageMeta=metaText+' · '+L('صفحه','Page','Stranica')+' '+(page+1)+'/'+pages;
-    const canvas=await captureGroupPdfPage(titleText,pageMeta,theadHtml,chunk,dir);
-    const img=canvas.toDataURL('image/jpeg',0.92);
-    if(page>0)pdf.addPage('a4','landscape');
-    const ratio=canvas.height/canvas.width;
-    let drawW=printW,drawH=drawW*ratio;
-    if(drawH>printH){drawH=printH;drawW=drawH/ratio}
-    const x=margin+(printW-drawW)/2;
-    pdf.addImage(img,'JPEG',x,margin,drawW,drawH,undefined,'FAST');
-    canvas.width=1;canvas.height=1
-  }
-  const blob=pdf.output('blob');
-  if(!(blob instanceof Blob)||blob.size<1500)throw new Error(L('فایل PDF معتبر ساخته نشد.','A valid PDF could not be created.','Nije moguće izraditi valjan PDF.'));
-  return blob
-}
-function prepareGroupPdf(){
-  const key=groupPdfKey();
-  if(groupPdfState.key===key&&groupPdfState.blob){setGroupPdfButton('ready');return Promise.resolve(groupPdfState.blob)}
-  if(groupPdfState.key===key&&groupPdfState.promise)return groupPdfState.promise;
-  groupPdfState={key,blob:null,promise:null,error:''};
-  setGroupPdfButton('loading',L('PDF در حال آماده‌شدن است؛ بعد از آماده‌شدن دکمه فعال می‌شود.','The PDF is being prepared; the button will enable when ready.','PDF se priprema; gumb će se aktivirati kada bude spreman.'));
-  groupPdfState.promise=createGroupPdfBlob().then(blob=>{
-    groupPdfState.blob=blob;groupPdfState.promise=null;
-    setGroupPdfButton('ready',L('PDF آماده است. دکمه PDF / چاپ را بزن.','PDF is ready. Tap PDF / Print.','PDF je spreman. Dodirnite PDF / Ispis.'));
-    return blob
-  }).catch(error=>{
-    groupPdfState.error=String(error?.message||error);groupPdfState.promise=null;
-    setGroupPdfButton('error',groupPdfState.error);
-    throw error
-  });
-  return groupPdfState.promise
-}
-function groupPdfFile(){
-  const blob=groupPdfState.blob;
-  if(!blob)return null;
-  try{return new File([blob],groupPdfSafeName(),{type:'application/pdf'})}catch(_){return null}
-}
 function groupPdfAction(){
-  const blob=groupPdfState.blob;
-  if(!blob){
-    if(!groupPdfState.promise)prepareGroupPdf().catch(()=>{});
-    alert(L('PDF هنوز آماده نشده است. چند لحظه صبر کن.','The PDF is still preparing. Please wait a moment.','PDF se još priprema. Pričekajte trenutak.'));
-    return
-  }
-  const file=groupPdfFile();
-  const apple=/iPad|iPhone|iPod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-  if(apple&&file&&navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}))){
-    navigator.share({
-      files:[file],
-      title:'New Hope 7 · '+optionLabel(reportFilter),
-      text:L('برای چاپ گزینه Print و برای ذخیره گزینه Save to Files را انتخاب کن.','Choose Print to print, or Save to Files to save the PDF.','Odaberite Print za ispis ili Save to Files za spremanje PDF-a.')
-    }).catch(error=>{if(error?.name!=='AbortError')alert(error?.message||String(error))});
-    return
-  }
-  const url=URL.createObjectURL(blob),a=document.createElement('a');
-  a.href=url;a.download=groupPdfSafeName();a.rel='noopener';document.body.appendChild(a);a.click();a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),60000)
+  if(!document.getElementById('nh7AcademicGroupReportV546'))return;
+  document.body.classList.add('nh7ac540-printing');
+  const oldTitle=document.title;document.title='New Hope 7 — '+optionLabel(reportFilter);
+  const cleanup=()=>{document.body.classList.remove('nh7ac540-printing');document.title=oldTitle};
+  window.addEventListener('afterprint',cleanup,{once:true});
+  try{window.print()}catch(e){cleanup();throw e}
 }
 
 function printGroup(){
-  closeGroupReport();
-  const list=filteredRows();
+  closeGroupReport();returnFocus=document.activeElement;
+  const list=filteredRows();groupSnapshot={rows:list};
   const rows=list.map(r=>'<tr>'+
     '<td><strong>'+E(r.display_name||r.email)+'</strong><br><small>'+E(r.email||'—')+'</small></td>'+
     '<td>'+E(N(r.completed_lessons))+'/'+E(N(r.total_lessons))+'<br><small>'+E(L('مرحله معتبر','validated','potvrđeno'))+': '+E(N(r.validated_classes))+'/7</small></td>'+
@@ -485,18 +332,19 @@ function printGroup(){
   modal.id='nh7AcademicGroupReportV546';
   modal.className='nh7ac540-report-modal';
   modal.setAttribute('role','dialog');
-  modal.setAttribute('aria-modal','true');
+  modal.setAttribute('aria-modal','true');modal.setAttribute('aria-labelledby','nh7GroupReportTitle');modal.lang=lang;
   modal.innerHTML=
     '<section class="nh7ac540-report-dialog" dir="'+(lang==='fa'?'rtl':'ltr')+'">'+
       '<div class="nh7ac540-report-toolbar">'+
-        '<div class="nh7ac540-report-heading"><strong>New Hope 7 · '+E(optionLabel(reportFilter))+'</strong><small>'+E(L('تاریخ گزارش','Report date','Datum izvještaja'))+': '+E(fmtDateTime(new Date()))+' · '+E(list.length)+' '+E(L('نفر','people','osoba'))+'</small></div>'+
+        '<div class="nh7ac540-report-heading"><strong id="nh7GroupReportTitle">New Hope 7 · '+E(optionLabel(reportFilter))+'</strong><small>'+E(L('آخرین دریافت','Last loaded','Zadnje učitavanje'))+': '+E(fmtDateTime(loadedAt||new Date()))+' · '+E(list.length)+' '+E(L('نفر','people','osoba'))+'</small></div>'+
         '<div class="nh7ac540-report-actions">'+
-          '<button type="button" id="nh7AcademicGroupPdfBtnV547" class="btn primary" disabled onclick="nh7StudentAcademicGroupPdfActionV547()">⏳ '+E(L('آماده‌سازی PDF…','Preparing PDF…','Priprema PDF-a…'))+'</button>'+
+          '<button type="button" id="nh7AcademicGroupPdfBtnV547" class="btn primary" onclick="nh7StudentAcademicGroupPdfActionV547()">🖨 '+E(L('چاپ','Print','Ispis'))+'</button>'+
+          '<button type="button" class="btn secondary" onclick="nh7StudentAcademicGroupPdfActionV547()">'+E(L('ذخیره PDF','Save as PDF','Spremi kao PDF'))+'</button>'+
           '<button type="button" class="btn secondary" onclick="nh7StudentAcademicCsvV540()">⬇ CSV</button>'+
           '<button type="button" class="nh7ac540-report-close" aria-label="'+E(L('بستن','Close','Zatvori'))+'" onclick="nh7StudentAcademicCloseReportV546()">✕</button>'+
         '</div>'+
       '</div>'+
-      '<div id="nh7AcademicGroupPdfHintV547" class="nh7ac540-report-help">'+E(L('PDF در حال آماده‌شدن است؛ بعد از آماده‌شدن دکمه فعال می‌شود.','The PDF is being prepared; the button will enable when ready.','PDF se priprema; gumb će se aktivirati kada bude spreman.'))+'</div>'+
+      '<div id="nh7AcademicGroupPdfHintV547" class="nh7ac540-report-help">'+E(L('برای PDF در پنجره چاپ گزینه ذخیره PDF را انتخاب کنید.','For PDF, choose Save as PDF in the browser print dialog.','Za PDF odaberite Spremi kao PDF u dijalogu ispisa.'))+'</div>'+
       '<div class="nh7ac540-report-body">'+
         '<table class="nh7ac540-print-table"><thead><tr>'+
           '<th>'+E(L('دانشجو','Student','Student'))+'</th>'+
@@ -513,7 +361,7 @@ function printGroup(){
   modal.addEventListener('click',event=>{if(event.target===modal)closeGroupReport()});
   document.body.appendChild(modal);
   document.body.classList.add('nh7ac540-report-open');
-  setTimeout(()=>prepareGroupPdf().catch(()=>{}),50);
+  modal.querySelector('button')?.focus();
 }
 
 function openProfile(encoded){
@@ -525,7 +373,7 @@ function individualReport(encoded){
   const email=decodeURIComponent(encoded);activeTab='studentreport';render();
   setTimeout(()=>{
     const select=document.getElementById('nh7ReportStudent');
-    if(select){select.value=email;window.nh7GenerateStudentReportV496?.()}
+    if(select){if(![...select.options].some(x=>x.value===email))select.add(new Option(email,email));select.value=email;window.nh7GenerateStudentReportV496?.()}
   },120)
 }
 
@@ -581,7 +429,7 @@ function openReport(filter){reportFilter=filter;view='reports';render()}
 const style=document.createElement('style');
 style.id='nh7StudentAcademicV540Style';
 style.textContent=`
-.nh7ac540-shell{padding-bottom:10px}.nh7ac540-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}.nh7ac540-nav button{border:1px solid var(--line,#d8ecea);background:#f8fbfb;color:#17324d;border-radius:14px;padding:11px 8px;font-weight:800}.nh7ac540-nav button.active{background:#0f766e;color:white;border-color:#0f766e}
+.nh7ac540-shell{padding-bottom:10px}.nh7ac540-pagination{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0}.nh7ac540-report-dialog{min-height:0}.nh7ac540-report-body{min-height:0}.nh7ac540-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}.nh7ac540-nav button{border:1px solid var(--line,#d8ecea);background:#f8fbfb;color:#17324d;border-radius:14px;padding:11px 8px;font-weight:800}.nh7ac540-nav button.active{background:#0f766e;color:white;border-color:#0f766e}
 .nh7ac540-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:14px 0}.nh7ac540-stat{border:1px solid #d8ecea;background:#fff;border-radius:16px;padding:13px;text-align:start;min-height:88px}.nh7ac540-stat b{display:block;font-size:1.55rem;color:#102033}.nh7ac540-stat span{display:block;margin-top:4px;color:#667085;font-size:.82rem;line-height:1.45}.nh7ac540-stat.alert{border-color:#f3c7c2;background:#fff8f7}.nh7ac540-stat.alert b{color:#b42318}
 .nh7ac540-note{padding:11px 13px;border-radius:14px;background:#eff8ff;color:#175cd3;line-height:1.7;margin:10px 0}.nh7ac540-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.nh7ac540-toolbar{display:grid;grid-template-columns:minmax(180px,1fr) minmax(200px,1.4fr) minmax(110px,.5fr);gap:8px;margin:12px 0}.nh7ac540-check{display:flex;align-items:center;gap:6px;padding:8px 10px}
 .nh7ac540-table-wrap{overflow:auto;-webkit-overflow-scrolling:touch;border:1px solid #d8ecea;border-radius:14px;margin-top:12px}.nh7ac540-table{width:100%;min-width:980px;border-collapse:collapse;font-size:.82rem}.nh7ac540-table th,.nh7ac540-table td{padding:9px;border-bottom:1px solid #e7efef;text-align:start;vertical-align:top}.nh7ac540-table th{background:#f3faf9;position:sticky;top:0;z-index:1}.nh7ac540-row-actions{display:flex;gap:5px;flex-wrap:wrap}.nh7ac540-row-actions .btn{padding:7px 8px;margin:0;min-width:0}
@@ -598,6 +446,12 @@ style.textContent=`
 body.nh7ac540-report-open{overflow:hidden}
 @media(max-width:720px){.nh7ac540-report-modal{padding:max(6px,env(safe-area-inset-top)) 6px max(6px,env(safe-area-inset-bottom))}.nh7ac540-report-dialog{border-radius:16px}.nh7ac540-report-toolbar{align-items:flex-start;flex-direction:column}.nh7ac540-report-actions{width:100%}.nh7ac540-report-actions .btn{flex:1}.nh7ac540-report-close{margin-inline-start:auto;position:absolute;top:10px;inset-inline-end:10px}.nh7ac540-report-heading{padding-inline-end:48px}.nh7ac540-report-body{padding:10px}}
 @media print{
+  @page{size:A4 landscape;margin:12mm}
+  html,body{height:auto!important;overflow:visible!important}
+  body.nh7ac540-printing .nh7ac540-print-table{table-layout:fixed;overflow-wrap:anywhere}
+  body.nh7ac540-printing thead{display:table-header-group}
+  body.nh7ac540-printing tr{break-inside:avoid}
+
   body.nh7ac540-printing>*:not(#nh7AcademicGroupReportV546){display:none!important}
   body.nh7ac540-printing{background:#fff!important;overflow:visible!important}
   body.nh7ac540-printing #nh7AcademicGroupReportV546{position:static!important;display:block!important;background:#fff!important;padding:0!important;overflow:visible!important}
@@ -616,11 +470,13 @@ function install(){
   if(typeof renderStudentsDashboard!=='function'||typeof adminRpc!=='function')return false;
   if(renderStudentsDashboard.__nh7Academic540)return true;
   const old=renderStudentsDashboard;
-  const wrapped=function(){return shell(old())};
+  const wrapped=function(){return shell(view==='profiles'?old():'')};
   wrapped.__nh7Academic540=true;
   renderStudentsDashboard=window.renderStudentsDashboard=wrapped;
   window.nh7StudentAcademicSetViewV540=setView;
   window.nh7StudentAcademicSetFilterV540=setFilter;
+  window.nh7StudentAcademicPageV116=setPage;
+  window.NH7AcademicReportRowsV116=()=>rows().map(x=>({...x}));
   window.nh7StudentAcademicOpenReportV540=openReport;
   window.nh7StudentAcademicReloadV540=()=>load(true);
   window.nh7StudentAcademicInactiveDaysV540=setInactiveDays;
@@ -640,7 +496,7 @@ function install(){
   window.NH7_ADMIN_STUDENT_ACADEMIC_VERSION=VERSION;
   if(!window.__NH7_ACADEMIC_REPORT_ESCAPE_V546__){
     window.__NH7_ACADEMIC_REPORT_ESCAPE_V546__=true;
-    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.getElementById('nh7AcademicGroupReportV546'))closeGroupReport()},true);
+    document.addEventListener('keydown',event=>{const modal=document.getElementById('nh7AcademicGroupReportV546');if(!modal)return;if(event.key==='Escape')closeGroupReport();if(event.key==='Tab'){const buttons=[...modal.querySelectorAll('button')];const first=buttons[0],last=buttons.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}}},true);
   }
   if(activeTab==='students'){setTimeout(()=>{load(false);render()},0)}
   return true
