@@ -12,3 +12,181 @@
     bottom:var(--nh7-mini-dock-bottom,calc(64px + env(safe-area-inset-bottom,0px)))!important;
   }
 }
+
+/* New Hope 7 Wave 1 — adaptive responsive foundation.
+   Keep the canonical phone experience below 600px. Tablet/fold/desktop widths
+   gain a navigation rail, wider canvas and scalable grids without changing routes,
+   data contracts or user state. Theme colors stay sourced from existing variables. */
+
+@media (min-width:600px){
+  html,body{min-width:0;overflow-x:hidden}
+
+  .app-shell{
+    width:100%;
+    max-width:1440px;
+    min-height:100dvh;
+    margin-inline:auto;
+    position:relative;
+  }
+
+  .topbar{
+    width:auto;
+    max-width:none;
+    margin-inline:0;
+    padding-block-start:calc(14px + var(--safe-area-inset-top,env(safe-area-inset-top,0px)));
+    padding-inline:22px;
+    border-radius:0 0 18px 18px;
+  }
+
+  .topbar .brand{min-width:0}
+  .topbar .brand>div{min-width:0}
+  .topbar .brand small{max-width:46vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  .view{
+    width:auto;
+    max-width:none;
+    min-width:0;
+    margin-inline:0;
+    padding-block:22px 42px;
+    padding-inline-start:104px;
+    padding-inline-end:24px;
+  }
+
+  /* Reuse the same six routes as a tablet/desktop navigation rail. */
+  .bottom-nav{
+    position:fixed;
+    z-index:80;
+    inset-block-start:calc(var(--safe-area-inset-top,env(safe-area-inset-top,0px)) + 102px);
+    inset-block-end:calc(18px + var(--safe-area-inset-bottom,env(safe-area-inset-bottom,0px)));
+    inset-inline-start:max(14px,calc((100vw - min(100vw,1440px))/2 + 14px));
+    inset-inline-end:auto;
+    left:auto;
+    right:auto;
+    bottom:auto;
+    transform:none;
+    width:76px;
+    height:auto;
+    max-height:calc(100dvh - 126px - var(--safe-area-inset-top,env(safe-area-inset-top,0px)) - var(--safe-area-inset-bottom,env(safe-area-inset-bottom,0px)));
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:stretch;
+    gap:7px;
+    overflow:auto;
+    padding:9px 7px;
+    border:1px solid var(--line,#d9e6f7);
+    border-radius:22px;
+    background:color-mix(in srgb,var(--card,#fff) 94%,transparent);
+    box-shadow:0 12px 30px rgba(15,35,55,.12);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    scrollbar-width:none;
+  }
+  .bottom-nav::-webkit-scrollbar{display:none}
+
+  .bottom-nav .nav-item{
+    flex:0 0 auto;
+    width:100%;
+    min-width:0;
+    min-height:62px;
+    padding:7px 4px;
+    border-radius:16px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:3px;
+  }
+  .bottom-nav .nav-item span{font-size:21px;line-height:1}
+  .bottom-nav .nav-item small{max-width:100%;font-size:9.5px;line-height:1.15;text-align:center;white-space:normal;overflow-wrap:anywhere}
+
+  /* Generic content scaling. */
+  .card{max-width:none;padding:22px;margin-bottom:18px}
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .tile{min-width:0;min-height:108px}
+  .sermon-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .sermon-card{min-width:0}
+
+  /* Keep wide controls/dialogs usable instead of stretching edge-to-edge. */
+  .verse-note-box:not(.hidden){width:min(720px,calc(100vw - 150px));max-width:100%}
+  .sermon-note-dialog{width:min(760px,100%);max-width:calc(100vw - 150px)}
+  .nh7-reader-dialog{width:min(1120px,100%);max-width:calc(100vw - 150px)}
+  dialog,.modal,.modal-card,.sheet{max-width:calc(100vw - 150px)}
+
+  /* Existing horizontal tab rows should remain reachable on fold/tablet. */
+  .tabs{max-width:100%;overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-width:thin}
+  .button-row,.actions{max-width:100%;flex-wrap:wrap}
+
+  /* On tablet/desktop the navigation is vertical, so the mobile dock measurement
+     must not push the mini-player hundreds of pixels upward. */
+  html.nh7p500-active .nh7p500{
+    bottom:calc(14px + var(--safe-area-inset-bottom,env(safe-area-inset-bottom,0px)))!important;
+    inset-inline-start:104px;
+    inset-inline-end:24px;
+    width:auto;
+    max-width:none;
+  }
+}
+
+/* Fold-open / compact tablet: preserve useful content width beside a slim rail. */
+@media (min-width:600px) and (max-width:767px){
+  .view{padding-block:18px 36px;padding-inline-start:82px;padding-inline-end:16px}
+  .bottom-nav{width:62px;inset-inline-start:8px;padding:7px 5px;gap:5px}
+  .bottom-nav .nav-item{min-height:54px;border-radius:13px}
+  .bottom-nav .nav-item span{font-size:19px}
+  .bottom-nav .nav-item small{font-size:8px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .sermon-list{grid-template-columns:1fr}
+  .card{padding:18px}
+  .topbar{padding-inline:16px}
+  .topbar .brand small{max-width:36vw}
+  html.nh7p500-active .nh7p500{inset-inline-start:80px;inset-inline-end:16px}
+  .verse-note-box:not(.hidden),.sermon-note-dialog,.nh7-reader-dialog,dialog,.modal,.modal-card,.sheet{max-width:calc(100vw - 96px)}
+}
+
+/* Standard tablet / iPad portrait. */
+@media (min-width:768px) and (max-width:1023px){
+  .view{padding-inline-start:106px;padding-inline-end:24px}
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .school-entry-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .school-entry-actions>.wide-btn:last-child:nth-child(odd){grid-column:1/-1}
+}
+
+/* iPad landscape / desktop foundation. */
+@media (min-width:1024px){
+  .app-shell{max-width:1500px}
+  .view{padding-block:26px 46px;padding-inline-start:116px;padding-inline-end:30px}
+  .bottom-nav{width:82px;inset-inline-start:max(16px,calc((100vw - min(100vw,1500px))/2 + 16px))}
+  .grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+  .sermon-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  .nh7-chapter-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .school-entry-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .school-entry-actions>.wide-btn:last-child:nth-child(odd){grid-column:auto}
+  html.nh7p500-active .nh7p500{inset-inline-start:116px;inset-inline-end:30px}
+}
+
+/* Mac/large desktop: use the screen, but cap reading density. */
+@media (min-width:1366px){
+  .view{padding-inline-start:126px;padding-inline-end:38px}
+  .bottom-nav{width:88px}
+  .grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+  .sermon-list{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .continuous-reader,.bible-reader,.reader-content{max-width:920px;margin-inline:auto}
+  .card{padding:24px}
+  html.nh7p500-active .nh7p500{inset-inline-start:126px;inset-inline-end:38px}
+}
+
+/* Landscape foldables with limited height need shorter navigation targets. */
+@media (min-width:600px) and (orientation:landscape) and (max-height:620px){
+  .bottom-nav{inset-block-start:calc(var(--safe-area-inset-top,env(safe-area-inset-top,0px)) + 78px);inset-block-end:8px;gap:3px;padding-block:5px}
+  .bottom-nav .nav-item{min-height:42px;padding-block:4px}
+  .bottom-nav .nav-item span{font-size:17px}
+  .bottom-nav .nav-item small{font-size:7.5px}
+  .topbar{padding-block:9px}
+  .view{padding-block-start:14px}
+}
+
+/* Never alter the canonical phone layout. */
+@media (max-width:599px){
+  .app-shell,.topbar,.view,.bottom-nav{max-width:760px}
+}
