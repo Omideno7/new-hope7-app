@@ -27,18 +27,19 @@ def ensure_replace(path,old,new,label,expected=1):
 p=Path('index.html'); text=p.read_text();
 school='  <script src="js/nh7-school-path-v351.js?v=4.6.7-io" defer></script>'
 student='  <script src="js/nh7-student-identity-v127.js?v=1.27.0" defer></script>'
-lines=[line for line in text.splitlines() if line.strip()!=student.strip()]
+lines=[line.rstrip() for line in text.splitlines() if line.strip()!=student.strip()]
 try: idx=lines.index(school)
 except ValueError: raise SystemExit('index Student Identity runtime: School anchor missing')
 lines.insert(idx+1,student)
 write('index.html','\n'.join(lines)+'\n','index Student Identity runtime')
 
-# Normalize release asset to exactly one occurrence.
+# Normalize release asset to exactly one occurrence and remove whitespace-only residue.
 p=Path('sw-release-core-v403.js'); text=p.read_text(); token="'./js/nh7-student-identity-v127.js'"
 text=text.replace(token+',','').replace(token,'')
 anchor="'./js/nh7-school-path-v351.js',"
 if text.count(anchor)!=1: raise SystemExit(f'release cache anchor count={text.count(anchor)}')
 text=text.replace(anchor,anchor+"\n  './js/nh7-student-identity-v127.js',",1)
+text='\n'.join(line.rstrip() for line in text.splitlines())+'\n'
 write('sw-release-core-v403.js',text,'release cache Student Identity asset')
 
 # Admin Academic Center: patches become no-ops after first successful application.
