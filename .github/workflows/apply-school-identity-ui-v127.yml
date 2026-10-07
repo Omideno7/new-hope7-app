@@ -46,3 +46,5 @@ jobs:
           git add index.html sw-release-core-v403.js .github/workflows/deploy-pages.yml js/nh7-admin-student-academic-v540.js js/nh7-admin-student-report-v496.js
           git commit -m 'Issue #127: integrate Student Identity UI on feature branch'
           git push origin HEAD:feature/school-identity-credentials
+
+# Corrected patch run: both Admin student tables intentionally receive Student Code.
