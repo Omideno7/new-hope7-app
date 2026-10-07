@@ -1,0 +1,46 @@
+name: Validate Develop
+
+on:
+  pull_request:
+    branches: [develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: new-hope7-develop-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Validate active JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check js/app.js
+          node --check js/nh7-finalqa-v558.js
+          if [ -f js/nh7-adaptive-layout-v570.js ]; then
+            node --check js/nh7-adaptive-layout-v570.js
+          fi
+
+      - name: Validate responsive foundation when present
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f scripts/verify-responsive-v570.mjs ]; then
+            node scripts/verify-responsive-v570.mjs
+          fi
+
+      - name: Validate optimization invariants
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/validate_next_native_optimization_guard.py
