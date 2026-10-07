@@ -27,6 +27,7 @@ jobs:
           set -euo pipefail
           node --check js/app.js
           node --check js/nh7-finalqa-v558.js
+          node --check js/nh7-settings-controller-v403.js
           if [ -f js/nh7-adaptive-layout-v570.js ]; then
             node --check js/nh7-adaptive-layout-v570.js
           fi
@@ -45,6 +46,14 @@ jobs:
           set -euo pipefail
           if [ -f scripts/verify-theme-propagation-v571.mjs ]; then
             node scripts/verify-theme-propagation-v571.mjs
+          fi
+
+      - name: Validate offline reconciliation when present
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f scripts/verify-offline-reconciliation-v572.mjs ]; then
+            node scripts/verify-offline-reconciliation-v572.mjs
           fi
 
       - name: Validate optimization invariants
