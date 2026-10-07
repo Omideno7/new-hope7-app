@@ -25,10 +25,11 @@ jobs:
         run: |
           set -euo pipefail
           node --check js/nh7-school-path-v351.js
+          node --check js/nh7-student-identity-v127.js
           node --check js/nh7-admin-student-academic-v540.js
           node --check js/nh7-admin-student-report-v496.js
 
-      - name: Run School identity review contracts when present
+      - name: Run School review contracts when present
         shell: bash
         run: |
           set -euo pipefail
@@ -37,6 +38,9 @@ jobs:
           fi
           if [ -f scripts/verify-school-identity-integration-v127.mjs ]; then
             node scripts/verify-school-identity-integration-v127.mjs
+          fi
+          if [ -f scripts/verify-multi-course-v127.mjs ]; then
+            node scripts/verify-multi-course-v127.mjs
           fi
 
       - name: Diff whitespace check
