@@ -1,0 +1,47 @@
+name: Apply Admin Course Studio v127
+
+on:
+  push:
+    branches: [feature/school-identity-credentials]
+    paths:
+      - 'scripts/apply-admin-course-studio-v127.py'
+      - '.github/workflows/apply-admin-course-studio-v127.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/school-identity-credentials
+          fetch-depth: 0
+      - name: Apply deterministic loader patch
+        run: python3 scripts/apply-admin-course-studio-v127.py
+      - name: Validate Course Studio
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check js/nh7-admin-course-studio-v127.js
+          node scripts/verify-admin-course-studio-v127.mjs
+          node scripts/verify-multi-course-v127.mjs
+          node scripts/verify-school-identity-v127.mjs
+          node scripts/verify-school-identity-integration-v127.mjs
+          python3 scripts/validate_next_native_optimization_guard.py
+          grep -q 'nh7-admin-course-studio-v127.js?v=1.27.0' admin-v239-stable.html
+          test "$(grep -o 'nh7-admin-course-studio-v127.js?v=1.27.0' admin-v239-stable.html | wc -l | tr -d ' ')" = "1"
+          git diff --check
+      - name: Commit feature-branch loader integration
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add admin-v239-stable.html
+          git commit -m 'Issue #127: integrate Admin Course Studio loader'
+          git push origin HEAD:feature/school-identity-credentials
