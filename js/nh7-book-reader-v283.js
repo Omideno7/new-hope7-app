@@ -78,6 +78,8 @@ function decorate(){
       readButton.textContent='📖 '+L('مطالعه کتاب داخل اپ','Read book in app','Čitaj knjigu u aplikaciji');
       actions.insertBefore(readButton,fileButton);
     }
+    const readCopy='📖 '+L('مطالعه کتاب داخل اپ','Read book in app','Čitaj knjigu u aplikaciji');
+    if(readButton.textContent!==readCopy)readButton.textContent=readCopy;
     if(row.reader_mode==='text')fileButton.style.display='none';
     else{
       fileButton.style.display='';
@@ -161,7 +163,24 @@ function removeModal(preserveBook=false){if(modal){savePosition();modal.remove()
 function closeReader(){removeModal(false)}
 function shell(){
   const title=book.data['title_'+book.language]||titleOf(book.item);
-  return `<section class="nh7-book-shell"><header class="nh7-book-head"><button type="button" data-book-close>‹ ${E(L('بازگشت','Back','Natrag'))}</button><div><h2>${E(title)}</h2><small>${E(L('کتاب داخل اپ','In-app book','Knjiga u aplikaciji'))} · ${book.pages.length} ${E(L('بخش','sections','dijelova'))}</small></div><button type="button" data-book-top aria-label="${E(L('بالای صفحه','Top','Vrh'))}">↑</button></header><div class="nh7-book-toolbar"><input type="search" data-book-search placeholder="${E(L('جست‌وجو در کتاب…','Search in book…','Pretraži knjigu…'))}"><button type="button" class="nh7-book-tool-btn" data-book-font-down>A−</button><button type="button" class="nh7-book-tool-btn" data-book-font-up>A+</button><select data-book-theme><option value="light">${E(L('روشن','Light','Svijetlo'))}</option><option value="sepia">${E(L('کاغذی','Sepia','Sepija'))}</option><option value="dark">${E(L('تیره','Dark','Tamno'))}</option></select></div><div class="nh7-book-search-results" data-book-results></div><div class="nh7-book-progress"><i data-book-progress></i></div><main class="nh7-book-main"><article class="nh7-book-article"></article><aside class="nh7-book-sidebar"><h3>${E(L('فهرست بخش‌ها','Contents','Sadržaj'))}</h3><div class="nh7-book-page-list"></div></aside></main><footer class="nh7-book-footer"><button type="button" class="nh7-book-prev" data-book-prev>‹ ${E(L('بخش قبلی','Previous','Prethodno'))}</button><span class="nh7-book-count" data-book-count></span><button type="button" class="nh7-book-next" data-book-next>${E(L('بخش بعدی','Next','Sljedeće'))} ›</button></footer></section>`;
+  return `<section class="nh7-book-shell"><header class="nh7-book-head"><button type="button" data-book-close>‹ ${E(L('بازگشت','Back','Natrag'))}</button><div><h2>${E(title)}</h2><small>${E(L('کتاب داخل اپ','In-app book','Knjiga u aplikaciji'))} · ${book.pages.length} ${E(L('بخش','sections','dijelova'))}</small></div><button type="button" data-book-top aria-label="${E(L('بالای صفحه','Top','Vrh'))}">↑</button></header><div class="nh7-book-toolbar"><input type="search" data-book-search placeholder="${E(L('جست‌وجو در کتاب…','Search in book…','Pretraži knjigu…'))}"><button type="button" class="nh7-book-tool-btn" data-book-font-down aria-label="${E(L('کوچک کردن متن','Decrease text size','Smanji tekst'))}">A−</button><button type="button" class="nh7-book-tool-btn" data-book-font-up aria-label="${E(L('بزرگ کردن متن','Increase text size','Povećaj tekst'))}">A+</button><select data-book-theme><option value="light">${E(L('روشن','Light','Svijetlo'))}</option><option value="sepia">${E(L('کاغذی','Sepia','Sepija'))}</option><option value="dark">${E(L('تیره','Dark','Tamno'))}</option></select></div><div class="nh7-book-search-results" data-book-results></div><div class="nh7-book-progress"><i data-book-progress></i></div><main class="nh7-book-main"><article class="nh7-book-article"></article><aside class="nh7-book-sidebar"><h3>${E(L('فهرست بخش‌ها','Contents','Sadržaj'))}</h3><div class="nh7-book-page-list"></div></aside></main><footer class="nh7-book-footer"><button type="button" class="nh7-book-prev" data-book-prev>‹ ${E(L('بخش قبلی','Previous','Prethodno'))}</button><span class="nh7-book-count" data-book-count></span><button type="button" class="nh7-book-next" data-book-next>${E(L('بخش بعدی','Next','Sljedeće'))} ›</button></footer></section>`;
+}
+function refreshReaderCopy(){
+ if(!modal||!book)return;
+ const text=(selector,value)=>{const el=modal.querySelector(selector);if(el)el.textContent=value};
+ text('[data-book-close]','‹ '+L('بازگشت','Back','Natrag'));
+ text('.nh7-book-head small',L('کتاب داخل اپ','In-app book','Knjiga u aplikaciji')+' · '+book.pages.length+' '+L('بخش','sections','dijelova'));
+ text('.nh7-book-sidebar h3',L('فهرست بخش‌ها','Contents','Sadržaj'));
+ text('[data-book-prev]','‹ '+L('بخش قبلی','Previous','Prethodno'));
+ text('[data-book-next]',L('بخش بعدی','Next','Sljedeće')+' ›');
+ const labels={'[data-book-top]':L('بالای صفحه','Top','Vrh'),'[data-book-font-down]':L('کوچک کردن متن','Decrease text size','Smanji tekst'),'[data-book-font-up]':L('بزرگ کردن متن','Increase text size','Povećaj tekst')};
+ for(const [selector,value] of Object.entries(labels))modal.querySelector(selector)?.setAttribute('aria-label',value);
+ modal.querySelector('[data-book-search]')?.setAttribute('placeholder',L('جست‌وجو در کتاب…','Search in book…','Pretraži knjigu…'));
+ for(const [value,label] of Object.entries({light:L('روشن','Light','Svijetlo'),sepia:L('کاغذی','Sepia','Sepija'),dark:L('تیره','Dark','Tamno')}))text('[data-book-theme] option[value="'+value+'"]',label);
+ // Only UI direction changes; keep the original document's language/direction.
+ const results=modal.querySelector('[data-book-results]');if(results?.classList.contains('show')&&!results.querySelector('button'))results.textContent=L('نتیجه‌ای پیدا نشد.','No matches found.','Nema rezultata.');
+ modal.lang=lang();modal.dir=lang()==='fa'?'rtl':'ltr';
+ const article=modal.querySelector('.nh7-book-article');if(article){article.lang=book.language;article.dir=book.language==='fa'?'rtl':'ltr'}
 }
 function showReader(savedScroll=0){
   if(!book)return;
@@ -175,6 +194,7 @@ function showReader(savedScroll=0){
   document.body.classList.add('nh7-book-open');
   bindReader();
   renderPage(pageIndex,'',savedScroll);
+  refreshReaderCopy();
 }
 function highlight(text,query){
   const safe=E(text);
@@ -238,6 +258,7 @@ function installStyle(){
 document.addEventListener('click',event=>{const button=event.target.closest?.('[data-nh7-book-open]');if(!button)return;event.preventDefault();event.stopImmediatePropagation();openBook(button.dataset.nh7BookOpen)},true);
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&modal)closeReader()},true);
 window.addEventListener('beforeunload',savePosition);
+window.addEventListener('change',event=>{if(['langSelect','settingsLang'].includes(event.target?.id))setTimeout(refreshReaderCopy,0)},true);
 window.addEventListener('online',()=>loadCatalog(true));
 const observer=new MutationObserver(()=>{if(document.querySelector('[data-library-open]'))loadCatalog();decorate()});
 observer.observe(document.documentElement,{childList:true,subtree:true});

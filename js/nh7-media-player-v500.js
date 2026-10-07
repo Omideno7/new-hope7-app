@@ -88,7 +88,7 @@ function ensure(){
       </button>
       <div class="nh7p500-actions">
         <button type="button" data-prev aria-label="${L('قبلی','Previous','Prethodno')}">⏮</button>
-        <button type="button" class="nh7p500-play" data-play aria-label="Play/Pause">▶</button>
+        <button type="button" class="nh7p500-play" data-play aria-label="${L('پخش / توقف','Play / Pause','Reproduciraj / Pauziraj')}">▶</button>
         <button type="button" data-next aria-label="${L('بعدی','Next','Sljedeće')}">⏭</button>
         <button type="button" class="nh7p500-speed" data-speed aria-label="${L('سرعت','Speed','Brzina')}">1×</button>
         <button type="button" data-close aria-label="${L('بستن','Close','Zatvori')}">×</button>
@@ -109,9 +109,9 @@ function ensure(){
         <div class="nh7p500-time"><span data-now>0:00</span><span data-total>0:00</span></div>
         <div class="nh7p500-main">
           <button type="button" data-prev aria-label="${L('قبلی','Previous','Prethodno')}">⏮</button>
-          <button type="button" data-back aria-label="-15">↶15</button>
-          <button type="button" class="big" data-play aria-label="Play/Pause">▶</button>
-          <button type="button" data-forward aria-label="+30">30↷</button>
+          <button type="button" data-back aria-label="${L('۱۵ ثانیه عقب','Back 15 seconds','15 sekundi natrag')}">↶15</button>
+          <button type="button" class="big" data-play aria-label="${L('پخش / توقف','Play / Pause','Reproduciraj / Pauziraj')}">▶</button>
+          <button type="button" data-forward aria-label="${L('۳۰ ثانیه جلو','Forward 30 seconds','30 sekundi naprijed')}">30↷</button>
           <button type="button" data-next aria-label="${L('بعدی','Next','Sljedeće')}">⏭</button>
         </div>
         <div class="nh7p500-tools">
@@ -430,6 +430,14 @@ function refreshLanguageUI(force=false){
     else if(/restored|بازیابی|vraćena/i.test(raw))noteStatus.textContent=L('پیش‌نویس بازیابی شد ✓','Draft restored ✓','Skica je vraćena ✓');
   }
   const input=r.querySelector('[data-note-input]');if(input)input.placeholder=L('یادداشت خود را بنویسید…','Write your note…','Napišite bilješku…');
+  r.lang=currentLang;r.dir=currentLang==='fa'?'rtl':'ltr';
+  text('[data-mute] small',L('بی‌صدا','Mute','Isključi zvuk'));
+  text('[data-volume-note]',L('در آیفون، صدای سیستم با دکمه‌های گوشی کنترل می‌شود.','On iPhone, system volume is controlled by the phone buttons.','Na iPhoneu se glasnoća sustava kontrolira tipkama telefona.'));
+  attr('[data-play]','aria-label',L('پخش / توقف','Play / Pause','Reproduciraj / Pauziraj'));
+  attr('[data-back]','aria-label',L('۱۵ ثانیه عقب','Back 15 seconds','15 sekundi natrag'));
+  attr('[data-forward]','aria-label',L('۳۰ ثانیه جلو','Forward 30 seconds','30 sekundi naprijed'));
+  attr('[data-volume]','aria-label',L('بلندی صدا','Volume','Glasnoća'));
+  attr('[data-mute]','aria-label',L('قطع یا وصل صدا','Mute or unmute','Isključi ili uključi zvuk'));
   attr('[data-prev]','aria-label',L('قبلی','Previous','Prethodno'));
   attr('[data-next]','aria-label',L('بعدی','Next','Sljedeće'));
   attr('[data-close]','aria-label',L('بستن','Close','Zatvori'));
