@@ -1,7 +1,7 @@
 /* New Hope 7 v5.7.0 — adaptive layout enhancement for fold/tablet/desktop.
  * Presentation-only: does not mutate account, School, Bible, Audio or Supabase data.
- * Phone layout remains canonical. Existing route buttons are cloned with their data-* attrs
- * so the app's existing delegated navigation remains the source of truth.
+ * Phone layout remains canonical. Sidebar controls mirror the current rendered controls
+ * and forward clicks to those canonical buttons so existing route logic stays authoritative.
  */
 (()=>{'use strict';
 if(window.__NH7_ADAPTIVE_LAYOUT_V570__)return;
@@ -51,6 +51,11 @@ function cloneDataButton(source,extraClass='nh7-adaptive570-link'){
   b.innerHTML=source.innerHTML;
   b.removeAttribute('id');
   b.querySelectorAll('[id]').forEach(el=>el.removeAttribute('id'));
+  b.addEventListener('click',event=>{
+    event.preventDefault();
+    event.stopPropagation();
+    source.click();
+  });
   return b;
 }
 
