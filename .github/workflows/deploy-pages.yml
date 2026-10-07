@@ -192,6 +192,8 @@ jobs:
           grep -q 'nh7ExportStudentReportV116' js/nh7-admin-student-report-v496.js
           grep -q 'nh7_admin_student_academic_center_v542' js/nh7-admin-student-academic-v540.js
           node scripts/verify-school-reports-v116.mjs
+          node --check js/nh7-admin-report-print-v117.js
+          node scripts/verify-report-pdf-v119.mjs
           grep -q 'uploadWithProgress' js/nh7-admin-save-feedback-v497.js
           grep -q 'stableSaveSermon' js/nh7-admin-save-feedback-v497.js
           grep -q 'stableAnswerQuestion' js/nh7-admin-save-feedback-v497.js

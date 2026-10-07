@@ -96,7 +96,7 @@ const detail={school:{registration:{user_name:'Fixture Student',status:'approved
     return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(body)});
   });
   await integrated.goto(base+'/admin-v239-stable.html');
-  await integrated.waitForFunction(()=>window.NH7_ADMIN_STUDENT_ACADEMIC_VERSION&&window.NH7_ADMIN_STUDENT_REPORT_VERSION&&typeof nh7AdminAccessReady!=='undefined'&&nh7AdminAccessReady);
+  await integrated.waitForFunction(()=>window.NH7_ADMIN_STUDENT_ACADEMIC_VERSION&&window.NH7_ADMIN_STUDENT_REPORT_VERSION&&window.NH7_ADMIN_REPORT_PRINT_VERSION==='1.1.9'&&typeof nh7AdminAccessReady!=='undefined'&&nh7AdminAccessReady);
   await integrated.evaluate(()=>setTab('students'));
   await integrated.waitForFunction(()=>window.NH7AcademicReportRowsV116?.().length>1000);
   await integrated.waitForFunction(()=>!state.loading&&typeof adminLoadInFlight!=='undefined'&&!adminLoadInFlight);
@@ -106,10 +106,14 @@ const detail={school:{registration:{user_name:'Fixture Student',status:'approved
   await integrated.evaluate(()=>nh7StudentAcademicSetFilterV540('needs_revision'));
   await integrated.evaluate(()=>nh7StudentAcademicPrintV540());
   await integrated.locator('#nh7AcademicGroupPdfBtnV547').click();
+  await integrated.locator('#nh7ReportExport119').waitFor();
+  await integrated.evaluate(()=>{document.querySelector('#nh7ReportExport119 iframe').contentWindow.print=()=>window.__printCalls=(window.__printCalls||0)+1});
+  await integrated.locator('#nh7ReportExport119 [data-print]').click();
+  await integrated.locator('#nh7ReportExport119 [data-close]').click();
   await integrated.evaluate(()=>window.dispatchEvent(new Event('afterprint')));await integrated.keyboard.press('Escape');
   await integrated.evaluate(()=>nh7StudentAcademicIndividualReportV540(encodeURIComponent('revision@example.invalid')));
   await integrated.waitForFunction(()=>document.querySelector('#nh7ReportStatus')?.textContent.includes('✓'));
-  await integrated.evaluate(()=>nh7OpenStudentReportPreviewV496());await integrated.locator('#nh7ReportPrintAction').click();await integrated.evaluate(()=>window.dispatchEvent(new Event('afterprint')));await integrated.keyboard.press('Escape');
+  await integrated.evaluate(()=>nh7OpenStudentReportPreviewV496());await integrated.locator('#nh7ReportPrintAction').click();await integrated.locator('#nh7ReportExport119').waitFor();await integrated.evaluate(()=>{document.querySelector('#nh7ReportExport119 iframe').contentWindow.print=()=>window.__printCalls=(window.__printCalls||0)+1});await integrated.locator('#nh7ReportExport119 [data-print]').click();await integrated.locator('#nh7ReportExport119 [data-close]').click();await integrated.evaluate(()=>window.dispatchEvent(new Event('afterprint')));await integrated.keyboard.press('Escape');
   assert.equal(await integrated.evaluate(()=>window.__printCalls),2);
   const reportCalls=remote.slice(initialCalls).filter(x=>!['GET','HEAD','OPTIONS'].includes(x.method));
   assert.ok(reportCalls.every(x=>x.method==='POST'&&(/nh7_admin_(student_academic_center_v542|student_profile_v451|library_reading_v490|library_dashboard_v224|school_assignments_feed_v237)/.test(x.url)||x.url.includes('/functions/v1/nh7-admin-ai-v490')&&x.payload?.action==='status'||x.url.includes('/functions/v1/nh7-send-email')&&x.payload?.action==='config')),JSON.stringify(reportCalls));
