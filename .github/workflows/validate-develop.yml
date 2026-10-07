@@ -28,6 +28,7 @@ jobs:
           node --check js/nh7-student-identity-v127.js
           node --check js/nh7-admin-student-academic-v540.js
           node --check js/nh7-admin-student-report-v496.js
+          node --check js/nh7-admin-course-studio-v127.js
 
       - name: Run School review contracts when present
         shell: bash
@@ -42,6 +43,11 @@ jobs:
           if [ -f scripts/verify-multi-course-v127.mjs ]; then
             node scripts/verify-multi-course-v127.mjs
           fi
+          if [ -f scripts/verify-admin-course-studio-v127.mjs ]; then
+            node scripts/verify-admin-course-studio-v127.mjs
+          fi
+          grep -q 'nh7-admin-course-studio-v127.js?v=1.27.0' admin-v239-stable.html
+          test "$(grep -o 'nh7-admin-course-studio-v127.js?v=1.27.0' admin-v239-stable.html | wc -l | tr -d ' ')" = "1"
 
       - name: Diff whitespace check
         shell: bash
