@@ -13,11 +13,11 @@ Status legend:
 
 ## Progress summary
 - Total tracked items: 55
-- 🧪 Code/fix ready, awaiting QA: 16
+- 🧪 Code/fix ready, awaiting QA: 15
 - 🟡 In progress / implementation or review still needed: 24
 - ⬜ Not started / release-stage only: 15
 - ✅ Fully verified on target devices/backends: 0
-- 🚀 Included in approved release: 0
+- 🚀 Included in approved release: 1
 
 > Count-based snapshot only; items differ significantly in engineering effort. A task is not counted as fully complete until its required real-device/backend QA is done.
 
@@ -60,7 +60,7 @@ Status legend:
 - 🟡 Admin panel information architecture / remove duplicates and unnecessary sections.
 - 🟡 In-app Admin access with secure RBAC.
 - 🟡 Sermon admin edit/image/save regression QA.
-- 🧪 Preserve Admin community hotfixes: Testimony Publish/Delete/Download, Prayer Admin/Delete, Storage Manager, Blessing cleanup, Testimony Player compatibility — testimony playback regression repaired in v5.0.5; static CI passed; real Admin/Supabase QA pending.
+- 🚀 Preserve Admin community hotfixes: Testimony Publish/Delete/Download, Prayer Admin/Delete, Storage Manager, Blessing cleanup, Testimony Player compatibility — Web Admin 2.3.9.66 deployed with v5.0.5 hard-delete safety and v5.0.6 WebKit playback handling; user/device verification still required before marking ✅.
 - ⬜ Certificate Studio final implementation/QA.
 - ⬜ Remove obsolete Analytics UI while keeping required operational functions.
 
@@ -100,12 +100,14 @@ Status legend:
 
 ## Change log
 ### 2026-10-07
-- Root-caused the Testimony Admin playback regression: Storage Manager v5.0.4 overrode the approved v5.6.5 testimony `listen()` runtime after it loaded.
-- Added `js/nh7-admin-testimony-runtime-fix-v505.js` to restore authenticated private-audio playback with signed-URL fallback and blob URL cleanup.
-- Added permanent Delete controls for pending/published testimony review and changed the v5.0.5 deletion path to delete Storage objects before deleting the database row, preventing silent orphaned audio storage.
-- Repaired Storage Manager single/bulk delete entry points to use the safer v5.0.5 deletion path.
-- Added `validate-testimony-v505.yml`; JavaScript syntax and regression-wiring checks passed on commit `694e1d518df5f6f143ec0157764cf11961bb6458`.
-- Production and Supabase Production were not changed.
+- Root-caused the Testimony Admin playback regression and then narrowed the current live-file issue using Production metadata: the two pending `.m4a` submissions are stored as `audio/mp4;codecs=opus`, a problematic combination for Safari/WebKit inline playback.
+- Added `js/nh7-admin-testimony-runtime-fix-v505.js` with permanent storage-first deletion: private/public Storage objects are removed before the testimony database row, avoiding orphaned audio objects.
+- Added `js/nh7-admin-testimony-playback-v506.js`: authenticated private fetch, MIME cleanup to plain `audio/mp4`, direct `audio.src`, temporary object-URL cleanup, and signed-URL device-player fallback.
+- Added/updated static CI for testimony playback; v5.0.6 syntax and wiring validation passed on the development branch.
+- Promoted the narrow Admin hotfix to `main`, bumped stable Admin to `2.3.9.66`, and refreshed the Admin cache key.
+- Main deployment was initially blocked by a pre-existing offline-release guard (`nh7-finalqa-v558.js` active but not listed in release assets); added the active runtime to `sw-release-core-v403.js` instead of weakening the guard.
+- Main `Validate and Deploy New Hope 7` validation then passed all runtime/app/Admin/HTML checks and GitHub Pages deployment completed successfully.
+- No Supabase schema/data mutation was made during this hotfix; Production Supabase was read-only inspected for testimony MIME/storage metadata.
 
 ### 2026-10-06
 - Created persistent Master Checklist in the repository so progress is not dependent on chat history.
@@ -116,4 +118,3 @@ Status legend:
 - Verified current Global Search module covers Bible + Saved Verses + Notes + Audio and provides direct result navigation/handoff; moved to 🧪.
 - Verified current Inbox implementation has redesigned cards, cloud refresh/receipts, no developer-facing OneSignal sentence, and exact timestamp rendering; moved to 🧪.
 - Added count-based progress summary for persistent status reporting.
-- Production environments remain untouched by this checklist work.
