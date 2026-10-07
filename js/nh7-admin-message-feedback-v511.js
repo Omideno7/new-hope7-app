@@ -1,6 +1,6 @@
-/* New Hope 7 Admin feedback colors v5.1.1
+/* New Hope 7 Admin feedback colors v5.1.1b
  * Success confirmations = green, errors = red, progress/info stays neutral.
- * Safe UI-only layer: avoids observing class mutations to prevent render loops.
+ * Safe UI-only layer: no class-attribute observation and no storage/data logic changes.
  */
 (()=>{'use strict';
 if(window.__NH7_ADMIN_MESSAGE_FEEDBACK_V511__)return;
@@ -41,14 +41,31 @@ function desiredState(el,forced){
   if(/(^|\s)success(\s|$)/.test(cls)||hasAny(t,SUCCESS_WORDS))return'success';
   return'';
 }
+function setI(el,key,value){try{el.style.setProperty(key,value,'important')}catch(_){}}
+function clearFeedbackInline(el){
+  for(const key of ['background','background-color','color','border','border-color','border-inline-start','border-inline-start-color','box-shadow']){
+    try{el.style.removeProperty(key)}catch(_){}
+  }
+}
+function applyInline(el,state){
+  clearFeedbackInline(el);
+  if(state==='success'){
+    setI(el,'background','#ecfdf3');setI(el,'background-color','#ecfdf3');setI(el,'color','#067647');
+    setI(el,'border','1px solid #86efac');setI(el,'border-inline-start','5px solid #12b76a');
+    setI(el,'box-shadow','0 6px 18px rgba(18,183,106,.08)');
+  }else if(state==='error'){
+    setI(el,'background','#fef3f2');setI(el,'background-color','#fef3f2');setI(el,'color','#b42318');
+    setI(el,'border','1px solid #fda29b');setI(el,'border-inline-start','5px solid #d92d20');
+    setI(el,'box-shadow','0 6px 18px rgba(217,45,32,.08)');
+  }
+}
 function paint(el,forced){
   if(!(el instanceof Element))return;
   const state=desiredState(el,forced);
   const wanted=state==='success'?SUCCESS:state==='error'?ERROR:state==='neutral'?NEUTRAL:'';
-  const current=ALL.find(c=>el.classList.contains(c))||'';
-  if(current===wanted)return;
-  ALL.forEach(c=>{if(el.classList.contains(c))el.classList.remove(c)});
-  if(wanted)el.classList.add(wanted);
+  ALL.forEach(c=>{if(c!==wanted&&el.classList.contains(c))el.classList.remove(c)});
+  if(wanted&&!el.classList.contains(wanted))el.classList.add(wanted);
+  applyInline(el,state);
 }
 
 const SELECTORS=['#adminMsg','#nh7StorageMsg','#nh7StorageAuditV509','#nh7StorageAuditV507','#nh7TestimonyMsg','.notice.error','.notice.danger','.notice.success','[role="status"]','[role="alert"]'].join(',');
@@ -90,5 +107,5 @@ mo.observe(document.documentElement,{subtree:true,childList:true,characterData:t
 
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 setTimeout(boot,500);
-window.NH7AdminMessageFeedbackV511={scan,paint,VERSION:'5.1.1'};
+window.NH7AdminMessageFeedbackV511={scan,paint,VERSION:'5.1.1b'};
 })();
