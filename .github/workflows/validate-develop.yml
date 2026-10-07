@@ -1,0 +1,44 @@
+name: Validate Develop
+
+on:
+  pull_request:
+    branches: [develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-develop:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Validate optimization invariants
+        run: python3 scripts/validate_next_native_optimization_guard.py
+
+      - name: Validate active JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check js/nh7-school-path-v351.js
+          node --check js/nh7-admin-student-academic-v540.js
+          node --check js/nh7-admin-student-report-v496.js
+
+      - name: Run School identity review contracts when present
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f scripts/verify-school-identity-v127.mjs ]; then
+            node scripts/verify-school-identity-v127.mjs
+          fi
+          if [ -f scripts/verify-school-identity-integration-v127.mjs ]; then
+            node scripts/verify-school-identity-integration-v127.mjs
+          fi
+
+      - name: Diff whitespace check
+        shell: bash
+        run: git diff --check HEAD^ HEAD || git diff --check
