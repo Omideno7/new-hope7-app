@@ -1,4 +1,4 @@
-name: Validate Testimony Runtime v5.0.5
+name: Validate Testimony Runtime v5.0.6
 
 on:
   push:
@@ -9,6 +9,7 @@ on:
       - 'js/nh7-admin-community-fixes-v503.js'
       - 'js/nh7-admin-community-storage-v504.js'
       - 'js/nh7-admin-testimony-runtime-fix-v505.js'
+      - 'js/nh7-admin-testimony-playback-v506.js'
       - 'js/nh7-admin-testimony-v565.js'
       - '.github/workflows/validate-testimony-v505.yml'
   workflow_dispatch:
@@ -30,6 +31,7 @@ jobs:
           node --check js/nh7-admin-community-fixes-v503.js
           node --check js/nh7-admin-community-storage-v504.js
           node --check js/nh7-admin-testimony-runtime-fix-v505.js
+          node --check js/nh7-admin-testimony-playback-v506.js
           node --check js/nh7-admin-testimony-v565.js
 
       - name: Validate regression repair wiring
@@ -39,22 +41,26 @@ jobs:
           const fs=require('fs');
           const loader=fs.readFileSync('js/nh7-admin-testimony-v565.js','utf8');
           const fix=fs.readFileSync('js/nh7-admin-testimony-runtime-fix-v505.js','utf8');
+          const playback=fs.readFileSync('js/nh7-admin-testimony-playback-v506.js','utf8');
           const storage=fs.readFileSync('js/nh7-admin-community-storage-v504.js','utf8');
           const fail=m=>{throw new Error(m)};
 
           if(!loader.includes("nh7-admin-testimony-runtime-fix-v505.js?v=5.0.5"))fail('v505 runtime fix is not loaded');
-          if(!storage.includes('a.publish=publish;a.listen=listen'))fail('Expected v504 player override changed; re-audit v505 ordering');
-          if(!fix.includes('api.listen=listen'))fail('v505 does not reclaim testimony playback');
+          if(!loader.includes("nh7-admin-testimony-playback-v506.js?v=5.0.6"))fail('v506 playback fix is not loaded');
+          if(loader.indexOf('v505.js?v=5.0.5')>loader.indexOf('v506.js?v=5.0.6'))fail('v506 must load after v505');
+          if(!storage.includes('a.publish=publish;a.listen=listen'))fail('Expected v504 player override changed; re-audit ordering');
           if(!fix.includes("nh7_owner_testimony_delete_any_v504"))fail('permanent delete RPC missing');
+          if(!playback.includes('api.listen=listen'))fail('v506 does not own testimony playback');
+          if(!playback.includes("new Blob([ab],{type:cleanMime(mime,path)})"))fail('v506 MIME rewrap missing');
+          if(!playback.includes("a.src=src"))fail('v506 direct audio src missing');
+          if(!playback.includes('Open in device player')||!playback.includes('باز کردن در پخش‌کننده دستگاه'))fail('device-player fallback missing');
+          if(!playback.includes('/storage/v1/object/authenticated/${PRIVATE_BUCKET}/'))fail('authenticated private-audio fetch missing');
+          if(!playback.includes('URL.revokeObjectURL'))fail('blob URL cleanup missing');
 
           const privateDelete=fix.indexOf('await delObj(PRIVATE_BUCKET,privatePath)');
           const publicDelete=fix.indexOf('await delObj(PUBLIC_BUCKET,publicPath)');
           const dbDelete=fix.indexOf("await adminRpc('nh7_owner_testimony_delete_any_v504'");
           if(privateDelete<0||publicDelete<0||dbDelete<0)fail('hard-delete sequence incomplete');
           if(!(privateDelete<dbDelete&&publicDelete<dbDelete))fail('Storage must be deleted before DB row');
-
-          if(!fix.includes("/storage/v1/object/authenticated/${PRIVATE_BUCKET}/"))fail('authenticated private-audio playback path missing');
-          if(!fix.includes('URL.createObjectURL(blob)'))fail('private audio blob URL playback missing');
-          if(!fix.includes('URL.revokeObjectURL'))fail('blob URL cleanup missing');
-          console.log('Testimony v5.0.5 static validation passed');
+          console.log('Testimony v5.0.6 static validation passed');
           NODE
