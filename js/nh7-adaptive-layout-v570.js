@@ -127,7 +127,8 @@ function enhance(){
   const r=route();
   root.dataset.nh7AdaptiveRoute=r;
   const eligible=(r==='bible'||r==='audio');
-  if(!eligible){unwrap(root);return}
+  const split=matchMedia(`(min-width:${MIN_SPLIT}px)`).matches;
+  if(!eligible||!split){unwrap(root);return}
 
   let layout=root.querySelector(':scope > .nh7-adaptive570-layout');
   if(layout){
