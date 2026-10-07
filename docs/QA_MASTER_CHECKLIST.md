@@ -12,12 +12,12 @@ Status legend:
 - 🚀 Included in approved release
 
 ## Progress summary
-- Total tracked items: 57
+- Total tracked items: 58
 - 🧪 Code/fix ready, awaiting QA: 19
 - 🟡 In progress / implementation or review still needed: 22
 - ⬜ Not started / release-stage only: 15
 - ✅ Fully verified on target devices/backends: 1
-- 🚀 Included in approved release but not yet verified: 0
+- 🚀 Included in approved release but not yet verified: 1
 
 > Count-based snapshot only; items differ significantly in engineering effort. A task is not counted as fully complete until its required real-device/backend QA is done.
 
@@ -61,6 +61,7 @@ Status legend:
 - 🟡 In-app Admin access with secure RBAC.
 - 🟡 Sermon admin edit/image/save regression QA.
 - ✅ Testimony Admin playback/publish flow — Web Admin 2.3.9.66 deployed; user verified private review playback works, published a testimony, and verified the published testimony plays in the app. Permanent storage-first delete path remains part of the same protected hotfix set.
+- 🚀 Testimony Storage orphan audit / hard cleanup — Web Admin 2.3.9.67 deployed with admin-only `nh7_owner_community_storage_orphans_v507`, exact Storage-backed counts, automatic orphan cleanup through the Storage API when the Storage tab opens, and manual orphan cleanup control. Current Production audit found 2 unreferenced public objects totaling 4,012,043 bytes and no private objects; final authenticated-admin cleanup verification is pending.
 - 🧪 Testimony user UX for next update — submission composer is collapsed behind “Record or upload audio”; published testimonies are compact rows showing display name + title and expand to note/player on tap. Commit `8b3e8b76b0e437559dd77b349684f2b6517a2f87`; device QA pending.
 - ⬜ Certificate Studio final implementation/QA.
 - ⬜ Remove obsolete Analytics UI while keeping required operational functions.
@@ -104,6 +105,11 @@ Status legend:
 
 ## Change log
 ### 2026-10-07
+- Investigated the Storage screenshot against Production data. The displayed 3.8 MB was confirmed accurate: two real objects remained in `nh7-testimony-published-v502`, totaling 4,012,043 bytes, while the private testimony bucket was empty. Neither public object was referenced by any current `nh7_testimonies_v502.audio_public_path`, confirming both as orphans.
+- Applied Production migration `community_storage_orphan_audit_v507`: authenticated-admin-only orphan audit RPC, with `anon` execute explicitly revoked and admin permission checked inside the function.
+- Added `js/nh7-admin-storage-orphan-v507.js`: automatic orphan sweep only when the authenticated Admin Storage tab is opened, Storage-API deletion (not SQL object deletion), post-delete re-audit, exact stats refresh, and a manual “Clean orphan files” control.
+- Bumped Web Admin to `2.3.9.67`; runtime/app/Admin/HTML validation and GitHub Pages deployment all completed successfully. The two pre-existing orphan files remain until an authenticated admin opens/refreshed the Storage tab so the Storage API cleanup can execute; verification to 0 B is pending.
+- Carried the v5.0.7 runtime and loader wiring back to the development branch so the live hotfix is not lost during source-of-truth reconciliation.
 - Read-only verified the Production School v351 backend: class readiness requires previous-class pass, lesson completion and approved assignments; final exam readiness requires all 7 class exams passed. Moved strict progression and final-exam unlock to 🧪 pending end-to-end student QA.
 - Verified the current Student Report module contains explicit preview/Print/Save PDF controls and html2canvas + jsPDF generation; moved Print/Save/PDF to 🧪 pending real-device/browser QA.
 - User verified Web Admin 2.3.9.66 testimony review playback works; a testimony was published and the published audio was also verified playable inside the app. Moved the Testimony Admin playback/publish flow to ✅.
@@ -114,7 +120,6 @@ Status legend:
 - Added `js/nh7-admin-testimony-runtime-fix-v505.js` with permanent storage-first deletion: private/public Storage objects are removed before the testimony database row, avoiding orphaned audio objects.
 - Added `js/nh7-admin-testimony-playback-v506.js`: authenticated private fetch, MIME cleanup to plain `audio/mp4`, direct `audio.src`, temporary object-URL cleanup, and signed-URL device-player fallback.
 - Promoted the narrow Admin hotfix to `main`, bumped stable Admin to `2.3.9.66`, and refreshed the Admin cache key. Main deployment validation and GitHub Pages deployment completed successfully.
-- No Supabase schema/data mutation was made during these inspections; Production Supabase was read-only inspected only.
 
 ### 2026-10-06
 - Created persistent Master Checklist in the repository so progress is not dependent on chat history.
