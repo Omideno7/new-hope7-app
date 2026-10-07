@@ -1,0 +1,60 @@
+name: Validate Testimony Runtime v5.0.5
+
+on:
+  push:
+    branches:
+      - batch2/critical-stability-v300
+    paths:
+      - 'js/nh7-admin-testimony-core-v565.js'
+      - 'js/nh7-admin-community-fixes-v503.js'
+      - 'js/nh7-admin-community-storage-v504.js'
+      - 'js/nh7-admin-testimony-runtime-fix-v505.js'
+      - 'js/nh7-admin-testimony-v565.js'
+      - '.github/workflows/validate-testimony-v505.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@v4
+
+      - name: JavaScript syntax check
+        run: |
+          set -euo pipefail
+          node --check js/nh7-admin-testimony-core-v565.js
+          node --check js/nh7-admin-community-fixes-v503.js
+          node --check js/nh7-admin-community-storage-v504.js
+          node --check js/nh7-admin-testimony-runtime-fix-v505.js
+          node --check js/nh7-admin-testimony-v565.js
+
+      - name: Validate regression repair wiring
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const fs=require('fs');
+          const loader=fs.readFileSync('js/nh7-admin-testimony-v565.js','utf8');
+          const fix=fs.readFileSync('js/nh7-admin-testimony-runtime-fix-v505.js','utf8');
+          const storage=fs.readFileSync('js/nh7-admin-community-storage-v504.js','utf8');
+          const fail=m=>{throw new Error(m)};
+
+          if(!loader.includes("nh7-admin-testimony-runtime-fix-v505.js?v=5.0.5"))fail('v505 runtime fix is not loaded');
+          if(!storage.includes('a.publish=publish;a.listen=listen'))fail('Expected v504 player override changed; re-audit v505 ordering');
+          if(!fix.includes('api.listen=listen'))fail('v505 does not reclaim testimony playback');
+          if(!fix.includes("nh7_owner_testimony_delete_any_v504"))fail('permanent delete RPC missing');
+
+          const privateDelete=fix.indexOf('await delObj(PRIVATE_BUCKET,privatePath)');
+          const publicDelete=fix.indexOf('await delObj(PUBLIC_BUCKET,publicPath)');
+          const dbDelete=fix.indexOf("await adminRpc('nh7_owner_testimony_delete_any_v504'");
+          if(privateDelete<0||publicDelete<0||dbDelete<0)fail('hard-delete sequence incomplete');
+          if(!(privateDelete<dbDelete&&publicDelete<dbDelete))fail('Storage must be deleted before DB row');
+
+          if(!fix.includes("/storage/v1/object/authenticated/${PRIVATE_BUCKET}/"))fail('authenticated private-audio playback path missing');
+          if(!fix.includes('URL.createObjectURL(blob)'))fail('private audio blob URL playback missing');
+          if(!fix.includes('URL.revokeObjectURL'))fail('blob URL cleanup missing');
+          console.log('Testimony v5.0.5 static validation passed');
+          NODE
