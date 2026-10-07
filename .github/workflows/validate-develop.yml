@@ -39,6 +39,14 @@ jobs:
             node scripts/verify-responsive-v570.mjs
           fi
 
+      - name: Validate theme propagation when present
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f scripts/verify-theme-propagation-v571.mjs ]; then
+            node scripts/verify-theme-propagation-v571.mjs
+          fi
+
       - name: Validate optimization invariants
         shell: bash
         run: |
