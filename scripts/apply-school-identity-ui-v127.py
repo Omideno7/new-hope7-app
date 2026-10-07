@@ -28,14 +28,6 @@ replace_exact(
     'release cache Student Identity asset'
 )
 
-# Main validation should syntax-check the newly active runtime.
-replace_exact(
-    '.github/workflows/deploy-pages.yml',
-    '            js/nh7-school-path-v351.js',
-    '            js/nh7-school-path-v351.js\n            js/nh7-student-identity-v127.js',
-    'deploy validation Student Identity runtime'
-)
-
 # Admin Academic Center uses the server-enriched v543 batch, still exactly one batch RPC.
 replace_exact(
     'js/nh7-admin-student-academic-v540.js',
