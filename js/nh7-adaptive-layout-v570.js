@@ -12,7 +12,6 @@ const MIN_SPLIT=768;
 let queued=false;
 const view=()=>document.getElementById('view');
 const route=()=>document.querySelector('.bottom-nav .nav-item.active')?.dataset?.route||'';
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 function installStyle(){
   if(document.getElementById('nh7Adaptive570Style'))return;
@@ -83,17 +82,25 @@ function collectNavSources(root,r){
   return out;
 }
 
+function sourceSignature(sources,r){
+  return r+'|'+sources.map(source=>{
+    const data=Array.from(source.attributes).filter(a=>a.name.startsWith('data-')).map(a=>a.name+'='+a.value).sort().join('&');
+    return data+'|'+String(source.textContent||'').replace(/\s+/g,' ').trim()+'|'+(source.classList.contains('active')?'1':'0');
+  }).join('||');
+}
+
 function buildSidebar(root,r){
+  const sources=collectNavSources(root,r);
+  if(!sources.length)return null;
   const aside=document.createElement('aside');
   aside.className='nh7-adaptive570-sidebar';
   aside.setAttribute('aria-label',sidebarTitle(r));
+  aside.dataset.nh7Signature=sourceSignature(sources,r);
   const head=document.createElement('div');
   head.className='nh7-adaptive570-head';
   head.textContent=sidebarTitle(r);
   const scroll=document.createElement('div');
   scroll.className='nh7-adaptive570-scroll';
-  const sources=collectNavSources(root,r);
-  if(!sources.length)return null;
   const list=document.createElement('div');
   list.className='nh7-adaptive570-links';
   sources.forEach(source=>list.appendChild(cloneDataButton(source)));
@@ -123,7 +130,7 @@ function enhance(){
     const main=layout.querySelector(':scope > .nh7-adaptive570-main');
     if(old&&main){
       const fresh=buildSidebar(main,r);
-      if(fresh)old.replaceWith(fresh);
+      if(fresh&&fresh.dataset.nh7Signature!==old.dataset.nh7Signature)old.replaceWith(fresh);
     }
     return;
   }
