@@ -2,244 +2,42 @@
   'use strict';
   if(window.__NH7_ADMIN_STUDENT_REPORT_V496__)return;
   window.__NH7_ADMIN_STUDENT_REPORT_V496__=true;
-  const VERSION='4.9.6-student-report-explicit-pdf-engines';
+  const VERSION='4.9.6-issue116-browser-print-csv';
   let report={email:'',language:'fa',html:'',name:'',generatedAt:null};
-  let pdfState={key:'',blob:null,promise:null,error:''};
-  let pdfEnginePromise=null;
+  let generating=false, generation=0, returnFocus=null;
+  const detailCache=new Map();
   const L=(fa,en,hr,l=null)=>{const v=l||String(typeof lang!=='undefined'?lang:'fa');return v==='fa'?fa:v==='hr'?hr:en};
   const E=v=>typeof h==='function'?h(v):String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const N=(v,f=0)=>Number.isFinite(Number(v))?Number(v):f;
   const currentLang=()=>{const v=String(typeof lang!=='undefined'?lang:'fa');return ['fa','en','hr'].includes(v)?v:'fa'};
-  function safeFileName(value){
-    const base=String(value||'student').trim().replace(/[\\/:*?"<>|]+/g,'-').replace(/\s+/g,' ').slice(0,80)||'student';
-    return 'New-Hope-7-Student-Report-'+base+'.pdf';
-  }
-  function reportKey(){return [report.email,report.language,report.generatedAt?new Date(report.generatedAt).getTime():0].join('|')}
-  function resetPdfState(){pdfState={key:'',blob:null,promise:null,error:''}}
-  function setPreviewHint(text,isError=false){
-    const note=document.getElementById('nh7ReportPreviewHint');
-    if(note){note.textContent=text||'';note.style.color=isError?'#b42318':''}
-  }
-  function setPdfButtonsReady(ready){
-    for(const id of ['nh7ReportPrintAction','nh7ReportPdfAction']){
-      const btn=document.getElementById(id);if(btn)btn.disabled=!ready;
-    }
-  }
-  function loadScriptOnce(src,key,ready){
-    if(ready())return Promise.resolve(true);
-    const existing=document.querySelector('script[data-nh7-lib="'+key+'"]');
-    if(existing)return new Promise((resolve,reject)=>{
-      const check=()=>ready()?resolve(true):reject(new Error(key+' loaded but global is unavailable'));
-      if(existing.dataset.loaded==='1'){check();return}
-      existing.addEventListener('load',check,{once:true});
-      existing.addEventListener('error',()=>reject(new Error(key+' failed to load')),{once:true});
-    });
-    return new Promise((resolve,reject)=>{
-      const s=document.createElement('script');
-      s.dataset.nh7Lib=key;s.src=src;s.async=true;
-      const timer=setTimeout(()=>reject(new Error(key+' timed out')),20000);
-      s.onload=()=>{clearTimeout(timer);s.dataset.loaded='1';ready()?resolve(true):reject(new Error(key+' global unavailable'))};
-      s.onerror=()=>{clearTimeout(timer);reject(new Error(key+' failed to load'))};
-      document.head.appendChild(s);
-    });
-  }
-  function loadPdfEngine(){
-    if(pdfEnginePromise)return pdfEnginePromise;
-    pdfEnginePromise=Promise.all([
-      loadScriptOnce(
-        'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js',
-        'html2canvas-1.4.1',
-        ()=>typeof window.html2canvas==='function'
-      ),
-      loadScriptOnce(
-        'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js',
-        'jspdf-2.5.1',
-        ()=>typeof window.jspdf?.jsPDF==='function'
-      )
-    ]).then(()=>true).catch(error=>{pdfEnginePromise=null;throw error});
-    return pdfEnginePromise;
-  }
-  function canvasHasInk(canvas){
-    try{
-      const ctx=canvas?.getContext?.('2d',{willReadFrequently:true});if(!ctx)return false;
-      const w=canvas.width||0,h=canvas.height||0;if(w<50||h<50)return false;
-      let ink=0,total=0;
-      const cols=28,rows=36;
-      for(let yi=1;yi<rows;yi++){
-        const y=Math.min(h-1,Math.floor(h*yi/rows));
-        for(let xi=1;xi<cols;xi++){
-          const x=Math.min(w-1,Math.floor(w*xi/cols));
-          const d=ctx.getImageData(x,y,1,1).data;total++;
-          if(d[3]>30&&(d[0]<238||d[1]<238||d[2]<238))ink++;
-        }
-      }
-      return total>0&&ink>=3;
-    }catch(_){return true}
-  }
-  function horizontalInkBounds(canvas){
-    try{
-      const w=canvas.width||0,h=canvas.height||0;if(w<20||h<20)return{x:0,width:w};
-      const probe=document.createElement('canvas');
-      const pw=Math.min(320,w),ph=Math.max(40,Math.min(1400,Math.round(h*pw/w)));
-      probe.width=pw;probe.height=ph;
-      const pctx=probe.getContext('2d',{willReadFrequently:true});
-      pctx.fillStyle='#fff';pctx.fillRect(0,0,pw,ph);pctx.drawImage(canvas,0,0,pw,ph);
-      const data=pctx.getImageData(0,0,pw,ph).data;
-      let minX=pw,maxX=-1;
-      for(let y=0;y<ph;y+=2){
-        for(let x=0;x<pw;x++){
-          const i=(y*pw+x)*4,r=data[i],g=data[i+1],bl=data[i+2],al=data[i+3];
-          if(al>20&&(r<248||g<248||bl<248)){if(x<minX)minX=x;if(x>maxX)maxX=x}
-        }
-      }
-      if(maxX<minX)return{x:0,width:w};
-      const pad=Math.max(10,Math.round(w*0.018));
-      const x0=Math.max(0,Math.floor(minX/pw*w)-pad);
-      const x1=Math.min(w,Math.ceil((maxX+1)/pw*w)+pad);
-      return{x:x0,width:Math.max(1,x1-x0)};
-    }catch(_){return{x:0,width:canvas.width||1}}
-  }
-  function canvasToPdfBlob(canvas){
-    const JsPDF=window.jspdf?.jsPDF;
-    if(typeof JsPDF!=='function')throw new Error(L('موتور PDF در دسترس نیست.','PDF engine is unavailable.','PDF sustav nije dostupan.'));
-    if(!canvasHasInk(canvas))throw new Error(L('تصویر گزارش برای PDF سفید تشخیص داده شد. دوباره تلاش کن.','The PDF capture was detected as blank. Please try again.','Snimka PDF-a je prazna. Pokušajte ponovno.'));
-    const bounds=horizontalInkBounds(canvas);
-    const srcX=bounds.x,srcW=bounds.width,srcH=canvas.height;
-    if(srcW<40||srcH<40)throw new Error(L('ابعاد گزارش برای PDF معتبر نیست.','The report dimensions are invalid for PDF.','Dimenzije izvještaja nisu valjane za PDF.'));
-
-    const pdf=new JsPDF({orientation:'landscape',unit:'mm',format:'a4',compress:true});
-    const pageW=pdf.internal.pageSize.getWidth(),pageH=pdf.internal.pageSize.getHeight();
-    const margin=8,printW=pageW-margin*2,printH=pageH-margin*2;
-    const sliceH=Math.max(120,Math.floor(srcW*(printH/printW)));
-    let page=0;
-
-    for(let sy=0;sy<srcH;sy+=sliceH){
-      const sh=Math.min(sliceH,srcH-sy);
-      const slice=document.createElement('canvas');
-      slice.width=srcW;slice.height=sh;
-      const sctx=slice.getContext('2d');
-      sctx.fillStyle='#fff';sctx.fillRect(0,0,srcW,sh);
-      sctx.drawImage(canvas,srcX,sy,srcW,sh,0,0,srcW,sh);
-      const img=slice.toDataURL('image/jpeg',0.94);
-      if(page>0)pdf.addPage('a4','landscape');
-      const drawH=Math.min(printH,sh/srcW*printW);
-      pdf.addImage(img,'JPEG',margin,margin,printW,drawH,undefined,'FAST');
-      slice.width=1;slice.height=1;
-      page++;
-    }
-    const blob=pdf.output('blob');
-    if(!(blob instanceof Blob)||blob.size<1500)throw new Error(L('فایل PDF معتبر ساخته نشد.','A valid PDF could not be created.','Nije moguće izraditi valjan PDF.'));
-    return blob;
-  }
-  async function createPdfBlob(){
-    if(!report.html)throw new Error(L('ابتدا گزارش را بساز.','Generate the report first.','Najprije izradite izvještaj.'));
-    await loadPdfEngine();
-    try{await document.fonts?.ready}catch(_){}
-    const visibleSource=document.querySelector('#nh7ReportPreviewOverlay .nh7r491-print-surface .nh7r490-report')
-      ||document.querySelector('#nh7ReportOutput .nh7r490-report');
-    if(!visibleSource)throw new Error(L('گزارش قابل مشاهده پیدا نشد. Preview را دوباره باز کن.','Visible report not found. Reopen the preview.','Vidljivi izvještaj nije pronađen. Ponovno otvorite pregled.'));
-    const html2canvasFn=window.html2canvas;
-    if(typeof html2canvasFn!=='function')throw new Error(L('موتور تصویر گزارش در دسترس نیست.','Report capture engine is unavailable.','Sustav za snimanje izvještaja nije dostupan.'));
-    const apple=/iPad|iPhone|iPod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-
-    const host=document.createElement('div');
-    host.id='nh7PdfCaptureHostV496';
-    host.dir='ltr';
-    Object.assign(host.style,{
-      position:'fixed',left:'0',top:'0',width:'980px',minWidth:'980px',maxWidth:'980px',
-      height:'auto',background:'#fff',zIndex:'2147482000',pointerEvents:'none',
-      overflow:'visible',margin:'0',padding:'0',boxSizing:'border-box',direction:'ltr'
-    });
-
-    const source=visibleSource.cloneNode(true);
-    source.removeAttribute('id');
-    source.querySelectorAll('[id]').forEach(el=>el.removeAttribute('id'));
-    source.dir=report.language==='fa'?'rtl':'ltr';
-    Object.assign(source.style,{
-      position:'relative',left:'0',right:'auto',top:'0',
-      width:'960px',minWidth:'960px',maxWidth:'960px',
-      margin:'0',padding:'18px',background:'#fff',overflow:'visible',
-      boxSizing:'border-box',transform:'none'
-    });
-    source.querySelectorAll('*').forEach(el=>{el.style.boxSizing='border-box';el.style.minWidth='0';el.style.maxWidth='100%'});
-    source.querySelectorAll('section').forEach(el=>{el.style.overflow='visible';el.style.width='100%';el.style.maxWidth='100%'});
-    source.querySelectorAll('table').forEach(el=>{el.style.width='100%';el.style.maxWidth='100%';el.style.minWidth='0';el.style.tableLayout='fixed';el.style.borderCollapse='collapse'});
-    source.querySelectorAll('td,th,.long,p,li,small,strong,span').forEach(el=>{el.style.overflowWrap='anywhere';el.style.wordBreak='break-word';el.style.maxWidth='100%'});
-    source.querySelectorAll('img').forEach(el=>{el.style.maxWidth='72px';el.style.height='auto';el.style.objectFit='contain'});
-    const summary=source.querySelector('.nh7r490-summary');
-    if(summary){summary.style.display='grid';summary.style.gridTemplateColumns='repeat(4,minmax(0,1fr))';summary.style.width='100%'}
-    const header=source.querySelector('header');
-    if(header){header.style.display='grid';header.style.gridTemplateColumns='minmax(0,1fr) 72px';header.style.width='100%';header.style.gap='16px'}
-
-    host.appendChild(source);
-    document.body.appendChild(host);
-    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
-
-    try{
-      const images=[...source.querySelectorAll('img')];
-      await Promise.all(images.map(img=>img.complete?Promise.resolve():new Promise(resolve=>{
-        const done=()=>resolve();img.addEventListener('load',done,{once:true});img.addEventListener('error',done,{once:true});setTimeout(done,2200);
-      })));
-
-      const captureWidth=Math.max(960,source.scrollWidth,source.offsetWidth);
-      const captureHeight=Math.max(source.scrollHeight,source.offsetHeight);
-      const canvas=await html2canvasFn(source,{
-        scale:apple?1.15:1.35,
-        useCORS:true,allowTaint:false,backgroundColor:'#ffffff',logging:false,
-        scrollX:0,scrollY:0,width:captureWidth,height:captureHeight,
-        windowWidth:Math.max(1000,captureWidth),windowHeight:Math.max(900,Math.min(captureHeight,2200)),
-        x:0,y:0,removeContainer:true
-      });
-      return canvasToPdfBlob(canvas);
-    }finally{
-      host.remove();
-    }
-  }
-  function ensurePdfReady(){
-    const key=reportKey();
-    if(pdfState.key===key&&pdfState.blob)return Promise.resolve(pdfState.blob);
-    if(pdfState.key===key&&pdfState.promise)return pdfState.promise;
-    pdfState={key,blob:null,promise:null,error:''};
-    pdfState.promise=createPdfBlob().then(blob=>{pdfState.blob=blob;pdfState.promise=null;return blob}).catch(error=>{pdfState.error=String(error?.message||error);pdfState.promise=null;throw error});
-    return pdfState.promise;
-  }
-  function preparedPdfFile(){
-    const blob=pdfState.key===reportKey()?pdfState.blob:null;
-    if(!blob)return null;
-    try{return new File([blob],safeFileName(report.name||report.email),{type:'application/pdf'})}catch(_){return null}
-  }
-  function downloadPreparedPdf(){
-    const blob=pdfState.key===reportKey()?pdfState.blob:null;
-    if(!blob){alert(L('PDF هنوز آماده نشده است. چند لحظه صبر کن.','The PDF is still preparing. Please wait a moment.','PDF se još priprema. Pričekajte trenutak.'));return}
-    const file=preparedPdfFile();
-    const apple=/iPad|iPhone|iPod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-    if(apple&&file&&navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}))){
-      navigator.share({files:[file],title:'New Hope 7 · '+String(report.name||'Student Report')}).catch(error=>{if(error?.name!=='AbortError')alert(error?.message||String(error))});
-      return;
-    }
-    const url=URL.createObjectURL(blob),a=document.createElement('a');
-    a.href=url;a.download=safeFileName(report.name||report.email);a.rel='noopener';document.body.appendChild(a);a.click();a.remove();
-    setTimeout(()=>URL.revokeObjectURL(url),60000);
-  }
+  function unwrap(value){for(let i=0;i<4&&Array.isArray(value)&&value.length===1;i++)value=value[0];return value}
+  // Bound presentation even when an existing Admin wrapper drops timeoutMs.
+  function bounded(promise,ms){return new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(new Error(L('زمان دریافت گزارش تمام شد. دوباره تلاش کنید.','Report request timed out. Please retry.','Zahtjev za izvještaj je istekao. Pokušajte ponovno.'))),ms);Promise.resolve(promise).then(value=>{clearTimeout(timer);resolve(value)},error=>{clearTimeout(timer);reject(error)})})}
   function printPreparedPdf(){
-    const blob=pdfState.key===reportKey()?pdfState.blob:null;
-    if(!blob){alert(L('PDF هنوز آماده نشده است. چند لحظه صبر کن.','The PDF is still preparing. Please wait a moment.','PDF se još priprema. Pričekajte trenutak.'));return}
-    const file=preparedPdfFile();
-    const apple=/iPad|iPhone|iPod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-    if(apple&&file&&navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}))){
-      navigator.share({
-        files:[file],
-        title:'New Hope 7 · '+String(report.name||'Student Report'),
-        text:L('برای چاپ، در پنجره Share گزینه Print را انتخاب کن.','Choose Print in the share sheet.','U izborniku dijeljenja odaberite Print.',report.language)
-      }).catch(error=>{if(error?.name!=='AbortError')alert(error?.message||String(error))});
-      return;
+    if(!report.html)return;
+    if(!document.getElementById('nh7ReportPreviewOverlay'))openPreview();
+    document.body.classList.add('nh7r491-printing');
+    const oldTitle=document.title;document.title='New Hope 7 — '+report.name;
+    const cleanup=()=>{document.body.classList.remove('nh7r491-printing');document.title=oldTitle};
+    window.addEventListener('afterprint',cleanup,{once:true});
+    try{window.print()}catch(error){cleanup();throw error}
+  }
+  // Save PDF uses the browser's print destination, retaining searchable text.
+  function downloadPreparedPdf(){printPreparedPdf()}
+  function csvEscape(value){let text=String(value??'');if(/^[\s]*[=+@-]/.test(text))text="'"+text;return '"'+text.replace(/"/g,'""')+'"'}
+  function exportDetail(){
+    if(!report.profile)return;
+    const l=report.language,school=report.profile.school||{};
+    const rows=[['record_type','email','course','lesson_or_exam','state','score','attempt','question','student_answer','correct_answer','feedback','updated_at','objective_score_percent','assignment_score_percent','final_score_percent']];
+    rows.push(['registration',report.email,'','',school.registration?.status||'', '', '', '', '', '', '',school.registration?.created_at||'']);
+    for(const lesson of lessonRows(school)){rows.push(['lesson',report.email,lesson.course_code,lesson.lesson_code,lesson.completed?'completed':'pending',lesson.final_score_percent??lesson.exam_score??'', '', '', '', '', '',lesson.updated_at||'']);if(lesson.assignmentState==='missing')rows.push(['assignment',report.email,lesson.course_code,lesson.lesson_code,'missing','','','','','','','']);}
+    for(const a of school.assignments||[])rows.push(['assignment',report.email,a.course_code,a.lesson_code,a.status,a.score_percent??'', '', '',a.answer_text||'', '',a.admin_feedback||'',a.submitted_at||'']);
+    for(const a of school.attempts||[]){
+      rows.push(['exam_attempt',report.email,a.course_code,a.exam_id,a.passed===true?'passed':a.passed===false?'failed':'unknown',a.final_score_percent??a.score_percent??'',a.attempt_number??'', '', '', '', '',a.submitted_at||'',a.objective_score_percent??a.score_percent??'',a.assignment_score_percent??'',a.final_score_percent??a.score_percent??'']);
+      for(const w of wrongAnswers(a,l))rows.push(['wrong_answer',report.email,a.course_code,a.exam_id,'incorrect','',a.attempt_number??'',w.question,w.selected,w.correct,'',a.submitted_at||'']);
     }
-    const url=URL.createObjectURL(blob);
-    const w=window.open(url,'_blank');
-    if(!w){
-      const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove();
-    }
-    setTimeout(()=>URL.revokeObjectURL(url),120000);
+    const blob=new Blob(['\uFEFF'+rows.map(row=>{while(row.length<15)row.push('');return row.map(csvEscape).join(',')}).join('\r\n')],{type:'text/csv;charset=utf-8'});
+    const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='New-Hope-7-student-report.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);
   }
   function fmtDate(v,l){if(!v)return'-';try{return new Date(v).toLocaleString(l==='fa'?'fa-IR':l==='hr'?'hr-HR':'en-GB')}catch(_){return String(v)}}
   function fmtSeconds(v){v=Math.max(0,N(v));const h=Math.floor(v/3600),m=Math.floor((v%3600)/60),s=Math.floor(v%60);return h?`${h}h ${m}m`:`${m}m ${s}s`}
@@ -260,7 +58,7 @@
     const questions=Array.isArray(exam.questions)?exam.questions:[],answers=Array.isArray(attempt.answers)?attempt.answers:[],out=[];
     answers.forEach((a,index)=>{
       const q=questions.find(x=>N(x.number,-999)===N(a.question_number,-998))||questions[N(a.question_id,-999)]||questions[N(a.question_number,0)-1]||questions[index];
-      if(!q)return;
+      if(!q||q.correct==null||a.selected==null)return;
       const selected=N(a.selected,-1),correct=N(q.correct,-2);if(selected===correct)return;
       const opts=Array.isArray(q.options)?q.options:[];
       out.push({number:N(a.question_number,N(q.number,index+1)),question:questionText(q,l)||L('متن سؤال در دسترس نیست','Question text unavailable','Tekst pitanja nije dostupan',l),selected:optionText(opts[selected],l)||String(selected),correct:optionText(opts[correct],l)||String(correct)});
@@ -268,7 +66,7 @@
     return out;
   }
   function statusLabel(v,l){
-    const key=String(v||''),m={approved:['تأیید شده','Approved','Odobreno'],submitted:['در انتظار بررسی','Pending review','Čeka pregled'],needs_revision:['نیاز به اصلاح','Needs revision','Potrebna dorada']};
+    const key=String(v||''),m={approved:['تأیید شده','Approved','Odobreno'],submitted:['در انتظار بررسی','Pending review','Čeka pregled'],needs_revision:['نیاز به اصلاح','Needs revision','Potrebna dorada'],pending:['در انتظار','Pending','Na čekanju'],rejected:['رد شده','Rejected','Odbijeno'],missing:['ارسال نشده','Not submitted','Nije predano'],none:['تکلیف لازم نیست','No required assignment','Nema obveznog zadatka']};
     const a=m[key]||[key,key,key];return l==='fa'?a[0]:l==='hr'?a[2]:a[1];
   }
   function rowTitle(item,l){return String(item?.title||item?.['title_'+l]||item?.title_fa||item?.title_en||item?.title_hr||item?.item_id||item?.media_id||'-')}
@@ -285,10 +83,21 @@
     ];
     return`<div class="nh7r490-summary">${cards.map(([k,v])=>`<div><b>${E(v)}</b><span>${E(k)}</span></div>`).join('')}</div>`;
   }
-  function progressHtml(rows,l){
-    rows=Array.isArray(rows)?rows:[];
-    if(!rows.length)return`<p class="empty">${E(L('پیشرفت درسی ثبت نشده است.','No lesson progress recorded.','Nema zabilježenog napretka lekcija.',l))}</p>`;
-    return`<table><thead><tr><th>${E(L('درس','Lesson','Lekcija',l))}</th><th>${E(L('پیشرفت','Progress','Napredak',l))}</th><th>${E(L('نمره نهایی','Final score','Konačni rezultat',l))}</th><th>${E(L('تکمیل','Completed','Završeno',l))}</th><th>${E(L('آخرین تغییر','Updated','Ažurirano',l))}</th></tr></thead><tbody>${rows.map(x=>`<tr><td>${E(x.lesson_code||'-')}</td><td>${E(x.progress_percent??0)}%</td><td>${E(x.final_score_percent??x.exam_score??'-')}${x.final_score_percent!=null||x.exam_score!=null?'%':''}</td><td>${E(x.completed_at?'✓':'—')}</td><td>${E(fmtDate(x.updated_at,l))}</td></tr>`).join('')}</tbody></table>`;
+  function lessonRows(school){
+    const progress=Array.isArray(school.progress)?school.progress:[],catalog=Array.isArray(state.schoolLessons)?state.schoolLessons:[];
+    const relevant=new Set([...progress,...school.assignments||[],...school.attempts||[]].map(x=>String(x.course_code||'foundation_school')));
+    if(!relevant.size)relevant.add('foundation_school');
+    const map=new Map(progress.map(x=>[String(x.course_code||'foundation_school')+'|'+x.lesson_code,{...x}]));
+    for(const lesson of catalog)if(lesson.is_active!==false&&relevant.has(String(lesson.course_code||'foundation_school'))){
+      const key=String(lesson.course_code||'foundation_school')+'|'+lesson.lesson_code;
+      if(!map.has(key))map.set(key,{lesson_code:lesson.lesson_code,course_code:lesson.course_code,title_fa:lesson.title_fa,title_en:lesson.title_en,title_hr:lesson.title_hr});
+    }
+    return [...map.values()].map(x=>{const lesson=catalog.find(y=>String(y.lesson_code)===String(x.lesson_code)&&String(y.course_code||'foundation_school')===String(x.course_code||'foundation_school'));const assignment=(school.assignments||[]).find(a=>String(a.lesson_code)===String(x.lesson_code)&&String(a.course_code||'foundation_school')===String(x.course_code||'foundation_school'));const required=lesson&&typeof schoolLessonHasAssignment==='function'?schoolLessonHasAssignment(lesson):false;return {...x,completed:!!x.completed_at||N(x.progress_percent)>=100,assignmentState:assignment?.status||(required?'missing':'none')};});
+  }
+  function progressHtml(school,l){
+    const rows=lessonRows(school);
+    if(!rows.length)return`<p class="empty">${E(L('فهرست درس‌ها در دسترس نیست.','Lesson catalog unavailable.','Popis lekcija nije dostupan.',l))}</p>`;
+    return`<table><thead><tr><th>${E(L('درس','Lesson','Lekcija',l))}</th><th>${E(L('پیشرفت','Progress','Napredak',l))}</th><th>${E(L('نمره نهایی','Final score','Konačni rezultat',l))}</th><th>${E(L('تکمیل / باقی‌مانده','Completed / pending','Završeno / na čekanju',l))}</th><th>${E(L('وضعیت تکلیف','Assignment state','Status zadatka',l))}</th><th>${E(L('آخرین تغییر','Updated','Ažurirano',l))}</th></tr></thead><tbody>${rows.map(x=>`<tr><td>${E(x['title_'+l]||x.lesson_code||'-')}</td><td>${E(x.progress_percent??'—')}${x.progress_percent!=null?'%':''}</td><td>${E(x.final_score_percent??x.exam_score??'—')}</td><td>${E(x.completed?L('تکمیل‌شده','Completed','Završeno',l):L('باقی‌مانده','Pending','Na čekanju',l))}</td><td>${E(statusLabel(x.assignmentState,l))}</td><td>${E(fmtDate(x.updated_at,l))}</td></tr>`).join('')}</tbody></table>`;
   }
   function assignmentsHtml(rows,l){
     rows=Array.isArray(rows)?rows:[];
@@ -300,10 +109,10 @@
     if(!rows.length)return`<p class="empty">${E(L('آزمونی ثبت نشده است.','No exam attempts recorded.','Nema zabilježenih pokušaja ispita.',l))}</p>`;
     return rows.map(a=>{
       const exam=(state.schoolExams||[]).find(x=>String(x.id)===String(a.exam_id)),wrong=wrongAnswers(a,l);
-      return`<article class="nh7r490-attempt"><h4>${E(examTitle(exam,l))} · #${E(a.attempt_number||1)} · ${E(a.passed?'✅ '+L('قبول','Passed','Položeno',l):'↻ '+L('نیاز به مرور','Review needed','Potrebno ponoviti',l))}</h4>
-      <p>${E(L('نمره آزمون','Exam score','Rezultat ispita',l))}: <b>${E(a.objective_score_percent??a.score_percent??0)}%</b> · ${E(L('تکالیف','Assignments','Zadaci',l))}: <b>${E(a.assignment_score_percent??0)}%</b> · ${E(L('نهایی','Final','Konačno',l))}: <b>${E(a.final_score_percent??a.score_percent??0)}%</b> · ${E(fmtDate(a.submitted_at,l))}</p>
+      return`<article class="nh7r490-attempt"><h4>${E(examTitle(exam,l))} · #${E(a.attempt_number||1)} · ${E(a.passed===true?'✅ '+L('قبول','Passed','Položeno',l):a.passed===false?'↻ '+L('قبول نشده','Failed','Nije položeno',l):L('نتیجه در دسترس نیست','Result unavailable','Rezultat nije dostupan',l))}</h4>
+      <p>${E(L('نمره آزمون','Exam score','Rezultat ispita',l))}: <b>${E(a.objective_score_percent??a.score_percent??'—')}${a.objective_score_percent!=null||a.score_percent!=null?'%':''}</b> · ${E(L('تکالیف','Assignments','Zadaci',l))}: <b>${E(a.assignment_score_percent??'—')}${a.assignment_score_percent!=null?'%':''}</b> · ${E(L('نهایی','Final','Konačno',l))}: <b>${E(a.final_score_percent??a.score_percent??'—')}${a.final_score_percent!=null||a.score_percent!=null?'%':''}</b> · ${E(fmtDate(a.submitted_at,l))}</p>
       <h5>${E(L('پاسخ‌های اشتباه','Incorrect answers','Netočni odgovori',l))} (${wrong.length})</h5>
-      ${wrong.length?`<ol>${wrong.map(w=>`<li><strong>${E(w.question)}</strong><br><span>${E(L('پاسخ دانشجو','Student','Student',l))}: ${E(w.selected)}</span><br><span>${E(L('پاسخ صحیح','Correct','Točno',l))}: ${E(w.correct)}</span></li>`).join('')}</ol>`:`<p>✓ ${E(L('پاسخ اشتباهی ثبت نشده است.','No incorrect answers recorded.','Nema zabilježenih netočnih odgovora.',l))}</p>`}
+      ${wrong.length?`<ol>${wrong.map(w=>`<li><strong>${E(w.question)}</strong><br><span>${E(L('پاسخ دانشجو','Student','Student',l))}: ${E(w.selected)}</span><br><span>${E(L('پاسخ صحیح','Correct','Točno',l))}: ${E(w.correct)}</span></li>`).join('')}</ol>`:`<p>✓ ${E((exam&&Array.isArray(exam.questions)&&exam.questions.length&&Array.isArray(a.answers)&&a.answers.length?L('پاسخ اشتباهی ثبت نشده است.','No incorrect answers recorded.','Nema zabilježenih netočnih odgovora.',l):L('جزئیات پاسخ‌ها در دسترس نیست.','Answer details unavailable.','Detalji odgovora nisu dostupni.',l)))}</p>`}
     </article>`;
     }).join('');
   }
@@ -321,14 +130,15 @@
     return`<p class="notice">${E(L('داده قدیمی فقط بازشدن کتاب را ثبت کرده است؛ درصد مطالعه از نسخه جدید به بعد ثبت می‌شود.','Older data records book opens only; reading percentage is tracked from the new version onward.','Stariji podaci bilježe samo otvaranje knjige; postotak čitanja prati se od nove verzije.',l))}</p>
   <table><thead><tr><th>${E(L('کتاب','Book','Knjiga',l))}</th><th>${E(L('دفعات بازشدن','Opens','Otvaranja',l))}</th><th>${E(L('آخرین بار','Last opened','Zadnje otvaranje',l))}</th></tr></thead><tbody>${opened.map(x=>`<tr><td>${E(rowTitle(x,l))}</td><td>${E(x.open_count||1)}</td><td>${E(fmtDate(x.last_opened_at,l))}</td></tr>`).join('')}</tbody></table>`;
   }
-  function build(profile,reading,l,email){
+  function build(profile,reading,l,email,loaded=new Date()){
     const school=profile?.school||{},activity=profile?.activity||{},reg=school.registration||{};
     const progress=school.progress||[],assignments=school.assignments||[],attempts=school.attempts||[],audio=activity.audio||[],library=activity.library||[];
     const name=String(reg.user_name||assignments[0]?.user_name||attempts[0]?.user_name||email);
-    const html=`<div class="nh7r490-report" dir="${l==='fa'?'rtl':'ltr'}">
-    <header><div><h2>New Hope 7 · ${E(L('گزارش دانشجو','Student Report','Izvještaj studenta',l))}</h2><h3>${E(name)}</h3><p>${E(email)} · ${E(L('تاریخ گزارش','Report date','Datum izvještaja',l))}: ${E(fmtDate(new Date(),l))}</p></div><img src="assets/logo.png" alt=""></header>
+    const html=`<div class="nh7r490-report" lang="${l}" dir="${l==='fa'?'rtl':'ltr'}">
+    <header><div><h2>New Hope 7 · ${E(L('گزارش دانشجو','Student Report','Izvještaj studenta',l))}</h2><h3>${E(name)}</h3><p>${E(email)} · ${E(L('زمان دریافت داده','Data loaded','Podaci učitani',l))}: ${E(fmtDate(loaded,l))}</p></div><img src="assets/logo.png" alt=""></header>
+    <p>${E(L('ثبت‌نام','Registration','Registracija',l))}: ${E(school.registration?statusLabel(school.registration.status||L('ثبت‌نام شده','Registered','Registriran',l),l):L('ثبت‌نام نشده','Not registered','Nije registriran',l))}</p>
     ${summaryCards(school,activity,reading,l)}
-    <section><h3>${E(L('پیشرفت درس‌ها','Lesson progress','Napredak lekcija',l))}</h3>${progressHtml(progress,l)}</section>
+    <section><h3>${E(L('پیشرفت درس‌ها','Lesson progress','Napredak lekcija',l))}</h3>${progressHtml(school,l)}</section>
     <section><h3>${E(L('تکالیف','Assignments','Zadaci',l))}</h3>${assignmentsHtml(assignments,l)}</section>
     <section><h3>${E(L('آزمون‌ها و پاسخ‌های اشتباه','Exams and incorrect answers','Ispiti i netočni odgovori',l))}</h3>${attemptsHtml(attempts,l)}</section>
     <section><h3>${E(L('فعالیت فایل‌های صوتی','Audio listening activity','Aktivnost slušanja audija',l))}</h3>${audioHtml(audio,l)}</section>
@@ -341,55 +151,69 @@
     return`body{font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;margin:0;color:#102033;background:#fff}.nh7r490-report{max-width:1100px;margin:auto;padding:24px}.nh7r490-report header{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;border-bottom:2px solid #0f766e;padding-bottom:14px}.nh7r490-report header img{width:72px;height:72px;object-fit:contain}.nh7r490-report h2,.nh7r490-report h3,.nh7r490-report h4{margin:0 0 8px}.nh7r490-report section{margin:24px 0}.nh7r490-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:18px 0}.nh7r490-summary div{border:1px solid #d8ecea;border-radius:12px;padding:10px}.nh7r490-summary b{display:block;font-size:1.25rem}.nh7r490-summary span{font-size:.78rem;color:#667085}table{width:100%;border-collapse:collapse;font-size:.85rem}th,td{border:1px solid #dce8e7;padding:7px;vertical-align:top;text-align:start}th{background:#eef8f7}.long{max-width:310px;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;unicode-bidi:plaintext}.nh7r490-attempt{border:1px solid #d8ecea;border-radius:14px;padding:12px;margin:10px 0;break-inside:avoid}.nh7r490-attempt li{margin:9px 0}.notice{padding:9px;border-radius:10px;background:#fff7ed;color:#9a3412}.empty{color:#667085}.nh7r490-report footer{margin-top:30px;padding-top:10px;border-top:1px solid #d8ecea;font-size:.75rem;color:#667085}@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.nh7r490-report{padding:0}.nh7r490-report section{break-inside:auto}table{page-break-inside:auto}tr{page-break-inside:avoid}.nh7r490-summary{grid-template-columns:repeat(4,1fr)}}@media(max-width:700px){.nh7r490-summary{grid-template-columns:1fr 1fr}.nh7r490-report{padding:12px;overflow-x:auto}}`;
   }
   function panel(){
-    const list=students(),opts=list.map(s=>`<option value="${E(s.email)}">${E(s.name||s.email)} · ${E(s.email)}</option>`).join('');
+    const list=students(),known=window.NH7AcademicReportRowsV116?.()||[];for(const row of known)if(row.email&&!list.some(x=>x.email===row.email))list.push({email:row.email,name:row.display_name||row.email});const opts=list.map(s=>`<option value="${E(s.email)}">${E(s.name||s.email)} · ${E(s.email)}</option>`).join('');
     return`<section class="panel-card"><div class="req-head"><div><h3>📄 ${E(L('گزارش جامع دانشجو','Student Report Center','Centar izvještaja studenta'))}</h3><p class="muted small">${E(L('نام یا ایمیل دانشجو را انتخاب کن؛ گزارش تکالیف، آزمون‌ها، شنیدن فایل‌ها و مطالعه کتابخانه ساخته می‌شود.','Select a student to generate assignments, exams, audio and library activity.','Odaberite studenta za izvještaj o zadacima, ispitima, audiju i knjižnici.'))}</p></div></div>
-    <div class="grid3"><select id="nh7ReportStudent"><option value="">— ${E(L('انتخاب دانشجو','Choose student','Odaberi studenta'))} —</option>${opts}</select><select id="nh7ReportLang"><option value="fa">فارسی</option><option value="en">English</option><option value="hr">Hrvatski</option></select><button class="btn primary" onclick="nh7GenerateStudentReportV496()">📊 ${E(L('ساخت گزارش','Generate report','Izradi izvještaj'))}</button></div>
-    <div class="actions"><button id="nh7ReportPrintBtn" class="btn secondary" onclick="nh7OpenStudentReportPreviewV496()" ${report.html?'':'disabled'}>📄 PDF / Print</button><button class="btn ghost" onclick="loadAll(true)">⟳ ${E(typeof tr==='function'?tr('refresh'):'Refresh')}</button></div>
-    <div id="nh7ReportStatus" class="muted small"></div>
+    <div class="grid3"><select id="nh7ReportStudent" ${generating?'disabled':''} aria-label="${E(L('دانشجو','Student','Student'))}"><option value="">— ${E(L('انتخاب دانشجو','Choose student','Odaberi studenta'))} —</option>${opts}</select><select id="nh7ReportLang" ${generating?'disabled':''} aria-label="${E(L('زبان گزارش','Report language','Jezik izvještaja'))}"><option value="fa">فارسی</option><option value="en">English</option><option value="hr">Hrvatski</option></select><button id="nh7ReportGenerateBtn" class="btn primary" onclick="nh7GenerateStudentReportV496()" ${generating?'disabled':''}>📊 ${E(L('ساخت گزارش','Generate report','Izradi izvještaj'))}</button></div>
+    <div class="actions"><button id="nh7ReportPrintBtn" class="btn secondary" onclick="nh7OpenStudentReportPreviewV496()" ${report.html?'':'disabled'}>📄 PDF / Print</button><button class="btn ghost" onclick="nh7GenerateStudentReportV496(true)">⟳ ${E(L('به‌روزرسانی گزارش','Refresh report','Osvježi izvještaj'))}</button><button id="nh7ReportCsvBtn" class="btn secondary" onclick="nh7ExportStudentReportV116()" ${report.html?'':'disabled'}>CSV</button></div>
+    <div id="nh7ReportStatus" class="muted small" role="status" aria-live="polite"></div>
   </section><section class="panel-card" id="nh7ReportOutput">${report.html||`<div class="empty">${E(L('هنوز گزارشی ساخته نشده است.','No report generated yet.','Izvještaj još nije izrađen.'))}</div>`}</section>`;
   }
-  async function generate(){
+  async function generate(force=false){
+    if(generating)return;
     const email=String(document.getElementById('nh7ReportStudent')?.value||'').trim().toLowerCase(),l=String(document.getElementById('nh7ReportLang')?.value||currentLang());
     if(!email){alert(L('دانشجو را انتخاب کن.','Choose a student.','Odaberite studenta.'));return}
-    const status=document.getElementById('nh7ReportStatus');if(status)status.textContent=L('در حال جمع‌آوری اطلاعات…','Collecting report data…','Prikupljanje podataka…');
+    generating=true;const run=++generation;
+    const status=document.getElementById('nh7ReportStatus'),button=document.getElementById('nh7ReportGenerateBtn');
+    if(button)button.disabled=true;for(const id of ['nh7ReportStudent','nh7ReportLang']){const input=document.getElementById(id);if(input)input.disabled=true}if(status)status.textContent=L('در حال جمع‌آوری اطلاعات…','Collecting report data…','Prikupljanje podataka…');
     try{
-      const [profile,reading]=await Promise.all([
-        adminRpc('nh7_admin_student_profile_v451',{p_email:email}),
-        adminRpc('nh7_admin_library_reading_v490',{p_email:email}).catch(()=>[])
-      ]);
-      const built=build(profile,reading,l,email);report={email,language:l,html:built.html,name:built.name,generatedAt:new Date()};resetPdfState();
-      const out=document.getElementById('nh7ReportOutput');if(out)out.innerHTML=report.html;
-      const btn=document.getElementById('nh7ReportPrintBtn');if(btn)btn.disabled=false;
-      if(status)status.textContent=L('گزارش آماده شد ✓','Report ready ✓','Izvještaj je spreman ✓');
-      loadPdfEngine().catch(()=>{});
-    }catch(e){if(status)status.textContent=e.message||String(e);alert(e.message||String(e))}
+      let cached=detailCache.get(email);
+      if(force||!cached||Date.now()-cached.at>60000){
+        const [profile,reading]=await Promise.all([
+          bounded(adminRpc('nh7_admin_student_profile_v451',{p_email:email},15000),17000),
+          bounded(adminRpc('nh7_admin_library_reading_v490',{p_email:email},6000),7000).then(value=>({value:unwrap(value),warning:false}),()=>({value:[],warning:true}))
+        ]);
+        const value=unwrap(profile);if(!value?.school)throw new Error(L('اطلاعات گزارش معتبر نیست. دوباره تلاش کنید.','Invalid report response. Please retry.','Nevaljan odgovor izvještaja. Pokušajte ponovno.'));
+        cached={profile:value,reading:reading.value,warning:reading.warning,at:Date.now()};detailCache.set(email,cached);
+        if(detailCache.size>20)detailCache.delete(detailCache.keys().next().value);
+      }
+      if(run!==generation)return;
+      const built=build(cached.profile,cached.reading,l,email,cached.at);
+      report={email,language:l,html:built.html,name:built.name,generatedAt:new Date(cached.at),profile:cached.profile};
+      if(cached.warning)report.html+='<p class="notice">'+E(L('داده اختیاری مطالعه کتابخانه در دسترس نیست؛ گزارش مدرسه آماده است.','Optional library reading data unavailable; the School report is ready.','Neobavezni podaci čitanja nisu dostupni; školski izvještaj je spreman.',l))+'</p>';
+      closePreview();const out=document.getElementById('nh7ReportOutput');if(out)out.innerHTML=report.html;
+      for(const id of ['nh7ReportPrintBtn','nh7ReportCsvBtn']){const btn=document.getElementById(id);if(btn)btn.disabled=false}
+      if(status)status.textContent=L('گزارش آماده شد ✓','Report ready ✓','Izvještaj je spreman ✓')+' · '+fmtDate(cached.at,l);
+    }catch(e){if(status)status.textContent=L('گزارش بارگذاری نشد؛ دوباره تلاش کنید. ','Report could not load; please retry. ','Izvještaj nije učitan; pokušajte ponovno. ')+String(e.message||e)}
+    finally{generating=false;const currentButton=document.getElementById('nh7ReportGenerateBtn');if(currentButton)currentButton.disabled=false;for(const id of ['nh7ReportStudent','nh7ReportLang']){const input=document.getElementById(id);if(input)input.disabled=false}}
   }
   function closePreview(){
     const overlay=document.getElementById('nh7ReportPreviewOverlay');
     if(overlay)overlay.remove();
     document.body.classList.remove('nh7r491-preview-open','nh7r491-printing');
     document.documentElement.classList.remove('nh7r491-preview-open');
+    if(returnFocus?.isConnected)returnFocus.focus();
   }
   function openPreview(){
     if(!report.html){alert(L('ابتدا گزارش را بساز.','Generate the report first.','Najprije izradite izvještaj.'));return}
-    closePreview();
+    closePreview();returnFocus=document.activeElement;
     const overlay=document.createElement('div');
     overlay.id='nh7ReportPreviewOverlay';
     overlay.className='nh7r491-overlay';
     overlay.setAttribute('role','dialog');
-    overlay.setAttribute('aria-modal','true');
+    overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-labelledby','nh7ReportPreviewTitle');overlay.lang=report.language;
     overlay.dir=report.language==='fa'?'rtl':'ltr';
     overlay.innerHTML=`
       <div class="nh7r491-shell">
         <div class="nh7r491-toolbar">
           <div class="nh7r491-toolbar-title">
-            <strong>📄 ${E(L('پیش‌نمایش گزارش دانشجو','Student report preview','Pregled izvještaja studenta',report.language))}</strong>
+            <strong id="nh7ReportPreviewTitle">📄 ${E(L('پیش‌نمایش گزارش دانشجو','Student report preview','Pregled izvještaja studenta',report.language))}</strong>
             <small id="nh7ReportPreviewHint">${E(L('می‌توانی گزارش را ببینی، چاپ کنی یا به PDF ذخیره کنی.','Review, print, or save the report as PDF.','Pregledajte, ispišite ili spremite izvještaj kao PDF.',report.language))}</small>
           </div>
           <div class="nh7r491-toolbar-actions">
             <button type="button" class="btn ghost" onclick="nh7CloseStudentReportPreviewV496()">✕ ${E(L('بستن','Close','Zatvori',report.language))}</button>
-            <button id="nh7ReportPrintAction" type="button" class="btn secondary" onclick="nh7PrintStudentReportPdfV496()" disabled>🖨 ${E(L('چاپ','Print','Ispis',report.language))}</button>
-            <button id="nh7ReportPdfAction" type="button" class="btn primary" onclick="nh7DownloadStudentReportPdfV496()" disabled>📄 ${E(L('ذخیره PDF','Save PDF','Spremi PDF',report.language))}</button>
+            <button id="nh7ReportPrintAction" type="button" class="btn secondary" onclick="nh7PrintStudentReportPdfV496()">🖨 ${E(L('چاپ','Print','Ispis',report.language))}</button>
+            <button id="nh7ReportPdfAction" type="button" class="btn primary" onclick="nh7DownloadStudentReportPdfV496()">📄 ${E(L('ذخیره PDF','Save PDF','Spremi PDF',report.language))}</button>
+            <button class="btn secondary" onclick="nh7ExportStudentReportV116()">CSV</button>
           </div>
         </div>
         <div class="nh7r491-preview-scroll">
@@ -401,15 +225,8 @@
     document.body.classList.add('nh7r491-preview-open');
     document.documentElement.classList.add('nh7r491-preview-open');
     overlay.querySelector('button')?.focus();
-    setPdfButtonsReady(false);
-    setPreviewHint(L('در حال ساخت فایل PDF واقعی…','Preparing the PDF file…','Priprema PDF datoteke…',report.language));
-    ensurePdfReady().then(()=>{
-      setPdfButtonsReady(true);
-      setPreviewHint(L('PDF آماده است. دکمه چاپ یا ذخیره PDF را بزن.','PDF ready. Choose Print or Save PDF.','PDF je spreman. Odaberite Print ili Save PDF.',report.language));
-    }).catch(error=>{
-      setPdfButtonsReady(false);
-      setPreviewHint(L('ساخت PDF انجام نشد: ','PDF generation failed: ','Izrada PDF-a nije uspjela: ',report.language)+String(error?.message||error),true);
-    });
+    const hint=document.getElementById('nh7ReportPreviewHint');if(hint)hint.textContent=L('برای PDF، در پنجره چاپ گزینه ذخیره PDF را انتخاب کنید.','For PDF, choose Save as PDF in the browser print dialog.','Za PDF odaberite Spremi kao PDF u dijalogu ispisa.',report.language);
+
   }
   function install(){
     if(typeof tabsHtml!=='function'||typeof renderActivePanel!=='function'||typeof adminRpc!=='function')return false;
@@ -422,6 +239,7 @@
     wrappedTabs.__nh7Report496=true;tabsHtml=window.tabsHtml=wrappedTabs;
     const oldPanel=renderActivePanel;renderActivePanel=window.renderActivePanel=function(){if(activeTab==='studentreport')return panel();return oldPanel()};
     window.nh7GenerateStudentReportV496=generate;
+    window.nh7ExportStudentReportV116=exportDetail;
     window.nh7OpenStudentReportPreviewV496=openPreview;
     window.nh7CloseStudentReportPreviewV496=closePreview;
     window.nh7DownloadStudentReportPdfV496=downloadPreparedPdf;
@@ -433,7 +251,7 @@
   style.id='nh7AdminStudentReportV491Style';
   style.textContent=reportCss()+`
     .nh7r490-report{padding:0;min-width:0}.nh7r490-report header img{max-width:72px}
-    .nh7r490-report table{min-width:700px}.nh7r490-report section{overflow-x:auto}
+    .nh7r490-report table{min-width:600px}.nh7r490-report section{overflow-x:auto}
     .nh7r490-report td,.nh7r490-report th,.nh7r490-report p,.nh7r490-report li{overflow-wrap:anywhere;word-break:break-word}
     html.nh7r491-preview-open,body.nh7r491-preview-open{overflow:hidden!important}
     .nh7r491-overlay{position:fixed;inset:0;z-index:2147483000;background:rgba(15,23,42,.62);display:flex;align-items:stretch;justify-content:center;padding:0}
@@ -450,6 +268,12 @@
       .nh7r491-preview-scroll{padding:8px}.nh7r491-print-surface{padding:10px;border-radius:12px}
     }
     @media print{
+      @page{size:A4 landscape;margin:12mm}
+      html,body{height:auto!important;overflow:visible!important}
+      body.nh7r491-printing table{min-width:0!important;width:100%!important;table-layout:fixed}
+      body.nh7r491-printing th,body.nh7r491-printing td{position:static!important;overflow-wrap:anywhere}
+      body.nh7r491-printing thead{display:table-header-group}
+      body.nh7r491-printing .nh7r490-attempt{break-inside:auto!important}
       body.nh7r491-printing>*:not(#nh7ReportPreviewOverlay){display:none!important}
       body.nh7r491-printing #nh7ReportPreviewOverlay{position:static!important;display:block!important;background:#fff!important;height:auto!important;overflow:visible!important}
       body.nh7r491-printing .nh7r491-shell{width:100%!important;height:auto!important;box-shadow:none!important;background:#fff!important}
@@ -460,7 +284,7 @@
       body.nh7r491-printing .nh7r490-report section{overflow:visible!important}
     }`;
   document.head.appendChild(style);
-  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.getElementById('nh7ReportPreviewOverlay'))closePreview()});
-  setTimeout(()=>loadPdfEngine().catch(()=>{}),1200);
+  document.addEventListener('keydown',event=>{const modal=document.getElementById('nh7ReportPreviewOverlay');if(!modal)return;if(event.key==='Escape')closePreview();if(event.key==='Tab'){const buttons=[...modal.querySelectorAll('button:not([disabled])')];const first=buttons[0],last=buttons.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}}});
+
   if(!install()){let n=0;const t=setInterval(()=>{n++;if(install()||n>100)clearInterval(t)},100)}
 })();

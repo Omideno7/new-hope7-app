@@ -3,6 +3,8 @@ name: Validate and Deploy New Hope 7
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -183,13 +185,13 @@ jobs:
           grep -q 'nh7_admin_library_reading_v490' js/nh7-admin-student-report-v496.js
           grep -q 'Incorrect answers' js/nh7-admin-student-report-v496.js
           grep -q 'PDF / Print' js/nh7-admin-student-report-v496.js
-          grep -q 'html2canvas@1.4.1' js/nh7-admin-student-report-v496.js
-          grep -q 'jspdf@2.5.1' js/nh7-admin-student-report-v496.js
-          grep -q "pdf.output('blob')" js/nh7-admin-student-report-v496.js
           grep -q 'nh7CloseStudentReportPreviewV496' js/nh7-admin-student-report-v496.js
           grep -q 'nh7DownloadStudentReportPdfV496' js/nh7-admin-student-report-v496.js
           grep -q 'nh7PrintStudentReportPdfV496' js/nh7-admin-student-report-v496.js
-          grep -q 'navigator.share' js/nh7-admin-student-report-v496.js
+          grep -q 'window.print()' js/nh7-admin-student-report-v496.js
+          grep -q 'nh7ExportStudentReportV116' js/nh7-admin-student-report-v496.js
+          grep -q 'nh7_admin_student_academic_center_v542' js/nh7-admin-student-academic-v540.js
+          node scripts/verify-school-reports-v116.mjs
           grep -q 'uploadWithProgress' js/nh7-admin-save-feedback-v497.js
           grep -q 'stableSaveSermon' js/nh7-admin-save-feedback-v497.js
           grep -q 'stableAnswerQuestion' js/nh7-admin-save-feedback-v497.js
@@ -197,13 +199,6 @@ jobs:
           grep -q 'پاسخ و ترجمه‌ها ذخیره شدند' js/nh7-admin-save-feedback-v497.js
           grep -q 'Waiting for admin approval' js/nh7-registration-repeat-guard-v402.js
           grep -q 'nh7_registration_status' js/nh7-registration-repeat-guard-v402.js
-          grep -q 'canvasHasInk' js/nh7-admin-student-report-v496.js
-          grep -q 'nh7PdfCaptureHostV496' js/nh7-admin-student-report-v496.js
-          grep -q 'horizontalInkBounds' js/nh7-admin-student-report-v496.js
-          grep -q 'canvasToPdfBlob' js/nh7-admin-student-report-v496.js
-          grep -q 'window.html2canvas' js/nh7-admin-student-report-v496.js
-          grep -q 'window.jspdf' js/nh7-admin-student-report-v496.js
-          grep -q "pdf.addImage" js/nh7-admin-student-report-v496.js
           grep -q 'admin-v2.3.9-student-clean-v311.js' admin-v239-stable.html
           grep -q 'admin-v2.3.9-clean-features-v312.css' admin-v239-stable.html
           grep -q 'nh7-v311-answer' js/admin-v2.3.9-student-clean-v311.js
