@@ -58,15 +58,27 @@ function syncHeader(){
 function syncHome(){
   const marker=document.getElementById('quickNotify'),view=document.getElementById('view');if(!marker||!view)return false;
   const card=marker.closest('.card')||view.querySelector('.card');if(!card)return false;
-  const p=profile(),photo=readPhoto();if(!p.name&&!photo)return false;const sig=`${p.name}|${photoSig(photo)}`;
+  const p=profile(),photo=readPhoto();if(!p.name&&!photo)return false;const sig=`${p.name}|${photoSig(photo)}|${lang()}`;
   let row=document.getElementById('nh7HomeProfile564');if(!row){row=document.createElement('div');row.id='nh7HomeProfile564';row.className='nh7-home-profile564';card.prepend(row)}
   if(row.dataset.sig!==sig){row.dataset.sig=sig;row.innerHTML=homeMarkup(p,photo)}return true;
 }
 
+function refreshEditorCopy(){
+ const modal=document.getElementById('nh7PhotoEditor564');if(!modal)return;
+ modal.lang=lang();modal.dir=lang()==='fa'?'rtl':'ltr';
+ const labels={
+  '[data-nh7-crop-title]':L('تنظیم عکس پروفایل','Adjust profile photo','Podesi profilnu fotografiju'),
+  '.nh7-photo-help564':L('عکس را با انگشت جابه‌جا کنید و با نوار زوم، صورت را وسط کادر قرار دهید.','Drag the photo and use zoom to center your face in the frame.','Pomaknite fotografiju i zumirajte kako biste lice postavili u sredinu.'),
+  '[data-nh7-crop-center]':L('وسط‌چین','Center','Centriraj'), '[data-nh7-crop-cancel]':L('لغو','Cancel','Odustani'),
+  '[data-nh7-crop-save]':L('ذخیره عکس','Save photo','Spremi fotografiju')
+ };
+ for(const [selector,value] of Object.entries(labels)){const el=modal.querySelector(selector);if(el&&el.textContent!==value)el.textContent=value}
+ modal.querySelector('[data-nh7-crop-zoom]')?.setAttribute('aria-label',L('بزرگ‌نمایی','Zoom','Zumiranje'));
+}
 function editorShell(){
-  let modal=document.getElementById('nh7PhotoEditor564');if(modal)return modal;
-  modal=document.createElement('div');modal.id='nh7PhotoEditor564';modal.className='nh7-photo-editor564';modal.hidden=true;modal.innerHTML=`<section class="nh7-photo-sheet564" role="dialog" aria-modal="true"><h3>${esc(L('تنظیم عکس پروفایل','Adjust profile photo','Podesi profilnu fotografiju'))}</h3><p class="nh7-photo-help564">${esc(L('عکس را با انگشت جابه‌جا کنید و با نوار زوم، صورت را وسط کادر قرار دهید.','Drag the photo and use zoom to center your face in the frame.','Pomaknite fotografiju i zumirajte kako biste lice postavili u sredinu.'))}</p><div class="nh7-photo-canvas-wrap564"><canvas class="nh7-photo-canvas564" width="320" height="320" data-nh7-crop-canvas></canvas><span class="nh7-photo-guide564"></span></div><label class="nh7-photo-zoom564"><span>−</span><input data-nh7-crop-zoom type="range" min="1" max="3" step="0.01" value="1" aria-label="Zoom"><span>＋</span></label><div class="nh7-photo-editor-actions564"><button type="button" class="secondary-btn" data-nh7-crop-center>${esc(L('وسط‌چین','Center','Centriraj'))}</button><button type="button" class="secondary-btn" data-nh7-crop-cancel>${esc(L('لغو','Cancel','Odustani'))}</button><button type="button" class="primary-btn" data-nh7-crop-save>${esc(L('ذخیره عکس','Save photo','Spremi fotografiju'))}</button></div></section>`;
-  document.body.appendChild(modal);
+  let modal=document.getElementById('nh7PhotoEditor564');if(modal){refreshEditorCopy();return modal;}
+  modal=document.createElement('div');modal.id='nh7PhotoEditor564';modal.className='nh7-photo-editor564';modal.hidden=true;modal.innerHTML=`<section class="nh7-photo-sheet564" role="dialog" aria-modal="true"><h3 data-nh7-crop-title>${esc(L('تنظیم عکس پروفایل','Adjust profile photo','Podesi profilnu fotografiju'))}</h3><p class="nh7-photo-help564">${esc(L('عکس را با انگشت جابه‌جا کنید و با نوار زوم، صورت را وسط کادر قرار دهید.','Drag the photo and use zoom to center your face in the frame.','Pomaknite fotografiju i zumirajte kako biste lice postavili u sredinu.'))}</p><div class="nh7-photo-canvas-wrap564"><canvas class="nh7-photo-canvas564" width="320" height="320" data-nh7-crop-canvas></canvas><span class="nh7-photo-guide564"></span></div><label class="nh7-photo-zoom564"><span>−</span><input data-nh7-crop-zoom type="range" min="1" max="3" step="0.01" value="1" aria-label="${esc(L('بزرگ‌نمایی','Zoom','Zumiranje'))}"><span>＋</span></label><div class="nh7-photo-editor-actions564"><button type="button" class="secondary-btn" data-nh7-crop-center>${esc(L('وسط‌چین','Center','Centriraj'))}</button><button type="button" class="secondary-btn" data-nh7-crop-cancel>${esc(L('لغو','Cancel','Odustani'))}</button><button type="button" class="primary-btn" data-nh7-crop-save>${esc(L('ذخیره عکس','Save photo','Spremi fotografiju'))}</button></div></section>`;
+  document.body.appendChild(modal);refreshEditorCopy();
   modal.addEventListener('click',e=>{if(e.target===modal)closeEditor()});
   modal.querySelector('[data-nh7-crop-cancel]')?.addEventListener('click',closeEditor);
   modal.querySelector('[data-nh7-crop-center]')?.addEventListener('click',()=>{if(!editor)return;editor.offsetX=0;editor.offsetY=0;drawEditor()});
@@ -107,7 +119,7 @@ function syncAccount(force=false){
   if(force||box.dataset.sig!==sig){box.dataset.sig=sig;renderAccountBox(box,p,photo)}return true;
 }
 function cleanupLegacy(){['nh7HomeProfile563','nh7AccountProfile563'].forEach(id=>document.getElementById(id)?.remove())}
-function syncAll(force=false){ensureStyle();cleanupLegacy();syncHeader();syncHome();syncAccount(force)}
+function syncAll(force=false){ensureStyle();refreshEditorCopy();cleanupLegacy();syncHeader();syncHome();syncAccount(force)}
 function schedule(force=false){if(force){queued=false;requestAnimationFrame(()=>syncAll(true));return}if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;syncAll(false)})}
 function start(){ensureStyle();syncAll(false);const view=document.getElementById('view');if(view)new MutationObserver(()=>schedule(false)).observe(view,{subtree:true,childList:true});document.getElementById('langSelect')?.addEventListener('change',()=>setTimeout(()=>syncAll(true),0));window.addEventListener('storage',event=>{if(event.key===PHOTO_KEY||event.key==='nh7_user_profile')schedule(true)})}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();

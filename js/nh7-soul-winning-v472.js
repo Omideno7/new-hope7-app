@@ -127,7 +127,7 @@ export function createSoulWinningV472(options={}){
     if(!root)return;
     root.innerHTML=`
       <section class="card nh7-sw-hero">
-        <div class="nh7-sw-head"><div><span class="nh7-sw-eyebrow">🌾 SOUL TRACKER</span><h2>${esc(t.title)}</h2><p>${esc(t.subtitle)}</p></div><button class="primary-btn" data-sw-add>＋ ${esc(t.add)}</button></div>
+        <div class="nh7-sw-head"><div><span class="nh7-sw-eyebrow">🌾 ${esc(L('پیگیری نجات جان‌ها','Soul tracker','Praćenje evangelizacije'))}</span><h2>${esc(t.title)}</h2><p>${esc(t.subtitle)}</p></div><button class="primary-btn" data-sw-add>＋ ${esc(t.add)}</button></div>
         <div class="nh7-sw-stats">
           <div><strong>${s.total}</strong><span>${esc(t.total)}</span></div>
           <div><strong>${s.gospel}</strong><span>${esc(t.gospel)}</span></div>

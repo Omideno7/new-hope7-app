@@ -20,6 +20,7 @@ function setText(root,selector,value){const el=root.querySelector(selector);if(e
 function localize(root=document){
   const dialog=root.matches?.('#nh7AppearanceDialog514')?root:root.querySelector?.('#nh7AppearanceDialog514');
   if(!dialog)return false;
+  window.NH7AppearancePersonalizationV514?.refreshDialogCopy?.();
   const t=COPY[lang()]||COPY.en;
   setText(dialog,'[data-ap514-mode="manual"]',t.manual);
   setText(dialog,'[data-ap514-mode="system"]',t.system);

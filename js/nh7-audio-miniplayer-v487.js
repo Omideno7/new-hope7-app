@@ -90,7 +90,7 @@ function ensure(){
       </button>
       <div class="nh7-mini485-actions">
         <button type="button" data-mini-prev aria-label="${L('قبلی','Previous','Prethodno')}">⏮</button>
-        <button type="button" class="nh7-mini485-play" data-mini-toggle aria-label="Play/Pause">▶</button>
+        <button type="button" class="nh7-mini485-play" data-mini-toggle aria-label="${L('پخش / توقف','Play / Pause','Reproduciraj / Pauziraj')}">▶</button>
         <button type="button" data-mini-next aria-label="${L('بعدی','Next','Sljedeće')}">⏭</button>
         <button type="button" data-mini-expand aria-label="${L('باز کردن پلیر','Expand player','Proširi player')}">⌃</button>
         <button type="button" class="nh7-mini485-close" data-mini-close aria-label="${L('بستن پلیر','Close player','Zatvori player')}">×</button>
@@ -121,7 +121,7 @@ function ensure(){
           <button type="button" data-mini-rate><strong>1×</strong></button>
           <button type="button" data-mini-speed-up>+</button>
           <button type="button" data-mini-mute>🔊</button>
-          <small>${L('ولوم با دکمه‌های گوشی','Volume: phone buttons','Glasnoća: tipke telefona')}</small>
+          <small data-mini-volume-hint>${L('ولوم با دکمه‌های گوشی','Volume: phone buttons','Glasnoća: tipke telefona')}</small>
         </div>
       </div>
     </section>`;
@@ -153,8 +153,26 @@ function setExpanded(value){
   r.classList.toggle('is-expanded',expanded);
   document.body.classList.toggle('nh7-mini485-expanded',expanded);
 }
+let copyLocale='';
+function refreshCopy(r){
+ const locale=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';if(copyLocale===locale)return;copyLocale=locale;
+ r.lang=locale;r.dir=locale==='fa'?'rtl':'ltr';
+ const labels={
+  'data-mini-prev':L('قبلی','Previous','Prethodno'), 'data-mini-next':L('بعدی','Next','Sljedeće'),
+  'data-mini-toggle':L('پخش / توقف','Play / Pause','Reproduciraj / Pauziraj'),
+  'data-mini-close':L('بستن پلیر','Close player','Zatvori player'),
+  'data-mini-open':L('باز کردن پلیر','Expand player','Proširi player'), 'data-mini-expand':L('باز کردن پلیر','Expand player','Proširi player'),
+  'data-mini-collapse':L('جمع کردن','Collapse','Smanji'), 'data-sheet-seek':L('موقعیت پخش','Playback position','Pozicija reprodukcije'),
+  'data-mini-back':L('۱۵ ثانیه عقب','Back 15 seconds','15 sekundi natrag'), 'data-mini-forward':L('۳۰ ثانیه جلو','Forward 30 seconds','30 sekundi naprijed'),
+  'data-mini-speed-down':L('کاهش سرعت','Slower','Sporije'), 'data-mini-speed-up':L('افزایش سرعت','Faster','Brže'),
+  'data-mini-rate':L('سرعت پخش','Playback speed','Brzina reprodukcije'), 'data-mini-mute':L('قطع یا وصل صدا','Mute or unmute','Isključi ili uključi zvuk')
+ };
+ for(const [key,value] of Object.entries(labels))r.querySelectorAll('['+key+']').forEach(el=>el.setAttribute('aria-label',value));
+ const hint=r.querySelector('[data-mini-volume-hint]');if(hint)hint.textContent=L('ولوم با دکمه‌های گوشی','Volume: phone buttons','Glasnoća: tipke telefona');
+}
 function sync(){
   const r=ensure(),s=state(),a=s.audio,item=s.current;
+  refreshCopy(r);
   // Hide the older wide v484 bar while this UI is active.
   document.documentElement.classList.add('nh7-mini485-active');
   if(!a||!item||!a.src){r.hidden=true;return}

@@ -42,7 +42,21 @@ function completeGratitudeDays(){
     selector.dataset.nh7FullThirty='1';
   })
 }
-function settle(){cleanVideoTile();completeGratitudeDays()}
-document.addEventListener('click',event=>{const settings=event.target.closest?.('[data-go="settings"]');if(!settings)return;if(window.NH7_CANONICAL_SETTINGS===true||window.NH7_CANONICAL_SETTINGS_PREVIEW===true)return;event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();renderSettings().catch(error=>{const root=view();if(root)root.innerHTML=`<section class="card"><h2>Error</h2><p>${E(error?.message||error)}</p></section>`})},true);
+function localizeAudioLabels(){
+ const labels={
+  '[data-classic-toggle],[data-now-toggle]':L('پخش / توقف','Play / Pause','Reproduciraj / Pauziraj'),
+  '[data-classic-back],[data-now-back]':L('۱۵ ثانیه عقب','Back 15 seconds','15 sekundi natrag'),
+  '[data-classic-forward],[data-now-forward]':L('۳۰ ثانیه جلو','Forward 30 seconds','30 sekundi naprijed'),
+  '[data-classic-speed-down],[data-now-speed-down]':L('کاهش سرعت','Slower','Sporije'),
+  '[data-classic-speed-up],[data-now-speed-up]':L('افزایش سرعت','Faster','Brže'),
+  '[data-now-prev]':L('فایل قبلی','Previous track','Prethodna snimka'), '[data-now-next]':L('فایل بعدی','Next track','Sljedeća snimka'),
+  '[data-now-open]':L('باز کردن پلیر','Open player','Otvori player'), '[data-classic-seek]':L('موقعیت پخش','Playback position','Pozicija reprodukcije'),
+  '[data-now-mute]':L('قطع یا وصل صدا','Mute or unmute','Isključi ili uključi zvuk'), '[data-now-volume]':L('بلندی صدا','Volume','Glasnoća')
+ };
+ for(const [selector,value] of Object.entries(labels))document.querySelectorAll(selector).forEach(el=>{if(el.getAttribute('aria-label')!==value)el.setAttribute('aria-label',value)});
+}
+function settle(){cleanVideoTile();completeGratitudeDays();localizeAudioLabels()}
+document.addEventListener('click',event=>{const settings=event.target.closest?.('[data-go="settings"]');if(!settings)return;if(window.NH7_CANONICAL_SETTINGS===true||window.NH7_CANONICAL_SETTINGS_PREVIEW===true)return;event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();renderSettings().catch(error=>{const root=view();if(root)root.innerHTML=`<section class="card"><h2>${E(L('خطا','Error','Pogreška'))}</h2><p>${E(error?.message||error)}</p></section>`})},true);
+document.getElementById('langSelect')?.addEventListener('change',()=>setTimeout(localizeAudioLabels,0));
 addStyle();const observer=new MutationObserver(()=>requestAnimationFrame(settle));observer.observe(document.documentElement,{childList:true,subtree:true});window.addEventListener('pageshow',settle);setTimeout(settle,300);window.NH7_UI_STABILITY_VERSION=VERSION;
 })();
