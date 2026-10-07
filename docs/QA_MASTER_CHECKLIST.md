@@ -13,8 +13,8 @@ Status legend:
 
 ## Progress summary
 - Total tracked items: 57
-- 🧪 Code/fix ready, awaiting QA: 16
-- 🟡 In progress / implementation or review still needed: 25
+- 🧪 Code/fix ready, awaiting QA: 19
+- 🟡 In progress / implementation or review still needed: 22
 - ⬜ Not started / release-stage only: 15
 - ✅ Fully verified on target devices/backends: 1
 - 🚀 Included in approved release but not yet verified: 0
@@ -49,11 +49,11 @@ Status legend:
 - ⬜ Human Audio Bible gap audit / error handling.
 
 ## E. School
-- 🟡 Strict lesson progression after assignment approval.
-- 🟡 Final exam unlock only after all lessons complete.
+- 🧪 Strict lesson progression after assignment approval — client v351 and Production backend function were read-only verified: prior class pass unlocks the next class; class exam readiness requires lesson completion plus approved assignments. End-to-end student QA pending.
+- 🧪 Final exam unlock only after all lessons/class path complete — Production `nh7_school_final_exam_session_v351` was read-only verified to require all 7 class exams passed before exposing the final exam. End-to-end student QA pending.
 - 🟡 Status terminology consistency: Accepted / Completed / Passed.
-- 🟡 Admin student reports and per-student details.
-- 🟡 Report Print / Save / PDF behavior.
+- 🟡 Admin student reports and per-student details — Academic Center has report filters/profiles; completeness of every requested per-student field still needs review/QA.
+- 🧪 Report Print / Save / PDF behavior — explicit html2canvas + jsPDF pipeline, preview, Print and Save PDF controls are implemented; real-device/browser QA pending.
 - 🧪 School assignment note normalization — fix prepared; final QA pending.
 
 ## F. Admin / Community
@@ -104,6 +104,8 @@ Status legend:
 
 ## Change log
 ### 2026-10-07
+- Read-only verified the Production School v351 backend: class readiness requires previous-class pass, lesson completion and approved assignments; final exam readiness requires all 7 class exams passed. Moved strict progression and final-exam unlock to 🧪 pending end-to-end student QA.
+- Verified the current Student Report module contains explicit preview/Print/Save PDF controls and html2canvas + jsPDF generation; moved Print/Save/PDF to 🧪 pending real-device/browser QA.
 - User verified Web Admin 2.3.9.66 testimony review playback works; a testimony was published and the published audio was also verified playable inside the app. Moved the Testimony Admin playback/publish flow to ✅.
 - Added next-update Testimony UX on the development branch: collapsed “Record or upload audio” composer and compact published testimony rows that expand to details/audio, commit `8b3e8b76b0e437559dd77b349684f2b6517a2f87`.
 - Confirmed the user's Web App observation by comparing branches: `main` and `batch2/critical-stability-v300` are diverged; the development branch is 39 commits ahead and 9 behind `main`. Added a dedicated Source-of-Truth/Web parity work item.
@@ -111,11 +113,8 @@ Status legend:
 - Root-caused the Testimony Admin playback regression and narrowed the live-file issue using Production metadata: pending `.m4a` submissions were stored as `audio/mp4;codecs=opus`, a problematic combination for Safari/WebKit inline playback.
 - Added `js/nh7-admin-testimony-runtime-fix-v505.js` with permanent storage-first deletion: private/public Storage objects are removed before the testimony database row, avoiding orphaned audio objects.
 - Added `js/nh7-admin-testimony-playback-v506.js`: authenticated private fetch, MIME cleanup to plain `audio/mp4`, direct `audio.src`, temporary object-URL cleanup, and signed-URL device-player fallback.
-- Added/updated static CI for testimony playback; v5.0.6 syntax and wiring validation passed on the development branch.
-- Promoted the narrow Admin hotfix to `main`, bumped stable Admin to `2.3.9.66`, and refreshed the Admin cache key.
-- Main deployment was initially blocked by a pre-existing offline-release guard (`nh7-finalqa-v558.js` active but not listed in release assets); added the active runtime to `sw-release-core-v403.js` instead of weakening the guard.
-- Main `Validate and Deploy New Hope 7` validation then passed all runtime/app/Admin/HTML checks and GitHub Pages deployment completed successfully.
-- No Supabase schema/data mutation was made during this hotfix; Production Supabase was read-only inspected for testimony MIME/storage metadata.
+- Promoted the narrow Admin hotfix to `main`, bumped stable Admin to `2.3.9.66`, and refreshed the Admin cache key. Main deployment validation and GitHub Pages deployment completed successfully.
+- No Supabase schema/data mutation was made during these inspections; Production Supabase was read-only inspected only.
 
 ### 2026-10-06
 - Created persistent Master Checklist in the repository so progress is not dependent on chat history.
