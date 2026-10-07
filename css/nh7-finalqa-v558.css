@@ -199,3 +199,158 @@
 @media (min-width:1024px){
   .bottom-nav{left:auto;right:auto;inset-inline-start:max(16px,calc((100vw - 1500px)/2 + 16px));inset-inline-end:auto}
 }
+
+/* New Hope 7 Wave 2 — app-wide Theme Studio propagation.
+   Only applies after Theme Studio has resolved an explicit theme and set data-nh7-studio.
+   Classic/current users therefore keep the original application appearance. */
+html[data-nh7-studio]{
+  --nh7-ui-bg:var(--nh7-studio-bg,var(--bg,#eef8ff));
+  --nh7-ui-surface:var(--nh7-studio-card,var(--card,#fff));
+  --nh7-ui-text:var(--nh7-studio-text,var(--ink,#17364e));
+  --nh7-ui-muted:var(--nh7-studio-muted,var(--muted,#64748b));
+  --nh7-ui-verse:var(--nh7-studio-verse,var(--nh7-studio-text,var(--ink,#17364e)));
+  --nh7-ui-accent:var(--nh7-studio-accent,var(--brand,#1858a4));
+  --nh7-ui-line:var(--nh7-studio-line,var(--line,#cbd8e1));
+  --nh7-ui-button-ink:var(--nh7-studio-button-ink,#fff);
+}
+
+html[data-nh7-studio] body,
+html[data-nh7-studio] .app-shell,
+html[data-nh7-studio] #view{
+  background:var(--nh7-ui-bg)!important;
+  color:var(--nh7-ui-text)!important;
+}
+html[data-nh7-studio] #view :is(p,li,label,h1,h2,h3,h4,strong){color:inherit}
+html[data-nh7-studio] #view :is(.muted,small,.helper,.hint){color:var(--nh7-ui-muted)!important}
+
+/* Global chrome: top bar, navigation rail/bottom navigation, adaptive sidebar. */
+html[data-nh7-studio] :is(.topbar,.bottom-nav,.nh7-adaptive570-sidebar){
+  background:color-mix(in srgb,var(--nh7-ui-surface) 94%,transparent)!important;
+  color:var(--nh7-ui-text)!important;
+  border-color:var(--nh7-ui-line)!important;
+}
+html[data-nh7-studio] :is(.topbar,.bottom-nav,.nh7-adaptive570-sidebar) :is(button,select){color:inherit}
+html[data-nh7-studio] .nh7-adaptive570-head{
+  background:color-mix(in srgb,var(--nh7-ui-accent) 8%,var(--nh7-ui-surface))!important;
+  border-color:var(--nh7-ui-line)!important;
+  color:var(--nh7-ui-text)!important;
+}
+
+/* Message of the Day / Amen gate follows the exact active theme. */
+html[data-nh7-studio] .amen-gate{background:color-mix(in srgb,var(--nh7-ui-bg) 62%,#000 38%)!important}
+html[data-nh7-studio] .amen-card{
+  background:var(--nh7-ui-surface)!important;
+  color:var(--nh7-ui-text)!important;
+  border:1px solid var(--nh7-ui-line)!important;
+  box-shadow:0 24px 70px color-mix(in srgb,var(--nh7-ui-text) 20%,transparent)!important;
+}
+html[data-nh7-studio] :is(#amenTitle,#amenMessage){color:var(--nh7-ui-text)!important}
+html[data-nh7-studio] #amenMessage{color:var(--nh7-ui-muted)!important}
+html[data-nh7-studio] #amenButton{
+  background:var(--nh7-ui-accent)!important;
+  color:var(--nh7-ui-button-ink)!important;
+  border-color:var(--nh7-ui-accent)!important;
+}
+
+/* Generic app surfaces that historically carried page-local colors. */
+html[data-nh7-studio] #view :is(.card:not(.hero),.tile,.list-btn,.link-card,.notice,.saved-verse-card,.sermon-card,.accordion-panel,.verse-note-box,.inline-reading),
+html[data-nh7-studio] :is(.modal-card,.sheet,dialog:not(.nh7-ap514-dialog)){
+  background:var(--nh7-ui-surface)!important;
+  color:var(--nh7-ui-text)!important;
+  border-color:var(--nh7-ui-line)!important;
+}
+html[data-nh7-studio] #view :is(input:not([type="range"]),textarea,select),
+html[data-nh7-studio] :is(.modal-card,.sheet,dialog:not(.nh7-ap514-dialog)) :is(input:not([type="range"]),textarea,select){
+  background:color-mix(in srgb,var(--nh7-ui-bg) 72%,var(--nh7-ui-surface))!important;
+  color:var(--nh7-ui-text)!important;
+  border-color:var(--nh7-ui-line)!important;
+  caret-color:var(--nh7-ui-accent)!important;
+}
+html[data-nh7-studio] #view :is(input,textarea)::placeholder{color:color-mix(in srgb,var(--nh7-ui-muted) 82%,transparent)!important}
+
+/* Buttons and tabs preserve semantic primary/secondary contrast. */
+html[data-nh7-studio] #view :is(.primary-btn,.tab.active),
+html[data-nh7-studio] .bottom-nav .nav-item.active{
+  background:var(--nh7-ui-accent)!important;
+  color:var(--nh7-ui-button-ink)!important;
+  border-color:var(--nh7-ui-accent)!important;
+}
+html[data-nh7-studio] #view :is(.secondary-btn,.tab:not(.active),.icon-btn){
+  background:color-mix(in srgb,var(--nh7-ui-accent) 7%,var(--nh7-ui-surface))!important;
+  color:var(--nh7-ui-text)!important;
+  border-color:var(--nh7-ui-line)!important;
+}
+
+/* Bible / reading surfaces: dark and navy themes must never lose verse text. */
+html[data-nh7-studio] #view :is(.reader,.bible-reader,.reader-content,.continuous-reader,.nh7-apo-continuous-reader){
+  background:var(--nh7-ui-surface)!important;
+  color:var(--nh7-ui-text)!important;
+  border-color:var(--nh7-ui-line)!important;
+}
+html[data-nh7-studio] #view :is(.reader-verse,.verse-row,.nh7-apo-verse){
+  color:var(--nh7-ui-verse)!important;
+  border-color:color-mix(in srgb,var(--nh7-ui-line) 72%,transparent)!important;
+}
+html[data-nh7-studio] #view :is(.verse-text,.reader-verse .verse-text,.nh7-apo-verse-text,.inline-reading p){
+  color:var(--nh7-ui-verse)!important;
+}
+html[data-nh7-studio] #view :is(.verse-number,.chapter-number,.reference){color:var(--nh7-ui-accent)!important}
+html[data-nh7-studio-tone457="dark"] #view :is(.reader-verse,.verse-row,.nh7-apo-verse,.verse-text,.nh7-apo-verse-text){
+  color:var(--nh7-ui-verse)!important;
+  text-shadow:none!important;
+}
+
+/* Inbox/community/status cards keep theme surfaces but preserve semantic status colors. */
+html[data-nh7-studio] #view :is(.inbox-item,.inbox-message,.notification-item,.message-card,.prayer-card,.testimony-card){
+  background:var(--nh7-ui-surface)!important;
+  color:var(--nh7-ui-text)!important;
+  border-color:var(--nh7-ui-line)!important;
+}
+html[data-nh7-studio] #view :is(.inbox-item,.inbox-message,.notification-item,.message-card) :is(time,.timestamp,small){color:var(--nh7-ui-muted)!important}
+
+/* Christian occasion UI is part of the same semantic theme, while birthday effects remain intact. */
+html[data-nh7-studio] :is(.nh7-christian-today464,.nh7-celebration-dialog464,.nh7-feast-verse464,.nh7-celebration-close464,.nh7-celebration-symbol464){
+  --card:var(--nh7-ui-surface);
+  --brand:var(--nh7-ui-accent);
+  --accent:var(--nh7-ui-accent);
+  color:var(--nh7-ui-text)!important;
+  border-color:var(--nh7-ui-line)!important;
+}
+html[data-nh7-studio] .nh7-celebration-dialog464{
+  background:linear-gradient(145deg,color-mix(in srgb,var(--nh7-ui-accent) 10%,var(--nh7-ui-surface)),var(--nh7-ui-surface) 56%,color-mix(in srgb,var(--nh7-ui-accent) 5%,var(--nh7-ui-surface)))!important;
+}
+html[data-nh7-studio] :is(.nh7-christian-today464,.nh7-feast-verse464,.nh7-celebration-close464,.nh7-celebration-symbol464){
+  background:color-mix(in srgb,var(--nh7-ui-accent) 9%,var(--nh7-ui-surface))!important;
+}
+
+/* Distinct interface personalities must also reach chrome/popups outside #view. */
+html[data-nh7-ui-style514="glass"] :is(.topbar,.bottom-nav,.amen-card,.nh7-adaptive570-sidebar,.nh7-celebration-dialog464),
+html[data-nh7-ui-style514="aurora"] :is(.topbar,.bottom-nav,.amen-card,.nh7-adaptive570-sidebar,.nh7-celebration-dialog464){
+  background:color-mix(in srgb,var(--nh7-ui-surface,var(--card,#fff)) 68%,transparent)!important;
+  backdrop-filter:blur(22px) saturate(1.18)!important;
+  -webkit-backdrop-filter:blur(22px) saturate(1.18)!important;
+  border-color:color-mix(in srgb,var(--nh7-ui-accent,var(--brand,#1858a4)) 22%,#fff)!important;
+  box-shadow:0 14px 34px color-mix(in srgb,var(--nh7-ui-accent,var(--brand,#1858a4)) 16%,transparent),inset 0 1px #ffffff70!important;
+}
+html[data-nh7-ui-style514="clay"] :is(.topbar,.bottom-nav,.amen-card,.nh7-adaptive570-sidebar,.nh7-celebration-dialog464){
+  border-radius:24px!important;
+  box-shadow:8px 10px 20px color-mix(in srgb,var(--nh7-ui-text,var(--ink,#17364e)) 16%,transparent),-5px -5px 13px #ffffff55,inset 0 1px #ffffff8a!important;
+}
+html[data-nh7-ui-style514="floating"] :is(.topbar,.bottom-nav,.amen-card,.nh7-adaptive570-sidebar,.nh7-celebration-dialog464){
+  border-radius:22px!important;
+  box-shadow:0 18px 42px color-mix(in srgb,var(--nh7-ui-text,var(--ink,#17364e)) 18%,transparent)!important;
+}
+html[data-nh7-ui-style514="neon"] :is(.topbar,.bottom-nav,.amen-card,.nh7-adaptive570-sidebar,.nh7-celebration-dialog464){
+  border:1px solid color-mix(in srgb,var(--nh7-ui-accent,var(--brand,#1858a4)) 70%,#fff)!important;
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--nh7-ui-accent,var(--brand,#1858a4)) 26%,transparent),0 0 24px color-mix(in srgb,var(--nh7-ui-accent,var(--brand,#1858a4)) 28%,transparent)!important;
+}
+html[data-nh7-ui-style514="motion"] :is(.amen-card,.nh7-adaptive570-sidebar,.nh7-celebration-dialog464){
+  transition:transform .22s ease,box-shadow .22s ease,background .22s ease!important;
+}
+html[data-nh7-ui-style514="motion"] .amen-card{animation:nh7ThemeMotion571 .42s cubic-bezier(.2,.8,.2,1) both}
+@keyframes nh7ThemeMotion571{from{opacity:.82;transform:translateY(8px) scale(.985)}to{opacity:1;transform:none}}
+
+@media(prefers-reduced-motion:reduce){
+  html[data-nh7-ui-style514="motion"] .amen-card{animation:none!important}
+  html[data-nh7-ui-style514="motion"] :is(.amen-card,.nh7-adaptive570-sidebar,.nh7-celebration-dialog464){transition:none!important}
+}
