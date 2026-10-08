@@ -2,9 +2,13 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import {createHash} from 'node:crypto';
 import {stripTypeScriptTypes} from 'node:module';
 import {libraryCatalog} from '../supabase/functions/nh7-content-access/library-catalog.mjs';
 const before=fs.readFileSync(new URL('./fixtures/nh7-content-access-before-v125.ts',import.meta.url),'utf8');
+// Maintainer supplied authoritative v4 fixture in commit 1c61755; preserve its bytes.
+const expectedV4Hash='51ab2d9b17669a35f32a233b0f4ef2a901e5df78be74dcaa9bf7e5c3d6d7c9f1';
+assert.equal(createHash('sha256').update(before).digest('hex'),expectedV4Hash,'Fixture must be the exact deployed v4 export, not a reconstructed baseline');
 const after=fs.readFileSync(new URL('../supabase/functions/nh7-content-access/index.ts',import.meta.url),'utf8');
 function withoutLibrary(source){
  const marker=source.match(/^( +)if \(resource === 'library'\) \{/m);assert(marker);
@@ -23,7 +27,7 @@ const allowedRows=token=>token==='admin'?rows:token==='minister'?rows.slice(0,2)
 const samples={
  audio_bible_books:[{id:'book',book_order:1,is_active:true}],
  audio_bible_chapters:[{id:'chapter',language:'fa',storage_path:'audio-bible/fa/one.mp3',audio_url:'old',is_published:true,admin_deleted_at:null,book_code:'GEN',chapter_number:1},{id:'chapter2',language:'en',storage_path:'',audio_url:'https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/audio-bible/en/two.mp3',is_published:true,admin_deleted_at:null,book_code:'GEN',chapter_number:2}],
- sermons:[{id:'sermon',audio_url:'https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/messages/fixture.mp3',is_published:true,sort_order:1,published_at:'2026-01-01'},{id:'no-audio',audio_url:'',is_published:true,sort_order:2}],
+ sermons:[{id:'sermon',audio_url:'https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/public/church-audio/messages/fixture.mp3',is_published:true,sort_order:1,published_at:'2026-01-01'},{id:'no-audio',audio_url:'',is_published:true,sort_order:2},{id:'unpublished',audio_url:'',is_published:false,sort_order:3}],
  nh7_library_items:rows,
 };
 async function execute(source,test){
@@ -31,15 +35,16 @@ async function execute(source,test){
  const env={SUPABASE_URL:'https://fixture.invalid',SUPABASE_SERVICE_ROLE_KEY:'synthetic-service-role',SUPABASE_ANON_KEY:'synthetic-publishable',...test.env};
  const admin={
   auth:{getUser:async token=>{calls.push(['getUser',token]);return{data:{user:authUser(token)},error:test.invalidSession?'invalid':null}}},
-  rpc:async(name,args)=>{calls.push(['rpc',name,args]);assert.equal(name,'nh7_school_access_approved_v223');return{data:test.approved!==false,error:test.approvalError?{message:'synthetic approval failure'}:null}},
+  rpc:async(name)=>{throw new Error('Unexpected non-Library RPC: '+name+'; deployed v4 uses registrations')},
   from(table){
-   calls.push(['from',table]);let data=structuredClone(samples[table]||[]);const builder={
+   calls.push(['from',table]);let data=structuredClone(table==='registrations'?(test.registrations||(test.approved===false?[]:[{id:'registration',type:'school',status:'approved',payload:{email:(test.token||'school')+'@example.invalid'},updated_at:'2026-10-08'}])):(samples[table]||[]));const builder={
     select(fields){calls.push(['select',table,fields]);return builder},
     eq(field,value){calls.push(['eq',table,field,value]);data=data.filter(row=>row[field]===value);return builder},
     is(field,value){calls.push(['is',table,field,value]);data=data.filter(row=>row[field]===value);return builder},
-    order(field,options){calls.push(['order',table,field,options]);return builder},
+    order(field,options){calls.push(['order',table,field,options]);data.sort((a,b)=>String(a[field]??'').localeCompare(String(b[field]??''))*(options?.ascending===false?-1:1));return builder},
+    limit(value){calls.push(['limit',table,value]);data=data.slice(0,value);return builder},
     async upsert(value,options){calls.push(['upsert',table,value,options]);return{error:test.tableError?new Error('synthetic write failure'):null}},
-    then(resolve,reject){return Promise.resolve({data,error:test.tableError?new Error('synthetic table failure'):null}).then(resolve,reject)},
+    then(resolve,reject){return Promise.resolve({data,error:table==='registrations'?(test.approvalError?new Error('synthetic approval failure'):null):(test.tableError?new Error('synthetic table failure'):null)}).then(resolve,reject)},
    };return builder;
   },
   storage:{from(bucket){return{async createSignedUrl(path,ttl){calls.push(['sign',bucket,path,ttl]);return{data:{signedUrl:'https://signed.invalid/'+path},error:test.signError?'synthetic sign error':null}}}}},
@@ -81,6 +86,38 @@ const cases=[
  {body:{action:'save_bible_batch',items:[{verse_ref:'fixture'}]},tableError:true},
  {approved:false,body:{action:'save_bible_batch',items:[{verse_ref:'must not save'}]}},
 ];
+// Independent Production invariants catch a wrong fixture even if before/after agree.
+for(const source of [before,after]){
+ const sermons=await execute(source,{approved:false,approvalError:true,body:{action:'catalog',resource:'sermons'}});
+ assert.equal(sermons.status,200,'Authenticated Sermons catalog must bypass the School gate');
+ assert(sermons.body.items.some(row=>row.id==='sermon'));
+ assert(sermons.body.items.every(row=>row.is_published));
+ assert(!sermons.calls.some(call=>call[0]==='from'&&call[1]==='registrations'),'Early Sermons must not query School registrations');
+ assert(sermons.calls.filter(call=>call[0]==='sign').every(call=>call[3]===900));
+ const approved=await execute(source,{body:{action:'status'}});
+ assert.equal(approved.body.approved,true);
+ for(const call of [['from','registrations'],['select','registrations','id,status,device_id,payload,updated_at'],['eq','registrations','type','school'],['eq','registrations','status','approved'],['order','registrations','updated_at',{ascending:false}],['limit','registrations',100]])assert(approved.calls.some(actual=>JSON.stringify(actual)===JSON.stringify(call)),JSON.stringify(call));
+ const unrelated=await execute(source,{registrations:[{type:'school',status:'approved',payload:{email:'forged@example.invalid'},updated_at:'2026-10-08'}],body:{action:'status',user_email:'forged@example.invalid'}});
+ assert.equal(unrelated.body.approved,false,'Client-supplied email cannot replace verified JWT email');
+}
+// Preserve v4's exact email/device matching, filters, newest-first ordering and 100-row bound.
+const registrationCases=[
+ {label:'verified JWT email normalized',rows:[{payload:{email:'  SCHOOL@EXAMPLE.INVALID  '}}],approved:true},
+ {label:'payload user_email fallback',rows:[{payload:{user_email:'school@example.invalid'}}],approved:true},
+ {label:'row device match',rows:[{device_id:'header-fixture-device',payload:{email:'other@example.invalid'}}],approved:true},
+ {label:'payload device fallback',rows:[{payload:{device_id:'header-fixture-device'}}],approved:true},
+ {label:'body device precedence',rows:[{device_id:'body-fixture-device'}],body:{device_id:'body-fixture-device'},approved:true},
+ {label:'unrelated registration',rows:[{payload:{email:'other@example.invalid'}}],approved:false},
+ {label:'pending school registration',rows:[{status:'pending',payload:{email:'school@example.invalid'}}],approved:false},
+ {label:'non-school registration',rows:[{type:'meeting',payload:{email:'school@example.invalid'}}],approved:false},
+ {label:'matching registration outside newest 100',rows:[{payload:{email:'school@example.invalid'},updated_at:'2026-01-01'},...Array.from({length:100},(_,i)=>({payload:{email:'other'+i+'@example.invalid'},updated_at:new Date(Date.UTC(2026,9,8,0,i)).toISOString()}))],approved:false},
+];
+for(const test of registrationCases){
+ const fixture={registrations:test.rows.map(row=>({type:'school',status:'approved',updated_at:'2026-10-08',...row})),body:{action:'status',...test.body}};
+ const old=await execute(before,fixture),fixed=await execute(after,fixture);
+ assert.deepEqual(fixed,old,test.label);assert.equal(fixed.body.approved,test.approved,test.label);
+}
+console.log('PASS independent v4 invariants: early authenticated/published Sermons bypasses all School checks; nine exact registrations matching/filter/order/limit cases.');
 for(const test of cases)assert.deepEqual(await execute(after,test),await execute(before,test),JSON.stringify(test.body||test));
 console.log(`PASS full Edge: ${cases.length} before/after cases have identical responses, CORS, School checks, audio signatures and synthetic Bible writes; non-Library source bytes unchanged.`);
 for(const token of ['normal','school','minister','revoked','admin']){
@@ -90,7 +127,8 @@ for(const token of ['normal','school','minister','revoked','admin']){
  assert.deepEqual(fixed.body.items,allowedRows(token));assert.equal(fixed.body.approved,true);assert.equal(fixed.body.user_email,token+'@example.invalid');
  assert.deepEqual(fixed.headers,old.headers,'Existing reply/CORS behavior is retained for Library too');
  assert(!fixed.calls.some(call=>call[0]==='from'&&call[1]==='nh7_library_items'));
- assert.deepEqual(fixed.calls.slice(0,3),old.calls.slice(0,3),'JWT validation and School gate run identically before Library routing');
+ const beforeLibrary=old.calls.slice(0,old.calls.findIndex(call=>call[0]==='from'&&call[1]==='nh7_library_items'));
+ assert.deepEqual(fixed.calls.slice(0,beforeLibrary.length),beforeLibrary,'Complete JWT validation and registrations School gate run identically before Library routing');
 }
 for(const test of [{token:null},{token:'invalid'},{approved:false},{token:'normal',approved:false}]){
  const body={action:'catalog',resource:'library'};

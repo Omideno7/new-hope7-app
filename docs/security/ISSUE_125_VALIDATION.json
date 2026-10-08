@@ -80,7 +80,7 @@
       "workflow": "deploy-pages.yml",
       "name": "Validate Ministers Library security",
       "status": "PASS",
-      "output": "PASS Edge adapter: six principals, scoped grants, forged identity/role ignored, no service role, denial/timeout fail closed.\nPASS actual client: UID binding, public-only snapshots, legacy purge, revoke, 403, offline, logout, identity race, freshness expiry; unrelated data preserved.\nPASS actual worker/offline API: old Library bytes cannot be replayed; audio worker cache lookup preserved.\nPASS active reader wrapper: legacy full-text cache deleted; denial/offline never replay text; verified v321 five-parameter/language wire contract retained (authorizes via v230/auth.uid, not v372 delegation).\nPASS source scope and Library loader ordering.\nPASS full Edge: 37 before/after cases have identical responses, CORS, School checks, audio signatures and synthetic Bible writes; non-Library source bytes unchanged.\nPASS exact Library path: School-approved non-minister/revoked get zero restricted rows; scoped minister/Admin use caller-JWT v396; anonymous/School denial unchanged; no service-role Library read.\n(node:36955) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+      "output": "PASS Edge adapter: six principals, scoped grants, forged identity/role ignored, no service role, denial/timeout fail closed.\nPASS actual client: UID binding, public-only snapshots, legacy purge, revoke, 403, offline, logout, identity race, freshness expiry; unrelated data preserved.\nPASS actual worker/offline API: old Library bytes cannot be replayed; audio worker cache lookup preserved.\nPASS active reader wrapper: legacy full-text cache deleted; denial/offline never replay text; verified v321 five-parameter/language wire contract retained (authorizes via v230/auth.uid, not v372 delegation).\nPASS source scope and Library loader ordering.\nPASS independent v4 invariants: early authenticated/published Sermons bypasses all School checks; nine exact registrations matching/filter/order/limit cases.\nPASS full Edge: 37 before/after cases have identical responses, CORS, School checks, audio signatures and synthetic Bible writes; non-Library source bytes unchanged.\nPASS exact Library path: School-approved non-minister/revoked get zero restricted rows; scoped minister/Admin use caller-JWT v396; anonymous/School denial unchanged; no service-role Library read.\n(node:44530) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
     },
     {
       "workflow": "deploy-pages.yml",
@@ -205,25 +205,21 @@
     {
       "command": "node scripts/verify-school-reports-browser-v116.cjs",
       "status": "PASS",
-      "evidence": "PASS: enrolled, started/inactive, needs-revision, passed, failed and not-registered groups from one batch RPC\nPASS: 100-row view pagination; complete 1,109-row UTF-8 CSV with stable headers and spreadsheet-formula escaping\nPASS: Print and browser Save as PDF; searchable multi-page document contains first and final rows with unclipped table\nPASS: FA → EN → HR → FA, RTL/LTR and view/Close on phone, tablet/iPad and desktop widths\nPASS: per-student completed/pending lessons, required missing assignment, review state, scores, exam attempts, wrong answers, CSV/PDF; optional failure and cache reuse\nPASS: bounded hangs, one server-timeout retry, stale snapshot retained, UI unlocks; no record mutations or write RPCs; zero page errors\nPASS: real current Admin wrapper, RBAC/stability modules, group → individual report integration and Print; no report-time write calls\nIsolated CSV/PDF evidence: [local artifact directory]\n"
+      "evidence": "PASS: enrolled, started/inactive, needs-revision, passed, failed and not-registered groups from one batch RPC\nPASS: 100-row view pagination; complete 1,109-row UTF-8 CSV with stable headers and spreadsheet-formula escaping\nPASS: Print and browser Save as PDF; searchable multi-page document contains first and final rows with unclipped table\nPASS: FA → EN → HR → FA, RTL/LTR and view/Close on phone, tablet/iPad and desktop widths\nPASS: per-student completed/pending lessons, required missing assignment, review state, scores, exam attempts, wrong answers, CSV/PDF; optional failure and cache reuse\nPASS: bounded hangs, one server-timeout retry, stale snapshot retained, UI unlocks; no record mutations or write RPCs; zero page errors\nPASS: real current Admin wrapper, RBAC/stability modules, group → individual report integration and Print; no report-time write calls\nIsolated CSV/PDF evidence: [local artifact directory]\n",
+      "retry_note": "First attempt hit an existing Playwright TargetClosed race while Back closed its popup. Isolated rerun passed; no School report/Print/PDF/CSV code changed."
     }
   ],
   "backend_blockers": [],
   "unrun": [
-    "Live Supabase principal/grant matrix",
-    "Actual Safari/iOS devices",
-    "Original deployed v4 export byte/hash comparison by agent"
+    "Live Supabase principal/grant matrix by agent",
+    "Actual Safari/iOS devices"
   ],
   "resolved_verification": {
-    "source": "Maintainer PR comment and user-supplied authoritative v4 source fragments, read-only live inspection by maintainer",
-    "maintainer_comment": "https://github.com/Omideno7/new-hope7-app/pull/126#issuecomment-6045835711",
+    "source": "Maintainer-committed exact deployed v4 fixture, explicitly designated authoritative by user",
+    "maintainer_comment": "https://github.com/Omideno7/new-hope7-app/pull/126#issuecomment-6051194755",
     "deployed_version": 4,
     "verify_jwt": true,
-    "reported_deployed_sha256": "86061a202cb4a854fa9488ffa2f75f3ab1b31cbf3696eb2ecdbbcb9d9baf893a",
-    "reconstructed_baseline_sha256": "ba45bbb6142f46b122d8809f7a2f2ed6415994d98260e9ec66f58a6264206b1b",
-    "integrated_entrypoint_sha256": "b5999ecd131a43ccd3b0f1ef4833e335af91f6b5609ab7a98edb0ac100d09484",
-    "deployed_source_hash_match": false,
-    "source_limit": "Pasted fragments reformatted/partial scaffold recovered from tracked e581a63; baseline is a reviewable reconstruction, not a byte-identical deployed export. Compare original v4 export before deployment.",
+    "integrated_entrypoint_sha256": "60502c97804c6dc6909d129f32b2432e3ee4de8d6fd6ea2981b107e72428ff54",
     "reader_v321_signature": [
       "p_item_id",
       "p_code",
@@ -232,15 +228,23 @@
       "p_language"
     ],
     "reader_v321_authorization": "nh7_library_authorize_v230 with auth.uid; active_v251 required for ministers; no v372 delegation",
-    "v372": "Independently UID/grant-secure; no migration/switch needed"
+    "v372": "Independently UID/grant-secure; no migration/switch needed",
+    "baseline_source_commit": "1c61755eb222a2649905052411b67b1e3716ea38",
+    "authoritative_fixture_sha256": "51ab2d9b17669a35f32a233b0f4ef2a901e5df78be74dcaa9bf7e5c3d6d7c9f1",
+    "baseline_matches_authoritative_fixture": true,
+    "early_sermons": "Authenticated published catalog returns before all School/registrations checks",
+    "school_approval": "Exact registrations query: type school, status approved, updated_at DESC, limit 100; verified JWT email / existing device matching, no substituted RPC"
   },
   "entrypoint_regressions": {
     "command": "node scripts/verify-content-access-entrypoint-v125.mjs",
     "status": "PASS",
-    "evidence": "PASS full Edge: 37 before/after cases have identical responses, CORS, School checks, audio signatures and synthetic Bible writes; non-Library source bytes unchanged.\nPASS exact Library path: School-approved non-minister/revoked get zero restricted rows; scoped minister/Admin use caller-JWT v396; anonymous/School denial unchanged; no service-role Library read.\n",
+    "evidence": "PASS independent v4 invariants: early authenticated/published Sermons bypasses all School checks; nine exact registrations matching/filter/order/limit cases.\nPASS full Edge: 37 before/after cases have identical responses, CORS, School checks, audio signatures and synthetic Bible writes; non-Library source bytes unchanged.\nPASS exact Library path: School-approved non-minister/revoked get zero restricted rows; scoped minister/Admin use caller-JWT v396; anonymous/School denial unchanged; no service-role Library read.",
     "non_library_cases": 37,
+    "independent_registration_cases": 9,
+    "independent_early_sermons_checks": true,
+    "baseline_hash_pinned": true,
     "non_library_source_unchanged": true,
-    "scope": "Exact byte identity outside Library branch/import relative to reconstructed baseline, plus mocked complete handlers. No Production requests or real Bible writes."
+    "scope": "Exact source bytes outside Library branch/import compared to authoritative maintainer fixture; complete mocked handlers and independent Production invariants. No Production requests or real Bible writes."
   },
   "deno_check": {
     "command": "deno check --no-lock supabase/functions/nh7-content-access/index.ts",
