@@ -2169,6 +2169,7 @@ function nh7ShowPdfViewerV223(title=''){
   nh7ClosePdfViewerV223();const modal=document.createElement('div');modal.id='nh7PdfViewerV223';modal.className='nh7-pdf-viewer-modal';modal.innerHTML=`<div class="nh7-pdf-viewer-dialog"><div class="nh7-pdf-viewer-head"><strong>${html(title||tr('library'))}</strong><div><a class="secondary-btn hidden" id="nh7PdfExternalV223" target="_blank" rel="noopener">${html(tr('openExternal'))}</a><button class="icon-btn" type="button" data-pdf-close aria-label="${html(tr('close'))}">×</button></div></div><div class="nh7-pdf-loading" id="nh7PdfLoadingV223"><div class="spinner"></div><p>${html(tr('securePdfLoading'))}</p></div><iframe class="hidden" id="nh7PdfFrameV223" title="${html(tr('document'))}"></iframe><div class="nh7-docx-reader hidden" id="nh7DocxReaderV224"></div></div>`;document.body.appendChild(modal);document.body.classList.add('nh7-modal-open');modal.querySelectorAll('[data-pdf-close]').forEach(b=>b.onclick=nh7ClosePdfViewerV223);modal.onclick=e=>{if(e.target===modal)nh7ClosePdfViewerV223()};return modal;
 }
 async function openLibraryPdf(item){
+  if(nh7LibraryTextV125(item))return window.NH7_OPEN_BOOK?.(item.id);
   if(!item)return;if(!await nh7RequireSchoolAccessV223(tr('library')))return;
   const owner=window.NH7LibrarySecurityV125?.uid();
   const code='';
@@ -2209,10 +2210,14 @@ async function openLibraryPdf(item){
   }
 }
 
+// Capabilities come from the verified catalog / authorized file proof, never pseudo paths.
+function nh7LibraryTextV125(item){return item?.reader_mode==='text';}
+function nh7LibraryDownloadableV125(item){return !nh7LibraryTextV125(item)&&(item?.reader_mode==='pdf'||item?.reader_mode==='file'||!!window.NH7LibrarySecurityV125?.publicFile(item?.id));}
 // Public offline UI uses only UID/catalog/file proofs, never a filename or URL guess.
 async function nh7LibrarySignedFileV125(item){
   const security=window.NH7LibrarySecurityV125,owner=security?.uid(),bundle=await security?.catalog();
-  if(!navigator.onLine||!owner||owner!==security?.uid()||!bundle?.items.some(row=>String(row.id)===String(item.id)))throw new Error('library_online_required');
+  const current=bundle?.items.find(row=>String(row.id)===String(item.id));
+  if(!navigator.onLine||!owner||owner!==security?.uid()||!current||nh7LibraryTextV125(current))throw new Error('library_online_required');
   const data=await invokeEdgeFunction('nh7-library-access',{item_id:item.id,code:'',device_id:deviceId(),user_email:currentUserEmail()||''});
   if(owner!==security?.uid())throw new Error('library_online_required');
   return data;
@@ -2222,10 +2227,10 @@ async function nh7RefreshLibraryOfflineControlsV125(){
     if(button.disabled)continue;
     const id=button.dataset.libraryOffline,owner=window.NH7LibrarySecurityV125?.uid(),row=nh7LibraryCatalog.find(row=>String(row.id)===id);
     if(!owner||row?.audience!=='public'){button.remove();continue;}
-    const path=window.NH7LibrarySecurityV125?.publicFile(id),status=path?await window.NH7OfflineV325?.status(path):null;
+    const text=nh7LibraryTextV125(row),path=text?null:window.NH7LibrarySecurityV125?.publicFile(id),status=text?{cached:await window.NH7LibraryReaderCacheV125?.ready(id)}:path?await window.NH7OfflineV325?.status(path):null;
     if(!button.isConnected||button.disabled||owner!==window.NH7LibrarySecurityV125?.uid())continue;
-    button.dataset.offlineDownload=path||'';button.dataset.offlineCached=status?.cached?'1':'0';
-    button.textContent=status?.cached?l223('آفلاین آماده ✓','Offline ready ✓','Offline spremno ✓'):l223('دانلود برای آفلاین','Download offline','Preuzmi offline');
+    if(!text)button.dataset.offlineDownload=path||'';else button.removeAttribute('data-offline-download');button.dataset.offlineCached=status?.cached?'1':'0';
+    button.textContent=status?.cached?l223('آفلاین آماده ✓','Offline ready ✓','Offline spremno ✓'):text?l223('مطالعه و آماده‌سازی آفلاین','Read and prepare offline','Čitaj i pripremi offline'):l223('دانلود برای آفلاین','Download offline','Preuzmi offline');
   }
 }
 async function nh7DownloadPublicLibraryV125(button){
@@ -2234,6 +2239,8 @@ async function nh7DownloadPublicLibraryV125(button){
   try{
     const bundle=await window.NH7LibrarySecurityV125?.catalog(),item=bundle?.items.find(row=>String(row.id)===id&&row.audience==='public');
     if(!owner||owner!==window.NH7LibrarySecurityV125?.uid()||!item)throw new Error('library_online_required');
+    if(nh7LibraryTextV125(item)){await window.NH7_OPEN_BOOK?.(id);return;}
+    if(!nh7LibraryDownloadableV125(item))throw new Error('library_online_required');
     const path=window.NH7LibrarySecurityV125.publicFile(id),status=path?await window.NH7OfflineV325?.status(path,true):null;
     if(status?.cached){if(confirm(l223('این فایل از حافظه آفلاین پاک شود؟','Remove this offline download?','Ukloniti ovu offline datoteku?')))await window.NH7OfflineV325.remove(path);}
     else{
@@ -2246,7 +2253,7 @@ async function nh7DownloadPublicLibraryV125(button){
   finally{button.disabled=false;nh7RefreshLibraryOfflineControlsV125();}
 }
 
-function libraryUserCardV224(x,isApocrypha=false){const mime=String(x.mime_type||'application/pdf'),label=mime.includes('wordprocessingml')||/\.docx$/i.test(x.file_name||'')?'DOCX':'PDF';return `<article class="library-user-card" data-library-audience="${html(x.audience||'')}"><div class="library-user-icon">${label}</div><span class="library-audience ${html(x.audience)}">${x.audience==='ministers'?'🔒 '+tr('ministersLibrary'):'🌍 '+tr('publicLibrary')}</span><h3>${html(libraryText(x,'title')||x.file_name||label)}</h3><p>${html(libraryText(x,'description')||'')}</p><small class="muted">${html(x.file_name||'')} · ${librarySize(x.file_size)}</small><div class="button-row"><button class="primary-btn" data-library-open="${html(x.id)}">${x.audience==='ministers'?'🔐':'📖'} ${html(isApocrypha?l223('باز کردن','Open','Otvori'):tr('openPdf'))}</button>${x.audience==='public'?`<button type="button" class="secondary-btn" data-library-offline="${html(x.id)}" data-offline-download="${html(window.NH7LibrarySecurityV125?.publicFile(x.id)||'')}" data-offline-title="${html(libraryText(x,'title')||x.file_name||'')}">${html(l223('دانلود برای آفلاین','Download offline','Preuzmi offline'))}</button>`:''}</div></article>`}
+function libraryUserCardV224(x,isApocrypha=false){const mime=String(x.mime_type||'application/pdf'),label=nh7LibraryTextV125(x)?l223('متن','Text','Tekst'):mime.includes('wordprocessingml')||/\.docx$/i.test(x.file_name||'')?'DOCX':'PDF';return `<article class="library-user-card" data-library-audience="${html(x.audience||'')}"><div class="library-user-icon">${label}</div><span class="library-audience ${html(x.audience)}">${x.audience==='ministers'?'🔒 '+tr('ministersLibrary'):'🌍 '+tr('publicLibrary')}</span><h3>${html(libraryText(x,'title')||x.file_name||label)}</h3><p>${html(libraryText(x,'description')||'')}</p>${nh7LibraryTextV125(x)?'':`<small class="muted">${html(x.file_name||'')} · ${librarySize(x.file_size)}</small>`}<div class="button-row"><button class="primary-btn" data-library-open="${html(x.id)}">${x.audience==='ministers'?'🔐':'📖'} ${html(nh7LibraryTextV125(x)?l223('مطالعه','Read','Čitaj'):isApocrypha?l223('باز کردن','Open','Otvori'):tr('openPdf'))}</button>${x.audience==='public'&&(nh7LibraryTextV125(x)||nh7LibraryDownloadableV125(x))?`<button type="button" class="secondary-btn" data-library-offline="${html(x.id)}" ${nh7LibraryTextV125(x)?'':`data-offline-download="${html(window.NH7LibrarySecurityV125?.publicFile(x.id)||'')}"`} data-offline-title="${html(libraryText(x,'title')||x.file_name||'')}">${html(nh7LibraryTextV125(x)?l223('مطالعه و آماده‌سازی آفلاین','Read and prepare offline','Čitaj i pripremi offline'):l223('دانلود برای آفلاین','Download offline','Preuzmi offline'))}</button>`:''}</div>${nh7LibraryDownloadableV125(x)?`<p class="muted small">${tr('pdfExpires')}</p>`:''}</article>`}
 
 async function library(params={}){
   if(!await nh7RequireSchoolAccessV223(tr('library')))return;
@@ -2255,7 +2262,7 @@ async function library(params={}){
   const rows=nh7LibraryCatalog.filter(x=>x.audience===nh7LibraryTab&&(x.resource_type||'library')==='library');
   const title=nh7LibraryTab==='ministers'?tr('ministersLibrary'):tr('publicLibrary');
   const cards=rows.map(x=>libraryUserCardV224(x,false)).join('');
-  view.innerHTML=card(tr('library'),`<div class="library-user-tabs"><button class="${nh7LibraryTab==='public'?'primary-btn':'secondary-btn'}" data-library-tab="public">${tr('publicLibrary')}</button><button class="${nh7LibraryTab==='ministers'?'primary-btn':'secondary-btn'}" data-library-tab="ministers">🔒 ${tr('ministersLibrary')}</button></div>${nh7LibraryTab==='ministers'?`<div class="library-lock-note">${tr('protectedLibrary')}</div>`:''}<h2>${title}</h2><div class="library-user-grid">${cards||`<p class="muted">${tr('libraryEmpty')}</p>`}</div><p class="muted small">${tr('pdfExpires')}</p>`);
+  view.innerHTML=card(tr('library'),`<div class="library-user-tabs"><button class="${nh7LibraryTab==='public'?'primary-btn':'secondary-btn'}" data-library-tab="public">${tr('publicLibrary')}</button><button class="${nh7LibraryTab==='ministers'?'primary-btn':'secondary-btn'}" data-library-tab="ministers">🔒 ${tr('ministersLibrary')}</button></div>${nh7LibraryTab==='ministers'?`<div class="library-lock-note">${tr('protectedLibrary')}</div>`:''}<h2>${title}</h2><div class="library-user-grid">${cards||`<p class="muted">${tr('libraryEmpty')}</p>`}</div>`);
 }
 
 async function more(){

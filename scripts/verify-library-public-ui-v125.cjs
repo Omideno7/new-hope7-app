@@ -12,6 +12,7 @@ const pub = {
     audience: 'public',
     resource_type: 'library',
     reader_available: false,
+    reader_mode: 'pdf',
     mime_type: 'application/pdf',
     file_name: 'public.pdf',
     title_en: 'Public PDF',
@@ -20,6 +21,8 @@ const pub = {
   },
   minister = { ...pub, id: 'pdf-minister', audience: 'ministers' },
   unknown = { ...pub, id: 'pdf-unknown', audience: 'unknown' };
+const textBook={...pub,id:'text-public',reader_mode:'text',reader_status:'ready',reader_available:true,collection_id:'public-general',storage_path:'text-only/ready-v440/book',title_en:'Public text book'};
+const noCapability={...pub,id:'file-capability-unknown',reader_mode:null,file_name:'looks-downloadable.pdf',storage_path:'text-only/pretend.pdf'};
 const host = 'https://gpzcwffxnddhaeaogdyo.supabase.co',
   file = (id) =>
     host + '/storage/v1/object/sign/nh7-library/' + id + '.pdf?token=fixture';
@@ -61,7 +64,7 @@ function pdf() {
       errors = [],
       edgeCalls = [];
     let phase = 'granted',
-      fileCalls = 0;
+      fileCalls = 0,readerCalls=0,collectionTitle='Public collection',collectionPresent=true;
     page.on('pageerror', (e) => errors.push(e.message));
     page.on('dialog', (d) => {
       return d.type() === 'confirm' ? d.accept() : d.dismiss();
@@ -78,9 +81,13 @@ function pdf() {
               ? [{ ...pub, audience: 'ministers' }, minister, unknown]
               : phase === 'revoked'
                 ? [minister, unknown]
-                : [pub, minister, unknown],
-          collections: [],
+                : [pub, textBook, noCapability, minister, unknown],
+          collections: collectionPresent?[{id:'public-general',audience:'public',title_en:collectionTitle}]:[],
         };
+      if(/nh7_library_reader_access_v(?:250|321)/.test(u)){
+        readerCalls++;assert.equal(JSON.parse(req.postData()).p_item_id,'text-public');
+        return route.fulfill({json:{allowed:true,audience:'public',reader_mode:'text',reader_status:'ready',reader_language:'en',reader:{text:'Verified PUBLIC text from v321'},available_languages:['en']}});
+      }
       if (u.includes('/functions/v1/nh7-library-access')) {
         const id = JSON.parse(req.postData()).item_id;
         edgeCalls.push(id);
@@ -156,7 +163,7 @@ function pdf() {
       ['unknown', 'pdf-unknown'],
     ]) {
       await page.evaluate((tab) => NH7_NAVIGATE('library', { tab }), tab);
-      await page.waitForSelector('[data-library-open="' + id + '"]');
+      await page.waitForSelector('[data-library-open="' + id + '"]',{state:'attached'});
       assert.equal(
         await page.locator('[data-library-offline="' + id + '"]').count(),
         0,
@@ -170,7 +177,7 @@ function pdf() {
       );
     }
     await page.evaluate(() => NH7_NAVIGATE('library', { tab: 'public' }));
-    await page.waitForSelector('[data-library-offline="pdf-public"]');
+    await page.waitForSelector('[data-library-offline="pdf-public"]',{state:'attached'});
     assert.equal(
       await page
         .locator(
@@ -179,6 +186,44 @@ function pdf() {
         .count(),
       0,
     );
+    await page.waitForTimeout(700);
+    assert.equal(await page.locator('[data-library-offline="file-capability-unknown"]').count(),0,'Filename/pseudo storage path cannot grant file-download capability');
+    // Real production-shaped text book has no file object: prepare through the actual reader UI.
+    await page.locator('[data-nh7-open-collection="public-general"]').click();
+    await page.waitForSelector('[data-nh7-current-collection="public-general"]');
+    const textControl=page.locator('[data-library-offline="text-public"]');
+    assert.equal(await textControl.getAttribute('data-offline-download'),null);
+    await textControl.click();
+    await page.waitForSelector('.nh7-book-article');
+    assert.match(await page.locator('.nh7-book-article').innerText(),/Verified PUBLIC text/);
+    await page.locator('[data-book-close]').click();
+    await page.waitForFunction(()=>document.querySelector('[data-library-offline="text-public"]')?.dataset.offlineCached==='1');
+    assert.equal(edgeCalls.length,0,'Text-only book must never request a signed file');
+    collectionTitle='Refreshed collection';
+    await page.evaluate(()=>NH7LibrarySecurityV125.catalog());
+    await page.waitForFunction(()=>document.querySelector('[data-nh7-current-collection="public-general"] h2')?.textContent.includes('Refreshed collection'));
+    assert.equal(await textControl.count(),1,'Refresh must retain the selected collection and its cards');
+    await context.setOffline(true);
+    await textControl.click();
+    await page.waitForSelector('.nh7-book-article');
+    assert.match(await page.locator('.nh7-book-article').innerText(),/Verified PUBLIC text/);
+    await page.locator('[data-book-close]').click();
+    assert.equal(readerCalls,1,'Offline text reopen must use verified UID/language reader cache');
+    assert.equal(edgeCalls.length,0);
+    await context.setOffline(false);
+    collectionPresent=false;
+    await page.evaluate(()=>NH7LibrarySecurityV125.catalog());
+    await page.waitForSelector('[data-nh7-current-collection=""]');
+    assert.equal(await page.locator('[data-nh7-collections-back]').count(),0,'Removed collection must reset');
+    collectionPresent=true;
+    await page.evaluate(()=>NH7LibrarySecurityV125.catalog());
+    await page.locator('[data-nh7-open-collection="public-general"]').click();
+    await page.waitForSelector('[data-nh7-current-collection="public-general"]');
+    assert(!await page.locator('[data-nh7-collection-books]').innerText().then(t=>t.includes('secure PDF link')),'Text-only collection must not advertise a PDF link');
+    // Returning to the hub retains the separate downloadable-file cards.
+    await page.evaluate(()=>NH7LibrarySecurityV125.catalog());
+    await page.locator('[data-nh7-collections-back]').click();
+    await page.locator('[data-nh7-open-collection="__unassigned"]').click();
     await page.locator('[data-library-offline="pdf-public"]').click();
     await page.waitForFunction(
       () =>
@@ -232,6 +277,10 @@ function pdf() {
     await context.setOffline(false);
     phase = 'reclassified';
     await page.evaluate(() => NH7LibrarySecurityV125.catalog());
+    assert.equal(await page.evaluate(()=>NH7LibraryReaderCacheV125.ready('text-public')),false);
+    await context.setOffline(true);
+    assert.equal(await page.evaluate(()=>NH7_OPEN_BOOK('text-public')),false,'Removed text book cannot replay');
+    await context.setOffline(false);
     assert.equal(
       await page.locator('[data-library-offline="pdf-public"]').count(),
       0,
@@ -300,6 +349,8 @@ function pdf() {
         }
         window.dispatchEvent(new Event('nh7-library-auth-change'));
       }, mode);
+      assert.equal(await page.evaluate(()=>NH7LibraryReaderCacheV125.ready('text-public')),false);
+      assert.equal(await page.evaluate(()=>NH7_OPEN_BOOK('text-public')),false);
       await page.evaluate(() => __publicOfflineCard.click());
       assert.equal(
         await page.locator('#nh7PdfFrameV223:not(.hidden)').count(),
@@ -315,7 +366,7 @@ function pdf() {
     console.log(
       'PASS ' +
         (engine === webkit ? 'WebKit' : 'Chromium') +
-        ': zero-note runtime routes; actual PUBLIC card verify/download/status → repeated offline PDF opens without Edge/network; Ministers/unknown denied; reclassification/revoke/logout/account switch safe.',
+        ': zero-note runtime routes; PUBLIC text UI → v321 cache/offline reopen without signed-file calls; collection refresh retained/removal resets; PUBLIC PDF download/status/offline opens; Ministers/unknown denied; reclassification/revoke/logout/account switch safe.',
     );
   } finally {
     await browser.close();

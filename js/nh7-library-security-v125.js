@@ -350,6 +350,7 @@
     libraryFile,
     fileAllowed,
     publicFile,
+    publicItem: (id) => { sync(); const row=bundle.items.find(x=>String(x.id)===String(id)&&x.audience==='public'); return row?{...row}:null; },
   };
   purgeLegacy();
   sync();

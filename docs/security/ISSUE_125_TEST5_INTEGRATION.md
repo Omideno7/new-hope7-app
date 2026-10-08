@@ -21,3 +21,6 @@ The PR's normal runtime also has the real Public Library download/status control
 - Check FA → EN → HR → FA and direction, current Calendar/Community/Profile/themes/player/navigation, and public download status/remove behavior.
 
 Local Chromium regressions pass on both the PR runtime and patched Test5. Real Safari/iOS/native validation is still a release gate. Playwright WebKit installation was unavailable because the browser download domains returned HTTP 403 `Domain forbidden`; no WebKit or physical-device pass is claimed. No merge, deployment, Supabase/RLS/Storage/schema/data change was performed.
+
+
+The native iPhone follow-up updates this same exact-reference patch to loader `125.4`: PUBLIC text-only books use the existing v321 reader cache through “Read and prepare offline,” with per-language ready status, and never request a signed PDF URL. File downloads require verified file capability. Open collections survive authorized catalog refresh and reset only on disappearance or UID/audience changes. The browser regression covers both actual user paths in the patched Test5 copy. All previous module/file preservation guarantees remain enforced.

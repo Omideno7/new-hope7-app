@@ -180,5 +180,13 @@
   wrapped.__nh7LibraryLanguageV125 = true;
   wrapped.__nh7LibraryLanguageV321 = true;
   window.fetch = wrapped;
+  // Status uses the same UID/item/language key and current PUBLIC authorization as replay.
+  window.NH7LibraryReaderCacheV125 = Object.freeze({ready: async (id) => {
+    const security=window.NH7LibrarySecurityV125,owner=security?.uid(),row=security?.publicItem(id);
+    const language=localStorage.getItem('nh7_lang')||document.documentElement.lang||'fa';
+    if(!owner||owner!==security?.uid()||!row)return false;
+    const response=await cached(owner,row,language),data=response?await response.json().catch(()=>null):null;
+    return owner===security.uid()&&!!security.publicItem(id)&&data?.allowed===true;
+  }});
   window.NH7_LIBRARY_LANGUAGE_VERSION = VERSION;
 })();
