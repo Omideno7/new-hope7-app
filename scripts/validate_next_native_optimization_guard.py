@@ -18,6 +18,11 @@ def require(path, needle, label=None):
     if needle not in data:
         errors.append(f"{path}: missing {label or needle}")
 
+def require_compact(path, needle):
+    # Library code is formatted for review; retain the same markers independently of whitespace.
+    if needle not in re.sub(r"\s+", "", text(path)):
+        errors.append(f"{path}: missing {needle}")
+
 def forbid(path, needle, label=None):
     data = text(path)
     if needle in data:
@@ -65,8 +70,11 @@ require('js/nh7-inbox-badge-sync-v418.js', 'Promise.all([rest(ownPath)', "legacy
 require('js/nh7-school-path-v351.js', 'Date.now()-cacheAt<30000')
 require('js/nh7-school-path-v351.js', 'setInterval(refreshSchoolPath,120000);')
 
-# Stable Library catalog cache.
-require('js/app.js', 'const NH7_LIBRARY_CATALOG_CACHE_MS=10*60*1000;')
+# Library snapshots must not persist ministers metadata (#125).
+require('js/app.js', 'NH7LibrarySecurityV125?.catalog()')
+require_compact('js/nh7-library-security-v125.js', "x.audience==='public'")
+require_compact('js/nh7-library-security-v125.js', "v?.uid===id")
+require_compact('js/nh7-library-security-v125.js', "cache:'no-store'")
 
 # Data-preservation guard for this release and future timestamped migrations.
 # Only migrations at/after the first Supabase hardening migration are scanned,
