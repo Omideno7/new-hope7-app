@@ -24,3 +24,6 @@ Local Chromium regressions pass on both the PR runtime and patched Test5. Real S
 
 
 The native iPhone follow-up updates this same exact-reference patch to loader `125.4`: PUBLIC text-only books use the existing v321 reader cache through “Read and prepare offline,” with per-language ready status, and never request a signed PDF URL. File downloads require verified file capability. Open collections survive authorized catalog refresh and reset only on disappearance or UID/audience changes. The browser regression covers both actual user paths in the patched Test5 copy. All previous module/file preservation guarantees remain enforced.
+
+
+The native-persistence follow-up updates the same patch to loader `125.5` and preserves the newer Test5 reader code while adding the targeted offline-miss handling. PUBLIC text is committed to UID/item/language IndexedDB even if CacheStorage is unavailable. Run `NH7_TEST_SOURCE=/path/to/isolated/Test5/qa node scripts/verify-library-native-reader-v125.cjs http://127.0.0.1:PORT` against its local test server to exercise the full browser-process restart regression with bundled-file modelling and mocked services. Actual iPhone restart/airplane-mode validation is still required. Do not apply this patch over an older patched QA copy: start from the pinned clean Test5 reference as above.

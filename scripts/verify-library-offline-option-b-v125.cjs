@@ -162,7 +162,7 @@ assert(!Object.hasOwn(readerResponse('public', 'fixture'), 'item_id'));
     }, host);
     assert.deepEqual(
       quarantined,
-      { statuses: [403, 403], newBodies: 0, legacyBodies: 2 },
+      { statuses: [503, 403], newBodies: 0, legacyBodies: 2 },
       'Known public catalog/hash/audience cannot identify a legacy body; both stay quarantined before online reopen',
     );
     await context.setOffline(false);
@@ -425,7 +425,7 @@ assert(!Object.hasOwn(readerResponse('public', 'fixture'), 'item_id'));
         localStorage.setItem('nh7_lang', 'en');
         return response.status;
       }, host),
-      403,
+      503,
       'Online English reopen must not resurrect the quarantined Persian legacy body',
     );
     // A fresh page/module instance retains durable public files + reader while offline.

@@ -6,8 +6,8 @@ diff --git a/index.html b/index.html
    <script src="js/nh7-audio-route-stability-v423.js?v=4.6.1"></script>
    <script src="js/nh7-sermon-catalog-hotfix-v424.js?v=4.2.4"></script>
 -  <script src="js/nh7-access-bootstrap-v230.js?v=2.3.9.33"></script>
-+  <script src="js/nh7-library-security-v125.js?v=125.4"></script>
-+  <script src="js/nh7-access-bootstrap-v230.js?v=2.3.9.33&library=125.4"></script>
++  <script src="js/nh7-library-security-v125.js?v=125.5"></script>
++  <script src="js/nh7-access-bootstrap-v230.js?v=2.3.9.33&library=125.5"></script>
    <script src="js/nh7-auth-signup-guard-v343.js?v=3.5.5"></script>
    <script src="js/nh7-registration-canonical-v353.js?v=4.0.1"></script>
    <script src="js/nh7-school-registration-v342.js?v=2.3.9.50"></script>
@@ -15,7 +15,7 @@ diff --git a/index.html b/index.html
    <script src="js/nh7-registration-repeat-guard-v402.js?v=4.0.2"></script>
    <script src="js/nh7-offline-playback-bridge-v332.js?v=2.3.9.50-offline403"></script>
 -  <script src="js/nh7-offline-persistence-v323.js?v=2.3.9.50-offline403"></script>
-+  <script src="js/nh7-offline-persistence-v323.js?v=2.3.9.50-offline403&library=125.4"></script>
++  <script src="js/nh7-offline-persistence-v323.js?v=2.3.9.50-offline403&library=125.5"></script>
    <script src="js/nh7-auth-recovery-v342.js?v=2.3.9.50"></script>
    <script src="js/nh7-audio-classic-v484.js?v=4.8.6-qa250"></script>
    <script src="js/nh7-audio-miniplayer-v487.js?v=4.8.7" defer></script>
@@ -24,7 +24,7 @@ diff --git a/index.html b/index.html
    <script src="js/nh7-note-text-v501.js?v=5.0.3-account-repair"></script>
    <script src="js/nh7-community-v502.js?v=5.0.9-profile-local-finalqa" defer></script>
 -  <script src="js/app.js?v=4.8.27-finalqa-test5" type="module"></script>
-+  <script src="js/app.js?v=4.8.27-finalqa-test5&library=125.4" type="module"></script>
++  <script src="js/app.js?v=4.8.27-finalqa-test5&library=125.5" type="module"></script>
    <script src="js/nh7-settings-controller-v403.js?v=4.6.4"></script>
    <script src="js/nh7-settings-account-v252.js?v=2.5.2" defer></script>
    <script src="js/nh7-delete-account-v253.js?v=2.5.4" defer></script>
@@ -35,9 +35,9 @@ diff --git a/index.html b/index.html
 -  <script src="js/nh7-book-reader-v283.js?v=2.3.9.51" defer></script>
 -  <script src="js/nh7-library-language-v321.js?v=2.3.9.33" defer></script>
 -  <script src="js/nh7-library-collections-v322.js?v=2.3.9.51" defer></script>
-+  <script src="js/nh7-book-reader-v283.js?v=2.3.9.51&library=125.4" defer></script>
-+  <script src="js/nh7-library-language-v321.js?v=2.3.9.33&library=125.4" defer></script>
-+  <script src="js/nh7-library-collections-v322.js?v=2.3.9.51&library=125.4" defer></script>
++  <script src="js/nh7-book-reader-v283.js?v=2.3.9.51&library=125.5" defer></script>
++  <script src="js/nh7-library-language-v321.js?v=2.3.9.33&library=125.5" defer></script>
++  <script src="js/nh7-library-collections-v322.js?v=2.3.9.51&library=125.5" defer></script>
    <script src="js/nh7-school-media-session-v262.js?v=2.3.9.50" defer></script>
    <script src="js/nh7-secure-media-v270.js?v=2.3.9.33" defer></script>
    <script src="js/nh7-secure-media-fix-v271.js?v=2.3.9.33" defer></script>
@@ -303,19 +303,31 @@ diff --git a/js/nh7-book-reader-v283.js b/js/nh7-book-reader-v283.js
  function decorate(){
    document.querySelectorAll('[data-library-open]').forEach(fileButton=>{
      const id=String(fileButton.dataset.libraryOpen||''),row=catalog.get(id);
-@@ -149,8 +150,11 @@
+@@ -92,11 +93,13 @@
+   const response=await fetch(`${URL}/rest/v1/rpc/nh7_library_reader_access_v250`,{method:'POST',headers:await headers(),body:JSON.stringify({p_item_id:item.id,p_code:code,p_device_id:deviceId(),p_user_email:userEmail(current)}),cache:'no-store'});
+   const text=await response.text();let data={};
+   try{data=text?JSON.parse(text):{}}catch(_){data={message:text}}
++  if(!response.ok&&data?.code==='library_offline_unavailable')return data;
+   if(!response.ok)throw new Error(data.message||text||response.statusText);
+   return Array.isArray(data)?data[0]:data;
+ }
+ function accessError(data){
+   const code=String(data?.code||'');
++  if(code==='library_offline_unavailable')return L('این کتاب برای آفلاین آماده نشده است؛ یک بار آنلاین باز کنید.','This book is not available offline. Open it once online to prepare it.','Ova knjiga nije dostupna offline. Otvorite je jednom online.');
+   if(code==='login_required')return L('برای مطالعه کتاب ابتدا وارد حساب شوید.','Sign in before reading.','Prijavite se prije čitanja.');
+   if(code==='school_approval_required')return L('دسترسی مدرسه شما هنوز تأیید نشده است.','Your school access is not approved yet.','Pristup školi još nije odobren.');
+   if(code==='content_access_required')return L('این کتاب مخصوص خادمان است و هنوز برای حساب شما فعال نشده است.','This ministers-only book has not been enabled for your account.','Ova knjiga za služitelje još nije omogućena za vaš račun.');
+@@ -149,7 +152,10 @@
    if(!item){alert(L('نسخهٔ متنی این کتاب پیدا نشد.','The text edition of this book was not found.','Tekstualno izdanje knjige nije pronađeno.'));return false}
    const current=await ensureSession();
    if(!current?.access_token){alert(L('برای مطالعه کتاب ابتدا وارد حساب شوید.','Sign in before reading.','Prijavite se prije čitanja.'));return false}
 +  const owner=window.NH7LibrarySecurityV125?.uid();
    const data=await readerRpc(item,'').catch(error=>({allowed:false,code:'request_failed',message:error.message}));
--  if(!data?.allowed){alert(accessError(data));return false}
 +  if(owner!==window.NH7LibrarySecurityV125?.uid())return false;
 +  if(!await ensureItem(item.id))return false;
-+  if(!data?.allowed){window.NH7LibrarySecurityV125?.invalidate('reader_denied');alert(accessError(data));return false}
+   if(!data?.allowed){alert(accessError(data));return false}
    const pages=makePages(readerPayload(data)),position=readPosition(item.id);
    book={item,data,pages,language:data.reader_language||lang()};
-   pageIndex=Math.max(0,Math.min(pages.length-1,Number(position.page||0)));
 diff --git a/js/nh7-library-collections-v322.js b/js/nh7-library-collections-v322.js
 --- a/js/nh7-library-collections-v322.js
 +++ b/js/nh7-library-collections-v322.js
@@ -388,7 +400,7 @@ diff --git a/js/nh7-library-collections-v322.js b/js/nh7-library-collections-v32
 diff --git a/js/nh7-library-language-v321.js b/js/nh7-library-language-v321.js
 --- a/js/nh7-library-language-v321.js
 +++ b/js/nh7-library-language-v321.js
-@@ -1,30 +1,192 @@
+@@ -1,30 +1,239 @@
 -/* New Hope 7 v3.2.7 — multilingual in-app books with offline reader cache */
 -(()=>{'use strict';
 -const VERSION='3.2.7-library-reader-offline';
@@ -413,6 +425,11 @@ diff --git a/js/nh7-library-language-v321.js b/js/nh7-library-language-v321.js
 -      if(!navigator.onLine){const hit=await cached(body);if(hit)return hit.clone()}
 -      try{const response=await original(url,next);if(response.ok)await store(body,response);else{const hit=await cached(body);if(hit)return hit.clone()}return response}
 -      catch(error){const hit=await cached(body);if(hit)return hit.clone();throw error}
+-    }
+-  }catch(error){console.warn('Library language/offline routing',error);throw error}
+-  return original(input,init);
+-};
+-wrapped.__nh7LibraryLanguageV321=true;wrapped.__nh7LibraryLanguageV327=true;window.fetch=wrapped;window.NH7_LIBRARY_LANGUAGE_VERSION=VERSION;
 +/* Option B: UID/language-scoped PUBLIC reader cache; Ministers always online + v321 authorization. */
 +(() => {
 +  'use strict';
@@ -434,11 +451,7 @@ diff --git a/js/nh7-library-language-v321.js b/js/nh7-library-language-v321.js
 +    for (let i = 0; i < value.length; i++) {
 +      h ^= value.charCodeAt(i);
 +      h = Math.imul(h, 16777619);
-     }
--  }catch(error){console.warn('Library language/offline routing',error);throw error}
--  return original(input,init);
--};
--wrapped.__nh7LibraryLanguageV321=true;wrapped.__nh7LibraryLanguageV327=true;window.fetch=wrapped;window.NH7_LIBRARY_LANGUAGE_VERSION=VERSION;
++    }
 +    return (h >>> 0).toString(16);
 +  }
 +  const denial = () =>
@@ -446,14 +459,70 @@ diff --git a/js/nh7-library-language-v321.js b/js/nh7-library-language-v321.js
 +      { allowed: false, code: 'content_access_required' },
 +      { status: 403, headers: { 'Cache-Control': 'private, no-store' } },
 +    );
-+  async function cached(owner, row, language) {
-+    if (row?.audience !== 'public' || !window.caches) return null;
-+    try {
-+      const cache = await caches.open(CACHE);
-+      return await cache.match(key(owner, row.id, language));
-+    } catch (_) {
-+      return null;
-+    }
++  const offlineMiss = () => Response.json({allowed:false,code:'library_offline_unavailable'}, {status:503});
++  // Dedicated PUBLIC-only IndexedDB store works without WKWebView CacheStorage.
++  // All transactions complete before ready/open succeeds. No unrelated databases are touched.
++  const DB='nh7-reader-public-v125', STORE='readers';
++  let dbPromise, maintenance=Promise.resolve();
++  function database(){
++    if(!window.indexedDB)return Promise.reject(new Error('indexeddb_unavailable'));
++    if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{
++      const request=indexedDB.open(DB,1);
++      request.onupgradeneeded=()=>request.result.createObjectStore(STORE,{keyPath:'key'});
++      request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);
++    });
++    return dbPromise;
++  }
++  async function transaction(mode,work){
++    const db=await database();return new Promise((resolve,reject)=>{
++      const tx=db.transaction(STORE,mode),store=tx.objectStore(STORE);let result;
++      work(store,value=>result=value);
++      tx.oncomplete=()=>resolve(result);tx.onerror=tx.onabort=()=>reject(tx.error||new Error('reader_store_failed'));
++    });
++  }
++  const recordKey=(owner,id,language)=>JSON.stringify([owner,String(id),language]);
++  async function prune(owner,allowed=null){
++    await transaction('readwrite',store=>{
++      const request=store.openCursor();request.onsuccess=()=>{const cursor=request.result;if(!cursor)return;
++        const row=cursor.value;if(!owner||row.uid!==owner||(allowed&&!allowed.has(row.item)))cursor.delete();cursor.continue();};
++    }).catch(()=>{});
++    if(window.caches)try{const cache=await caches.open(CACHE);for(const request of await cache.keys()){
++      const parts=new URL(request.url).pathname.split('/'),uid=decodeURIComponent(parts[parts.length-3]||''),id=decodeURIComponent(parts[parts.length-2]||'');
++      if(!owner||uid!==owner||(allowed&&!allowed.has(id)))await cache.delete(request);
++    }}catch(_){}
++  }
++  window.addEventListener('nh7-library-security',event=>{
++    const owner=window.NH7LibrarySecurityV125?.uid(),reason=event.detail.reason;
++    const allowed=reason==='verified'?new Set(event.detail.bundle.items.filter(x=>x.audience==='public').map(x=>String(x.id))):
++      ['reader_denied','login_required','catalog_denied'].includes(reason)?new Set():null;
++    maintenance=maintenance.then(()=>prune(owner,allowed)).catch(()=>{});
++  });
++  // On startup keep only this UID's records; authorization is checked again before every read.
++  maintenance=maintenance.then(()=>prune(window.NH7LibrarySecurityV125?.uid()));
++  async function cached(owner,row,language){
++    if(row?.audience!=='public')return null;
++    await maintenance;
++    const security=window.NH7LibrarySecurityV125;
++    if(owner!==security?.uid()||!security.publicItem(row.id))return null;
++    let response;
++    try{const record=await transaction('readonly',(store,done)=>{const request=store.get(recordKey(owner,row.id,language));request.onsuccess=()=>done(request.result);});
++      if(record?.data?.allowed===true&&record.data.audience==='public')response=Response.json(record.data);
++    }catch(_){}
++    if(!response&&window.caches)try{response=await(await caches.open(CACHE)).match(key(owner,row.id,language));const data=response?await response.clone().json():null;if(data?.allowed!==true||data?.audience!=='public')response=null;}catch(_){}
++    return owner===security.uid()&&security.publicItem(row.id)?response:null;
++  }
++  async function removeItem(owner,id){
++    await transaction('readwrite',store=>{const request=store.openCursor();request.onsuccess=()=>{const cursor=request.result;if(!cursor)return;if(cursor.value.uid===owner&&cursor.value.item===String(id))cursor.delete();cursor.continue();};}).catch(()=>{});
++    if(window.caches)try{const cache=await caches.open(CACHE);for(const language of ['fa','en','hr'])await cache.delete(key(owner,id,language));}catch(_){}
++  }
++  async function persist(owner,row,language,data,response){
++    await maintenance;
++    const security=window.NH7LibrarySecurityV125;
++    if(owner!==security.uid()||!security.publicItem(row.id))return;
++    if(data.audience==='public')await transaction('readwrite',store=>store.put({key:recordKey(owner,row.id,language),uid:owner,item:String(row.id),language,data})).catch(()=>{});
++    if(owner!==security.uid()||!security.publicItem(row.id)){await removeItem(owner,row.id);return;}
++    if(window.caches)try{await(await caches.open(CACHE)).put(key(owner,row.id,language),response.clone());}catch(_){}
++    if(owner!==security.uid()||!security.publicItem(row.id))await removeItem(owner,row.id);
 +  }
 +  // Legacy email/hash reader entries cannot be trusted offline. Production v321 bodies lack
 +  // item identity: keep those quarantined, requiring one verified PUBLIC online reopen.
@@ -491,6 +560,7 @@ diff --git a/js/nh7-library-language-v321.js b/js/nh7-library-language-v321.js
 +            response &&
 +            owner === security.uid() &&
 +            data?.allowed === true &&
++            data?.audience === 'public' &&
 +            String(data?.item?.id || data?.item_id || '') === String(row.id)
 +          ) {
 +            await target.put(key(owner, row.id, language), response.clone());
@@ -548,7 +618,7 @@ diff --git a/js/nh7-library-language-v321.js b/js/nh7-library-language-v321.js
 +    );
 +    if (!owner || owner !== security?.uid() || !row) return denial();
 +    if (!navigator.onLine)
-+      return (await cached(owner, row, body.p_language)) || denial();
++      return (await cached(owner, row, body.p_language)) || (row.audience==='public'?offlineMiss():denial());
 +    // v321 retains its five-parameter contract and authorizes through v230/auth.uid().
 +    let response;
 +    try {
@@ -561,7 +631,7 @@ diff --git a/js/nh7-library-language-v321.js b/js/nh7-library-language-v321.js
 +      );
 +    } catch (error) {
 +      return owner === security.uid()
-+        ? (await cached(owner, row, body.p_language)) || denial()
++        ? (await cached(owner, row, body.p_language)) || (row.audience==='public'?offlineMiss():denial())
 +        : denial();
 +    }
 +    if (owner !== security.uid()) return denial();
@@ -570,16 +640,10 @@ diff --git a/js/nh7-library-language-v321.js b/js/nh7-library-language-v321.js
 +      .json()
 +      .catch(() => null);
 +    if (!response.ok || data?.allowed === false) {
-+      security.invalidate('reader_denied');
-+      if (window.caches)
-+        try {
-+          await (
-+            await caches.open(CACHE)
-+          ).delete(key(owner, row.id, body.p_language));
-+        } catch (_) {}
++      if(response.status===401||response.status===403||(response.ok&&data?.allowed===false&&!['reader_not_ready','reader_unavailable','request_failed'].includes(data.code||''))){security.invalidate('reader_denied');await removeItem(owner,row.id);}
 +      return response;
 +    }
-+    if (row.audience === 'public' && data?.allowed === true && window.caches) {
++    if (row.audience === 'public' && data?.allowed === true && data?.audience==='public') {
 +      const current = await security.catalog();
 +      if (
 +        owner !== security.uid() ||
@@ -588,11 +652,7 @@ diff --git a/js/nh7-library-language-v321.js b/js/nh7-library-language-v321.js
 +        )
 +      )
 +        return denial();
-+      try {
-+        await (
-+          await caches.open(CACHE)
-+        ).put(key(owner, row.id, body.p_language), response.clone());
-+      } catch (_) {}
++      await persist(owner,row,body.p_language,data,response);
 +    }
 +    return response;
 +  };
@@ -613,7 +673,7 @@ diff --git a/js/nh7-library-security-v125.js b/js/nh7-library-security-v125.js
 new file mode 100644
 --- /dev/null
 +++ b/js/nh7-library-security-v125.js
-@@ -0,0 +1,387 @@
+@@ -0,0 +1,388 @@
 +/* Library-only authorization freshness. Persistent snapshots contain public metadata only. */
 +(() => {
 +  'use strict';
@@ -658,6 +718,7 @@ new file mode 100644
 +  }
 +  function invalidate(reason = 'identity') {
 +    generation++;
++    if(reason==='reader_denied'){sessionStorage.removeItem(CACHE+identity);localStorage.removeItem(CACHE+identity);}
 +    bundle =
 +      reason === 'offline' || reason === 'unverified'
 +        ? readPublic(identity)
@@ -1099,7 +1160,7 @@ diff --git a/sw-release-core-v403.js b/sw-release-core-v403.js
  'use strict';
  const NH7_RELEASE_CORE_VERSION='5.4.0-qa250';
 -const NH7_RELEASE_CORE_CACHE='nh7-release-core-v540-qa250';
-+const NH7_RELEASE_CORE_CACHE='nh7-release-core-v540-qa250-library125-iphone-reader';
++const NH7_RELEASE_CORE_CACHE='nh7-release-core-v540-qa250-library125-native-reader-store';
  const NH7_RELEASE_DATA_CACHE='nh7-data-stable-v329';
  const NH7_RELEASE_ASSETS=[
    './','./index.html','./app-v239.html','./reset-password.html','./manifest.json','./version.json','./offline/index.html',
@@ -1128,6 +1189,6 @@ diff --git a/service-worker.js b/service-worker.js
  importScripts('./app/download-worker-v1.js?v=20260914.3');
 -importScripts('./sw-release-core-v403.js?v=5.4.0-qa250');
 -importScripts('./sw-offline-v329.js?v=2.3.9.64-player529');
-+importScripts('./sw-release-core-v403.js?v=5.4.0-qa250&library=125.4');
-+importScripts('./sw-offline-v329.js?v=2.3.9.64-player529&library=125.4');
++importScripts('./sw-release-core-v403.js?v=5.4.0-qa250&library=125.5');
++importScripts('./sw-offline-v329.js?v=2.3.9.64-player529&library=125.5');
  importScripts('./sw-offline-path-fix-v329.js?v=2.3.9.50');

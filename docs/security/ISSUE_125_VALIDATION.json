@@ -80,7 +80,7 @@
       "workflow": "deploy-pages.yml",
       "name": "Validate Ministers Library security",
       "status": "PASS",
-      "output": "PASS Edge adapter: six principals, scoped grants, forged identity/role ignored, no service role, denial/timeout fail closed.\nPASS Option B file identity: signed response + current UID/audience proof; public offline retained, Ministers/unknown/canonical bypass denied; revoke/logout safe.\nPASS actual client: UID binding, public-only snapshots, legacy purge, revoke, 403, offline, logout, identity race, freshness expiry; unrelated data preserved.\nPASS actual worker/offline API: old Library bytes cannot be replayed; audio worker cache lookup preserved.\nPASS active reader wrapper: unidentified legacy full-text cache quarantined; denial/offline never replay restricted text; verified v321 five-parameter/language wire contract retained (authorizes via v230/auth.uid, not v372 delegation).\nPASS source scope and Library loader ordering.\nPASS independent v4 invariants: early authenticated/published Sermons bypasses all School checks; nine exact registrations matching/filter/order/limit cases.\nPASS full Edge: 37 before/after cases have identical responses, CORS, School checks, audio signatures and synthetic Bible writes; non-Library source bytes unchanged.\nPASS exact Library path: School-approved non-minister/revoked get zero restricted rows; scoped minister/Admin use caller-JWT v396; anonymous/School denial unchanged; no service-role Library read.\n(node:91315) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nFrom https://github.com/Omideno7/new-hope7-app\n * branch            82efc731c64f76c051528ae01189521bee0ee8b9 -> FETCH_HEAD\nPASS Test5: existing modules/files/import order and non-Library app bytes preserved; exact note typo + scoped Library hardening applied.\n{\"reference\":\"82efc731c64f76c051528ae01189521bee0ee8b9\",\"qa_copy\":\"/tmp/nh7-test5-library-DnvNh0/qa\",\"total_reference_files\":565,\"unchanged_non_library_files\":555,\"existing_module_import_order_preserved\":true,\"non_library_app_source_preserved_sha256\":\"e6a0faca2f734ef602735a418533e1d88f6648ce96961ae123fd3da2e506fec1\",\"exact_test5_verse_note_typo_fixed\":true}\n"
+      "output": "PASS Edge adapter: six principals, scoped grants, forged identity/role ignored, no service role, denial/timeout fail closed.\nPASS Option B file identity: signed response + current UID/audience proof; public offline retained, Ministers/unknown/canonical bypass denied; revoke/logout safe.\nPASS actual client: UID binding, public-only snapshots, legacy purge, revoke, 403, offline, logout, identity race, freshness expiry; unrelated data preserved.\nPASS actual worker/offline API: old Library bytes cannot be replayed; audio worker cache lookup preserved.\nPASS active reader wrapper: unidentified legacy full-text cache quarantined; denial/offline never replay restricted text; verified v321 five-parameter/language wire contract retained (authorizes via v230/auth.uid, not v372 delegation).\nPASS source scope and Library loader ordering.\nPASS independent v4 invariants: early authenticated/published Sermons bypasses all School checks; nine exact registrations matching/filter/order/limit cases.\nPASS full Edge: 37 before/after cases have identical responses, CORS, School checks, audio signatures and synthetic Bible writes; non-Library source bytes unchanged.\nPASS exact Library path: School-approved non-minister/revoked get zero restricted rows; scoped minister/Admin use caller-JWT v396; anonymous/School denial unchanged; no service-role Library read.\n(node:102675) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nFrom https://github.com/Omideno7/new-hope7-app\n * branch            82efc731c64f76c051528ae01189521bee0ee8b9 -> FETCH_HEAD\nPASS Test5: existing modules/files/import order and non-Library app bytes preserved; exact note typo + scoped Library hardening applied.\n{\"reference\":\"82efc731c64f76c051528ae01189521bee0ee8b9\",\"qa_copy\":\"/tmp/nh7-test5-library-I7XvH8/qa\",\"total_reference_files\":565,\"unchanged_non_library_files\":555,\"existing_module_import_order_preserved\":true,\"non_library_app_source_preserved_sha256\":\"e6a0faca2f734ef602735a418533e1d88f6648ce96961ae123fd3da2e506fec1\",\"exact_test5_verse_note_typo_fixed\":true}\n"
     },
     {
       "workflow": "deploy-pages.yml",
@@ -348,5 +348,24 @@
     "production_accessed": false,
     "deployed": false,
     "real_iphone_safari_validation": "still required; no physical device available"
+  },
+  "native_reader_persistence_followup": {
+    "comment": "https://github.com/Omideno7/new-hope7-app/pull/126#issuecomment-6069296420",
+    "loader": "125.5",
+    "store": "Dedicated PUBLIC-only IndexedDB, UID/item/language scope; CacheStorage optional",
+    "restart_test": "PASS: actual UI with unavailable CacheStorage; full Chromium process termination/relaunch with persistent disk profile; offline reopen",
+    "exact_test5_restart_test": "PASS same test against patched exact-Test5 source",
+    "offline_miss": "503 library_offline_unavailable; localized guidance; verified PUBLIC catalog remains intact",
+    "purge_tests": [
+      "logout",
+      "account switch",
+      "PUBLIC to Ministers",
+      "real online 403"
+    ],
+    "transient_500": "does not purge verified payload/catalog",
+    "physical_iphone": "not run; maintainer native QA remains required",
+    "production_accessed": false,
+    "merged": false,
+    "deployed": false
   }
 }

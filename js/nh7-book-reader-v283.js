@@ -95,11 +95,13 @@ async function readerRpc(item,code=''){
   const response=await fetch(`${URL}/rest/v1/rpc/nh7_library_reader_access_v250`,{method:'POST',headers:await headers(),body:JSON.stringify({p_item_id:item.id,p_code:code,p_device_id:deviceId(),p_user_email:userEmail(current)}),cache:'no-store'});
   const text=await response.text();let data={};
   try{data=text?JSON.parse(text):{}}catch(_){data={message:text}}
+  if(!response.ok&&data?.code==='library_offline_unavailable')return data;
   if(!response.ok)throw new Error(data.message||text||response.statusText);
   return Array.isArray(data)?data[0]:data;
 }
 function accessError(data){
   const code=String(data?.code||'');
+  if(code==='library_offline_unavailable')return L('این کتاب برای آفلاین آماده نشده است؛ یک بار آنلاین باز کنید.','This book is not available offline. Open it once online to prepare it.','Ova knjiga nije dostupna offline. Otvorite je jednom online.');
   if(code==='login_required')return L('برای مطالعه کتاب ابتدا وارد حساب شوید.','Sign in before reading.','Prijavite se prije čitanja.');
   if(code==='school_approval_required')return L('دسترسی مدرسه شما هنوز تأیید نشده است.','Your school access is not approved yet.','Pristup školi još nije odobren.');
   if(code==='content_access_required')return L('این کتاب مخصوص خادمان است و هنوز برای حساب شما فعال نشده است.','This ministers-only book has not been enabled for your account.','Ova knjiga za služitelje još nije omogućena za vaš račun.');
@@ -156,7 +158,7 @@ async function openBook(id){
   const data=await readerRpc(item,'').catch(error=>({allowed:false,code:'request_failed',message:error.message}));
   if(owner!==window.NH7LibrarySecurityV125?.uid())return false;
   if(!await ensureItem(item.id))return false;
-  if(!data?.allowed){window.NH7LibrarySecurityV125?.invalidate('reader_denied');alert(accessError(data));return false}
+  if(!data?.allowed){alert(accessError(data));return false}
   const pages=makePages(readerPayload(data)),position=readPosition(item.id);
   book={item,data,pages,language:data.reader_language||lang()};
   pageIndex=Math.max(0,Math.min(pages.length-1,Number(position.page||0)));

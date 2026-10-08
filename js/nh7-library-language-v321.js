@@ -27,14 +27,70 @@
       { allowed: false, code: 'content_access_required' },
       { status: 403, headers: { 'Cache-Control': 'private, no-store' } },
     );
-  async function cached(owner, row, language) {
-    if (row?.audience !== 'public' || !window.caches) return null;
-    try {
-      const cache = await caches.open(CACHE);
-      return await cache.match(key(owner, row.id, language));
-    } catch (_) {
-      return null;
-    }
+  const offlineMiss = () => Response.json({allowed:false,code:'library_offline_unavailable'}, {status:503});
+  // Dedicated PUBLIC-only IndexedDB store works without WKWebView CacheStorage.
+  // All transactions complete before ready/open succeeds. No unrelated databases are touched.
+  const DB='nh7-reader-public-v125', STORE='readers';
+  let dbPromise, maintenance=Promise.resolve();
+  function database(){
+    if(!window.indexedDB)return Promise.reject(new Error('indexeddb_unavailable'));
+    if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{
+      const request=indexedDB.open(DB,1);
+      request.onupgradeneeded=()=>request.result.createObjectStore(STORE,{keyPath:'key'});
+      request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);
+    });
+    return dbPromise;
+  }
+  async function transaction(mode,work){
+    const db=await database();return new Promise((resolve,reject)=>{
+      const tx=db.transaction(STORE,mode),store=tx.objectStore(STORE);let result;
+      work(store,value=>result=value);
+      tx.oncomplete=()=>resolve(result);tx.onerror=tx.onabort=()=>reject(tx.error||new Error('reader_store_failed'));
+    });
+  }
+  const recordKey=(owner,id,language)=>JSON.stringify([owner,String(id),language]);
+  async function prune(owner,allowed=null){
+    await transaction('readwrite',store=>{
+      const request=store.openCursor();request.onsuccess=()=>{const cursor=request.result;if(!cursor)return;
+        const row=cursor.value;if(!owner||row.uid!==owner||(allowed&&!allowed.has(row.item)))cursor.delete();cursor.continue();};
+    }).catch(()=>{});
+    if(window.caches)try{const cache=await caches.open(CACHE);for(const request of await cache.keys()){
+      const parts=new URL(request.url).pathname.split('/'),uid=decodeURIComponent(parts[parts.length-3]||''),id=decodeURIComponent(parts[parts.length-2]||'');
+      if(!owner||uid!==owner||(allowed&&!allowed.has(id)))await cache.delete(request);
+    }}catch(_){}
+  }
+  window.addEventListener('nh7-library-security',event=>{
+    const owner=window.NH7LibrarySecurityV125?.uid(),reason=event.detail.reason;
+    const allowed=reason==='verified'?new Set(event.detail.bundle.items.filter(x=>x.audience==='public').map(x=>String(x.id))):
+      ['reader_denied','login_required','catalog_denied'].includes(reason)?new Set():null;
+    maintenance=maintenance.then(()=>prune(owner,allowed)).catch(()=>{});
+  });
+  // On startup keep only this UID's records; authorization is checked again before every read.
+  maintenance=maintenance.then(()=>prune(window.NH7LibrarySecurityV125?.uid()));
+  async function cached(owner,row,language){
+    if(row?.audience!=='public')return null;
+    await maintenance;
+    const security=window.NH7LibrarySecurityV125;
+    if(owner!==security?.uid()||!security.publicItem(row.id))return null;
+    let response;
+    try{const record=await transaction('readonly',(store,done)=>{const request=store.get(recordKey(owner,row.id,language));request.onsuccess=()=>done(request.result);});
+      if(record?.data?.allowed===true&&record.data.audience==='public')response=Response.json(record.data);
+    }catch(_){}
+    if(!response&&window.caches)try{response=await(await caches.open(CACHE)).match(key(owner,row.id,language));const data=response?await response.clone().json():null;if(data?.allowed!==true||data?.audience!=='public')response=null;}catch(_){}
+    return owner===security.uid()&&security.publicItem(row.id)?response:null;
+  }
+  async function removeItem(owner,id){
+    await transaction('readwrite',store=>{const request=store.openCursor();request.onsuccess=()=>{const cursor=request.result;if(!cursor)return;if(cursor.value.uid===owner&&cursor.value.item===String(id))cursor.delete();cursor.continue();};}).catch(()=>{});
+    if(window.caches)try{const cache=await caches.open(CACHE);for(const language of ['fa','en','hr'])await cache.delete(key(owner,id,language));}catch(_){}
+  }
+  async function persist(owner,row,language,data,response){
+    await maintenance;
+    const security=window.NH7LibrarySecurityV125;
+    if(owner!==security.uid()||!security.publicItem(row.id))return;
+    if(data.audience==='public')await transaction('readwrite',store=>store.put({key:recordKey(owner,row.id,language),uid:owner,item:String(row.id),language,data})).catch(()=>{});
+    if(owner!==security.uid()||!security.publicItem(row.id)){await removeItem(owner,row.id);return;}
+    if(window.caches)try{await(await caches.open(CACHE)).put(key(owner,row.id,language),response.clone());}catch(_){}
+    if(owner!==security.uid()||!security.publicItem(row.id))await removeItem(owner,row.id);
   }
   // Legacy email/hash reader entries cannot be trusted offline. Production v321 bodies lack
   // item identity: keep those quarantined, requiring one verified PUBLIC online reopen.
@@ -72,6 +128,7 @@
             response &&
             owner === security.uid() &&
             data?.allowed === true &&
+            data?.audience === 'public' &&
             String(data?.item?.id || data?.item_id || '') === String(row.id)
           ) {
             await target.put(key(owner, row.id, language), response.clone());
@@ -129,7 +186,7 @@
     );
     if (!owner || owner !== security?.uid() || !row) return denial();
     if (!navigator.onLine)
-      return (await cached(owner, row, body.p_language)) || denial();
+      return (await cached(owner, row, body.p_language)) || (row.audience==='public'?offlineMiss():denial());
     // v321 retains its five-parameter contract and authorizes through v230/auth.uid().
     let response;
     try {
@@ -142,7 +199,7 @@
       );
     } catch (error) {
       return owner === security.uid()
-        ? (await cached(owner, row, body.p_language)) || denial()
+        ? (await cached(owner, row, body.p_language)) || (row.audience==='public'?offlineMiss():denial())
         : denial();
     }
     if (owner !== security.uid()) return denial();
@@ -151,16 +208,10 @@
       .json()
       .catch(() => null);
     if (!response.ok || data?.allowed === false) {
-      security.invalidate('reader_denied');
-      if (window.caches)
-        try {
-          await (
-            await caches.open(CACHE)
-          ).delete(key(owner, row.id, body.p_language));
-        } catch (_) {}
+      if(response.status===401||response.status===403||(response.ok&&data?.allowed===false&&!['reader_not_ready','reader_unavailable','request_failed'].includes(data.code||''))){security.invalidate('reader_denied');await removeItem(owner,row.id);}
       return response;
     }
-    if (row.audience === 'public' && data?.allowed === true && window.caches) {
+    if (row.audience === 'public' && data?.allowed === true && data?.audience==='public') {
       const current = await security.catalog();
       if (
         owner !== security.uid() ||
@@ -169,11 +220,7 @@
         )
       )
         return denial();
-      try {
-        await (
-          await caches.open(CACHE)
-        ).put(key(owner, row.id, body.p_language), response.clone());
-      } catch (_) {}
+      await persist(owner,row,body.p_language,data,response);
     }
     return response;
   };

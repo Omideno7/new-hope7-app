@@ -42,6 +42,7 @@
   }
   function invalidate(reason = 'identity') {
     generation++;
+    if(reason==='reader_denied'){sessionStorage.removeItem(CACHE+identity);localStorage.removeItem(CACHE+identity);}
     bundle =
       reason === 'offline' || reason === 'unverified'
         ? readPublic(identity)
