@@ -36,7 +36,9 @@
       return null;
     }
   }
-  // Legacy email/hash reader entries cannot be trusted offline. Migrate ONLY exact currently verified public identities.
+  // Legacy email/hash reader entries cannot be trusted offline. Production v321 bodies lack
+  // item identity: keep those quarantined, requiring one verified PUBLIC online reopen.
+  // Never infer identity from audience, title, storage metadata or the legacy hash alone.
   window.addEventListener('nh7-library-security', async (event) => {
     if (event.detail.reason !== 'verified' || !window.caches) return;
     const security = window.NH7LibrarySecurityV125,

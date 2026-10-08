@@ -73,13 +73,13 @@ const offline={...context,window:offlineWindow,document:offlineDoc,MutationObser
 vm.createContext(offline);vm.runInContext(read('js/nh7-offline-persistence-v323.js'),offline);
 assert.equal((await offlineWindow.NH7OfflineV325.status(signed)).cached,false);assert.equal(await offlineWindow.NH7OfflineV325.localPlayable(signed),'');await assert.rejects(offlineWindow.NH7OfflineV325.download(signed,'fixture'),/online verification/);
 console.log('PASS actual worker/offline API: old Library bytes cannot be replayed; audio worker cache lookup preserved.');
-// Execute the active language wrapper: full-text legacy cache is deleted, not read on failure/offline.
+// Execute the active language wrapper: unidentified legacy bodies stay quarantined, never replayed.
 let removedReaderCache='',readerCalls=0;
 window.fetch=async(url,init)=>{readerCalls++;assert(url.endsWith('nh7_library_reader_access_v321'));const body=JSON.parse(init.body);assert.deepEqual(body,{p_item_id:minister.id,p_code:'',p_device_id:'fixture-device',p_user_email:'fixture@example.invalid',p_language:'en'});assert.equal(init.cache,'no-store');return Response.json({allowed:false},{status:403})};
 context.caches={delete:async name=>{removedReaderCache=name;return true},open:async()=>{throw new Error('Reader cache must not be opened')}};
 window.caches=context.caches;context.document.documentElement={lang:'en'};
 vm.runInContext(read('js/nh7-library-language-v321.js'),context);
-assert.equal(removedReaderCache,'','Unidentified legacy text stays quarantined until verified public migration');
+assert.equal(removedReaderCache,'','Unidentified legacy text stays quarantined; fresh public caching requires online reopen');
 const deniedReader=await window.fetch('https://gpzcwffxnddhaeaogdyo.supabase.co/rest/v1/rpc/nh7_library_reader_access_v250',{method:'POST',body:JSON.stringify({p_item_id:minister.id,p_code:'',p_device_id:'fixture-device',p_user_email:'fixture@example.invalid'})});
 assert.equal(deniedReader.status,403);assert.equal(readerCalls,1);
 context.navigator.onLine=false;

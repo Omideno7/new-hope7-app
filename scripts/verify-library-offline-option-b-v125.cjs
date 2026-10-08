@@ -9,6 +9,26 @@ const host = 'https://gpzcwffxnddhaeaogdyo.supabase.co',
   minister = { id: 'minister-book', audience: 'ministers' };
 const url = (id) =>
   host + '/storage/v1/object/sign/nh7-library/' + id + '.pdf?token=synthetic';
+// v321 combines v230 authorization metadata with reader fields; Production supplies NO item.id/item_id.
+const readerResponse = (audience, text, language = 'en') => ({
+  allowed: true,
+  audience,
+  resource_type: 'library',
+  reader_mode: 'text',
+  reader_language: language,
+  reader_status: 'published',
+  reader_page_count: 1,
+  reader: { pages: [{ text }] },
+  available_languages: ['fa', 'en', 'hr'],
+  title_fa: 'کتاب آزمایشی',
+  title_en: 'Fixture book',
+  title_hr: 'Probna knjiga',
+  description_fa: '',
+  description_en: '',
+  description_hr: '',
+});
+assert(!Object.hasOwn(readerResponse('public', 'fixture'), 'item'));
+assert(!Object.hasOwn(readerResponse('public', 'fixture'), 'item_id'));
 (async () => {
   const browser = await chromium.launch({
     executablePath: '/usr/bin/chromium',
@@ -43,20 +63,14 @@ const url = (id) =>
           },
         });
       if (u.includes('nh7_library_reader_access_v321')) {
-        const id = JSON.parse(req.postData()).p_item_id;
+        const body = JSON.parse(req.postData()),
+          isPublic = body.p_item_id === 'public-book';
         return route.fulfill({
-          json: {
-            allowed: true,
-            item: { id },
-            reader: {
-              pages: [
-                {
-                  text:
-                    id === 'public-book' ? 'PUBLIC TEXT' : 'MINISTERS SECRET',
-                },
-              ],
-            },
-          },
+          json: readerResponse(
+            isPublic ? 'public' : 'ministers',
+            isPublic ? 'PUBLIC TEXT' : 'MINISTERS SECRET',
+            body.p_language,
+          ),
         });
       }
       if (u.includes('nh7-library-access'))
@@ -88,43 +102,71 @@ const url = (id) =>
       ])
         localStorage.setItem(key, 'KEEP');
     });
-    await page.evaluate(async () => {
-      const legacy = await caches.open('nh7reader-offline-v327');
-      for (const id of ['public-book', 'minister-book']) {
-        const identity = ['fixture@example.invalid', id, 'fa'].join('|');
-        let h = 2166136261;
-        for (let i = 0; i < identity.length; i++) {
-          h ^= identity.charCodeAt(i);
-          h = Math.imul(h, 16777619);
-        }
-        await legacy.put(
-          new Request(
-            new URL(
-              '__nh7_reader_cache_v327__/' + (h >>> 0).toString(16),
-              location.href,
+    await page.evaluate(
+      async (fixtures) => {
+        const legacy = await caches.open('nh7reader-offline-v327');
+        for (const { id, body } of fixtures) {
+          const identity = ['fixture@example.invalid', id, 'fa'].join('|');
+          let h = 2166136261;
+          for (let i = 0; i < identity.length; i++) {
+            h ^= identity.charCodeAt(i);
+            h = Math.imul(h, 16777619);
+          }
+          await legacy.put(
+            new Request(
+              new URL(
+                '__nh7_reader_cache_v327__/' + (h >>> 0).toString(16),
+                location.href,
+              ),
             ),
-          ),
-          Response.json({
-            allowed: true,
-            item: { id },
-            reader: {
-              pages: [
-                {
-                  text:
-                    id === 'public-book' ? 'LEGACY PUBLIC' : 'LEGACY MINISTERS',
-                },
-              ],
-            },
-          }),
-        );
-      }
-    });
+            Response.json(body),
+          );
+        }
+      },
+      [
+        { id: pub.id, body: readerResponse('public', 'LEGACY PUBLIC', 'fa') },
+        {
+          id: minister.id,
+          body: readerResponse('ministers', 'LEGACY MINISTERS', 'fa'),
+        },
+      ],
+    );
     for (const file of [
       'js/nh7-library-security-v125.js',
       'js/nh7-offline-persistence-v323.js',
       'js/nh7-library-language-v321.js',
     ])
       await page.addScriptTag({ url: base + '/' + file });
+    await page.evaluate(() => NH7LibrarySecurityV125.catalog());
+    await context.setOffline(true);
+    const quarantined = await page.evaluate(async (host) => {
+      localStorage.setItem('nh7_lang', 'fa');
+      const statuses = [];
+      for (const id of ['public-book', 'minister-book'])
+        statuses.push(
+          (
+            await fetch(host + '/rest/v1/rpc/nh7_library_reader_access_v250', {
+              method: 'POST',
+              body: JSON.stringify({ p_item_id: id }),
+            })
+          ).status,
+        );
+      return {
+        statuses,
+        newBodies: (await (await caches.open('nh7reader-public-v125')).keys())
+          .length,
+        legacyBodies: (
+          await (await caches.open('nh7reader-offline-v327')).keys()
+        ).length,
+      };
+    }, host);
+    assert.deepEqual(
+      quarantined,
+      { statuses: [403, 403], newBodies: 0, legacyBodies: 2 },
+      'Known public catalog/hash/audience cannot identify a legacy body; both stay quarantined before online reopen',
+    );
+    await context.setOffline(false);
+    await page.evaluate(() => localStorage.setItem('nh7_lang', 'en'));
     const result = await page.evaluate(
       async ({ host, publicUrl, restrictedUrl }) => {
         const security = NH7LibrarySecurityV125,
@@ -191,16 +233,16 @@ const url = (id) =>
     );
     assert.equal(
       result.readerKeys.length,
-      2,
-      'Verified legacy public reader survives migration alongside new English reader',
+      1,
+      'Only fresh verified PUBLIC online reopen populates the new cache',
     );
     assert.equal(
       await page.evaluate(
         async () =>
           (await (await caches.open('nh7reader-offline-v327')).keys()).length,
       ),
-      0,
-      'Identifiable Ministers reader deleted, public migrated',
+      2,
+      'Production-shaped bodies without item identity remain quarantined, never migrated',
     );
     assert(result.readerKeys[0].includes(pub.id));
     assert.equal(fileCalls, 1, 'Ministers download must not request bytes');
@@ -370,6 +412,22 @@ const url = (id) =>
       privateLocal: '',
       workerPrivate: false,
     });
+    assert.equal(
+      await page.evaluate(async (host) => {
+        localStorage.setItem('nh7_lang', 'fa');
+        const response = await fetch(
+          host + '/rest/v1/rpc/nh7_library_reader_access_v250',
+          {
+            method: 'POST',
+            body: JSON.stringify({ p_item_id: 'public-book' }),
+          },
+        );
+        localStorage.setItem('nh7_lang', 'en');
+        return response.status;
+      }, host),
+      403,
+      'Online English reopen must not resurrect the quarantined Persian legacy body',
+    );
     // A fresh page/module instance retains durable public files + reader while offline.
     const restart = await page.context().newPage();
     await restart.goto(base + '/__optionb_test__');
@@ -564,7 +622,7 @@ const url = (id) =>
     });
     assert.deepEqual(errors, []);
     console.log(
-      'PASS Option B: public web/IDB/cache/native download and offline reader; Ministers persistence/replay blocked; revoke/logout/switch; public retained; reclassification purged; unrelated data retained.',
+      'PASS Option B: Production-shaped v321 without item ID; unidentified legacy public/Ministers bodies quarantined, public online reopen enables offline reader; public web/IDB/cache/native download; Ministers persistence/replay blocked; revoke/logout/switch; public retained; reclassification purged; unrelated data retained.',
     );
   } finally {
     await browser.close();
