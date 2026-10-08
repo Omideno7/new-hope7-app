@@ -230,6 +230,9 @@ jobs:
           node --check supabase/functions/nh7-content-access/library-catalog.mjs
           node scripts/verify-library-security-v125.mjs
           node scripts/verify-content-access-entrypoint-v125.mjs
+          node --check scripts/verify-library-public-ui-v125.cjs
+          git fetch --no-tags origin 82efc731c64f76c051528ae01189521bee0ee8b9
+          node scripts/verify-library-test5-integration-v125.mjs
 
       - name: Validate HTML inline scripts and JSON
         shell: bash

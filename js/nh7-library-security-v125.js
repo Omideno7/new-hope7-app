@@ -250,6 +250,16 @@
       )
     );
   }
+  function publicFile(itemId) {
+    const id = sync();
+    if (!id) return '';
+    const index = files(id);
+    return (
+      Object.keys(index).find(
+        (key) => index[key]?.itemId === String(itemId) && fileAllowed(key),
+      ) || ''
+    );
+  }
   async function reconcileFiles(id, value) {
     const rows = new Map(value.items.map((x) => [String(x.id), x]));
     for (const storageKey of Object.keys(localStorage).filter((key) =>
@@ -339,6 +349,7 @@
     sync,
     libraryFile,
     fileAllowed,
+    publicFile,
   };
   purgeLegacy();
   sync();

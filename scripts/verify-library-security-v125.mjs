@@ -94,5 +94,5 @@ try{
  const changed=execFileSync('git',['diff','--name-only','origin/main'],{cwd:root}).toString().trim().split('\n');
  assert(!changed.some(path=>/^(js\/nh7-admin|js\/nh7-school|js\/nh7-audio|js\/nh7-media|js\/nh7-profile|supabase\/migrations)/.test(path)));
 }catch(error){if(error.code==='ERR_ASSERTION')throw error;console.log('Scope diff unavailable in shallow checkout; local review scope check required.')}
-const app=read('js/app.js');assert(app.includes("invokeEdgeFunction('nh7-library-access'"));assert(read('index.html').indexOf('nh7-library-security-v125.js')<read('index.html').indexOf('nh7-access-bootstrap-v230.js'));
+const app=read('js/app.js');assert(app.includes("$$('[data-save-verse-note]').forEach"));assert(!/(^|[^$])\$\('\[data-save-verse-note\]'\)\.forEach/.test(app));assert(app.includes("invokeEdgeFunction('nh7-library-access'"));assert(read('index.html').indexOf('nh7-library-security-v125.js')<read('index.html').indexOf('nh7-access-bootstrap-v230.js'));
 console.log('PASS source scope and Library loader ordering.');

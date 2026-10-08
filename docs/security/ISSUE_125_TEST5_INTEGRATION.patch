@@ -1,0 +1,1082 @@
+--- a/index.html
++++ b/index.html
+@@ -146,14 +146,15 @@
+   <script src="js/nh7-offline-data-v422.js?v=4.2.2"></script>
+   <script src="js/nh7-audio-route-stability-v423.js?v=4.6.1"></script>
+   <script src="js/nh7-sermon-catalog-hotfix-v424.js?v=4.2.4"></script>
+-  <script src="js/nh7-access-bootstrap-v230.js?v=2.3.9.33"></script>
++  <script src="js/nh7-library-security-v125.js?v=125.3"></script>
++  <script src="js/nh7-access-bootstrap-v230.js?v=2.3.9.33&library=125.3"></script>
+   <script src="js/nh7-auth-signup-guard-v343.js?v=3.5.5"></script>
+   <script src="js/nh7-registration-canonical-v353.js?v=4.0.1"></script>
+   <script src="js/nh7-school-registration-v342.js?v=2.3.9.50"></script>
+   <script src="js/nh7-registration-final-guard-v401.js?v=4.0.1"></script>
+   <script src="js/nh7-registration-repeat-guard-v402.js?v=4.0.2"></script>
+   <script src="js/nh7-offline-playback-bridge-v332.js?v=2.3.9.50-offline403"></script>
+-  <script src="js/nh7-offline-persistence-v323.js?v=2.3.9.50-offline403"></script>
++  <script src="js/nh7-offline-persistence-v323.js?v=2.3.9.50-offline403&library=125.3"></script>
+   <script src="js/nh7-auth-recovery-v342.js?v=2.3.9.50"></script>
+   <script src="js/nh7-audio-classic-v484.js?v=4.8.6-qa250"></script>
+   <script src="js/nh7-audio-miniplayer-v487.js?v=4.8.7" defer></script>
+@@ -162,7 +163,7 @@
+   <script src="js/nh7-audio-library-v500.js?v=5.4.3-fold-audio" defer></script>
+   <script src="js/nh7-note-text-v501.js?v=5.0.3-account-repair"></script>
+   <script src="js/nh7-community-v502.js?v=5.0.9-profile-local-finalqa" defer></script>
+-  <script src="js/app.js?v=4.8.27-finalqa-test5" type="module"></script>
++  <script src="js/app.js?v=4.8.27-finalqa-test5&library=125.3" type="module"></script>
+   <script src="js/nh7-settings-controller-v403.js?v=4.6.4"></script>
+   <script src="js/nh7-settings-account-v252.js?v=2.5.2" defer></script>
+   <script src="js/nh7-delete-account-v253.js?v=2.5.4" defer></script>
+@@ -170,9 +171,9 @@
+   <script src="js/nh7-reader-toolbar-v452.js?v=4.5.3-unified" defer></script>
+   <script src="js/nh7-my-notes-v234.js?v=5.4.4-account-merge" type="module"></script>
+   <script src="js/nh7-my-notes-categories-v452.js?v=4.5.2-r2" defer></script>
+-  <script src="js/nh7-book-reader-v283.js?v=2.3.9.51" defer></script>
+-  <script src="js/nh7-library-language-v321.js?v=2.3.9.33" defer></script>
+-  <script src="js/nh7-library-collections-v322.js?v=2.3.9.51" defer></script>
++  <script src="js/nh7-book-reader-v283.js?v=2.3.9.51&library=125.3" defer></script>
++  <script src="js/nh7-library-language-v321.js?v=2.3.9.33&library=125.3" defer></script>
++  <script src="js/nh7-library-collections-v322.js?v=2.3.9.51&library=125.3" defer></script>
+   <script src="js/nh7-school-media-session-v262.js?v=2.3.9.50" defer></script>
+   <script src="js/nh7-secure-media-v270.js?v=2.3.9.33" defer></script>
+   <script src="js/nh7-secure-media-fix-v271.js?v=2.3.9.33" defer></script>
+--- a/js/app.js
++++ b/js/app.js
+@@ -54,7 +54,7 @@
+ async function nativeDownloadForOffline(url,title,button){const F=capacitorPlugin('Filesystem'),T=capacitorPlugin('FileTransfer');if(!F||!T)throw new Error('Native file plugins unavailable');await ensureNativeOfflineDir();const path=nativeOfflinePath(url),targetUri=await nativeFileUri(path);let handle=null;try{if(button&&T.addListener)handle=await T.addListener('progress',p=>{if(p?.type==='download'&&p.lengthComputable&&p.contentLength>0){const n=Math.min(100,Math.round(Number(p.bytes||0)/Number(p.contentLength)*100));button.textContent=(state.lang==='fa'?'در حال دانلود ':state.lang==='hr'?'Preuzimanje ':'Downloading ')+n+'%'}});await T.downloadFile({url,path:targetUri,progress:true,connectTimeout:60000,readTimeout:120000});const st=await F.stat({directory:'DATA',path});saveOfflineMeta(url,{title:title||'',path,uri:targetUri,bytes:Number(st?.size||0),native:true});return{bytes:Number(st?.size||0),path,uri:targetUri}}finally{try{await handle?.remove?.()}catch(e){}}}
+ async function downloadForOffline(url,title,button){if(!url)return;const original=button?.textContent||'';try{if(button){button.disabled=true;button.textContent=state.lang==='fa'?'در حال دانلود…':state.lang==='hr'?'Preuzimanje…':'Downloading…'}const r=isNativeCapacitor()?await nativeDownloadForOffline(url,title,button):await swMessage('DOWNLOAD_URL',{url,title:title||''});if(!isNativeCapacitor())saveOfflineMeta(url,{title:title||'',bytes:r.bytes||0,native:false});if(button){button.textContent=state.lang==='fa'?'دانلود شد ✓':state.lang==='hr'?'Preuzeto ✓':'Downloaded ✓';button.dataset.offlineCached='1'}}catch(e){console.warn('Offline download failed',e);const d=String(e?.message||'');alert(state.lang==='fa'?'دانلود آفلاین انجام نشد.'+(d?'\n'+d:''):state.lang==='hr'?'Izvanmrežno preuzimanje nije uspjelo.'+(d?'\n'+d:''):'Offline download failed.'+(d?'\n'+d:''));if(button)button.textContent=original}finally{if(button)button.disabled=false}}
+ async function removeOfflineDownload(url,button){try{if(isNativeCapacitor()){const F=capacitorPlugin('Filesystem'),m=offlineMeta(url);if(F&&m?.path)try{await F.deleteFile({directory:'DATA',path:m.path})}catch(e){}removeOfflineMeta(url)}else{await swMessage('REMOVE_URL',{url});removeOfflineMeta(url)}if(button){button.textContent=state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline';button.dataset.offlineCached='0'}}catch(e){console.warn(e)}}
+-async function refreshOfflineButtons(){const bs=$$('[data-offline-download]');await Promise.all(bs.map(async b=>{const u=b.dataset.offlineDownload;if(!u)return;const st=await offlineMediaStatus(u);b.dataset.offlineCached=st.cached?'1':'0';b.textContent=st.cached?(state.lang==='fa'?'آفلاین آماده ✓':state.lang==='hr'?'Offline spremno ✓':'Offline ready ✓'):(state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline')}))}
++async function refreshOfflineButtons(){const bs=$$('[data-offline-download]:not([data-library-offline])');await Promise.all(bs.map(async b=>{const u=b.dataset.offlineDownload;if(!u)return;const st=await offlineMediaStatus(u);b.dataset.offlineCached=st.cached?'1':'0';b.textContent=st.cached?(state.lang==='fa'?'آفلاین آماده ✓':state.lang==='hr'?'Offline spremno ✓':'Offline ready ✓'):(state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline')}))}
+ async function resolveOfflineMediaUrl(url){if(!url||!isNativeCapacitor())return url;const st=await offlineMediaStatus(url);if(!st.cached)return url;const m=offlineMeta(url);let uri=m?.uri||st.uri||'';if(!uri&&m?.path)uri=await nativeFileUri(m.path);return uri?playableNativeUri(uri):url}
+ async function clearDownloadedMedia(){if(isNativeCapacitor()){const F=capacitorPlugin('Filesystem');if(F)try{await F.rmdir({directory:'DATA',path:NATIVE_OFFLINE_DIR,recursive:true})}catch(e){}const ks=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith(OFFLINE_MEDIA_PREFIX))ks.push(k)}ks.forEach(k=>localStorage.removeItem(k));return}await swMessage('CLEAR_MEDIA')}
+ async function prepareCoreOffline(button){const old=button?.textContent||'';try{if(button){button.disabled=true;button.textContent=state.lang==='fa'?'در حال آماده‌سازی…':state.lang==='hr'?'Priprema…':'Preparing…'}if(isNativeCapacitor()){localStorage.setItem('nh7_offline_core_ready',new Date().toISOString());alert(state.lang==='fa'?'محتوای اصلی داخل برنامه نصب شده و برای استفاده آفلاین آماده است.':state.lang==='hr'?'Osnovni sadržaj ugrađen je u aplikaciju i spreman je za offline korištenje.':'Core content is bundled in the app and ready offline.')}else{const r=await swMessage('CACHE_CORE');localStorage.setItem('nh7_offline_core_ready',new Date().toISOString());alert(state.lang==='fa'?`محتوای اصلی برای استفاده آفلاین آماده شد. (${r.cached||0} فایل)`:state.lang==='hr'?'Osnovni sadržaj je spreman za offline korištenje.':'Core content is ready for offline use.')}}catch(e){console.warn(e);alert(state.lang==='fa'?'آماده‌سازی آفلاین کامل نشد. دوباره تلاش کنید.':'Offline preparation did not finish. Please try again.')}finally{if(button){button.disabled=false;button.textContent=old}}}
+@@ -2500,40 +2500,26 @@
+ 
+ let nh7LibraryTab=sessionStorage.getItem('nh7_library_tab')||'public';
+ let nh7LibraryCatalog=[];
+-const NH7_LIBRARY_CATALOG_CACHE_KEY='nh7_library_catalog_cache_v1';
+-const NH7_LIBRARY_CATALOG_CACHE_MS=10*60*1000;
+ function libraryText(row,key){return row?.[key+'_'+state.lang]||row?.[key+'_en']||row?.[key+'_fa']||row?.[key+'_hr']||''}
+ function librarySize(bytes){bytes=Number(bytes||0);if(bytes<1024*1024)return Math.max(1,Math.round(bytes/1024))+' KB';return (bytes/1024/1024).toFixed(1)+' MB'}
+ async function loadLibraryCatalog(force=false){
+-  if(!force&&nh7LibraryCatalog.length)return nh7LibraryCatalog;
+-  if(!force){
+-    try{
+-      const cached=JSON.parse(sessionStorage.getItem(NH7_LIBRARY_CATALOG_CACHE_KEY)||'null');
+-      if(cached&&Array.isArray(cached.items)&&Date.now()-Number(cached.at||0)<NH7_LIBRARY_CATALOG_CACHE_MS){
+-        nh7LibraryCatalog=cached.items;
+-        return nh7LibraryCatalog;
+-      }
+-    }catch(_){}
+-  }
+-  try{
+-    const bundle=await cloudRpc('nh7_library_catalog_v396',{});
+-    nh7LibraryCatalog=Array.isArray(bundle?.items)?bundle.items:[];
+-    try{sessionStorage.setItem(NH7_LIBRARY_CATALOG_CACHE_KEY,JSON.stringify({at:Date.now(),items:nh7LibraryCatalog}))}catch(_){}
+-  }catch(e){
+-    console.warn('Library catalog',e);
+-    if(!nh7LibraryCatalog.length){
+-      try{
+-        const cached=JSON.parse(sessionStorage.getItem(NH7_LIBRARY_CATALOG_CACHE_KEY)||'null');
+-        nh7LibraryCatalog=Array.isArray(cached?.items)?cached.items:[];
+-      }catch(_){nh7LibraryCatalog=[]}
+-    }
+-  }
++  const bundle=await window.NH7LibrarySecurityV125?.catalog();
++  nh7LibraryCatalog=Array.isArray(bundle?.items)?bundle.items:[];
+   return nh7LibraryCatalog;
+ }
+-let nh7LibraryBlobUrlV224='';
+-function nh7ClosePdfViewerV223(){if(nh7LibraryBlobUrlV224){URL.revokeObjectURL(nh7LibraryBlobUrlV224);nh7LibraryBlobUrlV224=''}document.getElementById('nh7PdfViewerV223')?.remove();document.body.classList.remove('nh7-modal-open')}
++window.addEventListener('nh7-library-security',event=>{
++  nh7LibraryCatalog=event.detail.bundle.items;
++  const allowed=new Set(nh7LibraryCatalog.map(row=>String(row.id)));
++  document.querySelectorAll('[data-library-open]').forEach(button=>{if(!allowed.has(button.dataset.libraryOpen)||button.closest('.library-user-card')?.dataset.libraryAudience!==nh7LibraryCatalog.find(row=>String(row.id)===button.dataset.libraryOpen)?.audience)button.closest('.library-user-card')?.remove()});
++  if(nh7LibraryViewerItemV125&&(!allowed.has(nh7LibraryViewerItemV125)||(nh7LibraryViewerPublicV125&&nh7LibraryCatalog.find(row=>String(row.id)===nh7LibraryViewerItemV125)?.audience!=='public')))nh7ClosePdfViewerV223();
++  nh7RefreshLibraryOfflineControlsV125();
++});
++let nh7LibraryBlobUrlV224='',nh7LibraryViewerItemV125='',nh7LibraryViewerPublicV125=false;
++function nh7ClosePdfViewerV223(){nh7LibraryViewerItemV125='';nh7LibraryViewerPublicV125=false;if(nh7LibraryBlobUrlV224){URL.revokeObjectURL(nh7LibraryBlobUrlV224);nh7LibraryBlobUrlV224=''}document.getElementById('nh7PdfViewerV223')?.remove();document.body.classList.remove('nh7-modal-open')}
+ function nh7PdfErrorTextV223(err){
+   const raw=String(err?.code||err?.message||err||'').trim(),key=raw.toLowerCase();
++  if(key.includes('library_offline_unavailable'))return l223('برای باز کردن آفلاین، یک بار آنلاین شوید و این فایل عمومی را دانلود کنید.','Go online and download this public file once before opening it offline.','Povežite se i jednom preuzmite ovu javnu datoteku prije otvaranja offline.');
++  if(key.includes('library_online_required'))return l223('این فایل به تأیید آنلاین نیاز دارد.','This file requires online authorization.','Ova datoteka zahtijeva mrežnu autorizaciju.');
+   if(key.includes('school_approval_required'))return tr('schoolContentGate');
+   if(key.includes('invalid_code')||key.includes('code_invalid')||key.includes('expired')||key.includes('max_uses'))return tr('invalidAccessCode');
+   if(key.includes('item_not_found')||key.includes('not_found'))return l223('این فایل پیدا نشد یا دیگر منتشر نشده است.','This file was not found or is no longer published.','Datoteka nije pronađena ili više nije objavljena.');
+@@ -2542,20 +2528,36 @@
+   return raw||l223('فایل باز نشد. پنجره را ببندید و دوباره تلاش کنید.','The file could not be opened. Close this window and try again.','Datoteka se nije mogla otvoriti.');
+ }
+ function nh7ShowPdfViewerV223(title=''){
+-  nh7ClosePdfViewerV223();const modal=document.createElement('div');modal.id='nh7PdfViewerV223';modal.className='nh7-pdf-viewer-modal';modal.innerHTML=`<div class="nh7-pdf-viewer-dialog"><div class="nh7-pdf-viewer-head"><strong>${html(title||tr('library'))}</strong><div><a class="secondary-btn hidden" id="nh7PdfExternalV223" target="_blank" rel="noopener">${html(tr('openExternal'))}</a><button class="icon-btn" type="button" data-pdf-close aria-label="${html(tr('close'))}">×</button></div></div><div class="nh7-pdf-loading" id="nh7PdfLoadingV223"><div class="spinner"></div><p>${html(tr('securePdfLoading'))}</p></div><iframe class="hidden" id="nh7PdfFrameV223" title="Document"></iframe><div class="nh7-docx-reader hidden" id="nh7DocxReaderV224"></div></div>`;document.body.appendChild(modal);document.body.classList.add('nh7-modal-open');modal.querySelectorAll('[data-pdf-close]').forEach(b=>b.onclick=nh7ClosePdfViewerV223);modal.onclick=e=>{if(e.target===modal)nh7ClosePdfViewerV223()};return modal;
++  nh7ClosePdfViewerV223();const modal=document.createElement('div');modal.id='nh7PdfViewerV223';modal.className='nh7-pdf-viewer-modal';modal.innerHTML=`<div class="nh7-pdf-viewer-dialog"><div class="nh7-pdf-viewer-head"><strong>${html(title||tr('library'))}</strong><div><a class="secondary-btn hidden" id="nh7PdfExternalV223" target="_blank" rel="noopener">${html(tr('openExternal'))}</a><button class="icon-btn" type="button" data-pdf-close aria-label="${html(tr('close'))}">×</button></div></div><div class="nh7-pdf-loading" id="nh7PdfLoadingV223"><div class="spinner"></div><p>${html(tr('securePdfLoading'))}</p></div><iframe class="hidden" id="nh7PdfFrameV223" title="${html(tr('document'))}"></iframe><div class="nh7-docx-reader hidden" id="nh7DocxReaderV224"></div></div>`;document.body.appendChild(modal);document.body.classList.add('nh7-modal-open');modal.querySelectorAll('[data-pdf-close]').forEach(b=>b.onclick=nh7ClosePdfViewerV223);modal.onclick=e=>{if(e.target===modal)nh7ClosePdfViewerV223()};return modal;
+ }
+ async function openLibraryPdf(item){
+   if(!item)return;if(!await nh7RequireSchoolAccessV223(tr('library')))return;
++  const owner=window.NH7LibrarySecurityV125?.uid();
+   const code='';
+   const title=libraryText(item,'title')||item.file_name||'Document',modal=nh7ShowPdfViewerV223(title);
++  nh7LibraryViewerItemV125=String(item.id);nh7LibraryViewerPublicV125=item.audience==='public';
+   try{
+-    const d=await invokeEdgeFunction('nh7-library-access',{item_id:item.id,code,device_id:deviceId(),user_email:currentUserEmail()||''});
+-    if(!d?.signed_url)throw new Error(d?.error||'No signed URL');
++    let local='',d;
++    if(!navigator.onLine){
++      await window.NH7LibrarySecurityV125?.catalog();
++      const row=nh7LibraryCatalog.find(row=>String(row.id)===String(item.id));
++      if(row?.audience!=='public'||owner!==window.NH7LibrarySecurityV125?.uid())throw new Error('library_online_required');
++      const path=window.NH7LibrarySecurityV125?.publicFile(item.id);
++      local=path?await window.NH7OfflineV325?.localPlayable(path):'';
++      if(!local)throw new Error('library_offline_unavailable');
++      if(owner!==window.NH7LibrarySecurityV125?.uid()||!window.NH7LibrarySecurityV125?.fileAllowed(path)||!modal.isConnected)return;
++      d={mime_type:row.mime_type,file_name:row.file_name};
++    }else d=await nh7LibrarySignedFileV125(item);
++
++    if(owner!==window.NH7LibrarySecurityV125?.uid()||!modal.isConnected)return;
++    if(!local&&!d?.signed_url)throw new Error(d?.error||'No signed URL');
+     if(item.audience==='ministers')sessionStorage.setItem('nh7_minister_library_code',JSON.stringify({code,at:Date.now()}));
+     trackAppSection('library:'+item.audience+':open');nh7TrackContentV223((item.resource_type||'library')==='apocrypha'?'apocrypha':'library_pdf',String(item.id),title);
+-    const external=modal.querySelector('#nh7PdfExternalV223'),loading=modal.querySelector('#nh7PdfLoadingV223'),mime=String(d.mime_type||item.mime_type||'application/pdf').toLowerCase();external.href=d.signed_url;external.classList.remove('hidden');
+-    const response=await fetch(d.signed_url,{cache:'no-store'});if(!response.ok)throw new Error('Document download failed: '+response.status);
++    const external=modal.querySelector('#nh7PdfExternalV223'),loading=modal.querySelector('#nh7PdfLoadingV223'),mime=String(d.mime_type||item.mime_type||'application/pdf').toLowerCase();external.href=local||d.signed_url;external.classList.remove('hidden');
++    if(local&&!mime.includes('wordprocessingml')&&!/\.docx$/i.test(d.file_name||item.file_name||'')){modal.querySelector('#nh7PdfFrameV223').src=local+'#toolbar=1&navpanes=0&view=FitH';modal.querySelector('#nh7PdfFrameV223').classList.remove('hidden');loading?.classList.add('hidden');return;}
++    const response=await fetch(local||d.signed_url,{cache:'no-store'});if(!response.ok)throw new Error('Document download failed: '+response.status);
+     const blob=await response.blob();
++    if(owner!==window.NH7LibrarySecurityV125?.uid()||!modal.isConnected)return;
+     if(mime.includes('wordprocessingml')||/\.docx$/i.test(d.file_name||item.file_name||'')){
+       if(!window.mammoth)throw new Error(l223('نمایش Word هنوز بارگذاری نشده است؛ دوباره تلاش کنید.','Word reader is not loaded yet. Please retry.','Čitač Worda nije učitan. Pokušajte ponovno.'));
+       const reader=modal.querySelector('#nh7DocxReaderV224'),result=await window.mammoth.convertToHtml({arrayBuffer:await blob.arrayBuffer()});reader.innerHTML=`<article class="nh7-docx-page"><h1>${html(title)}</h1>${result.value}</article>`;reader.classList.remove('hidden');
+@@ -2569,7 +2571,44 @@
+   }
+ }
+ 
+-function libraryUserCardV224(x,isApocrypha=false){const mime=String(x.mime_type||'application/pdf'),label=mime.includes('wordprocessingml')||/\.docx$/i.test(x.file_name||'')?'DOCX':'PDF';return `<article class="library-user-card"><div class="library-user-icon">${label}</div><span class="library-audience ${html(x.audience)}">${x.audience==='ministers'?'🔒 '+tr('ministersLibrary'):'🌍 '+tr('publicLibrary')}</span><h3>${html(libraryText(x,'title')||x.file_name||label)}</h3><p>${html(libraryText(x,'description')||'')}</p><small class="muted">${html(x.file_name||'')} · ${librarySize(x.file_size)}</small><div class="button-row"><button class="primary-btn" data-library-open="${html(x.id)}">${x.audience==='ministers'?'🔐':'📖'} ${html(isApocrypha?l223('باز کردن','Open','Otvori'):tr('openPdf'))}</button></div></article>`}
++// Public offline UI uses only UID/catalog/file proofs, never a filename or URL guess.
++async function nh7LibrarySignedFileV125(item){
++  const security=window.NH7LibrarySecurityV125,owner=security?.uid(),bundle=await security?.catalog();
++  if(!navigator.onLine||!owner||owner!==security?.uid()||!bundle?.items.some(row=>String(row.id)===String(item.id)))throw new Error('library_online_required');
++  const data=await invokeEdgeFunction('nh7-library-access',{item_id:item.id,code:'',device_id:deviceId(),user_email:currentUserEmail()||''});
++  if(owner!==security?.uid())throw new Error('library_online_required');
++  return data;
++}
++async function nh7RefreshLibraryOfflineControlsV125(){
++  for(const button of document.querySelectorAll('[data-library-offline]')){
++    if(button.disabled)continue;
++    const id=button.dataset.libraryOffline,owner=window.NH7LibrarySecurityV125?.uid(),row=nh7LibraryCatalog.find(row=>String(row.id)===id);
++    if(!owner||row?.audience!=='public'){button.remove();continue;}
++    const path=window.NH7LibrarySecurityV125?.publicFile(id),status=path?await window.NH7OfflineV325?.status(path):null;
++    if(!button.isConnected||button.disabled||owner!==window.NH7LibrarySecurityV125?.uid())continue;
++    button.dataset.offlineDownload=path||'';button.dataset.offlineCached=status?.cached?'1':'0';
++    button.textContent=status?.cached?l223('آفلاین آماده ✓','Offline ready ✓','Offline spremno ✓'):l223('دانلود برای آفلاین','Download offline','Preuzmi offline');
++  }
++}
++async function nh7DownloadPublicLibraryV125(button){
++  if(button.disabled)return;button.disabled=true;
++  const id=button.dataset.libraryOffline,owner=window.NH7LibrarySecurityV125?.uid();
++  try{
++    const bundle=await window.NH7LibrarySecurityV125?.catalog(),item=bundle?.items.find(row=>String(row.id)===id&&row.audience==='public');
++    if(!owner||owner!==window.NH7LibrarySecurityV125?.uid()||!item)throw new Error('library_online_required');
++    const path=window.NH7LibrarySecurityV125.publicFile(id),status=path?await window.NH7OfflineV325?.status(path,true):null;
++    if(status?.cached){if(confirm(l223('این فایل از حافظه آفلاین پاک شود؟','Remove this offline download?','Ukloniti ovu offline datoteku?')))await window.NH7OfflineV325.remove(path);}
++    else{
++      if(!navigator.onLine)throw new Error('library_offline_unavailable');
++      const data=await nh7LibrarySignedFileV125(item);
++      if(!data?.signed_url||owner!==window.NH7LibrarySecurityV125?.uid()||!window.NH7LibrarySecurityV125?.fileAllowed(data.signed_url))throw new Error('library_online_required');
++      await window.NH7OfflineV325.download(data.signed_url,libraryText(item,'title')||item.file_name,button);
++    }
++  }catch(error){alert(nh7PdfErrorTextV223(error));}
++  finally{button.disabled=false;nh7RefreshLibraryOfflineControlsV125();}
++}
++
++function libraryUserCardV224(x,isApocrypha=false){const mime=String(x.mime_type||'application/pdf'),label=mime.includes('wordprocessingml')||/\.docx$/i.test(x.file_name||'')?'DOCX':'PDF';return `<article class="library-user-card" data-library-audience="${html(x.audience||'')}"><div class="library-user-icon">${label}</div><span class="library-audience ${html(x.audience)}">${x.audience==='ministers'?'🔒 '+tr('ministersLibrary'):'🌍 '+tr('publicLibrary')}</span><h3>${html(libraryText(x,'title')||x.file_name||label)}</h3><p>${html(libraryText(x,'description')||'')}</p><small class="muted">${html(x.file_name||'')} · ${librarySize(x.file_size)}</small><div class="button-row"><button class="primary-btn" data-library-open="${html(x.id)}">${x.audience==='ministers'?'🔐':'📖'} ${html(isApocrypha?l223('باز کردن','Open','Otvori'):tr('openPdf'))}</button>${x.audience==='public'?`<button type="button" class="secondary-btn" data-library-offline="${html(x.id)}" data-offline-download="${html(window.NH7LibrarySecurityV125?.publicFile(x.id)||'')}" data-offline-title="${html(libraryText(x,'title')||x.file_name||'')}">${html(l223('دانلود برای آفلاین','Download offline','Preuzmi offline'))}</button>`:''}</div></article>`}
+ 
+ async function library(params={}){
+   if(!await nh7RequireSchoolAccessV223(tr('library')))return;
+@@ -2991,9 +3030,11 @@
+ 
+ function bindDynamic(){
+   $$('[data-library-tab]').forEach(el=>el.onclick=()=>{nh7LibraryTab=el.dataset.libraryTab||'public';render('library',{tab:nh7LibraryTab},true)});
++  $$('[data-library-offline]').forEach(el=>el.onclick=()=>nh7DownloadPublicLibraryV125(el));
++  nh7RefreshLibraryOfflineControlsV125();
+   $$('[data-library-open]').forEach(el=>el.onclick=()=>openLibraryPdf(nh7LibraryCatalog.find(x=>String(x.id)===String(el.dataset.libraryOpen))));
+   $$('[data-go]').forEach(el=>el.onclick=()=>navigate(el.dataset.go, JSON.parse(el.dataset.params||'{}')));
+-  $$('[data-offline-download]').forEach(el=>el.onclick=async()=>{const url=el.dataset.offlineDownload;if(el.dataset.offlineCached==='1'){if(confirm(state.lang==='fa'?'این فایل از حافظه آفلاین پاک شود؟':'Remove this offline download?'))await removeOfflineDownload(url,el)}else await downloadForOffline(url,el.dataset.offlineTitle||'',el)});
++  $$('[data-offline-download]:not([data-library-offline])').forEach(el=>el.onclick=async()=>{const url=el.dataset.offlineDownload;if(el.dataset.offlineCached==='1'){if(confirm(state.lang==='fa'?'این فایل از حافظه آفلاین پاک شود؟':'Remove this offline download?'))await removeOfflineDownload(url,el)}else await downloadForOffline(url,el.dataset.offlineTitle||'',el)});
+   refreshOfflineButtons().catch(()=>{});
+   $$('.reader-verse').forEach(el=>{el.onclick=e=>{if(e.target.closest('button,textarea,input,a,.verse-tools,.verse-note-box'))return;const was=el.classList.contains('verse-selected');$$('.reader-verse.verse-selected').forEach(v=>{v.classList.remove('verse-selected');v.querySelector('.verse-tools')?.classList.add('hidden');v.querySelector('.verse-note-box')?.classList.add('hidden')});if(!was){el.classList.add('verse-selected');el.querySelector('.verse-tools')?.classList.remove('hidden')}};el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click()}}});
+   $$('.verse-tools,.verse-note-box').forEach(el=>el.onclick=e=>e.stopPropagation());
+@@ -3007,7 +3048,8 @@
+   $$('[data-highlight-clear]').forEach(el=>el.onclick=e=>{e.stopPropagation();const key=el.dataset.highlightClear,st=JSON.parse(localStorage.getItem(key)||'{}'),verse=el.closest('.reader-verse');st.highlight=false;delete st.highlightColor;localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);verse?.classList.remove('highlighted','highlight-yellow','highlight-red','highlight-green','highlight-blue');el.closest('.highlight-palette')?.classList.add('hidden')});
+   $$('[data-note-verse],[data-note-marker]').forEach(el=>el.onclick=()=>{const id=el.dataset.noteVerse||el.dataset.noteMarker,box=$('#'+CSS.escape(id));if(box){$$('.verse-note-box').forEach(x=>{if(x!==box)x.classList.add('hidden')});box.classList.toggle('hidden')}});
+   $$('[data-close-verse-note]').forEach(el=>el.onclick=()=>el.closest('.verse-note-box')?.classList.add('hidden'));
+-  $('[data-save-verse-note]').forEach(el=>el.onclick=()=>{const key=el.dataset.saveVerseNote,input=$(`[data-note-input="${CSS.escape(key)}"]`),verse=el.closest('.reader-verse');let st={};try{st=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}st.note=(window.NH7NoteTextV501?.normalize?.(input?.value||'')??(input?.value||'')).slice(0,1000);localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);const ref=verse?.querySelector('[data-bookmark]')?.dataset.bookmark||verse?.querySelector('[data-share-verse]')?.dataset.shareVerse||'';const verseText=verse?.querySelector('.verse-text')?.textContent||'';window.NH7BibleBatchV230?.syncPayload?.({batch_id:crypto.randomUUID?.()||String(Date.now()),language:state.lang,items:[{verse_key:key,verse_ref:ref,verse_text:verseText,saved:!!st.saved,highlight_color:st.highlight?String(st.highlightColor||'yellow'):'',note:String(st.note||'')}]});let marker=verse?.querySelector('.verse-note-marker');if(st.note&&!marker&&verse){marker=document.createElement('button');marker.type='button';marker.className='verse-note-marker';marker.dataset.noteMarker=el.closest('.verse-note-box')?.id||'';marker.textContent='📓';marker.title=tr('noteAvailable');marker.onclick=()=>el.closest('.verse-note-box')?.classList.toggle('hidden');verse.querySelector('.verse-text')?.after(marker)}else if(!st.note&&marker)marker.remove();el.textContent=tr('saved');setTimeout(()=>el.closest('.verse-note-box')?.classList.add('hidden'),350)});
++  // querySelectorAll ($$) keeps routes with zero verse-note controls safe in Safari.
++  $$('[data-save-verse-note]').forEach(el=>el.onclick=()=>{const key=el.dataset.saveVerseNote,input=$(`[data-note-input="${CSS.escape(key)}"]`),verse=el.closest('.reader-verse');let st={};try{st=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}st.note=(window.NH7NoteTextV501?.normalize?.(input?.value||'')??(input?.value||'')).slice(0,1000);localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);const ref=verse?.querySelector('[data-bookmark]')?.dataset.bookmark||verse?.querySelector('[data-share-verse]')?.dataset.shareVerse||'';const verseText=verse?.querySelector('.verse-text')?.textContent||'';window.NH7BibleBatchV230?.syncPayload?.({batch_id:crypto.randomUUID?.()||String(Date.now()),language:state.lang,items:[{verse_key:key,verse_ref:ref,verse_text:verseText,saved:!!st.saved,highlight_color:st.highlight?String(st.highlightColor||'yellow'):'',note:String(st.note||'')}]});let marker=verse?.querySelector('.verse-note-marker');if(st.note&&!marker&&verse){marker=document.createElement('button');marker.type='button';marker.className='verse-note-marker';marker.dataset.noteMarker=el.closest('.verse-note-box')?.id||'';marker.textContent='📓';marker.title=tr('noteAvailable');marker.onclick=()=>el.closest('.verse-note-box')?.classList.toggle('hidden');verse.querySelector('.verse-text')?.after(marker)}else if(!st.note&&marker)marker.remove();el.textContent=tr('saved');setTimeout(()=>el.closest('.verse-note-box')?.classList.add('hidden'),350)});
+   $$('[data-share-verse]').forEach(el=>el.onclick=async()=>{ const txt=`${localizeRef(el.dataset.shareVerse)} — ${el.dataset.shareText||''}`; try{ if(navigator.share) await navigator.share({text:txt}); else { await navigator.clipboard.writeText(txt); alert(tr('saved')); } window.NH7BibleBatchV230?.clearSelection?.(); }catch(e){} });
+   $$('[data-complete-daily]').forEach(el=>el.onclick=()=>{ const key='nh7_daily_done_'+el.dataset.completeDaily; if(!localStorage.getItem(key)){ localStorage.setItem(key,'1'); saveProgressCloud(key,{done:true,at:new Date().toISOString()}).catch(console.warn); addPoints(3,'daily_1'); } el.textContent=tr('dailyCompleted'); });
+   $$('[data-open-ref]').forEach(el=>el.onclick=async()=>{ await loadBibleMeta(); const ref=parseRef(el.dataset.openRef); if(ref){ const params={mode:'chapter',bookId:ref.bookId,chapter:ref.chapter}; if((el.dataset.openRefMode||'verse')==='verse') params.verse=ref.verse; navigate('bible',params); } });
+--- a/js/nh7-access-bootstrap-v230.js
++++ b/js/nh7-access-bootstrap-v230.js
+@@ -83,6 +83,21 @@
+ function jsonResponse(body,status=200,extra={}){return new Response(JSON.stringify(body),{status,headers:Object.assign({'Content-Type':'application/json; charset=utf-8','Cache-Control':'private, no-store'},extra)})}
+ async function protectedCatalog(url,resource){
+   if(!token())return jsonResponse({message:'Registration and approved school access are required.',code:'login_required'},401);
++  if(resource==='library'){
++    // Legacy views use the same current UID-scoped RPC; never call the School-only Edge catalog.
++    const bundle=await window.NH7LibrarySecurityV125?.catalog();
++    let items=bundle?.items||[];
++    for(const [field,filter] of url.searchParams){
++      if(['select','order','limit','offset'].includes(field))continue;
++      if(filter.startsWith('eq.'))items=items.filter(row=>String(row[field])===filter.slice(3));
++      else if(filter.startsWith('is.'))items=items.filter(row=>String(row[field])===filter.slice(3));
++      else return jsonResponse({code:'unsupported_library_filter'},400);
++    }
++    const order=url.searchParams.get('order');if(order){const [field,direction]=order.split('.');items=[...items].sort((a,b)=>String(a[field]??'').localeCompare(String(b[field]??''))*(direction==='desc'?-1:1))}
++    const offset=Math.max(0,Number(url.searchParams.get('offset'))||0),limit=url.searchParams.get('limit');
++    items=items.slice(offset,limit===null?undefined:offset+Math.max(0,Number(limit)||0));
++    return jsonResponse(items);
++  }
+   const query=url.searchParams.toString(),stored=readCatalog(resource,query);
+   if(!navigator.onLine){
+     if(stored)return jsonResponse(stored.items,200,{'X-NH7-Offline':'1'});
+--- a/js/nh7-book-reader-v283.js
++++ b/js/nh7-book-reader-v283.js
+@@ -40,12 +40,8 @@
+ const SELECT_FIELDS='id,title_fa,title_en,title_hr,audience,resource_type,apocrypha_book,reader_mode,reader_language,reader_status,reader_available,reader_page_count,collection_id';
+ 
+ async function catalogBundle(){
+-  const current=await ensureSession();
+-  if(!current?.access_token)return null;
+-  const response=await fetch(`${URL}/rest/v1/rpc/nh7_library_catalog_v396`,{method:'POST',headers:await headers(),body:'{}',cache:'no-store'});
+-  if(!response.ok)throw new Error(await response.text());
+-  const data=await response.json();
+-  return Array.isArray(data)?data[0]:data;
++  await ensureSession();
++  return window.NH7LibrarySecurityV125?.catalog();
+ }
+ async function loadCatalog(force=false){
+   if(catalogBusy||(!force&&Date.now()-lastCatalog<15000))return;
+@@ -55,14 +51,19 @@
+     const rows=Array.isArray(bundle?.items)?bundle.items.filter(row=>row.reader_available):[];
+     catalog=new Map(rows.map(row=>[String(row.id),row]));
+     lastCatalog=Date.now();
+-  }catch(error){console.warn('[NH7 book catalog]',error)}finally{catalogBusy=false;decorate()}
++  }catch(error){catalog=new Map();console.warn('[NH7 book catalog]',error)}finally{catalogBusy=false;decorate()}
+ }
+ async function ensureItem(id){
+-  id=String(id||'');
+-  if(catalog.has(id))return catalog.get(id);
+-  await loadCatalog(true);
+-  return catalog.get(id)||null;
+-}
++  const bundle=await catalogBundle();
++  catalog=new Map((bundle?.items||[]).filter(row=>row.reader_available).map(row=>[String(row.id),row]));
++  return catalog.get(String(id))||null;
++}
++
++window.addEventListener('nh7-library-security',event=>{
++  catalog=new Map(event.detail.bundle.items.filter(row=>row.reader_available).map(row=>[String(row.id),row]));
++  if(book&&!catalog.has(String(book.item.id))){removeModal();book=null}
++  document.querySelectorAll('[data-nh7-book-open]').forEach(button=>{if(!catalog.has(button.dataset.nh7BookOpen))button.remove()});
++});
+ function decorate(){
+   document.querySelectorAll('[data-library-open]').forEach(fileButton=>{
+     const id=String(fileButton.dataset.libraryOpen||''),row=catalog.get(id);
+@@ -149,8 +150,11 @@
+   if(!item){alert(L('نسخهٔ متنی این کتاب پیدا نشد.','The text edition of this book was not found.','Tekstualno izdanje knjige nije pronađeno.'));return false}
+   const current=await ensureSession();
+   if(!current?.access_token){alert(L('برای مطالعه کتاب ابتدا وارد حساب شوید.','Sign in before reading.','Prijavite se prije čitanja.'));return false}
++  const owner=window.NH7LibrarySecurityV125?.uid();
+   const data=await readerRpc(item,'').catch(error=>({allowed:false,code:'request_failed',message:error.message}));
+-  if(!data?.allowed){alert(accessError(data));return false}
++  if(owner!==window.NH7LibrarySecurityV125?.uid())return false;
++  if(!await ensureItem(item.id))return false;
++  if(!data?.allowed){window.NH7LibrarySecurityV125?.invalidate('reader_denied');alert(accessError(data));return false}
+   const pages=makePages(readerPayload(data)),position=readPosition(item.id);
+   book={item,data,pages,language:data.reader_language||lang()};
+   pageIndex=Math.max(0,Math.min(pages.length-1,Number(position.page||0)));
+--- a/js/nh7-library-collections-v322.js
++++ b/js/nh7-library-collections-v322.js
+@@ -1,39 +1,30 @@
+ /* New Hope 7 v3.2.7 — dynamic library collections with offline cache */
+ (()=>{'use strict';
+ const VERSION='3.2.7-library-collections-offline';
+-const URL='https://gpzcwffxnddhaeaogdyo.supabase.co';
+-const KEY='sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37';
+ const SESSION_KEY='nh7_user_session_v170';
+-const CACHE_PREFIX='nh7_library_collections_cache_v327_';
+ let collections=[],itemMap=new Map(),loading=false,lastLoad=0,mountTimer=0,selectedCollection='',selectedAudience='';
+ const lang=()=>{const value=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return['fa','en','hr'].includes(value)?value:'en'};
+ const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
+ const E=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+ function session(){try{return JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch(_){return null}}
+-function token(){return String(session()?.access_token||'')}
+-function email(){return String(session()?.user?.email||'').trim().toLowerCase()}
+-function hash(value){let h=2166136261;for(let i=0;i<String(value).length;i++){h^=String(value).charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(16)}
+-function cacheKey(){return CACHE_PREFIX+hash(email()||'guest')}
+-function headers(){return{apikey:KEY,Authorization:'Bearer '+(token()||KEY),'Content-Type':'application/json'}}
++function token(){return window.NH7LibrarySecurityV125?.uid()?String(session()?.access_token||''):''}
+ function title(row){const l=lang();return row?.['title_'+l]||row?.title_en||row?.title_fa||row?.title_hr||row?.slug||L('مجموعه','Collection','Zbirka')}
+ function description(row){const l=lang();return row?.['description_'+l]||row?.description_en||row?.description_fa||row?.description_hr||''}
+-function applyCache(value){if(!value||!Array.isArray(value.collections)||!Array.isArray(value.items))return false;collections=value.collections;itemMap=new Map(value.items.map(row=>[String(row.id),row]));lastLoad=Number(value.saved_at||Date.now());return true}
+-function readCache(){try{return JSON.parse(localStorage.getItem(cacheKey())||'null')}catch(_){return null}}
+-function saveCache(items){try{localStorage.setItem(cacheKey(),JSON.stringify({collections,items,saved_at:Date.now(),user_email:email()}))}catch(_){}}
+ async function load(force=false){
+-  if(loading||!token()||(!force&&Date.now()-lastLoad<20000))return;
+-  if(!navigator.onLine){applyCache(readCache());scheduleMount();return}
++  if(loading||(!force&&Date.now()-lastLoad<20000))return;
+   loading=true;
+   try{
+-    const response=await fetch(`${URL}/rest/v1/rpc/nh7_library_catalog_v396`,{method:'POST',headers:headers(),body:'{}',cache:'no-store'});
+-    if(!response.ok)throw new Error(await response.text());
+-    const raw=await response.json(),bundle=Array.isArray(raw)?raw[0]:raw;
+-    collections=Array.isArray(bundle?.collections)?bundle.collections:[];
+-    const items=Array.isArray(bundle?.items)?bundle.items:[];
+-    itemMap=new Map(items.map(row=>[String(row.id),row]));lastLoad=Date.now();saveCache(items)
+-  }catch(error){console.warn('Library collections',error);if(!applyCache(readCache())){collections=[];itemMap=new Map()}}
+-  finally{loading=false;scheduleMount()}
++    const value=await window.NH7LibrarySecurityV125?.catalog();
++    collections=value?.collections||[];itemMap=new Map((value?.items||[]).map(row=>[String(row.id),row]));
++  }finally{lastLoad=Date.now();loading=false;scheduleMount()}
+ }
++window.addEventListener('nh7-library-security',event=>{
++  const next=event.detail.bundle;
++  const changed=JSON.stringify([collections,[...itemMap.values()]])!==JSON.stringify([next.collections,next.items]);
++  collections=next.collections;itemMap=new Map(next.items.map(row=>[String(row.id),row]));
++  if(changed){selectedCollection='';libraryRoot()?.querySelector('[data-nh7-library-collection-host]')?.remove()}scheduleMount();
++});
++
+ function audience(){return sessionStorage.getItem('nh7_library_tab')==='ministers'?'ministers':'public'}
+ function libraryRoot(){const tabs=document.querySelector('.library-user-tabs');if(!tabs)return null;return tabs.closest('section,.card')||tabs.parentElement}
+ function originalGrid(root){return root?.querySelector('.library-user-grid[data-nh7-original-library-grid]')||root?.querySelector('.library-user-grid')}
+--- a/js/nh7-library-language-v321.js
++++ b/js/nh7-library-language-v321.js
+@@ -1,30 +1,184 @@
+-/* New Hope 7 v3.2.7 — multilingual in-app books with offline reader cache */
+-(()=>{'use strict';
+-const VERSION='3.2.7-library-reader-offline';
+-const CACHE='nh7reader-offline-v327';
+-const SESSION='nh7_user_session_v170';
+-if(window.fetch?.__nh7LibraryLanguageV327)return;
+-const original=window.fetch.bind(window);
+-function email(){try{return String(JSON.parse(localStorage.getItem(SESSION)||'null')?.user?.email||'').trim().toLowerCase()}catch(_){return''}}
+-function hash(value){let h=2166136261;for(let i=0;i<String(value).length;i++){h^=String(value).charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(16)}
+-function cacheRequest(body){const id=[email(),body?.p_item_id||'',body?.p_language||'fa'].join('|');return new Request(new URL(`__nh7_reader_cache_v327__/${hash(id)}`,location.href).href)}
+-async function cached(body){if(!('caches'in window))return null;try{return await (await caches.open(CACHE)).match(cacheRequest(body))}catch(_){return null}}
+-async function store(body,response){if(!('caches'in window)||!response?.ok)return;try{await (await caches.open(CACHE)).put(cacheRequest(body),response.clone())}catch(_){}}
+-const wrapped=async function(input,init={}){
+-  try{
+-    const raw=typeof input==='string'?input:input?.url||'';
+-    if(raw.includes('/rest/v1/rpc/nh7_library_reader_access_v250')||raw.includes('/rest/v1/rpc/nh7_library_reader_access_v321')){
+-      const url=raw.replace('/nh7_library_reader_access_v250','/nh7_library_reader_access_v321');
+-      const next=Object.assign({},init||{});let body={};
+-      try{body=JSON.parse(String(next.body||'{}'))||{}}catch(_){body={}}
+-      const language=localStorage.getItem('nh7_lang')||document.documentElement.lang||'fa';
+-      body.p_language=['fa','en','hr'].includes(language)?language:'fa';next.body=JSON.stringify(body);
+-      if(!navigator.onLine){const hit=await cached(body);if(hit)return hit.clone()}
+-      try{const response=await original(url,next);if(response.ok)await store(body,response);else{const hit=await cached(body);if(hit)return hit.clone()}return response}
+-      catch(error){const hit=await cached(body);if(hit)return hit.clone();throw error}
++/* Option B: UID/language-scoped PUBLIC reader cache; Ministers always online + v321 authorization. */
++(() => {
++  'use strict';
++  const VERSION = '125.2-library-public-offline',
++    CACHE = 'nh7reader-public-v125',
++    LEGACY = 'nh7reader-offline-v327';
++  if (window.fetch?.__nh7LibraryLanguageV125) return;
++  const original = window.fetch.bind(window);
++  const key = (uid, id, language) =>
++    new Request(
++      new URL(
++        '__nh7_reader_public_v125__/' +
++          [uid, id, language].map(encodeURIComponent).join('/'),
++        location.href,
++      ).href,
++    );
++  function hash(value) {
++    let h = 2166136261;
++    for (let i = 0; i < value.length; i++) {
++      h ^= value.charCodeAt(i);
++      h = Math.imul(h, 16777619);
+     }
+-  }catch(error){console.warn('Library language/offline routing',error);throw error}
+-  return original(input,init);
+-};
+-wrapped.__nh7LibraryLanguageV321=true;wrapped.__nh7LibraryLanguageV327=true;window.fetch=wrapped;window.NH7_LIBRARY_LANGUAGE_VERSION=VERSION;
++    return (h >>> 0).toString(16);
++  }
++  const denial = () =>
++    Response.json(
++      { allowed: false, code: 'content_access_required' },
++      { status: 403, headers: { 'Cache-Control': 'private, no-store' } },
++    );
++  async function cached(owner, row, language) {
++    if (row?.audience !== 'public' || !window.caches) return null;
++    try {
++      const cache = await caches.open(CACHE);
++      return await cache.match(key(owner, row.id, language));
++    } catch (_) {
++      return null;
++    }
++  }
++  // Legacy email/hash reader entries cannot be trusted offline. Production v321 bodies lack
++  // item identity: keep those quarantined, requiring one verified PUBLIC online reopen.
++  // Never infer identity from audience, title, storage metadata or the legacy hash alone.
++  window.addEventListener('nh7-library-security', async (event) => {
++    if (event.detail.reason !== 'verified' || !window.caches) return;
++    const security = window.NH7LibrarySecurityV125,
++      owner = security.uid();
++    let email = '';
++    try {
++      const s = JSON.parse(
++        localStorage.getItem('nh7_user_session_v170') || 'null',
++      );
++      email = String((s?.currentSession || s?.session || s)?.user?.email || '')
++        .trim()
++        .toLowerCase();
++    } catch (_) {}
++    try {
++      const legacy = await caches.open(LEGACY),
++        target = await caches.open(CACHE);
++      for (const row of event.detail.bundle.items.filter(
++        (x) => x.audience === 'public',
++      ))
++        for (const language of ['fa', 'en', 'hr']) {
++          const old = new Request(
++              new URL(
++                '__nh7_reader_cache_v327__/' +
++                  hash([email, row.id, language].join('|')),
++                location.href,
++              ).href,
++            ),
++            response = await legacy.match(old);
++          const data = response ? await response.clone().json() : null;
++          if (
++            response &&
++            owner === security.uid() &&
++            data?.allowed === true &&
++            String(data?.item?.id || data?.item_id || '') === String(row.id)
++          ) {
++            await target.put(key(owner, row.id, language), response.clone());
++            await legacy.delete(old);
++          }
++        } // Unidentified legacy bodies remain quarantined; do not destroy possible public downloads.
++      for (const row of event.detail.bundle.items.filter(
++        (x) => x.audience === 'ministers',
++      ))
++        for (const language of ['fa', 'en', 'hr']) {
++          const old = new Request(
++              new URL(
++                '__nh7_reader_cache_v327__/' +
++                  hash([email, row.id, language].join('|')),
++                location.href,
++              ).href,
++            ),
++            response = await legacy.match(old),
++            data = response ? await response.clone().json() : null;
++          if (String(data?.item?.id || data?.item_id || '') === String(row.id))
++            await legacy.delete(old);
++        }
++      for (const request of await target.keys()) {
++        const parts = new URL(request.url).pathname.split('/'),
++          itemId = decodeURIComponent(parts[parts.length - 2] || '');
++        const row = event.detail.bundle.items.find(
++          (x) => String(x.id) === itemId,
++        );
++        if (row?.audience !== 'public') await target.delete(request);
++      }
++    } catch (_) {}
++  });
++  const wrapped = async function (input, init = {}) {
++    const raw = typeof input === 'string' ? input : input?.url || '';
++    if (
++      !/\/rest\/v1\/rpc\/nh7_library_reader_access_v(?:250|321)(?:$|\?)/.test(
++        raw,
++      )
++    )
++      return original(input, init);
++    const next = { ...init, cache: 'no-store' };
++    let body = {};
++    try {
++      body = JSON.parse(String(next.body || '{}')) || {};
++    } catch (_) {}
++    const language =
++      localStorage.getItem('nh7_lang') || document.documentElement.lang || 'fa';
++    body.p_language = ['fa', 'en', 'hr'].includes(language) ? language : 'fa';
++    next.body = JSON.stringify(body);
++    const security = window.NH7LibrarySecurityV125,
++      owner = security?.uid(),
++      catalog = await security?.catalog();
++    const row = catalog?.items.find(
++      (x) => String(x.id) === String(body.p_item_id),
++    );
++    if (!owner || owner !== security?.uid() || !row) return denial();
++    if (!navigator.onLine)
++      return (await cached(owner, row, body.p_language)) || denial();
++    // v321 retains its five-parameter contract and authorizes through v230/auth.uid().
++    let response;
++    try {
++      response = await original(
++        raw.replace(
++          '/nh7_library_reader_access_v250',
++          '/nh7_library_reader_access_v321',
++        ),
++        next,
++      );
++    } catch (error) {
++      return owner === security.uid()
++        ? (await cached(owner, row, body.p_language)) || denial()
++        : denial();
++    }
++    if (owner !== security.uid()) return denial();
++    const data = await response
++      .clone()
++      .json()
++      .catch(() => null);
++    if (!response.ok || data?.allowed === false) {
++      security.invalidate('reader_denied');
++      if (window.caches)
++        try {
++          await (
++            await caches.open(CACHE)
++          ).delete(key(owner, row.id, body.p_language));
++        } catch (_) {}
++      return response;
++    }
++    if (row.audience === 'public' && data?.allowed === true && window.caches) {
++      const current = await security.catalog();
++      if (
++        owner !== security.uid() ||
++        !current.items.some(
++          (x) => String(x.id) === String(row.id) && x.audience === 'public',
++        )
++      )
++        return denial();
++      try {
++        await (
++          await caches.open(CACHE)
++        ).put(key(owner, row.id, body.p_language), response.clone());
++      } catch (_) {}
++    }
++    return response;
++  };
++  wrapped.__nh7LibraryLanguageV125 = true;
++  wrapped.__nh7LibraryLanguageV321 = true;
++  window.fetch = wrapped;
++  window.NH7_LIBRARY_LANGUAGE_VERSION = VERSION;
+ })();
+--- /dev/null
++++ b/js/nh7-library-security-v125.js
+@@ -0,0 +1,386 @@
++/* Library-only authorization freshness. Persistent snapshots contain public metadata only. */
++(() => {
++  'use strict';
++  const URL = 'https://gpzcwffxnddhaeaogdyo.supabase.co';
++  const KEY = 'sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37';
++  const SESSION = 'nh7_user_session_v170',
++    CACHE = 'nh7_library_public_v125_';
++  const fetchNetwork = window.fetch.bind(window);
++  let identity = '',
++    generation = 0,
++    bundle = { items: [], collections: [] },
++    checkedAt = 0;
++  function session() {
++    try {
++      const s = JSON.parse(localStorage.getItem(SESSION) || 'null');
++      return s?.currentSession || s?.session || s;
++    } catch (_) {
++      return null;
++    }
++  }
++  function uid() {
++    const s = session();
++    return localStorage.getItem('nh7_explicit_logout') === '1' ||
++      !s?.access_token
++      ? ''
++      : String(s.user?.id || '');
++  }
++  function publicOnly(value) {
++    return {
++      items: (value?.items || []).filter((x) => x.audience === 'public'),
++      collections: (value?.collections || []).filter(
++        (x) => x.audience === 'public',
++      ),
++    };
++  }
++  function emit(reason) {
++    window.dispatchEvent(
++      new CustomEvent('nh7-library-security', {
++        detail: { reason, uid: identity, bundle },
++      }),
++    );
++  }
++  function invalidate(reason = 'identity') {
++    generation++;
++    bundle =
++      reason === 'offline' || reason === 'unverified'
++        ? readPublic(identity)
++        : { items: [], collections: [] };
++    checkedAt = 0;
++    emit(reason);
++  }
++  function sync() {
++    const next = uid();
++    if (next !== identity) {
++      identity = next;
++      invalidate();
++    }
++    return identity;
++  }
++  function purgeLegacy() {
++    for (const storage of [sessionStorage, localStorage]) {
++      for (const key of Object.keys(storage)) {
++        if (
++          key === 'nh7_library_catalog_cache_v1' ||
++          key.startsWith('nh7_library_collections_cache_v327_')
++        )
++          storage.removeItem(key);
++        else if (key.startsWith('nh7_protected_catalog_v327_')) {
++          try {
++            if (JSON.parse(storage.getItem(key))?.resource === 'library')
++              storage.removeItem(key);
++          } catch (_) {
++            /* Unknown shared audio snapshots are not removed. */
++          }
++        }
++      }
++    }
++  }
++  function readPublic(id) {
++    try {
++      const v = JSON.parse(
++        localStorage.getItem(CACHE + id) ||
++          sessionStorage.getItem(CACHE + id) ||
++          'null',
++      );
++      return v?.uid === id ? publicOnly(v) : { items: [], collections: [] };
++    } catch (_) {
++      return { items: [], collections: [] };
++    }
++  }
++  async function catalog() {
++    const id = sync(),
++      epoch = generation,
++      accessToken = session()?.access_token;
++    if (!id) {
++      invalidate('login_required');
++      return bundle;
++    }
++    const controller = new AbortController(),
++      timer = setTimeout(() => controller.abort(), 10000);
++    try {
++      if (!navigator.onLine) throw new Error('offline');
++      const response = await fetchNetwork(
++        URL + '/rest/v1/rpc/nh7_library_catalog_v396',
++        {
++          method: 'POST',
++          headers: {
++            apikey: KEY,
++            Authorization: 'Bearer ' + accessToken,
++            'Content-Type': 'application/json',
++          },
++          body: '{}',
++          cache: 'no-store',
++          signal: controller.signal,
++        },
++      );
++      if (!response.ok)
++        throw Object.assign(new Error('catalog_denied'), {
++          status: response.status,
++        });
++      const raw = await response.json(),
++        value = Array.isArray(raw) ? raw[0] : raw;
++      if (value?.allowed === false)
++        throw Object.assign(new Error('catalog_denied'), { status: 403 });
++      if (sync() !== id || epoch !== generation)
++        return { items: [], collections: [] };
++      bundle = {
++        items: Array.isArray(value?.items) ? value.items : [],
++        collections: Array.isArray(value?.collections) ? value.collections : [],
++      };
++      checkedAt = Date.now();
++      try {
++        const snapshot = JSON.stringify({
++          uid: id,
++          at: checkedAt,
++          ...publicOnly(bundle),
++        });
++        sessionStorage.setItem(CACHE + id, snapshot);
++        localStorage.setItem(CACHE + id, snapshot);
++      } catch (_) {}
++      await reconcileFiles(id, bundle);
++      if (sync() !== id || epoch !== generation)
++        return { items: [], collections: [] };
++      emit('verified');
++      return bundle;
++    } catch (error) {
++      if (sync() !== id || epoch !== generation)
++        return { items: [], collections: [] };
++      if (error.status === 401 || error.status === 403) {
++        try {
++          localStorage.removeItem(CACHE + id);
++          sessionStorage.removeItem(CACHE + id);
++        } catch (_) {}
++      }
++      invalidate(
++        error.status === 401 || error.status === 403 ? 'denied' : 'unverified',
++      );
++      // Denial never resurrects any snapshot. Offline/transient fallback is public-only and UID-bound.
++      if (error.status !== 401 && error.status !== 403) {
++        bundle = readPublic(id);
++        emit('public_fallback');
++      }
++      return bundle;
++    } finally {
++      clearTimeout(timer);
++    }
++  }
++  function libraryFile(raw) {
++    try {
++      const u = new window.URL(raw, location.href);
++      return (
++        u.origin === URL &&
++        /^\/storage\/v1\/object\/(?:(?:sign|authenticated|public)\/)?nh7-library\//.test(
++          decodeURIComponent(u.pathname),
++        )
++      );
++    } catch (_) {
++      return false;
++    }
++  }
++
++  // Only verified PUBLIC identity mappings persist. Restricted URLs/metadata stay in memory.
++  const FILES = 'nh7_library_public_files_v125_',
++    PROOF_DB = 'nh7-library-public-v125';
++  let restrictedFiles = new Set();
++  function canonicalFile(raw) {
++    try {
++      const u = new window.URL(raw, location.href);
++      return (
++        u.origin +
++        decodeURIComponent(u.pathname).replace(
++          /\/storage\/v1\/object\/(?:sign|authenticated|public)\//,
++          '/storage/v1/object/',
++        )
++      );
++    } catch (_) {
++      return '';
++    }
++  }
++  function files(id = uid()) {
++    try {
++      return JSON.parse(localStorage.getItem(FILES + id) || '{}');
++    } catch (_) {
++      return {};
++    }
++  }
++  function writeFiles(id, value) {
++    try {
++      localStorage.setItem(FILES + id, JSON.stringify(value));
++    } catch (_) {}
++  }
++  function proofStore(identity, value) {
++    return new Promise((resolve) => {
++      try {
++        const r = indexedDB.open(PROOF_DB, 1);
++        r.onupgradeneeded = () =>
++          r.result.createObjectStore('proofs', { keyPath: 'identity' });
++        r.onerror = () => resolve();
++        r.onsuccess = () => {
++          const db = r.result,
++            tx = db.transaction('proofs', 'readwrite');
++          value
++            ? tx.objectStore('proofs').put({ identity, ...value })
++            : tx.objectStore('proofs').delete(identity);
++          tx.oncomplete = () => {
++            db.close();
++            resolve();
++          };
++          tx.onerror = () => {
++            db.close();
++            resolve();
++          };
++        };
++      } catch (_) {
++        resolve();
++      }
++    });
++  }
++  function fileAllowed(raw) {
++    if (!libraryFile(raw)) return true;
++    const id = sync(),
++      key = canonicalFile(raw);
++    const proof = files(id)[key];
++    return (
++      !!id &&
++      !restrictedFiles.has(key) &&
++      proof?.audience === 'public' &&
++      readPublic(id).items.some(
++        (row) => String(row.id) === proof.itemId && row.audience === 'public',
++      )
++    );
++  }
++  function publicFile(itemId) {
++    const id = sync();
++    if (!id) return '';
++    const index = files(id);
++    return (
++      Object.keys(index).find(
++        (key) => index[key]?.itemId === String(itemId) && fileAllowed(key),
++      ) || ''
++    );
++  }
++  async function reconcileFiles(id, value) {
++    const rows = new Map(value.items.map((x) => [String(x.id), x]));
++    for (const storageKey of Object.keys(localStorage).filter((key) =>
++      key.startsWith(FILES),
++    )) {
++      const owner = storageKey.slice(FILES.length),
++        index = files(owner);
++      for (const [key, proof] of Object.entries(index)) {
++        const row = rows.get(String(proof.itemId));
++        if (
++          (owner === id && row?.audience !== 'public') ||
++          (row && row.audience !== 'public')
++        ) {
++          delete index[key];
++          restrictedFiles.add(key);
++          await proofStore(key, null);
++          await window.NH7OfflineV325?.remove(key);
++        }
++      }
++      writeFiles(owner, index);
++    }
++  }
++  async function bindFile(itemId, raw) {
++    const id = sync(),
++      row = bundle.items.find((x) => String(x.id) === String(itemId));
++    if (
++      !id ||
++      !checkedAt ||
++      Date.now() - checkedAt > 35000 ||
++      !row ||
++      !libraryFile(raw)
++    )
++      return false;
++    const key = canonicalFile(raw);
++    if (row.audience !== 'public') {
++      restrictedFiles.add(key);
++      const index = files(id);
++      delete index[key];
++      writeFiles(id, index);
++      await proofStore(key, null);
++      await window.NH7OfflineV325?.remove(raw);
++      return false;
++    }
++    restrictedFiles.delete(key);
++    const proof = {
++      audience: 'public',
++      itemId: String(row.id),
++      uid: id,
++      verifiedAt: checkedAt,
++    };
++    const index = files(id);
++    index[key] = proof;
++    writeFiles(id, index);
++    await proofStore(key, proof);
++    return id === sync() && fileAllowed(raw);
++  }
++  // Capture successful signed-file responses, including legacy callers, without changing their contract.
++  window.fetch = async function (input, init) {
++    const raw = typeof input === 'string' ? input : input?.url || '',
++      id = sync();
++    const response = await fetchNetwork(input, init);
++    if (raw === URL + '/functions/v1/nh7-library-access' && response.ok) {
++      try {
++        const body = JSON.parse(init?.body || '{}'),
++          data = await response.clone().json();
++        if (
++          data.signed_url &&
++          data.allowed !== false &&
++          !data.error &&
++          id &&
++          id === sync()
++        ) {
++          await catalog();
++          if (id === sync()) await bindFile(body.item_id, data.signed_url);
++        }
++      } catch (_) {
++        /* Unknown files remain quarantined. */
++      }
++    }
++    return response;
++  };
++
++  window.NH7LibrarySecurityV125 = {
++    catalog,
++    uid: () => sync(),
++    invalidate,
++    sync,
++    libraryFile,
++    fileAllowed,
++    publicFile,
++  };
++  purgeLegacy();
++  sync();
++  window.addEventListener('storage', sync);
++  window.addEventListener('nh7-library-auth-change', sync);
++  window.addEventListener('offline', () => {
++    invalidate('offline');
++    if (identity) {
++      bundle = readPublic(identity);
++      emit('public_fallback');
++    }
++  });
++  window.addEventListener('pageshow', () => {
++    sync();
++    if (bundle.items.some((x) => x.audience !== 'public')) catalog();
++  });
++  document.addEventListener('visibilitychange', () => {
++    if (!document.hidden) {
++      sync();
++      if (bundle.items.some((x) => x.audience !== 'public')) catalog();
++    }
++  });
++  setInterval(() => {
++    sync();
++    if (checkedAt && Date.now() - checkedAt > 35000) {
++      if (bundle.items.some((x) => x.audience !== 'public'))
++        invalidate('expired');
++      else checkedAt = 0;
++    }
++  }, 1000);
++  setInterval(() => {
++    if (bundle.items.some((x) => x.audience !== 'public')) catalog();
++  }, 10000);
++})();
+--- a/js/nh7-offline-persistence-v323.js
++++ b/js/nh7-offline-persistence-v323.js
+@@ -15,6 +15,7 @@
+ const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
+ function hash(value){let h=2166136261;for(let i=0;i<value.length;i++){h^=value.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(16)}
+ function canonical(raw){try{const u=new URL(String(raw||''),location.href);let path=decodeURIComponent(u.pathname);path=path.replace(/\/storage\/v1\/object\/(?:sign|authenticated|public)\//,'/storage/v1/object/');return u.origin+path}catch(_){return String(raw||'').split(/[?#]/)[0]}}
++function libraryFile(raw){try{const u=new URL(canonical(raw));return u.origin==='https://gpzcwffxnddhaeaogdyo.supabase.co'&&u.pathname.startsWith('/storage/v1/object/nh7-library/')}catch(_){return false}}
+ function metaKey(raw){const id=canonical(raw);return META_PREFIX+hash(id)+'_'+id.length}
+ function stableRequest(raw){const id=canonical(raw),base=new URL('./',location.href);return new Request(new URL(`${STABLE_PATH}/${hash(id)}-${id.length}`,base).href,{method:'GET'})}
+ function extension(raw){try{const m=new URL(canonical(raw),location.href).pathname.match(/\.([a-zA-Z0-9]{2,8})$/);return m?'.'+m[1].toLowerCase():'.bin'}catch(_){return'.bin'}}
+@@ -34,24 +35,25 @@
+ function humanBytes(bytes){bytes=Math.max(0,Number(bytes)||0);if(bytes<1048576)return Math.max(1,Math.round(bytes/1024))+' KB';return(bytes/1048576).toFixed(1)+' MB'}
+ function progressText(loaded,total){if(total>0){const p=Math.max(0,Math.min(100,Math.round(loaded/total*100)));return L(`در حال دانلود ${p}٪`,`Downloading ${p}%`,`Preuzimanje ${p}%`)}return L(`در حال دانلود ${humanBytes(loaded)}`,`Downloading ${humanBytes(loaded)}`,`Preuzimanje ${humanBytes(loaded)}`)}
+ async function cacheFind(raw){if(!('caches'in window))return null;const cache=await caches.open(CACHE_NAME),stable=stableRequest(raw);let response=await cache.match(stable);if(response)return response;const identity=canonical(raw),keys=await cache.keys();for(const candidate of keys){const path=new URL(candidate.url).pathname;if(path.includes('/'+STABLE_PATH+'/'))continue;if(canonical(candidate.url)!==identity)continue;response=await cache.match(candidate);if(response){await cache.put(stable,response.clone());await cache.delete(candidate);return response}}return null}
+-async function migrateCacheToDb(raw){const identity=canonical(raw);try{const existing=await dbGet(identity);if(existing?.blob?.size)return existing;const response=await cacheFind(raw);if(!response)return null;const blob=await response.blob();if(!blob.size)return null;const row={identity,blob,mime:blob.type||response.headers.get('content-type')||'application/octet-stream',bytes:blob.size,title:'',sourceUrl:String(raw||''),updatedAt:Date.now()};await dbPut(row);writeMeta(raw,{bytes:blob.size,native:false,migrated:true});return row}catch(_){return null}}
+-async function migrateLegacyMeta(){if(localStorage.getItem('nh7_offline_stable_migrated_v325')==='1')return;const old=[];for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(key?.startsWith(LEGACY_PREFIX)){try{const row=JSON.parse(localStorage.getItem(key)||'null');if(row?.url)old.push(row)}catch(_){}}}for(const row of old){if(!readMeta(row.url))writeMeta(row.url,Object.assign({},row,{identity:canonical(row.url),migrated:true}))}localStorage.setItem('nh7_offline_stable_migrated_v325','1')}
+-async function status(raw,force=false){const identity=canonical(raw),hit=statusCache.get(identity);if(!force&&hit&&Date.now()-hit.at<2000)return hit.value;let value={cached:false};if(native()){const F=capacitor('Filesystem'),meta=readMeta(raw);if(F&&meta?.path){try{const st=await F.stat({directory:'DATA',path:meta.path});value={cached:true,bytes:Number(st?.size||meta.bytes||0),path:meta.path,uri:meta.uri||''}}catch(_){removeMeta(raw)}}}else{try{let row=await dbGet(identity);if(!row?.blob?.size)row=await migrateCacheToDb(raw);if(row?.blob?.size)value={cached:true,bytes:row.blob.size,row}}catch(error){console.warn('Offline status',error)}}statusCache.set(identity,{at:Date.now(),value});return value}
++async function migrateCacheToDb(raw){const identity=canonical(raw);try{const existing=await dbGet(identity);if(existing?.blob?.size)return existing;const response=await cacheFind(raw);if(!response)return null;const blob=await response.blob();if(!blob.size)return null;const row={identity,blob,mime:blob.type||response.headers.get('content-type')||'application/octet-stream',bytes:blob.size,title:'',sourceUrl:String(raw||''),updatedAt:Date.now()};await assertPublic(raw);await dbPut(row);await assertPublic(raw);writeMeta(raw,{bytes:blob.size,native:false,migrated:true});return row}catch(_){return null}}
++async function migrateLegacyMeta(){if(localStorage.getItem('nh7_offline_stable_migrated_v325')==='1')return;const old=[];for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(key?.startsWith(LEGACY_PREFIX)){try{const row=JSON.parse(localStorage.getItem(key)||'null');if(row?.url)old.push(row)}catch(_){}}}for(const row of old){if(libraryFile(row.url)&&!window.NH7LibrarySecurityV125?.fileAllowed(row.url))continue;if(!readMeta(row.url))writeMeta(row.url,Object.assign({},row,{identity:canonical(row.url),migrated:true}))}localStorage.setItem('nh7_offline_stable_migrated_v325','1')}
++async function status(raw,force=false){if(libraryFile(raw)&&!window.NH7LibrarySecurityV125?.fileAllowed(raw))return{cached:false};const identity=canonical(raw),hit=statusCache.get(identity);if(!force&&hit&&Date.now()-hit.at<2000)return hit.value;let value={cached:false};if(native()){const F=capacitor('Filesystem'),meta=readMeta(raw);if(F&&meta?.path){try{const st=await F.stat({directory:'DATA',path:meta.path});value={cached:true,bytes:Number(st?.size||meta.bytes||0),path:meta.path,uri:meta.uri||''}}catch(_){removeMeta(raw)}}}else{try{let row=await dbGet(identity);if(!row?.blob?.size)row=await migrateCacheToDb(raw);if(row?.blob?.size)value={cached:true,bytes:row.blob.size,row}}catch(error){console.warn('Offline status',error)}}if(libraryFile(raw)&&!window.NH7LibrarySecurityV125?.fileAllowed(raw))return{cached:false};statusCache.set(identity,{at:Date.now(),value});return value}
+ function xhrBlob(raw,button){return new Promise((resolve,reject)=>{let done=false,stall=0,hard=0;const xhr=new XMLHttpRequest();const finish=(error,value)=>{if(done)return;done=true;clearTimeout(stall);clearTimeout(hard);error?reject(error):resolve(value)};const reset=()=>{clearTimeout(stall);stall=setTimeout(()=>{try{xhr.abort()}catch(_){}finish(new Error(L('دانلود متوقف شد؛ اتصال اینترنت را بررسی کنید.','The download stopped; check your connection.','Preuzimanje se zaustavilo; provjerite vezu.')))},90000)};try{xhr.open('GET',raw,true);xhr.responseType='blob';xhr.onload=()=>{if(xhr.status>=200&&xhr.status<300&&xhr.response?.size>0)finish(null,{blob:xhr.response,mime:xhr.getResponseHeader('content-type')||xhr.response.type||'application/octet-stream'});else finish(new Error('HTTP '+xhr.status))};xhr.onerror=()=>finish(new Error(L('ارتباط دانلود برقرار نشد.','Download connection failed.','Veza za preuzimanje nije uspjela.')));xhr.onabort=()=>finish(new Error(L('دانلود متوقف شد.','Download stopped.','Preuzimanje je zaustavljeno.')));xhr.onprogress=e=>{reset();if(button)button.textContent=progressText(Number(e.loaded||0),e.lengthComputable?Number(e.total||0):0)};hard=setTimeout(()=>{try{xhr.abort()}catch(_){}finish(new Error(L('زمان دانلود بیش از حد طولانی شد.','The download took too long.','Preuzimanje je trajalo predugo.')))},15*60*1000);reset();xhr.send()}catch(error){finish(error)}})}
+-async function webDownload(raw,title,button){if(!/^https?:/i.test(String(raw||'')))throw new Error(L('آدرس فایل آماده نیست؛ صفحه را تازه‌سازی کنید.','The file link is not ready; refresh the page.','Poveznica nije spremna; osvježite stranicu.'));const existing=await status(raw,true);if(existing.cached)return{bytes:existing.bytes,already:true};const{blob,mime}=await xhrBlob(raw,button),identity=canonical(raw),row={identity,blob,mime,bytes:blob.size,title:title||'',sourceUrl:String(raw),updatedAt:Date.now()};await dbPut(row);const verify=await dbGet(identity);if(!verify?.blob?.size)throw new Error(L('فایل دریافت شد اما در حافظه ذخیره نشد.','The file downloaded but was not saved.','Datoteka je preuzeta, ali nije spremljena.'));try{const cache=await caches.open(CACHE_NAME);await cache.put(stableRequest(raw),new Response(blob,{status:200,headers:{'Content-Type':mime,'Content-Length':String(blob.size),'Accept-Ranges':'bytes'}}))}catch(_){}writeMeta(raw,{title:title||'',bytes:blob.size,native:false});statusCache.delete(identity);return{bytes:blob.size,already:false}}
+-async function nativeDownload(raw,title,button){const F=capacitor('Filesystem'),T=capacitor('FileTransfer');if(!F||!T)throw new Error(L('امکان ذخیره روی دستگاه فعال نیست.','Device storage is unavailable.','Spremanje nije dostupno.'));await ensureDir();const identity=canonical(raw),path=`${NATIVE_DIR}/${hash(identity)}${extension(raw)}`,uri=await fileUri(path);let listener=null,timer=0;try{if(T.addListener)listener=await T.addListener('progress',p=>{if(p?.type==='download'&&button)button.textContent=progressText(Number(p.bytes||0),p.lengthComputable?Number(p.contentLength||0):0)});const task=T.downloadFile({url:raw,path:uri,progress:true,connectTimeout:60000,readTimeout:180000}),timeout=new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error(L('زمان دانلود بیش از حد طولانی شد.','The download took too long.','Preuzimanje je trajalo predugo.'))),15*60*1000)});await Promise.race([task,timeout]);const st=await F.stat({directory:'DATA',path});writeMeta(raw,{title:title||'',path,uri,bytes:Number(st?.size||0),native:true});statusCache.delete(identity);return{bytes:Number(st?.size||0)}}finally{clearTimeout(timer);try{await listener?.remove?.()}catch(_){}}}
+-async function download(raw,title,button){return native()?nativeDownload(raw,title,button):webDownload(raw,title,button)}
+-async function remove(raw){const identity=canonical(raw);if(native()){const F=capacitor('Filesystem'),meta=readMeta(raw);if(F&&meta?.path)try{await F.deleteFile({directory:'DATA',path:meta.path})}catch(_){}removeMeta(raw)}else{try{await dbDelete(identity)}catch(_){}try{const cache=await caches.open(CACHE_NAME),keys=await cache.keys();for(const candidate of keys){const path=new URL(candidate.url).pathname;if((path.includes('/'+STABLE_PATH+'/')&&candidate.url===stableRequest(raw).url)||(!path.includes('/'+STABLE_PATH+'/')&&canonical(candidate.url)===identity))await cache.delete(candidate)}}catch(_){}removeMeta(raw)}const object=objectUrls.get(identity);if(object){URL.revokeObjectURL(object);objectUrls.delete(identity)}statusCache.delete(identity)}
++async function webDownload(raw,title,button){if(!/^https?:/i.test(String(raw||'')))throw new Error(L('آدرس فایل آماده نیست؛ صفحه را تازه‌سازی کنید.','The file link is not ready; refresh the page.','Poveznica nije spremna; osvježite stranicu.'));const existing=await status(raw,true);if(existing.cached)return{bytes:existing.bytes,already:true};const{blob,mime}=await xhrBlob(raw,button),identity=canonical(raw),row={identity,blob,mime,bytes:blob.size,title:title||'',sourceUrl:String(raw),updatedAt:Date.now()};await assertPublic(raw);await dbPut(row);await assertPublic(raw);const verify=await dbGet(identity);if(!verify?.blob?.size)throw new Error(L('فایل دریافت شد اما در حافظه ذخیره نشد.','The file downloaded but was not saved.','Datoteka je preuzeta, ali nije spremljena.'));try{const cache=await caches.open(CACHE_NAME);await cache.put(stableRequest(raw),new Response(blob,{status:200,headers:{'Content-Type':mime,'Content-Length':String(blob.size),'Accept-Ranges':'bytes'}}))}catch(_){}await assertPublic(raw);writeMeta(raw,{title:title||'',bytes:blob.size,native:false});statusCache.delete(identity);return{bytes:blob.size,already:false}}
++async function nativeDownload(raw,title,button){const F=capacitor('Filesystem'),T=capacitor('FileTransfer');if(!F||!T)throw new Error(L('امکان ذخیره روی دستگاه فعال نیست.','Device storage is unavailable.','Spremanje nije dostupno.'));await ensureDir();const identity=canonical(raw),path=`${NATIVE_DIR}/${hash(identity)}${extension(raw)}`,uri=await fileUri(path);let listener=null,timer=0;try{if(T.addListener)listener=await T.addListener('progress',p=>{if(p?.type==='download'&&button)button.textContent=progressText(Number(p.bytes||0),p.lengthComputable?Number(p.contentLength||0):0)});const task=T.downloadFile({url:raw,path:uri,progress:true,connectTimeout:60000,readTimeout:180000}),timeout=new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error(L('زمان دانلود بیش از حد طولانی شد.','The download took too long.','Preuzimanje je trajalo predugo.'))),15*60*1000)});await Promise.race([task,timeout]);try{await assertPublic(raw)}catch(error){try{await F.deleteFile({directory:'DATA',path})}catch(_){}throw error}const st=await F.stat({directory:'DATA',path});writeMeta(raw,{title:title||'',path,uri,bytes:Number(st?.size||0),native:true});statusCache.delete(identity);return{bytes:Number(st?.size||0)}}finally{clearTimeout(timer);try{await listener?.remove?.()}catch(_){}}}
++async function assertPublic(raw){if(libraryFile(raw)&&navigator.onLine)await window.NH7LibrarySecurityV125?.catalog();if(libraryFile(raw)&&!window.NH7LibrarySecurityV125?.fileAllowed(raw)){await remove(raw);throw new Error(L('کتابخانه به تأیید آنلاین نیاز دارد.','Library access requires online verification.','Pristup knjižnici zahtijeva mrežnu provjeru.'))}}
++async function download(raw,title,button){if(libraryFile(raw)&&navigator.onLine)await window.NH7LibrarySecurityV125?.catalog();if(libraryFile(raw)&&!window.NH7LibrarySecurityV125?.fileAllowed(raw))throw new Error(L('کتابخانه به تأیید آنلاین نیاز دارد.','Library access requires online verification.','Pristup knjižnici zahtijeva mrežnu provjeru.'));return native()?nativeDownload(raw,title,button):webDownload(raw,title,button)}
++async function remove(raw){const identity=canonical(raw);if(libraryFile(raw)){for(const key of Object.keys(localStorage).filter(key=>key.startsWith(LEGACY_PREFIX))){try{const row=JSON.parse(localStorage.getItem(key));if(canonical(row?.url||row?.identity)===identity)localStorage.removeItem(key)}catch(_){}}}if(native()){const F=capacitor('Filesystem'),meta=readMeta(raw);if(F&&meta?.path)try{await F.deleteFile({directory:'DATA',path:meta.path})}catch(_){}removeMeta(raw)}else{try{await dbDelete(identity)}catch(_){}try{const cache=await caches.open(CACHE_NAME),keys=await cache.keys();for(const candidate of keys){const path=new URL(candidate.url).pathname;if((path.includes('/'+STABLE_PATH+'/')&&candidate.url===stableRequest(raw).url)||(!path.includes('/'+STABLE_PATH+'/')&&canonical(candidate.url)===identity))await cache.delete(candidate)}}catch(_){}removeMeta(raw)}const object=objectUrls.get(identity);if(object){URL.revokeObjectURL(object);objectUrls.delete(identity)}statusCache.delete(identity)}
+ function buttonText(cached){return cached?L('آفلاین آماده ✓','Offline ready ✓','Offline spremno ✓'):L('دانلود برای آفلاین','Download offline','Preuzmi offline')}
+ async function decorateButton(button){if(!button?.isConnected||button.disabled)return;const raw=button.dataset.offlineDownload;if(!raw)return;const result=await status(raw);if(!button.isConnected||button.disabled)return;button.dataset.offlineCached=result.cached?'1':'0';button.textContent=buttonText(result.cached)}
+ function decorate(){document.querySelectorAll('[data-offline-download]').forEach(button=>decorateButton(button).catch(()=>{}))}
+ function schedule(){clearTimeout(decorateTimer);decorateTimer=setTimeout(decorate,100)}
+-async function downloadClick(event){const button=event.target.closest?.('[data-offline-download]');if(!button)return;event.preventDefault();event.stopImmediatePropagation();const raw=button.dataset.offlineDownload;if(!raw||button.dataset.nh7Downloading==='1')return;const original=button.textContent;button.dataset.nh7Downloading='1';button.disabled=true;try{const current=await status(raw,true);if(current.cached){if(!confirm(L('این فایل از حافظه آفلاین پاک شود؟','Remove this offline download?','Ukloniti ovu offline datoteku?')))return;await remove(raw);button.dataset.offlineCached='0';button.textContent=buttonText(false)}else{button.textContent=L('در حال اتصال…','Connecting…','Povezivanje…');const result=await download(raw,button.dataset.offlineTitle||'',button);button.dataset.offlineCached='1';button.textContent=buttonText(true);writeMeta(raw,{title:button.dataset.offlineTitle||'',bytes:Number(result?.bytes||0),native:native()})}}catch(error){console.warn('Offline download',error);button.dataset.offlineCached='0';button.textContent=original;alert(L('دانلود آفلاین انجام نشد.','Offline download failed.','Offline preuzimanje nije uspjelo.')+'\n'+String(error?.message||error))}finally{button.disabled=false;delete button.dataset.nh7Downloading;statusCache.delete(canonical(raw));schedule()}}
+-async function localPlayable(raw){const identity=canonical(raw);if(native()){const meta=readMeta(raw);if(!meta?.path)return'';try{const uri=meta.uri||await fileUri(meta.path);return playable(uri)}catch(_){return''}}let row=await dbGet(identity).catch(()=>null);if(!row?.blob?.size)row=await migrateCacheToDb(raw);if(!row?.blob?.size)return'';let url=objectUrls.get(identity);if(!url){url=URL.createObjectURL(row.blob);objectUrls.set(identity,url)}return url}
++async function downloadClick(event){const button=event.target.closest?.('[data-offline-download]');if(!button||button.hasAttribute('data-library-offline'))return;event.preventDefault();event.stopImmediatePropagation();const raw=button.dataset.offlineDownload;if(!raw||button.dataset.nh7Downloading==='1')return;const original=button.textContent;button.dataset.nh7Downloading='1';button.disabled=true;try{const current=await status(raw,true);if(current.cached){if(!confirm(L('این فایل از حافظه آفلاین پاک شود؟','Remove this offline download?','Ukloniti ovu offline datoteku?')))return;await remove(raw);button.dataset.offlineCached='0';button.textContent=buttonText(false)}else{button.textContent=L('در حال اتصال…','Connecting…','Povezivanje…');const result=await download(raw,button.dataset.offlineTitle||'',button);button.dataset.offlineCached='1';button.textContent=buttonText(true);if(!libraryFile(raw))writeMeta(raw,{title:button.dataset.offlineTitle||'',bytes:Number(result?.bytes||0),native:native()})}}catch(error){console.warn('Offline download',error);button.dataset.offlineCached='0';button.textContent=original;alert(L('دانلود آفلاین انجام نشد.','Offline download failed.','Offline preuzimanje nije uspjelo.')+'\n'+String(error?.message||error))}finally{button.disabled=false;delete button.dataset.nh7Downloading;statusCache.delete(canonical(raw));schedule()}}
++async function localPlayable(raw){if(libraryFile(raw)&&!window.NH7LibrarySecurityV125?.fileAllowed(raw))return'';const identity=canonical(raw);if(native()){const meta=readMeta(raw);if(!meta?.path)return'';try{const uri=meta.uri||await fileUri(meta.path);return libraryFile(raw)&&!window.NH7LibrarySecurityV125?.fileAllowed(raw)?'':playable(uri)}catch(_){return''}}let row=await dbGet(identity).catch(()=>null);if(!row?.blob?.size)row=await migrateCacheToDb(raw);if(!row?.blob?.size||(libraryFile(raw)&&!window.NH7LibrarySecurityV125?.fileAllowed(raw)))return'';let url=objectUrls.get(identity);if(!url){url=URL.createObjectURL(row.blob);objectUrls.set(identity,url)}return url}
+ async function playClick(event){const button=event.target.closest?.('[data-sermon-play]');if(!button||button.dataset.nh7OfflinePlayBypass==='1')return;const card=button.closest('[data-sermon-card],.sermon-card'),downloadButton=card?.querySelector?.('[data-offline-download]'),id=String(button.dataset.sermonPlay||''),item=window.__sermonMap?.[id]||window.__audioBibleMap?.[id];const raw=downloadButton?.dataset.offlineDownload||item?.__nh7OriginalAudioUrl||item?.audio_url||'';if(!raw)return;const current=await status(raw,true);if(!current.cached)return;event.preventDefault();event.stopImmediatePropagation();const local=await localPlayable(raw);if(!local||!item)return;if(!item.__nh7OriginalAudioUrl)item.__nh7OriginalAudioUrl=raw;item.audio_url=local;button.dataset.nh7OfflinePlayBypass='1';queueMicrotask(()=>{button.click();setTimeout(()=>delete button.dataset.nh7OfflinePlayBypass,0)})}
+-function patchNativeMedia(){if(!native()||!window.HTMLMediaElement)return;const proto=HTMLMediaElement.prototype,desc=Object.getOwnPropertyDescriptor(proto,'src');if(desc?.set&&!desc.set.__nh7OfflineV325){const original=desc.set,wrapped=function(value){const meta=readMeta(value),local=meta?.uri?playable(meta.uri):'';return original.call(this,local||value)};wrapped.__nh7OfflineV325=true;Object.defineProperty(proto,'src',Object.assign({},desc,{set:wrapped}))}}
++function patchNativeMedia(){if(!native()||!window.HTMLMediaElement)return;const proto=HTMLMediaElement.prototype,desc=Object.getOwnPropertyDescriptor(proto,'src');if(desc?.set&&!desc.set.__nh7OfflineV325){const original=desc.set,wrapped=function(value){const meta=libraryFile(value)&&!window.NH7LibrarySecurityV125?.fileAllowed(value)?null:readMeta(value),local=meta?.uri?playable(meta.uri):'';return original.call(this,local||value)};wrapped.__nh7OfflineV325=true;Object.defineProperty(proto,'src',Object.assign({},desc,{set:wrapped}))}}
+ function transientOfflineBanner(){document.querySelectorAll('.offline').forEach(node=>{if(node.dataset.nh7Transient==='1')return;node.dataset.nh7Transient='1';node.style.transition='opacity .25s ease';setTimeout(()=>{node.style.opacity='0';setTimeout(()=>node.remove(),280)},2200)})}
+-async function init(){await migrateLegacyMeta();patchNativeMedia();try{await navigator.storage?.persist?.()}catch(_){}try{for(const row of await dbAll())if(row?.identity&&row?.blob?.size)writeMeta(row.sourceUrl||row.identity,{title:row.title||'',bytes:row.blob.size,native:false})}catch(_){}decorate();transientOfflineBanner()}
++async function init(){await migrateLegacyMeta();patchNativeMedia();try{await navigator.storage?.persist?.()}catch(_){}try{for(const row of await dbAll())if(row?.identity&&row?.blob?.size&&(!libraryFile(row.identity)||window.NH7LibrarySecurityV125?.fileAllowed(row.identity)))writeMeta(row.sourceUrl||row.identity,{title:row.title||'',bytes:row.blob.size,native:false})}catch(_){}decorate();transientOfflineBanner()}
+ document.addEventListener('click',downloadClick,true);
+ document.addEventListener('click',playClick,true);
+ const observer=new MutationObserver(()=>{schedule();transientOfflineBanner()});observer.observe(document.documentElement,{childList:true,subtree:true});
+@@ -62,5 +64,8 @@
+ window.addEventListener('beforeunload',()=>{for(const url of objectUrls.values())URL.revokeObjectURL(url);objectUrls.clear()});
+ init().catch(console.warn);
+ window.NH7_OFFLINE_PERSISTENCE_VERSION=VERSION;
++// Unknown legacy Library downloads are quarantined by the per-item guards, not deleted.
++// Verified Ministers mappings are removed by bindFile/reconcileFiles. Public copies survive.
++window.addEventListener('nh7-library-security',()=>{statusCache.clear();for(const [identity,url]of objectUrls){if(libraryFile(identity)&&!window.NH7LibrarySecurityV125?.fileAllowed(identity)){URL.revokeObjectURL(url);objectUrls.delete(identity)}}schedule()});
+ window.NH7OfflineV325={canonical,status,download,remove,localPlayable};
+ })();
+--- a/service-worker.js
++++ b/service-worker.js
+@@ -2,6 +2,6 @@
+ importScripts('./sw-media-stream-bypass-v332.js?v=2.3.9.50');
+ importScripts('./sw-navigation-fresh-v403.js?v=4.0.3');
+ importScripts('./app/download-worker-v1.js?v=20260914.3');
+-importScripts('./sw-release-core-v403.js?v=5.4.0-qa250');
+-importScripts('./sw-offline-v329.js?v=2.3.9.64-player529');
++importScripts('./sw-release-core-v403.js?v=5.4.0-qa250&library=125.3');
++importScripts('./sw-offline-v329.js?v=2.3.9.64-player529&library=125.3');
+ importScripts('./sw-offline-path-fix-v329.js?v=2.3.9.50');
+--- a/sw-offline-v329.js
++++ b/sw-offline-v329.js
+@@ -13,7 +13,7 @@
+ const CORE_ASSETS=[
+   './','./index.html','./app-v239.html','./reset-password.html','./manifest.json','./version.json',OFFLINE_URL,
+   './assets/logo.png','./css/styles.css','./css/v2.2.0.css','./css/v2.2.2.css','./css/v2.2.3.css','./css/v2.2.4.css','./css/v2.3.0-access-bible.css','./css/v2.3.4-my-notes.css','./css/nh7-book-reader-v280.css','./css/nh7-library-collections-v322.css','./css/nh7-secure-media-v270.css','./css/nh7-secure-media-watermark-v272.css','./css/nh7-apocrypha-v270.css','./css/nh7-spiritual-plans-v240.css','./css/nh7-appearance-personalization-v514.css','./css/nh7-icons-v517.css','./css/nh7-player-volume-v521.css',
+-  './js/nh7-offline-startup-v327.js','./js/nh7-auto-update-v325.js','./js/nh7-offline-core-v327.js','./js/nh7-offline-data-v329.js','./js/nh7-access-bootstrap-v230.js','./js/nh7-auth-signup-guard-v343.js','./js/nh7-school-registration-v342.js','./js/nh7-auth-recovery-v342.js','./js/nh7-offline-playback-bridge-v326.js','./js/nh7-offline-persistence-v323.js','./js/nh7-note-text-v501.js','./js/nh7-audio-library-v500.js','./js/app.js','./js/nh7-media-player-v500.js','./js/nh7-theme-studio-v453.js','./js/nh7-fonts-v454.js','./js/nh7-appearance-personalization-v514.js','./js/nh7-icons-v517.js','./js/nh7-app-enhancements-v230.js','./js/nh7-my-notes-v234.js','./js/nh7-book-reader-v283.js','./js/nh7-library-language-v321.js','./js/nh7-library-collections-v322.js','./js/nh7-school-media-session-v262.js','./js/nh7-secure-media-v270.js','./js/nh7-secure-media-fix-v271.js','./js/nh7-large-mov-native-fallback-v273.js','./js/nh7-secure-media-watermark-v272.js','./js/nh7-apocrypha-v270.js','./js/nh7-protected-audio-gate-v316.js','./js/nh7-ui-stability-v329.js','./js/nh7-spiritual-plans-v240.js','./js/nh7-spiritual-plans-v412.js','./js/nh7-fasting-practical-note-removal-v413.js',
++  './js/nh7-offline-startup-v327.js','./js/nh7-auto-update-v325.js','./js/nh7-offline-core-v327.js','./js/nh7-offline-data-v329.js','./js/nh7-library-security-v125.js','./js/nh7-access-bootstrap-v230.js','./js/nh7-auth-signup-guard-v343.js','./js/nh7-school-registration-v342.js','./js/nh7-auth-recovery-v342.js','./js/nh7-offline-playback-bridge-v326.js','./js/nh7-offline-persistence-v323.js','./js/nh7-note-text-v501.js','./js/nh7-audio-library-v500.js','./js/app.js','./js/nh7-media-player-v500.js','./js/nh7-theme-studio-v453.js','./js/nh7-fonts-v454.js','./js/nh7-appearance-personalization-v514.js','./js/nh7-icons-v517.js','./js/nh7-app-enhancements-v230.js','./js/nh7-my-notes-v234.js','./js/nh7-book-reader-v283.js','./js/nh7-library-language-v321.js','./js/nh7-library-collections-v322.js','./js/nh7-school-media-session-v262.js','./js/nh7-secure-media-v270.js','./js/nh7-secure-media-fix-v271.js','./js/nh7-large-mov-native-fallback-v273.js','./js/nh7-secure-media-watermark-v272.js','./js/nh7-apocrypha-v270.js','./js/nh7-protected-audio-gate-v316.js','./js/nh7-ui-stability-v329.js','./js/nh7-spiritual-plans-v240.js','./js/nh7-spiritual-plans-v412.js','./js/nh7-fasting-practical-note-removal-v413.js',
+   './data/app/opening_messages_365.json','./data/church/church_config.json','./data/church/about.json','./data/daily/daily_word_365.json','./data/daily/faith_proclamations_365.json','./data/daily/daily_juice_365.json','./data/gratitude/gratitude_plan_30_days.json','./data/salvation/need_salvation.json','./data/school/school_content.json','./data/school/foundation_exam_50_trilingual.json','./data/bible/plans/reading_plans_1yr_2yr.json','./data/bible/groups/bible_group_01_18.json','./data/bible/groups/bible_group_19_39.json','./data/bible/groups/bible_group_40_66.json','./data/spiritual-plans/catalog.json','./data/spiritual-plans/prayer-30.json','./data/spiritual-plans/grace-14.json','./data/spiritual-plans/fasting-7.json','./data/spiritual-plans/fasting-types.json','./data/spiritual-plans/obedience-10.json','./data/spiritual-plans/salvation-10.json','./data/spiritual-plans/mind-renewal-days-01-07.json','./data/spiritual-plans/mind-renewal-days-08-14.json','./data/spiritual-plans/mind-renewal-days-15-18.json','./data/spiritual-plans/mind-renewal-days-19-22.json','./data/spiritual-plans/mind-renewal-days-23-26.json','./data/spiritual-plans/mind-renewal-days-27-30.json'
+ ];
+ function canonicalRequest(raw){const url=new URL(typeof raw==='string'?raw:raw.url,self.location.origin);return new Request(url.origin+url.pathname,{method:'GET'})}
+@@ -44,13 +44,19 @@
+ async function dbAll(){const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction(DB_STORE,'readonly'),request=tx.objectStore(DB_STORE).getAll();request.onsuccess=()=>resolve(request.result||[]);request.onerror=()=>reject(request.error)})}
+ async function dbDelete(identity){const db=await openDb();return new Promise((resolve,reject)=>{const tx=db.transaction(DB_STORE,'readwrite');tx.objectStore(DB_STORE).delete(identity);tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error)})}
+ function blobResponse(blob,mime){return new Response(blob,{status:200,headers:{'Content-Type':mime||blob.type||'application/octet-stream','Content-Length':String(blob.size),'Accept-Ranges':'bytes','Cache-Control':'private, max-age=31536000'}})}
+-async function storedMedia(raw){try{const row=await dbGet(mediaIdentity(raw));if(row?.blob?.size)return blobResponse(row.blob,row.mime)}catch(_){}try{return await (await caches.open(MEDIA_CACHE)).match(mediaKey(raw))}catch(_){return null}}
++function libraryFile(raw){try{const u=new URL(mediaIdentity(raw));return u.origin==='https://gpzcwffxnddhaeaogdyo.supabase.co'&&u.pathname.startsWith('/storage/v1/object/nh7-library/')}catch(_){return false}}
++async function publicLibraryProof(raw){return new Promise(resolve=>{try{const r=indexedDB.open('nh7-library-public-v125',1);r.onupgradeneeded=()=>r.result.createObjectStore('proofs',{keyPath:'identity'});r.onerror=()=>resolve(false);r.onsuccess=()=>{const db=r.result,tx=db.transaction('proofs','readonly'),q=tx.objectStore('proofs').get(mediaIdentity(raw));q.onsuccess=()=>{resolve(q.result?.audience==='public'&&q.result.identity===mediaIdentity(raw));db.close()};q.onerror=()=>{resolve(false);db.close()}}}catch(_){resolve(false)}})}
++async function storedMedia(raw){if(libraryFile(raw)&&!await publicLibraryProof(raw))return null;try{const row=await dbGet(mediaIdentity(raw));if(row?.blob?.size)return blobResponse(row.blob,row.mime)}catch(_){}try{return await (await caches.open(MEDIA_CACHE)).match(mediaKey(raw))}catch(_){return null}}
+ async function rangeResponse(response,request){const range=request.headers.get('range');if(!range)return response;const blob=await response.blob(),match=/bytes=(\d+)-(\d*)/.exec(range);if(!match)return response;const start=Number(match[1]),end=match[2]?Number(match[2]):blob.size-1;if(start>=blob.size)return new Response(null,{status:416,headers:{'Content-Range':`bytes */${blob.size}`}});const finalEnd=Math.min(end,blob.size-1),chunk=blob.slice(start,finalEnd+1),headers=new Headers(response.headers);headers.set('Content-Range',`bytes ${start}-${finalEnd}/${blob.size}`);headers.set('Content-Length',String(chunk.size));headers.set('Accept-Ranges','bytes');return new Response(chunk,{status:206,statusText:'Partial Content',headers})}
+ function protectedMedia(url){return url.origin==='https://gpzcwffxnddhaeaogdyo.supabase.co'&&(/\/storage\/v1\/object\/(?:public|sign|authenticated)\/(?:church-audio|nh7-library|nh7-school-media)/.test(url.pathname)||/\/functions\/v1\/(?:nh7-content-access|nh7-library-access|nh7-school-media-access)/.test(url.pathname))}
+ self.addEventListener('install',event=>event.waitUntil(cacheCore().then(()=>self.skipWaiting())));
+ self.addEventListener('activate',event=>event.waitUntil((async()=>{const keep=new Set([CORE_CACHE,SHELL_CACHE,DATA_CACHE,MEDIA_CACHE,READER_CACHE]);const keys=await caches.keys();await Promise.all(keys.filter(key=>(key.startsWith('nh7-core-')||key.startsWith('nh7-public-api-')||key.startsWith('omideno7-'))&&!keep.has(key)).map(key=>caches.delete(key)));await self.clients.claim()})()));
+ self.addEventListener('fetch',event=>{
+   const request=event.request;if(request.method!=='GET')return;const url=new URL(request.url);
++  // Legacy reader keys and synthetic media URLs must not bypass item authorization via generic navigation cache lookup.
++  if(url.origin===self.location.origin&&url.pathname.includes('/__nh7_reader_cache_v327__/')){event.respondWith(Promise.resolve(new Response('',{status:403})));return}
++  if(url.origin===self.location.origin&&url.pathname.includes('/'+STABLE_MEDIA_PATH+'/')){event.respondWith((async()=>{let rows=[];try{rows=await dbAll()}catch(_){}const row=rows.find(x=>mediaKey(x.identity).url===request.url);if(!row)return new Response('',{status:403});return await storedMedia(row.identity)||new Response('',{status:403})})());return}
++
+   if(request.mode==='navigate'&&url.origin===self.location.origin){
+     if(recoveryRequest(url)){event.respondWith((async()=>await updateCache(request,CORE_CACHE)||await caches.match(request,{ignoreSearch:true})||await caches.match(OFFLINE_URL,{ignoreSearch:true}))());return}
+     if(adminRequest(url)){event.respondWith((async()=>await updateCache(request,CORE_CACHE)||await caches.match(request,{ignoreSearch:true})||await caches.match(OFFLINE_URL,{ignoreSearch:true}))());return}
+--- a/sw-release-core-v403.js
++++ b/sw-release-core-v403.js
+@@ -1,13 +1,13 @@
+ /* New Hope 7 — isolated release core cache v4.0.3 */
+ 'use strict';
+ const NH7_RELEASE_CORE_VERSION='5.4.0-qa250';
+-const NH7_RELEASE_CORE_CACHE='nh7-release-core-v540-qa250';
++const NH7_RELEASE_CORE_CACHE='nh7-release-core-v540-qa250-library125-safari-ui';
+ const NH7_RELEASE_DATA_CACHE='nh7-data-stable-v329';
+ const NH7_RELEASE_ASSETS=[
+   './','./index.html','./app-v239.html','./reset-password.html','./manifest.json','./version.json','./offline/index.html',
+   './assets/logo.png','./assets/new-hope7-logo-1024.png','./assets/new-hope7-logo-512.png','./assets/new-hope7-logo-192.png','./assets/new-hope7-logo-180.png',
+   './css/styles.css','./css/v2.2.0.css','./css/v2.2.2.css','./css/v2.2.3.css','./css/v2.2.4.css','./css/v2.3.0-access-bible.css','./css/v2.3.4-my-notes.css','./css/nh7-book-reader-v280.css','./css/nh7-library-collections-v322.css','./css/nh7-secure-media-v270.css','./css/nh7-secure-media-watermark-v272.css','./css/nh7-apocrypha-v270.css','./css/nh7-spiritual-plans-v240.css','./css/nh7-appearance-v427.css','./css/nh7-bible-keywords-v450.css',
+-  './js/nh7-security-core-v340.js','./js/nh7-qna-i18n-v341.js','./js/nh7-offline-startup-v327.js','./js/nh7-auto-update-v335.js','./js/nh7-notifications-zagreb-v334.js','./js/nh7-offline-core-v327.js','./js/nh7-offline-data-v422.js','./js/nh7-audio-route-stability-v423.js','./js/nh7-sermon-catalog-hotfix-v424.js','./js/nh7-access-bootstrap-v230.js','./js/nh7-auth-signup-guard-v343.js','./js/nh7-registration-canonical-v353.js','./js/nh7-school-registration-v342.js','./js/nh7-registration-final-guard-v401.js','./js/nh7-registration-repeat-guard-v402.js','./js/nh7-offline-playback-bridge-v332.js','./js/nh7-offline-persistence-v323.js','./js/nh7-auth-recovery-v342.js','./js/nh7-audio-classic-v484.js','./js/nh7-audio-miniplayer-v487.js','./js/nh7-sermon-social-v443.js','./js/nh7-sermon-list-detail-v445.js','./js/nh7-note-text-v501.js','./js/nh7-audio-library-v500.js','./js/app.js','./js/nh7-media-player-v500.js','./js/nh7-bible-keywords-v451.js','./js/nh7-settings-controller-v403.js','./js/nh7-settings-account-v252.js','./js/nh7-delete-account-v253.js','./js/nh7-app-enhancements-v230.js','./js/nh7-my-notes-v234.js','./js/nh7-book-reader-v283.js','./js/nh7-book-reading-telemetry-v490.js','./js/nh7-library-language-v321.js','./js/nh7-library-collections-v322.js','./js/nh7-school-media-session-v262.js','./js/nh7-secure-media-v270.js','./js/nh7-secure-media-fix-v271.js','./js/nh7-large-mov-native-fallback-v273.js','./js/nh7-secure-media-watermark-v272.js','./js/nh7-apocrypha-v270.js','./js/nh7-protected-audio-gate-v316.js','./js/nh7-ui-stability-v329.js','./js/nh7-push-account-bind-v362.js','./js/nh7-inbox-badge-sync-v418.js','./js/nh7-school-exam-v344.js','./js/nh7-school-path-v351.js','./js/nh7-spiritual-plans-v412.js','./js/nh7-fasting-practical-note-removal-v413.js',
++  './js/nh7-security-core-v340.js','./js/nh7-qna-i18n-v341.js','./js/nh7-offline-startup-v327.js','./js/nh7-auto-update-v335.js','./js/nh7-notifications-zagreb-v334.js','./js/nh7-offline-core-v327.js','./js/nh7-offline-data-v422.js','./js/nh7-audio-route-stability-v423.js','./js/nh7-sermon-catalog-hotfix-v424.js','./js/nh7-library-security-v125.js','./js/nh7-access-bootstrap-v230.js','./js/nh7-auth-signup-guard-v343.js','./js/nh7-registration-canonical-v353.js','./js/nh7-school-registration-v342.js','./js/nh7-registration-final-guard-v401.js','./js/nh7-registration-repeat-guard-v402.js','./js/nh7-offline-playback-bridge-v332.js','./js/nh7-offline-persistence-v323.js','./js/nh7-auth-recovery-v342.js','./js/nh7-audio-classic-v484.js','./js/nh7-audio-miniplayer-v487.js','./js/nh7-sermon-social-v443.js','./js/nh7-sermon-list-detail-v445.js','./js/nh7-note-text-v501.js','./js/nh7-audio-library-v500.js','./js/app.js','./js/nh7-media-player-v500.js','./js/nh7-bible-keywords-v451.js','./js/nh7-settings-controller-v403.js','./js/nh7-settings-account-v252.js','./js/nh7-delete-account-v253.js','./js/nh7-app-enhancements-v230.js','./js/nh7-my-notes-v234.js','./js/nh7-book-reader-v283.js','./js/nh7-book-reading-telemetry-v490.js','./js/nh7-library-language-v321.js','./js/nh7-library-collections-v322.js','./js/nh7-school-media-session-v262.js','./js/nh7-secure-media-v270.js','./js/nh7-secure-media-fix-v271.js','./js/nh7-large-mov-native-fallback-v273.js','./js/nh7-secure-media-watermark-v272.js','./js/nh7-apocrypha-v270.js','./js/nh7-protected-audio-gate-v316.js','./js/nh7-ui-stability-v329.js','./js/nh7-push-account-bind-v362.js','./js/nh7-inbox-badge-sync-v418.js','./js/nh7-school-exam-v344.js','./js/nh7-school-path-v351.js','./js/nh7-spiritual-plans-v412.js','./js/nh7-fasting-practical-note-removal-v413.js',
+   './data/app/opening_messages_365.json','./data/church/church_config.json','./data/church/about.json','./data/daily/daily_word_365.json','./data/daily/faith_proclamations_365.json','./data/daily/daily_juice_365.json','./data/gratitude/gratitude_plan_30_days.json','./data/salvation/need_salvation.json','./data/school/school_content.json','./data/school/foundation_exam_50_trilingual.json','./data/bible/plans/reading_plans_1yr_2yr.json','./data/bible/groups/bible_group_01_18.json','./data/bible/groups/bible_group_19_39.json','./data/bible/groups/bible_group_40_66.json','./data/bible/keywords/bible_keywords_v450.json','./data/spiritual-plans/catalog.json','./data/spiritual-plans/prayer-30.json','./data/spiritual-plans/grace-14.json','./data/spiritual-plans/fasting-7.json','./data/spiritual-plans/fasting-types.json','./data/spiritual-plans/obedience-10.json','./data/spiritual-plans/salvation-10.json','./data/spiritual-plans/mind-renewal-days-01-07.json','./data/spiritual-plans/mind-renewal-days-08-14.json','./data/spiritual-plans/mind-renewal-days-15-18.json','./data/spiritual-plans/mind-renewal-days-19-22.json','./data/spiritual-plans/mind-renewal-days-23-26.json','./data/spiritual-plans/mind-renewal-days-27-30.json',
+   './js/nh7-apocrypha-preview-v240.js','./js/nh7-apocrypha-actions-v393.js','./js/nh7-reader-ux-v251.js','./js/nh7-reader-toolbar-v452.js','./js/nh7-my-notes-categories-v452.js','./css/nh7-reader-toolbar-v452.css','./css/nh7-notes-categories-v452.css','./js/nh7-apocrypha-runtime-patch-v402.js','./js/nh7-apocrypha-reader-flow-v244.js','./js/nh7-saved-verses-chapter-v252.js','./js/nh7-apocrypha-inline-v392.js','./js/nh7-apocrypha-saved-nav-v394.js'
+ ,
+@@ -20,7 +20,7 @@
+ self.addEventListener('activate',event=>event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(k=>k.startsWith('nh7-release-core-')&&k!==NH7_RELEASE_CORE_CACHE).map(k=>caches.delete(k)))})()));
+ self.addEventListener('message',event=>{const data=event.data||{};if(data.type!=='CACHE_RELEASE_CORE'&&data.type!=='RELEASE_CORE_STATUS')return;const port=event.ports?.[0];event.waitUntil((async()=>{try{if(data.type==='CACHE_RELEASE_CORE'){port?.postMessage(await nh7CacheReleaseCore());return}const cache=await caches.open(NH7_RELEASE_CORE_CACHE),keys=await cache.keys();port?.postMessage({ok:true,cached:keys.length,total:NH7_RELEASE_ASSETS.length,version:NH7_RELEASE_CORE_VERSION})}catch(error){port?.postMessage({ok:false,error:error?.message||String(error)})}})())});
+ 
+-const NH7_READER_RELEASE_PATHS_V452=new Set(["js/app.js", "js/nh7-app-enhancements-v230.js", "js/nh7-my-notes-v234.js", "js/nh7-apocrypha-preview-v240.js", "js/nh7-apocrypha-actions-v393.js", "js/nh7-reader-ux-v251.js", "js/nh7-reader-toolbar-v452.js", "js/nh7-my-notes-categories-v452.js", "css/nh7-reader-toolbar-v452.css", "css/nh7-notes-categories-v452.css", "js/nh7-apocrypha-v270.js", "js/nh7-theme-studio-v453.js", "js/nh7-original-language-v453.js", "js/nh7-fonts-v454.js", "js/nh7-audio-quick-bible-v454.js", "css/nh7-theme-studio-v453.css", "css/nh7-study-reader-v453.css", "css/nh7-fonts-quick-bible-v454.css", "data/lexicon/original-language-core-v454.json", "assets/fonts/v453/estedad.woff2", "assets/fonts/v453/inter.woff2", "assets/fonts/v453/lora.woff2", "assets/fonts/v453/manifest.json", "assets/fonts/v453/notonaskharabic.woff2", "assets/fonts/v453/nunitosans.woff2", "assets/fonts/v453/vazirmatn.woff2", "assets/fonts/v454/amiri.woff2", "assets/fonts/v454/manifest.json", "assets/fonts/v454/markazitext.woff2", "js/nh7-header-date-v455.js", "css/nh7-header-date-v455.css", "css/nh7-navigation-v456.css", "css/nh7-theme-gallery-v457.css", "css/nh7-appearance-personalization-v514.css", "css/nh7-icons-v517.css", "css/nh7-player-volume-v521.css", "js/nh7-appearance-personalization-v514.js", "js/nh7-icons-v517.js", "js/nh7-celebrations-v464.js", "css/nh7-celebrations-v464.css", "css/nh7-growth-v463.css", "js/nh7-school-path-v351.js", "js/nh7-settings-controller-v403.js", "js/nh7-audio-classic-v484.js", "js/nh7-audio-route-stability-v423.js", "js/nh7-school-drafts-v468.js", "js/nh7-store-review-v469.js", "css/nh7-store-review-v469.css", "js/nh7-soul-winning-v472.js", "css/nh7-soul-winning-v472.css"]);
++const NH7_READER_RELEASE_PATHS_V452=new Set(["js/nh7-library-security-v125.js","js/nh7-access-bootstrap-v230.js","js/nh7-library-collections-v322.js","js/nh7-library-language-v321.js","js/nh7-book-reader-v283.js","js/nh7-offline-persistence-v323.js","js/app.js", "js/nh7-app-enhancements-v230.js", "js/nh7-my-notes-v234.js", "js/nh7-apocrypha-preview-v240.js", "js/nh7-apocrypha-actions-v393.js", "js/nh7-reader-ux-v251.js", "js/nh7-reader-toolbar-v452.js", "js/nh7-my-notes-categories-v452.js", "css/nh7-reader-toolbar-v452.css", "css/nh7-notes-categories-v452.css", "js/nh7-apocrypha-v270.js", "js/nh7-theme-studio-v453.js", "js/nh7-original-language-v453.js", "js/nh7-fonts-v454.js", "js/nh7-audio-quick-bible-v454.js", "css/nh7-theme-studio-v453.css", "css/nh7-study-reader-v453.css", "css/nh7-fonts-quick-bible-v454.css", "data/lexicon/original-language-core-v454.json", "assets/fonts/v453/estedad.woff2", "assets/fonts/v453/inter.woff2", "assets/fonts/v453/lora.woff2", "assets/fonts/v453/manifest.json", "assets/fonts/v453/notonaskharabic.woff2", "assets/fonts/v453/nunitosans.woff2", "assets/fonts/v453/vazirmatn.woff2", "assets/fonts/v454/amiri.woff2", "assets/fonts/v454/manifest.json", "assets/fonts/v454/markazitext.woff2", "js/nh7-header-date-v455.js", "css/nh7-header-date-v455.css", "css/nh7-navigation-v456.css", "css/nh7-theme-gallery-v457.css", "css/nh7-appearance-personalization-v514.css", "css/nh7-icons-v517.css", "css/nh7-player-volume-v521.css", "js/nh7-appearance-personalization-v514.js", "js/nh7-icons-v517.js", "js/nh7-celebrations-v464.js", "css/nh7-celebrations-v464.css", "css/nh7-growth-v463.css", "js/nh7-school-path-v351.js", "js/nh7-settings-controller-v403.js", "js/nh7-audio-classic-v484.js", "js/nh7-audio-route-stability-v423.js", "js/nh7-school-drafts-v468.js", "js/nh7-store-review-v469.js", "css/nh7-store-review-v469.css", "js/nh7-soul-winning-v472.js", "css/nh7-soul-winning-v472.css"]);
+ 
+ self.addEventListener('fetch',event=>{
+   if(event.request.method!=='GET')return;

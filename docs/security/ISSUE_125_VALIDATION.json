@@ -80,7 +80,7 @@
       "workflow": "deploy-pages.yml",
       "name": "Validate Ministers Library security",
       "status": "PASS",
-      "output": "PASS Edge adapter: six principals, scoped grants, forged identity/role ignored, no service role, denial/timeout fail closed.\nPASS Option B file identity: signed response + current UID/audience proof; public offline retained, Ministers/unknown/canonical bypass denied; revoke/logout safe.\nPASS actual client: UID binding, public-only snapshots, legacy purge, revoke, 403, offline, logout, identity race, freshness expiry; unrelated data preserved.\nPASS actual worker/offline API: old Library bytes cannot be replayed; audio worker cache lookup preserved.\nPASS active reader wrapper: unidentified legacy full-text cache quarantined; denial/offline never replay restricted text; verified v321 five-parameter/language wire contract retained (authorizes via v230/auth.uid, not v372 delegation).\nPASS source scope and Library loader ordering.\nPASS independent v4 invariants: early authenticated/published Sermons bypasses all School checks; nine exact registrations matching/filter/order/limit cases.\nPASS full Edge: 37 before/after cases have identical responses, CORS, School checks, audio signatures and synthetic Bible writes; non-Library source bytes unchanged.\nPASS exact Library path: School-approved non-minister/revoked get zero restricted rows; scoped minister/Admin use caller-JWT v396; anonymous/School denial unchanged; no service-role Library read.\n(node:68133) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+      "output": "PASS Edge adapter: six principals, scoped grants, forged identity/role ignored, no service role, denial/timeout fail closed.\nPASS Option B file identity: signed response + current UID/audience proof; public offline retained, Ministers/unknown/canonical bypass denied; revoke/logout safe.\nPASS actual client: UID binding, public-only snapshots, legacy purge, revoke, 403, offline, logout, identity race, freshness expiry; unrelated data preserved.\nPASS actual worker/offline API: old Library bytes cannot be replayed; audio worker cache lookup preserved.\nPASS active reader wrapper: unidentified legacy full-text cache quarantined; denial/offline never replay restricted text; verified v321 five-parameter/language wire contract retained (authorizes via v230/auth.uid, not v372 delegation).\nPASS source scope and Library loader ordering.\nPASS independent v4 invariants: early authenticated/published Sermons bypasses all School checks; nine exact registrations matching/filter/order/limit cases.\nPASS full Edge: 37 before/after cases have identical responses, CORS, School checks, audio signatures and synthetic Bible writes; non-Library source bytes unchanged.\nPASS exact Library path: School-approved non-minister/revoked get zero restricted rows; scoped minister/Admin use caller-JWT v396; anonymous/School denial unchanged; no service-role Library read.\n(node:81754) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nFrom https://github.com/Omideno7/new-hope7-app\n * branch            82efc731c64f76c051528ae01189521bee0ee8b9 -> FETCH_HEAD\nPASS Test5: existing modules/files/import order and non-Library app bytes preserved; exact note typo + scoped Library hardening applied.\n{\"reference\":\"82efc731c64f76c051528ae01189521bee0ee8b9\",\"qa_copy\":\"/tmp/nh7-test5-library-ZT3vfZ/qa\",\"total_reference_files\":565,\"unchanged_non_library_files\":555,\"existing_module_import_order_preserved\":true,\"non_library_app_source_preserved_sha256\":\"e6a0faca2f734ef602735a418533e1d88f6648ce96961ae123fd3da2e506fec1\",\"exact_test5_verse_note_typo_fixed\":true}\n"
     },
     {
       "workflow": "deploy-pages.yml",
@@ -195,7 +195,7 @@
     {
       "command": "node scripts/verify-i18n-v115.cjs",
       "status": "PASS",
-      "evidence": "PASS: 11 representative routes, FA → EN → HR → FA; RTL/LTR and navigation labels\nPASS: open appearance dialog translates in place; custom color draft and controls preserved\nPASS: photo picker and crop canvas/zoom survive language switches; photo persistence not changed\nPASS: mounted mini/full player accessibility labels; engine behavior untouched\nPASS: book reader UI switches in place; original document direction and search retained\nPASS: exact-result search → John 3:16; FA/EN/HR verse target and native share payload\nPASS: notes, saved verses, assignments, progress, favorites, download metadata, profile/account fixtures preserved\nAll service calls mocked; intercepted background write attempts: 36\nTestimony/Prayer user routes absent from this main baseline; no feature import or protected Admin edits.\n"
+      "evidence": "PASS: 11 representative routes, FA → EN → HR → FA; RTL/LTR and navigation labels\nPASS: open appearance dialog translates in place; custom color draft and controls preserved\nPASS: photo picker and crop canvas/zoom survive language switches; photo persistence not changed\nPASS: mounted mini/full player accessibility labels; engine behavior untouched\nPASS: book reader UI switches in place; original document direction and search retained\nPASS: exact-result search → John 3:16; FA/EN/HR verse target and native share payload\nPASS: notes, saved verses, assignments, progress, favorites, download metadata, profile/account fixtures preserved\nAll service calls mocked; intercepted background write attempts: 35\nTestimony/Prayer user routes absent from this main baseline; no feature import or protected Admin edits.\n"
     },
     {
       "command": "NH7_TEST_PRINT121=1 node scripts/verify-report-pdf-v119.cjs",
@@ -212,6 +212,18 @@
       "status": "PASS",
       "evidence": "PASS Option B: Production-shaped v321 without item ID; unidentified legacy public/Ministers bodies quarantined, public online reopen enables offline reader; public web/IDB/cache/native download; Ministers persistence/replay blocked; revoke/logout/switch; public retained; reclassification purged; unrelated data retained.\n",
       "scope": "Real browser IndexedDB/Cache Storage, shipped worker storedMedia/fetch handlers, fresh offline page, mocked native Filesystem/FileTransfer. No external service calls."
+    },
+    {
+      "command": "node scripts/verify-library-public-ui-v125.cjs",
+      "status": "PASS",
+      "evidence": "PASS Chromium: zero-note runtime routes; actual PUBLIC card verify/download/status → repeated offline PDF opens without Edge/network; Ministers/unknown denied; reclassification/revoke/logout/account switch safe.\n",
+      "scope": "Actual full PR UI: public card download/status/iframe; repeated offline blob PDF opens and no Edge/network; zero-note routes including caught Error cards; restricted/unknown and reclassification/revoke/logout/account switch."
+    },
+    {
+      "command": "NH7_TEST_TEST5=1 node scripts/verify-library-public-ui-v125.cjs http://127.0.0.1:8766",
+      "status": "PASS",
+      "evidence": "PASS Chromium: zero-note runtime routes; actual PUBLIC card verify/download/status → repeated offline PDF opens without Edge/network; Ministers/unknown denied; reclassification/revoke/logout/account switch safe.\n",
+      "scope": "Exact Test5 reference with reviewed integration patch; includes Testimonies/Prayer Request route rendering. Only synthetic backend calls; no mutation of feature branch/Production/native bundle."
     }
   ],
   "backend_blockers": [],
@@ -284,7 +296,8 @@
       "Native public download retained; identifiable native Ministers copy deleted",
       "Public-to-Ministers reclassification invalidates proof and bytes",
       "Existing audio/School downloads and Notes/Bible/School account fixtures retained",
-      "Production-shaped legacy PUBLIC/Ministers bodies without item IDs cannot populate/replay the new reader cache; one fresh PUBLIC online reopen enables UID/item/language-scoped offline reading, with unmatched legacy language still denied"
+      "Production-shaped legacy PUBLIC/Ministers bodies without item IDs cannot populate/replay the new reader cache; one fresh PUBLIC online reopen enables UID/item/language-scoped offline reading, with unmatched legacy language still denied",
+      "Actual Public Library card/download/status/iframe path online→offline repeated reopen with no Edge; explicit Test5 typo reproduction and patched-runtime pass"
     ],
     "limitations": [
       "Live backend and real iOS/Safari devices not exercised",
@@ -292,5 +305,35 @@
       "Unidentifiable legacy copies quarantined by app/worker; external/forensic copies cannot be retracted"
     ]
   },
-  "validation_date": "2026-10-08"
+  "validation_date": "2026-10-08",
+  "safari_ui_followup": {
+    "maintainer_comment": "https://github.com/Omideno7/new-hope7-app/pull/126#issuecomment-6067430933",
+    "test5_reference_branch": "feature/final-qa-v2500-20261004",
+    "test5_reference_sha": "82efc731c64f76c051528ae01189521bee0ee8b9",
+    "runtime_typo": "Real single-$ typo reproduced on unpatched Test5 home route; main/PR already used $$; narrow Test5 integration patch fixes it and route regression includes caught render errors.",
+    "before_test5": "Expected regression failure: Cannot read properties of null (reading forEach)",
+    "after_test5": "PASS actual user-facing UI regression on patched exact Test5 reference",
+    "preservation": {
+      "reference": "82efc731c64f76c051528ae01189521bee0ee8b9",
+      "total_reference_files": 565,
+      "unchanged_non_library_files": 555,
+      "existing_module_import_order_preserved": true,
+      "non_library_app_source_preserved_sha256": "e6a0faca2f734ef602735a418533e1d88f6648ce96961ae123fd3da2e506fec1",
+      "exact_test5_verse_note_typo_fixed": true
+    },
+    "pr_module_preservation": {
+      "baseline": "7103f415d5db4247551f87ede525226dadc2d5ac",
+      "outside_library_app_source_unchanged": true,
+      "sha256": "2ed70372339af176711926f10c0874123a69bde96fb6cd6aa0598fec992e09ad",
+      "exceptions": "Library button binding/status selectors exclude new Library controls; verse-note comment only. Existing verse-note selector already $$."
+    },
+    "offline_ui": "Verified PUBLIC cards expose download/status; offline viewer resolves UID/item-bound file proof plus localPlayable without Edge first. Generic offline handlers exclude Library-specific control. Offline helper owns local Blob URL so repeated Close/reopen works. Reclassification removes stale public controls/viewers.",
+    "artifacts": [
+      "docs/security/ISSUE_125_TEST5_INTEGRATION.md",
+      "docs/security/ISSUE_125_TEST5_INTEGRATION.patch",
+      "scripts/verify-library-test5-integration-v125.mjs",
+      "scripts/verify-library-public-ui-v125.cjs"
+    ],
+    "webkit": "NOT RUN: official browser-download hosts returned HTTP 403 Domain forbidden. Physical Safari/iOS/native testing remains the release gate."
+  }
 }
