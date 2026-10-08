@@ -54,7 +54,7 @@ async function offlineMediaStatus(url){if(!url)return{cached:false};if(isNativeC
 async function nativeDownloadForOffline(url,title,button){const F=capacitorPlugin('Filesystem'),T=capacitorPlugin('FileTransfer');if(!F||!T)throw new Error('Native file plugins unavailable');await ensureNativeOfflineDir();const path=nativeOfflinePath(url),targetUri=await nativeFileUri(path);let handle=null;try{if(button&&T.addListener)handle=await T.addListener('progress',p=>{if(p?.type==='download'&&p.lengthComputable&&p.contentLength>0){const n=Math.min(100,Math.round(Number(p.bytes||0)/Number(p.contentLength)*100));button.textContent=(state.lang==='fa'?'در حال دانلود ':state.lang==='hr'?'Preuzimanje ':'Downloading ')+n+'%'}});await T.downloadFile({url,path:targetUri,progress:true,connectTimeout:60000,readTimeout:120000});const st=await F.stat({directory:'DATA',path});saveOfflineMeta(url,{title:title||'',path,uri:targetUri,bytes:Number(st?.size||0),native:true});return{bytes:Number(st?.size||0),path,uri:targetUri}}finally{try{await handle?.remove?.()}catch(e){}}}
 async function downloadForOffline(url,title,button){if(!url)return;const original=button?.textContent||'';try{if(button){button.disabled=true;button.textContent=state.lang==='fa'?'در حال دانلود…':state.lang==='hr'?'Preuzimanje…':'Downloading…'}const r=isNativeCapacitor()?await nativeDownloadForOffline(url,title,button):await swMessage('DOWNLOAD_URL',{url,title:title||''});if(!isNativeCapacitor())saveOfflineMeta(url,{title:title||'',bytes:r.bytes||0,native:false});if(button){button.textContent=state.lang==='fa'?'دانلود شد ✓':state.lang==='hr'?'Preuzeto ✓':'Downloaded ✓';button.dataset.offlineCached='1'}}catch(e){console.warn('Offline download failed',e);const d=String(e?.message||'');alert(state.lang==='fa'?'دانلود آفلاین انجام نشد.'+(d?'\n'+d:''):state.lang==='hr'?'Izvanmrežno preuzimanje nije uspjelo.'+(d?'\n'+d:''):'Offline download failed.'+(d?'\n'+d:''));if(button)button.textContent=original}finally{if(button)button.disabled=false}}
 async function removeOfflineDownload(url,button){try{if(isNativeCapacitor()){const F=capacitorPlugin('Filesystem'),m=offlineMeta(url);if(F&&m?.path)try{await F.deleteFile({directory:'DATA',path:m.path})}catch(e){}removeOfflineMeta(url)}else{await swMessage('REMOVE_URL',{url});removeOfflineMeta(url)}if(button){button.textContent=state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline';button.dataset.offlineCached='0'}}catch(e){console.warn(e)}}
-async function refreshOfflineButtons(){const bs=$$('[data-offline-download]');await Promise.all(bs.map(async b=>{const u=b.dataset.offlineDownload;if(!u)return;const st=await offlineMediaStatus(u);b.dataset.offlineCached=st.cached?'1':'0';b.textContent=st.cached?(state.lang==='fa'?'آفلاین آماده ✓':state.lang==='hr'?'Offline spremno ✓':'Offline ready ✓'):(state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline')}))}
+async function refreshOfflineButtons(){const bs=$$('[data-offline-download]:not([data-library-offline])');await Promise.all(bs.map(async b=>{const u=b.dataset.offlineDownload;if(!u)return;const st=await offlineMediaStatus(u);b.dataset.offlineCached=st.cached?'1':'0';b.textContent=st.cached?(state.lang==='fa'?'آفلاین آماده ✓':state.lang==='hr'?'Offline spremno ✓':'Offline ready ✓'):(state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline')}))}
 async function resolveOfflineMediaUrl(url){if(!url||!isNativeCapacitor())return url;const st=await offlineMediaStatus(url);if(!st.cached)return url;const m=offlineMeta(url);let uri=m?.uri||st.uri||'';if(!uri&&m?.path)uri=await nativeFileUri(m.path);return uri?playableNativeUri(uri):url}
 async function clearDownloadedMedia(){if(isNativeCapacitor()){const F=capacitorPlugin('Filesystem');if(F)try{await F.rmdir({directory:'DATA',path:NATIVE_OFFLINE_DIR,recursive:true})}catch(e){}const ks=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith(OFFLINE_MEDIA_PREFIX))ks.push(k)}ks.forEach(k=>localStorage.removeItem(k));return}await swMessage('CLEAR_MEDIA')}
 async function prepareCoreOffline(button){const old=button?.textContent||'';try{if(button){button.disabled=true;button.textContent=state.lang==='fa'?'در حال آماده‌سازی…':state.lang==='hr'?'Priprema…':'Preparing…'}if(isNativeCapacitor()){localStorage.setItem('nh7_offline_core_ready',new Date().toISOString());alert(state.lang==='fa'?'محتوای اصلی داخل برنامه نصب شده و برای استفاده آفلاین آماده است.':state.lang==='hr'?'Osnovni sadržaj ugrađen je u aplikaciju i spreman je za offline korištenje.':'Core content is bundled in the app and ready offline.')}else{const r=await swMessage('CACHE_CORE');localStorage.setItem('nh7_offline_core_ready',new Date().toISOString());alert(state.lang==='fa'?`محتوای اصلی برای استفاده آفلاین آماده شد. (${r.cached||0} فایل)`:state.lang==='hr'?'Osnovni sadržaj je spreman za offline korištenje.':'Core content is ready for offline use.')}}catch(e){console.warn(e);alert(state.lang==='fa'?'آماده‌سازی آفلاین کامل نشد. دوباره تلاش کنید.':'Offline preparation did not finish. Please try again.')}finally{if(button){button.disabled=false;button.textContent=old}}}
@@ -2500,40 +2500,26 @@ async function meetings(params={}){
 
 let nh7LibraryTab=sessionStorage.getItem('nh7_library_tab')||'public';
 let nh7LibraryCatalog=[];
-const NH7_LIBRARY_CATALOG_CACHE_KEY='nh7_library_catalog_cache_v1';
-const NH7_LIBRARY_CATALOG_CACHE_MS=10*60*1000;
 function libraryText(row,key){return row?.[key+'_'+state.lang]||row?.[key+'_en']||row?.[key+'_fa']||row?.[key+'_hr']||''}
 function librarySize(bytes){bytes=Number(bytes||0);if(bytes<1024*1024)return Math.max(1,Math.round(bytes/1024))+' KB';return (bytes/1024/1024).toFixed(1)+' MB'}
 async function loadLibraryCatalog(force=false){
-  if(!force&&nh7LibraryCatalog.length)return nh7LibraryCatalog;
-  if(!force){
-    try{
-      const cached=JSON.parse(sessionStorage.getItem(NH7_LIBRARY_CATALOG_CACHE_KEY)||'null');
-      if(cached&&Array.isArray(cached.items)&&Date.now()-Number(cached.at||0)<NH7_LIBRARY_CATALOG_CACHE_MS){
-        nh7LibraryCatalog=cached.items;
-        return nh7LibraryCatalog;
-      }
-    }catch(_){}
-  }
-  try{
-    const bundle=await cloudRpc('nh7_library_catalog_v396',{});
-    nh7LibraryCatalog=Array.isArray(bundle?.items)?bundle.items:[];
-    try{sessionStorage.setItem(NH7_LIBRARY_CATALOG_CACHE_KEY,JSON.stringify({at:Date.now(),items:nh7LibraryCatalog}))}catch(_){}
-  }catch(e){
-    console.warn('Library catalog',e);
-    if(!nh7LibraryCatalog.length){
-      try{
-        const cached=JSON.parse(sessionStorage.getItem(NH7_LIBRARY_CATALOG_CACHE_KEY)||'null');
-        nh7LibraryCatalog=Array.isArray(cached?.items)?cached.items:[];
-      }catch(_){nh7LibraryCatalog=[]}
-    }
-  }
+  const bundle=await window.NH7LibrarySecurityV125?.catalog();
+  nh7LibraryCatalog=Array.isArray(bundle?.items)?bundle.items:[];
   return nh7LibraryCatalog;
 }
-let nh7LibraryBlobUrlV224='';
-function nh7ClosePdfViewerV223(){if(nh7LibraryBlobUrlV224){URL.revokeObjectURL(nh7LibraryBlobUrlV224);nh7LibraryBlobUrlV224=''}document.getElementById('nh7PdfViewerV223')?.remove();document.body.classList.remove('nh7-modal-open')}
+window.addEventListener('nh7-library-security',event=>{
+  nh7LibraryCatalog=event.detail.bundle.items;
+  const allowed=new Set(nh7LibraryCatalog.map(row=>String(row.id)));
+  document.querySelectorAll('[data-library-open]').forEach(button=>{if(!allowed.has(button.dataset.libraryOpen)||button.closest('.library-user-card')?.dataset.libraryAudience!==nh7LibraryCatalog.find(row=>String(row.id)===button.dataset.libraryOpen)?.audience)button.closest('.library-user-card')?.remove()});
+  if(nh7LibraryViewerItemV125&&(!allowed.has(nh7LibraryViewerItemV125)||(nh7LibraryViewerPublicV125&&nh7LibraryCatalog.find(row=>String(row.id)===nh7LibraryViewerItemV125)?.audience!=='public')))nh7ClosePdfViewerV223();
+  nh7RefreshLibraryOfflineControlsV125();
+});
+let nh7LibraryBlobUrlV224='',nh7LibraryViewerItemV125='',nh7LibraryViewerPublicV125=false;
+function nh7ClosePdfViewerV223(){nh7LibraryViewerItemV125='';nh7LibraryViewerPublicV125=false;if(nh7LibraryBlobUrlV224){URL.revokeObjectURL(nh7LibraryBlobUrlV224);nh7LibraryBlobUrlV224=''}document.getElementById('nh7PdfViewerV223')?.remove();document.body.classList.remove('nh7-modal-open')}
 function nh7PdfErrorTextV223(err){
   const raw=String(err?.code||err?.message||err||'').trim(),key=raw.toLowerCase();
+  if(key.includes('library_offline_unavailable'))return l223('برای باز کردن آفلاین، یک بار آنلاین شوید و این فایل عمومی را دانلود کنید.','Go online and download this public file once before opening it offline.','Povežite se i jednom preuzmite ovu javnu datoteku prije otvaranja offline.');
+  if(key.includes('library_online_required'))return l223('این فایل به تأیید آنلاین نیاز دارد.','This file requires online authorization.','Ova datoteka zahtijeva mrežnu autorizaciju.');
   if(key.includes('school_approval_required'))return tr('schoolContentGate');
   if(key.includes('invalid_code')||key.includes('code_invalid')||key.includes('expired')||key.includes('max_uses'))return tr('invalidAccessCode');
   if(key.includes('item_not_found')||key.includes('not_found'))return l223('این فایل پیدا نشد یا دیگر منتشر نشده است.','This file was not found or is no longer published.','Datoteka nije pronađena ili više nije objavljena.');
@@ -2542,20 +2528,37 @@ function nh7PdfErrorTextV223(err){
   return raw||l223('فایل باز نشد. پنجره را ببندید و دوباره تلاش کنید.','The file could not be opened. Close this window and try again.','Datoteka se nije mogla otvoriti.');
 }
 function nh7ShowPdfViewerV223(title=''){
-  nh7ClosePdfViewerV223();const modal=document.createElement('div');modal.id='nh7PdfViewerV223';modal.className='nh7-pdf-viewer-modal';modal.innerHTML=`<div class="nh7-pdf-viewer-dialog"><div class="nh7-pdf-viewer-head"><strong>${html(title||tr('library'))}</strong><div><a class="secondary-btn hidden" id="nh7PdfExternalV223" target="_blank" rel="noopener">${html(tr('openExternal'))}</a><button class="icon-btn" type="button" data-pdf-close aria-label="${html(tr('close'))}">×</button></div></div><div class="nh7-pdf-loading" id="nh7PdfLoadingV223"><div class="spinner"></div><p>${html(tr('securePdfLoading'))}</p></div><iframe class="hidden" id="nh7PdfFrameV223" title="Document"></iframe><div class="nh7-docx-reader hidden" id="nh7DocxReaderV224"></div></div>`;document.body.appendChild(modal);document.body.classList.add('nh7-modal-open');modal.querySelectorAll('[data-pdf-close]').forEach(b=>b.onclick=nh7ClosePdfViewerV223);modal.onclick=e=>{if(e.target===modal)nh7ClosePdfViewerV223()};return modal;
+  nh7ClosePdfViewerV223();const modal=document.createElement('div');modal.id='nh7PdfViewerV223';modal.className='nh7-pdf-viewer-modal';modal.innerHTML=`<div class="nh7-pdf-viewer-dialog"><div class="nh7-pdf-viewer-head"><strong>${html(title||tr('library'))}</strong><div><a class="secondary-btn hidden" id="nh7PdfExternalV223" target="_blank" rel="noopener">${html(tr('openExternal'))}</a><button class="icon-btn" type="button" data-pdf-close aria-label="${html(tr('close'))}">×</button></div></div><div class="nh7-pdf-loading" id="nh7PdfLoadingV223"><div class="spinner"></div><p>${html(tr('securePdfLoading'))}</p></div><iframe class="hidden" id="nh7PdfFrameV223" title="${html(tr('document'))}"></iframe><div class="nh7-docx-reader hidden" id="nh7DocxReaderV224"></div></div>`;document.body.appendChild(modal);document.body.classList.add('nh7-modal-open');modal.querySelectorAll('[data-pdf-close]').forEach(b=>b.onclick=nh7ClosePdfViewerV223);modal.onclick=e=>{if(e.target===modal)nh7ClosePdfViewerV223()};return modal;
 }
 async function openLibraryPdf(item){
+  if(nh7LibraryTextV125(item))return window.NH7_OPEN_BOOK?.(item.id);
   if(!item)return;if(!await nh7RequireSchoolAccessV223(tr('library')))return;
+  const owner=window.NH7LibrarySecurityV125?.uid();
   const code='';
   const title=libraryText(item,'title')||item.file_name||'Document',modal=nh7ShowPdfViewerV223(title);
+  nh7LibraryViewerItemV125=String(item.id);nh7LibraryViewerPublicV125=item.audience==='public';
   try{
-    const d=await invokeEdgeFunction('nh7-library-access',{item_id:item.id,code,device_id:deviceId(),user_email:currentUserEmail()||''});
-    if(!d?.signed_url)throw new Error(d?.error||'No signed URL');
+    let local='',d;
+    if(!navigator.onLine){
+      await window.NH7LibrarySecurityV125?.catalog();
+      const row=nh7LibraryCatalog.find(row=>String(row.id)===String(item.id));
+      if(row?.audience!=='public'||owner!==window.NH7LibrarySecurityV125?.uid())throw new Error('library_online_required');
+      const path=window.NH7LibrarySecurityV125?.publicFile(item.id);
+      local=path?await window.NH7OfflineV325?.localPlayable(path):'';
+      if(!local)throw new Error('library_offline_unavailable');
+      if(owner!==window.NH7LibrarySecurityV125?.uid()||!window.NH7LibrarySecurityV125?.fileAllowed(path)||!modal.isConnected)return;
+      d={mime_type:row.mime_type,file_name:row.file_name};
+    }else d=await nh7LibrarySignedFileV125(item);
+
+    if(owner!==window.NH7LibrarySecurityV125?.uid()||!modal.isConnected)return;
+    if(!local&&!d?.signed_url)throw new Error(d?.error||'No signed URL');
     if(item.audience==='ministers')sessionStorage.setItem('nh7_minister_library_code',JSON.stringify({code,at:Date.now()}));
     trackAppSection('library:'+item.audience+':open');nh7TrackContentV223((item.resource_type||'library')==='apocrypha'?'apocrypha':'library_pdf',String(item.id),title);
-    const external=modal.querySelector('#nh7PdfExternalV223'),loading=modal.querySelector('#nh7PdfLoadingV223'),mime=String(d.mime_type||item.mime_type||'application/pdf').toLowerCase();external.href=d.signed_url;external.classList.remove('hidden');
-    const response=await fetch(d.signed_url,{cache:'no-store'});if(!response.ok)throw new Error('Document download failed: '+response.status);
+    const external=modal.querySelector('#nh7PdfExternalV223'),loading=modal.querySelector('#nh7PdfLoadingV223'),mime=String(d.mime_type||item.mime_type||'application/pdf').toLowerCase();external.href=local||d.signed_url;external.classList.remove('hidden');
+    if(local&&!mime.includes('wordprocessingml')&&!/\.docx$/i.test(d.file_name||item.file_name||'')){modal.querySelector('#nh7PdfFrameV223').src=local+'#toolbar=1&navpanes=0&view=FitH';modal.querySelector('#nh7PdfFrameV223').classList.remove('hidden');loading?.classList.add('hidden');return;}
+    const response=await fetch(local||d.signed_url,{cache:'no-store'});if(!response.ok)throw new Error('Document download failed: '+response.status);
     const blob=await response.blob();
+    if(owner!==window.NH7LibrarySecurityV125?.uid()||!modal.isConnected)return;
     if(mime.includes('wordprocessingml')||/\.docx$/i.test(d.file_name||item.file_name||'')){
       if(!window.mammoth)throw new Error(l223('نمایش Word هنوز بارگذاری نشده است؛ دوباره تلاش کنید.','Word reader is not loaded yet. Please retry.','Čitač Worda nije učitan. Pokušajte ponovno.'));
       const reader=modal.querySelector('#nh7DocxReaderV224'),result=await window.mammoth.convertToHtml({arrayBuffer:await blob.arrayBuffer()});reader.innerHTML=`<article class="nh7-docx-page"><h1>${html(title)}</h1>${result.value}</article>`;reader.classList.remove('hidden');
@@ -2569,7 +2572,50 @@ async function openLibraryPdf(item){
   }
 }
 
-function libraryUserCardV224(x,isApocrypha=false){const mime=String(x.mime_type||'application/pdf'),label=mime.includes('wordprocessingml')||/\.docx$/i.test(x.file_name||'')?'DOCX':'PDF';return `<article class="library-user-card"><div class="library-user-icon">${label}</div><span class="library-audience ${html(x.audience)}">${x.audience==='ministers'?'🔒 '+tr('ministersLibrary'):'🌍 '+tr('publicLibrary')}</span><h3>${html(libraryText(x,'title')||x.file_name||label)}</h3><p>${html(libraryText(x,'description')||'')}</p><small class="muted">${html(x.file_name||'')} · ${librarySize(x.file_size)}</small><div class="button-row"><button class="primary-btn" data-library-open="${html(x.id)}">${x.audience==='ministers'?'🔐':'📖'} ${html(isApocrypha?l223('باز کردن','Open','Otvori'):tr('openPdf'))}</button></div></article>`}
+// Capabilities come from the verified catalog / authorized file proof, never pseudo paths.
+function nh7LibraryTextV125(item){return item?.reader_mode==='text';}
+function nh7LibraryDownloadableV125(item){return !nh7LibraryTextV125(item)&&(item?.reader_mode==='pdf'||item?.reader_mode==='file'||!!window.NH7LibrarySecurityV125?.publicFile(item?.id));}
+// Public offline UI uses only UID/catalog/file proofs, never a filename or URL guess.
+async function nh7LibrarySignedFileV125(item){
+  const security=window.NH7LibrarySecurityV125,owner=security?.uid(),bundle=await security?.catalog();
+  const current=bundle?.items.find(row=>String(row.id)===String(item.id));
+  if(!navigator.onLine||!owner||owner!==security?.uid()||!current||nh7LibraryTextV125(current))throw new Error('library_online_required');
+  const data=await invokeEdgeFunction('nh7-library-access',{item_id:item.id,code:'',device_id:deviceId(),user_email:currentUserEmail()||''});
+  if(owner!==security?.uid())throw new Error('library_online_required');
+  return data;
+}
+async function nh7RefreshLibraryOfflineControlsV125(){
+  for(const button of document.querySelectorAll('[data-library-offline]')){
+    if(button.disabled)continue;
+    const id=button.dataset.libraryOffline,owner=window.NH7LibrarySecurityV125?.uid(),row=nh7LibraryCatalog.find(row=>String(row.id)===id);
+    if(!owner||row?.audience!=='public'){button.remove();continue;}
+    const text=nh7LibraryTextV125(row),path=text?null:window.NH7LibrarySecurityV125?.publicFile(id),status=text?{cached:await window.NH7LibraryReaderCacheV125?.ready(id)}:path?await window.NH7OfflineV325?.status(path):null;
+    if(!button.isConnected||button.disabled||owner!==window.NH7LibrarySecurityV125?.uid())continue;
+    if(!text)button.dataset.offlineDownload=path||'';else button.removeAttribute('data-offline-download');button.dataset.offlineCached=status?.cached?'1':'0';
+    button.textContent=status?.cached?l223('آفلاین آماده ✓','Offline ready ✓','Offline spremno ✓'):text?l223('مطالعه و آماده‌سازی آفلاین','Read and prepare offline','Čitaj i pripremi offline'):l223('دانلود برای آفلاین','Download offline','Preuzmi offline');
+  }
+}
+async function nh7DownloadPublicLibraryV125(button){
+  if(button.disabled)return;button.disabled=true;
+  const id=button.dataset.libraryOffline,owner=window.NH7LibrarySecurityV125?.uid();
+  try{
+    const bundle=await window.NH7LibrarySecurityV125?.catalog(),item=bundle?.items.find(row=>String(row.id)===id&&row.audience==='public');
+    if(!owner||owner!==window.NH7LibrarySecurityV125?.uid()||!item)throw new Error('library_online_required');
+    if(nh7LibraryTextV125(item)){await window.NH7_OPEN_BOOK?.(id);return;}
+    if(!nh7LibraryDownloadableV125(item))throw new Error('library_online_required');
+    const path=window.NH7LibrarySecurityV125.publicFile(id),status=path?await window.NH7OfflineV325?.status(path,true):null;
+    if(status?.cached){if(confirm(l223('این فایل از حافظه آفلاین پاک شود؟','Remove this offline download?','Ukloniti ovu offline datoteku?')))await window.NH7OfflineV325.remove(path);}
+    else{
+      if(!navigator.onLine)throw new Error('library_offline_unavailable');
+      const data=await nh7LibrarySignedFileV125(item);
+      if(!data?.signed_url||owner!==window.NH7LibrarySecurityV125?.uid()||!window.NH7LibrarySecurityV125?.fileAllowed(data.signed_url))throw new Error('library_online_required');
+      await window.NH7OfflineV325.download(data.signed_url,libraryText(item,'title')||item.file_name,button);
+    }
+  }catch(error){alert(nh7PdfErrorTextV223(error));}
+  finally{button.disabled=false;nh7RefreshLibraryOfflineControlsV125();}
+}
+
+function libraryUserCardV224(x,isApocrypha=false){const mime=String(x.mime_type||'application/pdf'),label=nh7LibraryTextV125(x)?l223('متن','Text','Tekst'):mime.includes('wordprocessingml')||/\.docx$/i.test(x.file_name||'')?'DOCX':'PDF';return `<article class="library-user-card" data-library-audience="${html(x.audience||'')}"><div class="library-user-icon">${label}</div><span class="library-audience ${html(x.audience)}">${x.audience==='ministers'?'🔒 '+tr('ministersLibrary'):'🌍 '+tr('publicLibrary')}</span><h3>${html(libraryText(x,'title')||x.file_name||label)}</h3><p>${html(libraryText(x,'description')||'')}</p>${nh7LibraryTextV125(x)?'':`<small class="muted">${html(x.file_name||'')} · ${librarySize(x.file_size)}</small>`}<div class="button-row"><button class="primary-btn" data-library-open="${html(x.id)}">${x.audience==='ministers'?'🔐':'📖'} ${html(nh7LibraryTextV125(x)?l223('مطالعه','Read','Čitaj'):isApocrypha?l223('باز کردن','Open','Otvori'):tr('openPdf'))}</button>${x.audience==='public'&&(nh7LibraryTextV125(x)||nh7LibraryDownloadableV125(x))?`<button type="button" class="secondary-btn" data-library-offline="${html(x.id)}" ${nh7LibraryTextV125(x)?'':`data-offline-download="${html(window.NH7LibrarySecurityV125?.publicFile(x.id)||'')}"`} data-offline-title="${html(libraryText(x,'title')||x.file_name||'')}">${html(nh7LibraryTextV125(x)?l223('مطالعه و آماده‌سازی آفلاین','Read and prepare offline','Čitaj i pripremi offline'):l223('دانلود برای آفلاین','Download offline','Preuzmi offline'))}</button>`:''}</div>${nh7LibraryDownloadableV125(x)?`<p class="muted small">${tr('pdfExpires')}</p>`:''}</article>`}
 
 async function library(params={}){
   if(!await nh7RequireSchoolAccessV223(tr('library')))return;
@@ -2578,7 +2624,7 @@ async function library(params={}){
   const rows=nh7LibraryCatalog.filter(x=>x.audience===nh7LibraryTab&&(x.resource_type||'library')==='library');
   const title=nh7LibraryTab==='ministers'?tr('ministersLibrary'):tr('publicLibrary');
   const cards=rows.map(x=>libraryUserCardV224(x,false)).join('');
-  view.innerHTML=card(tr('library'),`<div class="library-user-tabs"><button class="${nh7LibraryTab==='public'?'primary-btn':'secondary-btn'}" data-library-tab="public">${tr('publicLibrary')}</button><button class="${nh7LibraryTab==='ministers'?'primary-btn':'secondary-btn'}" data-library-tab="ministers">🔒 ${tr('ministersLibrary')}</button></div>${nh7LibraryTab==='ministers'?`<div class="library-lock-note">${tr('protectedLibrary')}</div>`:''}<h2>${title}</h2><div class="library-user-grid">${cards||`<p class="muted">${tr('libraryEmpty')}</p>`}</div><p class="muted small">${tr('pdfExpires')}</p>`);
+  view.innerHTML=card(tr('library'),`<div class="library-user-tabs"><button class="${nh7LibraryTab==='public'?'primary-btn':'secondary-btn'}" data-library-tab="public">${tr('publicLibrary')}</button><button class="${nh7LibraryTab==='ministers'?'primary-btn':'secondary-btn'}" data-library-tab="ministers">🔒 ${tr('ministersLibrary')}</button></div>${nh7LibraryTab==='ministers'?`<div class="library-lock-note">${tr('protectedLibrary')}</div>`:''}<h2>${title}</h2><div class="library-user-grid">${cards||`<p class="muted">${tr('libraryEmpty')}</p>`}</div>`);
 }
 
 async function more(){
@@ -2991,9 +3037,11 @@ async function enableNotifications(){
 
 function bindDynamic(){
   $$('[data-library-tab]').forEach(el=>el.onclick=()=>{nh7LibraryTab=el.dataset.libraryTab||'public';render('library',{tab:nh7LibraryTab},true)});
+  $$('[data-library-offline]').forEach(el=>el.onclick=()=>nh7DownloadPublicLibraryV125(el));
+  nh7RefreshLibraryOfflineControlsV125();
   $$('[data-library-open]').forEach(el=>el.onclick=()=>openLibraryPdf(nh7LibraryCatalog.find(x=>String(x.id)===String(el.dataset.libraryOpen))));
   $$('[data-go]').forEach(el=>el.onclick=()=>navigate(el.dataset.go, JSON.parse(el.dataset.params||'{}')));
-  $$('[data-offline-download]').forEach(el=>el.onclick=async()=>{const url=el.dataset.offlineDownload;if(el.dataset.offlineCached==='1'){if(confirm(state.lang==='fa'?'این فایل از حافظه آفلاین پاک شود؟':'Remove this offline download?'))await removeOfflineDownload(url,el)}else await downloadForOffline(url,el.dataset.offlineTitle||'',el)});
+  $$('[data-offline-download]:not([data-library-offline])').forEach(el=>el.onclick=async()=>{const url=el.dataset.offlineDownload;if(el.dataset.offlineCached==='1'){if(confirm(state.lang==='fa'?'این فایل از حافظه آفلاین پاک شود؟':'Remove this offline download?'))await removeOfflineDownload(url,el)}else await downloadForOffline(url,el.dataset.offlineTitle||'',el)});
   refreshOfflineButtons().catch(()=>{});
   $$('.reader-verse').forEach(el=>{el.onclick=e=>{if(e.target.closest('button,textarea,input,a,.verse-tools,.verse-note-box'))return;const was=el.classList.contains('verse-selected');$$('.reader-verse.verse-selected').forEach(v=>{v.classList.remove('verse-selected');v.querySelector('.verse-tools')?.classList.add('hidden');v.querySelector('.verse-note-box')?.classList.add('hidden')});if(!was){el.classList.add('verse-selected');el.querySelector('.verse-tools')?.classList.remove('hidden')}};el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click()}}});
   $$('.verse-tools,.verse-note-box').forEach(el=>el.onclick=e=>e.stopPropagation());
@@ -3007,7 +3055,8 @@ function bindDynamic(){
   $$('[data-highlight-clear]').forEach(el=>el.onclick=e=>{e.stopPropagation();const key=el.dataset.highlightClear,st=JSON.parse(localStorage.getItem(key)||'{}'),verse=el.closest('.reader-verse');st.highlight=false;delete st.highlightColor;localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);verse?.classList.remove('highlighted','highlight-yellow','highlight-red','highlight-green','highlight-blue');el.closest('.highlight-palette')?.classList.add('hidden')});
   $$('[data-note-verse],[data-note-marker]').forEach(el=>el.onclick=()=>{const id=el.dataset.noteVerse||el.dataset.noteMarker,box=$('#'+CSS.escape(id));if(box){$$('.verse-note-box').forEach(x=>{if(x!==box)x.classList.add('hidden')});box.classList.toggle('hidden')}});
   $$('[data-close-verse-note]').forEach(el=>el.onclick=()=>el.closest('.verse-note-box')?.classList.add('hidden'));
-  $('[data-save-verse-note]').forEach(el=>el.onclick=()=>{const key=el.dataset.saveVerseNote,input=$(`[data-note-input="${CSS.escape(key)}"]`),verse=el.closest('.reader-verse');let st={};try{st=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}st.note=(window.NH7NoteTextV501?.normalize?.(input?.value||'')??(input?.value||'')).slice(0,1000);localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);const ref=verse?.querySelector('[data-bookmark]')?.dataset.bookmark||verse?.querySelector('[data-share-verse]')?.dataset.shareVerse||'';const verseText=verse?.querySelector('.verse-text')?.textContent||'';window.NH7BibleBatchV230?.syncPayload?.({batch_id:crypto.randomUUID?.()||String(Date.now()),language:state.lang,items:[{verse_key:key,verse_ref:ref,verse_text:verseText,saved:!!st.saved,highlight_color:st.highlight?String(st.highlightColor||'yellow'):'',note:String(st.note||'')}]});let marker=verse?.querySelector('.verse-note-marker');if(st.note&&!marker&&verse){marker=document.createElement('button');marker.type='button';marker.className='verse-note-marker';marker.dataset.noteMarker=el.closest('.verse-note-box')?.id||'';marker.textContent='📓';marker.title=tr('noteAvailable');marker.onclick=()=>el.closest('.verse-note-box')?.classList.toggle('hidden');verse.querySelector('.verse-text')?.after(marker)}else if(!st.note&&marker)marker.remove();el.textContent=tr('saved');setTimeout(()=>el.closest('.verse-note-box')?.classList.add('hidden'),350)});
+  // querySelectorAll ($$) keeps routes with zero verse-note controls safe in Safari.
+  $$('[data-save-verse-note]').forEach(el=>el.onclick=()=>{const key=el.dataset.saveVerseNote,input=$(`[data-note-input="${CSS.escape(key)}"]`),verse=el.closest('.reader-verse');let st={};try{st=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}st.note=(window.NH7NoteTextV501?.normalize?.(input?.value||'')??(input?.value||'')).slice(0,1000);localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);const ref=verse?.querySelector('[data-bookmark]')?.dataset.bookmark||verse?.querySelector('[data-share-verse]')?.dataset.shareVerse||'';const verseText=verse?.querySelector('.verse-text')?.textContent||'';window.NH7BibleBatchV230?.syncPayload?.({batch_id:crypto.randomUUID?.()||String(Date.now()),language:state.lang,items:[{verse_key:key,verse_ref:ref,verse_text:verseText,saved:!!st.saved,highlight_color:st.highlight?String(st.highlightColor||'yellow'):'',note:String(st.note||'')}]});let marker=verse?.querySelector('.verse-note-marker');if(st.note&&!marker&&verse){marker=document.createElement('button');marker.type='button';marker.className='verse-note-marker';marker.dataset.noteMarker=el.closest('.verse-note-box')?.id||'';marker.textContent='📓';marker.title=tr('noteAvailable');marker.onclick=()=>el.closest('.verse-note-box')?.classList.toggle('hidden');verse.querySelector('.verse-text')?.after(marker)}else if(!st.note&&marker)marker.remove();el.textContent=tr('saved');setTimeout(()=>el.closest('.verse-note-box')?.classList.add('hidden'),350)});
   $$('[data-share-verse]').forEach(el=>el.onclick=async()=>{ const txt=`${localizeRef(el.dataset.shareVerse)} — ${el.dataset.shareText||''}`; try{ if(navigator.share) await navigator.share({text:txt}); else { await navigator.clipboard.writeText(txt); alert(tr('saved')); } window.NH7BibleBatchV230?.clearSelection?.(); }catch(e){} });
   $$('[data-complete-daily]').forEach(el=>el.onclick=()=>{ const key='nh7_daily_done_'+el.dataset.completeDaily; if(!localStorage.getItem(key)){ localStorage.setItem(key,'1'); saveProgressCloud(key,{done:true,at:new Date().toISOString()}).catch(console.warn); addPoints(3,'daily_1'); } el.textContent=tr('dailyCompleted'); });
   $$('[data-open-ref]').forEach(el=>el.onclick=async()=>{ await loadBibleMeta(); const ref=parseRef(el.dataset.openRef); if(ref){ const params={mode:'chapter',bookId:ref.bookId,chapter:ref.chapter}; if((el.dataset.openRefMode||'verse')==='verse') params.verse=ref.verse; navigate('bible',params); } });
