@@ -52,7 +52,7 @@
  async function clearDownloadedMedia(){if(isNativeCapacitor()){const F=capacitorPlugin('Filesystem');if(F)try{await F.rmdir({directory:'DATA',path:NATIVE_OFFLINE_DIR,recursive:true})}catch(e){}const ks=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith(OFFLINE_MEDIA_PREFIX))ks.push(k)}ks.forEach(k=>localStorage.removeItem(k));return}await swMessage('CLEAR_MEDIA')}
  async function prepareCoreOffline(button){const old=button?.textContent||'';try{if(button){button.disabled=true;button.textContent=state.lang==='fa'?'در حال آماده‌سازی…':state.lang==='hr'?'Priprema…':'Preparing…'}if(isNativeCapacitor()){localStorage.setItem('nh7_offline_core_ready',new Date().toISOString());alert(state.lang==='fa'?'محتوای اصلی داخل برنامه نصب شده و برای استفاده آفلاین آماده است.':state.lang==='hr'?'Osnovni sadržaj ugrađen je u aplikaciju i spreman je za offline korištenje.':'Core content is bundled in the app and ready offline.')}else{const r=await swMessage('CACHE_CORE');localStorage.setItem('nh7_offline_core_ready',new Date().toISOString());alert(state.lang==='fa'?`محتوای اصلی برای استفاده آفلاین آماده شد. (${r.cached||0} فایل)`:state.lang==='hr'?'Osnovni sadržaj je spreman za offline korištenje.':'Core content is ready for offline use.')}}catch(e){console.warn(e);alert(state.lang==='fa'?'آماده‌سازی آفلاین کامل نشد. دوباره تلاش کنید.':'Offline preparation did not finish. Please try again.')}finally{if(button){button.disabled=false;button.textContent=old}}}
 @@ -2500,40 +2500,26 @@
- 
+
  let nh7LibraryTab=sessionStorage.getItem('nh7_library_tab')||'public';
  let nh7LibraryCatalog=[];
 -const NH7_LIBRARY_CATALOG_CACHE_KEY='nh7_library_catalog_cache_v1';
@@ -150,7 +150,7 @@
 @@ -2569,7 +2571,44 @@
    }
  }
- 
+
 -function libraryUserCardV224(x,isApocrypha=false){const mime=String(x.mime_type||'application/pdf'),label=mime.includes('wordprocessingml')||/\.docx$/i.test(x.file_name||'')?'DOCX':'PDF';return `<article class="library-user-card"><div class="library-user-icon">${label}</div><span class="library-audience ${html(x.audience)}">${x.audience==='ministers'?'🔒 '+tr('ministersLibrary'):'🌍 '+tr('publicLibrary')}</span><h3>${html(libraryText(x,'title')||x.file_name||label)}</h3><p>${html(libraryText(x,'description')||'')}</p><small class="muted">${html(x.file_name||'')} · ${librarySize(x.file_size)}</small><div class="button-row"><button class="primary-btn" data-library-open="${html(x.id)}">${x.audience==='ministers'?'🔐':'📖'} ${html(isApocrypha?l223('باز کردن','Open','Otvori'):tr('openPdf'))}</button></div></article>`}
 +// Public offline UI uses only UID/catalog/file proofs, never a filename or URL guess.
 +async function nh7LibrarySignedFileV125(item){
@@ -190,11 +190,11 @@
 +}
 +
 +function libraryUserCardV224(x,isApocrypha=false){const mime=String(x.mime_type||'application/pdf'),label=mime.includes('wordprocessingml')||/\.docx$/i.test(x.file_name||'')?'DOCX':'PDF';return `<article class="library-user-card" data-library-audience="${html(x.audience||'')}"><div class="library-user-icon">${label}</div><span class="library-audience ${html(x.audience)}">${x.audience==='ministers'?'🔒 '+tr('ministersLibrary'):'🌍 '+tr('publicLibrary')}</span><h3>${html(libraryText(x,'title')||x.file_name||label)}</h3><p>${html(libraryText(x,'description')||'')}</p><small class="muted">${html(x.file_name||'')} · ${librarySize(x.file_size)}</small><div class="button-row"><button class="primary-btn" data-library-open="${html(x.id)}">${x.audience==='ministers'?'🔐':'📖'} ${html(isApocrypha?l223('باز کردن','Open','Otvori'):tr('openPdf'))}</button>${x.audience==='public'?`<button type="button" class="secondary-btn" data-library-offline="${html(x.id)}" data-offline-download="${html(window.NH7LibrarySecurityV125?.publicFile(x.id)||'')}" data-offline-title="${html(libraryText(x,'title')||x.file_name||'')}">${html(l223('دانلود برای آفلاین','Download offline','Preuzmi offline'))}</button>`:''}</div></article>`}
- 
+
  async function library(params={}){
    if(!await nh7RequireSchoolAccessV223(tr('library')))return;
 @@ -2991,9 +3030,11 @@
- 
+
  function bindDynamic(){
    $$('[data-library-tab]').forEach(el=>el.onclick=()=>{nh7LibraryTab=el.dataset.libraryTab||'public';render('library',{tab:nh7LibraryTab},true)});
 +  $$('[data-library-offline]').forEach(el=>el.onclick=()=>nh7DownloadPublicLibraryV125(el));
@@ -244,7 +244,7 @@
 +++ b/js/nh7-book-reader-v283.js
 @@ -40,12 +40,8 @@
  const SELECT_FIELDS='id,title_fa,title_en,title_hr,audience,resource_type,apocrypha_book,reader_mode,reader_language,reader_status,reader_available,reader_page_count,collection_id';
- 
+
  async function catalogBundle(){
 -  const current=await ensureSession();
 -  if(!current?.access_token)return null;
@@ -1074,9 +1074,9 @@
 @@ -20,7 +20,7 @@
  self.addEventListener('activate',event=>event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(k=>k.startsWith('nh7-release-core-')&&k!==NH7_RELEASE_CORE_CACHE).map(k=>caches.delete(k)))})()));
  self.addEventListener('message',event=>{const data=event.data||{};if(data.type!=='CACHE_RELEASE_CORE'&&data.type!=='RELEASE_CORE_STATUS')return;const port=event.ports?.[0];event.waitUntil((async()=>{try{if(data.type==='CACHE_RELEASE_CORE'){port?.postMessage(await nh7CacheReleaseCore());return}const cache=await caches.open(NH7_RELEASE_CORE_CACHE),keys=await cache.keys();port?.postMessage({ok:true,cached:keys.length,total:NH7_RELEASE_ASSETS.length,version:NH7_RELEASE_CORE_VERSION})}catch(error){port?.postMessage({ok:false,error:error?.message||String(error)})}})())});
- 
+
 -const NH7_READER_RELEASE_PATHS_V452=new Set(["js/app.js", "js/nh7-app-enhancements-v230.js", "js/nh7-my-notes-v234.js", "js/nh7-apocrypha-preview-v240.js", "js/nh7-apocrypha-actions-v393.js", "js/nh7-reader-ux-v251.js", "js/nh7-reader-toolbar-v452.js", "js/nh7-my-notes-categories-v452.js", "css/nh7-reader-toolbar-v452.css", "css/nh7-notes-categories-v452.css", "js/nh7-apocrypha-v270.js", "js/nh7-theme-studio-v453.js", "js/nh7-original-language-v453.js", "js/nh7-fonts-v454.js", "js/nh7-audio-quick-bible-v454.js", "css/nh7-theme-studio-v453.css", "css/nh7-study-reader-v453.css", "css/nh7-fonts-quick-bible-v454.css", "data/lexicon/original-language-core-v454.json", "assets/fonts/v453/estedad.woff2", "assets/fonts/v453/inter.woff2", "assets/fonts/v453/lora.woff2", "assets/fonts/v453/manifest.json", "assets/fonts/v453/notonaskharabic.woff2", "assets/fonts/v453/nunitosans.woff2", "assets/fonts/v453/vazirmatn.woff2", "assets/fonts/v454/amiri.woff2", "assets/fonts/v454/manifest.json", "assets/fonts/v454/markazitext.woff2", "js/nh7-header-date-v455.js", "css/nh7-header-date-v455.css", "css/nh7-navigation-v456.css", "css/nh7-theme-gallery-v457.css", "css/nh7-appearance-personalization-v514.css", "css/nh7-icons-v517.css", "css/nh7-player-volume-v521.css", "js/nh7-appearance-personalization-v514.js", "js/nh7-icons-v517.js", "js/nh7-celebrations-v464.js", "css/nh7-celebrations-v464.css", "css/nh7-growth-v463.css", "js/nh7-school-path-v351.js", "js/nh7-settings-controller-v403.js", "js/nh7-audio-classic-v484.js", "js/nh7-audio-route-stability-v423.js", "js/nh7-school-drafts-v468.js", "js/nh7-store-review-v469.js", "css/nh7-store-review-v469.css", "js/nh7-soul-winning-v472.js", "css/nh7-soul-winning-v472.css"]);
 +const NH7_READER_RELEASE_PATHS_V452=new Set(["js/nh7-library-security-v125.js","js/nh7-access-bootstrap-v230.js","js/nh7-library-collections-v322.js","js/nh7-library-language-v321.js","js/nh7-book-reader-v283.js","js/nh7-offline-persistence-v323.js","js/app.js", "js/nh7-app-enhancements-v230.js", "js/nh7-my-notes-v234.js", "js/nh7-apocrypha-preview-v240.js", "js/nh7-apocrypha-actions-v393.js", "js/nh7-reader-ux-v251.js", "js/nh7-reader-toolbar-v452.js", "js/nh7-my-notes-categories-v452.js", "css/nh7-reader-toolbar-v452.css", "css/nh7-notes-categories-v452.css", "js/nh7-apocrypha-v270.js", "js/nh7-theme-studio-v453.js", "js/nh7-original-language-v453.js", "js/nh7-fonts-v454.js", "js/nh7-audio-quick-bible-v454.js", "css/nh7-theme-studio-v453.css", "css/nh7-study-reader-v453.css", "css/nh7-fonts-quick-bible-v454.css", "data/lexicon/original-language-core-v454.json", "assets/fonts/v453/estedad.woff2", "assets/fonts/v453/inter.woff2", "assets/fonts/v453/lora.woff2", "assets/fonts/v453/manifest.json", "assets/fonts/v453/notonaskharabic.woff2", "assets/fonts/v453/nunitosans.woff2", "assets/fonts/v453/vazirmatn.woff2", "assets/fonts/v454/amiri.woff2", "assets/fonts/v454/manifest.json", "assets/fonts/v454/markazitext.woff2", "js/nh7-header-date-v455.js", "css/nh7-header-date-v455.css", "css/nh7-navigation-v456.css", "css/nh7-theme-gallery-v457.css", "css/nh7-appearance-personalization-v514.css", "css/nh7-icons-v517.css", "css/nh7-player-volume-v521.css", "js/nh7-appearance-personalization-v514.js", "js/nh7-icons-v517.js", "js/nh7-celebrations-v464.js", "css/nh7-celebrations-v464.css", "css/nh7-growth-v463.css", "js/nh7-school-path-v351.js", "js/nh7-settings-controller-v403.js", "js/nh7-audio-classic-v484.js", "js/nh7-audio-route-stability-v423.js", "js/nh7-school-drafts-v468.js", "js/nh7-store-review-v469.js", "css/nh7-store-review-v469.css", "js/nh7-soul-winning-v472.js", "css/nh7-soul-winning-v472.css"]);
- 
+
  self.addEventListener('fetch',event=>{
    if(event.request.method!=='GET')return;
