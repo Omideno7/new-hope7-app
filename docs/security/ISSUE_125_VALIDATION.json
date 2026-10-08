@@ -80,7 +80,7 @@
       "workflow": "deploy-pages.yml",
       "name": "Validate Ministers Library security",
       "status": "PASS",
-      "output": "PASS Edge adapter: six principals, scoped grants, forged identity/role ignored, no service role, denial/timeout fail closed.\nPASS actual client: UID binding, public-only snapshots, legacy purge, revoke, 403, offline, logout, identity race, freshness expiry; unrelated data preserved.\nPASS actual worker/offline API: old Library bytes cannot be replayed; audio worker cache lookup preserved.\nPASS active reader wrapper: legacy full-text cache deleted; denial/offline never replay text; verified v321 five-parameter/language wire contract retained (authorizes via v230/auth.uid, not v372 delegation).\nPASS source scope and Library loader ordering.\nPASS independent v4 invariants: early authenticated/published Sermons bypasses all School checks; nine exact registrations matching/filter/order/limit cases.\nPASS full Edge: 37 before/after cases have identical responses, CORS, School checks, audio signatures and synthetic Bible writes; non-Library source bytes unchanged.\nPASS exact Library path: School-approved non-minister/revoked get zero restricted rows; scoped minister/Admin use caller-JWT v396; anonymous/School denial unchanged; no service-role Library read.\n(node:44530) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+      "output": "PASS Edge adapter: six principals, scoped grants, forged identity/role ignored, no service role, denial/timeout fail closed.\nPASS Option B file identity: signed response + current UID/audience proof; public offline retained, Ministers/unknown/canonical bypass denied; revoke/logout safe.\nPASS actual client: UID binding, public-only snapshots, legacy purge, revoke, 403, offline, logout, identity race, freshness expiry; unrelated data preserved.\nPASS actual worker/offline API: old Library bytes cannot be replayed; audio worker cache lookup preserved.\nPASS active reader wrapper: unidentified legacy full-text cache quarantined; denial/offline never replay restricted text; verified v321 five-parameter/language wire contract retained (authorizes via v230/auth.uid, not v372 delegation).\nPASS source scope and Library loader ordering.\nPASS independent v4 invariants: early authenticated/published Sermons bypasses all School checks; nine exact registrations matching/filter/order/limit cases.\nPASS full Edge: 37 before/after cases have identical responses, CORS, School checks, audio signatures and synthetic Bible writes; non-Library source bytes unchanged.\nPASS exact Library path: School-approved non-minister/revoked get zero restricted rows; scoped minister/Admin use caller-JWT v396; anonymous/School denial unchanged; no service-role Library read.\n(node:65159) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
     },
     {
       "workflow": "deploy-pages.yml",
@@ -205,8 +205,13 @@
     {
       "command": "node scripts/verify-school-reports-browser-v116.cjs",
       "status": "PASS",
-      "evidence": "PASS: enrolled, started/inactive, needs-revision, passed, failed and not-registered groups from one batch RPC\nPASS: 100-row view pagination; complete 1,109-row UTF-8 CSV with stable headers and spreadsheet-formula escaping\nPASS: Print and browser Save as PDF; searchable multi-page document contains first and final rows with unclipped table\nPASS: FA → EN → HR → FA, RTL/LTR and view/Close on phone, tablet/iPad and desktop widths\nPASS: per-student completed/pending lessons, required missing assignment, review state, scores, exam attempts, wrong answers, CSV/PDF; optional failure and cache reuse\nPASS: bounded hangs, one server-timeout retry, stale snapshot retained, UI unlocks; no record mutations or write RPCs; zero page errors\nPASS: real current Admin wrapper, RBAC/stability modules, group → individual report integration and Print; no report-time write calls\nIsolated CSV/PDF evidence: [local artifact directory]\n",
-      "retry_note": "First attempt hit an existing Playwright TargetClosed race while Back closed its popup. Isolated rerun passed; no School report/Print/PDF/CSV code changed."
+      "evidence": "PASS: enrolled, started/inactive, needs-revision, passed, failed and not-registered groups from one batch RPC\nPASS: 100-row view pagination; complete 1,109-row UTF-8 CSV with stable headers and spreadsheet-formula escaping\nPASS: Print and browser Save as PDF; searchable multi-page document contains first and final rows with unclipped table\nPASS: FA → EN → HR → FA, RTL/LTR and view/Close on phone, tablet/iPad and desktop widths\nPASS: per-student completed/pending lessons, required missing assignment, review state, scores, exam attempts, wrong answers, CSV/PDF; optional failure and cache reuse\nPASS: bounded hangs, one server-timeout retry, stale snapshot retained, UI unlocks; no record mutations or write RPCs; zero page errors\nPASS: real current Admin wrapper, RBAC/stability modules, group → individual report integration and Print; no report-time write calls\nIsolated CSV/PDF evidence: [local artifact directory]\n"
+    },
+    {
+      "command": "node scripts/verify-library-offline-option-b-v125.cjs",
+      "status": "PASS",
+      "evidence": "PASS Option B: public web/IDB/cache/native download and offline reader; Ministers persistence/replay blocked; revoke/logout/switch; public retained; reclassification purged; unrelated data retained.\n",
+      "scope": "Real browser IndexedDB/Cache Storage, shipped worker storedMedia/fetch handlers, fresh offline page, mocked native Filesystem/FileTransfer. No external service calls."
     }
   ],
   "backend_blockers": [],
@@ -250,6 +255,29 @@
     "command": "deno check --no-lock supabase/functions/nh7-content-access/index.ts",
     "runtime": "Deno 2.9.6",
     "status": "PASS",
-    "scope": "Complete entrypoint and local adapter; dependency registry reads only, no Supabase connection/deploy."
-  }
+    "scope": "Complete entrypoint and local adapter; dependency registry reads only, no Supabase connection/deploy.",
+    "evidence": "Download https://registry.npmjs.org/@supabase/supabase-js/-/supabase-js-2.117.3.tgz\nDownload https://registry.npmjs.org/@supabase/functions-js/-/functions-js-2.117.3.tgz\nDownload https://registry.npmjs.org/@supabase/postgrest-js/-/postgrest-js-2.117.3.tgz\nDownload https://registry.npmjs.org/@supabase/storage-js/-/storage-js-2.117.3.tgz\nDownload https://registry.npmjs.org/@supabase/realtime-js/-/realtime-js-2.117.3.tgz\nDownload https://registry.npmjs.org/@supabase/auth-js/-/auth-js-2.117.3.tgz\nCheck supabase/functions/nh7-content-access/index.ts\n"
+  },
+  "option_b": {
+    "maintainer_comment": "https://github.com/Omideno7/new-hope7-app/pull/126#issuecomment-6053286033",
+    "decision": "Ministers online-only; verified public items retain offline download/status/local playback/reader",
+    "classification": "Current caller-JWT catalog item ID/audience plus exact signed-file response object identity; no bucket-only classification",
+    "public_persistence": "UID-bound public catalog/file map; public proof DB for worker; UID/item/language public reader cache",
+    "legacy": "Verified public file bytes retained; identifiable Ministers copies removed; unknown legacy copies quarantined; old reader migration requires current public row and exact payload item ID",
+    "tests": [
+      "Public web download, local Blob, worker public replay, offline reader and fresh page restart",
+      "Ministers download blocked before byte request; unknown/canonical/synthetic URL bypass denied",
+      "Revoked grant, logout and account switch deny restricted replay",
+      "Native public download retained; identifiable native Ministers copy deleted",
+      "Public-to-Ministers reclassification invalidates proof and bytes",
+      "Existing audio/School downloads and Notes/Bible/School account fixtures retained",
+      "Safely identified legacy public reader migration retained; identified legacy Ministers reader removed"
+    ],
+    "limitations": [
+      "Live backend and real iOS/Safari devices not exercised",
+      "Offline public copies cannot discover subsequent server reclassification until online catalog verification",
+      "Unidentifiable legacy copies quarantined by app/worker; external/forensic copies cannot be retracted"
+    ]
+  },
+  "validation_date": "2026-10-08"
 }

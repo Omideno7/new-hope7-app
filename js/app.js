@@ -2149,7 +2149,7 @@ window.addEventListener('nh7-library-security',event=>{
   nh7LibraryCatalog=event.detail.bundle.items;
   const allowed=new Set(nh7LibraryCatalog.map(row=>String(row.id)));
   document.querySelectorAll('[data-library-open]').forEach(button=>{if(!allowed.has(button.dataset.libraryOpen))button.closest('.library-user-card')?.remove()});
-  if(event.detail.reason!=='verified'||(nh7LibraryViewerItemV125&&!allowed.has(nh7LibraryViewerItemV125)))nh7ClosePdfViewerV223();
+  if(nh7LibraryViewerItemV125&&!allowed.has(nh7LibraryViewerItemV125))nh7ClosePdfViewerV223();
 });
 let nh7LibraryBlobUrlV224='',nh7LibraryViewerItemV125='';
 function nh7ClosePdfViewerV223(){nh7LibraryViewerItemV125='';if(nh7LibraryBlobUrlV224){URL.revokeObjectURL(nh7LibraryBlobUrlV224);nh7LibraryBlobUrlV224=''}document.getElementById('nh7PdfViewerV223')?.remove();document.body.classList.remove('nh7-modal-open')}

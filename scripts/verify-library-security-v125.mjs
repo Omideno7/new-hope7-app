@@ -35,7 +35,7 @@ let phase='minister',networkStatus=200,pending=null,clock=Date.now();const inter
 Object.assign(window,{URL});document.hidden=false;
 const context={window,document,localStorage,sessionStorage,location:{href:'https://app.invalid/'},navigator:{onLine:true},CustomEvent,Event,URL,Headers,Request,Response,AbortController,console,Date:class extends Date{static now(){return clock}},setTimeout,clearTimeout,setInterval:fn=>{intervals.push(fn);return intervals.length}};
 const setUser=(who)=>{localStorage.setItem('nh7_user_session_v170',JSON.stringify({access_token:who,user:{id:'uid-'+who,email:'same@example.invalid'}}));localStorage.removeItem('nh7_explicit_logout')};
-window.fetch=async(url,init)=>{assert.equal(init.cache,'no-store');assert(url.endsWith('/rpc/nh7_library_catalog_v396'));const token=init.headers.Authorization.replace('Bearer ','');if(pending)return pending;return Response.json({items:phase==='revoked'?[pub]:grantRows(token),collections:[{id:'pub-collection',audience:'public'},{id:'minister-collection',audience:'ministers'}].filter(x=>x.audience==='public'||['minister','admin'].includes(token)&&phase!=='revoked')},{status:networkStatus})};
+window.fetch=async(url,init)=>{if(url.endsWith('/functions/v1/nh7-library-access'))return Response.json({signed_url:'https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/sign/nh7-library/'+JSON.parse(init.body).item_id+'.pdf?token=fixture'});assert.equal(init.cache,'no-store');assert(url.endsWith('/rpc/nh7_library_catalog_v396'));const token=init.headers.Authorization.replace('Bearer ','');if(pending)return pending;return Response.json({items:phase==='revoked'?[pub]:grantRows(token),collections:[{id:'pub-collection',audience:'public'},{id:'minister-collection',audience:'ministers'}].filter(x=>x.audience==='public'||['minister','admin'].includes(token)&&phase!=='revoked')},{status:networkStatus})};
 setUser('minister');sessionStorage.setItem('nh7_library_catalog_cache_v1',JSON.stringify({items:[minister]}));localStorage.setItem('nh7_library_collections_cache_v327_old',JSON.stringify({items:[minister]}));localStorage.setItem('nh7_protected_catalog_v327_old',JSON.stringify({resource:'library',items:[minister]}));localStorage.setItem('nh7_protected_catalog_v327_audio',JSON.stringify({resource:'sermons',items:[{id:'audio-preserve'}]}));localStorage.setItem('nh7_account_notes','preserve');
 vm.createContext(context);vm.runInContext(read('js/nh7-library-security-v125.js'),context);
 const api=window.NH7LibrarySecurityV125;
@@ -52,6 +52,14 @@ setUser('minister');let resolve;pending=new Promise(r=>resolve=r);const loading=
 setUser('minister');value=await api.catalog();let expired=false;window.addEventListener('nh7-library-security',e=>{if(e.detail.reason==='expired'){expired=true;assert.equal(e.detail.bundle.items.length,0)}});clock+=36000;intervals[0]();assert(expired);
 assert.equal(localStorage.getItem('nh7_account_notes'),'preserve');assert(localStorage.getItem('nh7_protected_catalog_v327_audio').includes('audio-preserve'));
 for(const who of ['normal','school','revoked','admin']){setUser(who);value=await api.catalog();assert.equal(value.items.length,grantRows(who).length)}
+setUser('minister');phase='minister';await api.catalog();
+const file=id=>'https://gpzcwffxnddhaeaogdyo.supabase.co/storage/v1/object/sign/nh7-library/'+id+'.pdf?token=fixture';
+for(const item of [pub,minister])await window.fetch('https://gpzcwffxnddhaeaogdyo.supabase.co/functions/v1/nh7-library-access',{method:'POST',body:JSON.stringify({item_id:item.id})});
+assert(api.fileAllowed(file(pub.id)));assert(!api.fileAllowed(file(minister.id)));assert(!api.fileAllowed(file('unknown')));assert(!api.fileAllowed(file(minister.id).replace('/object/sign/','/object/')));
+context.navigator.onLine=false;assert(api.fileAllowed(file(pub.id)),'Verified public file retains offline permission');assert(!api.fileAllowed(file(minister.id)));
+context.navigator.onLine=true;phase='revoked';await api.catalog();assert(api.fileAllowed(file(pub.id)));assert(!api.fileAllowed(file(minister.id)));
+localStorage.setItem('nh7_explicit_logout','1');api.sync();assert(!api.fileAllowed(file(pub.id)));assert(!api.fileAllowed(file(minister.id)));setUser('minister');phase='minister';await api.catalog();
+console.log('PASS Option B file identity: signed response + current UID/audience proof; public offline retained, Ministers/unknown/canonical bypass denied; revoke/logout safe.');
 console.log('PASS actual client: UID binding, public-only snapshots, legacy purge, revoke, 403, offline, logout, identity race, freshness expiry; unrelated data preserved.');
 // Run the shipped SW storedMedia function with a seeded lookup: Library must never consult it.
 let cacheReads=0;const sw={URL,Request,Response,Headers,console,fetch:async()=>new Response('network'),self:{location:{origin:'https://app.invalid'},registration:{scope:'https://app.invalid/'},addEventListener(){},clients:{}},caches:{open:async()=>({match:async()=>{cacheReads++;return new Response('synthetic cached bytes')}})},indexedDB:{open(){throw new Error('no DB')}}};
@@ -71,13 +79,13 @@ window.fetch=async(url,init)=>{readerCalls++;assert(url.endsWith('nh7_library_re
 context.caches={delete:async name=>{removedReaderCache=name;return true},open:async()=>{throw new Error('Reader cache must not be opened')}};
 window.caches=context.caches;context.document.documentElement={lang:'en'};
 vm.runInContext(read('js/nh7-library-language-v321.js'),context);
-assert.equal(removedReaderCache,'nh7reader-offline-v327');
+assert.equal(removedReaderCache,'','Unidentified legacy text stays quarantined until verified public migration');
 const deniedReader=await window.fetch('https://gpzcwffxnddhaeaogdyo.supabase.co/rest/v1/rpc/nh7_library_reader_access_v250',{method:'POST',body:JSON.stringify({p_item_id:minister.id,p_code:'',p_device_id:'fixture-device',p_user_email:'fixture@example.invalid'})});
 assert.equal(deniedReader.status,403);assert.equal(readerCalls,1);
 context.navigator.onLine=false;
 const offlineReader=await window.fetch('https://gpzcwffxnddhaeaogdyo.supabase.co/rest/v1/rpc/nh7_library_reader_access_v250',{method:'POST',body:JSON.stringify({p_item_id:minister.id,p_code:'',p_device_id:'fixture-device',p_user_email:'fixture@example.invalid'})});
 assert.equal(offlineReader.status,403);assert.equal(readerCalls,1);
-console.log('PASS active reader wrapper: legacy full-text cache deleted; denial/offline never replay text; verified v321 five-parameter/language wire contract retained (authorizes via v230/auth.uid, not v372 delegation).');
+console.log('PASS active reader wrapper: unidentified legacy full-text cache quarantined; denial/offline never replay restricted text; verified v321 five-parameter/language wire contract retained (authorizes via v230/auth.uid, not v372 delegation).');
 // The scope check prevents accidental changes to protected feature implementations.
 const {execFileSync}=await import('node:child_process');
 // Full local checkout can compare scope; shallow CI checkout may not have origin/main.
