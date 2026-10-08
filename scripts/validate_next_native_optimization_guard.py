@@ -66,8 +66,22 @@ require('js/nh7-inbox-badge-sync-v418.js', 'Promise.all([rest(ownPath)', "legacy
 require('js/nh7-school-path-v351.js', 'Date.now()-cacheAt<30000')
 require('js/nh7-school-path-v351.js', 'setInterval(refreshSchoolPath,120000);')
 
-# Stable Library catalog cache.
-require('js/app.js', 'const NH7_LIBRARY_CATALOG_CACHE_MS=10*60*1000;')
+# Stable Library catalog cache / security freshness.
+# Library 125.5 intentionally replaces the legacy 10-minute app.js catalog cache
+# with a UID-scoped PUBLIC snapshot plus short-lived online verification for
+# restricted Ministers metadata. Accept either the legacy optimization or the
+# hardened 125.5 model, but never silently drop both.
+app_js = text('js/app.js')
+library_security = text('js/nh7-library-security-v125.js')
+if 'window.NH7LibrarySecurityV125' in library_security:
+    require(index, 'js/nh7-library-security-v125.js?v=125.5', 'Library 125.5 security runtime')
+    require('js/app.js', 'window.NH7LibrarySecurityV125?.catalog()', 'Library catalog delegated to security runtime')
+    require('js/nh7-library-security-v125.js', "CACHE = 'nh7_library_public_v125_';", 'UID-scoped PUBLIC catalog snapshot')
+    require('js/nh7-library-security-v125.js', 'localStorage.setItem(CACHE + id, snapshot);', 'persistent PUBLIC catalog snapshot')
+    require('js/nh7-library-security-v125.js', 'Date.now() - checkedAt > 35000', 'bounded restricted-catalog freshness')
+    require('js/nh7-library-security-v125.js', "if (bundle.items.some((x) => x.audience !== 'public')) catalog();", 'restricted-only catalog heartbeat')
+else:
+    require('js/app.js', 'const NH7_LIBRARY_CATALOG_CACHE_MS=10*60*1000;')
 
 # Data-preservation guard for this release and future timestamped migrations.
 # Only migrations at/after the first Supabase hardening migration are scanned,
