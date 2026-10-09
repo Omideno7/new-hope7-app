@@ -27,12 +27,7 @@ begin
   select count(*) into v_partial
   from pg_policies
   where schemaname='storage' and tablename='objects'
-    and policyname in (
-      'nh7 student photo select own v127',
-      'nh7 student photo insert own v127',
-      'nh7 student photo update own v127',
-      'nh7 student photo delete own v127'
-    );
+    and policyname in ('nh7 student photo select own v127','nh7 student photo insert own v127','nh7 student photo update own v127','nh7 student photo delete own v127');
   if v_partial<>0 then raise exception 'student photo Storage policies partially exist: %',v_partial; end if;
 
   if exists(select 1 from storage.objects where bucket_id='nh7-document-assets' and name like 'student-photos/%')
@@ -103,10 +98,7 @@ declare
 begin
   if v_uid is null then raise exception 'login_required'; end if;
 
-  if not exists(
-    select 1 from public.school_student_identities i
-    where i.user_id=v_uid and i.status='active'
-  ) then
+  if not exists(select 1 from public.school_student_identities i where i.user_id=v_uid and i.status='active') then
     raise exception 'student_identity_required';
   end if;
 
@@ -115,22 +107,14 @@ begin
   end if;
 
   if v_path<>'' then
-    select nullif(o.metadata->>'size','')::bigint,
-           lower(coalesce(o.metadata->>'mimetype',''))
+    select nullif(o.metadata->>'size','')::bigint,lower(coalesce(o.metadata->>'mimetype',''))
       into v_size,v_mime
     from storage.objects o
-    where o.bucket_id='nh7-document-assets'
-      and o.name=v_path
-      and o.owner_id=v_uid::text
+    where o.bucket_id='nh7-document-assets' and o.name=v_path and o.owner_id=v_uid::text
     limit 1;
-
     if not found then raise exception 'student_photo_not_found'; end if;
-    if v_size is null or v_size<1 or v_size>5*1024*1024 then
-      raise exception 'student_photo_size_invalid';
-    end if;
-    if v_mime not in ('image/jpeg','image/png','image/webp') then
-      raise exception 'student_photo_mime_invalid';
-    end if;
+    if v_size is null or v_size<1 or v_size>5*1024*1024 then raise exception 'student_photo_size_invalid'; end if;
+    if v_mime not in ('image/jpeg','image/png','image/webp') then raise exception 'student_photo_mime_invalid'; end if;
   end if;
 
   update public.school_student_identities i
@@ -141,10 +125,8 @@ begin
 end;
 $function$;
 
-revoke all on function public.nh7_set_my_student_photo_v127(text)
-  from public,anon,authenticated,service_role;
-grant execute on function public.nh7_set_my_student_photo_v127(text)
-  to authenticated;
+revoke all on function public.nh7_set_my_student_photo_v127(text) from public,anon,authenticated,service_role;
+grant execute on function public.nh7_set_my_student_photo_v127(text) to authenticated;
 
 do $postflight$
 declare
@@ -154,20 +136,13 @@ begin
   select count(*) into v_policy_count
   from pg_policies
   where schemaname='storage' and tablename='objects'
-    and policyname in (
-      'nh7 student photo select own v127',
-      'nh7 student photo insert own v127',
-      'nh7 student photo update own v127',
-      'nh7 student photo delete own v127'
-    );
+    and policyname in ('nh7 student photo select own v127','nh7 student photo insert own v127','nh7 student photo update own v127','nh7 student photo delete own v127');
   if v_policy_count<>4 then raise exception 'student photo policy count failed: %',v_policy_count; end if;
 
   select coalesce(p.proconfig,'{}'::text[]) into v_config
   from pg_proc p join pg_namespace n on n.oid=p.pronamespace
   where n.nspname='public' and p.proname='nh7_set_my_student_photo_v127' limit 1;
-  if not ('search_path=""'=any(v_config)) then
-    raise exception 'student photo setter search_path not pinned empty: %',v_config;
-  end if;
+  if not ('search_path=""'=any(v_config)) then raise exception 'student photo setter search_path not pinned empty: %',v_config; end if;
   if has_function_privilege('anon','public.nh7_set_my_student_photo_v127(text)','EXECUTE')
      or has_function_privilege('public','public.nh7_set_my_student_photo_v127(text)','EXECUTE')
      or has_function_privilege('service_role','public.nh7_set_my_student_photo_v127(text)','EXECUTE')
