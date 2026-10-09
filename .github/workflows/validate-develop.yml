@@ -80,6 +80,14 @@ jobs:
             node scripts/verify-school-exam-read-identity-v351.mjs
           fi
 
+      - name: Validate School exam scoring identity when present
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f scripts/verify-school-exam-scoring-identity-v128.mjs ]; then
+            node scripts/verify-school-exam-scoring-identity-v128.mjs
+          fi
+
       - name: Validate optimization invariants
         shell: bash
         run: |
