@@ -1,0 +1,16 @@
+import fs from 'node:fs';
+const files=fs.readdirSync('supabase/migrations').filter(x=>x.endsWith('_school_certificate_identity_bridge_v127.sql'));
+if(files.length!==1) throw new Error(`expected one Wave 1J-A migration, found ${files.length}`);
+const sql=fs.readFileSync(`supabase/migrations/${files[0]}`,'utf8');
+const low=sql.toLowerCase();
+const need=(s,m)=>{if(!low.includes(s.toLowerCase()))throw new Error(m)};
+need('add column recipient_user_id uuid','recipient_user_id column missing');
+need('add column student_code text','student_code column missing');
+need('private.nh7_school_certificate_identity_guard_v127','certificate identity trigger guard missing');
+need("set search_path=''",'guard search_path not pinned empty');
+need("old.recipient_user_id is not null",'immutable existing recipient binding missing');
+need('join public.school_student_identities','Student Identity resolution missing');
+need('nh7_school_certificate_identity_guard_v127','certificate trigger missing');
+for(const re of [/nh7_public_document_lookup_v222/i,/nh7_public_certificate_lookup/i,/nh7_public_certificate_verify/i,/storage\.objects/i,/drop\s+table/i,/delete\s+from\s+public\.school_certificates/i]) if(re.test(sql)) throw new Error(`forbidden Wave 1J-A scope matched: ${re}`);
+console.log(`School Certificate Identity Bridge v127 verifier: PASS (${files[0]})`);
+console.log('Scope: certificate recipient binding only; public verifier/QR/Storage untouched');
