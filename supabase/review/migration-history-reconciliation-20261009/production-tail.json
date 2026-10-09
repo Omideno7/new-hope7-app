@@ -163,6 +163,13 @@
       "sql_md5": "d323f473d827f61d220f178e8198cf06",
       "sql_chars": 5455,
       "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261009092532",
+      "name": "student_photo_private_v127",
+      "sql_md5": "03e712b81c0460896ecbed11951ee1cd",
+      "sql_chars": 7022,
+      "status": "present_exact_recovered"
     }
   ],
   "parity": "exact_raw_md5",
