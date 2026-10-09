@@ -198,6 +198,13 @@
       "sql_md5": "7156c832ac677cdd41886190e999225c",
       "sql_chars": 6090,
       "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261009164138",
+      "name": "school_certificate_identity_bridge_v127",
+      "sql_md5": "c0dfba2d8f8efb31e833b48f728c1c39",
+      "sql_chars": 4400,
+      "status": "present_exact_recovered"
     }
   ],
   "parity": "exact_raw_md5",
