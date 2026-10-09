@@ -1,0 +1,121 @@
+{
+  "project_ref": "gpzcwffxnddhaeaogdyo",
+  "captured_at": "2026-10-09",
+  "source": "supabase_migrations.schema_migrations",
+  "migrations": [
+    {
+      "version": "20261002221819",
+      "name": "optimize_disk_io_inbox_registrations_v1",
+      "sql_md5": "8b311145dd053d95cc32c024bcee0b06",
+      "sql_chars": 731,
+      "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261003073335",
+      "name": "retire_nonessential_telemetry_and_audio_gate_v1",
+      "sql_md5": "b86ce3368cfdd1050124b202c55be533",
+      "sql_chars": 8451,
+      "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261003100105",
+      "name": "add_batched_social_and_inbox_snapshot_v1",
+      "sql_md5": "87f70fb06ef4d1570d9464ad4cdf084d",
+      "sql_chars": 4862,
+      "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261003171531",
+      "name": "optimize_inbox_rls_initplan_v1",
+      "sql_md5": "d1a33e1000535fe8affefcfb6eb46715",
+      "sql_chars": 2273,
+      "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261003171549",
+      "name": "optimize_admin_engagement_analytics_v223",
+      "sql_md5": "627a93ab0545e2a59bee661293b367b3",
+      "sql_chars": 6810,
+      "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261003172711",
+      "name": "optimize_admin_library_dashboard_queries_v1",
+      "sql_md5": "4722a04404212f7fd67e11a19f142fe1",
+      "sql_chars": 2468,
+      "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261005232733",
+      "name": "community_prayer_testimony_v502_backend",
+      "sql_md5": "88862ae895171de7e78117c021b91869",
+      "sql_chars": 16512,
+      "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261006083051",
+      "name": "community_moderation_prayer_v503",
+      "sql_md5": "4551c66c23a36cd4f0df0f3293a23eb6",
+      "sql_chars": 1697,
+      "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261006085853",
+      "name": "community_storage_ops_v504",
+      "sql_md5": "a203c26b228f09bba7cea2d31be3338a",
+      "sql_chars": 6867,
+      "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261006090128",
+      "name": "community_storage_cleanup_helpers_v504",
+      "sql_md5": "5bb47ed7fa53bb4771035c9c21e87323",
+      "sql_chars": 1891,
+      "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261007065642",
+      "name": "community_storage_orphan_audit_v507",
+      "sql_md5": "e024678ae152087db6cbd417348c04a9",
+      "sql_chars": 2087,
+      "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261007074710",
+      "name": "fix_testimony_public_storage_admin_select_v508",
+      "sql_md5": "ca8849fd537ff5d953a664f194ffcc44",
+      "sql_chars": 326,
+      "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261008173510",
+      "name": "school_v351_legacy_class_progress_hotfix",
+      "sql_md5": "693005431834f7078d9d5acb47446a9e",
+      "sql_chars": 8025,
+      "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261008173533",
+      "name": "school_v351_legacy_final_progress_hotfix",
+      "sql_md5": "d1ea8e1040708d9603b7eaa381fed889",
+      "sql_chars": 5331,
+      "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261009031227",
+      "name": "revoke_legacy_library_qa_execute",
+      "sql_md5": "72004cd1aa039b6972060d9798a40cb3",
+      "sql_chars": 690,
+      "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261009032342",
+      "name": "optimize_inbox_and_legacy_library_dashboard",
+      "sql_md5": "5c2705e4830679e11c60c8dbdd7801ef",
+      "sql_chars": 1912,
+      "status": "present_exact_recovered"
+    }
+  ],
+  "parity": "exact_raw_md5",
+  "parity_verified_at": "2026-10-09"
+}

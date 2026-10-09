@@ -25,6 +25,12 @@ jobs:
         with:
           ref: ${{ github.sha }}
 
+      - name: Guard Supabase migration history parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/verify-supabase-migration-parity.py
+
       - name: Validate current runtime JavaScript
         shell: bash
         run: |

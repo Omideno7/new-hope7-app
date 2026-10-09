@@ -1,23 +1,3 @@
--- New Hope 7 — Admin engagement analytics optimization
--- Supabase migration history version: 20261003171549
--- Applied to Production on 2026-10-03 after read-only benchmarks and data-integrity checks.
--- This migration is idempotent and does not delete or rewrite user content.
-
--- Keeps the same function name/signature and output schema.
---
--- Read-only benchmarks against current Production data:
---   current function: ~3150 ms isolated RPC call
---   current full SQL body: ~2327 ms
---   optimized full SQL body: ~278 ms
--- The optimized body removes duplicate work while preserving the same metrics.
---
--- Main changes:
--- 1. Materialize the 30-day content slice once and reuse it.
--- 2. Aggregate app sections once and reuse that aggregation.
--- 3. Pre-deduplicate listener keys per source before UNION.
--- 4. Count rows from the already-unique listener set instead of DISTINCT twice.
---
--- No tables, data, indexes, RLS policies, grants, or client contracts are changed.
 
 create or replace function public.nh7_admin_engagement_analytics_v223(
   p_from date default (current_date - 29),
@@ -240,3 +220,4 @@ begin
   return v_result;
 end;
 $function$;
+

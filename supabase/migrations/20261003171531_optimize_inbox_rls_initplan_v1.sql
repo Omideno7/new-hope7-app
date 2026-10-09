@@ -1,12 +1,3 @@
--- New Hope 7 — Inbox RLS initPlan optimization
--- Supabase migration history version: 20261003171531
--- Applied to Production on 2026-10-03 after read-only benchmarks and data-integrity checks.
--- This migration is idempotent and does not delete or rewrite user content.
-
--- Goal: preserve policy semantics while evaluating stable request/auth helpers once
--- per SQL statement instead of once per candidate row.
-
--- 1) notification_inbox SELECT policy
 alter policy "notification inbox secure read"
 on public.notification_inbox
 using (
@@ -33,8 +24,6 @@ using (
     or coalesce((select public.nh7_is_admin()), false)
   )
 );
-
--- 2) notification_inbox INSERT policy
 alter policy "notification inbox secure self insert"
 on public.notification_inbox
 with check (
@@ -58,23 +47,18 @@ with check (
     )
   )
 );
-
--- 3) Receipts policies. The existing helper reads auth/request headers and is
--- stable for the statement, so make it an initPlan instead of re-running per row.
 alter policy "receipt own insert"
 on public.notification_inbox_receipts
 with check (
   user_key = (select public.nh7_request_user_key())
   or (select public.nh7_admin_is_admin_v170())
 );
-
 alter policy "receipt own select"
 on public.notification_inbox_receipts
 using (
   user_key = (select public.nh7_request_user_key())
   or (select public.nh7_admin_is_admin_v170())
 );
-
 alter policy "receipt own update"
 on public.notification_inbox_receipts
 using (
@@ -85,5 +69,3 @@ with check (
   user_key = (select public.nh7_request_user_key())
   or (select public.nh7_admin_is_admin_v170())
 );
-
--- Verification after an explicitly approved Production apply:
