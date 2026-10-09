@@ -72,6 +72,14 @@ jobs:
             python3 scripts/verify-school-identity-core-v127.py
           fi
 
+      - name: Validate School exam read identity when present
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f scripts/verify-school-exam-read-identity-v351.mjs ]; then
+            node scripts/verify-school-exam-read-identity-v351.mjs
+          fi
+
       - name: Validate optimization invariants
         shell: bash
         run: |
