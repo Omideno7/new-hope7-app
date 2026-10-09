@@ -44,8 +44,6 @@ CREATE INDEX school_certificates_recipient_user_id_idx_v127
 CREATE INDEX school_certificates_student_code_idx_v127
   ON public.school_certificates(student_code);
 
--- Bind only certificates whose email resolves to an active Student Identity.
--- Non-student ministry documents intentionally remain nullable.
 UPDATE public.school_certificates c
 SET recipient_user_id=i.user_id,
     student_code=i.student_code,
@@ -65,14 +63,12 @@ DECLARE
   v_uid uuid;
   v_code text;
 BEGIN
-  -- Once a certificate is bound, recipient identity and Student Code snapshot are immutable.
   IF tg_op='UPDATE' AND old.recipient_user_id IS NOT NULL THEN
     new.recipient_user_id:=old.recipient_user_id;
     new.student_code:=old.student_code;
     RETURN new;
   END IF;
 
-  -- Never trust caller-supplied identity metadata. Resolve from the certificate email.
   new.recipient_user_id:=NULL;
   new.student_code:=NULL;
 
