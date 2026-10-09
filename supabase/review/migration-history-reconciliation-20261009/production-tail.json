@@ -135,6 +135,13 @@
       "sql_md5": "e4991d5a4c1d330aad85ec3692e5c810",
       "sql_chars": 9557,
       "status": "present_exact_deployed"
+    },
+    {
+      "version": "20261009073622",
+      "name": "school_email_fallback_fence_v128",
+      "sql_md5": "42214006c76d54ee12ee829439fe7922",
+      "sql_chars": 7575,
+      "status": "present_exact_deployed"
     }
   ],
   "parity": "exact_raw_md5",
