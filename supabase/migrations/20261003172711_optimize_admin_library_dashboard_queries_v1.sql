@@ -1,12 +1,3 @@
--- New Hope 7 — Library Admin dashboard query optimization
--- Supabase migration history version: 20261003172711
--- Applied to Production on 2026-10-03 after read-only equivalence checks.
--- Replaces correlated per-item access-log scans with one grouped aggregate.
--- No user data, RLS policy, grant, table, or index is changed.
-
--- Goal: preserve JSON output while replacing per-item correlated access-log scans
--- with one grouped pass over nh7_library_access_log.
-
 create or replace function public.nh7_admin_library_dashboard_v222()
 returns jsonb
 language plpgsql
@@ -107,5 +98,3 @@ begin
   return v_result;
 end;
 $function$;
-
---
