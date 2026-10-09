@@ -128,6 +128,13 @@
       "sql_md5": "6858822ee390c481b6388209235eecdd",
       "sql_chars": 8647,
       "status": "present_exact_deployed"
+    },
+    {
+      "version": "20261009072624",
+      "name": "school_dual_key_ownership_v128",
+      "sql_md5": "e4991d5a4c1d330aad85ec3692e5c810",
+      "sql_chars": 9557,
+      "status": "present_exact_deployed"
     }
   ],
   "parity": "exact_raw_md5",
