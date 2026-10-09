@@ -152,14 +152,15 @@ function selectBook(){
   renderCollections(book?.collection_id||'');
 }
 function show(){
-  const all=LANGS.every(l=>data[l]),counts=LANGS.map(l=>data[l]?.ed.pages.length||0),same=all&&new Set(counts).size===1,coll=!!$('collection').value;
+  const all=LANGS.every(l=>data[l]),counts=LANGS.map(l=>data[l]?.ed.pages.length||0),same=all&&new Set(counts).size===1,coll=!!$('collection').value,hasTitle=LANGS.some(l=>$('title_'+l).value.trim());
   $('counts').innerHTML=LANGS.map(l=>data[l]
     ? `<div class="file-ok">✅ ${l.toUpperCase()} — ${data[l].name} — ${data[l].ed.pages.length} فصل/بخش</div>`
     : `<div class="file-missing">⬜ ${l.toUpperCase()} هنوز انتخاب نشده</div>`).join('');
-  $('confirm').disabled=!(all&&same&&coll);
-  $('save').disabled=!(all&&same&&coll&&$('confirm').checked);
+  $('confirm').disabled=!(all&&same&&coll&&hasTitle);
+  $('save').disabled=!(all&&same&&coll&&hasTitle&&$('confirm').checked);
   if(all&&!same)setStatus('تعداد فصل/بخش‌های سه زبان برابر نیست؛ ذخیره متوقف شد.');
-  else if(all&&same&&coll){$('status').textContent='✅ هر سه فایل آماده‌اند. قفسهٔ مقصد و پیش‌نمایش را بررسی کنید.';$('status').className='status good'}
+  else if(all&&same&&coll&&!hasTitle)setStatus('حداقل یک عنوان کتاب (فارسی، انگلیسی یا کرواتی) وارد کنید.');
+  else if(all&&same&&coll&&hasTitle){$('status').textContent='✅ هر سه فایل و عنوان کتاب آماده‌اند. قفسهٔ مقصد و پیش‌نمایش را بررسی کنید.';$('status').className='status good'}
   preview();
 }
 function preview(){$('preview').value=data[$('previewLang').value]?.ed.text||'';$('preview').dir=$('previewLang').value==='fa'?'rtl':'ltr'}
@@ -187,6 +188,7 @@ $('retry').onclick=load;
 $('book').onchange=selectBook;
 $('audience').onchange=()=>renderCollections();
 $('collection').onchange=show;
+for(const l of LANGS)$('title_'+l).addEventListener('input',()=>{$('confirm').checked=false;show()});
 $('previewLang').onchange=preview;
 $('confirm').onchange=show;
 $('files').onchange=async e=>{
@@ -215,7 +217,9 @@ $('createCollection').onclick=async()=>{
 };
 $('save').onclick=async()=>{
   if($('save').disabled)return;
-  const payload={id:book?.id||null,title_fa:$('title_fa').value,title_en:$('title_en').value,title_hr:$('title_hr').value,audience:$('audience').value,collection_id:$('collection').value,reader_language:'fa',is_published:$('publish').checked,reader_text:{fa:data.fa.ed,en:data.en.ed,hr:data.hr.ed}};
+  const titles={fa:$('title_fa').value.trim(),en:$('title_en').value.trim(),hr:$('title_hr').value.trim()};
+  if(!titles.fa&&!titles.en&&!titles.hr){setStatus('حداقل یک عنوان کتاب (فارسی، انگلیسی یا کرواتی) وارد کنید.');$('title_fa').focus();return}
+  const payload={id:book?.id||null,title_fa:titles.fa,title_en:titles.en,title_hr:titles.hr,audience:$('audience').value,collection_id:$('collection').value,reader_language:'fa',is_published:$('publish').checked,reader_text:{fa:data.fa.ed,en:data.en.ed,hr:data.hr.ed}};
   $('form').disabled=true;$('status').textContent='در حال ذخیره و کنترل سرور…';$('status').className='status';
   try{
     let r=await rpc('nh7_admin_library_import_ready_v440',{p_item:payload,p_expected_updated_at:book?.updated_at||null});r=Array.isArray(r)?r[0]:r;
@@ -223,7 +227,7 @@ $('save').onclick=async()=>{
     $('status').textContent=(r.is_published?'✅ کتاب ذخیره و منتشر شد.':'✅ کتاب ذخیره شد و فعلاً منتشر نشده است.')+' محل: '+($('audience').value==='ministers'?'کتابخانه خادمین':'کتابخانه عمومی')+' / '+($('collection').selectedOptions[0]?.textContent||'');
     $('status').className='status good';data={};$('confirm').checked=false;
     await load();
-  }catch(e){setStatus('ذخیره نشد: '+(e.message||e))}
+  }catch(e){const m=String(e?.message||e);setStatus(m.includes('A book title is required')?'ذخیره نشد: حداقل یک عنوان کتاب (فارسی، انگلیسی یا کرواتی) وارد کنید.':'ذخیره نشد: '+m)}
   finally{$('form').disabled=false;show()}
 };
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
