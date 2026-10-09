@@ -1,0 +1,13 @@
+import fs from 'node:fs';
+const files=fs.readdirSync('supabase/migrations').filter(x=>x.endsWith('_public_certificate_verifier_v127.sql'));
+if(files.length!==1) throw new Error(`expected one Wave 1J-B1 migration, found ${files.length}`);
+const sql=fs.readFileSync(`supabase/migrations/${files[0]}`,'utf8');
+const low=sql.toLowerCase();
+const body=low.split('create or replace function public.nh7_public_certificate_verify_v127',2)[1]?.split('revoke all on function public.nh7_public_certificate_verify_v127',1)[0]||'';
+const need=(s,m)=>{if(!body.includes(s.toLowerCase()))throw new Error(m)};
+for(const [s,m] of [['verification_status','verification status missing'],['certificate_number','certificate number missing'],['certificate_type','certificate type missing'],['issue_date','issue date missing'],['document_version','document version missing'],['issuer','issuer missing'],["set search_path=''",'search_path not pinned empty']]) need(s,m);
+for(const f of ['user_name','user_email','student_code','recipient_user_id','photo_url','signature_url','final_score','body_fa','body_en','body_hr','designation_','custom_fields','church_info']) if(body.includes(f)) throw new Error(`forbidden public field leaked: ${f}`);
+for(const re of [/create\s+or\s+replace\s+function\s+public\.nh7_public_document_lookup_v222/i,/create\s+or\s+replace\s+function\s+public\.nh7_public_certificate_lookup/i,/alter\s+table/i,/update\s+public\.school_certificates/i,/storage\.objects/i]) if(re.test(sql)) throw new Error(`forbidden Wave 1J-B1 scope matched: ${re}`);
+if(!low.includes("grant execute on function public.nh7_public_certificate_verify_v127(uuid)\n  to anon,authenticated,service_role")) throw new Error('safe verifier ACL grant missing');
+console.log(`Public Certificate Verifier v127 verifier: PASS (${files[0]})`);
+console.log('Scope: additive privacy-minimal verifier only; legacy document/QR lookups untouched');
