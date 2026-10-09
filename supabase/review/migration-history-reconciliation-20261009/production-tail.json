@@ -114,6 +114,13 @@
       "sql_md5": "5c2705e4830679e11c60c8dbdd7801ef",
       "sql_chars": 1912,
       "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261009065456",
+      "name": "school_student_identity_core_v127",
+      "sql_md5": "c53492115a48a7b9c5204a4b2c5ce0f5",
+      "sql_chars": 13665,
+      "status": "present_exact_recovered"
     }
   ],
   "parity": "exact_raw_md5",
