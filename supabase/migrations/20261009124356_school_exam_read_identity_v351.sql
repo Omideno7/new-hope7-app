@@ -2,7 +2,6 @@
 -- Wave 1H-A: make active School exam/path read sessions durable-user-id first.
 -- No table rows, RLS policies, Storage objects, scoring rules, or submit functions are changed.
 
--- 0. Fail-closed baseline.
 do $preflight$
 declare
   v_def text;
@@ -56,7 +55,6 @@ begin
 end
 $preflight$;
 
--- 1. Base exam session: durable user_id owns attempt history; email is unbound fallback only.
 create or replace function public.nh7_school_exam_session_v340(
   p_course_code text default null,
   p_lesson_code text default null
@@ -157,7 +155,6 @@ begin
 end;
 $function$;
 
--- 2. Class session: user_id-first activity reads; original registration email only for legacy anchor.
 create or replace function public.nh7_school_class_exam_session_v351(p_class_key text)
 returns jsonb
 language plpgsql
@@ -322,7 +319,7 @@ begin
   );
 end;
 $function$;
--- 3. Final session: user_id-first activity reads; original registration email preserves shuffle/legacy semantics.
+
 create or replace function public.nh7_school_final_exam_session_v351(p_course_code text default 'foundation_school')
 returns jsonb
 language plpgsql
@@ -453,7 +450,7 @@ begin
   );
 end;
 $function$;
--- 4. Path wrapper keeps the exact JSON contract and becomes authenticated-only.
+
 create or replace function public.nh7_school_path_state_v351()
 returns jsonb
 language plpgsql
@@ -481,7 +478,6 @@ begin
 end;
 $function$;
 
--- 5. Narrow active RPC ACLs. service_role is retained for controlled server diagnostics.
 revoke all on function public.nh7_school_exam_session_v340(text,text) from public,anon,authenticated,service_role;
 grant execute on function public.nh7_school_exam_session_v340(text,text) to authenticated,service_role;
 revoke all on function public.nh7_school_class_exam_session_v351(text) from public,anon,authenticated,service_role;
@@ -491,7 +487,6 @@ grant execute on function public.nh7_school_final_exam_session_v351(text) to aut
 revoke all on function public.nh7_school_path_state_v351() from public,anon,authenticated,service_role;
 grant execute on function public.nh7_school_path_state_v351() to authenticated,service_role;
 
--- 6. Fail-closed postflight.
 do $postflight$
 declare
   v_def text;
