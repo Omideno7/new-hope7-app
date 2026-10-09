@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-const path='supabase/migrations/20261009070727_school_activity_user_id_bridge_v128.sql';
+const path='supabase/migrations/20261009071217_school_activity_user_id_bridge_v128.sql';
 const sql=fs.readFileSync(path,'utf8');
 const need=(s,msg)=>{if(!sql.includes(s))throw new Error(msg)};
 const forbid=(r,msg)=>{if(r.test(sql))throw new Error(msg)};
