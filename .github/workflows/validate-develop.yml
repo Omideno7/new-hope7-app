@@ -56,6 +56,22 @@ jobs:
             node scripts/verify-offline-reconciliation-v572.mjs
           fi
 
+      - name: Validate Supabase migration checkpoint parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f scripts/verify-supabase-migration-parity.py ]; then
+            python3 scripts/verify-supabase-migration-parity.py
+          fi
+
+      - name: Validate Student Identity Core migration when present
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f scripts/verify-school-identity-core-v127.py ]; then
+            python3 scripts/verify-school-identity-core-v127.py
+          fi
+
       - name: Validate optimization invariants
         shell: bash
         run: |
