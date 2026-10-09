@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+const dir='supabase/migrations';
+const files=fs.readdirSync(dir).filter(x=>x.endsWith('_school_assignment_submit_identity_v128.sql')).sort();
+if(files.length!==1) throw new Error(`expected one Wave 1I migration, found ${files.length}`);
+const sql=fs.readFileSync(`${dir}/${files[0]}`,'utf8');
+const low=sql.toLowerCase();
+const need=(s,m)=>{if(!low.includes(s.toLowerCase()))throw new Error(m)};
+need('create or replace function public.nh7_submit_school_assignment','active assignment submit replacement missing');
+need('a.user_id=v_uid','durable assignment ownership missing');
+need('where a.id=v_existing.id','stable existing-row update missing');
+need('private.nh7_recalculate_exam_scores_identity_v128','identity exam recalc missing');
+need("set search_path=''",'empty search_path hardening missing');
+need('revoke all on function public.nh7_submit_school_assignment','assignment ACL hardening missing');
+const core=low.split('create or replace function public.nh7_submit_school_assignment',2)[1]?.split('do $postflight$',1)[0]||'';
+if(/on\s+conflict\s*\(\s*user_email\s*,\s*lesson_code\s*\)/i.test(core)) throw new Error('email-keyed assignment upsert remains');
+for(const re of [/^\s*alter\s+table\s+/mi,/^\s*create\s+table\s+/mi,/^\s*drop\s+table\s+/mi,/^\s*create\s+policy\s+/mi,/^\s*alter\s+policy\s+/mi,/storage\.objects/i,/school_certificates/i,/create\s+or\s+replace\s+function\s+public\.nh7_submit_school_exam/i,/create\s+or\s+replace\s+function\s+public\.nh7_submit_school_assignment_v(?:372|373|381)/i]) if(re.test(sql)) throw new Error(`forbidden Wave 1I scope matched: ${re}`);
+console.log(`School Assignment Submit Identity v128 verifier: PASS (${files[0]})`);
+console.log('Scope: active unversioned assignment submit only; legacy wrappers/tables/RLS/Storage/certificates/exam submit untouched');
