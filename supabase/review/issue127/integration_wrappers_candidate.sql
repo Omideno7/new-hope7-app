@@ -54,8 +54,16 @@ begin
   ),'[]'::jsonb)
   into v_rows
   from jsonb_array_elements(coalesce(v_base->'rows','[]'::jsonb)) r
-  left join public.school_student_identities i
-    on lower(trim(i.registration_email))=lower(trim(r->>'email'));
+  left join lateral (
+    select i.*
+    from public.school_student_identities i
+    left join auth.users u on u.id=i.user_id
+    where lower(trim(i.registration_email))=lower(trim(r->>'email'))
+       or lower(trim(coalesce(u.email,'')))=lower(trim(r->>'email'))
+    order by (lower(trim(coalesce(u.email,'')))=lower(trim(r->>'email'))) desc,
+             i.created_at asc
+    limit 1
+  ) i on true;
 
   return jsonb_set(v_base,'{rows}',coalesce(v_rows,'[]'::jsonb),true)
          || jsonb_build_object('identity_version','127');
