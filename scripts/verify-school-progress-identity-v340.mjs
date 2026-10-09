@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+const path='supabase/migrations/20261009091333_school_progress_identity_save_v340.sql';
+const sql=fs.readFileSync(path,'utf8');
+const need=(s,m)=>{if(!sql.includes(s))throw new Error(m)};
+const forbid=(r,m)=>{if(r.test(sql))throw new Error(m)};
+need('create or replace function public.nh7_school_progress_save_v340','progress RPC replacement missing');
+need('p.user_id=v_uid','user_id-first update missing');
+need('pg_advisory_xact_lock','same-user lesson lock missing');
+need("set search_path=''",'empty search_path pin missing');
+need('public.nh7_school_access_approved_v230(v_uid,v_email,\'\')','identity-aware approval call missing');
+const body=sql.split('create or replace function public.nh7_school_progress_save_v340',2)[1]?.split('revoke all on function',1)[0]||'';
+if(/on\s+conflict\s*\(\s*user_email\s*,\s*lesson_code\s*\)/i.test(body))throw new Error('email conflict must not be primary continuation path');
+forbid(/\balter\s+table\b/i,'Wave 1G must not alter tables');
+forbid(/\bdelete\s+from\b/i,'Wave 1G must not delete data');
+forbid(/storage\.(objects|buckets)/i,'Wave 1G must not touch Storage');
+console.log('School Progress Identity Save v340 verifier: PASS');
+console.log('Scope: one progress RPC only; user_id-first continuation, legacy email snapshot preserved');
