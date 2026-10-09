@@ -17,6 +17,10 @@ need(legacy,'update public.school_exam_attempts','exam durable user bridge missi
 need(wrappers,'public.nh7_school_path_state_v352','one-call School identity wrapper missing');
 need(wrappers,"jsonb_build_object('student_identity',v_identity)",'School wrapper must return student_identity');
 need(wrappers,'public.nh7_admin_student_academic_center_v543','Academic Center identity wrapper missing');
+need(wrappers,'left join lateral','Academic Center identity lookup must be row-safe');
+need(wrappers,'left join auth.users u on u.id=i.user_id','Academic Center identity lookup must support current Auth email');
+need(wrappers,"lower(trim(coalesce(u.email,'')))=lower(trim(r->>'email'))",'Academic Center identity lookup must match current Auth email');
+
 need(wrappers,'public.nh7_admin_student_academic_center_v542(p_inactive_days)','must preserve optimized existing Academic Center');
 need(wrappers,"'student_code',i.student_code",'Admin rows must include Student Code');
 need(wrappers,'public.nh7_admin_student_profile_v452','individual Admin identity profile missing');
