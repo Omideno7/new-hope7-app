@@ -96,6 +96,9 @@ jobs:
           if [ -f scripts/verify-school-certificate-identity-v127.mjs ]; then
             node scripts/verify-school-certificate-identity-v127.mjs
           fi
+          if [ -f scripts/verify-public-certificate-verifier-v127.mjs ]; then
+            node scripts/verify-public-certificate-verifier-v127.mjs
+          fi
 
       - name: Validate optimization invariants
         shell: bash
