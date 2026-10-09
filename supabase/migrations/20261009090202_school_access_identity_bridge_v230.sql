@@ -3,9 +3,6 @@
 -- Current JWT email remains a legacy fallback for preapproved/unbound callers.
 -- No table, row, RLS, Storage, certificate, or Student Code mutation occurs here.
 
--- ---------------------------------------------------------------------------
--- 0. Fail-closed preflight
--- ---------------------------------------------------------------------------
 do $preflight$
 declare
   v_def text;
@@ -67,9 +64,6 @@ begin
 end
 $preflight$;
 
--- ---------------------------------------------------------------------------
--- 1. In-place access replacement — same function contract
--- ---------------------------------------------------------------------------
 create or replace function public.nh7_school_access_approved_v230(
   p_user_id uuid default null,
   p_email text default '',
@@ -109,8 +103,6 @@ begin
     v_email:=lower(trim(coalesce(p_email,'')));
   end if;
 
-  -- Canonical path: durable Auth user_id -> active Student Identity -> approved
-  -- source School registration. Account email changes do not break this path.
   if v_user is not null and exists(
     select 1
     from public.school_student_identities i
@@ -126,8 +118,6 @@ begin
     return true;
   end if;
 
-  -- Compatibility path for legacy/preapproved users that do not yet have a
-  -- canonical Student Identity. This intentionally retains the old email rules.
   if v_email='' then
     return false;
   end if;
@@ -154,9 +144,6 @@ revoke all on function public.nh7_school_access_approved_v230(uuid,text,text)
 grant execute on function public.nh7_school_access_approved_v230(uuid,text,text)
   to authenticated, service_role;
 
--- ---------------------------------------------------------------------------
--- 2. Fail-closed postflight
--- ---------------------------------------------------------------------------
 do $postflight$
 declare
   v_def text;

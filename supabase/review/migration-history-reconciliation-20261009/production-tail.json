@@ -149,6 +149,13 @@
       "sql_md5": "9598328c711ea1aa0439d8943e27df38",
       "sql_chars": 4887,
       "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261009090202",
+      "name": "school_access_identity_bridge_v230",
+      "sql_md5": "8715e76c84e348f221bfeec3a60954f9",
+      "sql_chars": 6289,
+      "status": "present_exact_recovered"
     }
   ],
   "parity": "exact_raw_md5",
