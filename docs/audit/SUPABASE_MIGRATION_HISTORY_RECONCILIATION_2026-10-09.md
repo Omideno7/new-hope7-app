@@ -6,7 +6,7 @@ Until GitHub Issue #144 is closed, **do not run `supabase db push` against Produ
 
 Production migration history and `main/supabase/migrations` drifted because some changes were applied through controlled SQL/migration actions without the exact Production versioned file being committed, while several School/Admin SQL files were kept under `supabase/migrations` even though no matching history row exists.
 
-Stage A removes the immediate replay hazard. It does **not** claim full parity yet.
+Stage A removed the immediate replay hazard. Stage B recovered the exact SQL recorded by Production. The captured 16-migration Production checkpoint now has byte-for-byte source parity in `supabase/migrations`.
 
 ## Production source of truth
 
@@ -28,23 +28,11 @@ Production schema/data is not changed by this source-history cleanup.
 4. Move the old v508 source candidate out of executable migrations because its SQL is not semantically identical to the Production-recorded migration.
 5. Add a validator that rejects any executable October migration not present in the Production manifest or whose filename version/name disagrees with Production.
 
-## Still missing — Stage B
+## Stage B — exact recovery complete
 
-The following Production-applied migrations still need exact source recovery from Production history before parity is complete:
+All 11 previously missing Production-applied migrations were recovered from `supabase_migrations.schema_migrations.statements`. The five files that previously had only semantic parity were also replaced with the exact recorded SQL. A fresh clone verified **16/16 raw MD5 matches and 0 differences** against the captured Production history.
 
-- `20261002221819 optimize_disk_io_inbox_registrations_v1`
-- `20261003073335 retire_nonessential_telemetry_and_audio_gate_v1`
-- `20261003100105 add_batched_social_and_inbox_snapshot_v1`
-- `20261005232733 community_prayer_testimony_v502_backend`
-- `20261006083051 community_moderation_prayer_v503`
-- `20261006085853 community_storage_ops_v504`
-- `20261006090128 community_storage_cleanup_helpers_v504`
-- `20261007065642 community_storage_orphan_audit_v507`
-- `20261007074710 fix_testimony_public_storage_admin_select_v508`
-- `20261008173510 school_v351_legacy_class_progress_hotfix`
-- `20261008173533 school_v351_legacy_final_progress_hotfix`
-
-Do not create placeholder executable migrations for these versions. Recover the SQL recorded by Production (or a byte/semantic-equivalent authoritative source), then verify hashes before placing them under `supabase/migrations`.
+The validator now locks the captured checkpoint by exact filename, version, name, and raw MD5. Canonical migrations newer than the checkpoint are reported as pending; `--strict` additionally rejects pending migrations for a full checkpoint-only audit.
 
 ## Archived local-only files
 
@@ -54,10 +42,11 @@ The v508 file under `source-candidates/` is also reference-only because it diffe
 
 ## Exit condition for #144
 
-Normal migration workflows may resume only after:
+The source-history portion of this exit condition is now satisfied:
 
-- every Production version in the manifest has a matching executable migration file;
-- no executable migration exists without a matching Production history row unless it is an explicitly reviewed new pending migration;
-- recovered SQL is hash/semantic verified;
-- the validator passes in strict mode;
-- a final read-only Production/local comparison is recorded.
+- every captured Production version has a matching executable migration file;
+- all 16 captured files match Production by raw MD5;
+- no unrecorded historical executable migration remains at/before the checkpoint;
+- the validator passes in strict mode.
+
+A final read-only Production/local comparison after Stage B is merged to `main` is the remaining gate before Issue #144 can be closed.
