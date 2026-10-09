@@ -184,6 +184,13 @@
       "sql_md5": "f262b654d90ec97e1c4f1b0e3d0f1673",
       "sql_chars": 12917,
       "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261009162431",
+      "name": "school_exam_submit_identity_v128",
+      "sql_md5": "4834b854f8a6d5d6cd693deab0714136",
+      "sql_chars": 16836,
+      "status": "present_exact_recovered"
     }
   ],
   "parity": "exact_raw_md5",
