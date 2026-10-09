@@ -142,6 +142,13 @@
       "sql_md5": "42214006c76d54ee12ee829439fe7922",
       "sql_chars": 7575,
       "status": "present_exact_deployed"
+    },
+    {
+      "version": "20261009074806",
+      "name": "school_snapshot_dual_key_v2110",
+      "sql_md5": "9598328c711ea1aa0439d8943e27df38",
+      "sql_chars": 4887,
+      "status": "present_exact_recovered"
     }
   ],
   "parity": "exact_raw_md5",
