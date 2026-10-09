@@ -131,11 +131,11 @@
   <table><thead><tr><th>${E(L('کتاب','Book','Knjiga',l))}</th><th>${E(L('دفعات بازشدن','Opens','Otvaranja',l))}</th><th>${E(L('آخرین بار','Last opened','Zadnje otvaranje',l))}</th></tr></thead><tbody>${opened.map(x=>`<tr><td>${E(rowTitle(x,l))}</td><td>${E(x.open_count||1)}</td><td>${E(fmtDate(x.last_opened_at,l))}</td></tr>`).join('')}</tbody></table>`;
   }
   function build(profile,reading,l,email,loaded=new Date()){
-    const school=profile?.school||{},activity=profile?.activity||{},reg=school.registration||{};
+    const school=profile?.school||{},activity=profile?.activity||{},identity=profile?.student_identity||{},reg=school.registration||{};
     const progress=school.progress||[],assignments=school.assignments||[],attempts=school.attempts||[],audio=activity.audio||[],library=activity.library||[];
     const name=String(reg.user_name||assignments[0]?.user_name||attempts[0]?.user_name||email);
     const html=`<div class="nh7r490-report" lang="${l}" dir="${l==='fa'?'rtl':'ltr'}">
-    <header><div><h2>New Hope 7 · ${E(L('گزارش دانشجو','Student Report','Izvještaj studenta',l))}</h2><h3>${E(name)}</h3><p>${E(email)} · ${E(L('زمان دریافت داده','Data loaded','Podaci učitani',l))}: ${E(fmtDate(loaded,l))}</p></div><img src="assets/logo.png" alt=""></header>
+    <header><div><h2>New Hope 7 · ${E(L('گزارش دانشجو','Student Report','Izvještaj studenta',l))}</h2><h3>${E(name)}</h3><p>${identity.student_code?E(identity.student_code)+' · ':''}${E(email)} · ${E(L('زمان دریافت داده','Data loaded','Podaci učitani',l))}: ${E(fmtDate(loaded,l))}</p></div><img src="assets/logo.png" alt=""></header>
     <p>${E(L('ثبت‌نام','Registration','Registracija',l))}: ${E(school.registration?statusLabel(school.registration.status||L('ثبت‌نام شده','Registered','Registriran',l),l):L('ثبت‌نام نشده','Not registered','Nije registriran',l))}</p>
     ${summaryCards(school,activity,reading,l)}
     <section><h3>${E(L('پیشرفت درس‌ها','Lesson progress','Napredak lekcija',l))}</h3>${progressHtml(school,l)}</section>
@@ -169,7 +169,7 @@
       let cached=detailCache.get(email);
       if(force||!cached||Date.now()-cached.at>60000){
         const [profile,reading]=await Promise.all([
-          bounded(adminRpc('nh7_admin_student_profile_v451',{p_email:email},15000),17000),
+          bounded(adminRpc('nh7_admin_student_profile_v452',{p_email:email},15000),17000),
           bounded(adminRpc('nh7_admin_library_reading_v490',{p_email:email},6000),7000).then(value=>({value:unwrap(value),warning:false}),()=>({value:[],warning:true}))
         ]);
         const value=unwrap(profile);if(!value?.school)throw new Error(L('اطلاعات گزارش معتبر نیست. دوباره تلاش کنید.','Invalid report response. Please retry.','Nevaljan odgovor izvještaja. Pokušajte ponovno.'));

@@ -83,7 +83,7 @@ function matchesFilter(r,key=reportFilter){
 }
 function filteredRows(){
   const q=lower(searchValue);
-  return visibleRows().filter(r=>matchesFilter(r)&&(!q||lower([r.display_name,r.email,r.phone].join(' ')).includes(q)))
+  return visibleRows().filter(r=>matchesFilter(r)&&(!q||lower([r.display_name,r.email,r.phone,r.student_code].join(' ')).includes(q)))
     .sort((a,b)=>String(a.display_name||a.email).localeCompare(String(b.display_name||b.email),undefined,{sensitivity:'base'}))
 }
 function counts(){
@@ -159,7 +159,7 @@ async function load(force=false){
     let lastError=null;
     for(let attempt=0;attempt<2;attempt++){
       try{
-        const raw=await reportRequest(adminRpc('nh7_admin_student_academic_center_v542',{p_inactive_days:requestDays},20000),22000);
+        const raw=await reportRequest(adminRpc('nh7_admin_student_academic_center_v543',{p_inactive_days:requestDays},20000),22000);
         if(sequence!==loadSequence)return;
         const next=unwrap(raw);if(!Array.isArray(next?.rows))throw new Error(L('پاسخ گزارش معتبر نیست.','Invalid report response.','Nevaljan odgovor izvještaja.'));
         data={...next,__days:requestDays};
@@ -240,7 +240,7 @@ function reportTable(){
   const all=filteredRows();pageIndex=Math.min(pageIndex,Math.max(0,Math.ceil(all.length/PAGE_SIZE)-1));
   const list=all.slice(pageIndex*PAGE_SIZE,(pageIndex+1)*PAGE_SIZE);
   const body=list.map(r=>'<tr>'+
-    '<td><strong>'+E(r.display_name||r.email)+'</strong><br><small>'+E(r.email||'—')+'</small></td>'+
+    '<td><strong>'+E(r.display_name||r.email)+'</strong><br><small>'+E(r.email||'—')+'</small>'+(r.student_code?'<br><small><b>'+E(r.student_code)+'</b></small>':'')+'</td>'+
     '<td>'+E(r.app_activity_seen?L('فعالیت دیده شده','Activity seen','Aktivnost zabilježena'):L('فعالیت شناسایی نشده','No identified activity','Nema prepoznate aktivnosti'))+'<br><small>'+E(fmtDate(r.last_app_activity))+'</small></td>'+
     '<td>'+E(r.school_registered?L('ثبت‌نام شده','Registered','Registriran'):L('ثبت‌نام نشده','Not registered','Nije registriran'))+'<br><small>'+E(fmtDate(r.registered_at))+'</small></td>'+
     '<td>'+E(N(r.completed_lessons))+'/'+E(N(r.total_lessons))+'<br><small>'+E(L('مرحله معتبر','validated stages','potvrđene faze'))+': '+E(N(r.validated_classes))+'/7'+(N(r.legacy_completed_through_class)>0?' · Legacy '+E(N(r.legacy_completed_through_class)):'')+'</small></td>'+
@@ -259,7 +259,7 @@ function reports(){
   if(!data)return loadingCard();
   const list=filteredRows();
   return'<section class="panel-card"><div class="req-head"><div><h3>📋 '+E(L('گزارش‌های گروهی دانشجویان','Student Group Reports','Grupni izvještaji studenata'))+'</h3><p class="muted small">'+E(L('گروه را انتخاب کن، سپس همان لیست را CSV بگیر یا برای PDF/چاپ باز کن.','Choose a group, then export the same list as CSV or open a printable/PDF report.','Odaberite grupu, zatim izvezite CSV ili otvorite izvještaj za PDF/ispis.'))+'</p></div><span class="pill">'+E(list.length)+' '+E(L('نفر','people','osoba'))+'</span></div>'+
-  reportNotice()+'<div class="nh7ac540-toolbar"><select aria-label="'+E(L('گروه گزارش','Report group','Grupa izvještaja'))+'" onchange="nh7StudentAcademicSetFilterV540(this.value)">'+filterOptions()+'</select><input data-academic-search type="search" aria-label="'+E(L('جستجو','Search','Pretraži'))+'" placeholder="'+E(L('جستجوی نام یا ایمیل…','Search name or email…','Pretraži ime ili e-mail…'))+'" value="'+E(searchValue)+'" oninput="nh7StudentAcademicSearchV540(this.value)"><select aria-label="'+E(L('روزهای عدم فعالیت','Inactive days','Dani neaktivnosti'))+'" onchange="nh7StudentAcademicInactiveDaysV540(this.value)"><option value="7" '+(inactiveDays===7?'selected':'')+'>7 '+E(L('روز','days','dana'))+'</option><option value="14" '+(inactiveDays===14?'selected':'')+'>14 '+E(L('روز','days','dana'))+'</option><option value="30" '+(inactiveDays===30?'selected':'')+'>30 '+E(L('روز','days','dana'))+'</option><option value="60" '+(inactiveDays===60?'selected':'')+'>60 '+E(L('روز','days','dana'))+'</option><option value="90" '+(inactiveDays===90?'selected':'')+'>90 '+E(L('روز','days','dana'))+'</option></select></div>'+
+  reportNotice()+'<div class="nh7ac540-toolbar"><select aria-label="'+E(L('گروه گزارش','Report group','Grupa izvještaja'))+'" onchange="nh7StudentAcademicSetFilterV540(this.value)">'+filterOptions()+'</select><input data-academic-search type="search" aria-label="'+E(L('جستجو','Search','Pretraži'))+'" placeholder="'+E(L('جستجوی نام، ایمیل یا کد دانشجویی…','Search name, email or Student ID…','Pretraži ime, e-mail ili studentski ID…'))+'" value="'+E(searchValue)+'" oninput="nh7StudentAcademicSearchV540(this.value)"><select aria-label="'+E(L('روزهای عدم فعالیت','Inactive days','Dani neaktivnosti'))+'" onchange="nh7StudentAcademicInactiveDaysV540(this.value)"><option value="7" '+(inactiveDays===7?'selected':'')+'>7 '+E(L('روز','days','dana'))+'</option><option value="14" '+(inactiveDays===14?'selected':'')+'>14 '+E(L('روز','days','dana'))+'</option><option value="30" '+(inactiveDays===30?'selected':'')+'>30 '+E(L('روز','days','dana'))+'</option><option value="60" '+(inactiveDays===60?'selected':'')+'>60 '+E(L('روز','days','dana'))+'</option><option value="90" '+(inactiveDays===90?'selected':'')+'>90 '+E(L('روز','days','dana'))+'</option></select></div>'+
   '<div class="nh7ac540-actions"><button class="btn primary" onclick="nh7StudentAcademicCsvV540()">⬇ CSV</button><button class="btn secondary" onclick="nh7StudentAcademicPrintV540()">📄 PDF / '+E(L('چاپ','Print','Ispis'))+'</button><label class="nh7ac540-check"><input type="checkbox" '+(showTests?'checked':'')+' onchange="nh7StudentAcademicToggleTestsV540(this.checked)"> '+E(L('نمایش حساب‌های تست','Show test accounts','Prikaži test račune'))+'</label></div>'+
   reportTable()+'</section>'
 }
@@ -284,9 +284,9 @@ function shell(oldDashboard){
 
 function csvEscape(v){let s=String(v??'');if(/^[\s]*[=+@-]/.test(s))s="'"+s;return /[",\n\r]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s}
 function csvRows(list=filteredRows()){
-  const header=['display_name','email','app_account_exists','app_activity_seen','last_app_activity','school_registered','completed_lessons','validated_classes','legacy_completed_through_class','revision_assignments','pending_assignments','class_exams_passed','unresolved_failed_class_exams','final_exam_attempts','final_exam_passed','final_exam_best_score','course_completed','graduated','last_school_activity','status','status_code','total_lessons','pending_lessons','registered_at'];
+  const header=['display_name','email','student_code','app_account_exists','app_activity_seen','last_app_activity','school_registered','completed_lessons','validated_classes','legacy_completed_through_class','revision_assignments','pending_assignments','class_exams_passed','unresolved_failed_class_exams','final_exam_attempts','final_exam_passed','final_exam_best_score','course_completed','graduated','last_school_activity','status','status_code','total_lessons','pending_lessons','registered_at'];
   const body=list.map(r=>[
-    r.display_name,r.email,r.app_account_exists?'yes':'no',r.app_activity_seen?'yes':'no',r.last_app_activity||'',r.school_registered?'yes':'no',
+    r.display_name,r.email,r.student_code||'',r.app_account_exists?'yes':'no',r.app_activity_seen?'yes':'no',r.last_app_activity||'',r.school_registered?'yes':'no',
     r.completed_lessons,r.validated_classes,r.legacy_completed_through_class,r.revision_assignments,r.pending_assignments,
     r.class_exams_passed,r.unresolved_failed_class_exams,r.final_exam_attempts,r.final_exam_passed?'yes':'no',r.final_exam_best_score??'',
     r.course_completed?'yes':'no',r.graduated?'yes':'no',r.last_school_activity||'',statusLabel(r.academic_status_code||r.status_code),r.academic_status_code||r.status_code,r.total_lessons,Math.max(0,N(r.total_lessons)-N(r.completed_lessons)),r.registered_at||''
@@ -318,7 +318,7 @@ function printGroup(){
   closeGroupReport();returnFocus=document.activeElement;
   const list=filteredRows();groupSnapshot={rows:list};
   const rows=list.map(r=>'<tr>'+
-    '<td><strong>'+E(r.display_name||r.email)+'</strong><br><small>'+E(r.email||'—')+'</small></td>'+
+    '<td><strong>'+E(r.display_name||r.email)+'</strong><br><small>'+E(r.email||'—')+'</small>'+(r.student_code?'<br><small><b>'+E(r.student_code)+'</b></small>':'')+'</td>'+
     '<td>'+E(N(r.completed_lessons))+'/'+E(N(r.total_lessons))+'<br><small>'+E(L('مرحله معتبر','validated','potvrđeno'))+': '+E(N(r.validated_classes))+'/7</small></td>'+
     '<td>'+E(N(r.revision_assignments))+'<br><small>'+E(L('در انتظار','pending','na čekanju'))+': '+E(N(r.pending_assignments))+'</small></td>'+
     '<td>'+E(N(r.class_exams_passed))+'/7</td>'+
