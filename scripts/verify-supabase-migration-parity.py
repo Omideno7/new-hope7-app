@@ -6,49 +6,54 @@ ROOT=Path(__file__).resolve().parents[1]
 MANIFEST=ROOT/'supabase/review/migration-history-reconciliation-20261009/production-tail.json'
 MIGRATIONS=ROOT/'supabase/migrations'
 
-def semantic(text:str)->str:
-    text=re.sub(r'--[^\n]*','',text)
-    text=re.sub(r'\s+','',text)
-    return hashlib.md5(text.encode()).hexdigest()
-
 def main():
     ap=argparse.ArgumentParser()
-    ap.add_argument('--strict', action='store_true', help='also fail when Production-applied files are still missing')
+    ap.add_argument('--strict', action='store_true', help='fail if any newer pending migration exists beyond the captured Production checkpoint')
     args=ap.parse_args()
     data=json.loads(MANIFEST.read_text())
     expected={m['version']:m for m in data['migrations']}
-    unsafe=[]; present=set()
+    checkpoint=max(expected)
+    unsafe=[]; present=set(); pending=[]; exact=0
+
     for path in sorted(MIGRATIONS.glob('202610*.sql')):
         m=re.fullmatch(r'(\d{14})_(.+)\.sql',path.name)
         if not m:
             unsafe.append(f'non-canonical executable migration filename: {path.name}')
             continue
-        version,name=m.groups(); row=expected.get(version)
-        if not row:
-            unsafe.append(f'executable migration not recorded in Production manifest: {path.name}')
+        version,name=m.groups()
+        row=expected.get(version)
+        if row:
+            if name!=row['name']:
+                unsafe.append(f'name mismatch for {version}: local={name} production={row["name"]}')
+                continue
+            present.add(version)
+            got=hashlib.md5(path.read_bytes()).hexdigest()
+            if got!=row['sql_md5']:
+                unsafe.append(f'raw SQL hash mismatch for {path.name}: {got} != {row["sql_md5"]}')
+                continue
+            exact+=1
             continue
-        if name!=row['name']:
-            unsafe.append(f'name mismatch for {version}: local={name} production={row["name"]}')
-            continue
-        present.add(version)
-        expected_sem=row.get('semantic_md5')
-        if expected_sem:
-            got=semantic(path.read_text())
-            if got!=expected_sem:
-                unsafe.append(f'semantic SQL mismatch for {path.name}: {got} != {expected_sem}')
+        if version<=checkpoint:
+            unsafe.append(f'unrecorded historical executable migration at/before checkpoint: {path.name}')
+        else:
+            pending.append(path.name)
+
     missing=[f'{v}_{expected[v]["name"]}.sql' for v in expected if v not in present]
-    print(f'Production tail entries: {len(expected)}')
-    print(f'Executable matching files: {len(present)}')
-    print(f'Missing Production-applied files: {len(missing)}')
+    print(f'Production checkpoint entries: {len(expected)}')
+    print(f'Exact raw-hash matches: {exact}')
+    print(f'Missing checkpoint files: {len(missing)}')
+    print(f'Newer pending migrations: {len(pending)}')
     for x in missing: print(f'  MISSING {x}')
+    for x in pending: print(f'  PENDING {x}')
     for x in unsafe: print(f'  UNSAFE {x}')
-    if unsafe:
-        print('Migration parity guard: FAIL (unsafe executable drift)')
+
+    if unsafe or missing or exact!=len(expected):
+        print('Migration parity guard: FAIL (Production checkpoint drift)')
         return 1
-    if args.strict and missing:
-        print('Migration parity guard: FAIL (strict parity incomplete)')
+    if args.strict and pending:
+        print('Migration parity guard: FAIL (strict mode forbids pending migrations)')
         return 2
-    print('Migration parity guard: PASS (Stage A; no unsafe executable drift)')
+    print('Migration parity guard: PASS (Production checkpoint exact)')
     return 0
 
 if __name__=='__main__': sys.exit(main())
