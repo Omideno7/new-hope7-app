@@ -121,6 +121,13 @@
       "sql_md5": "c53492115a48a7b9c5204a4b2c5ce0f5",
       "sql_chars": 13665,
       "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261009071217",
+      "name": "school_activity_user_id_bridge_v128",
+      "sql_md5": "6858822ee390c481b6388209235eecdd",
+      "sql_chars": 8647,
+      "status": "present_exact_deployed"
     }
   ],
   "parity": "exact_raw_md5",
