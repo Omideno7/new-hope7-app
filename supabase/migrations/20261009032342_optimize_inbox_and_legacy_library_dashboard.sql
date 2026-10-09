@@ -1,10 +1,3 @@
--- New Hope 7 Production reliability / IO hardening.
--- 1) Support the Inbox receipt snapshot query by user_key + newest update.
--- 2) Support the legacy Admin Inbox top-100 newest-message query.
--- 3) Preserve the legacy v224 Library dashboard contract while excluding the
---    multi-megabyte reader_text payload that list/edit screens do not consume.
--- No user rows, Library reader bodies, Storage objects, grants, or progress data are changed.
-
 create index if not exists notification_inbox_receipts_user_updated_v420_idx
   on public.notification_inbox_receipts (user_key, updated_at desc)
   include (message_id, read_at, deleted_at);
@@ -60,7 +53,6 @@ begin
 end;
 $function$;
 
--- Preserve the existing v224 execution boundary explicitly.
 revoke execute on function public.nh7_admin_library_dashboard_v224() from public;
 revoke execute on function public.nh7_admin_library_dashboard_v224() from anon;
 grant execute on function public.nh7_admin_library_dashboard_v224() to authenticated;
