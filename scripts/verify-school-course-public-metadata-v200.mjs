@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+const files=fs.readdirSync('supabase/migrations').filter(x=>x.endsWith('_school_course_public_metadata_v200.sql'));
+if(files.length!==1)throw new Error(`Expected one Wave 2B migration, found ${files.length}`);
+const sql=fs.readFileSync('supabase/migrations/'+files[0],'utf8');
+const need=(x,m)=>{if(!sql.includes(x))throw new Error(m)};
+const forbid=(re,m)=>{if(re.test(sql))throw new Error(m)};
+need('add column cover_url text','cover_url missing');
+need('add column requires_manual_grant boolean not null default false','manual grant flag missing');
+need('add column certificate_template_code text','certificate template code missing');
+need("where course_code='foundation_school'","Foundation compatibility assertion missing");
+forbid(/add\s+column\s+settings\b/i,'Wave 2B must not add generic public settings');
+forbid(/create\s+table\b/i,'Wave 2B must not create new tables');
+forbid(/\bdelete\s+from\b/i,'Wave 2B must not delete data');
+forbid(/(?:grant|revoke)\s+(?:select|insert|update|delete|all)/i,'Wave 2B must not change table privileges');
+forbid(/create\s+(?:or\s+replace\s+)?function/i,'Wave 2B must not add RPC/function behavior');
+console.log(`School Public Course Metadata v200 verifier: PASS (${files[0]})`);
+console.log('Scope: three public-safe metadata fields only; generic settings/stages/grants/RPCs untouched');
