@@ -2,8 +2,8 @@
 'use strict';
 // Issue #115 UI refresh: recache localized assets with the existing cache/storage contract.
 
-const NH7_RELEASE_CORE_VERSION='5.3.7-student-exam-review';
-const NH7_RELEASE_CORE_CACHE='nh7-release-core-v537-student-exam-review-library125';
+const NH7_RELEASE_CORE_VERSION='5.4.3-push-bind364';
+const NH7_RELEASE_CORE_CACHE='nh7-release-core-v543-push-bind364-library125';
 const NH7_RELEASE_DATA_CACHE='nh7-data-stable-v329';
 const NH7_RELEASE_ASSETS=[
   './',
@@ -86,7 +86,7 @@ const NH7_RELEASE_ASSETS=[
   './js/nh7-apocrypha-v270.js',
   './js/nh7-protected-audio-gate-v316.js',
   './js/nh7-ui-stability-v329.js',
-  './js/nh7-push-account-bind-v362.js',
+  './js/nh7-push-account-bind-v364.js',
   './js/nh7-inbox-badge-sync-v418.js',
   './js/nh7-school-exam-v344.js',
   './js/nh7-school-path-v351.js',

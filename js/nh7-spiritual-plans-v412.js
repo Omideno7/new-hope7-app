@@ -325,7 +325,7 @@ new MutationObserver(() => {
 }).observe(VIEW || document.body, { childList:true, subtree:false });
 
 const style = document.createElement('style');
-style.textContent = `.nh7-scripture-reveal .inline-verse{padding:11px;border:1px solid #cce0ee;background:#fff}.nh7-scripture-reveal .inline-verse.hidden{display:none}.inline-verse-line{display:grid;grid-template-columns:28px 1fr;gap:8px;margin:5px 0;line-height:1.8}.inline-verse-line b{display:grid;place-items:center;width:24px;height:24px;border-radius:8px;background:#e8f4ff;color:#0565ad;font-size:.72rem}`;
+style.textContent = `.nh7-scripture-reveal .inline-verse{padding:11px;border:1px solid var(--nh7-studio-line,var(--line,#cce0ee));background:var(--nh7-studio-card,var(--card,#fff));color:var(--nh7-studio-verse,var(--ink,#16364c))}.nh7-scripture-reveal .inline-verse.hidden{display:none}.inline-verse-line{display:grid;grid-template-columns:28px 1fr;gap:8px;margin:5px 0;line-height:1.8}.inline-verse-line b{display:grid;place-items:center;width:24px;height:24px;border-radius:8px;background:color-mix(in srgb,var(--nh7-studio-accent,var(--brand,#0565ad)) 12%,var(--nh7-studio-card,var(--card,#fff)));color:var(--nh7-studio-accent,var(--brand,#0565ad));font-size:.72rem}`;
 document.head.appendChild(style);
 
 window.NH7_SPIRITUAL_PLANS_VERSION = VERSION;
