@@ -1,6 +1,6 @@
 {
   "project_ref": "gpzcwffxnddhaeaogdyo",
-  "captured_at": "2026-10-09",
+  "captured_at": "2026-10-10",
   "source": "supabase_migrations.schema_migrations",
   "migrations": [
     {
@@ -233,6 +233,13 @@
       "sql_md5": "b77ec3354749705d32fd46994e03be3a",
       "sql_chars": 6192,
       "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261010180059",
+      "name": "optimize_inbox_lower_email_index_v1",
+      "sql_md5": "9433d6fafad76e6dc36232ba8390b4d1",
+      "sql_chars": 207,
+      "status": "present_exact_deployed"
     }
   ],
   "parity": "exact_raw_md5",
