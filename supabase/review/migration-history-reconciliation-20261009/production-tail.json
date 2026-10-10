@@ -226,6 +226,13 @@
       "sql_md5": "53f239472bd07850a366afce15ff58aa",
       "sql_chars": 3178,
       "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261010025936",
+      "name": "school_stage_model_v210",
+      "sql_md5": "b77ec3354749705d32fd46994e03be3a",
+      "sql_chars": 6192,
+      "status": "present_exact_recovered"
     }
   ],
   "parity": "exact_raw_md5",
