@@ -61,6 +61,12 @@ jobs:
           set -euo pipefail
           python3 scripts/verify-plans-theme-parity-v534.py
 
+      - name: Verify Appearance CSS parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/verify-appearance-css-parity-v521.py
+
       - name: Validate current runtime JavaScript
         shell: bash
         run: |
@@ -147,7 +153,7 @@ jobs:
           if(!releaseCore.includes('./js/nh7-registration-repeat-guard-v402.js'))fail('Registration repeat guard not cached');
 
           if(!worker.includes('sw-navigation-fresh-v403.js?v=4.0.3'))fail('Fresh navigation worker missing');
-          if(!worker.includes('sw-release-core-v403.js?v=5.4.0-plans-theme'))fail('Release core v5.3.7 missing');
+          if(!worker.includes('sw-release-core-v403.js?v=5.4.1-appearance-css'))fail('Release core v5.3.7 missing');
           if(worker.indexOf('sw-navigation-fresh-v403.js')>worker.indexOf('sw-offline-v329.js'))fail('Fresh navigation worker must load before offline worker');
 
           for(const required of [
@@ -183,7 +189,7 @@ jobs:
           const missingFromRelease=currentScripts.filter(p=>!paths.includes(p));
           if(missingFromRelease.length)fail('Current app scripts not guaranteed offline: '+missingFromRelease.join(', '));
 
-          if(!releaseCore.includes("NH7_RELEASE_CORE_VERSION='5.4.0-plans-theme'"))fail('Release core version mismatch');
+          if(!releaseCore.includes("NH7_RELEASE_CORE_VERSION='5.4.1-appearance-css'"))fail('Release core version mismatch');
           if(!releaseCore.includes('./js/nh7-audio-classic-v484.js'))fail('Audio engine not cached');
           if(!releaseCore.includes('./js/nh7-audio-miniplayer-v487.js'))fail('Mini-player not cached');
           if(!index.includes('NH7_ONESIGNAL_WORKER')||!index.includes('push/OneSignalSDKWorker.js'))fail('OneSignal worker wiring missing');

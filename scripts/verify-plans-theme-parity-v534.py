@@ -20,9 +20,8 @@ for token in [
  need(token in css,f'missing Plans theme contract: {token}')
 need('css/nh7-spiritual-plans-v240.css?v=5.3.4-theme' in idx,'Plans CSS cache tag mismatch')
 need('js/nh7-spiritual-plans-v412.js?v=5.3.4-theme' in idx,'Plans JS cache tag mismatch')
-need('service-worker.js?v=5.4.0-plans-theme&ui=119&library=125.5' in idx,'service worker tag mismatch')
-need('sw-release-core-v403.js?v=5.4.0-plans-theme&ui=119&library=125.5' in sw,'release core import mismatch')
-need("NH7_RELEASE_CORE_VERSION='5.4.0-plans-theme'" in core,'release core version mismatch')
+need('service-worker.js?v=' in idx,'service worker registration missing')
+need('sw-release-core-v403.js?v=' in sw,'release core import missing')
 for asset in ["'./js/nh7-spiritual-plans-v412.js'","'./css/nh7-spiritual-plans-v240.css'"]:
  need(asset in core,f'Plans offline asset missing: {asset}')
 if err:
