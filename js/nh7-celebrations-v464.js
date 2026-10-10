@@ -25,24 +25,34 @@ function feastText(id){
   stephen:[['این روز استیفان، نخستین شهید ثبت‌شده کلیسای اولیه را به یاد می‌آورد؛ او با ایمان و بخشش تا پایان بر مسیح شهادت داد.','This day remembers Stephen, the first recorded martyr of the early Church, who bore witness to Christ with faith and forgiveness to the end.','Ovaj dan podsjeća na Stjepana, prvog zabilježenog mučenika rane Crkve, koji je do kraja svjedočio za Krista vjerom i oproštenjem.'],'اعمال ۷:۵۴–۶۰','Acts 7:54–60','Djela 7,54–60']
  };const x=texts[id];return x?{body:x[0][lang()==='fa'?0:lang()==='hr'?2:1],verse:x[lang()==='fa'?1:lang()==='hr'?3:2]}:{body:'',verse:''}
 }
-function eventFor(now=new Date()){if(!(now instanceof Date)||!Number.isFinite(now.getTime()))return null;const y=now.getFullYear(),e=easter(y),today=key(now),rows=[
-[y+'-01-01','holy_name','✝️',L('نام‌گذاری عیسی','Holy Name of Jesus','Ime Isusovo')],
-[y+'-01-06','epiphany','✨',L('ظهور مسیح','Epiphany','Bogojavljenje')],
-[key(plus(e,-46)),'ash','🕊️',L('چهارشنبه خاکستر','Ash Wednesday','Pepelnica')],
-[key(plus(e,-7)),'palm','🌿',L('یکشنبه نخل','Palm Sunday','Cvjetnica')],
-[key(plus(e,-3)),'maundy','🍞',L('پنجشنبه مقدس','Maundy Thursday','Veliki četvrtak')],
-[key(plus(e,-2)),'good_friday','✝️',L('جمعه نیک','Good Friday','Veliki petak')],
-[key(plus(e,-1)),'holy_saturday','🕯️',L('شنبه مقدس','Holy Saturday','Velika subota')],
-[key(e),'easter','🌅',L('عید قیام مسیح','Easter Sunday','Uskrs')],
-[key(plus(e,1)),'easter_monday','🌅',L('دوشنبه عید پاک','Easter Monday','Uskrsni ponedjeljak')],
-[key(plus(e,39)),'ascension','☁️',L('عید صعود','Ascension','Uzašašće')],
-[key(plus(e,49)),'pentecost','🔥',L('پنطیکاست','Pentecost','Duhovi')],
-[key(plus(e,50)),'pentecost_monday','🔥',L('دوشنبه پنطیکاست','Pentecost Monday','Duhovski ponedjeljak')],
-[y+'-11-01','all_saints','🕯️',L('روز همه مقدسین','All Saints’ Day','Svi sveti')],
-[y+'-12-24','christmas_eve','🕯️',L('شب میلاد','Christmas Eve','Badnjak')],
-[y+'-12-25','christmas','⭐',L('میلاد عیسی مسیح','Christmas','Božić')],
-[y+'-12-26','stephen','✝️',L('روز استیفان مقدس','St Stephen’s Day','Sveti Stjepan')]
-];const x=rows.find(r=>r[0]===today);if(!x)return null;const info=feastText(x[1]);return{key:today,id:x[1],icon:x[2],title:x[3],body:info.body,verse:info.verse}}
+const FEAST_REFS464={
+ holy_name:'Luke 2:21',epiphany:'Matthew 2:1',ash:'Joel 2:12',palm:'Matthew 21:1',
+ maundy:'1 Corinthians 11:23',good_friday:'John 19:16',holy_saturday:'Matthew 27:57',
+ easter:'Luke 24:1',easter_monday:'Luke 24:13',ascension:'Acts 1:8',pentecost:'Acts 2:1',
+ pentecost_monday:'Acts 1:8',all_saints:'Hebrews 12:1',christmas_eve:'Luke 2:1',
+ christmas:'Luke 2:10',stephen:'Acts 7:54'
+};
+function annualEvents(y=new Date().getFullYear()){
+ const e=easter(Number(y));return[
+ [y+'-01-01','holy_name','✝️',L('نام‌گذاری عیسی','Holy Name of Jesus','Ime Isusovo')],
+ [y+'-01-06','epiphany','✨',L('ظهور مسیح','Epiphany','Bogojavljenje')],
+ [key(plus(e,-46)),'ash','🕊️',L('چهارشنبه خاکستر','Ash Wednesday','Pepelnica')],
+ [key(plus(e,-7)),'palm','🌿',L('یکشنبه نخل','Palm Sunday','Cvjetnica')],
+ [key(plus(e,-3)),'maundy','🍞',L('پنجشنبه مقدس','Maundy Thursday','Veliki četvrtak')],
+ [key(plus(e,-2)),'good_friday','✝️',L('جمعه نیک','Good Friday','Veliki petak')],
+ [key(plus(e,-1)),'holy_saturday','🕯️',L('شنبه مقدس','Holy Saturday','Velika subota')],
+ [key(e),'easter','🌅',L('عید قیام مسیح','Easter Sunday','Uskrs')],
+ [key(plus(e,1)),'easter_monday','🌅',L('دوشنبه عید پاک','Easter Monday','Uskrsni ponedjeljak')],
+ [key(plus(e,39)),'ascension','☁️',L('عید صعود','Ascension','Uzašašće')],
+ [key(plus(e,49)),'pentecost','🔥',L('پنطیکاست','Pentecost','Duhovi')],
+ [key(plus(e,50)),'pentecost_monday','🔥',L('دوشنبه پنطیکاست','Pentecost Monday','Duhovski ponedjeljak')],
+ [y+'-11-01','all_saints','🕯️',L('روز همه مقدسین','All Saints’ Day','Svi sveti')],
+ [y+'-12-24','christmas_eve','🕯️',L('شب میلاد','Christmas Eve','Badnjak')],
+ [y+'-12-25','christmas','⭐',L('میلاد عیسی مسیح','Christmas','Božić')],
+ [y+'-12-26','stephen','✝️',L('روز استیفان مقدس','St Stephen’s Day','Sveti Stjepan')]
+ ].map(r=>{const info=feastText(r[1]);return{key:r[0],id:r[1],icon:r[2],title:r[3],body:info.body,verse:info.verse,ref:FEAST_REFS464[r[1]]||''}})
+}
+function eventFor(now=new Date()){if(!(now instanceof Date)||!Number.isFinite(now.getTime()))return null;const today=key(now);return annualEvents(now.getFullYear()).find(x=>x.key===today)||null}
 
 // Read-only profile lookup: a birthday must belong to the currently signed-in account.
 const SESSION='nh7_user_session_v170';
@@ -89,7 +99,16 @@ function modalCopy(){
   a.title.textContent=L('تولدت مبارک','Happy Birthday','Sretan rođendan')+(a.person.name?(lang()==='fa'?'، ':', ')+a.person.name:'')+'!';
   a.body.textContent=L('دعا می‌کنیم سال تازهٔ زندگی‌ات پر از فیض، سلامتی، حکمت و ثمر برای جلال خداوند باشد.','We pray that your new year of life is filled with grace, health, wisdom and fruit for the glory of God.','Molimo da nova godina tvoga života bude ispunjena milošću, zdravljem, mudrošću i plodom na slavu Božju.');
   a.verse.textContent='📖 '+L('ارمیا ۲۹:۱۱','Jeremiah 29:11','Jeremija 29,11');
- }else{const ev=eventFor(a.date);if(!ev){closeModal();return}a.title.textContent=ev.title;a.body.textContent=ev.body;a.verse.textContent='📖 '+ev.verse}
+ }else{
+  const ev=eventFor(a.date);if(!ev){closeModal();return}
+  a.title.textContent=ev.title;a.body.textContent=ev.body;a.verse.textContent='📖 '+ev.verse;
+  a.verse.classList.toggle('is-link',!!ev.ref);
+  a.verse.tabIndex=ev.ref?0:-1;
+  a.verse.setAttribute('role',ev.ref?'button':'note');
+  a.verse.setAttribute('aria-label',ev.ref?L('باز کردن آیه در کتاب مقدس','Open verse in Bible','Otvori redak u Bibliji'):'');
+  a.verse.onclick=ev.ref?()=>{const ref=ev.ref;closeModal();setTimeout(()=>Promise.resolve(window.NH7ReaderSourceV452?.open?.(ref)).catch(()=>{}),0)}:null;
+  a.verse.onkeydown=ev.ref?e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();a.verse.click()}}:null;
+ }
 }
 function openModal(kind,person=null,date=new Date()){
  if(active)return false;
@@ -108,12 +127,43 @@ function openModal(kind,person=null,date=new Date()){
  if(layer)active.effectsTimer=setTimeout(stopEffects,4800);
  return true;
 }
+function localDateLabel(iso){
+ const d=new Date(iso+'T12:00:00');
+ const locale=lang()==='fa'?'fa-IR':lang()==='hr'?'hr-HR':'en-GB';
+ try{return new Intl.DateTimeFormat(locale,{day:'numeric',month:'long'}).format(d)}catch(_){return iso.slice(5)}
+}
+function openCalendar(){
+ if(active)return false;
+ const overlay=node('div','nh7-celebration-modal464'),dialog=node('div','nh7-celebration-dialog464 nh7-calendar-dialog464');
+ const close=node('button','nh7-celebration-close464','×');close.type='button';
+ const title=node('h2',null,'📅 '+L('تقویم مسیحی','Christian Calendar','Kršćanski kalendar'));
+ const intro=node('p',null,L('مناسبت‌های اصلی سال را ببینید و برای توضیح کوتاه و آیه روی هر مورد بزنید.','Browse the main Christian observances of the year. Tap one for a short teaching and Scripture reference.','Pregledajte glavne kršćanske blagdane godine. Dodirnite stavku za kratko objašnjenje i biblijski navod.'));
+ const list=node('div','nh7-calendar-list464');
+ annualEvents(new Date().getFullYear()).forEach(ev=>{
+   const b=node('button','nh7-calendar-item464');b.type='button';
+   const date=node('small',null,localDateLabel(ev.key)),name=node('strong',null,ev.icon+' '+ev.title);
+   b.append(name,date);
+   b.onclick=()=>{const date=new Date(ev.key+'T12:00:00');closeModal();setTimeout(()=>openModal('feast',null,date),0)};
+   list.append(b)
+ });
+ dialog.append(close,title,intro,list);overlay.append(dialog);
+ const shell=document.getElementById('appShell');active={kind:'calendar',overlay,dialog,close,shell,wasInert:shell?.inert||false,focus:document.activeElement,owner:identity()?.id||'guest'};
+ document.body.append(overlay);if(shell)shell.inert=true;close.focus({preventScroll:true});
+ close.onclick=closeModal;overlay.onclick=e=>{if(e.target===overlay)closeModal()};
+ overlay.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();closeModal()}});
+ return true
+}
 function header(){
- const row=document.querySelector('.nh7-header-date-row455');if(!row)return;const ev=eventFor();let button=document.getElementById('nh7ChristianToday464');
+ const row=document.querySelector('.nh7-header-date-row455');if(!row)return;const ev=eventFor();
+ let calendar=document.getElementById('nh7ChristianCalendar464');
+ if(!calendar){calendar=node('button','nh7-christian-today464 nh7-christian-calendar464');calendar.id='nh7ChristianCalendar464';calendar.type='button';calendar.onclick=openCalendar;row.append(calendar)}
+ const calendarLabel='📅 '+L('تقویم مسیحی','Christian Calendar','Kršćanski kalendar');
+ if(calendar.textContent!==calendarLabel)calendar.textContent=calendarLabel;
+ calendar.setAttribute('aria-label',calendarLabel);
+ let button=document.getElementById('nh7ChristianToday464');
  if(!ev){button?.remove();return}
  if(!button){button=node('button','nh7-christian-today464');button.id='nh7ChristianToday464';button.type='button';row.append(button);button.onclick=()=>openModal('feast')}
  const label=ev.icon+' '+ev.title;
- // Do not write identical DOM in an observer callback: no self-triggered mutation loop.
  if(button.textContent!==label)button.textContent=label;
  const aria=L('دربارهٔ ','About ','O blagdanu ')+ev.title;
  if(button.getAttribute('aria-label')!==aria)button.setAttribute('aria-label',aria);
@@ -145,5 +195,5 @@ document.addEventListener('change',e=>{if(['langSelect','settingsLang'].includes
 document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(clockTimer);stopEffects()}else clock()});
 try{matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',e=>{if(e.matches)stopEffects()})}catch(_){}
 setTimeout(clock,900);
-window.NH7_CELEBRATIONS_V464=Object.freeze({VERSION:'4.6.4',eventFor,birthday,run,easter});
+window.NH7_CELEBRATIONS_V464=Object.freeze({VERSION:'4.6.6-calendar-lock-finalqa',eventFor,annualEvents,birthday,run,easter,openCalendar});
 })();

@@ -18,9 +18,9 @@ has(mod,"'Review incorrect answers'",'EN review copy missing');
 has(mod,"'Pregled netočnih odgovora'",'HR review copy missing');
 
 has(index,'examreview=566','app cache tag not rotated for exam review');
-has(index,'service-worker.js?v=5.3.7-student-exam-review','service worker tag not rotated');
-has(worker,'sw-release-core-v403.js?v=5.3.7-student-exam-review','worker release-core tag not rotated');
-has(release,"NH7_RELEASE_CORE_VERSION='5.3.7-student-exam-review'",'release core version not rotated');
+has(index,'service-worker.js?v=5.3.8-calendar-lock-parity','service worker tag not rotated');
+has(worker,'sw-release-core-v403.js?v=5.3.8-calendar-lock-parity','worker release-core tag not rotated');
+has(release,"NH7_RELEASE_CORE_VERSION='5.3.8-calendar-lock-parity'",'release core version not rotated');
 has(release,"'./js/nh7-exam-review-v566.js'",'exam review module missing from release cache');
 has(release,'"js/nh7-exam-review-v566.js"','exam review module missing from release fetch allow-list');
 
