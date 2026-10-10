@@ -1,6 +1,6 @@
 /* New Hope 7 v2.3.4 — unified My Notes for Bible, audio and app sections */
 (()=>{'use strict';
-const VERSION='2.3.4';
+const VERSION='2.3.5-web-account-merge';
 const META_PREFIX='nh7_my_note_meta_v234_';
 const SESSION_KEY='nh7_user_session_v170';
 const SUPABASE_URL='https://gpzcwffxnddhaeaogdyo.supabase.co';
@@ -213,6 +213,7 @@ observer.observe(document.documentElement,{childList:true,subtree:true});
 window.addEventListener('storage',scheduleRender);
 window.addEventListener('nh7-reader-data452',scheduleRender);
 window.addEventListener('nh7-note-text-repaired-v501',scheduleRender);
+window.addEventListener('nh7-account-data-restored-v544',scheduleRender);
 window.addEventListener('popstate',()=>setTimeout(scrollToPending,250));
 scheduleRender();
 window.NH7MyNotesV234={VERSION,collectNotes,renderNotesPanel,openNote,deleteNote};

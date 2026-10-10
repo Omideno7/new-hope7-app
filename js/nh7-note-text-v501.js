@@ -2,10 +2,23 @@
    Repairs legacy whitespace encodings without interpreting arbitrary HTML. */
 (()=>{'use strict';
 if(window.__NH7_NOTE_TEXT_V501__)return;window.__NH7_NOTE_TEXT_V501__=true;
-const VERSION='5.0.2';
+const VERSION='5.0.4-web-account-merge';
 
+function unwrap(value){
+  let current=value;
+  for(let i=0;i<4;i++){
+    if(current&&typeof current==='object'&&!Array.isArray(current)&&Object.prototype.hasOwnProperty.call(current,'value')){current=current.value;continue}
+    if(typeof current!=='string')break;
+    const raw=current.trim();
+    if(!(raw.startsWith('{')&&raw.endsWith('}')))break;
+    let parsed=null;try{parsed=JSON.parse(raw)}catch(_){break}
+    if(parsed&&typeof parsed==='object'&&!Array.isArray(parsed)&&Object.prototype.hasOwnProperty.call(parsed,'value')){current=parsed.value;continue}
+    break;
+  }
+  return current==null?'':String(current);
+}
 function normalize(value){
-  let s=String(value??'');
+  let s=unwrap(value);
   for(let i=0;i<3;i++){
     const before=s;
     s=s
@@ -99,5 +112,5 @@ function startObserver(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startObserver,{once:true});else startObserver();
 scheduleRepair();
-window.NH7NoteTextV501={VERSION,normalize,repairKnownNotes,repairVisibleNotes};
+window.NH7NoteTextV501={VERSION,unwrap,normalize,repairKnownNotes,repairVisibleNotes};
 })();

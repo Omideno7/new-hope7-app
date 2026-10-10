@@ -2,8 +2,8 @@
 'use strict';
 // Issue #115 UI refresh: recache localized assets with the existing cache/storage contract.
 
-const NH7_RELEASE_CORE_VERSION='5.3.8-calendar-lock-parity';
-const NH7_RELEASE_CORE_CACHE='nh7-release-core-v538-calendar-lock-parity-library125';
+const NH7_RELEASE_CORE_VERSION='5.3.9-notes-account-merge';
+const NH7_RELEASE_CORE_CACHE='nh7-release-core-v539-notes-account-merge-library125';
 const NH7_RELEASE_DATA_CACHE='nh7-data-stable-v329';
 const NH7_RELEASE_ASSETS=[
   './','./index.html','./app-v239.html','./reset-password.html','./manifest.json','./version.json','./offline/index.html',

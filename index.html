@@ -51,7 +51,7 @@
     window.NH7_CANONICAL_SETTINGS = true;
     window.NH7_VERSION = '2.3.9.50';
     window.NH7_BASE_PATH = new URL('.', window.location.href).pathname;
-    window.NH7_SERVICE_WORKER = window.NH7_BASE_PATH + 'service-worker.js?v=5.3.8-calendar-lock-parity&ui=117&library=125.5';
+    window.NH7_SERVICE_WORKER = window.NH7_BASE_PATH + 'service-worker.js?v=5.3.9-notes-account-merge&ui=118&library=125.5';
     window.NH7_ONESIGNAL_WORKER = window.NH7_BASE_PATH + 'push/OneSignalSDKWorker.js';
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register(window.NH7_SERVICE_WORKER, { scope: window.NH7_BASE_PATH, updateViaCache: 'none' }).catch(console.warn);
@@ -161,15 +161,15 @@
   <script src="js/nh7-sermon-social-v443.js?v=4.4.8-batch" defer></script>
   <script src="js/nh7-sermon-list-detail-v445.js?v=4.4.6" defer></script>
   <script src="js/nh7-audio-library-v500.js?v=5.3.5-cover-sync&ui=115" defer></script>
-  <script src="js/nh7-note-text-v501.js?v=5.0.1"></script>
+  <script src="js/nh7-note-text-v501.js?v=5.0.4-web-account-merge"></script>
   <script src="js/nh7-community-v502.js?v=5.0.6-web-parity" defer></script>
-  <script src="js/app.js?v=4.8.16-inbox&ui=116&library=125.5&community=506&examreview=566" type="module"></script>
+  <script src="js/app.js?v=4.8.16-inbox&ui=118&library=125.5&community=506&examreview=566&notesmerge=544" type="module"></script>
   <script src="js/nh7-settings-controller-v403.js?v=4.6.4"></script>
   <script src="js/nh7-settings-account-v252.js?v=2.5.2&ui=115" defer></script>
   <script src="js/nh7-delete-account-v253.js?v=2.5.4" defer></script>
   <script src="js/nh7-app-enhancements-v230.js?v=4.5.2-reader" type="module"></script>
   <script src="js/nh7-reader-toolbar-v452.js?v=4.5.3-unified" defer></script>
-  <script src="js/nh7-my-notes-v234.js?v=4.5.2-reader" type="module"></script>
+  <script src="js/nh7-my-notes-v234.js?v=5.4.4-account-merge-web" type="module"></script>
   <script src="js/nh7-my-notes-categories-v452.js?v=4.5.2-r2" defer></script>
   <script src="js/nh7-book-reader-v283.js?v=2.3.9.51&ui=115&library=125.5" defer></script>
   <script src="js/nh7-library-language-v321.js?v=2.3.9.33&library=125.5" defer></script>
