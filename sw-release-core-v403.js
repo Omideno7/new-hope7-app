@@ -2,8 +2,8 @@
 'use strict';
 // Issue #115 UI refresh: recache localized assets with the existing cache/storage contract.
 
-const NH7_RELEASE_CORE_VERSION='5.4.5-cost-audit';
-const NH7_RELEASE_CORE_CACHE='nh7-release-core-v545-cost-audit-library126';
+const NH7_RELEASE_CORE_VERSION='5.4.6-community-cert-fix';
+const NH7_RELEASE_CORE_CACHE='nh7-release-core-v546-community-cert-fix';
 const NH7_RELEASE_DATA_CACHE='nh7-data-stable-v329';
 const NH7_RELEASE_ASSETS=[
   './',
