@@ -205,6 +205,13 @@
       "sql_md5": "c0dfba2d8f8efb31e833b48f728c1c39",
       "sql_chars": 4400,
       "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261009165011",
+      "name": "public_certificate_verifier_v127",
+      "sql_md5": "92a8dd3c1c137ebc18c6e33e2f6ac27c",
+      "sql_chars": 4318,
+      "status": "present_exact_recovered"
     }
   ],
   "parity": "exact_raw_md5",
