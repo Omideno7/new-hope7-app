@@ -106,7 +106,7 @@ jobs:
             js/nh7-registration-canonical-v353.js
             js/nh7-registration-final-guard-v401.js
             js/nh7-registration-repeat-guard-v402.js
-            js/nh7-push-account-bind-v362.js
+            js/nh7-push-account-bind-v364.js
             js/nh7-school-exam-v344.js
             js/nh7-school-path-v351.js
             js/nh7-ui-stability-v329.js
@@ -159,7 +159,7 @@ jobs:
           if(!releaseCore.includes('./js/nh7-registration-repeat-guard-v402.js'))fail('Registration repeat guard not cached');
 
           if(!worker.includes('sw-navigation-fresh-v403.js?v=4.0.3'))fail('Fresh navigation worker missing');
-          if(!worker.includes('sw-release-core-v403.js?v=5.4.2-audio-safety'))fail('Release core audio-safety runtime missing');
+          if(!worker.includes('sw-release-core-v403.js?v=5.4.3-push-bind364'))fail('Release core audio-safety runtime missing');
           if(worker.indexOf('sw-navigation-fresh-v403.js')>worker.indexOf('sw-offline-v329.js'))fail('Fresh navigation worker must load before offline worker');
 
           for(const required of [
@@ -195,7 +195,7 @@ jobs:
           const missingFromRelease=currentScripts.filter(p=>!paths.includes(p));
           if(missingFromRelease.length)fail('Current app scripts not guaranteed offline: '+missingFromRelease.join(', '));
 
-          if(!releaseCore.includes("NH7_RELEASE_CORE_VERSION='5.4.2-audio-safety'"))fail('Release core version mismatch');
+          if(!releaseCore.includes("NH7_RELEASE_CORE_VERSION='5.4.3-push-bind364'"))fail('Release core version mismatch');
           if(!releaseCore.includes('./js/nh7-audio-classic-v484.js'))fail('Audio engine not cached');
           if(!releaseCore.includes('./js/nh7-audio-miniplayer-v487.js'))fail('Mini-player not cached');
           if(!index.includes('NH7_ONESIGNAL_WORKER')||!index.includes('push/OneSignalSDKWorker.js'))fail('OneSignal worker wiring missing');
