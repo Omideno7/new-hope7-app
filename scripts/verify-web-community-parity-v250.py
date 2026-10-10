@@ -29,7 +29,10 @@ except Exception as e:
 need('js/nh7-community-v502.js?v=5.0.6-web-parity' in index,'index does not load Community runtime')
 need(index.find('js/nh7-community-v502.js') < index.find('js/app.js'),'Community runtime must be declared before app.js')
 need('community=506' in index,'app cache tag not rotated for Community')
-need('5.3.6-web-community-parity' in index and '5.3.6-web-community-parity' in worker,'service-worker cache tag not rotated')
+release_match=re.search(r"NH7_RELEASE_CORE_VERSION='([^']+)'",sw)
+need(bool(release_match),'release core version declaration missing')
+release_version=release_match.group(1) if release_match else ''
+need(bool(release_version) and release_version in index and release_version in worker,'index/worker release-core version tags are not aligned')
 need("'./js/nh7-community-v502.js'" in sw,'Community JS missing from release precache')
 need("'./data/community/testimony_guide_v502.json'" in sw,'Community guide missing from release data precache')
 need('"js/nh7-community-v502.js"' in sw,'Community JS missing from release fetch allow-list')
