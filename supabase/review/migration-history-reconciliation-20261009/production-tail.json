@@ -240,6 +240,13 @@
       "sql_md5": "9433d6fafad76e6dc36232ba8390b4d1",
       "sql_chars": 207,
       "status": "present_exact_deployed"
+    },
+    {
+      "version": "20261010180256",
+      "name": "optimize_user_data_rls_initplan_v1",
+      "sql_md5": "ae74e61b998a3c6f9bd6480d12d82de5",
+      "sql_chars": 2496,
+      "status": "present_exact_deployed"
     }
   ],
   "parity": "exact_raw_md5",
