@@ -4,7 +4,7 @@
 (()=>{'use strict';
 if(window.__NH7_ADMIN_STUDENT_ACADEMIC_V540__)return;
 window.__NH7_ADMIN_STUDENT_ACADEMIC_V540__=true;
-const VERSION='5.4.7-issue116-readonly-reports';
+const VERSION='5.4.8-student-code-visibility';
 
 let view='overview';
 let reportFilter='school_registered';
@@ -477,6 +477,7 @@ function install(){
   window.nh7StudentAcademicSetFilterV540=setFilter;
   window.nh7StudentAcademicPageV116=setPage;
   window.NH7AcademicReportRowsV116=()=>rows().map(x=>({...x}));
+  window.nh7StudentCodeForEmailV540=email=>String(rows().find(r=>lower(r.email)===lower(email))?.student_code||'');
   window.nh7StudentAcademicOpenReportV540=openReport;
   window.nh7StudentAcademicReloadV540=()=>load(true);
   window.nh7StudentAcademicInactiveDaysV540=setInactiveDays;

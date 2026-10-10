@@ -4,7 +4,7 @@ if(window.__NH7_ADMIN_TESTIMONY_LOADER_V509__)return;
 window.__NH7_ADMIN_TESTIMONY_LOADER_V509__=true;
 function load(src){return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=src;s.defer=true;s.onload=resolve;s.onerror=()=>reject(new Error('Failed to load '+src));document.head.appendChild(s)})}
 load('js/nh7-admin-testimony-core-v565.js?v=5.6.5-core')
- .then(()=>load('js/nh7-admin-community-fixes-v503.js?v=5.0.3'))
+ .then(()=>load('js/nh7-admin-community-fixes-v503.js?v=5.0.4-prayer-reply'))
  .then(()=>load('js/nh7-admin-community-storage-v504.js?v=5.0.4-storage-report-510'))
  .then(()=>load('js/nh7-admin-testimony-runtime-fix-v505.js?v=5.0.5'))
  .then(()=>load('js/nh7-admin-testimony-playback-v506.js?v=5.0.6'))

@@ -188,7 +188,7 @@ function renderOwnPrayerRowsV503(){
  if(!ownPrayerRowsV503.length){host.innerHTML='<p class="muted">'+esc(L('هنوز درخواست دعایی ثبت نکرده‌اید.','You have not submitted a prayer request yet.','Još niste poslali molitveni zahtjev.'))+'</p>';return}
  host.innerHTML=ownPrayerRowsV503.map(r=>{
   const status=String(r.status||'new').toLowerCase(),done=status==='completed';
-  return '<article class="nh7c502-prayer-own '+prayerStatusClassV503(status)+'"><div class="nh7c502-prayer-own-head"><span class="nh7c502-prayer-status">'+esc(prayerStatusLabelV503(status))+'</span><small>'+esc(prayerDateV503(r.created_at))+'</small></div><p>'+esc(r.request_text||'')+'</p>'+(done?'<div class="nh7c502-prayer-answer"><span>'+esc(L('اگر پاسخ دعایتان را دریافت کرده‌اید، می‌توانید آن را به‌عنوان شهادت با کلیسا در میان بگذارید.','If you have received an answer to this prayer, you can share it with the church as a testimony.','Ako ste primili odgovor na ovu molitvu, možete ga podijeliti s crkvom kao svjedočanstvo.'))+'</span><button type="button" class="secondary-btn" data-nh7c502-testimony>'+esc(L('ثبت شهادت','Share testimony','Podijeli svjedočanstvo'))+'</button></div>':'')+'</article>';
+  return '<article class="nh7c502-prayer-own '+prayerStatusClassV503(status)+'"><div class="nh7c502-prayer-own-head"><span class="nh7c502-prayer-status">'+esc(prayerStatusLabelV503(status))+'</span><small>'+esc(prayerDateV503(r.created_at))+'</small></div><p>'+esc(r.request_text||'')+'</p>'+(String(r.admin_note||'').trim()?'<div class="nh7c502-prayer-answer"><strong>'+esc(L('پیام تیم دعا','Prayer team message','Poruka molitvenog tima'))+'</strong><span>'+esc(r.admin_note)+'</span></div>':'')+(done?'<div class="nh7c502-prayer-answer"><span>'+esc(L('اگر پاسخ دعایتان را دریافت کرده‌اید، می‌توانید آن را به‌عنوان شهادت با کلیسا در میان بگذارید.','If you have received an answer to this prayer, you can share it with the church as a testimony.','Ako ste primili odgovor na ovu molitvu, možete ga podijeliti s crkvom kao svjedočanstvo.'))+'</span><button type="button" class="secondary-btn" data-nh7c502-testimony>'+esc(L('ثبت شهادت','Share testimony','Podijeli svjedočanstvo'))+'</button></div>':'')+'</article>';
  }).join('');
  host.querySelectorAll('[data-nh7c502-testimony]').forEach(b=>b.onclick=()=>C().navigate('testimonies',{},false));
 }
@@ -199,7 +199,7 @@ async function loadOwnPrayersV503(force=false){
   ownPrayerRowsV503=myPrayerCache.rows;renderOwnPrayerRowsV503();return;
  }
  try{
-  const rows=await C().cloudFetch('nh7_prayer_requests_v502?user_id=eq.'+encodeURIComponent(uid)+'&select=id,request_text,status,created_at,updated_at&order=created_at.desc&limit=20',{method:'GET',cache:'no-store'});
+  const rows=await C().cloudFetch('nh7_prayer_requests_v502?user_id=eq.'+encodeURIComponent(uid)+'&select=id,request_text,status,admin_note,prayed_at,completed_at,created_at,updated_at&order=created_at.desc&limit=20',{method:'GET',cache:'no-store'});
   ownPrayerRowsV503=Array.isArray(rows)?rows:[];
   myPrayerCache={uid,at:now,rows:ownPrayerRowsV503};
  }catch(e){
