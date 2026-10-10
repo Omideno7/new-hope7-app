@@ -3,9 +3,6 @@
 -- so this wave adds only fields intentionally safe to expose to authenticated/anon readers.
 -- Generic/private settings are deliberately excluded from this public table.
 
--- ---------------------------------------------------------------------------
--- 0. Fail-closed preflight
--- ---------------------------------------------------------------------------
 do $preflight$
 declare
   v_rows bigint;
@@ -38,9 +35,6 @@ begin
 end
 $preflight$;
 
--- ---------------------------------------------------------------------------
--- 1. Public-safe course metadata only
--- ---------------------------------------------------------------------------
 alter table public.school_courses
   add column cover_url text,
   add column requires_manual_grant boolean not null default false,
@@ -53,14 +47,10 @@ comment on column public.school_courses.requires_manual_grant is
 comment on column public.school_courses.certificate_template_code is
   'Public-safe certificate template identifier; nullable until a course template is configured.';
 
--- Preserve the current Foundation School behavior explicitly.
 update public.school_courses
 set requires_manual_grant=false
 where course_code='foundation_school';
 
--- ---------------------------------------------------------------------------
--- 2. Fail-closed postflight
--- ---------------------------------------------------------------------------
 do $postflight$
 declare
   v_missing bigint;
