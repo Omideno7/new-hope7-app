@@ -1,4 +1,4 @@
-/* New Hope 7 — classic signed audio player v4.8.4
+/* New Hope 7 — classic signed audio player v4.8.6
  *
  * One authoritative player for both School lessons and sermon messages.
  * Keeps the approved classic School-player appearance while retaining:
@@ -23,7 +23,8 @@ const SPEEDS=[0.75,1,1.25,1.5,2];
 const signed=new Map();
 const derived=new Map();
 const localUrls=new Map();
-let audio=null,current=null,currentPanel=null,patchTimer=0,prewarmBusy=false,nowPlayingBar=null,playQueue=[],queueIndex=-1,queueBusy=false,volumeControlSupported=null;
+const failedLocal=new Set();
+let audio=null,current=null,currentPanel=null,patchTimer=0,prewarmBusy=false,nowPlayingBar=null,playQueue=[],queueIndex=-1,queueBusy=false,volumeControlSupported=null,selection=0;
 let listenedPending=0,lastWall=0,lastPosition=0,trackTimer=0,sessionId='';
 
 const $=(s,r=document)=>r.querySelector(s);
@@ -42,7 +43,7 @@ async function accessToken(){
     try{
       const response=await fetch(`${SB}/auth/v1/token?grant_type=refresh_token`,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:session.refresh_token}),cache:'no-store'});
       const text=await response.text();let data={};try{data=text?JSON.parse(text):{}}catch(_){}
-      if(response.ok&&data?.access_token){localStorage.setItem(SESSION_KEY,JSON.stringify(data));session=data}
+      if(response.ok&&data?.access_token){session=Object.assign({},session,data,{user:data.user||session.user});localStorage.setItem(SESSION_KEY,JSON.stringify(session))}
     }catch(_){}
   }
   return String(session?.access_token||'');
@@ -116,11 +117,16 @@ async function edge(payload,retry=0){
   return data;
 }
 async function signedUrl(item,force=false){
-  const id=mediaId(item),cached=signed.get(id);
+  const id=mediaId(item),owner=accountEmail(),key=owner+'|'+id,cached=signed.get(key);
   if(!force&&cached?.url&&cached.expires>Date.now()+60000)return cached.url;
   if(!force&&cached?.promise)return cached.promise;
-  const promise=(async()=>{const data=isSchool(item)?await edge({kind:'audio',lesson_code:lessonCode(item)}):await edge({kind:'sermon',sermon_id:id});const value={url:String(data.signed_url),expires:Date.now()+Math.max(60,Number(data.expires_in||0)-60)*1000,mime:String(data.mime_type||'audio/mpeg')};signed.set(id,value);return value.url})();
-  signed.set(id,{promise});try{return await promise}catch(error){signed.delete(id);throw error}
+  const promise=(async()=>{
+    const data=isSchool(item)?await edge({kind:'audio',lesson_code:lessonCode(item)}):await edge({kind:'sermon',sermon_id:id});
+    if(owner!==accountEmail())throw Object.assign(new Error('session_changed'),{code:'session_changed'});
+    const value={url:String(data.signed_url),expires:Date.now()+Math.max(60,Number(data.expires_in||0)-60)*1000,mime:String(data.mime_type||'audio/mpeg')};
+    signed.set(key,value);return value.url
+  })();
+  signed.set(key,{promise});try{return await promise}catch(error){signed.delete(key);throw error}
 }
 
 function errorText(error){
@@ -373,7 +379,7 @@ function ensureAudio(){
   audio.addEventListener('ended',()=>{if(!current)return;captureListen();saveProgress(current,true);setStatus(current,L('پخش کامل شد ✓','Completed ✓','Završeno ✓'),'ok');syncPanel(current);syncNowPlaying();Promise.resolve(flushTracking(true,true)).finally(()=>{setTimeout(()=>playNextTrack('auto-ended').catch(()=>{}),120)})});
   audio.addEventListener('volumechange',()=>syncNowPlaying());
   audio.addEventListener('ratechange',()=>{syncNowPlaying();syncMediaPosition()});
-  audio.addEventListener('error',async()=>{if(!current)return;const id=mediaId(current),local=localUrls.get(id);if(local&&audio.src===local){await removeLocal(current);setStatus(current,L('نسخه آفلاین ناسازگار بود و پاک شد؛ دوباره دانلود کنید.','The offline copy was invalid and was removed; download it again.','Offline kopija nije valjana i uklonjena je; preuzmite ponovno.'),'error')}else setStatus(current,L('فایل صوتی باز نشد.','Audio could not be opened.','Audio se nije mogao otvoriti.'),'error');syncPanel(current);syncNowPlaying()});
+  audio.addEventListener('error',()=>{if(!current)return;const id=mediaId(current),local=localUrls.get(id);if(local&&audio.src===local){failedLocal.add(id);setStatus(current,L('پخش نسخه دانلودشده متوقف شد؛ فایل پاک نشده است. اگر آنلاین هستید دوباره Play را بزنید تا نسخهٔ شبکه امتحان شود.','Playback of the downloaded copy stopped; the file was not deleted. If you are online, tap Play again to try the network copy.','Reprodukcija preuzete kopije je stala; datoteka nije izbrisana. Ako ste online, ponovno dodirnite Play za mrežnu kopiju.'),'error')}else setStatus(current,L('فایل صوتی باز نشد. دوباره Play را بزنید.','Audio could not be opened. Tap Play to retry.','Audio se nije mogao otvoriti. Dodirnite Play za ponovni pokušaj.'),'error');syncPanel(current);syncNowPlaying()});
   return audio;
 }
 
@@ -393,7 +399,7 @@ async function localUrl(item){
   try{const row=await idbGet(id);if(!row?.blob)return'';const url=URL.createObjectURL(row.blob);localUrls.set(id,url);return url}catch(_){return''}
 }
 async function removeLocal(item){
-  const id=mediaId(item),url=localUrls.get(id);if(url?.startsWith('blob:'))URL.revokeObjectURL(url);localUrls.delete(id);
+  const id=mediaId(item),url=localUrls.get(id);failedLocal.delete(id);if(url?.startsWith('blob:'))URL.revokeObjectURL(url);localUrls.delete(id);
   if(isNative()){const meta=readMeta(item),Filesystem=plugin('Filesystem');if(meta?.path&&Filesystem)try{await Filesystem.deleteFile({directory:'DATA',path:meta.path})}catch(_){} }
   else await idbDelete(id).catch(()=>{});
   removeMeta(item);updateDownloadButtons(item,false);
@@ -402,6 +408,7 @@ async function isDownloaded(item){if(isNative()){const meta=readMeta(item),Files
 
 async function playItem(item,options={}){
   if(!supported(item))return false;
+  const request=++selection;
   if(!options?.fromQueue)capturePlayQueue(item);
   else{
     const idx=playQueue.findIndex(candidate=>mediaId(candidate)===mediaId(item));
@@ -410,11 +417,15 @@ async function playItem(item,options={}){
   showCurrentPanel(item);const player=ensureAudio();
   if(current&&mediaId(current)===mediaId(item)&&player.src){if(player.paused){try{await player.play()}catch(error){setStatus(item,errorText(error),'error')}}else player.pause();syncPanel(item);syncNowPlaying();return true}
   if(current&&mediaId(current)!==mediaId(item)){captureListen();flushTracking(false,true).catch(()=>{})}
-  const local=await localUrl(item);
+  const storedLocal=await localUrl(item);
+  if(request!==selection)return false;
+  const local=(storedLocal&&(!failedLocal.has(mediaId(item))||!navigator.onLine))?storedLocal:'';
   if(!local&&!navigator.onLine){setStatus(item,L('این فایل هنوز برای آفلاین دانلود نشده است.','This file has not been downloaded for offline use.','Datoteka nije preuzeta za offline rad.'),'error');return false}
   try{
     setStatus(item,local?L('در حال بازکردن نسخه دانلودشده…','Opening downloaded copy…','Otvaranje preuzete kopije…'):L('در حال آماده‌سازی فایل صوتی…','Preparing audio…','Priprema audio datoteke…'),'busy');
-    const url=local||await signedUrl(item);current=item;sessionId='classic_'+(crypto.randomUUID?.()||Date.now());listenedPending=0;lastWall=Date.now();lastPosition=0;setupMediaSession(item);syncNowPlaying();
+    const url=local||await signedUrl(item);
+    if(request!==selection)return false;
+    current=item;sessionId='classic_'+(crypto.randomUUID?.()||Date.now());listenedPending=0;lastWall=Date.now();lastPosition=0;setupMediaSession(item);syncNowPlaying();
     player.pause();player.src=url;player.playbackRate=nearestSpeed(Number(localStorage.getItem('nh7_sermon_speed')||1)||1);player.load();syncPanel(item);
     try{await player.play()}catch(error){setStatus(item,L('فایل آماده است؛ دوباره روی Play بزنید.','The file is ready; tap Play again.','Datoteka je spremna; ponovno dodirnite Play.'),'busy')}
   }catch(error){setStatus(item,errorText(error)+(error?.status?` [${error.status}]`:''),'error')}
@@ -442,7 +453,7 @@ async function downloadItem(item){
   if(await isDownloaded(item)){if(confirm(L('این فایل آفلاین پاک شود؟','Remove this offline file?','Ukloniti ovu offline datoteku?')))await removeLocal(item);return}
   if(!navigator.onLine){setStatus(item,L('برای دانلود به اینترنت نیاز است.','Internet is required to download.','Za preuzimanje je potreban internet.'),'error');return}
   updateDownloadButtons(item,false,0);setStatus(item,L('در حال دریافت فایل…','Downloading file…','Preuzimanje datoteke…'),'busy');
-  try{const url=await signedUrl(item);if(isNative())await downloadNative(item,url);else await downloadWeb(item,url);updateDownloadButtons(item,true,100);setStatus(item,L('فایل برای استفاده آفلاین آماده شد ✓','The file is ready offline ✓','Datoteka je spremna offline ✓'),'ok')}
+  try{const url=await signedUrl(item);if(isNative())await downloadNative(item,url);else await downloadWeb(item,url);failedLocal.delete(mediaId(item));updateDownloadButtons(item,true,100);setStatus(item,L('فایل برای استفاده آفلاین آماده شد ✓','The file is ready offline ✓','Datoteka je spremna offline ✓'),'ok')}
   catch(error){updateDownloadButtons(item,false);setStatus(item,errorText(error)+(error?.status?` [${error.status}]`:''),'error')}
 }
 
@@ -502,7 +513,7 @@ const style=document.createElement('style');style.id='nh7-audio-classic-v400-sty
 new MutationObserver(()=>{clearTimeout(patchTimer);patchTimer=setTimeout(()=>{patch();prewarm()},40)}).observe(document.documentElement,{childList:true,subtree:true});
 setTimeout(()=>{patch();prewarm()},250);
 
-window.NH7_AUDIO_CLASSIC_VERSION='4.8.4';
+window.NH7_AUDIO_CLASSIC_VERSION='4.8.6';
 window.NH7_AUDIO_SIGNED_VERSION='4.6.1-401-refresh';
 window.NH7_AUDIO_CLASSIC_V400={patch,prewarm,playItem,playNextTrack,playPreviousTrack,setPlaybackSpeed,setMediaVolume,toggleMediaMute,downloadItem,clearAll,getState:()=>({current,audio,playQueue:[...playQueue],queueIndex,volumeControlSupported}),openCurrentAudio,syncNowPlaying};
 // Compatibility for the Settings cleanup controller introduced in 2.3.9.48.

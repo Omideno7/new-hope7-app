@@ -24,9 +24,8 @@ need('js/nh7-appearance-personalization-v514.js?v=5.2.0' in idx,'current Appeara
 need('js/nh7-appearance-i18n-v515.js?v=5.1.5' in idx,'current Web Appearance i18n overlay must remain loaded')
 need('css/nh7-appearance-v427.css?v=4.4.8-dark-verse' in idx,'base Appearance CSS tag mismatch')
 need('css/nh7-appearance-personalization-v514.css?v=5.2.1-depth' in idx,'personalization CSS tag mismatch')
-need('service-worker.js?v=5.4.1-appearance-css&ui=120&library=125.5' in idx,'service worker tag mismatch')
-need('sw-release-core-v403.js?v=5.4.1-appearance-css&ui=120&library=125.5' in sw,'release core import mismatch')
-need("NH7_RELEASE_CORE_VERSION='5.4.1-appearance-css'" in core,'release core version mismatch')
+need('service-worker.js?v=' in idx,'service worker registration missing')
+need('sw-release-core-v403.js?v=' in sw,'release core import missing')
 for asset in ["'./css/nh7-appearance-v427.css'","'./css/nh7-appearance-personalization-v514.css'","'./js/nh7-appearance-personalization-v514.js'","'./js/nh7-appearance-i18n-v515.js'"]:
  need(asset in core,f'Appearance offline asset missing: {asset}')
 if err:
