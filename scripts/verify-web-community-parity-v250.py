@@ -26,9 +26,9 @@ except Exception as e:
     guide={}
 
 # Assets/wiring.
-need('js/nh7-community-v502.js?v=5.0.6-web-parity' in index,'index does not load Community runtime')
+need('js/nh7-community-v502.js?v=5.0.7-prayer-reply' in index,'index does not load Community runtime')
 need(index.find('js/nh7-community-v502.js') < index.find('js/app.js'),'Community runtime must be declared before app.js')
-need('community=506' in index,'app cache tag not rotated for Community')
+need('community=507' in index,'app cache tag not rotated for Community')
 release_match=re.search(r"NH7_RELEASE_CORE_VERSION='([^']+)'",sw)
 need(bool(release_match),'release core version declaration missing')
 release_version=release_match.group(1) if release_match else ''
