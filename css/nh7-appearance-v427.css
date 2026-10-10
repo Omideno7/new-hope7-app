@@ -60,6 +60,7 @@ html[data-nh7-theme="dark"] #view .list-btn,
 html[data-nh7-theme="dark"] #view .link-card,
 html[data-nh7-theme="dark"] #view .accordion-panel,
 html[data-nh7-theme="dark"] #view .inline-reading,
+html[data-nh7-theme="dark"] #view .inline-verse,
 html[data-nh7-theme="dark"] #view .verse-list-item,
 html[data-nh7-theme="dark"] #view .saved-verse-card,
 html[data-nh7-theme="dark"] #view .nh7-v252-settings-box,
@@ -208,3 +209,11 @@ html[data-nh7-theme="dark"] .nh7-theme-quick button.is-selected{background:linea
 
 .nh7-custom-color{width:100%!important;height:44px!important;min-height:44px!important;padding:4px!important;margin-top:8px;border:1px solid var(--line)!important;border-radius:12px!important;background:var(--card)!important}
 html[data-nh7-theme="dark"] .nh7-custom-color{background:#0f1d2e!important;border-color:var(--nh7-dark-line)!important}
+
+
+/* v428: readable revealed verse copy in base dark mode. */
+html[data-nh7-theme="dark"] #view .inline-verse,
+html[data-nh7-theme="dark"] #view .inline-verse p,
+html[data-nh7-theme="dark"] #view .inline-verse strong{
+  color:var(--nh7-dark-ink,#f5f9ff)!important;
+}
