@@ -301,6 +301,9 @@ Object.assign(T.hr,{soulWinning:'Osvajanje duša'});
 Object.assign(T.en,{schoolExistingLogin:'Sign in to school',schoolNewRegistration:'New registration',schoolLoginHelp:'Already registered? Sign in with the same email and password on any device.',sermonNoteButton:'Notes'});
 Object.assign(T.fa,{schoolExistingLogin:'ورود به مدرسه',schoolNewRegistration:'ثبت‌نام جدید',schoolLoginHelp:'اگر قبلاً ثبت‌نام کرده‌اید، در هر دستگاه با همان ایمیل و رمز عبور وارد شوید.',sermonNoteButton:'یادداشت'});
 Object.assign(T.hr,{schoolExistingLogin:'Prijava u školu',schoolNewRegistration:'Nova registracija',schoolLoginHelp:'Ako ste se već registrirali, prijavite se istim emailom i lozinkom na bilo kojem uređaju.',sermonNoteButton:'Bilješke'});
+Object.assign(T.en,{testimonies:'Testimonies',prayerRequest:'Prayer Request',profile:'My Profile'});
+Object.assign(T.fa,{testimonies:'شهادت‌ها',prayerRequest:'درخواست دعا',profile:'پروفایل من'});
+Object.assign(T.hr,{testimonies:'Svjedočanstva',prayerRequest:'Molitveni zahtjev',profile:'Moj profil'});
 
 // UI-only copy: keep route, persistence and transport behavior unchanged.
 Object.assign(T.fa,{"verseActions": "ابزارهای آیه", "clearHighlight": "پاک کردن هایلایت", "document": "سند", "exam": "امتحان", "enterAccessCode": "کد دسترسی را وارد کنید", "mainNavigation": "ناوبری اصلی", "loading": "در حال بارگذاری…", "playPause": "پخش / توقف", "playbackPosition": "موقعیت پخش"});
@@ -466,6 +469,49 @@ async function cloudFetch(path, options={}){
 async function cloudRpc(name, payload={}){
   return cloudFetch('rpc/'+name, {method:'POST', body:JSON.stringify(payload)});
 }
+
+// Community 2.5 web parity bridge. Keep this limited to publishable-key/session-scoped APIs.
+// Existing local profile-photo v563/v564 remains authoritative for the current top bar;
+// cloud Profile is exposed as its own route to avoid changing existing users' header state.
+window.NH7_COMMUNITY_CTX_V502={
+  lang:()=>state.lang,
+  html,
+  card,
+  view:()=>view,
+  navigate,
+  isLoggedIn:isAccountLoggedIn,
+  session:authSession,
+  email:authEmail,
+  profileName:()=>getKnownUserProfile().name||'',
+  cloudFetch,
+  cloudRpc,
+  publicStorageUrl:(bucket,path)=>SUPABASE_CONFIG.url+'/storage/v1/object/public/'+encodeURIComponent(bucket)+'/'+String(path||'').split('/').map(encodeURIComponent).join('/'),
+  storageUpload:async(bucket,path,body,contentType='application/octet-stream',upsert=false)=>{
+    const makeHeaders=()=>({apikey:SUPABASE_CONFIG.key,Authorization:'Bearer '+(authSession()?.access_token||SUPABASE_CONFIG.key),'Content-Type':contentType,'x-upsert':upsert?'true':'false'});
+    const url=SUPABASE_CONFIG.url+'/storage/v1/object/'+encodeURIComponent(bucket)+'/'+String(path||'').split('/').map(encodeURIComponent).join('/');
+    let res=await fetch(url,{method:'POST',headers:makeHeaders(),body});
+    if(!res.ok&&(res.status===401||res.status===403)&&await refreshUserSession())res=await fetch(url,{method:'POST',headers:makeHeaders(),body});
+    if(!res.ok)throw new Error(await res.text().catch(()=>res.statusText));
+    return res.json().catch(()=>({}));
+  },
+  storageRemove:async(bucket,paths)=>{
+    const list=(Array.isArray(paths)?paths:[paths]).filter(Boolean);if(!list.length)return{};
+    const makeHeaders=()=>({apikey:SUPABASE_CONFIG.key,Authorization:'Bearer '+(authSession()?.access_token||SUPABASE_CONFIG.key),'Content-Type':'application/json'});
+    const url=SUPABASE_CONFIG.url+'/storage/v1/object/'+encodeURIComponent(bucket);
+    let res=await fetch(url,{method:'DELETE',headers:makeHeaders(),body:JSON.stringify({prefixes:list})});
+    if(!res.ok&&(res.status===401||res.status===403)&&await refreshUserSession())res=await fetch(url,{method:'DELETE',headers:makeHeaders(),body:JSON.stringify({prefixes:list})});
+    if(!res.ok)throw new Error(await res.text().catch(()=>res.statusText));
+    return res.json().catch(()=>({}));
+  },
+  privateStorageObjectUrl:async(bucket,path)=>{
+    const makeHeaders=()=>({apikey:SUPABASE_CONFIG.key,Authorization:'Bearer '+(authSession()?.access_token||SUPABASE_CONFIG.key)});
+    const url=SUPABASE_CONFIG.url+'/storage/v1/object/authenticated/'+encodeURIComponent(bucket)+'/'+String(path||'').split('/').map(encodeURIComponent).join('/');
+    let res=await fetch(url,{headers:makeHeaders()});
+    if(!res.ok&&(res.status===401||res.status===403)&&await refreshUserSession())res=await fetch(url,{headers:makeHeaders()});
+    if(!res.ok)throw new Error(await res.text().catch(()=>res.statusText));
+    return URL.createObjectURL(await res.blob());
+  }
+};
 
 const NH7_FAST_CLOUD_TIMEOUT_V470=5000;
 function nh7WithTimeoutV470(promise,timeoutMs=NH7_FAST_CLOUD_TIMEOUT_V470){
@@ -1269,6 +1315,7 @@ async function showAmen(){
 let nh7NavigationEpochV456=0;
 async function render(route, params={}, preserve=false){
   schoolDraftsV468.unmount();
+  try{window.NH7CommunityV502?.dispose?.()}catch(e){console.warn('[NH7 Community dispose]',e)}
   const navigationEpochV456=++nh7NavigationEpochV456;
   view.innerHTML='<section class="card"><p>...</p></section>';
   try{
@@ -1278,6 +1325,9 @@ async function render(route, params={}, preserve=false){
     else if(route==='plans') await plans(params);
     else if(route==='school') await school(params);
     else if(route==='more') await more();
+    else if(route==='testimonies') { if(!window.NH7CommunityV502?.renderTestimonies)throw new Error('Community module is unavailable.'); await window.NH7CommunityV502.renderTestimonies(); }
+    else if(route==='prayerRequest') { if(!window.NH7CommunityV502?.renderPrayer)throw new Error('Community module is unavailable.'); await window.NH7CommunityV502.renderPrayer(); }
+    else if(route==='profile') await account();
     else if(route==='soulWinning') soulWinningV472.render(params);
     else if(route==='library') await library(params);
     else if(route==='audio') await audio(params);
@@ -2266,7 +2316,7 @@ async function library(params={}){
 }
 
 async function more(){
-  const destinations=[['audio','🎧'],['meetings','☎'],['salvation','✝'],['soulWinning','🌾'],['qna','❓'],['account','👤'],['about','ℹ'],['settings','⚙']];
+  const destinations=[['audio','🎧'],['testimonies','✨'],['prayerRequest','🙏'],['profile','👤'],['meetings','☎'],['salvation','✝'],['soulWinning','🌾'],['qna','❓'],['account','🔐'],['about','ℹ'],['settings','⚙']];
   view.innerHTML=`<div class="grid" data-more-navigation456>${destinations.map(([route,icon])=>tile(route,icon,tr(route))).join('')}</div>`;
   mountMoreReviewV469(view.querySelector('[data-more-navigation456]'),{language:state.lang});
 }
@@ -2390,6 +2440,7 @@ async function qna(opts={}){
 async function account(){
   const session=authSession();
   if(isAccountLoggedIn()){
+    if(window.NH7CommunityV502?.resumePending?.())return;
     const profile=getKnownUserProfile(); const email=authEmail()||profile.email||'';
     view.innerHTML=card(tr('account'), `<h3>${tr('myAccess')}</h3><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||session?.user?.user_metadata?.full_name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(email)}</p></div><button class="danger-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button>`);
     $('#logoutAccountBtn')?.addEventListener('click',logoutAccount); return;
@@ -2420,6 +2471,7 @@ async function signInAccount(){
     await restoreAccountCloudData(true);
     invalidateSchoolSnapshot(email);
     await getSchoolSnapshot(email,true);
+    if(window.NH7CommunityV502?.resumePending?.())return;
     navigate('school',{},true);
   }catch(e){
     console.warn('Account sign-in failed',e);

@@ -51,7 +51,7 @@
     window.NH7_CANONICAL_SETTINGS = true;
     window.NH7_VERSION = '2.3.9.50';
     window.NH7_BASE_PATH = new URL('.', window.location.href).pathname;
-    window.NH7_SERVICE_WORKER = window.NH7_BASE_PATH + 'service-worker.js?v=4.8.14-sermon-cover535&ui=115';
+    window.NH7_SERVICE_WORKER = window.NH7_BASE_PATH + 'service-worker.js?v=5.3.6-web-community-parity&ui=116&library=125.5';
     window.NH7_ONESIGNAL_WORKER = window.NH7_BASE_PATH + 'push/OneSignalSDKWorker.js';
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register(window.NH7_SERVICE_WORKER, { scope: window.NH7_BASE_PATH, updateViaCache: 'none' }).catch(console.warn);
@@ -162,7 +162,8 @@
   <script src="js/nh7-sermon-list-detail-v445.js?v=4.4.6" defer></script>
   <script src="js/nh7-audio-library-v500.js?v=5.3.5-cover-sync&ui=115" defer></script>
   <script src="js/nh7-note-text-v501.js?v=5.0.1"></script>
-  <script src="js/app.js?v=4.8.16-inbox&ui=115&library=125.5" type="module"></script>
+  <script src="js/nh7-community-v502.js?v=5.0.6-web-parity" defer></script>
+  <script src="js/app.js?v=4.8.16-inbox&ui=116&library=125.5&community=506" type="module"></script>
   <script src="js/nh7-settings-controller-v403.js?v=4.6.4"></script>
   <script src="js/nh7-settings-account-v252.js?v=2.5.2&ui=115" defer></script>
   <script src="js/nh7-delete-account-v253.js?v=2.5.4" defer></script>

@@ -31,6 +31,12 @@ jobs:
           set -euo pipefail
           python3 scripts/verify-supabase-migration-parity.py
 
+      - name: Verify Web Community parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/verify-web-community-parity-v250.py
+
       - name: Validate current runtime JavaScript
         shell: bash
         run: |
@@ -51,6 +57,7 @@ jobs:
             js/nh7-audio-route-stability-v423.js
             js/nh7-audio-classic-v484.js
             js/nh7-audio-miniplayer-v487.js
+            js/nh7-community-v502.js
             js/nh7-settings-controller-v403.js
             js/nh7-delete-account-v253.js
             js/nh7-auto-update-v335.js
@@ -114,7 +121,7 @@ jobs:
           if(!releaseCore.includes('./js/nh7-registration-repeat-guard-v402.js'))fail('Registration repeat guard not cached');
 
           if(!worker.includes('sw-navigation-fresh-v403.js?v=4.0.3'))fail('Fresh navigation worker missing');
-          if(!worker.includes('sw-release-core-v403.js?v=5.3.5-sermon-cover-sync'))fail('Release core v5.3.5 missing');
+          if(!worker.includes('sw-release-core-v403.js?v=5.3.6-web-community-parity'))fail('Release core v5.3.6 missing');
           if(worker.indexOf('sw-navigation-fresh-v403.js')>worker.indexOf('sw-offline-v329.js'))fail('Fresh navigation worker must load before offline worker');
 
           for(const required of [
@@ -150,7 +157,7 @@ jobs:
           const missingFromRelease=currentScripts.filter(p=>!paths.includes(p));
           if(missingFromRelease.length)fail('Current app scripts not guaranteed offline: '+missingFromRelease.join(', '));
 
-          if(!releaseCore.includes("NH7_RELEASE_CORE_VERSION='5.3.5-sermon-cover-sync'"))fail('Release core version mismatch');
+          if(!releaseCore.includes("NH7_RELEASE_CORE_VERSION='5.3.6-web-community-parity'"))fail('Release core version mismatch');
           if(!releaseCore.includes('./js/nh7-audio-classic-v484.js'))fail('Audio engine not cached');
           if(!releaseCore.includes('./js/nh7-audio-miniplayer-v487.js'))fail('Mini-player not cached');
           if(!index.includes('NH7_ONESIGNAL_WORKER')||!index.includes('push/OneSignalSDKWorker.js'))fail('OneSignal worker wiring missing');
