@@ -52,6 +52,7 @@ function homeMarkup(p,photo){return `${avatarHtml(photo,p.name)}<span class="nh7
 function syncHeader(){
   const top=document.querySelector('.topbar'),inbox=document.getElementById('inboxBtn');if(!top||!inbox)return false;
   let slot=document.getElementById('nh7TopProfile564');if(!slot){slot=document.createElement('span');slot.id='nh7TopProfile564';slot.setAttribute('aria-label',L('عکس پروفایل','Profile photo','Profilna fotografija'));inbox.insertAdjacentElement('beforebegin',slot)}
+  slot.setAttribute('aria-label',L('عکس پروفایل','Profile photo','Profilna fotografija'));
   const photo=readPhoto(),sig=photoSig(photo);if(slot.dataset.sig!==sig){slot.dataset.sig=sig;slot.innerHTML=photo?`<img src="${esc(photo)}" alt="">`:''}
   slot.classList.toggle('is-visible',!!photo);return true;
 }
