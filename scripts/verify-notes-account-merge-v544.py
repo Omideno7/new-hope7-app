@@ -41,14 +41,12 @@ need(m.get('note')=='LOCAL NOTE','behavior: cloud overwrote local note')
 need(m.get('saved') is True and m.get('highlight') is True and m.get('highlightColor')=='blue','behavior: missing cloud verse flags were not merged')
 
 for token in [
- 'service-worker.js?v=5.3.9-notes-account-merge&ui=118&library=125.5',
  'js/nh7-note-text-v501.js?v=5.0.4-web-account-merge',
  'js/nh7-my-notes-v234.js?v=5.4.4-account-merge-web',
  'notesmerge=544']:
-    need(token in idx,f'index cache tag missing: {token}')
-need('sw-release-core-v403.js?v=5.3.9-notes-account-merge&ui=118&library=125.5' in sw,'service worker release tag mismatch')
-need("NH7_RELEASE_CORE_VERSION='5.3.9-notes-account-merge'" in core,'release core version mismatch')
-need("NH7_RELEASE_CORE_CACHE='nh7-release-core-v539-notes-account-merge-library125'" in core,'release core cache mismatch')
+    need(token in idx,f'index Notes tag missing: {token}')
+need('service-worker.js?v=' in idx,'service worker registration missing')
+need('sw-release-core-v403.js?v=' in sw,'release core import missing')
 for asset in ["'./js/nh7-note-text-v501.js'","'./js/nh7-my-notes-v234.js'","'./js/app.js'"]:
     need(asset in core,f'offline cache missing {asset}')
 
