@@ -31,7 +31,9 @@ def forbid(path, needle, label=None):
 index = "index.html"
 
 # Release runtime signatures.
-require(index, 'js/nh7-audio-classic-v484.js?v=4.8.5-no-telemetry', "audio no-telemetry runtime")
+require(index, 'js/nh7-audio-classic-v484.js?v=', "audio classic runtime")
+require('js/nh7-audio-classic-v484.js', 'function scheduleTracking(){return false}', "retired audio tracking scheduler remains disabled")
+require('js/nh7-audio-classic-v484.js', 'School listening telemetry retired. Playback and local resume remain unchanged.', "retired audio tracking flush remains disabled")
 require(index, 'js/nh7-sermon-social-v443.js?v=4.4.8-batch', "batched sermon social runtime")
 require(index, 'js/nh7-inbox-badge-sync-v418.js?v=4.1.10-snapshot', "Inbox snapshot runtime")
 require(index, 'js/nh7-school-path-v351.js?v=4.6.7-io', "School Path low-I/O runtime")
