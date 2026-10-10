@@ -212,8 +212,15 @@
       "sql_md5": "92a8dd3c1c137ebc18c6e33e2f6ac27c",
       "sql_chars": 4318,
       "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261010024423",
+      "name": "school_course_code_bridge_v200",
+      "sql_md5": "049a75a016e787881dd74d35ed50e8b0",
+      "sql_chars": 6993,
+      "status": "present_exact_recovered"
     }
   ],
   "parity": "exact_raw_md5",
-  "parity_verified_at": "2026-10-09"
+  "parity_verified_at": "2026-10-10"
 }
