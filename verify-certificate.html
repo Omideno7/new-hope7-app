@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b5faa">
+  <title>New Hope 7 Certificate Verification</title>
+  <link rel="icon" href="assets/logo.png">
+  <style>
+    :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#10233e;background:#edf4f7}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(180deg,#edf4f7,#f8fbfd);display:flex;align-items:center;justify-content:center;padding:22px}
+    .card{width:min(680px,100%);background:#fff;border:1px solid #d7e4ec;border-radius:26px;box-shadow:0 18px 55px rgba(16,35,62,.12);overflow:hidden}
+    .head{padding:24px;text-align:center;background:linear-gradient(135deg,#073b67,#0b5faa);color:#fff}.head img{width:64px;height:64px;object-fit:contain;background:#fff;border-radius:18px;padding:7px}.head h1{font-size:1.35rem;margin:12px 0 4px}.head p{margin:0;opacity:.86;font-size:.92rem}
+    .body{padding:22px}.status{padding:14px 16px;border-radius:16px;text-align:center;font-weight:800;margin-bottom:18px}.valid{background:#dcfce7;color:#166534}.revoked{background:#fee2e2;color:#991b1b}.notfound{background:#f1f5f9;color:#475569}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.item{background:#f7fafc;border:1px solid #e2e8f0;border-radius:14px;padding:12px;min-width:0}.item b{display:block;font-size:.75rem;color:#64748b;margin-bottom:5px}.item span{word-break:break-word;font-weight:700}
+    .privacy{margin:18px 0 0;padding:12px 14px;border-radius:14px;background:#f8fafc;color:#64748b;font-size:.82rem;line-height:1.55}.actions{text-align:center;margin-top:18px}.actions a{display:inline-block;text-decoration:none;background:#0b5faa;color:#fff;border-radius:14px;padding:11px 18px;font-weight:800}
+    @media(max-width:560px){.grid{grid-template-columns:1fr}.head{padding:20px}.body{padding:16px}}
+  </style>
+</head>
+<body>
+<main class="card">
+  <header class="head"><img src="assets/logo.png" alt="New Hope 7"><h1 id="title">Certificate Verification</h1><p>New Hope 7 Church</p></header>
+  <section class="body" id="app"><div class="status notfound">Checking authenticity…</div></section>
+</main>
+<script>
+(()=>{'use strict';
+const S='https://gpzcwffxnddhaeaogdyo.supabase.co';
+const K='sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37';
+const token=new URL(location.href).searchParams.get('token')||'';
+const app=document.getElementById('app');
+const lang=(()=>{const q=(new URL(location.href).searchParams.get('lang')||'').toLowerCase();if(['fa','en','hr'].includes(q))return q;const n=(navigator.language||'en').toLowerCase();return n.startsWith('fa')?'fa':n.startsWith('hr')?'hr':'en'})();
+const T=(fa,en,hr)=>lang==='fa'?fa:lang==='hr'?hr:en;
+const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+document.documentElement.lang=lang;document.documentElement.dir=lang==='fa'?'rtl':'ltr';document.getElementById('title').textContent=T('اعتبارسنجی مدرک','Certificate Verification','Provjera potvrde');
+const typeLabel=t=>({school:T('پایان دوره مدرسه','School completion','Završetak škole'),water_baptism:T('تعمید در آب','Water baptism','Krštenje u vodi'),ministry_service:T('خدمت','Ministry service','Služba'),calling:T('خواندگی','Calling','Poziv'),participation:T('مشارکت','Participation','Sudjelovanje')}[String(t||'').toLowerCase()]||String(t||T('مدرک','Certificate','Potvrda')).replaceAll('_',' '));
+async function verify(){const r=await fetch(`${S}/rest/v1/rpc/nh7_public_certificate_verify_v127`,{method:'POST',headers:{apikey:K,Authorization:`Bearer ${K}`,'Content-Type':'application/json'},body:JSON.stringify({p_token:token}),cache:'no-store'});const text=await r.text();if(!r.ok)throw new Error(text||r.statusText);return JSON.parse(text)}
+function render(d){
+  if(!d?.found){app.innerHTML=`<div class="status notfound">${E(T('مدرکی با این شناسه پیدا نشد.','No certificate was found for this verification token.','Nije pronađena potvrda za ovaj token.'))}</div><p class="privacy">${E(T('این صفحه فقط اصالت مدرک را بررسی می‌کند و اطلاعات شخصی گیرنده را نمایش نمی‌دهد.','This page verifies document authenticity only and does not expose recipient personal information.','Ova stranica provjerava samo autentičnost i ne prikazuje osobne podatke primatelja.'))}</p>`;return}
+  const valid=!!d.verified&&d.verification_status==='valid';
+  app.innerHTML=`<div class="status ${valid?'valid':'revoked'}">${E(valid?T('✓ این مدرک معتبر است','✓ This certificate is valid','✓ Ova potvrda je valjana'):T('این مدرک معتبر نیست یا لغو شده است','This certificate is not valid or has been revoked','Ova potvrda nije valjana ili je poništena'))}</div><div class="grid"><div class="item"><b>${E(T('صادرکننده','Issuer','Izdavatelj'))}</b><span>${E(d.issuer||'New Hope 7')}</span></div><div class="item"><b>${E(T('شماره مدرک','Certificate number','Broj potvrde'))}</b><span>${E(d.certificate_number||'-')}</span></div><div class="item"><b>${E(T('نوع مدرک','Certificate type','Vrsta potvrde'))}</b><span>${E(typeLabel(d.certificate_type))}</span></div><div class="item"><b>${E(T('تاریخ صدور','Issue date','Datum izdavanja'))}</b><span>${E(d.issue_date||'-')}</span></div><div class="item"><b>${E(T('وضعیت','Status','Status'))}</b><span>${E(d.verification_status||'-')}</span></div><div class="item"><b>${E(T('نسخه سند','Document version','Verzija dokumenta'))}</b><span>${E(d.document_version??1)}</span></div></div><p class="privacy">${E(T('برای حفاظت از حریم خصوصی، این صفحه نام، ایمیل، عکس، نمره، کد دانشجو یا متن خصوصی مدرک را نمایش نمی‌دهد.','For privacy, this verification page does not display the recipient name, email, photo, score, Student Code, or private certificate text.','Radi privatnosti ova stranica ne prikazuje ime, e-mail, fotografiju, ocjenu, studentski kod ni privatni tekst potvrde.'))}</p><div class="actions"><a href="index.html">${E(T('بازگشت به امیدنو۷','New Hope 7 Home','New Hope 7 početna'))}</a></div>`;
+}
+(async()=>{if(!/^[0-9a-f-]{36}$/i.test(token)){render({found:false});return}try{render(await verify())}catch(e){console.error(e);app.innerHTML=`<div class="status notfound">${E(T('اعتبارسنجی در دسترس نیست. دوباره تلاش کنید.','Verification is temporarily unavailable. Please try again.','Provjera trenutačno nije dostupna. Pokušajte ponovno.'))}</div>`}})();
+})();
+</script>
+</body>
+</html>
