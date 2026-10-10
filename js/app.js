@@ -616,7 +616,20 @@ async function saveProgressCloud(key,value){
     payload:{user_email:email,progress_key:accountProgressKey(key),value,language:state.lang,updated_at:new Date().toISOString()}
   });
 }
+function nh7UnwrapCloudValueV544(value){
+  let current=value;
+  for(let i=0;i<4;i++){
+    if(current&&typeof current==='object'&&!Array.isArray(current)&&Object.prototype.hasOwnProperty.call(current,'value')){current=current.value;continue}
+    if(typeof current!=='string')break;
+    const raw=current.trim();if(!(raw.startsWith('{')&&raw.endsWith('}')))break;
+    let parsed=null;try{parsed=JSON.parse(raw)}catch(_){break}
+    if(parsed&&typeof parsed==='object'&&!Array.isArray(parsed)&&Object.prototype.hasOwnProperty.call(parsed,'value')){current=parsed.value;continue}
+    break;
+  }
+  return current;
+}
 function restoreAccountProgressValue(key,value){
+  value=nh7UnwrapCloudValueV544(value);
   if(key==='nh7_gratitude_completed'&&value&&Array.isArray(value.completed)){
     localStorage.setItem(key,JSON.stringify(value.completed));
     return;
@@ -625,34 +638,64 @@ function restoreAccountProgressValue(key,value){
     localStorage.setItem(key,String(value.__raw??''));
     return;
   }
-  localStorage.setItem(key,JSON.stringify(value??{}));
+  localStorage.setItem(key,typeof value==='string'?value:JSON.stringify(value??{}));
+}
+function nh7MergeBibleStateV544(key,cloudValue){
+  const incoming=nh7UnwrapCloudValueV544(cloudValue);
+  if(!incoming||typeof incoming!=='object'||Array.isArray(incoming)){if(localStorage.getItem(key)===null)restoreAccountProgressValue(key,incoming);return}
+  let local={};try{local=JSON.parse(localStorage.getItem(key)||'{}')}catch(_){local={}}
+  if(!local||typeof local!=='object'||Array.isArray(local))local={};
+  const merged=Object.assign({},incoming,local);
+  if(!String(local.note||'').trim()&&String(incoming.note||'').trim())merged.note=incoming.note;
+  if(local.saved!==true&&incoming.saved===true)merged.saved=true;
+  if(!local.highlight&&incoming.highlight){merged.highlight=true;merged.highlightColor=incoming.highlightColor||merged.highlightColor||'yellow'}
+  localStorage.setItem(key,JSON.stringify(merged));
 }
 async function restoreAccountCloudData(force=false){
   const email=accountCloudEmail();
   if(!email||!navigator.onLine)return false;
-  const marker='nh7_account_cloud_restore_'+email;
+  const marker='nh7_account_cloud_restore_v544_'+email;
   if(!force&&sessionStorage.getItem(marker)==='1')return true;
   try{
-    const [notes,progress,verses]=await Promise.all([
+    const base=await Promise.all([
       cloudFetch('nh7_account_notes?select=note_key,content,updated_at&user_email=eq.'+encodeURIComponent(email),{method:'GET'}),
       cloudFetch('nh7_account_progress?select=progress_key,value,updated_at&user_email=eq.'+encodeURIComponent(email),{method:'GET'}),
       cloudFetch('nh7_account_saved_verses?select=ref&user_email=eq.'+encodeURIComponent(email),{method:'GET'})
     ]);
+    const notes=base[0],progress=base[1],verses=base[2];
+    let verseMarks=[];
+    try{verseMarks=await cloudFetch('nh7_account_verse_marks_v230?select=verse_key,verse_ref,saved,highlight_color,note,updated_at&user_email=eq.'+encodeURIComponent(email),{method:'GET'})}catch(e){console.warn('Verse marks restore unavailable',e)}
     (Array.isArray(notes)?notes:[]).forEach(row=>{
       const key='nh7_'+String(row.note_key||'');
-      if(row.content!=null)localStorage.setItem(key,String(row.content));
+      const incoming=window.NH7NoteTextV501?.normalize?.(nh7UnwrapCloudValueV544(row.content))??String(nh7UnwrapCloudValueV544(row.content)??'');
+      const localRaw=localStorage.getItem(key);
+      const local=window.NH7NoteTextV501?.normalize?.(localRaw||'')??String(localRaw||'');
+      // Cloud restore is fill-only for note text. Existing local text, including a
+      // repairable legacy wrapper, always wins so upgrades cannot erase user edits.
+      if(incoming&&!String(local).trim())localStorage.setItem(key,String(incoming));
     });
     (Array.isArray(progress)?progress:[]).forEach(row=>{
-      const key=accountProgressKey(row.progress_key);
-      if(key)restoreAccountProgressValue(key,row.value);
+      const key=accountProgressKey(row.progress_key);if(!key)return;
+      if(key.startsWith('nh7_bible_state_'))nh7MergeBibleStateV544(key,row.value);
+      else if(localStorage.getItem(key)===null)restoreAccountProgressValue(key,row.value);
     });
-    const cloudRefs=(Array.isArray(verses)?verses:[]).map(x=>String(x.ref||'')).filter(Boolean);
-    if(cloudRefs.length){
+    const refs=new Set((Array.isArray(verses)?verses:[]).map(x=>String(x.ref||'')).filter(Boolean));
+    (Array.isArray(verseMarks)?verseMarks:[]).forEach(row=>{
+      const key=accountProgressKey(row.verse_key);if(!key||!key.startsWith('nh7_bible_state_'))return;
+      let local={};try{local=JSON.parse(localStorage.getItem(key)||'{}')}catch(_){local={}}
+      if(!local||typeof local!=='object'||Array.isArray(local))local={};
+      if(!String(local.note||'').trim()&&String(row.note||'').trim())local.note=String(row.note);
+      if(row.saved){local.saved=true;if(row.verse_ref)refs.add(String(row.verse_ref))}
+      if(row.highlight_color&&!local.highlight){local.highlight=true;local.highlightColor=String(row.highlight_color)}
+      localStorage.setItem(key,JSON.stringify(local));
+    });
+    if(refs.size){
       let local=[];try{local=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]')}catch(e){}
-      localStorage.setItem('nh7_bookmarks',JSON.stringify([...new Set([...(Array.isArray(local)?local:[]),...cloudRefs])]));
+      localStorage.setItem('nh7_bookmarks',JSON.stringify([...new Set([...(Array.isArray(local)?local:[]),...refs])]));
     }
     sessionStorage.setItem(marker,'1');
     localStorage.setItem('nh7_account_cloud_restored_at',new Date().toISOString());
+    try{window.NH7NoteTextV501?.repairKnownNotes?.();window.NH7MyNotesV234?.renderNotesPanel?.();window.dispatchEvent(new CustomEvent('nh7-account-data-restored-v544'))}catch(_){}
     return true;
   }catch(e){
     console.warn('Account cloud restore failed',e);
@@ -2746,7 +2789,7 @@ function bindDynamic(){
   $$('[data-note-verse],[data-note-marker]').forEach(el=>el.onclick=()=>{const id=el.dataset.noteVerse||el.dataset.noteMarker,box=$('#'+CSS.escape(id));if(box){$$('.verse-note-box').forEach(x=>{if(x!==box)x.classList.add('hidden')});box.classList.toggle('hidden')}});
   $$('[data-close-verse-note]').forEach(el=>el.onclick=()=>el.closest('.verse-note-box')?.classList.add('hidden'));
   // querySelectorAll ($$) keeps routes with zero verse-note controls safe in Safari.
-  $$('[data-save-verse-note]').forEach(el=>el.onclick=()=>{const key=el.dataset.saveVerseNote,input=$(`[data-note-input="${CSS.escape(key)}"]`),verse=el.closest('.reader-verse');let st={};try{st=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}st.note=(window.NH7NoteTextV501?.normalize?.(input?.value||'')??(input?.value||'')).slice(0,1000);localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);let marker=verse?.querySelector('.verse-note-marker');if(st.note&&!marker&&verse){marker=document.createElement('button');marker.type='button';marker.className='verse-note-marker';marker.dataset.noteMarker=el.closest('.verse-note-box')?.id||'';marker.textContent='📓';marker.title=tr('noteAvailable');marker.onclick=()=>el.closest('.verse-note-box')?.classList.toggle('hidden');verse.querySelector('.verse-text')?.after(marker)}else if(!st.note&&marker)marker.remove();el.textContent=tr('saved');setTimeout(()=>el.closest('.verse-note-box')?.classList.add('hidden'),350)});
+  $$('[data-save-verse-note]').forEach(el=>el.onclick=()=>{const key=el.dataset.saveVerseNote,input=$(`[data-note-input="${CSS.escape(key)}"]`),verse=el.closest('.reader-verse');let st={};try{st=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}st.note=(window.NH7NoteTextV501?.normalize?.(input?.value||'')??(input?.value||'')).slice(0,1000);localStorage.setItem(key,JSON.stringify(st));saveProgressCloud(key,st).catch(console.warn);const ref=verse?.querySelector('[data-bookmark]')?.dataset.bookmark||verse?.querySelector('[data-share-verse]')?.dataset.shareVerse||'';const verseText=verse?.querySelector('.verse-text')?.textContent||'';window.NH7BibleBatchV230?.syncPayload?.({batch_id:crypto.randomUUID?.()||String(Date.now()),language:state.lang,items:[{verse_key:key,verse_ref:ref,verse_text:verseText,saved:!!st.saved,highlight_color:st.highlight?String(st.highlightColor||'yellow'):'',note:String(st.note||'')}]});let marker=verse?.querySelector('.verse-note-marker');if(st.note&&!marker&&verse){marker=document.createElement('button');marker.type='button';marker.className='verse-note-marker';marker.dataset.noteMarker=el.closest('.verse-note-box')?.id||'';marker.textContent='📓';marker.title=tr('noteAvailable');marker.onclick=()=>el.closest('.verse-note-box')?.classList.toggle('hidden');verse.querySelector('.verse-text')?.after(marker)}else if(!st.note&&marker)marker.remove();el.textContent=tr('saved');setTimeout(()=>el.closest('.verse-note-box')?.classList.add('hidden'),350)});
   $$('[data-share-verse]').forEach(el=>el.onclick=async()=>{ const txt=`${localizeRef(el.dataset.shareVerse)} — ${el.dataset.shareText||''}`; try{ if(navigator.share) await navigator.share({text:txt}); else { await navigator.clipboard.writeText(txt); alert(tr('saved')); } window.NH7BibleBatchV230?.clearSelection?.(); }catch(e){} });
   $$('[data-complete-daily]').forEach(el=>el.onclick=()=>{ const key='nh7_daily_done_'+el.dataset.completeDaily; if(!localStorage.getItem(key)){ localStorage.setItem(key,'1'); saveProgressCloud(key,{done:true,at:new Date().toISOString()}).catch(console.warn); addPoints(3,'daily_1'); } el.textContent=tr('dailyCompleted'); });
   $$('[data-open-ref]').forEach(el=>el.onclick=async()=>{ await loadBibleMeta(); const ref=parseRef(el.dataset.openRef); if(ref){ const params={mode:'chapter',bookId:ref.bookId,chapter:ref.chapter}; if((el.dataset.openRefMode||'verse')==='verse') params.verse=ref.verse; navigate('bible',params); } });

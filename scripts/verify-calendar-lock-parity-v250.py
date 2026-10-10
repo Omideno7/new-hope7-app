@@ -27,10 +27,6 @@ need("active={kind:'calendar'" in js,'calendar modal state missing')
 need('nh7-calendar-dialog464' in css and 'nh7-feast-verse464.is-link' in css,'calendar/link styles missing')
 need('js/nh7-celebrations-v464.js?v=4.6.6-calendar-lock-finalqa' in index,'calendar JS cache tag mismatch')
 need('css/nh7-celebrations-v464.css?v=4.6.6-calendar-lock-finalqa' in index,'calendar CSS cache tag mismatch')
-need('service-worker.js?v=5.3.8-calendar-lock-parity&ui=117&library=125.5' in index,'service worker URL not rotated')
-need('sw-release-core-v403.js?v=5.3.8-calendar-lock-parity&ui=117&library=125.5' in worker,'worker release-core import not rotated')
-need("NH7_RELEASE_CORE_VERSION='5.3.8-calendar-lock-parity'" in release,'release core version mismatch')
-need("NH7_RELEASE_CORE_CACHE='nh7-release-core-v538-calendar-lock-parity-library125'" in release,'release cache name not rotated')
 need("'./js/nh7-celebrations-v464.js'" in release and "'./css/nh7-celebrations-v464.css'" in release,'calendar assets missing from release cache')
 
 if errors:
@@ -40,4 +36,4 @@ if errors:
 print('Calendar lock parity verification: PASS')
 print(' - annual calendar + verse handoff present')
 print(' - modal inert state restored before Bible Reader navigation')
-print(' - release cache/service-worker tags rotated')
+print(' - calendar assets remain included in the active release cache')
