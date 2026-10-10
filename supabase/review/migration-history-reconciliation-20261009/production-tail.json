@@ -247,6 +247,13 @@
       "sql_md5": "ae74e61b998a3c6f9bd6480d12d82de5",
       "sql_chars": 2496,
       "status": "present_exact_deployed"
+    },
+    {
+      "version": "20261010182200",
+      "name": "optimize_school_registration_rls_initplan_v1",
+      "sql_md5": "0b6971f50562488421d130ae8345f21c",
+      "sql_chars": 1549,
+      "status": "present_exact_deployed"
     }
   ],
   "parity": "exact_raw_md5",
