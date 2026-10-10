@@ -150,7 +150,7 @@ jobs:
           if(!index.includes(`window.NH7_VERSION = '${version.app}'`))fail('index version mismatch');
           if(!index.includes('js/nh7-school-exam-v344.js?v=2.3.9.50'))fail('School exam runtime missing');
           if(!index.includes('js/nh7-school-path-v351.js?v=4.6.7-io'))fail('School path v351 optimized runtime missing');
-          if(!index.includes('js/nh7-audio-classic-v484.js?v=4.8.5-no-telemetry'))fail('Audio engine no-telemetry runtime missing');
+          if(!index.includes('js/nh7-audio-classic-v484.js?v=4.8.6-safe-playback'))fail('Audio engine safe-playback runtime missing');
           if(!index.includes('js/nh7-audio-miniplayer-v487.js?v=4.8.7'))fail('Audio mini-player v487 missing');
           if(index.includes('js/nh7-book-reading-telemetry-v490.js'))fail('Book reading telemetry must stay disabled in the active app');
           if(!index.includes('js/nh7-settings-controller-v403.js?v=4.6.4'))fail('Settings runtime missing');
