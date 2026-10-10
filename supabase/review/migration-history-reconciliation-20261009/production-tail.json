@@ -219,6 +219,13 @@
       "sql_md5": "049a75a016e787881dd74d35ed50e8b0",
       "sql_chars": 6993,
       "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261010025305",
+      "name": "school_course_public_metadata_v200",
+      "sql_md5": "53f239472bd07850a366afce15ff58aa",
+      "sql_chars": 3178,
+      "status": "present_exact_recovered"
     }
   ],
   "parity": "exact_raw_md5",
