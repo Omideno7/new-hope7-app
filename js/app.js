@@ -2,6 +2,7 @@ import {mountMoreReviewV469} from './nh7-store-review-v469.js?v=4.6.9';
 import {createSchoolDraftsV468} from './nh7-school-drafts-v468.js?v=4.6.8';
 import {createSoulWinningV472} from './nh7-soul-winning-v472.js?v=4.7.2';
 import {createBibleKeywordsV451} from './nh7-bible-keywords-v451.js?v=4.5.1';
+import {createExamReviewV566} from './nh7-exam-review-v566.js?v=5.6.6';
 // NH7 v2.2.3 targeted update: Bible navigation, protected content, reliable analytics, and secure PDF viewer.
 const $ = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
@@ -21,6 +22,7 @@ const state = {
 
 const schoolDraftsV468=createSchoolDraftsV468({account:()=>isAccountLoggedIn()?authSession()?.user:null,lang:()=>state.lang});
 const soulWinningV472=createSoulWinningV472({mount:()=>view,lang:()=>state.lang,navigate:(route,params,replace)=>navigate(route,params,replace)});
+const nh7ExamReviewV566=createExamReviewV566({lang:()=>state.lang,html,localNum,questionText:examQuestionText,optionText:examOptionText});
 
 const OFFLINE_MEDIA_PREFIX='nh7_offline_media_';
 const NATIVE_OFFLINE_DIR='offline_media';
@@ -301,6 +303,9 @@ Object.assign(T.hr,{soulWinning:'Osvajanje duša'});
 Object.assign(T.en,{schoolExistingLogin:'Sign in to school',schoolNewRegistration:'New registration',schoolLoginHelp:'Already registered? Sign in with the same email and password on any device.',sermonNoteButton:'Notes'});
 Object.assign(T.fa,{schoolExistingLogin:'ورود به مدرسه',schoolNewRegistration:'ثبت‌نام جدید',schoolLoginHelp:'اگر قبلاً ثبت‌نام کرده‌اید، در هر دستگاه با همان ایمیل و رمز عبور وارد شوید.',sermonNoteButton:'یادداشت'});
 Object.assign(T.hr,{schoolExistingLogin:'Prijava u školu',schoolNewRegistration:'Nova registracija',schoolLoginHelp:'Ako ste se već registrirali, prijavite se istim emailom i lozinkom na bilo kojem uređaju.',sermonNoteButton:'Bilješke'});
+Object.assign(T.en,{testimonies:'Testimonies',prayerRequest:'Prayer Request',profile:'My Profile'});
+Object.assign(T.fa,{testimonies:'شهادت‌ها',prayerRequest:'درخواست دعا',profile:'پروفایل من'});
+Object.assign(T.hr,{testimonies:'Svjedočanstva',prayerRequest:'Molitveni zahtjev',profile:'Moj profil'});
 
 // UI-only copy: keep route, persistence and transport behavior unchanged.
 Object.assign(T.fa,{"verseActions": "ابزارهای آیه", "clearHighlight": "پاک کردن هایلایت", "document": "سند", "exam": "امتحان", "enterAccessCode": "کد دسترسی را وارد کنید", "mainNavigation": "ناوبری اصلی", "loading": "در حال بارگذاری…", "playPause": "پخش / توقف", "playbackPosition": "موقعیت پخش"});
@@ -466,6 +471,49 @@ async function cloudFetch(path, options={}){
 async function cloudRpc(name, payload={}){
   return cloudFetch('rpc/'+name, {method:'POST', body:JSON.stringify(payload)});
 }
+
+// Community 2.5 web parity bridge. Keep this limited to publishable-key/session-scoped APIs.
+// Existing local profile-photo v563/v564 remains authoritative for the current top bar;
+// cloud Profile is exposed as its own route to avoid changing existing users' header state.
+window.NH7_COMMUNITY_CTX_V502={
+  lang:()=>state.lang,
+  html,
+  card,
+  view:()=>view,
+  navigate,
+  isLoggedIn:isAccountLoggedIn,
+  session:authSession,
+  email:authEmail,
+  profileName:()=>getKnownUserProfile().name||'',
+  cloudFetch,
+  cloudRpc,
+  publicStorageUrl:(bucket,path)=>SUPABASE_CONFIG.url+'/storage/v1/object/public/'+encodeURIComponent(bucket)+'/'+String(path||'').split('/').map(encodeURIComponent).join('/'),
+  storageUpload:async(bucket,path,body,contentType='application/octet-stream',upsert=false)=>{
+    const makeHeaders=()=>({apikey:SUPABASE_CONFIG.key,Authorization:'Bearer '+(authSession()?.access_token||SUPABASE_CONFIG.key),'Content-Type':contentType,'x-upsert':upsert?'true':'false'});
+    const url=SUPABASE_CONFIG.url+'/storage/v1/object/'+encodeURIComponent(bucket)+'/'+String(path||'').split('/').map(encodeURIComponent).join('/');
+    let res=await fetch(url,{method:'POST',headers:makeHeaders(),body});
+    if(!res.ok&&(res.status===401||res.status===403)&&await refreshUserSession())res=await fetch(url,{method:'POST',headers:makeHeaders(),body});
+    if(!res.ok)throw new Error(await res.text().catch(()=>res.statusText));
+    return res.json().catch(()=>({}));
+  },
+  storageRemove:async(bucket,paths)=>{
+    const list=(Array.isArray(paths)?paths:[paths]).filter(Boolean);if(!list.length)return{};
+    const makeHeaders=()=>({apikey:SUPABASE_CONFIG.key,Authorization:'Bearer '+(authSession()?.access_token||SUPABASE_CONFIG.key),'Content-Type':'application/json'});
+    const url=SUPABASE_CONFIG.url+'/storage/v1/object/'+encodeURIComponent(bucket);
+    let res=await fetch(url,{method:'DELETE',headers:makeHeaders(),body:JSON.stringify({prefixes:list})});
+    if(!res.ok&&(res.status===401||res.status===403)&&await refreshUserSession())res=await fetch(url,{method:'DELETE',headers:makeHeaders(),body:JSON.stringify({prefixes:list})});
+    if(!res.ok)throw new Error(await res.text().catch(()=>res.statusText));
+    return res.json().catch(()=>({}));
+  },
+  privateStorageObjectUrl:async(bucket,path)=>{
+    const makeHeaders=()=>({apikey:SUPABASE_CONFIG.key,Authorization:'Bearer '+(authSession()?.access_token||SUPABASE_CONFIG.key)});
+    const url=SUPABASE_CONFIG.url+'/storage/v1/object/authenticated/'+encodeURIComponent(bucket)+'/'+String(path||'').split('/').map(encodeURIComponent).join('/');
+    let res=await fetch(url,{headers:makeHeaders()});
+    if(!res.ok&&(res.status===401||res.status===403)&&await refreshUserSession())res=await fetch(url,{headers:makeHeaders()});
+    if(!res.ok)throw new Error(await res.text().catch(()=>res.statusText));
+    return URL.createObjectURL(await res.blob());
+  }
+};
 
 const NH7_FAST_CLOUD_TIMEOUT_V470=5000;
 function nh7WithTimeoutV470(promise,timeoutMs=NH7_FAST_CLOUD_TIMEOUT_V470){
@@ -1269,6 +1317,7 @@ async function showAmen(){
 let nh7NavigationEpochV456=0;
 async function render(route, params={}, preserve=false){
   schoolDraftsV468.unmount();
+  try{window.NH7CommunityV502?.dispose?.()}catch(e){console.warn('[NH7 Community dispose]',e)}
   const navigationEpochV456=++nh7NavigationEpochV456;
   view.innerHTML='<section class="card"><p>...</p></section>';
   try{
@@ -1278,6 +1327,9 @@ async function render(route, params={}, preserve=false){
     else if(route==='plans') await plans(params);
     else if(route==='school') await school(params);
     else if(route==='more') await more();
+    else if(route==='testimonies') { if(!window.NH7CommunityV502?.renderTestimonies)throw new Error('Community module is unavailable.'); await window.NH7CommunityV502.renderTestimonies(); }
+    else if(route==='prayerRequest') { if(!window.NH7CommunityV502?.renderPrayer)throw new Error('Community module is unavailable.'); await window.NH7CommunityV502.renderPrayer(); }
+    else if(route==='profile') await account();
     else if(route==='soulWinning') soulWinningV472.render(params);
     else if(route==='library') await library(params);
     else if(route==='audio') await audio(params);
@@ -1864,15 +1916,15 @@ async function schoolCourseExam(d,courseCode){
   if(!exam){view.innerHTML=card(tr('finalExam'),`<p class="muted">${state.lang==='fa'?'آزمون فعالی برای این دوره پیدا نشد.':state.lang==='hr'?'Nije pronađen aktivan ispit za ovaj tečaj.':'No active exam was found for this course.'}</p><button class="secondary-btn wide-btn" data-go="school">${tr('back')}</button>`);return}
   try{attempts=await cloudFetch('school_exam_attempts?select=*&exam_id=eq.'+encodeURIComponent(exam.id)+'&user_email=eq.'+encodeURIComponent(email)+'&order=submitted_at.desc',{method:'GET'})}catch(e){console.warn('exam attempts',e)}
   try{const snapshot=await getSchoolSnapshot(email,false);assignments=(snapshot.assignments||[]).filter(x=>String(x.course_code||'foundation_school')===String(courseCode))}catch(e){console.warn('exam assignments',e)}
-  const used=Array.isArray(attempts)?attempts.length:0,max=Number(exam.max_attempts||3),passedAlready=Array.isArray(attempts)&&attempts.some(x=>x.passed),remaining=passedAlready?0:Math.max(0,max-used),latest=attempts?.[0];const attemptNumber=used+1,attemptExam=prepareExamForAttempt(exam,attemptNumber,email),qs=Array.isArray(attemptExam.questions)?attemptExam.questions:[],title=examLocalized(exam,'title',tr('finalExam')),intro=examLocalized(exam,'intro',''),assignment=courseAssignmentSummary(d,courseCode,assignments);const examWeight=Number(exam.exam_weight??70),assignmentWeight=Number(exam.assignment_weight??30),assignmentLocked=exam.require_assignments_before_exam===true&&assignment.completed<assignment.total;
-  view.innerHTML=card(title,`${intro?`<p>${html(intro)}</p>`:''}<div class="notice"><p><strong>${state.lang==='fa'?'ساختار نمره':state.lang==='hr'?'Struktura ocjene':'Grade structure'}:</strong> ${localNum(examWeight)}% ${state.lang==='fa'?'آزمون':state.lang==='hr'?'ispit':'exam'} + ${localNum(assignmentWeight)}% ${state.lang==='fa'?'تکالیف':state.lang==='hr'?'zadaci':'assignments'}</p><p><strong>${state.lang==='fa'?'نمره فعلی تکالیف':state.lang==='hr'?'Trenutačna ocjena zadataka':'Current assignment score'}:</strong> ${localNum(assignment.percent)}% (${localNum(assignment.completed)} / ${localNum(assignment.total)})</p><p><strong>${state.lang==='fa'?'حد قبولی نهایی':state.lang==='hr'?'Završni prag prolaza':'Final passing score'}:</strong> ${Number(exam.passing_score||70)}%</p><p><strong>${state.lang==='fa'?'تعداد سؤال این تلاش':state.lang==='hr'?'Broj pitanja u ovom pokušaju':'Questions in this attempt'}:</strong> ${localNum(qs.length)}</p><p><strong>${state.lang==='fa'?'فرصت باقی‌مانده':state.lang==='hr'?'Preostali pokušaji':'Attempts remaining'}:</strong> ${localNum(remaining)} / ${localNum(max)}</p>${exam.shuffle_questions?`<p class="muted">${state.lang==='fa'?'ترتیب سؤال‌ها برای هر تلاش تغییر می‌کند.':state.lang==='hr'?'Redoslijed pitanja mijenja se pri svakom pokušaju.':'Question order changes on each attempt.'}</p>`:''}${latest?`<p><strong>${state.lang==='fa'?'آخرین نتیجه نهایی':state.lang==='hr'?'Posljednji završni rezultat':'Latest final result'}:</strong> ${html(latest.final_score_percent??latest.score_percent)}% ${latest.passed?'✓':''}</p>`:''}</div>${remaining>0&&!assignmentLocked?`${renderExamQuestions(attemptExam,'course_exam_q_')}<button class="primary-btn wide-btn" id="submitCourseExam">${state.lang==='fa'?'ثبت و دریافت نتیجه':state.lang==='hr'?'Pošalji i prikaži rezultat':'Submit and view result'}</button>`:assignmentLocked?`<p class="notice">${state.lang==='fa'?'ابتدا همه تکالیف لازم را ارسال کنید.':state.lang==='hr'?'Najprije predajte sve potrebne zadatke.':'Submit all required assignments first.'}</p>`:passedAlready?`<p class="notice" style="background:#ecfdf3;color:#08783d">${html(examResultMessage(exam,true))}</p>`:`<p class="notice">${state.lang==='fa'?'فرصت‌های تعیین‌شده برای این آزمون تمام شده است. لطفاً با مدیر مدرسه تماس بگیرید.':state.lang==='hr'?'Iskoristili ste sve dopuštene pokušaje. Obratite se administratoru škole.':'You have used all allowed attempts. Please contact the school administrator.'}</p>`}<button class="secondary-btn wide-btn" data-go="school">${tr('back')}</button><div id="courseExamResult"></div>`);
+  const used=Array.isArray(attempts)?attempts.length:0,max=Number(exam.max_attempts||3),passedAlready=Array.isArray(attempts)&&attempts.some(x=>x.passed),remaining=passedAlready?0:Math.max(0,max-used),latest=attempts?.[0];const attemptNumber=used+1,attemptExam=prepareExamForAttempt(exam,attemptNumber,email),qs=Array.isArray(attemptExam.questions)?attemptExam.questions:[],title=examLocalized(exam,'title',tr('finalExam')),intro=examLocalized(exam,'intro',''),assignment=courseAssignmentSummary(d,courseCode,assignments);const latestExamV566=latest?prepareExamForAttempt(exam,Number(latest.attempt_number||Math.max(1,used)),email):null,latestReviewV566=latest?nh7ExamReviewV566.render(latestExamV566,latest.answers,!latest.passed):'';const examWeight=Number(exam.exam_weight??70),assignmentWeight=Number(exam.assignment_weight??30),assignmentLocked=exam.require_assignments_before_exam===true&&assignment.completed<assignment.total;
+  view.innerHTML=card(title,`${intro?`<p>${html(intro)}</p>`:''}<div class="notice"><p><strong>${state.lang==='fa'?'ساختار نمره':state.lang==='hr'?'Struktura ocjene':'Grade structure'}:</strong> ${localNum(examWeight)}% ${state.lang==='fa'?'آزمون':state.lang==='hr'?'ispit':'exam'} + ${localNum(assignmentWeight)}% ${state.lang==='fa'?'تکالیف':state.lang==='hr'?'zadaci':'assignments'}</p><p><strong>${state.lang==='fa'?'نمره فعلی تکالیف':state.lang==='hr'?'Trenutačna ocjena zadataka':'Current assignment score'}:</strong> ${localNum(assignment.percent)}% (${localNum(assignment.completed)} / ${localNum(assignment.total)})</p><p><strong>${state.lang==='fa'?'حد قبولی نهایی':state.lang==='hr'?'Završni prag prolaza':'Final passing score'}:</strong> ${Number(exam.passing_score||70)}%</p><p><strong>${state.lang==='fa'?'تعداد سؤال این تلاش':state.lang==='hr'?'Broj pitanja u ovom pokušaju':'Questions in this attempt'}:</strong> ${localNum(qs.length)}</p><p><strong>${state.lang==='fa'?'فرصت باقی‌مانده':state.lang==='hr'?'Preostali pokušaji':'Attempts remaining'}:</strong> ${localNum(remaining)} / ${localNum(max)}</p>${exam.shuffle_questions?`<p class="muted">${state.lang==='fa'?'ترتیب سؤال‌ها برای هر تلاش تغییر می‌کند.':state.lang==='hr'?'Redoslijed pitanja mijenja se pri svakom pokušaju.':'Question order changes on each attempt.'}</p>`:''}${latest?`<p><strong>${state.lang==='fa'?'آخرین نتیجه نهایی':state.lang==='hr'?'Posljednji završni rezultat':'Latest final result'}:</strong> ${html(latest.final_score_percent??latest.score_percent)}% ${latest.passed?'✓':''}</p>`:''}</div>${latestReviewV566}${remaining>0&&!assignmentLocked?`${renderExamQuestions(attemptExam,'course_exam_q_')}<button class="primary-btn wide-btn" id="submitCourseExam">${state.lang==='fa'?'ثبت و دریافت نتیجه':state.lang==='hr'?'Pošalji i prikaži rezultat':'Submit and view result'}</button>`:assignmentLocked?`<p class="notice">${state.lang==='fa'?'ابتدا همه تکالیف لازم را ارسال کنید.':state.lang==='hr'?'Najprije predajte sve potrebne zadatke.':'Submit all required assignments first.'}</p>`:passedAlready?`<p class="notice" style="background:#ecfdf3;color:#08783d">${html(examResultMessage(exam,true))}</p>`:`<p class="notice">${state.lang==='fa'?'فرصت‌های تعیین‌شده برای این آزمون تمام شده است. لطفاً با مدیر مدرسه تماس بگیرید.':state.lang==='hr'?'Iskoristili ste sve dopuštene pokušaje. Obratite se administratoru škole.':'You have used all allowed attempts. Please contact the school administrator.'}</p>`}<button class="secondary-btn wide-btn" data-go="school">${tr('back')}</button><div id="courseExamResult"></div>`);
   $('#submitCourseExam')?.addEventListener('click',()=>submitCourseExam(exam,attemptExam,courseCode,used,assignment));
 }
 async function submitCourseExam(exam,attemptExam,courseCode,usedAttempts=0,assignment={percent:100,completed:0,total:0}){
   const button=$('#submitCourseExam');if(button?.disabled)return;const result=collectExamAnswers(attemptExam,'course_exam_q_');if(result.answered<result.total){alert(state.lang==='fa'?'لطفاً به همه سؤال‌ها پاسخ بدهید.':state.lang==='hr'?'Molimo odgovorite na sva pitanja.':'Please answer all questions.');return}if(button){button.disabled=true;button.textContent=state.lang==='fa'?'در حال ثبت نتیجه…':state.lang==='hr'?'Spremanje rezultata…':'Saving result…'}
   const email=currentUserEmail(),profile=getKnownUserProfile(),objectiveScore=Math.round(result.correct/Math.max(1,result.total)*100),examWeight=Number(exam.exam_weight??70),assignmentWeight=Number(exam.assignment_weight??30),weightTotal=Math.max(1,examWeight+assignmentWeight),assignmentScore=Number(assignment.percent??100),finalScore=Math.round((objectiveScore*examWeight+assignmentScore*assignmentWeight)/weightTotal),passed=finalScore>=Number(exam.passing_score||70),submitted=new Date().toISOString(),attemptNumber=Number(usedAttempts||0)+1;
   const attempt={exam_id:exam.id,user_email:email,user_name:profile.name||'',course_code:courseCode,lesson_code:'course:'+courseCode,attempt_number:attemptNumber,correct_count:result.correct,total_questions:result.total,objective_score_percent:objectiveScore,assignment_score_percent:assignmentScore,final_score_percent:finalScore,assignment_completed_count:Number(assignment.completed||0),assignment_total_count:Number(assignment.total||0),score_percent:finalScore,passed,answers:result.answers,submitted_at:submitted};
-  try{await cloudFetch('school_exam_attempts',{method:'POST',body:JSON.stringify(attempt)});await cloudFetch('school_progress?on_conflict=user_email,lesson_code',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({user_email:email,user_name:profile.name||'',lesson_code:'course:'+courseCode,progress_percent:passed?100:finalScore,completed_at:passed?submitted:null,exam_id:exam.id,exam_score:finalScore,objective_score_percent:objectiveScore,assignment_score_percent:assignmentScore,final_score_percent:finalScore,exam_passed:passed,exam_attempted_at:submitted,updated_at:submitted})});invalidateSchoolSnapshot(email);await getSchoolSnapshot(email,true);const msg=examResultMessage(exam,passed),box=$('#courseExamResult');if(box)box.innerHTML=`<section class="notice" style="${passed?'background:#ecfdf3;color:#08783d':''}"><h3>${passed?'✓ ':''}${state.lang==='fa'?'نتیجه نهایی':state.lang==='hr'?'Završni rezultat':'Final result'}</h3><p><strong>${state.lang==='fa'?'آزمون کتبی':state.lang==='hr'?'Pisani ispit':'Written exam'}:</strong> ${localNum(result.correct)} / ${localNum(result.total)} · ${localNum(objectiveScore)}% × ${localNum(examWeight)}%</p><p><strong>${state.lang==='fa'?'تکالیف':state.lang==='hr'?'Zadaci':'Assignments'}:</strong> ${localNum(assignmentScore)}% × ${localNum(assignmentWeight)}%</p><p><strong>${state.lang==='fa'?'نمره نهایی':state.lang==='hr'?'Završna ocjena':'Final grade'}:</strong> ${localNum(finalScore)}%</p><p>${html(msg)}</p></section>`;window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})}catch(e){console.warn(e);alert(state.lang==='fa'?'ثبت نتیجه انجام نشد. لطفاً دوباره تلاش کنید.':state.lang==='hr'?'Rezultat nije spremljen. Pokušajte ponovno.':'The result could not be saved. Please try again.');if(button){button.disabled=false;button.textContent=state.lang==='fa'?'ثبت و دریافت نتیجه':state.lang==='hr'?'Pošalji i prikaži rezultat':'Submit and view result'}}
+  try{await cloudFetch('school_exam_attempts',{method:'POST',body:JSON.stringify(attempt)});await cloudFetch('school_progress?on_conflict=user_email,lesson_code',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({user_email:email,user_name:profile.name||'',lesson_code:'course:'+courseCode,progress_percent:passed?100:finalScore,completed_at:passed?submitted:null,exam_id:exam.id,exam_score:finalScore,objective_score_percent:objectiveScore,assignment_score_percent:assignmentScore,final_score_percent:finalScore,exam_passed:passed,exam_attempted_at:submitted,updated_at:submitted})});invalidateSchoolSnapshot(email);await getSchoolSnapshot(email,true);const msg=examResultMessage(exam,passed),box=$('#courseExamResult');if(box)box.innerHTML=`<section class="notice" style="${passed?'background:#ecfdf3;color:#08783d':''}"><h3>${passed?'✓ ':''}${state.lang==='fa'?'نتیجه نهایی':state.lang==='hr'?'Završni rezultat':'Final result'}</h3><p><strong>${state.lang==='fa'?'آزمون کتبی':state.lang==='hr'?'Pisani ispit':'Written exam'}:</strong> ${localNum(result.correct)} / ${localNum(result.total)} · ${localNum(objectiveScore)}% × ${localNum(examWeight)}%</p><p><strong>${state.lang==='fa'?'تکالیف':state.lang==='hr'?'Zadaci':'Assignments'}:</strong> ${localNum(assignmentScore)}% × ${localNum(assignmentWeight)}%</p><p><strong>${state.lang==='fa'?'نمره نهایی':state.lang==='hr'?'Završna ocjena':'Final grade'}:</strong> ${localNum(finalScore)}%</p><p>${html(msg)}</p></section>${nh7ExamReviewV566.render(attemptExam,result.answers,!passed)}`;window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})}catch(e){console.warn(e);alert(state.lang==='fa'?'ثبت نتیجه انجام نشد. لطفاً دوباره تلاش کنید.':state.lang==='hr'?'Rezultat nije spremljen. Pokušajte ponovno.':'The result could not be saved. Please try again.');if(button){button.disabled=false;button.textContent=state.lang==='fa'?'ثبت و دریافت نتیجه':state.lang==='hr'?'Pošalji i prikaži rezultat':'Submit and view result'}}
 }
 function bindInlineSermonControls(){
   $$('[data-sermon-play]').forEach(b=>b.onclick=e=>{e.stopPropagation();const item=window.__sermonMap?.[String(b.dataset.sermonPlay)];if(item)playSermon(item)});
@@ -2266,7 +2318,7 @@ async function library(params={}){
 }
 
 async function more(){
-  const destinations=[['audio','🎧'],['meetings','☎'],['salvation','✝'],['soulWinning','🌾'],['qna','❓'],['account','👤'],['about','ℹ'],['settings','⚙']];
+  const destinations=[['audio','🎧'],['testimonies','✨'],['prayerRequest','🙏'],['profile','👤'],['meetings','☎'],['salvation','✝'],['soulWinning','🌾'],['qna','❓'],['account','🔐'],['about','ℹ'],['settings','⚙']];
   view.innerHTML=`<div class="grid" data-more-navigation456>${destinations.map(([route,icon])=>tile(route,icon,tr(route))).join('')}</div>`;
   mountMoreReviewV469(view.querySelector('[data-more-navigation456]'),{language:state.lang});
 }
@@ -2390,6 +2442,7 @@ async function qna(opts={}){
 async function account(){
   const session=authSession();
   if(isAccountLoggedIn()){
+    if(window.NH7CommunityV502?.resumePending?.())return;
     const profile=getKnownUserProfile(); const email=authEmail()||profile.email||'';
     view.innerHTML=card(tr('account'), `<h3>${tr('myAccess')}</h3><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||session?.user?.user_metadata?.full_name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(email)}</p></div><button class="danger-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button>`);
     $('#logoutAccountBtn')?.addEventListener('click',logoutAccount); return;
@@ -2420,6 +2473,7 @@ async function signInAccount(){
     await restoreAccountCloudData(true);
     invalidateSchoolSnapshot(email);
     await getSchoolSnapshot(email,true);
+    if(window.NH7CommunityV502?.resumePending?.())return;
     navigate('school',{},true);
   }catch(e){
     console.warn('Account sign-in failed',e);
