@@ -1343,7 +1343,7 @@ function inboxTimestampLabel(message){
 }
 async function inbox(){
   cleanupInboxLanguage();
-  maybeCreateScheduledInboxMessages(); await refreshInboxFromCloud(true);
+  maybeCreateScheduledInboxMessages(); await refreshInboxFromCloud(false);
   cleanupInboxLanguage();
   const arr=inboxDisplayMessages();
   const body = arr.length ? `<div class="list inbox-list">${arr.map((m,i)=>`<div class="list-btn inbox-item ${m.read?'read':'unread'}"><button class="list-btn inbox-item ${m.read?'read':'unread'}" data-inbox-open="${html(m.id)}"><strong>${m.read?'':'● '}${html(m.title)}</strong><small>${inboxTimestampLabel(m)} • ${m.read?html(l223('خوانده‌شده','Read','Pročitano')):tr('unread')}</small></button><div id="inbox-${html(String(m.id).replace(/[^a-zA-Z0-9_-]/g,'_'))}" class="accordion-panel hidden"><small class="muted">${inboxTimestampLabel(m)}</small><p>${html(m.body)}</p><button class="danger-btn" data-inbox-delete="${html(m.id)}">${tr('deleteMessage')}</button></div></div>`).join('')}</div>` : `<p class="muted">${tr('noInboxMessages')}</p>`;

@@ -51,7 +51,7 @@
     window.NH7_CANONICAL_SETTINGS = true;
     window.NH7_VERSION = '2.3.9.50';
     window.NH7_BASE_PATH = new URL('.', window.location.href).pathname;
-    window.NH7_SERVICE_WORKER = window.NH7_BASE_PATH + 'service-worker.js?v=5.4.4-fold-player-safe&ui=123&library=125.5';
+    window.NH7_SERVICE_WORKER = window.NH7_BASE_PATH + 'service-worker.js?v=5.4.5-cost-audit&ui=123&library=125.6';
     window.NH7_ONESIGNAL_WORKER = window.NH7_BASE_PATH + 'push/OneSignalSDKWorker.js';
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register(window.NH7_SERVICE_WORKER, { scope: window.NH7_BASE_PATH, updateViaCache: 'none' }).catch(console.warn);
@@ -141,7 +141,7 @@
   <script src="js/nh7-offline-data-v422.js?v=4.2.2"></script>
   <script src="js/nh7-audio-route-stability-v423.js?v=4.6.1"></script>
   <script src="js/nh7-sermon-catalog-hotfix-v424.js?v=4.2.4"></script>
-  <script src="js/nh7-library-security-v125.js?v=125.5"></script>
+  <script src="js/nh7-library-security-v125.js?v=125.6-cost-cache"></script>
   <script src="js/nh7-access-bootstrap-v230.js?v=2.3.9.33&library=125.5"></script>
   <script src="js/nh7-auth-signup-guard-v343.js?v=3.5.5"></script>
   <script src="js/nh7-registration-canonical-v353.js?v=4.0.1"></script>
@@ -164,7 +164,7 @@
   <script src="js/nh7-audio-library-v500.js?v=5.4.4-fold-safe&ui=123" defer></script>
   <script src="js/nh7-note-text-v501.js?v=5.0.4-web-account-merge"></script>
   <script src="js/nh7-community-v502.js?v=5.0.6-web-parity" defer></script>
-  <script src="js/app.js?v=4.8.16-inbox&ui=118&library=125.5&community=506&examreview=566&notesmerge=544&qa=profile-search-inbox" type="module"></script>
+  <script src="js/app.js?v=4.8.16-inbox&ui=118&library=125.6&community=506&examreview=566&notesmerge=544&qa=cost-audit" type="module"></script>
   <script src="js/nh7-settings-controller-v403.js?v=4.6.4"></script>
   <script src="js/nh7-settings-account-v252.js?v=2.5.2&ui=115" defer></script>
   <script src="js/nh7-delete-account-v253.js?v=2.5.4" defer></script>
