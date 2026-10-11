@@ -42,6 +42,7 @@ function enhancePhotos(){
   if(dialog?.open&&!window.NH7ProfilePhotoV564?.read?.())close();
 }
 function start(){
+  if(window.Capacitor?.isNativePlatform?.())document.documentElement.classList.add('nh7-parity-native');
   const header=document.querySelector('#appShell > .topbar'),nav=document.querySelector('#appShell > .bottom-nav');
   if(header&&nav){document.documentElement.classList.add('nh7-parity-chrome');const observer=new ResizeObserver(schedule);observer.observe(header);observer.observe(nav);schedule()}
   new MutationObserver(()=>{enhancePhotos();schedule()}).observe(document.body,{childList:true,subtree:true});enhancePhotos();

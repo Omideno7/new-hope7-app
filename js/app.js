@@ -1561,12 +1561,10 @@ async function bible(params={}){
 function renderBookList(title,books,testament=''){return card(title,`<div class="grid">${books.map(b=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:testament||b.testament,bookId:b.id}))}'><strong>${html(b.names[state.lang]||b.names.en)}</strong><small>${localNum(b.chapters)} ${tr('chapters')}</small></button>`).join('')}</div>`)}
 // Tablet context uses already-loaded metadata; all buttons use existing Web routing.
 function nh7BibleSidebarV573(bookId,chapter=0){
+  const book=(state.bible.books||[]).find(item=>item.id===bookId);if(!book)return;
   const entries=[];
-  for(const book of state.bible.books||[]){
-    entries.push({label:book.names[state.lang]||book.names.en,route:'bible',params:{section:'written',mode:'book',testament:book.testament,bookId:book.id},active:book.id===bookId&&!chapter});
-    if(book.id===bookId)for(let ch=1;ch<=book.chapters;ch++)entries.push({label:tr('chapter')+' '+localNum(ch),route:'bible',params:{section:'written',mode:'chapter',bookId,chapter:ch},active:ch===chapter});
-  }
-  window.NH7WebParityV573?.sidebar(view,entries,tr('bible'));
+  for(let ch=1;ch<=Number(book.chapters||0);ch++)entries.push({label:tr('chapter')+' '+localNum(ch),route:'bible',params:{section:'written',mode:'chapter',bookId,chapter:ch},active:ch===Number(chapter)});
+  window.NH7WebParityV573?.sidebar(view,entries,book.names[state.lang]||book.names.en||tr('bible'));
 }
 function nh7AudioSidebarV573(categories,selected,bundled=false){
   const entries=[{label:tr('allCategories'),route:'audio',params:{},active:!selected},...categories.map(c=>({label:bundled?pick(c.title):(c['name_'+state.lang]||c.name_en||c.name_fa),route:'audio',params:{cat:c.id},active:String(selected)===String(c.id)}))];

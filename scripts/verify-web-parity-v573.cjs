@@ -37,15 +37,15 @@ const read=p=>fs.readFileSync(p,'utf8');
   assert.equal(await page.locator('.nh7-parity-sidebar').isVisible(),width>=768);
   assert.equal(await page.locator('.nh7-parity-sidebar button').getAttribute('data-params'),JSON.stringify({section:'written',mode:'chapter',bookId:'GEN',chapter:3}));
   await page.locator('#existing').click();assert.equal(await page.evaluate(()=>existingClicked),true);
-  const bounds=await page.evaluate(()=>{const h=document.querySelector('.topbar').getBoundingClientRect(),n=document.querySelector('.bottom-nav').getBoundingClientRect(),v=document.querySelector('#view'),r=v.getBoundingClientRect(),st=getComputedStyle(v),dateNode=document.querySelector('.nh7-header-date-row455'),dateDisplay=dateNode?getComputedStyle(dateNode).display:'absent';return{headerTop:h.top,headerBottom:h.bottom,headerHeight:h.height,navTop:n.top,navBottom:n.bottom,navHeight:n.height,scroll:document.documentElement.scrollWidth,width:innerWidth,viewOverflowY:st.overflowY,viewPaddingTop:parseFloat(st.paddingTop),shellHeight:document.querySelector('#appShell').getBoundingClientRect().height,dateDisplay}});
-  assert.equal(bounds.headerTop,0,JSON.stringify(bounds));assert(Math.abs(bounds.navBottom-900)<=1,JSON.stringify(bounds));assert.equal(bounds.viewOverflowY,'auto',JSON.stringify(bounds));assert(bounds.viewPaddingTop>=bounds.headerBottom-1,JSON.stringify(bounds));assert(bounds.scroll<=bounds.width+1,JSON.stringify(bounds));assert(bounds.shellHeight<=901,JSON.stringify(bounds));if(width<=1024){assert(['none','absent'].includes(bounds.dateDisplay),JSON.stringify(bounds));assert(bounds.headerHeight<=58,JSON.stringify(bounds));assert(bounds.navHeight<=40,JSON.stringify(bounds));}
+  const bounds=await page.evaluate(()=>{const h=document.querySelector('.topbar').getBoundingClientRect(),n=document.querySelector('.bottom-nav').getBoundingClientRect(),v=document.querySelector('#view'),r=v.getBoundingClientRect(),st=getComputedStyle(v),dateNode=document.querySelector('.nh7-header-date-row455'),dateDisplay=dateNode?getComputedStyle(dateNode).display:'absent';return{headerTop:h.top,headerBottom:h.bottom,headerHeight:h.height,navTop:n.top,navBottom:n.bottom,navHeight:n.height,viewTop:r.top,viewBottom:r.bottom,scroll:document.documentElement.scrollWidth,width:innerWidth,viewOverflowY:st.overflowY,viewPaddingTop:parseFloat(st.paddingTop),viewPaddingBottom:parseFloat(st.paddingBottom),shellHeight:document.querySelector('#appShell').getBoundingClientRect().height,dateDisplay}});
+  assert.equal(bounds.headerTop,0,JSON.stringify(bounds));assert(Math.abs(bounds.navBottom-900)<=1,JSON.stringify(bounds));assert.equal(bounds.viewOverflowY,'auto',JSON.stringify(bounds));assert(Math.abs(bounds.viewTop-bounds.headerBottom)<=1,JSON.stringify(bounds));assert(Math.abs(bounds.navTop-bounds.viewBottom)<=1,JSON.stringify(bounds));assert(bounds.viewPaddingTop<=8&&bounds.viewPaddingBottom<=8,JSON.stringify(bounds));assert(bounds.scroll<=bounds.width+1,JSON.stringify(bounds));assert(bounds.shellHeight<=901,JSON.stringify(bounds));if(width<=1366){assert(['none','absent'].includes(bounds.dateDisplay),JSON.stringify(bounds));assert(bounds.headerHeight<=58,JSON.stringify(bounds));assert(bounds.navHeight<=40,JSON.stringify(bounds));}
   const chromeBefore=await page.evaluate(()=>({h:document.querySelector('.topbar').getBoundingClientRect().top,n:document.querySelector('.bottom-nav').getBoundingClientRect().bottom}));
   await page.evaluate(()=>{const v=document.querySelector('#view');v.innerHTML+='<div style="height:1800px"></div>';v.scrollTop=900});await page.waitForTimeout(60);
   const chromeAfter=await page.evaluate(()=>({h:document.querySelector('.topbar').getBoundingClientRect().top,n:document.querySelector('.bottom-nav').getBoundingClientRect().bottom,scrollTop:document.querySelector('#view').scrollTop}));
   assert(chromeAfter.scrollTop>0);assert.equal(chromeAfter.h,chromeBefore.h);assert.equal(chromeAfter.n,chromeBefore.n);
   await page.evaluate(()=>{document.getElementById('date').style.height='140px'});await page.waitForTimeout(100);
   assert(await page.evaluate(()=>parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nh7-parity-header'))>=140));
-  assert(await page.evaluate(()=>parseFloat(getComputedStyle(document.querySelector('#view')).paddingTop)>=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nh7-parity-header'))));
+  assert(await page.evaluate(()=>{const h=document.querySelector('.topbar').getBoundingClientRect(),v=document.querySelector('#view').getBoundingClientRect();return Math.abs(v.top-h.bottom)<=1}));
   await page.locator('#nh7TopProfile564').focus();await page.keyboard.press('Enter');assert(await page.locator('dialog').isVisible());
   await page.locator('[data-photo-in]').click();assert.match(await page.locator('dialog img').getAttribute('style'),/1.25/);
   await page.keyboard.press('Escape');assert.equal(await page.locator('dialog').isVisible(),false);assert.equal(await page.evaluate(()=>document.activeElement.id),'nh7TopProfile564');
@@ -72,6 +72,8 @@ const read=p=>fs.readFileSync(p,'utf8');
  for(const marker of ["'nav.more':'Više'","audio:'Audio poruke'","testimonies:'Svjedočanstva'","prayerRequest:'Molitveni zahtjev'","['audio','🎧']","['testimonies','✨']","['prayerRequest','🙏']"])assert(app.includes(marker),marker);
  for(const asset of ['js/nh7-web-parity-v573.js','css/nh7-web-parity-v573.css']){assert(index.includes(asset));assert(core.includes(asset))}
  for(const marker of ['publicAudioCardV573','bindPublicAudioV573','audio/mp4;codecs=mp4a.40.2','audio/webm;codecs=opus'])assert(read('js/nh7-community-v502.js').includes(marker),marker);
+ const profile564=read('js/nh7-profile-photo-v564.js');assert(profile564.includes("document.getElementById('logoutAccountBtn')||document.getElementById('signInBtn')"),'profile picker must mount for signed-in and signed-out My Profile');
+ assert(app.includes("const book=(state.bible.books||[]).find(item=>item.id===bookId)"),'Bible sidebar must be scoped to selected book');
  console.log('PASS current Web route integration and release cache wiring');
  if(process.env.NH7_PARITY_APP_URL){
   for(const width of [390,768,1440]){
@@ -89,6 +91,8 @@ const read=p=>fs.readFileSync(p,'utf8');
    await page.waitForSelector('#v-4');assert.equal(await page.locator('.nh7-parity-sidebar').isVisible(),width>=768);
    assert(await page.locator('#v-4').evaluate(node=>node.classList.contains('saved-focus')));
    if(width>=768){
+    const sidebarParams=await page.locator('.nh7-parity-sidebar button').evaluateAll(nodes=>nodes.map(node=>JSON.parse(node.dataset.params||'{}')));
+    assert(sidebarParams.length>1);assert(sidebarParams.every(p=>p.mode==='chapter'&&p.bookId==='GEN'));assert.deepEqual(sidebarParams.slice(0,3).map(p=>p.chapter),[1,2,3]);
     for(const preset of ['midnight','aurora','sapphire']){
      const contrast=await page.evaluate(preset=>{
       const api=NH7ThemeStudioV453;api.set({...api.PRESETS[preset],preset});
@@ -126,5 +130,9 @@ const read=p=>fs.readFileSync(p,'utf8');
    assert.deepEqual(errors,[]);await page.close();console.log(`PASS actual index.html ${width}px: exact Bible navigation, localized reflection title, plan route and Back/Forward with byte-identical progress`);
   }
  }
+ const profilePage=await browser.newPage({viewport:{width:768,height:900}});
+ await profilePage.route('**/*',route=>route.fulfill({status:200,contentType:'text/html',body:'<!doctype html><html><body></body></html>'}));await profilePage.goto('http://profile.test/');
+ await profilePage.evaluate(()=>{localStorage.clear();localStorage.setItem('nh7_lang','en');document.body.innerHTML='<select id="langSelect"><option value="en">EN</option></select><div id="view"><section class="card"><h3>Account</h3><button id="signInBtn">Sign in</button></section></div><header class="topbar"><button id="inboxBtn"></button></header>'});
+ await profilePage.addScriptTag({content:read('js/nh7-profile-photo-v564.js')});await profilePage.waitForSelector('#nh7AccountProfile564 [data-nh7-profile-pick]');assert.equal(await profilePage.locator('#nh7AccountProfile564 [data-nh7-profile-pick]').count(),1);await profilePage.close();console.log('PASS signed-out My Profile still exposes device-local photo picker');
  }finally{await browser.close()}
 })().catch(error=>{console.error(error);process.exitCode=1});

@@ -5,7 +5,7 @@
 (()=>{'use strict';
 if(window.__NH7_PROFILE_PHOTO_V564__)return;window.__NH7_PROFILE_PHOTO_V564__=true;
 
-const VERSION='5.6.5-student-id';
+const VERSION='5.6.6-profile-consistency';
 const PHOTO_KEY='nh7_profile_photo_v561';
 let queued=false,busy=false,editor=null,studentIdentity=null,studentIdentityOwner='',identityLoading=false;
 const lang=()=>{const v=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return ['fa','en','hr'].includes(v)?v:'en'};
@@ -129,7 +129,7 @@ function renderAccountBox(box,p,photo){
   remove?.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();if(busy)return;try{localStorage.removeItem(PHOTO_KEY)}catch(_){}schedule(true)});
 }
 function syncAccount(force=false){
-  const logout=document.getElementById('logoutAccountBtn');if(!logout)return false;const card=logout.closest('.card');if(!card)return false;const p=profile(),photo=readPhoto(),owner=identityOwner();if(owner&&studentIdentityOwner!==owner&&!identityLoading)loadStudentIdentity(false).then(()=>schedule(true));const sig=`${p.name}|${p.email}|${photoSig(photo)}|${String(studentIdentity?.student_code||'')}|${lang()}`;
+  const accountControl=document.getElementById('logoutAccountBtn')||document.getElementById('signInBtn');if(!accountControl)return false;const card=accountControl.closest('.card');if(!card)return false;const p=profile(),photo=readPhoto(),owner=identityOwner();if(owner&&studentIdentityOwner!==owner&&!identityLoading)loadStudentIdentity(false).then(()=>schedule(true));const sig=`${p.name}|${p.email}|${photoSig(photo)}|${String(studentIdentity?.student_code||'')}|${lang()}`;
   let box=document.getElementById('nh7AccountProfile564');if(!box){box=document.createElement('section');box.id='nh7AccountProfile564';box.className='nh7-account-profile564';const anchor=card.querySelector('h3')||card.firstChild;if(anchor)anchor.insertAdjacentElement('afterend',box);else card.prepend(box)}
   if(force||box.dataset.sig!==sig){box.dataset.sig=sig;renderAccountBox(box,p,photo)}return true;
 }
