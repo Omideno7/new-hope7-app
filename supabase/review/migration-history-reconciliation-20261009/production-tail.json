@@ -275,11 +275,18 @@
       "sql_md5": "abdb63766b1347d209da8bc07e48ec3e",
       "sql_chars": 3724,
       "status": "present_exact_deployed"
+    },
+    {
+      "version": "20261011082912",
+      "name": "admin_student_code_payload_v543",
+      "sql_md5": "a1b41dbaa50d7b50ca65446a3261e6d4",
+      "sql_chars": 1538,
+      "status": "present_exact_deployed"
     }
   ],
   "parity": {
-    "production_entries": 39,
-    "exact_raw_hash_matches": 39,
+    "production_entries": 40,
+    "exact_raw_hash_matches": 40,
     "missing_checkpoint_files": 0,
     "newer_pending_migrations": 0
   },
