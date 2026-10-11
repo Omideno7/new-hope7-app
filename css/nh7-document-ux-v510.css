@@ -1,0 +1,23 @@
+/* New Hope 7 Document UX v5.1.0 — direct manipulation, clean A4 output, professional footer. */
+.document-sheet .doc-letterhead{min-height:118px!important;border-bottom:0!important;background:transparent!important}
+.document-sheet .doc-church-block{top:18px!important;width:min(48%,520px)!important;pointer-events:none}
+.document-sheet .doc-church-contact{display:none!important}
+.document-sheet .doc-logo,.document-sheet .doc-photo,.document-sheet .certificate-logo,.document-sheet .nh7-v239-photo{cursor:grab!important;touch-action:none!important;-webkit-user-drag:none!important;user-select:none!important}
+.document-sheet .doc-logo:active,.document-sheet .doc-photo:active{cursor:grabbing!important}
+.document-sheet .doc-logo.nh7-logo-round-v509,.document-sheet .doc-logo[data-nh7-logo-round="1"]{aspect-ratio:1/1!important;border-radius:50%!important;clip-path:circle(50% at 50% 50%)!important;object-fit:contain!important}
+.document-sheet .doc-photo{overflow:hidden!important;transform-origin:center!important}
+.document-sheet .doc-footer{display:grid!important;grid-template-columns:minmax(150px,1fr) minmax(220px,1.35fr) minmax(105px,.75fr)!important;align-items:end!important;gap:18px!important;width:88%!important}
+.document-sheet .doc-footer-church-v510{font-size:9px;line-height:1.55;color:#52667f;text-align:center;word-break:break-word;padding:0 8px 4px}
+.document-sheet .doc-verify{justify-self:end!important;max-width:150px!important}.document-sheet .nh7-doc-qr{width:82px!important;height:82px!important;padding:3px!important}.document-sheet .doc-verify small{font-size:8px!important;line-height:1.3!important}
+.nh7-v510-name-tools{margin:10px 0;padding:12px;border:1px solid #d5e2ea;border-radius:14px;background:#f8fbfd}.nh7-v510-name-tools strong{display:block;margin-bottom:8px}.nh7-v510-name-grid{display:grid;grid-template-columns:1.4fr .7fr .7fr;gap:8px}.nh7-v510-name-grid label{display:grid;gap:4px;font-size:12px}
+.nh7-v510-drag-hint{padding:8px 10px;border-radius:10px;background:#eef7ff;color:#174a73;font-size:12px;line-height:1.6;margin:8px 0}
+.nh7-v510-pdf-busy{position:fixed;z-index:200000;inset:0;display:grid;place-items:center;background:rgba(15,23,42,.65);color:#fff;font:800 16px/1.5 system-ui}.nh7-v510-pdf-busy span{background:#102a43;padding:18px 22px;border-radius:16px}
+@media(max-width:760px){.nh7-v510-name-grid{grid-template-columns:1fr}.document-sheet .doc-footer{grid-template-columns:1fr 1.15fr .7fr!important;gap:8px!important}.document-sheet .doc-footer-church-v510{font-size:7px}.document-sheet .nh7-doc-qr{width:68px!important;height:68px!important}}
+@media print{
+ @page{margin:0}
+ html,body{background:#fff!important;color-adjust:exact!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+ .document-sheet{box-sizing:border-box!important;break-after:avoid!important;break-inside:avoid!important;page-break-after:avoid!important;page-break-inside:avoid!important;print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}
+ .document-sheet.layout-portrait{width:210mm!important;height:296.5mm!important;min-height:296.5mm!important;max-height:296.5mm!important}
+ .document-sheet.layout-landscape{width:297mm!important;height:209.5mm!important;min-height:209.5mm!important;max-height:209.5mm!important}
+ .public-doc-shell{margin:0!important;padding:0!important}.nh7-certificate-back,.public-doc-actions,.public-doc-status,.public-integrity{display:none!important}
+}
