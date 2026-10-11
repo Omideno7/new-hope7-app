@@ -1,6 +1,6 @@
 /* New Hope 7 Admin v2.3.9 Fix 6 — stable in-place document selection inside studio */
 (()=>{'use strict';
-const VERSION='2.3.9-document-select-fix7';
+const VERSION='2.3.9-document-select-fix8';
 const SELECT_KEY='nh7_doc_selected_certificate_v260';
 const DESIGN_KEY='nh7_doc_studio_v239';
 const CONTACT_KEY='nh7_doc_church_contact_v239_fix1';
@@ -8,17 +8,22 @@ const L=(fa,en,hr)=>typeof lang!=='undefined'&&lang==='fa'?fa:typeof lang!=='und
 const E=value=>typeof h==='function'?h(value):String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let injecting=false,listLoading=false,listAttempted=false,applying=false;
 function rows(){try{return Array.isArray(state?.schoolCertificates)?state.schoolCertificates:[]}catch(_){return[]}}
-function currentId(){try{return String((typeof nh7SelectedCertificateId!=='undefined'&&nh7SelectedCertificateId)||sessionStorage.getItem(SELECT_KEY)||'')}catch(_){return String(sessionStorage.getItem(SELECT_KEY)||'')}}
+function currentId(){try{return String(window.NH7CurrentDocumentV508?.selectedId?.()||(typeof nh7SelectedCertificateId!=='undefined'&&nh7SelectedCertificateId)||sessionStorage.getItem(SELECT_KEY)||'')}catch(_){return String(sessionStorage.getItem(SELECT_KEY)||'')}}
 function rowTitle(row){const language=typeof lang!=='undefined'?lang:'fa';return row?.['title_'+language]||row?.title_fa||row?.title_en||row?.title_hr||L('مدرک رسمی','Official document','Službeni dokument')}
 function rowLabel(row){const number=row?.certificate_number||L('بدون شماره','No number','Bez broja'),name=row?.user_name||row?.user_email||L('بدون نام','Unnamed','Bez imena'),status=String(row?.status||'draft').toUpperCase();return `${number} — ${name} — ${rowTitle(row)} [${status}]`}
 function parseObject(value){if(value&&typeof value==='object'&&!Array.isArray(value))return JSON.parse(JSON.stringify(value));try{const out=JSON.parse(String(value||'{}'));return out&&typeof out==='object'?out:{}}catch(_){return{}}}
 function readDesign(row){
-  const raw=parseObject(row?.design);
+  const base=parseObject(row?.design),raw=parseObject(base.studio_v239||{});
   if(row?.layout&&!raw.orientation)raw.orientation=row.layout;
-  if(row?.theme_code&&!raw.theme)raw.theme=row.theme_code;
+  if(!raw.theme){const t=String(row?.theme_code||'');raw.theme=t==='baptism_water'?'baptism_water':t==='emerald_ministry'?'emerald_ministry':t==='classic_gold'?'covenant_gold':t==='official_letterhead'||t==='minimal_clean'?'letterhead':'royal_blue_gold'}
+  if(!raw.frame){const f=String(base.frame||'');raw.frame=f==='double'?'ornate_double':f==='classic'?'classic_gold':f==='water'?'ministry_blue':'clean_line'}
+  if(!raw.paper&&/^#[0-9a-f]{6}$/i.test(String(base.background||'')))raw.paper=base.background;
+  if(!raw.accent)raw.accent=base.border||base.accent;
+  if(!raw.accent2)raw.accent2=base.accent;
+  if(base.styles&&!raw.styles)raw.styles=parseObject(base.styles);
   if(row?.logo_url){raw.logo=Object.assign({},raw.logo||{},{source:row.logo_url,enabled:true});raw.watermark=Object.assign({},raw.watermark||{},{source:row.logo_url})}
-  if(row?.photo_url)raw.photo=Object.assign({},raw.photo||{},{source:row.photo_url,enabled:true});
-  if(row?.signature_url)raw.signature=Object.assign({},raw.signature||{},{source:row.signature_url});
+  if(row?.photo_url&&!raw.photo?.source)raw.photo=Object.assign({},raw.photo||{},{source:row.photo_url,enabled:true});
+  if(row?.signature_url&&!raw.signature?.source)raw.signature=Object.assign({},raw.signature||{},{source:row.signature_url});
   if(row?.church_info&&typeof row.church_info==='object')raw.church=Object.assign({},raw.church||{},row.church_info);
   return raw;
 }
@@ -56,9 +61,10 @@ async function choose(id){
   try{localStorage.setItem(DESIGN_KEY,JSON.stringify(design));if(design.church)localStorage.setItem(CONTACT_KEY,JSON.stringify(design.church))}catch(_){}
   sessionStorage.setItem(SELECT_KEY,id);
   try{
+    if(window.NH7CurrentDocumentV508?.select)window.NH7CurrentDocumentV508.select(id);else if(typeof nh7SelectIssuedCertificate==='function')nh7SelectIssuedCertificate(id);
     if(typeof nh7SelectedCertificateId!=='undefined')nh7SelectedCertificateId=id;
     if(typeof nh7CertificatePreviewMode!=='undefined')nh7CertificatePreviewMode='issued';
-    if(typeof nh7SelectIssuedCertificate==='function')nh7SelectIssuedCertificate(id);window.NH7DocumentStudioFix4?.refreshBase?.();
+    window.NH7DocumentStudioFix4?.loadDesign?.(design);
   }catch(error){console.warn('Issued document content selection',error)}
   await frame();await applyDesignToOpenStudio(design);await frame();window.NH7DocumentStudioFix4?.refreshPreview?.();inject(true);
   setStatus(L(`مدرک «${row.user_name||row.user_email||row.certificate_number||''}» بدون خروج از استودیو بارگذاری شد.`,`The selected document was loaded without leaving the studio.`,`Odabrani dokument je učitan bez izlaska iz studija.`),'success');
