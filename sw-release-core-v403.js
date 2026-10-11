@@ -2,10 +2,12 @@
 'use strict';
 // Issue #115 UI refresh: recache localized assets with the existing cache/storage contract.
 
-const NH7_RELEASE_CORE_VERSION='5.4.4-community-cert-doc521';
+const NH7_RELEASE_CORE_VERSION='5.4.5-document-studio-v2';
 const NH7_RELEASE_CORE_CACHE='nh7-release-core-v544-community-cert-library125-doc521';
 const NH7_RELEASE_DATA_CACHE='nh7-data-stable-v329';
 const NH7_RELEASE_ASSETS=[
+  './document-studio.html','./document-output.html','./document-verify.html','./my-documents.html','./css/document-studio-v2.css','./js/vendor/document-qrcode-1.5.4.js','./js/document-studio-v2/admin-entry.mjs','./js/document-studio-v2/api.mjs','./js/document-studio-v2/archive-entry.mjs','./js/document-studio-v2/archive.mjs','./js/document-studio-v2/catalog.mjs','./js/document-studio-v2/editor.mjs','./js/document-studio-v2/model.mjs','./js/document-studio-v2/output-page.mjs','./js/document-studio-v2/output.mjs','./js/document-studio-v2/renderer.mjs','./js/document-studio-v2/ui.mjs','./js/document-studio-v2/verification.mjs',
+
   './','./index.html','./app-v239.html','./reset-password.html','./manifest.json','./version.json','./offline/index.html',
   './assets/logo.png','./assets/new-hope7-logo-1024.png','./assets/new-hope7-logo-512.png','./assets/new-hope7-logo-192.png','./assets/new-hope7-logo-180.png',
   './css/styles.css','./css/v2.2.0.css','./css/v2.2.2.css','./css/v2.2.3.css','./css/v2.2.4.css','./css/v2.3.0-access-bible.css','./css/v2.3.4-my-notes.css','./css/nh7-book-reader-v280.css','./css/nh7-library-collections-v322.css','./css/nh7-secure-media-v270.css','./css/nh7-secure-media-watermark-v272.css','./css/nh7-apocrypha-v270.css','./css/nh7-spiritual-plans-v240.css','./css/nh7-appearance-v427.css','./css/nh7-bible-keywords-v450.css',
@@ -23,6 +25,25 @@ self.addEventListener('message',event=>{const data=event.data||{};if(data.type!=
 
 const NH7_READER_RELEASE_PATHS_V452=new Set(["js/nh7-library-language-v321.js", "js/nh7-library-security-v125.js", "js/nh7-access-bootstrap-v230.js", "js/nh7-library-collections-v322.js", "js/nh7-book-reader-v283.js", "js/nh7-offline-persistence-v323.js", "js/nh7-community-v502.js", "js/nh7-exam-review-v566.js", "js/app.js", "js/nh7-bible-deeplink-v565.js", "js/nh7-app-enhancements-v230.js", "js/nh7-my-notes-v234.js", "js/nh7-apocrypha-preview-v240.js", "js/nh7-apocrypha-actions-v393.js", "js/nh7-reader-ux-v251.js", "js/nh7-reader-toolbar-v452.js", "js/nh7-my-notes-categories-v452.js", "css/nh7-reader-toolbar-v452.css", "css/nh7-notes-categories-v452.css", "js/nh7-apocrypha-v270.js", "js/nh7-theme-studio-v453.js", "js/nh7-original-language-v453.js", "js/nh7-fonts-v454.js", "js/nh7-audio-quick-bible-v454.js", "css/nh7-theme-studio-v453.css", "css/nh7-study-reader-v453.css", "css/nh7-fonts-quick-bible-v454.css", "data/lexicon/original-language-core-v454.json", "assets/fonts/v453/estedad.woff2", "assets/fonts/v453/inter.woff2", "assets/fonts/v453/lora.woff2", "assets/fonts/v453/manifest.json", "assets/fonts/v453/notonaskharabic.woff2", "assets/fonts/v453/nunitosans.woff2", "assets/fonts/v453/vazirmatn.woff2", "assets/fonts/v454/amiri.woff2", "assets/fonts/v454/manifest.json", "assets/fonts/v454/markazitext.woff2", "js/nh7-header-date-v455.js", "css/nh7-header-date-v455.css", "css/nh7-navigation-v456.css", "css/nh7-theme-gallery-v457.css", "css/nh7-appearance-personalization-v514.css", "css/nh7-icons-v517.css", "css/nh7-player-volume-v521.css", "js/nh7-appearance-personalization-v514.js", "js/nh7-appearance-i18n-v515.js", "js/nh7-icons-v517.js", "js/nh7-celebrations-v464.js", "css/nh7-celebrations-v464.css", "css/nh7-growth-v463.css", "js/nh7-school-path-v351.js", "js/nh7-settings-controller-v403.js", "js/nh7-audio-classic-v484.js", "js/nh7-audio-route-stability-v423.js", "js/nh7-school-drafts-v468.js", "js/nh7-store-review-v469.js", "css/nh7-store-review-v469.css", "js/nh7-soul-winning-v472.js", "css/nh7-soul-winning-v472.css"]);
 
+// V2 executable assets only; no RPC response or document/user-data caching.
+NH7_READER_RELEASE_PATHS_V452.add('document-studio.html');
+NH7_READER_RELEASE_PATHS_V452.add('document-output.html');
+NH7_READER_RELEASE_PATHS_V452.add('document-verify.html');
+NH7_READER_RELEASE_PATHS_V452.add('my-documents.html');
+NH7_READER_RELEASE_PATHS_V452.add('css/document-studio-v2.css');
+NH7_READER_RELEASE_PATHS_V452.add('js/vendor/document-qrcode-1.5.4.js');
+NH7_READER_RELEASE_PATHS_V452.add('js/document-studio-v2/admin-entry.mjs');
+NH7_READER_RELEASE_PATHS_V452.add('js/document-studio-v2/api.mjs');
+NH7_READER_RELEASE_PATHS_V452.add('js/document-studio-v2/archive-entry.mjs');
+NH7_READER_RELEASE_PATHS_V452.add('js/document-studio-v2/archive.mjs');
+NH7_READER_RELEASE_PATHS_V452.add('js/document-studio-v2/catalog.mjs');
+NH7_READER_RELEASE_PATHS_V452.add('js/document-studio-v2/editor.mjs');
+NH7_READER_RELEASE_PATHS_V452.add('js/document-studio-v2/model.mjs');
+NH7_READER_RELEASE_PATHS_V452.add('js/document-studio-v2/output-page.mjs');
+NH7_READER_RELEASE_PATHS_V452.add('js/document-studio-v2/output.mjs');
+NH7_READER_RELEASE_PATHS_V452.add('js/document-studio-v2/renderer.mjs');
+NH7_READER_RELEASE_PATHS_V452.add('js/document-studio-v2/ui.mjs');
+NH7_READER_RELEASE_PATHS_V452.add('js/document-studio-v2/verification.mjs');
 self.addEventListener('fetch',event=>{
   if(event.request.method!=='GET')return;
   const url=new URL(event.request.url),scope=new URL(self.registration.scope);

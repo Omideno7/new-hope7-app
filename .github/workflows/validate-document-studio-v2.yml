@@ -1,0 +1,45 @@
+name: Document Studio V2 regression
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  isolated-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install isolated test tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/document-tools" --no-audit --no-fund @electric-sql/pglite@0.3.14 playwright@1.62.1 jsqr@1.4.0
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils
+          "$RUNNER_TEMP/document-tools/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Model and actual PostgreSQL security/lifecycle regression
+        run: |
+          export NODE_PATH="$RUNNER_TEMP/document-tools/node_modules"
+          python3 scripts/verify-document-studio-v2-wiring.py
+          node scripts/verify-document-studio-v2.cjs
+      - name: Actual editor / public / PDF / print / archive regression
+        run: |
+          export NODE_PATH="$RUNNER_TEMP/document-tools/node_modules"
+          export CHROMIUM_PATH="$(node -e "console.log(require('playwright').chromium.executablePath())")"
+          python3 -m http.server 8878 --bind 127.0.0.1 > "$RUNNER_TEMP/document-server.log" 2>&1 &
+          node scripts/verify-document-studio-v2-browser.cjs http://127.0.0.1:8878
+      - name: Syntax and whitespace
+        run: |
+          for file in js/document-studio-v2/*.mjs scripts/document-studio-v2/*.cjs scripts/verify-document-studio-v2*.cjs; do node --check "$file"; done
+          git diff --check
+      - name: Preserve generated fixture PDFs for manual review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: document-studio-v2-fixture-output
+          path: /tmp/nh7-studio-v2-*/
+          if-no-files-found: warn
