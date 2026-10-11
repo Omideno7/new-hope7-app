@@ -1,0 +1,155 @@
+/* New Hope 7 Document UX v5.2.0 — one canonical A4 layout for Admin, Full Studio, public link and PDF. */
+.document-sheet{
+  position:relative!important;
+  box-sizing:border-box!important;
+  isolation:isolate!important;
+  overflow:hidden!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  text-align:center!important;
+  color-scheme:light!important;
+  filter:none!important;
+  opacity:1!important;
+  margin:12px auto!important;
+}
+.document-sheet.layout-portrait{width:min(100%,760px)!important;aspect-ratio:210/297!important;min-height:0!important;height:auto!important}
+.document-sheet.layout-landscape{width:min(100%,1120px)!important;aspect-ratio:297/210!important;min-height:0!important;height:auto!important}
+
+/* The page itself is the coordinate system. Logo/photo X/Y sliders therefore mean the same everywhere. */
+.document-sheet>.doc-letterhead{position:static!important;display:block!important;flex:0 0 120px!important;width:100%!important;min-height:120px!important;height:120px!important;padding:0!important;margin:0!important;border:0!important;background:transparent!important}
+.document-sheet .doc-church-block{position:absolute!important;left:50%!important;right:auto!important;top:20px!important;transform:translateX(-50%)!important;width:min(58%,620px)!important;margin:0!important;text-align:center!important;z-index:5!important;pointer-events:none!important}
+.document-sheet .doc-church{margin:0!important;text-align:center!important}
+.document-sheet .doc-church-contact{display:none!important}
+
+.document-sheet .doc-logo{
+  pointer-events:none!important;
+  cursor:default!important;
+  touch-action:auto!important;
+  user-select:none!important;
+  -webkit-user-drag:none!important;
+  box-sizing:border-box!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+}
+.document-sheet .nh7-doc-photo-frame-v520,
+.document-sheet .nh7-photo-frame-public-v510{
+  pointer-events:none!important;
+  cursor:default!important;
+  touch-action:auto!important;
+  box-sizing:border-box!important;
+  background:#fff!important;
+  border:2px solid var(--v239-accent,var(--doc-border,#17375e))!important;
+  box-shadow:0 5px 16px rgba(15,23,42,.13)!important;
+}
+.document-sheet .nh7-doc-photo-frame-v520>.doc-photo,
+.document-sheet .nh7-photo-frame-public-v510>.doc-photo{
+  pointer-events:none!important;
+  cursor:default!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  box-shadow:none!important;
+  max-width:none!important;
+  max-height:none!important;
+}
+
+.document-sheet>.doc-main{
+  position:relative!important;
+  z-index:3!important;
+  flex:1 1 auto!important;
+  min-height:0!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  padding:14px 4% 155px!important;
+}
+.document-sheet .doc-body{max-width:86%!important}
+.document-sheet .doc-fields{max-width:88%!important}
+.document-sheet .doc-field{border-bottom-color:rgba(23,55,94,.28)!important}
+
+.document-sheet>.doc-footer{
+  position:absolute!important;
+  left:7%!important;
+  right:7%!important;
+  bottom:34px!important;
+  width:86%!important;
+  margin:0!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:minmax(150px,1fr) minmax(180px,1.25fr) minmax(96px,.72fr)!important;
+  align-items:end!important;
+  gap:16px!important;
+  z-index:8!important;
+}
+.document-sheet .doc-sign{min-width:0!important;max-width:100%!important}
+.document-sheet .doc-footer-church-v520,
+.document-sheet .doc-footer-church-v510{
+  min-width:0!important;
+  align-self:end!important;
+  text-align:center!important;
+  color:#52667f!important;
+  font-size:8.5px!important;
+  line-height:1.35!important;
+  overflow-wrap:anywhere!important;
+  word-break:break-word!important;
+  padding:0 4px 4px!important;
+}
+.document-sheet .doc-verify{min-width:0!important;max-width:118px!important;justify-self:end!important;text-align:center!important;overflow:visible!important}
+.document-sheet .nh7-doc-qr{display:block!important;width:64px!important;height:64px!important;max-width:64px!important;max-height:64px!important;padding:2px!important;margin:0 auto 3px!important;background:#fff!important;box-sizing:content-box!important}
+.document-sheet .doc-verify small{font-size:8px!important;line-height:1.28!important;overflow-wrap:anywhere!important}
+
+/* Full Studio shows the same DOM; only the container is responsive. */
+.nh7-f4-preview{background:#dce6eb!important;overflow:auto!important}
+.nh7-f4-preview-host{display:block!important;min-height:300px!important;overflow:auto!important;padding:0!important}
+.nh7-f4-preview-host>.document-sheet{min-width:0!important;max-width:1120px!important;transform:none!important;transform-origin:top center!important;margin:0 auto!important}
+.nh7-f4-preview-host>.document-sheet.layout-portrait{max-width:760px!important}
+.nh7-f4-preview-host>.document-sheet.layout-landscape{max-width:1120px!important}
+
+/* PDF staging gets fixed logical A4 proportions, independent of the current viewport. */
+.document-sheet.nh7-v520-capture{max-width:none!important;min-width:0!important;margin:0!important;box-shadow:none!important;transform:none!important}
+.document-sheet.nh7-v520-capture.layout-portrait{width:760px!important;height:1075px!important;min-height:1075px!important;max-height:1075px!important}
+.document-sheet.nh7-v520-capture.layout-landscape{width:1120px!important;height:792px!important;min-height:792px!important;max-height:792px!important}
+.nh7-v520-pdf-busy{position:fixed;z-index:2147483646;inset:0;display:grid;place-items:center;background:rgba(15,23,42,.66);color:#fff;font:800 16px/1.5 system-ui,sans-serif}
+.nh7-v520-pdf-busy>span{background:#102a43;padding:18px 22px;border-radius:16px;box-shadow:0 12px 35px rgba(0,0,0,.25)}
+
+/* No direct drag. Placement is intentionally controlled by Studio sliders only. */
+.document-sheet .doc-logo,
+.document-sheet .doc-photo,
+.document-sheet .nh7-doc-photo-frame-v520,
+.document-sheet .nh7-photo-frame-public-v510{transition:none!important;will-change:auto!important}
+
+@media(max-width:900px){
+  .nh7-f4-layout{display:block!important;overflow:auto!important;padding:8px!important}
+  .nh7-f4-controls,.nh7-f4-preview{overflow:visible!important;min-height:auto!important}
+  .nh7-f4-preview{margin:16px 0 calc(24px + env(safe-area-inset-bottom))!important}
+  .nh7-f4-preview-host{overflow:auto!important;min-height:360px!important}
+  .nh7-f4-preview-host>.document-sheet{width:100%!important;min-width:0!important;transform:none!important;margin-bottom:0!important}
+}
+@media(max-width:700px){
+  .document-sheet{padding-left:18px!important;padding-right:18px!important}
+  .document-sheet>.doc-letterhead{flex-basis:96px!important;min-height:96px!important;height:96px!important}
+  .document-sheet .doc-church-block{top:14px!important;width:56%!important}
+  .document-sheet>.doc-main{padding:10px 2% 126px!important}
+  .document-sheet>.doc-footer{left:5%!important;right:5%!important;width:90%!important;bottom:24px!important;grid-template-columns:1fr 1.1fr .68fr!important;gap:7px!important}
+  .document-sheet .doc-footer-church-v520,.document-sheet .doc-footer-church-v510{font-size:7px!important}
+  .document-sheet .nh7-doc-qr{width:54px!important;height:54px!important;max-width:54px!important;max-height:54px!important}
+}
+
+.document-sheet.layout-portrait{page:nh7V520Portrait}.document-sheet.layout-landscape{page:nh7V520Landscape}
+@page nh7V520Portrait{size:A4 portrait;margin:0}
+@page nh7V520Landscape{size:A4 landscape;margin:0}
+@media print{
+  html,body{margin:0!important;padding:0!important;background:#fff!important;color-scheme:light!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .public-doc-shell{max-width:none!important;margin:0!important;padding:0!important;background:#fff!important}
+  .public-doc-shell>*:not(.document-sheet){display:none!important}
+  .document-sheet{box-shadow:none!important;margin:0!important;filter:none!important;opacity:1!important;color-scheme:light!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .document-sheet.layout-portrait{width:210mm!important;height:297mm!important;min-height:297mm!important;max-height:297mm!important}
+  .document-sheet.layout-landscape{width:297mm!important;height:210mm!important;min-height:210mm!important;max-height:210mm!important}
+  .nh7-f4-card,.nh7-f4-fab,.nh7-f4-head,.nh7-f4-controls,.nh7-f5-cert-select{display:none!important}
+}
