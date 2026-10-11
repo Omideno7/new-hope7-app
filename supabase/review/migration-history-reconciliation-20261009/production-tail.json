@@ -268,13 +268,20 @@
       "sql_md5": "c5426e87ef5ffa5fdfa6613e23f3ecde",
       "sql_chars": 1804,
       "status": "present_exact_deployed"
+    },
+    {
+      "version": "20261011073048",
+      "name": "school_exam_retry_final_completion_consistency_v1",
+      "sql_md5": "abdb63766b1347d209da8bc07e48ec3e",
+      "sql_chars": 3724,
+      "status": "present_exact_deployed"
     }
   ],
   "parity": {
-    "production_entries": 38,
-    "exact_raw_hash_matches": 38,
+    "production_entries": 39,
+    "exact_raw_hash_matches": 39,
     "missing_checkpoint_files": 0,
     "newer_pending_migrations": 0
   },
-  "parity_verified_at": "2026-10-10"
+  "parity_verified_at": "2026-10-11"
 }
