@@ -1,6 +1,6 @@
 /* New Hope 7 Admin v2.3.9 Fix 6 — stable in-place document selection inside studio */
 (()=>{'use strict';
-const VERSION='2.3.9-document-select-fix6';
+const VERSION='2.3.9-document-select-fix7';
 const SELECT_KEY='nh7_doc_selected_certificate_v260';
 const DESIGN_KEY='nh7_doc_studio_v239';
 const CONTACT_KEY='nh7_doc_church_contact_v239_fix1';
@@ -58,9 +58,9 @@ async function choose(id){
   try{
     if(typeof nh7SelectedCertificateId!=='undefined')nh7SelectedCertificateId=id;
     if(typeof nh7CertificatePreviewMode!=='undefined')nh7CertificatePreviewMode='issued';
-    if(typeof nh7SelectIssuedCertificate==='function')nh7SelectIssuedCertificate(id);
+    if(typeof nh7SelectIssuedCertificate==='function')nh7SelectIssuedCertificate(id);window.NH7DocumentStudioFix4?.refreshBase?.();
   }catch(error){console.warn('Issued document content selection',error)}
-  await frame();await applyDesignToOpenStudio(design);inject(true);
+  await frame();await applyDesignToOpenStudio(design);await frame();window.NH7DocumentStudioFix4?.refreshPreview?.();inject(true);
   setStatus(L(`مدرک «${row.user_name||row.user_email||row.certificate_number||''}» بدون خروج از استودیو بارگذاری شد.`,`The selected document was loaded without leaving the studio.`,`Odabrani dokument je učitan bez izlaska iz studija.`),'success');
 }
 function selectionSignature(){return `${listLoading?'loading':'ready'}#${rows().map(row=>`${row.id}:${row.updated_at||row.approved_at||row.created_at||''}`).join('|')}#${currentId()}`}
