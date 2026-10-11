@@ -26,9 +26,9 @@ except Exception as e:
     guide={}
 
 # Assets/wiring.
-need('js/nh7-community-v502.js?v=5.0.7-prayer-reply' in index,'index does not load Community runtime')
+need('js/nh7-community-v502.js?v=5.0.8-mobile-audio' in index,'index does not load Community runtime')
 need(index.find('js/nh7-community-v502.js') < index.find('js/app.js'),'Community runtime must be declared before app.js')
-need('community=507' in index,'app cache tag not rotated for Community')
+need('community=508' in index,'app cache tag not rotated for Community')
 release_match=re.search(r"NH7_RELEASE_CORE_VERSION='([^']+)'",sw)
 need(bool(release_match),'release core version declaration missing')
 release_version=release_match.group(1) if release_match else ''
@@ -62,6 +62,9 @@ need('60 MB' not in community and '۶۰ مگابایت' not in community,'stale 
 need("nh7_prayer_requests_v502" in community,'prayer backend contract missing')
 need("nh7_testimonies_v502" in community,'testimony backend contract missing')
 need("nh7_public_testimony_feed_v502" in community,'public testimony RPC missing')
+need('publicAudioCardV573' in community and 'bindPublicAudioV573' in community,'public testimony playback hardening missing')
+need('audio/mp4;codecs=mp4a.40.2' in community and 'audio/webm;codecs=opus' in community,'cross-platform testimony recorder codec preference missing')
+need('playsinline webkit-playsinline' in community,'public testimony player must stay inline on iOS')
 need("window.NH7CommunityV502={VERSION,renderTestimonies,renderPrayer,resumePending,dispose};" in community,'stale cloud Profile export must stay disabled')
 need('service_role' not in (community+app).lower(),'service_role reference found in browser runtime')
 need('SUPABASE_SECRET' not in (community+app),'secret-key symbol found in browser runtime')
