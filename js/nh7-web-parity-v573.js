@@ -13,7 +13,18 @@ let frame=0;
 function nativePlatform(){
   try{return !!(window.Capacitor?.isNativePlatform?.()||['ios','android'].includes(window.Capacitor?.getPlatform?.())||window.cordova)}catch(_){return false}
 }
-function syncPlatform(){document.documentElement.classList.toggle('nh7-parity-native',nativePlatform())}
+function syncPlatform(){
+  const root=document.documentElement;root.classList.toggle('nh7-parity-native',nativePlatform());
+  const ios=window.Capacitor?.getPlatform?.()==='ios'||window.cordova?.platformId==='ios';
+  root.classList.toggle('nh7-parity-ios',ios);
+  if(ios){
+    // 100dvh can span unsafe regions in WKWebView. Size the grid to the visible
+    // viewport; safe-area padding belongs inside its header/nav, never subtracted twice.
+    const height=Math.min(window.innerHeight,window.visualViewport?.height||window.innerHeight);
+    const value=Math.round(height)+'px';
+    if(height>0&&root.style.getPropertyValue('--nh7-parity-ios-viewport-height')!==value)root.style.setProperty('--nh7-parity-ios-viewport-height',value);
+  }else root.style.removeProperty('--nh7-parity-ios-viewport-height');
+}
 function measure(){
   frame=0;syncPlatform();const root=document.documentElement,header=document.querySelector('#appShell > .topbar'),nav=document.querySelector('#appShell > .bottom-nav');
   if(!header||!nav)return;
