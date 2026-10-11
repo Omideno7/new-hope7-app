@@ -18,7 +18,7 @@
   </style>
   <link rel="stylesheet" href="css/v2.2.3.css?v=2.2.3">
   <link rel="stylesheet" href="css/admin-v2.3.9-document-runtime-fix4.css?v=2.3.9-f9">
-  <link rel="stylesheet" href="css/nh7-document-ux-v520.css?v=5.2.1">
+  <link rel="stylesheet" href="css/nh7-document-ux-v520.css?v=5.2.1&fit=522">
   <script src="js/nh7-document-renderer-v521.js?v=5.2.1"></script>
   <script src="js/vendor/html2canvas-1.4.1.min.js"></script>
 </head>
@@ -36,7 +36,7 @@ function canvas(d){return window.NH7DocumentRendererV521.render(Object.assign({}
 function render(d){const l=d.language||'fa';document.documentElement.lang=l;document.documentElement.dir=l==='fa'?'rtl':'ltr';app.className='public-doc-shell';const valid=d.status==='approved';app.innerHTML=`<div class="public-doc-status"><span class="document-status ${valid?'valid':'revoked'}">${esc(valid?label('این سند رسمی و معتبر است','This is an official valid document','Ovo je službeni valjani dokument',l):label('این سند لغو شده است','This document has been revoked','Dokument je poništen',l))}</span></div><div class="public-integrity"><div><strong>${esc(label('شماره سند','Document number','Broj dokumenta',l))}</strong><br>${esc(d.certificate_number||'-')}</div><div><strong>${esc(label('کد اعتبار یکتا','Unique verification code','Jedinstveni kod',l))}</strong><br>${esc(d.verification_code||'-')}</div><div><strong>${esc(label('اثر دیجیتال','Digital integrity','Digitalni integritet',l))}</strong><br>${esc(String(d.content_hash||'').slice(0,20)||'-')}…</div></div>${canvas(d)}<div class="public-doc-actions"><button onclick="location.href='https://omideno7church.com/'">🌐 ${esc(label('وب‌سایت کلیسای امیدنو۷','New Hope 7 Church Website','Web-stranica crkve New Hope 7',l))}</button><button onclick="NH7DocumentUXV520.printPublic()">🖨 ${esc(label('چاپ','Print','Ispis',l))}</button><button onclick="NH7DocumentUXV520.downloadPublicPdf()">⬇ ${esc(label('دانلود PDF ثابت','Download locked PDF','Preuzmi zaključani PDF',l))}</button></div>`;const draw=()=>{const c=document.getElementById('certificateQr');if(!c||!window.QRCode)return setTimeout(draw,80);QRCode.toCanvas(c,new URL('verify-certificate-v508.html?token='+encodeURIComponent(token)+'&v=508',location.href).href,{width:150,margin:1,errorCorrectionLevel:'M'},()=>{})};draw()}
 (async()=>{if(!/^[0-9a-f-]{36}$/i.test(token)){app.innerHTML='<h2>لینک سند معتبر نیست</h2><p>Invalid document link.</p>';return}try{const d=await rpc();if(!d||!d.found)throw new Error('Not found');render(d)}catch(e){console.error(e);app.innerHTML='<h2>سند پیدا نشد</h2><p>این لینک نامعتبر است یا سند در دسترس نیست.</p><p>Document not found.</p>'}})()})();
 </script>
-<script src="js/nh7-document-ux-v520.js?v=5.2.1"></script>
+<script src="js/nh7-document-ux-v520.js?v=5.2.1&fit=522"></script>
 <script>if(new URL(location.href).searchParams.get('download')==='1')setTimeout(()=>window.NH7DocumentUXV520?.downloadPublicPdf?.(),900);</script>
 </body>
 </html>

@@ -32,7 +32,7 @@ checks += [check('copyCanvasPixels' in ux and 'nh7-v520-capture' in ux,'PDF capt
 checks += [check("certificate.html?token='+encodeURIComponent(row.public_token||'')+'&v=520" in core,'Copy Link URL cache-busts to v5.2.0')]
 checks += [check('NH7DocumentUXV520.printPublic()' in public and 'NH7DocumentUXV520.downloadPublicPdf()' in public,'Public Print/PDF buttons use canonical runtime')]
 checks += [check("size:88,x:88,y:9" in renderer and "size:110,x:9,y:18" in renderer,'Public default asset coordinates match Full Studio defaults')]
-checks += [check("BUILD='2.3.9.68-admin-v521'" in stable and 'document-runtime-fix4\\.js\\?v=' in stable,'Stable Admin cache key and runtime cache rewrite are updated')]
+checks += [check("BUILD='2.3.9.68-admin-v521-fit522'" in stable and 'document-runtime-fix4\\.js\\?v=' in stable,'Stable Admin cache key and runtime cache rewrite are updated')]
 checks += [check('NH7DocumentRendererV521.render' in core and 'NH7DocumentRendererV521.render' in public,'Admin/public share the document renderer')]
 if not all(checks): sys.exit(1)
 print('Document v5.2.0 verification passed.')

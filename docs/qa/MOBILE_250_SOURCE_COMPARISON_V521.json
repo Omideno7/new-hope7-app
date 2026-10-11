@@ -1,0 +1,951 @@
+{
+  "main": "67d829de0d8d4846e309a99bcd98c4c005b3b030",
+  "ios": {
+    "branch": "baseline/ios-2.5.0-approved",
+    "sha": "dba24de9b35316e5e0a72d83966954988ecd0046",
+    "bundle": "repository root",
+    "mobile_only_commits": [],
+    "active_assets": [
+      {
+        "file": "css/nh7-apocrypha-v270.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-appearance-personalization-v514.css",
+        "status": "different"
+      },
+      {
+        "file": "css/nh7-appearance-v427.css",
+        "status": "different"
+      },
+      {
+        "file": "css/nh7-bible-keywords-v450.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-book-reader-v280.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-celebrations-v464.css",
+        "status": "different"
+      },
+      {
+        "file": "css/nh7-finalqa-v558.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-fonts-quick-bible-v454.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-growth-v463.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-header-date-v455.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-icons-v517.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-library-collections-v322.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-navigation-v456.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-notes-categories-v452.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-player-volume-v521.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-reader-toolbar-v452.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-secure-media-v270.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-secure-media-watermark-v272.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-soul-winning-v472.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-spiritual-plans-v240.css",
+        "status": "different"
+      },
+      {
+        "file": "css/nh7-store-review-v469.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-study-reader-v453.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-theme-gallery-v457.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-theme-studio-v453.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/styles.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/v2.2.0.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/v2.2.2.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/v2.2.3.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/v2.2.4.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/v2.3.0-access-bible.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/v2.3.4-my-notes.css",
+        "status": "identical"
+      },
+      {
+        "file": "js/app.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-access-bootstrap-v230.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-apocrypha-v270.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-app-enhancements-v230.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-appearance-personalization-v514.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-audio-classic-v484.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-audio-library-v500.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-audio-miniplayer-v487.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-audio-quick-bible-v454.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-audio-route-stability-v423.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-auth-recovery-v342.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-auth-signup-guard-v343.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-auto-update-v335.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-bible-keywords-v451.js",
+        "status": "identical",
+        "reference": "transitive module import"
+      },
+      {
+        "file": "js/nh7-book-reader-v283.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-celebrations-v464.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-delete-account-v253.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-fasting-practical-note-removal-v413.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-finalqa-v558.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-fonts-v454.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-header-date-v455.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-icons-v517.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-inbox-badge-sync-v418.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-large-mov-native-fallback-v273.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-library-collections-v322.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-library-language-v321.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-media-player-v500.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-my-notes-categories-v452.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-my-notes-v234.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-note-text-v501.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-notifications-zagreb-v334.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-offline-core-v327.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-offline-data-v422.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-offline-persistence-v323.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-offline-playback-bridge-v332.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-offline-startup-v327.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-original-language-v453.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-protected-audio-gate-v316.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-push-account-bind-v362.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-qna-i18n-v341.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-reader-toolbar-v452.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-registration-canonical-v353.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-registration-final-guard-v401.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-registration-repeat-guard-v402.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-school-drafts-v468.js",
+        "status": "identical",
+        "reference": "transitive module import"
+      },
+      {
+        "file": "js/nh7-school-exam-v344.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-school-media-session-v262.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-school-path-v351.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-school-registration-v342.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-secure-media-fix-v271.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-secure-media-v270.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-secure-media-watermark-v272.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-security-core-v340.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-sermon-catalog-hotfix-v424.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-sermon-list-detail-v445.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-sermon-social-v443.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-settings-account-v252.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-settings-controller-v403.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-soul-winning-v472.js",
+        "status": "different",
+        "reference": "transitive module import"
+      },
+      {
+        "file": "js/nh7-spiritual-plans-v240.js",
+        "status": "identical",
+        "reference": "transitive module import"
+      },
+      {
+        "file": "js/nh7-spiritual-plans-v412.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-store-review-v469.js",
+        "status": "identical",
+        "reference": "transitive module import"
+      },
+      {
+        "file": "js/nh7-theme-studio-v453.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-ui-stability-v329.js",
+        "status": "different"
+      }
+    ],
+    "all_missing_ui_files": []
+  },
+  "android": {
+    "branch": "baseline/android-2.5.0-25002-published",
+    "sha": "a177cdc7d995894868cf84bbe00c2dfa05ad6e25",
+    "bundle": "android-release-25002/www/",
+    "mobile_only_commits": [
+      "a177cdc7d995894868cf84bbe00c2dfa05ad6e25 Make Android scroll compatibility setup idempotent",
+      "61b5b53fe0f81f08157811dd6de012d44588dce7 Harden Android root scrolling and Amen gate cleanup",
+      "7974d342e661753ffaa578a6e01c103721c0307a Add real Android phone and fold touch-scroll diagnostics",
+      "e20d1804357f9db539bf59c409fd7d0cf60d5cfa Fix Android 2.5.0 touch scrolling by scoping iOS overscroll guard",
+      "3bb4600f80a857eff3550c1c6355f28070a877f1 Support legacy Android WebView UI APIs and verify persisted notes through cold restart and upgrade",
+      "68d64e3e29e17bde63a374cbfb81f9e9c3192e46 Fix native push injection on older Android WebViews and verify real plugin bridge",
+      "f6e118db290e5404cb69303d36730885c951b65d Refresh Android WebView resource caches on native upgrades",
+      "8925112af211a2438e833aec57c3fc2b16ddf858 Build Android 2.5.0 (25002) from the complete approved Test 5.8 payload"
+    ],
+    "active_assets": [
+      {
+        "file": "css/nh7-amen-theme-v531.css",
+        "status": "missing from main"
+      },
+      {
+        "file": "css/nh7-apocrypha-v270.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-appearance-personalization-v514.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-appearance-v427.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-bible-keywords-v450.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-book-reader-v280.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-celebrations-v464.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-finalqa-v551.css",
+        "status": "missing from main"
+      },
+      {
+        "file": "css/nh7-finalqa-v553.css",
+        "status": "missing from main"
+      },
+      {
+        "file": "css/nh7-finalqa-v554.css",
+        "status": "missing from main"
+      },
+      {
+        "file": "css/nh7-finalqa-v555.css",
+        "status": "missing from main"
+      },
+      {
+        "file": "css/nh7-finalqa-v556.css",
+        "status": "missing from main"
+      },
+      {
+        "file": "css/nh7-finalqa-v557.css",
+        "status": "missing from main"
+      },
+      {
+        "file": "css/nh7-finalqa-v558.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-fonts-quick-bible-v454.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-global-search-exam-v540.css",
+        "status": "missing from main"
+      },
+      {
+        "file": "css/nh7-growth-v463.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-header-date-v455.css",
+        "status": "different"
+      },
+      {
+        "file": "css/nh7-icons-v517.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-inbox-v542.css",
+        "status": "missing from main"
+      },
+      {
+        "file": "css/nh7-library-collections-v322.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-navigation-v456.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-notes-categories-v452.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-plans-theme-v533.css",
+        "status": "missing from main"
+      },
+      {
+        "file": "css/nh7-player-volume-v521.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-reader-toolbar-v452.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-secure-media-v270.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-secure-media-watermark-v272.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-soul-winning-v472.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-spiritual-plans-v240.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-store-review-v469.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-study-reader-v453.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/nh7-tablet-v530.css",
+        "status": "missing from main"
+      },
+      {
+        "file": "css/nh7-theme-gallery-v457.css",
+        "status": "different"
+      },
+      {
+        "file": "css/nh7-theme-studio-v453.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/styles.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/v2.2.0.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/v2.2.2.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/v2.2.3.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/v2.2.4.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/v2.3.0-access-bible.css",
+        "status": "identical"
+      },
+      {
+        "file": "css/v2.3.4-my-notes.css",
+        "status": "identical"
+      },
+      {
+        "file": "js/app.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-access-bootstrap-v230.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-apocrypha-v270.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-app-enhancements-v230.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-appearance-personalization-v514.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-audio-classic-v484.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-audio-library-v500.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-audio-miniplayer-v487.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-audio-quick-bible-v454.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-audio-route-stability-v423.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-auth-recovery-v342.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-auth-signup-guard-v343.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-auto-update-v335.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-bible-keywords-v451.js",
+        "status": "different",
+        "reference": "transitive module import"
+      },
+      {
+        "file": "js/nh7-book-reader-v283.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-celebrations-v464.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-community-v502.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-delete-account-v253.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-exam-review-v540.js",
+        "status": "missing from main",
+        "reference": "transitive module import"
+      },
+      {
+        "file": "js/nh7-fasting-practical-note-removal-v413.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-finalqa-v553.js",
+        "status": "missing from main"
+      },
+      {
+        "file": "js/nh7-finalqa-v554.js",
+        "status": "missing from main"
+      },
+      {
+        "file": "js/nh7-finalqa-v555.js",
+        "status": "missing from main"
+      },
+      {
+        "file": "js/nh7-finalqa-v558.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-fonts-v454.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-global-search-v540.js",
+        "status": "missing from main",
+        "reference": "transitive module import"
+      },
+      {
+        "file": "js/nh7-header-date-v455.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-icons-v517.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-inbox-badge-sync-v418.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-large-mov-native-fallback-v273.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-library-collections-v322.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-library-language-v321.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-media-player-v500.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-my-notes-categories-v452.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-my-notes-v234.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-note-text-v501.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-notifications-zagreb-v334.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-offline-core-v327.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-offline-data-v422.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-offline-persistence-v323.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-offline-playback-bridge-v332.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-offline-startup-v327.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-original-language-v453.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-protected-audio-gate-v316.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-push-account-bind-v364.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-qna-i18n-v341.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-reader-toolbar-v452.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-registration-canonical-v353.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-registration-final-guard-v401.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-registration-repeat-guard-v402.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-school-drafts-v468.js",
+        "status": "identical",
+        "reference": "transitive module import"
+      },
+      {
+        "file": "js/nh7-school-exam-v344.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-school-media-session-v262.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-school-path-v351.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-school-registration-v342.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-secure-media-fix-v271.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-secure-media-v270.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-secure-media-watermark-v272.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-security-core-v340.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-sermon-catalog-hotfix-v424.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-sermon-list-detail-v445.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-sermon-social-v443.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-settings-account-v252.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-settings-controller-v403.js",
+        "status": "identical"
+      },
+      {
+        "file": "js/nh7-soul-winning-v472.js",
+        "status": "different",
+        "reference": "transitive module import"
+      },
+      {
+        "file": "js/nh7-spiritual-plans-v240.js",
+        "status": "different",
+        "reference": "transitive module import"
+      },
+      {
+        "file": "js/nh7-spiritual-plans-v412.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-store-review-v469.js",
+        "status": "identical",
+        "reference": "transitive module import"
+      },
+      {
+        "file": "js/nh7-theme-studio-v453.js",
+        "status": "different"
+      },
+      {
+        "file": "js/nh7-ui-stability-v329.js",
+        "status": "different"
+      }
+    ],
+    "all_missing_ui_files": [
+      {
+        "file": "css/nh7-amen-theme-v531.css",
+        "active_entry_reference": true,
+        "active_transitive_reference": false
+      },
+      {
+        "file": "css/nh7-finalqa-v551.css",
+        "active_entry_reference": true,
+        "active_transitive_reference": false
+      },
+      {
+        "file": "css/nh7-finalqa-v553.css",
+        "active_entry_reference": true,
+        "active_transitive_reference": false
+      },
+      {
+        "file": "css/nh7-finalqa-v554.css",
+        "active_entry_reference": true,
+        "active_transitive_reference": false
+      },
+      {
+        "file": "css/nh7-finalqa-v555.css",
+        "active_entry_reference": true,
+        "active_transitive_reference": false
+      },
+      {
+        "file": "css/nh7-finalqa-v556.css",
+        "active_entry_reference": true,
+        "active_transitive_reference": false
+      },
+      {
+        "file": "css/nh7-finalqa-v557.css",
+        "active_entry_reference": true,
+        "active_transitive_reference": false
+      },
+      {
+        "file": "css/nh7-global-search-exam-v540.css",
+        "active_entry_reference": true,
+        "active_transitive_reference": false
+      },
+      {
+        "file": "css/nh7-inbox-v542.css",
+        "active_entry_reference": true,
+        "active_transitive_reference": false
+      },
+      {
+        "file": "css/nh7-plans-theme-v533.css",
+        "active_entry_reference": true,
+        "active_transitive_reference": false
+      },
+      {
+        "file": "css/nh7-tablet-v530.css",
+        "active_entry_reference": true,
+        "active_transitive_reference": false
+      },
+      {
+        "file": "js/nh7-exam-review-v540.js",
+        "active_entry_reference": false,
+        "active_transitive_reference": true
+      },
+      {
+        "file": "js/nh7-finalqa-v553.js",
+        "active_entry_reference": true,
+        "active_transitive_reference": false
+      },
+      {
+        "file": "js/nh7-finalqa-v554.js",
+        "active_entry_reference": true,
+        "active_transitive_reference": false
+      },
+      {
+        "file": "js/nh7-finalqa-v555.js",
+        "active_entry_reference": true,
+        "active_transitive_reference": false
+      },
+      {
+        "file": "js/nh7-global-search-v540.js",
+        "active_entry_reference": false,
+        "active_transitive_reference": true
+      }
+    ]
+  }
+}

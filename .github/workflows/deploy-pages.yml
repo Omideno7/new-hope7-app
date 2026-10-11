@@ -75,6 +75,8 @@ jobs:
 
       - name: Verify canonical Documents renderer
         run: |
+          python3 scripts/verify-document-entrypoints-v521.py
+          node scripts/verify-document-release-refresh-v521.cjs
           python3 scripts/verify-document-v520.py
           node scripts/verify-admin-live-search-document-studio-v508.cjs
           node --check js/nh7-document-renderer-v521.js
