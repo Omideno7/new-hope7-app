@@ -1,0 +1,10 @@
+/* New Hope 7 Document UX v5.1.1 — safe bounds, light print, iOS safe area. */
+.document-sheet .doc-logo,.document-sheet .nh7-photo-frame-v510{touch-action:none!important;cursor:grab!important;will-change:left,top;pointer-events:auto!important}
+.document-sheet .nh7-v511-dragging{cursor:grabbing!important;transition:none!important}
+.document-sheet .doc-footer{position:absolute!important;left:6%!important;right:6%!important;bottom:32px!important;width:88%!important;margin:0!important;box-sizing:border-box!important;grid-template-columns:minmax(150px,1fr) minmax(190px,1.25fr) minmax(105px,.72fr)!important;z-index:5!important}
+.document-sheet .doc-main{padding-bottom:145px!important;width:100%!important}
+.document-sheet .doc-verify{min-width:0!important;max-width:145px!important;overflow:visible!important}.document-sheet .nh7-doc-qr{width:72px!important;height:72px!important;max-width:72px!important;max-height:72px!important}
+.document-sheet .doc-footer-church-v510{align-self:end!important;padding-bottom:4px!important}
+@supports(padding:max(0px)){.topbar{padding-top:max(12px,env(safe-area-inset-top))!important}.app-shell{padding-top:0!important}}
+@media(max-width:760px){.document-sheet .doc-footer{left:5%!important;right:5%!important;width:90%!important;bottom:24px!important;grid-template-columns:1fr 1.1fr .65fr!important;gap:7px!important}.document-sheet .doc-main{padding-bottom:125px!important}.document-sheet .nh7-doc-qr{width:58px!important;height:58px!important}}
+@media print{@page{size:auto;margin:0}html,body,.public-doc-shell,.nh7-doc-print-v509,.nh7-doc-print-v509__stage,.nh7-doc-print-v509__sheet{background:#fff!important;color-scheme:light!important;filter:none!important;opacity:1!important}.document-sheet{background-color:var(--v239-paper,var(--doc-bg,#fffdf8))!important;color-scheme:light!important;filter:none!important;opacity:1!important;box-shadow:none!important;margin:0!important}.document-sheet *{filter:none!important}.nh7-doc-print-v509__bar,.public-doc-actions,.nh7-certificate-back{display:none!important}}
