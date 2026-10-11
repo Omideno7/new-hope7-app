@@ -1,0 +1,10 @@
+const fs=require('fs');
+const need=(s,x,m)=>{if(!s.includes(x))throw new Error(m)};
+const forbid=(s,x,m)=>{if(s.includes(x))throw new Error(m)};
+const admin=fs.readFileSync('admin.html','utf8'),ux=fs.readFileSync('js/nh7-document-ux-v509.js','utf8'),runtime=fs.readFileSync('js/admin-v2.3.9-document-runtime-fix4.js','utf8'),pub=fs.readFileSync('certificate.html','utf8'),css=fs.readFileSync('css/nh7-document-ux-v509.css','utf8');
+need(admin,'nh7-document-ux-v509.js?v=5.0.9','v509 runtime not loaded');need(admin,'nh7-document-ux-v509.css?v=5.0.9','v509 css not loaded');
+need(runtime,"range('logo.y',L('بالا و پایین لوگو','Logo up / down','Logo gore / dolje'),0,100)",'logo vertical range not expanded');
+need(ux,"nh7-admin-messaging-v360",'certificate Inbox must use admin messaging service path');need(ux,"channels:['inbox']",'certificate Inbox must be Inbox-only');need(ux,'syncEditableFields','template editable fields sync missing');need(ux,'pointerdown','logo drag missing');need(ux,'nh7-doc-print-v509','print modal missing');need(ux,'QRCode.toCanvas','print QR regeneration missing');
+need(css,'.doc-church-block{position:absolute!important;left:50%!important','church header is not centered');need(css,'clip-path:circle(50% at 50% 50%)','true circular logo clipping missing');
+need(pub,'baseDesign.studio_v239','public page must honor saved Studio design');need(pub,'class="doc-letterhead"','public page must use canonical current document structure');need(pub,'class="doc-church-block"','public page church header missing');need(pub,'class="doc-verify"','public QR block missing');forbid(pub,'doc-v222-seal','obsolete NEW HOPE 7 OFFICIAL seal must be removed from public document');
+console.log('Document UX v509 verifier: PASS');
