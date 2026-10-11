@@ -56,15 +56,24 @@ function enhancePhotos(){
   });
   if(dialog?.open&&!window.NH7ProfilePhotoV564?.read?.())close();
 }
+function refreshHomeDate(){
+  const node=document.querySelector('[data-nh7-home-date573]');if(!node)return;
+  const now=new Date(),locale=localStorage.getItem('nh7_lang')||'en';
+  const signature=[locale,now.getFullYear(),now.getMonth(),now.getDate()].join(':');
+  if(node.dataset.dateSignature===signature)return;
+  const value=window.NH7HeaderDateV455?.format?.(now,locale);if(!value)return;
+  node.textContent=value.text;node.dateTime=value.iso;node.dataset.dateSignature=signature;
+}
 function start(){
   syncPlatform();
   const header=document.querySelector('#appShell > .topbar'),nav=document.querySelector('#appShell > .bottom-nav');
   if(header&&nav){document.documentElement.classList.add('nh7-parity-chrome');const observer=new ResizeObserver(schedule);observer.observe(header);observer.observe(nav);schedule()}
-  new MutationObserver(()=>{enhancePhotos();schedule()}).observe(document.body,{childList:true,subtree:true});enhancePhotos();
+  new MutationObserver(()=>{enhancePhotos();refreshHomeDate();schedule()}).observe(document.body,{childList:true,subtree:true});enhancePhotos();refreshHomeDate();
 }
 document.addEventListener('click',event=>{const target=event.target.closest?.('#nh7TopProfile564, #nh7HomeProfile564 .nh7-profile-avatar564, #nh7AccountProfile564 .nh7-profile-avatar564');if(target?.querySelector('img'))openPhoto(target)});
 document.addEventListener('keydown',event=>{if(!['Enter',' '].includes(event.key))return;const target=event.target.closest?.('[role="button"]');if(target?.matches('#nh7TopProfile564,.nh7-profile-avatar564')){event.preventDefault();openPhoto(target)}});
 window.addEventListener('resize',schedule);window.visualViewport?.addEventListener('resize',schedule);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshHomeDate()});
 window.NH7WebParityV573={sidebar,measure};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();

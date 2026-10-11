@@ -35,6 +35,15 @@ html.nh7-parity-ios {
   --nh7-parity-safe-left:env(safe-area-inset-left,0px);
   --nh7-parity-safe-right:env(safe-area-inset-right,0px);
 }
+/* Opaque, continuous chrome: also paint exposed viewport/tablet gutters.
+   Safe-area padding stays in its row; no overlay/pseudo-element filler is added. */
+html.nh7-parity-ios,html.nh7-parity-ios body,
+html.nh7-parity-ios #appShell,
+html.nh7-parity-ios #appShell > .topbar,
+html.nh7-parity-ios #appShell > .bottom-nav {
+  background:var(--nh7-studio-card,var(--bg,#f4f8ff))!important;
+  background-image:none!important;
+}
 html.nh7-parity-ios #appShell {height:var(--nh7-parity-ios-viewport-height,100%);grid-template-rows:auto minmax(0,1fr) auto}
 html.nh7-parity-ios #appShell > .topbar {
   padding:calc(6px + var(--nh7-parity-safe-top)) max(9px,var(--nh7-parity-safe-right)) 4px max(9px,var(--nh7-parity-safe-left))!important;
@@ -42,7 +51,7 @@ html.nh7-parity-ios #appShell > .topbar {
 html.nh7-parity-ios #appShell > .bottom-nav {
   grid-template-columns:repeat(6,minmax(0,1fr));height:auto!important;min-height:0!important;max-height:none!important;
   padding:6px max(8px,var(--nh7-parity-safe-right)) calc(6px + var(--nh7-parity-safe-bottom)) max(8px,var(--nh7-parity-safe-left))!important;
-  margin:0!important;align-items:stretch!important;
+  margin:0!important;align-items:stretch!important;border-radius:0!important;
 }
 html.nh7-parity-ios #appShell > .bottom-nav .nav-item {height:auto!important;min-height:44px!important;min-width:0;padding:4px 2px!important}
 html.nh7-parity-ios #appShell > .bottom-nav .nav-item small {font-size:11px!important;line-height:1.25!important;white-space:normal;overflow-wrap:anywhere}
@@ -54,6 +63,26 @@ html.nh7-parity-native.nh7-parity-ios .nh7p500 {bottom:max(var(--nh7-mini-dock-b
 
 .nh7-parity-sidebar {display:none}
 .nh7-parity-content {min-width:0}
+/* Only the existing Home hero: v564 still owns/inserts the profile row. */
+#view .nh7-home-hero573 {display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:'identity' 'profile' 'welcome' 'actions' 'today';gap:12px;align-items:center}
+#view .nh7-home-hero573 > h2 {grid-area:identity;text-align:center;margin:0;font-size:clamp(1.15rem,2.5vw,1.6rem);overflow-wrap:anywhere}
+#view .nh7-home-hero573 > #nh7HomeProfile564 {grid-area:profile;margin:0;padding:0;border:0;min-width:0}
+#view .nh7-home-hero573 .nh7-home-profile564-copy {min-width:0;overflow-wrap:anywhere}
+#view .nh7-home-hero573 #nh7HomeProfile564 .nh7-home-profile564-copy small {color:inherit!important;opacity:1}
+#view .nh7-home-hero573 > p {grid-area:welcome;margin:0;line-height:1.6}
+#view .nh7-home-hero573 > .button-row {grid-area:actions;margin:0;gap:8px}
+#view .nh7-home-hero573 > .button-row button {min-height:44px;white-space:normal;max-width:100%}
+#view .card.nh7-home-hero573 > .button-row > .secondary-btn {background:var(--nh7-studio-card,var(--card,#fff))!important;color:var(--nh7-studio-text,var(--ink,#10284a))!important}
+#view .nh7-home-today573 {grid-area:today;min-width:0;padding:12px;border:0;border-radius:16px}
+#view #nh7HomeToday573 {background:var(--nh7-studio-card,var(--card,#fff))!important;color:var(--nh7-studio-text,var(--ink,#10284a))!important}
+#view #nh7HomeToday573 :is(h3,p,time) {color:inherit!important}
+#view .nh7-home-today573 h3 {margin:0 0 6px;font-size:.9rem}
+#view .nh7-home-today573 time {display:block;font-size:.85rem;line-height:1.6;overflow-wrap:anywhere}
+#view .nh7-home-today573 p {margin:6px 0 0;font-size:.8rem;opacity:.8}
+@media(min-width:768px){
+  #view .nh7-home-hero573 {grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:'identity identity' 'profile today' 'welcome today' 'actions today';column-gap:24px;row-gap:14px}
+  #view .nh7-home-today573 {align-self:stretch;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:18px}
+}
 [role="button"]#nh7TopProfile564,.nh7-profile-avatar564[role="button"] {cursor:zoom-in}
 .nh7-parity-photo {position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;border:0;padding:0;background:#111;color:#fff;box-sizing:border-box}
 .nh7-parity-photo::backdrop {background:#111}

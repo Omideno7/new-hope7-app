@@ -16,11 +16,34 @@ const {chromium}=require('playwright');
    localStorage.setItem('nh7_lang',lang);localStorage.setItem('nh7_profile_photo_v561','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=');
   },{lang});
   await page.goto(base);await page.locator('#amenButton').click();await page.waitForSelector('#nh7HomeProfile564 img');
+  await page.waitForFunction(()=>document.querySelector('[data-nh7-home-date573]')?.textContent);
   await page.evaluate(({top,bottom,side})=>{
    const root=document.documentElement;for(const [key,value] of Object.entries({top,bottom,left:side,right:side}))root.style.setProperty('--nh7-parity-safe-'+key,value+'px');
    NH7WebParityV573.measure();
   },{top,bottom,side});
   assert.equal(await page.locator('#nh7HomeProfile564 img').isVisible(),true);
+  const hero=await page.locator('.nh7-home-hero573').evaluate(n=>{
+   const box=node=>{const r=node.getBoundingClientRect();return{left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width}};
+   return{card:box(n),title:box(n.querySelector('h2')),profile:box(n.querySelector('#nh7HomeProfile564')),today:box(n.querySelector('.nh7-home-today573')),welcome:box(n.querySelector(':scope > p')),actions:box(n.querySelector('.button-row')),columns:getComputedStyle(n).gridTemplateColumns,date:n.querySelector('time').textContent};
+  });
+  assert(Math.abs((hero.title.left+hero.title.right)-(hero.card.left+hero.card.right))<=2,'centered church title');
+  for(const key of ['profile','today','welcome','actions'])assert(hero[key].left>=hero.card.left&&hero[key].right<=hero.card.right,'hero content stays within card');
+  if(width>=768){assert(Math.abs(hero.profile.width-hero.today.width)<=2,'balanced tablet columns');assert(hero.profile.right<=hero.today.left||hero.today.right<=hero.profile.left,'separate profile/today columns')}else{assert(hero.today.top>=hero.actions.bottom,'compact phone stack')}
+  assert.equal(await page.locator('[data-nh7-home-date573]').textContent(),await page.evaluate(()=>NH7HeaderDateV455.format().text));
+  // All Web-owned safe-area/gutter surfaces use one opaque palette color.
+  for(const preset of [null,'midnight','sapphire']){
+   if(preset)await page.evaluate(preset=>NH7ThemeStudioV453.set({...NH7ThemeStudioV453.PRESETS[preset],preset}),preset);
+   const paint=await page.evaluate(()=>[document.documentElement,document.body,document.querySelector('#appShell'),document.querySelector('.topbar'),document.querySelector('.bottom-nav')].map(n=>{const s=getComputedStyle(n);return{color:s.backgroundColor,image:s.backgroundImage}}));
+   assert(paint.every(p=>p.color===paint[0].color&&p.image==='none'),JSON.stringify(paint));
+   assert(!paint[0].color.startsWith('rgba('),'opaque chrome');
+   assert.equal(await page.locator('.bottom-nav').evaluate(n=>getComputedStyle(n).borderTopLeftRadius),'0px');
+   const panelContrast=await page.evaluate(()=>{
+    const n=document.querySelector('#nh7HomeToday573'),style=getComputedStyle(n);
+    const hex=value=>'#'+value.match(/\d+/g).slice(0,3).map(v=>Number(v).toString(16).padStart(2,'0')).join('');
+    return NH7ThemeStudioV453.contrast(hex(style.color),hex(style.backgroundColor));
+   });assert(panelContrast>=4.5,'readable date panel');
+   assert.equal(await page.locator('#nh7HomeProfile564 small').evaluate(n=>getComputedStyle(n).color),await page.locator('.nh7-home-hero573').evaluate(n=>getComputedStyle(n).color));
+  }
   const photoBefore=await page.evaluate(()=>localStorage.getItem('nh7_profile_photo_v561'));
   const rects=await page.evaluate(()=>{
    const rect=n=>{const r=n.getBoundingClientRect();return{top:r.top,bottom:r.bottom,left:r.left,right:r.right,height:r.height}};
@@ -47,7 +70,7 @@ const {chromium}=require('playwright');
   await page.evaluate(height=>{Object.defineProperty(window,'visualViewport',{configurable:true,value:Object.assign(new EventTarget(),{height:height-40,offsetTop:0})});NH7WebParityV573.measure()},height);
   assert(Math.abs(await page.locator('#appShell').evaluate(n=>n.getBoundingClientRect().height)-(height-40))<=1);
   assert.equal(await page.evaluate(()=>localStorage.getItem('nh7_profile_photo_v561')),photoBefore);
-  assert.deepEqual(errors,[]);await page.close();console.log(`PASS synthetic ${name} ${lang}: safe rows, six tappable labels/icons, single scroll, tabs, dock, photo and viewport sizing`);
+  assert.deepEqual(errors,[]);await page.close();console.log(`PASS synthetic ${name} ${lang}: unified opaque chrome, balanced hero, safe rows, six controls, single scroll, tabs, dock, photo and viewport sizing`);
  }
  }finally{await browser.close()}
 })().catch(error=>{console.error(error);process.exitCode=1});

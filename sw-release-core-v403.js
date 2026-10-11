@@ -2,8 +2,8 @@
 'use strict';
 // Issue #115 UI refresh: recache localized assets with the existing cache/storage contract.
 
-const NH7_RELEASE_CORE_VERSION='5.4.9-web-parity573-safearea';
-const NH7_RELEASE_CORE_CACHE='nh7-release-core-v549-web-parity573-safearea-library125';
+const NH7_RELEASE_CORE_VERSION='5.5.0-web-parity573-chrome-hero';
+const NH7_RELEASE_CORE_CACHE='nh7-release-core-v550-web-parity573-chrome-hero-library125';
 const NH7_RELEASE_DATA_CACHE='nh7-data-stable-v329';
 const NH7_RELEASE_ASSETS=[
   './js/nh7-web-parity-v573.js','./css/nh7-web-parity-v573.css',

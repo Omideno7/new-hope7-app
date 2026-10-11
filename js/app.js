@@ -1402,7 +1402,7 @@ async function home(){
   const bookmarks=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]');
   const dailyDay=userCycleDay(365);
   view.innerHTML =
-    card(tr('appTitle'), `<p>${tr('welcome')}</p><div class="button-row"><button class="primary-btn" data-go="daily">${tr('continueToday')}</button><button class="secondary-btn" id="quickNotify">${tr('enableNotifications')}</button></div>`, 'hero') +
+    card(tr('appTitle'), `<p>${tr('welcome')}</p><div class="button-row"><button class="primary-btn" data-go="daily">${tr('continueToday')}</button><button class="secondary-btn" id="quickNotify">${tr('enableNotifications')}</button></div><aside id="nh7HomeToday573" class="nh7-home-today573"><h3>${html(l223('امروز','Today','Danas'))}</h3><time data-nh7-home-date573></time><p>${html(tr('day'))} ${localNum(dailyDay)}</p></aside>`, 'hero nh7-home-hero573') +
     card(tr('todayMessage'), `<p>${tr('day')} ${localNum(dailyDay)}</p><div class="button-row"><button class="secondary-btn" data-go="daily" data-params='{"tab":"word"}'>${tr('dailyWord')}</button><button class="secondary-btn" data-go="daily" data-params='{"tab":"faith"}'>${tr('faithProclamation')}</button><button class="secondary-btn" data-go="daily" data-params='{"tab":"juice"}'>${tr('dailyJuice')}</button></div>`) +
     card(tr('savedVerses'), `<p class="muted">${tr('savedVersesCollapsed')}</p>${savedVersesPanel(bookmarks)}`) +
     card(tr('myNotes'), `<p class="muted">${tr('notesCollapsed')}</p>${notesPanel()}`) +
