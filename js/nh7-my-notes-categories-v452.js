@@ -4,9 +4,10 @@ if(window.__NH7_NOTES_CATEGORIES_V452__)return;window.__NH7_NOTES_CATEGORIES_V45
 const language=()=>localStorage.getItem('nh7_lang')||'en',L=(fa,en,hr)=>language()==='fa'?fa:language()==='hr'?hr:en;
 const number=n=>language()==='fa'?String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]):String(n);
 let timer=0,notesBusy=false,savedBusy=false;const expanded=new Set(),resolvedCache=new Map();
-const labels={bible:()=>L('کتاب مقدس','Bible','Biblija'),apocrypha:()=>L('اپوکریفا','Apocrypha','Apokrifi'),audio:()=>L('موعظات و فایل‌های صوتی','Sermons and audio','Propovijedi i audio'),school:()=>L('مدرسه','School','Škola'),gratitude:()=>L('شکرگزاری','Gratitude','Zahvalnost'),other:()=>L('سایر یادداشت‌ها','Other notes','Ostale bilješke')};
+const labels={plan:()=>L('پلن‌های روحانی','Spiritual Plans','Duhovni planovi'),bible:()=>L('کتاب مقدس','Bible','Biblija'),apocrypha:()=>L('اپوکریفا','Apocrypha','Apokrifi'),audio:()=>L('موعظات و فایل‌های صوتی','Sermons and audio','Propovijedi i audio'),school:()=>L('مدرسه','School','Škola'),gratitude:()=>L('شکرگزاری','Gratitude','Zahvalnost'),other:()=>L('سایر یادداشت‌ها','Other notes','Ostale bilješke')};
 function category(n){
   const k=n.storageKey||'',m=n.meta||{};
+  if(n.kind==='plan')return'plan';
   if(n.kind==='apocrypha'||k.startsWith('nh7_apo_note_v242:'))return'apocrypha';
   if(k.startsWith('nh7_bible_state_'))return'bible';
   if(k.startsWith('nh7_gratitude_note_'))return'gratitude';
@@ -51,7 +52,7 @@ async function notesPanel(){
       if(!groups.has(kind))groups.set(kind,[]);groups.get(kind).push(card);
     });
     const wrap=document.createElement('div');wrap.className='nh7-note-categories-v452';
-    for(const key of ['bible','apocrypha','audio','school','gratitude','other'])if(groups.has(key)){const {group,list}=groupBox('notes:'+key,labels[key](),groups.get(key).length);list.append(...groups.get(key));wrap.append(group)}
+    for(const key of ['bible','apocrypha','audio','school','gratitude','plan','other'])if(groups.has(key)){const {group,list}=groupBox('notes:'+key,labels[key](),groups.get(key).length);list.append(...groups.get(key));wrap.append(group)}
     panel.replaceChildren(wrap);panel.dataset.categories452=signature;
   }finally{notesBusy=false}
 }
