@@ -37,18 +37,25 @@ const read=p=>fs.readFileSync(p,'utf8');
   assert.equal(await page.locator('.nh7-parity-sidebar').isVisible(),width>=768);
   assert.equal(await page.locator('.nh7-parity-sidebar button').getAttribute('data-params'),JSON.stringify({section:'written',mode:'chapter',bookId:'GEN',chapter:3}));
   await page.locator('#existing').click();assert.equal(await page.evaluate(()=>existingClicked),true);
-  const bounds=await page.evaluate(()=>({header:document.querySelector('.topbar').getBoundingClientRect().bottom,content:document.querySelector('#view').getBoundingClientRect().top,scroll:document.documentElement.scrollWidth,width:innerWidth}));
-  assert(bounds.content>=bounds.header-1,JSON.stringify(bounds));assert(bounds.scroll<=bounds.width+1,JSON.stringify(bounds));
+  const bounds=await page.evaluate(()=>{const h=document.querySelector('.topbar').getBoundingClientRect(),n=document.querySelector('.bottom-nav').getBoundingClientRect(),v=document.querySelector('#view'),r=v.getBoundingClientRect(),st=getComputedStyle(v);return{headerTop:h.top,headerBottom:h.bottom,navTop:n.top,navBottom:n.bottom,scroll:document.documentElement.scrollWidth,width:innerWidth,viewOverflowY:st.overflowY,viewPaddingTop:parseFloat(st.paddingTop),shellHeight:document.querySelector('#appShell').getBoundingClientRect().height}});
+  assert.equal(bounds.headerTop,0,JSON.stringify(bounds));assert(Math.abs(bounds.navBottom-900)<=1,JSON.stringify(bounds));assert.equal(bounds.viewOverflowY,'auto',JSON.stringify(bounds));assert(bounds.viewPaddingTop>=bounds.headerBottom-1,JSON.stringify(bounds));assert(bounds.scroll<=bounds.width+1,JSON.stringify(bounds));assert(bounds.shellHeight<=901,JSON.stringify(bounds));
+  const chromeBefore=await page.evaluate(()=>({h:document.querySelector('.topbar').getBoundingClientRect().top,n:document.querySelector('.bottom-nav').getBoundingClientRect().bottom}));
+  await page.evaluate(()=>{const v=document.querySelector('#view');v.innerHTML+='<div style="height:1800px"></div>';v.scrollTop=900});await page.waitForTimeout(60);
+  const chromeAfter=await page.evaluate(()=>({h:document.querySelector('.topbar').getBoundingClientRect().top,n:document.querySelector('.bottom-nav').getBoundingClientRect().bottom,scrollTop:document.querySelector('#view').scrollTop}));
+  assert(chromeAfter.scrollTop>0);assert.equal(chromeAfter.h,chromeBefore.h);assert.equal(chromeAfter.n,chromeBefore.n);
   await page.evaluate(()=>{document.getElementById('date').style.height='140px'});await page.waitForTimeout(100);
   assert(await page.evaluate(()=>parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nh7-parity-header'))>=140));
+  assert(await page.evaluate(()=>parseFloat(getComputedStyle(document.querySelector('#view')).paddingTop)>=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nh7-parity-header'))));
   await page.locator('#nh7TopProfile564').focus();await page.keyboard.press('Enter');assert(await page.locator('dialog').isVisible());
   await page.locator('[data-photo-in]').click();assert.match(await page.locator('dialog img').getAttribute('style'),/1.25/);
   await page.keyboard.press('Escape');assert.equal(await page.locator('dialog').isVisible(),false);assert.equal(await page.evaluate(()=>document.activeElement.id),'nh7TopProfile564');
   const virtual=await page.evaluate(()=>NH7MyNotesV234.collectNotes().filter(n=>n.kind==='plan'));assert.equal(virtual.length,1);assert.equal(virtual[0].text,'Current reflection');assert.equal(virtual[0].readOnly,true);
+  const bidi=await page.evaluate(()=>{const p=document.createElement('p');p.setAttribute('dir','auto');p.textContent='یادداشت فارسی';document.body.append(p);return{dir:p.dir,computed:getComputedStyle(p).direction}});assert.equal(bidi.dir,'auto');assert.equal(bidi.computed,'rtl');
   assert.equal(virtual[0].title,{fa:'یادداشت پلن روحانی — روز ۳',en:'Spiritual plan note — day 3',hr:'Bilješka duhovnog plana — dan 3'}[lang]);
   assert(!virtual[0].title.includes('prayer-30'));
   assert.equal(await page.locator('.nh7-my-note-head-v234 strong').filter({hasText:'prayer-30'}).count(),0);
   assert.equal(await page.locator('[data-nh7-note-delete]').count(),1);
+  assert.equal(await page.locator('.nh7-my-note-card-v234 p').first().getAttribute('dir'),'auto');
   const progressBefore=await page.evaluate(()=>localStorage.getItem('nh7_spiritual_plans_v240:current'));
   await page.evaluate(async key=>{await NH7MyNotesV234.deleteNote(key);NH7MyNotesV234.openNote(key)},virtual[0].storageKey);
   assert.deepEqual(await page.evaluate(()=>openedDay),{tab:'spiritual',plan:'prayer-30',day:3});assert.deepEqual(await page.evaluate(()=>writes),[]);
@@ -62,6 +69,7 @@ const read=p=>fs.readFileSync(p,'utf8');
  // Guard actual integration points and untouched authoritative Profile behavior.
  const app=read('js/app.js'),index=read('index.html'),core=read('sw-release-core-v403.js');
  for(const marker of ['nh7BibleSidebarV573(bookId);','nh7BibleSidebarV573(bookId,chapter);','nh7AudioSidebarV573(categories,catId);','nh7AudioSidebarV573(d.categories,params.cat,true);','sidebar(view,d.lessons.map'])assert(app.includes(marker),marker);
+ for(const marker of ["'nav.more':'Više'","audio:'Audio poruke'","testimonies:'Svjedočanstva'","prayerRequest:'Molitveni zahtjev'","['audio','🎧']","['testimonies','✨']","['prayerRequest','🙏']"])assert(app.includes(marker),marker);
  for(const asset of ['js/nh7-web-parity-v573.js','css/nh7-web-parity-v573.css']){assert(index.includes(asset));assert(core.includes(asset))}
  console.log('PASS current Web route integration and release cache wiring');
  if(process.env.NH7_PARITY_APP_URL){
@@ -91,6 +99,12 @@ const read=p=>fs.readFileSync(p,'utf8');
     await page.locator('.nh7-parity-sidebar button').filter({hasText:/^Chapter 2$/}).click();
     await page.waitForFunction(()=>history.state?.params?.chapter===2);await page.waitForSelector('.reader-verse');
    }
+   // Physical QA found a Croatian fallback risk: exercise the real language switch and More renderer after Bible checks.
+   await page.locator('#langSelect').selectOption('hr');await page.waitForFunction(()=>localStorage.getItem('nh7_lang')==='hr');
+   assert.equal((await page.locator('.nav-item[data-route="more"] small').textContent()).trim(),'Više');
+   await page.evaluate(()=>NH7_NAVIGATE('more'));await page.waitForSelector('[data-more-navigation456]');
+   for(const [route,label] of [['audio','Audio poruke'],['testimonies','Svjedočanstva'],['prayerRequest','Molitveni zahtjev']]){const tile=page.locator(`[data-more-navigation456] [data-go="${route}"]`);assert.equal(await tile.count(),1,route);assert((await tile.textContent()).includes(label),`${route} Croatian label`)}
+   await page.locator('#langSelect').selectOption('en');await page.waitForFunction(()=>localStorage.getItem('nh7_lang')==='en');
    await page.evaluate(()=>NH7_NAVIGATE('home'));await page.waitForSelector('#notesPanel',{state:'attached'});
    const before=await page.evaluate(()=>localStorage.getItem('nh7_spiritual_plans_v240:guest'));
    await page.locator('[data-toggle-panel="notesPanel"]').click();

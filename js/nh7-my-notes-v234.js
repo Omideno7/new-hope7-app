@@ -113,7 +113,7 @@ function noteCard(note){
   const encoded=encodeURIComponent(note.storageKey);
   const openText=t('باز کردن منبع','Open source','Otvori izvor');
   const deleteText=t('پاک کردن','Delete','Obriši');
-  return `<article class="nh7-my-note-card-v234"><div class="nh7-my-note-head-v234"><span class="nh7-my-note-type-v234">${esc(typeLabel(note.kind))}</span><strong>${esc(note.title)}</strong></div><p>${esc(note.text).replace(/\n/g,'<br>')}</p><div class="button-row nh7-my-note-actions-v234"><button type="button" class="secondary-btn" data-nh7-note-open="${encoded}">↗ ${esc(openText)}</button>${note.readOnly?`<small>${esc(t('فقط خواندنی — ویرایش در پلن','Read only — edit in plan','Samo za čitanje — uredi u planu'))}</small>`:`<button type="button" class="danger-btn" data-nh7-note-delete="${encoded}">🗑 ${esc(deleteText)}</button>`}</div></article>`;
+  return `<article class="nh7-my-note-card-v234"><div class="nh7-my-note-head-v234"><span class="nh7-my-note-type-v234">${esc(typeLabel(note.kind))}</span><strong>${esc(note.title)}</strong></div><p dir="auto">${esc(note.text).replace(/\n/g,'<br>')}</p><div class="button-row nh7-my-note-actions-v234"><button type="button" class="secondary-btn" data-nh7-note-open="${encoded}">↗ ${esc(openText)}</button>${note.readOnly?`<small>${esc(t('فقط خواندنی — ویرایش در پلن','Read only — edit in plan','Samo za čitanje — uredi u planu'))}</small>`:`<button type="button" class="danger-btn" data-nh7-note-delete="${encoded}">🗑 ${esc(deleteText)}</button>`}</div></article>`;
 }
 function renderNotesPanel(){
   if(rendering)return;
