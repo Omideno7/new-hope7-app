@@ -289,11 +289,18 @@
       "sql_md5": "3b8e044bbac950c6d5521fb5f8a1738a",
       "sql_chars": 1233,
       "status": "present_exact_deployed"
+    },
+    {
+      "version": "20261011092221",
+      "name": "fix_prayer_document_admin_runtime_v507",
+      "sql_md5": "7c4d218d36708c430ff3bab0d98de754",
+      "sql_chars": 6518,
+      "status": "present_exact_deployed"
     }
   ],
   "parity": {
-    "production_entries": 41,
-    "exact_raw_hash_matches": 41,
+    "production_entries": 42,
+    "exact_raw_hash_matches": 42,
     "missing_checkpoint_files": 0,
     "newer_pending_migrations": 0
   },
