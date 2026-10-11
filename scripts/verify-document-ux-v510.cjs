@@ -1,0 +1,14 @@
+const fs=require('fs');
+const must=(ok,msg)=>{if(!ok)throw new Error(msg)};
+const js=fs.readFileSync('js/nh7-document-ux-v510.js','utf8');
+const css=fs.readFileSync('css/nh7-document-ux-v510.css','utf8');
+const cert=fs.readFileSync('certificate.html','utf8');
+const admin=fs.readFileSync('admin.html','utf8');
+const app=fs.readFileSync('js/app.js','utf8');
+for(const token of ['pointerdown','pointermove','nh7-photo-frame-v510','objectFit:\'cover\'','scale(${clamp(p.zoom,1,3)})','Datum izdavanja','Služitelj','data-v510-name="font"','data-v510-name="size"','data-v510-name="color"','buildPdf','html2canvas'])must(js.includes(token),'missing '+token);
+for(const token of ['doc-footer-church-v510','downloadPublicPdf','nh7-photo-frame-public-v510','Church representative','Predstavnik crkve'])must(cert.includes(token),'certificate missing '+token);
+must(!cert.includes('NEW HOPE 7</div><div class="doc-sign"'),'legacy seal unexpectedly present');
+for(const token of ['nh7-document-ux-v510.css','nh7-document-ux-v510.js','html2canvas-1.4.1.min.js'])must(admin.includes(token),'admin missing '+token);
+for(const token of ['myDocumentsV510','school_certificates?select=','public_token','Moji dokumenti'])must(app.includes(token),'profile archive missing '+token);
+must(css.includes('@media print')&&css.includes('print-color-adjust:exact'),'print hardening missing');
+console.log('Document UX v510 verifier: PASS');
