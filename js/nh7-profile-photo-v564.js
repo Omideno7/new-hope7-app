@@ -5,9 +5,9 @@
 (()=>{'use strict';
 if(window.__NH7_PROFILE_PHOTO_V564__)return;window.__NH7_PROFILE_PHOTO_V564__=true;
 
-const VERSION='5.6.4';
+const VERSION='5.6.5-student-id';
 const PHOTO_KEY='nh7_profile_photo_v561';
-let queued=false,busy=false,editor=null;
+let queued=false,busy=false,editor=null,studentIdentity=null,studentIdentityOwner='',identityLoading=false;
 const lang=()=>{const v=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return ['fa','en','hr'].includes(v)?v:'en'};
 const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -33,7 +33,7 @@ function ensureStyle(){
     .nh7-home-profile564{display:flex;align-items:center;gap:10px;margin:0 0 13px;padding-bottom:11px;border-bottom:1px solid color-mix(in srgb,var(--brand,#1858a4) 12%,transparent)}
     .nh7-home-profile564 .nh7-profile-avatar564{width:46px;height:46px;flex-basis:46px}.nh7-home-profile564-copy{min-width:0;display:grid;gap:2px}.nh7-home-profile564-copy strong{font-size:.92rem}.nh7-home-profile564-copy small{font-size:.68rem;opacity:.68}
     .nh7-account-profile564{display:flex;align-items:center;gap:12px;margin:0 0 15px;padding:12px;border:1px solid color-mix(in srgb,var(--brand,#1858a4) 15%,transparent);border-radius:17px;background:color-mix(in srgb,var(--card,#fff) 96%,var(--brand,#1858a4))}
-    .nh7-account-profile564-copy{min-width:0;flex:1}.nh7-account-profile564-copy strong,.nh7-account-profile564-copy small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.nh7-account-profile564-copy small{margin-top:3px;font-size:.7rem;opacity:.68}
+    .nh7-account-profile564-copy{min-width:0;flex:1}.nh7-account-profile564-copy strong,.nh7-account-profile564-copy small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.nh7-account-profile564-copy small{margin-top:3px;font-size:.7rem;opacity:.68}.nh7-student-code564{margin-top:6px!important;display:inline-flex!important;width:max-content;max-width:100%;padding:5px 8px;border-radius:999px;background:color-mix(in srgb,var(--brand,#1858a4) 9%,var(--card,#fff));color:var(--brand,#1858a4);opacity:1!important;font-weight:800;direction:ltr}
     .nh7-account-profile564-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.nh7-account-profile564-actions button{min-height:36px;padding:7px 11px;border-radius:10px;font-size:.7rem;cursor:pointer}
     .nh7-profile-file564{position:fixed!important;left:-10000px!important;top:-10000px!important;width:1px!important;height:1px!important;opacity:.01!important;overflow:hidden!important}.nh7-profile-status564{margin-top:7px!important;white-space:normal!important;line-height:1.4!important}
     #nh7TopProfile564{width:34px;height:34px;flex:0 0 34px;border-radius:50%;overflow:hidden;border:1.5px solid color-mix(in srgb,var(--brand,#1858a4) 28%,transparent);background:var(--card,#fff);display:none;place-items:center;margin-inline-start:auto;margin-inline-end:4px;padding:0;box-shadow:0 1px 5px rgba(0,0,0,.08)}
@@ -106,23 +106,38 @@ function openEditor(file){
 function saveEditor(){
   if(!editor)return;const out=document.createElement('canvas');out.width=384;out.height=384;const ctx=out.getContext('2d',{alpha:false});if(!ctx)return;const img=editor.img,iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height,base=Math.max(out.width/iw,out.height/ih),scale=base*editor.zoom,dw=iw*scale,dh=ih*scale,ratio=out.width/editor.canvas.width;ctx.fillStyle='#111';ctx.fillRect(0,0,out.width,out.height);ctx.drawImage(img,(out.width-dw)/2+editor.offsetX*ratio,(out.height-dh)/2+editor.offsetY*ratio,dw,dh);let data=out.toDataURL('image/jpeg',.82);if(data.length>650000)data=out.toDataURL('image/jpeg',.68);try{localStorage.setItem(PHOTO_KEY,data)}catch(error){console.warn('Profile photo save',error);alert(L('ذخیره عکس انجام نشد.','The photo could not be saved.','Fotografija nije spremljena.'));return}closeEditor();schedule(true);
 }
+function identityOwner(){return String(window.NH7AccessV230?.userEmail?.()||profile().email||'').trim().toLowerCase()}
+async function loadStudentIdentity(force=false){
+  const owner=identityOwner(),access=window.NH7AccessV230,token=String(access?.token?.()||'');
+  if(!owner||!token){studentIdentity=null;studentIdentityOwner=owner;return null}
+  if(!force&&studentIdentityOwner===owner&&studentIdentity)return studentIdentity;
+  if(identityLoading)return null;identityLoading=true;
+  try{
+    const response=await fetch('https://gpzcwffxnddhaeaogdyo.supabase.co/rest/v1/rpc/nh7_my_student_identity_v127',{method:'POST',cache:'no-store',headers:{apikey:'sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37',Authorization:'Bearer '+token,'Content-Type':'application/json'},body:'{}'});
+    if(!response.ok){if(response.status===401||response.status===403){studentIdentity=null;studentIdentityOwner=owner;return null}throw new Error(await response.text())}
+    const raw=await response.json().catch(()=>null),value=Array.isArray(raw)&&raw.length===1?raw[0]:raw;
+    studentIdentity=value?.student&&typeof value.student==='object'?value.student:null;studentIdentityOwner=owner;return studentIdentity;
+  }catch(error){studentIdentity=null;studentIdentityOwner=owner;console.warn('[NH7 Profile Student ID]',error);return null}
+  finally{identityLoading=false}
+}
 function setStatus(box,text){const el=box?.querySelector('[data-nh7-profile-status]');if(el)el.textContent=text||''}
 function renderAccountBox(box,p,photo){
-  box.innerHTML=`${avatarHtml(photo,p.name)}<div class="nh7-account-profile564-copy"><strong>${esc(p.name||L('پروفایل من','My profile','Moj profil'))}</strong>${p.email?`<small>${esc(p.email)}</small>`:''}<div class="nh7-account-profile564-actions"><button type="button" class="secondary-btn" data-nh7-profile-pick>${esc(photo?L('تغییر و تنظیم عکس','Change & adjust photo','Promijeni i podesi fotografiju'):L('افزودن عکس','Add photo','Dodaj fotografiju'))}</button>${photo?`<button type="button" class="secondary-btn" data-nh7-profile-remove>${esc(L('حذف عکس','Remove photo','Ukloni fotografiju'))}</button>`:''}</div><small class="nh7-profile-status564" data-nh7-profile-status>${esc(L('بعد از انتخاب، می‌توانید عکس را جابه‌جا و زوم کنید.','After choosing, you can move and zoom the photo.','Nakon odabira fotografiju možete pomicati i zumirati.'))}</small></div><input class="nh7-profile-file564" data-nh7-profile-file type="file" accept="image/*">`;
+  const studentCode=String(studentIdentity?.student_code||'');
+  box.innerHTML=`${avatarHtml(photo,p.name)}<div class="nh7-account-profile564-copy"><strong>${esc(p.name||L('پروفایل من','My profile','Moj profil'))}</strong>${p.email?`<small>${esc(p.email)}</small>`:''}${studentCode?`<small class="nh7-student-code564">🎓 ${esc(L('کد دانشجویی','Student ID','Studentski ID'))}: ${esc(studentCode)}</small>`:''}<div class="nh7-account-profile564-actions"><button type="button" class="secondary-btn" data-nh7-profile-pick>${esc(photo?L('تغییر و تنظیم عکس','Change & adjust photo','Promijeni i podesi fotografiju'):L('افزودن عکس','Add photo','Dodaj fotografiju'))}</button>${photo?`<button type="button" class="secondary-btn" data-nh7-profile-remove>${esc(L('حذف عکس','Remove photo','Ukloni fotografiju'))}</button>`:''}</div><small class="nh7-profile-status564" data-nh7-profile-status>${esc(L('بعد از انتخاب، می‌توانید عکس را جابه‌جا و زوم کنید.','After choosing, you can move and zoom the photo.','Nakon odabira fotografiju možete pomicati i zumirati.'))}</small></div><input class="nh7-profile-file564" data-nh7-profile-file type="file" accept="image/*">`;
   const input=box.querySelector('[data-nh7-profile-file]'),pick=box.querySelector('[data-nh7-profile-pick]'),remove=box.querySelector('[data-nh7-profile-remove]');
   pick?.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();if(busy||!input)return;try{input.value='';input.click()}catch(error){console.warn('Profile picker',error);setStatus(box,L('باز کردن انتخاب عکس انجام نشد.','Could not open the photo picker.','Nije moguće otvoriti odabir fotografije.'))}});
   input?.addEventListener('change',event=>{const file=event.target.files?.[0];if(!file||busy)return;openEditor(file)});
   remove?.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();if(busy)return;try{localStorage.removeItem(PHOTO_KEY)}catch(_){}schedule(true)});
 }
 function syncAccount(force=false){
-  const logout=document.getElementById('logoutAccountBtn');if(!logout)return false;const card=logout.closest('.card');if(!card)return false;const p=profile(),photo=readPhoto(),sig=`${p.name}|${p.email}|${photoSig(photo)}|${lang()}`;
+  const logout=document.getElementById('logoutAccountBtn');if(!logout)return false;const card=logout.closest('.card');if(!card)return false;const p=profile(),photo=readPhoto(),owner=identityOwner();if(owner&&studentIdentityOwner!==owner&&!identityLoading)loadStudentIdentity(false).then(()=>schedule(true));const sig=`${p.name}|${p.email}|${photoSig(photo)}|${String(studentIdentity?.student_code||'')}|${lang()}`;
   let box=document.getElementById('nh7AccountProfile564');if(!box){box=document.createElement('section');box.id='nh7AccountProfile564';box.className='nh7-account-profile564';const anchor=card.querySelector('h3')||card.firstChild;if(anchor)anchor.insertAdjacentElement('afterend',box);else card.prepend(box)}
   if(force||box.dataset.sig!==sig){box.dataset.sig=sig;renderAccountBox(box,p,photo)}return true;
 }
 function cleanupLegacy(){['nh7HomeProfile563','nh7AccountProfile563'].forEach(id=>document.getElementById(id)?.remove())}
 function syncAll(force=false){ensureStyle();refreshEditorCopy();cleanupLegacy();syncHeader();syncHome();syncAccount(force)}
 function schedule(force=false){if(force){queued=false;requestAnimationFrame(()=>syncAll(true));return}if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;syncAll(false)})}
-function start(){ensureStyle();syncAll(false);const view=document.getElementById('view');if(view)new MutationObserver(()=>schedule(false)).observe(view,{subtree:true,childList:true});document.getElementById('langSelect')?.addEventListener('change',()=>setTimeout(()=>syncAll(true),0));window.addEventListener('storage',event=>{if(event.key===PHOTO_KEY||event.key==='nh7_user_profile')schedule(true)})}
+function start(){ensureStyle();syncAll(false);const view=document.getElementById('view');if(view)new MutationObserver(()=>schedule(false)).observe(view,{subtree:true,childList:true});document.getElementById('langSelect')?.addEventListener('change',()=>setTimeout(()=>syncAll(true),0));window.addEventListener('storage',event=>{if(event.key===PHOTO_KEY||event.key==='nh7_user_profile'||event.key==='nh7_user_session_v170'||event.key==='nh7_explicit_logout'){if(event.key==='nh7_user_session_v170'||event.key==='nh7_explicit_logout'){studentIdentity=null;studentIdentityOwner=''}schedule(true)}});window.addEventListener('nh7-session-refreshed',()=>{studentIdentity=null;studentIdentityOwner='';schedule(true)});window.addEventListener('online',()=>{studentIdentityOwner='';schedule(true)})}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 window.NH7ProfilePhotoV564={VERSION,PHOTO_KEY,mount:()=>syncAll(true),read:readPhoto};
 })();
