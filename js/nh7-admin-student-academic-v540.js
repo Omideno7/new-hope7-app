@@ -4,7 +4,7 @@
 (()=>{'use strict';
 if(window.__NH7_ADMIN_STUDENT_ACADEMIC_V540__)return;
 window.__NH7_ADMIN_STUDENT_ACADEMIC_V540__=true;
-const VERSION='5.4.8-student-code-visibility';
+const VERSION='5.4.9-student-code-payload';
 
 let view='overview';
 let reportFilter='school_registered';
