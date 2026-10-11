@@ -81,6 +81,7 @@ jobs:
           node scripts/verify-admin-live-search-document-studio-v508.cjs
           node --check js/nh7-document-renderer-v521.js
           node --check js/nh7-document-ux-v520.js
+          node --check js/nh7-admin-documents-workspace-v522.js
           node --check js/admin-v2.2.0.js
           node --check js/admin-v2.3.9-document-runtime-fix4.js
           node --check js/admin-v2.3.9-document-select-fix5.js
