@@ -1,399 +1,5 @@
 {
   "main": "67d829de0d8d4846e309a99bcd98c4c005b3b030",
-  "ios": {
-    "branch": "baseline/ios-2.5.0-approved",
-    "sha": "dba24de9b35316e5e0a72d83966954988ecd0046",
-    "bundle": "repository root",
-    "mobile_only_commits": [],
-    "active_assets": [
-      {
-        "file": "css/nh7-apocrypha-v270.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/nh7-appearance-personalization-v514.css",
-        "status": "different"
-      },
-      {
-        "file": "css/nh7-appearance-v427.css",
-        "status": "different"
-      },
-      {
-        "file": "css/nh7-bible-keywords-v450.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/nh7-book-reader-v280.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/nh7-celebrations-v464.css",
-        "status": "different"
-      },
-      {
-        "file": "css/nh7-finalqa-v558.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/nh7-fonts-quick-bible-v454.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/nh7-growth-v463.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/nh7-header-date-v455.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/nh7-icons-v517.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/nh7-library-collections-v322.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/nh7-navigation-v456.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/nh7-notes-categories-v452.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/nh7-player-volume-v521.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/nh7-reader-toolbar-v452.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/nh7-secure-media-v270.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/nh7-secure-media-watermark-v272.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/nh7-soul-winning-v472.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/nh7-spiritual-plans-v240.css",
-        "status": "different"
-      },
-      {
-        "file": "css/nh7-store-review-v469.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/nh7-study-reader-v453.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/nh7-theme-gallery-v457.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/nh7-theme-studio-v453.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/styles.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/v2.2.0.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/v2.2.2.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/v2.2.3.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/v2.2.4.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/v2.3.0-access-bible.css",
-        "status": "identical"
-      },
-      {
-        "file": "css/v2.3.4-my-notes.css",
-        "status": "identical"
-      },
-      {
-        "file": "js/app.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-access-bootstrap-v230.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-apocrypha-v270.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-app-enhancements-v230.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-appearance-personalization-v514.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-audio-classic-v484.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-audio-library-v500.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-audio-miniplayer-v487.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-audio-quick-bible-v454.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-audio-route-stability-v423.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-auth-recovery-v342.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-auth-signup-guard-v343.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-auto-update-v335.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-bible-keywords-v451.js",
-        "status": "identical",
-        "reference": "transitive module import"
-      },
-      {
-        "file": "js/nh7-book-reader-v283.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-celebrations-v464.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-delete-account-v253.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-fasting-practical-note-removal-v413.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-finalqa-v558.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-fonts-v454.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-header-date-v455.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-icons-v517.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-inbox-badge-sync-v418.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-large-mov-native-fallback-v273.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-library-collections-v322.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-library-language-v321.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-media-player-v500.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-my-notes-categories-v452.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-my-notes-v234.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-note-text-v501.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-notifications-zagreb-v334.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-offline-core-v327.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-offline-data-v422.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-offline-persistence-v323.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-offline-playback-bridge-v332.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-offline-startup-v327.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-original-language-v453.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-protected-audio-gate-v316.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-push-account-bind-v362.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-qna-i18n-v341.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-reader-toolbar-v452.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-registration-canonical-v353.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-registration-final-guard-v401.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-registration-repeat-guard-v402.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-school-drafts-v468.js",
-        "status": "identical",
-        "reference": "transitive module import"
-      },
-      {
-        "file": "js/nh7-school-exam-v344.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-school-media-session-v262.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-school-path-v351.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-school-registration-v342.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-secure-media-fix-v271.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-secure-media-v270.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-secure-media-watermark-v272.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-security-core-v340.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-sermon-catalog-hotfix-v424.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-sermon-list-detail-v445.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-sermon-social-v443.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-settings-account-v252.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-settings-controller-v403.js",
-        "status": "identical"
-      },
-      {
-        "file": "js/nh7-soul-winning-v472.js",
-        "status": "different",
-        "reference": "transitive module import"
-      },
-      {
-        "file": "js/nh7-spiritual-plans-v240.js",
-        "status": "identical",
-        "reference": "transitive module import"
-      },
-      {
-        "file": "js/nh7-spiritual-plans-v412.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-store-review-v469.js",
-        "status": "identical",
-        "reference": "transitive module import"
-      },
-      {
-        "file": "js/nh7-theme-studio-v453.js",
-        "status": "different"
-      },
-      {
-        "file": "js/nh7-ui-stability-v329.js",
-        "status": "different"
-      }
-    ],
-    "all_missing_ui_files": []
-  },
   "android": {
     "branch": "baseline/android-2.5.0-25002-published",
     "sha": "a177cdc7d995894868cf84bbe00c2dfa05ad6e25",
@@ -946,6 +552,400 @@
         "active_entry_reference": false,
         "active_transitive_reference": true
       }
-    ]
+    ],
+    "comparison_scope": "Published www payload compared against current main; source inequality does not establish older/newer behavior",
+    "runtime_inventory": {
+      "files_compared": 325,
+      "identical": 266,
+      "different": 43,
+      "missing": 16,
+      "nonidentical_files": [
+        {
+          "file": "css/admin-v2.3.9-document-runtime-fix4.css",
+          "status": "different",
+          "android_git_blob": "d643ea2d10fc5a9f0849ab3d6d0d149d3546dade",
+          "main_git_blob": "99f7c016c3f52a6988ba0a6d89823c1f76083b77"
+        },
+        {
+          "file": "css/nh7-amen-theme-v531.css",
+          "status": "missing from main",
+          "android_git_blob": "e7aefb78fd67ee792c99efb5e13314b9119e1bac",
+          "main_git_blob": null
+        },
+        {
+          "file": "css/nh7-finalqa-v551.css",
+          "status": "missing from main",
+          "android_git_blob": "89c4aa0623bf0da00a7db5656d948b1eb59078ad",
+          "main_git_blob": null
+        },
+        {
+          "file": "css/nh7-finalqa-v553.css",
+          "status": "missing from main",
+          "android_git_blob": "2cb0fe4bdbdf9ed4f54007cbc6c2aae8adb64101",
+          "main_git_blob": null
+        },
+        {
+          "file": "css/nh7-finalqa-v554.css",
+          "status": "missing from main",
+          "android_git_blob": "1796ab12463be15680a9876ac807a8df936cf3ec",
+          "main_git_blob": null
+        },
+        {
+          "file": "css/nh7-finalqa-v555.css",
+          "status": "missing from main",
+          "android_git_blob": "dc3990ab15c469d578499b200dbef0daf348d450",
+          "main_git_blob": null
+        },
+        {
+          "file": "css/nh7-finalqa-v556.css",
+          "status": "missing from main",
+          "android_git_blob": "f2bf158ec19bdb0848dddf797be5e9aa3269e28b",
+          "main_git_blob": null
+        },
+        {
+          "file": "css/nh7-finalqa-v557.css",
+          "status": "missing from main",
+          "android_git_blob": "d75b2c1cae538385e840feeaa89c8f4d31b334da",
+          "main_git_blob": null
+        },
+        {
+          "file": "css/nh7-global-search-exam-v540.css",
+          "status": "missing from main",
+          "android_git_blob": "1718f7a606b4e930831dd60c60dd237372b191c6",
+          "main_git_blob": null
+        },
+        {
+          "file": "css/nh7-header-date-v455.css",
+          "status": "different",
+          "android_git_blob": "a7a1889d8c234c5d7375ea82ab5e545f95fb4c23",
+          "main_git_blob": "bf39db3dbf7987f7fc58f3d926a169dcdf0fe700"
+        },
+        {
+          "file": "css/nh7-inbox-v542.css",
+          "status": "missing from main",
+          "android_git_blob": "6bb73d8446f672c2e171b0589669b9e3ea6049cf",
+          "main_git_blob": null
+        },
+        {
+          "file": "css/nh7-plans-theme-v533.css",
+          "status": "missing from main",
+          "android_git_blob": "ae13c6a543be65e4c127804ef272adda6edcf5ba",
+          "main_git_blob": null
+        },
+        {
+          "file": "css/nh7-tablet-v530.css",
+          "status": "missing from main",
+          "android_git_blob": "866bb5dafc17e05b457332732237fd027cf0cb4f",
+          "main_git_blob": null
+        },
+        {
+          "file": "css/nh7-theme-gallery-v457.css",
+          "status": "different",
+          "android_git_blob": "8982c17928a4d802cb14264ea9ecbf4d657a432e",
+          "main_git_blob": "b018113c428029635a5e6e575c870aa61489c09e"
+        },
+        {
+          "file": "index.html",
+          "status": "different",
+          "android_git_blob": "6363df3bc7326d8d6acfc934ff6fcbe69e33f430",
+          "main_git_blob": "c72e98294d6dfa3f097b63c50116f086d9db03d6"
+        },
+        {
+          "file": "js/admin-v2.2.0.js",
+          "status": "different",
+          "android_git_blob": "84430bf9b527ad955b62448318cd7e8d4d4ad220",
+          "main_git_blob": "b5950ea469d1290744f0c11a7ae67bdd0d1d8b11"
+        },
+        {
+          "file": "js/admin-v2.2.2.js",
+          "status": "different",
+          "android_git_blob": "892b68562bb79385c4d55109ebb5d7094deb0c71",
+          "main_git_blob": "7d3f687fa24b65c644fdb2ff57d5c001582cf1b3"
+        },
+        {
+          "file": "js/admin-v2.3.9-document-runtime-fix4.js",
+          "status": "different",
+          "android_git_blob": "6279708d75a9a5565b6c16a09883d22f88eb3150",
+          "main_git_blob": "578123d24f2ef725ca4ff868c8ef02add1014606"
+        },
+        {
+          "file": "js/admin-v2.3.9-document-select-fix5.js",
+          "status": "different",
+          "android_git_blob": "96221a513533f577de598d45feed52af8253e288",
+          "main_git_blob": "fb193cef76d5a4b5e3631636e28d46f5550bcd9b"
+        },
+        {
+          "file": "js/app.js",
+          "status": "different",
+          "android_git_blob": "3c05f70237dd2e044a3799fc0f03dec878538736",
+          "main_git_blob": "fa2b0b52e8d7cf190b462beff61fc4fee66a9d06"
+        },
+        {
+          "file": "js/nh7-access-bootstrap-v230.js",
+          "status": "different",
+          "android_git_blob": "4403f6318d6c8ba8c6554b6fa0f7a6e8e020ae60",
+          "main_git_blob": "4f68ef2dffed05cbf387a0c1bfe1604c9865a383"
+        },
+        {
+          "file": "js/nh7-admin-community-v502.js",
+          "status": "different",
+          "android_git_blob": "68c9ff9158686b8a6670cbf86ad8a645d3f98fa1",
+          "main_git_blob": "c0ed032d1430ea145c6c7f34967ef590851c8974"
+        },
+        {
+          "file": "js/nh7-admin-ready-v439.js",
+          "status": "different",
+          "android_git_blob": "8122a3652d8f1baa87a0df58c45929ddc30bced7",
+          "main_git_blob": "744ef43b58bbb2152bc7bb06b2b14abfc1f85f48"
+        },
+        {
+          "file": "js/nh7-admin-student-academic-v540.js",
+          "status": "different",
+          "android_git_blob": "144be007d1c26520fed876c6543e87c13f3f5611",
+          "main_git_blob": "73bb1fe4060da23893b8dee55d551693422e4de8"
+        },
+        {
+          "file": "js/nh7-admin-student-report-v496.js",
+          "status": "different",
+          "android_git_blob": "51d49b26609fbd834bc93266e568a5eca166827c",
+          "main_git_blob": "f8c9391ef1377ad613379932a776479aa60014ae"
+        },
+        {
+          "file": "js/nh7-apocrypha-preview-v240.js",
+          "status": "different",
+          "android_git_blob": "5b9b454bb7efdc67bd0c6b1d0ebd4c2adba1c945",
+          "main_git_blob": "7e8c3335baa83aa2533e2d46cedef61442a6c0e6"
+        },
+        {
+          "file": "js/nh7-apocrypha-v270.js",
+          "status": "different",
+          "android_git_blob": "ffc6c7106f168cc364ab9e3e3a30daf0e72510c7",
+          "main_git_blob": "2e2b63d97718acd874c3b87570add55e1ac19b12"
+        },
+        {
+          "file": "js/nh7-appearance-personalization-v514.js",
+          "status": "different",
+          "android_git_blob": "3c59de8dec6d42cf6c355d8fa946c4beff3d6a50",
+          "main_git_blob": "c3969f59f02cfc4e6c1914599df4e825f7e7c648"
+        },
+        {
+          "file": "js/nh7-audio-library-v500.js",
+          "status": "different",
+          "android_git_blob": "94fc07c8e018fe31616e3ca5830176ed9708a32e",
+          "main_git_blob": "a5f6d33171a85f8f2bfe11de641d526819691fae"
+        },
+        {
+          "file": "js/nh7-audio-miniplayer-v487.js",
+          "status": "different",
+          "android_git_blob": "268a62d8fbd6f5f3a7a9f4116f9fa9fdac52130b",
+          "main_git_blob": "f30046bf573547548c53659a80e1a11f68ae1ca8"
+        },
+        {
+          "file": "js/nh7-auto-update-v335.js",
+          "status": "different",
+          "android_git_blob": "d448384206bc32b885b43212e85f48398377202e",
+          "main_git_blob": "de762659d085b86e1116390104e5eed22aed13cb"
+        },
+        {
+          "file": "js/nh7-bible-keywords-v451.js",
+          "status": "different",
+          "android_git_blob": "cdac2cb3c30f717f8d9b71c018b795b025fdcc69",
+          "main_git_blob": "87fa4f36b6f99de4abeebf52ac62d7764a1a8b51"
+        },
+        {
+          "file": "js/nh7-book-reader-v283.js",
+          "status": "different",
+          "android_git_blob": "21930338476c9319ed02fd25f9e14f8341d679f9",
+          "main_git_blob": "bb1ffa777dd279f266d2da149e44e0ff961faa58"
+        },
+        {
+          "file": "js/nh7-community-v502.js",
+          "status": "different",
+          "android_git_blob": "748e65243157f6586e1edbf3b5a8b3ff9bf970c3",
+          "main_git_blob": "18b035fd19d021508c557732782a5f379b8f3d9b"
+        },
+        {
+          "file": "js/nh7-exam-review-v540.js",
+          "status": "missing from main",
+          "android_git_blob": "127c630a1483c7f3f932aa23cc244803ab42a2e0",
+          "main_git_blob": null
+        },
+        {
+          "file": "js/nh7-finalqa-v553.js",
+          "status": "missing from main",
+          "android_git_blob": "82e7ae7e2eea43fcf28a7e7607e7e3c910170c5a",
+          "main_git_blob": null
+        },
+        {
+          "file": "js/nh7-finalqa-v554.js",
+          "status": "missing from main",
+          "android_git_blob": "be85a39c8a50a731566d0ad32885b29413d0925f",
+          "main_git_blob": null
+        },
+        {
+          "file": "js/nh7-finalqa-v555.js",
+          "status": "missing from main",
+          "android_git_blob": "fca29bc3858080c1cd92b30e119ea49c9ea92612",
+          "main_git_blob": null
+        },
+        {
+          "file": "js/nh7-finalqa-v558.js",
+          "status": "different",
+          "android_git_blob": "490a8c47bd25c2e42be0d782fb6851d7f813a1b7",
+          "main_git_blob": "8d122f2c4e6895ede3266a28aebf5ba91ede6ab0"
+        },
+        {
+          "file": "js/nh7-global-search-v540.js",
+          "status": "missing from main",
+          "android_git_blob": "bc264ab1fd8c75559a3c1c6432676c44cbd4977e",
+          "main_git_blob": null
+        },
+        {
+          "file": "js/nh7-library-collections-v322.js",
+          "status": "different",
+          "android_git_blob": "cd0e1a42d6a92a0ee02dacc8633afe9861598d2b",
+          "main_git_blob": "948a34d96674fa2f0d055a98347e7c74aae141a8"
+        },
+        {
+          "file": "js/nh7-library-language-v321.js",
+          "status": "different",
+          "android_git_blob": "00c57a22a641edd549bbdff5aa043b225b2a37b9",
+          "main_git_blob": "b59bd428c7ec081f8889e4b427c4e4890a2ea0c2"
+        },
+        {
+          "file": "js/nh7-media-player-v500.js",
+          "status": "different",
+          "android_git_blob": "1deb1ab316968bc643642b76985bc6e8d25b475d",
+          "main_git_blob": "b26f441ac5b509a80d016b1e91ea3b8c3a52d606"
+        },
+        {
+          "file": "js/nh7-my-notes-categories-v452.js",
+          "status": "different",
+          "android_git_blob": "4d2c22c43491041f2e49145b3d0ae823f8964c5f",
+          "main_git_blob": "0303bbfe77532ad4bfe3011a8d3051f6b781f1a5"
+        },
+        {
+          "file": "js/nh7-my-notes-v234.js",
+          "status": "different",
+          "android_git_blob": "bb5dc91a205cba13bbc3c33244e69f9b95122e80",
+          "main_git_blob": "3a87ad5a2d745e7e8bd109e077a0c262d7854857"
+        },
+        {
+          "file": "js/nh7-note-text-v501.js",
+          "status": "different",
+          "android_git_blob": "2c7acf580b73d5a39a9710703ad7b8b3e90c88d1",
+          "main_git_blob": "ec0c7849c3106fdff80ad0c55b5e33a856a6b3fd"
+        },
+        {
+          "file": "js/nh7-offline-persistence-v323.js",
+          "status": "different",
+          "android_git_blob": "8e6b40d5ed58daa043a7697f1e67452069e1a50a",
+          "main_git_blob": "07a1e854e0a310e0557b61315a9343c2e38f55e3"
+        },
+        {
+          "file": "js/nh7-original-language-v453.js",
+          "status": "different",
+          "android_git_blob": "02887113a3b08c290b961b5362186680e9cdcec7",
+          "main_git_blob": "216b062bc5d17e058bc990ec475952574e78d0ba"
+        },
+        {
+          "file": "js/nh7-secure-media-v270.js",
+          "status": "different",
+          "android_git_blob": "7a31735bbfb9f1e4aace7d360ffe9d391c21affa",
+          "main_git_blob": "ba81de626020cef72633eb46978e4239c123683b"
+        },
+        {
+          "file": "js/nh7-settings-account-v252.js",
+          "status": "different",
+          "android_git_blob": "648118e912cd81d177f1ffe1febfb0857ba91445",
+          "main_git_blob": "6ba6ab4eb60a44b83af305784306891c68efb91d"
+        },
+        {
+          "file": "js/nh7-soul-winning-v472.js",
+          "status": "different",
+          "android_git_blob": "664f210590fcf97b52fdf59fad62b7ed71077097",
+          "main_git_blob": "dcc985da8dc157833af7d1bcf591b155ee348c0d"
+        },
+        {
+          "file": "js/nh7-spiritual-plans-v240.js",
+          "status": "different",
+          "android_git_blob": "4d1487e11063d1229088cbed78db41e4b5b30824",
+          "main_git_blob": "9e177f79d1b7a5446216cd77daa5aaf6dee0e182"
+        },
+        {
+          "file": "js/nh7-spiritual-plans-v412.js",
+          "status": "different",
+          "android_git_blob": "8c32edf6c41bce8f98acb9d536c86dd30db65f5b",
+          "main_git_blob": "f5ced537a6240505cd08a2bdb5e5178221988b58"
+        },
+        {
+          "file": "js/nh7-theme-studio-v453.js",
+          "status": "different",
+          "android_git_blob": "96cbd40e6e676557012a483e56bb7dd047cbb0c5",
+          "main_git_blob": "2b078a01b9c6d5dc8fa046b8dc1120206fc67099"
+        },
+        {
+          "file": "js/nh7-ui-stability-v329.js",
+          "status": "different",
+          "android_git_blob": "486154671a497410e0669efff1733b33a50a0f44",
+          "main_git_blob": "80db550c29fe408428b44816594593b92d2b80ff"
+        },
+        {
+          "file": "service-worker.js",
+          "status": "different",
+          "android_git_blob": "7c47c5db12fc129bc33b0ea1b33f8b59219fdeb6",
+          "main_git_blob": "5130994bc6a0417ef7d0800ea2f75482fef26297"
+        },
+        {
+          "file": "sw-offline-v329.js",
+          "status": "different",
+          "android_git_blob": "24d24d3a545c757dddc00eab7f02924be1672b14",
+          "main_git_blob": "ca387a66e408215132550c1d44b0722cb5f5f2bc"
+        },
+        {
+          "file": "sw-release-core-v403.js",
+          "status": "different",
+          "android_git_blob": "de36dd9db06fea7dac901df8a1492519dc0023cd",
+          "main_git_blob": "614672b58b03219ec33221600e84f8e3c0617da5"
+        },
+        {
+          "file": "version.json",
+          "status": "different",
+          "android_git_blob": "4f41b544302290e489054a41d92b7d737de3f86a",
+          "main_git_blob": "de905192e0b98cf1af74f8fa371b61ee0b7540a5"
+        }
+      ]
+    }
+  },
+  "ios_archive": {
+    "authority": "Maintainer-verified signed Xcode archive embedded App.app/public, not a Git branch",
+    "version": "2.5.0",
+    "build": "25001",
+    "archive_path": "~/Library/Developer/Xcode/Archives/2026-10-05/App 10-5-26, 4.09 am.xcarchive",
+    "bundle_path": "Products/Applications/App.app/public",
+    "test5_checkout": "~/Desktop/NewHope7-Test5-iOS",
+    "test5_branch": "feature/final-qa-v2500-20261004",
+    "test5_git_head": "82efc731c64f76c051528ae01189521bee0ee8b9",
+    "candidate_run": 37202333319,
+    "candidate_artifact": "New_Hope_7_iOS_Next_Candidate",
+    "candidate_is_archive_substitute": false,
+    "reported_matches_to_test5_head": [
+      "version.json",
+      "service-worker.js"
+    ],
+    "reported_differences_from_test5_head": [
+      "index.html",
+      "js/app.js"
+    ],
+    "reported_index_markers": {
+      "NH7_VERSION": "2.5.0 \u00b7 Test 5.8 QA",
+      "worker": "service-worker.js?v=5.4.0-qa250",
+      "community": "nh7-community-v502.js?v=5.5.5-recorder-pause",
+      "app": "app.js?v=5.5.5-test55"
+    },
+    "comparison_status": "blocked: signed archive public tree not accessible in cloud workspace",
+    "active_assets": null,
+    "missing_or_older_features": null,
+    "baseline_dba24de9_not_build_proof": true
   }
 }

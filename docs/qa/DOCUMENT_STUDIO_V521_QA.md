@@ -104,3 +104,10 @@ Use the reviewed branch in a staging/local QA build before Production rollout:
 Follow-up validation results: all current Pages validation steps PASS; Next Native Optimization Guard PASS; migration parity 42/42 exact, 0 pending; School stage/access/assignment/exam/certificate identity and public verifier PASS; Community/Certificate Admin verifier PASS; dependency guard and worker lifecycle PASS; JS syntax checks and `git diff --check` PASS. The earlier 33-entry requirement is superseded by the current repository's unchanged 42-entry Production checkpoint. Historical Responsive v570/Theme propagation v571/Offline reconciliation v572 scripts are absent from this main baseline; they were not imported from develop or represented as executed.
 
 Final browser rerun PASS, including Studio viewport containment as well as public previews. Local artifacts: `/tmp/nh7-documents-UVq8gt` (six real flattened PDFs, six A4 print captures and Admin retry export). Physical Safari/iOS testing still requires maintainer verification.
+
+
+## Signed iOS archive provenance correction (maintainer follow-up)
+
+The authoritative iOS 2.5.0/build 25001 bundle is the signed October 5 Xcode archive's `App.app/public`, not `baseline/ios-2.5.0-approved` and not Test5 Git HEAD alone. Maintainer verified archived `index.html` and `js/app.js` differ from HEAD. The archived tree is not accessible in this cloud workspace, so iOS missing/older feature counts remain unknown until supplied. Prior approved-branch counts must not be interpreted as shipped-iOS findings. Candidate run 37202333319 is verified but is not used as an archive substitute.
+
+Android was compared separately against unchanged current main using the published `android-release-25002/www` tree: 325 runtime/data/UI paths (266 identical, 43 different, 16 absent). Findings distinguish missing browser-capable enhancements, native-only code, superseded implementations and user-data-sensitive parity work; see [DOCUMENT_MOBILE_PARITY_V521.md](DOCUMENT_MOBILE_PARITY_V521.md). This follow-up changes documentation only; all working Documents fixes remain untouched.
