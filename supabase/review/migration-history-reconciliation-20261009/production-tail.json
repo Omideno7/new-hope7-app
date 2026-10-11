@@ -282,11 +282,18 @@
       "sql_md5": "a1b41dbaa50d7b50ca65446a3261e6d4",
       "sql_chars": 1538,
       "status": "present_exact_deployed"
+    },
+    {
+      "version": "20261011084844",
+      "name": "admin_student_identity_directory_v128",
+      "sql_md5": "3b8e044bbac950c6d5521fb5f8a1738a",
+      "sql_chars": 1233,
+      "status": "present_exact_deployed"
     }
   ],
   "parity": {
-    "production_entries": 40,
-    "exact_raw_hash_matches": 40,
+    "production_entries": 41,
+    "exact_raw_hash_matches": 41,
     "missing_checkpoint_files": 0,
     "newer_pending_migrations": 0
   },
