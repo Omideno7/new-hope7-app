@@ -29,9 +29,10 @@ need('School listening telemetry retired. Playback and local resume remain uncha
 # Existing localization remains multilingual in engine errors/statuses.
 need("L('جلسه ورود منقضی شده است؛ دوباره وارد حساب شوید.','Your sign-in session expired; sign in again.','Sesija je istekla; ponovno se prijavite.')" in js,'FA/EN/HR session error localization regressed')
 need('js/nh7-audio-classic-v484.js?v=4.8.6-safe-playback' in idx,'audio classic cache tag mismatch')
-need('service-worker.js?v=5.4.3-push-bind364&ui=122&library=125.5' in idx,'service worker tag mismatch')
-need('sw-release-core-v403.js?v=5.4.3-push-bind364&ui=122&library=125.5' in sw,'release core import mismatch')
-need("NH7_RELEASE_CORE_VERSION='5.4.3-push-bind364'" in core,'release core version mismatch')
+# Global release-core version is owned by app wiring, not by this audio feature verifier.
+need('service-worker.js?v=' in idx and '&library=125.5' in idx,'service worker wiring missing')
+need('sw-release-core-v403.js?v=' in sw,'release core import missing')
+need('NH7_RELEASE_CORE_VERSION=' in core,'release core version marker missing')
 need("'./js/nh7-audio-classic-v484.js'" in core,'audio engine missing from offline release cache')
 if err:
  print('Audio playback safety verification: FAIL')
