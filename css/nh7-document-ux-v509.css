@@ -1,0 +1,14 @@
+/* New Hope 7 Document UX v5.0.9 — centered church header, draggable logo, reliable print preview. */
+.document-sheet .doc-letterhead{position:relative!important;width:100%!important;min-height:126px!important;display:block!important}
+.document-sheet .doc-church-block{position:absolute!important;left:50%!important;right:auto!important;top:8px!important;transform:translateX(-50%)!important;width:min(62%,620px)!important;text-align:center!important;z-index:4!important;margin:0!important}
+.document-sheet .doc-church,.document-sheet .doc-church-contact{text-align:center!important}
+.document-sheet .doc-logo,.document-sheet .certificate-logo{cursor:grab;touch-action:none;user-select:none;-webkit-user-drag:none}
+.document-sheet .doc-logo:active,.document-sheet .certificate-logo:active{cursor:grabbing}
+.document-sheet [data-nh7-logo-round="1"],.document-sheet .nh7-logo-round-v509{border-radius:50%!important;clip-path:circle(50% at 50% 50%)!important;overflow:hidden!important}
+.nh7-doc-print-v509{position:fixed;z-index:100000;inset:0;background:rgba(2,6,23,.86);display:flex;flex-direction:column;overflow:hidden}
+.nh7-doc-print-v509__bar{flex:0 0 auto;display:flex;gap:9px;align-items:center;justify-content:center;flex-wrap:wrap;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;background:#fff;border-bottom:1px solid #d0d9e2}
+.nh7-doc-print-v509__bar button{border:0;border-radius:12px;padding:11px 16px;font:800 14px/1.2 inherit;cursor:pointer;background:#0b5faa;color:#fff}.nh7-doc-print-v509__bar [data-close]{background:#475467}
+.nh7-doc-print-v509__stage{flex:1;overflow:auto;padding:18px;background:#dbe4ea;display:grid;place-items:start center}.nh7-doc-print-v509__sheet{width:min(1120px,100%)}.nh7-doc-print-v509__sheet>.document-sheet{width:100%!important;max-width:1120px!important;margin:0 auto!important}
+body.nh7-doc-print-open-v509{overflow:hidden!important}
+@media(max-width:760px){.document-sheet .doc-church-block{width:min(58%,480px)!important}.nh7-doc-print-v509__stage{padding:6px}.nh7-doc-print-v509__sheet{min-width:720px;transform:scale(.55);transform-origin:top center;margin-bottom:-38%}}
+@media print{body.nh7-doc-printing-v509>*:not(.nh7-doc-print-v509){display:none!important}body.nh7-doc-printing-v509 .nh7-doc-print-v509{position:static!important;display:block!important;background:#fff!important;overflow:visible!important}body.nh7-doc-printing-v509 .nh7-doc-print-v509__bar{display:none!important}body.nh7-doc-printing-v509 .nh7-doc-print-v509__stage{display:block!important;overflow:visible!important;padding:0!important;background:#fff!important}body.nh7-doc-printing-v509 .nh7-doc-print-v509__sheet{width:100%!important;min-width:0!important;transform:none!important;margin:0!important}body.nh7-doc-printing-v509 .document-sheet{box-shadow:none!important;margin:0!important}}
