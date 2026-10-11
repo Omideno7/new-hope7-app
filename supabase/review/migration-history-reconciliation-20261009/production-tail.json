@@ -1,6 +1,6 @@
 {
   "project_ref": "gpzcwffxnddhaeaogdyo",
-  "captured_at": "2026-10-09",
+  "captured_at": "2026-10-10",
   "source": "supabase_migrations.schema_migrations",
   "migrations": [
     {
@@ -233,8 +233,48 @@
       "sql_md5": "b77ec3354749705d32fd46994e03be3a",
       "sql_chars": 6192,
       "status": "present_exact_recovered"
+    },
+    {
+      "version": "20261010180059",
+      "name": "optimize_inbox_lower_email_index_v1",
+      "sql_md5": "9433d6fafad76e6dc36232ba8390b4d1",
+      "sql_chars": 207,
+      "status": "present_exact_deployed"
+    },
+    {
+      "version": "20261010180256",
+      "name": "optimize_user_data_rls_initplan_v1",
+      "sql_md5": "ae74e61b998a3c6f9bd6480d12d82de5",
+      "sql_chars": 2496,
+      "status": "present_exact_deployed"
+    },
+    {
+      "version": "20261010182200",
+      "name": "optimize_school_registration_rls_initplan_v1",
+      "sql_md5": "0b6971f50562488421d130ae8345f21c",
+      "sql_chars": 1549,
+      "status": "present_exact_deployed"
+    },
+    {
+      "version": "20261010224127",
+      "name": "admin_prayer_reply_document_delete_v505",
+      "sql_md5": "0faba2dbd22cb22b96d88ba955cbaeae",
+      "sql_chars": 3873,
+      "status": "present_exact_deployed"
+    },
+    {
+      "version": "20261010224433",
+      "name": "harden_document_delete_delivery_fence_v506",
+      "sql_md5": "c5426e87ef5ffa5fdfa6613e23f3ecde",
+      "sql_chars": 1804,
+      "status": "present_exact_deployed"
     }
   ],
-  "parity": "exact_raw_md5",
+  "parity": {
+    "production_entries": 38,
+    "exact_raw_hash_matches": 38,
+    "missing_checkpoint_files": 0,
+    "newer_pending_migrations": 0
+  },
   "parity_verified_at": "2026-10-10"
 }
