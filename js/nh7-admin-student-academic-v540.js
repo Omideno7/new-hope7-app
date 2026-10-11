@@ -4,7 +4,7 @@
 (()=>{'use strict';
 if(window.__NH7_ADMIN_STUDENT_ACADEMIC_V540__)return;
 window.__NH7_ADMIN_STUDENT_ACADEMIC_V540__=true;
-const VERSION='5.4.8-student-code-visibility';
+const VERSION='5.4.9-student-code-payload';
 
 let view='overview';
 let reportFilter='school_registered';
@@ -159,7 +159,7 @@ async function load(force=false){
     let lastError=null;
     for(let attempt=0;attempt<2;attempt++){
       try{
-        const raw=await reportRequest(adminRpc('nh7_admin_student_academic_center_v542',{p_inactive_days:requestDays},20000),22000);
+        const raw=await reportRequest(adminRpc('nh7_admin_student_academic_center_v543',{p_inactive_days:requestDays},20000),22000);
         if(sequence!==loadSequence)return;
         const next=unwrap(raw);if(!Array.isArray(next?.rows))throw new Error(L('پاسخ گزارش معتبر نیست.','Invalid report response.','Nevaljan odgovor izvještaja.'));
         data={...next,__days:requestDays};
