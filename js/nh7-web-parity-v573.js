@@ -10,8 +10,12 @@ function sidebar(view,entries,label){
   split.append(aside,main);view.append(split);
 }
 let frame=0;
+function nativePlatform(){
+  try{return !!(window.Capacitor?.isNativePlatform?.()||['ios','android'].includes(window.Capacitor?.getPlatform?.())||window.cordova)}catch(_){return false}
+}
+function syncPlatform(){document.documentElement.classList.toggle('nh7-parity-native',nativePlatform())}
 function measure(){
-  frame=0;const root=document.documentElement,header=document.querySelector('#appShell > .topbar'),nav=document.querySelector('#appShell > .bottom-nav');
+  frame=0;syncPlatform();const root=document.documentElement,header=document.querySelector('#appShell > .topbar'),nav=document.querySelector('#appShell > .bottom-nav');
   if(!header||!nav)return;
   for(const [key,node] of [['header',header],['nav',nav]]){const value=Math.ceil(node.getBoundingClientRect().height)+'px';if(root.style.getPropertyValue('--nh7-parity-'+key)!==value)root.style.setProperty('--nh7-parity-'+key,value)}
 }
@@ -42,7 +46,7 @@ function enhancePhotos(){
   if(dialog?.open&&!window.NH7ProfilePhotoV564?.read?.())close();
 }
 function start(){
-  if(window.Capacitor?.isNativePlatform?.())document.documentElement.classList.add('nh7-parity-native');
+  syncPlatform();
   const header=document.querySelector('#appShell > .topbar'),nav=document.querySelector('#appShell > .bottom-nav');
   if(header&&nav){document.documentElement.classList.add('nh7-parity-chrome');const observer=new ResizeObserver(schedule);observer.observe(header);observer.observe(nav);schedule()}
   new MutationObserver(()=>{enhancePhotos();schedule()}).observe(document.body,{childList:true,subtree:true});enhancePhotos();

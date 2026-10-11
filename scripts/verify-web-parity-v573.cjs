@@ -10,10 +10,10 @@ const read=p=>fs.readFileSync(p,'utf8');
   const page=await browser.newPage({viewport:{width,height:900}});
   await page.route('**/*',route=>route.fulfill({status:200,contentType:'text/html',body:'<!doctype html><html><head></head><body></body></html>'}));
   await page.goto('http://parity.test/');
-  const css=['css/styles.css','css/nh7-header-date-v455.css','css/nh7-finalqa-v558.css','css/nh7-web-parity-v573.css'].map(read).join('\n');
+  const css=['css/styles.css','css/nh7-header-date-v455.css','css/nh7-spiritual-plans-v240.css','css/nh7-finalqa-v558.css','css/nh7-web-parity-v573.css'].map(read).join('\n');
   await page.addStyleTag({content:css});
   await page.evaluate(({lang})=>{
-   document.documentElement.dir=lang==='fa'?'rtl':'ltr';localStorage.setItem('nh7_lang',lang);
+   document.documentElement.dir=lang==='fa'?'rtl':'ltr';localStorage.setItem('nh7_lang',lang);window.Capacitor={isNativePlatform:()=>true,getPlatform:()=>'ios'};
    const photo='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=';
    localStorage.setItem('nh7_profile_photo_v561',photo);
    localStorage.setItem('nh7_user_session_v170',JSON.stringify({user:{id:'current'},access_token:'fixture-only'}));
@@ -21,7 +21,7 @@ const read=p=>fs.readFileSync(p,'utf8');
    localStorage.setItem('nh7_spiritual_plans_v240:current',JSON.stringify(progress));
    progress.plans['prayer-30'].days['3'].note='Other account secret';localStorage.setItem('nh7_spiritual_plans_v240:other',JSON.stringify(progress));
    localStorage.setItem('nh7_note_example','Ordinary note');
-   document.body.innerHTML='<div id="appShell" class="app-shell"><header class="topbar"><span id="nh7TopProfile564"><img width="40" height="40" src="'+photo+'"></span><div id="date">Header</div></header><main id="view" class="view"><div id="notesPanel"></div><button id="existing">Existing control</button></main><nav class="bottom-nav"><button>Home</button><button>Bible</button></nav></div>';
+   document.body.innerHTML='<div id="appShell" class="app-shell"><header class="topbar"><span id="nh7TopProfile564"><img width="40" height="40" src="'+photo+'"></span><div id="date">Header</div></header><main id="view" class="view"><div class="nh7-plans-tabs"><button>Spiritual</button><button>Fasting</button><button>Bible</button></div><div id="notesPanel"></div><button id="existing">Existing control</button></main><nav class="bottom-nav"><button class="nav-item"><span>⌂</span><small>Home</small></button><button class="nav-item"><span>📖</span><small>Bible</small></button></nav></div>';
    window.NH7ProfilePhotoV564={read:()=>localStorage.getItem('nh7_profile_photo_v561')};window.NH7_SPIRITUAL_PLANS={render:params=>{window.openedDay=params}};
    history.replaceState({route:'home',params:{}},'','#home');
    window.addEventListener('popstate',event=>{if(event.state?.route==='plans')NH7_SPIRITUAL_PLANS.render(event.state.params)});
@@ -38,7 +38,7 @@ const read=p=>fs.readFileSync(p,'utf8');
   assert.equal(await page.locator('.nh7-parity-sidebar button').getAttribute('data-params'),JSON.stringify({section:'written',mode:'chapter',bookId:'GEN',chapter:3}));
   await page.locator('#existing').click();assert.equal(await page.evaluate(()=>existingClicked),true);
   const bounds=await page.evaluate(()=>{const h=document.querySelector('.topbar').getBoundingClientRect(),n=document.querySelector('.bottom-nav').getBoundingClientRect(),v=document.querySelector('#view'),r=v.getBoundingClientRect(),st=getComputedStyle(v),dateNode=document.querySelector('.nh7-header-date-row455'),dateDisplay=dateNode?getComputedStyle(dateNode).display:'absent';return{headerTop:h.top,headerBottom:h.bottom,headerHeight:h.height,navTop:n.top,navBottom:n.bottom,navHeight:n.height,viewTop:r.top,viewBottom:r.bottom,scroll:document.documentElement.scrollWidth,width:innerWidth,viewOverflowY:st.overflowY,viewPaddingTop:parseFloat(st.paddingTop),viewPaddingBottom:parseFloat(st.paddingBottom),shellHeight:document.querySelector('#appShell').getBoundingClientRect().height,dateDisplay}});
-  assert.equal(bounds.headerTop,0,JSON.stringify(bounds));assert(Math.abs(bounds.navBottom-900)<=1,JSON.stringify(bounds));assert.equal(bounds.viewOverflowY,'auto',JSON.stringify(bounds));assert(Math.abs(bounds.viewTop-bounds.headerBottom)<=1,JSON.stringify(bounds));assert(Math.abs(bounds.navTop-bounds.viewBottom)<=1,JSON.stringify(bounds));assert(bounds.viewPaddingTop<=8&&bounds.viewPaddingBottom<=8,JSON.stringify(bounds));assert(bounds.scroll<=bounds.width+1,JSON.stringify(bounds));assert(bounds.shellHeight<=901,JSON.stringify(bounds));if(width<=1366){assert(['none','absent'].includes(bounds.dateDisplay),JSON.stringify(bounds));assert(bounds.headerHeight<=58,JSON.stringify(bounds));assert(bounds.navHeight<=40,JSON.stringify(bounds));}
+  assert.equal(bounds.headerTop,0,JSON.stringify(bounds));assert(Math.abs(bounds.navBottom-900)<=1,JSON.stringify(bounds));assert.equal(await page.locator('.nh7-plans-tabs').evaluate(el=>getComputedStyle(el).position),'relative');assert.equal(bounds.viewOverflowY,'auto',JSON.stringify(bounds));assert(Math.abs(bounds.viewTop-bounds.headerBottom)<=1,JSON.stringify(bounds));assert(Math.abs(bounds.navTop-bounds.viewBottom)<=1,JSON.stringify(bounds));assert(bounds.viewPaddingTop<=8&&bounds.viewPaddingBottom<=8,JSON.stringify(bounds));assert(bounds.scroll<=bounds.width+1,JSON.stringify(bounds));assert(bounds.shellHeight<=901,JSON.stringify(bounds));if(width<=1366){assert(['none','absent'].includes(bounds.dateDisplay),JSON.stringify(bounds));assert(bounds.headerHeight<=58,JSON.stringify(bounds));assert(bounds.navHeight<=40,JSON.stringify(bounds));assert(bounds.navHeight>=34,JSON.stringify(bounds));}
   const chromeBefore=await page.evaluate(()=>({h:document.querySelector('.topbar').getBoundingClientRect().top,n:document.querySelector('.bottom-nav').getBoundingClientRect().bottom}));
   await page.evaluate(()=>{const v=document.querySelector('#view');v.innerHTML+='<div style="height:1800px"></div>';v.scrollTop=900});await page.waitForTimeout(60);
   const chromeAfter=await page.evaluate(()=>({h:document.querySelector('.topbar').getBoundingClientRect().top,n:document.querySelector('.bottom-nav').getBoundingClientRect().bottom,scrollTop:document.querySelector('#view').scrollTop}));
@@ -82,11 +82,11 @@ const read=p=>fs.readFileSync(p,'utf8');
    const base=process.env.NH7_PARITY_APP_URL;
    await page.route('**/*',route=>route.request().url().startsWith(base)?route.continue():route.fulfill({status:200,contentType:'application/json',body:'[]'}));
    await page.addInitScript(()=>{
-    localStorage.setItem('nh7_lang','en');
+    localStorage.setItem('nh7_lang','en');localStorage.setItem('nh7_profile_photo_v561','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=');
     localStorage.setItem('nh7_spiritual_plans_v240:guest',JSON.stringify({version:1,plans:{'prayer-30':{startedAt:'2026-10-01',days:{'3':{status:'in_progress',startedAt:'2026-10-01',note:'Guest reflection',updatedAt:'2026-10-01'}}}}}));
    });
    await page.goto(base);await page.waitForFunction(()=>typeof window.NH7_NAVIGATE==='function');
-   await page.locator('#amenButton').click();
+   await page.locator('#amenButton').click();await page.waitForSelector('#nh7HomeProfile564 img');assert.equal(await page.locator('#nh7HomeProfile564 img').isVisible(),true);
    await page.evaluate(()=>NH7_NAVIGATE('bible',{section:'written',mode:'chapter',bookId:'GEN',chapter:3,verse:4}));
    await page.waitForSelector('#v-4');assert.equal(await page.locator('.nh7-parity-sidebar').isVisible(),width>=768);
    assert(await page.locator('#v-4').evaluate(node=>node.classList.contains('saved-focus')));

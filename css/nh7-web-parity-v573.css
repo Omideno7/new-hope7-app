@@ -8,7 +8,7 @@ html.nh7-parity-chrome,html.nh7-parity-chrome body {height:100%;overflow:hidden}
 .nh7-parity-chrome #appShell > .bottom-nav {position:relative!important;inset:auto!important;transform:none!important;width:100%!important;z-index:30}
 /* Capacitor has ios.contentInset=automatic, so do not apply the same safe area twice. */
 html.nh7-parity-native #appShell > .topbar {padding-top:2px!important}
-html.nh7-parity-native #appShell > .bottom-nav {padding-bottom:2px!important}
+html.nh7-parity-native #appShell > .bottom-nav {padding-bottom:1px!important;margin-bottom:0!important}
 
 /* Compact the bar itself (not only its icons) on phones and iPads, including landscape. */
 @media(max-width:1366px){
@@ -20,12 +20,16 @@ html.nh7-parity-native #appShell > .bottom-nav {padding-bottom:2px!important}
   .nh7-parity-chrome #appShell > .topbar .brand small {font-size:.68rem!important;line-height:1.1}
   .nh7-parity-chrome #appShell > .topbar .icon-btn {width:34px!important;height:34px!important;font-size:23px!important;border-radius:10px!important}
   .nh7-parity-chrome #appShell > .topbar .lang-select {min-height:34px!important;padding:4px 6px!important;font-size:.8rem!important}
-  .nh7-parity-chrome #appShell > .bottom-nav {gap:1px!important;padding:2px 5px calc(2px + env(safe-area-inset-bottom,0px))!important;border-radius:14px 14px 0 0!important}
-  html.nh7-parity-native #appShell > .bottom-nav {padding-bottom:2px!important}
-  .nh7-parity-chrome #appShell > .bottom-nav .nav-item {padding:2px 1px!important;gap:1px!important;border-radius:10px!important;min-height:29px!important}
-  .nh7-parity-chrome #appShell > .bottom-nav .nav-item span {font-size:17px!important;line-height:1!important}
-  .nh7-parity-chrome #appShell > .bottom-nav .nav-item small {font-size:9.5px!important;line-height:1!important}
+  .nh7-parity-chrome #appShell > .bottom-nav {gap:1px!important;padding:1px 5px!important;min-height:38px!important;max-height:40px!important;align-items:center!important;overflow:visible!important;border-radius:12px 12px 0 0!important}
+  html.nh7-parity-native #appShell > .bottom-nav {padding:1px 5px!important;margin-bottom:0!important}
+  .nh7-parity-chrome #appShell > .bottom-nav .nav-item {padding:1px!important;gap:1px!important;border-radius:9px!important;min-height:34px!important;height:34px!important;justify-content:center!important;overflow:visible!important;transform:none!important}
+  .nh7-parity-chrome #appShell > .bottom-nav .nav-item span {font-size:17px!important;line-height:16px!important;min-height:16px!important}
+  .nh7-parity-chrome #appShell > .bottom-nav .nav-item small {font-size:9.5px!important;line-height:10px!important;min-height:10px!important;overflow:visible!important}
 }
+
+/* The Plans tabs belong to page content. The old sticky top offset was correct only
+   when the header overlaid the document; with row-based chrome it created a 70px gap. */
+.nh7-parity-chrome #view .nh7-plans-tabs {position:relative!important;top:auto!important;z-index:1!important;margin-top:0!important}
 
 .nh7-parity-sidebar {display:none}
 .nh7-parity-content {min-width:0}

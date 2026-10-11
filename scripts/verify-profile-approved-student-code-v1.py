@@ -15,7 +15,7 @@ for token in ['studentIdentities:[]',"adminRpc('nh7_admin_student_identity_direc
     if token not in admin: errors.append('Admin missing '+token)
 for token in ["nh7_my_student_identity_v127",'nh7-student-code564',"L('کد دانشجویی','Student ID','Studentski ID')",'studentIdentity?.student_code']:
     if token not in profile: errors.append('Profile missing '+token)
-if 'js/nh7-profile-photo-v564.js?v=5.6.6&ui=123' not in index: errors.append('profile cache bust missing')
+if 'js/nh7-profile-photo-v564.js?v=5.6.7&ui=124' not in index: errors.append('profile cache bust missing')
 if errors:
     print('FAILED'); [print(' -',e) for e in errors]; raise SystemExit(1)
 print('Approved/Profile Student Code verifier: PASS')

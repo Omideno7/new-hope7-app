@@ -5,7 +5,7 @@
 (()=>{'use strict';
 if(window.__NH7_PROFILE_PHOTO_V564__)return;window.__NH7_PROFILE_PHOTO_V564__=true;
 
-const VERSION='5.6.6-profile-consistency';
+const VERSION='5.6.7-home-consistency';
 const PHOTO_KEY='nh7_profile_photo_v561';
 let queued=false,busy=false,editor=null,studentIdentity=null,studentIdentityOwner='',identityLoading=false;
 const lang=()=>{const v=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return ['fa','en','hr'].includes(v)?v:'en'};
@@ -36,6 +36,7 @@ function ensureStyle(){
     .nh7-account-profile564-copy{min-width:0;flex:1}.nh7-account-profile564-copy strong,.nh7-account-profile564-copy small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.nh7-account-profile564-copy small{margin-top:3px;font-size:.7rem;opacity:.68}.nh7-student-code564{margin-top:6px!important;display:inline-flex!important;width:max-content;max-width:100%;padding:5px 8px;border-radius:999px;background:color-mix(in srgb,var(--brand,#1858a4) 9%,var(--card,#fff));color:var(--brand,#1858a4);opacity:1!important;font-weight:800;direction:ltr}
     .nh7-account-profile564-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.nh7-account-profile564-actions button{min-height:36px;padding:7px 11px;border-radius:10px;font-size:.7rem;cursor:pointer}
     .nh7-profile-file564{position:fixed!important;left:-10000px!important;top:-10000px!important;width:1px!important;height:1px!important;opacity:.01!important;overflow:hidden!important}.nh7-profile-status564{margin-top:7px!important;white-space:normal!important;line-height:1.4!important}
+    #nh7HomeProfile561,#nh7HomeProfile563,#nh7AccountProfile561,#nh7AccountProfile563{display:none!important}
     #nh7TopProfile564{width:34px;height:34px;flex:0 0 34px;border-radius:50%;overflow:hidden;border:1.5px solid color-mix(in srgb,var(--brand,#1858a4) 28%,transparent);background:var(--card,#fff);display:none;place-items:center;margin-inline-start:auto;margin-inline-end:4px;padding:0;box-shadow:0 1px 5px rgba(0,0,0,.08)}
     #nh7TopProfile564.is-visible{display:grid}#nh7TopProfile564 img{width:100%;height:100%;object-fit:cover;display:block}
     .nh7-photo-editor564{position:fixed;inset:0;z-index:2147482500;background:rgba(10,18,32,.72);display:flex;align-items:flex-end;justify-content:center;padding:18px;backdrop-filter:blur(5px)}
@@ -56,8 +57,9 @@ function syncHeader(){
   slot.classList.toggle('is-visible',!!photo);return true;
 }
 function syncHome(){
-  const marker=document.getElementById('quickNotify'),view=document.getElementById('view');if(!marker||!view)return false;
-  const card=marker.closest('.card')||view.querySelector('.card');if(!card)return false;
+  const view=document.getElementById('view'),marker=document.getElementById('quickNotify');if(!view)return false;
+  const homeActive=!!marker||document.querySelector('.bottom-nav [data-route="home"].active');if(!homeActive)return false;
+  const card=marker?.closest('.card')||view.querySelector('.card.hero')||view.querySelector('.card');if(!card)return false;
   const p=profile(),photo=readPhoto();if(!p.name&&!photo)return false;const sig=`${p.name}|${photoSig(photo)}|${lang()}`;
   let row=document.getElementById('nh7HomeProfile564');if(!row){row=document.createElement('div');row.id='nh7HomeProfile564';row.className='nh7-home-profile564';card.prepend(row)}
   if(row.dataset.sig!==sig){row.dataset.sig=sig;row.innerHTML=homeMarkup(p,photo)}return true;
@@ -133,7 +135,7 @@ function syncAccount(force=false){
   let box=document.getElementById('nh7AccountProfile564');if(!box){box=document.createElement('section');box.id='nh7AccountProfile564';box.className='nh7-account-profile564';const anchor=card.querySelector('h3')||card.firstChild;if(anchor)anchor.insertAdjacentElement('afterend',box);else card.prepend(box)}
   if(force||box.dataset.sig!==sig){box.dataset.sig=sig;renderAccountBox(box,p,photo)}return true;
 }
-function cleanupLegacy(){['nh7HomeProfile563','nh7AccountProfile563'].forEach(id=>document.getElementById(id)?.remove())}
+function cleanupLegacy(){['nh7HomeProfile561','nh7AccountProfile561','nh7HomeProfile563','nh7AccountProfile563'].forEach(id=>{const el=document.getElementById(id);if(el)el.hidden=true})}
 function syncAll(force=false){ensureStyle();refreshEditorCopy();cleanupLegacy();syncHeader();syncHome();syncAccount(force)}
 function schedule(force=false){if(force){queued=false;requestAnimationFrame(()=>syncAll(true));return}if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;syncAll(false)})}
 function start(){ensureStyle();syncAll(false);const view=document.getElementById('view');if(view)new MutationObserver(()=>schedule(false)).observe(view,{subtree:true,childList:true});document.getElementById('langSelect')?.addEventListener('change',()=>setTimeout(()=>syncAll(true),0));window.addEventListener('storage',event=>{if(event.key===PHOTO_KEY||event.key==='nh7_user_profile'||event.key==='nh7_user_session_v170'||event.key==='nh7_explicit_logout'){if(event.key==='nh7_user_session_v170'||event.key==='nh7_explicit_logout'){studentIdentity=null;studentIdentityOwner=''}schedule(true)}});window.addEventListener('nh7-session-refreshed',()=>{studentIdentity=null;studentIdentityOwner='';schedule(true)});window.addEventListener('online',()=>{studentIdentityOwner='';schedule(true)})}
