@@ -15,7 +15,7 @@ const L=(fa,en,hr)=>lang==='fa'?fa:lang==='hr'?hr:en;
 const esc=v=>h(v==null?'':String(v));
 const normalize=v=>String(v||'').trim().toLowerCase();
 function bookName(b){return lang==='fa'?(b.name_fa||b.name_en):lang==='hr'?(b.name_hr||b.name_en):(b.name_en||b.name_fa)}
-function publicDocUrl(row){return new URL('certificate.html?token='+encodeURIComponent(row.public_token||'')+'&v=508',location.href).href}
+function publicDocUrl(row){return new URL('certificate.html?token='+encodeURIComponent(row.public_token||'')+'&v=509',location.href).href}
 function verifyDocUrl(row){return row?.public_token?new URL('verify-certificate-v508.html?token='+encodeURIComponent(row.public_token)+'&v=508',location.href).href:''}
 function chapterFromName(name){const nums=String(name||'').match(/\d{1,3}/g)||[];return Number(nums[nums.length-1]||0)}
 function extOf(name){return (String(name||'').toLowerCase().match(/\.([a-z0-9]+)$/)||[])[1]||'mp3'}
