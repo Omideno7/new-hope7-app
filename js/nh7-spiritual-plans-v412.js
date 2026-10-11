@@ -315,6 +315,11 @@ document.querySelector('#langSelect')?.addEventListener('change', () => {
   if(active) setTimeout(() => renderPlans(currentParams), 120);
 });
 window.addEventListener('online', () => syncCloudQueue().catch(() => null));
+// The canonical router handles history rendering. Stop restoring a plan after Back.
+window.addEventListener('popstate', event => {
+  if(event.state?.route === 'plans' && event.state?.params?.tab === 'spiritual') return;
+  active=false; currentParams={tab:'spiritual'}; clearTimeout(restoreTimer);
+});
 
 new MutationObserver(() => {
   if(!active || rendering) return;

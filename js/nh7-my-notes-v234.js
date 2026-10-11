@@ -102,7 +102,8 @@ function collectNotes(){
       if(!plan?.startedAt)continue;
       for(const [day,value] of Object.entries(plan.days||{})){
         const text=normalizedText(value?.note);if(!text||!/^\d+$/.test(day)||Number(day)<1)continue;
-        notes.push({storageKey:'nh7_virtual_plan_note_v573:'+encodeURIComponent(owner)+':'+encodeURIComponent(planId)+':'+day,kind:'plan',readOnly:true,text,title:planId+' — '+t('روز','Day','Dan')+' '+day,route:'plans',params:{tab:'spiritual',plan:planId,day:Number(day)},updatedAt:value.updatedAt||'',meta:{}});
+        const dayLabel=lang()==='fa'?day.replace(/\d/g,n=>'۰۱۲۳۴۵۶۷۸۹'[n]):day;
+        notes.push({storageKey:'nh7_virtual_plan_note_v573:'+encodeURIComponent(owner)+':'+encodeURIComponent(planId)+':'+day,kind:'plan',readOnly:true,text,title:t('یادداشت پلن روحانی — روز','Spiritual plan note — day','Bilješka duhovnog plana — dan')+' '+dayLabel,route:'plans',params:{tab:'spiritual',plan:planId,day:Number(day)},updatedAt:value.updatedAt||'',meta:{planId,dayNumber:Number(day)}});
       }
     }
   }
@@ -144,7 +145,7 @@ function scrollToPending(){
 }
 function openNote(storageKey){
   const note=collectNotes().find(n=>n.storageKey===storageKey);if(!note)return;
-  if(note.kind==='plan'){window.NH7_SPIRITUAL_PLANS?.render?.(note.params);return;}
+  if(note.kind==='plan'){pendingTarget=null;routeTo('plans',note.params);return;}
   if(note.kind==='apocrypha'){window.NH7_OPEN_SAVED_APOCRYPHA_V394?.('APO:'+storageKey.replace(/^nh7_apo_note_v242:/,''));return;}
   const meta=note.meta||{};
   pendingTarget={kind:note.kind,storageKey};

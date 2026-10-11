@@ -1367,6 +1367,7 @@ async function render(route, params={}, preserve=false){
     if(route==='home') await home();
     else if(route==='daily') await daily(params);
     else if(route==='bible') await bible(params);
+    else if(route==='plans'&&params?.tab==='spiritual'&&window.NH7_SPIRITUAL_PLANS?.render) await window.NH7_SPIRITUAL_PLANS.render(params);
     else if(route==='plans') await plans(params);
     else if(route==='school') await school(params);
     else if(route==='more') await more();

@@ -29,14 +29,19 @@ mobile runtime files.
 - My Notes reads existing v240 reflections for the canonical current-session UID
   (or guest scope). It does not enumerate other users' plan keys. Virtual cards have
   no storage row, no delete button and a programmatic deletion guard. Open source
-  calls the current Spiritual Plans renderer with the stored plan/day, without
-  `start:1`. Existing plan editing and its normal sync behavior remain authoritative.
+  uses the existing Notes `routeTo('plans', params)` history path. The canonical Web
+  router delegates `tab: spiritual` to the current Spiritual Plans renderer with
+  the stored plan/day, without `start:1`. Leaving that history route disables the
+  bridge's DOM restoration so browser Back cannot reopen the plan over Home.
+  Titles use the localized “Spiritual plan note — day N” pattern (Persian digits
+  in FA); internal plan IDs remain in metadata/params, not visible titles.
+  Existing plan editing and its normal sync behavior remain authoritative.
   No Notes save/delete/restore contract changes for ordinary notes.
 - Existing Midnight, Aurora and Sapphire sidebar colors passed computed text
   contrast checks (at least 4.5:1). No reproduced palette bug required changes to
   existing theme CSS.
 - The isolated release-core executable cache and worker URL advance to
-  `5.4.5-web-parity573`; the new presentation files are precached. Library 125.5,
+  `5.4.5-web-parity573-r2`; the new presentation files are precached. Library 125.5,
   stable data/media/download/reader cache contracts and update logic are preserved.
 
 No migration, deployment, Production call, RLS/Storage/auth change, native bridge,
@@ -51,6 +56,7 @@ used. Existing route analytics are unchanged, with no additional tracking calls.
 - `css/nh7-web-parity-v573.css`: scoped responsive layout and viewer presentation.
 - `js/app.js`: small current-renderer sidebar hooks; existing routes/data flows retained.
 - `js/nh7-my-notes-v234.js`: identity-scoped virtual reflections and read-only guard.
+- `js/nh7-spiritual-plans-v412.js`: deactivate DOM restoration when history leaves Spiritual Plans; sync/persistence untouched.
 - `js/nh7-my-notes-categories-v452.js`: localized Spiritual Plans group.
 - `index.html`: load presentation assets and version the current app/worker.
 - `service-worker.js`: release-core import version.
@@ -67,6 +73,9 @@ used. Existing route analytics are unchanged, with no additional tracking calls.
   backend requests, current-account isolation and blocked virtual-note deletion.
 - Real `index.html` at all three widths: exact Bible verse focus, user-tapped tablet
   chapter navigation, existing plan day/reflection opening with unchanged progress.
+  Localized titles without internal IDs, real user-tapped Open source changing
+  route/history to `plans`, browser Back returning to Home without restoration,
+  Forward reopening the exact plan/day and byte-identical localStorage throughout.
   Dark/color palette contrast checks on tablet/desktop. No runtime page errors.
 - All existing Pages validation commands pass: migration parity **42/42 exact,
   zero pending**; Web Community, Exam Review, Calendar, Notes account merge, Plans
@@ -93,6 +102,8 @@ changed. School/Audio backend services are not exercised against Production.
 4. Save a reflection using the existing Spiritual Plans screen. Open Home/My Notes:
    expand Spiritual Plans, use Open source, and verify the correct plan/day. There
    must be no Delete action on that virtual card. Ordinary notes retain their actions.
+   Check the localized title (no internal ID), `#plans` URL and browser Back/Forward;
+   Back should return Home and Forward should reopen the same day/reflection.
    Switch accounts and confirm another account's plan reflections are not listed.
 5. Select Midnight, Aurora and Sapphire in Appearance and inspect sidebar/reader
    contrast. Exercise normal Community, Library, Notes and existing audio controls.
