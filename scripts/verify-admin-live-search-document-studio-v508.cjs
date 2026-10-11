@@ -7,6 +7,7 @@ const docs=fs.readFileSync('js/admin-v2.2.0.js','utf8');
 const runtime=fs.readFileSync('js/admin-v2.3.9-document-runtime-fix4.js','utf8');
 const select=fs.readFileSync('js/admin-v2.3.9-document-select-fix5.js','utf8');
 const cert=fs.readFileSync('certificate.html','utf8');
+const renderer=fs.readFileSync('js/nh7-document-renderer-v521.js','utf8');
 const verify=fs.readFileSync('verify-certificate-v508.html','utf8');
 need(admin,'nh7-admin-live-search-v508.js?v=5.0.8','Live search runtime is not loaded');
 need(search,'oldRegistration?.call(this,el)','Approved search must preserve canonical search state');
@@ -28,7 +29,7 @@ need(select,'window.NH7CurrentDocumentV508?.select','Studio selection is not bou
 need(select,'base.studio_v239','Studio selection does not load saved v239 design');
 need(cert,"location.href='https://omideno7church.com/'",'Public document still has a web-app/history back action');
 need(cert,'verify-certificate-v508.html?token=','Public document QR does not use the cache-isolated verification route');
-need(cert,'baseDesign.studio_v239','Public document renderer ignores saved Full Studio design');
+need(renderer,'baseDesign.studio_v239','Public document renderer ignores saved Full Studio design');
 forbid(cert,/history\.back\(\)|admin\.html/,'Public certificate must not send visitors back to Admin/web app');
 need(verify,'https://omideno7church.com/','Verification CTA must open the church website');
 console.log('Admin live search / Document Studio v508 verifier: PASS');

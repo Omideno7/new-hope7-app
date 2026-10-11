@@ -21,10 +21,10 @@ function readDesign(row){
   if(!raw.accent)raw.accent=base.border||base.accent;
   if(!raw.accent2)raw.accent2=base.accent;
   if(base.styles&&!raw.styles)raw.styles=parseObject(base.styles);
-  if(row?.logo_url){raw.logo=Object.assign({},raw.logo||{},{source:row.logo_url,enabled:true});raw.watermark=Object.assign({},raw.watermark||{},{source:row.logo_url})}
+  if(row?.logo_url&&!raw.logo?.source){raw.logo=Object.assign({},raw.logo||{},{source:row.logo_url,enabled:true});raw.watermark=Object.assign({},raw.watermark||{},{source:row.logo_url})}
   if(row?.photo_url&&!raw.photo?.source)raw.photo=Object.assign({},raw.photo||{},{source:row.photo_url,enabled:true});
   if(row?.signature_url&&!raw.signature?.source)raw.signature=Object.assign({},raw.signature||{},{source:row.signature_url});
-  if(row?.church_info&&typeof row.church_info==='object')raw.church=Object.assign({},raw.church||{},row.church_info);
+  if(row?.church_info&&typeof row.church_info==='object')raw.church=Object.assign({},row.church_info,raw.church||{});
   return raw;
 }
 function pathValue(obj,path){let value=obj;for(const key of String(path||'').split('.')){if(value==null||!Object.prototype.hasOwnProperty.call(Object(value),key))return{found:false,value:null};value=value[key]}return{found:true,value}}
@@ -82,7 +82,7 @@ function inject(force=false){
   injecting=true;try{const holder=document.createElement('div');holder.innerHTML=selectionHtml();const next=holder.firstElementChild;if(existing)existing.replaceWith(next);else controls.insertAdjacentElement('afterbegin',next)}finally{injecting=false}
   if(!rows().length&&!listAttempted&&!listLoading)loadRows(false);
 }
-function closeAndShowForm(){document.querySelector('[data-f4-close]')?.click();setTimeout(()=>{const target=document.querySelector('.certificate-admin-grid,.doc-v222-official-form,.doc-v222-editor');target?.scrollIntoView({behavior:'smooth',block:'start'})},120)}
+function closeAndShowForm(){document.querySelector('[data-f4-close]')?.click();window.newDocumentTemplateV220?.();setTimeout(()=>{const target=document.querySelector('.certificate-admin-grid,.doc-v222-official-form,.doc-v222-editor');target?.scrollIntoView({behavior:'smooth',block:'start'})},120)}
 async function loadRows(force=false){
   if(listLoading||(!force&&listAttempted))return;listLoading=true;listAttempted=true;inject(true);
   try{
