@@ -124,6 +124,7 @@ let activeTab=localStorage.getItem('nh7_admin_tab')||'overview';
 let currentFilter='pending';
 let currentSearch='';
 let registrationSearchTimer=0;
+let studentIdentityIndex=new Map();
 let assignmentFilter='submitted';
 let assignmentSearch='';
 let assignmentStudentFilter='all';
@@ -200,7 +201,8 @@ async function loadStudentIdentityDirectory(){
   try{const raw=await adminRpc('nh7_admin_student_identity_directory_v128',{});const value=Array.isArray(raw)&&raw.length===1?raw[0]:raw;return Array.isArray(value?.rows)?value.rows:[]}
   catch(e){console.warn('Student identity directory unavailable',e);return []}
 }
-function studentIdentityByEmail(email){const key=normEmailValue(email);if(!key)return null;return (state.studentIdentities||[]).find(x=>normEmailValue(x.current_email)===key||normEmailValue(x.registration_email)===key)||null}
+function rebuildStudentIdentityIndex(){studentIdentityIndex=new Map();for(const row of (state.studentIdentities||[])){for(const email of [row?.current_email,row?.registration_email]){const key=normEmailValue(email);if(key&&!studentIdentityIndex.has(key))studentIdentityIndex.set(key,row)}}}
+function studentIdentityByEmail(email){const key=normEmailValue(email);return key?studentIdentityIndex.get(key)||null:null}
 function studentCodeForRegistration(r){return String(studentIdentityByEmail(getEmail(r))?.student_code||'')}
 async function loadSchoolAssignmentsFeed(){
   try{return await adminRpc('nh7_admin_school_assignments_feed',{p_limit:2000})}
@@ -226,7 +228,7 @@ async function loadAll(silent=false){
     ]);
     const [registrations,studentIdentities,questions,meeting]=critical;
     if(registrations.status==='fulfilled')state.registrations=registrations.value||[];
-    if(studentIdentities.status==='fulfilled')state.studentIdentities=studentIdentities.value||[];
+    if(studentIdentities.status==='fulfilled'){state.studentIdentities=studentIdentities.value||[];rebuildStudentIdentityIndex()}
     if(questions.status==='fulfilled')state.questions=questions.value||[];
     if(meeting.status==='fulfilled')state.meeting=(meeting.value||[])[0]||{};
     state.lastError=critical.filter(x=>x.status==='rejected').map(x=>String(x.reason?.message||x.reason||'')).join('\n');
@@ -302,7 +304,7 @@ function nh7AdminReviewSummaryV476(){const c=counts(),b=Number(window.nh7AdminBl
 function nh7AdminReviewStripV476(){if(!['overview','requests','qa','assignments','blessings'].includes(String(activeTab||'')))return '';return '<div class="nh7-review-strip-v476"><div><strong>'+nh7Label('صف بررسی ادمین','Admin review queue','Red za pregled')+'</strong><small>'+h(nh7AdminReviewSummaryV476())+' · '+nh7Label('به‌روزرسانی فقط با دکمه انجام می‌شود؛ Poll خودکار غیرفعال است.','Updates run only when you tap the button; background polling is off.','Ažuriranje se pokreće samo pritiskom na gumb; automatsko osvježavanje je isključeno.')+'</small></div>'+nh7AdminReviewButtonV476()+'</div>'}
 function renderTop(){return '<div class="topbar"><div class="brand"><img src="assets/admin-icon-192.png" alt=""><div><h1>'+tr('title')+'</h1><p>'+tr('sub')+'</p></div></div><div class="top-actions"><select onchange="setLang(this.value)"><option value="fa" '+(lang==='fa'?'selected':'')+'>فارسی</option><option value="en" '+(lang==='en'?'selected':'')+'>English</option><option value="hr" '+(lang==='hr'?'selected':'')+'>Hrvatski</option></select><button class="btn secondary" onclick="loadAll()">⟳ '+tr('refresh')+'</button><button class="btn ghost" onclick="enableAlerts()">🔔 '+tr('enableAlerts')+'</button><button class="btn danger-btn" onclick="logout()">'+tr('logout')+'</button></div></div><div id="adminMsg" class="muted small"></div>'+tabsHtml()}
 function tabsHtml(){const c=counts();const tabs=[['overview',lang==='fa'?'داشبورد':lang==='hr'?'Nadzorna ploča':'Dashboard',0],['requests',tr('requests'),c.pending],['approved',tr('approvedUsers'),0],['qa',tr('questions'),c.newQ],['sermons',tr('sermons'),0],['notifications',tr('notificationCenter'),0],['dailycontent',lang==='fa'?'محتوای روزانه':lang==='hr'?'Dnevni sadržaj':'Daily Content',0],['schoolcontent',lang==='fa'?'مدیریت مدرسه':lang==='hr'?'Upravljanje školom':'School Management',0],['students',lang==='fa'?'دانشجویان':lang==='hr'?'Studenti':'Students',0],['certificates',lang==='fa'?'مدارک':lang==='hr'?'Certifikati':'Certificates',0],['assignments',lang==='fa'?'تکالیف':lang==='hr'?'Zadaci':'Assignments',c.pendingAssignments],['schoolresults',lang==='fa'?'آزمون و پیشرفت':lang==='hr'?'Ispiti i napredak':'Exams & Progress',0],['meetings',tr('meetings'),0],['messages',tr('messages'),0],['blessings',nh7Label('برکت‌ها','Blessings','Blagoslovi'),Number(window.nh7AdminBlessingsNewCountV476?.()||0)]];return '<nav class="tabs">'+tabs.map(([id,label,b])=>'<button class="tab '+(activeTab===id?'active':'')+'" onclick="setTab(&quot;'+id+'&quot;)">'+label+(b?'<span class="badge">'+b+'</span>':'')+'</button>').join('')+'</nav>'}
-function queueRegistrationSearch(el){currentSearch=el.value;clearTimeout(registrationSearchTimer);registrationSearchTimer=setTimeout(()=>{render();requestAnimationFrame(()=>{const next=document.getElementById('registrationSearchInput');if(next){try{next.focus({preventScroll:true})}catch(_){next.focus()}try{next.setSelectionRange(next.value.length,next.value.length)}catch(_){}}})},320)}
+function queueRegistrationSearch(el){currentSearch=el.value;clearTimeout(registrationSearchTimer);registrationSearchTimer=setTimeout(()=>{render();requestAnimationFrame(()=>{const next=document.getElementById('registrationSearchInput');if(next){try{next.focus({preventScroll:true})}catch(_){next.focus()}try{next.setSelectionRange(next.value.length,next.value.length)}catch(_){}}})},90)}
 function renderRequests(approvedOnly=false){let rows=state.registrations.slice();if(approvedOnly)rows=rows.filter(r=>isEffectiveApproved(r));else if(currentFilter==='pending')rows=rows.filter(r=>isEffectivePending(r));else if(currentFilter==='approved')rows=rows.filter(r=>isEffectiveApproved(r));else if(currentFilter==='rejected')rows=rows.filter(r=>isRejected(getEffectiveStatus(r)));if(currentSearch){const q=currentSearch.toLowerCase();rows=rows.filter(r=>(getName(r)+' '+getEmail(r)+' '+getPhone(r)+' '+studentCodeForRegistration(r)+' '+JSON.stringify(r.payload||{})).toLowerCase().includes(q))}const adminTools=!approvedOnly?'<button class="btn secondary" onclick="syncDuplicateStatuses()">✅ '+tr('syncStatuses')+'</button><button class="btn danger-btn" onclick="cleanupRegistrationDuplicates()">🧹 '+tr('dedupe')+'</button>':'';return '<section class="panel-card"><h3>'+(approvedOnly?tr('approvedUsers'):tr('requests'))+'</h3><div class="toolbar"><input id="registrationSearchInput" placeholder="'+tr('search')+'" value="'+h(currentSearch)+'" oninput="queueRegistrationSearch(this)">'+(!approvedOnly?'<select onchange="currentFilter=this.value;render()"><option value="pending" '+(currentFilter==='pending'?'selected':'')+'>'+tr('pending')+'</option><option value="all" '+(currentFilter==='all'?'selected':'')+'>'+tr('all')+'</option><option value="approved" '+(currentFilter==='approved'?'selected':'')+'>'+tr('approved')+'</option><option value="rejected" '+(currentFilter==='rejected'?'selected':'')+'>'+tr('rejected')+'</option></select>'+adminTools:'')+'</div>'+(!rows.length?'<div class="empty">'+tr('empty')+'</div>':rows.map(renderRequestCard).join(''))+'</section>'}
 function renderRequestCard(r){const name=getName(r);const email=getEmail(r);const phone=getPhone(r);const device=getDevice(r);const type=getType(r);const studentCode=studentCodeForRegistration(r);const raw=String(r.status||'pending');const effective=getEffectiveStatus(r);const dups=duplicateRows(r);const dupCount=Math.max(0,dups.length-1);const statusHtml=pillStatus(effective)+(effective!==raw?'<span class="db-status">'+tr('rawStatus')+': '+h(raw)+'</span>':'');const dupHtml=dupCount?'<div class="dup-note">'+dupCount+' '+tr('duplicates')+' — '+tr('effectiveStatus')+': '+h(effective)+'</div>':'';const dupBtn=(email&&dupCount)?'<button class="btn danger-btn" onclick="cleanupRegistrationDuplicatesFor(decodeURIComponent(\''+encodeURIComponent(email)+'\'),decodeURIComponent(\''+encodeURIComponent(type)+'\'))">🧹 '+tr('deleteDupEmail')+'</button>':'';return '<article class="request-card"><div class="req-head"><div><div class="req-name">'+h(name)+'</div><div class="req-meta">'+h(type)+' · '+h(getCreated(r))+'<br>'+h(email)+(phone?' · '+h(phone):'')+(studentCode?'<br><strong>🎓 '+h(lang==='fa'?'کد دانشجویی':lang==='hr'?'Studentski ID':'Student ID')+': '+h(studentCode)+'</strong>':'')+'</div>'+dupHtml+'</div>'+statusHtml+'</div><details class="detail-box"><summary>'+tr('details')+'</summary><div class="detail-row"><strong>'+tr('rawStatus')+'</strong><span>'+h(raw)+'</span></div><div class="detail-row"><strong>'+tr('effectiveStatus')+'</strong><span>'+h(effective)+'</span></div>'+detailRows(r)+'</details><div class="actions three"><button class="btn primary" onclick="updateStatus(\''+r.id+'\',\'approved\')">✅ '+tr('approve')+'</button><button class="btn ghost" onclick="updateStatus(\''+r.id+'\',\'rejected\')">⛔ '+tr('reject')+'</button>'+emailActionHtml(email,tr('mailSubject'),tr('mailBody')+'\n\n'+tr('name')+': '+name+'\n'+tr('email')+': '+email,tr('emailUser'))+inboxActionHtml(email,device,name)+'</div><div class="actions"><button class="btn danger-btn" onclick="deleteRequest(\''+r.id+'\')">🗑 '+tr('delete')+'</button>'+dupBtn+'</div></article>'}
 
@@ -702,7 +704,7 @@ render();
 if(refreshTimer)clearInterval(refreshTimer);
 refreshTimer=null;
 </script>
-  <script src="js/admin-v2.2.0.js?v=2.2.1-supabase-io2"></script>
+  <script src="js/admin-v2.2.0.js?v=2.2.2-doc-v507"></script>
 <script src="js/admin-v2.2.1.js?v=2.2.10-supabase-io4"></script>
   <script src="js/admin-v2.2.2.js?v=2.2.5-supabase-io1"></script>
   <script src="js/admin-v2.2.3.js?v=2.2.5-supabase-io2"></script>
@@ -711,8 +713,8 @@ refreshTimer=null;
   <script src="js/admin-v2.3.5-analytics.js?v=2.3.6"></script>
   <script src="js/admin-v2.3.9-student-clean-v311.js?v=3.1.1"></script>
   <script src="js/admin-v2.3.9-student-state-fix-v316.js?v=3.1.6"></script>
-  <script src="js/admin-v2.3.9-document-runtime-fix4.js?v=2.3.9-f4"></script>
-  <script src="js/admin-v2.3.9-document-select-fix5.js?v=2.3.9-f6"></script>
+  <script src="js/admin-v2.3.9-document-runtime-fix4.js?v=2.3.9-f7"></script>
+  <script src="js/admin-v2.3.9-document-select-fix5.js?v=2.3.9-f7"></script>
   <script id="nh7AdminRbacRuntime" defer src="js/nh7-admin-rbac-v350.js?v=2.3.9.40"></script>
   <script id="nh7AdminLibraryAccessV396" defer src="js/nh7-admin-library-access-v396.js?v=3.9.6"></script>
   <script defer src="js/admin-v2.3.9-registration-approval-email-v344.js?v=3.4.5"></script>
