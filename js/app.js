@@ -2137,7 +2137,7 @@ function audioBibleChapterTitle(row){
   return `${tr('chapter')} ${localNum(n)}`;
 }
 async function audioBible(params={}){
-  if(!await nh7RequireSchoolAccessV223(tr('audioBible')))return;
+  // Audio Bible is regular Bible content; do not require School approval.
   let books=[],chapters=[];
   try{
     [books,chapters]=await Promise.all([
