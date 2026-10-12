@@ -78,3 +78,6 @@ window.addEventListener('pagehide',()=>{if(current)current.cancel()});
 inspectSermonAudio=window.inspectSermonAudio=inspect;
 window.NH7AdminSermonMetadata={version:VERSION};
 })();
+
+/* Load the isolated Storage orphan guard after the stable admin runtime is ready. */
+(()=>{if(document.querySelector('script[data-nh7-storage-orphan-guard]'))return;const s=document.createElement('script');s.src='js/nh7-admin-storage-orphan-guard-v510.js?v=5.1.0';s.dataset.nh7StorageOrphanGuard='1';s.async=false;document.head.appendChild(s)})();
