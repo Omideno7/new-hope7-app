@@ -7,7 +7,7 @@ def need(ok,msg):
  if not ok: err.append(msg)
 def rd(p): return (root/p).read_text(encoding='utf-8')
 idx=rd('index.html'); js=rd('js/nh7-audio-classic-v484.js'); sw=rd('service-worker.js'); core=rd('sw-release-core-v403.js')
-need("window.NH7_AUDIO_CLASSIC_VERSION='4.8.6'" in js,'audio classic v4.8.6 marker missing')
+need("window.NH7_AUDIO_CLASSIC_VERSION='4.8.7'" in js,'audio classic v4.8.7 marker missing')
 # Refresh must preserve existing session/user fields instead of replacing the session object.
 need("session=Object.assign({},session,data,{user:data.user||session.user})" in js,'refresh-token session preservation missing')
 # Signed URL cache must be account-scoped and reject session switches mid-request.
@@ -28,7 +28,7 @@ need('function scheduleTracking(){return false}' in js,'retired tracking schedul
 need('School listening telemetry retired. Playback and local resume remain unchanged.' in js and 'async function flushTracking' in js and 'return false;' in js,'retired tracking flush guard missing')
 # Existing localization remains multilingual in engine errors/statuses.
 need("L('جلسه ورود منقضی شده است؛ دوباره وارد حساب شوید.','Your sign-in session expired; sign in again.','Sesija je istekla; ponovno se prijavite.')" in js,'FA/EN/HR session error localization regressed')
-need('js/nh7-audio-classic-v484.js?v=4.8.6-safe-playback' in idx,'audio classic cache tag mismatch')
+need('js/nh7-audio-classic-v484.js?v=4.8.7-audio-bible' in idx,'audio classic cache tag mismatch')
 # Global release-core version is owned by app wiring, not by this audio feature verifier.
 need('service-worker.js?v=' in idx and '&library=125.5' in idx,'service worker wiring missing')
 need('sw-release-core-v403.js?v=' in sw,'release core import missing')
