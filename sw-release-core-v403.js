@@ -2,8 +2,8 @@
 'use strict';
 // Issue #115 UI refresh: recache localized assets with the existing cache/storage contract.
 
-const NH7_RELEASE_CORE_VERSION='5.4.7-canonical-consolidation';
-const NH7_RELEASE_CORE_CACHE='nh7-release-core-v547-canonical-consolidation';
+const NH7_RELEASE_CORE_VERSION='5.7.1-user-writing-direction';
+const NH7_RELEASE_CORE_CACHE='nh7-release-core-v571-user-writing-direction';
 const NH7_RELEASE_DATA_CACHE='nh7-data-stable-v329';
 const NH7_RELEASE_ASSETS=[
 
@@ -69,6 +69,7 @@ const NH7_RELEASE_ASSETS=[
   './js/nh7-exam-review-v566.js',
   './js/app.js',
   './js/nh7-media-player-v500.js',
+  './js/nh7-user-writing-direction-v571.js',
   './js/nh7-bible-keywords-v451.js',
   './js/nh7-settings-controller-v403.js',
   './js/nh7-settings-account-v252.js',

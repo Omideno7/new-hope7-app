@@ -143,3 +143,4 @@ jobs:
           python3 -m http.server 8878 --bind 127.0.0.1 > "$RUNNER_TEMP/canonical-server.log" 2>&1 &
           node scripts/verify-profile-search-inbox-qa.cjs http://127.0.0.1:8878
           node scripts/verify-sermon-note-direction.cjs http://127.0.0.1:8878
+          node scripts/verify-user-writing-direction.cjs http://127.0.0.1:8878
