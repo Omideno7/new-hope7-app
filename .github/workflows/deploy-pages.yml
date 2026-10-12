@@ -164,7 +164,7 @@ jobs:
           const coreRelease=releaseCore.match(/NH7_RELEASE_CORE_VERSION='([^']+)'/);
           if(!workerRelease||!indexRelease||!coreRelease)fail('Release core wiring/version marker missing');
           if(workerRelease[1]!==indexRelease[1]||workerRelease[1]!==coreRelease[1])fail('Release core version mismatch across index/worker/core');
-          if(!index.includes('&library=125.5')||!worker.includes('&library=125.5'))fail('Production library cache contract changed');
+          if(!index.includes('&library=125.6')||!worker.includes('&library=125.6'))fail('Production library cache contract changed');
           if(worker.indexOf('sw-navigation-fresh-v403.js')>worker.indexOf('sw-offline-v329.js'))fail('Fresh navigation worker must load before offline worker');
 
           for(const required of [
@@ -237,7 +237,7 @@ jobs:
           grep -q 'PREVIEW_ONLY' js/nh7-admin-ai-v491.js
 
           grep -q 'Student Report Center' js/nh7-admin-student-report-v496.js
-          grep -q 'nh7_admin_student_profile_v451' js/nh7-admin-student-report-v496.js
+          grep -q 'nh7_admin_student_profile_v452' js/nh7-admin-student-report-v496.js
           grep -q 'nh7_admin_library_reading_v490' js/nh7-admin-student-report-v496.js
           grep -q 'Incorrect answers' js/nh7-admin-student-report-v496.js
           grep -q 'PDF / Print' js/nh7-admin-student-report-v496.js

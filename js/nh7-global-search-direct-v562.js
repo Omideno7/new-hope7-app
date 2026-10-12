@@ -78,7 +78,7 @@ function localNotes(q){
     else if(key.startsWith('nh7_sermon_note_')){icon='🎧';kind=L('یادداشت پیام','Audio note','Bilješka poruke')}
     else if(key.startsWith('nh7_note_school-')){icon='🎓';kind=L('یادداشت مدرسه','School note','Školska bilješka')}
     else if(key.startsWith('nh7_gratitude_note_')){icon='🙏';kind=L('یادداشت شکرگزاری','Gratitude note','Bilješka zahvalnosti')}
-    out.push({icon,kind,title:clip(text,82),sub:L('باز کردن همان محل یادداشت','Open the exact note location','Otvori točno mjesto bilješke'),...dest});
+    out.push({icon,kind,...(key.startsWith('nh7_apo_note_v242:')?{apocryphaRef:'APO:'+key.slice('nh7_apo_note_v242:'.length)}:{}),title:clip(text,82),sub:L('باز کردن همان محل یادداشت','Open the exact note location','Otvori točno mjesto bilješke'),...dest});
     if(out.length>=5)break;
   }
   return out;
@@ -142,6 +142,8 @@ async function runSearch(root,value){
 }
 async function openItem(item){
   if(!item)return;
+  const apoRef=item.apocryphaRef||(/^APO:/.test(item.savedRef||'')?item.savedRef:'');
+  if(apoRef&&window.NH7_OPEN_SAVED_APOCRYPHA_V394){await window.NH7_OPEN_SAVED_APOCRYPHA_V394(apoRef);return;}
   if(item.savedRef&&window.NH7ReaderSourceV452?.resolve){
     try{const r=await window.NH7ReaderSourceV452.resolve(item.savedRef,lang());if(r){window.NH7_NAVIGATE?.('bible',{section:'written',mode:'chapter',bookId:r.bookId,chapter:r.chapter,verse:r.verse});return}}catch(_){}
   }

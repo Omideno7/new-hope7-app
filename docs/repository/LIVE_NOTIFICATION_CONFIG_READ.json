@@ -1,0 +1,12 @@
+{
+  "captured_at_utc": "2026-10-12T07:34:52.559805+00:00",
+  "request_method": "GET",
+  "resource": "notification_schedules",
+  "role": "anonymous publishable-key; no user JWT/service secret",
+  "project_ref": "gpzcwffxnddhaeaogdyo",
+  "http_status": null,
+  "interpretation": "Cloud egress proxy denied HTTPS tunnel (403 Forbidden) before Supabase. No live schedules read or privileged credentials used; no mutation.",
+  "proxy_tunnel_http_status": 403,
+  "supabase_response_received": false,
+  "required_environment_destination": "gpzcwffxnddhaeaogdyo.supabase.co"
+}

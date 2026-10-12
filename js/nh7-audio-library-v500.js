@@ -97,6 +97,14 @@ html[dir="ltr"] .sermon-card-main{direction:ltr!important}html[dir="ltr"] .sermo
   border-radius:inherit;background:var(--accent,var(--nh7-studio-accent,#1858a4))
 }
 
+@media(min-width:600px){
+ .nh7-audio-adaptive .nh7al500-hero{min-height:250px}
+ .nh7-audio-adaptive .nh7al500-copy{left:22px;right:22px;bottom:20px}
+}
+@media(min-width:1024px){
+ .nh7-audio-adaptive .nh7al500-hero{min-height:270px}
+ .nh7-audio-adaptive .nh7al500-copy h2{font-size:1.58rem}
+}
 @media(max-width:430px){
  .nh7al500-hero{min-height:200px;border-radius:20px}
  .nh7al500-card{width:88px!important;flex-basis:88px!important}
