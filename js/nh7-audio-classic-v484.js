@@ -1,4 +1,4 @@
-/* New Hope 7 — classic signed audio player v4.8.6
+/* New Hope 7 — classic signed audio player v4.8.7
  *
  * One authoritative player for both School lessons and sermon messages.
  * Keeps the approved classic School-player appearance while retaining:
@@ -55,9 +55,11 @@ function plugin(name){return window.Capacitor?.Plugins?.[name]||window.Capacitor
 
 function mediaId(item){return String(item?.id||item?.analytics_id||'')}
 function isSchool(item){const id=mediaId(item);return id.startsWith('school-')||String(item?.analytics_type||'')==='school'||String(item?.audio_url||'').startsWith('nh7-private://school/')}
-function isSermon(item){const id=mediaId(item);return !isSchool(item)&&/^[0-9a-f-]{36}$/i.test(id)}
-function supported(item){return!!item&&(isSchool(item)||isSermon(item))}
+function isAudioBible(item){const id=mediaId(item);return id.startsWith('bible-')||String(item?.analytics_type||'')==='audio_bible'}
+function isSermon(item){const id=mediaId(item);return !isSchool(item)&&!isAudioBible(item)&&/^[0-9a-f-]{36}$/i.test(id)}
+function supported(item){return!!item&&(isSchool(item)||isAudioBible(item)||isSermon(item))}
 function lessonCode(item){return String(item?.analytics_id||mediaId(item)).replace(/^school-/,'')}
+function audioBibleChapterId(item){return String(item?.analytics_id||mediaId(item)).replace(/^bible-/,'')}
 function titleFor(item){return String(item?.['title_'+lang()]||item?.title_fa||item?.title_en||item?.title_hr||item?.title||L('فایل صوتی','Audio','Audio'))}
 function durationFor(item){const exact=Number(item?.duration_seconds||0);return exact>0?exact:Math.max(0,Math.round(Number(item?.duration_minutes||0)*60))}
 function progressKey(item){return'nh7_sermon_progress_'+mediaId(item)}
@@ -121,7 +123,7 @@ async function signedUrl(item,force=false){
   if(!force&&cached?.url&&cached.expires>Date.now()+60000)return cached.url;
   if(!force&&cached?.promise)return cached.promise;
   const promise=(async()=>{
-    const data=isSchool(item)?await edge({kind:'audio',lesson_code:lessonCode(item)}):await edge({kind:'sermon',sermon_id:id});
+    const data=isSchool(item)?await edge({kind:'audio',lesson_code:lessonCode(item)}):isAudioBible(item)?await edge({kind:'audio_bible',chapter_id:audioBibleChapterId(item)}):await edge({kind:'sermon',sermon_id:id});
     if(owner!==accountEmail())throw Object.assign(new Error('session_changed'),{code:'session_changed'});
     const value={url:String(data.signed_url),expires:Date.now()+Math.max(60,Number(data.expires_in||0)-60)*1000,mime:String(data.mime_type||'audio/mpeg')};
     signed.set(key,value);return value.url
@@ -133,7 +135,7 @@ function errorText(error){
   const code=String(error?.code||error?.name||error?.message||error||'').toLowerCase();
   if(code.includes('login_required')||code.includes('invalid_session'))return L('جلسه ورود منقضی شده است؛ دوباره وارد حساب شوید.','Your sign-in session expired; sign in again.','Sesija je istekla; ponovno se prijavite.');
   if(code.includes('school_approval_required'))return L('این حساب هنوز ثبت‌نام کامل و تأییدشده ندارد.','This account does not yet have complete approved registration.','Ovaj račun još nema potpunu odobrenu registraciju.');
-  if(code.includes('sermon_not_found')||code.includes('lesson_not_found'))return L('فایل صوتی در سرور پیدا نشد.','The audio file was not found on the server.','Audio datoteka nije pronađena.');
+  if(code.includes('sermon_not_found')||code.includes('lesson_not_found')||code.includes('audio_bible_not_found'))return L('فایل صوتی در سرور پیدا نشد.','The audio file was not found on the server.','Audio datoteka nije pronađena.');
   if(code.includes('signed_url_failed')||code.includes('invalid_path'))return L('ساخت لینک امن فایل صوتی انجام نشد.','The secure audio link could not be created.','Nije moguće izraditi sigurnu audio poveznicu.');
   if(code.includes('notsupported')||code.includes('operation is not supported'))return L('نسخه آفلاین ناسازگار بود؛ دوباره دانلود کنید.','The offline copy was incompatible; download it again.','Offline kopija nije kompatibilna; preuzmite ponovno.');
   if(code.includes('network')||code.includes('failed to fetch')||code.includes('load failed'))return L('ارتباط با فایل صوتی برقرار نشد. اتصال اینترنت را بررسی کنید.','The audio file could not be reached. Check the connection.','Audio datoteka nije dostupna. Provjerite vezu.');
@@ -295,7 +297,7 @@ function setupMediaSession(item){
       navigator.mediaSession.metadata=new MediaMetadata({
         title:titleFor(item),
         artist:mediaArtist(item),
-        album:isSchool(item)?L('مدرسه آنلاین امیدنو۷','New Hope 7 Online School','New Hope 7 Online School'):L('پیام‌های صوتی امیدنو۷','New Hope 7 Audio Messages','New Hope 7 Audio poruke'),
+        album:isSchool(item)?L('مدرسه آنلاین امیدنو۷','New Hope 7 Online School','New Hope 7 Online School'):isAudioBible(item)?L('کتاب مقدس صوتی','Audio Bible','Audio Biblija'):L('پیام‌های صوتی امیدنو۷','New Hope 7 Audio Messages','New Hope 7 Audio poruke'),
         artwork:[{src:art,sizes:'512x512',type:'image/png'}]
       });
     }
@@ -315,7 +317,7 @@ function openCurrentAudio(){
   if(!current)return;
   const existing=cardFor(current);
   if(existing){showCurrentPanel(current);existing.scrollIntoView({behavior:'smooth',block:'center'});return}
-  const route=isSchool(current)?'school':'audio';
+  const route=isSchool(current)?'school':isAudioBible(current)?'audioBible':'audio';
   if(typeof window.NH7_NAVIGATE==='function')window.NH7_NAVIGATE(route,{},true);
   let tries=0;const timer=setInterval(()=>{
     tries++;

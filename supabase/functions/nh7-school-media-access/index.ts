@@ -2,6 +2,8 @@ import { createClient } from 'npm:@supabase/supabase-js@2';
 
 const ALLOWED_ORIGINS = new Set([
   'https://omideno7.github.io',
+  'https://raw.githack.com',
+  'https://rawcdn.githack.com',
   'http://localhost',
   'https://localhost',
   'capacitor://localhost',
@@ -10,8 +12,9 @@ const ALLOWED_ORIGINS = new Set([
 function cors(origin: string | null) {
   return {
     'Access-Control-Allow-Origin': origin && ALLOWED_ORIGINS.has(origin) ? origin : 'https://omideno7.github.io',
-    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-device-id, x-user-email',
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-device-id, x-user-email, range',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Expose-Headers': 'content-length, content-range, accept-ranges, content-type',
     'Vary': 'Origin',
   };
 }
@@ -29,6 +32,24 @@ function json(origin: string | null, body: unknown, status = 200) {
 
 const clean = (value: unknown) => String(value || '').trim();
 const tokenFrom = (req: Request) => (req.headers.get('authorization') || '').replace(/^Bearer\s+/i, '').trim();
+
+
+function storagePathFromAudioUrl(raw: string) {
+  const value = clean(raw);
+  if (!value) return '';
+  try {
+    const url = new URL(value);
+    const marker = '/storage/v1/object/';
+    const index = url.pathname.indexOf(marker);
+    if (index < 0) return '';
+    let path = url.pathname.slice(index + marker.length);
+    path = path.replace(/^(?:public|sign|authenticated)\//i, '');
+    path = path.replace(/^church-audio\//i, '');
+    return decodeURIComponent(path).replace(/^\/+/, '');
+  } catch (_) {
+    return value.replace(/^.*?church-audio\//i, '').split('?')[0].replace(/^\/+/, '');
+  }
+}
 
 Deno.serve(async (req) => {
   const origin = req.headers.get('origin');
@@ -51,15 +72,17 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => ({}));
     const kind = clean(body?.kind || 'audio').toLowerCase();
     const lessonCode = clean(body?.lesson_code);
+    const sermonId = clean(body?.sermon_id);
+    const chapterId = clean(body?.chapter_id);
     const videoId = clean(body?.video_id);
     const code = clean(body?.code);
     const deviceId = clean(body?.device_id || req.headers.get('x-device-id')).slice(0, 160);
     const userEmail = String(user.email).trim().toLowerCase();
 
-    if (!['audio', 'portal', 'video'].includes(kind)) return json(origin, { error: 'Invalid media kind', code: 'invalid_kind' }, 400);
+    if (!['audio', 'sermon', 'audio_bible', 'portal', 'video'].includes(kind)) return json(origin, { error: 'Invalid media kind', code: 'invalid_kind' }, 400);
 
     if (kind === 'portal') {
-      const { data, error } = await admin.rpc('nh7_video_portal_authorize_v270', {
+      const { data, error } = await admin.rpc('nh7_video_portal_authorize_v392', {
         p_code: code,
         p_device_id: deviceId,
         p_user_id: user.id,
@@ -78,6 +101,81 @@ Deno.serve(async (req) => {
         catalog: Array.isArray(access.catalog) ? access.catalog : [],
         watermark_email: access.watermark_email || userEmail,
         watermark_device: access.watermark_device || deviceId.slice(-8),
+        target_name: access.target_name || '',
+      });
+    }
+
+    if (kind === 'audio_bible') {
+      if (!/^[0-9a-f-]{36}$/i.test(chapterId)) return json(origin, { error: 'Invalid Audio Bible chapter id', code: 'invalid_audio_bible' }, 400);
+      const { data: chapter, error: chapterError } = await admin
+        .from('audio_bible_chapters')
+        .select('id,book_code,chapter_number,language,title_fa,title_en,title_hr,audio_url,storage_path,file_name,duration_seconds,is_published,admin_deleted_at')
+        .eq('id', chapterId)
+        .eq('is_published', true)
+        .is('admin_deleted_at', null)
+        .maybeSingle();
+      if (chapterError || !chapter) return json(origin, { error: chapterError?.message || 'Audio Bible chapter not found', code: 'audio_bible_not_found' }, 404);
+      const path = clean(chapter.storage_path) || storagePathFromAudioUrl(String(chapter.audio_url || ''));
+      if (!path || path.includes('..') || !path.startsWith('audio-bible/')) return json(origin, { error: 'Invalid Audio Bible path', code: 'invalid_path' }, 400);
+      const expiresIn = 6 * 60 * 60;
+      const { data: signed, error: signError } = await admin.storage.from('church-audio').createSignedUrl(path, expiresIn);
+      if (signError || !signed?.signedUrl) return json(origin, { error: signError?.message || 'Could not create Audio Bible signed URL', code: 'signed_url_failed' }, 500);
+      return json(origin, {
+        ok: true,
+        allowed: true,
+        kind: 'audio_bible',
+        signed_url: signed.signedUrl,
+        expires_in: expiresIn,
+        expires_at: new Date(Date.now() + expiresIn * 1000).toISOString(),
+        file_name: chapter.file_name || path.split('/').pop() || '',
+        mime_type: /\.m4a$/i.test(path) ? 'audio/mp4' : 'audio/mpeg',
+        duration_seconds: Number(chapter.duration_seconds || 0),
+        title_fa: chapter.title_fa || '',
+        title_en: chapter.title_en || '',
+        title_hr: chapter.title_hr || '',
+        book_code: chapter.book_code || '',
+        chapter_number: Number(chapter.chapter_number || 0),
+        language: chapter.language || '',
+      });
+    }
+
+    if (kind === 'sermon') {
+      const { data: approved } = await admin.rpc('nh7_school_access_approved_v230', {
+        p_user_id: user.id,
+        p_email: userEmail,
+        p_device_id: deviceId,
+      });
+      const { data: adminAccess } = await admin.rpc('nh7_admin_my_access_v350');
+      const adminRow = Array.isArray(adminAccess) ? adminAccess[0] : adminAccess;
+      if (approved !== true && adminRow?.is_admin !== true) {
+        return json(origin, { error: 'school_approval_required', code: 'school_approval_required' }, 403);
+      }
+      if (!/^[0-9a-f-]{36}$/i.test(sermonId)) return json(origin, { error: 'Invalid sermon id', code: 'invalid_sermon' }, 400);
+      const { data: sermon, error: sermonError } = await admin
+        .from('sermons')
+        .select('id,audio_url,title_fa,title_en,title_hr,duration_seconds,duration_minutes,is_published')
+        .eq('id', sermonId)
+        .eq('is_published', true)
+        .maybeSingle();
+      if (sermonError || !sermon?.audio_url) return json(origin, { error: sermonError?.message || 'Sermon audio not found', code: 'sermon_not_found' }, 404);
+      const path = storagePathFromAudioUrl(String(sermon.audio_url));
+      if (!path || path.includes('..')) return json(origin, { error: 'Invalid sermon audio path', code: 'invalid_path' }, 400);
+      const expiresIn = 6 * 60 * 60;
+      const { data: signed, error: signError } = await admin.storage.from('church-audio').createSignedUrl(path, expiresIn);
+      if (signError || !signed?.signedUrl) return json(origin, { error: signError?.message || 'Could not create sermon signed URL', code: 'signed_url_failed' }, 500);
+      return json(origin, {
+        ok: true,
+        allowed: true,
+        kind: 'sermon',
+        signed_url: signed.signedUrl,
+        expires_in: expiresIn,
+        expires_at: new Date(Date.now() + expiresIn * 1000).toISOString(),
+        file_name: path.split('/').pop() || '',
+        mime_type: /\.m4a$/i.test(path) ? 'audio/mp4' : 'audio/mpeg',
+        duration_seconds: Number(sermon.duration_seconds || 0) || Math.round(Number(sermon.duration_minutes || 0) * 60),
+        title_fa: sermon.title_fa || '',
+        title_en: sermon.title_en || '',
+        title_hr: sermon.title_hr || '',
       });
     }
 
@@ -96,7 +194,7 @@ Deno.serve(async (req) => {
       access = Array.isArray(data) ? data[0] : data;
     } else {
       if (!/^[0-9a-f-]{36}$/i.test(videoId)) return json(origin, { error: 'Invalid video id', code: 'invalid_video' }, 400);
-      const { data, error } = await admin.rpc('nh7_video_authorize_v270', {
+      const { data, error } = await admin.rpc('nh7_video_authorize_v392', {
         p_video_id: videoId,
         p_code: code,
         p_device_id: deviceId,
