@@ -1,0 +1,12 @@
+/* New Hope 7 v2.3.4 — unified My Notes */
+.nh7-my-notes-list-v234{display:grid;gap:12px}
+.nh7-my-note-card-v234{padding:14px;border:1px solid #d8e5ec;border-radius:18px;background:#fff;box-shadow:0 5px 18px rgba(16,47,72,.07)}
+.nh7-my-note-head-v234{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:8px}
+.nh7-my-note-head-v234 strong{color:#123a63;font-size:15px}
+.nh7-my-note-type-v234{display:inline-flex;align-items:center;min-height:26px;padding:4px 9px;border-radius:999px;background:#edf6ff;color:#18558d;font-size:12px;font-weight:850}
+.nh7-my-note-card-v234 p{margin:8px 0 12px;line-height:1.8;white-space:normal;overflow-wrap:anywhere}
+.nh7-my-note-actions-v234{margin-top:4px}
+.nh7-note-source-focus-v234{animation:nh7-note-source-focus-v234 2.4s ease both}
+@keyframes nh7-note-source-focus-v234{0%,100%{box-shadow:inherit}18%,75%{box-shadow:0 0 0 4px rgba(25,118,210,.27),0 10px 30px rgba(25,118,210,.14)}}
+.fa .nh7-my-note-card-v234{text-align:right}
+@media(max-width:520px){.nh7-my-note-actions-v234>*{flex:1 1 auto}.nh7-my-note-card-v234{padding:12px}}

@@ -1,0 +1,12 @@
+{
+  "appId": "com.omideno7.newhope7.qa",
+  "appName": "New Hope 7 QA",
+  "webDir": "www",
+  "ios": {
+    "backgroundColor": "#ffffff",
+    "contentInset": "automatic"
+  },
+  "plugins": {
+    "LocalNotifications": {}
+  }
+}

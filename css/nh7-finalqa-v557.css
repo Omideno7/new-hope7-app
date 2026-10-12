@@ -1,0 +1,14 @@
+/* New Hope 7 v5.5.7 — final mini-player bottom offset only.
+   Keep the compact player fully above the fixed bottom navigation. */
+
+@media (max-width:767px) and (orientation:portrait){
+  html.nh7p500-active .nh7p500{
+    bottom:calc(var(--nh7-fixed-nav-h,82px) + 8px + env(safe-area-inset-bottom,0px))!important;
+  }
+}
+
+@media (orientation:landscape) and (max-height:520px) and (max-width:980px){
+  html.nh7p500-active .nh7p500{
+    bottom:calc(var(--nh7-fixed-nav-h,64px) + 8px + env(safe-area-inset-bottom,0px))!important;
+  }
+}

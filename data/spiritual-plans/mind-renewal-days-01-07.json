@@ -1,0 +1,216 @@
+{
+  "version": 1,
+  "plan_id": "mind-renewal-30",
+  "days": [
+    {
+      "day": 1,
+      "scriptures": ["1 Corinthians 14:33", "1 Corinthians 14:40"],
+      "content": {
+        "fa": {
+          "title": "خدا سرچشمهٔ نظم است",
+          "devotional": "نظم فقط یک عادت خوب یا روش مدیریتی نیست؛ بازتابی از ذات خداست. او خدای آشفتگی نیست و هرجا فرمانروایی او پذیرفته شود، حقیقت، آرامش، هدف و جای درست امور آشکار می‌گردد. تازه‌شدن ذهن از شناختن منبع نظم آغاز می‌شود، نه از تلاش برای کنترل همه‌چیز.",
+          "reflection": "آیا نظم را فقط توانایی شخصی می‌دانم یا ثمرهٔ هم‌سویی با خدا؟",
+          "action": "یک بخش آشفتهٔ زندگی را نام ببر و امروز آن را آگاهانه زیر فرمانروایی خدا قرار بده.",
+          "prayer": "ای خدای نظم و صلح، فکر و زندگی مرا با حضور و ارادهٔ خود هماهنگ کن.",
+          "declaration": "خدای من خدای نظم است و ذهن من زیر فرمانروایی او مرتب می‌شود."
+        },
+        "en": {
+          "title": "God Is the Source of Order",
+          "devotional": "Order is more than a useful habit or management method; it reflects God’s nature. He is not the author of confusion, and wherever His rule is welcomed, truth, peace, purpose, and the proper place of things become visible. Renewal begins by knowing the Source of order, not by trying to control everything.",
+          "reflection": "Do I see order only as personal ability, or as the fruit of alignment with God?",
+          "action": "Name one disordered area of life and consciously place it under God’s rule today.",
+          "prayer": "God of order and peace, align my mind and life with Your presence and will.",
+          "declaration": "My God is the God of order, and my mind is brought into order under His rule."
+        },
+        "hr": {
+          "title": "Bog je izvor reda",
+          "devotional": "Red je više od korisne navike ili metode upravljanja; on odražava Božju narav. Bog nije začetnik zbrke, a gdje se prihvati njegova vlast, postaju vidljivi istina, mir, svrha i pravo mjesto stvari. Obnova počinje poznavanjem Izvora reda, a ne pokušajem da sve kontroliramo.",
+          "reflection": "Vidim li red samo kao osobnu sposobnost ili kao plod usklađenosti s Bogom?",
+          "action": "Imenuj jedno neuređeno područje života i danas ga svjesno stavi pod Božju vlast.",
+          "prayer": "Bože reda i mira, uskladi moj um i život sa svojom prisutnošću i voljom.",
+          "declaration": "Moj Bog je Bog reda i moj se um uređuje pod njegovom vlašću."
+        }
+      }
+    },
+    {
+      "day": 2,
+      "scriptures": ["Genesis 1:1-5", "Psalm 119:130"],
+      "content": {
+        "fa": {
+          "title": "خدا از آشفتگی، ساختار می‌آفریند",
+          "devotional": "در آغاز، زمین بی‌شکل و تهی بود، اما روح خدا حاضر بود و کلام او نور و مرز و ترتیب پدید آورد. آشفتگی فعلی زندگی به این معنا نیست که امیدی وجود ندارد. وقتی حضور روح و کلام خدا را می‌پذیریم، نخستین قدم نظم اغلب روشن‌شدن چیزی است که تا دیروز مبهم بود.",
+          "reflection": "کدام مسئله در ذهن من هنوز بی‌شکل، تاریک یا مبهم است؟",
+          "action": "مسئله را در یک جملهٔ روشن بنویس و یک حقیقت کتاب‌مقدسی مرتبط با آن پیدا کن.",
+          "prayer": "روح خدا، بر آشفتگی من حرکت کن و با نور کلامت راه درست را آشکار ساز.",
+          "declaration": "تاریکی بر ذهن من حکومت نمی‌کند؛ کلام خدا نور، مرز و جهت می‌آورد."
+        },
+        "en": {
+          "title": "God Creates Structure from Chaos",
+          "devotional": "In the beginning the earth was formless and empty, yet God’s Spirit was present and His Word brought light, boundaries, and sequence. Present confusion does not mean there is no hope. When the Spirit and the Word are welcomed, the first step toward order is often clarity where there was once darkness.",
+          "reflection": "Which issue in my mind still feels formless, dark, or unclear?",
+          "action": "Describe the issue in one clear sentence and find one related truth in Scripture.",
+          "prayer": "Spirit of God, move over my confusion and reveal the right path through the light of Your Word.",
+          "declaration": "Darkness does not rule my mind; God’s Word brings light, boundaries, and direction."
+        },
+        "hr": {
+          "title": "Bog stvara strukturu iz kaosa",
+          "devotional": "U početku je zemlja bila bez obličja i prazna, ali Božji je Duh bio prisutan, a njegova Riječ donijela je svjetlo, granice i redoslijed. Sadašnja zbrka ne znači da nema nade. Kada prihvatimo Duha i Riječ, prvi korak prema redu često je jasnoća ondje gdje je prije bila tama.",
+          "reflection": "Koje je pitanje u mojem umu još bez oblika, tamno ili nejasno?",
+          "action": "Opiši ga jednom jasnom rečenicom i pronađi jednu povezanu istinu u Pismu.",
+          "prayer": "Duše Božji, djeluj nad mojom zbrkom i svjetlom svoje Riječi pokaži pravi put.",
+          "declaration": "Tama ne vlada mojim umom; Božja Riječ donosi svjetlo, granice i smjer."
+        }
+      }
+    },
+    {
+      "day": 3,
+      "scriptures": ["Genesis 2:8", "Ephesians 2:10"],
+      "content": {
+        "fa": {
+          "title": "جایگاه و مأموریت خود را بشناس",
+          "devotional": "خدا انسان را بی‌هدف و سرگردان نیافرید؛ او را در مکانی مشخص قرار داد و کاری معین به او سپرد. بخشی از بی‌نظمی ذهنی از آنجا می‌آید که هم‌زمان می‌خواهیم در همه‌جا باشیم و هر نقشی را بپذیریم. نظم با شناخت جایگاه، فصل و مسئولیت امروز آغاز می‌شود.",
+          "reflection": "در این فصل، مهم‌ترین جایگاه و مسئولیتی که خدا به من سپرده چیست؟",
+          "action": "سه نقش فعلی خود را بنویس و برای هرکدام یک مسئولیت اصلی تعیین کن.",
+          "prayer": "پدر، جایگاه، فصل و مأموریت امروز مرا روشن ساز و مرا از پراکندگی حفظ کن.",
+          "declaration": "من بی‌هدف نیستم؛ خدا مرا برای کارهای نیک و مسئولیتی روشن قرار داده است."
+        },
+        "en": {
+          "title": "Recognize Your Place and Assignment",
+          "devotional": "God did not create humanity aimless and wandering; He placed the man in a specific setting and entrusted him with a defined assignment. Mental disorder often grows when we try to be everywhere and accept every role at once. Order begins by recognizing today’s place, season, and responsibility.",
+          "reflection": "In this season, what is the most important place and responsibility God has entrusted to me?",
+          "action": "Write your three present roles and define one primary responsibility for each.",
+          "prayer": "Father, clarify my place, season, and assignment, and protect me from scattered living.",
+          "declaration": "I am not without purpose; God has placed me for good works and clear responsibility."
+        },
+        "hr": {
+          "title": "Prepoznaj svoje mjesto i zadaću",
+          "devotional": "Bog nije stvorio čovjeka besciljnim i lutajućim; postavio ga je na određeno mjesto i povjerio mu jasnu zadaću. Nered u umu često raste kada pokušavamo biti posvuda i prihvatiti svaku ulogu odjednom. Red počinje prepoznavanjem današnjega mjesta, razdoblja i odgovornosti.",
+          "reflection": "Koje mi je najvažnije mjesto i odgovornost Bog povjerio u ovom razdoblju?",
+          "action": "Napiši svoje tri sadašnje uloge i za svaku odredi jednu glavnu odgovornost.",
+          "prayer": "Oče, razjasni moje mjesto, razdoblje i zadaću te me sačuvaj od raspršenog života.",
+          "declaration": "Nisam bez svrhe; Bog me postavio za dobra djela i jasnu odgovornost."
+        }
+      }
+    },
+    {
+      "day": 4,
+      "scriptures": ["Genesis 2:15", "Colossians 3:23-24"],
+      "content": {
+        "fa": {
+          "title": "کار و نگهداری، بخشی از نظم روحانی‌اند",
+          "devotional": "آدم پیش از سقوط مأمور شد باغ را کار کند و نگاه دارد. بنابراین تلاش، مدیریت، مراقبت و پایان‌دادن مسئولیت‌ها مجازات نیستند؛ بخشی از نظم آفرینش‌اند. ذهن تازه فقط ایده تولید نمی‌کند، بلکه آنچه خدا سپرده با وفاداری می‌سازد و حفظ می‌کند.",
+          "reflection": "کدام مسئولیت را آغاز کرده‌ام اما به‌درستی نگهداری یا کامل نکرده‌ام؟",
+          "action": "امروز یک کار نیمه‌تمام را انتخاب کن و پیش از شروع کار تازه، آن را یک مرحله جلو ببر.",
+          "prayer": "خداوندا، مرا در کار، مراقبت و امانتداری ثابت‌قدم ساز.",
+          "declaration": "من با تمام دل کار می‌کنم و آنچه خدا به من سپرده با وفاداری نگه می‌دارم."
+        },
+        "en": {
+          "title": "Work and Stewardship Belong to Spiritual Order",
+          "devotional": "Before the fall, Adam was commissioned to work and keep the garden. Effort, management, care, and completion are therefore not punishments; they belong to created order. A renewed mind does more than produce ideas—it builds and faithfully preserves what God has entrusted.",
+          "reflection": "Which responsibility have I started but failed to maintain or complete well?",
+          "action": "Choose one unfinished task and move it one meaningful step forward before beginning something new.",
+          "prayer": "Lord, make me steady in work, care, and faithful stewardship.",
+          "declaration": "I work wholeheartedly and faithfully keep what God has entrusted to me."
+        },
+        "hr": {
+          "title": "Rad i upravljanje pripadaju duhovnom redu",
+          "devotional": "Prije pada Adam je dobio zadaću obrađivati i čuvati vrt. Trud, upravljanje, briga i dovršavanje zato nisu kazna, nego dio stvorenoga reda. Obnovljen um ne proizvodi samo ideje, nego gradi i vjerno čuva ono što mu je Bog povjerio.",
+          "reflection": "Koju sam odgovornost započeo, ali je nisam dobro održavao ili dovršio?",
+          "action": "Odaberi jedan nedovršen zadatak i napravi jedan važan korak prije nego započneš novi.",
+          "prayer": "Gospodine, učini me postojanim u radu, brizi i vjernom upravljanju.",
+          "declaration": "Radim od srca i vjerno čuvam ono što mi je Bog povjerio."
+        }
+      }
+    },
+    {
+      "day": 5,
+      "scriptures": ["Genesis 2:16-17", "John 14:21"],
+      "content": {
+        "fa": {
+          "title": "اطاعت، مرزهای زندگی را حفظ می‌کند",
+          "devotional": "فرمان خدا در باغ، محدودیتی بی‌محبت نبود؛ مرزی برای حفظ حیات و رابطه بود. ذهن بی‌نظم، مرز را دشمن آزادی می‌بیند، اما ذهن تازه می‌فهمد اطاعت از خدا، آزادی را از ویرانی محافظت می‌کند. نظم بدون اطاعت فقط ظاهر است و روح ندارد.",
+          "reflection": "در کدام بخش، فرمان روشن خدا را با توجیه یا تأخیر ضعیف کرده‌ام؟",
+          "action": "یک قدم اطاعتی را که می‌دانی درست است، امروز بدون تأخیر انجام بده.",
+          "prayer": "عیسی خداوند، محبت خود را در اطاعت عملی من آشکار کن.",
+          "declaration": "مرزهای کلام خدا از زندگی من محافظت می‌کنند و من با محبت اطاعت می‌کنم."
+        },
+        "en": {
+          "title": "Obedience Protects the Boundaries of Life",
+          "devotional": "God’s command in the garden was not an unloving restriction; it was a boundary that protected life and relationship. A disordered mind treats boundaries as enemies of freedom, but a renewed mind understands that obedience protects freedom from destruction. Order without obedience has appearance but no living spirit.",
+          "reflection": "Where have I weakened a clear command of God through excuses or delay?",
+          "action": "Take one obedient step you already know is right, and do it today without delay.",
+          "prayer": "Lord Jesus, let my practical obedience reveal my love for You.",
+          "declaration": "The boundaries of God’s Word protect my life, and I obey in love."
+        },
+        "hr": {
+          "title": "Poslušnost čuva granice života",
+          "devotional": "Božja zapovijed u vrtu nije bila ograničenje bez ljubavi, nego granica koja je čuvala život i odnos. Neuređen um granice vidi kao neprijatelje slobode, a obnovljen um razumije da poslušnost čuva slobodu od propasti. Red bez poslušnosti ima oblik, ali nema živoga duha.",
+          "reflection": "Gdje sam jasnu Božju zapovijed oslabio izgovorima ili odgađanjem?",
+          "action": "Učini danas, bez odgađanja, jedan korak poslušnosti za koji već znaš da je ispravan.",
+          "prayer": "Gospodine Isuse, neka moja praktična poslušnost pokaže ljubav prema tebi.",
+          "declaration": "Granice Božje Riječi čuvaju moj život i ja slušam iz ljubavi."
+        }
+      }
+    },
+    {
+      "day": 6,
+      "scriptures": ["Genesis 3:6-9", "1 John 1:9"],
+      "content": {
+        "fa": {
+          "title": "بی‌نظمی را پنهان نکن؛ به نور بیاور",
+          "devotional": "پس از نافرمانی، انسان پنهان شد و مسئولیت را به دیگری نسبت داد. بی‌نظمی هنگامی عمیق‌تر می‌شود که آن را توجیه، مخفی یا عادی جلوه دهیم. توبه، محکوم‌کردن خود نیست؛ بازگشت صادقانه به حقیقت و پذیرش بخشش و اصلاح خداست.",
+          "reflection": "کدام بی‌نظمی را به‌جای اعتراف، توجیه یا پنهان می‌کنم؟",
+          "action": "آن را مشخص و بدون مقصرکردن دیگران نزد خدا اعتراف کن و اولین اصلاح عملی را بنویس.",
+          "prayer": "پدر، مرا از پنهان‌شدن بیرون بیاور؛ ببخش، پاک کن و راه اصلاح را نشان بده.",
+          "declaration": "من از نور فرار نمی‌کنم؛ حقیقت را می‌پذیرم و در فیض خدا اصلاح می‌شوم."
+        },
+        "en": {
+          "title": "Do Not Hide Disorder—Bring It into the Light",
+          "devotional": "After disobedience, humanity hid and shifted responsibility. Disorder grows deeper when it is justified, concealed, or treated as normal. Repentance is not self-condemnation; it is an honest return to truth, receiving God’s forgiveness and correction.",
+          "reflection": "Which disorder am I explaining away or hiding instead of confessing?",
+          "action": "Confess it specifically without blaming another person, then write the first practical repair.",
+          "prayer": "Father, bring me out of hiding; forgive, cleanse, and show me the way of repair.",
+          "declaration": "I do not run from the light; I receive truth and am restored by God’s grace."
+        },
+        "hr": {
+          "title": "Ne skrivaj nered—donesi ga na svjetlo",
+          "devotional": "Nakon neposlušnosti čovjek se sakrio i prebacio odgovornost. Nered se produbljuje kada ga opravdavamo, skrivamo ili smatramo normalnim. Pokajanje nije samoosuda, nego iskren povratak istini te primanje Božjega oprosta i ispravka.",
+          "reflection": "Koji nered opravdavam ili skrivam umjesto da ga priznam?",
+          "action": "Priznaj ga konkretno bez okrivljavanja druge osobe i napiši prvi praktični korak popravka.",
+          "prayer": "Oče, izvedi me iz skrivanja; oprosti, očisti i pokaži put obnove.",
+          "declaration": "Ne bježim od svjetla; prihvaćam istinu i obnavljam se Božjom milošću."
+        }
+      }
+    },
+    {
+      "day": 7,
+      "scriptures": ["Titus 2:11-12", "Ephesians 2:8-10"],
+      "content": {
+        "fa": {
+          "title": "فیض، تو را برای نظم توانمند می‌سازد",
+          "devotional": "فیض فقط بخشش رایگان نیست؛ آموزگار و قدرت خدا برای یک زندگی تازه است. فیض ما را از بی‌خدایی دور می‌کند و خویشتنداری، عدالت و خداپرستی می‌آموزد. نظم روحانی از زور انسانی به وجود نمی‌آید، اما فیض نیز جای تصمیم و عمل را نمی‌گیرد؛ توان می‌دهد تا آنچه درست است انجام دهیم.",
+          "reflection": "کجا منتظر احساس یا انگیزه‌ام، درحالی‌که فیض برای یک قدم عملی در دسترس است؟",
+          "action": "یک تصمیم کوچک و مشخص بگیر و پیش از پایان امروز آن را اجرا کن.",
+          "prayer": "خدای فیض، مرا از درون تعلیم بده و برای زندگی منظم و خداپسندانه توانمند ساز.",
+          "declaration": "فیض خدا مرا می‌بخشد، تعلیم می‌دهد و برای انجام ارادهٔ او توانمند می‌سازد."
+        },
+        "en": {
+          "title": "Grace Empowers You for Order",
+          "devotional": "Grace is more than a free pardon; it is God’s teacher and power for a new life. Grace turns us from ungodliness and trains us in self-control, righteousness, and devotion. Spiritual order is not produced by human force, yet grace does not replace decision and action—it empowers us to do what is right.",
+          "reflection": "Where am I waiting for a feeling while grace is already available for one practical step?",
+          "action": "Make one small, specific decision and carry it out before today ends.",
+          "prayer": "God of grace, teach me from within and empower me for an ordered, godly life.",
+          "declaration": "God’s grace forgives me, trains me, and empowers me to do His will."
+        },
+        "hr": {
+          "title": "Milost te osposobljava za red",
+          "devotional": "Milost je više od besplatnog oprosta; ona je Božji učitelj i snaga za novi život. Milost nas odvraća od bezbožnosti i uči samokontroli, pravednosti i pobožnosti. Duhovni red ne nastaje ljudskom silom, ali milost ne zamjenjuje odluku i djelovanje—ona nas osposobljava činiti ono što je ispravno.",
+          "reflection": "Gdje čekam osjećaj, iako je milost već dostupna za jedan praktičan korak?",
+          "action": "Donesi jednu malu i konkretnu odluku te je izvrši prije kraja dana.",
+          "prayer": "Bože milosti, poučavaj me iznutra i osposobi za uređen i pobožan život.",
+          "declaration": "Božja milost mi oprašta, poučava me i osposobljava da vršim njegovu volju."
+        }
+      }
+    }
+  ]
+}

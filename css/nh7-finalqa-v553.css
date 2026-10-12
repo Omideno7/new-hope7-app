@@ -1,0 +1,76 @@
+/* New Hope 7 v5.5.3 — final targeted QA fixes: dark readability, studio palette, iOS landscape/bounce, player/profile. */
+html,body{min-height:100%;background:var(--nh7-studio-bg,var(--bg,#07111f));overscroll-behavior-y:none!important}
+body{min-height:100dvh}
+.app-shell{min-height:100dvh}
+
+/* Dark mode: surfaces that legacy modules painted white must become dark too. */
+html[data-nh7-theme="dark"] #view :is(.saved-verse-card,.nh7-saved-inline-v251,.nh7-v252-settings-box,.nh7-v252-health>div,.nh7-reader-note-dialog452,.sermon-note-dialog,.sermon-note-modal,.nh7-private-note){
+  background:var(--nh7-studio-card,var(--nh7-dark-card,#0f1d2e))!important;
+  color:var(--nh7-studio-text,var(--nh7-dark-ink,#f5f9ff))!important;
+  border-color:var(--nh7-studio-line,var(--nh7-dark-line,#2c4058))!important;
+}
+html[data-nh7-theme="dark"] #view :is(.saved-verse-card,.nh7-saved-inline-v251,.nh7-v252-settings-box,.nh7-v252-health>div,.nh7-reader-note-dialog452,.sermon-note-dialog,.sermon-note-modal,.nh7-private-note) :is(h1,h2,h3,h4,p,strong,span,label,small){color:var(--nh7-studio-text,var(--nh7-dark-ink,#f5f9ff))!important}
+html[data-nh7-theme="dark"] #view :is(.saved-verse-card,.nh7-saved-inline-v251) :is(.muted,small){color:var(--nh7-studio-muted,var(--nh7-dark-muted,#b8c7d9))!important}
+html[data-nh7-theme="dark"] #view :is(input,textarea,select),
+html[data-nh7-theme="dark"] :is(.sermon-note-dialog,.sermon-note-modal,.nh7-reader-note-dialog452,.nh7p500-note) :is(input,textarea,select){
+  background:var(--nh7-studio-card,var(--nh7-dark-card-2,#12243a))!important;
+  color:var(--nh7-studio-text,var(--nh7-dark-ink,#f5f9ff))!important;
+  border-color:var(--nh7-studio-line,var(--nh7-dark-line,#2c4058))!important;
+  -webkit-text-fill-color:var(--nh7-studio-text,var(--nh7-dark-ink,#f5f9ff))!important;
+}
+html[data-nh7-theme="dark"] :is(input,textarea)::placeholder{color:var(--nh7-studio-muted,var(--nh7-dark-muted,#b8c7d9))!important;opacity:.85!important}
+
+/* Bible/revealed/saved verse text — never pale text on pale cards. */
+html[data-nh7-theme="dark"] #view :is(.saved-verse-card,.nh7-saved-inline-v251,.verse-card,.verse-list-item,.inline-verse,.reader-verse:not(.highlighted)) :is(.verse-text,p,span,strong){color:var(--nh7-studio-verse,var(--nh7-dark-ink,#f5f9ff))!important}
+html[data-nh7-theme="dark"] #view .reader-verse.highlighted :is(.verse-text,p,span,strong){color:#142c40!important;-webkit-text-fill-color:#142c40!important}
+
+/* Status cards in Settings. */
+html[data-nh7-theme="dark"] #view .nh7-v252-health>div{box-shadow:none!important}
+html[data-nh7-theme="dark"] #view .nh7-v252-health>div :is(p,strong,span,small){color:var(--nh7-studio-text,var(--nh7-dark-ink,#f5f9ff))!important;-webkit-text-fill-color:currentColor!important}
+
+/* Theme Studio custom text/verse/muted colors must reach legacy surfaces consistently. */
+html[data-nh7-studio] body,html[data-nh7-studio] .app-shell,html[data-nh7-studio] .topbar,html[data-nh7-studio] .bottom-nav{background-color:var(--nh7-studio-bg)!important;color:var(--nh7-studio-text)!important}
+html[data-nh7-studio] #view :is(.card:not(.hero),.tile,.list-btn,.link-card,.accordion-panel,.inline-reading,.saved-verse-card,.nh7-saved-inline-v251,.nh7-v252-settings-box,.nh7-v252-health>div,.nh7-private-note,.sermon-note-dialog,.sermon-note-modal){background:var(--nh7-studio-card)!important;color:var(--nh7-studio-text)!important;border-color:var(--nh7-studio-line)!important}
+html[data-nh7-studio] #view :is(.card:not(.hero),.tile,.list-btn,.link-card,.accordion-panel,.saved-verse-card,.nh7-saved-inline-v251,.nh7-v252-settings-box,.nh7-v252-health>div,.nh7-private-note) :is(h1,h2,h3,h4,h5,p,li,label,strong){color:var(--nh7-studio-text)!important}
+html[data-nh7-studio] #view :is(.muted,small){color:var(--nh7-studio-muted)!important}
+html[data-nh7-studio] #view :is(.reader-verse:not(.highlighted),.saved-verse-card,.nh7-saved-inline-v251,.inline-verse,.verse-card,.verse-list-item) :is(.verse-text,p,span,strong){color:var(--nh7-studio-verse)!important}
+html[data-nh7-studio] #view :is(input,textarea,select),html[data-nh7-studio] :is(.sermon-note-dialog,.sermon-note-modal,.nh7p500-note) :is(input,textarea,select){background:var(--nh7-studio-card)!important;color:var(--nh7-studio-text)!important;-webkit-text-fill-color:var(--nh7-studio-text)!important;border-color:var(--nh7-studio-line)!important}
+html[data-nh7-studio] #view .primary-btn{background:var(--nh7-studio-accent)!important;color:var(--nh7-studio-button-ink)!important}
+
+/* Mini player: readable in dark and custom themes. */
+html[data-nh7-theme="dark"] .nh7p500,
+html[data-nh7-studio] .nh7p500{color:var(--nh7-studio-text,var(--nh7-dark-ink,#f5f9ff))!important}
+html[data-nh7-theme="dark"] .nh7p500-mini,
+html[data-nh7-studio] .nh7p500-mini{background:color-mix(in srgb,var(--nh7-studio-card,var(--nh7-dark-card,#0f1d2e)) 94%,transparent)!important;border-color:var(--nh7-studio-line,var(--nh7-dark-line,#2c4058))!important;color:var(--nh7-studio-text,var(--nh7-dark-ink,#f5f9ff))!important}
+html[data-nh7-theme="dark"] .nh7p500-mini :is(strong,span,button,small),html[data-nh7-studio] .nh7p500-mini :is(strong,span,button,small){color:inherit!important;-webkit-text-fill-color:currentColor!important}
+html[data-nh7-theme="dark"] .nh7p500-mini small,html[data-nh7-studio] .nh7p500-mini small{color:var(--nh7-studio-muted,var(--nh7-dark-muted,#b8c7d9))!important}
+
+/* Profile photo viewer + crop zoom helpers. */
+#nh7c502Avatar:has(img){cursor:zoom-in;position:relative}
+#nh7c502Avatar:has(img)::after{content:'⌕';position:absolute;inset-inline-end:-3px;bottom:-3px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--nh7-studio-accent,var(--brand,#1d4ed8));color:#fff;font-size:14px;border:2px solid var(--nh7-studio-card,var(--card,#fff))}
+.nh7-profile-viewer553{position:fixed;inset:0;z-index:100000;display:none;place-items:center;background:#000d;padding:max(18px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right)) max(18px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));touch-action:none}
+.nh7-profile-viewer553.open{display:grid}.nh7-profile-viewer553 img{max-width:92vw;max-height:78dvh;object-fit:contain;border-radius:18px;transform:scale(var(--nh7-photo-scale,1));transition:transform .12s ease;box-shadow:0 20px 80px #0009}
+.nh7-profile-viewer553 .nh7-photo-tools553{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;gap:8px;padding:8px;border-radius:18px;background:#111d;backdrop-filter:blur(14px)}
+.nh7-profile-viewer553 button,.nh7-profile-zoom-controls553 button{min-width:44px;min-height:44px;border-radius:12px;border:1px solid #ffffff33;background:#fff;color:#10284a;font-size:1rem;font-weight:800}
+.nh7-profile-zoom-controls553{display:flex;align-items:center;justify-content:center;gap:8px;margin:8px 0 12px}.nh7-profile-zoom-controls553 span{min-width:58px;text-align:center;font-weight:700}
+
+/* iPhone landscape: retain phone IA; iPad/tablet (taller viewport) keeps the rail. */
+@media (orientation:landscape) and (max-height:520px) and (max-width:980px){
+  #appShell>.topbar{position:sticky!important;top:0!important;z-index:1200!important;min-height:62px!important;padding:calc(5px + env(safe-area-inset-top,0px)) calc(12px + env(safe-area-inset-right,0px)) 5px calc(12px + env(safe-area-inset-left,0px))!important;flex-wrap:nowrap!important;gap:8px!important}
+  #appShell>.topbar .nh7-header-date-row455{display:none!important}
+  #appShell>.topbar .brand img{width:48px!important;height:48px!important}
+  #appShell>.topbar .brand strong{font-size:1rem!important}
+  #appShell>.topbar .brand small{font-size:.72rem!important}
+  .view{margin:0!important;padding-top:12px!important;padding-inline-start:calc(12px + env(safe-area-inset-left,0px))!important;padding-inline-end:calc(12px + env(safe-area-inset-right,0px))!important;padding-bottom:calc(86px + env(safe-area-inset-bottom,0px))!important;max-width:none!important;min-width:0!important}
+  .bottom-nav{position:fixed!important;z-index:1800!important;inset:auto calc(8px + env(safe-area-inset-right,0px)) calc(5px + env(safe-area-inset-bottom,0px)) calc(8px + env(safe-area-inset-left,0px))!important;width:auto!important;height:64px!important;max-height:64px!important;display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;grid-auto-flow:column!important;align-items:stretch!important;padding:4px!important;border-radius:18px!important;overflow:hidden!important}
+  .bottom-nav .nav-item{min-width:0!important;min-height:54px!important;height:54px!important;padding:3px 4px!important;display:grid!important;place-items:center!important;gap:0!important;border-radius:13px!important}
+  .bottom-nav .nav-item span{font-size:20px!important;line-height:1!important}.bottom-nav .nav-item small{font-size:9px!important;line-height:1.1!important;white-space:nowrap!important}
+  .nh7-adaptive-sidebar{display:none!important}.nh7-adaptive-split,.nh7-audio-adaptive,.nh7-bible-adaptive{display:block!important;grid-template-columns:1fr!important}.nh7-adaptive-main{width:100%!important;min-width:0!important}
+  .sermon-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .nh7p500{left:auto!important;right:auto!important;inset-inline-start:calc(10px + env(safe-area-inset-left,0px))!important;inset-inline-end:calc(10px + env(safe-area-inset-right,0px))!important;bottom:calc(74px + env(safe-area-inset-bottom,0px))!important;z-index:1750!important}
+  html.nh7p500-active body #view{padding-bottom:calc(148px + env(safe-area-inset-bottom,0px))!important}
+}
+
+/* Keep iPad/tablet rail inside viewport/safe areas. */
+@media (min-width:768px) and (min-height:521px){.bottom-nav{max-height:calc(100dvh - 130px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))!important;overflow:auto!important}}

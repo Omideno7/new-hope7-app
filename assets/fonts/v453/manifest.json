@@ -1,0 +1,47 @@
+{
+  "fonts": [
+    {
+      "family": "vazirmatn",
+      "source": "https://github.com/google/fonts/tree/f2bd09badbc763d8757951d52deec29da27e85fb/ofl/vazirmatn/",
+      "bytes": 110744,
+      "scriptCoverageTest": "پچژگیک",
+      "license": "OFL-1.1"
+    },
+    {
+      "family": "notonaskharabic",
+      "source": "https://github.com/google/fonts/tree/f2bd09badbc763d8757951d52deec29da27e85fb/ofl/notonaskharabic/",
+      "bytes": 123420,
+      "scriptCoverageTest": "پچژگیک",
+      "license": "OFL-1.1"
+    },
+    {
+      "family": "estedad",
+      "source": "https://github.com/google/fonts/tree/f2bd09badbc763d8757951d52deec29da27e85fb/ofl/estedad/",
+      "bytes": 128416,
+      "scriptCoverageTest": "پچژگیک",
+      "license": "OFL-1.1"
+    },
+    {
+      "family": "inter",
+      "source": "https://github.com/google/fonts/tree/f2bd09badbc763d8757951d52deec29da27e85fb/ofl/inter/",
+      "bytes": 350804,
+      "scriptCoverageTest": "čćžšđČĆŽŠĐ",
+      "license": "OFL-1.1"
+    },
+    {
+      "family": "lora",
+      "source": "https://github.com/google/fonts/tree/f2bd09badbc763d8757951d52deec29da27e85fb/ofl/lora/",
+      "bytes": 85088,
+      "scriptCoverageTest": "čćžšđČĆŽŠĐ",
+      "license": "OFL-1.1"
+    },
+    {
+      "family": "nunitosans",
+      "source": "https://github.com/google/fonts/tree/f2bd09badbc763d8757951d52deec29da27e85fb/ofl/nunitosans/",
+      "bytes": 208996,
+      "scriptCoverageTest": "čćžšđČĆŽŠĐ",
+      "license": "OFL-1.1"
+    }
+  ],
+  "sourceCommit": "f2bd09badbc763d8757951d52deec29da27e85fb"
+}

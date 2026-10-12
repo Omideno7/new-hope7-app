@@ -1,0 +1,1557 @@
+{
+  "schema_version": 3,
+  "course_code": "foundation_school",
+  "exam_scope": "course",
+  "lesson_code": "course:foundation_school",
+  "title_fa": "امتحان نهایی مدرسه بنیادی مسیحی",
+  "title_en": "Christian Foundation School Final Examination",
+  "title_hr": "Završni ispit Škole kršćanskih temelja",
+  "intro_fa": "این ارزیابی برای سنجش یادگیری و رشد شما طراحی شده است. نمره نهایی از ۷۰٪ آزمون کتبی و ۳۰٪ تکالیف کلاس‌ها تشکیل می‌شود. پرسش‌ها در هر تلاش می‌توانند با ترتیب متفاوت نمایش داده شوند.",
+  "intro_en": "This assessment is designed to measure your learning and growth. The final grade consists of 70% written examination and 30% class assignments. Questions may appear in a different order on each attempt.",
+  "intro_hr": "Ova je procjena osmišljena za mjerenje vašeg učenja i rasta. Završna ocjena sastoji se od 70% pisanog ispita i 30% razrednih zadataka. Pitanja se pri svakom pokušaju mogu prikazati drugim redoslijedom.",
+  "passing_score": 70,
+  "max_attempts": 3,
+  "duration_minutes": 60,
+  "shuffle_questions": true,
+  "show_answers": "after_submit",
+  "require_course_completion": true,
+  "pass_message_fa": "تبریک! شما این آزمون را با موفقیت گذراندید. نتیجه شما نشان می‌دهد که تعالیم را به‌خوبی آموخته‌اید. در شناخت کلام خدا و رشد روحانی خود همچنان پیش بروید.",
+  "pass_message_en": "Congratulations! You have successfully passed this examination. Your result shows that you have understood the teachings well. Continue growing in the knowledge of God’s Word and in your spiritual life.",
+  "pass_message_hr": "Čestitamo! Uspješno ste položili ovaj ispit. Vaš rezultat pokazuje da ste dobro razumjeli pouke. Nastavite rasti u poznavanju Božje Riječi i u svom duhovnom životu.",
+  "fail_message_fa": "از تلاش شما سپاسگزاریم. نتیجه نشان می‌دهد بعضی از مباحث هنوز نیاز به مرور دارند. بهتر است یک دور دیگر درس‌ها را با دقت مطالعه کنید تا پایه‌های ایمان شما قوی‌تر شود و سپس دوباره در آزمون شرکت کنید. هدف این آزمون کمک به یادگیری و رشد شماست، نه صرفاً قبولی یا رد شدن.",
+  "fail_message_en": "Thank you for your effort. The result shows that some subjects still need review. We recommend studying the lessons carefully once more so that the foundations of your faith become stronger, and then taking the examination again. The purpose of this exam is to support your learning and growth, not merely to pass or fail you.",
+  "fail_message_hr": "Hvala vam na trudu. Rezultat pokazuje da je neke teme potrebno ponovno proučiti. Preporučujemo da još jednom pažljivo prođete lekcije kako bi temelji vaše vjere postali čvršći, a zatim ponovno pristupite ispitu. Svrha ovog ispita jest podržati vaše učenje i rast, a ne samo proglasiti prolaz ili pad.",
+  "questions": [
+    {
+      "number": 1,
+      "section": {
+        "fa": "کلاس ۱: خلقت تازه",
+        "en": "Class 1: The New Creature",
+        "hr": "1. razred: Novo stvorenje"
+      },
+      "question": {
+        "en": "The term ‘new creature’ describes:",
+        "fa": "اصطلاح «خلقت تازه» چه کسی را توصیف می‌کند؟",
+        "hr": "Izraz „novo stvorenje” opisuje:"
+      },
+      "options": [
+        {
+          "en": "The old man in Christ",
+          "fa": "انسان قدیمی در مسیح",
+          "hr": "Starog čovjeka u Kristu"
+        },
+        {
+          "en": "One who is born again",
+          "fa": "کسی که دوباره متولد شده است",
+          "hr": "Onoga koji je nanovo rođen"
+        },
+        {
+          "en": "The love of God toward man",
+          "fa": "محبت خدا نسبت به انسان",
+          "hr": "Božju ljubav prema čovjeku"
+        }
+      ],
+      "correct": 1,
+      "type": "single_choice"
+    },
+    {
+      "number": 2,
+      "section": {
+        "fa": "کلاس ۱: خلقت تازه",
+        "en": "Class 1: The New Creature",
+        "hr": "1. razred: Novo stvorenje"
+      },
+      "question": {
+        "en": "The new creation has a brand-new:",
+        "fa": "خلقت تازه دارای چه چیز کاملاً تازه‌ای است؟",
+        "hr": "Novo stvorenje ima potpuno novi:"
+      },
+      "options": [
+        {
+          "en": "Life",
+          "fa": "حیات",
+          "hr": "Život"
+        },
+        {
+          "en": "Glory",
+          "fa": "جلال",
+          "hr": "Slavu"
+        },
+        {
+          "en": "Strength",
+          "fa": "قوت",
+          "hr": "Snagu"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 3,
+      "section": {
+        "fa": "کلاس ۱: خلقت تازه",
+        "en": "Class 1: The New Creature",
+        "hr": "1. razred: Novo stvorenje"
+      },
+      "question": {
+        "en": "When you were born again, you believed in the Lord Jesus Christ and received Him most importantly as:",
+        "fa": "وقتی تولد تازه یافتید، به خداوند عیسی مسیح ایمان آوردید و مهم‌تر از همه او را به‌عنوان چه کسی پذیرفتید؟",
+        "hr": "Kad ste bili nanovo rođeni, povjerovali ste u Gospodina Isusa Krista i prije svega primili Ga kao:"
+      },
+      "options": [
+        {
+          "en": "Your friend",
+          "fa": "دوست خود",
+          "hr": "Svoga prijatelja"
+        },
+        {
+          "en": "Your support",
+          "fa": "پشتیبان خود",
+          "hr": "Svoju potporu"
+        },
+        {
+          "en": "Your personal Lord and Savior",
+          "fa": "خداوند و نجات‌دهنده شخصی خود",
+          "hr": "Svoga osobnog Gospodina i Spasitelja"
+        }
+      ],
+      "correct": 2,
+      "type": "single_choice"
+    },
+    {
+      "number": 4,
+      "section": {
+        "fa": "کلاس ۱: خلقت تازه",
+        "en": "Class 1: The New Creature",
+        "hr": "1. razred: Novo stvorenje"
+      },
+      "question": {
+        "en": "A person who is a new creature with the life and nature of God is superior to death, defeat, failure, and sickness.",
+        "fa": "کسی که خلقت تازه است و حیات و طبیعت خدا را دارد، بر مرگ، شکست، ناکامی و بیماری برتری دارد.",
+        "hr": "Osoba koja je novo stvorenje s Božjim životom i naravi nadmoćna je smrti, porazu, neuspjehu i bolesti."
+      },
+      "options": [
+        {
+          "en": "True",
+          "fa": "درست",
+          "hr": "Točno"
+        },
+        {
+          "en": "False",
+          "fa": "نادرست",
+          "hr": "Netočno"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 5,
+      "section": {
+        "fa": "کلاس ۱: خلقت تازه",
+        "en": "Class 1: The New Creature",
+        "hr": "1. razred: Novo stvorenje"
+      },
+      "question": {
+        "en": "Complete Ephesians 2:8: “For by grace are you saved through ____.”",
+        "fa": "افسسیان ۲:‏۸ را کامل کنید: «زیرا به فیض نجات یافته‌اید، به‌وسیلهٔ ____».",
+        "hr": "Dovršite Efežanima 2,8: „Milošću ste spašeni po ____.”"
+      },
+      "options": [
+        {
+          "en": "Righteousness",
+          "fa": "عدالت",
+          "hr": "Pravednosti"
+        },
+        {
+          "en": "Faith",
+          "fa": "ایمان",
+          "hr": "Vjeri"
+        },
+        {
+          "en": "Fellowship",
+          "fa": "مشارکت",
+          "hr": "Zajedništvu"
+        }
+      ],
+      "correct": 1,
+      "type": "single_choice"
+    },
+    {
+      "number": 6,
+      "section": {
+        "fa": "کلاس ۱: خلقت تازه",
+        "en": "Class 1: The New Creature",
+        "hr": "1. razred: Novo stvorenje"
+      },
+      "question": {
+        "en": "Salvation is by works.",
+        "fa": "نجات از طریق اعمال به دست می‌آید.",
+        "hr": "Spasenje se postiže djelima."
+      },
+      "options": [
+        {
+          "en": "True",
+          "fa": "درست",
+          "hr": "Točno"
+        },
+        {
+          "en": "False",
+          "fa": "نادرست",
+          "hr": "Netočno"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 7,
+      "section": {
+        "fa": "کلاس ۱: خلقت تازه",
+        "en": "Class 1: The New Creature",
+        "hr": "1. razred: Novo stvorenje"
+      },
+      "question": {
+        "en": "According to Romans 10:9–10, salvation is received by:",
+        "fa": "طبق رومیان ۱۰:‏۹–۱۰، نجات از چه طریقی دریافت می‌شود؟",
+        "hr": "Prema Rimljanima 10,9–10, spasenje se prima po:"
+      },
+      "options": [
+        {
+          "en": "Repentance and confession",
+          "fa": "توبه و اعتراف",
+          "hr": "Pokajanju i ispovijedanju"
+        },
+        {
+          "en": "Change of heart and lifestyle",
+          "fa": "تغییر قلب و سبک زندگی",
+          "hr": "Promjeni srca i načina života"
+        },
+        {
+          "en": "Faith and confession",
+          "fa": "ایمان و اعتراف",
+          "hr": "Vjeri i ispovijedanju"
+        }
+      ],
+      "correct": 2,
+      "type": "single_choice"
+    },
+    {
+      "number": 8,
+      "section": {
+        "fa": "کلاس ۲: روح‌القدس",
+        "en": "Class 2: The Holy Spirit",
+        "hr": "2. razred: Duh Sveti"
+      },
+      "question": {
+        "en": "“But when the Comforter has come, whom I will send to you from the Father, even the Spirit of truth… He shall testify of Me.” Where is this found in the Bible?",
+        "fa": "این آیه در کجای کتاب‌مقدس آمده است؟ «اما چون تسلی‌دهنده آید که او را از جانب پدر نزد شما می‌فرستم، یعنی روح راستی… او بر من شهادت خواهد داد.»",
+        "hr": "Gdje se u Bibliji nalazi ovaj redak? „A kad dođe Utješitelj, kojega ću vam poslati od Oca, Duh istine… on će svjedočiti za mene.”"
+      },
+      "options": [
+        {
+          "en": "Galatians 5:22–23",
+          "fa": "غلاطیان ۵:‏۲۲–۲۳",
+          "hr": "Galaćanima 5,22–23"
+        },
+        {
+          "en": "John 15:26",
+          "fa": "یوحنا ۱۵:‏۲۶",
+          "hr": "Ivan 15,26"
+        },
+        {
+          "en": "Colossians 2:3",
+          "fa": "کولسیان ۲:‏۳",
+          "hr": "Kološanima 2,3"
+        }
+      ],
+      "correct": 1,
+      "type": "single_choice"
+    },
+    {
+      "number": 9,
+      "section": {
+        "fa": "کلاس ۲: روح‌القدس",
+        "en": "Class 2: The Holy Spirit",
+        "hr": "2. razred: Duh Sveti"
+      },
+      "question": {
+        "en": "The “Comforter” in the scripture above refers to:",
+        "fa": "«تسلی‌دهنده» در آیه بالا به چه کسی اشاره دارد؟",
+        "hr": "„Utješitelj” u prethodnom retku odnosi se na:"
+      },
+      "options": [
+        {
+          "en": "The Holy Spirit",
+          "fa": "روح‌القدس",
+          "hr": "Duha Svetoga"
+        },
+        {
+          "en": "The Son of God",
+          "fa": "پسر خدا",
+          "hr": "Sina Božjega"
+        },
+        {
+          "en": "The Word of God",
+          "fa": "کلام خدا",
+          "hr": "Božju Riječ"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 10,
+      "section": {
+        "fa": "کلاس ۲: روح‌القدس",
+        "en": "Class 2: The Holy Spirit",
+        "hr": "2. razred: Duh Sveti"
+      },
+      "question": {
+        "en": "The first reference to the Holy Spirit in Scripture is found in:",
+        "fa": "نخستین اشاره به روح‌القدس در کتاب‌مقدس در کجا دیده می‌شود؟",
+        "hr": "Prvo spominjanje Duha Svetoga u Pismu nalazi se u:"
+      },
+      "options": [
+        {
+          "en": "Genesis 1:2",
+          "fa": "پیدایش ۱:‏۲",
+          "hr": "Postanku 1,2"
+        },
+        {
+          "en": "Judges 5:10",
+          "fa": "داوران ۵:‏۱۰",
+          "hr": "Sucima 5,10"
+        },
+        {
+          "en": "Matthew 1:5",
+          "fa": "متی ۱:‏۵",
+          "hr": "Mateju 1,5"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 11,
+      "section": {
+        "fa": "کلاس ۲: روح‌القدس",
+        "en": "Class 2: The Holy Spirit",
+        "hr": "2. razred: Duh Sveti"
+      },
+      "question": {
+        "en": "The primary ministry of the Holy Spirit in the life of a Christian is to empower him or her with:",
+        "fa": "خدمت اصلی روح‌القدس در زندگی یک مسیحی این است که او را به چه چیزی توانمند سازد؟",
+        "hr": "Primarna služba Duha Svetoga u životu kršćanina jest osposobiti ga:"
+      },
+      "options": [
+        {
+          "en": "The dynamic ability to live the Christian life successfully and be an effective witness for Jesus Christ",
+          "fa": "توانایی پویا برای زندگی موفق مسیحی و شاهد مؤثر عیسی مسیح بودن",
+          "hr": "Dinamičnom sposobnošću da uspješno živi kršćanski život i bude djelotvoran svjedok Isusa Krista"
+        },
+        {
+          "en": "Comfort and strength in times of trouble",
+          "fa": "تسلی و قوت در زمان مشکلات",
+          "hr": "Utjehom i snagom u vrijeme nevolje"
+        },
+        {
+          "en": "Faith and power to perform miracles",
+          "fa": "ایمان و قدرت برای انجام معجزات",
+          "hr": "Vjerom i silom za činjenje čudesa"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 12,
+      "section": {
+        "fa": "کلاس ۲: روح‌القدس",
+        "en": "Class 2: The Holy Spirit",
+        "hr": "2. razred: Duh Sveti"
+      },
+      "question": {
+        "en": "The baptism of the Holy Spirit occurs when a person is born again.",
+        "fa": "تعمید روح‌القدس هنگامی رخ می‌دهد که شخص تولد تازه می‌یابد.",
+        "hr": "Krštenje Duhom Svetim događa se kada je osoba nanovo rođena."
+      },
+      "options": [
+        {
+          "en": "True",
+          "fa": "درست",
+          "hr": "Točno"
+        },
+        {
+          "en": "False",
+          "fa": "نادرست",
+          "hr": "Netočno"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 13,
+      "section": {
+        "fa": "کلاس ۲: روح‌القدس",
+        "en": "Class 2: The Holy Spirit",
+        "hr": "2. razred: Duh Sveti"
+      },
+      "question": {
+        "en": "At salvation, the new creature receives the ____ of the Holy Spirit.",
+        "fa": "در هنگام نجات، خلقت تازه چه چیزی از روح‌القدس دریافت می‌کند؟",
+        "hr": "Pri spasenju novo stvorenje prima ____ Duha Svetoga."
+      },
+      "options": [
+        {
+          "en": "Infilling",
+          "fa": "پُری",
+          "hr": "Ispunjenje"
+        },
+        {
+          "en": "Mark",
+          "fa": "نشان",
+          "hr": "Znak"
+        },
+        {
+          "en": "Indwelling presence",
+          "fa": "حضور ساکن در درون",
+          "hr": "Prebivajuću prisutnost"
+        }
+      ],
+      "correct": 2,
+      "type": "single_choice"
+    },
+    {
+      "number": 14,
+      "section": {
+        "fa": "کلاس ۲: روح‌القدس",
+        "en": "Class 2: The Holy Spirit",
+        "hr": "2. razred: Duh Sveti"
+      },
+      "question": {
+        "en": "When a Christian has received the Holy Spirit, one advantage is that he or she receives the ability to:",
+        "fa": "هنگامی که یک مسیحی روح‌القدس را دریافت می‌کند، یکی از مزایای آن این است که توانایی چه کاری را می‌یابد؟",
+        "hr": "Kad kršćanin primi Duha Svetoga, jedna je prednost to što prima sposobnost:"
+      },
+      "options": [
+        {
+          "en": "Speak in tongues",
+          "fa": "به زبان‌ها سخن بگوید",
+          "hr": "Govoriti u jezicima"
+        },
+        {
+          "en": "Talk to God",
+          "fa": "با خدا صحبت کند",
+          "hr": "Razgovarati s Bogom"
+        },
+        {
+          "en": "Proclaim the Word of God",
+          "fa": "کلام خدا را اعلام کند",
+          "hr": "Naviještati Božju Riječ"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 15,
+      "section": {
+        "fa": "کلاس ۳: تعالیم مسیحی",
+        "en": "Class 3: Christian Doctrine",
+        "hr": "3. razred: Kršćanski nauk"
+      },
+      "question": {
+        "en": "The Bible contains the written Word of God.",
+        "fa": "کتاب‌مقدس شامل کلام مکتوب خداست.",
+        "hr": "Biblija sadrži pisanu Božju Riječ."
+      },
+      "options": [
+        {
+          "en": "True",
+          "fa": "درست",
+          "hr": "Točno"
+        },
+        {
+          "en": "False",
+          "fa": "نادرست",
+          "hr": "Netočno"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 16,
+      "section": {
+        "fa": "کلاس ۳: تعالیم مسیحی",
+        "en": "Class 3: Christian Doctrine",
+        "hr": "3. razred: Kršćanski nauk"
+      },
+      "question": {
+        "en": "A ____ is a recognizable set of beliefs, teachings, values, or instructions that are adhered to, believed, taught, and practiced by a group of people.",
+        "fa": "____ مجموعه‌ای شناخته‌شده از باورها، تعالیم، ارزش‌ها یا دستورالعمل‌هاست که گروهی از مردم به آن پایبندند، آن را باور دارند، تعلیم می‌دهند و عمل می‌کنند.",
+        "hr": "____ je prepoznatljiv skup vjerovanja, učenja, vrijednosti ili uputa kojih se skupina ljudi drži, vjeruje ih, podučava i provodi."
+      },
+      "options": [
+        {
+          "en": "Constitution",
+          "fa": "قانون اساسی",
+          "hr": "Ustav"
+        },
+        {
+          "en": "Gospel",
+          "fa": "انجیل",
+          "hr": "Evanđelje"
+        },
+        {
+          "en": "Doctrine",
+          "fa": "تعلیم/دکترین",
+          "hr": "Nauk"
+        }
+      ],
+      "correct": 2,
+      "type": "single_choice"
+    },
+    {
+      "number": 17,
+      "section": {
+        "fa": "کلاس ۳: تعالیم مسیحی",
+        "en": "Class 3: Christian Doctrine",
+        "hr": "3. razred: Kršćanski nauk"
+      },
+      "question": {
+        "en": "In Christianity, our doctrines are based on and revealed in:",
+        "fa": "در مسیحیت، تعالیم ما بر چه چیزی بنا شده و در چه چیزی مکشوف شده‌اند؟",
+        "hr": "U kršćanstvu se naš nauk temelji na i objavljen je u:"
+      },
+      "options": [
+        {
+          "en": "The constitution",
+          "fa": "قانون اساسی",
+          "hr": "Ustavu"
+        },
+        {
+          "en": "The Scriptures",
+          "fa": "کتب مقدس",
+          "hr": "Svetom pismu"
+        },
+        {
+          "en": "Stories of the fathers of faith",
+          "fa": "داستان‌های پدران ایمان",
+          "hr": "Pričama otaca vjere"
+        }
+      ],
+      "correct": 1,
+      "type": "single_choice"
+    },
+    {
+      "number": 18,
+      "section": {
+        "fa": "کلاس ۳: تعالیم مسیحی",
+        "en": "Class 3: Christian Doctrine",
+        "hr": "3. razred: Kršćanski nauk"
+      },
+      "question": {
+        "en": "Doctrines can be transferred through teaching.",
+        "fa": "تعالیم را می‌توان از طریق تعلیم‌دادن منتقل کرد.",
+        "hr": "Nauk se može prenositi poučavanjem."
+      },
+      "options": [
+        {
+          "en": "True",
+          "fa": "درست",
+          "hr": "Točno"
+        },
+        {
+          "en": "False",
+          "fa": "نادرست",
+          "hr": "Netočno"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 19,
+      "section": {
+        "fa": "کلاس ۳: تعالیم مسیحی",
+        "en": "Class 3: Christian Doctrine",
+        "hr": "3. razred: Kršćanski nauk"
+      },
+      "question": {
+        "en": "“For He has made Him to be sin for us, who knew no sin; that we might be made the righteousness of God in Him.” This scripture communicates the doctrine of:",
+        "fa": "«زیرا او را که گناه نشناخت، در راه ما گناه ساخت تا ما در وی عدالت خدا شویم.» این آیه تعلیمِ کدام موضوع را بیان می‌کند؟",
+        "hr": "„Onoga koji nije upoznao grijeha, za nas učini grijehom da mi u njemu postanemo pravednost Božja.” Ovaj redak govori o nauku:"
+      },
+      "options": [
+        {
+          "en": "Repentance",
+          "fa": "توبه",
+          "hr": "Pokajanja"
+        },
+        {
+          "en": "Substitution",
+          "fa": "جانشینی",
+          "hr": "Zamjene"
+        },
+        {
+          "en": "Holiness",
+          "fa": "قدوسیت",
+          "hr": "Svetosti"
+        }
+      ],
+      "correct": 1,
+      "type": "single_choice"
+    },
+    {
+      "number": 20,
+      "section": {
+        "fa": "کلاس ۳: تعالیم مسیحی",
+        "en": "Class 3: Christian Doctrine",
+        "hr": "3. razred: Kršćanski nauk"
+      },
+      "question": {
+        "en": "“Now faith is the substance of things hoped for, the evidence of things not seen. For by it the elders obtained a good report.” Where is this found?",
+        "fa": "«ایمان، اطمینان به چیزهای امید داشته‌شده و اثبات چیزهای نادیده است. زیرا پیشینیان به‌وسیله آن نیکنامی یافتند.» این آیه در کجا آمده است؟",
+        "hr": "„Vjera je jamstvo za ono čemu se nadamo, dokaz za stvarnosti kojih ne vidimo. Po njoj su stari primili dobro svjedočanstvo.” Gdje se to nalazi?"
+      },
+      "options": [
+        {
+          "en": "Revelation 5:10",
+          "fa": "مکاشفه ۵:‏۱۰",
+          "hr": "Otkrivenje 5,10"
+        },
+        {
+          "en": "Hebrews 10:1",
+          "fa": "عبرانیان ۱۰:‏۱",
+          "hr": "Hebrejima 10,1"
+        },
+        {
+          "en": "Hebrews 11:1",
+          "fa": "عبرانیان ۱۱:‏۱",
+          "hr": "Hebrejima 11,1"
+        }
+      ],
+      "correct": 2,
+      "type": "single_choice"
+    },
+    {
+      "number": 21,
+      "section": {
+        "fa": "کلاس ۴-الف: بشارت",
+        "en": "Class 4A: Evangelism",
+        "hr": "4A. razred: Evangelizacija"
+      },
+      "question": {
+        "en": "Soul saving is synonymous with soul winning.",
+        "fa": "نجات جان‌ها هم‌معنای صید جان‌هاست.",
+        "hr": "Spašavanje duša istoznačno je s pridobivanjem duša."
+      },
+      "options": [
+        {
+          "en": "True",
+          "fa": "درست",
+          "hr": "Točno"
+        },
+        {
+          "en": "False",
+          "fa": "نادرست",
+          "hr": "Netočno"
+        }
+      ],
+      "correct": 1,
+      "type": "single_choice"
+    },
+    {
+      "number": 22,
+      "section": {
+        "fa": "کلاس ۴-الف: بشارت",
+        "en": "Class 4A: Evangelism",
+        "hr": "4A. razred: Evangelizacija"
+      },
+      "question": {
+        "en": "Another term for evangelism is:",
+        "fa": "اصطلاح دیگری برای بشارت چیست؟",
+        "hr": "Drugi naziv za evangelizaciju je:"
+      },
+      "options": [
+        {
+          "en": "Praying",
+          "fa": "دعا کردن",
+          "hr": "Molitva"
+        },
+        {
+          "en": "The Gospel",
+          "fa": "انجیل",
+          "hr": "Evanđelje"
+        },
+        {
+          "en": "Soul winning",
+          "fa": "صید جان‌ها",
+          "hr": "Pridobivanje duša"
+        }
+      ],
+      "correct": 2,
+      "type": "single_choice"
+    },
+    {
+      "number": 23,
+      "section": {
+        "fa": "کلاس ۴-الف: بشارت",
+        "en": "Class 4A: Evangelism",
+        "hr": "4A. razred: Evangelizacija"
+      },
+      "question": {
+        "en": "The command of the Lord in Matthew 28:19–20 is an instruction for all believers.",
+        "fa": "فرمان خداوند در متی ۲۸:‏۱۹–۲۰ برای همه ایمانداران است.",
+        "hr": "Gospodinova zapovijed u Mateju 28,19–20 uputa je svim vjernicima."
+      },
+      "options": [
+        {
+          "en": "True",
+          "fa": "درست",
+          "hr": "Točno"
+        },
+        {
+          "en": "False",
+          "fa": "نادرست",
+          "hr": "Netočno"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 24,
+      "section": {
+        "fa": "کلاس ۴-الف: بشارت",
+        "en": "Class 4A: Evangelism",
+        "hr": "4A. razred: Evangelizacija"
+      },
+      "question": {
+        "en": "Matthew 28:19–20 further reveals that the Lord does not want us merely to preach or witness, but to teach and raise:",
+        "fa": "متی ۲۸:‏۱۹–۲۰ همچنین نشان می‌دهد که خداوند نمی‌خواهد فقط موعظه یا شهادت بدهیم، بلکه باید تعلیم دهیم و چه کسانی را پرورش دهیم؟",
+        "hr": "Matej 28,19–20 nadalje pokazuje da Gospodin ne želi da samo propovijedamo ili svjedočimo, nego da poučavamo i podižemo:"
+      },
+      "options": [
+        {
+          "en": "Giants",
+          "fa": "غول‌ها",
+          "hr": "Divove"
+        },
+        {
+          "en": "Disciples",
+          "fa": "شاگردان",
+          "hr": "Učenike"
+        },
+        {
+          "en": "Witnesses",
+          "fa": "شاهدان",
+          "hr": "Svjedoke"
+        }
+      ],
+      "correct": 2,
+      "type": "single_choice"
+    },
+    {
+      "number": 25,
+      "section": {
+        "fa": "کلاس ۴-الف: بشارت",
+        "en": "Class 4A: Evangelism",
+        "hr": "4A. razred: Evangelizacija"
+      },
+      "question": {
+        "en": "When God saves you, He makes you His partner in saving others.",
+        "fa": "وقتی خدا شما را نجات می‌دهد، شما را شریک خود در نجات دیگران می‌سازد.",
+        "hr": "Kad vas Bog spasi, čini vas svojim suradnikom u spašavanju drugih."
+      },
+      "options": [
+        {
+          "en": "True",
+          "fa": "درست",
+          "hr": "Točno"
+        },
+        {
+          "en": "False",
+          "fa": "نادرست",
+          "hr": "Netočno"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 26,
+      "section": {
+        "fa": "کلاس ۴-الف: بشارت",
+        "en": "Class 4A: Evangelism",
+        "hr": "4A. razred: Evangelizacija"
+      },
+      "question": {
+        "en": "Complete the scripture: “And all things are of God, who has reconciled us to Himself by Jesus Christ, and has given to us the ministry of ____.”",
+        "fa": "آیه را کامل کنید: «همه چیز از خداست که ما را به‌واسطه عیسی مسیح با خود مصالحه داد و خدمتِ ____ را به ما سپرد.»",
+        "hr": "Dovršite redak: „A sve je od Boga, koji nas je po Isusu Kristu pomirio sa sobom i dao nam službu ____.”"
+      },
+      "options": [
+        {
+          "en": "Salvation",
+          "fa": "نجات",
+          "hr": "Spasenja"
+        },
+        {
+          "en": "Sanctification",
+          "fa": "تقدیس",
+          "hr": "Posvećenja"
+        },
+        {
+          "en": "Reconciliation",
+          "fa": "مصالحه",
+          "hr": "Pomirenja"
+        }
+      ],
+      "correct": 2,
+      "type": "single_choice"
+    },
+    {
+      "number": 27,
+      "section": {
+        "fa": "کلاس ۴-الف: بشارت",
+        "en": "Class 4A: Evangelism",
+        "hr": "4A. razred: Evangelizacija"
+      },
+      "question": {
+        "en": "Evangelism is the responsibility of every Christian.",
+        "fa": "بشارت مسئولیت هر مسیحی است.",
+        "hr": "Evangelizacija je odgovornost svakog kršćanina."
+      },
+      "options": [
+        {
+          "en": "True",
+          "fa": "درست",
+          "hr": "Točno"
+        },
+        {
+          "en": "False",
+          "fa": "نادرست",
+          "hr": "Netočno"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 28,
+      "section": {
+        "fa": "کلاس ۴-ب: خدمت سلولی",
+        "en": "Class 4B: Cell Ministry",
+        "hr": "4B. razred: Služba ćelija"
+      },
+      "question": {
+        "en": "Cell Ministry is a powerful strategy for producing the results of Ephesians 4:11–16, where every member matures and contributes to the ____ of the church.",
+        "fa": "خدمت سلولی راهبردی نیرومند برای تحقق نتایج افسسیان ۴:‏۱۱–۱۶ است؛ جایی که هر عضو بالغ می‌شود و در ____ کلیسا سهم می‌گذارد.",
+        "hr": "Služba ćelija snažna je strategija za ostvarenje rezultata iz Efežanima 4,11–16, gdje svaki član sazrijeva i doprinosi ____ crkve."
+      },
+      "options": [
+        {
+          "en": "Growth",
+          "fa": "رشد",
+          "hr": "Rastu"
+        },
+        {
+          "en": "Maturity",
+          "fa": "بلوغ",
+          "hr": "Zrelosti"
+        },
+        {
+          "en": "Communion",
+          "fa": "مشارکت",
+          "hr": "Zajedništvu"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 29,
+      "section": {
+        "fa": "کلاس ۴-ب: خدمت سلولی",
+        "en": "Class 4B: Cell Ministry",
+        "hr": "4B. razred: Služba ćelija"
+      },
+      "question": {
+        "en": "Cell Ministry is one of the programs of the church.",
+        "fa": "خدمت سلولی یکی از برنامه‌های کلیساست.",
+        "hr": "Služba ćelija jedan je od crkvenih programa."
+      },
+      "options": [
+        {
+          "en": "True",
+          "fa": "درست",
+          "hr": "Točno"
+        },
+        {
+          "en": "False",
+          "fa": "نادرست",
+          "hr": "Netočno"
+        }
+      ],
+      "correct": 1,
+      "type": "single_choice"
+    },
+    {
+      "number": 30,
+      "section": {
+        "fa": "کلاس ۴-ب: خدمت سلولی",
+        "en": "Class 4B: Cell Ministry",
+        "hr": "4B. razred: Služba ćelija"
+      },
+      "question": {
+        "en": "Our Pastor and President hosts all Cell Leaders across the ministry at an annual conference to sharpen, impart, and equip them for their assignment. This conference is called:",
+        "fa": "شبان و رئیس خدمت، رهبران سلولی را هر سال در کنفرانسی گردهم می‌آورد تا برای مأموریتشان تیز، تجهیز و برخوردار شوند. نام این کنفرانس چیست؟",
+        "hr": "Naš pastor i predsjednik okuplja sve voditelje ćelija na godišnjoj konferenciji kako bi ih izoštrio, osnažio i opremio za njihovu zadaću. Ta se konferencija zove:"
+      },
+      "options": [
+        {
+          "en": "ITPLC",
+          "fa": "ITPLC",
+          "hr": "ITPLC"
+        },
+        {
+          "en": "IPPC",
+          "fa": "IPPC",
+          "hr": "IPPC"
+        },
+        {
+          "en": "ICLC",
+          "fa": "ICLC",
+          "hr": "ICLC"
+        }
+      ],
+      "correct": 2,
+      "type": "single_choice"
+    },
+    {
+      "number": 31,
+      "section": {
+        "fa": "کلاس ۴-ب: خدمت سلولی",
+        "en": "Class 4B: Cell Ministry",
+        "hr": "4B. razred: Služba ćelija"
+      },
+      "question": {
+        "en": "When properly carried out, Cell Ministry produces:",
+        "fa": "هنگامی که خدمت سلولی به‌درستی اجرا شود، چه نتیجه‌ای ایجاد می‌کند؟",
+        "hr": "Kada se pravilno provodi, služba ćelija donosi:"
+      },
+      "options": [
+        {
+          "en": "Predictable results of growth and maturity in the members",
+          "fa": "نتایج قابل پیش‌بینیِ رشد و بلوغ در اعضا",
+          "hr": "Predvidljive rezultate rasta i zrelosti članova"
+        },
+        {
+          "en": "Self-esteem",
+          "fa": "عزت‌نفس",
+          "hr": "Samopoštovanje"
+        },
+        {
+          "en": "A community of like-minded people",
+          "fa": "جامعه‌ای از افراد همفکر",
+          "hr": "Zajednicu istomišljenika"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 32,
+      "section": {
+        "fa": "کلاس ۴-ب: خدمت سلولی",
+        "en": "Class 4B: Cell Ministry",
+        "hr": "4B. razred: Služba ćelija"
+      },
+      "question": {
+        "en": "Participation and development through Cell Ministry is a prerequisite for a member to be considered for leadership responsibilities in the church.",
+        "fa": "مشارکت و رشد از طریق خدمت سلولی، پیش‌نیاز درنظرگرفتن یک عضو برای مسئولیت‌های رهبری در کلیساست.",
+        "hr": "Sudjelovanje i razvoj kroz službu ćelija preduvjet su da bi se člana razmatralo za odgovornosti vodstva u crkvi."
+      },
+      "options": [
+        {
+          "en": "True",
+          "fa": "درست",
+          "hr": "Točno"
+        },
+        {
+          "en": "False",
+          "fa": "نادرست",
+          "hr": "Netočno"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 33,
+      "section": {
+        "fa": "کلاس ۵: شخصیت مسیحی و کامیابی",
+        "en": "Class 5: Christian Character and Prosperity",
+        "hr": "5. razred: Kršćanski karakter i prosperitet"
+      },
+      "question": {
+        "en": "The new creature has a new life, making it possible to develop a new character and lifestyle consistent with his or her calling in Christ.",
+        "fa": "خلقت تازه حیاتی تازه دارد که امکان پرورش شخصیت و سبک زندگی تازه و هماهنگ با دعوت او در مسیح را فراهم می‌کند.",
+        "hr": "Novo stvorenje ima novi život koji omogućuje razvoj novoga karaktera i načina života u skladu s pozivom u Kristu."
+      },
+      "options": [
+        {
+          "en": "True",
+          "fa": "درست",
+          "hr": "Točno"
+        },
+        {
+          "en": "False",
+          "fa": "نادرست",
+          "hr": "Netočno"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 34,
+      "section": {
+        "fa": "کلاس ۵: شخصیت مسیحی و کامیابی",
+        "en": "Class 5: Christian Character and Prosperity",
+        "hr": "5. razred: Kršćanski karakter i prosperitet"
+      },
+      "question": {
+        "en": "While salvation is instantaneous, spiritual growth is:",
+        "fa": "درحالی‌که نجات آنی است، رشد روحانی چگونه است؟",
+        "hr": "Dok je spasenje trenutačno, duhovni rast je:"
+      },
+      "options": [
+        {
+          "en": "Constant",
+          "fa": "ثابت",
+          "hr": "Stalan"
+        },
+        {
+          "en": "Progressive",
+          "fa": "تدریجی و پیش‌رونده",
+          "hr": "Postupan"
+        },
+        {
+          "en": "Simultaneous",
+          "fa": "هم‌زمان",
+          "hr": "Istodoban"
+        }
+      ],
+      "correct": 1,
+      "type": "single_choice"
+    },
+    {
+      "number": 35,
+      "section": {
+        "fa": "کلاس ۵: شخصیت مسیحی و کامیابی",
+        "en": "Class 5: Christian Character and Prosperity",
+        "hr": "5. razred: Kršćanski karakter i prosperitet"
+      },
+      "question": {
+        "en": "Spiritual growth can be seen in the quality of a Christian’s:",
+        "fa": "رشد روحانی را می‌توان در کیفیتِ چه چیزی در یک مسیحی مشاهده کرد؟",
+        "hr": "Duhovni rast može se vidjeti u kvaliteti kršćaninova:"
+      },
+      "options": [
+        {
+          "en": "Character",
+          "fa": "شخصیت",
+          "hr": "Karaktera"
+        },
+        {
+          "en": "Strength",
+          "fa": "قوت",
+          "hr": "Snage"
+        },
+        {
+          "en": "Religious beliefs",
+          "fa": "باورهای مذهبی",
+          "hr": "Vjerskih uvjerenja"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 36,
+      "section": {
+        "fa": "کلاس ۵: شخصیت مسیحی و کامیابی",
+        "en": "Class 5: Christian Character and Prosperity",
+        "hr": "5. razred: Kršćanski karakter i prosperitet"
+      },
+      "question": {
+        "en": "“Do not be deceived: evil communications corrupt good manners.” This is a statement of:",
+        "fa": "«فریب نخورید: معاشرت‌های بد، اخلاق نیکو را فاسد می‌سازد.» این عبارت بیانگر چیست؟",
+        "hr": "„Ne varajte se: loša društva kvare dobre običaje.” Ovo je izjava:"
+      },
+      "options": [
+        {
+          "en": "Suggestion",
+          "fa": "پیشنهاد",
+          "hr": "Prijedloga"
+        },
+        {
+          "en": "Assumption",
+          "fa": "فرض",
+          "hr": "Pretpostavke"
+        },
+        {
+          "en": "Truth",
+          "fa": "حقیقت",
+          "hr": "Istine"
+        }
+      ],
+      "correct": 2,
+      "type": "single_choice"
+    },
+    {
+      "number": 37,
+      "section": {
+        "fa": "کلاس ۵: شخصیت مسیحی و کامیابی",
+        "en": "Class 5: Christian Character and Prosperity",
+        "hr": "5. razred: Kršćanski karakter i prosperitet"
+      },
+      "question": {
+        "en": "As the seed of Abraham, you are not only to be blessed, but to be a:",
+        "fa": "به‌عنوان نسل ابراهیم، شما فقط نباید برکت‌یافته باشید، بلکه باید چه باشید؟",
+        "hr": "Kao Abrahamovo sjeme, niste pozvani samo biti blagoslovljeni, nego biti:"
+      },
+      "options": [
+        {
+          "en": "Philanthropist",
+          "fa": "نیکوکار",
+          "hr": "Dobrotvor"
+        },
+        {
+          "en": "Blessing",
+          "fa": "برکت",
+          "hr": "Blagoslov"
+        },
+        {
+          "en": "Curse",
+          "fa": "لعنت",
+          "hr": "Prokletstvo"
+        }
+      ],
+      "correct": 1,
+      "type": "single_choice"
+    },
+    {
+      "number": 38,
+      "section": {
+        "fa": "کلاس ۵: شخصیت مسیحی و کامیابی",
+        "en": "Class 5: Christian Character and Prosperity",
+        "hr": "5. razred: Kršćanski karakter i prosperitet"
+      },
+      "question": {
+        "en": "Complete the statement: “It is more blessed to give than to ____.”",
+        "fa": "عبارت را کامل کنید: «دادن از ____ مبارک‌تر است.»",
+        "hr": "Dovršite izjavu: „Blaženije je davati nego ____.”"
+      },
+      "options": [
+        {
+          "en": "Spend",
+          "fa": "خرج کردن",
+          "hr": "Trošiti"
+        },
+        {
+          "en": "Borrow",
+          "fa": "قرض گرفتن",
+          "hr": "Posuđivati"
+        },
+        {
+          "en": "Receive",
+          "fa": "گرفتن",
+          "hr": "Primati"
+        }
+      ],
+      "correct": 2,
+      "type": "single_choice"
+    },
+    {
+      "number": 39,
+      "section": {
+        "fa": "کلاس ۵: شخصیت مسیحی و کامیابی",
+        "en": "Class 5: Christian Character and Prosperity",
+        "hr": "5. razred: Kršćanski karakter i prosperitet"
+      },
+      "question": {
+        "en": "Kingdom prosperity starts with:",
+        "fa": "کامیابی ملکوتی با چه چیزی آغاز می‌شود؟",
+        "hr": "Prosperitet Kraljevstva počinje s:"
+      },
+      "options": [
+        {
+          "en": "Spending",
+          "fa": "خرج کردن",
+          "hr": "Trošenjem"
+        },
+        {
+          "en": "Giving",
+          "fa": "دادن",
+          "hr": "Davanjem"
+        },
+        {
+          "en": "Asking",
+          "fa": "درخواست کردن",
+          "hr": "Traženjem"
+        }
+      ],
+      "correct": 1,
+      "type": "single_choice"
+    },
+    {
+      "number": 40,
+      "section": {
+        "fa": "کلاس ۶: کلیسای محلی و لاوورلد",
+        "en": "Class 6: The Local Assembly and Loveworld Inc.",
+        "hr": "6. razred: Lokalna crkva i Loveworld Inc."
+      },
+      "question": {
+        "en": "The Universal Church refers to:",
+        "fa": "کلیسای جهانی به چه چیزی اشاره دارد؟",
+        "hr": "Univerzalna Crkva odnosi se na:"
+      },
+      "options": [
+        {
+          "en": "The entire Body of Christ on the earth",
+          "fa": "تمام بدن مسیح بر زمین",
+          "hr": "Cijelo Kristovo Tijelo na zemlji"
+        },
+        {
+          "en": "The gathering of the called-out people",
+          "fa": "گردهمایی فراخوانده‌شدگان",
+          "hr": "Okupljanje pozvanih ljudi"
+        },
+        {
+          "en": "The gathering of unbelievers",
+          "fa": "گردهمایی بی‌ایمانان",
+          "hr": "Okupljanje nevjernika"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 41,
+      "section": {
+        "fa": "کلاس ۶: کلیسای محلی و لاوورلد",
+        "en": "Class 6: The Local Assembly and Loveworld Inc.",
+        "hr": "6. razred: Lokalna crkva i Loveworld Inc."
+      },
+      "question": {
+        "en": "The Universal Church is divided into:",
+        "fa": "کلیسای جهانی به چه بخش‌هایی تقسیم می‌شود؟",
+        "hr": "Univerzalna Crkva podijeljena je na:"
+      },
+      "options": [
+        {
+          "en": "Communities of saints",
+          "fa": "جوامع مقدسین",
+          "hr": "Zajednice svetih"
+        },
+        {
+          "en": "Cell groups",
+          "fa": "گروه‌های سلولی",
+          "hr": "Ćelijske skupine"
+        },
+        {
+          "en": "Local assemblies",
+          "fa": "کلیساهای محلی",
+          "hr": "Lokalne crkve"
+        }
+      ],
+      "correct": 2,
+      "type": "single_choice"
+    },
+    {
+      "number": 42,
+      "section": {
+        "fa": "کلاس ۶: کلیسای محلی و لاوورلد",
+        "en": "Class 6: The Local Assembly and Loveworld Inc.",
+        "hr": "6. razred: Lokalna crkva i Loveworld Inc."
+      },
+      "question": {
+        "en": "Every Christian must be a member of a local assembly in order to be nurtured, grow, and function effectively as a member of the Universal Body of Christ.",
+        "fa": "هر مسیحی باید عضو یک کلیسای محلی باشد تا پرورش یابد، رشد کند و به‌عنوان عضوی از بدن جهانی مسیح به‌طور مؤثر عمل کند.",
+        "hr": "Svaki kršćanin treba biti član lokalne crkve kako bi bio njegovan, rastao i djelotvorno funkcionirao kao član univerzalnog Kristova Tijela."
+      },
+      "options": [
+        {
+          "en": "True",
+          "fa": "درست",
+          "hr": "Točno"
+        },
+        {
+          "en": "False",
+          "fa": "نادرست",
+          "hr": "Netočno"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 43,
+      "section": {
+        "fa": "کلاس ۶: کلیسای محلی و لاوورلد",
+        "en": "Class 6: The Local Assembly and Loveworld Inc.",
+        "hr": "6. razred: Lokalna crkva i Loveworld Inc."
+      },
+      "question": {
+        "en": "As a member of the local assembly, your first and most important personal responsibility is to:",
+        "fa": "به‌عنوان عضو کلیسای محلی، نخستین و مهم‌ترین مسئولیت شخصی شما چیست؟",
+        "hr": "Kao članu lokalne crkve, vaša prva i najvažnija osobna odgovornost jest:"
+      },
+      "options": [
+        {
+          "en": "Attend the corporate services",
+          "fa": "شرکت در جلسات جمعی کلیسا",
+          "hr": "Sudjelovati na zajedničkim bogoslužjima"
+        },
+        {
+          "en": "Organize cell meetings",
+          "fa": "برگزاری جلسات سلولی",
+          "hr": "Organizirati sastanke ćelija"
+        },
+        {
+          "en": "Populate the church",
+          "fa": "افزایش تعداد اعضای کلیسا",
+          "hr": "Povećavati broj članova crkve"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 44,
+      "section": {
+        "fa": "کلاس ۶: کلیسای محلی و لاوورلد",
+        "en": "Class 6: The Local Assembly and Loveworld Inc.",
+        "hr": "6. razred: Lokalna crkva i Loveworld Inc."
+      },
+      "question": {
+        "en": "In Christ Embassy, our vision is to take the divine presence of God to the nations and peoples of the world and to demonstrate the character of the Spirit.",
+        "fa": "در سفارت مسیح، رؤیای ما این است که حضور الهی خدا را به ملت‌ها و مردم جهان ببریم و شخصیت روح را آشکار سازیم.",
+        "hr": "U Christ Embassyju naša je vizija odnijeti Božju božansku prisutnost narodima i ljudima svijeta te očitovati karakter Duha."
+      },
+      "options": [
+        {
+          "en": "True",
+          "fa": "درست",
+          "hr": "Točno"
+        },
+        {
+          "en": "False",
+          "fa": "نادرست",
+          "hr": "Netočno"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 45,
+      "section": {
+        "fa": "کلاس ۷: فناوری موبایل برای رشد، بشارت و رشد کلیسا",
+        "en": "Class 7: Mobile Technology for Personal Growth, Evangelism and Church Growth",
+        "hr": "7. razred: Mobilna tehnologija za osobni rast, evangelizaciju i rast crkve"
+      },
+      "question": {
+        "en": "In Christ Embassy, we strongly believe that technology is primarily for the propagation of:",
+        "fa": "در سفارت مسیح، ما قویاً باور داریم که فناوری در درجه نخست برای گسترش چه چیزی است؟",
+        "hr": "U Christ Embassyju čvrsto vjerujemo da je tehnologija prvenstveno namijenjena širenju:"
+      },
+      "options": [
+        {
+          "en": "Worldly content",
+          "fa": "محتوای دنیوی",
+          "hr": "Svjetovnog sadržaja"
+        },
+        {
+          "en": "The Gospel",
+          "fa": "انجیل",
+          "hr": "Evanđelja"
+        },
+        {
+          "en": "Current affairs",
+          "fa": "اخبار روز",
+          "hr": "Aktualnih događaja"
+        }
+      ],
+      "correct": 1,
+      "type": "single_choice"
+    },
+    {
+      "number": 46,
+      "section": {
+        "fa": "کلاس ۷: فناوری موبایل برای رشد، بشارت و رشد کلیسا",
+        "en": "Class 7: Mobile Technology for Personal Growth, Evangelism and Church Growth",
+        "hr": "7. razred: Mobilna tehnologija za osobni rast, evangelizaciju i rast crkve"
+      },
+      "question": {
+        "en": "It is desirable for every church member to have sufficient knowledge of our ministry technology platforms and apps, know how to use them for personal growth and access to information, and use them to reach souls and disciple others.",
+        "fa": "شایسته است هر عضو کلیسا شناخت کافی از پلتفرم‌ها و اپ‌های فناوری خدمت داشته باشد، برای رشد شخصی و دسترسی به اطلاعات از آنها استفاده کند و به‌وسیله آنها به جان‌ها دست یابد و دیگران را شاگرد سازد.",
+        "hr": "Poželjno je da svaki član crkve dovoljno poznaje tehnološke platforme i aplikacije naše službe, koristi ih za osobni rast i pristup informacijama te njima doseže duše i učini druge učenicima."
+      },
+      "options": [
+        {
+          "en": "True",
+          "fa": "درست",
+          "hr": "Točno"
+        },
+        {
+          "en": "False",
+          "fa": "نادرست",
+          "hr": "Netočno"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 47,
+      "section": {
+        "fa": "کلاس ۷: فناوری موبایل برای رشد، بشارت و رشد کلیسا",
+        "en": "Class 7: Mobile Technology for Personal Growth, Evangelism and Church Growth",
+        "hr": "7. razred: Mobilna tehnologija za osobni rast, evangelizaciju i rast crkve"
+      },
+      "question": {
+        "en": "Which of these is not a ministry platform?",
+        "fa": "کدام‌یک از موارد زیر پلتفرم این خدمت نیست؟",
+        "hr": "Koje od navedenoga nije platforma službe?"
+      },
+      "options": [
+        {
+          "en": "KingsChat",
+          "fa": "KingsChat",
+          "hr": "KingsChat"
+        },
+        {
+          "en": "Live TV App",
+          "fa": "اپ Live TV",
+          "hr": "Aplikacija Live TV"
+        },
+        {
+          "en": "Xender",
+          "fa": "Xender",
+          "hr": "Xender"
+        }
+      ],
+      "correct": 2,
+      "type": "single_choice"
+    },
+    {
+      "number": 48,
+      "section": {
+        "fa": "کلاس ۷: فناوری موبایل برای رشد، بشارت و رشد کلیسا",
+        "en": "Class 7: Mobile Technology for Personal Growth, Evangelism and Church Growth",
+        "hr": "7. razred: Mobilna tehnologija za osobni rast, evangelizaciju i rast crkve"
+      },
+      "question": {
+        "en": "Which ministry mobile application gives users access to an array of life-transforming audio and video messages by Pastor Chris on various life issues?",
+        "fa": "کدام اپلیکیشن موبایل خدمت، دسترسی کاربران را به مجموعه‌ای از پیام‌های صوتی و تصویری دگرگون‌کننده زندگی از پاستور کریس درباره موضوعات گوناگون فراهم می‌کند؟",
+        "hr": "Koja mobilna aplikacija službe korisnicima omogućuje pristup nizu audio i video poruka pastora Chrisa koje mijenjaju život i obrađuju različita životna pitanja?"
+      },
+      "options": [
+        {
+          "en": "PCDL",
+          "fa": "PCDL",
+          "hr": "PCDL"
+        },
+        {
+          "en": "Loveworld Sat",
+          "fa": "Loveworld Sat",
+          "hr": "Loveworld Sat"
+        },
+        {
+          "en": "CEFLIX",
+          "fa": "CEFLIX",
+          "hr": "CEFLIX"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    },
+    {
+      "number": 49,
+      "section": {
+        "fa": "کلاس ۷: فناوری موبایل برای رشد، بشارت و رشد کلیسا",
+        "en": "Class 7: Mobile Technology for Personal Growth, Evangelism and Church Growth",
+        "hr": "7. razred: Mobilna tehnologija za osobni rast, evangelizaciju i rast crkve"
+      },
+      "question": {
+        "en": "Which ministry platform is available for recording your soul-winning work?",
+        "fa": "کدام پلتفرم خدمت برای ثبت فعالیت‌های صید جان‌های شما در دسترس است؟",
+        "hr": "Koja je platforma službe dostupna za bilježenje vašega rada u pridobivanju duša?"
+      },
+      "options": [
+        {
+          "en": "PCDL",
+          "fa": "PCDL",
+          "hr": "PCDL"
+        },
+        {
+          "en": "Soul Tracker",
+          "fa": "Soul Tracker",
+          "hr": "Soul Tracker"
+        },
+        {
+          "en": "Loveworld App Store",
+          "fa": "فروشگاه اپ Loveworld",
+          "hr": "Loveworld App Store"
+        }
+      ],
+      "correct": 1,
+      "type": "single_choice"
+    },
+    {
+      "number": 50,
+      "section": {
+        "fa": "کلاس ۷: فناوری موبایل برای رشد، بشارت و رشد کلیسا",
+        "en": "Class 7: Mobile Technology for Personal Growth, Evangelism and Church Growth",
+        "hr": "7. razred: Mobilna tehnologija za osobni rast, evangelizaciju i rast crkve"
+      },
+      "question": {
+        "en": "Have you downloaded any of our ministry mobile applications?",
+        "fa": "آیا تاکنون یکی از اپلیکیشن‌های موبایل این خدمت را دانلود کرده‌اید؟",
+        "hr": "Jeste li preuzeli neku od mobilnih aplikacija naše službe?"
+      },
+      "options": [
+        {
+          "en": "Yes",
+          "fa": "بله",
+          "hr": "Da"
+        },
+        {
+          "en": "No",
+          "fa": "خیر",
+          "hr": "Ne"
+        }
+      ],
+      "correct": 0,
+      "type": "single_choice"
+    }
+  ],
+  "answer_key_source": "Official Foundation School Marking Scheme",
+  "answer_key_locked": true,
+  "answer_key_policy": {
+    "en": "Use the official marking scheme exactly. Do not reinterpret trick or assessment questions.",
+    "fa": "کلید رسمی دقیقاً استفاده شود و سؤال‌های انحرافی یا سنجشی دوباره تفسیر نشوند.",
+    "hr": "Službeni ključ odgovora mora se koristiti točno, bez reinterpretacije kontrolnih pitanja."
+  },
+  "exam_weight": 70,
+  "assignment_weight": 30,
+  "questions_per_attempt": 50,
+  "require_assignments_before_exam": false
+}

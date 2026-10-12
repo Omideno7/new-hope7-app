@@ -1,0 +1,224 @@
+{
+  "version": "2.5.0",
+  "createdAt": "2026-06-09T18:29:49.611840Z",
+  "inputXml": {
+    "file": "PersianTPVBible.xml",
+    "metadata": {
+      "translation": "Persian TPV (مژده برای عصر جدید)",
+      "status": "Today’s Persian Version (TPV) © United Bible Societies, 2012.",
+      "link": "https://www.bible.com/bible/181/GEN.1.TPV"
+    }
+  },
+  "baseBible": "omideno7_bible_fa_mojdeh_en_kjv_hr_bkj_complete_v2_4.json",
+  "totalBooks": 66,
+  "totalVerses": 31102,
+  "xmlVerseElements": 30785,
+  "xmlNonEmptyVerseElements": 30270,
+  "xmlBlankVerseElements": 515,
+  "persianVersesReplacedFromUploadedXml": 30268,
+  "persianVersesKeptFromPreviousFallback": 834,
+  "xmlExtraVersesIgnoredNoMatchingTarget": 2,
+  "finalBlankCounts": {
+    "fa": 0,
+    "en": 0,
+    "hr": 0
+  },
+  "examples": {
+    "Genesis_1_1": {
+      "id": "GEN.1.1",
+      "reference": {
+        "fa": "پیدایش 1:1",
+        "en": "Genesis 1:1",
+        "hr": "Postanak 1:1"
+      },
+      "text": {
+        "fa": "در ابتدا، خدا آسمانها و زمین را آفرید.",
+        "en": "1. In the beginning God created the heaven and the earth.",
+        "hr": "U početku je Bog stvorio nebo i zemlju."
+      },
+      "translations": {
+        "fa": "Persian TPV (مژده برای عصر جدید)",
+        "en": "KJV",
+        "hr": "BKJ"
+      },
+      "faFallback": {
+        "used": false
+      }
+    },
+    "Psalm_23_1": {
+      "id": "PSA.23.1",
+      "reference": {
+        "fa": "مزامیر 23:1",
+        "en": "Psalms 23:1",
+        "hr": "Psalmi 23:1"
+      },
+      "text": {
+        "fa": "خداوند شبان من است. محتاج به هیچ چیز نخواهم بود.",
+        "en": "1. The LORD [is] my shepherd; I shall not want.",
+        "hr": "GOSPOD je pastir moj; ni u čemu ja neću oskudijevati."
+      },
+      "translations": {
+        "fa": "Persian TPV (مژده برای عصر جدید)",
+        "en": "KJV",
+        "hr": "BKJ"
+      },
+      "faFallback": {
+        "used": false
+      }
+    },
+    "John_3_16": {
+      "id": "JHN.3.16",
+      "reference": {
+        "fa": "یوحنا 3:16",
+        "en": "John 3:16",
+        "hr": "Ivan 3:16"
+      },
+      "text": {
+        "fa": "زیرا خدا جهانیان را آن‌قدر محبّت نمود كه پسر یگانهٔ خود را داد تا هرکه به او ایمان بیاورد هلاک نگردد، بلكه صاحب حیات جاودان شود.",
+        "en": "16. For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+        "hr": "Jer je Bog tako ljubio svijet da je dao svoga jedinorođenog Sina, da svaki koji u njega vjeruje ne propadne, nego ima život vječni."
+      },
+      "translations": {
+        "fa": "Persian TPV (مژده برای عصر جدید)",
+        "en": "KJV",
+        "hr": "BKJ"
+      },
+      "faFallback": {
+        "used": false
+      }
+    },
+    "Revelation_22_21": {
+      "id": "REV.22.21",
+      "reference": {
+        "fa": "مکاشفه 22:21",
+        "en": "Revelation 22:21",
+        "hr": "Otkrivenje 22:21"
+      },
+      "text": {
+        "fa": "فیض عیسی خداوند با همهٔ شما باد، آمین!",
+        "en": "21. The grace of our Lord Jesus Christ [be] with you all. Amen.",
+        "hr": "Milost Gospodina našega Isusa Krista sa svima vama! Amen."
+      },
+      "translations": {
+        "fa": "Persian TPV (مژده برای عصر جدید)",
+        "en": "KJV",
+        "hr": "BKJ"
+      },
+      "faFallback": {
+        "used": false
+      }
+    }
+  },
+  "notes": [
+    "Only non-empty matching Persian TPV XML verses were used.",
+    "The uploaded XML has blank verses and some chapter verse-count differences against the existing 31,102-verse KJV-aligned structure.",
+    "Previous Persian text was preserved wherever the uploaded XML was missing, blank, or could not be matched, so the final Bible remains complete in all three languages.",
+    "Because the XML metadata says TPV © United Bible Societies, redistribution rights should be confirmed before public store release."
+  ],
+  "firstFallbackVerseKeysSample": [
+    "1.5.24",
+    "1.6.10",
+    "1.6.20",
+    "1.7.16",
+    "1.10.19",
+    "1.20.18",
+    "1.24.63",
+    "1.25.8",
+    "1.31.18",
+    "1.36.11",
+    "1.36.12",
+    "1.36.13",
+    "1.36.21",
+    "1.36.26",
+    "1.36.30",
+    "1.36.32",
+    "1.36.33",
+    "1.36.34",
+    "1.36.35",
+    "1.36.36",
+    "1.36.37",
+    "1.36.38",
+    "1.36.39",
+    "1.36.41",
+    "1.36.42",
+    "1.36.43",
+    "1.41.34",
+    "1.44.31",
+    "1.49.30",
+    "2.1.14",
+    "2.4.26",
+    "2.7.18",
+    "2.14.7",
+    "2.18.3",
+    "2.19.2",
+    "2.22.3",
+    "2.22.4",
+    "2.27.15",
+    "2.28.14",
+    "2.28.34",
+    "2.30.20",
+    "2.31.5",
+    "2.34.9",
+    "2.35.31",
+    "2.35.32",
+    "2.35.33",
+    "2.37.21",
+    "2.38.15",
+    "2.39.7",
+    "3.3.4",
+    "3.3.5",
+    "3.4.12",
+    "3.6.5",
+    "3.6.17",
+    "3.7.4",
+    "3.7.33",
+    "3.11.5",
+    "3.11.6",
+    "3.11.14",
+    "3.11.15",
+    "3.11.16",
+    "3.11.17",
+    "3.11.18",
+    "3.11.19",
+    "3.11.22",
+    "3.11.30",
+    "3.11.42",
+    "3.13.41",
+    "3.14.34",
+    "3.14.35",
+    "3.14.56",
+    "3.15.2",
+    "3.15.23",
+    "3.17.4",
+    "3.18.13",
+    "3.21.12",
+    "3.21.14",
+    "3.21.19",
+    "3.22.27",
+    "3.23.10",
+    "3.23.24",
+    "3.23.27",
+    "3.23.34",
+    "3.24.4",
+    "3.24.11",
+    "3.25.49",
+    "3.25.52",
+    "3.26.35",
+    "3.27.4",
+    "3.27.5",
+    "3.27.6",
+    "3.27.7",
+    "4.1.30",
+    "4.1.31",
+    "4.1.32",
+    "4.1.33",
+    "4.1.34",
+    "4.1.35",
+    "4.1.36",
+    "4.1.37"
+  ],
+  "xmlExtraKeysIgnored": [
+    "64.1.15",
+    "66.12.18"
+  ]
+}

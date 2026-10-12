@@ -1,0 +1,2 @@
+/* New Hope 7 compatibility marker: legacy ready-import UI retired. MASTER upload now lives inside the authenticated admin navigation. */
+(()=>{window.NH7_ADMIN_READY_IMPORT_VERSION='4.3.6';function cleanup(){document.querySelectorAll('[data-ready-import-card],[data-master435]').forEach(x=>x.remove())}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',cleanup,{once:true});else cleanup();new MutationObserver(cleanup).observe(document.documentElement,{childList:true,subtree:true})})();

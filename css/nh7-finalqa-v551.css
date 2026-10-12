@@ -1,0 +1,54 @@
+/* New Hope 7 v5.5.1 — targeted Test 5.1 QA fixes. */
+
+/* iOS safe-area: keep logo/avatar/language controls below status bar while scrolling. */
+#appShell>.topbar{padding-top:calc(12px + env(safe-area-inset-top,0px))!important}
+@media(min-width:600px){#appShell>.topbar{padding-top:calc(14px + env(safe-area-inset-top,0px))!important}}
+
+/* Settings/status readability in dark mode. */
+html[data-nh7-theme="dark"] #view :is(#settingsNotificationStatus,#settingsOfflineSummary,.nh7-version-footer),
+html[data-nh7-theme="dark"] .nh7-settings403-status,
+html[data-nh7-theme="dark"] .nh7-settings403-status *,
+html[data-nh7-theme="dark"] .nh7-settings403-toast,
+html[data-nh7-theme="dark"] .nh7-settings403-toast *{color:var(--nh7-dark-ink,#f5f9ff)!important}
+
+/* Bible / revealed Scripture readability in every base dark surface. */
+html[data-nh7-theme="dark"] #view .reader-verse:not(.highlighted),
+html[data-nh7-theme="dark"] #view .reader-verse:not(.highlighted) .verse-text,
+html[data-nh7-theme="dark"] #view .clean-verse:not(.highlighted),
+html[data-nh7-theme="dark"] #view .verse-card,
+html[data-nh7-theme="dark"] #view .verse-card :is(p,strong,span),
+html[data-nh7-theme="dark"] #view .verse-list-item,
+html[data-nh7-theme="dark"] #view .verse-list-item :is(p,strong,span),
+html[data-nh7-theme="dark"] #view .inline-verse,
+html[data-nh7-theme="dark"] #view .inline-verse :is(p,strong,span),
+html[data-nh7-theme="dark"] #view .nh7-scripture-reveal .inline-verse,
+html[data-nh7-theme="dark"] #view .nh7-scripture-reveal .inline-verse :is(p,strong,span){color:var(--nh7-dark-ink,#f5f9ff)!important}
+html[data-nh7-theme="dark"] #view .reader-verse.highlighted,
+html[data-nh7-theme="dark"] #view .reader-verse.highlighted .verse-text{color:#142c40!important}
+
+/* My Progress / spiritual plans follow base Dark even when no Studio palette is selected. */
+html[data-nh7-theme="dark"] #view :is(.nh7-profile-plans,.nh7-profile-history>div,.nh7-plan-card,.nh7-plan-stats>div,.nh7-plan-sync,.nh7-plan-outline li,.nh7-pastoral-note,.nh7-scripture-block,.nh7-devotional-block,.nh7-private-note,.nh7-fasting-hero,.nh7-safety-note,.nh7-fasting-covenant,.nh7-fast-type-guide,.nh7-fasting-log,.nh7-journey-card,.nh7-plans-v534 .card,.nh7-plans-v534 .list-btn,.nh7-plans-v534 .inline-reading){background:var(--nh7-dark-card,#0c1929)!important;color:var(--nh7-dark-ink,#f5f9ff)!important;border-color:var(--nh7-dark-line,#2c4058)!important}
+html[data-nh7-theme="dark"] #view :is(.nh7-profile-plans,.nh7-profile-history,.nh7-plan-card,.nh7-plan-stats,.nh7-plan-sync,.nh7-plan-outline,.nh7-pastoral-note,.nh7-scripture-block,.nh7-devotional-block,.nh7-private-note,.nh7-fasting-hero,.nh7-safety-note,.nh7-fasting-covenant,.nh7-fast-type-guide,.nh7-fasting-log,.nh7-journey-card,.nh7-plans-v534) :is(h1,h2,h3,h4,p,strong,label,.reader-verse){color:var(--nh7-dark-ink,#f5f9ff)!important}
+html[data-nh7-theme="dark"] #view :is(.nh7-profile-plans,.nh7-plan-card,.nh7-plan-stats,.nh7-plan-sync,.nh7-plan-outline,.nh7-plans-v534) :is(small,.muted){color:var(--nh7-dark-muted,#a9bbce)!important}
+
+/* Plans: remove decorative language chip and non-interactive Offline Ready pill. */
+#view .nh7-plans-hero>div>.badge,#view .nh7-plan-sync>.nh7-offline-pill{display:none!important}
+
+/* Compact central search. */
+.nh7-global-search-card-v540{padding:12px!important}
+.nh7-global-search-card-v540>h2{display:none!important}
+.nh7-global-input-shell-v540{width:100%;min-height:50px;display:flex;align-items:center;gap:10px;padding:0 14px;border-radius:16px;border:1px solid var(--nh7-studio-line,var(--line,#d9e6f7));background:var(--nh7-studio-card,var(--card,#fff));color:var(--nh7-studio-text,var(--ink,#10284a));box-shadow:0 7px 20px color-mix(in srgb,var(--nh7-studio-text,var(--ink,#10284a)) 7%,transparent)}
+.nh7-global-search-icon-v540{flex:0 0 auto;font-size:1.35rem;line-height:1;color:var(--nh7-studio-muted,var(--muted,#64748b))}
+.nh7-global-search-v540 input{width:100%;min-width:0;min-height:48px;padding:0;border:0!important;outline:0;background:transparent!important;color:var(--nh7-studio-text,var(--ink,#10284a));font:inherit}
+.nh7-global-search-v540 input::placeholder{color:var(--nh7-studio-muted,var(--muted,#64748b));opacity:.92}
+.nh7-global-focus-v540{outline:3px solid var(--nh7-studio-accent,var(--brand,#1d4ed8))!important;outline-offset:3px;scroll-margin-block:110px;animation:nh7GlobalFocus551 1.8s ease}
+@keyframes nh7GlobalFocus551{0%,100%{transform:scale(1)}30%{transform:scale(1.015)}}
+
+/* iPad/tablet: explicit wide information architecture. */
+@media(min-width:768px){
+  .app-shell{width:100%!important;max-width:1440px!important}
+  .view{min-width:0!important;padding-inline-start:104px!important;padding-inline-end:24px!important}
+  .bottom-nav{inset-inline-start:14px!important;left:auto!important;right:auto!important;transform:none!important}
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(min-width:1024px){.view{padding-inline-start:112px!important;padding-inline-end:28px!important}.grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}}

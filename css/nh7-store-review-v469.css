@@ -1,0 +1,10 @@
+/* Reuse the app's existing .tile and selected theme; no new color settings. */
+#view .nh7-review-menu469{font-family:inherit;font-size:inherit;box-sizing:border-box;overflow-wrap:anywhere;cursor:pointer}
+#view a.nh7-review-menu469{text-decoration:none}
+#view .nh7-review-menu469 summary{display:flex;flex-direction:column;gap:6px;cursor:pointer;min-height:82px;justify-content:space-between;list-style:none}
+#view .nh7-review-menu469 summary::-webkit-details-marker{display:none}
+#view .nh7-review-choices469{display:grid;gap:8px;margin-block-start:12px}
+#view .nh7-review-choices469 a{display:flex;align-items:center;justify-content:center;min-height:44px;font-family:inherit;text-decoration:none}
+#view .nh7-review-warning469{font-size:.78rem;line-height:1.7;font-weight:600}
+#view .nh7-review-warning469:empty{display:none}
+#view a.nh7-review-menu469:focus-visible,#view .nh7-review-menu469 summary:focus-visible,#view .nh7-review-choices469 a:focus-visible{outline:3px solid var(--nh7-studio-accent,var(--brand,#1858a4));outline-offset:3px}

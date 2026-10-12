@@ -1,0 +1,24 @@
+@font-face{font-family:'NH7 Amiri';src:url('../assets/fonts/v454/amiri.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'NH7 Markazi';src:url('../assets/fonts/v454/markazitext.woff2') format('woff2');font-style:normal;font-weight:400 700;font-display:swap}
+html[data-nh7-font454] body,html[data-nh7-font454] body button,html[data-nh7-font454] body input,html[data-nh7-font454] body select,html[data-nh7-font454] body textarea,html[data-nh7-font454] body #view p,html[data-nh7-font454] body #view small,html[data-nh7-font454] body #view h1,html[data-nh7-font454] body #view h2,html[data-nh7-font454] body #view h3,html[data-nh7-font454] body #view h4,html[data-nh7-font454] body #view li,html[data-nh7-font454] body #view label,html[data-nh7-font454] body #view strong,html[data-nh7-font454] body #view .verse-text,html[data-nh7-font454] body #view .nh7-apo-verse-text,html[data-nh7-font454] body .nh7-reader-note-dialog452,html[data-nh7-font454] body .nh7-quick-bible454{font-family:var(--nh7-font454)!important}
+html[data-nh7-font454] body #view .nh7-lex-lemma453,html[data-nh7-font454] body #view .nh7-lex-original453{font-family:Georgia,'Times New Roman',serif!important}
+html[data-nh7-font454] body #view #nh7ThemeStudio453 .nh7-studio-sample453 p,html[data-nh7-font454] body #view #nh7ThemeStudio453 .nh7-studio-sample453 blockquote,html[data-nh7-font454] body #view #nh7ThemeStudio453 .nh7-studio-sample453 b{font-family:var(--nh7-font454)!important}
+#nh7FontProof454{margin:14px 0;padding:14px;border:1px dashed var(--nh7-studio-line,#90a8b8);border-radius:14px;background:var(--nh7-studio-card,var(--card,#fff));color:var(--nh7-studio-text,var(--ink,#17364e))}
+#nh7FontProof454 [data-font-sample454]{font-size:1.23rem!important;line-height:1.95!important;font-weight:400;overflow-wrap:anywhere}
+#nh7FontProof454 small{font-size:.78rem;line-height:1.6;display:block}
+#nh7FontStatus454{min-height:1.6em;font-size:.8rem;line-height:1.6}#nh7FontStatus454[data-error='1']{color:#ae352f!important}
+.nh7-quick-bible454{box-sizing:border-box;width:min(720px,calc(100vw - 22px));max-height:90dvh;overflow:auto;border:1px solid var(--nh7-studio-line,var(--line,#b8cdda));border-radius:20px;padding:18px;background:var(--nh7-studio-card,var(--card,#fff));color:var(--nh7-studio-text,var(--ink,#17364e));box-shadow:0 18px 70px #102c4b55;font-family:inherit}
+.nh7-quick-bible454::backdrop{background:#061827a6}
+.nh7-quick-bible454>header{display:flex;align-items:center;justify-content:space-between;gap:10px}.nh7-quick-bible454 h2{font-size:1.16rem;line-height:1.6;margin:0}.nh7-quick-bible454 h3{font-size:1.05rem;line-height:1.6}
+.nh7-quick-bible454 label{display:grid;gap:6px;font-size:.82rem}
+.nh7-quick-bible454 form{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:8px;margin:12px 0}
+.nh7-quick-bible454 input,.nh7-quick-bible454 select{box-sizing:border-box;width:100%;min-height:44px;font:inherit;font-size:16px;padding:8px;border-radius:9px;border:1px solid var(--nh7-studio-line,var(--line,#b8cdda));background:var(--nh7-studio-card,var(--card,#fff));color:var(--nh7-studio-text,var(--ink,#17364e))}
+.nh7-quick-pickers454{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px}
+.nh7-quick-bible454 [data-quick-content454]{max-height:42dvh;min-height:120px;overflow:auto;overscroll-behavior:contain;padding:12px;border-radius:12px;border:1px solid var(--nh7-studio-line,var(--line,#b8cdda));margin:12px 0}
+.nh7-quick-bible454 [data-quick-content454] p{font-size:1.06rem;line-height:1.95;color:var(--nh7-studio-verse,var(--ink,#17364e));white-space:pre-wrap}
+.nh7-quick-bible454 sup{font-size:.7em;opacity:.8}.nh7-quick-bible454 .is-focus{border-inline-start:3px solid var(--nh7-studio-accent,var(--brand,#1858a4));padding-inline-start:10px}
+.nh7-quick-bible454 [data-quick-status454]{font-size:.8rem;line-height:1.6;min-height:1.6em}.nh7-quick-bible454 .muted{font-size:.82rem;line-height:1.7;color:var(--nh7-studio-muted,var(--muted,#526777))}
+.nh7-quick-bible454 footer{display:flex;flex-wrap:wrap;gap:6px}.nh7-quick-bible454 button{min-height:42px;font-size:.8rem}
+.nh7-quick-bible454 .primary-btn{background:var(--nh7-studio-accent,var(--brand,#1858a4));color:var(--nh7-studio-button-ink,#fff)}
+.nh7-quick-bible454 .secondary-btn{background:var(--nh7-studio-bg,var(--bg,#eef8ff));color:var(--nh7-studio-text,var(--ink,#17364e))}
+@media(max-width:400px){.nh7-quick-bible454{padding:12px}.nh7-quick-pickers454{grid-template-columns:1fr 1fr}.nh7-quick-pickers454 label:first-child{grid-column:1/-1}.nh7-quick-bible454 [data-quick-content454]{max-height:32dvh}}

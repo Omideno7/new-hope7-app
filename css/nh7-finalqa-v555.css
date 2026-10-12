@@ -1,0 +1,23 @@
+/* New Hope 7 v5.5.5 — iOS edge + full-player stacking fixes. */
+html,body{
+  width:100%;
+  min-height:100%;
+  overscroll-behavior:none!important;
+}
+body{
+  min-height:100dvh!important;
+}
+
+/* Expanded player must be above the fixed header/navigation stacking contexts. */
+html.nh7p500-open .nh7p500{
+  z-index:100000!important;
+}
+html.nh7p500-open .nh7p500-full{
+  z-index:100001!important;
+  overscroll-behavior:none!important;
+}
+html.nh7p500-open #appShell>.topbar,
+html.nh7p500-open .bottom-nav{
+  visibility:hidden!important;
+  pointer-events:none!important;
+}

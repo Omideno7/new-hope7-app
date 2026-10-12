@@ -1,0 +1,450 @@
+{
+  "id": "grace-14",
+  "version": 1,
+  "durationDays": 14,
+  "category": "grace",
+  "icon": "🕊️",
+  "theme": "grace",
+  "localized": {
+    "fa": {
+      "title": "زندگی در فیض",
+      "subtitle": "۱۴ روز برای رهایی از محکومیت و زیستن از هویت تازه",
+      "description": "فیض فقط دروازهٔ نجات نیست؛ قدرت خدا برای هویت، تقدس، خدمت، روابط و پایداری روزانه است.",
+      "goal": "یاد بگیریم از پذیرش خدا زندگی کنیم، نه برای به‌دست آوردن آن."
+    },
+    "en": {
+      "title": "Living in Grace",
+      "subtitle": "14 days to leave condemnation and live from your new identity",
+      "description": "Grace is not only the doorway of salvation; it is God’s power for identity, holiness, service, relationships, and endurance.",
+      "goal": "Learn to live from God’s acceptance rather than trying to earn it."
+    },
+    "hr": {
+      "title": "Život u milosti",
+      "subtitle": "14 dana izlaska iz osude i života iz novoga identiteta",
+      "description": "Milost nije samo vrata spasenja; ona je Božja snaga za identitet, svetost, služenje, odnose i ustrajnost.",
+      "goal": "Naučiti živjeti iz Božjega prihvaćanja umjesto pokušaja da ga zaslužimo."
+    }
+  },
+  "days": [
+    {
+      "day": 1,
+      "scriptures": ["Ephesians 2:8-10", "John 1:16-17"],
+      "content": {
+        "fa": {
+          "title": "فیض: بخشش نالایق‌به‌دست‌آمده",
+          "devotional": "فیض پاداش عملکرد خوب نیست؛ هدیهٔ خدا به کسی است که نمی‌تواند خود را نجات دهد. نجات از ایمان آغاز می‌شود و نتیجه‌اش اعمال نیکویی است که خدا از قبل آماده کرده، نه برعکس. وقتی این ترتیب به‌هم می‌خورد، یا مغرور می‌شویم یا ناامید. در مسیح از پُری خدا «فیض بر فیض» دریافت می‌کنیم و کار نیک پاسخ محبت است، نه قیمت پذیرش.",
+          "reflection": "آیا بیشتر مانند فرزند پذیرفته‌شده زندگی می‌کنم یا کارگری که می‌ترسد دستمزدش قطع شود؟",
+          "action": "دو ستون بنویس: «چیزی که خدا رایگان داده» و «پاسخ محبت‌آمیز من به آن هدیه».",
+          "prayer": "پدر، مرا از تلاش برای خریدن محبتت آزاد کن و چشمم را به فراوانی فیض در مسیح باز نما.",
+          "declaration": "من به فیض و از راه ایمان نجات یافته‌ام؛ اعمال من ثمرهٔ پذیرش خداست."
+        },
+        "en": {
+          "title": "Grace: the Unearned Gift",
+          "devotional": "Grace is not a reward for good performance; it is God’s gift to those who cannot save themselves. Salvation begins by grace through faith and results in the good works God prepared—not the other way around. When that order is reversed, we become proud or discouraged. In Christ we receive grace upon grace, and good works become love’s response, never the price of acceptance.",
+          "reflection": "Do I live more like an accepted child or a worker afraid of losing wages?",
+          "action": "Make two columns: “What God freely gave” and “My loving response to His gift.”",
+          "prayer": "Father, free me from trying to purchase Your love and open my eyes to the abundance of grace in Christ.",
+          "declaration": "I am saved by grace through faith; my works are the fruit of God’s acceptance."
+        },
+        "hr": {
+          "title": "Milost: nezasluženi dar",
+          "devotional": "Milost nije nagrada za dobar učinak, nego Božji dar onima koji se ne mogu sami spasiti. Spasenje počinje milošću po vjeri i rađa dobrim djelima koja je Bog pripremio, a ne obrnuto. Kada okrenemo taj redoslijed, postajemo oholi ili obeshrabreni. U Kristu primamo milost na milost, a dobra djela postaju odgovor ljubavi, nikada cijena prihvaćanja.",
+          "reflection": "Živim li više kao prihvaćeno dijete ili kao radnik koji se boji izgubiti plaću?",
+          "action": "Napravi dva stupca: „Što je Bog besplatno dao“ i „Moj odgovor ljubavi na njegov dar“.",
+          "prayer": "Oče, oslobodi me pokušaja da kupim tvoju ljubav i otvori mi oči za obilje milosti u Kristu.",
+          "declaration": "Spašen sam milošću po vjeri; moja su djela plod Božjega prihvaćanja."
+        }
+      }
+    },
+    {
+      "day": 2,
+      "scriptures": ["Romans 3:23-24", "Romans 5:1-2"],
+      "content": {
+        "fa": {
+          "title": "عادل شمرده‌شده به رایگان",
+          "devotional": "همه گناه کرده‌اند و هیچ پروندهٔ انسانی در دادگاه قدوس خدا کامل نیست. اما خدا در مسیح نه فقط گناهان را نادیده می‌گیرد، بلکه ایماندار را به رایگان عادل می‌شمارد. عدالت هدیه‌ای است که بر پایهٔ خون و قیام عیسی داده می‌شود. بنابراین سلامتی با خدا احساس زودگذر نیست؛ جایگاه تازه‌ای است که در آن به فیض دسترسی داریم.",
+          "reflection": "کدام شکست قدیمی هنوز باعث می‌شود جایگاه عادل‌شدهٔ خود را زیر سؤال ببرم؟",
+          "action": "رومیان ۵:۱ را با نام خودت بنویس و هر بار محکومیت برگشت، آن را با صدای بلند بخوان.",
+          "prayer": "ای خدا، برای عدالت رایگان در مسیح سپاسگزارم. ذهنم را با حکم نهایی صلیب هماهنگ کن.",
+          "declaration": "به ایمان عادل شمرده شده‌ام و به‌وسیلهٔ عیسی با خدا در صلح هستم."
+        },
+        "en": {
+          "title": "Justified Freely",
+          "devotional": "All have sinned; no human record is complete before a holy God. Yet in Christ, God does more than overlook sin—He freely justifies the believer. Righteousness is a gift grounded in Jesus’ blood and resurrection. Therefore, peace with God is not a passing feeling but a new standing in which we have access to grace.",
+          "reflection": "Which former failure still makes me question my justified standing?",
+          "action": "Write Romans 5:1 with your own name and read it aloud whenever condemnation returns.",
+          "prayer": "God, thank You for free righteousness in Christ. Align my mind with the cross’s final verdict.",
+          "declaration": "I am justified by faith and have peace with God through Jesus."
+        },
+        "hr": {
+          "title": "Besplatno opravdan",
+          "devotional": "Svi su sagriješili; nijedan ljudski dosje nije potpun pred svetim Bogom. Ipak, u Kristu Bog ne samo da prelazi preko grijeha nego vjernika besplatno opravdava. Pravednost je dar utemeljen na Isusovoj krvi i uskrsnuću. Mir s Bogom zato nije prolazan osjećaj, nego novi položaj u kojem imamo pristup milosti.",
+          "reflection": "Koji stari neuspjeh još uvijek dovodi u pitanje moj položaj opravdanoga?",
+          "action": "Napiši Rimljanima 5:1 sa svojim imenom i pročitaj naglas kad se osuda vrati.",
+          "prayer": "Bože, hvala ti za besplatnu pravednost u Kristu. Uskladi moj um s konačnom presudom križa.",
+          "declaration": "Opravdan sam vjerom i imam mir s Bogom po Isusu."
+        }
+      }
+    },
+    {
+      "day": 3,
+      "scriptures": ["Romans 8:1-2", "John 8:10-11"],
+      "content": {
+        "fa": {
+          "title": "دیگر هیچ محکومیتی نیست",
+          "devotional": "محکومیت می‌گوید: «تو همان خطایت هستی و امیدی نیست.» روح‌القدس به‌طور مشخص گناه را نشان می‌دهد و راه بازگشت را می‌گشاید، اما محکومیت هویت را می‌کوبد و انسان را پنهان می‌کند. حکم خدا دربارهٔ کسی که در مسیح است روشن است: هیچ محکومیتی نیست. فیض گناه را سبک نمی‌شمارد؛ قدرت آن را می‌شکند و می‌گوید: «برو و دیگر گناه مکن.»",
+          "reflection": "صدایی که می‌شنوم مرا به توبه و امید می‌برد یا به شرم و پنهان شدن؟",
+          "action": "یک جملهٔ محکوم‌کننده را بنویس و آن را با حقیقت رومیان ۸:۱ جایگزین کن.",
+          "prayer": "پدر، صدای محکومیت را خاموش کن و مرا به توبهٔ سالم، امید و آزادی روح هدایت نما.",
+          "declaration": "من در مسیح عیسی هستم؛ محکوم نیستم و در قانون روح حیات آزاد شده‌ام."
+        },
+        "en": {
+          "title": "No Condemnation",
+          "devotional": "Condemnation says, “You are your failure, and there is no hope.” The Holy Spirit identifies sin and opens a way back, but condemnation attacks identity and drives us into hiding. God’s verdict over those in Christ is clear: no condemnation. Grace never treats sin lightly; it breaks sin’s power and says, “Go, and leave your life of sin.”",
+          "reflection": "Does the voice I am hearing lead to repentance and hope, or to shame and hiding?",
+          "action": "Write one condemning statement and replace it with the truth of Romans 8:1.",
+          "prayer": "Father, silence condemnation and lead me into healthy repentance, hope, and the Spirit’s freedom.",
+          "declaration": "I am in Christ Jesus; I am not condemned, and the law of the Spirit of life has set me free."
+        },
+        "hr": {
+          "title": "Nema osude",
+          "devotional": "Osuda govori: „Ti si svoj neuspjeh i nema nade.“ Duh Sveti jasno pokazuje grijeh i otvara put povratka, ali osuda napada identitet i tjera nas u skrivanje. Božja presuda nad onima u Kristu jasna je: nema osude. Milost ne umanjuje grijeh; ona lomi njegovu silu i govori: „Idi i odsada više nemoj griješiti.“",
+          "reflection": "Vodi li me glas koji čujem prema pokajanju i nadi ili prema sramu i skrivanju?",
+          "action": "Napiši jednu osuđujuću rečenicu i zamijeni je istinom iz Rimljanima 8:1.",
+          "prayer": "Oče, utišaj osudu i vodi me u zdravo pokajanje, nadu i slobodu Duha.",
+          "declaration": "U Kristu Isusu sam; nisam osuđen i zakon Duha života oslobodio me."
+        }
+      }
+    },
+    {
+      "day": 4,
+      "scriptures": ["2 Corinthians 5:17", "Galatians 2:20"],
+      "content": {
+        "fa": {
+          "title": "هویت تازه، نه نسخهٔ اصلاح‌شدهٔ گذشته",
+          "devotional": "تولد تازه فقط بهتر شدن رفتار قدیمی نیست؛ خلقتی تازه در اتحاد با مسیح است. گذشته ممکن است حافظه و پیامد داشته باشد، اما حق تعریف نهایی تو را ندارد. زندگی اکنون از مسیحِ ساکن در تو سرچشمه می‌گیرد. رشد یعنی یاد گرفتن اینکه افکار، انتخاب‌ها و روابط با حقیقت این هویت تازه هماهنگ شوند.",
+          "reflection": "هنوز خودم را با کدام عنوان قدیمی معرفی می‌کنم که صلیب آن را پایان داده است؟",
+          "action": "سه جمله با «در مسیح من...» بنویس و برای هر کدام یک رفتار هماهنگ انتخاب کن.",
+          "prayer": "عیسی خداوند، هویت تازه‌ام را بر من آشکار کن و زندگی‌ام را بیان حضور خودت بساز.",
+          "declaration": "من خلقتی تازه هستم؛ مسیح در من زندگی می‌کند و گذشته فرمانروای من نیست."
+        },
+        "en": {
+          "title": "A New Identity, Not a Repaired Past",
+          "devotional": "New birth is more than improved old behavior; it is a new creation united with Christ. The past may leave memories and consequences, but it no longer has the right to define you. Life now flows from Christ dwelling within. Growth is learning to align thoughts, choices, and relationships with the truth of this new identity.",
+          "reflection": "Which former label still defines me even though the cross ended its authority?",
+          "action": "Write three sentences beginning, “In Christ I am…” and choose one matching action for each.",
+          "prayer": "Lord Jesus, reveal my new identity and make my life an expression of Your indwelling presence.",
+          "declaration": "I am a new creation; Christ lives in me, and my past is not my ruler."
+        },
+        "hr": {
+          "title": "Novi identitet, a ne popravljena prošlost",
+          "devotional": "Novo rođenje više je od poboljšanoga starog ponašanja; ono je novo stvorenje sjedinjeno s Kristom. Prošlost može ostaviti sjećanja i posljedice, ali više nema pravo definirati te. Život sada izvire iz Krista koji prebiva u tebi. Rast znači uskladiti misli, odluke i odnose s istinom novoga identiteta.",
+          "reflection": "Koja me stara oznaka još uvijek definira iako je križ ukinuo njezinu vlast?",
+          "action": "Napiši tri rečenice koje počinju s „U Kristu ja sam…“ i za svaku odaberi jedno odgovarajuće djelo.",
+          "prayer": "Gospodine Isuse, objavi mi novi identitet i učini moj život izrazom svoje prisutnosti u meni.",
+          "declaration": "Novo sam stvorenje; Krist živi u meni i prošlost nije moj gospodar."
+        }
+      }
+    },
+    {
+      "day": 5,
+      "scriptures": ["Hebrews 4:14-16", "Hebrews 10:19-22"],
+      "content": {
+        "fa": {
+          "title": "تخت فیض همیشه باز است",
+          "devotional": "در ضعف، غریزهٔ شرم می‌گوید از خدا دور شو؛ انجیل می‌گوید همان وقت نزدیک شو. کاهن اعظم ما ضعف‌های انسانی را می‌شناسد و راه ورود را با خون خود گشوده است. تخت خدا برای فرزندِ در مسیح، تخت فیض است؛ جایی برای دریافت رحمت نسبت به گذشته و فیض برای کمکِ اکنون.",
+          "reflection": "وقتی شکست می‌خورم، به خدا نزدیک می‌شوم یا خودم را مجازات و پنهان می‌کنم؟",
+          "action": "امروز دقیقاً در نقطهٔ ضعفت نزد خدا برو و رحمت برای گذشته و کمک برای قدم بعدی را بطلب.",
+          "prayer": "ای کاهن اعظم مهربان، مرا از پنهان شدن آزاد کن؛ رحمت و فیضِ به‌موقع را می‌پذیرم.",
+          "declaration": "راه حضور خدا برای من باز است و در زمان نیاز فیض کافی دریافت می‌کنم."
+        },
+        "en": {
+          "title": "The Throne of Grace Is Open",
+          "devotional": "In weakness, shame tells us to move away from God; the gospel tells us to draw near at that very moment. Our High Priest understands human weakness and opened the way by His blood. For the child in Christ, God’s throne is a throne of grace—the place to receive mercy for the past and grace to help now.",
+          "reflection": "When I fail, do I draw near to God or punish and hide myself?",
+          "action": "Approach God precisely at your point of weakness and ask for mercy for the past and help for the next step.",
+          "prayer": "Compassionate High Priest, free me from hiding; I receive mercy and timely grace.",
+          "declaration": "The way into God’s presence is open, and I receive sufficient grace in time of need."
+        },
+        "hr": {
+          "title": "Prijestolje milosti je otvoreno",
+          "devotional": "U slabosti nas sram tjera da se udaljimo od Boga, a evanđelje nas poziva da upravo tada pristupimo. Naš Veliki svećenik razumije ljudsku slabost i svojom je krvlju otvorio put. Za dijete u Kristu Božje je prijestolje prijestolje milosti—mjesto milosrđa za prošlost i milosti za sadašnju pomoć.",
+          "reflection": "Kada padnem, približavam li se Bogu ili se kažnjavam i skrivam?",
+          "action": "Pristupi Bogu upravo u svojoj slabosti i traži milosrđe za prošlost te pomoć za sljedeći korak.",
+          "prayer": "Suosjećajni Veliki svećeniče, oslobodi me skrivanja; primam milosrđe i pravodobnu milost.",
+          "declaration": "Put u Božju prisutnost otvoren je i u potrebi primam dovoljnu milost."
+        }
+      }
+    },
+    {
+      "day": 6,
+      "scriptures": ["Titus 2:11-14", "Romans 6:1-2"],
+      "content": {
+        "fa": {
+          "title": "فیضی که تربیت می‌کند",
+          "devotional": "فیض اجازه‌نامهٔ گناه نیست؛ معلمی است که «نه» گفتن به بی‌خدایی و «آری» گفتن به زندگی پاک را تعلیم می‌دهد. قانون بیرونی می‌تواند خط را نشان دهد، اما فیض قلب را برای انتخاب تازه قوت می‌بخشد. نجات‌دهنده‌ای که ما را بخشید، هم‌زمان قومی مشتاق اعمال نیک می‌سازد. تقدس ثمرهٔ مشارکت با فیض است، نه تلاش جدا از آن.",
+          "reflection": "فیض امروز به من می‌آموزد به چه چیزی نه و به چه چیزی آری بگویم؟",
+          "action": "یک عادت ناسالم و یک جایگزین عملی و خداپسندانه برای آن مشخص کن.",
+          "prayer": "فیض خدا، قلب و خواسته‌های مرا تربیت کن تا با شادی زندگی پاک و مفید را انتخاب کنم.",
+          "declaration": "فیض بر من حکومت می‌کند، گناه ارباب من نیست و من برای اعمال نیک آماده‌ام."
+        },
+        "en": {
+          "title": "Grace That Trains",
+          "devotional": "Grace is not a permit to sin; it is a teacher training us to say no to ungodliness and yes to a godly life. An external rule can mark the boundary, but grace strengthens the heart for a new choice. The Savior who forgives also forms a people eager to do good. Holiness is the fruit of cooperation with grace, not effort separated from it.",
+          "reflection": "What is grace teaching me to refuse and to embrace today?",
+          "action": "Identify one unhealthy habit and one practical, godly replacement for it.",
+          "prayer": "Grace of God, train my heart and desires so I gladly choose a pure and fruitful life.",
+          "declaration": "Grace reigns over me, sin is not my master, and I am ready for good works."
+        },
+        "hr": {
+          "title": "Milost koja odgaja",
+          "devotional": "Milost nije dopuštenje za grijeh, nego učiteljica koja nas odgaja da kažemo ne bezbožnosti i da pobožnom životu. Vanjsko pravilo može pokazati granicu, ali milost jača srce za novi izbor. Spasitelj koji oprašta također oblikuje narod revan za dobra djela. Svetost je plod suradnje s milošću, a ne truda odvojenog od nje.",
+          "reflection": "Čemu me milost danas uči reći ne, a čemu da?",
+          "action": "Prepoznaj jednu nezdravu naviku i jednu praktičnu, pobožnu zamjenu.",
+          "prayer": "Božja milosti, odgajaj moje srce i želje da radosno biram čist i plodan život.",
+          "declaration": "Milost vlada nada mnom, grijeh mi nije gospodar i spreman sam za dobra djela."
+        }
+      }
+    },
+    {
+      "day": 7,
+      "scriptures": ["2 Corinthians 12:8-10", "1 Corinthians 1:27-29"],
+      "content": {
+        "fa": {
+          "title": "قدرت در ضعف",
+          "devotional": "دنیا ضعف را پنهان می‌کند، اما پولس آموخت ضعفِ تسلیم‌شده می‌تواند جایگاه ظهور قدرت مسیح باشد. این به معنای ستایش رنج یا نادیده گرفتن راه حل نیست؛ یعنی محدودیت ما آخرین کلمه را ندارد. فیض کافی همیشه حذف فوری مشکل نیست، گاهی حضور و قوتی است که در همان موقعیت ما را پایدار، فروتن و ثمربخش نگه می‌دارد.",
+          "reflection": "کدام محدودیت را هنوز نشانهٔ بی‌ارزشی خود می‌دانم؟",
+          "action": "آن ضعف را نام ببر و بنویس خدا چگونه می‌تواند در همان نقطه قدرت، همدلی یا وابستگی سالم بسازد.",
+          "prayer": "عیسی، قدرتت را در ضعف من کامل کن؛ مرا از شرم آزاد و به فیض کافی‌ات متکی ساز.",
+          "declaration": "ضعف من پایان داستان نیست؛ قدرت مسیح بر من قرار می‌گیرد."
+        },
+        "en": {
+          "title": "Power in Weakness",
+          "devotional": "The world hides weakness, but Paul learned that surrendered weakness can become a place where Christ’s power is displayed. This does not glorify suffering or ignore available help; it means our limitation does not have the final word. Sufficient grace does not always remove a problem immediately. Sometimes it is the presence and strength that keep us faithful, humble, and fruitful within it.",
+          "reflection": "Which limitation do I still interpret as proof that I am worthless?",
+          "action": "Name that weakness and write how God can form strength, compassion, or healthy dependence at that very point.",
+          "prayer": "Jesus, perfect Your power in my weakness; free me from shame and teach me to depend on sufficient grace.",
+          "declaration": "My weakness is not the end of the story; Christ’s power rests on me."
+        },
+        "hr": {
+          "title": "Snaga u slabosti",
+          "devotional": "Svijet skriva slabost, ali Pavao je naučio da predana slabost može postati mjesto očitovanja Kristove snage. To ne veliča patnju niti zanemaruje dostupnu pomoć; znači da naše ograničenje nema posljednju riječ. Dovoljna milost ne uklanja uvijek problem odmah. Ponekad je ona prisutnost i snaga koja nas u njemu drži vjernima, poniznima i plodnima.",
+          "reflection": "Koje ograničenje još uvijek tumačim kao dokaz svoje bezvrijednosti?",
+          "action": "Imenuj tu slabost i napiši kako Bog upravo ondje može oblikovati snagu, suosjećanje ili zdravu ovisnost.",
+          "prayer": "Isuse, usavrši svoju snagu u mojoj slabosti; oslobodi me srama i nauči me oslanjati se na dovoljnu milost.",
+          "declaration": "Moja slabost nije kraj priče; Kristova snaga počiva na meni."
+        }
+      }
+    },
+    {
+      "day": 8,
+      "scriptures": ["Matthew 11:28-30", "Hebrews 4:9-11"],
+      "content": {
+        "fa": {
+          "title": "از تقلا به استراحت ایمان",
+          "devotional": "استراحت کتاب‌مقدسی تنبلی نیست؛ پایان تلاش برای اثبات ارزش خود و آغاز عمل از اتحاد با مسیح است. یوغ عیسی یعنی شاگردی زیر هدایت او، نه حمل بار انتظارات بی‌پایان. در استراحت ایمان همچنان کار می‌کنیم، اما دیگر هویت و آرامش را به نتیجه گره نمی‌زنیم. ریتم سالم کار و توقف اعلام می‌کند که خداست که جهان را نگه می‌دارد.",
+          "reflection": "کدام کار را برای اثبات ارزش یا جلب تأیید انجام می‌دهم؟",
+          "action": "یک بازهٔ واقعی استراحت تعیین کن و یک مسئولیت غیرضروری را که از ترس پذیرفته‌ای کنار بگذار.",
+          "prayer": "عیسی حلیم، یوغ خودت را بر من بگذار؛ بار اثبات خود را بردار و روحم را آرام ساز.",
+          "declaration": "ارزش من در مسیح ثابت است؛ از استراحت ایمان کار می‌کنم، نه برای کسب پذیرش."
+        },
+        "en": {
+          "title": "From Striving to Faith-Rest",
+          "devotional": "Biblical rest is not laziness; it ends the attempt to prove our worth and begins action from union with Christ. Jesus’ yoke means discipleship under His direction, not the weight of endless expectations. In faith-rest we still work, but identity and peace are no longer chained to results. A healthy rhythm of work and stopping declares that God holds the world together.",
+          "reflection": "Which work do I perform mainly to prove my worth or gain approval?",
+          "action": "Schedule a real period of rest and release one unnecessary responsibility accepted out of fear.",
+          "prayer": "Gentle Jesus, place Your yoke on me; remove the burden of self-proving and give rest to my soul.",
+          "declaration": "My worth is secure in Christ; I work from rest, not for acceptance."
+        },
+        "hr": {
+          "title": "Od naprezanja do počinka vjere",
+          "devotional": "Biblijski počinak nije lijenost; on završava pokušaj dokazivanja vlastite vrijednosti i započinje djelovanje iz sjedinjenosti s Kristom. Isusov jaram znači učeništvo pod njegovim vodstvom, a ne teret beskrajnih očekivanja. U počinku vjere i dalje radimo, ali identitet i mir više nisu vezani uz rezultate. Zdrav ritam rada i odmora objavljuje da Bog drži svijet.",
+          "reflection": "Koji posao obavljam ponajviše da dokažem vrijednost ili steknem odobravanje?",
+          "action": "Odredi stvarno vrijeme odmora i otpusti jednu nepotrebnu obvezu prihvaćenu iz straha.",
+          "prayer": "Krotki Isuse, stavi svoj jaram na mene; ukloni teret dokazivanja i odmori moju dušu.",
+          "declaration": "Moja je vrijednost sigurna u Kristu; radim iz počinka, a ne za prihvaćanje."
+        }
+      }
+    },
+    {
+      "day": 9,
+      "scriptures": ["Romans 6:14-18", "Galatians 5:13"],
+      "content": {
+        "fa": {
+          "title": "فیض و اطاعت آزاد",
+          "devotional": "زیر فیض بودن به معنای بی‌قانونی نیست؛ یعنی گناه دیگر ارباب و محکومیت دیگر محرک اطاعت نیست. محبت مسیح قلب را آزاد می‌کند تا خود را به عدالت بسپارد. آزادی مسیحی قدرت انجام هر خواسته نیست؛ قدرت انتخاب آن چیزی است که محبت می‌سازد. اطاعت از فیض، پاسخ فرزند است نه اضطراب برده.",
+          "reflection": "کدام اطاعت من هنوز از ترس مجازات یا ترس نظر مردم سرچشمه می‌گیرد؟",
+          "action": "یک فرمان خدا را انتخاب کن و دلیل محبت‌آمیز و آزادانهٔ اطاعت از آن را بنویس.",
+          "prayer": "پدر، مرا از اطاعتِ ترس‌آلود آزاد کن و اراده‌ام را با محبت و قدرت فیضت تازه ساز.",
+          "declaration": "گناه بر من سلطه ندارد؛ من آزادانه خود را به عدالت و محبت می‌سپارم."
+        },
+        "en": {
+          "title": "Grace and Free Obedience",
+          "devotional": "Being under grace does not mean lawlessness. It means sin is no longer master and condemnation is no longer the engine of obedience. Christ’s love frees the heart to offer itself to righteousness. Christian freedom is not power to follow every desire; it is power to choose what love builds. Grace-shaped obedience is a child’s response, not a slave’s anxiety.",
+          "reflection": "Which act of obedience still grows from fear of punishment or people’s opinion?",
+          "action": "Choose one command of God and write a loving, freely chosen reason to obey it.",
+          "prayer": "Father, free me from fear-driven obedience and renew my will through the love and power of grace.",
+          "declaration": "Sin has no dominion over me; I freely offer myself to righteousness and love."
+        },
+        "hr": {
+          "title": "Milost i slobodna poslušnost",
+          "devotional": "Biti pod milošću ne znači bezakonje. To znači da grijeh više nije gospodar, a osuda više nije pokretač poslušnosti. Kristova ljubav oslobađa srce da se preda pravednosti. Kršćanska sloboda nije moć slijediti svaku želju, nego moć izabrati ono što ljubav izgrađuje. Poslušnost oblikovana milošću odgovor je djeteta, a ne tjeskoba roba.",
+          "reflection": "Koja moja poslušnost još uvijek izvire iz straha od kazne ili mišljenja ljudi?",
+          "action": "Odaberi jednu Božju zapovijed i napiši razlog ljubavi zbog kojega je slobodno želiš poslušati.",
+          "prayer": "Oče, oslobodi me poslušnosti pokretane strahom i obnovi moju volju ljubavlju i snagom milosti.",
+          "declaration": "Grijeh nema vlast nada mnom; slobodno se predajem pravednosti i ljubavi."
+        }
+      }
+    },
+    {
+      "day": 10,
+      "scriptures": ["Ephesians 4:31-32", "Colossians 3:12-13"],
+      "content": {
+        "fa": {
+          "title": "فیض برای بخشیدن",
+          "devotional": "ما از ذخیرهٔ محدود احساسات خود نمی‌بخشیم؛ از بخششی که در مسیح دریافت کرده‌ایم می‌بخشیم. یادآوری بدهی بخشیده‌شده، قلب را برای آزاد کردن بدهی دیگران نرم می‌کند. بخشش ممکن است یک تصمیم باشد که بارها در احساسات تأیید می‌شود. فیض هم حقیقت را می‌گوید، هم مرز سالم می‌گذارد و هم از پرورش کینه خودداری می‌کند.",
+          "reflection": "آیا رنج خود را به هویتی تبدیل کرده‌ام که نمی‌خواهم رها شود؟",
+          "action": "در حضور خدا بنویس چه چیزی را می‌بخشی، چه مرزی لازم است و چه بخشی از عدالت را به او می‌سپاری.",
+          "prayer": "خدای فیض، بخشش عظیمت را به یادم آور و قلبم را برای آزادی، حقیقت و شفای عمیق قوت بده.",
+          "declaration": "چنان‌که در مسیح بخشیده شده‌ام، فیض دارم ببخشم و آزاد زندگی کنم."
+        },
+        "en": {
+          "title": "Grace to Forgive",
+          "devotional": "We do not forgive from a limited reserve of emotion; we forgive from the forgiveness received in Christ. Remembering our canceled debt softens the heart to release another’s debt. Forgiveness may be a decision repeatedly confirmed through changing feelings. Grace speaks truth, establishes healthy boundaries, and refuses to cultivate bitterness.",
+          "reflection": "Have I turned my wound into an identity I am afraid to release?",
+          "action": "Before God, write what you forgive, which boundary is needed, and which part of justice you entrust to Him.",
+          "prayer": "God of grace, remind me of Your great forgiveness and strengthen my heart for freedom, truth, and deep healing.",
+          "declaration": "As I have been forgiven in Christ, I have grace to forgive and live free."
+        },
+        "hr": {
+          "title": "Milost za oprost",
+          "devotional": "Ne opraštamo iz ograničene zalihe osjećaja, nego iz oprosta primljenog u Kristu. Sjećanje na naš poništeni dug omekšava srce da otpusti dug drugoga. Oprost može biti odluka koju više puta potvrđujemo dok se osjećaji mijenjaju. Milost govori istinu, postavlja zdrave granice i odbija njegovati gorčinu.",
+          "reflection": "Jesam li svoju ranu pretvorio u identitet koji se bojim otpustiti?",
+          "action": "Pred Bogom napiši što opraštaš, koja je granica potrebna i koji dio pravde povjeravaš njemu.",
+          "prayer": "Bože milosti, podsjeti me na svoj veliki oprost i ojačaj srce za slobodu, istinu i duboko iscjeljenje.",
+          "declaration": "Kao što je meni oprošteno u Kristu, imam milost oprostiti i živjeti slobodno."
+        }
+      }
+    },
+    {
+      "day": 11,
+      "scriptures": ["Ephesians 4:29", "1 Peter 4:10"],
+      "content": {
+        "fa": {
+          "title": "رساندن فیض به دیگران",
+          "devotional": "فیضی که دریافت می‌شود باید از کلام و خدمت ما عبور کند. پولس می‌گوید سخن ما باید مطابق نیاز، بناکننده و بخشندهٔ فیض باشد. این به معنای تعریف بی‌پایان یا پرهیز از حقیقت نیست؛ حقیقتی است که در محبت، زمان درست و با هدف بنا کردن گفته می‌شود. عطایای ما نیز مالکیت شخصی نیستند؛ امانتی برای خدمت به دیگران‌اند.",
+          "reflection": "کلام من امروز به چه کسی زخم زده یا چه کسی را می‌تواند بنا کند؟",
+          "action": "یک پیام مشخص و صادقانهٔ تشویق برای کسی بفرست و یکی از عطایایت را عملاً برای خدمت به کار ببر.",
+          "prayer": "پدر، دهان و دستانم را کانال فیض قرار بده تا دیگران از طریق من قوت و امید بگیرند.",
+          "declaration": "کلام من بنا می‌کند و عطای من فیض گوناگون خدا را به دیگران می‌رساند."
+        },
+        "en": {
+          "title": "Giving Grace to Others",
+          "devotional": "Grace received is meant to pass through our words and service. Paul says speech should fit the need, build up, and give grace to the hearer. This does not mean endless praise or avoiding truth; it is truth spoken in love, at the right time, for the purpose of building. Our gifts are not private possessions either; they are stewardship for serving others.",
+          "reflection": "Whom have my words wounded, and whom could they strengthen today?",
+          "action": "Send one specific, honest message of encouragement and use one gift in a practical act of service.",
+          "prayer": "Father, make my mouth and hands channels of grace so others receive strength and hope through me.",
+          "declaration": "My words build up, and my gift carries God’s varied grace to others."
+        },
+        "hr": {
+          "title": "Davati milost drugima",
+          "devotional": "Primljena milost treba prolaziti kroz naše riječi i služenje. Pavao kaže da govor treba odgovarati potrebi, izgrađivati i davati milost slušatelju. To ne znači stalne pohvale ni izbjegavanje istine; to je istina izrečena u ljubavi, u pravo vrijeme i radi izgradnje. Ni darovi nisu privatno vlasništvo, nego povjerenje za služenje drugima.",
+          "reflection": "Koga su moje riječi ranile, a koga danas mogu ojačati?",
+          "action": "Pošalji jednu konkretnu i iskrenu poruku ohrabrenja te praktično upotrijebi jedan dar za služenje.",
+          "prayer": "Oče, učini moja usta i ruke kanalima milosti da drugi kroz mene prime snagu i nadu.",
+          "declaration": "Moje riječi izgrađuju, a moj dar prenosi drugima raznoliku Božju milost."
+        }
+      }
+    },
+    {
+      "day": 12,
+      "scriptures": ["1 Corinthians 15:10", "Philippians 2:12-13"],
+      "content": {
+        "fa": {
+          "title": "فیضی که کار می‌کند",
+          "devotional": "پولس هم گفت «بیش از همه زحمت کشیدم» و هم افزود «اما نه من، بلکه فیض خدا با من.» فیض تلاش را حذف نمی‌کند؛ منبع و جهت آن را تغییر می‌دهد. خدا در ما هم خواستن و هم انجام دادن را پدید می‌آورد، و ما با نظم، مهارت و وفاداری پاسخ می‌دهیم. تنبلی و تقلا هر دو وقتی درمان می‌شوند که همکاری با فیض را بیاموزیم.",
+          "reflection": "در کجا به‌جای همکاری با فیض، یا منفعل شده‌ام یا با نیروی خود تقلا می‌کنم؟",
+          "action": "برای یک مسئولیت مهم، یک قدم کوچک و قابل‌اندازه‌گیری تعیین کن و آن را امروز با دعا انجام بده.",
+          "prayer": "خداوندا، در من خواستن و عمل کردن را پدید آور؛ زحمت مرا از غرور پاک و با فیضت ثمربخش کن.",
+          "declaration": "من با فیض خدا کار می‌کنم؛ زحمت من از حضور او نیرو و ثمر می‌گیرد."
+        },
+        "en": {
+          "title": "Grace That Works",
+          "devotional": "Paul could say, “I worked harder than all,” and then add, “yet not I, but God’s grace with me.” Grace does not erase effort; it changes its source and direction. God works in us both to desire and to act, while we answer with discipline, skill, and faithfulness. Laziness and striving are both healed as we learn cooperation with grace.",
+          "reflection": "Where have I become passive or begun striving in my own strength instead of cooperating with grace?",
+          "action": "Choose one small, measurable step for an important responsibility and complete it today with prayer.",
+          "prayer": "Lord, work in me to desire and to act; cleanse my labor from pride and make it fruitful by grace.",
+          "declaration": "I work with God’s grace; His presence gives strength and fruit to my labor."
+        },
+        "hr": {
+          "title": "Milost koja djeluje",
+          "devotional": "Pavao je mogao reći: „Trudio sam se više od svih“, a zatim dodati: „Ali ne ja, nego milost Božja sa mnom.“ Milost ne briše trud, nego mijenja njegov izvor i smjer. Bog u nama djeluje i htjeti i činiti, a mi odgovaramo disciplinom, vještinom i vjernošću. Lijenost i naprezanje iscjeljuju se kada učimo surađivati s milošću.",
+          "reflection": "Gdje sam postao pasivan ili se naprežem vlastitom snagom umjesto da surađujem s milošću?",
+          "action": "Odaberi jedan mali, mjerljiv korak za važnu odgovornost i danas ga uz molitvu izvrši.",
+          "prayer": "Gospodine, djeluj u meni da hoću i činim; očisti moj trud od ponosa i milošću ga učini plodnim.",
+          "declaration": "Radim s Božjom milošću; njegova prisutnost daje snagu i plod mojem radu."
+        }
+      }
+    },
+    {
+      "day": 13,
+      "scriptures": ["Romans 5:1-5", "1 Peter 5:12"],
+      "content": {
+        "fa": {
+          "title": "ایستادن در فیض",
+          "devotional": "فیض فقط لحظه‌ای برای شروع ایمان نیست؛ زمینی است که هر روز بر آن می‌ایستیم. فشار و رنج می‌کوشد ما را به خوداتکایی، تلخی یا ترس برگرداند، اما فیض در میان سختی نیز پایداری، شخصیت و امید می‌سازد. «ایستادن» یعنی حقیقت را نگه داشتن، کمک پذیرفتن و اجازه ندادن به شرایط که هویت ما را تعیین کند.",
+          "reflection": "فشار فعلی مرا به کدام واکنش قدیمی بازمی‌گرداند؟",
+          "action": "یک حقیقت دربارهٔ فیض را روی کاغذی بنویس و در جایی بگذار که در طول روز ببینی.",
+          "prayer": "پدر، در این فشار قدم‌هایم را در فیض استوار کن و امیدی بساز که شرمسار نمی‌گردد.",
+          "declaration": "من در فیض حقیقی خدا ایستاده‌ام؛ سختی هویت یا امید مرا نمی‌دزدد."
+        },
+        "en": {
+          "title": "Standing in Grace",
+          "devotional": "Grace is not only a moment at the beginning of faith; it is the ground on which we stand every day. Pressure and suffering try to return us to self-reliance, bitterness, or fear, but grace forms endurance, character, and hope even within hardship. To stand means holding truth, receiving help, and refusing to let circumstances define identity.",
+          "reflection": "Which old reaction is current pressure pulling me toward?",
+          "action": "Write one truth about grace on paper and place it where you will see it throughout the day.",
+          "prayer": "Father, establish my steps in grace under this pressure and form a hope that does not disappoint.",
+          "declaration": "I stand in God’s true grace; hardship cannot steal my identity or hope."
+        },
+        "hr": {
+          "title": "Stajati u milosti",
+          "devotional": "Milost nije samo trenutak na početku vjere, nego tlo na kojem svakodnevno stojimo. Pritisak i patnja pokušavaju nas vratiti samopouzdanju, gorčini ili strahu, ali milost i usred teškoće oblikuje ustrajnost, karakter i nadu. Stajati znači držati se istine, prihvatiti pomoć i ne dopustiti okolnostima da definiraju identitet.",
+          "reflection": "Prema kojoj me staroj reakciji vuče sadašnji pritisak?",
+          "action": "Napiši jednu istinu o milosti na papir i stavi je ondje gdje ćeš je viđati tijekom dana.",
+          "prayer": "Oče, pod ovim pritiskom učvrsti moje korake u milosti i oblikuj nadu koja ne razočarava.",
+          "declaration": "Stojim u istinskoj Božjoj milosti; teškoća mi ne može ukrasti identitet ni nadu."
+        }
+      }
+    },
+    {
+      "day": 14,
+      "scriptures": ["Matthew 10:8", "2 Corinthians 9:8", "John 1:16"],
+      "content": {
+        "fa": {
+          "title": "رایگان گرفته‌اید، رایگان بدهید",
+          "devotional": "فیض وقتی بالغ می‌شود که از ما عبور کند. کسی که می‌داند همه چیز را دریافت کرده، دیگر لازم نیست محبت، خدمت یا بخشندگی را وسیلهٔ کنترل و اعتبار بسازد. خدا قادر است فیض را فراوان کند تا در هر کار نیک کفایت داشته باشیم. زندگی در فیض یعنی با دست باز دریافت کنیم، با قلب شکرگزار خدمت کنیم و جلال را به منبع هدیه بازگردانیم.",
+          "reflection": "کدام هدیهٔ خدا را نگه داشته‌ام چون از کمبود یا دیده نشدن می‌ترسم؟",
+          "action": "امروز زمان، توانایی، تشویق یا بخشی از دارایی‌ات را بی‌منت برای نیاز واقعی کسی به کار ببر.",
+          "prayer": "پدر بخشنده، مرا انبار بسته نساز؛ فیضت را از طریق زندگی من به دیگران جاری کن.",
+          "declaration": "من از پُری مسیح دریافت می‌کنم و آزادانه فیض، محبت و خدمت را می‌بخشم."
+        },
+        "en": {
+          "title": "Freely You Received; Freely Give",
+          "devotional": "Grace matures as it passes through us. Those who know everything is received no longer need to use love, service, or generosity for control and recognition. God is able to make grace abound so we have sufficiency for every good work. Living in grace means receiving with open hands, serving with a thankful heart, and returning glory to the Giver.",
+          "reflection": "Which gift from God am I withholding because I fear scarcity or being overlooked?",
+          "action": "Today freely use your time, ability, encouragement, or resources to meet someone’s genuine need.",
+          "prayer": "Generous Father, do not let me become a closed storehouse; let Your grace flow through my life to others.",
+          "declaration": "I receive from Christ’s fullness and freely give grace, love, and service."
+        },
+        "hr": {
+          "title": "Besplatno primiste, besplatno dajte",
+          "devotional": "Milost sazrijeva dok prolazi kroz nas. Onaj tko zna da je sve primio više ne mora ljubav, služenje ili velikodušnost koristiti za kontrolu i priznanje. Bog može umnožiti milost da imamo dovoljno za svako dobro djelo. Živjeti u milosti znači primati otvorenih ruku, služiti zahvalna srca i slavu vratiti Darivatelju.",
+          "reflection": "Koji Božji dar zadržavam jer se bojim oskudice ili da ću ostati neprimijećen?",
+          "action": "Danas besplatno upotrijebi vrijeme, sposobnost, ohrabrenje ili sredstva za nečiju stvarnu potrebu.",
+          "prayer": "Velikodušni Oče, ne dopusti da postanem zatvoreno spremište; neka tvoja milost kroz moj život teče drugima.",
+          "declaration": "Primam iz Kristove punine i slobodno dajem milost, ljubav i služenje."
+        }
+      }
+    }
+  ]
+}

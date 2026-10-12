@@ -1,0 +1,21 @@
+/* New Hope 7 Admin v2.3.9 — official church contact editor and stable certificate header */
+.nh7-v239-contact-editor{margin:12px 0!important;border:1px solid #cfe4e2!important;border-radius:18px!important;background:#fff!important;overflow:hidden}
+.nh7-v239-contact-editor>summary{cursor:pointer;padding:13px 14px;background:linear-gradient(135deg,#eef8ff,#f1fbf7);color:#183b45}
+.nh7-v239-contact-editor[open]>summary{border-bottom:1px solid #d8ecea}
+.nh7-v239-contact-note{margin:12px;padding:10px 12px;border-radius:14px;background:#ecfdf3;color:#067647;font-size:.82rem;font-weight:750;line-height:1.7}
+.nh7-v239-contact-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:0 12px 12px}
+.nh7-v239-contact-grid label{display:grid;gap:5px;min-width:0;font-size:.78rem;color:#475467;font-weight:800}
+.nh7-v239-contact-grid input,.nh7-v239-contact-grid select{width:100%;min-width:0}
+.nh7-v239-contact-wide{grid-column:span 2}
+.nh7-v239-contact-checks{display:flex;gap:8px 16px;flex-wrap:wrap;padding:0 12px 4px}
+.nh7-v239-contact-checks label{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:750;color:#344054}
+.nh7-v239-contact-checks input{width:20px;height:20px;margin:0}
+.nh7-v239-contact-editor>.actions{padding:0 12px 12px}
+.certificate-preview .nh7-v239-church-contact{position:relative;z-index:4;display:flex;justify-content:center;align-items:center;gap:5px 8px;flex-wrap:wrap;max-width:88%;margin:3px auto 8px;line-height:1.55;text-align:center;direction:ltr;unicode-bidi:isolate}
+.certificate-preview .nh7-v239-church-contact i{font-style:normal;opacity:.45}
+.certificate-preview .nh7-v239-church-contact[data-placement="footer"]{margin-top:auto;margin-bottom:6px;max-width:94%;padding-top:7px;border-top:1px solid color-mix(in srgb,var(--v239-accent) 18%,transparent)}
+.certificate-preview[data-nh7-v239-theme="letterhead"] .nh7-v239-church-contact[data-placement="header"]{width:88%;max-width:88%;margin:5px auto 16px;padding:7px 12px;border-top:1px solid color-mix(in srgb,var(--v239-accent) 24%,transparent);border-bottom:1px solid color-mix(in srgb,var(--v239-accent) 24%,transparent);background:color-mix(in srgb,var(--v239-paper) 84%,transparent)}
+.certificate-preview[data-nh7-v239-theme="letterhead"] .certificate-kicker{margin-top:12px!important}
+@media(max-width:760px){.nh7-v239-contact-grid{grid-template-columns:1fr 1fr}.nh7-v239-contact-wide{grid-column:1/-1}}
+@media(max-width:480px){.nh7-v239-contact-grid{grid-template-columns:1fr}.nh7-v239-contact-wide{grid-column:auto}}
+@media print{.nh7-v239-contact-editor{display:none!important}.certificate-preview .nh7-v239-church-contact{break-inside:avoid}}

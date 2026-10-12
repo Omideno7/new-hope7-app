@@ -1,0 +1,38 @@
+/* Dedicated second header row; existing navigation and controls remain in place. */
+#appShell>.topbar.nh7-header-date455{flex-wrap:wrap;row-gap:6px}
+#appShell>.topbar.nh7-header-date455>.brand{flex:1 1 0;min-width:0}
+#appShell>.topbar.nh7-header-date455>.brand>div{min-width:0}
+#appShell>.topbar.nh7-header-date455>.brand strong{overflow:hidden;text-overflow:ellipsis}
+#appShell>.topbar.nh7-header-date455>.brand img{flex-shrink:0}
+#appShell>.topbar.nh7-header-date455>.icon-btn,#appShell>.topbar.nh7-header-date455>.lang-select{flex-shrink:0}
+#appShell>.topbar .nh7-header-date-row455{display:flex;flex:0 0 100%;min-width:0;align-items:center;justify-content:center;gap:7px;padding:6px 2px 0;border-top:1px solid var(--nh7-studio-line,var(--line,#d9e6f7));color:var(--nh7-studio-text,var(--ink,#10284a))}
+#appShell>.topbar .nh7-header-date-row455[hidden]{display:none}
+.nh7-header-date-row455>svg{width:14px;height:14px;flex:none;opacity:.78}
+#nh7HeaderDate455{font-family:inherit;font-size:.77rem;font-weight:500;line-height:1.65;letter-spacing:0;min-width:0;text-align:center;white-space:normal;overflow-wrap:normal;unicode-bidi:isolate;font-variant-numeric:tabular-nums}
+html[data-nh7-font454] #nh7HeaderDate455{font-family:var(--nh7-font454)!important}
+html[data-nh7-theme="dark"] #appShell>.topbar .nh7-header-date-row455{color:var(--nh7-studio-text,var(--nh7-dark-ink,#f5f9ff));border-top-color:var(--nh7-studio-line,var(--nh7-dark-line,#2c4058))}
+@media(max-width:380px){#appShell>.topbar.nh7-header-date455{column-gap:8px}#appShell>.topbar.nh7-header-date455 .brand{gap:8px}#nh7HeaderDate455{font-size:.74rem}}
+
+
+/* v5.0.3 Profile: compact real-header avatar. No extra profile text is added to the top bar. */
+#appShell>.topbar .nh7-header-profile-v503{
+  width:40px;height:40px;flex:0 0 40px;padding:0;margin:0;
+  display:grid;place-items:center;overflow:hidden;border-radius:50%;
+  border:1px solid var(--nh7-studio-line,var(--line,#d9e6f7));
+  background:var(--nh7-studio-card,var(--card,#fff));
+  color:var(--nh7-studio-accent,var(--brand,#1858a4));
+  box-shadow:0 4px 12px rgba(15,35,55,.10);
+  cursor:pointer;
+}
+#appShell>.topbar .nh7-header-profile-v503[hidden]{display:none!important}
+#appShell>.topbar .nh7-header-profile-v503>span{font-size:19px;line-height:1}
+#appShell>.topbar .nh7-header-profile-v503>img{width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block}
+#appShell>.topbar .nh7-header-profile-v503>img[hidden]{display:none!important}
+html[data-nh7-studio-tone457="dark"] #appShell>.topbar .nh7-header-profile-v503{
+  box-shadow:0 5px 16px rgba(0,0,0,.24)
+}
+@media(max-width:420px){
+  #appShell>.topbar.nh7-header-date455{column-gap:7px}
+  #appShell>.topbar .nh7-header-profile-v503{width:36px;height:36px;flex-basis:36px}
+  #appShell>.topbar .inbox-top-btn{width:38px;height:38px}
+}

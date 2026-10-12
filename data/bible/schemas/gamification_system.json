@@ -1,0 +1,113 @@
+{
+  "points": {
+    "read_plan_day": 25,
+    "complete_chapter": 5,
+    "highlight_verse": 2,
+    "save_verse": 3,
+    "write_note": 5,
+    "share_verse": 5,
+    "search_bible": 1,
+    "finish_week_streak": 50,
+    "finish_month_plan": 300
+  },
+  "badges": [
+    {
+      "id": "first_day",
+      "title": {
+        "fa": "شروع مقدس",
+        "en": "Holy Start",
+        "hr": "Sveti početak"
+      },
+      "condition": "complete first reading-plan day"
+    },
+    {
+      "id": "seven_day_streak",
+      "title": {
+        "fa": "۷ روز وفاداری",
+        "en": "7-Day Faithfulness",
+        "hr": "7 dana vjernosti"
+      },
+      "condition": "complete 7 consecutive days"
+    },
+    {
+      "id": "word_student",
+      "title": {
+        "fa": "شاگرد کلام",
+        "en": "Student of the Word",
+        "hr": "Učenik Riječi"
+      },
+      "condition": "write 30 verse notes"
+    },
+    {
+      "id": "verse_sharer",
+      "title": {
+        "fa": "اعلام‌کننده کلام",
+        "en": "Word Sharer",
+        "hr": "Djelitelj Riječi"
+      },
+      "condition": "share 25 verses"
+    },
+    {
+      "id": "one_year_finisher",
+      "title": {
+        "fa": "تکمیل‌کننده یک‌ساله",
+        "en": "One-Year Finisher",
+        "hr": "Završio jednogodišnji plan"
+      },
+      "condition": "complete 365-day plan"
+    }
+  ],
+  "levels": [
+    {
+      "level": 1,
+      "minPoints": 0,
+      "title": {
+        "fa": "شروع‌کننده",
+        "en": "Beginner",
+        "hr": "Početnik"
+      }
+    },
+    {
+      "level": 2,
+      "minPoints": 250,
+      "title": {
+        "fa": "جوینده کلام",
+        "en": "Word Seeker",
+        "hr": "Tražitelj Riječi"
+      }
+    },
+    {
+      "level": 3,
+      "minPoints": 750,
+      "title": {
+        "fa": "شاگرد پایدار",
+        "en": "Steady Disciple",
+        "hr": "Postojan učenik"
+      }
+    },
+    {
+      "level": 4,
+      "minPoints": 1500,
+      "title": {
+        "fa": "خادم کلام",
+        "en": "Servant of the Word",
+        "hr": "Sluga Riječi"
+      }
+    },
+    {
+      "level": 5,
+      "minPoints": 3000,
+      "title": {
+        "fa": "قهرمان ایمان",
+        "en": "Faith Champion",
+        "hr": "Prvak vjere"
+      }
+    }
+  ],
+  "anti_abuse": {
+    "dailySearchPointsLimit": 10,
+    "dailySharePointsLimit": 25,
+    "noteMinimumCharactersForPoints": 20,
+    "readingCompletionRequiresVisibleReadingsLoaded": true
+  }
+}

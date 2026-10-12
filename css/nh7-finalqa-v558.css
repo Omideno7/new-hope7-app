@@ -1,0 +1,14 @@
+/* New Hope 7 v5.5.8 — precise final mini-player docking.
+   Position is driven by the actual top edge of the fixed bottom navigation. */
+
+@media (max-width:767px) and (orientation:portrait){
+  html.nh7p500-active .nh7p500{
+    bottom:var(--nh7-mini-dock-bottom,calc(82px + env(safe-area-inset-bottom,0px)))!important;
+  }
+}
+
+@media (orientation:landscape) and (max-height:520px) and (max-width:980px){
+  html.nh7p500-active .nh7p500{
+    bottom:var(--nh7-mini-dock-bottom,calc(64px + env(safe-area-inset-bottom,0px)))!important;
+  }
+}
