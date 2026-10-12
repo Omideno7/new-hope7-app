@@ -51,7 +51,7 @@
     window.NH7_CANONICAL_SETTINGS = true;
     window.NH7_VERSION = '2.3.9.50';
     window.NH7_BASE_PATH = new URL('.', window.location.href).pathname;
-    window.NH7_SERVICE_WORKER = window.NH7_BASE_PATH + 'service-worker.js?v=5.4.7-canonical-consolidation&ui=123&library=125.6';
+    window.NH7_SERVICE_WORKER = window.NH7_BASE_PATH + 'service-worker.js?v=5.7.1-user-writing-direction&ui=123&library=125.6';
     window.NH7_ONESIGNAL_WORKER = window.NH7_BASE_PATH + 'push/OneSignalSDKWorker.js';
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register(window.NH7_SERVICE_WORKER, { scope: window.NH7_BASE_PATH, updateViaCache: 'none' }).catch(console.warn);
@@ -199,6 +199,7 @@
   <script src="js/nh7-icons-v517.js?v=5.2.4" defer></script>
   <script src="js/nh7-audio-quick-bible-v454.js?v=4.5.4" defer></script>
   <script src="js/nh7-media-player-v500.js?v=5.4.4-fold-safe&ui=123" defer></script>
+  <script src="js/nh7-user-writing-direction-v571.js?v=5.7.1" defer></script>
   <script src="js/nh7-header-date-v455.js?v=4.5.5" defer></script>
   <script src="js/nh7-celebrations-v464.js?v=4.6.6-calendar-lock-finalqa" defer></script>
 </body>
