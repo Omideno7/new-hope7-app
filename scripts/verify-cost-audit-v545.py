@@ -17,7 +17,7 @@ need("bundle.items.every((x) => x.audience === 'public')" in lib,'public-only it
 need("bundle.collections.every((x) => x.audience === 'public')" in lib,'public-only collection cache fence missing')
 need('if (catalogPromise) return catalogPromise;' in lib,'catalog single-flight missing')
 need('nh7-library-security-v125.js?v=125.6-cost-cache' in idx,'library cache-bust missing')
-need('5.4.5-cost-audit' in idx and '5.4.5-cost-audit' in sw and "NH7_RELEASE_CORE_VERSION='5.4.5-cost-audit'" in core,'release cache rotation missing')
+need('5.4.7-canonical-consolidation' in idx and '5.4.7-canonical-consolidation' in sw and "NH7_RELEASE_CORE_VERSION='5.4.7-canonical-consolidation'" in core,'release cache rotation missing')
 for bad in ('drop table','truncate','delete from','drop schema'):
     need(bad not in candidate,f'candidate SQL contains destructive operation: {bad}')
 need('alter policy "nh7 account notes own"' in candidate,'account notes InitPlan candidate missing')

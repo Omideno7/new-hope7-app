@@ -2488,12 +2488,26 @@ async function qna(opts={}){
     await nh7WithTimeoutV470(saveQuestionCloud(item),5000).catch(console.warn);alert(tr('questionSent'));render('qna',{},true);
   };
 }
+async function myDocumentsV510(){
+  const email=String(authEmail()||getKnownUserProfile().email||'').trim().toLowerCase();
+  if(!email)return[];
+  try{
+    const q='school_certificates?select=id,certificate_number,certificate_type,language,title_fa,title_en,title_hr,status,issue_date,approved_at,created_at,public_token,preview_url&user_email=eq.'+encodeURIComponent(email)+'&order=created_at.desc&limit=100';
+    const rows=await cloudFetch(q,{method:'GET'});
+    return Array.isArray(rows)?rows:[];
+  }catch(e){console.warn('[NH7 documents archive v510]',e);return[]}
+}
+function myDocumentsHtmlV510(rows){
+  const L=(fa,en,hr)=>state.lang==='fa'?fa:state.lang==='hr'?hr:en;
+  if(!rows.length)return `<section class="nh7-my-documents-v510"><h3>📜 ${L('مدارک من','My documents','Moji dokumenti')}</h3><p class="muted">${L('هنوز مدرکی برای این حساب صادر نشده است.','No document has been issued to this account yet.','Za ovaj račun još nije izdan dokument.')}</p></section>`;
+  return `<section class="nh7-my-documents-v510"><h3>📜 ${L('مدارک من','My documents','Moji dokumenti')}</h3><p class="muted">${L('مدارک صادرشده در حساب شما بایگانی می‌شوند و هر زمان می‌توانید آن‌ها را باز، نمایش یا به صورت PDF ثابت دانلود کنید.','Issued documents stay in your account archive. You can open, show, or download a flattened PDF at any time.','Izdani dokumenti ostaju u arhivi računa. Možete ih otvoriti, pokazati ili preuzeti kao zaključani PDF.')}</p><div class="list">${rows.map(r=>{const title=r['title_'+state.lang]||r.title_en||r.title_fa||r.title_hr||r.certificate_type||L('مدرک','Document','Dokument'),url=r.public_token?new URL('certificate.html?token='+encodeURIComponent(r.public_token)+'&v=510',location.href).href:(r.preview_url||''),date=r.issue_date||r.approved_at||r.created_at||'',revoked=String(r.status||'').toLowerCase()==='revoked';return `<article class="list-btn nh7-my-document-v510 ${revoked?'revoked':''}"><div><strong>${html(title)}</strong><small>${html(r.certificate_number||'')} · ${html(String(date).slice(0,10))}${revoked?' · '+L('لغوشده','Revoked','Poništeno'):''}</small></div>${url?`<div class="button-row"><a class="secondary-btn" href="${html(url)}" target="_blank" rel="noopener">👁 ${L('باز کردن / نمایش','Open / show','Otvori / prikaži')}</a><a class="primary-btn" href="${html(url+(url.includes('?')?'&':'?')+'download=1')}" target="_blank" rel="noopener">⬇ PDF</a></div>`:''}</article>`}).join('')}</div></section>`;
+}
 async function account(){
   const session=authSession();
   if(isAccountLoggedIn()){
     if(window.NH7CommunityV502?.resumePending?.())return;
-    const profile=getKnownUserProfile(); const email=authEmail()||profile.email||'';
-    view.innerHTML=card(tr('account'), `<h3>${tr('myAccess')}</h3><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||session?.user?.user_metadata?.full_name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(email)}</p></div><button class="danger-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button>`);
+    const profile=getKnownUserProfile(); const email=authEmail()||profile.email||'',documents=await myDocumentsV510();
+    view.innerHTML=card(tr('account'), `<h3>${tr('myAccess')}</h3><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||session?.user?.user_metadata?.full_name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(email)}</p></div>${myDocumentsHtmlV510(documents)}<button class="danger-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button>`);
     $('#logoutAccountBtn')?.addEventListener('click',logoutAccount); return;
   }
   view.innerHTML=card(tr('account'), `<p class="muted">${tr('signedOut')}</p><p>${tr('signInHint')}</p><input id="accountEmail" type="email" autocomplete="email" placeholder="${tr('email')}"><div class="password-wrap"><input id="accountPassword" type="password" autocomplete="current-password" placeholder="${tr('password')}"><button type="button" class="password-eye" data-toggle-password="accountPassword">👁</button></div><button class="primary-btn wide-btn" id="signInBtn">${tr('signIn')}</button><button class="link-button" id="forgotPasswordToggle">${tr('forgotPassword')}</button><div id="forgotPasswordPanel" class="hidden"><input id="resetEmail" type="email" placeholder="${tr('email')}"><button class="secondary-btn" id="resetPasswordBtn">${tr('resetPassword')}</button><p id="resetMsg" class="muted"></p></div>`);

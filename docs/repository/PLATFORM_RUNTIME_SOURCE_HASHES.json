@@ -1,0 +1,56 @@
+{
+  "js/nh7-notifications-zagreb-v334.js": {
+    "ios": "3cda59bced075b78d205fb5c38275f69ce8cf95b7291cc24350072a2a8436ee6",
+    "android": "3cda59bced075b78d205fb5c38275f69ce8cf95b7291cc24350072a2a8436ee6",
+    "main": "3cda59bced075b78d205fb5c38275f69ce8cf95b7291cc24350072a2a8436ee6",
+    "canonical_develop_working_tree": "3cda59bced075b78d205fb5c38275f69ce8cf95b7291cc24350072a2a8436ee6"
+  },
+  "js/nh7-push-account-bind-v364.js": {
+    "ios": "c49982ed37bdf76c433d777e31694fd3975be0203b1f3f1dad1bea2f2590c476",
+    "android": "c49982ed37bdf76c433d777e31694fd3975be0203b1f3f1dad1bea2f2590c476",
+    "main": "c49982ed37bdf76c433d777e31694fd3975be0203b1f3f1dad1bea2f2590c476",
+    "canonical_develop_working_tree": "c49982ed37bdf76c433d777e31694fd3975be0203b1f3f1dad1bea2f2590c476"
+  },
+  "js/nh7-inbox-badge-sync-v418.js": {
+    "ios": "d74988ddf0dbf88e687c884cf763475dd9a6077caec5bdc91a73779fbc81bad8",
+    "android": "d74988ddf0dbf88e687c884cf763475dd9a6077caec5bdc91a73779fbc81bad8",
+    "main": "d74988ddf0dbf88e687c884cf763475dd9a6077caec5bdc91a73779fbc81bad8",
+    "canonical_develop_working_tree": "d74988ddf0dbf88e687c884cf763475dd9a6077caec5bdc91a73779fbc81bad8"
+  },
+  "js/nh7-registration-canonical-v353.js": {
+    "ios": "8a9b4997e41d6a208cff1e23389481523c132dc5cb447f3670e1fb3ba84564f4",
+    "android": "8a9b4997e41d6a208cff1e23389481523c132dc5cb447f3670e1fb3ba84564f4",
+    "main": "8a9b4997e41d6a208cff1e23389481523c132dc5cb447f3670e1fb3ba84564f4",
+    "canonical_develop_working_tree": "8a9b4997e41d6a208cff1e23389481523c132dc5cb447f3670e1fb3ba84564f4"
+  },
+  "js/nh7-school-registration-v342.js": {
+    "ios": "c47e6b60b29f60c2e3cfaf1330e1734bd97ba2a00aa2f712c3f8880085553cb6",
+    "android": "c47e6b60b29f60c2e3cfaf1330e1734bd97ba2a00aa2f712c3f8880085553cb6",
+    "main": "c47e6b60b29f60c2e3cfaf1330e1734bd97ba2a00aa2f712c3f8880085553cb6",
+    "canonical_develop_working_tree": "c47e6b60b29f60c2e3cfaf1330e1734bd97ba2a00aa2f712c3f8880085553cb6"
+  },
+  "sw-navigation-fresh-v403.js": {
+    "ios": "ad9e303410fe1d912f1d1931c94154df1c2814f91908fa8b7208ad804046835f",
+    "android": "ad9e303410fe1d912f1d1931c94154df1c2814f91908fa8b7208ad804046835f",
+    "main": "ad9e303410fe1d912f1d1931c94154df1c2814f91908fa8b7208ad804046835f",
+    "canonical_develop_working_tree": "ad9e303410fe1d912f1d1931c94154df1c2814f91908fa8b7208ad804046835f"
+  },
+  "service-worker.js": {
+    "ios": "ba0f3ecd77fe15609ea39994099de5bc426c40bac1cb535cd91bed398a43cb89",
+    "android": "ba0f3ecd77fe15609ea39994099de5bc426c40bac1cb535cd91bed398a43cb89",
+    "main": "ef06a8032ce7006320dc704e47b06d11f5a733b4ba254d88dea9d195bc35d3e8",
+    "canonical_develop_working_tree": "b1b5697ac80f83c890d470715c8ceaa62144a66ea5a8be4119721ff8dc032132"
+  },
+  "index.html": {
+    "ios": "39686f8fc859898086e5830909f9531eb6d28e6f5464307c940f795dae4fd977",
+    "android": "68e0eb4d3f2278d1da66e9de91d8a3b161b7401b8cbaeea13fc17fded95e7eb0",
+    "main": "d7c7cf38177a877b381ec8c872d1896491896638f2ae0107272a29b52e272d00",
+    "canonical_develop_working_tree": "cda9997755670a639524a6ff658ecacbb023afea4ddf7f30134ffdd86926175a"
+  },
+  "js/app.js": {
+    "ios": "cfa57398c5fdd6e35833132e07238a5e59b6525247732fbf2759dc153c9a5f05",
+    "android": "cfa57398c5fdd6e35833132e07238a5e59b6525247732fbf2759dc153c9a5f05",
+    "main": "cb47572e25539cf7df2a9849826d6d9bb3a7e3291510d24bcec9bd161ebaa127",
+    "canonical_develop_working_tree": "5d4f8b5aa4687462e5e9b6b21133bff526c21f596071d116e568fb83b4780c9d"
+  }
+}

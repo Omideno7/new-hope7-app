@@ -15,7 +15,7 @@ const L=(fa,en,hr)=>lang==='fa'?fa:lang==='hr'?hr:en;
 const esc=v=>h(v==null?'':String(v));
 const normalize=v=>String(v||'').trim().toLowerCase();
 function bookName(b){return lang==='fa'?(b.name_fa||b.name_en):lang==='hr'?(b.name_hr||b.name_en):(b.name_en||b.name_fa)}
-function publicDocUrl(row){return new URL('certificate.html?token='+encodeURIComponent(row.public_token||'')+'&v=509',location.href).href}
+function publicDocUrl(row){return new URL('certificate.html?token='+encodeURIComponent(row.public_token||'')+'&v=520',location.href).href}
 function verifyDocUrl(row){return row?.public_token?new URL('verify-certificate-v508.html?token='+encodeURIComponent(row.public_token)+'&v=508',location.href).href:''}
 function chapterFromName(name){const nums=String(name||'').match(/\d{1,3}/g)||[];return Number(nums[nums.length-1]||0)}
 function extOf(name){return (String(name||'').toLowerCase().match(/\.([a-z0-9]+)$/)||[])[1]||'mp3'}
@@ -151,7 +151,7 @@ window.useDocumentTemplateV220=function(id){applyTemplateV220(state.documentTemp
 window.newDocumentTemplateV220=function(){
   docTemplateId='';
   docDraft=normalizeDocumentDraftV221(Object.assign({},docDraft,{
-    template_code:'official_letter_'+Date.now(),certificate_type:'custom',
+    template_code:'official_letter_'+Date.now(),certificate_type:'custom',user_name:'',user_email:'',photo_url:'',issue_date:new Date().toISOString().slice(0,10),place:'',witness:'',
     title_fa:'نامه رسمی کلیسای امیدنو۷',title_en:'Official Letter — New Hope 7 Church',title_hr:'Službeno pismo — Crkva New Hope 7',
     designation_fa:'',designation_en:'',designation_hr:'',
     body_fa:'متن نامه یا مدرک را در این قسمت وارد کنید.',body_en:'Enter the official letter or document text here.',body_hr:'Ovdje unesite tekst službenog pisma ili dokumenta.',
