@@ -1,120 +1,32 @@
-// New Hope 7 automatic notification sender for Supabase Edge Functions.
-// Required secrets:
-// ONESIGNAL_APP_ID, ONESIGNAL_REST_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
-
-const ONESIGNAL_APP_ID = Deno.env.get('ONESIGNAL_APP_ID')!;
-const ONESIGNAL_REST_API_KEY = Deno.env.get('ONESIGNAL_REST_API_KEY')!;
-const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-const APP_URL = 'https://omideno7.github.io/new-hope7-app/?v=138';
-
-type Lang = 'fa' | 'en' | 'hr';
-
-const messages = {
-  daily_word: {
-    time: '07:00AM', mode: 'timezone', category: 'daily_word',
-    fa: ['کلام روزانه آماده است', 'امروز کلام خدا را دریافت کن و روزت را با ایمان شروع کن.'],
-    en: ['Daily Word is ready', 'Receive God’s Word today and start your day in faith.'],
-    hr: ['Dnevna Riječ je spremna', 'Primi Božju Riječ danas i započni dan u vjeri.'],
-  },
-  faith: {
-    time: '12:00PM', mode: 'timezone', category: 'faith',
-    fa: ['اعلان ایمان آماده است', 'وقت اعلان ایمان است؛ کلام را با دهانت اعلام کن.'],
-    en: ['Faith proclamation is ready', 'It is time for your faith proclamation; speak the Word.'],
-    hr: ['Proglas vjere je spreman', 'Vrijeme je za proglas vjere; izgovori Riječ.'],
-  },
-  daily_juice: {
-    time: '05:00PM', mode: 'timezone', category: 'daily_juice',
-    fa: ['آبمیوه روزانه آماده است', 'آبمیوه روزانه امروز آماده است؛ چند دقیقه برای تقویت روح خود وقت بگذار.'],
-    en: ['Daily Juice is ready', 'Today’s Daily Juice is ready; take a few minutes to strengthen your spirit.'],
-    hr: ['Dnevni sok je spreman', 'Današnji Daily Juice je spreman; odvoji nekoliko minuta za svoj duh.'],
-  },
-  gratitude: {
-    time: '09:00PM', mode: 'timezone', category: 'gratitude',
-    fa: ['یادآوری شکرگزاری', 'امروز را با شکرگزاری به پایان برسان و نیکویی خدا را به یاد آور.'],
-    en: ['Gratitude reminder', 'End today with thanksgiving and remember God’s goodness.'],
-    hr: ['Podsjetnik zahvalnosti', 'Završi dan zahvalnošću i sjeti se Božje dobrote.'],
-  },
-  morning_meeting: {
-    category: 'meeting',
-    fa: ['یادآوری جلسه دعای صبحگاهی', 'جلسه دعای صبحگاهی کلیسا ۵ دقیقه دیگر آغاز می‌شود.'],
-    en: ['Morning prayer meeting reminder', 'The morning prayer meeting starts in 5 minutes.'],
-    hr: ['Podsjetnik za jutarnju molitvu', 'Jutarnji molitveni sastanak počinje za 5 minuta.'],
-  },
-  sunday_service: {
-    category: 'meeting',
-    fa: ['یادآوری جلسه کلیسای یکشنبه', 'جلسه کلیسای یکشنبه آماده است. برای ورود به جلسه کلیک کن.'],
-    en: ['Sunday church meeting reminder', 'The Sunday church meeting is ready. Tap to join.'],
-    hr: ['Podsjetnik za nedjeljni sastanak', 'Nedjeljni crkveni sastanak je spreman. Dodirni za ulazak.'],
-  },
-} as const;
-
-async function sendOneSignal(key: keyof typeof messages, lang: Lang) {
-  const msg = messages[key];
-  const [title, body] = msg[lang];
-  const payload: Record<string, unknown> = {
-    app_id: ONESIGNAL_APP_ID,
-    target_channel: 'push',
-    filters: [
-      { field: 'tag', key: 'app', relation: '=', value: 'new_hope_7' },
-      { operator: 'AND' },
-      { field: 'tag', key: 'language', relation: '=', value: lang },
-    ],
-    headings: { [lang]: title, en: title },
-    contents: { [lang]: body, en: body },
-    url: APP_URL,
-  };
-  if ('mode' in msg && msg.mode === 'timezone') {
-    payload.delayed_option = 'timezone';
-    payload.delivery_time_of_day = msg.time;
-  }
-  const res = await fetch('https://api.onesignal.com/notifications', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Key ${ONESIGNAL_REST_API_KEY}`,
-    },
-    body: JSON.stringify(payload),
-  });
-  if (!res.ok) throw new Error(`OneSignal ${res.status}: ${await res.text()}`);
-  return res.json();
-}
-
-async function saveGlobalInbox(key: keyof typeof messages, lang: Lang) {
-  const msg = messages[key];
-  const [title, body] = msg[lang];
-  await fetch(`${SUPABASE_URL}/rest/v1/notification_inbox`, {
-    method: 'POST',
-    headers: {
-      apikey: SUPABASE_SERVICE_ROLE_KEY,
-      Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
-      'Content-Type': 'application/json',
-      Prefer: 'return=minimal',
-    },
-    body: JSON.stringify({ title, body, category: msg.category, language: lang, device_id: null, user_email: null }),
-  });
-}
-
-Deno.serve(async (req) => {
-  try {
-    const url = new URL(req.url);
-    const mode = url.searchParams.get('mode') || 'daily';
-    const keys = mode === 'daily'
-      ? ['daily_word', 'faith', 'daily_juice', 'gratitude']
-      : mode === 'morning'
-        ? ['morning_meeting']
-        : mode === 'sunday'
-          ? ['sunday_service']
-          : [];
-    const out = [];
-    for (const key of keys as (keyof typeof messages)[]) {
-      for (const lang of ['fa','en','hr'] as Lang[]) {
-        out.push(await sendOneSignal(key, lang));
-        await saveGlobalInbox(key, lang);
-      }
-    }
-    return new Response(JSON.stringify({ ok: true, mode, sent: out.length }), { headers: { 'content-type': 'application/json' } });
-  } catch (err) {
-    return new Response(JSON.stringify({ ok: false, error: String(err?.message || err) }), { status: 500, headers: { 'content-type': 'application/json' } });
-  }
-});
+// New Hope 7 notification sender v4.1.7 — scheduled user pushes exclude admin; shared Inbox rows avoid per-user duplication.
+const ONESIGNAL_APP_ID='86f4116a-707a-4959-aa3f-7c703f57bf7e';
+const ONESIGNAL_REST_API_KEY=Deno.env.get('ONESIGNAL_REST_API_KEY')!;
+const SUPABASE_URL=Deno.env.get('SUPABASE_URL')!;
+const SUPABASE_SERVICE_ROLE_KEY=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+const APP_URL='https://omideno7.github.io/new-hope7-app/index.html';
+const ADMIN_URL='https://omideno7.github.io/new-hope7-app/admin-v239.html';
+const ZONE='Europe/Zagreb';
+type Lang='fa'|'en'|'hr';
+type ScheduleRow={key:string,time_value:string,days_of_week:number[],title_fa:string,body_fa:string,title_en:string,body_en:string,title_hr:string,body_hr:string,target_route?:string,is_active:boolean};
+type AdminEvent={id:string,event_type:string,title_fa:string,title_en:string,title_hr:string,body_fa?:string,body_en?:string,body_hr?:string};
+async function serviceFetch(path:string,init:RequestInit={}){const res=await fetch(`${SUPABASE_URL}${path}`,{...init,headers:{apikey:SUPABASE_SERVICE_ROLE_KEY,Authorization:`Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,'Content-Type':'application/json',...(init.headers||{})}});if(!res.ok)throw new Error(`Supabase ${res.status}: ${await res.text()}`);if(res.status===204)return null;const text=await res.text();return text?JSON.parse(text):null}
+function safeEqual(a:string,b:string){if(!a||!b||a.length!==b.length)return false;let diff=0;for(let i=0;i<a.length;i++)diff|=a.charCodeAt(i)^b.charCodeAt(i);return diff===0}
+async function cronAuthorized(req:Request){const provided=String(req.headers.get('x-nh7-cron-secret')||'');if(!provided)return false;const rows=await serviceFetch('/rest/v1/nh7_notification_runtime_secret?select=secret&key=eq.cron&limit=1')||[];const expected=String(Array.isArray(rows)&&rows[0]?.secret||'');return safeEqual(provided,expected)}
+function zagrebParts(date=new Date()){const parts=new Intl.DateTimeFormat('en-CA',{timeZone:ZONE,year:'numeric',month:'2-digit',day:'2-digit',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(date),get=(t:string)=>parts.find(p=>p.type===t)?.value||'',wd=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(get('weekday'));return{date:`${get('year')}-${get('month')}-${get('day')}`,hour:Number(get('hour')),minute:Number(get('minute')),weekday:wd}}
+function due(row:ScheduleRow,now=new Date()){const z=zagrebParts(now),[hh,mm]=String(row.time_value||'00:00').slice(0,5).split(':').map(Number);if(Array.isArray(row.days_of_week)&&!row.days_of_week.includes(z.weekday))return null;const delta=(z.hour*60+z.minute)-(hh*60+mm);return delta>=0&&delta<=4?z.date:null}
+function langText(row:any,lang:Lang,field:'title'|'body'){return String(row[`${field}_${lang}`]||row[`${field}_en`]||row[`${field}_fa`]||row[`${field}_hr`]||'').trim()}
+async function claim(key:string,date:string,lang:Lang){const rows=await serviceFetch('/rest/v1/notification_dispatch_log?on_conflict=schedule_key,zagreb_date,language',{method:'POST',headers:{Prefer:'resolution=ignore-duplicates,return=representation'},body:JSON.stringify({schedule_key:key,zagreb_date:date,language:lang,status:'sending',claimed_at:new Date().toISOString()})})||[];return Array.isArray(rows)&&rows.length>0}
+async function releaseClaim(key:string,date:string,lang:Lang,error:string){await serviceFetch(`/rest/v1/notification_dispatch_log?schedule_key=eq.${encodeURIComponent(key)}&zagreb_date=eq.${date}&language=eq.${lang}`,{method:'DELETE'}).catch(()=>null);console.warn('claim released',key,date,lang,error)}
+async function finishClaim(key:string,date:string,lang:Lang,id='',error=''){await serviceFetch(`/rest/v1/notification_dispatch_log?schedule_key=eq.${encodeURIComponent(key)}&zagreb_date=eq.${date}&language=eq.${lang}`,{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify({status:'sent',sent_at:new Date().toISOString(),onesignal_id:id,last_error:error})})}
+async function postOneSignal(payload:any){if(!ONESIGNAL_REST_API_KEY)throw new Error('ONESIGNAL_REST_API_KEY is missing');const res=await fetch('https://api.onesignal.com/notifications',{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Key ${ONESIGNAL_REST_API_KEY}`},body:JSON.stringify(payload)});const text=await res.text();let out:any={};try{out=text?JSON.parse(text):{}}catch{out={raw:text}}if(!res.ok)throw new Error(`OneSignal ${res.status}: ${text}`);if(!String(out?.id||'').trim())throw new Error(`OneSignal no recipients: ${JSON.stringify(out?.errors||out?.warnings||out||{})}`);return out}
+function nonAdminFilters(){return[{field:'tag',key:'role',relation:'not_exists'},{operator:'OR'},{field:'tag',key:'role',relation:'!=',value:'admin'}]}
+function localizedPayload(row:any,topic:string,route='home'){return{app_id:ONESIGNAL_APP_ID,target_channel:'push',filters:nonAdminFilters(),headings:{en:langText(row,'en','title'),fa:langText(row,'fa','title'),hr:langText(row,'hr','title')},contents:{en:langText(row,'en','body'),fa:langText(row,'fa','body'),hr:langText(row,'hr','body')},url:APP_URL,web_push_topic:topic,data:{route,nh7_topic:topic}}}
+async function sendLocalizedUsers(row:ScheduleRow,date:string){const topic=`nh7-${row.key}-${date}`,payload:any=localizedPayload(row,topic,row.target_route||'home');payload.data.schedule_key=row.key;payload.data.zagreb_date=date;return await postOneSignal(payload)}
+async function sendLocalizedBroadcast(event:AdminEvent){const topic=`nh7-broadcast-${event.id}`;return await postOneSignal(localizedPayload(event,topic,'home'))}
+async function sendPush(opts:{title:string,body:string,lang:Lang,route?:string,topic:string,audience:'users'|'admins'}){if(opts.audience==='users')return await postOneSignal({app_id:ONESIGNAL_APP_ID,target_channel:'push',filters:nonAdminFilters(),headings:{en:opts.title,fa:opts.title,hr:opts.title},contents:{en:opts.body,fa:opts.body,hr:opts.body},url:APP_URL,web_push_topic:opts.topic,data:{route:opts.route||'home',nh7_topic:opts.topic}});const filters:any[]=[{field:'tag',key:'app',relation:'=',value:'new_hope_7'},{operator:'AND'},{field:'tag',key:'role',relation:'=',value:'admin'}];return await postOneSignal({app_id:ONESIGNAL_APP_ID,target_channel:'push',filters,headings:{en:opts.title,fa:opts.title,hr:opts.title},contents:{en:opts.body,fa:opts.body,hr:opts.body},url:ADMIN_URL,web_push_topic:opts.topic,data:{route:opts.route||'home',nh7_topic:opts.topic}})}
+async function saveUserInbox(titleByLang:Record<Lang,string>,bodyByLang:Record<Lang,string>,category:string,dedupePrefix:string){const deliveredAt=new Date().toISOString();const rows=(['fa','en','hr'] as Lang[]).map(lang=>({title:titleByLang[lang]||titleByLang.en,body:bodyByLang[lang]||bodyByLang.en,category,language:lang,device_id:null,user_email:null,dedupe_key:`${dedupePrefix}:global:${lang}`,delivered_at:deliveredAt}));await serviceFetch('/rest/v1/notification_inbox?on_conflict=dedupe_key',{method:'POST',headers:{Prefer:'resolution=ignore-duplicates,return=minimal'},body:JSON.stringify(rows)});return rows.length}
+async function sendClaimed(key:string,date:string,lang:Lang,opts:{title:string,body:string,route?:string,topic:string,audience:'users'|'admins'}){if(!await claim(key,date,lang))return{skipped:true};let out:any=null;try{out=await sendPush({title:opts.title,body:opts.body,lang,route:opts.route,topic:opts.topic,audience:opts.audience});await finishClaim(key,date,lang,String(out?.id||''));return{id:out?.id||''}}catch(error){await releaseClaim(key,date,lang,String((error as Error)?.message||error));throw error}}
+async function processScheduled(){const rows=(await serviceFetch('/rest/v1/notification_schedules?select=*&is_active=eq.true&order=sort_order.asc')) as ScheduleRow[]||[],results:any[]=[];for(const row of rows){const date=due(row);if(!date)continue;const claimKey=`schedule:${row.key}`;if(!await claim(claimKey,date,'fa'))continue;try{const out=await sendLocalizedUsers(row,date);await finishClaim(claimKey,date,'fa',String(out?.id||''));const titles={fa:langText(row,'fa','title'),en:langText(row,'en','title'),hr:langText(row,'hr','title')},bodies={fa:langText(row,'fa','body'),en:langText(row,'en','body'),hr:langText(row,'hr','body')};await saveUserInbox(titles,bodies,row.key,`schedule:${row.key}:${date}`).catch(error=>console.warn('scheduled inbox save',row.key,error));results.push({key:row.key,date,id:String(out?.id||'')})}catch(error){await releaseClaim(claimKey,date,'fa',String((error as Error)?.message||error));results.push({key:row.key,date,error:String((error as Error)?.message||error)})}}return results}
+async function processAdminEvents(){const rows=(await serviceFetch('/rest/v1/admin_notification_events?select=*&status=eq.pending&order=created_at.asc&limit=50')) as AdminEvent[]||[];let sent=0;const errors:any[]=[];for(const event of rows){try{const date=zagrebParts().date;if(event.event_type==='user_broadcast'){const claimKey=`broadcast:${event.id}`;if(await claim(claimKey,date,'fa')){try{const out=await sendLocalizedBroadcast(event);await finishClaim(claimKey,date,'fa',String(out?.id||''));const titles={fa:langText(event,'fa','title'),en:langText(event,'en','title'),hr:langText(event,'hr','title')},bodies={fa:langText(event,'fa','body'),en:langText(event,'en','body'),hr:langText(event,'hr','body')};await saveUserInbox(titles,bodies,'admin_broadcast',`broadcast:${event.id}`).catch(()=>null)}catch(error){await releaseClaim(claimKey,date,'fa',String((error as Error)?.message||error));throw error}}}else{const title=event.title_fa||event.title_en||'New Hope 7 Admin',body=event.body_fa||event.body_en||'';await sendClaimed(`admin:${event.id}`,date,'fa',{title,body,route:'home',topic:`nh7-admin-${event.id}`,audience:'admins'})}await serviceFetch(`/rest/v1/admin_notification_events?id=eq.${encodeURIComponent(event.id)}`,{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify({status:'sent',sent_at:new Date().toISOString(),last_error:'',attempt_count:1})});sent++}catch(error){const message=String((error as Error)?.message||error).slice(0,1000);errors.push({id:event.id,error:message});await serviceFetch(`/rest/v1/admin_notification_events?id=eq.${encodeURIComponent(event.id)}`,{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify({status:'pending',last_error:message,attempt_count:1})}).catch(()=>null)}}return{queued:rows.length,sent,errors}}
+async function health(){const res=await fetch(`https://api.onesignal.com/notifications?app_id=${encodeURIComponent(ONESIGNAL_APP_ID)}&limit=1`,{headers:{Authorization:`Key ${ONESIGNAL_REST_API_KEY}`}});const text=await res.text();let data:any={};try{data=text?JSON.parse(text):{}}catch{data={raw:text}}return{app_id:ONESIGNAL_APP_ID,onesignal_http:res.status,onesignal_ok:res.ok,total_count:Number(data?.total_count||0),key_present:!!ONESIGNAL_REST_API_KEY}}
+Deno.serve(async req=>{try{if(!(await cronAuthorized(req)))return Response.json({ok:false,error:'Unauthorized'},{status:401,headers:{'Cache-Control':'no-store'}});const mode=new URL(req.url).searchParams.get('mode')||'scheduled';if(mode==='health')return Response.json({ok:true,mode,...await health()});if(mode==='admin')return Response.json({ok:true,mode,...await processAdminEvents()});if(mode!=='scheduled')return Response.json({ok:false,error:'Unsupported mode'},{status:400});const scheduled=await processScheduled();return Response.json({ok:true,mode:'scheduled',sent:scheduled.length,results:scheduled})}catch(error){return Response.json({ok:false,error:String((error as Error)?.message||error)},{status:500})}});

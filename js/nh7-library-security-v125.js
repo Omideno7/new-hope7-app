@@ -9,7 +9,9 @@
   let identity = '',
     generation = 0,
     bundle = { items: [], collections: [] },
-    checkedAt = 0;
+    checkedAt = 0,
+    catalogPromise = null;
+  const PUBLIC_CATALOG_TTL_MS = 120000;
   function session() {
     try {
       const s = JSON.parse(localStorage.getItem(SESSION) || 'null');
@@ -93,6 +95,13 @@
     const id = sync(),
       epoch = generation,
       accessToken = session()?.access_token;
+    const publicOnlyBundle = bundle.items.every((x) => x.audience === 'public') && bundle.collections.every((x) => x.audience === 'public');
+    if (checkedAt && publicOnlyBundle && Date.now() - checkedAt < PUBLIC_CATALOG_TTL_MS) return bundle;
+    if (catalogPromise) return catalogPromise;
+    catalogPromise = catalogNetwork(id, epoch, accessToken);
+    try { return await catalogPromise; } finally { catalogPromise = null; }
+  }
+  async function catalogNetwork(id, epoch, accessToken) {
     if (!id) {
       invalidate('login_required');
       return bundle;
