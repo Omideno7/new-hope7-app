@@ -4,6 +4,7 @@
 
 - `main` is the reviewed release source and default branch. No direct routine edits, force pushes or history rewrite.
 - `develop` is the only normal development/integration branch. Before editing, print repo/branch/SHA/upstream/target, fetch and check for another agent's work. Commit normally here. If the remote advances, reconcile the actual work rather than overwriting it.
+- All normal development must reach `develop` first. Never create a temporary branch and merge it directly into `main`; `main` receives only explicitly approved release integration.
 - A new temporary branch needs explicit user authorization. Do not create another permanent agent/codex/fix/backup branch. Delete an authorized temporary head after reviewed integration.
 - Historical Store/build/checkpoint/unique experiments use immutable annotated tags. The before-cleanup JSON records exact names and tips; the tag manifest and after-cleanup report explain recovery. Never reset main to a historical Store tree.
 - Active #240 Documents V2 and #241 mobile/Web QA retain their exact heads and Draft status. #106 WatchOS and its Test5 base remain temporary pending companion/device acceptance and safe retargeting. No unfinished Draft is merged just to clean branches. Their acceptance gates are in `docs/repository/STORE_CONVERGENCE_250.md`.

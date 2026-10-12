@@ -131,6 +131,7 @@ jobs:
         run: |
           python3 scripts/validate-canonical-develop.py
           python3 scripts/verify-consolidation-safety.py
+          python3 scripts/verify-main-develop-sync.py
 
       - name: Verify build provenance against actual exported bytes
         run: python3 scripts/verify-build-metadata.py

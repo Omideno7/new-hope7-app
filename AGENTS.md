@@ -6,7 +6,7 @@
 4. Do not create a new branch unless the user explicitly authorizes it.
 5. Do not invent `agent/*`, `codex/*`, `fix/*` or `backup/*` branches.
 6. Before editing, print repository, current branch, current SHA, upstream and target branch.
-7. Normal development changes go to `develop`; fetch/check for concurrent work first.
+7. All normal development changes go to `develop` first; fetch/check for concurrent work first. Never create a temporary branch and merge normal development directly into `main`.
 8. Never commit directly to `main` except an explicitly approved release/convergence operation.
 9. `main` must contain only reviewed, release-ready state. Never force-push or rewrite its history.
 10. Web, iOS and Android releases must reference the exact same approved canonical `main` SHA for shared Web assets.

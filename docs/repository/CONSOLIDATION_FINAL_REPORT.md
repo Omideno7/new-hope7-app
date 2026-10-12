@@ -1,6 +1,20 @@
 # Repository consolidation final evidence
 
-## Before / after
+## Follow-up after PR #243 — current source capture
+
+The initial cleanup was completed at develop `491c7b3625092d8322020fc696d222a2e256a2b8`. Its before/after inventories below are historical captures, not current remote-head claims. The maintainer subsequently squash-merged PR #243 into main at **`f91d13113f02ea0f13e506f64090d3f35c295f69`**; existing successful deployment runs are recorded in `docs/RELEASE_PROVENANCE.md`.
+
+- Normal main→develop merge: `2be63e8ef0ab5b4ef265ad4ce3a8c038c4fcd7a1`, retaining old develop and current main as parents.
+- Synchronized runtime develop: **`4926ff6af0e89045e6fe8a060d189626b4d4e3bb`**. Because PR #243 was squash-merged, a second normal merge preserves its original tip **`00baef33aa408ffb7631c4f2774ef8fe7967c0d7`** in develop's ancestry; this second merge changes no files.
+- `js/nh7-admin-sermon-metadata-v452.js` and `js/nh7-admin-storage-orphan-guard-v510.js` match current main byte-for-byte. They are the only runtime changes from previous develop. No backend/SQL/data files changed.
+- The full develop validation suite, real browser Profile/Search/Inbox test, both changed-JS syntax checks and whitespace checks passed locally. Migration parity remains **42/42 exact, zero pending**. Exact final-head CI links and SHA are recorded in Draft PR #242; no release is approved by this report.
+- Original PR tip reachability was verified on fetched **remote develop** before deleting `fix/supabase-storage-orphan-guard-20261012`. No force push or history rewrite was used.
+- Seven remote branches remain at this capture. An unrelated `fix/audio-bible-and-legacy-audio-cleanup-20261012` appeared concurrently and was left untouched. The seven exact names/SHAs and integrity evidence are in [MAIN_DEVELOP_SYNC_20261012.json](MAIN_DEVELOP_SYNC_20261012.json). Final documentation head is recorded by PR #242/CI, rather than inside its own commit.
+- #240/#241/#106 heads, bases and Draft state are untouched. Main stays at **`f91d13113f02ea0f13e506f64090d3f35c295f69`** during this synchronization. No deployment or Production/backend mutation was performed.
+
+All normal development goes to develop first. Temporary branch→main development is forbidden; main is approved/release source only. No develop→main merge has been performed.
+
+## Initial cleanup before / after
 
 **451 → 6 remote branches. 445 deleted:** 129 entirely reachable from retained main/develop history, 11 exact-tip duplicates, **305 unique historical tips archived first**. 314 annotated preservation/checkpoint tags are verified remotely (313 before cleanup plus canonical develop checkpoint). Every branch has exactly one before-audit classification. No prefix-only or unproven-obsolete deletion; no blanket manual blockers. `BRANCH_AUDIT_AFTER_CLEANUP.json` retains every deleted name/SHA/class/tag/time. Remote-tracking refs were pruned.
 
@@ -15,7 +29,7 @@ No stale PR was closed: the three open Drafts are genuinely unmerged active work
 - `feature/watchos-v2500-20261004` — `8a58086289aa1fa0d9d845f76b574a9422adc63d`
 - `main` — `67d829de0d8d4846e309a99bcd98c4c005b3b030`
 
-The develop SHA above is the exact **validated runtime candidate** after deletion. This inventory is added in a following docs-only commit; the exact final documentation head is reported by the Draft integration PR/CI and delivery message, avoiding a self-referential Git hash inside its own commit. Both old main and old develop are ancestors of the new line. Main stays **67d829de0d8d4846e309a99bcd98c4c005b3b030**.
+The develop SHA above is the exact **validated runtime candidate** after deletion. This inventory is added in a following docs-only commit; the exact final documentation head is reported by the Draft integration PR/CI and delivery message, avoiding a self-referential Git hash inside its own commit. Both old main and old develop are ancestors of the new line. Main stayed **67d829de0d8d4846e309a99bcd98c4c005b3b030** during that initial cleanup.
 
 ## Store provenance / reconciliation
 

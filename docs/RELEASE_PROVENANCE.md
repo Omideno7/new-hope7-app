@@ -4,14 +4,16 @@
 
 | Platform | Approved/historical source | Exact source/provenance | Workflow/archive |
 |---|---|---|---|
-| Web | main | `67d829de0d8d4846e309a99bcd98c4c005b3b030` | Successful Pages validation/deploy run **38151018348** and Pages deployment **38151017839**; existing deployment, not run by cleanup |
+| Web | current main | `f91d13113f02ea0f13e506f64090d3f35c295f69` | Maintainer squash-merged PR #243; successful existing Pages validation/deploy run **38232212806**, Pages deployment **38232212310**; neither deployment was initiated by this synchronization |
 | iOS | 2.5.0 / 25001 | Actual signed archive's App.app/public; independent verified snapshot `b62085749c41c21b9ca346a8439e80d065a3fd10` | `App 10-5-26, 4.09 am.xcarchive`; Products/Applications/App.app/public; 388 per-file hashes |
 | Android | 2.5.0 / versionCode 25002 | `a177cdc7d995894868cf84bbe00c2dfa05ad6e25`, payload `android-release-25002/www` | Successful published build run **37388172102** |
 | Development before normalization | develop | `82544939da06f580351002dca5114b6bd8d0471e` | Checkpoint tag preserves every existing unique commit; normal main merge only |
 
-Validated canonical develop runtime candidate: `15b961e34d05307a03af33ae655228355213c153`, CI run **38217685825**. Final inventory commits are documentation-only and their exact head is recorded in the integration PR/delivery.
+Initial cleanup validated runtime candidate: `15b961e34d05307a03af33ae655228355213c153`, CI run **38217685825**. Final inventory commits are documentation-only and their exact head is recorded in the integration PR/delivery.
 
-Current main remains `67d829de0d8d4846e309a99bcd98c4c005b3b030` throughout this maintenance execution. Final canonical develop head is recorded in the cleanup delivery/integration PR and generated build metadata; this file intentionally records the verified source capture rather than embedding its own future commit hash. The after-cleanup report records the exact validated runtime candidate before its docs-only inventory update.
+The initial cleanup completed at develop `491c7b3625092d8322020fc696d222a2e256a2b8`, while main was `67d829de0d8d4846e309a99bcd98c4c005b3b030`. Subsequently the maintainer merged PR #243 into main at `f91d13113f02ea0f13e506f64090d3f35c295f69`. The follow-up normal main→develop merge is `2be63e8ef0ab5b4ef265ad4ce3a8c038c4fcd7a1`; a second tree-identical ancestry merge preserves the original squash-merged PR tip `00baef33aa408ffb7631c4f2774ef8fe7967c0d7` at synchronized runtime candidate `4926ff6af0e89045e6fe8a060d189626b4d4e3bb`. No develop commits were dropped and both PR #243 files are byte-identical to main.
+
+Current fetched release source is main `f91d13113f02ea0f13e506f64090d3f35c295f69`. The follow-up did not change main or deploy. Current develop's exact final documentation SHA and its CI are recorded in Draft PR #242 and delivery, avoiding a self-referential hash. [Follow-up evidence](repository/MAIN_DEVELOP_SYNC_20261012.json) records the exact main/develop runtime capture, merge parents, original PR tip, file hashes, verified branch deletion and seven remote branches (including an unrelated concurrent branch, left untouched). Historical cleanup inventories remain immutable dated evidence.
 
 ### Authoritative iOS distinction
 
