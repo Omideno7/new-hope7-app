@@ -1,6 +1,6 @@
 # Platform runtime consistency — read-only source audit
 
-Inputs: main `67d829de0d8d4846e309a99bcd98c4c005b3b030`, published Android `a177cdc7d995894868cf84bbe00c2dfa05ad6e25`/www, authoritative iOS 2.5.0/25001 archive (SHA256 `e5b6565049ef5025de48dc0d629501732880fa482f0990251b010f8fdc803b6b`), and reviewed pre-existing develop source `82544939da06f580351002dca5114b6bd8d0471e` plus normal main reconciliation. Exact client source hashes are in `PLATFORM_RUNTIME_SOURCE_HASHES.json`. No Production schedule/subscription/data query, secret access, cron invocation or deployment was performed. Thus current installed permissions/OS/plugin registration and live schedules/dispatch cannot be inferred from source alone.
+Inputs: main `67d829de0d8d4846e309a99bcd98c4c005b3b030`, published Android `a177cdc7d995894868cf84bbe00c2dfa05ad6e25`/www, authoritative iOS 2.5.0/25001 archive (SHA256 `e5b6565049ef5025de48dc0d629501732880fa482f0990251b010f8fdc803b6b`), and reviewed pre-existing develop source `82544939da06f580351002dca5114b6bd8d0471e` plus normal main reconciliation. Exact client source hashes are in `PLATFORM_RUNTIME_SOURCE_HASHES.json`. One limited anonymous read-only GET for public notification schedule fields was attempted; the cloud egress proxy denied the HTTPS tunnel with **403 Forbidden before Supabase**, even with the trusted environment CA. No Supabase response/rows, subscription/user data, service secret, cron invocation or deployment were accessed. `LIVE_NOTIFICATION_CONFIG_READ.json` records that result. Thus current installed permissions/OS/plugin registration and live schedules/dispatch cannot be inferred from source alone.
 
 ## Confirmed common configuration
 
@@ -37,3 +37,5 @@ Read-only operator checks: exact installed payload/build metadata; native plugin
 | Background hooks | Web worker + native lifecycle | Android legacy WebView/polyfill/bridge fixes | Preserve current lifecycle; do not add native overscroll/touch suppression to Web |
 
 The native eight-commit Android difference inventory records legacy WebView APIs, bridge injection, upgrade cache refresh and scoped scroll/Amen diagnostics as native/build evidence. They are preserved by tags, not copied onto Web/iOS. Any future native wrapper must export the approved canonical shared source with explicitly recorded generated bridge/config differences and pass real device QA.
+
+Live configuration verification remains blocked by that environment destination restriction. Add `gpzcwffxnddhaeaogdyo.supabase.co` to the existing environment allowlist (do not replace an unknown list), or have an authorized operator perform the listed read-only checks. No Production access policy/RLS change should be used to bypass a cloud-network restriction.

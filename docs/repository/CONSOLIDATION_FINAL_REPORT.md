@@ -37,7 +37,7 @@ The develop SHA above is the exact **validated runtime candidate** after deletio
 
 Validated candidate CI [38217685825](https://github.com/Omideno7/new-hope7-app/actions/runs/38217685825): **PASS**, including all current release validation blocks, existing develop responsive/theme/offline/migration/identity guards, optimization, Documents v520, notification/source cost/Fold safeguards, exact-byte build metadata tamper rejection and real local browser Profile/Search/Inbox regression. Existing migration parity remains **42/42 exact; 0 pending**. Whitespace and syntax checks pass. A subsequent docs-only head is also required to pass CI before delivery.
 
-The Inbox test now uses the actual badge-sync module and waits for its documented asynchronous paint, rather than a fake sync result that left its internal count stale. The known v452 report RPC and new executable cache version are checked explicitly; no security assertion was dropped. Device/Store parity, actual native 07:00 push, #240/#241 acceptance and Production schedules cannot be certified in this cloud workspace; gates remain documented.
+The Inbox test now uses the actual badge-sync module and waits for its documented asynchronous paint, rather than a fake sync result that left its internal count stale. The known v452 report RPC and new executable cache version are checked explicitly; no security assertion was dropped. Device/Store parity, actual native 07:00 push, #240/#241 acceptance and Production schedules cannot be certified (the attempted public schedule read was blocked by the cloud egress proxy: tunnel 403 before Supabase) in this cloud workspace; gates remain documented.
 
 ## Safety and release decision
 
