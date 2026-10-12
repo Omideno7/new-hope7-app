@@ -441,7 +441,12 @@ function refreshLanguageUI(force=false){
     if(/auto-saved|خودکار|automatski/i.test(raw))noteStatus.textContent=L('پیش‌نویس خودکار ذخیره شد ✓','Draft auto-saved ✓','Skica je automatski spremljena ✓');
     else if(/restored|بازیابی|vraćena/i.test(raw))noteStatus.textContent=L('پیش‌نویس بازیابی شد ✓','Draft restored ✓','Skica je vraćena ✓');
   }
-  const input=r.querySelector('[data-note-input]');if(input)input.placeholder=L('یادداشت خود را بنویسید…','Write your note…','Napišite bilješku…');
+  const input=r.querySelector('[data-note-input]');if(input){
+    input.placeholder=L('یادداشت خود را بنویسید…','Write your note…','Napišite bilješku…');
+    input.dir=currentLang==='fa'?'rtl':'ltr';
+    input.style.direction=input.dir;
+    input.style.textAlign=currentLang==='fa'?'right':'left';
+  }
   r.lang=currentLang;r.dir=currentLang==='fa'?'rtl':'ltr';
   text('[data-mute] small',L('بی‌صدا','Mute','Isključi zvuk'));
   text('[data-volume-note]',L('در آیفون، صدای سیستم با دکمه‌های گوشی کنترل می‌شود.','On iPhone, system volume is controlled by the phone buttons.','Na iPhoneu se glasnoća sustava kontrolira tipkama telefona.'));
