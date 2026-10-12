@@ -2,6 +2,10 @@
 
 `develop` → automated QA → physical iOS/Android/Web QA where required → explicit release approval → normal `develop` → `main` integration → Web/iOS/Android builds from the **same exact approved main SHA**.
 
+## Single development branch rule
+
+For normal work there are only two active workflow roles: **`develop` for all coding/testing** and **`main` for approved release/Production**. Every agent must work directly on `develop` after fetching current remote state. Do **not** create `feature/*`, `fix/*`, `codex/*`, `agent/*`, `test/*`, backup, experiment or per-task PR branches unless the user explicitly authorizes that exact exception. Normal QA happens on `develop`; after user approval, the reviewed `develop` state is integrated into `main`.
+
 - `main` is the reviewed release source and default branch. No direct routine edits, force pushes or history rewrite.
 - `develop` is the only normal development/integration branch. Before editing, print repo/branch/SHA/upstream/target, fetch and check for another agent's work. Commit normally here. If the remote advances, reconcile the actual work rather than overwriting it.
 - All normal development must reach `develop` first. Never create a temporary branch and merge it directly into `main`; `main` receives only explicitly approved release integration.
