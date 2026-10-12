@@ -1250,5 +1250,9 @@
   "archive/branch-cleanup-2026-10-12/5d5a46a6e44ee002282a4c73c9900e4b07ab16f7": {
     "sha": "5d5a46a6e44ee002282a4c73c9900e4b07ab16f7",
     "reason": "Archived exact historical branch tip test/network-diagnostic-iran-20260925. Behavior unreviewed; no wholesale integration. Other identical refs may share this preserved tip."
+  },
+  "checkpoint/canonical-develop-consolidation-2026-10-12": {
+    "sha": "a790b6e9520681df97f8a951acfea1c0f1187084",
+    "reason": "Normal ancestry-preserving main/develop consolidation snapshot; no Store/Draft merge or production release."
   }
 }

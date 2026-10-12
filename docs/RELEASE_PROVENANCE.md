@@ -9,6 +9,8 @@
 | Android | 2.5.0 / versionCode 25002 | `a177cdc7d995894868cf84bbe00c2dfa05ad6e25`, payload `android-release-25002/www` | Successful published build run **37388172102** |
 | Development before normalization | develop | `82544939da06f580351002dca5114b6bd8d0471e` | Checkpoint tag preserves every existing unique commit; normal main merge only |
 
+Validated canonical develop runtime candidate: `15b961e34d05307a03af33ae655228355213c153`, CI run **38217685825**. Final inventory commits are documentation-only and their exact head is recorded in the integration PR/delivery.
+
 Current main remains `67d829de0d8d4846e309a99bcd98c4c005b3b030` throughout this maintenance execution. Final canonical develop head is recorded in the cleanup delivery/integration PR and generated build metadata; this file intentionally records the verified source capture rather than embedding its own future commit hash. The after-cleanup report records the exact validated runtime candidate before its docs-only inventory update.
 
 ### Authoritative iOS distinction
