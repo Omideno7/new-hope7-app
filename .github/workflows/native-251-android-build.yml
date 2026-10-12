@@ -1,0 +1,128 @@
+name: Native Android 2.5.1 RTL Candidate
+
+on:
+  push:
+    branches: [develop]
+    paths:
+      - '.github/workflows/native-251-android-build.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-android-251:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout develop with tags
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Install Android API 36
+        run: |
+          set -euo pipefail
+          export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
+          export ANDROID_HOME=$ANDROID_SDK_ROOT
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> "$GITHUB_ENV"
+          echo "ANDROID_HOME=$ANDROID_HOME" >> "$GITHUB_ENV"
+          SDKMANAGER="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKMANAGER" --licenses >/dev/null || true
+          "$SDKMANAGER" 'platforms;android-36' 'build-tools;36.0.0' 'platform-tools'
+
+      - name: Reconstruct published 2.5.0 Android baseline and apply only RTL runtime
+        run: |
+          set -euo pipefail
+          git rev-parse store/android-2.5.0-25002
+          mkdir -p baseline native-release/assets out
+          git archive store/android-2.5.0-25002 android-release-25002 | tar -x -C baseline
+          cp -a baseline/android-release-25002/www native-release/www
+          cp baseline/android-release-25002/package.json native-release/package.json
+          cp baseline/android-release-25002/capacitor.config.json native-release/capacitor.config.json
+          cp native-release/www/assets/new-hope7-logo-1024.png native-release/assets/logo.png
+          cp js/nh7-user-writing-direction-v571.js native-release/www/js/nh7-user-writing-direction-v571.js
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('native-release/www/index.html')
+          s=p.read_text()
+          assert 'nh7-user-writing-direction-v571.js' not in s
+          m=re.search(r'(^\s*<script[^>]+src="js/nh7-media-player-v500\.js[^>]*></script>\s*$)',s,re.M)
+          assert m, 'media player script not found'
+          indent=re.match(r'\s*',m.group(1)).group(0)
+          s=s[:m.end()]+f'\n{indent}<script src="js/nh7-user-writing-direction-v571.js?v=5.7.1" defer></script>'+s[m.end():]
+          p.write_text(s)
+          PY
+          grep -q 'nh7-user-writing-direction-v571.js?v=5.7.1' native-release/www/index.html
+
+      - name: Generate proven Capacitor Android wrapper
+        run: |
+          set -euo pipefail
+          cd native-release
+          npm install --no-audit --no-fund
+          cd ..
+          python3 baseline/android-release-25002/patch_native_push_compat.py
+          cd native-release
+          npx cap add android
+          npx cap sync android
+          cd ..
+          python3 baseline/android-release-25002/configure_android.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('native-release/android/app/build.gradle')
+          s=p.read_text()
+          s=re.sub(r'versionCode\s+\d+', 'versionCode 25009', s)
+          s=re.sub(r'versionName\s+"[^"]+"', 'versionName "2.5.1"', s)
+          p.write_text(s)
+          PY
+          grep -q 'applicationId "com.omideno7.newhope7"' native-release/android/app/build.gradle
+          grep -q 'versionCode 25009' native-release/android/app/build.gradle
+          grep -q 'versionName "2.5.1"' native-release/android/app/build.gradle
+
+      - name: Build and validate unsigned AAB
+        run: |
+          set -euo pipefail
+          cd native-release/android
+          chmod +x gradlew
+          ./gradlew --no-daemon bundleRelease
+          cd ../..
+          cp native-release/android/app/build/outputs/bundle/release/app-release.aab out/New_Hope_7_2.5.1_25009_API36_UNSIGNED.aab
+          curl --fail --location --silent --show-error https://github.com/google/bundletool/releases/download/1.18.2/bundletool-all-1.18.2.jar --output "$RUNNER_TEMP/bundletool.jar"
+          java -jar "$RUNNER_TEMP/bundletool.jar" validate --bundle=out/New_Hope_7_2.5.1_25009_API36_UNSIGNED.aab
+          java -jar "$RUNNER_TEMP/bundletool.jar" dump manifest --bundle=out/New_Hope_7_2.5.1_25009_API36_UNSIGNED.aab --module=base > out/AndroidManifest.xml
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET, hashlib, json
+          from pathlib import Path
+          ns='{http://schemas.android.com/apk/res/android}'
+          root=ET.parse('out/AndroidManifest.xml').getroot()
+          assert root.attrib['package']=='com.omideno7.newhope7'
+          assert root.attrib[ns+'versionCode']=='25009'
+          assert root.attrib[ns+'versionName']=='2.5.1'
+          aab=Path('out/New_Hope_7_2.5.1_25009_API36_UNSIGNED.aab')
+          audit={'status':'PASS','package':'com.omideno7.newhope7','versionName':'2.5.1','versionCode':25009,'sourceBaseline':'store/android-2.5.0-25002','rtlRuntime':'js/nh7-user-writing-direction-v571.js','sha256':hashlib.sha256(aab.read_bytes()).hexdigest()}
+          Path('out/build-audit.json').write_text(json.dumps(audit,indent=2))
+          print(json.dumps(audit))
+          PY
+
+      - name: Upload Android 2.5.1 candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: New_Hope_7_Android_2.5.1_25009_UNSIGNED
+          path: |
+            out/New_Hope_7_2.5.1_25009_API36_UNSIGNED.aab
+            out/AndroidManifest.xml
+            out/build-audit.json
+          retention-days: 14
