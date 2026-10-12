@@ -6,7 +6,7 @@ const NH7_RELEASE_CORE_VERSION='5.4.7-canonical-consolidation';
 const NH7_RELEASE_CORE_CACHE='nh7-release-core-v547-canonical-consolidation';
 const NH7_RELEASE_DATA_CACHE='nh7-data-stable-v329';
 const NH7_RELEASE_ASSETS=[
-  
+
   './',
   './index.html',
   './app-v239.html',
