@@ -515,7 +515,7 @@ const style=document.createElement('style');style.id='nh7-audio-classic-v400-sty
 new MutationObserver(()=>{clearTimeout(patchTimer);patchTimer=setTimeout(()=>{patch();prewarm()},40)}).observe(document.documentElement,{childList:true,subtree:true});
 setTimeout(()=>{patch();prewarm()},250);
 
-window.NH7_AUDIO_CLASSIC_VERSION='4.8.6';
+window.NH7_AUDIO_CLASSIC_VERSION='4.8.7';
 window.NH7_AUDIO_SIGNED_VERSION='4.6.1-401-refresh';
 window.NH7_AUDIO_CLASSIC_V400={patch,prewarm,playItem,playNextTrack,playPreviousTrack,setPlaybackSpeed,setMediaVolume,toggleMediaMute,downloadItem,clearAll,getState:()=>({current,audio,playQueue:[...playQueue],queueIndex,volumeControlSupported}),openCurrentAudio,syncNowPlaying};
 // Compatibility for the Settings cleanup controller introduced in 2.3.9.48.
