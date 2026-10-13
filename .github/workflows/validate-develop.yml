@@ -133,6 +133,8 @@ jobs:
           python3 scripts/verify-consolidation-safety.py
           python3 scripts/verify-main-develop-sync.py
           node scripts/verify-performance-wave1.cjs
+          node scripts/verify-local-first-wave2.cjs
+          node scripts/measure-local-first-wave2.cjs
 
       - name: Verify build provenance against actual exported bytes
         run: python3 scripts/verify-build-metadata.py
@@ -146,3 +148,4 @@ jobs:
           node scripts/verify-sermon-note-direction.cjs http://127.0.0.1:8878
           node scripts/verify-user-writing-direction.cjs http://127.0.0.1:8878
           node scripts/verify-performance-wave1-browser.cjs http://127.0.0.1:8878
+          node scripts/verify-local-first-wave2-browser.cjs http://127.0.0.1:8878

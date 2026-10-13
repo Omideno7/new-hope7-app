@@ -267,7 +267,7 @@ function mergeFastingLog(localLog, remoteLog) {
 
 export async function syncSpiritualPlansV240(ctx, { force=false } = {}) {
   if (!loggedIn(ctx) || !navigator.onLine || typeof ctx.cloudFetch !== 'function') return false;
-  const userId = ctx.userId();
+  const userId = ctx.userId(),currentOwner=()=>ctx.userId()===userId;
   const last = cloudSyncAt.get(userId) || 0;
   if (!force && Date.now() - last < 30000) return true;
   if (typeof ctx.syncCloudQueue === 'function') await ctx.syncCloudQueue();
@@ -280,16 +280,22 @@ export async function syncSpiritualPlansV240(ctx, { force=false } = {}) {
     console.warn('Spiritual plans cloud restore unavailable', error);
     return false;
   }
+  if(!currentOwner())return false;
   const progress = loadProgress(ctx);
   for (const row of progressRows) {
     const plan = planProgress(progress, row.plan_id);
     const number = String(Number(row.day_number));
-    plan.days[number] = mergeProgressDay(plan.days[number], cloudProgressRowToLocal(row));
+    const local=plan.days[number],remote=cloudProgressRowToLocal(row);
+    window.NH7LocalFirstWave2?.observe('spiritual_plan_progress','',row);
+    if(local&&String(local.note||'')!==String(remote.note||'')){
+      window.NH7LocalFirstWave2?.recordConflict('spiritual:'+row.plan_id+':'+number,local,remote);
+    }else plan.days[number] = mergeProgressDay(local,remote);
     const started = Object.values(plan.days).map(day => day.startedAt).filter(Boolean).sort();
     plan.startedAt = started[0] || plan.startedAt || null;
     plan.lastOpenedDay = Math.max(Number(plan.lastOpenedDay || 1), Number(row.day_number || 1));
   }
   const plans = await loadPlans(ctx).catch(() => []);
+  if(!currentOwner())return false;
   for (const plan of plans) if (progress.plans[plan.id]) derivePlanCompletion(plan, progress.plans[plan.id]);
   saveProgress(ctx, progress);
 
@@ -301,7 +307,10 @@ export async function syncSpiritualPlansV240(ctx, { force=false } = {}) {
       purpose:row.purpose || '', status:row.status || 'active', completedAt:row.completed_at || null,
       createdAt:row.created_at || null, updatedAt:row.updated_at || row.created_at || null
     };
-    journeyMap.set(journey.id, mergeJourney(journeyMap.get(journey.id), journey));
+    window.NH7LocalFirstWave2?.observe('fasting_journeys','',row);
+    const local=journeyMap.get(journey.id);
+    if(local&&String(local.purpose||'')!==String(journey.purpose||''))window.NH7LocalFirstWave2?.recordConflict('journey:'+journey.id,local,journey);
+    else journeyMap.set(journey.id, mergeJourney(local, journey));
   }
   fasting.journeys = Array.from(journeyMap.values()).sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
   for (const row of logRows) {
@@ -310,7 +319,10 @@ export async function syncSpiritualPlansV240(ctx, { force=false } = {}) {
       id:row.id || null, journeyId:row.journey_id, logDate:row.log_date, completed:Boolean(row.completed),
       prayerMinutes:Number(row.prayer_minutes || 0), scriptureNote:row.scripture_note || '', reflection:row.reflection || '', updatedAt:row.updated_at || null
     };
-    fasting.logs[key] = mergeFastingLog(fasting.logs[key], log);
+    window.NH7LocalFirstWave2?.observe('fasting_daily_logs','',row);
+    const local=fasting.logs[key];
+    if(local&&(String(local.reflection||'')!==String(log.reflection||'')||String(local.scriptureNote||'')!==String(log.scriptureNote||'')))window.NH7LocalFirstWave2?.recordConflict('fasting:'+key,local,log);
+    else fasting.logs[key] = mergeFastingLog(local, log);
   }
   saveFasting(ctx, fasting);
   cloudSyncAt.set(userId, Date.now());

@@ -25,7 +25,7 @@ const session={access_token:'e30.'+Buffer.from(JSON.stringify({exp:4102444800,su
   if(url.pathname.includes('/auth/'))data=session;
   else if(url.pathname.endsWith('nh7_library_catalog_v396'))data=catalog;
   else if(url.pathname.endsWith('nh7_library_reader_access_v321'))data={allowed:true,audience:'public',item_id:'public',reader_mode:'text',reader_text:{text:'Verified reader '+body.p_language,pages:[]}};
-  else if(url.pathname.endsWith('nh7-content-access'))data=body.action==='catalog'?{items:[{id,title_en:'Sermon',audio_url:base+'/fixture.wav'}],approved:true}:{authenticated:true,approved:true,user_email:session.user.email};
+  else if(url.pathname.endsWith('nh7-content-access'))data=body.action==='save_bible_batch'?{ok:true,saved:body.items.length,batch_id:body.batch_id}:body.action==='catalog'?{items:[{id,title_en:'Sermon',audio_url:base+'/fixture.wav'}],approved:true}:{authenticated:true,approved:true,user_email:session.user.email};
   else if(url.pathname.endsWith('nh7-school-media-access'))data={signed_url:base+'/fixture.wav',expires_in:900};
   else if(url.pathname.includes('nh7_registration'))data=[{found:true,status:'approved',approved:true,payload:{email:session.user.email}}];
   else if(url.pathname.endsWith('nh7_get_my_school_snapshot_v2110'))data={access:{status:'approved'},lessons:[],assignments:[],progress:[]};

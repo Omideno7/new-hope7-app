@@ -24,6 +24,7 @@ const signed=new Map();
 const derived=new Map();
 const localUrls=new Map();
 const failedLocal=new Set();
+let progressOwnerWave2=null;
 let audio=null,current=null,currentPanel=null,patchTimer=0,prewarmBusy=false,nowPlayingBar=null,playQueue=[],queueIndex=-1,queueBusy=false,volumeControlSupported=null,selection=0;
 let listenedPending=0,lastWall=0,lastPosition=0,trackTimer=0,sessionId='';
 
@@ -43,6 +44,7 @@ async function accessToken(){
     try{
       const response=await fetch(`${SB}/auth/v1/token?grant_type=refresh_token`,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:session.refresh_token}),cache:'no-store'});
       const text=await response.text();let data={};try{data=text?JSON.parse(text):{}}catch(_){}
+      if(readSession()?.access_token!==session?.access_token||readSession()?.user?.id!==session?.user?.id)return '';
       if(response.ok&&data?.access_token){session=Object.assign({},session,data,{user:data.user||session.user});localStorage.setItem(SESSION_KEY,JSON.stringify(session))}
     }catch(_){}
   }
@@ -64,7 +66,7 @@ function titleFor(item){return String(item?.['title_'+lang()]||item?.title_fa||i
 function durationFor(item){const exact=Number(item?.duration_seconds||0);return exact>0?exact:Math.max(0,Math.round(Number(item?.duration_minutes||0)*60))}
 function progressKey(item){return'nh7_sermon_progress_'+mediaId(item)}
 function readProgress(item){try{return JSON.parse(localStorage.getItem(progressKey(item))||'{}')}catch(_){return{}}}
-function saveProgress(item,completed=false){if(!audio||!item)return;try{localStorage.setItem(progressKey(item),JSON.stringify({time:completed?0:Number(audio.currentTime||0),duration:Number.isFinite(audio.duration)?Number(audio.duration||0):durationFor(item),completed:!!completed,updatedAt:new Date().toISOString()}))}catch(_){}}
+function saveProgress(item,completed=false,checkpoint=false){if(!audio||!item||progressOwnerWave2&&!window.NH7LocalFirstWave2?.isCurrent(progressOwnerWave2))return;try{localStorage.setItem(progressKey(item),JSON.stringify({time:completed?0:Number(audio.currentTime||0),duration:Number.isFinite(audio.duration)?Number(audio.duration||0):durationFor(item),completed:!!completed,updatedAt:new Date().toISOString()}));window.NH7LocalFirstWave2?.checkpoint(progressKey(item),readProgress(item),completed||checkpoint)}catch(_){}}
 
 function deriveFromCard(card){
   if(!card)return null;
@@ -100,6 +102,7 @@ async function refreshAudioSession(){
     const response=await fetch(`${SB}/auth/v1/token?grant_type=refresh_token`,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:session.refresh_token}),cache:'no-store'});
     const text=await response.text();let data={};try{data=text?JSON.parse(text):{}}catch(_){}
     if(!response.ok||!data?.access_token)return null;
+    if(readSession()?.access_token!==session?.access_token||readSession()?.user?.id!==session?.user?.id)return null;
     // Supabase refresh responses can omit user metadata. Preserve the existing
     // user object so account identity remains stable across an audio refresh.
     session=Object.assign({},session,data,{user:data.user||session.user});
@@ -380,7 +383,7 @@ function ensureAudio(){
   audio.addEventListener('playing',()=>{if(!current)return;lastWall=Date.now();lastPosition=audio.currentTime;setupMediaSession(current);setStatus(current,L('در حال پخش','Playing','Reprodukcija'),'ok');syncPanel(current);syncNowPlaying()});
   audio.addEventListener('waiting',()=>current&&setStatus(current,L('در حال دریافت فایل…','Buffering…','Učitavanje…'),'busy'));
   audio.addEventListener('timeupdate',()=>{if(!current)return;captureListen();saveProgress(current,false);syncPanel(current);syncNowPlaying();scheduleTracking()});
-  audio.addEventListener('pause',()=>{if(!current)return;captureListen();saveProgress(current,false);syncPanel(current);syncNowPlaying();flushTracking(false,true);window.NH7PerformanceWave1?.flush()});
+  audio.addEventListener('pause',()=>{if(!current)return;captureListen();saveProgress(current,false,true);syncPanel(current);syncNowPlaying();flushTracking(false,true);window.NH7PerformanceWave1?.flush()});
   audio.addEventListener('ended',()=>{if(!current)return;captureListen();saveProgress(current,true);window.NH7PerformanceWave1?.audio(sessionId,current,0,true);window.NH7PerformanceWave1?.flush();setStatus(current,L('پخش کامل شد ✓','Completed ✓','Završeno ✓'),'ok');syncPanel(current);syncNowPlaying();Promise.resolve(flushTracking(true,true)).finally(()=>{setTimeout(()=>playNextTrack('auto-ended').catch(()=>{}),120)})});
   audio.addEventListener('volumechange',()=>syncNowPlaying());
   audio.addEventListener('ratechange',()=>{syncNowPlaying();syncMediaPosition()});
@@ -413,6 +416,7 @@ async function isDownloaded(item){if(isNative()){const meta=readMeta(item),Files
 
 async function playItem(item,options={}){
   if(!supported(item))return false;
+  const requestedOwnerWave2=window.NH7LocalFirstWave2?.identity()||null;
   const request=++selection;
   if(!options?.fromQueue)capturePlayQueue(item);
   else{
@@ -420,7 +424,7 @@ async function playItem(item,options={}){
     if(idx>=0)queueIndex=idx;
   }
   showCurrentPanel(item);const player=ensureAudio();
-  if(current&&mediaId(current)===mediaId(item)&&player.src){if(player.paused){try{await player.play()}catch(error){setStatus(item,errorText(error),'error')}}else player.pause();syncPanel(item);syncNowPlaying();return true}
+  if(current&&mediaId(current)===mediaId(item)&&player.src){progressOwnerWave2=requestedOwnerWave2;if(player.paused){try{await player.play()}catch(error){setStatus(item,errorText(error),'error')}}else player.pause();syncPanel(item);syncNowPlaying();return true}
   if(current&&mediaId(current)!==mediaId(item)){captureListen();flushTracking(false,true).catch(()=>{})}
   const storedLocal=await localUrl(item);
   if(request!==selection)return false;
@@ -430,7 +434,7 @@ async function playItem(item,options={}){
     setStatus(item,local?L('در حال بازکردن نسخه دانلودشده…','Opening downloaded copy…','Otvaranje preuzete kopije…'):L('در حال آماده‌سازی فایل صوتی…','Preparing audio…','Priprema audio datoteke…'),'busy');
     const url=local||await signedUrl(item);
     if(request!==selection)return false;
-    current=item;sessionId='classic_'+(crypto.randomUUID?.()||Date.now());listenedPending=0;lastWall=Date.now();lastPosition=0;setupMediaSession(item);syncNowPlaying();
+    current=item;progressOwnerWave2=requestedOwnerWave2;sessionId='classic_'+(crypto.randomUUID?.()||Date.now());listenedPending=0;lastWall=Date.now();lastPosition=0;setupMediaSession(item);syncNowPlaying();
     player.pause();player.src=url;player.playbackRate=nearestSpeed(Number(localStorage.getItem('nh7_sermon_speed')||1)||1);player.load();syncPanel(item);
     try{await player.play()}catch(error){setStatus(item,L('فایل آماده است؛ دوباره روی Play بزنید.','The file is ready; tap Play again.','Datoteka je spremna; ponovno dodirnite Play.'),'busy')}
   }catch(error){setStatus(item,errorText(error)+(error?.status?` [${error.status}]`:''),'error')}
@@ -506,8 +510,8 @@ window.addEventListener('pointerdown',event=>{const node=event.target.closest?.(
 window.addEventListener('click',intercept,true);
 window.addEventListener('input',event=>{const seek=event.target.closest?.('[data-classic-seek]');if(seek&&audio&&current&&Number.isFinite(audio.duration)&&audio.duration>0){event.stopImmediatePropagation();audio.currentTime=audio.duration*Number(seek.value||0)/1000;syncPanel(current)}},true);
 window.addEventListener('online',()=>{patch();prewarm()});
-document.addEventListener('visibilitychange',()=>{if(document.hidden)flushTracking(false,true).catch(()=>{})});
-window.addEventListener('pagehide',()=>{flushTracking(false,true).catch(()=>{})});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){saveProgress(current,false,true);flushTracking(false,true).catch(()=>{})}});
+window.addEventListener('pagehide',()=>{saveProgress(current,false,true);flushTracking(false,true).catch(()=>{})});
 window.addEventListener('beforeunload',()=>{flushTracking(false,true).catch(()=>{});for(const url of localUrls.values())if(url?.startsWith('blob:'))URL.revokeObjectURL(url)});
 
 async function clearAll(){

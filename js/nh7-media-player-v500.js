@@ -315,14 +315,17 @@ async function saveInlineNote(){
   const item=state().current,r=ensure(),p=r.querySelector('[data-note-panel]'),input=r.querySelector('[data-note-input]'),status=r.querySelector('[data-note-status]');
   if(!item||!p||!input||p.dataset.noteId!==mediaId(item))return;
   clearTimeout(noteDraftTimer);noteDraftTimer=0;
+  const owner=window.NH7LocalFirstWave2?.identity();
   const id=mediaId(item),clean=normalizeInlineNote(input.value);
   input.value=clean;writeNoteDraft(id,clean,false);
   try{
     localStorage.setItem('nh7_sermon_note_'+id,clean);
     if(window.NH7_SERMON_NOTE_BRIDGE_V527?.save)await window.NH7_SERMON_NOTE_BRIDGE_V527.save(id,clean);
+    if(owner&&!window.NH7LocalFirstWave2.isCurrent(owner))return;
     try{localStorage.removeItem(noteDraftKey(id))}catch(_){}
     if(status)status.textContent=L('یادداشت نهایی ذخیره شد ✓','Note saved ✓','Bilješka je spremljena ✓');
   }catch(_){
+    if(owner&&!window.NH7LocalFirstWave2.isCurrent(owner))return;
     writeNoteDraft(id,clean,false);
     if(status)status.textContent=L('ذخیره نهایی انجام نشد؛ پیش‌نویس روی دستگاه محفوظ است.','Final save failed; your draft is safe on this device.','Konačno spremanje nije uspjelo; skica je sigurna na uređaju.');
   }
@@ -596,6 +599,8 @@ function resumeUI(){lastUiSignature='';lastUiLang='';sync();scheduleSync()}
 function start(){
   ensure();refreshLanguageUI(true);resumeUI();
   window.addEventListener('pageshow',resumeUI);
+  window.addEventListener('nh7-personal-before-owner-wave2',()=>flushInlineNoteDraft(false));
+  window.addEventListener('nh7-personal-owner-wave2',()=>{clearTimeout(noteDraftTimer);noteDraftTimer=0;const panel=root?.querySelector('[data-note-panel]'),input=root?.querySelector('[data-note-input]');if(panel){panel.hidden=true;panel.dataset.noteId=''}if(input)input.value=''});
   window.addEventListener('pagehide',()=>{clearTimeout(syncTimer);flushInlineNoteDraft(false)});
   document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(syncTimer);flushInlineNoteDraft(false)}else resumeUI()});
   window.addEventListener('change',e=>{if(['langSelect','settingsLang'].includes(e.target?.id)){lastUiLang='';lastTrackKey='';setTimeout(()=>{refreshLanguageUI(true);lastUiSignature='';sync()},0)}},true);

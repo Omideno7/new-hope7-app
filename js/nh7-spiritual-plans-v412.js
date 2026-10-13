@@ -53,6 +53,7 @@ function localNum(value){
 }
 function escapeHtml(value){ return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
 function currentSessionRecord(){
+  if(window.NH7LocalFirstWave2){try{return{key:'nh7_user_session_v170',value:window.NH7LocalFirstWave2.identity().uid?JSON.parse(localStorage.getItem('nh7_user_session_v170')):null}}catch(_){return{key:'nh7_user_session_v170',value:null}}}
   const preferred = ['nh7_user_session_v170','nh7_auth_session','nh7_supabase_session'];
   const keys = [...preferred];
   for(let i=0;i<localStorage.length;i++){
@@ -89,7 +90,9 @@ async function session(){
         body:JSON.stringify({ refresh_token:value.refresh_token })
       });
       if(response.ok){
-        value = await response.json();
+        const next = await response.json();
+        if(currentSessionRecord().value?.access_token!==record.value?.access_token||currentSessionRecord().value?.user?.id!==record.value?.user?.id)return null;
+        value=next;
         localStorage.setItem(record.key, JSON.stringify(value));
         return value;
       }
@@ -140,7 +143,7 @@ function queue(){
   try{ const value = JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]'); return Array.isArray(value) ? value : []; }
   catch(_){ return []; }
 }
-function setQueue(value){ localStorage.setItem(QUEUE_KEY, JSON.stringify(value.slice(-300))); }
+function setQueue(value){ localStorage.setItem(QUEUE_KEY, JSON.stringify(value)); }
 async function rest(path, options={}){
   const s = await session();
   if(!s?.access_token) throw new Error('login_required');
@@ -164,6 +167,11 @@ async function performCloudOperation(operation){
   return true;
 }
 async function saveCloud(operation){
+  if(window.NH7LocalFirstWave2){
+    const rows=Array.isArray(operation.payload)?operation.payload:[operation.payload];
+    await Promise.all(rows.map(payload=>window.NH7LocalFirstWave2.enqueue({...operation,payload})));
+    return false; // Durable locally; do not claim cloud acknowledgement.
+  }
   if(!navigator.onLine || !isLoggedIn()){
     const items = queue(); items.push({ ...operation, queuedAt:new Date().toISOString() }); setQueue(items); return false;
   }
@@ -174,6 +182,7 @@ async function saveCloud(operation){
   }
 }
 async function syncCloudQueue(){
+  if(window.NH7LocalFirstWave2){window.NH7LocalFirstWave2.importLegacyPlans();await window.NH7LocalFirstWave2.flush();return !window.NH7LocalFirstWave2.pending().length}
   if(!navigator.onLine || !isLoggedIn()) return false;
   const items = queue(); if(!items.length) return true;
   const remaining = [];

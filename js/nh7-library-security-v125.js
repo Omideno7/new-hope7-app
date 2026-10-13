@@ -159,8 +159,12 @@
           cache_version: bundle.items.every(x=>x.audience==='public')&&bundle.collections.every(x=>x.audience==='public')?PUBLIC_CACHE_VERSION:'offline-only',
           ...publicOnly(bundle),
         });
-        sessionStorage.setItem(CACHE + id, snapshot);
-        localStorage.setItem(CACHE + id, snapshot);
+        // Rebuildable metadata must leave space for durable personal edits.
+        // Keep the complete online bundle; never truncate rows or clear offline files.
+        if(snapshot.length*2<=2*1024*1024 && bundle.items.length+bundle.collections.length<=10000){
+          sessionStorage.setItem(CACHE + id, snapshot);
+          localStorage.setItem(CACHE + id, snapshot);
+        }
       } catch (_) {}
       clearTimeout(expiryTimer);
       if(bundle.items.some(x=>x.audience!=='public')||bundle.collections.some(x=>x.audience!=='public'))expiryTimer=setTimeout(()=>invalidate('expired'),35000);

@@ -27,6 +27,7 @@ async function ensureSession(){
       const response=await fetch(`${URL}/auth/v1/token?grant_type=refresh_token`,{method:'POST',cache:'no-store',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:value.refresh_token})});
       if(!response.ok)return value;
       const next=await response.json();
+      if(storedSession()?.access_token!==value?.access_token||storedSession()?.user?.id!==value?.user?.id)return null;
       if(next?.access_token){persistSession(next);value=next}
       return value;
     }catch(_){return value}finally{refreshing=null}
@@ -147,7 +148,7 @@ function makePages(payload){
 }
 function pageLabel(page,index){return String(page?.title||'').trim()||`${L('بخش','Section','Dio')} ${index+1}`}
 function readPosition(id){try{return JSON.parse(localStorage.getItem(POS_PREFIX+id)||'{}')}catch(_){return{}}}
-function savePosition(){if(!book)return;localStorage.setItem(POS_PREFIX+book.item.id,JSON.stringify({page:pageIndex,scroll:modal?.querySelector('.nh7-book-article')?.scrollTop||0,at:Date.now()}))}
+function savePosition(){if(!book||book.owner!==window.NH7LibrarySecurityV125?.uid())return;localStorage.setItem(POS_PREFIX+book.item.id,JSON.stringify({page:pageIndex,scroll:modal?.querySelector('.nh7-book-article')?.scrollTop||0,at:Date.now()}))}
 
 async function openBook(id){
   const item=await ensureItem(id);
@@ -160,7 +161,7 @@ async function openBook(id){
   if(!await ensureItem(item.id))return false;
   if(!data?.allowed){alert(accessError(data));return false}
   const pages=makePages(readerPayload(data)),position=readPosition(item.id);
-  book={item,data,pages,language:data.reader_language||lang()};
+  book={item,data,pages,owner,language:data.reader_language||lang()};
   pageIndex=Math.max(0,Math.min(pages.length-1,Number(position.page||0)));
   showReader(Number(position.scroll||0));
   return true;

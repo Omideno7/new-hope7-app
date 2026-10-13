@@ -369,7 +369,8 @@ async function invokeEdgeFunction(name,payload={}){
 
 async function refreshUserSession(){
   const old=authSession(); if(!old?.refresh_token)return null;
-  try{const d=await authApi('token?grant_type=refresh_token',{method:'POST',body:JSON.stringify({refresh_token:old.refresh_token})});saveAuthSession(d);return d}catch(e){saveAuthSession(null);return null}
+  const current=()=>authSession()?.access_token===old.access_token&&authSession()?.user?.id===old.user?.id;
+  try{const d=await authApi('token?grant_type=refresh_token',{method:'POST',body:JSON.stringify({refresh_token:old.refresh_token})});if(!current())return null;saveAuthSession(d);return d}catch(e){if(current())saveAuthSession(null);return null}
 }
 function authEmail(){ return String(authSession()?.user?.email||'').trim().toLowerCase(); }
 
@@ -532,6 +533,7 @@ function nh7TimedCloudRpcV470(name,payload={},timeoutMs=NH7_FAST_CLOUD_TIMEOUT_V
   return nh7TimedCloudFetchV470('rpc/'+name,{method:'POST',body:JSON.stringify(payload)},timeoutMs);
 }
 function enqueueCloud(op){
+  if(window.NH7LocalFirstWave2&&nh7LocalFirstEligibleWave2(op))return window.NH7LocalFirstWave2.enqueue(op);
   const q=JSON.parse(localStorage.getItem('nh7_cloud_queue')||'[]');
   q.push(Object.assign({id:Date.now()+'_'+Math.random().toString(16).slice(2),createdAt:new Date().toISOString()},op));
   localStorage.setItem('nh7_cloud_queue',JSON.stringify(q));
@@ -539,25 +541,28 @@ function enqueueCloud(op){
 }
 let nh7CloudDrainWave1=null;
 function syncCloudQueue(){
+  window.NH7LocalFirstWave2?.importLegacyMain();
+  window.NH7LocalFirstWave2?.flush().catch(console.warn);
   if(!navigator.onLine)return Promise.resolve();
   if(nh7CloudDrainWave1)return nh7CloudDrainWave1;
   nh7CloudDrainWave1=drainCloudQueueWave1().finally(()=>{nh7CloudDrainWave1=null});
   return nh7CloudDrainWave1;
 }
 async function drainCloudQueueWave1(){
-  const attempted=new Set();
+  const attempted=new Set(),send=(path,options)=>window.NH7LocalFirstWave2?window.NH7LocalFirstWave2.legacySend(path,options):cloudFetch(path,options);
   while(navigator.onLine){
     const queue=JSON.parse(localStorage.getItem('nh7_cloud_queue')||'[]'),activeEmail=authEmail();
-    const batch=queue.filter(op=>!attempted.has(op.id||JSON.stringify(op))&&(!op.owner_email||String(op.owner_email).toLowerCase()===activeEmail));
+    const batch=queue.filter(op=>(!window.NH7LocalFirstWave2||window.NH7LocalFirstWave2.legacyEligible(op))&&!attempted.has(op.id||JSON.stringify(op))&&(!op.owner_email||String(op.owner_email).toLowerCase()===activeEmail));
     if(!batch.length)break;
     for(const op of batch){
       if(!navigator.onLine)break;
+      if(window.NH7LocalFirstWave2&&!window.NH7LocalFirstWave2.legacyEligible(op))continue;
       if(op.owner_email&&String(op.owner_email).toLowerCase()!==authEmail())continue;
       attempted.add(op.id||JSON.stringify(op));
       try{
-        if(op.type==='insert')await cloudFetch(op.table,{method:'POST',body:JSON.stringify(op.payload)});
-        else if(op.type==='upsert')await cloudFetch(op.table+'?on_conflict='+encodeURIComponent(op.conflict||'device_id'),{method:'POST',headers:{'Prefer':'resolution=merge-duplicates,return=representation'},body:JSON.stringify(op.payload)});
-        else if(op.type==='delete')await cloudFetch(op.path,{method:'DELETE'});
+        if(op.type==='insert')await send(op.table,{method:'POST',body:JSON.stringify(op.payload)});
+        else if(op.type==='upsert')await send(op.table+'?on_conflict='+encodeURIComponent(op.conflict||'device_id'),{method:'POST',headers:{'Prefer':'resolution=merge-duplicates,return=representation'},body:JSON.stringify(op.payload)});
+        else if(op.type==='delete')await send(op.path,{method:'DELETE'});
         else continue;
         // Acknowledge only this successful operation against the latest queue.
         const latest=JSON.parse(localStorage.getItem('nh7_cloud_queue')||'[]');
@@ -568,9 +573,32 @@ async function drainCloudQueueWave1(){
     }
   }
   const remaining=JSON.parse(localStorage.getItem('nh7_cloud_queue')||'[]');
-  localStorage.setItem('nh7_cloud_status',remaining.length?'queued':'synced');
+  localStorage.setItem('nh7_cloud_status',remaining.length||window.NH7LocalFirstWave2?.pending().length?'queued':'synced');
 }
-async function saveCloud(op){ enqueueCloud(op); await syncCloudQueue(); }
+function nh7LocalFirstEligibleWave2(op){return ['user_notes','nh7_account_notes','user_progress','nh7_account_progress','saved_verses','nh7_account_saved_verses'].includes(op.table)||/^(user_notes|nh7_account_notes|saved_verses|nh7_account_saved_verses)\?/.test(op.path||'')}
+async function saveCloud(op){
+  if(window.NH7LocalFirstWave2&&nh7LocalFirstEligibleWave2(op)){enqueueCloud(op);return true}
+  enqueueCloud(op);await syncCloudQueue();
+}
+window.NH7LocalFirstWave2?.configure(async(path,options,owner,edge=false)=>{
+  if(!window.NH7LocalFirstWave2.isCurrent(owner))throw Error('session_changed');
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);
+  try{
+    const response=await fetch(SUPABASE_CONFIG.url+(edge?'/functions/v1/':'/rest/v1/')+path,{...options,signal:controller.signal,headers:{apikey:SUPABASE_CONFIG.key,Authorization:'Bearer '+(owner.token||SUPABASE_CONFIG.key),'Content-Type':'application/json','x-device-id':deviceId(),'x-user-email':owner.email,...options.headers}});
+    if(!response.ok)throw Error('Personal sync HTTP '+response.status);
+    if(response.status===204)return null;
+    return await response.json();
+  }finally{clearTimeout(timer)}
+});
+window.NH7_PERSONAL_SYNC_BRIDGE_WAVE2={saveProgress:(...args)=>saveProgressCloud(...args),deleteNote:(...args)=>deleteNoteCloudWave2(...args),clearVerse:async(key,value,payload)=>{localStorage.setItem(key,JSON.stringify(value));await saveProgressCloud(key,value);if(payload)await window.NH7BibleBatchV230?.syncPayload?.(payload)}};
+async function deleteNoteCloudWave2(key){
+  const localKey='nh7_'+key,email=accountCloudEmail(),expected_content=localStorage.getItem(localKey);
+  localStorage.removeItem(localKey);
+  const ops=[{type:'delete',sync_key:'user_notes:'+key,expected_content,local_key:localKey,path:'user_notes?device_id=eq.'+encodeURIComponent(deviceId())+'&note_key=eq.'+encodeURIComponent(key)}];
+  if(email)ops.push({type:'delete',owner_email:email,sync_key:'nh7_account_notes:'+key,expected_content,local_key:localKey,path:'nh7_account_notes?user_email=eq.'+encodeURIComponent(email)+'&note_key=eq.'+encodeURIComponent(key)});
+  for(const op of ops)enqueueCloud(op);
+}
+
 function cloudStatusText(){
   const s=localStorage.getItem('nh7_cloud_status')||'local';
   if(state.lang==='fa') return s==='synced'?'ذخیره ابری همگام است.':s==='queued'?'چند مورد برای همگام‌سازی ابری در صف است.':'ذخیره محلی فعال است؛ بعد از ساخت جدول‌ها ذخیره ابری فعال می‌شود.';
@@ -589,46 +617,30 @@ async function saveRegistrationCloud(data){
 function accountCloudEmail(){return isAccountLoggedIn()?authEmail():''}
 function accountProgressKey(key){const k=String(key||'');return k.startsWith('nh7_')?k:'nh7_'+k}
 async function saveVerseCloud(ref){
-  await saveCloud({type:'upsert',table:'saved_verses',conflict:'device_id,ref',payload:{device_id:deviceId(),ref,language:state.lang}});
-  const email=accountCloudEmail();
-  if(email)await saveCloud({
-    type:'upsert',
-    table:'nh7_account_saved_verses',
-    conflict:'user_email,ref',
-    owner_email:email,
-    payload:{user_email:email,ref,language:state.lang,updated_at:new Date().toISOString()}
-  });
+  const email=accountCloudEmail(),now=new Date().toISOString();
+  const ops=[{type:'upsert',table:'saved_verses',conflict:'device_id,ref',payload:{device_id:deviceId(),ref,language:state.lang}}];
+  if(email)ops.push({type:'upsert',table:'nh7_account_saved_verses',conflict:'user_email,ref',owner_email:email,payload:{user_email:email,ref,language:state.lang,updated_at:now}});
+  await Promise.all(ops.map(saveCloud));
 }
 async function deleteVerseCloud(ref){
-  await saveCloud({type:'delete',path:'saved_verses?device_id=eq.'+encodeURIComponent(deviceId())+'&ref=eq.'+encodeURIComponent(ref)});
   const email=accountCloudEmail();
-  if(email)await saveCloud({
-    type:'delete',
-    owner_email:email,
-    path:'nh7_account_saved_verses?user_email=eq.'+encodeURIComponent(email)+'&ref=eq.'+encodeURIComponent(ref)
-  });
+  const ops=[{type:'delete',sync_key:'saved_verses:'+ref,path:'saved_verses?device_id=eq.'+encodeURIComponent(deviceId())+'&ref=eq.'+encodeURIComponent(ref)}];
+  if(email)ops.push({type:'delete',sync_key:'nh7_account_saved_verses:'+ref,owner_email:email,path:'nh7_account_saved_verses?user_email=eq.'+encodeURIComponent(email)+'&ref=eq.'+encodeURIComponent(ref)});
+  await Promise.all(ops.map(saveCloud));
 }
 async function saveNoteCloud(key,content){
-  await saveCloud({type:'upsert',table:'user_notes',conflict:'device_id,note_key',payload:{device_id:deviceId(),note_key:key,content,language:state.lang,updated_at:new Date().toISOString()}});
-  const email=accountCloudEmail();
-  if(email)await saveCloud({
-    type:'upsert',
-    table:'nh7_account_notes',
-    conflict:'user_email,note_key',
-    owner_email:email,
-    payload:{user_email:email,note_key:key,content,language:state.lang,updated_at:new Date().toISOString()}
-  });
+  const email=accountCloudEmail(),now=new Date().toISOString();
+  localStorage.setItem('nh7_'+key,content);
+  const ops=[{type:'upsert',table:'user_notes',conflict:'device_id,note_key',local_key:'nh7_'+key,payload:{device_id:deviceId(),note_key:key,content,language:state.lang,updated_at:now}}];
+  if(email)ops.push({type:'upsert',table:'nh7_account_notes',conflict:'user_email,note_key',owner_email:email,local_key:'nh7_'+key,payload:{user_email:email,note_key:key,content,language:state.lang,updated_at:now}});
+  await Promise.all(ops.map(saveCloud));
 }
 async function saveProgressCloud(key,value){
-  await saveCloud({type:'upsert',table:'user_progress',conflict:'device_id,progress_key',payload:{device_id:deviceId(),progress_key:key,value,language:state.lang,updated_at:new Date().toISOString()}});
-  const email=accountCloudEmail();
-  if(email)await saveCloud({
-    type:'upsert',
-    table:'nh7_account_progress',
-    conflict:'user_email,progress_key',
-    owner_email:email,
-    payload:{user_email:email,progress_key:accountProgressKey(key),value,language:state.lang,updated_at:new Date().toISOString()}
-  });
+  const email=accountCloudEmail(),now=new Date().toISOString();
+  restoreAccountProgressValue(accountProgressKey(key),value);
+  const ops=[{type:'upsert',table:'user_progress',conflict:'device_id,progress_key',local_key:accountProgressKey(key),payload:{device_id:deviceId(),progress_key:key,value,language:state.lang,updated_at:now}}];
+  if(email)ops.push({type:'upsert',table:'nh7_account_progress',conflict:'user_email,progress_key',owner_email:email,local_key:accountProgressKey(key),payload:{user_email:email,progress_key:accountProgressKey(key),value,language:state.lang,updated_at:now}});
+  await Promise.all(ops.map(saveCloud));
 }
 function nh7UnwrapCloudValueV544(value){
   let current=value;
@@ -666,7 +678,7 @@ function nh7MergeBibleStateV544(key,cloudValue){
   localStorage.setItem(key,JSON.stringify(merged));
 }
 async function restoreAccountCloudData(force=false){
-  const email=accountCloudEmail();
+  const email=accountCloudEmail(),sync=window.NH7LocalFirstWave2,owner=sync?.identity();
   if(!email||!navigator.onLine)return false;
   const marker='nh7_account_cloud_restore_v544_'+email;
   if(!force&&sessionStorage.getItem(marker)==='1')return true;
@@ -676,26 +688,34 @@ async function restoreAccountCloudData(force=false){
       cloudFetch('nh7_account_progress?select=progress_key,value,updated_at&user_email=eq.'+encodeURIComponent(email),{method:'GET'}),
       cloudFetch('nh7_account_saved_verses?select=ref&user_email=eq.'+encodeURIComponent(email),{method:'GET'})
     ]);
+    if(sync&&!sync.isCurrent(owner))return false;
     const notes=base[0],progress=base[1],verses=base[2];
     let verseMarks=[];
     try{verseMarks=await cloudFetch('nh7_account_verse_marks_v230?select=verse_key,verse_ref,saved,highlight_color,note,updated_at&user_email=eq.'+encodeURIComponent(email),{method:'GET'})}catch(e){console.warn('Verse marks restore unavailable',e)}
+    if(sync&&!sync.isCurrent(owner))return false;
     (Array.isArray(notes)?notes:[]).forEach(row=>{
       const key='nh7_'+String(row.note_key||'');
       const incoming=window.NH7NoteTextV501?.normalize?.(nh7UnwrapCloudValueV544(row.content))??String(nh7UnwrapCloudValueV544(row.content)??'');
       const localRaw=localStorage.getItem(key);
       const local=window.NH7NoteTextV501?.normalize?.(localRaw||'')??String(localRaw||'');
+      sync?.observe('nh7_account_notes',key,row);
+      if(sync&&(!sync.allowRestore(key)||local&&incoming&&local!==incoming)){sync.preserveRemote(key,local,row);return}
       // Cloud restore is fill-only for note text. Existing local text, including a
       // repairable legacy wrapper, always wins so upgrades cannot erase user edits.
       if(incoming&&!String(local).trim())localStorage.setItem(key,String(incoming));
     });
     (Array.isArray(progress)?progress:[]).forEach(row=>{
       const key=accountProgressKey(row.progress_key);if(!key)return;
+      sync?.observe('nh7_account_progress',key,row);
+      if(sync&&!sync.allowRestore(key)){sync.preserveRemote(key,localStorage.getItem(key),row);return}
       if(key.startsWith('nh7_bible_state_'))nh7MergeBibleStateV544(key,row.value);
       else if(localStorage.getItem(key)===null)restoreAccountProgressValue(key,row.value);
     });
     const refs=new Set((Array.isArray(verses)?verses:[]).map(x=>String(x.ref||'')).filter(Boolean));
     (Array.isArray(verseMarks)?verseMarks:[]).forEach(row=>{
       const key=accountProgressKey(row.verse_key);if(!key||!key.startsWith('nh7_bible_state_'))return;
+      sync?.observe('nh7_account_verse_marks_v230',key,row);
+      if(sync&&!sync.allowRestore(key))return;
       let local={};try{local=JSON.parse(localStorage.getItem(key)||'{}')}catch(_){local={}}
       if(!local||typeof local!=='object'||Array.isArray(local))local={};
       if(!String(local.note||'').trim()&&String(row.note||'').trim())local.note=String(row.note);
@@ -705,7 +725,7 @@ async function restoreAccountCloudData(force=false){
     });
     if(refs.size){
       let local=[];try{local=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]')}catch(e){}
-      localStorage.setItem('nh7_bookmarks',JSON.stringify([...new Set([...(Array.isArray(local)?local:[]),...refs])]));
+      localStorage.setItem('nh7_bookmarks',JSON.stringify(sync?sync.mergeRefs(local,[...refs]):[...new Set([...(Array.isArray(local)?local:[]),...refs])]));
     }
     sessionStorage.setItem(marker,'1');
     localStorage.setItem('nh7_account_cloud_restored_at',new Date().toISOString());
@@ -2868,6 +2888,7 @@ $('#inboxBtn')?.addEventListener('click',()=>navigate('inbox',{},false));
 $('#backBtn').onclick=back;
 $$('.nav-item').forEach(b=>b.onclick=()=>{ state.stack=[]; navigate(b.dataset.route,{},true); });
 $('#amenButton').onclick=()=>$('#amenGate').classList.add('hidden');
+window.addEventListener('nh7-personal-owner-wave2',()=>{if(state.route==='plans')render('plans',{tab:'spiritual'},true);else if(['bible','audio','daily','school'].includes(state.route))render(state.route,state.params,true)});
 window.addEventListener('online',async()=>{$('.offline')?.remove();await syncCloudQueue().catch(console.warn);if(isAccountLoggedIn()){await restoreAccountCloudData(true).catch(console.warn);invalidateSchoolSnapshot(authEmail());await getSchoolSnapshot(authEmail(),true).catch(console.warn);if(state.route==='school')render('school',state.params,true)}});
 window.addEventListener('offline',()=>{ if(!$('.offline')){ const d=document.createElement('div'); d.className='offline'; d.textContent=tr('offline'); document.body.appendChild(d);} });
 if('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js').catch(console.warn);

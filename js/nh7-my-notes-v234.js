@@ -105,11 +105,17 @@ function renderNotesPanel(){
   if(rendering)return;
   const panel=document.getElementById('notesPanel');if(!panel)return;
   const notes=collectNotes();
-  const signature=lang()+'|'+JSON.stringify(notes.map(n=>[n.storageKey,n.text,n.title,n.updatedAt]));
+  const conflicts=window.NH7LocalFirstWave2?.conflicts()||[];
+  const signature=lang()+'|'+JSON.stringify(conflicts)+'|'+JSON.stringify(notes.map(n=>[n.storageKey,n.text,n.title,n.updatedAt]));
   if(panel.dataset.nh7NotesSignature===signature)return;
   rendering=true;
   panel.dataset.nh7NotesSignature=signature;
   panel.innerHTML=notes.length?`<div class="nh7-my-notes-list-v234">${notes.map(noteCard).join('')}</div>`:`<p class="muted">${esc(t('هنوز یادداشتی ذخیره نشده است.','No notes have been saved yet.','Još nema spremljenih bilješki.'))}</p>`;
+  if(conflicts.length){
+    const text=value=>value===null?t('حذف محلی','Local deletion','Lokalno brisanje'):String(value?.content??value?.note??value?.reflection??(typeof value==='string'?t('حذف محلی','Local deletion','Lokalno brisanje'):JSON.stringify(value?.value??value,null,2)));
+    const details=conflicts.map(item=>`<details><summary>${esc(notes.find(note=>note.storageKey===item.key)?.title||t('نسخه‌های محفوظ','Preserved versions','Sačuvane verzije'))}</summary>${item.versions.map(v=>`<strong>${esc(t('نسخهٔ محلی','Local version','Lokalna verzija'))}</strong><pre dir="${lang()==='fa'?'rtl':'ltr'}">${esc(text(v.local))}</pre><strong>${esc(t('نسخهٔ ابری','Cloud version','Verzija u oblaku'))}</strong><pre dir="${lang()==='fa'?'rtl':'ltr'}">${esc(text(v.remote))}</pre>`).join('')}</details>`).join('');
+    panel.insertAdjacentHTML('afterbegin',`<aside class="card nh7-sync-conflicts-wave2"><strong>${esc(t('هر دو نسخهٔ یادداشت حفظ شدند','Both note versions were preserved','Obje verzije bilješke su sačuvane'))}</strong><p>${esc(t('همگام‌سازی موارد متعارض متوقف است. قبل از ادامه، هر دو متن را بررسی و کپی کنید.','Sync of conflicting entries is paused. Review and copy both texts before continuing.','Sinkronizacija sukobljenih zapisa je pauzirana. Pregledajte i kopirajte oba teksta prije nastavka.'))}</p>${details}</aside>`);
+  }
   const toggle=document.querySelector('[data-toggle-panel="notesPanel"]');
   if(toggle){toggle.dataset.nh7NoteCount=String(notes.length);const base=t('نمایش یادداشت‌های من','Show my notes','Prikaži moje bilješke');if(panel.classList.contains('hidden'))toggle.textContent=`${base} (${notes.length})`}
   rendering=false;
@@ -147,6 +153,7 @@ async function cloudRequest(path,options={}){
   return response.ok;
 }
 async function deleteCloudNote(noteKey){
+  if(window.NH7_PERSONAL_SYNC_BRIDGE_WAVE2)return window.NH7_PERSONAL_SYNC_BRIDGE_WAVE2.deleteNote(noteKey);
   const dev=encodeURIComponent(deviceId()),key=encodeURIComponent(noteKey),mail=email();
   try{await cloudRequest(`user_notes?device_id=eq.${dev}&note_key=eq.${key}`,{method:'DELETE'})}catch(_){}
   if(mail)try{await cloudRequest(`nh7_account_notes?user_email=eq.${encodeURIComponent(mail)}&note_key=eq.${key}`,{method:'DELETE'})}catch(_){}
@@ -154,6 +161,10 @@ async function deleteCloudNote(noteKey){
 async function syncVerseState(note){
   const st=note.stateValue||safeJson(localStorage.getItem(note.storageKey),{})||{};
   st.note='';localStorage.setItem(note.storageKey,JSON.stringify(st));
+  if(window.NH7_PERSONAL_SYNC_BRIDGE_WAVE2){
+    const meta=note.meta||{};
+    await window.NH7_PERSONAL_SYNC_BRIDGE_WAVE2.clearVerse(note.storageKey,st,{batch_id:crypto.randomUUID?.()||String(Date.now()),language:lang(),items:[{verse_key:note.storageKey,verse_ref:meta.ref||'',verse_text:meta.verseText||'',saved:!!st.saved,highlight_color:st.highlight?String(st.highlightColor||'yellow'):'',note:''}]});return;
+  }
   const now=new Date().toISOString(),mail=email(),dev=deviceId();
   try{await cloudRequest('user_progress?on_conflict=device_id,progress_key',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({device_id:dev,progress_key:note.storageKey,value:st,language:lang(),updated_at:now})})}catch(_){}
   if(mail)try{await cloudRequest('nh7_account_progress?on_conflict=user_email,progress_key',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({user_email:mail,progress_key:note.storageKey,value:st,language:lang(),updated_at:now})})}catch(_){}
@@ -165,7 +176,7 @@ async function deleteNote(storageKey){
   if(!confirm(t('این یادداشت پاک شود؟','Delete this note?','Obrisati ovu bilješku?')))return;
   if(note.kind==='apocrypha'){localStorage.removeItem(storageKey);deleteMeta(storageKey);renderNotesPanel();return;}
   if(note.kind==='verse')await syncVerseState(note);else{
-    localStorage.removeItem(storageKey);
+    if(!window.NH7_PERSONAL_SYNC_BRIDGE_WAVE2)localStorage.removeItem(storageKey);
     const cloudKey=storageKey.replace(/^nh7_/,'');
     await deleteCloudNote(cloudKey);
   }
@@ -211,6 +222,8 @@ document.addEventListener('click',event=>{
 const observer=new MutationObserver(()=>{scheduleRender();if(pendingTarget)setTimeout(scrollToPending,80)});
 observer.observe(document.documentElement,{childList:true,subtree:true});
 window.addEventListener('storage',scheduleRender);
+window.addEventListener('nh7-sync-conflict-wave2',scheduleRender);
+window.addEventListener('nh7-personal-owner-wave2',scheduleRender);
 window.addEventListener('nh7-reader-data452',scheduleRender);
 window.addEventListener('nh7-note-text-repaired-v501',scheduleRender);
 window.addEventListener('nh7-account-data-restored-v544',scheduleRender);

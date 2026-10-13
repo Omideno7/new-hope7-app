@@ -24,10 +24,11 @@ async function run(){
   if(!u.hostname.endsWith('.supabase.co'))return route.fulfill({json:[]});
   requests.push({phase,path:u.pathname,method:req.method()});
   const path=u.pathname;let data=[];
-  if(path.includes('/auth/'))data=path.includes('token')?session:session.user;
+  if(req.method()==='POST'&&['user_notes','nh7_account_notes','user_progress','nh7_account_progress','saved_verses','nh7_account_saved_verses'].includes(path.split('/').at(-1)))data=[req.postDataJSON()];
+  else if(path.includes('/auth/'))data=path.includes('token')?session:session.user;
   else if(path.endsWith('nh7_library_catalog_v396'))data={allowed:true,items:[item],collections:[]};
   else if(path.endsWith('nh7_inbox_snapshot_v419'))data={messages:[{id:'qa-message',title:'Fixture message',body:'Message',language:'en',delivered_at:'2026-10-13T07:00:00Z'}],receipts:[]};
-  else if(path.endsWith('nh7-content-access')){const body=req.postDataJSON();data=body?.action==='catalog'?{items:[sermon],approved:true}:{authenticated:true,approved:true,user_email:session.user.email};}
+  else if(path.endsWith('nh7-content-access')){const body=req.postDataJSON();data=body?.action==='save_bible_batch'?{ok:true,saved:body.items.length,batch_id:body.batch_id}:body?.action==='catalog'?{items:[sermon],approved:true}:{authenticated:true,approved:true,user_email:session.user.email};}
   else if(path.endsWith('nh7-school-media-access'))data={signed_url:base+'/fixture.wav',expires_in:900};
   else if(path.includes('nh7_registration'))data=[{found:true,status:'approved',approved:true,payload:{email:session.user.email,firstName:'Fixture'}}];
   else if(path.endsWith('nh7_get_my_school_snapshot_v2110'))data={access:{status:'approved'},lessons:[],assignments:[],progress:[]};

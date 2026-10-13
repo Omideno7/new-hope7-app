@@ -46,6 +46,7 @@ function syncButtons(){
   document.querySelectorAll('[data-nh7-apo-save]').forEach(button=>buttonState(button,saved.has(String(button.dataset.nh7ApoSave||''))));
 }
 async function syncAccount(ref,remove=false){
+  if(window.NH7LocalFirstWave2)return window.NH7LocalFirstWave2.syncRef(ref,remove);
   const current=session(),access=String(current?.access_token||''),email=String(current?.user?.email||'').trim().toLowerCase();
   if(!access||!email||!navigator.onLine)return;
   try{
@@ -88,10 +89,12 @@ function removeLocal(ref){
   const map=metadata();delete map[ref];writeMetadata(map);
 }
 async function enrichMetadata(ref){
+  const owner=window.NH7LocalFirstWave2?.identity();
   const parts=String(ref||'').split(':');if(parts.length!==4)return;
   const [,bookId,chapter,verse]=parts;
   try{
     const data=await runtime();
+    if(owner&&!window.NH7LocalFirstWave2.isCurrent(owner))return;
     if(!isSaved(ref))return;
     const map=metadata(),old=map[ref]||{},texts=Object.assign({},old.texts||{},verseTexts(data,bookId,+chapter,+verse));
     map[ref]=Object.assign({},old,{kind:'apocrypha',bookId,chapter:+chapter,verse:+verse,texts,updatedAt:new Date().toISOString()});
