@@ -165,6 +165,8 @@ function observe(table,key,row){
  if(!pending().some(p=>describe(p)===describe(op)))raw.setItem(baselineKey(op),JSON.stringify(row));
 }
 function preserveRemote(key,local,row){
+ const editing=pending().find(op=>op.local_key===key),known=editing?parse(raw.getItem(baselineKey(editing))):null;
+ if(known&&known.updated_at===row.updated_at&&JSON.stringify(known.content??known.value)===JSON.stringify(row.content??row.value))return;
  const remote=row.content??row.value;
  const value=typeof remote==='string'?remote:JSON.stringify(remote);
  if(local!==null&&local!==value||local===null&&value){
@@ -173,6 +175,8 @@ function preserveRemote(key,local,row){
  }
 }
 function recordConflict(key,local,remote){conflict({owner:identity().owner,sync_key:key,local_key:key,payload:local,revision:'restore'},remote,'local_and_remote_preserved')}
+const reads=new Map();
+function readOnce(key,work){const who=identity(),id=who.owner+'|'+who.token+'|'+key;if(reads.has(id))return reads.get(id);const promise=Promise.resolve().then(work).finally(()=>{if(reads.get(id)===promise)reads.delete(id)});reads.set(id,promise);return promise}
 function syncRef(ref,remove=false){
  const who=identity();if(!who.uid||!who.token)return Promise.resolve(false);
  return enqueue(remove?{type:'delete',sync_key:'nh7_account_saved_verses:'+ref,owner_email:who.email,path:'nh7_account_saved_verses?user_email=eq.'+enc(who.email)+'&ref=eq.'+enc(ref)}:{type:'upsert',table:'nh7_account_saved_verses',conflict:'user_email,ref',owner_email:who.email,payload:{user_email:who.email,ref,language:raw.getItem('nh7_lang')||'en',updated_at:new Date().toISOString()}});
@@ -212,7 +216,7 @@ function checkpoint(key,value,force=false){
  const marker=PREFIX+'checkpoint_'+enc(identity().owner)+'_'+enc(key),last=Number(raw.getItem(marker)||0);
  if(!force&&Date.now()-last<60000)return;raw.setItem(marker,String(Date.now()));raw.setItem(snapshotKey,fingerprint);window.NH7_PERSONAL_SYNC_BRIDGE_WAVE2?.saveProgress(key,value);
 }
-window.NH7LocalFirstWave2={configure,enqueue,flush,legacySend:(path,options)=>transport(path,options,identity()),identity,isCurrent:same,allowRestore,syncRef,mergeRefs,observe,preserveRemote,recordConflict,conflicts,pending,legacyEligible,checkpoint,importLegacyMain,importLegacyPlans,personal};
+window.NH7LocalFirstWave2={configure,enqueue,flush,legacySend:(path,options)=>transport(path,options,identity()),identity,isCurrent:same,allowRestore,readOnce,syncRef,mergeRefs,observe,preserveRemote,recordConflict,conflicts,pending,legacyEligible,checkpoint,importLegacyMain,importLegacyPlans,personal};
 window.addEventListener('online',()=>{importLegacyMain();importLegacyPlans();schedule(100)});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)flush(true).catch(()=>{});else{importLegacyMain();importLegacyPlans();schedule(100)}});
 window.addEventListener('pagehide',()=>flush(true).catch(()=>{}));

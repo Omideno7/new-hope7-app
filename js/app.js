@@ -677,7 +677,10 @@ function nh7MergeBibleStateV544(key,cloudValue){
   if(!local.highlight&&incoming.highlight){merged.highlight=true;merged.highlightColor=incoming.highlightColor||merged.highlightColor||'yellow'}
   localStorage.setItem(key,JSON.stringify(merged));
 }
-async function restoreAccountCloudData(force=false){
+function restoreAccountCloudData(force=false){
+  return window.NH7LocalFirstWave2?window.NH7LocalFirstWave2.readOnce('account-restore',()=>restoreAccountCloudDataWave2(force)):restoreAccountCloudDataWave2(force);
+}
+async function restoreAccountCloudDataWave2(force=false){
   const email=accountCloudEmail(),sync=window.NH7LocalFirstWave2,owner=sync?.identity();
   if(!email||!navigator.onLine)return false;
   const marker='nh7_account_cloud_restore_v544_'+email;
