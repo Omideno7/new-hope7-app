@@ -1,0 +1,99 @@
+/* Physical-device QA: header/content/nav are three real rows. Only content scrolls.
+   This removes the duplicate reserved white bands that the overlay layout created. */
+html.nh7-parity-chrome,html.nh7-parity-chrome body {height:100%;overflow:hidden}
+.nh7-parity-chrome body {overscroll-behavior:none}
+.nh7-parity-chrome #appShell {display:grid!important;grid-template-rows:auto minmax(0,1fr) auto;position:relative;height:100dvh;min-height:0;overflow:hidden;padding:0!important}
+.nh7-parity-chrome #appShell > .topbar {position:relative!important;inset:auto!important;transform:none!important;width:100%!important;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)!important;padding-bottom:4px!important;z-index:30}
+.nh7-parity-chrome #appShell > .view {min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;padding-top:6px!important;padding-bottom:6px!important}
+.nh7-parity-chrome #appShell > .bottom-nav {position:relative!important;inset:auto!important;transform:none!important;width:100%!important;z-index:30}
+/* Retain the existing Android presentation; iOS owns explicit safe-area rows below. */
+html.nh7-parity-native:not(.nh7-parity-ios) #appShell > .topbar {padding-top:2px!important}
+html.nh7-parity-native:not(.nh7-parity-ios) #appShell > .bottom-nav {padding-bottom:1px!important;margin-bottom:0!important}
+
+/* Compact the bar itself (not only its icons) on phones and iPads, including landscape. */
+@media(max-width:1366px){
+  .nh7-parity-chrome #appShell > .topbar {gap:7px!important;padding-inline:9px!important}
+  .nh7-parity-chrome #appShell > .topbar .nh7-header-date-row455 {display:none!important}
+  .nh7-parity-chrome #appShell > .topbar .brand {gap:7px!important}
+  .nh7-parity-chrome #appShell > .topbar .brand img {width:38px!important;height:38px!important;border-radius:11px!important}
+  .nh7-parity-chrome #appShell > .topbar .brand strong {font-size:.9rem!important;line-height:1.1}
+  .nh7-parity-chrome #appShell > .topbar .brand small {font-size:.68rem!important;line-height:1.1}
+  .nh7-parity-chrome #appShell > .topbar .icon-btn {width:34px!important;height:34px!important;font-size:23px!important;border-radius:10px!important}
+  .nh7-parity-chrome #appShell > .topbar .lang-select {min-height:34px!important;padding:4px 6px!important;font-size:.8rem!important}
+  .nh7-parity-chrome #appShell > .bottom-nav {gap:1px!important;padding:1px 5px!important;min-height:38px!important;max-height:40px!important;align-items:center!important;overflow:visible!important;border-radius:12px 12px 0 0!important}
+  html.nh7-parity-native:not(.nh7-parity-ios) #appShell > .bottom-nav {padding:1px 5px!important;margin-bottom:0!important}
+  .nh7-parity-chrome #appShell > .bottom-nav .nav-item {padding:1px!important;gap:1px!important;border-radius:9px!important;min-height:34px!important;height:34px!important;justify-content:center!important;overflow:visible!important;transform:none!important}
+  .nh7-parity-chrome #appShell > .bottom-nav .nav-item span {font-size:17px!important;line-height:16px!important;min-height:16px!important}
+  .nh7-parity-chrome #appShell > .bottom-nav .nav-item small {font-size:9.5px!important;line-height:10px!important;min-height:10px!important;overflow:visible!important}
+}
+
+/* WKWebView: do not assume contentInset=automatic protects CSS chrome.
+   The unsafe areas are painted by their own rows, not by an extra overlay/band. */
+html.nh7-parity-ios {
+  --nh7-parity-safe-top:env(safe-area-inset-top,0px);
+  --nh7-parity-safe-bottom:env(safe-area-inset-bottom,0px);
+  --nh7-parity-safe-left:env(safe-area-inset-left,0px);
+  --nh7-parity-safe-right:env(safe-area-inset-right,0px);
+}
+/* Opaque, continuous chrome: also paint exposed viewport/tablet gutters.
+   Safe-area padding stays in its row; no overlay/pseudo-element filler is added. */
+html.nh7-parity-ios,html.nh7-parity-ios body,
+html.nh7-parity-ios #appShell,
+html.nh7-parity-ios #appShell > .topbar,
+html.nh7-parity-ios #appShell > .bottom-nav {
+  background:var(--nh7-studio-card,var(--bg,#f4f8ff))!important;
+  background-image:none!important;
+}
+html.nh7-parity-ios #appShell {height:var(--nh7-parity-ios-viewport-height,100%);grid-template-rows:auto minmax(0,1fr) auto}
+html.nh7-parity-ios #appShell > .topbar {
+  padding:calc(6px + var(--nh7-parity-safe-top)) max(9px,var(--nh7-parity-safe-right)) 4px max(9px,var(--nh7-parity-safe-left))!important;
+}
+html.nh7-parity-ios #appShell > .bottom-nav {
+  grid-template-columns:repeat(6,minmax(0,1fr));height:auto!important;min-height:0!important;max-height:none!important;
+  padding:6px max(8px,var(--nh7-parity-safe-right)) calc(6px + var(--nh7-parity-safe-bottom)) max(8px,var(--nh7-parity-safe-left))!important;
+  margin:0!important;align-items:stretch!important;border-radius:0!important;
+}
+html.nh7-parity-ios #appShell > .bottom-nav .nav-item {height:auto!important;min-height:44px!important;min-width:0;padding:4px 2px!important}
+html.nh7-parity-ios #appShell > .bottom-nav .nav-item small {font-size:11px!important;line-height:1.25!important;white-space:normal;overflow-wrap:anywhere}
+html.nh7-parity-native.nh7-parity-ios .nh7p500 {bottom:max(var(--nh7-mini-dock-bottom,0px),calc(var(--nh7-parity-nav,80px) + 3px))!important}
+
+/* The Plans tabs belong to page content. The old sticky top offset was correct only
+   when the header overlaid the document; with row-based chrome it created a 70px gap. */
+.nh7-parity-chrome #view .nh7-plans-tabs {position:relative!important;top:auto!important;z-index:1!important;margin-top:0!important}
+
+.nh7-parity-sidebar {display:none}
+.nh7-parity-content {min-width:0}
+/* Only the existing Home hero: v564 still owns/inserts the profile row. */
+#view .nh7-home-hero573 {display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:'identity' 'profile' 'welcome' 'actions' 'today';gap:12px;align-items:center}
+#view .nh7-home-hero573 > h2 {grid-area:identity;text-align:center;margin:0;font-size:clamp(1.15rem,2.5vw,1.6rem);overflow-wrap:anywhere}
+#view .nh7-home-hero573 > #nh7HomeProfile564 {grid-area:profile;margin:0;padding:0;border:0;min-width:0}
+#view .nh7-home-hero573 .nh7-home-profile564-copy {min-width:0;overflow-wrap:anywhere}
+#view .nh7-home-hero573 #nh7HomeProfile564 .nh7-home-profile564-copy small {color:inherit!important;opacity:1}
+#view .nh7-home-hero573 > p {grid-area:welcome;margin:0;line-height:1.6}
+#view .nh7-home-hero573 > .button-row {grid-area:actions;margin:0;gap:8px}
+#view .nh7-home-hero573 > .button-row button {min-height:44px;white-space:normal;max-width:100%}
+#view .card.nh7-home-hero573 > .button-row > .secondary-btn {background:var(--nh7-studio-card,var(--card,#fff))!important;color:var(--nh7-studio-text,var(--ink,#10284a))!important}
+#view .nh7-home-today573 {grid-area:today;min-width:0;padding:12px;border:0;border-radius:16px}
+#view #nh7HomeToday573 {background:var(--nh7-studio-card,var(--card,#fff))!important;color:var(--nh7-studio-text,var(--ink,#10284a))!important}
+#view #nh7HomeToday573 :is(h3,p,time) {color:inherit!important}
+#view .nh7-home-today573 h3 {margin:0 0 6px;font-size:.9rem}
+#view .nh7-home-today573 time {display:block;font-size:.85rem;line-height:1.6;overflow-wrap:anywhere}
+#view .nh7-home-today573 p {margin:6px 0 0;font-size:.8rem;opacity:.8}
+@media(min-width:768px){
+  #view .nh7-home-hero573 {grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:'identity identity' 'profile today' 'welcome today' 'actions today';column-gap:24px;row-gap:14px}
+  #view .nh7-home-today573 {align-self:stretch;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:18px}
+}
+[role="button"]#nh7TopProfile564,.nh7-profile-avatar564[role="button"] {cursor:zoom-in}
+.nh7-parity-photo {position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;border:0;padding:0;background:#111;color:#fff;box-sizing:border-box}
+.nh7-parity-photo::backdrop {background:#111}
+.nh7-parity-photo-controls {position:absolute;inset-block-start:calc(12px + env(safe-area-inset-top,0px));inset-inline:16px;display:flex;gap:12px;z-index:1}
+.nh7-parity-photo-controls button {background:#252525;color:#fff;border:1px solid #aaa;border-radius:12px;min-height:44px;min-width:44px;font-size:22px}
+.nh7-parity-photo-stage {height:100%;padding:calc(80px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px));box-sizing:border-box;display:grid;place-items:center;overflow:auto}
+.nh7-parity-photo-stage img {max-width:100%;max-height:100%;object-fit:contain;transform-origin:center}
+@media(min-width:768px){
+  .nh7-parity-chrome #appShell {max-width:1200px}
+  .nh7-parity-split {display:grid;grid-template-columns:minmax(180px,240px) minmax(0,1fr);gap:20px;align-items:start}
+  .nh7-parity-sidebar {display:flex;flex-direction:column;gap:8px;position:sticky;top:calc(var(--nh7-parity-header,80px) + 16px);max-height:calc(100dvh - var(--nh7-parity-header,80px) - var(--nh7-parity-nav,80px) - 40px);overflow:auto;padding:4px}
+  .nh7-parity-sidebar button {text-align:start;flex-shrink:0;overflow-wrap:anywhere}
+  .nh7-parity-sidebar [aria-current] {outline:2px solid var(--accent,#568bc7);outline-offset:1px}
+}

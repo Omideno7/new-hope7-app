@@ -61,6 +61,7 @@ function noteTitle(kind,storageKey,meta){
   return t('یادداشت من','My note','Moja bilješka');
 }
 function typeLabel(kind){
+  if(kind==='plan')return t('پلن روحانی','Spiritual plan','Duhovni plan');
   if(kind==='verse')return t('آیه','Verse','Stih');
   if(kind==='audio')return t('فایل صوتی','Audio','Audio');
   if(kind==='gratitude')return t('شکرگزاری','Gratitude','Zahvalnost');
@@ -93,13 +94,26 @@ function collectNotes(){
     }
     notes.push({storageKey,kind,text,title:noteTitle(kind,storageKey,meta),meta,stateValue,route:location.route,params:location.params||{},updatedAt:meta.updatedAt||''});
   }
+  // Virtual reflections: read only the current identity, never enumerate other accounts.
+  const user=session()?.user?.id,owner=user||'guest';
+  const progress=safeJson(localStorage.getItem('nh7_spiritual_plans_v240:'+owner),null);
+  if(progress?.version===1&&progress.plans&&typeof progress.plans==='object'){
+    for(const [planId,plan] of Object.entries(progress.plans)){
+      if(!plan?.startedAt)continue;
+      for(const [day,value] of Object.entries(plan.days||{})){
+        const text=normalizedText(value?.note);if(!text||!/^\d+$/.test(day)||Number(day)<1)continue;
+        const dayLabel=lang()==='fa'?day.replace(/\d/g,n=>'۰۱۲۳۴۵۶۷۸۹'[n]):day;
+        notes.push({storageKey:'nh7_virtual_plan_note_v573:'+encodeURIComponent(owner)+':'+encodeURIComponent(planId)+':'+day,kind:'plan',readOnly:true,text,title:t('یادداشت پلن روحانی — روز','Spiritual plan note — day','Bilješka duhovnog plana — dan')+' '+dayLabel,route:'plans',params:{tab:'spiritual',plan:planId,day:Number(day)},updatedAt:value.updatedAt||'',meta:{planId,dayNumber:Number(day)}});
+      }
+    }
+  }
   return notes.sort((a,b)=>String(b.updatedAt).localeCompare(String(a.updatedAt))||b.storageKey.localeCompare(a.storageKey));
 }
 function noteCard(note){
   const encoded=encodeURIComponent(note.storageKey);
   const openText=t('باز کردن منبع','Open source','Otvori izvor');
   const deleteText=t('پاک کردن','Delete','Obriši');
-  return `<article class="nh7-my-note-card-v234"><div class="nh7-my-note-head-v234"><span class="nh7-my-note-type-v234">${esc(typeLabel(note.kind))}</span><strong>${esc(note.title)}</strong></div><p>${esc(note.text).replace(/\n/g,'<br>')}</p><div class="button-row nh7-my-note-actions-v234"><button type="button" class="secondary-btn" data-nh7-note-open="${encoded}">↗ ${esc(openText)}</button><button type="button" class="danger-btn" data-nh7-note-delete="${encoded}">🗑 ${esc(deleteText)}</button></div></article>`;
+  return `<article class="nh7-my-note-card-v234"><div class="nh7-my-note-head-v234"><span class="nh7-my-note-type-v234">${esc(typeLabel(note.kind))}</span><strong>${esc(note.title)}</strong></div><p dir="auto">${esc(note.text).replace(/\n/g,'<br>')}</p><div class="button-row nh7-my-note-actions-v234"><button type="button" class="secondary-btn" data-nh7-note-open="${encoded}">↗ ${esc(openText)}</button>${note.readOnly?`<small>${esc(t('فقط خواندنی — ویرایش در پلن','Read only — edit in plan','Samo za čitanje — uredi u planu'))}</small>`:`<button type="button" class="danger-btn" data-nh7-note-delete="${encoded}">🗑 ${esc(deleteText)}</button>`}</div></article>`;
 }
 function renderNotesPanel(){
   if(rendering)return;
@@ -131,6 +145,7 @@ function scrollToPending(){
 }
 function openNote(storageKey){
   const note=collectNotes().find(n=>n.storageKey===storageKey);if(!note)return;
+  if(note.kind==='plan'){pendingTarget=null;routeTo('plans',note.params);return;}
   if(note.kind==='apocrypha'){window.NH7_OPEN_SAVED_APOCRYPHA_V394?.('APO:'+storageKey.replace(/^nh7_apo_note_v242:/,''));return;}
   const meta=note.meta||{};
   pendingTarget={kind:note.kind,storageKey};
@@ -161,7 +176,7 @@ async function syncVerseState(note){
   try{await window.NH7AccessV230?.edge?.('nh7-content-access',{action:'save_bible_batch',batch_id:crypto.randomUUID?.()||String(Date.now()),language:lang(),items:[{verse_key:note.storageKey,verse_ref:meta.ref||'',verse_text:meta.verseText||'',saved:!!st.saved,highlight_color:st.highlight?String(st.highlightColor||'yellow'):'',note:''}]},true)}catch(_){}
 }
 async function deleteNote(storageKey){
-  const note=collectNotes().find(n=>n.storageKey===storageKey);if(!note)return;
+  const note=collectNotes().find(n=>n.storageKey===storageKey);if(!note||note.readOnly)return;
   if(!confirm(t('این یادداشت پاک شود؟','Delete this note?','Obrisati ovu bilješku?')))return;
   if(note.kind==='apocrypha'){localStorage.removeItem(storageKey);deleteMeta(storageKey);renderNotesPanel();return;}
   if(note.kind==='verse')await syncVerseState(note);else{

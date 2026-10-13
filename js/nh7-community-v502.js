@@ -4,7 +4,7 @@
 (()=>{'use strict';
 if(window.__NH7_COMMUNITY_V502__)return;window.__NH7_COMMUNITY_V502__=true;
 
-const VERSION='5.0.6-web-parity';
+const VERSION='5.0.8-mobile-audio';
 const GUIDE_URL='data/community/testimony_guide_v502.json';
 const PROFILE_BUCKET='nh7-profile-photos-v502';
 const TESTIMONY_PRIVATE='nh7-testimony-submissions-v502';
@@ -90,7 +90,19 @@ async function publicTestimonies(){
   const safe=Array.isArray(rows)?rows:[];publicFeedCache.set(key,{at:now,rows:safe});return safe;
  }catch(e){console.warn('Public testimony feed unavailable',e);return cached?.rows||[]}
 }
-function publicAudioUrl(path){return path?C().publicStorageUrl(TESTIMONY_PUBLIC,path):''}
+function publicAudioUrl(path,row=null){return String(row?.audio_url||'').trim()||(path?C().publicStorageUrl(TESTIMONY_PUBLIC,path):'')}
+function publicAudioCardV573(x,u){
+ const path=String(x.published_audio_path||x.audio_public_path||''),url=publicAudioUrl(path,x);
+ if(!url)return'';
+ return '<div class="nh7c502-public-audio-v573"><audio controls preload="metadata" playsinline webkit-playsinline style="width:100%;margin-top:8px" src="'+esc(url)+'"></audio><div class="nh7c502-public-audio-help-v573 muted small" hidden></div><a class="secondary-btn nh7c502-public-audio-open-v573" href="'+esc(url)+'" target="_blank" rel="noopener" hidden>↗ '+esc(L('باز کردن فایل صوتی','Open audio file','Otvori audio datoteku'))+'</a></div>';
+}
+function bindPublicAudioV573(){
+ document.querySelectorAll('.nh7c502-public-audio-v573').forEach(box=>{const a=box.querySelector('audio'),help=box.querySelector('.nh7c502-public-audio-help-v573'),open=box.querySelector('.nh7c502-public-audio-open-v573');if(!a)return;
+  a.addEventListener('error',()=>{if(help){help.hidden=false;help.textContent=L('این فایل با کُدک فعلی روی این دستگاه پخش نشد. فایل اصلی محفوظ است.','This file did not play with its current codec on this device. The original file is preserved.','Datoteka se s trenutačnim kodekom ne može reproducirati na ovom uređaju. Izvorna datoteka je sačuvana.')}if(open)open.hidden=false});
+  a.addEventListener('canplay',()=>{if(help)help.hidden=true;if(open)open.hidden=true},{once:true});
+  try{a.load()}catch(_){}
+ });
+}
 
 async function renderTestimonies(){
  injectCss();await guide();
@@ -99,7 +111,7 @@ async function renderTestimonies(){
  const intro=g.importance.map(x=>'<p>'+esc(x)+'</p>').join('');
  const verses=g.verses.map(v=>'<div class="nh7c502-verse"><strong>'+esc(v[0])+'</strong>'+esc(v[1])+'</div>').join('');
  const guideHtml=g.sections.map(s=>'<details class="nh7c502-section"><summary>'+esc(s.title)+'</summary><div class="nh7c502-section-body">'+s.topics.map(t=>'<section class="nh7c502-topic"><h4>'+esc(t.title)+'</h4><ul>'+t.bullets.map(b=>'<li>'+esc(b)+'</li>').join('')+'</ul></section>').join('')+'</div></details>').join('');
- const cards=publicRows.length?publicRows.map(x=>'<article class="nh7c502-list-card"><div class="nh7c502-audio-head"><div class="nh7c502-art">🎙️</div><div class="nh7c502-copy"><strong>'+esc(x.title||u.testimonies||'Testimony')+'</strong><small>'+esc(x.display_name||'')+'</small><p>'+esc(x.note_text||'')+'</p></div></div>'+(x.published_audio_path?'<audio controls preload="none" style="width:100%;margin-top:8px" src="'+esc(publicAudioUrl(x.published_audio_path))+'"></audio>':'')+'</article>').join(''):'<p class="muted">'+esc(L('هنوز شهادت صوتی منتشر نشده است.','No audio testimony has been published yet.','Još nema objavljenih audio svjedočanstava.'))+'</p>';
+ const cards=publicRows.length?publicRows.map(x=>'<article class="nh7c502-list-card"><div class="nh7c502-audio-head"><div class="nh7c502-art">🎙️</div><div class="nh7c502-copy"><strong>'+esc(x.title||u.testimonies||'Testimony')+'</strong><small>'+esc(x.display_name||'')+'</small><p>'+esc(x.note_text||'')+'</p></div></div>'+publicAudioCardV573(x,u)+'</article>').join(''):'<p class="muted">'+esc(L('هنوز شهادت صوتی منتشر نشده است.','No audio testimony has been published yet.','Još nema objavljenih audio svjedočanstava.'))+'</p>';
  const whyHtml='<details class="nh7c502-top-accordion"><summary>'+esc(g.importanceTitle)+'</summary><div class="nh7c502-top-body">'+intro+verses+'</div></details>';
  const guideTopHtml='<details class="nh7c502-top-accordion"><summary>'+esc(g.guideTitle)+'</summary><div class="nh7c502-top-body"><p class="muted">'+esc(g.goal)+'</p><h3>'+esc(g.tipsTitle)+'</h3><ul>'+g.tips.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul><div class="nh7c502-guide">'+guideHtml+'</div></div></details>';
  view.innerHTML=
@@ -107,7 +119,7 @@ async function renderTestimonies(){
   C().card('',guideTopHtml,'')+
   C().card(u.recordTitle,submissionHtml(g,u),'')+
   C().card(u.approvedAudio,cards,'');
- bindTestimonyForm();
+ bindTestimonyForm();bindPublicAudioV573();
 }
 function submissionHtml(g,u){
  const topics=g.sections.flatMap(s=>s.topics),first=topics[0];
@@ -138,7 +150,7 @@ function bindTestimonyForm(){
  document.getElementById('nh7c502RecordStart').onclick=async()=>{
   try{
    if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder)throw new Error('unsupported');
-   const stream=await navigator.mediaDevices.getUserMedia({audio:true}),type=['audio/mp4','audio/webm;codecs=opus','audio/webm'].find(x=>MediaRecorder.isTypeSupported?.(x));
+   const stream=await navigator.mediaDevices.getUserMedia({audio:true}),appleWebKit=/AppleWebKit/i.test(navigator.userAgent||'')&&!/Android/i.test(navigator.userAgent||''),types=appleWebKit?['audio/mp4;codecs=mp4a.40.2','audio/mp4;codecs=aac','audio/mp4','audio/webm;codecs=opus','audio/webm']:['audio/mp4;codecs=mp4a.40.2','audio/mp4;codecs=aac','audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus','audio/mp4'],type=types.find(x=>MediaRecorder.isTypeSupported?.(x));
    clearRecording();recordState.stream=stream;recordState.chunks=[];recordState.bytes=0;recordState.tooLarge=false;recordState.rec=new MediaRecorder(stream,type?{mimeType:type}:undefined);
    recordState.rec.ondataavailable=e=>{if(!e.data?.size)return;recordState.bytes+=e.data.size;if(recordState.bytes>TESTIMONY_MAX_BYTES){recordState.tooLarge=true;if(recordState.rec?.state!=='inactive')recordState.rec.stop();return}recordState.chunks.push(e.data)};
    recordState.rec.onstop=()=>{clearInterval(recordState.timer);stream.getTracks().forEach(t=>t.stop());if(recordState.tooLarge){recordState.chunks=[];recordState.blob=null;recordState.bytes=0;const a=document.getElementById('nh7c502Playback');a.pause();a.removeAttribute('src');a.hidden=true;document.getElementById('nh7c502RecordStart').disabled=false;document.getElementById('nh7c502RecordPause').disabled=true;document.getElementById('nh7c502RecordStop').disabled=true;document.getElementById('nh7c502RecordDelete').disabled=true;recordingStatus(L('حجم ضبط به ۵۰ مگابایت رسید؛ فایل ذخیره نشد.','Recording reached the 50 MB limit and was not kept.','Snimka je dosegla ograničenje od 50 MB i nije spremljena.'));return}recordState.blob=new Blob(recordState.chunks,{type:recordState.rec.mimeType||'audio/webm'});recordState.url=URL.createObjectURL(recordState.blob);const a=document.getElementById('nh7c502Playback');a.src=recordState.url;a.hidden=false;document.getElementById('nh7c502RecordDelete').disabled=false;recordingStatus('✓')};

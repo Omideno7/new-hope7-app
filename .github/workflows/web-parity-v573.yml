@@ -1,0 +1,31 @@
+name: Safe Web parity regression
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  responsive-parity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated browser test dependencies
+        run: |
+          npm install --prefix "$RUNNER_TEMP/nh7-parity-tests" --no-package-lock playwright@1.62.1
+          "$RUNNER_TEMP/nh7-parity-tests/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Syntax checks
+        run: |
+          for file in js/app.js js/nh7-web-parity-v573.js js/nh7-my-notes-v234.js js/nh7-spiritual-plans-v412.js js/nh7-my-notes-categories-v452.js service-worker.js sw-release-core-v403.js scripts/verify-web-parity-v573.cjs scripts/verify-ios-safe-area-v573.cjs; do node --check "$file"; done
+          bash -n scripts/build-pr241-ios-device-qa-r8.sh
+      - name: Phone, tablet, desktop and FA/EN/HR regression
+        run: |
+          python3 -m http.server 8769 --bind 127.0.0.1 > "$RUNNER_TEMP/nh7-parity-server.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          for attempt in $(seq 1 30); do curl -fsS http://127.0.0.1:8769/ > /dev/null && break; sleep 1; done
+          NODE_PATH="$RUNNER_TEMP/nh7-parity-tests/node_modules" NH7_PARITY_APP_URL=http://127.0.0.1:8769/ node scripts/verify-web-parity-v573.cjs
+          NODE_PATH="$RUNNER_TEMP/nh7-parity-tests/node_modules" NH7_PARITY_APP_URL=http://127.0.0.1:8769/ node scripts/verify-ios-safe-area-v573.cjs
