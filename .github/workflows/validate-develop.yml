@@ -137,27 +137,27 @@ jobs:
 
       - name: Run current release and develop safeguards without deployment
         run: |
-          python3 scripts/validate-canonical-develop.py
-          python3 scripts/verify-consolidation-safety.py
-          python3 scripts/verify-main-develop-sync.py
-          python3 scripts/verify-wave3-safety.py
-          node scripts/verify-performance-wave1.cjs
-          node scripts/verify-local-first-wave2.cjs
-          node scripts/measure-local-first-wave2.cjs
+          python3 scripts/run-ci-check.py python3 scripts/validate-canonical-develop.py
+          python3 scripts/run-ci-check.py python3 scripts/verify-consolidation-safety.py
+          python3 scripts/run-ci-check.py python3 scripts/verify-main-develop-sync.py
+          python3 scripts/run-ci-check.py python3 scripts/verify-wave3-safety.py
+          python3 scripts/run-ci-check.py node scripts/verify-performance-wave1.cjs
+          python3 scripts/run-ci-check.py node scripts/verify-local-first-wave2.cjs
+          python3 scripts/run-ci-check.py node scripts/measure-local-first-wave2.cjs
 
       - name: Verify build provenance against actual exported bytes
-        run: python3 scripts/verify-build-metadata.py
+        run: python3 scripts/run-ci-check.py python3 scripts/verify-build-metadata.py
 
       - name: Verify current Profile / Search / Inbox in browser
         run: |
           export NODE_PATH="$RUNNER_TEMP/canonical-tools/node_modules"
           export CHROMIUM_PATH="$(node -e "console.log(require('playwright').chromium.executablePath())")"
           python3 -m http.server 8878 --bind 127.0.0.1 > "$RUNNER_TEMP/canonical-server.log" 2>&1 &
-          node scripts/verify-profile-search-inbox-qa.cjs http://127.0.0.1:8878
-          node scripts/verify-sermon-note-direction.cjs http://127.0.0.1:8878
-          node scripts/verify-user-writing-direction.cjs http://127.0.0.1:8878
-          node scripts/verify-performance-wave1-browser.cjs http://127.0.0.1:8878
-          node scripts/verify-local-first-wave2-browser.cjs http://127.0.0.1:8878
-          node scripts/verify-wave3-birthday.cjs http://127.0.0.1:8878
-          node scripts/verify-wave3-admin-fencing.cjs http://127.0.0.1:8878
-          node scripts/verify-wave3-admin-browser.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-profile-search-inbox-qa.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-sermon-note-direction.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-user-writing-direction.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-performance-wave1-browser.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-local-first-wave2-browser.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-wave3-birthday.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-wave3-admin-fencing.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-wave3-admin-browser.cjs http://127.0.0.1:8878

@@ -13,7 +13,7 @@
 - This documentation/measurement commit follows the frozen runtime. **The exact final develop/report SHA and exact-head CI run URL are provided in the delivery receipt.** A commit cannot contain its own hash. CI must check that report commit; the runtime bytes above are unchanged by the report commit. Workflow: [Validate Develop](https://github.com/Omideno7/new-hope7-app/actions/workflows/validate-develop.yml).
 - Runtime + audit diff: **23 files changed, 574 insertions(+), 69 deletions(-)**. The delivery receipt gives the complete final diff including these two evidence files.
 
-## Complete changed-file list (25 files)
+## Complete changed-file list (26 files)
 
 - `.github/workflows/validate-develop.yml`
 - `admin-v239-stable.html`
@@ -33,6 +33,7 @@
 - `js/nh7-celebrations-v464.js`
 - `scripts/fixtures/wave3-admin.cjs`
 - `scripts/measure-wave3-admin.cjs`
+- `scripts/run-ci-check.py`
 - `scripts/verify-calendar-lock-parity-v250.py`
 - `scripts/verify-wave3-admin-browser.cjs`
 - `scripts/verify-wave3-admin-fencing.cjs`
@@ -110,7 +111,7 @@ Local PASS:
 - New delayed Admin bootstrap/refresh/legacy read/keepalive, app-role stale reply and concurrent shared-session refresh tests. Personal note payload is unchanged.
 - Wave3 safety guard: protected app/data/engine/Library/Profile/backend bytes, old AI490 unchanged, exactly two count visibility changes, server authority, no new polling/destructive Storage path. Changed JS/CJS syntax and `git diff --check`.
 
-Final acceptance also requires **Validate Develop success on the exact final report/develop SHA**. The delivery receipt records the immutable run URL and confirms its `headSha`; do not substitute an earlier green runtime commit. Browser/VM evidence is not physical/live integration acceptance.
+Initial exact-head run `38476413463` failed; GitHub returned empty job steps and 403 for runner logs. All local gates remained green. A CI-only wrapper now preserves original commands/exit codes and publishes failing assertions to check annotations; no test is weakened. Final acceptance requires **Validate Develop success on the exact final report/develop SHA**. The delivery receipt records the immutable run URL and confirms its `headSha`; do not substitute an earlier green runtime commit. Browser/VM evidence is not physical/live integration acceptance.
 
 ## Completion matrix / next approval gates
 
