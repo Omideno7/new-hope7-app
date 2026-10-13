@@ -60,13 +60,21 @@ const remembered=new Set();
 let active=null,scheduled=0,clockTimer=0;
 function read(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch(_){return null}}
 function item(k){try{return localStorage.getItem(k)}catch(_){return null}}
-function identity(){const s=read(SESSION);if(item('nh7_explicit_logout')==='1'||!s?.access_token||!s.user)return null;const email=String(s.user.email||'').trim().toLowerCase(),id=String(s.user.id||email);return id?{id,email,user:s.user}:null}
+function identity(){const s=read(SESSION);if(item('nh7_explicit_logout')==='1'||!s?.access_token||!s.user)return null;const email=String(s.user.email||'').trim().toLowerCase(),id=String(s.user.id||'');return id?{id,email,user:s.user}:null}
 function profile(){
  const account=identity();if(!account)return null;
  const school=read('nh7_school_access'),cached=read('nh7_user_profile'),metadata=account.user.user_metadata||{};
- const belongs=x=>x&&typeof x==='object'&&account.email&&String(x.email||x.user_email||'').trim().toLowerCase()===account.email;
- const rows=[school,cached].filter(belongs);rows.push(metadata);
- for(const x of rows){const date=String(x.birthDate||x.birth_date||x.date_of_birth||x.dob||'').trim();if(!validBirthDate(date))continue;const name=String(x.firstName||x.first_name||x.name||x.full_name||'').trim().slice(0,100);return {id:account.id,name,birthDate:date}}
+ const belongs=x=>{
+  if(!x||typeof x!=='object')return false;
+  const uids=[x.user_id,x.auth_user_id].map(v=>String(v||'').trim()).filter(Boolean),emails=[x.email,x.user_email].map(v=>String(v||'').trim().toLowerCase()).filter(Boolean);
+  // A contradictory UID or email disqualifies a cache even if the other matches.
+  return uids.every(uid=>uid===account.id)&&emails.every(email=>email===account.email)&&!!(uids.length||emails.length);
+ };
+ const nested=metadata.school_registration;
+ // Session metadata is already owned by the authenticated user; nested packets
+ // still must not contradict that identity. Prefer it to a stale flattened cache.
+ const rows=[nested&&(![nested.email,nested.user_email,nested.user_id,nested.auth_user_id].some(Boolean)||belongs(nested))?nested:null,metadata,...[school,cached].filter(belongs)].filter(Boolean);
+ for(const x of rows){const date=String(x.birthDate||x.birth_date||x.date_of_birth||x.dob||'').trim();if(!validBirthDate(date))continue;const name=String(x.firstName||x.first_name||x.name||x.full_name||metadata.full_name||'').trim().slice(0,100);return {id:account.id,name,birthDate:date}}
  return null;
 }
 function validBirthDate(value){const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(value);if(!m)return false;const y=+m[1],month=+m[2],d=+m[3],date=new Date(y,month-1,d,12);return y>=1900&&date.getFullYear()===y&&date.getMonth()===month-1&&date.getDate()===d&&value<=key(new Date())}
@@ -92,8 +100,15 @@ function closeModal(){
  if(old.shell)old.shell.inert=old.wasInert;
  if(old.focus?.isConnected)try{old.focus.focus({preventScroll:true})}catch(_){}
 }
+function trapFocus(event,dialog){
+ const focusable=[...dialog.querySelectorAll('button:not([disabled]),[tabindex="0"]')].filter(x=>!x.hidden);
+ if(!focusable.length)return;
+ const first=focusable[0],last=focusable[focusable.length-1];
+ if(event.shiftKey&&(document.activeElement===first||!dialog.contains(document.activeElement))){event.preventDefault();last.focus()}
+ else if(!event.shiftKey&&(document.activeElement===last||!dialog.contains(document.activeElement))){event.preventDefault();first.focus()}
+}
 function modalCopy(){
- if(!active)return;const a=active;a.dialog.dir=lang()==='fa'?'rtl':'ltr';a.dialog.lang=lang();
+ if(!active)return;const a=active;if(a.kind==='calendar')return;a.dialog.dir=lang()==='fa'?'rtl':'ltr';a.dialog.lang=lang();
  a.close.setAttribute('aria-label',L('بستن','Close','Zatvori'));
  if(a.kind==='birthday'){
   a.title.textContent=L('تولدت مبارک','Happy Birthday','Sretan rođendan')+(a.person.name?(lang()==='fa'?'، ':', ')+a.person.name:'')+'!';
@@ -123,7 +138,7 @@ function openModal(kind,person=null,date=new Date()){
  const shell=document.getElementById('appShell');active={kind,person,date:new Date(date),overlay,dialog,title,body,verse,close,layer,shell,wasInert:shell?.inert||false,focus:document.activeElement,owner:identity()?.id||'guest'};
  modalCopy();document.body.append(overlay);if(shell)shell.inert=true;close.focus({preventScroll:true});
  close.onclick=closeModal;overlay.onclick=e=>{if(e.target===overlay)closeModal()};
- overlay.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();closeModal()}else if(e.key==='Tab'){e.preventDefault();close.focus()}});
+ overlay.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();closeModal()}else if(e.key==='Tab'){trapFocus(e,dialog)}});
  if(layer)active.effectsTimer=setTimeout(stopEffects,4800);
  return true;
 }
@@ -150,7 +165,7 @@ function openCalendar(){
  const shell=document.getElementById('appShell');active={kind:'calendar',overlay,dialog,close,shell,wasInert:shell?.inert||false,focus:document.activeElement,owner:identity()?.id||'guest'};
  document.body.append(overlay);if(shell)shell.inert=true;close.focus({preventScroll:true});
  close.onclick=closeModal;overlay.onclick=e=>{if(e.target===overlay)closeModal()};
- overlay.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();closeModal()}});
+ overlay.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();closeModal()}else if(e.key==='Tab'){trapFocus(e,dialog)}});
  return true
 }
 function header(){
@@ -171,7 +186,7 @@ function header(){
 function canAuto(){
  if(document.hidden||active)return false;
  const gate=document.getElementById('amenGate');if(gate&&!gate.classList.contains('hidden')&&!gate.hidden)return false;
- if(document.querySelector('[aria-modal="true"]:not(.hidden):not([hidden]),dialog[open]'))return false;
+ if(document.querySelector('[aria-modal="true"]:not(.hidden):not([hidden]),dialog[open],.nh7-registration-confirm-v353:not(.hidden):not([hidden])'))return false;
  if(/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName||''))return false;
  return true;
 }
@@ -182,18 +197,19 @@ function run(){
  if(p){const k='nh7_birthday_seen_v464:'+encodeURIComponent(p.id)+':'+today;if(!seen(k)&&openModal('birthday',p))markSeen(k);return}
  const ev=eventFor();if(ev){const k='nh7_feast_seen_v464:'+encodeURIComponent(identity()?.id||'guest')+':'+today;if(!seen(k)&&openModal('feast'))markSeen(k)}
 }
-function schedule(){clearTimeout(scheduled);scheduled=setTimeout(run,100)}
+function schedule(){if(active&&active.owner!==(identity()?.id||'guest'))closeModal();clearTimeout(scheduled);scheduled=setTimeout(run,100)}
 function clock(){clearTimeout(clockTimer);if(document.hidden)return;run();clockTimer=setTimeout(clock,60000)}
 // Observe only the app view/gate and language, never the header or our own modal subtree.
 const view=document.getElementById('view'),gate=document.getElementById('amenGate');
 if(view)new MutationObserver(schedule).observe(view,{childList:true});
 if(gate)new MutationObserver(schedule).observe(gate,{attributes:true,attributeFilter:['class','hidden']});
 new MutationObserver(schedule).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+['nh7-personal-owner-wave2','nh7-library-auth-change','nh7-account-data-restored-v544'].forEach(event=>window.addEventListener(event,schedule));
 window.addEventListener('pageshow',schedule);window.addEventListener('focus',schedule);window.addEventListener('nh7-session-refreshed',schedule);
 window.addEventListener('storage',e=>{if([SESSION,'nh7_explicit_logout','nh7_school_access','nh7_user_profile','nh7_lang'].includes(e.key))schedule()});
 document.addEventListener('change',e=>{if(['langSelect','settingsLang'].includes(e.target?.id))schedule()});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(clockTimer);stopEffects()}else clock()});
 try{matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',e=>{if(e.matches)stopEffects()})}catch(_){}
 setTimeout(clock,900);
-window.NH7_CELEBRATIONS_V464=Object.freeze({VERSION:'4.6.6-calendar-lock-finalqa',eventFor,annualEvents,birthday,run,easter,openCalendar});
+window.NH7_CELEBRATIONS_V464=Object.freeze({VERSION:'4.6.7-wave3-owner-dob',eventFor,annualEvents,birthday,run,easter,openCalendar});
 })();

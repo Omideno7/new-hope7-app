@@ -17,7 +17,7 @@ css=text('css/nh7-celebrations-v464.css')
 worker=text('service-worker.js')
 release=text('sw-release-core-v403.js')
 
-need("VERSION:'4.6.6-calendar-lock-finalqa'" in js,'calendar runtime version mismatch')
+need("VERSION:'4.6.7-wave3-owner-dob'" in js,'calendar runtime version mismatch')
 need('function annualEvents' in js,'annual calendar list missing')
 need('function openCalendar' in js,'calendar entry point missing')
 need("closeModal();setTimeout(()=>Promise.resolve(window.NH7ReaderSourceV452?.open?.(ref)).catch(()=>{}),0)" in js,
@@ -25,7 +25,7 @@ need("closeModal();setTimeout(()=>Promise.resolve(window.NH7ReaderSourceV452?.op
 need("old.shell.inert=old.wasInert" in js,'closeModal must restore appShell inert state')
 need("active={kind:'calendar'" in js,'calendar modal state missing')
 need('nh7-calendar-dialog464' in css and 'nh7-feast-verse464.is-link' in css,'calendar/link styles missing')
-need('js/nh7-celebrations-v464.js?v=4.6.6-calendar-lock-finalqa' in index,'calendar JS cache tag mismatch')
+need('js/nh7-celebrations-v464.js?v=4.6.7-wave3-owner-dob' in index,'calendar JS cache tag mismatch')
 need('css/nh7-celebrations-v464.css?v=4.6.6-calendar-lock-finalqa' in index,'calendar CSS cache tag mismatch')
 need("'./js/nh7-celebrations-v464.js'" in release and "'./css/nh7-celebrations-v464.css'" in release,'calendar assets missing from release cache')
 

@@ -28,6 +28,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          node --check js/nh7-celebrations-v464.js
+          node --check js/nh7-admin-rbac-v350.js
+          node --check js/nh7-admin-session-keepalive-v451.js
+          node --check js/nh7-admin-ai-v491.js
+          node --check js/nh7-admin-community-fixes-v503.js
+          node --check js/nh7-admin-testimony-core-v565.js
+          node --check js/nh7-admin-message-center-v416.js
+          node --check js/nh7-admin-workspace-wave3.js
           node --check js/app.js
           node --check js/nh7-finalqa-v558.js
           node --check js/nh7-settings-controller-v403.js
@@ -132,6 +140,7 @@ jobs:
           python3 scripts/validate-canonical-develop.py
           python3 scripts/verify-consolidation-safety.py
           python3 scripts/verify-main-develop-sync.py
+          python3 scripts/verify-wave3-safety.py
           node scripts/verify-performance-wave1.cjs
           node scripts/verify-local-first-wave2.cjs
           node scripts/measure-local-first-wave2.cjs
@@ -149,3 +158,6 @@ jobs:
           node scripts/verify-user-writing-direction.cjs http://127.0.0.1:8878
           node scripts/verify-performance-wave1-browser.cjs http://127.0.0.1:8878
           node scripts/verify-local-first-wave2-browser.cjs http://127.0.0.1:8878
+          node scripts/verify-wave3-birthday.cjs http://127.0.0.1:8878
+          node scripts/verify-wave3-admin-fencing.cjs http://127.0.0.1:8878
+          node scripts/verify-wave3-admin-browser.cjs http://127.0.0.1:8878

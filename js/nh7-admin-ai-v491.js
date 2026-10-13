@@ -32,24 +32,25 @@ function refreshProviderUi(){
   const ready=authReady();
   document.querySelectorAll('[data-nh7-ai-button]').forEach(btn=>{btn.disabled=!ready;btn.title=ready?'':statusText()});
 }
+let providerOwner='',providerCheckedAt=0;
+const providerIdentity=()=>authReady()?String(window.NH7AdminAuthorityWave3?.snapshot?.().generation||0)+'\n'+String(token||''):'';
 async function checkProvider(force=false){
-  if(providerConfigured===true&&!force)return true;
+  const owner=providerIdentity();
+  if(owner!==providerOwner){providerOwner=owner;providerCheckedAt=0;providerConfigured=null;providerCheck=null}
+  if(!owner){refreshProviderUi();return null}
+  if(!force&&document.hidden)return providerConfigured;
+  if(!force&&providerCheckedAt&&Date.now()-providerCheckedAt<120000)return providerConfigured;
   if(providerCheck)return providerCheck;
-  if(!authReady()){
-    providerConfigured=null;refreshProviderUi();return null
-  }
-  providerCheck=(async()=>{
+  const check=(async()=>{
     try{
       const result=await authFetch('/functions/v1/nh7-admin-ai-v490',{method:'POST',body:JSON.stringify({action:'status'})});
-      providerConfigured=result?.configured===true;
-      return providerConfigured;
+      if(owner!==providerIdentity())return null;
+      providerConfigured=result?.configured===true;providerCheckedAt=Date.now();return providerConfigured;
     }catch(error){
-      const status=Number(error?.status||0);
-      providerConfigured=(status===401||status===403)?null:false;
-      return providerConfigured;
-    }finally{providerCheck=null;refreshProviderUi()}
-  })();
-  return providerCheck;
+      if(owner!==providerIdentity())return null;
+      const status=Number(error?.status||0);providerConfigured=(status===401||status===403)?null:false;providerCheckedAt=Date.now();return providerConfigured;
+    }finally{if(owner===providerIdentity()){providerCheck=null;refreshProviderUi()}}
+  })();providerCheck=check;return check;
 }
 async function callAI(payload){
   if(!authReady())throw Object.assign(new Error(statusText()),{code:'ADMIN_SESSION_NOT_READY'});
@@ -274,16 +275,16 @@ function install(){
       autoSermonTried.add(editor);setTimeout(async()=>{const v=sermonTitles(),filled=LANGS.filter(l=>v[l]);if(filled.length!==1)return;try{if(authReady())await translateSermonTitles(false)}catch(_){ }},1200);
     }
   },true);
-  document.addEventListener('nh7:admin-render',()=>{setTimeout(()=>{checkProvider(true).then(()=>scan());},160)});
-  window.addEventListener('pageshow',()=>setTimeout(()=>checkProvider(true).then(()=>scan()),220));
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(()=>checkProvider(true).then(()=>scan()),120)});
+  document.addEventListener('nh7:admin-render',()=>{setTimeout(()=>{checkProvider(false).then(()=>scan());},160)});
+  window.addEventListener('pageshow',()=>setTimeout(()=>checkProvider(false).then(()=>scan()),220));
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(()=>checkProvider(false).then(()=>scan()),120)});
   window.nh7AiTranslateQuestionV491=id=>translateQuestion(id,true).catch(()=>{});
   window.nh7AiTranslateAnswerV491=id=>translateAnswer(id,true).catch(()=>{});
   window.nh7AiDraftAnswerV491=id=>draftAnswer(id);
   window.nh7AiTranslateSermonTitlesV491=manual=>translateSermonTitles(manual!==false);
   window.nh7AiDraftAssignmentFeedbackV491=id=>draftAssignmentFeedback(id);
   window.NH7_ADMIN_AI_VERSION=VERSION;
-  setTimeout(()=>{checkProvider(true).then(()=>scan())},450);
+  setTimeout(()=>{checkProvider(false).then(()=>scan())},450);
   return true;
 }
 const style=document.createElement('style');style.textContent=`

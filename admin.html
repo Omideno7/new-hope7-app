@@ -217,6 +217,8 @@ async function signIn(){alert(nh7Label('سامانه دسترسی امن پنل 
 function logout(){localStorage.removeItem('nh7_admin_token');localStorage.removeItem('nh7_admin_refresh_token');token='';refreshToken='';state={registrations:[],questions:[],messages:[],meeting:{},sermons:[],categories:[],schedules:[],dailyContent:[],schoolLessons:[],schoolCourses:[],schoolLocalLessons:[],schoolExams:[],schoolProgress:[],schoolAttempts:[],schoolAssignments:[],schoolAssignmentsError:'',schoolCertificates:[],studentIdentities:[],authUserCount:null,legacyAudio:[],loading:false,lastError:''};render()}
 async function loadAll(silent=false){
   if(!token||adminLoadInFlight)return;
+  const epoch=window.NH7AdminAuthorityWave3?.snapshot?.().generation;
+  const current=()=>epoch===window.NH7AdminAuthorityWave3?.snapshot?.().generation&&!!token;
   adminLoadInFlight=true;
   state.loading=true;
   if(!silent)render();
@@ -227,6 +229,7 @@ async function loadAll(silent=false){
       authFetch('/rest/v1/qa_questions?select=*&order=created_at.desc&limit=500'),
       authFetch('/rest/v1/meeting_settings?select=*&id=eq.active&limit=1')
     ]);
+    if(!current())return;
     const [registrations,studentIdentities,questions,meeting]=critical;
     if(registrations.status==='fulfilled')state.registrations=registrations.value||[];
     if(studentIdentities.status==='fulfilled'){state.studentIdentities=studentIdentities.value||[];rebuildStudentIdentityIndex()}
@@ -255,6 +258,7 @@ async function loadAll(silent=false){
       fetch('./data/school/school_content.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('school content');return r.json()}),
       fetch('./data/audio/messages.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('legacy audio');return r.json()})
     ]);
+    if(!current())return;
     const [msgs,categories,sermons,schedules,dailyContent,schoolLessons,schoolCourses,schoolExams,schoolProgress,schoolAttempts,schoolAssignments,schoolCertificates,authUserCount,schoolLocal,legacyAudio]=secondary;
     state.messages=msgs.status==='fulfilled'?(msgs.value||[]):state.messages;
     state.categories=categories.status==='fulfilled'?(categories.value||[]):state.categories;
@@ -274,8 +278,8 @@ async function loadAll(silent=false){
     state.schoolLessons=mergeSchoolLessons(cloudSchool,state.schoolLocalLessons);
     state.legacyAudio=legacyAudio.status==='fulfilled'?((legacyAudio.value?.categories||[]).flatMap(c=>(c.items||[]).map(i=>Object.assign({legacy_category:c},i)))):state.legacyAudio;
     render(false);
-  }catch(e){state.lastError=String(e?.message||e);state.loading=false;render(false)}
-  finally{adminLoadInFlight=false;state.loading=false}
+  }catch(e){if(!current())return;state.lastError=String(e?.message||e);state.loading=false;render(false)}
+  finally{if(current()){adminLoadInFlight=false;state.loading=false}}
 }
 function counts(){const pending=state.registrations.filter(r=>isEffectivePending(r)).length;const approved=state.registrations.filter(r=>isEffectiveApproved(r)).length;const newQ=state.questions.filter(q=>String(q.status||'new').toLowerCase()!=='answered'&&String(q.status||'new').toLowerCase()!=='archived').length;const pendingAssignments=state.schoolAssignments.filter(a=>String(a.status||'submitted').toLowerCase()==='submitted').length;const activeCourses=state.schoolCourses.filter(c=>c.is_active!==false).length;const activeExams=state.schoolExams.filter(e=>e.is_active!==false).length;return{pending,approved,newQ,pendingAssignments,activeCourses,activeExams}}
 function notifyIfNew(){const c=counts();const newPending=c.pending>Number(lastCounts.pending||0),newQuestions=c.newQ>Number(lastCounts.questions||0),newAssignments=c.pendingAssignments>Number(lastCounts.assignments||0);if(('Notification' in window)&&Notification.permission==='granted'){if(newPending)new Notification('OmideNo7 Admin',{body:c.pending+' '+tr('newRequests'),icon:'assets/admin-icon-192.png'});if(newQuestions)new Notification('OmideNo7 Admin',{body:c.newQ+' '+tr('newQuestions'),icon:'assets/admin-icon-192.png'});if(newAssignments)new Notification('OmideNo7 Admin',{body:c.pendingAssignments+' '+(lang==='fa'?'تکلیف در انتظار بررسی':lang==='hr'?'zadataka čeka pregled':'assignments awaiting review'),icon:'assets/admin-icon-192.png'});}if(newPending||newQuestions||newAssignments){const parts=[];if(newPending)parts.push(c.pending+' '+tr('newRequests'));if(newQuestions)parts.push(c.newQ+' '+tr('newQuestions'));if(newAssignments)parts.push(c.pendingAssignments+' '+(lang==='fa'?'تکلیف جدید':lang==='hr'?'novih zadataka':'new assignments'));setTimeout(()=>setMessage(parts.join(' · '),'success'),80);try{const C=window.AudioContext||window.webkitAudioContext;if(C){const a=new C(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);g.gain.value=.05;o.frequency.value=880;o.start();o.stop(a.currentTime+.12)}}catch(e){}}lastCounts={pending:c.pending,questions:c.newQ,assignments:c.pendingAssignments};localStorage.setItem('nh7_admin_last_counts',JSON.stringify(lastCounts));const total=c.pending+c.newQ+c.pendingAssignments;document.title=(total?('('+total+') '):'')+'OmideNo7 Admin'}
@@ -717,6 +721,7 @@ refreshTimer=null;
   <script src="js/admin-v2.3.9-document-runtime-fix4.js?v=2.3.9-f9"></script>
   <script src="js/admin-v2.3.9-document-select-fix5.js?v=2.3.9-f8"></script>
   <script id="nh7AdminRbacRuntime" defer src="js/nh7-admin-rbac-v350.js?v=2.3.9.40"></script>
+<script defer src="js/nh7-admin-workspace-wave3.js?v=3"></script>
   <script id="nh7AdminLibraryAccessV396" defer src="js/nh7-admin-library-access-v396.js?v=3.9.6"></script>
   <script defer src="js/admin-v2.3.9-registration-approval-email-v344.js?v=3.4.5"></script>
   <script defer src="js/admin-v2.3.9-registration-email-actions-v346.js?v=3.4.6"></script>
