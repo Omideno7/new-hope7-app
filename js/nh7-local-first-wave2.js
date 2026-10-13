@@ -7,9 +7,9 @@ const enc=value=>encodeURIComponent(String(value));
 const clone=value=>JSON.parse(JSON.stringify(value));
 const nonce=()=>crypto.randomUUID?.()||Date.now()+'_'+Math.random().toString(16).slice(2);
 let device=raw.getItem('nh7_device_id');if(!device){device='dev_'+nonce();raw.setItem('nh7_device_id',device)}
-function identity(){const s=raw.getItem('nh7_explicit_logout')==='1'?{}:parse(raw.getItem(SESSION),{});return{owner:s?.user?.id?'uid:'+s.user.id:'device:'+device,uid:String(s?.user?.id||''),email:String(s?.user?.email||'').trim().toLowerCase(),token:String(s?.access_token||'')}}
+function identity(){let s=raw.getItem('nh7_explicit_logout')==='1'?{}:parse(raw.getItem(SESSION),{});if(!s?.access_token)s={};return{owner:s?.user?.id?'uid:'+s.user.id:'device:'+device,uid:String(s?.user?.id||''),email:String(s?.user?.email||'').trim().toLowerCase(),token:String(s?.access_token||'')}}
 const same=who=>identity().owner===who.owner;
-const sessionOwner=value=>{const s=parse(value,{});return s?.user?.id?'uid:'+s.user.id:'device:'+device};
+const sessionOwner=value=>{const s=parse(value,{});return s?.access_token&&s?.user?.id?'uid:'+s.user.id:'device:'+device};
 let observedOwner=identity().owner;
 function notifyOwner(){cachedKeys=null;const next=identity().owner;if(next===observedOwner)return;observedOwner=next;window.dispatchEvent(new Event('nh7-personal-owner-wave2'))}
 // Values remain in their existing formats. Historical raw keys are never deleted/migrated.
