@@ -19,7 +19,7 @@ const MAX_LOCAL_MESSAGES=200;
 let activeSync=null;
 let lastSuccessfulSync=0;
 let lastCount=-1;
-let observerTimer=0;
+let observerTimer=0,syncContext='',syncGeneration=0,scheduleTimer=0,scheduledForce=false;
 
 function parseJson(value,fallback){try{const out=JSON.parse(value);return out==null?fallback:out}catch(_){return fallback}}
 function readJson(key,fallback){return parseJson(localStorage.getItem(key)||'',fallback)}
@@ -84,6 +84,8 @@ async function snapshot(retry=true){
   return out&&typeof out==='object'?out:{};
 }
 function ensureOwnerScope(){
+  const context=ownerKey()+'|'+language()+'|'+authToken();
+  if(context!==syncContext){syncContext=context;syncGeneration++;lastSuccessfulSync=0;activeSync=null;}
   const current=ownerKey(),previous=String(localStorage.getItem(OWNER_KEY)||'');
   if(previous&&previous!==current){
     localStorage.removeItem(INBOX_KEY);
@@ -134,17 +136,17 @@ function addStyle(){
 `;document.head.appendChild(style)
 }
 function paintBadge(count=unreadCount()){
-  count=Math.max(0,Number(count)||0);lastCount=count;
+  count=Math.max(0,Number(count)||0);const changed=count!==lastCount;lastCount=count;
   const label=count>99?'99+':String(count);
   const top=document.getElementById('inboxBadge');
-  if(top){if(top.textContent!==label)top.textContent=label;top.classList.toggle('hidden',count===0);top.hidden=count===0;top.setAttribute('aria-label',`${count} unread messages`)}
+  if(top){if(top.textContent!==label)top.textContent=label;if(top.classList.contains('hidden')!==(count===0))top.classList.toggle('hidden',count===0);if(top.hidden!==(count===0))top.hidden=count===0;const aria=`${count} unread messages`;if(top.getAttribute('aria-label')!==aria)top.setAttribute('aria-label',aria)}
   const tile=document.querySelector('.tile[data-go="inbox"],[data-go="inbox"].tile,[data-go="inbox"]');
   if(tile){
     let badge=tile.querySelector(':scope > .nh7-inbox-tile-badge-v418');
     if(!badge){badge=document.createElement('span');badge.className='nh7-inbox-tile-badge-v418';badge.setAttribute('aria-hidden','true');tile.appendChild(badge)}
-    if(badge.textContent!==label)badge.textContent=label;badge.hidden=count===0;
+    if(badge.textContent!==label)badge.textContent=label;if(badge.hidden!==(count===0))badge.hidden=count===0;
   }
-  window.dispatchEvent(new CustomEvent('nh7:inbox-badge',{detail:{count,version:VERSION}}));
+  if(changed)window.dispatchEvent(new CustomEvent('nh7:inbox-badge',{detail:{count,version:VERSION}}));
   return count;
 }
 function saveMerged(rows,deleted){
@@ -155,6 +157,7 @@ function saveMerged(rows,deleted){
 }
 async function doSync(){
   ensureOwnerScope();
+  const context=syncContext,generation=syncGeneration;
   if(!navigator.onLine){paintBadge();return{ok:false,offline:true,count:lastCount}}
   let cloudRows=[],receipts=[];
   try{
@@ -162,6 +165,7 @@ async function doSync(){
     cloudRows=Array.isArray(shot?.messages)?shot.messages:[];
     receipts=Array.isArray(shot?.receipts)?shot.receipts:[];
   }catch(snapshotError){
+    ensureOwnerScope();if(context!==syncContext||generation!==syncGeneration)return{ok:false,stale:true};
     console.warn('[NH7 inbox badge] snapshot fallback',snapshotError);
     const email=profileEmail(),device=encodeURIComponent(deviceId()),lang=encodeURIComponent(language());
     const ownPath=email
@@ -172,6 +176,7 @@ async function doSync(){
     const [ownRows,globalRows,fallbackReceipts]=await Promise.all([rest(ownPath),rest(globalPath).catch(()=>[]),rest(receiptsPath).catch(()=>[])]);
     cloudRows=[...ownRows,...globalRows];receipts=fallbackReceipts;
   }
+  ensureOwnerScope();if(context!==syncContext||generation!==syncGeneration)return{ok:false,stale:true};
   const receiptMap=new Map(receipts.map(row=>[String(row?.message_id||''),row]));
   const deleted=deletedIds(),byId=new Map(localMessages().filter(row=>!deleted.has(String(row?.id||''))).map(row=>[String(row.id),row]));
   for(const row of cloudRows){
@@ -192,10 +197,10 @@ function sync({force=false}={}){
   ensureOwnerScope();
   if(!force&&Date.now()-lastSuccessfulSync<SYNC_TTL_MS){paintBadge();return Promise.resolve({ok:true,cached:true,count:lastCount})}
   if(activeSync)return activeSync;
-  activeSync=doSync().catch(error=>{console.warn('[NH7 inbox badge] sync failed',error);return{ok:false,error:String(error?.message||error),count:paintBadge()}}).finally(()=>{activeSync=null});
-  return activeSync;
+  const flight=doSync().catch(error=>{console.warn('[NH7 inbox badge] sync failed',error);return{ok:false,error:String(error?.message||error),count:paintBadge()}}).finally(()=>{if(activeSync===flight)activeSync=null});
+  activeSync=flight;return flight;
 }
-function scheduleSync(delay=120,force=false){setTimeout(()=>sync({force}),Math.max(0,delay))}
+function scheduleSync(delay=120,force=false){scheduledForce=scheduledForce||force;clearTimeout(scheduleTimer);scheduleTimer=0;if(document.hidden)return;scheduleTimer=setTimeout(()=>{const force=scheduledForce;scheduledForce=false;sync({force})},Math.max(0,delay))}
 function hookOneSignal(){
   try{
     window.OneSignalDeferred=window.OneSignalDeferred||[];
@@ -206,10 +211,10 @@ function hookOneSignal(){
 }
 function start(){
   addStyle();ensureOwnerScope();paintBadge();hookOneSignal();scheduleSync(250,true);
-  window.setInterval(()=>{if(!document.hidden&&navigator.onLine)sync()},POLL_MS);
+  window.NH7PerformanceWave1?.visibleLoop(()=>{if(navigator.onLine)sync()},POLL_MS);
   ['focus','pageshow'].forEach(name=>window.addEventListener(name,()=>scheduleSync(120,false)));
   window.addEventListener('online',()=>scheduleSync(120,true));
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden)scheduleSync(120,false)});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(scheduleTimer);clearTimeout(observerTimer);}else{paintBadge();scheduleSync(120,false)}});
   window.addEventListener('storage',event=>{
     if([SESSION_KEY,LOGOUT_KEY,'nh7_manual_email','nh7_school_access','nh7_meeting_access','nh7_device_id','nh7_lang',INBOX_KEY,DELETED_KEY].includes(String(event.key||''))){ensureOwnerScope();paintBadge();scheduleSync(120,true)}
   });
@@ -219,7 +224,7 @@ function start(){
     setTimeout(()=>paintBadge(),120);
     if(target.matches?.('#inboxBtn,[data-go="inbox"]'))scheduleSync(700,false);
   },true);
-  new MutationObserver(()=>{clearTimeout(observerTimer);observerTimer=setTimeout(()=>paintBadge(lastCount<0?unreadCount():lastCount),35)}).observe(document.documentElement,{childList:true,subtree:true});
+  new MutationObserver(()=>{if(document.hidden)return;clearTimeout(observerTimer);observerTimer=setTimeout(()=>paintBadge(lastCount<0?unreadCount():lastCount),35)}).observe(document.getElementById('view')||document.documentElement,{childList:true,subtree:true});
   window.NH7_INBOX_BADGE_SYNC={version:VERSION,sync:(force=true)=>sync({force:!!force}),count:()=>unreadCount()};
   window.NH7_INBOX_BADGE_SYNC_VERSION=VERSION;
 }

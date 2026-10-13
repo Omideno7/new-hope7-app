@@ -537,23 +537,37 @@ function enqueueCloud(op){
   localStorage.setItem('nh7_cloud_queue',JSON.stringify(q));
   localStorage.setItem('nh7_cloud_status','queued');
 }
-async function syncCloudQueue(){
-  if(!navigator.onLine)return;
-  const q=JSON.parse(localStorage.getItem('nh7_cloud_queue')||'[]');
-  if(!q.length){localStorage.setItem('nh7_cloud_status','synced');return}
-  const remaining=[],activeEmail=authEmail();
-  for(const op of q){
-    if(op.owner_email&&String(op.owner_email).toLowerCase()!==activeEmail){
-      remaining.push(op);
-      continue;
+let nh7CloudDrainWave1=null;
+function syncCloudQueue(){
+  if(!navigator.onLine)return Promise.resolve();
+  if(nh7CloudDrainWave1)return nh7CloudDrainWave1;
+  nh7CloudDrainWave1=drainCloudQueueWave1().finally(()=>{nh7CloudDrainWave1=null});
+  return nh7CloudDrainWave1;
+}
+async function drainCloudQueueWave1(){
+  const attempted=new Set();
+  while(navigator.onLine){
+    const queue=JSON.parse(localStorage.getItem('nh7_cloud_queue')||'[]'),activeEmail=authEmail();
+    const batch=queue.filter(op=>!attempted.has(op.id||JSON.stringify(op))&&(!op.owner_email||String(op.owner_email).toLowerCase()===activeEmail));
+    if(!batch.length)break;
+    for(const op of batch){
+      if(!navigator.onLine)break;
+      if(op.owner_email&&String(op.owner_email).toLowerCase()!==authEmail())continue;
+      attempted.add(op.id||JSON.stringify(op));
+      try{
+        if(op.type==='insert')await cloudFetch(op.table,{method:'POST',body:JSON.stringify(op.payload)});
+        else if(op.type==='upsert')await cloudFetch(op.table+'?on_conflict='+encodeURIComponent(op.conflict||'device_id'),{method:'POST',headers:{'Prefer':'resolution=merge-duplicates,return=representation'},body:JSON.stringify(op.payload)});
+        else if(op.type==='delete')await cloudFetch(op.path,{method:'DELETE'});
+        else continue;
+        // Acknowledge only this successful operation against the latest queue.
+        const latest=JSON.parse(localStorage.getItem('nh7_cloud_queue')||'[]');
+        const index=latest.findIndex(row=>op.id?row.id===op.id:JSON.stringify(row)===JSON.stringify(op));
+        if(index>=0)latest.splice(index,1);
+        localStorage.setItem('nh7_cloud_queue',JSON.stringify(latest));
+      }catch(e){console.warn('Cloud sync failed',e)}
     }
-    try{
-      if(op.type==='insert')await cloudFetch(op.table,{method:'POST',body:JSON.stringify(op.payload)});
-      if(op.type==='upsert')await cloudFetch(op.table+'?on_conflict='+encodeURIComponent(op.conflict||'device_id'),{method:'POST',headers:{'Prefer':'resolution=merge-duplicates,return=representation'},body:JSON.stringify(op.payload)});
-      if(op.type==='delete')await cloudFetch(op.path,{method:'DELETE'});
-    }catch(e){console.warn('Cloud sync failed',e);remaining.push(op)}
   }
-  localStorage.setItem('nh7_cloud_queue',JSON.stringify(remaining));
+  const remaining=JSON.parse(localStorage.getItem('nh7_cloud_queue')||'[]');
   localStorage.setItem('nh7_cloud_status',remaining.length?'queued':'synced');
 }
 async function saveCloud(op){ enqueueCloud(op); await syncCloudQueue(); }
@@ -766,20 +780,24 @@ async function saveInboxCloud(item){
 async function fetchLatestRegistration(kind){
   if(!CLOUD_ENABLED || !navigator.onLine) return null;
   const localKey = kind==='meeting' ? 'nh7_meeting_access' : 'nh7_school_access';
+  const requestOwner=String(authSession()?.access_token||'')+'|'+currentUserEmail();
+  const stillOwner=()=>requestOwner===String(authSession()?.access_token||'')+'|'+currentUserEmail();
   try{
-    const local = JSON.parse(localStorage.getItem(localKey)||'{}');
+    let local = JSON.parse(localStorage.getItem(localKey)||'{}');
+    if(local.email&&authEmail()&&String(local.email).trim().toLowerCase()!==authEmail())local={};
     const email = (currentUserEmail() || local.email || '').trim().toLowerCase();
     const normalize = (row)=>Object.assign({}, row?.payload||{}, {
       email: (row?.payload?.email || row?.email || email || local.email || '').trim().toLowerCase(),
       status: row?.status || 'pending',
       cloudId: row?.registration_id || row?.id || local.cloudId || '',
-      approvedBy: (row?.approved || row?.status==='approved') ? 'admin' : (local.approvedBy||''),
+      approvedBy: (row?.approved || row?.status==='approved') ? 'admin' : '',
       syncedAt: new Date().toISOString()
     });
 
     // Preferred v2 RPC: uses the signed-in account email, returns the approved row and its profile payload.
     try{
       const rpcRows = await cloudRpc('nh7_registration_access_v2', {p_type:kind, p_email:email, p_device_id:deviceId()});
+      if(!stillOwner())return null;
       const r = Array.isArray(rpcRows) ? rpcRows[0] : rpcRows;
       if(r && typeof r.found!=='undefined'){
         if(r.found){
@@ -795,6 +813,7 @@ async function fetchLatestRegistration(kind){
     // Legacy secure RPC fallback.
     try{
       const rpcRows = await cloudRpc('nh7_registration_status', {p_type:kind, p_email:email, p_device_id:deviceId()});
+      if(!stillOwner())return null;
       const r = Array.isArray(rpcRows) ? rpcRows[0] : rpcRows;
       if(r && typeof r.found!=='undefined'){
         if(r.found){
@@ -808,6 +827,7 @@ async function fetchLatestRegistration(kind){
 
     // Robust REST fallback: load recent rows and match locally by email or device.
     let rows = await cloudFetch(`registrations?select=*&type=eq.${encodeURIComponent(kind)}&order=updated_at.desc,created_at.desc&limit=300`, {method:'GET'}).catch(()=>[]);
+    if(!stillOwner())return null;
     rows = Array.isArray(rows) ? rows : [];
     const dev = deviceId();
     const matches = rows.filter(r=>{
@@ -872,20 +892,23 @@ Object.assign(T.en,{writtenBible:'Written Bible',apocrypha:'Apocrypha',bookList:
 Object.assign(T.fa,{writtenBible:'کتاب مقدس',apocrypha:'کتاب‌های اپوکریفا',bookList:'فهرست کتاب‌ها',previousBook:'کتاب قبلی',nextBook:'کتاب بعدی',previousChapter:'باب قبلی',nextChapter:'باب بعدی',noteAvailable:'برای این آیه یادداشت ذخیره شده است',close:'بستن',openExternal:'باز کردن در مرورگر',securePdfLoading:'در حال آماده‌سازی فایل امن PDF…',schoolContentRequired:'ثبت‌نام مدرسه لازم است',schoolContentGate:'این منبع آموزشی محافظت‌شده پس از ثبت‌نام در مدرسه و تأیید مدیر در دسترس قرار می‌گیرد.',goToSchoolRegistration:'رفتن به ثبت‌نام مدرسه'});
 Object.assign(T.hr,{writtenBible:'Biblija',apocrypha:'Apokrifi',bookList:'Popis knjiga',previousBook:'Prethodna knjiga',nextBook:'Sljedeća knjiga',previousChapter:'Prethodno poglavlje',nextChapter:'Sljedeće poglavlje',noteAvailable:'Za ovaj redak spremljena je bilješka',close:'Zatvori',openExternal:'Otvori u pregledniku',securePdfLoading:'Priprema sigurne PDF datoteke…',schoolContentRequired:'Potrebna je registracija za školu',schoolContentGate:'Ovaj zaštićeni nastavni sadržaj dostupan je nakon registracije za školu i odobrenja administratora.',goToSchoolRegistration:'Idi na registraciju za školu'});
 
-let nh7SchoolApprovalCacheV223={at:0,value:false,status:'none'};
+let nh7SchoolApprovalCacheV223={at:0,value:false,status:'none',owner:''};
+function nh7ApprovalOwnerWave1(){return String(authSession()?.access_token||'')+'|'+currentUserEmail()}
 async function nh7ApprovedSchoolAccessV223(force=false){
   const now=Date.now();
-  if(!force&&now-nh7SchoolApprovalCacheV223.at<60000)return nh7SchoolApprovalCacheV223.value;
+  const owner=nh7ApprovalOwnerWave1();
+  if(!force&&owner===nh7SchoolApprovalCacheV223.owner&&now-nh7SchoolApprovalCacheV223.at<60000)return nh7SchoolApprovalCacheV223.value;
   let access={};
   try{access=JSON.parse(localStorage.getItem('nh7_school_access')||'{}')||{}}catch(e){}
+  if(access.email&&authEmail()&&String(access.email).trim().toLowerCase()!==authEmail())access={};
   const localStatus=String(access?.status||'none').toLowerCase();
   const localValue=localStatus==='approved'||access?.approvedBy==='admin';
   if(localValue&&!force){
-    nh7SchoolApprovalCacheV223={at:now,value:true,status:localStatus};
+    nh7SchoolApprovalCacheV223={at:now,value:true,status:localStatus,owner};
     nh7WithTimeoutV470(fetchLatestRegistration('school'),4000).then(cloud=>{
-      if(!cloud)return;
+      if(!cloud||owner!==nh7ApprovalOwnerWave1())return;
       const status=String(cloud?.status||'none').toLowerCase();
-      nh7SchoolApprovalCacheV223={at:Date.now(),value:status==='approved'||cloud?.approvedBy==='admin',status};
+      nh7SchoolApprovalCacheV223={at:Date.now(),value:status==='approved'||cloud?.approvedBy==='admin',status,owner};
     }).catch(e=>console.warn('School access background check',e));
     return true;
   }
@@ -893,9 +916,10 @@ async function nh7ApprovedSchoolAccessV223(force=false){
     const cloud=await nh7WithTimeoutV470(fetchLatestRegistration('school'),4000);
     if(cloud)access=cloud;
   }catch(e){console.warn('School access check',e)}
+  if(owner!==nh7ApprovalOwnerWave1())return false;
   const status=String(access?.status||'none').toLowerCase();
   const value=status==='approved'||access?.approvedBy==='admin';
-  nh7SchoolApprovalCacheV223={at:now,value,status};
+  nh7SchoolApprovalCacheV223={at:now,value,status,owner};
   return value;
 }
 function nh7RenderSchoolGateV223(resourceLabel=''){
@@ -923,6 +947,7 @@ function nh7TrackRenderedContentV223(route,params={}){
   else if(route==='library'){type='library_section';id=String(params.tab||nh7LibraryTab||'public');}
   else {id=JSON.stringify(params||{}).slice(0,160)||'overview';}
   nh7TrackContentV223(type,id,title,false,0);
+  window.NH7PerformanceWave1?.content(type,route==='daily'||route==='bible'||route==='plans'||route==='library'?id:'overview');
 }
 
 function pick(obj){ return (obj && (obj[state.lang] ?? obj.en ?? obj.fa ?? obj.hr)) || ''; }
@@ -2242,14 +2267,19 @@ let nh7LibraryCatalog=[];
 function libraryText(row,key){return row?.[key+'_'+state.lang]||row?.[key+'_en']||row?.[key+'_fa']||row?.[key+'_hr']||''}
 function librarySize(bytes){bytes=Number(bytes||0);if(bytes<1024*1024)return Math.max(1,Math.round(bytes/1024))+' KB';return (bytes/1024/1024).toFixed(1)+' MB'}
 async function loadLibraryCatalog(force=false){
-  const bundle=await window.NH7LibrarySecurityV125?.catalog();
+  const bundle=await window.NH7LibrarySecurityV125?.catalog(force);
   nh7LibraryCatalog=Array.isArray(bundle?.items)?bundle.items:[];
   return nh7LibraryCatalog;
 }
 window.addEventListener('nh7-library-security',event=>{
+  const changed=JSON.stringify(nh7LibraryCatalog)!==JSON.stringify(event.detail.bundle.items);
   nh7LibraryCatalog=event.detail.bundle.items;
   const allowed=new Set(nh7LibraryCatalog.map(row=>String(row.id)));
   document.querySelectorAll('[data-library-open]').forEach(button=>{if(!allowed.has(button.dataset.libraryOpen)||button.closest('.library-user-card')?.dataset.libraryAudience!==nh7LibraryCatalog.find(row=>String(row.id)===button.dataset.libraryOpen)?.audience)button.closest('.library-user-card')?.remove()});
+  if(changed&&event.detail.reason==='verified'&&state.route==='library'){
+    const root=document.querySelector('#view .library-user-tabs')?.closest('.card'),grid=root?.querySelector('[data-nh7-original-library-grid]')||root?.querySelector('.library-user-grid');
+    if(grid){root.querySelectorAll('.library-user-card').forEach(card=>card.remove());grid.innerHTML=nh7LibraryCatalog.filter(x=>x.audience===nh7LibraryTab&&(x.resource_type||'library')==='library').map(x=>libraryUserCardV224(x,false)).join('');bindDynamic();}
+  }
   if(nh7LibraryViewerItemV125&&(!allowed.has(nh7LibraryViewerItemV125)||(nh7LibraryViewerPublicV125&&nh7LibraryCatalog.find(row=>String(row.id)===nh7LibraryViewerItemV125)?.audience!=='public')))nh7ClosePdfViewerV223();
   nh7RefreshLibraryOfflineControlsV125();
 });
@@ -2359,7 +2389,7 @@ function libraryUserCardV224(x,isApocrypha=false){const mime=String(x.mime_type|
 async function library(params={}){
   if(!await nh7RequireSchoolAccessV223(tr('library')))return;
   nh7LibraryTab=params.tab||nh7LibraryTab||'public';sessionStorage.setItem('nh7_library_tab',nh7LibraryTab);
-  await loadLibraryCatalog();
+  await loadLibraryCatalog(nh7LibraryTab==='ministers');
   const rows=nh7LibraryCatalog.filter(x=>x.audience===nh7LibraryTab&&(x.resource_type||'library')==='library');
   const title=nh7LibraryTab==='ministers'?tr('ministersLibrary'):tr('publicLibrary');
   const cards=rows.map(x=>libraryUserCardV224(x,false)).join('');

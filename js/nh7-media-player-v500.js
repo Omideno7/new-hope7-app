@@ -11,6 +11,7 @@ const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]
 const FAVORITES_KEY='nh7_audio_favorites_v500';
 const NOTE_DRAFT_PREFIX='nh7_sermon_note_draft_v528_';
 let root=null,expanded=false,lastTrackKey='',syncTimer=0,seeking=false,seekPreview=0,lastRecentId='',iosVolumeVisual=1,downloadUi=null,lastUiLang='',noteDraftTimer=0;
+let lastUiSignature='';
 
 const lang=()=>{const v=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return ['fa','en','hr'].includes(v)?v:'en'};
 const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
@@ -529,7 +530,11 @@ function bind(){
 }
 
 function sync(){
+  if(document.hidden)return;
   const r=ensure(),s=state(),a=s.audio,item=s.current,active=!!(a&&item&&a.src);
+  const signature=JSON.stringify([active,mediaId(item),artworkFor(item),titleFor(item),s.queueIndex,s.playQueue?.map(mediaId),expanded,lang(),Math.floor(Number(a?.currentTime||0)),a?.duration,a?.paused,a?.playbackRate,a?.volume,a?.muted,seeking,seekPreview,localStorage.getItem(FAVORITES_KEY)]);
+  if(signature===lastUiSignature&&!downloadUi?.active)return;
+  lastUiSignature=signature;
   refreshLanguageUI();
   r.hidden=!active;
   document.documentElement.classList.toggle('nh7p500-active',active);
@@ -582,7 +587,20 @@ function sync(){
   }
 }
 
-function start(){ensure();refreshLanguageUI(true);sync();clearInterval(syncTimer);syncTimer=setInterval(sync,250);window.addEventListener('pageshow',()=>{lastUiLang='';sync()});window.addEventListener('pagehide',()=>flushInlineNoteDraft(false));document.addEventListener('visibilitychange',()=>{if(document.hidden)flushInlineNoteDraft(false)});window.addEventListener('change',e=>{if(['langSelect','settingsLang'].includes(e.target?.id)){lastUiLang='';lastTrackKey='';setTimeout(()=>{refreshLanguageUI(true);sync()},0)}},true);window.addEventListener('storage',e=>{if(e.key==='nh7_lang'){lastUiLang='';refreshLanguageUI(true);sync()}})}
+function scheduleSync(){
+  clearTimeout(syncTimer);syncTimer=0;if(document.hidden)return;
+  const s=state(),delay=!s.audio||!s.current?5000:s.audio.paused?2000:expanded?500:1000;
+  syncTimer=setTimeout(()=>{sync();scheduleSync()},delay);
+}
+function resumeUI(){lastUiSignature='';lastUiLang='';sync();scheduleSync()}
+function start(){
+  ensure();refreshLanguageUI(true);resumeUI();
+  window.addEventListener('pageshow',resumeUI);
+  window.addEventListener('pagehide',()=>{clearTimeout(syncTimer);flushInlineNoteDraft(false)});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(syncTimer);flushInlineNoteDraft(false)}else resumeUI()});
+  window.addEventListener('change',e=>{if(['langSelect','settingsLang'].includes(e.target?.id)){lastUiLang='';lastTrackKey='';setTimeout(()=>{refreshLanguageUI(true);lastUiSignature='';sync()},0)}},true);
+  window.addEventListener('storage',e=>{if(e.key==='nh7_lang'){lastUiLang='';refreshLanguageUI(true);lastUiSignature='';sync()}});
+}
 window.NH7_MEDIA_PLAYER_V500={version:VERSION,sync,setExpanded,close:closePlayer};
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start,{once:true}):start();
 })();

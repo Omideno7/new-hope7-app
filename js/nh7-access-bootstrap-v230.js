@@ -10,6 +10,7 @@ const STATUS_LOCAL_PREFIX='nh7_content_access_offline_';
 const CATALOG_PREFIX='nh7_protected_catalog_v327_';
 const STATUS_TTL=5*60*1000;
 const originalFetch=window.fetch.bind(window);
+let statusFlight=null,statusGeneration=0;
 
 function session(){try{return JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch(_){return null}}
 function token(){const s=session();return localStorage.getItem(LOGOUT_KEY)==='1'?'':String(s?.access_token||'')}
@@ -24,18 +25,22 @@ function cachedStatus(allowStale=!navigator.onLine){
   const localValue=parse(localStorage.getItem(statusLocalKey()));
   const value=sessionValue||localValue;
   if(!value)return null;
+  if(value.owner_uid!==String(session()?.user?.id||'')||value.token_hash!==hash(token())){
+    if(!(allowStale&&!navigator.onLine&&token()&&value.user_email===userEmail()&&!value.owner_uid))return null;
+  }
+  if(!token()&&value.authenticated)return null;
   if(!allowStale&&Date.now()-Number(value.checked_at||0)>=STATUS_TTL)return null;
   if(value.user_email&&userEmail()&&String(value.user_email).toLowerCase()!==userEmail())return null;
   return value;
 }
 function saveStatus(value){
-  const out=Object.assign({authenticated:false,approved:false,checked_at:Date.now(),user_email:userEmail()},value||{});
+  const out=Object.assign({authenticated:false,approved:false,checked_at:Date.now(),user_email:userEmail()},value||{},{owner_uid:String(session()?.user?.id||''),token_hash:hash(token())});
   sessionStorage.setItem(STATUS_CACHE_KEY,JSON.stringify(out));
   if(out.authenticated&&userEmail())localStorage.setItem(statusLocalKey(),JSON.stringify(out));
   window.dispatchEvent(new CustomEvent('nh7-access-status',{detail:out}));
   return out;
 }
-function clearStatus(){sessionStorage.removeItem(STATUS_CACHE_KEY)}
+function clearStatus(){statusGeneration++;statusFlight=null;sessionStorage.removeItem(STATUS_CACHE_KEY)}
 function catalogKey(resource,query=''){return CATALOG_PREFIX+hash([userEmail(),resource,query].join('|'))}
 function readCatalog(resource,query=''){const value=parse(localStorage.getItem(catalogKey(resource,query)));return value&&Array.isArray(value.items)?value:null}
 function saveCatalog(resource,query,items){const value={items:Array.isArray(items)?items:[],saved_at:Date.now(),user_email:userEmail(),resource,query};try{localStorage.setItem(catalogKey(resource,query),JSON.stringify(value))}catch(_){ }return value}
@@ -60,12 +65,21 @@ async function checkStatus(force=false){
     const stale=cachedStatus(true);
     return stale||{authenticated:true,approved:false,offline:true,reason:'offline_not_verified',checked_at:Date.now(),user_email:userEmail()};
   }
-  try{return saveStatus(await edge('nh7-content-access',{action:'status',language:language()},true))}
-  catch(error){
+  const context=token()+'|'+userEmail(),generation=statusGeneration;
+  if(statusFlight?.context===context)return statusFlight.promise;
+  const promise=(async()=>{try{
+    const result=await edge('nh7-content-access',{action:'status',language:language()},true);
+    if(context!==token()+'|'+userEmail()||generation!==statusGeneration)return{authenticated:!!token(),approved:false,reason:'session_changed'};
+    return saveStatus(result);
+  }catch(error){
+    if(context!==token()+'|'+userEmail()||generation!==statusGeneration)return{authenticated:!!token(),approved:false,reason:'session_changed'};
+    if(error.status===401||error.status===403){sessionStorage.removeItem(STATUS_CACHE_KEY);localStorage.removeItem(statusLocalKey());return saveStatus({authenticated:!!token(),approved:false,reason:error.code||'denied'});}
     const stale=cachedStatus(true);
     if(stale)return Object.assign({},stale,{offline:error.code==='offline',reason:error.code||error.message});
     return saveStatus({authenticated:!!token(),approved:false,reason:error.code||error.message||'access_check_failed'});
-  }
+  }})();
+  statusFlight={context,promise};
+  try{return await promise}finally{if(statusFlight?.promise===promise)statusFlight=null}
 }
 
 const protectedTables=new Map([
@@ -135,6 +149,8 @@ window.fetch=async function nh7ProtectedFetch(input,init={}){
 };
 
 window.addEventListener('storage',event=>{if(event.key===SESSION_KEY||event.key===LOGOUT_KEY)clearStatus()});
+window.addEventListener('nh7-library-auth-change',clearStatus);
+window.addEventListener('nh7-session-refreshed',clearStatus);
 window.NH7AccessV230={VERSION,session,token,userEmail,deviceId,language,edge,checkStatus,cachedStatus,clearStatus,isApproved:()=>!!cachedStatus(true)?.approved};
 checkStatus(false).catch(()=>{});
 })();

@@ -132,6 +132,7 @@ jobs:
           python3 scripts/validate-canonical-develop.py
           python3 scripts/verify-consolidation-safety.py
           python3 scripts/verify-main-develop-sync.py
+          node scripts/verify-performance-wave1.cjs
 
       - name: Verify build provenance against actual exported bytes
         run: python3 scripts/verify-build-metadata.py
@@ -144,3 +145,4 @@ jobs:
           node scripts/verify-profile-search-inbox-qa.cjs http://127.0.0.1:8878
           node scripts/verify-sermon-note-direction.cjs http://127.0.0.1:8878
           node scripts/verify-user-writing-direction.cjs http://127.0.0.1:8878
+          node scripts/verify-performance-wave1-browser.cjs http://127.0.0.1:8878

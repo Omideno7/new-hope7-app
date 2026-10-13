@@ -10,8 +10,10 @@
     generation = 0,
     bundle = { items: [], collections: [] },
     checkedAt = 0,
-    catalogPromise = null;
+    catalogPromise = null,
+    expiryTimer = 0;
   const PUBLIC_CATALOG_TTL_MS = 120000;
+  const PUBLIC_CACHE_VERSION = 'wave1-public-1';
   function session() {
     try {
       const s = JSON.parse(localStorage.getItem(SESSION) || 'null');
@@ -44,6 +46,8 @@
   }
   function invalidate(reason = 'identity') {
     generation++;
+    catalogPromise = null;
+    clearTimeout(expiryTimer);
     if(reason==='reader_denied'){sessionStorage.removeItem(CACHE+identity);localStorage.removeItem(CACHE+identity);}
     bundle =
       reason === 'offline' || reason === 'unverified'
@@ -91,15 +95,24 @@
       return { items: [], collections: [] };
     }
   }
-  async function catalog() {
+  async function catalog(force = false) {
     const id = sync(),
       epoch = generation,
       accessToken = session()?.access_token;
+    if (!id) { invalidate('login_required'); return bundle; }
+    if (!navigator.onLine) { invalidate('offline'); return bundle; }
+    if (!force && !checkedAt) {
+      try {
+        const snapshot=JSON.parse(localStorage.getItem(CACHE+id)||'null');
+        if(snapshot?.uid===id && snapshot.cache_version===PUBLIC_CACHE_VERSION && Date.now()-snapshot.at>=0 && Date.now()-snapshot.at<PUBLIC_CATALOG_TTL_MS){bundle=publicOnly(snapshot);checkedAt=snapshot.at;}
+      } catch (_) {}
+    }
     const publicOnlyBundle = bundle.items.every((x) => x.audience === 'public') && bundle.collections.every((x) => x.audience === 'public');
-    if (checkedAt && publicOnlyBundle && Date.now() - checkedAt < PUBLIC_CATALOG_TTL_MS) return bundle;
+    if (!force && checkedAt && publicOnlyBundle && Date.now() - checkedAt < PUBLIC_CATALOG_TTL_MS) return bundle;
     if (catalogPromise) return catalogPromise;
-    catalogPromise = catalogNetwork(id, epoch, accessToken);
-    try { return await catalogPromise; } finally { catalogPromise = null; }
+    const flight = catalogNetwork(id, epoch, accessToken);
+    catalogPromise = flight;
+    try { return await flight; } finally { if(catalogPromise===flight)catalogPromise = null; }
   }
   async function catalogNetwork(id, epoch, accessToken) {
     if (!id) {
@@ -143,11 +156,14 @@
         const snapshot = JSON.stringify({
           uid: id,
           at: checkedAt,
+          cache_version: bundle.items.every(x=>x.audience==='public')&&bundle.collections.every(x=>x.audience==='public')?PUBLIC_CACHE_VERSION:'offline-only',
           ...publicOnly(bundle),
         });
         sessionStorage.setItem(CACHE + id, snapshot);
         localStorage.setItem(CACHE + id, snapshot);
       } catch (_) {}
+      clearTimeout(expiryTimer);
+      if(bundle.items.some(x=>x.audience!=='public')||bundle.collections.some(x=>x.audience!=='public'))expiryTimer=setTimeout(()=>invalidate('expired'),35000);
       await reconcileFiles(id, bundle);
       if (sync() !== id || epoch !== generation)
         return { items: [], collections: [] };
@@ -342,7 +358,7 @@
           id &&
           id === sync()
         ) {
-          await catalog();
+          await catalog(Date.now()-checkedAt>35000);
           if (id === sync()) await bindFile(body.item_id, data.signed_url);
         }
       } catch (_) {
@@ -383,15 +399,9 @@
       if (bundle.items.some((x) => x.audience !== 'public')) catalog();
     }
   });
-  setInterval(() => {
+  window.addEventListener('nh7-library-content-change',()=>{try{localStorage.removeItem(CACHE+identity);sessionStorage.removeItem(CACHE+identity)}catch(_){}invalidate('content_changed');if(!document.hidden&&navigator.onLine)catalog(true)});
+  window.NH7PerformanceWave1?.visibleLoop(() => {
     sync();
-    if (checkedAt && Date.now() - checkedAt > 35000) {
-      if (bundle.items.some((x) => x.audience !== 'public'))
-        invalidate('expired');
-      else checkedAt = 0;
-    }
-  }, 1000);
-  setInterval(() => {
-    if (bundle.items.some((x) => x.audience !== 'public')) catalog();
+    if (document.querySelector('#view .library-user-tabs') && bundle.items.some((x) => x.audience !== 'public')) catalog();
   }, 10000);
 })();

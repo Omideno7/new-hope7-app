@@ -1,6 +1,6 @@
 # Wave 1 audit — before product changes
 
-Base: `6e312ff087220520fc89aac69c5d7e145b992cb8`, existing develop. Main was fetched for observation only. The accompanying inventory records every matched network/lifecycle/DOM/persistence location in all root `js/*.js`, with direct active-entrypoint and Admin flags. Imported modules and backend SQL were inspected separately; historical/Admin files are not all active user-app work.
+Base: `6e312ff087220520fc89aac69c5d7e145b992cb8`, existing develop. Main was fetched for observation only. The accompanying inventory records every matched network/lifecycle/DOM/persistence location in 247 user/historical/Admin JavaScript, app/worker and Edge TypeScript sources, with 75 entrypoint/import references and scope flags. The 2,254 matched locations include 396 network, 588 timer/lifecycle, 595 DOM and 815 persistence locations (categories overlap). Backend SQL was inspected separately; historical/Admin files are not all active user-app work.
 
 No Production requests, data reads/writes, migrations or deployments are needed for this audit. Measurements use local Chromium, intercepted remote endpoints, fixture accounts and development-only timer/DOM instrumentation. Physical battery consumption and Production billing cannot be measured here.
 
@@ -23,6 +23,12 @@ No Production requests, data reads/writes, migrations or deployments are needed 
 | Other observers/pollers | Push v364 2.5s binding, School path 120s, watermark 8s, access/session refresh, registration 1.8s, styles/themes and native reconciliation are coupled to security/ownership/UI. | Inventory and retain sensitive paths; measure cascade reduction from player/Inbox fixes rather than blanket disabling listeners/observers. | Push, School progression, offline/downloads, Profile and account merge unchanged. |
 
 ## Cache and lifecycle contract
+
+Measurement follow-up before changing the legacy mini-player: `nh7-audio-miniplayer-v487.js:sync` is another unconditional 250ms timer. It continues to render its CSS-hidden player under v500, including in background, and accounts for 240 callbacks/minute after the first UI optimization. Park this superseded presentation layer when v500 exists; retain its fallback behavior when v500 is absent. No playback/persistence method changes are needed.
+
+Further measurement follow-up before changing the classic labels: its root observer schedules `patch` every 40ms; `refreshCard` then writes the same download-label text unconditionally, creating another childList mutation and another patch/IndexedDB read. Make download/status/fallback text updates idempotent. This changes no labels, file operations or playback behavior, but breaks the self-triggering DOM loop.
+
+Access follow-up before touching the app's read cache: the 60s School-approval UI cache has no identity key; registration reads can write their old response into local profile/access state after an account switch, and normalization retains `approvedBy:admin` from an old local row even after a current server denial. Bind the read cache/results to the current session and let an explicit server denial clear that stale display flag. Do not change registrations, School progression or authoritative backend checks.
 
 Public Library cache is UID-bound, public-only and versioned. Existing two-minute TTL bounds content-change staleness; explicit invalidation/force refresh must discover changed content immediately. Offline fallback cannot include Ministers; restricted metadata/file authorization must remain current, server UID/grant-bound and online-only. App update/version mismatch must force the next online refresh. No additional cache of completed auth/access responses is allowed outside existing scoped status TTLs.
 

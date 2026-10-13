@@ -171,6 +171,8 @@ function refreshCopy(r){
  const hint=r.querySelector('[data-mini-volume-hint]');if(hint)hint.textContent=L('ولوم با دکمه‌های گوشی','Volume: phone buttons','Glasnoća: tipke telefona');
 }
 function sync(){
+  if(document.hidden)return;
+  if(window.NH7_MEDIA_PLAYER_V500){stopFallback?.();return;}
   const r=ensure(),s=state(),a=s.audio,item=s.current;
   refreshCopy(r);
   // Hide the older wide v484 bar while this UI is active.
@@ -203,7 +205,9 @@ html.nh7-mini485-active .nh7-now-playing-v484{display:none!important}
 html.nh7-mini485-active body #view{padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))!important}
 `;
 document.head.appendChild(style);
-timer=setInterval(sync,250);setTimeout(sync,200);
+let stopFallback=window.NH7PerformanceWave1?.visibleLoop(sync,1000);
+if(!stopFallback)timer=setInterval(sync,1000);
+setTimeout(sync,200);
 window.addEventListener('pagehide',()=>clearInterval(timer),{once:true});
 window.NH7_AUDIO_MINIPLAYER_VERSION=VERSION;
 window.NH7_AUDIO_MINIPLAYER_V487={sync,setExpanded,close:closeMiniPlayer,writeResumeSnapshot,get expanded(){return expanded}};

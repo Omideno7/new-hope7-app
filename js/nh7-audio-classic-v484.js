@@ -155,17 +155,18 @@ function createPanel(item,forceVisible=false){
   return panel;
 }
 function panelFor(item){return cardFor(item)?.querySelector('[data-classic-player]')||null}
-function setStatus(item,text,type=''){const panel=createPanel(item,true),node=panel?.querySelector('[data-classic-status]');if(!node)return;node.textContent=text||'';node.className=type?'is-'+type:''}
+function setStatus(item,text,type=''){const panel=createPanel(item,true),node=panel?.querySelector('[data-classic-status]');if(!node)return;if(node.textContent!==(text||''))node.textContent=text||'';const className=type?'is-'+type:'';if(node.className!==className)node.className=className}
 function nearestSpeed(value){let best=SPEEDS[0];for(const speed of SPEEDS)if(Math.abs(speed-value)<Math.abs(best-value))best=speed;return best}
 function syncPanel(item){
+  if(document.hidden||document.documentElement.classList.contains('nh7p500-active'))return;
   const panel=panelFor(item);if(!panel)return;
   const same=current&&mediaId(current)===mediaId(item),now=same?Number(audio?.currentTime||0):Number(readProgress(item).time||0),duration=same&&Number.isFinite(audio?.duration)?audio.duration:durationFor(item),rate=same?Number(audio?.playbackRate||1):Number(localStorage.getItem('nh7_sermon_speed')||1)||1;
   const play=panel.querySelector('[data-classic-toggle]'),seek=panel.querySelector('[data-classic-seek]');
-  if(play){play.disabled=false;play.textContent=same&&!audio?.paused?'❚❚':'▶'}
-  panel.querySelector('[data-classic-now]').textContent=fmt(now);
-  panel.querySelector('[data-classic-total]').textContent=fmt(duration);
+  if(play){play.disabled=false;const label=same&&!audio?.paused?'❚❚':'▶';if(play.textContent!==label)play.textContent=label}
+  const nowNode=panel.querySelector('[data-classic-now]');if(nowNode.textContent!==fmt(now))nowNode.textContent=fmt(now);
+  const totalNode=panel.querySelector('[data-classic-total]');if(totalNode.textContent!==fmt(duration))totalNode.textContent=fmt(duration);
   if(seek)seek.value=duration>0?Math.round(now/duration*1000):0;
-  panel.querySelector('[data-classic-rate]').textContent=`${L('سرعت','Speed','Brzina')} ${nearestSpeed(rate)}×`;
+  const rateNode=panel.querySelector('[data-classic-rate]'),rateLabel=`${L('سرعت','Speed','Brzina')} ${nearestSpeed(rate)}×`;if(rateNode.textContent!==rateLabel)rateNode.textContent=rateLabel;
 }
 function showCurrentPanel(item){
   if(currentPanel&&currentPanel!==panelFor(item)&&!currentPanel.closest('.school-audio-card'))currentPanel.hidden=true;
@@ -351,6 +352,8 @@ function ensureNowPlaying(){
   document.body.appendChild(bar);nowPlayingBar=bar;return bar;
 }
 function syncNowPlaying(){
+  window.NH7_MEDIA_PLAYER_V500?.sync();
+  if(document.hidden||document.documentElement.classList.contains('nh7p500-active')){setMediaPlaybackState();syncMediaPosition();return;}
   const bar=ensureNowPlaying();
   if(!current||!audio||!audio.src){bar.hidden=true;document.body.classList.remove('nh7-has-now-playing-v484');return}
   bar.hidden=false;document.body.classList.add('nh7-has-now-playing-v484');
@@ -377,15 +380,15 @@ function ensureAudio(){
   audio.addEventListener('playing',()=>{if(!current)return;lastWall=Date.now();lastPosition=audio.currentTime;setupMediaSession(current);setStatus(current,L('در حال پخش','Playing','Reprodukcija'),'ok');syncPanel(current);syncNowPlaying()});
   audio.addEventListener('waiting',()=>current&&setStatus(current,L('در حال دریافت فایل…','Buffering…','Učitavanje…'),'busy'));
   audio.addEventListener('timeupdate',()=>{if(!current)return;captureListen();saveProgress(current,false);syncPanel(current);syncNowPlaying();scheduleTracking()});
-  audio.addEventListener('pause',()=>{if(!current)return;captureListen();saveProgress(current,false);syncPanel(current);syncNowPlaying();flushTracking(false,true)});
-  audio.addEventListener('ended',()=>{if(!current)return;captureListen();saveProgress(current,true);setStatus(current,L('پخش کامل شد ✓','Completed ✓','Završeno ✓'),'ok');syncPanel(current);syncNowPlaying();Promise.resolve(flushTracking(true,true)).finally(()=>{setTimeout(()=>playNextTrack('auto-ended').catch(()=>{}),120)})});
+  audio.addEventListener('pause',()=>{if(!current)return;captureListen();saveProgress(current,false);syncPanel(current);syncNowPlaying();flushTracking(false,true);window.NH7PerformanceWave1?.flush()});
+  audio.addEventListener('ended',()=>{if(!current)return;captureListen();saveProgress(current,true);window.NH7PerformanceWave1?.audio(sessionId,current,0,true);window.NH7PerformanceWave1?.flush();setStatus(current,L('پخش کامل شد ✓','Completed ✓','Završeno ✓'),'ok');syncPanel(current);syncNowPlaying();Promise.resolve(flushTracking(true,true)).finally(()=>{setTimeout(()=>playNextTrack('auto-ended').catch(()=>{}),120)})});
   audio.addEventListener('volumechange',()=>syncNowPlaying());
   audio.addEventListener('ratechange',()=>{syncNowPlaying();syncMediaPosition()});
   audio.addEventListener('error',()=>{if(!current)return;const id=mediaId(current),local=localUrls.get(id);if(local&&audio.src===local){failedLocal.add(id);setStatus(current,L('پخش نسخه دانلودشده متوقف شد؛ فایل پاک نشده است. اگر آنلاین هستید دوباره Play را بزنید تا نسخهٔ شبکه امتحان شود.','Playback of the downloaded copy stopped; the file was not deleted. If you are online, tap Play again to try the network copy.','Reprodukcija preuzete kopije je stala; datoteka nije izbrisana. Ako ste online, ponovno dodirnite Play za mrežnu kopiju.'),'error')}else setStatus(current,L('فایل صوتی باز نشد. دوباره Play را بزنید.','Audio could not be opened. Tap Play to retry.','Audio se nije mogao otvoriti. Dodirnite Play za ponovni pokušaj.'),'error');syncPanel(current);syncNowPlaying()});
   return audio;
 }
 
-function captureListen(){if(!current||!audio||audio.paused)return;const now=Date.now(),wall=Math.min(5,Math.max(0,(now-(lastWall||now))/1000)),position=Math.max(0,Number(audio.currentTime||0));lastWall=now;if(position>=lastPosition-0.5&&position-lastPosition<8&&wall>0)listenedPending+=wall;lastPosition=position}
+function captureListen(){if(!current||!audio||audio.paused)return;const now=Date.now(),wall=Math.min(5,Math.max(0,(now-(lastWall||now))/1000)),position=Math.max(0,Number(audio.currentTime||0));lastWall=now;if(position>=lastPosition-0.5&&position-lastPosition<8&&wall>0){listenedPending+=wall;window.NH7PerformanceWave1?.audio(sessionId,current,wall)}lastPosition=position}
 function scheduleTracking(){return false}
 async function rpc(name,body){const token=await accessToken();if(!token)throw new Error('login_required');const response=await fetch(`${SB}/rest/v1/rpc/${name}`,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store'});if(!response.ok)throw new Error(await response.text());return response.json().catch(()=>({}))}
 async function flushTracking(ended=false,force=false){
@@ -435,7 +438,17 @@ async function playItem(item,options={}){
 
 function downloadLabel(percent){return percent>=100?L('آفلاین آماده ✓','Offline ready ✓','Offline spremno ✓'):L(`در حال دانلود ${percent}%`,`Downloading ${percent}%`,`Preuzimanje ${percent}%`)}
 function downloadButtons(item){const card=cardFor(item);return card?$$('[data-classic-download]',card):[]}
-function updateDownloadButtons(item,downloaded,percent=null){for(const button of downloadButtons(item)){button.disabled=percent!==null&&percent<100;button.textContent=percent!==null?downloadLabel(percent):downloaded?downloadLabel(100):L('دانلود برای آفلاین','Download offline','Preuzmi offline');button.classList.toggle('is-downloaded-v400',!!downloaded);button.dataset.offlineCached=downloaded?'1':'0'}const external=cardFor(item)?.querySelector('[data-external-classic-download]');if(external){external.textContent=downloaded?downloadLabel(100):L('دانلود برای آفلاین','Download offline','Preuzmi offline');external.classList.toggle('is-downloaded-v400',!!downloaded)}}
+function updateDownloadButtons(item,downloaded,percent=null){
+  for(const button of downloadButtons(item)){
+    const disabled=percent!==null&&percent<100,label=percent!==null?downloadLabel(percent):downloaded?downloadLabel(100):L('دانلود برای آفلاین','Download offline','Preuzmi offline'),cached=downloaded?'1':'0';
+    if(button.disabled!==disabled)button.disabled=disabled;
+    if(button.textContent!==label)button.textContent=label;
+    if(button.classList.contains('is-downloaded-v400')!==!!downloaded)button.classList.toggle('is-downloaded-v400',!!downloaded);
+    if(button.dataset.offlineCached!==cached)button.dataset.offlineCached=cached;
+  }
+  const external=cardFor(item)?.querySelector('[data-external-classic-download]');
+  if(external){const label=downloaded?downloadLabel(100):L('دانلود برای آفلاین','Download offline','Preuzmi offline');if(external.textContent!==label)external.textContent=label;if(external.classList.contains('is-downloaded-v400')!==!!downloaded)external.classList.toggle('is-downloaded-v400',!!downloaded)}
+}
 function filename(item,url){let ext='.mp3';try{const match=new URL(url).pathname.match(/\.([a-z0-9]{2,6})$/i);if(match)ext='.'+match[1].toLowerCase()}catch(_){}return mediaId(item).replace(/[^a-z0-9._-]+/gi,'_').slice(0,90)+ext}
 async function downloadWeb(item,url){
   const response=await fetch(url,{cache:'no-store'});if(!response.ok)throw Object.assign(new Error(`HTTP ${response.status}`),{status:response.status});
@@ -475,7 +488,7 @@ function ownCard(card){
   refreshCard(item).catch(()=>{});
 }
 function patch(){document.querySelectorAll('[data-sermon-card]').forEach(ownCard)}
-function prewarm(){if(prewarmBusy||!navigator.onLine)return;prewarmBusy=true;const items=$$('[data-sermon-card]').map(deriveFromCard).filter(supported).slice(0,20);(async()=>{try{for(let i=0;i<items.length;i+=4)await Promise.all(items.slice(i,i+4).map(item=>signedUrl(item).catch(()=>null)))}finally{prewarmBusy=false}})()}
+function prewarm(){if(prewarmBusy||!navigator.onLine||document.hidden)return;prewarmBusy=true;const items=$$('[data-sermon-card]').map(deriveFromCard).filter(supported).slice(0,20);(async()=>{try{for(let i=0;i<items.length;i+=4)await Promise.all(items.slice(i,i+4).map(item=>signedUrl(item).catch(()=>null)))}finally{prewarmBusy=false}})()}
 
 function itemFromPanelNode(node){return deriveFromCard(node?.closest?.('[data-sermon-card]'))}
 function intercept(event){
