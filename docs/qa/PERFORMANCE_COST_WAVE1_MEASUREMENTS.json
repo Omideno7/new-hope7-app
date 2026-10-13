@@ -1,6 +1,6 @@
 {
   "base_develop_sha": "6e312ff087220520fc89aac69c5d7e145b992cb8",
-  "runtime_candidate": "current Wave 1 working tree; exact committed candidate recorded in report/delivery",
+  "runtime_candidate": "60465e2bb297102eae55ae14e80b11d2d829d67e",
   "environment": {
     "browser": "Chromium/Playwright 1.62.1",
     "viewport": "390x844",
