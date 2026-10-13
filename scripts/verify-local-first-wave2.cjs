@@ -37,7 +37,8 @@ async function tests(){
  assert.equal(restarted.localStorage.getItem('nh7_note_test'),'offline-19');assert.equal(restarted.api.pending().length,2);
  restarted.ctx.navigator.onLine=true;await restarted.api.flush();assert.equal(restarted.api.pending().length,0);assert.equal(b.store.get('user_notes')[0].content,'offline-19');assert.equal(b.store.get('nh7_account_notes')[0].content,'offline-19');
  console.log('PASS offline edit -> offline restart -> reconnect: both backups, 20 edits coalesce to final state');
- await restarted.ctx.saveNoteCloud('note_test','latest');await restarted.api.flush();assert.equal(b.store.get('nh7_account_notes')[0].content,'latest');
+ const earlierVersion=b.store.get('nh7_account_notes')[0].updated_at;
+ await restarted.ctx.saveNoteCloud('note_test','latest');await restarted.api.flush();assert(Date.parse(b.store.get('nh7_account_notes')[0].updated_at)>Date.parse(earlierVersion),'conditional update must advance its existing version even with a fixed clock');assert.equal(b.store.get('nh7_account_notes')[0].content,'latest');
  b.store.get('nh7_account_notes')[0].content='device B new text';b.store.get('nh7_account_notes')[0].updated_at='2099-01-01T00:00:00Z';
  await restarted.ctx.saveNoteCloud('note_test','A offline text');await restarted.api.flush();assert.equal(b.store.get('nh7_account_notes')[0].content,'device B new text');assert.equal(restarted.localStorage.getItem('nh7_note_test'),'A offline text');assert(restarted.api.conflicts().some(c=>JSON.stringify(c).includes('device B new text')));
  console.log('PASS differing cross-device notes: preserve both, block weaker overwrite');

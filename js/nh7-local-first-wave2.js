@@ -90,8 +90,10 @@ async function checkedWrite(op,who){
   }
   if(remote){
    if(!remote.updated_at){conflict(op,remote,'missing_remote_version');return false}
-   const result=await transport(path+'&updated_at=eq.'+enc(remote.updated_at),{method:'PATCH',...options,body:JSON.stringify(op.payload)},who);
-   if(!Array.isArray(result)||result.length!==1||value(result[0])!==value(op.payload)){conflict(op,remote,'conditional_update_not_confirmed');return false}
+   const timestamp=Date.parse(remote.updated_at);if(!Number.isFinite(timestamp)){conflict(op,remote,'invalid_remote_version');return false}
+   const payload={...op.payload,updated_at:new Date(Math.max(Date.now(),timestamp+1)).toISOString()};
+   const result=await transport(path+'&updated_at=eq.'+enc(remote.updated_at),{method:'PATCH',...options,body:JSON.stringify(payload)},who);
+   if(!Array.isArray(result)||result.length!==1||result[0].updated_at===remote.updated_at||value(result[0])!==value(op.payload)){conflict(op,remote,'conditional_update_not_confirmed');return false}
    raw.setItem(baselineKey(op),JSON.stringify(result[0]));
   }else{
    const result=await transport(op.table+'?on_conflict='+enc(op.conflict),{method:'POST',headers:{Prefer:'resolution=ignore-duplicates,return=representation'},body:JSON.stringify(op.payload)},who);
