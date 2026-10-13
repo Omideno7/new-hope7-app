@@ -1,0 +1,1581 @@
+{
+  "baseline_sha": "177d196f8fdb2b641156b0e7b28d03e8bd98b7cc",
+  "runtime_sha": "13ebccf5c40befcda2fa13610c57ad038869260a",
+  "main_unchanged_sha": "15af811f78a17a0881c13171311e7ade6bc390f4",
+  "fixture": "scripts/fixtures/wave3-admin.cjs",
+  "source_hashes": {
+    "admin-v239-stable.html": "e1b8b55904871c1a27f31f2748e116e0b680e35714cef039d99a85349dc9e15d",
+    "admin.html": "2a92645e9825566d328ceb3c21520b974cb8053bb9f54b401e24038ccdc346c6",
+    "index.html": "763c671fe21f880e2443a8b5f5fcf4e05f9b551866321e074ec43e56199993ef",
+    "js/nh7-admin-ai-v491.js": "04250fd3bd470f3164bfc85a42e58c4104569d11c1ceb07511b9f3d3a9866259",
+    "js/nh7-admin-community-fixes-v503.js": "20d5536672f92de85dda46f621071ca199aae076c336bb21497a98dd616252da",
+    "js/nh7-admin-message-center-v416.js": "80867eb6929c698cea9eedc35d75ba12093c9d4e3cd00588af1d9a1b14d0725c",
+    "js/nh7-admin-rbac-v350.js": "f2175b8ba354a0a70f7f57525fd77060198acfab4d4f9598649e77dc254b6140",
+    "js/nh7-admin-session-keepalive-v451.js": "691224b7aaffb30150f595982afbbc8b49fd327fa5f8a42c5344d81278e27521",
+    "js/nh7-admin-testimony-core-v565.js": "a27af25916db6995810e66ac48c4329b259eb2322ece35fb5e6e8c4ba6c0fc75",
+    "js/nh7-admin-workspace-wave3.js": "db3e7e0f8cb7469972e5279efff966d67f41d6c9e76351014186d913fdca8dc6",
+    "js/nh7-celebrations-v464.js": "435dad91af2fb04a2119e056cde4c945049ed7509e4ba410b1426e22df535430",
+    "scripts/fixtures/wave3-admin.cjs": "22e2efc453191b7d54255fc2340da95046f7689fd74314b186d589d3ac98fab4",
+    "scripts/measure-wave3-admin.cjs": "d2bcf2809ef81e8fc0bdcab3a92d6d1d2bf3afb69e35a758c40a3615b4e4a820",
+    "scripts/verify-wave3-admin-browser.cjs": "8bf02e54778c22ee78814fda2a7fa451f9fac08240e3d50a5057f01de0772b1e",
+    "scripts/verify-wave3-admin-fencing.cjs": "45ac48af8ce5aa9aa4e1033183e254857ace4b6bf099a43930f12cf379de0aff",
+    "scripts/verify-wave3-birthday.cjs": "6fbab4c06e749ac01d64dcb35b01acd51a1900f32968d822e07dc6e644d1471f",
+    "sw-release-core-v403.js": "a45341f6547b9d0e601fbf3ec76cb4153fc811cdfef6c12d5df100c223f97f2b"
+  },
+  "before": {
+    "source_url": "http://127.0.0.1:8883",
+    "scenario": "same actual stable Admin, owner fixture; settle25s; idle45s; four existing request tabs; message composer open; hidden60s",
+    "limitations": "Real browser timers with fixed calendar date, intercepted response shapes; not Production volume, physical CPU/battery or actual message delivery.",
+    "startup_requests": [
+      {
+        "path": "/rest/v1/rpc/nh7_admin_my_access_v350",
+        "method": "POST",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_registration_feed_v3",
+        "method": "POST",
+        "body": {
+          "p_limit": 2000,
+          "p_offset": 0
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_student_identity_directory_v128",
+        "method": "POST",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/qa_questions",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/meeting_settings",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_owner_testimony_feed_v502",
+        "method": "POST",
+        "body": {
+          "p_status": "pending",
+          "p_limit": 200
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/notification_inbox",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/sermon_categories",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/sermons",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/notification_schedules",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/daily_content",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_lessons",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_courses",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_school_assignments_feed",
+        "method": "POST",
+        "body": {
+          "p_limit": 2000
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_exams",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_progress",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_exam_attempts",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_certificates",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_auth_user_count",
+        "method": "POST",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/audio_bible_books_v220",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/audio_bible_chapters_v220",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/document_templates_v220",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_school_assignments_feed_v237",
+        "method": "POST",
+        "body": {
+          "p_limit": 5000
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/auth/v1/token",
+        "method": "POST",
+        "body": {
+          "refresh_token": "refresh-owner"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-admin-ai-v490",
+        "method": "POST",
+        "body": {
+          "action": "status"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-admin-ai-v490",
+        "method": "POST",
+        "body": {
+          "action": "status"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-admin-ai-v490",
+        "method": "POST",
+        "body": {
+          "action": "status"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_owner_testimony_feed_v502",
+        "method": "POST",
+        "body": {
+          "p_status": "pending",
+          "p_limit": 100
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-admin-ai-v490",
+        "method": "POST",
+        "body": {
+          "action": "status"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-admin-ai-v490",
+        "method": "POST",
+        "body": {
+          "action": "status"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_registration_feed_v3",
+        "method": "POST",
+        "body": {
+          "p_limit": 2000,
+          "p_offset": 0
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_student_identity_directory_v128",
+        "method": "POST",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/qa_questions",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/meeting_settings",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/notification_inbox",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/sermon_categories",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/sermons",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/notification_schedules",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/daily_content",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_lessons",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_courses",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_exams",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_progress",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_exam_attempts",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_school_assignments_feed",
+        "method": "POST",
+        "body": {
+          "p_limit": 2000
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_certificates",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_auth_user_count",
+        "method": "POST",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_school_assignments_feed_v237",
+        "method": "POST",
+        "body": {
+          "p_limit": 5000
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_owner_prayer_feed_v502",
+        "method": "POST",
+        "body": {
+          "p_status": "new",
+          "p_limit": 200
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-admin-ai-v490",
+        "method": "POST",
+        "body": {
+          "action": "status"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-admin-ai-v490",
+        "method": "POST",
+        "body": {
+          "action": "status"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_registration_feed_v3",
+        "method": "POST",
+        "body": {
+          "p_limit": 2000,
+          "p_offset": 0
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_student_identity_directory_v128",
+        "method": "POST",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/qa_questions",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/meeting_settings",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-admin-ai-v490",
+        "method": "POST",
+        "body": {
+          "action": "status"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_library_dashboard_v224",
+        "method": "POST",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/notification_inbox",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/sermon_categories",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/sermons",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/notification_schedules",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/daily_content",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_lessons",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_courses",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_exams",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_progress",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_exam_attempts",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_school_assignments_feed",
+        "method": "POST",
+        "body": {
+          "p_limit": 2000
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_auth_user_count",
+        "method": "POST",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_certificates",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_school_assignments_feed_v237",
+        "method": "POST",
+        "body": {
+          "p_limit": 5000
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_school_assignments_feed_v237",
+        "method": "POST",
+        "body": {
+          "p_limit": 5000
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-admin-ai-v490",
+        "method": "POST",
+        "body": {
+          "action": "status"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-send-email",
+        "method": "POST",
+        "body": {
+          "action": "config"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-admin-ai-v490",
+        "method": "POST",
+        "body": {
+          "action": "status"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-admin-ai-v490",
+        "method": "POST",
+        "body": {
+          "action": "status"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-admin-ai-v490",
+        "method": "POST",
+        "body": {
+          "action": "status"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-admin-ai-v490",
+        "method": "POST",
+        "body": {
+          "action": "status"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-admin-ai-v490",
+        "method": "POST",
+        "body": {
+          "action": "status"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-admin-ai-v490",
+        "method": "POST",
+        "body": {
+          "action": "status"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-admin-ai-v490",
+        "method": "POST",
+        "body": {
+          "action": "status"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-admin-ai-v490",
+        "method": "POST",
+        "body": {
+          "action": "status"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-admin-ai-v490",
+        "method": "POST",
+        "body": {
+          "action": "status"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-admin-ai-v490",
+        "method": "POST",
+        "body": {
+          "action": "status"
+        },
+        "role": "owner"
+      }
+    ],
+    "steps": [
+      {
+        "name": "visible_idle",
+        "observed_ms": 45000,
+        "requests": [],
+        "new_listeners": 0,
+        "observer_callbacks": 0,
+        "queries": 177,
+        "timer_callbacks": {
+          "admin-v2.3.5-analytics-core-v237.js": 0,
+          "admin-v2.2.2.js": 12875,
+          "admin-v2.2.3.js": 0,
+          "nh7-admin-registration-dedupe-v332.js": 0,
+          "nh7-admin-full-stability-v447.js": 0,
+          "nh7-admin-sermon-integrity-v421.js": 0,
+          "admin-v2.2.0.js": 0,
+          "nh7-document-ux-v520.js": 0,
+          "nh7-admin-testimony-core-v565.js": 0,
+          "nh7-admin-ai-v491.js": 0,
+          "nh7-admin-storage-orphan-guard-v510.js": 0,
+          "nh7-admin-community-fixes-v503.js": 0,
+          "admin-v2.3.9-document-runtime-fix4.js": 26,
+          "admin-v2.3.9-registration-approval-email-v344.js": 0,
+          "admin-v2.3.9-approval-email-ui-v345.js": 0,
+          "admin-v2.3.9-registration-email-actions-v346.js": 0,
+          "nh7-admin-push-owner-v400.js": 0,
+          "nh7-admin-global-stability-v414.js": 64,
+          "admin-v2.3.9-document-select-fix5.js": 45,
+          "inline": 0,
+          "nh7-admin-community-storage-v504.js": 0,
+          "nh7-admin-report-print-v117.js": 0,
+          "nh7-admin-message-feedback-v511.js": 0,
+          "nh7-admin-library-access-v396.js": 50,
+          "nh7-admin-school-workflow-v249.js": 0,
+          "nh7-admin-session-keepalive-v451.js": 0,
+          "nh7-admin-testimony-runtime-fix-v505.js": 0,
+          "admin-v2.2.4.js": 0,
+          "nh7-admin-storage-orphan-v509.js": 0,
+          "nh7-admin-message-center-v416.js": 31,
+          "nh7-admin-assignment-feedback-presets-v499.js": 0
+        }
+      },
+      {
+        "name": "request_navigation",
+        "observed_ms": 1000,
+        "requests": [
+          {
+            "path": "/functions/v1/nh7-admin-ai-v490",
+            "method": "POST",
+            "body": {
+              "action": "status"
+            },
+            "role": "owner"
+          },
+          {
+            "path": "/functions/v1/nh7-admin-ai-v490",
+            "method": "POST",
+            "body": {
+              "action": "status"
+            },
+            "role": "owner"
+          },
+          {
+            "path": "/rest/v1/rpc/nh7_admin_school_assignments_feed_v238",
+            "method": "POST",
+            "body": {
+              "p_limit": 5000
+            },
+            "role": "owner"
+          },
+          {
+            "path": "/functions/v1/nh7-admin-ai-v490",
+            "method": "POST",
+            "body": {
+              "action": "status"
+            },
+            "role": "owner"
+          },
+          {
+            "path": "/functions/v1/nh7-admin-ai-v490",
+            "method": "POST",
+            "body": {
+              "action": "status"
+            },
+            "role": "owner"
+          },
+          {
+            "path": "/functions/v1/nh7-admin-ai-v490",
+            "method": "POST",
+            "body": {
+              "action": "status"
+            },
+            "role": "owner"
+          }
+        ],
+        "new_listeners": 10,
+        "observer_callbacks": 678,
+        "queries": 1116,
+        "timer_callbacks": {
+          "admin-v2.3.5-analytics-core-v237.js": 0,
+          "admin-v2.2.2.js": 681,
+          "admin-v2.2.3.js": 5,
+          "nh7-admin-registration-dedupe-v332.js": 0,
+          "nh7-admin-full-stability-v447.js": 0,
+          "nh7-admin-sermon-integrity-v421.js": 0,
+          "admin-v2.2.0.js": 5,
+          "nh7-document-ux-v520.js": 0,
+          "nh7-admin-testimony-core-v565.js": 0,
+          "nh7-admin-ai-v491.js": 14,
+          "nh7-admin-storage-orphan-guard-v510.js": 0,
+          "nh7-admin-community-fixes-v503.js": 0,
+          "admin-v2.3.9-document-runtime-fix4.js": 2,
+          "admin-v2.3.9-registration-approval-email-v344.js": 0,
+          "admin-v2.3.9-approval-email-ui-v345.js": 0,
+          "admin-v2.3.9-registration-email-actions-v346.js": 0,
+          "nh7-admin-push-owner-v400.js": 0,
+          "nh7-admin-global-stability-v414.js": 4,
+          "admin-v2.3.9-document-select-fix5.js": 3,
+          "inline": 0,
+          "nh7-admin-community-storage-v504.js": 0,
+          "nh7-admin-report-print-v117.js": 0,
+          "nh7-admin-message-feedback-v511.js": 0,
+          "nh7-admin-library-access-v396.js": 9,
+          "nh7-admin-school-workflow-v249.js": 0,
+          "nh7-admin-session-keepalive-v451.js": 0,
+          "nh7-admin-testimony-runtime-fix-v505.js": 0,
+          "admin-v2.2.4.js": 0,
+          "nh7-admin-storage-orphan-v509.js": 0,
+          "nh7-admin-message-center-v416.js": 1,
+          "nh7-admin-assignment-feedback-presets-v499.js": 9
+        }
+      },
+      {
+        "name": "compose_open_preview_only",
+        "observed_ms": 1000,
+        "requests": [
+          {
+            "path": "/rest/v1/rpc/nh7_admin_message_templates_v416",
+            "method": "POST",
+            "body": {},
+            "role": "owner"
+          },
+          {
+            "path": "/rest/v1/rpc/nh7_admin_user_directory_v360",
+            "method": "POST",
+            "body": {},
+            "role": "owner"
+          },
+          {
+            "path": "/rest/v1/rpc/nh7_admin_campaign_history_v416",
+            "method": "POST",
+            "body": {
+              "p_limit": 20
+            },
+            "role": "owner"
+          }
+        ],
+        "new_listeners": 0,
+        "observer_callbacks": 38,
+        "queries": 77,
+        "timer_callbacks": {
+          "admin-v2.3.5-analytics-core-v237.js": 0,
+          "admin-v2.2.2.js": 476,
+          "admin-v2.2.3.js": 0,
+          "nh7-admin-registration-dedupe-v332.js": 0,
+          "nh7-admin-full-stability-v447.js": 0,
+          "nh7-admin-sermon-integrity-v421.js": 0,
+          "admin-v2.2.0.js": 0,
+          "nh7-document-ux-v520.js": 0,
+          "nh7-admin-testimony-core-v565.js": 0,
+          "nh7-admin-ai-v491.js": 1,
+          "nh7-admin-storage-orphan-guard-v510.js": 0,
+          "nh7-admin-community-fixes-v503.js": 0,
+          "admin-v2.3.9-document-runtime-fix4.js": 0,
+          "admin-v2.3.9-registration-approval-email-v344.js": 0,
+          "admin-v2.3.9-approval-email-ui-v345.js": 0,
+          "admin-v2.3.9-registration-email-actions-v346.js": 0,
+          "nh7-admin-push-owner-v400.js": 0,
+          "nh7-admin-global-stability-v414.js": 2,
+          "admin-v2.3.9-document-select-fix5.js": 1,
+          "inline": 0,
+          "nh7-admin-community-storage-v504.js": 0,
+          "nh7-admin-report-print-v117.js": 0,
+          "nh7-admin-message-feedback-v511.js": 0,
+          "nh7-admin-library-access-v396.js": 3,
+          "nh7-admin-school-workflow-v249.js": 0,
+          "nh7-admin-session-keepalive-v451.js": 0,
+          "nh7-admin-testimony-runtime-fix-v505.js": 0,
+          "admin-v2.2.4.js": 0,
+          "nh7-admin-storage-orphan-v509.js": 0,
+          "nh7-admin-message-center-v416.js": 1,
+          "nh7-admin-assignment-feedback-presets-v499.js": 1
+        }
+      },
+      {
+        "name": "background",
+        "observed_ms": 60000,
+        "requests": [
+          {
+            "path": "/rest/v1/rpc/nh7_owner_testimony_feed_v502",
+            "method": "POST",
+            "body": {
+              "p_status": "pending",
+              "p_limit": 100
+            },
+            "role": "owner"
+          },
+          {
+            "path": "/rest/v1/rpc/nh7_owner_prayer_feed_v502",
+            "method": "POST",
+            "body": {
+              "p_status": "new",
+              "p_limit": 200
+            },
+            "role": "owner"
+          }
+        ],
+        "new_listeners": 0,
+        "observer_callbacks": 0,
+        "queries": 236,
+        "timer_callbacks": {
+          "admin-v2.3.5-analytics-core-v237.js": 0,
+          "admin-v2.2.2.js": 20368,
+          "admin-v2.2.3.js": 0,
+          "nh7-admin-registration-dedupe-v332.js": 0,
+          "nh7-admin-full-stability-v447.js": 0,
+          "nh7-admin-sermon-integrity-v421.js": 0,
+          "admin-v2.2.0.js": 0,
+          "nh7-document-ux-v520.js": 0,
+          "nh7-admin-testimony-core-v565.js": 0,
+          "nh7-admin-ai-v491.js": 0,
+          "nh7-admin-storage-orphan-guard-v510.js": 0,
+          "nh7-admin-community-fixes-v503.js": 0,
+          "admin-v2.3.9-document-runtime-fix4.js": 36,
+          "admin-v2.3.9-registration-approval-email-v344.js": 0,
+          "admin-v2.3.9-approval-email-ui-v345.js": 0,
+          "admin-v2.3.9-registration-email-actions-v346.js": 0,
+          "nh7-admin-push-owner-v400.js": 0,
+          "nh7-admin-global-stability-v414.js": 86,
+          "admin-v2.3.9-document-select-fix5.js": 61,
+          "inline": 0,
+          "nh7-admin-community-storage-v504.js": 0,
+          "nh7-admin-report-print-v117.js": 0,
+          "nh7-admin-message-feedback-v511.js": 0,
+          "nh7-admin-library-access-v396.js": 67,
+          "nh7-admin-school-workflow-v249.js": 0,
+          "nh7-admin-session-keepalive-v451.js": 0,
+          "nh7-admin-testimony-runtime-fix-v505.js": 0,
+          "admin-v2.2.4.js": 0,
+          "nh7-admin-storage-orphan-v509.js": 0,
+          "nh7-admin-message-center-v416.js": 40,
+          "nh7-admin-assignment-feedback-presets-v499.js": 0,
+          "nh7-admin-rbac-v350.js": 1
+        }
+      }
+    ],
+    "request_total": 95,
+    "metrics": {
+      "callbacks": {
+        "admin-v2.3.5-analytics-core-v237.js": 2,
+        "admin-v2.2.2.js": 40716,
+        "admin-v2.2.3.js": 35,
+        "nh7-admin-registration-dedupe-v332.js": 1,
+        "nh7-admin-full-stability-v447.js": 2,
+        "nh7-admin-sermon-integrity-v421.js": 2,
+        "admin-v2.2.0.js": 35,
+        "nh7-document-ux-v520.js": 3,
+        "nh7-admin-testimony-core-v565.js": 2,
+        "nh7-admin-ai-v491.js": 46,
+        "nh7-admin-storage-orphan-guard-v510.js": 2,
+        "nh7-admin-community-fixes-v503.js": 2,
+        "admin-v2.3.9-document-runtime-fix4.js": 80,
+        "admin-v2.3.9-registration-approval-email-v344.js": 41,
+        "admin-v2.3.9-approval-email-ui-v345.js": 1,
+        "admin-v2.3.9-registration-email-actions-v346.js": 1,
+        "nh7-admin-push-owner-v400.js": 88,
+        "nh7-admin-global-stability-v414.js": 193,
+        "admin-v2.3.9-document-select-fix5.js": 136,
+        "inline": 1,
+        "nh7-admin-community-storage-v504.js": 1,
+        "nh7-admin-report-print-v117.js": 81,
+        "nh7-admin-message-feedback-v511.js": 1,
+        "nh7-admin-library-access-v396.js": 158,
+        "nh7-admin-school-workflow-v249.js": 1,
+        "nh7-admin-session-keepalive-v451.js": 2,
+        "nh7-admin-testimony-runtime-fix-v505.js": 1,
+        "admin-v2.2.4.js": 1,
+        "nh7-admin-storage-orphan-v509.js": 2,
+        "nh7-admin-message-center-v416.js": 89,
+        "nh7-admin-assignment-feedback-presets-v499.js": 12,
+        "nh7-admin-rbac-v350.js": 1
+      },
+      "listeners": 168,
+      "observers": 3964,
+      "queries": 6001,
+      "hidden": true
+    }
+  },
+  "after": {
+    "source_url": "http://127.0.0.1:8878",
+    "scenario": "same actual stable Admin, owner fixture; settle25s; idle45s; four existing request tabs; message composer open; hidden60s",
+    "limitations": "Real browser timers with fixed calendar date, intercepted response shapes; not Production volume, physical CPU/battery or actual message delivery.",
+    "startup_requests": [
+      {
+        "path": "/rest/v1/rpc/nh7_admin_my_access_v350",
+        "method": "POST",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_registration_feed_v3",
+        "method": "POST",
+        "body": {
+          "p_limit": 2000,
+          "p_offset": 0
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_student_identity_directory_v128",
+        "method": "POST",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/qa_questions",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/meeting_settings",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_owner_testimony_feed_v502",
+        "method": "POST",
+        "body": {
+          "p_status": "pending",
+          "p_limit": 200
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/notification_inbox",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/sermon_categories",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/sermons",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/notification_schedules",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/daily_content",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_lessons",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_courses",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_exams",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_progress",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_exam_attempts",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_school_assignments_feed",
+        "method": "POST",
+        "body": {
+          "p_limit": 2000
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_certificates",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_auth_user_count",
+        "method": "POST",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/audio_bible_books_v220",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/audio_bible_chapters_v220",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/document_templates_v220",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_school_assignments_feed_v237",
+        "method": "POST",
+        "body": {
+          "p_limit": 5000
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/auth/v1/token",
+        "method": "POST",
+        "body": {
+          "refresh_token": "refresh-owner"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-admin-ai-v490",
+        "method": "POST",
+        "body": {
+          "action": "status"
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_owner_testimony_feed_v502",
+        "method": "POST",
+        "body": {
+          "p_status": "pending",
+          "p_limit": 100
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_registration_feed_v3",
+        "method": "POST",
+        "body": {
+          "p_limit": 2000,
+          "p_offset": 0
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_student_identity_directory_v128",
+        "method": "POST",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/qa_questions",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/meeting_settings",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/notification_inbox",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/sermon_categories",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/sermons",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/notification_schedules",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/daily_content",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_lessons",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_courses",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_exams",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_progress",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_exam_attempts",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_school_assignments_feed",
+        "method": "POST",
+        "body": {
+          "p_limit": 2000
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_auth_user_count",
+        "method": "POST",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_certificates",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_owner_prayer_feed_v502",
+        "method": "POST",
+        "body": {
+          "p_status": "new",
+          "p_limit": 200
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_school_assignments_feed_v237",
+        "method": "POST",
+        "body": {
+          "p_limit": 5000
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_registration_feed_v3",
+        "method": "POST",
+        "body": {
+          "p_limit": 2000,
+          "p_offset": 0
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_student_identity_directory_v128",
+        "method": "POST",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/qa_questions",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/meeting_settings",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_library_dashboard_v224",
+        "method": "POST",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/notification_inbox",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/sermon_categories",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/sermons",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/notification_schedules",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/daily_content",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_lessons",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_courses",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_exams",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_progress",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_school_assignments_feed",
+        "method": "POST",
+        "body": {
+          "p_limit": 2000
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_exam_attempts",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/school_certificates",
+        "method": "GET",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_auth_user_count",
+        "method": "POST",
+        "body": {},
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_school_assignments_feed_v237",
+        "method": "POST",
+        "body": {
+          "p_limit": 5000
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/rest/v1/rpc/nh7_admin_school_assignments_feed_v237",
+        "method": "POST",
+        "body": {
+          "p_limit": 5000
+        },
+        "role": "owner"
+      },
+      {
+        "path": "/functions/v1/nh7-send-email",
+        "method": "POST",
+        "body": {
+          "action": "config"
+        },
+        "role": "owner"
+      }
+    ],
+    "steps": [
+      {
+        "name": "visible_idle",
+        "observed_ms": 45000,
+        "requests": [],
+        "new_listeners": 0,
+        "observer_callbacks": 0,
+        "queries": 146,
+        "timer_callbacks": {
+          "admin-v2.3.5-analytics-core-v237.js": 0,
+          "admin-v2.2.2.js": 13077,
+          "admin-v2.2.3.js": 0,
+          "nh7-admin-registration-dedupe-v332.js": 0,
+          "nh7-admin-full-stability-v447.js": 0,
+          "nh7-admin-sermon-integrity-v421.js": 0,
+          "admin-v2.2.0.js": 0,
+          "nh7-document-ux-v520.js": 0,
+          "nh7-admin-testimony-core-v565.js": 0,
+          "nh7-admin-storage-orphan-guard-v510.js": 0,
+          "nh7-admin-ai-v491.js": 0,
+          "nh7-admin-community-fixes-v503.js": 0,
+          "admin-v2.3.9-document-runtime-fix4.js": 26,
+          "admin-v2.3.9-registration-approval-email-v344.js": 0,
+          "admin-v2.3.9-approval-email-ui-v345.js": 0,
+          "admin-v2.3.9-registration-email-actions-v346.js": 0,
+          "nh7-admin-push-owner-v400.js": 0,
+          "nh7-admin-global-stability-v414.js": 64,
+          "admin-v2.3.9-document-select-fix5.js": 45,
+          "inline": 0,
+          "nh7-admin-community-storage-v504.js": 0,
+          "nh7-admin-report-print-v117.js": 0,
+          "nh7-admin-school-workflow-v249.js": 0,
+          "nh7-admin-message-feedback-v511.js": 0,
+          "nh7-admin-library-access-v396.js": 50,
+          "nh7-admin-session-keepalive-v451.js": 0,
+          "nh7-admin-testimony-runtime-fix-v505.js": 0,
+          "admin-v2.2.4.js": 0,
+          "nh7-admin-storage-orphan-v509.js": 0,
+          "nh7-admin-assignment-feedback-presets-v499.js": 0
+        }
+      },
+      {
+        "name": "request_navigation",
+        "observed_ms": 1000,
+        "requests": [
+          {
+            "path": "/rest/v1/rpc/nh7_admin_school_assignments_feed_v238",
+            "method": "POST",
+            "body": {
+              "p_limit": 5000
+            },
+            "role": "owner"
+          }
+        ],
+        "new_listeners": 10,
+        "observer_callbacks": 814,
+        "queries": 1447,
+        "timer_callbacks": {
+          "admin-v2.3.5-analytics-core-v237.js": 0,
+          "admin-v2.2.2.js": 710,
+          "admin-v2.2.3.js": 5,
+          "nh7-admin-registration-dedupe-v332.js": 0,
+          "nh7-admin-full-stability-v447.js": 0,
+          "nh7-admin-sermon-integrity-v421.js": 0,
+          "admin-v2.2.0.js": 5,
+          "nh7-document-ux-v520.js": 0,
+          "nh7-admin-testimony-core-v565.js": 0,
+          "nh7-admin-storage-orphan-guard-v510.js": 0,
+          "nh7-admin-ai-v491.js": 13,
+          "nh7-admin-community-fixes-v503.js": 0,
+          "admin-v2.3.9-document-runtime-fix4.js": 2,
+          "admin-v2.3.9-registration-approval-email-v344.js": 0,
+          "admin-v2.3.9-approval-email-ui-v345.js": 0,
+          "admin-v2.3.9-registration-email-actions-v346.js": 0,
+          "nh7-admin-push-owner-v400.js": 0,
+          "nh7-admin-global-stability-v414.js": 4,
+          "admin-v2.3.9-document-select-fix5.js": 3,
+          "inline": 0,
+          "nh7-admin-community-storage-v504.js": 0,
+          "nh7-admin-report-print-v117.js": 0,
+          "nh7-admin-school-workflow-v249.js": 0,
+          "nh7-admin-message-feedback-v511.js": 0,
+          "nh7-admin-library-access-v396.js": 8,
+          "nh7-admin-session-keepalive-v451.js": 0,
+          "nh7-admin-testimony-runtime-fix-v505.js": 0,
+          "admin-v2.2.4.js": 0,
+          "nh7-admin-storage-orphan-v509.js": 0,
+          "nh7-admin-assignment-feedback-presets-v499.js": 9
+        }
+      },
+      {
+        "name": "compose_open_preview_only",
+        "observed_ms": 1000,
+        "requests": [
+          {
+            "path": "/rest/v1/rpc/nh7_admin_message_templates_v416",
+            "method": "POST",
+            "body": {},
+            "role": "owner"
+          },
+          {
+            "path": "/rest/v1/rpc/nh7_admin_user_directory_v360",
+            "method": "POST",
+            "body": {},
+            "role": "owner"
+          },
+          {
+            "path": "/rest/v1/rpc/nh7_admin_campaign_history_v416",
+            "method": "POST",
+            "body": {
+              "p_limit": 20
+            },
+            "role": "owner"
+          }
+        ],
+        "new_listeners": 1,
+        "observer_callbacks": 38,
+        "queries": 81,
+        "timer_callbacks": {
+          "admin-v2.3.5-analytics-core-v237.js": 0,
+          "admin-v2.2.2.js": 472,
+          "admin-v2.2.3.js": 0,
+          "nh7-admin-registration-dedupe-v332.js": 0,
+          "nh7-admin-full-stability-v447.js": 0,
+          "nh7-admin-sermon-integrity-v421.js": 0,
+          "admin-v2.2.0.js": 0,
+          "nh7-document-ux-v520.js": 0,
+          "nh7-admin-testimony-core-v565.js": 0,
+          "nh7-admin-storage-orphan-guard-v510.js": 0,
+          "nh7-admin-ai-v491.js": 1,
+          "nh7-admin-community-fixes-v503.js": 0,
+          "admin-v2.3.9-document-runtime-fix4.js": 0,
+          "admin-v2.3.9-registration-approval-email-v344.js": 0,
+          "admin-v2.3.9-approval-email-ui-v345.js": 0,
+          "admin-v2.3.9-registration-email-actions-v346.js": 0,
+          "nh7-admin-push-owner-v400.js": 0,
+          "nh7-admin-global-stability-v414.js": 2,
+          "admin-v2.3.9-document-select-fix5.js": 1,
+          "inline": 0,
+          "nh7-admin-community-storage-v504.js": 0,
+          "nh7-admin-report-print-v117.js": 0,
+          "nh7-admin-school-workflow-v249.js": 0,
+          "nh7-admin-message-feedback-v511.js": 0,
+          "nh7-admin-library-access-v396.js": 3,
+          "nh7-admin-session-keepalive-v451.js": 0,
+          "nh7-admin-testimony-runtime-fix-v505.js": 0,
+          "admin-v2.2.4.js": 0,
+          "nh7-admin-storage-orphan-v509.js": 0,
+          "nh7-admin-assignment-feedback-presets-v499.js": 1
+        }
+      },
+      {
+        "name": "background",
+        "observed_ms": 60000,
+        "requests": [],
+        "new_listeners": 0,
+        "observer_callbacks": 0,
+        "queries": 195,
+        "timer_callbacks": {
+          "admin-v2.3.5-analytics-core-v237.js": 0,
+          "admin-v2.2.2.js": 20388,
+          "admin-v2.2.3.js": 0,
+          "nh7-admin-registration-dedupe-v332.js": 0,
+          "nh7-admin-full-stability-v447.js": 0,
+          "nh7-admin-sermon-integrity-v421.js": 0,
+          "admin-v2.2.0.js": 0,
+          "nh7-document-ux-v520.js": 0,
+          "nh7-admin-testimony-core-v565.js": 0,
+          "nh7-admin-storage-orphan-guard-v510.js": 0,
+          "nh7-admin-ai-v491.js": 0,
+          "nh7-admin-community-fixes-v503.js": 0,
+          "admin-v2.3.9-document-runtime-fix4.js": 36,
+          "admin-v2.3.9-registration-approval-email-v344.js": 0,
+          "admin-v2.3.9-approval-email-ui-v345.js": 0,
+          "admin-v2.3.9-registration-email-actions-v346.js": 0,
+          "nh7-admin-push-owner-v400.js": 0,
+          "nh7-admin-global-stability-v414.js": 86,
+          "admin-v2.3.9-document-select-fix5.js": 60,
+          "inline": 0,
+          "nh7-admin-community-storage-v504.js": 0,
+          "nh7-admin-report-print-v117.js": 0,
+          "nh7-admin-school-workflow-v249.js": 0,
+          "nh7-admin-message-feedback-v511.js": 0,
+          "nh7-admin-library-access-v396.js": 66,
+          "nh7-admin-session-keepalive-v451.js": 0,
+          "nh7-admin-testimony-runtime-fix-v505.js": 0,
+          "admin-v2.2.4.js": 0,
+          "nh7-admin-storage-orphan-v509.js": 0,
+          "nh7-admin-assignment-feedback-presets-v499.js": 0,
+          "nh7-admin-rbac-v350.js": 1
+        }
+      }
+    ],
+    "request_total": 70,
+    "metrics": {
+      "callbacks": {
+        "admin-v2.3.5-analytics-core-v237.js": 2,
+        "admin-v2.2.2.js": 40967,
+        "admin-v2.2.3.js": 35,
+        "nh7-admin-registration-dedupe-v332.js": 1,
+        "nh7-admin-full-stability-v447.js": 2,
+        "nh7-admin-sermon-integrity-v421.js": 2,
+        "admin-v2.2.0.js": 35,
+        "nh7-document-ux-v520.js": 3,
+        "nh7-admin-testimony-core-v565.js": 2,
+        "nh7-admin-storage-orphan-guard-v510.js": 2,
+        "nh7-admin-ai-v491.js": 45,
+        "nh7-admin-community-fixes-v503.js": 2,
+        "admin-v2.3.9-document-runtime-fix4.js": 80,
+        "admin-v2.3.9-registration-approval-email-v344.js": 41,
+        "admin-v2.3.9-approval-email-ui-v345.js": 1,
+        "admin-v2.3.9-registration-email-actions-v346.js": 1,
+        "nh7-admin-push-owner-v400.js": 88,
+        "nh7-admin-global-stability-v414.js": 193,
+        "admin-v2.3.9-document-select-fix5.js": 135,
+        "inline": 1,
+        "nh7-admin-community-storage-v504.js": 1,
+        "nh7-admin-report-print-v117.js": 81,
+        "nh7-admin-school-workflow-v249.js": 1,
+        "nh7-admin-message-feedback-v511.js": 1,
+        "nh7-admin-library-access-v396.js": 156,
+        "nh7-admin-session-keepalive-v451.js": 2,
+        "nh7-admin-testimony-runtime-fix-v505.js": 1,
+        "admin-v2.2.4.js": 1,
+        "nh7-admin-storage-orphan-v509.js": 2,
+        "nh7-admin-assignment-feedback-presets-v499.js": 12,
+        "nh7-admin-rbac-v350.js": 1
+      },
+      "listeners": 175,
+      "observers": 4384,
+      "queries": 6967,
+      "hidden": true
+    }
+  }
+}
