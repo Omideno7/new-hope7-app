@@ -96,7 +96,7 @@ const session={access_token:'e30.'+Buffer.from(JSON.stringify({exp:4102444800,su
   assert.equal(JSON.parse(await p.evaluate(id=>localStorage.getItem('nh7_sermon_progress_'+id),id)).time,38.5);
   await start();assert.equal(JSON.parse(await p.evaluate(id=>localStorage.getItem('nh7_sermon_progress_'+id),id)).time,38.5);
   assert((await p.evaluate(()=>JSON.parse(localStorage.getItem('nh7_audio_favorites_v500')))).includes(id));
-  for(const width of [390,820,1280]){await p.setViewportSize({width,height:900});await p.evaluate(()=>NH7_NAVIGATE('profile'));assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1))}
+  for(const width of [390,820,1280]){await p.setViewportSize({width,height:900});await p.evaluate(()=>{NH7_NAVIGATE('profile');NH7LocalFirstWave2.recordConflict('fixture-long',{content:'X'.repeat(4000)},{content:'Y'.repeat(4000)})});await p.waitForTimeout(100);await p.evaluate(()=>{const panel=document.getElementById('notesPanel');panel?.classList.remove('hidden');NH7MyNotesV234.renderNotesPanel();document.querySelectorAll('.nh7-sync-conflicts-wave2 details').forEach(detail=>detail.open=true)});assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1))}
   console.log('PASS full-app authenticated/offline startup, FA/EN/HR note direction/save/reopen, offline reload/reconnect, owner fencing of open editor, actual My Notes offline deletion, position/restart, phone/tablet/desktop. Fixtures intercept all remote requests; no Production mutation.');
  }finally{await ctx.close();await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

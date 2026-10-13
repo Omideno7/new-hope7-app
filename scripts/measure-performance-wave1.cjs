@@ -9,7 +9,7 @@ const sermon={id,title_en:'Fixture sermon',title_fa:'موعظه آزمایشی',
 async function run(){
  const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
  const ctx=await browser.newContext({viewport:{width:390,height:844},serviceWorkers:'block'});let phase='launch',requests=[];
- const p=await ctx.newPage();await p.clock.install();
+ const p=await ctx.newPage();await p.clock.install({time:new Date('2026-10-13T00:00:00Z')});await p.clock.pauseAt(new Date('2026-10-13T00:00:01Z'));
  await ctx.addInitScript(()=>{
   window.__wave={timers:{},queries:0,observers:0,listeners:0,hidden:false};
   for(const name of ['setInterval','setTimeout']){const old=window[name];window[name]=function(fn,ms,...args){const source=(new Error().stack.split('\n')[2]||'').match(/\/js\/([^?:]+\.js)/)?.[1]||'other';return old(typeof fn==='function'?function(...a){__wave.timers[source]=(__wave.timers[source]||0)+1;return fn(...a)}:fn,ms,...args)}}
