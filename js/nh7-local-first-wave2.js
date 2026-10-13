@@ -186,6 +186,7 @@ function allowRestore(key){return raw.getItem(viewKey(key))===null}
 function conflicts(){const prefix=CONFLICT+enc(identity().owner)+'_',rows=[];for(let i=0;i<raw.length;i++){const key=raw.key(i);if(key.startsWith(prefix))rows.push(parse(raw.getItem(key)))}return rows.filter(Boolean)}
 function legacyEligible(op){
  const who=identity(),email=String(op.owner_email||op.payload?.user_email||'').toLowerCase();
+ if(op.owner_scope)return op.owner_scope===who.owner;
  if(op.owner_uid)return op.owner_uid===who.uid;if(email)return email===who.email;
  if(['user_notes','user_progress','saved_verses'].includes(op.table))return !who.uid&&op.payload?.device_id===device;
  if(noteOp(op)||op.table?.startsWith('nh7_account_'))return false;

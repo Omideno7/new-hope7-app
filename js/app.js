@@ -534,6 +534,7 @@ function nh7TimedCloudRpcV470(name,payload={},timeoutMs=NH7_FAST_CLOUD_TIMEOUT_V
 }
 function enqueueCloud(op){
   if(window.NH7LocalFirstWave2&&nh7LocalFirstEligibleWave2(op))return window.NH7LocalFirstWave2.enqueue(op);
+  const owner=window.NH7LocalFirstWave2?.identity();if(owner)op={...op,owner_uid:owner.uid,owner_scope:owner.owner};
   const q=JSON.parse(localStorage.getItem('nh7_cloud_queue')||'[]');
   q.push(Object.assign({id:Date.now()+'_'+Math.random().toString(16).slice(2),createdAt:new Date().toISOString()},op));
   localStorage.setItem('nh7_cloud_queue',JSON.stringify(q));
