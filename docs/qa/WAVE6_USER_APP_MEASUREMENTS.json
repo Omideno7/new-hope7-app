@@ -76,7 +76,7 @@
       "js/nh7-user-context-wave6.js": "9369452b88ee1c443254cd4cab2497ec9fc1d56c872544a13b9c057f31d93787",
       "css/nh7-user-app-wave6.css": "8274276cf2cf2344009c486dc1b1f7e065bd1b3a87e2ce59dcf3ffc4d15a1156"
     },
-    "patch_sha256": "001b1d86960fd9d343596376400f4510ed65bfb1b4b1550806c1d5a87529de2e"
+    "patch_sha256": "7ac3eefdfa205759e142f7ef3184dcb51e2083f921758a62dc432586672d4ce2"
   },
   "before": {
     "base": "http://127.0.0.1:8886",

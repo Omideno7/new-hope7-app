@@ -43,7 +43,7 @@ index bd8e8971..946bc629 100644
 +  const ticket=routeTicketWave6();const approved=await nh7ApprovedSchoolAccessV223();try{routeCheckWave6(ticket)}catch{return false}if(approved)return true;
    return nh7RenderSchoolGateV223(resourceLabel);
  }
- 
+
 @@ -1045,6 +1045,7 @@ function setLang(lang){
  }
  function setCrumb(t){ $('#breadcrumb').textContent=t; $('#backBtn').classList.toggle('hidden', state.stack.length===0); $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.route===state.route)); }
@@ -70,11 +70,11 @@ index bd8e8971..946bc629 100644
 +  for(const key of ['nh7_user_profile','nh7_school_access','nh7_meeting_access'])try{const row=JSON.parse(localStorage.getItem(key)||'null');if(window.NH7UserContextWave6?.cacheOwned(row)&&row.phone){phone=String(row.phone);break}}catch{}
 +  return {...person,phone};
  }
- 
+
  function registrationFormHtml(kind, access={}){
 @@ -1415,7 +1409,12 @@ async function showAmen(){
  }
- 
+
  let nh7NavigationEpochV456=0;
 +let presentedRouteWave6='';
 +const routeTicketWave6=(publicRead=false)=>({publicRead,epoch:nh7NavigationEpochV456,actor:window.NH7UserContextWave6?.identity(),language:state.lang});
@@ -98,7 +98,7 @@ index bd8e8971..946bc629 100644
 -  }catch(e){ if(navigationEpochV456!==nh7NavigationEpochV456)return;console.error(e); view.innerHTML=card('Error',`<p>${html(e.message)}</p>`); }
 +  }catch(e){ if(navigationEpochV456!==nh7NavigationEpochV456)return;console.error(e); view.innerHTML=card(l223('خطا','Error','Greška'),`<p>${html(l223('این بخش موقتاً در دسترس نیست؛ دوباره تلاش کنید.','This section is temporarily unavailable; try again.','Ovaj dio privremeno nije dostupan; pokušajte ponovno.'))}</p>`); }
  }
- 
+
  async function home(){
 @@ -1483,6 +1484,7 @@ async function fetchDynamicDailyItem(contentType,day){
  }
@@ -130,7 +130,7 @@ index bd8e8971..946bc629 100644
    if(!start){ return card(tr('gratitudeCourse'), `<p>${tr('gratitudeCourse')} - ${localNum(list.length||30)} ${tr('day')}</p><button class="primary-btn" id="startGratitude">${tr('startCourse')}</button>`); }
 @@ -1597,31 +1601,34 @@ const nh7BibleKeywordsV451=createBibleKeywordsV451({state,view,html,card,tr,l223
  async function bibleKeywordsV450(params={}){return nh7BibleKeywordsV451.bibleKeywords(params);}
- 
+
  async function bible(params={}){
 -  await loadBibleMeta();
 +  const routeViewTicketWave6=routeTicketWave6(true);
@@ -197,7 +197,7 @@ index bd8e8971..946bc629 100644
    if(params.exam)return schoolCourseExam(d,params.exam);
 @@ -2139,7 +2151,8 @@ function nh7MountAudioEnhancementsV446(){
  }
- 
+
  async function audio(params={}){
 -  if(!await nh7RequireSchoolAccessV223(tr('audio')))return;
 +  const routeViewTicketWave6=routeTicketWave6();
@@ -227,7 +227,7 @@ index bd8e8971..946bc629 100644
 -  view.innerHTML=card(tr('audio'),`<div class="grid">${d.categories.map(c=>tile('audio','🎧',pick(c.title),`${tr('all')}: ${localNum((c.items||[]).length)}`,{cat:c.id})).join('')}</div>`);
 +  routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('audio'),`<div class="grid">${d.categories.map(c=>tile('audio','🎧',pick(c.title),`${tr('all')}: ${localNum((c.items||[]).length)}`,{cat:c.id})).join('')}</div>`);
  }
- 
+
  function audioBibleTitle(row){return row?.['name_'+state.lang]||row?.name_en||row?.name_fa||row?.code||''}
 @@ -2189,6 +2202,7 @@ function audioBibleChapterTitle(row){
    return `${tr('chapter')} ${localNum(n)}`;
@@ -272,7 +272,7 @@ index bd8e8971..946bc629 100644
 +  routeCheckWave6(routeViewTicketWave6);view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="audioBible" data-params='${html(JSON.stringify({testament}))}'>‹ ${html(tr('bookList'))}</button></div>`+card(audioBibleTitle(book)||tr('audioBible'),`<p class="muted">${html(testament==='old'?tr('oldTestament'):tr('newTestament'))}</p>${list}`);
    window.__sermonMap=Object.assign(window.__sermonMap||{},window.__audioBibleMap||{});bindInlineSermonControls();updateInlineSermonPlayers();
  }
- 
+
  async function salvation(){
 +  const routeViewTicketWave6=routeTicketWave6();
    const d=await jfetch('data/salvation/need_salvation.json');
@@ -311,7 +311,7 @@ index bd8e8971..946bc629 100644
    // Fast path: render immediately from the last known access and built-in meeting
 @@ -2414,13 +2431,14 @@ async function nh7DownloadPublicLibraryV125(button){
  function libraryUserCardV224(x,isApocrypha=false){const mime=String(x.mime_type||'application/pdf'),label=nh7LibraryTextV125(x)?l223('متن','Text','Tekst'):mime.includes('wordprocessingml')||/\.docx$/i.test(x.file_name||'')?'DOCX':'PDF';return `<article class="library-user-card" data-library-audience="${html(x.audience||'')}"><div class="library-user-icon">${label}</div><span class="library-audience ${html(x.audience)}">${x.audience==='ministers'?'🔒 '+tr('ministersLibrary'):'🌍 '+tr('publicLibrary')}</span><h3>${html(libraryText(x,'title')||x.file_name||label)}</h3><p>${html(libraryText(x,'description')||'')}</p>${nh7LibraryTextV125(x)?'':`<small class="muted">${html(x.file_name||'')} · ${librarySize(x.file_size)}</small>`}<div class="button-row"><button class="primary-btn" data-library-open="${html(x.id)}">${x.audience==='ministers'?'🔐':'📖'} ${html(nh7LibraryTextV125(x)?l223('مطالعه','Read','Čitaj'):isApocrypha?l223('باز کردن','Open','Otvori'):tr('openPdf'))}</button>${x.audience==='public'&&(nh7LibraryTextV125(x)||nh7LibraryDownloadableV125(x))?`<button type="button" class="secondary-btn" data-library-offline="${html(x.id)}" ${nh7LibraryTextV125(x)?'':`data-offline-download="${html(window.NH7LibrarySecurityV125?.publicFile(x.id)||'')}"`} data-offline-title="${html(libraryText(x,'title')||x.file_name||'')}">${html(nh7LibraryTextV125(x)?l223('مطالعه و آماده‌سازی آفلاین','Read and prepare offline','Čitaj i pripremi offline'):l223('دانلود برای آفلاین','Download offline','Preuzmi offline'))}</button>`:''}</div>${nh7LibraryDownloadableV125(x)?`<p class="muted small">${tr('pdfExpires')}</p>`:''}</article>`}
- 
+
  async function library(params={}){
 -  if(!await nh7RequireSchoolAccessV223(tr('library')))return;
 +  const routeViewTicketWave6=routeTicketWave6();
@@ -324,7 +324,7 @@ index bd8e8971..946bc629 100644
 -  view.innerHTML=card(tr('library'),`<div class="library-user-tabs"><button class="${nh7LibraryTab==='public'?'primary-btn':'secondary-btn'}" data-library-tab="public">${tr('publicLibrary')}</button><button class="${nh7LibraryTab==='ministers'?'primary-btn':'secondary-btn'}" data-library-tab="ministers">🔒 ${tr('ministersLibrary')}</button></div>${nh7LibraryTab==='ministers'?`<div class="library-lock-note">${tr('protectedLibrary')}</div>`:''}<h2>${title}</h2><div class="library-user-grid">${cards||`<p class="muted">${tr('libraryEmpty')}</p>`}</div>`);
 +  routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('library'),`<div class="library-user-tabs"><button class="${nh7LibraryTab==='public'?'primary-btn':'secondary-btn'}" data-library-tab="public">${tr('publicLibrary')}</button><button class="${nh7LibraryTab==='ministers'?'primary-btn':'secondary-btn'}" data-library-tab="ministers">🔒 ${tr('ministersLibrary')}</button></div>${nh7LibraryTab==='ministers'?`<div class="library-lock-note">${tr('protectedLibrary')}</div>`:''}<h2>${title}</h2><div class="library-user-grid">${cards||`<p class="muted">${tr('libraryEmpty')}</p>`}</div>`);
  }
- 
+
  async function more(){
 @@ -2491,6 +2509,7 @@ function nh7MergeOwnQuestionsV470(local,ownCloud){
    return out;
@@ -362,7 +362,7 @@ index bd8e8971..946bc629 100644
    $('#forgotPasswordToggle')?.addEventListener('click',()=>$('#forgotPasswordPanel')?.classList.toggle('hidden'));
    $('#resetPasswordBtn')?.addEventListener('click',resetPassword);
 @@ -2921,6 +2941,7 @@ window.dispatchEvent(new Event('nh7-router-ready-wave4'));
- 
+
  // Reader localization only. Canonical storage keys stay unchanged.
  window.NH7ReaderSourceV452={
 +  open:async ref=>{const ticket=routeTicketWave6(true),row=await window.NH7ReaderSourceV452.resolve(ref,state.lang);routeCheckWave6(ticket);if(!row)throw Error('Invalid Bible reference');return navigate('bible',{section:'written',mode:'chapter',bookId:row.bookId,chapter:row.chapter,verse:row.verse});},
@@ -479,7 +479,7 @@ index 3b7f3bdf..2ccf4cf7 100644
 +++ b/js/nh7-global-search-direct-v562.js
 @@ -29,8 +29,9 @@ function ensureStyle(){
  }
- 
+
  function audioCatalog(){
 +  const actor=window.NH7UserContextWave6.identity();if(!actor.uid)return{categories:[],sermons:[]};
    for(const [store,key] of [[sessionStorage,'nh7_audio_catalog_cache_v446'],[localStorage,'nh7_audio_catalog_cache_v470']]){
@@ -581,7 +581,7 @@ index e18ccba8..737cb39e 100644
 --- a/js/nh7-library-security-v125.js
 +++ b/js/nh7-library-security-v125.js
 @@ -374,6 +374,8 @@
- 
+
    window.NH7LibrarySecurityV125 = {
      catalog,
 +    // Read-only metadata projection of the already-authorized current catalog.
@@ -601,7 +601,7 @@ index dc911014..5e514986 100644
 +function presented(value){return window.NH7NoteTextV501?.display?.(value)||{text:String(value??'')}}
 +function normalizedText(value){return presented(value).text||''}
  function decodeKey(value){try{return decodeURIComponent(String(value||''))}catch(_){return String(value||'')}}
- 
+
  function inferVerseLocation(storageKey){
 @@ -39,7 +40,7 @@ function inferVerseLocation(storageKey){
  function inferAudioLocation(id){
@@ -691,7 +691,7 @@ index dc911014..5e514986 100644
    if(rendering)return;
 @@ -123,10 +140,15 @@ function renderNotesPanel(){
  function scheduleRender(){clearTimeout(renderTimer);renderTimer=setTimeout(renderNotesPanel,40)}
- 
+
  function routeTo(route,params={}){
 +  if(window.NH7_NAVIGATE)return window.NH7_NAVIGATE(route,params);
    const state={route,params};
@@ -743,13 +743,13 @@ index ec0c7849..541a883f 100644
 @@ -45,34 +45,37 @@ function normalize(value){
    return s;
  }
- 
+
 +function normalize(value){const presented=display(value);return presented.recoverable||presented.omitted?(typeof value==='string'?value:JSON.stringify(value??'')):presented.text}
 +
  function looksEncoded(value){
    return /(?:&(?:amp;)?#(?:9|10|13|32|x0*(?:9|a|d|20));|&(?:amp;)?nbsp;|&lt;br|<br|%0[ad9]|%20|\\[rnt]|\\u00(?:09|0a|0d|20))/i.test(String(value??''));
  }
- 
+
 -function repairKnownNotes(){
 -  let changed=0;
 -  const keys=[];
@@ -792,14 +792,14 @@ index ec0c7849..541a883f 100644
 -  return changed;
 +  return{text:'',recoverable:true,original};
  }
- 
+
  function repairTextControl(el){
 +  if(document.activeElement===el)return false;
    if(!el||typeof el.value!=='string'||!looksEncoded(el.value))return false;
    const clean=normalize(el.value);if(clean===el.value)return false;
    const start=el.selectionStart,end=el.selectionEnd;
 @@ -94,12 +97,10 @@ function repairVisibleNotes(root=document){
- 
+
  let visibleQueued=false;
  function scheduleVisibleRepair(){
 -  if(visibleQueued)return;visibleQueued=true;
@@ -825,7 +825,7 @@ index 1e4139ef..800205e6 100644
 --- a/js/nh7-profile-photo-v564.js
 +++ b/js/nh7-profile-photo-v564.js
 @@ -7,22 +7,14 @@ if(window.__NH7_PROFILE_PHOTO_V564__)return;window.__NH7_PROFILE_PHOTO_V564__=tr
- 
+
  const VERSION='5.6.5-student-id';
  const PHOTO_KEY='nh7_profile_photo_v561';
 -let queued=false,busy=false,editor=null,studentIdentity=null,studentIdentityOwner='',identityLoading=false;
@@ -833,7 +833,7 @@ index 1e4139ef..800205e6 100644
  const lang=()=>{const v=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return ['fa','en','hr'].includes(v)?v:'en'};
  const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
  const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- 
+
 -function profile(){
 -  let cached={},school={},meeting={};
 -  try{cached=JSON.parse(localStorage.getItem('nh7_user_profile')||'{}')||{}}catch(_){}
@@ -848,7 +848,7 @@ index 1e4139ef..800205e6 100644
 -function readPhoto(){try{const v=localStorage.getItem(PHOTO_KEY)||'';return /^data:image\//.test(v)?v:''}catch(_){return''}}
 +function readPhoto(){return window.NH7UserContextWave6?.photo()||''}
  function photoSig(photo){return photo?`${photo.length}:${photo.slice(-28)}`:'none'}
- 
+
  function ensureStyle(){
 @@ -39,7 +31,7 @@ function ensureStyle(){
      #nh7TopProfile564{width:34px;height:34px;flex:0 0 34px;border-radius:50%;overflow:hidden;border:1.5px solid color-mix(in srgb,var(--brand,#1858a4) 28%,transparent);background:var(--card,#fff);display:none;place-items:center;margin-inline-start:auto;margin-inline-end:4px;padding:0;box-shadow:0 1px 5px rgba(0,0,0,.08)}
@@ -862,7 +862,7 @@ index 1e4139ef..800205e6 100644
 @@ -49,17 +41,21 @@ function ensureStyle(){
  function avatarHtml(photo,name){return `<span class="nh7-profile-avatar564">${photo?`<img src="${esc(photo)}" alt="">`:esc(initials(name))}</span>`}
  function homeMarkup(p,photo){return `${avatarHtml(photo,p.name)}<span class="nh7-home-profile564-copy"><strong>${esc(p.name||L('پروفایل من','My profile','Moj profil'))}</strong><small>${esc(L('خوش آمدید','Welcome','Dobro došli'))}</small></span>`}
- 
+
 +function openPhotoViewer(){
 +  const ticket=window.NH7UserContextWave6.identity(),photo=readPhoto();if(!photo||document.querySelector('#nh7PhotoViewerWave6'))return;
 +  const dialog=document.createElement('dialog'),image=document.createElement('img'),close=document.createElement('button');dialog.id='nh7PhotoViewerWave6';dialog.setAttribute('aria-label',L('عکس پروفایل','Profile photo','Profilna fotografija'));dialog.style.cssText='max-width:94vw;max-height:90dvh;padding:12px;border:1px solid var(--line);border-radius:18px;background:var(--card);color:var(--ink)';image.src=photo;image.alt=L('عکس پروفایل','Profile photo','Profilna fotografija');image.style.cssText='display:block;max-width:min(82vw,800px);max-height:72dvh;object-fit:contain';close.textContent=L('بستن','Close','Zatvori');close.type='button';close.style.minHeight='44px';close.onclick=()=>dialog.close();dialog.append(close,image);document.body.append(dialog);dialog.addEventListener('close',()=>{image.removeAttribute('src');dialog.remove()},{once:true});dialog.showModal();if(!window.NH7UserContextWave6.current(ticket))dialog.close();
@@ -959,7 +959,7 @@ index cd3a1a10..b04a68db 100644
 +export const peekPlanTitlesWave6=()=>searchMetadata.map(x=>({...x}));
 +export async function validExistingPlanDayWave6(planId,day,ctx={}){const plans=await loadPlans(ctx);const p=plans.find(x=>x.id===planId);return !!p&&Number.isInteger(+day)&&+day>0&&+day<=Number(p.durationDays||p.days?.length||0)}
  let fastingGuidesPromise = null;
- 
+
  const UI = {
 @@ -213,6 +216,7 @@ async function loadPlans(ctx) {
      catalogPromise = (async () => {
@@ -979,7 +979,7 @@ index cd3a1a10..b04a68db 100644
    const day = plan.days.find(item => Number(item.day) === selected) || plan.days[selected - 1];
    const copy = localDay(day, ctx);
 @@ -656,8 +660,10 @@ async function renderPlansHome(ctx, plans) {
- 
+
  export async function renderSpiritualPlansV240(ctx, params={}) {
    try {
 -    await syncSpiritualPlansV240(ctx).catch(() => false);
@@ -1007,7 +1007,7 @@ index 18c942ef..cac68336 100644
 -  renderSpiritualPlansV240
 +  renderSpiritualPlansV240,peekPlanTitlesWave6,validExistingPlanDayWave6
  } from './nh7-spiritual-plans-v240.js';
- 
+
  /* New Hope 7 — production spiritual plans bridge v4.1.2
 @@ -248,9 +248,10 @@ function setNav(){
    const back = document.querySelector('#backBtn'); if(back){ back.classList.remove('hidden'); back.setAttribute('aria-label',say('back')); }
@@ -1044,12 +1044,12 @@ index 18c942ef..cac68336 100644
      VIEW.innerHTML = `<section class="card"><h2>${escapeHtml(say('plans'))}</h2><p>${escapeHtml(error?.message || String(error))}</p></section>`;
    }finally{ rendering=false; }
 @@ -339,7 +344,7 @@ document.head.appendChild(style);
- 
+
  window.NH7_SPIRITUAL_PLANS_VERSION = VERSION;
  // Presentation disposal only: no progress/Notes/queue/storage mutation.
 -window.NH7_SPIRITUAL_PLANS = { render:renderPlans, sync:syncCloudQueue, active:() => active, dispose:()=>{active=false;clearTimeout(restoreTimer)} };
 +window.NH7_SPIRITUAL_PLANS = { render:renderPlans, sync:syncCloudQueue, active:() => active, catalog:peekPlanTitlesWave6, validExistingDay:(id,day)=>validExistingPlanDayWave6(id,day,context()), dispose:()=>{active=false;clearTimeout(restoreTimer)} };
- 
+
  if(new URLSearchParams(location.search).get('open') === 'plans'){
    setTimeout(() => renderPlans({tab:'spiritual'}), 700);
 diff --git a/js/nh7-student-identity-v127.js b/js/nh7-student-identity-v127.js
@@ -1070,7 +1070,7 @@ index 7ef7fb53..1c272b3e 100644
 +function cached(){const k=cacheKey();if(!k)return null;try{const x=JSON.parse(localStorage.getItem(k)||'null');if(!x||Date.now()-Number(x.at||0)>MAX_CACHE_MS)return null;return x.student&&(!x.student.user_id||x.student.user_id===uid())?x.student:null}catch(_){return null}}
  function writeCache(student){const k=cacheKey();if(!k)return;try{localStorage.setItem(k,JSON.stringify({at:Date.now(),student:student||null}))}catch(_){}}
  function clearCache(){const k=cacheKey();if(k)try{localStorage.removeItem(k)}catch(_){}}
- 
+
  async function rpc(name,body={}){
 + const ticket=window.NH7UserContextWave6?.identity();
   const t=token();if(!t)throw new Error('login_required');
@@ -1087,7 +1087,7 @@ index 7ef7fb53..1c272b3e 100644
 -function localPhoto(){try{const v=localStorage.getItem(LOCAL_PHOTO)||'';return /^data:image\//.test(v)?v:''}catch(_){return''}}
 +function localPhoto(){return window.NH7UserContextWave6?.photo?.()||''}
  function identityAnchor(){const view=document.getElementById('view');if(!view)return null;return view.querySelector('.nh7-school-guide-v351,.school-course-group,.card')}
- 
+
  async function privatePhotoUrl(path){
 + const ticket=window.NH7UserContextWave6?.identity();
   if(!path||!token())return'';
@@ -1100,7 +1100,7 @@ index 7ef7fb53..1c272b3e 100644
  }
 @@ -87,8 +89,9 @@ async function syncLocalPhoto(student,el){
  }
- 
+
  async function sync(force=false){
 + const ticket=window.NH7UserContextWave6?.identity();
   if(!activeSchool()){document.getElementById('nh7StudentIdentity127')?.remove();return}
@@ -1108,7 +1108,7 @@ index 7ef7fb53..1c272b3e 100644
 + try{const student=await loadIdentity(force);if(!student?.student_code)return;let photo='';if(student.photo_path)photo=await privatePhotoUrl(student.photo_path);if((!ticket||window.NH7UserContextWave6.current(ticket))&&activeSchool())render(student,photo)}catch(e){if(!/login_required/i.test(String(e?.message||'')))console.warn('[NH7 Student Identity v127]',e)}
  }
  function schedule(force=false){if(queued)return;queued=true;setTimeout(()=>{queued=false;const route=activeSchool()?'school':'other',changed=route!==lastRoute;lastRoute=route;sync(force||changed)},80)}
- 
+
 diff --git a/my-documents.html b/my-documents.html
 index 6e90a898..a8a85674 100644
 --- a/my-documents.html
@@ -1128,7 +1128,7 @@ index 1d3c07f1..86538259 100644
 +++ b/sw-release-core-v403.js
 @@ -3,7 +3,7 @@
  // Issue #115 UI refresh: recache localized assets with the existing cache/storage contract.
- 
+
  const NH7_RELEASE_CORE_VERSION='5.7.1-user-writing-direction';
 -const NH7_RELEASE_CORE_CACHE='nh7-release-core-v571-wave4-notifications-wave5-documents';
 +const NH7_RELEASE_CORE_CACHE='nh7-release-core-v571-wave4-notifications-wave5-documents-wave6-user-app';
