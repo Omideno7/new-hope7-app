@@ -1,0 +1,288 @@
+{
+  "method": "Actual wall timers/advancing clock, local intercepted requests and synthetic PGlite schema. No live SQL/provider/physical energy/billing claim; repeated admin legacy timers are included, not attributed to Studio.",
+  "samples": [
+    {
+      "surface": "Admin",
+      "url": "http://127.0.0.1:8885",
+      "startup_requests": 29,
+      "phases": [
+        {
+          "name": "visible_idle",
+          "action_ms": 0,
+          "wall_ms": 60003,
+          "requests": [],
+          "timer_callbacks": 13373,
+          "url_created": 0,
+          "url_released": 0,
+          "observers_created": 0,
+          "observers_active": 1,
+          "global_listener_delta": 0
+        },
+        {
+          "name": "hidden_idle",
+          "action_ms": 2,
+          "wall_ms": 60005,
+          "requests": [],
+          "timer_callbacks": 13237,
+          "url_created": 0,
+          "url_released": 0,
+          "observers_created": 0,
+          "observers_active": 1,
+          "global_listener_delta": 0
+        }
+      ]
+    },
+    {
+      "surface": "Admin",
+      "url": "http://127.0.0.1:8878",
+      "startup_requests": 47,
+      "phases": [
+        {
+          "name": "visible_idle",
+          "action_ms": 0,
+          "wall_ms": 60006,
+          "requests": [],
+          "timer_callbacks": 15772,
+          "url_created": 0,
+          "url_released": 0,
+          "observers_created": 0,
+          "observers_active": 1,
+          "global_listener_delta": 0
+        },
+        {
+          "name": "hidden_idle",
+          "action_ms": 3,
+          "wall_ms": 60007,
+          "requests": [],
+          "timer_callbacks": 15615,
+          "url_created": 0,
+          "url_released": 0,
+          "observers_created": 0,
+          "observers_active": 1,
+          "global_listener_delta": 0
+        }
+      ]
+    },
+    {
+      "surface": "Studio",
+      "startup_requests": 5,
+      "phases": [
+        {
+          "name": "open_visible_idle",
+          "action_ms": 0,
+          "wall_ms": 60070,
+          "requests": [],
+          "timer_callbacks": 0,
+          "url_created": 0,
+          "url_released": 0,
+          "observers_created": 0,
+          "observers_active": 1,
+          "global_listener_delta": 0
+        },
+        {
+          "name": "20_edit_autosave_burst",
+          "action_ms": 124,
+          "wall_ms": 1803,
+          "requests": [
+            {
+              "name": "nh7_document_save_draft_v2",
+              "method": "POST"
+            }
+          ],
+          "timer_callbacks": 1,
+          "url_created": 0,
+          "url_released": 0,
+          "observers_created": 0,
+          "observers_active": 1,
+          "global_listener_delta": 0
+        },
+        {
+          "name": "20_language_rebuilds",
+          "action_ms": 220,
+          "wall_ms": 253,
+          "requests": [],
+          "timer_callbacks": 0,
+          "url_created": 0,
+          "url_released": 0,
+          "observers_created": 20,
+          "observers_active": 1,
+          "global_listener_delta": 0
+        },
+        {
+          "name": "image_upload",
+          "action_ms": 297,
+          "wall_ms": 1803,
+          "requests": [
+            {
+              "name": "nh7_document_save_draft_v2",
+              "method": "POST"
+            }
+          ],
+          "timer_callbacks": 1,
+          "url_created": 1,
+          "url_released": 1,
+          "observers_created": 0,
+          "observers_active": 1,
+          "global_listener_delta": 0
+        },
+        {
+          "name": "image_cancel",
+          "action_ms": 120,
+          "wall_ms": 103,
+          "requests": [],
+          "timer_callbacks": 0,
+          "url_created": 1,
+          "url_released": 1,
+          "observers_created": 0,
+          "observers_active": 1,
+          "global_listener_delta": 0
+        },
+        {
+          "name": "image_retry",
+          "action_ms": 133,
+          "wall_ms": 1805,
+          "requests": [],
+          "timer_callbacks": 0,
+          "url_created": 1,
+          "url_released": 1,
+          "observers_created": 0,
+          "observers_active": 1,
+          "global_listener_delta": 0
+        },
+        {
+          "name": "preview",
+          "action_ms": 34,
+          "wall_ms": 52,
+          "requests": [],
+          "timer_callbacks": 0,
+          "url_created": 0,
+          "url_released": 0,
+          "observers_created": 0,
+          "observers_active": 1,
+          "global_listener_delta": 0
+        },
+        {
+          "name": "PDF_generation",
+          "action_ms": 293,
+          "wall_ms": 55,
+          "requests": [],
+          "timer_callbacks": 1,
+          "url_created": 0,
+          "url_released": 0,
+          "observers_created": 0,
+          "observers_active": 1,
+          "global_listener_delta": 0
+        },
+        {
+          "name": "hidden_idle",
+          "action_ms": 1,
+          "wall_ms": 60010,
+          "requests": [],
+          "timer_callbacks": 0,
+          "url_created": 0,
+          "url_released": 0,
+          "observers_created": 0,
+          "observers_active": 1,
+          "global_listener_delta": 0
+        }
+      ],
+      "metrics": {
+        "api": {
+          "requests": 7,
+          "local_writes": 4,
+          "stale": 0
+        },
+        "render": {
+          "renders": 44,
+          "readiness": 44,
+          "image_decodes": 2
+        },
+        "output": {
+          "captures": 1,
+          "active": 0,
+          "urls": 0
+        },
+        "pdf_bytes": 249947,
+        "history_depth": 21,
+        "snapshot_bytes": 1027453
+      }
+    },
+    {
+      "surface": "My Documents",
+      "startup_requests": 1,
+      "phases": [
+        {
+          "name": "open_visible_idle",
+          "action_ms": 0,
+          "wall_ms": 60041,
+          "requests": [],
+          "timer_callbacks": 0,
+          "url_created": 0,
+          "url_released": 0,
+          "observers_created": 0,
+          "observers_active": 0,
+          "global_listener_delta": 0
+        },
+        {
+          "name": "account_switch",
+          "action_ms": 14,
+          "wall_ms": 155,
+          "requests": [
+            {
+              "name": "nh7_my_documents_v2",
+              "method": "POST"
+            }
+          ],
+          "timer_callbacks": 0,
+          "url_created": 0,
+          "url_released": 0,
+          "observers_created": 0,
+          "observers_active": 0,
+          "global_listener_delta": 0
+        },
+        {
+          "name": "hidden_idle",
+          "action_ms": 2,
+          "wall_ms": 60051,
+          "requests": [],
+          "timer_callbacks": 0,
+          "url_created": 0,
+          "url_released": 0,
+          "observers_created": 0,
+          "observers_active": 0,
+          "global_listener_delta": 0
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "baseline_sha": "46c0ebf9aaabf67f07bcbae4e02028913b86b951",
+    "implementation_sha": "5f8ad6a44c320223680f1626c9efb92ad2a998b7",
+    "harness_sha256": "87d0bc51f2828bc818a7baf80eda7fe25bb91ef61e3e461c29b1e94c4064ff69",
+    "node": "v24.19.0",
+    "chromium": "Chromium 151.0.7922.173 built on Debian GNU/Linux 13 (trixie)",
+    "review_database": "@electric-sql/pglite0.3.14 synthetic fresh schema",
+    "runtime_hashes": {
+      "js/document-studio-v2/admin-entry.mjs": "c8dc3d09836c4453775b42b71f3e549df38a5d21fdd1c77778ef5f37c55d532f",
+      "js/document-studio-v2/api.mjs": "6c057a53f38400580b5e22632c6e7bcefca1259c77d452619276361dc1f7037b",
+      "js/document-studio-v2/archive-entry.mjs": "92f290158f4c8dffd24c74ed8e6c90483be70547770039f4ec60782ea98caf5a",
+      "js/document-studio-v2/archive.mjs": "f63bdcabf7314387deab83b4672ad76ea2f9582ba03ae0740cfa1d0018cc4e36",
+      "js/document-studio-v2/catalog.mjs": "193bd0bad44a6519b682ea4a7a039042d5491a492fef72a4ec07bd8626e161a6",
+      "js/document-studio-v2/editor.mjs": "bd8d07d5c28fbe41ed769f95119175a99a9e4d3701302f8efefbf8237d365fb1",
+      "js/document-studio-v2/model.mjs": "9313d45a4160e44f146f2021e2226f2c2b3d1eb82b876a2efd63d5a06e387b89",
+      "js/document-studio-v2/output-page.mjs": "2d41417f3553b0b8eef96c65aa5a834aef30f228a565ce2bf0a196ddae9118a8",
+      "js/document-studio-v2/output.mjs": "8727d1ea661febbef097e81011e8a8094aa2b1ebf9c61319bf1dc4c18ae4c648",
+      "js/document-studio-v2/renderer.mjs": "848356861f90c1317fce599abda6b09f593e3ea78f3c73ce45279f1b8be491d0",
+      "js/document-studio-v2/resource.mjs": "dac2ec1f203e246262a56e3c7b6edaec2f1dfe7520cfb753628b6f7c16a9d2b9",
+      "js/document-studio-v2/ui.mjs": "982587234fd1651d2e8160deec75f81f8d6f58da7944391848d67fb7ec61cfc5",
+      "js/document-studio-v2/verification.mjs": "f19306ef52218b8cdde22e1a8ff503e082714a2371a7bc5d5f0cfdeb5f680d3f"
+    }
+  },
+  "limits": [
+    "Remote requests intercepted; no live backend/provider call or write.",
+    "Admin contexts measured concurrently; total legacy timer callback variance is scheduling/load sensitive; no physical CPU/energy/cost conclusion. Existing legacy timer code is byte-exact.",
+    "Studio/My Documents have no starting-baseline equivalent: these are additive surfaces.",
+    "action_ms includes real async work; wall_ms is actual idle/wait duration, never a frozen Date clock.",
+    "One desktop Chromium run; native Safari/iOS/Android and production parallel SQL are unproven."
+  ]
+}
