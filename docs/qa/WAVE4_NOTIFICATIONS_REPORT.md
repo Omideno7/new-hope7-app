@@ -99,7 +99,7 @@ Migration checkpoint: **42/42 raw-hash exact, 0 missing, 1 pre-existing pending*
 
 ## Changed files
 
-34 files relative to starting develop (complete inventory):
+35 files relative to starting develop (complete inventory):
 
 - `.github/workflows/validate-develop.yml`
 - `admin.html`
@@ -122,6 +122,7 @@ Migration checkpoint: **42/42 raw-hash exact, 0 missing, 1 pre-existing pending*
 - `scripts/verify-wave3-safety.py`
 - `scripts/verify-wave4-notifications-browser.cjs`
 - `scripts/verify-wave4-notifications.cjs`
+- `scripts/verify-wave4-review-syntax.cjs`
 - `scripts/verify-wave4-safety.py`
 - `supabase/review/wave4-notifications-2/README.md`
 - `supabase/review/wave4-notifications-2/authorization.sql`
@@ -135,6 +136,8 @@ Migration checkpoint: **42/42 raw-hash exact, 0 missing, 1 pre-existing pending*
 - `supabase/review/wave4-notifications-2/scheduled-sender.ts`
 - `supabase/review/wave4-notifications-2/service-grants.sql`
 - `sw-release-core-v403.js`
+
+CI syntax failure was reproduced with the actual runner Node24.21.0: its naked `--check file.ts` no longer erases annotations (local24.19 did), although module execution fixtures pass. `verify-wave4-review-syntax.cjs` uses Node's built-in TypeScript parser/type erasure, then checks the resulting module JavaScript without importing/serving backend entrypoints. Both versions pass; no dependency/check was removed. Syntax failures now also surface through the existing run-ci-check annotation wrapper. Runtime/measurement source bytes remain f717…; CI-only follow-up hashes and the exact final successful head are in the delivery receipt.
 
 ## Review-only backend and remaining acceptance gates
 

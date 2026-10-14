@@ -40,7 +40,8 @@ jobs:
           python3 scripts/run-ci-check.py node --check js/nh7-admin-push-owner-v400.js
           python3 scripts/run-ci-check.py node --check js/nh7-inbox-badge-sync-v418.js
           python3 scripts/run-ci-check.py node --check js/nh7-spiritual-plans-v412.js
-          for source in supabase/review/wave4-notifications-2/*.ts scripts/*wave4*.cjs; do python3 scripts/run-ci-check.py node --check "$source"; done
+          for source in scripts/*wave4*.cjs; do python3 scripts/run-ci-check.py node --check "$source"; done
+          python3 scripts/run-ci-check.py node scripts/verify-wave4-review-syntax.cjs
           python3 scripts/run-ci-check.py node --check js/nh7-celebrations-v464.js
           python3 scripts/run-ci-check.py node --check js/nh7-admin-rbac-v350.js
           python3 scripts/run-ci-check.py node --check js/nh7-admin-session-keepalive-v451.js
