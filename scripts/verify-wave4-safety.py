@@ -1,14 +1,18 @@
 """Wave4 approved scope; retain exact Wave1–3 engine/data/backend bytes."""
 from pathlib import Path
 import subprocess,re
+import sys
+sys.dont_write_bytecode=True
+from wave6_accepted_source import accepted_bytes
+subprocess.run(['python3','scripts/verify-wave6-safety.py'],check=True)
 BASE='f841a1df90c07e842ebf4b910df26dfd8561b2a3'
 def before(p):return subprocess.check_output(['git','show',f'{BASE}:{p}']).decode()
 allowed={'js/app.js','js/nh7-spiritual-plans-v412.js','js/nh7-push-account-bind-v364.js','js/nh7-notifications-zagreb-v334.js','js/nh7-admin-push-owner-v400.js','js/nh7-admin-message-center-v416.js','js/nh7-inbox-badge-sync-v418.js'}
 for p in subprocess.check_output(['git','ls-tree','-r','--name-only',BASE,'--','js','data','supabase/functions','supabase/migrations']).decode().splitlines():
- if p not in allowed:assert Path(p).read_bytes()==subprocess.check_output(['git','show',f'{BASE}:{p}']),f'Protected product/backend file changed: {p}'
+ if p not in allowed:assert accepted_bytes(p)==subprocess.check_output(['git','show',f'{BASE}:{p}']),f'Protected product/backend file changed: {p}'
 # app.js may change only notification presentation/dispatch, its readiness event and
 # narrowing local cancellation to this app's already-retired notification IDs.
-s=Path('js/app.js').read_text()
+s=accepted_bytes('js/app.js').decode()
 s=s.replace('${window.NH7NotificationContractWave4?.intent(m.intent)?`<button class="secondary-btn" data-inbox-destination="${html(m.id)}">${html(l223(\'باز کردن مقصد\',\'Open destination\',\'Otvori odredište\'))}</button>`:\'\'}','')
 s=s.replace("const legacy=pending.filter(x=>Number(x.id)>=17000&&Number(x.id)<=19999);if(legacy.length)await Native.cancel({notifications:legacy.map(x=>({id:x.id}))})","if(pending.length)await Native.cancel({notifications:pending.map(x=>({id:x.id}))})")
 s=s.replace("const extra=ev?.notification?.extra||{};const intent=extra.nh7_intent||{version:4,route:extra.route||'home',params:{}};window.NH7NotificationIntentsWave4?.open(intent)","const route=ev?.notification?.extra?.route||'home';navigate(route,{},true)")
@@ -20,7 +24,7 @@ s=s.replace("\nwindow.dispatchEvent(new Event('nh7-router-ready-wave4'));",'')
 s=s.replace("\n  if(route!=='plans'||params.tab!=='spiritual')window.NH7_SPIRITUAL_PLANS?.dispose?.();",'')
 s=s.replace("else if(route==='plans') {if(params.tab==='spiritual'&&window.NH7_SPIRITUAL_PLANS)await window.NH7_SPIRITUAL_PLANS.render(params);else await plans(params);}","else if(route==='plans') await plans(params);")
 assert s==before('js/app.js'),'Unrelated app data/router/engine behavior changed'
-p='js/nh7-spiritual-plans-v412.js';s=Path(p).read_text().replace("// Presentation disposal only: no progress/Notes/queue/storage mutation.\nwindow.NH7_SPIRITUAL_PLANS = { render:renderPlans, sync:syncCloudQueue, active:() => active, dispose:()=>{active=false;clearTimeout(restoreTimer)} };","window.NH7_SPIRITUAL_PLANS = { render:renderPlans, sync:syncCloudQueue, active:() => active };");assert s==before(p),'Plans persistence must remain exact'
+p='js/nh7-spiritual-plans-v412.js';s=accepted_bytes(p).decode().replace("// Presentation disposal only: no progress/Notes/queue/storage mutation.\nwindow.NH7_SPIRITUAL_PLANS = { render:renderPlans, sync:syncCloudQueue, active:() => active, dispose:()=>{active=false;clearTimeout(restoreTimer)} };","window.NH7_SPIRITUAL_PLANS = { render:renderPlans, sync:syncCloudQueue, active:() => active };");assert s==before(p),'Plans persistence must remain exact'
 for p in ['js/nh7-push-account-bind-v364.js','js/nh7-notification-contract-wave4.js','js/nh7-notification-intents-wave4.js','js/nh7-admin-message-center-v416.js','js/nh7-admin-push-owner-v400.js']:
  s=Path(p).read_text();assert 'setInterval(' not in s,f'New notification polling: {p}'
  assert 'localStorage.clear(' not in s and 'SERVICE_ROLE' not in s and 'sb_secret_' not in s

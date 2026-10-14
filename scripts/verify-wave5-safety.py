@@ -1,16 +1,22 @@
 """Exact Wave5 changed-file boundary and retained current product/backend bytes."""
 from pathlib import Path
 import subprocess,re,json,hashlib
+import sys
+sys.dont_write_bytecode=True
+from wave6_accepted_source import accepted_bytes
+subprocess.run(['python3','scripts/verify-wave6-safety.py'],check=True)
 BASE='46c0ebf9aaabf67f07bcbae4e02028913b86b951'
 def old(p):return subprocess.check_output(['git','show',BASE+':'+p])
 for scope in ('js','css','assets','data','public','supabase/functions','supabase/migrations'):
- for name in subprocess.check_output(['git','ls-tree','-r','--name-only',BASE,'--',scope]).decode().splitlines():assert Path(name).read_bytes()==old(name),f'Protected product/backend changed: {name}'
+ for name in subprocess.check_output(['git','ls-tree','-r','--name-only',BASE,'--',scope]).decode().splitlines():assert accepted_bytes(name)==old(name),f'Protected product/backend changed: {name}'
 allowed={'scripts/verify-report-pdf-v119.cjs','scripts/verify-school-reports-browser-v116.cjs','scripts/verify-local-first-wave2-browser.cjs','admin.html','index.html','sw-release-core-v403.js','.github/workflows/validate-develop.yml','document-studio.html','document-output.html','document-verify.html','my-documents.html','css/document-studio-v2.css','js/vendor/document-qrcode-1.5.4.js','js/vendor/document-qrcode-LICENSE.txt','js/vendor/document-qrcode-dependencies.json'}
 files=set(subprocess.check_output(['git','diff','--name-only',BASE]).decode().splitlines())|set(subprocess.check_output(['git','ls-files','--others','--exclude-standard']).decode().splitlines())
-for name in files:assert name in allowed or name.startswith(('js/document-studio-v2/','supabase/review/wave5-document-studio-v2/','scripts/document-studio-v2/','scripts/verify-wave5','scripts/measure-wave5','docs/qa/WAVE5_DOCUMENT_STUDIO_')),f'Unexpected scope: {name}'
+from wave6_accepted_source import manifest
+allowed.update(manifest()['existing_ui_files']);allowed.update(manifest()['new_ui_files']);allowed.update({'scripts/wave6_accepted_source.py','scripts/verify-profile-search-inbox-qa.cjs','scripts/verify-calendar-lock-parity-v250.py','scripts/fixtures/wave6-user.cjs','scripts/fixtures/wave6-approved-ui.json','scripts/fixtures/wave6-approved-ui.patch','docs/qa/CODEX_WAVE6_USER_APP_COMPLETION_BUG_SWEEP.md','docs/qa/WAVE6_USER_APP_COMPLETION_AUDIT.md','docs/qa/WAVE6_USER_APP_COMPLETION_REPORT.md','docs/qa/WAVE6_USER_APP_MEASUREMENTS.json','docs/qa/WAVE6_HISTORICAL_UI_CONVERGENCE.md','scripts/verify-wave3-safety.py','scripts/verify-wave4-safety.py'})
+for name in files:assert name in allowed or name.startswith(('scripts/verify-wave6','scripts/measure-wave6')) or name.startswith(('js/document-studio-v2/','supabase/review/wave5-document-studio-v2/','scripts/document-studio-v2/','scripts/verify-wave5','scripts/measure-wave5','docs/qa/WAVE5_DOCUMENT_STUDIO_')),f'Unexpected scope: {name}'
 for file,module in [('admin.html','admin-entry'),('index.html','archive-entry')]:
- s=Path(file).read_text().replace('  <script type="module" src="js/document-studio-v2/'+module+'.mjs?v=wave5"></script>\n','');assert s.encode()==old(file),'Only additive current page entry permitted'
-core=Path('sw-release-core-v403.js').read_text();assert "NH7_RELEASE_DATA_CACHE='nh7-data-stable-v329'" in core
+ s=accepted_bytes(file).decode().replace('  <script type="module" src="js/document-studio-v2/'+module+'.mjs?v=wave5"></script>\n','');assert s.encode()==old(file),'Only additive current page entry permitted'
+core=accepted_bytes('sw-release-core-v403.js').decode();assert "NH7_RELEASE_DATA_CACHE='nh7-data-stable-v329'" in core
 before=old('sw-release-core-v403.js').decode();s=core.replace('nh7-release-core-v571-wave4-notifications-wave5-documents','nh7-release-core-v571-wave4-notifications');s='\n'.join(l for l in s.split('\n') if not any(x in l for x in ['./document-studio.html','./document-output.html','./document-verify.html','./my-documents.html','./css/document-studio-v2.css','./js/vendor/document-qrcode-1.5.4.js','./js/document-studio-v2/']));assert s==before,'No worker/data/cache policy changes permitted'
 for p in Path('js/document-studio-v2').glob('*.mjs'):
  s=p.read_text();assert 'setInterval(' not in s and 'localStorage.clear(' not in s and 'SERVICE_ROLE' not in s and 'sb_secret_' not in s,p

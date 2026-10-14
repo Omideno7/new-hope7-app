@@ -17,18 +17,19 @@ const lang=()=>{const v=localStorage.getItem('nh7_lang')||document.documentEleme
 const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
 const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function session(){try{return JSON.parse(localStorage.getItem(SESSION)||'null')}catch(_){return null}}
-function uid(){return String(session()?.user?.id||'').trim()}
-function token(){return String(session()?.access_token||'').trim()}
+function uid(){return window.NH7UserContextWave6?.identity().uid||''}
+function token(){return window.NH7UserContextWave6?.identity().token||''}
 function activeSchool(){return !!document.querySelector('.nav-item.active[data-route="school"]')}
 function cacheKey(){const id=uid();return id?CACHE+id:''}
-function cached(){const k=cacheKey();if(!k)return null;try{const x=JSON.parse(localStorage.getItem(k)||'null');if(!x||Date.now()-Number(x.at||0)>MAX_CACHE_MS)return null;return x.student||null}catch(_){return null}}
+function cached(){const k=cacheKey();if(!k)return null;try{const x=JSON.parse(localStorage.getItem(k)||'null');if(!x||Date.now()-Number(x.at||0)>MAX_CACHE_MS)return null;return x.student&&(!x.student.user_id||x.student.user_id===uid())?x.student:null}catch(_){return null}}
 function writeCache(student){const k=cacheKey();if(!k)return;try{localStorage.setItem(k,JSON.stringify({at:Date.now(),student:student||null}))}catch(_){}}
 function clearCache(){const k=cacheKey();if(k)try{localStorage.removeItem(k)}catch(_){}}
 
 async function rpc(name,body={}){
+ const ticket=window.NH7UserContextWave6?.identity();
  const t=token();if(!t)throw new Error('login_required');
  const r=await fetch(`${SB}/rest/v1/rpc/${name}`,{method:'POST',headers:{apikey:KEY,Authorization:`Bearer ${t}`,'Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store'});
- const text=await r.text();let data={};try{data=text?JSON.parse(text):{}}catch(_){data={message:text}};
+ const text=await r.text();if(ticket&&!window.NH7UserContextWave6.current(ticket))throw new Error('session_changed');let data={};try{data=text?JSON.parse(text):{}}catch(_){data={message:text}};
  if(!r.ok){const e=new Error(String(data?.message||data?.error||r.statusText));e.status=r.status;throw e}
  return Array.isArray(data)?(data[0]??{}):data;
 }
@@ -48,14 +49,15 @@ function ensureStyle(){if(document.getElementById('nh7StudentIdentity127Style'))
  @media(max-width:520px){.nh7-student-id127{align-items:flex-start;flex-wrap:wrap}.nh7-student-id127-copy{min-width:calc(100% - 70px)}.nh7-student-id127-actions{width:100%;justify-content:flex-start}}
  `;document.head.appendChild(s)}
 function initials(name){const p=String(name||'').trim().split(/\s+/).filter(Boolean);return p.length?(p[0][0]+(p.length>1?p.at(-1)[0]:'')).toUpperCase():'🎓'}
-function localPhoto(){try{const v=localStorage.getItem(LOCAL_PHOTO)||'';return /^data:image\//.test(v)?v:''}catch(_){return''}}
+function localPhoto(){return window.NH7UserContextWave6?.photo?.()||''}
 function identityAnchor(){const view=document.getElementById('view');if(!view)return null;return view.querySelector('.nh7-school-guide-v351,.school-course-group,.card')}
 
 async function privatePhotoUrl(path){
+ const ticket=window.NH7UserContextWave6?.identity();
  if(!path||!token())return'';
  try{
   const r=await fetch(`${SB}/storage/v1/object/nh7-document-assets/${String(path).split('/').map(encodeURIComponent).join('/')}`,{headers:{apikey:KEY,Authorization:`Bearer ${token()}`},cache:'no-store'});
-  if(!r.ok)return'';const b=await r.blob();if(!String(b.type||'').startsWith('image/'))return'';
+  if(!r.ok)return'';const b=await r.blob();if(!String(b.type||'').startsWith('image/')||(ticket&&!window.NH7UserContextWave6.current(ticket)))return'';
   if(objectUrl)URL.revokeObjectURL(objectUrl);objectUrl=URL.createObjectURL(b);return objectUrl;
  }catch(_){return''}
 }
@@ -87,8 +89,9 @@ async function syncLocalPhoto(student,el){
 }
 
 async function sync(force=false){
+ const ticket=window.NH7UserContextWave6?.identity();
  if(!activeSchool()){document.getElementById('nh7StudentIdentity127')?.remove();return}
- try{const student=await loadIdentity(force);if(!student?.student_code)return;let photo='';if(student.photo_path)photo=await privatePhotoUrl(student.photo_path);render(student,photo)}catch(e){if(!/login_required/i.test(String(e?.message||'')))console.warn('[NH7 Student Identity v127]',e)}
+ try{const student=await loadIdentity(force);if(!student?.student_code)return;let photo='';if(student.photo_path)photo=await privatePhotoUrl(student.photo_path);if((!ticket||window.NH7UserContextWave6.current(ticket))&&activeSchool())render(student,photo)}catch(e){if(!/login_required/i.test(String(e?.message||'')))console.warn('[NH7 Student Identity v127]',e)}
 }
 function schedule(force=false){if(queued)return;queued=true;setTimeout(()=>{queued=false;const route=activeSchool()?'school':'other',changed=route!==lastRoute;lastRoute=route;sync(force||changed)},80)}
 

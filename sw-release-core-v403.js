@@ -3,7 +3,7 @@
 // Issue #115 UI refresh: recache localized assets with the existing cache/storage contract.
 
 const NH7_RELEASE_CORE_VERSION='5.7.1-user-writing-direction';
-const NH7_RELEASE_CORE_CACHE='nh7-release-core-v571-wave4-notifications-wave5-documents';
+const NH7_RELEASE_CORE_CACHE='nh7-release-core-v571-wave4-notifications-wave5-documents-wave6-user-app';
 const NH7_RELEASE_DATA_CACHE='nh7-data-stable-v329';
 const NH7_RELEASE_ASSETS=[
   './document-studio.html',
@@ -91,6 +91,8 @@ const NH7_RELEASE_ASSETS=[
   './js/nh7-audio-library-v500.js',
   './js/nh7-community-v502.js',
   './js/nh7-exam-review-v566.js',
+  './js/nh7-user-context-wave6.js',
+  './css/nh7-user-app-wave6.css',
   './js/app.js',
   './js/nh7-media-player-v500.js',
   './js/nh7-user-writing-direction-v571.js',

@@ -1,5 +1,5 @@
 import {
-  renderSpiritualPlansV240
+  renderSpiritualPlansV240,peekPlanTitlesWave6,validExistingPlanDayWave6
 } from './nh7-spiritual-plans-v240.js';
 
 /* New Hope 7 — production spiritual plans bridge v4.1.2
@@ -248,9 +248,10 @@ function setNav(){
   const back = document.querySelector('#backBtn'); if(back){ back.classList.remove('hidden'); back.setAttribute('aria-label',say('back')); }
 }
 function banner(){}
-function context(){
+function context(isCurrent){
   return {
     view:VIEW,
+    isCurrent,
     getLang:lang,
     navigate,
     localNum,
@@ -268,9 +269,12 @@ function context(){
 async function renderPlans(params={tab:'spiritual'}){
   if(!VIEW || rendering) return;
   active = true; rendering = true; currentParams = { ...params };
+  const ticket=window.NH7UserContextWave6?.identity(),hash=location.hash,language=lang();
+  const isCurrent=()=>active&&location.hash===hash&&lang()===language&&(!ticket||window.NH7UserContextWave6.current(ticket));
   setNav(); VIEW.innerHTML = `<section class="card"><p>${escapeHtml(say('loading'))}</p></section>`;
   try{
-    await renderSpiritualPlansV240(context(), currentParams);
+    await renderSpiritualPlansV240(context(isCurrent), currentParams);
+    if(!isCurrent())return;
     if(!VIEW.querySelector('#nh7SpiritualPlansRootMarker')){
       const marker=document.createElement('span');
       marker.id='nh7SpiritualPlansRootMarker'; marker.hidden=true;
@@ -278,6 +282,7 @@ async function renderPlans(params={tab:'spiritual'}){
     }
     VIEW.dataset.spiritualPlans = VERSION;
   }catch(error){
+    if(!isCurrent())return;
     console.error('[Wave1B plans]', error);
     VIEW.innerHTML = `<section class="card"><h2>${escapeHtml(say('plans'))}</h2><p>${escapeHtml(error?.message || String(error))}</p></section>`;
   }finally{ rendering=false; }
@@ -339,7 +344,7 @@ document.head.appendChild(style);
 
 window.NH7_SPIRITUAL_PLANS_VERSION = VERSION;
 // Presentation disposal only: no progress/Notes/queue/storage mutation.
-window.NH7_SPIRITUAL_PLANS = { render:renderPlans, sync:syncCloudQueue, active:() => active, dispose:()=>{active=false;clearTimeout(restoreTimer)} };
+window.NH7_SPIRITUAL_PLANS = { render:renderPlans, sync:syncCloudQueue, active:() => active, catalog:peekPlanTitlesWave6, validExistingDay:(id,day)=>validExistingPlanDayWave6(id,day,context()), dispose:()=>{active=false;clearTimeout(restoreTimer)} };
 
 if(new URLSearchParams(location.search).get('open') === 'plans'){
   setTimeout(() => renderPlans({tab:'spiritual'}), 700);

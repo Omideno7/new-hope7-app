@@ -1,0 +1,74 @@
+{
+  "base": "184498f5e184ac6f0d5ffdf6962c426957af842b",
+  "existing_ui_files": {
+    "document-verify.html": {
+      "before_sha256": "7e62ab583a357a00face3745f36b309b645bedcd5c98065d7682e4cb239cd450",
+      "after_sha256": "9abb35d8c555d2646f0126822a1c1836d8c7802cfee936422f2a6876cad7b1e4"
+    },
+    "index.html": {
+      "before_sha256": "a8c30c7023f83d6af96ea610dbbeb0f1738244b8fd928283b51f2822387b096d",
+      "after_sha256": "bc012eee3c015fdf27511d81607d7a07ebb77a0b2038301d5dc4dddfc2ad2e7a"
+    },
+    "js/app.js": {
+      "before_sha256": "817c7e3fe81afc01352bc812c77caeabc43d925b5bc2b7c305e09f57cc8f6f18",
+      "after_sha256": "8eeb686a1ec666629c688f567983c62880110a35fb034d4eed27b0c360a60380"
+    },
+    "js/document-studio-v2/archive.mjs": {
+      "before_sha256": "f63bdcabf7314387deab83b4672ad76ea2f9582ba03ae0740cfa1d0018cc4e36",
+      "after_sha256": "ebb812229e2ea8ac6935b207226558e178a92ce93131281ed347d267d8c0d311"
+    },
+    "js/nh7-book-reader-v283.js": {
+      "before_sha256": "16cdf0a88a3372d8c4e251d7991b36e79c0214028fd9952d2363fc4e542bb780",
+      "after_sha256": "269c8a11c8e50c7b76df03c75aabc51b792abe548e1e64bd6c915e56a0b7a4a6"
+    },
+    "js/nh7-celebrations-v464.js": {
+      "before_sha256": "435dad91af2fb04a2119e056cde4c945049ed7509e4ba410b1426e22df535430",
+      "after_sha256": "f8a4f73977d9db02aadd72d846f6f6fd7fa29968307604962fdfaa43bdc5a446"
+    },
+    "js/nh7-global-search-direct-v562.js": {
+      "before_sha256": "e8e8b4974f8d5f4534fa90148da1b83ba6497ec5da8920088bed4d84dcd93c79",
+      "after_sha256": "feed6fb1c7c6424b924f695942b8ac50fa2fa2f0407205191104ae7194eafa38"
+    },
+    "js/nh7-library-security-v125.js": {
+      "before_sha256": "d185f30fc273185f3e3e92ffb4bf482300b45c038e70218b510dffba03a6051b",
+      "after_sha256": "6283e93b634bbd0832ecbd3c5d0e68c1cb163c5be2ba4830665a6af78814df89"
+    },
+    "js/nh7-my-notes-v234.js": {
+      "before_sha256": "e664d0ad1c2cc08a38e22fe8c859c9df15de6bae5201f9825c4e343b5e172edb",
+      "after_sha256": "cf1d18b313b074f891e9948f8d4822a452b76ffc9e3ea88a9a8f38a54cf30813"
+    },
+    "js/nh7-note-text-v501.js": {
+      "before_sha256": "f50b8e8b7e1cc463661c616013e17048cb02a68845cd37ed422478df39e3492a",
+      "after_sha256": "c0241d1cbd5c7a9d8cd6eabe7632f34891190e5055028b87dc49459239e3025f"
+    },
+    "js/nh7-profile-photo-v564.js": {
+      "before_sha256": "b6fd70dd74a8bf0ae8b0f5c5db8376d5e1e7dcf10807e4ae517e56a15d86a131",
+      "after_sha256": "8933c688d61433bbeeac84c1bf30e9b743438865a9bc0a3c11daa0041f50c05f"
+    },
+    "js/nh7-spiritual-plans-v240.js": {
+      "before_sha256": "29f7100d923a511038bbadadcbcfa31846d5e40b8a319e5c09390fde9ac51dc2",
+      "after_sha256": "24041cba5e0955465138fe1fae1980703f5ea9095fe86e1a4bb2aa4803a0b10f"
+    },
+    "js/nh7-spiritual-plans-v412.js": {
+      "before_sha256": "900fc78cf2216968ee9829d39784c8f06d089dce53e44aa2b68e1aebc6fff02e",
+      "after_sha256": "46dd23fc5e117efb58b4ffb916e630a1291e6e0ddea28418876fc61a7f6135df"
+    },
+    "js/nh7-student-identity-v127.js": {
+      "before_sha256": "d1b7715eeb5d00c567e380f232354f3ca23f6dc2487407417162666918676a51",
+      "after_sha256": "284550d3ce1b1784509124a9e4dc9d81018e12bec0c5725fe18ff337398a5c6f"
+    },
+    "my-documents.html": {
+      "before_sha256": "c535bab13b7f1b3ba5e936875fd96c15ca763990a8caa2c17966e1ec8a1abda3",
+      "after_sha256": "79c079f278ff87b06933f561ef53aeabb8ba11b346f67f318daaf612461cf9ec"
+    },
+    "sw-release-core-v403.js": {
+      "before_sha256": "a78c3dbfcc51b4437fd73bf8afce74b179ad2990172fc1ee3f6b6c8df8818f86",
+      "after_sha256": "5eaa7fc9195d314c4e1561386a26843ca19f5cc4400a75d6ce0b466e5d5b7e00"
+    }
+  },
+  "new_ui_files": {
+    "js/nh7-user-context-wave6.js": "9369452b88ee1c443254cd4cab2497ec9fc1d56c872544a13b9c057f31d93787",
+    "css/nh7-user-app-wave6.css": "8274276cf2cf2344009c486dc1b1f7e065bd1b3a87e2ce59dcf3ffc4d15a1156"
+  },
+  "patch_sha256": "001b1d86960fd9d343596376400f4510ed65bfb1b4b1550806c1d5a87529de2e"
+}

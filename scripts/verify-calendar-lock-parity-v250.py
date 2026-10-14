@@ -20,8 +20,9 @@ release=text('sw-release-core-v403.js')
 need("VERSION:'4.6.7-wave3-owner-dob'" in js,'calendar runtime version mismatch')
 need('function annualEvents' in js,'annual calendar list missing')
 need('function openCalendar' in js,'calendar entry point missing')
-need("closeModal();setTimeout(()=>Promise.resolve(window.NH7ReaderSourceV452?.open?.(ref)).catch(()=>{}),0)" in js,
+need("closeModal();setTimeout(()=>{" in js and "window.NH7ReaderSourceV452?.open?.(ref)" in js and "window.NH7UserContextWave6.current(ticket)" in js and "location.hash===route" in js,
      'verse handoff must release modal/inert before opening Reader')
+need("open:async ref=>" in text('js/app.js') and 'routeCheckWave6(ticket)' in text('js/app.js'),'canonical exact-verse opener and stale-navigation fence missing')
 need("old.shell.inert=old.wasInert" in js,'closeModal must restore appShell inert state')
 need("active={kind:'calendar'" in js,'calendar modal state missing')
 need('nh7-calendar-dialog464' in css and 'nh7-feast-verse464.is-link' in css,'calendar/link styles missing')

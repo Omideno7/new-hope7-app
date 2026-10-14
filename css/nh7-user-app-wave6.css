@@ -1,0 +1,13 @@
+/* Current semantic palette only; no theme engine and no print/page-coordinate rules. */
+/* Existing reader highlight palette/contrast remains authoritative. */
+html[data-nh7-studio] :is(.nh7-photo-sheet564,#nh7PhotoViewerWave6){background:var(--nh7-studio-card)!important;color:var(--nh7-studio-text)!important}
+html[data-nh7-studio] :is(.nh7-photo-sheet564,#nh7PhotoViewerWave6) button{background:var(--nh7-studio-card);color:var(--nh7-studio-text);border:1px solid var(--nh7-studio-line,var(--line))}
+/* Account/public chrome may follow the app theme; certificates/PDF retain snapshot colors. */
+html[data-nh7-studio] body:has(>.ds2-public),html[data-nh7-studio] body:has(>main.ds2-public){background:var(--nh7-studio-bg);color:var(--nh7-studio-text)}
+html[data-nh7-studio] .ds2-public :is(.ds2-record,.ds2-public-header){background:var(--nh7-studio-card);color:var(--nh7-studio-text);border-color:var(--nh7-studio-line,var(--line))}
+html[data-nh7-studio] .ds2-public :is(.ds2-public-header,.ds2-record) :is(button,a,input,select){color:var(--nh7-studio-text);background:var(--nh7-studio-card);border-color:var(--nh7-studio-line,var(--line))}
+@media(prefers-reduced-motion:reduce){#nh7PhotoViewerWave6{scroll-behavior:auto}}
+/* Default book presentation follows the current palette. An explicit reader choice wins. */
+html[data-nh7-studio] .nh7-book-modal[data-follow-app-wave6="true"] :is(.nh7-book-dialog,.nh7-book-shell,.nh7-book-toolbar,.nh7-book-main,.nh7-book-sidebar,.nh7-book-footer,.nh7-book-head,.nh7-book-search-results){background:var(--nh7-studio-card)!important;color:var(--nh7-studio-text)!important;border-color:var(--nh7-studio-line,var(--line))!important}
+html[data-nh7-studio] .nh7-book-modal[data-follow-app-wave6="true"] :is(button,input,select){background:var(--nh7-studio-card)!important;color:var(--nh7-studio-text)!important;border-color:var(--nh7-studio-line,var(--line))!important}
+html[data-nh7-studio]:not([data-nh7-eye-reader514="1"]) .nh7-book-modal[data-follow-app-wave6="true"] :is(.nh7-book-article,.nh7-book-page){background:var(--nh7-studio-card)!important;color:var(--nh7-studio-verse,var(--nh7-studio-text))!important}

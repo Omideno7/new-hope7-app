@@ -1,0 +1,1708 @@
+{
+  "recorded_date": "2026-10-14",
+  "baseline_sha": "184498f5e184ac6f0d5ffdf6962c426957af842b",
+  "audit_sha": "13c48a97f41ab5e18c400d1a1e3d6dc6d6269f2e",
+  "unchanged_main": "15af811f78a17a0881c13171311e7ade6bc390f4",
+  "harness_sha256": "b6d657c46a8a6a248dc3da40a85fe17de381e36e0db6bdbed20006c1546446e4",
+  "after_ui_manifest": {
+    "base": "184498f5e184ac6f0d5ffdf6962c426957af842b",
+    "existing_ui_files": {
+      "document-verify.html": {
+        "before_sha256": "7e62ab583a357a00face3745f36b309b645bedcd5c98065d7682e4cb239cd450",
+        "after_sha256": "9abb35d8c555d2646f0126822a1c1836d8c7802cfee936422f2a6876cad7b1e4"
+      },
+      "index.html": {
+        "before_sha256": "a8c30c7023f83d6af96ea610dbbeb0f1738244b8fd928283b51f2822387b096d",
+        "after_sha256": "bc012eee3c015fdf27511d81607d7a07ebb77a0b2038301d5dc4dddfc2ad2e7a"
+      },
+      "js/app.js": {
+        "before_sha256": "817c7e3fe81afc01352bc812c77caeabc43d925b5bc2b7c305e09f57cc8f6f18",
+        "after_sha256": "8eeb686a1ec666629c688f567983c62880110a35fb034d4eed27b0c360a60380"
+      },
+      "js/document-studio-v2/archive.mjs": {
+        "before_sha256": "f63bdcabf7314387deab83b4672ad76ea2f9582ba03ae0740cfa1d0018cc4e36",
+        "after_sha256": "ebb812229e2ea8ac6935b207226558e178a92ce93131281ed347d267d8c0d311"
+      },
+      "js/nh7-book-reader-v283.js": {
+        "before_sha256": "16cdf0a88a3372d8c4e251d7991b36e79c0214028fd9952d2363fc4e542bb780",
+        "after_sha256": "269c8a11c8e50c7b76df03c75aabc51b792abe548e1e64bd6c915e56a0b7a4a6"
+      },
+      "js/nh7-celebrations-v464.js": {
+        "before_sha256": "435dad91af2fb04a2119e056cde4c945049ed7509e4ba410b1426e22df535430",
+        "after_sha256": "f8a4f73977d9db02aadd72d846f6f6fd7fa29968307604962fdfaa43bdc5a446"
+      },
+      "js/nh7-global-search-direct-v562.js": {
+        "before_sha256": "e8e8b4974f8d5f4534fa90148da1b83ba6497ec5da8920088bed4d84dcd93c79",
+        "after_sha256": "feed6fb1c7c6424b924f695942b8ac50fa2fa2f0407205191104ae7194eafa38"
+      },
+      "js/nh7-library-security-v125.js": {
+        "before_sha256": "d185f30fc273185f3e3e92ffb4bf482300b45c038e70218b510dffba03a6051b",
+        "after_sha256": "6283e93b634bbd0832ecbd3c5d0e68c1cb163c5be2ba4830665a6af78814df89"
+      },
+      "js/nh7-my-notes-v234.js": {
+        "before_sha256": "e664d0ad1c2cc08a38e22fe8c859c9df15de6bae5201f9825c4e343b5e172edb",
+        "after_sha256": "cf1d18b313b074f891e9948f8d4822a452b76ffc9e3ea88a9a8f38a54cf30813"
+      },
+      "js/nh7-note-text-v501.js": {
+        "before_sha256": "f50b8e8b7e1cc463661c616013e17048cb02a68845cd37ed422478df39e3492a",
+        "after_sha256": "c0241d1cbd5c7a9d8cd6eabe7632f34891190e5055028b87dc49459239e3025f"
+      },
+      "js/nh7-profile-photo-v564.js": {
+        "before_sha256": "b6fd70dd74a8bf0ae8b0f5c5db8376d5e1e7dcf10807e4ae517e56a15d86a131",
+        "after_sha256": "8933c688d61433bbeeac84c1bf30e9b743438865a9bc0a3c11daa0041f50c05f"
+      },
+      "js/nh7-spiritual-plans-v240.js": {
+        "before_sha256": "29f7100d923a511038bbadadcbcfa31846d5e40b8a319e5c09390fde9ac51dc2",
+        "after_sha256": "24041cba5e0955465138fe1fae1980703f5ea9095fe86e1a4bb2aa4803a0b10f"
+      },
+      "js/nh7-spiritual-plans-v412.js": {
+        "before_sha256": "900fc78cf2216968ee9829d39784c8f06d089dce53e44aa2b68e1aebc6fff02e",
+        "after_sha256": "46dd23fc5e117efb58b4ffb916e630a1291e6e0ddea28418876fc61a7f6135df"
+      },
+      "js/nh7-student-identity-v127.js": {
+        "before_sha256": "d1b7715eeb5d00c567e380f232354f3ca23f6dc2487407417162666918676a51",
+        "after_sha256": "284550d3ce1b1784509124a9e4dc9d81018e12bec0c5725fe18ff337398a5c6f"
+      },
+      "my-documents.html": {
+        "before_sha256": "c535bab13b7f1b3ba5e936875fd96c15ca763990a8caa2c17966e1ec8a1abda3",
+        "after_sha256": "79c079f278ff87b06933f561ef53aeabb8ba11b346f67f318daaf612461cf9ec"
+      },
+      "sw-release-core-v403.js": {
+        "before_sha256": "a78c3dbfcc51b4437fd73bf8afce74b179ad2990172fc1ee3f6b6c8df8818f86",
+        "after_sha256": "5eaa7fc9195d314c4e1561386a26843ca19f5cc4400a75d6ce0b466e5d5b7e00"
+      }
+    },
+    "new_ui_files": {
+      "js/nh7-user-context-wave6.js": "9369452b88ee1c443254cd4cab2497ec9fc1d56c872544a13b9c057f31d93787",
+      "css/nh7-user-app-wave6.css": "8274276cf2cf2344009c486dc1b1f7e065bd1b3a87e2ce59dcf3ffc4d15a1156"
+    },
+    "patch_sha256": "001b1d86960fd9d343596376400f4510ed65bfb1b4b1550806c1d5a87529de2e"
+  },
+  "before": {
+    "base": "http://127.0.0.1:8886",
+    "source_hashes": {
+      "js/app.js": "817c7e3fe81afc01352bc812c77caeabc43d925b5bc2b7c305e09f57cc8f6f18",
+      "js/nh7-global-search-direct-v562.js": "e8e8b4974f8d5f4534fa90148da1b83ba6497ec5da8920088bed4d84dcd93c79",
+      "js/nh7-profile-photo-v564.js": "b6fd70dd74a8bf0ae8b0f5c5db8376d5e1e7dcf10807e4ae517e56a15d86a131"
+    },
+    "clock": "real wall-clock, no Date/timer freezing",
+    "steps": [
+      {
+        "name": "signed_in_startup",
+        "wall_ms": 12047,
+        "requests": 18,
+        "asset_requests": 133,
+        "metrics": {
+          "timers": {
+            "nh7-sermon-catalog-hotfix-v424.js": 2,
+            "nh7-auto-update-v335.js": 2,
+            "nh7-notifications-zagreb-v334.js": 39,
+            "nh7-note-text-v501.js": 10,
+            "nh7-registration-final-guard-v401.js": 11,
+            "nh7-registration-canonical-v353.js": 12,
+            "nh7-offline-playback-bridge-v332.js": 1,
+            "nh7-audio-library-v500.js": 1,
+            "nh7-finalqa-v558.js": 2,
+            "nh7-registration-repeat-guard-v402.js": 4,
+            "nh7-student-identity-v127.js": 7,
+            "nh7-audio-miniplayer-v487.js": 1,
+            "nh7-audio-classic-v484.js": 5,
+            "nh7-apocrypha-reader-flow-v244.js": 22,
+            "nh7-school-media-session-v262.js": 1,
+            "nh7-protected-audio-gate-v316.js": 2,
+            "nh7-inbox-badge-sync-v418.js": 6,
+            "nh7-delete-account-v253.js": 1,
+            "nh7-ui-stability-v329.js": 1,
+            "nh7-settings-account-v252.js": 4,
+            "nh7-reader-ux-v251.js": 5,
+            "nh7-my-notes-v234.js": 5,
+            "nh7-celebrations-v464.js": 4,
+            "nh7-secure-media-v270.js": 6,
+            "nh7-school-exam-v344.js": 3,
+            "nh7-apocrypha-inline-v392.js": 4,
+            "nh7-saved-verses-chapter-v252.js": 3,
+            "nh7-apocrypha-actions-v393.js": 4,
+            "nh7-school-path-v351.js": 2,
+            "nh7-sermon-list-detail-v445.js": 2,
+            "nh7-my-notes-categories-v452.js": 2,
+            "nh7-sermon-social-v443.js": 2,
+            "nh7-apocrypha-saved-nav-v394.js": 30,
+            "nh7-offline-persistence-v323.js": 2,
+            "nh7-book-reader-v283.js": 3,
+            "nh7-library-collections-v322.js": 2,
+            "nh7-app-enhancements-v230.js": 1,
+            "nh7-media-player-v500.js": 2,
+            "nh7-performance-wave1.js": 1
+          },
+          "queries": 2829,
+          "observer_callbacks": 1906,
+          "observer_registrations": 58,
+          "listeners": 320,
+          "local_writes": 30,
+          "session_writes": 3
+        }
+      },
+      {
+        "name": "visible_idle_60s",
+        "wall_ms": 60026,
+        "requests": 0,
+        "asset_requests": 27,
+        "cloud_writes": 0,
+        "request_details": [],
+        "metrics": {
+          "timers": {
+            "nh7-registration-final-guard-v401.js": 50,
+            "nh7-registration-canonical-v353.js": 33,
+            "nh7-registration-repeat-guard-v402.js": 12,
+            "nh7-celebrations-v464.js": 1,
+            "nh7-secure-media-v270.js": 34,
+            "nh7-book-reader-v283.js": 15,
+            "nh7-media-player-v500.js": 12,
+            "nh7-performance-wave1.js": 9,
+            "nh7-offline-data-v422.js": 2,
+            "nh7-appearance-personalization-v514.js": 1,
+            "nh7-offline-core-v327.js": 3
+          },
+          "queries": 237,
+          "observer_callbacks": 0,
+          "observer_registrations": 0,
+          "listeners": 0,
+          "local_writes": 2,
+          "session_writes": 0
+        }
+      },
+      {
+        "name": "hidden_idle_60s",
+        "wall_ms": 60080,
+        "requests": 0,
+        "asset_requests": 0,
+        "cloud_writes": 0,
+        "request_details": [],
+        "metrics": {
+          "timers": {
+            "nh7-registration-final-guard-v401.js": 50,
+            "nh7-registration-canonical-v353.js": 33,
+            "nh7-registration-repeat-guard-v402.js": 12,
+            "nh7-secure-media-v270.js": 33,
+            "nh7-school-path-v351.js": 1,
+            "nh7-book-reader-v283.js": 15,
+            "nh7-appearance-personalization-v514.js": 1,
+            "nh7-offline-core-v327.js": 1
+          },
+          "queries": 227,
+          "observer_callbacks": 0,
+          "observer_registrations": 0,
+          "listeners": 0,
+          "local_writes": 1,
+          "session_writes": 0
+        }
+      },
+      {
+        "name": "global_search_typing_results",
+        "wall_ms": 2573,
+        "requests": 0,
+        "asset_requests": 3,
+        "cloud_writes": 0,
+        "request_details": [],
+        "metrics": {
+          "timers": {
+            "nh7-registration-final-guard-v401.js": 2,
+            "nh7-registration-canonical-v353.js": 6,
+            "nh7-registration-repeat-guard-v402.js": 3,
+            "nh7-student-identity-v127.js": 3,
+            "nh7-audio-classic-v484.js": 3,
+            "nh7-apocrypha-reader-flow-v244.js": 2,
+            "nh7-inbox-badge-sync-v418.js": 3,
+            "nh7-settings-account-v252.js": 3,
+            "nh7-reader-ux-v251.js": 3,
+            "nh7-my-notes-v234.js": 3,
+            "nh7-secure-media-v270.js": 2,
+            "nh7-school-exam-v344.js": 2,
+            "nh7-apocrypha-inline-v392.js": 3,
+            "nh7-saved-verses-chapter-v252.js": 3,
+            "nh7-apocrypha-actions-v393.js": 3,
+            "nh7-school-path-v351.js": 2,
+            "nh7-sermon-list-detail-v445.js": 3,
+            "nh7-my-notes-categories-v452.js": 3,
+            "nh7-sermon-social-v443.js": 3,
+            "nh7-offline-persistence-v323.js": 3,
+            "nh7-book-reader-v283.js": 1,
+            "nh7-library-collections-v322.js": 3,
+            "nh7-global-search-direct-v562.js": 26
+          },
+          "queries": 355,
+          "observer_callbacks": 102,
+          "observer_registrations": 0,
+          "listeners": 0,
+          "local_writes": 1,
+          "session_writes": 0
+        }
+      },
+      {
+        "name": "notes_open_edit_delete",
+        "wall_ms": 1126,
+        "requests": 2,
+        "asset_requests": 4,
+        "cloud_writes": 0,
+        "request_details": [
+          {
+            "name": "school_certificates",
+            "method": "GET",
+            "body": {},
+            "uid": "00000000-0000-4000-8000-000000000061"
+          },
+          {
+            "name": "nh7_my_student_identity_v127",
+            "method": "POST",
+            "body": {},
+            "uid": "00000000-0000-4000-8000-000000000061"
+          }
+        ],
+        "metrics": {
+          "timers": {
+            "nh7-sermon-catalog-hotfix-v424.js": 1,
+            "nh7-note-text-v501.js": 1,
+            "nh7-registration-final-guard-v401.js": 1,
+            "nh7-registration-canonical-v353.js": 7,
+            "nh7-registration-repeat-guard-v402.js": 2,
+            "nh7-student-identity-v127.js": 5,
+            "nh7-audio-classic-v484.js": 3,
+            "nh7-apocrypha-reader-flow-v244.js": 15,
+            "nh7-inbox-badge-sync-v418.js": 6,
+            "nh7-settings-account-v252.js": 7,
+            "nh7-reader-ux-v251.js": 6,
+            "nh7-my-notes-v234.js": 3,
+            "nh7-celebrations-v464.js": 3,
+            "nh7-school-exam-v344.js": 2,
+            "nh7-apocrypha-inline-v392.js": 8,
+            "nh7-saved-verses-chapter-v252.js": 8,
+            "nh7-apocrypha-actions-v393.js": 3,
+            "nh7-school-path-v351.js": 2,
+            "nh7-sermon-list-detail-v445.js": 2,
+            "nh7-my-notes-categories-v452.js": 2,
+            "nh7-sermon-social-v443.js": 2,
+            "nh7-offline-persistence-v323.js": 2,
+            "nh7-library-collections-v322.js": 2,
+            "app.js": 2
+          },
+          "queries": 5528,
+          "observer_callbacks": 773,
+          "observer_registrations": 0,
+          "listeners": 79,
+          "local_writes": 27,
+          "session_writes": 0
+        }
+      },
+      {
+        "name": "theme_switch",
+        "wall_ms": 525,
+        "requests": 6,
+        "asset_requests": 0,
+        "cloud_writes": 4,
+        "request_details": [
+          {
+            "name": "user_progress",
+            "method": "POST",
+            "body": {
+              "device_id": "dev_52b0ff71-dfb9-4316-b579-6e104dfcb798",
+              "progress_key": "nh7_bible_state_JHN_3_16",
+              "value": {
+                "note": ""
+              },
+              "language": "en",
+              "updated_at": "2026-10-14T19:27:44.475Z"
+            },
+            "uid": "00000000-0000-4000-8000-000000000061"
+          },
+          {
+            "name": "nh7_account_progress",
+            "method": "POST",
+            "body": {
+              "user_email": "a@example.invalid",
+              "progress_key": "nh7_bible_state_JHN_3_16",
+              "value": {
+                "note": ""
+              },
+              "language": "en",
+              "updated_at": "2026-10-14T19:27:44.475Z"
+            },
+            "uid": "00000000-0000-4000-8000-000000000061"
+          },
+          {
+            "name": "nh7_account_progress",
+            "method": "GET",
+            "body": {},
+            "uid": "00000000-0000-4000-8000-000000000061"
+          },
+          {
+            "name": "nh7_account_progress",
+            "method": "POST",
+            "body": {
+              "user_email": "a@example.invalid",
+              "progress_key": "nh7_bible_state_JHN_3_16",
+              "value": {
+                "note": ""
+              },
+              "language": "en",
+              "updated_at": "2026-10-14T19:27:44.475Z"
+            },
+            "uid": "00000000-0000-4000-8000-000000000061"
+          },
+          {
+            "name": "nh7_account_verse_marks_v230",
+            "method": "GET",
+            "body": {},
+            "uid": "00000000-0000-4000-8000-000000000061"
+          },
+          {
+            "name": "nh7-content-access",
+            "method": "POST",
+            "body": {
+              "action": "save_bible_batch",
+              "batch_id": "46598bc6-3a95-4dbf-bf5c-56af5f8e34b3",
+              "language": "en",
+              "items": [
+                {
+                  "verse_key": "nh7_bible_state_JHN_3_16",
+                  "verse_ref": "John 3:16",
+                  "verse_text": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+                  "saved": false,
+                  "highlight_color": "",
+                  "note": ""
+                }
+              ]
+            },
+            "uid": "00000000-0000-4000-8000-000000000061"
+          }
+        ],
+        "metrics": {
+          "timers": {
+            "nh7-registration-canonical-v353.js": 1,
+            "nh7-registration-repeat-guard-v402.js": 1,
+            "nh7-my-notes-v234.js": 2,
+            "nh7-secure-media-v270.js": 1,
+            "nh7-local-first-wave2.js": 1
+          },
+          "queries": 7,
+          "observer_callbacks": 1,
+          "observer_registrations": 0,
+          "listeners": 0,
+          "local_writes": 7,
+          "session_writes": 0
+        }
+      },
+      {
+        "name": "profile_open_photo_restore",
+        "wall_ms": 608,
+        "requests": 1,
+        "asset_requests": 1,
+        "cloud_writes": 0,
+        "request_details": [
+          {
+            "name": "school_certificates",
+            "method": "GET",
+            "body": {},
+            "uid": "00000000-0000-4000-8000-000000000061"
+          }
+        ],
+        "metrics": {
+          "timers": {
+            "nh7-registration-final-guard-v401.js": 1,
+            "nh7-registration-canonical-v353.js": 3,
+            "nh7-registration-repeat-guard-v402.js": 1,
+            "nh7-student-identity-v127.js": 2,
+            "nh7-audio-classic-v484.js": 2,
+            "nh7-apocrypha-reader-flow-v244.js": 11,
+            "nh7-inbox-badge-sync-v418.js": 3,
+            "nh7-settings-account-v252.js": 3,
+            "nh7-reader-ux-v251.js": 3,
+            "nh7-my-notes-v234.js": 2,
+            "nh7-celebrations-v464.js": 1,
+            "nh7-school-exam-v344.js": 1,
+            "nh7-apocrypha-inline-v392.js": 3,
+            "nh7-saved-verses-chapter-v252.js": 3,
+            "nh7-apocrypha-actions-v393.js": 3,
+            "nh7-school-path-v351.js": 1,
+            "nh7-sermon-list-detail-v445.js": 1,
+            "nh7-my-notes-categories-v452.js": 1,
+            "nh7-sermon-social-v443.js": 1,
+            "nh7-offline-persistence-v323.js": 1,
+            "nh7-library-collections-v322.js": 1
+          },
+          "queries": 905,
+          "observer_callbacks": 540,
+          "observer_registrations": 0,
+          "listeners": 14,
+          "local_writes": 1,
+          "session_writes": 0
+        }
+      },
+      {
+        "name": "library_open_reopen_freshness",
+        "wall_ms": 646,
+        "requests": 2,
+        "asset_requests": 3,
+        "cloud_writes": 0,
+        "request_details": [
+          {
+            "name": "nh7_library_catalog_v396",
+            "method": "POST",
+            "body": {},
+            "uid": "00000000-0000-4000-8000-000000000061"
+          },
+          {
+            "name": "nh7_library_catalog_v396",
+            "method": "POST",
+            "body": {},
+            "uid": "00000000-0000-4000-8000-000000000061"
+          }
+        ],
+        "metrics": {
+          "timers": {
+            "nh7-registration-canonical-v353.js": 3,
+            "nh7-registration-repeat-guard-v402.js": 1,
+            "nh7-student-identity-v127.js": 3,
+            "nh7-audio-classic-v484.js": 3,
+            "nh7-apocrypha-reader-flow-v244.js": 13,
+            "nh7-inbox-badge-sync-v418.js": 3,
+            "nh7-settings-account-v252.js": 3,
+            "nh7-reader-ux-v251.js": 3,
+            "nh7-my-notes-v234.js": 3,
+            "nh7-celebrations-v464.js": 1,
+            "nh7-school-exam-v344.js": 2,
+            "nh7-apocrypha-inline-v392.js": 3,
+            "nh7-saved-verses-chapter-v252.js": 3,
+            "nh7-apocrypha-actions-v393.js": 3,
+            "nh7-school-path-v351.js": 2,
+            "nh7-sermon-list-detail-v445.js": 2,
+            "nh7-my-notes-categories-v452.js": 2,
+            "nh7-sermon-social-v443.js": 2,
+            "nh7-offline-persistence-v323.js": 2,
+            "nh7-book-reader-v283.js": 1,
+            "nh7-library-collections-v322.js": 2,
+            "nh7-media-player-v500.js": 1
+          },
+          "queries": 1134,
+          "observer_callbacks": 646,
+          "observer_registrations": 0,
+          "listeners": 7,
+          "local_writes": 4,
+          "session_writes": 4
+        }
+      },
+      {
+        "name": "calendar_destination_observation",
+        "route": "home"
+      },
+      {
+        "name": "calendar_bible_handoff",
+        "wall_ms": 998,
+        "requests": 0,
+        "asset_requests": 1,
+        "cloud_writes": 0,
+        "request_details": [],
+        "metrics": {
+          "timers": {
+            "nh7-sermon-catalog-hotfix-v424.js": 3,
+            "nh7-registration-final-guard-v401.js": 1,
+            "nh7-registration-canonical-v353.js": 6,
+            "nh7-registration-repeat-guard-v402.js": 1,
+            "nh7-student-identity-v127.js": 3,
+            "nh7-audio-classic-v484.js": 5,
+            "nh7-apocrypha-reader-flow-v244.js": 6,
+            "nh7-inbox-badge-sync-v418.js": 2,
+            "nh7-settings-account-v252.js": 5,
+            "nh7-reader-ux-v251.js": 5,
+            "nh7-my-notes-v234.js": 5,
+            "nh7-celebrations-v464.js": 3,
+            "nh7-secure-media-v270.js": 1,
+            "nh7-school-exam-v344.js": 1,
+            "nh7-apocrypha-inline-v392.js": 5,
+            "nh7-saved-verses-chapter-v252.js": 5,
+            "nh7-apocrypha-actions-v393.js": 5,
+            "nh7-school-path-v351.js": 1,
+            "nh7-sermon-list-detail-v445.js": 2,
+            "nh7-my-notes-categories-v452.js": 2,
+            "nh7-sermon-social-v443.js": 2,
+            "nh7-offline-persistence-v323.js": 1,
+            "nh7-library-collections-v322.js": 1
+          },
+          "queries": 494,
+          "observer_callbacks": 207,
+          "observer_registrations": 0,
+          "listeners": 2,
+          "local_writes": 0,
+          "session_writes": 0
+        }
+      },
+      {
+        "name": "audio_miniplayer_navigation",
+        "wall_ms": 673,
+        "requests": 2,
+        "asset_requests": 3,
+        "cloud_writes": 0,
+        "request_details": [
+          {
+            "name": "nh7-school-media-access",
+            "method": "POST",
+            "body": {
+              "device_id": "dev_52b0ff71-dfb9-4316-b579-6e104dfcb798",
+              "kind": "sermon",
+              "sermon_id": "12345678-1234-4234-8234-123456789abc"
+            },
+            "uid": "00000000-0000-4000-8000-000000000061"
+          },
+          {
+            "name": "school_certificates",
+            "method": "GET",
+            "body": {},
+            "uid": "00000000-0000-4000-8000-000000000061"
+          }
+        ],
+        "metrics": {
+          "timers": {
+            "nh7-registration-final-guard-v401.js": 1,
+            "nh7-registration-canonical-v353.js": 2,
+            "nh7-registration-repeat-guard-v402.js": 1,
+            "nh7-student-identity-v127.js": 3,
+            "nh7-audio-classic-v484.js": 2,
+            "nh7-apocrypha-reader-flow-v244.js": 14,
+            "nh7-inbox-badge-sync-v418.js": 3,
+            "nh7-settings-account-v252.js": 2,
+            "nh7-reader-ux-v251.js": 2,
+            "nh7-my-notes-v234.js": 2,
+            "nh7-celebrations-v464.js": 1,
+            "nh7-school-exam-v344.js": 2,
+            "nh7-apocrypha-inline-v392.js": 3,
+            "nh7-saved-verses-chapter-v252.js": 2,
+            "nh7-apocrypha-actions-v393.js": 2,
+            "nh7-school-path-v351.js": 1,
+            "nh7-sermon-list-detail-v445.js": 1,
+            "nh7-my-notes-categories-v452.js": 1,
+            "nh7-sermon-social-v443.js": 1,
+            "nh7-offline-persistence-v323.js": 1,
+            "nh7-library-collections-v322.js": 1
+          },
+          "queries": 1127,
+          "observer_callbacks": 644,
+          "observer_registrations": 0,
+          "listeners": 23,
+          "local_writes": 12,
+          "session_writes": 0
+        }
+      }
+    ],
+    "remote_requests": 33,
+    "remote_writes_or_rpcs": 17,
+    "requests": [
+      {
+        "name": "css2",
+        "method": "GET",
+        "body": {},
+        "uid": ""
+      },
+      {
+        "name": "css2",
+        "method": "GET",
+        "body": {},
+        "uid": ""
+      },
+      {
+        "name": "css2",
+        "method": "GET",
+        "body": {},
+        "uid": ""
+      },
+      {
+        "name": "css2",
+        "method": "GET",
+        "body": {},
+        "uid": ""
+      },
+      {
+        "name": "OneSignalSDK.page.js",
+        "method": "GET",
+        "body": {},
+        "uid": ""
+      },
+      {
+        "name": "mammoth.browser.min.js",
+        "method": "GET",
+        "body": {},
+        "uid": ""
+      },
+      {
+        "name": "nh7_admin_my_access_v350",
+        "method": "POST",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_notes",
+        "method": "GET",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_progress",
+        "method": "GET",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_saved_verses",
+        "method": "GET",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_verse_marks_v230",
+        "method": "GET",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_get_my_school_snapshot_v2110",
+        "method": "POST",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_inbox_snapshot_v419",
+        "method": "POST",
+        "body": {
+          "p_language": "en",
+          "p_message_limit": 200,
+          "p_receipt_limit": 500
+        },
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "user_progress",
+        "method": "POST",
+        "body": {
+          "device_id": "dev_52b0ff71-dfb9-4316-b579-6e104dfcb798",
+          "progress_key": "nh7_first_use_date",
+          "value": {
+            "__raw": "2026-10-14"
+          },
+          "language": "en",
+          "updated_at": "2026-10-14T19:25:30.644Z"
+        },
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_progress",
+        "method": "POST",
+        "body": {
+          "user_email": "a@example.invalid",
+          "progress_key": "nh7_first_use_date",
+          "value": {
+            "__raw": "2026-10-14"
+          },
+          "language": "en",
+          "updated_at": "2026-10-14T19:25:30.644Z"
+        },
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_progress",
+        "method": "GET",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_progress",
+        "method": "POST",
+        "body": {
+          "user_email": "a@example.invalid",
+          "progress_key": "nh7_first_use_date",
+          "value": {
+            "__raw": "2026-10-14"
+          },
+          "language": "en",
+          "updated_at": "2026-10-14T19:25:30.644Z"
+        },
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_library_catalog_v396",
+        "method": "POST",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_admin_my_access_v350",
+        "method": "POST",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_inbox_snapshot_v419",
+        "method": "POST",
+        "body": {
+          "p_language": "en",
+          "p_message_limit": 200,
+          "p_receipt_limit": 500
+        },
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "school_certificates",
+        "method": "GET",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_my_student_identity_v127",
+        "method": "POST",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "user_progress",
+        "method": "POST",
+        "body": {
+          "device_id": "dev_52b0ff71-dfb9-4316-b579-6e104dfcb798",
+          "progress_key": "nh7_bible_state_JHN_3_16",
+          "value": {
+            "note": ""
+          },
+          "language": "en",
+          "updated_at": "2026-10-14T19:27:44.475Z"
+        },
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_progress",
+        "method": "POST",
+        "body": {
+          "user_email": "a@example.invalid",
+          "progress_key": "nh7_bible_state_JHN_3_16",
+          "value": {
+            "note": ""
+          },
+          "language": "en",
+          "updated_at": "2026-10-14T19:27:44.475Z"
+        },
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_progress",
+        "method": "GET",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_progress",
+        "method": "POST",
+        "body": {
+          "user_email": "a@example.invalid",
+          "progress_key": "nh7_bible_state_JHN_3_16",
+          "value": {
+            "note": ""
+          },
+          "language": "en",
+          "updated_at": "2026-10-14T19:27:44.475Z"
+        },
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_verse_marks_v230",
+        "method": "GET",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7-content-access",
+        "method": "POST",
+        "body": {
+          "action": "save_bible_batch",
+          "batch_id": "46598bc6-3a95-4dbf-bf5c-56af5f8e34b3",
+          "language": "en",
+          "items": [
+            {
+              "verse_key": "nh7_bible_state_JHN_3_16",
+              "verse_ref": "John 3:16",
+              "verse_text": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+              "saved": false,
+              "highlight_color": "",
+              "note": ""
+            }
+          ]
+        },
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "school_certificates",
+        "method": "GET",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_library_catalog_v396",
+        "method": "POST",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_library_catalog_v396",
+        "method": "POST",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7-school-media-access",
+        "method": "POST",
+        "body": {
+          "device_id": "dev_52b0ff71-dfb9-4316-b579-6e104dfcb798",
+          "kind": "sermon",
+          "sermon_id": "12345678-1234-4234-8234-123456789abc"
+        },
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "school_certificates",
+        "method": "GET",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      }
+    ],
+    "asset_requests": 175,
+    "limitations": "Synthetic intercepted backend; media event simulator; hidden property simulation, not native suspension/energy/provider/RLS acceptance. RPC POSTs are reads unless action/table indicates write; raw details retained. Harness counters include their own queries."
+  },
+  "after": {
+    "base": "http://127.0.0.1:8878",
+    "source_hashes": {
+      "js/app.js": "8eeb686a1ec666629c688f567983c62880110a35fb034d4eed27b0c360a60380",
+      "js/nh7-global-search-direct-v562.js": "feed6fb1c7c6424b924f695942b8ac50fa2fa2f0407205191104ae7194eafa38",
+      "js/nh7-profile-photo-v564.js": "8933c688d61433bbeeac84c1bf30e9b743438865a9bc0a3c11daa0041f50c05f",
+      "js/nh7-user-context-wave6.js": "9369452b88ee1c443254cd4cab2497ec9fc1d56c872544a13b9c057f31d93787"
+    },
+    "clock": "real wall-clock, no Date/timer freezing",
+    "steps": [
+      {
+        "name": "signed_in_startup",
+        "wall_ms": 11468,
+        "requests": 18,
+        "asset_requests": 135,
+        "metrics": {
+          "timers": {
+            "nh7-sermon-catalog-hotfix-v424.js": 2,
+            "nh7-registration-canonical-v353.js": 11,
+            "nh7-audio-classic-v484.js": 5,
+            "nh7-registration-final-guard-v401.js": 10,
+            "nh7-offline-playback-bridge-v332.js": 1,
+            "nh7-audio-library-v500.js": 1,
+            "nh7-auto-update-v335.js": 2,
+            "nh7-notifications-zagreb-v334.js": 39,
+            "nh7-finalqa-v558.js": 2,
+            "nh7-registration-repeat-guard-v402.js": 4,
+            "nh7-student-identity-v127.js": 6,
+            "nh7-audio-miniplayer-v487.js": 1,
+            "nh7-apocrypha-reader-flow-v244.js": 21,
+            "nh7-school-media-session-v262.js": 1,
+            "nh7-protected-audio-gate-v316.js": 2,
+            "nh7-inbox-badge-sync-v418.js": 5,
+            "nh7-delete-account-v253.js": 1,
+            "nh7-ui-stability-v329.js": 1,
+            "nh7-school-exam-v344.js": 2,
+            "nh7-celebrations-v464.js": 4,
+            "nh7-school-path-v351.js": 2,
+            "nh7-secure-media-v270.js": 6,
+            "nh7-apocrypha-inline-v392.js": 4,
+            "nh7-saved-verses-chapter-v252.js": 3,
+            "nh7-settings-account-v252.js": 3,
+            "nh7-reader-ux-v251.js": 4,
+            "nh7-apocrypha-actions-v393.js": 4,
+            "nh7-my-notes-v234.js": 3,
+            "nh7-apocrypha-saved-nav-v394.js": 30,
+            "nh7-sermon-list-detail-v445.js": 1,
+            "nh7-my-notes-categories-v452.js": 1,
+            "nh7-sermon-social-v443.js": 1,
+            "nh7-offline-persistence-v323.js": 2,
+            "nh7-library-collections-v322.js": 3,
+            "nh7-book-reader-v283.js": 3,
+            "nh7-app-enhancements-v230.js": 1,
+            "nh7-media-player-v500.js": 2,
+            "nh7-performance-wave1.js": 1
+          },
+          "queries": 2653,
+          "observer_callbacks": 1854,
+          "observer_registrations": 58,
+          "listeners": 339,
+          "local_writes": 30,
+          "session_writes": 3
+        }
+      },
+      {
+        "name": "visible_idle_60s",
+        "wall_ms": 60018,
+        "requests": 0,
+        "asset_requests": 27,
+        "cloud_writes": 0,
+        "request_details": [],
+        "metrics": {
+          "timers": {
+            "nh7-registration-canonical-v353.js": 34,
+            "nh7-registration-final-guard-v401.js": 50,
+            "nh7-registration-repeat-guard-v402.js": 12,
+            "nh7-celebrations-v464.js": 1,
+            "nh7-secure-media-v270.js": 34,
+            "nh7-book-reader-v283.js": 15,
+            "nh7-media-player-v500.js": 12,
+            "nh7-performance-wave1.js": 9,
+            "nh7-offline-data-v422.js": 2,
+            "nh7-appearance-personalization-v514.js": 1,
+            "nh7-offline-core-v327.js": 3
+          },
+          "queries": 238,
+          "observer_callbacks": 0,
+          "observer_registrations": 0,
+          "listeners": 0,
+          "local_writes": 2,
+          "session_writes": 0
+        }
+      },
+      {
+        "name": "hidden_idle_60s",
+        "wall_ms": 60020,
+        "requests": 0,
+        "asset_requests": 0,
+        "cloud_writes": 0,
+        "request_details": [],
+        "metrics": {
+          "timers": {
+            "nh7-registration-canonical-v353.js": 33,
+            "nh7-registration-final-guard-v401.js": 50,
+            "nh7-registration-repeat-guard-v402.js": 12,
+            "nh7-school-path-v351.js": 1,
+            "nh7-secure-media-v270.js": 33,
+            "nh7-book-reader-v283.js": 15,
+            "nh7-appearance-personalization-v514.js": 1,
+            "nh7-offline-core-v327.js": 1
+          },
+          "queries": 227,
+          "observer_callbacks": 0,
+          "observer_registrations": 0,
+          "listeners": 0,
+          "local_writes": 1,
+          "session_writes": 0
+        }
+      },
+      {
+        "name": "global_search_typing_results",
+        "wall_ms": 2541,
+        "requests": 2,
+        "asset_requests": 5,
+        "cloud_writes": 0,
+        "request_details": [
+          {
+            "name": "nh7_admin_my_access_v350",
+            "method": "POST",
+            "body": {},
+            "uid": "00000000-0000-4000-8000-000000000061"
+          },
+          {
+            "name": "nh7_inbox_snapshot_v419",
+            "method": "POST",
+            "body": {
+              "p_language": "en",
+              "p_message_limit": 200,
+              "p_receipt_limit": 500
+            },
+            "uid": "00000000-0000-4000-8000-000000000061"
+          }
+        ],
+        "metrics": {
+          "timers": {
+            "nh7-registration-canonical-v353.js": 6,
+            "nh7-audio-classic-v484.js": 3,
+            "nh7-registration-final-guard-v401.js": 3,
+            "nh7-registration-repeat-guard-v402.js": 3,
+            "nh7-student-identity-v127.js": 3,
+            "nh7-apocrypha-reader-flow-v244.js": 2,
+            "nh7-inbox-badge-sync-v418.js": 3,
+            "nh7-school-exam-v344.js": 2,
+            "nh7-school-path-v351.js": 2,
+            "nh7-secure-media-v270.js": 1,
+            "nh7-apocrypha-inline-v392.js": 3,
+            "nh7-saved-verses-chapter-v252.js": 3,
+            "nh7-settings-account-v252.js": 3,
+            "nh7-reader-ux-v251.js": 3,
+            "nh7-apocrypha-actions-v393.js": 3,
+            "nh7-my-notes-v234.js": 3,
+            "nh7-sermon-list-detail-v445.js": 3,
+            "nh7-my-notes-categories-v452.js": 3,
+            "nh7-sermon-social-v443.js": 3,
+            "nh7-offline-persistence-v323.js": 3,
+            "nh7-library-collections-v322.js": 3,
+            "nh7-book-reader-v283.js": 1,
+            "nh7-global-search-direct-v562.js": 26
+          },
+          "queries": 360,
+          "observer_callbacks": 102,
+          "observer_registrations": 0,
+          "listeners": 0,
+          "local_writes": 1,
+          "session_writes": 0
+        }
+      },
+      {
+        "name": "notes_open_edit_delete",
+        "wall_ms": 807,
+        "requests": 2,
+        "asset_requests": 2,
+        "cloud_writes": 0,
+        "request_details": [
+          {
+            "name": "school_certificates",
+            "method": "GET",
+            "body": {},
+            "uid": "00000000-0000-4000-8000-000000000061"
+          },
+          {
+            "name": "nh7_my_student_identity_v127",
+            "method": "POST",
+            "body": {},
+            "uid": "00000000-0000-4000-8000-000000000061"
+          }
+        ],
+        "metrics": {
+          "timers": {
+            "nh7-sermon-catalog-hotfix-v424.js": 1,
+            "nh7-registration-canonical-v353.js": 5,
+            "nh7-audio-classic-v484.js": 2,
+            "nh7-registration-repeat-guard-v402.js": 1,
+            "nh7-student-identity-v127.js": 4,
+            "nh7-apocrypha-reader-flow-v244.js": 16,
+            "nh7-inbox-badge-sync-v418.js": 4,
+            "nh7-school-exam-v344.js": 1,
+            "nh7-celebrations-v464.js": 2,
+            "nh7-school-path-v351.js": 1,
+            "nh7-secure-media-v270.js": 1,
+            "nh7-apocrypha-inline-v392.js": 8,
+            "nh7-saved-verses-chapter-v252.js": 6,
+            "nh7-settings-account-v252.js": 5,
+            "nh7-reader-ux-v251.js": 4,
+            "nh7-apocrypha-actions-v393.js": 1,
+            "nh7-my-notes-v234.js": 2,
+            "nh7-sermon-list-detail-v445.js": 1,
+            "nh7-my-notes-categories-v452.js": 1,
+            "nh7-sermon-social-v443.js": 1,
+            "nh7-offline-persistence-v323.js": 1,
+            "nh7-library-collections-v322.js": 1,
+            "app.js": 2,
+            "nh7-note-text-v501.js": 1
+          },
+          "queries": 6135,
+          "observer_callbacks": 828,
+          "observer_registrations": 0,
+          "listeners": 79,
+          "local_writes": 27,
+          "session_writes": 0
+        }
+      },
+      {
+        "name": "theme_switch",
+        "wall_ms": 514,
+        "requests": 6,
+        "asset_requests": 0,
+        "cloud_writes": 4,
+        "request_details": [
+          {
+            "name": "user_progress",
+            "method": "POST",
+            "body": {
+              "device_id": "dev_5a9e7bec-aced-4016-8e4a-aacdf6a56f35",
+              "progress_key": "nh7_bible_state_JHN_3_16",
+              "value": {
+                "note": ""
+              },
+              "language": "en",
+              "updated_at": "2026-10-14T19:30:04.919Z"
+            },
+            "uid": "00000000-0000-4000-8000-000000000061"
+          },
+          {
+            "name": "nh7_account_progress",
+            "method": "POST",
+            "body": {
+              "user_email": "a@example.invalid",
+              "progress_key": "nh7_bible_state_JHN_3_16",
+              "value": {
+                "note": ""
+              },
+              "language": "en",
+              "updated_at": "2026-10-14T19:30:04.919Z"
+            },
+            "uid": "00000000-0000-4000-8000-000000000061"
+          },
+          {
+            "name": "nh7_account_progress",
+            "method": "GET",
+            "body": {},
+            "uid": "00000000-0000-4000-8000-000000000061"
+          },
+          {
+            "name": "nh7_account_progress",
+            "method": "POST",
+            "body": {
+              "user_email": "a@example.invalid",
+              "progress_key": "nh7_bible_state_JHN_3_16",
+              "value": {
+                "note": ""
+              },
+              "language": "en",
+              "updated_at": "2026-10-14T19:30:04.919Z"
+            },
+            "uid": "00000000-0000-4000-8000-000000000061"
+          },
+          {
+            "name": "nh7_account_verse_marks_v230",
+            "method": "GET",
+            "body": {},
+            "uid": "00000000-0000-4000-8000-000000000061"
+          },
+          {
+            "name": "nh7-content-access",
+            "method": "POST",
+            "body": {
+              "action": "save_bible_batch",
+              "batch_id": "1e062725-44bc-489d-895f-b9e11d72757c",
+              "language": "en",
+              "items": [
+                {
+                  "verse_key": "nh7_bible_state_JHN_3_16",
+                  "verse_ref": "John 3:16",
+                  "verse_text": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+                  "saved": false,
+                  "highlight_color": "",
+                  "note": ""
+                }
+              ]
+            },
+            "uid": "00000000-0000-4000-8000-000000000061"
+          }
+        ],
+        "metrics": {
+          "timers": {
+            "nh7-registration-final-guard-v401.js": 1,
+            "nh7-my-notes-v234.js": 1,
+            "nh7-local-first-wave2.js": 1
+          },
+          "queries": 3,
+          "observer_callbacks": 1,
+          "observer_registrations": 0,
+          "listeners": 0,
+          "local_writes": 7,
+          "session_writes": 0
+        }
+      },
+      {
+        "name": "profile_open_photo_restore",
+        "wall_ms": 636,
+        "requests": 1,
+        "asset_requests": 1,
+        "cloud_writes": 0,
+        "request_details": [
+          {
+            "name": "school_certificates",
+            "method": "GET",
+            "body": {},
+            "uid": "00000000-0000-4000-8000-000000000061"
+          }
+        ],
+        "metrics": {
+          "timers": {
+            "nh7-registration-canonical-v353.js": 4,
+            "nh7-audio-classic-v484.js": 2,
+            "nh7-registration-repeat-guard-v402.js": 2,
+            "nh7-student-identity-v127.js": 2,
+            "nh7-apocrypha-reader-flow-v244.js": 11,
+            "nh7-inbox-badge-sync-v418.js": 3,
+            "nh7-school-exam-v344.js": 1,
+            "nh7-celebrations-v464.js": 1,
+            "nh7-school-path-v351.js": 1,
+            "nh7-secure-media-v270.js": 1,
+            "nh7-apocrypha-inline-v392.js": 3,
+            "nh7-saved-verses-chapter-v252.js": 3,
+            "nh7-settings-account-v252.js": 3,
+            "nh7-reader-ux-v251.js": 3,
+            "nh7-apocrypha-actions-v393.js": 3,
+            "nh7-my-notes-v234.js": 2,
+            "nh7-sermon-list-detail-v445.js": 1,
+            "nh7-my-notes-categories-v452.js": 1,
+            "nh7-sermon-social-v443.js": 1,
+            "nh7-offline-persistence-v323.js": 1,
+            "nh7-library-collections-v322.js": 1
+          },
+          "queries": 909,
+          "observer_callbacks": 540,
+          "observer_registrations": 0,
+          "listeners": 14,
+          "local_writes": 1,
+          "session_writes": 0
+        }
+      },
+      {
+        "name": "library_open_reopen_freshness",
+        "wall_ms": 736,
+        "requests": 2,
+        "asset_requests": 3,
+        "cloud_writes": 0,
+        "request_details": [
+          {
+            "name": "nh7_library_catalog_v396",
+            "method": "POST",
+            "body": {},
+            "uid": "00000000-0000-4000-8000-000000000061"
+          },
+          {
+            "name": "nh7_library_catalog_v396",
+            "method": "POST",
+            "body": {},
+            "uid": "00000000-0000-4000-8000-000000000061"
+          }
+        ],
+        "metrics": {
+          "timers": {
+            "nh7-registration-canonical-v353.js": 3,
+            "nh7-audio-classic-v484.js": 3,
+            "nh7-registration-final-guard-v401.js": 1,
+            "nh7-registration-repeat-guard-v402.js": 1,
+            "nh7-student-identity-v127.js": 4,
+            "nh7-apocrypha-reader-flow-v244.js": 13,
+            "nh7-inbox-badge-sync-v418.js": 3,
+            "nh7-school-exam-v344.js": 2,
+            "nh7-celebrations-v464.js": 1,
+            "nh7-school-path-v351.js": 2,
+            "nh7-apocrypha-inline-v392.js": 3,
+            "nh7-saved-verses-chapter-v252.js": 3,
+            "nh7-settings-account-v252.js": 3,
+            "nh7-reader-ux-v251.js": 3,
+            "nh7-apocrypha-actions-v393.js": 3,
+            "nh7-my-notes-v234.js": 3,
+            "nh7-sermon-list-detail-v445.js": 2,
+            "nh7-my-notes-categories-v452.js": 2,
+            "nh7-sermon-social-v443.js": 2,
+            "nh7-offline-persistence-v323.js": 2,
+            "nh7-library-collections-v322.js": 2,
+            "nh7-media-player-v500.js": 1
+          },
+          "queries": 1136,
+          "observer_callbacks": 646,
+          "observer_registrations": 0,
+          "listeners": 7,
+          "local_writes": 4,
+          "session_writes": 4
+        }
+      },
+      {
+        "name": "calendar_destination_observation",
+        "route": "bible"
+      },
+      {
+        "name": "calendar_bible_handoff",
+        "wall_ms": 960,
+        "requests": 0,
+        "asset_requests": 2,
+        "cloud_writes": 0,
+        "request_details": [],
+        "metrics": {
+          "timers": {
+            "nh7-sermon-catalog-hotfix-v424.js": 3,
+            "nh7-registration-canonical-v353.js": 22,
+            "nh7-audio-classic-v484.js": 4,
+            "nh7-registration-final-guard-v401.js": 1,
+            "nh7-student-identity-v127.js": 9,
+            "nh7-apocrypha-reader-flow-v244.js": 29,
+            "nh7-inbox-badge-sync-v418.js": 20,
+            "nh7-school-exam-v344.js": 1,
+            "nh7-celebrations-v464.js": 4,
+            "nh7-school-path-v351.js": 1,
+            "nh7-secure-media-v270.js": 1,
+            "nh7-apocrypha-inline-v392.js": 21,
+            "nh7-saved-verses-chapter-v252.js": 21,
+            "nh7-settings-account-v252.js": 21,
+            "nh7-reader-ux-v251.js": 21,
+            "nh7-apocrypha-actions-v393.js": 3,
+            "nh7-my-notes-v234.js": 3,
+            "nh7-book-reader-v283.js": 1,
+            "app.js": 1
+          },
+          "queries": 15232,
+          "observer_callbacks": 1363,
+          "observer_registrations": 0,
+          "listeners": 108,
+          "local_writes": 0,
+          "session_writes": 0
+        }
+      },
+      {
+        "name": "audio_miniplayer_navigation",
+        "wall_ms": 695,
+        "requests": 2,
+        "asset_requests": 3,
+        "cloud_writes": 0,
+        "request_details": [
+          {
+            "name": "nh7-school-media-access",
+            "method": "POST",
+            "body": {
+              "device_id": "dev_5a9e7bec-aced-4016-8e4a-aacdf6a56f35",
+              "kind": "sermon",
+              "sermon_id": "12345678-1234-4234-8234-123456789abc"
+            },
+            "uid": "00000000-0000-4000-8000-000000000061"
+          },
+          {
+            "name": "school_certificates",
+            "method": "GET",
+            "body": {},
+            "uid": "00000000-0000-4000-8000-000000000061"
+          }
+        ],
+        "metrics": {
+          "timers": {
+            "nh7-registration-canonical-v353.js": 3,
+            "nh7-audio-classic-v484.js": 3,
+            "nh7-registration-repeat-guard-v402.js": 1,
+            "nh7-student-identity-v127.js": 3,
+            "nh7-apocrypha-reader-flow-v244.js": 14,
+            "nh7-inbox-badge-sync-v418.js": 4,
+            "nh7-school-exam-v344.js": 1,
+            "nh7-celebrations-v464.js": 1,
+            "nh7-school-path-v351.js": 1,
+            "nh7-apocrypha-inline-v392.js": 3,
+            "nh7-saved-verses-chapter-v252.js": 3,
+            "nh7-settings-account-v252.js": 3,
+            "nh7-reader-ux-v251.js": 3,
+            "nh7-apocrypha-actions-v393.js": 3,
+            "nh7-my-notes-v234.js": 3,
+            "nh7-sermon-list-detail-v445.js": 1,
+            "nh7-my-notes-categories-v452.js": 1,
+            "nh7-sermon-social-v443.js": 1,
+            "nh7-offline-persistence-v323.js": 1,
+            "nh7-library-collections-v322.js": 1
+          },
+          "queries": 1438,
+          "observer_callbacks": 642,
+          "observer_registrations": 0,
+          "listeners": 23,
+          "local_writes": 12,
+          "session_writes": 0
+        }
+      }
+    ],
+    "remote_requests": 33,
+    "remote_writes_or_rpcs": 17,
+    "requests": [
+      {
+        "name": "css2",
+        "method": "GET",
+        "body": {},
+        "uid": ""
+      },
+      {
+        "name": "css2",
+        "method": "GET",
+        "body": {},
+        "uid": ""
+      },
+      {
+        "name": "css2",
+        "method": "GET",
+        "body": {},
+        "uid": ""
+      },
+      {
+        "name": "css2",
+        "method": "GET",
+        "body": {},
+        "uid": ""
+      },
+      {
+        "name": "OneSignalSDK.page.js",
+        "method": "GET",
+        "body": {},
+        "uid": ""
+      },
+      {
+        "name": "mammoth.browser.min.js",
+        "method": "GET",
+        "body": {},
+        "uid": ""
+      },
+      {
+        "name": "nh7_admin_my_access_v350",
+        "method": "POST",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_notes",
+        "method": "GET",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_progress",
+        "method": "GET",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_saved_verses",
+        "method": "GET",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_verse_marks_v230",
+        "method": "GET",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_get_my_school_snapshot_v2110",
+        "method": "POST",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_inbox_snapshot_v419",
+        "method": "POST",
+        "body": {
+          "p_language": "en",
+          "p_message_limit": 200,
+          "p_receipt_limit": 500
+        },
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "user_progress",
+        "method": "POST",
+        "body": {
+          "device_id": "dev_5a9e7bec-aced-4016-8e4a-aacdf6a56f35",
+          "progress_key": "nh7_first_use_date",
+          "value": {
+            "__raw": "2026-10-14"
+          },
+          "language": "en",
+          "updated_at": "2026-10-14T19:27:51.671Z"
+        },
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_progress",
+        "method": "POST",
+        "body": {
+          "user_email": "a@example.invalid",
+          "progress_key": "nh7_first_use_date",
+          "value": {
+            "__raw": "2026-10-14"
+          },
+          "language": "en",
+          "updated_at": "2026-10-14T19:27:51.671Z"
+        },
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_progress",
+        "method": "GET",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_progress",
+        "method": "POST",
+        "body": {
+          "user_email": "a@example.invalid",
+          "progress_key": "nh7_first_use_date",
+          "value": {
+            "__raw": "2026-10-14"
+          },
+          "language": "en",
+          "updated_at": "2026-10-14T19:27:51.671Z"
+        },
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_library_catalog_v396",
+        "method": "POST",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_admin_my_access_v350",
+        "method": "POST",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_inbox_snapshot_v419",
+        "method": "POST",
+        "body": {
+          "p_language": "en",
+          "p_message_limit": 200,
+          "p_receipt_limit": 500
+        },
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "school_certificates",
+        "method": "GET",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_my_student_identity_v127",
+        "method": "POST",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "user_progress",
+        "method": "POST",
+        "body": {
+          "device_id": "dev_5a9e7bec-aced-4016-8e4a-aacdf6a56f35",
+          "progress_key": "nh7_bible_state_JHN_3_16",
+          "value": {
+            "note": ""
+          },
+          "language": "en",
+          "updated_at": "2026-10-14T19:30:04.919Z"
+        },
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_progress",
+        "method": "POST",
+        "body": {
+          "user_email": "a@example.invalid",
+          "progress_key": "nh7_bible_state_JHN_3_16",
+          "value": {
+            "note": ""
+          },
+          "language": "en",
+          "updated_at": "2026-10-14T19:30:04.919Z"
+        },
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_progress",
+        "method": "GET",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_progress",
+        "method": "POST",
+        "body": {
+          "user_email": "a@example.invalid",
+          "progress_key": "nh7_bible_state_JHN_3_16",
+          "value": {
+            "note": ""
+          },
+          "language": "en",
+          "updated_at": "2026-10-14T19:30:04.919Z"
+        },
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_account_verse_marks_v230",
+        "method": "GET",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7-content-access",
+        "method": "POST",
+        "body": {
+          "action": "save_bible_batch",
+          "batch_id": "1e062725-44bc-489d-895f-b9e11d72757c",
+          "language": "en",
+          "items": [
+            {
+              "verse_key": "nh7_bible_state_JHN_3_16",
+              "verse_ref": "John 3:16",
+              "verse_text": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+              "saved": false,
+              "highlight_color": "",
+              "note": ""
+            }
+          ]
+        },
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "school_certificates",
+        "method": "GET",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_library_catalog_v396",
+        "method": "POST",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7_library_catalog_v396",
+        "method": "POST",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "nh7-school-media-access",
+        "method": "POST",
+        "body": {
+          "device_id": "dev_5a9e7bec-aced-4016-8e4a-aacdf6a56f35",
+          "kind": "sermon",
+          "sermon_id": "12345678-1234-4234-8234-123456789abc"
+        },
+        "uid": "00000000-0000-4000-8000-000000000061"
+      },
+      {
+        "name": "school_certificates",
+        "method": "GET",
+        "body": {},
+        "uid": "00000000-0000-4000-8000-000000000061"
+      }
+    ],
+    "asset_requests": 178,
+    "limitations": "Synthetic intercepted backend; media event simulator; hidden property simulation, not native suspension/energy/provider/RLS acceptance. RPC POSTs are reads unless action/table indicates write; raw details retained. Harness counters include their own queries."
+  },
+  "school_report_export": {
+    "scenario": "Actual report open/group filters/full 1109-row CSV/browser print-PDF/individual details/FA-EN-HR controls/retries/current authorized Admin handoff",
+    "wall_seconds_including_browser_and_all_assertions": 14.311,
+    "exit": 0,
+    "remote_requests": 0,
+    "cloud_writes": 0,
+    "group_batch_read_rpc": 1,
+    "fixture_data_unchanged": true,
+    "dom_queries": null,
+    "timers": null,
+    "local_writes": null,
+    "unsupported_counters": "Existing report harness does not expose these counters; do not infer zero. Report RPCs are synthetic in-page stubs, all external HTTP is blocked. Protected report engines are byte-identical to starting develop; no new report implementation or query added."
+  },
+  "interpretation": [
+    "Startup remote requests unchanged18→18; two added local startup assets are explicit UI helper/CSS.",
+    "Visible idle60s remote0→0; queries237→238; callbacks172→173 at inherited timer boundary; observer/listener registrations0; local writes2→2.",
+    "Hidden60s remote0→0; callbacks146→146, queries227→227, observers/listeners0, local writes1→1; all repeated callback sources are inherited, no Wave6 recurring loop.",
+    "Search raw sample remote0→2: current inherited foreground/focus Admin permission and Inbox read RPCs (nh7_admin_my_access_v350/nh7_inbox_snapshot_v419), not protected indexing. Existing listeners remain unchanged. Dedicated already-loaded Search test asserts zero remote reads across all metadata queries.",
+    "Literal Bible reference completion loads two existing local metadata assets earlier; baseline exact-reference query does not produce the same complete destination.",
+    "Notes explicit save/delete coalesce and flush in next Theme sample: same six request sequence, four synthetic write calls and two preflight reads; theme itself does not write Notes.",
+    "Calendar before is a no-op; after renders the real exact chapter. DOM work differs because destination is now functional; no remote request or user-data write added.",
+    "Current report engines are protected byte-identical; one actual full export fixture is measured with all active controls/no remote calls; unsupported report counters are null.",
+    "Wall-time counts are single samples with normal timers and synthetic intercepted backend; no causal latency, billing, energy, physical suspension or native decoding claim."
+  ],
+  "local_storage_counter_note": "Captured the original native localStorage object before Wave2 installs its owner-scoped Proxy; counts include actual durable raw writes, not a mistaken comparison against the later facade.",
+  "limitations": [
+    "All remote services intercepted; synthetic UUIDs/users only.",
+    "Browser media/visibility simulator, not real decoder/physical background lifecycle.",
+    "No Production/provider/Supabase RLS/SQL/notification/battery benchmarks.",
+    "Final exact commit and exact-head successful CI are supplied in delivery receipt after Git commit."
+  ]
+}

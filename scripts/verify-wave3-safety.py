@@ -2,13 +2,16 @@
 """Wave 3 scope guard, in addition to behavioral browser/contract regressions."""
 from pathlib import Path
 import subprocess,re
+import sys
+sys.dont_write_bytecode=True
+from wave6_accepted_source import accepted_bytes
 BASE='177d196f8fdb2b641156b0e7b28d03e8bd98b7cc'
 def before(path):return subprocess.check_output(['git','show',f'{BASE}:{path}'])
 # Authorized Wave4 notification-only exceptions are guarded byte-for-byte below.
 subprocess.run(['python3','scripts/verify-wave4-safety.py'],check=True)
 # Product data/engines/security and all backend executable contracts must remain exact.
 protected=['js/nh7-admin-ai-v490.js','js/nh7-local-first-wave2.js','js/nh7-performance-wave1.js','js/nh7-library-security-v125.js','js/nh7-book-reader-v283.js','js/nh7-profile-photo-v563.js','js/nh7-profile-photo-v564.js','js/nh7-audio-classic-v484.js','js/nh7-media-player-v500.js','js/nh7-admin-storage-orphan-guard-v510.js','js/nh7-admin-sermon-metadata-v452.js','js/nh7-admin-storage-orphan-v509.js','js/nh7-admin-community-storage-v504.js','js/nh7-document-ux-v520.js','js/nh7-admin-report-print-v117.js']
-for p in protected:assert Path(p).read_bytes()==before(p),f'Protected source changed: {p}'
+for p in protected:assert accepted_bytes(p)==before(p),f'Protected source changed: {p}'
 assert not subprocess.check_output(['git','diff',BASE,'--','supabase/migrations','supabase/functions','data']), 'Backend/data change not permitted'
 for p,old,new in [('js/nh7-admin-community-fixes-v503.js','if(P.countLoading||!auth())','if(document.hidden||P.countLoading||!auth())'),('js/nh7-admin-testimony-core-v565.js',"if(S.countLoading||typeof token==='undefined'||!token)","if(document.hidden||S.countLoading||typeof token==='undefined'||!token)")]:
  assert Path(p).read_text()==before(p).decode().replace(old,new,1),f'Only background count gating permitted: {p}'

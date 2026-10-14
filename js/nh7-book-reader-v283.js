@@ -18,19 +18,19 @@ function storedSession(){try{const raw=JSON.parse(localStorage.getItem(SESSION_K
 function jwtExpiry(token){try{const part=String(token||'').split('.')[1]||'';const normalized=part.replace(/-/g,'+').replace(/_/g,'/');const payload=JSON.parse(atob(normalized.padEnd(Math.ceil(normalized.length/4)*4,'=')));return Number(payload.exp||0)*1000}catch(_){return 0}}
 function persistSession(value){if(!value)return;localStorage.setItem(SESSION_KEY,JSON.stringify(value))}
 async function ensureSession(){
-  let value=storedSession();
+  let value=storedSession();const originalToken=value?.access_token,originalUID=value?.user?.id;const current=()=>storedSession()?.access_token===originalToken&&storedSession()?.user?.id===originalUID;
   if(value?.access_token&&jwtExpiry(value.access_token)>Date.now()+90000)return value;
   if(!value?.refresh_token||!navigator.onLine)return value;
   if(refreshing)return refreshing;
   refreshing=(async()=>{
     try{
       const response=await fetch(`${URL}/auth/v1/token?grant_type=refresh_token`,{method:'POST',cache:'no-store',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:value.refresh_token})});
-      if(!response.ok)return value;
+      if(!response.ok)return current()?value:null;
       const next=await response.json();
-      if(storedSession()?.access_token!==value?.access_token||storedSession()?.user?.id!==value?.user?.id)return null;
+      if(!current()||next?.user?.id&&next.user.id!==originalUID)return null;
       if(next?.access_token){persistSession(next);value=next}
       return value;
-    }catch(_){return value}finally{refreshing=null}
+    }catch(_){return current()?value:null}finally{refreshing=null}
   })();
   return refreshing;
 }
@@ -195,7 +195,7 @@ function showReader(savedScroll=0){
   modal=document.createElement('div');
   modal.className='nh7-book-modal';
   modal.dir=book.language==='fa'?'rtl':'ltr';
-  modal.dataset.theme=localStorage.getItem('nh7_book_theme')||'light';
+  modal.dataset.theme=localStorage.getItem('nh7_book_theme')||'light';modal.dataset.followAppWave6=String(!localStorage.getItem('nh7_book_theme'));
   modal.innerHTML=shell();
   document.body.appendChild(modal);
   document.body.classList.add('nh7-book-open');
@@ -240,7 +240,7 @@ function searchBook(query){
 function changeFont(delta){const current=Number(localStorage.getItem('nh7_book_font')||20),next=Math.max(15,Math.min(34,current+delta));localStorage.setItem('nh7_book_font',String(next));const article=modal?.querySelector('.nh7-book-article');if(article)article.style.fontSize=next+'px'}
 function bindReader(){
   modal.querySelector('[data-book-theme]').value=modal.dataset.theme;
-  modal.querySelector('[data-book-theme]').onchange=event=>{modal.dataset.theme=event.target.value;localStorage.setItem('nh7_book_theme',event.target.value)};
+  modal.querySelector('[data-book-theme]').onchange=event=>{modal.dataset.followAppWave6='false';modal.dataset.theme=event.target.value;localStorage.setItem('nh7_book_theme',event.target.value)};
   modal.querySelector('[data-book-search]').oninput=event=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>searchBook(event.target.value),180)};
   modal.addEventListener('click',event=>{
     if(event.target.closest('[data-book-close]'))return closeReader();

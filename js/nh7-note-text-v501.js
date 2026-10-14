@@ -17,7 +17,7 @@ function unwrap(value){
   }
   return current==null?'':String(current);
 }
-function normalize(value){
+function decodeLegacy(value){
   let s=unwrap(value);
   for(let i=0;i<3;i++){
     const before=s;
@@ -45,34 +45,37 @@ function normalize(value){
   return s;
 }
 
+function normalize(value){const presented=display(value);return presented.recoverable||presented.omitted?(typeof value==='string'?value:JSON.stringify(value??'')):presented.text}
+
 function looksEncoded(value){
   return /(?:&(?:amp;)?#(?:9|10|13|32|x0*(?:9|a|d|20));|&(?:amp;)?nbsp;|&lt;br|<br|%0[ad9]|%20|\\[rnt]|\\u00(?:09|0a|0d|20))/i.test(String(value??''));
 }
 
-function repairKnownNotes(){
-  let changed=0;
-  const keys=[];
-  for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k)keys.push(k)}
-  for(const key of keys){
-    try{
-      if(key.startsWith('nh7_bible_state_')){
-        const raw=localStorage.getItem(key)||'';let st=null;try{st=JSON.parse(raw)}catch(_){continue}
-        if(!st||typeof st!=='object'||typeof st.note!=='string')continue;
-        const clean=normalize(st.note);if(clean!==st.note){st.note=clean;localStorage.setItem(key,JSON.stringify(st));changed++}
-        continue;
-      }
-      if(!/^(nh7_sermon_note_|nh7_apo_note_v242:|nh7_gratitude_note_|nh7_note_)/.test(key))continue;
-      const raw=localStorage.getItem(key);if(typeof raw!=='string')continue;
-      const clean=normalize(raw);if(clean!==raw){localStorage.setItem(key,clean);changed++}
-    }catch(_){}
+// Presentation only: keep every persisted legacy/raw payload and conflict copy unchanged.
+function repairKnownNotes(){return 0}
+function display(value){
+  const original=typeof value==='string'?value:JSON.stringify(value??'');let current=value,legacy=false;
+  for(let depth=0;depth<4;depth++){
+    if(typeof current==='string'){
+      let parsed;try{parsed=JSON.parse(current)}catch{if(/^\s*{\s*"(?:value|note_text|note_key|schema_version)"\s*:/.test(current))return{text:'',recoverable:true,original};return{text:legacy?decodeLegacy(current):current,recoverable:false}}
+      if(!parsed||typeof parsed!=='object'||Array.isArray(parsed))return{text:legacy?'':current,recoverable:legacy,original};
+      const hint=parsed.owner_uid||parsed.user_id||parsed.ownerUid;if(hint&&window.NH7UserContextWave6?.identity().uid!==String(hint))return{text:'',omitted:true};
+      if(!['value','content','note','text','note_text'].some(k=>Object.prototype.hasOwnProperty.call(parsed,k)))return parsed.note_key||parsed.schema_version?{text:'',recoverable:true,original}:{text:current,recoverable:false};
+      current=parsed;
+    }
+    if(!current||typeof current!=='object'||Array.isArray(current))return{text:'',recoverable:true,original};
+    const actor=window.NH7UserContextWave6?.identity(),uid=current.owner_uid||current.user_id||current.ownerUid;
+    if(uid&&actor?.uid!==String(uid))return{text:'',omitted:true};
+    if(Object.prototype.hasOwnProperty.call(current,'value')){current=current.value;legacy=true;continue}
+    const field=['content','note','text','note_text'].find(k=>typeof current[k]==='string');
+    if(field)return{text:current[field],recoverable:false};
+    return{text:'',recoverable:true,original};
   }
-  if(changed){
-    try{window.dispatchEvent(new CustomEvent('nh7-note-text-repaired-v501',{detail:{changed}}))}catch(_){}
-  }
-  return changed;
+  return{text:'',recoverable:true,original};
 }
 
 function repairTextControl(el){
+  if(document.activeElement===el)return false;
   if(!el||typeof el.value!=='string'||!looksEncoded(el.value))return false;
   const clean=normalize(el.value);if(clean===el.value)return false;
   const start=el.selectionStart,end=el.selectionEnd;
@@ -94,12 +97,10 @@ function repairVisibleNotes(root=document){
 
 let visibleQueued=false;
 function scheduleVisibleRepair(){
-  if(visibleQueued)return;visibleQueued=true;
+  if(document.hidden||visibleQueued)return;visibleQueued=true;
   requestAnimationFrame(()=>{visibleQueued=false;repairVisibleNotes(document)});
 }
-function scheduleRepair(){
-  [0,120,600,1600,5000].forEach(ms=>setTimeout(()=>{repairKnownNotes();repairVisibleNotes(document)},ms));
-}
+function scheduleRepair(){scheduleVisibleRepair()}
 document.addEventListener('click',e=>{
   if(e.target.closest?.('[data-save-verse-note],[data-save-modal-note],[data-save-note],#completeGratitude,#saveSchoolAssignmentDraft,#submitSchoolAssignment'))setTimeout(()=>{repairKnownNotes();repairVisibleNotes(document)},80);
 },true);
@@ -113,4 +114,5 @@ function startObserver(){
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startObserver,{once:true});else startObserver();
 scheduleRepair();
 window.NH7NoteTextV501={VERSION,unwrap,normalize,repairKnownNotes,repairVisibleNotes};
+window.NH7NoteTextV501.display=display;
 })();

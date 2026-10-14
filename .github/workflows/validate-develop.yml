@@ -150,6 +150,11 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/canonical-tools" --no-audit --no-fund playwright@1.62.1 @electric-sql/pglite@0.3.14 jsqr@1.4.0 pngjs@7.0.0
           "$RUNNER_TEMP/canonical-tools/node_modules/.bin/playwright" install --with-deps chromium
 
+      - name: Verify Wave 6 syntax and explicit UI/data-safety boundaries
+        run: |
+          python3 scripts/run-ci-check.py node scripts/verify-wave6-syntax.cjs
+          python3 scripts/run-ci-check.py python3 scripts/verify-wave6-safety.py
+
       - name: Verify Wave 5 syntax and exact changed-file boundaries
         run: |
           python3 scripts/run-ci-check.py node scripts/verify-wave5-syntax.cjs
@@ -183,6 +188,10 @@ jobs:
           python3 scripts/run-ci-check.py node scripts/verify-wave3-admin-fencing.cjs http://127.0.0.1:8878
           python3 scripts/run-ci-check.py node scripts/verify-wave3-admin-browser.cjs http://127.0.0.1:8878
           python3 scripts/run-ci-check.py node scripts/verify-wave4-notifications-browser.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-wave6-read-contracts.cjs
+          python3 scripts/run-ci-check.py node scripts/verify-wave6-user-security.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-wave6-navigation-search.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-wave6-ui-browser.cjs http://127.0.0.1:8878
           python3 scripts/run-ci-check.py node scripts/verify-wave5-documents.cjs
           python3 scripts/run-ci-check.py node scripts/verify-wave5-boundaries.cjs
           python3 scripts/run-ci-check.py node scripts/verify-wave5-documents-browser.cjs http://127.0.0.1:8878

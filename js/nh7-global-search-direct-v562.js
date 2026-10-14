@@ -29,8 +29,9 @@ function ensureStyle(){
 }
 
 function audioCatalog(){
+  const actor=window.NH7UserContextWave6.identity();if(!actor.uid)return{categories:[],sermons:[]};
   for(const [store,key] of [[sessionStorage,'nh7_audio_catalog_cache_v446'],[localStorage,'nh7_audio_catalog_cache_v470']]){
-    try{const d=JSON.parse(store.getItem(key)||'null');if(d?.sermons?.length)return d}catch(_){}
+    try{const d=JSON.parse(store.getItem(key)||'null');if(d?.sermons?.length&&(!d.uid||d.uid===actor.uid)&&(!d.user_id||d.user_id===actor.uid))return{...d,sermons:d.sermons.filter(x=>x.is_published!==false&&x.is_active!==false&&(!x.owner_uid||x.owner_uid===actor.uid))}}catch(_){}
   }
   return {categories:[],sermons:[]};
 }
@@ -66,23 +67,19 @@ function noteDestination(key){
   return {route:'home',params:{}};
 }
 function localNotes(q){
-  const out=[],needle=normalize(q);
-  for(let i=0;i<localStorage.length;i++){
-    const key=localStorage.key(i)||'';
-    if(!/^(nh7_bible_state_|nh7_sermon_note_|nh7_apo_note_v242:|nh7_gratitude_note_|nh7_note_)/.test(key))continue;
-    let text='';try{text=noteText(localStorage.getItem(key))}catch(_){}
-    if(!text||!normalize(text).includes(needle))continue;
-    const dest=noteDestination(key);
-    let icon='📝',kind=L('یادداشت','Note','Bilješka');
-    if(key.startsWith('nh7_bible_state_')){icon='📖';kind=L('یادداشت آیه','Bible note','Bilješka stiha')}
-    else if(key.startsWith('nh7_sermon_note_')){icon='🎧';kind=L('یادداشت پیام','Audio note','Bilješka poruke')}
-    else if(key.startsWith('nh7_note_school-')){icon='🎓';kind=L('یادداشت مدرسه','School note','Školska bilješka')}
-    else if(key.startsWith('nh7_gratitude_note_')){icon='🙏';kind=L('یادداشت شکرگزاری','Gratitude note','Bilješka zahvalnosti')}
-    out.push({icon,kind,...(key.startsWith('nh7_apo_note_v242:')?{apocryphaRef:'APO:'+key.slice('nh7_apo_note_v242:'.length)}:{}),title:clip(text,82),sub:L('باز کردن همان محل یادداشت','Open the exact note location','Otvori točno mjesto bilješke'),...dest});
-    if(out.length>=5)break;
-  }
-  return out;
+  const needle=normalize(q);return(window.NH7MyNotesV234?.collectNotes?.()||[]).filter(n=>!n.recoverable&&normalize(n.text+' '+n.title).includes(needle)).slice(0,5).map(n=>({icon:'📝',kind:L('یادداشت','Note','Bilješka'),title:clip(n.title,82),sub:clip(n.text),noteKey:n.storageKey,...(n.kind==='apocrypha'?{apocryphaRef:'APO:'+n.storageKey.slice('nh7_apo_note_v242:'.length)}:{}),route:n.route,params:n.params}));
 }
+function metadataMatches(q){
+  const needle=normalize(q),match=x=>['fa','en','hr'].some(l=>normalize((x['title_'+l]||'')+' '+(x['description_'+l]||'')).includes(needle)),title=x=>x['title_'+lang()]||L('محتوا','Content','Sadržaj');
+  const library=(window.NH7LibrarySecurityV125?.searchItems?.()||[]).filter(match).slice(0,4).map(x=>({icon:'📚',kind:L('کتابخانه','Library','Knjižnica'),title:title(x),sub:L('باز کردن از مسیر مجاز کتابخانه','Open through authorized Library','Otvori kroz dopuštenu knjižnicu'),route:'library',params:{tab:x.audience,open:String(x.id)}}));
+  const actor=window.NH7UserContextWave6.identity();let progress={};try{progress=JSON.parse(localStorage.getItem('nh7_spiritual_plans_v240:'+(actor.uid||'guest'))||'{}')}catch{}
+  const plans=(window.NH7_SPIRITUAL_PLANS?.catalog?.()||[]).filter(match).flatMap(x=>{const p=progress.plans?.[x.id],day=p?.startedAt?Object.keys(p.days||{}).map(Number).find(d=>Number.isInteger(d)&&d>0&&d<=Number(x.durationDays||365)):null;if(p?.startedAt&&!day)return[];return[{icon:'🌱',kind:L('پلن روحانی','Spiritual plan','Duhovni plan'),title:title(x),sub:'',route:'plans',params:{tab:'spiritual',plan:x.id,...(day?{day}:{})}}]}).slice(0,4);
+  const school=(window.NH7SearchSchoolMetadataWave6?.()||[]).filter(match).slice(0,4).map(x=>({icon:'🎓',kind:L('مدرسه','School','Škola'),title:title(x),sub:L('دسترسی مدرسه دوباره بررسی می‌شود','School access is checked again','Pristup školi ponovno se provjerava'),route:'school',params:{lesson:x.id}}));
+  let favorites=[];try{favorites=JSON.parse(localStorage.getItem('nh7_audio_favorites_v500')||'[]')}catch{}const liked=audioMatches(q).filter(x=>Array.isArray(favorites)&&favorites.includes(x.params.open)).map(x=>({...x,icon:'★',kind:L('صوت مورد علاقه','Favorite audio','Omiljeni audio')}));return[...library,...plans,...school,...liked];
+}
+const capture=root=>({actor:window.NH7UserContextWave6.identity(),language:lang(),root,serial:searchSerial});
+const fresh=t=>t.root?.isConnected&&t.serial===searchSerial&&lang()===t.language&&window.NH7UserContextWave6.current(t.actor)&&history.state?.route==='home';
+function invalidate(){clearTimeout(debounce);searchSerial++;const root=document.getElementById('nh7GlobalSearch560');if(root){root.__nh7Items562=[];const results=root.querySelector('[data-nh7gs-results]');if(results){results.replaceChildren();results.hidden=true}}}
 function savedReferenceMatches(q){
   let refs=[];try{refs=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]')}catch(_){}
   const needle=normalize(q);
@@ -130,22 +127,25 @@ async function runSearch(root,value){
   const q=String(value||'').trim(),serial=++searchSerial;
   const results=root?.querySelector('[data-nh7gs-results]');if(!results)return;
   if(q.length<2){root.__nh7Items562=[];results.hidden=true;results.innerHTML='';return}
-  const quick=[...audioMatches(q),...savedReferenceMatches(q),...localNotes(q)];
+  const ticket=capture(root),quick=[...audioMatches(q),...savedReferenceMatches(q),...localNotes(q),...metadataMatches(q)].slice(0,24);if(!fresh(ticket))return;
   paint(root,quick,L('در حال جستجو در متن کتاب مقدس…','Searching Bible text…','Pretraživanje teksta Biblije…'));
   try{
-    const bible=await bibleMatches(q,serial);if(serial!==searchSerial)return;
-    const items=[...bible,...audioMatches(q),...savedReferenceMatches(q),...localNotes(q)].slice(0,18);
+    const bible=await bibleMatches(q,serial);if(!fresh(ticket))return;
+    const refQuery=q.replace(/[۰-۹٠-٩]/g,c=>String('۰۱۲۳۴۵۶۷۸۹'.includes(c)?'۰۱۲۳۴۵۶۷۸۹'.indexOf(c):'٠١٢٣٤٥٦٧٨٩'.indexOf(c)));
+    if(/\d+\s*[:،,]\s*\d+/.test(refQuery)){const row=await window.NH7ReaderSourceV452?.resolve?.(refQuery,lang());if(!fresh(ticket))return;if(row&&!bible.some(v=>v.params.bookId===row.bookId&&v.params.chapter===row.chapter&&v.params.verse===row.verse))bible.unshift({icon:'📖',kind:L('آیه کتاب مقدس','Bible verse','Biblijski stih'),title:row.label,sub:row.text,route:'bible',params:{section:'written',mode:'chapter',bookId:row.bookId,chapter:row.chapter,verse:row.verse}});}
+    const metadata=metadataMatches(q),groups=[bible,audioMatches(q),savedReferenceMatches(q),localNotes(q),metadata.filter(x=>x.route==='library'),metadata.filter(x=>x.route==='plans'),metadata.filter(x=>x.route==='school'),metadata.filter(x=>x.icon==='★')],items=[];for(let n=0;n<8&&items.length<24;n++)for(const group of groups)if(group[n]&&items.length<24)items.push(group[n]);
     paint(root,items,'');
   }catch(error){
-    console.warn('Global Bible search',error);if(serial!==searchSerial)return;paint(root,quick,'');
+    console.warn('Global Bible search',error);if(!fresh(ticket))return;paint(root,quick,L('جستجوی کتاب مقدس موقتاً در دسترس نیست.','Bible search is temporarily unavailable.','Pretraživanje Biblije privremeno nije dostupno.'));
   }
 }
 async function openItem(item){
-  if(!item)return;
+  if(!item)return;const actor=window.NH7UserContextWave6.identity();
+  if(item.noteKey&&!item.apocryphaRef){window.NH7MyNotesV234?.openNote?.(item.noteKey);return}
   const apoRef=item.apocryphaRef||(/^APO:/.test(item.savedRef||'')?item.savedRef:'');
   if(apoRef&&window.NH7_OPEN_SAVED_APOCRYPHA_V394){await window.NH7_OPEN_SAVED_APOCRYPHA_V394(apoRef);return;}
   if(item.savedRef&&window.NH7ReaderSourceV452?.resolve){
-    try{const r=await window.NH7ReaderSourceV452.resolve(item.savedRef,lang());if(r){window.NH7_NAVIGATE?.('bible',{section:'written',mode:'chapter',bookId:r.bookId,chapter:r.chapter,verse:r.verse});return}}catch(_){}
+    try{const r=await window.NH7ReaderSourceV452.resolve(item.savedRef,lang());if(r&&window.NH7UserContextWave6.current(actor)){window.NH7_NAVIGATE?.('bible',{section:'written',mode:'chapter',bookId:r.bookId,chapter:r.chapter,verse:r.verse});return}}catch(_){}
   }
   if(typeof window.NH7_NAVIGATE==='function'){window.NH7_NAVIGATE(item.route,item.params||{});return}
   const params=item.params&&Object.keys(item.params).length?':'+encodeURIComponent(JSON.stringify(item.params)):'';
@@ -164,15 +164,16 @@ function wire(root){
   },true);
   root.addEventListener('click',event=>{
     const button=event.target.closest?.('[data-nh7gs562-index]');if(!button)return;
-    event.preventDefault();event.stopImmediatePropagation();openItem(root.__nh7Items562?.[Number(button.dataset.nh7gs562Index)]);
+    event.preventDefault();event.stopImmediatePropagation();if(history.state?.route!=='home')return;openItem(root.__nh7Items562?.[Number(button.dataset.nh7gs562Index)]);
   },true);
   return true;
 }
 function mount(){ensureStyle();return wire(document.getElementById('nh7GlobalSearch560'))}
 function schedule(){if(observerQueued)return;observerQueued=true;requestAnimationFrame(()=>{observerQueued=false;mount()})}
 function start(){
+  for(const name of ['storage','nh7-personal-before-owner-wave2','nh7-personal-owner-wave2','nh7-session-refreshed','nh7-library-security','nh7-route-changed-wave6','offline','popstate'])window.addEventListener(name,invalidate);
   ensureStyle();mount();const view=document.getElementById('view');if(view)new MutationObserver(schedule).observe(view,{subtree:true,childList:true});
-  document.getElementById('langSelect')?.addEventListener('change',()=>setTimeout(schedule,0));
+  document.getElementById('langSelect')?.addEventListener('change',()=>{invalidate();setTimeout(schedule,0)});
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 window.NH7GlobalSearchDirectV562={VERSION,mount,search:q=>{const root=document.getElementById('nh7GlobalSearch560');if(root)runSearch(root,q)}};

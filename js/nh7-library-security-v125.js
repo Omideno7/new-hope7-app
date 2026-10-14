@@ -374,6 +374,8 @@
 
   window.NH7LibrarySecurityV125 = {
     catalog,
+    // Read-only metadata projection of the already-authorized current catalog.
+    searchItems:()=>{const id=sync();if(!id)return[];const restrictedFresh=navigator.onLine&&checkedAt&&Date.now()-checkedAt<=35000;return bundle.items.filter(x=>x.is_active!==false&&x.is_published!==false&&(x.audience==='public'||restrictedFresh)).slice(0,500).map(x=>({id:x.id,audience:x.audience,title_fa:x.title_fa,title_en:x.title_en,title_hr:x.title_hr,description_fa:x.description_fa,description_en:x.description_en,description_hr:x.description_hr}));},
     uid: () => sync(),
     invalidate,
     sync,

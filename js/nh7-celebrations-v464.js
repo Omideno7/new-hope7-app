@@ -121,7 +121,7 @@ function modalCopy(){
   a.verse.tabIndex=ev.ref?0:-1;
   a.verse.setAttribute('role',ev.ref?'button':'note');
   a.verse.setAttribute('aria-label',ev.ref?L('باز کردن آیه در کتاب مقدس','Open verse in Bible','Otvori redak u Bibliji'):'');
-  a.verse.onclick=ev.ref?()=>{const ref=ev.ref;closeModal();setTimeout(()=>Promise.resolve(window.NH7ReaderSourceV452?.open?.(ref)).catch(()=>{}),0)}:null;
+  a.verse.onclick=ev.ref?()=>{const ref=ev.ref,ticket=window.NH7UserContextWave6?.identity(),route=location.hash;closeModal();setTimeout(()=>{if((!ticket||window.NH7UserContextWave6.current(ticket))&&location.hash===route)Promise.resolve(window.NH7ReaderSourceV452?.open?.(ref)).catch(()=>{})},0)}:null;
   a.verse.onkeydown=ev.ref?e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();a.verse.click()}}:null;
  }
 }
@@ -186,7 +186,7 @@ function header(){
 function canAuto(){
  if(document.hidden||active)return false;
  const gate=document.getElementById('amenGate');if(gate&&!gate.classList.contains('hidden')&&!gate.hidden)return false;
- if(document.querySelector('[aria-modal="true"]:not(.hidden):not([hidden]),dialog[open],.nh7-registration-confirm-v353:not(.hidden):not([hidden])'))return false;
+ if([...document.querySelectorAll('[aria-modal="true"],dialog[open],.nh7-registration-confirm-v353')].some(el=>!el.closest('[hidden],.hidden')&&el.getClientRects().length))return false;
  if(/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName||''))return false;
  return true;
 }
@@ -211,5 +211,6 @@ document.addEventListener('change',e=>{if(['langSelect','settingsLang'].includes
 document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(clockTimer);stopEffects()}else clock()});
 try{matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',e=>{if(e.matches)stopEffects()})}catch(_){}
 setTimeout(clock,900);
+for(const event of ['popstate','nh7-route-changed-wave6'])window.addEventListener(event,closeModal);
 window.NH7_CELEBRATIONS_V464=Object.freeze({VERSION:'4.6.7-wave3-owner-dob',eventFor,annualEvents,birthday,run,easter,openCalendar});
 })();

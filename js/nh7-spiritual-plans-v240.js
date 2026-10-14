@@ -5,6 +5,9 @@ const PROGRESS_PREFIX = 'nh7_spiritual_plans_v240:';
 const FASTING_PREFIX = 'nh7_fasting_journeys_v240:';
 const cloudSyncAt = new Map();
 let catalogPromise = null;
+let searchMetadata=[];
+export const peekPlanTitlesWave6=()=>searchMetadata.map(x=>({...x}));
+export async function validExistingPlanDayWave6(planId,day,ctx={}){const plans=await loadPlans(ctx);const p=plans.find(x=>x.id===planId);return !!p&&Number.isInteger(+day)&&+day>0&&+day<=Number(p.durationDays||p.days?.length||0)}
 let fastingGuidesPromise = null;
 
 const UI = {
@@ -213,6 +216,7 @@ async function loadPlans(ctx) {
     catalogPromise = (async () => {
       const catalog = await fetchJson(ctx, CATALOG_PATH);
       const plans = await Promise.all((catalog.plans || []).sort((a, b) => Number(a.order) - Number(b.order)).map(item => fetchJson(ctx, item.file)));
+      searchMetadata=plans.map(p=>({id:p.id,durationDays:p.durationDays,...Object.fromEntries(['fa','en','hr'].map(l=>['title_'+l,p.localized?.[l]?.title||'']))}));
       return plans;
     })().catch(error => { catalogPromise = null; throw error; });
   }
@@ -487,7 +491,7 @@ async function renderPlanDetail(ctx, plan, params) {
     return;
   }
   const selected = Math.max(1, Math.min(Number(params.day || state.lastOpenedDay || nextOpenDay(plan, state)), total));
-  if (!dayProgress(state, selected)) state = await ensurePlanStarted(ctx, plan, selected);
+  if (!dayProgress(state, selected) && String(params.start) === '1') state = await ensurePlanStarted(ctx, plan, selected);
   progress = loadProgress(ctx); state = progress.plans[plan.id];
   const day = plan.days.find(item => Number(item.day) === selected) || plan.days[selected - 1];
   const copy = localDay(day, ctx);
@@ -656,8 +660,10 @@ async function renderPlansHome(ctx, plans) {
 
 export async function renderSpiritualPlansV240(ctx, params={}) {
   try {
-    await syncSpiritualPlansV240(ctx).catch(() => false);
+    // Opening an existing day is a read operation; sync/start remain explicit/catalog actions.
+    if (!params.plan || String(params.start) === '1') await syncSpiritualPlansV240(ctx).catch(() => false);
     const plans = await loadPlans(ctx);
+    if (ctx.isCurrent && !ctx.isCurrent()) return;
     if (params.tab === 'fasting') { await renderFastingHub(ctx, plans); return; }
     if (params.plan) {
       const plan = plans.find(item => item.id === params.plan);
@@ -667,6 +673,7 @@ export async function renderSpiritualPlansV240(ctx, params={}) {
     }
     await renderPlansHome(ctx, plans);
   } catch (error) {
+    if (ctx.isCurrent && !ctx.isCurrent()) return;
     console.error('Spiritual plans render failed', error);
     ctx.view.innerHTML = `<section class="card"><h2>${esc(t(ctx, 'errorTitle'))}</h2><p>${esc(error?.message || '')}</p><button type="button" class="primary-btn" data-nh7-plans-retry>${esc(t(ctx, 'retry'))}</button></section>`;
     document.querySelector('[data-nh7-plans-retry]')?.addEventListener('click', () => ctx.navigate('plans', { tab:'spiritual' }, true));

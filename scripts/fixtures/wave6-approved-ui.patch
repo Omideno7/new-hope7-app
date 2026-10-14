@@ -1,0 +1,1146 @@
+diff --git a/document-verify.html b/document-verify.html
+index c4103761..787e6d72 100644
+--- a/document-verify.html
++++ b/document-verify.html
+@@ -8,6 +8,8 @@
+     <link rel="stylesheet" href="css/document-studio-v2.css" />
+     <script src="js/vendor/document-qrcode-1.5.4.js"></script>
+     <script src="js/vendor/html2canvas-1.4.1.min.js"></script>
++    <link rel="stylesheet" href="css/nh7-user-app-wave6.css?v=6" />
++    <script src="js/nh7-theme-studio-v453.js?v=4.5.9-ap515&wave6=6" defer></script>
+   </head>
+   <body>
+     <main id="verification" class="ds2-public" aria-live="polite"></main>
+diff --git a/index.html b/index.html
+index 504ea818..2a3d9da3 100644
+--- a/index.html
++++ b/index.html
+@@ -86,6 +86,7 @@
+   <link rel="stylesheet" href="css/nh7-soul-winning-v472.css?v=4.7.2" />
+   <link rel="stylesheet" href="css/nh7-finalqa-v558.css?v=5.7.0-responsive" />
+   <link rel="stylesheet" href="css/nh7-document-ux-v511.css?v=5.1.1">
++  <link rel="stylesheet" href="css/nh7-user-app-wave6.css?v=6">
+ </head>
+ <body>
+   <div id="amenGate" class="amen-gate hidden" role="dialog" aria-modal="true">
+@@ -160,6 +161,7 @@
+   <script src="js/nh7-finalqa-v558.js?v=5.5.8" defer></script>
+   <script src="js/nh7-adaptive-layout-v570.js?v=5.7.0" defer></script>
+   <script src="js/nh7-profile-photo-v563.js?v=5.6.3" defer></script>
++  <script src="js/nh7-user-context-wave6.js?v=6" defer></script>
+   <script src="js/nh7-profile-photo-v564.js?v=5.6.5&ui=116&qa=profile-search-inbox" defer></script>
+   <script src="js/nh7-global-search-direct-v562.js?v=5.6.2&qa=profile-search-inbox" defer></script>
+   <script src="js/nh7-sermon-social-v443.js?v=4.4.8-batch" defer></script>
+diff --git a/js/app.js b/js/app.js
+index bd8e8971..946bc629 100644
+--- a/js/app.js
++++ b/js/app.js
+@@ -953,7 +953,7 @@ function nh7RenderSchoolGateV223(resourceLabel=''){
+   return false;
+ }
+ async function nh7RequireSchoolAccessV223(resourceLabel=''){
+-  if(await nh7ApprovedSchoolAccessV223())return true;
++  const ticket=routeTicketWave6();const approved=await nh7ApprovedSchoolAccessV223();try{routeCheckWave6(ticket)}catch{return false}if(approved)return true;
+   return nh7RenderSchoolGateV223(resourceLabel);
+ }
+ 
+@@ -1045,6 +1045,7 @@ function setLang(lang){
+ }
+ function setCrumb(t){ $('#breadcrumb').textContent=t; $('#backBtn').classList.toggle('hidden', state.stack.length===0); $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.route===state.route)); }
+ function navigate(route, params={}, replace=false){
++  if(!replace&&route===state.route&&JSON.stringify(params||{})===JSON.stringify(state.params||{}))return render(route,state.params);
+   if(!replace && state.route) state.stack.push({route:state.route, params:state.params});
+   state.route=route; state.params=params||{};
+   try{ const url='#'+encodeURIComponent(route)+(Object.keys(state.params).length?':'+encodeURIComponent(JSON.stringify(state.params)):''); replace ? history.replaceState({route,params:state.params},'',url) : history.pushState({route,params:state.params},'',url); }catch(e){}
+@@ -1063,16 +1064,9 @@ function registrationStatus(access={}){ return access.status==='pending'?tr('pen
+ function optionYesNo(value=''){ return `<option value="">---</option><option value="yes" ${value==='yes'?'selected':''}>${tr('yes')}</option><option value="no" ${value==='no'?'selected':''}>${tr('no')}</option>`; }
+ function normalizeQuestionText(q){ return String(q||'').trim().replace(/\s+/g,' ').toLowerCase(); }
+ function getKnownUserProfile(){
+-  try{
+-    const s=JSON.parse(localStorage.getItem('nh7_school_access')||'{}');
+-    const m=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{}');
+-    const cached=JSON.parse(localStorage.getItem('nh7_user_profile')||'{}');
+-    const session=authSession();
+-    const p=Object.assign({}, m||{}, s||{});
+-    const metadataName=String(session?.user?.user_metadata?.full_name||session?.user?.user_metadata?.name||'').trim();
+-    const registrationName=String((p.firstName||'')+' '+(p.lastName||'')).trim();
+-    return {name:registrationName||cached.name||metadataName, email:String(p.email||cached.email||currentUserEmail()||'').trim().toLowerCase(), phone:String(p.phone||cached.phone||'').trim()};
+-  }catch(e){ return {name:String(authSession()?.user?.user_metadata?.full_name||''),email:currentUserEmail(),phone:''}; }
++  const person=window.NH7UserContextWave6?.person()||{name:'',email:authEmail()};let phone='';
++  for(const key of ['nh7_user_profile','nh7_school_access','nh7_meeting_access'])try{const row=JSON.parse(localStorage.getItem(key)||'null');if(window.NH7UserContextWave6?.cacheOwned(row)&&row.phone){phone=String(row.phone);break}}catch{}
++  return {...person,phone};
+ }
+ 
+ function registrationFormHtml(kind, access={}){
+@@ -1415,7 +1409,12 @@ async function showAmen(){
+ }
+ 
+ let nh7NavigationEpochV456=0;
++let presentedRouteWave6='';
++const routeTicketWave6=(publicRead=false)=>({publicRead,epoch:nh7NavigationEpochV456,actor:window.NH7UserContextWave6?.identity(),language:state.lang});
++function routeCheckWave6(ticket){if(ticket.epoch!==nh7NavigationEpochV456||ticket.language!==state.lang||(ticket.actor&&(ticket.publicRead?ticket.actor.owner!==window.NH7UserContextWave6.identity().owner:!window.NH7UserContextWave6?.current(ticket.actor))))throw new DOMException('Navigation superseded','AbortError')}
++
+ async function render(route, params={}, preserve=false){
++  const presentationKeyWave6=JSON.stringify({route,params});if(presentedRouteWave6&&presentedRouteWave6!==presentationKeyWave6)window.dispatchEvent(new Event('nh7-route-changed-wave6'));presentedRouteWave6=presentationKeyWave6;
+   schoolDraftsV468.unmount();
+   if(route!=='plans'||params.tab!=='spiritual')window.NH7_SPIRITUAL_PLANS?.dispose?.();
+   try{window.NH7CommunityV502?.dispose?.()}catch(e){console.warn('[NH7 Community dispose]',e)}
+@@ -1447,11 +1446,13 @@ async function render(route, params={}, preserve=false){
+     else await home();
+     if(navigationEpochV456!==nh7NavigationEpochV456)return;
+     bindDynamic();
++    if(route==='library'&&params.open&&window.NH7LibrarySecurityV125?.searchItems?.().some(x=>String(x.id)===String(params.open)))openLibraryPdf(nh7LibraryCatalog.find(x=>String(x.id)===String(params.open))).catch(console.warn);
++    if(route==='bible'&&params.verse)requestAnimationFrame(()=>{if(navigationEpochV456===nh7NavigationEpochV456){const verse=document.getElementById('v-'+Number(params.verse));verse?.scrollIntoView({block:'center'});verse?.classList.add('nh7-note-source-focus-v234')}});
+     const detail=params?.lesson?':lesson':params?.exam?':exam':params?.mode==='chapter'?':chapter':params?.book?':book':params?.tab?':'+String(params.tab):'';
+     trackAppSection(String(route||'home')+detail);
+     nh7TrackRenderedContentV223(route,params);
+     setCrumb(tr(route));
+-  }catch(e){ if(navigationEpochV456!==nh7NavigationEpochV456)return;console.error(e); view.innerHTML=card('Error',`<p>${html(e.message)}</p>`); }
++  }catch(e){ if(navigationEpochV456!==nh7NavigationEpochV456)return;console.error(e); view.innerHTML=card(l223('خطا','Error','Greška'),`<p>${html(l223('این بخش موقتاً در دسترس نیست؛ دوباره تلاش کنید.','This section is temporarily unavailable; try again.','Ovaj dio privremeno nije dostupan; pokušajte ponovno.'))}</p>`); }
+ }
+ 
+ async function home(){
+@@ -1483,6 +1484,7 @@ async function fetchDynamicDailyItem(contentType,day){
+ }
+ function mergeDailyItem(localItem,remoteItem){return remoteItem&&typeof remoteItem==='object'?Object.assign({},localItem||{},remoteItem):localItem}
+ async function daily(params={}){
++  const routeViewTicketWave6=routeTicketWave6();
+   Object.keys(dailyContentCache).forEach(k=>delete dailyContentCache[k]);
+   if(params.tab) state.dailyTab = params.tab;
+   const tabs=[['word',tr('dailyWord')],['faith',tr('faithProclamation')],['juice',tr('dailyJuice')],['gratitude',tr('gratitudeCourse')]];
+@@ -1491,9 +1493,10 @@ async function daily(params={}){
+   if(state.dailyTab==='faith') out += await renderDailyType('data/daily/faith_proclamations_365.json','proclamation',null,'faith',null,params);
+   if(state.dailyTab==='juice') out += await renderDailyType('data/daily/daily_juice_365.json','message','prayer','juice','actionStep',params);
+   if(state.dailyTab==='gratitude') out += await renderGratitude();
+-  view.innerHTML=out;
++  routeCheckWave6(routeViewTicketWave6);view.innerHTML=out;
+ }
+ async function renderDailyType(path, mainKey, prayerKey, type, extraKey, params={}){
++  const routeViewTicketWave6=routeTicketWave6();
+   const d=await jfetch(path); const list=itemsOf(d); const todayDay=userCycleDay(list.length);
+   let day=Number(params.day||0); if(!day || day<1 || day>list.length) day=todayDay;
+   let it=list[day-1]||{};
+@@ -1552,6 +1555,7 @@ function renderMulti(v){
+   return `<p>${html(pick(v)||v)}</p>`;
+ }
+ async function renderGratitude(){
++  const routeViewTicketWave6=routeTicketWave6();
+   const data=await jfetch('data/gratitude/gratitude_plan_30_days.json'); const list=itemsOf(data);
+   let start=localStorage.getItem('nh7_gratitude_start');
+   if(!start){ return card(tr('gratitudeCourse'), `<p>${tr('gratitudeCourse')} - ${localNum(list.length||30)} ${tr('day')}</p><button class="primary-btn" id="startGratitude">${tr('startCourse')}</button>`); }
+@@ -1597,31 +1601,34 @@ const nh7BibleKeywordsV451=createBibleKeywordsV451({state,view,html,card,tr,l223
+ async function bibleKeywordsV450(params={}){return nh7BibleKeywordsV451.bibleKeywords(params);}
+ 
+ async function bible(params={}){
+-  await loadBibleMeta();
++  const routeViewTicketWave6=routeTicketWave6(true);
++  await loadBibleMeta();routeCheckWave6(routeViewTicketWave6);
+   if(params.q)return bibleSearch(params.q,params);
+   if(params.mode==='lexicon')return window.NH7OriginalLanguageV453.render(params);
+   if(params.mode==='keywords')return bibleKeywordsV450(params);
+   if(params.mode==='book')return bibleBook(params.bookId,params.testament||'');
+   if(params.mode==='chapter')return bibleChapter(params.bookId,Number(params.chapter||1));
+   if(!params.section&&!params.testament){
+-    view.innerHTML=card(tr('book'),`<p class="muted">${html(l223('منبع مورد نظر خود را انتخاب کنید.','Choose the resource you want to open.','Odaberite sadržaj koji želite otvoriti.'))}</p><div class="grid nh7-book-hub">${tile('bible','📖',tr('writtenBible'),l223('عهد عتیق و عهد جدید','Old and New Testaments','Stari i Novi zavjet'),{section:'written'})}${tile('audioBible','🎧📖',tr('audioBible'),l223('کتاب مقدس صوتی','Audio Bible','Audio Biblija'))}${tile('apocrypha','📜',tr('apocrypha'),l223('کتاب‌های تاریخی اپوکریفا','Apocryphal books','Apokrifne knjige'))}${tile('library','📚',tr('library'),l223('کتاب‌ها و جزوه‌ها','Books and handouts','Knjige i materijali'))}</div>`);
++    routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('book'),`<p class="muted">${html(l223('منبع مورد نظر خود را انتخاب کنید.','Choose the resource you want to open.','Odaberite sadržaj koji želite otvoriti.'))}</p><div class="grid nh7-book-hub">${tile('bible','📖',tr('writtenBible'),l223('عهد عتیق و عهد جدید','Old and New Testaments','Stari i Novi zavjet'),{section:'written'})}${tile('audioBible','🎧📖',tr('audioBible'),l223('کتاب مقدس صوتی','Audio Bible','Audio Biblija'))}${tile('apocrypha','📜',tr('apocrypha'),l223('کتاب‌های تاریخی اپوکریفا','Apocryphal books','Apokrifne knjige'))}${tile('library','📚',tr('library'),l223('کتاب‌ها و جزوه‌ها','Books and handouts','Knjige i materijali'))}</div>`);
+     return;
+   }
+   if(!params.testament){
+-    view.innerHTML=card(tr('writtenBible'),`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible">‹ ${html(tr('back'))}</button></div><div class="form-row"><input id="bibleSearch" class="search-box" placeholder="${tr('search')}"></div><button class="secondary-btn" id="runBibleSearch">${tr('search')}</button><div class="grid">${tile('bible','📜',tr('oldtestament'),'',{section:'written',testament:'OT'})}${tile('bible','✝',tr('newtestament'),'',{section:'written',testament:'NT'})}${tile('bible','🔑',l223('کلیدواژه‌ها','Keywords','Ključne riječi'),l223('۲۵۰۰ واژه','2,500 words','2.500 riječi'),{section:'written',mode:'keywords'})}${tile('bible','🔤',l223('زبان اصلی','Original languages','Izvorni jezici'),l223('واژه، معنی و ارجاع‌های منتخب','Words, meanings and selected references','Riječi, značenja i odabrani navodi'),{section:'written',mode:'lexicon'})}</div>`);
++    routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('writtenBible'),`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible">‹ ${html(tr('back'))}</button></div><div class="form-row"><input id="bibleSearch" class="search-box" placeholder="${tr('search')}"></div><button class="secondary-btn" id="runBibleSearch">${tr('search')}</button><div class="grid">${tile('bible','📜',tr('oldtestament'),'',{section:'written',testament:'OT'})}${tile('bible','✝',tr('newtestament'),'',{section:'written',testament:'NT'})}${tile('bible','🔑',l223('کلیدواژه‌ها','Keywords','Ključne riječi'),l223('۲۵۰۰ واژه','2,500 words','2.500 riječi'),{section:'written',mode:'keywords'})}${tile('bible','🔤',l223('زبان اصلی','Original languages','Izvorni jezici'),l223('واژه، معنی و ارجاع‌های منتخب','Words, meanings and selected references','Riječi, značenja i odabrani navodi'),{section:'written',mode:'lexicon'})}</div>`);
+     return;
+   }
+   const testament=String(params.testament).toUpperCase();
+   const books=state.bible.books.filter(b=>b.testament===testament);
+-  view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written'}))}'>‹ ${html(tr('back'))}</button></div>`+renderBookList(testament==='OT'?tr('oldtestament'):tr('newtestament'),books,testament);
++  routeCheckWave6(routeViewTicketWave6);view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written'}))}'>‹ ${html(tr('back'))}</button></div>`+renderBookList(testament==='OT'?tr('oldtestament'):tr('newtestament'),books,testament);
+ }
+ function renderBookList(title,books,testament=''){return card(title,`<div class="grid">${books.map(b=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:testament||b.testament,bookId:b.id}))}'><strong>${html(b.names[state.lang]||b.names.en)}</strong><small>${localNum(b.chapters)} ${tr('chapters')}</small></button>`).join('')}</div>`)}
+ async function bibleBook(bookId,testament=''){
++  const routeViewTicketWave6=routeTicketWave6(true);
+   const data=await loadBook(bookId);if(!data)return bible({section:'written'});
+   const chapters=Array.from({length:data.book.chapters},(_,i)=>i+1),test=data.book.testament||testament;
+-  view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written',testament:test}))}'>‹ ${html(tr('bookList'))}</button></div>`+card(data.book.names[state.lang]||data.book.names.en,`<div class="grid">${chapters.map(ch=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:ch}))}'><strong>${tr('chapter')} ${localNum(ch)}</strong></button>`).join('')}</div>`);
++  routeCheckWave6(routeViewTicketWave6);view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written',testament:test}))}'>‹ ${html(tr('bookList'))}</button></div>`+card(data.book.names[state.lang]||data.book.names.en,`<div class="grid">${chapters.map(ch=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:ch}))}'><strong>${tr('chapter')} ${localNum(ch)}</strong></button>`).join('')}</div>`);
+ }
+ async function bibleChapter(bookId,chapter){
++  const routeViewTicketWave6=routeTicketWave6(true);
+   const data=await loadBook(bookId);if(!data)return bible({section:'written'});
+   chapter=Math.min(Math.max(1,Number(chapter)||1),Number(data.book.chapters)||1);
+   const verses=data.verses.filter(v=>Number(v.chapter)===chapter),focusVerse=Number(state.params?.verse||0),title=`${data.book.names[state.lang]||data.book.names.en} ${localNum(chapter)}`;
+@@ -1639,7 +1646,7 @@ async function bibleChapter(bookId,chapter){
+   const topNav=`<div class="bible-book-nav"><button class="secondary-btn" ${prevBook?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:prevBook.testament,bookId:prevBook.id}))}'`:'disabled'}>‹ ${html(tr('previousBook'))}</button><button class="primary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written',testament:data.book.testament}))}'>☷ ${html(tr('bookList'))}</button><button class="secondary-btn" ${nextBook?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:nextBook.testament,bookId:nextBook.id}))}'`:'disabled'}>${html(tr('nextBook'))} ›</button></div>`;
+   const prevChapter=chapter>1?chapter-1:null,nextChapter=chapter<data.book.chapters?chapter+1:null;
+   const bottomNav=`<div class="bible-chapter-nav"><button class="secondary-btn" ${prevChapter?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:prevChapter}))}'`:'disabled'}>‹ ${html(tr('previousChapter'))}</button><span>${tr('chapter')} ${localNum(chapter)} / ${localNum(data.book.chapters)}</span><button class="secondary-btn" ${nextChapter?`data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:nextChapter}))}'`:'disabled'}>${html(tr('nextChapter'))} ›</button></div>`;
+-  view.innerHTML=card(title,`${topNav}<p class="muted bible-reader-hint">${html(l223('برای نمایش ابزارها روی آیه بزنید؛ برای باب بعدی یا قبلی صفحه را به چپ یا راست بکشید.','Tap a verse for tools; swipe left or right to change chapter.','Dodirnite redak za alate; povucite lijevo ili desno za drugo poglavlje.'))}</p><div class="reader continuous-reader" data-bible-swipe="1">${rows}</div>${bottomNav}`);
++  routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(title,`${topNav}<p class="muted bible-reader-hint">${html(l223('برای نمایش ابزارها روی آیه بزنید؛ برای باب بعدی یا قبلی صفحه را به چپ یا راست بکشید.','Tap a verse for tools; swipe left or right to change chapter.','Dodirnite redak za alate; povucite lijevo ili desno za drugo poglavlje.'))}</p><div class="reader continuous-reader" data-bible-swipe="1">${rows}</div>${bottomNav}`);
+   bindBibleChapterSwipe(prevChapter?{bookId,chapter:prevChapter}:null,nextChapter?{bookId,chapter:nextChapter}:null);
+   if(focusVerse)setTimeout(()=>document.getElementById('v-'+focusVerse)?.scrollIntoView({behavior:'smooth',block:'center'}),150);
+ }
+@@ -1901,12 +1908,17 @@ async function school(params={}){
+   if(cloudAccess)access=cloudAccess;
+   const approved=access.status==='approved'||access.approvedBy==='admin';
+   if(!approved){
++    window.NH7SearchSchoolMetadataWave6=()=>[];
+     const status=access.status==='pending'?`<span class="badge">${tr('pending')}</span>`:'';
+     view.innerHTML=card(tr('school'),`<p>${tr('schoolAccessText')}</p>${status}<p class="muted">${access.status==='pending'?tr('approvedRefreshHint'):tr('schoolNotApproved')}</p><div class="school-entry-actions">${access.status==='pending'?'':`<button class="primary-btn wide-btn" data-go="school" data-params='{"form":true}'>${tr('schoolNewRegistration')}</button>`}<button class="secondary-btn wide-btn" data-go="school" data-params='{"enter":true}'>${tr('refreshApproval')}</button><button class="secondary-btn wide-btn" id="schoolLogoutBtn">${tr('logoutAccount')}</button></div>`);
+     $('#schoolLogoutBtn')?.addEventListener('click',()=>logoutAccount('school'));return;
+   }
+   // Load protected lessons only after the existing identity and approval checks.
++  const schoolSearchActorWave6=window.NH7UserContextWave6.identity(),schoolSearchAtWave6=Date.now();
+   const d=await loadSchoolContent();
++  if(!window.NH7UserContextWave6.current(schoolSearchActorWave6))return;
++  const schoolSearchRowsWave6=(d.lessons||[]).map(l=>({id:l.lesson_code,...Object.fromEntries(['fa','en','hr'].map(lang=>['title_'+lang,[l.translations?.[lang]?.class_title,l.translations?.[lang]?.lesson_title].filter(Boolean).join(' — ')]))}));
++  window.NH7SearchSchoolMetadataWave6=()=>window.NH7UserContextWave6.current(schoolSearchActorWave6)&&Date.now()-schoolSearchAtWave6<120000?schoolSearchRowsWave6.map(x=>({...x})):[];
+   if(schoolEpochV465!==nh7NavigationEpochV456)return;
+   if(params.lesson)return schoolLesson(d,params.lesson);
+   if(params.exam)return schoolCourseExam(d,params.exam);
+@@ -2139,7 +2151,8 @@ function nh7MountAudioEnhancementsV446(){
+ }
+ 
+ async function audio(params={}){
+-  if(!await nh7RequireSchoolAccessV223(tr('audio')))return;
++  const routeViewTicketWave6=routeTicketWave6();
++  if(!await nh7RequireSchoolAccessV223(tr('audio')))return;routeCheckWave6(routeViewTicketWave6);
+   let categories=[],sermons=[];
+   const cached=nh7ReadAudioCatalogCacheV446();
+   const fetchFresh=()=>Promise.all([
+@@ -2162,9 +2175,9 @@ async function audio(params={}){
+     const catId=params.cat||'';
+     const filtered=nh7FilterSermonsV530(sermons,catId,params.q||'');
+     window.__sermonMap=nh7BuildSermonMapV535(categories,sermons);
+-    if(params.open){const x=sermons.find(v=>String(v.id)===String(params.open));if(x)playSermon(x);navigate('audio',{cat:catId,q:params.q||''},true);return}
++    if(params.open){const x=sermons.find(v=>String(v.id)===String(params.open));if(x){await window.NH7_AUDIO_CLASSIC_V400?.playItem(window.__sermonMap[String(x.id)]);routeCheckWave6(routeViewTicketWave6)}navigate('audio',{cat:catId,q:params.q||''},true);return}
+     const list=filtered.length?`<div class="sermon-list">${filtered.map(x=>{const title=x['title_'+state.lang]||x.title_fa||x.title_en;let progress={};try{progress=JSON.parse(localStorage.getItem(sermonProgressKey(x.id))||'{}')}catch(e){}const duration=sermonDurationLabel(x)||formatAudioTime(progress.duration||0);return `<article class="sermon-card" data-sermon-card="${html(x.id)}"><div class="sermon-card-main">${x.cover_url?`<img src="${html(x.cover_url)}" alt="">`:'<span class="sermon-placeholder">🎙</span>'}<div class="sermon-card-copy"><strong>${html(title)}</strong><small>${duration?`${tr('duration')}: ${localText(duration)} · `:''}${x.youtube_url?'YouTube · ':''}${x.audio_url?'MP3':''}</small><div class="sermon-card-actions">${x.audio_url?`<button class="primary-btn compact-player-btn" data-sermon-play="${html(x.id)}">▶ ${progress.time>5?tr('continueListening'):tr('listenAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(x.audio_url)}" data-offline-title="${html(title)}">${state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline'}</button>`:''}<button class="secondary-btn compact-player-btn" data-sermon-note="${html(x.id)}">📝 ${tr('sermonNoteButton')}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(x.id)}"><div class="inline-player-controls"><button class="player-round" data-inline-back aria-label="${html(tr('back15'))}">↶15</button><button class="player-main" data-inline-play aria-label="${html(tr('playPause'))}">▶</button><button class="player-round" data-inline-forward aria-label="${html(tr('forward30'))}">30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek aria-label="${html(tr('playbackPosition'))}" type="range" min="0" max="1000" value="0"><span data-inline-total>${duration||'0:00'}</span></div></div></article>`}).join('')}</div>`:`<p class="muted">${tr('noSermons')}</p>`;
+-    view.innerHTML=card(tr('sermons'),`<input id="sermonSearch" placeholder="${tr('sermonSearch')}" value="${html(params.q||'')}"><div class="tabs"><button class="tab ${!catId?'active':''}" data-go="audio">${tr('allCategories')}</button>${(categories||[]).map(c=>`<button class="tab ${String(catId)===String(c.id)?'active':''}" data-go="audio" data-params='${html(JSON.stringify({cat:c.id}))}'>${html(c['name_'+state.lang]||c.name_fa||c.name_en)}</button>`).join('')}</div>${list}`);
++    routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('sermons'),`<input id="sermonSearch" placeholder="${tr('sermonSearch')}" value="${html(params.q||'')}"><div class="tabs"><button class="tab ${!catId?'active':''}" data-go="audio">${tr('allCategories')}</button>${(categories||[]).map(c=>`<button class="tab ${String(catId)===String(c.id)?'active':''}" data-go="audio" data-params='${html(JSON.stringify({cat:c.id}))}'>${html(c['name_'+state.lang]||c.name_fa||c.name_en)}</button>`).join('')}</div>${list}`);
+     try{window.NH7_AUDIO_LIBRARY_V500_PATCH?.()}catch(e){console.warn('Audio Library v500 mount',e)}
+     const sermonSearchEl=$('#sermonSearch');
+     const runSermonSearch=e=>navigate('audio',{cat:catId,q:e.target.value},true);
+@@ -2177,9 +2190,9 @@ async function audio(params={}){
+     const c=d.categories.find(x=>x.id===params.cat),items=c?.items||[],topic=pick(c?.title)||tr('audio');
+     window.__sermonMap=Object.fromEntries(items.map(it=>{const id='bundled-'+String(it.id||simpleHash(it.src||it.title||''));return[id,{id,audio_url:it.src||'',title_fa:it.title?.fa||it.title?.en||'Audio',title_en:it.title?.en||it.title?.fa||'Audio',title_hr:it.title?.hr||it.title?.en||'Audio',analytics_type:'sermon',analytics_id:String(it.id||id),analytics_topic:topic,analytics_source_group:String(c?.id||''),analytics_language:state.lang}]}));
+     const list=items.length?`<div class="sermon-list">${items.map(it=>{const id='bundled-'+String(it.id||simpleHash(it.src||it.title||'')),title=pick(it.title)||it.title||tr('playAudio');let progress={};try{progress=JSON.parse(localStorage.getItem(sermonProgressKey(id))||'{}')}catch(e){}const duration=formatAudioTime(progress.duration||0);return`<article class="sermon-card" data-sermon-card="${html(id)}"><div class="sermon-card-main"><span class="sermon-placeholder">🎧</span><div class="sermon-card-copy"><strong>${html(title)}</strong><small>${duration!=='0:00'?`${tr('duration')}: ${localText(duration)} · `:''}MP3</small><div class="sermon-card-actions"><button class="primary-btn compact-player-btn" data-sermon-play="${html(id)}">▶ ${progress.time>5?tr('continueListening'):tr('listenAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(it.src||'')}" data-offline-title="${html(title)}">${state.lang==='fa'?'دانلود برای آفلاین':state.lang==='hr'?'Preuzmi offline':'Download offline'}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(id)}"><div class="inline-player-controls"><button class="player-round" data-inline-back aria-label="${html(tr('back15'))}">↶15</button><button class="player-main" data-inline-play aria-label="${html(tr('playPause'))}">▶</button><button class="player-round" data-inline-forward aria-label="${html(tr('forward30'))}">30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek aria-label="${html(tr('playbackPosition'))}" type="range" min="0" max="1000" value="0"><span data-inline-total>${duration}</span></div></div></article>`}).join('')}</div>`:`<p class="muted">${tr('noAudio')}</p>`;
+-    view.innerHTML=card(topic,list);bindInlineSermonControls();updateInlineSermonPlayers();nh7MountAudioEnhancementsV446();return
++    routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(topic,list);bindInlineSermonControls();updateInlineSermonPlayers();nh7MountAudioEnhancementsV446();return
+   }
+-  view.innerHTML=card(tr('audio'),`<div class="grid">${d.categories.map(c=>tile('audio','🎧',pick(c.title),`${tr('all')}: ${localNum((c.items||[]).length)}`,{cat:c.id})).join('')}</div>`);
++  routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('audio'),`<div class="grid">${d.categories.map(c=>tile('audio','🎧',pick(c.title),`${tr('all')}: ${localNum((c.items||[]).length)}`,{cat:c.id})).join('')}</div>`);
+ }
+ 
+ function audioBibleTitle(row){return row?.['name_'+state.lang]||row?.name_en||row?.name_fa||row?.code||''}
+@@ -2189,6 +2202,7 @@ function audioBibleChapterTitle(row){
+   return `${tr('chapter')} ${localNum(n)}`;
+ }
+ async function audioBible(params={}){
++  const routeViewTicketWave6=routeTicketWave6();
+   // Audio Bible is regular Bible content; do not require School approval.
+   let books=[],chapters=[];
+   try{
+@@ -2198,7 +2212,7 @@ async function audioBible(params={}){
+     ]);
+   }catch(e){
+     console.warn('Audio Bible load failed',e);
+-    view.innerHTML=card(tr('audioBible'),`<p class="muted">${html(tr('noChapterAudio'))}</p>`);
++    routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('audioBible'),`<p class="muted">${html(tr('noChapterAudio'))}</p>`);
+     return;
+   }
+   books=Array.isArray(books)?books:[]; chapters=Array.isArray(chapters)?chapters:[];
+@@ -2207,7 +2221,7 @@ async function audioBible(params={}){
+   if(!testament){
+     const oldCount=chapters.filter(c=>books.find(b=>b.book_code===c.book_code)?.testament==='old').length;
+     const newCount=chapters.filter(c=>books.find(b=>b.book_code===c.book_code)?.testament==='new').length;
+-    view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible">‹ ${html(tr('back'))}</button></div>`+card(tr('audioBible'),`<p class="muted">${html(tr('audioBibleIntro'))}</p><div class="grid">${tile('audioBible','📜',tr('oldTestament'),`${tr('uploadedChapters')}: ${localNum(oldCount)}`,{testament:'old'})}${tile('audioBible','✝',tr('newTestament'),`${tr('uploadedChapters')}: ${localNum(newCount)}`,{testament:'new'})}</div>`);
++    routeCheckWave6(routeViewTicketWave6);view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible">‹ ${html(tr('back'))}</button></div>`+card(tr('audioBible'),`<p class="muted">${html(tr('audioBibleIntro'))}</p><div class="grid">${tile('audioBible','📜',tr('oldTestament'),`${tr('uploadedChapters')}: ${localNum(oldCount)}`,{testament:'old'})}${tile('audioBible','✝',tr('newTestament'),`${tr('uploadedChapters')}: ${localNum(newCount)}`,{testament:'new'})}</div>`);
+     return;
+   }
+   const testamentBooks=books.filter(b=>String(b.testament)===testament);
+@@ -2216,7 +2230,7 @@ async function audioBible(params={}){
+       const count=chapters.filter(c=>String(c.book_code)===String(b.book_code)).length;
+       return tile('audioBible','📘',audioBibleTitle(b),`${tr('uploadedChapters')}: ${localNum(count)} / ${localNum(b.chapter_count||0)}`,{testament,book:b.book_code});
+     }).join('');
+-    view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="audioBible">‹ ${html(tr('back'))}</button></div>`+card(testament==='old'?tr('oldTestament'):tr('newTestament'),`<p class="muted">${html(tr('audioBibleIntro'))}</p><div class="grid">${cards}</div>`);
++    routeCheckWave6(routeViewTicketWave6);view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="audioBible">‹ ${html(tr('back'))}</button></div>`+card(testament==='old'?tr('oldTestament'):tr('newTestament'),`<p class="muted">${html(tr('audioBibleIntro'))}</p><div class="grid">${cards}</div>`);
+     return;
+   }
+   const book=books.find(b=>String(b.book_code)===bookCode);
+@@ -2226,11 +2240,12 @@ async function audioBible(params={}){
+     const id='bible-'+String(r.id),title=audioBibleChapterTitle(r),duration=formatAudioTime(r.duration_seconds||0),progress=(()=>{try{return JSON.parse(localStorage.getItem(sermonProgressKey(id))||'{}')}catch(e){return{}}})();
+     return `<article class="sermon-card" data-sermon-card="${html(id)}"><div class="sermon-card-main"><span class="sermon-placeholder">🔊</span><div class="sermon-card-copy"><strong>${html(title)}</strong><small>${duration?`${tr('duration')}: ${duration}`:''}</small><div class="sermon-card-actions"><button class="primary-btn compact-player-btn" data-sermon-play="${html(id)}">▶ ${progress.time>5?tr('continueListening'):tr('playAudio')}</button><button class="secondary-btn compact-player-btn" data-offline-download="${html(r.audio_url)}" data-offline-title="${html(audioBibleTitle(book)+' '+title)}">${tr('downloadOffline')}</button></div></div></div><div class="inline-sermon-player hidden" data-inline-player="${html(id)}"><div class="inline-player-controls"><button class="player-round" data-inline-back aria-label="${html(tr('back15'))}">↶15</button><button class="player-main" data-inline-play aria-label="${html(tr('playPause'))}">▶</button><button class="player-round" data-inline-forward aria-label="${html(tr('forward30'))}">30↷</button><select data-inline-speed aria-label="${tr('playbackSpeed')}"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="inline-player-timeline"><span data-inline-now>0:00</span><input data-inline-seek aria-label="${html(tr('playbackPosition'))}" type="range" min="0" max="1000" value="0"><span data-inline-total>${duration||'0:00'}</span></div></div></article>`;
+   }).join('')}</div>`:`<p class="muted">${html(tr('noChapterAudio'))}</p>`;
+-  view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="audioBible" data-params='${html(JSON.stringify({testament}))}'>‹ ${html(tr('bookList'))}</button></div>`+card(audioBibleTitle(book)||tr('audioBible'),`<p class="muted">${html(testament==='old'?tr('oldTestament'):tr('newTestament'))}</p>${list}`);
++  routeCheckWave6(routeViewTicketWave6);view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="audioBible" data-params='${html(JSON.stringify({testament}))}'>‹ ${html(tr('bookList'))}</button></div>`+card(audioBibleTitle(book)||tr('audioBible'),`<p class="muted">${html(testament==='old'?tr('oldTestament'):tr('newTestament'))}</p>${list}`);
+   window.__sermonMap=Object.assign(window.__sermonMap||{},window.__audioBibleMap||{});bindInlineSermonControls();updateInlineSermonPlayers();
+ }
+ 
+ async function salvation(){
++  const routeViewTicketWave6=routeTicketWave6();
+   const d=await jfetch('data/salvation/need_salvation.json');
+   const sections=(d.sections||[]).filter(s=>s.id!=='new_birth_videos');
+   const introText = state.lang==='fa'
+@@ -2253,16 +2268,18 @@ async function salvation(){
+       <small>${state.lang==='fa'?'نمایش ویدیوها':state.lang==='hr'?'Prikaži video lekcije':'Show videos'}</small>
+     </button>
+     <div id="salvation-videos" class="accordion-panel hidden">${videoList}</div>`;
+-  view.innerHTML=card(tr('salvation'), `<p class="muted">${introText}</p><div class="list">${sectionButtons}${videosAccordion}</div>`);
++  routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('salvation'), `<p class="muted">${introText}</p><div class="list">${sectionButtons}${videosAccordion}</div>`);
+   bindDynamic();
+ }
+ async function about(){
++  const routeViewTicketWave6=routeTicketWave6();
+   const d=await jfetch('data/church/about.json');
+-  view.innerHTML=card(tr('about'), `<h3>${tr('churchIntro')}</h3><p>${html(d.intro?.[state.lang]||'')}</p><h3>${tr('ourVision')}</h3><p>${html(d.vision?.[state.lang]||'')}</p><h3>${tr('ourBeliefs')}</h3><p>${html(d.beliefs?.[state.lang]||'')}</p><div class="button-row"><a class="secondary-btn" href="https://www.bible.com/organizations/da6136d1-04cd-4243-a52b-f9ba7f32ec79?utm_source=yvapp&utm_medium=share&utm_content=partner-page" target="_blank" rel="noopener">${tr('youversion')}</a></div>`);
++  routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('about'), `<h3>${tr('churchIntro')}</h3><p>${html(d.intro?.[state.lang]||'')}</p><h3>${tr('ourVision')}</h3><p>${html(d.vision?.[state.lang]||'')}</p><h3>${tr('ourBeliefs')}</h3><p>${html(d.beliefs?.[state.lang]||'')}</p><div class="button-row"><a class="secondary-btn" href="https://www.bible.com/organizations/da6136d1-04cd-4243-a52b-f9ba7f32ec79?utm_source=yvapp&utm_medium=share&utm_content=partner-page" target="_blank" rel="noopener">${tr('youversion')}</a></div>`);
+ }
+ async function meetings(params={}){
++  const routeViewTicketWave6=routeTicketWave6();
+   const meetingEpochV456=nh7NavigationEpochV456;
+-  if(isExplicitlyLoggedOut()){view.innerHTML=card(tr('meetings'),`<p>${tr('loginRequired')}</p><button class="primary-btn" data-go="account">${tr('signIn')}</button>`);return;}
++  if(isExplicitlyLoggedOut()){routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('meetings'),`<p>${tr('loginRequired')}</p><button class="primary-btn" data-go="account">${tr('signIn')}</button>`);return;}
+   let meetingAccess={status:'none'},schoolAccess={status:'none'};
+   try{meetingAccess=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{"status":"none"}')||meetingAccess}catch(_){}
+   try{schoolAccess=JSON.parse(localStorage.getItem('nh7_school_access')||'{"status":"none"}')||schoolAccess}catch(_){}
+@@ -2273,7 +2290,7 @@ async function meetings(params={}){
+     const buttons=approved?`<div class="button-row"><button class="secondary-btn" data-go="meetings">${tr('refreshApproval')}</button></div>`:`<div class="button-row"><button class="primary-btn" data-go="school" data-params='{"form":true}'>${tr('register')} ${tr('school')}</button><button class="secondary-btn" data-go="meetings">${tr('refreshApproval')}</button></div>`;
+     const notApprovedText=state.lang==='fa'?'برای امنیت جلسه، ورود مهمان نداریم. اگر در مدرسه ثبت‌نام کرده‌اید، پس از تأیید ادمین همین بخش لینک و کد جلسه را نشان می‌دهد.':(state.lang==='hr'?'Zbog sigurnosti nema ulaska kao gost. Nakon registracije za školu i odobrenja administratora ovdje će se prikazati poveznica i kod sastanka.':'For meeting security, guest access is not available. After school registration and admin approval, the meeting link and codes will appear here.');
+     const sync=refreshing?`<p class="muted small">${html(state.lang==='fa'?'در حال بررسی تازه‌ترین وضعیت…':state.lang==='hr'?'Provjera najnovijeg statusa…':'Checking latest status…')}</p>`:'';
+-    view.innerHTML=card(tr('meetings'),`<p>${tr('meetingAccessText')}</p>${approved?'':`<p class="muted">${notApprovedText}</p>`}<span class="badge">${approved?tr('approved'):(schoolAccess.status==='pending'||meetingAccess.status==='pending'?tr('pending'):tr('notStarted'))}</span>${details}${sync}${buttons}`);
++    routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('meetings'),`<p>${tr('meetingAccessText')}</p>${approved?'':`<p class="muted">${notApprovedText}</p>`}<span class="badge">${approved?tr('approved'):(schoolAccess.status==='pending'||meetingAccess.status==='pending'?tr('pending'):tr('notStarted'))}</span>${details}${sync}${buttons}`);
+     bindDynamic();
+   };
+   // Fast path: render immediately from the last known access and built-in meeting
+@@ -2414,13 +2431,14 @@ async function nh7DownloadPublicLibraryV125(button){
+ function libraryUserCardV224(x,isApocrypha=false){const mime=String(x.mime_type||'application/pdf'),label=nh7LibraryTextV125(x)?l223('متن','Text','Tekst'):mime.includes('wordprocessingml')||/\.docx$/i.test(x.file_name||'')?'DOCX':'PDF';return `<article class="library-user-card" data-library-audience="${html(x.audience||'')}"><div class="library-user-icon">${label}</div><span class="library-audience ${html(x.audience)}">${x.audience==='ministers'?'🔒 '+tr('ministersLibrary'):'🌍 '+tr('publicLibrary')}</span><h3>${html(libraryText(x,'title')||x.file_name||label)}</h3><p>${html(libraryText(x,'description')||'')}</p>${nh7LibraryTextV125(x)?'':`<small class="muted">${html(x.file_name||'')} · ${librarySize(x.file_size)}</small>`}<div class="button-row"><button class="primary-btn" data-library-open="${html(x.id)}">${x.audience==='ministers'?'🔐':'📖'} ${html(nh7LibraryTextV125(x)?l223('مطالعه','Read','Čitaj'):isApocrypha?l223('باز کردن','Open','Otvori'):tr('openPdf'))}</button>${x.audience==='public'&&(nh7LibraryTextV125(x)||nh7LibraryDownloadableV125(x))?`<button type="button" class="secondary-btn" data-library-offline="${html(x.id)}" ${nh7LibraryTextV125(x)?'':`data-offline-download="${html(window.NH7LibrarySecurityV125?.publicFile(x.id)||'')}"`} data-offline-title="${html(libraryText(x,'title')||x.file_name||'')}">${html(nh7LibraryTextV125(x)?l223('مطالعه و آماده‌سازی آفلاین','Read and prepare offline','Čitaj i pripremi offline'):l223('دانلود برای آفلاین','Download offline','Preuzmi offline'))}</button>`:''}</div>${nh7LibraryDownloadableV125(x)?`<p class="muted small">${tr('pdfExpires')}</p>`:''}</article>`}
+ 
+ async function library(params={}){
+-  if(!await nh7RequireSchoolAccessV223(tr('library')))return;
++  const routeViewTicketWave6=routeTicketWave6();
++  if(!await nh7RequireSchoolAccessV223(tr('library')))return;routeCheckWave6(routeViewTicketWave6);
+   nh7LibraryTab=params.tab||nh7LibraryTab||'public';sessionStorage.setItem('nh7_library_tab',nh7LibraryTab);
+   await loadLibraryCatalog(nh7LibraryTab==='ministers');
+   const rows=nh7LibraryCatalog.filter(x=>x.audience===nh7LibraryTab&&(x.resource_type||'library')==='library');
+   const title=nh7LibraryTab==='ministers'?tr('ministersLibrary'):tr('publicLibrary');
+   const cards=rows.map(x=>libraryUserCardV224(x,false)).join('');
+-  view.innerHTML=card(tr('library'),`<div class="library-user-tabs"><button class="${nh7LibraryTab==='public'?'primary-btn':'secondary-btn'}" data-library-tab="public">${tr('publicLibrary')}</button><button class="${nh7LibraryTab==='ministers'?'primary-btn':'secondary-btn'}" data-library-tab="ministers">🔒 ${tr('ministersLibrary')}</button></div>${nh7LibraryTab==='ministers'?`<div class="library-lock-note">${tr('protectedLibrary')}</div>`:''}<h2>${title}</h2><div class="library-user-grid">${cards||`<p class="muted">${tr('libraryEmpty')}</p>`}</div>`);
++  routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('library'),`<div class="library-user-tabs"><button class="${nh7LibraryTab==='public'?'primary-btn':'secondary-btn'}" data-library-tab="public">${tr('publicLibrary')}</button><button class="${nh7LibraryTab==='ministers'?'primary-btn':'secondary-btn'}" data-library-tab="ministers">🔒 ${tr('ministersLibrary')}</button></div>${nh7LibraryTab==='ministers'?`<div class="library-lock-note">${tr('protectedLibrary')}</div>`:''}<h2>${title}</h2><div class="library-user-grid">${cards||`<p class="muted">${tr('libraryEmpty')}</p>`}</div>`);
+ }
+ 
+ async function more(){
+@@ -2491,6 +2509,7 @@ function nh7MergeOwnQuestionsV470(local,ownCloud){
+   return out;
+ }
+ async function qna(opts={}){
++  const routeViewTicketWave6=routeTicketWave6();
+   let local=[];try{local=JSON.parse(localStorage.getItem('nh7_my_questions')||'[]')}catch(e){local=[]}
+   local=Array.isArray(local)?local:[];
+   let answered=nh7ReadQnaPublicCacheV470();
+@@ -2535,7 +2554,7 @@ async function qna(opts={}){
+   const openText=state.lang==='fa'?'برای باز کردن کلیک کنید':state.lang==='hr'?'Dodirnite za otvaranje':'Tap to open';
+   const myHtml=my.length?`<div class="list">${my.slice().reverse().map((q,i)=>{const done=String(q.answer||'').trim().length>0||q.status==='answered';return `<button class="list-btn qna-answer-toggle" data-qna-answer="myq-${i}"><strong>${html(q.question)}</strong><small>${done?tr('answered'):tr('waitingAnswer')} • ${tapText}</small></button><div id="myq-${i}" class="accordion-panel hidden">${done?`<p><strong>${tr('answer')}:</strong> ${html(q.answer)}</p>`:`<p class="muted">${tr('waitingAnswer')}</p>`}</div>`}).join('')}</div>`:`<p class="muted">${tr('noQuestions')}</p>`;
+   const answeredHtml=answered&&answered.length?`<div class="list">${answered.map((q,i)=>`<button class="list-btn qna-answer-toggle" data-qna-answer="pubq-${i}"><strong>${html(q.question_text)}</strong><small>${tapText}</small></button><div id="pubq-${i}" class="accordion-panel hidden"><p><strong>${tr('answer')}:</strong> ${html(q.answer_text||'')}</p></div>`).join('')}</div>`:`<p class="muted">${tr('noQuestions')}</p>`;
+-  view.innerHTML=card(tr('qna'),`<p class="muted">${tr('anonymousNote')}</p><div class="notice"><p>${tr('qnaWaitNotice')}</p><p>${tr('askQuestionOnce')}</p></div><h3>${tr('askQuestion')}</h3><textarea id="qaQuestion" placeholder="${tr('questionText')}" required>${html(opts.draft||'')}</textarea><button class="primary-btn" id="submitQa">${tr('submitQuestion')}</button><div class="qna-section"><button class="secondary-btn wide-btn" data-qna-toggle="myQuestionsPanel">${tr('myQuestions')} <span>${openText}</span></button><div id="myQuestionsPanel" class="accordion-panel hidden">${myHtml}</div></div><div class="qna-section"><button class="secondary-btn wide-btn" data-qna-toggle="publicAnswersPanel">${tr('publicAnswers')} <span>${openText}</span></button><div id="publicAnswersPanel" class="accordion-panel hidden">${answeredHtml}</div></div>`);
++  routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('qna'),`<p class="muted">${tr('anonymousNote')}</p><div class="notice"><p>${tr('qnaWaitNotice')}</p><p>${tr('askQuestionOnce')}</p></div><h3>${tr('askQuestion')}</h3><textarea id="qaQuestion" placeholder="${tr('questionText')}" required>${html(opts.draft||'')}</textarea><button class="primary-btn" id="submitQa">${tr('submitQuestion')}</button><div class="qna-section"><button class="secondary-btn wide-btn" data-qna-toggle="myQuestionsPanel">${tr('myQuestions')} <span>${openText}</span></button><div id="myQuestionsPanel" class="accordion-panel hidden">${myHtml}</div></div><div class="qna-section"><button class="secondary-btn wide-btn" data-qna-toggle="publicAnswersPanel">${tr('publicAnswers')} <span>${openText}</span></button><div id="publicAnswersPanel" class="accordion-panel hidden">${answeredHtml}</div></div>`);
+   $('#submitQa').onclick=async()=>{
+     const question=($('#qaQuestion').value||'').trim();if(!question){alert(tr('requiredField'));return}
+     const norm=normalizeQuestionText(question),duplicateLocal=my.some(q=>normalizeQuestionText(q.question)===norm),duplicatePublic=(answered||[]).some(q=>normalizeQuestionText(q.question_text)===norm);
+@@ -2560,14 +2579,15 @@ function myDocumentsHtmlV510(rows){
+   return `<section class="nh7-my-documents-v510"><h3>📜 ${L('مدارک من','My documents','Moji dokumenti')}</h3><p class="muted">${L('مدارک صادرشده در حساب شما بایگانی می‌شوند و هر زمان می‌توانید آن‌ها را باز، نمایش یا به صورت PDF ثابت دانلود کنید.','Issued documents stay in your account archive. You can open, show, or download a flattened PDF at any time.','Izdani dokumenti ostaju u arhivi računa. Možete ih otvoriti, pokazati ili preuzeti kao zaključani PDF.')}</p><div class="list">${rows.map(r=>{const title=r['title_'+state.lang]||r.title_en||r.title_fa||r.title_hr||r.certificate_type||L('مدرک','Document','Dokument'),url=r.public_token?new URL('certificate.html?token='+encodeURIComponent(r.public_token)+'&v=510',location.href).href:(r.preview_url||''),date=r.issue_date||r.approved_at||r.created_at||'',revoked=String(r.status||'').toLowerCase()==='revoked';return `<article class="list-btn nh7-my-document-v510 ${revoked?'revoked':''}"><div><strong>${html(title)}</strong><small>${html(r.certificate_number||'')} · ${html(String(date).slice(0,10))}${revoked?' · '+L('لغوشده','Revoked','Poništeno'):''}</small></div>${url?`<div class="button-row"><a class="secondary-btn" href="${html(url)}" target="_blank" rel="noopener">👁 ${L('باز کردن / نمایش','Open / show','Otvori / prikaži')}</a><a class="primary-btn" href="${html(url+(url.includes('?')?'&':'?')+'download=1')}" target="_blank" rel="noopener">⬇ PDF</a></div>`:''}</article>`}).join('')}</div></section>`;
+ }
+ async function account(){
++  const routeViewTicketWave6=routeTicketWave6();
+   const session=authSession();
+   if(isAccountLoggedIn()){
+     if(window.NH7CommunityV502?.resumePending?.())return;
+     const profile=getKnownUserProfile(); const email=authEmail()||profile.email||'',documents=await myDocumentsV510();
+-    view.innerHTML=card(tr('account'), `<h3>${tr('myAccess')}</h3><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||session?.user?.user_metadata?.full_name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(email)}</p></div>${myDocumentsHtmlV510(documents)}<button class="danger-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button>`);
++    routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('account'), `<h3>${tr('myAccess')}</h3><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||session?.user?.user_metadata?.full_name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(email)}</p></div>${myDocumentsHtmlV510(documents)}<button class="danger-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button>`);
+     $('#logoutAccountBtn')?.addEventListener('click',logoutAccount); return;
+   }
+-  view.innerHTML=card(tr('account'), `<p class="muted">${tr('signedOut')}</p><p>${tr('signInHint')}</p><input id="accountEmail" type="email" autocomplete="email" placeholder="${tr('email')}"><div class="password-wrap"><input id="accountPassword" type="password" autocomplete="current-password" placeholder="${tr('password')}"><button type="button" class="password-eye" data-toggle-password="accountPassword">👁</button></div><button class="primary-btn wide-btn" id="signInBtn">${tr('signIn')}</button><button class="link-button" id="forgotPasswordToggle">${tr('forgotPassword')}</button><div id="forgotPasswordPanel" class="hidden"><input id="resetEmail" type="email" placeholder="${tr('email')}"><button class="secondary-btn" id="resetPasswordBtn">${tr('resetPassword')}</button><p id="resetMsg" class="muted"></p></div>`);
++  routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('account'), `<p class="muted">${tr('signedOut')}</p><p>${tr('signInHint')}</p><input id="accountEmail" type="email" autocomplete="email" placeholder="${tr('email')}"><div class="password-wrap"><input id="accountPassword" type="password" autocomplete="current-password" placeholder="${tr('password')}"><button type="button" class="password-eye" data-toggle-password="accountPassword">👁</button></div><button class="primary-btn wide-btn" id="signInBtn">${tr('signIn')}</button><button class="link-button" id="forgotPasswordToggle">${tr('forgotPassword')}</button><div id="forgotPasswordPanel" class="hidden"><input id="resetEmail" type="email" placeholder="${tr('email')}"><button class="secondary-btn" id="resetPasswordBtn">${tr('resetPassword')}</button><p id="resetMsg" class="muted"></p></div>`);
+   $('#signInBtn')?.addEventListener('click',signInAccount);
+   $('#forgotPasswordToggle')?.addEventListener('click',()=>$('#forgotPasswordPanel')?.classList.toggle('hidden'));
+   $('#resetPasswordBtn')?.addEventListener('click',resetPassword);
+@@ -2921,6 +2941,7 @@ window.dispatchEvent(new Event('nh7-router-ready-wave4'));
+ 
+ // Reader localization only. Canonical storage keys stay unchanged.
+ window.NH7ReaderSourceV452={
++  open:async ref=>{const ticket=routeTicketWave6(true),row=await window.NH7ReaderSourceV452.resolve(ref,state.lang);routeCheckWave6(ticket);if(!row)throw Error('Invalid Bible reference');return navigate('bible',{section:'written',mode:'chapter',bookId:row.bookId,chapter:row.chapter,verse:row.verse});},
+   recordSaved:()=>addPoints(5,'first_verse'),
+   label:(bookId,chapter,verse,locale=state.lang)=>{
+     const b=state.bible.books?.find(x=>x.id===bookId),n=v=>locale==='fa'?String(v).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]):String(v);
+@@ -2960,3 +2981,6 @@ window.NH7QuickBibleSourceV454={
+   });
+  }
+ };
++
++// Same-page ownership changes invalidate transient route presentation, never stored data.
++window.addEventListener('nh7-personal-owner-wave2',()=>{nh7NavigationEpochV456++;window.NH7SearchSchoolMetadataWave6=()=>[];navigate(state.route,state.params,true)});
+diff --git a/js/document-studio-v2/archive.mjs b/js/document-studio-v2/archive.mjs
+index 198abb4a..e76d9690 100644
+--- a/js/document-studio-v2/archive.mjs
++++ b/js/document-studio-v2/archive.mjs
+@@ -7,7 +7,8 @@ import {types} from './catalog.mjs';
+ const root=document.querySelector('#archive'),language=['fa','en','hr'].includes(localStorage.getItem('nh7_lang'))?localStorage.getItem('nh7_lang'):'en';let records=[],actor=null,epoch=0,viewerPage=null;
+ document.documentElement.lang=language;document.documentElement.dir=language==='fa'?'rtl':'ltr';
+ const word=k=>t(k,language);
+-function clear(){epoch++;records=[];viewerPage=null;root.querySelector('dialog')?.close();root.replaceChildren(Object.assign(document.createElement('p'),{textContent:word('login')}))}
++function messageView(message){root.innerHTML=`<header class="ds2-public-header"><a href="index.html#account">${esc(word('close'))}</a><h1>${esc(word('archive'))}</h1></header><p role="status">${esc(message)}</p>`}
++function clear(){epoch++;records=[];viewerPage=null;root.querySelector('dialog')?.close();messageView(word('login'))}
+ function guard(ticket=actor){if(!ticket?.uid||!current(ticket)){clear();throw Error('sessionChanged')}}
+ async function load(){clear();actor=identity('user');if(!actor.uid)return;const token=++epoch,captured=actor;root.textContent=word('loading');try{const data=await rpc(calls.archive,{},'user');if(token!==epoch||!current(captured))return clear();records=[...(data.documents||[]),...(data.legacy||[])].filter(r=>!r.recipient_user_id||r.recipient_user_id===captured.uid);records=records.map(r=>({...r,document:r.document?publicProjection(r.document):undefined}));
+ root.innerHTML=`<header class="ds2-public-header"><a href="index.html#account">${esc(word('close'))}</a><h1>${esc(word('archive'))}</h1></header><div class="ds2-row"><label>${word('type')}<select id="category"><option value="">${word('all')}</option>${types.map(x=>`<option value="${x.id}">${esc(x.titles[language])}</option>`).join('')}</select></label><label>${word('search')}<input id="search" type="search"></label><label>${word('records')}<select id="status"><option value="">${word('all')}</option>${['issued','revoked','expired'].map(x=>`<option value="${x}">${word(x)}</option>`).join('')}</select></label><label>${word('date')}<input id="from" type="date"><input id="to" type="date"></label></div><button id="refresh">${word('refresh')}</button><div id="list"></div><p id="message" role="status"></p><dialog id="viewer"></dialog>`;
+@@ -17,6 +18,6 @@ if(b.dataset.action==='share'){if(navigator.share)await navigator.share({title:r
+ if(b.dataset.action==='pdf'){b.disabled=true;await download(record.document,{guard:()=>guard(captured),gestureGuard:()=>guard(captured),scope:"user"});return}
+ const dialog=root.querySelector('#viewer');dialog.innerHTML=`<button id="close">${word('close')}</button><button id="print">${word('print')}</button><div class="ds2-viewport"><div class="ds2-scaled" id="page"></div></div>`;const page=render(record.document);viewerPage=page;dialog.querySelector('#page').append(page);dialog.querySelector('#close').onclick=()=>dialog.close();dialog.querySelector('#print').onclick=()=>openOutput(record.document,{guard:()=>guard(captured),scope:'user'});dialog.onclose=()=>{viewerPage=null;dialog.replaceChildren();b.focus()};dialog.showModal();await ready(page);guard(captured);if(page.isConnected)fit(page,dialog.querySelector('.ds2-viewport'));
+ }catch{if(current(captured)&&root.querySelector('#message'))root.querySelector('#message').textContent=word('serviceError')}finally{if(b.isConnected)b.disabled=false}};
+-}catch{if(token===epoch&&current(captured))root.textContent=word('serviceError');else clear()}}
++}catch{if(token===epoch&&current(captured))messageView(word('serviceError'));else clear()}}
+ for(const name of ['storage','nh7-personal-owner-wave2','nh7-session-refreshed','pageshow'])addEventListener(name,()=>{if(actor&&!current(actor))clear()});document.addEventListener('visibilitychange',()=>{if(actor&&!current(actor))clear()});addEventListener('resize',()=>{if(viewerPage?.isConnected)fit(viewerPage,viewerPage.closest('.ds2-viewport'))});
+ window.NH7MyDocumentsV2={refresh:load,count:()=>records.length};load();
+diff --git a/js/nh7-book-reader-v283.js b/js/nh7-book-reader-v283.js
+index 0d2f0f87..32b92fe3 100644
+--- a/js/nh7-book-reader-v283.js
++++ b/js/nh7-book-reader-v283.js
+@@ -18,19 +18,19 @@ function storedSession(){try{const raw=JSON.parse(localStorage.getItem(SESSION_K
+ function jwtExpiry(token){try{const part=String(token||'').split('.')[1]||'';const normalized=part.replace(/-/g,'+').replace(/_/g,'/');const payload=JSON.parse(atob(normalized.padEnd(Math.ceil(normalized.length/4)*4,'=')));return Number(payload.exp||0)*1000}catch(_){return 0}}
+ function persistSession(value){if(!value)return;localStorage.setItem(SESSION_KEY,JSON.stringify(value))}
+ async function ensureSession(){
+-  let value=storedSession();
++  let value=storedSession();const originalToken=value?.access_token,originalUID=value?.user?.id;const current=()=>storedSession()?.access_token===originalToken&&storedSession()?.user?.id===originalUID;
+   if(value?.access_token&&jwtExpiry(value.access_token)>Date.now()+90000)return value;
+   if(!value?.refresh_token||!navigator.onLine)return value;
+   if(refreshing)return refreshing;
+   refreshing=(async()=>{
+     try{
+       const response=await fetch(`${URL}/auth/v1/token?grant_type=refresh_token`,{method:'POST',cache:'no-store',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:value.refresh_token})});
+-      if(!response.ok)return value;
++      if(!response.ok)return current()?value:null;
+       const next=await response.json();
+-      if(storedSession()?.access_token!==value?.access_token||storedSession()?.user?.id!==value?.user?.id)return null;
++      if(!current()||next?.user?.id&&next.user.id!==originalUID)return null;
+       if(next?.access_token){persistSession(next);value=next}
+       return value;
+-    }catch(_){return value}finally{refreshing=null}
++    }catch(_){return current()?value:null}finally{refreshing=null}
+   })();
+   return refreshing;
+ }
+@@ -195,7 +195,7 @@ function showReader(savedScroll=0){
+   modal=document.createElement('div');
+   modal.className='nh7-book-modal';
+   modal.dir=book.language==='fa'?'rtl':'ltr';
+-  modal.dataset.theme=localStorage.getItem('nh7_book_theme')||'light';
++  modal.dataset.theme=localStorage.getItem('nh7_book_theme')||'light';modal.dataset.followAppWave6=String(!localStorage.getItem('nh7_book_theme'));
+   modal.innerHTML=shell();
+   document.body.appendChild(modal);
+   document.body.classList.add('nh7-book-open');
+@@ -240,7 +240,7 @@ function searchBook(query){
+ function changeFont(delta){const current=Number(localStorage.getItem('nh7_book_font')||20),next=Math.max(15,Math.min(34,current+delta));localStorage.setItem('nh7_book_font',String(next));const article=modal?.querySelector('.nh7-book-article');if(article)article.style.fontSize=next+'px'}
+ function bindReader(){
+   modal.querySelector('[data-book-theme]').value=modal.dataset.theme;
+-  modal.querySelector('[data-book-theme]').onchange=event=>{modal.dataset.theme=event.target.value;localStorage.setItem('nh7_book_theme',event.target.value)};
++  modal.querySelector('[data-book-theme]').onchange=event=>{modal.dataset.followAppWave6='false';modal.dataset.theme=event.target.value;localStorage.setItem('nh7_book_theme',event.target.value)};
+   modal.querySelector('[data-book-search]').oninput=event=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>searchBook(event.target.value),180)};
+   modal.addEventListener('click',event=>{
+     if(event.target.closest('[data-book-close]'))return closeReader();
+diff --git a/js/nh7-celebrations-v464.js b/js/nh7-celebrations-v464.js
+index 9e2dc6e9..8fc48f6b 100644
+--- a/js/nh7-celebrations-v464.js
++++ b/js/nh7-celebrations-v464.js
+@@ -121,7 +121,7 @@ function modalCopy(){
+   a.verse.tabIndex=ev.ref?0:-1;
+   a.verse.setAttribute('role',ev.ref?'button':'note');
+   a.verse.setAttribute('aria-label',ev.ref?L('باز کردن آیه در کتاب مقدس','Open verse in Bible','Otvori redak u Bibliji'):'');
+-  a.verse.onclick=ev.ref?()=>{const ref=ev.ref;closeModal();setTimeout(()=>Promise.resolve(window.NH7ReaderSourceV452?.open?.(ref)).catch(()=>{}),0)}:null;
++  a.verse.onclick=ev.ref?()=>{const ref=ev.ref,ticket=window.NH7UserContextWave6?.identity(),route=location.hash;closeModal();setTimeout(()=>{if((!ticket||window.NH7UserContextWave6.current(ticket))&&location.hash===route)Promise.resolve(window.NH7ReaderSourceV452?.open?.(ref)).catch(()=>{})},0)}:null;
+   a.verse.onkeydown=ev.ref?e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();a.verse.click()}}:null;
+  }
+ }
+@@ -186,7 +186,7 @@ function header(){
+ function canAuto(){
+  if(document.hidden||active)return false;
+  const gate=document.getElementById('amenGate');if(gate&&!gate.classList.contains('hidden')&&!gate.hidden)return false;
+- if(document.querySelector('[aria-modal="true"]:not(.hidden):not([hidden]),dialog[open],.nh7-registration-confirm-v353:not(.hidden):not([hidden])'))return false;
++ if([...document.querySelectorAll('[aria-modal="true"],dialog[open],.nh7-registration-confirm-v353')].some(el=>!el.closest('[hidden],.hidden')&&el.getClientRects().length))return false;
+  if(/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName||''))return false;
+  return true;
+ }
+@@ -211,5 +211,6 @@ document.addEventListener('change',e=>{if(['langSelect','settingsLang'].includes
+ document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(clockTimer);stopEffects()}else clock()});
+ try{matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',e=>{if(e.matches)stopEffects()})}catch(_){}
+ setTimeout(clock,900);
++for(const event of ['popstate','nh7-route-changed-wave6'])window.addEventListener(event,closeModal);
+ window.NH7_CELEBRATIONS_V464=Object.freeze({VERSION:'4.6.7-wave3-owner-dob',eventFor,annualEvents,birthday,run,easter,openCalendar});
+ })();
+diff --git a/js/nh7-global-search-direct-v562.js b/js/nh7-global-search-direct-v562.js
+index 3b7f3bdf..2ccf4cf7 100644
+--- a/js/nh7-global-search-direct-v562.js
++++ b/js/nh7-global-search-direct-v562.js
+@@ -29,8 +29,9 @@ function ensureStyle(){
+ }
+ 
+ function audioCatalog(){
++  const actor=window.NH7UserContextWave6.identity();if(!actor.uid)return{categories:[],sermons:[]};
+   for(const [store,key] of [[sessionStorage,'nh7_audio_catalog_cache_v446'],[localStorage,'nh7_audio_catalog_cache_v470']]){
+-    try{const d=JSON.parse(store.getItem(key)||'null');if(d?.sermons?.length)return d}catch(_){}
++    try{const d=JSON.parse(store.getItem(key)||'null');if(d?.sermons?.length&&(!d.uid||d.uid===actor.uid)&&(!d.user_id||d.user_id===actor.uid))return{...d,sermons:d.sermons.filter(x=>x.is_published!==false&&x.is_active!==false&&(!x.owner_uid||x.owner_uid===actor.uid))}}catch(_){}
+   }
+   return {categories:[],sermons:[]};
+ }
+@@ -66,23 +67,19 @@ function noteDestination(key){
+   return {route:'home',params:{}};
+ }
+ function localNotes(q){
+-  const out=[],needle=normalize(q);
+-  for(let i=0;i<localStorage.length;i++){
+-    const key=localStorage.key(i)||'';
+-    if(!/^(nh7_bible_state_|nh7_sermon_note_|nh7_apo_note_v242:|nh7_gratitude_note_|nh7_note_)/.test(key))continue;
+-    let text='';try{text=noteText(localStorage.getItem(key))}catch(_){}
+-    if(!text||!normalize(text).includes(needle))continue;
+-    const dest=noteDestination(key);
+-    let icon='📝',kind=L('یادداشت','Note','Bilješka');
+-    if(key.startsWith('nh7_bible_state_')){icon='📖';kind=L('یادداشت آیه','Bible note','Bilješka stiha')}
+-    else if(key.startsWith('nh7_sermon_note_')){icon='🎧';kind=L('یادداشت پیام','Audio note','Bilješka poruke')}
+-    else if(key.startsWith('nh7_note_school-')){icon='🎓';kind=L('یادداشت مدرسه','School note','Školska bilješka')}
+-    else if(key.startsWith('nh7_gratitude_note_')){icon='🙏';kind=L('یادداشت شکرگزاری','Gratitude note','Bilješka zahvalnosti')}
+-    out.push({icon,kind,...(key.startsWith('nh7_apo_note_v242:')?{apocryphaRef:'APO:'+key.slice('nh7_apo_note_v242:'.length)}:{}),title:clip(text,82),sub:L('باز کردن همان محل یادداشت','Open the exact note location','Otvori točno mjesto bilješke'),...dest});
+-    if(out.length>=5)break;
+-  }
+-  return out;
+-}
++  const needle=normalize(q);return(window.NH7MyNotesV234?.collectNotes?.()||[]).filter(n=>!n.recoverable&&normalize(n.text+' '+n.title).includes(needle)).slice(0,5).map(n=>({icon:'📝',kind:L('یادداشت','Note','Bilješka'),title:clip(n.title,82),sub:clip(n.text),noteKey:n.storageKey,...(n.kind==='apocrypha'?{apocryphaRef:'APO:'+n.storageKey.slice('nh7_apo_note_v242:'.length)}:{}),route:n.route,params:n.params}));
++}
++function metadataMatches(q){
++  const needle=normalize(q),match=x=>['fa','en','hr'].some(l=>normalize((x['title_'+l]||'')+' '+(x['description_'+l]||'')).includes(needle)),title=x=>x['title_'+lang()]||L('محتوا','Content','Sadržaj');
++  const library=(window.NH7LibrarySecurityV125?.searchItems?.()||[]).filter(match).slice(0,4).map(x=>({icon:'📚',kind:L('کتابخانه','Library','Knjižnica'),title:title(x),sub:L('باز کردن از مسیر مجاز کتابخانه','Open through authorized Library','Otvori kroz dopuštenu knjižnicu'),route:'library',params:{tab:x.audience,open:String(x.id)}}));
++  const actor=window.NH7UserContextWave6.identity();let progress={};try{progress=JSON.parse(localStorage.getItem('nh7_spiritual_plans_v240:'+(actor.uid||'guest'))||'{}')}catch{}
++  const plans=(window.NH7_SPIRITUAL_PLANS?.catalog?.()||[]).filter(match).flatMap(x=>{const p=progress.plans?.[x.id],day=p?.startedAt?Object.keys(p.days||{}).map(Number).find(d=>Number.isInteger(d)&&d>0&&d<=Number(x.durationDays||365)):null;if(p?.startedAt&&!day)return[];return[{icon:'🌱',kind:L('پلن روحانی','Spiritual plan','Duhovni plan'),title:title(x),sub:'',route:'plans',params:{tab:'spiritual',plan:x.id,...(day?{day}:{})}}]}).slice(0,4);
++  const school=(window.NH7SearchSchoolMetadataWave6?.()||[]).filter(match).slice(0,4).map(x=>({icon:'🎓',kind:L('مدرسه','School','Škola'),title:title(x),sub:L('دسترسی مدرسه دوباره بررسی می‌شود','School access is checked again','Pristup školi ponovno se provjerava'),route:'school',params:{lesson:x.id}}));
++  let favorites=[];try{favorites=JSON.parse(localStorage.getItem('nh7_audio_favorites_v500')||'[]')}catch{}const liked=audioMatches(q).filter(x=>Array.isArray(favorites)&&favorites.includes(x.params.open)).map(x=>({...x,icon:'★',kind:L('صوت مورد علاقه','Favorite audio','Omiljeni audio')}));return[...library,...plans,...school,...liked];
++}
++const capture=root=>({actor:window.NH7UserContextWave6.identity(),language:lang(),root,serial:searchSerial});
++const fresh=t=>t.root?.isConnected&&t.serial===searchSerial&&lang()===t.language&&window.NH7UserContextWave6.current(t.actor)&&history.state?.route==='home';
++function invalidate(){clearTimeout(debounce);searchSerial++;const root=document.getElementById('nh7GlobalSearch560');if(root){root.__nh7Items562=[];const results=root.querySelector('[data-nh7gs-results]');if(results){results.replaceChildren();results.hidden=true}}}
+ function savedReferenceMatches(q){
+   let refs=[];try{refs=JSON.parse(localStorage.getItem('nh7_bookmarks')||'[]')}catch(_){}
+   const needle=normalize(q);
+@@ -130,22 +127,25 @@ async function runSearch(root,value){
+   const q=String(value||'').trim(),serial=++searchSerial;
+   const results=root?.querySelector('[data-nh7gs-results]');if(!results)return;
+   if(q.length<2){root.__nh7Items562=[];results.hidden=true;results.innerHTML='';return}
+-  const quick=[...audioMatches(q),...savedReferenceMatches(q),...localNotes(q)];
++  const ticket=capture(root),quick=[...audioMatches(q),...savedReferenceMatches(q),...localNotes(q),...metadataMatches(q)].slice(0,24);if(!fresh(ticket))return;
+   paint(root,quick,L('در حال جستجو در متن کتاب مقدس…','Searching Bible text…','Pretraživanje teksta Biblije…'));
+   try{
+-    const bible=await bibleMatches(q,serial);if(serial!==searchSerial)return;
+-    const items=[...bible,...audioMatches(q),...savedReferenceMatches(q),...localNotes(q)].slice(0,18);
++    const bible=await bibleMatches(q,serial);if(!fresh(ticket))return;
++    const refQuery=q.replace(/[۰-۹٠-٩]/g,c=>String('۰۱۲۳۴۵۶۷۸۹'.includes(c)?'۰۱۲۳۴۵۶۷۸۹'.indexOf(c):'٠١٢٣٤٥٦٧٨٩'.indexOf(c)));
++    if(/\d+\s*[:،,]\s*\d+/.test(refQuery)){const row=await window.NH7ReaderSourceV452?.resolve?.(refQuery,lang());if(!fresh(ticket))return;if(row&&!bible.some(v=>v.params.bookId===row.bookId&&v.params.chapter===row.chapter&&v.params.verse===row.verse))bible.unshift({icon:'📖',kind:L('آیه کتاب مقدس','Bible verse','Biblijski stih'),title:row.label,sub:row.text,route:'bible',params:{section:'written',mode:'chapter',bookId:row.bookId,chapter:row.chapter,verse:row.verse}});}
++    const metadata=metadataMatches(q),groups=[bible,audioMatches(q),savedReferenceMatches(q),localNotes(q),metadata.filter(x=>x.route==='library'),metadata.filter(x=>x.route==='plans'),metadata.filter(x=>x.route==='school'),metadata.filter(x=>x.icon==='★')],items=[];for(let n=0;n<8&&items.length<24;n++)for(const group of groups)if(group[n]&&items.length<24)items.push(group[n]);
+     paint(root,items,'');
+   }catch(error){
+-    console.warn('Global Bible search',error);if(serial!==searchSerial)return;paint(root,quick,'');
++    console.warn('Global Bible search',error);if(!fresh(ticket))return;paint(root,quick,L('جستجوی کتاب مقدس موقتاً در دسترس نیست.','Bible search is temporarily unavailable.','Pretraživanje Biblije privremeno nije dostupno.'));
+   }
+ }
+ async function openItem(item){
+-  if(!item)return;
++  if(!item)return;const actor=window.NH7UserContextWave6.identity();
++  if(item.noteKey&&!item.apocryphaRef){window.NH7MyNotesV234?.openNote?.(item.noteKey);return}
+   const apoRef=item.apocryphaRef||(/^APO:/.test(item.savedRef||'')?item.savedRef:'');
+   if(apoRef&&window.NH7_OPEN_SAVED_APOCRYPHA_V394){await window.NH7_OPEN_SAVED_APOCRYPHA_V394(apoRef);return;}
+   if(item.savedRef&&window.NH7ReaderSourceV452?.resolve){
+-    try{const r=await window.NH7ReaderSourceV452.resolve(item.savedRef,lang());if(r){window.NH7_NAVIGATE?.('bible',{section:'written',mode:'chapter',bookId:r.bookId,chapter:r.chapter,verse:r.verse});return}}catch(_){}
++    try{const r=await window.NH7ReaderSourceV452.resolve(item.savedRef,lang());if(r&&window.NH7UserContextWave6.current(actor)){window.NH7_NAVIGATE?.('bible',{section:'written',mode:'chapter',bookId:r.bookId,chapter:r.chapter,verse:r.verse});return}}catch(_){}
+   }
+   if(typeof window.NH7_NAVIGATE==='function'){window.NH7_NAVIGATE(item.route,item.params||{});return}
+   const params=item.params&&Object.keys(item.params).length?':'+encodeURIComponent(JSON.stringify(item.params)):'';
+@@ -164,15 +164,16 @@ function wire(root){
+   },true);
+   root.addEventListener('click',event=>{
+     const button=event.target.closest?.('[data-nh7gs562-index]');if(!button)return;
+-    event.preventDefault();event.stopImmediatePropagation();openItem(root.__nh7Items562?.[Number(button.dataset.nh7gs562Index)]);
++    event.preventDefault();event.stopImmediatePropagation();if(history.state?.route!=='home')return;openItem(root.__nh7Items562?.[Number(button.dataset.nh7gs562Index)]);
+   },true);
+   return true;
+ }
+ function mount(){ensureStyle();return wire(document.getElementById('nh7GlobalSearch560'))}
+ function schedule(){if(observerQueued)return;observerQueued=true;requestAnimationFrame(()=>{observerQueued=false;mount()})}
+ function start(){
++  for(const name of ['storage','nh7-personal-before-owner-wave2','nh7-personal-owner-wave2','nh7-session-refreshed','nh7-library-security','nh7-route-changed-wave6','offline','popstate'])window.addEventListener(name,invalidate);
+   ensureStyle();mount();const view=document.getElementById('view');if(view)new MutationObserver(schedule).observe(view,{subtree:true,childList:true});
+-  document.getElementById('langSelect')?.addEventListener('change',()=>setTimeout(schedule,0));
++  document.getElementById('langSelect')?.addEventListener('change',()=>{invalidate();setTimeout(schedule,0)});
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+ window.NH7GlobalSearchDirectV562={VERSION,mount,search:q=>{const root=document.getElementById('nh7GlobalSearch560');if(root)runSearch(root,q)}};
+diff --git a/js/nh7-library-security-v125.js b/js/nh7-library-security-v125.js
+index e18ccba8..737cb39e 100644
+--- a/js/nh7-library-security-v125.js
++++ b/js/nh7-library-security-v125.js
+@@ -374,6 +374,8 @@
+ 
+   window.NH7LibrarySecurityV125 = {
+     catalog,
++    // Read-only metadata projection of the already-authorized current catalog.
++    searchItems:()=>{const id=sync();if(!id)return[];const restrictedFresh=navigator.onLine&&checkedAt&&Date.now()-checkedAt<=35000;return bundle.items.filter(x=>x.is_active!==false&&x.is_published!==false&&(x.audience==='public'||restrictedFresh)).slice(0,500).map(x=>({id:x.id,audience:x.audience,title_fa:x.title_fa,title_en:x.title_en,title_hr:x.title_hr,description_fa:x.description_fa,description_en:x.description_en,description_hr:x.description_hr}));},
+     uid: () => sync(),
+     invalidate,
+     sync,
+diff --git a/js/nh7-my-notes-v234.js b/js/nh7-my-notes-v234.js
+index dc911014..5e514986 100644
+--- a/js/nh7-my-notes-v234.js
++++ b/js/nh7-my-notes-v234.js
+@@ -22,7 +22,8 @@ function readMeta(storageKey){return safeJson(localStorage.getItem(metaKey(stora
+ function saveMeta(storageKey,meta){localStorage.setItem(metaKey(storageKey),JSON.stringify(Object.assign({},readMeta(storageKey),meta,{storageKey,updatedAt:new Date().toISOString()})))}
+ function deleteMeta(storageKey){localStorage.removeItem(metaKey(storageKey))}
+ function historyLocation(){const s=history.state||{};return{route:String(s.route||''),params:s.params&&typeof s.params==='object'?JSON.parse(JSON.stringify(s.params)):{} }}
+-function normalizedText(value){const text=window.NH7NoteTextV501?.normalize?.(value)??String(value||'');return String(text).trim()}
++function presented(value){return window.NH7NoteTextV501?.display?.(value)||{text:String(value??'')}}
++function normalizedText(value){return presented(value).text||''}
+ function decodeKey(value){try{return decodeURIComponent(String(value||''))}catch(_){return String(value||'')}}
+ 
+ function inferVerseLocation(storageKey){
+@@ -39,7 +40,7 @@ function inferVerseLocation(storageKey){
+ function inferAudioLocation(id){
+   if(id.startsWith('school-'))return{route:'school',params:{lesson:id.slice(7)}};
+   if(id.startsWith('bible-')||id.startsWith('audio-bible-'))return{route:'audioBible',params:{}};
+-  return{route:'audio',params:{}};
++  return{route:'audio',params:{open:id}};
+ }
+ function inferGenericLocation(storageKey){
+   const raw=storageKey.replace(/^nh7_note_/,'');
+@@ -48,7 +49,11 @@ function inferGenericLocation(storageKey){
+   return{route:'home',params:{}};
+ }
+ function noteTitle(kind,storageKey,meta){
+-  if(meta.title)return String(meta.title);
++  if(meta.userAuthoredTitle===true&&meta.title)return String(meta.title);
++  if(kind==='generic')return storageKey.startsWith('nh7_note_school-')?t('یادداشت درس مدرسه','School lesson note','Bilješka školske lekcije'):t('یادداشت من','My note','Moja bilješka');
++  if(kind==='gratitude')return `${t('یادداشت شکرگزاری روز','Gratitude note — day','Bilješka zahvalnosti — dan')} ${storageKey.replace(/^nh7_gratitude_note_/,'').replace(/\d/g,n=>lang()==='fa'?'۰۱۲۳۴۵۶۷۸۹'[+n]:n)}`;
++  if(kind==='verse'){const location=inferVerseLocation(storageKey),p=location.params;return window.NH7ReaderSourceV452?.label?.(p.bookId,p.chapter,p.verse,lang())||t('یادداشت آیه کتاب مقدس','Bible verse note','Bilješka uz biblijski stih')}
++  if(meta.title&&!/^(?:\d+|[a-z0-9]+(?:-[a-z0-9]+)*-\d+|[0-9a-f]{8}-[0-9a-f-]{27,}|nh7_.+|[A-Z0-9]+_\d+_\d+)$/.test(String(meta.title)))return String(meta.title);
+   if(kind==='verse')return meta.ref||t('یادداشت آیه کتاب مقدس','Bible verse note','Bilješka uz biblijski stih');
+   if(kind==='audio'){
+     const id=storageKey.replace(/^nh7_sermon_note_/,'');
+@@ -61,6 +66,7 @@ function noteTitle(kind,storageKey,meta){
+   return t('یادداشت من','My note','Moja bilješka');
+ }
+ function typeLabel(kind){
++  if(kind==='plan')return t('پلن روحانی','Spiritual plan','Duhovni plan');
+   if(kind==='verse')return t('آیه','Verse','Stih');
+   if(kind==='audio')return t('فایل صوتی','Audio','Audio');
+   if(kind==='gratitude')return t('شکرگزاری','Gratitude','Zahvalnost');
+@@ -70,19 +76,19 @@ function collectNotes(){
+   const notes=[];
+   for(let i=0;i<localStorage.length;i++){
+     const storageKey=localStorage.key(i);if(!storageKey||storageKey.startsWith(META_PREFIX))continue;
+-    let kind='',text='',stateValue=null;
++    let kind='',text='',stateValue=null,rawValue=null;
+     if(storageKey.startsWith('nh7_bible_state_')){
+-      stateValue=safeJson(localStorage.getItem(storageKey),{});text=normalizedText(stateValue?.note);kind='verse';
++      stateValue=safeJson(localStorage.getItem(storageKey),{});rawValue=stateValue?.note;text=normalizedText(rawValue);kind='verse';
+     }else if(storageKey.startsWith('nh7_apo_note_v242:')){
+-      text=normalizedText(localStorage.getItem(storageKey));kind='apocrypha';
++      rawValue=localStorage.getItem(storageKey);text=normalizedText(rawValue);kind='apocrypha';
+     }else if(storageKey.startsWith('nh7_sermon_note_')){
+-      text=normalizedText(localStorage.getItem(storageKey));kind='audio';
++      rawValue=localStorage.getItem(storageKey);text=normalizedText(rawValue);kind='audio';
+     }else if(storageKey.startsWith('nh7_gratitude_note_')){
+-      text=normalizedText(localStorage.getItem(storageKey));kind='gratitude';
++      rawValue=localStorage.getItem(storageKey);text=normalizedText(rawValue);kind='gratitude';
+     }else if(storageKey.startsWith('nh7_note_')){
+-      text=normalizedText(localStorage.getItem(storageKey));kind='generic';
++      rawValue=localStorage.getItem(storageKey);text=normalizedText(rawValue);kind='generic';
+     }
+-    if(!kind||!text)continue;
++    const presentation=presented(rawValue);if(!kind||presentation.omitted||(!text.trim()&&!presentation.recoverable))continue;
+     const meta=readMeta(storageKey);
+     let location={route:meta.route||'',params:meta.params||{}};
+     if(!location.route){
+@@ -91,7 +97,18 @@ function collectNotes(){
+       else if(kind==='gratitude')location={route:'daily',params:{tab:'gratitude',gday:Number(storageKey.replace(/^nh7_gratitude_note_/,'')||1)}};
+       else location=inferGenericLocation(storageKey);
+     }
+-    notes.push({storageKey,kind,text,title:noteTitle(kind,storageKey,meta),meta,stateValue,route:location.route,params:location.params||{},updatedAt:meta.updatedAt||''});
++    notes.push({recoverable:!!presentation.recoverable,original:presentation.original,storageKey,kind,text,title:noteTitle(kind,storageKey,meta),meta,stateValue,route:location.route,params:location.params||{},updatedAt:meta.updatedAt||''});
++  }
++  // Read-only virtual entries: one exact current UID scope; never enumerate accounts.
++  const actor=window.NH7UserContextWave6?.identity(),scope=actor?.uid||'guest';
++  const progress=safeJson(localStorage.getItem('nh7_spiritual_plans_v240:'+scope),null);
++  if(progress?.version===1&&progress.plans&&typeof progress.plans==='object')for(const [planId,plan] of Object.entries(progress.plans)){
++    if(!plan?.startedAt)continue;
++    for(const [day,value] of Object.entries(plan.days||{})){
++      const text=normalizedText(value?.note);if(!text.trim()||!/^\d+$/.test(day)||+day<1)continue;
++      const dayLabel=lang()==='fa'?day.replace(/\d/g,n=>'۰۱۲۳۴۵۶۷۸۹'[n]):day;
++      notes.push({storageKey:'nh7_virtual_plan_note_wave6:'+encodeURIComponent(scope)+':'+encodeURIComponent(planId)+':'+day,kind:'plan',readOnly:true,text,title:t('یادداشت پلن روحانی — روز','Spiritual plan note — day','Bilješka duhovnog plana — dan')+' '+dayLabel,route:'plans',params:{tab:'spiritual',plan:planId,day:+day},updatedAt:value.updatedAt||'',meta:{planId,dayNumber:+day}});
++    }
+   }
+   return notes.sort((a,b)=>String(b.updatedAt).localeCompare(String(a.updatedAt))||b.storageKey.localeCompare(a.storageKey));
+ }
+@@ -99,7 +116,7 @@ function noteCard(note){
+   const encoded=encodeURIComponent(note.storageKey);
+   const openText=t('باز کردن منبع','Open source','Otvori izvor');
+   const deleteText=t('پاک کردن','Delete','Obriši');
+-  return `<article class="nh7-my-note-card-v234"><div class="nh7-my-note-head-v234"><span class="nh7-my-note-type-v234">${esc(typeLabel(note.kind))}</span><strong>${esc(note.title)}</strong></div><p>${esc(note.text).replace(/\n/g,'<br>')}</p><div class="button-row nh7-my-note-actions-v234"><button type="button" class="secondary-btn" data-nh7-note-open="${encoded}">↗ ${esc(openText)}</button><button type="button" class="danger-btn" data-nh7-note-delete="${encoded}">🗑 ${esc(deleteText)}</button></div></article>`;
++  return `<article class="nh7-my-note-card-v234"><div class="nh7-my-note-head-v234"><span class="nh7-my-note-type-v234">${esc(typeLabel(note.kind))}</span><strong>${esc(note.title)}</strong></div><p style="white-space:pre-wrap">${esc(note.recoverable?t('یادداشت قدیمی نیاز به بررسی دارد؛ نسخهٔ اصلی محفوظ است.','Legacy note needs review; the original is preserved.','Staru bilješku treba pregledati; izvornik je sačuvan.'):note.text)}</p><div class="button-row nh7-my-note-actions-v234"><button type="button" class="secondary-btn" data-nh7-note-open="${encoded}">↗ ${esc(openText)}</button>${note.readOnly||note.recoverable?'':`<button type="button" class="danger-btn" data-nh7-note-delete="${encoded}">🗑 ${esc(deleteText)}</button>`}</div></article>`;
+ }
+ function renderNotesPanel(){
+   if(rendering)return;
+@@ -123,10 +140,15 @@ function renderNotesPanel(){
+ function scheduleRender(){clearTimeout(renderTimer);renderTimer=setTimeout(renderNotesPanel,40)}
+ 
+ function routeTo(route,params={}){
++  if(window.NH7_NAVIGATE)return window.NH7_NAVIGATE(route,params);
+   const state={route,params};
+   try{history.pushState(state,'','#'+encodeURIComponent(route)+':'+encodeURIComponent(JSON.stringify(params||{})))}catch(_){}
+   try{window.dispatchEvent(new PopStateEvent('popstate',{state}))}catch(_){window.dispatchEvent(new Event('popstate'))}
+ }
++function showNote(note){
++  const ticket=window.NH7UserContextWave6?.identity(),dialog=document.createElement('dialog'),heading=document.createElement('h2'),body=document.createElement('pre'),close=document.createElement('button');
++  heading.textContent=note.title;body.textContent=note.recoverable?String(note.original||''):note.text;body.style.cssText='white-space:pre-wrap;overflow-wrap:anywhere';close.textContent=t('بستن','Close','Zatvori');dialog.style.cssText='max-width:min(92vw,700px);max-height:85vh;overflow:auto;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:16px';dialog.append(heading,body,close);close.onclick=()=>dialog.close();dialog.addEventListener('close',()=>dialog.remove(),{once:true});document.body.append(dialog);dialog.showModal();const fence=()=>{if(!window.NH7UserContextWave6.current(ticket))dialog.close()};for(const event of ['storage','nh7-personal-owner-wave2'])addEventListener(event,fence);const leave=()=>dialog.close();for(const event of ['popstate','nh7-route-changed-wave6'])addEventListener(event,leave);dialog.addEventListener('close',()=>{for(const event of ['storage','nh7-personal-owner-wave2'])removeEventListener(event,fence);for(const event of ['popstate','nh7-route-changed-wave6'])removeEventListener(event,leave)},{once:true});
++}
+ function scrollToPending(){
+   if(!pendingTarget)return;
+   let target=null;
+@@ -135,9 +157,11 @@ function scrollToPending(){
+   if(pendingTarget.kind==='generic'&&pendingTarget.lesson)target=document.querySelector('.school-assignment,textarea#schoolAssignmentAnswer');
+   if(target){target.scrollIntoView({behavior:'smooth',block:'center'});target.classList.add('nh7-note-source-focus-v234');setTimeout(()=>target.classList.remove('nh7-note-source-focus-v234'),2400);pendingTarget=null}
+ }
+-function openNote(storageKey){
++async function openNote(storageKey){
+   const note=collectNotes().find(n=>n.storageKey===storageKey);if(!note)return;
+   if(note.kind==='apocrypha'){window.NH7_OPEN_SAVED_APOCRYPHA_V394?.('APO:'+storageKey.replace(/^nh7_apo_note_v242:/,''));return;}
++  if(note.recoverable||note.route==='home'){showNote(note);return;}
++  if(note.kind==='plan'){const ticket=window.NH7UserContextWave6.identity(),route=location.hash;let valid=false;try{valid=await window.NH7_SPIRITUAL_PLANS?.validExistingDay?.(note.params.plan,note.params.day)}catch{}if(!window.NH7UserContextWave6.current(ticket)||location.hash!==route)return;pendingTarget=null;if(valid)routeTo('plans',note.params);else showNote(note);return;}
+   const meta=note.meta||{};
+   pendingTarget={kind:note.kind,storageKey};
+   if(note.kind==='verse')pendingTarget.verse=Number(meta.verse||note.params?.verse||inferVerseLocation(storageKey).verse||0);
+@@ -172,7 +196,7 @@ async function syncVerseState(note){
+   try{await window.NH7AccessV230?.edge?.('nh7-content-access',{action:'save_bible_batch',batch_id:crypto.randomUUID?.()||String(Date.now()),language:lang(),items:[{verse_key:note.storageKey,verse_ref:meta.ref||'',verse_text:meta.verseText||'',saved:!!st.saved,highlight_color:st.highlight?String(st.highlightColor||'yellow'):'',note:''}]},true)}catch(_){}
+ }
+ async function deleteNote(storageKey){
+-  const note=collectNotes().find(n=>n.storageKey===storageKey);if(!note)return;
++  const note=collectNotes().find(n=>n.storageKey===storageKey);if(!note||note.readOnly||note.recoverable)return;
+   if(!confirm(t('این یادداشت پاک شود؟','Delete this note?','Obrisati ovu bilješku?')))return;
+   if(note.kind==='apocrypha'){localStorage.removeItem(storageKey);deleteMeta(storageKey);renderNotesPanel();return;}
+   if(note.kind==='verse')await syncVerseState(note);else{
+diff --git a/js/nh7-note-text-v501.js b/js/nh7-note-text-v501.js
+index ec0c7849..541a883f 100644
+--- a/js/nh7-note-text-v501.js
++++ b/js/nh7-note-text-v501.js
+@@ -17,7 +17,7 @@ function unwrap(value){
+   }
+   return current==null?'':String(current);
+ }
+-function normalize(value){
++function decodeLegacy(value){
+   let s=unwrap(value);
+   for(let i=0;i<3;i++){
+     const before=s;
+@@ -45,34 +45,37 @@ function normalize(value){
+   return s;
+ }
+ 
++function normalize(value){const presented=display(value);return presented.recoverable||presented.omitted?(typeof value==='string'?value:JSON.stringify(value??'')):presented.text}
++
+ function looksEncoded(value){
+   return /(?:&(?:amp;)?#(?:9|10|13|32|x0*(?:9|a|d|20));|&(?:amp;)?nbsp;|&lt;br|<br|%0[ad9]|%20|\\[rnt]|\\u00(?:09|0a|0d|20))/i.test(String(value??''));
+ }
+ 
+-function repairKnownNotes(){
+-  let changed=0;
+-  const keys=[];
+-  for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k)keys.push(k)}
+-  for(const key of keys){
+-    try{
+-      if(key.startsWith('nh7_bible_state_')){
+-        const raw=localStorage.getItem(key)||'';let st=null;try{st=JSON.parse(raw)}catch(_){continue}
+-        if(!st||typeof st!=='object'||typeof st.note!=='string')continue;
+-        const clean=normalize(st.note);if(clean!==st.note){st.note=clean;localStorage.setItem(key,JSON.stringify(st));changed++}
+-        continue;
+-      }
+-      if(!/^(nh7_sermon_note_|nh7_apo_note_v242:|nh7_gratitude_note_|nh7_note_)/.test(key))continue;
+-      const raw=localStorage.getItem(key);if(typeof raw!=='string')continue;
+-      const clean=normalize(raw);if(clean!==raw){localStorage.setItem(key,clean);changed++}
+-    }catch(_){}
+-  }
+-  if(changed){
+-    try{window.dispatchEvent(new CustomEvent('nh7-note-text-repaired-v501',{detail:{changed}}))}catch(_){}
++// Presentation only: keep every persisted legacy/raw payload and conflict copy unchanged.
++function repairKnownNotes(){return 0}
++function display(value){
++  const original=typeof value==='string'?value:JSON.stringify(value??'');let current=value,legacy=false;
++  for(let depth=0;depth<4;depth++){
++    if(typeof current==='string'){
++      let parsed;try{parsed=JSON.parse(current)}catch{if(/^\s*{\s*"(?:value|note_text|note_key|schema_version)"\s*:/.test(current))return{text:'',recoverable:true,original};return{text:legacy?decodeLegacy(current):current,recoverable:false}}
++      if(!parsed||typeof parsed!=='object'||Array.isArray(parsed))return{text:legacy?'':current,recoverable:legacy,original};
++      const hint=parsed.owner_uid||parsed.user_id||parsed.ownerUid;if(hint&&window.NH7UserContextWave6?.identity().uid!==String(hint))return{text:'',omitted:true};
++      if(!['value','content','note','text','note_text'].some(k=>Object.prototype.hasOwnProperty.call(parsed,k)))return parsed.note_key||parsed.schema_version?{text:'',recoverable:true,original}:{text:current,recoverable:false};
++      current=parsed;
++    }
++    if(!current||typeof current!=='object'||Array.isArray(current))return{text:'',recoverable:true,original};
++    const actor=window.NH7UserContextWave6?.identity(),uid=current.owner_uid||current.user_id||current.ownerUid;
++    if(uid&&actor?.uid!==String(uid))return{text:'',omitted:true};
++    if(Object.prototype.hasOwnProperty.call(current,'value')){current=current.value;legacy=true;continue}
++    const field=['content','note','text','note_text'].find(k=>typeof current[k]==='string');
++    if(field)return{text:current[field],recoverable:false};
++    return{text:'',recoverable:true,original};
+   }
+-  return changed;
++  return{text:'',recoverable:true,original};
+ }
+ 
+ function repairTextControl(el){
++  if(document.activeElement===el)return false;
+   if(!el||typeof el.value!=='string'||!looksEncoded(el.value))return false;
+   const clean=normalize(el.value);if(clean===el.value)return false;
+   const start=el.selectionStart,end=el.selectionEnd;
+@@ -94,12 +97,10 @@ function repairVisibleNotes(root=document){
+ 
+ let visibleQueued=false;
+ function scheduleVisibleRepair(){
+-  if(visibleQueued)return;visibleQueued=true;
++  if(document.hidden||visibleQueued)return;visibleQueued=true;
+   requestAnimationFrame(()=>{visibleQueued=false;repairVisibleNotes(document)});
+ }
+-function scheduleRepair(){
+-  [0,120,600,1600,5000].forEach(ms=>setTimeout(()=>{repairKnownNotes();repairVisibleNotes(document)},ms));
+-}
++function scheduleRepair(){scheduleVisibleRepair()}
+ document.addEventListener('click',e=>{
+   if(e.target.closest?.('[data-save-verse-note],[data-save-modal-note],[data-save-note],#completeGratitude,#saveSchoolAssignmentDraft,#submitSchoolAssignment'))setTimeout(()=>{repairKnownNotes();repairVisibleNotes(document)},80);
+ },true);
+@@ -113,4 +114,5 @@ function startObserver(){
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startObserver,{once:true});else startObserver();
+ scheduleRepair();
+ window.NH7NoteTextV501={VERSION,unwrap,normalize,repairKnownNotes,repairVisibleNotes};
++window.NH7NoteTextV501.display=display;
+ })();
+\ No newline at end of file
+diff --git a/js/nh7-profile-photo-v564.js b/js/nh7-profile-photo-v564.js
+index 1e4139ef..800205e6 100644
+--- a/js/nh7-profile-photo-v564.js
++++ b/js/nh7-profile-photo-v564.js
+@@ -7,22 +7,14 @@ if(window.__NH7_PROFILE_PHOTO_V564__)return;window.__NH7_PROFILE_PHOTO_V564__=tr
+ 
+ const VERSION='5.6.5-student-id';
+ const PHOTO_KEY='nh7_profile_photo_v561';
+-let queued=false,busy=false,editor=null,studentIdentity=null,studentIdentityOwner='',identityLoading=false;
++let pendingImage=null,queued=false,busy=false,editor=null,studentIdentity=null,studentIdentityOwner='',identityLoading=false;
+ const lang=()=>{const v=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return ['fa','en','hr'].includes(v)?v:'en'};
+ const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
+ const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ 
+-function profile(){
+-  let cached={},school={},meeting={};
+-  try{cached=JSON.parse(localStorage.getItem('nh7_user_profile')||'{}')||{}}catch(_){}
+-  try{school=JSON.parse(localStorage.getItem('nh7_school_access')||'{}')||{}}catch(_){}
+-  try{meeting=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{}')||{}}catch(_){}
+-  const p=Object.assign({},meeting,school,cached);
+-  const registration=String((p.firstName||'')+' '+(p.lastName||'')).trim();
+-  return {name:String(cached.name||registration||p.name||'').trim(),email:String(cached.email||p.email||localStorage.getItem('nh7_manual_email')||'').trim()};
+-}
++function profile(){return window.NH7UserContextWave6?.person()||{name:'',email:''}}
+ function initials(name){const parts=String(name||'').trim().split(/\s+/).filter(Boolean);if(!parts.length)return'👤';return (parts[0][0]+(parts.length>1?parts[parts.length-1][0]:'')).toUpperCase()}
+-function readPhoto(){try{const v=localStorage.getItem(PHOTO_KEY)||'';return /^data:image\//.test(v)?v:''}catch(_){return''}}
++function readPhoto(){return window.NH7UserContextWave6?.photo()||''}
+ function photoSig(photo){return photo?`${photo.length}:${photo.slice(-28)}`:'none'}
+ 
+ function ensureStyle(){
+@@ -39,7 +31,7 @@ function ensureStyle(){
+     #nh7TopProfile564{width:34px;height:34px;flex:0 0 34px;border-radius:50%;overflow:hidden;border:1.5px solid color-mix(in srgb,var(--brand,#1858a4) 28%,transparent);background:var(--card,#fff);display:none;place-items:center;margin-inline-start:auto;margin-inline-end:4px;padding:0;box-shadow:0 1px 5px rgba(0,0,0,.08)}
+     #nh7TopProfile564.is-visible{display:grid}#nh7TopProfile564 img{width:100%;height:100%;object-fit:cover;display:block}
+     .nh7-photo-editor564{position:fixed;inset:0;z-index:2147482500;background:rgba(10,18,32,.72);display:flex;align-items:flex-end;justify-content:center;padding:18px;backdrop-filter:blur(5px)}
+-    .nh7-photo-editor564[hidden]{display:none}.nh7-photo-sheet564{width:min(430px,100%);max-height:min(92vh,760px);overflow:auto;border-radius:24px 24px 18px 18px;background:var(--card,#fff);color:var(--text,#111827);padding:18px;box-shadow:0 22px 70px rgba(0,0,0,.35)}
++    .nh7-photo-editor564[hidden]{display:none}.nh7-photo-sheet564{width:min(430px,100%);max-height:min(92vh,760px);overflow:auto;border-radius:24px 24px 18px 18px;background:var(--card,#fff);color:var(--nh7-ui-text,var(--ink,#111827));padding:18px;box-shadow:0 22px 70px rgba(0,0,0,.35)}
+     .nh7-photo-sheet564 h3{margin:0 0 4px;font-size:1.05rem}.nh7-photo-help564{margin:0 0 14px;font-size:.74rem;opacity:.72;line-height:1.55}.nh7-photo-canvas-wrap564{width:min(76vw,320px);aspect-ratio:1;margin:0 auto 15px;border-radius:50%;overflow:hidden;position:relative;background:#111;box-shadow:0 0 0 4px color-mix(in srgb,var(--brand,#1858a4) 22%,transparent)}
+     .nh7-photo-canvas564{width:100%;height:100%;display:block;touch-action:none;cursor:grab}.nh7-photo-canvas564:active{cursor:grabbing}.nh7-photo-guide564{position:absolute;inset:0;border-radius:50%;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.7)}
+     .nh7-photo-zoom564{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;margin:10px 0 14px}.nh7-photo-zoom564 input{width:100%}.nh7-photo-editor-actions564{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}.nh7-photo-editor-actions564 button{min-height:40px;border-radius:11px;padding:8px 14px}
+@@ -49,17 +41,21 @@ function ensureStyle(){
+ function avatarHtml(photo,name){return `<span class="nh7-profile-avatar564">${photo?`<img src="${esc(photo)}" alt="">`:esc(initials(name))}</span>`}
+ function homeMarkup(p,photo){return `${avatarHtml(photo,p.name)}<span class="nh7-home-profile564-copy"><strong>${esc(p.name||L('پروفایل من','My profile','Moj profil'))}</strong><small>${esc(L('خوش آمدید','Welcome','Dobro došli'))}</small></span>`}
+ 
++function openPhotoViewer(){
++  const ticket=window.NH7UserContextWave6.identity(),photo=readPhoto();if(!photo||document.querySelector('#nh7PhotoViewerWave6'))return;
++  const dialog=document.createElement('dialog'),image=document.createElement('img'),close=document.createElement('button');dialog.id='nh7PhotoViewerWave6';dialog.setAttribute('aria-label',L('عکس پروفایل','Profile photo','Profilna fotografija'));dialog.style.cssText='max-width:94vw;max-height:90dvh;padding:12px;border:1px solid var(--line);border-radius:18px;background:var(--card);color:var(--ink)';image.src=photo;image.alt=L('عکس پروفایل','Profile photo','Profilna fotografija');image.style.cssText='display:block;max-width:min(82vw,800px);max-height:72dvh;object-fit:contain';close.textContent=L('بستن','Close','Zatvori');close.type='button';close.style.minHeight='44px';close.onclick=()=>dialog.close();dialog.append(close,image);document.body.append(dialog);dialog.addEventListener('close',()=>{image.removeAttribute('src');dialog.remove()},{once:true});dialog.showModal();if(!window.NH7UserContextWave6.current(ticket))dialog.close();
++}
+ function syncHeader(){
+   const top=document.querySelector('.topbar'),inbox=document.getElementById('inboxBtn');if(!top||!inbox)return false;
+   let slot=document.getElementById('nh7TopProfile564');if(!slot){slot=document.createElement('span');slot.id='nh7TopProfile564';slot.setAttribute('aria-label',L('عکس پروفایل','Profile photo','Profilna fotografija'));inbox.insertAdjacentElement('beforebegin',slot)}
+-  slot.setAttribute('aria-label',L('عکس پروفایل','Profile photo','Profilna fotografija'));
++  slot.setAttribute('aria-label',L('عکس پروفایل','Profile photo','Profilna fotografija'));slot.setAttribute('role','button');slot.tabIndex=0;slot.onclick=openPhotoViewer;slot.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openPhotoViewer()}};
+   const photo=readPhoto(),sig=photoSig(photo);if(slot.dataset.sig!==sig){slot.dataset.sig=sig;slot.innerHTML=photo?`<img src="${esc(photo)}" alt="">`:''}
+   slot.classList.toggle('is-visible',!!photo);return true;
+ }
+ function syncHome(){
+   const marker=document.getElementById('quickNotify'),view=document.getElementById('view');if(!marker||!view)return false;
+   const card=marker.closest('.card')||view.querySelector('.card');if(!card)return false;
+-  const p=profile(),photo=readPhoto();if(!p.name&&!photo)return false;const sig=`${p.name}|${photoSig(photo)}|${lang()}`;
++  const p=profile(),photo=readPhoto();if(!p.name&&!photo){document.getElementById('nh7HomeProfile564')?.remove();return false}const sig=`${p.name}|${photoSig(photo)}|${lang()}`;
+   let row=document.getElementById('nh7HomeProfile564');if(!row){row=document.createElement('div');row.id='nh7HomeProfile564';row.className='nh7-home-profile564';card.prepend(row)}
+   if(row.dataset.sig!==sig){row.dataset.sig=sig;row.innerHTML=homeMarkup(p,photo)}return true;
+ }
+@@ -97,37 +93,37 @@ function clampEditor(){
+ function drawEditor(){
+   if(!editor)return;const c=editor.canvas,ctx=c.getContext('2d'),img=editor.img,iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height,base=Math.max(c.width/iw,c.height/ih),scale=base*editor.zoom,dw=iw*scale,dh=ih*scale;ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle='#111';ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(img,(c.width-dw)/2+editor.offsetX,(c.height-dh)/2+editor.offsetY,dw,dh);
+ }
+-function closeEditor(){const modal=document.getElementById('nh7PhotoEditor564');if(modal)modal.hidden=true;if(editor?.url)URL.revokeObjectURL(editor.url);editor=null;busy=false}
++function closeEditor(){if(pendingImage){pendingImage.img.onload=pendingImage.img.onerror=null;pendingImage.img.src='';URL.revokeObjectURL(pendingImage.url);pendingImage=null}const modal=document.getElementById('nh7PhotoEditor564');if(modal)modal.hidden=true;if(editor?.url)URL.revokeObjectURL(editor.url);editor=null;busy=false}
+ function openEditor(file){
+-  if(!file||!String(file.type||'').startsWith('image/'))return;busy=true;const modal=editorShell(),canvas=modal.querySelector('[data-nh7-crop-canvas]'),zoom=modal.querySelector('[data-nh7-crop-zoom]'),url=URL.createObjectURL(file),img=new Image();
+-  img.onload=()=>{editor={file,url,img,canvas,zoom:1,offsetX:0,offsetY:0};if(zoom)zoom.value='1';modal.hidden=false;drawEditor()};
+-  img.onerror=()=>{URL.revokeObjectURL(url);busy=false;alert(L('این عکس باز نشد. لطفاً عکس دیگری انتخاب کنید.','This image could not be opened. Please choose another one.','Fotografija se nije mogla otvoriti. Odaberite drugu.'))};img.src=url;
++  if(!file||!String(file.type||'').startsWith('image/'))return;const ticket=window.NH7UserContextWave6.identity();busy=true;const modal=editorShell(),canvas=modal.querySelector('[data-nh7-crop-canvas]'),zoom=modal.querySelector('[data-nh7-crop-zoom]'),url=URL.createObjectURL(file),img=new Image();
++  pendingImage={img,url};img.onload=()=>{if(!window.NH7UserContextWave6.current(ticket)){closeEditor();return}pendingImage=null;editor={ticket,file,url,img,canvas,zoom:1,offsetX:0,offsetY:0};if(zoom)zoom.value='1';modal.hidden=false;drawEditor()};
++  img.onerror=()=>{pendingImage=null;URL.revokeObjectURL(url);busy=false;if(!window.NH7UserContextWave6.current(ticket))return;alert(L('این عکس باز نشد. لطفاً عکس دیگری انتخاب کنید.','This image could not be opened. Please choose another one.','Fotografija se nije mogla otvoriti. Odaberite drugu.'))};img.src=url;
+ }
+ function saveEditor(){
+-  if(!editor)return;const out=document.createElement('canvas');out.width=384;out.height=384;const ctx=out.getContext('2d',{alpha:false});if(!ctx)return;const img=editor.img,iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height,base=Math.max(out.width/iw,out.height/ih),scale=base*editor.zoom,dw=iw*scale,dh=ih*scale,ratio=out.width/editor.canvas.width;ctx.fillStyle='#111';ctx.fillRect(0,0,out.width,out.height);ctx.drawImage(img,(out.width-dw)/2+editor.offsetX*ratio,(out.height-dh)/2+editor.offsetY*ratio,dw,dh);let data=out.toDataURL('image/jpeg',.82);if(data.length>650000)data=out.toDataURL('image/jpeg',.68);try{localStorage.setItem(PHOTO_KEY,data)}catch(error){console.warn('Profile photo save',error);alert(L('ذخیره عکس انجام نشد.','The photo could not be saved.','Fotografija nije spremljena.'));return}closeEditor();schedule(true);
++  if(!editor)return;if(!window.NH7UserContextWave6.current(editor.ticket)){closeEditor();return}const out=document.createElement('canvas');out.width=384;out.height=384;const ctx=out.getContext('2d',{alpha:false});if(!ctx)return;const img=editor.img,iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height,base=Math.max(out.width/iw,out.height/ih),scale=base*editor.zoom,dw=iw*scale,dh=ih*scale,ratio=out.width/editor.canvas.width;ctx.fillStyle='#111';ctx.fillRect(0,0,out.width,out.height);ctx.drawImage(img,(out.width-dw)/2+editor.offsetX*ratio,(out.height-dh)/2+editor.offsetY*ratio,dw,dh);let data=out.toDataURL('image/jpeg',.82);if(data.length>650000)data=out.toDataURL('image/jpeg',.68);try{window.NH7UserContextWave6.setPhoto(data,editor.ticket)}catch(error){console.warn('Profile photo save',error);alert(L('ذخیره عکس انجام نشد.','The photo could not be saved.','Fotografija nije spremljena.'));return}closeEditor();schedule(true);
+ }
+-function identityOwner(){return String(window.NH7AccessV230?.userEmail?.()||profile().email||'').trim().toLowerCase()}
++function identityOwner(){return window.NH7UserContextWave6.identity().uid}
+ async function loadStudentIdentity(force=false){
+-  const owner=identityOwner(),access=window.NH7AccessV230,token=String(access?.token?.()||'');
++  const ticket=window.NH7UserContextWave6.identity(),owner=ticket.uid,token=ticket.token;
+   if(!owner||!token){studentIdentity=null;studentIdentityOwner=owner;return null}
+   if(!force&&studentIdentityOwner===owner&&studentIdentity)return studentIdentity;
+   if(identityLoading)return null;identityLoading=true;
+   try{
+     const response=await fetch('https://gpzcwffxnddhaeaogdyo.supabase.co/rest/v1/rpc/nh7_my_student_identity_v127',{method:'POST',cache:'no-store',headers:{apikey:'sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37',Authorization:'Bearer '+token,'Content-Type':'application/json'},body:'{}'});
+-    if(!response.ok){if(response.status===401||response.status===403){studentIdentity=null;studentIdentityOwner=owner;return null}throw new Error(await response.text())}
++    if(!window.NH7UserContextWave6.current(ticket))return null;if(!response.ok){if(response.status===401||response.status===403){studentIdentity=null;studentIdentityOwner=owner;return null}throw new Error(await response.text())}
+     const raw=await response.json().catch(()=>null),value=Array.isArray(raw)&&raw.length===1?raw[0]:raw;
+-    studentIdentity=value?.student&&typeof value.student==='object'?value.student:null;studentIdentityOwner=owner;return studentIdentity;
+-  }catch(error){studentIdentity=null;studentIdentityOwner=owner;console.warn('[NH7 Profile Student ID]',error);return null}
++    if(!window.NH7UserContextWave6.current(ticket))return null;studentIdentity=value?.student&&typeof value.student==='object'&&(!value.student.user_id||value.student.user_id===owner)?value.student:null;studentIdentityOwner=owner;return studentIdentity;
++  }catch(error){if(!window.NH7UserContextWave6.current(ticket))return null;studentIdentity=null;studentIdentityOwner=owner;console.warn('[NH7 Profile Student ID]',error);return null}
+   finally{identityLoading=false}
+ }
+ function setStatus(box,text){const el=box?.querySelector('[data-nh7-profile-status]');if(el)el.textContent=text||''}
+ function renderAccountBox(box,p,photo){
+-  const studentCode=String(studentIdentity?.student_code||'');
++  const studentCode=String(studentIdentityOwner===identityOwner()?studentIdentity?.student_code||'':'');
+   box.innerHTML=`${avatarHtml(photo,p.name)}<div class="nh7-account-profile564-copy"><strong>${esc(p.name||L('پروفایل من','My profile','Moj profil'))}</strong>${p.email?`<small>${esc(p.email)}</small>`:''}${studentCode?`<small class="nh7-student-code564">🎓 ${esc(L('کد دانشجویی','Student ID','Studentski ID'))}: ${esc(studentCode)}</small>`:''}<div class="nh7-account-profile564-actions"><button type="button" class="secondary-btn" data-nh7-profile-pick>${esc(photo?L('تغییر و تنظیم عکس','Change & adjust photo','Promijeni i podesi fotografiju'):L('افزودن عکس','Add photo','Dodaj fotografiju'))}</button>${photo?`<button type="button" class="secondary-btn" data-nh7-profile-remove>${esc(L('حذف عکس','Remove photo','Ukloni fotografiju'))}</button>`:''}</div><small class="nh7-profile-status564" data-nh7-profile-status>${esc(L('بعد از انتخاب، می‌توانید عکس را جابه‌جا و زوم کنید.','After choosing, you can move and zoom the photo.','Nakon odabira fotografiju možete pomicati i zumirati.'))}</small></div><input class="nh7-profile-file564" data-nh7-profile-file type="file" accept="image/*">`;
+   const input=box.querySelector('[data-nh7-profile-file]'),pick=box.querySelector('[data-nh7-profile-pick]'),remove=box.querySelector('[data-nh7-profile-remove]');
+   pick?.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();if(busy||!input)return;try{input.value='';input.click()}catch(error){console.warn('Profile picker',error);setStatus(box,L('باز کردن انتخاب عکس انجام نشد.','Could not open the photo picker.','Nije moguće otvoriti odabir fotografije.'))}});
+   input?.addEventListener('change',event=>{const file=event.target.files?.[0];if(!file||busy)return;openEditor(file)});
+-  remove?.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();if(busy)return;try{localStorage.removeItem(PHOTO_KEY)}catch(_){}schedule(true)});
++  remove?.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();if(busy)return;try{window.NH7UserContextWave6.setPhoto('')}catch(_){}schedule(true)});
+ }
+ function syncAccount(force=false){
+   const logout=document.getElementById('logoutAccountBtn');if(!logout)return false;const card=logout.closest('.card');if(!card)return false;const p=profile(),photo=readPhoto(),owner=identityOwner();if(owner&&studentIdentityOwner!==owner&&!identityLoading)loadStudentIdentity(false).then(()=>schedule(true));const sig=`${p.name}|${p.email}|${photoSig(photo)}|${String(studentIdentity?.student_code||'')}|${lang()}`;
+@@ -135,9 +131,11 @@ function syncAccount(force=false){
+   if(force||box.dataset.sig!==sig){box.dataset.sig=sig;renderAccountBox(box,p,photo)}return true;
+ }
+ function cleanupLegacy(){['nh7HomeProfile563','nh7AccountProfile563'].forEach(id=>document.getElementById(id)?.remove())}
+-function syncAll(force=false){ensureStyle();refreshEditorCopy();cleanupLegacy();syncHeader();syncHome();syncAccount(force)}
++function syncAll(force=false){ensureStyle();refreshEditorCopy();const viewer=document.getElementById('nh7PhotoViewerWave6');if(viewer){viewer.setAttribute('aria-label',L('عکس پروفایل','Profile photo','Profilna fotografija'));viewer.querySelector('button').textContent=L('بستن','Close','Zatvori');viewer.querySelector('img').alt=L('عکس پروفایل','Profile photo','Profilna fotografija')}cleanupLegacy();syncHeader();syncHome();syncAccount(force)}
+ function schedule(force=false){if(force){queued=false;requestAnimationFrame(()=>syncAll(true));return}if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;syncAll(false)})}
+-function start(){ensureStyle();syncAll(false);const view=document.getElementById('view');if(view)new MutationObserver(()=>schedule(false)).observe(view,{subtree:true,childList:true});document.getElementById('langSelect')?.addEventListener('change',()=>setTimeout(()=>syncAll(true),0));window.addEventListener('storage',event=>{if(event.key===PHOTO_KEY||event.key==='nh7_user_profile'||event.key==='nh7_user_session_v170'||event.key==='nh7_explicit_logout'){if(event.key==='nh7_user_session_v170'||event.key==='nh7_explicit_logout'){studentIdentity=null;studentIdentityOwner=''}schedule(true)}});window.addEventListener('nh7-session-refreshed',()=>{studentIdentity=null;studentIdentityOwner='';schedule(true)});window.addEventListener('online',()=>{studentIdentityOwner='';schedule(true)})}
++function clearHeaderOwner(){const slot=document.getElementById('nh7TopProfile564');if(slot){slot.replaceChildren();delete slot.dataset.sig;slot.classList.remove('is-visible')}}
++function ownerChanged(){document.querySelector('#nh7PhotoViewerWave6')?.close();studentIdentity=null;studentIdentityOwner='';closeEditor();clearHeaderOwner();document.getElementById('nh7HomeProfile564')?.remove();syncAll(true)}
++function start(){window.addEventListener('nh7-route-changed-wave6',()=>{document.getElementById('nh7PhotoViewerWave6')?.close();closeEditor()});for(const name of ['nh7-personal-owner-wave2','nh7-session-refreshed'])window.addEventListener(name,ownerChanged);window.addEventListener('nh7-personal-before-owner-wave2',()=>{document.querySelector('#nh7PhotoViewerWave6')?.close();closeEditor();studentIdentity=null;studentIdentityOwner='';clearHeaderOwner();document.getElementById('nh7HomeProfile564')?.remove()});ensureStyle();syncAll(false);const view=document.getElementById('view');if(view)new MutationObserver(()=>schedule(false)).observe(view,{subtree:true,childList:true});document.getElementById('langSelect')?.addEventListener('change',()=>setTimeout(()=>syncAll(true),0));window.addEventListener('storage',event=>{if(event.key===PHOTO_KEY||event.key==='nh7_user_profile'||event.key==='nh7_user_session_v170'||event.key==='nh7_explicit_logout'){if(event.key==='nh7_user_session_v170'||event.key==='nh7_explicit_logout'){studentIdentity=null;studentIdentityOwner=''}schedule(true)}});window.addEventListener('nh7-session-refreshed',()=>{studentIdentity=null;studentIdentityOwner='';schedule(true)});window.addEventListener('online',()=>{studentIdentityOwner='';schedule(true)})}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+ window.NH7ProfilePhotoV564={VERSION,PHOTO_KEY,mount:()=>syncAll(true),read:readPhoto};
+ })();
+diff --git a/js/nh7-spiritual-plans-v240.js b/js/nh7-spiritual-plans-v240.js
+index cd3a1a10..b04a68db 100644
+--- a/js/nh7-spiritual-plans-v240.js
++++ b/js/nh7-spiritual-plans-v240.js
+@@ -5,6 +5,9 @@ const PROGRESS_PREFIX = 'nh7_spiritual_plans_v240:';
+ const FASTING_PREFIX = 'nh7_fasting_journeys_v240:';
+ const cloudSyncAt = new Map();
+ let catalogPromise = null;
++let searchMetadata=[];
++export const peekPlanTitlesWave6=()=>searchMetadata.map(x=>({...x}));
++export async function validExistingPlanDayWave6(planId,day,ctx={}){const plans=await loadPlans(ctx);const p=plans.find(x=>x.id===planId);return !!p&&Number.isInteger(+day)&&+day>0&&+day<=Number(p.durationDays||p.days?.length||0)}
+ let fastingGuidesPromise = null;
+ 
+ const UI = {
+@@ -213,6 +216,7 @@ async function loadPlans(ctx) {
+     catalogPromise = (async () => {
+       const catalog = await fetchJson(ctx, CATALOG_PATH);
+       const plans = await Promise.all((catalog.plans || []).sort((a, b) => Number(a.order) - Number(b.order)).map(item => fetchJson(ctx, item.file)));
++      searchMetadata=plans.map(p=>({id:p.id,durationDays:p.durationDays,...Object.fromEntries(['fa','en','hr'].map(l=>['title_'+l,p.localized?.[l]?.title||'']))}));
+       return plans;
+     })().catch(error => { catalogPromise = null; throw error; });
+   }
+@@ -487,7 +491,7 @@ async function renderPlanDetail(ctx, plan, params) {
+     return;
+   }
+   const selected = Math.max(1, Math.min(Number(params.day || state.lastOpenedDay || nextOpenDay(plan, state)), total));
+-  if (!dayProgress(state, selected)) state = await ensurePlanStarted(ctx, plan, selected);
++  if (!dayProgress(state, selected) && String(params.start) === '1') state = await ensurePlanStarted(ctx, plan, selected);
+   progress = loadProgress(ctx); state = progress.plans[plan.id];
+   const day = plan.days.find(item => Number(item.day) === selected) || plan.days[selected - 1];
+   const copy = localDay(day, ctx);
+@@ -656,8 +660,10 @@ async function renderPlansHome(ctx, plans) {
+ 
+ export async function renderSpiritualPlansV240(ctx, params={}) {
+   try {
+-    await syncSpiritualPlansV240(ctx).catch(() => false);
++    // Opening an existing day is a read operation; sync/start remain explicit/catalog actions.
++    if (!params.plan || String(params.start) === '1') await syncSpiritualPlansV240(ctx).catch(() => false);
+     const plans = await loadPlans(ctx);
++    if (ctx.isCurrent && !ctx.isCurrent()) return;
+     if (params.tab === 'fasting') { await renderFastingHub(ctx, plans); return; }
+     if (params.plan) {
+       const plan = plans.find(item => item.id === params.plan);
+@@ -667,6 +673,7 @@ export async function renderSpiritualPlansV240(ctx, params={}) {
+     }
+     await renderPlansHome(ctx, plans);
+   } catch (error) {
++    if (ctx.isCurrent && !ctx.isCurrent()) return;
+     console.error('Spiritual plans render failed', error);
+     ctx.view.innerHTML = `<section class="card"><h2>${esc(t(ctx, 'errorTitle'))}</h2><p>${esc(error?.message || '')}</p><button type="button" class="primary-btn" data-nh7-plans-retry>${esc(t(ctx, 'retry'))}</button></section>`;
+     document.querySelector('[data-nh7-plans-retry]')?.addEventListener('click', () => ctx.navigate('plans', { tab:'spiritual' }, true));
+diff --git a/js/nh7-spiritual-plans-v412.js b/js/nh7-spiritual-plans-v412.js
+index 18c942ef..cac68336 100644
+--- a/js/nh7-spiritual-plans-v412.js
++++ b/js/nh7-spiritual-plans-v412.js
+@@ -1,5 +1,5 @@
+ import {
+-  renderSpiritualPlansV240
++  renderSpiritualPlansV240,peekPlanTitlesWave6,validExistingPlanDayWave6
+ } from './nh7-spiritual-plans-v240.js';
+ 
+ /* New Hope 7 — production spiritual plans bridge v4.1.2
+@@ -248,9 +248,10 @@ function setNav(){
+   const back = document.querySelector('#backBtn'); if(back){ back.classList.remove('hidden'); back.setAttribute('aria-label',say('back')); }
+ }
+ function banner(){}
+-function context(){
++function context(isCurrent){
+   return {
+     view:VIEW,
++    isCurrent,
+     getLang:lang,
+     navigate,
+     localNum,
+@@ -268,9 +269,12 @@ function context(){
+ async function renderPlans(params={tab:'spiritual'}){
+   if(!VIEW || rendering) return;
+   active = true; rendering = true; currentParams = { ...params };
++  const ticket=window.NH7UserContextWave6?.identity(),hash=location.hash,language=lang();
++  const isCurrent=()=>active&&location.hash===hash&&lang()===language&&(!ticket||window.NH7UserContextWave6.current(ticket));
+   setNav(); VIEW.innerHTML = `<section class="card"><p>${escapeHtml(say('loading'))}</p></section>`;
+   try{
+-    await renderSpiritualPlansV240(context(), currentParams);
++    await renderSpiritualPlansV240(context(isCurrent), currentParams);
++    if(!isCurrent())return;
+     if(!VIEW.querySelector('#nh7SpiritualPlansRootMarker')){
+       const marker=document.createElement('span');
+       marker.id='nh7SpiritualPlansRootMarker'; marker.hidden=true;
+@@ -278,6 +282,7 @@ async function renderPlans(params={tab:'spiritual'}){
+     }
+     VIEW.dataset.spiritualPlans = VERSION;
+   }catch(error){
++    if(!isCurrent())return;
+     console.error('[Wave1B plans]', error);
+     VIEW.innerHTML = `<section class="card"><h2>${escapeHtml(say('plans'))}</h2><p>${escapeHtml(error?.message || String(error))}</p></section>`;
+   }finally{ rendering=false; }
+@@ -339,7 +344,7 @@ document.head.appendChild(style);
+ 
+ window.NH7_SPIRITUAL_PLANS_VERSION = VERSION;
+ // Presentation disposal only: no progress/Notes/queue/storage mutation.
+-window.NH7_SPIRITUAL_PLANS = { render:renderPlans, sync:syncCloudQueue, active:() => active, dispose:()=>{active=false;clearTimeout(restoreTimer)} };
++window.NH7_SPIRITUAL_PLANS = { render:renderPlans, sync:syncCloudQueue, active:() => active, catalog:peekPlanTitlesWave6, validExistingDay:(id,day)=>validExistingPlanDayWave6(id,day,context()), dispose:()=>{active=false;clearTimeout(restoreTimer)} };
+ 
+ if(new URLSearchParams(location.search).get('open') === 'plans'){
+   setTimeout(() => renderPlans({tab:'spiritual'}), 700);
+diff --git a/js/nh7-student-identity-v127.js b/js/nh7-student-identity-v127.js
+index 7ef7fb53..1c272b3e 100644
+--- a/js/nh7-student-identity-v127.js
++++ b/js/nh7-student-identity-v127.js
+@@ -17,18 +17,19 @@ const lang=()=>{const v=localStorage.getItem('nh7_lang')||document.documentEleme
+ const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
+ const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ function session(){try{return JSON.parse(localStorage.getItem(SESSION)||'null')}catch(_){return null}}
+-function uid(){return String(session()?.user?.id||'').trim()}
+-function token(){return String(session()?.access_token||'').trim()}
++function uid(){return window.NH7UserContextWave6?.identity().uid||''}
++function token(){return window.NH7UserContextWave6?.identity().token||''}
+ function activeSchool(){return !!document.querySelector('.nav-item.active[data-route="school"]')}
+ function cacheKey(){const id=uid();return id?CACHE+id:''}
+-function cached(){const k=cacheKey();if(!k)return null;try{const x=JSON.parse(localStorage.getItem(k)||'null');if(!x||Date.now()-Number(x.at||0)>MAX_CACHE_MS)return null;return x.student||null}catch(_){return null}}
++function cached(){const k=cacheKey();if(!k)return null;try{const x=JSON.parse(localStorage.getItem(k)||'null');if(!x||Date.now()-Number(x.at||0)>MAX_CACHE_MS)return null;return x.student&&(!x.student.user_id||x.student.user_id===uid())?x.student:null}catch(_){return null}}
+ function writeCache(student){const k=cacheKey();if(!k)return;try{localStorage.setItem(k,JSON.stringify({at:Date.now(),student:student||null}))}catch(_){}}
+ function clearCache(){const k=cacheKey();if(k)try{localStorage.removeItem(k)}catch(_){}}
+ 
+ async function rpc(name,body={}){
++ const ticket=window.NH7UserContextWave6?.identity();
+  const t=token();if(!t)throw new Error('login_required');
+  const r=await fetch(`${SB}/rest/v1/rpc/${name}`,{method:'POST',headers:{apikey:KEY,Authorization:`Bearer ${t}`,'Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store'});
+- const text=await r.text();let data={};try{data=text?JSON.parse(text):{}}catch(_){data={message:text}};
++ const text=await r.text();if(ticket&&!window.NH7UserContextWave6.current(ticket))throw new Error('session_changed');let data={};try{data=text?JSON.parse(text):{}}catch(_){data={message:text}};
+  if(!r.ok){const e=new Error(String(data?.message||data?.error||r.statusText));e.status=r.status;throw e}
+  return Array.isArray(data)?(data[0]??{}):data;
+ }
+@@ -48,14 +49,15 @@ function ensureStyle(){if(document.getElementById('nh7StudentIdentity127Style'))
+  @media(max-width:520px){.nh7-student-id127{align-items:flex-start;flex-wrap:wrap}.nh7-student-id127-copy{min-width:calc(100% - 70px)}.nh7-student-id127-actions{width:100%;justify-content:flex-start}}
+  `;document.head.appendChild(s)}
+ function initials(name){const p=String(name||'').trim().split(/\s+/).filter(Boolean);return p.length?(p[0][0]+(p.length>1?p.at(-1)[0]:'')).toUpperCase():'🎓'}
+-function localPhoto(){try{const v=localStorage.getItem(LOCAL_PHOTO)||'';return /^data:image\//.test(v)?v:''}catch(_){return''}}
++function localPhoto(){return window.NH7UserContextWave6?.photo?.()||''}
+ function identityAnchor(){const view=document.getElementById('view');if(!view)return null;return view.querySelector('.nh7-school-guide-v351,.school-course-group,.card')}
+ 
+ async function privatePhotoUrl(path){
++ const ticket=window.NH7UserContextWave6?.identity();
+  if(!path||!token())return'';
+  try{
+   const r=await fetch(`${SB}/storage/v1/object/nh7-document-assets/${String(path).split('/').map(encodeURIComponent).join('/')}`,{headers:{apikey:KEY,Authorization:`Bearer ${token()}`},cache:'no-store'});
+-  if(!r.ok)return'';const b=await r.blob();if(!String(b.type||'').startsWith('image/'))return'';
++  if(!r.ok)return'';const b=await r.blob();if(!String(b.type||'').startsWith('image/')||(ticket&&!window.NH7UserContextWave6.current(ticket)))return'';
+   if(objectUrl)URL.revokeObjectURL(objectUrl);objectUrl=URL.createObjectURL(b);return objectUrl;
+  }catch(_){return''}
+ }
+@@ -87,8 +89,9 @@ async function syncLocalPhoto(student,el){
+ }
+ 
+ async function sync(force=false){
++ const ticket=window.NH7UserContextWave6?.identity();
+  if(!activeSchool()){document.getElementById('nh7StudentIdentity127')?.remove();return}
+- try{const student=await loadIdentity(force);if(!student?.student_code)return;let photo='';if(student.photo_path)photo=await privatePhotoUrl(student.photo_path);render(student,photo)}catch(e){if(!/login_required/i.test(String(e?.message||'')))console.warn('[NH7 Student Identity v127]',e)}
++ try{const student=await loadIdentity(force);if(!student?.student_code)return;let photo='';if(student.photo_path)photo=await privatePhotoUrl(student.photo_path);if((!ticket||window.NH7UserContextWave6.current(ticket))&&activeSchool())render(student,photo)}catch(e){if(!/login_required/i.test(String(e?.message||'')))console.warn('[NH7 Student Identity v127]',e)}
+ }
+ function schedule(force=false){if(queued)return;queued=true;setTimeout(()=>{queued=false;const route=activeSchool()?'school':'other',changed=route!==lastRoute;lastRoute=route;sync(force||changed)},80)}
+ 
+diff --git a/my-documents.html b/my-documents.html
+index 6e90a898..a8a85674 100644
+--- a/my-documents.html
++++ b/my-documents.html
+@@ -7,6 +7,8 @@
+     <link rel="stylesheet" href="css/document-studio-v2.css" />
+     <script src="js/vendor/document-qrcode-1.5.4.js"></script>
+     <script src="js/vendor/html2canvas-1.4.1.min.js"></script>
++    <link rel="stylesheet" href="css/nh7-user-app-wave6.css?v=6" />
++    <script src="js/nh7-theme-studio-v453.js?v=4.5.9-ap515&wave6=6" defer></script>
+   </head>
+   <body>
+     <main id="archive" class="ds2-public"></main>
+diff --git a/sw-release-core-v403.js b/sw-release-core-v403.js
+index 1d3c07f1..86538259 100644
+--- a/sw-release-core-v403.js
++++ b/sw-release-core-v403.js
+@@ -3,7 +3,7 @@
+ // Issue #115 UI refresh: recache localized assets with the existing cache/storage contract.
+ 
+ const NH7_RELEASE_CORE_VERSION='5.7.1-user-writing-direction';
+-const NH7_RELEASE_CORE_CACHE='nh7-release-core-v571-wave4-notifications-wave5-documents';
++const NH7_RELEASE_CORE_CACHE='nh7-release-core-v571-wave4-notifications-wave5-documents-wave6-user-app';
+ const NH7_RELEASE_DATA_CACHE='nh7-data-stable-v329';
+ const NH7_RELEASE_ASSETS=[
+   './document-studio.html',
+@@ -91,6 +91,8 @@ const NH7_RELEASE_ASSETS=[
+   './js/nh7-audio-library-v500.js',
+   './js/nh7-community-v502.js',
+   './js/nh7-exam-review-v566.js',
++  './js/nh7-user-context-wave6.js',
++  './css/nh7-user-app-wave6.css',
+   './js/app.js',
+   './js/nh7-media-player-v500.js',
+   './js/nh7-user-writing-direction-v571.js',

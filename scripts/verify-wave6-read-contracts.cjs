@@ -1,0 +1,12 @@
+/* Execute the actual legacy reader session function in isolated synthetic realms. */
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const source=fs.readFileSync('js/nh7-book-reader-v283.js','utf8'),part=source.slice(source.indexOf('function storedSession()'),source.indexOf('function userEmail('));
+(async()=>{for(const mode of ['http-failure','network-failure','successful-refresh','different-uid-response']){let row={access_token:'expired-A',refresh_token:'A-refresh',user:{id:'A'}},writes=0,release;const localStorage={getItem:()=>JSON.stringify(row),setItem:(_,v)=>{writes++;row=JSON.parse(v)}};
+const context={localStorage,navigator:{onLine:true},Date,JSON,atob,fetch:async()=>{await new Promise(r=>release=r);if(mode==='network-failure')throw Error('offline');return{ok:mode!=='http-failure',json:async()=>({access_token:'new-token',user:{id:mode==='different-uid-response'?'B':'A'}})}}};
+vm.createContext(context);vm.runInContext("const SESSION_KEY='fixture',URL='https://fixture.invalid',KEY='public';let refreshing=null;"+part+';globalThis.run=ensureSession;',context);const pending=context.run();await Promise.resolve();row={access_token:'B-token',user:{id:'B'}};release();assert.equal(await pending,null,mode+' must quarantine late A credential');assert.equal(row.user.id,'B');assert.equal(writes,0)}
+// A response whose caller did not change but claims a different UID is equally rejected.
+let writes=0;const c={localStorage:{getItem:()=>JSON.stringify({access_token:'old',refresh_token:'old',user:{id:'A'}}),setItem:()=>writes++},navigator:{onLine:true},Date,JSON,atob,fetch:async()=>({ok:true,json:async()=>({access_token:'new',user:{id:'B'}})})};vm.createContext(c);vm.runInContext("const SESSION_KEY='fixture',URL='https://fixture.invalid',KEY='public';let refreshing=null;"+part+';globalThis.run=ensureSession;',c);assert.equal(await c.run(),null);assert.equal(writes,0);
+// DOB review: current registration metadata discovery retained, no invented editor/write.
+assert.ok(fs.readFileSync('js/nh7-celebrations-v464.js','utf8').includes('school_registration'));assert.ok(!fs.existsSync('supabase/review/wave6-dob'));
+console.log('PASS actual reader failed/successful/contradictory UID refresh races never return/write A under B; Birthday uses existing registration metadata, DOB update remains BLOCKED-CONTRACT')
+})().catch(e=>{console.error(e);process.exitCode=1});
