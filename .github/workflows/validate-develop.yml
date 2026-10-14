@@ -33,27 +33,27 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          node --check js/nh7-notification-contract-wave4.js
-          node --check js/nh7-notification-intents-wave4.js
-          node --check js/nh7-push-account-bind-v364.js
-          node --check js/nh7-notifications-zagreb-v334.js
-          node --check js/nh7-admin-push-owner-v400.js
-          node --check js/nh7-inbox-badge-sync-v418.js
-          node --check js/nh7-spiritual-plans-v412.js
-          for source in supabase/review/wave4-notifications-2/*.ts scripts/*wave4*.cjs; do node --check "$source"; done
-          node --check js/nh7-celebrations-v464.js
-          node --check js/nh7-admin-rbac-v350.js
-          node --check js/nh7-admin-session-keepalive-v451.js
-          node --check js/nh7-admin-ai-v491.js
-          node --check js/nh7-admin-community-fixes-v503.js
-          node --check js/nh7-admin-testimony-core-v565.js
-          node --check js/nh7-admin-message-center-v416.js
-          node --check js/nh7-admin-workspace-wave3.js
-          node --check js/app.js
-          node --check js/nh7-finalqa-v558.js
-          node --check js/nh7-settings-controller-v403.js
+          python3 scripts/run-ci-check.py node --check js/nh7-notification-contract-wave4.js
+          python3 scripts/run-ci-check.py node --check js/nh7-notification-intents-wave4.js
+          python3 scripts/run-ci-check.py node --check js/nh7-push-account-bind-v364.js
+          python3 scripts/run-ci-check.py node --check js/nh7-notifications-zagreb-v334.js
+          python3 scripts/run-ci-check.py node --check js/nh7-admin-push-owner-v400.js
+          python3 scripts/run-ci-check.py node --check js/nh7-inbox-badge-sync-v418.js
+          python3 scripts/run-ci-check.py node --check js/nh7-spiritual-plans-v412.js
+          for source in supabase/review/wave4-notifications-2/*.ts scripts/*wave4*.cjs; do python3 scripts/run-ci-check.py node --check "$source"; done
+          python3 scripts/run-ci-check.py node --check js/nh7-celebrations-v464.js
+          python3 scripts/run-ci-check.py node --check js/nh7-admin-rbac-v350.js
+          python3 scripts/run-ci-check.py node --check js/nh7-admin-session-keepalive-v451.js
+          python3 scripts/run-ci-check.py node --check js/nh7-admin-ai-v491.js
+          python3 scripts/run-ci-check.py node --check js/nh7-admin-community-fixes-v503.js
+          python3 scripts/run-ci-check.py node --check js/nh7-admin-testimony-core-v565.js
+          python3 scripts/run-ci-check.py node --check js/nh7-admin-message-center-v416.js
+          python3 scripts/run-ci-check.py node --check js/nh7-admin-workspace-wave3.js
+          python3 scripts/run-ci-check.py node --check js/app.js
+          python3 scripts/run-ci-check.py node --check js/nh7-finalqa-v558.js
+          python3 scripts/run-ci-check.py node --check js/nh7-settings-controller-v403.js
           if [ -f js/nh7-adaptive-layout-v570.js ]; then
-            node --check js/nh7-adaptive-layout-v570.js
+            python3 scripts/run-ci-check.py node --check js/nh7-adaptive-layout-v570.js
           fi
 
       - name: Validate responsive foundation when present
