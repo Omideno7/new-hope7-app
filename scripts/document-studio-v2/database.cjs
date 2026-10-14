@@ -1,0 +1,95 @@
+// Isolated PostgreSQL (PGlite), never a remote/Production database.
+const fs = require("node:fs");
+const { PGlite } = require("@electric-sql/pglite");
+const ADMIN = "00000000-0000-0000-0000-000000000001",
+  A = "00000000-0000-0000-0000-000000000002",
+  B = "00000000-0000-0000-0000-000000000003";
+async function database() {
+  const db = new PGlite();
+  await db.exec(
+    `create role anon;create role authenticated;create schema auth;create schema private;create table auth.users(id uuid primary key,email text,raw_user_meta_data jsonb);create function auth.uid() returns uuid language sql as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;create function public.nh7_is_admin() returns boolean language sql as $$select auth.uid()='${ADMIN}'::uuid$$;create function public.nh7_admin_is_admin_v170() returns boolean language sql as $$select public.nh7_is_admin()$$;create table public.school_student_identities(user_id uuid,student_code text,status text);create table public.school_certificates(id uuid,user_name text,user_email text,recipient_user_id uuid,student_code text,public_token uuid,status text,issue_date date,certificate_number text,certificate_type text,language text,course_code text,revoked_at timestamptz);grant usage on schema auth to anon,authenticated;grant execute on function auth.uid() to anon,authenticated;`,
+  );
+  for (const [uid, name, email] of [
+    [ADMIN, "Admin", "admin@example.test"],
+    [A, "Alex Example", "alex@example.test"],
+    [B, "Blair Example", "blair@example.test"],
+  ])
+    await db.query("insert into auth.users values($1,$2,$3)", [
+      uid,
+      email,
+      { full_name: name },
+    ]);
+  await db.query(
+    "insert into school_student_identities values($1,'NH7-S-101','active')",
+    [A],
+  );
+  await db.query(
+    "insert into school_certificates values('11111111-1111-1111-1111-111111111111','Alex Example','alex@example.test',$1,'NH7-S-101','22222222-2222-2222-2222-222222222222','approved','2026-01-01','LEGACY-001','foundation_school','fa','foundation_school')",
+    [A],
+  );
+  const baseline = await db.query("select * from school_certificates");
+  const sql = fs.readFileSync("supabase/review/document-studio-v2.sql", "utf8");
+  await db.exec(sql);
+  await db.exec(sql); // Idempotent review SQL.
+  const signatures = {
+    nh7_admin_is_admin_v170: [],
+    nh7_document_capabilities_v2: [],
+    nh7_document_recipients_v2: [],
+    nh7_document_admin_list_v2: [],
+    nh7_document_templates_v2: [],
+    nh7_my_documents_v2: [],
+    nh7_document_save_draft_v2: [
+      ["p_document", "jsonb"],
+      ["p_revision", "integer"],
+    ],
+    nh7_document_reserve_number_v2: [
+      ["p_id", "uuid"],
+      ["p_revision", "integer"],
+    ],
+    nh7_document_issue_v2: [
+      ["p_id", "uuid"],
+      ["p_revision", "integer"],
+    ],
+    nh7_document_verify_v2: [["p_token", "uuid"]],
+    nh7_document_deliver_v2: [["p_id", "uuid"]],
+    nh7_document_revoke_v2: [
+      ["p_id", "uuid"],
+      ["p_reason", "text"],
+    ],
+    nh7_document_delete_draft_v2: [["p_id", "uuid"]],
+    nh7_document_save_template_v2: [
+      ["p_name", "text"],
+      ["p_definition", "jsonb"],
+    ],
+  };
+  let queue = Promise.resolve();
+  function rpc(name, body = {}, uid = ADMIN) {
+    const work = async () => {
+      if (!signatures[name]) throw Error("Unknown test RPC");
+      await db.exec("begin");
+      try {
+        await db.query("select set_config('request.jwt.claim.sub',$1,true)", [
+          uid || "",
+        ]);
+        await db.exec(
+          uid ? "set local role authenticated" : "set local role anon",
+        );
+        const args = signatures[name];
+        const result = await db.query(
+          `select public.${name}(${args.map((a, i) => "$" + (i + 1) + "::" + a[1]).join(",")}) as result`,
+          args.map(([key]) => body[key] ?? null),
+        );
+        await db.exec("commit");
+        return result.rows[0].result;
+      } catch (e) {
+        await db.exec("rollback");
+        throw e;
+      }
+    };
+    const next = queue.then(work);
+    queue = next.catch(() => {});
+    return next;
+  }
+  return { db, rpc, baseline };
+}
+module.exports = { database, ADMIN, A, B };

@@ -1,4 +1,5 @@
 const fs=require('fs');
+const renderer=fs.readFileSync('js/nh7-document-renderer-v521.js','utf8');
 const need=(s,x,m)=>{if(!s.includes(x))throw new Error(m)};
 const forbid=(s,r,m)=>{if(r.test(s))throw new Error(m)};
 const admin=fs.readFileSync('admin.html','utf8');
@@ -16,9 +17,9 @@ need(prayer,'admin_note,prayed_at,completed_at','User prayer query does not fetc
 need(prayer,"پیام تیم دعا",'User prayer UI does not render prayer-team message');
 need(prayerAdmin,"nh7_owner_prayer_reply_v505",'Admin prayer Send action is not wired to reply RPC');
 need(prayerAdmin,"ارسال پیام به کاربر",'Admin Prayer explicit send button missing');
-need(docs,"url=token?verifyDocUrl(Object.assign({},d,row||{})):'',",'Draft document QR still has a fallback URL');
+need(renderer,"url=token?new URL('verify-certificate-v508.html?token='+encodeURIComponent(token)+'&v=508',location.href).href:''",'Draft document QR still has a fallback URL');
 forbid(docs,/url=token\?verifyDocUrl\([^\n]+\):location\.href/,'Draft QR must never encode Admin location.href');
-need(docs,"QR پس از صدور ساخته می‌شود",'Draft QR placeholder missing');
+need(renderer,"QR پس از صدور ساخته می‌شود",'Draft QR placeholder missing');
 need(docs,"nh7_admin_delete_document_v507",'Current permanent-delete RPC is not wired to Admin');
 need(docs,"canHardDeleteDocumentV505",'Admin hard-delete visibility guard missing');
 need(docs,"inbox_sent_at:sentAt",'Document Inbox send must stamp inbox_sent_at');

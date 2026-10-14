@@ -73,6 +73,19 @@ jobs:
           set -euo pipefail
           python3 scripts/verify-audio-playback-safety-v486.py
 
+      - name: Verify canonical Documents renderer
+        run: |
+          python3 scripts/verify-document-entrypoints-v521.py
+          node scripts/verify-document-release-refresh-v521.cjs
+          python3 scripts/verify-document-v520.py
+          node scripts/verify-admin-live-search-document-studio-v508.cjs
+          node --check js/nh7-document-renderer-v521.js
+          node --check js/nh7-document-ux-v520.js
+          node --check js/nh7-admin-documents-workspace-v522.js
+          node --check js/admin-v2.2.0.js
+          node --check js/admin-v2.3.9-document-runtime-fix4.js
+          node --check js/admin-v2.3.9-document-select-fix5.js
+
       - name: Validate current runtime JavaScript
         shell: bash
         run: |

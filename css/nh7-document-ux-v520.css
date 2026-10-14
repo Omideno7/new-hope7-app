@@ -153,3 +153,29 @@
   .document-sheet.layout-landscape{width:297mm!important;height:210mm!important;min-height:210mm!important;max-height:210mm!important}
   .nh7-f4-card,.nh7-f4-fab,.nh7-f4-head,.nh7-f4-controls,.nh7-f5-cert-select{display:none!important}
 }
+
+/* Canonical logical page size: responsive hosts scale visually, never reflow certificate coordinates. */
+.document-sheet.layout-portrait,.nh7-f4-preview-host>.document-sheet.layout-portrait{width:760px!important;height:1075px!important;min-width:760px!important;max-width:760px!important;min-height:1075px!important;max-height:1075px!important}
+.document-sheet.layout-landscape,.nh7-f4-preview-host>.document-sheet.layout-landscape{width:1120px!important;height:792px!important;min-width:1120px!important;max-width:1120px!important;min-height:792px!important;max-height:792px!important}
+.document-sheet .doc-church-block{top:10%!important;left:50%!important;width:58%!important;transform:translate(-50%,-50%)!important}
+.document-sheet>.doc-letterhead{height:120px!important;min-height:120px!important;flex-basis:120px!important}
+.document-sheet>.doc-main{padding:14px 4% 155px!important}
+.document-sheet>.doc-footer{left:7%!important;right:7%!important;width:86%!important;bottom:34px!important;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) minmax(0,.72fr)!important;gap:16px!important}
+.document-sheet .doc-verify{overflow:hidden!important;max-width:118px!important}
+.document-sheet .nh7-doc-qr{width:64px!important;height:64px!important;max-width:64px!important;max-height:64px!important}
+.document-sheet .doc-footer-church-v520,.document-sheet .doc-footer-church-v510{font-size:8.5px!important}
+.public-doc-shell,.nh7-f4-preview-host,.document-preview-wrap{overflow-x:auto}
+@media print{.document-sheet.layout-portrait{zoom:1.044343!important}.document-sheet.layout-landscape{zoom:1.002249!important}}
+
+/* Legacy mobile rules must not change the logical certificate layout. */
+.document-sheet,.document-sheet *{box-sizing:border-box}
+.document-sheet{padding:28px 38px!important}
+.document-sheet .doc-main h1{margin:18px 70px 8px!important}
+.document-sheet .doc-fields{grid-template-columns:repeat(2,minmax(0,1fr))!important;width:85%!important}
+
+/* Screen-only scaling changes visual bounds, never the canonical A4 canvas. */
+@media screen{
+  .public-doc-shell,.nh7-f4-preview-host,.document-preview-wrap{overflow-x:hidden!important;min-width:0!important}
+  .document-sheet.nh7-preview-fit-v521:not(.nh7-v520-capture){justify-self:start!important;align-self:start!important;left:var(--nh7-preview-rtl-offset,0px)!important;transform:scale(var(--nh7-preview-scale,1))!important;transform-origin:top left!important;margin-left:var(--nh7-preview-left,0px)!important;margin-right:0!important;margin-bottom:calc(12px + var(--nh7-preview-gap,0px))!important}
+}
+@media print{.document-sheet.nh7-preview-fit-v521{left:0!important;transform:none!important;margin:0!important}}

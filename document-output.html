@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>New Hope 7 — Document preview</title>
+    <link rel="stylesheet" href="css/document-studio-v2.css" />
+    <script src="js/vendor/document-qrcode-1.5.4.js"></script>
+    <script src="js/vendor/html2canvas-1.4.1.min.js"></script>
+  </head>
+  <body>
+    <div class="ds2-output-actions">
+      <button id="back">Close / Back</button
+      ><button id="print" disabled>Print</button
+      ><button id="pdf" disabled>Download PDF</button>
+    </div>
+    <p id="message" role="status">Waiting for document…</p>
+    <main class="ds2-public">
+      <div class="ds2-viewport"><div class="ds2-scaled" id="sheet"></div></div>
+    </main>
+    <script type="module" src="js/document-studio-v2/output-page.mjs"></script>
+  </body>
+</html>
