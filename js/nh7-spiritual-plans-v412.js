@@ -338,7 +338,8 @@ style.textContent = `.nh7-scripture-reveal .inline-verse{padding:11px;border:1px
 document.head.appendChild(style);
 
 window.NH7_SPIRITUAL_PLANS_VERSION = VERSION;
-window.NH7_SPIRITUAL_PLANS = { render:renderPlans, sync:syncCloudQueue, active:() => active };
+// Presentation disposal only: no progress/Notes/queue/storage mutation.
+window.NH7_SPIRITUAL_PLANS = { render:renderPlans, sync:syncCloudQueue, active:() => active, dispose:()=>{active=false;clearTimeout(restoreTimer)} };
 
 if(new URLSearchParams(location.search).get('open') === 'plans'){
   setTimeout(() => renderPlans({tab:'spiritual'}), 700);

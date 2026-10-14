@@ -3,9 +3,11 @@
 // Issue #115 UI refresh: recache localized assets with the existing cache/storage contract.
 
 const NH7_RELEASE_CORE_VERSION='5.7.1-user-writing-direction';
-const NH7_RELEASE_CORE_CACHE='nh7-release-core-v571-wave3-admin-birthday';
+const NH7_RELEASE_CORE_CACHE='nh7-release-core-v571-wave4-notifications';
 const NH7_RELEASE_DATA_CACHE='nh7-data-stable-v329';
 const NH7_RELEASE_ASSETS=[
+  './js/nh7-notification-contract-wave4.js',
+  './js/nh7-notification-intents-wave4.js',
   './js/nh7-admin-workspace-wave3.js',
 
   './',

@@ -1048,7 +1048,7 @@ function navigate(route, params={}, replace=false){
   if(!replace && state.route) state.stack.push({route:state.route, params:state.params});
   state.route=route; state.params=params||{};
   try{ const url='#'+encodeURIComponent(route)+(Object.keys(state.params).length?':'+encodeURIComponent(JSON.stringify(state.params)):''); replace ? history.replaceState({route,params:state.params},'',url) : history.pushState({route,params:state.params},'',url); }catch(e){}
-  render(route, state.params);
+  return render(route, state.params);
 }
 window.NH7_NAVIGATE=(route,params={},replace=false)=>navigate(route,params,replace);
 function back(){
@@ -1266,6 +1266,7 @@ const INBOX_LOCALIZED_MESSAGES = {
   }
 };
 function inboxMessageKey(m){
+  if(window.NH7NotificationIntentsWave4?.owned(m))return '';
   const c=String(m.category||'').toLowerCase();
   const t=String(m.title||'').toLowerCase();
   const b=String(m.body||'').toLowerCase();
@@ -1289,6 +1290,7 @@ function inboxCanonicalGroup(m){
   return key ? `scheduled:${key}:${inboxDateKey(m)}` : `message:${String(m.id)}`;
 }
 function normalizedInboxMessage(m){
+  if(window.NH7NotificationIntentsWave4?.owned(m))return Object.assign({},m,{displayLang:m.language||m.lang||state.lang});
   const lang = String(m.language || m.lang || '').toLowerCase();
   const key = inboxMessageKey(m);
   if(lang && lang!==state.lang && !key) return null;
@@ -1395,7 +1397,7 @@ async function inbox(){
   maybeCreateScheduledInboxMessages(); await refreshInboxFromCloud(false);
   cleanupInboxLanguage();
   const arr=inboxDisplayMessages();
-  const body = arr.length ? `<div class="list inbox-list">${arr.map((m,i)=>`<div class="list-btn inbox-item ${m.read?'read':'unread'}"><button class="list-btn inbox-item ${m.read?'read':'unread'}" data-inbox-open="${html(m.id)}"><strong>${m.read?'':'● '}${html(m.title)}</strong><small>${inboxTimestampLabel(m)} • ${m.read?html(l223('خوانده‌شده','Read','Pročitano')):tr('unread')}</small></button><div id="inbox-${html(String(m.id).replace(/[^a-zA-Z0-9_-]/g,'_'))}" class="accordion-panel hidden"><small class="muted">${inboxTimestampLabel(m)}</small><p>${html(m.body)}</p><button class="danger-btn" data-inbox-delete="${html(m.id)}">${tr('deleteMessage')}</button></div></div>`).join('')}</div>` : `<p class="muted">${tr('noInboxMessages')}</p>`;
+  const body = arr.length ? `<div class="list inbox-list">${arr.map((m,i)=>`<div class="list-btn inbox-item ${m.read?'read':'unread'}"><button class="list-btn inbox-item ${m.read?'read':'unread'}" data-inbox-open="${html(m.id)}"><strong>${m.read?'':'● '}${html(m.title)}</strong><small>${inboxTimestampLabel(m)} • ${m.read?html(l223('خوانده‌شده','Read','Pročitano')):tr('unread')}</small></button><div id="inbox-${html(String(m.id).replace(/[^a-zA-Z0-9_-]/g,'_'))}" class="accordion-panel hidden"><small class="muted">${inboxTimestampLabel(m)}</small><p>${html(m.body)}</p>${window.NH7NotificationContractWave4?.intent(m.intent)?`<button class="secondary-btn" data-inbox-destination="${html(m.id)}">${html(l223('باز کردن مقصد','Open destination','Otvori odredište'))}</button>`:''}<button class="danger-btn" data-inbox-delete="${html(m.id)}">${tr('deleteMessage')}</button></div></div>`).join('')}</div>` : `<p class="muted">${tr('noInboxMessages')}</p>`;
   view.innerHTML = card(tr('notificationInbox'), `<p class="muted">${tr('notificationAutoNote')}</p><div class="button-row"><span class="badge">${tr('unread')}: ${localNum(unreadCount())}</span><button class="secondary-btn" id="markAllRead">${tr('markAllRead')}</button><button class="secondary-btn" id="cleanInboxLang">${tr('cleanInbox')}</button><button class="danger-btn" id="deleteVisibleInbox">${tr('deleteAllInbox')}</button></div>${body}`);
   $('#markAllRead')?.addEventListener('click',()=>{ const now=new Date().toISOString(); const all=inboxMessages().map(m=>({...m,read:true,readAt:now})); setInboxMessages(all); all.filter(m=>!String(m.id).startsWith('scheduled:')).forEach(m=>saveInboxReceipt(m.id,{read_at:now})); render('inbox',{},true); });
   $('#cleanInboxLang')?.addEventListener('click',()=>{ cleanupInboxLanguage(); render('inbox',{},true); });
@@ -1415,6 +1417,7 @@ async function showAmen(){
 let nh7NavigationEpochV456=0;
 async function render(route, params={}, preserve=false){
   schoolDraftsV468.unmount();
+  if(route!=='plans'||params.tab!=='spiritual')window.NH7_SPIRITUAL_PLANS?.dispose?.();
   try{window.NH7CommunityV502?.dispose?.()}catch(e){console.warn('[NH7 Community dispose]',e)}
   const navigationEpochV456=++nh7NavigationEpochV456;
   view.innerHTML='<section class="card"><p>...</p></section>';
@@ -1422,7 +1425,7 @@ async function render(route, params={}, preserve=false){
     if(route==='home') await home();
     else if(route==='daily') await daily(params);
     else if(route==='bible') await bible(params);
-    else if(route==='plans') await plans(params);
+    else if(route==='plans') {if(params.tab==='spiritual'&&window.NH7_SPIRITUAL_PLANS)await window.NH7_SPIRITUAL_PLANS.render(params);else await plans(params);}
     else if(route==='school') await school(params);
     else if(route==='more') await more();
     else if(route==='testimonies') { if(!window.NH7CommunityV502?.renderTestimonies)throw new Error('Community module is unavailable.'); await window.NH7CommunityV502.renderTestimonies(); }
@@ -2655,7 +2658,7 @@ function zonedScheduleDate(baseDay,hh,mm,zone){
   try{const parts=new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).formatToParts(guess);const val=t=>Number(parts.find(p=>p.type===t)?.value||0);const asUTC=Date.UTC(val('year'),val('month')-1,val('day'),val('hour'),val('minute'),val('second'));return new Date(guess.getTime()-(asUTC-guess.getTime()))}catch(e){return guess}
 }
 async function scheduleNativeNotifications(){
-  const Native=nativeLocalNotifications();if(!Native)return false;const settings=await fetchNotificationSchedules(true);try{const pending=(await Native.getPending()).notifications||[];if(pending.length)await Native.cancel({notifications:pending.map(x=>({id:x.id}))})}catch(e){}
+  const Native=nativeLocalNotifications();if(!Native)return false;const settings=await fetchNotificationSchedules(true);try{const pending=(await Native.getPending()).notifications||[];const legacy=pending.filter(x=>Number(x.id)>=17000&&Number(x.id)<=19999);if(legacy.length)await Native.cancel({notifications:legacy.map(x=>({id:x.id}))})}catch(e){}
   const now=new Date();const notifications=[];let id=17000;
   for(const row of settings){const [hh,mm]=String(row.time_value||'00:00').split(':').map(Number);for(let plus=0;plus<14;plus++){const base=new Date(now);base.setDate(base.getDate()+plus);const d=zonedScheduleDate(base,hh,mm,row.timezone_mode);if(d<=now)continue;let dow=d.getDay();if(row.timezone_mode&&row.timezone_mode!=='local'){try{const wd=new Intl.DateTimeFormat('en-US',{timeZone:row.timezone_mode,weekday:'short'}).format(d);dow=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(wd)}catch(e){}}if(Array.isArray(row.days_of_week)&&!row.days_of_week.includes(dow))continue;notifications.push({id:id++,title:scheduleText(row,'title'),body:scheduleText(row,'body'),schedule:{at:d,allowWhileIdle:true},extra:{route:row.target_route||'home',notificationKey:row.key}})}}
   if(notifications.length)await Native.schedule({notifications});return true;
@@ -2820,7 +2823,7 @@ async function settings(){
     const status=perm==='granted'?tr('notificationEnabled'):perm==='denied'?tr('notificationDenied'):tr('notificationDefault');
     const schedules=results[1].status==='fulfilled'&&Array.isArray(results[1].value)?results[1].value:[];
     const offlineSummary=results[2].status==='fulfilled'?results[2].value:(state.lang==='fa'?'وضعیت آفلاین در دسترس نیست.':state.lang==='hr'?'Offline status nije dostupan.':'Offline status is unavailable.');
-    const n=$('#settingsNotificationStatus');if(n)n.textContent=status;
+    const n=$('#settingsNotificationStatus');if(n)n.textContent=status+' '+(window.NH7PushBindingWave4?.statusLabel?.()||'');
     const s=$('#settingsSchedules');if(s)s.innerHTML=schedules.length?schedules.map(x=>`<p><strong>${html(scheduleText(x,'title'))}</strong> — ${html(x.time_value||'')} ${x.timezone_mode&&x.timezone_mode!=='local'?`(${html(x.timezone_mode)})`:''}</p>`).join(''):`<p class="muted">${html(state.lang==='fa'?'برنامه‌ای ثبت نشده است.':state.lang==='hr'?'Nema zakazanih stavki.':'No schedules configured.')}</p>`;
     const o=$('#settingsOfflineSummary');if(o)o.textContent=String(offlineSummary||'');
   }).catch(()=>{});
@@ -2896,7 +2899,7 @@ window.addEventListener('nh7-personal-owner-wave2',()=>{if(state.route==='plans'
 window.addEventListener('online',async()=>{$('.offline')?.remove();await syncCloudQueue().catch(console.warn);if(isAccountLoggedIn()){await restoreAccountCloudData(true).catch(console.warn);invalidateSchoolSnapshot(authEmail());await getSchoolSnapshot(authEmail(),true).catch(console.warn);if(state.route==='school')render('school',state.params,true)}});
 window.addEventListener('offline',()=>{ if(!$('.offline')){ const d=document.createElement('div'); d.className='offline'; d.textContent=tr('offline'); document.body.appendChild(d);} });
 if('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js').catch(console.warn);
-try{const Native=nativeLocalNotifications();Native?.addListener?.('localNotificationActionPerformed',ev=>{const route=ev?.notification?.extra?.route||'home';navigate(route,{},true)});}catch(e){}
+try{const Native=nativeLocalNotifications();Native?.addListener?.('localNotificationActionPerformed',ev=>{const extra=ev?.notification?.extra||{};const intent=extra.nh7_intent||{version:4,route:extra.route||'home',params:{}};window.NH7NotificationIntentsWave4?.open(intent)});}catch(e){}
 async function bootstrapApp(){
   clearLegacySchoolSession();
   if(isAccountLoggedIn()){
@@ -2913,6 +2916,7 @@ async function bootstrapApp(){
   showAmen();
 }
 bootstrapApp().catch(console.warn);
+window.dispatchEvent(new Event('nh7-router-ready-wave4'));
 
 
 // Reader localization only. Canonical storage keys stay unchanged.

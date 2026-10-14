@@ -17,6 +17,7 @@ async function intercept(ctx,base,options={}){
  else if(name==='sermons')data=[{id:'sermon',title_en:'Fixture sermon',title_fa:'موعظه',title_hr:'Propovijed',audio_url:base+'/fixture.wav',is_published:true}];
  else if(name==='nh7_admin_user_directory_v360')data=users;
  else if(name==='nh7_admin_message_templates_v416')data=[];
+ else if(name==='nh7_notification_campaign_preview_wave4'){const p=body.p_request,recipients=p.mode==='all'?users:p.mode==='segment'?users.filter(u=>u.language===p.segment):users.filter(u=>p.recipients?.some(r=>r.user_id===u.user_id));data={version:4,request_id:p.request_id,preview_token:id,recipients,inbox_accounts:p.channels.includes('inbox')?recipients.length:0,push_devices:p.channels.includes('push')?recipients.length:0}}
  else if(name==='nh7-admin-messaging-v360')data={ok:true,status:'sent',recipient_count:body.recipients?.length||2,inbox_rows:body.recipients?.length||2};
  else if(url.pathname==='/storage/v1/bucket')data=[{id:'church-audio',name:'church-audio',public:false}];
  else if(url.pathname.includes('/storage/v1/object/list/'))data=[{id:'file1',name:'fixture.mp3',created_at:'2026-10-13T10:00:00Z',metadata:{size:1234,mimetype:'audio/mpeg'}},{id:null,name:'folder',metadata:null}];

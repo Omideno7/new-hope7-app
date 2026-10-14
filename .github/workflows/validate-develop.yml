@@ -24,10 +24,23 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 0
 
+      - name: Use Node 24 for current JavaScript and review-only TypeScript fixtures
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
       - name: Validate active JavaScript syntax
         shell: bash
         run: |
           set -euo pipefail
+          node --check js/nh7-notification-contract-wave4.js
+          node --check js/nh7-notification-intents-wave4.js
+          node --check js/nh7-push-account-bind-v364.js
+          node --check js/nh7-notifications-zagreb-v334.js
+          node --check js/nh7-admin-push-owner-v400.js
+          node --check js/nh7-inbox-badge-sync-v418.js
+          node --check js/nh7-spiritual-plans-v412.js
+          for source in supabase/review/wave4-notifications-2/*.ts scripts/*wave4*.cjs; do node --check "$source"; done
           node --check js/nh7-celebrations-v464.js
           node --check js/nh7-admin-rbac-v350.js
           node --check js/nh7-admin-session-keepalive-v451.js
@@ -141,6 +154,7 @@ jobs:
           python3 scripts/run-ci-check.py python3 scripts/verify-consolidation-safety.py
           python3 scripts/run-ci-check.py python3 scripts/verify-main-develop-sync.py
           python3 scripts/run-ci-check.py python3 scripts/verify-wave3-safety.py
+          python3 scripts/run-ci-check.py node scripts/verify-wave4-notifications.cjs
           python3 scripts/run-ci-check.py node scripts/verify-performance-wave1.cjs
           python3 scripts/run-ci-check.py node scripts/verify-local-first-wave2.cjs
           python3 scripts/run-ci-check.py node scripts/measure-local-first-wave2.cjs
@@ -161,3 +175,4 @@ jobs:
           python3 scripts/run-ci-check.py node scripts/verify-wave3-birthday.cjs http://127.0.0.1:8878
           python3 scripts/run-ci-check.py node scripts/verify-wave3-admin-fencing.cjs http://127.0.0.1:8878
           python3 scripts/run-ci-check.py node scripts/verify-wave3-admin-browser.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-wave4-notifications-browser.cjs http://127.0.0.1:8878

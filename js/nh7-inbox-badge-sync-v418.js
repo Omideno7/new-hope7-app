@@ -52,33 +52,39 @@ function headers(){return{
 }}
 async function refreshSession(){
   const current=session(),refresh=String(current?.refresh_token||'');
-  if(!refresh)return false;
+  if(!refresh||explicitlyLoggedOut()||!current?.user?.id)return false;
+  const stillOwner=()=>!explicitlyLoggedOut()&&session()?.user?.id===current.user.id&&session()?.access_token===current.access_token&&session()?.refresh_token===refresh;
   try{
     const response=await fetch(SUPABASE_URL+'/auth/v1/token?grant_type=refresh_token',{
       method:'POST',headers:{apikey:SUPABASE_KEY,'Content-Type':'application/json','Cache-Control':'no-store'},
       body:JSON.stringify({refresh_token:refresh}),cache:'no-store'
     });
+    if(!stillOwner())return false;
     if(!response.ok){if(response.status===400||response.status===401)localStorage.removeItem(SESSION_KEY);return false}
     const next=await response.json();
-    if(!next?.access_token)return false;
+    if(!stillOwner()||!next?.access_token||next?.user?.id!==current.user.id)return false;
     localStorage.setItem(SESSION_KEY,JSON.stringify(next));
     return true;
   }catch(_){return false}
 }
 async function rest(path,retry=true){
+  const origin=authToken(),owner=ownerKey(),uid=session()?.user?.id;
   const response=await fetch(SUPABASE_URL+'/rest/v1/'+path,{method:'GET',headers:headers(),cache:'no-store'});
-  if(response.status===401&&retry){const before=authToken();const refreshed=await refreshSession();if(refreshed||authToken()!==before||authToken()===SUPABASE_KEY)return rest(path,false)}
+  if(origin!==authToken()||owner!==ownerKey())throw Error('account_changed');
+  if(response.status===401&&retry){const before=authToken();const refreshed=await refreshSession();if(owner!==ownerKey()||uid!==session()?.user?.id||explicitlyLoggedOut())throw Error('account_changed');if(refreshed||authToken()!==before||authToken()===SUPABASE_KEY)return rest(path,false)}
   if(!response.ok){const detail=await response.text().catch(()=>'');throw new Error(`Inbox REST ${response.status}: ${detail||response.statusText}`)}
   if(response.status===204)return[];
   const out=await response.json().catch(()=>[]);
   return Array.isArray(out)?out:[];
 }
 async function snapshot(retry=true){
+  const origin=authToken(),owner=ownerKey(),uid=session()?.user?.id;
   const response=await fetch(SUPABASE_URL+'/rest/v1/rpc/nh7_inbox_snapshot_v419',{
     method:'POST',headers:headers(),cache:'no-store',
     body:JSON.stringify({p_language:language(),p_message_limit:200,p_receipt_limit:500})
   });
-  if(response.status===401&&retry){const before=authToken();const refreshed=await refreshSession();if(refreshed||authToken()!==before||authToken()===SUPABASE_KEY)return snapshot(false)}
+  if(origin!==authToken()||owner!==ownerKey())throw Error('account_changed');
+  if(response.status===401&&retry){const before=authToken();const refreshed=await refreshSession();if(owner!==ownerKey()||uid!==session()?.user?.id||explicitlyLoggedOut())throw Error('account_changed');if(refreshed||authToken()!==before||authToken()===SUPABASE_KEY)return snapshot(false)}
   if(!response.ok){const detail=await response.text().catch(()=>'');throw new Error(`Inbox snapshot ${response.status}: ${detail||response.statusText}`)}
   const out=await response.json().catch(()=>({}));
   return out&&typeof out==='object'?out:{};
@@ -97,6 +103,7 @@ function ensureOwnerScope(){
 function localMessages(){const rows=readJson(INBOX_KEY,[]);return Array.isArray(rows)?rows:[]}
 function deletedIds(){const rows=readJson(DELETED_KEY,[]);return new Set(Array.isArray(rows)?rows.map(String):[])}
 function messageKey(message){
+  if(window.NH7NotificationIntentsWave4?.owned(message))return '';
   const category=String(message?.category||'').toLowerCase();
   const title=String(message?.title||'').toLowerCase();
   const body=String(message?.body||'').toLowerCase();
@@ -118,7 +125,7 @@ function visibleMessages(){
     const id=String(message?.id||'');
     if(!id||deleted.has(id)||deleted.has(canonicalGroup(message)))continue;
     const scheduled=!!messageKey(message),rowLang=String(message?.language||message?.lang||'').toLowerCase();
-    if(rowLang&&rowLang!==lang&&!scheduled)continue;
+    if(rowLang&&rowLang!==lang&&!scheduled&&!window.NH7NotificationIntentsWave4?.owned(message))continue;
     const group=canonicalGroup(message),existing=groups.get(group);
     if(!existing){groups.set(group,message);continue}
     const existingLocal=String(existing?.language||existing?.lang||'').toLowerCase()===lang;
@@ -139,7 +146,7 @@ function paintBadge(count=unreadCount()){
   count=Math.max(0,Number(count)||0);const changed=count!==lastCount;lastCount=count;
   const label=count>99?'99+':String(count);
   const top=document.getElementById('inboxBadge');
-  if(top){if(top.textContent!==label)top.textContent=label;if(top.classList.contains('hidden')!==(count===0))top.classList.toggle('hidden',count===0);if(top.hidden!==(count===0))top.hidden=count===0;const aria=`${count} unread messages`;if(top.getAttribute('aria-label')!==aria)top.setAttribute('aria-label',aria)}
+  if(top){if(top.textContent!==label)top.textContent=label;if(top.classList.contains('hidden')!==(count===0))top.classList.toggle('hidden',count===0);if(top.hidden!==(count===0))top.hidden=count===0;const aria=language()==='fa'?`${count} پیام خوانده‌نشده`:language()==='hr'?`${count} nepročitanih poruka`:`${count} unread messages`;if(top.getAttribute('aria-label')!==aria)top.setAttribute('aria-label',aria)}
   const tile=document.querySelector('.tile[data-go="inbox"],[data-go="inbox"].tile,[data-go="inbox"]');
   if(tile){
     let badge=tile.querySelector(':scope > .nh7-inbox-tile-badge-v418');
@@ -186,7 +193,9 @@ async function doSync(){
       byId.delete(id);if(row?.admin_deleted_at)deleted.add(id);continue;
     }
     const old=byId.get(id)||{};
-    byId.set(id,{...old,id,title:String(row?.title||''),body:String(row?.body||''),category:String(row?.category||'cloud'),language:String(row?.language||language()),createdAt:row?.delivered_at||old.createdAt||new Date().toISOString(),read:!!(old.read||receipt?.read_at||row?.read_at),readAt:receipt?.read_at||row?.read_at||old.readAt||null,lang:String(row?.language||language())});
+    const intent=window.NH7NotificationContractWave4?.intent(row.intent);
+    if(row.recipient_uid&&row.recipient_uid!==session()?.user?.id)continue;
+    byId.set(id,{...old,...(intent?{intent}:{}),id,title:String(row?.title||''),body:String(row?.body||''),category:String(row?.category||'cloud'),language:String(row?.language||language()),createdAt:row?.delivered_at||old.createdAt||new Date().toISOString(),read:!!(old.read||receipt?.read_at||row?.read_at),readAt:receipt?.read_at||row?.read_at||old.readAt||null,lang:String(row?.language||language())});
   }
   const merged=[...byId.values()].sort((a,b)=>String(b?.createdAt||'').localeCompare(String(a?.createdAt||'')));
   saveMerged(merged,deleted);
