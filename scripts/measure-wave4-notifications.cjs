@@ -20,8 +20,10 @@ async function sample(browser,panel){
  await new Promise(r=>setTimeout(r,12000));const phases=[];
  async function phase(name,action,ms){const start=calls.length,a=await page.evaluate(()=>structuredClone(__w4));await action();await new Promise(r=>setTimeout(r,ms));const b=await page.evaluate(()=>structuredClone(__w4));phases.push({name,observed_ms:ms,requests:calls.slice(start),sdk:b.sdk.slice(a.sdk.length),observers:b.observers-a.observers,listeners:b.listeners-a.listeners,notification_ticks:b.notification_ticks-a.notification_ticks,timer_callbacks:Object.fromEntries(Object.entries(b.timers).map(([k,v])=>[k,v-(a.timers[k]||0)]))})}
  await phase('foreground_idle',async()=>{},60000);
+ await phase('stable_binding_lifecycle',()=>page.evaluate(()=>{for(let n=0;n<20;n++)window.dispatchEvent(new Event('pageshow'))}),750);
  if(panel)await phase('compose_open_preview_cancel',async()=>{await page.evaluate(()=>nh7OpenMessageCenterV416());await page.waitForSelector('#nh7MsgBodyV416:not(.hidden)');await page.click('#nh7MsgCloseV416')},500);
  await phase('background',()=>page.evaluate(()=>{__w4.hidden=true;document.dispatchEvent(new Event('visibilitychange'))}),60000);
+ if(!panel)await phase('account_switch_binding',()=>page.evaluate(()=>{const uid='32345678-1234-4234-8234-123456789abc';localStorage.setItem('nh7_user_session_v170',JSON.stringify({access_token:'e30.'+btoa(JSON.stringify({sub:uid,exp:4102444800}))+'.fixture',user:{id:uid,email:'switch@example.invalid'}}));window.dispatchEvent(new StorageEvent('storage',{key:'nh7_user_session_v170'}));window.dispatchEvent(new Event('pageshow'))}),750);
  assert.equal(calls.filter(c=>c.path.endsWith('nh7-admin-messaging-v360')).length,0);
  return{surface:panel?'Admin':'signed-in app',startup_requests:calls.slice(0,calls.length-phases.reduce((n,p)=>n+p.requests.length,0)),phases,request_total:calls.length,metrics:await page.evaluate(()=>__w4)};
  }finally{await ctx.close()}
