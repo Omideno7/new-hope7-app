@@ -85,8 +85,19 @@ const session={access_token:'e30.'+Buffer.from(JSON.stringify({exp:4102444800,su
   assert.equal(await p.evaluate(id=>localStorage.getItem('nh7_sermon_note_'+id),id),ownerText);
   // Actual My Notes delete action, with browser confirm and offline durable intent.
   await p.evaluate(()=>NH7_SERMON_NOTE_BRIDGE_V527.save('delete-browser','Delete browser note'));await offline(false);await p.evaluate(()=>NH7LocalFirstWave2.flush());await offline(true);
-  p.on('dialog',dialog=>dialog.accept());await p.evaluate(()=>{NH7_MEDIA_PLAYER_V500.setExpanded(false);NH7_NAVIGATE('profile')});await p.waitForTimeout(500);
-  await p.evaluate(()=>{let panel=document.getElementById('notesPanel');if(!panel){panel=document.createElement('section');panel.id='notesPanel';document.getElementById('view').append(panel)}NH7MyNotesV234.renderNotesPanel()});
+  p.on('dialog',dialog=>dialog.accept());await p.evaluate(()=>{NH7_MEDIA_PLAYER_V500.setExpanded(false);NH7_NAVIGATE('home')});
+  // Wait for the actual asynchronous route and open its real collapsed panel.
+  // A fabricated panel after 500ms can be covered/replaced by the eventual route render.
+  await p.locator('[data-toggle-panel="notesPanel"]').waitFor({state:'visible'});
+  await p.locator('[data-toggle-panel="notesPanel"]').click();
+  await p.locator('#notesPanel').waitFor({state:'visible'});
+  await p.evaluate(()=>NH7MyNotesV234.renderNotesPanel());
+  // Owner restore may rerender Home; reopen through the same user control after it settles.
+  await p.waitForTimeout(1200);
+  if(!await p.locator('#notesPanel').isVisible())await p.locator('[data-toggle-panel="notesPanel"]').click();
+  const audioGroup=p.locator('[data-reader-group452="notes:audio"]');
+  await audioGroup.waitFor({state:'visible'});
+  if(!await audioGroup.evaluate(n=>n.open))await audioGroup.locator('summary').click();
   await p.locator('[data-nh7-note-delete="nh7_sermon_note_delete-browser"]').click();
   assert.equal(await p.evaluate(()=>localStorage.getItem('nh7_sermon_note_delete-browser')),null);
   await start();await offline(false);await p.evaluate(()=>NH7LocalFirstWave2.flush());assert(!db.get('nh7_account_notes').some(row=>row.note_key==='sermon_note_delete-browser'));

@@ -1,0 +1,13 @@
+{
+  "name": "qrcode",
+  "version": "1.5.4",
+  "runtime": "Locally bundled reference-only QR build; no CDN runtime",
+  "source_reference_commit": "822b7062302d5f9c60fa1e1caacd0c2e8a56f4c2",
+  "source": "https://registry.npmjs.org/qrcode/-/qrcode-1.5.4.tgz",
+  "sha256": "be1955498c997b70b937c293268f3afea5b200947da66f4711cae9e6da87e27f",
+  "licenses": [
+    "MIT qrcode (Ryan Day)",
+    "MIT bundled dijkstrajs (Wyatt Baldwin)"
+  ],
+  "license_file": "document-qrcode-LICENSE.txt"
+}

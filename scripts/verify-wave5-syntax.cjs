@@ -1,0 +1,6 @@
+/* Parse all new executables without executing Studio/Edge entrypoints. */
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{spawnSync}=require('node:child_process'),{stripTypeScriptTypes}=require('node:module');
+for(const directory of ['js/document-studio-v2','supabase/review/wave5-document-studio-v2','scripts/document-studio-v2'])for(const name of fs.readdirSync(directory)){
+ const file=path.join(directory,name);if(!/\.(mjs|cjs|js|ts)$/.test(name))continue;const source=fs.readFileSync(file,'utf8');const result=name.endsWith('.ts')?spawnSync(process.execPath,['--input-type=module','--check'],{input:stripTypeScriptTypes(source,{mode:'strip',sourceUrl:file}),encoding:'utf8'}):spawnSync(process.execPath,['--check',file],{encoding:'utf8'});assert.equal(result.status,0,file+': '+result.stderr);console.log('PASS syntax',file)
+}
+for(const file of ['js/vendor/document-qrcode-1.5.4.js','scripts/verify-local-first-wave2-browser.cjs','scripts/verify-school-reports-browser-v116.cjs','scripts/verify-report-pdf-v119.cjs',...fs.readdirSync('scripts').filter(n=>/wave5.*\.cjs$/.test(n)).map(n=>'scripts/'+n)]){const r=spawnSync(process.execPath,['--check',file],{encoding:'utf8'});assert.equal(r.status,0,r.stderr)}

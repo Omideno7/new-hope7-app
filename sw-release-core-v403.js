@@ -3,9 +3,28 @@
 // Issue #115 UI refresh: recache localized assets with the existing cache/storage contract.
 
 const NH7_RELEASE_CORE_VERSION='5.7.1-user-writing-direction';
-const NH7_RELEASE_CORE_CACHE='nh7-release-core-v571-wave4-notifications';
+const NH7_RELEASE_CORE_CACHE='nh7-release-core-v571-wave4-notifications-wave5-documents';
 const NH7_RELEASE_DATA_CACHE='nh7-data-stable-v329';
 const NH7_RELEASE_ASSETS=[
+  './document-studio.html',
+  './document-output.html',
+  './document-verify.html',
+  './my-documents.html',
+  './css/document-studio-v2.css',
+  './js/vendor/document-qrcode-1.5.4.js',
+  './js/document-studio-v2/model.mjs',
+  './js/document-studio-v2/catalog.mjs',
+  './js/document-studio-v2/ui.mjs',
+  './js/document-studio-v2/api.mjs',
+  './js/document-studio-v2/editor.mjs',
+  './js/document-studio-v2/renderer.mjs',
+  './js/document-studio-v2/output.mjs',
+  './js/document-studio-v2/output-page.mjs',
+  './js/document-studio-v2/verification.mjs',
+  './js/document-studio-v2/archive.mjs',
+  './js/document-studio-v2/archive-entry.mjs',
+  './js/document-studio-v2/admin-entry.mjs',
+  './js/document-studio-v2/resource.mjs',
   './js/nh7-notification-contract-wave4.js',
   './js/nh7-notification-intents-wave4.js',
   './js/nh7-admin-workspace-wave3.js',

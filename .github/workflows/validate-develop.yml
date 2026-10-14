@@ -146,8 +146,14 @@ jobs:
       - name: Install isolated canonical gate tools
         run: |
           python3 -m pip install PyYAML==6.0.2
-          npm install --prefix "$RUNNER_TEMP/canonical-tools" --no-audit --no-fund playwright@1.62.1
+          if ! command -v pdfinfo >/dev/null; then sudo apt-get update && sudo apt-get install -y poppler-utils; fi
+          npm install --prefix "$RUNNER_TEMP/canonical-tools" --no-audit --no-fund playwright@1.62.1 @electric-sql/pglite@0.3.14 jsqr@1.4.0 pngjs@7.0.0
           "$RUNNER_TEMP/canonical-tools/node_modules/.bin/playwright" install --with-deps chromium
+
+      - name: Verify Wave 5 syntax and exact changed-file boundaries
+        run: |
+          python3 scripts/run-ci-check.py node scripts/verify-wave5-syntax.cjs
+          python3 scripts/run-ci-check.py python3 scripts/verify-wave5-safety.py
 
       - name: Run current release and develop safeguards without deployment
         run: |
@@ -177,3 +183,23 @@ jobs:
           python3 scripts/run-ci-check.py node scripts/verify-wave3-admin-fencing.cjs http://127.0.0.1:8878
           python3 scripts/run-ci-check.py node scripts/verify-wave3-admin-browser.cjs http://127.0.0.1:8878
           python3 scripts/run-ci-check.py node scripts/verify-wave4-notifications-browser.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-wave5-documents.cjs
+          python3 scripts/run-ci-check.py node scripts/verify-wave5-boundaries.cjs
+          python3 scripts/run-ci-check.py node scripts/verify-wave5-documents-browser.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-wave5-documents-safety-browser.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-wave5-races.cjs http://127.0.0.1:8878
+
+      - name: Preserve current School reports, PDF, Print and Community document paths
+        run: |
+          export NODE_PATH="$RUNNER_TEMP/canonical-tools/node_modules"
+          export CHROMIUM_PATH="$(node -e "console.log(require('playwright').chromium.executablePath())")"
+          python3 scripts/run-ci-check.py python3 scripts/verify-web-community-parity-v250.py
+          python3 scripts/run-ci-check.py python3 scripts/verify-notes-account-merge-v544.py
+          python3 scripts/run-ci-check.py python3 scripts/verify-audio-playback-safety-v486.py
+          python3 scripts/run-ci-check.py node scripts/verify-school-reports-v116.mjs
+          python3 scripts/run-ci-check.py node scripts/verify-school-reports-browser-v116.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-report-pdf-v119.mjs
+          python3 scripts/run-ci-check.py node scripts/verify-report-pdf-v119.cjs http://127.0.0.1:8878
+          NH7_TEST_PRINT121=1 python3 scripts/run-ci-check.py node scripts/verify-report-pdf-v119.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-print-v121.mjs
+          python3 scripts/run-ci-check.py node scripts/verify-community-certificate-admin-v505.cjs
