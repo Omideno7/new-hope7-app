@@ -4,7 +4,7 @@ Review-only Production-grounded analysis. No app runtime/backend/data changes, d
 
 Original starting develop: `535346f143399cc04be5bcdf7feccd68285bae5a`. Accepted Wave6.5: `1ba57005b591fc0e8a7d9eae8573ee5e7297fa3c`. Resumed authoritative metadata head: `4f6c702c3f9e996256a5f9410bfd6096b5f3f018`. Original local audit `79fea0df2292ed3eb52b2f037596ff1062ba11e7` was replayed unchanged, without conflicts, as `7bec2720848717c6707ba8d46a412a91ec28b802`. Its bytes remain independently hash-checked. Main remains `15af811f78a17a0881c13171311e7ade6bc390f4`.
 
-Implementation/follow-up hashes and exact final head/CI are reported by the final delivery and CI run (a report cannot embed its own commit hash). CI measurements include `measured_head=GITHUB_SHA`; only a successful Validate Develop with that head equal to final remote develop counts. No earlier Wave's green run is reused.
+Initial implementation commit: `afe3f1b7f63e380af995fd8e8b97b610cd62f2fc`. A focused verifier follow-up explicitly clears prior synthetic JWT identity before the anonymous public-verification assertion; no runtime/proposal/data change. Follow-up hash and exact final head/CI are reported by the final delivery and CI run (a report cannot embed its own commit hash). CI measurements include `measured_head=GITHUB_SHA`; only a successful Validate Develop with that head equal to final remote develop counts. No earlier Wave's green run is reused.
 
 ## Decisions
 
