@@ -1,0 +1,359 @@
+{
+  "scope": "source candidates only; live no-policy census in preflight.sql",
+  "tables": [
+    {
+      "table": "private.nh7_admin_audit_log_v350",
+      "sources": [
+        "supabase/migrations/20260821174931_admin_rbac_recovery_v350.sql"
+      ],
+      "source_policy_seen": false,
+      "disposition": "SAFE BY DESIGN / KEEP: private internal deny-all"
+    },
+    {
+      "table": "private.nh7_admin_members_v350",
+      "sources": [
+        "supabase/migrations/20260821174931_admin_rbac_recovery_v350.sql"
+      ],
+      "source_policy_seen": false,
+      "disposition": "SAFE BY DESIGN / KEEP: private internal deny-all"
+    },
+    {
+      "table": "private.nh7_admin_permission_catalog_v350",
+      "sources": [
+        "supabase/migrations/20260821174931_admin_rbac_recovery_v350.sql"
+      ],
+      "source_policy_seen": false,
+      "disposition": "SAFE BY DESIGN / KEEP: private internal deny-all"
+    },
+    {
+      "table": "private.nh7_admin_permission_grants_v350",
+      "sources": [
+        "supabase/migrations/20260821174931_admin_rbac_recovery_v350.sql"
+      ],
+      "source_policy_seen": false,
+      "disposition": "SAFE BY DESIGN / KEEP: private internal deny-all"
+    },
+    {
+      "table": "private.nh7_document_library_versions_v2",
+      "sources": [
+        "supabase/review/wave5-document-studio-v2/library-boundary.sql"
+      ],
+      "source_policy_seen": false,
+      "disposition": "SAFE BY DESIGN / KEEP: private internal deny-all"
+    },
+    {
+      "table": "private.nh7_notification_preferences_wave4",
+      "sources": [
+        "supabase/review/wave4-notifications-2/candidate.sql"
+      ],
+      "source_policy_seen": false,
+      "disposition": "SAFE BY DESIGN / KEEP: private internal deny-all"
+    },
+    {
+      "table": "private.nh7_notification_subscriptions_wave4",
+      "sources": [
+        "supabase/review/wave4-notifications-2/candidate.sql"
+      ],
+      "source_policy_seen": false,
+      "disposition": "SAFE BY DESIGN / KEEP: private internal deny-all"
+    },
+    {
+      "table": "public.church_members",
+      "sources": [
+        "supabase/review/migration-history-reconciliation-20261009/legacy-applied-outside-history/20261003_student_academic_center_v540.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.meeting_settings",
+      "sources": [
+        "docs/supabase_schema_v1_3.sql",
+        "supabase_v1_6_3_meeting_settings_fix.sql",
+        "supabase_v1_6_4_meeting_settings_rpc_fix.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.nh7_apocrypha_books_v270",
+      "sources": [
+        "supabase/migrations/20260728170000_fix7_video_portal_apocrypha.sql"
+      ],
+      "source_policy_seen": false,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.nh7_document_deliveries_v2",
+      "sources": [
+        "supabase/review/wave5-document-studio-v2/candidate.sql"
+      ],
+      "source_policy_seen": false,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.nh7_document_design_templates_v2",
+      "sources": [
+        "supabase/review/wave5-document-studio-v2/candidate.sql"
+      ],
+      "source_policy_seen": false,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.nh7_document_drafts_v2",
+      "sources": [
+        "supabase/review/wave5-document-studio-v2/candidate.sql"
+      ],
+      "source_policy_seen": false,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.nh7_library_reading_progress_v490",
+      "sources": [
+        "supabase_v490_library_reading_progress.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.nh7_official_documents_v2",
+      "sources": [
+        "supabase/review/wave5-document-studio-v2/candidate.sql"
+      ],
+      "source_policy_seen": false,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.nh7_prayer_requests_v502",
+      "sources": [
+        "supabase/migrations/20261005232733_community_prayer_testimony_v502_backend.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.nh7_school_video_codes_v260",
+      "sources": [
+        "supabase/migrations/20260728_school_secure_media_v260.sql"
+      ],
+      "source_policy_seen": false,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.nh7_school_video_grants_v260",
+      "sources": [
+        "supabase/migrations/20260728_school_secure_media_v260.sql"
+      ],
+      "source_policy_seen": false,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.nh7_school_videos_v260",
+      "sources": [
+        "supabase/migrations/20260728_school_secure_media_v260.sql"
+      ],
+      "source_policy_seen": false,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.nh7_testimonies_v502",
+      "sources": [
+        "supabase/migrations/20261005232733_community_prayer_testimony_v502_backend.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.notification_inbox",
+      "sources": [
+        "docs/supabase_schema_v1_3.sql",
+        "supabase_admin5_inbox_messages.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.notification_inbox_receipts",
+      "sources": [
+        "supabase_v1_7_0_dynamic_platform.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.notification_schedules",
+      "sources": [
+        "supabase_v1_7_0_dynamic_platform.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.qa_questions",
+      "sources": [
+        "docs/supabase_schema_v1_3.sql",
+        "supabase_admin3_qna_delete_policy.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.registrations",
+      "sources": [
+        "docs/supabase_schema_v1_3.sql",
+        "supabase_v2_1_2_auth_registration_admin_hotfix.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.saved_verses",
+      "sources": [
+        "docs/supabase_schema_v1_3.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.school_assignments",
+      "sources": [
+        "supabase_v2_1_1_exam_assignments_weighted.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.school_certificates",
+      "sources": [
+        "supabase_v2_1_4_admin_student_dashboard.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.school_course_access_grants",
+      "sources": [
+        "supabase/review/issue127/multi_course_candidate.sql"
+      ],
+      "source_policy_seen": false,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.school_course_prerequisites",
+      "sources": [
+        "supabase/review/issue127/multi_course_candidate.sql"
+      ],
+      "source_policy_seen": false,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.school_course_stage_lessons",
+      "sources": [
+        "supabase/migrations/20261010025936_school_stage_model_v210.sql",
+        "supabase/review/issue127/multi_course_candidate.sql"
+      ],
+      "source_policy_seen": false,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.school_course_stages",
+      "sources": [
+        "supabase/migrations/20261010025936_school_stage_model_v210.sql",
+        "supabase/review/issue127/multi_course_candidate.sql"
+      ],
+      "source_policy_seen": false,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.school_courses",
+      "sources": [
+        "supabase_v1_8_0_hotfix5_school_courses.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.school_exam_attempts",
+      "sources": [
+        "supabase_v2_1_1_exam_assignments_weighted.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.school_exams",
+      "sources": [
+        "supabase_v1_9_0_school_exams_progress.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.school_legacy_progress_v542",
+      "sources": [
+        "supabase/review/migration-history-reconciliation-20261009/legacy-applied-outside-history/20261003_school_legacy_anchor_v542.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.school_lessons",
+      "sources": [
+        "supabase_v1_8_0_dynamic_school.sql",
+        "supabase_v1_8_0_hotfix1_school_audio.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.school_progress",
+      "sources": [
+        "supabase_v1_9_0_school_exams_progress.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.school_student_identities",
+      "sources": [
+        "supabase/migrations/20261009065456_school_student_identity_core_v127.sql",
+        "supabase/review/issue127/student_identity_candidate.sql",
+        "supabase/review/issue127/unapplied-foundation-candidate-20261009/20261009064545_school_student_identity_foundation_v127.sql"
+      ],
+      "source_policy_seen": false,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.sermon_categories",
+      "sources": [
+        "supabase_v1_7_0_dynamic_platform.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.sermons",
+      "sources": [
+        "supabase_v1_7_0_dynamic_platform.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.user_notes",
+      "sources": [
+        "docs/supabase_schema_v1_3.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    },
+    {
+      "table": "public.user_progress",
+      "sources": [
+        "docs/supabase_schema_v1_3.sql"
+      ],
+      "source_policy_seen": true,
+      "disposition": "REVIEW-ONLY BACKEND CHANGE: verify live policies and ownership before any grant"
+    }
+  ]
+}

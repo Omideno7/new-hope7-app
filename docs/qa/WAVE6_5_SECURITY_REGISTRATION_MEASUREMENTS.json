@@ -1,0 +1,127 @@
+{
+  "date": "2026-10-15",
+  "starting_sha": "fd7191653d45fc53791b867feb54181e2b90bf77",
+  "clock": "real wall-clock; no timer/Date acceleration",
+  "baseline": {
+    "base": "http://127.0.0.1:8887",
+    "steps": [
+      {
+        "name": "startup",
+        "wall_ms": 7115,
+        "remote_requests": 18
+      },
+      {
+        "name": "visible_idle_60s",
+        "wall_ms": 60235,
+        "remote_requests": 0,
+        "request_names": []
+      },
+      {
+        "name": "hidden_idle_60s",
+        "wall_ms": 60588,
+        "remote_requests": 0,
+        "request_names": []
+      },
+      {
+        "name": "registration_form_idle_10s",
+        "wall_ms": 10153,
+        "remote_requests": 0,
+        "request_names": []
+      },
+      {
+        "name": "invalid_phone_submit",
+        "wall_ms": 590,
+        "remote_requests": 0,
+        "request_names": []
+      },
+      {
+        "name": "phone_typing_20_events",
+        "wall_ms": 200,
+        "remote_requests": 0,
+        "request_names": []
+      },
+      {
+        "name": "valid_authenticated_submit",
+        "wall_ms": 1039,
+        "remote_requests": 1,
+        "request_names": [],
+        "registration_submit_requests": 1
+      },
+      {
+        "name": "admin_account_list_idle_10s",
+        "wall_ms": 10480,
+        "remote_requests": 0
+      }
+    ]
+  },
+  "current": {
+    "base": "http://127.0.0.1:8878",
+    "steps": [
+      {
+        "name": "startup",
+        "wall_ms": 7091,
+        "remote_requests": 18
+      },
+      {
+        "name": "visible_idle_60s",
+        "wall_ms": 60223,
+        "remote_requests": 0,
+        "request_names": []
+      },
+      {
+        "name": "hidden_idle_60s",
+        "wall_ms": 61249,
+        "remote_requests": 0,
+        "request_names": []
+      },
+      {
+        "name": "registration_form_idle_10s",
+        "wall_ms": 10001,
+        "remote_requests": 0,
+        "request_names": []
+      },
+      {
+        "name": "invalid_phone_submit",
+        "wall_ms": 258,
+        "remote_requests": 0,
+        "request_names": []
+      },
+      {
+        "name": "phone_typing_20_events",
+        "wall_ms": 189,
+        "remote_requests": 0,
+        "request_names": []
+      },
+      {
+        "name": "valid_authenticated_submit",
+        "wall_ms": 1006,
+        "remote_requests": 1,
+        "request_names": [],
+        "registration_submit_requests": 1
+      },
+      {
+        "name": "captcha_disabled",
+        "wall_ms": 143,
+        "remote_requests": 0,
+        "request_names": []
+      },
+      {
+        "name": "admin_account_list_idle_10s",
+        "wall_ms": 10731,
+        "remote_requests": 0
+      }
+    ]
+  },
+  "synthetic_purge": {
+    "wall_ms": 3357,
+    "result": "PASS Wave65 staged Storage/API-before-DB/Auth, zero/201 objects, ownership negatives, each failure boundary, exact-UUID resume/no-retarget, parallel idempotency, minimal hash audit, disabled Edge zero provider calls"
+  },
+  "limitations": [
+    "All remote requests intercepted; no live signup/email/user deletion",
+    "Hidden property simulated, not physical native process suspension",
+    "Admin/list windows 10s; visible/hidden windows each real 60s",
+    "Browser counts do not prove live Auth quotas/RLS/provider latency"
+  ],
+  "paid_provider_activations": 0,
+  "production_mutations": 0
+}

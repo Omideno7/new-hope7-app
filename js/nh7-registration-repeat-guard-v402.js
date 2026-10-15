@@ -7,7 +7,7 @@ const SUPABASE='https://gpzcwffxnddhaeaogdyo.supabase.co';
 const KEY='sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37';
 const SESSION='nh7_user_session_v170';
 const ACCESS='nh7_school_access';
-let checking=false,lastCheck=0,lockInfo=null,timer=0;
+let checking=false,lastCheck=0,lockInfo=null,timer=0,lastOwner='';
 const parse=(v,f=null)=>{try{return JSON.parse(v||'')??f}catch(_){return f}};
 const lang=()=>{const v=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';return ['fa','en','hr'].includes(v)?v:'en'};
 const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
@@ -20,7 +20,7 @@ function lockable(status){return ['pending','approved'].includes(String(status||
 function saveKnown(info,email=''){
   const old=localAccess()||{},status=String(info?.status||old.status||'pending').toLowerCase();
   const next=Object.assign({},old,{
-    email:String(info?.email||email||old.email||'').trim().toLowerCase(),
+    user_id:String(session()?.user?.id||''),email:String(info?.email||email||old.email||'').trim().toLowerCase(),
     status,
     registration_id:info?.registration_id||old.registration_id||'',
     submitted:true,
@@ -32,13 +32,15 @@ function saveKnown(info,email=''){
 async function serverStatus(email=''){
   const s=session(),headers={apikey:KEY,'Content-Type':'application/json','x-device-id':deviceId()};
   if(s?.access_token)headers.Authorization='Bearer '+s.access_token;
+  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),15000);try{
   const response=await fetch(SUPABASE+'/rest/v1/rpc/nh7_registration_status',{
-    method:'POST',headers,cache:'no-store',
+    method:'POST',headers,cache:'no-store',signal:controller.signal,
     body:JSON.stringify({p_type:'school',p_email:String(email||'').trim().toLowerCase(),p_device_id:deviceId()})
   });
   const text=await response.text();let data=null;try{data=text?JSON.parse(text):null}catch(_){}
   if(!response.ok)throw new Error(data?.message||text||('HTTP '+response.status));
   return Array.isArray(data)?data[0]||null:data;
+  }finally{clearTimeout(timeout)}
 }
 function notice(){
   let n=document.getElementById('nh7RepeatRegistrationNoticeV402');
@@ -71,15 +73,15 @@ function decorate(){
   }
 }
 async function refresh(force=false){
-  if(checking)return;
-  const now=Date.now();if(!force&&now-lastCheck<7000){decorate();return}
-  checking=true;lastCheck=now;
-  const local=localAccess(),localStatus=String(local?.status||'').toLowerCase();
+  if(checking||document.hidden||!document.querySelector('[data-submit-registration="school"]'))return;
+  const owner=String(session()?.user?.id||'');if(!owner){lockInfo=null;decorate();return}const now=Date.now();if(!force&&owner===lastOwner){decorate();return}
+  checking=true;lastCheck=now;lastOwner=owner;
+  const ticket=window.NH7SecurityWave65.ticket(),emailNow=currentEmail();let local=localAccess();if(local&&(local.user_id!==owner||String(local.email||'').trim().toLowerCase()!==emailNow))local=null;lockInfo=null;const localStatus=String(local?.status||'').toLowerCase();
   if(lockable(localStatus))lockInfo={status:localStatus,email:local?.email||'',registration_id:local?.registration_id||''};
   decorate();
   try{
     const email=String(local?.email||currentEmail()||'').trim().toLowerCase();
-    const info=await serverStatus(email);
+    const info=await serverStatus(email);window.NH7SecurityWave65.assert(ticket);
     if(info?.found&&lockable(info.status)){
       const saved=saveKnown(info,email);lockInfo={status:saved.status,email:saved.email,registration_id:saved.registration_id};
     }else if(info?.found&&String(info.status||'').toLowerCase()==='rejected'){
@@ -91,17 +93,14 @@ async function refresh(force=false){
       }else if(!lockable(localStatus))lockInfo=null;
     }
   }catch(error){
-    if(!lockable(localStatus))lockInfo=null;
+    if(!window.NH7SecurityWave65.current(ticket)){lockInfo=null;return}if(!lockable(localStatus))lockInfo=null;
     console.warn('[NH7 repeat registration guard]',error);
   }finally{checking=false;decorate()}
 }
 function schedule(force=false){clearTimeout(timer);timer=setTimeout(()=>refresh(force),force?40:180)}
-document.addEventListener('input',e=>{if(e.target?.id==='reg_email')schedule(false)},true);
-document.addEventListener('change',e=>{if(e.target?.id==='reg_email')schedule(false)},true);
 new MutationObserver(()=>schedule(false)).observe(document.documentElement,{childList:true,subtree:true});
 window.addEventListener('pageshow',()=>schedule(true));
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)schedule(true)});
-setInterval(()=>{if(document.querySelector('[data-submit-registration="school"]'))refresh(false)},5000);
 const style=document.createElement('style');style.textContent=`
 .nh7-repeat-reg-notice-v402{margin:10px 0 12px;padding:12px 14px;border:1px solid #bfe3dc;border-radius:15px;background:#effbf7;color:#173d38;line-height:1.65}
 .nh7-repeat-reg-notice-v402 strong,.nh7-repeat-reg-notice-v402 span{display:block}.nh7-repeat-reg-notice-v402 span{margin-top:4px;color:#52606d;font-size:.84rem}

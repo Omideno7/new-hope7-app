@@ -1,0 +1,24 @@
+"""Independent current-wave checks; no wildcard exemption for earlier product/authority/data guards."""
+from pathlib import Path
+import subprocess,hashlib,json,re,sys
+sys.dont_write_bytecode=True
+from wave65_accepted_source import BASE,manifest,prior_bytes
+m=manifest();assert m['base']==BASE
+scopes=['js','css','assets','data','public','supabase','index.html','admin.html','reset-password.html','sw-release-core-v403.js']
+baseline=set(subprocess.check_output(['git','ls-tree','-r','--name-only',BASE,'--',*scopes]).decode().splitlines())
+current=set(subprocess.check_output(['git','ls-files','--',*scopes]).decode().splitlines())|set(subprocess.check_output(['git','ls-files','--others','--exclude-standard','--',*scopes]).decode().splitlines())
+assert current-baseline==set(m['new_runtime']),'Unexpected new runtime/review source'
+for p in baseline:
+ old=subprocess.check_output(['git','show',BASE+':'+p]);assert prior_bytes(p)==old,'Unapproved source/data/backend change '+p
+for p,sha in m['new_runtime'].items():assert hashlib.sha256(Path(p).read_bytes()).hexdigest()==sha,'Unrecorded Wave65 source '+p
+assert not subprocess.check_output(['git','diff',BASE,'--','supabase/migrations','supabase/functions','data']), 'No deployment/migration/existing backend/data changes'
+for p in ['js/nh7-security-registration-wave65.js','js/nh7-delete-account-v253.js','js/nh7-admin-delete-wave65.js']:
+ s=Path(p).read_text();assert 'setInterval(' not in s and 'localStorage.clear(' not in s and "startsWith('nh7_')" not in s,p
+for p in ['js/nh7-delete-account-v253.js','js/nh7-settings-account-v252.js']:assert 'clearPrivate' not in Path(p).read_text()
+assert 'nh7-delete-my-account-v252' not in Path('js/nh7-delete-account-v253.js').read_text()+Path('js/nh7-settings-account-v252.js').read_text()
+html=Path('index.html').read_text();assert html.index('js/nh7-security-registration-wave65.js')<html.index('js/nh7-auth-signup-guard-v343.js')
+assert 'NH7_FULL_DELETE_WAVE65_ENABLED=true' not in html+Path('admin.html').read_text()
+assert "NH7_RELEASE_DATA_CACHE='nh7-data-stable-v329'" in Path('sw-release-core-v403.js').read_text()
+for p in Path('supabase/review/wave6_5-security-registration').glob('*'):
+ if p.suffix in ('.sql','.mjs'):assert not re.search(r'delete\s+from\s+storage\.objects|truncate\s+|Deno\.serve',p.read_text(),re.I),p
+print('PASS Wave65 exact hash-bound client/review delta; all other Wave1–6 runtime/data/engines/backend/migrations exact; disabled activation, no polling/broad cache clear/storage SQL deletion')

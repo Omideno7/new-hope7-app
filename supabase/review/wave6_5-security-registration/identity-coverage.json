@@ -1,0 +1,2104 @@
+{
+  "scope": "superset discovery; referenced-only/absent tables and column keys must be resolved by preflight; table presence never assumed",
+  "rows": [
+    {
+      "table": "public.registrations",
+      "domain": "registrations",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "docs/supabase_schema_v1_3.sql",
+        "js/admin-v2.2.3.js",
+        "js/admin-v2.3.9-registration-approval-email-v342.js",
+        "js/admin-v2.3.9-registration-approval-email-v344.js",
+        "js/admin-v2.3.9-registration-email-actions-v346.js",
+        "js/admin-v2.3.9-registration-requests-v331.js",
+        "js/app.js",
+        "js/nh7-admin-rbac-v350.js",
+        "js/nh7-admin-registration-dedupe-v332.js",
+        "js/nh7-admin-review-blessings-v476.js",
+        "js/nh7-admin-review-refresh-v474.js",
+        "js/nh7-admin-review-refresh-v475.js",
+        "js/nh7-admin-workspace-wave3.js",
+        "js/nh7-notification-contract-wave4.js",
+        "js/nh7-performance-wave1.js",
+        "qa/rc-3.6.3/launcher-v363.js",
+        "supabase/migrations/20260821163134_auth_registration_integrity_v348.sql",
+        "supabase/migrations/20260821163811_auth_registration_compatibility_v349.sql",
+        "supabase/migrations/20260821174931_admin_rbac_recovery_v350.sql",
+        "supabase/migrations/20260824171500_atomic_complete_school_signup_v356.sql",
+        "supabase/migrations/20260824190500_block_incomplete_auth_signup_v355.sql",
+        "supabase/migrations/20261002221819_optimize_disk_io_inbox_registrations_v1.sql",
+        "supabase/migrations/20261003171531_optimize_inbox_rls_initplan_v1.sql",
+        "supabase/migrations/20261009065456_school_student_identity_core_v127.sql",
+        "supabase/migrations/20261009090202_school_access_identity_bridge_v230.sql",
+        "supabase/migrations/20261009124356_school_exam_read_identity_v351.sql",
+        "supabase/migrations/20261009162431_school_exam_submit_identity_v128.sql",
+        "supabase/migrations/20261010182200_optimize_school_registration_rls_initplan_v1.sql",
+        "supabase/review/issue127/legacy_activity_bridge_candidate.sql",
+        "supabase/review/issue127/preflight.sql",
+        "supabase/review/issue127/student_identity_candidate.sql",
+        "supabase/review/issue127/unapplied-foundation-candidate-20261009/20261009064545_school_student_identity_foundation_v127.sql",
+        "supabase/review/migration-history-reconciliation-20261009/legacy-applied-outside-history/20261003_student_academic_center_v540.sql",
+        "supabase/review/wave4-notifications-2/authorization.sql",
+        "supabase/review/wave4-notifications-2/candidate.sql",
+        "supabase/review/wave4-notifications-2/disable.sql",
+        "supabase/review/wave4-notifications-2/preflight.sql",
+        "supabase/rollbacks/20261003171531_optimize_inbox_rls_initplan_v1_rollback.sql",
+        "supabase_admin4_registration_cleanup.sql",
+        "supabase_school_access_fix_v1_4_1.sql",
+        "supabase_v1_6_3_meeting_settings_fix.sql",
+        "supabase_v1_6_4_meeting_settings_rpc_fix.sql",
+        "supabase_v1_7_0_hotfix5_school_account_duration.sql",
+        "supabase_v2_1_2_auth_registration_admin_hotfix.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.bible_user_actions",
+      "domain": "notes-verses-progress",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "data/bible/sql/user_activity_tables.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.bible_user_bookmarks",
+      "domain": "notes-verses-progress",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "data/bible/sql/user_activity_tables.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.bible_user_highlights",
+      "domain": "notes-verses-progress",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "data/bible/sql/user_activity_tables.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.bible_user_notes",
+      "domain": "notes-verses-progress",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "data/bible/sql/user_activity_tables.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.bible_user_rewards",
+      "domain": "notes-verses-progress",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "data/bible/sql/user_activity_tables.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.nh7_account_notes",
+      "domain": "notes-verses-progress",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "js/app.js",
+        "js/nh7-local-first-wave2.js",
+        "js/nh7-my-notes-v234.js",
+        "supabase/migrations/20261010180256_optimize_user_data_rls_initplan_v1.sql",
+        "supabase/review/optimize_inbox_rls_cost_v1_candidate.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.nh7_account_progress",
+      "domain": "notes-verses-progress",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "js/app.js",
+        "js/nh7-local-first-wave2.js",
+        "js/nh7-my-notes-v234.js",
+        "supabase/migrations/20261010180256_optimize_user_data_rls_initplan_v1.sql",
+        "supabase/review/optimize_inbox_rls_cost_v1_candidate.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.nh7_account_saved_verses",
+      "domain": "notes-verses-progress",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "js/app.js",
+        "js/nh7-apocrypha-actions-v393.js",
+        "js/nh7-local-first-wave2.js",
+        "js/nh7-reader-ux-v251.js",
+        "supabase/migrations/20261010180256_optimize_user_data_rls_initplan_v1.sql",
+        "supabase/review/optimize_inbox_rls_cost_v1_candidate.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.nh7_account_verse_marks_v230",
+      "domain": "notes-verses-progress",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "js/app.js",
+        "js/nh7-local-first-wave2.js",
+        "supabase/migrations/20261010180256_optimize_user_data_rls_initplan_v1.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.saved_verses",
+      "domain": "notes-verses-progress",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "docs/supabase_schema_v1_3.sql",
+        "js/app.js",
+        "js/nh7-local-first-wave2.js"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.user_bible_activity",
+      "domain": "notes-verses-progress",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "data/bible/sql/supabase_bible_schema.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.user_notes",
+      "domain": "notes-verses-progress",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "docs/supabase_schema_v1_3.sql",
+        "js/app.js",
+        "js/nh7-local-first-wave2.js",
+        "js/nh7-my-notes-v234.js"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.user_points_ledger",
+      "domain": "notes-verses-progress",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "data/bible/sql/supabase_bible_schema.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.user_progress",
+      "domain": "notes-verses-progress",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "docs/supabase_schema_v1_3.sql",
+        "js/app.js",
+        "js/nh7-local-first-wave2.js",
+        "js/nh7-my-notes-v234.js"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.user_reading_progress",
+      "domain": "notes-verses-progress",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "data/bible/sql/supabase_bible_schema.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.church_members",
+      "domain": "school",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "supabase/review/migration-history-reconciliation-20261009/legacy-applied-outside-history/20261003_student_academic_center_v540.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.nh7_school_video_grants_v260",
+      "domain": "school",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "supabase/migrations/20260728170000_fix7_video_portal_apocrypha.sql",
+        "supabase/migrations/20260728_school_secure_media_v260.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.school_assignments",
+      "domain": "school",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "js/admin-v2.3.8-student-fix.js",
+        "js/app.js",
+        "js/nh7-admin-review-blessings-v476.js",
+        "js/nh7-admin-review-refresh-v474.js",
+        "js/nh7-admin-review-refresh-v475.js",
+        "scripts/verify-admin-course-studio-v127.mjs",
+        "scripts/verify-school-activity-user-id-bridge-v128.mjs",
+        "scripts/verify-school-identity-integration-v127.mjs",
+        "scripts/verify-school-identity-v127.mjs",
+        "supabase/migrations/20260822091500_school_assignment_review_workflow_v246.sql",
+        "supabase/migrations/20260822091600_school_assignment_workflow_permissions_v246.sql",
+        "supabase/migrations/20260917_school_path_v350_candidate.sql",
+        "supabase/migrations/20260918_school_path_v350_legacy_compat.sql",
+        "supabase/migrations/20261003073335_retire_nonessential_telemetry_and_audio_gate_v1.sql",
+        "supabase/migrations/20261008173510_school_v351_legacy_class_progress_hotfix.sql",
+        "supabase/migrations/20261009071217_school_activity_user_id_bridge_v128.sql",
+        "supabase/migrations/20261009072624_school_dual_key_ownership_v128.sql",
+        "supabase/migrations/20261009073622_school_email_fallback_fence_v128.sql",
+        "supabase/migrations/20261009074806_school_snapshot_dual_key_v2110.sql",
+        "supabase/migrations/20261009124356_school_exam_read_identity_v351.sql",
+        "supabase/migrations/20261009130632_school_exam_scoring_identity_v128.sql",
+        "supabase/migrations/20261009162431_school_exam_submit_identity_v128.sql",
+        "supabase/migrations/20261009163134_school_assignment_submit_identity_v128.sql",
+        "supabase/migrations/20261011073048_school_exam_retry_final_completion_consistency_v1.sql",
+        "supabase/review/issue127/legacy_activity_bridge_candidate.sql",
+        "supabase/review/issue127/multi_course_candidate.sql",
+        "supabase/review/issue127/preflight.sql",
+        "supabase/review/issue127/student_identity_candidate.sql",
+        "supabase/review/issue127/unapplied-foundation-candidate-20261009/20261009064545_school_student_identity_foundation_v127.sql",
+        "supabase/review/issue127/unapplied-foundation-candidate-20261009/verify-school-identity-foundation-migration-v127.mjs",
+        "supabase/review/migration-history-reconciliation-20261009/legacy-applied-outside-history/20261003_school_legacy_anchor_v542.sql",
+        "supabase/review/migration-history-reconciliation-20261009/legacy-applied-outside-history/20261003_student_academic_center_v540.sql",
+        "supabase/review/optimize_inbox_rls_cost_v1_candidate.sql",
+        "supabase/review/wave4-notifications-2/authorization.sql",
+        "supabase/review/wave4-notifications-2/candidate.sql",
+        "supabase/review/wave4-notifications-2/disable.sql",
+        "supabase/rollback/20261003_school_legacy_anchor_v542_rollback.sql",
+        "supabase_v2_1_1_exam_assignments_weighted.sql",
+        "supabase_v2_1_4_admin_student_dashboard.sql",
+        "supabase_v2_1_7_targeted_fixes.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.school_audio_progress",
+      "domain": "school",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.school_course_access_grants",
+      "domain": "school",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "scripts/verify-multi-course-v127.mjs",
+        "supabase/review/issue127/admin_course_studio_candidate.sql",
+        "supabase/review/issue127/multi_course_candidate.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.school_exam_attempts",
+      "domain": "school",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "js/app.js",
+        "js/nh7-security-core-v340.js",
+        "scripts/verify-admin-course-studio-v127.mjs",
+        "scripts/verify-school-activity-user-id-bridge-v128.mjs",
+        "scripts/verify-school-identity-integration-v127.mjs",
+        "scripts/verify-school-identity-v127.mjs",
+        "scripts/verify-student-exam-review-v566.mjs",
+        "supabase/migrations/20260917_school_path_v350_candidate.sql",
+        "supabase/migrations/20260917_school_path_v350_final_source_fix.sql",
+        "supabase/migrations/20260918_school_path_v350_legacy_compat.sql",
+        "supabase/migrations/20261008173510_school_v351_legacy_class_progress_hotfix.sql",
+        "supabase/migrations/20261008173533_school_v351_legacy_final_progress_hotfix.sql",
+        "supabase/migrations/20261009071217_school_activity_user_id_bridge_v128.sql",
+        "supabase/migrations/20261009072624_school_dual_key_ownership_v128.sql",
+        "supabase/migrations/20261009073622_school_email_fallback_fence_v128.sql",
+        "supabase/migrations/20261009124356_school_exam_read_identity_v351.sql",
+        "supabase/migrations/20261009130632_school_exam_scoring_identity_v128.sql",
+        "supabase/migrations/20261009162431_school_exam_submit_identity_v128.sql",
+        "supabase/review/issue127/legacy_activity_bridge_candidate.sql",
+        "supabase/review/issue127/multi_course_candidate.sql",
+        "supabase/review/issue127/preflight.sql",
+        "supabase/review/issue127/student_identity_candidate.sql",
+        "supabase/review/issue127/unapplied-foundation-candidate-20261009/20261009064545_school_student_identity_foundation_v127.sql",
+        "supabase/review/issue127/unapplied-foundation-candidate-20261009/verify-school-identity-foundation-migration-v127.mjs",
+        "supabase/review/migration-history-reconciliation-20261009/legacy-applied-outside-history/20261003_school_legacy_anchor_v542.sql",
+        "supabase/review/migration-history-reconciliation-20261009/legacy-applied-outside-history/20261003_student_academic_center_v540.sql",
+        "supabase/review/migration-history-reconciliation-20261009/legacy-applied-outside-history/20261003_student_exam_status_v543.sql",
+        "supabase/rollback/20261003_school_legacy_anchor_v542_rollback.sql",
+        "supabase_v2_1_1_exam_assignments_weighted.sql",
+        "supabase_v2_1_7_targeted_fixes.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.school_legacy_progress_v542",
+      "domain": "school",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "supabase/migrations/20261008173510_school_v351_legacy_class_progress_hotfix.sql",
+        "supabase/migrations/20261008173533_school_v351_legacy_final_progress_hotfix.sql",
+        "supabase/migrations/20261009124356_school_exam_read_identity_v351.sql",
+        "supabase/review/migration-history-reconciliation-20261009/legacy-applied-outside-history/20261003_school_legacy_anchor_v542.sql",
+        "supabase/review/migration-history-reconciliation-20261009/legacy-applied-outside-history/20261003_student_exam_status_v543.sql",
+        "supabase/rollback/20261003_school_legacy_anchor_v542_rollback.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.school_progress",
+      "domain": "school",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "js/app.js",
+        "js/nh7-security-core-v340.js",
+        "scripts/verify-admin-course-studio-v127.mjs",
+        "scripts/verify-multi-course-v127.mjs",
+        "scripts/verify-offline-reconciliation-v572.mjs",
+        "scripts/verify-school-activity-user-id-bridge-v128.mjs",
+        "scripts/verify-school-course-code-bridge-v200.mjs",
+        "scripts/verify-school-identity-integration-v127.mjs",
+        "scripts/verify-school-identity-v127.mjs",
+        "scripts/verify-student-exam-review-v566.mjs",
+        "supabase/migrations/20260917_school_path_v350_candidate.sql",
+        "supabase/migrations/20260918_school_path_v350_legacy_compat.sql",
+        "supabase/migrations/20261003073335_retire_nonessential_telemetry_and_audio_gate_v1.sql",
+        "supabase/migrations/20261008173510_school_v351_legacy_class_progress_hotfix.sql",
+        "supabase/migrations/20261008173533_school_v351_legacy_final_progress_hotfix.sql",
+        "supabase/migrations/20261009071217_school_activity_user_id_bridge_v128.sql",
+        "supabase/migrations/20261009072624_school_dual_key_ownership_v128.sql",
+        "supabase/migrations/20261009073622_school_email_fallback_fence_v128.sql",
+        "supabase/migrations/20261009074806_school_snapshot_dual_key_v2110.sql",
+        "supabase/migrations/20261009091333_school_progress_identity_save_v340.sql",
+        "supabase/migrations/20261009124356_school_exam_read_identity_v351.sql",
+        "supabase/migrations/20261009130632_school_exam_scoring_identity_v128.sql",
+        "supabase/migrations/20261009162431_school_exam_submit_identity_v128.sql",
+        "supabase/migrations/20261010024423_school_course_code_bridge_v200.sql",
+        "supabase/migrations/20261011073048_school_exam_retry_final_completion_consistency_v1.sql",
+        "supabase/review/issue127/legacy_activity_bridge_candidate.sql",
+        "supabase/review/issue127/multi_course_candidate.sql",
+        "supabase/review/issue127/preflight.sql",
+        "supabase/review/issue127/student_identity_candidate.sql",
+        "supabase/review/issue127/unapplied-foundation-candidate-20261009/20261009064545_school_student_identity_foundation_v127.sql",
+        "supabase/review/issue127/unapplied-foundation-candidate-20261009/verify-school-identity-foundation-migration-v127.mjs",
+        "supabase/review/migration-history-reconciliation-20261009/legacy-applied-outside-history/20261003_school_legacy_anchor_v542.sql",
+        "supabase/review/migration-history-reconciliation-20261009/legacy-applied-outside-history/20261003_student_academic_center_v540.sql",
+        "supabase/review/optimize_inbox_rls_cost_v1_candidate.sql",
+        "supabase/rollback/20261003_school_legacy_anchor_v542_rollback.sql",
+        "supabase_v1_9_0_school_exams_progress.sql",
+        "supabase_v2_1_1_exam_assignments_weighted.sql",
+        "supabase_v2_1_7_targeted_fixes.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.school_student_identities",
+      "domain": "school",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "scripts/verify-admin-course-studio-v127.mjs",
+        "scripts/verify-school-access-identity-v230.mjs",
+        "scripts/verify-school-activity-user-id-bridge-v128.mjs",
+        "scripts/verify-school-certificate-identity-v127.mjs",
+        "scripts/verify-school-dual-key-ownership-v128.mjs",
+        "scripts/verify-school-email-fallback-fence-v128.mjs",
+        "scripts/verify-school-identity-v127.mjs",
+        "scripts/verify-school-snapshot-dual-key-v2110.mjs",
+        "supabase/migrations/20261009065456_school_student_identity_core_v127.sql",
+        "supabase/migrations/20261009071217_school_activity_user_id_bridge_v128.sql",
+        "supabase/migrations/20261009090202_school_access_identity_bridge_v230.sql",
+        "supabase/migrations/20261009092532_student_photo_private_v127.sql",
+        "supabase/migrations/20261009124356_school_exam_read_identity_v351.sql",
+        "supabase/migrations/20261009162431_school_exam_submit_identity_v128.sql",
+        "supabase/migrations/20261009164138_school_certificate_identity_bridge_v127.sql",
+        "supabase/migrations/20261011082912_admin_student_code_payload_v543.sql",
+        "supabase/migrations/20261011084844_admin_student_identity_directory_v128.sql",
+        "supabase/review/issue127/admin_course_studio_candidate.sql",
+        "supabase/review/issue127/credential_delivery_candidate.sql",
+        "supabase/review/issue127/integration_wrappers_candidate.sql",
+        "supabase/review/issue127/legacy_activity_bridge_candidate.sql",
+        "supabase/review/issue127/student_identity_candidate.sql",
+        "supabase/review/issue127/student_photo_candidate.sql",
+        "supabase/review/issue127/unapplied-foundation-candidate-20261009/20261009064545_school_student_identity_foundation_v127.sql",
+        "supabase/review/issue127/unapplied-foundation-candidate-20261009/verify-school-identity-foundation-migration-v127.mjs",
+        "supabase/review/wave5-document-studio-v2/candidate.sql",
+        "supabase/review/wave5-document-studio-v2/preflight.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.school_video_progress",
+      "domain": "school",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.fasting_daily_logs",
+      "domain": "plans",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "js/nh7-local-first-wave2.js",
+        "js/nh7-spiritual-plans-v240.js"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.fasting_journeys",
+      "domain": "plans",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "js/nh7-local-first-wave2.js",
+        "js/nh7-spiritual-plans-v240.js"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.spiritual_plan_progress",
+      "domain": "plans",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "js/nh7-local-first-wave2.js",
+        "js/nh7-spiritual-plans-v240.js",
+        "supabase/review/wave4-notifications-2/authorization.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.nh7_library_access_grants",
+      "domain": "library",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.nh7_library_code_claims",
+      "domain": "library",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.nh7_library_grants",
+      "domain": "library",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.nh7_library_minister_grants",
+      "domain": "library",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.nh7_library_reading_progress_v490",
+      "domain": "library",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "supabase_v490_library_reading_progress.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.nh7_library_user_access",
+      "domain": "library",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.nh7_prayer_requests_v502",
+      "domain": "community",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "js/nh7-community-v502.js",
+        "supabase/migrations/20261005232733_community_prayer_testimony_v502_backend.sql",
+        "supabase/migrations/20261006085853_community_storage_ops_v504.sql",
+        "supabase/migrations/20261010180256_optimize_user_data_rls_initplan_v1.sql",
+        "supabase/migrations/20261010224127_admin_prayer_reply_document_delete_v505.sql",
+        "supabase/migrations/20261011092221_fix_prayer_document_admin_runtime_v507.sql",
+        "supabase/review/optimize_inbox_rls_cost_v1_candidate.sql",
+        "supabase/review/wave4-notifications-2/authorization.sql",
+        "supabase/review/wave4-notifications-2/candidate.sql",
+        "supabase/review/wave4-notifications-2/disable.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.nh7_testimonies_v502",
+      "domain": "community",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "js/nh7-community-v502.js",
+        "supabase/migrations/20261005232733_community_prayer_testimony_v502_backend.sql",
+        "supabase/migrations/20261006083051_community_moderation_prayer_v503.sql",
+        "supabase/migrations/20261006085853_community_storage_ops_v504.sql",
+        "supabase/migrations/20261006090128_community_storage_cleanup_helpers_v504.sql",
+        "supabase/migrations/20261007065642_community_storage_orphan_audit_v507.sql",
+        "supabase/migrations/20261010180256_optimize_user_data_rls_initplan_v1.sql",
+        "supabase/review/optimize_inbox_rls_cost_v1_candidate.sql",
+        "supabase/review/wave4-notifications-2/authorization.sql",
+        "supabase/review/wave4-notifications-2/candidate.sql",
+        "supabase/review/wave4-notifications-2/disable.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.nh7_sermon_blessings",
+      "domain": "sermon-social",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.nh7_sermon_likes",
+      "domain": "sermon-social",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.sermon_blessings",
+      "domain": "sermon-social",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.sermon_likes",
+      "domain": "sermon-social",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.notification_inbox",
+      "domain": "inbox",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "docs/supabase_schema_v1_3.sql",
+        "js/admin-v2.2.0.js",
+        "js/admin-v2.2.3.js",
+        "js/app.js",
+        "js/nh7-inbox-badge-sync-v418.js",
+        "supabase/migrations/20261002221819_optimize_disk_io_inbox_registrations_v1.sql",
+        "supabase/migrations/20261003100105_add_batched_social_and_inbox_snapshot_v1.sql",
+        "supabase/migrations/20261003171531_optimize_inbox_rls_initplan_v1.sql",
+        "supabase/migrations/20261009032342_optimize_inbox_and_legacy_library_dashboard.sql",
+        "supabase/migrations/20261010180059_optimize_inbox_lower_email_index_v1.sql",
+        "supabase/migrations/20261010224127_admin_prayer_reply_document_delete_v505.sql",
+        "supabase/migrations/20261010224433_harden_document_delete_delivery_fence_v506.sql",
+        "supabase/migrations/20261011092221_fix_prayer_document_admin_runtime_v507.sql",
+        "supabase/review/issue127/credential_delivery_candidate.sql",
+        "supabase/review/optimize_inbox_rls_cost_v1_candidate.sql",
+        "supabase/review/wave4-notifications-2/authorization.sql",
+        "supabase/review/wave4-notifications-2/candidate.sql",
+        "supabase/review/wave4-notifications-2/inbox-snapshot.sql",
+        "supabase/review/wave4-notifications-2/preflight.sql",
+        "supabase/rollbacks/20261003171531_optimize_inbox_rls_initplan_v1_rollback.sql",
+        "supabase_admin5_inbox_messages.sql",
+        "supabase_v2_1_8_certificate_password_message_fix.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.notification_inbox_receipts",
+      "domain": "inbox",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "js/app.js",
+        "js/nh7-inbox-badge-sync-v418.js",
+        "supabase/migrations/20261003100105_add_batched_social_and_inbox_snapshot_v1.sql",
+        "supabase/migrations/20261003171531_optimize_inbox_rls_initplan_v1.sql",
+        "supabase/migrations/20261009032342_optimize_inbox_and_legacy_library_dashboard.sql",
+        "supabase/migrations/20261011092221_fix_prayer_document_admin_runtime_v507.sql",
+        "supabase/review/wave4-notifications-2/inbox-snapshot.sql",
+        "supabase/review/wave4-notifications-2/preflight.sql",
+        "supabase/rollbacks/20261003171531_optimize_inbox_rls_initplan_v1_rollback.sql",
+        "supabase_v1_7_0_dynamic_platform.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.qa_questions",
+      "domain": "questions",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "docs/supabase_schema_v1_3.sql",
+        "js/admin-qna-i18n-v341.js",
+        "js/admin-qna-i18n-v342.js",
+        "js/admin-qna-i18n-v343.js",
+        "js/app.js",
+        "js/nh7-admin-ai-v490.js",
+        "js/nh7-admin-ai-v491.js",
+        "js/nh7-admin-qna-ai-v492.js",
+        "js/nh7-admin-qna-ai-v493.js",
+        "js/nh7-admin-review-blessings-v476.js",
+        "js/nh7-admin-review-refresh-v474.js",
+        "js/nh7-admin-review-refresh-v475.js",
+        "js/nh7-admin-save-feedback-v497.js",
+        "js/nh7-qna-i18n-v341.js",
+        "js/nh7-security-core-v340.js",
+        "supabase/review/wave4-notifications-2/authorization.sql",
+        "supabase/review/wave4-notifications-2/candidate.sql",
+        "supabase/review/wave4-notifications-2/disable.sql",
+        "supabase_admin3_qna_delete_policy.sql",
+        "supabase_v1_6_0_qna_admin_fix.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.nh7_user_profiles",
+      "domain": "profile",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.nh7_user_profiles_v502",
+      "domain": "profile",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "js/nh7-community-v502.js"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.profiles",
+      "domain": "profile",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "js/nh7-admin-student-academic-v540.js"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "private.nh7_notification_preferences_wave4",
+      "domain": "notifications-review",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "supabase/review/wave4-notifications-2/authorization.sql",
+        "supabase/review/wave4-notifications-2/candidate.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "private.nh7_notification_subscriptions_wave4",
+      "domain": "notifications-review",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "supabase/review/wave4-notifications-2/authorization.sql",
+        "supabase/review/wave4-notifications-2/candidate.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.nh7_document_deliveries_v2",
+      "domain": "documents-review",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "supabase/review/wave5-document-studio-v2/candidate.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.nh7_document_drafts_v2",
+      "domain": "documents-review",
+      "status": "purge-owner; exact deployed columns and recursive identity census REQUIRED before activation",
+      "uid_keys": [
+        "user_id",
+        "owner_id",
+        "author_id",
+        "recipient_user_id",
+        "auth_user_id"
+      ],
+      "email_keys": [
+        "user_email",
+        "author_email",
+        "target_email",
+        "email",
+        "recipient_email",
+        "email_normalized"
+      ],
+      "json_keys": [
+        "payload"
+      ],
+      "device_keys": [
+        "device_id"
+      ],
+      "sources": [
+        "supabase/review/wave5-document-studio-v2/candidate.sql",
+        "supabase/review/wave5-document-studio-v2/library-boundary.sql"
+      ],
+      "device_only": "quarantine unless independently proven exclusive ownership; never delete by device alone"
+    },
+    {
+      "table": "public.nh7_apocrypha_books_v270",
+      "domain": "retention-policy-exception",
+      "status": "BLOCKED: owner-approved retention/redaction/revocation/offboarding policy required; never claim verified full purge while active PII remains",
+      "uid_keys": [
+        "user_id",
+        "recipient_user_id",
+        "created_by",
+        "actor_user_id",
+        "target_user_id"
+      ],
+      "email_keys": [
+        "recipient_email",
+        "email"
+      ],
+      "json_keys": [
+        "details",
+        "definition",
+        "snapshot"
+      ],
+      "device_keys": [],
+      "sources": [
+        "supabase/migrations/20260728170000_fix7_video_portal_apocrypha.sql"
+      ]
+    },
+    {
+      "table": "public.nh7_school_videos_v260",
+      "domain": "retention-policy-exception",
+      "status": "BLOCKED: owner-approved retention/redaction/revocation/offboarding policy required; never claim verified full purge while active PII remains",
+      "uid_keys": [
+        "user_id",
+        "recipient_user_id",
+        "created_by",
+        "actor_user_id",
+        "target_user_id"
+      ],
+      "email_keys": [
+        "recipient_email",
+        "email"
+      ],
+      "json_keys": [
+        "details",
+        "definition",
+        "snapshot"
+      ],
+      "device_keys": [],
+      "sources": [
+        "supabase/migrations/20260728170000_fix7_video_portal_apocrypha.sql",
+        "supabase/migrations/20260728_school_secure_media_v260.sql"
+      ]
+    },
+    {
+      "table": "public.nh7_school_video_codes_v260",
+      "domain": "retention-policy-exception",
+      "status": "BLOCKED: owner-approved retention/redaction/revocation/offboarding policy required; never claim verified full purge while active PII remains",
+      "uid_keys": [
+        "user_id",
+        "recipient_user_id",
+        "created_by",
+        "actor_user_id",
+        "target_user_id"
+      ],
+      "email_keys": [
+        "recipient_email",
+        "email"
+      ],
+      "json_keys": [
+        "details",
+        "definition",
+        "snapshot"
+      ],
+      "device_keys": [],
+      "sources": [
+        "supabase/migrations/20260728170000_fix7_video_portal_apocrypha.sql",
+        "supabase/migrations/20260728_school_secure_media_v260.sql"
+      ]
+    },
+    {
+      "table": "public.school_certificates",
+      "domain": "retention-policy-exception",
+      "status": "BLOCKED: owner-approved retention/redaction/revocation/offboarding policy required; never claim verified full purge while active PII remains",
+      "uid_keys": [
+        "user_id",
+        "recipient_user_id",
+        "created_by",
+        "actor_user_id",
+        "target_user_id"
+      ],
+      "email_keys": [
+        "recipient_email",
+        "email"
+      ],
+      "json_keys": [
+        "details",
+        "definition",
+        "snapshot"
+      ],
+      "device_keys": [],
+      "sources": [
+        "js/admin-v2.2.0.js",
+        "js/admin-v2.2.2.js",
+        "js/admin-v2.3.9-document-select-fix5.js",
+        "js/app.js",
+        "js/nh7-document-ux-v509.js",
+        "js/nh7-document-ux-v512.js",
+        "js/nh7-document-ux-v520.js",
+        "qa/rc-3.6.0-admin/assets/nh7-admin-university-v360.js",
+        "scripts/verify-admin-course-studio-v127.mjs",
+        "scripts/verify-public-certificate-verifier-v127.mjs",
+        "scripts/verify-school-activity-user-id-bridge-v128.mjs",
+        "scripts/verify-school-assignment-submit-identity-v128.mjs",
+        "scripts/verify-school-certificate-identity-v127.mjs",
+        "scripts/verify-school-dual-key-ownership-v128.mjs",
+        "scripts/verify-school-email-fallback-fence-v128.mjs",
+        "scripts/verify-school-exam-scoring-identity-v128.mjs",
+        "scripts/verify-school-exam-submit-identity-v128.mjs",
+        "scripts/verify-school-identity-v127.mjs",
+        "scripts/verify-school-snapshot-dual-key-v2110.mjs",
+        "supabase/migrations/20261009164138_school_certificate_identity_bridge_v127.sql",
+        "supabase/migrations/20261009165011_public_certificate_verifier_v127.sql",
+        "supabase/migrations/20261010182200_optimize_school_registration_rls_initplan_v1.sql",
+        "supabase/migrations/20261010224127_admin_prayer_reply_document_delete_v505.sql",
+        "supabase/migrations/20261010224433_harden_document_delete_delivery_fence_v506.sql",
+        "supabase/migrations/20261011092221_fix_prayer_document_admin_runtime_v507.sql",
+        "supabase/review/issue127/credential_delivery_candidate.sql",
+        "supabase/review/issue127/legacy_activity_bridge_candidate.sql",
+        "supabase/review/issue127/preflight.sql",
+        "supabase/review/issue127/student_identity_candidate.sql",
+        "supabase/review/issue127/unapplied-foundation-candidate-20261009/20261009064545_school_student_identity_foundation_v127.sql",
+        "supabase/review/migration-history-reconciliation-20261009/legacy-applied-outside-history/20261003_school_legacy_anchor_v542.sql",
+        "supabase/review/migration-history-reconciliation-20261009/legacy-applied-outside-history/20261003_student_exam_status_v543.sql",
+        "supabase/review/wave5-document-studio-v2/candidate.sql",
+        "supabase/review/wave5-document-studio-v2/library-boundary.sql",
+        "supabase/review/wave5-document-studio-v2/preflight.sql",
+        "supabase_v2_1_4_admin_student_dashboard.sql",
+        "supabase_v2_1_7_targeted_fixes.sql",
+        "supabase_v2_1_8_certificate_password_message_fix.sql"
+      ]
+    },
+    {
+      "table": "public.nh7_official_documents_v2",
+      "domain": "retention-policy-exception",
+      "status": "BLOCKED: owner-approved retention/redaction/revocation/offboarding policy required; never claim verified full purge while active PII remains",
+      "uid_keys": [
+        "user_id",
+        "recipient_user_id",
+        "created_by",
+        "actor_user_id",
+        "target_user_id"
+      ],
+      "email_keys": [
+        "recipient_email",
+        "email"
+      ],
+      "json_keys": [
+        "details",
+        "definition",
+        "snapshot"
+      ],
+      "device_keys": [],
+      "sources": [
+        "supabase/review/wave5-document-studio-v2/candidate.sql",
+        "supabase/review/wave5-document-studio-v2/library-boundary.sql"
+      ]
+    },
+    {
+      "table": "public.nh7_document_design_templates_v2",
+      "domain": "retention-policy-exception",
+      "status": "BLOCKED: owner-approved retention/redaction/revocation/offboarding policy required; never claim verified full purge while active PII remains",
+      "uid_keys": [
+        "user_id",
+        "recipient_user_id",
+        "created_by",
+        "actor_user_id",
+        "target_user_id"
+      ],
+      "email_keys": [
+        "recipient_email",
+        "email"
+      ],
+      "json_keys": [
+        "details",
+        "definition",
+        "snapshot"
+      ],
+      "device_keys": [],
+      "sources": [
+        "supabase/review/wave5-document-studio-v2/candidate.sql"
+      ]
+    },
+    {
+      "table": "private.nh7_document_library_versions_v2",
+      "domain": "retention-policy-exception",
+      "status": "BLOCKED: owner-approved retention/redaction/revocation/offboarding policy required; never claim verified full purge while active PII remains",
+      "uid_keys": [
+        "user_id",
+        "recipient_user_id",
+        "created_by",
+        "actor_user_id",
+        "target_user_id"
+      ],
+      "email_keys": [
+        "recipient_email",
+        "email"
+      ],
+      "json_keys": [
+        "details",
+        "definition",
+        "snapshot"
+      ],
+      "device_keys": [],
+      "sources": [
+        "supabase/review/wave5-document-studio-v2/library-boundary.sql"
+      ]
+    },
+    {
+      "table": "private.nh7_admin_audit_log_v350",
+      "domain": "retention-policy-exception",
+      "status": "BLOCKED: owner-approved retention/redaction/revocation/offboarding policy required; never claim verified full purge while active PII remains",
+      "uid_keys": [
+        "user_id",
+        "recipient_user_id",
+        "created_by",
+        "actor_user_id",
+        "target_user_id"
+      ],
+      "email_keys": [
+        "recipient_email",
+        "email"
+      ],
+      "json_keys": [
+        "details",
+        "definition",
+        "snapshot"
+      ],
+      "device_keys": [],
+      "sources": [
+        "scripts/verify-admin-rbac-v350.mjs",
+        "supabase/migrations/20260821174931_admin_rbac_recovery_v350.sql"
+      ]
+    },
+    {
+      "table": "private.nh7_admin_members_v350",
+      "domain": "retention-policy-exception",
+      "status": "BLOCKED: owner-approved retention/redaction/revocation/offboarding policy required; never claim verified full purge while active PII remains",
+      "uid_keys": [
+        "user_id",
+        "recipient_user_id",
+        "created_by",
+        "actor_user_id",
+        "target_user_id"
+      ],
+      "email_keys": [
+        "recipient_email",
+        "email"
+      ],
+      "json_keys": [
+        "details",
+        "definition",
+        "snapshot"
+      ],
+      "device_keys": [],
+      "sources": [
+        "scripts/verify-admin-rbac-v350.mjs",
+        "supabase/migrations/20260821174931_admin_rbac_recovery_v350.sql",
+        "supabase/migrations/20261003100105_add_batched_social_and_inbox_snapshot_v1.sql",
+        "supabase/migrations/20261006085853_community_storage_ops_v504.sql",
+        "supabase/migrations/20261006090128_community_storage_cleanup_helpers_v504.sql",
+        "supabase/review/wave4-notifications-2/candidate.sql",
+        "supabase/review/wave4-notifications-2/preflight.sql"
+      ]
+    },
+    {
+      "table": "private.nh7_admin_permission_grants_v350",
+      "domain": "retention-policy-exception",
+      "status": "BLOCKED: owner-approved retention/redaction/revocation/offboarding policy required; never claim verified full purge while active PII remains",
+      "uid_keys": [
+        "user_id",
+        "recipient_user_id",
+        "created_by",
+        "actor_user_id",
+        "target_user_id"
+      ],
+      "email_keys": [
+        "recipient_email",
+        "email"
+      ],
+      "json_keys": [
+        "details",
+        "definition",
+        "snapshot"
+      ],
+      "device_keys": [],
+      "sources": [
+        "scripts/verify-admin-rbac-v350.mjs",
+        "supabase/migrations/20260821174931_admin_rbac_recovery_v350.sql",
+        "supabase/review/wave4-notifications-2/candidate.sql"
+      ]
+    }
+  ],
+  "systems": [
+    {
+      "system": "Auth users/identities/sessions/refresh tokens",
+      "strategy": "supported Auth Admin deleteUser; cascades verified, never raw Auth SQL"
+    },
+    {
+      "system": "Storage owned objects",
+      "strategy": "supported Storage remove API before app DB/Auth; verified owner UID only, zero-object supported"
+    },
+    {
+      "system": "legacy device-only / immutable issued history / admin membership logs",
+      "strategy": "explicit safe exception; quarantine pending exclusive proof or approved retention policy; full deletion reports blocked, never false success"
+    }
+  ]
+}

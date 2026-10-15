@@ -1,0 +1,114 @@
+{
+  "base": "fd7191653d45fc53791b867feb54181e2b90bf77",
+  "existing_runtime": {
+    "admin.html": {
+      "before": "cf44646a1f91952671bacb9583e858335c4606318ce5379e3bce0ec0f9486bb3",
+      "after": "8b41f0d58d1353ecca43fa5b1b54c54d6b15d468dd2eb6bb9f789608454e5613"
+    },
+    "index.html": {
+      "before": "bc012eee3c015fdf27511d81607d7a07ebb77a0b2038301d5dc4dddfc2ad2e7a",
+      "after": "d824f1e7127e0573306d95a202f790b7295057f7f9b393b7f63d73b065aa9380"
+    },
+    "js/nh7-auth-recovery-v342.js": {
+      "before": "5a056dd1ca557f18b68d1d9f15d37ecdb65eae33506b2d9c26a02e77842dfc5a",
+      "after": "9e9c49a05680b920ad72df696475978123972f70e4818972299546e59928ade5"
+    },
+    "js/nh7-delete-account-v253.js": {
+      "before": "4a32837fb09ca7cd96b8059888899c1e854f6a7d716e55e21b5dec1377075ee8",
+      "after": "e19ca67a96af73e419133b257c11ba02241391c449b2a3427205967f075013b3"
+    },
+    "js/nh7-registration-canonical-v353.js": {
+      "before": "8a9b4997e41d6a208cff1e23389481523c132dc5cb447f3670e1fb3ba84564f4",
+      "after": "ca77e36682c9de830818b0ce92b30f074f74ab89968b3c2f28fe1d99a45ad3b2"
+    },
+    "js/nh7-registration-final-guard-v401.js": {
+      "before": "89f6f4c41f4e0c7d62f5252a7192b465559b2f891ab15ad5ce0eac81325c7ba0",
+      "after": "daefbd679d9a4efc38a3885cb528855b6233b8712da5ff4595985936ce32a9b6"
+    },
+    "js/nh7-registration-repeat-guard-v402.js": {
+      "before": "1764abb2bf6461783ebd6e1a7f6dc53cf1a1f0fd51039c1544fbddc736c17d93",
+      "after": "0a6767230a93f1a1b2fcbf1f431249c7c7e1b58178038af2729094ec1f8c18e2"
+    },
+    "js/nh7-settings-account-v252.js": {
+      "before": "d14ef01bf7aac118720c80651536feff19f058a3d4a7ef218ef297264945ba60",
+      "after": "3d4e2d10922fd29f938eb714b7d7fdf7ee986f454056b939ba40db1206aee2b9"
+    },
+    "reset-password.html": {
+      "before": "81f216427994986eca2a1114adb1b51499486d6a37289ddaec68b9ee140fb273",
+      "after": "81dfc45d23a8751df18538e1a9b75da978ee97429cd57fdac1cdbe6761bd6cbc"
+    },
+    "sw-release-core-v403.js": {
+      "before": "5eaa7fc9195d314c4e1561386a26843ca19f5cc4400a75d6ce0b466e5d5b7e00",
+      "after": "966a2452bc87a291f712c3036245c2754f11130a0b580419afe6e36f2c361486"
+    }
+  },
+  "new_runtime": {
+    "js/nh7-admin-delete-wave65.js": "99b3faa41f2be74da9f7738122577e974b51a7b84789131df087959d3fcd078c",
+    "js/nh7-security-registration-wave65.js": "9363a39b00d86271cb2d1b320f1d62bcfdbb19f2aadfbb64cb25e1e473ebe97a",
+    "supabase/review/wave6_5-security-registration/README.md": "3b4210eb123f017ca8c4c6c6500dd98d60bed14da43af80f681a94797f921d24",
+    "supabase/review/wave6_5-security-registration/__pycache__/propose-adapters.cpython-312.pyc": "b749a90970aef11f6cbb08aded630b9e411f4af10317247f38a4236fe9fdc449",
+    "supabase/review/wave6_5-security-registration/delete-orchestrator.mjs": "cfb1a41e12a135773fda897e3e0d90b3748d15b4f22bb54f003ced5a90054633",
+    "supabase/review/wave6_5-security-registration/delete.sql": "e547b6c790a7f34b2070ea6c29715494463ae108b2310e1a6af6bc302d979093",
+    "supabase/review/wave6_5-security-registration/disable.sql": "154ac7e7577d8f7eabab4ac5d487a7d9e285f40d664239dbd0ea172916185582",
+    "supabase/review/wave6_5-security-registration/edge.mjs": "3a54313c96c005da383164fdaa67b9677bc2e58967a0474ef761cc068b9a70e3",
+    "supabase/review/wave6_5-security-registration/function-matrix.json": "5ce2992f077a2149cfcad893db7f57be5e971b3dfc70f964c8479182f0ef796e",
+    "supabase/review/wave6_5-security-registration/grants.sql": "6a19ae9031cbccdd3448042333385623c39cacb940e827db3786c0ae0682ad18",
+    "supabase/review/wave6_5-security-registration/identity-coverage.json": "c18d45fc1b065be17bab49282cedf48ddc18b3374ff14fd0c59af5ddbfe1dc8d",
+    "supabase/review/wave6_5-security-registration/library.sql": "228dd2c8337a303fc9b68546cb69141b4de85087a108a3e6c88bd576a5d74ffd",
+    "supabase/review/wave6_5-security-registration/preflight.sql": "f2fb927766b609c01dfcaa5170ec71fc700b2a0dbd02cb5c274e1e3f8f5dbdff",
+    "supabase/review/wave6_5-security-registration/propose-adapters.py": "f4a52b1c39b8c403668f4228717021424fe03391ad427db5e520e40b707093b5",
+    "supabase/review/wave6_5-security-registration/registration.sql": "ab92c951897e307876b1019aa1cfcdeb620f00542a3a6d49b744941f833a8b54",
+    "supabase/review/wave6_5-security-registration/rls-matrix.json": "45641d9fe86da8c1d9ff20baefc9b042e3172b2567632a1c1b350913f35a0890"
+  },
+  "approved_paths": [
+    ".github/workflows/validate-develop.yml",
+    "admin.html",
+    "docs/qa/CODEX_WAVE6_5_SECURITY_REGISTRATION_HARDENING.md",
+    "docs/qa/WAVE6_5_SECURITY_REGISTRATION_AUDIT.md",
+    "docs/qa/WAVE6_5_SECURITY_REGISTRATION_MEASUREMENTS.json",
+    "docs/qa/WAVE6_5_SECURITY_REGISTRATION_REPORT.md",
+    "docs/qa/WAVE6_5_SUPABASE_SECURITY_ADVISOR_TRIAGE.md",
+    "index.html",
+    "js/nh7-admin-delete-wave65.js",
+    "js/nh7-auth-recovery-v342.js",
+    "js/nh7-delete-account-v253.js",
+    "js/nh7-registration-canonical-v353.js",
+    "js/nh7-registration-final-guard-v401.js",
+    "js/nh7-registration-repeat-guard-v402.js",
+    "js/nh7-security-registration-wave65.js",
+    "js/nh7-settings-account-v252.js",
+    "reset-password.html",
+    "scripts/build-wave65-inventory.py",
+    "scripts/fixtures/wave65-approved-security.json",
+    "scripts/measure-wave65.cjs",
+    "scripts/verify-wave3-birthday.cjs",
+    "scripts/verify-wave5-safety.py",
+    "scripts/verify-wave6-safety.py",
+    "scripts/verify-wave65-advisor.py",
+    "scripts/verify-wave65-browser.cjs",
+    "scripts/verify-wave65-delete.mjs",
+    "scripts/verify-wave65-postgres.cjs",
+    "scripts/verify-wave65-safety.py",
+    "scripts/verify-wave65-secrets.py",
+    "scripts/verify-wave65-signup.cjs",
+    "scripts/verify-wave65-syntax.cjs",
+    "scripts/verify-wave65-validation.cjs",
+    "scripts/wave65_accepted_source.py",
+    "scripts/wave6_accepted_source.py",
+    "supabase/review/wave6_5-security-registration/README.md",
+    "supabase/review/wave6_5-security-registration/__pycache__/propose-adapters.cpython-312.pyc",
+    "supabase/review/wave6_5-security-registration/delete-orchestrator.mjs",
+    "supabase/review/wave6_5-security-registration/delete.sql",
+    "supabase/review/wave6_5-security-registration/disable.sql",
+    "supabase/review/wave6_5-security-registration/edge.mjs",
+    "supabase/review/wave6_5-security-registration/function-matrix.json",
+    "supabase/review/wave6_5-security-registration/grants.sql",
+    "supabase/review/wave6_5-security-registration/identity-coverage.json",
+    "supabase/review/wave6_5-security-registration/library.sql",
+    "supabase/review/wave6_5-security-registration/preflight.sql",
+    "supabase/review/wave6_5-security-registration/propose-adapters.py",
+    "supabase/review/wave6_5-security-registration/registration.sql",
+    "supabase/review/wave6_5-security-registration/rls-matrix.json",
+    "sw-release-core-v403.js"
+  ]
+}

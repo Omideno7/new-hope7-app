@@ -25,10 +25,12 @@ function stripLegacy(){
 async function serverStatus(email){
   const s=session(),headers={apikey:KEY,'Content-Type':'application/json','x-device-id':deviceId()};
   if(s?.access_token)headers.Authorization='Bearer '+s.access_token;
-  const r=await fetch(SUPABASE+'/rest/v1/rpc/nh7_registration_status',{method:'POST',headers,body:JSON.stringify({p_type:'school',p_email:String(email||'').trim().toLowerCase(),p_device_id:deviceId()}),cache:'no-store'});
+  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),15000);try{
+  const r=await fetch(SUPABASE+'/rest/v1/rpc/nh7_registration_status',{method:'POST',headers,body:JSON.stringify({p_type:'school',p_email:String(email||'').trim().toLowerCase(),p_device_id:deviceId()}),cache:'no-store',signal:controller.signal});
   const text=await r.text();let data=null;try{data=text?JSON.parse(text):null}catch(_){data=null}
   if(!r.ok)throw new Error((data&&data.message)||text||('HTTP '+r.status));
   return Array.isArray(data)?data[0]||null:data;
+  }finally{clearTimeout(timeout)}
 }
 function modalParts(modal){return{title:modal.querySelector('h2'),body:modal.querySelector('p'),button:modal.querySelector('[data-v353-close]')}}
 async function verifySuccessModal(modal){
@@ -38,9 +40,10 @@ async function verifySuccessModal(modal){
   if(button){button.disabled=true;button.textContent=L('در حال تأیید با سرور…','Verifying with server…','Provjera sa serverom…')}
   if(title)title.textContent=L('در حال تأیید ثبت درخواست…','Verifying registration…','Provjera registracije…');
   if(body)body.textContent=L('چند لحظه صبر کنید؛ ثبت درخواست در سرور بررسی می‌شود.','Please wait while the server confirms your registration.','Pričekajte dok poslužitelj potvrdi registraciju.');
+  const ticket=window.NH7SecurityWave65.ticket();
   try{
     if(!email)throw new Error('missing_registration_email');
-    const info=await serverStatus(email);
+    const info=await serverStatus(email);window.NH7SecurityWave65.assert(ticket);
     if(!info?.found)throw new Error('registration_not_found');
     const status=String(info.status||'pending').toLowerCase();
     const next=Object.assign({},local,{status,registration_id:info.registration_id||local?.registration_id||'',serverVerifiedAt:new Date().toISOString()});
@@ -54,7 +57,7 @@ async function verifySuccessModal(modal){
     }
     if(button){button.disabled=false;button.textContent=L('باشه','OK','U redu')}
   }catch(error){
-    console.error('[NH7 registration final guard]',error);
+    if(!window.NH7SecurityWave65.current(ticket)){modal.remove();return}console.error('[NH7 registration final guard]',error);
     localStorage.removeItem('nh7_school_access');
     if(title)title.textContent=L('درخواست ثبت نشد','Registration was not submitted','Registracija nije poslana');
     if(body)body.textContent=L('سرور هیچ پرونده‌ای برای این ایمیل پیدا نکرد. لطفاً به فرم برگردید و دوباره ارسال کنید.','The server did not find a registration for this email. Return to the form and submit again.','Poslužitelj nije pronašao registraciju za ovaj e-mail. Vratite se na obrazac i pošaljite ponovno.');

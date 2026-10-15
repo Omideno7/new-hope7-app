@@ -13,6 +13,8 @@ allowed={'scripts/verify-report-pdf-v119.cjs','scripts/verify-school-reports-bro
 files=set(subprocess.check_output(['git','diff','--name-only',BASE]).decode().splitlines())|set(subprocess.check_output(['git','ls-files','--others','--exclude-standard']).decode().splitlines())
 from wave6_accepted_source import manifest
 allowed.update(manifest()['existing_ui_files']);allowed.update(manifest()['new_ui_files']);allowed.update({'scripts/wave6_accepted_source.py','scripts/verify-profile-search-inbox-qa.cjs','scripts/verify-calendar-lock-parity-v250.py','scripts/fixtures/wave6-user.cjs','scripts/fixtures/wave6-approved-ui.json','scripts/fixtures/wave6-approved-ui.patch','docs/qa/CODEX_WAVE6_USER_APP_COMPLETION_BUG_SWEEP.md','docs/qa/WAVE6_USER_APP_COMPLETION_AUDIT.md','docs/qa/WAVE6_USER_APP_COMPLETION_REPORT.md','docs/qa/WAVE6_USER_APP_MEASUREMENTS.json','docs/qa/WAVE6_HISTORICAL_UI_CONVERGENCE.md','scripts/verify-wave3-safety.py','scripts/verify-wave4-safety.py'})
+from wave65_accepted_source import manifest as security_manifest
+allowed.update(security_manifest()['approved_paths'])
 for name in files:assert name in allowed or name.startswith(('scripts/verify-wave6','scripts/measure-wave6')) or name.startswith(('js/document-studio-v2/','supabase/review/wave5-document-studio-v2/','scripts/document-studio-v2/','scripts/verify-wave5','scripts/measure-wave5','docs/qa/WAVE5_DOCUMENT_STUDIO_')),f'Unexpected scope: {name}'
 for file,module in [('admin.html','admin-entry'),('index.html','archive-entry')]:
  s=accepted_bytes(file).decode().replace('  <script type="module" src="js/document-studio-v2/'+module+'.mjs?v=wave5"></script>\n','');assert s.encode()==old(file),'Only additive current page entry permitted'

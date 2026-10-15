@@ -1,0 +1,4 @@
+const fs=require('node:fs'),assert=require('node:assert/strict'),vm=require('node:vm'),{spawnSync}=require('node:child_process'),m=require('./fixtures/wave65-approved-security.json');
+const paths=[...Object.keys(m.existing_runtime),...Object.keys(m.new_runtime),...fs.readdirSync('scripts').filter(x=>/wave65.*\.(?:cjs|mjs)$/.test(x)).map(x=>'scripts/'+x)];
+for(const p of paths){if(/\.(?:js|cjs|mjs)$/.test(p)){const r=spawnSync(process.execPath,['--check',p],{encoding:'utf8'});assert.equal(r.status,0,p+': '+r.stderr);}if(p.endsWith('.html'))for(const [i,match]of [...fs.readFileSync(p,'utf8').matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].entries()){if(!/\bsrc\s*=|type=["'](?:module|application\/)/i.test(match[1])&&match[2].trim())new vm.Script(match[2],{filename:p+':inline:'+i});}}
+console.log('PASS Wave65 every changed/new JS/module/test and changed HTML classic inline syntax');

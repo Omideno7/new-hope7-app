@@ -4,20 +4,26 @@ import subprocess,re,json,hashlib
 import sys
 sys.dont_write_bytecode=True
 from wave6_accepted_source import BASE,original,manifest,accepted_bytes
+from wave65_accepted_source import prior_bytes,manifest as security_manifest
+subprocess.run(['python3','scripts/verify-wave65-safety.py'],check=True)
 m=manifest();assert m['base']==BASE
 allowed=set(m['existing_ui_files'])
 for scope in ['js','css','assets','data','public','supabase']:
  for p in subprocess.check_output(['git','ls-tree','-r','--name-only',BASE,'--',scope]).decode().splitlines():
   if p in allowed:accepted_bytes(p)
-  else:assert Path(p).read_bytes()==original(p),'Unapproved engine/data/backend change: '+p
+  else:assert prior_bytes(p)==original(p),'Unapproved engine/data/backend change: '+p
 runtime=set(subprocess.check_output(['git','ls-files','--','js','css','assets','data','public','supabase']).decode().splitlines())|set(subprocess.check_output(['git','ls-files','--others','--exclude-standard','--','js','css','assets','data','public','supabase']).decode().splitlines())
 baseline=set(subprocess.check_output(['git','ls-tree','-r','--name-only',BASE,'--','js','css','assets','data','public','supabase']).decode().splitlines())
-assert runtime-baseline==set(m['new_ui_files']),'Unapproved new runtime/backend/data source'
+assert runtime-baseline==set(m['new_ui_files'])|set(security_manifest()['new_runtime']),'Unapproved new runtime/backend/data source'
 for p,row in m['existing_ui_files'].items():accepted_bytes(p)
-for p,sha in m['new_ui_files'].items():assert hashlib.sha256(Path(p).read_bytes()).hexdigest()==sha,'New UI changed outside recorded patch: '+p
+for p,sha in m['new_ui_files'].items():assert hashlib.sha256(prior_bytes(p)).hexdigest()==sha,'New UI changed outside recorded patch: '+p
 patch=Path('scripts/fixtures/wave6-approved-ui.patch').read_bytes();assert hashlib.sha256(patch).hexdigest()==m['patch_sha256']
 # Reverse-check the explicit review patch without altering the checkout/index.
-subprocess.run(['git','apply','--reverse','--check','scripts/fixtures/wave6-approved-ui.patch'],check=True)
+import tempfile
+with tempfile.TemporaryDirectory(prefix='nh7-wave6-check-') as directory:
+ for p in list(m['existing_ui_files'])+list(m['new_ui_files']):
+  target=Path(directory)/p;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(prior_bytes(p))
+ subprocess.run(['git','apply','--reverse','--check',str(Path('scripts/fixtures/wave6-approved-ui.patch').resolve())],cwd=directory,check=True)
 # All top-level persistence and authority functions stay byte-identical. Only enumerated UI/read functions differ.
 def functions(text):
  hits=list(re.finditer(r'^(?:export )?(?:async )?function ([\w$]+)\(',text,re.M))
@@ -37,7 +43,7 @@ for p,names in protected.items():
   assert a[name]==b[name],'Persistent/business contract changed: '+p+':'+name;checked+=1
 # Core legacy files remain exact, including audio, notification contracts, School engines and Studio outputs.
 for p in ['js/nh7-local-first-wave2.js','js/nh7-performance-wave1.js','js/nh7-media-player-v500.js','js/nh7-audio-classic-v484.js','js/nh7-notification-intents-wave4.js','js/nh7-notification-contract-wave4.js','js/nh7-push-account-bind-v364.js','js/nh7-admin-report-print-v117.js','js/document-studio-v2/model.mjs','js/document-studio-v2/renderer.mjs','js/document-studio-v2/output.mjs','js/document-studio-v2/api.mjs']:
- assert Path(p).read_bytes()==original(p),p
+ assert prior_bytes(p)==original(p),p
 for p in ['js/nh7-user-context-wave6.js','js/nh7-global-search-direct-v562.js']:
  s=Path(p).read_text();assert 'setInterval(' not in s and 'localStorage.clear(' not in s and 'SERVICE_ROLE' not in s
 context=Path('js/nh7-user-context-wave6.js').read_text();assert "if(uid)return !!i.uid&&uid===i.uid" in context and 'nh7_profile_photo_v561' not in context

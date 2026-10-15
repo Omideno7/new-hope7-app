@@ -9,6 +9,7 @@ const KEY='sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37';
 const RESET_URL='https://omideno7.github.io/new-hope7-app/reset-password.html';
 const APP_URL='https://omideno7.github.io/new-hope7-app/app-v239.html';
 const SESSION='nh7_user_session_v170';
+const security=window.NH7SecurityWave65;
 const LOGOUT='nh7_explicit_logout';
 const SENSITIVE=['access_token','refresh_token','expires_at','expires_in','token_type','token_hash','type','error','error_code','error_description'];
 
@@ -20,6 +21,7 @@ function validEmail(email){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email
 function redirectPath(path){return path+(path.includes('?')?'&':'?')+'redirect_to='+encodeURIComponent(RESET_URL)}
 
 async function request(path,{method='POST',body,token='',timeout=18000}={}){
+  const owner=security.ticket();if(path.includes('/recover')||path.includes('/resend'))body={...body,...await security.captcha('recovery',language())};security.assert(owner);
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeout);
   try{
     const headers={apikey:KEY,'Content-Type':'application/json','x-device-id':deviceId()};
@@ -28,7 +30,7 @@ async function request(path,{method='POST',body,token='',timeout=18000}={}){
     if(body!==undefined)options.body=JSON.stringify(body);
     const response=await fetch(SUPABASE+path,options),raw=await response.text();let data={};
     try{data=raw?JSON.parse(raw):{}}catch(_){data={message:raw}}
-    if(!response.ok){const error=new Error(data?.msg||data?.message||data?.error_description||data?.error||response.statusText);error.status=response.status;error.code=String(data?.code||data?.error_code||'');throw error}
+    security.assert(owner);if(!response.ok){const error=new Error(data?.msg||data?.message||data?.error_description||data?.error||response.statusText);error.status=response.status;error.code=String(data?.code||data?.error_code||'');throw error}
     return data;
   }catch(error){
     if(error?.name==='AbortError'){const e=new Error('request_timeout');e.code='request_timeout';throw e}
@@ -38,7 +40,7 @@ async function request(path,{method='POST',body,token='',timeout=18000}={}){
 }
 
 function messageFor(error){
-  const code=String(error?.code||'').toLowerCase(),status=Number(error?.status||0);
+  const code=String(error?.code||'').toLowerCase(),status=Number(error?.status||0);if(code==='session_changed')return security.message('session',language());if(code==='captcha_required')return security.message('captcha',language());
   if(!navigator.onLine||code==='network_error')return L('اینترنت در دسترس نیست. اتصال را بررسی و دوباره تلاش کنید.','No internet connection. Check your connection and try again.','Nema internetske veze. Provjerite vezu i pokušajte ponovno.');
   if(code==='request_timeout')return L('پاسخ سرور طول کشید. چند لحظه بعد دوباره تلاش کنید.','The server took too long to respond. Try again in a moment.','Poslužitelj predugo odgovara. Pokušajte ponovno za trenutak.');
   if(status===429||code.includes('rate'))return L('تعداد درخواست‌ها زیاد بوده است. چند دقیقه صبر کنید و دوباره تلاش کنید.','Too many requests. Wait a few minutes and try again.','Previše zahtjeva. Pričekajte nekoliko minuta i pokušajte ponovno.');
@@ -96,13 +98,13 @@ async function sendFreshRecovery(modal){const email=String(modal.querySelector('
 async function recoveryAccessToken(payload){if(payload.accessToken)return payload.accessToken;if(!payload.tokenHash)return'';const data=await request('/auth/v1/verify',{body:{token_hash:payload.tokenHash,type:'recovery'}});payload.tokenHash='';payload.accessToken=data?.access_token||data?.session?.access_token||'';return payload.accessToken}
 async function savePassword(modal,payload){
   const password=String(modal.querySelector('[data-nh7-recovery-password]')?.value||''),confirmPassword=String(modal.querySelector('[data-nh7-recovery-confirm]')?.value||''),button=modal.querySelector('[data-nh7-recovery-save]');
-  if(password.length<6){modalStatus(modal,L('رمز عبور باید حداقل ۶ کاراکتر باشد.','Password must be at least 6 characters.','Lozinka mora imati najmanje 6 znakova.'),'error');return}
+  if(!security.password(password)){modalStatus(modal,security.message('password',language()),'error');return}
   if(password!==confirmPassword){modalStatus(modal,L('تکرار رمز عبور با رمز اصلی یکسان نیست.','Password confirmation does not match.','Potvrda lozinke nije ista kao lozinka.'),'error');return}
-  const old=button.textContent;button.disabled=true;button.textContent=L('در حال ذخیره…','Saving…','Spremanje…');
+  const owner=security.ticket();const old=button.textContent;button.disabled=true;button.textContent=L('در حال ذخیره…','Saving…','Spremanje…');
   try{
     const token=await recoveryAccessToken(payload);if(!token){const e=new Error('missing_recovery_token');e.code='expired';throw e}
-    await request('/auth/v1/user',{method:'PUT',token,body:{password}});request('/auth/v1/logout',{token}).catch(()=>{});
-    localStorage.removeItem(SESSION);localStorage.setItem(LOGOUT,'1');localStorage.removeItem('nh7_recovery_requested_at');
+    const verified=await request('/auth/v1/user',{method:'GET',token});security.assert(owner);if(!verified?.id)throw Error('missing_recovery_identity');await request('/auth/v1/user',{method:'PUT',token,body:{password}});request('/auth/v1/logout',{token}).catch(()=>{});
+    security.assert(owner);let active=null;try{const raw=JSON.parse(owner.raw);active=raw?.currentSession||raw?.session||raw}catch{}if(active?.user?.id===verified.id){localStorage.removeItem(SESSION);localStorage.setItem(LOGOUT,'1');localStorage.removeItem('nh7_recovery_requested_at');}
     modal.querySelector('[data-nh7-recovery-password]').value='';modal.querySelector('[data-nh7-recovery-confirm]').value='';modal.querySelector('[data-nh7-recovery-form]')?.classList.add('nh7-hidden');modal.querySelector('[data-nh7-recovery-resend]')?.classList.add('nh7-hidden');modal.querySelector('[data-nh7-recovery-done]')?.classList.remove('nh7-hidden');
     modalStatus(modal,L('رمز عبور با موفقیت تغییر کرد. اکنون با ایمیل و رمز جدید وارد شوید.','Your password was updated. Sign in with your email and new password.','Lozinka je promijenjena. Prijavite se e-mailom i novom lozinkom.'),'success');
   }catch(error){console.warn('Password update',error);modalStatus(modal,messageFor(error),'error');if(permanentRecoveryError(error)){payload.accessToken='';payload.tokenHash='';showFreshLink(modal)}}
@@ -111,7 +113,7 @@ async function savePassword(modal,payload){
 function openInlineRecovery(payload){
   addStyle();document.getElementById('nh7AuthRecoveryModalV348')?.remove();
   const modal=document.createElement('div');modal.id='nh7AuthRecoveryModalV348';modal.className='nh7-auth-recovery-v348';modal.dir=language()==='fa'?'rtl':'ltr';modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');
-  modal.innerHTML=`<section class="nh7-auth-recovery-v348__card"><img class="nh7-auth-recovery-v348__logo" src="assets/logo.png" alt="New Hope 7"><h2>${E(L('تعیین رمز عبور جدید','Set a new password','Postavite novu lozinku'))}</h2><p class="nh7-status" data-nh7-recovery-status></p><div class="nh7-hidden" data-nh7-recovery-form><input class="nh7-ltr" type="password" minlength="6" autocomplete="new-password" data-nh7-recovery-password placeholder="${E(L('رمز جدید','New password','Nova lozinka'))}"><input class="nh7-ltr" type="password" minlength="6" autocomplete="new-password" data-nh7-recovery-confirm placeholder="${E(L('تکرار رمز جدید','Confirm new password','Potvrdite novu lozinku'))}"><button type="button" class="nh7-primary" data-nh7-recovery-save>${E(L('ذخیره رمز جدید','Save new password','Spremi novu lozinku'))}</button></div><div class="nh7-hidden" data-nh7-recovery-resend><p>${E(L('یک لینک بازیابی تازه برای خودتان بفرستید.','Send yourself a fresh recovery link.','Pošaljite si novu poveznicu za obnovu.'))}</p><input class="nh7-ltr" type="email" autocomplete="email" data-nh7-recovery-email placeholder="${E(L('ایمیل حساب','Account email','E-mail računa'))}"><button type="button" data-nh7-recovery-send>${E(L('ارسال لینک جدید','Send a new link','Pošalji novu poveznicu'))}</button></div><button type="button" class="nh7-hidden" data-nh7-recovery-done>${E(L('بازگشت به صفحه ورود','Return to sign in','Povratak na prijavu'))}</button></section>`;
+  modal.innerHTML=`<section class="nh7-auth-recovery-v348__card"><img class="nh7-auth-recovery-v348__logo" src="assets/logo.png" alt="New Hope 7"><h2>${E(L('تعیین رمز عبور جدید','Set a new password','Postavite novu lozinku'))}</h2><p class="nh7-status" data-nh7-recovery-status></p><div class="nh7-hidden" data-nh7-recovery-form><input class="nh7-ltr" type="password" minlength="10" autocomplete="new-password" data-nh7-recovery-password placeholder="${E(L('رمز جدید','New password','Nova lozinka'))}"><input class="nh7-ltr" type="password" minlength="10" autocomplete="new-password" data-nh7-recovery-confirm placeholder="${E(L('تکرار رمز جدید','Confirm new password','Potvrdite novu lozinku'))}"><button type="button" class="nh7-primary" data-nh7-recovery-save>${E(L('ذخیره رمز جدید','Save new password','Spremi novu lozinku'))}</button></div><div class="nh7-hidden" data-nh7-recovery-resend><p>${E(L('یک لینک بازیابی تازه برای خودتان بفرستید.','Send yourself a fresh recovery link.','Pošaljite si novu poveznicu za obnovu.'))}</p><input class="nh7-ltr" type="email" autocomplete="email" data-nh7-recovery-email placeholder="${E(L('ایمیل حساب','Account email','E-mail računa'))}"><button type="button" data-nh7-recovery-send>${E(L('ارسال لینک جدید','Send a new link','Pošalji novu poveznicu'))}</button></div><button type="button" class="nh7-hidden" data-nh7-recovery-done>${E(L('بازگشت به صفحه ورود','Return to sign in','Povratak na prijavu'))}</button></section>`;
   document.body.appendChild(modal);modal.querySelector('[data-nh7-recovery-send]').onclick=()=>sendFreshRecovery(modal);modal.querySelector('[data-nh7-recovery-done]').onclick=()=>location.assign(APP_URL+'?recovered=1&v='+Date.now());
   if(payload.error||(!payload.accessToken&&!payload.tokenHash)){modalStatus(modal,L('این لینک معتبر نیست یا منقضی شده است. یک لینک تازه درخواست کنید.','This link is invalid or expired. Request a fresh one.','Poveznica nije valjana ili je istekla. Zatražite novu.'),'error');showFreshLink(modal);return}
   modalStatus(modal,L('رمز جدید را دو بار وارد کنید. لینک تنها هنگام ذخیره مصرف می‌شود.','Enter your new password twice. The link is used only when you save.','Unesite novu lozinku dva puta. Poveznica se koristi tek pri spremanju.'));modal.querySelector('[data-nh7-recovery-form]').classList.remove('nh7-hidden');modal.querySelector('[data-nh7-recovery-save]').onclick=()=>savePassword(modal,payload);modal.querySelector('[data-nh7-recovery-password]')?.focus();

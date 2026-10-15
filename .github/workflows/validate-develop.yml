@@ -150,6 +150,18 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/canonical-tools" --no-audit --no-fund playwright@1.62.1 @electric-sql/pglite@0.3.14 jsqr@1.4.0 pngjs@7.0.0
           "$RUNNER_TEMP/canonical-tools/node_modules/.bin/playwright" install --with-deps chromium
 
+      - name: Verify Wave 6.5 source-only security and synthetic backend contracts
+        run: |
+          export NODE_PATH="$RUNNER_TEMP/canonical-tools/node_modules"
+          python3 scripts/run-ci-check.py node scripts/verify-wave65-syntax.cjs
+          python3 scripts/run-ci-check.py python3 scripts/verify-wave65-safety.py
+          python3 scripts/run-ci-check.py python3 scripts/build-wave65-inventory.py
+          python3 scripts/run-ci-check.py python3 scripts/verify-wave65-advisor.py
+          python3 scripts/run-ci-check.py python3 scripts/verify-wave65-secrets.py
+          python3 scripts/run-ci-check.py node scripts/verify-wave65-validation.cjs
+          python3 scripts/run-ci-check.py node scripts/verify-wave65-postgres.cjs
+          python3 scripts/run-ci-check.py node scripts/verify-wave65-delete.mjs
+
       - name: Verify Wave 6 syntax and explicit UI/data-safety boundaries
         run: |
           python3 scripts/run-ci-check.py node scripts/verify-wave6-syntax.cjs
@@ -180,6 +192,8 @@ jobs:
           export CHROMIUM_PATH="$(node -e "console.log(require('playwright').chromium.executablePath())")"
           python3 -m http.server 8878 --bind 127.0.0.1 > "$RUNNER_TEMP/canonical-server.log" 2>&1 &
           python3 scripts/run-ci-check.py node scripts/verify-profile-search-inbox-qa.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-wave65-browser.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-wave65-signup.cjs http://127.0.0.1:8878
           python3 scripts/run-ci-check.py node scripts/verify-sermon-note-direction.cjs http://127.0.0.1:8878
           python3 scripts/run-ci-check.py node scripts/verify-user-writing-direction.cjs http://127.0.0.1:8878
           python3 scripts/run-ci-check.py node scripts/verify-performance-wave1-browser.cjs http://127.0.0.1:8878
@@ -212,3 +226,19 @@ jobs:
           NH7_TEST_PRINT121=1 python3 scripts/run-ci-check.py node scripts/verify-report-pdf-v119.cjs http://127.0.0.1:8878
           python3 scripts/run-ci-check.py node scripts/verify-print-v121.mjs
           python3 scripts/run-ci-check.py node scripts/verify-community-certificate-admin-v505.cjs
+
+      - name: Measure Wave 6.5 real idle windows and synthetic operations
+        run: |
+          export NODE_PATH="$RUNNER_TEMP/canonical-tools/node_modules"
+          export CHROMIUM_PATH="$(node -e "console.log(require('playwright').chromium.executablePath())")"
+          mkdir -p "$RUNNER_TEMP/wave65-baseline"
+          git archive fd7191653d45fc53791b867feb54181e2b90bf77 | tar -x -C "$RUNNER_TEMP/wave65-baseline"
+          python3 -m http.server 8887 --bind 127.0.0.1 --directory "$RUNNER_TEMP/wave65-baseline" > "$RUNNER_TEMP/wave65-baseline.log" 2>&1 &
+          python3 scripts/run-ci-check.py node scripts/measure-wave65.cjs http://127.0.0.1:8878 http://127.0.0.1:8887 "$RUNNER_TEMP/wave65-measurements.json"
+
+      - name: Retain synthetic Wave 6.5 measurements for this exact head
+        uses: actions/upload-artifact@v4
+        with:
+          name: wave65-measurements-${{ github.sha }}
+          path: ${{ runner.temp }}/wave65-measurements.json
+          retention-days: 14
