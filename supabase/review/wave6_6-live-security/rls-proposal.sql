@@ -1,0 +1,4 @@
+-- REVIEW ONLY; no executable activation statements.
+-- No policy or grant changes proposed for any of the exact 29 findings.
+-- See rls-dispositions.json: intentional deny-all/service/RPC/recovery states plus individual missing facts.
+-- No cosmetic USING(true), system-schema modifications or broad table SELECT.

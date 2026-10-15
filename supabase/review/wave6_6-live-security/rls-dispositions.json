@@ -1,0 +1,412 @@
+{
+  "advisor_count": 29,
+  "excluded_system_raw_census": 53,
+  "rows": [
+    {
+      "table": "nh7_library_recovery_20260906.before_state",
+      "advisor_row": 1,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "LEGACY_RECOVERY_KEEP_LOCKED",
+      "intended_read_write": "Owner-approved recovery maintenance only; no app client access",
+      "intended_access_path": "Recovery provenance only; no current runtime caller",
+      "source_evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "no_policy_correct": "Preserve deny-all; intended path supported by cited source, live effective grants still require preflight"
+    },
+    {
+      "table": "nh7_library_recovery_20260906.chunks",
+      "advisor_row": 2,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "LEGACY_RECOVERY_KEEP_LOCKED",
+      "intended_read_write": "Owner-approved recovery maintenance only; no app client access",
+      "intended_access_path": "Recovery provenance only; no current runtime caller",
+      "source_evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "no_policy_correct": "Preserve deny-all; intended path supported by cited source, live effective grants still require preflight"
+    },
+    {
+      "table": "nh7_library_recovery_20260906.sources",
+      "advisor_row": 3,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "LEGACY_RECOVERY_KEEP_LOCKED",
+      "intended_read_write": "Owner-approved recovery maintenance only; no app client access",
+      "intended_access_path": "Recovery provenance only; no current runtime caller",
+      "source_evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "no_policy_correct": "Preserve deny-all; intended path supported by cited source, live effective grants still require preflight"
+    },
+    {
+      "table": "nh7_library_recovery_20260906.targets",
+      "advisor_row": 4,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "LEGACY_RECOVERY_KEEP_LOCKED",
+      "intended_read_write": "Owner-approved recovery maintenance only; no app client access",
+      "intended_access_path": "Recovery provenance only; no current runtime caller",
+      "source_evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "no_policy_correct": "Preserve deny-all; intended path supported by cited source, live effective grants still require preflight"
+    },
+    {
+      "table": "private.nh7_admin_audit_log_v350",
+      "advisor_row": 5,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "ADMIN_RPC_ONLY",
+      "intended_read_write": "Definer permission/owner routines; no direct anon/authenticated access",
+      "intended_access_path": "private RBAC tables through v350 owner/permission RPCs",
+      "source_evidence": [
+        "supabase/migrations/20260821174931_admin_rbac_recovery_v350.sql"
+      ],
+      "no_policy_correct": "Preserve deny-all; intended path supported by cited source, live effective grants still require preflight"
+    },
+    {
+      "table": "private.nh7_admin_members_v350",
+      "advisor_row": 6,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "ADMIN_RPC_ONLY",
+      "intended_read_write": "Definer permission/owner routines; no direct anon/authenticated access",
+      "intended_access_path": "private RBAC tables through v350 owner/permission RPCs",
+      "source_evidence": [
+        "supabase/migrations/20260821174931_admin_rbac_recovery_v350.sql"
+      ],
+      "no_policy_correct": "Preserve deny-all; intended path supported by cited source, live effective grants still require preflight"
+    },
+    {
+      "table": "private.nh7_admin_permission_catalog_v350",
+      "advisor_row": 7,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "ADMIN_RPC_ONLY",
+      "intended_read_write": "Definer permission/owner routines; no direct anon/authenticated access",
+      "intended_access_path": "private RBAC tables through v350 owner/permission RPCs",
+      "source_evidence": [
+        "supabase/migrations/20260821174931_admin_rbac_recovery_v350.sql"
+      ],
+      "no_policy_correct": "Preserve deny-all; intended path supported by cited source, live effective grants still require preflight"
+    },
+    {
+      "table": "private.nh7_admin_permission_grants_v350",
+      "advisor_row": 8,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "ADMIN_RPC_ONLY",
+      "intended_read_write": "Definer permission/owner routines; no direct anon/authenticated access",
+      "intended_access_path": "private RBAC tables through v350 owner/permission RPCs",
+      "source_evidence": [
+        "supabase/migrations/20260821174931_admin_rbac_recovery_v350.sql"
+      ],
+      "no_policy_correct": "Preserve deny-all; intended path supported by cited source, live effective grants still require preflight"
+    },
+    {
+      "table": "public._nh7_book_master_stage_14_21",
+      "advisor_row": 9,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "BLOCKED_LIVE_FACT",
+      "intended_read_write": "No direct client access approved; preserve deny-all pending exact owner mapping",
+      "intended_access_path": "Missing live definition/grants/caller ownership proof. Singular notification_schedule is NOT current notification_schedules.",
+      "source_evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "no_policy_correct": "Unresolved individually; do not add permissive policy"
+    },
+    {
+      "table": "public.nh7_account_content_grants_v251",
+      "advisor_row": 10,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "BLOCKED_LIVE_FACT",
+      "intended_read_write": "No direct client access approved; preserve deny-all pending exact owner mapping",
+      "intended_access_path": "Missing live definition/grants/caller ownership proof. Singular notification_schedule is NOT current notification_schedules.",
+      "source_evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "no_policy_correct": "Unresolved individually; do not add permissive policy"
+    },
+    {
+      "table": "public.nh7_admin_account_actions_v380",
+      "advisor_row": 11,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "BLOCKED_LIVE_FACT",
+      "intended_read_write": "No direct client access approved; preserve deny-all pending exact owner mapping",
+      "intended_access_path": "Missing live definition/grants/caller ownership proof. Singular notification_schedule is NOT current notification_schedules.",
+      "source_evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "no_policy_correct": "Unresolved individually; do not add permissive policy"
+    },
+    {
+      "table": "public.nh7_apocrypha_books_v270",
+      "advisor_row": 12,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "INTENTIONAL_DENY_ALL",
+      "intended_read_write": "Scoped definer RPCs and owner/service writes; no direct client table access",
+      "intended_access_path": "Apocrypha catalog/admin RPC",
+      "source_evidence": [
+        "supabase/migrations/20260728170000_fix7_video_portal_apocrypha.sql"
+      ],
+      "no_policy_correct": "Preserve deny-all; intended path supported by cited source, live effective grants still require preflight"
+    },
+    {
+      "table": "public.nh7_content_entitlements_v380",
+      "advisor_row": 13,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "BLOCKED_LIVE_FACT",
+      "intended_read_write": "No direct client access approved; preserve deny-all pending exact owner mapping",
+      "intended_access_path": "Missing live definition/grants/caller ownership proof. Singular notification_schedule is NOT current notification_schedules.",
+      "source_evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "no_policy_correct": "Unresolved individually; do not add permissive policy"
+    },
+    {
+      "table": "public.nh7_legacy_auth_claim_audit",
+      "advisor_row": 14,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "BLOCKED_LIVE_FACT",
+      "intended_read_write": "No direct client access approved; preserve deny-all pending exact owner mapping",
+      "intended_access_path": "Missing live definition/grants/caller ownership proof. Singular notification_schedule is NOT current notification_schedules.",
+      "source_evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "no_policy_correct": "Unresolved individually; do not add permissive policy"
+    },
+    {
+      "table": "public.nh7_library_claim_codes_v433",
+      "advisor_row": 15,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "BLOCKED_LIVE_FACT",
+      "intended_read_write": "No direct client access approved; preserve deny-all pending exact owner mapping",
+      "intended_access_path": "Missing live definition/grants/caller ownership proof. Singular notification_schedule is NOT current notification_schedules.",
+      "source_evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "no_policy_correct": "Unresolved individually; do not add permissive policy"
+    },
+    {
+      "table": "public.nh7_library_import_history_v434",
+      "advisor_row": 16,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "BLOCKED_LIVE_FACT",
+      "intended_read_write": "No direct client access approved; preserve deny-all pending exact owner mapping",
+      "intended_access_path": "Missing live definition/grants/caller ownership proof. Singular notification_schedule is NOT current notification_schedules.",
+      "source_evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "no_policy_correct": "Unresolved individually; do not add permissive policy"
+    },
+    {
+      "table": "public.nh7_notification_runtime_secret",
+      "advisor_row": 17,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "SERVICE_ONLY",
+      "intended_read_write": "Notification service only; never return secrets/dispatch control to clients",
+      "intended_access_path": "nh7-send-notifications serviceFetch",
+      "source_evidence": [
+        "supabase/functions/nh7-send-notifications/index.ts"
+      ],
+      "no_policy_correct": "Preserve deny-all; intended path supported by cited source, live effective grants still require preflight"
+    },
+    {
+      "table": "public.nh7_school_audio_progress_v380",
+      "advisor_row": 18,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "BLOCKED_LIVE_FACT",
+      "intended_read_write": "No direct client access approved; preserve deny-all pending exact owner mapping",
+      "intended_access_path": "Missing live definition/grants/caller ownership proof. Singular notification_schedule is NOT current notification_schedules.",
+      "source_evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "no_policy_correct": "Unresolved individually; do not add permissive policy"
+    },
+    {
+      "table": "public.nh7_school_video_code_items_v392",
+      "advisor_row": 19,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "BLOCKED_LIVE_FACT",
+      "intended_read_write": "No direct client access approved; preserve deny-all pending exact owner mapping",
+      "intended_access_path": "Missing live definition/grants/caller ownership proof. Singular notification_schedule is NOT current notification_schedules.",
+      "source_evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "no_policy_correct": "Unresolved individually; do not add permissive policy"
+    },
+    {
+      "table": "public.nh7_school_video_codes_v260",
+      "advisor_row": 20,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "INTENTIONAL_DENY_ALL",
+      "intended_read_write": "Scoped definer RPCs and owner/service writes; no direct client table access",
+      "intended_access_path": "Video code authorization/admin RPC",
+      "source_evidence": [
+        "supabase/migrations/20260728_school_secure_media_v260.sql"
+      ],
+      "no_policy_correct": "Preserve deny-all; intended path supported by cited source, live effective grants still require preflight"
+    },
+    {
+      "table": "public.nh7_school_video_grants_v260",
+      "advisor_row": 21,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "INTENTIONAL_DENY_ALL",
+      "intended_read_write": "Scoped definer RPCs and owner/service writes; no direct client table access",
+      "intended_access_path": "Video grants authorization/admin RPC",
+      "source_evidence": [
+        "supabase/migrations/20260728_school_secure_media_v260.sql"
+      ],
+      "no_policy_correct": "Preserve deny-all; intended path supported by cited source, live effective grants still require preflight"
+    },
+    {
+      "table": "public.nh7_school_videos_v260",
+      "advisor_row": 22,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "INTENTIONAL_DENY_ALL",
+      "intended_read_write": "Scoped definer RPCs and owner/service writes; no direct client table access",
+      "intended_access_path": "School video catalog/admin RPC",
+      "source_evidence": [
+        "supabase/migrations/20260728_school_secure_media_v260.sql"
+      ],
+      "no_policy_correct": "Preserve deny-all; intended path supported by cited source, live effective grants still require preflight"
+    },
+    {
+      "table": "public.nh7_sermon_blessings_v440",
+      "advisor_row": 23,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "INTENTIONAL_DENY_ALL",
+      "intended_read_write": "Scoped definer RPCs and owner/service writes; no direct client table access",
+      "intended_access_path": "Published social batch and guarded moderation RPC",
+      "source_evidence": [
+        "supabase/migrations/20261003100105_add_batched_social_and_inbox_snapshot_v1.sql"
+      ],
+      "no_policy_correct": "Preserve deny-all; intended path supported by cited source, live effective grants still require preflight"
+    },
+    {
+      "table": "public.nh7_sermon_likes_v440",
+      "advisor_row": 24,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "INTENTIONAL_DENY_ALL",
+      "intended_read_write": "Scoped definer RPCs and owner/service writes; no direct client table access",
+      "intended_access_path": "Published social batch RPC",
+      "source_evidence": [
+        "supabase/migrations/20261003100105_add_batched_social_and_inbox_snapshot_v1.sql"
+      ],
+      "no_policy_correct": "Preserve deny-all; intended path supported by cited source, live effective grants still require preflight"
+    },
+    {
+      "table": "public.notification_dispatch_log",
+      "advisor_row": 25,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "SERVICE_ONLY",
+      "intended_read_write": "Notification service only; never return secrets/dispatch control to clients",
+      "intended_access_path": "nh7-send-notifications serviceFetch",
+      "source_evidence": [
+        "supabase/functions/nh7-send-notifications/index.ts"
+      ],
+      "no_policy_correct": "Preserve deny-all; intended path supported by cited source, live effective grants still require preflight"
+    },
+    {
+      "table": "public.notification_schedule",
+      "advisor_row": 26,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "BLOCKED_LIVE_FACT",
+      "intended_read_write": "No direct client access approved; preserve deny-all pending exact owner mapping",
+      "intended_access_path": "Missing live definition/grants/caller ownership proof. Singular notification_schedule is NOT current notification_schedules.",
+      "source_evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "no_policy_correct": "Unresolved individually; do not add permissive policy"
+    },
+    {
+      "table": "public.school_course_stage_lessons",
+      "advisor_row": 27,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "INTENTIONAL_DENY_ALL",
+      "intended_read_write": "Scoped definer RPCs and owner/service writes; no direct client table access",
+      "intended_access_path": "Internal stage model, no direct grants",
+      "source_evidence": [
+        "supabase/migrations/20261010025936_school_stage_model_v210.sql"
+      ],
+      "no_policy_correct": "Preserve deny-all; intended path supported by cited source, live effective grants still require preflight"
+    },
+    {
+      "table": "public.school_course_stages",
+      "advisor_row": 28,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "INTENTIONAL_DENY_ALL",
+      "intended_read_write": "Scoped definer RPCs and owner/service writes; no direct client table access",
+      "intended_access_path": "Internal stage model, no direct grants",
+      "source_evidence": [
+        "supabase/migrations/20261010025936_school_stage_model_v210.sql"
+      ],
+      "no_policy_correct": "Preserve deny-all; intended path supported by cited source, live effective grants still require preflight"
+    },
+    {
+      "table": "public.school_student_identities",
+      "advisor_row": 29,
+      "direct_grants": "BLOCKED_LIVE_FACT: relacl/effective schema+table privileges not included in export; no grant/policy alteration proposed",
+      "policy_proposal": "NONE",
+      "live_fact": "RLS enabled, no policies; exact Advisor finding supplied by owner",
+      "disposition": "INTENTIONAL_DENY_ALL",
+      "intended_read_write": "Scoped definer RPCs and owner/service writes; no direct client table access",
+      "intended_access_path": "Current-UID identity/photo and Admin directory RPC",
+      "source_evidence": [
+        "supabase/migrations/20261009065456_school_student_identity_core_v127.sql"
+      ],
+      "no_policy_correct": "Preserve deny-all; intended path supported by cited source, live effective grants still require preflight"
+    }
+  ]
+}

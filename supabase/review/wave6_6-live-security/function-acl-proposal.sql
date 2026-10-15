@@ -1,0 +1,9 @@
+-- REVIEW ONLY; no executable activation statements.
+-- Zero SAFE_TO_REVOKE deltas. Exact signatures/ACLs/body matches/callers in function-dispositions.json.
+-- Suspicious anon Admin/trigger bodies are unmatched, not permission to revoke.
+-- Existing v355/v356 trigger revokes in Wave65 are not proof those signatures are in this live warning set.
+-- No wildcard REVOKE, no ALL FUNCTIONS IN SCHEMA, no obsolete-version removal.
+-- A later row-specific delta needs body + caller/Store + transitive dependency proof,
+-- exact pg_get_function_identity_arguments, md5(prosrc), md5(pg_get_functiondef), proacl,
+-- owner/proconfig and dependencies checked in one transaction; rollback restores captured ACL
+-- including PUBLIC inheritance, grantor and grant options. This wave proposes no such delta.

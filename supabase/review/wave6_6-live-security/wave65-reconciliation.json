@@ -1,0 +1,190 @@
+{
+  "rows": [
+    {
+      "file": "supabase/review/wave6_5-security-registration/README.md",
+      "object": "(file-level contract)",
+      "disposition": "BLOCKED_LIVE_FACT",
+      "reason": "Review-only source per Wave65 delivery; require exact absence/owner/ACL/dependency preflight before any future creation, not an assertion a complete live private-schema census exists."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/delete-orchestrator.mjs",
+      "object": "(file-level contract)",
+      "disposition": "BLOCKED_LIVE_FACT",
+      "reason": "Review-only source per Wave65 delivery; require exact absence/owner/ACL/dependency preflight before any future creation, not an assertion a complete live private-schema census exists. Full Delete activation blocked: target ownership/FK order, old JWT fencing, durable resume and supported Auth/Storage integration unresolved."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/delete.sql",
+      "object": "private",
+      "disposition": "LIVE_MATCH_COMPATIBLE",
+      "reason": "Live private Admin tables in authoritative manifest prove schema exists; old CREATE SCHEMA IF NOT EXISTS is redundant, not a new activation or authority grant."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/delete.sql",
+      "object": "private.nh7_delete_jobs_wave65",
+      "disposition": "NOT_DEPLOYED",
+      "reason": "Review-only source per Wave65 delivery; require exact absence/owner/ACL/dependency preflight before any future creation, not an assertion a complete live private-schema census exists. Full Delete activation blocked: target ownership/FK order, old JWT fencing, durable resume and supported Auth/Storage integration unresolved."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/delete.sql",
+      "object": "private.nh7_delete_scope_wave65",
+      "disposition": "NOT_DEPLOYED",
+      "reason": "Review-only source per Wave65 delivery; require exact absence/owner/ACL/dependency preflight before any future creation, not an assertion a complete live private-schema census exists. Full Delete activation blocked: target ownership/FK order, old JWT fencing, durable resume and supported Auth/Storage integration unresolved."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/delete.sql",
+      "object": "private.nh7_delete_match_wave65",
+      "disposition": "NOT_DEPLOYED",
+      "reason": "Review-only source per Wave65 delivery; require exact absence/owner/ACL/dependency preflight before any future creation, not an assertion a complete live private-schema census exists. Full Delete activation blocked: target ownership/FK order, old JWT fencing, durable resume and supported Auth/Storage integration unresolved."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/delete.sql",
+      "object": "private.nh7_delete_reference_wave65",
+      "disposition": "NOT_DEPLOYED",
+      "reason": "Review-only source per Wave65 delivery; require exact absence/owner/ACL/dependency preflight before any future creation, not an assertion a complete live private-schema census exists. Full Delete activation blocked: target ownership/FK order, old JWT fencing, durable resume and supported Auth/Storage integration unresolved."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/delete.sql",
+      "object": "public.nh7_full_delete_prepare_wave65",
+      "disposition": "NOT_DEPLOYED",
+      "reason": "Review-only source per Wave65 delivery; require exact absence/owner/ACL/dependency preflight before any future creation, not an assertion a complete live private-schema census exists. Full Delete activation blocked: target ownership/FK order, old JWT fencing, durable resume and supported Auth/Storage integration unresolved."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/delete.sql",
+      "object": "public.nh7_full_delete_database_wave65",
+      "disposition": "NOT_DEPLOYED",
+      "reason": "Review-only source per Wave65 delivery; require exact absence/owner/ACL/dependency preflight before any future creation, not an assertion a complete live private-schema census exists. Full Delete activation blocked: target ownership/FK order, old JWT fencing, durable resume and supported Auth/Storage integration unresolved."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/delete.sql",
+      "object": "public.nh7_full_delete_stage_wave65",
+      "disposition": "NOT_DEPLOYED",
+      "reason": "Review-only source per Wave65 delivery; require exact absence/owner/ACL/dependency preflight before any future creation, not an assertion a complete live private-schema census exists. Full Delete activation blocked: target ownership/FK order, old JWT fencing, durable resume and supported Auth/Storage integration unresolved."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/delete.sql",
+      "object": "private.nh7_delete_write_fence_wave65",
+      "disposition": "NOT_DEPLOYED",
+      "reason": "Review-only source per Wave65 delivery; require exact absence/owner/ACL/dependency preflight before any future creation, not an assertion a complete live private-schema census exists. Full Delete activation blocked: target ownership/FK order, old JWT fencing, durable resume and supported Auth/Storage integration unresolved."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/disable.sql",
+      "object": "(file-level contract)",
+      "disposition": "UNSAFE_DO_NOT_ACTIVATE",
+      "reason": "Existing trigger signatures not proven as current live warning targets; disable.sql lacks captured old view ACL restoration. No row-specific ACL delta is proven; Wave66 rollback replaces Library proposal only."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/edge.mjs",
+      "object": "(file-level contract)",
+      "disposition": "BLOCKED_LIVE_FACT",
+      "reason": "Review-only source per Wave65 delivery; require exact absence/owner/ACL/dependency preflight before any future creation, not an assertion a complete live private-schema census exists. Full Delete activation blocked: target ownership/FK order, old JWT fencing, durable resume and supported Auth/Storage integration unresolved."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/function-matrix.json",
+      "object": "(file-level contract)",
+      "disposition": "LIVE_DIFF_REQUIRES_REGENERATION",
+      "reason": "231 repository declarations/188 names are not live 236 unique signatures; replaced for decisions by exact PSV-linked 236 rows, 32 anon subset."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/grants.sql",
+      "object": "(file-level contract)",
+      "disposition": "UNSAFE_DO_NOT_ACTIVATE",
+      "reason": "Existing trigger signatures not proven as current live warning targets; disable.sql lacks captured old view ACL restoration. No row-specific ACL delta is proven; Wave66 rollback replaces Library proposal only."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/identity-coverage.json",
+      "object": "(file-level contract)",
+      "disposition": "BLOCKED_LIVE_FACT",
+      "reason": "61 discovery candidates remain useful; not exact live identity/FK/Storage ownership census. Additional confirmed live names reconciled separately; Full Delete stays off."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/library.sql",
+      "object": "public.nh7_library_catalog_wave65",
+      "disposition": "LIVE_DIFF_REQUIRES_REGENERATION",
+      "reason": "Generic v396 JSON adapter does not prove exact live 25/12 typed columns or constant empty reader_text. Superseded by Wave66 exact-predicate typed adapter, not activated."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/preflight.sql",
+      "object": "(file-level contract)",
+      "disposition": "BLOCKED_LIVE_FACT",
+      "reason": "Review-only source per Wave65 delivery; require exact absence/owner/ACL/dependency preflight before any future creation, not an assertion a complete live private-schema census exists."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/propose-adapters.py",
+      "object": "(file-level contract)",
+      "disposition": "UNSAFE_DO_NOT_ACTIVATE",
+      "reason": "Old generator can forward actual JSON reader_text and assumes a v396 envelope; metadata proof does not make that output the exact live constant-{} contract. Do not use for activation."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/registration.sql",
+      "object": "private",
+      "disposition": "LIVE_MATCH_COMPATIBLE",
+      "reason": "Live private Admin tables in authoritative manifest prove schema exists; old CREATE SCHEMA IF NOT EXISTS is redundant, not a new activation or authority grant."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/registration.sql",
+      "object": "private.nh7_phone_wave65",
+      "disposition": "NOT_DEPLOYED",
+      "reason": "Review-only source per Wave65 delivery; require exact absence/owner/ACL/dependency preflight before any future creation, not an assertion a complete live private-schema census exists. Strict BEFORE triggers would reject old installed anonymous/device signup; WAIT_FOR_CLIENT_ADOPTION and staged versioned RPC, no existing-row UPDATE or backfill."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/registration.sql",
+      "object": "private.nh7_human_wave65",
+      "disposition": "NOT_DEPLOYED",
+      "reason": "Review-only source per Wave65 delivery; require exact absence/owner/ACL/dependency preflight before any future creation, not an assertion a complete live private-schema census exists. Strict BEFORE triggers would reject old installed anonymous/device signup; WAIT_FOR_CLIENT_ADOPTION and staged versioned RPC, no existing-row UPDATE or backfill."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/registration.sql",
+      "object": "private.nh7_registration_error_wave65",
+      "disposition": "NOT_DEPLOYED",
+      "reason": "Review-only source per Wave65 delivery; require exact absence/owner/ACL/dependency preflight before any future creation, not an assertion a complete live private-schema census exists. Strict BEFORE triggers would reject old installed anonymous/device signup; WAIT_FOR_CLIENT_ADOPTION and staged versioned RPC, no existing-row UPDATE or backfill."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/registration.sql",
+      "object": "private.nh7_registration_before_wave65",
+      "disposition": "NOT_DEPLOYED",
+      "reason": "Review-only source per Wave65 delivery; require exact absence/owner/ACL/dependency preflight before any future creation, not an assertion a complete live private-schema census exists. Strict BEFORE triggers would reject old installed anonymous/device signup; WAIT_FOR_CLIENT_ADOPTION and staged versioned RPC, no existing-row UPDATE or backfill."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/registration.sql",
+      "object": "nh7_registration_strict_wave65",
+      "disposition": "NOT_DEPLOYED",
+      "reason": "Review-only source per Wave65 delivery; require exact absence/owner/ACL/dependency preflight before any future creation, not an assertion a complete live private-schema census exists. Strict BEFORE triggers would reject old installed anonymous/device signup; WAIT_FOR_CLIENT_ADOPTION and staged versioned RPC, no existing-row UPDATE or backfill."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/registration.sql",
+      "object": "private.nh7_auth_signup_before_wave65",
+      "disposition": "NOT_DEPLOYED",
+      "reason": "Review-only source per Wave65 delivery; require exact absence/owner/ACL/dependency preflight before any future creation, not an assertion a complete live private-schema census exists. Strict BEFORE triggers would reject old installed anonymous/device signup; WAIT_FOR_CLIENT_ADOPTION and staged versioned RPC, no existing-row UPDATE or backfill."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/registration.sql",
+      "object": "nh7_auth_signup_strict_wave65",
+      "disposition": "NOT_DEPLOYED",
+      "reason": "Review-only source per Wave65 delivery; require exact absence/owner/ACL/dependency preflight before any future creation, not an assertion a complete live private-schema census exists. Strict BEFORE triggers would reject old installed anonymous/device signup; WAIT_FOR_CLIENT_ADOPTION and staged versioned RPC, no existing-row UPDATE or backfill."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/registration.sql",
+      "object": "public.nh7_submit_registration_wave65",
+      "disposition": "NOT_DEPLOYED",
+      "reason": "Review-only source per Wave65 delivery; require exact absence/owner/ACL/dependency preflight before any future creation, not an assertion a complete live private-schema census exists. Strict BEFORE triggers would reject old installed anonymous/device signup; WAIT_FOR_CLIENT_ADOPTION and staged versioned RPC, no existing-row UPDATE or backfill."
+    },
+    {
+      "file": "supabase/review/wave6_5-security-registration/rls-matrix.json",
+      "object": "(file-level contract)",
+      "disposition": "LIVE_DIFF_REQUIRES_REGENERATION",
+      "reason": "43 repository candidates are not exact live Advisor29; use Wave66 29-row matrix."
+    },
+    {
+      "file": "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md",
+      "object": "public.nh7_school_registration_payload_error_v351(text,jsonb)",
+      "disposition": "LIVE_MATCH_COMPATIBLE",
+      "reason": "Manifest non-SD/service+owner-only ACL is compatible with retaining current validator. Definition differs from strict Wave65 validator; no change proposed."
+    },
+    {
+      "file": "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md",
+      "object": "public.nh7_submit_registration_v3(text,text,text,text,jsonb)",
+      "disposition": "LIVE_DIFF_REQUIRES_REGENERATION",
+      "reason": "Confirmed pre65 compatibility behavior, exact body not matched. Never replace with strict trigger deployment before Store client adoption."
+    }
+  ]
+}

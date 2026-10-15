@@ -14,7 +14,7 @@ for scope in ['js','css','assets','data','public','supabase']:
   else:assert prior_bytes(p)==original(p),'Unapproved engine/data/backend change: '+p
 runtime=set(subprocess.check_output(['git','ls-files','--','js','css','assets','data','public','supabase']).decode().splitlines())|set(subprocess.check_output(['git','ls-files','--others','--exclude-standard','--','js','css','assets','data','public','supabase']).decode().splitlines())
 baseline=set(subprocess.check_output(['git','ls-tree','-r','--name-only',BASE,'--','js','css','assets','data','public','supabase']).decode().splitlines())
-assert runtime-baseline==set(m['new_ui_files'])|set(security_manifest()['new_runtime']),'Unapproved new runtime/backend/data source'
+assert runtime-baseline==set(m['new_ui_files'])|set(security_manifest()['new_runtime'])|set(json.loads(Path('scripts/fixtures/wave66-approved-review.json').read_text())['new_review']),'Unapproved new runtime/backend/data source'
 for p,row in m['existing_ui_files'].items():accepted_bytes(p)
 for p,sha in m['new_ui_files'].items():assert hashlib.sha256(prior_bytes(p)).hexdigest()==sha,'New UI changed outside recorded patch: '+p
 patch=Path('scripts/fixtures/wave6-approved-ui.patch').read_bytes();assert hashlib.sha256(patch).hexdigest()==m['patch_sha256']

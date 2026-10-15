@@ -160,6 +160,11 @@ jobs:
           python3 scripts/run-ci-check.py python3 scripts/verify-wave65-secrets.py
           python3 scripts/run-ci-check.py node scripts/verify-wave65-validation.cjs
           python3 scripts/run-ci-check.py node scripts/verify-wave65-postgres.cjs
+          python3 scripts/run-ci-check.py python3 scripts/verify-wave66-evidence.py
+          python3 scripts/run-ci-check.py python3 scripts/verify-wave66-safety.py
+          python3 scripts/run-ci-check.py node --check scripts/verify-wave66-postgres.cjs
+          python3 scripts/run-ci-check.py node --check scripts/measure-wave66.cjs
+          python3 scripts/run-ci-check.py node scripts/verify-wave66-postgres.cjs
           python3 scripts/run-ci-check.py node scripts/verify-wave65-delete.mjs
 
       - name: Verify Wave 6 syntax and explicit UI/data-safety boundaries
@@ -241,4 +246,22 @@ jobs:
         with:
           name: wave65-measurements-${{ github.sha }}
           path: ${{ runner.temp }}/wave65-measurements.json
+          retention-days: 14
+
+      - name: Measure frozen Wave 6.6 startup and idle cost against metadata head
+        shell: bash
+        run: |
+          set -euo pipefail
+          export NODE_PATH="$RUNNER_TEMP/canonical-tools/node_modules"
+          export CHROMIUM_PATH="$(node -e "console.log(require('playwright').chromium.executablePath())")"
+          mkdir -p "$RUNNER_TEMP/wave66-baseline"
+          git archive 4f6c702c3f9e996256a5f9410bfd6096b5f3f018 | tar -x -C "$RUNNER_TEMP/wave66-baseline"
+          python3 -m http.server 8888 --bind 127.0.0.1 --directory "$RUNNER_TEMP/wave66-baseline" > "$RUNNER_TEMP/wave66-baseline.log" 2>&1 &
+          python3 scripts/run-ci-check.py node scripts/measure-wave66.cjs http://127.0.0.1:8878 http://127.0.0.1:8888 "$RUNNER_TEMP/wave66-measurements.json"
+
+      - name: Upload exact-head Wave 6.6 measurements
+        uses: actions/upload-artifact@v4
+        with:
+          name: wave66-measurements-${{ github.sha }}
+          path: ${{ runner.temp }}/wave66-measurements.json
           retention-days: 14

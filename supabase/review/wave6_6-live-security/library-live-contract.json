@@ -1,0 +1,348 @@
+{
+  "views": [
+    {
+      "name": "public.nh7_library_items_v224",
+      "before_md5": "4c965d6f56977723b947abde52c5bf1a",
+      "columns": [
+        [
+          "id",
+          "uuid"
+        ],
+        [
+          "title_fa",
+          "text"
+        ],
+        [
+          "title_en",
+          "text"
+        ],
+        [
+          "title_hr",
+          "text"
+        ],
+        [
+          "description_fa",
+          "text"
+        ],
+        [
+          "description_en",
+          "text"
+        ],
+        [
+          "description_hr",
+          "text"
+        ],
+        [
+          "audience",
+          "text"
+        ],
+        [
+          "resource_type",
+          "text"
+        ],
+        [
+          "apocrypha_book",
+          "text"
+        ],
+        [
+          "mime_type",
+          "text"
+        ],
+        [
+          "file_name",
+          "text"
+        ],
+        [
+          "file_size",
+          "bigint"
+        ],
+        [
+          "cover_url",
+          "text"
+        ],
+        [
+          "sort_order",
+          "integer"
+        ],
+        [
+          "created_at",
+          "timestamptz"
+        ],
+        [
+          "updated_at",
+          "timestamptz"
+        ],
+        [
+          "reader_mode",
+          "text"
+        ],
+        [
+          "reader_language",
+          "text"
+        ],
+        [
+          "reader_text",
+          "jsonb"
+        ],
+        [
+          "reader_status",
+          "text"
+        ],
+        [
+          "reader_page_count",
+          "integer"
+        ],
+        [
+          "reader_updated_at",
+          "timestamptz"
+        ],
+        [
+          "reader_available",
+          "boolean"
+        ],
+        [
+          "collection_id",
+          "uuid"
+        ]
+      ],
+      "definition": "SELECT id,\n    title_fa,\n    title_en,\n    title_hr,\n    description_fa,\n    description_en,\n    description_hr,\n    audience,\n    resource_type,\n    apocrypha_book,\n    mime_type,\n    file_name,\n    file_size,\n    cover_url,\n    sort_order,\n    created_at,\n    updated_at,\n    reader_mode,\n    reader_language,\n    '{}'::jsonb AS reader_text,\n    reader_status,\n    reader_page_count,\n    reader_updated_at,\n    reader_status = 'ready'::text\n      AND (reader_mode = ANY (ARRAY['text'::text, 'both'::text])) AS reader_available,\n    collection_id\nFROM nh7_library_items i\nWHERE is_published\n  AND is_active\n  AND (\n    COALESCE(nh7_is_admin(), false)\n    OR auth.uid() IS NOT NULL\n      AND (\n        audience = 'ministers'::text\n        AND nh7_content_access_active_v251(auth.uid(), 'library_item'::text, id)\n        OR audience <> 'ministers'::text\n        AND nh7_school_access_approved_v230(\n          auth.uid(),\n          COALESCE(auth.jwt() ->> 'email'::text, ''::text),\n          ''::text\n        )\n      )\n  );",
+      "owner": "postgres",
+      "reloptions": null,
+      "acl": "BLOCKED_LIVE_FACT: capture relacl and effective SELECT roles before activation",
+      "decision": "B: exact-projection invoker compatibility view over current-UID narrow definer function",
+      "activation": "BLOCKED_LIVE_FACT: capture view ACL/owner/dependencies/PG version and staging equivalence before approval"
+    },
+    {
+      "name": "public.nh7_library_items_v251",
+      "before_md5": "4c965d6f56977723b947abde52c5bf1a",
+      "columns": [
+        [
+          "id",
+          "uuid"
+        ],
+        [
+          "title_fa",
+          "text"
+        ],
+        [
+          "title_en",
+          "text"
+        ],
+        [
+          "title_hr",
+          "text"
+        ],
+        [
+          "description_fa",
+          "text"
+        ],
+        [
+          "description_en",
+          "text"
+        ],
+        [
+          "description_hr",
+          "text"
+        ],
+        [
+          "audience",
+          "text"
+        ],
+        [
+          "resource_type",
+          "text"
+        ],
+        [
+          "apocrypha_book",
+          "text"
+        ],
+        [
+          "mime_type",
+          "text"
+        ],
+        [
+          "file_name",
+          "text"
+        ],
+        [
+          "file_size",
+          "bigint"
+        ],
+        [
+          "cover_url",
+          "text"
+        ],
+        [
+          "sort_order",
+          "integer"
+        ],
+        [
+          "created_at",
+          "timestamptz"
+        ],
+        [
+          "updated_at",
+          "timestamptz"
+        ],
+        [
+          "reader_mode",
+          "text"
+        ],
+        [
+          "reader_language",
+          "text"
+        ],
+        [
+          "reader_text",
+          "jsonb"
+        ],
+        [
+          "reader_status",
+          "text"
+        ],
+        [
+          "reader_page_count",
+          "integer"
+        ],
+        [
+          "reader_updated_at",
+          "timestamptz"
+        ],
+        [
+          "reader_available",
+          "boolean"
+        ],
+        [
+          "collection_id",
+          "uuid"
+        ]
+      ],
+      "definition": "SELECT id,\n    title_fa,\n    title_en,\n    title_hr,\n    description_fa,\n    description_en,\n    description_hr,\n    audience,\n    resource_type,\n    apocrypha_book,\n    mime_type,\n    file_name,\n    file_size,\n    cover_url,\n    sort_order,\n    created_at,\n    updated_at,\n    reader_mode,\n    reader_language,\n    '{}'::jsonb AS reader_text,\n    reader_status,\n    reader_page_count,\n    reader_updated_at,\n    reader_status = 'ready'::text\n      AND (reader_mode = ANY (ARRAY['text'::text, 'both'::text])) AS reader_available,\n    collection_id\nFROM nh7_library_items i\nWHERE is_published\n  AND is_active\n  AND (\n    COALESCE(nh7_is_admin(), false)\n    OR auth.uid() IS NOT NULL\n      AND (\n        audience = 'ministers'::text\n        AND nh7_content_access_active_v251(auth.uid(), 'library_item'::text, id)\n        OR audience <> 'ministers'::text\n        AND nh7_school_access_approved_v230(\n          auth.uid(),\n          COALESCE(auth.jwt() ->> 'email'::text, ''::text),\n          ''::text\n        )\n      )\n  );",
+      "owner": "postgres",
+      "reloptions": null,
+      "acl": "BLOCKED_LIVE_FACT: capture relacl and effective SELECT roles before activation",
+      "decision": "B: exact-projection invoker compatibility view over current-UID narrow definer function",
+      "activation": "BLOCKED_LIVE_FACT: capture view ACL/owner/dependencies/PG version and staging equivalence before approval"
+    },
+    {
+      "name": "public.nh7_library_collections_public_v251",
+      "before_md5": "3a0b0f1a2c53dbbaa90d3b33b15c32d4",
+      "columns": [
+        [
+          "id",
+          "uuid"
+        ],
+        [
+          "slug",
+          "text"
+        ],
+        [
+          "title_fa",
+          "text"
+        ],
+        [
+          "title_en",
+          "text"
+        ],
+        [
+          "title_hr",
+          "text"
+        ],
+        [
+          "description_fa",
+          "text"
+        ],
+        [
+          "description_en",
+          "text"
+        ],
+        [
+          "description_hr",
+          "text"
+        ],
+        [
+          "icon",
+          "text"
+        ],
+        [
+          "audience",
+          "text"
+        ],
+        [
+          "sort_order",
+          "integer"
+        ],
+        [
+          "item_count",
+          "integer"
+        ]
+      ],
+      "definition": "SELECT c.id,\n    c.slug,\n    c.title_fa,\n    c.title_en,\n    c.title_hr,\n    c.description_fa,\n    c.description_en,\n    c.description_hr,\n    c.icon,\n    c.audience,\n    c.sort_order,\n    count(i.id)::integer AS item_count\nFROM nh7_library_collections_v322 c\nLEFT JOIN nh7_library_items i\n  ON i.collection_id = c.id\n AND i.resource_type = 'library'::text\n AND i.is_active\n AND i.is_published\n AND i.audience = c.audience\n AND (\n   c.audience <> 'ministers'::text\n   OR COALESCE(nh7_is_admin(), false)\n   OR nh7_content_access_active_v251(auth.uid(), 'library_item'::text, i.id)\n )\nWHERE c.is_active\n  AND (\n    COALESCE(nh7_is_admin(), false)\n    OR auth.uid() IS NOT NULL\n      AND (\n        c.audience = 'ministers'::text\n        AND nh7_content_access_active_v251(auth.uid(), 'library_collection'::text, c.id)\n        OR c.audience <> 'ministers'::text\n        AND nh7_school_access_approved_v230(\n          auth.uid(),\n          COALESCE(auth.jwt() ->> 'email'::text, ''::text),\n          ''::text\n        )\n      )\n  )\nGROUP BY c.id\nORDER BY c.audience, c.sort_order, c.created_at;",
+      "owner": "postgres",
+      "reloptions": null,
+      "acl": "BLOCKED_LIVE_FACT: capture relacl and effective SELECT roles before activation",
+      "decision": "B: exact-projection invoker compatibility view over current-UID narrow definer function",
+      "activation": "BLOCKED_LIVE_FACT: capture view ACL/owner/dependencies/PG version and staging equivalence before approval"
+    },
+    {
+      "name": "public.nh7_library_collections_public_v322",
+      "before_md5": "3a0b0f1a2c53dbbaa90d3b33b15c32d4",
+      "columns": [
+        [
+          "id",
+          "uuid"
+        ],
+        [
+          "slug",
+          "text"
+        ],
+        [
+          "title_fa",
+          "text"
+        ],
+        [
+          "title_en",
+          "text"
+        ],
+        [
+          "title_hr",
+          "text"
+        ],
+        [
+          "description_fa",
+          "text"
+        ],
+        [
+          "description_en",
+          "text"
+        ],
+        [
+          "description_hr",
+          "text"
+        ],
+        [
+          "icon",
+          "text"
+        ],
+        [
+          "audience",
+          "text"
+        ],
+        [
+          "sort_order",
+          "integer"
+        ],
+        [
+          "item_count",
+          "integer"
+        ]
+      ],
+      "definition": "SELECT c.id,\n    c.slug,\n    c.title_fa,\n    c.title_en,\n    c.title_hr,\n    c.description_fa,\n    c.description_en,\n    c.description_hr,\n    c.icon,\n    c.audience,\n    c.sort_order,\n    count(i.id)::integer AS item_count\nFROM nh7_library_collections_v322 c\nLEFT JOIN nh7_library_items i\n  ON i.collection_id = c.id\n AND i.resource_type = 'library'::text\n AND i.is_active\n AND i.is_published\n AND i.audience = c.audience\n AND (\n   c.audience <> 'ministers'::text\n   OR COALESCE(nh7_is_admin(), false)\n   OR nh7_content_access_active_v251(auth.uid(), 'library_item'::text, i.id)\n )\nWHERE c.is_active\n  AND (\n    COALESCE(nh7_is_admin(), false)\n    OR auth.uid() IS NOT NULL\n      AND (\n        c.audience = 'ministers'::text\n        AND nh7_content_access_active_v251(auth.uid(), 'library_collection'::text, c.id)\n        OR c.audience <> 'ministers'::text\n        AND nh7_school_access_approved_v230(\n          auth.uid(),\n          COALESCE(auth.jwt() ->> 'email'::text, ''::text),\n          ''::text\n        )\n      )\n  )\nGROUP BY c.id\nORDER BY c.audience, c.sort_order, c.created_at;",
+      "owner": "postgres",
+      "reloptions": null,
+      "acl": "BLOCKED_LIVE_FACT: capture relacl and effective SELECT roles before activation",
+      "decision": "B: exact-projection invoker compatibility view over current-UID narrow definer function",
+      "activation": "BLOCKED_LIVE_FACT: capture view ACL/owner/dependencies/PG version and staging equivalence before approval"
+    }
+  ]
+}

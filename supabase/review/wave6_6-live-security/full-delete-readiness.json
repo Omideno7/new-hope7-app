@@ -1,0 +1,880 @@
+{
+  "enabled": false,
+  "source_candidates": 61,
+  "rows": [
+    {
+      "target": "public.registrations",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "registrations",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "docs/supabase_schema_v1_3.sql",
+        "js/admin-v2.2.3.js",
+        "js/admin-v2.3.9-registration-approval-email-v342.js",
+        "js/admin-v2.3.9-registration-approval-email-v344.js"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.bible_user_actions",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "notes-verses-progress",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "data/bible/sql/user_activity_tables.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.bible_user_bookmarks",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "notes-verses-progress",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "data/bible/sql/user_activity_tables.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.bible_user_highlights",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "notes-verses-progress",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "data/bible/sql/user_activity_tables.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.bible_user_notes",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "notes-verses-progress",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "data/bible/sql/user_activity_tables.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.bible_user_rewards",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "notes-verses-progress",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "data/bible/sql/user_activity_tables.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_account_notes",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "notes-verses-progress",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "js/app.js",
+        "js/nh7-local-first-wave2.js",
+        "js/nh7-my-notes-v234.js",
+        "supabase/migrations/20261010180256_optimize_user_data_rls_initplan_v1.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_account_progress",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "notes-verses-progress",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "js/app.js",
+        "js/nh7-local-first-wave2.js",
+        "js/nh7-my-notes-v234.js",
+        "supabase/migrations/20261010180256_optimize_user_data_rls_initplan_v1.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_account_saved_verses",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "notes-verses-progress",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "js/app.js",
+        "js/nh7-apocrypha-actions-v393.js",
+        "js/nh7-local-first-wave2.js",
+        "js/nh7-reader-ux-v251.js"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_account_verse_marks_v230",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "notes-verses-progress",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "js/app.js",
+        "js/nh7-local-first-wave2.js",
+        "supabase/migrations/20261010180256_optimize_user_data_rls_initplan_v1.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.saved_verses",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "notes-verses-progress",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "docs/supabase_schema_v1_3.sql",
+        "js/app.js",
+        "js/nh7-local-first-wave2.js"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.user_bible_activity",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "notes-verses-progress",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "data/bible/sql/supabase_bible_schema.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.user_notes",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "notes-verses-progress",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "docs/supabase_schema_v1_3.sql",
+        "js/app.js",
+        "js/nh7-local-first-wave2.js",
+        "js/nh7-my-notes-v234.js"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.user_points_ledger",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "notes-verses-progress",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "data/bible/sql/supabase_bible_schema.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.user_progress",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "notes-verses-progress",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "docs/supabase_schema_v1_3.sql",
+        "js/app.js",
+        "js/nh7-local-first-wave2.js",
+        "js/nh7-my-notes-v234.js"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.user_reading_progress",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "notes-verses-progress",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "data/bible/sql/supabase_bible_schema.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.church_members",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "school",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "supabase/review/migration-history-reconciliation-20261009/legacy-applied-outside-history/20261003_student_academic_center_v540.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_school_video_grants_v260",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "school",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "supabase/migrations/20260728170000_fix7_video_portal_apocrypha.sql",
+        "supabase/migrations/20260728_school_secure_media_v260.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.school_assignments",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "school",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "js/admin-v2.3.8-student-fix.js",
+        "js/app.js",
+        "js/nh7-admin-review-blessings-v476.js",
+        "js/nh7-admin-review-refresh-v474.js"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.school_audio_progress",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "school",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.school_course_access_grants",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "school",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "scripts/verify-multi-course-v127.mjs",
+        "supabase/review/issue127/admin_course_studio_candidate.sql",
+        "supabase/review/issue127/multi_course_candidate.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.school_exam_attempts",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "school",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "js/app.js",
+        "js/nh7-security-core-v340.js",
+        "scripts/verify-admin-course-studio-v127.mjs",
+        "scripts/verify-school-activity-user-id-bridge-v128.mjs"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.school_legacy_progress_v542",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "school",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "supabase/migrations/20261008173510_school_v351_legacy_class_progress_hotfix.sql",
+        "supabase/migrations/20261008173533_school_v351_legacy_final_progress_hotfix.sql",
+        "supabase/migrations/20261009124356_school_exam_read_identity_v351.sql",
+        "supabase/review/migration-history-reconciliation-20261009/legacy-applied-outside-history/20261003_school_legacy_anchor_v542.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.school_progress",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "school",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "js/app.js",
+        "js/nh7-security-core-v340.js",
+        "scripts/verify-admin-course-studio-v127.mjs",
+        "scripts/verify-multi-course-v127.mjs"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.school_student_identities",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "school",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "scripts/verify-admin-course-studio-v127.mjs",
+        "scripts/verify-school-access-identity-v230.mjs",
+        "scripts/verify-school-activity-user-id-bridge-v128.mjs",
+        "scripts/verify-school-certificate-identity-v127.mjs"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.school_video_progress",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "school",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.fasting_daily_logs",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "plans",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "js/nh7-local-first-wave2.js",
+        "js/nh7-spiritual-plans-v240.js"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.fasting_journeys",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "plans",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "js/nh7-local-first-wave2.js",
+        "js/nh7-spiritual-plans-v240.js"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.spiritual_plan_progress",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "plans",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "js/nh7-local-first-wave2.js",
+        "js/nh7-spiritual-plans-v240.js",
+        "supabase/review/wave4-notifications-2/authorization.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_library_access_grants",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "library",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_library_code_claims",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "library",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_library_grants",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "library",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_library_minister_grants",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "library",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_library_reading_progress_v490",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "library",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "supabase_v490_library_reading_progress.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_library_user_access",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "library",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_prayer_requests_v502",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "community",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "js/nh7-community-v502.js",
+        "supabase/migrations/20261005232733_community_prayer_testimony_v502_backend.sql",
+        "supabase/migrations/20261006085853_community_storage_ops_v504.sql",
+        "supabase/migrations/20261010180256_optimize_user_data_rls_initplan_v1.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_testimonies_v502",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "community",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "js/nh7-community-v502.js",
+        "supabase/migrations/20261005232733_community_prayer_testimony_v502_backend.sql",
+        "supabase/migrations/20261006083051_community_moderation_prayer_v503.sql",
+        "supabase/migrations/20261006085853_community_storage_ops_v504.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_sermon_blessings",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "sermon-social",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_sermon_likes",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "sermon-social",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.sermon_blessings",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "sermon-social",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.sermon_likes",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "sermon-social",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.notification_inbox",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "inbox",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "docs/supabase_schema_v1_3.sql",
+        "js/admin-v2.2.0.js",
+        "js/admin-v2.2.3.js",
+        "js/app.js"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.notification_inbox_receipts",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "inbox",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "js/app.js",
+        "js/nh7-inbox-badge-sync-v418.js",
+        "supabase/migrations/20261003100105_add_batched_social_and_inbox_snapshot_v1.sql",
+        "supabase/migrations/20261003171531_optimize_inbox_rls_initplan_v1.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.qa_questions",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "questions",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "docs/supabase_schema_v1_3.sql",
+        "js/admin-qna-i18n-v341.js",
+        "js/admin-qna-i18n-v342.js",
+        "js/admin-qna-i18n-v343.js"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_user_profiles",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "profile",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_user_profiles_v502",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "profile",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "js/nh7-community-v502.js"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.profiles",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "profile",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "js/nh7-admin-student-academic-v540.js"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "private.nh7_notification_preferences_wave4",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "notifications-review",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "supabase/review/wave4-notifications-2/authorization.sql",
+        "supabase/review/wave4-notifications-2/candidate.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "private.nh7_notification_subscriptions_wave4",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "notifications-review",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "supabase/review/wave4-notifications-2/authorization.sql",
+        "supabase/review/wave4-notifications-2/candidate.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_document_deliveries_v2",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "documents-review",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "supabase/review/wave5-document-studio-v2/candidate.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_document_drafts_v2",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "existing_domain": "documents-review",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "supabase/review/wave5-document-studio-v2/candidate.sql",
+        "supabase/review/wave5-document-studio-v2/library-boundary.sql"
+      ],
+      "blocker": "Source discovery only. Exact deployed UID/email columns, conflicting ownership, nested JSON references, FKs and write paths not exported; no safe live purge inference.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_apocrypha_books_v270",
+      "classification": "RETENTION_POLICY_REQUIRED",
+      "existing_domain": "retention-policy-exception",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "supabase/migrations/20260728170000_fix7_video_portal_apocrypha.sql"
+      ],
+      "blocker": "Immutable certificate/public verification, community/shared material or Admin/audit history needs explicit retain/redact policy and PII reference check; no live deletion allowed.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_school_videos_v260",
+      "classification": "RETENTION_POLICY_REQUIRED",
+      "existing_domain": "retention-policy-exception",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "supabase/migrations/20260728170000_fix7_video_portal_apocrypha.sql",
+        "supabase/migrations/20260728_school_secure_media_v260.sql"
+      ],
+      "blocker": "Immutable certificate/public verification, community/shared material or Admin/audit history needs explicit retain/redact policy and PII reference check; no live deletion allowed.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_school_video_codes_v260",
+      "classification": "RETENTION_POLICY_REQUIRED",
+      "existing_domain": "retention-policy-exception",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "supabase/migrations/20260728170000_fix7_video_portal_apocrypha.sql",
+        "supabase/migrations/20260728_school_secure_media_v260.sql"
+      ],
+      "blocker": "Immutable certificate/public verification, community/shared material or Admin/audit history needs explicit retain/redact policy and PII reference check; no live deletion allowed.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.school_certificates",
+      "classification": "RETENTION_POLICY_REQUIRED",
+      "existing_domain": "retention-policy-exception",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "js/admin-v2.2.0.js",
+        "js/admin-v2.2.2.js",
+        "js/admin-v2.3.9-document-select-fix5.js",
+        "js/app.js"
+      ],
+      "blocker": "Immutable certificate/public verification, community/shared material or Admin/audit history needs explicit retain/redact policy and PII reference check; no live deletion allowed.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_official_documents_v2",
+      "classification": "RETENTION_POLICY_REQUIRED",
+      "existing_domain": "retention-policy-exception",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "supabase/review/wave5-document-studio-v2/candidate.sql",
+        "supabase/review/wave5-document-studio-v2/library-boundary.sql"
+      ],
+      "blocker": "Immutable certificate/public verification, community/shared material or Admin/audit history needs explicit retain/redact policy and PII reference check; no live deletion allowed.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_document_design_templates_v2",
+      "classification": "RETENTION_POLICY_REQUIRED",
+      "existing_domain": "retention-policy-exception",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "supabase/review/wave5-document-studio-v2/candidate.sql"
+      ],
+      "blocker": "Immutable certificate/public verification, community/shared material or Admin/audit history needs explicit retain/redact policy and PII reference check; no live deletion allowed.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "private.nh7_document_library_versions_v2",
+      "classification": "RETENTION_POLICY_REQUIRED",
+      "existing_domain": "retention-policy-exception",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "supabase/review/wave5-document-studio-v2/library-boundary.sql"
+      ],
+      "blocker": "Immutable certificate/public verification, community/shared material or Admin/audit history needs explicit retain/redact policy and PII reference check; no live deletion allowed.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "private.nh7_admin_audit_log_v350",
+      "classification": "RETENTION_POLICY_REQUIRED",
+      "existing_domain": "retention-policy-exception",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "scripts/verify-admin-rbac-v350.mjs",
+        "supabase/migrations/20260821174931_admin_rbac_recovery_v350.sql"
+      ],
+      "blocker": "Immutable certificate/public verification, community/shared material or Admin/audit history needs explicit retain/redact policy and PII reference check; no live deletion allowed.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "private.nh7_admin_members_v350",
+      "classification": "RETENTION_POLICY_REQUIRED",
+      "existing_domain": "retention-policy-exception",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "scripts/verify-admin-rbac-v350.mjs",
+        "supabase/migrations/20260821174931_admin_rbac_recovery_v350.sql",
+        "supabase/migrations/20261003100105_add_batched_social_and_inbox_snapshot_v1.sql",
+        "supabase/migrations/20261006085853_community_storage_ops_v504.sql"
+      ],
+      "blocker": "Immutable certificate/public verification, community/shared material or Admin/audit history needs explicit retain/redact policy and PII reference check; no live deletion allowed.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "private.nh7_admin_permission_grants_v350",
+      "classification": "RETENTION_POLICY_REQUIRED",
+      "existing_domain": "retention-policy-exception",
+      "state": "BLOCKED; Full Delete disabled",
+      "evidence": [
+        "scripts/verify-admin-rbac-v350.mjs",
+        "supabase/migrations/20260821174931_admin_rbac_recovery_v350.sql",
+        "supabase/review/wave4-notifications-2/candidate.sql"
+      ],
+      "blocker": "Immutable certificate/public verification, community/shared material or Admin/audit history needs explicit retain/redact policy and PII reference check; no live deletion allowed.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_account_content_grants_v251",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "state": "BLOCKED; live existence confirmed, exact ownership/FKs/retention missing",
+      "evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "blocker": "Do not substitute old guessed aliases; explicit UUID ownership vs actor/subject/shared audit distinction required. Singular/plural notification tables are different.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_content_entitlements_v380",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "state": "BLOCKED; live existence confirmed, exact ownership/FKs/retention missing",
+      "evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "blocker": "Do not substitute old guessed aliases; explicit UUID ownership vs actor/subject/shared audit distinction required. Singular/plural notification tables are different.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_school_audio_progress_v380",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "state": "BLOCKED; live existence confirmed, exact ownership/FKs/retention missing",
+      "evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "blocker": "Do not substitute old guessed aliases; explicit UUID ownership vs actor/subject/shared audit distinction required. Singular/plural notification tables are different.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_sermon_likes_v440",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "state": "BLOCKED; live existence confirmed, exact ownership/FKs/retention missing",
+      "evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "blocker": "Do not substitute old guessed aliases; explicit UUID ownership vs actor/subject/shared audit distinction required. Singular/plural notification tables are different.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_sermon_blessings_v440",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "state": "BLOCKED; live existence confirmed, exact ownership/FKs/retention missing",
+      "evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "blocker": "Do not substitute old guessed aliases; explicit UUID ownership vs actor/subject/shared audit distinction required. Singular/plural notification tables are different.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_library_claim_codes_v433",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "state": "BLOCKED; live existence confirmed, exact ownership/FKs/retention missing",
+      "evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "blocker": "Do not substitute old guessed aliases; explicit UUID ownership vs actor/subject/shared audit distinction required. Singular/plural notification tables are different.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.nh7_admin_account_actions_v380",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "state": "BLOCKED; live existence confirmed, exact ownership/FKs/retention missing",
+      "evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "blocker": "Do not substitute old guessed aliases; explicit UUID ownership vs actor/subject/shared audit distinction required. Singular/plural notification tables are different.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.notification_dispatch_log",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "state": "BLOCKED; live existence confirmed, exact ownership/FKs/retention missing",
+      "evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "blocker": "Do not substitute old guessed aliases; explicit UUID ownership vs actor/subject/shared audit distinction required. Singular/plural notification tables are different.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "public.notification_schedule",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "state": "BLOCKED; live existence confirmed, exact ownership/FKs/retention missing",
+      "evidence": [
+        "docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md"
+      ],
+      "blocker": "Do not substitute old guessed aliases; explicit UUID ownership vs actor/subject/shared audit distinction required. Singular/plural notification tables are different.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "legacy-device-only records",
+      "classification": "SHARED_DEVICE_DO_NOT_DELETE",
+      "state": "BLOCKED live activation; candidate policy only",
+      "evidence": [
+        "supabase/review/wave6_5-security-registration/README.md"
+      ],
+      "blocker": "Device is not identity; keep another user/device-shared content, no blanket cache clear.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "minimal non-PII deletion job audit/tombstone",
+      "classification": "MUST_RETAIN_NON_PII_AUDIT",
+      "state": "BLOCKED live activation; candidate policy only",
+      "evidence": [
+        "supabase/review/wave6_5-security-registration/README.md"
+      ],
+      "blocker": "Immutable request UUID/target UUID stage receipts required to fence old JWT and retry unknown responses; retention approval needed.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "published certificate/document PII fields",
+      "classification": "RETENTION_POLICY_REQUIRED",
+      "state": "BLOCKED live activation; candidate policy only",
+      "evidence": [
+        "supabase/review/wave6_5-security-registration/README.md"
+      ],
+      "blocker": "Only a policy-approved future field-level redaction candidate; no live schema/field authority proof, not executable.",
+      "production_delete_authorized": false,
+      "future_candidate_only": "SAFE_TO_REDACT only after exact field/verification/retention policy approval; not proven safe now"
+    },
+    {
+      "target": "proven exclusively owned synthetic rows",
+      "classification": "SAFE_TO_PURGE",
+      "state": "BLOCKED live activation; candidate policy only",
+      "evidence": [
+        "supabase/review/wave6_5-security-registration/README.md"
+      ],
+      "blocker": "Synthetic-only fixture success; zero real Production purge targets approved.",
+      "production_delete_authorized": false
+    },
+    {
+      "target": "Storage objects / Auth account APIs",
+      "classification": "OWNER_MAPPING_UNKNOWN",
+      "state": "BLOCKED live activation; candidate policy only",
+      "evidence": [
+        "supabase/review/wave6_5-security-registration/README.md"
+      ],
+      "blocker": "Exact buckets/paths/shared-asset references and supported API Auth session/token behavior must be owner-reviewed; never SQL-delete storage.objects or auth.users in Production.",
+      "production_delete_authorized": false
+    }
+  ],
+  "global_blockers": [
+    "Exact deployed identity columns/FKs and recursive PII census absent; do not treat source superset as completeness",
+    "Current v372/v381/v393 full bodies do not match repository, destructive endpoint authority/coverage not proven",
+    "Lexicographic scope table deletion cannot express dependency-safe FK order; regeneration required",
+    "Generic match rejects contradictory UID, but retained actor/target references need any-match and recursive JSON redaction proof",
+    "freezeWrites is a contract port, not proof every old-JWT RPC/RLS/service write is fenced",
+    "Storage ownership/path listing and shared references, immutable verification retention require owner approval",
+    "Durable service-side retry/resume after Auth deletion, staged API integration and unknown-response recovery not integrated live",
+    "Current owner/delegated Admin self-protection and membership race handling need live authority proof",
+    "Same-email re-registration only synthetic proven; no real accounts created/deleted for this wave"
+  ],
+  "enabled_scope": "New Wave65 Full Delete activation only. Existing live v372/v381/v393 RPCs are retained; body/coverage not certified and no claim they are disabled live."
+}

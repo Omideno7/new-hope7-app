@@ -1,0 +1,7 @@
+-- REVIEW ONLY; no executable activation statements.
+-- Keep pg_net 0.20.3 in public, owner supabase_admin, extrelocatable=false.
+-- No exact network-function effective ACL/extension dependency export was supplied.
+-- Repository references outside review/comment material do not prove absence of provider/cron dependencies.
+-- No ACL delta proven safe; no revoke proposed. Platform warning intentionally remains.
+-- Owner read-only preflight: inventory extension-owned net/http routines, ACL inheritance,
+-- pg_depend, pg_cron/Edge/webhook callers privately (never publish secrets), then reassess individually.
