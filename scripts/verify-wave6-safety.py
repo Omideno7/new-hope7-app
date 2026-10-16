@@ -1,9 +1,9 @@
 """Explicit Wave6 UI delta plus exact persistence/authority/engine/backend protections."""
-from wave75_accepted_source import manifest as wave75_manifest
 from pathlib import Path
 import subprocess,re,json,hashlib
 import sys
 sys.dont_write_bytecode=True
+from wave75_accepted_source import manifest as wave75_manifest
 from wave6_accepted_source import BASE,original,manifest,accepted_bytes
 from wave65_accepted_source import prior_bytes,manifest as security_manifest
 from wave7_accepted_source import manifest as platform_manifest

@@ -1,8 +1,8 @@
 """Independent current-wave checks; no wildcard exemption for earlier product/authority/data guards."""
-from wave75_accepted_source import manifest as wave75_manifest
 from pathlib import Path
 import subprocess,hashlib,json,re,sys
 sys.dont_write_bytecode=True
+from wave75_accepted_source import manifest as wave75_manifest
 from wave65_accepted_source import BASE,manifest,prior_bytes
 from wave7_accepted_source import manifest as platform_manifest
 subprocess.run(['python3','scripts/verify-wave66-safety.py'],check=True)
