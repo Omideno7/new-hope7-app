@@ -51,8 +51,8 @@
     "js/nh7-admin-audio-cost-wave75.js": "67c57fa1af883f188ac316ff1d22239fc3925bbc0cdfb327522064acb9af94db"
   },
   "new_review": {
-    "supabase/review/wave7_5-admin-documents/README.md": "6e97ad0957ccd2c5b27e5900e94f390f90f13896ef22cf2f021afc16ef7b98f4",
-    "supabase/review/wave7_5-admin-documents/activation-checklist.md": "99b1097ffdaaaf5a6e96b058e9faa9b4281cf2605fc67572fcbc644e72ef6160",
+    "supabase/review/wave7_5-admin-documents/README.md": "66b1ce6370ddee315483242535030791ce18fcd8c14668035bb1cc4b15c94a38",
+    "supabase/review/wave7_5-admin-documents/activation-checklist.md": "a3d6eb55568ed2c21ee983d68fc4ead5d3f48f6171ccbb710f890edbb640d8c5",
     "supabase/review/wave7_5-admin-documents/assemble.py": "8218a335a48424f155070534c83105ea5cea8f93d21f254af35cbc062b470cbf",
     "supabase/review/wave7_5-admin-documents/baseline-sha256.json": "ab2405fca90cf2c56a0549f24185f886eb0e0837cc74f5b1e21445ea66470346",
     "supabase/review/wave7_5-admin-documents/document-backend-proposal.sql": "e45a4c74b6a3ec302033e4831c9f50696bfa50a52096aa23fd675a4104daeffc",
