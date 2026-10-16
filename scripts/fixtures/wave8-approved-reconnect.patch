@@ -1,5 +1,5 @@
 diff --git a/js/app.js b/js/app.js
-index 946bc629..bb1de724 100644
+index 946bc629..b5589875 100644
 --- a/js/app.js
 +++ b/js/app.js
 @@ -2919 +2919,20 @@ window.addEventListener('nh7-personal-owner-wave2',()=>{if(state.route==='plans'
@@ -24,6 +24,12 @@ index 946bc629..bb1de724 100644
 +  nh7ReconnectFlightWave8=flight;return flight.promise;
 +}
 +window.addEventListener('online',()=>{$('.offline')?.remove();reconnectCurrentAccountWave8().catch(console.warn)});
+@@ -2932 +2951,4 @@ async function bootstrapApp(){
+-  refreshInboxFromCloud().catch(console.warn);
++  // The central Inbox API starts at DOM-ready; avoid a pre-ready legacy startup fetch.
++  const refreshStartupInboxWave8=()=>{if(typeof window.NH7_INBOX_BADGE_SYNC?.sync==='function')return;return refreshInboxFromCloud().catch(console.warn)};
++  if(document.readyState==='complete')refreshStartupInboxWave8();
++  else window.addEventListener('load',refreshStartupInboxWave8,{once:true});
 diff --git a/sw-release-core-v403.js b/sw-release-core-v403.js
 index 1e3151ed..29e4a22c 100644
 --- a/sw-release-core-v403.js

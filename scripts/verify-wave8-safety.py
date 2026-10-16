@@ -34,10 +34,13 @@ measurement=subprocess.check_output(['git','show',BASE+':scripts/measure-wave65.
 for before,after in m['measurement_readiness_replacements']:
  assert measurement.count(before)==1;measurement=measurement.replace(before,after)
 assert Path('scripts/measure-wave65.cjs').read_text()==measurement,'Only symmetric fixture latency, bounded bootstrap readiness and diagnostics; every original measurement assertion unchanged'
+old66=subprocess.check_output(['git','show',BASE+':scripts/measure-wave66.cjs']).decode()
+new66=old66.replace('Existing Wave65 harness, both runtime payloads identical; local synthetic purge is regression only','Existing Wave65 harness; guarded startup changes can remove duplicate reads; local synthetic purge is regression only').replace("assert.equal(data.baseline.steps[0].remote_requests,data.current.steps[0].remote_requests,'Frozen-runtime startup counts must match');","assert.ok(data.current.steps[0].remote_requests<=data.baseline.steps[0].remote_requests,'Guarded startup fix must not add requests; duplicate-read reductions are allowed');")
+assert Path('scripts/measure-wave66.cjs').read_text()==new66,'Only obsolete runtime-equality cost assertion permits proven duplicate-read reduction; no added requests or other assertion change'
 test_path='scripts/verify-wave6-navigation-search.cjs'
 old_test=subprocess.check_output(['git','show',BASE+':'+test_path]).decode()
 ready_old='async function query(value){await p.evaluate'
 ready_new='async function query(value){await p.waitForSelector(\'#nh7GlobalSearch560[data-nh7-direct562="1"] [data-nh7gs-input]\');await p.evaluate'
 assert old_test.count(ready_old)==1 and Path(test_path).read_text()==old_test.replace(ready_old,ready_new),'Only mounted-control readiness wait added; every original assertion byte-identical'
 assert not subprocess.check_output(['git','diff',BASE,'--','supabase/migrations','supabase/functions','supabase/review'])
-print('PASS Wave8 exact reversible reconnect-only delta; all other runtime/backend/review/authority/data/Watch/native sources unchanged; explicit evidence-only paths; original audit/ledger preserved; no activation/migration/analytics/deploy/native artifacts')
+print('PASS Wave8 exact reversible reconnect and Inbox-startup-only delta; all other runtime/backend/review/authority/data/Watch/native sources unchanged; explicit evidence-only paths; original audit/ledger preserved; no activation/migration/analytics/deploy/native artifacts')

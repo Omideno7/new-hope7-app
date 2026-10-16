@@ -16,6 +16,7 @@
     "scripts/fixtures/wave8-approved-reconnect.patch",
     "scripts/fixtures/wave8-evidence-contract.json",
     "scripts/measure-wave65.cjs",
+    "scripts/measure-wave66.cjs",
     "scripts/measure-wave8.cjs",
     "scripts/verify-wave5-safety.py",
     "scripts/verify-wave6-navigation-search.cjs",
@@ -55,14 +56,14 @@
   "existing_runtime": {
     "js/app.js": {
       "before": "8eeb686a1ec666629c688f567983c62880110a35fb034d4eed27b0c360a60380",
-      "after": "467142d2c259037be89ce2b201eed0d8ee45aefcef4169813988e204630df504"
+      "after": "c1a82e8664414c6b328cfa16a89a5c7798111aaa1ad59a19863a0e2ada861d07"
     },
     "sw-release-core-v403.js": {
       "before": "c3e904f296c5c8881a83f3544f8ca96deabb66e84edb97c8fcc11a57e1772312",
       "after": "365ee358a8a152d8f40e148669270fe5377a7cc6c41e032c68c7045531afee5a"
     }
   },
-  "patch_sha256": "019ae078656e71e6fda590741eed30264c82193a17a92b81e8a2b4c2fe67b129",
+  "patch_sha256": "2904eb56b8bc9373f78984fe35dc34c3e68fefce6d6c1caaea2426f50a45b14a",
   "measurement_readiness_replacements": [
     [
       "const {calls}=await user.intercept(ctx,base);",

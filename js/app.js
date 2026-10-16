@@ -2948,7 +2948,10 @@ async function bootstrapApp(){
   setLang(state.lang);
   ensureSermonPlayer();
   syncCloudQueue().catch(console.warn);
-  refreshInboxFromCloud().catch(console.warn);
+  // The central Inbox API starts at DOM-ready; avoid a pre-ready legacy startup fetch.
+  const refreshStartupInboxWave8=()=>{if(typeof window.NH7_INBOX_BADGE_SYNC?.sync==='function')return;return refreshInboxFromCloud().catch(console.warn)};
+  if(document.readyState==='complete')refreshStartupInboxWave8();
+  else window.addEventListener('load',refreshStartupInboxWave8,{once:true});
   maybeCreateScheduledInboxMessages().catch(console.warn);
   notificationPermissionStatus().then(p=>{if(p==='granted'&&nativeLocalNotifications())scheduleNativeNotifications().catch(console.warn)}).catch(console.warn);
   updateInboxBadge();
