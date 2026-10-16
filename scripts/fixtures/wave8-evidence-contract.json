@@ -17,6 +17,7 @@
     "scripts/fixtures/wave8-evidence-contract.json",
     "scripts/measure-wave8.cjs",
     "scripts/verify-wave5-safety.py",
+    "scripts/verify-wave6-navigation-search.cjs",
     "scripts/verify-wave7-safety.py",
     "scripts/verify-wave75-safety.py",
     "scripts/verify-wave8-evidence.py",

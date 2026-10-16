@@ -1044,6 +1044,7 @@
   "diagnostic_limitations": {
     "fresh_profile_sigkill_1_5s_latest_checkpoint": "FAIL exploratory stronger durability scenario; intermittent missing latest resume/language, cause unproven. Not counted as persisted-profile PASS; investigate with controlled storage/native traces.",
     "http_baseline_recovery": "Initial local Wave7 baseline server returned ERR_EMPTY_RESPONSE; fresh identical archived baseline on redirected server passed unchanged assertions. Final CI servers already redirect logs.",
-    "timeout_probe": "18s probe showed existing pending timers not drained; actual existing60s timer window retained.62s real settled observation returns pending counts28\u21923 with zero requests; no production timer was changed."
+    "timeout_probe": "18s probe showed existing pending timers not drained; actual existing60s timer window retained.62s real settled observation returns pending counts28\u21923 with zero requests; no production timer was changed.",
+    "legacy_navigation_fixture": "Local full-suite Back\u2192Search API query ran before Search mounted (null root). Unchanged isolated rerun passed. Add mounted v562 input readiness wait only; no existing expected result/assertion or app navigation change. Final-head CI reruns all gates."
   }
 }

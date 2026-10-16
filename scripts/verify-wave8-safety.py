@@ -30,5 +30,10 @@ for path in ['js/nh7-audio-classic-v484.js','js/nh7-audio-library-v500.js','js/n
 for p in ['document-studio.html','document-output.html','document-verify.html','my-documents.html','index.html','admin.html']:
  assert 'NH7_DOCUMENT_STUDIO_V2_BACKEND_READY=true' not in Path(p).read_text(),p
 assert not any('ios-release' in p or 'DerivedData' in p or p.endswith(('.ipa','.apk','.aab','.p12','.keystore','.mobileprovision','.pyc')) for p in changed)
+test_path='scripts/verify-wave6-navigation-search.cjs'
+old_test=subprocess.check_output(['git','show',BASE+':'+test_path]).decode()
+ready_old='async function query(value){await p.evaluate'
+ready_new='async function query(value){await p.waitForSelector(\'#nh7GlobalSearch560[data-nh7-direct562="1"] [data-nh7gs-input]\');await p.evaluate'
+assert old_test.count(ready_old)==1 and Path(test_path).read_text()==old_test.replace(ready_old,ready_new),'Only mounted-control readiness wait added; every original assertion byte-identical'
 assert not subprocess.check_output(['git','diff',BASE,'--','supabase/migrations','supabase/functions','supabase/review'])
 print('PASS Wave8 exact reversible reconnect-only delta; all other runtime/backend/review/authority/data/Watch/native sources unchanged; explicit evidence-only paths; original audit/ledger preserved; no activation/migration/analytics/deploy/native artifacts')
