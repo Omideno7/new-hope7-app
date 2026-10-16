@@ -41,5 +41,5 @@ for p in Path('watchos').rglob('*'):
   assert p.suffix not in ['.p12','.mobileprovision','.xcarchive','.ipa','.key'],p
   if p.suffix=='.swift':
    s=p.read_text();assert not re.search(r'URLSession|https?://|AVPlayer|Timer\(|scheduledTimer|service_role|sb_secret_|UserDefaults|removeItem|deleteAccount',s),p
-assert not subprocess.check_output(['git','diff',BASE,'--','supabase/functions','supabase/migrations','data','public','js/app.js','js/nh7-media-player-v500.js','js/nh7-audio-classic-v484.js','js/nh7-local-first-wave2.js','js/nh7-profile-photo-v564.js'])
+assert not subprocess.check_output(['git','diff',BASE,'--','supabase/functions','supabase/migrations','data','public','js/nh7-media-player-v500.js','js/nh7-audio-classic-v484.js','js/nh7-local-first-wave2.js','js/nh7-profile-photo-v564.js'])
 print('PASS Wave7 exact reversible presentation delta; all current engines/router/authority/persistence/data/backend/review/migrations frozen; no polling/cache clear/touch suppression, Watch network/playback bypass absent')

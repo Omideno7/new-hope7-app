@@ -1,0 +1,64 @@
+{
+  "base": "ffa2cc97a7c225d3d97a5ff4e57e620360440e04",
+  "audit_sha": "4258d2e197e92827a52535e1ee0e959e9d8ac6bb",
+  "audit_sha256": "9c4b0d124d0aacb86cfb80413d5b29963e2e4c784fa35461ccbbfb70a9f9f10b",
+  "approved_paths": [
+    ".github/workflows/validate-develop.yml",
+    "docs/RELEASE_PROVENANCE.md",
+    "docs/qa/CODEX_WAVE8_INTEGRATION_PHYSICAL_ACCEPTANCE.md",
+    "docs/qa/WAVE8_DEVICE_TEST_MATRIX.md",
+    "docs/qa/WAVE8_FINAL_REPORT.md",
+    "docs/qa/WAVE8_INTEGRATION_MEASUREMENTS.json",
+    "docs/qa/WAVE8_INTEGRATION_PHYSICAL_ACCEPTANCE_AUDIT.md",
+    "docs/qa/WAVE8_PHYSICAL_ACCEPTANCE_REPORT.md",
+    "docs/qa/WAVE8_UPGRADE_OFFLINE_REPORT.md",
+    "js/app.js",
+    "scripts/fixtures/wave8-approved-reconnect.patch",
+    "scripts/fixtures/wave8-evidence-contract.json",
+    "scripts/measure-wave8.cjs",
+    "scripts/verify-wave5-safety.py",
+    "scripts/verify-wave7-safety.py",
+    "scripts/verify-wave75-safety.py",
+    "scripts/verify-wave8-evidence.py",
+    "scripts/verify-wave8-output.cjs",
+    "scripts/verify-wave8-provenance.py",
+    "scripts/verify-wave8-reconnect.cjs",
+    "scripts/verify-wave8-safety.py",
+    "scripts/verify-wave8-upgrade.cjs",
+    "scripts/wave75_accepted_source.py",
+    "scripts/wave8_accepted_source.py",
+    "sw-release-core-v403.js"
+  ],
+  "physical_passes": 0,
+  "simulator_passes": 0,
+  "platforms": [
+    "iPhone",
+    "iPad",
+    "Android phone",
+    "Android tablet",
+    "Samsung Fold",
+    "macOS/Safari/PWA",
+    "Apple Watch"
+  ],
+  "vocabulary": [
+    "PASS_AUTOMATED",
+    "PASS_SIMULATOR",
+    "PASS_PHYSICAL",
+    "PHYSICAL_QA_REQUIRED",
+    "BLOCKED_TOOLCHAIN",
+    "PROVIDER_EVIDENCE_REQUIRED",
+    "BLOCKED_ACTIVATION",
+    "FAIL"
+  ],
+  "existing_runtime": {
+    "js/app.js": {
+      "before": "8eeb686a1ec666629c688f567983c62880110a35fb034d4eed27b0c360a60380",
+      "after": "467142d2c259037be89ce2b201eed0d8ee45aefcef4169813988e204630df504"
+    },
+    "sw-release-core-v403.js": {
+      "before": "c3e904f296c5c8881a83f3544f8ca96deabb66e84edb97c8fcc11a57e1772312",
+      "after": "365ee358a8a152d8f40e148669270fe5377a7cc6c41e032c68c7045531afee5a"
+    }
+  },
+  "patch_sha256": "019ae078656e71e6fda590741eed30264c82193a17a92b81e8a2b4c2fe67b129"
+}

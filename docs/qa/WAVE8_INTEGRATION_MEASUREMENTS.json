@@ -1,0 +1,1049 @@
+{
+  "schema_version": 1,
+  "test_head": "4258d2e197e92827a52535e1ee0e959e9d8ac6bb",
+  "status": "PASS_AUTOMATED",
+  "date": "2026-10-16",
+  "timezone": "Etc/UTC",
+  "working_tree_dirty": true,
+  "clock": "Real wall-clock; no acceleration. Visibility/media/native APIs remain explicitly synthetic in inherited harnesses.",
+  "steps": [
+    {
+      "name": "warm_two_route_cycles",
+      "wall_ms": 2420,
+      "requests": 1,
+      "request_names": [
+        "notification_schedules"
+      ],
+      "before": {
+        "registered_global": 312,
+        "removed_global": 3,
+        "active_global": 309,
+        "active_intervals": 10,
+        "pending_timeouts": 9,
+        "interval_callbacks": 13,
+        "timeout_callbacks": 183,
+        "resize_observer_instances": 1,
+        "active_resize_targets": 2
+      },
+      "after": {
+        "registered_global": 312,
+        "removed_global": 3,
+        "active_global": 309,
+        "active_intervals": 10,
+        "pending_timeouts": 9,
+        "interval_callbacks": 18,
+        "timeout_callbacks": 266,
+        "resize_observer_instances": 1,
+        "active_resize_targets": 2
+      }
+    },
+    {
+      "name": "twenty_more_route_cycles",
+      "wall_ms": 5715,
+      "requests": 0,
+      "request_names": [],
+      "before": {
+        "registered_global": 312,
+        "removed_global": 3,
+        "active_global": 309,
+        "active_intervals": 10,
+        "pending_timeouts": 9,
+        "interval_callbacks": 18,
+        "timeout_callbacks": 266,
+        "resize_observer_instances": 1,
+        "active_resize_targets": 2
+      },
+      "after": {
+        "registered_global": 312,
+        "removed_global": 3,
+        "active_global": 309,
+        "active_intervals": 10,
+        "pending_timeouts": 8,
+        "interval_callbacks": 30,
+        "timeout_callbacks": 954,
+        "resize_observer_instances": 1,
+        "active_resize_targets": 2
+      }
+    },
+    {
+      "name": "forty_narrow_wide_transitions_browser_only",
+      "wall_ms": 3777,
+      "requests": 0,
+      "request_names": [],
+      "before": {
+        "registered_global": 312,
+        "removed_global": 3,
+        "active_global": 309,
+        "active_intervals": 10,
+        "pending_timeouts": 8,
+        "interval_callbacks": 30,
+        "timeout_callbacks": 954,
+        "resize_observer_instances": 1,
+        "active_resize_targets": 2
+      },
+      "after": {
+        "registered_global": 312,
+        "removed_global": 3,
+        "active_global": 309,
+        "active_intervals": 10,
+        "pending_timeouts": 8,
+        "interval_callbacks": 40,
+        "timeout_callbacks": 975,
+        "resize_observer_instances": 1,
+        "active_resize_targets": 2
+      }
+    },
+    {
+      "name": "offline_start_and_reconnect_burst",
+      "wall_ms": 2830,
+      "requests": 6,
+      "request_names": [
+        "nh7_account_notes",
+        "nh7_account_progress",
+        "nh7_account_saved_verses",
+        "nh7_account_verse_marks_v230",
+        "nh7_get_my_school_snapshot_v2110",
+        "nh7_inbox_snapshot_v419"
+      ],
+      "before": {
+        "registered_global": 312,
+        "removed_global": 3,
+        "active_global": 309,
+        "active_intervals": 10,
+        "pending_timeouts": 8,
+        "interval_callbacks": 40,
+        "timeout_callbacks": 975,
+        "resize_observer_instances": 1,
+        "active_resize_targets": 2
+      },
+      "after": {
+        "registered_global": 312,
+        "removed_global": 3,
+        "active_global": 309,
+        "active_intervals": 10,
+        "pending_timeouts": 28,
+        "interval_callbacks": 47,
+        "timeout_callbacks": 1044,
+        "resize_observer_instances": 1,
+        "active_resize_targets": 2
+      }
+    },
+    {
+      "name": "settled_after_reconnect_3s",
+      "wall_ms": 3012,
+      "requests": 0,
+      "request_names": [],
+      "before": {
+        "registered_global": 312,
+        "removed_global": 3,
+        "active_global": 309,
+        "active_intervals": 10,
+        "pending_timeouts": 28,
+        "interval_callbacks": 47,
+        "timeout_callbacks": 1044,
+        "resize_observer_instances": 1,
+        "active_resize_targets": 2
+      },
+      "after": {
+        "registered_global": 312,
+        "removed_global": 3,
+        "active_global": 309,
+        "active_intervals": 10,
+        "pending_timeouts": 28,
+        "interval_callbacks": 53,
+        "timeout_callbacks": 1045,
+        "resize_observer_instances": 1,
+        "active_resize_targets": 2
+      }
+    },
+    {
+      "name": "existing_request_timeout_settles_62s",
+      "wall_ms": 62021,
+      "requests": 0,
+      "request_names": [],
+      "before": {
+        "registered_global": 312,
+        "removed_global": 3,
+        "active_global": 309,
+        "active_intervals": 10,
+        "pending_timeouts": 28,
+        "interval_callbacks": 53,
+        "timeout_callbacks": 1045,
+        "resize_observer_instances": 1,
+        "active_resize_targets": 2
+      },
+      "after": {
+        "registered_global": 312,
+        "removed_global": 3,
+        "active_global": 309,
+        "active_intervals": 10,
+        "pending_timeouts": 3,
+        "interval_callbacks": 198,
+        "timeout_callbacks": 1087,
+        "resize_observer_instances": 1,
+        "active_resize_targets": 2
+      }
+    },
+    {
+      "name": "account_switch_and_logout",
+      "wall_ms": 1432,
+      "requests": 1,
+      "request_names": [
+        "nh7_admin_my_access_v350"
+      ],
+      "before": {
+        "registered_global": 312,
+        "removed_global": 3,
+        "active_global": 309,
+        "active_intervals": 10,
+        "pending_timeouts": 3,
+        "interval_callbacks": 198,
+        "timeout_callbacks": 1087,
+        "resize_observer_instances": 1,
+        "active_resize_targets": 2
+      },
+      "after": {
+        "registered_global": 312,
+        "removed_global": 3,
+        "active_global": 309,
+        "active_intervals": 10,
+        "pending_timeouts": 4,
+        "interval_callbacks": 201,
+        "timeout_callbacks": 1153,
+        "resize_observer_instances": 1,
+        "active_resize_targets": 2
+      }
+    }
+  ],
+  "analytics_decision": "REJECTED_COST",
+  "additional_analytics_backend_reads": 0,
+  "additional_analytics_backend_writes": 0,
+  "additional_analytics_storage_bytes": 0,
+  "physical_passes": 0,
+  "simulator_passes": 0,
+  "physical_status": "PHYSICAL_QA_REQUIRED",
+  "source_sha256": {
+    "js/app.js": "467142d2c259037be89ce2b201eed0d8ee45aefcef4169813988e204630df504",
+    "js/nh7-local-first-wave2.js": "bb89673e943368185e17d8171955b59abbe0114126ab19c38ab5ceedc075fee8",
+    "js/nh7-audio-classic-v484.js": "6dda7d21c68a7fb63d62a459cc8848b53f77c3262bba0d80ed0eb09fd339bbbc",
+    "js/document-studio-v2/editor.mjs": "df05fe192c44f80f25effd4b37b96bd849bedb3e511cb75e50d437925f6da0af",
+    "js/document-studio-v2/output.mjs": "8727d1ea661febbef097e81011e8a8094aa2b1ebf9c61319bf1dc4c18ae4c648",
+    "js/document-studio-v2/verification.mjs": "5c5f05b89c6beea9bb52adedf32360859b73260911d893738f11988aa2beba21",
+    "js/nh7-platform-wave7.js": "053d4d2ee29202d82c25e250fd3116dab2a1f9bc51a65dd3f4b73b51a4c8445c"
+  },
+  "limitations": [
+    "Window/document/visualViewport listeners and ResizeObserver target counts are instrumentation, not formal heap/RSS or GC proof",
+    "Browser viewport transitions are not physical Fold posture acceptance",
+    "Existing legitimate per-route/account/product requests remain counted; no assertion that all interactions use zero network",
+    "No physical CPU/battery/thermal/native background claim"
+  ],
+  "exact_head_inherited": {
+    "wave65": {
+      "measured_head": null,
+      "runner_head": "4258d2e197e92827a52535e1ee0e959e9d8ac6bb",
+      "head_binding": "Original Wave65 schema has no head field; generated by preceding sequential step in same exact-head CI job",
+      "artifact_sha256": "2ba2c6a83b1fdf9dca8a4ff16abc0f5a83126a21df74b3ac7e788b6240b785c3",
+      "current": {
+        "base": "http://127.0.0.1:8878",
+        "steps": [
+          {
+            "name": "startup",
+            "wall_ms": 8929,
+            "remote_requests": 18
+          },
+          {
+            "name": "visible_idle_60s",
+            "wall_ms": 60003,
+            "remote_requests": 0,
+            "request_names": []
+          },
+          {
+            "name": "hidden_idle_60s",
+            "wall_ms": 60006,
+            "remote_requests": 0,
+            "request_names": []
+          },
+          {
+            "name": "registration_form_idle_10s",
+            "wall_ms": 10000,
+            "remote_requests": 0,
+            "request_names": []
+          },
+          {
+            "name": "invalid_phone_submit",
+            "wall_ms": 151,
+            "remote_requests": 0,
+            "request_names": []
+          },
+          {
+            "name": "phone_typing_20_events",
+            "wall_ms": 111,
+            "remote_requests": 0,
+            "request_names": []
+          },
+          {
+            "name": "valid_authenticated_submit",
+            "wall_ms": 514,
+            "remote_requests": 1,
+            "request_names": [],
+            "registration_submit_requests": 1
+          },
+          {
+            "name": "captcha_disabled",
+            "wall_ms": 165,
+            "remote_requests": 0,
+            "request_names": []
+          },
+          {
+            "name": "admin_account_list_idle_10s",
+            "wall_ms": 10001,
+            "remote_requests": 0
+          }
+        ]
+      }
+    },
+    "wave66": {
+      "measured_head": "4258d2e197e92827a52535e1ee0e959e9d8ac6bb",
+      "runner_head": "4258d2e197e92827a52535e1ee0e959e9d8ac6bb",
+      "head_binding": "Artifact internal measured_head equals current job head",
+      "artifact_sha256": "001871e549b48395ad220ad48f83ff2bc1d982f2d2264718d637b28182cf4a52",
+      "current": {
+        "base": "http://127.0.0.1:8878",
+        "steps": [
+          {
+            "name": "startup",
+            "wall_ms": 7305,
+            "remote_requests": 18
+          },
+          {
+            "name": "visible_idle_60s",
+            "wall_ms": 60004,
+            "remote_requests": 0,
+            "request_names": []
+          },
+          {
+            "name": "hidden_idle_60s",
+            "wall_ms": 60006,
+            "remote_requests": 0,
+            "request_names": []
+          },
+          {
+            "name": "registration_form_idle_10s",
+            "wall_ms": 10020,
+            "remote_requests": 0,
+            "request_names": []
+          },
+          {
+            "name": "invalid_phone_submit",
+            "wall_ms": 182,
+            "remote_requests": 0,
+            "request_names": []
+          },
+          {
+            "name": "phone_typing_20_events",
+            "wall_ms": 163,
+            "remote_requests": 0,
+            "request_names": []
+          },
+          {
+            "name": "valid_authenticated_submit",
+            "wall_ms": 529,
+            "remote_requests": 1,
+            "request_names": [],
+            "registration_submit_requests": 1
+          },
+          {
+            "name": "captcha_disabled",
+            "wall_ms": 108,
+            "remote_requests": 0,
+            "request_names": []
+          },
+          {
+            "name": "admin_account_list_idle_10s",
+            "wall_ms": 10002,
+            "remote_requests": 0
+          }
+        ]
+      }
+    },
+    "wave7": {
+      "measured_head": "4258d2e197e92827a52535e1ee0e959e9d8ac6bb",
+      "runner_head": "4258d2e197e92827a52535e1ee0e959e9d8ac6bb",
+      "head_binding": "Artifact internal measured_head equals current job head",
+      "artifact_sha256": "a9a30412c60f607ac63ae45a131ab951d4147980b616c1a86e8580cb121aea17",
+      "current": {
+        "base": "http://127.0.0.1:8988",
+        "steps": [
+          {
+            "name": "signed_in_startup",
+            "wall_ms": 11158,
+            "remote_requests": 18,
+            "request_names": [
+              "css2",
+              "css2",
+              "css2",
+              "css2",
+              "OneSignalSDK.page.js",
+              "mammoth.browser.min.js",
+              "nh7_account_notes",
+              "nh7_account_progress",
+              "nh7_account_saved_verses",
+              "nh7_account_verse_marks_v230",
+              "nh7_get_my_school_snapshot_v2110",
+              "nh7_inbox_snapshot_v419",
+              "nh7_admin_my_access_v350",
+              "nh7_library_catalog_v396",
+              "user_progress",
+              "nh7_account_progress",
+              "nh7_account_progress",
+              "nh7_account_progress"
+            ],
+            "global_listener_registrations": 312
+          },
+          {
+            "name": "visible_idle_60s",
+            "wall_ms": 60041,
+            "remote_requests": 0,
+            "request_names": [],
+            "global_listener_delta": 0,
+            "platform_frames": 0,
+            "resize_observer_callbacks": 0
+          },
+          {
+            "name": "simulated_hidden_idle_60s",
+            "wall_ms": 60045,
+            "remote_requests": 0,
+            "request_names": [],
+            "global_listener_delta": 0,
+            "platform_frames": 0,
+            "resize_observer_callbacks": 0
+          },
+          {
+            "name": "narrow_wide_narrow",
+            "wall_ms": 590,
+            "remote_requests": 0,
+            "request_names": [],
+            "global_listener_delta": 0,
+            "platform_frames": 6,
+            "resize_observer_callbacks": 3
+          },
+          {
+            "name": "40_viewport_orientation_changes",
+            "wall_ms": 3153,
+            "remote_requests": 0,
+            "request_names": [],
+            "global_listener_delta": 0,
+            "platform_frames": 78,
+            "resize_observer_callbacks": 40
+          },
+          {
+            "name": "settled_after_resize_2s",
+            "wall_ms": 2011,
+            "remote_requests": 0,
+            "request_names": [],
+            "global_listener_delta": 0,
+            "platform_frames": 0,
+            "resize_observer_callbacks": 0
+          },
+          {
+            "name": "warm_exact_verse_handoff",
+            "wall_ms": 921,
+            "remote_requests": 0,
+            "request_names": [],
+            "global_listener_delta": 0,
+            "platform_frames": 1,
+            "resize_observer_callbacks": 0
+          },
+          {
+            "name": "mini_player_route_navigation",
+            "wall_ms": 739,
+            "remote_requests": 1,
+            "request_names": [
+              "notification_schedules"
+            ],
+            "global_listener_delta": 0,
+            "platform_frames": 2,
+            "resize_observer_callbacks": 0
+          },
+          {
+            "name": "account_switch",
+            "wall_ms": 1521,
+            "remote_requests": 1,
+            "request_names": [
+              "nh7_admin_my_access_v350"
+            ],
+            "global_listener_delta": 0,
+            "platform_frames": 0,
+            "resize_observer_callbacks": 0
+          }
+        ],
+        "final_platform_metrics": {
+          "frames": 95,
+          "observations": 47,
+          "started": true
+        }
+      }
+    },
+    "wave75": {
+      "measured_head": "4258d2e197e92827a52535e1ee0e959e9d8ac6bb",
+      "runner_head": "4258d2e197e92827a52535e1ee0e959e9d8ac6bb",
+      "head_binding": "Artifact internal measured_head equals current job head",
+      "artifact_sha256": "91d5b6ce784b83faa85ff342e1d483856657315fcf7b38aabb56149d73a006e6",
+      "current": {
+        "base": "http://127.0.0.1:8988",
+        "steps": [
+          {
+            "name": "startup",
+            "wall_ms": 14313,
+            "requests": 18,
+            "request_names": [
+              "css2",
+              "css2",
+              "css2",
+              "css2",
+              "OneSignalSDK.page.js",
+              "mammoth.browser.min.js",
+              "nh7_account_notes",
+              "nh7_account_progress",
+              "nh7_account_saved_verses",
+              "nh7_account_verse_marks_v230",
+              "nh7_get_my_school_snapshot_v2110",
+              "nh7_inbox_snapshot_v419",
+              "nh7_admin_my_access_v350",
+              "nh7_library_catalog_v396",
+              "user_progress",
+              "nh7_account_progress",
+              "nh7_account_progress",
+              "nh7_account_progress"
+            ]
+          },
+          {
+            "name": "visible_idle_60s",
+            "wall_ms": 60001,
+            "requests": 0,
+            "request_names": [],
+            "analytics_requests": 0
+          },
+          {
+            "name": "simulated_hidden_idle_60s",
+            "wall_ms": 61887,
+            "requests": 0,
+            "request_names": [],
+            "analytics_requests": 0
+          },
+          {
+            "name": "audio_start",
+            "wall_ms": 4338,
+            "requests": 5,
+            "request_names": [
+              "nh7-school-media-access",
+              "user_progress",
+              "nh7_account_progress",
+              "nh7_account_progress",
+              "nh7_account_progress"
+            ],
+            "analytics_requests": 0
+          },
+          {
+            "name": "audio_playback_60s",
+            "wall_ms": 60214,
+            "requests": 4,
+            "request_names": [
+              "user_progress",
+              "nh7_account_progress",
+              "nh7_account_progress",
+              "nh7_account_progress"
+            ],
+            "analytics_requests": 0
+          },
+          {
+            "name": "pause_resume_burst",
+            "wall_ms": 1025,
+            "requests": 4,
+            "request_names": [
+              "user_progress",
+              "nh7_account_progress",
+              "nh7_account_progress",
+              "nh7_account_progress"
+            ],
+            "analytics_requests": 0
+          },
+          {
+            "name": "route_change",
+            "wall_ms": 687,
+            "requests": 1,
+            "request_names": [
+              "notification_schedules"
+            ],
+            "analytics_requests": 0
+          },
+          {
+            "name": "account_switch",
+            "wall_ms": 1516,
+            "requests": 1,
+            "request_names": [
+              "nh7_admin_my_access_v350"
+            ],
+            "analytics_requests": 0
+          },
+          {
+            "name": "logout",
+            "wall_ms": 513,
+            "requests": 0,
+            "request_names": [],
+            "analytics_requests": 0
+          }
+        ],
+        "local_resume_time_before_switch": 60,
+        "account_switch_and_logout_fenced": true,
+        "retired_telemetry_requests": 0
+      },
+      "admin": {
+        "baseline": {
+          "base": "http://127.0.0.1:8989",
+          "startup_requests": 48,
+          "idle_wall_ms": 60008,
+          "idle_requests": 0,
+          "request_names": [
+            "/rest/v1/rpc/nh7_admin_my_access_v350",
+            "/rest/v1/rpc/nh7_admin_registration_feed_v3",
+            "/rest/v1/rpc/nh7_admin_student_identity_directory_v128",
+            "/rest/v1/qa_questions",
+            "/rest/v1/meeting_settings",
+            "/functions/v1/nh7-admin-ai-v490",
+            "/rest/v1/rpc/nh7_admin_school_assignments_feed_v237",
+            "/functions/v1/nh7-send-email",
+            "/rest/v1/notification_inbox",
+            "/rest/v1/sermon_categories",
+            "/rest/v1/sermons",
+            "/rest/v1/notification_schedules",
+            "/rest/v1/daily_content",
+            "/rest/v1/school_lessons",
+            "/rest/v1/school_courses",
+            "/rest/v1/school_exams",
+            "/rest/v1/school_progress",
+            "/rest/v1/school_exam_attempts",
+            "/rest/v1/rpc/nh7_admin_school_assignments_feed",
+            "/rest/v1/school_certificates",
+            "/rest/v1/rpc/nh7_admin_auth_user_count",
+            "/auth/v1/token",
+            "/rest/v1/rpc/nh7_owner_testimony_feed_v502",
+            "/rest/v1/audio_bible_books_v220",
+            "/rest/v1/audio_bible_chapters_v220",
+            "/rest/v1/document_templates_v220",
+            "/rest/v1/rpc/nh7_owner_testimony_feed_v502",
+            "/rest/v1/rpc/nh7_admin_school_assignments_feed_v237",
+            "/rest/v1/rpc/nh7_owner_prayer_feed_v502",
+            "/auth/v1/token",
+            "/rest/v1/rpc/nh7_admin_registration_feed_v3",
+            "/rest/v1/rpc/nh7_admin_student_identity_directory_v128",
+            "/rest/v1/qa_questions",
+            "/rest/v1/meeting_settings",
+            "/rest/v1/rpc/nh7_admin_school_assignments_feed",
+            "/rest/v1/rpc/nh7_admin_auth_user_count",
+            "/rest/v1/notification_inbox",
+            "/rest/v1/sermon_categories",
+            "/rest/v1/sermons",
+            "/rest/v1/notification_schedules",
+            "/rest/v1/daily_content",
+            "/rest/v1/school_lessons",
+            "/rest/v1/school_courses",
+            "/rest/v1/school_exams",
+            "/rest/v1/school_progress",
+            "/rest/v1/school_exam_attempts",
+            "/rest/v1/school_certificates",
+            "/rest/v1/rpc/nh7_admin_school_assignments_feed_v237"
+          ]
+        },
+        "current": {
+          "base": "http://127.0.0.1:8988",
+          "startup_requests": 48,
+          "idle_wall_ms": 60002,
+          "idle_requests": 0,
+          "request_names": [
+            "/rest/v1/rpc/nh7_admin_my_access_v350",
+            "/rest/v1/rpc/nh7_admin_registration_feed_v3",
+            "/rest/v1/rpc/nh7_admin_student_identity_directory_v128",
+            "/rest/v1/qa_questions",
+            "/rest/v1/meeting_settings",
+            "/functions/v1/nh7-admin-ai-v490",
+            "/rest/v1/rpc/nh7_admin_school_assignments_feed_v237",
+            "/functions/v1/nh7-send-email",
+            "/rest/v1/rpc/nh7_admin_school_assignments_feed",
+            "/rest/v1/rpc/nh7_admin_auth_user_count",
+            "/rest/v1/notification_inbox",
+            "/rest/v1/sermon_categories",
+            "/rest/v1/sermons",
+            "/rest/v1/notification_schedules",
+            "/rest/v1/daily_content",
+            "/rest/v1/school_lessons",
+            "/rest/v1/school_courses",
+            "/rest/v1/school_exams",
+            "/rest/v1/school_progress",
+            "/rest/v1/school_exam_attempts",
+            "/rest/v1/school_certificates",
+            "/rest/v1/rpc/nh7_owner_testimony_feed_v502",
+            "/auth/v1/token",
+            "/rest/v1/audio_bible_books_v220",
+            "/rest/v1/audio_bible_chapters_v220",
+            "/rest/v1/document_templates_v220",
+            "/rest/v1/rpc/nh7_owner_testimony_feed_v502",
+            "/rest/v1/rpc/nh7_owner_prayer_feed_v502",
+            "/rest/v1/rpc/nh7_admin_school_assignments_feed_v237",
+            "/auth/v1/token",
+            "/rest/v1/rpc/nh7_admin_registration_feed_v3",
+            "/rest/v1/rpc/nh7_admin_student_identity_directory_v128",
+            "/rest/v1/qa_questions",
+            "/rest/v1/meeting_settings",
+            "/rest/v1/notification_inbox",
+            "/rest/v1/sermon_categories",
+            "/rest/v1/sermons",
+            "/rest/v1/notification_schedules",
+            "/rest/v1/daily_content",
+            "/rest/v1/rpc/nh7_admin_school_assignments_feed",
+            "/rest/v1/school_lessons",
+            "/rest/v1/school_courses",
+            "/rest/v1/school_exams",
+            "/rest/v1/school_progress",
+            "/rest/v1/rpc/nh7_admin_auth_user_count",
+            "/rest/v1/school_exam_attempts",
+            "/rest/v1/school_certificates",
+            "/rest/v1/rpc/nh7_admin_school_assignments_feed_v237"
+          ]
+        }
+      },
+      "documents": {
+        "baseline": {
+          "base": "http://127.0.0.1:8989",
+          "startup_requests": 5,
+          "idle": {
+            "wall_ms": 60000,
+            "requests": 0
+          },
+          "preview": {
+            "wall_ms": 569,
+            "requests": 1,
+            "canonical_page": true
+          },
+          "pdf": {
+            "wall_ms": 588,
+            "requests": 0,
+            "bytes": 246896,
+            "mime_signature": "%PDF-"
+          },
+          "print": {
+            "wall_ms": 885,
+            "requests": 1,
+            "top_level_page": true,
+            "controls": 4
+          },
+          "request_names": [
+            "nh7_admin_my_access_v350",
+            "nh7_document_capabilities_v2",
+            "nh7_document_admin_list_v2",
+            "nh7_document_recipients_v2",
+            "nh7_document_templates_v2",
+            "nh7_admin_my_access_v350",
+            "nh7_admin_my_access_v350"
+          ]
+        },
+        "current": {
+          "base": "http://127.0.0.1:8988",
+          "startup_requests": 5,
+          "idle": {
+            "wall_ms": 60020,
+            "requests": 0
+          },
+          "preview": {
+            "wall_ms": 625,
+            "requests": 1,
+            "canonical_page": true
+          },
+          "pdf": {
+            "wall_ms": 620,
+            "requests": 0,
+            "bytes": 246896,
+            "mime_signature": "%PDF-"
+          },
+          "print": {
+            "wall_ms": 796,
+            "requests": 1,
+            "top_level_page": true,
+            "controls": 4
+          },
+          "request_names": [
+            "nh7_admin_my_access_v350",
+            "nh7_document_capabilities_v2",
+            "nh7_document_admin_list_v2",
+            "nh7_document_recipient_search_v2",
+            "nh7_document_templates_v2",
+            "nh7_admin_my_access_v350",
+            "nh7_admin_my_access_v350"
+          ]
+        }
+      }
+    }
+  },
+  "provenance": {
+    "schema_version": 1,
+    "test_head": "4258d2e197e92827a52535e1ee0e959e9d8ac6bb",
+    "status": "PASS_AUTOMATED",
+    "os": "Linux",
+    "architecture": "x86_64",
+    "artifact_kind": "exact-Git-QA-source-export-not-installable-native-build",
+    "source_mode": "qa-only",
+    "platform": "web",
+    "version": "wave8-integration-qa",
+    "build": "4258d2e197e9",
+    "exported_file_count": 966,
+    "verified_shared_file_count": 442,
+    "sorted_payload_sha256_map_digest": "ff851fcaca40f0f550cb1b0e2a5ad68b57f37a2ea582187e2e43b3895ecf1ffd",
+    "native_builds": 0,
+    "simulator_runs": 0,
+    "physical_runs": 0,
+    "signed_artifacts": 0,
+    "store_uploads": 0,
+    "tools_available": {
+      "node": true,
+      "python3": true,
+      "chromium": true,
+      "pdfinfo": true,
+      "pdftoppm": true,
+      "java": true,
+      "gradle": false,
+      "adb": false,
+      "emulator": false,
+      "xcodebuild": false,
+      "xcrun": false,
+      "swift": false,
+      "xcodegen": false,
+      "safaridriver": false,
+      "security": false
+    },
+    "binding_presence_only": {
+      "ANDROID_HOME": false,
+      "ANDROID_SDK_ROOT": false,
+      "JAVA_HOME": false,
+      "DEVELOPER_DIR": false
+    },
+    "visible_usb_interface": false,
+    "wrapper_source_sha256": {
+      "watchos/.gitignore": "079188dc4a171830067a53acc90d3af84f51fc8bb6caee96f3aa235a3748cba3",
+      "watchos/NewHope7Watch/Audio.swift": "6c740917a76c14ad9ad6e16e8b2b5231f27b27cb0e18a303d112cf7cc04388b2",
+      "watchos/NewHope7Watch/Bible.swift": "0ab8e73036b7e9efc46b72d74e26470f77af0e915ba12215629468e9630603d5",
+      "watchos/NewHope7Watch/Info.plist": "b3b4c2b0736b1d30f6efce4888cacc35c3a8372b472f1c34d6e2fcdfee388193",
+      "watchos/NewHope7Watch/NewHope7WatchApp.swift": "2ce215e65989895955a0fc03d1721fcf761282bdd64eed8d52aa252c49a4ec7e",
+      "watchos/README.md": "139378d29f90793db7d8265cedb009cdf89b245c5ffe09a0749e20bdc1b0a31d",
+      "watchos/project.yml": "0173410bb6dad0d7731eea6f48f20a538b97282701acba5e0880419fb732f45f"
+    },
+    "ios_android_macos_wrapper_status": "BLOCKED_TOOLCHAIN",
+    "watch_compile_status": "BLOCKED_TOOLCHAIN",
+    "physical_devices": "PHYSICAL_QA_REQUIRED",
+    "provider_delivery": "PROVIDER_EVIDENCE_REQUIRED",
+    "negatives": [
+      "modified shared file rejected",
+      "missing active dependency rejected",
+      "develop cannot masquerade as approved Production source"
+    ],
+    "limitations": [
+      "No current iOS/Android/macOS wrapper available; preserve exact owner project/locks/plugins/entitlements before any later approved build",
+      "Linux Chromium is not Safari/WKWebView/Android/Fold or installed native evidence",
+      "Watch resource generation is not Swift compilation, companion embedding, installation or pairing",
+      "No signing or native project reconstruction performed"
+    ]
+  },
+  "output": {
+    "test_head": "4258d2e197e92827a52535e1ee0e959e9d8ac6bb",
+    "status": "PASS_AUTOMATED",
+    "artifact_kind": "synthetic-current-renderer-PDF-not-real-issued-document",
+    "cases": [
+      {
+        "language": "fa",
+        "orientation": "portrait",
+        "status": "PASS_AUTOMATED",
+        "pdf_bytes": 270087,
+        "pdf_sha256": "a079d23c6d7723e0544ee44a8aa735d80ecef0c53723addf463003f5edd72110",
+        "page_mm": {
+          "width": 210,
+          "height": 297
+        },
+        "raster_pixels": {
+          "width": 1241,
+          "height": 1754
+        },
+        "visible_image_canvases": 5,
+        "qr_decoded_from_actual_pdf": true,
+        "qr_bounds_inside_page": true,
+        "dir": "rtl",
+        "reopened_from_disk": true
+      },
+      {
+        "language": "fa",
+        "orientation": "landscape",
+        "status": "PASS_AUTOMATED",
+        "pdf_bytes": 267993,
+        "pdf_sha256": "a8972f6db1e5fee0c0db69fb167b03f4a29bb0fbcaac7325aaeeb4d1811af8b1",
+        "page_mm": {
+          "width": 297,
+          "height": 210
+        },
+        "raster_pixels": {
+          "width": 1754,
+          "height": 1241
+        },
+        "visible_image_canvases": 5,
+        "qr_decoded_from_actual_pdf": true,
+        "qr_bounds_inside_page": true,
+        "dir": "rtl",
+        "reopened_from_disk": true
+      },
+      {
+        "language": "en",
+        "orientation": "portrait",
+        "status": "PASS_AUTOMATED",
+        "pdf_bytes": 323805,
+        "pdf_sha256": "172307d9ce2921ba64a69d96611f7260a6839cf6ddf810ed8d10b51fe402cfe8",
+        "page_mm": {
+          "width": 210,
+          "height": 297
+        },
+        "raster_pixels": {
+          "width": 1241,
+          "height": 1754
+        },
+        "visible_image_canvases": 5,
+        "qr_decoded_from_actual_pdf": true,
+        "qr_bounds_inside_page": true,
+        "dir": "ltr",
+        "reopened_from_disk": true
+      },
+      {
+        "language": "en",
+        "orientation": "landscape",
+        "status": "PASS_AUTOMATED",
+        "pdf_bytes": 327509,
+        "pdf_sha256": "e5eedbb9d193beb9bcae66bb13d0c9f6148e6b4aab6a2c47cf99c9cd87810f37",
+        "page_mm": {
+          "width": 297,
+          "height": 210
+        },
+        "raster_pixels": {
+          "width": 1754,
+          "height": 1241
+        },
+        "visible_image_canvases": 5,
+        "qr_decoded_from_actual_pdf": true,
+        "qr_bounds_inside_page": true,
+        "dir": "ltr",
+        "reopened_from_disk": true
+      },
+      {
+        "language": "hr",
+        "orientation": "portrait",
+        "status": "PASS_AUTOMATED",
+        "pdf_bytes": 306096,
+        "pdf_sha256": "7c4c34bfaaecf84859981507950a073f704e171a3a8b36095cd4cdf722ee4afe",
+        "page_mm": {
+          "width": 210,
+          "height": 297
+        },
+        "raster_pixels": {
+          "width": 1241,
+          "height": 1754
+        },
+        "visible_image_canvases": 5,
+        "qr_decoded_from_actual_pdf": true,
+        "qr_bounds_inside_page": true,
+        "dir": "ltr",
+        "reopened_from_disk": true
+      },
+      {
+        "language": "hr",
+        "orientation": "landscape",
+        "status": "PASS_AUTOMATED",
+        "pdf_bytes": 310158,
+        "pdf_sha256": "fa1e80cb05b3b7bf0b5f19768cb782bc120e588e1ae7eedf435f61d6dca044fd",
+        "page_mm": {
+          "width": 297,
+          "height": 210
+        },
+        "raster_pixels": {
+          "width": 1754,
+          "height": 1241
+        },
+        "visible_image_canvases": 5,
+        "qr_decoded_from_actual_pdf": true,
+        "qr_bounds_inside_page": true,
+        "dir": "ltr",
+        "reopened_from_disk": true
+      }
+    ],
+    "quota_failure_preserves_previous_draft_and_unsaved_edit": true,
+    "quota_retry_recovers_without_clearing": true,
+    "physical_passes": 0,
+    "physical_status": "PHYSICAL_QA_REQUIRED",
+    "limitations": [
+      "Chromium raster/Poppler/QR decoder do not prove Safari/WKWebView/Android/Print/Share/Save-to-Files or a physical camera scan",
+      "All images/names/numbers/verification tokens are synthetic fixture values; no Production issuance",
+      "Actual subjective typography/accessibility/page output and wrappers remain owner physical QA"
+    ]
+  },
+  "upgrade": {
+    "test_head": "4258d2e197e92827a52535e1ee0e959e9d8ac6bb",
+    "status": "PASS_AUTOMATED",
+    "synthetic_only": true,
+    "real_browser_process_sigkill_and_relaunch": true,
+    "legacy_profile_prepared_with_normal_shutdown": true,
+    "immediate_last_write_crash_durability": "PHYSICAL_QA_REQUIRED",
+    "native_os_kill_status": "PHYSICAL_QA_REQUIRED",
+    "preserved_raw_legacy_keys": [
+      "nh7_note_wave8_unknown",
+      "nh7_note_wave8_numeric",
+      "nh7_bible_state_JHN_3_16",
+      "nh7_bookmarks",
+      "nh7_audio_favorites_v500",
+      "nh7_spiritual_plans_v240:00000000-0000-4000-8000-000000000061",
+      "nh7_fasting_journeys_v240:00000000-0000-4000-8000-000000000061",
+      "nh7_sermon_note_wave8-legacy",
+      "nh7_school_draft_v468:id%3A00000000-0000-4000-8000-000000000061:wave8-existing"
+    ],
+    "profile_photo_preserved": true,
+    "notes_plain_text_and_unknown_owner_quarantined": true,
+    "saved_verses_highlights_favorites_plan_fasting_school_draft_preserved": true,
+    "offline_existing_blob_played": true,
+    "temporary_indexeddb_failure_preserves_download_metadata_and_recovers": true,
+    "pending_intents_survive_process_termination": true,
+    "pending_before_termination": 6,
+    "resume_seconds": 38.5,
+    "repeated_online_events": 10,
+    "intercepted_remote_requests": 29,
+    "analytics_requests": 0,
+    "account_switch_and_logout_fenced": true,
+    "limitations": [
+      "All media events are synthetic; Blob selected by actual current engine, not a codec/physical speaker test",
+      "This is previously persisted legacy profile upgrade and real Chromium process recovery, not App Store/Google Play package upgrade or native OS-kill; immediate last-write disk durability is not guaranteed by localStorage",
+      "API mock acknowledgements are not a real Supabase reconciliation/durability claim; full semantic write/conflict coverage remains Wave2 tests",
+      "Quota pressure/IndexedDB failure simulation is not actual device storage eviction"
+    ]
+  },
+  "checked_in_capture": {
+    "kind": "local pre-commit worktree measurement",
+    "parent_head": "4258d2e197e92827a52535e1ee0e959e9d8ac6bb",
+    "runtime_binding": "source_sha256 records actual tested worktree; dirty parent SHA is not a clean candidate claim",
+    "exact_final_head_evidence": "Validate Develop generates all measurements again from clean checkout; use wave8-evidence-<successful head_sha>",
+    "local_export_limitation": "Local provenance exported exact audit HEAD before committing reconnect fix; it is explicitly not the dirty runtime payload or a native build. Final CI regenerates export from its exact clean head."
+  },
+  "migration_parity": {
+    "checkpoint": 42,
+    "exact": 42,
+    "missing": 0,
+    "pending": 1,
+    "pending_name": "20261012123000_audio_bible_public_catalog_read_v511.sql",
+    "applied": false
+  },
+  "diagnostic_limitations": {
+    "fresh_profile_sigkill_1_5s_latest_checkpoint": "FAIL exploratory stronger durability scenario; intermittent missing latest resume/language, cause unproven. Not counted as persisted-profile PASS; investigate with controlled storage/native traces.",
+    "http_baseline_recovery": "Initial local Wave7 baseline server returned ERR_EMPTY_RESPONSE; fresh identical archived baseline on redirected server passed unchanged assertions. Final CI servers already redirect logs.",
+    "timeout_probe": "18s probe showed existing pending timers not drained; actual existing60s timer window retained.62s real settled observation returns pending counts28\u21923 with zero requests; no production timer was changed."
+  }
+}

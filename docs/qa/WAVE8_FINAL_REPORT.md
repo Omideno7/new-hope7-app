@@ -1,0 +1,68 @@
+# Wave 8 integration final report
+
+2026-10-16. **PASS_PHYSICAL=0; PASS_SIMULATOR=0.** Available source/fixture/browser integration is PASS_AUTOMATED, subject to exact final-head Validate Develop success recorded in delivery. Physical acceptance remains PHYSICAL_QA_REQUIRED. This is not release approval, Final Release Readiness or a claim that the current Store apps changed.
+
+## Provenance and scope
+
+Starting fetched develop: `ffa2cc97a7c225d3d97a5ff4e57e620360440e04`; accepted inherited runtime `6c41958b7027f4da51f9f96f755a52aaa4ba3cb5`. Pre-implementation audit committed before runtime changes: `4258d2e197e92827a52535e1ee0e959e9d8ac6bb`. Main remains `15af811f78a17a0881c13171311e7ade6bc390f4`. Final implementation/follow-up SHA, full diff totals and exact successful CI URL/head_sha are recorded in delivery and Git/Actions rather than a self-referential commit. CI artifact `wave8-evidence-<head_sha>` contains exact-Git QA export per-file hashes, Watch resource hashes, six real PDFs/rasters and same-head integration measurements. No installable native binary exists here.
+
+Only runtime fix: overlapping online events now share one current-actor reconnect flight with token/epoch/account/route fencing. Actual original callback reproduces ten School snapshot reads; current callback one (browser15→6 total requests). A later reconnect still refreshes. No School progression/restore/storage schema or audio change. The existing executable worker cache suffix rotates; stable data cache remains identical. All other runtime/backend/review/Watch sources are frozen by an independent exact reversible-patch/hash guard. Earlier safety adapters reconstruct the exact prior accepted bytes, preserving earlier assertions; no old gate was deleted or expected security result relaxed.
+
+## Platform acceptance
+
+| Target | Status and exact limitation |
+| --- | --- |
+| iPhone/iOS | PHYSICAL_QA_REQUIRED / BLOCKED_TOOLCHAIN: no current wrapper, Xcode, device, safe-area/keyboard/background/output evidence. |
+| iPad | PHYSICAL_QA_REQUIRED / BLOCKED_TOOLCHAIN: split-view, rotation, Home avatar and native print unproven. |
+| Android phone | PHYSICAL_QA_REQUIRED / BLOCKED_TOOLCHAIN: SDK/adb/current wrapper/install/system Back/media unproven. |
+| Android tablet | PHYSICAL_QA_REQUIRED / BLOCKED_TOOLCHAIN: physical layout, multitasking, keyboard and file sheets unproven. |
+| Samsung Fold | PHYSICAL_QA_REQUIRED / BLOCKED_TOOLCHAIN: no device/posture/hinge/continuity acceptance; browser resizing is insufficient. |
+| macOS/Safari/PWA | PHYSICAL_QA_REQUIRED / BLOCKED_TOOLCHAIN: Linux Chromium does not prove Safari, installed Mac PWA/update or Print/Share. |
+| Apple Watch/watchOS | PHYSICAL_QA_REQUIRED / BLOCKED_TOOLCHAIN: safe public Bible/resources/source pass; no Swift/SDK compile, current companion embedding, pairing, Crown/VoiceOver/kill evidence. Audio remains intentionally unavailable. |
+
+All actual device models/OS/installed candidate SHA remain UNKNOWN. No simulator result is fabricated. Existing historical projects remain reference-only. Exact owner cases/provenance fields are in `WAVE8_DEVICE_TEST_MATRIX.md`.
+
+## Product integration matrix
+
+| Area | Available automated evidence / outstanding acceptance |
+| --- | --- |
+| Admin | PASS_AUTOMATED owner/delegated section grants, normal/anonymous/direct URL denial, current server authority and stale A→B/logout fences. Existing350 authority unchanged. |
+| Documents | PASS_AUTOMATED create/edit/reopen/asset hydration, validation/prepare/explicit Confirm, cancel, strict issue receipt, retry identity/duplicate prevention, immutable revisions/revoke/expire, account archive and minimum public proof fixtures. SOURCE fixtures are not Production issuance. |
+| PDF/QR/Print/Share | PASS_AUTOMATED six real FA/EN/HR A4portrait/landscape PDFs reopened/rasterized; actual embedded QR decode/token privacy/bounds; five image layers, overflow and quota retry. Existing720renderer combinations and legacy/School/report PDF/CSV/Print/fallback gates retained. Native sheets/paper/camera/font/accessibility acceptance PHYSICAL_QA_REQUIRED. |
+| My Documents | PASS_AUTOMATED wrong UID denied, A→B/logout/stale receipt fenced; authoritative archive backend still BLOCKED_ACTIVATION. |
+| Profile / Notes / Search | PASS_AUTOMATED current v563/v564 photo/header persistence/fencing, old literal/code/numeric note recovery/quarantine, FA RTL and EN/HR LTR, current exact Bible/audio/Notes/saved destinations. No old backend or account data rewrite. |
+| Bible / Calendar / deep links | PASS_AUTOMATED exact verse/Share/deep-link/Calendar transition, Back/history/router/resume fixtures. Native universal link/system Back/launch PHYSICAL_QA_REQUIRED. |
+| Library | PASS_AUTOMATED current grant/UID catalog/reader boundary, public verified reader caching/offline UI, collections refresh preservation; Ministers online-only, revoked/anonymous/normal/A→B negative coverage. Source assurance is not a new live RLS/security activation. |
+| School | PASS_AUTOMATED existing registration/assignment/exam identity, scoring, progress/read rules, certificates and full group/individual reports/PDF/CSV/Print/fallback. New reconnect coalescing changes redundant reads only. No student data writes performed. |
+| Inbox / notifications | PASS_AUTOMATED timestamps, read/badge, preferred FA/EN/HR, contracts/idempotency/deep-link/account fences. Real APNs/FCM/OneSignal/closed-app delivery PROVIDER_EVIDENCE_REQUIRED; no send or provider activation. |
+| Audio / offline | PASS_AUTOMATED unchanged engine/local resume/progress/account fence, offline Blob selection/IDB recovery, media control fixtures; actual codec/background/lock/Bluetooth/focus/kill PHYSICAL_QA_REQUIRED. Analytics remains REJECTED_COST. |
+| FA/EN/HR / RTL/LTR | PASS_AUTOMATED existing localization/geometry/route/Notes/document matrices; physical glyphs/readability/fonts/screen-reader reading order PHYSICAL_QA_REQUIRED. |
+| Accessibility | PASS_AUTOMATED existing focus/dialog/Escape/keyboard/input/contrast/source/responsive gates; actual VoiceOver/TalkBack/Watch Crown/large type/reduced motion/device focus PHYSICAL_QA_REQUIRED. |
+
+## Reliability, measurements and residual failure
+
+`WAVE8_UPGRADE_OFFLINE_REPORT.md` records exact raw legacy Notes/verses/highlights/Plans/fasting/School draft/favorites/photo preservation across actual SIGKILL/relaunch of an already persisted synthetic Chromium profile. Queued local intents and38.5second resume survive; temporary IndexedDB unavailability preserves download metadata and recovers; quota failure preserves old draft/current unsaved edits and unlocks retry. Account A→B/logout cannot reuse private Notes/photo/Library. This is not encryption or live backend reconciliation proof.
+
+Immediate latest-write durability is **not closed**. An exploratory fresh-profile SIGKILL1.5seconds after mocked playback sometimes lost the latest resume/language state. A plain-storage control passed, so its cause is unproven; no persistence change or fabricated PASS. The committed recovery gate explicitly starts from an already persisted legacy profile, not that stronger scenario. Reproduce with native/browser storage traces before claiming last-write OS-kill acceptance. No real data cleared. OS/package-upgrade/eviction tests remain PHYSICAL_QA_REQUIRED.
+
+Real wall-clock60second visible and simulated-hidden windows, Admin/editor idle, output, audio interval/pause-resume, routes/account switch are inherited from freshly rerun Wave6.5/6.6/7/7.5 exact-head gates. `measure-wave8.cjs` additionally checks40viewport transitions,20more route cycles after warmup, reconnect burst, settled timeout drain and logout. Listener/interval/observer target counts cannot be used as GC/heap/battery/thermal proof. Raw baseline/current metrics and actual runtime hashes are in `WAVE8_INTEGRATION_MEASUREMENTS.json`; final-head measurements are generated again in CI, never copied from historical runs. No recurring analytics timer/subscription/job/request exists.
+
+Audio analytics decision **REJECTED_COST** retained unchanged. Additional analytics backend reads=0, writes=0, persistent storage=0bytes, Edge/RPC/Storage/Realtime/jobs/providers=0. Existing required audio/route/account requests are measured, not mislabeled zero. No retired telemetry reactivated.
+
+Migration parity: **42/42 exact checkpoint hashes, zero checkpoint mismatches/missing, one pre-existing pending v511 migration unapplied**. This is not42/42zero-pending; no ordinary migration/review SQL/backend change in Wave8.
+
+## Exact remaining activation/provider/toolchain blockers
+
+Document gates A1/A2: fresh live exact authority/identity/School/object/ACL/constraint compatibility evidence. A3: exact pinned source human approval (source tests pass). A4: isolated real Supabase/PostgreSQL roles/RLS/two-session concurrency/atomic failure rehearsal. A5: physical output/native sheets/fonts/paper/camera and optional remote-asset ownership (inline/local core independent). A6: real-role non-destructive rollback rehearsal. A7: explicit later Production approval/window/artifact/operator. A8: later approved server enable plus matched client release. A9: separately approved controlled first real issue/archive/PDF/QR evidence. Each is BLOCKED_ACTIVATION where live/operator proof is absent. Wave75 rollback gate=false/exact mutation revokes preserves all issued immutable records/public proof/current-UID read paths; no rollback executed.
+
+A separate owner-approved **read-only Document Production Activation preflight** can be planned from this package; applying/enabling/issuing cannot proceed now. Audio analytics rejection does not block document work. Optional Library/AI remote publication is not a core issuance prerequisite.
+
+Other BLOCKED_ACTIVATION: Wave4 live producer/worker/registry/preferences/provider/role acceptance; Wave6.6 review security changes and specific missing live bodies/facts; strict registration old-Store adoption/email/Auth contract; Full Delete identity/Storage/write-fence/retention; DOB update contract; optional document remote asset/Library/AI configuration; pendingv511. These remain unchanged review packages, not certified live features.
+
+BLOCKED_TOOLCHAIN covers exact current owner native wrappers/locks/plugins/entitlements, Apple tools/Xcode/Swift/XcodeGen/simulator/Safari and Android SDK/Gradle/adb/emulator. No alternative historical wrapper reconstructed. PHYSICAL_QA_REQUIRED covers every seven-target row plus output, package upgrade/kill/immediate-write/eviction, safe areas/keyboard/rotation/split/Fold, audio background/route, real assistive tech and Watch pairing. PROVIDER_EVIDENCE_REQUIRED covers actual APNs/FCM/OneSignal binding, subscription/entitlements, closed-app delivery, taps and language/recipient proof; no real send occurred.
+
+## Safety and completion boundary
+
+No main change; no merge/branch/PR; no release/deploy; no Store/TestFlight upload or signing; no Production Supabase/Auth/RLS/ACL/function/view/data mutation; no migration application; no Wave6.6 security activation; no Document backend activation; no real document issuance; no strict registration/Full Delete activation; no Audio Analytics implementation; no paid/provider/CAPTCHA/SMS/KYC activation; no real-user data deletion/reset/backfill/cache clearing.
+
+All existing Wave1–7.5 automated stages are retained with new independent source/provenance/output/reconnect/upgrade/evidence/measurement gates. Final successful Validate Develop and head equality must be verified before delivery; no failing required check is waived. Physical/activation acceptance is explicitly incomplete. Stop after Wave8; do not merge develop to main or start Final Release Readiness.

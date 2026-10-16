@@ -1,0 +1,33 @@
+diff --git a/js/app.js b/js/app.js
+index 946bc629..bb1de724 100644
+--- a/js/app.js
++++ b/js/app.js
+@@ -2919 +2919,20 @@ window.addEventListener('nh7-personal-owner-wave2',()=>{if(state.route==='plans'
+-window.addEventListener('online',async()=>{$('.offline')?.remove();await syncCloudQueue().catch(console.warn);if(isAccountLoggedIn()){await restoreAccountCloudData(true).catch(console.warn);invalidateSchoolSnapshot(authEmail());await getSchoolSnapshot(authEmail(),true).catch(console.warn);if(state.route==='school')render('school',state.params,true)}});
++// One in-flight reconnect per exact account ticket; duplicate online events share existing work.
++let nh7ReconnectFlightWave8=null;
++function reconnectCurrentAccountWave8(){
++  const context=window.NH7UserContextWave6,actor=context?.identity();
++  if(!actor)return Promise.resolve();
++  if(nh7ReconnectFlightWave8&&context.current(nh7ReconnectFlightWave8.actor))return nh7ReconnectFlightWave8.promise;
++  const flight={actor,promise:null},current=()=>context.current(actor);
++  flight.promise=Promise.resolve().then(async()=>{
++    if(!current())return;
++    await syncCloudQueue().catch(console.warn);
++    if(!current()||!isAccountLoggedIn())return;
++    await restoreAccountCloudData(true).catch(console.warn);
++    if(!current())return;
++    const email=authEmail();invalidateSchoolSnapshot(email);
++    await getSchoolSnapshot(email,true).catch(console.warn);
++    if(current()&&state.route==='school')render('school',state.params,true);
++  }).finally(()=>{if(nh7ReconnectFlightWave8===flight)nh7ReconnectFlightWave8=null});
++  nh7ReconnectFlightWave8=flight;return flight.promise;
++}
++window.addEventListener('online',()=>{$('.offline')?.remove();reconnectCurrentAccountWave8().catch(console.warn)});
+diff --git a/sw-release-core-v403.js b/sw-release-core-v403.js
+index 1e3151ed..29e4a22c 100644
+--- a/sw-release-core-v403.js
++++ b/sw-release-core-v403.js
+@@ -6 +6 @@ const NH7_RELEASE_CORE_VERSION='5.7.1-user-writing-direction';
+-const NH7_RELEASE_CORE_CACHE='nh7-release-core-v571-wave4-notifications-wave5-documents-wave6-user-app-wave65-security-wave7-platform-wave75-documents';
++const NH7_RELEASE_CORE_CACHE='nh7-release-core-v571-wave4-notifications-wave5-documents-wave6-user-app-wave65-security-wave7-platform-wave75-documents-wave8-reconnect';

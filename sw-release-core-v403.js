@@ -3,7 +3,7 @@
 // Issue #115 UI refresh: recache localized assets with the existing cache/storage contract.
 
 const NH7_RELEASE_CORE_VERSION='5.7.1-user-writing-direction';
-const NH7_RELEASE_CORE_CACHE='nh7-release-core-v571-wave4-notifications-wave5-documents-wave6-user-app-wave65-security-wave7-platform-wave75-documents';
+const NH7_RELEASE_CORE_CACHE='nh7-release-core-v571-wave4-notifications-wave5-documents-wave6-user-app-wave65-security-wave7-platform-wave75-documents-wave8-reconnect';
 const NH7_RELEASE_DATA_CACHE='nh7-data-stable-v329';
 const NH7_RELEASE_ASSETS=[
   './js/document-studio-v2/issuance.mjs',

@@ -2916,7 +2916,26 @@ $('#backBtn').onclick=back;
 $$('.nav-item').forEach(b=>b.onclick=()=>{ state.stack=[]; navigate(b.dataset.route,{},true); });
 $('#amenButton').onclick=()=>$('#amenGate').classList.add('hidden');
 window.addEventListener('nh7-personal-owner-wave2',()=>{if(state.route==='plans')render('plans',{tab:'spiritual'},true);else if(['bible','audio','daily','school'].includes(state.route))render(state.route,state.params,true)});
-window.addEventListener('online',async()=>{$('.offline')?.remove();await syncCloudQueue().catch(console.warn);if(isAccountLoggedIn()){await restoreAccountCloudData(true).catch(console.warn);invalidateSchoolSnapshot(authEmail());await getSchoolSnapshot(authEmail(),true).catch(console.warn);if(state.route==='school')render('school',state.params,true)}});
+// One in-flight reconnect per exact account ticket; duplicate online events share existing work.
+let nh7ReconnectFlightWave8=null;
+function reconnectCurrentAccountWave8(){
+  const context=window.NH7UserContextWave6,actor=context?.identity();
+  if(!actor)return Promise.resolve();
+  if(nh7ReconnectFlightWave8&&context.current(nh7ReconnectFlightWave8.actor))return nh7ReconnectFlightWave8.promise;
+  const flight={actor,promise:null},current=()=>context.current(actor);
+  flight.promise=Promise.resolve().then(async()=>{
+    if(!current())return;
+    await syncCloudQueue().catch(console.warn);
+    if(!current()||!isAccountLoggedIn())return;
+    await restoreAccountCloudData(true).catch(console.warn);
+    if(!current())return;
+    const email=authEmail();invalidateSchoolSnapshot(email);
+    await getSchoolSnapshot(email,true).catch(console.warn);
+    if(current()&&state.route==='school')render('school',state.params,true);
+  }).finally(()=>{if(nh7ReconnectFlightWave8===flight)nh7ReconnectFlightWave8=null});
+  nh7ReconnectFlightWave8=flight;return flight.promise;
+}
+window.addEventListener('online',()=>{$('.offline')?.remove();reconnectCurrentAccountWave8().catch(console.warn)});
 window.addEventListener('offline',()=>{ if(!$('.offline')){ const d=document.createElement('div'); d.className='offline'; d.textContent=tr('offline'); document.body.appendChild(d);} });
 if('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js').catch(console.warn);
 try{const Native=nativeLocalNotifications();Native?.addListener?.('localNotificationActionPerformed',ev=>{const extra=ev?.notification?.extra||{};const intent=extra.nh7_intent||{version:4,route:extra.route||'home',params:{}};window.NH7NotificationIntentsWave4?.open(intent)});}catch(e){}
