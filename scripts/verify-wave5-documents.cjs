@@ -105,10 +105,8 @@ global.location = {
     assert.equal(issued.certificate_number, number);
     assert.equal(issued.recipient_user_id, A);
     assert.equal(issued.recipient_email, "alex@example.test");
-    assert.equal(
-      (await rpc("nh7_document_issue_v2", { p_id: d.id, p_revision: 0 })).id,
-      issued.id,
-    );
+    await assert.rejects(()=>rpc("nh7_document_issue_v2",{p_id:d.id,p_revision:0}),/Exact confirmed request/);
+    assert.equal((await rpc("nh7_document_issue_v2",payload)).id,issued.id);
     await assert.rejects(() =>
       rpc("nh7_document_save_draft_v2", { p_document: d, p_revision: 1 }),
     );
@@ -142,7 +140,7 @@ global.location = {
       ).status,
       "not_found",
     );
-    assert.equal((await rpc("nh7_my_documents_v2", {}, A)).documents.length, 0);
+    assert.equal((await rpc("nh7_my_documents_v2", {}, A)).documents.length, 1, "Issue atomically delivers to the canonical account recipient");
     await rpc("nh7_document_deliver_v2", { p_id: issued.id });
     await rpc("nh7_document_deliver_v2", { p_id: issued.id });
     assert.equal((await rpc("nh7_my_documents_v2", {}, A)).documents.length, 1);
@@ -213,10 +211,7 @@ global.location = {
       (await db.query("select * from school_certificates")).rows,
       baseline.rows,
     );
-    await db.query(
-      "update nh7_official_documents_v2 set expires_at=now()-interval '1 day' where id=$1",
-      [issued.id],
-    );
+    await assert.rejects(()=>rpc("nh7_document_expire_v2",{p_id:issued.id,p_expires_at:new Date(Date.now()-86400000).toISOString(),p_reason:"Already revoked"}),/Issued record required/);
     assert.equal(
       (
         await rpc(

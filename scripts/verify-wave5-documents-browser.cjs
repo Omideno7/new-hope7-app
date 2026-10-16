@@ -190,50 +190,18 @@ const out = fs.mkdtempSync(path.join(os.tmpdir(), "nh7-studio-v2-")),
     assert.equal(row.recipient_user_id, A);
     assert.equal(row.definition.contents.en.subtitle, "Latest confirmed draft");
     delaySave = 0;
-    // Public/Studio logical coordinates are identical; QR resolves to this exact public token.
-    console.log("QA public");
-    const publicPage = await context.newPage();
-    await publicPage.goto(
-      base + "/document-verify.html?token=" + row.public_token,
-    );
-    await publicPage.waitForSelector(".ds2-page");
-    await publicPage.waitForFunction(() =>
-      document
-        .querySelector("canvas[data-url]")
-        ?.getContext("2d")
-        .getImageData(0, 0, 768, 768)
-        .data.some((v) => v),
-    );
-    assert.deepEqual(
-      await publicPage
-        .locator("[data-logical]")
-        .evaluateAll((ns) => ns.map((n) => n.dataset.logical)),
-      d.elements
-        .filter((e) => e.visible)
-        .map((e) => JSON.stringify([e.x, e.y, e.width, e.height])),
-    );
-
-    assert.equal(await page.locator('canvas[data-image]').first().evaluate(n=>n.toDataURL()),await publicPage.locator('canvas[data-image]').first().evaluate(n=>n.toDataURL()),'Editor/public image pixels identical');
-    assert.ok(!(await publicPage.content()).includes("alex@example.test"));
-    await publicPage.screenshot({ path: path.join(out, "public.png") });
-    // Decode the actual bundled QR pixels, rather than only matching a data attribute.
-    const qr = await publicPage.evaluate(() => {
-      const c = document.querySelector("canvas[data-url]");
-      return {
-        url: c.dataset.url,
-        width: c.width,
-        height: c.height,
-        pixels: Array.from(
-          c.getContext("2d").getImageData(0, 0, c.width, c.height).data,
-        ),
-      };
-    });
-    const jsQR = require("jsqr");
-    assert.equal(
-      jsQR(Uint8ClampedArray.from(qr.pixels), qr.width, qr.height).data,
-      qr.url,
-    );
-    assert.ok(qr.url.includes(row.public_token));
+    // Current privacy contract: public proof is status-only, authorized archive uses the same renderer.
+    console.log("QA minimal public proof / private canonical renderer");
+    const publicPage=await context.newPage();await publicPage.goto(base+"/document-verify.html?token="+row.public_token);await publicPage.waitForSelector('.ds2-badge');
+    assert.equal(await publicPage.locator('.ds2-page').count(),0);assert.equal(await publicPage.locator('#pdf,#print').count(),0);
+    for(const secret of ['alex@example.test','Alex Example',row.recipient_user_id])assert.ok(!(await publicPage.content()).includes(secret));
+    const privatePage=await context.newPage();await privatePage.goto(base+'/my-documents.html');await privatePage.waitForSelector('[data-action="view"]');await privatePage.locator('[data-action="view"]').first().click();await privatePage.waitForSelector('.ds2-page');
+    await privatePage.waitForFunction(()=>document.querySelector('canvas[data-url]')?.getContext('2d').getImageData(0,0,768,768).data.some(v=>v));
+    assert.deepEqual(await privatePage.locator('[data-logical]').evaluateAll(ns=>ns.map(n=>n.dataset.logical)),d.elements.filter(e=>e.visible).map(e=>JSON.stringify([e.x,e.y,e.width,e.height])));
+    assert.equal(await page.locator('canvas[data-image]').first().evaluate(n=>n.toDataURL()),await privatePage.locator('canvas[data-image]').first().evaluate(n=>n.toDataURL()),'Editor/authorized recipient image pixels identical');
+    await publicPage.screenshot({path:path.join(out,'minimal-public-proof.png')});
+    const qr=await privatePage.evaluate(()=>{const c=document.querySelector('canvas[data-url]');return{url:c.dataset.url,width:c.width,height:c.height,pixels:Array.from(c.getContext('2d').getImageData(0,0,c.width,c.height).data)}});
+    const jsQR=require('jsqr');assert.equal(jsQR(Uint8ClampedArray.from(qr.pixels),qr.width,qr.height).data,qr.url);assert.ok(qr.url.includes(row.public_token));assert.deepEqual([...new URL(qr.url).searchParams.keys()],['token']);
     // Dedicated top-level print page: explicit direct gesture and action fallback.
     const popupPromise = page.waitForEvent("popup");
     await page.locator('[data-action="print"]').click();

@@ -17,6 +17,7 @@ import { render, ready, fit, publicURL, clearReadyCache } from "./renderer.mjs";
 import { download, openOutput } from "./output.mjs";
 import { rpc, calls, saveLocal, localDrafts, owner, session, identity, current, fence, authorize, ownerProven, aiDraft } from "./api.mjs";
 import { t, esc } from "./ui.mjs";
+import {capabilities,preparedReceipt,issuedReceipt} from "./issuance.mjs";
 const root = document.querySelector("#studio");
 class Studio {
   constructor() {
@@ -37,7 +38,7 @@ class Studio {
     this.canWrite = false;
     this.revision = 0;
     this.records = { drafts: [], issued: [], legacy: [] };
-    this.recipients = [];
+    this.recipients = [];this.recipientCursor=null;this.recipientQuery="";this.recipientSearchSerial=0;
     this.customTemplates=[];
     this.saveTimer = 0;
     this.saving = null;
@@ -101,7 +102,7 @@ class Studio {
     root.textContent=t('loading',localStorage.getItem('nh7_lang')||'en');
     try{await authorize();fence(this.credential);try{this.customTemplates=JSON.parse(localStorage.getItem("nh7_document_templates_local_v2:"+owner())||"[]").slice(0,100)}catch{this.customTemplates=[]}this.build()}
     catch{root.textContent=t('adminLogin',localStorage.getItem('nh7_lang')||'en');this.sessionLocked=true;return}
-    try{const result=await rpc(calls.capabilities);fence(this.credential);this.canWrite=result?.schema_version===2&&result.owner_uid===this.ownerUID&&result.mutations===true;this.libraryEnabled=result.library_publication===true;if(this.canWrite){await this.reload();const recipients=await rpc(calls.recipients),templates=await rpc(calls.templates);fence(this.credential);this.recipients=recipients;this.customTemplates=[...templates,...this.customTemplates.filter(local=>!templates.some(t=>t.id===local.id))];this.left()}}
+    try{const result=await rpc(calls.capabilities);fence(this.credential);this.canWrite=capabilities(result,this.ownerUID);this.libraryEnabled=result.library_publication===true;if(this.canWrite){await this.reload();const recipients=await rpc(calls.recipients),templates=await rpc(calls.templates);fence(this.credential);this.recipients=recipients.items||[];this.recipientCursor=recipients.next_cursor||null;this.customTemplates=[...templates,...this.customTemplates.filter(local=>!templates.some(t=>t.id===local.id))];this.left()}}
     catch{this.canWrite=false;root.querySelector('#serviceStatus').textContent=this.word('disabled')}
     this.serverButtons();this.bootstrapReady?.();
   }
@@ -126,7 +127,7 @@ class Studio {
   error(error) {
     if(error?.name==="AbortError"||!root.querySelector("#error"))return;
     root.querySelector("#error").textContent =
-      t(error?.message in Object.assign({}, {sessionChanged:1,conflict:1,denied:1,assetLimit:1,assetError:1,captureError:1,templateIdentity:1,reviewChanged:1,disabled:1,aiUnavailable:1,libraryBoundary:1,popup:1,noDraftDelete:1})?error.message:"serviceError",this.l);
+      t(error?.message in Object.assign({}, {sessionChanged:1,conflict:1,denied:1,assetLimit:1,assetError:1,captureError:1,templateIdentity:1,reviewChanged:1,disabled:1,aiUnavailable:1,libraryBoundary:1,popup:1,noDraftDelete:1,issueUnverified:1})?error.message:"serviceError",this.l);
     this.status(this.word("error"), true);
   }
   commit(value, { rebuild = false } = {}) {
@@ -180,7 +181,7 @@ class Studio {
         d.orientation,
         ["portrait", "landscape"].map((x) => [x, this.word(x)]),
       )}${this.button("templateReset", "templateReset")}${this.button("templateSave", "templateSave")}</details>
-  <details open>${header("recipient")}<label>${esc(this.word("search"))}<input id="recipientSearch" type="search"></label><select id="recipientSelect" aria-label="${esc(this.word("recipient"))}"><option value="">${esc(this.word("manual"))}</option>${this.recipients.map((r, i) => `<option value="${i}" ${r.user_id === d.recipient.userId ? "selected" : ""}>${esc(r.name)} · ${esc(r.student_code)} · ${esc(r.email)}</option>`).join("")}</select>${this.field("name", "name", d.recipient.name, "text", "recipient")}${this.field("email", "email", d.recipient.email, "email", "recipient")}${this.field("student", "studentId", d.recipient.studentId, "text", "recipient", "readonly")}</details>
+  <details open>${header("recipient")}<label>${esc(this.word("search"))}<input id="recipientSearch" type="search" maxlength="120" value="${esc(this.recipientQuery)}"></label><div class="ds2-row">${this.button("recipientSearch","searchAccounts",this.canWrite?"":"disabled")}${this.button("recipientNext","nextAccounts",this.canWrite&&this.recipientCursor?"":"disabled")}</div><select id="recipientSelect" aria-label="${esc(this.word("recipient"))}"><option value="">${esc(this.word("manual"))}</option>${this.recipients.map((r, i) => `<option value="${i}" ${r.user_id === d.recipient.userId ? "selected" : ""}>${esc(r.name)} · ${esc(r.student_code)} · ${esc(r.email)}</option>`).join("")}</select>${this.field("name", "name", d.recipient.name, "text", "recipient")}${this.field("email", "email", d.recipient.email, "email", "recipient")}${this.field("student", "studentId", d.recipient.studentId, "text", "recipient", "readonly")}</details>
   <details>${header("content")}${this.select(
     "presets",
     "preset",
@@ -710,6 +711,16 @@ class Studio {
       }
       return;
     }
+    if(action==='recipientSearch'||action==='recipientNext'){
+      if(!this.canWrite)throw Error('disabled');
+      const serial=++this.recipientSearchSerial,query=action==='recipientSearch'?root.querySelector('#recipientSearch').value.trim():this.recipientQuery;
+      const selected=this.recipients.find(r=>r.user_id===this.d.recipient.userId);
+      const result=await rpc(calls.recipients,{p_query:query,p_after:action==='recipientNext'?this.recipientCursor:null,p_limit:100});
+      this.check(actionTicket);if(serial!==this.recipientSearchSerial)return;
+      if(!Array.isArray(result?.items)||result.items.length>100)throw Error('serviceError');
+      this.recipients=result.items;if(selected&&!this.recipients.some(r=>r.user_id===selected.user_id))this.recipients=[selected,...this.recipients];
+      this.recipientCursor=result.next_cursor||null;this.recipientQuery=query;this.left();return;
+    }
     if (action === "preflight" || action === "issue") {
       if(this.d.publicationTarget==="library"&&action==="issue")throw Error("libraryBoundary");
       if (this.preparingIssue) return;
@@ -741,7 +752,7 @@ class Studio {
         this.check(actionTicket);
         this.issueRequest=this.issueRequest?.id===this.d.id?this.issueRequest:{id:this.d.id,request:id()};
         const prepared=await rpc(calls.prepare,{p_id:this.d.id,p_revision:this.revision,p_request_id:this.issueRequest.request});this.check(actionTicket);
-        this.prepared=prepared;this.history.value={...clone(this.d),recipient:{...this.d.recipient,...prepared.recipient},verification:prepared.verification};
+        this.prepared=preparedReceipt(prepared,this.d);this.history.value={...clone(this.d),recipient:{...this.d.recipient,...prepared.recipient},verification:prepared.verification};
         this.draw();await this.confirmIssue();
       } finally {
         this.preparingIssue = false;
@@ -751,6 +762,7 @@ class Studio {
     }
     if (action === "issueConfirm") {
       if (this.confirmBusy) return;
+      if(!root.querySelector("#confirmDialog")?.open||!this.prepared||!this.confirmSnapshot)throw Error("reviewChanged");
       this.confirmBusy = true;root.inert=true;
       const b = root.querySelector('[data-action="issueConfirm"]');
       b.disabled = true;
@@ -758,6 +770,7 @@ class Studio {
         if (JSON.stringify(this.d) !== this.confirmSnapshot)
           throw Error("Draft changed. Run preflight again.");
         const result = await rpc(calls.issue, {p_id:this.d.id,p_revision:this.revision,p_request_id:this.issueRequest.request,p_prepare_token:this.prepared.prepare_token});this.check(actionTicket);
+        issuedReceipt(result,{draft:this.d,prepared:this.prepared,request:this.issueRequest.request});
         try{saveLocal({...this.d,status:'issued'},actionTicket.credential)}catch{/* Server result retained despite local quota */}
         this.history = new History(result.authoring||result.definition);
         this.issuedId = result.id;
@@ -775,7 +788,7 @@ class Studio {
       return;
     }
     if (action === "cancelConfirm") {
-      root.querySelector("#confirmDialog").close();
+      root.querySelector("#confirmDialog").close();this.prepared=null;this.confirmSnapshot="";
       return;
     }
     if (action === "new" || action === "duplicate") {
@@ -975,7 +988,7 @@ class Studio {
   }
   async confirmIssue() {
     const ticket=this.ticket();this.confirmSnapshot = JSON.stringify(this.d);
-    const dialog = root.querySelector("#confirmDialog");dialog.oncancel=e=>{if(this.confirmBusy)e.preventDefault()};
+    const dialog = root.querySelector("#confirmDialog");dialog.oncancel=e=>{if(this.confirmBusy)e.preventDefault();else{this.prepared=null;this.confirmSnapshot=""}};
     dialog.innerHTML = `<h2>${esc(this.word("issue"))}</h2><p>${esc(this.d.recipient.name)} · ${esc(types.find((t) => t.id === this.d.type).titles[this.l])}</p><p>${esc(this.word("student"))}: ${esc(this.d.recipient.studentId || "—")}</p><p>${esc(this.word("date"))}: ${esc(this.d.issueDate)}</p><p>${esc(this.word("number"))}: ${esc(this.d.verification.number || this.word("issued"))}</p><p class="ds2-notice">${esc(this.word("publicNotice"))}</p><div class="ds2-viewport"><div class="ds2-scaled" id="finalPreview"></div></div>${this.button("issueConfirm", "confirm")}${this.button("cancelConfirm", "cancel")}`;
     const page = render(this.prepared.snapshot);
     dialog.querySelector("#finalPreview").append(page);
@@ -989,7 +1002,7 @@ class Studio {
         if(this.records.issued.some(row=>row.draft_id===local.id))return false;const remote=this.records.drafts.find(r=>r.id===local.id);return !remote||serialize({...remote.definition,revision:0})!==serialize({...local,revision:0});
       }).map(d=>({id:d.id,list_id:d.id+':local',definition:d,revision:d.revision,local:true}))];
     const issued = [...this.records.issued, ...this.records.legacy,...(this.records.resources||[])];
-    dialog.innerHTML = `${this.button("closeRecords", "close")}<h2>${esc(this.word("records"))}</h2><input id="recordSearch" type="search" placeholder="${esc(this.word("search"))}"><div class="ds2-row"><select id="recordStatus"><option value="">${this.word("all")}</option>${["draft", "issued", "revoked"].map((x) => `<option value="${x}">${this.word(x)}</option>`).join("")}</select><select id="recordType"><option value="">${this.word("all")}</option>${types.map((x) => `<option value="${x.id}">${esc(x.titles[this.l])}</option>`).join("")}</select><select id="recordTemplate"><option value="">${this.word("all")}</option>${templates.map((x) => `<option value="${x.id}">${esc(x.name)}</option>`).join("")}</select><select id="recordLanguage"><option value="">${this.word("all")}</option>${["fa", "en", "hr"].map((x) => `<option>${x}</option>`).join("")}</select></div><label>${this.word("date")}<input id="recordFrom" type="date"><input id="recordTo" type="date"></label><div id="recordList"></div>`;
+    dialog.innerHTML = `${this.button("closeRecords", "close")}<h2>${esc(this.word("records"))}</h2><input id="recordSearch" type="search" placeholder="${esc(this.word("search"))}"><div class="ds2-row"><select id="recordStatus"><option value="">${this.word("all")}</option>${["draft", "issued", "revoked", "expired"].map((x) => `<option value="${x}">${this.word(x)}</option>`).join("")}</select><select id="recordType"><option value="">${this.word("all")}</option>${types.map((x) => `<option value="${x.id}">${esc(x.titles[this.l])}</option>`).join("")}</select><select id="recordTemplate"><option value="">${this.word("all")}</option>${templates.map((x) => `<option value="${x.id}">${esc(x.name)}</option>`).join("")}</select><select id="recordLanguage"><option value="">${this.word("all")}</option>${["fa", "en", "hr"].map((x) => `<option>${x}</option>`).join("")}</select></div><label>${this.word("date")}<input id="recordFrom" type="date"><input id="recordTo" type="date"></label><div id="recordList"></div>`;
     const list = dialog.querySelector("#recordList");
     list.innerHTML =
       [...drafts, ...issued]
@@ -1012,7 +1025,7 @@ class Studio {
             ]
               .join(" ")
               .toLowerCase();
-          return `<article class="ds2-record" data-search="${esc(search)}" data-status="${isDraft ? "draft" : r.status}" data-type="${esc(d.type || r.certificate_type)}" data-template="${esc(d.template || "")}" data-language="${esc(d.language || r.language)}" data-date="${esc(d.issueDate || r.issue_date || String(r.issued_at || "").slice(0, 10))}"><strong>${esc(d.recipient?.name || r.recipient_name || d.name || this.word("draft"))}</strong>${r.local?`<p>${esc(this.word("recovery"))}</p>`:""}<p>${esc(r.certificate_number || d.verification?.number || "")} · ${esc(r.student_code || d.recipient?.studentId || "")} · ${esc(this.word(r.status || "draft"))}</p>${this.button("record:view", "view", `data-id="${r.list_id||r.id}"`)}${legacy ? "" : isDraft ? this.button("record:delete", "remove", `data-id="${r.list_id||r.id}"`) : ["verify", "copy", "pdf", "print", "deliver", "revoke", "revision", "duplicate"].map((x) => this.button("record:" + x, x, `data-id="${r.list_id||r.id}"`)).join("")}</article>`;
+          return `<article class="ds2-record" data-search="${esc(search)}" data-status="${isDraft ? "draft" : r.status}" data-type="${esc(d.type || r.certificate_type)}" data-template="${esc(d.template || "")}" data-language="${esc(d.language || r.language)}" data-date="${esc(d.issueDate || r.issue_date || String(r.issued_at || "").slice(0, 10))}"><strong>${esc(d.recipient?.name || r.recipient_name || d.name || this.word("draft"))}</strong>${r.local?`<p>${esc(this.word("recovery"))}</p>`:""}<p>${esc(r.certificate_number || d.verification?.number || "")} · ${esc(r.student_code || d.recipient?.studentId || "")} · ${esc(this.word(r.status || "draft"))}</p>${this.button("record:view", "view", `data-id="${r.list_id||r.id}"`)}${legacy ? "" : isDraft ? this.button("record:delete", "remove", `data-id="${r.list_id||r.id}"`) : ["verify", "copy", "pdf", "print", "deliver", "revoke", "expire", "revision", "duplicate"].map((x) => this.button("record:" + x, x, `data-id="${r.list_id||r.id}"`)).join("")}</article>`;
         })
         .join("") || esc(this.word("empty"));
     const filter = () => {
@@ -1073,7 +1086,7 @@ class Studio {
       return;
     }
     if (!row) return;
-    if(row.library&&["revoke","deliver"].includes(action))throw Error("libraryBoundary");
+    if(row.library&&["revoke","expire","deliver"].includes(action))throw Error("libraryBoundary");
     if (row.legacy) {
       window.open(
         new URL(
@@ -1101,6 +1114,13 @@ class Studio {
       await rpc(calls.revoke, { p_id: id, p_reason: reason });
       await this.reload();
       this.showRecords();
+    }
+    if (action === "expire") {
+      if(!this.canWrite)throw Error("disabled");
+      if(!confirm(this.word("expire")+"?"))return;
+      this.check(actionTicket);
+      await rpc(calls.expire,{p_id:id,p_expires_at:new Date().toISOString(),p_reason:this.word("expire")});
+      this.check(actionTicket);await this.reload();this.showRecords();
     }
     if (action === "duplicate" || action === "revision") {
       const next=action==="revision"?revision(row.authoring||d,row.id,row.recipient_user_id):cleanIdentity(d);this.check(actionTicket);this.switchContext();

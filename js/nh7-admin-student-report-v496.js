@@ -77,8 +77,6 @@
       [L('تکالیف تأییدشده','Approved assignments','Odobreni zadaci',l),N(ss.approved_assignments)],
       [L('آزمون‌های قبول‌شده','Passed attempts','Položeni pokušaji',l),N(ss.passed_attempts)],
       [L('روزهای فعال','Active days','Aktivni dani',l),N(as.active_days)],
-      [L('فایل‌های صوتی شنیده‌شده','Audio files listened','Preslušane audio datoteke',l),N(as.audio_files_listened)],
-      [L('زمان شنیدن','Listening time','Vrijeme slušanja',l),fmtSeconds(as.total_listened_seconds)],
       [L('کتاب‌های بازشده','Books opened','Otvorene knjige',l),Math.max(N(as.library_opens),read.length)]
     ];
     return`<div class="nh7r490-summary">${cards.map(([k,v])=>`<div><b>${E(v)}</b><span>${E(k)}</span></div>`).join('')}</div>`;
@@ -116,11 +114,7 @@
     </article>`;
     }).join('');
   }
-  function audioHtml(rows,l){
-    rows=Array.isArray(rows)?rows:[];
-    if(!rows.length)return`<p class="empty">${E(L('فعالیت صوتی ثبت نشده است.','No audio activity recorded.','Nema zabilježene audio aktivnosti.',l))}</p>`;
-    return`<table><thead><tr><th>${E(L('فایل','Audio','Audio',l))}</th><th>${E(L('نوع','Type','Vrsta',l))}</th><th>${E(L('شنیده','Listened','Preslušano',l))}</th><th>${E(L('پیشرفت','Reached','Dosegnuto',l))}</th><th>${E(L('وضعیت','Status','Status',l))}</th><th>${E(L('آخرین فعالیت','Last activity','Zadnja aktivnost',l))}</th></tr></thead><tbody>${rows.map(x=>`<tr><td>${E(rowTitle(x,l))}</td><td>${E(x.media_type||'-')}</td><td>${E(fmtSeconds(x.total_listened_seconds))}</td><td>${E(pct(x.reached_percent))}%</td><td>${E(x.completed?'✓ '+L('کامل','Complete','Završeno',l):x.likely_skipped?'⚠ '+L('پرش زیاد','Likely skipped','Vjerojatno preskakano',l):L('در حال گوش دادن','In progress','U tijeku',l))}</td><td>${E(fmtDate(x.last_listened_at,l))}</td></tr>`).join('')}</tbody></table>`;
-  }
+  function audioHtml(rows,l){return window.NH7AudioCostWave75?.notice(l)||''}
   function libraryHtml(access,reading,l){
     const detailed=Array.isArray(reading)?reading:[],opened=Array.isArray(access)?access:[];
     if(detailed.length){

@@ -1,7 +1,7 @@
 import {normalize} from './model.mjs';
 /* Current v350 authority and exact credential fences; no backend is enabled by file presence. */
 export const base='https://gpzcwffxnddhaeaogdyo.supabase.co',key='sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37';
-export const calls={capabilities:'nh7_document_capabilities_v2',list:'nh7_document_admin_list_v2',recipients:'nh7_document_recipients_v2',save:'nh7_document_save_draft_v2',prepare:'nh7_document_prepare_v2',issue:'nh7_document_issue_v2',revoke:'nh7_document_revoke_v2',deliver:'nh7_document_deliver_v2',template:'nh7_document_save_template_v2',templates:'nh7_document_templates_v2',verify:'nh7_document_verify_v2',archive:'nh7_my_documents_v2',libraryPrepare:'nh7_document_library_prepare_v2',libraryPublish:'nh7_document_library_publish_v2'};
+export const calls={capabilities:'nh7_document_capabilities_v2',list:'nh7_document_admin_list_v2',recipients:'nh7_document_recipient_search_v2',save:'nh7_document_save_draft_v2',prepare:'nh7_document_prepare_v2',issue:'nh7_document_issue_v2',expire:'nh7_document_expire_v2',revoke:'nh7_document_revoke_v2',deliver:'nh7_document_deliver_v2',template:'nh7_document_save_template_v2',templates:'nh7_document_templates_v2',verify:'nh7_document_verify_v2',archive:'nh7_my_documents_v2',libraryPrepare:'nh7_document_library_prepare_v2',libraryPublish:'nh7_document_library_publish_v2'};
 export const metrics={requests:0,local_writes:0,stale:0};
 export function session(admin=false){try{return admin?{access_token:localStorage.getItem('nh7_admin_token')||''}:JSON.parse(localStorage.getItem('nh7_user_session_v170')||'null')}catch{return null}}
 export function identity(mode='admin'){

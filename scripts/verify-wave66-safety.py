@@ -1,6 +1,7 @@
 """Exact frozen app/backend/prior review bytes; enumerate only inert current-wave review additions."""
 import sys
 sys.dont_write_bytecode=True
+from wave75_accepted_source import manifest as wave75_manifest
 from pathlib import Path
 import json,subprocess,hashlib,re
 from wave7_accepted_source import previous_bytes,manifest as platform_manifest
@@ -9,7 +10,7 @@ BASE='4f6c702c3f9e996256a5f9410bfd6096b5f3f018'
 m=json.loads(Path('scripts/fixtures/wave66-approved-review.json').read_text());assert m['base']==BASE
 scopes=['js','css','assets','data','public','supabase','index.html','admin.html','reset-password.html','sw-release-core-v403.js']
 old=set(subprocess.check_output(['git','ls-tree','-r','--name-only',BASE,'--',*scopes]).decode().splitlines());now=set(subprocess.check_output(['git','ls-files','--',*scopes]).decode().splitlines())|set(subprocess.check_output(['git','ls-files','--others','--exclude-standard','--',*scopes]).decode().splitlines())
-assert now-old==set(m['new_review'])|set(platform_manifest()['new_runtime']),'Unexpected runtime/backend/review addition'
+assert now-old==set(m['new_review'])|set(platform_manifest()['new_runtime'])|set(wave75_manifest()['new_runtime'])|set(wave75_manifest()['new_review']),'Unexpected runtime/backend/review addition'
 objects=dict(line.split(' ',1)[::-1] for line in subprocess.check_output(['git','ls-tree','-r','--format=%(objectname) %(path)',BASE,'--',*scopes]).decode().splitlines())
 for p in old:
  data=previous_bytes(p);assert hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()==objects[p],'Wave66 must not alter existing product/backend/review source '+p

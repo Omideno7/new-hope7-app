@@ -140,10 +140,14 @@ export const words = {
   valid: ["معتبر", "Valid", "Valjano"],
   expired: ["منقضی", "Expired", "Isteklo"],
   not_found: ["پیدا نشد", "Not found", "Nije pronađeno"],
+  searchAccounts: ["جست‌وجوی حساب‌ها", "Search accounts", "Pretraži račune"],
+  nextAccounts: ["صفحهٔ بعد حساب‌ها", "Next accounts page", "Sljedeća stranica računa"],
+  expire: ["منقضی کردن اکنون", "Expire now", "Označi isteklim sada"],
+  issueUnverified: ["صدور تأیید نشد. پیش از تلاش دوباره سوابق را تازه کنید؛ موفقیت اعلام نشده است.", "Issuance was not verified. Refresh records before retrying; success has not been confirmed.", "Izdavanje nije potvrđeno. Prije ponovnog pokušaja osvježite zapise; uspjeh nije potvrđen."],
   publicNotice: [
-    "تمام محتوای قابل نمایش مدرک، از جمله عکس و شناسه‌ای که نمایش داده می‌شود، در لینک عمومی قابل مشاهده خواهد بود.",
-    "All visible certificate content, including displayed photo and Student ID, will be public through its verification link.",
-    "Sav vidljivi sadržaj dokumenta, uključujući prikazanu fotografiju i studentski ID, bit će javan putem poveznice za provjeru.",
+    "لینک QR فقط شماره و وضعیت اعتبار را نشان می‌دهد. محتوای مدرک در پیش‌نمایش مجاز و مدارک من باقی می‌ماند.",
+    "The QR link shows only the document number and validity status. Document content remains in authorized previews and My Documents.",
+    "QR poveznica prikazuje samo broj i status valjanosti. Sadržaj ostaje u ovlaštenim pregledima i Mojim dokumentima.",
   ],
   disabled: [
     "پیش‌نویس محلی فعال است. سرویس صدور هنوز فعال نشده است.",

@@ -1,0 +1,423 @@
+{
+  "date": "2026-10-16",
+  "timezone": "Europe/Zagreb",
+  "starting_sha": "3e209b646eac811d47a735408365c06a01c5b7de",
+  "measured_head": "8566e4b55486a226b6e0c6cd39a567eef98842e9",
+  "working_tree_dirty": true,
+  "clock": "Real wall-clock60s windows, media position events driven every5 real seconds; document.hidden simulated. Fixed500ms Inbox fixture latency matches previous protocol; pre-existing legacy Inbox fallback timing can add3 reads under concurrent context load. Raw totals retained; no performance reduction inferred and non-Inbox request names must match exactly.",
+  "decision": "REJECTED_COST",
+  "additional_audio_analytics_backend_requests": 0,
+  "additional_audio_analytics_backend_reads": 0,
+  "additional_audio_analytics_backend_writes": 0,
+  "additional_audio_analytics_persistent_rows": 0,
+  "additional_audio_analytics_storage_bytes": 0,
+  "baseline": {
+    "base": "http://127.0.0.1:8891",
+    "steps": [
+      {
+        "name": "startup",
+        "wall_ms": 14573,
+        "requests": 18,
+        "request_names": [
+          "css2",
+          "css2",
+          "css2",
+          "css2",
+          "OneSignalSDK.page.js",
+          "mammoth.browser.min.js",
+          "nh7_account_notes",
+          "nh7_library_catalog_v396",
+          "nh7_admin_my_access_v350",
+          "nh7_account_progress",
+          "nh7_account_saved_verses",
+          "nh7_inbox_snapshot_v419",
+          "nh7_account_verse_marks_v230",
+          "nh7_get_my_school_snapshot_v2110",
+          "user_progress",
+          "nh7_account_progress",
+          "nh7_account_progress",
+          "nh7_account_progress"
+        ]
+      },
+      {
+        "name": "visible_idle_60s",
+        "wall_ms": 60025,
+        "requests": 0,
+        "request_names": [],
+        "analytics_requests": 0
+      },
+      {
+        "name": "simulated_hidden_idle_60s",
+        "wall_ms": 60063,
+        "requests": 0,
+        "request_names": [],
+        "analytics_requests": 0
+      },
+      {
+        "name": "audio_start",
+        "wall_ms": 4078,
+        "requests": 5,
+        "request_names": [
+          "nh7-school-media-access",
+          "user_progress",
+          "nh7_account_progress",
+          "nh7_account_progress",
+          "nh7_account_progress"
+        ],
+        "analytics_requests": 0
+      },
+      {
+        "name": "audio_playback_60s",
+        "wall_ms": 61021,
+        "requests": 0,
+        "request_names": [],
+        "analytics_requests": 0
+      },
+      {
+        "name": "pause_resume_burst",
+        "wall_ms": 1657,
+        "requests": 4,
+        "request_names": [
+          "user_progress",
+          "nh7_account_progress",
+          "nh7_account_progress",
+          "nh7_account_progress"
+        ],
+        "analytics_requests": 0
+      },
+      {
+        "name": "route_change",
+        "wall_ms": 714,
+        "requests": 1,
+        "request_names": [
+          "notification_schedules"
+        ],
+        "analytics_requests": 0
+      },
+      {
+        "name": "account_switch",
+        "wall_ms": 1761,
+        "requests": 1,
+        "request_names": [
+          "nh7_admin_my_access_v350"
+        ],
+        "analytics_requests": 0
+      },
+      {
+        "name": "logout",
+        "wall_ms": 976,
+        "requests": 0,
+        "request_names": [],
+        "analytics_requests": 0
+      }
+    ],
+    "local_resume_time_before_switch": 60,
+    "account_switch_and_logout_fenced": true,
+    "retired_telemetry_requests": 0
+  },
+  "current": {
+    "base": "http://127.0.0.1:8878",
+    "steps": [
+      {
+        "name": "startup",
+        "wall_ms": 14548,
+        "requests": 18,
+        "request_names": [
+          "css2",
+          "css2",
+          "css2",
+          "css2",
+          "OneSignalSDK.page.js",
+          "mammoth.browser.min.js",
+          "nh7_account_notes",
+          "nh7_account_progress",
+          "nh7_account_saved_verses",
+          "nh7_library_catalog_v396",
+          "nh7_inbox_snapshot_v419",
+          "nh7_admin_my_access_v350",
+          "nh7_account_verse_marks_v230",
+          "nh7_get_my_school_snapshot_v2110",
+          "user_progress",
+          "nh7_account_progress",
+          "nh7_account_progress",
+          "nh7_account_progress"
+        ]
+      },
+      {
+        "name": "visible_idle_60s",
+        "wall_ms": 60044,
+        "requests": 0,
+        "request_names": [],
+        "analytics_requests": 0
+      },
+      {
+        "name": "simulated_hidden_idle_60s",
+        "wall_ms": 60062,
+        "requests": 0,
+        "request_names": [],
+        "analytics_requests": 0
+      },
+      {
+        "name": "audio_start",
+        "wall_ms": 4082,
+        "requests": 5,
+        "request_names": [
+          "nh7-school-media-access",
+          "user_progress",
+          "nh7_account_progress",
+          "nh7_account_progress",
+          "nh7_account_progress"
+        ],
+        "analytics_requests": 0
+      },
+      {
+        "name": "audio_playback_60s",
+        "wall_ms": 61018,
+        "requests": 0,
+        "request_names": [],
+        "analytics_requests": 0
+      },
+      {
+        "name": "pause_resume_burst",
+        "wall_ms": 1670,
+        "requests": 4,
+        "request_names": [
+          "user_progress",
+          "nh7_account_progress",
+          "nh7_account_progress",
+          "nh7_account_progress"
+        ],
+        "analytics_requests": 0
+      },
+      {
+        "name": "route_change",
+        "wall_ms": 706,
+        "requests": 1,
+        "request_names": [
+          "notification_schedules"
+        ],
+        "analytics_requests": 0
+      },
+      {
+        "name": "account_switch",
+        "wall_ms": 1766,
+        "requests": 1,
+        "request_names": [
+          "nh7_admin_my_access_v350"
+        ],
+        "analytics_requests": 0
+      },
+      {
+        "name": "logout",
+        "wall_ms": 990,
+        "requests": 0,
+        "request_names": [],
+        "analytics_requests": 0
+      }
+    ],
+    "local_resume_time_before_switch": 60,
+    "account_switch_and_logout_fenced": true,
+    "retired_telemetry_requests": 0
+  },
+  "admin": {
+    "baseline": {
+      "base": "http://127.0.0.1:8891",
+      "startup_requests": 48,
+      "idle_wall_ms": 60001,
+      "idle_requests": 0,
+      "request_names": [
+        "/rest/v1/rpc/nh7_admin_my_access_v350",
+        "/rest/v1/rpc/nh7_admin_registration_feed_v3",
+        "/rest/v1/rpc/nh7_admin_student_identity_directory_v128",
+        "/rest/v1/qa_questions",
+        "/rest/v1/meeting_settings",
+        "/rest/v1/rpc/nh7_admin_school_assignments_feed_v237",
+        "/functions/v1/nh7-admin-ai-v490",
+        "/functions/v1/nh7-send-email",
+        "/auth/v1/token",
+        "/rest/v1/notification_inbox",
+        "/rest/v1/rpc/nh7_admin_school_assignments_feed",
+        "/rest/v1/sermon_categories",
+        "/rest/v1/sermons",
+        "/rest/v1/notification_schedules",
+        "/rest/v1/daily_content",
+        "/rest/v1/school_lessons",
+        "/rest/v1/school_courses",
+        "/rest/v1/school_exams",
+        "/rest/v1/school_progress",
+        "/rest/v1/school_exam_attempts",
+        "/rest/v1/school_certificates",
+        "/rest/v1/rpc/nh7_admin_auth_user_count",
+        "/rest/v1/rpc/nh7_owner_testimony_feed_v502",
+        "/rest/v1/audio_bible_books_v220",
+        "/rest/v1/audio_bible_chapters_v220",
+        "/rest/v1/document_templates_v220",
+        "/rest/v1/rpc/nh7_owner_prayer_feed_v502",
+        "/rest/v1/rpc/nh7_admin_school_assignments_feed_v237",
+        "/rest/v1/rpc/nh7_owner_testimony_feed_v502",
+        "/auth/v1/token",
+        "/rest/v1/rpc/nh7_admin_registration_feed_v3",
+        "/rest/v1/rpc/nh7_admin_student_identity_directory_v128",
+        "/rest/v1/qa_questions",
+        "/rest/v1/meeting_settings",
+        "/rest/v1/notification_inbox",
+        "/rest/v1/sermon_categories",
+        "/rest/v1/sermons",
+        "/rest/v1/notification_schedules",
+        "/rest/v1/daily_content",
+        "/rest/v1/school_lessons",
+        "/rest/v1/school_courses",
+        "/rest/v1/school_exams",
+        "/rest/v1/school_progress",
+        "/rest/v1/rpc/nh7_admin_school_assignments_feed",
+        "/rest/v1/rpc/nh7_admin_auth_user_count",
+        "/rest/v1/school_exam_attempts",
+        "/rest/v1/school_certificates",
+        "/rest/v1/rpc/nh7_admin_school_assignments_feed_v237"
+      ]
+    },
+    "current": {
+      "base": "http://127.0.0.1:8878",
+      "startup_requests": 46,
+      "idle_wall_ms": 60007,
+      "idle_requests": 0,
+      "request_names": [
+        "/rest/v1/rpc/nh7_admin_my_access_v350",
+        "/rest/v1/rpc/nh7_admin_registration_feed_v3",
+        "/rest/v1/rpc/nh7_admin_student_identity_directory_v128",
+        "/rest/v1/qa_questions",
+        "/rest/v1/meeting_settings",
+        "/functions/v1/nh7-admin-ai-v490",
+        "/auth/v1/token",
+        "/rest/v1/notification_inbox",
+        "/rest/v1/sermon_categories",
+        "/rest/v1/sermons",
+        "/rest/v1/rpc/nh7_admin_school_assignments_feed",
+        "/rest/v1/rpc/nh7_admin_auth_user_count",
+        "/rest/v1/notification_schedules",
+        "/rest/v1/daily_content",
+        "/rest/v1/school_lessons",
+        "/rest/v1/school_courses",
+        "/rest/v1/school_exams",
+        "/rest/v1/school_progress",
+        "/rest/v1/school_exam_attempts",
+        "/rest/v1/school_certificates",
+        "/rest/v1/rpc/nh7_owner_testimony_feed_v502",
+        "/rest/v1/rpc/nh7_owner_prayer_feed_v502",
+        "/rest/v1/audio_bible_books_v220",
+        "/rest/v1/audio_bible_chapters_v220",
+        "/rest/v1/document_templates_v220",
+        "/rest/v1/rpc/nh7_owner_testimony_feed_v502",
+        "/rest/v1/rpc/nh7_admin_school_assignments_feed_v237",
+        "/auth/v1/token",
+        "/rest/v1/rpc/nh7_admin_registration_feed_v3",
+        "/rest/v1/rpc/nh7_admin_student_identity_directory_v128",
+        "/rest/v1/qa_questions",
+        "/rest/v1/meeting_settings",
+        "/rest/v1/notification_inbox",
+        "/rest/v1/sermon_categories",
+        "/rest/v1/sermons",
+        "/rest/v1/notification_schedules",
+        "/rest/v1/daily_content",
+        "/rest/v1/school_lessons",
+        "/rest/v1/rpc/nh7_admin_school_assignments_feed",
+        "/rest/v1/school_courses",
+        "/rest/v1/school_exams",
+        "/rest/v1/school_progress",
+        "/rest/v1/school_exam_attempts",
+        "/rest/v1/school_certificates",
+        "/rest/v1/rpc/nh7_admin_auth_user_count",
+        "/rest/v1/rpc/nh7_admin_school_assignments_feed_v237"
+      ]
+    }
+  },
+  "documents": {
+    "baseline": {
+      "base": "http://127.0.0.1:8891",
+      "startup_requests": 5,
+      "idle": {
+        "wall_ms": 60024,
+        "requests": 0
+      },
+      "preview": {
+        "wall_ms": 414,
+        "requests": 1,
+        "canonical_page": true
+      },
+      "pdf": {
+        "wall_ms": 423,
+        "requests": 0,
+        "bytes": 246896,
+        "mime_signature": "%PDF-"
+      },
+      "print": {
+        "wall_ms": 429,
+        "requests": 1,
+        "top_level_page": true,
+        "controls": 4
+      },
+      "request_names": [
+        "nh7_admin_my_access_v350",
+        "nh7_document_capabilities_v2",
+        "nh7_document_admin_list_v2",
+        "nh7_document_recipients_v2",
+        "nh7_document_templates_v2",
+        "nh7_admin_my_access_v350",
+        "nh7_admin_my_access_v350"
+      ]
+    },
+    "current": {
+      "base": "http://127.0.0.1:8878",
+      "startup_requests": 5,
+      "idle": {
+        "wall_ms": 60021,
+        "requests": 0
+      },
+      "preview": {
+        "wall_ms": 431,
+        "requests": 1,
+        "canonical_page": true
+      },
+      "pdf": {
+        "wall_ms": 497,
+        "requests": 0,
+        "bytes": 246896,
+        "mime_signature": "%PDF-"
+      },
+      "print": {
+        "wall_ms": 360,
+        "requests": 1,
+        "top_level_page": true,
+        "controls": 4
+      },
+      "request_names": [
+        "nh7_admin_my_access_v350",
+        "nh7_document_capabilities_v2",
+        "nh7_document_admin_list_v2",
+        "nh7_document_recipient_search_v2",
+        "nh7_document_templates_v2",
+        "nh7_admin_my_access_v350",
+        "nh7_admin_my_access_v350"
+      ]
+    }
+  },
+  "source_sha256": {
+    "js/nh7-admin-audio-cost-wave75.js": "67c57fa1af883f188ac316ff1d22239fc3925bbc0cdfb327522064acb9af94db",
+    "js/document-studio-v2/issuance.mjs": "9bce2f806b79ec81f2a6d72e12958ea45db9da65218ccfa8297dc6c98e7cbf6d",
+    "js/document-studio-v2/editor.mjs": "df05fe192c44f80f25effd4b37b96bd849bedb3e511cb75e50d437925f6da0af",
+    "js/document-studio-v2/verification.mjs": "5c5f05b89c6beea9bb52adedf32360859b73260911d893738f11988aa2beba21",
+    "js/nh7-audio-classic-v484.js": "6dda7d21c68a7fb63d62a459cc8848b53f77c3262bba0d80ed0eb09fd339bbbc",
+    "js/nh7-audio-library-v500.js": "c96f494379faef4dedbf2d03aaf65543c33a2e6ee5d4cb5cd3a84a2dbee11eef",
+    "js/nh7-media-player-v500.js": "d282409c22220e9f67eeafb3c627e0722c60f42a577d36b31c35b5989382c687"
+  },
+  "limitations": [
+    "Every remote endpoint intercepted, synthetic SQL/users only; no live counts/Production requests",
+    "Existing required product/progress/manual non-listening Admin requests are counted, not falsely called new analytics",
+    "Zero additional analytics I/O follows frozen player bytes, network negative assertions and presentation-only notice; no physical battery/thermal claim",
+    "PGlite serial transactions are not proof of real multi-connection concurrency/RLS/default ACL rollout",
+    "Physical PDF/Print/Share/fonts/Safari/native acceptance remains PHYSICAL_QA_ONLY; no deployment"
+  ],
+  "production_mutations": 0,
+  "deployments": 0,
+  "paid_activations": 0
+}

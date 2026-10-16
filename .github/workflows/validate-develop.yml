@@ -150,6 +150,17 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/canonical-tools" --no-audit --no-fund playwright@1.62.1 @electric-sql/pglite@0.3.14 jsqr@1.4.0 pngjs@7.0.0
           "$RUNNER_TEMP/canonical-tools/node_modules/.bin/playwright" install --with-deps chromium
 
+      - name: Validate Wave 7.5 review-only issuance and zero-cost boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          export NODE_PATH="$RUNNER_TEMP/canonical-tools/node_modules"
+          for source in js/document-studio-v2/*.mjs js/nh7-admin-audio-cost-wave75.js js/admin-v2.2.3.js js/admin-v2.3.5-analytics-core-v237.js js/nh7-admin-student-report-v496.js scripts/*wave75*.cjs; do
+            python3 scripts/run-ci-check.py node --check "$source"
+          done
+          python3 scripts/run-ci-check.py python3 scripts/verify-wave75-safety.py
+          python3 scripts/run-ci-check.py node scripts/verify-wave75-documents.cjs
+
       - name: Validate Wave 7 platform and safe Watch source contracts
         shell: bash
         run: |
@@ -228,6 +239,7 @@ jobs:
           python3 scripts/run-ci-check.py node scripts/verify-wave5-documents-browser.cjs http://127.0.0.1:8878
           python3 scripts/run-ci-check.py node scripts/verify-wave5-documents-safety-browser.cjs http://127.0.0.1:8878
           python3 scripts/run-ci-check.py node scripts/verify-wave5-races.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-wave75-browser.cjs http://127.0.0.1:8878
 
       - name: Preserve current School reports, PDF, Print and Community document paths
         run: |
@@ -294,4 +306,22 @@ jobs:
         with:
           name: wave7-measurements-${{ github.sha }}
           path: ${{ runner.temp }}/wave7-measurements.json
+          retention-days: 14
+
+      - name: Measure Wave 7.5 real idle and audio intervals against accepted baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          export NODE_PATH="$RUNNER_TEMP/canonical-tools/node_modules"
+          export CHROMIUM_PATH="$(node -e "console.log(require('playwright').chromium.executablePath())")"
+          mkdir -p "$RUNNER_TEMP/wave75-baseline"
+          git archive 3e209b646eac811d47a735408365c06a01c5b7de | tar -x -C "$RUNNER_TEMP/wave75-baseline"
+          python3 -m http.server 8891 --bind 127.0.0.1 --directory "$RUNNER_TEMP/wave75-baseline" > "$RUNNER_TEMP/wave75-baseline.log" 2>&1 &
+          python3 scripts/run-ci-check.py node scripts/measure-wave75.cjs http://127.0.0.1:8878 http://127.0.0.1:8891 "$RUNNER_TEMP/wave75-measurements.json"
+
+      - name: Upload exact-head Wave 7.5 measurements
+        uses: actions/upload-artifact@v4
+        with:
+          name: wave75-measurements-${{ github.sha }}
+          path: ${{ runner.temp }}/wave75-measurements.json
           retention-days: 14

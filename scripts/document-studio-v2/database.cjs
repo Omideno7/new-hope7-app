@@ -5,7 +5,7 @@ const ADMIN = "00000000-0000-0000-0000-000000000001",
   A = "00000000-0000-0000-0000-000000000002",
   B = "00000000-0000-0000-0000-000000000003",
   DELEGATE = "00000000-0000-0000-0000-000000000004";
-async function database() {
+async function database({coreOnly=false,disabled=false}={}) {
   const db = new PGlite();
   await db.exec(
     `create role anon;create role authenticated;create role service_role;create schema auth;create schema private;create table auth.users(id uuid primary key,email text,raw_user_meta_data jsonb);create function auth.uid() returns uuid language sql as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;create function public.nh7_is_admin() returns boolean language sql as $$select auth.uid()='${ADMIN}'::uuid$$;create function private.nh7_admin_is_owner_v350() returns boolean language sql as $$select public.nh7_is_admin()$$;create function public.nh7_admin_my_access_v350() returns jsonb language sql as $$select jsonb_build_object('is_owner',public.nh7_is_admin(),'is_admin',(public.nh7_is_admin() or auth.uid()='${DELEGATE}'::uuid),'permissions',jsonb_build_array())$$;create table public.school_student_identities(user_id uuid,student_code text,status text);create table public.school_certificates(id uuid,user_name text,user_email text,recipient_user_id uuid,student_code text,public_token uuid,status text,issue_date date,certificate_number text,certificate_type text,language text,course_code text,revoked_at timestamptz);grant usage on schema auth to anon,authenticated;grant execute on function auth.uid() to anon,authenticated;`,
@@ -33,12 +33,17 @@ async function database() {
   const sql = fs.readFileSync("supabase/review/wave5-document-studio-v2/candidate.sql", "utf8");
   await db.exec(sql);
   await db.exec(sql); // Idempotent review SQL.
-  await db.exec("create schema storage;create table storage.objects(bucket_id text,name text,owner_id text)");
-  await db.exec(fs.readFileSync("supabase/review/wave5-document-studio-v2/library-boundary.sql","utf8"));
+  if(!coreOnly){await db.exec("create schema storage;create table storage.objects(bucket_id text,name text,owner_id text)");
+  await db.exec(fs.readFileSync("supabase/review/wave5-document-studio-v2/library-boundary.sql","utf8"));}
+  // Current activation proposal in a fresh synthetic database only. Never a remote/live connection.
+  await db.exec(fs.readFileSync("supabase/review/wave7_5-admin-documents/document-backend-proposal.sql","utf8"));
+  await db.exec(fs.readFileSync("supabase/review/wave7_5-admin-documents/rls-acl-proposal.sql","utf8"));
+  if(!disabled)await db.exec("update private.nh7_document_control_wave75 set enabled=true where singleton"); // Synthetic activation only.
   const signatures = {
     nh7_admin_my_access_v350: [],
     nh7_document_capabilities_v2: [],
     nh7_document_recipients_v2: [],
+    nh7_document_recipient_search_v2: [["p_query","text"],["p_after","uuid"],["p_limit","integer"]],
     nh7_document_admin_list_v2: [],
     nh7_document_templates_v2: [],
     nh7_document_library_prepare_v2:[["p_plan","jsonb"]],
@@ -56,6 +61,7 @@ async function database() {
       ["p_revision", "integer"], ["p_request_id","uuid"],["p_prepare_token","uuid"],
     ],
     nh7_document_verify_v2: [["p_token", "uuid"]],
+    nh7_document_expire_v2: [["p_id","uuid"],["p_expires_at","timestamptz"],["p_reason","text"]],
     nh7_document_deliver_v2: [["p_id", "uuid"]],
     nh7_document_revoke_v2: [
       ["p_id", "uuid"],

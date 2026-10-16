@@ -2,6 +2,7 @@
 import sys
 sys.dont_write_bytecode=True
 from pathlib import Path
+from wave75_accepted_source import prior75_bytes
 import re,json,hashlib,collections
 P=Path('supabase/review/wave6_6-live-security');rows=json.loads((P/'function-dispositions.json').read_text())['rows'];live=[]
 for file in sorted(Path('docs/qa/wave6_6-live-security').glob('*.psv')):
@@ -39,7 +40,10 @@ for r,v in zip(rows,live):
   text=Path(candidate['path']).read_text();offset=sum(len(l) for l in text.splitlines(keepends=True)[:candidate['line']-1]);tail=text[offset:];a=re.search(r'\bas\s+(\$\w*\$)',tail,re.I);assert a
   body=tail[a.end():tail.index(a[1],a.end())];assert hashlib.md5(body.encode()).hexdigest()==candidate['candidate_body_md5']!=r['body_md5']
  for c in r['runtime_callers']:
-  assert r['signature'].split('(')[0].split('.')[-1] in Path(c['path']).read_text().splitlines()[c['line']-1]
+  name=r['signature'].split('(')[0].split('.')[-1]
+  # Historical exact line offsets use independently hash-bound accepted source; the current caller must still exist.
+  assert name in prior75_bytes(c['path']).decode().splitlines()[c['line']-1]
+  assert name in Path(c['path']).read_text(),('Removed current caller',name,c)
 assert matched==72
 rls=json.loads((P/'rls-dispositions.json').read_text())['rows'];manifest=Path('docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md').read_text();expected=re.findall(r'^\d+\. `([^`]+)`',manifest.split('The authoritative Advisor list is:')[1].split('A broader raw SQL')[0],re.M)
 assert [r['table'] for r in rls]==expected and len(expected)==29

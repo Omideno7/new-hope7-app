@@ -1,0 +1,111 @@
+{
+  "base": "3e209b646eac811d47a735408365c06a01c5b7de",
+  "existing_runtime": {
+    "admin.html": {
+      "before": "8b41f0d58d1353ecca43fa5b1b54c54d6b15d468dd2eb6bb9f789608454e5613",
+      "after": "29731c04a2370f6b4886b472db8333db838f45fb93703c07a64768b4b99b56ea"
+    },
+    "js/admin-v2.2.3.js": {
+      "before": "d66d29c05e127f1960e363c4176e7ab1f94928033afd373f59a67f0cd86bdf5e",
+      "after": "9f2d16b431575580b0f632e37a0bd3391cda9ed2657cc0f9857723e513d9f07a"
+    },
+    "js/admin-v2.3.5-analytics-core-v237.js": {
+      "before": "b592a6d137dd5dd90486be5b00848c3e6ab600cfa82996f8ed01e44e0c3aec06",
+      "after": "70b37229ae52f32e435d507483f59dff029ea937c34759b65a52b6e92bbe8623"
+    },
+    "js/document-studio-v2/api.mjs": {
+      "before": "6c057a53f38400580b5e22632c6e7bcefca1259c77d452619276361dc1f7037b",
+      "after": "6861767c4d1b95c96e25f0faf7048f5ed95aed8a2aaa92b8fa588f41ee00b25f"
+    },
+    "js/document-studio-v2/editor.mjs": {
+      "before": "bd8d07d5c28fbe41ed769f95119175a99a9e4d3701302f8efefbf8237d365fb1",
+      "after": "df05fe192c44f80f25effd4b37b96bd849bedb3e511cb75e50d437925f6da0af"
+    },
+    "js/document-studio-v2/output-page.mjs": {
+      "before": "2d41417f3553b0b8eef96c65aa5a834aef30f228a565ce2bf0a196ddae9118a8",
+      "after": "7556a5bcd3faef37cbebef9189c470bf64198dcd5ec8e2f7bd94bb1dc98247bb"
+    },
+    "js/document-studio-v2/ui.mjs": {
+      "before": "982587234fd1651d2e8160deec75f81f8d6f58da7944391848d67fb7ec61cfc5",
+      "after": "fe64c70fe96298e6aa59aaeea3835b6de6296ed49405d9e9b5b9a6118e757476"
+    },
+    "js/document-studio-v2/verification.mjs": {
+      "before": "f19306ef52218b8cdde22e1a8ff503e082714a2371a7bc5d5f0cfdeb5f680d3f",
+      "after": "5c5f05b89c6beea9bb52adedf32360859b73260911d893738f11988aa2beba21"
+    },
+    "js/nh7-admin-student-report-v496.js": {
+      "before": "f35d06f4f1e88c3bdcd3e42bd451f6366421fe0e71e4c404ce26896078cf7517",
+      "after": "676236df5de736fce89f67bb7dd24fc90625de0d6de3c93e789debec7c8fcf5b"
+    },
+    "js/nh7-admin-workspace-wave3.js": {
+      "before": "db3e7e0f8cb7469972e5279efff966d67f41d6c9e76351014186d913fdca8dc6",
+      "after": "6600692eafb379572f7e59d3338a298b83a436f0d7bc8c6150fab397afa63ed7"
+    },
+    "sw-release-core-v403.js": {
+      "before": "a20a5e977ae054b09582d94cb46741a9ecbf92b3aa2677c98f912212e80d6d08",
+      "after": "c3e904f296c5c8881a83f3544f8ca96deabb66e84edb97c8fcc11a57e1772312"
+    }
+  },
+  "new_runtime": {
+    "js/document-studio-v2/issuance.mjs": "9bce2f806b79ec81f2a6d72e12958ea45db9da65218ccfa8297dc6c98e7cbf6d",
+    "js/nh7-admin-audio-cost-wave75.js": "67c57fa1af883f188ac316ff1d22239fc3925bbc0cdfb327522064acb9af94db"
+  },
+  "new_review": {
+    "supabase/review/wave7_5-admin-documents/README.md": "6e97ad0957ccd2c5b27e5900e94f390f90f13896ef22cf2f021afc16ef7b98f4",
+    "supabase/review/wave7_5-admin-documents/activation-checklist.md": "99b1097ffdaaaf5a6e96b058e9faa9b4281cf2605fc67572fcbc644e72ef6160",
+    "supabase/review/wave7_5-admin-documents/assemble.py": "8218a335a48424f155070534c83105ea5cea8f93d21f254af35cbc062b470cbf",
+    "supabase/review/wave7_5-admin-documents/baseline-sha256.json": "ab2405fca90cf2c56a0549f24185f886eb0e0837cc74f5b1e21445ea66470346",
+    "supabase/review/wave7_5-admin-documents/document-backend-proposal.sql": "e45a4c74b6a3ec302033e4831c9f50696bfa50a52096aa23fd675a4104daeffc",
+    "supabase/review/wave7_5-admin-documents/preflight-readonly.sql": "bb0c7e921c924822a3a9258d68b129d64fcb651cb62ffdc34a908bad6c8f52ab",
+    "supabase/review/wave7_5-admin-documents/rls-acl-proposal.sql": "ffe35b0b258dc8ef33b8c72a8deffbdadd6e8ad49b8c072b7ca166d1b46219f6",
+    "supabase/review/wave7_5-admin-documents/rollback.sql": "0945781c258758c4ea2c2043b61d9c4d9effefa1ccfc6fa0e36ace8bbd9c8f9b"
+  },
+  "patch_sha256": "b3d82d94921fb6301b5b3f93ac85f24fae337a7e3b62ab0f7140e69287c41e98",
+  "audit_sha256": "d88ffdc03d10d24f1cdde10264e0a2fa2f2ca05da18106009673c79d2baa9ba7",
+  "approved_paths": [
+    ".github/workflows/validate-develop.yml",
+    "admin.html",
+    "docs/qa/WAVE7_5_ADMIN_DOCUMENTS_REPORT.md",
+    "docs/qa/WAVE7_5_ADMIN_DOCUMENTS_ZERO_COST_ANALYTICS_AUDIT.md",
+    "docs/qa/WAVE7_5_MEASUREMENTS.json",
+    "docs/qa/WAVE7_5_ZERO_COST_AUDIO_ANALYTICS_DECISION.md",
+    "js/admin-v2.2.3.js",
+    "js/admin-v2.3.5-analytics-core-v237.js",
+    "js/document-studio-v2/api.mjs",
+    "js/document-studio-v2/editor.mjs",
+    "js/document-studio-v2/issuance.mjs",
+    "js/document-studio-v2/output-page.mjs",
+    "js/document-studio-v2/ui.mjs",
+    "js/document-studio-v2/verification.mjs",
+    "js/nh7-admin-audio-cost-wave75.js",
+    "js/nh7-admin-student-report-v496.js",
+    "js/nh7-admin-workspace-wave3.js",
+    "scripts/document-studio-v2/database.cjs",
+    "scripts/fixtures/wave75-approved-documents.json",
+    "scripts/fixtures/wave75-approved-documents.patch",
+    "scripts/measure-wave75.cjs",
+    "scripts/verify-wave5-boundaries.cjs",
+    "scripts/verify-wave5-documents-browser.cjs",
+    "scripts/verify-wave5-documents.cjs",
+    "scripts/verify-wave5-safety.py",
+    "scripts/verify-wave6-safety.py",
+    "scripts/verify-wave65-safety.py",
+    "scripts/verify-wave66-evidence.py",
+    "scripts/verify-wave66-safety.py",
+    "scripts/verify-wave7-safety.py",
+    "scripts/verify-wave75-browser.cjs",
+    "scripts/verify-wave75-documents.cjs",
+    "scripts/verify-wave75-safety.py",
+    "scripts/wave75_accepted_source.py",
+    "scripts/wave7_accepted_source.py",
+    "supabase/review/wave7_5-admin-documents/README.md",
+    "supabase/review/wave7_5-admin-documents/activation-checklist.md",
+    "supabase/review/wave7_5-admin-documents/assemble.py",
+    "supabase/review/wave7_5-admin-documents/baseline-sha256.json",
+    "supabase/review/wave7_5-admin-documents/document-backend-proposal.sql",
+    "supabase/review/wave7_5-admin-documents/preflight-readonly.sql",
+    "supabase/review/wave7_5-admin-documents/rls-acl-proposal.sql",
+    "supabase/review/wave7_5-admin-documents/rollback.sql",
+    "sw-release-core-v403.js"
+  ]
+}
