@@ -1,0 +1,108 @@
+diff --git a/index.html b/index.html
+index 81e34d81..b8917428 100644
+--- a/index.html
++++ b/index.html
+@@ -26 +26 @@
+-  <link rel="manifest" href="manifest.json?v=4.4.7" />
++  <link rel="manifest" href="manifest.json?v=wave7" />
+@@ -89,0 +90 @@
++  <link rel="stylesheet" href="css/nh7-platform-wave7.css?v=7">
+@@ -163,0 +165 @@
++  <script src="js/nh7-platform-wave7.js?v=7" defer></script>
+diff --git a/manifest.json b/manifest.json
+index 041c6f57..8c0dcf3c 100644
+--- a/manifest.json
++++ b/manifest.json
+@@ -9 +9 @@
+-  "orientation": "portrait",
++  "orientation": "any",
+diff --git a/sw-release-core-v403.js b/sw-release-core-v403.js
+index 9e81ae71..1a2211ff 100644
+--- a/sw-release-core-v403.js
++++ b/sw-release-core-v403.js
+@@ -6 +6 @@ const NH7_RELEASE_CORE_VERSION='5.7.1-user-writing-direction';
+-const NH7_RELEASE_CORE_CACHE='nh7-release-core-v571-wave4-notifications-wave5-documents-wave6-user-app-wave65-security';
++const NH7_RELEASE_CORE_CACHE='nh7-release-core-v571-wave4-notifications-wave5-documents-wave6-user-app-wave65-security-wave7-platform';
+@@ -8,0 +9,2 @@ const NH7_RELEASE_ASSETS=[
++  './js/nh7-platform-wave7.js',
++  './css/nh7-platform-wave7.css',
+@@ -211 +213 @@ self.addEventListener('message',event=>{const data=event.data||{};if(data.type!=
+-const NH7_READER_RELEASE_PATHS_V452=new Set(["js/nh7-library-language-v321.js", "js/nh7-library-security-v125.js", "js/nh7-access-bootstrap-v230.js", "js/nh7-library-collections-v322.js", "js/nh7-book-reader-v283.js", "js/nh7-offline-persistence-v323.js", "js/nh7-community-v502.js", "js/nh7-exam-review-v566.js", "js/app.js", "js/nh7-bible-deeplink-v565.js", "js/nh7-app-enhancements-v230.js", "js/nh7-my-notes-v234.js", "js/nh7-apocrypha-preview-v240.js", "js/nh7-apocrypha-actions-v393.js", "js/nh7-reader-ux-v251.js", "js/nh7-reader-toolbar-v452.js", "js/nh7-my-notes-categories-v452.js", "css/nh7-reader-toolbar-v452.css", "css/nh7-notes-categories-v452.css", "js/nh7-apocrypha-v270.js", "js/nh7-theme-studio-v453.js", "js/nh7-original-language-v453.js", "js/nh7-fonts-v454.js", "js/nh7-audio-quick-bible-v454.js", "css/nh7-theme-studio-v453.css", "css/nh7-study-reader-v453.css", "css/nh7-fonts-quick-bible-v454.css", "data/lexicon/original-language-core-v454.json", "assets/fonts/v453/estedad.woff2", "assets/fonts/v453/inter.woff2", "assets/fonts/v453/lora.woff2", "assets/fonts/v453/manifest.json", "assets/fonts/v453/notonaskharabic.woff2", "assets/fonts/v453/nunitosans.woff2", "assets/fonts/v453/vazirmatn.woff2", "assets/fonts/v454/amiri.woff2", "assets/fonts/v454/manifest.json", "assets/fonts/v454/markazitext.woff2", "js/nh7-header-date-v455.js", "css/nh7-header-date-v455.css", "css/nh7-navigation-v456.css", "css/nh7-theme-gallery-v457.css", "css/nh7-appearance-personalization-v514.css", "css/nh7-icons-v517.css", "css/nh7-player-volume-v521.css", "js/nh7-appearance-personalization-v514.js", "js/nh7-appearance-i18n-v515.js", "js/nh7-icons-v517.js", "js/nh7-celebrations-v464.js", "css/nh7-celebrations-v464.css", "css/nh7-growth-v463.css", "js/nh7-school-path-v351.js", "js/nh7-settings-controller-v403.js", "js/nh7-audio-classic-v484.js", "js/nh7-audio-route-stability-v423.js", "js/nh7-school-drafts-v468.js", "js/nh7-store-review-v469.js", "css/nh7-store-review-v469.css", "js/nh7-soul-winning-v472.js", "css/nh7-soul-winning-v472.css", "js/nh7-adaptive-layout-v570.js"]);
++const NH7_READER_RELEASE_PATHS_V452=new Set(["js/nh7-platform-wave7.js", "css/nh7-platform-wave7.css", "js/nh7-library-language-v321.js", "js/nh7-library-security-v125.js", "js/nh7-access-bootstrap-v230.js", "js/nh7-library-collections-v322.js", "js/nh7-book-reader-v283.js", "js/nh7-offline-persistence-v323.js", "js/nh7-community-v502.js", "js/nh7-exam-review-v566.js", "js/app.js", "js/nh7-bible-deeplink-v565.js", "js/nh7-app-enhancements-v230.js", "js/nh7-my-notes-v234.js", "js/nh7-apocrypha-preview-v240.js", "js/nh7-apocrypha-actions-v393.js", "js/nh7-reader-ux-v251.js", "js/nh7-reader-toolbar-v452.js", "js/nh7-my-notes-categories-v452.js", "css/nh7-reader-toolbar-v452.css", "css/nh7-notes-categories-v452.css", "js/nh7-apocrypha-v270.js", "js/nh7-theme-studio-v453.js", "js/nh7-original-language-v453.js", "js/nh7-fonts-v454.js", "js/nh7-audio-quick-bible-v454.js", "css/nh7-theme-studio-v453.css", "css/nh7-study-reader-v453.css", "css/nh7-fonts-quick-bible-v454.css", "data/lexicon/original-language-core-v454.json", "assets/fonts/v453/estedad.woff2", "assets/fonts/v453/inter.woff2", "assets/fonts/v453/lora.woff2", "assets/fonts/v453/manifest.json", "assets/fonts/v453/notonaskharabic.woff2", "assets/fonts/v453/nunitosans.woff2", "assets/fonts/v453/vazirmatn.woff2", "assets/fonts/v454/amiri.woff2", "assets/fonts/v454/manifest.json", "assets/fonts/v454/markazitext.woff2", "js/nh7-header-date-v455.js", "css/nh7-header-date-v455.css", "css/nh7-navigation-v456.css", "css/nh7-theme-gallery-v457.css", "css/nh7-appearance-personalization-v514.css", "css/nh7-icons-v517.css", "css/nh7-player-volume-v521.css", "js/nh7-appearance-personalization-v514.js", "js/nh7-appearance-i18n-v515.js", "js/nh7-icons-v517.js", "js/nh7-celebrations-v464.js", "css/nh7-celebrations-v464.css", "css/nh7-growth-v463.css", "js/nh7-school-path-v351.js", "js/nh7-settings-controller-v403.js", "js/nh7-audio-classic-v484.js", "js/nh7-audio-route-stability-v423.js", "js/nh7-school-drafts-v468.js", "js/nh7-store-review-v469.js", "css/nh7-store-review-v469.css", "js/nh7-soul-winning-v472.js", "css/nh7-soul-winning-v472.css", "js/nh7-adaptive-layout-v570.js"]);
+diff --git a/js/nh7-platform-wave7.js b/js/nh7-platform-wave7.js
+new file mode 100644
+index 00000000..878d212e
+--- /dev/null
++++ b/js/nh7-platform-wave7.js
+@@ -0,0 +1,34 @@
++/* Shared presentation geometry only. Current router, v570 navigation and v558 media dock own behavior. */
++(()=>{'use strict';
++if(window.NH7PlatformWave7)return;
++const root=document.documentElement;let frame=0,started=false,frames=0,observations=0;
++function set(name,value){if(root.style.getPropertyValue(name)!==value)root.style.setProperty(name,value)}
++function measure(){
++ frame=0;frames++;
++ let platform='web';try{platform=window.Capacitor?.getPlatform?.()||window.cordova?.platformId||'web'}catch(_){}
++ root.classList.toggle('nh7-platform-native',platform==='ios'||platform==='android');
++ const height=Math.min(innerHeight,window.visualViewport?.height||innerHeight);
++ if(height>0)set('--nh7-platform-height',Math.round(height)+'px');
++ for(const [name,selector]of [['header','.topbar'],['nav','.bottom-nav']]){
++  const box=document.querySelector('#appShell > '+selector)?.getBoundingClientRect();
++  if(box?.height)set('--nh7-platform-'+name,Math.ceil(box.height)+'px');
++ }
++ root.classList.add('nh7-platform-ready');
++}
++function schedule(){if(!frame)frame=requestAnimationFrame(measure)}
++function start(){
++ if(started)return;started=true;
++ const header=document.querySelector('#appShell > .topbar'),nav=document.querySelector('#appShell > .bottom-nav');
++ if(window.ResizeObserver){const observer=new ResizeObserver(()=>{observations++;schedule()});if(header)observer.observe(header);if(nav)observer.observe(nav)}
++ schedule();
++}
++window.NH7PlatformWave7={refresh:schedule,metrics:()=>({frames,observations,started})};
++addEventListener('resize',schedule,{passive:true});addEventListener('orientationchange',schedule,{passive:true});
++addEventListener('pageshow',schedule,{passive:true});
++addEventListener('nh7-route-changed-wave6',()=>{if(root.classList.contains('nh7-platform-native')){const view=document.getElementById('view');if(view)view.scrollTop=0}schedule()});
++window.visualViewport?.addEventListener('resize',schedule,{passive:true});
++window.visualViewport?.addEventListener('scroll',schedule,{passive:true});
++document.addEventListener('visibilitychange',()=>{if(!document.hidden)schedule()});
++document.addEventListener('deviceready',schedule,{once:true});
++if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
++})();
+diff --git a/css/nh7-platform-wave7.css b/css/nh7-platform-wave7.css
+new file mode 100644
+index 00000000..fbae7aaa
+--- /dev/null
++++ b/css/nh7-platform-wave7.css
+@@ -0,0 +1,31 @@
++/* Geometry only; current semantic palette, phone routes and wide Web rail remain canonical. */
++:root {--nh7-platform-safe-top:var(--safe-area-inset-top,env(safe-area-inset-top,0px));--nh7-platform-safe-bottom:var(--safe-area-inset-bottom,env(safe-area-inset-bottom,0px));--nh7-platform-safe-left:var(--safe-area-inset-left,env(safe-area-inset-left,0px));--nh7-platform-safe-right:var(--safe-area-inset-right,env(safe-area-inset-right,0px))}
++.nh7-platform-ready #appShell > .topbar {padding-top:calc(12px + var(--nh7-platform-safe-top))!important;padding-left:max(14px,var(--nh7-platform-safe-left))!important;padding-right:max(14px,var(--nh7-platform-safe-right))!important}
++.nh7-platform-ready #appShell > .view {min-width:0}
++.nh7-platform-ready .topbar :is(button,select) {min-height:44px}
++.nh7-platform-ready :is(button,a,input,select,textarea,[tabindex]):focus-visible {outline:3px solid var(--brand,#1d4ed8);outline-offset:3px}
++@media(min-width:600px){
++ .nh7-platform-ready #appShell > .bottom-nav {inset-block-start:calc(var(--nh7-platform-header,120px) + 8px);max-height:calc(var(--nh7-platform-height,100dvh) - var(--nh7-platform-header,120px) - var(--nh7-platform-safe-bottom) - 24px)}
++ .nh7-platform-ready .nh7-adaptive570-sidebar {top:calc(var(--nh7-platform-header,120px) + 12px);max-height:calc(var(--nh7-platform-height,100dvh) - var(--nh7-platform-header,120px) - 28px)}
++}
++/* Short windows use the same six canonical controls in one bottom row, never a clipped rail. */
++@media(min-width:600px) and (max-height:550px){
++ .nh7-platform-ready #appShell > .bottom-nav {display:grid;grid-template-columns:repeat(6,minmax(0,1fr));position:fixed;inset:auto 0 0;transform:none;margin-inline:auto;width:100%;max-width:1500px;height:auto;max-height:none;border-radius:0;padding:6px max(8px,var(--nh7-platform-safe-right)) calc(6px + var(--nh7-platform-safe-bottom)) max(8px,var(--nh7-platform-safe-left));gap:2px}
++ .nh7-platform-ready .bottom-nav .nav-item {min-height:44px;min-width:0;padding:4px 2px;gap:2px}
++ .nh7-platform-ready .bottom-nav .nav-item small {font-size:11px;line-height:1.25;white-space:normal;overflow-wrap:anywhere}
++ .nh7-platform-ready #appShell > .view {padding-inline:14px;padding-bottom:calc(var(--nh7-platform-nav,76px) + 20px)}
++ .nh7-platform-ready.nh7p500-active .nh7p500 {bottom:calc(var(--nh7-platform-nav,76px) + 3px)!important;inset-inline:14px}
++}
++/* WKWebView/WebView source contract: explicit inset-owning rows; only the content scrolls.
++   No contentInset assumption, touch cancellation, external filler or hard navigation height cap. */
++html.nh7-platform-native,html.nh7-platform-native body {height:100%;overflow:hidden;background:var(--card,#fff)}
++.nh7-platform-native #appShell:not(.hidden) {display:grid!important;grid-template-rows:auto minmax(0,1fr) auto;height:var(--nh7-platform-height,100svh);min-height:0;padding:0;overflow:hidden;background:var(--card,#fff)}
++.nh7-platform-native #appShell > .topbar {position:relative;inset:auto;transform:none;width:100%;margin:0;border-radius:0;background:var(--card,#fff);background-image:none}
++.nh7-platform-native #appShell > .view {min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:12px max(14px,var(--nh7-platform-safe-right)) 16px max(14px,var(--nh7-platform-safe-left))}
++.nh7-platform-native #appShell > .bottom-nav {position:relative;inset:auto;transform:none;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));width:100%;height:auto;min-height:0;max-height:none;margin:0;padding:6px max(8px,var(--nh7-platform-safe-right)) calc(6px + var(--nh7-platform-safe-bottom)) max(8px,var(--nh7-platform-safe-left));gap:2px;border-radius:0;overflow:visible;background:var(--card,#fff);background-image:none}
++.nh7-platform-native #appShell > .bottom-nav .nav-item {height:auto;min-height:44px;min-width:0;padding:4px 2px;gap:2px}
++.nh7-platform-native #appShell > .bottom-nav .nav-item small {font-size:11px;line-height:1.25;white-space:normal;overflow-wrap:anywhere}
++.nh7-platform-native.nh7p500-active .nh7p500 {bottom:calc(var(--nh7-platform-nav,76px) + 3px)!important;inset-inline:max(14px,var(--nh7-platform-safe-left)) max(14px,var(--nh7-platform-safe-right));max-width:none;width:auto}
++.nh7-platform-native #view .nh7-plans-tabs {position:relative!important;top:auto!important;z-index:1;margin-top:0}
++.nh7-platform-native .nh7-adaptive570-sidebar {top:8px;max-height:calc(var(--nh7-platform-height,100svh) - var(--nh7-platform-header,120px) - var(--nh7-platform-nav,76px) - 32px)}
++@media(prefers-reduced-motion:reduce){.nh7-platform-ready :focus-visible {scroll-behavior:auto}}

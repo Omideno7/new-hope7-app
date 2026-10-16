@@ -1,0 +1,58 @@
+{
+  "base": "8bdb9a0cad807440b36bdca7c5a6f53562cc9e70",
+  "existing_runtime": {
+    "index.html": {
+      "before": "d824f1e7127e0573306d95a202f790b7295057f7f9b393b7f63d73b065aa9380",
+      "after": "68159a6792d141c21edab4785facd2d03dcae8ff57089afc16d6507aee3fd98c"
+    },
+    "manifest.json": {
+      "before": "770391c76b722386ba41e6150de16d0b5866d1fa0f2a47e3b2dc9d1644e8772f",
+      "after": "7e4f3ee9be7538f738399a8b6a6d4755164eb8eec8793a2326ccb087d5cf62bc"
+    },
+    "sw-release-core-v403.js": {
+      "before": "966a2452bc87a291f712c3036245c2754f11130a0b580419afe6e36f2c361486",
+      "after": "a20a5e977ae054b09582d94cb46741a9ecbf92b3aa2677c98f912212e80d6d08"
+    }
+  },
+  "new_runtime": {
+    "js/nh7-platform-wave7.js": "053d4d2ee29202d82c25e250fd3116dab2a1f9bc51a65dd3f4b73b51a4c8445c",
+    "css/nh7-platform-wave7.css": "a91bc75d9c6f287f6d26ca332770d6e7f053e9b6f4e8fdcab8a0218a700c5956"
+  },
+  "patch_sha256": "9c2efb2c2ecf77ebfacc7ef81f98a6a0ac321ead7f5160b5c5f0125aa654a495",
+  "approved_paths": [
+    ".github/workflows/validate-develop.yml",
+    "css/nh7-platform-wave7.css",
+    "docs/qa/CODEX_WAVE7_PLATFORM_COMPLETION_CONVERGENCE.md",
+    "docs/qa/WAVE7_HISTORICAL_PLATFORM_CONVERGENCE.md",
+    "docs/qa/WAVE7_NATIVE_ASSET_INVENTORY.md",
+    "docs/qa/WAVE7_PLATFORM_COMPLETION_AUDIT.md",
+    "docs/qa/WAVE7_PLATFORM_COMPLETION_REPORT.md",
+    "docs/qa/WAVE7_PLATFORM_MEASUREMENTS.json",
+    "docs/qa/WAVE7_WATCHOS_CONVERGENCE.md",
+    "index.html",
+    "js/nh7-platform-wave7.js",
+    "manifest.json",
+    "scripts/build-watch-bible-wave7.py",
+    "scripts/fixtures/wave7-approved-platform.json",
+    "scripts/fixtures/wave7-approved-platform.patch",
+    "scripts/measure-wave7.cjs",
+    "scripts/verify-wave5-safety.py",
+    "scripts/verify-wave6-safety.py",
+    "scripts/verify-wave65-safety.py",
+    "scripts/verify-wave66-safety.py",
+    "scripts/verify-wave7-platform-browser.cjs",
+    "scripts/verify-wave7-safety.py",
+    "scripts/verify-wave7-watch.py",
+    "scripts/wave65_accepted_source.py",
+    "scripts/wave7_accepted_source.py",
+    "sw-release-core-v403.js",
+    "watchos/.gitignore",
+    "watchos/NewHope7Watch/Audio.swift",
+    "watchos/NewHope7Watch/Bible.swift",
+    "watchos/NewHope7Watch/Info.plist",
+    "watchos/NewHope7Watch/NewHope7WatchApp.swift",
+    "watchos/README.md",
+    "watchos/project.yml"
+  ],
+  "reason": "Narrow new presentation module, orientation and executable-only asset epoch; no existing runtime business/persistence/backend logic changed. All previous assertions retained through hash-bound prior-byte adapters."
+}

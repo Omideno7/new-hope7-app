@@ -150,6 +150,17 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/canonical-tools" --no-audit --no-fund playwright@1.62.1 @electric-sql/pglite@0.3.14 jsqr@1.4.0 pngjs@7.0.0
           "$RUNNER_TEMP/canonical-tools/node_modules/.bin/playwright" install --with-deps chromium
 
+      - name: Validate Wave 7 platform and safe Watch source contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/run-ci-check.py node --check js/nh7-platform-wave7.js
+          python3 scripts/run-ci-check.py node --check sw-release-core-v403.js
+          python3 scripts/run-ci-check.py node --check scripts/verify-wave7-platform-browser.cjs
+          python3 scripts/run-ci-check.py node --check scripts/measure-wave7.cjs
+          python3 scripts/run-ci-check.py python3 scripts/verify-wave7-safety.py
+          python3 scripts/run-ci-check.py python3 scripts/verify-wave7-watch.py
+
       - name: Verify Wave 6.5 source-only security and synthetic backend contracts
         run: |
           export NODE_PATH="$RUNNER_TEMP/canonical-tools/node_modules"
@@ -197,6 +208,7 @@ jobs:
           export CHROMIUM_PATH="$(node -e "console.log(require('playwright').chromium.executablePath())")"
           python3 -m http.server 8878 --bind 127.0.0.1 > "$RUNNER_TEMP/canonical-server.log" 2>&1 &
           python3 scripts/run-ci-check.py node scripts/verify-profile-search-inbox-qa.cjs http://127.0.0.1:8878
+          python3 scripts/run-ci-check.py node scripts/verify-wave7-platform-browser.cjs http://127.0.0.1:8878
           python3 scripts/run-ci-check.py node scripts/verify-wave65-browser.cjs http://127.0.0.1:8878
           python3 scripts/run-ci-check.py node scripts/verify-wave65-signup.cjs http://127.0.0.1:8878
           python3 scripts/run-ci-check.py node scripts/verify-sermon-note-direction.cjs http://127.0.0.1:8878
@@ -264,4 +276,22 @@ jobs:
         with:
           name: wave66-measurements-${{ github.sha }}
           path: ${{ runner.temp }}/wave66-measurements.json
+          retention-days: 14
+
+      - name: Measure Wave 7 platform idle, listeners and transitions against exact baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          export NODE_PATH="$RUNNER_TEMP/canonical-tools/node_modules"
+          export CHROMIUM_PATH="$(node -e "console.log(require('playwright').chromium.executablePath())")"
+          mkdir -p "$RUNNER_TEMP/wave7-baseline"
+          git archive 8bdb9a0cad807440b36bdca7c5a6f53562cc9e70 | tar -x -C "$RUNNER_TEMP/wave7-baseline"
+          python3 -m http.server 8890 --bind 127.0.0.1 --directory "$RUNNER_TEMP/wave7-baseline" > "$RUNNER_TEMP/wave7-baseline.log" 2>&1 &
+          python3 scripts/run-ci-check.py node scripts/measure-wave7.cjs http://127.0.0.1:8878 http://127.0.0.1:8890 "$RUNNER_TEMP/wave7-measurements.json"
+
+      - name: Upload exact-head Wave 7 measurements
+        uses: actions/upload-artifact@v4
+        with:
+          name: wave7-measurements-${{ github.sha }}
+          path: ${{ runner.temp }}/wave7-measurements.json
           retention-days: 14

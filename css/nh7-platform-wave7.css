@@ -1,0 +1,31 @@
+/* Geometry only; current semantic palette, phone routes and wide Web rail remain canonical. */
+:root {--nh7-platform-safe-top:var(--safe-area-inset-top,env(safe-area-inset-top,0px));--nh7-platform-safe-bottom:var(--safe-area-inset-bottom,env(safe-area-inset-bottom,0px));--nh7-platform-safe-left:var(--safe-area-inset-left,env(safe-area-inset-left,0px));--nh7-platform-safe-right:var(--safe-area-inset-right,env(safe-area-inset-right,0px))}
+.nh7-platform-ready #appShell > .topbar {padding-top:calc(12px + var(--nh7-platform-safe-top))!important;padding-left:max(14px,var(--nh7-platform-safe-left))!important;padding-right:max(14px,var(--nh7-platform-safe-right))!important}
+.nh7-platform-ready #appShell > .view {min-width:0}
+.nh7-platform-ready .topbar :is(button,select) {min-height:44px}
+.nh7-platform-ready :is(button,a,input,select,textarea,[tabindex]):focus-visible {outline:3px solid var(--brand,#1d4ed8);outline-offset:3px}
+@media(min-width:600px){
+ .nh7-platform-ready #appShell > .bottom-nav {inset-block-start:calc(var(--nh7-platform-header,120px) + 8px);max-height:calc(var(--nh7-platform-height,100dvh) - var(--nh7-platform-header,120px) - var(--nh7-platform-safe-bottom) - 24px)}
+ .nh7-platform-ready .nh7-adaptive570-sidebar {top:calc(var(--nh7-platform-header,120px) + 12px);max-height:calc(var(--nh7-platform-height,100dvh) - var(--nh7-platform-header,120px) - 28px)}
+}
+/* Short windows use the same six canonical controls in one bottom row, never a clipped rail. */
+@media(min-width:600px) and (max-height:550px){
+ .nh7-platform-ready #appShell > .bottom-nav {display:grid;grid-template-columns:repeat(6,minmax(0,1fr));position:fixed;inset:auto 0 0;transform:none;margin-inline:auto;width:100%;max-width:1500px;height:auto;max-height:none;border-radius:0;padding:6px max(8px,var(--nh7-platform-safe-right)) calc(6px + var(--nh7-platform-safe-bottom)) max(8px,var(--nh7-platform-safe-left));gap:2px}
+ .nh7-platform-ready .bottom-nav .nav-item {min-height:44px;min-width:0;padding:4px 2px;gap:2px}
+ .nh7-platform-ready .bottom-nav .nav-item small {font-size:11px;line-height:1.25;white-space:normal;overflow-wrap:anywhere}
+ .nh7-platform-ready #appShell > .view {padding-inline:14px;padding-bottom:calc(var(--nh7-platform-nav,76px) + 20px)}
+ .nh7-platform-ready.nh7p500-active .nh7p500 {bottom:calc(var(--nh7-platform-nav,76px) + 3px)!important;inset-inline:14px}
+}
+/* WKWebView/WebView source contract: explicit inset-owning rows; only the content scrolls.
+   No contentInset assumption, touch cancellation, external filler or hard navigation height cap. */
+html.nh7-platform-native,html.nh7-platform-native body {height:100%;overflow:hidden;background:var(--card,#fff)}
+.nh7-platform-native #appShell:not(.hidden) {display:grid!important;grid-template-rows:auto minmax(0,1fr) auto;height:var(--nh7-platform-height,100svh);min-height:0;padding:0;overflow:hidden;background:var(--card,#fff)}
+.nh7-platform-native #appShell > .topbar {position:relative;inset:auto;transform:none;width:100%;margin:0;border-radius:0;background:var(--card,#fff);background-image:none}
+.nh7-platform-native #appShell > .view {min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:12px max(14px,var(--nh7-platform-safe-right)) 16px max(14px,var(--nh7-platform-safe-left))}
+.nh7-platform-native #appShell > .bottom-nav {position:relative;inset:auto;transform:none;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));width:100%;height:auto;min-height:0;max-height:none;margin:0;padding:6px max(8px,var(--nh7-platform-safe-right)) calc(6px + var(--nh7-platform-safe-bottom)) max(8px,var(--nh7-platform-safe-left));gap:2px;border-radius:0;overflow:visible;background:var(--card,#fff);background-image:none}
+.nh7-platform-native #appShell > .bottom-nav .nav-item {height:auto;min-height:44px;min-width:0;padding:4px 2px;gap:2px}
+.nh7-platform-native #appShell > .bottom-nav .nav-item small {font-size:11px;line-height:1.25;white-space:normal;overflow-wrap:anywhere}
+.nh7-platform-native.nh7p500-active .nh7p500 {bottom:calc(var(--nh7-platform-nav,76px) + 3px)!important;inset-inline:max(14px,var(--nh7-platform-safe-left)) max(14px,var(--nh7-platform-safe-right));max-width:none;width:auto}
+.nh7-platform-native #view .nh7-plans-tabs {position:relative!important;top:auto!important;z-index:1;margin-top:0}
+.nh7-platform-native .nh7-adaptive570-sidebar {top:8px;max-height:calc(var(--nh7-platform-height,100svh) - var(--nh7-platform-header,120px) - var(--nh7-platform-nav,76px) - 32px)}
+@media(prefers-reduced-motion:reduce){.nh7-platform-ready :focus-visible {scroll-behavior:auto}}

@@ -16,6 +16,8 @@ allowed.update(manifest()['existing_ui_files']);allowed.update(manifest()['new_u
 from wave65_accepted_source import manifest as security_manifest
 allowed.update(security_manifest()['approved_paths'])
 allowed.update(json.loads(Path('scripts/fixtures/wave66-approved-review.json').read_text())['approved_paths'])
+from wave7_accepted_source import manifest as platform_manifest
+allowed.update(platform_manifest()['approved_paths'])
 for name in files:assert name in allowed or name.startswith(('scripts/verify-wave6','scripts/measure-wave6')) or name.startswith(('js/document-studio-v2/','supabase/review/wave5-document-studio-v2/','scripts/document-studio-v2/','scripts/verify-wave5','scripts/measure-wave5','docs/qa/WAVE5_DOCUMENT_STUDIO_')),f'Unexpected scope: {name}'
 for file,module in [('admin.html','admin-entry'),('index.html','archive-entry')]:
  s=accepted_bytes(file).decode().replace('  <script type="module" src="js/document-studio-v2/'+module+'.mjs?v=wave5"></script>\n','');assert s.encode()==old(file),'Only additive current page entry permitted'
