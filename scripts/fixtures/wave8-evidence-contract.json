@@ -15,6 +15,7 @@
     "js/app.js",
     "scripts/fixtures/wave8-approved-reconnect.patch",
     "scripts/fixtures/wave8-evidence-contract.json",
+    "scripts/measure-wave65.cjs",
     "scripts/measure-wave8.cjs",
     "scripts/verify-wave5-safety.py",
     "scripts/verify-wave6-navigation-search.cjs",
@@ -61,5 +62,27 @@
       "after": "365ee358a8a152d8f40e148669270fe5377a7cc6c41e032c68c7045531afee5a"
     }
   },
-  "patch_sha256": "019ae078656e71e6fda590741eed30264c82193a17a92b81e8a2b4c2fe67b129"
+  "patch_sha256": "019ae078656e71e6fda590741eed30264c82193a17a92b81e8a2b4c2fe67b129",
+  "measurement_readiness_replacements": [
+    [
+      "const {calls}=await user.intercept(ctx,base);",
+      "const {calls,state:fixtureState}=await user.intercept(ctx,base);fixtureState.delay=async({name})=>{if(name==='nh7_inbox_snapshot_v419')await new Promise(resolve=>setTimeout(resolve,500))};"
+    ],
+    [
+      "remote_requests:calls.length});",
+      "remote_requests:calls.length,request_names:calls.map(x=>x.name)});"
+    ],
+    [
+      "const page=await ac.newPage();await page.goto",
+      "const page=await ac.newPage();let lastAdminRequest=Date.now();page.on('request',r=>{if(!r.url().startsWith(base+'/'))lastAdminRequest=Date.now()});await page.goto"
+    ],
+    [
+      "await page.waitForTimeout(2000);n=adminCalls.length;",
+      "lastAdminRequest=Date.now();const settleDeadline=Date.now()+15000;while(Date.now()-lastAdminRequest<2000){assert.ok(Date.now()<settleDeadline,'Admin bootstrap must quiesce within15s; polling cannot be ignored');await page.waitForTimeout(100)}n=adminCalls.length;"
+    ],
+    [
+      "const [baseline,current]=await Promise.all([measure(before),measure(after)]);",
+      "const [baseline,current]=await Promise.all([measure(before),measure(after)]);console.log('STARTUP',JSON.stringify({baseline:baseline.steps[0],current:current.steps[0]}));"
+    ]
+  ]
 }

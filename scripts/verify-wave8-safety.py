@@ -30,6 +30,10 @@ for path in ['js/nh7-audio-classic-v484.js','js/nh7-audio-library-v500.js','js/n
 for p in ['document-studio.html','document-output.html','document-verify.html','my-documents.html','index.html','admin.html']:
  assert 'NH7_DOCUMENT_STUDIO_V2_BACKEND_READY=true' not in Path(p).read_text(),p
 assert not any('ios-release' in p or 'DerivedData' in p or p.endswith(('.ipa','.apk','.aab','.p12','.keystore','.mobileprovision','.pyc')) for p in changed)
+measurement=subprocess.check_output(['git','show',BASE+':scripts/measure-wave65.cjs']).decode()
+for before,after in m['measurement_readiness_replacements']:
+ assert measurement.count(before)==1;measurement=measurement.replace(before,after)
+assert Path('scripts/measure-wave65.cjs').read_text()==measurement,'Only symmetric fixture latency, bounded bootstrap readiness and diagnostics; every original measurement assertion unchanged'
 test_path='scripts/verify-wave6-navigation-search.cjs'
 old_test=subprocess.check_output(['git','show',BASE+':'+test_path]).decode()
 ready_old='async function query(value){await p.evaluate'
