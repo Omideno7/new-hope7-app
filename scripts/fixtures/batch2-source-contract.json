@@ -44,6 +44,7 @@
     "scripts/batch2_accepted_source.py",
     "scripts/fixtures/batch2-approved-ui.patch",
     "scripts/fixtures/batch2-source-contract.json",
+    "scripts/measure-wave75.cjs",
     "scripts/verify-batch1-safety.py",
     "scripts/verify-batch2-browser.cjs",
     "scripts/verify-batch2-safety.py",

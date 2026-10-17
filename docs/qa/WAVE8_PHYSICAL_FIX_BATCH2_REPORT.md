@@ -40,6 +40,7 @@ QA/documentation:
 - `scripts/batch2_accepted_source.py`, `scripts/fixtures/batch2-source-contract.json`, `scripts/fixtures/batch2-approved-ui.patch`: full before/after hashes and exact reversible UI delta for historical freeze guards.
 - `scripts/batch1_accepted_source.py`, `scripts/verify-batch1-safety.py`, `scripts/verify-wave7-safety.py`: feed historical assertions their exact prior accepted bytes after independently checking Batch2 delta; original frozen assertions/fixtures remain intact and functional tests run actual current code.
 - `scripts/verify-wave7-platform-browser.cjs`, `scripts/verify-profile-search-inbox-qa.cjs`: update obsolete duplicate-Home-image selectors to the visible canonical header image on Home; retain exact photo bytes, persistence, actor isolation and all keyboard focus assertions; add visible/single-avatar assertions.
+- `scripts/measure-wave75.cjs`: isolate baseline/current Admin startup and each full 60s idle window from sibling app/output popup workloads; retain every raw request, zero-idle assertion and unchanged `current <= baseline` ceiling; log both complete Admin traces. No app/Admin runtime change.
 - `scripts/verify-responsive-v570.mjs`: adds Daily eligibility assertion alongside existing Bible/Audio/phone/no-I/O assertions.
 - This report and `docs/qa/WAVE8_PHYSICAL_FIX_BATCH2_AUDIT.md`.
 
@@ -59,3 +60,9 @@ Migration parity: **42/42 raw-hash exact**, missing checkpoint files 0. Existing
 - Browser synthetic viewport/capacitor probes are source/geometry evidence only. No physical device, native audio/keyboard, battery/thermal, Store delivery or real offline download PASS is claimed.
 
 Stop after Batch2. Later device QA must identify exact installed source SHA and wrapper provenance; green CI does not authorize deployment or integration into main.
+
+## Measurement harness follow-up
+
+CI exposed an existing Admin startup comparison race while six app/Admin/output contexts ran concurrently: legacy Admin pageshow/visibility resume handlers can refresh loaded product state, making unequal startup scheduling an invalid isolated-cost comparison. All Admin runtime/entrypoint bytes remain unchanged since accepted Batch1. Two sequential isolated diagnostic pairs gave baseline/current 66/66 requests each; the previous concurrent local run had baseline 48/current 30. The Wave75 harness now measures Admin pairs separately before opening unrelated app/document popup workloads, preserving the full 60s idle window, all raw counts and the identical startup ceiling. No requests are filtered out, no assertion/expected count is relaxed, and no real Admin behavior is changed. All six workload reports remain required.
+
+Local full isolated Wave75 rerun passed: Admin startup baseline/current 65/65, each real 60s Admin idle 0 requests; visible/hidden/audio60 analytics 0; app resume/account fences and real PDF/print assertions retained. Final clean exact-head CI remains the delivery gate.
