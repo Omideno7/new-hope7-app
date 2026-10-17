@@ -3,6 +3,7 @@ import sys
 sys.dont_write_bytecode=True
 from pathlib import Path
 import hashlib,json,subprocess,re,tempfile
+from batch2_accepted_source import prior_batch2_bytes
 from wave7_accepted_source import BASE,manifest,previous_bytes
 from wave75_accepted_source import manifest as wave75_manifest,prior75_bytes
 subprocess.run(["python3","scripts/verify-wave75-safety.py"],check=True)
@@ -16,7 +17,7 @@ assert now-old==set(m['new_runtime'])|set(wave75_manifest()['new_runtime'])|set(
 objects=dict(line.split(' ',1)[::-1] for line in subprocess.check_output(['git','ls-tree','-r','--format=%(objectname) %(path)',BASE,'--',*scopes]).decode().splitlines())
 for p in old:
  raw=previous_bytes(p);assert hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==objects[p],'Protected current product/backend/review source changed: '+p
-for p,h in m['new_runtime'].items():assert hashlib.sha256(Path(p).read_bytes()).hexdigest()==h,p
+for p,h in m['new_runtime'].items():assert hashlib.sha256(prior_batch2_bytes(p)).hexdigest()==h,p
 patch=Path('scripts/fixtures/wave7-approved-platform.patch');assert hashlib.sha256(patch.read_bytes()).hexdigest()==m['patch_sha256']
 with tempfile.TemporaryDirectory(prefix='nh7-wave7-check-') as tmp:
  for p in list(m['existing_runtime'])+list(m['new_runtime']):

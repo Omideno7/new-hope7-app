@@ -4,6 +4,8 @@ sys.dont_write_bytecode=True
 from pathlib import Path
 import hashlib,subprocess,tempfile
 from batch1_accepted_source import BASE,contract,prior_batch1_bytes
+from batch2_accepted_source import prior_batch2_bytes
+subprocess.run(['python3','scripts/verify-batch2-safety.py'],check=True)
 m=contract();assert m['base']==BASE
 expected={'js/app.js','js/nh7-soul-winning-v472.js','js/nh7-admin-workspace-wave3.js','js/nh7-user-context-wave6.js','js/document-studio-v2/admin-entry.mjs','js/document-studio-v2/editor.mjs','css/styles.css'}
 assert set(m['runtime'])==expected
@@ -12,7 +14,7 @@ assert changed<=set(m['approved_paths']),changed-set(m['approved_paths'])
 patch=Path('scripts/fixtures/batch1-approved-ui.patch');assert hashlib.sha256(patch.read_bytes()).hexdigest()==m['patch_sha256']
 with tempfile.TemporaryDirectory(prefix='nh7-batch1-inverse-') as temp:
  for p in expected:
-  prior_batch1_bytes(p);out=Path(temp)/p;out.parent.mkdir(parents=True,exist_ok=True);out.write_bytes(Path(p).read_bytes())
+  prior_batch1_bytes(p);out=Path(temp)/p;out.parent.mkdir(parents=True,exist_ok=True);out.write_bytes(prior_batch2_bytes(p))
  subprocess.run(['git','apply','--reverse','--check','--unidiff-zero',str(patch.resolve())],cwd=temp,check=True)
 # No backend, media engine, user-data or wrapper exception.
 assert not subprocess.check_output(['git','diff',BASE,'--','supabase','data','public','watchos','service-worker.js','sw-release-core-v403.js','js/nh7-profile-photo-v564.js','js/nh7-local-first-wave2.js','js/nh7-audio-classic-v484.js','js/nh7-audio-library-v500.js','js/nh7-media-player-v500.js','js/nh7-admin-rbac-v350.js'])

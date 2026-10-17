@@ -268,6 +268,17 @@ jobs:
           python3 scripts/run-ci-check.py node scripts/verify-batch1-browser.cjs http://127.0.0.1:8878
           git diff --check
 
+      - name: Validate Batch 2 responsive hierarchy and media presentation
+        run: |
+          export NODE_PATH="$RUNNER_TEMP/canonical-tools/node_modules"
+          export CHROMIUM_PATH="$(node -e "console.log(require('playwright').chromium.executablePath())")"
+          python3 scripts/run-ci-check.py python3 scripts/verify-batch2-safety.py
+          for source in js/app.js js/nh7-adaptive-layout-v570.js js/nh7-audio-quick-bible-v454.js js/nh7-spiritual-plans-v240.js js/nh7-reader-ux-v251.js scripts/verify-batch2-browser.cjs; do
+            python3 scripts/run-ci-check.py node --check "$source"
+          done
+          python3 scripts/run-ci-check.py node scripts/verify-batch2-browser.cjs http://127.0.0.1:8878
+          git diff --check
+
       - name: Preserve current School reports, PDF, Print and Community document paths
         run: |
           export NODE_PATH="$RUNNER_TEMP/canonical-tools/node_modules"

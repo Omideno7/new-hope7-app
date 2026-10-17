@@ -1,4 +1,4 @@
-/* Quick Bible: separate dialog; never navigates, pauses, replaces or recreates audio. */
+/* Quick Bible: in-flow lookup; never navigates, pauses, replaces or recreates audio. */
 (()=>{'use strict';if(window.NH7QuickBibleV454)return;
 const KEY='nh7_quick_bible_place_v454';let modal=null,origin=null,books=[],chapterRows=[],requestId=0,scheduled=false;
 const lang=()=>['fa','en','hr'].includes(localStorage.getItem('nh7_lang'))?localStorage.getItem('nh7_lang'):'en';
@@ -8,7 +8,7 @@ const num=v=>lang()==='fa'?String(v).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d])
 const normalize=v=>String(v).normalize('NFKD').replace(/\p{M}/gu,'').replace(/[يى]/g,'ی').replace(/ك/g,'ک').replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\s+/g,' ').trim().toLowerCase();
 const query=s=>modal?.querySelector(s),title=()=>L('کتاب مقدس کنار پلیر','Bible beside the player','Biblija uz reprodukciju');
 function place(){try{const p=JSON.parse(localStorage.getItem(KEY)||'{}');return{bookId:books.some(b=>b.id===p.bookId)?p.bookId:'JHN',chapter:Number.isInteger(p.chapter)?p.chapter:3,verse:Number.isInteger(p.verse)?p.verse:16}}catch(_){return{bookId:'JHN',chapter:3,verse:16}}}
-function close(){requestId++;if(modal){modal.close();modal.remove();modal=null}if(origin?.isConnected)try{origin.focus({preventScroll:true})}catch(_){}}
+function close(restore=true){requestId++;const controls=document.querySelector('.batch2-playback-controls');if(controls){controls.before(...controls.childNodes);controls.remove()}if(modal){modal.remove();modal=null}if(restore!==false&&origin?.isConnected)try{origin.focus({preventScroll:true})}catch(_){}}
 function status(text){const n=query('[data-quick-status454]');if(n)n.textContent=text}
 function options(select,max,value){select.innerHTML=Array.from({length:max},(_,i)=>`<option value="${i+1}">${num(i+1)}</option>`).join('');select.value=String(Math.max(1,Math.min(max,value||1)))}
 async function chapter(bookId,chapterNumber,verseNumber){
@@ -45,10 +45,10 @@ async function findReference(){
 }
 async function open(button){
  if(modal){modal.focus();return}origin=button||document.activeElement;const locale=lang();
- modal=document.createElement('dialog');modal.id='nh7QuickBible454';modal.className='nh7-quick-bible454';modal.dir=locale==='fa'?'rtl':'ltr';modal.setAttribute('aria-labelledby','nh7QuickTitle454');
+ modal=document.createElement('section');modal.id='nh7QuickBible454';modal.className='nh7-quick-bible454';modal.dir=locale==='fa'?'rtl':'ltr';modal.setAttribute('aria-labelledby','nh7QuickTitle454');
  modal.innerHTML=`<header><h2 id="nh7QuickTitle454">📖 ${E(title())}</h2><button type="button" class="secondary-btn" data-quick-close454 aria-label="${E(L('بازگشت به پلیر','Back to player','Povratak na reprodukciju'))}">×</button></header><p class="muted">${E(L('هم‌زمان با گوش‌دادن، آیه را پیدا کن؛ از صفحهٔ صوت خارج نمی‌شوی.','Find a verse while listening, without leaving the audio page.','Pronađite redak dok slušate, bez napuštanja audio stranice.'))}</p><form data-quick-form454><label>${E(L('آدرس آیه','Verse reference','Navod retka'))}<input data-quick-reference454 type="search" maxlength="100" placeholder="${E(L('یوحنا ۳:۱۶','John 3:16','Ivan 3:16'))}" autocomplete="off"></label><button type="submit" class="primary-btn">${E(L('یافتن','Find','Pronađi'))}</button></form><div class="nh7-quick-pickers454"><label>${E(L('کتاب','Book','Knjiga'))}<select data-quick-book454></select></label><label>${E(L('باب','Chapter','Poglavlje'))}<select data-quick-chapter454></select></label><label>${E(L('آیه','Verse','Redak'))}<select data-quick-verse454></select></label></div><p data-quick-status454 role="status" aria-live="polite"></p><section data-quick-content454 aria-live="polite"></section><footer><button type="button" class="secondary-btn" data-quick-prev454>‹ ${E(L('آیهٔ قبل','Previous verse','Prethodni redak'))}</button><button type="button" class="secondary-btn" data-quick-next454>${E(L('آیهٔ بعد','Next verse','Sljedeći redak'))} ›</button><button type="button" class="secondary-btn" data-quick-all454>${E(L('نمایش باب','Show chapter','Prikaži poglavlje'))}</button><button type="button" class="secondary-btn" data-quick-copy454>⧉ ${E(L('کپی','Copy','Kopiraj'))}</button><button type="button" class="primary-btn" data-quick-close454>${E(L('بازگشت به پلیر','Back to player','Povratak na reprodukciju'))}</button></footer>`;
- document.body.appendChild(modal);modal.showModal();
- modal.addEventListener('cancel',e=>{e.preventDefault();close()});
+ const player=document.querySelector('.nh7p500-full:not([hidden]) .nh7p500-sheet');if(player&&!player.querySelector('.batch2-playback-controls')){const seek=player.querySelector('.nh7p500-seek'),controls=document.createElement('div');controls.className='batch2-playback-controls';seek.before(controls);for(const selector of ['.nh7p500-seek','.nh7p500-time','.nh7p500-main']){const node=player.querySelector(selector);if(node)controls.append(node)}}(player||document.getElementById('view')||document.body).appendChild(modal);modal.tabIndex=-1;modal.setAttribute('role','region');modal.classList.add('batch2-quick-flow');modal.focus({preventScroll:true});modal.scrollIntoView({block:'nearest',behavior:'instant'});
+ modal.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();close()}});
  modal.querySelectorAll('[data-quick-close454]').forEach(b=>b.onclick=close);
  query('[data-quick-form454]').onsubmit=e=>{e.preventDefault();findReference()};
  query('[data-quick-book454]').onchange=e=>chapter(e.target.value,1,1);
@@ -68,6 +68,8 @@ function enhance(){scheduled=false;
 }
 function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(enhance)}
 new MutationObserver(schedule).observe(document.documentElement,{childList:true,subtree:true});
-window.addEventListener('change',event=>{if(['langSelect','settingsLang'].includes(event.target.id)){close();schedule()}},true);
+window.addEventListener('change',event=>{if(['langSelect','settingsLang'].includes(event.target.id)){close(false);schedule()}},true);
+window.addEventListener('nh7-route-changed-wave6',()=>close(false));
+window.addEventListener('nh7-personal-before-owner-wave2',()=>close(false));
 window.NH7QuickBibleV454={open,close,enhance};schedule();
 })();

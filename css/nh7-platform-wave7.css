@@ -29,3 +29,38 @@ html.nh7-platform-native,html.nh7-platform-native body {height:100%;overflow:hid
 .nh7-platform-native #view .nh7-plans-tabs {position:relative!important;top:auto!important;z-index:1;margin-top:0}
 .nh7-platform-native .nh7-adaptive570-sidebar {top:8px;max-height:calc(var(--nh7-platform-height,100svh) - var(--nh7-platform-header,120px) - var(--nh7-platform-nav,76px) - 32px)}
 @media(prefers-reduced-motion:reduce){.nh7-platform-ready :focus-visible {scroll-behavior:auto}}
+/* Batch2: responsive hierarchy uses canonical controls, never a second data source. */
+.batch2-chapters{display:none}
+.batch2-today{display:block;color:var(--muted);font-size:.85rem;margin-block:6px}
+#view:has(#quickNotify) .hero{min-height:0!important;height:auto!important;padding:18px!important;display:grid;gap:10px}
+#view:has(#quickNotify) .hero h2{margin-block:0}
+#nh7HomeProfile564 #nh7TopProfile564{flex:none;width:46px;height:46px}
+#nh7HomeProfile564 #nh7TopProfile564 img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.batch2-quick-flow{position:relative!important;inset:auto!important;display:block;margin:14px 0;width:100%;max-height:none;box-shadow:none}
+.batch2-quick-flow [data-quick-content454]{max-height:40dvh}
+.nh7p500-full .batch2-playback-controls{position:sticky;top:0;z-index:8;background:var(--nh7p-bg);padding-block:8px}
+@media(min-width:768px) and (min-height:500px){
+ .nh7-adaptive570-main [data-batch2-master],.nh7-adaptive570-main[data-batch2-detail=daily] .tabs:has(>[data-dailytab]),.nh7-adaptive570-main .nh7al500-chips{display:none!important}
+ .nh7-adaptive570-main[data-batch2-detail=audio] .sermon-list{display:none!important}
+ .nh7-adaptive570-sidebar button{min-height:44px!important}
+ .nh7-step-back{position:static!important;inset:auto!important;margin-block-end:12px}
+ html.batch2-audio-split .nh7p500-full{inset:auto!important;left:var(--batch2-player-left)!important;top:var(--batch2-player-top)!important;width:var(--batch2-player-width)!important;height:var(--batch2-player-height)!important;border-radius:16px;z-index:1800}
+ html.batch2-audio-split .nh7p500-bg,html.batch2-audio-split .nh7p500-shade,html.batch2-audio-split .nh7p500-brandmark{display:none}
+ html.batch2-audio-split .nh7p500-sheet{width:100%;max-width:none}
+ #view:has(#quickNotify) .hero{grid-template-columns:minmax(0,1fr) minmax(180px,.7fr);align-items:center}
+ #view:has(#quickNotify) .hero>h2{grid-column:1/-1;text-align:center}
+ #view:has(#quickNotify) .hero>.button-row{grid-column:1/-1}
+}
+/* Compact content padding, not unsafe-region subtraction. env insets remain row-owned. */
+.nh7-platform-native #appShell>.topbar{padding-top:calc(6px + var(--nh7-platform-safe-top))!important;padding-bottom:6px!important;gap:6px}
+.nh7-platform-native #appShell>.bottom-nav{padding-top:4px;padding-bottom:calc(4px + var(--nh7-platform-safe-bottom))}
+
+@media(min-width:768px) and (min-height:500px){
+ #view:has(#quickNotify) .hero>#nh7HomeProfile564{grid-column:1;grid-row:2;margin:0}
+ #view:has(#quickNotify) .hero>h2{grid-row:1}
+ #view:has(#quickNotify) .hero>.batch2-today{grid-column:2;grid-row:2}
+ #view:has(#quickNotify) .hero>p{grid-column:1/-1;grid-row:3}
+ #view:has(#quickNotify) .hero>.button-row{grid-row:4;justify-content:center}
+}
+
+.batch2-quick-flow button{min-height:44px}

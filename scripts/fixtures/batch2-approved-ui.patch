@@ -1,0 +1,182 @@
+diff --git a/css/nh7-platform-wave7.css b/css/nh7-platform-wave7.css
+index fbae7aaa..3eb61ac5 100644
+--- a/css/nh7-platform-wave7.css
++++ b/css/nh7-platform-wave7.css
+@@ -31,0 +32,35 @@ html.nh7-platform-native,html.nh7-platform-native body {height:100%;overflow:hid
++/* Batch2: responsive hierarchy uses canonical controls, never a second data source. */
++.batch2-chapters{display:none}
++.batch2-today{display:block;color:var(--muted);font-size:.85rem;margin-block:6px}
++#view:has(#quickNotify) .hero{min-height:0!important;height:auto!important;padding:18px!important;display:grid;gap:10px}
++#view:has(#quickNotify) .hero h2{margin-block:0}
++#nh7HomeProfile564 #nh7TopProfile564{flex:none;width:46px;height:46px}
++#nh7HomeProfile564 #nh7TopProfile564 img{width:100%;height:100%;object-fit:cover;border-radius:50%}
++.batch2-quick-flow{position:relative!important;inset:auto!important;display:block;margin:14px 0;width:100%;max-height:none;box-shadow:none}
++.batch2-quick-flow [data-quick-content454]{max-height:40dvh}
++.nh7p500-full .batch2-playback-controls{position:sticky;top:0;z-index:8;background:var(--nh7p-bg);padding-block:8px}
++@media(min-width:768px) and (min-height:500px){
++ .nh7-adaptive570-main [data-batch2-master],.nh7-adaptive570-main[data-batch2-detail=daily] .tabs:has(>[data-dailytab]),.nh7-adaptive570-main .nh7al500-chips{display:none!important}
++ .nh7-adaptive570-main[data-batch2-detail=audio] .sermon-list{display:none!important}
++ .nh7-adaptive570-sidebar button{min-height:44px!important}
++ .nh7-step-back{position:static!important;inset:auto!important;margin-block-end:12px}
++ html.batch2-audio-split .nh7p500-full{inset:auto!important;left:var(--batch2-player-left)!important;top:var(--batch2-player-top)!important;width:var(--batch2-player-width)!important;height:var(--batch2-player-height)!important;border-radius:16px;z-index:1800}
++ html.batch2-audio-split .nh7p500-bg,html.batch2-audio-split .nh7p500-shade,html.batch2-audio-split .nh7p500-brandmark{display:none}
++ html.batch2-audio-split .nh7p500-sheet{width:100%;max-width:none}
++ #view:has(#quickNotify) .hero{grid-template-columns:minmax(0,1fr) minmax(180px,.7fr);align-items:center}
++ #view:has(#quickNotify) .hero>h2{grid-column:1/-1;text-align:center}
++ #view:has(#quickNotify) .hero>.button-row{grid-column:1/-1}
++}
++/* Compact content padding, not unsafe-region subtraction. env insets remain row-owned. */
++.nh7-platform-native #appShell>.topbar{padding-top:calc(6px + var(--nh7-platform-safe-top))!important;padding-bottom:6px!important;gap:6px}
++.nh7-platform-native #appShell>.bottom-nav{padding-top:4px;padding-bottom:calc(4px + var(--nh7-platform-safe-bottom))}
++
++@media(min-width:768px) and (min-height:500px){
++ #view:has(#quickNotify) .hero>#nh7HomeProfile564{grid-column:1;grid-row:2;margin:0}
++ #view:has(#quickNotify) .hero>h2{grid-row:1}
++ #view:has(#quickNotify) .hero>.batch2-today{grid-column:2;grid-row:2}
++ #view:has(#quickNotify) .hero>p{grid-column:1/-1;grid-row:3}
++ #view:has(#quickNotify) .hero>.button-row{grid-row:4;justify-content:center}
++}
++
++.batch2-quick-flow button{min-height:44px}
+diff --git a/js/app.js b/js/app.js
+index 2b2b0fb6..dc6ce028 100644
+--- a/js/app.js
++++ b/js/app.js
+@@ -1464 +1464 @@ async function home(){
+-    card(tr('appTitle'), `<p>${tr('welcome')}</p><div class="button-row"><button class="primary-btn" data-go="daily">${tr('continueToday')}</button><button class="secondary-btn" id="quickNotify">${tr('enableNotifications')}</button></div>`, 'hero') +
++    card(tr('appTitle'), `<time class="batch2-today" datetime="${new Date().toISOString().slice(0,10)}">${html(new Intl.DateTimeFormat(state.lang,{weekday:'long',year:'numeric',month:'long',day:'numeric'}).format(new Date()))}</time><p>${tr('welcome')}</p><div class="button-row"><button class="primary-btn" data-go="daily">${tr('continueToday')}</button><button class="secondary-btn" id="quickNotify">${tr('enableNotifications')}</button></div>`, 'hero') +
+@@ -1624 +1624 @@ async function bible(params={}){
+-function renderBookList(title,books,testament=''){return card(title,`<div class="grid">${books.map(b=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:testament||b.testament,bookId:b.id}))}'><strong>${html(b.names[state.lang]||b.names.en)}</strong><small>${localNum(b.chapters)} ${tr('chapters')}</small></button>`).join('')}</div>`)}
++function renderBookList(title,books,testament=''){return card(title,`<div class="grid" data-batch2-master>${books.map(b=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'book',testament:testament||b.testament,bookId:b.id}))}'><strong>${html(b.names[state.lang]||b.names.en)}</strong><small>${localNum(b.chapters)} ${tr('chapters')}</small></button>`).join('')}</div>`)}
+@@ -1629 +1629 @@ async function bibleBook(bookId,testament=''){
+-  routeCheckWave6(routeViewTicketWave6);view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written',testament:test}))}'>‹ ${html(tr('bookList'))}</button></div>`+card(data.book.names[state.lang]||data.book.names.en,`<div class="grid">${chapters.map(ch=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:ch}))}'><strong>${tr('chapter')} ${localNum(ch)}</strong></button>`).join('')}</div>`);
++  routeCheckWave6(routeViewTicketWave6);view.innerHTML=`<div class="nh7-step-back"><button class="secondary-btn" data-go="bible" data-params='${html(JSON.stringify({section:'written',testament:test}))}'>‹ ${html(tr('bookList'))}</button></div>`+card(data.book.names[state.lang]||data.book.names.en,`<div class="grid" data-batch2-master>${chapters.map(ch=>`<button class="tile compact" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:ch}))}'><strong>${tr('chapter')} ${localNum(ch)}</strong></button>`).join('')}</div>`);
+@@ -1650 +1650 @@ async function bibleChapter(bookId,chapter){
+-  routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(title,`${topNav}<p class="muted bible-reader-hint">${html(l223('برای نمایش ابزارها روی آیه بزنید؛ برای باب بعدی یا قبلی صفحه را به چپ یا راست بکشید.','Tap a verse for tools; swipe left or right to change chapter.','Dodirnite redak za alate; povucite lijevo ili desno za drugo poglavlje.'))}</p><div class="reader continuous-reader" data-bible-swipe="1">${rows}</div>${bottomNav}`);
++  routeCheckWave6(routeViewTicketWave6);view.innerHTML=`<nav class="batch2-chapters" aria-label="${html(tr('chapters'))}" data-batch2-master>${Array.from({length:data.book.chapters},(_,i)=>`<button type="button" class="secondary-btn ${i+1===chapter?'active':''}" data-go="bible" data-params='${html(JSON.stringify({section:'written',mode:'chapter',bookId,chapter:i+1}))}'>${html(tr('chapter'))} ${localNum(i+1)}</button>`).join('')}</nav>`+card(title,`${topNav}<p class="muted bible-reader-hint">${html(l223('برای نمایش ابزارها روی آیه بزنید؛ برای باب بعدی یا قبلی صفحه را به چپ یا راست بکشید.','Tap a verse for tools; swipe left or right to change chapter.','Dodirnite redak za alate; povucite lijevo ili desno za drugo poglavlje.'))}</p><div class="reader continuous-reader" data-bible-swipe="1">${rows}</div>${bottomNav}`);
+@@ -2876 +2876 @@ function bindDynamic(){
+-  $$('[data-dailytab]').forEach(el=>el.onclick=()=>{ state.dailyTab=el.dataset.dailytab; render('daily',{},true); });
++  $$('[data-dailytab]').forEach(el=>el.onclick=()=>{ state.dailyTab=el.dataset.dailytab; navigate('daily',{...state.params,tab:state.dailyTab},true); });
+diff --git a/js/nh7-adaptive-layout-v570.js b/js/nh7-adaptive-layout-v570.js
+index 4160c221..a765cba2 100644
+--- a/js/nh7-adaptive-layout-v570.js
++++ b/js/nh7-adaptive-layout-v570.js
+@@ -14 +14 @@ const view=()=>document.getElementById('view');
+-const route=()=>document.querySelector('.bottom-nav .nav-item.active')?.dataset?.route||'';
++const route=()=>history.state?.route||document.querySelector('.bottom-nav .nav-item.active')?.dataset?.route||'';
+@@ -49 +49 @@ function cloneDataButton(source,extraClass='nh7-adaptive570-link'){
+-    if(name.startsWith('data-'))b.setAttribute(name,value);
++    if(name==='aria-current')b.setAttribute(name,value);
+@@ -51 +51,2 @@ function cloneDataButton(source,extraClass='nh7-adaptive570-link'){
+-  b.innerHTML=source.innerHTML;
++  if(source.matches('.sermon-card-main'))b.textContent=source.querySelector('strong')?.textContent||source.textContent;else b.innerHTML=source.innerHTML;
++  if(source.classList.contains('active'))b.setAttribute('aria-current','page');
+@@ -56,0 +58,5 @@ function cloneDataButton(source,extraClass='nh7-adaptive570-link'){
++    if(source.matches('.sermon-card-main')){
++      const context=window.NH7UserContextWave6,actor=context?.identity(),id=source.closest('[data-sermon-card]')?.dataset.sermonCard,item=window.__sermonMap?.[id];
++      if(!item||!source.isConnected)return;
++      Promise.resolve(window.NH7_AUDIO_CLASSIC_V400?.playItem(item)).then(()=>{if(source.isConnected&&route()==='audio'&&(!actor||context.current(actor))&&String(window.NH7_AUDIO_CLASSIC_V400?.getState().current?.id)===id)window.NH7_MEDIA_PLAYER_V500?.setExpanded(true)}).catch(error=>console.warn('[NH7 audio selection]',error));return;
++    }
+@@ -65,0 +72 @@ function sidebarTitle(r){
++  if(r==='daily')return lang==='fa'?'روزانه':lang==='hr'?'Dnevno':'Daily';
+@@ -70,18 +77,4 @@ function collectNavSources(root,r){
+-  const out=[];
+-  const tabs=Array.from(root.querySelectorAll('.tabs')).filter(el=>!el.closest('.nh7-adaptive570-sidebar'));
+-  const firstTabs=tabs[0];
+-  if(firstTabs){
+-    for(const b of firstTabs.querySelectorAll('button,[data-go]')){
+-      if(b.closest('.nh7-adaptive570-sidebar'))continue;
+-      out.push(b);
+-    }
+-  }
+-  if(r==='bible'&&out.length<4){
+-    const buttons=Array.from(root.querySelectorAll('.grid [data-go="bible"],.nh7-chapter-grid [data-go="bible"]'));
+-    for(const b of buttons.slice(0,80))if(!out.includes(b))out.push(b);
+-  }
+-  if(r==='audio'&&out.length<2){
+-    const buttons=Array.from(root.querySelectorAll('[data-go="audio"]'));
+-    for(const b of buttons.slice(0,40))if(!out.includes(b))out.push(b);
+-  }
+-  return out;
++  if(r==='bible')return [...root.querySelectorAll('[data-batch2-master] button')];
++  if(r==='daily')return [...root.querySelectorAll('[data-dailytab]')];
++  if(r==='audio')return [...root.querySelectorAll('.nh7al500-chips button,.sermon-card-main')];
++  return [];
+@@ -91,0 +85 @@ function sourceSignature(sources,r){
++    if(source.matches('.sermon-card-main'))return 'item:'+source.closest('[data-sermon-card]').dataset.sermonCard+'|'+source.querySelector('strong')?.textContent;
+@@ -130,2 +124,4 @@ function enhance(){
+-  const split=matchMedia(`(min-width:${MIN_SPLIT}px)`).matches;
+-  if(!eligible||!split){unwrap(root);return}
++  const dailyEligible=r==='daily';
++  homePresentation(root,r);
++  const split=matchMedia(`(min-width:${MIN_SPLIT}px)`).matches&&matchMedia('(min-height:500px)').matches;
++  if((!eligible&&!dailyEligible)||!split){unwrap(root);document.documentElement.classList.remove('batch2-audio-split');return}
+@@ -139,0 +136,2 @@ function enhance(){
++      detailPresentation(main,r);
++      playerBounds(main,r);
+@@ -149 +147 @@ function enhance(){
+-  layout.append(sidebar,main);root.appendChild(layout);
++  layout.append(sidebar,main);root.appendChild(layout);detailPresentation(main,r);playerBounds(main,r);
+@@ -151,0 +150,25 @@ function enhance(){
++function copy(fa,en,hr){const l=document.documentElement.lang;return l==='fa'?fa:l==='hr'?hr:en}
++function detailPresentation(main,r){
++  main.dataset.batch2Detail=r;
++  const needsPrompt=r==='bible'&&!main.querySelector('.continuous-reader');
++  let prompt=main.querySelector('[data-batch2-prompt]');
++  if(needsPrompt&&!prompt){prompt=document.createElement('p');prompt.dataset.batch2Prompt='';prompt.className='notice';main.append(prompt)}
++  if(prompt){if(!needsPrompt)prompt.remove();else{const text=copy('از فهرست کناری انتخاب کنید.','Choose from the navigation pane.','Odaberite iz navigacije.');if(prompt.textContent!==text)prompt.textContent=text}}
++}
++function playerBounds(main,r){
++ const root=document.documentElement;root.classList.toggle('batch2-audio-split',r==='audio'&&matchMedia('(min-width:768px)').matches);
++ if(r!=='audio')return;const b=main.getBoundingClientRect(),top=Math.max(b.top,document.querySelector('.topbar')?.getBoundingClientRect().bottom||0),nav=document.querySelector('.bottom-nav')?.getBoundingClientRect(),bottom=nav&&nav.width>nav.height?nav.top:innerHeight;
++ for(const [name,value]of Object.entries({left:b.left,top,width:b.width,height:Math.max(120,bottom-top)})){const key='--batch2-player-'+name,v=value+'px';if(root.style.getPropertyValue(key)!==v)root.style.setProperty(key,v)}
++}
++function restoreHeaderPhoto(){const slot=document.getElementById('nh7TopProfile564'),inbox=document.getElementById('inboxBtn');if(slot&&inbox&&!slot.closest('.topbar'))inbox.before(slot)}
++function homePresentation(root,r){
++ if(r!=='home'){restoreHeaderPhoto();return}
++ const row=root.querySelector('#nh7HomeProfile564'),slot=document.getElementById('nh7TopProfile564');
++ if(row&&slot){row.querySelector(':scope > .nh7-profile-avatar564')?.remove();if(!row.contains(slot))row.prepend(slot)}
++}
++addEventListener('nh7-route-changed-wave6',()=>{restoreHeaderPhoto();document.documentElement.classList.remove('batch2-audio-split')});
++document.addEventListener('click',event=>{
++ if(!event.target.closest('[data-note],[data-note-verse],[data-note-marker],[data-sermon-note],[data-reader-action452="note"],[data-highlight-menu]'))return;
++ requestAnimationFrame(()=>requestAnimationFrame(()=>{const target=document.querySelector('.nh7p500-note:not([hidden]) textarea,.verse-note-box:not(.hidden) textarea,.nh7-reader-note-dialog452[open] textarea');
++ if(!target||!target.isConnected)return;const active=document.activeElement;if(active&&active!==target&&active.matches('input,textarea,select'))return;target.focus({preventScroll:true});target.scrollIntoView({block:'nearest',behavior:'instant'})}));
++},true);
+diff --git a/js/nh7-audio-quick-bible-v454.js b/js/nh7-audio-quick-bible-v454.js
+index 42614c07..4a63bb09 100644
+--- a/js/nh7-audio-quick-bible-v454.js
++++ b/js/nh7-audio-quick-bible-v454.js
+@@ -1 +1 @@
+-/* Quick Bible: separate dialog; never navigates, pauses, replaces or recreates audio. */
++/* Quick Bible: in-flow lookup; never navigates, pauses, replaces or recreates audio. */
+@@ -11 +11 @@ function place(){try{const p=JSON.parse(localStorage.getItem(KEY)||'{}');return{
+-function close(){requestId++;if(modal){modal.close();modal.remove();modal=null}if(origin?.isConnected)try{origin.focus({preventScroll:true})}catch(_){}}
++function close(restore=true){requestId++;const controls=document.querySelector('.batch2-playback-controls');if(controls){controls.before(...controls.childNodes);controls.remove()}if(modal){modal.remove();modal=null}if(restore!==false&&origin?.isConnected)try{origin.focus({preventScroll:true})}catch(_){}}
+@@ -48 +48 @@ async function open(button){
+- modal=document.createElement('dialog');modal.id='nh7QuickBible454';modal.className='nh7-quick-bible454';modal.dir=locale==='fa'?'rtl':'ltr';modal.setAttribute('aria-labelledby','nh7QuickTitle454');
++ modal=document.createElement('section');modal.id='nh7QuickBible454';modal.className='nh7-quick-bible454';modal.dir=locale==='fa'?'rtl':'ltr';modal.setAttribute('aria-labelledby','nh7QuickTitle454');
+@@ -50,2 +50,2 @@ async function open(button){
+- document.body.appendChild(modal);modal.showModal();
+- modal.addEventListener('cancel',e=>{e.preventDefault();close()});
++ const player=document.querySelector('.nh7p500-full:not([hidden]) .nh7p500-sheet');if(player&&!player.querySelector('.batch2-playback-controls')){const seek=player.querySelector('.nh7p500-seek'),controls=document.createElement('div');controls.className='batch2-playback-controls';seek.before(controls);for(const selector of ['.nh7p500-seek','.nh7p500-time','.nh7p500-main']){const node=player.querySelector(selector);if(node)controls.append(node)}}(player||document.getElementById('view')||document.body).appendChild(modal);modal.tabIndex=-1;modal.setAttribute('role','region');modal.classList.add('batch2-quick-flow');modal.focus({preventScroll:true});modal.scrollIntoView({block:'nearest',behavior:'instant'});
++ modal.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();close()}});
+@@ -71 +71,3 @@ new MutationObserver(schedule).observe(document.documentElement,{childList:true,
+-window.addEventListener('change',event=>{if(['langSelect','settingsLang'].includes(event.target.id)){close();schedule()}},true);
++window.addEventListener('change',event=>{if(['langSelect','settingsLang'].includes(event.target.id)){close(false);schedule()}},true);
++window.addEventListener('nh7-route-changed-wave6',()=>close(false));
++window.addEventListener('nh7-personal-before-owner-wave2',()=>close(false));
+diff --git a/js/nh7-reader-ux-v251.js b/js/nh7-reader-ux-v251.js
+index 8a9677a1..cf4c3c1d 100644
+--- a/js/nh7-reader-ux-v251.js
++++ b/js/nh7-reader-ux-v251.js
+@@ -51 +51 @@ function scrollReaderStart(){const target=document.querySelector('.reader.contin
+-function navigationPatch(){const sig=readerSignature();if(sig&&lastReaderSignature&&sig!==lastReaderSignature)pendingReaderTop=true;if(sig)lastReaderSignature=sig;if(pendingReaderTop&&document.querySelector('.reader.continuous-reader,.nh7-apo-continuous-reader')){pendingReaderTop=false;scrollReaderStart()}}
++function navigationPatch(){const sig=readerSignature();/* Canonical Bible router owns fresh-target and Back restoration. */if(sig.startsWith('bible|')&&history.state?.route==='bible'){lastReaderSignature=sig;pendingReaderTop=false;return}if(sig&&lastReaderSignature&&sig!==lastReaderSignature)pendingReaderTop=true;if(sig)lastReaderSignature=sig;if(pendingReaderTop&&document.querySelector('.reader.continuous-reader,.nh7-apo-continuous-reader')){pendingReaderTop=false;scrollReaderStart()}}
+diff --git a/js/nh7-spiritual-plans-v240.js b/js/nh7-spiritual-plans-v240.js
+index b04a68db..41f2447f 100644
+--- a/js/nh7-spiritual-plans-v240.js
++++ b/js/nh7-spiritual-plans-v240.js
+@@ -653 +653 @@ async function renderPlansHome(ctx, plans) {
+-    <section class="card nh7-plans-hero"><div><span class="badge">FA · EN · HR</span><h1>${esc(t(ctx, 'heroTitle'))}</h1><p>${esc(t(ctx, 'heroText'))}</p></div><span class="nh7-hero-mark" aria-hidden="true">✦</span></section>
++    <section class="card nh7-plans-hero"><div><h1>${esc(t(ctx, 'heroTitle'))}</h1><p>${esc(t(ctx, 'heroText'))}</p></div><span class="nh7-hero-mark" aria-hidden="true">✦</span></section>

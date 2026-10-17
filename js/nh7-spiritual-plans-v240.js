@@ -650,7 +650,7 @@ async function renderFastingHub(ctx, plans) {
 async function renderPlansHome(ctx, plans) {
   const progress = loadProgress(ctx), fasting = loadFasting(ctx), stats = summaryStats(plans, progress);
   ctx.view.innerHTML = `${renderPlansTabsV240(ctx, 'spiritual')}
-    <section class="card nh7-plans-hero"><div><span class="badge">FA · EN · HR</span><h1>${esc(t(ctx, 'heroTitle'))}</h1><p>${esc(t(ctx, 'heroText'))}</p></div><span class="nh7-hero-mark" aria-hidden="true">✦</span></section>
+    <section class="card nh7-plans-hero"><div><h1>${esc(t(ctx, 'heroTitle'))}</h1><p>${esc(t(ctx, 'heroText'))}</p></div><span class="nh7-hero-mark" aria-hidden="true">✦</span></section>
     ${statsStrip(ctx, stats, fasting.journeys.length)}
     ${syncBanner(ctx)}
     <section class="nh7-plan-grid">${plans.map(plan => renderPlanCard(ctx, plan, progress.plans[plan.id])).join('')}</section>`;

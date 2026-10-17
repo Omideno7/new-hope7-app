@@ -11,7 +11,7 @@ const VERSION='5.7.0';
 const MIN_SPLIT=768;
 let queued=false;
 const view=()=>document.getElementById('view');
-const route=()=>document.querySelector('.bottom-nav .nav-item.active')?.dataset?.route||'';
+const route=()=>history.state?.route||document.querySelector('.bottom-nav .nav-item.active')?.dataset?.route||'';
 
 function installStyle(){
   if(document.getElementById('nh7Adaptive570Style'))return;
@@ -46,14 +46,20 @@ function cloneDataButton(source,extraClass='nh7-adaptive570-link'){
   b.type='button';
   b.className=extraClass+(source.classList.contains('active')?' active':'');
   for(const {name,value} of Array.from(source.attributes)){
-    if(name.startsWith('data-'))b.setAttribute(name,value);
+    if(name==='aria-current')b.setAttribute(name,value);
   }
-  b.innerHTML=source.innerHTML;
+  if(source.matches('.sermon-card-main'))b.textContent=source.querySelector('strong')?.textContent||source.textContent;else b.innerHTML=source.innerHTML;
+  if(source.classList.contains('active'))b.setAttribute('aria-current','page');
   b.removeAttribute('id');
   b.querySelectorAll('[id]').forEach(el=>el.removeAttribute('id'));
   b.addEventListener('click',event=>{
     event.preventDefault();
     event.stopPropagation();
+    if(source.matches('.sermon-card-main')){
+      const context=window.NH7UserContextWave6,actor=context?.identity(),id=source.closest('[data-sermon-card]')?.dataset.sermonCard,item=window.__sermonMap?.[id];
+      if(!item||!source.isConnected)return;
+      Promise.resolve(window.NH7_AUDIO_CLASSIC_V400?.playItem(item)).then(()=>{if(source.isConnected&&route()==='audio'&&(!actor||context.current(actor))&&String(window.NH7_AUDIO_CLASSIC_V400?.getState().current?.id)===id)window.NH7_MEDIA_PLAYER_V500?.setExpanded(true)}).catch(error=>console.warn('[NH7 audio selection]',error));return;
+    }
     source.click();
   });
   return b;
@@ -63,32 +69,20 @@ function sidebarTitle(r){
   const lang=localStorage.getItem('nh7_lang')||document.documentElement.lang||'en';
   if(r==='bible')return lang==='fa'?'کتاب مقدس':lang==='hr'?'Biblija':'Bible';
   if(r==='audio')return lang==='fa'?'پیام‌های صوتی':lang==='hr'?'Audio poruke':'Audio';
+  if(r==='daily')return lang==='fa'?'روزانه':lang==='hr'?'Dnevno':'Daily';
   return 'New Hope 7';
 }
 
 function collectNavSources(root,r){
-  const out=[];
-  const tabs=Array.from(root.querySelectorAll('.tabs')).filter(el=>!el.closest('.nh7-adaptive570-sidebar'));
-  const firstTabs=tabs[0];
-  if(firstTabs){
-    for(const b of firstTabs.querySelectorAll('button,[data-go]')){
-      if(b.closest('.nh7-adaptive570-sidebar'))continue;
-      out.push(b);
-    }
-  }
-  if(r==='bible'&&out.length<4){
-    const buttons=Array.from(root.querySelectorAll('.grid [data-go="bible"],.nh7-chapter-grid [data-go="bible"]'));
-    for(const b of buttons.slice(0,80))if(!out.includes(b))out.push(b);
-  }
-  if(r==='audio'&&out.length<2){
-    const buttons=Array.from(root.querySelectorAll('[data-go="audio"]'));
-    for(const b of buttons.slice(0,40))if(!out.includes(b))out.push(b);
-  }
-  return out;
+  if(r==='bible')return [...root.querySelectorAll('[data-batch2-master] button')];
+  if(r==='daily')return [...root.querySelectorAll('[data-dailytab]')];
+  if(r==='audio')return [...root.querySelectorAll('.nh7al500-chips button,.sermon-card-main')];
+  return [];
 }
 
 function sourceSignature(sources,r){
   return r+'|'+sources.map(source=>{
+    if(source.matches('.sermon-card-main'))return 'item:'+source.closest('[data-sermon-card]').dataset.sermonCard+'|'+source.querySelector('strong')?.textContent;
     const data=Array.from(source.attributes).filter(a=>a.name.startsWith('data-')).map(a=>a.name+'='+a.value).sort().join('&');
     return data+'|'+String(source.textContent||'').replace(/\s+/g,' ').trim()+'|'+(source.classList.contains('active')?'1':'0');
   }).join('||');
@@ -127,8 +121,10 @@ function enhance(){
   const r=route();
   root.dataset.nh7AdaptiveRoute=r;
   const eligible=(r==='bible'||r==='audio');
-  const split=matchMedia(`(min-width:${MIN_SPLIT}px)`).matches;
-  if(!eligible||!split){unwrap(root);return}
+  const dailyEligible=r==='daily';
+  homePresentation(root,r);
+  const split=matchMedia(`(min-width:${MIN_SPLIT}px)`).matches&&matchMedia('(min-height:500px)').matches;
+  if((!eligible&&!dailyEligible)||!split){unwrap(root);document.documentElement.classList.remove('batch2-audio-split');return}
 
   let layout=root.querySelector(':scope > .nh7-adaptive570-layout');
   if(layout){
@@ -137,6 +133,8 @@ function enhance(){
     if(old&&main){
       const fresh=buildSidebar(main,r);
       if(fresh&&fresh.dataset.nh7Signature!==old.dataset.nh7Signature)old.replaceWith(fresh);
+      detailPresentation(main,r);
+      playerBounds(main,r);
     }
     return;
   }
@@ -146,9 +144,34 @@ function enhance(){
   const main=document.createElement('div');main.className='nh7-adaptive570-main';
   const children=Array.from(root.childNodes);
   children.forEach(node=>main.appendChild(node));
-  layout.append(sidebar,main);root.appendChild(layout);
+  layout.append(sidebar,main);root.appendChild(layout);detailPresentation(main,r);playerBounds(main,r);
 }
 
+function copy(fa,en,hr){const l=document.documentElement.lang;return l==='fa'?fa:l==='hr'?hr:en}
+function detailPresentation(main,r){
+  main.dataset.batch2Detail=r;
+  const needsPrompt=r==='bible'&&!main.querySelector('.continuous-reader');
+  let prompt=main.querySelector('[data-batch2-prompt]');
+  if(needsPrompt&&!prompt){prompt=document.createElement('p');prompt.dataset.batch2Prompt='';prompt.className='notice';main.append(prompt)}
+  if(prompt){if(!needsPrompt)prompt.remove();else{const text=copy('از فهرست کناری انتخاب کنید.','Choose from the navigation pane.','Odaberite iz navigacije.');if(prompt.textContent!==text)prompt.textContent=text}}
+}
+function playerBounds(main,r){
+ const root=document.documentElement;root.classList.toggle('batch2-audio-split',r==='audio'&&matchMedia('(min-width:768px)').matches);
+ if(r!=='audio')return;const b=main.getBoundingClientRect(),top=Math.max(b.top,document.querySelector('.topbar')?.getBoundingClientRect().bottom||0),nav=document.querySelector('.bottom-nav')?.getBoundingClientRect(),bottom=nav&&nav.width>nav.height?nav.top:innerHeight;
+ for(const [name,value]of Object.entries({left:b.left,top,width:b.width,height:Math.max(120,bottom-top)})){const key='--batch2-player-'+name,v=value+'px';if(root.style.getPropertyValue(key)!==v)root.style.setProperty(key,v)}
+}
+function restoreHeaderPhoto(){const slot=document.getElementById('nh7TopProfile564'),inbox=document.getElementById('inboxBtn');if(slot&&inbox&&!slot.closest('.topbar'))inbox.before(slot)}
+function homePresentation(root,r){
+ if(r!=='home'){restoreHeaderPhoto();return}
+ const row=root.querySelector('#nh7HomeProfile564'),slot=document.getElementById('nh7TopProfile564');
+ if(row&&slot){row.querySelector(':scope > .nh7-profile-avatar564')?.remove();if(!row.contains(slot))row.prepend(slot)}
+}
+addEventListener('nh7-route-changed-wave6',()=>{restoreHeaderPhoto();document.documentElement.classList.remove('batch2-audio-split')});
+document.addEventListener('click',event=>{
+ if(!event.target.closest('[data-note],[data-note-verse],[data-note-marker],[data-sermon-note],[data-reader-action452="note"],[data-highlight-menu]'))return;
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{const target=document.querySelector('.nh7p500-note:not([hidden]) textarea,.verse-note-box:not(.hidden) textarea,.nh7-reader-note-dialog452[open] textarea');
+ if(!target||!target.isConnected)return;const active=document.activeElement;if(active&&active!==target&&active.matches('input,textarea,select'))return;target.focus({preventScroll:true});target.scrollIntoView({block:'nearest',behavior:'instant'})}));
+},true);
 function schedule(){
   if(queued)return;queued=true;
   requestAnimationFrame(()=>{queued=false;try{enhance()}catch(error){console.warn('[NH7 adaptive 570]',error)}});

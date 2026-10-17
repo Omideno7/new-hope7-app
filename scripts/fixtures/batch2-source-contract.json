@@ -1,0 +1,53 @@
+{
+  "base": "d06b170f052390c84a500a7b78bd18115a84b04f",
+  "runtime": {
+    "css/nh7-platform-wave7.css": {
+      "before": "a91bc75d9c6f287f6d26ca332770d6e7f053e9b6f4e8fdcab8a0218a700c5956",
+      "after": "8182137a9175cea1760dbd9ae749621241ed13b1937048546518ba72a0155350"
+    },
+    "js/app.js": {
+      "before": "21268a397a4b73756ebabc95a7c95b4d370c92e2ee752d8f8b64d94d0abb17f3",
+      "after": "ebe08cac5cd18423fbaf5a7dc6115789fb88be20f96362c332b852721c7dfbdf"
+    },
+    "js/nh7-adaptive-layout-v570.js": {
+      "before": "ca0f7000cd5394170273738d8dac29da5bf4535066ce7c398c3cacade9910ab1",
+      "after": "6085a3980a1abfa55f199a445cc0f2bd70ecda98a1f23eb0cd2120c40b51eae5"
+    },
+    "js/nh7-audio-quick-bible-v454.js": {
+      "before": "17da5bf6e6061f91d30fdb3aae64bc58dd4bdf61926fb57003504d384579964d",
+      "after": "75573af967ebab0bdfbfcf346018146c7ea3569754b05a694719adf43d9dafe5"
+    },
+    "js/nh7-reader-ux-v251.js": {
+      "before": "48fc85debfc4a37a4d6c4316fef326403855c20de7a411184fab90573f15cb43",
+      "after": "ed5515876639c3a129f5dec092638e84fa413d6d2772ee4fd09ee6cd50c90fd2"
+    },
+    "js/nh7-spiritual-plans-v240.js": {
+      "before": "24041cba5e0955465138fe1fae1980703f5ea9095fe86e1a4bb2aa4803a0b10f",
+      "after": "8fefdece6dfeb1555d266746d76e677fb883382ecdb5f04012d6e65bbcaa2eb6"
+    }
+  },
+  "patch_sha256": "bbe589c6a537d486527ca0531134f9403c521423c9d7b6bdc40df26cbcaf14c6",
+  "approved_paths": [
+    ".github/workflows/validate-develop.yml",
+    "css/nh7-platform-wave7.css",
+    "docs/qa/CODEX_WAVE8_INTEGRATION_PHYSICAL_ACCEPTANCE.md",
+    "docs/qa/CODEX_WAVE8_PHYSICAL_FIX_BATCH2.md",
+    "docs/qa/WAVE8_PHYSICAL_FIX_BATCH2_AUDIT.md",
+    "docs/qa/WAVE8_PHYSICAL_FIX_BATCH2_REPORT.md",
+    "docs/qa/WAVE8_PHYSICAL_FIX_MASTER_SPEC.md",
+    "js/app.js",
+    "js/nh7-adaptive-layout-v570.js",
+    "js/nh7-audio-quick-bible-v454.js",
+    "js/nh7-reader-ux-v251.js",
+    "js/nh7-spiritual-plans-v240.js",
+    "scripts/batch1_accepted_source.py",
+    "scripts/batch2_accepted_source.py",
+    "scripts/fixtures/batch2-approved-ui.patch",
+    "scripts/fixtures/batch2-source-contract.json",
+    "scripts/verify-batch1-safety.py",
+    "scripts/verify-batch2-browser.cjs",
+    "scripts/verify-batch2-safety.py",
+    "scripts/verify-responsive-v570.mjs",
+    "scripts/verify-wave7-safety.py"
+  ]
+}

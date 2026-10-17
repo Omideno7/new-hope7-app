@@ -21,8 +21,9 @@ has(css,"html.nh7p500-active .nh7p500",'Wide-screen mini-player dock override mi
 has(css,'.school-entry-actions','School responsive action layout missing');
 
 has(adaptive,"const MIN_SPLIT=768",'Tablet split breakpoint changed unexpectedly');
-has(adaptive,"const eligible=(r==='bible'||r==='audio')",'Adaptive routes must stay scoped to Bible/Audio');
+has(adaptive,"const eligible=(r==='bible'||r==='audio')",'Bible/Audio canonical split eligibility missing');
 has(adaptive,'matchMedia(`(min-width:${MIN_SPLIT}px)`).matches','Phone DOM guard missing');
+has(adaptive,"const dailyEligible=r==='daily'",'Daily split eligibility missing');
 has(adaptive,'source.click();','Adaptive controls must forward to canonical controls');
 has(adaptive,'fresh.dataset.nh7Signature!==old.dataset.nh7Signature','Observer/sidebar signature guard missing');
 has(adaptive,"new MutationObserver(schedule)",'Adaptive route re-render observer missing');
