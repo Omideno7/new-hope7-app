@@ -160,13 +160,11 @@ function playerBounds(main,r){
  if(r!=='audio')return;const b=main.getBoundingClientRect(),top=Math.max(b.top,document.querySelector('.topbar')?.getBoundingClientRect().bottom||0),nav=document.querySelector('.bottom-nav')?.getBoundingClientRect(),bottom=nav&&nav.width>nav.height?nav.top:innerHeight;
  for(const [name,value]of Object.entries({left:b.left,top,width:b.width,height:Math.max(120,bottom-top)})){const key='--batch2-player-'+name,v=value+'px';if(root.style.getPropertyValue(key)!==v)root.style.setProperty(key,v)}
 }
-function restoreHeaderPhoto(){const slot=document.getElementById('nh7TopProfile564'),inbox=document.getElementById('inboxBtn');if(slot&&inbox&&!slot.closest('.topbar'))inbox.before(slot)}
 function homePresentation(root,r){
- if(r!=='home'){restoreHeaderPhoto();return}
- const row=root.querySelector('#nh7HomeProfile564'),slot=document.getElementById('nh7TopProfile564');
- if(row&&slot){row.querySelector(':scope > .nh7-profile-avatar564')?.remove();if(!row.contains(slot))row.prepend(slot)}
+ // Keep the focusable v564 authority in its stable header; Home retains identity text.
+ if(r==='home')root.querySelector('#nh7HomeProfile564 > .nh7-profile-avatar564')?.remove();
 }
-addEventListener('nh7-route-changed-wave6',()=>{restoreHeaderPhoto();document.documentElement.classList.remove('batch2-audio-split')});
+addEventListener('nh7-route-changed-wave6',()=>document.documentElement.classList.remove('batch2-audio-split'));
 document.addEventListener('click',event=>{
  if(!event.target.closest('[data-note],[data-note-verse],[data-note-marker],[data-sermon-note],[data-reader-action452="note"],[data-highlight-menu]'))return;
  requestAnimationFrame(()=>requestAnimationFrame(()=>{const target=document.querySelector('.nh7p500-note:not([hidden]) textarea,.verse-note-box:not(.hidden) textarea,.nh7-reader-note-dialog452[open] textarea');

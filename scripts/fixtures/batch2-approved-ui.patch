@@ -1,15 +1,13 @@
 diff --git a/css/nh7-platform-wave7.css b/css/nh7-platform-wave7.css
-index fbae7aaa..3eb61ac5 100644
+index fbae7aaa..e6531f43 100644
 --- a/css/nh7-platform-wave7.css
 +++ b/css/nh7-platform-wave7.css
-@@ -31,0 +32,35 @@ html.nh7-platform-native,html.nh7-platform-native body {height:100%;overflow:hid
+@@ -31,0 +32,33 @@ html.nh7-platform-native,html.nh7-platform-native body {height:100%;overflow:hid
 +/* Batch2: responsive hierarchy uses canonical controls, never a second data source. */
 +.batch2-chapters{display:none}
-+.batch2-today{display:block;color:var(--muted);font-size:.85rem;margin-block:6px}
++.batch2-today{display:block;color:inherit;font-size:.85rem;margin-block:6px}
 +#view:has(#quickNotify) .hero{min-height:0!important;height:auto!important;padding:18px!important;display:grid;gap:10px}
 +#view:has(#quickNotify) .hero h2{margin-block:0}
-+#nh7HomeProfile564 #nh7TopProfile564{flex:none;width:46px;height:46px}
-+#nh7HomeProfile564 #nh7TopProfile564 img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 +.batch2-quick-flow{position:relative!important;inset:auto!important;display:block;margin:14px 0;width:100%;max-height:none;box-shadow:none}
 +.batch2-quick-flow [data-quick-content454]{max-height:40dvh}
 +.nh7p500-full .batch2-playback-controls{position:sticky;top:0;z-index:8;background:var(--nh7p-bg);padding-block:8px}
@@ -58,7 +56,7 @@ index 2b2b0fb6..dc6ce028 100644
 -  $$('[data-dailytab]').forEach(el=>el.onclick=()=>{ state.dailyTab=el.dataset.dailytab; render('daily',{},true); });
 +  $$('[data-dailytab]').forEach(el=>el.onclick=()=>{ state.dailyTab=el.dataset.dailytab; navigate('daily',{...state.params,tab:state.dailyTab},true); });
 diff --git a/js/nh7-adaptive-layout-v570.js b/js/nh7-adaptive-layout-v570.js
-index 4160c221..a765cba2 100644
+index 4160c221..0dab7ad0 100644
 --- a/js/nh7-adaptive-layout-v570.js
 +++ b/js/nh7-adaptive-layout-v570.js
 @@ -14 +14 @@ const view=()=>document.getElementById('view');
@@ -117,7 +115,7 @@ index 4160c221..a765cba2 100644
 @@ -149 +147 @@ function enhance(){
 -  layout.append(sidebar,main);root.appendChild(layout);
 +  layout.append(sidebar,main);root.appendChild(layout);detailPresentation(main,r);playerBounds(main,r);
-@@ -151,0 +150,25 @@ function enhance(){
+@@ -151,0 +150,23 @@ function enhance(){
 +function copy(fa,en,hr){const l=document.documentElement.lang;return l==='fa'?fa:l==='hr'?hr:en}
 +function detailPresentation(main,r){
 +  main.dataset.batch2Detail=r;
@@ -131,13 +129,11 @@ index 4160c221..a765cba2 100644
 + if(r!=='audio')return;const b=main.getBoundingClientRect(),top=Math.max(b.top,document.querySelector('.topbar')?.getBoundingClientRect().bottom||0),nav=document.querySelector('.bottom-nav')?.getBoundingClientRect(),bottom=nav&&nav.width>nav.height?nav.top:innerHeight;
 + for(const [name,value]of Object.entries({left:b.left,top,width:b.width,height:Math.max(120,bottom-top)})){const key='--batch2-player-'+name,v=value+'px';if(root.style.getPropertyValue(key)!==v)root.style.setProperty(key,v)}
 +}
-+function restoreHeaderPhoto(){const slot=document.getElementById('nh7TopProfile564'),inbox=document.getElementById('inboxBtn');if(slot&&inbox&&!slot.closest('.topbar'))inbox.before(slot)}
 +function homePresentation(root,r){
-+ if(r!=='home'){restoreHeaderPhoto();return}
-+ const row=root.querySelector('#nh7HomeProfile564'),slot=document.getElementById('nh7TopProfile564');
-+ if(row&&slot){row.querySelector(':scope > .nh7-profile-avatar564')?.remove();if(!row.contains(slot))row.prepend(slot)}
++ // Keep the focusable v564 authority in its stable header; Home retains identity text.
++ if(r==='home')root.querySelector('#nh7HomeProfile564 > .nh7-profile-avatar564')?.remove();
 +}
-+addEventListener('nh7-route-changed-wave6',()=>{restoreHeaderPhoto();document.documentElement.classList.remove('batch2-audio-split')});
++addEventListener('nh7-route-changed-wave6',()=>document.documentElement.classList.remove('batch2-audio-split'));
 +document.addEventListener('click',event=>{
 + if(!event.target.closest('[data-note],[data-note-verse],[data-note-marker],[data-sermon-note],[data-reader-action452="note"],[data-highlight-menu]'))return;
 + requestAnimationFrame(()=>requestAnimationFrame(()=>{const target=document.querySelector('.nh7p500-note:not([hidden]) textarea,.verse-note-box:not(.hidden) textarea,.nh7-reader-note-dialog452[open] textarea');
