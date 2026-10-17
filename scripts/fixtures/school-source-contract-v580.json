@@ -31,7 +31,7 @@
     },
     "js/nh7-security-core-v340.js": {
       "before": "d1d7696ff5105ab32bf39e16f3d494f8d78d9979d71e315e882dd963ef890a4a",
-      "after": "fe7149f87314bfcdfa9840069dfec3977e30799695577b2762b25963faeb80dd"
+      "after": "33575ea286919f48da64561e54447684a370f557c6ac5d0879f55ff4610b3cac"
     },
     "supabase/migrations/20261017130000_school_cycles_and_admin_overrides_v580.sql": {
       "before": null,
@@ -109,6 +109,7 @@
     "scripts/verify-school-drafts-cycle-v580.cjs",
     "scripts/verify-school-exam-race-v580.cjs",
     "scripts/verify-school-safety-v580.py",
+    "scripts/verify-school-secure-retry-v580.cjs",
     "scripts/verify-wave3-safety.py",
     "scripts/verify-wave6-safety.py",
     "scripts/verify-wave65-safety.py",
@@ -129,5 +130,5 @@
     "supabase/review/school-progression-v580/schema.sql",
     "sw-release-core-v403.js"
   ],
-  "patch_sha256": "c5e178efb80a15ce9c10b43867b862345679bfff1df7fc6784d31429b5a3a4ba"
+  "patch_sha256": "4c6ae2763fbeaf832b97e9a1f2289f22343854d63e53eea9907ac91923ad9d48"
 }

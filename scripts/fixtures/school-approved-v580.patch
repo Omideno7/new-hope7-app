@@ -150,7 +150,7 @@ index db5783db..d91cffd5 100644
 +window.addEventListener('nh7-personal-before-owner-wave2',()=>{examEpoch580++;cache=null;cacheOwner='';cacheAt=0;lastSig='';examOpen=false;document.querySelector('[data-school-path-v351]')?.remove()});
 +schedule(700);window.NH7_SCHOOL_PATH_VERSION='3.5.2';window.NH7SchoolPathV351=Object.assign(window.NH7SchoolPathV351||{},{guideHtml,openFinalExam});
 diff --git a/js/nh7-security-core-v340.js b/js/nh7-security-core-v340.js
-index 397a5448..e30613c0 100644
+index 397a5448..113494cf 100644
 --- a/js/nh7-security-core-v340.js
 +++ b/js/nh7-security-core-v340.js
 @@ -40,0 +41 @@ window.fetch=async function(input,init={}){
@@ -169,7 +169,7 @@ index 397a5448..e30613c0 100644
 +          ...(cycle?{p_cycle:body.school_cycle??window.NH7SchoolCyclesV580.cycleForView()}:{})
 @@ -90 +96,2 @@ async function secureSubmit(button){
 -  const session=examState.current;
-+  const session=examState.current,schoolOwner580=examState.owner;
++  const session=examState.current,schoolOwner580=examState.owner,retryParams580={...(history.state?.params||{})};
 +  if(schoolOwner580?.uid&&!window.NH7SchoolCyclesV580.current(schoolOwner580))return;
 @@ -98,2 +105,4 @@ async function secureSubmit(button){
 -  const answers=[];
@@ -189,12 +189,16 @@ index 397a5448..e30613c0 100644
 +
 +    if(!button.isConnected||examState.current!==session)return;
 +    if(schoolOwner580?.uid&&!window.NH7SchoolCyclesV580.current(schoolOwner580,true))return;
-@@ -122,0 +136 @@ async function secureSubmit(button){
-+    if(out.budget&&box)window.NH7SchoolCyclesV580?.appendBudget(box,out.budget,()=>window.NH7_COMMUNITY_CTX_V502?.navigate?.('school',{enter:true}));
-@@ -124,0 +139,2 @@ async function secureSubmit(button){
+@@ -122,0 +136,2 @@ async function secureSubmit(button){
++    const finalSchool580=exam.exam_scope==='course'&&exam.course_code==='foundation_school'&&exam.lesson_code==='course:foundation_school';
++    if(out.budget&&box&&finalSchool580)window.NH7SchoolCyclesV580?.appendBudget(box,out.budget,()=>window.NH7_COMMUNITY_CTX_V502?.navigate?.('school',{enter:true}));
+@@ -123,0 +139,2 @@ async function secureSubmit(button){
++    if(!passed&&out.submission_id&&!finalSchool580){const retry=document.createElement('button');retry.type='button';retry.className='secondary-btn';retry.dataset.schoolSecureRetry580='';retry.textContent=say('تلاش دوباره','Retry exam','Pokušaj ponovno');retry.onclick=()=>{if(button.isConnected&&(!schoolOwner580?.uid||window.NH7SchoolCyclesV580.current(schoolOwner580,true)))window.NH7_COMMUNITY_CTX_V502?.navigate?.('school',retryParams580,true)};button.insertAdjacentElement('afterend',retry)}
++
+@@ -124,0 +142,2 @@ async function secureSubmit(button){
 +    if(!button.isConnected||examState.current!==session)return;
 +    if(schoolOwner580?.uid&&!window.NH7SchoolCyclesV580.current(schoolOwner580,true))return;
-@@ -143,0 +160 @@ document.addEventListener('click',event=>{
+@@ -143,0 +163 @@ document.addEventListener('click',event=>{
 +window.addEventListener('nh7-personal-before-owner-wave2',()=>{examState.current=null;examState.owner=null;examState.byId.clear();examState.lastRestUrl='';examState.lastHeaders=null});
 diff --git a/sw-release-core-v403.js b/sw-release-core-v403.js
 index 29e4a22c..0374e596 100644

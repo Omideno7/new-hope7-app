@@ -10,7 +10,7 @@ The active security transport already blocks raw client scoring and uses server-
 
 | Area | Result |
 |---|---|
-| Lesson/class quiz | Unlimited failed attempts; server grading and approved-assignment/class prerequisites retained. Actual SQL tests exercise ten failures, attempt eleven and later pass for both scopes. |
+| Lesson/class quiz | Unlimited failed attempts; server grading and approved-assignment/class prerequisites retained. Actual SQL tests exercise ten failures, attempt eleven and later pass for both scopes. The existing secure lesson editor also exposes an explicit localized retry that reopens the same canonical lesson for a fresh server session, without resending finalized answers. |
 | Final School exam | Three confirmed failed finalized receipts per cycle; failures one/two retry, third requires restart, ordinary fourth rejected. Passed/legacy/Admin completion cannot be regraded into another normal attempt. |
 | Submission recovery | Durable UID/cycle/exam request identity + original answers before sending; exact server replay, input mismatch rejection, transaction-level cycle lock and unique receipt. Lost replies/refresh do not create another finalized failure. |
 | Restart | Explicit localized confirmation only. New metadata cycle and fresh active reads/writes/drafts; no historical row deletion/reset/backfill. New assignments require normal review/approval again. Waiting/contacting Admin remains an alternative. |
@@ -79,6 +79,7 @@ Stop after this School task; no Batch3 or release work.
 - `scripts/verify-school-drafts-cycle-v580.cjs`
 - `scripts/verify-school-exam-race-v580.cjs`
 - `scripts/verify-school-safety-v580.py`
+- `scripts/verify-school-secure-retry-v580.cjs`
 - `scripts/verify-wave3-safety.py`
 - `scripts/verify-wave6-safety.py`
 - `scripts/verify-wave65-safety.py`

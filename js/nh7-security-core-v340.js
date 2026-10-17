@@ -93,7 +93,7 @@ window.fetch=async function(input,init={}){
 };
 
 async function secureSubmit(button){
-  const session=examState.current,schoolOwner580=examState.owner;
+  const session=examState.current,schoolOwner580=examState.owner,retryParams580={...(history.state?.params||{})};
   if(schoolOwner580?.uid&&!window.NH7SchoolCyclesV580.current(schoolOwner580))return;
   const exam=session?.exam;
   if(!exam?.id||!exam?._nh7_secure_server_scoring){
@@ -133,8 +133,11 @@ async function secureSubmit(button){
     }else{
       alert(`${say('نمره شما','Your score','Vaš rezultat')}: ${finalScore}%\n\n${msg}`);
     }
-    if(out.budget&&box)window.NH7SchoolCyclesV580?.appendBudget(box,out.budget,()=>window.NH7_COMMUNITY_CTX_V502?.navigate?.('school',{enter:true}));
+    const finalSchool580=exam.exam_scope==='course'&&exam.course_code==='foundation_school'&&exam.lesson_code==='course:foundation_school';
+    if(out.budget&&box&&finalSchool580)window.NH7SchoolCyclesV580?.appendBudget(box,out.budget,()=>window.NH7_COMMUNITY_CTX_V502?.navigate?.('school',{enter:true}));
     button.textContent=passed?say('قبول شدید ✓','Passed ✓','Položeno ✓'):say('نتیجه ثبت شد ✓','Result saved ✓','Rezultat spremljen ✓');
+    if(!passed&&out.submission_id&&!finalSchool580){const retry=document.createElement('button');retry.type='button';retry.className='secondary-btn';retry.dataset.schoolSecureRetry580='';retry.textContent=say('تلاش دوباره','Retry exam','Pokušaj ponovno');retry.onclick=()=>{if(button.isConnected&&(!schoolOwner580?.uid||window.NH7SchoolCyclesV580.current(schoolOwner580,true)))window.NH7_COMMUNITY_CTX_V502?.navigate?.('school',retryParams580,true)};button.insertAdjacentElement('afterend',retry)}
+
   }catch(error){
     if(!button.isConnected||examState.current!==session)return;
     if(schoolOwner580?.uid&&!window.NH7SchoolCyclesV580.current(schoolOwner580,true))return;
