@@ -1,0 +1,60 @@
+{
+  "base": "9ad13f338aae4f3eba10850b57e02305c1d66ea9",
+  "runtime": {
+    "css/styles.css": {
+      "before": "229fd3e3d2665156ea349df43a5285ebc3e5a2ba9f4618d5e7512ba33a238e42",
+      "after": "3e8a93f2f4e38f1303ecfd49dda1c5eb562046347dc547998017e50dce2de5f3"
+    },
+    "js/app.js": {
+      "before": "c1a82e8664414c6b328cfa16a89a5c7798111aaa1ad59a19863a0e2ada861d07",
+      "after": "11a05c4c4c9aba2d4b79ac5535f8932ce81115bc58b19afce0ba5a3c8faeb95c"
+    },
+    "js/document-studio-v2/admin-entry.mjs": {
+      "before": "c8dc3d09836c4453775b42b71f3e549df38a5d21fdd1c77778ef5f37c55d532f",
+      "after": "742836564dc8cc9f8927aec123f99a3ab1f5df8fb9bc0c5d7a8f81f7deaaf685"
+    },
+    "js/document-studio-v2/editor.mjs": {
+      "before": "df05fe192c44f80f25effd4b37b96bd849bedb3e511cb75e50d437925f6da0af",
+      "after": "6b82eba57cd0fd467d72beb6329aeced85991eb2470886870d14215a8adfad79"
+    },
+    "js/nh7-admin-workspace-wave3.js": {
+      "before": "6600692eafb379572f7e59d3338a298b83a436f0d7bc8c6150fab397afa63ed7",
+      "after": "2016ed09cabb5c1353cf45e1aead271d8b02332ba0cf5deef050f3bb6135dd6b"
+    },
+    "js/nh7-soul-winning-v472.js": {
+      "before": "99ac884f975ebb9dd3b782067e057b581313ef554f8375aff9fea8dc54a5980b",
+      "after": "e1b0d29564c87caeb1267bb8aa668ee586ffc0266e33f9f1626d943d4583e76f"
+    },
+    "js/nh7-user-context-wave6.js": {
+      "before": "9369452b88ee1c443254cd4cab2497ec9fc1d56c872544a13b9c057f31d93787",
+      "after": "b6f5a746ef7dc6bdda83307b8f8dbfde48b5d7683eb30b3b8e93ce2abbe8cb1d"
+    }
+  },
+  "patch_sha256": "8b443175bc54aee9139aff42e53cd7c1c29a9633f935b315d0fbab70a9f94e06",
+  "approved_paths": [
+    ".github/workflows/validate-develop.yml",
+    "css/styles.css",
+    "docs/qa/CODEX_WAVE8_INTEGRATION_PHYSICAL_ACCEPTANCE.md",
+    "docs/qa/CODEX_WAVE8_PHYSICAL_FIX_BATCH1.md",
+    "docs/qa/WAVE8_PHYSICAL_FIX_BATCH1_AUDIT.md",
+    "docs/qa/WAVE8_PHYSICAL_FIX_BATCH1_REPORT.md",
+    "docs/qa/WAVE8_PHYSICAL_FIX_MASTER_SPEC.md",
+    "js/app.js",
+    "js/document-studio-v2/admin-entry.mjs",
+    "js/document-studio-v2/editor.mjs",
+    "js/nh7-admin-workspace-wave3.js",
+    "js/nh7-soul-winning-v472.js",
+    "js/nh7-user-context-wave6.js",
+    "scripts/batch1_accepted_source.py",
+    "scripts/fixtures/batch1-approved-ui.patch",
+    "scripts/fixtures/batch1-source-contract.json",
+    "scripts/verify-batch1-browser.cjs",
+    "scripts/verify-batch1-login.cjs",
+    "scripts/verify-batch1-safety.py",
+    "scripts/verify-wave6-safety.py",
+    "scripts/verify-wave75-safety.py",
+    "scripts/verify-wave8-safety.py",
+    "scripts/verify-web-community-parity-v250.py",
+    "scripts/wave8_accepted_source.py"
+  ]
+}

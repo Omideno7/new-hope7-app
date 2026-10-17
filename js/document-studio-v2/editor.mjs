@@ -1187,25 +1187,17 @@ const checkSession=()=>{if(!current(studio.credential))studio.lockSession()};
 for(const name of ['storage','nh7-personal-owner-wave2','nh7-admin-clear-wave3','nh7-session-refreshed','pageshow'])addEventListener(name,checkSession);
 document.addEventListener('visibilitychange',()=>{checkSession();if(document.hidden){clearTimeout(studio.saveTimer);studio.readyAbort?.abort()}else if(!studio.sessionLocked){studio.draw();if(studio.dirty)studio.saveTimer=setTimeout(()=>studio.save().catch(e=>studio.error(e)),1200)}});
 const nonce = location.hash.slice(1);
-if (nonce && window.opener) {
-  const accept = (event) => {
-    if (
-      event.origin !== location.origin ||
-      event.source !== window.opener ||
-      event.data?.type !== "nh7-studio-v2-import" ||
-      event.data?.nonce !== nonce
-    )
-      return;
-    removeEventListener("message", accept);
-    if(!ownerProven()||studio.sessionLocked||!current(studio.credential))return;
-    const legacy = event.data.document;
+function importAdminDraftBatch1(payload){
+  if(!ownerProven()||studio.sessionLocked||!current(studio.credential))return;
+    const legacy = payload.document;
+    if(!legacy)return;
     if (legacy.status === "approved" || legacy.public_token) {
       studio.status(studio.word("legacyPreserved"));
       return;
     }
     const imported = legacyDraft(legacy);
     for (const e of imported.elements) {
-      const geometry = event.data.layout?.[e.type];
+      const geometry = payload.layout?.[e.type];
       if (geometry && geometry.width > 0 && geometry.height > 0)
         Object.assign(e, geometry);
     }
@@ -1214,7 +1206,19 @@ if (nonce && window.opener) {
     studio.inspector();
     studio.draw();
     studio.status(studio.word("unsaved"));
+}
+if (nonce && window.opener) {
+  const accept = event => {
+    if(event.origin!==location.origin||event.source!==window.opener||event.data?.type!=="nh7-studio-v2-import"||event.data?.nonce!==nonce)return;
+    removeEventListener('message',accept);importAdminDraftBatch1(event.data);
   };
-  addEventListener("message", accept);
-  studio.bootstrapReady=()=>window.opener.postMessage({type:"nh7-studio-v2-ready",nonce},location.origin);
+  addEventListener('message',accept);
+  studio.bootstrapReady=()=>window.opener.postMessage({type:'nh7-studio-v2-ready',nonce},location.origin);
+}else if(nonce){
+  studio.bootstrapReady=()=>{
+    const key='nh7-studio-handoff:'+nonce;let payload;
+    try{payload=JSON.parse(sessionStorage.getItem(key)||'null');sessionStorage.removeItem(key)}catch{return}
+    if(payload?.uid!==studio.credential.uid||!Number.isFinite(payload.created)||Date.now()-payload.created<0||Date.now()-payload.created>120000)return;
+    importAdminDraftBatch1(payload);
+  };
 }

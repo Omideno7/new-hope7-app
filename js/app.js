@@ -1045,16 +1045,17 @@ function setLang(lang){
 }
 function setCrumb(t){ $('#breadcrumb').textContent=t; $('#backBtn').classList.toggle('hidden', state.stack.length===0); $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.route===state.route)); }
 function navigate(route, params={}, replace=false){
+  if(route==='profile')route='account'; // Preserve legacy links without a second profile authority.
   if(!replace&&route===state.route&&JSON.stringify(params||{})===JSON.stringify(state.params||{}))return render(route,state.params);
-  if(!replace && state.route) state.stack.push({route:state.route, params:state.params});
+  if(!replace && state.route) state.stack.push({route:state.route, params:state.params,scroll:document.getElementById('view')?.scrollTop||0,pageScroll:window.scrollY});
   state.route=route; state.params=params||{};
   try{ const url='#'+encodeURIComponent(route)+(Object.keys(state.params).length?':'+encodeURIComponent(JSON.stringify(state.params)):''); replace ? history.replaceState({route,params:state.params},'',url) : history.pushState({route,params:state.params},'',url); }catch(e){}
-  return render(route, state.params);
+  const rendering=render(route,state.params),epoch=nh7NavigationEpochV456;return rendering.then(()=>{if(epoch===nh7NavigationEpochV456&&!params.verse){document.getElementById('view')?.scrollTo(0,0);window.scrollTo(0,0)}});
 }
 window.NH7_NAVIGATE=(route,params={},replace=false)=>navigate(route,params,replace);
 function back(){
   const prev=state.stack.pop();
-  if(prev){ state.route=prev.route; state.params=prev.params; render(prev.route, prev.params, true); try{ history.replaceState({route:prev.route,params:prev.params},'', '#'+encodeURIComponent(prev.route)); }catch(e){} return; }
+  if(prev){ state.route=prev.route; state.params=prev.params; render(prev.route, prev.params, true).then(()=>requestAnimationFrame(()=>{if(state.route===prev.route&&state.params===prev.params){view.scrollTop=prev.scroll||0;window.scrollTo(0,prev.pageScroll||0)}})); try{ history.replaceState({route:prev.route,params:prev.params},'', '#'+encodeURIComponent(prev.route)+(Object.keys(prev.params||{}).length?':'+encodeURIComponent(JSON.stringify(prev.params)):'')); }catch(e){} return; }
   if(state.route && state.route!=='home'){ state.route='home'; state.params={}; render('home',{},true); try{ history.replaceState({route:'home',params:{}},'', '#home'); }catch(e){} }
 }
 function card(title, body, cls=''){ return `<section class="card ${cls}">${title?`<h2>${html(title)}</h2>`:''}${body}</section>`; }
@@ -1452,7 +1453,7 @@ async function render(route, params={}, preserve=false){
     trackAppSection(String(route||'home')+detail);
     nh7TrackRenderedContentV223(route,params);
     setCrumb(tr(route));
-  }catch(e){ if(navigationEpochV456!==nh7NavigationEpochV456)return;console.error(e); view.innerHTML=card(l223('خطا','Error','Greška'),`<p>${html(l223('این بخش موقتاً در دسترس نیست؛ دوباره تلاش کنید.','This section is temporarily unavailable; try again.','Ovaj dio privremeno nije dostupan; pokušajte ponovno.'))}</p>`); }
+  }catch(e){ if(navigationEpochV456!==nh7NavigationEpochV456)return;console.error(e); view.innerHTML=card(l223('خطا','Error','Greška'),`<p role="alert">${html(l223('این بخش موقتاً در دسترس نیست؛ دوباره تلاش کنید.','This section is temporarily unavailable; try again.','Ovaj dio privremeno nije dostupan; pokušajte ponovno.'))}</p><div class="button-row"><button type="button" class="secondary-btn" id="routeRetryBatch1">${html(l223('تلاش دوباره','Try again','Pokušaj ponovno'))}</button><button type="button" class="secondary-btn" id="routeBackBatch1">${html(tr('back'))}</button></div>`);setCrumb(tr(route));$('#routeRetryBatch1').onclick=()=>render(state.route,state.params,true);$('#routeBackBatch1').onclick=back; }
 }
 
 async function home(){
@@ -1724,11 +1725,14 @@ function parseRef(ref){
   return b?{bookId:b.id,chapter,verse}:null;
 }
 
-async function plans(){
+async function plans(params={}){
+  const ticket=routeTicketWave6();
   const d=await jfetch('data/bible/plans/reading_plans_1yr_2yr.json'); await loadBibleMeta();
-  const plans=d.plans||[];
+  routeCheckWave6(ticket);const plans=d.plans||[];
+  const selected=plans.find(p=>String(p.id)===String(params.readingPlan||''));
   view.innerHTML=card(tr('plans'), `<div class="list">${plans.map((p,i)=>`<button class="list-btn" data-show-plan="${i}"><strong>${html(p.title?.[state.lang]||p.title?.en)}</strong><small>${localNum(p.durationDays||p.days?.length)} ${tr('day')}</small></button>`).join('')}</div><div id="planDetail"></div>`);
-  $$('[data-show-plan]').forEach(btn=>btn.onclick=()=>showPlan(plans[Number(btn.dataset.showPlan)]));
+  $$('[data-show-plan]').forEach(btn=>btn.onclick=()=>navigate('plans',{tab:'bible',readingPlan:String(plans[Number(btn.dataset.showPlan)].id)}));
+  if(selected){view.querySelector('.list').hidden=true;showPlan(selected)}
 }
 function planBookName(bookId){ const b=state.bible.books?.find(x=>x.id===bookId); return b?.names?.[state.lang] || b?.names?.en || bookId; }
 function renderReading(r){
@@ -1751,7 +1755,8 @@ function showPlan(p){
   const key='nh7_plan_'+(p.id||'plan'); const prog=JSON.parse(localStorage.getItem(key)||'{"completed":[]}');
   const total=p.days?.length||p.durationDays||365; const current=Math.min((prog.completed?.length||0)+1,total); const day=(p.days||[]).find(x=>Number(x.day)===current)||p.days?.[0]||{};
   const percent=Math.round(((prog.completed?.length||0)/total)*100);
-  $('#planDetail').innerHTML=card(p.title?.[state.lang]||p.title?.en, `<span class="badge">${tr('oldAndNew')}</span><div class="progress"><span style="width:${percent}%"></span></div><p><strong>${tr('day')} ${localNum(current)}</strong> / ${localNum(total)}</p><h3>${tr('readings')}</h3><div class="list">${(day.readings||[]).map(renderReading).join('')}</div><button class="primary-btn" id="markRead">${tr('read')}</button>`);
+  $('#planDetail').innerHTML=`<button type="button" class="secondary-btn" id="readingPlanBackBatch1">${html(tr('back'))}</button>`+card(p.title?.[state.lang]||p.title?.en, `<span class="badge">${tr('oldAndNew')}</span><div class="progress"><span style="width:${percent}%"></span></div><p><strong>${tr('day')} ${localNum(current)}</strong> / ${localNum(total)}</p><h3>${tr('readings')}</h3><div class="list">${(day.readings||[]).map(renderReading).join('')}</div><button class="primary-btn" id="markRead">${tr('read')}</button>`);
+  $('#readingPlanBackBatch1').onclick=()=>state.stack.at(-1)?.route==='plans'?back():navigate('plans',{tab:'bible'},true);
   $('#markRead').onclick=()=>{if(!prog.completed.includes(current))prog.completed.push(current);localStorage.setItem(key,JSON.stringify(prog));saveProgressCloud(key,prog).catch(console.warn);addPoints(10,'plan_1');showPlan(p);bindDynamic()};
   bindDynamic();
 }
@@ -1936,30 +1941,7 @@ async function school(params={}){
   view.innerHTML=card(tr('school'),`<span class="badge">${tr('approved')}</span><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(profile.email||currentUserEmail()||'')}</p></div><p class="success-text">${tr('enterSchool')}</p>${schoolSyncNotice}<div class="button-row"><button class="secondary-btn" data-go="account">${tr('accountActions')}</button><button class="secondary-btn" id="schoolLogoutBtn">${tr('logoutAccount')}</button></div><div class="list">${(()=>{const groups=new Map();d.lessons.forEach(l=>{const c=schoolCourseInfo(l);if(!groups.has(c.code))groups.set(c.code,{info:c,lessons:[]});groups.get(c.code).lessons.push(l)});return [...groups.values()].sort((a,b)=>a.info.order-b.info.order).map(g=>{const exam=examByCourse.get(g.info.code),summary=progressByCode.get('course:'+g.info.code),assignment=courseAssignmentSummary(d,g.info.code,courseAssignments);const lessons=g.lessons.sort((a,b)=>Number(a.lesson_order||999)-Number(b.lesson_order||999));const completed=lessons.filter(l=>progressByCode.get(l.lesson_code)?.completed_at).length;const lessonsLocked=exam?.require_course_completion===true&&completed<lessons.length;const assignmentsLocked=exam?.require_assignments_before_exam===true&&assignment.completed<assignment.total;const locked=lessonsLocked||assignmentsLocked;const examTitle=exam?.['title_'+state.lang]||exam?.title_en||tr('finalExam');return `<section class="school-course-group"><h3>${html(g.info.title[state.lang]||g.info.title.en)}</h3><p class="muted">${state.lang==='fa'?'پیشرفت دوره':state.lang==='hr'?'Napredak tečaja':'Course progress'}: ${localNum(completed)} / ${localNum(lessons.length)}</p>${assignment.total?`<p class="muted">${state.lang==='fa'?'تکالیف دارای نمره':state.lang==='hr'?'Ocjenjivani zadaci':'Graded assignments'}: ${localNum(assignment.completed)} / ${localNum(assignment.total)} · ${localNum(assignment.percent)}%</p>`:''}${lessons.map(l=>`<button class="list-btn" data-go="school" data-params='${html(JSON.stringify({lesson:l.lesson_code}))}'><strong>${html(l.translations?.[state.lang]?.class_title||l.translations?.en?.class_title)}</strong><small>${html(l.translations?.[state.lang]?.lesson_title||'')}${progressByCode.get(l.lesson_code)?.completed_at?' · ✅':''}${assignmentIsCompleted(assignment.rows.get(String(l.lesson_code||'')))?' · 📓':''}</small></button>`).join('')}${exam?`<button class="primary-btn wide-btn" ${locked?'disabled':''} data-go="school" data-params='${html(JSON.stringify({exam:g.info.code}))}'>📝 ${html(examTitle)}${summary?.exam_score!=null?' · '+html(summary.exam_score)+'%':''}</button>${locked?`<p class="muted">${lessonsLocked?(state.lang==='fa'?'برای ورود به آزمون ابتدا همه درس‌ها را تکمیل کنید.':state.lang==='hr'?'Za pristup ispitu najprije završite sve lekcije.':'Complete all lessons before taking the exam.'):(state.lang==='fa'?'برای ورود به آزمون ابتدا تکالیف لازم را ارسال کنید.':state.lang==='hr'?'Za pristup ispitu najprije predajte potrebne zadatke.':'Submit the required assignments before taking the exam.')}</p>`:''}`:''}</section>`}).join('')})()}</div>`);
   $('#schoolLogoutBtn')?.addEventListener('click',()=>logoutAccount('school'));
 }
-async function signInSchool(){
-  const email=($('#schoolLoginEmail')?.value||'').trim().toLowerCase(),password=$('#schoolLoginPassword')?.value||'';
-  if(!email||!password){alert(tr('requiredField'));return}
-  try{
-    const data=await signInOrClaimLegacyAccount(email,password);
-    if(!data?.access_token)throw new Error('Authenticated session was not returned.');
-    saveAuthSession(data);
-    clearLegacySchoolSession();
-    localStorage.setItem('nh7_manual_email',email);
-    localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
-
-    const schoolAccess=await fetchLatestRegistration('school');
-    if(schoolAccess)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},schoolAccess,{email})));
-
-    if(!isAccountLoggedIn())throw new Error('School login completed without an authenticated session.');
-    await restoreAccountCloudData(true);
-    invalidateSchoolSnapshot(email);
-    await getSchoolSnapshot(email,true);
-    navigate('school',{enter:true},true);
-  }catch(e){
-    console.warn('School sign-in failed',e);
-    alert(accountLoginError(e));
-  }
-}
+async function signInSchool(){return signInAccount({fromSchool:true})}
 
 async function schoolLesson(d, code){
   schoolDraftsV468.flush();
@@ -2442,7 +2424,7 @@ async function library(params={}){
 }
 
 async function more(){
-  const destinations=[['audio','🎧'],['testimonies','✨'],['prayerRequest','🙏'],['profile','👤'],['meetings','☎'],['salvation','✝'],['soulWinning','🌾'],['qna','❓'],['account','🔐'],['about','ℹ'],['settings','⚙']];
+  const destinations=[['audio','🎧'],['testimonies','✨'],['prayerRequest','🙏'],['meetings','☎'],['salvation','✝'],['soulWinning','🌾'],['qna','❓'],['account','🔐'],['about','ℹ'],['settings','⚙']];
   view.innerHTML=`<div class="grid" data-more-navigation456>${destinations.map(([route,icon])=>tile(route,icon,tr(route))).join('')}</div>`;
   mountMoreReviewV469(view.querySelector('[data-more-navigation456]'),{language:state.lang});
 }
@@ -2583,9 +2565,11 @@ async function account(){
   const session=authSession();
   if(isAccountLoggedIn()){
     if(window.NH7CommunityV502?.resumePending?.())return;
-    const profile=getKnownUserProfile(); const email=authEmail()||profile.email||'',documents=await myDocumentsV510();
+    const profile=getKnownUserProfile(); const email=authEmail()||profile.email||'',documents=[];
     routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('account'), `<h3>${tr('myAccess')}</h3><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||session?.user?.user_metadata?.full_name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(email)}</p></div>${myDocumentsHtmlV510(documents)}<button class="danger-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button>`);
-    $('#logoutAccountBtn')?.addEventListener('click',logoutAccount); return;
+    $('#logoutAccountBtn')?.addEventListener('click',logoutAccount);
+    const archiveMessage=view.querySelector('.nh7-my-documents-v510 p');if(archiveMessage)archiveMessage.textContent=l223('در حال بارگذاری مدارک…','Loading documents…','Učitavanje dokumenata…');
+    void myDocumentsV510().then(rows=>{try{routeCheckWave6(routeViewTicketWave6);const node=view.querySelector('.nh7-my-documents-v510');if(node)node.outerHTML=myDocumentsHtmlV510(rows)}catch{}});return;
   }
   routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('account'), `<p class="muted">${tr('signedOut')}</p><p>${tr('signInHint')}</p><input id="accountEmail" type="email" autocomplete="email" placeholder="${tr('email')}"><div class="password-wrap"><input id="accountPassword" type="password" autocomplete="current-password" placeholder="${tr('password')}"><button type="button" class="password-eye" data-toggle-password="accountPassword">👁</button></div><button class="primary-btn wide-btn" id="signInBtn">${tr('signIn')}</button><button class="link-button" id="forgotPasswordToggle">${tr('forgotPassword')}</button><div id="forgotPasswordPanel" class="hidden"><input id="resetEmail" type="email" placeholder="${tr('email')}"><button class="secondary-btn" id="resetPasswordBtn">${tr('resetPassword')}</button><p id="resetMsg" class="muted"></p></div>`);
   $('#signInBtn')?.addEventListener('click',signInAccount);
@@ -2593,36 +2577,50 @@ async function account(){
   $('#resetPasswordBtn')?.addEventListener('click',resetPassword);
   bindPasswordToggles();
 }
-async function signInAccount(){
-  const email=($('#accountEmail')?.value||'').trim().toLowerCase(),password=$('#accountPassword')?.value||'';
+let loginAttemptBatch1=0;
+async function signInAccount({fromSchool=false}={}){
+  const email=($(fromSchool?'#schoolLoginEmail':'#accountEmail')?.value||'').trim().toLowerCase(),password=$(fromSchool?'#schoolLoginPassword':'#accountPassword')?.value||'';
   if(!email||!password){alert(tr('requiredField'));return}
+  const attempt=++loginAttemptBatch1,context=window.NH7UserContextWave6,before=context?.identity(),button=$(fromSchool?'#schoolSignInBtn':'#signInBtn');
+  if(button)button.disabled=true;
   try{
     const data=await signInOrClaimLegacyAccount(email,password);
+    if(attempt!==loginAttemptBatch1||(before&&!context.current(before)))return;
     if(!data?.access_token)throw new Error('Authenticated session was not returned.');
     saveAuthSession(data);
     clearLegacySchoolSession();
     localStorage.setItem('nh7_manual_email',email);
     localStorage.removeItem(EXPLICIT_LOGOUT_KEY);
-
-    const school=await fetchLatestRegistration('school');
-    const meeting=await fetchLatestRegistration('meeting');
-    if(school)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},school,{email})));
-    if(meeting)localStorage.setItem('nh7_meeting_access',JSON.stringify(Object.assign({},meeting,{email})));
-
-    if(!isAccountLoggedIn())throw new Error('Account sign-in completed without an authenticated session.');
-    await restoreAccountCloudData(true);
-    invalidateSchoolSnapshot(email);
-    await getSchoolSnapshot(email,true);
-    if(window.NH7CommunityV502?.resumePending?.())return;
-    navigate('school',{},true);
+    const actor=context?.identity(),current=()=>attempt===loginAttemptBatch1&&(!actor||context.current(actor));
+    // Authentication has succeeded. Optional product hydration must not hold the shell.
+    if(state.route!=='account'||!$('#logoutAccountBtn'))await navigate('account',{},true);
+    const routeEpoch=nh7NavigationEpochV456;
+    void (async()=>{
+      const [school,meeting]=await Promise.all([fetchLatestRegistration('school'),fromSchool?Promise.resolve(null):fetchLatestRegistration('meeting')]);
+      if(!current())return;
+      if(school)localStorage.setItem('nh7_school_access',JSON.stringify(Object.assign({},school,{email})));
+      if(meeting)localStorage.setItem('nh7_meeting_access',JSON.stringify(Object.assign({},meeting,{email})));
+      await restoreAccountCloudData(true);
+      if(!current())return;
+      invalidateSchoolSnapshot(email);
+      await getSchoolSnapshot(email,true);
+      if(!current()||routeEpoch!==nh7NavigationEpochV456)return;
+      if(window.NH7CommunityV502?.resumePending?.())return;
+      navigate('school',fromSchool?{enter:true}:{},true);
+    })().catch(e=>{if(current())console.warn('Optional account hydration unavailable',e)});
   }catch(e){
-    console.warn('Account sign-in failed',e);
-    alert(accountLoginError(e));
-  }
+    if(attempt===loginAttemptBatch1&&(!before||context.current(before))){console.warn('Account sign-in failed',e);alert(accountLoginError(e))}
+  }finally{if(button?.isConnected)button.disabled=false}
 }
+
 function bindPasswordToggles(){
-  $$('[data-toggle-password]').forEach(btn=>btn.onclick=()=>{const input=$('#'+btn.dataset.togglePassword);if(!input)return;input.type=input.type==='password'?'text':'password';btn.textContent=input.type==='password'?'👁':'🙈';});
+  $$('[data-toggle-password]').forEach(btn=>{
+    const label=()=>{const input=$('#'+btn.dataset.togglePassword),shown=input?.type==='text';btn.setAttribute('aria-label',shown?l223('پنهان کردن رمز عبور','Hide password','Sakrij lozinku'):l223('نمایش رمز عبور','Show password','Prikaži lozinku'));btn.setAttribute('aria-pressed',String(shown))};
+    let selection=null;label();btn.onpointerdown=e=>{const input=$('#'+btn.dataset.togglePassword);selection=input?[input.selectionStart,input.selectionEnd]:null;e.preventDefault()};btn.onmousedown=e=>e.preventDefault();
+    btn.onclick=()=>{const input=$('#'+btn.dataset.togglePassword);if(!input)return;const [start,end]=selection||[input.selectionStart,input.selectionEnd];selection=null;input.type=input.type==='password'?'text':'password';btn.textContent=input.type==='password'?'👁':'🙈';label();input.focus({preventScroll:true});if(start!==null){input.setSelectionRange(start,end);requestAnimationFrame(()=>{if(input.isConnected&&document.activeElement===input)input.setSelectionRange(start,end)})}};
+  });
 }
+
 
 async function loginRestoreAccess(){
   const email=($('#loginEmail')?.value||'').trim().toLowerCase(); if(!email){alert(tr('requiredField'));return}
@@ -2908,7 +2906,13 @@ function bindDynamic(){
 
 window.addEventListener('pagehide',()=>{flushAudioAnalytics('pagehide',true).catch(()=>{})});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)flushAudioAnalytics('hidden',true).catch(()=>{})});
-window.addEventListener('popstate', (ev)=>{ const st=ev.state||{}; if(st.route){ state.route=st.route; state.params=st.params||{}; render(state.route,state.params,true); } else { back(); } });
+window.addEventListener('popstate', (ev)=>{ const st=ev.state||{}; if(st.route){
+  let index=-1;for(let n=state.stack.length-1;n>=0;n--){const x=state.stack[n];if(x.route===st.route&&JSON.stringify(x.params||{})===JSON.stringify(st.params||{})){index=n;break}}const previous=index>=0?state.stack[index]:null;
+  if(previous)state.stack.splice(index);
+  state.route=st.route==='profile'?'account':st.route;state.params=st.params||{};
+  const rendering=render(state.route,state.params,true),epoch=nh7NavigationEpochV456;
+  rendering.then(()=>requestAnimationFrame(()=>{if(epoch===nh7NavigationEpochV456&&previous){view.scrollTop=previous.scroll||0;window.scrollTo(0,previous.pageScroll||0)}}));
+ } else { back(); } });
 try{ history.replaceState({route:state.route,params:state.params},'', '#'+encodeURIComponent(state.route)); }catch(e){}
 $('#langSelect').onchange=e=>setLang(e.target.value);
 $('#inboxBtn')?.addEventListener('click',()=>navigate('inbox',{},false));

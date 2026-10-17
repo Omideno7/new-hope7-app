@@ -120,6 +120,7 @@ export function createSoulWinningV472(options={}){
   const lang=()=>safeLang(typeof options.lang==='function'?options.lang():localStorage.getItem('nh7_lang')||document.documentElement.lang||'en');
   const nav=(params={})=>{if(typeof options.navigate==='function')options.navigate('soulWinning',params,true);else render(params)};
   const tr=()=>TXT[lang()];
+  const L=(fa,en,hr)=>lang()==='fa'?fa:lang()==='hr'?hr:en;
   const stageOptions=(selected='')=>STAGES.map(s=>'<option value="'+esc(s.id)+'" '+(selected===s.id?'selected':'')+'>'+esc(stageLabel(s.id,lang()))+'</option>').join('');
 
   function renderDashboard(){

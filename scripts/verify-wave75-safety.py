@@ -5,6 +5,7 @@ from pathlib import Path
 import subprocess,hashlib,re,tempfile,json
 from wave75_accepted_source import BASE,manifest,prior75_bytes
 from wave8_accepted_source import prior8_bytes
+from batch1_accepted_source import prior_batch1_bytes,contract as batch1_contract
 m=manifest();assert m['base']==BASE
 subprocess.run(['python3','scripts/verify-wave8-safety.py'],check=True)
 wave8=json.loads(Path('scripts/fixtures/wave8-evidence-contract.json').read_text())
@@ -15,14 +16,14 @@ assert now-old==set(m['new_runtime'])|set(m['new_review']),'Unexpected runtime/r
 objects=dict(line.split(' ',1)[::-1] for line in subprocess.check_output(['git','ls-tree','-r','--format=%(objectname) %(path)',BASE,'--',*scopes]).decode().splitlines())
 for p in old:
  raw=prior75_bytes(p);assert hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==objects[p],'Unapproved product/backend change: '+p
-for p,h in (m['new_runtime']|m['new_review']).items():assert hashlib.sha256(Path(p).read_bytes()).hexdigest()==h,p
+for p,h in (m['new_runtime']|m['new_review']).items():assert hashlib.sha256(prior_batch1_bytes(p)).hexdigest()==h,p
 patch=Path('scripts/fixtures/wave75-approved-documents.patch');assert hashlib.sha256(patch.read_bytes()).hexdigest()==m['patch_sha256']
 with tempfile.TemporaryDirectory(prefix='nh7-wave75-check-') as tmp:
  for p in m['existing_runtime']:
   target=Path(tmp)/p;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(prior8_bytes(p))
  subprocess.run(['git','apply','--reverse','--check','--unidiff-zero',str(patch.resolve())],cwd=tmp,check=True)
 changed=set(subprocess.check_output(['git','diff','--name-only',BASE]).decode().splitlines())|set(subprocess.check_output(['git','ls-files','--others','--exclude-standard']).decode().splitlines())
-assert changed<=set(m['approved_paths'])|set(wave8['approved_paths']),changed-set(m['approved_paths'])-set(wave8['approved_paths'])
+assert changed<=set(m['approved_paths'])|set(wave8['approved_paths'])|set(batch1_contract()['approved_paths']),changed-set(m['approved_paths'])-set(wave8['approved_paths'])
 assert hashlib.sha256(Path('docs/qa/WAVE7_5_ADMIN_DOCUMENTS_ZERO_COST_ANALYTICS_AUDIT.md').read_bytes()).hexdigest()==m['audit_sha256']
 cost=Path('js/nh7-admin-audio-cost-wave75.js').read_text()
 assert 'REJECTED_COST' in cost

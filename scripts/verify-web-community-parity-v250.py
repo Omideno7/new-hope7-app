@@ -44,7 +44,7 @@ need("route==='testimonies'" in app and 'renderTestimonies' in app,'testimonies 
 need("route==='prayerRequest'" in app and 'renderPrayer' in app,'prayer route is not wired')
 need("else if(route==='profile') await account();" in app,'Profile must use current Account/local-photo path')
 need('renderProfile' not in app,'stale cloud Profile route must not be called by app.js')
-need("['testimonies','✨']" in app and "['prayerRequest','🙏']" in app and "['profile','👤']" in app,'More navigation is incomplete')
+need("['testimonies','✨']" in app and "['prayerRequest','🙏']" in app and "['account','🔐']" in app and "['profile','👤']" not in app,'More must retain Community and the single canonical Account entry')
 for token in ("testimonies:'Testimonies'","testimonies:'شهادت‌ها'","testimonies:'Svjedočanstva'",
               "prayerRequest:'Prayer Request'","prayerRequest:'درخواست دعا'","prayerRequest:'Molitveni zahtjev'",
               "profile:'My Profile'","profile:'پروفایل من'","profile:'Moj profil'"):

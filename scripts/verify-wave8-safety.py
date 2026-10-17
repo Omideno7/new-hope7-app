@@ -4,6 +4,8 @@ sys.dont_write_bytecode=True
 from pathlib import Path
 import subprocess,json,hashlib,re,tempfile
 from wave8_accepted_source import prior8_bytes
+from batch1_accepted_source import prior_batch1_bytes,contract as batch1_contract
+subprocess.run(['python3','scripts/verify-batch1-safety.py'],check=True)
 BASE='ffa2cc97a7c225d3d97a5ff4e57e620360440e04'
 m=json.loads(Path('scripts/fixtures/wave8-evidence-contract.json').read_text());assert m['base']==BASE
 scopes=['js','css','assets','data','public','app','supabase','watchos','index.html','admin.html','admin-v239-stable.html','manifest.json','service-worker.js','sw-release-core-v403.js','document-studio.html','document-output.html','document-verify.html','my-documents.html','version.json']
@@ -14,12 +16,12 @@ assert set(m['existing_runtime'])=={'js/app.js','sw-release-core-v403.js'},'Only
 patch=Path('scripts/fixtures/wave8-approved-reconnect.patch');assert hashlib.sha256(patch.read_bytes()).hexdigest()==m['patch_sha256']
 with tempfile.TemporaryDirectory(prefix='nh7-wave8-inverse-') as tmp:
  for name in m['existing_runtime']:
-  p=Path(tmp)/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(Path(name).read_bytes())
+  p=Path(tmp)/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(prior_batch1_bytes(name))
  subprocess.run(['git','apply','--reverse','--check','--unidiff-zero',str(patch.resolve())],cwd=tmp,check=True)
 core=Path('sw-release-core-v403.js').read_text();assert core.replace('-wave8-reconnect','')==prior8_bytes('sw-release-core-v403.js').decode(),'Executable cache rotation only'
-app=Path('js/app.js').read_text();assert app.count('function reconnectCurrentAccountWave8()')==1 and 'context.current(nh7ReconnectFlightWave8.actor)' in app and 'if(!current())return;' in app and 'if(current()&&state.route' in app
+app=prior_batch1_bytes('js/app.js').decode();assert app.count('function reconnectCurrentAccountWave8()')==1 and 'context.current(nh7ReconnectFlightWave8.actor)' in app and 'if(!current())return;' in app and 'if(current()&&state.route' in app
 tracked=set(subprocess.check_output(['git','ls-files','--',*scopes]).decode().splitlines());untracked=set(subprocess.check_output(['git','ls-files','--others','--exclude-standard','--',*scopes]).decode().splitlines());old=set(subprocess.check_output(['git','ls-tree','-r','--name-only',BASE,'--',*scopes]).decode().splitlines());assert tracked|untracked==old,'No runtime/backend/native addition/removal'
-changed=set(subprocess.check_output(['git','diff','--name-only',BASE]).decode().splitlines())|set(subprocess.check_output(['git','ls-files','--others','--exclude-standard']).decode().splitlines());assert changed<=set(m['approved_paths']),changed-set(m['approved_paths'])
+changed=set(subprocess.check_output(['git','diff','--name-only',BASE]).decode().splitlines())|set(subprocess.check_output(['git','ls-files','--others','--exclude-standard']).decode().splitlines());assert changed<=set(m['approved_paths'])|set(batch1_contract()['approved_paths']),changed-set(m['approved_paths'])-set(batch1_contract()['approved_paths'])
 audit=Path('docs/qa/WAVE8_INTEGRATION_PHYSICAL_ACCEPTANCE_AUDIT.md');assert hashlib.sha256(audit.read_bytes()).hexdigest()==m['audit_sha256'],'Audit must remain preserved'
 ledger=Path('docs/RELEASE_PROVENANCE.md').read_bytes();before=subprocess.check_output(['git','show',BASE+':docs/RELEASE_PROVENANCE.md']);assert ledger.startswith(before),'Historical release ledger is immutable; append dated QA evidence only'
 for p in ['.github/workflows/deploy-pages.yml','.github/workflows/apply-admin-full-stability-v447.yml','.github/workflows/apply-admin-listening-session-v451.yml','.github/workflows/apply-admin-stability-v439.yml']:

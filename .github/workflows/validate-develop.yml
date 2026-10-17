@@ -256,6 +256,18 @@ jobs:
           python3 scripts/run-ci-check.py node scripts/verify-wave5-races.cjs http://127.0.0.1:8878
           python3 scripts/run-ci-check.py node scripts/verify-wave75-browser.cjs http://127.0.0.1:8878
 
+      - name: Validate physical fix Batch 1 source and synthetic regressions
+        run: |
+          export NODE_PATH="$RUNNER_TEMP/canonical-tools/node_modules"
+          export CHROMIUM_PATH="$(node -e "console.log(require('playwright').chromium.executablePath())")"
+          python3 scripts/run-ci-check.py python3 scripts/verify-batch1-safety.py
+          for source in js/app.js js/nh7-user-context-wave6.js js/nh7-soul-winning-v472.js js/nh7-admin-workspace-wave3.js js/document-studio-v2/admin-entry.mjs js/document-studio-v2/editor.mjs scripts/verify-batch1-browser.cjs; do
+            python3 scripts/run-ci-check.py node --check "$source"
+          done
+          python3 scripts/run-ci-check.py node scripts/verify-batch1-login.cjs
+          python3 scripts/run-ci-check.py node scripts/verify-batch1-browser.cjs http://127.0.0.1:8878
+          git diff --check
+
       - name: Preserve current School reports, PDF, Print and Community document paths
         run: |
           export NODE_PATH="$RUNNER_TEMP/canonical-tools/node_modules"

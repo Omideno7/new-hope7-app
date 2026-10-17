@@ -3,6 +3,7 @@ from pathlib import Path
 import subprocess,re,json,hashlib
 import sys
 sys.dont_write_bytecode=True
+from batch1_accepted_source import prior_batch1_bytes
 from wave75_accepted_source import manifest as wave75_manifest
 from wave6_accepted_source import BASE,original,manifest,accepted_bytes
 from wave65_accepted_source import prior_bytes,manifest as security_manifest
@@ -39,7 +40,7 @@ protected={
  'js/nh7-my-notes-v234.js':['syncVerseState','deleteCloudNote','restoreCloudNotes','saveMeta','deleteMeta']}
 checked=0
 for p,names in protected.items():
- a,b=functions(original(p).decode()),functions(Path(p).read_text())
+ a,b=functions(original(p).decode()),functions(prior_batch1_bytes(p).decode())
  for name in names:
   if name not in a:continue
   assert a[name]==b[name],'Persistent/business contract changed: '+p+':'+name;checked+=1
