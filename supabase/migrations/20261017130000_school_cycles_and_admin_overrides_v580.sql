@@ -385,12 +385,12 @@ begin
       select 1 from private.nh7_school_progress_active_v580 p
       where (p.user_id=v_uid or (p.user_id is null and v_email<>'' and lower(trim(p.user_email))=v_email)) and p.lesson_code=x.code
         and (p.completed_at is not null or p.progress_percent>=100)
-        
+
     )
     or exists(
       select 1 from private.nh7_school_assignments_active_v580 a
       where (a.user_id=v_uid or (a.user_id is null and v_email<>'' and lower(trim(a.user_email))=v_email)) and a.lesson_code=x.code and lower(coalesce(a.status,''))='approved'
-        
+
     )
   );
 

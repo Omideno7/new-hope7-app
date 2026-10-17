@@ -35,7 +35,7 @@
     },
     "supabase/migrations/20261017130000_school_cycles_and_admin_overrides_v580.sql": {
       "before": null,
-      "after": "a65d2acff0bc2fd802f867f96f75ae6ca0ed8148a6e715d99307b40a6871451c"
+      "after": "79d52d33899eefe6879084ed287cdcf6d84a9d409cd7d22d711fa0c766a600a2"
     },
     "supabase/review/school-progression-v580/README.md": {
       "before": null,
@@ -59,7 +59,7 @@
     },
     "supabase/review/school-progression-v580/compiled-rpcs.sql": {
       "before": null,
-      "after": "5ed68e57d1a99ab3819d78f202700b35cb040bbacd9c0049ae55239314fe348e"
+      "after": "8740e09f10a48bebfa74b7b6007b6fd7bec045794f6fba3207ac76c5d2def8e0"
     },
     "supabase/review/school-progression-v580/preflight-readonly.sql": {
       "before": null,
