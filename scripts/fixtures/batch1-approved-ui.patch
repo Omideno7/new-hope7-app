@@ -12,7 +12,7 @@ index 98272338..826ee2a1 100644
 +.password-wrap>input{margin-bottom:0;min-height:48px;min-width:0;padding-inline-end:56px;box-sizing:border-box}
 +.password-wrap>.password-eye{position:absolute!important;inset-inline-end:4px;inset-inline-start:auto;top:0;bottom:0;transform:none;align-self:stretch;margin:0;width:48px;min-width:44px;min-height:44px;height:auto;max-height:none;padding:4px;display:grid;place-items:center;font-size:20px;line-height:1;border:0;background:transparent;box-shadow:none;z-index:1}
 diff --git a/js/app.js b/js/app.js
-index b5589875..a494e621 100644
+index b5589875..4fcea61a 100644
 --- a/js/app.js
 +++ b/js/app.js
 @@ -1045,16 +1045,17 @@ function setLang(lang){
@@ -182,7 +182,7 @@ index b5589875..a494e621 100644
 -    alert(accountLoginError(e));
 -  }
 +    if(attempt===loginAttemptBatch1&&(!before||context.current(before))){console.warn('Account sign-in failed',e);alert(accountLoginError(e))}
-+  }finally{if(button?.isConnected)button.disabled=false}
++  }finally{if(attempt===loginAttemptBatch1&&button?.isConnected)button.disabled=false}
  }
 +
  function bindPasswordToggles(){

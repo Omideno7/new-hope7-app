@@ -2610,7 +2610,7 @@ async function signInAccount({fromSchool=false}={}){
     })().catch(e=>{if(current())console.warn('Optional account hydration unavailable',e)});
   }catch(e){
     if(attempt===loginAttemptBatch1&&(!before||context.current(before))){console.warn('Account sign-in failed',e);alert(accountLoginError(e))}
-  }finally{if(button?.isConnected)button.disabled=false}
+  }finally{if(attempt===loginAttemptBatch1&&button?.isConnected)button.disabled=false}
 }
 
 function bindPasswordToggles(){
