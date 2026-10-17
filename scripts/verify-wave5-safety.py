@@ -21,6 +21,8 @@ allowed.update(platform_manifest()['approved_paths'])
 from wave75_accepted_source import manifest as wave75_manifest
 allowed.update(wave75_manifest()['approved_paths'])
 allowed.update(json.loads(Path('scripts/fixtures/wave8-evidence-contract.json').read_text())['approved_paths'])
+from batch1_accepted_source import contract as batch1_contract
+allowed.update(batch1_contract()['approved_paths'])
 for name in files:assert name in allowed or name.startswith(('scripts/verify-wave6','scripts/measure-wave6')) or name.startswith(('js/document-studio-v2/','supabase/review/wave5-document-studio-v2/','scripts/document-studio-v2/','scripts/verify-wave5','scripts/measure-wave5','docs/qa/WAVE5_DOCUMENT_STUDIO_')),f'Unexpected scope: {name}'
 for file,module in [('admin.html','admin-entry'),('index.html','archive-entry')]:
  s=accepted_bytes(file).decode().replace('  <script type="module" src="js/document-studio-v2/'+module+'.mjs?v=wave5"></script>\n','');assert s.encode()==old(file),'Only additive current page entry permitted'

@@ -51,6 +51,7 @@
     "scripts/verify-batch1-browser.cjs",
     "scripts/verify-batch1-login.cjs",
     "scripts/verify-batch1-safety.py",
+    "scripts/verify-wave5-safety.py",
     "scripts/verify-wave6-safety.py",
     "scripts/verify-wave75-safety.py",
     "scripts/verify-wave8-safety.py",
