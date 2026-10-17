@@ -67,6 +67,7 @@ Implement in four sequential batches on the same continuously advancing `develop
 34. Motion/transition system must remain performant, respect `prefers-reduced-motion` / platform Reduce Motion, and avoid battery-heavy perpetual effects.
 35. Theme Library presets must be visually distinct across background/cards/buttons/text/accent/navigation/shadows.
 36. Theme customization controls must actually apply and persist supported background/card/button/text/accent choices with immediate preview; prefer local-first persistence unless cross-device sync is already justified and bounded.
+37. Production native app display name must be exactly **`New Hope 7`** on iOS/iPadOS and Android launcher/home-screen surfaces. The `QA` suffix is allowed only for clearly non-Production QA/test builds. Prepare and validate the release configuration so the App Store / Google Play build cannot ship as `New Hope 7 QA` (including iOS display-name/product-name and Android app-label resources as applicable) without changing bundle/application identity accidentally.
 
 ## Cross-cutting acceptance requirements
 
@@ -83,6 +84,7 @@ Implement in four sequential batches on the same continuously advancing `develop
 - Add regression tests for each confirmed physical defect where automation can model it.
 - Report exact starting SHA, implementation commits, final `develop` SHA and exact-head CI run.
 - Do not claim physical pass after code changes. Rebuild/install from the exact final `develop` candidate and perform final physical QA on real devices.
+- QA/test artifacts may keep an explicit QA suffix for provenance during testing, but the final Production App Store / Google Play candidate must visibly identify the app only as **`New Hope 7`**. Verify this on an installed release candidate before owner approval.
 
 ## Final convergence / release gate
 
@@ -94,3 +96,4 @@ After all four batches:
 4. Freeze the exact accepted `develop` SHA.
 5. Only after explicit owner approval, integrate the exact reviewed state `develop → main` without unrelated rewrites.
 6. Production Web/iOS/Android release artifacts must use the same exact approved canonical `main` shared payload SHA. Backend/provider/document/security activation steps remain separate explicit approval gates.
+7. Before Store upload, install the Production release candidate and verify the visible app name is exactly **`New Hope 7`** (no `QA`, `Test`, `Wave`, or other test suffix) on iOS/iPadOS and Android, while bundle/application identifiers and signing/provenance remain the approved Production ones.
