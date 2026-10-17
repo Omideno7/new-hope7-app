@@ -20,7 +20,7 @@ The active security transport already blocks raw client scoring and uses server-
 | Technical repair | Separate audited stage-unlock metadata. Does not fabricate an academic pass or waive assignment/class final prerequisites. |
 | Admin restart | Same non-destructive generation semantics; prior cycles/history remain owner-visible. |
 | Admin UI | Manual, bounded School Progress Management inside existing student detail. Five localized actions, reason/confirmation, recover same pending action, owner-bound pending key, previous-cycle attempt pagination; actor/generation/selection/late-response fencing. No automatic backend load/polling. |
-| Accounts/offline | UID-bound pending requests and cycle hints; hints isolate drafts/cached old rows but never authorize RPCs/count failures. New-cycle draft keys preserve legacy Notes/draft bytes. Stale owner/route/cycle responses cannot repopulate current state. |
+| Accounts/offline | UID-bound pending requests and cycle hints; hints isolate drafts/cached old rows but never authorize RPCs/count failures. New-cycle draft keys preserve legacy Notes/draft bytes. Stale owner/route/cycle responses cannot repopulate current state. A reproduced overlapping-exam read race is fenced by an independent view generation, and secure submission checks the original connected button/session before updating results. |
 | Reports/completion | Preserve exact deployed profile/academic bodies privately; overlay active-cycle School fields, retain identity/non-School data, preserve other courses. Completion adapter distinguishes EXAM/LEGACY_PRESERVED/ADMIN_OVERRIDE. Existing PDF/Print/CSV/certificate render/issuance code remains unchanged. |
 
 ## Schema, RPC and authority
@@ -35,7 +35,7 @@ Migration checkpoint: **42/42 exact, 0 missing; 2 newer pending**: existing `202
 
 ## Verification and acceptance boundary
 
-New tests: actual synthetic PostgreSQL migration/RPC tests (including actual recalculation trigger), current student UI 12 FA/EN/HR phone/tablet portrait/landscape cases, Admin UI 6 language/width cases, generation-zero/new-cycle draft bytes/receipts/account isolation, current-source scope and exact original checkpoint tests. Existing 20 School static/migration tests passed during implementation. Current reports/Print/PDF, Profile/Search/Inbox, Wave1–8 browser/SQL/measurement regressions run through Validate Develop; final exact-head CI determines acceptance. Browser fixtures are not a Production or physical-device claim. PGlite serial locking tests are not two-connection PostgreSQL concurrency acceptance.
+New tests include a real-browser overlapping-session race that reproduced STALE EXAM before the fix and retains CURRENT EXAM afterward. New tests: actual synthetic PostgreSQL migration/RPC tests (including actual recalculation trigger), current student UI 12 FA/EN/HR phone/tablet portrait/landscape cases, Admin UI 6 language/width cases, generation-zero/new-cycle draft bytes/receipts/account isolation, current-source scope and exact original checkpoint tests. Existing 20 School static/migration tests passed during implementation. Current reports/Print/PDF, Profile/Search/Inbox, Wave1–8 browser/SQL/measurement regressions run through Validate Develop; final exact-head CI determines acceptance. Browser fixtures are not a Production or physical-device claim. PGlite serial locking tests are not two-connection PostgreSQL concurrency acceptance.
 
 Historical safety assertions originally froze *all* School/backend changes from prior waves. Their narrow reconciliation was explicitly approved by the user after an automatic-review rejection of an earlier broad proposal. The approved bridge must validate current School behavior and exact before/after hashes/reversible patch first; historical original-byte assertions remain intact, no wildcard backend/runtime exemption. See `SCHOOL_V580_GUARD_RECONCILIATION_REVIEW.md`.
 
@@ -77,6 +77,7 @@ Stop after this School task; no Batch3 or release work.
 - `scripts/verify-school-cycles-browser-v580.cjs`
 - `scripts/verify-school-cycles-v580.cjs`
 - `scripts/verify-school-drafts-cycle-v580.cjs`
+- `scripts/verify-school-exam-race-v580.cjs`
 - `scripts/verify-school-safety-v580.py`
 - `scripts/verify-wave3-safety.py`
 - `scripts/verify-wave6-safety.py`

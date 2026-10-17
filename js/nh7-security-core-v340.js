@@ -120,6 +120,7 @@ async function secureSubmit(button){
     if(cycles?.state())out=await cycles.submit(session,answers);
     else {const res=await rpc(examState.lastRestUrl,examState.lastHeaders,'nh7_submit_school_exam_v340',{p_exam_id:exam.id,p_answers:answers});if(!res.ok)throw new Error(await responseError(res));out=await res.json()}
 
+    if(!button.isConnected||examState.current!==session)return;
     if(schoolOwner580?.uid&&!window.NH7SchoolCyclesV580.current(schoolOwner580,true))return;
     if(!out?.ok)throw new Error(out?.error||'Secure exam submission failed');
     const passed=!!out.passed,objective=Number(out.objective_score_percent||0),finalScore=Number(out.final_score_percent??out.score_percent??0),assignment=Number(out.assignment_score_percent??100);
@@ -135,6 +136,7 @@ async function secureSubmit(button){
     if(out.budget&&box)window.NH7SchoolCyclesV580?.appendBudget(box,out.budget,()=>window.NH7_COMMUNITY_CTX_V502?.navigate?.('school',{enter:true}));
     button.textContent=passed?say('قبول شدید ✓','Passed ✓','Položeno ✓'):say('نتیجه ثبت شد ✓','Result saved ✓','Rezultat spremljen ✓');
   }catch(error){
+    if(!button.isConnected||examState.current!==session)return;
     if(schoolOwner580?.uid&&!window.NH7SchoolCyclesV580.current(schoolOwner580,true))return;
     console.warn('NH7 secure exam submit',error);
     button.disabled=false;button.textContent=old;

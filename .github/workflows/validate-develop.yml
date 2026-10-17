@@ -164,6 +164,7 @@ jobs:
           python3 scripts/run-ci-check.py node scripts/verify-school-drafts-cycle-v580.cjs
           python3 scripts/run-ci-check.py node scripts/verify-school-cycles-browser-v580.cjs
           python3 scripts/run-ci-check.py node scripts/verify-school-admin-browser-v580.cjs
+          python3 scripts/run-ci-check.py node scripts/verify-school-exam-race-v580.cjs
 
       - name: Validate Wave 8 scoped integration and exact-current provenance
         shell: bash
