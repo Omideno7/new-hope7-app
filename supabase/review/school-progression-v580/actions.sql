@@ -34,7 +34,7 @@ begin
   if old_event.input<>input then raise exception 'request_id_reused';end if;
   return jsonb_build_object('ok',true,'audit_id',old_event.id,'state',old_event.after_state,'replayed',true);
  end if;
- if private.nh7_school_cycle_v580(p_target,p_course)<>p_cycle then raise exception 'school_cycle_changed';end if;
+ if private.nh7_school_cycle_v580(p_target,p_course) is distinct from p_cycle then raise exception 'school_cycle_changed';end if;
  before_state:=private.nh7_school_summary_v580(p_target,p_course);
  if p_action='student_restart' and before_state->>'access_state'<>'RESTART_REQUIRED' then raise exception 'restart_not_required';end if;
  case p_action
@@ -98,7 +98,7 @@ begin
  if not found then raise exception 'exam_not_found';end if;
  course:=coalesce(nullif(e.course_code,''),'foundation_school');
  perform private.nh7_school_ensure_cycle_v580(uid,course);
- if private.nh7_school_cycle_v580(uid,course)<>p_cycle then raise exception 'school_cycle_changed';end if;
+ if private.nh7_school_cycle_v580(uid,course) is distinct from p_cycle then raise exception 'school_cycle_changed';end if;
  payload:=jsonb_build_object('exam',p_exam_id,'cycle',p_cycle,'class',p_class_key,'answers',p_answers);
  select * into prior from private.nh7_school_receipts_v580 where user_id=uid and request_id=p_request;
  if found then

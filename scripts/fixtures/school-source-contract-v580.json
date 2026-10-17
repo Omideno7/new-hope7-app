@@ -35,7 +35,7 @@
     },
     "supabase/migrations/20261017130000_school_cycles_and_admin_overrides_v580.sql": {
       "before": null,
-      "after": "ede10170bfcd4e473b577c0a989e9871d6160d133de4bb6a9c23cfcc54088df3"
+      "after": "09e65d2fd11d674b78d973838523a6ce2242e85e448d7a0e0902124d020be039"
     },
     "supabase/review/school-progression-v580/README.md": {
       "before": null,
@@ -47,7 +47,7 @@
     },
     "supabase/review/school-progression-v580/actions.sql": {
       "before": null,
-      "after": "88d0d6bc33010b7f3174bac87e3362326478de4e0baee02d78a7a1908f096afb"
+      "after": "3fc82004ebcbcd6e31daa200f758653fa860f2822f6ca2e1e31fd30e84a70c49"
     },
     "supabase/review/school-progression-v580/activation-checklist.md": {
       "before": null,
@@ -59,7 +59,7 @@
     },
     "supabase/review/school-progression-v580/compiled-rpcs.sql": {
       "before": null,
-      "after": "8740e09f10a48bebfa74b7b6007b6fd7bec045794f6fba3207ac76c5d2def8e0"
+      "after": "a0577e4b5bee351b903cb561e2b12074c41fed1dacf912e56ad7bd9d104042ca"
     },
     "supabase/review/school-progression-v580/preflight-readonly.sql": {
       "before": null,

@@ -52,7 +52,7 @@ parts.append(s)
 # Grade from the exact current server question selector, never trust a client score.
 s=active(function(SUB,'public.nh7_submit_school_exam_v340'))
 s=s.replace('public.nh7_submit_school_exam_v340(', 'private.nh7_school_grade_v580(').replace('p_answers jsonb\n)', 'p_answers jsonb, p_expected_cycle integer\n)')
-s=s.replace("if v_attempts>=v_exam.max_attempts then raise exception 'max_attempts_reached'; end if;", "if private.nh7_school_cycle_v580(v_uid,coalesce(v_exam.course_code,'foundation_school'))<>p_expected_cycle then raise exception 'school_cycle_changed';end if;")
+s=s.replace("if v_attempts>=v_exam.max_attempts then raise exception 'max_attempts_reached'; end if;", "if private.nh7_school_cycle_v580(v_uid,coalesce(v_exam.course_code,'foundation_school')) is distinct from p_expected_cycle then raise exception 'school_cycle_changed';end if;")
 s=s.replace('user_id,exam_id,user_email,user_name,course_code,lesson_code,attempt_number,','school_cycle,user_id,exam_id,user_email,user_name,course_code,lesson_code,attempt_number,').replace('v_uid,v_exam.id,v_write_email,v_name,','p_expected_cycle,v_uid,v_exam.id,v_write_email,v_name,')
 s=s.replace('where p.user_id=v_uid and p.lesson_code=', 'where p.school_cycle=p_expected_cycle and p.user_id=v_uid and p.lesson_code=')
 s=s.replace('user_id,user_email,user_name,lesson_code,progress_percent,completed_at,exam_id,exam_score,','school_cycle,user_id,user_email,user_name,lesson_code,progress_percent,completed_at,exam_id,exam_score,').replace('v_uid,v_write_email,v_name,v_exam.lesson_code,', 'p_expected_cycle,v_uid,v_write_email,v_name,v_exam.lesson_code,')
@@ -76,11 +76,11 @@ for file,oldname,newname in [
  mark="p_user_name text default ''\n)" if 'assignment' in newname else 'p_completed_at timestamptz default null\n)'
  assert mark in s;s=s.replace(mark,mark[:-2]+', p_expected_cycle integer default 0\n)')
  if 'assignment' in newname:
-  s=s.replace("if v_lesson='' then", "perform private.nh7_school_ensure_cycle_v580(v_uid,v_course);if private.nh7_school_cycle_v580(v_uid,v_course)<>p_expected_cycle then raise exception 'school_cycle_changed';end if;\n  if v_lesson='' then")
+  s=s.replace("if v_lesson='' then", "perform private.nh7_school_ensure_cycle_v580(v_uid,v_course);if private.nh7_school_cycle_v580(v_uid,v_course) is distinct from p_expected_cycle then raise exception 'school_cycle_changed';end if;\n  if v_lesson='' then")
   s=s.replace('user_id,user_email,user_name,course_code,lesson_code,answer_text,language,','school_cycle,user_id,user_email,user_name,course_code,lesson_code,answer_text,language,').replace("v_uid,v_write_email,coalesce(p_user_name,''),", "p_expected_cycle,v_uid,v_write_email,coalesce(p_user_name,''),")
  else:
   s=s.replace('v_row public.school_progress;',"v_row public.school_progress; v_course text;")
-  s=s.replace("if v_code=''", "select coalesce(course_code,'foundation_school') into v_course from public.school_lessons where lesson_code=v_code limit 1;v_course:=coalesce(v_course,'foundation_school');perform private.nh7_school_ensure_cycle_v580(v_uid,v_course);if private.nh7_school_cycle_v580(v_uid,v_course)<>p_expected_cycle then raise exception 'school_cycle_changed';end if;\n  if v_code=''")
+  s=s.replace("if v_code=''", "select coalesce(course_code,'foundation_school') into v_course from public.school_lessons where lesson_code=v_code limit 1;v_course:=coalesce(v_course,'foundation_school');perform private.nh7_school_ensure_cycle_v580(v_uid,v_course);if private.nh7_school_cycle_v580(v_uid,v_course) is distinct from p_expected_cycle then raise exception 'school_cycle_changed';end if;\n  if v_code=''")
   s=s.replace('where p.user_id=v_uid', 'where p.school_cycle=p_expected_cycle and p.user_id=v_uid')
   s=s.replace('user_email,user_name,lesson_code,progress_percent,completed_at,updated_at','school_cycle,user_email,user_name,lesson_code,progress_percent,completed_at,updated_at').replace('v_email,v_name,v_code,v_progress,','p_expected_cycle,v_email,v_name,v_code,v_progress,')
  parts.append(s)

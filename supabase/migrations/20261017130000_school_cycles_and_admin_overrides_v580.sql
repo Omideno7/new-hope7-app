@@ -778,7 +778,7 @@ begin
   ) then
     raise exception 'exam_already_passed';
   end if;
-  if private.nh7_school_cycle_v580(v_uid,coalesce(v_exam.course_code,'foundation_school'))<>p_expected_cycle then raise exception 'school_cycle_changed';end if;
+  if private.nh7_school_cycle_v580(v_uid,coalesce(v_exam.course_code,'foundation_school')) is distinct from p_expected_cycle then raise exception 'school_cycle_changed';end if;
   v_attempt_no:=v_attempts+1;
 
   if v_exam.exam_scope='course' then
@@ -940,7 +940,7 @@ begin
   if not public.nh7_school_access_approved_v230(v_uid,'','') then
     raise exception 'school_approval_required';
   end if;
-  perform private.nh7_school_ensure_cycle_v580(v_uid,v_course);if private.nh7_school_cycle_v580(v_uid,v_course)<>p_expected_cycle then raise exception 'school_cycle_changed';end if;
+  perform private.nh7_school_ensure_cycle_v580(v_uid,v_course);if private.nh7_school_cycle_v580(v_uid,v_course) is distinct from p_expected_cycle then raise exception 'school_cycle_changed';end if;
   if v_lesson='' then raise exception 'Lesson code is required'; end if;
   if length(v_answer)<10 then raise exception 'Assignment answer is too short'; end if;
 
@@ -1019,7 +1019,7 @@ begin
   if not public.nh7_school_access_approved_v230(v_uid,v_email,'') then
     raise exception 'school_approval_required';
   end if;
-  select coalesce(course_code,'foundation_school') into v_course from public.school_lessons where lesson_code=v_code limit 1;v_course:=coalesce(v_course,'foundation_school');perform private.nh7_school_ensure_cycle_v580(v_uid,v_course);if private.nh7_school_cycle_v580(v_uid,v_course)<>p_expected_cycle then raise exception 'school_cycle_changed';end if;
+  select coalesce(course_code,'foundation_school') into v_course from public.school_lessons where lesson_code=v_code limit 1;v_course:=coalesce(v_course,'foundation_school');perform private.nh7_school_ensure_cycle_v580(v_uid,v_course);if private.nh7_school_cycle_v580(v_uid,v_course) is distinct from p_expected_cycle then raise exception 'school_cycle_changed';end if;
   if v_code='' or v_code like 'course:%' then
     raise exception 'invalid_lesson';
   end if;
@@ -1094,7 +1094,7 @@ begin
   if old_event.input<>input then raise exception 'request_id_reused';end if;
   return jsonb_build_object('ok',true,'audit_id',old_event.id,'state',old_event.after_state,'replayed',true);
  end if;
- if private.nh7_school_cycle_v580(p_target,p_course)<>p_cycle then raise exception 'school_cycle_changed';end if;
+ if private.nh7_school_cycle_v580(p_target,p_course) is distinct from p_cycle then raise exception 'school_cycle_changed';end if;
  before_state:=private.nh7_school_summary_v580(p_target,p_course);
  if p_action='student_restart' and before_state->>'access_state'<>'RESTART_REQUIRED' then raise exception 'restart_not_required';end if;
  case p_action
@@ -1158,7 +1158,7 @@ begin
  if not found then raise exception 'exam_not_found';end if;
  course:=coalesce(nullif(e.course_code,''),'foundation_school');
  perform private.nh7_school_ensure_cycle_v580(uid,course);
- if private.nh7_school_cycle_v580(uid,course)<>p_cycle then raise exception 'school_cycle_changed';end if;
+ if private.nh7_school_cycle_v580(uid,course) is distinct from p_cycle then raise exception 'school_cycle_changed';end if;
  payload:=jsonb_build_object('exam',p_exam_id,'cycle',p_cycle,'class',p_class_key,'answers',p_answers);
  select * into prior from private.nh7_school_receipts_v580 where user_id=uid and request_id=p_request;
  if found then

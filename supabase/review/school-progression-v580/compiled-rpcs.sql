@@ -624,7 +624,7 @@ begin
   ) then
     raise exception 'exam_already_passed';
   end if;
-  if private.nh7_school_cycle_v580(v_uid,coalesce(v_exam.course_code,'foundation_school'))<>p_expected_cycle then raise exception 'school_cycle_changed';end if;
+  if private.nh7_school_cycle_v580(v_uid,coalesce(v_exam.course_code,'foundation_school')) is distinct from p_expected_cycle then raise exception 'school_cycle_changed';end if;
   v_attempt_no:=v_attempts+1;
 
   if v_exam.exam_scope='course' then
@@ -786,7 +786,7 @@ begin
   if not public.nh7_school_access_approved_v230(v_uid,'','') then
     raise exception 'school_approval_required';
   end if;
-  perform private.nh7_school_ensure_cycle_v580(v_uid,v_course);if private.nh7_school_cycle_v580(v_uid,v_course)<>p_expected_cycle then raise exception 'school_cycle_changed';end if;
+  perform private.nh7_school_ensure_cycle_v580(v_uid,v_course);if private.nh7_school_cycle_v580(v_uid,v_course) is distinct from p_expected_cycle then raise exception 'school_cycle_changed';end if;
   if v_lesson='' then raise exception 'Lesson code is required'; end if;
   if length(v_answer)<10 then raise exception 'Assignment answer is too short'; end if;
 
@@ -865,7 +865,7 @@ begin
   if not public.nh7_school_access_approved_v230(v_uid,v_email,'') then
     raise exception 'school_approval_required';
   end if;
-  select coalesce(course_code,'foundation_school') into v_course from public.school_lessons where lesson_code=v_code limit 1;v_course:=coalesce(v_course,'foundation_school');perform private.nh7_school_ensure_cycle_v580(v_uid,v_course);if private.nh7_school_cycle_v580(v_uid,v_course)<>p_expected_cycle then raise exception 'school_cycle_changed';end if;
+  select coalesce(course_code,'foundation_school') into v_course from public.school_lessons where lesson_code=v_code limit 1;v_course:=coalesce(v_course,'foundation_school');perform private.nh7_school_ensure_cycle_v580(v_uid,v_course);if private.nh7_school_cycle_v580(v_uid,v_course) is distinct from p_expected_cycle then raise exception 'school_cycle_changed';end if;
   if v_code='' or v_code like 'course:%' then
     raise exception 'invalid_lesson';
   end if;
