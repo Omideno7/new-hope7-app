@@ -1055,7 +1055,7 @@ function navigate(route, params={}, replace=false){
 window.NH7_NAVIGATE=(route,params={},replace=false)=>navigate(route,params,replace);
 function back(){
   const prev=state.stack.pop();
-  if(prev){ state.route=prev.route; state.params=prev.params; render(prev.route, prev.params, true).then(()=>requestAnimationFrame(()=>{if(state.route===prev.route&&state.params===prev.params){view.scrollTop=prev.scroll||0;window.scrollTo(0,prev.pageScroll||0)}})); try{ history.replaceState({route:prev.route,params:prev.params},'', '#'+encodeURIComponent(prev.route)+(Object.keys(prev.params||{}).length?':'+encodeURIComponent(JSON.stringify(prev.params)):'')); }catch(e){} return; }
+  if(prev){ state.route=prev.route; state.params=prev.params; const rendering=render(prev.route,prev.params,true),epoch=nh7NavigationEpochV456;rendering.then(()=>requestAnimationFrame(()=>{if(epoch===nh7NavigationEpochV456&&state.route===prev.route&&state.params===prev.params){view.scrollTop=prev.scroll||0;window.scrollTo(0,prev.pageScroll||0)}})); try{ history.replaceState({route:prev.route,params:prev.params},'', '#'+encodeURIComponent(prev.route)+(Object.keys(prev.params||{}).length?':'+encodeURIComponent(JSON.stringify(prev.params)):'')); }catch(e){} return; }
   if(state.route && state.route!=='home'){ state.route='home'; state.params={}; render('home',{},true); try{ history.replaceState({route:'home',params:{}},'', '#home'); }catch(e){} }
 }
 function card(title, body, cls=''){ return `<section class="card ${cls}">${title?`<h2>${html(title)}</h2>`:''}${body}</section>`; }

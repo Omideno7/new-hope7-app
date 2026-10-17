@@ -7,7 +7,7 @@
     },
     "js/app.js": {
       "before": "c1a82e8664414c6b328cfa16a89a5c7798111aaa1ad59a19863a0e2ada861d07",
-      "after": "6277c9b508bd8eddd2e803aebdf3865204d14683e8c9c64f42130344302c30db"
+      "after": "21268a397a4b73756ebabc95a7c95b4d370c92e2ee752d8f8b64d94d0abb17f3"
     },
     "js/document-studio-v2/admin-entry.mjs": {
       "before": "c8dc3d09836c4453775b42b71f3e549df38a5d21fdd1c77778ef5f37c55d532f",
@@ -30,7 +30,7 @@
       "after": "b6f5a746ef7dc6bdda83307b8f8dbfde48b5d7683eb30b3b8e93ce2abbe8cb1d"
     }
   },
-  "patch_sha256": "a77a6b3b7a9e06ffe8e1d890620db37be0916a429158b862050e51a035f7497e",
+  "patch_sha256": "f55b5d94020c729f1bb03824bead10c57dfd0e857815129ef3d171ad578e9bf6",
   "approved_paths": [
     ".github/workflows/validate-develop.yml",
     "css/styles.css",

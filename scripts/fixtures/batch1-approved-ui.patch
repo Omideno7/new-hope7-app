@@ -12,7 +12,7 @@ index 98272338..826ee2a1 100644
 +.password-wrap>input{margin-bottom:0;min-height:48px;min-width:0;padding-inline-end:56px;box-sizing:border-box}
 +.password-wrap>.password-eye{position:absolute!important;inset-inline-end:4px;inset-inline-start:auto;top:0;bottom:0;transform:none;align-self:stretch;margin:0;width:48px;min-width:44px;min-height:44px;height:auto;max-height:none;padding:4px;display:grid;place-items:center;font-size:20px;line-height:1;border:0;background:transparent;box-shadow:none;z-index:1}
 diff --git a/js/app.js b/js/app.js
-index b5589875..4fcea61a 100644
+index b5589875..2b2b0fb6 100644
 --- a/js/app.js
 +++ b/js/app.js
 @@ -1045,16 +1045,17 @@ function setLang(lang){
@@ -32,7 +32,7 @@ index b5589875..4fcea61a 100644
  function back(){
    const prev=state.stack.pop();
 -  if(prev){ state.route=prev.route; state.params=prev.params; render(prev.route, prev.params, true); try{ history.replaceState({route:prev.route,params:prev.params},'', '#'+encodeURIComponent(prev.route)); }catch(e){} return; }
-+  if(prev){ state.route=prev.route; state.params=prev.params; render(prev.route, prev.params, true).then(()=>requestAnimationFrame(()=>{if(state.route===prev.route&&state.params===prev.params){view.scrollTop=prev.scroll||0;window.scrollTo(0,prev.pageScroll||0)}})); try{ history.replaceState({route:prev.route,params:prev.params},'', '#'+encodeURIComponent(prev.route)+(Object.keys(prev.params||{}).length?':'+encodeURIComponent(JSON.stringify(prev.params)):'')); }catch(e){} return; }
++  if(prev){ state.route=prev.route; state.params=prev.params; const rendering=render(prev.route,prev.params,true),epoch=nh7NavigationEpochV456;rendering.then(()=>requestAnimationFrame(()=>{if(epoch===nh7NavigationEpochV456&&state.route===prev.route&&state.params===prev.params){view.scrollTop=prev.scroll||0;window.scrollTo(0,prev.pageScroll||0)}})); try{ history.replaceState({route:prev.route,params:prev.params},'', '#'+encodeURIComponent(prev.route)+(Object.keys(prev.params||{}).length?':'+encodeURIComponent(JSON.stringify(prev.params)):'')); }catch(e){} return; }
    if(state.route && state.route!=='home'){ state.route='home'; state.params={}; render('home',{},true); try{ history.replaceState({route:'home',params:{}},'', '#home'); }catch(e){} }
  }
  function card(title, body, cls=''){ return `<section class="card ${cls}">${title?`<h2>${html(title)}</h2>`:''}${body}</section>`; }
