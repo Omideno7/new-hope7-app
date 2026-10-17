@@ -100,5 +100,5 @@ BEGIN
 END $preflight$;
 """
 path=ROOT/'supabase/migrations/20261017130000_school_cycles_and_admin_overrides_v580.sql'
-path.write_text(header+'\n\n'.join((REVIEW/f).read_text() for f in files)+'\nCOMMIT;\n')
+path.write_text(header+'\n\n'.join((REVIEW/f).read_text() for f in files)+"\nNOTIFY pgrst, 'reload schema';\nCOMMIT;\n")
 print('Generated',path.name,'UNAPPLIED')

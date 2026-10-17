@@ -64,3 +64,10 @@ before=[Path(p).read_bytes() for p in paths]
 subprocess.run(['python3','scripts/build-school-cycle-source-v580.py'],check=True)
 assert before==[Path(p).read_bytes() for p in paths],'Generated SQL was stale'
 print('PASS original CI steps/permissions byte-equivalent; additive School gate only; SQL source compiler deterministic')
+
+# A zero-latency Admin fixture raced deferred bootstrap (unchanged baseline47/65/66).
+# Preserve every request and every original cost/idle assertion; only paired fixture latency/metadata changes.
+old_measure=old('scripts/measure-wave75.cjs').decode()
+expected=old_measure.replace('const calls=await a.intercept(c,base),p=await c.newPage();',"const calls=await a.intercept(c,base,{delay:async({name})=>{if(name==='nh7_admin_my_access_v350')await new Promise(r=>setTimeout(r,500))}}),p=await c.newPage();").replace('Fixed500ms Inbox fixture latency matches previous protocol;','Fixed500ms owner-proof latency stabilizes deferred-wrapper bootstrap in BOTH Admin payloads; fixed500ms Inbox fixture latency matches previous protocol;')
+assert Path('scripts/measure-wave75.cjs').read_text()==expected,'Only identical fixed fixture latency and honest metadata; no cost assertion/filter change'
+print('PASS Wave75 measurement original assertions/counting unchanged; symmetric500ms owner-proof fixture only')

@@ -35,7 +35,7 @@
     },
     "supabase/migrations/20261017130000_school_cycles_and_admin_overrides_v580.sql": {
       "before": null,
-      "after": "09e65d2fd11d674b78d973838523a6ce2242e85e448d7a0e0902124d020be039"
+      "after": "c8e3d4794e463d46fc54e098d1703a27ad8b53082b3081b2aa1b3479daab4eb6"
     },
     "supabase/review/school-progression-v580/README.md": {
       "before": null,
@@ -51,7 +51,7 @@
     },
     "supabase/review/school-progression-v580/activation-checklist.md": {
       "before": null,
-      "after": "061c920bd96d885d92309c3c2b844150c9f7bb0caa8ad68b4a681445fba7680f"
+      "after": "9d9c367e3b3fd0401a860e8adcd47258aea3410c50f09f4189d31c227fd35ab1"
     },
     "supabase/review/school-progression-v580/compatibility.sql": {
       "before": null,
@@ -99,6 +99,7 @@
     "scripts/build-school-cycle-source-v580.py",
     "scripts/fixtures/school-approved-v580.patch",
     "scripts/fixtures/school-source-contract-v580.json",
+    "scripts/measure-wave75.cjs",
     "scripts/school-v580/database.cjs",
     "scripts/school_accepted_source_v580.py",
     "scripts/verify-batch1-safety.py",

@@ -51,6 +51,10 @@ Exact activation and non-destructive rollback: `supabase/review/school-progressi
 
 Stop after this School task; no Batch3 or release work.
 
+## Measurement fixture correction
+
+The unchanged Admin baseline with an instantaneous synthetic owner-proof response produced 47, 65 and 66 startup requests across diagnostic runs because deferred legacy bootstrap wrappers raced the response. Two paired runs with a fixed500ms owner-proof response produced baseline/current28/28 and28/28, with identical request names. Wave75 now uses that same fixed latency in both payloads. Every original request counter, zero-idle assertion, strict current≤baseline ceiling and audio analytics negative remains unchanged. This is deterministic fixture timing, not a claimed product request reduction or live-provider measurement; independent source guard reconstructs the exact original test plus only latency/metadata edits. Instantaneous fixture functional/security tests remain in the existing suite.
+
 ## Exact changed-file inventory
 
 - `.github/workflows/validate-develop.yml`
@@ -67,6 +71,7 @@ Stop after this School task; no Batch3 or release work.
 - `js/nh7-security-core-v340.js`
 - `scripts/batch2_accepted_source.py`
 - `scripts/build-school-cycle-source-v580.py`
+- `scripts/measure-wave75.cjs`
 - `scripts/fixtures/school-approved-v580.patch`
 - `scripts/fixtures/school-source-contract-v580.json`
 - `scripts/school-v580/database.cjs`
