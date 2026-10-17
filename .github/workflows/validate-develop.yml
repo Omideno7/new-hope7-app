@@ -152,6 +152,19 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/canonical-tools" --no-audit --no-fund playwright@1.62.1 @electric-sql/pglite@0.3.14 jsqr@1.4.0 pngjs@7.0.0
           "$RUNNER_TEMP/canonical-tools/node_modules/.bin/playwright" install --with-deps chromium
 
+      - name: Validate School cycle and Admin override source without activation
+        shell: bash
+        run: |
+          set -euo pipefail
+          export NODE_PATH="$RUNNER_TEMP/canonical-tools/node_modules"
+          export CHROMIUM_PATH="$(node -e "console.log(require('playwright').chromium.executablePath())")"
+          for source in js/app.js js/nh7-school-cycles-v580.js js/nh7-school-drafts-v468.js js/nh7-school-path-v351.js js/nh7-security-core-v340.js js/nh7-admin-school-cycles-v580.js; do node --check "$source"; done
+          python3 scripts/run-ci-check.py python3 scripts/verify-school-safety-v580.py
+          python3 scripts/run-ci-check.py node scripts/verify-school-cycles-v580.cjs
+          python3 scripts/run-ci-check.py node scripts/verify-school-drafts-cycle-v580.cjs
+          python3 scripts/run-ci-check.py node scripts/verify-school-cycles-browser-v580.cjs
+          python3 scripts/run-ci-check.py node scripts/verify-school-admin-browser-v580.cjs
+
       - name: Validate Wave 8 scoped integration and exact-current provenance
         shell: bash
         run: |

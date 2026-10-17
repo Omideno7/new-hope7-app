@@ -2,6 +2,7 @@
 import sys
 sys.dont_write_bytecode=True
 from pathlib import Path
+from school_accepted_source_v580 import prior_school_bytes,protected_diff,school_additions
 import subprocess,json,hashlib,re,tempfile
 from wave8_accepted_source import prior8_bytes
 from batch1_accepted_source import prior_batch1_bytes,contract as batch1_contract
@@ -18,9 +19,9 @@ with tempfile.TemporaryDirectory(prefix='nh7-wave8-inverse-') as tmp:
  for name in m['existing_runtime']:
   p=Path(tmp)/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(prior_batch1_bytes(name))
  subprocess.run(['git','apply','--reverse','--check','--unidiff-zero',str(patch.resolve())],cwd=tmp,check=True)
-core=Path('sw-release-core-v403.js').read_text();assert core.replace('-wave8-reconnect','')==prior8_bytes('sw-release-core-v403.js').decode(),'Executable cache rotation only'
+core=prior_school_bytes('sw-release-core-v403.js').decode();assert core.replace('-wave8-reconnect','')==prior8_bytes('sw-release-core-v403.js').decode(),'Executable cache rotation only'
 app=prior_batch1_bytes('js/app.js').decode();assert app.count('function reconnectCurrentAccountWave8()')==1 and 'context.current(nh7ReconnectFlightWave8.actor)' in app and 'if(!current())return;' in app and 'if(current()&&state.route' in app
-tracked=set(subprocess.check_output(['git','ls-files','--',*scopes]).decode().splitlines());untracked=set(subprocess.check_output(['git','ls-files','--others','--exclude-standard','--',*scopes]).decode().splitlines());old=set(subprocess.check_output(['git','ls-tree','-r','--name-only',BASE,'--',*scopes]).decode().splitlines());assert tracked|untracked==old,'No runtime/backend/native addition/removal'
+tracked=set(subprocess.check_output(['git','ls-files','--',*scopes]).decode().splitlines());untracked=set(subprocess.check_output(['git','ls-files','--others','--exclude-standard','--',*scopes]).decode().splitlines());old=set(subprocess.check_output(['git','ls-tree','-r','--name-only',BASE,'--',*scopes]).decode().splitlines());assert tracked|untracked==old|school_additions(),'No runtime/backend/native addition/removal'
 changed=set(subprocess.check_output(['git','diff','--name-only',BASE]).decode().splitlines())|set(subprocess.check_output(['git','ls-files','--others','--exclude-standard']).decode().splitlines());assert changed<=set(m['approved_paths'])|set(batch1_contract()['approved_paths']),changed-set(m['approved_paths'])-set(batch1_contract()['approved_paths'])
 audit=Path('docs/qa/WAVE8_INTEGRATION_PHYSICAL_ACCEPTANCE_AUDIT.md');assert hashlib.sha256(audit.read_bytes()).hexdigest()==m['audit_sha256'],'Audit must remain preserved'
 ledger=Path('docs/RELEASE_PROVENANCE.md').read_bytes();before=subprocess.check_output(['git','show',BASE+':docs/RELEASE_PROVENANCE.md']);assert ledger.startswith(before),'Historical release ledger is immutable; append dated QA evidence only'
@@ -44,5 +45,5 @@ old_test=subprocess.check_output(['git','show',BASE+':'+test_path]).decode()
 ready_old='async function query(value){await p.evaluate'
 ready_new='async function query(value){await p.waitForSelector(\'#nh7GlobalSearch560[data-nh7-direct562="1"] [data-nh7gs-input]\');await p.evaluate'
 assert old_test.count(ready_old)==1 and Path(test_path).read_text()==old_test.replace(ready_old,ready_new),'Only mounted-control readiness wait added; every original assertion byte-identical'
-assert not subprocess.check_output(['git','diff',BASE,'--','supabase/migrations','supabase/functions','supabase/review'])
+assert not protected_diff(BASE,['supabase/migrations','supabase/functions','supabase/review'])
 print('PASS Wave8 exact reversible reconnect and Inbox-startup-only delta; all other runtime/backend/review/authority/data/Watch/native sources unchanged; explicit evidence-only paths; original audit/ledger preserved; no activation/migration/analytics/deploy/native artifacts')

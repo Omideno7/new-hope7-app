@@ -62,6 +62,8 @@ const NH7_RELEASE_ASSETS=[
   './css/nh7-spiritual-plans-v240.css',
   './css/nh7-appearance-v427.css',
   './css/nh7-bible-keywords-v450.css',
+  './js/nh7-school-cycles-v580.js',
+  './js/nh7-admin-school-cycles-v580.js',
   './js/nh7-security-core-v340.js',
   './js/nh7-qna-i18n-v341.js',
   './js/nh7-offline-startup-v327.js',

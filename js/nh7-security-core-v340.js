@@ -38,10 +38,14 @@ window.fetch=async function(input,init={}){
     const course=eqValue(u.searchParams.get('course_code'));
     const lesson=eqValue(u.searchParams.get('lesson_code'));
     if(course||lesson){
+      const schoolTicket580=window.NH7SchoolCyclesV580?.ticket();
       const res=await rpc(u.href,headers,'nh7_school_exam_session_v340',{p_course_code:course||null,p_lesson_code:lesson||null});
       if(!res.ok)return res;
       const session=await res.json();
       const exam=session?.exam||null;
+      if(schoolTicket580?.uid&&!window.NH7SchoolCyclesV580.current(schoolTicket580))return jsonResponse({message:'school_account_changed'},403);
+      window.NH7SchoolCyclesV580?.observe(session,schoolTicket580);
+      examState.owner=schoolTicket580;
       examState.current=session||null;
       if(exam?.id)examState.byId.set(String(exam.id),session);
       return jsonResponse(exam?[exam]:[]);
@@ -61,10 +65,12 @@ window.fetch=async function(input,init={}){
         return jsonResponse({code:'SERVER_SCORING_REQUIRED',message:'Course/exam progress is server controlled.'},403);
       }
       if(lessonCode){
-        const res=await rpc(u.href,headers,'nh7_school_progress_save_v340',{
+        const cycle=window.NH7SchoolCyclesV580?.state();
+        const res=await rpc(u.href,headers,cycle?'nh7_school_progress_save_cycle_v580':'nh7_school_progress_save_v340',{
           p_lesson_code:lessonCode,
           p_progress_percent:body.progress_percent==null?null:Number(body.progress_percent),
-          p_completed_at:body.completed_at||null
+          p_completed_at:body.completed_at||null,
+          ...(cycle?{p_cycle:body.school_cycle??window.NH7SchoolCyclesV580.cycleForView()}:{})
         });
         return res;
       }
@@ -87,7 +93,8 @@ window.fetch=async function(input,init={}){
 };
 
 async function secureSubmit(button){
-  const session=examState.current;
+  const session=examState.current,schoolOwner580=examState.owner;
+  if(schoolOwner580?.uid&&!window.NH7SchoolCyclesV580.current(schoolOwner580))return;
   const exam=session?.exam;
   if(!exam?.id||!exam?._nh7_secure_server_scoring){
     alert(say('جلسه امن آزمون آماده نیست. صفحه آزمون را دوباره باز کنید.','The secure exam session is not ready. Reopen the exam page.','Sigurna sesija ispita nije spremna. Ponovno otvorite ispit.'));
@@ -95,8 +102,10 @@ async function secureSubmit(button){
   }
   const questions=Array.isArray(exam.questions)?exam.questions:[];
   const prefix=button.id==='submitCourseExam'?'course_exam_q_':'exam_q_';
-  const answers=[];
-  for(let i=0;i<questions.length;i++){
+  const recovery=window.NH7SchoolCyclesV580?.state()?window.NH7SchoolCyclesV580.pending(Number(session.school_cycle??session.cycle??window.NH7SchoolCyclesV580.state().cycle),exam.id):null;
+  if(recovery&&!confirm(say('ارسال قبلی هنوز تأیید نشده است. همان پاسخ‌های قبلی را بدون مصرف تلاش تکراری بررسی کنیم؟','The previous submission is unconfirmed. Recover its original answers without consuming a duplicate attempt?','Prethodna predaja nije potvrđena. Provjeriti izvorne odgovore bez dodatnog pokušaja?')))return;
+  const answers=recovery?.answers||[];
+  for(let i=0;!recovery&&i<questions.length;i++){
     const picked=document.querySelector(`input[name="${prefix}${i}"]:checked`);
     if(!picked){alert(say('لطفاً به همه سؤال‌ها پاسخ دهید.','Please answer every question.','Molimo odgovorite na sva pitanja.'));return}
     const qid=Number(questions[i]?._nh7_qid);
@@ -106,9 +115,12 @@ async function secureSubmit(button){
   if(!examState.lastRestUrl||!examState.lastHeaders){alert(say('ارتباط امن با سرور آماده نیست.','Secure server connection is not ready.','Sigurna veza s poslužiteljem nije spremna.'));return}
   const old=button.textContent;button.disabled=true;button.textContent=say('در حال بررسی امن نتیجه…','Securely checking result…','Sigurna provjera rezultata…');
   try{
-    const res=await rpc(examState.lastRestUrl,examState.lastHeaders,'nh7_submit_school_exam_v340',{p_exam_id:exam.id,p_answers:answers});
-    if(!res.ok)throw new Error(await responseError(res));
-    const out=await res.json();
+    const cycles=window.NH7SchoolCyclesV580;
+    let out;
+    if(cycles?.state())out=await cycles.submit(session,answers);
+    else {const res=await rpc(examState.lastRestUrl,examState.lastHeaders,'nh7_submit_school_exam_v340',{p_exam_id:exam.id,p_answers:answers});if(!res.ok)throw new Error(await responseError(res));out=await res.json()}
+
+    if(schoolOwner580?.uid&&!window.NH7SchoolCyclesV580.current(schoolOwner580,true))return;
     if(!out?.ok)throw new Error(out?.error||'Secure exam submission failed');
     const passed=!!out.passed,objective=Number(out.objective_score_percent||0),finalScore=Number(out.final_score_percent??out.score_percent??0),assignment=Number(out.assignment_score_percent??100);
     const msg=String(exam[(passed?'pass_message_':'fail_message_')+lang()]||exam[passed?'pass_message_en':'fail_message_en']||
@@ -120,8 +132,10 @@ async function secureSubmit(button){
     }else{
       alert(`${say('نمره شما','Your score','Vaš rezultat')}: ${finalScore}%\n\n${msg}`);
     }
+    if(out.budget&&box)window.NH7SchoolCyclesV580?.appendBudget(box,out.budget,()=>window.NH7_COMMUNITY_CTX_V502?.navigate?.('school',{enter:true}));
     button.textContent=passed?say('قبول شدید ✓','Passed ✓','Položeno ✓'):say('نتیجه ثبت شد ✓','Result saved ✓','Rezultat spremljen ✓');
   }catch(error){
+    if(schoolOwner580?.uid&&!window.NH7SchoolCyclesV580.current(schoolOwner580,true))return;
     console.warn('NH7 secure exam submit',error);
     button.disabled=false;button.textContent=old;
     const raw=String(error?.message||error||'');
@@ -141,5 +155,6 @@ document.addEventListener('click',event=>{
   secureSubmit(button);
 },true);
 
+window.addEventListener('nh7-personal-before-owner-wave2',()=>{examState.current=null;examState.owner=null;examState.byId.clear();examState.lastRestUrl='';examState.lastHeaders=null});
 console.info('NH7 security core active',VERSION);
 })();

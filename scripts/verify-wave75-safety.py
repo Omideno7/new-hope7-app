@@ -2,6 +2,7 @@
 import sys
 sys.dont_write_bytecode=True
 from pathlib import Path
+from school_accepted_source_v580 import prior_school_bytes,protected_diff,school_additions
 import subprocess,hashlib,re,tempfile,json
 from wave75_accepted_source import BASE,manifest,prior75_bytes
 from wave8_accepted_source import prior8_bytes
@@ -12,7 +13,7 @@ wave8=json.loads(Path('scripts/fixtures/wave8-evidence-contract.json').read_text
 scopes=['js','css','assets','data','public','supabase','watchos','index.html','admin.html','reset-password.html','sw-release-core-v403.js','service-worker.js','manifest.json']
 old=set(subprocess.check_output(['git','ls-tree','-r','--name-only',BASE,'--',*scopes]).decode().splitlines())
 now=set(subprocess.check_output(['git','ls-files','--',*scopes]).decode().splitlines())|set(subprocess.check_output(['git','ls-files','--others','--exclude-standard','--',*scopes]).decode().splitlines())
-assert now-old==set(m['new_runtime'])|set(m['new_review']),'Unexpected runtime/review addition'
+assert now-old==set(m['new_runtime'])|set(m['new_review'])|school_additions(),'Unexpected runtime/review addition'
 objects=dict(line.split(' ',1)[::-1] for line in subprocess.check_output(['git','ls-tree','-r','--format=%(objectname) %(path)',BASE,'--',*scopes]).decode().splitlines())
 for p in old:
  raw=prior75_bytes(p);assert hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==objects[p],'Unapproved product/backend change: '+p
@@ -46,5 +47,5 @@ for s in [sql,(review/'rls-acl-proposal.sql').read_text(),rollback]:
  clean=re.sub(r'--[^\n]*','',s)
  assert not re.search(r'grant\s+.+\bon\s+all\b|truncate\b|drop\s+table|delete\s+from',clean,re.I)
 assert 'enabled=false' in rollback.replace(' ','')
-assert not subprocess.check_output(['git','diff',BASE,'--','supabase/migrations','supabase/functions','data','public','js/nh7-audio-classic-v484.js','js/nh7-audio-library-v500.js','js/nh7-media-player-v500.js','js/nh7-admin-rbac-v350.js','js/nh7-profile-photo-v564.js','js/nh7-local-first-wave2.js'])
+assert not protected_diff(BASE,['supabase/migrations','supabase/functions','data','public','js/nh7-audio-classic-v484.js','js/nh7-audio-library-v500.js','js/nh7-media-player-v500.js','js/nh7-admin-rbac-v350.js','js/nh7-profile-photo-v564.js','js/nh7-local-first-wave2.js'])
 print('PASS Wave75 exact reversible document/Admin presentation delta; all audio/auth/School/Notes/Library/profile/data/backend/migrations and older review bytes frozen; no new analytics I/O/timers/storage; default-off issuance and non-destructive rollback')

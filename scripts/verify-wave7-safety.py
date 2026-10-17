@@ -2,6 +2,7 @@
 import sys
 sys.dont_write_bytecode=True
 from pathlib import Path
+from school_accepted_source_v580 import prior_school_bytes,protected_diff,school_additions
 import hashlib,json,subprocess,re,tempfile
 from batch2_accepted_source import prior_batch2_bytes
 from wave7_accepted_source import BASE,manifest,previous_bytes
@@ -13,7 +14,7 @@ assert set(m['new_runtime'])=={'js/nh7-platform-wave7.js','css/nh7-platform-wave
 scopes=['js','css','assets','data','public','supabase','index.html','admin.html','reset-password.html','sw-release-core-v403.js','service-worker.js','manifest.json']
 old=set(subprocess.check_output(['git','ls-tree','-r','--name-only',BASE,'--',*scopes]).decode().splitlines())
 now=set(subprocess.check_output(['git','ls-files','--',*scopes]).decode().splitlines())|set(subprocess.check_output(['git','ls-files','--others','--exclude-standard','--',*scopes]).decode().splitlines())
-assert now-old==set(m['new_runtime'])|set(wave75_manifest()['new_runtime'])|set(wave75_manifest()['new_review']),'Unexpected Wave7 runtime/backend addition'
+assert now-old==set(m['new_runtime'])|set(wave75_manifest()['new_runtime'])|set(wave75_manifest()['new_review'])|school_additions(),'Unexpected Wave7 runtime/backend addition'
 objects=dict(line.split(' ',1)[::-1] for line in subprocess.check_output(['git','ls-tree','-r','--format=%(objectname) %(path)',BASE,'--',*scopes]).decode().splitlines())
 for p in old:
  raw=previous_bytes(p);assert hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==objects[p],'Protected current product/backend/review source changed: '+p
@@ -25,7 +26,7 @@ with tempfile.TemporaryDirectory(prefix='nh7-wave7-check-') as tmp:
  subprocess.run(['git','apply','--reverse','--check','--unidiff-zero',str(patch.resolve())],cwd=tmp,check=True)
 # Entry/core changes are only one geometry module/style, orientation and executable-cache rotation.
 before=json.loads(previous_bytes('manifest.json'));after=json.loads(Path('manifest.json').read_text());before['orientation']='any';assert before==after
-oldhtml=previous_bytes('index.html').decode();html=Path('index.html').read_text()
+oldhtml=previous_bytes('index.html').decode();html=prior_school_bytes('index.html').decode()
 assert html.index('css/nh7-platform-wave7.css')>html.index('css/nh7-user-app-wave6.css')
 assert html.index('js/nh7-platform-wave7.js')>html.index('js/nh7-adaptive-layout-v570.js')
 assert html.replace('  <link rel="stylesheet" href="css/nh7-platform-wave7.css?v=7">\n','').replace('  <script src="js/nh7-platform-wave7.js?v=7" defer></script>\n','').replace('manifest.json?v=wave7','manifest.json?v=4.4.7')==oldhtml
@@ -42,5 +43,5 @@ for p in Path('watchos').rglob('*'):
   assert p.suffix not in ['.p12','.mobileprovision','.xcarchive','.ipa','.key'],p
   if p.suffix=='.swift':
    s=p.read_text();assert not re.search(r'URLSession|https?://|AVPlayer|Timer\(|scheduledTimer|service_role|sb_secret_|UserDefaults|removeItem|deleteAccount',s),p
-assert not subprocess.check_output(['git','diff',BASE,'--','supabase/functions','supabase/migrations','data','public','js/nh7-media-player-v500.js','js/nh7-audio-classic-v484.js','js/nh7-local-first-wave2.js','js/nh7-profile-photo-v564.js'])
+assert not protected_diff(BASE,['supabase/functions','supabase/migrations','data','public','js/nh7-media-player-v500.js','js/nh7-audio-classic-v484.js','js/nh7-local-first-wave2.js','js/nh7-profile-photo-v564.js'])
 print('PASS Wave7 exact reversible presentation delta; all current engines/router/authority/persistence/data/backend/review/migrations frozen; no polling/cache clear/touch suppression, Watch network/playback bypass absent')

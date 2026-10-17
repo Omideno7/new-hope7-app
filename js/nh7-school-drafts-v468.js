@@ -7,17 +7,18 @@ export function createSchoolDraftsV468(deps){
   let active=null,sequence=0;
   function account(){try{return deps.account()||null}catch(_){return null}}
   function owner(){const u=account();return u?.id?'id:'+String(u.id):u?.email?'email:'+String(u.email).trim().toLowerCase():''}
-  const key=(who,lesson)=>PREFIX+encodeURIComponent(who)+':'+encodeURIComponent(lesson);
-  function read(who,lesson){
+  const cycle=()=>{const n=Number(deps.cycle?.()||0);return Number.isInteger(n)&&n>=0?n:0};
+  const key=(who,lesson,generation=0)=>PREFIX+encodeURIComponent(who)+':'+encodeURIComponent(lesson)+(generation>0?':cycle:'+generation:'');
+  function read(who,lesson,generation=cycle()){
     if(!who||!lesson)return null;
-    const k=key(who,lesson);
+    const k=key(who,lesson,generation);
     try{
       const d=unsaved.get(k)||JSON.parse(localStorage.getItem(k)||'null');
-      return d?.v===1&&d.owner===who&&d.lesson===lesson&&typeof d.text==='string'&&typeof d.pending==='boolean'?d:null;
+      return d?.v===1&&d.owner===who&&d.lesson===lesson&&Number(d.school_cycle||0)===generation&&typeof d.text==='string'&&typeof d.pending==='boolean'?d:null;
     }catch(_){return unsaved.get(k)||null}
   }
   function write(d){
-    const k=key(d.owner,d.lesson);
+    const k=key(d.owner,d.lesson,Number(d.school_cycle||0));
     try{localStorage.setItem(k,JSON.stringify(d));unsaved.delete(k);return true}
     catch(_){unsaved.set(k,d);return false}
   }
@@ -33,7 +34,7 @@ export function createSchoolDraftsV468(deps){
     if(!a||a.owner!==owner()||a.element.disabled)return false;
     const text=a.element.value;
     if(text===a.last&&!a.failed)return true;
-    const d={v:1,owner:a.owner,email:a.email,lesson:a.lesson,text,pending:true,rev:Date.now()+':'+(++sequence)+':'+Math.random().toString(36).slice(2),saved_at:new Date().toISOString()};
+    const d={...(a.cycle>0?{school_cycle:a.cycle}:{}),v:1,owner:a.owner,email:a.email,lesson:a.lesson,text,pending:true,rev:Date.now()+':'+(++sequence)+':'+Math.random().toString(36).slice(2),saved_at:new Date().toISOString()};
     const ok=write(d);a.last=text;a.failed=!ok;warn(a,!ok);return ok;
   }
   function unmount(){
@@ -47,18 +48,18 @@ export function createSchoolDraftsV468(deps){
     // Assign .value rather than HTML: preserve real newlines, spaces and literal markup.
     element.value=!approved&&saved?.pending?saved.text:String(initialValue??'');
     if(approved)return; // A local draft never replaces an accepted server answer.
-    active={element,lesson,owner:expectedOwner,email:String(account()?.email||'').trim().toLowerCase(),last:element.value,failed:!!unsaved.get(key(expectedOwner,lesson)),warning:null};
+    active={element,lesson,cycle:cycle(),owner:expectedOwner,email:String(account()?.email||'').trim().toLowerCase(),last:element.value,failed:!!unsaved.get(key(expectedOwner,lesson,cycle())),warning:null};
     for(const name of ['input','change','compositionend','blur'])element.addEventListener(name,flush);
     if(active.failed)warn(active,true);
   }
   function ticket(lesson,text){
     flush();const who=owner(),d=read(who,lesson);
-    return who?{owner:who,lesson,text:String(text??''),rev:d?.rev||null}:null;
+    return who?{owner:who,cycle:cycle(),lesson,text:String(text??''),rev:d?.rev||null}:null;
   }
   function submitted(t,receipt){
     const row=Array.isArray(receipt)?receipt[0]:receipt;
-    if(!t||!t.rev||owner()!==t.owner||row?.lesson_code!==t.lesson||typeof row.answer_text!=='string'||row.answer_text.trim()!==t.text.trim()||!['submitted','pending','approved'].includes(String(row.status||'').toLowerCase()))return;
-    const d=read(t.owner,t.lesson);
+    if(!t||!t.rev||owner()!==t.owner||Number(row?.school_cycle||0)!==Number(t.cycle||0)||row?.lesson_code!==t.lesson||typeof row.answer_text!=='string'||row.answer_text.trim()!==t.text.trim()||!['submitted','pending','approved'].includes(String(row.status||'').toLowerCase()))return;
+    const d=read(t.owner,t.lesson,Number(t.cycle||0));
     if(!d||d.rev!==t.rev||d.text!==t.text)return; // Typing during submission remains a new draft.
     if(row.user_email&&String(row.user_email).trim().toLowerCase()!==d.email)return;
     // Retain the text, but stop shadowing a newer server answer after this receipt.

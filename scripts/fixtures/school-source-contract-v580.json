@@ -1,0 +1,132 @@
+{
+  "base": "b769df6d91cc2ffb4cc86905ab35d2c022fb2447",
+  "files": {
+    "admin.html": {
+      "before": "29731c04a2370f6b4886b472db8333db838f45fb93703c07a64768b4b99b56ea",
+      "after": "7058e36802dad478ccc4f410e8150f97639ae9b19280cdf0c936a0520fe6211b"
+    },
+    "index.html": {
+      "before": "68159a6792d141c21edab4785facd2d03dcae8ff57089afc16d6507aee3fd98c",
+      "after": "d8257f1dbf002c5df0fc3c6f89a1576e15ba7dd5bd7f3cc87d0209c39f84c495"
+    },
+    "js/app.js": {
+      "before": "ebe08cac5cd18423fbaf5a7dc6115789fb88be20f96362c332b852721c7dfbdf",
+      "after": "56e8118e0ae2e1784edf304d41877744b6784b469779de9dda3fce4139420a8a"
+    },
+    "js/nh7-admin-school-cycles-v580.js": {
+      "before": null,
+      "after": "3ecb77e7e6a502f4193713a6044df363a2b8a9feb986a66962fb20798f51254c"
+    },
+    "js/nh7-school-cycles-v580.js": {
+      "before": null,
+      "after": "fec96afaa6e07fa5d12ead1e0b3f496a73d1f03051e8943cd375322349675e90"
+    },
+    "js/nh7-school-drafts-v468.js": {
+      "before": "562e43913f74928f02f881450107850d402261de8fceb37c880302cdeb245efd",
+      "after": "e626dea8f8e6f927209ac6a2f4a124cfd033bc31408f802e4282762b4daf901e"
+    },
+    "js/nh7-school-path-v351.js": {
+      "before": "3d50e288497c64ae1244f5ea048139df776aca3bd9069b59d774cee5c3f5aa29",
+      "after": "8438be57bf37f0318acd8ef3e40a9fb2ba842128b10f0575bd68b023e3baa791"
+    },
+    "js/nh7-security-core-v340.js": {
+      "before": "d1d7696ff5105ab32bf39e16f3d494f8d78d9979d71e315e882dd963ef890a4a",
+      "after": "a2d05bc8b2819fa4989d663109f3af43b97ecd8797a6a9dd7365a41219307579"
+    },
+    "supabase/migrations/20261017130000_school_cycles_and_admin_overrides_v580.sql": {
+      "before": null,
+      "after": "a65d2acff0bc2fd802f867f96f75ae6ca0ed8148a6e715d99307b40a6871451c"
+    },
+    "supabase/review/school-progression-v580/README.md": {
+      "before": null,
+      "after": "6098818283eb305af04a9a6b691b3c615374e75b39c9cea1e3b58b9c198b83e8"
+    },
+    "supabase/review/school-progression-v580/acl.sql": {
+      "before": null,
+      "after": "1a464340bff1e1d70e161fce03c0dd375fc284d8f3a367ce76001b702dae43a2"
+    },
+    "supabase/review/school-progression-v580/actions.sql": {
+      "before": null,
+      "after": "88d0d6bc33010b7f3174bac87e3362326478de4e0baee02d78a7a1908f096afb"
+    },
+    "supabase/review/school-progression-v580/activation-checklist.md": {
+      "before": null,
+      "after": "061c920bd96d885d92309c3c2b844150c9f7bb0caa8ad68b4a681445fba7680f"
+    },
+    "supabase/review/school-progression-v580/compatibility.sql": {
+      "before": null,
+      "after": "965bd0feb0834239064758606bf9380ba70548373d717c378229d4a3a74fce40"
+    },
+    "supabase/review/school-progression-v580/compiled-rpcs.sql": {
+      "before": null,
+      "after": "5ed68e57d1a99ab3819d78f202700b35cb040bbacd9c0049ae55239314fe348e"
+    },
+    "supabase/review/school-progression-v580/preflight-readonly.sql": {
+      "before": null,
+      "after": "3aa23907d7c226a8ca2c880d6e4a139b6fe6ecebe56c50d3569e81e31547f2f9"
+    },
+    "supabase/review/school-progression-v580/report-compatibility.sql": {
+      "before": null,
+      "after": "d73b9bc953d4da6929051b9c1b03032643131413bfa412abd52ae9c5811d70b0"
+    },
+    "supabase/review/school-progression-v580/rollback.sql": {
+      "before": null,
+      "after": "de637a9ed80a1cb77f457e14ae00db3917fa8f379966d784b786cbabdd05bd0b"
+    },
+    "supabase/review/school-progression-v580/schema.sql": {
+      "before": null,
+      "after": "1c79f914a8571e48c2819db67a486a2dae6af611f96eb781f25e2946ee933ed1"
+    },
+    "sw-release-core-v403.js": {
+      "before": "365ee358a8a152d8f40e148669270fe5377a7cc6c41e032c68c7045531afee5a",
+      "after": "aad63db0be6fd428804ea2bc5c499967e4b950183d159ea1d1534088c7d73688"
+    }
+  },
+  "approved_paths": [
+    ".github/workflows/validate-develop.yml",
+    "admin.html",
+    "docs/qa/SCHOOL_PROGRESSION_ADMIN_OVERRIDE_AUDIT.md",
+    "docs/qa/SCHOOL_PROGRESSION_ADMIN_OVERRIDE_REPORT.md",
+    "docs/qa/SCHOOL_V580_GUARD_RECONCILIATION_REVIEW.md",
+    "index.html",
+    "js/app.js",
+    "js/nh7-admin-school-cycles-v580.js",
+    "js/nh7-school-cycles-v580.js",
+    "js/nh7-school-drafts-v468.js",
+    "js/nh7-school-path-v351.js",
+    "js/nh7-security-core-v340.js",
+    "scripts/batch2_accepted_source.py",
+    "scripts/build-school-cycle-source-v580.py",
+    "scripts/fixtures/school-approved-v580.patch",
+    "scripts/fixtures/school-source-contract-v580.json",
+    "scripts/school-v580/database.cjs",
+    "scripts/school_accepted_source_v580.py",
+    "scripts/verify-batch1-safety.py",
+    "scripts/verify-batch2-safety.py",
+    "scripts/verify-school-admin-browser-v580.cjs",
+    "scripts/verify-school-cycles-browser-v580.cjs",
+    "scripts/verify-school-cycles-v580.cjs",
+    "scripts/verify-school-drafts-cycle-v580.cjs",
+    "scripts/verify-school-safety-v580.py",
+    "scripts/verify-wave3-safety.py",
+    "scripts/verify-wave6-safety.py",
+    "scripts/verify-wave65-safety.py",
+    "scripts/verify-wave66-safety.py",
+    "scripts/verify-wave7-safety.py",
+    "scripts/verify-wave75-safety.py",
+    "scripts/verify-wave8-safety.py",
+    "supabase/migrations/20261017130000_school_cycles_and_admin_overrides_v580.sql",
+    "supabase/review/school-progression-v580/README.md",
+    "supabase/review/school-progression-v580/acl.sql",
+    "supabase/review/school-progression-v580/actions.sql",
+    "supabase/review/school-progression-v580/activation-checklist.md",
+    "supabase/review/school-progression-v580/compatibility.sql",
+    "supabase/review/school-progression-v580/compiled-rpcs.sql",
+    "supabase/review/school-progression-v580/preflight-readonly.sql",
+    "supabase/review/school-progression-v580/report-compatibility.sql",
+    "supabase/review/school-progression-v580/rollback.sql",
+    "supabase/review/school-progression-v580/schema.sql",
+    "sw-release-core-v403.js"
+  ],
+  "patch_sha256": "e9f0ca72fd6f48eba8a7323ccc08e0e2f595d4c10b69a23ddb2109260bc670ec"
+}

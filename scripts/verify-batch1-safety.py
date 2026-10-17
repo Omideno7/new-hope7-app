@@ -2,6 +2,7 @@
 import sys
 sys.dont_write_bytecode=True
 from pathlib import Path
+from school_accepted_source_v580 import prior_school_bytes,protected_diff,school_additions
 import hashlib,subprocess,tempfile
 from batch1_accepted_source import BASE,contract,prior_batch1_bytes
 from batch2_accepted_source import prior_batch2_bytes
@@ -17,7 +18,7 @@ with tempfile.TemporaryDirectory(prefix='nh7-batch1-inverse-') as temp:
   prior_batch1_bytes(p);out=Path(temp)/p;out.parent.mkdir(parents=True,exist_ok=True);out.write_bytes(prior_batch2_bytes(p))
  subprocess.run(['git','apply','--reverse','--check','--unidiff-zero',str(patch.resolve())],cwd=temp,check=True)
 # No backend, media engine, user-data or wrapper exception.
-assert not subprocess.check_output(['git','diff',BASE,'--','supabase','data','public','watchos','service-worker.js','sw-release-core-v403.js','js/nh7-profile-photo-v564.js','js/nh7-local-first-wave2.js','js/nh7-audio-classic-v484.js','js/nh7-audio-library-v500.js','js/nh7-media-player-v500.js','js/nh7-admin-rbac-v350.js'])
+assert not protected_diff(BASE,['supabase','data','public','watchos','service-worker.js','sw-release-core-v403.js','js/nh7-profile-photo-v564.js','js/nh7-local-first-wave2.js','js/nh7-audio-classic-v484.js','js/nh7-audio-library-v500.js','js/nh7-media-player-v500.js','js/nh7-admin-rbac-v350.js'])
 for p in ['js/document-studio-v2/api.mjs','js/document-studio-v2/issuance.mjs','docs/qa/WAVE7_5_ZERO_COST_AUDIO_ANALYTICS_DECISION.md']:
  assert Path(p).read_bytes()==subprocess.check_output(['git','show',BASE+':'+p])
 assert 'REJECTED_COST' in Path('docs/qa/WAVE7_5_ZERO_COST_AUDIO_ANALYTICS_DECISION.md').read_text()
