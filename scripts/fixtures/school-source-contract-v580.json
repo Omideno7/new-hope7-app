@@ -15,7 +15,7 @@
     },
     "js/nh7-admin-school-cycles-v580.js": {
       "before": null,
-      "after": "3ecb77e7e6a502f4193713a6044df363a2b8a9feb986a66962fb20798f51254c"
+      "after": "48e3effb3cb0147178f119b801547c616d79d4797b8e1636b14fc32fbbbfdb5d"
     },
     "js/nh7-school-cycles-v580.js": {
       "before": null,
@@ -35,7 +35,7 @@
     },
     "supabase/migrations/20261017130000_school_cycles_and_admin_overrides_v580.sql": {
       "before": null,
-      "after": "79d52d33899eefe6879084ed287cdcf6d84a9d409cd7d22d711fa0c766a600a2"
+      "after": "ede10170bfcd4e473b577c0a989e9871d6160d133de4bb6a9c23cfcc54088df3"
     },
     "supabase/review/school-progression-v580/README.md": {
       "before": null,
@@ -67,7 +67,7 @@
     },
     "supabase/review/school-progression-v580/report-compatibility.sql": {
       "before": null,
-      "after": "d73b9bc953d4da6929051b9c1b03032643131413bfa412abd52ae9c5811d70b0"
+      "after": "27f6d68cae0a9f05c4746ec4d1e486e72ca4775d303dfd4cc354716f23e82ac1"
     },
     "supabase/review/school-progression-v580/rollback.sql": {
       "before": null,

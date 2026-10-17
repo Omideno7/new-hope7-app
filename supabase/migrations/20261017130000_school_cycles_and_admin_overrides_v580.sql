@@ -1317,11 +1317,12 @@ declare uid uuid; s jsonb; old_school jsonb;
 begin
  select u.id into uid from auth.users u join public.school_student_identities i on i.user_id=u.id and i.status='active' where lower(trim(u.email))=lower(trim(p_email));
  if uid is null then return p_base;end if;
- s:=private.nh7_school_report_v580(uid);old_school:=coalesce(p_base->'school','{}');
+ s:=private.nh7_school_budget_v580(uid,'foundation_school');old_school:=coalesce(p_base->'school','{}');
  -- Cycle zero remains legacy-compatible unless explicitly accepted by Admin.
- if (s#>>'{cycle_state,cycle}')::integer=0 and not (s#>>'{cycle_state,admin_override}')::boolean then
-  return jsonb_set(p_base,'{school}',old_school||jsonb_build_object('cycle_state',s->'cycle_state'),true);
+ if (s->>'cycle')::integer=0 and not (s->>'admin_override')::boolean then
+  return jsonb_set(p_base,'{school}',old_school||jsonb_build_object('cycle_state',s),true);
  end if;
+ s:=private.nh7_school_report_v580(uid);
  return jsonb_set(p_base,'{school}',old_school||s,true);
 end $$;
 revoke all on function private.nh7_school_profile_overlay_v580(jsonb,text) from public,anon,authenticated;
@@ -1348,7 +1349,8 @@ begin
  base:=private.nh7_admin_student_academic_center_v543_before580(p_inactive_days);
  for r in select value from jsonb_array_elements(coalesce(base->'rows','[]')) loop
   select u.id into uid from auth.users u join public.school_student_identities i on i.user_id=u.id and i.status='active' where lower(trim(u.email))=lower(trim(r->>'email'));
-  if uid is not null then
+  -- Avoid materializing full answers/history for unchanged generation-zero roster rows.
+  if uid is not null and exists(select 1 from private.nh7_school_cycles_v580 c where c.user_id=uid and c.course_code='foundation_school' and c.ended_at is null and (c.cycle>0 or c.admin_pass)) then
    s:=private.nh7_school_report_v580(uid);
    r:=r||jsonb_build_object('school_cycle',s->'cycle_state');
    if (s#>>'{cycle_state,cycle}')::integer>0 or (s#>>'{cycle_state,admin_override}')::boolean then
