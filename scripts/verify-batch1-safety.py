@@ -13,7 +13,7 @@ patch=Path('scripts/fixtures/batch1-approved-ui.patch');assert hashlib.sha256(pa
 with tempfile.TemporaryDirectory(prefix='nh7-batch1-inverse-') as temp:
  for p in expected:
   prior_batch1_bytes(p);out=Path(temp)/p;out.parent.mkdir(parents=True,exist_ok=True);out.write_bytes(Path(p).read_bytes())
- subprocess.run(['git','apply','--reverse','--check',str(patch.resolve())],cwd=temp,check=True)
+ subprocess.run(['git','apply','--reverse','--check','--unidiff-zero',str(patch.resolve())],cwd=temp,check=True)
 # No backend, media engine, user-data or wrapper exception.
 assert not subprocess.check_output(['git','diff',BASE,'--','supabase','data','public','watchos','service-worker.js','sw-release-core-v403.js','js/nh7-profile-photo-v564.js','js/nh7-local-first-wave2.js','js/nh7-audio-classic-v484.js','js/nh7-audio-library-v500.js','js/nh7-media-player-v500.js','js/nh7-admin-rbac-v350.js'])
 for p in ['js/document-studio-v2/api.mjs','js/document-studio-v2/issuance.mjs','docs/qa/WAVE7_5_ZERO_COST_AUDIO_ANALYTICS_DECISION.md']:

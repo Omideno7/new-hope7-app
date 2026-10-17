@@ -30,7 +30,7 @@
       "after": "b6f5a746ef7dc6bdda83307b8f8dbfde48b5d7683eb30b3b8e93ce2abbe8cb1d"
     }
   },
-  "patch_sha256": "f55b5d94020c729f1bb03824bead10c57dfd0e857815129ef3d171ad578e9bf6",
+  "patch_sha256": "55cc600136e526c7cb00e10aa16ae2c8a3f02dd51c6c06bc4fc21e1a3544f41a",
   "approved_paths": [
     ".github/workflows/validate-develop.yml",
     "css/styles.css",
