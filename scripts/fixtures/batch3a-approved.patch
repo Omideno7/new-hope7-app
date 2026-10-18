@@ -5,7 +5,7 @@ index e40b2682..70f45693 100644
 @@ -137,0 +138 @@
 +  <script src="js/nh7-batch3a-v581.js?v=581"></script>
 diff --git a/js/app.js b/js/app.js
-index cdfec59b..7798f199 100644
+index cdfec59b..995c1c18 100644
 --- a/js/app.js
 +++ b/js/app.js
 @@ -594 +594 @@ window.NH7LocalFirstWave2?.configure(async(path,options,owner,edge=false)=>{
@@ -21,10 +21,10 @@ index cdfec59b..7798f199 100644
 @@ -1365 +1367,2 @@ async function maybeCreateScheduledInboxMessages(){
 -  if(localStorage.getItem('nh7_notifications_permission')!=='granted')return;const rows=await fetchNotificationSchedules();const now=new Date();const dateKey=todayKey();
 +  const inboxTicket3A=routeTicketWave6();
-+  if(localStorage.getItem('nh7_notifications_permission')!=='granted')return;const rows=await fetchNotificationSchedules();routeCheckWave6(inboxTicket3A);const now=new Date();const dateKey=todayKey();
++  if(localStorage.getItem('nh7_notifications_permission')!=='granted')return;const rows=await fetchNotificationSchedules().catch(()=>[]);try{routeCheckWave6(inboxTicket3A)}catch{return}const now=new Date();const dateKey=todayKey();
 @@ -1373,0 +1377 @@ async function refreshInboxFromCloud(force=false){
 +      if(shared?.stale){updateInboxBadge();return false}
-@@ -1397,9 +1401,4 @@ async function inbox(){
+@@ -1397,9 +1401,3 @@ async function inbox(){
 -  cleanupInboxLanguage();
 -  maybeCreateScheduledInboxMessages(); await refreshInboxFromCloud(false);
 -  cleanupInboxLanguage();
@@ -35,62 +35,61 @@ index cdfec59b..7798f199 100644
 -  $('#cleanInboxLang')?.addEventListener('click',()=>{ cleanupInboxLanguage(); render('inbox',{},true); });
 -  $('#deleteVisibleInbox')?.addEventListener('click',()=>{ if(confirm(tr('deleteAllConfirm'))){ deleteVisibleInbox(); render('inbox',{},true); } });
 +  const ticket=routeTicketWave6();
-+  void maybeCreateScheduledInboxMessages().catch(()=>{});
-+  await refreshInboxFromCloud(false);routeCheckWave6(ticket);
++  maybeCreateScheduledInboxMessages(); await refreshInboxFromCloud(false);routeCheckWave6(ticket);
 +  window.NH7Batch3A.inbox(view,{rows:inboxDisplayMessages,raw:inboxMessages,set:setInboxMessages,group:inboxCanonicalGroup,time:inboxTimestampLabel,receipt:saveInboxReceipt,current:()=>{try{routeCheckWave6(ticket);return true}catch{return false}},badge:updateInboxBadge});
-@@ -2492 +2491 @@ function nh7ReadQnaPublicCacheV470(){
+@@ -2492 +2490 @@ function nh7ReadQnaPublicCacheV470(){
 -    const d=JSON.parse(localStorage.getItem(NH7_QNA_PUBLIC_CACHE_V470)||'null');
 +    const d=JSON.parse(localStorage.getItem(window.NH7Batch3A?.publicQuestionKey()||NH7_QNA_PUBLIC_CACHE_V470)||'null');
-@@ -2497 +2496 @@ function nh7WriteQnaPublicCacheV470(items){
+@@ -2497 +2495 @@ function nh7WriteQnaPublicCacheV470(items){
 -  try{if(Array.isArray(items))localStorage.setItem(NH7_QNA_PUBLIC_CACHE_V470,JSON.stringify({items,at:Date.now()}))}catch(e){}
 +  try{if(Array.isArray(items))localStorage.setItem(window.NH7Batch3A?.publicQuestionKey()||NH7_QNA_PUBLIC_CACHE_V470,JSON.stringify({items,at:Date.now()}))}catch(e){}
-@@ -2508 +2507 @@ function nh7MergeOwnQuestionsV470(local,ownCloud){
+@@ -2508 +2506 @@ function nh7MergeOwnQuestionsV470(local,ownCloud){
 -  try{localStorage.setItem('nh7_my_questions',JSON.stringify(out))}catch(e){}
 +  try{window.NH7Batch3A.saveQuestions(out)}catch(e){}
-@@ -2513 +2512 @@ async function qna(opts={}){
+@@ -2513 +2511 @@ async function qna(opts={}){
 -  let local=[];try{local=JSON.parse(localStorage.getItem('nh7_my_questions')||'[]')}catch(e){local=[]}
 +  let local=[];try{local=window.NH7Batch3A.questions()}catch(e){local=[]}
-@@ -2515,0 +2515 @@ async function qna(opts={}){
+@@ -2515,0 +2514 @@ async function qna(opts={}){
 +  const publicHtml3A=items=>items&&items.length?`<div class="list">${items.map((q,i)=>`<button class="list-btn qna-answer-toggle" data-qna-answer="pubq-${i}"><strong>${html(q.question_text)}</strong><small>${tapText}</small></button><div id="pubq-${i}" class="accordion-panel hidden"><p><strong>${tr('answer')}:</strong> ${html(q.answer_text||'')}</p></div>`).join('')}</div>`:`<p class="muted">${tr('noQuestions')}</p>`;
-@@ -2523,0 +2524 @@ async function qna(opts={}){
+@@ -2523,0 +2523 @@ async function qna(opts={}){
 +      try{routeCheckWave6(routeViewTicketWave6)}catch{return}
-@@ -2527,2 +2528,2 @@ async function qna(opts={}){
+@@ -2527,2 +2527,2 @@ async function qna(opts={}){
 -        let latest=[];try{latest=JSON.parse(localStorage.getItem('nh7_my_questions')||'[]')}catch(e){}
 -        local=nh7MergeOwnQuestionsV470(Array.isArray(latest)?latest:local,own);
 +        let latest=[];try{latest=window.NH7Batch3A.questions()}catch(e){}
 +        local=window.NH7Batch3A.filterQuestions(nh7MergeOwnQuestionsV470(Array.isArray(latest)?latest:local,own));
-@@ -2540,0 +2542 @@ async function qna(opts={}){
+@@ -2540,0 +2541 @@ async function qna(opts={}){
 +        else if(results?.[1]?.status==='fulfilled'){const panel=$('#publicAnswersPanel');if(panel){panel.innerHTML=publicHtml3A(answered);bindDynamic()}}
-@@ -2547 +2549 @@ async function qna(opts={}){
+@@ -2547 +2548 @@ async function qna(opts={}){
 -    try{local=JSON.parse(localStorage.getItem('nh7_my_questions')||'[]')}catch(e){local=[]}
 +    try{local=window.NH7Batch3A.questions()}catch(e){local=[]}
-@@ -2552 +2554 @@ async function qna(opts={}){
+@@ -2552 +2553 @@ async function qna(opts={}){
 -  const my=local.filter(q=>q&&q.question).sort((a,b)=>String(a.createdAt||'').localeCompare(String(b.createdAt||'')));
 +  const my=window.NH7Batch3A.filterQuestions(local).filter(q=>q&&q.question).sort((a,b)=>String(a.createdAt||'').localeCompare(String(b.createdAt||'')));
-@@ -2555,2 +2557,2 @@ async function qna(opts={}){
+@@ -2555,2 +2556,2 @@ async function qna(opts={}){
 -  const myHtml=my.length?`<div class="list">${my.slice().reverse().map((q,i)=>{const done=String(q.answer||'').trim().length>0||q.status==='answered';return `<button class="list-btn qna-answer-toggle" data-qna-answer="myq-${i}"><strong>${html(q.question)}</strong><small>${done?tr('answered'):tr('waitingAnswer')} • ${tapText}</small></button><div id="myq-${i}" class="accordion-panel hidden">${done?`<p><strong>${tr('answer')}:</strong> ${html(q.answer)}</p>`:`<p class="muted">${tr('waitingAnswer')}</p>`}</div>`}).join('')}</div>`:`<p class="muted">${tr('noQuestions')}</p>`;
 -  const answeredHtml=answered&&answered.length?`<div class="list">${answered.map((q,i)=>`<button class="list-btn qna-answer-toggle" data-qna-answer="pubq-${i}"><strong>${html(q.question_text)}</strong><small>${tapText}</small></button><div id="pubq-${i}" class="accordion-panel hidden"><p><strong>${tr('answer')}:</strong> ${html(q.answer_text||'')}</p></div>`).join('')}</div>`:`<p class="muted">${tr('noQuestions')}</p>`;
 +  const myHtml=my.length?`<div class="list">${my.slice().reverse().map((q,i)=>{const done=String(q.answer||'').trim().length>0||q.status==='answered';return `<button class="list-btn qna-answer-toggle" data-qna-answer="myq-${i}"><strong>${html(q.question)}</strong><small>${done?tr('answered'):tr('waitingAnswer')} • ${tapText}</small></button><div id="myq-${i}" class="accordion-panel hidden">${authSession()?.user?.id?`<button type="button" class="danger-btn" data-qa-delete3a="${html(q.cloud_id||q.id)}">${html(l223('حذف پرسش من','Delete my question','Izbriši moje pitanje'))}</button>`:''}${done?`<p><strong>${tr('answer')}:</strong> ${html(q.answer)}</p>`:`<p class="muted">${tr('waitingAnswer')}</p>`}</div>`}).join('')}</div>`:`<p class="muted">${tr('noQuestions')}</p>`;
 +  const answeredHtml=publicHtml3A(answered);
-@@ -2557,0 +2560 @@ async function qna(opts={}){
+@@ -2557,0 +2559 @@ async function qna(opts={}){
 +  window.NH7Batch3A.bindQuestions(view,{current:()=>{try{routeCheckWave6(routeViewTicketWave6);return true}catch{return false}},rpc:cloudRpc,refresh:()=>qna({cacheOnly:true}).then(bindDynamic)});
-@@ -2563,2 +2566,2 @@ async function qna(opts={}){
+@@ -2563,2 +2565,2 @@ async function qna(opts={}){
 -    const arr=[...my,item];localStorage.setItem('nh7_my_questions',JSON.stringify(arr));
 -    await nh7WithTimeoutV470(saveQuestionCloud(item),5000).catch(console.warn);alert(tr('questionSent'));render('qna',{},true);
 +    const arr=[...my,item];window.NH7Batch3A.saveQuestions(arr);
 +    await nh7WithTimeoutV470(saveQuestionCloud(item),5000).catch(console.warn);try{routeCheckWave6(routeViewTicketWave6)}catch{return}alert(tr('questionSent'));render('qna',{},true);
-@@ -2568,2 +2571,2 @@ async function myDocumentsV510(){
+@@ -2568,2 +2570,2 @@ async function myDocumentsV510(){
 -  const email=String(authEmail()||getKnownUserProfile().email||'').trim().toLowerCase();
 -  if(!email)return[];
 +  const email=String(authEmail()||'').trim().toLowerCase();
 +  if(!authSession()?.user?.id||!email)return[];
-@@ -2579 +2582 @@ function myDocumentsHtmlV510(rows){
+@@ -2579 +2581 @@ function myDocumentsHtmlV510(rows){
 -  return `<section class="nh7-my-documents-v510"><h3>📜 ${L('مدارک من','My documents','Moji dokumenti')}</h3><p class="muted">${L('مدارک صادرشده در حساب شما بایگانی می‌شوند و هر زمان می‌توانید آن‌ها را باز، نمایش یا به صورت PDF ثابت دانلود کنید.','Issued documents stay in your account archive. You can open, show, or download a flattened PDF at any time.','Izdani dokumenti ostaju u arhivi računa. Možete ih otvoriti, pokazati ili preuzeti kao zaključani PDF.')}</p><div class="list">${rows.map(r=>{const title=r['title_'+state.lang]||r.title_en||r.title_fa||r.title_hr||r.certificate_type||L('مدرک','Document','Dokument'),url=r.public_token?new URL('certificate.html?token='+encodeURIComponent(r.public_token)+'&v=510',location.href).href:(r.preview_url||''),date=r.issue_date||r.approved_at||r.created_at||'',revoked=String(r.status||'').toLowerCase()==='revoked';return `<article class="list-btn nh7-my-document-v510 ${revoked?'revoked':''}"><div><strong>${html(title)}</strong><small>${html(r.certificate_number||'')} · ${html(String(date).slice(0,10))}${revoked?' · '+L('لغوشده','Revoked','Poništeno'):''}</small></div>${url?`<div class="button-row"><a class="secondary-btn" href="${html(url)}" target="_blank" rel="noopener">👁 ${L('باز کردن / نمایش','Open / show','Otvori / prikaži')}</a><a class="primary-btn" href="${html(url+(url.includes('?')?'&':'?')+'download=1')}" target="_blank" rel="noopener">⬇ PDF</a></div>`:''}</article>`}).join('')}</div></section>`;
 +  return `<section class="nh7-my-documents-v510"><h3>📜 ${L('مدارک من','My documents','Moji dokumenti')}</h3><p class="muted">${L('مدارک صادرشده در حساب شما بایگانی می‌شوند و هر زمان می‌توانید آن‌ها را باز، نمایش یا به صورت PDF ثابت دانلود کنید.','Issued documents stay in your account archive. You can open, show, or download a flattened PDF at any time.','Izdani dokumenti ostaju u arhivi računa. Možete ih otvoriti, pokazati ili preuzeti kao zaključani PDF.')}</p><div class="list">${rows.map(r=>{const title=r['title_'+state.lang]||r.title_en||r.title_fa||r.title_hr||r.certificate_type||L('مدرک','Document','Dokument'),url=r.public_token?new URL('certificate.html?token='+encodeURIComponent(r.public_token)+'&v=510',location.href).href:(r.preview_url||''),date=r.issue_date||r.approved_at||r.created_at||'',revoked=String(r.status||'').toLowerCase()==='revoked',statusLabel=({issued:L('صادرشده','Issued','Izdano'),approved:L('تأییدشده','Approved','Odobreno'),revoked:L('لغوشده','Revoked','Poništeno'),expired:L('منقضی‌شده','Expired','Isteklo')})[String(r.status||'').toLowerCase()]||L('وضعیت نامشخص','Status unavailable','Status nije dostupan');return `<article class="list-btn nh7-my-document-v510 ${revoked?'revoked':''}"><div><strong>${html(title)}</strong><small>${html(r.certificate_number||'')} · ${html(String(date).slice(0,10))} · ${html(statusLabel)}</small></div>${url?`<div class="button-row"><a class="secondary-btn" href="${html(url)}" target="_blank" rel="noopener">👁 ${L('باز کردن / نمایش','Open / show','Otvori / prikaži')}</a><a class="primary-btn" href="${html(url+(url.includes('?')?'&':'?')+'download=1')}" target="_blank" rel="noopener">⬇ PDF</a></div>`:''}</article>`}).join('')}</div></section>`;
-@@ -2587 +2590 @@ async function account(){
+@@ -2587 +2589 @@ async function account(){
 -    routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('account'), `<h3>${tr('myAccess')}</h3><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||session?.user?.user_metadata?.full_name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(email)}</p></div>${myDocumentsHtmlV510(documents)}<button class="danger-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button>`);
 +    routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('account'), `<section id="nh7MyAccess3A"><h3>${tr('myAccess')}</h3><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||session?.user?.user_metadata?.full_name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(email)}</p></div>${myDocumentsHtmlV510(documents)}<div id="nh7DocumentsEntry3A"></div></section><section class="nh7-account-management3a" aria-label="${html(l223('مدیریت حساب','Account management','Upravljanje računom'))}"><h3>${html(l223('مدیریت حساب','Account management','Upravljanje računom'))}</h3><button class="danger-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button></section>`);
-@@ -2915 +2918 @@ function bindDynamic(){
+@@ -2915 +2917 @@ function bindDynamic(){
 -  $$('[data-inbox-open]').forEach(el=>el.onclick=()=>{ const id=el.dataset.inboxOpen; const safe=String(id).replace(/[^a-zA-Z0-9_-]/g,'_'); const p=$('#inbox-'+safe); if(p) p.classList.toggle('hidden'); const at=new Date().toISOString(); const arr=inboxMessages().map(m=>String(m.id)===String(id)?{...m,read:true,readAt:at}:m); setInboxMessages(arr); saveInboxReceipt(id,{read_at:at}).catch(console.warn); updateInboxBadge(); });
 +  $$('[data-inbox-open]:not([data-inbox3a])').forEach(el=>el.onclick=()=>{ const id=el.dataset.inboxOpen; const safe=String(id).replace(/[^a-zA-Z0-9_-]/g,'_'); const p=$('#inbox-'+safe); if(p) p.classList.toggle('hidden'); const at=new Date().toISOString(); const arr=inboxMessages().map(m=>String(m.id)===String(id)?{...m,read:true,readAt:at}:m); setInboxMessages(arr); saveInboxReceipt(id,{read_at:at}).catch(console.warn); updateInboxBadge(); });
 diff --git a/js/document-studio-v2/archive-entry.mjs b/js/document-studio-v2/archive-entry.mjs
