@@ -63,6 +63,8 @@ const NH7_RELEASE_ASSETS=[
   './css/nh7-appearance-v427.css',
   './css/nh7-bible-keywords-v450.css',
   './js/nh7-batch3a-v581.js',
+  './js/nh7-church-connect-batch3b.js',
+  './css/nh7-church-connect-batch3b.css',
   './js/nh7-school-cycles-v580.js',
   './js/nh7-admin-school-cycles-v580.js',
   './js/nh7-security-core-v340.js',

@@ -871,49 +871,14 @@ async function fetchLatestRegistration(kind){
   return null;
 }
 function defaultMeetingSettings(){
-  return {
-    id:'fallback',
-    meeting_url:'https://fccdl.in/i/omideno7church',
-    phone_number:'',
-    access_code:'',
-    security_code:'789987',
-    extra_info: state.lang==='fa' ? 'جلسه دعا هر روز ساعت ۵ صبح به وقت کرواسی برگزار می‌شود. برای ورود، روی لینک جلسه بزنید و فقط کد امنیتی را وارد کنید.' : (state.lang==='hr' ? 'Molitveni sastanak održava se svaki dan u 05:00 po hrvatskom vremenu. Za ulazak otvorite poveznicu i unesite samo sigurnosni kod.' : 'Prayer meeting is held daily at 05:00 Croatia time. To join, open the meeting link and enter only the security code.')
-  };
+  // No bundled private credentials or offline authorization fallback.
+  return {id:'unconfigured',meeting_url:'',phone_number:'',access_code:'',security_code:'',extra_info:''};
 }
 async function fetchMeetingSettings(){
-  if(!CLOUD_ENABLED || !navigator.onLine) return defaultMeetingSettings();
-  try{
-    // v1.6.4: use a security-definer RPC so approved school/meeting users always receive
-    // the latest admin-edited meeting link and security code. This avoids RLS/header/cache
-    // issues that caused the app to fall back to the old built-in meeting details.
-    try{
-      const rpc = await cloudRpc('nh7_get_meeting_settings', {
-        p_email: currentUserEmail(),
-        p_device_id: deviceId()
-      });
-      const row = Array.isArray(rpc) ? rpc[0] : rpc;
-      if(row && (row.meeting_url || row.security_code || row.extra_info)){
-        return Object.assign(defaultMeetingSettings(), row, {phone_number:'', access_code:''});
-      }
-    }catch(rpcErr){
-      console.warn('Meeting settings RPC failed, trying REST fallback', rpcErr);
-    }
-
-    const rows = await cloudFetch('meeting_settings?select=*&id=eq.active&limit=1&_ts='+Date.now(), {method:'GET', headers:{'Cache-Control':'no-cache'}});
-    const row = Array.isArray(rows) ? rows[0] : null;
-    return row ? Object.assign(defaultMeetingSettings(), row, {phone_number:'', access_code:''}) : defaultMeetingSettings();
-  }catch(e){ console.warn('Meeting settings load failed', e); return defaultMeetingSettings(); }
+  return null; // Legacy email/device RPC and direct table fallback are retired.
 }
-function renderMeetingDetails(settings){
-  if(!settings) return `<div class="notice">${tr('notConfigured')}</div>`;
-  const link = settings.meeting_url || '';
-  const security = settings.security_code || '';
-  const extra = settings.extra_info || defaultMeetingSettings().extra_info || '';
-  return `<div class="notice"><h3>${tr('meetingDetails')}</h3>
-    ${link?`<p><strong>${tr('meetingLink')}:</strong> <a class="primary-btn inline-link" href="${html(link)}" target="_blank" rel="noopener">${tr('openMeeting')}</a></p>`:''}
-    ${security?`<p><strong>${tr('securityCode')}:</strong> <span class="code-box">${html(security)}</span></p>`:''}
-    ${extra?`<p>${html(extra)}</p>`:''}
-  </div>`;
+function renderMeetingDetails(){
+  return `<p class="notice">${tr('notConfigured')}</p>`;
 }
 
 function tr(k){ return T[state.lang]?.[k] || T.en[k] || k; }
@@ -2275,33 +2240,10 @@ async function about(){
   routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('about'), `<h3>${tr('churchIntro')}</h3><p>${html(d.intro?.[state.lang]||'')}</p><h3>${tr('ourVision')}</h3><p>${html(d.vision?.[state.lang]||'')}</p><h3>${tr('ourBeliefs')}</h3><p>${html(d.beliefs?.[state.lang]||'')}</p><div class="button-row"><a class="secondary-btn" href="https://www.bible.com/organizations/da6136d1-04cd-4243-a52b-f9ba7f32ec79?utm_source=yvapp&utm_medium=share&utm_content=partner-page" target="_blank" rel="noopener">${tr('youversion')}</a></div>`);
 }
 async function meetings(params={}){
-  const routeViewTicketWave6=routeTicketWave6();
-  const meetingEpochV456=nh7NavigationEpochV456;
-  if(isExplicitlyLoggedOut()){routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('meetings'),`<p>${tr('loginRequired')}</p><button class="primary-btn" data-go="account">${tr('signIn')}</button>`);return;}
-  let meetingAccess={status:'none'},schoolAccess={status:'none'};
-  try{meetingAccess=JSON.parse(localStorage.getItem('nh7_meeting_access')||'{"status":"none"}')||meetingAccess}catch(_){}
-  try{schoolAccess=JSON.parse(localStorage.getItem('nh7_school_access')||'{"status":"none"}')||schoolAccess}catch(_){}
-  const approvedNow=()=>schoolAccess.status==='approved'||schoolAccess.approvedBy==='admin'||meetingAccess.status==='approved'||meetingAccess.approvedBy==='admin';
-  const paint=(settings=null,refreshing=false)=>{
-    if(meetingEpochV456!==nh7NavigationEpochV456)return;
-    const approved=approvedNow(),details=approved&&settings?`<p class="success-text">${tr('meetingApproved')}</p>${renderMeetingDetails(settings)}`:'';
-    const buttons=approved?`<div class="button-row"><button class="secondary-btn" data-go="meetings">${tr('refreshApproval')}</button></div>`:`<div class="button-row"><button class="primary-btn" data-go="school" data-params='{"form":true}'>${tr('register')} ${tr('school')}</button><button class="secondary-btn" data-go="meetings">${tr('refreshApproval')}</button></div>`;
-    const notApprovedText=state.lang==='fa'?'برای امنیت جلسه، ورود مهمان نداریم. اگر در مدرسه ثبت‌نام کرده‌اید، پس از تأیید ادمین همین بخش لینک و کد جلسه را نشان می‌دهد.':(state.lang==='hr'?'Zbog sigurnosti nema ulaska kao gost. Nakon registracije za školu i odobrenja administratora ovdje će se prikazati poveznica i kod sastanka.':'For meeting security, guest access is not available. After school registration and admin approval, the meeting link and codes will appear here.');
-    const sync=refreshing?`<p class="muted small">${html(state.lang==='fa'?'در حال بررسی تازه‌ترین وضعیت…':state.lang==='hr'?'Provjera najnovijeg statusa…':'Checking latest status…')}</p>`:'';
-    routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('meetings'),`<p>${tr('meetingAccessText')}</p>${approved?'':`<p class="muted">${notApprovedText}</p>`}<span class="badge">${approved?tr('approved'):(schoolAccess.status==='pending'||meetingAccess.status==='pending'?tr('pending'):tr('notStarted'))}</span>${details}${sync}${buttons}`);
-    bindDynamic();
-  };
-  // Fast path: render immediately from the last known access and built-in meeting
-  // settings. Network refresh happens afterwards and never blocks opening the module.
-  paint(approvedNow()?defaultMeetingSettings():null,true);
-  const [cloudSchool,cloudMeeting]=await Promise.all([
-    fetchLatestRegistration('school').catch(()=>null),
-    fetchLatestRegistration('meeting').catch(()=>null)
-  ]);
-  if(cloudSchool)schoolAccess=cloudSchool;if(cloudMeeting)meetingAccess=cloudMeeting;
-  let settings=null;
-  if(approvedNow())settings=await fetchMeetingSettings().catch(()=>defaultMeetingSettings());
-  paint(settings|| (approvedNow()?defaultMeetingSettings():null),false);
+  const ticket=routeTicketWave6();
+  routeCheckWave6(ticket);
+  if(window.NH7ConnectBatch3B)return window.NH7ConnectBatch3B.render(view,params,(name,args,signal)=>cloudFetch('rpc/'+name,{method:'POST',body:JSON.stringify(args),cache:'no-store',signal}));
+  view.innerHTML=card(tr('meetings'),`<p>${tr('notConfigured')}</p>`);
 }
 
 let nh7LibraryTab=sessionStorage.getItem('nh7_library_tab')||'public';

@@ -43,7 +43,14 @@ for r,v in zip(rows,live):
   name=r['signature'].split('(')[0].split('.')[-1]
   # Historical exact line offsets use independently hash-bound accepted source; the current caller must still exist.
   assert name in prior75_bytes(c['path']).decode().splitlines()[c['line']-1]
-  assert name in Path(c['path']).read_text(),('Removed current caller',name,c)
+  if r['row']==131 and name=='nh7_get_meeting_settings' and c['path']=='js/app.js':
+   # Batch3B intentionally retires this one unproven email/device transport; old Store callers still block live ACL changes.
+   from batch3b_accepted_source import prior_batch3b_bytes
+   assert name in prior_batch3b_bytes(c['path']).decode()
+   assert "cloudRpc('nh7_get_meeting_settings'" not in Path(c['path']).read_text()
+   assert "cloudFetch('meeting_settings?" not in Path(c['path']).read_text()
+  else:
+   assert name in Path(c['path']).read_text(),('Removed current caller',name,c)
 assert matched==72
 rls=json.loads((P/'rls-dispositions.json').read_text())['rows'];manifest=Path('docs/qa/WAVE6_6_LIVE_METADATA_MANIFEST.md').read_text();expected=re.findall(r'^\d+\. `([^`]+)`',manifest.split('The authoritative Advisor list is:')[1].split('A broader raw SQL')[0],re.M)
 assert [r['table'] for r in rls]==expected and len(expected)==29

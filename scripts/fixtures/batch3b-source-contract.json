@@ -1,0 +1,93 @@
+{
+  "base": "73610310eaccebe417975aaa48b17b563b642796",
+  "files": {
+    ".github/workflows/validate-develop.yml": {
+      "before": "634a9d2107e605a1aa07946d7729a4e217f5d404461565311e7f1b038ce320e1",
+      "after": "b2a3b636e4f193e2819981a9e7db85553074727b633055e338b5b3814a069492"
+    },
+    "admin.html": {
+      "before": "7058e36802dad478ccc4f410e8150f97639ae9b19280cdf0c936a0520fe6211b",
+      "after": "3f3c668f52e6da5a73fb83ac167f3d2f5802ace281abeefd6a6c2276be963934"
+    },
+    "css/nh7-church-connect-batch3b.css": {
+      "before": null,
+      "after": "92f38d68b23dbf5947d9d19962777a00513faef1fc1c239b1fdaf1261abfdcb9"
+    },
+    "index.html": {
+      "before": "2cb2be30bf25342c7fea25ccbaeeefa113e9f6b1d9fa6cd710a7346a38531049",
+      "after": "ff727da09510992a265213b2c45ae96dc8bcc80da65d4eb169376adf5822beca"
+    },
+    "js/app.js": {
+      "before": "1498dab9554a1fab0dba062c6d34c0392dfde432ec3b516bace2f8e837db8bd3",
+      "after": "583185dda950ca5758ce636d58e08308c36bca3cb8fe9f19b8713afa5d3b4165"
+    },
+    "js/nh7-admin-connect-batch3b.js": {
+      "before": null,
+      "after": "7e3d8b4798a122defce73ce9009bce6f9602425f747c01667cb1023d5dbacf85"
+    },
+    "js/nh7-celebrations-v464.js": {
+      "before": "f8a4f73977d9db02aadd72d846f6f6fd7fa29968307604962fdfaa43bdc5a446",
+      "after": "cc8b81cf6bf97336cfe1144fd0f76236d87b0a0995ef9c8d4efe33f332ed5905"
+    },
+    "js/nh7-church-connect-batch3b.js": {
+      "before": null,
+      "after": "63b4693c777f8d8208c3aa5db514fb47fb5e530f94b96bcd5f290a43f995673e"
+    },
+    "supabase/review/batch3b-church-connect/README.md": {
+      "before": null,
+      "after": "f3c74f461d89587e1b49938b802a57f5a7c5cfb10fd0be2410e35edd8d7a3d9a"
+    },
+    "supabase/review/batch3b-church-connect/candidate.sql": {
+      "before": null,
+      "after": "6e0900b9e9dbd7dd5f6796b88e2ad638d6dd879abb21b36835adcca3260f7a93"
+    },
+    "supabase/review/batch3b-church-connect/preflight-readonly.sql": {
+      "before": null,
+      "after": "41571b0b99fb9ad387ae8ec67eb9da2a66ce34356d74f3e9b02d2489f06c6604"
+    },
+    "supabase/review/batch3b-church-connect/rollback.sql": {
+      "before": null,
+      "after": "2ddbbd48bb50c22677bd64ac752be28042d36ca9beaf3ab37f9762f866f01ef7"
+    },
+    "supabase_v1_6_3_meeting_settings_fix.sql": {
+      "before": "83098aa01e14de417e8a0bfbee945f6568762232d8f8d07ac3f9296b6f31d926",
+      "after": "ed9fe50c70e553b175c9067e6c66a9bb457afa1454acb464ddb1c58c0076b5cd"
+    },
+    "supabase_v1_6_4_meeting_settings_rpc_fix.sql": {
+      "before": "b7abb7667c3055c16aede59aea8903f710017ea6baf63cd8e205574c1cfb0abb",
+      "after": "908466ea1568bc8005fcbae38ac324bb0978412fae8bfa16d83b7e81d90e32f4"
+    },
+    "sw-release-core-v403.js": {
+      "before": "8458ffee4bff85dca45bc89ff049f10ad25c96b4d6182aab79db89680a683414",
+      "after": "efab2a887dbc1fa35580f0c2c538e9fca99bc84a0874be9b3b85d7f618b90caa"
+    }
+  },
+  "approved_paths": [
+    ".github/workflows/validate-develop.yml",
+    "admin.html",
+    "css/nh7-church-connect-batch3b.css",
+    "docs/qa/WAVE8_PHYSICAL_FIX_BATCH3B_AUDIT.md",
+    "docs/qa/WAVE8_PHYSICAL_FIX_BATCH3B_REPORT.md",
+    "index.html",
+    "js/app.js",
+    "js/nh7-admin-connect-batch3b.js",
+    "js/nh7-celebrations-v464.js",
+    "js/nh7-church-connect-batch3b.js",
+    "scripts/batch3a_accepted_source.py",
+    "scripts/batch3b_accepted_source.py",
+    "scripts/fixtures/batch3b-source-contract.json",
+    "scripts/school_accepted_source_v580.py",
+    "scripts/verify-batch3a-safety.py",
+    "scripts/verify-batch3b-browser.cjs",
+    "scripts/verify-batch3b-postgres.cjs",
+    "scripts/verify-batch3b-safety.py",
+    "scripts/verify-wave66-evidence.py",
+    "supabase/review/batch3b-church-connect/README.md",
+    "supabase/review/batch3b-church-connect/candidate.sql",
+    "supabase/review/batch3b-church-connect/preflight-readonly.sql",
+    "supabase/review/batch3b-church-connect/rollback.sql",
+    "supabase_v1_6_3_meeting_settings_fix.sql",
+    "supabase_v1_6_4_meeting_settings_rpc_fix.sql",
+    "sw-release-core-v403.js"
+  ]
+}

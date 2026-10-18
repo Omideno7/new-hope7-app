@@ -117,6 +117,7 @@ function modalCopy(){
  }else{
   const ev=eventFor(a.date);if(!ev){closeModal();return}
   a.title.textContent=ev.title;a.body.textContent=ev.body;a.verse.textContent='📖 '+ev.verse;
+  if(window.NH7ConnectBatch3B){let detail=a.dialog.querySelector('[data-education3b]');if(!detail){detail=node('section');detail.dataset.education3b='';a.dialog.append(detail)}detail.innerHTML=window.NH7ConnectBatch3B.calendarDetail(ev,false);detail.querySelector('[data-connect-bible]')?.remove();}
   a.verse.classList.toggle('is-link',!!ev.ref);
   a.verse.tabIndex=ev.ref?0:-1;
   a.verse.setAttribute('role',ev.ref?'button':'note');
@@ -157,8 +158,8 @@ function openCalendar(){
  annualEvents(new Date().getFullYear()).forEach(ev=>{
    const b=node('button','nh7-calendar-item464');b.type='button';
    const date=node('small',null,localDateLabel(ev.key)),name=node('strong',null,ev.icon+' '+ev.title);
-   b.append(name,date);
-   b.onclick=()=>{const date=new Date(ev.key+'T12:00:00');closeModal();setTimeout(()=>openModal('feast',null,date),0)};
+   b.append(name,date);if(ev.key===key(new Date()))b.setAttribute('aria-current','date');
+   b.onclick=()=>{const date=new Date(ev.key+'T12:00:00');closeModal();setTimeout(()=>{openModal('feast',null,date);if(active){const back=node('button','secondary-btn',L('بازگشت به تقویم','Back to Calendar','Natrag na kalendar'));back.type='button';back.onclick=()=>{closeModal();openCalendar()};active.dialog.append(back)}},0)};
    list.append(b)
  });
  dialog.append(close,title,intro,list);overlay.append(dialog);
@@ -191,7 +192,7 @@ function canAuto(){
  return true;
 }
 function run(){
- header();if(active){if(active.owner!==(identity()?.id||'guest'))closeModal();else modalCopy()}
+ window.NH7ConnectBatch3B?.home();header();if(active){if(active.owner!==(identity()?.id||'guest'))closeModal();else modalCopy()}
  if(!canAuto())return;
  const today=key(new Date()),p=birthday();
  if(p){const k='nh7_birthday_seen_v464:'+encodeURIComponent(p.id)+':'+today;if(!seen(k)&&openModal('birthday',p))markSeen(k);return}

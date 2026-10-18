@@ -1,0 +1,21 @@
+# Batch3B Church Connect — REVIEW ONLY / BLOCKED_ACTIVATION
+
+No SQL executed against Production. Candidate deliberately raises before DDL and rolls back. Synthetic tests extract its marked body into isolated PostgreSQL only. No ordinary migration, no new pending migration.42 exact/0missing/2pending v511/v580 unchanged. Existing meeting_settings and users are untouched.
+
+One private table; no direct anon/authenticated table access, RLS enabled with no policy deliberately denies clients. Four narrowly granted RPCs: bounded catalog without destinations/IDs/passcodes, per-item current-UID detail, owner-only list/save using existing v350 helper. JSON multilingual metadata, three categories, active/order, UTC start/end + display timezone and localized schedule. Revision compare-and-swap prevents lost Admin edits; duplicate ID/create is rejected, never overwritten. No destructive delete API.
+
+Audiences: public, authenticated (any current signed-in user), owner administrator. **Approved/student entitlement is NOT equivalent to authenticated and is BLOCKED_ACTIVATION**: reconcile the exact current UID-bound School/meeting approval authority and add explicit adapter/test before importing any approval-restricted meeting. Never classify legacy private meeting as authenticated merely to make it visible. Existing links/settings remain in original table; import only via explicit owner-reviewed Admin save after audience verification; never automatic migration/backfill.
+
+## Activation / App Review disclosure
+
+1. Separate owner approval; privately capture current definitions/ACLs/dependencies and verify v350 helper checks current auth.uid, current owner record and no client-email authority. Preflight source is metadata-only and not run here.
+2. Review table/RPC owner/search_path/RLS/explicit ACLs and URL policy. Reconcile legacy approved audiences; until then do not copy approval-only links. Review/rotate previously public static credentials with owner outside this task; Git history exposure cannot be undone by removing fallback literals.
+3. Prepare approved transactional migration from marked candidate, capture before state; no automatic execution/release flag. Verify with synthetic and separate approved non-real-user staging; approve activation separately.
+4. Save only verified official links/content/translations and audience with explicit Admin confirmation. No fabricated Groups/Media destinations. YouVersion fallback uses existing local church_config URL; dynamic Connect media entries can be edited without a release after activation. Home fallback is local configuration, not remotely activated membership logic.
+5. Old Store clients still call legacy nh7_get_meeting_settings. This package does NOT revoke/modify that RPC and cannot prove its live private safety. Obtain exact body/callers, stage compatible UID-bound hardening and rotation separately before approving private credential activation. Do not silently break older clients or mistake new-source hardening for live remediation.
+6. Native universal-link return, .ics import, browser popup/share policy, iPad/phone WKWebView and reminder delivery remain PHYSICAL_QA_REQUIRED/NATIVE_ACTIVATION_REQUIRED. Calendar declares optional/default-off semantic only, no provider/permissions/schedules. App Review notes must disclose public Connect navigation, authenticated/owner-only categories, owner review account and inactive backend; no hidden activation.
+7. Rollback: separately approved revoke-only script, keep private table/history/old settings. UI fails closed. Never reintroduce bundled passcode fallback; no record drops/caches/user reset. Record actual postactivation ACLs and rollback grants privately.
+
+## Cost
+
+Zero startup remote Connect calls. Local config fetched once per page; catalog on open/category/manual retry (200 maximum), detail on explicit selection; Admin list on manual Load, write only confirmed Save + one list refresh. No polling, subscription, background job, analytics or recurring storage write. Private values memory-only; session/token/generation/hash + route guards, hide on background, logout/switch clears, never serialize into browser storage/ICS/log. Admin owner revalidated independently by RPC.
