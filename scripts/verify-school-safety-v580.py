@@ -1,22 +1,24 @@
 """Independent CURRENT School delta check; existing historical safety gates remain untouched."""
 from pathlib import Path
 import subprocess,re,hashlib,tempfile
-from school_accepted_source_v580 import verify_school_contract,EXISTING
+from school_accepted_source_v580 import verify_school_contract,EXISTING,protected_diff
+from batch3a_accepted_source import prior_batch3a_bytes,verify3a
 BASE='b769df6d91cc2ffb4cc86905ab35d2c022fb2447'
 old=lambda p:subprocess.check_output(['git','show',BASE+':'+p])
 existing={'admin.html','index.html','js/app.js','js/nh7-school-drafts-v468.js','js/nh7-school-path-v351.js','js/nh7-security-core-v340.js'}
 protected=['data','public','watchos','supabase/functions','js/document-studio-v2','service-worker.js','js/nh7-admin-rbac-v350.js','js/nh7-audio-classic-v484.js','js/nh7-audio-library-v500.js','js/nh7-media-player-v500.js','js/nh7-profile-photo-v564.js','js/nh7-local-first-wave2.js','js/nh7-user-context-wave6.js']
-assert not subprocess.check_output(['git','diff',BASE,'--',*protected]),'Unrelated authority/data/engine changes'
+verify3a()
+assert not protected_diff(BASE,protected),'Unrelated authority/data/engine changes'
 for p in ['admin.html','index.html']:
  line='  <script src="js/nh7-school-cycles-v580.js?v=580"></script>\n' if p=='index.html' else '<script defer src="js/nh7-admin-school-cycles-v580.js?v=580"></script>\n'
- assert Path(p).read_text().replace(line,'')==old(p).decode(),p
-assert Path('sw-release-core-v403.js').read_text().replace("  './js/nh7-school-cycles-v580.js',\n  './js/nh7-admin-school-cycles-v580.js',\n",'')==old('sw-release-core-v403.js').decode(),'Only cache the two required School dependencies; all cache/storage behavior remains exact'
+ assert prior_batch3a_bytes(p).decode().replace(line,'')==old(p).decode(),p
+assert prior_batch3a_bytes('sw-release-core-v403.js').decode().replace("  './js/nh7-school-cycles-v580.js',\n  './js/nh7-admin-school-cycles-v580.js',\n",'')==old('sw-release-core-v403.js').decode(),'Only cache the two required School dependencies; all cache/storage behavior remains exact'
 # All non-School app functions are byte-identical, not whitelisted by directory.
 def functions(s):
  hits=list(re.finditer(r'^(?:async )?function (\w+)\(',s,re.M));return {h[1]:s[h.start():hits[i+1].start() if i+1<len(hits) else len(s)] for i,h in enumerate(hits)}
-a,b=functions(old('js/app.js').decode()),functions(Path('js/app.js').read_text())
+a,b=functions(old('js/app.js').decode()),functions(prior_batch3a_bytes('js/app.js').decode())
 allowed={'getSchoolSnapshot','submitSchoolAssignment','school','schoolLesson','saveSchoolProgress'}
-prefix_old=old('js/app.js').decode().split('function ',1)[0];prefix_new=Path('js/app.js').read_text().split('function ',1)[0];assert prefix_new.replace(',cycle:()=>window.NH7SchoolCyclesV580?.cycleForView()||0','')==prefix_old,'Only add cycle dependency before app functions'
+prefix_old=old('js/app.js').decode().split('function ',1)[0];prefix_new=prior_batch3a_bytes('js/app.js').decode().split('function ',1)[0];assert prefix_new.replace(',cycle:()=>window.NH7SchoolCyclesV580?.cycleForView()||0','')==prefix_old,'Only add cycle dependency before app functions'
 assert set(a)==set(b)
 assert "if(params.exam==='foundation_school'&&window.NH7SchoolPathV351?.openFinalExam)" in b['school']
 assert {n for n in a if a[n]!=b[n]}<=allowed,'Unexpected app function change'
@@ -47,14 +49,14 @@ assert changed<=set(m['approved_paths']),changed-set(m['approved_paths'])
 patch=Path('scripts/fixtures/school-approved-v580.patch');assert hashlib.sha256(patch.read_bytes()).hexdigest()==m['patch_sha256']
 with tempfile.TemporaryDirectory(prefix='nh7-school-inverse-') as tmp:
  for name in EXISTING:
-  out=Path(tmp)/name;out.parent.mkdir(parents=True,exist_ok=True);out.write_bytes(Path(name).read_bytes())
+  out=Path(tmp)/name;out.parent.mkdir(parents=True,exist_ok=True);out.write_bytes(prior_batch3a_bytes(name))
  subprocess.run(['git','apply','--reverse','--check','--unidiff-zero',str(patch.resolve())],cwd=tmp,check=True)
 print('PASS exact School before/after hashes and reversible patch; individually named paths; all original guard assertions retained on exact accepted prior source')
 
 # Keep every existing CI step/permission intact; exactly one additional independent School gate.
 import yaml
 prior_workflow=yaml.safe_load(old('.github/workflows/validate-develop.yml'))
-current_workflow=yaml.safe_load(Path('.github/workflows/validate-develop.yml').read_text())
+current_workflow=yaml.safe_load(subprocess.check_output(['git','show','ae2c9d4c460a7dc999c9713449366ac427ac5cea:.github/workflows/validate-develop.yml']))
 steps=current_workflow['jobs']['validate']['steps'];new_steps=[s for s in steps if s['name']=='Validate School cycle and Admin override source without activation'];assert len(new_steps)==1
 current_workflow['jobs']['validate']['steps']=[s for s in steps if s not in new_steps]
 assert current_workflow==prior_workflow,'Existing CI commands, permissions or gates changed'

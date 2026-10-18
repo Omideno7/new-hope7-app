@@ -688,3 +688,13 @@ export async function renderSpiritualProfileSummaryV240(ctx, mount) {
   const activity = stats.activePlans || stats.completedDays || fasting.journeys.length;
   mount.innerHTML = `<section class="card nh7-profile-plans"><h2>${esc(t(ctx, 'summaryTitle'))}</h2>${activity ? `${statsStrip(ctx, stats, fasting.journeys.length)}${stats.completions.length ? `<h3>${esc(t(ctx, 'recentCompletions'))}</h3><div class="nh7-profile-history">${stats.completions.slice(0, 4).map(item => `<div><span>${esc(item.plan.icon || '✓')}</span><strong>${esc(localMeta(item.plan, ctx).title || item.plan.id)}</strong><small>${esc(formatDate(ctx, item.at))}</small></div>`).join('')}</div>` : ''}` : `<p class="muted">${esc(t(ctx, 'noActivity'))}</p>`}<button type="button" class="secondary-btn wide-btn" data-go="plans">${esc(t(ctx, 'viewPlans'))}</button></section>`;
 }
+
+// Explicit note edit only: no start, completion derivation, last-day movement or new day.
+export async function editExistingPlanNoteBatch3A(ctx,planId,dayNumber,text,expected){
+ if(ctx.isCurrent&&!ctx.isCurrent())throw Error('session_changed');
+ const progress=loadProgress(ctx),plan=progress.plans?.[planId],day=plan?.days?.[String(dayNumber)];
+ if(!plan?.startedAt||!day||String(day.note||'')!==expected)throw Error('note_changed');
+ const updated={...day,note:String(text).slice(0,4000),updatedAt:nowIso()};
+ plan.days[String(dayNumber)]=updated;saveProgress(ctx,progress);
+ await queueProgressRows(ctx,[localProgressRow(ctx,planId,dayNumber,updated)]);
+}

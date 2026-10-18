@@ -1,5 +1,5 @@
 import {
-  renderSpiritualPlansV240,peekPlanTitlesWave6,validExistingPlanDayWave6
+  renderSpiritualPlansV240,peekPlanTitlesWave6,validExistingPlanDayWave6,editExistingPlanNoteBatch3A
 } from './nh7-spiritual-plans-v240.js';
 
 /* New Hope 7 — production spiritual plans bridge v4.1.2
@@ -344,7 +344,7 @@ document.head.appendChild(style);
 
 window.NH7_SPIRITUAL_PLANS_VERSION = VERSION;
 // Presentation disposal only: no progress/Notes/queue/storage mutation.
-window.NH7_SPIRITUAL_PLANS = { render:renderPlans, sync:syncCloudQueue, active:() => active, catalog:peekPlanTitlesWave6, validExistingDay:(id,day)=>validExistingPlanDayWave6(id,day,context()), dispose:()=>{active=false;clearTimeout(restoreTimer)} };
+window.NH7_SPIRITUAL_PLANS = { editExistingNote:(id,day,text,expected)=>{const actor=window.NH7UserContextWave6.identity();return editExistingPlanNoteBatch3A(context(()=>window.NH7UserContextWave6.current(actor)),id,day,text,expected)},render:renderPlans, sync:syncCloudQueue, active:() => active, catalog:peekPlanTitlesWave6, validExistingDay:(id,day)=>validExistingPlanDayWave6(id,day,context()), dispose:()=>{active=false;clearTimeout(restoreTimer)} };
 
 if(new URLSearchParams(location.search).get('open') === 'plans'){
   setTimeout(() => renderPlans({tab:'spiritual'}), 700);

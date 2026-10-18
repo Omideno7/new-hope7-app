@@ -116,7 +116,7 @@ function noteCard(note){
   const encoded=encodeURIComponent(note.storageKey);
   const openText=t('باز کردن منبع','Open source','Otvori izvor');
   const deleteText=t('پاک کردن','Delete','Obriši');
-  return `<article class="nh7-my-note-card-v234"><div class="nh7-my-note-head-v234"><span class="nh7-my-note-type-v234">${esc(typeLabel(note.kind))}</span><strong>${esc(note.title)}</strong></div><p style="white-space:pre-wrap">${esc(note.recoverable?t('یادداشت قدیمی نیاز به بررسی دارد؛ نسخهٔ اصلی محفوظ است.','Legacy note needs review; the original is preserved.','Staru bilješku treba pregledati; izvornik je sačuvan.'):note.text)}</p><div class="button-row nh7-my-note-actions-v234"><button type="button" class="secondary-btn" data-nh7-note-open="${encoded}">↗ ${esc(openText)}</button>${note.readOnly||note.recoverable?'':`<button type="button" class="danger-btn" data-nh7-note-delete="${encoded}">🗑 ${esc(deleteText)}</button>`}</div></article>`;
+  return `<article class="nh7-my-note-card-v234"><div class="nh7-my-note-head-v234"><span class="nh7-my-note-type-v234">${esc(typeLabel(note.kind))}</span><strong>${esc(note.title)}</strong></div><p style="white-space:pre-wrap">${esc(note.recoverable?t('یادداشت قدیمی نیاز به بررسی دارد؛ نسخهٔ اصلی محفوظ است.','Legacy note needs review; the original is preserved.','Staru bilješku treba pregledati; izvornik je sačuvan.'):note.text)}</p><div class="button-row nh7-my-note-actions-v234"><button type="button" class="secondary-btn" data-nh7-note-open="${encoded}">↗ ${esc(openText)}</button>${note.recoverable?'':`<button type="button" class="secondary-btn" data-nh7-note-edit="${encoded}">${esc(t('ویرایش','Edit','Uredi'))}</button>`}${note.readOnly||note.recoverable?'':`<button type="button" class="danger-btn" data-nh7-note-delete="${encoded}">🗑 ${esc(deleteText)}</button>`}</div></article>`;
 }
 function renderNotesPanel(){
   if(rendering)return;
@@ -196,6 +196,7 @@ async function syncVerseState(note){
   try{await window.NH7AccessV230?.edge?.('nh7-content-access',{action:'save_bible_batch',batch_id:crypto.randomUUID?.()||String(Date.now()),language:lang(),items:[{verse_key:note.storageKey,verse_ref:meta.ref||'',verse_text:meta.verseText||'',saved:!!st.saved,highlight_color:st.highlight?String(st.highlightColor||'yellow'):'',note:''}]},true)}catch(_){}
 }
 async function deleteNote(storageKey){
+  const actor=window.NH7UserContextWave6?.identity();
   const note=collectNotes().find(n=>n.storageKey===storageKey);if(!note||note.readOnly||note.recoverable)return;
   if(!confirm(t('این یادداشت پاک شود؟','Delete this note?','Obrisati ovu bilješku?')))return;
   if(note.kind==='apocrypha'){localStorage.removeItem(storageKey);deleteMeta(storageKey);renderNotesPanel();return;}
@@ -204,7 +205,35 @@ async function deleteNote(storageKey){
     const cloudKey=storageKey.replace(/^nh7_/,'');
     await deleteCloudNote(cloudKey);
   }
-  deleteMeta(storageKey);renderNotesPanel();
+  if(!window.NH7UserContextWave6?.current(actor))return;deleteMeta(storageKey);renderNotesPanel();
+}
+
+function editNote(storageKey){
+ const actor=window.NH7UserContextWave6?.identity(),note=collectNotes().find(n=>n.storageKey===storageKey);if(!actor||!note||note.recoverable)return;
+ const original=note.text,draftKey='nh7_editor_draft_batch3a:'+encodeURIComponent(actor.owner)+':'+encodeURIComponent(storageKey),draft=safeJson(localStorage.getItem(draftKey));
+ const dialog=document.createElement('dialog');dialog.className='nh7-note-editor3a';dialog.style.cssText='width:min(92vw,700px);max-height:85dvh;overflow:auto;box-sizing:border-box;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:18px';dialog.dir=lang()==='fa'?'rtl':'ltr';
+ dialog.innerHTML=`<form><h2 id="nh7NoteEditTitle3A">${esc(t('ویرایش یادداشت','Edit note','Uredi bilješku'))}</h2><label for="nh7NoteEditText3A">${esc(note.title)}</label><textarea id="nh7NoteEditText3A" rows="8" style="width:100%;box-sizing:border-box;direction:${lang()==='fa'?'rtl':'ltr'};text-align:${lang()==='fa'?'right':'left'}" dir="${lang()==='fa'?'rtl':'ltr'}" maxlength="${note.kind==='plan'?4000:note.kind==='verse'?1000:8000}"></textarea><p role="status" aria-live="polite"></p><div class="button-row"><button type="submit" class="primary-btn" data-note-save3a>${esc(t('ذخیره','Save','Spremi'))}</button><button type="button" class="secondary-btn" data-note-cancel3a>${esc(t('لغو','Cancel','Odustani'))}</button></div></form>`;
+ dialog.setAttribute('aria-labelledby','nh7NoteEditTitle3A');const input=dialog.querySelector('textarea'),status=dialog.querySelector('[role=status]'),save=dialog.querySelector('[type=submit]'),opener=document.activeElement;
+ input.value=draft&&draft.base===original?draft.text:original;let busy=false;
+ const current=()=>window.NH7UserContextWave6.current(actor),retain=()=>{if(current())localStorage.setItem(draftKey,JSON.stringify({base:original,text:input.value}))};
+ input.oninput=()=>{try{retain();status.textContent=''}catch{status.textContent=t('ذخیرهٔ پیش‌نویس ممکن نیست؛ متن را کپی کنید.','Draft storage unavailable; copy your text.','Pohrana nacrta nije dostupna; kopirajte tekst.')}};
+ const cancel=()=>{if(busy)return;if(current())localStorage.removeItem(draftKey);dialog.close()};dialog.querySelector('[data-note-cancel3a]').onclick=cancel;dialog.oncancel=e=>{e.preventDefault();cancel()};
+ const fence=()=>{if(!current())dialog.close()};for(const name of ['nh7-personal-before-owner-wave2','nh7-personal-owner-wave2','storage','nh7-session-refreshed'])addEventListener(name,fence);
+ const routeFence=()=>dialog.close();for(const name of ['nh7-route-changed-wave6','popstate'])addEventListener(name,routeFence);
+ dialog.addEventListener('close',()=>{for(const name of ['nh7-personal-before-owner-wave2','nh7-personal-owner-wave2','storage','nh7-session-refreshed'])removeEventListener(name,fence);for(const name of ['nh7-route-changed-wave6','popstate'])removeEventListener(name,routeFence);dialog.remove();if(current()&&opener?.isConnected)opener.focus()},{once:true});
+ dialog.querySelector('form').onsubmit=async e=>{
+  e.preventDefault();if(busy||!current())return;const text=input.value;if(!text.trim()){status.textContent=t('برای حذف، از گزینهٔ حذف استفاده کنید.','Use Delete to remove a note.','Za uklanjanje bilješke koristite Obriši.');return}
+  busy=true;save.disabled=true;input.readOnly=true;
+  try{retain();const latest=collectNotes().find(n=>n.storageKey===storageKey);if(!latest||latest.text!==original)throw Error('changed');
+   if(note.kind==='plan'){if(!window.NH7_SPIRITUAL_PLANS?.editExistingNote)throw Error('unavailable');await window.NH7_SPIRITUAL_PLANS.editExistingNote(note.meta.planId,note.meta.dayNumber,text,original)}
+   else if(note.kind==='verse'){const st=safeJson(localStorage.getItem(storageKey),{})||{};st.note=text;const m=note.meta||{};if(!window.NH7_PERSONAL_SYNC_BRIDGE_WAVE2?.clearVerse)throw Error('unavailable');await window.NH7_PERSONAL_SYNC_BRIDGE_WAVE2.clearVerse(storageKey,st,{batch_id:crypto.randomUUID(),language:lang(),items:[{verse_key:storageKey,verse_ref:m.ref||'',verse_text:m.verseText||'',saved:!!st.saved,highlight_color:st.highlight?String(st.highlightColor||'yellow'):'',note:text}]})}
+   else if(note.kind==='apocrypha')localStorage.setItem(storageKey,text);
+   else{if(!window.NH7_PERSONAL_SYNC_BRIDGE_WAVE2?.saveNote)throw Error('unavailable');await window.NH7_PERSONAL_SYNC_BRIDGE_WAVE2.saveNote(storageKey.replace(/^nh7_/,''),text)}
+   if(!current())return;if(note.kind!=='plan')saveMeta(storageKey,note.meta||{});localStorage.removeItem(draftKey);renderNotesPanel();dialog.close();
+  }catch{if(current())status.textContent=t('ذخیره تأیید نشد؛ متن و پیش‌نویس شما محفوظ است. دوباره تلاش کنید.','Save was not confirmed; your text and draft are preserved. Retry.','Spremanje nije potvrđeno; tekst i nacrt su sačuvani. Pokušajte ponovno.')}
+  finally{busy=false;if(dialog.isConnected){save.disabled=false;input.readOnly=false}}
+ };
+ document.body.append(dialog);dialog.showModal();input.focus();
 }
 
 function verseSaveMeta(button){
@@ -235,6 +264,7 @@ function genericSaveMeta(button){
 }
 
 document.addEventListener('click',event=>{
+  const edit=event.target.closest?.('[data-nh7-note-edit]');if(edit){event.preventDefault();event.stopPropagation();editNote(decodeKey(edit.dataset.nh7NoteEdit));return}
   const open=event.target.closest?.('[data-nh7-note-open]');if(open){event.preventDefault();event.stopPropagation();openNote(decodeKey(open.dataset.nh7NoteOpen));return}
   const del=event.target.closest?.('[data-nh7-note-delete]');if(del){event.preventDefault();event.stopPropagation();deleteNote(decodeKey(del.dataset.nh7NoteDelete));return}
   const verse=event.target.closest?.('[data-save-verse-note]');if(verse){verseSaveMeta(verse);setTimeout(scheduleRender,50);return}
@@ -253,5 +283,5 @@ window.addEventListener('nh7-note-text-repaired-v501',scheduleRender);
 window.addEventListener('nh7-account-data-restored-v544',scheduleRender);
 window.addEventListener('popstate',()=>setTimeout(scrollToPending,250));
 scheduleRender();
-window.NH7MyNotesV234={VERSION,collectNotes,renderNotesPanel,openNote,deleteNote};
+window.NH7MyNotesV234={VERSION,collectNotes,renderNotesPanel,openNote,deleteNote,editNote};
 })();

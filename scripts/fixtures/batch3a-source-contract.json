@@ -1,0 +1,92 @@
+{
+  "base": "ae2c9d4c460a7dc999c9713449366ac427ac5cea",
+  "files": {
+    "index.html": {
+      "before": "d8257f1dbf002c5df0fc3c6f89a1576e15ba7dd5bd7f3cc87d0209c39f84c495",
+      "after": "2cb2be30bf25342c7fea25ccbaeeefa113e9f6b1d9fa6cd710a7346a38531049"
+    },
+    "js/app.js": {
+      "before": "56e8118e0ae2e1784edf304d41877744b6784b469779de9dda3fce4139420a8a",
+      "after": "0cdf7ffeee9191d23eec6dfd8a700d544208da1f15596e8d9e396601702293f8"
+    },
+    "js/document-studio-v2/archive-entry.mjs": {
+      "before": "92f290158f4c8dffd24c74ed8e6c90483be70547770039f4ec60782ea98caf5a",
+      "after": "f729134238842acb14509b492e1cde82ec4126260a53ed8c52a50f1b185570a2"
+    },
+    "js/document-studio-v2/archive.mjs": {
+      "before": "ebb812229e2ea8ac6935b207226558e178a92ce93131281ed347d267d8c0d311",
+      "after": "3a783d710d57f672954841ac445772d5a5188afa68f5e2071885d9875071760f"
+    },
+    "js/nh7-batch3a-v581.js": {
+      "before": null,
+      "after": "9c0fb7fe5e16d2a0dbdc42d95bc4a17f60e8dd58f4d53eb148bf411df3c73827"
+    },
+    "js/nh7-inbox-badge-sync-v418.js": {
+      "before": "77d2ed69afd061b9d5333f5fd0242e62ec038e4f3b3fa2a7ce7447bea0a9854c",
+      "after": "3a8b75ceab4530770c39f2c2e2f6b568d477f8ed9d319c3730aa3a2317aef434"
+    },
+    "js/nh7-my-notes-v234.js": {
+      "before": "cf1d18b313b074f891e9948f8d4822a452b76ffc9e3ea88a9a8f38a54cf30813",
+      "after": "d7a37db5c9c5c35dbbede97c2d5c96e1f1408916a93eeef5a59c9a6ce919a379"
+    },
+    "js/nh7-spiritual-plans-v240.js": {
+      "before": "8fefdece6dfeb1555d266746d76e677fb883382ecdb5f04012d6e65bbcaa2eb6",
+      "after": "3cd3501ffb3add6138d82bb797d047dae9b267d0e1612ded887e046416fe005b"
+    },
+    "js/nh7-spiritual-plans-v412.js": {
+      "before": "46dd23fc5e117efb58b4ffb916e630a1291e6e0ddea28418876fc61a7f6135df",
+      "after": "a20cda41c287368ed08182352f678f722349f442829e3c03b532e78634d09f61"
+    },
+    "supabase/review/batch3a-qa-owner-removal/README.md": {
+      "before": null,
+      "after": "ac0e96f8a524b1a41e6bb4e6ffcef69b7e0ad6f0380090952625ab76450ade57"
+    },
+    "supabase/review/batch3a-qa-owner-removal/candidate.sql": {
+      "before": null,
+      "after": "280b7ea11eb4d958e7775279104083af0acee523ab28ca0231a6c479d0d4f747"
+    },
+    "supabase/review/batch3a-qa-owner-removal/preflight-readonly.sql": {
+      "before": null,
+      "after": "77ccc527e50acbccddf153ce0214aa418b3339c8dc1953dc4b62fd24a25ba35b"
+    },
+    "supabase/review/batch3a-qa-owner-removal/rollback.sql": {
+      "before": null,
+      "after": "8cee7ad828f591f29ef1dc93932da522009008e643ec143cd1fa004c7b55ae9c"
+    },
+    "sw-release-core-v403.js": {
+      "before": "aad63db0be6fd428804ea2bc5c499967e4b950183d159ea1d1534088c7d73688",
+      "after": "8458ffee4bff85dca45bc89ff049f10ad25c96b4d6182aab79db89680a683414"
+    }
+  },
+  "patch_sha256": "eba8b53dd58fd13de50638eb7731e8fbdce15ec6e0bf799bd8f0ae3533f6420c",
+  "approved_paths": [
+    ".github/workflows/validate-develop.yml",
+    "docs/qa/WAVE8_PHYSICAL_FIX_BATCH3A_AUDIT.md",
+    "docs/qa/WAVE8_PHYSICAL_FIX_BATCH3A_REPORT.md",
+    "index.html",
+    "js/app.js",
+    "js/document-studio-v2/archive-entry.mjs",
+    "js/document-studio-v2/archive.mjs",
+    "js/nh7-batch3a-v581.js",
+    "js/nh7-inbox-badge-sync-v418.js",
+    "js/nh7-my-notes-v234.js",
+    "js/nh7-spiritual-plans-v240.js",
+    "js/nh7-spiritual-plans-v412.js",
+    "scripts/batch3a_accepted_source.py",
+    "scripts/fixtures/batch3a-approved.patch",
+    "scripts/fixtures/batch3a-source-contract.json",
+    "scripts/school_accepted_source_v580.py",
+    "scripts/verify-batch2-safety.py",
+    "scripts/verify-batch3a-browser.cjs",
+    "scripts/verify-batch3a-notes-archive.cjs",
+    "scripts/verify-batch3a-postgres.cjs",
+    "scripts/verify-batch3a-safety.py",
+    "scripts/verify-school-safety-v580.py",
+    "scripts/verify-wave4-notifications-browser.cjs",
+    "supabase/review/batch3a-qa-owner-removal/README.md",
+    "supabase/review/batch3a-qa-owner-removal/candidate.sql",
+    "supabase/review/batch3a-qa-owner-removal/preflight-readonly.sql",
+    "supabase/review/batch3a-qa-owner-removal/rollback.sql",
+    "sw-release-core-v403.js"
+  ]
+}

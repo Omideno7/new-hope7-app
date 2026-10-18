@@ -90,15 +90,17 @@ async function snapshot(retry=true){
   return out&&typeof out==='object'?out:{};
 }
 function ensureOwnerScope(){
-  const context=ownerKey()+'|'+language()+'|'+authToken();
-  if(context!==syncContext){syncContext=context;syncGeneration++;lastSuccessfulSync=0;activeSync=null;}
-  const current=ownerKey(),previous=String(localStorage.getItem(OWNER_KEY)||'');
-  if(previous&&previous!==current){
-    localStorage.removeItem(INBOX_KEY);
-    localStorage.removeItem(DELETED_KEY);
-    lastCount=-1;
+  const uid=explicitlyLoggedOut()?'':String(session()?.access_token&&session()?.user?.id||''),scope=uid?'uid:'+uid:'signed-out';
+  const marker='nh7_inbox_uid_batch3a',previous=localStorage.getItem(marker),slot=value=>'nh7_inbox_scope_batch3a:'+encodeURIComponent(value);
+  if(previous!==scope){
+    if(previous)localStorage.setItem(slot(previous),JSON.stringify({messages:readJson(INBOX_KEY,[]),deleted:readJson(DELETED_KEY,[])}));
+    else if(localStorage.getItem(INBOX_KEY))localStorage.setItem('nh7_inbox_unverified_legacy_batch3a',JSON.stringify({messages:readJson(INBOX_KEY,[]),deleted:readJson(DELETED_KEY,[])}));
+    const saved=scope==='signed-out'?{}:readJson(slot(scope),{});
+    localStorage.setItem(INBOX_KEY,JSON.stringify(saved.messages||[]));localStorage.setItem(DELETED_KEY,JSON.stringify(saved.deleted||[]));localStorage.setItem(marker,scope);lastCount=-1;
   }
-  if(previous!==current)localStorage.setItem(OWNER_KEY,current);
+  const context=scope+'|'+language()+'|'+authToken();
+  if(context!==syncContext){syncContext=context;syncGeneration++;lastSuccessfulSync=0;activeSync=null;}
+  const current=ownerKey();if(localStorage.getItem(OWNER_KEY)!==current)localStorage.setItem(OWNER_KEY,current);
 }
 function localMessages(){const rows=readJson(INBOX_KEY,[]);return Array.isArray(rows)?rows:[]}
 function deletedIds(){const rows=readJson(DELETED_KEY,[]);return new Set(Array.isArray(rows)?rows.map(String):[])}
@@ -135,7 +137,7 @@ function visibleMessages(){
   }
   return[...groups.values()];
 }
-function unreadCount(){return visibleMessages().filter(message=>!message.read).length}
+function unreadCount(){if(explicitlyLoggedOut()||!session()?.user?.id)return 0;return visibleMessages().filter(message=>!message.read).length}
 function addStyle(){
   if(document.getElementById('nh7-inbox-badge-v418-style'))return;
   const style=document.createElement('style');style.id='nh7-inbox-badge-v418-style';style.textContent=`
@@ -164,6 +166,7 @@ function saveMerged(rows,deleted){
 }
 async function doSync(){
   ensureOwnerScope();
+  if(explicitlyLoggedOut()||!session()?.user?.id){paintBadge(0);return{ok:true,signedOut:true,count:0}}
   const context=syncContext,generation=syncGeneration;
   if(!navigator.onLine){paintBadge();return{ok:false,offline:true,count:lastCount}}
   let cloudRows=[],receipts=[];
@@ -220,7 +223,9 @@ function hookOneSignal(){
 }
 function start(){
   addStyle();ensureOwnerScope();paintBadge();hookOneSignal();scheduleSync(250,true);
-  window.NH7PerformanceWave1?.visibleLoop(()=>{if(navigator.onLine)sync()},POLL_MS);
+  // Event-driven only: no Inbox polling or recurring backend cost.
+  window.addEventListener('nh7-personal-before-owner-wave2',()=>{ensureOwnerScope();const scope=localStorage.getItem('nh7_inbox_uid_batch3a');if(scope)localStorage.setItem('nh7_inbox_scope_batch3a:'+encodeURIComponent(scope),JSON.stringify({messages:localMessages(),deleted:[...deletedIds()]}))});
+  window.addEventListener('nh7-personal-owner-wave2',()=>{ensureOwnerScope();paintBadge();scheduleSync(120,false)});
   ['focus','pageshow'].forEach(name=>window.addEventListener(name,()=>scheduleSync(120,false)));
   window.addEventListener('online',()=>scheduleSync(120,true));
   document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(scheduleTimer);clearTimeout(observerTimer);}else{paintBadge();scheduleSync(120,false)}});

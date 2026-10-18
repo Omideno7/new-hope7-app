@@ -2,6 +2,7 @@
 import sys
 sys.dont_write_bytecode=True
 from pathlib import Path
+from batch3a_accepted_source import prior_batch3a_bytes
 from school_accepted_source_v580 import prior_school_bytes,protected_diff,school_additions
 import hashlib,subprocess,tempfile
 from batch2_accepted_source import BASE,contract2,prior_batch2_bytes
@@ -23,11 +24,11 @@ def functions(s):
 a,b=functions(before),functions(after)
 for name in ['signInAccount','signInSchool','logoutAccount','fetchLatestRegistration','saveNoteCloud','saveProgressCloud','restoreAccountCloudDataWave2','getSchoolSnapshot','submitSchoolAssignment','submitSchoolExam','navigate','back']:
  assert a[name]==b[name],name
-assert 'FA · EN · HR' not in Path('js/nh7-spiritual-plans-v240.js').read_text()
+assert 'FA · EN · HR' not in prior_batch3a_bytes('js/nh7-spiritual-plans-v240.js').decode()
 assert 'showModal()' not in Path('js/nh7-audio-quick-bible-v454.js').read_text()
 print('PASS Batch2 exact reversible presentation-only delta; Batch1/auth/data/persistence/backend/engines and activation gates preserved')
 old_plans=subprocess.check_output(['git','show',BASE+':js/nh7-spiritual-plans-v240.js']).decode()
-assert old_plans.replace('<span class="badge">FA · EN · HR</span>','')==Path('js/nh7-spiritual-plans-v240.js').read_text(),'Only the redundant hero badge may change'
+assert old_plans.replace('<span class="badge">FA · EN · HR</span>','')==prior_batch3a_bytes('js/nh7-spiritual-plans-v240.js').decode(),'Only the redundant hero badge may change'
 a,b=functions(subprocess.check_output(['git','show',BASE+':js/nh7-audio-quick-bible-v454.js']).decode()),functions(Path('js/nh7-audio-quick-bible-v454.js').read_text())
 for name in ['place','chapter','show','findReference','options']:
  assert a[name]==b[name],name

@@ -591,7 +591,7 @@ window.NH7LocalFirstWave2?.configure(async(path,options,owner,edge=false)=>{
     return await response.json();
   }finally{clearTimeout(timer)}
 });
-window.NH7_PERSONAL_SYNC_BRIDGE_WAVE2={saveProgress:(...args)=>saveProgressCloud(...args),deleteNote:(...args)=>deleteNoteCloudWave2(...args),clearVerse:async(key,value,payload)=>{localStorage.setItem(key,JSON.stringify(value));await saveProgressCloud(key,value);if(payload)await window.NH7BibleBatchV230?.syncPayload?.(payload)}};
+window.NH7_PERSONAL_SYNC_BRIDGE_WAVE2={saveNote:(...args)=>saveNoteCloud(...args),saveProgress:(...args)=>saveProgressCloud(...args),deleteNote:(...args)=>deleteNoteCloudWave2(...args),clearVerse:async(key,value,payload)=>{localStorage.setItem(key,JSON.stringify(value));await saveProgressCloud(key,value);if(payload)await window.NH7BibleBatchV230?.syncPayload?.(payload)}};
 async function deleteNoteCloudWave2(key){
   const localKey='nh7_'+key,email=accountCloudEmail(),expected_content=localStorage.getItem(localKey);
   localStorage.removeItem(localKey);
@@ -1323,6 +1323,7 @@ function updateInboxBadge(){
   const count=unreadCount();
   const badge=$('#inboxBadge');
   if(badge){ badge.textContent=count>99?'99+':String(count); badge.classList.toggle('hidden', count===0); }
+  window.NH7Batch3A?.badge(count);
   if('setAppBadge' in navigator){ try{ count>0 ? navigator.setAppBadge(count) : navigator.clearAppBadge(); }catch(e){} }
 }
 function addInboxMessage(title, body, category='app', id=null){
@@ -1394,15 +1395,9 @@ function inboxTimestampLabel(message){
   return `<time datetime="${html(date.toISOString())}">${html(date.toLocaleString({fa:'fa-IR',en:'en-GB',hr:'hr-HR'}[state.lang]||'en-GB'))}</time>`;
 }
 async function inbox(){
-  cleanupInboxLanguage();
-  maybeCreateScheduledInboxMessages(); await refreshInboxFromCloud(false);
-  cleanupInboxLanguage();
-  const arr=inboxDisplayMessages();
-  const body = arr.length ? `<div class="list inbox-list">${arr.map((m,i)=>`<div class="list-btn inbox-item ${m.read?'read':'unread'}"><button class="list-btn inbox-item ${m.read?'read':'unread'}" data-inbox-open="${html(m.id)}"><strong>${m.read?'':'● '}${html(m.title)}</strong><small>${inboxTimestampLabel(m)} • ${m.read?html(l223('خوانده‌شده','Read','Pročitano')):tr('unread')}</small></button><div id="inbox-${html(String(m.id).replace(/[^a-zA-Z0-9_-]/g,'_'))}" class="accordion-panel hidden"><small class="muted">${inboxTimestampLabel(m)}</small><p>${html(m.body)}</p>${window.NH7NotificationContractWave4?.intent(m.intent)?`<button class="secondary-btn" data-inbox-destination="${html(m.id)}">${html(l223('باز کردن مقصد','Open destination','Otvori odredište'))}</button>`:''}<button class="danger-btn" data-inbox-delete="${html(m.id)}">${tr('deleteMessage')}</button></div></div>`).join('')}</div>` : `<p class="muted">${tr('noInboxMessages')}</p>`;
-  view.innerHTML = card(tr('notificationInbox'), `<p class="muted">${tr('notificationAutoNote')}</p><div class="button-row"><span class="badge">${tr('unread')}: ${localNum(unreadCount())}</span><button class="secondary-btn" id="markAllRead">${tr('markAllRead')}</button><button class="secondary-btn" id="cleanInboxLang">${tr('cleanInbox')}</button><button class="danger-btn" id="deleteVisibleInbox">${tr('deleteAllInbox')}</button></div>${body}`);
-  $('#markAllRead')?.addEventListener('click',()=>{ const now=new Date().toISOString(); const all=inboxMessages().map(m=>({...m,read:true,readAt:now})); setInboxMessages(all); all.filter(m=>!String(m.id).startsWith('scheduled:')).forEach(m=>saveInboxReceipt(m.id,{read_at:now})); render('inbox',{},true); });
-  $('#cleanInboxLang')?.addEventListener('click',()=>{ cleanupInboxLanguage(); render('inbox',{},true); });
-  $('#deleteVisibleInbox')?.addEventListener('click',()=>{ if(confirm(tr('deleteAllConfirm'))){ deleteVisibleInbox(); render('inbox',{},true); } });
+  const ticket=routeTicketWave6();
+  await refreshInboxFromCloud(false);routeCheckWave6(ticket);
+  window.NH7Batch3A.inbox(view,{rows:inboxDisplayMessages,raw:inboxMessages,set:setInboxMessages,group:inboxCanonicalGroup,time:inboxTimestampLabel,receipt:saveInboxReceipt,current:()=>{try{routeCheckWave6(ticket);return true}catch{return false}},badge:updateInboxBadge});
 }
 
 async function showAmen(){
@@ -2489,12 +2484,12 @@ function mergeMyQuestionState(localRows,cloudRows){
 const NH7_QNA_PUBLIC_CACHE_V470='nh7_qna_public_cache_v470';
 function nh7ReadQnaPublicCacheV470(){
   try{
-    const d=JSON.parse(localStorage.getItem(NH7_QNA_PUBLIC_CACHE_V470)||'null');
+    const d=JSON.parse(localStorage.getItem(window.NH7Batch3A?.publicQuestionKey()||NH7_QNA_PUBLIC_CACHE_V470)||'null');
     return d&&Array.isArray(d.items)?d.items:[];
   }catch(e){return[]}
 }
 function nh7WriteQnaPublicCacheV470(items){
-  try{if(Array.isArray(items))localStorage.setItem(NH7_QNA_PUBLIC_CACHE_V470,JSON.stringify({items,at:Date.now()}))}catch(e){}
+  try{if(Array.isArray(items))localStorage.setItem(window.NH7Batch3A?.publicQuestionKey()||NH7_QNA_PUBLIC_CACHE_V470,JSON.stringify({items,at:Date.now()}))}catch(e){}
 }
 function nh7MergeOwnQuestionsV470(local,ownCloud){
   const map=new Map();
@@ -2505,14 +2500,15 @@ function nh7MergeOwnQuestionsV470(local,ownCloud){
     map.set(key,{...old,id:row.client_question_id||old.id||row.id,client_question_id:row.client_question_id||old.client_question_id||'',cloud_id:row.id,question:row.question_text,status:String(row.answer_text||'').trim()?'answered':(row.status||'pending'),answer:row.answer_text||'',createdAt:row.created_at||old.createdAt,answeredAt:row.answered_at||null,updatedAt:row.updated_at||null});
   });
   const out=Array.from(map.values()).filter(q=>q&&q.question).sort((a,b)=>String(a.createdAt||'').localeCompare(String(b.createdAt||'')));
-  try{localStorage.setItem('nh7_my_questions',JSON.stringify(out))}catch(e){}
+  try{window.NH7Batch3A.saveQuestions(out)}catch(e){}
   return out;
 }
 async function qna(opts={}){
   const routeViewTicketWave6=routeTicketWave6();
-  let local=[];try{local=JSON.parse(localStorage.getItem('nh7_my_questions')||'[]')}catch(e){local=[]}
+  let local=[];try{local=window.NH7Batch3A.questions()}catch(e){local=[]}
   local=Array.isArray(local)?local:[];
   let answered=nh7ReadQnaPublicCacheV470();
+  const publicHtml3A=items=>items&&items.length?`<div class="list">${items.map((q,i)=>`<button class="list-btn qna-answer-toggle" data-qna-answer="pubq-${i}"><strong>${html(q.question_text)}</strong><small>${tapText}</small></button><div id="pubq-${i}" class="accordion-panel hidden"><p><strong>${tr('answer')}:</strong> ${html(q.answer_text||'')}</p></div>`).join('')}</div>`:`<p class="muted">${tr('noQuestions')}</p>`;
 
   if(!opts.cacheOnly){
     const qnaEpochV470=nh7NavigationEpochV456;
@@ -2521,11 +2517,12 @@ async function qna(opts={}){
       nh7TimedCloudFetchV470('qa_questions?select=id,question_text,answer_text,language,answered_at&status=eq.answered&order=answered_at.desc&limit=50',{method:'GET'},5000)
     ]);
     const applyResults=results=>{
+      try{routeCheckWave6(routeViewTicketWave6)}catch{return}
       const ownResult=results?.[0],publicResult=results?.[1];
       if(ownResult?.status==='fulfilled'){
         const own=Array.isArray(ownResult.value)?ownResult.value:(ownResult.value?[ownResult.value]:[]);
-        let latest=[];try{latest=JSON.parse(localStorage.getItem('nh7_my_questions')||'[]')}catch(e){}
-        local=nh7MergeOwnQuestionsV470(Array.isArray(latest)?latest:local,own);
+        let latest=[];try{latest=window.NH7Batch3A.questions()}catch(e){}
+        local=window.NH7Batch3A.filterQuestions(nh7MergeOwnQuestionsV470(Array.isArray(latest)?latest:local,own));
       }else if(ownResult?.reason){console.warn('My Q&A cloud sync failed',ownResult.reason)}
       if(publicResult?.status==='fulfilled'&&Array.isArray(publicResult.value)){
         answered=publicResult.value;nh7WriteQnaPublicCacheV470(answered);
@@ -2538,35 +2535,37 @@ async function qna(opts={}){
         const draft=$('#qaQuestion')?.value||'';
         const interacting=!!draft||!!view.querySelector('.qna-section .accordion-panel:not(.hidden)');
         if(!interacting)qna({cacheOnly:true,draft}).then(()=>bindDynamic()).catch(()=>{});
+        else if(results?.[1]?.status==='fulfilled'){const panel=$('#publicAnswersPanel');if(panel){panel.innerHTML=publicHtml3A(answered);bindDynamic()}}
       }).catch(()=>{});
     }else{
       const results=await sync;
       applyResults(results);
     }
   }else{
-    try{local=JSON.parse(localStorage.getItem('nh7_my_questions')||'[]')}catch(e){local=[]}
+    try{local=window.NH7Batch3A.questions()}catch(e){local=[]}
     local=Array.isArray(local)?local:[];
     answered=nh7ReadQnaPublicCacheV470();
   }
 
-  const my=local.filter(q=>q&&q.question).sort((a,b)=>String(a.createdAt||'').localeCompare(String(b.createdAt||'')));
+  const my=window.NH7Batch3A.filterQuestions(local).filter(q=>q&&q.question).sort((a,b)=>String(a.createdAt||'').localeCompare(String(b.createdAt||'')));
   const tapText=state.lang==='fa'?'برای دیدن پاسخ کلیک کنید':state.lang==='hr'?'Dodirnite za prikaz odgovora':'Tap to view answer';
   const openText=state.lang==='fa'?'برای باز کردن کلیک کنید':state.lang==='hr'?'Dodirnite za otvaranje':'Tap to open';
-  const myHtml=my.length?`<div class="list">${my.slice().reverse().map((q,i)=>{const done=String(q.answer||'').trim().length>0||q.status==='answered';return `<button class="list-btn qna-answer-toggle" data-qna-answer="myq-${i}"><strong>${html(q.question)}</strong><small>${done?tr('answered'):tr('waitingAnswer')} • ${tapText}</small></button><div id="myq-${i}" class="accordion-panel hidden">${done?`<p><strong>${tr('answer')}:</strong> ${html(q.answer)}</p>`:`<p class="muted">${tr('waitingAnswer')}</p>`}</div>`}).join('')}</div>`:`<p class="muted">${tr('noQuestions')}</p>`;
-  const answeredHtml=answered&&answered.length?`<div class="list">${answered.map((q,i)=>`<button class="list-btn qna-answer-toggle" data-qna-answer="pubq-${i}"><strong>${html(q.question_text)}</strong><small>${tapText}</small></button><div id="pubq-${i}" class="accordion-panel hidden"><p><strong>${tr('answer')}:</strong> ${html(q.answer_text||'')}</p></div>`).join('')}</div>`:`<p class="muted">${tr('noQuestions')}</p>`;
+  const myHtml=my.length?`<div class="list">${my.slice().reverse().map((q,i)=>{const done=String(q.answer||'').trim().length>0||q.status==='answered';return `<button class="list-btn qna-answer-toggle" data-qna-answer="myq-${i}"><strong>${html(q.question)}</strong><small>${done?tr('answered'):tr('waitingAnswer')} • ${tapText}</small></button><div id="myq-${i}" class="accordion-panel hidden">${authSession()?.user?.id?`<button type="button" class="danger-btn" data-qa-delete3a="${html(q.cloud_id||q.id)}">${html(l223('حذف پرسش من','Delete my question','Izbriši moje pitanje'))}</button>`:''}${done?`<p><strong>${tr('answer')}:</strong> ${html(q.answer)}</p>`:`<p class="muted">${tr('waitingAnswer')}</p>`}</div>`}).join('')}</div>`:`<p class="muted">${tr('noQuestions')}</p>`;
+  const answeredHtml=publicHtml3A(answered);
   routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('qna'),`<p class="muted">${tr('anonymousNote')}</p><div class="notice"><p>${tr('qnaWaitNotice')}</p><p>${tr('askQuestionOnce')}</p></div><h3>${tr('askQuestion')}</h3><textarea id="qaQuestion" placeholder="${tr('questionText')}" required>${html(opts.draft||'')}</textarea><button class="primary-btn" id="submitQa">${tr('submitQuestion')}</button><div class="qna-section"><button class="secondary-btn wide-btn" data-qna-toggle="myQuestionsPanel">${tr('myQuestions')} <span>${openText}</span></button><div id="myQuestionsPanel" class="accordion-panel hidden">${myHtml}</div></div><div class="qna-section"><button class="secondary-btn wide-btn" data-qna-toggle="publicAnswersPanel">${tr('publicAnswers')} <span>${openText}</span></button><div id="publicAnswersPanel" class="accordion-panel hidden">${answeredHtml}</div></div>`);
+  window.NH7Batch3A.bindQuestions(view,{current:()=>{try{routeCheckWave6(routeViewTicketWave6);return true}catch{return false}},rpc:cloudRpc,refresh:()=>qna({cacheOnly:true}).then(bindDynamic)});
   $('#submitQa').onclick=async()=>{
     const question=($('#qaQuestion').value||'').trim();if(!question){alert(tr('requiredField'));return}
     const norm=normalizeQuestionText(question),duplicateLocal=my.some(q=>normalizeQuestionText(q.question)===norm),duplicatePublic=(answered||[]).some(q=>normalizeQuestionText(q.question_text)===norm);
     if(duplicateLocal||duplicatePublic){alert(tr('alreadyAsked'));return}
     const id=(globalThis.crypto?.randomUUID?.()||('q-'+Date.now()+'-'+Math.random().toString(16).slice(2))),item={id,client_question_id:id,question,status:'pending',answer:'',createdAt:new Date().toISOString()};
-    const arr=[...my,item];localStorage.setItem('nh7_my_questions',JSON.stringify(arr));
-    await nh7WithTimeoutV470(saveQuestionCloud(item),5000).catch(console.warn);alert(tr('questionSent'));render('qna',{},true);
+    const arr=[...my,item];window.NH7Batch3A.saveQuestions(arr);
+    await nh7WithTimeoutV470(saveQuestionCloud(item),5000).catch(console.warn);try{routeCheckWave6(routeViewTicketWave6)}catch{return}alert(tr('questionSent'));render('qna',{},true);
   };
 }
 async function myDocumentsV510(){
-  const email=String(authEmail()||getKnownUserProfile().email||'').trim().toLowerCase();
-  if(!email)return[];
+  const email=String(authEmail()||'').trim().toLowerCase();
+  if(!authSession()?.user?.id||!email)return[];
   try{
     const q='school_certificates?select=id,certificate_number,certificate_type,language,title_fa,title_en,title_hr,status,issue_date,approved_at,created_at,public_token,preview_url&user_email=eq.'+encodeURIComponent(email)+'&order=created_at.desc&limit=100';
     const rows=await cloudFetch(q,{method:'GET'});
@@ -2576,7 +2575,7 @@ async function myDocumentsV510(){
 function myDocumentsHtmlV510(rows){
   const L=(fa,en,hr)=>state.lang==='fa'?fa:state.lang==='hr'?hr:en;
   if(!rows.length)return `<section class="nh7-my-documents-v510"><h3>📜 ${L('مدارک من','My documents','Moji dokumenti')}</h3><p class="muted">${L('هنوز مدرکی برای این حساب صادر نشده است.','No document has been issued to this account yet.','Za ovaj račun još nije izdan dokument.')}</p></section>`;
-  return `<section class="nh7-my-documents-v510"><h3>📜 ${L('مدارک من','My documents','Moji dokumenti')}</h3><p class="muted">${L('مدارک صادرشده در حساب شما بایگانی می‌شوند و هر زمان می‌توانید آن‌ها را باز، نمایش یا به صورت PDF ثابت دانلود کنید.','Issued documents stay in your account archive. You can open, show, or download a flattened PDF at any time.','Izdani dokumenti ostaju u arhivi računa. Možete ih otvoriti, pokazati ili preuzeti kao zaključani PDF.')}</p><div class="list">${rows.map(r=>{const title=r['title_'+state.lang]||r.title_en||r.title_fa||r.title_hr||r.certificate_type||L('مدرک','Document','Dokument'),url=r.public_token?new URL('certificate.html?token='+encodeURIComponent(r.public_token)+'&v=510',location.href).href:(r.preview_url||''),date=r.issue_date||r.approved_at||r.created_at||'',revoked=String(r.status||'').toLowerCase()==='revoked';return `<article class="list-btn nh7-my-document-v510 ${revoked?'revoked':''}"><div><strong>${html(title)}</strong><small>${html(r.certificate_number||'')} · ${html(String(date).slice(0,10))}${revoked?' · '+L('لغوشده','Revoked','Poništeno'):''}</small></div>${url?`<div class="button-row"><a class="secondary-btn" href="${html(url)}" target="_blank" rel="noopener">👁 ${L('باز کردن / نمایش','Open / show','Otvori / prikaži')}</a><a class="primary-btn" href="${html(url+(url.includes('?')?'&':'?')+'download=1')}" target="_blank" rel="noopener">⬇ PDF</a></div>`:''}</article>`}).join('')}</div></section>`;
+  return `<section class="nh7-my-documents-v510"><h3>📜 ${L('مدارک من','My documents','Moji dokumenti')}</h3><p class="muted">${L('مدارک صادرشده در حساب شما بایگانی می‌شوند و هر زمان می‌توانید آن‌ها را باز، نمایش یا به صورت PDF ثابت دانلود کنید.','Issued documents stay in your account archive. You can open, show, or download a flattened PDF at any time.','Izdani dokumenti ostaju u arhivi računa. Možete ih otvoriti, pokazati ili preuzeti kao zaključani PDF.')}</p><div class="list">${rows.map(r=>{const title=r['title_'+state.lang]||r.title_en||r.title_fa||r.title_hr||r.certificate_type||L('مدرک','Document','Dokument'),url=r.public_token?new URL('certificate.html?token='+encodeURIComponent(r.public_token)+'&v=510',location.href).href:(r.preview_url||''),date=r.issue_date||r.approved_at||r.created_at||'',revoked=String(r.status||'').toLowerCase()==='revoked',statusLabel=({issued:L('صادرشده','Issued','Izdano'),approved:L('تأییدشده','Approved','Odobreno'),revoked:L('لغوشده','Revoked','Poništeno'),expired:L('منقضی‌شده','Expired','Isteklo')})[String(r.status||'').toLowerCase()]||L('وضعیت نامشخص','Status unavailable','Status nije dostupan');return `<article class="list-btn nh7-my-document-v510 ${revoked?'revoked':''}"><div><strong>${html(title)}</strong><small>${html(r.certificate_number||'')} · ${html(String(date).slice(0,10))} · ${html(statusLabel)}</small></div>${url?`<div class="button-row"><a class="secondary-btn" href="${html(url)}" target="_blank" rel="noopener">👁 ${L('باز کردن / نمایش','Open / show','Otvori / prikaži')}</a><a class="primary-btn" href="${html(url+(url.includes('?')?'&':'?')+'download=1')}" target="_blank" rel="noopener">⬇ PDF</a></div>`:''}</article>`}).join('')}</div></section>`;
 }
 async function account(){
   const routeViewTicketWave6=routeTicketWave6();
@@ -2584,7 +2583,7 @@ async function account(){
   if(isAccountLoggedIn()){
     if(window.NH7CommunityV502?.resumePending?.())return;
     const profile=getKnownUserProfile(); const email=authEmail()||profile.email||'',documents=[];
-    routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('account'), `<h3>${tr('myAccess')}</h3><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||session?.user?.user_metadata?.full_name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(email)}</p></div>${myDocumentsHtmlV510(documents)}<button class="danger-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button>`);
+    routeCheckWave6(routeViewTicketWave6);view.innerHTML=card(tr('account'), `<section id="nh7MyAccess3A"><h3>${tr('myAccess')}</h3><div class="notice"><p><strong>${tr('name')}:</strong> ${html(profile.name||session?.user?.user_metadata?.full_name||'-')}</p><p><strong>${tr('email')}:</strong> ${html(email)}</p></div>${myDocumentsHtmlV510(documents)}<div id="nh7DocumentsEntry3A"></div></section><section class="nh7-account-management3a" aria-label="${html(l223('مدیریت حساب','Account management','Upravljanje računom'))}"><h3>${html(l223('مدیریت حساب','Account management','Upravljanje računom'))}</h3><button class="danger-btn" id="logoutAccountBtn">${tr('logoutAccount')}</button></section>`);
     $('#logoutAccountBtn')?.addEventListener('click',logoutAccount);
     const archiveMessage=view.querySelector('.nh7-my-documents-v510 p');if(archiveMessage)archiveMessage.textContent=l223('در حال بارگذاری مدارک…','Loading documents…','Učitavanje dokumenata…');
     void myDocumentsV510().then(rows=>{try{routeCheckWave6(routeViewTicketWave6);const node=view.querySelector('.nh7-my-documents-v510');if(node)node.outerHTML=myDocumentsHtmlV510(rows)}catch{}});return;
@@ -2912,7 +2911,7 @@ function bindDynamic(){
   $$('[data-salvation-toggle]').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.salvationToggle); if(p){ p.classList.toggle('hidden'); const small=el.querySelector('small'); if(small) small.textContent=p.classList.contains('hidden') ? (state.lang==='fa'?'برای باز کردن کلیک کنید':state.lang==='hr'?'Dodirnite za otvaranje':'Tap to open') : tr('hide'); }});
   $$('[data-qna-toggle]').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.qnaToggle); if(p){ p.classList.toggle('hidden'); const sp=el.querySelector('span'); if(sp) sp.textContent=p.classList.contains('hidden') ? (state.lang==='fa'?'برای باز کردن کلیک کنید':state.lang==='hr'?'Dodirnite za otvaranje':'Tap to open') : tr('hide'); }});
   $$('.qna-answer-toggle').forEach(el=>el.onclick=()=>{ const p=$('#'+el.dataset.qnaAnswer); if(p){ p.classList.toggle('hidden'); }});
-  $$('[data-inbox-open]').forEach(el=>el.onclick=()=>{ const id=el.dataset.inboxOpen; const safe=String(id).replace(/[^a-zA-Z0-9_-]/g,'_'); const p=$('#inbox-'+safe); if(p) p.classList.toggle('hidden'); const at=new Date().toISOString(); const arr=inboxMessages().map(m=>String(m.id)===String(id)?{...m,read:true,readAt:at}:m); setInboxMessages(arr); saveInboxReceipt(id,{read_at:at}).catch(console.warn); updateInboxBadge(); });
+  $$('[data-inbox-open]:not([data-inbox3a])').forEach(el=>el.onclick=()=>{ const id=el.dataset.inboxOpen; const safe=String(id).replace(/[^a-zA-Z0-9_-]/g,'_'); const p=$('#inbox-'+safe); if(p) p.classList.toggle('hidden'); const at=new Date().toISOString(); const arr=inboxMessages().map(m=>String(m.id)===String(id)?{...m,read:true,readAt:at}:m); setInboxMessages(arr); saveInboxReceipt(id,{read_at:at}).catch(console.warn); updateInboxBadge(); });
   $$('[data-inbox-delete]').forEach(el=>el.onclick=(ev)=>{ ev.stopPropagation(); const id=el.dataset.inboxDelete; if(confirm(tr('deleteConfirm'))){ deleteInboxLocal(id); render('inbox',{},true); } });
   $$('[data-submit-registration]').forEach(el=>el.onclick=()=>collectRegistration(el.dataset.submitRegistration)); bindPasswordToggles();
   $$('[data-clear-bible-selection]').forEach(el=>el.onclick=()=>window.NH7BibleBatchV230?.clearSelection?.());
