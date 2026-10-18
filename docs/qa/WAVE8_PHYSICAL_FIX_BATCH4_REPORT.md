@@ -77,5 +77,10 @@ Physical acceptance steps: use a later authorized QA wrapper containing the exac
 - `scripts/verify-batch4-lifecycle.cjs`
 - `scripts/verify-batch4-safety.py`
 - `scripts/verify-batch4-storage.cjs`
+- `scripts/verify-offline-reconciliation-v572.mjs`
 - `scripts/verify-native-display-name.py`
 - `sw-release-core-v403.js`
+
+## Exact-head CI follow-up
+
+Initial implementation `d51d7b494c3407d7b46f7313f949d660c281a0be` passed all final scoped tests, but CI39127882050 correctly stopped early: the old v572 static guard still required Settings to call broad CLEAR_MEDIA and retain residual-media cleanup literals. That expectation is demonstrably stale after the fail-closed three-action replacement. The broad cleanup was NOT restored. The one controller input is now projected through independently verified exact Batch4 before/after hashes; every original v572 assertion below its checkpoint marker remains byte-identical. Worker/app inputs remain current. Additional current assertions require bounded delegates, explicit missing-tools denial, acknowledged transactions and no whole-store/DB/recursive cleanup. Real current storage/UI/lifecycle tests remain mandatory in the additive CI gate. This changes neither the worker legacy contract nor any user-data behavior; the final successful CI is on the follow-up SHA, supplied in delivery.

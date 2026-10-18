@@ -15,7 +15,7 @@
     },
     "docs/qa/WAVE8_PHYSICAL_FIX_BATCH4_REPORT.md": {
       "before": null,
-      "after": "57379c4c63a9a01f1530f51939e777e666b7578197aae9c7e5fa1d392bf7fe2c"
+      "after": "24b1245faaae2f82bc281328a517318233ca9bc1904fb34111b22cdda4c16380"
     },
     "index.html": {
       "before": "ff727da09510992a265213b2c45ae96dc8bcc80da65d4eb169376adf5822beca",
@@ -83,7 +83,7 @@
     },
     "scripts/verify-batch4-safety.py": {
       "before": null,
-      "after": "e5f5c2f03431161536a54ae8c3affde6c00d0d55601653cd3313069fcffe2783"
+      "after": "6a9de9700fd959ce6f056ac534f5c869d58980316d8b9d997d51a3cb71c61ed2"
     },
     "scripts/verify-batch4-storage.cjs": {
       "before": null,
@@ -92,6 +92,10 @@
     "scripts/verify-native-display-name.py": {
       "before": null,
       "after": "d611c7d47b5e6fd5cb9acb7a1239083e4aadb11504ba37bb0b8aa1609904dc95"
+    },
+    "scripts/verify-offline-reconciliation-v572.mjs": {
+      "before": "42183c6ab9ade1219c8dcd8920d5d9afd76cf8b0280ddad505c1da70b5c82aaf",
+      "after": "04e9aa90af0ef0b4ebaf0b1b208c8d2ea8fe83107a8e1fc05a6ecfeb8c16e527"
     },
     "sw-release-core-v403.js": {
       "before": "efab2a887dbc1fa35580f0c2c538e9fca99bc84a0874be9b3b85d7f618b90caa",
@@ -123,6 +127,7 @@
     "scripts/verify-batch4-safety.py",
     "scripts/verify-batch4-storage.cjs",
     "scripts/verify-native-display-name.py",
+    "scripts/verify-offline-reconciliation-v572.mjs",
     "sw-release-core-v403.js"
   ]
 }

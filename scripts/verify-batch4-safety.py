@@ -36,6 +36,11 @@ for name in ['js/app.js','index.html','sw-release-core-v403.js','.github/workflo
 marker='# Guard reconciliation is an exact additive transform, never a broad whitelist or removed assertion.'
 x=x.split(marker)[0]+marker+before4(p).decode().split(marker)[1]
 assert Path(p).read_text()==x
+# This one stale v572 source guard retains ALL original assertions verbatim.
+p='scripts/verify-offline-reconciliation-v572.mjs';source=Path(p).read_text();marker='// Original v572 checkpoint assertions remain unchanged below.\n'
+original=before4(p).decode();assert source.split(marker)[1]==original[original.index('const settings=read('):]
+assert "const read=p=>p==='js/nh7-settings-controller-v403.js'?acceptedSettings:fs.readFileSync(p,'utf8');" in source
+assert 'verify4(); sys.stdout.buffer.write(prior_batch4_bytes(sys.argv[1]))' in source
 for p in runtime:
  if p.endswith('.js'):subprocess.run(['node','--check',p],check=True)
 with tempfile.TemporaryDirectory() as d:
