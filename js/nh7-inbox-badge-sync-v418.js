@@ -225,7 +225,7 @@ function start(){
   addStyle();ensureOwnerScope();paintBadge();hookOneSignal();scheduleSync(250,true);
   // Event-driven only: no Inbox polling or recurring backend cost.
   window.addEventListener('nh7-personal-before-owner-wave2',()=>{ensureOwnerScope();const scope=localStorage.getItem('nh7_inbox_uid_batch3a');if(scope)localStorage.setItem('nh7_inbox_scope_batch3a:'+encodeURIComponent(scope),JSON.stringify({messages:localMessages(),deleted:[...deletedIds()]}))});
-  window.addEventListener('nh7-personal-owner-wave2',()=>{ensureOwnerScope();paintBadge();scheduleSync(120,false)});
+  window.addEventListener('nh7-personal-owner-wave2',()=>{ensureOwnerScope();paintBadge()});
   ['focus','pageshow'].forEach(name=>window.addEventListener(name,()=>scheduleSync(120,false)));
   window.addEventListener('online',()=>scheduleSync(120,true));
   document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(scheduleTimer);clearTimeout(observerTimer);}else{paintBadge();scheduleSync(120,false)}});
