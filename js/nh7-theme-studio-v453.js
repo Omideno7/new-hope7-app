@@ -47,7 +47,7 @@ const FONT_FA={default:'inherit',amiri:'"NH7 Amiri",Tahoma,serif',markazi:'"NH7 
 const FONT_LATIN={default:'inherit',system:'system-ui,-apple-system,"Segoe UI",Arial,sans-serif',inter:'"NH7 Inter",Arial,sans-serif',lora:'"NH7 Lora",Georgia,serif',nunito:'"NH7 Nunito",Arial,sans-serif',classic:'Georgia,"Times New Roman",serif',roboto:'Roboto,Arial,sans-serif',opensans:'"Open Sans",Arial,sans-serif',montserrat:'Montserrat,Arial,sans-serif',poppins:'Poppins,Arial,sans-serif',merriweather:'Merriweather,Georgia,serif',playfair:'"Playfair Display",Georgia,serif',sourcesans:'"Source Sans 3",Arial,sans-serif',raleway:'Raleway,Arial,sans-serif',ubuntu:'Ubuntu,Arial,sans-serif',avenir:'"Avenir Next",Avenir,system-ui,sans-serif',helvetica:'"Helvetica Neue",Helvetica,Arial,sans-serif',trebuchet:'"Trebuchet MS",Verdana,Arial,sans-serif',verdana:'Verdana,Arial,sans-serif',times:'"Times New Roman",Times,serif',arial:'Arial,Helvetica,sans-serif',courier:'"Courier New",Courier,monospace'};
 const COLOR_NAMES={bg:['پس‌زمینهٔ کل','App background','Pozadina aplikacije'],card:['پس‌زمینهٔ کارت‌ها','Card background','Pozadina kartica'],text:['متن اصلی','Main text','Glavni tekst'],muted:['متن فرعی','Secondary text','Sporedni tekst'],verse:['متن آیات','Verse text','Tekst stihova'],accent:['دکمه‌ها و رنگ تأکید','Buttons and accent','Gumbi i naglasak']};
 const fields=Object.keys(COLOR_NAMES),pick=a=>L(...a);
-let draft=null,lastApplied='',renderKey='',pending=false,ownChange=false;
+let draft=null,lastApplied='',renderKey='',pending=false,ownChange=false,visualPreview=null;
 function read(key,fallback){try{const value=localStorage.getItem(key);return value===null?fallback:JSON.parse(value)}catch(_){return fallback}}
 function clean(value){
  if(!value||typeof value!=='object'||Array.isArray(value))return null;
@@ -62,7 +62,7 @@ function base(id='hope'){return{preset:id,...PRESETS[id],fa:'system',latin:'syst
 function ink(bg){return contrast('#ffffff',bg)>contrast('#000000',bg)?'#ffffff':'#000000'}
 function clearVariables(){delete root.dataset.nh7StudioTone457;if(previousColorScheme457!==null){previousColorScheme457?root.style.setProperty('color-scheme',previousColorScheme457):root.style.removeProperty('color-scheme');previousColorScheme457=null}delete root.dataset.nh7Studio;delete root.dataset.nh7StudioFont;for(const k of ['bg','card','text','muted','verse','accent','button-ink','link','line','fa-font','latin-font','font'])root.style.removeProperty('--nh7-studio-'+k)}
 function apply(){
- const c=clean(read(KEY,null));if(!c||!validate(c).ok){clearVariables();lastApplied='';return}
+ const c=clean(visualPreview||read(KEY,null));if(!c||!validate(c).ok){clearVariables();lastApplied='';return}
  const signature=lang()+'|'+JSON.stringify(c);if(lastApplied===signature&&root.dataset.nh7Studio)return;
  lastApplied=signature;root.dataset.nh7Studio=c.preset;root.dataset.nh7StudioFont='1';
  if(previousColorScheme457===null)previousColorScheme457=root.style.getPropertyValue('color-scheme');const tone=luminance(c.card)<0.2?'dark':'light';root.dataset.nh7StudioTone457=tone;root.style.setProperty('color-scheme',tone);
@@ -75,9 +75,11 @@ function apply(){
  document.querySelector('meta[name="theme-color"]')?.setAttribute('content',c.bg);
 }
 function status(text,bad=false){const n=document.getElementById('nh7StudioStatus453');if(n){n.textContent=text;n.dataset.error=bad?'1':'0'}}
-function set(value){const c=clean(value);if(!c||!validate(c).ok)return false;try{localStorage.setItem(KEY,JSON.stringify(c))}catch(_){status(L('ذخیرهٔ ظاهر انجام نشد؛ تنظیم قبلی حفظ شد.','Could not save appearance; the previous setting was kept.','Izgled nije spremljen; prethodna postavka je sačuvana.'),true);return false}lastApplied='';apply();return true}
+function set(value){const c=clean(value);if(!c||!validate(c).ok)return false;try{localStorage.setItem(KEY,JSON.stringify(c))}catch(_){status(L('ذخیرهٔ ظاهر انجام نشد؛ تنظیم قبلی حفظ شد.','Could not save appearance; the previous setting was kept.','Izgled nije spremljen; prethodna postavka je sačuvana.'),true);return false}visualPreview=null;lastApplied='';apply();return true}
+function previewVisual(value){const c=clean(value);if(!c||!validate(c).ok)return false;visualPreview=c;lastApplied='';apply();return true}
+function restoreVisual(){visualPreview=null;lastApplied='';apply()}
 function library(){const x=read(SAVED,[]);return Array.isArray(x)?x.filter(i=>i&&typeof i==='object'&&typeof i.id==='string'&&typeof i.name==='string'&&i.name.length<=40&&clean(i.config)&&validate(i.config).ok).slice(0,12):[]}
-function reset(){try{localStorage.removeItem(KEY)}catch(_){status(L('بازنشانی انجام نشد.','Reset failed.','Vraćanje nije uspjelo.'),true);return}lastApplied='';clearVariables();window.NH7_UI_PREFS?.apply?.();draft=base();renderKey='';mount();status(L('فقط ظاهر بازنشانی شد؛ یادداشت‌ها و پیشرفت‌ها تغییر نکردند.','Only appearance was reset; notes and progress were unchanged.','Vraćen je samo izgled; bilješke i napredak nisu promijenjeni.'))}
+function reset(){visualPreview=null;try{localStorage.removeItem(KEY)}catch(_){status(L('بازنشانی انجام نشد.','Reset failed.','Vraćanje nije uspjelo.'),true);return}lastApplied='';clearVariables();window.NH7_UI_PREFS?.apply?.();draft=base();renderKey='';mount();status(L('فقط ظاهر بازنشانی شد؛ یادداشت‌ها و پیشرفت‌ها تغییر نکردند.','Only appearance was reset; notes and progress were unchanged.','Vraćen je samo izgled; bilješke i napredak nisu promijenjeni.'))}
 function preview(){
  const panel=document.getElementById('nh7ThemeStudio453');if(!panel||!draft)return;
  const card=panel.querySelector('[data-studio-sample453]');fields.forEach(k=>card.style.setProperty('--sample-'+k,draft[k]));
@@ -105,14 +107,14 @@ function mount(){
   else if(b.hasAttribute('data-studio-apply453')){if(set(draft)){renderKey='';mount();status(L('ظاهر ذخیره و اعمال شد ✓','Appearance saved and applied ✓','Izgled je spremljen i primijenjen ✓'))}}
   else if(b.hasAttribute('data-studio-auto453')){for(const key of ['text','muted'])draft[key]=['#000000','#ffffff'].sort((a,b)=>Math.min(contrast(b,draft.bg),contrast(b,draft.card))-Math.min(contrast(a,draft.bg),contrast(a,draft.card)))[0];draft.verse=ink(draft.card);if(!validate(draft).ok){draft.card=draft.bg;draft.text=draft.muted=draft.verse=ink(draft.bg)}draft.preset='custom';fields.forEach(k=>panel.querySelector(`[data-studio-color453="${k}"]`).value=draft[k]);preview()}
   else if(b.hasAttribute('data-studio-reset453'))reset();
-  else if(b.hasAttribute('data-studio-save453')){const rows=library();if(rows.length>=12){status(L('حداکثر ۱۲ تم؛ ابتدا یکی را حذف کن.','Maximum 12 themes. Remove one first.','Najviše 12 tema. Najprije uklonite jednu.'),true);return}const name=panel.querySelector('[data-studio-name453]').value.trim()||L('تم من','My theme','Moja tema');try{rows.push({id:crypto.randomUUID?.()||String(Date.now()),name,config:clean(draft)});localStorage.setItem(SAVED,JSON.stringify(rows));set(draft);renderKey='';mount();status(L('تم ذخیره شد ✓','Theme saved ✓','Tema je spremljena ✓'))}catch(_){status(L('ذخیره انجام نشد.','Save failed.','Spremanje nije uspjelo.'),true)}}
+  else if(b.hasAttribute('data-studio-save453')){const rows=library();if(rows.length>=12){status(L('حداکثر ۱۲ تم؛ ابتدا یکی را حذف کن.','Maximum 12 themes. Remove one first.','Najviše 12 tema. Najprije uklonite jednu.'),true);return}const name=panel.querySelector('[data-studio-name453]').value.trim()||L('تم من','My theme','Moja tema');try{rows.push({id:crypto.randomUUID?.()||String(Date.now()),name,config:clean(draft)});const previous=localStorage.getItem(SAVED);localStorage.setItem(SAVED,JSON.stringify(rows));if(!set(draft)){previous===null?localStorage.removeItem(SAVED):localStorage.setItem(SAVED,previous);throw Error('appearance_not_saved')}renderKey='';mount();status(L('تم ذخیره شد ✓','Theme saved ✓','Tema je spremljena ✓'))}catch(_){status(L('ذخیره انجام نشد.','Save failed.','Spremanje nije uspjelo.'),true)}}
   else if(b.dataset.studioLoad453){const item=library().find(x=>x.id===b.dataset.studioLoad453);if(item&&set(item.config)){renderKey='';mount()}}
   else if(b.dataset.studioDelete453){const id=b.dataset.studioDelete453;if(confirm(L('فقط این تم از فهرست تم‌ها حذف شود؟','Remove only this theme from My themes?','Ukloniti samo ovu temu iz Mojih tema?'))){try{localStorage.setItem(SAVED,JSON.stringify(library().filter(x=>x.id!==id)));renderKey='';mount()}catch(_){status(L('حذف تم انجام نشد.','Theme removal failed.','Tema nije uklonjena.'),true)}}}
  });
 }
 function schedule(){if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;apply();mount();syncAccent457()})}
 window.addEventListener('nh7:font454',event=>{if(draft&&event.detail){draft[event.detail.script]=event.detail.id;lastApplied='';apply();preview()}});
-window.addEventListener('nh7:ui-preferences',()=>{lastApplied='';schedule()});window.addEventListener('storage',event=>{if([KEY,SAVED,'nh7_lang'].includes(event.key)){lastApplied='';renderKey='';schedule()}});
+window.addEventListener('nh7:ui-preferences',()=>{lastApplied='';schedule()});window.addEventListener('storage',event=>{if(event.key===KEY)visualPreview=null;if([KEY,SAVED,'nh7_lang'].includes(event.key)){lastApplied='';renderKey='';schedule()}});
 
 window.addEventListener('change',event=>{
  const input=event.target;if(!['nh7AccentSelect','nh7AccentCustom'].includes(input.id))return;
@@ -125,6 +127,6 @@ window.addEventListener('change',event=>{
 },true);
 window.addEventListener('change',event=>{if(['langSelect','settingsLang'].includes(event.target.id)){renderKey='';lastApplied='';schedule()}},true);
 new MutationObserver(schedule).observe(document.documentElement,{childList:true,subtree:true});
-window.NH7ThemeStudioV453={VERSION:'4.5.7',KEY,SAVED,PRESETS,contrast,validate,get:()=>clean(read(KEY,null)),set,reset,apply,mount};
+window.NH7ThemeStudioV453={VERSION:'4.5.7',KEY,SAVED,PRESETS,contrast,validate,get:()=>clean(visualPreview||read(KEY,null)),preview:previewVisual,restorePreview:restoreVisual,set,reset,apply,mount};
 apply();schedule();
 })();

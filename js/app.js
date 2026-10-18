@@ -1330,8 +1330,8 @@ function notificationBodies(){
 }
 async function maybeCreateScheduledInboxMessages(){
   const inboxTicket3A=routeTicketWave6();
-  if(localStorage.getItem('nh7_notifications_permission')!=='granted')return;const rows=await fetchNotificationSchedules().catch(()=>[]);try{routeCheckWave6(inboxTicket3A)}catch{return}const now=new Date();const dateKey=todayKey();
-  for(const row of rows){let compare=now;if(row.timezone_mode&&row.timezone_mode!=='local'){try{const parts=new Intl.DateTimeFormat('en-CA',{timeZone:row.timezone_mode,weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(now);const hh=Number(parts.find(p=>p.type==='hour')?.value||0),mm=Number(parts.find(p=>p.type==='minute')?.value||0),wd=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(parts.find(p=>p.type==='weekday')?.value);const [th,tm]=String(row.time_value||'00:00').split(':').map(Number);if(Array.isArray(row.days_of_week)&&!row.days_of_week.includes(wd))continue;if(hh>th||(hh===th&&mm>=tm))addInboxMessage(scheduleText(row,'title'),scheduleText(row,'body'),row.key,row.key+'_'+dateKey)}catch(e){}}else{const [th,tm]=String(row.time_value||'00:00').split(':').map(Number);if(Array.isArray(row.days_of_week)&&!row.days_of_week.includes(now.getDay()))continue;if(now.getHours()>th||(now.getHours()===th&&now.getMinutes()>=tm))addInboxMessage(scheduleText(row,'title'),scheduleText(row,'body'),row.key,row.key+'_'+dateKey)}}
+  if(localStorage.getItem('nh7_notifications_enabled_v252')==='0'||localStorage.getItem('nh7_notifications_permission')!=='granted')return;const rows=await fetchNotificationSchedules().catch(()=>[]);try{routeCheckWave6(inboxTicket3A)}catch{return}const now=new Date();const dateKey=todayKey();
+  for(const row of rows){if(window.NH7SettingsBatch4&&!window.NH7SettingsBatch4.allows(row.key))continue;let compare=now;if(row.timezone_mode&&row.timezone_mode!=='local'){try{const parts=new Intl.DateTimeFormat('en-CA',{timeZone:row.timezone_mode,weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(now);const hh=Number(parts.find(p=>p.type==='hour')?.value||0),mm=Number(parts.find(p=>p.type==='minute')?.value||0),wd=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(parts.find(p=>p.type==='weekday')?.value);const [th,tm]=String(row.time_value||'00:00').split(':').map(Number);if(Array.isArray(row.days_of_week)&&!row.days_of_week.includes(wd))continue;if(hh>th||(hh===th&&mm>=tm))addInboxMessage(scheduleText(row,'title'),scheduleText(row,'body'),row.key,row.key+'_'+dateKey)}catch(e){}}else{const [th,tm]=String(row.time_value||'00:00').split(':').map(Number);if(Array.isArray(row.days_of_week)&&!row.days_of_week.includes(now.getDay()))continue;if(now.getHours()>th||(now.getHours()===th&&now.getMinutes()>=tm))addInboxMessage(scheduleText(row,'title'),scheduleText(row,'body'),row.key,row.key+'_'+dateKey)}}
 }
 const INBOX_CLOUD_REFRESH_KEY='nh7_inbox_cloud_refresh_at_v1';
 const INBOX_CLOUD_REFRESH_MS=10*60*1000;
@@ -2746,6 +2746,17 @@ nh7UiApply();
 window.NH7_UI_PREFS={apply:nh7UiApply,get:nh7UiPrefs,version:'4.3.1'};
 
 async function settings(){
+  if(window.NH7SettingsBatch4){
+    return window.NH7SettingsBatch4.render(view,{appearanceHTML:nh7AppearanceSettingsHtml,bindAppearance:nh7BindAppearanceSettings,setLanguage:setLang,sync:async()=>{
+      const ticket=routeTicketWave6();routeCheckWave6(ticket);
+      await Promise.all([syncCloudQueue(),window.NH7LocalFirstWave2?.flush?.()]);routeCheckWave6(ticket);
+      const inbox=await refreshInboxFromCloud(true);routeCheckWave6(ticket);
+      let pending=window.NH7LocalFirstWave2?.pending?.().length||0;
+      try{pending+=JSON.parse(localStorage.getItem('nh7_cloud_queue')||'[]').filter(x=>window.NH7LocalFirstWave2?.legacyEligible?.(x)).length}catch(_){}
+      return {pending,inbox};
+    }});
+  }
+  view.innerHTML=card(tr('settings'),`<p role="status">${state.lang==='fa'?'ابزار تنظیمات بارگذاری نشده؛ برنامه را دوباره باز کنید. هیچ داده‌ای پاک نشد.':state.lang==='hr'?'Alati postavki nisu učitani. Ponovno otvorite aplikaciju; podaci nisu izbrisani.':'Settings tools are unavailable. Reopen the app; no data was cleared.'}</p>`);return;
   const loadingText=state.lang==='fa'?'در حال بررسی…':state.lang==='hr'?'Provjera…':'Checking…';
   view.innerHTML=card(tr('settings'),`
     <h3>${tr('language')}</h3>

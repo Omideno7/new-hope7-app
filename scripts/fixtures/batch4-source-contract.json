@@ -1,0 +1,128 @@
+{
+  "base": "eef4e4fe365f50fe5b859e4e4acbc064c6a30cc0",
+  "files": {
+    ".github/workflows/validate-develop.yml": {
+      "before": "b2a3b636e4f193e2819981a9e7db85553074727b633055e338b5b3814a069492",
+      "after": "e171a68485b13a0930a26b742ab0a61425156f46b24bac5fdfbd3717da277a31"
+    },
+    "css/nh7-settings-appearance-batch4.css": {
+      "before": null,
+      "after": "02404d71e7c282018bd24b73cea483f8d7f2feaf59ccbe0824f374c0e32f5302"
+    },
+    "docs/qa/WAVE8_PHYSICAL_FIX_BATCH4_AUDIT.md": {
+      "before": null,
+      "after": "f5fcf5b14b8d63b8ad9960c53462ef949caf5f8356299170755c86d03f6045da"
+    },
+    "docs/qa/WAVE8_PHYSICAL_FIX_BATCH4_REPORT.md": {
+      "before": null,
+      "after": "57379c4c63a9a01f1530f51939e777e666b7578197aae9c7e5fa1d392bf7fe2c"
+    },
+    "index.html": {
+      "before": "ff727da09510992a265213b2c45ae96dc8bcc80da65d4eb169376adf5822beca",
+      "after": "19db03573258e83fdf978ce62da258fb2aa0ef06a1b644a72772a8be49e079c5"
+    },
+    "js/app.js": {
+      "before": "583185dda950ca5758ce636d58e08308c36bca3cb8fe9f19b8713afa5d3b4165",
+      "after": "32d9ff9bfd5197790b14c9b807d61ca4fc0d8f6859db719256aca2b62ee92d88"
+    },
+    "js/nh7-appearance-personalization-v514.js": {
+      "before": "2e984bb3bdf8e123ade81c622f8cad3d71831ca816b1aac75059a540d2124aaf",
+      "after": "90dd419640ef5decda6e783dbdf12bd7924d3c8633c212d598b7c403ef8ff3cd"
+    },
+    "js/nh7-notification-intents-wave4.js": {
+      "before": "96f2e27ac3649ed447a681c3e7fd3cb7ba64444109c2d0f7486912e0281fa016",
+      "after": "fb533d285e54bf878d1dbba7ad08eb032defd2d34e3bfef8a77dc5c034611f72"
+    },
+    "js/nh7-push-account-bind-v364.js": {
+      "before": "23ebad8269aea9cb4be209ff2fb87280448e4016250e89d77301b02788e3d63a",
+      "after": "de77da7511ac8bd2da424652e8a9d1b34b6292276a52fb5039d9132495835916"
+    },
+    "js/nh7-settings-account-v252.js": {
+      "before": "3d4e2d10922fd29f938eb714b7d7fdf7ee986f454056b939ba40db1206aee2b9",
+      "after": "2b1e62b3160ba1bf8d786f3a59ea43ef95c43bbc1c4600fa8d745a695eb88bfb"
+    },
+    "js/nh7-settings-batch4.js": {
+      "before": null,
+      "after": "ad68a9b5108c89bbc4d6523e9ee0887c3a95d59294aa6f42dac9c3660625ad81"
+    },
+    "js/nh7-settings-controller-v403.js": {
+      "before": "1bb0c4f10062a08277c7e38cfa4549f683b32c6c7d420ce6b82c1f8201359f2f",
+      "after": "7608d094bd68b648deb06d253a63804be534def08324ace267b6608c8897661e"
+    },
+    "js/nh7-settings-storage-batch4.js": {
+      "before": null,
+      "after": "edf79e1afd75157bc508971d59286f93b806c0c8ee3abedb8fa3aaecac6fde05"
+    },
+    "js/nh7-theme-studio-v453.js": {
+      "before": "540cbd97ac0106685d91d90a162a7fde33bfe026d8893be8b8886067ff1f81d9",
+      "after": "869d158541b784a3405690291a12ead324e8fada413d909593e7e24736aee28c"
+    },
+    "scripts/batch3b_accepted_source.py": {
+      "before": "eaa8201d5cae9fa0c3b920b064ac9d0dbb545e546d1319f7d90e70f4de398cee",
+      "after": "663e34a5fad40f43574c84242ed1455d7088959e37aaa76d95d38a655f0bab5e"
+    },
+    "scripts/batch4_accepted_source.py": {
+      "before": null,
+      "after": "778352182dc0531504fd44f70507b3177c23a1f285372436242e6dba6ae55a8b"
+    },
+    "scripts/verify-batch3b-safety.py": {
+      "before": "e046549c0ac735dd9c0df0ecce8cc5db52a6adcfe107a5fae0fa09d05f429e70",
+      "after": "2b730c1cc878bb4f5d765ee5fd92a370b46d6853147559a78325067d20a7fa3c"
+    },
+    "scripts/verify-batch4-browser.cjs": {
+      "before": null,
+      "after": "383d862a56c5f30215cdae4a723f1f66d4916731d8b5c96bbb5022451d7a11b5"
+    },
+    "scripts/verify-batch4-contrast.cjs": {
+      "before": null,
+      "after": "4b9df031659369c9c040ff99f59d7d5e0adc3f662816cc2768c79e7478bceb8a"
+    },
+    "scripts/verify-batch4-lifecycle.cjs": {
+      "before": null,
+      "after": "8900215b4f4ae9b8448b7868637b4feac81c286f3d0df8176c056aa17c5e0ec0"
+    },
+    "scripts/verify-batch4-safety.py": {
+      "before": null,
+      "after": "e5f5c2f03431161536a54ae8c3affde6c00d0d55601653cd3313069fcffe2783"
+    },
+    "scripts/verify-batch4-storage.cjs": {
+      "before": null,
+      "after": "a6950b7ca8c8e67286bb3cad09a1d12de30ed7f50fb64e91a96a15cc3ba0b370"
+    },
+    "scripts/verify-native-display-name.py": {
+      "before": null,
+      "after": "d611c7d47b5e6fd5cb9acb7a1239083e4aadb11504ba37bb0b8aa1609904dc95"
+    },
+    "sw-release-core-v403.js": {
+      "before": "efab2a887dbc1fa35580f0c2c538e9fca99bc84a0874be9b3b85d7f618b90caa",
+      "after": "d2d0d414bfffe42b21317c0a4c550a6ba7d0c8bc3cfa402fe1fb66688e197f3a"
+    }
+  },
+  "approved_paths": [
+    ".github/workflows/validate-develop.yml",
+    "css/nh7-settings-appearance-batch4.css",
+    "docs/qa/WAVE8_PHYSICAL_FIX_BATCH4_AUDIT.md",
+    "docs/qa/WAVE8_PHYSICAL_FIX_BATCH4_REPORT.md",
+    "index.html",
+    "js/app.js",
+    "js/nh7-appearance-personalization-v514.js",
+    "js/nh7-notification-intents-wave4.js",
+    "js/nh7-push-account-bind-v364.js",
+    "js/nh7-settings-account-v252.js",
+    "js/nh7-settings-batch4.js",
+    "js/nh7-settings-controller-v403.js",
+    "js/nh7-settings-storage-batch4.js",
+    "js/nh7-theme-studio-v453.js",
+    "scripts/batch3b_accepted_source.py",
+    "scripts/batch4_accepted_source.py",
+    "scripts/fixtures/batch4-source-contract.json",
+    "scripts/verify-batch3b-safety.py",
+    "scripts/verify-batch4-browser.cjs",
+    "scripts/verify-batch4-contrast.cjs",
+    "scripts/verify-batch4-lifecycle.cjs",
+    "scripts/verify-batch4-safety.py",
+    "scripts/verify-batch4-storage.cjs",
+    "scripts/verify-native-display-name.py",
+    "sw-release-core-v403.js"
+  ]
+}

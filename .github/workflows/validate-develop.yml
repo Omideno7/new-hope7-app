@@ -152,6 +152,22 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/canonical-tools" --no-audit --no-fund playwright@1.62.1 @electric-sql/pglite@0.3.14 jsqr@1.4.0 pngjs@7.0.0
           "$RUNNER_TEMP/canonical-tools/node_modules/.bin/playwright" install --with-deps chromium
 
+      - name: Validate Batch 4 Settings storage notifications appearance without activation
+        shell: bash
+        run: |
+          set -euo pipefail
+          export NODE_PATH="$RUNNER_TEMP/canonical-tools/node_modules"
+          export CHROMIUM_PATH="$(node -e "console.log(require('playwright').chromium.executablePath())")"
+          python3 scripts/run-ci-check.py python3 scripts/verify-batch4-safety.py
+          python3 -m http.server 8985 --bind 127.0.0.1 > /tmp/nh7-batch4-server.log 2>&1 &
+          batch4_server=$!
+          trap 'kill "$batch4_server" 2>/dev/null || true' EXIT
+          for attempt in {1..50}; do if curl -fsS http://127.0.0.1:8985/index.html > /dev/null; then break; fi; sleep 0.1; done
+          python3 scripts/run-ci-check.py node scripts/verify-batch4-storage.cjs http://127.0.0.1:8985
+          python3 scripts/run-ci-check.py node scripts/verify-batch4-browser.cjs http://127.0.0.1:8985
+          python3 scripts/run-ci-check.py node scripts/verify-batch4-lifecycle.cjs http://127.0.0.1:8985
+          python3 scripts/run-ci-check.py node scripts/verify-batch4-contrast.cjs http://127.0.0.1:8985
+
       - name: Validate Batch 3B Calendar YouVersion Church Connect without activation
         shell: bash
         run: |

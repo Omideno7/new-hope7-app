@@ -2,14 +2,15 @@
 from pathlib import Path
 import subprocess,re,hashlib,yaml
 from batch3b_accepted_source import BASE,verify3b,prior_batch3b_bytes
+from batch4_accepted_source import prior_batch4_bytes,diff_without4
 m=verify3b();old=lambda p:subprocess.check_output(['git','show',BASE+':'+p])
 changed=set(subprocess.check_output(['git','diff','--name-only',BASE]).decode().splitlines())|set(subprocess.check_output(['git','ls-files','--others','--exclude-standard']).decode().splitlines())
 assert changed==set(m['approved_paths']),changed^set(m['approved_paths'])
 protected=['supabase/migrations','supabase/functions','data','public','watchos','ios','android','js/document-studio-v2','supabase/review/school-progression-v580','supabase/review/batch3a-qa-owner-removal','js/nh7-school-cycles-v580.js','js/nh7-admin-school-cycles-v580.js','js/nh7-school-path-v351.js','js/nh7-school-drafts-v468.js','js/nh7-security-core-v340.js','js/nh7-admin-rbac-v350.js','js/nh7-profile-photo-v564.js','js/nh7-local-first-wave2.js','js/nh7-user-context-wave6.js','js/nh7-push-account-bind-v364.js','js/nh7-batch3a-v581.js','js/nh7-inbox-badge-sync-v418.js','js/nh7-my-notes-v234.js','js/nh7-spiritual-plans-v240.js','js/nh7-spiritual-plans-v412.js','js/nh7-audio-classic-v484.js','js/nh7-audio-library-v500.js','js/nh7-media-player-v500.js','service-worker.js']
-assert not subprocess.check_output(['git','diff',BASE,'--',*protected]),'Unrelated authority/data/engine changed'
+assert not diff_without4(BASE,protected),'Unrelated authority/data/engine changed'
 def functions(s):
  hits=list(re.finditer(r'^(?:async )?function (\w+)\(',s,re.M));return {h[1]:s[h.start():hits[i+1].start() if i+1<len(hits) else len(s)] for i,h in enumerate(hits)}
-a,b=functions(old('js/app.js').decode()),functions(Path('js/app.js').read_text());assert set(a)==set(b);assert {k for k in a if a[k]!=b[k]}=={'defaultMeetingSettings','fetchMeetingSettings','renderMeetingDetails','meetings'}
+a,b=functions(old('js/app.js').decode()),functions(prior_batch4_bytes('js/app.js').decode());assert set(a)==set(b);assert {k for k in a if a[k]!=b[k]}=={'defaultMeetingSettings','fetchMeetingSettings','renderMeetingDetails','meetings'}
 a,b=functions(old('js/nh7-celebrations-v464.js').decode()),functions(Path('js/nh7-celebrations-v464.js').read_text());assert set(a)==set(b);assert {k for k in a if a[k]!=b[k]}=={'modalCopy','openCalendar','run'}
 assert a['annualEvents']==b['annualEvents'] and a['feastText']==b['feastText'] and a['birthday']==b['birthday'] and a['profile']==b['profile']
 for file in ['js/nh7-church-connect-batch3b.js','js/nh7-admin-connect-batch3b.js']:
@@ -23,18 +24,18 @@ for name in subprocess.check_output(['git','ls-files']).decode().splitlines():
   except UnicodeError:continue
   assert "'"+secret+"'" not in s and '"'+secret+'"' not in s,'Obsolete bundled credential: '+name
 assert Path('admin.html').read_text().replace('\n<script defer src="js/nh7-admin-connect-batch3b.js?v=3b"></script>\n<link rel="stylesheet" href="css/nh7-church-connect-batch3b.css?v=3b">','')==old('admin.html').decode()
-assert Path('index.html').read_text().replace('  <link rel="stylesheet" href="css/nh7-church-connect-batch3b.css?v=3b" />\n','').replace('  <script src="js/nh7-church-connect-batch3b.js?v=3b" defer></script>\n','')==old('index.html').decode()
-assert Path('sw-release-core-v403.js').read_text().replace("  './js/nh7-church-connect-batch3b.js',\n  './css/nh7-church-connect-batch3b.css',\n",'')==old('sw-release-core-v403.js').decode()
+assert prior_batch4_bytes('index.html').decode().replace('  <link rel="stylesheet" href="css/nh7-church-connect-batch3b.css?v=3b" />\n','').replace('  <script src="js/nh7-church-connect-batch3b.js?v=3b" defer></script>\n','')==old('index.html').decode()
+assert prior_batch4_bytes('sw-release-core-v403.js').decode().replace("  './js/nh7-church-connect-batch3b.js',\n  './css/nh7-church-connect-batch3b.css',\n",'')==old('sw-release-core-v403.js').decode()
 for name in ['supabase_v1_6_3_meeting_settings_fix.sql','supabase_v1_6_4_meeting_settings_rpc_fix.sql']:
  assert Path(name).read_text()==old(name).decode().replace("'"+secret+"'","''").replace('"'+secret+'"','""'),name
 # Birthday branch, owner/DOB lookup, dates, text and Bible handoff retain every original byte.
 calendar_old=functions(old('js/nh7-celebrations-v464.js').decode());calendar_now=functions(Path('js/nh7-celebrations-v464.js').read_text())
 assert calendar_now['modalCopy'].split(' }else{')[0]==calendar_old['modalCopy'].split(' }else{')[0]
 assert calendar_now['run']==calendar_old['run'].replace(' header();',' window.NH7ConnectBatch3B?.home();header();')
-app=Path('js/app.js').read_text();assert "cloudRpc('nh7_get_meeting_settings'" not in app;assert "cloudFetch('meeting_settings?" not in app
+app=prior_batch4_bytes('js/app.js').decode();assert "cloudRpc('nh7_get_meeting_settings'" not in app;assert "cloudFetch('meeting_settings?" not in app
 sql=Path('supabase/review/batch3b-church-connect/candidate.sql').read_text();assert 'RAISE EXCEPTION' in sql.split('-- BEGIN SYNTHETIC CANDIDATE')[0];assert sql.rstrip().endswith('ROLLBACK;');assert not re.search(r'GRANT\s+ALL|TO\s+PUBLIC|auth\.jwt\(\).*email',sql,re.I)
 assert sql.count("private.nh7_admin_is_owner_v350()")>=4 and 'auth.uid()' in sql
-before=yaml.safe_load(old('.github/workflows/validate-develop.yml'));after=yaml.safe_load(Path('.github/workflows/validate-develop.yml').read_text());steps=after['jobs']['validate']['steps'];new=[x for x in steps if x['name']=='Validate Batch 3B Calendar YouVersion Church Connect without activation'];assert len(new)==1;after['jobs']['validate']['steps']=[s for s in steps if s not in new];assert before==after,'No prior CI step or permission may change'
+before=yaml.safe_load(old('.github/workflows/validate-develop.yml'));after=yaml.safe_load(prior_batch4_bytes('.github/workflows/validate-develop.yml').decode());steps=after['jobs']['validate']['steps'];new=[x for x in steps if x['name']=='Validate Batch 3B Calendar YouVersion Church Connect without activation'];assert len(new)==1;after['jobs']['validate']['steps']=[s for s in steps if s not in new];assert before==after,'No prior CI step or permission may change'
 # Exact prior fixture is unchanged; projection cannot alter its safety assertions.
 for name in ['scripts/fixtures/batch3a-source-contract.json','scripts/fixtures/batch3a-approved.patch','scripts/fixtures/school-source-contract-v580.json','scripts/fixtures/school-approved-v580.patch']:
  assert Path(name).read_bytes()==old(name),name

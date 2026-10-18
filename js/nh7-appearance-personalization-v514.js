@@ -63,7 +63,9 @@ let state=load();
 let applying=false,pending=false,lastThemeSig='';
 
 function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||'null');return Object.assign({},defaults,x&&typeof x==='object'?x:{})}catch(_){return {...defaults}}}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(state));localStorage.setItem(SIZE_KEY,String(state.fontSize||100))}catch(_){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));localStorage.setItem(SIZE_KEY,String(state.fontSize||100));return true}catch(_){appearanceError();return false}}
+function appearanceError(){const out=document.getElementById('nh7ApContrast');if(out){out.textContent=L('ذخیرهٔ ظاهر انجام نشد؛ ظاهر قبلی حفظ شد.','Appearance was not saved; the previous appearance was retained.','Izgled nije spremljen; prethodni izgled je sačuvan.');out.classList.add('bad')}window.NH7_SETTINGS_CONTROLLER_V403?.show?.(L('ذخیرهٔ ظاهر انجام نشد.','Appearance save failed.','Spremanje izgleda nije uspjelo.'),'error')}
+
 function rgb(h){const s=String(h||'').replace('#','');return[0,2,4].map(i=>parseInt(s.slice(i,i+2),16))}
 function toHex(a){return'#'+a.map(x=>Math.max(0,Math.min(255,Math.round(x))).toString(16).padStart(2,'0')).join('')}
 function mix(a,b,t){const A=rgb(a),B=rgb(b),p=Math.max(0,Math.min(1,t));return toHex(A.map((x,i)=>x+(B[i]-x)*p))}
@@ -101,18 +103,14 @@ function applyFontVisual(){
  else{delete root.dataset.nh7Ap514Font;root.style.removeProperty('--nh7-ap514-font')}
 }
 function applyTheme(){
- if(applying)return;
- if(state.mode==='manual'&&state.themeId==='current')return;
- const id=resolvedThemeId(),cfg=configFor(id);if(!cfg)return;
- const sig=JSON.stringify(cfg);if(sig===lastThemeSig)return;
+ if(applying)return false;
+ if(state.mode==='manual'&&state.themeId==='current')return true;
+ const cfg=configFor(resolvedThemeId());if(!cfg)return false;
+ const sig=JSON.stringify(cfg);if(sig===lastThemeSig)return true;
  applying=true;
- try{
-   const ok=window.NH7ThemeStudioV453?.set?.(cfg);
-   applyThemeVisual(cfg);
-   if(ok)window.NH7_UI_PREFS?.apply?.();
-   lastThemeSig=sig;
- }finally{applying=false}
+ try{const ok=window.NH7ThemeStudioV453?.preview?.(cfg);if(!ok)return false;lastThemeSig=sig;return true}finally{applying=false}
 }
+
 function applyFont(){
  const api=window.NH7FontsV454;if(!api)return;
  if(!FA_FONT_IDS.includes(state.faFont))state.faFont='system';
@@ -126,7 +124,26 @@ function applyReader(){
  root.dataset.nh7EyeReader514=state.reader?'1':'0';root.dataset.nh7ReaderMode514=state.readerMode||'paper';
 }
 function applyStyle(){root.dataset.nh7UiStyle514=state.style||'classic';root.style.setProperty('--nh7-ap514-depth',(Number(state.depth)||7)+'px');root.style.setProperty('--nh7-ap514-glow',(Number(state.glow)||14)+'%');const cfg=currentThemeConfig();root.style.setProperty('--nh7-ap514-icon',cfg?.accent||getComputedStyle(root).getPropertyValue('--brand')||'#1858a4')}
-function applyAll(){applyStyle();applySize();applyReader();applyFontVisual();applyTheme();save();syncOpenDialog()}
+function applyAll(override=null){
+ const keys=[KEY,SIZE_KEY,'nh7_theme_studio_v453'],previous=keys.map(key=>localStorage.getItem(key));
+ const cfg=override||(state.mode==='manual'&&state.themeId==='current'?currentThemeConfig():configFor(resolvedThemeId()));
+ if(cfg&&window.NH7ThemeStudioV453?.validate?.(cfg)?.ok!==true){state=load();syncOpenDialog();appearanceError();return false}
+ try{
+  if(!save())throw Error('appearance_storage_failed');
+  if(cfg&&window.NH7ThemeStudioV453?.set?.(cfg)!==true)throw Error('appearance_palette_failed');
+ }catch(_){
+  keys.forEach((key,i)=>{try{previous[i]===null?localStorage.removeItem(key):localStorage.setItem(key,previous[i])}catch(_){}});
+  state=load();lastThemeSig='';window.NH7ThemeStudioV453?.restorePreview?.();applyStyle();applySize();applyReader();applyFontVisual();applyTheme();syncOpenDialog();appearanceError();return false;
+ }
+ applyStyle();applySize();applyReader();applyFontVisual();applyTheme();scheduleThemeBoundary();syncOpenDialog();return true;
+}
+let autoThemeTimer=0;
+function scheduleThemeBoundary(){
+ clearTimeout(autoThemeTimer);if(document.hidden||state.mode!=='auto')return;
+ const now=new Date(),times=[];for(const text of [state.dayStart,state.nightStart]){const minute=timeMin(text),next=new Date(now);next.setHours(Math.floor(minute/60),minute%60,0,0);if(next<=now)next.setDate(next.getDate()+1);times.push(next.getTime())}
+ autoThemeTimer=setTimeout(()=>{lastThemeSig='';applyTheme();scheduleThemeBoundary()},Math.max(1000,Math.min(...times)-Date.now()));
+}
+
 function resetOriginal(){
  state={...defaults,style:'classic',themeId:'current',faFont:'system',latinFont:'system',fontSize:100,reader:false};
  try{
@@ -199,8 +216,9 @@ function refreshDialogCopy(){
 }
 function ensureDialog(){let d=$('#nh7AppearanceDialog514');if(!d){document.body.insertAdjacentHTML('beforeend',dialogHtml());d=$('#nh7AppearanceDialog514');bindDialog(d)}return d}
 function openDialog(){const d=ensureDialog();refreshDialogCopy();syncOpenDialog();try{d.showModal()}catch(_){d.setAttribute('open','')}}
-function closeDialog(){const d=$('#nh7AppearanceDialog514');if(!d)return;try{d.close()}catch(_){d.removeAttribute('open')}}
+function closeDialog(){window.NH7ThemeStudioV453?.restorePreview?.();lastThemeSig='';applyTheme();const d=$('#nh7AppearanceDialog514');if(!d)return;try{d.close()}catch(_){d.removeAttribute('open')}}
 function bindDialog(d){
+ d.addEventListener('close',()=>{window.NH7ThemeStudioV453?.restorePreview?.();lastThemeSig='';applyTheme()});
  d.addEventListener('click',e=>{
    if(e.target===d){closeDialog();return}
    const close=e.target.closest('[data-ap514-close]');if(close){closeDialog();return}
@@ -209,7 +227,7 @@ function bindDialog(d){
    const m=e.target.closest('[data-ap514-mode]');if(m){state.mode=m.dataset.ap514Mode;applyAll();return}
    const g=e.target.closest('[data-ap514-group]');if(g){state.themeGroup=g.dataset.ap514Group;syncOpenDialog();save();return}
    const t=e.target.closest('[data-ap514-theme]');if(t){state.themeId=t.dataset.ap514Theme;state.mode='manual';state.intensityBase=null;lastThemeSig='';if(state.themeId==='current'){lastThemeSig='';window.NH7_UI_PREFS?.apply?.();applyFontVisual()}else applyTheme();applyAll();return}
-   const saved=e.target.closest('[data-ap514-saved]');if(saved){const item=readSavedThemes().find(x=>x.id===saved.dataset.ap514Saved);if(item&&window.NH7ThemeStudioV453?.set?.(item.config)){state.themeId='current';state.mode='manual';applyAll()}return}
+   const saved=e.target.closest('[data-ap514-saved]');if(saved){const item=readSavedThemes().find(x=>x.id===saved.dataset.ap514Saved);if(item){state.themeId='current';state.mode='manual';applyAll(item.config)}return}
    const rr=e.target.closest('[data-ap514-reader]');if(rr){state.readerMode=rr.dataset.ap514Reader;applyAll();return}
    if(e.target.closest('[data-ap514-custom]')){applyCustomFromForm();return}
  });
@@ -223,9 +241,10 @@ function bindDialog(d){
    else if(e.target.id==='nh7ApNightStart'){state.nightStart=e.target.value;lastThemeSig='';applyAll()}
  });
  d.addEventListener('input',e=>{
+   if(['nh7ApBg','nh7ApCard','nh7ApAccent','nh7ApText','nh7ApVerse'].includes(e.target.id)){const cfg={preset:'custom',bg:$('#nh7ApBg',d).value,card:$('#nh7ApCard',d).value,text:$('#nh7ApText',d).value,muted:$('#nh7ApText',d).value,verse:$('#nh7ApVerse',d).value,accent:$('#nh7ApAccent',d).value,fa:state.faFont,latin:state.latinFont};const ok=window.NH7ThemeStudioV453?.preview?.(cfg);const out=$('#nh7ApContrast',d);out.textContent=ok?L('پیش‌نمایش؛ برای ذخیره «اعمال تم شخصی» را بزنید.','Preview only; choose Apply custom theme to save.','Samo pregled; za spremanje odaberite Primijeni vlastitu temu.'):L('کنتراست کافی نیست؛ رنگ‌ها اعمال نشدند.','Insufficient contrast; colors were not applied.','Nedovoljan kontrast; boje nisu primijenjene.');out.classList.toggle('bad',!ok);return}
    if(e.target.id==='nh7ApSize'){state.fontSize=Number(e.target.value);applySize();save();syncOpenDialog()}
-   else if(e.target.id==='nh7ApAccentIntensity'){state.accentIntensity=Number(e.target.value);lastThemeSig='';if(state.mode==='manual'&&state.themeId==='current')applyCurrentIntensity();applyAll()}
-   else if(e.target.id==='nh7ApTextIntensity'){state.textIntensity=Number(e.target.value);lastThemeSig='';if(state.mode==='manual'&&state.themeId==='current')applyCurrentIntensity();applyAll()}
+   else if(e.target.id==='nh7ApAccentIntensity'){state.accentIntensity=Number(e.target.value);lastThemeSig='';if(state.mode==='manual'&&state.themeId==='current'&&!applyCurrentIntensity()){state=load();syncOpenDialog();const out=$('#nh7ApContrast',d);out.textContent=L('کنتراست کافی نیست؛ مقدار قبلی حفظ شد.','Insufficient contrast; previous value retained.','Nedovoljan kontrast; prethodna vrijednost je sačuvana.');out.classList.add('bad');return}applyAll()}
+   else if(e.target.id==='nh7ApTextIntensity'){state.textIntensity=Number(e.target.value);lastThemeSig='';if(state.mode==='manual'&&state.themeId==='current'&&!applyCurrentIntensity()){state=load();syncOpenDialog();const out=$('#nh7ApContrast',d);out.textContent=L('کنتراست کافی نیست؛ مقدار قبلی حفظ شد.','Insufficient contrast; previous value retained.','Nedovoljan kontrast; prethodna vrijednost je sačuvana.');out.classList.add('bad');return}applyAll()}
  });
 }
 function applyCurrentIntensity(){
@@ -235,7 +254,7 @@ function applyCurrentIntensity(){
  const cfg={...state.intensityBase,preset:'custom',text:intensity(state.intensityBase.text,state.intensityBase.card,state.textIntensity),accent:intensity(state.intensityBase.accent,state.intensityBase.card,state.accentIntensity),fa:state.faFont,latin:state.latinFont};
  const validation=window.NH7ThemeStudioV453?.validate?.(cfg);
  if(validation&&!validation.ok)return false;
- return !!window.NH7ThemeStudioV453?.set?.(cfg);
+ return !!window.NH7ThemeStudioV453?.preview?.(cfg);
 }
 function applyCustomFromForm(){
  const d=$('#nh7AppearanceDialog514');if(!d)return;
@@ -244,7 +263,7 @@ function applyCustomFromForm(){
  const validation=window.NH7ThemeStudioV453?.validate?.(cfg);
  const out=$('#nh7ApContrast',d);
  if(validation&&!validation.ok){if(out){out.textContent=L('کنتراست بعضی رنگ‌ها برای خوانایی کافی نیست.','Some colors do not have enough contrast for readability.','Neke boje nemaju dovoljan kontrast za čitljivost.');out.classList.add('bad')}return}
- if(window.NH7ThemeStudioV453?.set?.(cfg)){state.themeId='current';state.mode='manual';state.custom=cfg;state.intensityBase=cfg;lastThemeSig='';if(out){out.textContent=L('تم شخصی اعمال شد ✓','Custom theme applied ✓','Vlastita tema je primijenjena ✓');out.classList.remove('bad')}applyAll()}
+ state.themeId='current';state.mode='manual';state.custom=cfg;state.intensityBase=cfg;lastThemeSig='';if(applyAll(cfg)&&out){out.textContent=L('تم شخصی ذخیره و اعمال شد ✓','Custom theme saved and applied ✓','Vlastita tema je spremljena i primijenjena ✓');out.classList.remove('bad')}
 }
 function syncOpenDialog(){
  const d=$('#nh7AppearanceDialog514');if(!d)return;
@@ -282,9 +301,10 @@ function start(){
  new MutationObserver(()=>{if(!pending){pending=true;requestAnimationFrame(()=>{pending=false;mount();applyReader()})}}).observe(document.documentElement,{childList:true,subtree:true});
  window.addEventListener('nh7:ui-preferences',()=>{applySize();applyStyle();applyFontVisual()});
  window.addEventListener('change',e=>{if(['langSelect','settingsLang'].includes(e.target?.id))setTimeout(applyFontVisual,0)},true);
- window.addEventListener('storage',e=>{if(e.key===KEY){state=load();applyAll()}});
+ window.addEventListener('storage',e=>{if(e.key===KEY){state=load();lastThemeSig='';applyStyle();applySize();applyReader();applyFontVisual();applyTheme();scheduleThemeBoundary();syncOpenDialog()}});
  try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(state.mode==='system'){lastThemeSig='';applyTheme()}})}catch(_){}
- setInterval(()=>{if(state.mode==='auto'){lastThemeSig='';applyTheme()}},60000);
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)clearTimeout(autoThemeTimer);else{lastThemeSig='';applyTheme();scheduleThemeBoundary()}});
+ window.addEventListener('pageshow',()=>{lastThemeSig='';applyTheme();scheduleThemeBoundary()});scheduleThemeBoundary();
 }
 window.NH7AppearancePersonalizationV514={refreshDialogCopy,VERSION:'5.2.0',KEY,get:()=>JSON.parse(JSON.stringify(state)),apply:applyAll,open:openDialog,reset:resetOriginal};
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start,{once:true}):start();

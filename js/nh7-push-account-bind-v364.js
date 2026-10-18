@@ -33,7 +33,7 @@ async function register(i,id,active){
 }
 async function subscriptionState(i){const s=sub();let id=String(s?.id||''),optedIn=s?.optedIn===true;if(s?.getIdAsync){id=String(await Promise.resolve(s.getIdAsync())||'');fence(i)}if(s?.getOptedInAsync){optedIn=await Promise.resolve(s.getOptedInAsync())===true;fence(i)}return {sub:s,id,optedIn}}
 async function perform(i){
- metrics.passes++;const before=await subscriptionState(i);if(registered&&registered.identity.uid!==i.uid){const old=registered;registered=null;await register(old.identity,old.id,false);fence(i)}const expected=signature(i)+'|'+before.id+'|'+getPermission();
+ metrics.passes++;const before=await subscriptionState(i);if(registered&&registered.identity.uid!==i.uid){const old=registered;registered=null;await register(old.identity,old.id,false);fence(i)}const optionalOn=localStorage.getItem('nh7_notifications_enabled_v252')!=='0';const expected=signature(i)+'|'+before.id+'|'+getPermission()+'|'+optionalOn;
  if(expected===lastApplied){if(registered?.identity.uid===i.uid)registered.identity=i;return;}
  if(!i.uid){
   if(sdk.logout){metrics.logouts++;await Promise.resolve(sdk.logout());fence(i)}
@@ -52,10 +52,12 @@ async function perform(i){
  const tags={app:'new_hope_7',account_linked:'true',language:i.language,app_language:i.language,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'local',notification_clock:'Europe/Zagreb',notification_source:'server_v335',...(i.role==='admin'?{role:'admin'}:{}),...(i.device?{device_id:i.device}:{})};
  if(user()?.addTags){await Promise.resolve(user().addTags(tags));fence(i)}
  const permission=native?(sdk.Notifications?.permission===true?'granted':'default'):(typeof Notification==='undefined'?'unsupported':Notification.permission);
- const subscription=sub();if(permission==='granted'&&!before.optedIn&&subscription?.optIn){await Promise.resolve(subscription.optIn());fence(i)}
- const after=await subscriptionState(i);lastApplied=signature(i)+'|'+after.id+'|'+permission;
+ const subscription=sub();if(optionalOn&&permission==='granted'&&!before.optedIn&&subscription?.optIn){await Promise.resolve(subscription.optIn());fence(i)}
+ if(!optionalOn&&before.optedIn&&subscription?.optOut){await Promise.resolve(subscription.optOut());fence(i)}
+ const after=await subscriptionState(i);lastApplied=signature(i)+'|'+after.id+'|'+permission+'|'+optionalOn;
  window[native?'__NH7_ONESIGNAL_NATIVE_BOUND_USER_V364__':'__NH7_ONESIGNAL_WEB_BOUND_USER_V364__']=i.uid;
- if(!registered||registered.identity.uid!==i.uid||registered.id!==after.id){await register(i,after.id,true);fence(i)}
+ if(!optionalOn&&registered?.identity.uid===i.uid){const prior=registered;registered=null;await register(i,prior.id,false);fence(i)}
+ if(optionalOn&&(!registered||registered.identity.uid!==i.uid||registered.id!==after.id)){await register(i,after.id,true);fence(i)}
  publish(i,{permission,optedIn:after.optedIn,subscriptionId:after.id||null,subscriptionReady:!!after.id});
 }
 async function drain(){

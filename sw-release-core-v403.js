@@ -64,6 +64,9 @@ const NH7_RELEASE_ASSETS=[
   './css/nh7-bible-keywords-v450.css',
   './js/nh7-batch3a-v581.js',
   './js/nh7-church-connect-batch3b.js',
+  './js/nh7-settings-storage-batch4.js',
+  './js/nh7-settings-batch4.js',
+  './css/nh7-settings-appearance-batch4.css',
   './css/nh7-church-connect-batch3b.css',
   './js/nh7-school-cycles-v580.js',
   './js/nh7-admin-school-cycles-v580.js',
@@ -237,3 +240,6 @@ self.addEventListener('fetch',event=>{
   })());
   event.stopImmediatePropagation();
 });
+
+// Batch4 on-demand manifest verification; no stale marker or cache-length readiness claim.
+self.addEventListener('message',event=>{if(event.data?.type!=='BATCH4_CORE_STATUS')return;event.waitUntil((async()=>{try{const core=await caches.open(NH7_RELEASE_CORE_CACHE),data=await caches.open(NH7_RELEASE_DATA_CACHE);let cached=0;for(const path of NH7_RELEASE_ASSETS){const target=path.includes('/data/')||path.endsWith('.json')?data:core;if(await target.match(nh7ReleaseKey(path)))cached++}event.ports?.[0]?.postMessage({ok:true,cached,total:NH7_RELEASE_ASSETS.length,version:NH7_RELEASE_CORE_VERSION})}catch(_){event.ports?.[0]?.postMessage({ok:false,error:'core_status_unavailable'})}})())});
