@@ -16,6 +16,7 @@ const SYNC_TTL_MS=120000;
 const POLL_MS=900000;
 const MAX_LOCAL_MESSAGES=200;
 
+let cacheBlocked=false;
 let activeSync=null;
 let lastSuccessfulSync=0;
 let lastCount=-1;
@@ -93,16 +94,20 @@ function ensureOwnerScope(){
   const uid=explicitlyLoggedOut()?'':String(session()?.access_token&&session()?.user?.id||''),scope=uid?'uid:'+uid:'signed-out';
   const marker='nh7_inbox_uid_batch3a',previous=localStorage.getItem(marker),slot=value=>'nh7_inbox_scope_batch3a:'+encodeURIComponent(value);
   if(previous!==scope){
+   try{
     if(previous)localStorage.setItem(slot(previous),JSON.stringify({messages:readJson(INBOX_KEY,[]),deleted:readJson(DELETED_KEY,[])}));
     else if(localStorage.getItem(INBOX_KEY))localStorage.setItem('nh7_inbox_unverified_legacy_batch3a',JSON.stringify({messages:readJson(INBOX_KEY,[]),deleted:readJson(DELETED_KEY,[])}));
     const saved=scope==='signed-out'?{}:readJson(slot(scope),{});
     localStorage.setItem(INBOX_KEY,JSON.stringify(saved.messages||[]));localStorage.setItem(DELETED_KEY,JSON.stringify(saved.deleted||[]));localStorage.setItem(marker,scope);lastCount=-1;
+   }catch{cacheBlocked=true;lastCount=0;syncGeneration++;activeSync=null;return false}
   }
+  cacheBlocked=false;
   const context=scope+'|'+language()+'|'+authToken();
   if(context!==syncContext){syncContext=context;syncGeneration++;lastSuccessfulSync=0;activeSync=null;}
-  const current=ownerKey();if(localStorage.getItem(OWNER_KEY)!==current)localStorage.setItem(OWNER_KEY,current);
+  const current=ownerKey();try{if(localStorage.getItem(OWNER_KEY)!==current)localStorage.setItem(OWNER_KEY,current)}catch{}
+  return true;
 }
-function localMessages(){const rows=readJson(INBOX_KEY,[]);return Array.isArray(rows)?rows:[]}
+function localMessages(){const uid=explicitlyLoggedOut()?'':String(session()?.user?.id||'');if(!uid||localStorage.getItem('nh7_inbox_uid_batch3a')!=='uid:'+uid)return[];const rows=readJson(INBOX_KEY,[]);return Array.isArray(rows)?rows:[]}
 function deletedIds(){const rows=readJson(DELETED_KEY,[]);return new Set(Array.isArray(rows)?rows.map(String):[])}
 function messageKey(message){
   if(window.NH7NotificationIntentsWave4?.owned(message))return '';
@@ -165,7 +170,7 @@ function saveMerged(rows,deleted){
   if(localStorage.getItem(DELETED_KEY)!==removed)localStorage.setItem(DELETED_KEY,removed);
 }
 async function doSync(){
-  ensureOwnerScope();
+  if(ensureOwnerScope()===false)return{ok:true,storageBlocked:true,count:paintBadge(0)};
   if(explicitlyLoggedOut()||!session()?.user?.id){paintBadge(0);return{ok:true,signedOut:true,count:0}}
   const context=syncContext,generation=syncGeneration;
   if(!navigator.onLine){paintBadge();return{ok:false,offline:true,count:lastCount}}
@@ -175,7 +180,7 @@ async function doSync(){
     cloudRows=Array.isArray(shot?.messages)?shot.messages:[];
     receipts=Array.isArray(shot?.receipts)?shot.receipts:[];
   }catch(snapshotError){
-    ensureOwnerScope();if(context!==syncContext||generation!==syncGeneration)return{ok:false,stale:true};
+    if(ensureOwnerScope()===false)return{ok:true,storageBlocked:true,count:paintBadge(0)};if(context!==syncContext||generation!==syncGeneration)return{ok:false,stale:true};
     console.warn('[NH7 inbox badge] snapshot fallback',snapshotError);
     const email=profileEmail(),device=encodeURIComponent(deviceId()),lang=encodeURIComponent(language());
     const ownPath=email
@@ -186,7 +191,7 @@ async function doSync(){
     const [ownRows,globalRows,fallbackReceipts]=await Promise.all([rest(ownPath),rest(globalPath).catch(()=>[]),rest(receiptsPath).catch(()=>[])]);
     cloudRows=[...ownRows,...globalRows];receipts=fallbackReceipts;
   }
-  ensureOwnerScope();if(context!==syncContext||generation!==syncGeneration)return{ok:false,stale:true};
+  if(ensureOwnerScope()===false)return{ok:true,storageBlocked:true,count:paintBadge(0)};if(context!==syncContext||generation!==syncGeneration)return{ok:false,stale:true};
   const receiptMap=new Map(receipts.map(row=>[String(row?.message_id||''),row]));
   const deleted=deletedIds(),byId=new Map(localMessages().filter(row=>!deleted.has(String(row?.id||''))).map(row=>[String(row.id),row]));
   for(const row of cloudRows){
@@ -206,7 +211,7 @@ async function doSync(){
   return{ok:true,count:paintBadge(),rows:merged.length};
 }
 function sync({force=false}={}){
-  ensureOwnerScope();
+  if(ensureOwnerScope()===false)return Promise.resolve({ok:true,storageBlocked:true,count:paintBadge(0)});
   if(!force&&Date.now()-lastSuccessfulSync<SYNC_TTL_MS){paintBadge();return Promise.resolve({ok:true,cached:true,count:lastCount})}
   if(activeSync)return activeSync;
   const flight=doSync().catch(error=>{console.warn('[NH7 inbox badge] sync failed',error);return{ok:false,error:String(error?.message||error),count:paintBadge()}}).finally(()=>{if(activeSync===flight)activeSync=null});
@@ -224,7 +229,7 @@ function hookOneSignal(){
 function start(){
   addStyle();ensureOwnerScope();paintBadge();hookOneSignal();scheduleSync(250,true);
   // Event-driven only: no Inbox polling or recurring backend cost.
-  window.addEventListener('nh7-personal-before-owner-wave2',()=>{ensureOwnerScope();const scope=localStorage.getItem('nh7_inbox_uid_batch3a');if(scope)localStorage.setItem('nh7_inbox_scope_batch3a:'+encodeURIComponent(scope),JSON.stringify({messages:localMessages(),deleted:[...deletedIds()]}))});
+  window.addEventListener('nh7-personal-before-owner-wave2',()=>{if(ensureOwnerScope()===false)return;const scope=localStorage.getItem('nh7_inbox_uid_batch3a');try{if(scope)localStorage.setItem('nh7_inbox_scope_batch3a:'+encodeURIComponent(scope),JSON.stringify({messages:localMessages(),deleted:[...deletedIds()]}))}catch{}});
   window.addEventListener('nh7-personal-owner-wave2',()=>{ensureOwnerScope();paintBadge()});
   ['focus','pageshow'].forEach(name=>window.addEventListener(name,()=>scheduleSync(120,false)));
   window.addEventListener('online',()=>scheduleSync(120,true));
@@ -239,7 +244,7 @@ function start(){
     if(target.matches?.('#inboxBtn,[data-go="inbox"]'))scheduleSync(700,false);
   },true);
   new MutationObserver(()=>{if(document.hidden)return;clearTimeout(observerTimer);observerTimer=setTimeout(()=>paintBadge(lastCount<0?unreadCount():lastCount),35)}).observe(document.getElementById('view')||document.documentElement,{childList:true,subtree:true});
-  window.NH7_INBOX_BADGE_SYNC={version:VERSION,sync:(force=true)=>sync({force:!!force}),count:()=>unreadCount()};
+  window.NH7_INBOX_BADGE_SYNC={version:VERSION,sync:(force=true)=>sync({force:!!force}),count:()=>unreadCount(),storageBlocked:()=>cacheBlocked};
   window.NH7_INBOX_BADGE_SYNC_VERSION=VERSION;
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();

@@ -10,7 +10,7 @@ assert not subprocess.check_output(['git','diff',BASE,'--',*protected]),'Protect
 def functions(s):
  h=list(re.finditer(r'^(?:async )?function (\w+)\(',s,re.M));return {x[1]:s[x.start():h[i+1].start() if i+1<len(h) else len(s)] for i,x in enumerate(h)}
 a,b=functions(old('js/app.js').decode()),functions(Path('js/app.js').read_text());assert set(a)==set(b)
-allowed={'saveCloud','updateInboxBadge','inbox','nh7ReadQnaPublicCacheV470','nh7WriteQnaPublicCacheV470','nh7MergeOwnQuestionsV470','qna','myDocumentsV510','myDocumentsHtmlV510','account','bindDynamic'}
+allowed={'saveCloud','inboxMessages','setInboxMessages','updateInboxBadge','refreshInboxFromCloud','maybeCreateScheduledInboxMessages','inbox','nh7ReadQnaPublicCacheV470','nh7WriteQnaPublicCacheV470','nh7MergeOwnQuestionsV470','qna','myDocumentsV510','myDocumentsHtmlV510','account','bindDynamic'}
 assert {k for k in a if a[k]!=b[k]}==allowed
 assert b['saveCloud']==a['saveCloud'].replace('saveProgress:(...args)=>saveProgressCloud(...args),deleteNote:','saveNote:(...args)=>saveNoteCloud(...args),saveProgress:(...args)=>saveProgressCloud(...args),deleteNote:'),'Existing save function only exposes its same-key bridge'
 assert b['bindDynamic']==a['bindDynamic'].replace("$$('[data-inbox-open]')","$$('[data-inbox-open]:not([data-inbox3a])')"),'No unrelated handler change'

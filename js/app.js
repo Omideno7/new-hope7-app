@@ -1174,9 +1174,10 @@ function notesPanel(){
 
 
 function inboxMessages(){
-  return JSON.parse(localStorage.getItem('nh7_inbox_messages')||'[]');
+  return window.NH7Batch3A?.inboxRows()||[];
 }
 function setInboxMessages(arr){
+  if(!window.NH7Batch3A?.canWriteInbox())return;
   localStorage.setItem('nh7_inbox_messages', JSON.stringify(arr));
   updateInboxBadge();
 }
@@ -1363,7 +1364,8 @@ function notificationBodies(){
   };
 }
 async function maybeCreateScheduledInboxMessages(){
-  if(localStorage.getItem('nh7_notifications_permission')!=='granted')return;const rows=await fetchNotificationSchedules();const now=new Date();const dateKey=todayKey();
+  const inboxTicket3A=routeTicketWave6();
+  if(localStorage.getItem('nh7_notifications_permission')!=='granted')return;const rows=await fetchNotificationSchedules();routeCheckWave6(inboxTicket3A);const now=new Date();const dateKey=todayKey();
   for(const row of rows){let compare=now;if(row.timezone_mode&&row.timezone_mode!=='local'){try{const parts=new Intl.DateTimeFormat('en-CA',{timeZone:row.timezone_mode,weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(now);const hh=Number(parts.find(p=>p.type==='hour')?.value||0),mm=Number(parts.find(p=>p.type==='minute')?.value||0),wd=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(parts.find(p=>p.type==='weekday')?.value);const [th,tm]=String(row.time_value||'00:00').split(':').map(Number);if(Array.isArray(row.days_of_week)&&!row.days_of_week.includes(wd))continue;if(hh>th||(hh===th&&mm>=tm))addInboxMessage(scheduleText(row,'title'),scheduleText(row,'body'),row.key,row.key+'_'+dateKey)}catch(e){}}else{const [th,tm]=String(row.time_value||'00:00').split(':').map(Number);if(Array.isArray(row.days_of_week)&&!row.days_of_week.includes(now.getDay()))continue;if(now.getHours()>th||(now.getHours()===th&&now.getMinutes()>=tm))addInboxMessage(scheduleText(row,'title'),scheduleText(row,'body'),row.key,row.key+'_'+dateKey)}}
 }
 const INBOX_CLOUD_REFRESH_KEY='nh7_inbox_cloud_refresh_at_v1';
@@ -1372,6 +1374,7 @@ async function refreshInboxFromCloud(force=false){
   try{
     if(window.NH7_INBOX_BADGE_SYNC?.sync){
       const shared=await window.NH7_INBOX_BADGE_SYNC.sync(!!force);
+      if(shared?.stale){updateInboxBadge();return false}
       if(shared?.ok){updateInboxBadge();localStorage.setItem(INBOX_CLOUD_REFRESH_KEY,String(Date.now()));return true}
     }
     const last=Number(localStorage.getItem(INBOX_CLOUD_REFRESH_KEY)||0);
@@ -1396,6 +1399,7 @@ function inboxTimestampLabel(message){
 }
 async function inbox(){
   const ticket=routeTicketWave6();
+  void maybeCreateScheduledInboxMessages().catch(()=>{});
   await refreshInboxFromCloud(false);routeCheckWave6(ticket);
   window.NH7Batch3A.inbox(view,{rows:inboxDisplayMessages,raw:inboxMessages,set:setInboxMessages,group:inboxCanonicalGroup,time:inboxTimestampLabel,receipt:saveInboxReceipt,current:()=>{try{routeCheckWave6(ticket);return true}catch{return false}},badge:updateInboxBadge});
 }
