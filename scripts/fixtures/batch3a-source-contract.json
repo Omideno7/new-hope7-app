@@ -23,7 +23,7 @@
     },
     "js/nh7-inbox-badge-sync-v418.js": {
       "before": "77d2ed69afd061b9d5333f5fd0242e62ec038e4f3b3fa2a7ce7447bea0a9854c",
-      "after": "b7bfa10913037665d4375e01f79f6c8daabbf5bddbb6ec000de63a77a63b4a16"
+      "after": "5c25e27bfc135d3258b555cf1ea20fca19bdb6b199a2c5b15fb483ba5ce69f1b"
     },
     "js/nh7-my-notes-v234.js": {
       "before": "cf1d18b313b074f891e9948f8d4822a452b76ffc9e3ea88a9a8f38a54cf30813",
@@ -58,7 +58,7 @@
       "after": "8458ffee4bff85dca45bc89ff049f10ad25c96b4d6182aab79db89680a683414"
     }
   },
-  "patch_sha256": "68904b03b8bed48d62e626fce37543022e533e8e3a07f7796bc898787dbdb122",
+  "patch_sha256": "6e647708dd89e4af7614c256507d6a6f3c1bbc41d9365159ff5e162632c2fd55",
   "approved_paths": [
     ".github/workflows/validate-develop.yml",
     "docs/qa/WAVE8_PHYSICAL_FIX_BATCH3A_AUDIT.md",

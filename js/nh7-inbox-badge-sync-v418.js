@@ -203,7 +203,7 @@ async function doSync(){
     const old=byId.get(id)||{};
     const intent=window.NH7NotificationContractWave4?.intent(row.intent);
     if(row.recipient_uid&&row.recipient_uid!==session()?.user?.id)continue;
-    byId.set(id,{...old,...(intent?{intent}:{}),id,title:String(row?.title||''),body:String(row?.body||''),category:String(row?.category||'cloud'),language:String(row?.language||language()),createdAt:row?.delivered_at||old.createdAt||new Date().toISOString(),read:!!(old.read||receipt?.read_at||row?.read_at),readAt:receipt?.read_at||row?.read_at||old.readAt||null,lang:String(row?.language||language())});
+    byId.set(id,{...old,...(intent?{intent}:{}),id,title:String(row?.title||''),body:String(row?.body||''),category:String(row?.category||'cloud'),language:String(row?.language||language()),createdAt:row?.delivered_at||row?.sent_at||row?.created_at||old.createdAt||null,read:!!(old.read||receipt?.read_at||row?.read_at),readAt:receipt?.read_at||row?.read_at||old.readAt||null,lang:String(row?.language||language())});
   }
   const merged=[...byId.values()].sort((a,b)=>String(b?.createdAt||'').localeCompare(String(a?.createdAt||'')));
   saveMerged(merged,deleted);
