@@ -5,11 +5,14 @@
   const KEY = 'sb_publishable_v3xXEaJ5Fml7-te1mI4-0g_7R86oM37';
   const SESSION = 'nh7_user_session_v170',
     CACHE = 'nh7_library_public_v125_';
+  const CATALOG_REFRESH_MS = 5 * 60 * 1000;
+  const CATALOG_TTL_MS = 6 * 60 * 1000;
   const fetchNetwork = window.fetch.bind(window);
   let identity = '',
     generation = 0,
     bundle = { items: [], collections: [] },
-    checkedAt = 0;
+    checkedAt = 0,
+    catalogPromise = null;
   function session() {
     try {
       const s = JSON.parse(localStorage.getItem(SESSION) || 'null');
@@ -89,81 +92,93 @@
       return { items: [], collections: [] };
     }
   }
-  async function catalog() {
-    const id = sync(),
-      epoch = generation,
-      accessToken = session()?.access_token;
+  async function catalog(force = false) {
+    const id = sync(), accessToken = session()?.access_token;
     if (!id) {
       invalidate('login_required');
       return bundle;
     }
-    const controller = new AbortController(),
-      timer = setTimeout(() => controller.abort(), 10000);
-    try {
-      if (!navigator.onLine) throw new Error('offline');
-      const response = await fetchNetwork(
-        URL + '/rest/v1/rpc/nh7_library_catalog_v396',
-        {
-          method: 'POST',
-          headers: {
-            apikey: KEY,
-            Authorization: 'Bearer ' + accessToken,
-            'Content-Type': 'application/json',
-          },
-          body: '{}',
-          cache: 'no-store',
-          signal: controller.signal,
-        },
-      );
-      if (!response.ok)
-        throw Object.assign(new Error('catalog_denied'), {
-          status: response.status,
-        });
-      const raw = await response.json(),
-        value = Array.isArray(raw) ? raw[0] : raw;
-      if (value?.allowed === false)
-        throw Object.assign(new Error('catalog_denied'), { status: 403 });
-      if (sync() !== id || epoch !== generation)
-        return { items: [], collections: [] };
-      bundle = {
-        items: Array.isArray(value?.items) ? value.items : [],
-        collections: Array.isArray(value?.collections) ? value.collections : [],
-      };
-      checkedAt = Date.now();
+    if (!force && checkedAt && Date.now() - checkedAt < CATALOG_REFRESH_MS)
+      return bundle;
+    if (catalogPromise) return catalogPromise;
+
+    const epoch = generation;
+    const run = (async () => {
+      const controller = new AbortController(),
+        timer = setTimeout(() => controller.abort(), 10000);
       try {
-        const snapshot = JSON.stringify({
-          uid: id,
-          at: checkedAt,
-          ...publicOnly(bundle),
-        });
-        sessionStorage.setItem(CACHE + id, snapshot);
-        localStorage.setItem(CACHE + id, snapshot);
-      } catch (_) {}
-      await reconcileFiles(id, bundle);
-      if (sync() !== id || epoch !== generation)
-        return { items: [], collections: [] };
-      emit('verified');
-      return bundle;
-    } catch (error) {
-      if (sync() !== id || epoch !== generation)
-        return { items: [], collections: [] };
-      if (error.status === 401 || error.status === 403) {
+        if (!navigator.onLine) throw new Error('offline');
+        const response = await fetchNetwork(
+          URL + '/rest/v1/rpc/nh7_library_catalog_v396',
+          {
+            method: 'POST',
+            headers: {
+              apikey: KEY,
+              Authorization: 'Bearer ' + accessToken,
+              'Content-Type': 'application/json',
+            },
+            body: '{}',
+            cache: 'no-store',
+            signal: controller.signal,
+          },
+        );
+        if (!response.ok)
+          throw Object.assign(new Error('catalog_denied'), {
+            status: response.status,
+          });
+        const raw = await response.json(),
+          value = Array.isArray(raw) ? raw[0] : raw;
+        if (value?.allowed === false)
+          throw Object.assign(new Error('catalog_denied'), { status: 403 });
+        if (sync() !== id || epoch !== generation)
+          return { items: [], collections: [] };
+        bundle = {
+          items: Array.isArray(value?.items) ? value.items : [],
+          collections: Array.isArray(value?.collections) ? value.collections : [],
+        };
+        checkedAt = Date.now();
         try {
-          localStorage.removeItem(CACHE + id);
-          sessionStorage.removeItem(CACHE + id);
+          const snapshot = JSON.stringify({
+            uid: id,
+            at: checkedAt,
+            ...publicOnly(bundle),
+          });
+          sessionStorage.setItem(CACHE + id, snapshot);
+          localStorage.setItem(CACHE + id, snapshot);
         } catch (_) {}
+        await reconcileFiles(id, bundle);
+        if (sync() !== id || epoch !== generation)
+          return { items: [], collections: [] };
+        emit('verified');
+        return bundle;
+      } catch (error) {
+        if (sync() !== id || epoch !== generation)
+          return { items: [], collections: [] };
+        if (error.status === 401 || error.status === 403) {
+          try {
+            localStorage.removeItem(CACHE + id);
+            sessionStorage.removeItem(CACHE + id);
+          } catch (_) {}
+        }
+        invalidate(
+          error.status === 401 || error.status === 403 ? 'denied' : 'unverified',
+        );
+        // Denial never resurrects any snapshot. Offline/transient fallback is public-only and UID-bound.
+        if (error.status !== 401 && error.status !== 403) {
+          bundle = readPublic(id);
+          emit('public_fallback');
+        }
+        return bundle;
+      } finally {
+        clearTimeout(timer);
       }
-      invalidate(
-        error.status === 401 || error.status === 403 ? 'denied' : 'unverified',
-      );
-      // Denial never resurrects any snapshot. Offline/transient fallback is public-only and UID-bound.
-      if (error.status !== 401 && error.status !== 403) {
-        bundle = readPublic(id);
-        emit('public_fallback');
-      }
-      return bundle;
+    })();
+
+    catalogPromise = run;
+    try {
+      return await run;
     } finally {
-      clearTimeout(timer);
+      if (catalogPromise === run) catalogPromise = null;
     }
   }
   function libraryFile(raw) {
@@ -289,7 +304,7 @@
     if (
       !id ||
       !checkedAt ||
-      Date.now() - checkedAt > 35000 ||
+      Date.now() - checkedAt > CATALOG_TTL_MS ||
       !row ||
       !libraryFile(raw)
     )
@@ -333,7 +348,7 @@
           id &&
           id === sync()
         ) {
-          await catalog();
+          await catalog(true);
           if (id === sync()) await bindFile(body.item_id, data.signed_url);
         }
       } catch (_) {
@@ -376,13 +391,13 @@
   });
   setInterval(() => {
     sync();
-    if (checkedAt && Date.now() - checkedAt > 35000) {
+    if (checkedAt && Date.now() - checkedAt > CATALOG_TTL_MS) {
       if (bundle.items.some((x) => x.audience !== 'public'))
         invalidate('expired');
       else checkedAt = 0;
     }
-  }, 1000);
+  }, 5000);
   setInterval(() => {
-    if (bundle.items.some((x) => x.audience !== 'public')) catalog();
-  }, 10000);
+    if (bundle.items.some((x) => x.audience !== 'public')) catalog(true);
+  }, CATALOG_REFRESH_MS);
 })();

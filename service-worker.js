@@ -1,4 +1,5 @@
 /* New Hope 7 v2.3.9.50 — unified classic audio + network-first dynamic sermon catalogue v4.2.3 + Bible deep-link cache */
+/* 2026-11-02: refresh worker bytes so optimized library runtime is recached without changing the production cache contract. */
 importScripts('./sw-media-stream-bypass-v332.js?v=2.3.9.50');
 importScripts('./sw-navigation-fresh-v403.js?v=4.0.3');
 importScripts('./app/download-worker-v1.js?v=20260914.3');
